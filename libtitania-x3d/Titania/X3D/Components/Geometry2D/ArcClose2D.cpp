@@ -100,6 +100,19 @@ ArcClose2D::initialize ()
 	getBrowser () -> getArcClose2DOptions () .addInterest (this, &ArcClose2D::update);
 }
 
+void
+ArcClose2D::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getArcClose2DOptions () .removeInterest (this, &ArcClose2D::update);
+
+	X3DGeometryNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		getBrowser () -> getArcClose2DOptions () .addInterest (this, &ArcClose2D::update);
+}
+
 float
 ArcClose2D::getAngle ()
 {

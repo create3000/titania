@@ -50,6 +50,8 @@
 
 #include "X3DBrowserWindow.h"
 
+#include "../Editors/GridEditor/GridEditor.h"
+
 #include "../Widgets/Console/Console.h"
 #include "../Widgets/HistoryView/HistoryView.h"
 #include "../Widgets/LibraryView/LibraryView.h"
@@ -59,7 +61,10 @@
 #include "../Widgets/ScriptEditor/ScriptEditor.h"
 #include "../Widgets/ViewpointList/ViewpointList.h"
 
-#include <Titania/X3D/Tools/Grids/X3DGridTool.h>
+#include <Titania/X3D/Tools/Grids/GridTool.h>
+#include <Titania/X3D/Tools/Grids/AngleTool.h>
+
+#include <Titania/X3D/Browser/ContextLock.h>
 
 namespace titania {
 namespace puck {
@@ -72,9 +77,13 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
 	            outlineEditor (new OutlineEditor (this)),
 	                  console (new Console (this)),
 	             scriptEditor (new ScriptEditor (this)),
-	                     grid (),
+	                    tools (),
+	                 gridTool (),
+	                angleTool (),
 	                     keys (),
-	             accelerators (true)
+	             accelerators (true),
+	             hasGridTool_ (false),
+	            hasAngleTool_ (false)
 { }
 
 void
@@ -93,8 +102,8 @@ X3DBrowserWindow::initialize ()
 void
 X3DBrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 {
-	if (grid)
-		grid -> setExecutionContext (value);
+	for (const auto & tool : tools)
+		tool -> setExecutionContext (value);
 
 	X3DBrowserEditor::setBrowser (value);
 }
@@ -108,7 +117,7 @@ X3DBrowserWindow::getOutlineTreeView () const
 // Menu
 
 void
-X3DBrowserWindow::hasAccelerators (bool value)
+X3DBrowserWindow::hasAccelerators (const bool value)
 {
 	accelerators = value;
 
@@ -124,6 +133,74 @@ X3DBrowserWindow::hasAccelerators (bool value)
 				menu -> set_sensitive (accelerators);
 		}
 	}
+}
+
+void
+X3DBrowserWindow::hasGridTool (const bool value)
+{
+	hasGridTool_ = value;
+
+	if (hasGridTool_)
+	{
+		getGridTool () -> setExecutionContext (getBrowser ());
+		tools .emplace_back (getGridTool ());
+	}
+	else
+	{
+		getGridTool () -> setExecutionContext (getMasterBrowser ());
+		tools .remove (X3D::SFNode (getGridTool ()));
+	}
+}
+
+const X3D::X3DPtr <X3D::GridTool> &
+X3DBrowserWindow::getGridTool () const
+{
+	if (not gridTool)
+	{
+		const_cast <X3DBrowserWindow*> (this) -> gridTool = hasGridTool ()
+		                                                    ? X3D::createNode <X3D::GridTool> (getBrowser ())
+		                                                    : X3D::createNode <X3D::GridTool> (getMasterBrowser ());
+
+		GridEditor::setup (gridTool);
+
+		gridTool -> getExecutionContext () -> realize ();
+	}
+
+	return gridTool;
+}
+
+void
+X3DBrowserWindow::hasAngleTool (const bool value)
+{
+	hasAngleTool_ = value;
+
+	if (hasAngleTool_)
+	{
+		getAngleTool () -> setExecutionContext (getBrowser ());
+		tools .emplace_back (getAngleTool ());
+	}
+	else
+	{
+		getAngleTool () -> setExecutionContext (getMasterBrowser ());
+		tools .remove (X3D::SFNode (getAngleTool ()));
+	}
+}
+
+const X3D::X3DPtr <X3D::AngleTool> &
+X3DBrowserWindow::getAngleTool () const
+{
+	if (not angleTool)
+	{
+		const_cast <X3DBrowserWindow*> (this) -> angleTool = hasAngleTool ()
+		                                                     ? X3D::createNode <X3D::AngleTool> (getBrowser ())
+		                                                     : X3D::createNode <X3D::AngleTool> (getMasterBrowser ());
+
+		//AngleEditor::setup (angleTool);
+
+		angleTool -> getExecutionContext () -> realize ();
+	}
+
+	return angleTool;
 }
 
 void

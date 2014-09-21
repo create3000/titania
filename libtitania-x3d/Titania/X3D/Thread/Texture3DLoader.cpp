@@ -67,8 +67,18 @@ Texture3DLoader::Texture3DLoader (X3DExecutionContext* const executionContext,
 	           mutex (),
 	          future (getFuture (url, minTextureSize, maxTextureSize))
 {
-	browser -> prepareEvents () .addInterest (this, &Texture3DLoader::prepareEvents);
-	browser -> addEvent ();
+	getBrowser () -> prepareEvents () .addInterest (this, &Texture3DLoader::prepareEvents);
+	getBrowser () -> addEvent ();
+}
+
+void
+Texture3DLoader::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	getBrowser () -> prepareEvents () .removeInterest (this, &Texture3DLoader::prepareEvents);
+
+	browser = executionContext -> getBrowser ();
+	getBrowser () -> prepareEvents () .addInterest (this, &Texture3DLoader::prepareEvents);
+	getBrowser () -> addEvent ();
 }
 
 std::future <Texture3DPtr>
@@ -91,9 +101,11 @@ Texture3DLoader::loadAsync (const MFString & url,
 	{
 		try
 		{
+			const auto mutex = getBrowser () -> getDownloadMutex ();
+
 			if (running)
 			{
-				std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
+				std::lock_guard <std::mutex> lock (*mutex);
 
 				Texture3DPtr texture;
 
@@ -129,7 +141,7 @@ Texture3DLoader::prepareEvents ()
 {
 	if (running)
 	{
-		browser -> addEvent ();
+		getBrowser () -> addEvent ();
 
 		if (future .valid ())
 		{

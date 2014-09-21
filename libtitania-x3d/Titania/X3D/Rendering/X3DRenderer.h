@@ -74,6 +74,16 @@ class X3DRenderer :
 {
 public:
 
+	///  @name Common members
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
+
+	///  @name Member access
+
 	float
 	getDistance () const
 	{ return distance; }

@@ -84,6 +84,10 @@ public:
 	getInlineNode () const
 	{ return inlineNode; }
 
+	const SFNode &
+	getToolNode () const
+	throw (Error <DISPOSED>);
+
 	///  @name Operations
 
 	virtual
@@ -107,12 +111,6 @@ protected:
 	virtual
 	void
 	initialize () override;
-
-	///  @name Member acces
-
-	const SFNode &
-	getToolNode () const
-	throw (Error <DISPOSED>);
 
 	///  @name Operations
 

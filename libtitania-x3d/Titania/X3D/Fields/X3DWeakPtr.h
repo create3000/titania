@@ -68,10 +68,13 @@ public:
 	using X3DField <ValueType*>::getParents;
 	using X3DField <ValueType*>::addEvent;
 	using X3DField <ValueType*>::addInterest;
+	using X3DField <ValueType*>::setValue;
 
 	///  @name Constructors
 
-	X3DWeakPtr () = delete;
+	X3DWeakPtr () :
+		X3DField <ValueType*> ()
+	{ }
 
 	X3DWeakPtr (const X3DWeakPtr & field) :
 		X3DWeakPtr (field .getValue ())
@@ -126,6 +129,14 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override
 	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::copy: not supported!"); }
+
+	///  Assigns the X3DPtr and propagates an event.
+	X3DWeakPtr &
+	operator = (const X3DPtrBase & field)
+	{
+		setValue (dynamic_cast <ValueType*> (field .getObject ()));
+		return *this;
+	}
 
 	///  @name Field services
 
@@ -201,12 +212,9 @@ private:
 	template <class Up>
 	friend class X3DWeakPtr;
 
-	using X3DField <ValueType*>::isDefaultValue;
 	using X3DField <ValueType*>::getValue;
-	using X3DField <ValueType*>::setValue;
 	using X3DField <ValueType*>::reset;
 	using X3DField <ValueType*>::operator const value_type &;
-	using X3DField <ValueType*>::operator =;
 	using X3DField <ValueType*>::operator ==;
 	using X3DField <ValueType*>::operator not_eq;
 

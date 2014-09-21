@@ -92,9 +92,7 @@ X3DLODEditor::X3DLODEditor () :
 	                       getLODBBoxCenterBox (),
 	                       "bboxCenter"),
 	                  lod ()
-{
-	setup ();
-}
+{ }
 
 void
 X3DLODEditor::initialize ()
@@ -140,9 +138,7 @@ X3DLODEditor::on_lod_keep_current_level_activate ()
 }
 
 X3DLODEditor::~X3DLODEditor ()
-{
-	dispose ();
-}
+{ }
 
 } // puck
 } // titania

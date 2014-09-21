@@ -69,6 +69,15 @@ X3DScriptNode::initialize ()
 }
 
 void
+X3DScriptNode::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DUrlObject::setExecutionContext (executionContext);
+	X3DChildNode::setExecutionContext (executionContext);
+}
+
+void
 X3DScriptNode::dispose ()
 {
 	X3DUrlObject::dispose ();

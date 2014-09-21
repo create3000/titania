@@ -94,6 +94,15 @@ X3DRenderer::initialize ()
 }
 
 void
+X3DRenderer::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (depthBuffer)
+		depthBuffer -> setBrowser (executionContext -> getBrowser ());
+}
+
+void
 X3DRenderer::addShape (X3DShapeNode* const shape)
 {
 	const Box3f bbox   = shape -> getBBox () * getModelViewMatrix () .get ();

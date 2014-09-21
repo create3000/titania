@@ -133,6 +133,16 @@ PolylineEmitter::initialize ()
 	set_polyline ();
 }
 
+void
+PolylineEmitter::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	polylineNode -> setExecutionContext (executionContext);
+
+	X3DParticleEmitterNode::setExecutionContext (executionContext);
+}
+
 Box3f
 PolylineEmitter::getBBox ()
 {

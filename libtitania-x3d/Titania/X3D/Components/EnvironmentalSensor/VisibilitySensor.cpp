@@ -103,12 +103,17 @@ VisibilitySensor::setExecutionContext (X3DExecutionContext* const executionConte
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	getBrowser () -> sensors ()         .removeInterest (this, &VisibilitySensor::update);
 	getExecutionContext () -> isLive () .removeInterest (this, &VisibilitySensor::set_enabled);
-	executionContext -> isLive () .addInterest (this, &VisibilitySensor::set_enabled);
 
 	X3DEnvironmentalSensorNode::setExecutionContext (executionContext);
 
-	set_enabled ();
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (this, &VisibilitySensor::set_enabled);
+
+		set_enabled ();
+	}
 }
 
 void

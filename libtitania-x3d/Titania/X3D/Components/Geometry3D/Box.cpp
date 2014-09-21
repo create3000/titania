@@ -92,6 +92,19 @@ Box::initialize ()
 	//getBrowser () -> getBoxOptions () .addInterest (this, &Box::update);
 }
 
+//void
+//Box::setExecutionContext (X3DExecutionContext* const executionContext)
+//throw (Error <INVALID_OPERATION_TIMING>,
+//       Error <DISPOSED>)
+//{
+//	getBrowser () -> getBoxOptions () .removeInterest (this, &Box::update);
+//
+//	X3DGeometryNode::setExecutionContext (executionContext);
+//
+//	if (isInitialized ())
+//		getBrowser () -> getBoxOptions () .addInterest (this, &Box::update);
+//}
+
 Box3f
 Box::createBBox ()
 {

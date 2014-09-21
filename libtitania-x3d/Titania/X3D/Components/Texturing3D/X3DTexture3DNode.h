@@ -62,6 +62,14 @@ class X3DTexture3DNode :
 {
 public:
 
+	///  @name Common members
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
+
 	///  @name Fields
 
 	SFBool &

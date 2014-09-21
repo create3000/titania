@@ -47,71 +47,43 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#include "X3DFriendTool.h"
-
-#include "../../Browser/X3DBrowser.h"
+#include "X3DGridEditorInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-X3DFriendTool::X3DFriendTool () :
-	    X3DNode (),
-	       tool (new Tool (getBrowser ())),
-	activeLayer ()
-{
-	addChildren (tool, activeLayer);
-}
+const std::string X3DGridEditorInterface::m_widgetName = "GridEditor";
 
 void
-X3DFriendTool::initialize ()
+X3DGridEditorInterface::create (const std::string & filename)
 {
-	X3DNode::initialize ();
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	tool -> setup ();
+	// Get objects.
+	m_GridColorAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridColorAdjustment"));
 
-	getBrowser () -> getActiveLayer () .addInterest (this, &X3DFriendTool::set_activeLayer);
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("GridExpander", m_GridExpander);
+	m_builder -> get_widget ("InlineBox", m_InlineBox);
+	m_builder -> get_widget ("GridPlaneComboBoxText", m_GridPlaneComboBoxText);
+	m_builder -> get_widget ("GridColorBox", m_GridColorBox);
+	m_builder -> get_widget ("GridColorButton", m_GridColorButton);
+	m_builder -> get_widget ("GridColorScale", m_GridColorScale);
 
-	set_activeLayer ();
+	// Connect object Gtk::ComboBoxText with id 'GridPlaneComboBoxText'.
+	m_GridPlaneComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_plane_changed));
+
+	// Call construct handler of base class.
+	construct ();
 }
 
-void
-X3DFriendTool::setExecutionContext (X3DExecutionContext* const value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-
+X3DGridEditorInterface::~X3DGridEditorInterface ()
 {
-	getBrowser () -> getActiveLayer () .removeInterest (this, &X3DFriendTool::set_activeLayer);
-
-	tool -> setExecutionContext (value -> getBrowser ());
-
-	X3DNode::setExecutionContext (value);
-
-	getBrowser () -> getActiveLayer () .addInterest (this, &X3DFriendTool::set_activeLayer);
-
-	set_activeLayer ();
+	delete m_Window;
 }
 
-void
-X3DFriendTool::set_activeLayer ()
-{
-	if (activeLayer)
-		activeLayer -> getFriends () .remove (tool .getValue ());
-
-	activeLayer = getBrowser () -> getActiveLayer ();
-
-	if (activeLayer)
-		activeLayer -> getFriends () .emplace_back (tool);
-}
-
-void
-X3DFriendTool::dispose ()
-{
-	if (activeLayer)
-		activeLayer -> getFriends () .remove (tool .getValue ());
-
-	X3DNode::dispose ();
-}
-
-} // X3D
+} // puck
 } // titania

@@ -89,8 +89,39 @@ WorldInfo::initialize ()
 {
 	X3DInfoNode::initialize ();
 
+	if (not isPrivate ())
+		getExecutionContext () -> setWorldInfo (this);
+
 	if (not title () .empty ())
 		getBrowser () -> getNotification () -> string () = title ();
+}
+
+void
+WorldInfo::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (getExecutionContext () -> getWorldInfo () == this)
+	{
+		getExecutionContext () -> setWorldInfo (nullptr);
+		executionContext -> setWorldInfo (this);
+	}
+
+	X3DInfoNode::setExecutionContext (executionContext);
+}
+
+void
+WorldInfo::isPrivate (const bool value)
+{
+	X3DInfoNode::isPrivate (value);
+
+	if (value)
+	{
+		if (getExecutionContext () -> getWorldInfo () == this)
+			getExecutionContext () -> setWorldInfo (nullptr);
+	}
+	else
+		getExecutionContext () -> setWorldInfo (this);
 }
 
 } // X3D

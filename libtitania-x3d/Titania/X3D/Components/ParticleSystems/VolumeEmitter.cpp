@@ -149,6 +149,16 @@ VolumeEmitter::initialize ()
 	set_geometry ();
 }
 
+void
+VolumeEmitter::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	surfaceNode -> setExecutionContext (executionContext);
+
+	X3DParticleEmitterNode::setExecutionContext (executionContext);
+}
+
 Box3f
 VolumeEmitter::getBBox ()
 {

@@ -78,11 +78,24 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	getExecutionContext () -> isLive () .removeInterest (this, &X3DKeyDeviceSensorNode::set_live);
-	executionContext -> isLive () .addInterest (this, &X3DKeyDeviceSensorNode::set_live);
+
+	if (executionContext -> getBrowser () not_eq getBrowser ())
+	{
+		if (isActive ())
+		{
+			getBrowser () -> setKeyDeviceSensorNode (nullptr);
+			executionContext -> getBrowser () -> setKeyDeviceSensorNode (this);
+		}
+	}
 
 	X3DSensorNode::setExecutionContext (executionContext);
 
-	set_live ();
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (this, &X3DKeyDeviceSensorNode::set_live);
+
+		set_live ();
+	}
 }
 
 void

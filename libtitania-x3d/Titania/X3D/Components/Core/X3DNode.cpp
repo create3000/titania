@@ -50,8 +50,10 @@
 
 #include "X3DNode.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Bits/Traverse.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../Core/MetadataSet.h"
 #include "../Layering/X3DLayerNode.h"
 
 namespace titania {
@@ -68,6 +70,253 @@ X3DNode::X3DNode () :
 	     fields ()
 {
 	addType (X3DConstants::X3DNode);
+}
+
+void
+X3DNode::setBoolean (const std::string & key, const bool boolean)
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names, true);
+
+	set -> setBoolean (names .back (), boolean);
+}
+
+bool
+X3DNode::getBoolean (const std::string & key, const bool default_) const
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	try
+	{
+		const auto names = basic::split (key, "/");
+		const auto set   = getMetadataSet (names);
+
+		return set -> getBoolean (names .back (), default_);
+	}
+	catch (const Error <INVALID_NAME> &)
+	{
+		return default_;
+	}
+}
+
+void
+X3DNode::setDouble (const std::string & key, const double double_)
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names, true);
+
+	set -> setDouble (names .back (), double_);
+}
+
+double
+X3DNode::getDouble (const std::string & key, const double default_) const
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	try
+	{
+		const auto names = basic::split (key, "/");
+		const auto set   = getMetadataSet (names);
+
+		return set -> getDouble (names .back (), default_);
+	}
+	catch (const Error <INVALID_NAME> &)
+	{
+		return default_;
+	}
+}
+
+void
+X3DNode::setFloat (const std::string & key, const float float_)
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names, true);
+
+	set -> setFloat (names .back (), float_);
+}
+
+float
+X3DNode::getFloat (const std::string & key, const float default_) const
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	try
+	{
+		const auto names = basic::split (key, "/");
+		const auto set   = getMetadataSet (names);
+
+		return set -> getFloat (names .back (), default_);
+	}
+	catch (const Error <INVALID_NAME> &)
+	{
+		return default_;
+	}
+}
+
+void
+X3DNode::setInteger (const std::string & key, const int32_t integer)
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names, true);
+
+	set -> setInteger (names .back (), integer);
+}
+
+int32_t
+X3DNode::getInteger (const std::string & key, const int32_t default_) const
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	try
+	{
+		const auto names = basic::split (key, "/");
+		const auto set   = getMetadataSet (names);
+
+		return set -> getInteger (names .back (), default_);
+	}
+	catch (const Error <INVALID_NAME> &)
+	{
+		return default_;
+	}
+}
+
+void
+X3DNode::setString (const std::string & key, const std::string & string)
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names, true);
+
+	set -> setString (names .back (), string);
+}
+
+const std::string &
+X3DNode::getString (const std::string & key, const std::string & default_) const
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	try
+	{
+		const auto names = basic::split (key, "/");
+		const auto set   = getMetadataSet (names);
+
+		return set -> getString (names .back (), default_);
+	}
+	catch (const Error <INVALID_NAME> &)
+	{
+		return default_;
+	}
+}
+
+MetadataSet*
+X3DNode::getMetadataSet (const std::deque <std::string> & names, const bool create) const
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	if (names .size () < 3)
+		throw Error <INVALID_NAME> ("X3DNode::getMetadataSet: invalid key.");
+
+	if (not names .front () .empty ())
+		throw Error <INVALID_NAME> ("X3DNode::getMetadataSet: invalid key.");
+
+	if (names [1] .empty ())
+		throw Error <INVALID_NAME> ("X3DNode::getMetadataSet: invalid key.");
+
+	auto set = x3d_cast <MetadataSet*> (metadata ());
+
+	if (not set or set -> name () not_eq names [1])
+	{
+		if (not create)
+			throw Error <INVALID_NAME> ("X3DNode::getMetadataSet: invalid key.");
+
+		set            = new MetadataSet (getExecutionContext ());
+		set -> name () = names [1];
+		set -> setup ();
+		const_cast <X3DNode*> (this) -> metadata () = set;
+	}
+
+	for (const auto & name : std::make_pair (names .begin () + 2, names .end () - 1))
+		set = set -> getSet (name, create);
+
+	return set;
+}
+
+void
+X3DNode::removeMetaData (const std::string & key)
+throw (Error <DISPOSED>)
+{
+	auto names = basic::split (key, "/");
+
+	if (not names .empty () and not names .front () .empty ())
+		throw Error <INVALID_NAME> ("X3DNode::removeMetaData: Invalid key.");
+
+	switch (names .size ())
+	{
+		case 0:
+		{
+			metadata () = nullptr;
+			return;
+		}
+		case 1:
+			return;
+		case 2:
+		{
+			const auto set = x3d_cast <MetadataSet*> (metadata ());
+
+			if (set -> name () == names [1])
+				metadata () = nullptr;
+
+			return;
+		}
+		default:
+		{
+			std::vector <MetadataSet*> sets;
+
+			const auto set = x3d_cast <MetadataSet*> (metadata ());
+
+			if (not set or set -> name () not_eq names [1])
+				return;
+
+			sets .emplace_back (set);
+
+			try
+			{
+				for (const auto & name : std::make_pair (names .begin () + 2, names .end () - 1))
+					sets .emplace_back (sets .back () -> getSet (name));
+			}
+			catch (const Error <INVALID_NAME> &)
+			{
+				return;
+			}
+
+			sets .back () -> removeMetaData (names .back ());
+
+			while (sets .back () -> value () .empty ())
+			{
+				names .pop_back ();
+				sets .pop_back ();
+
+				if (sets .empty ())
+				{
+					metadata () = nullptr;
+					break;
+				}
+
+				sets .back () -> removeMetaData (names .back ());
+			}
+
+			return;
+		}
+	}
 }
 
 std::vector <X3DLayerNode*>

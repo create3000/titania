@@ -92,6 +92,19 @@ Rectangle2D::initialize ()
 	getBrowser () -> getRectangle2DOptions () .addInterest (this, &Rectangle2D::update);
 }
 
+void
+Rectangle2D::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getRectangle2DOptions () .removeInterest (this, &Rectangle2D::update);
+
+	X3DGeometryNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		getBrowser () -> getRectangle2DOptions () .addInterest (this, &Rectangle2D::update);
+}
+
 Box3f
 Rectangle2D::createBBox ()
 {

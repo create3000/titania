@@ -74,6 +74,9 @@ public:
 
 	SceneLoader (X3DExecutionContext* const, const MFString &, const Callback &);
 
+	void
+	setExecutionContext (X3DExecutionContext* const);
+
 	virtual
 	void
 	dispose () final override;
@@ -87,6 +90,10 @@ public:
 
 private:
 
+	X3DBrowser*
+	getBrowser () const
+	{ return browser; }
+
 	std::future <X3DScenePtr>
 	getFuture (const MFString &);
 
@@ -96,7 +103,7 @@ private:
 	void
 	prepareEvents ();
 
-	X3DBrowser* const         browser;
+	std::atomic <X3DBrowser*> browser;
 	const basic::uri          referer;
 	Callback                  callback;
 	std::atomic <bool>        running;

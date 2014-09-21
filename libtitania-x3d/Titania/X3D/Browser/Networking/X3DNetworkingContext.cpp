@@ -65,12 +65,12 @@ const std::string X3DNetworkingContext::providerUrl = "http://titania.create3000
 X3DNetworkingContext::X3DNetworkingContext () :
 	       X3DBaseNode (),
 	         userAgent (),
-	        emptyScene (new Scene (getBrowser ())),
+	      privateScene (new Scene (getBrowser ())),
 	downloadMutexIndex (0),
-	   downloadMutexes (1),
+	   downloadMutexes ({ std::make_shared <std::mutex> () }),
 	     downloadMutex ()
 {
-	addChildren (emptyScene);
+	addChildren (privateScene);
 }
 
 void
@@ -78,13 +78,16 @@ X3DNetworkingContext::initialize ()
 {
 	userAgent = getBrowser () -> getName () + "/" + getBrowser () -> getVersion () + " (X3D Browser; +" + providerUrl + ")";
 
-	emptyScene -> isPrivate (true);
-	emptyScene -> setup ();
+	privateScene -> isPrivate (true);
+	privateScene -> setup ();
 
 	downloadMutexes .resize (std::min <int32_t> (omp_get_max_threads () * 2, DOWNLOAD_THREADS_MAX));
+
+	for (auto & mutex : std::make_pair (downloadMutexes .begin () + 1, downloadMutexes .end ()))
+		mutex .reset (new std::mutex ());
 }
 
-std::mutex &
+const std::shared_ptr <std::mutex> &
 X3DNetworkingContext::getDownloadMutex ()
 {
 	std::lock_guard <std::mutex> lock (downloadMutex);
@@ -98,14 +101,14 @@ void
 X3DNetworkingContext::lock ()
 {
 	for (auto & downloadMutex : downloadMutexes)
-		downloadMutex .lock ();
+		downloadMutex -> lock ();
 }
 
 void
 X3DNetworkingContext::unlock ()
 {
 	for (auto & downloadMutex : downloadMutexes)
-		downloadMutex .unlock ();
+		downloadMutex -> unlock ();
 }
 
 X3DNetworkingContext::~X3DNetworkingContext ()

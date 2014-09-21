@@ -879,7 +879,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			{
 				const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
-				if (inlineNode and inlineNode -> getInternalScene () not_eq inlineNode -> getBrowser () -> getEmptyScene ())
+				if (inlineNode and inlineNode -> getInternalScene () not_eq inlineNode -> getBrowser () -> getPrivateScene ())
 				{
 					get_model () -> append (iter, OutlineIterType::X3DExecutionContext, inlineNode -> getInternalScene ());
 				}

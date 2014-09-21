@@ -111,6 +111,16 @@ Text::initialize ()
 }
 
 void
+Text::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DGeometryNode::setExecutionContext (executionContext);
+
+	set_fontStyle ();
+}
+
+void
 Text::set_fontStyle ()
 {
 	if (fontStyleNode)

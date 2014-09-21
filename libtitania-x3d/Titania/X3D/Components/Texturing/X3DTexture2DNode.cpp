@@ -89,6 +89,16 @@ X3DTexture2DNode::initialize ()
 }
 
 void
+X3DTexture2DNode::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DTextureNode::setExecutionContext (executionContext);
+
+	set_textureProperties ();
+}
+
+void
 X3DTexture2DNode::set_textureProperties ()
 {
 	if (texturePropertiesNode)

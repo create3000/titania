@@ -58,12 +58,22 @@ namespace X3D {
 
 const std::string GridTool::componentName  = "Tools";
 const std::string GridTool::typeName       = "GridTool";
-const std::string GridTool::containerField = "children";
+const std::string GridTool::containerField = "grid";
+
+GridTool::Fields::Fields ()
+{ }
 
 GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGridTool ()
-{ }
+	X3DGridTool (),
+	     fields ()
+{
+	addField (inputOutput, "metadata",     metadata ());
+	addField (inputOutput, "translation",  translation ());
+	addField (inputOutput, "rotation",     rotation ());
+	addField (inputOutput, "color",        color ());
+	addField (inputOutput, "transparency", transparency ());
+}
 
 X3DBaseNode*
 GridTool::create (X3DExecutionContext* const executionContext) const
@@ -77,6 +87,12 @@ GridTool::initialize ()
 	X3DGridTool::initialize ();
 
 	requestAsyncLoad ({ get_tool ("GridTool.x3dv") .str () });
+}
+
+void
+GridTool::realize ()
+{
+	X3DGridTool::realize ();
 }
 
 } // X3D

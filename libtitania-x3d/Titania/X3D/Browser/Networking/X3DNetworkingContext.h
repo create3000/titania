@@ -76,10 +76,10 @@ public:
 	{ return userAgent; }
 
 	const X3DScenePtr &
-	getEmptyScene () const
-	{ return emptyScene; }
+	getPrivateScene () const
+	{ return privateScene; }
 
-	std::mutex &
+	const std::shared_ptr <std::mutex> &
 	getDownloadMutex ();
 
 	///  @name Destruction
@@ -122,11 +122,11 @@ private:
 
 	std::string userAgent;
 
-	X3DScenePtr emptyScene;
+	X3DScenePtr privateScene;
 
-	size_t                  downloadMutexIndex;
-	std::deque <std::mutex> downloadMutexes;
-	std::mutex              downloadMutex;
+	size_t                                    downloadMutexIndex;
+	std::deque <std::shared_ptr <std::mutex>> downloadMutexes;
+	std::mutex                                downloadMutex;
 
 };
 

@@ -102,6 +102,15 @@ Anchor::initialize ()
 }
 
 void
+Anchor::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DUrlObject::setExecutionContext (executionContext);
+	X3DGroupingNode::setExecutionContext (executionContext);
+}
+
+void
 Anchor::set_over (const bool value)
 {
 	if (value not_eq isOver)

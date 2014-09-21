@@ -119,7 +119,13 @@ X3DBaseInterface::inPrototypeInstance () const
 {
 	return dynamic_cast <X3D::X3DPrototypeInstance*> (getExecutionContext () .getValue ());
 }
-	 
+
+X3D::WorldInfoPtr
+X3DBaseInterface::getWorldInfo () const
+{
+	return browserWindow -> getWorldInfo ();
+}
+
 void
 X3DBaseInterface::set_browser (const X3D::BrowserPtr & value)
 {

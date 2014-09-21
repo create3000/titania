@@ -48,74 +48,66 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_CORE_X3DFRIEND_TOOL_H__
-#define __TITANIA_X3D_TOOLS_CORE_X3DFRIEND_TOOL_H__
+#include "X3DGridEditor.h"
 
-#include "../../Components/Core/X3DNode.h"
-#include "../../Components/Layering/X3DLayerNode.h"
-#include "../Core/Tool.h"
+#include "../../Configuration/config.h"
+
+#include <Titania/X3D/Tools/Grids/GridTool.h>
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class X3DFriendTool :
-	public X3DNode
+X3DGridEditor::X3DGridEditor () :
+	X3DGridEditorInterface (),
+	                 color (getBrowserWindow (),
+	                        getGridColorButton (),
+	                        getGridColorAdjustment (),
+	                        getGridColorBox (),
+	                        "color")
+{ }
+
+void
+X3DGridEditor::initialize ()
+{ }
+
+void
+X3DGridEditor::setup (const X3D::X3DPtr <X3D::GridTool> & grid)
 {
-public:
+	Configuration config (gconf_dir (), "GridEditor");
 
-	///  @name Common members
+	setPlane (grid, config .hasItem ("Grid.plane") ? config .getInteger ("Grid.plane") : 1);
+}
 
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+void
+X3DGridEditor::on_grid_plane_changed ()
+{
+	getConfig () .setItem ("Grid.plane", getGridPlaneComboBoxText () .get_active_row_number ());
 
-	///  @name Destruction
+	setPlane (getBrowserWindow () -> getGridTool (),
+	          getGridPlaneComboBoxText () .get_active_row_number ());
+}
 
-	virtual
-	void
-	dispose () final override;
+void
+X3DGridEditor::setPlane (const X3D::X3DPtr <X3D::GridTool> & grid, const int32_t plane)
+{
+	switch (plane)
+	{
+		case 0:
+			grid -> rotation () = X3D::Rotation4f (0, 0, -1, M_PI / 2);
+			break;
+		case 1:
+			grid -> rotation () = X3D::Rotation4f ();
+			break;
+		case 2:
+			grid -> rotation () = X3D::Rotation4f (1, 0, 0, M_PI / 2);
+			break;
+		default:
+			break;
+	}
+}
 
+X3DGridEditor::~X3DGridEditor ()
+{ }
 
-protected:
-
-	///  @name Construction
-
-	X3DFriendTool ();
-
-	virtual
-	void
-	initialize () override;
-
-	///  @name Member access
-
-	const X3DPtr <Inline> &
-	getInlineNode () const
-	{ return tool -> getInlineNode (); }
-
-	///  @name Operations
-
-	void
-	requestAsyncLoad (const MFString & url)
-	{ tool -> requestAsyncLoad (url); }
-
-
-private:
-
-	///  @name Event handlers
-
-	void
-	set_activeLayer ();
-
-	///  @name Members
-
-	X3DPtr <Tool>         tool;
-	X3DPtr <X3DLayerNode> activeLayer;
-
-};
-
-} // X3D
+} // puck
 } // titania
-
-#endif

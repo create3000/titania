@@ -53,6 +53,7 @@
 #include "../Bits/Cast.h"
 #include "../Browser/ContextLock.h"
 #include "../Browser/X3DBrowser.h"
+#include "../Components/Core/WorldInfo.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Networking/Inline.h"
@@ -92,6 +93,7 @@ const UnitArray X3DExecutionContext::standardUnits = {
 
 X3DExecutionContext::X3DExecutionContext () :
 	         X3DBaseNode (),
+	           worldInfo (),
 	            encoding ("X3D"),
 	specificationVersion ("3.3"),
 	   characterEncoding ("utf8"),
@@ -147,7 +149,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	for (auto & parent : ChildObjectSet (getParents ()))
 	{
 		const auto node = dynamic_cast <X3DBaseNode*> (parent);
-		
+
 		if (not node)
 			continue;
 
@@ -172,8 +174,23 @@ X3DExecutionContext::realize ()
 				uninitializedNode -> setup ();
 		}
 	}
+
 	//else
 	//	throw Error <INVALID_OPERATION_TIMING> ("Couldn't realize nodes.");
+}
+
+void
+X3DExecutionContext::setWorldInfo (const WorldInfoPtr & value)
+throw (Error <DISPOSED>)
+{
+	worldInfo = value;
+}
+
+WorldInfoPtr
+X3DExecutionContext::getWorldInfo () const
+throw (Error <DISPOSED>)
+{
+	return WorldInfoPtr (worldInfo);
 }
 
 VersionType
@@ -381,21 +398,21 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	std::string newName = name;
 	size_t      i       = 64;
 
-	for ( ; i;)
+	for (; i;)
 	{
 		if (namedNodes .count (newName) or newName .empty ())
 		{
-			const auto min = i;
+			const auto                             min = i;
 			std::uniform_int_distribution <size_t> random (min, i <<= 1);
 
-			newName = name;
+			newName  = name;
 			newName += '_';
 			newName += basic::to_string (random (random_engine));
 		}
 		else
 			break;
 	}
-	
+
 	return newName;
 }
 
@@ -406,18 +423,18 @@ std::string
 X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext, std::string name) const
 {
 	RegEx::LastNumber_ .Replace ("", &name);
-	
+
 	std::string newName = name;
 	size_t      i       = 64;
 
-	for ( ; i;)
+	for (; i;)
 	{
 		if (namedNodes .count (newName) or executionContext -> namedNodes .count (newName) or newName .empty ())
 		{
-			const auto min = i;
+			const auto                             min = i;
 			std::uniform_int_distribution <size_t> random (min, i <<= 1);
 
-			newName = name;
+			newName  = name;
 			newName += '_';
 			newName += basic::to_string (random (random_engine));
 		}
@@ -502,7 +519,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	const auto iter = importedNodes .find (importedName);
-	
+
 	if (iter == importedNodes .end ())
 		return;
 
@@ -558,21 +575,21 @@ X3DExecutionContext::getUniqueImportedName (const X3DExecutionContext* const exe
 	std::string newName = importedName;
 	size_t      i       = 64;
 
-	for ( ; i;)
+	for (; i;)
 	{
 		if (importedNodes .count (newName) or executionContext -> importedNodes .count (newName) or newName .empty ())
 		{
-			const auto min = i;
+			const auto                             min = i;
 			std::uniform_int_distribution <size_t> random (min, i <<= 1);
 
-			newName = importedName;
+			newName  = importedName;
 			newName += '_';
 			newName += basic::to_string (random (random_engine));
 		}
 		else
 			break;
 	}
-	
+
 	return newName;
 }
 
@@ -607,7 +624,7 @@ throw (Error <INVALID_NODE>,
 {
 	if (not node)
 		throw Error <INVALID_NODE> ("Couldn't get local name: node is NULL.");
-	
+
 	if (node -> getExecutionContext () == this)
 		return node -> getName ();
 
@@ -674,7 +691,7 @@ throw (Error <INVALID_NAME>,
 {
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto name is empty.");
-	
+
 	if (prototypes .count (name))
 		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto '" + name + "' is already in use.");
 
@@ -896,7 +913,7 @@ throw (Error <INVALID_NAME>,
 {
 	const auto protoNodes = findProtoDeclarations ();
 	const auto iter       = protoNodes .find (name);
-	
+
 	if (iter not_eq protoNodes .end ())
 		return iter -> second;
 
@@ -915,7 +932,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	std::map <std::string, X3DProtoDeclarationNode*> prototypes;
 	std::string                                      current;
 
-	for (;;)
+	for (; ;)
 	{
 		// Skip all prototypes that are below a current prototype.
 
@@ -1138,7 +1155,7 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::import (X3DExecutionContext* const executionContext, MFNode & field)
 throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>,
+       Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
@@ -1227,7 +1244,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	for (auto & parent : ChildObjectSet (executionContext -> getParents ()))
 	{
 		const auto node = dynamic_cast <X3DBaseNode*> (parent);
-		
+
 		if (not node)
 			continue;
 
@@ -1254,7 +1271,7 @@ void
 X3DExecutionContext::importRoutes (X3DExecutionContext* const executionContext)
 {
 	for (const auto & route : executionContext -> routes)
-	  addRoute (route);
+		addRoute (route);
 
 	executionContext -> routes .clear ();
 }

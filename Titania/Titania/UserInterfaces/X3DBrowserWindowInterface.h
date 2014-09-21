@@ -526,6 +526,10 @@ public:
 	getAngleLayoutToolMenuItem () const
 	{ return *m_AngleLayoutToolMenuItem; }
 
+	Gtk::ImageMenuItem &
+	getGridProperiesMenuItem () const
+	{ return *m_GridProperiesMenuItem; }
+
 	Gtk::MenuItem &
 	getHelpMenuItem () const
 	{ return *m_HelpMenuItem; }
@@ -1132,6 +1136,10 @@ public:
 
 	virtual
 	void
+	on_grid_properties_activate () = 0;
+
+	virtual
+	void
 	on_standard_size () = 0;
 
 	virtual
@@ -1394,6 +1402,7 @@ private:
 	Gtk::MenuItem*                  m_LayoutMenuItem;
 	Gtk::CheckMenuItem*             m_GridLayoutToolMenuItem;
 	Gtk::CheckMenuItem*             m_AngleLayoutToolMenuItem;
+	Gtk::ImageMenuItem*             m_GridProperiesMenuItem;
 	Gtk::MenuItem*                  m_HelpMenuItem;
 	Gtk::ImageMenuItem*             m_StandardSizeMenuItem;
 	Gtk::ImageMenuItem*             m_InfoMenuItem;

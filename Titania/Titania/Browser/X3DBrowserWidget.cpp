@@ -275,6 +275,23 @@ X3DBrowserWidget::isLive () const
 	return getConfig () .getBoolean ("isLive");
 }
 
+X3D::WorldInfoPtr
+X3DBrowserWidget::getWorldInfo () const
+{
+	auto worldInfo = getRootContext () -> getWorldInfo ();
+
+	if (not worldInfo)
+	{
+		worldInfo = X3D::createNode <X3D::WorldInfo> (getRootContext ());
+		worldInfo -> title () = getRootContext () -> getWorldURL () .basename (false);
+
+		getRootContext () -> getRootNodes () .emplace_front (worldInfo);
+		getRootContext () -> realize ();
+	}
+
+	return worldInfo;
+}
+
 void
 X3DBrowserWidget::setTitle () const
 {

@@ -143,6 +143,14 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DUrlObject::transform (topUrl (),    getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
 	X3DUrlObject::transform (bottomUrl (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
 
+	frontTexture      -> setExecutionContext (executionContext);
+	backTexture       -> setExecutionContext (executionContext);
+	leftTexture       -> setExecutionContext (executionContext);
+	rightTexture      -> setExecutionContext (executionContext);
+	topTexture        -> setExecutionContext (executionContext);
+	bottomTexture     -> setExecutionContext (executionContext);
+	textureProperties -> setExecutionContext (executionContext);
+
 	X3DBackgroundNode::setExecutionContext (executionContext);
 }
 

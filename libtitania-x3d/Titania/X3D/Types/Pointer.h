@@ -82,6 +82,7 @@ class NamedNode;
 class ImportedNode;
 class Route;
 class ExportedNode;
+class WorldInfo;
 
 //
 class LayerSet;
@@ -148,6 +149,7 @@ using NamedNodePtr               = X3DPtr <NamedNode>;
 using ImportedNodePtr            = X3DPtr <ImportedNode>;
 using RoutePtr                   = X3DPtr <Route>;
 using ExportedNodePtr            = X3DPtr <ExportedNode>;
+using WorldInfoPtr               = X3DPtr <WorldInfo>;
 
 using LayerSetPtr            = X3DPtr <LayerSet>;
 using X3DLayerNodePtr        = X3DPtr <X3DLayerNode>;

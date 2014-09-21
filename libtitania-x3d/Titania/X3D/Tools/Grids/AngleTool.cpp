@@ -58,12 +58,22 @@ namespace X3D {
 
 const std::string AngleTool::componentName  = "Grids";
 const std::string AngleTool::typeName       = "AngleTool";
-const std::string AngleTool::containerField = "children";
+const std::string AngleTool::containerField = "grid";
+
+AngleTool::Fields::Fields ()
+{ }
 
 AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGridTool ()
-{ }
+	X3DGridTool (),
+	     fields ()
+{
+	addField (inputOutput, "metadata",     metadata ());
+	addField (inputOutput, "translation",  translation ());
+	addField (inputOutput, "rotation",     rotation ());
+	addField (inputOutput, "color",        color ());
+	addField (inputOutput, "transparency", transparency ());
+}
 
 X3DBaseNode*
 AngleTool::create (X3DExecutionContext* const executionContext) const
@@ -77,6 +87,12 @@ AngleTool::initialize ()
 	X3DGridTool::initialize ();
 
 	requestAsyncLoad ({ get_tool ("AngleTool.x3dv") .str () });
+}
+
+void
+AngleTool::realize ()
+{
+	X3DGridTool::realize ();
 }
 
 } // X3D

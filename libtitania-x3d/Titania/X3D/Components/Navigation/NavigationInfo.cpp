@@ -121,6 +121,16 @@ NavigationInfo::initialize ()
 }
 
 void
+NavigationInfo::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	directionalLight -> setExecutionContext (executionContext);
+
+	X3DBindableNode::setExecutionContext (executionContext);
+}
+
+void
 NavigationInfo::set_headlight ()
 {
 	getModelViewMatrix () .identity ();

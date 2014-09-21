@@ -87,6 +87,8 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	///  @name Fields
+
 
 private:
 
@@ -96,11 +98,24 @@ private:
 	void
 	initialize () final override;
 
+	virtual
+	void
+	realize () final override;
+
 	///  @name Static members
 
 	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+	};
+
+	Fields fields;
 
 };
 

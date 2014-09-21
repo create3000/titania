@@ -55,6 +55,7 @@
 #include "../Bits/Error.h"
 #include "../Browser/ContextLock.h"
 #include "../Browser/X3DBrowser.h"
+#include "../Components/Core/WorldInfo.h"
 #include "../Execution/ExportedNode.h"
 #include "../Parser/Parser.h"
 #include "../Parser/RegEx.h"
@@ -93,7 +94,11 @@ X3DScene::initialize ()
 
 std::string
 X3DScene::getTitle () const
+throw (Error <DISPOSED>)
 {
+	if (getWorldInfo () and not getWorldInfo () -> title () .empty ())
+		return getWorldInfo () -> title ();
+
 	try
 	{
 		const auto & title = getMetaData ("title");

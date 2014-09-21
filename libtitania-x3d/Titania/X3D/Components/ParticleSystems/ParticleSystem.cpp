@@ -450,12 +450,19 @@ ParticleSystem::setExecutionContext (X3DExecutionContext* const executionContext
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	getBrowser () -> prepareEvents ()   .removeInterest (this, &ParticleSystem::prepareEvents);
+	getBrowser () -> sensors ()         .removeInterest (this, &ParticleSystem::update);
 	getExecutionContext () -> isLive () .removeInterest (this, &ParticleSystem::set_live);
-	executionContext -> isLive () .addInterest (this, &ParticleSystem::set_live);
 
 	X3DShapeNode::setExecutionContext (executionContext);
 
-	set_live ();
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (this, &ParticleSystem::set_live);
+
+		set_live ();
+		set_emitter ();
+	}
 }
 
 bool

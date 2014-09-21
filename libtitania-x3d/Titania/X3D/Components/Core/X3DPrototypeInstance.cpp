@@ -174,11 +174,15 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	getExecutionContext () -> isLive () .removeInterest (this, &X3DPrototypeInstance::set_live);
-	executionContext -> isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
 
 	X3DExecutionContext::setExecutionContext (executionContext);
 
-	set_live ();
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
+
+		set_live ();
+	}
 }
 
 const std::string &

@@ -167,11 +167,16 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	getExecutionContext () -> isLive () .removeInterest (this, &ExternProtoDeclaration::set_live);
-	executionContext -> isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
 
 	X3DUrlObject::setExecutionContext (executionContext);
+	X3DProtoDeclarationNode::setExecutionContext (executionContext);
 
-	set_live ();
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
+
+		set_live ();
+	}
 }
 
 void
@@ -207,7 +212,7 @@ ExternProtoDeclaration::requestImmediateLoad ()
 		}
 		catch (const X3DError & error)
 		{
-			scene = getBrowser () -> getEmptyScene ();
+			scene = getBrowser () -> getPrivateScene ();
 
 			setLoadState (FAILED_STATE);
 

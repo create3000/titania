@@ -83,12 +83,12 @@ X3DViewpointNode::X3DViewpointNode () :
 	                parentMatrix (),
 	        transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),
 	 inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
-	                  timeSensor (new TimeSensor (getBrowser () -> getEmptyScene ())),
-	               easeInEaseOut (new EaseInEaseOut (getBrowser () -> getEmptyScene ())),
-	        positionInterpolator (new PositionInterpolator (getBrowser () -> getEmptyScene ())),
-	     orientationInterpolator (new OrientationInterpolator (getBrowser () -> getEmptyScene ())),
-	           scaleInterpolator (new PositionInterpolator (getBrowser () -> getEmptyScene ())),
-	scaleOrientationInterpolator (new OrientationInterpolator (getBrowser () -> getEmptyScene ()))
+	                  timeSensor (new TimeSensor (getBrowser () -> getPrivateScene ())),
+	               easeInEaseOut (new EaseInEaseOut (getBrowser () -> getPrivateScene ())),
+	        positionInterpolator (new PositionInterpolator (getBrowser () -> getPrivateScene ())),
+	     orientationInterpolator (new OrientationInterpolator (getBrowser () -> getPrivateScene ())),
+	           scaleInterpolator (new PositionInterpolator (getBrowser () -> getPrivateScene ())),
+	scaleOrientationInterpolator (new OrientationInterpolator (getBrowser () -> getPrivateScene ()))
 {
 	addType (X3DConstants::X3DViewpointNode);
 
@@ -142,6 +142,21 @@ X3DViewpointNode::initialize ()
 	scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
 
 	isBound () .addInterest (this, &X3DViewpointNode::set_bind_);
+}
+
+void
+X3DViewpointNode::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	timeSensor                   -> setExecutionContext (executionContext -> getBrowser () -> getPrivateScene ());
+	easeInEaseOut                -> setExecutionContext (executionContext -> getBrowser () -> getPrivateScene ());
+	positionInterpolator         -> setExecutionContext (executionContext -> getBrowser () -> getPrivateScene ());
+	orientationInterpolator      -> setExecutionContext (executionContext -> getBrowser () -> getPrivateScene ());
+	scaleInterpolator            -> setExecutionContext (executionContext -> getBrowser () -> getPrivateScene ());
+	scaleOrientationInterpolator -> setExecutionContext (executionContext -> getBrowser () -> getPrivateScene ());
+
+	X3DBindableNode::setExecutionContext (executionContext);
 }
 
 Vector3f

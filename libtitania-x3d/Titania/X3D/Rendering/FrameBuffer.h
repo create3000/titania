@@ -63,7 +63,17 @@ class FrameBuffer
 {
 public:
 
+	///  @name Construction
+
 	FrameBuffer (const X3DBrowserContext* const, const size_t, const size_t, const size_t, const bool = true);
+
+	///  @name Member access
+
+	void
+	setBrowser (const X3DBrowserContext* const value)
+	{ browser = value; }
+
+	///  @name Operations
 
 	double
 	getDistance (const double, const double);
@@ -77,27 +87,33 @@ public:
 	void
 	get (std::vector <uint8_t> &) const;
 
+	///  @name Debug
+
 	void
 	save ();
 
 	void
 	display ();
 
+	///  @name Destruction
+
 	~FrameBuffer ();
 
 
 private:
 
-	const X3DBrowserContext* const browser;
-	size_t                         width;
-	size_t                         height;
-	size_t                         samples;
-	GLuint                         id;
-	GLuint                         colorBufferId;
-	GLuint                         depthBufferId;
-	std::vector <float>            color;
-	std::vector <float>            depth;
-	GLint                          viewport [4];
+	///  @name Members
+
+	const X3DBrowserContext* browser;
+	size_t                   width;
+	size_t                   height;
+	size_t                   samples;
+	GLuint                   id;
+	GLuint                   colorBufferId;
+	GLuint                   depthBufferId;
+	std::vector <float>      color;
+	std::vector <float>      depth;
+	GLint                    viewport [4];
 
 };
 

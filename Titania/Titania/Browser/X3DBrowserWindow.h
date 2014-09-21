@@ -56,7 +56,8 @@
 namespace titania {
 namespace X3D {
 
-class X3DGridTool;
+class GridTool;
+class AngleTool;
 
 } // X3D
 } // titania
@@ -92,16 +93,28 @@ public:
 	hasAccelerators (const bool);
 
 	bool
-	hasAccelerators ()
+	hasAccelerators () const
 	{ return accelerators; }
 
-	const X3D::X3DPtr <X3D::X3DGridTool> &
-	getGrid () const
-	{ return grid; }
+	void
+	hasGridTool (const bool);
+
+	bool
+	hasGridTool () const
+	{ return hasGridTool_; }
+
+	const X3D::X3DPtr <X3D::GridTool> &
+	getGridTool () const;
 
 	void
-	setGrid (const X3D::X3DPtr <X3D::X3DGridTool> & value)
-	{ grid = value; }
+	hasAngleTool (const bool);
+
+	bool
+	hasAngleTool () const
+	{ return hasAngleTool_; }
+
+	const X3D::X3DPtr <X3D::AngleTool> &
+	getAngleTool () const;
 
 	/// @name Operations
 
@@ -149,10 +162,14 @@ private:
 	std::unique_ptr <OutlineEditor> outlineEditor;
 	std::unique_ptr <Console>       console;
 	std::unique_ptr <ScriptEditor>  scriptEditor;
-	X3D::X3DPtr <X3D::X3DGridTool>  grid;
+	X3D::MFNode                     tools;
+	X3D::X3DPtr <X3D::GridTool>     gridTool;
+	X3D::X3DPtr <X3D::AngleTool>    angleTool;
 
 	X3D::Keys keys;
 	bool      accelerators;
+	bool      hasGridTool_;
+	bool      hasAngleTool_;
 
 };
 

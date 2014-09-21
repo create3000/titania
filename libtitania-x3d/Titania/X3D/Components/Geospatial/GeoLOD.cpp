@@ -80,7 +80,7 @@ GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
 	   X3DBoundedObject (),
 	X3DGeospatialObject (),
 	             fields (),
-	          rootGroup (new Group (getBrowser () -> getEmptyScene ())),
+	          rootGroup (new Group (getBrowser () -> getPrivateScene ())),
 	         rootInline (new Inline (executionContext)),
 	       child1Inline (new Inline (executionContext)),
 	       child2Inline (new Inline (executionContext)),

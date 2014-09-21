@@ -1,18 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Grids/AngleTool.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Layering/X3DActiveLayerTool.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/GridTool.h" Line="107" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/GridTool.cpp" Line="54" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.h" Line="90" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.cpp" Line="92" Column="69" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1592" Column="6" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/AngleTool.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/AngleTool.cpp" Line="67" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.h" Line="92" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/GridEditor.cpp" Line="72" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/GridEditor.h" Line="50" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.cpp" Line="39" Column="81" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/GridTool.h" Line="104" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/GridTool.cpp" Line="94" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Core/X3DToolObject.h" Line="114" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.cpp" Line="64" Column="4" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.h" Line="55" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Layering/X3DActiveLayerTool.h" Line="56" Column="18" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -24,13 +23,16 @@
           <Node name="Library" expanded="True">
             <Node name="Materials" expanded="True" />
             <Node name="Tests" expanded="True">
-              <Node name="Handles" expanded="True" />
               <Node name="images" expanded="True" />
+              <Node name="Shape" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
+                <Node name="pages" expanded="True">
+                  <Node name="about" expanded="True" />
+                </Node>
                 <Node name="tools" expanded="True" />
               </Node>
             </Node>
@@ -38,25 +40,27 @@
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
                   <Node name="Layering" expanded="True" />
                   <Node name="Networking" expanded="True" />
                 </Node>
-                <Node name="Execution" expanded="True" />
-                <Node name="Prototype" expanded="True" />
                 <Node name="Tools" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Grids" expanded="True">
-                    <Node name="X3DGridTool.cpp" selected="True" />
+                  <Node name="Grids" expanded="True" />
+                  <Node name="Layering" expanded="True">
+                    <Node name="X3DActiveLayerTool.h" selected="True" />
                   </Node>
-                  <Node name="Grouping" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
                 </Node>
+                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -64,18 +68,22 @@
             <Node name="scripts" expanded="True" />
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
-                <Node name="Library" expanded="True">
-                  <Node name="Primitives" expanded="True" />
+                <Node name="pages" expanded="True">
+                  <Node name="about" expanded="True" />
                 </Node>
                 <Node name="ui" expanded="True">
                   <Node name="Dialogs" expanded="True" />
+                  <Node name="Editors" expanded="True" />
+                  <Node name="icons" expanded="True" />
                 </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
               <Node name="Editors" expanded="True">
-                <Node name="AppearanceEditor" expanded="True" />
+                <Node name="GridEditor" expanded="True" />
+                <Node name="LODEditor" expanded="True" />
               </Node>
             </Node>
           </Node>

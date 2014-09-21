@@ -72,6 +72,9 @@ public:
 	                 const MFString &, const size_t, const size_t,
 	                 const Callback &);
 
+	void
+	setExecutionContext (X3DExecutionContext* const);
+
 	virtual
 	void
 	dispose () final override;
@@ -82,6 +85,10 @@ public:
 
 private:
 
+	X3DBrowser*
+	getBrowser () const
+	{ return browser; }
+
 	std::future <Texture3DPtr>
 	getFuture (const MFString &, const size_t, const size_t);
 
@@ -91,7 +98,7 @@ private:
 	void
 	prepareEvents ();
 
-	X3DBrowser* const          browser;
+	std::atomic <X3DBrowser*>  browser;
 	const basic::uri           referer;
 	Callback                   callback;
 	std::atomic <bool>         running;

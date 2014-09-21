@@ -4,35 +4,37 @@
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
-      <source stock-id="Index" filename="icons/Index.svg"/>
-      <source stock-id="Navigation" filename="icons/Navigation.svg"/>
-      <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
-      <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
-      <source stock-id="Geometry" filename="icons/Geometry.svg"/>
-      <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
+      <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.96.svg"/>
       <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
-      <source stock-id="Inline" filename="icons/Inline.svg"/>
-      <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
-      <source stock-id="GroupNodes" filename="icons/Group.svg"/>
-      <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
+      <source stock-id="Index" filename="icons/Index.svg"/>
       <source stock-id="Placement" filename="icons/Placement.svg"/>
-      <source stock-id="Straighten" filename="icons/Straighten.svg"/>
-      <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
-      <source stock-id="Text" filename="icons/Text.svg"/>
-      <source stock-id="Texture" filename="icons/Texture.svg"/>
-      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>
-      <source stock-id="Light" filename="icons/Light.svg"/>
       <source stock-id="Icon" filename="icons/icon.svg"/>
-      <source stock-id="Prototype" filename="icons/Node/Prototype.96.svg"/>
-      <source stock-id="LOD" filename="icons/LOD.svg"/>
-      <source stock-id="Hand" filename="icons/Hand.png"/>
-      <source stock-id="History" filename="icons/History.svg"/>
       <source stock-id="Library" filename="icons/Library.svg"/>
-      <source stock-id="Appearance" filename="icons/Appearance.svg"/>
-      <source stock-id="ExternProto" filename="icons/Node/ExternProto.96.svg"/>
+      <source stock-id="GroupNodes" filename="icons/Group.svg"/>
+      <source stock-id="Grid" filename="icons/Grid.svg"/>
+      <source stock-id="Text" filename="icons/Text.svg"/>
       <source stock-id="Arrow" filename="icons/Arrow.png"/>
-      <source stock-id="PlaneViewer" filename="icons/PlaneViewer.svg"/>
+      <source stock-id="Appearance" filename="icons/Appearance.svg"/>
+      <source stock-id="LOD" filename="icons/LOD.svg"/>
+      <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
+      <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
+      <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
+      <source stock-id="Inline" filename="icons/Inline.svg"/>
+      <source stock-id="Geometry" filename="icons/Geometry.svg"/>
       <source stock-id="DotClear" filename="icons/dot-clear.png"/>
+      <source stock-id="Light" filename="icons/Light.svg"/>
+      <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
+      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>
+      <source stock-id="Hand" filename="icons/Hand.png"/>
+      <source stock-id="ExternProto" filename="icons/Node/ExternProto.96.svg"/>
+      <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
+      <source stock-id="Texture" filename="icons/Texture.svg"/>
+      <source stock-id="Straighten" filename="icons/Straighten.svg"/>
+      <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
+      <source stock-id="History" filename="icons/History.svg"/>
+      <source stock-id="Prototype" filename="icons/Node/Prototype.96.svg"/>
+      <source stock-id="PlaneViewer" filename="icons/PlaneViewer.svg"/>
+      <source stock-id="Navigation" filename="icons/Navigation.svg"/>
     </sources>
   </object>
   <object class="GtkImage" id="ExamineViewerImage">
@@ -153,6 +155,12 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">visualization</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image10">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Grid</property>
     <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image4">
@@ -1259,6 +1267,16 @@
                                 <property name="use_underline">True</property>
                                 <signal name="toggled" handler="on_angle_layout_tool_toggled" swapped="no"/>
                                 <accelerator key="apostrophe" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="GridProperiesMenuItem">
+                                <property name="label" translatable="yes">Grid Properties</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="image">image10</property>
+                                <property name="use_stock">False</property>
+                                <signal name="activate" handler="on_grid_properties_activate" swapped="no"/>
                               </object>
                             </child>
                           </object>

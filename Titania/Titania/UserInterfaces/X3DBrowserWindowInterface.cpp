@@ -170,6 +170,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LayoutMenuItem", m_LayoutMenuItem);
 	m_builder -> get_widget ("GridLayoutToolMenuItem", m_GridLayoutToolMenuItem);
 	m_builder -> get_widget ("AngleLayoutToolMenuItem", m_AngleLayoutToolMenuItem);
+	m_builder -> get_widget ("GridProperiesMenuItem", m_GridProperiesMenuItem);
 	m_builder -> get_widget ("HelpMenuItem", m_HelpMenuItem);
 	m_builder -> get_widget ("StandardSizeMenuItem", m_StandardSizeMenuItem);
 	m_builder -> get_widget ("InfoMenuItem", m_InfoMenuItem);
@@ -356,7 +357,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_GridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
 	m_AngleLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
 
-	// Connect object Gtk::ImageMenuItem with id 'StandardSizeMenuItem'.
+	// Connect object Gtk::ImageMenuItem with id 'GridProperiesMenuItem'.
+	m_GridProperiesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_properties_activate));
 	m_StandardSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_standard_size));
 	m_InfoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info));
 

@@ -103,7 +103,7 @@ Notification::set_string ()
 
 		try
 		{
-			scene = Loader (getBrowser () -> getEmptyScene ()) .createX3DFromURL ({ get_tool ("Notification.x3dv") .str () });
+			scene = Loader (getBrowser () -> getPrivateScene ()) .createX3DFromURL ({ get_tool ("Notification.x3dv") .str () });
 
 			const auto notification = scene -> getNamedNode ("Notification");
 			

@@ -120,6 +120,16 @@ ViewpointGroup::initialize ()
 	set_children ();
 }
 
+void
+ViewpointGroup::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	proximitySensor -> setExecutionContext (executionContext);
+
+	X3DChildNode::setExecutionContext (executionContext);
+}
+
 const std::vector <X3DViewpointObject*>
 ViewpointGroup::getViewpointObjects () const
 {

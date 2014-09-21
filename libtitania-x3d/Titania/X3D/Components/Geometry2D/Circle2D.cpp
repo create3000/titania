@@ -90,6 +90,19 @@ Circle2D::initialize ()
 	getBrowser () -> getCircle2DOptions () .addInterest (this, &Circle2D::update);
 }
 
+void
+Circle2D::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getCircle2DOptions () .removeInterest (this, &Circle2D::update);
+
+	X3DGeometryNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		getBrowser () -> getCircle2DOptions () .addInterest (this, &Circle2D::update);
+}
+
 Box3f
 Circle2D::createBBox ()
 {

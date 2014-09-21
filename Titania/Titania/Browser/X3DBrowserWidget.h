@@ -79,6 +79,10 @@ public:
 	getBrowser () const final override
 	{ return browser; }
 
+	const X3D::BrowserPtr &
+	getMasterBrowser () const
+	{ return masterBrowser; }
+
 	static
 	std::shared_ptr <BrowserUserData>
 	getUserData (const X3D::BrowserPtr &);
@@ -107,6 +111,10 @@ public:
 
 	bool
 	isLive () const;
+
+	virtual
+	X3D::WorldInfoPtr
+	getWorldInfo () const final override;
 
 	///  @name Operations
 

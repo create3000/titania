@@ -149,6 +149,34 @@ X3DLayerNode::initialize ()
 }
 
 void
+X3DLayerNode::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	defaultNavigationInfo -> setExecutionContext (executionContext);
+	defaultBackground     -> setExecutionContext (executionContext);
+	defaultFog            -> setExecutionContext (executionContext);
+	defaultViewpoint      -> setExecutionContext (executionContext);
+
+	navigationInfoStack -> setExecutionContext (executionContext);
+	backgroundStack     -> setExecutionContext (executionContext);
+	viewpointStack      -> setExecutionContext (executionContext);
+	fogStack            -> setExecutionContext (executionContext);
+
+	navigationInfos -> setExecutionContext (executionContext);
+	backgrounds     -> setExecutionContext (executionContext);
+	viewpoints      -> setExecutionContext (executionContext);
+	fogs            -> setExecutionContext (executionContext);
+
+	group -> setExecutionContext (executionContext);
+
+	X3DRenderer::setExecutionContext (executionContext);
+	X3DNode::setExecutionContext (executionContext);
+
+	set_viewport ();
+}
+
+void
 X3DLayerNode::isLayer0 (const bool value)
 {
 	layer0 = value;

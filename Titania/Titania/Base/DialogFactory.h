@@ -60,6 +60,7 @@
 
 #include "../Editors/AppearanceEditor/AppearanceEditor.h"
 #include "../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
+#include "../Editors/GridEditor/GridEditor.h"
 #include "../Editors/InlineEditor/InlineEditor.h"
 #include "../Editors/LODEditor/LODEditor.h"
 #include "../Editors/LightEditor/LightEditor.h"
@@ -88,6 +89,7 @@ public:
 		         std::make_pair ("FileImportDialog",         constructDialog <FileImportDialog>),
 		         std::make_pair ("FileSaveDialog",           constructDialog <FileSaveDialog>),
 		         std::make_pair ("FileSaveWarningDialog",    constructDialog <FileSaveWarningDialog>),
+		         std::make_pair ("GridEditor",               constructDialog <GridEditor>),
 		         std::make_pair ("NodeIndex",                constructDialog <NodeIndex>),
 		         std::make_pair ("NodePropertiesEditor",     constructDialog <NodePropertiesEditor>),
 		         std::make_pair ("AppearanceEditor",         constructDialog <AppearanceEditor>),

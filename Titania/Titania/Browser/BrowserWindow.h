@@ -482,6 +482,10 @@ private:
 	void
 	on_angle_layout_tool_toggled () final override;
 
+	virtual
+	void
+	on_grid_properties_activate () final override;
+
 	///  @name Help menu
 
 	virtual

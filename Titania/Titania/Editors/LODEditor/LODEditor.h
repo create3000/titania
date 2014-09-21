@@ -51,7 +51,6 @@
 #ifndef __TITANIA_EDITORS_LODEDITOR_LODEDITOR_H__
 #define __TITANIA_EDITORS_LODEDITOR_LODEDITOR_H__
 
-#include "../../ComposedWidgets.h"
 #include "X3DLODEditor.h"
 //#include "X3DGeoLODEditor.h"
 

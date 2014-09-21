@@ -51,19 +51,75 @@
 #ifndef __TITANIA_X3D_TOOLS_GRIDS_X3DGRID_TOOL_H__
 #define __TITANIA_X3D_TOOLS_GRIDS_X3DGRID_TOOL_H__
 
-#include "../Core/X3DFriendTool.h"
+#include "../Layering/X3DActiveLayerTool.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DGridTool :
-	public X3DFriendTool
+	public X3DActiveLayerTool
 {
+public:
+
+	///  @name Fields
+
+	SFVec3f &
+	translation ()
+	{ return *fields .translation; }
+
+	const SFVec3f &
+	translation () const
+	{ return *fields .translation; }
+
+	SFRotation &
+	rotation ()
+	{ return *fields .rotation; }
+
+	const SFRotation &
+	rotation () const
+	{ return *fields .rotation; }
+
+	SFColor &
+	color ()
+	{ return *fields .color; }
+
+	const SFColor &
+	color () const
+	{ return *fields .color; }
+
+	SFFloat &
+	transparency ()
+	{ return *fields .transparency; }
+
+	const SFFloat &
+	transparency () const
+	{ return *fields .transparency; }
+
+
 protected:
 
 	///  @name Construction
 
 	X3DGridTool ();
+
+	virtual
+	void
+	realize () override;
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const translation;
+		SFRotation* const rotation;
+		SFColor* const color;
+		SFFloat* const transparency;
+	};
+
+	Fields fields;
 
 };
 

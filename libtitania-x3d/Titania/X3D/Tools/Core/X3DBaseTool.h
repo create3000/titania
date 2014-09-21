@@ -91,12 +91,6 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
-
-	virtual
-	void
 	setUserData (const UserDataPtr & value) final override
 	{ node -> setUserData (value); }
 
@@ -104,6 +98,52 @@ public:
 	const UserDataPtr &
 	getUserData () const final override
 	{ return node -> getUserData (); }
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
+	///  Replaces the set of user defined fields of this node with @a userDefinedFields.
+	virtual
+	void
+	setUserDefinedFields (const X3D::FieldDefinitionArray & fields)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_FIELD>,
+	       Error <DISPOSED>) final override
+	{ node -> setUserDefinedFields (fields); }
+
+	///  Adds @a field to the set of user defined fields of this node.
+	virtual
+	void
+	addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_FIELD>,
+	       Error <DISPOSED>) final override
+	{ node -> addUserDefinedField (accessType, name, field); }
+
+	///  Removes the field named @a name from the set of user defined fields of this node.
+	virtual
+	void
+	removeUserDefinedField (const std::string & name)
+	throw (Error <DISPOSED>) final override
+	{ node -> removeUserDefinedField (name); }
+
+	///  Field that processes its interests when the set of fields has changed.
+	virtual
+	const SFTime &
+	fields_changed () const final override
+	{ return node -> fields_changed (); }
+
+	virtual
+	void
+	addTool () override
+	{ }
+
+	virtual
+	void
+	removeTool (const bool = false) override;
 
 	virtual
 	SFBool &
@@ -115,14 +155,6 @@ public:
 	isLive () const final override
 	{ return node -> isLive (); }
 
-	virtual
-	void
-	addTool () override
-	{ }
-
-	virtual
-	void
-	removeTool (const bool = false) override;
 
 	virtual
 	void

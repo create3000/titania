@@ -59,16 +59,26 @@ TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
                               const MFString & url,
                               const size_t minTextureSize, const size_t maxTextureSize,
                               const Callback & callback) :
-	        X3DInput (),
-	         browser (executionContext -> getBrowser ()),
-	         referer (executionContext -> getWorldURL ()),
-	        callback (callback),
-	         running (true),
-	           mutex (),
-	          future (getFuture (url, minTextureSize, maxTextureSize))
+	X3DInput (),
+	 browser (executionContext -> getBrowser ()),
+	 referer (executionContext -> getWorldURL ()),
+	callback (callback),
+	 running (true),
+	   mutex (),
+	  future (getFuture (url, minTextureSize, maxTextureSize))
 {
-	browser -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
-	browser -> addEvent ();
+	getBrowser () -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
+	getBrowser () -> addEvent ();
+}
+
+void
+TextureLoader::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	getBrowser () -> prepareEvents () .removeInterest (this, &TextureLoader::prepareEvents);
+
+	browser = executionContext -> getBrowser ();
+	getBrowser () -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
+	getBrowser () -> addEvent ();
 }
 
 std::future <TexturePtr>
@@ -91,9 +101,11 @@ TextureLoader::loadAsync (const MFString & url,
 	{
 		try
 		{
+			const auto mutex = getBrowser () -> getDownloadMutex ();
+
 			if (running)
 			{
-				std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
+				std::lock_guard <std::mutex> lock (*mutex);
 
 				TexturePtr texture;
 
@@ -129,7 +141,7 @@ TextureLoader::prepareEvents ()
 {
 	if (running)
 	{
-		browser -> addEvent ();
+		getBrowser () -> addEvent ();
 
 		if (future .valid ())
 		{
@@ -138,7 +150,7 @@ TextureLoader::prepareEvents ()
 			if (status == std::future_status::ready)
 			{
 				callback (future .get ());
-				
+
 				dispose ();
 			}
 		}
@@ -153,7 +165,7 @@ TextureLoader::dispose ()
 		running = false;
 
 		X3DInput::dispose ();
-		
+
 		// Clear the bound callback arguments.
 
 		callback = [ ] (const TexturePtr &) { };

@@ -149,7 +149,8 @@ public:
 
 	virtual
 	std::string
-	getTitle () const final override
+	getTitle () const
+	throw (Error <DISPOSED>) final override
 	{ return getName (); }
 
 	const WorldPtr &

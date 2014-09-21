@@ -483,11 +483,18 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	getExecutionContext () -> isLive () .removeInterest (this, &jsContext::set_live);
-	executionContext -> isLive () .addInterest (this, &jsContext::set_live);
+
+	if (future)
+		future -> setExecutionContext (executionContext);
 
 	X3DJavaScriptContext::setExecutionContext (executionContext);
 
-	set_live ();
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (this, &jsContext::set_live);
+
+		set_live ();
+	}
 }
 
 void

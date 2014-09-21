@@ -91,11 +91,15 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	getExecutionContext () -> isLive () .removeInterest (this, &X3DPointingDeviceSensorNode::set_live);
-	executionContext -> isLive () .addInterest (this, &X3DPointingDeviceSensorNode::set_live);
 
 	X3DSensorNode::setExecutionContext (executionContext);
 
-	set_live ();
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (this, &X3DPointingDeviceSensorNode::set_live);
+
+		set_live ();
+	}
 }
 
 void

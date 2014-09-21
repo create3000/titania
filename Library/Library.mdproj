@@ -2466,6 +2466,7 @@
     <None Include="Prototypes\Button\Button\Button.x3dv" />
     <None Include="Prototypes\Button\DiskSensor.x3dv" />
     <None Include="Prototypes\Button\ScrolledWindow\example.x3dv" />
+    <None Include="Tests\Shape\Dimmly.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

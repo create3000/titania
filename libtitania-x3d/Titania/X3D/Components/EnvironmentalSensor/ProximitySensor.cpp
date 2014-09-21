@@ -114,12 +114,17 @@ ProximitySensor::setExecutionContext (X3DExecutionContext* const executionContex
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	getBrowser () -> sensors ()         .removeInterest (this, &ProximitySensor::update);
 	getExecutionContext () -> isLive () .removeInterest (this, &ProximitySensor::set_enabled);
-	executionContext -> isLive () .addInterest (this, &ProximitySensor::set_enabled);
 
 	X3DEnvironmentalSensorNode::setExecutionContext (executionContext);
 
-	set_enabled ();
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (this, &ProximitySensor::set_enabled);
+
+		set_enabled ();
+	}
 }
 
 void

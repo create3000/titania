@@ -95,6 +95,19 @@ Disk2D::initialize ()
 	getBrowser () -> getDisk2DOptions () .addInterest (this, &Disk2D::update);
 }
 
+void
+Disk2D::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getDisk2DOptions () .removeInterest (this, &Disk2D::update);
+
+	X3DGeometryNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		getBrowser () -> getDisk2DOptions () .addInterest (this, &Disk2D::update);
+}
+
 Box3f
 Disk2D::createBBox ()
 {

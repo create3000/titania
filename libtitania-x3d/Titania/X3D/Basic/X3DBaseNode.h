@@ -237,17 +237,7 @@ public:
 	throw (Error <INVALID_FIELD>,
 	       Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{
-		X3DFieldDefinition* const fieldDefinition = getField (name);
-
-		Type* const field = dynamic_cast <Type*> (fieldDefinition);
-
-		if (field)
-			return *field;
-
-		throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + fieldDefinition -> getTypeName () + ".");
-	}
+	       Error <DISPOSED>);
 
 	///  Return the field with @a name.
 	template <class Type>
@@ -256,17 +246,7 @@ public:
 	throw (Error <INVALID_FIELD>,
 	       Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{
-		X3DFieldDefinition* const fieldDefinition = getField (name);
-
-		Type* const field = dynamic_cast <Type*> (fieldDefinition);
-
-		if (field)
-			return *field;
-
-		throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + fieldDefinition -> getTypeName () + ".");
-	}
+	       Error <DISPOSED>);
 
 	///  Return the field with @a name.
 	X3DFieldDefinition*
@@ -282,6 +262,7 @@ public:
 	{ return false; }
 
 	///  Replaces the set of user defined fields of this node with @a userDefinedFields.
+	virtual
 	void
 	setUserDefinedFields (const X3D::FieldDefinitionArray &)
 	throw (Error <INVALID_NAME>,
@@ -340,10 +321,12 @@ public:
 	 */
 
 	///  Marks this node as private or not.  The default is false.
+	virtual
 	void
 	isPrivate (const bool);
 
 	///  Returns whether this node is marked private.
+	virtual
 	bool
 	isPrivate () const
 	{ return private_; }
@@ -659,6 +642,44 @@ throw (Error <INVALID_FIELD>,
 
 	if (not compare or field not_eq value)
 		field = value;
+}
+
+///  Return the field with @a name.
+template <class Type>
+Type &
+X3DBaseNode::getField (const std::string & name)
+throw (Error <INVALID_FIELD>,
+       Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DFieldDefinition* const fieldDefinition = getField (name);
+
+	Type* const field = dynamic_cast <Type*> (fieldDefinition);
+
+	if (field)
+		return *field;
+
+	throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + fieldDefinition -> getTypeName () + ".");
+}
+
+///  Return the field with @a name.
+template <class Type>
+const Type &
+X3DBaseNode::getField (const std::string & name) const
+throw (Error <INVALID_FIELD>,
+       Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DFieldDefinition* const fieldDefinition = getField (name);
+
+	Type* const field = dynamic_cast <Type*> (fieldDefinition);
+
+	if (field)
+		return *field;
+
+	throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + fieldDefinition -> getTypeName () + ".");
 }
 
 } // X3D

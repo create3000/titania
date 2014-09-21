@@ -129,7 +129,7 @@ X3DBrowser::initialize ()
 		{
 			try
 			{
-				Loader (getEmptyScene ()) .parseIntoScene (X3DScenePtr (executionContext), browserOptions -> splashScreenURL ());
+				Loader (getPrivateScene ()) .parseIntoScene (X3DScenePtr (executionContext), browserOptions -> splashScreenURL ());
 			}
 			catch (const X3DError & error)
 			{

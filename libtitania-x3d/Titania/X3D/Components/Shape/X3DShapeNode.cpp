@@ -99,6 +99,16 @@ X3DShapeNode::initialize ()
 }
 
 void
+X3DShapeNode::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DChildNode::setExecutionContext (executionContext);
+
+	set_appearance ();
+}
+
+void
 X3DShapeNode::isHidden (const bool value)
 {
 	if (value not_eq hidden)

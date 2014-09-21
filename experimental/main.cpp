@@ -290,6 +290,13 @@ public:
 
 };
 
+const std::string &
+t (const std::string & v = "test")
+{
+	return v;
+}
+
+
 int
 main (int argc, char** argv)
 {
@@ -310,11 +317,10 @@ main (int argc, char** argv)
 
 	std::istringstream isstream ("a\t");
 
-	__LOG__ << is (isstream, s) << std::endl;
-	__LOG__ << s << std::endl;
-	__LOG__ << s .size () << std::endl;
-	__LOG__ << isstream .eof () << std::endl;
-	__LOG__ << bool (isstream) << std::endl;
+	const auto & v = t ();
+
+	__LOG__ << v << std::endl;
+	__LOG__ << t () << std::endl;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

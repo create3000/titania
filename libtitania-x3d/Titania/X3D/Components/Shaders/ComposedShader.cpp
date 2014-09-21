@@ -109,6 +109,16 @@ ComposedShader::initialize ()
 }
 
 void
+ComposedShader::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	loadSensor -> setExecutionContext (executionContext);
+
+	X3DShaderNode::setExecutionContext (executionContext);
+}
+
+void
 ComposedShader::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
 throw (Error <INVALID_NAME>,
        Error <INVALID_FIELD>,

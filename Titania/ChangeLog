@@ -1,3 +1,43 @@
+2014-09-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* DialogFactory.h:
+	* BrowserWindow.h:
+	* Text.svg:
+	* X3DBaseInterface.h:
+	* Grid.svg:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* X3DBaseInterface.cpp:
+	* Inline.svg:
+	* X3DBrowserWidget.h:
+	* BrowserWindow.xml:
+	* X3DBrowserWindow.h:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserWindow.cpp:
+	* Placement.svg:
+	* LODEditor.h:
+	* Palette.x3dv:
+	* Navigation.svg:
+	* blank-icon.png:
+	* LODEditor.h:
+	* GridEditor.xml:
+	* Hierarchy-Up.svg:
+	* GridEditor.cpp:
+	* Hierarchy-Down.svg:
+	* X3DLODEditor.cpp:
+	* X3DGridEditor.h:
+	* X3DGridEditor.cpp:
+	* AppearanceEditor.xml:
+	* X3DGridEditorInterface.h:
+	* NavigationInfoEditor.xml:
+	* X3DGridEditorInterface.cpp:
+	* ScenePropertiesEditor.xml:
+	* X3DBrowserWindowInterface.h:
+	* X3DOutlineTreeView.cpp:
+	* X3DBrowserWindowInterface.cpp: 
+
 2014-09-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* tab.x3dv:

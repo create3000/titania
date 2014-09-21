@@ -61,6 +61,8 @@ class WorldInfo :
 {
 public:
 
+	using X3DInfoNode::isPrivate;
+
 	///  @name Construction
 
 	WorldInfo (X3DExecutionContext* const);
@@ -87,6 +89,12 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
 	///  @name Fields
 
 	SFString &
@@ -104,6 +112,12 @@ public:
 	const MFString &
 	info () const
 	{ return *fields .info; }
+	
+	///  @name Member access
+
+	virtual
+	void
+	isPrivate (const bool) final override;
 
 
 private:

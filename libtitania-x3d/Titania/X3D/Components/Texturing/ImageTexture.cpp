@@ -95,6 +95,18 @@ ImageTexture::initialize ()
 }
 
 void
+ImageTexture::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (future)
+		future -> setExecutionContext (executionContext);
+
+	X3DUrlObject::setExecutionContext (executionContext);
+	X3DTexture2DNode::setExecutionContext (executionContext);
+}
+
+void
 ImageTexture::setTexture (const TexturePtr & texture)
 {
 	X3DTexture2DNode::setTexture (texture);

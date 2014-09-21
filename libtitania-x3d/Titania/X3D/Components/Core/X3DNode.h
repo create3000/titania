@@ -61,6 +61,7 @@
 namespace titania {
 namespace X3D {
 
+class MetadataSet;
 class X3DScene;
 class X3DLayerNode;
 class NavigationInfo;
@@ -83,14 +84,73 @@ public:
 	metadata () const
 	{ return *fields .metadata; }
 
+	///  @name Metadata handling
+
+	void
+	setBoolean (const std::string &, const bool)
+	throw (Error <INVALID_NAME>,
+          Error <DISPOSED>);
+
+	bool
+	getBoolean (const std::string &, const bool = false) const
+	throw (Error <INVALID_NAME>,
+          Error <DISPOSED>);
+
+	void
+	setDouble (const std::string &, const double)
+	throw (Error <INVALID_NAME>,
+          Error <DISPOSED>);
+
+	double
+	getDouble (const std::string &, const double = 0) const
+	throw (Error <INVALID_NAME>,
+          Error <DISPOSED>);
+
+	void
+	setFloat (const std::string &, const float)
+	throw (Error <INVALID_NAME>,
+          Error <DISPOSED>);
+
+	float
+	getFloat (const std::string &, const float = 0) const
+	throw (Error <INVALID_NAME>,
+          Error <DISPOSED>);
+
+	void
+	setInteger (const std::string &, const int32_t)
+	throw (Error <INVALID_NAME>,
+          Error <DISPOSED>);
+
+	int32_t
+	getInteger (const std::string &, const int32_t = 0) const
+	throw (Error <INVALID_NAME>,
+          Error <DISPOSED>);
+
+	void
+	setString (const std::string &, const std::string &)
+	throw (Error <INVALID_NAME>,
+          Error <DISPOSED>);
+
+	const std::string &
+	getString (const std::string &, const std::string & = "") const
+	throw (Error <INVALID_NAME>,
+          Error <DISPOSED>);
+
+	void
+	removeMetaData (const std::string & = "")
+	throw (Error <DISPOSED>);
+
 	///  @name Member access
 
 	std::vector <X3DLayerNode*>
 	getLayers () const;
 
-	static
 	Matrix4fStack &
 	getModelViewMatrix ()
+	{ return modelViewMatrix; }
+
+	const Matrix4fStack &
+	getModelViewMatrix () const
 	{ return modelViewMatrix; }
 
 
@@ -122,6 +182,14 @@ protected:
 
 
 private:
+
+
+	///  @name Member access
+
+	MetadataSet*
+	getMetadataSet (const std::deque <std::string> &, const bool = false) const
+	throw (Error <INVALID_NAME>,
+	       Error <DISPOSED>);
 
 	///  @name Static members
 

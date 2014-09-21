@@ -122,6 +122,10 @@ public:
 	bool
 	inPrototypeInstance () const;
 
+	virtual
+	X3D::WorldInfoPtr
+	getWorldInfo () const;
+
 	/***
 	 *  @name Input/Output
 	 */

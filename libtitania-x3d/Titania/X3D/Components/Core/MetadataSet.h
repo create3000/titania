@@ -97,6 +97,89 @@ public:
 	const MFNode &
 	value () const
 	{ return *fields .value; }
+	
+	///  @name Member access
+
+	void
+	setBoolean (const std::string &, const bool)
+	throw (Error <DISPOSED>);
+
+	bool
+	getBoolean (const std::string & name, const bool = false) const
+	throw (Error <DISPOSED>);
+
+	void
+	setDouble (const std::string & name, const double double_)
+	throw (Error <DISPOSED>);
+
+	double
+	getDouble (const std::string & name, const double = 0) const
+	throw (Error <DISPOSED>);
+
+	void
+	setFloat (const std::string & name, const float float_)
+	throw (Error <DISPOSED>);
+
+	float
+	getFloat (const std::string & name, const float = 0) const
+	throw (Error <DISPOSED>);
+
+	void
+	setInteger (const std::string & name, const int32_t integer)
+	throw (Error <DISPOSED>);
+
+	int32_t
+	getInteger (const std::string & name, const int32_t = 0) const
+	throw (Error <DISPOSED>);
+
+	void
+	setString (const std::string & name, const std::string & string)
+	throw (Error <DISPOSED>);
+
+	const std::string &
+	getString (const std::string & name, const std::string & = "") const
+	throw (Error <DISPOSED>);
+
+	const X3DPtr <MetadataSet> &
+	getSet (const std::string & name, const bool = false)
+	throw (Error <INVALID_NAME>,
+          Error <DISPOSED>);
+
+	template <class Type, class ValueType>
+	void
+	setMetaData (const std::string & name, const ValueType & value, const bool compare = false)
+	throw (Error <INVALID_FIELD>,
+	       Error <INVALID_NAME>,
+	       Error <DISPOSED>);
+
+	///  Return the field with @a name.
+	template <class Type>
+	Type &
+	getMetaData (const std::string & name)
+	throw (Error <INVALID_FIELD>,
+	       Error <INVALID_NAME>,
+	       Error <DISPOSED>);
+
+	///  Return the field with @a name.
+	template <class Type>
+	const Type &
+	getMetaData (const std::string & name) const
+	throw (Error <INVALID_FIELD>,
+	       Error <INVALID_NAME>,
+	       Error <DISPOSED>);
+
+	X3DFieldDefinition*
+	getMetaData (const std::string &) const
+	throw (Error <INVALID_NAME>,
+	       Error <DISPOSED>);
+
+	void
+	removeMetaData (const std::string &)
+	throw (Error <DISPOSED>);
+
+	void
+	removeMetaData ()
+	throw (Error <DISPOSED>);
 
 	///  @name Destruction
 
@@ -112,6 +195,11 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_value ();
 
 	///  @name Static members
 
@@ -130,7 +218,59 @@ private:
 
 	Fields fields;
 
+	std::map <std::string, X3DPtr <MetadataSet>> setIndex;
+	std::map <std::string, X3DFieldDefinition*>  fieldIndex;
+
 };
+
+template <class Type, class ValueType>
+void
+MetadataSet::setMetaData (const std::string & name, const ValueType & value, const bool compare)
+throw (Error <INVALID_FIELD>,
+       Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	Type & field = getMetaData <Type> (name);
+
+	if (not compare or field not_eq value)
+		field = value;
+}
+
+///  Return the field with @a name.
+template <class Type>
+Type &
+MetadataSet::getMetaData (const std::string & name)
+throw (Error <INVALID_FIELD>,
+       Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	X3DFieldDefinition* const fieldDefinition = getMetaData (name);
+
+	Type* const field = dynamic_cast <Type*> (fieldDefinition);
+
+	if (field)
+		return *field;
+
+	throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + fieldDefinition -> getTypeName () + ".");
+}
+
+///  Return the field with @a name.
+template <class Type>
+const Type &
+MetadataSet::getMetaData (const std::string & name) const
+throw (Error <INVALID_FIELD>,
+       Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	X3DFieldDefinition* const fieldDefinition = getMetaData (name);
+
+	Type* const field = dynamic_cast <Type*> (fieldDefinition);
+
+	if (field)
+		return *field;
+
+	throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + fieldDefinition -> getTypeName () + ".");
+}
 
 } // X3D
 } // titania

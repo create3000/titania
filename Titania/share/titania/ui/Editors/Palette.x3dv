@@ -1,0 +1,103 @@
+#X3D V3.3 utf8 Titania V0.7.4
+
+META "comment" "World of Titania"
+META "created" "Tue, 16 Sep 2014 13:16:50 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Tue, 16 Sep 2014 18:07:30 GMT"
+META "titania magic" "Material"
+
+NavigationInfo {
+  type "NONE"
+}
+
+DEF Gray_1 Background {
+  transparency 0.5
+}
+
+OrthoViewpoint {
+  position 6.25 -6.25 10
+  centerOfRotation -0.0729983 1.4843 0
+  fieldOfView [
+    -7.75,
+    -7.75,
+    7.75,
+    7.75
+  ]
+}
+
+DEF Grid Transform {
+  children [
+    Transform {
+      children DEF _1 Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0 0 0
+          }
+        }
+        geometry IndexedLineSet {
+          coordIndex [
+            0,
+            1,
+            -1
+          ]
+          coord Coordinate {
+            point [
+              -1.5 0 0,
+              14 0 0
+            ]
+          }
+        }
+      }
+    }
+    Transform {
+      translation 0 -2.5 0
+      children USE _1
+    }
+    Transform {
+      translation 0 -5 0
+      children USE _1
+    }
+    Transform {
+      translation 0 -7.5 0
+      children USE _1
+    }
+    Transform {
+      translation 0 -10 0
+      children USE _1
+    }
+    Transform {
+      translation 0 -12.5 0
+      children USE _1
+    }
+    Transform {
+      rotation 0 0 1 4.71219
+      children USE _1
+    }
+    Transform {
+      translation 2.5 0 0
+      rotation 0 0 1 4.71219
+      children USE _1
+    }
+    Transform {
+      translation 5 0 0
+      rotation 0 0 1 4.71219
+      children USE _1
+    }
+    Transform {
+      translation 7.5 0 0
+      rotation 0 0 1 4.71219
+      children USE _1
+    }
+    Transform {
+      translation 10 0 0
+      rotation 0 0 1 4.71219
+      children USE _1
+    }
+    Transform {
+      translation 12.5 0 0
+      rotation 0 0 1 4.71219
+      children USE _1
+    }
+  ]
+}

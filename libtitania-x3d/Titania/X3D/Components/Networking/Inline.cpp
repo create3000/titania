@@ -120,7 +120,7 @@ Inline::initialize ()
 	{
 		if (X3D_PARALLEL)
 		{
-			setScene (X3DScenePtr (getBrowser () -> getEmptyScene ()));
+			setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 
 			if (load ())
 				requestAsyncLoad ();
@@ -131,7 +131,7 @@ Inline::initialize ()
 				requestImmediateLoad ();
 
 			else
-				setScene (X3DScenePtr (getBrowser () -> getEmptyScene ()));
+				setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 		}
 	}
 
@@ -145,14 +145,26 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	getExecutionContext () -> isLive () .removeInterest (this, &Inline::set_live);
-	executionContext -> isLive () .addInterest (this, &Inline::set_live);
 
-	if (checkLoadState () == COMPLETE_STATE)
+	if (scene == getExecutionContext () -> getBrowser () -> getPrivateScene ())
+		scene = executionContext -> getBrowser () -> getPrivateScene ();
+	else if (scene)
 		scene -> setExecutionContext (executionContext);
 
-	X3DUrlObject::setExecutionContext (executionContext);
+	group -> setExecutionContext (executionContext);
 
-	set_live ();
+	if (future)
+		future -> setExecutionContext (executionContext);
+
+	X3DUrlObject::setExecutionContext (executionContext);
+	X3DChildNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (this, &Inline::set_live);
+
+		set_live ();
+	}
 }
 
 void
@@ -166,7 +178,7 @@ Inline::setSceneAsync (X3DScenePtr && value)
 	else
 	{
 		setLoadState (FAILED_STATE);
-		setScene (X3DScenePtr (getBrowser () -> getEmptyScene ()));
+		setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 	}
 }
 
@@ -310,7 +322,7 @@ Inline::requestImmediateLoad ()
 	catch (const X3DError & error)
 	{
 		setLoadState (FAILED_STATE);
-		setScene (X3DScenePtr (getBrowser () -> getEmptyScene ()));
+		setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 
 		for (const auto & string : loader .getUrlError ())
 			getBrowser () -> println (string .str ());
@@ -329,7 +341,7 @@ Inline::requestUnload ()
 		future -> dispose ();
 
 	setLoadState (NOT_STARTED_STATE);
-	setScene (X3DScenePtr (getBrowser () -> getEmptyScene ()));
+	setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 }
 
 void

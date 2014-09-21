@@ -92,6 +92,19 @@ Sphere::initialize ()
 	getBrowser () -> getSphereOptions () .addInterest (this, &Sphere::update);
 }
 
+void
+Sphere::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getSphereOptions () .removeInterest (this, &Sphere::update);
+
+	X3DGeometryNode::setExecutionContext (executionContext);
+	
+	if (isInitialized ())
+		getBrowser () -> getSphereOptions () .addInterest (this, &Sphere::update);
+}
+
 Box3f
 Sphere::createBBox ()
 {

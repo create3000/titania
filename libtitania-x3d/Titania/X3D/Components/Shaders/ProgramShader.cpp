@@ -109,6 +109,16 @@ ProgramShader::initialize ()
 	loadSensor -> setup ();
 }
 
+void
+ProgramShader::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	loadSensor -> setExecutionContext (executionContext);
+
+	X3DShaderNode::setExecutionContext (executionContext);
+}
+
 GLint
 ProgramShader::getProgramStageBit (const String & type)
 {

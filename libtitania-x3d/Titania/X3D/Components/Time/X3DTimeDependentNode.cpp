@@ -120,12 +120,17 @@ X3DTimeDependentNode::setExecutionContext (X3DExecutionContext* const executionC
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	getBrowser () -> prepareEvents ()   .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
 	getExecutionContext () -> isLive () .removeInterest (this, &X3DTimeDependentNode::set_live);
-	executionContext -> isLive () .addInterest (this, &X3DTimeDependentNode::set_live);
 
 	X3DChildNode::setExecutionContext (executionContext);
 
-	set_live ();
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (this, &X3DTimeDependentNode::set_live);
+
+		set_live ();
+	}
 }
 
 time_type

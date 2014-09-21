@@ -135,6 +135,18 @@ Appearance::initialize ()
 	set_shaders ();
 }
 
+void
+Appearance::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DAppearanceNode::setExecutionContext (executionContext);
+
+	set_lineProperties ();
+	set_fillProperties ();
+	set_textureTransform ();
+}
+
 bool
 Appearance::isTransparent () const
 {

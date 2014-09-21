@@ -69,8 +69,18 @@ SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFS
 	           mutex (),
 	          future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))
 {
-	browser -> prepareEvents () .addInterest (this, &SceneLoader::prepareEvents);
-	browser -> addEvent ();
+	getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::prepareEvents);
+	getBrowser () -> addEvent ();
+}
+
+void
+SceneLoader::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	getBrowser () -> prepareEvents () .removeInterest (this, &SceneLoader::prepareEvents);
+
+	browser = executionContext -> getBrowser ();
+	getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::prepareEvents);
+	getBrowser () -> addEvent ();
 }
 
 void
@@ -92,14 +102,16 @@ SceneLoader::getFuture (const MFString & url)
 X3DScenePtr
 SceneLoader::loadAsync (const MFString & url)
 {
+	const auto mutex = getBrowser () -> getDownloadMutex ();
+
 	if (running)
 	{
-		std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
+		std::lock_guard <std::mutex> lock (*mutex);
 
 		X3DScenePtr scene;
 
 		if (running)
-			scene = browser -> createScene ();
+			scene = getBrowser () -> createScene ();
 
 		if (running)
 			Loader (nullptr, referer) .parseIntoScene (scene, url);
@@ -118,7 +130,7 @@ SceneLoader::prepareEvents ()
 {
 	if (running)
 	{
-		browser -> addEvent ();
+		getBrowser () -> addEvent ();
 
 		if (future .valid ())
 		{
@@ -132,7 +144,7 @@ SceneLoader::prepareEvents ()
 				}
 				catch (const X3DError & error)
 				{
-					browser -> println (error .what ());
+					getBrowser () -> println (error .what ());
 					callback (nullptr);
 				}
 

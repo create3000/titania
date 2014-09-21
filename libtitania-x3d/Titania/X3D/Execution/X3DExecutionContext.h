@@ -113,7 +113,16 @@ public:
 
 	virtual
 	std::string
-	getTitle () const = 0;
+	getTitle () const
+	throw (Error <DISPOSED>) = 0;
+
+	void
+	setWorldInfo (const WorldInfoPtr & value)
+	throw (Error <DISPOSED>);
+
+	WorldInfoPtr
+	getWorldInfo () const
+	throw (Error <DISPOSED>);
 
 	virtual
 	void
@@ -739,6 +748,8 @@ private:
 	/***
 	 *  @name Members
 	 */
+
+	X3DWeakPtr <WorldInfo> worldInfo; 
 
 	std::string encoding;
 	std::string specificationVersion;

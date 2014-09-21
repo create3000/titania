@@ -786,7 +786,7 @@
     <None Include="share\titania\tools\AngleTool.x3dv" />
     <None Include="Titania\X3D\Tools\Grids\AngleTool.h" />
     <None Include="Titania\X3D\Tools\Core\Tool.h" />
-    <None Include="Titania\X3D\Tools\Core\X3DFriendTool.h" />
+    <None Include="Titania\X3D\Tools\Layering\X3DActiveLayerTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1300,7 +1300,7 @@
     <Compile Include="Titania\X3D\Tools\Grids\X3DGridTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Grids\AngleTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Core\Tool.cpp" />
-    <Compile Include="Titania\X3D\Tools\Core\X3DFriendTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Layering\X3DActiveLayerTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1370,6 +1370,7 @@
     <Folder Include="Titania\Moth\" />
     <Folder Include="Titania\X3D\Tools\ParticleSystems\" />
     <Folder Include="Titania\X3D\Tools\CADGeometry\" />
+    <Folder Include="Titania\X3D\Tools\Layering\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

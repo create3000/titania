@@ -135,11 +135,6 @@ protected:
 	setLoadState (const LoadState value)
 	{ loadState = value; }
 
-	///  @name Operations
-
-	void
-	disableEvents ();
-
 	///  @name Destruction
 
 	virtual

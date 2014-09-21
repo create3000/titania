@@ -53,9 +53,48 @@
 namespace titania {
 namespace X3D {
 
-X3DGridTool::X3DGridTool () :
-	X3DFriendTool ()
+X3DGridTool::Fields::Fields () :
+	 translation (new SFVec3f ()),
+	    rotation (new SFRotation ()),
+	       color (new SFColor (1, 0.5, 0)),
+	transparency (new SFFloat (0.8))
 { }
+
+X3DGridTool::X3DGridTool () :
+	X3DActiveLayerTool (),
+	            fields ()
+{ }
+
+void
+X3DGridTool::realize ()
+{
+	X3DActiveLayerTool::realize ();
+
+	try
+	{
+		auto & set_translation = getToolNode () -> getField <SFVec3f> ("set_translation");
+		translation ()  .addInterest (set_translation);
+		set_translation .addInterest (translation ());
+		set_translation = translation ();
+
+		auto & set_rotation = getToolNode () -> getField <SFRotation> ("set_rotation");
+		rotation ()  .addInterest (set_rotation);
+		set_rotation .addInterest (rotation ());
+		set_rotation = rotation ();
+
+		auto & set_color = getToolNode () -> getField <SFColor> ("set_color");
+		color ()  .addInterest (set_color);
+		set_color .addInterest (color ());
+		set_color = color ();
+
+		auto & set_transparency = getToolNode () -> getField <SFFloat> ("set_transparency");
+		transparency ()  .addInterest (set_transparency);
+		set_transparency .addInterest (transparency ());
+		set_transparency = transparency ();
+	}
+	catch (const X3DError & error)
+	{ }
+}
 
 } // X3D
 } // titania

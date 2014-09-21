@@ -87,8 +87,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	transform (url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
-
-	X3DBaseNode::setExecutionContext (executionContext);
 }
 
 void
@@ -105,16 +103,6 @@ X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const b
 			value .set (newWorldURL .relative_path (transformed) .str ());
 		}
 	}
-}
-
-/***
- *  Depreciated
- */
-void
-X3DUrlObject::disableEvents ()
-{
-	url () .isTainted (true);
-	loadState .isTainted (true);
 }
 
 } // X3D

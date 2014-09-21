@@ -67,15 +67,33 @@ X3DFollowerNode::X3DFollowerNode () :
 }
 
 void
+X3DFollowerNode::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> prepareEvents () .removeInterest (this, &X3DFollowerNode::prepareEvents);
+
+	X3DChildNode::setExecutionContext (executionContext);
+
+	if (isActive ())
+	{
+		getBrowser () -> prepareEvents () .addInterest (this, &X3DFollowerNode::prepareEvents);
+		getBrowser () -> addEvent ();
+	}
+}
+
+void
 X3DFollowerNode::set_active (bool value)
 {
 	if (value not_eq isActive ())
 	{
 		isActive () = value;
 
-		if (value)
+		if (isActive ())
+		{
 			getBrowser () -> prepareEvents () .addInterest (this, &X3DFollowerNode::prepareEvents);
-
+			getBrowser () -> addEvent ();
+		}
 		else
 			getBrowser () -> prepareEvents () .removeInterest (this, &X3DFollowerNode::prepareEvents);
 	}
