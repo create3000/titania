@@ -75,12 +75,6 @@ public:
 
 	using X3DGridEditorInterface::setup;
 
-	///  @name Construction
-
-	static
-	void
-	setup (const X3D::X3DPtr <X3D::GridTool> &);
-
 	///  @name Destruction
 
 	virtual
@@ -105,12 +99,6 @@ private:
 	virtual
 	void
 	on_grid_plane_changed () final override;
-
-	///  @name Member access
-
-	static
-	void
-	setPlane (const X3D::X3DPtr <X3D::GridTool> &, const int32_t);
 
 	///  @name Members
 

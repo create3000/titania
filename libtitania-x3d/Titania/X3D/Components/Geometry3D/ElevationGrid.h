@@ -101,14 +101,6 @@ public:
 	xDimension () const
 	{ return *fields .xDimension; }
 
-	SFFloat &
-	xSpacing ()
-	{ return *fields .xSpacing; }
-
-	const SFFloat &
-	xSpacing () const
-	{ return *fields .xSpacing; }
-
 	SFInt32 &
 	zDimension ()
 	{ return *fields .zDimension; }
@@ -116,6 +108,14 @@ public:
 	const SFInt32 &
 	zDimension () const
 	{ return *fields .zDimension; }
+
+	SFFloat &
+	xSpacing ()
+	{ return *fields .xSpacing; }
+
+	const SFFloat &
+	xSpacing () const
+	{ return *fields .xSpacing; }
 
 	SFFloat &
 	zSpacing ()
@@ -286,8 +286,8 @@ private:
 		Fields ();
 
 		SFInt32* const xDimension;
-		SFFloat* const xSpacing;
 		SFInt32* const zDimension;
+		SFFloat* const xSpacing;
 		SFFloat* const zSpacing;
 		SFBool* const solid;
 		SFBool* const ccw;

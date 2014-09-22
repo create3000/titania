@@ -124,7 +124,8 @@ public:
 
 	virtual
 	X3D::WorldInfoPtr
-	getWorldInfo () const;
+	getWorldInfo (const bool) const
+	throw (X3D::Error <X3D::NOT_SUPPORTED>);
 
 	/***
 	 *  @name Input/Output

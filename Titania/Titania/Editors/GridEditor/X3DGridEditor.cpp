@@ -101,14 +101,6 @@ X3DGridEditor::X3DGridEditor () :
 }
 
 void
-X3DGridEditor::setup (const X3D::X3DPtr <X3D::GridTool> & grid)
-{
-	Configuration config (gconf_dir (), "GridEditor");
-
-	setPlane (grid, config .hasItem ("Grid.plane") ? config .getInteger ("Grid.plane") : 1);
-}
-
-void
 X3DGridEditor::initialize ()
 {
 	translation  .setNodes ({ getBrowserWindow () -> getGridTool () });
@@ -123,16 +115,9 @@ X3DGridEditor::initialize ()
 void
 X3DGridEditor::on_grid_plane_changed ()
 {
-	getConfig () .setItem ("Grid.plane", getGridPlaneComboBoxText () .get_active_row_number ());
+	const auto & grid = getBrowserWindow () -> getGridTool ();
 
-	setPlane (getBrowserWindow () -> getGridTool (),
-	          getGridPlaneComboBoxText () .get_active_row_number ());
-}
-
-void
-X3DGridEditor::setPlane (const X3D::X3DPtr <X3D::GridTool> & grid, const int32_t plane)
-{
-	switch (plane)
+	switch (getGridPlaneComboBoxText () .get_active_row_number ())
 	{
 		case 0:
 			grid -> rotation () = X3D::Rotation4f (0, 0, -1, M_PI / 2);

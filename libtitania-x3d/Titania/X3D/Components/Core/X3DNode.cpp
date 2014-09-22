@@ -72,150 +72,301 @@ X3DNode::X3DNode () :
 	addType (X3DConstants::X3DNode);
 }
 
+template <>
 void
-X3DNode::setBoolean (const std::string & key, const bool boolean)
+X3DNode::setMetaData <bool> (const std::string & key, const bool & value)
 throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	setMetaData(key, MFBool ({ value }));
+}
+
+template <>
+void
+X3DNode::setMetaData <Color3f> (const std::string & key, const Color3f & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	setMetaData (key, MFFloat ({ value .r (), value .g (), value .b () }));
+}
+
+template <>
+void
+X3DNode::setMetaData <Color4f> (const std::string & key, const Color4f & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	setMetaData (key, MFFloat ({ value .r (), value .g (), value .b (), value .a () }));
+}
+
+template <>
+void
+X3DNode::setMetaData <double> (const std::string & key, const double & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	setMetaData (key, MFDouble ({ value }));
+}
+
+template <>
+void
+X3DNode::setMetaData <float> (const std::string & key, const float & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	setMetaData (key, MFFloat ({ value }));
+}
+
+template <>
+void
+X3DNode::setMetaData <int32_t> (const std::string & key, const int32_t & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	setMetaData (key, MFInt32 ({ value }));
+}
+
+template <>
+void
+X3DNode::setMetaData <Rotation4f> (const std::string & key, const Rotation4f & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	float x, y, z, angle;
+	
+	value .get (x, y, z, angle);
+
+	setMetaData (key, MFFloat ({ x, y, z, angle }));
+}
+
+template <>
+void
+X3DNode::setMetaData <std::string> (const std::string & key, const std::string & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	setMetaData (key, MFString ({ value }));
+}
+
+template <>
+void
+X3DNode::setMetaData <Vector2d> (const std::string & key, const Vector2d & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	setMetaData (key, MFDouble ({ value .x (), value .y () }));
+}
+
+template <>
+void
+X3DNode::setMetaData <Vector2f> (const std::string & key, const Vector2f & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	setMetaData (key, MFFloat ({ value .x (), value .y () }));
+}
+
+template <>
+void
+X3DNode::setMetaData <Vector3d> (const std::string & key, const Vector3d & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	setMetaData (key, MFDouble ({ value .x (), value .y (), value .z () }));
+}
+
+template <>
+void
+X3DNode::setMetaData <Vector3f> (const std::string & key, const Vector3f & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	setMetaData (key, MFFloat ({ value .x (), value .y (), value .z () }));
+}
+
+template <>
+void
+X3DNode::setMetaData <Vector4d> (const std::string & key, const Vector4d & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	setMetaData (key, MFDouble ({ value .x (), value .y (), value .z (), value .w () }));
+}
+
+template <>
+void
+X3DNode::setMetaData <Vector4f> (const std::string & key, const Vector4f & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	setMetaData (key, MFFloat ({ value .x (), value .y (), value .z (), value .w () }));
+}
+
+template <>
+void
+X3DNode::setMetaData <MFBool> (const std::string & key, const MFBool & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	const auto names = basic::split (key, "/");
 	const auto set   = getMetadataSet (names, true);
 
-	set -> setBoolean (names .back (), boolean);
+	set -> setMetaData (names .back (), value);
 }
 
-bool
-X3DNode::getBoolean (const std::string & key, const bool default_) const
-throw (Error <INVALID_NAME>,
-       Error <DISPOSED>)
-{
-	try
-	{
-		const auto names = basic::split (key, "/");
-		const auto set   = getMetadataSet (names);
-
-		return set -> getBoolean (names .back (), default_);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{
-		return default_;
-	}
-}
-
+template <>
 void
-X3DNode::setDouble (const std::string & key, const double double_)
+X3DNode::setMetaData <MFDouble> (const std::string & key, const MFDouble & value)
 throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	const auto names = basic::split (key, "/");
 	const auto set   = getMetadataSet (names, true);
 
-	set -> setDouble (names .back (), double_);
+	set -> setMetaData (names .back (), value);
 }
 
-double
-X3DNode::getDouble (const std::string & key, const double default_) const
-throw (Error <INVALID_NAME>,
-       Error <DISPOSED>)
-{
-	try
-	{
-		const auto names = basic::split (key, "/");
-		const auto set   = getMetadataSet (names);
-
-		return set -> getDouble (names .back (), default_);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{
-		return default_;
-	}
-}
-
+template <>
 void
-X3DNode::setFloat (const std::string & key, const float float_)
+X3DNode::setMetaData <MFFloat> (const std::string & key, const MFFloat & value)
 throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	const auto names = basic::split (key, "/");
 	const auto set   = getMetadataSet (names, true);
 
-	set -> setFloat (names .back (), float_);
+	set -> setMetaData (names .back (), value);
 }
 
-float
-X3DNode::getFloat (const std::string & key, const float default_) const
-throw (Error <INVALID_NAME>,
-       Error <DISPOSED>)
-{
-	try
-	{
-		const auto names = basic::split (key, "/");
-		const auto set   = getMetadataSet (names);
-
-		return set -> getFloat (names .back (), default_);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{
-		return default_;
-	}
-}
-
+template <>
 void
-X3DNode::setInteger (const std::string & key, const int32_t integer)
+X3DNode::setMetaData <MFInt32> (const std::string & key, const MFInt32 & value)
 throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	const auto names = basic::split (key, "/");
 	const auto set   = getMetadataSet (names, true);
 
-	set -> setInteger (names .back (), integer);
+	set -> setMetaData (names .back (), value);
 }
 
-int32_t
-X3DNode::getInteger (const std::string & key, const int32_t default_) const
-throw (Error <INVALID_NAME>,
-       Error <DISPOSED>)
-{
-	try
-	{
-		const auto names = basic::split (key, "/");
-		const auto set   = getMetadataSet (names);
-
-		return set -> getInteger (names .back (), default_);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{
-		return default_;
-	}
-}
-
+template <>
 void
-X3DNode::setString (const std::string & key, const std::string & string)
+X3DNode::setMetaData <MFString> (const std::string & key, const MFString & value)
 throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	const auto names = basic::split (key, "/");
 	const auto set   = getMetadataSet (names, true);
 
-	set -> setString (names .back (), string);
+	set -> setMetaData (names .back (), value);
 }
 
-const std::string &
-X3DNode::getString (const std::string & key, const std::string & default_) const
+template <>
+const MFBool &
+X3DNode::getMetaData <MFBool> (const std::string & key) const
 throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
-	try
-	{
-		const auto names = basic::split (key, "/");
-		const auto set   = getMetadataSet (names);
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names);
 
-		return set -> getString (names .back (), default_);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{
-		return default_;
-	}
+	return set -> getMetaData <MFBool> (names .back ());
 }
+
+template <>
+const MFDouble &
+X3DNode::getMetaData <MFDouble> (const std::string & key) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names);
+
+	return set -> getMetaData <MFDouble> (names .back ());
+}
+
+template <>
+const MFFloat &
+X3DNode::getMetaData <MFFloat> (const std::string & key) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names);
+
+	return set -> getMetaData <MFFloat> (names .back ());
+}
+
+template <>
+const MFInt32 &
+X3DNode::getMetaData <MFInt32> (const std::string & key) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names);
+
+	return set -> getMetaData <MFInt32> (names .back ());
+}
+
+template <>
+const MFString &
+X3DNode::getMetaData <MFString> (const std::string & key) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names);
+
+	return set -> getMetaData <MFString> (names .back ());
+}
+
+//try
+//{
+//	const auto & t = worldInfo -> getMetaData <MFFloat> ("/X3D/Grid/translation");
+//
+//	getGrid () -> translation () .setValue (t .at (0), t .at (1), t .at (2));
+//}
+//catch (...)
+//{
+//	getGrid () -> translation () = X3D::Vector3f ();
+//}
+//
+//try
+//{
+//	getGrid () -> transparency () = worldInfo -> getMetaData <MFFloat> ("/X3D/Grid/transparency") .at (0);
+//}
+//catch (...)
+//{
+//	getGrid () -> transparency () = 0.75;
+//}
+//
+//worldInfo -> setMetaData <X3D::Vector3f> ("/X3D/Grid/translation", getGrid () -> translation ());
 
 MetadataSet*
 X3DNode::getMetadataSet (const std::deque <std::string> & names, const bool create) const

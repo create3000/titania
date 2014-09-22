@@ -18,8 +18,8 @@ EXTERNPROTO ToolShader [
 
 PROTO Grid [
   inputOutput    SFInt32 xDimension 10
-  inputOutput    SFFloat xSpacing 1
   inputOutput    SFInt32 zDimension 10
+  inputOutput    SFFloat xSpacing 1
   inputOutput    SFFloat zSpacing 1
   inputOutput    SFColor color 1 0.5 0
   inputOutput    SFFloat transparency 0.61803
@@ -206,8 +206,8 @@ PROTO Grid [
 
   DEF GridScript Script {
     inputOutput    SFInt32 xDimension IS xDimension
-    inputOutput    SFFloat xSpacing IS xSpacing
     inputOutput    SFInt32 zDimension IS zDimension
+    inputOutput    SFFloat xSpacing IS xSpacing
     inputOutput    SFFloat zSpacing IS zSpacing
     inputOutput    SFFloat transparency IS transparency
     initializeOnly SFNode  plane USE Plane

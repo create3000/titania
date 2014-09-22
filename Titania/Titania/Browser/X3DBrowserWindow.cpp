@@ -50,8 +50,6 @@
 
 #include "X3DBrowserWindow.h"
 
-#include "../Editors/GridEditor/GridEditor.h"
-
 #include "../Widgets/Console/Console.h"
 #include "../Widgets/HistoryView/HistoryView.h"
 #include "../Widgets/LibraryView/LibraryView.h"
@@ -143,12 +141,12 @@ X3DBrowserWindow::hasGridTool (const bool value)
 	if (hasGridTool_)
 	{
 		getGridTool () -> setExecutionContext (getBrowser ());
-		tools .emplace_back (getGridTool ());
+		tools .emplace (getGridTool ());
 	}
 	else
 	{
 		getGridTool () -> setExecutionContext (getMasterBrowser ());
-		tools .remove (X3D::SFNode (getGridTool ()));
+		tools .erase (X3D::SFNode (getGridTool ()));
 	}
 }
 
@@ -160,8 +158,6 @@ X3DBrowserWindow::getGridTool () const
 		const_cast <X3DBrowserWindow*> (this) -> gridTool = hasGridTool ()
 		                                                    ? X3D::createNode <X3D::GridTool> (getBrowser ())
 		                                                    : X3D::createNode <X3D::GridTool> (getMasterBrowser ());
-
-		GridEditor::setup (gridTool);
 
 		gridTool -> getExecutionContext () -> realize ();
 	}
@@ -177,12 +173,12 @@ X3DBrowserWindow::hasAngleTool (const bool value)
 	if (hasAngleTool_)
 	{
 		getAngleTool () -> setExecutionContext (getBrowser ());
-		tools .emplace_back (getAngleTool ());
+		tools .emplace (getAngleTool ());
 	}
 	else
 	{
 		getAngleTool () -> setExecutionContext (getMasterBrowser ());
-		tools .remove (X3D::SFNode (getAngleTool ()));
+		tools .erase (X3D::SFNode (getAngleTool ()));
 	}
 }
 
@@ -195,12 +191,33 @@ X3DBrowserWindow::getAngleTool () const
 		                                                     ? X3D::createNode <X3D::AngleTool> (getBrowser ())
 		                                                     : X3D::createNode <X3D::AngleTool> (getMasterBrowser ());
 
-		//AngleEditor::setup (angleTool);
-
 		angleTool -> getExecutionContext () -> realize ();
 	}
 
 	return angleTool;
+}
+
+X3D::WorldInfoPtr
+X3DBrowserWindow::getWorldInfo (const bool create) const
+throw (X3D::Error <X3D::NOT_SUPPORTED>)
+{
+	auto worldInfo = getRootContext () -> getWorldInfo ();
+
+	if (not worldInfo)
+	{
+		if (not create)
+			throw X3D::Error <X3D::NOT_SUPPORTED> ("X3DBrowserWindow::getWorldInfo: not supported.");
+	
+		worldInfo = X3D::createNode <X3D::WorldInfo> (getRootContext ());
+		worldInfo -> title () = getRootContext () -> getWorldURL () .basename (false);
+
+		getRootContext () -> getRootNodes () .emplace_front (worldInfo);
+		getRootContext () -> realize ();
+
+		const_cast <X3DBrowserWindow*> (this) -> isModified (getBrowser (), true);
+	}
+
+	return worldInfo;
 }
 
 void

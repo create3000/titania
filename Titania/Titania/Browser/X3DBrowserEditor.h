@@ -273,6 +273,15 @@ protected:
 
 	/// @name Undo
 
+	bool
+	isSaved (const X3D::BrowserPtr &);
+
+	void
+	isModified (const X3D::BrowserPtr &, const bool);
+
+	bool
+	isModified (const X3D::BrowserPtr &) const;
+
 	void
 	set_undoHistory ();
 
@@ -310,15 +319,6 @@ private:
 	set_selection (const X3D::MFNode &);
 
 	// File
-
-	bool
-	isSaved (const X3D::BrowserPtr &);
-
-	void
-	isModified (const X3D::BrowserPtr &, const bool);
-
-	bool
-	isModified (const X3D::BrowserPtr &) const;
 
 	std::vector <X3D::X3DProtoDeclarationNodePtr>
 	getUsedPrototypes (X3D::MFNode &) const;

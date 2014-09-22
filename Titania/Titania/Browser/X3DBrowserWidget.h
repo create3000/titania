@@ -112,10 +112,6 @@ public:
 	bool
 	isLive () const;
 
-	virtual
-	X3D::WorldInfoPtr
-	getWorldInfo () const final override;
-
 	///  @name Operations
 
 	virtual

@@ -103,221 +103,6 @@ MetadataSet::initialize ()
 	set_value ();
 }
 
-void
-MetadataSet::setBoolean (const std::string & name, const bool boolean)
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		setMetaData <MFBool> (name, MFBool ({ boolean }));
-		return;
-	}
-	catch (const Error <INVALID_FIELD> &)
-	{
-		removeMetaData (name);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{ }
-	catch (...)
-	{
-		throw;
-	}
-
-	const auto node = new MetadataBoolean (getExecutionContext ());
-
-	node -> name () = name;
-	node -> value () .emplace_back (boolean);
-	node -> setup ();
-
-	value () .emplace_back (node);
-}
-
-bool
-MetadataSet::getBoolean (const std::string & name, const bool default_) const
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		return getMetaData <MFBool> (name) .at (0);
-	}
-	catch (...)
-	{
-		return default_;
-	}
-}
-
-void
-MetadataSet::setDouble (const std::string & name, const double double_)
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		setMetaData <MFDouble> (name, MFDouble ({ double_ }));
-		return;
-	}
-	catch (const Error <INVALID_FIELD> &)
-	{
-		removeMetaData (name);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{ }
-	catch (...)
-	{
-		throw;
-	}
-
-	const auto node = new MetadataDouble (getExecutionContext ());
-
-	node -> name () = name;
-	node -> value () .emplace_back (double_);
-	node -> setup ();
-
-	value () .emplace_back (node);
-}
-
-double
-MetadataSet::getDouble (const std::string & name, const double default_) const
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		return getMetaData <MFDouble> (name) .at (0);
-	}
-	catch (...)
-	{
-		return default_;
-	}
-}
-
-void
-MetadataSet::setFloat (const std::string & name, const float float_)
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		setMetaData <MFFloat> (name, MFFloat ({ float_ }));
-		return;
-	}
-	catch (const Error <INVALID_FIELD> &)
-	{
-		removeMetaData (name);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{ }
-	catch (...)
-	{
-		throw;
-	}
-
-	const auto node = new MetadataFloat (getExecutionContext ());
-
-	node -> name () = name;
-	node -> value () .emplace_back (float_);
-	node -> setup ();
-
-	value () .emplace_back (node);
-}
-
-float
-MetadataSet::getFloat (const std::string & name, const float default_) const
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		return getMetaData <MFFloat> (name) .at (0);
-	}
-	catch (...)
-	{
-		return default_;
-	}
-}
-
-void
-MetadataSet::setInteger (const std::string & name, const int32_t integer)
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		setMetaData <MFInt32> (name, MFInt32 ({ integer }));
-		return;
-	}
-	catch (const Error <INVALID_FIELD> &)
-	{
-		removeMetaData (name);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{ }
-	catch (...)
-	{
-		throw;
-	}
-
-	const auto node = new MetadataInteger (getExecutionContext ());
-
-	node -> name () = name;
-	node -> value () .emplace_back (integer);
-	node -> setup ();
-
-	value () .emplace_back (node);
-}
-
-int32_t
-MetadataSet::getInteger (const std::string & name, const int32_t default_) const
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		return getMetaData <MFInt32> (name) .at (0);
-	}
-	catch (...)
-	{
-		return default_;
-	}
-}
-
-void
-MetadataSet::setString (const std::string & name, const std::string & string)
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		setMetaData <MFString> (name, MFString ({ string }));
-		return;
-	}
-	catch (const Error <INVALID_FIELD> &)
-	{
-		removeMetaData (name);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{ }
-	catch (...)
-	{
-		throw;
-	}
-
-	const auto node = new MetadataString (getExecutionContext ());
-
-	node -> name () = name;
-	node -> value () .emplace_back (string);
-	node -> setup ();
-
-	value () .emplace_back (node);
-}
-
-const std::string &
-MetadataSet::getString (const std::string & name, const std::string & default_) const
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		return getMetaData <MFString> (name) .at (0) .str ();
-	}
-	catch (...)
-	{
-		return default_;
-	}
-}
-
 const X3DPtr <MetadataSet> &
 MetadataSet::getSet (const std::string & name, const bool create)
 throw (Error <INVALID_NAME>,
@@ -346,6 +131,156 @@ throw (Error <INVALID_NAME>,
 
 		return node;
 	}
+}
+
+template <>
+void
+MetadataSet::setMetaData <MFBool> (const std::string & name, const MFBool & boolean)
+throw (Error <DISPOSED>)
+{
+	try
+	{
+		getMetaData <MFBool> (name) = boolean;
+		return;
+	}
+	catch (const Error <INVALID_FIELD> &)
+	{
+		removeMetaData (name);
+	}
+	catch (const Error <INVALID_NAME> &)
+	{ }
+	catch (...)
+	{
+		throw;
+	}
+
+	const auto node = new MetadataBoolean (getExecutionContext ());
+
+	node -> name ()  = name;
+	node -> value () = boolean;
+	node -> setup ();
+
+	value () .emplace_back (node);
+}
+
+template <>
+void
+MetadataSet::setMetaData <MFDouble> (const std::string & name, const MFDouble & double_)
+throw (Error <DISPOSED>)
+{
+	try
+	{
+		getMetaData <MFDouble> (name) = double_;
+		return;
+	}
+	catch (const Error <INVALID_FIELD> &)
+	{
+		removeMetaData (name);
+	}
+	catch (const Error <INVALID_NAME> &)
+	{ }
+	catch (...)
+	{
+		throw;
+	}
+
+	const auto node = new MetadataDouble (getExecutionContext ());
+
+	node -> name ()  = name;
+	node -> value () = double_;
+	node -> setup ();
+
+	value () .emplace_back (node);
+}
+
+template <>
+void
+MetadataSet::setMetaData <MFFloat> (const std::string & name, const MFFloat & float_)
+throw (Error <DISPOSED>)
+{
+	try
+	{
+		getMetaData <MFFloat> (name) = float_;
+		return;
+	}
+	catch (const Error <INVALID_FIELD> &)
+	{
+		removeMetaData (name);
+	}
+	catch (const Error <INVALID_NAME> &)
+	{ }
+	catch (...)
+	{
+		throw;
+	}
+
+	const auto node = new MetadataFloat (getExecutionContext ());
+
+	node -> name ()  = name;
+	node -> value () = float_;
+	node -> setup ();
+
+	value () .emplace_back (node);
+}
+
+template <>
+void
+MetadataSet::setMetaData <MFInt32> (const std::string & name, const MFInt32 & integer)
+throw (Error <DISPOSED>)
+{
+	try
+	{
+		getMetaData <MFInt32> (name) = integer;
+		return;
+	}
+	catch (const Error <INVALID_FIELD> &)
+	{
+		removeMetaData (name);
+	}
+	catch (const Error <INVALID_NAME> &)
+	{ }
+	catch (...)
+	{
+		throw;
+	}
+
+	const auto node = new MetadataInteger (getExecutionContext ());
+
+	node -> name ()  = name;
+	node -> value () = integer;
+	node -> setup ();
+
+	value () .emplace_back (node);
+}
+
+template <>
+void
+MetadataSet::setMetaData <MFString> (const std::string & name, const MFString & string)
+throw (Error <DISPOSED>)
+{
+	try
+	{
+		getMetaData <MFString> (name) = string;
+		return;
+	}
+	catch (const Error <INVALID_FIELD> &)
+	{
+		removeMetaData (name);
+	}
+	catch (const Error <INVALID_NAME> &)
+	{ }
+	catch (...)
+	{
+		throw;
+	}
+
+	const auto node = new MetadataString (getExecutionContext ());
+
+	node -> name ()  = name;
+	node -> value () = string;
+	node -> setup ();
+
+	value () .emplace_back (node);
 }
 
 X3DFieldDefinition*

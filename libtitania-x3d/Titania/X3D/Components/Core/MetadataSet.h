@@ -100,57 +100,15 @@ public:
 	
 	///  @name Member access
 
-	void
-	setBoolean (const std::string &, const bool)
-	throw (Error <DISPOSED>);
-
-	bool
-	getBoolean (const std::string & name, const bool = false) const
-	throw (Error <DISPOSED>);
-
-	void
-	setDouble (const std::string & name, const double double_)
-	throw (Error <DISPOSED>);
-
-	double
-	getDouble (const std::string & name, const double = 0) const
-	throw (Error <DISPOSED>);
-
-	void
-	setFloat (const std::string & name, const float float_)
-	throw (Error <DISPOSED>);
-
-	float
-	getFloat (const std::string & name, const float = 0) const
-	throw (Error <DISPOSED>);
-
-	void
-	setInteger (const std::string & name, const int32_t integer)
-	throw (Error <DISPOSED>);
-
-	int32_t
-	getInteger (const std::string & name, const int32_t = 0) const
-	throw (Error <DISPOSED>);
-
-	void
-	setString (const std::string & name, const std::string & string)
-	throw (Error <DISPOSED>);
-
-	const std::string &
-	getString (const std::string & name, const std::string & = "") const
-	throw (Error <DISPOSED>);
-
 	const X3DPtr <MetadataSet> &
 	getSet (const std::string & name, const bool = false)
 	throw (Error <INVALID_NAME>,
           Error <DISPOSED>);
 
-	template <class Type, class ValueType>
+	template <class Type>
 	void
-	setMetaData (const std::string & name, const ValueType & value, const bool compare = false)
-	throw (Error <INVALID_FIELD>,
-	       Error <INVALID_NAME>,
-	       Error <DISPOSED>);
+	setMetaData (const std::string & name, const Type & value)
+	throw (Error <DISPOSED>);
 
 	///  Return the field with @a name.
 	template <class Type>
@@ -223,18 +181,36 @@ private:
 
 };
 
-template <class Type, class ValueType>
+template <class Type>
 void
-MetadataSet::setMetaData (const std::string & name, const ValueType & value, const bool compare)
-throw (Error <INVALID_FIELD>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
-{
-	Type & field = getMetaData <Type> (name);
+MetadataSet::setMetaData (const std::string &, const Type &)
+throw (Error <DISPOSED>)
+{ }
 
-	if (not compare or field not_eq value)
-		field = value;
-}
+template <>
+void
+MetadataSet::setMetaData <MFBool> (const std::string &, const MFBool &)
+throw (Error <DISPOSED>);
+
+template <>
+void
+MetadataSet::setMetaData <MFDouble> (const std::string &, const MFDouble &)
+throw (Error <DISPOSED>);
+
+template <>
+void
+MetadataSet::setMetaData <MFFloat> (const std::string &, const MFFloat &)
+throw (Error <DISPOSED>);
+
+template <>
+void
+MetadataSet::setMetaData <MFInt32> (const std::string &, const MFInt32 &)
+throw (Error <DISPOSED>);
+
+template <>
+void
+MetadataSet::setMetaData <MFString> (const std::string &, const MFString &)
+throw (Error <DISPOSED>);
 
 ///  Return the field with @a name.
 template <class Type>

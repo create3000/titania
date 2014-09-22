@@ -62,8 +62,8 @@ const std::string ElevationGrid::containerField = "geometry";
 
 ElevationGrid::Fields::Fields () :
 	     xDimension (new SFInt32 ()),
-	       xSpacing (new SFFloat (1)),
 	     zDimension (new SFInt32 ()),
+	       xSpacing (new SFFloat (1)),
 	       zSpacing (new SFFloat (1)),
 	          solid (new SFBool (true)),
 	            ccw (new SFBool (true)),
@@ -93,8 +93,8 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (initializeOnly, "xDimension",      xDimension ());
-	addField (initializeOnly, "xSpacing",        xSpacing ());
 	addField (initializeOnly, "zDimension",      zDimension ());
+	addField (initializeOnly, "xSpacing",        xSpacing ());
 	addField (initializeOnly, "zSpacing",        zSpacing ());
 
 	addField (initializeOnly, "solid",           solid ());

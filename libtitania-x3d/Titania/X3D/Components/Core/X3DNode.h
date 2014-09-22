@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,11 +61,11 @@
 namespace titania {
 namespace X3D {
 
-class MetadataSet;
 class X3DScene;
 class X3DLayerNode;
 class NavigationInfo;
 class X3DViewpointNode;
+class MetadataSet;
 
 class X3DNode :
 	virtual public X3DBaseNode
@@ -86,55 +86,19 @@ public:
 
 	///  @name Metadata handling
 
+	template <class Type>
 	void
-	setBoolean (const std::string &, const bool)
+	setMetaData (const std::string & name, const Type & value)
 	throw (Error <INVALID_NAME>,
-          Error <DISPOSED>);
+          Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>);
 
-	bool
-	getBoolean (const std::string &, const bool = false) const
+	template <class Type>
+	const Type &
+	getMetaData (const std::string &) const
 	throw (Error <INVALID_NAME>,
-          Error <DISPOSED>);
-
-	void
-	setDouble (const std::string &, const double)
-	throw (Error <INVALID_NAME>,
-          Error <DISPOSED>);
-
-	double
-	getDouble (const std::string &, const double = 0) const
-	throw (Error <INVALID_NAME>,
-          Error <DISPOSED>);
-
-	void
-	setFloat (const std::string &, const float)
-	throw (Error <INVALID_NAME>,
-          Error <DISPOSED>);
-
-	float
-	getFloat (const std::string &, const float = 0) const
-	throw (Error <INVALID_NAME>,
-          Error <DISPOSED>);
-
-	void
-	setInteger (const std::string &, const int32_t)
-	throw (Error <INVALID_NAME>,
-          Error <DISPOSED>);
-
-	int32_t
-	getInteger (const std::string &, const int32_t = 0) const
-	throw (Error <INVALID_NAME>,
-          Error <DISPOSED>);
-
-	void
-	setString (const std::string &, const std::string &)
-	throw (Error <INVALID_NAME>,
-          Error <DISPOSED>);
-
-	const std::string &
-	getString (const std::string &, const std::string & = "") const
-	throw (Error <INVALID_NAME>,
-          Error <DISPOSED>);
+          Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>);
 
 	void
 	removeMetaData (const std::string & = "")
@@ -183,7 +147,6 @@ protected:
 
 private:
 
-
 	///  @name Member access
 
 	MetadataSet*
@@ -207,6 +170,196 @@ private:
 	Fields fields;
 
 };
+
+// set
+
+template <class Type>
+void
+X3DNode::setMetaData (const std::string & key, const Type & value)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{ }
+
+template <>
+void
+X3DNode::setMetaData <bool> (const std::string &, const bool &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <Color3f> (const std::string &, const Color3f &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <Color4f> (const std::string &, const Color4f &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <double> (const std::string &, const double &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <float> (const std::string &, const float &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <int32_t> (const std::string &, const int32_t &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <Rotation4f> (const std::string &, const Rotation4f &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <std::string> (const std::string &, const std::string &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <Vector2d> (const std::string &, const Vector2d &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <Vector2f> (const std::string &, const Vector2f &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <Vector3d> (const std::string &, const Vector3d &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <Vector3f> (const std::string &, const Vector3f &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <Vector4d> (const std::string &, const Vector4d &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <Vector4f> (const std::string &, const Vector4f &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFBool> (const std::string &, const MFBool &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFDouble> (const std::string &, const MFDouble &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFFloat> (const std::string &, const MFFloat &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFInt32> (const std::string &, const MFInt32 &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFString> (const std::string &, const MFString &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+// get
+
+template <class Type>
+const Type &
+X3DNode::getMetaData (const std::string & key) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	throw Error <NOT_SUPPORTED> ("X3DNode::getMetaData: type is not supported.");
+}
+
+template <>
+const MFBool &
+X3DNode::getMetaData <MFBool> (const std::string &) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+const MFDouble &
+X3DNode::getMetaData <MFDouble> (const std::string &) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+const MFFloat &
+X3DNode::getMetaData <MFFloat> (const std::string &) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+const MFInt32 &
+X3DNode::getMetaData <MFInt32> (const std::string &) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+const MFString &
+X3DNode::getMetaData <MFString> (const std::string &) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
 
 } // X3D
 } // titania

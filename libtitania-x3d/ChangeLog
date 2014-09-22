@@ -1,3 +1,13 @@
+2014-09-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* GridTool.x3dv:
+	* X3DNode.h:
+	* X3DNode.cpp:
+	* MetadataSet.h:
+	* MetadataSet.cpp:
+	* ElevationGrid.h:
+	* ElevationGrid.cpp: 
+
 2014-09-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GridTool.x3dv:

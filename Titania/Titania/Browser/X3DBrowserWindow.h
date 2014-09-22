@@ -116,6 +116,11 @@ public:
 	const X3D::X3DPtr <X3D::AngleTool> &
 	getAngleTool () const;
 
+	virtual
+	X3D::WorldInfoPtr
+	getWorldInfo (const bool = false) const
+	throw (X3D::Error <X3D::NOT_SUPPORTED>) final override;
+
 	/// @name Operations
 
 	void
@@ -162,7 +167,7 @@ private:
 	std::unique_ptr <OutlineEditor> outlineEditor;
 	std::unique_ptr <Console>       console;
 	std::unique_ptr <ScriptEditor>  scriptEditor;
-	X3D::MFNode                     tools;
+	std::set <X3D::SFNode>          tools;
 	X3D::X3DPtr <X3D::GridTool>     gridTool;
 	X3D::X3DPtr <X3D::AngleTool>    angleTool;
 
