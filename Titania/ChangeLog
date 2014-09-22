@@ -1,5 +1,24 @@
 2014-09-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* MagicImport.cpp:
+	* X3DBaseInterface.h:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DBrowserWindow.h:
+	* X3DBrowserEditor.h:
+	* X3DBrowserWindow.cpp:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserEditor.cpp:
+	* GridTool.h:
+	* Palette.x3dv:
+	* GridEditor.xml:
+	* GridTool.cpp:
+	* X3DGridEditor.cpp: 
+
+2014-09-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseInterface.h:
 	* X3DBaseInterface.cpp:
 	* X3DBrowserEditor.h:

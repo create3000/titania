@@ -50,7 +50,7 @@
 
 #include "MagicImport.h"
 
-#include "BrowserWindow.h"
+#include "X3DBrowserWindow.h"
 #include "BrowserSelection.h"
 
 #include <Titania/X3D/Browser/ContextLock.h>

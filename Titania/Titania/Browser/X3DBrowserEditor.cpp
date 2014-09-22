@@ -48,10 +48,11 @@
  *
  ******************************************************************************/
 
-#include "BrowserWindow.h"
+#include "X3DBrowserEditor.h"
 
 #include "../Browser/BrowserUserData.h"
 #include "../Browser/MagicImport.h"
+#include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
 #include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
@@ -279,19 +280,21 @@ X3DBrowserEditor::isSaved (const X3D::BrowserPtr & browser)
 void
 X3DBrowserEditor::isModified (const X3D::BrowserPtr & browser, const bool value)
 {
-	getUserData (browser) -> modified      = value;
-	getUserData (browser) -> saveConfirmed = false;
+	const auto userData = getUserData (browser);
 
-	setTitle ();
+	userData -> modified      = value;
+	userData -> saveConfirmed = false;
 
 	if (not value)
 		getUndoHistory (browser) .setSaved ();
+
+	setTitle ();
 }
 
 bool
 X3DBrowserEditor::isModified (const X3D::BrowserPtr & browser) const
 {
-	return getUserData (browser) -> modified;
+	return getUndoHistory (browser) .isModified () or getUserData (browser) -> modified;
 }
 
 // File operations
@@ -840,7 +843,7 @@ X3DBrowserEditor::set_undoHistory ()
 		getRedoButton ()   .set_sensitive (false);
 	}
 
-	isModified (getBrowser (), undoHistory .isModified ());
+	setTitle ();
 }
 
 // Clipboard operations

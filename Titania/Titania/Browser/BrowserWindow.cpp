@@ -74,7 +74,6 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	         X3DBaseInterface (this, browser),
 	X3DBrowserWindowInterface (get_ui ("BrowserWindow.xml"), gconf_dir ()),
 	         X3DBrowserWindow (browser),
-	                   toggle (true),
 	                 changing (false),
 	                   viewer (X3D::ViewerType::NONE)
 {
@@ -205,25 +204,29 @@ BrowserWindow::set_browsers ()
 void
 BrowserWindow::set_scene ()
 {
-	toggle = false;
-	getBackgroundsMenuItem () .set_active (true);
+	changing = true;
 
-	toggle = false;
-	getFogsMenuItem () .set_active (true);
+	// View Menu
 
-	toggle = false;
-	getLightsMenuItem () .set_active (false);
-
-	toggle = false;
-	getProximitySensorsMenuItem () .set_active (false);
-
-	toggle = false;
+	getBackgroundsMenuItem ()       .set_active (true);
+	getFogsMenuItem ()              .set_active (true);
+	getLightsMenuItem ()            .set_active (false);
+	getProximitySensorsMenuItem ()  .set_active (false);
 	getVisibilitySensorsMenuItem () .set_active (false);
+	getViewpointsMenuItem ()        .set_active (false);
+	
+	// Layout Menu
 
-	toggle = false;
-	getViewpointsMenuItem () .set_active (false);
+	try
+	{
+		getGridLayoutToolMenuItem () .set_active (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/GridTool/enabled") .at (0));
+	}
+	catch (...)
+	{
+		getGridLayoutToolMenuItem () .set_active (false);
+	}
 
-	toggle = true;
+	changing = false;
 }
 
 void
@@ -304,11 +307,12 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 
 	// Show/Hide Object Icons.
 
+	changing = true;
+
 	for (const auto & node : selection)
 	{
 		if (X3D::x3d_cast <X3D::X3DLightNode*> (node))
 		{
-			toggle = false;
 			getLightsMenuItem () .set_active (true);
 			break;
 		}
@@ -318,7 +322,6 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	{
 		if (X3D::x3d_cast <X3D::ProximitySensor*> (node))
 		{
-			toggle = false;
 			getProximitySensorsMenuItem () .set_active (true);
 			break;
 		}
@@ -328,7 +331,6 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	{
 		if (X3D::x3d_cast <X3D::VisibilitySensor*> (node))
 		{
-			toggle = false;
 			getVisibilitySensorsMenuItem () .set_active (true);
 			break;
 		}
@@ -338,13 +340,12 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	{
 		if (X3D::x3d_cast <X3D::X3DViewpointNode*> (node))
 		{
-			toggle = false;
 			getViewpointsMenuItem () .set_active (true);
 			break;
 		}
 	}
 
-	toggle = true;
+	changing = false;
 }
 
 // Keys
@@ -1189,47 +1190,43 @@ BrowserWindow::connectPrimitiveQuality (const X3D::SFString & field)
 void
 BrowserWindow::on_backgrounds_toggled ()
 {
-	if (toggle)
-	{
-		const bool hidden = not getBackgroundsMenuItem () .get_active ();
+	if (changing)
+		return;
 
-		X3D::traverse (getExecutionContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
-		               {
-		                  const auto background = dynamic_cast <X3D::X3DBackgroundNode*> (node .getValue ());
+	const bool hidden = not getBackgroundsMenuItem () .get_active ();
 
-		                  if (background)
-									background -> isHidden (hidden);
+	X3D::traverse (getExecutionContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
+	               {
+	                  const auto background = dynamic_cast <X3D::X3DBackgroundNode*> (node .getValue ());
 
-		                  return true;
-							},
-		               true,
-		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	}
+	                  if (background)
+								background -> isHidden (hidden);
 
-	toggle = true;
+	                  return true;
+						},
+	               true,
+	               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
 void
 BrowserWindow::on_fogs_toggled ()
 {
-	if (toggle)
-	{
-		const bool hidden = not getFogsMenuItem () .get_active ();
+	if (changing)
+		return;
 
-		X3D::traverse (getExecutionContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
-		               {
-		                  const auto fog = dynamic_cast <X3D::X3DFogObject*> (node .getValue ());
+	const bool hidden = not getFogsMenuItem () .get_active ();
 
-		                  if (fog)
-									fog -> isHidden (hidden);
+	X3D::traverse (getExecutionContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
+	               {
+	                  const auto fog = dynamic_cast <X3D::X3DFogObject*> (node .getValue ());
 
-		                  return true;
-							},
-		               true,
-		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	}
+	                  if (fog)
+								fog -> isHidden (hidden);
 
-	toggle = true;
+	                  return true;
+						},
+	               true,
+	               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
 // Object Icons
@@ -1237,171 +1234,163 @@ BrowserWindow::on_fogs_toggled ()
 void
 BrowserWindow::on_lights_toggled ()
 {
-	if (toggle)
+	if (changing)
+		return;
+
+	if (getLightsMenuItem () .get_active ())
 	{
-		if (getLightsMenuItem () .get_active ())
-		{
-			X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-			               {
-			                  const auto tool = dynamic_cast <X3D::X3DLightNode*> (node .getValue ());
+		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		               {
+		                  const auto tool = dynamic_cast <X3D::X3DLightNode*> (node .getValue ());
 
-			                  if (tool)
-										tool -> addTool ();
+		                  if (tool)
+									tool -> addTool ();
 
-			                  return true;
-								},
-			               true,
-			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-		}
-		else
-		{
-			X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-			               {
-			                  if (not node)
-										return true;
-
-			                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
-			                  {
-			                     if (type == X3D::X3DConstants::X3DLightNodeTool)
-			                     {
-			                        if (not getSelection () -> isSelected (node))
-												node -> removeTool (true);
-
-			                        break;
-										}
-									}
-
-			                  return true;
-								},
-			               true,
-			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-		}
+		                  return true;
+							},
+		               true,
+		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
+	else
+	{
+		X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		               {
+		                  if (not node)
+									return true;
 
-	toggle = true;
+		                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
+		                  {
+		                     if (type == X3D::X3DConstants::X3DLightNodeTool)
+		                     {
+		                        if (not getSelection () -> isSelected (node))
+											node -> removeTool (true);
+
+		                        break;
+									}
+								}
+
+		                  return true;
+							},
+		               true,
+		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	}
 }
 
 void
 BrowserWindow::on_proximity_sensors_toggled ()
 {
-	if (toggle)
+	if (changing)
+		return;
+
+	if (getProximitySensorsMenuItem () .get_active ())
 	{
-		if (getProximitySensorsMenuItem () .get_active ())
-		{
-			X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-			               {
-			                  const auto tool = dynamic_cast <X3D::ProximitySensor*> (node .getValue ());
+		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		               {
+		                  const auto tool = dynamic_cast <X3D::ProximitySensor*> (node .getValue ());
 
-			                  if (tool)
-										tool -> addTool ();
+		                  if (tool)
+									tool -> addTool ();
 
-			                  return true;
-								},
-			               true,
-			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-		}
-		else
-		{
-			X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-			               {
-			                  const auto tool = dynamic_cast <X3D::ProximitySensorTool*> (node .getValue ());
-
-			                  if (tool and not getSelection () -> isSelected (node))
-										tool -> removeTool (true);
-
-			                  return true;
-								},
-			               true,
-			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-		}
+		                  return true;
+							},
+		               true,
+		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
+	else
+	{
+		X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		               {
+		                  const auto tool = dynamic_cast <X3D::ProximitySensorTool*> (node .getValue ());
 
-	toggle = true;
+		                  if (tool and not getSelection () -> isSelected (node))
+									tool -> removeTool (true);
+
+		                  return true;
+							},
+		               true,
+		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	}
 }
 
 void
 BrowserWindow::on_visibility_sensors_toggled ()
 {
-	if (toggle)
+	if (changing)
+		return;
+
+	if (getVisibilitySensorsMenuItem () .get_active ())
 	{
-		if (getVisibilitySensorsMenuItem () .get_active ())
-		{
-			X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-			               {
-			                  const auto tool = dynamic_cast <X3D::VisibilitySensor*> (node .getValue ());
+		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		               {
+		                  const auto tool = dynamic_cast <X3D::VisibilitySensor*> (node .getValue ());
 
-			                  if (tool)
-										tool -> addTool ();
+		                  if (tool)
+									tool -> addTool ();
 
-			                  return true;
-								},
-			               true,
-			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-		}
-		else
-		{
-			X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-			               {
-			                  const auto tool = dynamic_cast <X3D::VisibilitySensorTool*> (node .getValue ());
-
-			                  if (tool and not getSelection () -> isSelected (node))
-										tool -> removeTool (true);
-
-			                  return true;
-								},
-			               true,
-			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-		}
+		                  return true;
+							},
+		               true,
+		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
+	else
+	{
+		X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		               {
+		                  const auto tool = dynamic_cast <X3D::VisibilitySensorTool*> (node .getValue ());
 
-	toggle = true;
+		                  if (tool and not getSelection () -> isSelected (node))
+									tool -> removeTool (true);
+
+		                  return true;
+							},
+		               true,
+		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	}
 }
 
 void
 BrowserWindow::on_viewpoints_toggled ()
 {
-	if (toggle)
+	if (changing)
+		return;
+
+	if (getViewpointsMenuItem () .get_active ())
 	{
-		if (getViewpointsMenuItem () .get_active ())
-		{
-			X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-			               {
-			                  const auto tool = dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ());
+		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		               {
+		                  const auto tool = dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ());
 
-			                  if (tool)
-										tool -> addTool ();
+		                  if (tool)
+									tool -> addTool ();
 
-			                  return true;
-								},
-			               true,
-			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-		}
-		else
-		{
-			X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-			               {
-			                  if (not node)
-										return true;
-
-			                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
-			                  {
-			                     if (type == X3D::X3DConstants::X3DViewpointNodeTool)
-			                     {
-			                        if (not getSelection () -> isSelected (node))
-												node -> removeTool (true);
-
-			                        break;
-										}
-									}
-
-			                  return true;
-								},
-			               true,
-			               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-		}
+		                  return true;
+							},
+		               true,
+		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
+	else
+	{
+		X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		               {
+		                  if (not node)
+									return true;
 
-	toggle = true;
+		                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
+		                  {
+		                     if (type == X3D::X3DConstants::X3DViewpointNodeTool)
+		                     {
+		                        if (not getSelection () -> isSelected (node))
+											node -> removeTool (true);
+
+		                        break;
+									}
+								}
+
+		                  return true;
+							},
+		               true,
+		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	}
 }
 
 void

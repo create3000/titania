@@ -48,133 +48,61 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
-#define __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
+#ifndef __TITANIA_EDITORS_GRID_EDITOR_GRID_TOOL_H__
+#define __TITANIA_EDITORS_GRID_EDITOR_GRID_TOOL_H__
 
-#include "../Browser/X3DBrowserEditor.h"
+#include "../../Base/X3DBaseInterface.h"
 
-namespace titania {
-namespace X3D {
-
-class GridTool;
-class AngleTool;
-
-} // X3D
-} // titania
+#include <Titania/X3D/Tools/Grids/GridTool.h>
 
 namespace titania {
 namespace puck {
 
-class HistoryView;
-class LibraryView;
-class MotionBlurEditor;
-class OutlineEditor;
-class OutlineTreeViewEditor;
-class ViewpointList;
-class Console;
-class ScriptEditor;
-class GridTool;
-
-class X3DBrowserWindow :
-	public X3DBrowserEditor
+class GridTool :
+	virtual public X3DBaseInterface
 {
 public:
 
-	/// @name Member access
+	///  @name Construction
 
-	X3D::Keys &
-	getKeys ()
-	{ return keys; }
-
-	const X3D::Keys &
-	getKeys () const
-	{ return keys; }
+	GridTool (X3DBrowserWindow* const);
 
 	void
-	hasAccelerators (const bool);
+	isEnabled (const bool value)
+	{ isEnabled (value, true); }
 
 	bool
-	hasAccelerators () const
-	{ return accelerators; }
-
-	void
-	hasGridTool (const bool);
-
-	bool
-	hasGridTool () const;
+	isEnabled () const
+	{ return enabled; }
 
 	const X3D::X3DPtr <X3D::GridTool> &
-	getGridTool () const;
-
-	void
-	hasAngleTool (const bool);
-
-	bool
-	hasAngleTool () const
-	{ return hasAngleTool_; }
-
-	const X3D::X3DPtr <X3D::AngleTool> &
-	getAngleTool () const;
-
-	virtual
-	X3D::WorldInfoPtr
-	getWorldInfo (const bool = false) const
-	throw (X3D::Error <X3D::NOT_SUPPORTED>) final override;
-
-	/// @name Operations
-
-	void
-	expandNodes (const X3D::MFNode &);
+	getTool () const;
 
 	///  @name Destruction
 
 	virtual
-	~X3DBrowserWindow ();
-
-
-protected:
-
-	/// @name Construction
-
-	X3DBrowserWindow (const X3D::BrowserPtr &);
-
-	virtual
-	void
-	initialize ();
-
-	virtual
-	void
-	setBrowser (const X3D::BrowserPtr &) override;
+	~GridTool ();
 
 
 private:
 
-	/// @name Member access
-
-	const std::shared_ptr <OutlineTreeViewEditor> &
-	getOutlineTreeView () const;
-
-	/// @name Operations
+	void
+	realize ();
 
 	void
-	expandNodesImpl (const X3D::MFNode &);
+	isEnabled (const bool, const bool);
 
-	///  @name Members
+	void
+	set_browser (const X3D::BrowserPtr &);
 
-	std::unique_ptr <ViewpointList> viewpointList;
-	std::unique_ptr <HistoryView>   historyEditor;
-	std::unique_ptr <LibraryView>   libraryView;
-	std::unique_ptr <OutlineEditor> outlineEditor;
-	std::unique_ptr <Console>       console;
-	std::unique_ptr <ScriptEditor>  scriptEditor;
-	std::set <X3D::SFNode>          tools;
-	std::unique_ptr <GridTool>      gridTool;
-	X3D::X3DPtr <X3D::AngleTool>    angleTool;
+	void
+	set_scene ();
 
-	X3D::Keys keys;
-	bool      accelerators;
-	bool      hasGridTool_;
-	bool      hasAngleTool_;
+	void
+	configure ();
+
+	X3D::X3DPtr <X3D::GridTool> tool;
+	bool                        enabled;
 
 };
 

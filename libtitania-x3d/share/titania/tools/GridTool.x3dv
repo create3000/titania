@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sun, 21 Sep 2014 18:48:52 GMT"
+META "modified" "Mon, 22 Sep 2014 19:35:48 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -274,6 +274,20 @@ function eventsProcessed ()
   ROUTE Material1.diffuseColor_changed TO Material3.set_diffuseColor
 }
 
+WorldInfo {
+  metadata MetadataSet {
+    name "Titania"
+    value MetadataSet {
+      name "GridTool"
+      value MetadataBoolean {
+        name "enabled"
+        value TRUE
+      }
+    }
+  }
+  title "GridTool"
+}
+
 Viewpoint {
   position 5.44263 17.9858 10.111
   orientation -0.960029 0.279328 -0.0179136 1.07735
@@ -379,24 +393,29 @@ function eventsProcessed ()
 }
 
 DEF MoveScript Script {
-  inputOutput SFFloat xSpacing 1
-  inputOutput SFFloat zSpacing 1
-  inputOnly   SFVec3f set_translation
-  outputOnly  SFVec3f translation_changed
+  inputOutput SFFloat    xSpacing 1
+  inputOutput SFFloat    zSpacing 1
+  inputOnly   SFVec3f    set_translation
+  inputOutput SFRotation rotation 0 0 1 0
+  outputOnly  SFVec3f    translation_changed
+  outputOnly  SFRotation axisOfRotation_changed
 
   url "javascript:
-function initialize ()
-{
-}
 
 function set_translation (value)
 {
-	x = Math .round (value .x / xSpacing) * xSpacing;
-	z = Math .round (value .z / zSpacing) * zSpacing;
+	var translation = rotation .inverse () .multVec (value); 
 
-	translation_changed = new SFVec3f (x, value .y, z);
+	translation .x = Math .round (translation .x / xSpacing) * xSpacing;
+	translation .z = Math .round (translation .z / zSpacing) * zSpacing;
+
+	translation_changed = rotation .multVec (translation);
 }
-"
+
+function set_rotation (value)
+{
+	axisOfRotation_changed = new SFRotation (1, 0, 0, Math .PI / 2) .multiply (value);
+}"
 }
 
 DEF Tool Script {
@@ -421,10 +440,7 @@ ROUTE ScaleScript.translation_changed TO _2.set_offset
 ROUTE _6.translation_changed TO MoveScript.set_translation
 ROUTE Tool.translation_changed TO _6.set_offset
 ROUTE Tool.translation_changed TO Grid_1.set_translation
-ROUTE Tool.translation_changed TO Edge_1.set_translation
-ROUTE Tool.translation_changed TO _7.set_translation
 ROUTE MoveScript.translation_changed TO Tool.set_translation
-ROUTE Tool.rotation_changed TO GridTool.set_rotation
 ROUTE Tool.transparency_changed TO _1.set_transparency
 ROUTE Tool.color_changed TO _1.set_color
 ROUTE Tool.color_changed TO _5.set_diffuseColor
@@ -436,5 +452,12 @@ ROUTE Tool.xSpacing_changed TO MoveScript.set_xSpacing
 ROUTE Tool.zSpacing_changed TO MoveScript.set_zSpacing
 ROUTE ScaleScript.xDimension_changed TO Tool.set_xDimension
 ROUTE ScaleScript.zDimension_changed TO Tool.set_zDimension
+ROUTE Tool.rotation_changed TO Grid_1.set_rotation
+ROUTE Tool.rotation_changed TO Edge_1.set_rotation
+ROUTE Tool.translation_changed TO Edge_1.set_translation
+ROUTE Tool.rotation_changed TO _7.set_rotation
+ROUTE Tool.translation_changed TO _7.set_translation
+ROUTE MoveScript.axisOfRotation_changed TO _6.set_axisRotation
+ROUTE Tool.rotation_changed TO MoveScript.set_rotation
 
 EXPORT Tool

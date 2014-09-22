@@ -48,137 +48,121 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
-#define __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
+#include "GridTool.h"
 
-#include "../Browser/X3DBrowserEditor.h"
-
-namespace titania {
-namespace X3D {
-
-class GridTool;
-class AngleTool;
-
-} // X3D
-} // titania
+#include "../../Browser/X3DBrowserWindow.h"
 
 namespace titania {
 namespace puck {
 
-class HistoryView;
-class LibraryView;
-class MotionBlurEditor;
-class OutlineEditor;
-class OutlineTreeViewEditor;
-class ViewpointList;
-class Console;
-class ScriptEditor;
-class GridTool;
-
-class X3DBrowserWindow :
-	public X3DBrowserEditor
+GridTool::GridTool (X3DBrowserWindow* const browserWindow) :
+	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	            tool (),
+	         enabled (false)
 {
-public:
+	getScene () .addInterest (this, &GridTool::set_scene);
+	setup ();
+}
 
-	/// @name Member access
+void
+GridTool::realize ()
+{
+	this -> tool = isEnabled ()
+	               ? X3D::createNode <X3D::GridTool> (getBrowser ())
+	               : X3D::createNode <X3D::GridTool> (getBrowserWindow () -> getMasterBrowser ());
 
-	X3D::Keys &
-	getKeys ()
-	{ return keys; }
+	configure ();
 
-	const X3D::Keys &
-	getKeys () const
-	{ return keys; }
+	tool -> getExecutionContext () -> realize ();
+}
 
-	void
-	hasAccelerators (const bool);
+void
+GridTool::isEnabled (const bool value, const bool metadata)
+{
+	enabled = value;
 
-	bool
-	hasAccelerators () const
-	{ return accelerators; }
+	if (enabled)
+	{
+		getBrowser () .addInterest (this, &GridTool::set_browser);
+		set_browser (getBrowser ());
+	}
+	else
+	{
+		if (tool)
+		{
+			getBrowser () .removeInterest (this, &GridTool::set_browser);
+			set_browser (getBrowserWindow () -> getMasterBrowser ());
+		}
+	}
 
-	void
-	hasGridTool (const bool);
+	if (metadata)
+	{
+		getWorldInfo (true) -> setMetaData <bool> ("/Titania/GridTool/enabled", enabled);
+		getBrowserWindow () -> isModified (getBrowser (), true);
+	}
+}
 
-	bool
-	hasGridTool () const;
+const X3D::X3DPtr <X3D::GridTool> &
+GridTool::getTool () const
+{
+	if (not tool)
+		const_cast <GridTool*> (this) -> realize ();
 
-	const X3D::X3DPtr <X3D::GridTool> &
-	getGridTool () const;
+	return tool;
+}
 
-	void
-	hasAngleTool (const bool);
+void
+GridTool::set_browser (const X3D::BrowserPtr & browser)
+{
+	getTool () -> setExecutionContext (browser);
+}
 
-	bool
-	hasAngleTool () const
-	{ return hasAngleTool_; }
+void
+GridTool::set_scene ()
+{
+	try
+	{
+		isEnabled (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/GridTool/enabled") .at (0), false);
+	}
+	catch (...)
+	{
+		isEnabled (false, false);
+	}
 
-	const X3D::X3DPtr <X3D::AngleTool> &
-	getAngleTool () const;
+	if (tool)
+		configure ();
+}
 
-	virtual
-	X3D::WorldInfoPtr
-	getWorldInfo (const bool = false) const
-	throw (X3D::Error <X3D::NOT_SUPPORTED>) final override;
+void
+GridTool::configure ()
+{
+	try
+	{
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/translation");
 
-	/// @name Operations
+		getTool () -> translation () = X3D::Vector3f (v .at (0), v .at (1), v .at (2));
+	}
+	catch (...)
+	{
+		getTool () -> translation () = X3D::Vector3f ();
+	}
 
-	void
-	expandNodes (const X3D::MFNode &);
+	try
+	{
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/rotation");
 
-	///  @name Destruction
+		getTool () -> rotation () = X3D::Rotation4f (v .at (0), v .at (1), v .at (2), v .at (3));
+	}
+	catch (...)
+	{
+		getTool () -> rotation () = X3D::Rotation4f ();
+	}
+}
 
-	virtual
-	~X3DBrowserWindow ();
-
-
-protected:
-
-	/// @name Construction
-
-	X3DBrowserWindow (const X3D::BrowserPtr &);
-
-	virtual
-	void
-	initialize ();
-
-	virtual
-	void
-	setBrowser (const X3D::BrowserPtr &) override;
-
-
-private:
-
-	/// @name Member access
-
-	const std::shared_ptr <OutlineTreeViewEditor> &
-	getOutlineTreeView () const;
-
-	/// @name Operations
-
-	void
-	expandNodesImpl (const X3D::MFNode &);
-
-	///  @name Members
-
-	std::unique_ptr <ViewpointList> viewpointList;
-	std::unique_ptr <HistoryView>   historyEditor;
-	std::unique_ptr <LibraryView>   libraryView;
-	std::unique_ptr <OutlineEditor> outlineEditor;
-	std::unique_ptr <Console>       console;
-	std::unique_ptr <ScriptEditor>  scriptEditor;
-	std::set <X3D::SFNode>          tools;
-	std::unique_ptr <GridTool>      gridTool;
-	X3D::X3DPtr <X3D::AngleTool>    angleTool;
-
-	X3D::Keys keys;
-	bool      accelerators;
-	bool      hasGridTool_;
-	bool      hasAngleTool_;
-
-};
+GridTool::~GridTool ()
+{
+	dispose ();
+}
 
 } // puck
 } // titania
-
-#endif

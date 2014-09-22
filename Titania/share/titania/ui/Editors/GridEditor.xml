@@ -31,9 +31,9 @@
     <property name="page_increment">0.01</property>
   </object>
   <object class="GtkAdjustment" id="GridXDimensionAdjustment">
-    <property name="lower">1</property>
-    <property name="upper">100000</property>
-    <property name="step_increment">1</property>
+    <property name="lower">2</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">2</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="GridXSpacingAdjustment">
@@ -43,9 +43,9 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="GridZDimensionAdjustment">
-    <property name="lower">1</property>
-    <property name="upper">100000</property>
-    <property name="step_increment">1</property>
+    <property name="lower">2</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">2</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="GridZSpacingAdjustment">

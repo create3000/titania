@@ -92,8 +92,8 @@ WorldInfo::initialize ()
 	if (not isPrivate ())
 		getExecutionContext () -> setWorldInfo (this);
 
-	if (not title () .empty ())
-		getBrowser () -> getNotification () -> string () = title ();
+//	if (not title () .empty ())
+//		getBrowser () -> getNotification () -> string () = title ();
 }
 
 void

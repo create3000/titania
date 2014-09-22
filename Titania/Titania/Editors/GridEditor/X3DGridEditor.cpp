@@ -120,7 +120,7 @@ X3DGridEditor::on_grid_plane_changed ()
 	switch (getGridPlaneComboBoxText () .get_active_row_number ())
 	{
 		case 0:
-			grid -> rotation () = X3D::Rotation4f (0, 0, -1, M_PI / 2);
+			grid -> rotation () = X3D::Rotation4f (0, 0, -1, M_PI / 2) * X3D::Rotation4f (1, 0, 0, M_PI / 2);
 			break;
 		case 1:
 			grid -> rotation () = X3D::Rotation4f ();

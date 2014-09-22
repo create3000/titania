@@ -661,7 +661,6 @@ private:
 
 	///  @name Members
 
-	bool            toggle;
 	bool            changing;
 	X3D::ViewerType viewer;
 

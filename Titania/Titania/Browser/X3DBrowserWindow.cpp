@@ -50,6 +50,8 @@
 
 #include "X3DBrowserWindow.h"
 
+#include "../Editors/GridEditor/GridTool.h"
+
 #include "../Widgets/Console/Console.h"
 #include "../Widgets/HistoryView/HistoryView.h"
 #include "../Widgets/LibraryView/LibraryView.h"
@@ -59,7 +61,6 @@
 #include "../Widgets/ScriptEditor/ScriptEditor.h"
 #include "../Widgets/ViewpointList/ViewpointList.h"
 
-#include <Titania/X3D/Tools/Grids/GridTool.h>
 #include <Titania/X3D/Tools/Grids/AngleTool.h>
 
 #include <Titania/X3D/Browser/ContextLock.h>
@@ -76,7 +77,7 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
 	                  console (new Console (this)),
 	             scriptEditor (new ScriptEditor (this)),
 	                    tools (),
-	                 gridTool (),
+	                 gridTool (new GridTool (this)),
 	                angleTool (),
 	                     keys (),
 	             accelerators (true),
@@ -136,33 +137,19 @@ X3DBrowserWindow::hasAccelerators (const bool value)
 void
 X3DBrowserWindow::hasGridTool (const bool value)
 {
-	hasGridTool_ = value;
+	gridTool -> isEnabled (value);
+}
 
-	if (hasGridTool_)
-	{
-		getGridTool () -> setExecutionContext (getBrowser ());
-		tools .emplace (getGridTool ());
-	}
-	else
-	{
-		getGridTool () -> setExecutionContext (getMasterBrowser ());
-		tools .erase (X3D::SFNode (getGridTool ()));
-	}
+bool
+X3DBrowserWindow::hasGridTool () const
+{
+	return gridTool -> isEnabled ();
 }
 
 const X3D::X3DPtr <X3D::GridTool> &
 X3DBrowserWindow::getGridTool () const
 {
-	if (not gridTool)
-	{
-		const_cast <X3DBrowserWindow*> (this) -> gridTool = hasGridTool ()
-		                                                    ? X3D::createNode <X3D::GridTool> (getBrowser ())
-		                                                    : X3D::createNode <X3D::GridTool> (getMasterBrowser ());
-
-		gridTool -> getExecutionContext () -> realize ();
-	}
-
-	return gridTool;
+	return gridTool -> getTool ();
 }
 
 void

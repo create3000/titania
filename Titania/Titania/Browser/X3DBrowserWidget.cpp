@@ -279,7 +279,7 @@ void
 X3DBrowserWidget::setTitle () const
 {
 	const auto userData = getUserData (getBrowser ());
-	const bool modified = userData -> modified;
+	const bool modified = userData -> undoHistory .isModified () or userData -> modified;
 
 	auto title = getScene () -> getTitle ();
 
