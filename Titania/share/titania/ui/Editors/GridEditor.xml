@@ -37,7 +37,17 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="GridXSpacingAdjustment">
-    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="GridYDimensionAdjustment">
+    <property name="lower">2</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">2</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="GridYSpacingAdjustment">
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
@@ -49,7 +59,6 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="GridZSpacingAdjustment">
-    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
@@ -167,7 +176,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="xalign">0</property>
-                            <property name="label" translatable="yes">Plane:</property>
+                            <property name="label" translatable="yes">Rotation:</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -393,14 +402,15 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="box1">
+                          <object class="GtkBox" id="GridDimensionBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">2</property>
                             <child>
-                              <object class="GtkSpinButton" id="GridXDimensionSpinButton">
+                              <object class="GtkSpinButton" id="spinbutton12">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="tooltip_text" translatable="yes">x-Axis</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">GridXDimensionAdjustment</property>
                                 <property name="climb_rate">1</property>
@@ -413,9 +423,27 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkSpinButton" id="GridZDimensionSpinButton">
+                              <object class="GtkSpinButton" id="spinbutton10">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                <property name="text" translatable="yes">2</property>
+                                <property name="adjustment">GridYDimensionAdjustment</property>
+                                <property name="climb_rate">1</property>
+                                <property name="numeric">True</property>
+                                <property name="value">2</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSpinButton" id="spinbutton11">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="tooltip_text" translatable="yes">z-Axis</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">GridZDimensionAdjustment</property>
                                 <property name="climb_rate">1</property>
@@ -424,7 +452,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="position">1</property>
+                                <property name="position">2</property>
                               </packing>
                             </child>
                           </object>
@@ -436,14 +464,15 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="box4">
+                          <object class="GtkBox" id="GridSpacingBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">2</property>
                             <child>
-                              <object class="GtkSpinButton" id="GridXSpacingSpinButton">
+                              <object class="GtkSpinButton" id="spinbutton22">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="tooltip_text" translatable="yes">x-Axis</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">GridXSpacingAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -457,9 +486,27 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkSpinButton" id="GridZSpacingSpinButton">
+                              <object class="GtkSpinButton" id="spinbutton20">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                <property name="text" translatable="yes">0,000</property>
+                                <property name="adjustment">GridYSpacingAdjustment</property>
+                                <property name="climb_rate">0.01</property>
+                                <property name="digits">3</property>
+                                <property name="numeric">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSpinButton" id="spinbutton21">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="tooltip_text" translatable="yes">z-Axis</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">GridZSpacingAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -469,7 +516,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="position">1</property>
+                                <property name="position">2</property>
                               </packing>
                             </child>
                           </object>

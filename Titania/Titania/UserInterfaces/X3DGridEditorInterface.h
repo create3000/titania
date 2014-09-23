@@ -127,6 +127,14 @@ public:
 	{ return m_GridXSpacingAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridYDimensionAdjustment () const
+	{ return m_GridYDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridYSpacingAdjustment () const
+	{ return m_GridYSpacingAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getGridZDimensionAdjustment () const
 	{ return m_GridZDimensionAdjustment; }
 
@@ -170,21 +178,13 @@ public:
 	getGridTranslationBox () const
 	{ return *m_GridTranslationBox; }
 
-	Gtk::SpinButton &
-	getGridXDimensionSpinButton () const
-	{ return *m_GridXDimensionSpinButton; }
+	Gtk::Box &
+	getGridDimensionBox () const
+	{ return *m_GridDimensionBox; }
 
-	Gtk::SpinButton &
-	getGridZDimensionSpinButton () const
-	{ return *m_GridZDimensionSpinButton; }
-
-	Gtk::SpinButton &
-	getGridXSpacingSpinButton () const
-	{ return *m_GridXSpacingSpinButton; }
-
-	Gtk::SpinButton &
-	getGridZSpacingSpinButton () const
-	{ return *m_GridZSpacingSpinButton; }
+	Gtk::Box &
+	getGridSpacingBox () const
+	{ return *m_GridSpacingBox; }
 
 	virtual
 	void
@@ -210,6 +210,8 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GridTransparencyAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridXDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridXSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridYDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridYSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridZDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridZSpacingAdjustment;
 	Gtk::Window*                   m_Window;
@@ -221,10 +223,8 @@ private:
 	Gtk::Button*                   m_GridColorButton;
 	Gtk::Box*                      m_GridTransparencyBox;
 	Gtk::Box*                      m_GridTranslationBox;
-	Gtk::SpinButton*               m_GridXDimensionSpinButton;
-	Gtk::SpinButton*               m_GridZDimensionSpinButton;
-	Gtk::SpinButton*               m_GridXSpacingSpinButton;
-	Gtk::SpinButton*               m_GridZSpacingSpinButton;
+	Gtk::Box*                      m_GridDimensionBox;
+	Gtk::Box*                      m_GridSpacingBox;
 
 };
 

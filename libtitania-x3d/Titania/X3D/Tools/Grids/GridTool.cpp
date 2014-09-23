@@ -61,10 +61,8 @@ const std::string GridTool::typeName       = "GridTool";
 const std::string GridTool::containerField = "grid";
 
 GridTool::Fields::Fields () :
-	xDimension (new SFInt32 (10)),
-	zDimension (new SFInt32 (10)),
-	  xSpacing (new SFFloat (1)),
-	  zSpacing (new SFFloat (1))
+	dimension (new MFInt32 ({ 10, 10, 10 })),
+	  spacing (new MFFloat ({ 1, 1, 1 }))
 { }
 
 GridTool::GridTool (X3DExecutionContext* const executionContext) :
@@ -75,10 +73,8 @@ GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata",     metadata ());
 	addField (inputOutput, "translation",  translation ());
 	addField (inputOutput, "rotation",     rotation ());
-	addField (inputOutput, "xDimension",   xDimension ());
-	addField (inputOutput, "zDimension",   zDimension ());
-	addField (inputOutput, "xSpacing",     xSpacing ());
-	addField (inputOutput, "zSpacing",     zSpacing ());
+	addField (inputOutput, "dimension",    dimension ());;
+	addField (inputOutput, "spacing",      spacing ());
 	addField (inputOutput, "color",        color ());
 	addField (inputOutput, "transparency", transparency ());
 }
@@ -104,25 +100,15 @@ GridTool::realize ()
 
 	try
 	{
-		auto & set_xDimension = getToolNode () -> getField <SFInt32> ("set_xDimension");
-		xDimension ()  .addInterest (set_xDimension);
-		set_xDimension .addInterest (xDimension ());
-		set_xDimension = xDimension ();
+		auto & set_dimension = getToolNode () -> getField <MFInt32> ("set_dimension");
+		dimension ()  .addInterest (set_dimension);
+		set_dimension .addInterest (dimension ());
+		set_dimension = dimension ();
 
-		auto & set_zDimension = getToolNode () -> getField <SFInt32> ("set_zDimension");
-		zDimension ()  .addInterest (set_zDimension);
-		set_zDimension .addInterest (zDimension ());
-		set_zDimension = zDimension ();
-
-		auto & set_xSpacing = getToolNode () -> getField <SFFloat> ("set_xSpacing");
-		xSpacing ()  .addInterest (set_xSpacing);
-		set_xSpacing .addInterest (xSpacing ());
-		set_xSpacing = xSpacing ();
-
-		auto & set_zSpacing = getToolNode () -> getField <SFFloat> ("set_zSpacing");
-		zSpacing ()  .addInterest (set_zSpacing);
-		set_zSpacing .addInterest (zSpacing ());
-		set_zSpacing = zSpacing ();
+		auto & set_spacing = getToolNode () -> getField <MFFloat> ("set_spacing");
+		spacing ()  .addInterest (set_spacing);
+		set_spacing .addInterest (spacing ());
+		set_spacing = spacing ();
 	}
 	catch (const X3DError & error)
 	{ }

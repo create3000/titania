@@ -89,37 +89,21 @@ public:
 
 	///  @name Fields
 
-	SFInt32 &
-	xDimension ()
-	{ return *fields .xDimension; }
+	MFInt32 &
+	dimension ()
+	{ return *fields .dimension; }
 
-	const SFInt32 &
-	xDimension () const
-	{ return *fields .xDimension; }
+	const MFInt32 &
+	dimension () const
+	{ return *fields .dimension; }
 
-	SFInt32 &
-	zDimension ()
-	{ return *fields .zDimension; }
+	MFFloat &
+	spacing ()
+	{ return *fields .spacing; }
 
-	const SFInt32 &
-	zDimension () const
-	{ return *fields .zDimension; }
-
-	SFFloat &
-	xSpacing ()
-	{ return *fields .xSpacing; }
-
-	const SFFloat &
-	xSpacing () const
-	{ return *fields .xSpacing; }
-
-	SFFloat &
-	zSpacing ()
-	{ return *fields .zSpacing; }
-
-	const SFFloat &
-	zSpacing () const
-	{ return *fields .zSpacing; }
+	const MFFloat &
+	spacing () const
+	{ return *fields .spacing; }
 
 
 private:
@@ -146,10 +130,8 @@ private:
 	{
 		Fields ();
 
-		SFInt32* const xDimension;
-		SFInt32* const zDimension;
-		SFFloat* const xSpacing;
-		SFFloat* const zSpacing;
+		MFInt32* const dimension;
+		MFFloat* const spacing;
 	};
 
 	Fields fields;

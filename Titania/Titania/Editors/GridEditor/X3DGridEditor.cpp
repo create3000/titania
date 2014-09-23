@@ -57,6 +57,10 @@
 namespace titania {
 namespace puck {
 
+static const auto X_PLANE_ROTATION = X3D::Rotation4f (0, 0, -1, M_PI / 2) * X3D::Rotation4f (1, 0, 0, M_PI / 2);
+static const auto Y_PLANE_ROTATION = X3D::Rotation4f ();
+static const auto Z_PLANE_ROTATION = X3D::Rotation4f (1, 0, 0, M_PI / 2);
+
 X3DGridEditor::X3DGridEditor () :
 	X3DGridEditorInterface (),
 	           translation (getBrowserWindow (),
@@ -65,22 +69,18 @@ X3DGridEditor::X3DGridEditor () :
 	                        getGridTranslationZAdjustment (),
 	                        getGridTranslationBox (),
 	                        "translation"),
-	            xDimension (getBrowserWindow (),
+	             dimension (getBrowserWindow (),
 	                        getGridXDimensionAdjustment (),
-	                        getGridXDimensionSpinButton (),
-	                        "xDimension"),
-	            zDimension (getBrowserWindow (),
+	                        getGridYDimensionAdjustment (),
 	                        getGridZDimensionAdjustment (),
-	                        getGridZDimensionSpinButton (),
-	                        "zDimension"),
-	              xSpacing (getBrowserWindow (),
+	                        getGridDimensionBox (),
+	                        "dimension"),
+	               spacing (getBrowserWindow (),
 	                        getGridXSpacingAdjustment (),
-	                        getGridXSpacingSpinButton (),
-	                        "xSpacing"),
-	              zSpacing (getBrowserWindow (),
+	                        getGridYSpacingAdjustment (),
 	                        getGridZSpacingAdjustment (),
-	                        getGridZSpacingSpinButton (),
-	                        "zSpacing"),
+	                        getGridSpacingBox (),
+	                        "spacing"),
 	                 color (getBrowserWindow (),
 	                        getGridColorButton (),
 	                        getGridColorAdjustment (),
@@ -89,13 +89,12 @@ X3DGridEditor::X3DGridEditor () :
 	          transparency (getBrowserWindow (),
 	                        getGridTransparencyAdjustment (),
 	                        getGridTransparencyBox (),
-	                        "transparency")
+	                        "transparency"),
+	              changing (false)
 {
 	translation  .setUndo (false);
-	xDimension   .setUndo (false);
-	zDimension   .setUndo (false);
-	xSpacing     .setUndo (false);
-	zSpacing     .setUndo (false);
+	dimension    .setUndo (false);
+	spacing      .setUndo (false);
 	color        .setUndo (false);
 	transparency .setUndo (false);
 }
@@ -103,34 +102,75 @@ X3DGridEditor::X3DGridEditor () :
 void
 X3DGridEditor::initialize ()
 {
-	translation  .setNodes ({ getBrowserWindow () -> getGridTool () });
-	xDimension   .setNodes ({ getBrowserWindow () -> getGridTool () });
-	zDimension   .setNodes ({ getBrowserWindow () -> getGridTool () });
-	xSpacing     .setNodes ({ getBrowserWindow () -> getGridTool () });
-	zSpacing     .setNodes ({ getBrowserWindow () -> getGridTool () });
-	color        .setNodes ({ getBrowserWindow () -> getGridTool () });
-	transparency .setNodes ({ getBrowserWindow () -> getGridTool () });
+	const auto & gridTool  = getBrowserWindow () -> getGridTool ();
+	X3D::MFNode  gridTools = { gridTool };
+
+	translation  .setNodes (gridTools);
+	dimension    .setNodes (gridTools);
+	spacing      .setNodes (gridTools);
+	color        .setNodes (gridTools);
+	transparency .setNodes (gridTools);
+
+	gridTool -> rotation () .addInterest (this, &X3DGridEditor::set_rotation);
+
+	set_rotation ();
 }
 
 void
 X3DGridEditor::on_grid_plane_changed ()
 {
+	if (changing)
+		return;
+
 	const auto & grid = getBrowserWindow () -> getGridTool ();
+
+	grid -> rotation () .removeInterest (this, &X3DGridEditor::set_rotation);
+	grid -> rotation () .addInterest (this, &X3DGridEditor::connectRotation);
 
 	switch (getGridPlaneComboBoxText () .get_active_row_number ())
 	{
 		case 0:
-			grid -> rotation () = X3D::Rotation4f (0, 0, -1, M_PI / 2) * X3D::Rotation4f (1, 0, 0, M_PI / 2);
+			grid -> rotation () = X_PLANE_ROTATION;
 			break;
 		case 1:
-			grid -> rotation () = X3D::Rotation4f ();
+			grid -> rotation () = Y_PLANE_ROTATION;
 			break;
 		case 2:
-			grid -> rotation () = X3D::Rotation4f (1, 0, 0, M_PI / 2);
+			grid -> rotation () = Z_PLANE_ROTATION;
 			break;
 		default:
 			break;
 	}
+}
+
+void
+X3DGridEditor::set_rotation ()
+{
+	changing = true;
+
+	constexpr float EPS  = math::radians (0.1);
+	const auto &    grid = getBrowserWindow () -> getGridTool ();
+
+	if (std::abs ((grid -> rotation () * ~X_PLANE_ROTATION) .angle ()) < EPS)
+		getGridPlaneComboBoxText () .set_active (0);
+
+	else if (std::abs ((grid -> rotation () * ~Y_PLANE_ROTATION) .angle ()) < EPS)
+		getGridPlaneComboBoxText () .set_active (1);
+
+	else if (std::abs ((grid -> rotation () * ~Z_PLANE_ROTATION) .angle ()) < EPS)
+		getGridPlaneComboBoxText () .set_active (2);
+
+	else
+		getGridPlaneComboBoxText () .set_active (-1);
+
+	changing = false;
+}
+
+void
+X3DGridEditor::connectRotation (const X3D::SFRotation & field)
+{
+	field .removeInterest (this, &X3DGridEditor::connectRotation);
+	field .addInterest (this, &X3DGridEditor::set_rotation);
 }
 
 X3DGridEditor::~X3DGridEditor ()

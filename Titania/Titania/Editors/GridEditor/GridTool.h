@@ -101,6 +101,44 @@ private:
 	void
 	configure ();
 
+	void
+	set_translation ();
+
+	void
+	set_rotation ();
+
+	void
+	set_dimension ();
+
+	void
+	set_spacing ();
+
+	void
+	set_color ();
+
+	void
+	set_transparency ();
+
+	void
+	connectTranslation (const X3D::SFVec3f &);
+
+	void
+	connectRotation (const X3D::SFRotation &);
+
+	void
+	connectDimension (const X3D::MFInt32 &);
+
+	void
+	connectSpacing (const X3D::MFFloat &);
+
+	void
+	connectColor (const X3D::SFColor &);
+
+	void
+	connectTransparency (const X3D::SFFloat &);
+
+	///  @name Members
+
 	X3D::X3DPtr <X3D::GridTool> tool;
 	bool                        enabled;
 

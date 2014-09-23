@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Mon, 22 Sep 2014 19:35:48 GMT"
+META "modified" "Tue, 23 Sep 2014 04:14:58 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -17,10 +17,16 @@ EXTERNPROTO ToolShader [
 "library/ToolShader.x3dv"
 
 PROTO Grid [
-  inputOutput    SFInt32 xDimension 10
-  inputOutput    SFInt32 zDimension 10
-  inputOutput    SFFloat xSpacing 1
-  inputOutput    SFFloat zSpacing 1
+  inputOutput    MFInt32 dimension [
+    10,
+    10,
+    10
+  ]
+  inputOutput    MFFloat spacing [
+    1,
+    1,
+    1
+  ]
   inputOutput    SFColor color 1 0.5 0
   inputOutput    SFFloat transparency 0.61803
   initializeOnly SFBool  solid TRUE
@@ -201,18 +207,44 @@ PROTO Grid [
           }
         }
       }
+      Transform {
+        children Shape {
+          appearance Appearance {
+            lineProperties LineProperties {
+              linewidthScaleFactor 3
+            }
+            material USE Material1
+          }
+          geometry DEF Points PointSet {
+            coord Coordinate {
+              point [
+                0 5 0,
+                0 4 0,
+                0 3 0,
+                0 2 0,
+                0 1 0,
+                0 0 0,
+                0 -1 0,
+                0 -2 0,
+                0 -3 0,
+                0 -4 0,
+                0 -5 0
+              ]
+            }
+          }
+        }
+      }
     ]
   }
 
   DEF GridScript Script {
-    inputOutput    SFInt32 xDimension IS xDimension
-    inputOutput    SFInt32 zDimension IS zDimension
-    inputOutput    SFFloat xSpacing IS xSpacing
-    inputOutput    SFFloat zSpacing IS zSpacing
+    inputOutput    MFInt32 dimension IS dimension
+    inputOutput    MFFloat spacing IS spacing
     inputOutput    SFFloat transparency IS transparency
     initializeOnly SFNode  plane USE Plane
     initializeOnly SFNode  axis USE Axis
     initializeOnly SFNode  grid USE Grid
+    initializeOnly SFNode  points USE Points
     initializeOnly SFNode  axisMaterial USE Material3
 
     url "vrmlscript:
@@ -225,46 +257,57 @@ function eventsProcessed ()
 {
 	// Plane
 
-	plane .scale = new SFVec3f (xDimension * xSpacing, zDimension * zSpacing, 1);
+	plane .scale = new SFVec3f (dimension [0] * spacing [0], dimension [2] * spacing [2], 1);
 
 	// Axis
 
-	axis .coord .point = new MFVec3f (new SFVec3f (-plane .scale .x / 2 - xSpacing / 4, 0, 0),
-	                                  new SFVec3f ( plane .scale .x / 2 + xSpacing / 4, 0, 0),
-	                                  new SFVec3f (0, 0, -plane .scale .y / 2 - zSpacing / 4),
-	                                  new SFVec3f (0, 0,  plane .scale .y / 2 + zSpacing / 4));
+	axis .coord .point = new MFVec3f (new SFVec3f (-plane .scale .x / 2 - spacing [0] / 4, 0, 0),
+	                                  new SFVec3f ( plane .scale .x / 2 + spacing [0] / 4, 0, 0),
+	                                  new SFVec3f (0, 0, -plane .scale .y / 2 - spacing [2] / 4),
+	                                  new SFVec3f (0, 0,  plane .scale .y / 2 + spacing [2] / 4));
 
 	axisMaterial .transparency = Math .pow (transparency, 3 / 4);
 
 	// Grid
 
 	var coordIndex     = new MFInt32 ();
-	coordIndex .length = 3 * (xDimension + zDimension);
+	coordIndex .length = 3 * (dimension [0] + dimension [2]);
 
 	var point     = grid .coord .point;
-	point .length = 2 * (xDimension + zDimension);
+	point .length = 2 * (dimension [0] + dimension [2]);
 
 	var i = 0;
 
-	for (; i < xDimension + 1; ++ i)
+	for (; i < dimension [0] + 1; ++ i)
 	{
-		point [2 * i]          = new SFVec3f (-plane .scale .x / 2 + xSpacing * i, 0, -plane .scale .y / 2);
-		point [2 * i + 1]      = new SFVec3f (-plane .scale .x / 2 + xSpacing * i, 0,  plane .scale .y / 2);
+		point [2 * i]          = new SFVec3f (-plane .scale .x / 2 + spacing [0] * i, 0, -plane .scale .y / 2);
+		point [2 * i + 1]      = new SFVec3f (-plane .scale .x / 2 + spacing [0] * i, 0,  plane .scale .y / 2);
 		coordIndex [3 * i]     = 2 * i;
 		coordIndex [3 * i + 1] = 2 * i + 1;
 		coordIndex [3 * i + 2] = -1;
 	}
 
-	for (; i < zDimension + 1 + xDimension + 1; ++ i)
+	for (; i < dimension [2] + 1 + dimension [0] + 1; ++ i)
 	{
-		point [2 * i]          = new SFVec3f (-plane .scale .x / 2, 0, -plane .scale .y / 2 + zSpacing * (i - xDimension - 1));
-		point [2 * i + 1]      = new SFVec3f ( plane .scale .x / 2, 0, -plane .scale .y / 2 + zSpacing * (i - xDimension - 1));
+		point [2 * i]          = new SFVec3f (-plane .scale .x / 2, 0, -plane .scale .y / 2 + spacing [2] * (i - dimension [0] - 1));
+		point [2 * i + 1]      = new SFVec3f ( plane .scale .x / 2, 0, -plane .scale .y / 2 + spacing [2] * (i - dimension [0] - 1));
 		coordIndex [3 * i]     = 2 * i;
 		coordIndex [3 * i + 1] = 2 * i + 1;
 		coordIndex [3 * i + 2] = -1;
 	}
 
 	grid .set_coordIndex = coordIndex;
+
+	// Points
+
+	var offset    = dimension [1] * spacing [1] / 2;
+	var point     = points .coord .point;
+	point .length = dimension [1] + 1;
+	
+	for (var i = 0; i < dimension [1] + 1; ++ i)
+	{
+		point [i] = new SFVec3f (0, offset - i * spacing [1], 0);
+	}
 }
 "
     directOutput TRUE
@@ -279,10 +322,45 @@ WorldInfo {
     name "Titania"
     value MetadataSet {
       name "GridTool"
-      value MetadataBoolean {
-        name "enabled"
-        value TRUE
-      }
+      value [
+        MetadataBoolean {
+          name "enabled"
+          value FALSE
+        }
+        MetadataInteger {
+          name "dimension"
+          value [
+            8,
+            10,
+            10
+          ]
+        }
+        MetadataFloat {
+          name "rotation"
+          value [
+            1,
+            0,
+            0,
+            1.5708
+          ]
+        }
+        MetadataFloat {
+          name "spacing"
+          value [
+            1.38,
+            1,
+            1.11
+          ]
+        }
+        MetadataFloat {
+          name "translation"
+          value [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
     }
   }
   title "GridTool"
@@ -358,10 +436,16 @@ DEF GridTool Transform {
 }
 
 DEF ScaleScript Script {
-  inputOutput SFInt32 xDimension 10
-  inputOutput SFInt32 zDimension 10
-  inputOutput SFFloat xSpacing 1
-  inputOutput SFFloat zSpacing 1
+  inputOutput MFInt32 dimension [
+    10,
+    10,
+    10
+  ]
+  inputOutput MFFloat spacing [
+    1,
+    1,
+    1
+  ]
   inputOnly   SFVec3f set_translation
   outputOnly  SFVec3f translation_changed
 
@@ -373,28 +457,31 @@ function initialize ()
 
 function set_translation (value)
 {
-	xDimension = Math .round (value .x / xSpacing);
-	zDimension = Math .round (value .z / zSpacing);
+	dimension [0] = Math .round (value .x / spacing [0]);
+	dimension [2] = Math .round (value .z / spacing [2]);
 	
-	xDimension = Math .max (xDimension, 1);
-	zDimension = Math .max (zDimension, 1);
+	dimension [0] = Math .max (dimension [0], 1);
+	dimension [2] = Math .max (dimension [2], 1);
 
-	xDimension *= 2;
-	zDimension *= 2;
+	dimension [0] *= 2;
+	dimension [2] *= 2;
 }
 
 function eventsProcessed ()
 {
-	translation_changed = new SFVec3f (xDimension / 2 * xSpacing,
+	translation_changed = new SFVec3f (dimension [0] / 2 * spacing [0],
 	                                   0,
-	                                   zDimension / 2 * zSpacing);
+	                                   dimension [2] / 2 * spacing [2]);
 }
 "
 }
 
 DEF MoveScript Script {
-  inputOutput SFFloat    xSpacing 1
-  inputOutput SFFloat    zSpacing 1
+  inputOutput MFFloat    spacing [
+    1,
+    1,
+    1
+  ]
   inputOnly   SFVec3f    set_translation
   inputOutput SFRotation rotation 0 0 1 0
   outputOnly  SFVec3f    translation_changed
@@ -406,8 +493,14 @@ function set_translation (value)
 {
 	var translation = rotation .inverse () .multVec (value); 
 
-	translation .x = Math .round (translation .x / xSpacing) * xSpacing;
-	translation .z = Math .round (translation .z / zSpacing) * zSpacing;
+	if (spacing [0])
+		translation .x = Math .round (translation .x / spacing [0]) * spacing [0];
+
+	if (spacing [1])
+		translation .y = Math .round (translation .y / spacing [1]) * spacing [1];
+
+	if (spacing [2])
+		translation .z = Math .round (translation .z / spacing [2]) * spacing [2];
 
 	translation_changed = rotation .multVec (translation);
 }
@@ -421,10 +514,16 @@ function set_rotation (value)
 DEF Tool Script {
   inputOutput SFVec3f    translation 0 0 0
   inputOutput SFRotation rotation 0 0 1 0
-  inputOutput SFInt32    xDimension 0
-  inputOutput SFInt32    zDimension 0
-  inputOutput SFFloat    xSpacing 0
-  inputOutput SFFloat    zSpacing 0
+  inputOutput MFInt32    dimension [
+    10,
+    10,
+    10
+  ]
+  inputOutput MFFloat    spacing [
+    1,
+    1,
+    1
+  ]
   inputOutput SFColor    color 0 0 0
   inputOutput SFFloat    transparency 0
 
@@ -432,10 +531,6 @@ DEF Tool Script {
 
 ROUTE ScaleScript.translation_changed TO Edge.set_translation
 ROUTE _2.translation_changed TO ScaleScript.set_translation
-ROUTE ScaleScript.xDimension_changed TO _1.set_xDimension
-ROUTE ScaleScript.xSpacing_changed TO _1.set_xSpacing
-ROUTE ScaleScript.zDimension_changed TO _1.set_zDimension
-ROUTE ScaleScript.zSpacing_changed TO _1.set_zSpacing
 ROUTE ScaleScript.translation_changed TO _2.set_offset
 ROUTE _6.translation_changed TO MoveScript.set_translation
 ROUTE Tool.translation_changed TO _6.set_offset
@@ -444,14 +539,6 @@ ROUTE MoveScript.translation_changed TO Tool.set_translation
 ROUTE Tool.transparency_changed TO _1.set_transparency
 ROUTE Tool.color_changed TO _1.set_color
 ROUTE Tool.color_changed TO _5.set_diffuseColor
-ROUTE Tool.xDimension_changed TO ScaleScript.set_xDimension
-ROUTE Tool.zDimension_changed TO ScaleScript.set_zDimension
-ROUTE Tool.xSpacing_changed TO ScaleScript.set_xSpacing
-ROUTE Tool.zSpacing_changed TO ScaleScript.set_zSpacing
-ROUTE Tool.xSpacing_changed TO MoveScript.set_xSpacing
-ROUTE Tool.zSpacing_changed TO MoveScript.set_zSpacing
-ROUTE ScaleScript.xDimension_changed TO Tool.set_xDimension
-ROUTE ScaleScript.zDimension_changed TO Tool.set_zDimension
 ROUTE Tool.rotation_changed TO Grid_1.set_rotation
 ROUTE Tool.rotation_changed TO Edge_1.set_rotation
 ROUTE Tool.translation_changed TO Edge_1.set_translation
@@ -459,5 +546,11 @@ ROUTE Tool.rotation_changed TO _7.set_rotation
 ROUTE Tool.translation_changed TO _7.set_translation
 ROUTE MoveScript.axisOfRotation_changed TO _6.set_axisRotation
 ROUTE Tool.rotation_changed TO MoveScript.set_rotation
+ROUTE Tool.spacing_changed TO MoveScript.set_spacing
+ROUTE Tool.spacing_changed TO ScaleScript.set_spacing
+ROUTE Tool.dimension_changed TO ScaleScript.set_dimension
+ROUTE ScaleScript.dimension_changed TO Tool.set_dimension
+ROUTE Tool.dimension_changed TO _1.set_dimension
+ROUTE Tool.spacing_changed TO _1.set_spacing
 
 EXPORT Tool

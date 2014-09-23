@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 16 Sep 2014 13:16:50 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Mon, 22 Sep 2014 17:35:26 GMT"
+META "modified" "Tue, 23 Sep 2014 04:38:49 GMT"
 META "titania magic" "Material"
 
 WorldInfo {
@@ -12,10 +12,57 @@ WorldInfo {
     name "Titania"
     value MetadataSet {
       name "GridTool"
-      value MetadataBoolean {
-        name "enabled"
-        value TRUE
-      }
+      value [
+        MetadataBoolean {
+          name "enabled"
+          value TRUE
+        }
+        MetadataFloat {
+          name "rotation"
+          value [
+            1,
+            0,
+            0,
+            1.5708
+          ]
+        }
+        MetadataFloat {
+          name "translation"
+          value [
+            6.25,
+            -6.25,
+            -1
+          ]
+        }
+        MetadataFloat {
+          name "spacing"
+          value [
+            1.25,
+            1,
+            1.25
+          ]
+        }
+        MetadataInteger {
+          name "dimension"
+          value [
+            12,
+            10,
+            12
+          ]
+        }
+        MetadataFloat {
+          name "color"
+          value [
+            1,
+            1,
+            1
+          ]
+        }
+        MetadataFloat {
+          name "transparency"
+          value 0.924242
+        }
+      ]
     }
   }
   title "Palette"

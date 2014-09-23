@@ -100,15 +100,21 @@ private:
 	void
 	on_grid_plane_changed () final override;
 
+	void
+	set_rotation ();
+
+	void
+	connectRotation (const X3D::SFRotation &);
+
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f> translation;
-	X3DFieldAdjustment <X3D::SFInt32>  xDimension;
-	X3DFieldAdjustment <X3D::SFInt32>  zDimension;
-	X3DFieldAdjustment <X3D::SFFloat>  xSpacing;
-	X3DFieldAdjustment <X3D::SFFloat>  zSpacing;
+	X3DFieldAdjustment3 <X3D::MFInt32> dimension;
+	X3DFieldAdjustment3 <X3D::MFFloat> spacing;
 	SFColorButton                      color;
 	X3DFieldAdjustment <X3D::SFFloat>  transparency;
+	
+	bool changing;
 
 };
 

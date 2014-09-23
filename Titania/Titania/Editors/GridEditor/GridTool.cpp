@@ -136,6 +136,24 @@ GridTool::set_scene ()
 void
 GridTool::configure ()
 {
+	getTool () -> translation () .removeInterest (this, &GridTool::set_translation);
+	getTool () -> translation () .addInterest (this, &GridTool::connectTranslation);
+
+	getTool () -> rotation () .removeInterest (this, &GridTool::set_rotation);
+	getTool () -> rotation () .addInterest (this, &GridTool::connectRotation);
+
+	getTool () -> dimension () .removeInterest (this, &GridTool::set_dimension);
+	getTool () -> dimension () .addInterest (this, &GridTool::connectDimension);
+
+	getTool () -> spacing () .removeInterest (this, &GridTool::set_spacing);
+	getTool () -> spacing () .addInterest (this, &GridTool::connectSpacing);
+
+	getTool () -> color () .removeInterest (this, &GridTool::set_color);
+	getTool () -> color () .addInterest (this, &GridTool::connectColor);
+
+	getTool () -> transparency () .removeInterest (this, &GridTool::set_transparency);
+	getTool () -> transparency () .addInterest (this, &GridTool::connectTransparency);
+
 	try
 	{
 		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/translation");
@@ -157,6 +175,136 @@ GridTool::configure ()
 	{
 		getTool () -> rotation () = X3D::Rotation4f ();
 	}
+
+	try
+	{
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/GridTool/dimension");
+
+		getTool () -> dimension () = v;
+		getTool () -> dimension () .resize (3, X3D::SFInt32 (10));
+	}
+	catch (...)
+	{
+		getTool () -> dimension () = { 10, 10, 10 };
+	}
+
+	try
+	{
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/spacing");
+
+		getTool () -> spacing () = v;
+		getTool () -> spacing () .resize (3, X3D::SFFloat (1));
+	}
+	catch (...)
+	{
+		getTool () -> spacing () = { 1, 1, 1 };
+	}
+
+	try
+	{
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/color");
+
+		getTool () -> color () = X3D::Color3f (v .at (0), v .at (1), v .at (2));
+	}
+	catch (...)
+	{
+		getTool () -> color () = X3D::Color3f (1, 0.5, 0);
+	}
+
+	try
+	{
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/transparency");
+
+		getTool () -> transparency () = v .at (0);
+	}
+	catch (...)
+	{
+		getTool () -> transparency () = 0.8;
+	}
+}
+
+void
+GridTool::set_translation ()
+{
+	getWorldInfo (true) -> setMetaData <X3D::Vector3f> ("/Titania/GridTool/translation", getTool () -> translation ());
+	getBrowserWindow () -> isModified (getBrowser (), true);
+}
+
+void
+GridTool::set_rotation ()
+{
+	getWorldInfo (true) -> setMetaData <X3D::Rotation4f> ("/Titania/GridTool/rotation", getTool () -> rotation ());
+	getBrowserWindow () -> isModified (getBrowser (), true);
+}
+
+void
+GridTool::set_dimension ()
+{
+	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/dimension", getTool () -> dimension ());
+	getBrowserWindow () -> isModified (getBrowser (), true);
+}
+
+void
+GridTool::set_spacing ()
+{
+	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/spacing", getTool () -> spacing ());
+	getBrowserWindow () -> isModified (getBrowser (), true);
+}
+
+void
+GridTool::set_color ()
+{
+	getWorldInfo (true) -> setMetaData <X3D::Color3f> ("/Titania/GridTool/color", getTool () -> color ());
+	getBrowserWindow () -> isModified (getBrowser (), true);
+}
+
+void
+GridTool::set_transparency ()
+{
+	getWorldInfo (true) -> setMetaData <float> ("/Titania/GridTool/transparency", getTool () -> transparency ());
+	getBrowserWindow () -> isModified (getBrowser (), true);
+}
+
+void
+GridTool::connectTranslation (const X3D::SFVec3f & field)
+{
+	field .removeInterest (this, &GridTool::connectTranslation);
+	field .addInterest (this, &GridTool::set_translation);
+}
+
+void
+GridTool::connectRotation (const X3D::SFRotation & field)
+{
+	field .removeInterest (this, &GridTool::connectRotation);
+	field .addInterest (this, &GridTool::set_rotation);
+}
+
+void
+GridTool::connectDimension (const X3D::MFInt32 & field)
+{
+	field .removeInterest (this, &GridTool::connectDimension);
+	field .addInterest (this, &GridTool::set_dimension);
+}
+
+void
+GridTool::connectSpacing (const X3D::MFFloat & field)
+{
+	field .removeInterest (this, &GridTool::connectSpacing);
+	field .addInterest (this, &GridTool::set_spacing);
+}
+
+void
+GridTool::connectColor (const X3D::SFColor & field)
+{
+	field .removeInterest (this, &GridTool::connectColor);
+	field .addInterest (this, &GridTool::set_color);
+}
+
+void
+GridTool::connectTransparency (const X3D::SFFloat & field)
+{
+	field .removeInterest (this, &GridTool::connectTransparency);
+	field .addInterest (this, &GridTool::set_transparency);
 }
 
 GridTool::~GridTool ()

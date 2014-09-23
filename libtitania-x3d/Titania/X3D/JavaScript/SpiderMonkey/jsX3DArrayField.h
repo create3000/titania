@@ -442,16 +442,25 @@ template <class Type, class FieldType>
 JSBool
 jsX3DArrayField <Type, FieldType>::length (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	FieldType* const field = static_cast <FieldType*> (JS_GetPrivate (context, obj));
+	try
+	{
+		FieldType* const field = static_cast <FieldType*> (JS_GetPrivate (context, obj));
 
-	uint32 value;
+		uint32 value;
 
-	if (not JS_ValueToECMAUint32 (context, *vp, &value))
+		if (not JS_ValueToECMAUint32 (context, *vp, &value))
+			return JS_FALSE;
+
+		field -> resize (value);
+
+		return JS_TRUE;
+	}
+	catch (const std::bad_alloc &)
+	{
+		JS_ReportError (context, "out of memory");
+
 		return JS_FALSE;
-
-	field -> resize (value);
-
-	return JS_TRUE;
+	}
 }
 
 } // MozillaSpiderMonkey
