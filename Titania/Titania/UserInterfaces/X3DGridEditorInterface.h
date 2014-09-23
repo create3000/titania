@@ -103,6 +103,14 @@ public:
 	{ return m_GridColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridLineColorAdjustment () const
+	{ return m_GridLineColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridMajorLineColorAdjustment () const
+	{ return m_GridMajorLineColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getGridMajorLinesEveryXAdjustment () const
 	{ return m_GridMajorLinesEveryXAdjustment; }
 
@@ -154,10 +162,6 @@ public:
 	getGridZSpacingAdjustment () const
 	{ return m_GridZSpacingAdjustment; }
 
-	Gtk::Box &
-	getGridTransparencyBox () const
-	{ return *m_GridTransparencyBox; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -202,6 +206,22 @@ public:
 	getGridMajorLinesEveryBox () const
 	{ return *m_GridMajorLinesEveryBox; }
 
+	Gtk::Box &
+	getGridLineColorBox () const
+	{ return *m_GridLineColorBox; }
+
+	Gtk::Button &
+	getGridLineColorButton () const
+	{ return *m_GridLineColorButton; }
+
+	Gtk::Box &
+	getGridMajorLineColorBox () const
+	{ return *m_GridMajorLineColorBox; }
+
+	Gtk::Button &
+	getGridMajorLineColorButton () const
+	{ return *m_GridMajorLineColorButton; }
+
 	virtual
 	void
 	on_grid_plane_changed () = 0;
@@ -220,6 +240,8 @@ private:
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_GridColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridLineColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLineColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLinesEveryXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLinesEveryYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLinesEveryZAdjustment;
@@ -233,7 +255,6 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GridYSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridZDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridZSpacingAdjustment;
-	Gtk::Box*                      m_GridTransparencyBox;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Expander*                 m_GridExpander;
@@ -245,6 +266,10 @@ private:
 	Gtk::Box*                      m_GridDimensionBox;
 	Gtk::Box*                      m_GridSpacingBox;
 	Gtk::Box*                      m_GridMajorLinesEveryBox;
+	Gtk::Box*                      m_GridLineColorBox;
+	Gtk::Button*                   m_GridLineColorButton;
+	Gtk::Box*                      m_GridMajorLineColorBox;
+	Gtk::Button*                   m_GridMajorLineColorButton;
 
 };
 

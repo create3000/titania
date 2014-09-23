@@ -113,6 +113,8 @@ private:
 	X3DFieldAdjustment3 <X3D::MFFloat> spacing;
 	X3DFieldAdjustment3 <X3D::MFInt32> majorLinesEvery;
 	SFColorRGBAButton                  color;
+	SFColorRGBAButton                  lineColor;
+	SFColorRGBAButton                  majorLineColor;
 
 	bool changing;
 

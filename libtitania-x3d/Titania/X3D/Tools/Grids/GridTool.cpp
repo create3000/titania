@@ -78,6 +78,8 @@ GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "spacing",         spacing ());
 	addField (inputOutput, "majorLinesEvery", majorLinesEvery ());
 	addField (inputOutput, "color",           color ());
+	addField (inputOutput, "lineColor",       lineColor ());
+	addField (inputOutput, "majorLineColor",  majorLineColor ());
 }
 
 X3DBaseNode*

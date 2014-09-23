@@ -87,6 +87,22 @@ public:
 	color () const
 	{ return *fields .color; }
 
+	SFColorRGBA &
+	lineColor ()
+	{ return *fields .lineColor; }
+
+	const SFColorRGBA &
+	lineColor () const
+	{ return *fields .lineColor; }
+
+	SFColorRGBA &
+	majorLineColor ()
+	{ return *fields .majorLineColor; }
+
+	const SFColorRGBA &
+	majorLineColor () const
+	{ return *fields .majorLineColor; }
+
 
 protected:
 
@@ -106,6 +122,12 @@ private:
 	void
 	set_color ();
 
+	void
+	set_lineColor ();
+
+	void
+	set_majorLineColor ();
+
 	///  @name Members
 
 	struct Fields
@@ -115,6 +137,8 @@ private:
 		SFVec3f* const translation;
 		SFRotation* const rotation;
 		SFColorRGBA* const color;
+		SFColorRGBA* const lineColor;
+		SFColorRGBA* const majorLineColor;
 	};
 
 	Fields fields;

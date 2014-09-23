@@ -54,9 +54,11 @@ namespace titania {
 namespace X3D {
 
 X3DGridTool::Fields::Fields () :
-	 translation (new SFVec3f ()),
-	    rotation (new SFRotation ()),
-	       color (new SFColorRGBA (1, 0.5, 0, 0.2))
+	   translation (new SFVec3f ()),
+	      rotation (new SFRotation ()),
+	         color (new SFColorRGBA (0.5, 0.5, 0.5, 0.2)),
+	     lineColor (new SFColorRGBA (1, 0.7, 0.7, 0.2)),
+	majorLineColor (new SFColorRGBA (1, 0.7, 0.7, 0.4))
 { }
 
 X3DGridTool::X3DGridTool () :
@@ -81,7 +83,13 @@ X3DGridTool::realize ()
 		set_rotation .addInterest (rotation ());
 		set_rotation = rotation ();
 
-		color () .addInterest (this, &X3DGridTool::set_color);
+		color ()     .addInterest (this, &X3DGridTool::set_color);
+		lineColor () .addInterest (this, &X3DGridTool::set_lineColor);
+		majorLineColor () .addInterest (this, &X3DGridTool::set_majorLineColor);
+		
+		set_color ();
+		set_lineColor ();
+		set_majorLineColor ();
 	}
 	catch (const X3DError & error)
 	{ }
@@ -97,6 +105,38 @@ X3DGridTool::set_color ()
 	
 		set_color        = Color3f (color () .getR (), color () .getG (), color () .getB ());
 		set_transparency = 1 - color () .getA ();
+	}
+	catch (const X3DError & error)
+	{ }
+	
+}
+
+void
+X3DGridTool::set_lineColor ()
+{
+	try
+	{
+		auto & set_color        = getToolNode () -> getField <SFColor> ("set_lineColor");
+		auto & set_transparency = getToolNode () -> getField <SFFloat> ("set_lineTransparency");
+
+		set_color        = Color3f (lineColor () .getR (), lineColor () .getG (), lineColor () .getB ());
+		set_transparency = 1 - lineColor () .getA ();
+	}
+	catch (const X3DError & error)
+	{ }
+	
+}
+
+void
+X3DGridTool::set_majorLineColor ()
+{
+	try
+	{
+		auto & set_color        = getToolNode () -> getField <SFColor> ("set_majorLineColor");
+		auto & set_transparency = getToolNode () -> getField <SFFloat> ("set_majorLineTransparency");
+
+		set_color        = Color3f (majorLineColor () .getR (), majorLineColor () .getG (), majorLineColor () .getB ());
+		set_transparency = 1 - majorLineColor () .getA ();
 	}
 	catch (const X3DError & error)
 	{ }

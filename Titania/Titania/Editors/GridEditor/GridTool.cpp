@@ -154,6 +154,12 @@ GridTool::configure ()
 	getTool () -> color () .removeInterest (this, &GridTool::set_color);
 	getTool () -> color () .addInterest (this, &GridTool::connectColor);
 
+	getTool () -> lineColor () .removeInterest (this, &GridTool::set_lineColor);
+	getTool () -> lineColor () .addInterest (this, &GridTool::connectLineColor);
+
+	getTool () -> majorLineColor () .removeInterest (this, &GridTool::set_majorLineColor);
+	getTool () -> majorLineColor () .addInterest (this, &GridTool::connectMajorLineColor);
+
 	try
 	{
 		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/translation");
@@ -220,7 +226,29 @@ GridTool::configure ()
 	}
 	catch (...)
 	{
-		getTool () -> color () = X3D::Color4f (1, 0.5, 0, 0.2);
+		getTool () -> color () = X3D::Color4f (0.5, 0.5, 0.5, 0.2);
+	}
+
+	try
+	{
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/lineColor");
+
+		getTool () -> lineColor () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
+	}
+	catch (...)
+	{
+		getTool () -> lineColor () = X3D::Color4f (1, 0.7, 0.7, 0.2);
+	}
+
+	try
+	{
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/majorLineColor");
+
+		getTool () -> majorLineColor () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
+	}
+	catch (...)
+	{
+		getTool () -> majorLineColor () = X3D::Color4f (1, 0.7, 0.7, 0.4);
 	}
 }
 
@@ -267,6 +295,20 @@ GridTool::set_color ()
 }
 
 void
+GridTool::set_lineColor ()
+{
+	getWorldInfo (true) -> setMetaData <X3D::Color4f> ("/Titania/GridTool/lineColor", getTool () -> lineColor ());
+	getBrowserWindow () -> isModified (getBrowser (), true);
+}
+
+void
+GridTool::set_majorLineColor ()
+{
+	getWorldInfo (true) -> setMetaData <X3D::Color4f> ("/Titania/GridTool/majorLineColor", getTool () -> majorLineColor ());
+	getBrowserWindow () -> isModified (getBrowser (), true);
+}
+
+void
 GridTool::connectTranslation (const X3D::SFVec3f & field)
 {
 	field .removeInterest (this, &GridTool::connectTranslation);
@@ -306,6 +348,20 @@ GridTool::connectColor (const X3D::SFColorRGBA & field)
 {
 	field .removeInterest (this, &GridTool::connectColor);
 	field .addInterest (this, &GridTool::set_color);
+}
+
+void
+GridTool::connectLineColor (const X3D::SFColorRGBA & field)
+{
+	field .removeInterest (this, &GridTool::connectLineColor);
+	field .addInterest (this, &GridTool::set_lineColor);
+}
+
+void
+GridTool::connectMajorLineColor (const X3D::SFColorRGBA & field)
+{
+	field .removeInterest (this, &GridTool::connectMajorLineColor);
+	field .addInterest (this, &GridTool::set_majorLineColor);
 }
 
 GridTool::~GridTool ()

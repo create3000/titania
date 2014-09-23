@@ -92,7 +92,21 @@ PickableGroup::initialize ()
 void
 PickableGroup::traverse (const TraverseType type)
 {
-	X3DGroupingNode::traverse (type);
+	switch (type)
+	{
+		case TraverseType::PICKING:
+		{
+			if (not pickable ())
+				return;
+
+			// Proceed with next step:
+		}
+		default:
+		{
+			X3DGroupingNode::traverse (type);
+			return;
+		}
+	}
 }
 
 void

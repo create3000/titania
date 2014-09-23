@@ -120,6 +120,12 @@ private:
 	set_color ();
 
 	void
+	set_lineColor ();
+
+	void
+	set_majorLineColor ();
+
+	void
 	connectTranslation (const X3D::SFVec3f &);
 
 	void
@@ -136,6 +142,12 @@ private:
 
 	void
 	connectColor (const X3D::SFColorRGBA &);
+
+	void
+	connectLineColor (const X3D::SFColorRGBA &);
+
+	void
+	connectMajorLineColor (const X3D::SFColorRGBA &);
 
 	///  @name Members
 

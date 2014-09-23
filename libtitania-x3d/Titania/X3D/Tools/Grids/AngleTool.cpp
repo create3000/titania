@@ -68,10 +68,12 @@ AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
 	X3DGridTool (),
 	     fields ()
 {
-	addField (inputOutput, "metadata",    metadata ());
-	addField (inputOutput, "translation", translation ());
-	addField (inputOutput, "rotation",    rotation ());
-	addField (inputOutput, "color",       color ());
+	addField (inputOutput, "metadata",       metadata ());
+	addField (inputOutput, "translation",    translation ());
+	addField (inputOutput, "rotation",       rotation ());
+	addField (inputOutput, "color",          color ());
+	addField (inputOutput, "lineColor",      lineColor ());
+	addField (inputOutput, "majorLineColor", majorLineColor ());
 }
 
 X3DBaseNode*

@@ -1,3 +1,12 @@
+2014-09-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* GridTool.x3dv:
+	* GridTool.cpp:
+	* AngleTool.cpp:
+	* X3DGridTool.h:
+	* X3DGridTool.cpp:
+	* PickableGroup.cpp: 
+
 2014-09-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowser.cpp: 

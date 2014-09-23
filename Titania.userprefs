@@ -1,12 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/GridEditor/X3DGridEditor.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.h" Line="96" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.cpp" Line="135" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.cpp" Line="152" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/GridTool.h" Line="94" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/GridTool.cpp" Line="109" Column="22" />
+      <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.h" Line="114" Column="52" />
+      <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.cpp" Line="89" Column="42" />
+      <File FileName="Titania/Titania/Editors/GridEditor/GridTool.h" Line="117" Column="21" />
+      <File FileName="Titania/Titania/Editors/GridEditor/GridTool.cpp" Line="212" Column="32" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.h" Line="105" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.cpp" Line="201" Column="47" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="210" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/GridTool.h" Line="115" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/GridTool.cpp" Line="100" Column="26" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.h" Line="81" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.cpp" Line="58" Column="35" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -40,12 +46,17 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
+                <Node name="Basic" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="X3DBrowser.cpp" selected="True" />
+                </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
+                  <Node name="PointingDeviceSensor" expanded="True" />
                 </Node>
                 <Node name="Fields" expanded="True" />
                 <Node name="Tools" expanded="True">
+                  <Node name="Core" expanded="True" />
                   <Node name="Grids" expanded="True" />
                 </Node>
               </Node>
@@ -68,10 +79,14 @@
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
+              <Node name="ComposedWidgets" expanded="True" />
               <Node name="Editors" expanded="True">
-                <Node name="GridEditor" expanded="True">
-                  <Node name="X3DGridEditor.cpp" selected="True" />
-                </Node>
+                <Node name="AppearanceEditor" expanded="True" />
+                <Node name="GridEditor" expanded="True" />
+              </Node>
+              <Node name="Undo" expanded="True" />
+              <Node name="Widgets" expanded="True">
+                <Node name="ViewpointList" expanded="True" />
               </Node>
             </Node>
           </Node>

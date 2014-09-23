@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Tue, 23 Sep 2014 12:46:23 GMT"
+META "modified" "Tue, 23 Sep 2014 22:30:01 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -32,8 +32,12 @@ PROTO Grid [
     5,
     5
   ]
-  inputOutput    SFColor color 1 0.5 0
+  inputOutput    SFColor color 0.5 0.5 0.5
   inputOutput    SFFloat transparency 0.61803
+  inputOutput    SFColor lineColor 1 0.7 0.7
+  inputOutput    SFFloat lineTransparency 0.8
+  inputOutput    SFColor majorLineColor 1 0.7 0.7
+  inputOutput    SFFloat majorLineTransparency 0.6
   initializeOnly SFBool  solid TRUE
 ]
 {
@@ -60,8 +64,8 @@ PROTO Grid [
         children Shape {
           appearance Appearance {
             material DEF MajorMaterial Material {
-              emissiveColor IS color
-              transparency 0.236063
+              emissiveColor IS majorLineColor
+              transparency IS majorLineTransparency
             }
           }
           geometry DEF MajorGrid IndexedLineSet {
@@ -108,8 +112,8 @@ PROTO Grid [
         children Shape {
           appearance Appearance {
             material DEF MinorMaterial Material {
-              emissiveColor IS color
-              transparency IS transparency
+              emissiveColor IS lineColor
+              transparency IS lineTransparency
             }
           }
           geometry DEF Grid IndexedLineSet {
@@ -250,13 +254,11 @@ PROTO Grid [
     inputOutput    MFInt32 dimension IS dimension
     inputOutput    MFFloat spacing IS spacing
     inputOutput    MFInt32 majorLinesEvery IS majorLinesEvery
-    inputOutput    SFFloat transparency IS transparency
     initializeOnly SFNode  plane USE Plane
     initializeOnly SFNode  majorGrid USE MajorGrid
     initializeOnly SFNode  grid USE Grid
     initializeOnly SFNode  majorPoints USE MajorPoints
     initializeOnly SFNode  points USE Points
-    initializeOnly SFNode  majorMaterial USE MajorMaterial
 
     url "vrmlscript:
 
@@ -267,10 +269,6 @@ function initialize ()
 
 function eventsProcessed ()
 {
-	// Major Transparency
-
-	majorMaterial .transparency = Math .pow (transparency, 3);
-
 	// Plane
 
 	plane .scale = new SFVec3f (dimension [0] * spacing [0], dimension [2] * spacing [2], 1);
@@ -292,23 +290,6 @@ function eventsProcessed ()
 	generatePoints (false, points .coord .point);
 }
 
-function generatePoints (major, point)
-{
-	var offset = dimension [1] * spacing [1] / 2;
-	var p      = 0;
-	
-	for (var i = 0, size = dimension [1] + 1; i < size; ++ i)
-	{
-		if (major - ((i - dimension [1] / 2) % majorLinesEvery [1] == 0))
-			continue;
-
-		point [p] = new SFVec3f (0, offset - i * spacing [1], 0);
-		++ p;
-	}
-
-	point .length = p;
-}
-
 function generateGrid (major, point)
 {
 	var coordIndex  = new MFInt32 ();
@@ -316,11 +297,11 @@ function generateGrid (major, point)
 	var scaleZ1_2   = dimension [2] * spacing [2] / 2;
 	var XSpacing1_4 = spacing [0] / 4 * major;
 	var ZSpacing1_4 = spacing [2] / 4 * major;
-	var p          = 0;
+	var p           = 0;
 
 	for (var i = 0, size = dimension [0] + 1; i < size; ++ i)
 	{
-		if (major - ((i - dimension [0] / 2) % majorLinesEvery [0] == 0))
+		if (major - isMajor (i, dimension [0], majorLinesEvery [0]))
 			continue;
 
 		point [p]     = new SFVec3f (-scaleX1_2 + spacing [0] * i, 0, -scaleZ1_2 - XSpacing1_4);
@@ -334,7 +315,7 @@ function generateGrid (major, point)
 
 	for (var i = 0, size = dimension [2] + 1; i < size; ++ i)
 	{
-		if (major - ((i - dimension [2] / 2) % majorLinesEvery [2] == 0))
+		if (major - isMajor (i, dimension [2], majorLinesEvery [2]))
 			continue;
 
 		point [p]     = new SFVec3f (-scaleX1_2 - ZSpacing1_4, 0, -scaleZ1_2 + spacing [2] * i);
@@ -349,19 +330,48 @@ function generateGrid (major, point)
 	point .length = p;
 
 	return coordIndex;
-}"
+}
+
+function generatePoints (major, point)
+{
+	var offset = dimension [1] * spacing [1] / 2;
+	var p      = 0;
+	
+	for (var i = 0, size = dimension [1] + 1; i < size; ++ i)
+	{
+		if (major - isMajor (i, dimension [1], majorLinesEvery [1]))
+			continue;
+
+		point [p] = new SFVec3f (0, offset - i * spacing [1], 0);
+		++ p;
+	}
+
+	point .length = p;
+}
+
+function isMajor (i, dimension, majorLinesEvery)
+{
+	return round (i - dimension / 2) % majorLinesEvery == 0;
+}
+
+function round (value)
+{
+	return value > 0 ? Math .floor (value) : Math .ceil (value);
+}
+"
     directOutput TRUE
     mustEvaluate TRUE
   }
-
-  ROUTE MinorMaterial.diffuseColor_changed TO MajorMaterial.set_diffuseColor
 }
 
 DEF GridTool Transform {
   children [
-    DEF Grid_1 Transform {
-      children DEF _2 Grid {
-        transparency 0.8
+    DEF Grid_1 PickableGroup {
+      pickable FALSE
+      children DEF Grid_2 Transform {
+        children DEF _2 Grid {
+          transparency 0.8
+        }
       }
     }
     DEF Edge_1 Transform {
@@ -381,7 +391,7 @@ DEF GridTool Transform {
                 children DEF _4 Shape {
                   appearance DEF _5 Appearance {
                     shaders DEF _6 ToolShader {
-                      diffuseColor 1 0.5 0
+                      diffuseColor 0.5 0.5 0.5
                     }
                   }
                   geometry Box { }
@@ -515,8 +525,12 @@ DEF Tool Script {
     5,
     5
   ]
-  inputOutput SFColor    color 1 0.5 0
+  inputOutput SFColor    color 0.5 0.5 0.5
   inputOutput SFFloat    transparency 0.8
+  inputOutput SFColor    lineColor 1 0.7 0.7
+  inputOutput SFFloat    lineTransparency 0.8
+  inputOutput SFColor    majorLineColor 1 0.7 0.7
+  inputOutput SFFloat    majorLineTransparency 0.6
 
 }
 
@@ -525,12 +539,12 @@ ROUTE _3.translation_changed TO ScaleScript.set_translation
 ROUTE ScaleScript.translation_changed TO _3.set_offset
 ROUTE _7.translation_changed TO MoveScript.set_translation
 ROUTE Tool.translation_changed TO _7.set_offset
-ROUTE Tool.translation_changed TO Grid_1.set_translation
+ROUTE Tool.translation_changed TO Grid_2.set_translation
 ROUTE MoveScript.translation_changed TO Tool.set_translation
 ROUTE Tool.transparency_changed TO _2.set_transparency
 ROUTE Tool.color_changed TO _2.set_color
 ROUTE Tool.color_changed TO _6.set_diffuseColor
-ROUTE Tool.rotation_changed TO Grid_1.set_rotation
+ROUTE Tool.rotation_changed TO Grid_2.set_rotation
 ROUTE Tool.rotation_changed TO Edge_1.set_rotation
 ROUTE Tool.translation_changed TO Edge_1.set_translation
 ROUTE Tool.rotation_changed TO _8.set_rotation
@@ -544,5 +558,9 @@ ROUTE ScaleScript.dimension_changed TO Tool.set_dimension
 ROUTE Tool.dimension_changed TO _2.set_dimension
 ROUTE Tool.spacing_changed TO _2.set_spacing
 ROUTE Tool.majorLinesEvery_changed TO _2.set_majorLinesEvery
+ROUTE Tool.lineColor_changed TO _2.set_lineColor
+ROUTE Tool.lineTransparency_changed TO _2.set_lineTransparency
+ROUTE Tool.majorLineColor_changed TO _2.set_majorLineColor
+ROUTE Tool.majorLineTransparency_changed TO _2.set_majorLineTransparency
 
 EXPORT Tool

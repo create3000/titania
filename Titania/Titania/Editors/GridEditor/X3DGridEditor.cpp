@@ -92,6 +92,16 @@ X3DGridEditor::X3DGridEditor () :
 	                        getGridColorAdjustment (),
 	                        getGridColorBox (),
 	                        "color"),
+	             lineColor (getBrowserWindow (),
+	                        getGridLineColorButton (),
+	                        getGridLineColorAdjustment (),
+	                        getGridLineColorBox (),
+	                        "lineColor"),
+	        majorLineColor (getBrowserWindow (),
+	                        getGridMajorLineColorButton (),
+	                        getGridMajorLineColorAdjustment (),
+	                        getGridMajorLineColorBox (),
+	                        "majorLineColor"),
 	              changing (false)
 {
 	translation     .setUndo (false);
@@ -99,6 +109,8 @@ X3DGridEditor::X3DGridEditor () :
 	spacing         .setUndo (false);
 	majorLinesEvery .setUndo (false);
 	color           .setUndo (false);
+	lineColor       .setUndo (false);
+	majorLineColor  .setUndo (false);
 }
 
 void
@@ -112,6 +124,8 @@ X3DGridEditor::initialize ()
 	spacing         .setNodes (gridTools);
 	majorLinesEvery .setNodes (gridTools);
 	color           .setNodes (gridTools);
+	lineColor       .setNodes (gridTools);
+	majorLineColor  .setNodes (gridTools);
 
 	gridTool -> rotation () .addInterest (this, &X3DGridEditor::set_rotation);
 
