@@ -1,5 +1,15 @@
 2014-09-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* GridTool.h:
+	* Palette.x3dv:
+	* GridTool.cpp: 
+
+2014-09-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Palette.x3dv:
 	* GridTool.h:
 	* GridEditor.xml:

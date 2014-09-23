@@ -964,11 +964,8 @@ BrowserWindow::on_browser_toggled ()
 {
 	if (getBrowserMenuItem () .get_active ())
 	{
-		getConfig () .setItem ("workspace", "BROWSER");
-
-		isLive (true);
-
 		isEditor (false);
+		isLive (true);
 
 		if (not getBackgroundsMenuItem () .get_active ())
 			getBackgroundsMenuItem () .set_active (true);
@@ -996,16 +993,14 @@ void
 BrowserWindow::on_editor_toggled ()
 {
 	if (getEditorMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("workspace", "EDITOR");
-
 		isEditor (true);
-	}
 }
 
 void
 BrowserWindow::isEditor (const bool enabled)
 {
+	X3DBrowserWindow::isEditor (enabled);
+
 	getOpenRecentMenuItem ()                   .set_visible (enabled);
 	getImportMenuItem ()                       .set_visible (enabled);
 	getImportAsInlineMenuItem ()               .set_visible (enabled);

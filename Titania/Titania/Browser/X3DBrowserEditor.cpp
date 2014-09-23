@@ -67,10 +67,13 @@ namespace puck {
 
 X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
 	         X3DBrowserWidget (browser),
+	                  enabled (false),
 	             currentScene (),
 	                selection (new BrowserSelection (getBrowserWindow ())),
 	             undoMatrices ()
-{ }
+{
+	addChildren (enabled);
+}
 
 void
 X3DBrowserEditor::initialize ()
@@ -89,7 +92,7 @@ X3DBrowserEditor::restoreSession ()
 		getImportAsInlineMenuItem () .set_active (getConfig () .getBoolean ("importAsInline"));
 
 	// Workspace
-	if (isEditor ())
+	if (getConfig () .getString ("workspace") == "EDITOR")
 		getEditorMenuItem () .set_active (true);
 	else
 		getBrowserMenuItem () .set_active (true);
@@ -230,10 +233,11 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
 	}
 }
 
-bool
-X3DBrowserEditor::isEditor () const
+void
+X3DBrowserEditor::isEditor (const bool value)
 {
-	return getConfig () .getString ("workspace") == "EDITOR";
+	enabled = value;
+	getConfig () .setItem ("workspace", value ? "EDITOR" : "BROWSER");
 }
 
 bool

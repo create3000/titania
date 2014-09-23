@@ -67,6 +67,10 @@ public:
 
 	BrowserWindow (const X3D::BrowserPtr &);
 
+	virtual
+	void
+	isEditor (const bool) final override;
+
 	/// @name Destruction
 
 	virtual
@@ -330,9 +334,6 @@ private:
 	virtual
 	void
 	on_editor_toggled () final override;
-
-	void
-	isEditor (const bool);
 
 	/// @name Shading
 

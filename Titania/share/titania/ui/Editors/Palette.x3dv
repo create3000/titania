@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 16 Sep 2014 13:16:50 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Tue, 23 Sep 2014 21:36:52 GMT"
+META "modified" "Tue, 23 Sep 2014 23:39:33 GMT"
 META "titania magic" "Material"
 
 WorldInfo {
@@ -65,6 +65,24 @@ WorldInfo {
             3,
             5,
             3
+          ]
+        }
+        MetadataFloat {
+          name "lineColor"
+          value [
+            1,
+            1,
+            1,
+            0.2
+          ]
+        }
+        MetadataFloat {
+          name "majorLineColor"
+          value [
+            1,
+            1,
+            1,
+            0.4
           ]
         }
       ]

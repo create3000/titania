@@ -67,8 +67,13 @@ public:
 
 	/// @name Member access
 
-	bool
-	isEditor () const;
+	const X3D::SFBool &
+	isEditor () const
+	{ return enabled; }
+
+	virtual
+	void
+	isEditor (const bool);
 
 	void
 	isModified (const X3D::BrowserPtr &, const bool);
@@ -397,6 +402,7 @@ private:
 
 	using UndoMatrixIndex = std::map <X3D::X3DTransformNodePtr, std::pair <X3D::Matrix4f, X3D::Vector3f>> ;
 
+	X3D::SFBool                        enabled;
 	X3D::X3DExecutionContextPtr        currentScene;
 	std::unique_ptr <BrowserSelection> selection;
 	UndoMatrixIndex                    undoMatrices;

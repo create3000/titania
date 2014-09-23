@@ -60,6 +60,7 @@ GridTool::GridTool (X3DBrowserWindow* const browserWindow) :
 	            tool (),
 	         enabled (false)
 {
+	getBrowserWindow () -> isEditor () .addInterest (this, &GridTool::set_enabled);
 	getScene () .addInterest (this, &GridTool::set_scene);
 	setup ();
 }
@@ -81,7 +82,7 @@ GridTool::isEnabled (const bool value, const bool metadata)
 {
 	enabled = value;
 
-	if (enabled)
+	if (isEnabled ())
 	{
 		getBrowser () .addInterest (this, &GridTool::set_browser);
 		set_browser (getBrowser ());
@@ -102,6 +103,12 @@ GridTool::isEnabled (const bool value, const bool metadata)
 	}
 }
 
+bool
+GridTool::isEnabled () const
+{
+	return enabled and getBrowserWindow () -> isEditor ();
+}
+
 const X3D::X3DPtr <X3D::GridTool> &
 GridTool::getTool () const
 {
@@ -109,6 +116,12 @@ GridTool::getTool () const
 		const_cast <GridTool*> (this) -> realize ();
 
 	return tool;
+}
+
+void
+GridTool::set_enabled ()
+{
+	isEnabled (enabled, false);
 }
 
 void

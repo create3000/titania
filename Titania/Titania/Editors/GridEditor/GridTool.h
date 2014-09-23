@@ -72,8 +72,7 @@ public:
 	{ isEnabled (value, true); }
 
 	bool
-	isEnabled () const
-	{ return enabled; }
+	isEnabled () const;
 
 	const X3D::X3DPtr <X3D::GridTool> &
 	getTool () const;
@@ -91,6 +90,9 @@ private:
 
 	void
 	isEnabled (const bool, const bool);
+
+	void
+	set_enabled ();
 
 	void
 	set_browser (const X3D::BrowserPtr &);
