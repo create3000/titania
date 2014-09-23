@@ -74,6 +74,7 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_GridZSpacingAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridZSpacingAdjustment"));
 
 	// Get widgets.
+	m_builder -> get_widget ("GridTransparencyBox", m_GridTransparencyBox);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("GridExpander", m_GridExpander);
@@ -81,7 +82,6 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GridPlaneComboBoxText", m_GridPlaneComboBoxText);
 	m_builder -> get_widget ("GridColorBox", m_GridColorBox);
 	m_builder -> get_widget ("GridColorButton", m_GridColorButton);
-	m_builder -> get_widget ("GridTransparencyBox", m_GridTransparencyBox);
 	m_builder -> get_widget ("GridTranslationBox", m_GridTranslationBox);
 	m_builder -> get_widget ("GridDimensionBox", m_GridDimensionBox);
 	m_builder -> get_widget ("GridSpacingBox", m_GridSpacingBox);

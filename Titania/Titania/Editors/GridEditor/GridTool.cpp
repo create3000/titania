@@ -151,9 +151,6 @@ GridTool::configure ()
 	getTool () -> color () .removeInterest (this, &GridTool::set_color);
 	getTool () -> color () .addInterest (this, &GridTool::connectColor);
 
-	getTool () -> transparency () .removeInterest (this, &GridTool::set_transparency);
-	getTool () -> transparency () .addInterest (this, &GridTool::connectTransparency);
-
 	try
 	{
 		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/translation");
@@ -204,22 +201,11 @@ GridTool::configure ()
 	{
 		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/color");
 
-		getTool () -> color () = X3D::Color3f (v .at (0), v .at (1), v .at (2));
+		getTool () -> color () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
 	}
 	catch (...)
 	{
-		getTool () -> color () = X3D::Color3f (1, 0.5, 0);
-	}
-
-	try
-	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/transparency");
-
-		getTool () -> transparency () = v .at (0);
-	}
-	catch (...)
-	{
-		getTool () -> transparency () = 0.8;
+		getTool () -> color () = X3D::Color4f (1, 0.5, 0, 0.2);
 	}
 }
 
@@ -254,14 +240,7 @@ GridTool::set_spacing ()
 void
 GridTool::set_color ()
 {
-	getWorldInfo (true) -> setMetaData <X3D::Color3f> ("/Titania/GridTool/color", getTool () -> color ());
-	getBrowserWindow () -> isModified (getBrowser (), true);
-}
-
-void
-GridTool::set_transparency ()
-{
-	getWorldInfo (true) -> setMetaData <float> ("/Titania/GridTool/transparency", getTool () -> transparency ());
+	getWorldInfo (true) -> setMetaData <X3D::Color4f> ("/Titania/GridTool/color", getTool () -> color ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
@@ -294,17 +273,10 @@ GridTool::connectSpacing (const X3D::MFFloat & field)
 }
 
 void
-GridTool::connectColor (const X3D::SFColor & field)
+GridTool::connectColor (const X3D::SFColorRGBA & field)
 {
 	field .removeInterest (this, &GridTool::connectColor);
 	field .addInterest (this, &GridTool::set_color);
-}
-
-void
-GridTool::connectTransparency (const X3D::SFFloat & field)
-{
-	field .removeInterest (this, &GridTool::connectTransparency);
-	field .addInterest (this, &GridTool::set_transparency);
 }
 
 GridTool::~GridTool ()

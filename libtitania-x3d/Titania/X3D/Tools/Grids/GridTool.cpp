@@ -70,13 +70,12 @@ GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	X3DGridTool (),
 	     fields ()
 {
-	addField (inputOutput, "metadata",     metadata ());
-	addField (inputOutput, "translation",  translation ());
-	addField (inputOutput, "rotation",     rotation ());
-	addField (inputOutput, "dimension",    dimension ());;
-	addField (inputOutput, "spacing",      spacing ());
-	addField (inputOutput, "color",        color ());
-	addField (inputOutput, "transparency", transparency ());
+	addField (inputOutput, "metadata",    metadata ());
+	addField (inputOutput, "translation", translation ());
+	addField (inputOutput, "rotation",    rotation ());
+	addField (inputOutput, "dimension",   dimension ());;
+	addField (inputOutput, "spacing",     spacing ());
+	addField (inputOutput, "color",       color ());
 }
 
 X3DBaseNode*

@@ -125,6 +125,7 @@ AboutTab::set_scene ()
 	if (scene -> getWorldURL () not_eq getURL ())
 		return;
 
+	// XXX: or extend the use of isPrivate
 	getBrowser () -> getSelection () -> isEnabled (false);
 	getBrowser () -> beginUpdate ();
 
@@ -137,9 +138,9 @@ AboutTab::set_scene ()
 		const auto & previousPage_changed = previousPage -> getField <X3D::SFInt32> ("value_changed");
 		const auto & nextPage_changed     = nextPage -> getField <X3D::SFInt32> ("value_changed");
 
-		beginTime .addInterest (this, &AboutTab::set_page, scene .getValue (), X3D::SFInt32 (0));
+		beginTime            .addInterest (this, &AboutTab::set_page, scene .getValue (), X3D::SFInt32 (0));
 		previousPage_changed .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (previousPage_changed));
-		nextPage_changed .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (nextPage_changed));
+		nextPage_changed     .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (nextPage_changed));
 
 		set_page (scene, X3D::SFInt32 (getConfig () .getInteger ("currentPage")));
 	}

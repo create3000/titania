@@ -352,17 +352,22 @@ inline
 bool
 SFColorRGBAButton::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 {
+	const auto color    = dialog .get_color_selection () -> get_current_rgba ();
+	const int  width1_2 = drawingArea .get_width () / 2;
+
 	draw_checker_board (context,
 	                    8, 8,
 	                    X3D::Color4f (0.6, 0.6, 0.6, 1),
 	                    X3D::Color4f (0.4, 0.4, 0.4, 1),
 	                    0, 0,
-	                    drawingArea .get_width (), drawingArea .get_height ());
-
-	const auto color = dialog .get_color_selection () -> get_current_rgba ();
+	                    width1_2, drawingArea .get_height ());
 
 	context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
-	context -> rectangle (0, 0, drawingArea .get_width (), drawingArea .get_height ());
+	context -> rectangle (0, 0, width1_2, drawingArea .get_height ());
+	context -> fill ();
+
+	context -> set_source_rgb (color .get_red (), color .get_green (), color .get_blue ());
+	context -> rectangle (width1_2, 0, drawingArea .get_width () - width1_2, drawingArea .get_height ());
 	context -> fill ();
 
 	if (colorButton .get_style_context () -> get_state () & Gtk::STATE_FLAG_INSENSITIVE)

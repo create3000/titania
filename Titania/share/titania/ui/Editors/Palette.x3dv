@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 16 Sep 2014 13:16:50 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Tue, 23 Sep 2014 04:38:49 GMT"
+META "modified" "Tue, 23 Sep 2014 09:46:55 GMT"
 META "titania magic" "Material"
 
 WorldInfo {
@@ -55,12 +55,9 @@ WorldInfo {
           value [
             1,
             1,
-            1
+            1,
+            0.117647
           ]
-        }
-        MetadataFloat {
-          name "transparency"
-          value 0.924242
         }
       ]
     }
@@ -77,6 +74,7 @@ DEF Gray_1 Background {
 }
 
 OrthoViewpoint {
+  description "Home"
   position 6.25 -6.25 10
   centerOfRotation -0.0729983 1.4843 0
   fieldOfView [

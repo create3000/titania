@@ -142,6 +142,10 @@ public:
 	getGridZSpacingAdjustment () const
 	{ return m_GridZSpacingAdjustment; }
 
+	Gtk::Box &
+	getGridTransparencyBox () const
+	{ return *m_GridTransparencyBox; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -169,10 +173,6 @@ public:
 	Gtk::Button &
 	getGridColorButton () const
 	{ return *m_GridColorButton; }
-
-	Gtk::Box &
-	getGridTransparencyBox () const
-	{ return *m_GridTransparencyBox; }
 
 	Gtk::Box &
 	getGridTranslationBox () const
@@ -214,6 +214,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GridYSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridZDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridZSpacingAdjustment;
+	Gtk::Box*                      m_GridTransparencyBox;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Expander*                 m_GridExpander;
@@ -221,7 +222,6 @@ private:
 	Gtk::ComboBoxText*             m_GridPlaneComboBoxText;
 	Gtk::Box*                      m_GridColorBox;
 	Gtk::Button*                   m_GridColorButton;
-	Gtk::Box*                      m_GridTransparencyBox;
 	Gtk::Box*                      m_GridTranslationBox;
 	Gtk::Box*                      m_GridDimensionBox;
 	Gtk::Box*                      m_GridSpacingBox;

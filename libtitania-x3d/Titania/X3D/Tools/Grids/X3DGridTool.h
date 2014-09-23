@@ -79,21 +79,13 @@ public:
 	rotation () const
 	{ return *fields .rotation; }
 
-	SFColor &
+	SFColorRGBA &
 	color ()
 	{ return *fields .color; }
 
-	const SFColor &
+	const SFColorRGBA &
 	color () const
 	{ return *fields .color; }
-
-	SFFloat &
-	transparency ()
-	{ return *fields .transparency; }
-
-	const SFFloat &
-	transparency () const
-	{ return *fields .transparency; }
 
 
 protected:
@@ -109,14 +101,20 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_color ();
+
+	///  @name Members
+
 	struct Fields
 	{
 		Fields ();
 
 		SFVec3f* const translation;
 		SFRotation* const rotation;
-		SFColor* const color;
-		SFFloat* const transparency;
+		SFColorRGBA* const color;
 	};
 
 	Fields fields;

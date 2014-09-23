@@ -56,8 +56,7 @@ namespace X3D {
 X3DGridTool::Fields::Fields () :
 	 translation (new SFVec3f ()),
 	    rotation (new SFRotation ()),
-	       color (new SFColor (1, 0.5, 0)),
-	transparency (new SFFloat (0.8))
+	       color (new SFColorRGBA (1, 0.5, 0, 0.2))
 { }
 
 X3DGridTool::X3DGridTool () :
@@ -82,18 +81,26 @@ X3DGridTool::realize ()
 		set_rotation .addInterest (rotation ());
 		set_rotation = rotation ();
 
-		auto & set_color = getToolNode () -> getField <SFColor> ("set_color");
-		color ()  .addInterest (set_color);
-		set_color .addInterest (color ());
-		set_color = color ();
-
-		auto & set_transparency = getToolNode () -> getField <SFFloat> ("set_transparency");
-		transparency ()  .addInterest (set_transparency);
-		set_transparency .addInterest (transparency ());
-		set_transparency = transparency ();
+		color () .addInterest (this, &X3DGridTool::set_color);
 	}
 	catch (const X3DError & error)
 	{ }
+}
+
+void
+X3DGridTool::set_color ()
+{
+	try
+	{
+		auto & set_color        = getToolNode () -> getField <SFColor> ("set_color");
+		auto & set_transparency = getToolNode () -> getField <SFFloat> ("set_transparency");
+	
+		set_color        = Color3f (color () .getR (), color () .getG (), color () .getB ());
+		set_transparency = 1 - color () .getA ();
+	}
+	catch (const X3DError & error)
+	{ }
+	
 }
 
 } // X3D

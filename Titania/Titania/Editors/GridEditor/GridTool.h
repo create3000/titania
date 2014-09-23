@@ -117,9 +117,6 @@ private:
 	set_color ();
 
 	void
-	set_transparency ();
-
-	void
 	connectTranslation (const X3D::SFVec3f &);
 
 	void
@@ -132,10 +129,7 @@ private:
 	connectSpacing (const X3D::MFFloat &);
 
 	void
-	connectColor (const X3D::SFColor &);
-
-	void
-	connectTransparency (const X3D::SFFloat &);
+	connectColor (const X3D::SFColorRGBA &);
 
 	///  @name Members
 

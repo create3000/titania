@@ -86,17 +86,12 @@ X3DGridEditor::X3DGridEditor () :
 	                        getGridColorAdjustment (),
 	                        getGridColorBox (),
 	                        "color"),
-	          transparency (getBrowserWindow (),
-	                        getGridTransparencyAdjustment (),
-	                        getGridTransparencyBox (),
-	                        "transparency"),
 	              changing (false)
 {
-	translation  .setUndo (false);
-	dimension    .setUndo (false);
-	spacing      .setUndo (false);
-	color        .setUndo (false);
-	transparency .setUndo (false);
+	translation .setUndo (false);
+	dimension   .setUndo (false);
+	spacing     .setUndo (false);
+	color       .setUndo (false);
 }
 
 void
@@ -105,11 +100,10 @@ X3DGridEditor::initialize ()
 	const auto & gridTool  = getBrowserWindow () -> getGridTool ();
 	X3D::MFNode  gridTools = { gridTool };
 
-	translation  .setNodes (gridTools);
-	dimension    .setNodes (gridTools);
-	spacing      .setNodes (gridTools);
-	color        .setNodes (gridTools);
-	transparency .setNodes (gridTools);
+	translation .setNodes (gridTools);
+	dimension   .setNodes (gridTools);
+	spacing     .setNodes (gridTools);
+	color       .setNodes (gridTools);
 
 	gridTool -> rotation () .addInterest (this, &X3DGridEditor::set_rotation);
 
