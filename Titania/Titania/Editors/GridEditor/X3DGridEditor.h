@@ -111,6 +111,7 @@ private:
 	X3DFieldAdjustment3 <X3D::SFVec3f> translation;
 	X3DFieldAdjustment3 <X3D::MFInt32> dimension;
 	X3DFieldAdjustment3 <X3D::MFFloat> spacing;
+	X3DFieldAdjustment3 <X3D::MFInt32> majorLinesEvery;
 	SFColorRGBAButton                  color;
 
 	bool changing;

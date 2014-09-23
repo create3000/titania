@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 16 Sep 2014 13:16:50 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Tue, 23 Sep 2014 09:46:55 GMT"
+META "modified" "Tue, 23 Sep 2014 13:05:57 GMT"
 META "titania magic" "Material"
 
 WorldInfo {
@@ -46,7 +46,7 @@ WorldInfo {
           name "dimension"
           value [
             12,
-            10,
+            5,
             12
           ]
         }

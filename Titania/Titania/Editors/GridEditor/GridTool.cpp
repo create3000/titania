@@ -148,6 +148,9 @@ GridTool::configure ()
 	getTool () -> spacing () .removeInterest (this, &GridTool::set_spacing);
 	getTool () -> spacing () .addInterest (this, &GridTool::connectSpacing);
 
+	getTool () -> majorLinesEvery () .removeInterest (this, &GridTool::set_majorLinesEvery);
+	getTool () -> majorLinesEvery () .addInterest (this, &GridTool::connectMajorLinesEvery);
+
 	getTool () -> color () .removeInterest (this, &GridTool::set_color);
 	getTool () -> color () .addInterest (this, &GridTool::connectColor);
 
@@ -199,6 +202,18 @@ GridTool::configure ()
 
 	try
 	{
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/GridTool/majorLinesEvery");
+
+		getTool () -> majorLinesEvery () = v;
+		getTool () -> majorLinesEvery () .resize (3, X3D::SFInt32 (5));
+	}
+	catch (...)
+	{
+		getTool () -> majorLinesEvery () = { 5, 5, 5 };
+	}
+
+	try
+	{
 		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/color");
 
 		getTool () -> color () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
@@ -238,6 +253,13 @@ GridTool::set_spacing ()
 }
 
 void
+GridTool::set_majorLinesEvery ()
+{
+	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/majorLinesEvery", getTool () -> majorLinesEvery ());
+	getBrowserWindow () -> isModified (getBrowser (), true);
+}
+
+void
 GridTool::set_color ()
 {
 	getWorldInfo (true) -> setMetaData <X3D::Color4f> ("/Titania/GridTool/color", getTool () -> color ());
@@ -270,6 +292,13 @@ GridTool::connectSpacing (const X3D::MFFloat & field)
 {
 	field .removeInterest (this, &GridTool::connectSpacing);
 	field .addInterest (this, &GridTool::set_spacing);
+}
+
+void
+GridTool::connectMajorLinesEvery (const X3D::MFInt32 & field)
+{
+	field .removeInterest (this, &GridTool::connectMajorLinesEvery);
+	field .addInterest (this, &GridTool::set_majorLinesEvery);
 }
 
 void

@@ -61,8 +61,9 @@ const std::string GridTool::typeName       = "GridTool";
 const std::string GridTool::containerField = "grid";
 
 GridTool::Fields::Fields () :
-	dimension (new MFInt32 ({ 10, 10, 10 })),
-	  spacing (new MFFloat ({ 1, 1, 1 }))
+	      dimension (new MFInt32 ({ 10, 10, 10 })),
+	        spacing (new MFFloat ({ 1, 1, 1 })),
+	majorLinesEvery (new MFInt32 ({ 5, 5, 5 }))
 { }
 
 GridTool::GridTool (X3DExecutionContext* const executionContext) :
@@ -70,12 +71,13 @@ GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	X3DGridTool (),
 	     fields ()
 {
-	addField (inputOutput, "metadata",    metadata ());
-	addField (inputOutput, "translation", translation ());
-	addField (inputOutput, "rotation",    rotation ());
-	addField (inputOutput, "dimension",   dimension ());;
-	addField (inputOutput, "spacing",     spacing ());
-	addField (inputOutput, "color",       color ());
+	addField (inputOutput, "metadata",        metadata ());
+	addField (inputOutput, "translation",     translation ());
+	addField (inputOutput, "rotation",        rotation ());
+	addField (inputOutput, "dimension",       dimension ());;
+	addField (inputOutput, "spacing",         spacing ());
+	addField (inputOutput, "majorLinesEvery", majorLinesEvery ());
+	addField (inputOutput, "color",           color ());
 }
 
 X3DBaseNode*
@@ -108,6 +110,11 @@ GridTool::realize ()
 		spacing ()  .addInterest (set_spacing);
 		set_spacing .addInterest (spacing ());
 		set_spacing = spacing ();
+
+		auto & set_majorLinesEvery = getToolNode () -> getField <MFInt32> ("set_majorLinesEvery");
+		majorLinesEvery ()  .addInterest (set_majorLinesEvery);
+		set_majorLinesEvery .addInterest (majorLinesEvery ());
+		set_majorLinesEvery = majorLinesEvery ();
 	}
 	catch (const X3DError & error)
 	{ }

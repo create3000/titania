@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Tue, 23 Sep 2014 09:46:49 GMT"
+META "modified" "Tue, 23 Sep 2014 12:46:23 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -26,6 +26,11 @@ PROTO Grid [
     1,
     1,
     1
+  ]
+  inputOutput    MFInt32 majorLinesEvery [
+    5,
+    5,
+    5
   ]
   inputOutput    SFColor color 1 0.5 0
   inputOutput    SFFloat transparency 0.61803
@@ -54,26 +59,46 @@ PROTO Grid [
       Transform {
         children Shape {
           appearance Appearance {
-            material DEF Material3 Material {
+            material DEF MajorMaterial Material {
               emissiveColor IS color
-              transparency 0.459036
+              transparency 0.236063
             }
           }
-          geometry DEF Axis IndexedLineSet {
+          geometry DEF MajorGrid IndexedLineSet {
             coordIndex [
               0,
               1,
               -1,
               2,
               3,
+              -1,
+              4,
+              5,
+              -1,
+              6,
+              7,
+              -1,
+              8,
+              9,
+              -1,
+              10,
+              11,
               -1
             ]
             coord Coordinate {
               point [
+                -5 0 -5.25,
+                -5 0 5.25,
+                0 0 -5.25,
+                0 0 5.25,
+                5 0 -5.25,
+                5 0 5.25,
+                -5.25 0 -5,
+                5.25 0 -5,
                 -5.25 0 0,
                 5.25 0 0,
-                0 0 -5.25,
-                0 0 5.25
+                -5.25 0 5,
+                5.25 0 5
               ]
             }
           }
@@ -82,7 +107,7 @@ PROTO Grid [
       Transform {
         children Shape {
           appearance Appearance {
-            material DEF Material1 Material {
+            material DEF MinorMaterial Material {
               emissiveColor IS color
               transparency IS transparency
             }
@@ -136,30 +161,10 @@ PROTO Grid [
               -1,
               30,
               31,
-              -1,
-              32,
-              33,
-              -1,
-              34,
-              35,
-              -1,
-              36,
-              37,
-              -1,
-              38,
-              39,
-              -1,
-              40,
-              41,
-              -1,
-              42,
-              43,
               -1
             ]
             coord Coordinate {
               point [
-                -5 0 -5,
-                -5 0 5,
                 -4 0 -5,
                 -4 0 5,
                 -3 0 -5,
@@ -168,8 +173,6 @@ PROTO Grid [
                 -2 0 5,
                 -1 0 -5,
                 -1 0 5,
-                0 0 -5,
-                0 0 5,
                 1 0 -5,
                 1 0 5,
                 2 0 -5,
@@ -178,10 +181,6 @@ PROTO Grid [
                 3 0 5,
                 4 0 -5,
                 4 0 5,
-                5 0 -5,
-                5 0 5,
-                -5 0 -5,
-                5 0 -5,
                 -5 0 -4,
                 5 0 -4,
                 -5 0 -3,
@@ -190,8 +189,6 @@ PROTO Grid [
                 5 0 -2,
                 -5 0 -1,
                 5 0 -1,
-                -5 0 0,
-                5 0 0,
                 -5 0 1,
                 5 0 1,
                 -5 0 2,
@@ -199,9 +196,7 @@ PROTO Grid [
                 -5 0 3,
                 5 0 3,
                 -5 0 4,
-                5 0 4,
-                -5 0 5,
-                5 0 5
+                5 0 4
               ]
             }
           }
@@ -210,25 +205,39 @@ PROTO Grid [
       Transform {
         children Shape {
           appearance Appearance {
-            lineProperties LineProperties {
+            lineProperties DEF _1 LineProperties {
               linewidthScaleFactor 3
             }
-            material USE Material1
+            material USE MajorMaterial
+          }
+          geometry DEF MajorPoints PointSet {
+            coord Coordinate {
+              point [
+                0 5 0,
+                0 0 0,
+                0 -5 0
+              ]
+            }
+          }
+        }
+      }
+      Transform {
+        children Shape {
+          appearance Appearance {
+            lineProperties USE _1
+            material USE MinorMaterial
           }
           geometry DEF Points PointSet {
             coord Coordinate {
               point [
-                0 5 0,
                 0 4 0,
                 0 3 0,
                 0 2 0,
                 0 1 0,
-                0 0 0,
                 0 -1 0,
                 0 -2 0,
                 0 -3 0,
-                0 -4 0,
-                0 -5 0
+                0 -4 0
               ]
             }
           }
@@ -240,16 +249,16 @@ PROTO Grid [
   DEF GridScript Script {
     inputOutput    MFInt32 dimension IS dimension
     inputOutput    MFFloat spacing IS spacing
+    inputOutput    MFInt32 majorLinesEvery IS majorLinesEvery
     inputOutput    SFFloat transparency IS transparency
     initializeOnly SFNode  plane USE Plane
-    initializeOnly SFNode  axis USE Axis
+    initializeOnly SFNode  majorGrid USE MajorGrid
     initializeOnly SFNode  grid USE Grid
+    initializeOnly SFNode  majorPoints USE MajorPoints
     initializeOnly SFNode  points USE Points
-    initializeOnly SFNode  axisMaterial USE Material3
+    initializeOnly SFNode  majorMaterial USE MajorMaterial
 
     url "vrmlscript:
-
-var PHI = 1.61803;
 
 function initialize ()
 {
@@ -258,78 +267,106 @@ function initialize ()
 
 function eventsProcessed ()
 {
+	// Major Transparency
+
+	majorMaterial .transparency = Math .pow (transparency, 3);
+
 	// Plane
 
 	plane .scale = new SFVec3f (dimension [0] * spacing [0], dimension [2] * spacing [2], 1);
 
+	var scaleX1_2 = plane .scale .x / 2;
+	var scaleZ1_2 = plane .scale .y / 2;
+
 	// Axis
 
-	axis .coord .point = new MFVec3f (new SFVec3f (-plane .scale .x / 2 - spacing [0] / 4, 0, 0),
-	                                  new SFVec3f ( plane .scale .x / 2 + spacing [0] / 4, 0, 0),
-	                                  new SFVec3f (0, 0, -plane .scale .y / 2 - spacing [2] / 4),
-	                                  new SFVec3f (0, 0,  plane .scale .y / 2 + spacing [2] / 4));
-
-	axisMaterial .transparency = Math .pow (transparency, PHI);
+	majorGrid .set_coordIndex = generateGrid (true, majorGrid .coord .point);
 
 	// Grid
 
-	var coordIndex     = new MFInt32 ();
-	coordIndex .length = 3 * (dimension [0] + dimension [2]);
-
-	var point     = grid .coord .point;
-	point .length = 2 * (dimension [0] + dimension [2]);
-
-	var i = 0;
-
-	for (; i < dimension [0] + 1; ++ i)
-	{
-		point [2 * i]          = new SFVec3f (-plane .scale .x / 2 + spacing [0] * i, 0, -plane .scale .y / 2);
-		point [2 * i + 1]      = new SFVec3f (-plane .scale .x / 2 + spacing [0] * i, 0,  plane .scale .y / 2);
-		coordIndex [3 * i]     = 2 * i;
-		coordIndex [3 * i + 1] = 2 * i + 1;
-		coordIndex [3 * i + 2] = -1;
-	}
-
-	for (; i < dimension [2] + 1 + dimension [0] + 1; ++ i)
-	{
-		point [2 * i]          = new SFVec3f (-plane .scale .x / 2, 0, -plane .scale .y / 2 + spacing [2] * (i - dimension [0] - 1));
-		point [2 * i + 1]      = new SFVec3f ( plane .scale .x / 2, 0, -plane .scale .y / 2 + spacing [2] * (i - dimension [0] - 1));
-		coordIndex [3 * i]     = 2 * i;
-		coordIndex [3 * i + 1] = 2 * i + 1;
-		coordIndex [3 * i + 2] = -1;
-	}
-
-	grid .set_coordIndex = coordIndex;
+	grid .set_coordIndex = generateGrid (false, grid .coord .point);
 
 	// Points
 
-	var offset    = dimension [1] * spacing [1] / 2;
-	var point     = points .coord .point;
-	point .length = dimension [1] + 1;
-	
-	for (var i = 0; i < dimension [1] + 1; ++ i)
-	{
-		point [i] = new SFVec3f (0, offset - i * spacing [1], 0);
-	}
+	generatePoints (true,  majorPoints .coord .point);
+	generatePoints (false, points .coord .point);
 }
-"
+
+function generatePoints (major, point)
+{
+	var offset = dimension [1] * spacing [1] / 2;
+	var p      = 0;
+	
+	for (var i = 0, size = dimension [1] + 1; i < size; ++ i)
+	{
+		if (major - ((i - dimension [1] / 2) % majorLinesEvery [1] == 0))
+			continue;
+
+		point [p] = new SFVec3f (0, offset - i * spacing [1], 0);
+		++ p;
+	}
+
+	point .length = p;
+}
+
+function generateGrid (major, point)
+{
+	var coordIndex  = new MFInt32 ();
+	var scaleX1_2   = dimension [0] * spacing [0] / 2;
+	var scaleZ1_2   = dimension [2] * spacing [2] / 2;
+	var XSpacing1_4 = spacing [0] / 4 * major;
+	var ZSpacing1_4 = spacing [2] / 4 * major;
+	var p          = 0;
+
+	for (var i = 0, size = dimension [0] + 1; i < size; ++ i)
+	{
+		if (major - ((i - dimension [0] / 2) % majorLinesEvery [0] == 0))
+			continue;
+
+		point [p]     = new SFVec3f (-scaleX1_2 + spacing [0] * i, 0, -scaleZ1_2 - XSpacing1_4);
+		point [p + 1] = new SFVec3f (-scaleX1_2 + spacing [0] * i, 0,  scaleZ1_2 + XSpacing1_4);
+		coordIndex [coordIndex .length] = p;
+		coordIndex [coordIndex .length] = p + 1;
+		coordIndex [coordIndex .length] = -1;
+			
+		p += 2;
+	}
+
+	for (var i = 0, size = dimension [2] + 1; i < size; ++ i)
+	{
+		if (major - ((i - dimension [2] / 2) % majorLinesEvery [2] == 0))
+			continue;
+
+		point [p]     = new SFVec3f (-scaleX1_2 - ZSpacing1_4, 0, -scaleZ1_2 + spacing [2] * i);
+		point [p + 1] = new SFVec3f ( scaleX1_2 + ZSpacing1_4, 0, -scaleZ1_2 + spacing [2] * i);
+		coordIndex [coordIndex .length] = p;
+		coordIndex [coordIndex .length] = p + 1;
+		coordIndex [coordIndex .length] = -1;
+		
+		p += 2;
+	}
+
+	point .length = p;
+
+	return coordIndex;
+}"
     directOutput TRUE
     mustEvaluate TRUE
   }
 
-  ROUTE Material1.diffuseColor_changed TO Material3.set_diffuseColor
+  ROUTE MinorMaterial.diffuseColor_changed TO MajorMaterial.set_diffuseColor
 }
 
 DEF GridTool Transform {
   children [
     DEF Grid_1 Transform {
-      children DEF _1 Grid {
+      children DEF _2 Grid {
         transparency 0.8
       }
     }
     DEF Edge_1 Transform {
       children [
-        DEF _2 PlaneSensor {
+        DEF _3 PlaneSensor {
           axisRotation 1 0 0 1.5708
           autoOffset FALSE
           offset 5 0 5
@@ -341,9 +378,9 @@ DEF GridTool Transform {
               DEF Box Transform {
                 translation -9 0 0
                 scale 12 3 3
-                children DEF _3 Shape {
-                  appearance DEF _4 Appearance {
-                    shaders DEF _5 ToolShader {
+                children DEF _4 Shape {
+                  appearance DEF _5 Appearance {
+                    shaders DEF _6 ToolShader {
                       diffuseColor 1 0.5 0
                     }
                   }
@@ -354,7 +391,7 @@ DEF GridTool Transform {
                 translation -0 0 -9
                 rotation 0 -1 0 1.5708
                 scale 12 3 3
-                children USE _3
+                children USE _4
               }
             ]
           }
@@ -363,17 +400,17 @@ DEF GridTool Transform {
     }
     DEF Center Transform {
       children [
-        DEF _6 PlaneSensor {
+        DEF _7 PlaneSensor {
           axisRotation 1 0 0 1.5708
           autoOffset FALSE
           offset 0.16405 -9.48725e-07 0.261744
         }
-        DEF _7 Transform {
+        DEF _8 Transform {
           children ScreenGroup {
             children DEF Sphere Transform {
               scale 6 6 6
               children Shape {
-                appearance USE _4
+                appearance USE _5
                 geometry Sphere { }
               }
             }
@@ -473,33 +510,39 @@ DEF Tool Script {
     1,
     1
   ]
-  inputOutput SFColor    color 0 0 0
-  inputOutput SFFloat    transparency 0
+  inputOutput MFInt32    majorLinesEvery [
+    5,
+    5,
+    5
+  ]
+  inputOutput SFColor    color 1 0.5 0
+  inputOutput SFFloat    transparency 0.8
 
 }
 
 ROUTE ScaleScript.translation_changed TO Edge.set_translation
-ROUTE _2.translation_changed TO ScaleScript.set_translation
-ROUTE ScaleScript.translation_changed TO _2.set_offset
-ROUTE _6.translation_changed TO MoveScript.set_translation
-ROUTE Tool.translation_changed TO _6.set_offset
+ROUTE _3.translation_changed TO ScaleScript.set_translation
+ROUTE ScaleScript.translation_changed TO _3.set_offset
+ROUTE _7.translation_changed TO MoveScript.set_translation
+ROUTE Tool.translation_changed TO _7.set_offset
 ROUTE Tool.translation_changed TO Grid_1.set_translation
 ROUTE MoveScript.translation_changed TO Tool.set_translation
-ROUTE Tool.transparency_changed TO _1.set_transparency
-ROUTE Tool.color_changed TO _1.set_color
-ROUTE Tool.color_changed TO _5.set_diffuseColor
+ROUTE Tool.transparency_changed TO _2.set_transparency
+ROUTE Tool.color_changed TO _2.set_color
+ROUTE Tool.color_changed TO _6.set_diffuseColor
 ROUTE Tool.rotation_changed TO Grid_1.set_rotation
 ROUTE Tool.rotation_changed TO Edge_1.set_rotation
 ROUTE Tool.translation_changed TO Edge_1.set_translation
-ROUTE Tool.rotation_changed TO _7.set_rotation
-ROUTE Tool.translation_changed TO _7.set_translation
-ROUTE MoveScript.axisOfRotation_changed TO _6.set_axisRotation
+ROUTE Tool.rotation_changed TO _8.set_rotation
+ROUTE Tool.translation_changed TO _8.set_translation
+ROUTE MoveScript.axisOfRotation_changed TO _7.set_axisRotation
 ROUTE Tool.rotation_changed TO MoveScript.set_rotation
 ROUTE Tool.spacing_changed TO MoveScript.set_spacing
 ROUTE Tool.spacing_changed TO ScaleScript.set_spacing
 ROUTE Tool.dimension_changed TO ScaleScript.set_dimension
 ROUTE ScaleScript.dimension_changed TO Tool.set_dimension
-ROUTE Tool.dimension_changed TO _1.set_dimension
-ROUTE Tool.spacing_changed TO _1.set_spacing
+ROUTE Tool.dimension_changed TO _2.set_dimension
+ROUTE Tool.spacing_changed TO _2.set_spacing
+ROUTE Tool.majorLinesEvery_changed TO _2.set_majorLinesEvery
 
 EXPORT Tool

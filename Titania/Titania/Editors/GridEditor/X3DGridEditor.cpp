@@ -81,6 +81,12 @@ X3DGridEditor::X3DGridEditor () :
 	                        getGridZSpacingAdjustment (),
 	                        getGridSpacingBox (),
 	                        "spacing"),
+	       majorLinesEvery (getBrowserWindow (),
+	                        getGridMajorLinesEveryXAdjustment (),
+	                        getGridMajorLinesEveryYAdjustment (),
+	                        getGridMajorLinesEveryZAdjustment (),
+	                        getGridMajorLinesEveryBox (),
+	                        "majorLinesEvery"),
 	                 color (getBrowserWindow (),
 	                        getGridColorButton (),
 	                        getGridColorAdjustment (),
@@ -88,10 +94,11 @@ X3DGridEditor::X3DGridEditor () :
 	                        "color"),
 	              changing (false)
 {
-	translation .setUndo (false);
-	dimension   .setUndo (false);
-	spacing     .setUndo (false);
-	color       .setUndo (false);
+	translation     .setUndo (false);
+	dimension       .setUndo (false);
+	spacing         .setUndo (false);
+	majorLinesEvery .setUndo (false);
+	color           .setUndo (false);
 }
 
 void
@@ -100,10 +107,11 @@ X3DGridEditor::initialize ()
 	const auto & gridTool  = getBrowserWindow () -> getGridTool ();
 	X3D::MFNode  gridTools = { gridTool };
 
-	translation .setNodes (gridTools);
-	dimension   .setNodes (gridTools);
-	spacing     .setNodes (gridTools);
-	color       .setNodes (gridTools);
+	translation     .setNodes (gridTools);
+	dimension       .setNodes (gridTools);
+	spacing         .setNodes (gridTools);
+	majorLinesEvery .setNodes (gridTools);
+	color           .setNodes (gridTools);
 
 	gridTool -> rotation () .addInterest (this, &X3DGridEditor::set_rotation);
 
