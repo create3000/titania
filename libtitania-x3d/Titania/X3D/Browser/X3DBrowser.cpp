@@ -514,29 +514,29 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		const auto viewpoints = getActiveLayer () -> getUserViewpoints ();
 
-		if (not viewpoints .empty ())
+		if (viewpoints .empty ())
+			return;
+
+		size_t index = 0;
+
+		for (const auto & viewpoint : viewpoints)
 		{
-			size_t index = 0;
+			if (viewpoint -> isBound ())
+				break;
 
-			for (const auto & viewpoint : viewpoints)
-			{
-				if (viewpoint -> isBound ())
-					break;
-
-				++ index;
-			}
-
-			if (index < viewpoints .size ())
-			{
-				if (index == 0)
-					bindViewpoint (viewpoints .back ());
-
-				else
-					bindViewpoint (viewpoints [index - 1]);
-			}
-			else
-				bindViewpoint (viewpoints .back ());
+			++ index;
 		}
+
+		if (index < viewpoints .size ())
+		{
+			if (index == 0)
+				bindViewpoint (viewpoints .back ());
+
+			else
+				bindViewpoint (viewpoints [index - 1]);
+		}
+		else
+			bindViewpoint (viewpoints .back ());
 	}
 }
 
@@ -549,29 +549,29 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		const auto viewpoints = getActiveLayer () -> getUserViewpoints ();
 
-		if (not viewpoints .empty ())
+		if (viewpoints .empty ())
+			return;
+
+		size_t index = 0;
+
+		for (const auto & viewpoint : viewpoints)
 		{
-			size_t index = 0;
+			if (viewpoint -> isBound ())
+				break;
 
-			for (const auto & viewpoint : viewpoints)
-			{
-				if (viewpoint -> isBound ())
-					break;
-
-				++ index;
-			}
-
-			if (index < viewpoints .size ())
-			{
-				if (index == viewpoints .size () - 1)
-					bindViewpoint (viewpoints .front ());
-
-				else
-					bindViewpoint (viewpoints [index + 1]);
-			}
-			else
-				bindViewpoint (viewpoints .front ());
+			++ index;
 		}
+
+		if (index < viewpoints .size ())
+		{
+			if (index == viewpoints .size () - 1)
+				bindViewpoint (viewpoints .front ());
+
+			else
+				bindViewpoint (viewpoints [index + 1]);
+		}
+		else
+			bindViewpoint (viewpoints .front ());
 	}
 }
 
