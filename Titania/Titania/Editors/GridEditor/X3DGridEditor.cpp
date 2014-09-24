@@ -81,12 +81,12 @@ X3DGridEditor::X3DGridEditor () :
 	                        getGridZSpacingAdjustment (),
 	                        getGridSpacingBox (),
 	                        "spacing"),
-	       majorLinesEvery (getBrowserWindow (),
-	                        getGridMajorLinesEveryXAdjustment (),
-	                        getGridMajorLinesEveryYAdjustment (),
-	                        getGridMajorLinesEveryZAdjustment (),
-	                        getGridMajorLinesEveryBox (),
-	                        "majorLinesEvery"),
+	       majorLineEvery (getBrowserWindow (),
+	                        getGridMajorLineEveryXAdjustment (),
+	                        getGridMajorLineEveryYAdjustment (),
+	                        getGridMajorLineEveryZAdjustment (),
+	                        getGridMajorLineEveryBox (),
+	                        "majorLineEvery"),
 	                 color (getBrowserWindow (),
 	                        getGridColorButton (),
 	                        getGridColorAdjustment (),
@@ -104,13 +104,13 @@ X3DGridEditor::X3DGridEditor () :
 	                        "majorLineColor"),
 	              changing (false)
 {
-	translation     .setUndo (false);
-	dimension       .setUndo (false);
-	spacing         .setUndo (false);
-	majorLinesEvery .setUndo (false);
-	color           .setUndo (false);
-	lineColor       .setUndo (false);
-	majorLineColor  .setUndo (false);
+	translation    .setUndo (false);
+	dimension      .setUndo (false);
+	spacing        .setUndo (false);
+	majorLineEvery .setUndo (false);
+	color          .setUndo (false);
+	lineColor      .setUndo (false);
+	majorLineColor .setUndo (false);
 }
 
 void
@@ -119,13 +119,13 @@ X3DGridEditor::initialize ()
 	const auto & gridTool  = getBrowserWindow () -> getGridTool ();
 	X3D::MFNode  gridTools = { gridTool };
 
-	translation     .setNodes (gridTools);
-	dimension       .setNodes (gridTools);
-	spacing         .setNodes (gridTools);
-	majorLinesEvery .setNodes (gridTools);
-	color           .setNodes (gridTools);
-	lineColor       .setNodes (gridTools);
-	majorLineColor  .setNodes (gridTools);
+	translation    .setNodes (gridTools);
+	dimension      .setNodes (gridTools);
+	spacing        .setNodes (gridTools);
+	majorLineEvery .setNodes (gridTools);
+	color          .setNodes (gridTools);
+	lineColor      .setNodes (gridTools);
+	majorLineColor .setNodes (gridTools);
 
 	gridTool -> rotation () .addInterest (this, &X3DGridEditor::set_rotation);
 

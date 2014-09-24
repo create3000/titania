@@ -111,16 +111,16 @@ public:
 	{ return m_GridMajorLineColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getGridMajorLinesEveryXAdjustment () const
-	{ return m_GridMajorLinesEveryXAdjustment; }
+	getGridMajorLineEveryXAdjustment () const
+	{ return m_GridMajorLineEveryXAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getGridMajorLinesEveryYAdjustment () const
-	{ return m_GridMajorLinesEveryYAdjustment; }
+	getGridMajorLineEveryYAdjustment () const
+	{ return m_GridMajorLineEveryYAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getGridMajorLinesEveryZAdjustment () const
-	{ return m_GridMajorLinesEveryZAdjustment; }
+	getGridMajorLineEveryZAdjustment () const
+	{ return m_GridMajorLineEveryZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getGridTranslationXAdjustment () const
@@ -203,8 +203,8 @@ public:
 	{ return *m_GridSpacingBox; }
 
 	Gtk::Box &
-	getGridMajorLinesEveryBox () const
-	{ return *m_GridMajorLinesEveryBox; }
+	getGridMajorLineEveryBox () const
+	{ return *m_GridMajorLineEveryBox; }
 
 	Gtk::Box &
 	getGridLineColorBox () const
@@ -242,9 +242,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GridColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridLineColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLineColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLinesEveryXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLinesEveryYAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLinesEveryZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLineEveryXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLineEveryYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLineEveryZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridTranslationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridTranslationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridTranslationZAdjustment;
@@ -265,7 +265,7 @@ private:
 	Gtk::Box*                      m_GridTranslationBox;
 	Gtk::Box*                      m_GridDimensionBox;
 	Gtk::Box*                      m_GridSpacingBox;
-	Gtk::Box*                      m_GridMajorLinesEveryBox;
+	Gtk::Box*                      m_GridMajorLineEveryBox;
 	Gtk::Box*                      m_GridLineColorBox;
 	Gtk::Button*                   m_GridLineColorButton;
 	Gtk::Box*                      m_GridMajorLineColorBox;

@@ -60,7 +60,7 @@ WorldInfo {
           ]
         }
         MetadataInteger {
-          name "majorLinesEvery"
+          name "majorLineEvery"
           value [
             3,
             5,

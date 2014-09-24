@@ -17,19 +17,19 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="GridMajorLinesEveryXAdjustment">
+  <object class="GtkAdjustment" id="GridMajorLineEveryXAdjustment">
     <property name="lower">1</property>
     <property name="upper">10000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
-  <object class="GtkAdjustment" id="GridMajorLinesEveryYAdjustment">
+  <object class="GtkAdjustment" id="GridMajorLineEveryYAdjustment">
     <property name="lower">1</property>
     <property name="upper">10000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
-  <object class="GtkAdjustment" id="GridMajorLinesEveryZAdjustment">
+  <object class="GtkAdjustment" id="GridMajorLineEveryZAdjustment">
     <property name="lower">1</property>
     <property name="upper">10000</property>
     <property name="step_increment">1</property>
@@ -501,7 +501,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="xalign">0</property>
-                            <property name="label" translatable="yes">Major Lines Every:</property>
+                            <property name="label" translatable="yes">Major Line Every:</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -511,7 +511,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="GridMajorLinesEveryBox">
+                          <object class="GtkBox" id="GridMajorLineEveryBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
@@ -521,7 +521,7 @@
                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
-                                <property name="adjustment">GridMajorLinesEveryXAdjustment</property>
+                                <property name="adjustment">GridMajorLineEveryXAdjustment</property>
                                 <property name="climb_rate">1</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>
@@ -539,7 +539,7 @@
                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
-                                <property name="adjustment">GridMajorLinesEveryYAdjustment</property>
+                                <property name="adjustment">GridMajorLineEveryYAdjustment</property>
                                 <property name="climb_rate">1</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>
@@ -557,7 +557,7 @@
                                 <property name="tooltip_text" translatable="yes">z-Axis</property>
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
-                                <property name="adjustment">GridMajorLinesEveryZAdjustment</property>
+                                <property name="adjustment">GridMajorLineEveryZAdjustment</property>
                                 <property name="climb_rate">1</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>

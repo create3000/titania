@@ -27,7 +27,7 @@ PROTO Grid [
     1,
     1
   ]
-  inputOutput    MFInt32 majorLinesEvery [
+  inputOutput    MFInt32 majorLineEvery [
     5,
     5,
     5
@@ -253,7 +253,7 @@ PROTO Grid [
   DEF GridScript Script {
     inputOutput    MFInt32 dimension IS dimension
     inputOutput    MFFloat spacing IS spacing
-    inputOutput    MFInt32 majorLinesEvery IS majorLinesEvery
+    inputOutput    MFInt32 majorLineEvery IS majorLineEvery
     initializeOnly SFNode  plane USE Plane
     initializeOnly SFNode  majorGrid USE MajorGrid
     initializeOnly SFNode  grid USE Grid
@@ -301,7 +301,7 @@ function generateGrid (major, point)
 
 	for (var i = 0, size = dimension [0] + 1; i < size; ++ i)
 	{
-		if (major - isMajor (i, dimension [0], majorLinesEvery [0]))
+		if (major - isMajor (i, dimension [0], majorLineEvery [0]))
 			continue;
 
 		point [p]     = new SFVec3f (-scaleX1_2 + spacing [0] * i, 0, -scaleZ1_2 - XSpacing1_4);
@@ -315,7 +315,7 @@ function generateGrid (major, point)
 
 	for (var i = 0, size = dimension [2] + 1; i < size; ++ i)
 	{
-		if (major - isMajor (i, dimension [2], majorLinesEvery [2]))
+		if (major - isMajor (i, dimension [2], majorLineEvery [2]))
 			continue;
 
 		point [p]     = new SFVec3f (-scaleX1_2 - ZSpacing1_4, 0, -scaleZ1_2 + spacing [2] * i);
@@ -339,7 +339,7 @@ function generatePoints (major, point)
 	
 	for (var i = 0, size = dimension [1] + 1; i < size; ++ i)
 	{
-		if (major - isMajor (i, dimension [1], majorLinesEvery [1]))
+		if (major - isMajor (i, dimension [1], majorLineEvery [1]))
 			continue;
 
 		point [p] = new SFVec3f (0, offset - i * spacing [1], 0);
@@ -349,9 +349,9 @@ function generatePoints (major, point)
 	point .length = p;
 }
 
-function isMajor (i, dimension, majorLinesEvery)
+function isMajor (i, dimension, majorLineEvery)
 {
-	return round (i - dimension / 2) % majorLinesEvery == 0;
+	return round (i - dimension / 2) % majorLineEvery == 0;
 }
 
 function round (value)
@@ -521,7 +521,7 @@ DEF Tool Script {
     1,
     1
   ]
-  inputOutput MFInt32    majorLinesEvery [
+  inputOutput MFInt32    majorLineEvery [
     5,
     5,
     5
@@ -558,7 +558,7 @@ ROUTE Tool.dimension_changed TO ScaleScript.set_dimension
 ROUTE ScaleScript.dimension_changed TO Tool.set_dimension
 ROUTE Tool.dimension_changed TO _2.set_dimension
 ROUTE Tool.spacing_changed TO _2.set_spacing
-ROUTE Tool.majorLinesEvery_changed TO _2.set_majorLinesEvery
+ROUTE Tool.majorLineEvery_changed TO _2.set_majorLineEvery
 ROUTE Tool.lineColor_changed TO _2.set_lineColor
 ROUTE Tool.lineTransparency_changed TO _2.set_lineTransparency
 ROUTE Tool.majorLineColor_changed TO _2.set_majorLineColor

@@ -106,12 +106,12 @@ public:
 	{ return *fields .spacing; }
 
 	MFInt32 &
-	majorLinesEvery ()
-	{ return *fields .majorLinesEvery; }
+	majorLineEvery ()
+	{ return *fields .majorLineEvery; }
 
 	const MFInt32 &
-	majorLinesEvery () const
-	{ return *fields .majorLinesEvery; }
+	majorLineEvery () const
+	{ return *fields .majorLineEvery; }
 
 
 private:
@@ -140,7 +140,7 @@ private:
 
 		MFInt32* const dimension;
 		MFFloat* const spacing;
-		MFInt32* const majorLinesEvery;
+		MFInt32* const majorLineEvery;
 	};
 
 	Fields fields;

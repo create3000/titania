@@ -116,7 +116,7 @@ private:
 	set_spacing ();
 
 	void
-	set_majorLinesEvery ();
+	set_majorLineEvery ();
 
 	void
 	set_color ();
@@ -140,7 +140,7 @@ private:
 	connectSpacing (const X3D::MFFloat &);
 
 	void
-	connectMajorLinesEvery (const X3D::MFInt32 &);
+	connectMajorLineEvery (const X3D::MFInt32 &);
 
 	void
 	connectColor (const X3D::SFColorRGBA &);

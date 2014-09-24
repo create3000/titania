@@ -86,7 +86,7 @@ X3DGridTool::realize ()
 		color ()     .addInterest (this, &X3DGridTool::set_color);
 		lineColor () .addInterest (this, &X3DGridTool::set_lineColor);
 		majorLineColor () .addInterest (this, &X3DGridTool::set_majorLineColor);
-		
+
 		set_color ();
 		set_lineColor ();
 		set_majorLineColor ();
@@ -102,13 +102,13 @@ X3DGridTool::set_color ()
 	{
 		auto & set_color        = getToolNode () -> getField <SFColor> ("set_color");
 		auto & set_transparency = getToolNode () -> getField <SFFloat> ("set_transparency");
-	
+
 		set_color        = Color3f (color () .getR (), color () .getG (), color () .getB ());
 		set_transparency = 1 - color () .getA ();
 	}
 	catch (const X3DError & error)
 	{ }
-	
+
 }
 
 void
@@ -124,7 +124,7 @@ X3DGridTool::set_lineColor ()
 	}
 	catch (const X3DError & error)
 	{ }
-	
+
 }
 
 void
@@ -140,7 +140,7 @@ X3DGridTool::set_majorLineColor ()
 	}
 	catch (const X3DError & error)
 	{ }
-	
+
 }
 
 } // X3D

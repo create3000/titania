@@ -63,7 +63,7 @@ const std::string GridTool::containerField = "grid";
 GridTool::Fields::Fields () :
 	      dimension (new MFInt32 ({ 10, 10, 10 })),
 	        spacing (new MFFloat ({ 1, 1, 1 })),
-	majorLinesEvery (new MFInt32 ({ 5, 5, 5 }))
+	majorLineEvery (new MFInt32 ({ 5, 5, 5 }))
 { }
 
 GridTool::GridTool (X3DExecutionContext* const executionContext) :
@@ -71,15 +71,15 @@ GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	X3DGridTool (),
 	     fields ()
 {
-	addField (inputOutput, "metadata",        metadata ());
-	addField (inputOutput, "translation",     translation ());
-	addField (inputOutput, "rotation",        rotation ());
-	addField (inputOutput, "dimension",       dimension ());;
-	addField (inputOutput, "spacing",         spacing ());
-	addField (inputOutput, "majorLinesEvery", majorLinesEvery ());
-	addField (inputOutput, "color",           color ());
-	addField (inputOutput, "lineColor",       lineColor ());
-	addField (inputOutput, "majorLineColor",  majorLineColor ());
+	addField (inputOutput, "metadata",       metadata ());
+	addField (inputOutput, "translation",    translation ());
+	addField (inputOutput, "rotation",       rotation ());
+	addField (inputOutput, "dimension",      dimension ());;
+	addField (inputOutput, "spacing",        spacing ());
+	addField (inputOutput, "majorLineEvery", majorLineEvery ());
+	addField (inputOutput, "color",          color ());
+	addField (inputOutput, "lineColor",      lineColor ());
+	addField (inputOutput, "majorLineColor", majorLineColor ());
 }
 
 X3DBaseNode*
@@ -113,10 +113,10 @@ GridTool::realize ()
 		set_spacing .addInterest (spacing ());
 		set_spacing = spacing ();
 
-		auto & set_majorLinesEvery = getToolNode () -> getField <MFInt32> ("set_majorLinesEvery");
-		majorLinesEvery ()  .addInterest (set_majorLinesEvery);
-		set_majorLinesEvery .addInterest (majorLinesEvery ());
-		set_majorLinesEvery = majorLinesEvery ();
+		auto & set_majorLineEvery = getToolNode () -> getField <MFInt32> ("set_majorLineEvery");
+		majorLineEvery ()  .addInterest (set_majorLineEvery);
+		set_majorLineEvery .addInterest (majorLineEvery ());
+		set_majorLineEvery = majorLineEvery ();
 	}
 	catch (const X3DError & error)
 	{ }

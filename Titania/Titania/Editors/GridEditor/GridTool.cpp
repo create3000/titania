@@ -161,8 +161,8 @@ GridTool::configure ()
 	getTool () -> spacing () .removeInterest (this, &GridTool::set_spacing);
 	getTool () -> spacing () .addInterest (this, &GridTool::connectSpacing);
 
-	getTool () -> majorLinesEvery () .removeInterest (this, &GridTool::set_majorLinesEvery);
-	getTool () -> majorLinesEvery () .addInterest (this, &GridTool::connectMajorLinesEvery);
+	getTool () -> majorLineEvery () .removeInterest (this, &GridTool::set_majorLineEvery);
+	getTool () -> majorLineEvery () .addInterest (this, &GridTool::connectMajorLineEvery);
 
 	getTool () -> color () .removeInterest (this, &GridTool::set_color);
 	getTool () -> color () .addInterest (this, &GridTool::connectColor);
@@ -221,14 +221,14 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/GridTool/majorLinesEvery");
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/GridTool/majorLineEvery");
 
-		getTool () -> majorLinesEvery () = v;
-		getTool () -> majorLinesEvery () .resize (3, X3D::SFInt32 (5));
+		getTool () -> majorLineEvery () = v;
+		getTool () -> majorLineEvery () .resize (3, X3D::SFInt32 (5));
 	}
 	catch (...)
 	{
-		getTool () -> majorLinesEvery () = { 5, 5, 5 };
+		getTool () -> majorLineEvery () = { 5, 5, 5 };
 	}
 
 	try
@@ -294,9 +294,9 @@ GridTool::set_spacing ()
 }
 
 void
-GridTool::set_majorLinesEvery ()
+GridTool::set_majorLineEvery ()
 {
-	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/majorLinesEvery", getTool () -> majorLinesEvery ());
+	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/majorLineEvery", getTool () -> majorLineEvery ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
@@ -350,10 +350,10 @@ GridTool::connectSpacing (const X3D::MFFloat & field)
 }
 
 void
-GridTool::connectMajorLinesEvery (const X3D::MFInt32 & field)
+GridTool::connectMajorLineEvery (const X3D::MFInt32 & field)
 {
-	field .removeInterest (this, &GridTool::connectMajorLinesEvery);
-	field .addInterest (this, &GridTool::set_majorLinesEvery);
+	field .removeInterest (this, &GridTool::connectMajorLineEvery);
+	field .addInterest (this, &GridTool::set_majorLineEvery);
 }
 
 void
