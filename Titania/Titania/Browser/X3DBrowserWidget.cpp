@@ -214,8 +214,8 @@ X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
 	X3DBrowserWindowInterface::setBrowser (value);
 
 	browser          = value;
-	scene            = getBrowser () -> getExecutionContext () -> getMasterContext ();
-	executionContext = getBrowser () -> getExecutionContext ();
+	scene            = browser -> getExecutionContext () -> getMasterContext ();
+	executionContext = browser -> getExecutionContext ();
 
 	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_executionContext);
 	isLive (isLive ());

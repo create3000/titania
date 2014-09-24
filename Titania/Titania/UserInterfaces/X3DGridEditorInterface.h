@@ -174,6 +174,10 @@ public:
 	getGridExpander () const
 	{ return *m_GridExpander; }
 
+	Gtk::CheckButton &
+	getGridCheckButton () const
+	{ return *m_GridCheckButton; }
+
 	Gtk::Grid &
 	getGridBox () const
 	{ return *m_GridBox; }
@@ -224,6 +228,10 @@ public:
 
 	virtual
 	void
+	on_grid_toggled () = 0;
+
+	virtual
+	void
 	on_grid_plane_changed () = 0;
 
 	virtual
@@ -258,6 +266,7 @@ private:
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Expander*                 m_GridExpander;
+	Gtk::CheckButton*              m_GridCheckButton;
 	Gtk::Grid*                     m_GridBox;
 	Gtk::ComboBoxText*             m_GridPlaneComboBoxText;
 	Gtk::Box*                      m_GridColorBox;

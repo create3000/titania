@@ -82,6 +82,7 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("GridExpander", m_GridExpander);
+	m_builder -> get_widget ("GridCheckButton", m_GridCheckButton);
 	m_builder -> get_widget ("GridBox", m_GridBox);
 	m_builder -> get_widget ("GridPlaneComboBoxText", m_GridPlaneComboBoxText);
 	m_builder -> get_widget ("GridColorBox", m_GridColorBox);
@@ -94,6 +95,7 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GridLineColorButton", m_GridLineColorButton);
 	m_builder -> get_widget ("GridMajorLineColorBox", m_GridMajorLineColorBox);
 	m_builder -> get_widget ("GridMajorLineColorButton", m_GridMajorLineColorButton);
+	m_GridCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_toggled));
 
 	// Connect object Gtk::ComboBoxText with id 'GridPlaneComboBoxText'.
 	m_GridPlaneComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_plane_changed));

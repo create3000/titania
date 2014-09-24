@@ -98,6 +98,10 @@ private:
 
 	virtual
 	void
+	on_grid_toggled () final override;
+
+	virtual
+	void
 	on_grid_plane_changed () final override;
 
 	void

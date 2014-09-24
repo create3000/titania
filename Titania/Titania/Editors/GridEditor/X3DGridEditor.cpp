@@ -104,6 +104,8 @@ X3DGridEditor::X3DGridEditor () :
 	                        "majorLineColor"),
 	              changing (false)
 {
+	getGridCheckButton () .set_related_action (getBrowserWindow () -> getGridToggleAction ());
+
 	translation    .setUndo (false);
 	dimension      .setUndo (false);
 	spacing        .setUndo (false);
@@ -129,7 +131,14 @@ X3DGridEditor::initialize ()
 
 	gridTool -> rotation () .addInterest (this, &X3DGridEditor::set_rotation);
 
+	on_grid_toggled ();
 	set_rotation ();
+}
+
+void
+X3DGridEditor::on_grid_toggled ()
+{
+	getGridBox () .set_sensitive (getGridCheckButton () .get_active ());
 }
 
 void
