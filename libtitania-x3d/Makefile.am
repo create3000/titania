@@ -514,6 +514,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Navigation/BillboardTool.cpp \
 	Titania/X3D/Tools/Navigation/CollisionTool.cpp \
 	Titania/X3D/Tools/Navigation/LODTool.cpp \
+	Titania/X3D/Tools/Picking/PickableGroupTool.cpp \
 	Titania/X3D/Types/Image.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \

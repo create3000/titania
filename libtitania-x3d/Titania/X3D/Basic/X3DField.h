@@ -66,6 +66,7 @@ public:
 
 	typedef ValueType internal_type;
 
+	using X3DFieldDefinition::addEvent;
 	using X3DFieldDefinition::addInterest;
 	using X3DFieldDefinition::processInterests;
 
@@ -111,6 +112,7 @@ public:
 
 	///  @name Element access
 
+	///  Returns true if this field has the default value for this field type, otherwise false.
 	virtual
 	bool
 	isDefaultValue () const final override
@@ -120,17 +122,27 @@ public:
 		return value == defaultValue;
 	}
 
-	///  6.7.5 getValue service.
+	///  Returns the value of this field.
 	const ValueType &
 	getValue () const
 	{ return value; }
 
-	///  6.7.6 setValue service.
+	///  Assigns @a value to this field and notifies its parents about a change.
 	void
 	setValue (const ValueType & value)
 	{
 		set (value);
 		addEvent ();
+	}
+
+	///  Deferredly assigns @a value to this field and notifies its parents about a change.
+	void
+	addEvent (const X3DField & value)
+	{
+		const auto event = std::make_shared <Event> (&value);
+
+		event -> sources .emplace (&value);
+		addEvent (this, event);
 	}
 
 	///  Set @a value to this field without notifying this fields parents.

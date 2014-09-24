@@ -106,17 +106,17 @@ GridTool::realize ()
 		auto & set_dimension = getToolNode () -> getField <MFInt32> ("set_dimension");
 		dimension ()  .addInterest (set_dimension);
 		set_dimension .addInterest (dimension ());
-		set_dimension = dimension ();
+		set_dimension .addEvent (dimension ());
 
 		auto & set_spacing = getToolNode () -> getField <MFFloat> ("set_spacing");
 		spacing ()  .addInterest (set_spacing);
 		set_spacing .addInterest (spacing ());
-		set_spacing = spacing ();
+		set_spacing .addEvent (spacing ());
 
 		auto & set_majorLineEvery = getToolNode () -> getField <MFInt32> ("set_majorLineEvery");
 		majorLineEvery ()  .addInterest (set_majorLineEvery);
 		set_majorLineEvery .addInterest (majorLineEvery ());
-		set_majorLineEvery = majorLineEvery ();
+		set_majorLineEvery .addEvent (majorLineEvery ());
 	}
 	catch (const X3DError & error)
 	{ }

@@ -787,6 +787,7 @@
     <None Include="Titania\X3D\Tools\Grids\AngleTool.h" />
     <None Include="Titania\X3D\Tools\Core\Tool.h" />
     <None Include="Titania\X3D\Tools\Layering\X3DActiveLayerTool.h" />
+    <None Include="Titania\X3D\Tools\Picking\PickableGroupTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1301,6 +1302,7 @@
     <Compile Include="Titania\X3D\Tools\Grids\AngleTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Core\Tool.cpp" />
     <Compile Include="Titania\X3D\Tools\Layering\X3DActiveLayerTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Picking\PickableGroupTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1371,6 +1373,7 @@
     <Folder Include="Titania\X3D\Tools\ParticleSystems\" />
     <Folder Include="Titania\X3D\Tools\CADGeometry\" />
     <Folder Include="Titania\X3D\Tools\Layering\" />
+    <Folder Include="Titania\X3D\Tools\Picking\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -54,8 +54,8 @@ namespace titania {
 namespace X3D {
 
 X3DPickableObject::Fields::Fields () :
-	objectType (new MFString ({ "ALL" })),
-	pickable (new SFBool (true))
+	  pickable (new SFBool (true)),
+	objectType (new MFString ({ "ALL" }))
 { }
 
 X3DPickableObject::X3DPickableObject () :

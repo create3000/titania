@@ -98,6 +98,7 @@ GridTool::isEnabled (const bool value, const bool metadata)
 
 	if (metadata)
 	{
+__LOG__ << std::endl;
 		getWorldInfo (true) -> setMetaData <bool> ("/Titania/GridTool/enabled", enabled);
 		getBrowserWindow () -> isModified (getBrowser (), true);
 	}
@@ -268,6 +269,7 @@ GridTool::configure ()
 void
 GridTool::set_translation ()
 {
+__LOG__ << std::endl;
 	getWorldInfo (true) -> setMetaData <X3D::Vector3f> ("/Titania/GridTool/translation", getTool () -> translation ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
@@ -275,6 +277,7 @@ GridTool::set_translation ()
 void
 GridTool::set_rotation ()
 {
+__LOG__ << std::endl;
 	getWorldInfo (true) -> setMetaData <X3D::Rotation4f> ("/Titania/GridTool/rotation", getTool () -> rotation ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
@@ -282,6 +285,7 @@ GridTool::set_rotation ()
 void
 GridTool::set_dimension ()
 {
+__LOG__ << std::endl;
 	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/dimension", getTool () -> dimension ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
@@ -289,6 +293,7 @@ GridTool::set_dimension ()
 void
 GridTool::set_spacing ()
 {
+__LOG__ << std::endl;
 	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/spacing", getTool () -> spacing ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
@@ -296,6 +301,7 @@ GridTool::set_spacing ()
 void
 GridTool::set_majorLineEvery ()
 {
+__LOG__ << std::endl;
 	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/majorLineEvery", getTool () -> majorLineEvery ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
@@ -310,6 +316,7 @@ GridTool::set_color ()
 void
 GridTool::set_lineColor ()
 {
+__LOG__ << std::endl;
 	getWorldInfo (true) -> setMetaData <X3D::Color4f> ("/Titania/GridTool/lineColor", getTool () -> lineColor ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
@@ -317,6 +324,7 @@ GridTool::set_lineColor ()
 void
 GridTool::set_majorLineColor ()
 {
+__LOG__ << std::endl;
 	getWorldInfo (true) -> setMetaData <X3D::Color4f> ("/Titania/GridTool/majorLineColor", getTool () -> majorLineColor ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }

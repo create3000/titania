@@ -48,30 +48,62 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASE_EVENT_H__
-#define __TITANIA_X3D_BASE_EVENT_H__
+#ifndef __TITANIA_X3D_TOOLS_PICKING_PICKABLE_GROUP_TOOL_H__
+#define __TITANIA_X3D_TOOLS_PICKING_PICKABLE_GROUP_TOOL_H__
 
-#include "../Base/ChildObjectSet.h"
-#include <memory>
+#include "../Grouping/X3DGroupingNodeTool.h"
+
+#include "../../Components/Picking/PickableGroup.h"
 
 namespace titania {
 namespace X3D {
 
-class Event
+class PickableGroupTool :
+	public X3DGroupingNodeTool <PickableGroup>
 {
 public:
 
-	Event (const X3DChildObject* const object) :
-		 object (object),
-		sources ()
-	{ }
+	///  @name Construction
 
-	const X3DChildObject* const      object;
-	std::set <const X3DChildObject*> sources;
+	PickableGroupTool (PickableGroup* const);
+
+	///  @name Fields
+
+	virtual
+	MFString &
+	objectType () final override
+	{ return getNode () -> objectType (); }
+
+	virtual
+	const MFString &
+	objectType () const final override
+	{ return getNode () -> objectType (); }
+
+	virtual
+	SFBool &
+	pickable () final override
+	{ return getNode () -> pickable (); }
+
+	virtual
+	const SFBool &
+	pickable () const final override
+	{ return getNode () -> pickable (); }
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_pickable (const bool);
 
 };
-
-typedef std::shared_ptr <Event> EventPtr;
 
 } // X3D
 } // titania

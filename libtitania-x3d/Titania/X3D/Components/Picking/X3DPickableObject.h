@@ -63,21 +63,25 @@ class X3DPickableObject :
 {
 public:
 
-	MFString &
-	objectType ()
-	{ return *fields .objectType; }
-
-	const MFString &
-	objectType () const
-	{ return *fields .objectType; }
-
+	virtual
 	SFBool &
 	pickable ()
 	{ return *fields .pickable; }
 
+	virtual
 	const SFBool &
 	pickable () const
 	{ return *fields .pickable; }
+
+	virtual
+	MFString &
+	objectType ()
+	{ return *fields .objectType; }
+
+	virtual
+	const MFString &
+	objectType () const
+	{ return *fields .objectType; }
 
 	virtual
 	void
@@ -99,8 +103,8 @@ private:
 	{
 		Fields ();
 
-		MFString* const objectType;
 		SFBool* const pickable;
+		MFString* const objectType;
 	};
 
 	Fields fields;

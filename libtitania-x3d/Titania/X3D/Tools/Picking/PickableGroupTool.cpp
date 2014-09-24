@@ -48,32 +48,42 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASE_EVENT_H__
-#define __TITANIA_X3D_BASE_EVENT_H__
+#include "PickableGroupTool.h"
 
-#include "../Base/ChildObjectSet.h"
-#include <memory>
+#include "../../Bits/Linetypes.h"
+#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {
 
-class Event
+PickableGroupTool::PickableGroupTool (PickableGroup* const node) :
+	                        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	        X3DBaseTool <PickableGroup> (node),
+	X3DGroupingNodeTool <PickableGroup> (Color3f (1, 0.7, 0.7))
 {
-public:
+	//addType (X3DConstants::PickableGroupTool);
+}
 
-	Event (const X3DChildObject* const object) :
-		 object (object),
-		sources ()
+void
+PickableGroupTool::initialize ()
+{
+	X3DGroupingNodeTool <PickableGroup>::initialize ();
+
+	getNode () -> pickable () .addInterest (this, &PickableGroupTool::set_pickable);
+
+	set_pickable (getNode () -> pickable ());
+}
+
+void
+PickableGroupTool::set_pickable (const bool value)
+{
+	try
+	{
+		getToolNode () -> setField <SFInt32> ("linetype", int (value ? LineType::SOLID : LineType::DOTTED));
+	}
+	catch (const X3DError & error)
 	{ }
-
-	const X3DChildObject* const      object;
-	std::set <const X3DChildObject*> sources;
-
-};
-
-typedef std::shared_ptr <Event> EventPtr;
+}
 
 } // X3D
 } // titania
-
-#endif

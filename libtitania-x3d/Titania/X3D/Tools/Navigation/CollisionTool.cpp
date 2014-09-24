@@ -59,7 +59,8 @@ namespace X3D {
 CollisionTool::CollisionTool (Collision* const node) :
 	                    X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	        X3DBaseTool <Collision> (node),
-	X3DGroupingNodeTool <Collision> (ToolColors::RED)
+	X3DGroupingNodeTool <Collision> (ToolColors::RED),
+	  X3DSensorNodeTool <Collision> ()
 {
 	addType (X3DConstants::CollisionTool);
 }

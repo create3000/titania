@@ -1,5 +1,22 @@
 2014-09-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Event.h:
+	* X3DField.h:
+	* GridTool.cpp:
+	* X3DGridTool.cpp:
+	* CollisionTool.h:
+	* PickableGroupTool.h:
+	* CollisionTool.cpp:
+	* PickableGroup.h:
+	* PickableGroupTool.cpp:
+	* PickableGroup.cpp:
+	* X3DPickableObject.h:
+	* X3DPickableObject.cpp: 
+
+2014-09-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* GridTool.x3dv:
 	* GridTool.h:
 	* GridTool.cpp:

@@ -92,22 +92,29 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	traverse (const TraverseType) override;
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override;
+
+	virtual
+	void
+	addTool () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Static members
 

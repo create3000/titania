@@ -76,15 +76,15 @@ X3DGridTool::realize ()
 		auto & set_translation = getToolNode () -> getField <SFVec3f> ("set_translation");
 		translation ()  .addInterest (set_translation);
 		set_translation .addInterest (translation ());
-		set_translation = translation ();
+		set_translation .addEvent (translation ());
 
 		auto & set_rotation = getToolNode () -> getField <SFRotation> ("set_rotation");
 		rotation ()  .addInterest (set_rotation);
-		set_rotation .addInterest (rotation ());
-		set_rotation = rotation ();
+		set_rotation .addInterest (rotation ());		
+		set_rotation .addEvent (rotation ());
 
-		color ()     .addInterest (this, &X3DGridTool::set_color);
-		lineColor () .addInterest (this, &X3DGridTool::set_lineColor);
+		color ()          .addInterest (this, &X3DGridTool::set_color);
+		lineColor ()      .addInterest (this, &X3DGridTool::set_lineColor);
 		majorLineColor () .addInterest (this, &X3DGridTool::set_majorLineColor);
 
 		set_color ();

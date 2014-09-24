@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_TOOLS_NAVIGATION_COLLISION_TOOL_H__
 #define __TITANIA_X3D_TOOLS_NAVIGATION_COLLISION_TOOL_H__
 
+#include "../Core/X3DSensorNodeTool.h"
 #include "../Grouping/X3DGroupingNodeTool.h"
 
 #include "../../Components/Navigation/Collision.h"
@@ -59,7 +60,8 @@ namespace titania {
 namespace X3D {
 
 class CollisionTool :
-	public X3DGroupingNodeTool <Collision>
+	public X3DGroupingNodeTool <Collision>,
+	public X3DSensorNodeTool <Collision>
 {
 public:
 
@@ -90,6 +92,10 @@ public:
 	{ return getNode () -> proxy (); }
 
 private:
+
+	using X3DGroupingNodeTool <Collision>::addType;
+	using X3DGroupingNodeTool <Collision>::getNode;
+	using X3DGroupingNodeTool <Collision>::getToolNode;
 
 	///  @name Construction
 
