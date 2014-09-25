@@ -73,8 +73,6 @@ class X3DGridEditor :
 {
 public:
 
-	using X3DGridEditorInterface::setup;
-
 	///  @name Destruction
 
 	virtual

@@ -104,7 +104,7 @@ X3DGridEditor::X3DGridEditor () :
 	                        "majorLineColor"),
 	              changing (false)
 {
-	getGridCheckButton () .set_related_action (getBrowserWindow () -> getGridToggleAction ());
+	getGridCheckButton () .set_related_action (getBrowserWindow () -> getGridToolAction ());
 
 	translation    .setUndo (false);
 	dimension      .setUndo (false);

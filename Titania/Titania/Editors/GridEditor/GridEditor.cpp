@@ -60,7 +60,8 @@ namespace puck {
 GridEditor::GridEditor (X3DBrowserWindow* const browserWindow) :
 	      X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DGridEditorInterface (get_ui ("Editors/GridEditor.xml"), gconf_dir ()),
-	         X3DGridEditor ()
+	         X3DGridEditor (),
+	        X3DAngleEditor ()
 {
 	setup ();
 }
@@ -69,6 +70,15 @@ void
 GridEditor::initialize ()
 {
 	X3DGridEditor::initialize ();
+	X3DAngleEditor::initialize ();
+
+	getGridNotebook () .set_current_page (getConfig () .get <size_t> ("currentPage"));
+}
+
+void
+GridEditor::on_switch_page (Gtk::Widget*, guint pageNumber)
+{
+	getConfig () .set <size_t> ("currentPage", pageNumber);
 }
 
 GridEditor::~GridEditor ()

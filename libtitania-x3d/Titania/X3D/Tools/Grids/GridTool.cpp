@@ -61,8 +61,8 @@ const std::string GridTool::typeName       = "GridTool";
 const std::string GridTool::containerField = "grid";
 
 GridTool::Fields::Fields () :
-	      dimension (new MFInt32 ({ 10, 10, 10 })),
-	        spacing (new MFFloat ({ 1, 1, 1 })),
+	     dimension (new MFInt32 ({ 10, 10, 10 })),
+	       spacing (new MFFloat ({ 1, 1, 1 })),
 	majorLineEvery (new MFInt32 ({ 5, 5, 5 }))
 { }
 

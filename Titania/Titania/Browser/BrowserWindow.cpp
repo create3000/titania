@@ -129,13 +129,12 @@ BrowserWindow::loadStyles () const
 	cssProvider1 -> load_from_path (get_ui ("style.css"));
 	Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider1, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-	std::string string;
-
 	const auto styleContext = getWidget () .get_style_context ();
+	const auto fg_selected  = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED);
+	const auto bg_normal    = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL);
+	const auto bg_selected  = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED);
 
-	const auto fg_selected = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED);
-	const auto bg_normal   = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL);
-	const auto bg_selected = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED);
+	std::string string;
 
 	string += "#OutlineTreeViewEditor .textview-editable GtkTextView {";
 	string += "  background-color: mix (" + bg_selected .to_string () + ", " + bg_normal .to_string () + ", 0.9);";
@@ -224,6 +223,15 @@ BrowserWindow::set_scene ()
 	catch (...)
 	{
 		getGridLayoutToolMenuItem () .set_active (false);
+	}
+
+	try
+	{
+		getAngleLayoutToolMenuItem () .set_active (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/AngleTool/enabled") .at (0));
+	}
+	catch (...)
+	{
+		getAngleLayoutToolMenuItem () .set_active (false);
 	}
 
 	changing = false;

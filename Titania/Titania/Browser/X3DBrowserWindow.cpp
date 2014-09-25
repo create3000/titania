@@ -50,6 +50,7 @@
 
 #include "X3DBrowserWindow.h"
 
+#include "../Editors/GridEditor/AngleTool.h"
 #include "../Editors/GridEditor/GridTool.h"
 
 #include "../Widgets/Console/Console.h"
@@ -60,8 +61,6 @@
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
 #include "../Widgets/ScriptEditor/ScriptEditor.h"
 #include "../Widgets/ViewpointList/ViewpointList.h"
-
-#include <Titania/X3D/Tools/Grids/AngleTool.h>
 
 #include <Titania/X3D/Browser/ContextLock.h>
 
@@ -76,13 +75,10 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
 	            outlineEditor (new OutlineEditor (this)),
 	                  console (new Console (this)),
 	             scriptEditor (new ScriptEditor (this)),
-	                    tools (),
 	                 gridTool (new GridTool (this)),
-	                angleTool (),
+	                angleTool (new AngleTool (this)),
 	                     keys (),
-	             accelerators (true),
-	             hasGridTool_ (false),
-	            hasAngleTool_ (false)
+	             accelerators (true)
 { }
 
 void
@@ -101,9 +97,6 @@ X3DBrowserWindow::initialize ()
 void
 X3DBrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 {
-	for (const auto & tool : tools)
-		tool -> setExecutionContext (value);
-
 	X3DBrowserEditor::setBrowser (value);
 }
 
@@ -155,33 +148,19 @@ X3DBrowserWindow::getGridTool () const
 void
 X3DBrowserWindow::hasAngleTool (const bool value)
 {
-	hasAngleTool_ = value;
+	angleTool -> isEnabled (value);
+}
 
-	if (hasAngleTool_)
-	{
-		getAngleTool () -> setExecutionContext (getBrowser ());
-		tools .emplace (getAngleTool ());
-	}
-	else
-	{
-		getAngleTool () -> setExecutionContext (getMasterBrowser ());
-		tools .erase (X3D::SFNode (getAngleTool ()));
-	}
+bool
+X3DBrowserWindow::hasAngleTool () const
+{
+	return angleTool -> isEnabled ();
 }
 
 const X3D::X3DPtr <X3D::AngleTool> &
 X3DBrowserWindow::getAngleTool () const
 {
-	if (not angleTool)
-	{
-		const_cast <X3DBrowserWindow*> (this) -> angleTool = hasAngleTool ()
-		                                                     ? X3D::createNode <X3D::AngleTool> (getBrowser ())
-		                                                     : X3D::createNode <X3D::AngleTool> (getMasterBrowser ());
-
-		angleTool -> getExecutionContext () -> realize ();
-	}
-
-	return angleTool;
+	return angleTool -> getTool ();
 }
 
 X3D::WorldInfoPtr

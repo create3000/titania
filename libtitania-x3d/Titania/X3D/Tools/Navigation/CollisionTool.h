@@ -101,7 +101,7 @@ private:
 
 	virtual
 	void
-	initialize () final override;
+	realize () final override;
 
 	///  @name Event handlers
 

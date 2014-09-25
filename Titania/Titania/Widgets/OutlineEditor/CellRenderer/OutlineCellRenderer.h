@@ -170,6 +170,9 @@ private:
 	void
 	on_editing_done ();
 
+	void
+	on_remove_widget ();
+
 	bool
 	set_field_value (const X3D::SFNode &, X3D::X3DFieldDefinition* const, const std::string &);
 

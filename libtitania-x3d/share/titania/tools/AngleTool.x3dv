@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Tue, 23 Sep 2014 09:14:28 GMT"
+META "modified" "Thu, 25 Sep 2014 04:05:23 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -20,8 +20,16 @@ PROTO AngleGrid [
   inputOutput    SFInt32 dimension 5
   inputOutput    SFFloat spacing 1
   inputOutput    SFFloat angle 0.392699
-  inputOutput    SFColor color 1 0.5 0
-  inputOutput    SFFloat transparency 0.61803
+  inputOutput    MFInt32 majorLineEvery [
+    5,
+    4
+  ]
+  inputOutput    SFColor color 0.5 0.5 0.5
+  inputOutput    SFFloat transparency 0.8
+  inputOutput    SFColor lineColor 1 0.7 0.7
+  inputOutput    SFFloat lineTransparency 0.8
+  inputOutput    SFColor majorLineColor 1 0.7 0.7
+  inputOutput    SFFloat majorLineTransparency 0.6
   initializeOnly SFBool  solid TRUE
 ]
 {
@@ -45,10 +53,10 @@ PROTO AngleGrid [
         }
       }
       DEF Rays_1 Shape {
-        appearance DEF _1 Appearance {
-          material DEF Material1_1 Material {
-            emissiveColor IS color
-            transparency IS transparency
+        appearance DEF MinorAppearance Appearance {
+          material Material {
+            emissiveColor IS lineColor
+            transparency IS lineTransparency
           }
         }
         geometry DEF Grid_1 IndexedLineSet {
@@ -145,35 +153,30 @@ PROTO AngleGrid [
         scaleOrientation -1 7.70153e-07 1.47364e-06 0.785396
         children [
           Shape {
-            appearance USE _1
-            geometry NULL
+            appearance USE MinorAppearance
           }
           Shape {
-            appearance USE _1
-            geometry NULL
+            appearance USE MinorAppearance
           }
           Shape {
-            appearance USE _1
-            geometry NULL
+            appearance USE MinorAppearance
           }
           Shape {
-            appearance USE _1
-            geometry NULL
+            appearance USE MinorAppearance
           }
           Shape {
-            appearance USE _1
-            geometry NULL
+            appearance USE MinorAppearance
           }
         ]
       }
       DEF Axis_1 Shape {
         appearance Appearance {
-          material DEF Material1_2 Material {
-            emissiveColor IS color
-            transparency 0.459036
+          material DEF MajorMaterial Material {
+            emissiveColor IS majorLineColor
+            transparency IS majorLineTransparency
           }
         }
-        geometry DEF Axis_2 IndexedLineSet {
+        geometry DEF MajorLines IndexedLineSet {
           coordIndex [
             0,
             1,
@@ -195,12 +198,11 @@ PROTO AngleGrid [
     inputOutput    SFFloat spacing IS spacing
     inputOutput    SFFloat angle IS angle
     inputOutput    SFFloat transparency IS transparency
-    initializeOnly SFNode  axis USE Axis_2
+    initializeOnly SFNode  majorLines USE MajorLines
     initializeOnly SFNode  disk USE Disk_1
     initializeOnly SFNode  grid USE Grid_1
     initializeOnly SFNode  circles USE Circles_1
-    initializeOnly SFNode  appearance USE _1
-    initializeOnly SFNode  axisMaterial USE Material1_2
+    initializeOnly SFNode  appearance USE MinorAppearance
 
     url "javascript:
 
@@ -222,49 +224,48 @@ function eventsProcessed ()
 	
 	// Axis
 
-	axis .coord .point [1] = new SFVec3f (0, 0, disk .scale .y /2 + spacing/4);
-	
-	axisMaterial .transparency = Math .pow (transparency, Math .PHI);
+	majorLines .coord .point [1] = new SFVec3f (0, 0, radius + spacing / 4);
 
 	// Grid
 
-	// Radien
+	// Radiuses
 
 	var coordIndex = new MFInt32 ();
+	var point      = grid .coord .point;
+	point .length  = 0;
 
-	var point     = grid .coord .point;
-	point .length = 0;
-
-	for (var a = 0, i = 0; a < 2 * Math .PI - EPS; a += angle, i += 2)
+	if (angle)
 	{
-		var r = new SFRotation (0, 1, 0, a);
+		for (var a = 0, i = 0; a < 2 * Math .PI - EPS; a += angle, i += 2)
+		{
+			var r = new SFRotation (0, 1, 0, a);
 
-		point [i]     = new SFVec3f (0, 0, 0);
-		point [i + 1] = r .multVec (new SFVec3f (0, 0, radius));
-	}
+			point [i]     = new SFVec3f (0, 0, 0);
+			point [i + 1] = r .multVec (new SFVec3f (0, 0, radius));
+		}
 
-	for (var i = 0, p = 0; p < point .length; i += 3)
-	{
-		coordIndex [i]     = p ++;
-		coordIndex [i + 1] = p ++;
-		coordIndex [i + 2] = -1;
+		for (var i = 0, p = 0; p < point .length; i += 3)
+		{
+			coordIndex [i]     = p ++;
+			coordIndex [i + 1] = p ++;
+			coordIndex [i + 2] = -1;
+		}
 	}
 
 	grid .set_coordIndex = coordIndex;
 	
 	// Circles
-	
+
+	var scene                 = Browser .currentScene;
 	circles .children .length = 0;
-	
-	var scene = Browser .currentScene;
-	
+
 	for (var i = 0; i < dimension; ++ i)
 	{
 		var shape  = scene .createNode (\"Shape\");
 		var circle = Browser .createVrmlFromString (\"Circle2D { radius \" + (spacing * (i + 1)) + \" }\") [0];
-		
-		shape .appearance = appearance;
-		shape .geometry   = circle;
+
+		shape .appearance     = appearance;
+		shape .geometry       = circle;
 		circles .children [i] = shape;
 	}
 }
@@ -278,18 +279,18 @@ DEF AngleTool Transform {
   children [
     DEF Center_1 Transform {
       children [
-        DEF _2 PlaneSensor {
+        DEF _1 PlaneSensor {
           axisRotation 1 0 0 1.5708
           autoOffset FALSE
         }
-        DEF _3 Transform {
+        DEF _2 Transform {
           children ScreenGroup {
             children DEF Sphere_1 Transform {
               scale 6 6 6
               children Shape {
-                appearance DEF _4 Appearance {
-                  shaders DEF _5 ToolShader {
-                    diffuseColor 1 0.5 0
+                appearance DEF _3 Appearance {
+                  shaders DEF _4 ToolShader {
+                    diffuseColor 0.5 0.5 0.5
                   }
                 }
                 geometry Sphere { }
@@ -301,48 +302,53 @@ DEF AngleTool Transform {
     }
     DEF AngleGrid Transform {
       children [
-        DEF _6 AngleGrid {
-          angle 0.370273
-          transparency 0.75
+        PickableGroup {
+          pickable FALSE
+          children DEF _5 AngleGrid { }
         }
         DEF AngleHandle Group {
           children [
-            DEF _7 CylinderSensor {
+            DEF _6 CylinderSensor {
               diskAngle 1.2
-              offset 0.370273
+              offset 0.392699
             }
             DEF Handle Transform {
-              rotation 0 1 0 0.370273
-              scale 0.05 0.05 1
-              children DEF _8 Transform {
-                translation 0 0 4.5
-                children Shape {
-                  appearance USE _4
-                  geometry Box {
-                    size 1 1 1
+              rotation 0 1 0 0.392699
+              children DEF _7 Transform {
+                translation 0 0 4
+                children ScreenGroup {
+                  children Transform {
+                    scale 6 6 6
+                    children Shape {
+                      appearance Appearance {
+                        shaders ToolShader {
+                          diffuseColor 0.5 0.5 0.5
+                        }
+                      }
+                      geometry Sphere { }
+                    }
                   }
                 }
               }
             }
           ]
         }
-        DEF ScaleHandle Group {
+        DEF DimensionHandle Group {
           children [
-            DEF _9 PlaneSensor {
-              axisRotation 0 1 0 1.5708
-              offset -4.91129e-08 0 4.98645
-              maxPosition -1 0
+            DEF _8 PlaneSensor {
+              axisRotation 1 0 0 1.5708
+              autoOffset FALSE
+              offset 0 0 5
+              maxPosition 0 -1
             }
-            DEF _10 Transform {
-              translation -4.91129e-08 0 4.98645
+            DEF _9 Transform {
+              translation 0 0 5
               children ScreenGroup {
                 children DEF Sphere Transform {
-                  scale 12 3 3
+                  scale 6 6 6
                   children Shape {
-                    appearance USE _4
-                    geometry Box {
-                      size 1 1 1
-                    }
+                    appearance USE _3
+                    geometry Box { }
                   }
                 }
               }
@@ -354,12 +360,37 @@ DEF AngleTool Transform {
   ]
 }
 
+DEF MoveScript Script {
+  inputOutput SFRotation rotation 0 0 1 0
+  outputOnly  SFRotation axisOfRotation_changed
+
+  url "javascript:
+
+function set_translation (value)
+{
+	var translation = rotation .inverse () .multVec (value); 
+
+	if (spacing [0])
+		translation .x = Math .round (translation .x / spacing [0]) * spacing [0];
+
+	if (spacing [1])
+		translation .y = Math .round (translation .y / spacing [1]) * spacing [1];
+
+	if (spacing [2])
+		translation .z = Math .round (translation .z / spacing [2]) * spacing [2];
+
+	translation_changed = rotation .multVec (translation);
+}
+
+function set_rotation (value)
+{
+	axisOfRotation_changed = new SFRotation (1, 0, 0, Math .PI / 2) .multiply (value);
+}"
+}
+
 DEF AngleScript Script {
   inputOnly   SFRotation set_rotation
-  inputOutput SFInt32    dimension 5
-  inputOutput SFFloat    spacing 1
-  inputOutput SFFloat    angle 0.370273
-  outputOnly  SFVec3f    translation_changed
+  inputOutput SFFloat    angle 0.392699
   outputOnly  SFRotation rotation_changed
 
   url "javascript:
@@ -381,10 +412,37 @@ function set_rotation (value)
 		angle = 2 * Math .PI - value .angle;
 }
 
-function eventsProcessed (value)
+function eventsProcessed ()
 {
-	translation_changed = new SFVec3f (0, 0, dimension * spacing - spacing/2);
-	rotation_changed    = new SFRotation (0, 1, 0, angle);
+	rotation_changed = new SFRotation (0, 1, 0, angle);
+}
+"
+}
+
+DEF DimensionScript Script {
+  inputOnly   SFVec3f set_translation
+  inputOutput SFInt32 dimension 5
+  inputOutput SFFloat spacing 1
+  outputOnly  SFVec3f dimensionTranslation_changed
+  outputOnly  SFVec3f angleTranslation_changed
+
+  url "javascript:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function set_translation (value)
+{
+	dimension = Math .round (value .z / spacing);
+	dimension = Math .max (dimension, 1);
+}
+
+function eventsProcessed ()
+{
+	dimensionTranslation_changed = new SFVec3f (0, 0, dimension * spacing);
+	angleTranslation_changed     = new SFVec3f (0, 0, dimension * spacing - (dimension > 1 ? spacing : 0));
 }
 "
 }
@@ -392,24 +450,51 @@ function eventsProcessed (value)
 DEF Tool_1 Script {
   inputOutput SFVec3f    translation 0 0 0
   inputOutput SFRotation rotation 0 0 1 0
-  inputOutput SFColor    color 0 0 0
-  inputOutput SFFloat    transparency 0
+  inputOutput SFInt32    dimension 5
+  inputOutput SFFloat    spacing 1
+  inputOutput SFFloat    angle 0.392699
+  inputOutput MFInt32    majorLineEvery [
+    5,
+    4
+  ]
+  inputOutput SFColor    color 0.5 0.5 0.5
+  inputOutput SFFloat    transparency 0.8
+  inputOutput SFColor    lineColor 1 0.7 0.7
+  inputOutput SFFloat    lineTransparency 0.8
+  inputOutput SFColor    majorLineColor 1 0.7 0.7
+  inputOutput SFFloat    majorLineTransparency 0.6
 
 }
 
 ROUTE AngleScript.rotation_changed TO Handle.set_rotation
-ROUTE AngleScript.angle_changed TO _6.set_angle
-ROUTE AngleScript.translation_changed TO _8.set_translation
-ROUTE _7.rotation_changed TO AngleScript.set_rotation
-ROUTE AngleScript.angle_changed TO _7.set_offset
-ROUTE _9.translation_changed TO _10.set_translation
+ROUTE _6.rotation_changed TO AngleScript.set_rotation
 ROUTE Tool_1.translation_changed TO AngleGrid.set_translation
-ROUTE Tool_1.translation_changed TO _3.set_translation
-ROUTE _2.translation_changed TO Tool_1.set_translation
-ROUTE Tool_1.translation_changed TO _2.set_offset
-ROUTE Tool_1.rotation_changed TO AngleTool.set_rotation
-ROUTE Tool_1.transparency_changed TO _6.set_transparency
-ROUTE Tool_1.color_changed TO _6.set_color
-ROUTE Tool_1.color_changed TO _5.set_diffuseColor
+ROUTE Tool_1.translation_changed TO _2.set_translation
+ROUTE _1.translation_changed TO Tool_1.set_translation
+ROUTE Tool_1.translation_changed TO _1.set_offset
+ROUTE Tool_1.transparency_changed TO _5.set_transparency
+ROUTE Tool_1.color_changed TO _5.set_color
+ROUTE Tool_1.color_changed TO _4.set_diffuseColor
+ROUTE Tool_1.lineColor_changed TO _5.set_lineColor
+ROUTE Tool_1.lineTransparency_changed TO _5.set_lineTransparency
+ROUTE Tool_1.majorLineColor_changed TO _5.set_majorLineColor
+ROUTE Tool_1.majorLineTransparency_changed TO _5.set_majorLineTransparency
+ROUTE Tool_1.majorLineEvery_changed TO _5.set_majorLineEvery
+ROUTE Tool_1.angle_changed TO _6.set_offset
+ROUTE Tool_1.angle_changed TO _5.set_angle
+ROUTE AngleScript.angle_changed TO Tool_1.set_angle
+ROUTE Tool_1.angle_changed TO AngleScript.set_angle
+ROUTE Tool_1.dimension_changed TO _5.set_dimension
+ROUTE Tool_1.spacing_changed TO _5.set_spacing
+ROUTE Tool_1.dimension_changed TO DimensionScript.set_dimension
+ROUTE Tool_1.spacing_changed TO DimensionScript.set_spacing
+ROUTE DimensionScript.angleTranslation_changed TO _7.set_translation
+ROUTE _8.translation_changed TO DimensionScript.set_translation
+ROUTE DimensionScript.dimensionTranslation_changed TO _9.set_translation
+ROUTE DimensionScript.dimensionTranslation_changed TO _8.set_offset
+ROUTE DimensionScript.dimension_changed TO Tool_1.set_dimension
+ROUTE Tool_1.rotation_changed TO MoveScript.set_rotation
+ROUTE MoveScript.axisOfRotation_changed TO _1.set_axisRotation
+ROUTE Tool_1.rotation_changed TO AngleGrid.set_rotation
 
 EXPORT Tool_1 AS Tool

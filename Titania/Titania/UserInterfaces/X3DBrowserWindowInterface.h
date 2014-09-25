@@ -103,8 +103,12 @@ public:
 	{ return m_IconFactory; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
-	getGridToggleAction () const
-	{ return m_GridToggleAction; }
+	getAngleToolAction () const
+	{ return m_AngleToolAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getGridToolAction () const
+	{ return m_GridToolAction; }
 
 	Gtk::Image &
 	getExamineViewerImage () const
@@ -1300,7 +1304,8 @@ private:
 	std::string                      filename;
 	Glib::RefPtr <Gtk::Builder>      m_builder;
 	Glib::RefPtr <Gtk::IconFactory>  m_IconFactory;
-	Glib::RefPtr <Gtk::ToggleAction> m_GridToggleAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_AngleToolAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_GridToolAction;
 	Gtk::Image*                      m_ExamineViewerImage;
 	Gtk::Image*                      m_FileImportImage;
 	Gtk::Image*                      m_FlyViewerImage;

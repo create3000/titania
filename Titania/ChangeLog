@@ -1,3 +1,30 @@
+2014-09-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* style.css:
+	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* X3DBrowserWindow.h:
+	* X3DBrowserWindow.cpp:
+	* Configuration.h:
+	* AngleTool.h:
+	* Configuration.cpp:
+	* GridEditor.xml:
+	* AngleTool.cpp:
+	* GridEditor.cpp:
+	* X3DGridEditor.h:
+	* X3DAngleEditor.h:
+	* X3DGridEditor.cpp:
+	* X3DAngleEditor.cpp:
+	* X3DGridEditorInterface.h:
+	* X3DGridEditorInterface.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DPaletteEditor.cpp:
+	* OutlineCellRenderer.h:
+	* OutlineCellRenderer.cpp: 
+
 2014-09-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.xml:

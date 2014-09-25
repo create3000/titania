@@ -747,6 +747,7 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 			textview -> set_size_request (cell_area .get_width () - x_pad, cell_area .get_height ());
 
 			textview -> signal_editing_done () .connect (sigc::mem_fun (this, &OutlineCellRenderer::on_editing_done));
+			textview -> signal_remove_widget () .connect (sigc::mem_fun (this, &OutlineCellRenderer::on_remove_widget));
 
 			return textview .get ();
 		}
@@ -769,8 +770,13 @@ OutlineCellRenderer::on_editing_done ()
 	{
 		textview -> set_validated (true);
 		textview -> remove_widget ();
-		edited (textview -> get_path (), string);
 	}
+}
+
+void
+OutlineCellRenderer::on_remove_widget ()
+{
+	edited (textview -> get_path (), "");
 }
 
 bool

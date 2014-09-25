@@ -99,6 +99,50 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleAngleAdjustment () const
+	{ return m_AngleAngleAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleColorAdjustment () const
+	{ return m_AngleColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleDimensionAdjustment () const
+	{ return m_AngleDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleLineColorAdjustment () const
+	{ return m_AngleLineColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleMajorLineColorAdjustment () const
+	{ return m_AngleMajorLineColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleMajorLineEvery0Adjustment () const
+	{ return m_AngleMajorLineEvery0Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleMajorLineEvery1Adjustment () const
+	{ return m_AngleMajorLineEvery1Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleSpacingAdjustment () const
+	{ return m_AngleSpacingAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleTranslationXAdjustment () const
+	{ return m_AngleTranslationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleTranslationYAdjustment () const
+	{ return m_AngleTranslationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleTranslationZAdjustment () const
+	{ return m_AngleTranslationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getGridColorAdjustment () const
 	{ return m_GridColorAdjustment; }
 
@@ -170,6 +214,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Notebook &
+	getGridNotebook () const
+	{ return *m_GridNotebook; }
+
 	Gtk::Expander &
 	getGridExpander () const
 	{ return *m_GridExpander; }
@@ -226,6 +274,70 @@ public:
 	getGridMajorLineColorButton () const
 	{ return *m_GridMajorLineColorButton; }
 
+	Gtk::Expander &
+	getAngleExpander () const
+	{ return *m_AngleExpander; }
+
+	Gtk::CheckButton &
+	getAngleCheckButton () const
+	{ return *m_AngleCheckButton; }
+
+	Gtk::Grid &
+	getAngleBox () const
+	{ return *m_AngleBox; }
+
+	Gtk::ComboBoxText &
+	getAnglePlaneComboBoxText () const
+	{ return *m_AnglePlaneComboBoxText; }
+
+	Gtk::Box &
+	getAngleColorBox () const
+	{ return *m_AngleColorBox; }
+
+	Gtk::Button &
+	getAngleColorButton () const
+	{ return *m_AngleColorButton; }
+
+	Gtk::Box &
+	getAngleTranslationBox () const
+	{ return *m_AngleTranslationBox; }
+
+	Gtk::Box &
+	getAngleDimensionBox () const
+	{ return *m_AngleDimensionBox; }
+
+	Gtk::Box &
+	getAngleSpacingBox () const
+	{ return *m_AngleSpacingBox; }
+
+	Gtk::Box &
+	getAngleMajorLineEveryBox () const
+	{ return *m_AngleMajorLineEveryBox; }
+
+	Gtk::Box &
+	getAngleLineColorBox () const
+	{ return *m_AngleLineColorBox; }
+
+	Gtk::Button &
+	getAngleLineColorButton () const
+	{ return *m_AngleLineColorButton; }
+
+	Gtk::Box &
+	getAngleMajorLineColorBox () const
+	{ return *m_AngleMajorLineColorBox; }
+
+	Gtk::Button &
+	getAngleMajorLineColorButton () const
+	{ return *m_AngleMajorLineColorButton; }
+
+	Gtk::Box &
+	getAngleAngleBox () const
+	{ return *m_AngleAngleBox; }
+
+	virtual
+	void
+	on_switch_page (Widget* page, guint page_num) = 0;
+
 	virtual
 	void
 	on_grid_toggled () = 0;
@@ -233,6 +345,14 @@ public:
 	virtual
 	void
 	on_grid_plane_changed () = 0;
+
+	virtual
+	void
+	on_angle_toggled () = 0;
+
+	virtual
+	void
+	on_angle_plane_changed () = 0;
 
 	virtual
 	~X3DGridEditorInterface ();
@@ -247,6 +367,17 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleLineColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineEvery0Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineEvery1Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleTranslationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleTranslationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleTranslationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridLineColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLineColorAdjustment;
@@ -265,6 +396,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GridZSpacingAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
+	Gtk::Notebook*                 m_GridNotebook;
 	Gtk::Expander*                 m_GridExpander;
 	Gtk::CheckButton*              m_GridCheckButton;
 	Gtk::Grid*                     m_GridBox;
@@ -279,6 +411,21 @@ private:
 	Gtk::Button*                   m_GridLineColorButton;
 	Gtk::Box*                      m_GridMajorLineColorBox;
 	Gtk::Button*                   m_GridMajorLineColorButton;
+	Gtk::Expander*                 m_AngleExpander;
+	Gtk::CheckButton*              m_AngleCheckButton;
+	Gtk::Grid*                     m_AngleBox;
+	Gtk::ComboBoxText*             m_AnglePlaneComboBoxText;
+	Gtk::Box*                      m_AngleColorBox;
+	Gtk::Button*                   m_AngleColorButton;
+	Gtk::Box*                      m_AngleTranslationBox;
+	Gtk::Box*                      m_AngleDimensionBox;
+	Gtk::Box*                      m_AngleSpacingBox;
+	Gtk::Box*                      m_AngleMajorLineEveryBox;
+	Gtk::Box*                      m_AngleLineColorBox;
+	Gtk::Button*                   m_AngleLineColorButton;
+	Gtk::Box*                      m_AngleMajorLineColorBox;
+	Gtk::Button*                   m_AngleMajorLineColorButton;
+	Gtk::Box*                      m_AngleAngleBox;
 
 };
 

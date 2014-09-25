@@ -1,27 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Picking/PickableGroupTool.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/GridEditor/X3DAngleEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.h" Line="110" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.cpp" Line="108" Column="34" />
-      <File FileName="Titania/Titania/Editors/GridEditor/GridTool.h" Line="85" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/GridTool.cpp" Line="374" Column="65" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/GridTool.h" Line="57" Column="16" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/GridTool.cpp" Line="77" Column="47" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.h" Line="114" Column="6" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="76" Column="9" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="77" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="101" Column="45" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="996" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/AngleTool.cpp" Line="71" Column="42" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Picking/PickableGroupTool.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Picking/PickableGroupTool.h" Line="91" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PickableGroup.h" Line="106" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Group.h" Line="95" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Group.cpp" Line="88" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PickableGroup.cpp" Line="54" Column="48" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Navigation/CollisionTool.h" Line="56" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.h" Line="75" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.cpp" Line="101" Column="45" />
+      <File FileName="Titania/Titania/Editors/GridEditor/X3DAngleEditor.h" Line="103" Column="24" />
+      <File FileName="Titania/Titania/Editors/GridEditor/X3DAngleEditor.cpp" Line="137" Column="2" />
+      <File FileName="Titania/Titania/Editors/GridEditor/GridEditor.h" Line="50" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/GridEditor.cpp" Line="68" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -29,6 +15,7 @@
           <Node name="miscellaneous" expanded="True">
             <Node name="glade2c++" expanded="True" />
           </Node>
+          <Node name="build" expanded="True" />
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Materials" expanded="True" />
@@ -55,6 +42,7 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
                 <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
@@ -66,10 +54,9 @@
                 <Node name="Tools" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="Grids" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
                   <Node name="Navigation" expanded="True" />
-                  <Node name="Picking" expanded="True">
-                    <Node name="PickableGroupTool.h" selected="True" />
-                  </Node>
+                  <Node name="Picking" expanded="True" />
                 </Node>
               </Node>
             </Node>
@@ -97,7 +84,9 @@
               <Node name="ComposedWidgets" expanded="True" />
               <Node name="Editors" expanded="True">
                 <Node name="AppearanceEditor" expanded="True" />
-                <Node name="GridEditor" expanded="True" />
+                <Node name="GridEditor" expanded="True">
+                  <Node name="X3DAngleEditor.cpp" selected="True" />
+                </Node>
               </Node>
               <Node name="Undo" expanded="True" />
               <Node name="Widgets" expanded="True">

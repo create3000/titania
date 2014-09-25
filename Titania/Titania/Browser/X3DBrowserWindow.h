@@ -74,6 +74,7 @@ class ViewpointList;
 class Console;
 class ScriptEditor;
 class GridTool;
+class AngleTool;
 
 class X3DBrowserWindow :
 	public X3DBrowserEditor
@@ -110,8 +111,7 @@ public:
 	hasAngleTool (const bool);
 
 	bool
-	hasAngleTool () const
-	{ return hasAngleTool_; }
+	hasAngleTool () const;
 
 	const X3D::X3DPtr <X3D::AngleTool> &
 	getAngleTool () const;
@@ -167,14 +167,11 @@ private:
 	std::unique_ptr <OutlineEditor> outlineEditor;
 	std::unique_ptr <Console>       console;
 	std::unique_ptr <ScriptEditor>  scriptEditor;
-	std::set <X3D::SFNode>          tools;
 	std::unique_ptr <GridTool>      gridTool;
-	X3D::X3DPtr <X3D::AngleTool>    angleTool;
+	std::unique_ptr <AngleTool>     angleTool;
 
 	X3D::Keys keys;
 	bool      accelerators;
-	bool      hasGridTool_;
-	bool      hasAngleTool_;
 
 };
 

@@ -65,9 +65,9 @@ PickableGroupTool::PickableGroupTool (PickableGroup* const node) :
 }
 
 void
-PickableGroupTool::initialize ()
+PickableGroupTool::realize ()
 {
-	X3DGroupingNodeTool <PickableGroup>::initialize ();
+	X3DGroupingNodeTool <PickableGroup>::realize ();
 
 	getNode () -> pickable () .addInterest (this, &PickableGroupTool::set_pickable);
 

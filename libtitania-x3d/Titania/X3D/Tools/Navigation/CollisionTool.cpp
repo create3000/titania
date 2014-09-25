@@ -66,9 +66,9 @@ CollisionTool::CollisionTool (Collision* const node) :
 }
 
 void
-CollisionTool::initialize ()
+CollisionTool::realize ()
 {
-	X3DGroupingNodeTool <Collision>::initialize ();
+	X3DGroupingNodeTool <Collision>::realize ();
 	
 	getNode () -> enabled () .addInterest (this, &CollisionTool::set_enabled);
 

@@ -89,6 +89,38 @@ public:
 
 	///  @name Fields
 
+	SFInt32 &
+	dimension ()
+	{ return *fields .dimension; }
+
+	const SFInt32 &
+	dimension () const
+	{ return *fields .dimension; }
+
+	SFFloat &
+	spacing ()
+	{ return *fields .spacing; }
+
+	const SFFloat &
+	spacing () const
+	{ return *fields .spacing; }
+
+	SFFloat &
+	angle ()
+	{ return *fields .angle; }
+
+	const SFFloat &
+	angle () const
+	{ return *fields .angle; }
+
+	MFInt32 &
+	majorLineEvery ()
+	{ return *fields .majorLineEvery; }
+
+	const MFInt32 &
+	majorLineEvery () const
+	{ return *fields .majorLineEvery; }
+
 
 private:
 
@@ -113,6 +145,11 @@ private:
 	struct Fields
 	{
 		Fields ();
+
+		SFInt32* const dimension;
+		SFFloat* const spacing;
+		SFFloat* const angle;
+		MFInt32* const majorLineEvery;
 	};
 
 	Fields fields;

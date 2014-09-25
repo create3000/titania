@@ -60,7 +60,11 @@ const std::string AngleTool::componentName  = "Grids";
 const std::string AngleTool::typeName       = "AngleTool";
 const std::string AngleTool::containerField = "grid";
 
-AngleTool::Fields::Fields ()
+AngleTool::Fields::Fields () :
+	     dimension (new SFInt32 (4)),
+	       spacing (new SFFloat (1)),
+	         angle (new SFFloat (M_PI / 8)),
+	majorLineEvery (new MFInt32 ({ 5, 4 }))
 { }
 
 AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
@@ -71,6 +75,10 @@ AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata",       metadata ());
 	addField (inputOutput, "translation",    translation ());
 	addField (inputOutput, "rotation",       rotation ());
+	addField (inputOutput, "dimension",      dimension ());;
+	addField (inputOutput, "spacing",        spacing ());
+	addField (inputOutput, "angle",          angle ());
+	addField (inputOutput, "majorLineEvery", majorLineEvery ());
 	addField (inputOutput, "color",          color ());
 	addField (inputOutput, "lineColor",      lineColor ());
 	addField (inputOutput, "majorLineColor", majorLineColor ());
@@ -94,6 +102,31 @@ void
 AngleTool::realize ()
 {
 	X3DGridTool::realize ();
+
+	try
+	{
+		auto & set_dimension = getToolNode () -> getField <SFInt32> ("set_dimension");
+		dimension ()  .addInterest (set_dimension);
+		set_dimension .addInterest (dimension ());
+		set_dimension .addEvent (dimension ());
+
+		auto & set_spacing = getToolNode () -> getField <SFFloat> ("set_spacing");
+		spacing ()  .addInterest (set_spacing);
+		set_spacing .addInterest (spacing ());
+		set_spacing .addEvent (spacing ());
+
+		auto & set_angle = getToolNode () -> getField <SFFloat> ("set_angle");
+		angle ()  .addInterest (set_angle);
+		set_angle .addInterest (angle ());
+		set_angle .addEvent (angle ());
+
+		auto & set_majorLineEvery = getToolNode () -> getField <MFInt32> ("set_majorLineEvery");
+		majorLineEvery ()  .addInterest (set_majorLineEvery);
+		set_majorLineEvery .addInterest (majorLineEvery ());
+		set_majorLineEvery .addEvent (majorLineEvery ());
+	}
+	catch (const X3DError & error)
+	{ }
 }
 
 } // X3D

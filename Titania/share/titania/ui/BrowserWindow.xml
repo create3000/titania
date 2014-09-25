@@ -37,6 +37,7 @@
       <source stock-id="Navigation" filename="icons/Navigation.svg"/>
     </sources>
   </object>
+  <object class="GtkToggleAction" id="AngleToolAction"/>
   <object class="GtkImage" id="ExamineViewerImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -55,7 +56,7 @@
     <property name="stock">FlyViewer</property>
     <property name="icon_size">1</property>
   </object>
-  <object class="GtkToggleAction" id="GridToggleAction"/>
+  <object class="GtkToggleAction" id="GridToolAction"/>
   <object class="GtkMenu" id="HistoryMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1252,7 +1253,7 @@
                             <property name="can_focus">False</property>
                             <child>
                               <object class="GtkCheckMenuItem" id="GridLayoutToolMenuItem">
-                                <property name="related_action">GridToggleAction</property>
+                                <property name="related_action">GridToolAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Activate Grid Layout Tool</property>
@@ -1263,6 +1264,7 @@
                             </child>
                             <child>
                               <object class="GtkCheckMenuItem" id="AngleLayoutToolMenuItem">
+                                <property name="related_action">AngleToolAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Activate Angle Layout Tool</property>

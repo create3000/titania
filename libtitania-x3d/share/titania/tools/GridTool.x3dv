@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Tue, 23 Sep 2014 22:38:44 GMT"
+META "modified" "Thu, 25 Sep 2014 03:51:42 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -414,7 +414,6 @@ DEF GridTool Collision {
         DEF _7 PlaneSensor {
           axisRotation 1 0 0 1.5708
           autoOffset FALSE
-          offset 0.16405 -9.48725e-07 0.261744
         }
         DEF _8 Transform {
           children ScreenGroup {
@@ -548,7 +547,6 @@ ROUTE Tool.color_changed TO _6.set_diffuseColor
 ROUTE Tool.rotation_changed TO Grid_2.set_rotation
 ROUTE Tool.rotation_changed TO Edge_1.set_rotation
 ROUTE Tool.translation_changed TO Edge_1.set_translation
-ROUTE Tool.rotation_changed TO _8.set_rotation
 ROUTE Tool.translation_changed TO _8.set_translation
 ROUTE MoveScript.axisOfRotation_changed TO _7.set_axisRotation
 ROUTE Tool.rotation_changed TO MoveScript.set_rotation

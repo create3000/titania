@@ -1,3 +1,15 @@
+2014-09-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* GridTool.x3dv:
+	* AngleTool.x3dv:
+	* AngleTool.h:
+	* GridTool.cpp:
+	* AngleTool.cpp:
+	* CollisionTool.h:
+	* PickableGroupTool.h:
+	* CollisionTool.cpp:
+	* PickableGroupTool.cpp: 
+
 2014-09-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:
