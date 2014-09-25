@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Thu, 25 Sep 2014 04:05:23 GMT"
+META "modified" "Thu, 25 Sep 2014 04:34:06 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -154,18 +154,23 @@ PROTO AngleGrid [
         children [
           Shape {
             appearance USE MinorAppearance
+            geometry NULL
           }
           Shape {
             appearance USE MinorAppearance
+            geometry NULL
           }
           Shape {
             appearance USE MinorAppearance
+            geometry NULL
           }
           Shape {
             appearance USE MinorAppearance
+            geometry NULL
           }
           Shape {
             appearance USE MinorAppearance
+            geometry NULL
           }
         ]
       }
@@ -197,7 +202,6 @@ PROTO AngleGrid [
     inputOutput    SFInt32 dimension IS dimension
     inputOutput    SFFloat spacing IS spacing
     inputOutput    SFFloat angle IS angle
-    inputOutput    SFFloat transparency IS transparency
     initializeOnly SFNode  majorLines USE MajorLines
     initializeOnly SFNode  disk USE Disk_1
     initializeOnly SFNode  grid USE Grid_1
