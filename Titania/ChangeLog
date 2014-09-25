@@ -1,5 +1,14 @@
 2014-09-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Configuration.h:
+	* GridEditor.xml:
+	* GridEditor.cpp:
+	* X3DGridEditorInterface.h:
+	* X3DGridEditorInterface.cpp:
+	* X3DPaletteEditor.cpp: 
+
+2014-09-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* LODEditor.xml:
 	* TextEditor.xml:
 	* GridEditor.xml:

@@ -214,7 +214,6 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="tab_pos">bottom</property>
-            <signal name="switch-page" handler="on_switch_page" swapped="no"/>
             <child>
               <object class="GtkBox" id="box2">
                 <property name="visible">True</property>

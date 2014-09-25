@@ -162,7 +162,7 @@ Configuration::get (const std::string & name) const
 
 	isstream .imbue (std::locale::classic ());
 
-	Type value;
+	Type value = Type ();
 
 	isstream >> value;
 

@@ -123,11 +123,6 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AngleMajorLineColorButton", m_AngleMajorLineColorButton);
 	m_builder -> get_widget ("AngleAngleBox", m_AngleAngleBox);
 	m_builder -> get_widget ("AnglesComboBoxText", m_AnglesComboBoxText);
-
-	// Connect object Gtk::Notebook with id 'GridNotebook'.
-	m_GridNotebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_switch_page));
-
-	// Connect object Gtk::CheckButton with id 'GridCheckButton'.
 	m_GridCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_toggled));
 
 	// Connect object Gtk::ComboBoxText with id 'GridPlaneComboBoxText'.

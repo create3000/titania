@@ -340,10 +340,6 @@ public:
 
 	virtual
 	void
-	on_switch_page (Widget* page, guint page_num) = 0;
-
-	virtual
-	void
 	on_grid_toggled () = 0;
 
 	virtual

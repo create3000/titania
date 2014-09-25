@@ -72,17 +72,13 @@ GridEditor::initialize ()
 	X3DGridEditor::initialize ();
 	X3DAngleEditor::initialize ();
 
-	getGridNotebook () .set_current_page (getConfig () .get <size_t> ("currentPage"));
-}
-
-void
-GridEditor::on_switch_page (Gtk::Widget*, guint pageNumber)
-{
-	getConfig () .set <size_t> ("currentPage", pageNumber);
+	getGridNotebook () .set_current_page (getConfig () .getInteger ("currentPage"));
 }
 
 GridEditor::~GridEditor ()
 {
+	getConfig () .setItem ("currentPage", getGridNotebook () .get_current_page ());
+
 	dispose ();
 }
 

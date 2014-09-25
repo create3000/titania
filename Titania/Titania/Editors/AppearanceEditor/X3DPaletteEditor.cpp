@@ -118,7 +118,7 @@ X3DPaletteEditor::set_initialized ()
 		return;
 	}
 
-	const size_t index = getConfig () .get <size_t> ("palette");
+	const size_t index = getConfig () .getInteger ("palette");
 
 	if (index < folders .size ())
 		getPaletteComboBoxText () .set_active (index);
@@ -129,7 +129,7 @@ X3DPaletteEditor::set_initialized ()
 void
 X3DPaletteEditor::setCurrentFolder (const size_t index)
 {
-	getConfig () .set <size_t> ("palette", index);
+	getConfig () .setItem ("palette", (int) index);
 
 	getPalettePreviousButton () .set_sensitive (index > 0);
 	getPaletteNextButton ()     .set_sensitive (index + 1 < folders .size ());
@@ -140,7 +140,7 @@ X3DPaletteEditor::setCurrentFolder (const size_t index)
 
 		files .clear ();
 
-		const auto folder = Gio::File::create_for_uri (folders [index]);
+		const auto folder = Gio::File::create_for_uri (folders .at (index));
 
 		for (const auto & fileInfo : LibraryView::getChildren (folder))
 		{
