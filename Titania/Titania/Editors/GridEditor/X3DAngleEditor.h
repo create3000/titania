@@ -108,6 +108,10 @@ private:
 	void
 	connectRotation (const X3D::SFRotation &);
 
+	virtual
+	void
+	on_angle_changed () final override;
+
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f> translation;

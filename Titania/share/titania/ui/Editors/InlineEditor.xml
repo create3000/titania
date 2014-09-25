@@ -291,6 +291,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxSizeXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -308,6 +309,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxSizeYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -325,6 +327,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxSizeZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -358,6 +361,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxCenterXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -375,6 +379,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxCenterYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -392,6 +397,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxCenterZAdjustment</property>
                         <property name="climb_rate">0.01</property>

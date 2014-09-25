@@ -430,6 +430,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                    <property name="width_chars">10</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">GridTranslationXAdjustment</property>
                                     <property name="climb_rate">0.01</property>
@@ -447,6 +448,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                    <property name="width_chars">10</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">GridTranslationYAdjustment</property>
                                     <property name="climb_rate">0.01</property>
@@ -464,6 +466,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">z-Axis</property>
+                                    <property name="width_chars">10</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">GridTranslationZAdjustment</property>
                                     <property name="climb_rate">0.01</property>
@@ -488,7 +491,9 @@
                               <object class="GtkBox" id="GridDimensionBox">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="halign">start</property>
                                 <property name="spacing">2</property>
+                                <property name="homogeneous">True</property>
                                 <child>
                                   <object class="GtkSpinButton" id="spinbutton12">
                                     <property name="visible">True</property>
@@ -552,12 +557,15 @@
                               <object class="GtkBox" id="GridSpacingBox">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="halign">start</property>
                                 <property name="spacing">2</property>
+                                <property name="homogeneous">True</property>
                                 <child>
                                   <object class="GtkSpinButton" id="spinbutton22">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                    <property name="width_chars">10</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">GridXSpacingAdjustment</property>
                                     <property name="climb_rate">0.01</property>
@@ -575,6 +583,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                    <property name="width_chars">10</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">GridYSpacingAdjustment</property>
                                     <property name="climb_rate">0.01</property>
@@ -592,6 +601,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">z-Axis</property>
+                                    <property name="width_chars">10</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">GridZSpacingAdjustment</property>
                                     <property name="climb_rate">0.01</property>
@@ -1055,6 +1065,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                    <property name="width_chars">10</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">AngleTranslationXAdjustment</property>
                                     <property name="climb_rate">0.01</property>
@@ -1072,6 +1083,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                    <property name="width_chars">10</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">AngleTranslationYAdjustment</property>
                                     <property name="climb_rate">0.01</property>
@@ -1089,6 +1101,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">z-Axis</property>
+                                    <property name="width_chars">10</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">AngleTranslationZAdjustment</property>
                                     <property name="climb_rate">0.01</property>
@@ -1118,7 +1131,6 @@
                                   <object class="GtkSpinButton" id="spinbutton13">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="tooltip_text" translatable="yes">x-Axis</property>
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">2</property>
                                     <property name="adjustment">AngleDimensionAdjustment</property>
@@ -1149,7 +1161,7 @@
                                   <object class="GtkSpinButton" id="spinbutton16">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                    <property name="width_chars">10</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">AngleSpacingAdjustment</property>
                                     <property name="climb_rate">0.01</property>
@@ -1188,12 +1200,14 @@
                               <object class="GtkBox" id="AngleMajorLineEveryBox">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="halign">start</property>
                                 <property name="spacing">2</property>
+                                <property name="homogeneous">True</property>
                                 <child>
                                   <object class="GtkSpinButton" id="spinbutton19">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                    <property name="tooltip_text" translatable="yes">Circles</property>
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">5</property>
                                     <property name="adjustment">AngleMajorLineEvery0Adjustment</property>
@@ -1211,7 +1225,7 @@
                                   <object class="GtkSpinButton" id="spinbutton23">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                    <property name="tooltip_text" translatable="yes">Radiuses</property>
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">5</property>
                                     <property name="adjustment">AngleMajorLineEvery1Adjustment</property>
@@ -1368,11 +1382,10 @@
                                   <object class="GtkSpinButton" id="spinbutton14">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="tooltip_text" translatable="yes">x-Axis</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">AngleAngleAdjustment</property>
                                     <property name="climb_rate">0.01</property>
-                                    <property name="digits">3</property>
+                                    <property name="digits">6</property>
                                     <property name="numeric">True</property>
                                   </object>
                                   <packing>
@@ -1382,7 +1395,16 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <placeholder/>
+                                  <object class="GtkComboBoxText" id="AnglesComboBoxText">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <signal name="changed" handler="on_angle_changed" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
                                 </child>
                               </object>
                               <packing>

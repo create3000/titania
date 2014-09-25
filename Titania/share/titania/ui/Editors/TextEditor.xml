@@ -236,6 +236,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TextMaxExtentAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -481,6 +482,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">1,000</property>
                         <property name="adjustment">FontStyleSizeAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -514,6 +516,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">1,000</property>
                         <property name="adjustment">FontStyleSpacingAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -897,6 +900,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">1,000</property>
                         <property name="adjustment">FontStylePointSizeAdjustment</property>
                         <property name="climb_rate">0.01</property>

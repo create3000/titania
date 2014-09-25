@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,6 +60,29 @@ namespace puck {
 static const auto X_PLANE_ROTATION = X3D::Rotation4f (0, 0, -1, M_PI / 2) * X3D::Rotation4f (1, 0, 0, M_PI / 2);
 static const auto Y_PLANE_ROTATION = X3D::Rotation4f ();
 static const auto Z_PLANE_ROTATION = X3D::Rotation4f (1, 0, 0, M_PI / 2);
+
+static const std::vector <double> ANGLES = {
+	120,
+	90,
+	72,
+	60,
+	360.0 / 7,
+	45,
+	36,
+	30,
+	360.0 / 14,
+	22.5,
+	18,
+	15,
+	12,
+	11.25,
+	10,
+	6,
+	5.625,
+	3,
+	2,
+	1
+};
 
 X3DAngleEditor::X3DAngleEditor () :
 	X3DGridEditorInterface (),
@@ -118,6 +141,15 @@ X3DAngleEditor::X3DAngleEditor () :
 void
 X3DAngleEditor::initialize ()
 {
+	for (const auto & value : ANGLES)
+	{
+		std::ostringstream osstream;
+
+		osstream << value << "° (" << std::round (360.0 / value) << ")";
+
+		getAnglesComboBoxText () .append (osstream .str ());
+	}
+
 	const auto & angleTool  = getBrowserWindow () -> getAngleTool ();
 	X3D::MFNode  angleTools = { angleTool };
 
@@ -197,6 +229,24 @@ X3DAngleEditor::connectRotation (const X3D::SFRotation & field)
 {
 	field .removeInterest (this, &X3DAngleEditor::connectRotation);
 	field .addInterest (this, &X3DAngleEditor::set_rotation);
+}
+
+void
+X3DAngleEditor::on_angle_changed ()
+{
+	if (changing)
+		return;
+
+	const size_t index = getAnglesComboBoxText () .get_active_row_number ();
+
+	if (index < ANGLES .size ())
+		getAngleAngleAdjustment () -> set_value (math::radians (ANGLES [index]));
+
+	changing = true;
+
+	getAnglesComboBoxText () .set_active (-1);
+
+	changing = false;
 }
 
 X3DAngleEditor::~X3DAngleEditor ()

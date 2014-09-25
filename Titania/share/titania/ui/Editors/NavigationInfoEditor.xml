@@ -192,6 +192,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">Collision Radius</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">CollisionRadiusAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -209,6 +210,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">Height</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">HeightAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -226,6 +228,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">Step Height</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">StepHeightAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -251,6 +254,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
+                    <property name="width_chars">10</property>
                     <property name="text" translatable="yes">0,000</property>
                     <property name="adjustment">SpeedAdjustment</property>
                     <property name="climb_rate">0.01</property>
@@ -299,6 +303,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
+                    <property name="width_chars">10</property>
                     <property name="text" translatable="yes">0,000</property>
                     <property name="adjustment">TransitionTimeAdjustment</property>
                     <property name="climb_rate">0.01</property>
@@ -331,6 +336,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
+                    <property name="width_chars">10</property>
                     <property name="text" translatable="yes">0,000</property>
                     <property name="adjustment">VisibilityLimitAdjustment</property>
                     <property name="climb_rate">0.01</property>

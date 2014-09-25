@@ -550,7 +550,6 @@
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">Direction:</property>
-                    <property name="ellipsize">end</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -596,6 +595,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">x-Axis</property>
+                            <property name="width_chars">10</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">DirectionalLightDirectionXAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -613,6 +613,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">y-Axis</property>
+                            <property name="width_chars">10</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">DirectionalLightDirectionYAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -630,6 +631,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">z-Axis</property>
+                            <property name="width_chars">10</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">DirectionalLightDirectionZAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -691,7 +693,6 @@
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">Location:</property>
-                    <property name="ellipsize">end</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -713,6 +714,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightLocationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -730,6 +732,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightLocationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -747,6 +750,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightLocationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -787,7 +791,6 @@
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">Attenuation:</property>
-                    <property name="ellipsize">end</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -807,6 +810,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightAttenuationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -824,6 +828,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightAttenuationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -841,6 +846,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightAttenuationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -866,6 +872,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
+                    <property name="width_chars">10</property>
                     <property name="text" translatable="yes">0,000</property>
                     <property name="adjustment">PointLightRadiusAdjustment</property>
                     <property name="climb_rate">0.01</property>
@@ -913,7 +920,6 @@
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">Direction:</property>
-                    <property name="ellipsize">end</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -928,7 +934,6 @@
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">Attenuation:</property>
-                    <property name="ellipsize">end</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -948,6 +953,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightAttenuationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -965,6 +971,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightAttenuationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -982,6 +989,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightAttenuationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1008,7 +1016,6 @@
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">Location:</property>
-                    <property name="ellipsize">end</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -1030,6 +1037,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightLocationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1047,6 +1055,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightLocationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1064,6 +1073,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
+                        <property name="width_chars">10</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightLocationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1103,6 +1113,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
+                    <property name="width_chars">10</property>
                     <property name="text" translatable="yes">0,000</property>
                     <property name="adjustment">SpotLightRadiusAdjustment</property>
                     <property name="climb_rate">0.01</property>
@@ -1152,7 +1163,7 @@
                     <property name="text" translatable="yes">0,000</property>
                     <property name="adjustment">SpotLightBeamWidthAdjustment</property>
                     <property name="climb_rate">0.01</property>
-                    <property name="digits">3</property>
+                    <property name="digits">6</property>
                     <property name="numeric">True</property>
                   </object>
                   <packing>
@@ -1170,7 +1181,7 @@
                     <property name="text" translatable="yes">0,000</property>
                     <property name="adjustment">SpotLightCutOffAngleAdjustment</property>
                     <property name="climb_rate">0.01</property>
-                    <property name="digits">3</property>
+                    <property name="digits">6</property>
                     <property name="numeric">True</property>
                   </object>
                   <packing>
@@ -1217,6 +1228,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">x-Axis</property>
+                            <property name="width_chars">10</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">SpotLightDirectionXAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -1234,6 +1246,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">y-Axis</property>
+                            <property name="width_chars">10</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">SpotLightDirectionYAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -1251,6 +1264,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">z-Axis</property>
+                            <property name="width_chars">10</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">SpotLightDirectionZAdjustment</property>
                             <property name="climb_rate">0.01</property>

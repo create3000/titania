@@ -1153,6 +1153,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="halign">start</property>
+                                <property name="width_chars">10</property>
                                 <property name="text" translatable="yes">1,000</property>
                                 <property name="adjustment">TexturePropertiesAnisotropicDegreeAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -1522,6 +1523,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                        <property name="width_chars">10</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">TextureTransformTranslationXAdjustment</property>
                                         <property name="climb_rate">0.01</property>
@@ -1539,6 +1541,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                        <property name="width_chars">10</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">TextureTransformTranslationYAdjustment</property>
                                         <property name="climb_rate">0.01</property>
@@ -1586,6 +1589,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                        <property name="width_chars">10</property>
                                         <property name="text" translatable="yes">1,000</property>
                                         <property name="adjustment">TextureTransformScaleXAdjustment</property>
                                         <property name="climb_rate">0.01</property>
@@ -1604,6 +1608,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                        <property name="width_chars">10</property>
                                         <property name="text" translatable="yes">1,000</property>
                                         <property name="adjustment">TextureTransformScaleYAdjustment</property>
                                         <property name="climb_rate">0.01</property>
@@ -1638,6 +1643,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                        <property name="width_chars">10</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">TextureTransformCenterXAdjustment</property>
                                         <property name="climb_rate">0.01</property>
@@ -1654,6 +1660,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                        <property name="width_chars">10</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">TextureTransformCenterYAdjustment</property>
                                         <property name="climb_rate">0.01</property>
@@ -1707,10 +1714,11 @@
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">Angle</property>
                                     <property name="halign">start</property>
+                                    <property name="width_chars">10</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">TextureTransformRotationAdjustment</property>
                                     <property name="climb_rate">0.01</property>
-                                    <property name="digits">3</property>
+                                    <property name="digits">6</property>
                                     <property name="numeric">True</property>
                                   </object>
                                   <packing>

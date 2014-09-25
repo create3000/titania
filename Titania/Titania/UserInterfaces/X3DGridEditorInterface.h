@@ -334,6 +334,10 @@ public:
 	getAngleAngleBox () const
 	{ return *m_AngleAngleBox; }
 
+	Gtk::ComboBoxText &
+	getAnglesComboBoxText () const
+	{ return *m_AnglesComboBoxText; }
+
 	virtual
 	void
 	on_switch_page (Widget* page, guint page_num) = 0;
@@ -353,6 +357,10 @@ public:
 	virtual
 	void
 	on_angle_plane_changed () = 0;
+
+	virtual
+	void
+	on_angle_changed () = 0;
 
 	virtual
 	~X3DGridEditorInterface ();
@@ -426,6 +434,7 @@ private:
 	Gtk::Box*                      m_AngleMajorLineColorBox;
 	Gtk::Button*                   m_AngleMajorLineColorButton;
 	Gtk::Box*                      m_AngleAngleBox;
+	Gtk::ComboBoxText*             m_AnglesComboBoxText;
 
 };
 
