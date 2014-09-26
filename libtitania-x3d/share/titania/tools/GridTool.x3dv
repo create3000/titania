@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Fri, 26 Sep 2014 03:24:48 GMT"
+META "modified" "Fri, 26 Sep 2014 14:36:32 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -22,7 +22,7 @@ PROTO Grid [
   inputOutput    SFVec3f    scale 1 1 1
   inputOutput    MFInt32    dimension [
     10,
-    10,
+    20,
     10
   ]
   inputOutput    MFInt32    majorLineEvery [
@@ -127,7 +127,7 @@ PROTO Grid [
               transparency IS lineTransparency
             }
           }
-          geometry DEF Grid IndexedLineSet {
+          geometry DEF MinorGrid IndexedLineSet {
             coordIndex [
               0,
               1,
@@ -220,25 +220,19 @@ PROTO Grid [
       Transform {
         children Shape {
           appearance Appearance {
-            lineProperties DEF _1 LineProperties {
-              linewidthScaleFactor 3
+            lineProperties LineProperties {
+              linewidthScaleFactor 6
             }
             material USE MajorMaterial
           }
           geometry DEF MajorPoints PointSet {
             coord Coordinate {
               point [
-                0 5 0,
-                0 4 0,
-                0 3 0,
-                0 2 0,
-                0 1 0,
+                0 -10 0,
+                0 -5 0,
                 0 0 0,
-                0 -1 0,
-                0 -2 0,
-                0 -3 0,
-                0 -4 0,
-                0 -5 0
+                0 5 0,
+                0 10 0
               ]
             }
           }
@@ -247,11 +241,32 @@ PROTO Grid [
       Transform {
         children Shape {
           appearance Appearance {
-            lineProperties USE _1
+            lineProperties LineProperties {
+              linewidthScaleFactor 4
+            }
             material USE MinorMaterial
           }
           geometry DEF Points PointSet {
-            coord Coordinate { }
+            coord Coordinate {
+              point [
+                0 -9 0,
+                0 -8 0,
+                0 -7 0,
+                0 -6 0,
+                0 -4 0,
+                0 -3 0,
+                0 -2 0,
+                0 -1 0,
+                0 1 0,
+                0 2 0,
+                0 3 0,
+                0 4 0,
+                0 6 0,
+                0 7 0,
+                0 8 0,
+                0 9 0
+              ]
+            }
           }
         }
       }
@@ -265,7 +280,7 @@ PROTO Grid [
     inputOutput    MFInt32 offset IS offset
     initializeOnly SFNode  plane USE Plane
     initializeOnly SFNode  majorGrid USE MajorGrid
-    initializeOnly SFNode  grid USE Grid
+    initializeOnly SFNode  minorGrid USE MinorGrid
     initializeOnly SFNode  majorPoints USE MajorPoints
     initializeOnly SFNode  points USE Points
 
@@ -282,13 +297,10 @@ function eventsProcessed ()
 
 	plane .scale = new SFVec3f (dimension [0], dimension [2], 1);
 
-	// Axis
-
-	majorGrid .set_coordIndex = generateGrid (true, majorGrid .coord .point);
-
 	// Grid
 
-	grid .set_coordIndex = generateGrid (false, grid .coord .point);
+	generateGrid (true, majorGrid);
+	generateGrid (false, minorGrid);
 
 	// Points
 
@@ -296,8 +308,9 @@ function eventsProcessed ()
 	generatePoints (false, points .coord .point);
 }
 
-function generateGrid (major, point)
+function generateGrid (major, grid)
 {
+	var point       = grid .coord .point;
 	var coordIndex  = new MFInt32 ();
 	var scaleX1_2   = dimension [0] / 2;
 	var scaleZ1_2   = dimension [2] / 2;
@@ -308,9 +321,11 @@ function generateGrid (major, point)
 	{
 		if (major - isMajor (i, dimension [0], majorLineEvery [0], gap [0], offset [0]))
 			continue;
+		
+		var x = -scaleX1_2 + i;
 
-		point [p]     = new SFVec3f (-scaleX1_2 + i, 0, -scaleZ1_2 - majorAdd);
-		point [p + 1] = new SFVec3f (-scaleX1_2 + i, 0,  scaleZ1_2 + majorAdd);
+		point [p]     = new SFVec3f (x, 0, -scaleZ1_2 - majorAdd);
+		point [p + 1] = new SFVec3f (x, 0,  scaleZ1_2 + majorAdd);
 		coordIndex [coordIndex .length] = p;
 		coordIndex [coordIndex .length] = p + 1;
 		coordIndex [coordIndex .length] = -1;
@@ -323,8 +338,10 @@ function generateGrid (major, point)
 		if (major - isMajor (i, dimension [2], majorLineEvery [2], gap [2], offset [2]))
 			continue;
 
-		point [p]     = new SFVec3f (-scaleX1_2 - majorAdd, 0, -scaleZ1_2 + i);
-		point [p + 1] = new SFVec3f ( scaleX1_2 + majorAdd, 0, -scaleZ1_2 + i);
+		var z = -scaleZ1_2 + i;
+
+		point [p]     = new SFVec3f (-scaleX1_2 - majorAdd, 0, z);
+		point [p + 1] = new SFVec3f ( scaleX1_2 + majorAdd, 0, z);
 		coordIndex [coordIndex .length] = p;
 		coordIndex [coordIndex .length] = p + 1;
 		coordIndex [coordIndex .length] = -1;
@@ -334,20 +351,20 @@ function generateGrid (major, point)
 
 	point .length = p;
 
-	return coordIndex;
+	grid .set_coordIndex = coordIndex;
 }
 
 function generatePoints (major, point)
 {
-	var offset = dimension [1] / 2;
-	var p      = 0;
-	
+	var scaleY1_2 = -dimension [1] / 2;
+	var p         = 0;
+
 	for (var i = 0, size = dimension [1] + 1; i < size; ++ i)
 	{
 		if (major - isMajor (i, dimension [1], majorLineEvery [1], gap [1], offset [1]))
 			continue;
 
-		point [p] = new SFVec3f (0, offset - i, 0);
+		point [p] = new SFVec3f (0, scaleY1_2 + i, 0);
 		++ p;
 	}
 
@@ -358,21 +375,14 @@ function isMajor (i, dimension, majorLineEvery, gap, offset)
 {
 	if (majorLineEvery)
 	{
-		return !(Math .floor (i - dimension / 2 - offset)       % (majorLineEvery + gap) &&
-			      Math .floor (i - dimension / 2 - gap - offset) % (majorLineEvery + gap));
+		var index  = i - dimension / 2 - offset;
+		var factor = majorLineEvery + gap;
+	
+		return !(Math .floor (index)       % factor &&
+			      Math .floor (index - gap) % factor);
 	}
 
 	return false;
-}
-
-function xisMajor (i, dimension, majorLineEvery, gap)
-{
-	return round (i - dimension / 2) % majorLineEvery == 0;
-}
-
-function round (value)
-{
-	return value > 0 ? Math .floor (value) : Math .ceil (value);
 }
 "
     directOutput TRUE
@@ -385,13 +395,18 @@ DEF GridTool Collision {
   children [
     DEF Grid_1 PickableGroup {
       pickable FALSE
-      children DEF _2 Grid {
+      children DEF _1 Grid {
+        dimension [
+          10,
+          10,
+          10
+        ]
         transparency 0.8
       }
     }
     DEF Edge_1 Transform {
       children [
-        DEF _3 PlaneSensor {
+        DEF _2 PlaneSensor {
           axisRotation 1 0 0 1.5708
           autoOffset FALSE
           offset 5 0 5
@@ -403,9 +418,9 @@ DEF GridTool Collision {
               DEF Box Transform {
                 translation -9 0 0
                 scale 12 3 3
-                children DEF _4 Shape {
-                  appearance DEF _5 Appearance {
-                    shaders DEF _6 ToolShader {
+                children DEF _3 Shape {
+                  appearance DEF _4 Appearance {
+                    shaders DEF _5 ToolShader {
                       diffuseColor 0.5 0.5 0.5
                     }
                   }
@@ -416,7 +431,7 @@ DEF GridTool Collision {
                 translation -0 0 -9
                 rotation 0 -1 0 1.5708
                 scale 12 3 3
-                children USE _4
+                children USE _3
               }
             ]
           }
@@ -425,16 +440,16 @@ DEF GridTool Collision {
     }
     DEF Center Transform {
       children [
-        DEF _7 PlaneSensor {
+        DEF _6 PlaneSensor {
           axisRotation 1 0 0 1.5708
           autoOffset FALSE
         }
-        DEF _8 Transform {
+        DEF _7 Transform {
           children ScreenGroup {
             children DEF Sphere Transform {
               scale 6 6 6
               children Shape {
-                appearance USE _5
+                appearance USE _4
                 geometry Sphere { }
               }
             }
@@ -551,34 +566,34 @@ DEF Tool Script {
 }
 
 ROUTE DimensionScript.translation_changed TO Edge.set_translation
-ROUTE _3.translation_changed TO DimensionScript.set_translation
-ROUTE DimensionScript.translation_changed TO _3.set_offset
-ROUTE _7.translation_changed TO MoveScript.set_translation
-ROUTE Tool.translation_changed TO _7.set_offset
+ROUTE _2.translation_changed TO DimensionScript.set_translation
+ROUTE DimensionScript.translation_changed TO _2.set_offset
+ROUTE _6.translation_changed TO MoveScript.set_translation
+ROUTE Tool.translation_changed TO _6.set_offset
 ROUTE MoveScript.translation_changed TO Tool.set_translation
-ROUTE Tool.transparency_changed TO _2.set_transparency
-ROUTE Tool.color_changed TO _2.set_color
-ROUTE Tool.color_changed TO _6.set_diffuseColor
+ROUTE Tool.transparency_changed TO _1.set_transparency
+ROUTE Tool.color_changed TO _1.set_color
+ROUTE Tool.color_changed TO _5.set_diffuseColor
 ROUTE Tool.rotation_changed TO Edge_1.set_rotation
 ROUTE Tool.translation_changed TO Edge_1.set_translation
-ROUTE Tool.translation_changed TO _8.set_translation
-ROUTE MoveScript.axisOfRotation_changed TO _7.set_axisRotation
+ROUTE Tool.translation_changed TO _7.set_translation
+ROUTE MoveScript.axisOfRotation_changed TO _6.set_axisRotation
 ROUTE Tool.rotation_changed TO MoveScript.set_rotation
 ROUTE Tool.dimension_changed TO DimensionScript.set_dimension
 ROUTE DimensionScript.dimension_changed TO Tool.set_dimension
-ROUTE Tool.dimension_changed TO _2.set_dimension
-ROUTE Tool.majorLineEvery_changed TO _2.set_majorLineEvery
-ROUTE Tool.lineColor_changed TO _2.set_lineColor
-ROUTE Tool.lineTransparency_changed TO _2.set_lineTransparency
-ROUTE Tool.majorLineColor_changed TO _2.set_majorLineColor
-ROUTE Tool.majorLineTransparency_changed TO _2.set_majorLineTransparency
-ROUTE Tool.gap_changed TO _2.set_gap
-ROUTE Tool.offset_changed TO _2.set_offset
+ROUTE Tool.dimension_changed TO _1.set_dimension
+ROUTE Tool.majorLineEvery_changed TO _1.set_majorLineEvery
+ROUTE Tool.lineColor_changed TO _1.set_lineColor
+ROUTE Tool.lineTransparency_changed TO _1.set_lineTransparency
+ROUTE Tool.majorLineColor_changed TO _1.set_majorLineColor
+ROUTE Tool.majorLineTransparency_changed TO _1.set_majorLineTransparency
+ROUTE Tool.gap_changed TO _1.set_gap
+ROUTE Tool.offset_changed TO _1.set_offset
 ROUTE Tool.scale_changed TO DimensionScript.set_scale
 ROUTE Tool.scale_changed TO MoveScript.set_scale
-ROUTE Tool.translation_changed TO _2.set_translation
-ROUTE Tool.rotation_changed TO _2.set_rotation
-ROUTE Tool.scale_changed TO _2.set_scale
+ROUTE Tool.translation_changed TO _1.set_translation
+ROUTE Tool.rotation_changed TO _1.set_rotation
+ROUTE Tool.scale_changed TO _1.set_scale
 ROUTE Tool.scale_changed TO Edge_1.set_scale
 
 EXPORT Tool

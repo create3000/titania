@@ -2,19 +2,21 @@
 <!-- Generated with glade 3.16.1 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <object class="GtkAdjustment" id="AngleAngleAdjustment">
-    <property name="upper">6.2800000000000002</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">0.10000000000000001</property>
-  </object>
   <object class="GtkAdjustment" id="AngleColorAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="AngleDimensionAdjustment">
+  <object class="GtkAdjustment" id="AngleDimensionXAdjustment">
     <property name="lower">1</property>
     <property name="upper">10000</property>
+    <property name="value">5</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="AngleDimensionYAdjustment">
+    <property name="upper">10000</property>
+    <property name="value">16</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
@@ -1177,7 +1179,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
-                                <property name="top_attach">6</property>
+                                <property name="top_attach">5</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1219,7 +1221,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="top_attach">6</property>
+                                <property name="top_attach">5</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1314,9 +1316,10 @@
                                   <object class="GtkSpinButton" id="spinbutton13">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="tooltip_text" translatable="yes">Dimension</property>
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">2</property>
-                                    <property name="adjustment">AngleDimensionAdjustment</property>
+                                    <property name="adjustment">AngleDimensionXAdjustment</property>
                                     <property name="climb_rate">1</property>
                                     <property name="numeric">True</property>
                                     <property name="value">2</property>
@@ -1325,6 +1328,24 @@
                                     <property name="expand">False</property>
                                     <property name="fill">True</property>
                                     <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="spinbutton14">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="tooltip_text" translatable="yes">Sectors</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">2</property>
+                                    <property name="adjustment">AngleDimensionYAdjustment</property>
+                                    <property name="climb_rate">1</property>
+                                    <property name="numeric">True</property>
+                                    <property name="value">2</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
                                   </packing>
                                 </child>
                               </object>
@@ -1344,7 +1365,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
-                                <property name="top_attach">5</property>
+                                <property name="top_attach">4</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1360,7 +1381,7 @@
                                   <object class="GtkSpinButton" id="spinbutton19">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="tooltip_text" translatable="yes">Circles</property>
+                                    <property name="tooltip_text" translatable="yes">Rings</property>
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">5</property>
                                     <property name="adjustment">AngleMajorLineEvery0Adjustment</property>
@@ -1395,7 +1416,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="top_attach">5</property>
+                                <property name="top_attach">4</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1409,7 +1430,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
-                                <property name="top_attach">7</property>
+                                <property name="top_attach">6</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1451,7 +1472,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="top_attach">7</property>
+                                <property name="top_attach">6</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1465,7 +1486,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
-                                <property name="top_attach">8</property>
+                                <property name="top_attach">7</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1507,62 +1528,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="top_attach">8</property>
-                                <property name="width">1</property>
-                                <property name="height">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label24">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="xalign">0</property>
-                                <property name="label" translatable="yes">Angle:</property>
-                              </object>
-                              <packing>
-                                <property name="left_attach">0</property>
-                                <property name="top_attach">4</property>
-                                <property name="width">1</property>
-                                <property name="height">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkBox" id="AngleAngleBox">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="spacing">2</property>
-                                <child>
-                                  <object class="GtkSpinButton" id="spinbutton14">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="text" translatable="yes">0,000</property>
-                                    <property name="adjustment">AngleAngleAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
-                                    <property name="digits">6</property>
-                                    <property name="numeric">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">True</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkComboBoxText" id="AnglesComboBoxText">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <signal name="changed" handler="on_angle_changed" swapped="no"/>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">True</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="top_attach">4</property>
+                                <property name="top_attach">7</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>

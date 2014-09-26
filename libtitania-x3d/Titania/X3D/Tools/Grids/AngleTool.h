@@ -89,21 +89,13 @@ public:
 
 	///  @name Fields
 
-	SFInt32 &
+	MFInt32 &
 	dimension ()
 	{ return *fields .dimension; }
 
-	const SFInt32 &
+	const MFInt32 &
 	dimension () const
 	{ return *fields .dimension; }
-
-	SFFloat &
-	angle ()
-	{ return *fields .angle; }
-
-	const SFFloat &
-	angle () const
-	{ return *fields .angle; }
 
 	MFInt32 &
 	majorLineEvery ()
@@ -138,8 +130,7 @@ private:
 	{
 		Fields ();
 
-		SFInt32* const dimension;
-		SFFloat* const angle;
+		MFInt32* const dimension;
 		MFInt32* const majorLineEvery;
 	};
 

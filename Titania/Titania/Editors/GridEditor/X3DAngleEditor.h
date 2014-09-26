@@ -108,16 +108,11 @@ private:
 	void
 	connectRotation (const X3D::SFRotation &);
 
-	virtual
-	void
-	on_angle_changed () final override;
-
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f> translation;
 	X3DFieldAdjustment3 <X3D::SFVec3f> scale;
-	X3DFieldAdjustment <X3D::SFInt32>  dimension;
-	X3DFieldAdjustment <X3D::SFFloat>  angle;
+	X3DFieldAdjustment2 <X3D::MFInt32> dimension;;
 	X3DFieldAdjustment2 <X3D::MFInt32> majorLineEvery;
 	SFColorRGBAButton                  color;
 	SFColorRGBAButton                  lineColor;

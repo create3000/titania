@@ -116,9 +116,6 @@ private:
 	set_dimension ();
 
 	void
-	set_angle ();
-
-	void
 	set_majorLineEvery ();
 
 	void
@@ -140,10 +137,7 @@ private:
 	connectScale (const X3D::SFVec3f &);
 
 	void
-	connectDimension (const X3D::SFInt32 &);
-
-	void
-	connectAngle (const X3D::SFFloat &);
+	connectDimension (const X3D::MFInt32 &);
 
 	void
 	connectMajorLineEvery (const X3D::MFInt32 &);

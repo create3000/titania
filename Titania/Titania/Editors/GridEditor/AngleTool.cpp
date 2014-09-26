@@ -161,9 +161,6 @@ AngleTool::configure ()
 	getTool () -> dimension () .removeInterest (this, &AngleTool::set_dimension);
 	getTool () -> dimension () .addInterest (this, &AngleTool::connectDimension);
 
-	getTool () -> angle () .removeInterest (this, &AngleTool::set_angle);
-	getTool () -> angle () .addInterest (this, &AngleTool::connectAngle);
-
 	getTool () -> majorLineEvery () .removeInterest (this, &AngleTool::set_majorLineEvery);
 	getTool () -> majorLineEvery () .addInterest (this, &AngleTool::connectMajorLineEvery);
 
@@ -213,22 +210,17 @@ AngleTool::configure ()
 	{
 		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/AngleTool/dimension");
 
-		getTool () -> dimension () = v .at (0);
+		getTool () -> dimension () = v;
+
+		if (v .size () < 1)
+			getTool () -> dimension () .resize (1, X3D::SFInt32 (5));
+
+		if (v .size () < 2)
+			getTool () -> dimension () .resize (2, X3D::SFInt32 (16));
 	}
 	catch (...)
 	{
-		getTool () -> dimension () = 5;
-	}
-
-	try
-	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/AngleTool/angle");
-
-		getTool () -> angle () = v .at (0);
-	}
-	catch (...)
-	{
-		getTool () -> angle () = M_PI / 8;
+		getTool () -> dimension () = { 5, 16 };
 	}
 
 	try
@@ -236,12 +228,16 @@ AngleTool::configure ()
 		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/AngleTool/majorLineEvery");
 
 		getTool () -> majorLineEvery () = v;
-		getTool () -> majorLineEvery () .resize (1, X3D::SFInt32 (5));
-		getTool () -> majorLineEvery () .resize (2, X3D::SFInt32 (4));
+		
+		if (v .size () < 1)
+			getTool () -> majorLineEvery () .resize (1, X3D::SFInt32 (5));
+
+		if (v .size () < 2)
+			getTool () -> majorLineEvery () .resize (2, X3D::SFInt32 (2));
 	}
 	catch (...)
 	{
-		getTool () -> majorLineEvery () = { 5, 4 };
+		getTool () -> majorLineEvery () = { 5, 2 };
 	}
 
 	try
@@ -302,14 +298,7 @@ AngleTool::set_scale ()
 void
 AngleTool::set_dimension ()
 {
-	getWorldInfo (true) -> setMetaData <int32_t> ("/Titania/AngleTool/dimension", getTool () -> dimension ());
-	getBrowserWindow () -> isModified (getBrowser (), true);
-}
-
-void
-AngleTool::set_angle ()
-{
-	getWorldInfo (true) -> setMetaData <float> ("/Titania/AngleTool/angle", getTool () -> angle ());
+	getWorldInfo (true) -> setMetaData ("/Titania/AngleTool/dimension", getTool () -> dimension ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
@@ -363,17 +352,10 @@ AngleTool::connectScale (const X3D::SFVec3f & field)
 }
 
 void
-AngleTool::connectDimension (const X3D::SFInt32 & field)
+AngleTool::connectDimension (const X3D::MFInt32 & field)
 {
 	field .removeInterest (this, &AngleTool::connectDimension);
 	field .addInterest (this, &AngleTool::set_dimension);
-}
-
-void
-AngleTool::connectAngle (const X3D::SFFloat & field)
-{
-	field .removeInterest (this, &AngleTool::connectAngle);
-	field .addInterest (this, &AngleTool::set_angle);
 }
 
 void

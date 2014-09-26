@@ -61,9 +61,8 @@ const std::string AngleTool::typeName       = "AngleTool";
 const std::string AngleTool::containerField = "grid";
 
 AngleTool::Fields::Fields () :
-	     dimension (new SFInt32 (4)),
-	         angle (new SFFloat (M_PI / 8)),
-	majorLineEvery (new MFInt32 ({ 5, 4 }))
+	     dimension (new MFInt32 ({ 5, 16 })),
+	majorLineEvery (new MFInt32 ({ 5, 2 }))
 { }
 
 AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
@@ -76,7 +75,6 @@ AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "rotation",       rotation ());
 	addField (inputOutput, "scale",          scale ());
 	addField (inputOutput, "dimension",      dimension ());
-	addField (inputOutput, "angle",          angle ());
 	addField (inputOutput, "majorLineEvery", majorLineEvery ());
 	addField (inputOutput, "color",          color ());
 	addField (inputOutput, "lineColor",      lineColor ());
@@ -104,15 +102,10 @@ AngleTool::realize ()
 
 	try
 	{
-		auto & set_dimension = getToolNode () -> getField <SFInt32> ("set_dimension");
+		auto & set_dimension = getToolNode () -> getField <MFInt32> ("set_dimension");
 		dimension ()  .addInterest (set_dimension);
 		set_dimension .addInterest (dimension ());
 		set_dimension .addEvent (dimension ());
-
-		auto & set_angle = getToolNode () -> getField <SFFloat> ("set_angle");
-		angle ()  .addInterest (set_angle);
-		set_angle .addInterest (angle ());
-		set_angle .addEvent (angle ());
 
 		auto & set_majorLineEvery = getToolNode () -> getField <MFInt32> ("set_majorLineEvery");
 		majorLineEvery ()  .addInterest (set_majorLineEvery);

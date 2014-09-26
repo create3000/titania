@@ -61,9 +61,9 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_AngleAngleAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleAngleAdjustment"));
 	m_AngleColorAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleColorAdjustment"));
-	m_AngleDimensionAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleDimensionAdjustment"));
+	m_AngleDimensionXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleDimensionXAdjustment"));
+	m_AngleDimensionYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleDimensionYAdjustment"));
 	m_AngleLineColorAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleLineColorAdjustment"));
 	m_AngleMajorLineColorAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineColorAdjustment"));
 	m_AngleMajorLineEvery0Adjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineEvery0Adjustment"));
@@ -130,8 +130,6 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AngleLineColorButton", m_AngleLineColorButton);
 	m_builder -> get_widget ("AngleMajorLineColorBox", m_AngleMajorLineColorBox);
 	m_builder -> get_widget ("AngleMajorLineColorButton", m_AngleMajorLineColorButton);
-	m_builder -> get_widget ("AngleAngleBox", m_AngleAngleBox);
-	m_builder -> get_widget ("AnglesComboBoxText", m_AnglesComboBoxText);
 	m_builder -> get_widget ("AngleScaleBox", m_AngleScaleBox);
 	m_GridCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_toggled));
 
@@ -143,7 +141,6 @@ X3DGridEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ComboBoxText with id 'AnglePlaneComboBoxText'.
 	m_AnglePlaneComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_angle_plane_changed));
-	m_AnglesComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_angle_changed));
 
 	// Call construct handler of base class.
 	construct ();

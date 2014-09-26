@@ -99,16 +99,16 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getAngleAngleAdjustment () const
-	{ return m_AngleAngleAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
 	getAngleColorAdjustment () const
 	{ return m_AngleColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getAngleDimensionAdjustment () const
-	{ return m_AngleDimensionAdjustment; }
+	getAngleDimensionXAdjustment () const
+	{ return m_AngleDimensionXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleDimensionYAdjustment () const
+	{ return m_AngleDimensionYAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getAngleLineColorAdjustment () const
@@ -367,14 +367,6 @@ public:
 	{ return *m_AngleMajorLineColorButton; }
 
 	Gtk::Box &
-	getAngleAngleBox () const
-	{ return *m_AngleAngleBox; }
-
-	Gtk::ComboBoxText &
-	getAnglesComboBoxText () const
-	{ return *m_AnglesComboBoxText; }
-
-	Gtk::Box &
 	getAngleScaleBox () const
 	{ return *m_AngleScaleBox; }
 
@@ -395,10 +387,6 @@ public:
 	on_angle_plane_changed () = 0;
 
 	virtual
-	void
-	on_angle_changed () = 0;
-
-	virtual
 	~X3DGridEditorInterface ();
 
 
@@ -411,9 +399,9 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_AngleAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_AngleDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleDimensionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleDimensionYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleLineColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineEvery0Adjustment;
@@ -478,8 +466,6 @@ private:
 	Gtk::Button*                   m_AngleLineColorButton;
 	Gtk::Box*                      m_AngleMajorLineColorBox;
 	Gtk::Button*                   m_AngleMajorLineColorButton;
-	Gtk::Box*                      m_AngleAngleBox;
-	Gtk::ComboBoxText*             m_AnglesComboBoxText;
 	Gtk::Box*                      m_AngleScaleBox;
 
 };

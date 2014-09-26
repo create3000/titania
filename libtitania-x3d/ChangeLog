@@ -2,6 +2,13 @@
 
 	* GridTool.x3dv:
 	* AngleTool.x3dv:
+	* AngleTool.h:
+	* AngleTool.cpp: 
+
+2014-09-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* GridTool.x3dv:
+	* AngleTool.x3dv:
 	* GridTool.h:
 	* AngleTool.h:
 	* GridTool.cpp:
