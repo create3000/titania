@@ -782,8 +782,6 @@ function set_whichChoice (value)
   }
 
   DEF BBoxScript Script {
-    inputOutput    SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
-    inputOutput    SFMatrix4f modelViewMatrix IS modelViewMatrix
     inputOutput    SFVec3f    bboxSize IS bboxSize
     initializeOnly SFFloat    offset 0.01
     initializeOnly SFVec3f    xAxis 1 0 0
@@ -828,13 +826,9 @@ function eventsProcessed ()
 
 	// Position and scale planes
 
-	var scale = new SFVec3f ();
-	var m     = modelViewMatrix .multRight (cameraSpaceMatrix); // m = transformationMatrix
-	m .getTransform (null, null, scale);
-
-	var x = offset / Math .abs (scale .x);
-	var y = offset / Math .abs (scale .y);
-	var z = offset / Math .abs (scale .z);
+	var x = offset;
+	var y = offset;
+	var z = offset;
 
 	front  .translation = new SFVec3f ( 0,  0,  z + bboxSize1_2 .z);
 	right  .translation = new SFVec3f ( x + bboxSize1_2 .x,  0,  0);
@@ -855,10 +849,6 @@ function eventsProcessed ()
 	xHandle .translation = new SFVec3f (bboxSize1_2 .x, 0, 0);
 	yHandle .translation = new SFVec3f (0, bboxSize1_2 .y, 0);
 	zHandle .translation = new SFVec3f (0, 0, bboxSize1_2 .z);
-
-	//xHandle .rotation = new SFRotation (xAxis, new SFVec3f (m [0], m [1], m [ 2]));
-	//yHandle .rotation = new SFRotation (yAxis, new SFVec3f (m [4], m [5], m [ 6]));
-	//zHandle .rotation = new SFRotation (zAxis, new SFVec3f (m [8], m [9], m [10]));
 }
 "
     directOutput TRUE
