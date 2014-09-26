@@ -97,14 +97,6 @@ public:
 	dimension () const
 	{ return *fields .dimension; }
 
-	MFFloat &
-	spacing ()
-	{ return *fields .spacing; }
-
-	const MFFloat &
-	spacing () const
-	{ return *fields .spacing; }
-
 	MFInt32 &
 	majorLineEvery ()
 	{ return *fields .majorLineEvery; }
@@ -112,6 +104,22 @@ public:
 	const MFInt32 &
 	majorLineEvery () const
 	{ return *fields .majorLineEvery; }
+
+	MFInt32 &
+	gap ()
+	{ return *fields .gap; }
+
+	const MFInt32 &
+	gap () const
+	{ return *fields .gap; }
+
+	MFInt32 &
+	offset ()
+	{ return *fields .offset; }
+
+	const MFInt32 &
+	offset () const
+	{ return *fields .offset; }
 
 
 private:
@@ -139,8 +147,9 @@ private:
 		Fields ();
 
 		MFInt32* const dimension;
-		MFFloat* const spacing;
 		MFInt32* const majorLineEvery;
+		MFInt32* const gap;
+		MFInt32* const offset;
 	};
 
 	Fields fields;

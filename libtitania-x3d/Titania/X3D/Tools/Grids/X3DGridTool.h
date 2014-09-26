@@ -79,6 +79,14 @@ public:
 	rotation () const
 	{ return *fields .rotation; }
 
+	SFVec3f &
+	scale ()
+	{ return *fields .scale; }
+
+	const SFVec3f &
+	scale () const
+	{ return *fields .scale; }
+
 	SFColorRGBA &
 	color ()
 	{ return *fields .color; }
@@ -136,6 +144,7 @@ private:
 
 		SFVec3f* const translation;
 		SFRotation* const rotation;
+		SFVec3f* const scale;
 		SFColorRGBA* const color;
 		SFColorRGBA* const lineColor;
 		SFColorRGBA* const majorLineColor;

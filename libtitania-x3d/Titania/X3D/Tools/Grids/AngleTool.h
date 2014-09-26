@@ -98,14 +98,6 @@ public:
 	{ return *fields .dimension; }
 
 	SFFloat &
-	spacing ()
-	{ return *fields .spacing; }
-
-	const SFFloat &
-	spacing () const
-	{ return *fields .spacing; }
-
-	SFFloat &
 	angle ()
 	{ return *fields .angle; }
 
@@ -147,7 +139,6 @@ private:
 		Fields ();
 
 		SFInt32* const dimension;
-		SFFloat* const spacing;
 		SFFloat* const angle;
 		MFInt32* const majorLineEvery;
 	};

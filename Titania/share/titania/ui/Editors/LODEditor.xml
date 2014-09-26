@@ -221,7 +221,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODBBoxCenterXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -239,7 +239,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODBBoxCenterYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -257,7 +257,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODBBoxCenterZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -291,7 +291,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODBBoxSizeXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -309,7 +309,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODBBoxSizeYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -327,7 +327,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODBBoxSizeZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -359,7 +359,7 @@
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
                         <property name="editable">False</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODLevelAdjustment</property>
                         <property name="numeric">True</property>
@@ -437,7 +437,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODCenterXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -455,7 +455,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODCenterYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -473,7 +473,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">LODCenterZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -538,7 +538,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="editable">False</property>
-                            <property name="width_chars">10</property>
+                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">LODRangeMinAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -567,7 +567,7 @@
                           <object class="GtkSpinButton" id="LODRangeMaxSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="width_chars">10</property>
+                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">LODRangeMaxAdjustment</property>
                             <property name="climb_rate">0.01</property>

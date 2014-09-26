@@ -56,6 +56,7 @@ namespace X3D {
 X3DGridTool::Fields::Fields () :
 	   translation (new SFVec3f ()),
 	      rotation (new SFRotation ()),
+	         scale (new SFVec3f (1, 1, 1)),
 	         color (new SFColorRGBA (0.5, 0.5, 0.5, 0.2)),
 	     lineColor (new SFColorRGBA (1, 0.7, 0.7, 0.2)),
 	majorLineColor (new SFColorRGBA (1, 0.7, 0.7, 0.4))
@@ -82,6 +83,11 @@ X3DGridTool::realize ()
 		rotation ()  .addInterest (set_rotation);
 		set_rotation .addInterest (rotation ());		
 		set_rotation .addEvent (rotation ());
+
+		auto & set_scale = getToolNode () -> getField <SFVec3f> ("set_scale");
+		scale ()  .addInterest (set_scale);
+		set_scale .addInterest (scale ());
+		set_scale .addEvent (scale ());
 
 		color ()          .addInterest (this, &X3DGridTool::set_color);
 		lineColor ()      .addInterest (this, &X3DGridTool::set_lineColor);

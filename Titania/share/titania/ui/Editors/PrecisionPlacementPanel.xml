@@ -513,7 +513,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformTranslationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -531,7 +531,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformTranslationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -549,7 +549,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformTranslationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -610,7 +610,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
-                                <property name="width_chars">10</property>
+                                <property name="width_chars">-1</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">TransformRotationXAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -628,7 +628,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
-                                <property name="width_chars">10</property>
+                                <property name="width_chars">-1</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">TransformRotationYAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -646,7 +646,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">z-Axis</property>
-                                <property name="width_chars">10</property>
+                                <property name="width_chars">-1</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">TransformRotationZAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -672,7 +672,7 @@
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">Angle</property>
                             <property name="valign">end</property>
-                            <property name="width_chars">10</property>
+                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">TransformRotationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -740,7 +740,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
-                                <property name="width_chars">10</property>
+                                <property name="width_chars">-1</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">TransformScaleOrientationXAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -758,7 +758,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
-                                <property name="width_chars">10</property>
+                                <property name="width_chars">-1</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">TransformScaleOrientationYAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -776,7 +776,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">z-Axis</property>
-                                <property name="width_chars">10</property>
+                                <property name="width_chars">-1</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">TransformScaleOrientationZAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -802,7 +802,7 @@
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">Angle</property>
                             <property name="valign">end</property>
-                            <property name="width_chars">10</property>
+                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">TransformScaleOrientationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -843,7 +843,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformScaleXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -861,7 +861,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformScaleYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -879,7 +879,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformScaleZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -913,7 +913,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformCenterXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -931,7 +931,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformCenterYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -949,7 +949,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">TransformCenterZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1120,7 +1120,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">x-Axis</property>
-                            <property name="width_chars">10</property>
+                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">BillboardAxisOfRotationXAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -1138,7 +1138,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">y-Axis</property>
-                            <property name="width_chars">10</property>
+                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">BillboardAxisOfRotationYAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -1156,7 +1156,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">z-Axis</property>
-                            <property name="width_chars">10</property>
+                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">BillboardAxisOfRotationZAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -1336,7 +1336,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">x-Axis</property>
-                            <property name="width_chars">10</property>
+                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">LayoutOffsetXAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -1354,7 +1354,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">y-Axis</property>
-                            <property name="width_chars">10</property>
+                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">LayoutOffsetYAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -1388,7 +1388,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">x-Axis</property>
-                            <property name="width_chars">10</property>
+                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">LayoutSizeXAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -1406,7 +1406,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">y-Axis</property>
-                            <property name="width_chars">10</property>
+                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">LayoutSizeYAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -1979,7 +1979,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoTransformTranslationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1997,7 +1997,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoTransformTranslationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -2015,7 +2015,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoTransformTranslationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -2076,7 +2076,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
-                                <property name="width_chars">10</property>
+                                <property name="width_chars">-1</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">GeoTransformRotationXAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -2094,7 +2094,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
-                                <property name="width_chars">10</property>
+                                <property name="width_chars">-1</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">GeoTransformRotationYAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -2112,7 +2112,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">z-Axis</property>
-                                <property name="width_chars">10</property>
+                                <property name="width_chars">-1</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">GeoTransformRotationZAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -2138,7 +2138,7 @@
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">Angle</property>
                             <property name="valign">end</property>
-                            <property name="width_chars">10</property>
+                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">GeoTransformRotationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -2206,7 +2206,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
-                                <property name="width_chars">10</property>
+                                <property name="width_chars">-1</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">GeoTransformScaleOrientationXAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -2224,7 +2224,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
-                                <property name="width_chars">10</property>
+                                <property name="width_chars">-1</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">GeoTransformScaleOrientationYAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -2242,7 +2242,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">z-Axis</property>
-                                <property name="width_chars">10</property>
+                                <property name="width_chars">-1</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">GeoTransformScaleOrientationZAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -2268,7 +2268,7 @@
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">Angle</property>
                             <property name="valign">end</property>
-                            <property name="width_chars">10</property>
+                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">GeoTransformScaleOrientationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -2309,7 +2309,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoTransformScaleXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -2327,7 +2327,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoTransformScaleYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -2345,7 +2345,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoTransformScaleZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -2379,7 +2379,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoTransformGeoCenterXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -2397,7 +2397,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoTransformGeoCenterYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -2415,7 +2415,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoTransformGeoCenterZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -3014,7 +3014,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoLocationGeoCoordsXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -3032,7 +3032,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoLocationGeoCoordsYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -3050,7 +3050,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoLocationGeoCoordsZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -3142,7 +3142,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxSizeXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -3160,7 +3160,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxSizeYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -3178,7 +3178,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxSizeZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -3212,7 +3212,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxCenterXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -3230,7 +3230,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxCenterYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -3248,7 +3248,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
-                        <property name="width_chars">10</property>
+                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">BBoxCenterZAdjustment</property>
                         <property name="climb_rate">0.01</property>

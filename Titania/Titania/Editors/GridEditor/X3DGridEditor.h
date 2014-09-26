@@ -111,9 +111,11 @@ private:
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f> translation;
+	X3DFieldAdjustment3 <X3D::SFVec3f> scale;
 	X3DFieldAdjustment3 <X3D::MFInt32> dimension;
-	X3DFieldAdjustment3 <X3D::MFFloat> spacing;
 	X3DFieldAdjustment3 <X3D::MFInt32> majorLineEvery;
+	X3DFieldAdjustment3 <X3D::MFInt32> gap;
+	X3DFieldAdjustment3 <X3D::MFInt32> offset;
 	SFColorRGBAButton                  color;
 	SFColorRGBAButton                  lineColor;
 	SFColorRGBAButton                  majorLineColor;

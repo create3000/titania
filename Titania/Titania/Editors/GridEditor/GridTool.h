@@ -110,13 +110,19 @@ private:
 	set_rotation ();
 
 	void
+	set_scale ();
+
+	void
 	set_dimension ();
 
 	void
-	set_spacing ();
+	set_majorLineEvery ();
 
 	void
-	set_majorLineEvery ();
+	set_gap ();
+
+	void
+	set_offset ();
 
 	void
 	set_color ();
@@ -134,13 +140,19 @@ private:
 	connectRotation (const X3D::SFRotation &);
 
 	void
+	connectScale (const X3D::SFVec3f &);
+
+	void
 	connectDimension (const X3D::MFInt32 &);
 
 	void
-	connectSpacing (const X3D::MFFloat &);
+	connectMajorLineEvery (const X3D::MFInt32 &);
 
 	void
-	connectMajorLineEvery (const X3D::MFInt32 &);
+	connectGap (const X3D::MFInt32 &);
+
+	void
+	connectOffset (const X3D::MFInt32 &);
 
 	void
 	connectColor (const X3D::SFColorRGBA &);

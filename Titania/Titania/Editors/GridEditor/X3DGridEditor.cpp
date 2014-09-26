@@ -69,24 +69,36 @@ X3DGridEditor::X3DGridEditor () :
 	                        getGridTranslationZAdjustment (),
 	                        getGridTranslationBox (),
 	                        "translation"),
+	                 scale (getBrowserWindow (),
+	                        getGridScaleXAdjustment (),
+	                        getGridScaleYAdjustment (),
+	                        getGridScaleZAdjustment (),
+	                        getGridScaleBox (),
+	                        "scale"),
 	             dimension (getBrowserWindow (),
 	                        getGridXDimensionAdjustment (),
 	                        getGridYDimensionAdjustment (),
 	                        getGridZDimensionAdjustment (),
 	                        getGridDimensionBox (),
 	                        "dimension"),
-	               spacing (getBrowserWindow (),
-	                        getGridXSpacingAdjustment (),
-	                        getGridYSpacingAdjustment (),
-	                        getGridZSpacingAdjustment (),
-	                        getGridSpacingBox (),
-	                        "spacing"),
 	       majorLineEvery (getBrowserWindow (),
 	                        getGridMajorLineEveryXAdjustment (),
 	                        getGridMajorLineEveryYAdjustment (),
 	                        getGridMajorLineEveryZAdjustment (),
 	                        getGridMajorLineEveryBox (),
 	                        "majorLineEvery"),
+	                   gap (getBrowserWindow (),
+	                        getGridGapXAdjustment (),
+	                        getGridGapYAdjustment (),
+	                        getGridGapZAdjustment (),
+	                        getGridGapBox (),
+	                        "gap"),
+	                offset (getBrowserWindow (),
+	                        getGridOffsetXAdjustment (),
+	                        getGridOffsetYAdjustment (),
+	                        getGridOffsetZAdjustment (),
+	                        getGridOffsetBox (),
+	                        "offset"),
 	                 color (getBrowserWindow (),
 	                        getGridColorButton (),
 	                        getGridColorAdjustment (),
@@ -107,9 +119,11 @@ X3DGridEditor::X3DGridEditor () :
 	getGridCheckButton () .set_related_action (getBrowserWindow () -> getGridToolAction ());
 
 	translation    .setUndo (false);
+	scale          .setUndo (false);
 	dimension      .setUndo (false);
-	spacing        .setUndo (false);
 	majorLineEvery .setUndo (false);
+	gap            .setUndo (false);
+	offset         .setUndo (false);
 	color          .setUndo (false);
 	lineColor      .setUndo (false);
 	majorLineColor .setUndo (false);
@@ -122,9 +136,11 @@ X3DGridEditor::initialize ()
 	X3D::MFNode  gridTools = { gridTool };
 
 	translation    .setNodes (gridTools);
+	scale          .setNodes (gridTools);
 	dimension      .setNodes (gridTools);
-	spacing        .setNodes (gridTools);
 	majorLineEvery .setNodes (gridTools);
+	gap            .setNodes (gridTools);
+	offset         .setNodes (gridTools);
 	color          .setNodes (gridTools);
 	lineColor      .setNodes (gridTools);
 	majorLineColor .setNodes (gridTools);

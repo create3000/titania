@@ -92,14 +92,16 @@ X3DAngleEditor::X3DAngleEditor () :
 	                        getAngleTranslationZAdjustment (),
 	                        getAngleTranslationBox (),
 	                        "translation"),
+	                 scale (getBrowserWindow (),
+	                        getAngleScaleXAdjustment (),
+	                        getAngleScaleYAdjustment (),
+	                        getAngleScaleZAdjustment (),
+	                        getAngleScaleBox (),
+	                        "scale"),
 	             dimension (getBrowserWindow (),
 	                        getAngleDimensionAdjustment (),
 	                        getAngleDimensionBox (),
 	                        "dimension"),
-	               spacing (getBrowserWindow (),
-	                        getAngleSpacingAdjustment (),
-	                        getAngleSpacingBox (),
-	                        "spacing"),
 	                 angle (getBrowserWindow (),
 	                        getAngleAngleAdjustment (),
 	                        getAngleAngleBox (),
@@ -129,8 +131,8 @@ X3DAngleEditor::X3DAngleEditor () :
 	getAngleCheckButton () .set_related_action (getBrowserWindow () -> getAngleToolAction ());
 
 	translation    .setUndo (false);
+	scale          .setUndo (false);
 	dimension      .setUndo (false);
-	spacing        .setUndo (false);
 	angle          .setUndo (false);
 	majorLineEvery .setUndo (false);
 	color          .setUndo (false);
@@ -154,8 +156,8 @@ X3DAngleEditor::initialize ()
 	X3D::MFNode  angleTools = { angleTool };
 
 	translation    .setNodes (angleTools);
+	scale          .setNodes (angleTools);
 	dimension      .setNodes (angleTools);
-	spacing        .setNodes (angleTools);
 	angle          .setNodes (angleTools);
 	majorLineEvery .setNodes (angleTools);
 	color          .setNodes (angleTools);

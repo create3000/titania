@@ -127,8 +127,16 @@ public:
 	{ return m_AngleMajorLineEvery1Adjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getAngleSpacingAdjustment () const
-	{ return m_AngleSpacingAdjustment; }
+	getAngleScaleXAdjustment () const
+	{ return m_AngleScaleXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleScaleYAdjustment () const
+	{ return m_AngleScaleYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleScaleZAdjustment () const
+	{ return m_AngleScaleZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getAngleTranslationXAdjustment () const
@@ -145,6 +153,18 @@ public:
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getGridColorAdjustment () const
 	{ return m_GridColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridGapXAdjustment () const
+	{ return m_GridGapXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridGapYAdjustment () const
+	{ return m_GridGapYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridGapZAdjustment () const
+	{ return m_GridGapZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getGridLineColorAdjustment () const
@@ -167,6 +187,30 @@ public:
 	{ return m_GridMajorLineEveryZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridOffsetXAdjustment () const
+	{ return m_GridOffsetXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridOffsetYAdjustment () const
+	{ return m_GridOffsetYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridOffsetZAdjustment () const
+	{ return m_GridOffsetZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridScaleXAdjustment () const
+	{ return m_GridScaleXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridScaleYAdjustment () const
+	{ return m_GridScaleYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridScaleZAdjustment () const
+	{ return m_GridScaleZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getGridTranslationXAdjustment () const
 	{ return m_GridTranslationXAdjustment; }
 
@@ -187,24 +231,12 @@ public:
 	{ return m_GridXDimensionAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getGridXSpacingAdjustment () const
-	{ return m_GridXSpacingAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
 	getGridYDimensionAdjustment () const
 	{ return m_GridYDimensionAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getGridYSpacingAdjustment () const
-	{ return m_GridYSpacingAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
 	getGridZDimensionAdjustment () const
 	{ return m_GridZDimensionAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getGridZSpacingAdjustment () const
-	{ return m_GridZSpacingAdjustment; }
 
 	Gtk::Window &
 	getWindow () const
@@ -251,10 +283,6 @@ public:
 	{ return *m_GridDimensionBox; }
 
 	Gtk::Box &
-	getGridSpacingBox () const
-	{ return *m_GridSpacingBox; }
-
-	Gtk::Box &
 	getGridMajorLineEveryBox () const
 	{ return *m_GridMajorLineEveryBox; }
 
@@ -273,6 +301,18 @@ public:
 	Gtk::Button &
 	getGridMajorLineColorButton () const
 	{ return *m_GridMajorLineColorButton; }
+
+	Gtk::Box &
+	getGridScaleBox () const
+	{ return *m_GridScaleBox; }
+
+	Gtk::Box &
+	getGridGapBox () const
+	{ return *m_GridGapBox; }
+
+	Gtk::Box &
+	getGridOffsetBox () const
+	{ return *m_GridOffsetBox; }
 
 	Gtk::Expander &
 	getAngleExpander () const
@@ -307,10 +347,6 @@ public:
 	{ return *m_AngleDimensionBox; }
 
 	Gtk::Box &
-	getAngleSpacingBox () const
-	{ return *m_AngleSpacingBox; }
-
-	Gtk::Box &
 	getAngleMajorLineEveryBox () const
 	{ return *m_AngleMajorLineEveryBox; }
 
@@ -337,6 +373,10 @@ public:
 	Gtk::ComboBoxText &
 	getAnglesComboBoxText () const
 	{ return *m_AnglesComboBoxText; }
+
+	Gtk::Box &
+	getAngleScaleBox () const
+	{ return *m_AngleScaleBox; }
 
 	virtual
 	void
@@ -378,26 +418,34 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineEvery0Adjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineEvery1Adjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_AngleSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleScaleXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleScaleYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleScaleZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleTranslationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleTranslationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleTranslationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridGapXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridGapYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridGapZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridLineColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLineColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLineEveryXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLineEveryYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridMajorLineEveryZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridOffsetXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridOffsetYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridOffsetZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridScaleXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridScaleYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridScaleZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridTranslationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridTranslationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridTranslationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridTransparencyAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridXDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GridXSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridYDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GridYSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridZDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GridZSpacingAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Notebook*                 m_GridNotebook;
@@ -409,12 +457,14 @@ private:
 	Gtk::Button*                   m_GridColorButton;
 	Gtk::Box*                      m_GridTranslationBox;
 	Gtk::Box*                      m_GridDimensionBox;
-	Gtk::Box*                      m_GridSpacingBox;
 	Gtk::Box*                      m_GridMajorLineEveryBox;
 	Gtk::Box*                      m_GridLineColorBox;
 	Gtk::Button*                   m_GridLineColorButton;
 	Gtk::Box*                      m_GridMajorLineColorBox;
 	Gtk::Button*                   m_GridMajorLineColorButton;
+	Gtk::Box*                      m_GridScaleBox;
+	Gtk::Box*                      m_GridGapBox;
+	Gtk::Box*                      m_GridOffsetBox;
 	Gtk::Expander*                 m_AngleExpander;
 	Gtk::CheckButton*              m_AngleCheckButton;
 	Gtk::Grid*                     m_AngleBox;
@@ -423,7 +473,6 @@ private:
 	Gtk::Button*                   m_AngleColorButton;
 	Gtk::Box*                      m_AngleTranslationBox;
 	Gtk::Box*                      m_AngleDimensionBox;
-	Gtk::Box*                      m_AngleSpacingBox;
 	Gtk::Box*                      m_AngleMajorLineEveryBox;
 	Gtk::Box*                      m_AngleLineColorBox;
 	Gtk::Button*                   m_AngleLineColorButton;
@@ -431,6 +480,7 @@ private:
 	Gtk::Button*                   m_AngleMajorLineColorButton;
 	Gtk::Box*                      m_AngleAngleBox;
 	Gtk::ComboBoxText*             m_AnglesComboBoxText;
+	Gtk::Box*                      m_AngleScaleBox;
 
 };
 

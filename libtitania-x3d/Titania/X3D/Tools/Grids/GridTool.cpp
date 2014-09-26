@@ -62,8 +62,9 @@ const std::string GridTool::containerField = "grid";
 
 GridTool::Fields::Fields () :
 	     dimension (new MFInt32 ({ 10, 10, 10 })),
-	       spacing (new MFFloat ({ 1, 1, 1 })),
-	majorLineEvery (new MFInt32 ({ 5, 5, 5 }))
+	majorLineEvery (new MFInt32 ({ 5, 5, 5 })),
+	           gap (new MFInt32 ({ 0, 0, 0 })),
+	        offset (new MFInt32 ({ 0, 0, 0 }))
 { }
 
 GridTool::GridTool (X3DExecutionContext* const executionContext) :
@@ -74,9 +75,11 @@ GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata",       metadata ());
 	addField (inputOutput, "translation",    translation ());
 	addField (inputOutput, "rotation",       rotation ());
-	addField (inputOutput, "dimension",      dimension ());;
-	addField (inputOutput, "spacing",        spacing ());
+	addField (inputOutput, "scale",          scale ());
+	addField (inputOutput, "dimension",      dimension ());
 	addField (inputOutput, "majorLineEvery", majorLineEvery ());
+	addField (inputOutput, "gap",            gap ());
+	addField (inputOutput, "offset",         offset ());
 	addField (inputOutput, "color",          color ());
 	addField (inputOutput, "lineColor",      lineColor ());
 	addField (inputOutput, "majorLineColor", majorLineColor ());
@@ -108,15 +111,20 @@ GridTool::realize ()
 		set_dimension .addInterest (dimension ());
 		set_dimension .addEvent (dimension ());
 
-		auto & set_spacing = getToolNode () -> getField <MFFloat> ("set_spacing");
-		spacing ()  .addInterest (set_spacing);
-		set_spacing .addInterest (spacing ());
-		set_spacing .addEvent (spacing ());
-
 		auto & set_majorLineEvery = getToolNode () -> getField <MFInt32> ("set_majorLineEvery");
 		majorLineEvery ()  .addInterest (set_majorLineEvery);
 		set_majorLineEvery .addInterest (majorLineEvery ());
 		set_majorLineEvery .addEvent (majorLineEvery ());
+
+		auto & set_gap = getToolNode () -> getField <MFInt32> ("set_gap");
+		gap ()  .addInterest (set_gap);
+		set_gap .addInterest (gap ());
+		set_gap .addEvent (gap ());
+
+		auto & set_offset = getToolNode () -> getField <MFInt32> ("set_offset");
+		offset ()  .addInterest (set_offset);
+		set_offset .addInterest (offset ());
+		set_offset .addEvent (offset ());
 	}
 	catch (const X3DError & error)
 	{ }

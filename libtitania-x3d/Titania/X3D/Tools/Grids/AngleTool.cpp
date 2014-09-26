@@ -62,7 +62,6 @@ const std::string AngleTool::containerField = "grid";
 
 AngleTool::Fields::Fields () :
 	     dimension (new SFInt32 (4)),
-	       spacing (new SFFloat (1)),
 	         angle (new SFFloat (M_PI / 8)),
 	majorLineEvery (new MFInt32 ({ 5, 4 }))
 { }
@@ -75,8 +74,8 @@ AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata",       metadata ());
 	addField (inputOutput, "translation",    translation ());
 	addField (inputOutput, "rotation",       rotation ());
-	addField (inputOutput, "dimension",      dimension ());;
-	addField (inputOutput, "spacing",        spacing ());
+	addField (inputOutput, "scale",          scale ());
+	addField (inputOutput, "dimension",      dimension ());
 	addField (inputOutput, "angle",          angle ());
 	addField (inputOutput, "majorLineEvery", majorLineEvery ());
 	addField (inputOutput, "color",          color ());
@@ -109,11 +108,6 @@ AngleTool::realize ()
 		dimension ()  .addInterest (set_dimension);
 		set_dimension .addInterest (dimension ());
 		set_dimension .addEvent (dimension ());
-
-		auto & set_spacing = getToolNode () -> getField <SFFloat> ("set_spacing");
-		spacing ()  .addInterest (set_spacing);
-		set_spacing .addInterest (spacing ());
-		set_spacing .addEvent (spacing ());
 
 		auto & set_angle = getToolNode () -> getField <SFFloat> ("set_angle");
 		angle ()  .addInterest (set_angle);

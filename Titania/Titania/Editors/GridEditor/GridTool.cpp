@@ -155,14 +155,20 @@ GridTool::configure ()
 	getTool () -> rotation () .removeInterest (this, &GridTool::set_rotation);
 	getTool () -> rotation () .addInterest (this, &GridTool::connectRotation);
 
+	getTool () -> scale () .removeInterest (this, &GridTool::set_scale);
+	getTool () -> scale () .addInterest (this, &GridTool::connectScale);
+
 	getTool () -> dimension () .removeInterest (this, &GridTool::set_dimension);
 	getTool () -> dimension () .addInterest (this, &GridTool::connectDimension);
 
-	getTool () -> spacing () .removeInterest (this, &GridTool::set_spacing);
-	getTool () -> spacing () .addInterest (this, &GridTool::connectSpacing);
-
 	getTool () -> majorLineEvery () .removeInterest (this, &GridTool::set_majorLineEvery);
 	getTool () -> majorLineEvery () .addInterest (this, &GridTool::connectMajorLineEvery);
+
+	getTool () -> gap () .removeInterest (this, &GridTool::set_gap);
+	getTool () -> gap () .addInterest (this, &GridTool::connectGap);
+
+	getTool () -> offset () .removeInterest (this, &GridTool::set_offset);
+	getTool () -> offset () .addInterest (this, &GridTool::connectOffset);
 
 	getTool () -> color () .removeInterest (this, &GridTool::set_color);
 	getTool () -> color () .addInterest (this, &GridTool::connectColor);
@@ -197,6 +203,17 @@ GridTool::configure ()
 
 	try
 	{
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/scale");
+
+		getTool () -> scale () = X3D::Vector3f (v .at (0), v .at (1), v .at (2));
+	}
+	catch (...)
+	{
+		getTool () -> scale () = X3D::Vector3f (1, 1, 1);
+	}
+
+	try
+	{
 		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/GridTool/dimension");
 
 		getTool () -> dimension () = v;
@@ -209,18 +226,6 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/GridTool/spacing");
-
-		getTool () -> spacing () = v;
-		getTool () -> spacing () .resize (3, X3D::SFFloat (1));
-	}
-	catch (...)
-	{
-		getTool () -> spacing () = { 1, 1, 1 };
-	}
-
-	try
-	{
 		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/GridTool/majorLineEvery");
 
 		getTool () -> majorLineEvery () = v;
@@ -229,6 +234,30 @@ GridTool::configure ()
 	catch (...)
 	{
 		getTool () -> majorLineEvery () = { 5, 5, 5 };
+	}
+
+	try
+	{
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/GridTool/gap");
+
+		getTool () -> gap () = v;
+		getTool () -> gap () .resize (3);
+	}
+	catch (...)
+	{
+		getTool () -> gap () = { 0, 0, 0 };
+	}
+
+	try
+	{
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/GridTool/offset");
+
+		getTool () -> offset () = v;
+		getTool () -> offset () .resize (3);
+	}
+	catch (...)
+	{
+		getTool () -> offset () = { 0, 0, 0 };
 	}
 
 	try
@@ -280,6 +309,13 @@ GridTool::set_rotation ()
 }
 
 void
+GridTool::set_scale ()
+{
+	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/scale", getTool () -> scale ());
+	getBrowserWindow () -> isModified (getBrowser (), true);
+}
+
+void
 GridTool::set_dimension ()
 {
 	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/dimension", getTool () -> dimension ());
@@ -287,16 +323,23 @@ GridTool::set_dimension ()
 }
 
 void
-GridTool::set_spacing ()
+GridTool::set_majorLineEvery ()
 {
-	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/spacing", getTool () -> spacing ());
+	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/majorLineEvery", getTool () -> majorLineEvery ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
-GridTool::set_majorLineEvery ()
+GridTool::set_gap ()
 {
-	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/majorLineEvery", getTool () -> majorLineEvery ());
+	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/gap", getTool () -> gap ());
+	getBrowserWindow () -> isModified (getBrowser (), true);
+}
+
+void
+GridTool::set_offset ()
+{
+	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/offset", getTool () -> offset ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
@@ -336,6 +379,13 @@ GridTool::connectRotation (const X3D::SFRotation & field)
 }
 
 void
+GridTool::connectScale (const X3D::SFVec3f & field)
+{
+	field .removeInterest (this, &GridTool::connectScale);
+	field .addInterest (this, &GridTool::set_scale);
+}
+
+void
 GridTool::connectDimension (const X3D::MFInt32 & field)
 {
 	field .removeInterest (this, &GridTool::connectDimension);
@@ -343,17 +393,24 @@ GridTool::connectDimension (const X3D::MFInt32 & field)
 }
 
 void
-GridTool::connectSpacing (const X3D::MFFloat & field)
-{
-	field .removeInterest (this, &GridTool::connectSpacing);
-	field .addInterest (this, &GridTool::set_spacing);
-}
-
-void
 GridTool::connectMajorLineEvery (const X3D::MFInt32 & field)
 {
 	field .removeInterest (this, &GridTool::connectMajorLineEvery);
 	field .addInterest (this, &GridTool::set_majorLineEvery);
+}
+
+void
+GridTool::connectGap (const X3D::MFInt32 & field)
+{
+	field .removeInterest (this, &GridTool::connectGap);
+	field .addInterest (this, &GridTool::set_gap);
+}
+
+void
+GridTool::connectOffset (const X3D::MFInt32 & field)
+{
+	field .removeInterest (this, &GridTool::connectOffset);
+	field .addInterest (this, &GridTool::set_offset);
 }
 
 void

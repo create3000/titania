@@ -110,10 +110,10 @@ private:
 	set_rotation ();
 
 	void
-	set_dimension ();
+	set_scale ();
 
 	void
-	set_spacing ();
+	set_dimension ();
 
 	void
 	set_angle ();
@@ -137,10 +137,10 @@ private:
 	connectRotation (const X3D::SFRotation &);
 
 	void
-	connectDimension (const X3D::SFInt32 &);
+	connectScale (const X3D::SFVec3f &);
 
 	void
-	connectSpacing (const X3D::SFFloat &);
+	connectDimension (const X3D::SFInt32 &);
 
 	void
 	connectAngle (const X3D::SFFloat &);

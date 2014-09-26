@@ -1,3 +1,27 @@
+2014-09-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* GridTool.h:
+	* Palette.x3dv:
+	* AngleTool.h:
+	* LODEditor.xml:
+	* GridEditor.xml:
+	* TextEditor.xml:
+	* GridTool.cpp:
+	* AngleTool.cpp:
+	* LightEditor.xml:
+	* InlineEditor.xml:
+	* X3DGridEditor.h:
+	* TextureEditor.xml:
+	* X3DAngleEditor.h:
+	* ViewpointEditor.xml:
+	* X3DGridEditor.cpp:
+	* AppearanceEditor.xml:
+	* X3DAngleEditor.cpp:
+	* X3DGridEditorInterface.h:
+	* NavigationInfoEditor.xml:
+	* X3DGridEditorInterface.cpp:
+	* PrecisionPlacementPanel.xml: 
+
 2014-09-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Configuration.h:
