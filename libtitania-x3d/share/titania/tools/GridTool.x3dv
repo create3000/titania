@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Fri, 26 Sep 2014 14:36:32 GMT"
+META "modified" "Sat, 27 Sep 2014 05:33:38 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -246,7 +246,7 @@ PROTO Grid [
             }
             material USE MinorMaterial
           }
-          geometry DEF Points PointSet {
+          geometry DEF MinorPoints PointSet {
             coord Coordinate {
               point [
                 0 -9 0,
@@ -282,7 +282,7 @@ PROTO Grid [
     initializeOnly SFNode  majorGrid USE MajorGrid
     initializeOnly SFNode  minorGrid USE MinorGrid
     initializeOnly SFNode  majorPoints USE MajorPoints
-    initializeOnly SFNode  points USE Points
+    initializeOnly SFNode  minorPoints USE MinorPoints
 
     url "vrmlscript:
 
