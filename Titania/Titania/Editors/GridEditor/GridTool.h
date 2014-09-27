@@ -119,10 +119,7 @@ private:
 	set_majorLineEvery ();
 
 	void
-	set_gap ();
-
-	void
-	set_offset ();
+	set_majorLineOffset ();
 
 	void
 	set_color ();
@@ -149,10 +146,7 @@ private:
 	connectMajorLineEvery (const X3D::MFInt32 &);
 
 	void
-	connectGap (const X3D::MFInt32 &);
-
-	void
-	connectOffset (const X3D::MFInt32 &);
+	connectMajorLineOffset (const X3D::MFInt32 &);
 
 	void
 	connectColor (const X3D::SFColorRGBA &);

@@ -187,7 +187,14 @@ X3DViewportEditor::set_node ()
 	const X3D::MFNode viewports (viewport ? X3D::MFNode ({ viewport }) : X3D::MFNode ());
 
 	if (viewport)
-		viewport -> clipBoundary () .set (X3D::MFFloat ({ viewport -> getLeft (), viewport -> getRight (), viewport -> getBottom (), viewport -> getTop () }));
+	{
+		viewport -> clipBoundary () = {
+			viewport -> getLeft (), 
+			viewport -> getRight (), 
+			viewport -> getBottom (), 
+			viewport -> getTop ()
+		};
+	}
 
 	clipBoundary .setNodes (viewports);
 }

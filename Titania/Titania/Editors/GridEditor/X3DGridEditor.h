@@ -108,14 +108,31 @@ private:
 	void
 	connectRotation (const X3D::SFRotation &);
 
+	virtual
+	void
+	on_major_line_grid_value_changed () final override;
+
+	void
+	on_major_line_grid_upper_changed ();
+
+	virtual
+	void
+	on_add_major_line_grid () final override;
+	
+	virtual
+	void
+	on_remove_major_line_grid () final override;
+
+	void
+	set_majorLineEvery ();
+
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f> translation;
 	X3DFieldAdjustment3 <X3D::SFVec3f> scale;
 	X3DFieldAdjustment3 <X3D::MFInt32> dimension;
 	X3DFieldAdjustment3 <X3D::MFInt32> majorLineEvery;
-	X3DFieldAdjustment3 <X3D::MFInt32> gap;
-	X3DFieldAdjustment3 <X3D::MFInt32> offset;
+	X3DFieldAdjustment3 <X3D::MFInt32> majorLineOffset;
 	SFColorRGBAButton                  color;
 	SFColorRGBAButton                  lineColor;
 	SFColorRGBAButton                  majorLineColor;

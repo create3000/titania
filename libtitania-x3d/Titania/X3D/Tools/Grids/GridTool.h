@@ -106,20 +106,12 @@ public:
 	{ return *fields .majorLineEvery; }
 
 	MFInt32 &
-	gap ()
-	{ return *fields .gap; }
+	majorLineOffset ()
+	{ return *fields .majorLineOffset; }
 
 	const MFInt32 &
-	gap () const
-	{ return *fields .gap; }
-
-	MFInt32 &
-	offset ()
-	{ return *fields .offset; }
-
-	const MFInt32 &
-	offset () const
-	{ return *fields .offset; }
+	majorLineOffset () const
+	{ return *fields .majorLineOffset; }
 
 
 private:
@@ -148,8 +140,7 @@ private:
 
 		MFInt32* const dimension;
 		MFInt32* const majorLineEvery;
-		MFInt32* const gap;
-		MFInt32* const offset;
+		MFInt32* const majorLineOffset;
 	};
 
 	Fields fields;

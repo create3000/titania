@@ -73,6 +73,17 @@ public:
 	///  @name Member access
 
 	void
+	setIndex (const int value)
+	{
+		index = value;
+		set_field ();
+	}
+
+	int
+	getIndex () const
+	{ return index; }
+
+	void
 	setNormalize (const bool value)
 	{ normalize = value; }
 	
@@ -117,6 +128,7 @@ private:
 	Gtk::Widget &                        widget;
 	X3D::MFNode                          nodes;
 	const std::string                    name;
+	int                                  index;
 	UndoStepPtr                          undoStep;
 	int                                  input;
 	bool                                 changing;
@@ -138,6 +150,7 @@ X3DFieldAdjustment2 <Type>::X3DFieldAdjustment2 (X3DBrowserWindow* const browser
 	          widget (widget),
 	           nodes (),
 	            name (name),
+	           index (0),
 	        undoStep (),
 	           input (-1),
 	        changing (false),
@@ -210,8 +223,8 @@ X3DFieldAdjustment2 <Type>::on_value_changed (const int id)
 			if (normalize)
 				vector .normalize ();
 
-			field .set1Value (0, vector .x ());
-			field .set1Value (1, vector .y ());
+			field .set1Value (index + 0, vector .x ());
+			field .set1Value (index + 1, vector .y ());
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -239,20 +252,23 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 
 	bool hasField = false;
 
-	for (const auto & node : basic::make_reverse_range (nodes))
+	if (index >= 0)
 	{
-		try
+		for (const auto & node : basic::make_reverse_range (nodes))
 		{
-			auto & field = node -> getField <Type> (name);
-		
-			adjustment1 -> set_value (field .get1Value (0));
-			adjustment2 -> set_value (field .get1Value (1));
+			try
+			{
+				auto & field = node -> getField <Type> (name);
+			
+				adjustment1 -> set_value (field .get1Value (index + 0));
+				adjustment2 -> set_value (field .get1Value (index + 1));
 
-			hasField = true;
-			break;
+				hasField = true;
+				break;
+			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
-		catch (const X3D::X3DError &)
-		{ }
 	}
 
 	if (not hasField)

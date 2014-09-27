@@ -164,11 +164,8 @@ GridTool::configure ()
 	getTool () -> majorLineEvery () .removeInterest (this, &GridTool::set_majorLineEvery);
 	getTool () -> majorLineEvery () .addInterest (this, &GridTool::connectMajorLineEvery);
 
-	getTool () -> gap () .removeInterest (this, &GridTool::set_gap);
-	getTool () -> gap () .addInterest (this, &GridTool::connectGap);
-
-	getTool () -> offset () .removeInterest (this, &GridTool::set_offset);
-	getTool () -> offset () .addInterest (this, &GridTool::connectOffset);
+	getTool () -> majorLineOffset () .removeInterest (this, &GridTool::set_majorLineOffset);
+	getTool () -> majorLineOffset () .addInterest (this, &GridTool::connectMajorLineOffset);
 
 	getTool () -> color () .removeInterest (this, &GridTool::set_color);
 	getTool () -> color () .addInterest (this, &GridTool::connectColor);
@@ -229,7 +226,6 @@ GridTool::configure ()
 		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/GridTool/majorLineEvery");
 
 		getTool () -> majorLineEvery () = v;
-		getTool () -> majorLineEvery () .resize (3, X3D::SFInt32 (5));
 	}
 	catch (...)
 	{
@@ -238,26 +234,13 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/GridTool/gap");
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/GridTool/majorLineOffset");
 
-		getTool () -> gap () = v;
-		getTool () -> gap () .resize (3);
+		getTool () -> majorLineOffset () = v;
 	}
 	catch (...)
 	{
-		getTool () -> gap () = { 0, 0, 0 };
-	}
-
-	try
-	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/GridTool/offset");
-
-		getTool () -> offset () = v;
-		getTool () -> offset () .resize (3);
-	}
-	catch (...)
-	{
-		getTool () -> offset () = { 0, 0, 0 };
+		getTool () -> majorLineOffset () = { 0, 0, 0 };
 	}
 
 	try
@@ -330,16 +313,9 @@ GridTool::set_majorLineEvery ()
 }
 
 void
-GridTool::set_gap ()
+GridTool::set_majorLineOffset ()
 {
-	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/gap", getTool () -> gap ());
-	getBrowserWindow () -> isModified (getBrowser (), true);
-}
-
-void
-GridTool::set_offset ()
-{
-	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/offset", getTool () -> offset ());
+	getWorldInfo (true) -> setMetaData ("/Titania/GridTool/majorLineOffset", getTool () -> majorLineOffset ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
@@ -400,17 +376,10 @@ GridTool::connectMajorLineEvery (const X3D::MFInt32 & field)
 }
 
 void
-GridTool::connectGap (const X3D::MFInt32 & field)
+GridTool::connectMajorLineOffset (const X3D::MFInt32 & field)
 {
-	field .removeInterest (this, &GridTool::connectGap);
-	field .addInterest (this, &GridTool::set_gap);
-}
-
-void
-GridTool::connectOffset (const X3D::MFInt32 & field)
-{
-	field .removeInterest (this, &GridTool::connectOffset);
-	field .addInterest (this, &GridTool::set_offset);
+	field .removeInterest (this, &GridTool::connectMajorLineOffset);
+	field .addInterest (this, &GridTool::set_majorLineOffset);
 }
 
 void

@@ -79,13 +79,14 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_GridGapYAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridGapYAdjustment"));
 	m_GridGapZAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridGapZAdjustment"));
 	m_GridLineColorAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridLineColorAdjustment"));
+	m_GridMajorGridAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorGridAdjustment"));
 	m_GridMajorLineColorAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineColorAdjustment"));
 	m_GridMajorLineEveryXAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineEveryXAdjustment"));
 	m_GridMajorLineEveryYAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineEveryYAdjustment"));
 	m_GridMajorLineEveryZAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineEveryZAdjustment"));
-	m_GridOffsetXAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridOffsetXAdjustment"));
-	m_GridOffsetYAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridOffsetYAdjustment"));
-	m_GridOffsetZAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridOffsetZAdjustment"));
+	m_GridMajorLineOffsetXAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineOffsetXAdjustment"));
+	m_GridMajorLineOffsetYAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineOffsetYAdjustment"));
+	m_GridMajorLineOffsetZAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineOffsetZAdjustment"));
 	m_GridScaleXAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridScaleXAdjustment"));
 	m_GridScaleYAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridScaleYAdjustment"));
 	m_GridScaleZAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridScaleZAdjustment"));
@@ -115,8 +116,10 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GridMajorLineColorBox", m_GridMajorLineColorBox);
 	m_builder -> get_widget ("GridMajorLineColorButton", m_GridMajorLineColorButton);
 	m_builder -> get_widget ("GridScaleBox", m_GridScaleBox);
-	m_builder -> get_widget ("GridGapBox", m_GridGapBox);
-	m_builder -> get_widget ("GridOffsetBox", m_GridOffsetBox);
+	m_builder -> get_widget ("GridMajorLineOffsetBox", m_GridMajorLineOffsetBox);
+	m_builder -> get_widget ("GridMajorGridSpinButton", m_GridMajorGridSpinButton);
+	m_builder -> get_widget ("GridAddMajorGridButton", m_GridAddMajorGridButton);
+	m_builder -> get_widget ("GridRemoveMajorGridButton", m_GridRemoveMajorGridButton);
 	m_builder -> get_widget ("AngleExpander", m_AngleExpander);
 	m_builder -> get_widget ("AngleCheckButton", m_AngleCheckButton);
 	m_builder -> get_widget ("AngleBox", m_AngleBox);
@@ -135,6 +138,13 @@ X3DGridEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ComboBoxText with id 'GridPlaneComboBoxText'.
 	m_GridPlaneComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_plane_changed));
+
+	// Connect object Gtk::SpinButton with id 'GridMajorGridSpinButton'.
+	m_GridMajorGridSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_major_line_grid_value_changed));
+
+	// Connect object Gtk::Button with id 'GridAddMajorGridButton'.
+	m_GridAddMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_add_major_line_grid));
+	m_GridRemoveMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_remove_major_line_grid));
 
 	// Connect object Gtk::CheckButton with id 'AngleCheckButton'.
 	m_AngleCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_angle_toggled));

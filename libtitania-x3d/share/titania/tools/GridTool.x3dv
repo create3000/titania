@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sat, 27 Sep 2014 05:33:38 GMT"
+META "modified" "Sat, 27 Sep 2014 06:22:01 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -30,12 +30,7 @@ PROTO Grid [
     5,
     5
   ]
-  inputOutput    MFInt32    gap [
-    0,
-    0,
-    0
-  ]
-  inputOutput    MFInt32    offset [
+  inputOutput    MFInt32    majorLineOffset [
     0,
     0,
     0
@@ -276,8 +271,7 @@ PROTO Grid [
   DEF GridScript Script {
     inputOutput    MFInt32 dimension IS dimension
     inputOutput    MFInt32 majorLineEvery IS majorLineEvery
-    inputOutput    MFInt32 gap IS gap
-    inputOutput    MFInt32 offset IS offset
+    inputOutput    MFInt32 majorLineOffset IS majorLineOffset
     initializeOnly SFNode  plane USE Plane
     initializeOnly SFNode  majorGrid USE MajorGrid
     initializeOnly SFNode  minorGrid USE MinorGrid
@@ -305,7 +299,7 @@ function eventsProcessed ()
 	// Points
 
 	generatePoints (true,  majorPoints .coord .point);
-	generatePoints (false, points .coord .point);
+	generatePoints (false, minorPoints .coord .point);
 }
 
 function generateGrid (major, grid)
@@ -319,9 +313,9 @@ function generateGrid (major, grid)
 
 	for (var i = 0, size = dimension [0] + 1; i < size; ++ i)
 	{
-		if (major - isMajor (i, dimension [0], majorLineEvery [0], gap [0], offset [0]))
+		if (major - isMajorLine (i, 0))
 			continue;
-		
+
 		var x = -scaleX1_2 + i;
 
 		point [p]     = new SFVec3f (x, 0, -scaleZ1_2 - majorAdd);
@@ -335,7 +329,7 @@ function generateGrid (major, grid)
 
 	for (var i = 0, size = dimension [2] + 1; i < size; ++ i)
 	{
-		if (major - isMajor (i, dimension [2], majorLineEvery [2], gap [2], offset [2]))
+		if (major - isMajorLine (i, 2))
 			continue;
 
 		var z = -scaleZ1_2 + i;
@@ -361,7 +355,7 @@ function generatePoints (major, point)
 
 	for (var i = 0, size = dimension [1] + 1; i < size; ++ i)
 	{
-		if (major - isMajor (i, dimension [1], majorLineEvery [1], gap [1], offset [1]))
+		if (major - isMajorLine (i, 1))
 			continue;
 
 		point [p] = new SFVec3f (0, scaleY1_2 + i, 0);
@@ -371,15 +365,25 @@ function generatePoints (major, point)
 	point .length = p;
 }
 
-function isMajor (i, dimension, majorLineEvery, gap, offset)
+
+function isMajorLine (i, index)
+{
+	for (var d = index; d < majorLineEvery .length; d += 3)
+	{
+		if (isMajor (i, dimension [index], majorLineEvery [d], majorLineOffset [d]))
+			return true;
+	}
+
+	return false;
+}
+
+function isMajor (i, dimension, majorLineEvery, majorLineOffset)
 {
 	if (majorLineEvery)
 	{
-		var index  = i - dimension / 2 - offset;
-		var factor = majorLineEvery + gap;
-	
-		return !(Math .floor (index)       % factor &&
-			      Math .floor (index - gap) % factor);
+		var index = Math .floor (i - dimension / 2 - majorLineOffset);
+
+		return !(index % majorLineEvery);
 	}
 
 	return false;
@@ -546,12 +550,7 @@ DEF Tool Script {
     5,
     5
   ]
-  inputOutput MFInt32    gap [
-    0,
-    0,
-    0
-  ]
-  inputOutput MFInt32    offset [
+  inputOutput MFInt32    majorLineOffset [
     0,
     0,
     0
@@ -587,8 +586,7 @@ ROUTE Tool.lineColor_changed TO _1.set_lineColor
 ROUTE Tool.lineTransparency_changed TO _1.set_lineTransparency
 ROUTE Tool.majorLineColor_changed TO _1.set_majorLineColor
 ROUTE Tool.majorLineTransparency_changed TO _1.set_majorLineTransparency
-ROUTE Tool.gap_changed TO _1.set_gap
-ROUTE Tool.offset_changed TO _1.set_offset
+ROUTE Tool.majorLineOffset_changed TO _1.set_majorLineOffset
 ROUTE Tool.scale_changed TO DimensionScript.set_scale
 ROUTE Tool.scale_changed TO MoveScript.set_scale
 ROUTE Tool.translation_changed TO _1.set_translation

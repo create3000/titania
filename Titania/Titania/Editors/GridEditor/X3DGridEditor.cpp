@@ -87,18 +87,12 @@ X3DGridEditor::X3DGridEditor () :
 	                        getGridMajorLineEveryZAdjustment (),
 	                        getGridMajorLineEveryBox (),
 	                        "majorLineEvery"),
-	                   gap (getBrowserWindow (),
-	                        getGridGapXAdjustment (),
-	                        getGridGapYAdjustment (),
-	                        getGridGapZAdjustment (),
-	                        getGridGapBox (),
-	                        "gap"),
-	                offset (getBrowserWindow (),
-	                        getGridOffsetXAdjustment (),
-	                        getGridOffsetYAdjustment (),
-	                        getGridOffsetZAdjustment (),
-	                        getGridOffsetBox (),
-	                        "offset"),
+	       majorLineOffset (getBrowserWindow (),
+	                        getGridMajorLineOffsetXAdjustment (),
+	                        getGridMajorLineOffsetYAdjustment (),
+	                        getGridMajorLineOffsetZAdjustment (),
+	                        getGridMajorLineOffsetBox (),
+	                        "majorLineOffset"),
 	                 color (getBrowserWindow (),
 	                        getGridColorButton (),
 	                        getGridColorAdjustment (),
@@ -118,15 +112,14 @@ X3DGridEditor::X3DGridEditor () :
 {
 	getGridCheckButton () .set_related_action (getBrowserWindow () -> getGridToolAction ());
 
-	translation    .setUndo (false);
-	scale          .setUndo (false);
-	dimension      .setUndo (false);
-	majorLineEvery .setUndo (false);
-	gap            .setUndo (false);
-	offset         .setUndo (false);
-	color          .setUndo (false);
-	lineColor      .setUndo (false);
-	majorLineColor .setUndo (false);
+	translation     .setUndo (false);
+	scale           .setUndo (false);
+	dimension       .setUndo (false);
+	majorLineEvery  .setUndo (false);
+	majorLineOffset .setUndo (false);
+	color           .setUndo (false);
+	lineColor       .setUndo (false);
+	majorLineColor  .setUndo (false);
 }
 
 void
@@ -135,20 +128,21 @@ X3DGridEditor::initialize ()
 	const auto & gridTool  = getBrowserWindow () -> getGridTool ();
 	X3D::MFNode  gridTools = { gridTool };
 
-	translation    .setNodes (gridTools);
-	scale          .setNodes (gridTools);
-	dimension      .setNodes (gridTools);
-	majorLineEvery .setNodes (gridTools);
-	gap            .setNodes (gridTools);
-	offset         .setNodes (gridTools);
-	color          .setNodes (gridTools);
-	lineColor      .setNodes (gridTools);
-	majorLineColor .setNodes (gridTools);
+	translation     .setNodes (gridTools);
+	scale           .setNodes (gridTools);
+	dimension       .setNodes (gridTools);
+	majorLineEvery  .setNodes (gridTools);
+	majorLineOffset .setNodes (gridTools);
+	color           .setNodes (gridTools);
+	lineColor       .setNodes (gridTools);
+	majorLineColor  .setNodes (gridTools);
 
 	gridTool -> rotation () .addInterest (this, &X3DGridEditor::set_rotation);
+	getScene ()             .addInterest (this, &X3DGridEditor::set_majorLineEvery);
 
 	on_grid_toggled ();
 	set_rotation ();
+	set_majorLineEvery ();
 }
 
 void
@@ -212,6 +206,67 @@ X3DGridEditor::connectRotation (const X3D::SFRotation & field)
 {
 	field .removeInterest (this, &X3DGridEditor::connectRotation);
 	field .addInterest (this, &X3DGridEditor::set_rotation);
+}
+
+void
+X3DGridEditor::on_major_line_grid_value_changed ()
+{
+	const int index = getGridMajorGridAdjustment () -> get_value () - 1;
+
+	majorLineEvery  .setIndex (3 * index);
+	majorLineOffset .setIndex (3 * index);
+}
+
+void
+X3DGridEditor::on_major_line_grid_upper_changed ()
+{
+	getGridMajorGridSpinButton ()   .set_sensitive (getGridMajorGridAdjustment () -> get_upper () > 1);
+	getGridRemoveMajorGridButton () .set_sensitive (getGridMajorGridAdjustment () -> get_upper () > 0);
+}
+
+void
+X3DGridEditor::on_add_major_line_grid ()
+{
+	const int size = getGridMajorGridAdjustment () -> get_upper () + 1;
+
+	getGridMajorGridAdjustment () -> set_lower (1);
+	getGridMajorGridAdjustment () -> set_upper (size);
+	getGridMajorGridAdjustment () -> set_value (size);
+	
+	on_major_line_grid_upper_changed ();
+}
+
+void
+X3DGridEditor::on_remove_major_line_grid ()
+{
+	const auto & grid  = getBrowserWindow () -> getGridTool ();
+	const int    size  = getGridMajorGridAdjustment () -> get_upper () - 1;
+	const int    index = (getGridMajorGridAdjustment () -> get_value () - 1) * 3;
+	const auto   iterL = grid -> majorLineEvery ()  .begin () + index;
+	const auto   iterO = grid -> majorLineOffset () .begin () + index;
+
+	grid -> majorLineEvery ()  .erase (iterL, iterL + 3);
+	grid -> majorLineOffset () .erase (iterO, iterO + 3);
+
+	getGridMajorGridAdjustment () -> set_lower (bool (size));
+	getGridMajorGridAdjustment () -> set_upper (size);
+	
+	if (getGridMajorGridAdjustment () -> get_value () > size)
+		getGridMajorGridAdjustment () -> set_value (size);
+		
+	on_major_line_grid_upper_changed ();
+}
+
+void
+X3DGridEditor::set_majorLineEvery ()
+{
+	const auto & grid = getBrowserWindow () -> getGridTool ();
+
+	getGridMajorGridAdjustment () -> set_lower (bool (grid -> majorLineEvery () .size ()));
+	getGridMajorGridAdjustment () -> set_upper (grid -> majorLineEvery () .size () / 3);
+	getGridMajorGridAdjustment () -> set_value (grid -> majorLineEvery () .size () > 0);
+
+	on_major_line_grid_upper_changed ();
 }
 
 X3DGridEditor::~X3DGridEditor ()
