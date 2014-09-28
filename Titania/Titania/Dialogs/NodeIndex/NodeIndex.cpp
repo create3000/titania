@@ -95,6 +95,24 @@ NodeIndex::initialize ()
 }
 
 void
+NodeIndex::refresh ()
+{
+	switch (index)
+	{
+		case NAMED_NODES_INDEX:
+		{
+			setNodes (getNodes ());
+			break;
+		}
+		case TYPE_INDEX:
+		{
+			setNodes (getNodes (types));
+			break;
+		}
+	}
+}
+
+void
 NodeIndex::setNamedNodes ()
 {
 	executionContext -> sceneGraph_changed () .removeInterest (this, &NodeIndex::refresh);
@@ -113,22 +131,16 @@ NodeIndex::setTypes (const std::set <X3D::X3DConstants::NodeType> & value)
 	setNodes (getNodes (types));
 }
 
-void
-NodeIndex::refresh ()
+std::shared_ptr <UserData::NodeIndex>
+NodeIndex::getUserData (const X3D::X3DExecutionContextPtr & executionContext)
 {
-	switch (index)
-	{
-		case NAMED_NODES_INDEX:
-		{
-			setNodes (getNodes ());
-			break;
-		}
-		case TYPE_INDEX:
-		{
-			setNodes (getNodes (types));
-			break;
-		}
-	}
+	const auto contextUserData = getBrowserWindow () -> getUserData (executionContext);
+	const auto iter            = contextUserData -> nodeIndex .find (this);
+
+	if (iter not_eq contextUserData -> nodeIndex .end ())
+		return iter -> second;
+
+	return contextUserData -> nodeIndex .emplace (this, std::make_shared <UserData::NodeIndex> ()) .first -> second;
 }
 
 void
@@ -294,7 +306,7 @@ NodeIndex::set_executionContext ()
 		executionContext -> sceneGraph_changed () .addInterest (this, &NodeIndex::refresh);
 
 	scene = executionContext;
-	node  = nullptr;
+	node  = X3D::SFNode (getUserData (executionContext) -> node);
 
 	if (scene)
 		scene -> exportedNodes_changed () .addInterest (this, &NodeIndex::refresh);
@@ -306,6 +318,8 @@ void
 NodeIndex::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
 	node = nodes [path .front ()];
+
+	getUserData (getExecutionContext ()) -> node = node;
 
 	const X3D::MFNode selection = { node };
 

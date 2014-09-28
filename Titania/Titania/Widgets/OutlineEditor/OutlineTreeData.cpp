@@ -170,7 +170,7 @@ OutlineTreeData::is (X3D::X3DChildObject* const value) const
 	return object == value;
 }
 
-OutlineUserDataPtr
+UserDataPtr
 OutlineTreeData::get_user_data () const
 {
 	auto object = get_object ();
@@ -195,13 +195,13 @@ OutlineTreeData::get_user_data () const
 	return get_user_data (get_object ());
 }
 
-OutlineUserDataPtr
+UserDataPtr
 OutlineTreeData::get_user_data (X3D::X3DChildObject* const object)
 {
 	if (not object -> getUserData ())
-		object -> setUserData (X3D::UserDataPtr (new OutlineUserData ()));
+		object -> setUserData (X3D::UserDataPtr (new UserData ()));
 
-	return std::static_pointer_cast <OutlineUserData> (object -> getUserData ());
+	return std::static_pointer_cast <UserData> (object -> getUserData ());
 }
 
 ///  @name Destruction

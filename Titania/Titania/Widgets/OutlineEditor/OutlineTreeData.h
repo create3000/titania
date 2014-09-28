@@ -51,7 +51,7 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_DATA_H__
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_DATA_H__
 
-#include "OutlineUserData.h"
+#include "../../Base/UserData.h"
 
 #include <Titania/X3D.h>
 #include <gtkmm.h>
@@ -108,11 +108,11 @@ public:
 	get_index () const
 	{ return index; }
 
-	OutlineUserDataPtr
+	UserDataPtr
 	get_user_data () const;
 
 	static
-	OutlineUserDataPtr
+	UserDataPtr
 	get_user_data (X3D::X3DChildObject* const);
 
 	///  @name Route handling

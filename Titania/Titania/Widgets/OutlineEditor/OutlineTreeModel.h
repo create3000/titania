@@ -51,10 +51,10 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_MODEL_H__
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_MODEL_H__
 
+#include "../../Base/UserData.h"
 #include "../../Base/X3DBaseInterface.h"
 #include "OutlineTree.h"
 #include "OutlineTreeData.h"
-#include "OutlineUserData.h"
 
 #include <Titania/X3D.h>
 
@@ -125,11 +125,11 @@ public:
 	OutlineTreeData*
 	get_data (const iterator &);
 
-	OutlineUserDataPtr
+	UserDataPtr
 	get_user_data (const iterator &) const;
 
 	static
-	OutlineUserDataPtr
+	UserDataPtr
 	get_user_data (X3D::X3DChildObject*);
 
 	static

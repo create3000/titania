@@ -51,6 +51,7 @@
 #ifndef __TITANIA_DIALOGS_NODE_INDEX_NODE_INDEX_H__
 #define __TITANIA_DIALOGS_NODE_INDEX_NODE_INDEX_H__
 
+#include "../../Base/UserData.h"
 #include "../../UserInterfaces/X3DNodeIndexInterface.h"
 
 namespace titania {
@@ -104,6 +105,9 @@ private:
 	refresh ();
 
 	///  @name Operations
+	
+	std::shared_ptr <UserData::NodeIndex>
+	getUserData (const X3D::X3DExecutionContextPtr &);
 
 	void
 	setNodes (X3D::MFNode &&);

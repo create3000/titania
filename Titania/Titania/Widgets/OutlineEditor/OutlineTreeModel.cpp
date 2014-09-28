@@ -88,7 +88,7 @@ OutlineTreeModel::iter_is_valid (const iterator & iter) const
 	return get_data (iter);
 }
 
-OutlineUserDataPtr
+UserDataPtr
 OutlineTreeModel::get_user_data (const iterator & iter) const
 {
 	if (iter_is_valid (iter))
@@ -97,7 +97,7 @@ OutlineTreeModel::get_user_data (const iterator & iter) const
 	return nullptr;
 }
 
-OutlineUserDataPtr
+UserDataPtr
 OutlineTreeModel::get_user_data (X3D::X3DChildObject* object)
 {
 	return OutlineTreeData::get_user_data (object);

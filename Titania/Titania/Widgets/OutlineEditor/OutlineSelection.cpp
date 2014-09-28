@@ -178,7 +178,7 @@ OutlineSelection::select (X3D::X3DFieldDefinition* const field, const bool value
 }
 
 void
-OutlineSelection::select (const OutlineUserDataPtr & userData, const bool value)
+OutlineSelection::select (const UserDataPtr & userData, const bool value)
 {
 	if (value)
 		userData -> selected |= OUTLINE_SELECTED;

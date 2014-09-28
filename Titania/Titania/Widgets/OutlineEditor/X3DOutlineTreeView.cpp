@@ -292,15 +292,15 @@ X3DOutlineTreeView::get_iters (X3D::X3DChildObject* const object) const
 	return get_model () -> get_iters (object);
 }
 
-OutlineUserDataPtr
+UserDataPtr
 X3DOutlineTreeView::get_user_data (const Gtk::TreeModel::iterator & iter) const
 {
-	OutlineUserDataPtr user_data = get_model () -> get_user_data (iter);
+	UserDataPtr user_data = get_model () -> get_user_data (iter);
 
 	if (get_data_type (iter) == OutlineIterType::X3DExecutionContext)
 	{
 		if (not user_data -> user_data)
-			user_data -> user_data .reset (new OutlineUserData ());
+			user_data -> user_data .reset (new UserData ());
 
 		return user_data -> user_data;
 	}
@@ -308,7 +308,7 @@ X3DOutlineTreeView::get_user_data (const Gtk::TreeModel::iterator & iter) const
 	return user_data;
 }
 
-OutlineUserDataPtr
+UserDataPtr
 X3DOutlineTreeView::get_user_data (X3D::X3DChildObject* const object)
 {
 	return OutlineTreeModel::get_user_data (object);

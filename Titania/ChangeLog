@@ -1,5 +1,24 @@
 2014-09-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* UserData.h:
+	* X3DBrowserWidget.h:
+	* X3DBrowserWidget.cpp:
+	* NodeIndex.h:
+	* NodeIndex.cpp:
+	* OutlineTreeData.h:
+	* OutlineUserData.h:
+	* OutlineTreeModel.h:
+	* OutlineSelection.h:
+	* OutlineTreeData.cpp:
+	* X3DOutlineTreeView.h:
+	* OutlineSelection.cpp:
+	* OutlineTreeModel.cpp:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeViewEditor.cpp: 
+
+2014-09-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.cpp:
 	* Palette.x3dv:
 	* AngleTool.h:

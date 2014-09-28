@@ -111,10 +111,10 @@ private:
 	add_route (const double, const double);
 
 	void
-	set_access_type_selection (const OutlineUserDataPtr &, const int);
+	set_access_type_selection (const UserDataPtr &, const int);
 
 	void
-	clear_access_type_selection (const OutlineUserDataPtr &);
+	clear_access_type_selection (const UserDataPtr &);
 
 	bool
 	remove_route (const double, const double);
@@ -130,8 +130,8 @@ private:
 	using FieldType = X3D::X3DConstants::FieldType;
 
 	std::unique_ptr <OutlineDragDrop>  dragDrop;
-	OutlineUserDataPtr                 overUserData;
-	OutlineUserDataPtr                 selectedUserData;
+	UserDataPtr                 overUserData;
+	UserDataPtr                 selectedUserData;
 	FieldType                          matchingFieldType;
 	int                                matchingAccessType;
 	X3D::SFNode                        sourceNode;

@@ -62,6 +62,7 @@ namespace puck {
 
 class AboutTab;
 class BrowserUserData;
+class UserData;
 
 class X3DBrowserWidget :
 	virtual public X3DBrowserWindowInterface
@@ -82,10 +83,6 @@ public:
 	const X3D::BrowserPtr &
 	getMasterBrowser () const
 	{ return masterBrowser; }
-
-	static
-	std::shared_ptr <BrowserUserData>
-	getUserData (const X3D::BrowserPtr &);
 
 	virtual
 	const X3D::X3DScenePtr &
@@ -111,6 +108,14 @@ public:
 
 	bool
 	isLive () const;
+
+	static
+	std::shared_ptr <BrowserUserData>
+	getUserData (const X3D::BrowserPtr &);
+
+	static
+	std::shared_ptr <UserData>
+	getUserData (const X3D::X3DExecutionContextPtr &);
 
 	///  @name Operations
 

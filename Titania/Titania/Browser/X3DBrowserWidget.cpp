@@ -50,6 +50,7 @@
 
 #include "X3DBrowserWidget.h"
 
+#include "../Base/UserData.h"
 #include "../Browser/AboutTab.h"
 #include "../Browser/BrowserUserData.h"
 #include "../Browser/Image.h"
@@ -197,15 +198,6 @@ X3DBrowserWidget::saveSession ()
 	X3DBrowserWindowInterface::saveSession ();
 }
 
-std::shared_ptr <BrowserUserData>
-X3DBrowserWidget::getUserData (const X3D::BrowserPtr & browser)
-{
-	if (not browser -> getUserData ())
-		browser -> setUserData (X3D::UserDataPtr (new BrowserUserData (browser)));
-
-	return std::static_pointer_cast <BrowserUserData> (browser -> getUserData ());
-}
-
 void
 X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
 {
@@ -273,6 +265,24 @@ bool
 X3DBrowserWidget::isLive () const
 {
 	return getConfig () .getBoolean ("isLive");
+}
+
+std::shared_ptr <BrowserUserData>
+X3DBrowserWidget::getUserData (const X3D::BrowserPtr & browser)
+{
+	if (not browser -> getUserData ())
+		browser -> setUserData (X3D::UserDataPtr (new BrowserUserData (browser)));
+
+	return std::static_pointer_cast <BrowserUserData> (browser -> getUserData ());
+}
+
+std::shared_ptr <UserData>
+X3DBrowserWidget::getUserData (const X3D::X3DExecutionContextPtr & executionContext)
+{
+	if (not executionContext -> getUserData ())
+		executionContext -> setUserData (X3D::UserDataPtr (new UserData ()));
+
+	return std::static_pointer_cast <UserData> (executionContext -> getUserData ());
 }
 
 void

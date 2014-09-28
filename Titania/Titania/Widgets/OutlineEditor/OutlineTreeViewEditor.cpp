@@ -67,8 +67,8 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 	        Glib::ObjectBase (typeid (OutlineTreeViewEditor)),
 	      X3DOutlineTreeView (executionContext),
 	                dragDrop (new OutlineDragDrop (this)),
-	            overUserData (new OutlineUserData ()),
-	        selectedUserData (new OutlineUserData ()),
+	            overUserData (new UserData ()),
+	        selectedUserData (new UserData ()),
 	      matchingAccessType (0),
 	              sourceNode (),
 	             sourceField (),
@@ -610,7 +610,7 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 }
 
 void
-OutlineTreeViewEditor::set_access_type_selection (const OutlineUserDataPtr & userData, const int type)
+OutlineTreeViewEditor::set_access_type_selection (const UserDataPtr & userData, const int type)
 {
 	userData -> selected &= OUTLINE_SELECTED;
 	userData -> selected |= type;
@@ -622,7 +622,7 @@ OutlineTreeViewEditor::set_access_type_selection (const OutlineUserDataPtr & use
 }
 
 void
-OutlineTreeViewEditor::clear_access_type_selection (const OutlineUserDataPtr & userData)
+OutlineTreeViewEditor::clear_access_type_selection (const UserDataPtr & userData)
 {
 	if (not get_shift_key ())
 	{

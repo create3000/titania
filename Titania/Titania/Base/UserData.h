@@ -48,14 +48,16 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_USER_DATA_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_USER_DATA_H__
+#ifndef __TITANIA_BASE_USER_DATA_H__
+#define __TITANIA_BASE_USER_DATA_H__
 
 #include <Titania/X3D.h>
 #include <gtkmm.h>
 
 namespace titania {
 namespace puck {
+
+class NodeIndex;
 
 constexpr int OUTLINE_SELECTED        = 1;
 constexpr int OUTLINE_SELECTED_INPUT  = 1 << 1;
@@ -64,12 +66,14 @@ constexpr int OUTLINE_OVER_INPUT      = 1 << 3;
 constexpr int OUTLINE_OVER_OUTPUT     = 1 << 4;
 constexpr int OUTLINE_SPECIAL         = 1 << 5;
 
-class OutlineUserData :
+class UserData :
 	public X3D::X3DBase
 {
 public:
 
-	OutlineUserData () :
+	class NodeIndex;
+
+	UserData () :
 		    open_path (),
 		        paths (),
 		     expanded (false),
@@ -84,8 +88,9 @@ public:
 	bool full_expanded;                        // Expanded mode
 	int  selected;                             // Selected state
 
-	std::shared_ptr <OutlineUserData> user_data;
-	
+	std::shared_ptr <UserData>                               user_data;
+	std::map <puck::NodeIndex*, std::shared_ptr <NodeIndex>> nodeIndex;
+
 	virtual
 	void
 	dispose () final override;
@@ -93,27 +98,37 @@ public:
 
 private:
 
-	OutlineUserData (const OutlineUserData &) = delete;
+	UserData (const UserData &) = delete;
 
-	OutlineUserData (OutlineUserData &&) = delete;
+	UserData (UserData &&) = delete;
 
-	OutlineUserData &
-	operator = (const OutlineUserData &) = delete;
+	UserData &
+	operator = (const UserData &) = delete;
 
-	OutlineUserData &
-	operator = (OutlineUserData &&) = delete;
+	UserData &
+	operator = (UserData &&) = delete;
+
+};
+
+class UserData::NodeIndex
+{
+public:
+
+	X3D::X3DWeakPtr <X3D::X3DBaseNode> node;
 
 };
 
 inline
 void
-OutlineUserData::dispose ()
+UserData::dispose ()
 {
 	if (user_data)
 		user_data -> dispose ();
+
+	nodeIndex .clear ();
 }
 
-using OutlineUserDataPtr = std::shared_ptr <OutlineUserData>;
+using UserDataPtr = std::shared_ptr <UserData>;
 
 } // puck
 } // titania

@@ -53,10 +53,10 @@
 
 #include <gtkmm.h>
 
+#include "../../Base/UserData.h"
 #include "../../Base/X3DBaseInterface.h"
 #include "OutlineTree.h"
 #include "OutlineTreeData.h"
-#include "OutlineUserData.h"
 
 namespace titania {
 namespace puck {
@@ -144,11 +144,11 @@ public:
 	std::vector <Gtk::TreeModel::iterator>
 	get_iters (X3D::X3DChildObject* const) const;
 
-	OutlineUserDataPtr
+	UserDataPtr
 	get_user_data (const Gtk::TreeModel::iterator &) const;
 
 	static
-	OutlineUserDataPtr
+	UserDataPtr
 	get_user_data (X3D::X3DChildObject* const);
 
 	OutlineIterType
