@@ -4,14 +4,14 @@ META "comment" "World of Titania"
 META "created" "Tue, 16 Sep 2014 13:16:50 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Fri, 26 Sep 2014 00:58:46 GMT"
+META "modified" "Sat, 27 Sep 2014 17:27:44 GMT"
 META "titania magic" "Material"
 
 WorldInfo {
   metadata MetadataSet {
     name "Titania"
     value MetadataSet {
-      name "GridTool"
+      name "Grid"
       value [
         MetadataBoolean {
           name "enabled"

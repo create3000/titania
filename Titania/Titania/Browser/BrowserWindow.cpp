@@ -218,7 +218,7 @@ BrowserWindow::set_scene ()
 
 	try
 	{
-		getGridLayoutToolMenuItem () .set_active (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/GridTool/enabled") .at (0));
+		getGridLayoutToolMenuItem () .set_active (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/Grid/enabled") .at (0));
 	}
 	catch (...)
 	{
@@ -227,7 +227,7 @@ BrowserWindow::set_scene ()
 
 	try
 	{
-		getAngleLayoutToolMenuItem () .set_active (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/AngleTool/enabled") .at (0));
+		getAngleLayoutToolMenuItem () .set_active (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/AngleGrid/enabled") .at (0));
 	}
 	catch (...)
 	{

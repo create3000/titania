@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Fri, 26 Sep 2014 14:38:01 GMT"
+META "modified" "Sat, 27 Sep 2014 17:52:48 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -27,6 +27,10 @@ PROTO AngleGrid [
   inputOutput    MFInt32    majorLineEvery [
     5,
     2
+  ]
+  inputOutput    MFInt32    majorLineOffset [
+    0,
+    0
   ]
   inputOutput    SFColor    color 0.5 0.5 0.5
   inputOutput    SFFloat    transparency 0.8
@@ -201,6 +205,7 @@ PROTO AngleGrid [
   DEF AngleGridScript_1 Script {
     inputOutput    MFInt32 dimension IS dimension
     inputOutput    MFInt32 majorLineEvery IS majorLineEvery
+    inputOutput    MFInt32 majorLineOffset IS majorLineOffset
     initializeOnly SFNode  disk USE Disk_1
     initializeOnly SFNode  rings USE Rings
     initializeOnly SFNode  minorLines USE MinorLines_1
@@ -244,7 +249,7 @@ function generateRadiuses (major, radius, grid)
 
 	for (var i = 0, c = 0; i < dimension [1]; ++ i)
 	{
-		if (major - isMajor (i, dimension [1], majorLineEvery [1], 0, 0))
+		if (major - isMajorLine (i, 1))
 			continue;
 	
 		var a = angle * i;
@@ -272,7 +277,7 @@ function generateRings ()
 	{
 		var s         = i + 1;
 		var transform = rings .children [i];
-		var major     = isMajor (s, dimension [0], majorLineEvery [0], 0, 0);
+		var major     = isMajorLine (s, 0);
 
 		transform .children [0] .appearance = major ? majorAppearance : minorAppearance;
 		transform .scale                    = new SFVec3f (s, s, s);
@@ -284,7 +289,7 @@ function generateRings ()
 		var circle    = scene .createNode (\"Circle2D\");
 		var shape     = scene .createNode (\"Shape\");
 		var transform = scene .createNode (\"Transform\");
-		var major     = isMajor (s, dimension [0], majorLineEvery [0], 0, 0);
+		var major     = isMajorLine (s, 0);
 
 		shape .appearance       = major ? majorAppearance : minorAppearance;
 		shape .geometry         = circle;
@@ -296,20 +301,28 @@ function generateRings ()
 	rings .children .length = dimension [0];
 }
 
-function isMajor (i, dimension, majorLineEvery, gap, offset)
+function isMajorLine (i, index)
 {
-	if (majorLineEvery)
+	for (var d = index; d < majorLineEvery .length; d += 2)
 	{
-		var index  = i - offset;
-		var factor = majorLineEvery + gap;
-	
-		return !(Math .floor (index)       % factor &&
-			      Math .floor (index - gap) % factor);
+		if (isMajor (i, dimension [index], majorLineEvery [d], majorLineOffset [d]))
+			return true;
 	}
 
 	return false;
 }
-"
+
+function isMajor (i, dimension, majorLineEvery, majorLineOffset)
+{
+	if (majorLineEvery)
+	{
+		var index = Math .floor (i - majorLineOffset);
+
+		return !(index % majorLineEvery);
+	}
+
+	return false;
+}"
     directOutput TRUE
     mustEvaluate TRUE
   }
@@ -333,8 +346,8 @@ DEF AngleTool Transform {
               scale 6 6 6
               children Shape {
                 appearance DEF _4 Appearance {
-                  shaders DEF _5 ToolShader {
-                    diffuseColor 0.5 0.5 0.5
+                  shaders ToolShader {
+                    diffuseColor 1 0.7 0
                   }
                 }
                 geometry Sphere { }
@@ -348,13 +361,13 @@ DEF AngleTool Transform {
       children [
         DEF AngleHandle Group {
           children [
-            DEF _6 CylinderSensor {
+            DEF _5 CylinderSensor {
               diskAngle 1.2
               offset 0.392699
             }
             DEF Handle Transform {
               rotation 0 1 0 0.392699
-              children DEF _7 Transform {
+              children DEF _6 Transform {
                 translation 0 0 4
                 children ScreenGroup {
                   children Transform {
@@ -371,13 +384,13 @@ DEF AngleTool Transform {
         }
         DEF DimensionHandle Group {
           children [
-            DEF _8 PlaneSensor {
+            DEF _7 PlaneSensor {
               axisRotation 1 0 0 1.5708
               autoOffset FALSE
               offset 0 0 5
               maxPosition 0 -1
             }
-            DEF _9 Transform {
+            DEF _8 Transform {
               translation 0 0 5
               children ScreenGroup {
                 children DEF Sphere Transform {
@@ -487,6 +500,7 @@ DEF Tool_1 Script {
     5,
     2
   ]
+  inputOutput MFInt32    majorLineOffset [ ]
   inputOutput SFColor    color 0.5 0.5 0.5
   inputOutput SFFloat    transparency 0.8
   inputOutput SFColor    lineColor 1 0.7 0.7
@@ -497,23 +511,22 @@ DEF Tool_1 Script {
 }
 
 ROUTE AngleScript.rotation_changed TO Handle.set_rotation
-ROUTE _6.rotation_changed TO AngleScript.set_rotation
+ROUTE _5.rotation_changed TO AngleScript.set_rotation
 ROUTE Tool_1.translation_changed TO Handles.set_translation
 ROUTE Tool_1.translation_changed TO _3.set_translation
 ROUTE _2.translation_changed TO Tool_1.set_translation
 ROUTE Tool_1.translation_changed TO _2.set_offset
 ROUTE Tool_1.transparency_changed TO _1.set_transparency
 ROUTE Tool_1.color_changed TO _1.set_color
-ROUTE Tool_1.color_changed TO _5.set_diffuseColor
 ROUTE Tool_1.lineColor_changed TO _1.set_lineColor
 ROUTE Tool_1.lineTransparency_changed TO _1.set_lineTransparency
 ROUTE Tool_1.majorLineColor_changed TO _1.set_majorLineColor
 ROUTE Tool_1.majorLineTransparency_changed TO _1.set_majorLineTransparency
 ROUTE Tool_1.majorLineEvery_changed TO _1.set_majorLineEvery
-ROUTE DimensionScript.angleTranslation_changed TO _7.set_translation
-ROUTE _8.translation_changed TO DimensionScript.set_translation
-ROUTE DimensionScript.dimensionTranslation_changed TO _9.set_translation
-ROUTE DimensionScript.dimensionTranslation_changed TO _8.set_offset
+ROUTE DimensionScript.angleTranslation_changed TO _6.set_translation
+ROUTE _7.translation_changed TO DimensionScript.set_translation
+ROUTE DimensionScript.dimensionTranslation_changed TO _8.set_translation
+ROUTE DimensionScript.dimensionTranslation_changed TO _7.set_offset
 ROUTE Tool_1.rotation_changed TO MoveScript.set_rotation
 ROUTE MoveScript.axisOfRotation_changed TO _2.set_axisRotation
 ROUTE Tool_1.rotation_changed TO Handles.set_rotation
@@ -521,11 +534,12 @@ ROUTE Tool_1.translation_changed TO _1.set_translation
 ROUTE Tool_1.rotation_changed TO _1.set_rotation
 ROUTE Tool_1.scale_changed TO _1.set_scale
 ROUTE Tool_1.scale_changed TO Handles.set_scale
-ROUTE AngleScript.angle_changed TO _6.set_offset
+ROUTE AngleScript.angle_changed TO _5.set_offset
 ROUTE Tool_1.dimension_changed TO DimensionScript.set_dimension
 ROUTE DimensionScript.dimension_changed TO Tool_1.set_dimension
 ROUTE Tool_1.dimension_changed TO AngleScript.set_dimension
 ROUTE AngleScript.dimension_changed TO Tool_1.set_dimension
 ROUTE Tool_1.dimension_changed TO _1.set_dimension
+ROUTE Tool_1.majorLineOffset_changed TO _1.set_majorLineOffset
 
 EXPORT Tool_1 AS Tool

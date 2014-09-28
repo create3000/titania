@@ -119,6 +119,9 @@ private:
 	set_majorLineEvery ();
 
 	void
+	set_majorLineOffset ();
+
+	void
 	set_color ();
 
 	void
@@ -141,6 +144,9 @@ private:
 
 	void
 	connectMajorLineEvery (const X3D::MFInt32 &);
+
+	void
+	connectMajorLineOffset (const X3D::MFInt32 &);
 
 	void
 	connectColor (const X3D::SFColorRGBA &);

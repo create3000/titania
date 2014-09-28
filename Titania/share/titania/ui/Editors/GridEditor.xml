@@ -25,19 +25,37 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
+  <object class="GtkAdjustment" id="AngleMajorGridAdjustment">
+    <property name="lower">1</property>
+    <property name="upper">1</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">1</property>
+  </object>
   <object class="GtkAdjustment" id="AngleMajorLineColorAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="AngleMajorLineEvery0Adjustment">
-    <property name="upper">10000</property>
+    <property name="upper">1000000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="AngleMajorLineEvery1Adjustment">
-    <property name="upper">10000</property>
+    <property name="upper">1000000000</property>
     <property name="value">4</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="AngleMajorLineOffset0Adjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="AngleMajorLineOffset1Adjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
@@ -1142,6 +1160,7 @@
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_bottom">2</property>
                 <property name="label" translatable="yes">Grid Layout Tool</property>
               </object>
               <packing>
@@ -1274,7 +1293,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
-                                <property name="top_attach">5</property>
+                                <property name="top_attach">9</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1316,7 +1335,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="top_attach">5</property>
+                                <property name="top_attach">9</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1460,7 +1479,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
-                                <property name="top_attach">4</property>
+                                <property name="top_attach">6</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1511,7 +1530,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="top_attach">4</property>
+                                <property name="top_attach">6</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1525,7 +1544,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
-                                <property name="top_attach">6</property>
+                                <property name="top_attach">10</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1567,7 +1586,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="top_attach">6</property>
+                                <property name="top_attach">10</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1581,7 +1600,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
-                                <property name="top_attach">7</property>
+                                <property name="top_attach">11</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1623,7 +1642,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="top_attach">7</property>
+                                <property name="top_attach">11</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -1704,6 +1723,242 @@
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="top_attach">2</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label30">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Major Line Offset:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">7</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="AngleMajorLineOffsetBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <property name="spacing">2</property>
+                                <property name="homogeneous">True</property>
+                                <child>
+                                  <object class="GtkSpinButton" id="spinbutton16">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="tooltip_text" translatable="yes">Rings</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">5</property>
+                                    <property name="adjustment">AngleMajorLineOffset0Adjustment</property>
+                                    <property name="climb_rate">1</property>
+                                    <property name="numeric">True</property>
+                                    <property name="value">5</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="spinbutton24">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="tooltip_text" translatable="yes">Radiuses</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">5</property>
+                                    <property name="adjustment">AngleMajorLineOffset1Adjustment</property>
+                                    <property name="climb_rate">1</property>
+                                    <property name="numeric">True</property>
+                                    <property name="value">5</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">7</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="box9">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="spacing">2</property>
+                                <child>
+                                  <object class="GtkSpinButton" id="AngleMajorGridSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="text" translatable="yes">1</property>
+                                    <property name="adjustment">AngleMajorGridAdjustment</property>
+                                    <property name="numeric">True</property>
+                                    <property name="value">1</property>
+                                    <signal name="value-changed" handler="on_angle_major_line_grid_value_changed" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="AngleAddMajorGridButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="tooltip_text" translatable="yes">Add Grid</property>
+                                    <signal name="clicked" handler="on_angle_add_major_line_grid" swapped="no"/>
+                                    <child>
+                                      <object class="GtkImage" id="image4">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="stock">gtk-add</property>
+                                        <property name="icon_size">1</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="AngleRemoveMajorGridButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="tooltip_text" translatable="yes">Remove Grid</property>
+                                    <signal name="clicked" handler="on_angle_remove_major_line_grid" swapped="no"/>
+                                    <child>
+                                      <object class="GtkImage" id="image5">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="stock">gtk-remove</property>
+                                        <property name="icon_size">1</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">2</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">5</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label31">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Major Line Grid:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">5</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label32">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">8</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label33">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xalign">0</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">4</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="box10">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkLabel" id="label35">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="margin_top">6</property>
+                                    <property name="margin_bottom">2</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">&lt;b&gt;Color&lt;/b&gt;</property>
+                                    <property name="use_markup">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">8</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="box11">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkLabel" id="label34">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="margin_top">6</property>
+                                    <property name="margin_bottom">2</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">&lt;b&gt;Major Lines&lt;/b&gt;</property>
+                                    <property name="use_markup">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">4</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>

@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sat, 27 Sep 2014 06:22:01 GMT"
+META "modified" "Sun, 28 Sep 2014 05:15:51 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -365,7 +365,6 @@ function generatePoints (major, point)
 	point .length = p;
 }
 
-
 function isMajorLine (i, index)
 {
 	for (var d = index; d < majorLineEvery .length; d += 3)
@@ -408,53 +407,80 @@ DEF GridTool Collision {
         transparency 0.8
       }
     }
-    DEF Edge_1 Transform {
+    DEF Center Transform {
       children [
         DEF _2 PlaneSensor {
           axisRotation 1 0 0 1.5708
           autoOffset FALSE
-          offset 5 0 5
         }
-        DEF Edge Transform {
-          translation 5 0 5
-          children ScreenGroup {
-            children [
-              DEF Box Transform {
-                translation -9 0 0
-                scale 12 3 3
-                children DEF _3 Shape {
-                  appearance DEF _4 Appearance {
-                    shaders DEF _5 ToolShader {
-                      diffuseColor 0.5 0.5 0.5
-                    }
-                  }
-                  geometry Box { }
-                }
-              }
-              DEF Box_1 Transform {
-                translation -0 0 -9
-                rotation 0 -1 0 1.5708
-                scale 12 3 3
-                children USE _3
-              }
-            ]
-          }
-        }
-      ]
-    }
-    DEF Center Transform {
-      children [
-        DEF _6 PlaneSensor {
-          axisRotation 1 0 0 1.5708
-          autoOffset FALSE
-        }
-        DEF _7 Transform {
+        DEF _3 Transform {
           children ScreenGroup {
             children DEF Sphere Transform {
               scale 6 6 6
               children Shape {
-                appearance USE _4
+                appearance DEF _4 Appearance {
+                  shaders ToolShader {
+                    diffuseColor 1 0.7 0
+                  }
+                }
                 geometry Sphere { }
+              }
+            }
+          }
+        }
+      ]
+    }
+    DEF DimensionHandle Transform {
+      children [
+        DEF _5 PlaneSensor {
+          axisRotation 1 0 0 1.5708
+          autoOffset FALSE
+          offset 5 0 5
+        }
+        DEF _6 Transform {
+          translation 5 0 5
+          children ScreenGroup {
+            children DEF Edge Transform {
+              scale 3 3 3
+              children Shape {
+                appearance USE _4
+                geometry Extrusion {
+                  convex FALSE
+                  crossSection [
+                    1 1,
+                    1 -5,
+                    -1 -5,
+                    -1 -1,
+                    -5 -1,
+                    -5 1,
+                    1 1
+                  ]
+                  spine [
+                    0 -1 0,
+                    0 1 0
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+    DEF ScaleHandle Transform {
+      children [
+        DEF _7 PlaneSensor {
+          axisRotation 1 0 0 1.5708
+          autoOffset FALSE
+          offset 5 0 -5
+        }
+        DEF _8 Transform {
+          translation 5 0 -5
+          children ScreenGroup {
+            children DEF Box Transform {
+              scale 3 3 3
+              children Shape {
+                appearance USE _4
+                geometry Box { }
               }
             }
           }
@@ -518,13 +544,13 @@ function set_translation (value)
 {
 	var translation = rotation .inverse () .multVec (value); 
 
-	if (spacing [0])
+	if (scale .x)
 		translation .x = Math .round (translation .x / scale .x) * scale .x;
 
-	if (spacing [1])
+	if (scale .y)
 		translation .y = Math .round (translation .y / scale .y) * scale .y;
 
-	if (spacing [2])
+	if (scale .z)
 		translation .z = Math .round (translation .z / scale .z) * scale .z;
 
 	translation_changed = rotation .multVec (translation);
@@ -533,6 +559,39 @@ function set_translation (value)
 function set_rotation (value)
 {
 	axisOfRotation_changed = new SFRotation (1, 0, 0, Math .PI / 2) .multiply (value);
+}"
+}
+
+DEF ScaleScript Script {
+  inputOutput SFVec3f scale 1 1 1
+  inputOnly   SFBool  set_active
+  inputOnly   SFVec3f set_translation
+  inputOutput MFInt32 dimension [
+    10,
+    10,
+    10
+  ]
+  outputOnly  SFVec3f translation_changed
+
+  url "javascript:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function set_translation (value)
+{
+	var length = new SFVec2f (2 * value .x / dimension [0], -2 * value .z / dimension [2]) .length ();
+	var factor = length / new SFVec2f (scale .x, scale .z) .length ();
+
+	scale .x *= factor;
+	scale .z *= factor;
+}
+
+function eventsProcessed ()
+{
+	translation_changed = new SFVec3f (scale .x * dimension [0] / 2, 0, -scale .z * dimension [2] / 2);
 }"
 }
 
@@ -564,19 +623,18 @@ DEF Tool Script {
 
 }
 
-ROUTE DimensionScript.translation_changed TO Edge.set_translation
-ROUTE _2.translation_changed TO DimensionScript.set_translation
-ROUTE DimensionScript.translation_changed TO _2.set_offset
-ROUTE _6.translation_changed TO MoveScript.set_translation
-ROUTE Tool.translation_changed TO _6.set_offset
+ROUTE DimensionScript.translation_changed TO _6.set_translation
+ROUTE _5.translation_changed TO DimensionScript.set_translation
+ROUTE DimensionScript.translation_changed TO _5.set_offset
+ROUTE _2.translation_changed TO MoveScript.set_translation
+ROUTE Tool.translation_changed TO _2.set_offset
 ROUTE MoveScript.translation_changed TO Tool.set_translation
 ROUTE Tool.transparency_changed TO _1.set_transparency
 ROUTE Tool.color_changed TO _1.set_color
-ROUTE Tool.color_changed TO _5.set_diffuseColor
-ROUTE Tool.rotation_changed TO Edge_1.set_rotation
-ROUTE Tool.translation_changed TO Edge_1.set_translation
-ROUTE Tool.translation_changed TO _7.set_translation
-ROUTE MoveScript.axisOfRotation_changed TO _6.set_axisRotation
+ROUTE Tool.rotation_changed TO DimensionHandle.set_rotation
+ROUTE Tool.translation_changed TO DimensionHandle.set_translation
+ROUTE Tool.translation_changed TO _3.set_translation
+ROUTE MoveScript.axisOfRotation_changed TO _2.set_axisRotation
 ROUTE Tool.rotation_changed TO MoveScript.set_rotation
 ROUTE Tool.dimension_changed TO DimensionScript.set_dimension
 ROUTE DimensionScript.dimension_changed TO Tool.set_dimension
@@ -592,6 +650,15 @@ ROUTE Tool.scale_changed TO MoveScript.set_scale
 ROUTE Tool.translation_changed TO _1.set_translation
 ROUTE Tool.rotation_changed TO _1.set_rotation
 ROUTE Tool.scale_changed TO _1.set_scale
-ROUTE Tool.scale_changed TO Edge_1.set_scale
+ROUTE Tool.scale_changed TO DimensionHandle.set_scale
+ROUTE ScaleScript.translation_changed TO _8.set_translation
+ROUTE _7.translation_changed TO ScaleScript.set_translation
+ROUTE Tool.scale_changed TO ScaleScript.set_scale
+ROUTE ScaleScript.scale_changed TO Tool.set_scale
+ROUTE Tool.dimension_changed TO ScaleScript.set_dimension
+ROUTE ScaleScript.translation_changed TO _7.set_offset
+ROUTE _7.isActive TO ScaleScript.set_active
+ROUTE Tool.translation_changed TO ScaleHandle.set_translation
+ROUTE Tool.rotation_changed TO ScaleHandle.set_rotation
 
 EXPORT Tool

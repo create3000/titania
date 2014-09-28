@@ -1,3 +1,17 @@
+2014-09-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.cpp:
+	* Palette.x3dv:
+	* AngleTool.h:
+	* GridTool.cpp:
+	* GridEditor.xml:
+	* AngleTool.cpp:
+	* X3DAngleEditor.h:
+	* X3DGridEditor.cpp:
+	* X3DAngleEditor.cpp:
+	* X3DGridEditorInterface.h:
+	* X3DGridEditorInterface.cpp: 
+
 2014-09-27  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GridTool.h:

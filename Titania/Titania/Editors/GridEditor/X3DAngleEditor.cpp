@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,6 +61,8 @@ static const auto X_PLANE_ROTATION = X3D::Rotation4f (0, 0, -1, M_PI / 2) * X3D:
 static const auto Y_PLANE_ROTATION = X3D::Rotation4f ();
 static const auto Z_PLANE_ROTATION = X3D::Rotation4f (1, 0, 0, M_PI / 2);
 
+static constexpr int INDICES = 2;
+
 X3DAngleEditor::X3DAngleEditor () :
 	X3DGridEditorInterface (),
 	           translation (getBrowserWindow (),
@@ -85,6 +87,11 @@ X3DAngleEditor::X3DAngleEditor () :
 	                        getAngleMajorLineEvery1Adjustment (),
 	                        getAngleMajorLineEveryBox (),
 	                        "majorLineEvery"),
+	       majorLineOffset (getBrowserWindow (),
+	                        getAngleMajorLineOffset0Adjustment (),
+	                        getAngleMajorLineOffset1Adjustment (),
+	                        getAngleMajorLineOffsetBox (),
+	                        "majorLineOffset"),
 	                 color (getBrowserWindow (),
 	                        getAngleColorButton (),
 	                        getAngleColorAdjustment (),
@@ -104,13 +111,14 @@ X3DAngleEditor::X3DAngleEditor () :
 {
 	getAngleCheckButton () .set_related_action (getBrowserWindow () -> getAngleToolAction ());
 
-	translation    .setUndo (false);
-	scale          .setUndo (false);
-	dimension      .setUndo (false);
-	majorLineEvery .setUndo (false);
-	color          .setUndo (false);
-	lineColor      .setUndo (false);
-	majorLineColor .setUndo (false);
+	translation     .setUndo (false);
+	scale           .setUndo (false);
+	dimension       .setUndo (false);
+	majorLineEvery  .setUndo (false);
+	majorLineOffset .setUndo (false);
+	color           .setUndo (false);
+	lineColor       .setUndo (false);
+	majorLineColor  .setUndo (false);
 }
 
 void
@@ -119,18 +127,21 @@ X3DAngleEditor::initialize ()
 	const auto & angleTool  = getBrowserWindow () -> getAngleTool ();
 	X3D::MFNode  angleTools = { angleTool };
 
-	translation    .setNodes (angleTools);
-	scale          .setNodes (angleTools);
-	dimension      .setNodes (angleTools);
-	majorLineEvery .setNodes (angleTools);
-	color          .setNodes (angleTools);
-	lineColor      .setNodes (angleTools);
-	majorLineColor .setNodes (angleTools);
+	translation     .setNodes (angleTools);
+	scale           .setNodes (angleTools);
+	dimension       .setNodes (angleTools);
+	majorLineEvery  .setNodes (angleTools);
+	majorLineOffset .setNodes (angleTools);
+	color           .setNodes (angleTools);
+	lineColor       .setNodes (angleTools);
+	majorLineColor  .setNodes (angleTools);
 
 	angleTool -> rotation () .addInterest (this, &X3DAngleEditor::set_rotation);
+	getScene ()              .addInterest (this, &X3DAngleEditor::set_majorLineEvery);
 
 	on_grid_toggled ();
 	set_rotation ();
+	set_majorLineEvery ();
 }
 
 void
@@ -194,6 +205,67 @@ X3DAngleEditor::connectRotation (const X3D::SFRotation & field)
 {
 	field .removeInterest (this, &X3DAngleEditor::connectRotation);
 	field .addInterest (this, &X3DAngleEditor::set_rotation);
+}
+
+void
+X3DAngleEditor::on_angle_major_line_grid_value_changed ()
+{
+	const int index = getAngleMajorGridAdjustment () -> get_value () - 1;
+
+	majorLineEvery  .setIndex (INDICES * index);
+	majorLineOffset .setIndex (INDICES * index);
+}
+
+void
+X3DAngleEditor::on_angle_major_line_grid_upper_changed ()
+{
+	getAngleMajorGridSpinButton ()   .set_sensitive (getAngleMajorGridAdjustment () -> get_upper () > 1);
+	getAngleRemoveMajorGridButton () .set_sensitive (getAngleMajorGridAdjustment () -> get_upper () > 0);
+}
+
+void
+X3DAngleEditor::on_angle_add_major_line_grid ()
+{
+	const int size = getAngleMajorGridAdjustment () -> get_upper () + 1;
+
+	getAngleMajorGridAdjustment () -> set_lower (1);
+	getAngleMajorGridAdjustment () -> set_upper (size);
+	getAngleMajorGridAdjustment () -> set_value (size);
+
+	on_angle_major_line_grid_upper_changed ();
+}
+
+void
+X3DAngleEditor::on_angle_remove_major_line_grid ()
+{
+	const auto & grid  = getBrowserWindow () -> getAngleTool ();
+	const int    size  = getAngleMajorGridAdjustment () -> get_upper () - 1;
+	const int    index = (getAngleMajorGridAdjustment () -> get_value () - 1) * INDICES;
+	const auto   iterL = grid -> majorLineEvery ()  .begin () + index;
+	const auto   iterO = grid -> majorLineOffset () .begin () + index;
+
+	grid -> majorLineEvery ()  .erase (iterL, iterL + INDICES);
+	grid -> majorLineOffset () .erase (iterO, iterO + INDICES);
+
+	getAngleMajorGridAdjustment () -> set_lower (bool (size));
+	getAngleMajorGridAdjustment () -> set_upper (size);
+
+	if (getAngleMajorGridAdjustment () -> get_value () > size)
+		getAngleMajorGridAdjustment () -> set_value (size);
+
+	on_angle_major_line_grid_upper_changed ();
+}
+
+void
+X3DAngleEditor::set_majorLineEvery ()
+{
+	const auto & grid = getBrowserWindow () -> getAngleTool ();
+
+	getAngleMajorGridAdjustment () -> set_lower (bool (grid -> majorLineEvery () .size ()));
+	getAngleMajorGridAdjustment () -> set_upper (grid -> majorLineEvery () .size () / INDICES);
+	getAngleMajorGridAdjustment () -> set_value (grid -> majorLineEvery () .size () > 0);
+
+	on_angle_major_line_grid_upper_changed ();
 }
 
 X3DAngleEditor::~X3DAngleEditor ()

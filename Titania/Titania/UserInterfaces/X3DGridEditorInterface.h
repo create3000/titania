@@ -115,6 +115,10 @@ public:
 	{ return m_AngleLineColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleMajorGridAdjustment () const
+	{ return m_AngleMajorGridAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getAngleMajorLineColorAdjustment () const
 	{ return m_AngleMajorLineColorAdjustment; }
 
@@ -125,6 +129,14 @@ public:
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getAngleMajorLineEvery1Adjustment () const
 	{ return m_AngleMajorLineEvery1Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleMajorLineOffset0Adjustment () const
+	{ return m_AngleMajorLineOffset0Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleMajorLineOffset1Adjustment () const
+	{ return m_AngleMajorLineOffset1Adjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getAngleScaleXAdjustment () const
@@ -382,6 +394,22 @@ public:
 	getAngleScaleBox () const
 	{ return *m_AngleScaleBox; }
 
+	Gtk::Box &
+	getAngleMajorLineOffsetBox () const
+	{ return *m_AngleMajorLineOffsetBox; }
+
+	Gtk::SpinButton &
+	getAngleMajorGridSpinButton () const
+	{ return *m_AngleMajorGridSpinButton; }
+
+	Gtk::Button &
+	getAngleAddMajorGridButton () const
+	{ return *m_AngleAddMajorGridButton; }
+
+	Gtk::Button &
+	getAngleRemoveMajorGridButton () const
+	{ return *m_AngleRemoveMajorGridButton; }
+
 	virtual
 	void
 	on_grid_toggled () = 0;
@@ -411,6 +439,18 @@ public:
 	on_angle_plane_changed () = 0;
 
 	virtual
+	void
+	on_angle_major_line_grid_value_changed () = 0;
+
+	virtual
+	void
+	on_angle_add_major_line_grid () = 0;
+
+	virtual
+	void
+	on_angle_remove_major_line_grid () = 0;
+
+	virtual
 	~X3DGridEditorInterface ();
 
 
@@ -427,9 +467,12 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_AngleDimensionXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleDimensionYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleLineColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorGridAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineEvery0Adjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineEvery1Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineOffset0Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineOffset1Adjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleScaleXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleScaleYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleScaleZAdjustment;
@@ -494,6 +537,10 @@ private:
 	Gtk::Box*                      m_AngleMajorLineColorBox;
 	Gtk::Button*                   m_AngleMajorLineColorButton;
 	Gtk::Box*                      m_AngleScaleBox;
+	Gtk::Box*                      m_AngleMajorLineOffsetBox;
+	Gtk::SpinButton*               m_AngleMajorGridSpinButton;
+	Gtk::Button*                   m_AngleAddMajorGridButton;
+	Gtk::Button*                   m_AngleRemoveMajorGridButton;
 
 };
 

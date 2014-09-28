@@ -61,8 +61,9 @@ const std::string AngleTool::typeName       = "AngleTool";
 const std::string AngleTool::containerField = "grid";
 
 AngleTool::Fields::Fields () :
-	     dimension (new MFInt32 ({ 5, 16 })),
-	majorLineEvery (new MFInt32 ({ 5, 2 }))
+	      dimension (new MFInt32 ({ 5, 16 })),
+	 majorLineEvery (new MFInt32 ({ 5, 2 })),
+	majorLineOffset (new MFInt32 ({ 0, 0 }))
 { }
 
 AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
@@ -70,15 +71,16 @@ AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
 	X3DGridTool (),
 	     fields ()
 {
-	addField (inputOutput, "metadata",       metadata ());
-	addField (inputOutput, "translation",    translation ());
-	addField (inputOutput, "rotation",       rotation ());
-	addField (inputOutput, "scale",          scale ());
-	addField (inputOutput, "dimension",      dimension ());
-	addField (inputOutput, "majorLineEvery", majorLineEvery ());
-	addField (inputOutput, "color",          color ());
-	addField (inputOutput, "lineColor",      lineColor ());
-	addField (inputOutput, "majorLineColor", majorLineColor ());
+	addField (inputOutput, "metadata",        metadata ());
+	addField (inputOutput, "translation",     translation ());
+	addField (inputOutput, "rotation",        rotation ());
+	addField (inputOutput, "scale",           scale ());
+	addField (inputOutput, "dimension",       dimension ());
+	addField (inputOutput, "majorLineEvery",  majorLineEvery ());
+	addField (inputOutput, "majorLineOffset", majorLineOffset ());
+	addField (inputOutput, "color",           color ());
+	addField (inputOutput, "lineColor",       lineColor ());
+	addField (inputOutput, "majorLineColor",  majorLineColor ());
 }
 
 X3DBaseNode*
@@ -111,6 +113,11 @@ AngleTool::realize ()
 		majorLineEvery ()  .addInterest (set_majorLineEvery);
 		set_majorLineEvery .addInterest (majorLineEvery ());
 		set_majorLineEvery .addEvent (majorLineEvery ());
+
+		auto & set_majorLineOffset = getToolNode () -> getField <MFInt32> ("set_majorLineOffset");
+		majorLineOffset ()  .addInterest (set_majorLineOffset);
+		set_majorLineOffset .addInterest (majorLineOffset ());
+		set_majorLineOffset .addEvent (majorLineOffset ());
 	}
 	catch (const X3DError & error)
 	{ }

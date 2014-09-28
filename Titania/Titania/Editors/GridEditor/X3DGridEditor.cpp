@@ -61,6 +61,8 @@ static const auto X_PLANE_ROTATION = X3D::Rotation4f (0, 0, -1, M_PI / 2) * X3D:
 static const auto Y_PLANE_ROTATION = X3D::Rotation4f ();
 static const auto Z_PLANE_ROTATION = X3D::Rotation4f (1, 0, 0, M_PI / 2);
 
+static constexpr int INDICES = 3;
+
 X3DGridEditor::X3DGridEditor () :
 	X3DGridEditorInterface (),
 	           translation (getBrowserWindow (),
@@ -213,8 +215,8 @@ X3DGridEditor::on_major_line_grid_value_changed ()
 {
 	const int index = getGridMajorGridAdjustment () -> get_value () - 1;
 
-	majorLineEvery  .setIndex (3 * index);
-	majorLineOffset .setIndex (3 * index);
+	majorLineEvery  .setIndex (INDICES * index);
+	majorLineOffset .setIndex (INDICES * index);
 }
 
 void
@@ -241,12 +243,12 @@ X3DGridEditor::on_remove_major_line_grid ()
 {
 	const auto & grid  = getBrowserWindow () -> getGridTool ();
 	const int    size  = getGridMajorGridAdjustment () -> get_upper () - 1;
-	const int    index = (getGridMajorGridAdjustment () -> get_value () - 1) * 3;
+	const int    index = (getGridMajorGridAdjustment () -> get_value () - 1) * INDICES;
 	const auto   iterL = grid -> majorLineEvery ()  .begin () + index;
 	const auto   iterO = grid -> majorLineOffset () .begin () + index;
 
-	grid -> majorLineEvery ()  .erase (iterL, iterL + 3);
-	grid -> majorLineOffset () .erase (iterO, iterO + 3);
+	grid -> majorLineEvery ()  .erase (iterL, iterL + INDICES);
+	grid -> majorLineOffset () .erase (iterO, iterO + INDICES);
 
 	getGridMajorGridAdjustment () -> set_lower (bool (size));
 	getGridMajorGridAdjustment () -> set_upper (size);
@@ -263,7 +265,7 @@ X3DGridEditor::set_majorLineEvery ()
 	const auto & grid = getBrowserWindow () -> getGridTool ();
 
 	getGridMajorGridAdjustment () -> set_lower (bool (grid -> majorLineEvery () .size ()));
-	getGridMajorGridAdjustment () -> set_upper (grid -> majorLineEvery () .size () / 3);
+	getGridMajorGridAdjustment () -> set_upper (grid -> majorLineEvery () .size () / INDICES);
 	getGridMajorGridAdjustment () -> set_value (grid -> majorLineEvery () .size () > 0);
 
 	on_major_line_grid_upper_changed ();

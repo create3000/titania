@@ -105,6 +105,14 @@ public:
 	majorLineEvery () const
 	{ return *fields .majorLineEvery; }
 
+	MFInt32 &
+	majorLineOffset ()
+	{ return *fields .majorLineOffset; }
+
+	const MFInt32 &
+	majorLineOffset () const
+	{ return *fields .majorLineOffset; }
+
 
 private:
 
@@ -132,6 +140,7 @@ private:
 
 		MFInt32* const dimension;
 		MFInt32* const majorLineEvery;
+		MFInt32* const majorLineOffset;
 	};
 
 	Fields fields;
