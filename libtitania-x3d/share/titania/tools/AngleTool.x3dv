@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sat, 27 Sep 2014 17:52:48 GMT"
+META "modified" "Mon, 29 Sep 2014 08:19:17 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -406,6 +406,31 @@ DEF AngleTool Transform {
         }
       ]
     }
+    DEF ScaleHandle_1 Transform {
+      children [
+        DEF _9 PlaneSensor {
+          axisRotation 1 0 0 1.5708
+          autoOffset FALSE
+          offset 3.53553 0 -3.53553
+        }
+        DEF _10 Transform {
+          translation 3.53553 0 -3.53553
+          children ScreenGroup {
+            children DEF Box_1 Transform {
+              scale 3 3 3
+              children Shape {
+                appearance Appearance {
+                  shaders ToolShader {
+                    diffuseColor 1 0.7 0
+                  }
+                }
+                geometry Box { }
+              }
+            }
+          }
+        }
+      ]
+    }
   ]
 }
 
@@ -488,6 +513,42 @@ function eventsProcessed ()
 "
 }
 
+DEF ScaleScript Script {
+  inputOnly   SFVec3f set_translation
+  inputOutput SFVec3f scale 1 1 1
+  inputOutput MFInt32 dimension [
+    5,
+    16
+  ]
+  outputOnly  SFVec3f translation_changed
+
+  url "javascript:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function set_translation (value)
+{
+	var length = new SFVec2f ( value .x / (dimension [0] * Math .cos (Math .PI / 4)),
+	                          -value .z / (dimension [0] * Math .sin (Math .PI / 4))) .length ();
+
+	var factor = length / new SFVec2f (scale .x, scale .z) .length ();
+
+	scale .x *= factor;
+	scale .z *= factor;
+}
+
+function eventsProcessed ()
+{
+	//translation_changed = new SFVec3f (scale .x * dimension [0], 0, -scale .z * dimension [0]);
+	translation_changed = new SFVec3f ( scale .x * dimension [0] * Math .cos (Math .PI / 4),
+	                                   0,
+	                                   -scale .z * dimension [0] * Math .sin (Math .PI / 4));
+}"
+}
+
 DEF Tool_1 Script {
   inputOutput SFVec3f    translation 0 0 0
   inputOutput SFRotation rotation 0 0 1 0
@@ -541,5 +602,13 @@ ROUTE Tool_1.dimension_changed TO AngleScript.set_dimension
 ROUTE AngleScript.dimension_changed TO Tool_1.set_dimension
 ROUTE Tool_1.dimension_changed TO _1.set_dimension
 ROUTE Tool_1.majorLineOffset_changed TO _1.set_majorLineOffset
+ROUTE Tool_1.scale_changed TO ScaleScript.set_scale
+ROUTE ScaleScript.scale_changed TO Tool_1.set_scale
+ROUTE _9.translation_changed TO ScaleScript.set_translation
+ROUTE Tool_1.dimension_changed TO ScaleScript.set_dimension
+ROUTE ScaleScript.translation_changed TO _10.set_translation
+ROUTE ScaleScript.translation_changed TO _9.set_offset
+ROUTE Tool_1.translation_changed TO ScaleHandle_1.set_translation
+ROUTE Tool_1.rotation_changed TO ScaleHandle_1.set_rotation
 
 EXPORT Tool_1 AS Tool

@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sun, 28 Sep 2014 05:15:51 GMT"
+META "modified" "Mon, 29 Sep 2014 07:55:32 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -563,9 +563,8 @@ function set_rotation (value)
 }
 
 DEF ScaleScript Script {
-  inputOutput SFVec3f scale 1 1 1
-  inputOnly   SFBool  set_active
   inputOnly   SFVec3f set_translation
+  inputOutput SFVec3f scale 1 1 1
   inputOutput MFInt32 dimension [
     10,
     10,
@@ -657,7 +656,6 @@ ROUTE Tool.scale_changed TO ScaleScript.set_scale
 ROUTE ScaleScript.scale_changed TO Tool.set_scale
 ROUTE Tool.dimension_changed TO ScaleScript.set_dimension
 ROUTE ScaleScript.translation_changed TO _7.set_offset
-ROUTE _7.isActive TO ScaleScript.set_active
 ROUTE Tool.translation_changed TO ScaleHandle.set_translation
 ROUTE Tool.rotation_changed TO ScaleHandle.set_rotation
 
