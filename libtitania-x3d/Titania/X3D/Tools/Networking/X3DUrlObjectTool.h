@@ -98,6 +98,7 @@ public:
 
 protected:
 
+	using X3DBaseTool <Type>::addType;
 	using X3DBaseTool <Type>::getNode;
 
 	///  @name Construction
@@ -105,7 +106,7 @@ protected:
 	X3DUrlObjectTool () :
 		X3DBaseTool <Type> ()
 	{
-		//addType (X3DConstants::X3DUrlObjectTool);
+		addType (X3DConstants::X3DUrlObjectTool);
 	}
 
 	virtual

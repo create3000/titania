@@ -1,5 +1,34 @@
 2014-09-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DConstants.h:
+	* Tool.cpp:
+	* GridTool.cpp:
+	* AngleTool.cpp:
+	* X3DGridTool.cpp:
+	* InlineTool.h:
+	* AnchorTool.h:
+	* GeoLODTool.h:
+	* LayoutGroupTool.h:
+	* CADFaceTool.h:
+	* CADPartTool.h:
+	* CADLayerTool.h:
+	* GeoLocationTool.h:
+	* X3DUrlObjectTool.h:
+	* CADAssemblyTool.h:
+	* PickableGroupTool.cpp:
+	* GeoTransformTool.h:
+	* GeoViewpointTool.h:
+	* X3DActiveLayerTool.cpp:
+	* X3DTransformNodeTool.h:
+	* jsX3DConstants.h:
+	* ParticleSystemTool.h:
+	* jsX3DConstants.cpp:
+	* X3DGeospatialObjectTool.h:
+	* X3DTransformMatrix4DNodeTool.h:
+	* X3DProductStructureChildNodeTool.h: 
+
+2014-09-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* GridTool.x3dv:
 	* AngleTool.x3dv: 
 

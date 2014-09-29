@@ -191,7 +191,7 @@ X3DTransformNodeTool <Type>::X3DTransformNodeTool () :
 	                             matrix (),
 	                     interestEvents (0)
 {
-	//addType (X3DConstants::X3DTransformNodeTool);
+	addType (X3DConstants::X3DTransformNodeTool);
 }
 
 template <class Type>

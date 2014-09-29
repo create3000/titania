@@ -60,6 +60,8 @@ X3DActiveLayerTool::X3DActiveLayerTool () :
 	       tool (new Tool (getBrowser ())),
 	activeLayer ()
 {
+	addType (X3DConstants::X3DActiveLayerTool);
+
 	addChildren (tool, activeLayer);
 }
 

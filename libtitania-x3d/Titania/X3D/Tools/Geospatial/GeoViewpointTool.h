@@ -141,6 +141,7 @@ public:
 
 private:
 
+	using X3DViewpointNodeTool <GeoViewpoint>::addType;
 	using X3DViewpointNodeTool <GeoViewpoint>::getNode;
 
 	///  @name Destruction

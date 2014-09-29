@@ -87,51 +87,114 @@ Configuration::getKey (const std::string & name) const
 bool
 Configuration::hasItem (const std::string & name) const
 {
-	auto item = client -> get_entry (getKey (name));
+	try
+	{
+		const auto item = client -> get_entry (getKey (name));
 
-	return item .get_value () .get_type () not_eq Gnome::Conf::VALUE_INVALID;
+		return item .get_value () .get_type () not_eq Gnome::Conf::VALUE_INVALID;
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+		return false;
+	}
 }
 
 void
 Configuration::setItem (const std::string & name, const bool value)
 {
-	client -> set (getKey (name), value);
+	try
+	{
+		client -> set (getKey (name), value);
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
 Configuration::setItem (const std::string & name, const int value)
 {
-	client -> set (getKey (name), value);
+	try
+	{
+		client -> set (getKey (name), value);
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
 Configuration::setItem (const std::string & name, const char* value)
 {
-	client -> set (getKey (name), std::string (value));
+	try
+	{
+		client -> set (getKey (name), std::string (value));
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
 Configuration::setItem (const std::string & name, const std::string & value)
 {
-	client -> set (getKey (name), value);
+	try
+	{
+		client -> set (getKey (name), value);
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 bool
 Configuration::getBoolean (const std::string & name) const
 {
-	return client -> get_bool (getKey (name));
+	try
+	{
+		return client -> get_bool (getKey (name));
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+		
+		return false;
+	}
 }
 
 int
 Configuration::getInteger (const std::string & name) const
 {
-	return client -> get_int (getKey (name));
+	try
+	{
+		return client -> get_int (getKey (name));
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+		
+		return 0;
+	}
 }
 
 Glib::ustring
 Configuration::getString (const std::string & name) const
 {
-	return client -> get_string (getKey (name));
+	try
+	{
+		return client -> get_string (getKey (name));
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	
+		return "";
+	}
 }
 
 Configuration
@@ -145,10 +208,17 @@ Configuration::getDirectories () const
 {
 	Array directories;
 
-	for (const auto & subdir : client -> all_dirs (key))
+	try
 	{
-		const auto dirName = basic::split (subdir, "/");
-		directories .emplace_back (path, name + '/' + dirName .back ());
+		for (const auto & subdir : client -> all_dirs (key))
+		{
+			const auto dirName = basic::split (subdir, "/");
+			directories .emplace_back (path, name + '/' + dirName .back ());
+		}
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 
 	return directories;
@@ -157,13 +227,28 @@ Configuration::getDirectories () const
 bool
 Configuration::exists () const
 {
-	return client -> dir_exists (key);
+	try
+	{
+		return client -> dir_exists (key);
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+		return false;
+	}
 }
 
 void
 Configuration::remove ()
 {
-	client -> recursive_unset (key);
+	try
+	{
+		client -> recursive_unset (key);
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 } // puck

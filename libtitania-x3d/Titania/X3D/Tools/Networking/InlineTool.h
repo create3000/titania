@@ -63,7 +63,9 @@ namespace titania {
 namespace X3D {
 
 class InlineTool :
-	public X3DChildNodeTool <Inline>, public X3DBoundedObjectTool <Inline>, public X3DUrlObjectTool <Inline>
+	public X3DChildNodeTool <Inline>,
+	public X3DBoundedObjectTool <Inline>,
+	public X3DUrlObjectTool <Inline>
 {
 public:
 
@@ -76,7 +78,7 @@ public:
 		X3DBoundedObjectTool <Inline> (ToolColors::WHITE),
 		    X3DUrlObjectTool <Inline> ()
 	{
-		X3DChildNodeTool <Inline>::addType (X3DConstants::InlineTool);
+		addType (X3DConstants::InlineTool);
 	}
 
 	///  @name Fields
@@ -165,6 +167,7 @@ public:
 
 private:
 
+	using X3DChildNodeTool <Inline>::addType;
 	using X3DChildNodeTool <Inline>::getNode;
 
 	///  @name Construction

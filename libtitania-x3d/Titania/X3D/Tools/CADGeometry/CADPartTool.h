@@ -74,7 +74,7 @@ public:
 		            X3DTransformNodeTool <CADPart> (),
 		X3DProductStructureChildNodeTool <CADPart> ()
 	{
-		//addType (X3DConstants::CADPartTool);
+		addType (X3DConstants::CADPartTool);
 	}
 
 	/// @name Operations

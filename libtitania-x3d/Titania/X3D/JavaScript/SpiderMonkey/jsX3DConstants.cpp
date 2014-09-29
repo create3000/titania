@@ -444,6 +444,12 @@ JSPropertySpec jsX3DConstants::properties [ ] = {
 	{ "X3DViewpointObject",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DViewpointObject,           NULL },
 	{ "X3DViewportNode",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DViewportNode,              NULL },
 
+	// Tools
+
+	{ "AngleTool",   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, AngleTool,   NULL },
+	{ "GridTool",    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GridTool,    NULL },
+	{ "X3DGridTool", JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGridTool, NULL },
+
 	{ 0 }
 
 };
@@ -2535,6 +2541,26 @@ JSBool
 jsX3DConstants::X3DViewportNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (context, X3DConstants::X3DViewportNode, vp);
+}
+
+// Tools
+
+JSBool
+jsX3DConstants::AngleTool (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (context, X3DConstants::AngleTool, vp);
+}
+
+JSBool
+jsX3DConstants::GridTool (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (context, X3DConstants::GridTool, vp);
+}
+
+JSBool
+jsX3DConstants::X3DGridTool (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (context, X3DConstants::X3DGridTool, vp);
 }
 
 } // MozillaSpiderMonkey

@@ -61,7 +61,7 @@ PickableGroupTool::PickableGroupTool (PickableGroup* const node) :
 	        X3DBaseTool <PickableGroup> (node),
 	X3DGroupingNodeTool <PickableGroup> (Color3f (1, 0.7, 0.7))
 {
-	//addType (X3DConstants::PickableGroupTool);
+	addType (X3DConstants::PickableGroupTool);
 }
 
 void

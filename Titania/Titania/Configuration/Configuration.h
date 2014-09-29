@@ -54,6 +54,7 @@
 #include <gconfmm.h>
 #include <string>
 #include <sstream>
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace puck {
@@ -145,28 +146,44 @@ template <class Type>
 void
 Configuration::set (const std::string & name, const Type & value)
 {
-	std::ostringstream osstream;
-	
-	osstream .imbue (std::locale::classic ());
+	try
+	{
+		std::ostringstream osstream;
+		
+		osstream .imbue (std::locale::classic ());
 
-	osstream << value;	
+		osstream << value;	
 
-	client -> set (getKey (name), osstream .str ());
+		client -> set (getKey (name), osstream .str ());
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 template <class Type>
 Type
 Configuration::get (const std::string & name) const
 {
-	std::istringstream isstream (client -> get_string (getKey (name)));
+	try
+	{
+		std::istringstream isstream (client -> get_string (getKey (name)));
 
-	isstream .imbue (std::locale::classic ());
+		isstream .imbue (std::locale::classic ());
 
-	Type value = Type ();
+		Type value = Type ();
 
-	isstream >> value;
+		isstream >> value;
 
-	return value;
+		return value;
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+
+		return Type ();
+	}
 }
 
 } // puck

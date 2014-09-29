@@ -71,7 +71,7 @@ public:
 		        X3DBaseTool <CADLayer> (node),
 		X3DGroupingNodeTool <CADLayer> (ToolColors::DARK_YELLOW)
 	{
-		//addType (X3DConstants::CADLayerTool);
+		addType (X3DConstants::CADLayerTool);
 	}
 
 	///  @name Fields

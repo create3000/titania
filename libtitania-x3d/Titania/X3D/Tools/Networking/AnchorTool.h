@@ -134,6 +134,7 @@ public:
 
 private:
 
+	using X3DGroupingNodeTool <Anchor>::addType;
 	using X3DGroupingNodeTool <Anchor>::getNode;
 
 	///  @name Destruction

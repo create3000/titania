@@ -74,8 +74,12 @@ public:
 		             X3DGroupingNodeTool <CADAssembly> (ToolColors::DARK_GREEN),
 		X3DProductStructureChildNodeTool <CADAssembly> ()
 	{
-		//addType (X3DConstants::CADAssemblyTool);
+		addType (X3DConstants::CADAssemblyTool);
 	}
+
+private:
+
+	using X3DGroupingNodeTool::addType;
 
 };
 

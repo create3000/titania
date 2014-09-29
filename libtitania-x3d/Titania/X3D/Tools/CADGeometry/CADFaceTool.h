@@ -74,7 +74,7 @@ public:
 		X3DProductStructureChildNodeTool <CADFace> (),
 		            X3DBoundedObjectTool <CADFace> (ToolColors::BROWN)
 	{
-		//addType (X3DConstants::CADFaceTool);
+		addType (X3DConstants::CADFaceTool);
 	}
 
 	///  @name Fields

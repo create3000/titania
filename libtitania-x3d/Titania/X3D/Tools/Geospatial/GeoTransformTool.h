@@ -74,7 +74,7 @@ public:
 		X3DTransformMatrix4DNodeTool <GeoTransform> (ToolColors::DARK_GREEN),
 		     X3DGeospatialObjectTool <GeoTransform> ()
 	{
-		//addType (X3DConstants::GeoTransformTool);
+		addType (X3DConstants::GeoTransformTool);
 
 		setLinetype (1);
 		setDisplayCenter (true);
@@ -154,6 +154,7 @@ public:
 
 private:
 
+	using X3DTransformMatrix4DNodeTool <GeoTransform>::addType;
 	using X3DTransformMatrix4DNodeTool <GeoTransform>::getNode;
 
 	///  @name Destruction

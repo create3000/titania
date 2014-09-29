@@ -73,7 +73,7 @@ public:
 		     X3DBaseTool <ParticleSystem> (node),
 		X3DShapeNodeTool <ParticleSystem> (ToolColors::ORANGE)
 	{
-		//addType (X3DConstants::ParticleSystemTool);
+		addType (X3DConstants::ParticleSystemTool);
 	}
 
 	///  @name Fields

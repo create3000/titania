@@ -65,7 +65,9 @@ X3DGridTool::Fields::Fields () :
 X3DGridTool::X3DGridTool () :
 	X3DActiveLayerTool (),
 	            fields ()
-{ }
+{
+	addType (X3DConstants::X3DGridTool);
+}
 
 void
 X3DGridTool::realize ()

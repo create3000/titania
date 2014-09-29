@@ -85,7 +85,7 @@ protected:
 	X3DProductStructureChildNodeTool () :
 		X3DChildNodeTool <Type> ()
 	{
-		//addType (X3DConstants::X3DProductStructureChildNodeTool);
+		addType (X3DConstants::X3DProductStructureChildNodeTool);
 	}
 
 };

@@ -74,7 +74,7 @@ public:
 		X3DTransformMatrix4DNodeTool <GeoLocation> (ToolColors::DARK_GREEN),
 		     X3DGeospatialObjectTool <GeoLocation> ()
 	{
-		//addType (X3DConstants::GeoLocationTool);
+		addType (X3DConstants::GeoLocationTool);
 	}
 
 	///  @name Fields
@@ -111,6 +111,7 @@ public:
 
 private:
 
+	using X3DTransformMatrix4DNodeTool <GeoLocation>::addType;
 	using X3DTransformMatrix4DNodeTool <GeoLocation>::getNode;
 
 	///  @name Destruction

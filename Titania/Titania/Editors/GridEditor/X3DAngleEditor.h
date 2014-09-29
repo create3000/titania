@@ -65,9 +65,6 @@ class AngleTool;
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-class LODRangeWidget;
-
 class X3DAngleEditor :
 	virtual public X3DGridEditorInterface
 {

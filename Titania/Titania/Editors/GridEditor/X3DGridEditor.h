@@ -65,9 +65,6 @@ class GridTool;
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-class LODRangeWidget;
-
 class X3DGridEditor :
 	virtual public X3DGridEditorInterface
 {

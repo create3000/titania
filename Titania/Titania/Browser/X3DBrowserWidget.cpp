@@ -124,7 +124,7 @@ X3DBrowserWidget::set_initialized ()
 
 	if (empty)
 	{
-		const size_t pageNumber = getConfig () .getInteger ("currentPage"); // Use size_t!!!
+		const size_t pageNumber = getConfig () .getInteger ("currentPage");
 
 		if (pageNumber < browsers .size ())
 			getBrowserNotebook () .set_current_page (pageNumber);

@@ -71,7 +71,7 @@ public:
 		        X3DBaseTool <LayoutGroup> (node),
 		X3DGroupingNodeTool <LayoutGroup> (ToolColors::DARK_GREEN)
 	{
-		//addType (X3DConstants::LayoutGroupTool);
+		addType (X3DConstants::LayoutGroupTool);
 	}
 
 	///  @name Fields

@@ -1,5 +1,13 @@
 2014-09-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserWidget.cpp:
+	* Configuration.h:
+	* Configuration.cpp:
+	* X3DGridEditor.h:
+	* X3DAngleEditor.h: 
+
+2014-09-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* UserData.h:
 	* UserData.h:
 	* X3DBrowserWidget.h:

@@ -63,7 +63,9 @@ Tool::Tool (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	      X3DNode (),
 	X3DToolObject ()
-{ }
+{
+	addType (X3DConstants::Tool);
+}
 
 X3DBaseNode*
 Tool::create (X3DExecutionContext* const executionContext) const

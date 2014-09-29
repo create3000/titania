@@ -71,6 +71,8 @@ GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	X3DGridTool (),
 	     fields ()
 {
+	addType (X3DConstants::GridTool);
+
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOutput, "translation",     translation ());
 	addField (inputOutput, "rotation",        rotation ());

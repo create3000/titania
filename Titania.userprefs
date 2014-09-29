@@ -83,18 +83,18 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True">
-                <Node name="X3DBrowserWidget.cpp" selected="True" />
-              </Node>
+              <Node name="Browser" expanded="True" />
               <Node name="Configuration" expanded="True" />
               <Node name="Dialogs" expanded="True">
-                <Node name="NodeIndex" expanded="True" />
+                <Node name="NodeIndex" expanded="True">
+                  <Node name="NodeIndex.cpp" selected="True" />
+                </Node>
               </Node>
               <Node name="Editors" expanded="True">
                 <Node name="GridEditor" expanded="True" />
               </Node>
               <Node name="Widgets" expanded="True">
+                <Node name="Console" expanded="True" />
                 <Node name="ScriptEditor" expanded="True" />
               </Node>
             </Node>

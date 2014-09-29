@@ -77,6 +77,7 @@ public:
 
 protected:
 
+	using X3DGroupingNodeTool <Type>::addType;
 	using X3DGroupingNodeTool <Type>::getNode;
 
 	///  @name Construction
@@ -84,7 +85,7 @@ protected:
 	X3DTransformMatrix4DNodeTool (const Color3f & color) :
 		X3DGroupingNodeTool <Type> (color)
 	{
-		//addType (X3DConstants::X3DTransformMatrix4DNodeTool);
+		addType (X3DConstants::X3DTransformMatrix4DNodeTool);
 	}
 
 };

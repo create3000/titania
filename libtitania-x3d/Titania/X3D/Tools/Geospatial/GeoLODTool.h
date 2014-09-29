@@ -77,7 +77,7 @@ public:
 		X3DBoundedObjectTool <GeoLOD> (ToolColors::DARK_CYAN),
 		      X3DGeospatialObjectTool ()
 	{
-		//addType (X3DConstants::GeoLODTool);
+		addType (X3DConstants::GeoLODTool);
 
 		setDisplayCenter (true);
 	}

@@ -94,6 +94,7 @@ public:
 
 protected:
 
+	using X3DBaseTool <Type>::addType;
 	using X3DBaseTool <Type>::getNode;
 
 	///  @name Construction
@@ -101,7 +102,7 @@ protected:
 	X3DGeospatialObjectTool () :
 		X3DBaseTool <Type> ()
 	{
-		//addType (X3DConstants::X3DGeospatialObjectTool);
+		addType (X3DConstants::X3DGeospatialObjectTool);
 	}
 
 	virtual
