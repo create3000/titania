@@ -132,15 +132,18 @@ NodeIndex::setTypes (const std::set <X3D::X3DConstants::NodeType> & value)
 }
 
 std::shared_ptr <UserData::NodeIndex>
-NodeIndex::getUserData (const X3D::X3DExecutionContextPtr & executionContext)
+NodeIndex::getUserData (const X3D::X3DExecutionContextPtr & executionContext) const
 {
-	const auto contextUserData = getBrowserWindow () -> getUserData (executionContext);
-	const auto iter            = contextUserData -> nodeIndex .find (this);
+	const auto userData = getBrowserWindow () -> getUserData (executionContext);
 
-	if (iter not_eq contextUserData -> nodeIndex .end ())
-		return iter -> second;
-
-	return contextUserData -> nodeIndex .emplace (this, std::make_shared <UserData::NodeIndex> ()) .first -> second;
+	try
+	{
+		return userData -> nodeIndex .at (this);
+	}
+	catch (const std::out_of_range &)
+	{
+		return userData -> nodeIndex .emplace (this, std::make_shared <UserData::NodeIndex> ()) .first -> second;
+	}
 }
 
 void

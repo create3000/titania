@@ -53,8 +53,8 @@
 
 #include <gtkmm.h>
 
-#include "../../Base/UserData.h"
 #include "../../Base/X3DBaseInterface.h"
+#include "../../Browser/UserData.h"
 #include "OutlineTree.h"
 #include "OutlineTreeData.h"
 

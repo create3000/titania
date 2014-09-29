@@ -51,8 +51,8 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
 
-#include "../../Base/UserData.h"
 #include "../../Base/X3DBaseInterface.h"
+#include "../../Browser/UserData.h"
 
 #include <gtkmm.h>
 

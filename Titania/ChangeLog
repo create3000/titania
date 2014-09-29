@@ -1,3 +1,16 @@
+2014-09-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* UserData.h:
+	* UserData.h:
+	* X3DBrowserWidget.h:
+	* X3DBrowserWidget.cpp:
+	* NodeIndex.h:
+	* NodeIndex.cpp:
+	* OutlineTreeData.h:
+	* OutlineTreeModel.h:
+	* OutlineSelection.h:
+	* X3DOutlineTreeView.h: 
+
 2014-09-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* UserData.h:

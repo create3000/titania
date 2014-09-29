@@ -1,19 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Base/UserData.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.h" Line="136" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.cpp" Line="205" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/GridEditor.h" Line="86" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/GridEditor.cpp" Line="77" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/GridTool.cpp" Line="297" Column="36" />
-      <File FileName="Titania/Titania/Editors/GridEditor/GridTool.h" Line="147" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/AngleTool.h" Line="122" Column="21" />
-      <File FileName="Titania/Titania/Editors/GridEditor/AngleTool.cpp" Line="302" Column="42" />
-      <File FileName="Titania/Titania/Editors/GridEditor/X3DAngleEditor.cpp" Line="235" Column="11" />
-      <File FileName="Titania/Titania/Editors/GridEditor/X3DAngleEditor.h" Line="130" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="96" Column="1" />
-      <File FileName="Titania/Titania/Base/UserData.h" Line="125" Column="16" />
+      <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/GridEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/GridEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/GridTool.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/GridTool.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/AngleTool.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/AngleTool.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/X3DAngleEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/GridEditor/X3DAngleEditor.h" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -54,9 +52,7 @@
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="Grouping" expanded="True" />
-                  <Node name="ParticleSystems" expanded="True">
-                    <Node name="ParticleSystem.h" selected="True" />
-                  </Node>
+                  <Node name="ParticleSystems" expanded="True" />
                   <Node name="Picking" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
                 </Node>
@@ -88,14 +84,18 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True" />
-              <Node name="ComposedWidgets" expanded="True" />
+              <Node name="Browser" expanded="True">
+                <Node name="X3DBrowserWidget.cpp" selected="True" />
+              </Node>
               <Node name="Configuration" expanded="True" />
               <Node name="Dialogs" expanded="True">
                 <Node name="NodeIndex" expanded="True" />
               </Node>
+              <Node name="Editors" expanded="True">
+                <Node name="GridEditor" expanded="True" />
+              </Node>
               <Node name="Widgets" expanded="True">
-                <Node name="OutlineEditor" expanded="True" />
+                <Node name="ScriptEditor" expanded="True" />
               </Node>
             </Node>
           </Node>

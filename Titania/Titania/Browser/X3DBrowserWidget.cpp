@@ -50,10 +50,10 @@
 
 #include "X3DBrowserWidget.h"
 
-#include "../Base/UserData.h"
 #include "../Browser/AboutTab.h"
 #include "../Browser/BrowserUserData.h"
 #include "../Browser/Image.h"
+#include "../Browser/UserData.h"
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
 
@@ -283,6 +283,15 @@ X3DBrowserWidget::getUserData (const X3D::X3DExecutionContextPtr & executionCont
 		executionContext -> setUserData (X3D::UserDataPtr (new UserData ()));
 
 	return std::static_pointer_cast <UserData> (executionContext -> getUserData ());
+}
+
+std::shared_ptr <UserData>
+X3DBrowserWidget::getUserData (const X3D::SFNode & node)
+{
+	if (not node -> getUserData ())
+		node -> setUserData (X3D::UserDataPtr (new UserData ()));
+
+	return std::static_pointer_cast <UserData> (node -> getUserData ());
 }
 
 void

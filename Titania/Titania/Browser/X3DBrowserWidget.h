@@ -117,6 +117,10 @@ public:
 	std::shared_ptr <UserData>
 	getUserData (const X3D::X3DExecutionContextPtr &);
 
+	static
+	std::shared_ptr <UserData>
+	getUserData (const X3D::SFNode &);
+
 	///  @name Operations
 
 	virtual
