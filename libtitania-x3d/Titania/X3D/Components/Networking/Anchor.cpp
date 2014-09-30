@@ -151,7 +151,7 @@ Anchor::traverse (const TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::PICKING:
+		case TraverseType::POINTER:
 		{
 			if (getExecutionContext () -> isLive () and isLive ())
 			{

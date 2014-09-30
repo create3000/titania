@@ -59,4 +59,6 @@
 #include "PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
 #include "PointingDeviceSensor/X3DTouchSensorNode.h"
 
+#include "PointingDeviceSensor/TouchGroup.h"
+
 #endif

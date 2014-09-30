@@ -79,7 +79,7 @@ public:
 
 	virtual
 	void
-	set_motion (const PickedObjectPtr &) = 0;
+	set_motion (const HitPtr &) = 0;
 
 
 protected:

@@ -51,7 +51,7 @@
 #include "Shape.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/PointingDeviceSensor/PickedObject.h"
+#include "../../Browser/PointingDeviceSensor/Hit.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ViewVolume.h"
@@ -131,9 +131,9 @@ Shape::traverse (const TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::PICKING:
+		case TraverseType::POINTER:
 		{
-			pick ();
+			click ();
 			break;
 		}
 		case TraverseType::NAVIGATION:
@@ -157,7 +157,7 @@ Shape::traverse (const TraverseType type)
 }
 
 void
-Shape::pick ()
+Shape::click ()
 {
 	// All geometries must be picked
 
@@ -169,11 +169,11 @@ Shape::pick ()
 
 			if (getCurrentLayer () -> getViewVolumeStack () .back () .intersect (bbox))
 			{
-				const Line3f pickRay = getBrowser () -> getPickRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ()); // Attention!! returns a Line3d
+				const Line3f hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ()); // Attention!! returns a Line3d
 
 				std::vector <IntersectionPtr> itersections;
 
-				if (getGeometry () -> intersect (pickRay, itersections))
+				if (getGeometry () -> intersect (hitRay, itersections))
 				{
 					for (auto & itersection : itersections)
 						itersection -> hitPoint = itersection -> hitPoint * getModelViewMatrix () .get ();
@@ -193,7 +193,7 @@ Shape::pick ()
 																			 });
 
 					if (itersection not_eq itersections .end ())
-						getBrowser () -> addPickedObject (getModelViewMatrix () .get (), *itersection, this, getCurrentLayer ());
+						getBrowser () -> addHit (getModelViewMatrix () .get (), *itersection, this, getCurrentLayer ());
 				}
 			}
 		}

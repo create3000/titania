@@ -180,14 +180,14 @@ Selection::select ()
 
 	// Selected highest or lowest Node, or clear selection.
 
-	if (getBrowser () -> getPickedObjects () .empty ())
+	if (getBrowser () -> getHits () .empty ())
 	{
 		clear ();
 	}
 	else
 	{
 		const auto hierarchy = find (getBrowser () -> getExecutionContext () -> getRootNodes (),
-		                             getBrowser () -> getNearestPickedObject () -> shape,
+		                             getBrowser () -> getNearestHit () -> shape,
 		                             TRAVERSE_ROOT_NODES |
 		                             TRAVERSE_PROTOTYPE_INSTANCES |
 		                             TRAVERSE_INLINE_NODES |

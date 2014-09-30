@@ -72,15 +72,15 @@ PointingDevice::initialize ()
 {
 	X3DBrowserObject::initialize ();
 
-	getBrowser () -> isPickable () .addInterest (this, &PointingDevice::set_pickable);
+	getBrowser () -> isSensitive () .addInterest (this, &PointingDevice::set_sensitive);
 
-	set_pickable ();
+	set_sensitive ();
 }
 
 void
-PointingDevice::set_pickable ()
+PointingDevice::set_sensitive ()
 {
-	if (getBrowser () -> isPickable ())
+	if (getBrowser () -> isSensitive ())
 	{
 		button_press_conncection   = getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
 		button_release_conncection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
@@ -171,7 +171,7 @@ PointingDevice::on_button_press_event (GdkEventButton* event)
 		}
 		case 2:
 		{
-			//const bool picked = pick (event -> x, event -> y);
+			//const bool clicked = click (event -> x, event -> y);
 
 			getBrowser () -> setCursor (Gdk::FLEUR);
 			break;

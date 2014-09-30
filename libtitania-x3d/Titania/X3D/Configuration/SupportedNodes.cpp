@@ -286,6 +286,10 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 	add ("WindPhysicsModel",             new WindPhysicsModel             (executionContext));
 	add ("WorldInfo",                    new WorldInfo                    (executionContext));
 
+	//  Non standard: Component »Titania«
+
+	add ("TouchGroup",                   new TouchGroup                   (executionContext));
+
 	//std::clog << "\tDone creating node index." << std::endl;
 }
 

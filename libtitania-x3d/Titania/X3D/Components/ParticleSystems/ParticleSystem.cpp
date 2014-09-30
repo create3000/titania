@@ -1203,7 +1203,7 @@ ParticleSystem::traverse (const TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::PICKING:
+		case TraverseType::POINTER:
 		{
 			break;
 		}

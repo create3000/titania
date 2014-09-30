@@ -329,7 +329,7 @@ X3DGroupingNode::traverse (const TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::PICKING:
+		case TraverseType::POINTER:
 		{
 			if (not pointingDeviceSensors .empty ())
 			{

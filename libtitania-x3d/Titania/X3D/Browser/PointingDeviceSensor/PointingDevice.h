@@ -82,7 +82,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_pickable ();
+	set_sensitive ();
 
 	bool
 	on_motion_notify_event (GdkEventMotion*);

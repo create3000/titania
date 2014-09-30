@@ -125,7 +125,7 @@ private:
 	isLineGeometry () const final override;
 
 	void
-	pick ();
+	click ();
 
 	virtual
 	void

@@ -66,18 +66,18 @@ static constexpr time_type SELECTION_TIME = 0.01; // Use ExamineViewer SPIN_RELE
 
 X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	   X3DBaseNode (),
-	      pickable (true),
+	     sensitive (true),
 	       pointer (),
-	       pickRay (),
-	 pickedObjects (),
+	        hitRay (),
+	          hits (),
 	enabledSensors ({ NodeSet () }),
 	   overSensors (),
 	 activeSensors (),
-	  pickingLayer (),
+	 selectedLayer (),
 	     pressTime (0),
 	      hasMoved (false)
 {
-	addChildren (pickable,
+	addChildren (sensitive,
 	             overSensors,
 	             activeSensors);
 }
@@ -91,19 +91,19 @@ X3DPointingDeviceSensorContext::initialize ()
 void
 X3DPointingDeviceSensorContext::set_shutdown ()
 {
-	pickedObjects .clear ();
+	hits          .clear ();
 	overSensors   .clear ();
 	activeSensors .clear ();
 }
 
 void
-X3DPointingDeviceSensorContext::pick (const double x, const double y)
+X3DPointingDeviceSensorContext::click (const double x, const double y)
 {
 	pointer = Vector2d (x, y);
 
-	// Clear pickedObjects.
+	// Clear hits.
 
-	pickedObjects .clear ();
+	hits .clear ();
 
 	// Pick.
 
@@ -113,12 +113,12 @@ X3DPointingDeviceSensorContext::pick (const double x, const double y)
 	{
 		//update (); // We cannot make an update here because of gravity.
 
-		getWorld () -> traverse (TraverseType::PICKING);
+		getWorld () -> traverse (TraverseType::POINTER);
 	}
 
 	// Picking end.
 
-	std::stable_sort (pickedObjects .begin (), pickedObjects .end (), PickedObjectComp { });
+	std::stable_sort (hits .begin (), hits .end (), HitComp { });
 
 	enabledSensors = { NodeSet () };
 }
@@ -133,7 +133,7 @@ X3DPointingDeviceSensorContext::isPointerInRectangle (const Vector4i & rectangle
 }
 
 Line3d
-X3DPointingDeviceSensorContext::getPickRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport) const
+X3DPointingDeviceSensorContext::getHitRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport) const
 {
 	try
 	{
@@ -146,9 +146,9 @@ X3DPointingDeviceSensorContext::getPickRay (const Matrix4d & modelViewMatrix, co
 }
 
 void
-X3DPointingDeviceSensorContext::addPickedObject (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer)
+X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer)
 {
-	pickedObjects .emplace_front (new PickedObject (pointer, transformationMatrix, pickRay, intersection, enabledSensors .back (), shape, layer));
+	hits .emplace_front (new Hit (pointer, transformationMatrix, hitRay, intersection, enabledSensors .back (), shape, layer));
 }
 
 bool
@@ -156,11 +156,11 @@ X3DPointingDeviceSensorContext::motionNotifyEvent (const double x, const double 
 {
 	hasMoved |= pointer .x () not_eq x or pointer .y () not_eq y;
 
-	pick (x, y);
+	click (x, y);
 
 	motion ();
 
-	return not getPickedObjects () .empty () and not getNearestPickedObject () -> sensors .empty ();
+	return not getHits () .empty () and not getNearestHit () -> sensors .empty ();
 }
 
 void
@@ -170,7 +170,7 @@ X3DPointingDeviceSensorContext::motion ()
 
 	std::vector <X3DBaseNode*> difference;
 
-	if (getPickedObjects () .empty ())
+	if (getHits () .empty ())
 		difference .assign (overSensors .begin (), overSensors .end ());
 
 	else
@@ -178,7 +178,7 @@ X3DPointingDeviceSensorContext::motion ()
 		// overSensors and sensors are always sorted.
 
 		std::set_difference (overSensors .begin (), overSensors .end (),
-		                     getNearestPickedObject () -> sensors .begin (), getNearestPickedObject () -> sensors .end (),
+		                     getNearestHit () -> sensors .begin (), getNearestHit () -> sensors .end (),
 		                     std::back_inserter (difference));
 	}
 
@@ -187,7 +187,7 @@ X3DPointingDeviceSensorContext::motion ()
 		const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_over (getNearestPickedObject (), false);
+			pointingDeviceSensorNode -> set_over (getNearestHit (), false);
 
 		else
 		{
@@ -200,20 +200,20 @@ X3DPointingDeviceSensorContext::motion ()
 
 	// Set isOver to TRUE for appropriate nodes
 
-	if (getPickedObjects () .empty ())
+	if (getHits () .empty ())
 		overSensors .clear ();
 
 	else
 	{
-		overSensors .assign (getNearestPickedObject () -> sensors .begin (),
-		                     getNearestPickedObject () -> sensors .end ());
+		overSensors .assign (getNearestHit () -> sensors .begin (),
+		                     getNearestHit () -> sensors .end ());
 
 		for (const auto & node : overSensors)
 		{
 			const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 			if (pointingDeviceSensorNode)
-				pointingDeviceSensorNode -> set_over (getNearestPickedObject (), true);
+				pointingDeviceSensorNode -> set_over (getNearestHit (), true);
 
 			else
 			{
@@ -233,9 +233,9 @@ X3DPointingDeviceSensorContext::motion ()
 
 		if (dragSensorNode)
 		{
-			dragSensorNode -> set_motion (getPickedObjects () .empty ()
-			                              ? std::make_shared <PickedObject> (pointer, Matrix4d (), pickRay, std::make_shared <Intersection> (), NodeSet (), nullptr, nullptr)
-													: getNearestPickedObject ());
+			dragSensorNode -> set_motion (getHits () .empty ()
+			                              ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr, nullptr)
+													: getNearestHit ());
 		}
 	}
 }
@@ -246,25 +246,25 @@ X3DPointingDeviceSensorContext::buttonPressEvent (const double x, const double y
 	pressTime = chrono::now ();
 	hasMoved  = false;
 
-	pick (x, y);
+	click (x, y);
 
-	if (getPickedObjects () .empty ())
+	if (getHits () .empty ())
 		return false;
 		
-	if (getNearestPickedObject () -> sensors .empty ())
+	if (getNearestHit () -> sensors .empty ())
 		return false;
 
-	pickingLayer = getNearestPickedObject () -> layer;
+	selectedLayer = getNearestHit () -> layer;
 
-	activeSensors .assign (getNearestPickedObject () -> sensors .begin (),
-	                       getNearestPickedObject () -> sensors .end ());
+	activeSensors .assign (getNearestHit () -> sensors .begin (),
+	                       getNearestHit () -> sensors .end ());
 
 	for (const auto & node : activeSensors)
 	{
 		const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_active (getNearestPickedObject (), true);
+			pointingDeviceSensorNode -> set_active (getNearestHit (), true);
 
 		else
 		{
@@ -287,14 +287,14 @@ X3DPointingDeviceSensorContext::buttonReleaseEvent ()
 			return true;
 	}
 
-	pickingLayer = nullptr;
+	selectedLayer = nullptr;
 
 	for (const auto & node : activeSensors)
 	{
 		const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_active (std::make_shared <PickedObject> (pointer, Matrix4d (), pickRay, std::make_shared <Intersection> (), NodeSet (), nullptr, nullptr),
+			pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr, nullptr),
 			                                        false);
 
 		else
@@ -316,9 +316,9 @@ X3DPointingDeviceSensorContext::buttonReleaseEvent ()
 void
 X3DPointingDeviceSensorContext::leaveNotifyEvent ()
 {
-	// Clear pickedObjects.
+	// Clear hits.
 
-	pickedObjects .clear ();
+	hits .clear ();
 
 	motion ();
 }

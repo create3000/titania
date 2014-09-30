@@ -96,13 +96,13 @@ SphereSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 bool
-SphereSensor::getTrackPoint (const Line3d & pickRay, Vector3d & trackPoint, const bool behind) const
+SphereSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, const bool behind) const
 {
 	Vector3d exit;
 
-	if (sphere .intersect (pickRay, trackPoint, exit))
+	if (sphere .intersect (hitRay, trackPoint, exit))
 	{
-		if ((abs (pickRay .point () - exit) < abs (pickRay .point () - trackPoint)) - behind)
+		if ((abs (hitRay .point () - exit) < abs (hitRay .point () - trackPoint)) - behind)
 			trackPoint = exit;
 
 		return true;
@@ -112,7 +112,7 @@ SphereSensor::getTrackPoint (const Line3d & pickRay, Vector3d & trackPoint, cons
 }
 
 void
-SphereSensor::set_active (const PickedObjectPtr & hit, const bool active)
+SphereSensor::set_active (const HitPtr & hit, const bool active)
 {
 	X3DDragSensorNode::set_active (hit, active);
 
@@ -146,16 +146,16 @@ SphereSensor::set_active (const PickedObjectPtr & hit, const bool active)
 }
 
 void
-SphereSensor::set_motion (const PickedObjectPtr & hit)
+SphereSensor::set_motion (const HitPtr & hit)
 {
 	try
 	{
-		auto       pickRay    = hit -> pickRay * inverseModelViewMatrix;
+		auto       hitRay    = hit -> hitRay * inverseModelViewMatrix;
 		const auto startPoint = this -> startPoint * inverseModelViewMatrix;
 
 		Vector3d trackPoint;
 
-		if (getTrackPoint (pickRay, trackPoint, behind))
+		if (getTrackPoint (hitRay, trackPoint, behind))
 		{
 			const auto zAxis = inverseModelViewMatrix .mult_dir_matrix (Vector3d (0, 0, 1)); // Camera direction
 			zPlane = Plane3d (trackPoint, zAxis);                                          // Screen aligned Z-plane
@@ -165,11 +165,11 @@ SphereSensor::set_motion (const PickedObjectPtr & hit)
 			// Find trackPoint on the plane with sphere
 
 			Vector3d tangentPoint;
-			zPlane .intersect (pickRay, tangentPoint);
+			zPlane .intersect (hitRay, tangentPoint);
 
-			pickRay = Line3d (tangentPoint, sphere .center (), point_type ());
+			hitRay = Line3d (tangentPoint, sphere .center (), point_type ());
 
-			getTrackPoint (pickRay, trackPoint);
+			getTrackPoint (hitRay, trackPoint);
 
 			// Find trackPoint behind sphere
 
@@ -177,9 +177,9 @@ SphereSensor::set_motion (const PickedObjectPtr & hit)
 			const auto dirFromCenter = normalize (trackPoint - sphere .center ());
 			const auto normal        = cross (triNormal, dirFromCenter);
 
-			pickRay = Line3d (trackPoint - normal * abs (tangentPoint - trackPoint), sphere .center (), point_type ());
+			hitRay = Line3d (trackPoint - normal * abs (tangentPoint - trackPoint), sphere .center (), point_type ());
 
-			getTrackPoint (pickRay, trackPoint);
+			getTrackPoint (hitRay, trackPoint);
 		}
 
 		trackPoint_changed () = trackPoint;

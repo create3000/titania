@@ -133,11 +133,11 @@ public:
 
 	virtual
 	void
-	set_active (const PickedObjectPtr &, const bool) final override;
+	set_active (const HitPtr &, const bool) final override;
 
 	virtual
 	void
-	set_motion (const PickedObjectPtr &) final override;
+	set_motion (const HitPtr &) final override;
 
 
 private:
@@ -145,7 +145,7 @@ private:
 	///  @name Operations
 
 	bool
-	getLineTrackPoint (const PickedObjectPtr &, const Line3d &, Vector3d &)
+	getLineTrackPoint (const HitPtr &, const Line3d &, Vector3d &)
 	throw (std::domain_error);
 
 	void

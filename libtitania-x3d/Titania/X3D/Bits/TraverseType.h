@@ -56,7 +56,7 @@ namespace X3D {
 
 enum class TraverseType : uint8_t
 {
-	PICKING,
+	POINTER,
 	CAMERA,
 	NAVIGATION,
 	COLLISION,

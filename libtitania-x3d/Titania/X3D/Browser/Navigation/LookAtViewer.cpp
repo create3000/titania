@@ -59,7 +59,7 @@ namespace X3D {
 
 LookAtViewer::LookAtViewer (Browser* const browser) :
 	  X3DViewer (browser),
-	    picking (browser -> isPickable ()),
+	  sensitive (browser -> isSensitive ()),
 	     isOver (false),
 	orientation (),
 	   rotation (),
@@ -77,7 +77,7 @@ LookAtViewer::initialize ()
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &LookAtViewer::on_button_release_event), false);
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &LookAtViewer::on_motion_notify_event),  false);
 
-	getBrowser () -> isPickable (false);
+	getBrowser () -> isSensitive (false);
 }
 
 bool
@@ -105,11 +105,11 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 {
 	if (event -> button == 1)
 	{
-		if (not motion and pick (event -> x, event -> y))
+		if (not motion and click (event -> x, event -> y))
 		{
-			const auto pickedObject    = getBrowser () -> getNearestPickedObject ();
-			const auto modelViewMatrix = Matrix4f (pickedObject -> modelViewMatrix) * getActiveViewpoint () -> getTransformationMatrix ();
-			const auto bbox            = pickedObject -> shape -> getBBox () * modelViewMatrix;
+			const auto hit             = getBrowser () -> getNearestHit ();
+			const auto modelViewMatrix = Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getTransformationMatrix ();
+			const auto bbox            = hit -> shape -> getBBox () * modelViewMatrix;
 
 			getActiveViewpoint () -> lookAt (bbox, 2 - M_PHI);
 		}
@@ -123,7 +123,7 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 bool
 LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 {
-	if (pick (event -> x, event -> y))
+	if (click (event -> x, event -> y))
 	{
 		if (not isOver)
 		{
@@ -169,16 +169,16 @@ LookAtViewer::getOrientationOffset ()
 }
 
 bool
-LookAtViewer::pick (const double x, const double y)
+LookAtViewer::click (const double x, const double y)
 {
-	getBrowser () -> pick (x, getBrowser () -> get_height () - y);
+	getBrowser () -> click (x, getBrowser () -> get_height () - y);
 
-	return not getBrowser () -> getPickedObjects () .empty ();
+	return not getBrowser () -> getHits () .empty ();
 }
 
 LookAtViewer::~LookAtViewer ()
 {
-	getBrowser () -> isPickable (picking);
+	getBrowser () -> isSensitive (sensitive);
 }
 
 } // X3D

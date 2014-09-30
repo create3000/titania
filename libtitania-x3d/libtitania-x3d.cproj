@@ -678,8 +678,6 @@
     <None Include="Titania\X3D\Prototype\ProtoDeclaration.h" />
     <None Include="Titania\X3D\Prototype\ExternProtoDeclaration.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.h" />
-    <None Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObject.h" />
-    <None Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObjectArray.h" />
     <None Include="share\titania\tools\library\BooleanSwitch.x3dv" />
     <None Include="Titania\X3D\PeaseBlossom\Parser\Parser.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom.h" />
@@ -788,6 +786,10 @@
     <None Include="Titania\X3D\Tools\Core\Tool.h" />
     <None Include="Titania\X3D\Tools\Layering\X3DActiveLayerTool.h" />
     <None Include="Titania\X3D\Tools\Picking\PickableGroupTool.h" />
+    <None Include="Titania\X3D\Browser\PointingDeviceSensor\Hit.h" />
+    <None Include="Titania\X3D\Browser\PointingDeviceSensor\HitArray.h" />
+    <None Include="Titania\X3D\Components\PointingDeviceSensor\TouchGroup.h" />
+    <None Include="Titania\X3D\Tools\PointingDeviceSensor\TouchGroupTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1264,8 +1266,6 @@
     <Compile Include="Titania\X3D\Prototype\ProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\Prototype\ExternProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.cpp" />
-    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObject.cpp" />
-    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PickedObjectArray.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Parser\Parser.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Context.cpp" />
@@ -1303,6 +1303,10 @@
     <Compile Include="Titania\X3D\Tools\Core\Tool.cpp" />
     <Compile Include="Titania\X3D\Tools\Layering\X3DActiveLayerTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Picking\PickableGroupTool.cpp" />
+    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\Hit.cpp" />
+    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\HitArray.cpp" />
+    <Compile Include="Titania\X3D\Components\PointingDeviceSensor\TouchGroup.cpp" />
+    <Compile Include="Titania\X3D\Tools\PointingDeviceSensor\TouchGroupTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1374,6 +1378,7 @@
     <Folder Include="Titania\X3D\Tools\CADGeometry\" />
     <Folder Include="Titania\X3D\Tools\Layering\" />
     <Folder Include="Titania\X3D\Tools\Picking\" />
+    <Folder Include="Titania\X3D\Tools\PointingDeviceSensor\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

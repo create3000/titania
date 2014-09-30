@@ -1,5 +1,9 @@
 #X3D V3.3 utf8 Titania V0.7.4
 
+PROFILE Full
+
+COMPONENT Titania : 1
+
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
@@ -396,8 +400,8 @@ function isMajor (i, dimension, majorLineEvery, majorLineOffset)
 DEF GridTool Collision {
   enabled FALSE
   children [
-    DEF Grid_1 PickableGroup {
-      pickable FALSE
+    DEF Grid_1 TouchGroup {
+      enabled FALSE
       children DEF _1 Grid {
         dimension [
           10,

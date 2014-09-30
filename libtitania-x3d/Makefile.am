@@ -59,8 +59,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Networking/X3DNetworkingContext.cpp \
 	Titania/X3D/Browser/Notification.cpp \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.cpp \
-	Titania/X3D/Browser/PointingDeviceSensor/PickedObject.cpp \
-	Titania/X3D/Browser/PointingDeviceSensor/PickedObjectArray.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/Hit.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/HitArray.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
 	Titania/X3D/Browser/Rendering/MotionBlur.cpp \
@@ -267,6 +267,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/SphereSensor.cpp \
+	Titania/X3D/Components/PointingDeviceSensor/TouchGroup.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/TouchSensor.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/X3DDragSensorNode.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/X3DPointingDeviceSensorNode.cpp \
@@ -515,6 +516,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Navigation/CollisionTool.cpp \
 	Titania/X3D/Tools/Navigation/LODTool.cpp \
 	Titania/X3D/Tools/Picking/PickableGroupTool.cpp \
+	Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.cpp \
 	Titania/X3D/Types/Image.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \

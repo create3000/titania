@@ -365,9 +365,9 @@ X3DLayerNode::traverse (const TraverseType type)
 
 	switch (type)
 	{
-		case TraverseType::PICKING:
+		case TraverseType::POINTER:
 		{
-			pick ();
+			click ();
 			break;
 		}
 		case TraverseType::CAMERA:
@@ -399,13 +399,13 @@ X3DLayerNode::traverse (const TraverseType type)
 }
 
 void
-X3DLayerNode::pick ()
+X3DLayerNode::click ()
 {
 	if (isPickable ())
 	{
-		if (getBrowser () -> getPickingLayer ())
+		if (getBrowser () -> getSelectedLayer ())
 		{
-			if (getBrowser () -> getPickingLayer () not_eq this)
+			if (getBrowser () -> getSelectedLayer () not_eq this)
 				return;
 		}
 		else
@@ -416,14 +416,14 @@ X3DLayerNode::pick ()
 
 		getModelViewMatrix () .identity ();
 		getViewpoint () -> reshape ();
-		getBrowser ()   -> setPickRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), currentViewport -> getRectangle ());
+		getBrowser ()   -> setHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), currentViewport -> getRectangle ());
 		getViewpoint () -> transform ();
 
-		currentViewport -> push (TraverseType::PICKING);
+		currentViewport -> push (TraverseType::POINTER);
 
-		collect (TraverseType::PICKING);
+		collect (TraverseType::POINTER);
 		
-		currentViewport -> pop (TraverseType::PICKING);
+		currentViewport -> pop (TraverseType::POINTER);
 
 		getGlobalObjects () .clear ();
 	}

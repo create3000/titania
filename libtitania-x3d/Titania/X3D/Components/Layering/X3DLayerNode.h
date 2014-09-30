@@ -266,7 +266,7 @@ private:
 	set_viewport ();
 
 	void
-	pick ();
+	click ();
 
 	void
 	camera ();

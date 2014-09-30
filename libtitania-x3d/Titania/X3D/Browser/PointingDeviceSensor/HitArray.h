@@ -51,18 +51,18 @@
 #ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_HIT_ARRAY_H__
 #define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_HIT_ARRAY_H__
 
-#include "PickedObject.h"
+#include "Hit.h"
 
 #include <deque>
 
 namespace titania {
 namespace X3D {
 
-using PickedObjectArray = std::deque <PickedObjectPtr>;
+using HitArray = std::deque <HitPtr>;
 
 } // X3D
 } // titania
 
-extern template class std::deque <titania::X3D::PickedObjectPtr>;
+extern template class std::deque <titania::X3D::HitPtr>;
 
 #endif

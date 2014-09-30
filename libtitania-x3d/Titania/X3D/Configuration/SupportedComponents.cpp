@@ -101,6 +101,8 @@ SupportedComponents::SupportedComponents (const bool) :
 	add ("Time",                                       "Time",                 2);
 //	add ("Volume rendering",                           "VolumeRendering",      4);
 
+	add ("Titania",                                    "Titania",              1);
+
 	//std::clog << "\tDone creating component index." << std::endl;
 }
 

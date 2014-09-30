@@ -48,62 +48,71 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_HIT_H__
-#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_HIT_H__
+#include "TouchGroup.h"
 
-#include "../../Basic/NodeSet.h"
-#include "../../Fields.h"
-#include "../../Types/Geometry.h"
-#include "../../Types/Pointer.h"
-#include "Intersection.h"
-
-#include <memory>
+#include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/PointingDeviceSensor/TouchGroupTool.h"
 
 namespace titania {
 namespace X3D {
 
-class PickedObject
+const std::string TouchGroup::componentName  = "Titania";
+const std::string TouchGroup::typeName       = "TouchGroup";
+const std::string TouchGroup::containerField = "children";
+
+TouchGroup::TouchGroup (X3DExecutionContext* const executionContext) :
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode (),
+	  X3DSensorNode ()
 {
-public:
+	//addType (X3DConstants::TouchGroup);
 
-	PickedObject (const Vector2d &,
-	     const Matrix4d &,
-	     const Line3d &,
-	     const IntersectionPtr &,
-	     const NodeSet &,
-	     const X3DShapeNodePtr,
-	     const X3DLayerNodePtr);
+	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "enabled",        enabled ());
+	addField (initializeOnly, "bboxSize",       bboxSize ());
+	addField (initializeOnly, "bboxCenter",     bboxCenter ());
+	addField (inputOnly,      "addChildren",    addChildren ());
+	addField (inputOnly,      "removeChildren", removeChildren ());
+	addField (inputOutput,    "children",       children ());
+}
 
-	const Vector2d        pointer;
-	const Matrix4d        modelViewMatrix;
-	const Line3d          pickRay;
-	const Vector4d        texCoord;
-	const Vector3d        normal;
-	const Vector3d        point;
-	const float           distance;
-	const NodeSet         sensors;
-	const X3DShapeNodePtr shape;
-	const X3DLayerNodePtr layer;
-
-	~PickedObject ();
-
-};
-
-using PickedObjectPtr = std::shared_ptr <PickedObject>;
-
-class PickedObjectComp
+X3DBaseNode*
+TouchGroup::create (X3DExecutionContext* const executionContext) const
 {
-public:
+	return new TouchGroup (executionContext);
+}
 
-	bool
-	operator () (const PickedObjectPtr & lhs, const PickedObjectPtr & rhs) const
+void
+TouchGroup::initialize ()
+{
+	X3DGroupingNode::initialize ();
+}
+
+void
+TouchGroup::traverse (const TraverseType type)
+{
+	switch (type)
 	{
-		return lhs -> distance < rhs -> distance;
-	}
+		case TraverseType::POINTER:
+		{
+			if (not enabled ())
+				return;
 
-};
+			// Proceed with next step:
+		}
+		default:
+		{
+			X3DGroupingNode::traverse (type);
+			return;
+		}
+	}
+}
+
+void
+TouchGroup::addTool ()
+{
+	X3DGroupingNode::addTool (new TouchGroupTool (this));
+}
 
 } // X3D
 } // titania
-
-#endif

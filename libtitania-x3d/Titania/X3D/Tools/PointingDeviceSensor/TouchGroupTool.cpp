@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,35 +48,43 @@
  *
  ******************************************************************************/
 
-#include "PickedObject.h"
+#include "TouchGroupTool.h"
 
-#include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Components/Shape/X3DShapeNode.h"
+#include "../ToolColors.h"
+#include "../../Bits/Linetypes.h"
 
 namespace titania {
 namespace X3D {
 
-PickedObject::PickedObject (const Vector2d & pointer,
-          const Matrix4d & modelViewMatrix,
-          const Line3d & pickRay,
-          const IntersectionPtr & intersection,
-          const NodeSet & sensors,
-          const X3DShapeNodePtr shape,
-          const X3DLayerNodePtr layer) :
-	        pointer (pointer),
-	modelViewMatrix (modelViewMatrix),
-	        pickRay (pickRay),
-	       texCoord (intersection -> hitTexCoord),
-	         normal (intersection -> hitNormal),
-	          point (intersection -> hitPoint),
-	       distance (std::abs (point .z ())),
-	        sensors (sensors),
-	          shape (shape),
-	          layer (layer)
-{ }
+TouchGroupTool::TouchGroupTool (TouchGroup* const node) :
+	                    X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	        X3DBaseTool <TouchGroup> (node),
+	X3DGroupingNodeTool <TouchGroup> (ToolColors::RED),
+	  X3DSensorNodeTool <TouchGroup> ()
+{
+	//addType (X3DConstants::TouchGroupTool);
+}
 
-PickedObject::~PickedObject ()
-{ }
+void
+TouchGroupTool::realize ()
+{
+	X3DGroupingNodeTool <TouchGroup>::realize ();
+	
+	getNode () -> enabled () .addInterest (this, &TouchGroupTool::set_enabled);
+
+	set_enabled (getNode () -> enabled ());
+}
+
+void
+TouchGroupTool::set_enabled (const bool value)
+{
+	try
+	{
+		getToolNode () -> setField <SFInt32> ("linetype", int (value ? LineType::SOLID : LineType::DOTTED));
+	}
+	catch (const X3DError & error)
+	{ }
+}
 
 } // X3D
 } // titania

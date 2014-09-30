@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,66 +48,80 @@
  *
  ******************************************************************************/
 
-#include "PickableGroup.h"
+#ifndef __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_TOUCH_GROUP_H__
+#define __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_TOUCH_GROUP_H__
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../../Tools/Picking/PickableGroupTool.h"
+#include "../Grouping/X3DGroupingNode.h"
+#include "../Picking/X3DPickableObject.h"
 
 namespace titania {
 namespace X3D {
 
-const std::string PickableGroup::componentName  = "Picking";
-const std::string PickableGroup::typeName       = "PickableGroup";
-const std::string PickableGroup::containerField = "children";
-
-PickableGroup::PickableGroup (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	  X3DGroupingNode (),
-	X3DPickableObject ()
+class TouchGroup :
+	public X3DGroupingNode,
+	public X3DSensorNode
 {
-	addType (X3DConstants::PickableGroup);
+public:
 
-	addField (inputOutput,    "metadata",       metadata ());
-	addField (inputOutput,    "pickable",       pickable ());
-	addField (inputOutput,    "objectType",     objectType ());
-	addField (initializeOnly, "bboxSize",       bboxSize ());
-	addField (initializeOnly, "bboxCenter",     bboxCenter ());
-	addField (inputOnly,      "addChildren",    addChildren ());
-	addField (inputOnly,      "removeChildren", removeChildren ());
-	addField (inputOutput,    "children",       children ());
-}
+	///  @name Construction
 
-X3DBaseNode*
-PickableGroup::create (X3DExecutionContext* const executionContext) const
-{
-	return new PickableGroup (executionContext);
-}
+	TouchGroup (X3DExecutionContext* const);
 
-void
-PickableGroup::initialize ()
-{
-	X3DGroupingNode::initialize ();
-	X3DPickableObject::initialize ();
-}
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
 
-void
-PickableGroup::traverse (const TraverseType type)
-{
-	X3DGroupingNode::traverse (type);
-}
+	///  @name Common members
 
-void
-PickableGroup::addTool ()
-{
-	X3DGroupingNode::addTool (new PickableGroupTool (this));
-}
+	virtual
+	const std::string &
+	getComponentName () const final override
+	{ return componentName; }
 
-void
-PickableGroup::dispose ()
-{
-	X3DPickableObject::dispose ();
-	X3DGroupingNode::dispose ();
-}
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final override
+	{ return containerField; }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType) override;
+
+	virtual
+	void
+	addTool () override;
+
+	///  @name Destruction
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+};
 
 } // X3D
 } // titania
+
+#endif

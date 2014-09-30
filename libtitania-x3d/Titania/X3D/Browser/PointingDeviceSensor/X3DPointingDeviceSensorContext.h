@@ -55,7 +55,7 @@
 #include "../../Fields.h"
 #include "../../Types/Geometry.h"
 #include "../../Types/Pointer.h"
-#include "PickedObjectArray.h"
+#include "HitArray.h"
 #include "Intersection.h"
 
 namespace titania {
@@ -69,31 +69,31 @@ public:
 	///  @name Outputs
 
 	void
-	isPickable (const bool value)
-	{ pickable = value; }
+	isSensitive (const bool value)
+	{ sensitive = value; }
 
 	const SFBool &
-	isPickable () const
-	{ return pickable; }
+	isSensitive () const
+	{ return sensitive; }
 
 	///  @name Member access
 
-	const PickedObjectPtr &
-	getNearestPickedObject () const
-	{ return getPickedObjects () .front (); }
+	const HitPtr &
+	getNearestHit () const
+	{ return getHits () .front (); }
 
-	const PickedObjectArray &
-	getPickedObjects () const
-	{ return pickedObjects; }
+	const HitArray &
+	getHits () const
+	{ return hits; }
 
 	X3DLayerNode*
-	getPickingLayer () const
-	{ return pickingLayer; }
+	getSelectedLayer () const
+	{ return selectedLayer; }
 
 	///  @name Operations
 
 	void
-	pick (const double, const double);
+	click (const double, const double);
 
 	bool
 	isPointerInRectangle (const Vector4i &) const;
@@ -103,14 +103,14 @@ public:
 	{ return enabledSensors; }
 
 	void
-	setPickRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
-	{ pickRay = getPickRay (modelViewMatrix, projectionMatrix, viewport); }
+	setHitRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
+	{ hitRay = getHitRay (modelViewMatrix, projectionMatrix, viewport); }
 
 	Line3d
-	getPickRay (const Matrix4d &, const Matrix4d &, const Vector4i &) const;
+	getHitRay (const Matrix4d &, const Matrix4d &, const Vector4i &) const;
 
 	void
-	addPickedObject (const Matrix4d &, const IntersectionPtr &, X3DShapeNode* const, X3DLayerNode* const);
+	addHit (const Matrix4d &, const IntersectionPtr &, X3DShapeNode* const, X3DLayerNode* const);
 
 	///  @name Event handlers
 
@@ -167,14 +167,14 @@ private:
 
 	//  @name Members
 
-	SFBool                pickable;
+	SFBool                sensitive;
 	Vector2d              pointer;
-	Line3d                pickRay;
-	PickedObjectArray     pickedObjects;
+	Line3d                hitRay;
+	HitArray              hits;
 	std::vector <NodeSet> enabledSensors;
 	MFNode                overSensors;
 	MFNode                activeSensors;
-	X3DLayerNodePtr       pickingLayer;
+	X3DLayerNodePtr       selectedLayer;
 	time_type             pressTime;
 	bool                  hasMoved;
 

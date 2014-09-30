@@ -48,14 +48,62 @@
  *
  ******************************************************************************/
 
-#include "PickedObjectArray.h"
+#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_HIT_H__
+#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_HIT_H__
+
+#include "../../Basic/NodeSet.h"
+#include "../../Fields.h"
+#include "../../Types/Geometry.h"
+#include "../../Types/Pointer.h"
+#include "Intersection.h"
+
+#include <memory>
 
 namespace titania {
 namespace X3D {
 
-//
+class Hit
+{
+public:
+
+	Hit (const Vector2d &,
+	     const Matrix4d &,
+	     const Line3d &,
+	     const IntersectionPtr &,
+	     const NodeSet &,
+	     const X3DShapeNodePtr,
+	     const X3DLayerNodePtr);
+
+	const Vector2d        pointer;
+	const Matrix4d        modelViewMatrix;
+	const Line3d          hitRay;
+	const Vector4d        texCoord;
+	const Vector3d        normal;
+	const Vector3d        point;
+	const float           distance;
+	const NodeSet         sensors;
+	const X3DShapeNodePtr shape;
+	const X3DLayerNodePtr layer;
+
+	~Hit ();
+
+};
+
+using HitPtr = std::shared_ptr <Hit>;
+
+class HitComp
+{
+public:
+
+	bool
+	operator () (const HitPtr & lhs, const HitPtr & rhs) const
+	{
+		return lhs -> distance < rhs -> distance;
+	}
+
+};
 
 } // X3D
 } // titania
 
-template class std::deque <titania::X3D::PickedObjectPtr>;
+#endif

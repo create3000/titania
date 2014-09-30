@@ -1,3 +1,58 @@
+2014-09-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* TraverseType.h:
+	* Selection.cpp:
+	* GridTool.x3dv:
+	* AngleTool.x3dv:
+	* Shape.h:
+	* Shape.cpp:
+	* Anchor.cpp:
+	* SupportedNodes.cpp:
+	* LayoutGroup.cpp:
+	* PointingDeviceSensor.h:
+	* LookAtViewer.h:
+	* X3DLayerNode.h:
+	* PickableGroup.h:
+	* Hit.h:
+	* LookAtViewer.cpp:
+	* PickableGroup.cpp:
+	* X3DLayerNode.cpp:
+	* Hit.cpp:
+	* SupportedComponents.cpp:
+	* GeoTouchSensor.h:
+	* X3DGroupingNode.cpp:
+	* HitArray.h:
+	* GeoTouchSensor.cpp:
+	* HitArray.cpp:
+	* PickedObject.h:
+	* TouchGroupTool.h:
+	* TouchGroup.h:
+	* ParticleSystem.cpp:
+	* TouchGroupTool.cpp:
+	* PointingDevice.h:
+	* PlaneSensor.h:
+	* TouchSensor.h:
+	* PickedObject.cpp:
+	* SphereSensor.h:
+	* TouchGroup.cpp:
+	* PlaneSensor.cpp:
+	* TouchSensor.cpp:
+	* PointingDevice.cpp:
+	* PickedObjectArray.h:
+	* SphereSensor.cpp:
+	* CylinderSensor.h:
+	* PickedObjectArray.cpp:
+	* CylinderSensor.cpp:
+	* X3DDragSensorNode.h:
+	* X3DTouchSensorNode.h:
+	* X3DTouchSensorNode.cpp:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorContext.h:
+	* X3DPointingDeviceSensorContext.cpp:
+	* X3DPointingDeviceSensorNode.cpp: 
+
 2014-09-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DConstants.h:

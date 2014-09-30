@@ -107,7 +107,7 @@ PlaneSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 bool
-PlaneSensor::getLineTrackPoint (const PickedObjectPtr & hit, const Line3d & line, Vector3d & trackPoint)
+PlaneSensor::getLineTrackPoint (const HitPtr & hit, const Line3d & line, Vector3d & trackPoint)
 throw (std::domain_error)
 {
 	const auto screenLine     = ViewVolume::projectLine (line, modelViewMatrix, projectionMatrix, viewport);
@@ -118,7 +118,7 @@ throw (std::domain_error)
 }
 
 void
-PlaneSensor::set_active (const PickedObjectPtr & hit, const bool active)
+PlaneSensor::set_active (const HitPtr & hit, const bool active)
 {
 	X3DDragSensorNode::set_active (hit, active);
 
@@ -133,7 +133,7 @@ PlaneSensor::set_active (const PickedObjectPtr & hit, const bool active)
 			viewport               = matrices .viewport;
 			inverseModelViewMatrix = ~modelViewMatrix;
 
-			const auto pickRay  = hit -> pickRay * inverseModelViewMatrix;
+			const auto hitRay  = hit -> hitRay * inverseModelViewMatrix;
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 
 			const Rotation4d axisRotation (this -> axisRotation () .getValue ());
@@ -162,11 +162,11 @@ PlaneSensor::set_active (const PickedObjectPtr & hit, const bool active)
 
 			if (planeSensor)
 			{
-				if (plane .intersect (pickRay, startPoint))
+				if (plane .intersect (hitRay, startPoint))
 				{
 					Vector3d trackPoint;
 
-					Plane3d (Vector3d (), plane .normal ()) .intersect (pickRay, trackPoint);
+					Plane3d (Vector3d (), plane .normal ()) .intersect (hitRay, trackPoint);
 
 					trackStart (trackPoint);
 				}
@@ -209,19 +209,19 @@ PlaneSensor::trackStart (const Vector3d & trackPoint)
 }
 
 void
-PlaneSensor::set_motion (const PickedObjectPtr & hit)
+PlaneSensor::set_motion (const HitPtr & hit)
 {
 	try
 	{
 		if (planeSensor)
 		{
-			const auto pickRay = hit -> pickRay * inverseModelViewMatrix;
+			const auto hitRay = hit -> hitRay * inverseModelViewMatrix;
 
 			Vector3d endPoint, trackPoint;
 
-			if (plane .intersect (pickRay, endPoint))
+			if (plane .intersect (hitRay, endPoint))
 			{
-				Plane3d (Vector3d (), plane .normal ()) .intersect (pickRay, trackPoint);
+				Plane3d (Vector3d (), plane .normal ()) .intersect (hitRay, trackPoint);
 
 				track (endPoint, trackPoint);
 			}

@@ -170,7 +170,7 @@ LayoutGroup::traverse (const TraverseType type)
 	switch (type)
 	{
 		case TraverseType::CAMERA:
-		case TraverseType::PICKING:
+		case TraverseType::POINTER:
 		case TraverseType::DISPLAY:
 		{
 			if (viewportNode)

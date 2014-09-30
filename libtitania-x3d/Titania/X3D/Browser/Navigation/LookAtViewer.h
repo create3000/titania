@@ -105,11 +105,11 @@ private:
 	getOrientationOffset ();
 
 	bool
-	pick (const double, const double);
+	click (const double, const double);
 
 	///  @name Members
 
-	bool picking;
+	bool sensitive;
 	bool isOver;
 
 	Rotation4f orientation;

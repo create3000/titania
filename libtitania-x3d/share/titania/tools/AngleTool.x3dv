@@ -1,5 +1,9 @@
 #X3D V3.3 utf8 Titania V0.7.4
 
+PROFILE Full
+
+COMPONENT Titania : 1
+
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
@@ -330,8 +334,8 @@ function isMajor (i, dimension, majorLineEvery, majorLineOffset)
 
 DEF AngleTool Transform {
   children [
-    DEF AngleGrid PickableGroup {
-      pickable FALSE
+    DEF AngleGrid TouchGroup {
+      enabled FALSE
       children DEF _1 AngleGrid { }
     }
     DEF Center_1 Transform {
