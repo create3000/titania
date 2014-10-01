@@ -209,7 +209,7 @@ X3DLayerNode::getTranslation (const Vector3f & positionOffset, const float width
 
 			if (length > distance)
 			{
-				// Collision: The wall is reached.
+				// Collision: The wall has reached.
 				return normalize (translation) * distance;
 			}
 
@@ -229,6 +229,8 @@ X3DLayerNode::getTranslation (const Vector3f & positionOffset, const float width
 float
 X3DLayerNode::getDistance (const Vector3f & positionOffset, const float width, const float height, const Vector3f & direction)
 {
+	getBrowser () -> getLayers () .push (this);
+
 	try
 	{
 		const double width1_2  = width / 2;
@@ -256,10 +258,16 @@ X3DLayerNode::getDistance (const Vector3f & positionOffset, const float width, c
 
 		// Traverse and get distance
 
+		currentViewport -> push (TraverseType::NAVIGATION);
+
 		traverse (TraverseType::NAVIGATION);
+
+		currentViewport -> pop (TraverseType::NAVIGATION);
 	}
 	catch (const std::domain_error &)
 	{ }
+
+	getBrowser () -> getLayers () .pop ();
 
 	return X3DRenderer::getDistance ();
 }

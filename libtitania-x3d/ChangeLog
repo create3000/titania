@@ -1,5 +1,11 @@
 2014-10-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFString.cpp:
+	* X3DPtrArray.h:
+	* X3DLayerNode.cpp: 
+
+2014-10-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.h:
 	* Route.h:
 	* X3DField.h:

@@ -486,15 +486,15 @@ X3DPtrArray <ValueType>::toStream (std::ostream & ostream) const
 		}
 		case 1:
 		{
-			Generator::PushContext ();
+			Generator::EnterScope ();
 			ostream << front ();
-			Generator::PopContext ();
+			Generator::LeaveScope ();
 
 			return;
 		}
 		default:
 		{
-			Generator::PushContext ();
+			Generator::EnterScope ();
 
 			ostream
 				<< '['
@@ -517,7 +517,7 @@ X3DPtrArray <ValueType>::toStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< ']';
 
-			Generator::PopContext ();
+			Generator::LeaveScope ();
 
 			return;
 		}
@@ -530,7 +530,7 @@ X3DPtrArray <ValueType>::toXMLStream (std::ostream & ostream) const
 {
 	if (not empty ())
 	{
-		Generator::PushContext ();
+		Generator::EnterScope ();
 
 		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
 		{
@@ -559,7 +559,7 @@ X3DPtrArray <ValueType>::toXMLStream (std::ostream & ostream) const
 				<< "<!-- NULL -->";
 		}
 
-		Generator::PopContext ();
+		Generator::LeaveScope ();
 	}
 }
 

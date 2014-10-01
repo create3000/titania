@@ -194,7 +194,7 @@ SFString::toStream (std::ostream & ostream) const
 void
 SFString::toXMLStream (std::ostream & ostream) const
 {
-	Generator::XMLEncodeToStream (ostream, getValue () .raw ());
+	Generator::XMLEncode (ostream, getValue () .raw ());
 }
 
 } // X3D
