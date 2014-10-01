@@ -157,9 +157,9 @@ PolygonText::draw ()
 	}
 }
 
-const std::string FontStyle::componentName  = "Text";
-const std::string FontStyle::typeName       = "FontStyle";
-const std::string FontStyle::containerField = "fontStyle";
+const ComponentType FontStyle::component      = ComponentType::TEXT;
+const std::string   FontStyle::typeName       = "FontStyle";
+const std::string   FontStyle::containerField = "fontStyle";
 
 FontStyle::Fields::Fields () :
 	size (new SFFloat (1))

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,118 +48,45 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_TEXTURING3D_TEXTURE_TRANSFORM3D_H__
-#define __TITANIA_X3D_COMPONENTS_TEXTURING3D_TEXTURE_TRANSFORM3D_H__
+#ifndef __TITANIA_EDITORS_GRID_EDITOR_GRID_EDITOR_H__
+#define __TITANIA_EDITORS_GRID_EDITOR_GRID_EDITOR_H__
 
-#include "../Texturing/X3DTextureTransformNode.h"
+#include "X3DAngleEditor.h"
+#include "X3DGridEditor.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class TextureTransform3D :
-	public X3DTextureTransformNode
+class BrowserWindow;
+
+class GridEditor :
+	virtual public X3DGridEditorInterface,
+	public X3DGridEditor,
+	public X3DAngleEditor
 {
 public:
 
 	///  @name Construction
 
-	TextureTransform3D (X3DExecutionContext* const);
+	GridEditor (X3DBrowserWindow* const);
+
+	///  @name Destruction
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFVec3f &
-	translation ()
-	{ return *fields .translation; }
-
-	const SFVec3f &
-	translation () const
-	{ return *fields .translation; }
-
-	SFRotation &
-	rotation ()
-	{ return *fields .rotation; }
-
-	const SFRotation &
-	rotation () const
-	{ return *fields .rotation; }
-
-	SFVec3f &
-	scale ()
-	{ return *fields .scale; }
-
-	const SFVec3f &
-	scale () const
-	{ return *fields .scale; }
-
-	SFVec3f &
-	center ()
-	{ return *fields .center; }
-
-	const SFVec3f &
-	center () const
-	{ return *fields .center; }
+	~GridEditor ();
 
 
 private:
 
 	///  @name Construction
-	
+
 	virtual
 	void
 	initialize () final override;
 
-	///  @name Event handlers
-
-	void
-	eventsProcessed ();
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFVec3f* const translation;
-		SFRotation* const rotation;
-		SFVec3f* const scale;
-		SFVec3f* const center;
-	};
-
-	Fields fields;
-
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

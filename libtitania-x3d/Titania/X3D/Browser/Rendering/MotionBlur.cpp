@@ -61,9 +61,9 @@ MotionBlur::Fields::Fields () :
 	intensity (new SFFloat (0.25))
 { }
 
-const std::string MotionBlur::componentName  = "Browser";
-const std::string MotionBlur::typeName       = "MotionBlur";
-const std::string MotionBlur::containerField = "motionBlur";
+const ComponentType MotionBlur::component      = ComponentType::TITANIA;
+const std::string   MotionBlur::typeName       = "MotionBlur";
+const std::string   MotionBlur::containerField = "motionBlur";
 
 MotionBlur::MotionBlur (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),

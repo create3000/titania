@@ -63,9 +63,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string Appearance::componentName  = "Shape";
-const std::string Appearance::typeName       = "Appearance";
-const std::string Appearance::containerField = "appearance";
+const ComponentType Appearance::component      = ComponentType::SHAPE;
+const std::string   Appearance::typeName       = "Appearance";
+const std::string   Appearance::containerField = "appearance";
 
 Appearance::Fields::Fields () :
 	  fillProperties (new SFNode ()),

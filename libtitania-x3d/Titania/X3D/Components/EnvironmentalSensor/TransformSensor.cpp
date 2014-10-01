@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string TransformSensor::componentName  = "EnvironmentalSensor";
-const std::string TransformSensor::typeName       = "TransformSensor";
-const std::string TransformSensor::containerField = "children";
+const ComponentType TransformSensor::component      = ComponentType::ENVIRONMENTAL_SENSOR;
+const std::string   TransformSensor::typeName       = "TransformSensor";
+const std::string   TransformSensor::containerField = "children";
 
 TransformSensor::Fields::Fields () :
 	targetObject (new SFNode ()),

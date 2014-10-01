@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_CONTEXT_H__
 #define __TITANIA_X3D_BROWSER_X3DBROWSER_CONTEXT_H__
 
-#include "../Execution/X3DExecutionContext.h"
+#include "../Execution/X3DScene.h"
 
 #include "../Browser/Core/X3DCoreContext.h"
 #include "../Browser/Geometry2D/X3DGeometry2DContext.h"
@@ -81,7 +81,7 @@ namespace titania {
 namespace X3D {
 
 class X3DBrowserContext :
-	public X3DExecutionContext,
+	public X3DScene,
 	public X3DCoreContext,
 	public X3DGeometry2DContext,
 	public X3DGeometry3DContext,
@@ -141,18 +141,6 @@ public:
 	
 	///  @name Member access
 
-	virtual
-	bool
-	isRootContext () const
-	throw (Error <DISPOSED>) final override
-	{ return true; }
-
-	virtual
-	std::string
-	getTitle () const
-	throw (Error <DISPOSED>) final override
-	{ return getName (); }
-
 	const WorldPtr &
 	getWorld () const
 	{ return world; }
@@ -206,18 +194,6 @@ public:
 	swapBuffers () const
 	{ }
 
-	/// @name Input/Output
-
-	virtual
-	void
-	isCompressed (const bool value) final override
-	{ }
-
-	virtual
-	bool
-	isCompressed () const final override
-	{ return false; }
-
 	///  @name Destruction
 
 	virtual
@@ -239,7 +215,7 @@ protected:
 	initialize () override;
 
 	void
-	setWorld (const WorldPtr & value)
+	setWorld (World* const value)
 	{ world = value; }
 
 

@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string GeoTransform::componentName  = "Geospatial";
-const std::string GeoTransform::typeName       = "GeoTransform";
-const std::string GeoTransform::containerField = "children";
+const ComponentType GeoTransform::component      = ComponentType::GEOSPATIAL;
+const std::string   GeoTransform::typeName       = "GeoTransform";
+const std::string   GeoTransform::containerField = "children";
 
 GeoTransform::Fields::Fields () :
 	     translation (new SFVec3f ()),

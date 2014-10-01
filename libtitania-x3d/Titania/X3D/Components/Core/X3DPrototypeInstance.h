@@ -82,9 +82,10 @@ public:
 	///  @name Common members
 
 	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
 
 	virtual
 	const std::string &
@@ -98,20 +99,11 @@ public:
 
 	virtual
 	const std::string &
-	getContainerField () const final override
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
 	///  @name Member access
-
-	virtual
-	SFBool &
-	isLive () final override
-	{ return live; }
-
-	virtual
-	const SFBool &
-	isLive () const final override
-	{ return live; }
 
 	virtual
 	std::string
@@ -120,18 +112,66 @@ public:
 	{ return protoNode -> getProtoDeclaration () -> getTitle (); }
 
 	virtual
-	void
-	setWorldURL (const basic::uri & value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ return protoNode -> getProtoDeclaration () -> setWorldURL (value); }
-
-	virtual
 	const basic::uri &
 	getWorldURL () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
 	{ return protoNode -> getProtoDeclaration () -> getWorldURL (); }
+
+	virtual
+	const std::string &
+	getEncoding () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return protoNode -> getProtoDeclaration () -> getEncoding (); }
+
+	virtual
+	SpecificationVersionType
+	getSpecificationVersion () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return protoNode -> getProtoDeclaration () -> getSpecificationVersion (); }
+
+	virtual
+	const std::string &
+	getCharacterEncoding () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return protoNode -> getProtoDeclaration () -> getCharacterEncoding (); }
+
+	virtual
+	const std::string &
+	getComment () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return protoNode -> getProtoDeclaration () -> getComment (); }
+
+	///  @name Profile/Component handling
+
+	virtual
+	const ProfileInfoPtr &
+	getProfile ()  const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return protoNode -> getProtoDeclaration () -> getProfile (); }
+
+	virtual
+	const ComponentInfoArray &
+	getComponents () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return protoNode -> getProtoDeclaration () -> getComponents (); }
+
+	///  @name Unit handling
+
+	virtual
+	const UnitArray &
+	getUnits () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return protoNode -> getProtoDeclaration () -> getUnits (); }
+
+	///  @name Member access
 
 	virtual
 	X3DBaseNode*
@@ -157,6 +197,18 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override;
+
+	///  @name Event handling
+
+	virtual
+	SFBool &
+	isLive () final override
+	{ return live; }
+
+	virtual
+	const SFBool &
+	isLive () const final override
+	{ return live; }
 
 	///  @name Operations
 
@@ -214,8 +266,8 @@ private:
 
 	///  @name Static members
 
-	static const std::string componentName;
-	static const std::string containerField;
+	static const ComponentType component;
+	static const std::string   containerField;
 
 	///  @name Members
 

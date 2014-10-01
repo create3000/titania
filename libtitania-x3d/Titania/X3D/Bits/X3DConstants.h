@@ -595,7 +595,50 @@ using X3DConstants::inputOnly;
 using X3DConstants::outputOnly;
 using X3DConstants::inputOutput;
 
-enum VersionType : uint8_t
+
+enum class ComponentType : uint8_t
+{
+	CAD_GEOMETRY,
+	CORE,
+	CUBE_MAP_TEXTURING,
+	DIS,
+	ENVIRONMENTAL_EFFECTS,
+	ENVIRONMENTAL_SENSOR,
+	EVENT_UTILITIES,
+	FOLLOWERS,
+	GEOMETRY_2D,
+	GEOMETRY_3D,
+	GEOSPATIAL,
+	GROUPING,
+	H_ANIM,
+	INTERPOLATION,
+	KEY_DEVICE_SENSOR,
+	LAYERING,
+	LAYOUT,
+	LIGHTING,
+	NAVIGATION,
+	NETWORKING,
+	NURBS,
+	PARTICLE_SYSTEMS,
+	PICKING,
+	POINTING_DEVICE_SENSOR,
+	RENDERING,
+	RIGID_BODY_PHYSICS,
+	SCRIPTING,
+	SHADERS,
+	SHAPE,
+	SOUND,
+	TEXT,
+	TEXTURING,
+	TEXTURING_3D,
+	TIME,
+	VOLUME_RENDERING,
+
+	TITANIA
+
+};
+
+enum SpecificationVersionType : uint8_t
 {
 	VRML_V2_0,
 	X3D_V3_0,
@@ -605,35 +648,33 @@ enum VersionType : uint8_t
 
 };
 
-static constexpr VersionType LATEST_VERSION = VersionType::X3D_V3_3;
+static constexpr SpecificationVersionType LATEST_VERSION = SpecificationVersionType::X3D_V3_3;
 
 inline
 std::ostream &
-operator << (std::ostream & ostream, const VersionType version)
+operator << (std::ostream & ostream, const SpecificationVersionType specificationVersion)
 {
-	static const std::map <VersionType, std::string> versions = {
-		std::make_pair (VRML_V2_0, "VRML V2.0"),
-		std::make_pair (X3D_V3_0,  "X3D V3.0"),
-		std::make_pair (X3D_V3_1,  "X3D V3.1"),
-		std::make_pair (X3D_V3_2,  "X3D V3.2"),
-		std::make_pair (X3D_V3_3,  "X3D V3.3"),
-	};
-
-	return ostream << versions .at (version);
+	switch (specificationVersion)
+	{
+		case VRML_V2_0: return ostream << "VRML V2.0";
+		case X3D_V3_0:  return ostream << "X3D V3.0";
+		case X3D_V3_1:  return ostream << "X3D V3.1";
+		case X3D_V3_2:  return ostream << "X3D V3.2";
+		case X3D_V3_3:
+		default:
+			return ostream << "X3D V3.3";
+	}
 }
 
 inline
 std::string
-XMLEncode (const VersionType version)
+XMLEncode (const SpecificationVersionType specificationVersion)
 {
-	switch (version)
+	switch (specificationVersion)
 	{
-		case X3D_V3_0:
-			return "3.0";
-		case X3D_V3_1:
-			return "3.1";
-		case X3D_V3_2:
-			return "3.2";
+		case X3D_V3_0: return "3.0";
+		case X3D_V3_1: return "3.1";
+		case X3D_V3_2: return "3.2";
 		case X3D_V3_3:
 		default:
 			return "3.3";

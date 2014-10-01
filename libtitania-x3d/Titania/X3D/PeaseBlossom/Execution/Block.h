@@ -90,7 +90,7 @@ private:
 
 	///  @name Static members
 
-	static const std::string typeName;
+	static const std::string   typeName;
 
 };
 

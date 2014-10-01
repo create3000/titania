@@ -75,32 +75,9 @@ namespace X3D {
 static std::default_random_engine
 random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
-const UnitIndex X3DExecutionContext::unitCategories = {
-	std::make_pair ("angle",  UnitCategory::ANGLE),
-	std::make_pair ("force",  UnitCategory::FORCE),
-	std::make_pair ("length", UnitCategory::LENGTH),
-	std::make_pair ("mass",   UnitCategory::MASS)
-
-};
-
-const UnitArray X3DExecutionContext::standardUnits = {
-	Unit ("angle",  "radian",   1),
-	Unit ("force",  "newton",   1),
-	Unit ("length", "metre",    1),
-	Unit ("mass",   "kilogram", 1)
-
-};
-
 X3DExecutionContext::X3DExecutionContext () :
 	         X3DBaseNode (),
 	           worldInfo (),
-	            encoding ("X3D"),
-	specificationVersion ("3.3"),
-	   characterEncoding ("utf8"),
-	             comment ("Titania"),
-	             profile (),
-	          components (),
-	               units (standardUnits),
 	          namedNodes (),
 	       importedNodes (),
 	       importedNames (),
@@ -116,7 +93,8 @@ X3DExecutionContext::X3DExecutionContext () :
 {
 	addType (X3DConstants::X3DExecutionContext);
 
-	addChildren (namedNodesOutput,
+	addChildren (worldInfo,
+	             namedNodesOutput,
 	             importedNodesOutput,
 	             prototypesOutput,
 	             externProtosOutput,
@@ -179,6 +157,66 @@ X3DExecutionContext::realize ()
 	//	throw Error <INVALID_OPERATION_TIMING> ("Couldn't realize nodes.");
 }
 
+// Unit handling
+
+double
+X3DExecutionContext::fromRadians (const double value) const
+throw (Error <DISPOSED>)
+{
+	return value / getUnits () [size_t (UnitCategory::ANGLE)] .getConversion ();
+}
+
+double
+X3DExecutionContext::toRadians (const double value) const
+throw (Error <DISPOSED>)
+{
+	return value * getUnits () [size_t (UnitCategory::ANGLE)] .getConversion ();
+}
+
+double
+X3DExecutionContext::fromNewton (const double value) const
+throw (Error <DISPOSED>)
+{
+	return value / getUnits () [size_t (UnitCategory::FORCE)] .getConversion ();
+}
+
+double
+X3DExecutionContext::toNewton (const double value) const
+throw (Error <DISPOSED>)
+{
+	return value * getUnits () [size_t (UnitCategory::FORCE)] .getConversion ();
+}
+
+double
+X3DExecutionContext::fromMetre (const double value) const
+throw (Error <DISPOSED>)
+{
+	return value / getUnits () [size_t (UnitCategory::LENGTH)] .getConversion ();
+}
+
+double
+X3DExecutionContext::toMetre (const double value) const
+throw (Error <DISPOSED>)
+{
+	return value * getUnits () [size_t (UnitCategory::LENGTH)] .getConversion ();
+}
+
+double
+X3DExecutionContext::fromKilogram (const double value) const
+throw (Error <DISPOSED>)
+{
+	return value / getUnits () [size_t (UnitCategory::MASS)] .getConversion ();
+}
+
+double
+X3DExecutionContext::toKilogram (const double value) const
+throw (Error <DISPOSED>)
+{
+	return value * getUnits () [size_t (UnitCategory::MASS)] .getConversion ();
+}
+
+// Meta data handling
+
 void
 X3DExecutionContext::setWorldInfo (const WorldInfoPtr & value)
 throw (Error <DISPOSED>)
@@ -193,45 +231,7 @@ throw (Error <DISPOSED>)
 	return WorldInfoPtr (worldInfo);
 }
 
-VersionType
-X3DExecutionContext::getVersion () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	static const std::map <std::string, VersionType> versions = {
-		std::make_pair ("2.0", VRML_V2_0),
-		std::make_pair ("3.0",  X3D_V3_0),
-		std::make_pair ("3.1",  X3D_V3_1),
-		std::make_pair ("3.2",  X3D_V3_2),
-		std::make_pair ("3.3",  X3D_V3_3),
-	};
-
-	try
-	{
-		return versions .at (getSpecificationVersion ());
-	}
-	catch (const std::out_of_range &)
-	{
-		return LATEST_VERSION;
-	}
-}
-
-void
-X3DExecutionContext::updateUnit (const std::string & category, const std::string & name, const double conversion)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	const auto unitCategory = unitCategories .find (category);
-
-	if (unitCategory not_eq unitCategories .end ())
-	{
-		units [size_t (unitCategory -> second)] = Unit (category, name, conversion);
-		return;
-	}
-
-	throw Error <INVALID_NAME> ("Unkown base unit category '" + category + "'.");
-}
+// Node handling
 
 SFNode
 X3DExecutionContext::createNode (const std::string & name)
@@ -245,24 +245,12 @@ throw (Error <INVALID_NAME>,
 	{
 		if (getProfile ())
 		{
-			try
-			{
-				profile -> getComponents () .rfind (declaration -> getComponentName ());
-
+			if (getProfile () -> getComponents () .count (declaration -> getComponent ()))
 				return declaration -> create (this);
-			}
-			catch (const std::out_of_range &)
-			{ }
 		}
 
-		try
-		{
-			getComponents () .rfind (declaration -> getComponentName ());
-
+		if (getComponents () .count (declaration -> getComponent ()))
 			return declaration -> create (this);
-		}
-		catch (const std::out_of_range &)
-		{ }
 
 		throw Error <INVALID_NAME> ("Node type '" + name + "' not supported by profile or component specification.");
 	}
@@ -1163,18 +1151,6 @@ throw (Error <INVALID_NAME>,
 
 	if (lock)
 	{
-		if (getProfile () or not getComponents () .empty ())
-		{
-			if (executionContext -> getProfile ())
-			{
-				for (const auto & component : executionContext -> getProfile () -> getComponents ())
-					addComponent (component);
-			}
-
-			for (const auto & component : executionContext -> getComponents ())
-				addComponent (component);
-		}
-
 		updateNamedNodes (executionContext);
 
 		importNodes (executionContext);
@@ -1335,8 +1311,8 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 	ostream .imbue (std::locale::classic ());
 
 	Generator::PushExecutionContext (this);
-	Generator::PushContext ();
-	Generator::setImportedNodes (getImportedNodes ());
+	Generator::EnterScope ();
+	Generator::ImportedNodes (getImportedNodes ());
 
 	for (const auto & externProto : getExternProtoDeclarations ())
 	{
@@ -1417,7 +1393,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 		}
 	}
 
-	Generator::PopContext ();
+	Generator::LeaveScope ();
 	Generator::PopExecutionContext ();
 }
 
@@ -1427,8 +1403,8 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 	ostream .imbue (std::locale::classic ());
 
 	Generator::PushExecutionContext (this);
-	Generator::PushContext ();
-	Generator::setImportedNodes (getImportedNodes ());
+	Generator::EnterScope ();
+	Generator::ImportedNodes (getImportedNodes ());
 
 	for (const auto & externProto : getExternProtoDeclarations ())
 	{
@@ -1475,7 +1451,7 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 		{ }
 	}
 
-	Generator::PopContext ();
+	Generator::LeaveScope ();
 	Generator::PopExecutionContext ();
 }
 

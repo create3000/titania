@@ -61,9 +61,9 @@ namespace X3D {
 // node is tolerated but can be ignored in X3D scenes having version 3.0, 3.1 or 3.2.
 // GeoOrigin node is not allowed in X3D scenes having version 3.3 or higher.
 
-const std::string GeoOrigin::componentName  = "Geospatial";
-const std::string GeoOrigin::typeName       = "GeoOrigin";
-const std::string GeoOrigin::containerField = "geoOrigin";
+const ComponentType GeoOrigin::component      = ComponentType::GEOSPATIAL;
+const std::string   GeoOrigin::typeName       = "GeoOrigin";
+const std::string   GeoOrigin::containerField = "geoOrigin";
 
 GeoOrigin::Fields::Fields () :
 	rotateYUp (new SFBool ()),
@@ -96,7 +96,7 @@ GeoOrigin::initialize ()
 {
 	X3DNode::initialize ();
 
-	switch (getExecutionContext () -> getVersion ())
+	switch (getExecutionContext () -> getSpecificationVersion ())
 	{
 		case VRML_V2_0:
 		case X3D_V3_0:

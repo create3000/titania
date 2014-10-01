@@ -63,9 +63,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string Selection::componentName  = "Browser";
-const std::string Selection::typeName       = "Selection";
-const std::string Selection::containerField = "selection";
+const ComponentType Selection::component      = ComponentType::TITANIA;
+const std::string   Selection::typeName       = "Selection";
+const std::string   Selection::containerField = "selection";
 
 Selection::Selection (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),

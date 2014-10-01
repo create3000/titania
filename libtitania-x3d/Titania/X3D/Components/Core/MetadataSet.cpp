@@ -62,9 +62,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string MetadataSet::componentName  = "Core";
-const std::string MetadataSet::typeName       = "MetadataSet";
-const std::string MetadataSet::containerField = "metadata";
+const ComponentType MetadataSet::component      = ComponentType::CORE;
+const std::string   MetadataSet::typeName       = "MetadataSet";
+const std::string   MetadataSet::containerField = "metadata";
 
 MetadataSet::Fields::Fields () :
 	value (new MFNode ())

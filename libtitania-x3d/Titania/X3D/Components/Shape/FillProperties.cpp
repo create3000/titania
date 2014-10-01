@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string FillProperties::componentName  = "Shape";
-const std::string FillProperties::typeName       = "FillProperties";
-const std::string FillProperties::containerField = "fillProperties";
+const ComponentType FillProperties::component      = ComponentType::SHAPE;
+const std::string   FillProperties::typeName       = "FillProperties";
+const std::string   FillProperties::containerField = "fillProperties";
 
 FillProperties::Fields::Fields () :
 	    filled (new SFBool (true)),

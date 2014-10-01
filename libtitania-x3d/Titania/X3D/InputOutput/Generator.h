@@ -172,13 +172,13 @@ public:
 
 	static
 	void
-	Version (const VersionType value)
-	{ version = value; }
+	SpecificationVersion (const SpecificationVersionType value)
+	{ specificationVersion = value; }
 
 	static
-	VersionType
-	Version ()
-	{ return version; }
+	SpecificationVersionType
+	SpecificationVersion ()
+	{ return specificationVersion; }
 
 	static
 	void
@@ -190,24 +190,24 @@ public:
 
 	static
 	const X3DExecutionContext*
-	GetExecutionContext ()
+	ExecutionContext ()
 	{ return executionContextStack .back (); }
 
 	static
 	void
-	PushContext ();
+	EnterScope ();
 
 	static
 	void
-	PopContext ();
+	LeaveScope ();
 	
 	static
 	void
-	setExportedNodes (const ExportedNodeIndex &);
+	ExportedNodes (const ExportedNodeIndex &);
 
 	static
 	void
-	setImportedNodes (const ImportedNodeIndex &);
+	ImportedNodes (const ImportedNodeIndex &);
 
 	bool
 	static
@@ -223,7 +223,7 @@ public:
 
 	static
 	const std::string &
-	GetName (const X3DBaseNode* const);
+	Name (const X3DBaseNode* const);
 
 	static
 	void
@@ -231,7 +231,7 @@ public:
 
 	static
 	const std::string &
-	GetLocalName (const X3DBaseNode* const);
+	LocalName (const X3DBaseNode* const);
 
 	static
 	void
@@ -245,12 +245,12 @@ public:
 
 	static
 	const X3DFieldDefinition*
-	GetContainerField ()
+	ContainerField ()
 	{ return containerFieldStack .back (); }
 
 	static
 	void
-	XMLEncodeToStream (std::ostream &, const std::string &);
+	XMLEncode (std::ostream &, const std::string &);
 
 	/// @name Static members
 
@@ -278,8 +278,8 @@ private:
 	using ImportedNamesIndex    = std::map <const X3DBaseNode*, std::string>;
 	using FieldStack            = std::vector <const X3DFieldDefinition*>;
 
-	static StyleType   style;
-	static VersionType version;
+	static StyleType                style;
+	static SpecificationVersionType specificationVersion;
 
 	static ExecutionContextStack executionContextStack;
 	static size_t                level;
@@ -346,7 +346,7 @@ inline
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeStringType & value)
 {
-	Generator::XMLEncodeToStream (ostream, value .string);
+	Generator::XMLEncode (ostream, value .string);
 	return ostream;
 }
 

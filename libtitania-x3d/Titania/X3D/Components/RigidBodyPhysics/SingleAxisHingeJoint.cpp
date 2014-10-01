@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string SingleAxisHingeJoint::componentName  = "RigidBodyPhysics";
-const std::string SingleAxisHingeJoint::typeName       = "SingleAxisHingeJoint";
-const std::string SingleAxisHingeJoint::containerField = "joints";
+const ComponentType SingleAxisHingeJoint::component      = ComponentType::RIGID_BODY_PHYSICS;
+const std::string   SingleAxisHingeJoint::typeName       = "SingleAxisHingeJoint";
+const std::string   SingleAxisHingeJoint::containerField = "joints";
 
 SingleAxisHingeJoint::Fields::Fields () :
 	anchorPoint (new SFVec3f ()),

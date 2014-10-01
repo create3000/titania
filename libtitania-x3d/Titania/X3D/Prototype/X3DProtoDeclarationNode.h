@@ -68,7 +68,8 @@ public:
 
 	virtual
 	bool
-	isExternproto () const = 0;
+	isExternproto () const
+	throw (Error <DISPOSED>) = 0;
 
 	///  @name Member access
 

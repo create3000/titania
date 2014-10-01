@@ -60,9 +60,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string IndexedFaceSet::componentName  = "Geometry3D";
-const std::string IndexedFaceSet::typeName       = "IndexedFaceSet";
-const std::string IndexedFaceSet::containerField = "geometry";
+const ComponentType IndexedFaceSet::component      = ComponentType::GEOMETRY_3D;
+const std::string   IndexedFaceSet::typeName       = "IndexedFaceSet";
+const std::string   IndexedFaceSet::containerField = "geometry";
 
 IndexedFaceSet::Fields::Fields () :
 	       convex (new SFBool (true)),

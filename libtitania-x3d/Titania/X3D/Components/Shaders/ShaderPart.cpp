@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string ShaderPart::componentName  = "Shaders";
-const std::string ShaderPart::typeName       = "ShaderPart";
-const std::string ShaderPart::containerField = "parts";
+const ComponentType ShaderPart::component      = ComponentType::SHADERS;
+const std::string   ShaderPart::typeName       = "ShaderPart";
+const std::string   ShaderPart::containerField = "parts";
 
 ShaderPart::Fields::Fields () :
 	type (new SFString ("VERTEX"))

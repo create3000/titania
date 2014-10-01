@@ -446,19 +446,19 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 bool
 X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress)
 {
-	const auto suffix           = worldURL .suffix ();
-	const auto executionContext = X3D::X3DExecutionContextPtr (getRootContext ());
+	const auto suffix = worldURL .suffix ();
+	const auto scene  = X3D::X3DScenePtr (getRootContext ());
 
-	executionContext -> isCompressed (compress);
+	scene -> isCompressed (compress);
 
 	// Save
 
 	if (suffix == ".x3d" or suffix == ".xml")
 	{
-		if (executionContext -> getVersion () == X3D::VRML_V2_0)
+		if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
 		{
-			executionContext -> setEncoding ("X3D");
-			executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
+			scene -> setEncoding ("X3D");
+			scene -> setSpecificationVersion (X3D::LATEST_VERSION);
 		}
 
 		if (compress)
@@ -467,11 +467,11 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress)
 
 			if (file)
 			{
-				setWorldURL (executionContext, worldURL, std::make_shared <UndoStep> (""));
+				setWorldURL (scene, worldURL, std::make_shared <UndoStep> (""));
 
 				file
 					<< X3D::SmallestStyle
-					<< X3D::XMLEncode (executionContext);
+					<< X3D::XMLEncode (scene);
 				
 				if (file)
 					return true;
@@ -483,11 +483,11 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress)
 
 			if (file)
 			{
-				setWorldURL (executionContext, worldURL, std::make_shared <UndoStep> (""));
+				setWorldURL (scene, worldURL, std::make_shared <UndoStep> (""));
 
 				file
 					<< X3D::CompactStyle
-					<< X3D::XMLEncode (executionContext);
+					<< X3D::XMLEncode (scene);
 
 				if (file)
 					return true;
@@ -498,18 +498,18 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress)
 	{
 		if (suffix == ".wrl")
 		{
-			if (executionContext -> getVersion () not_eq X3D::VRML_V2_0)
+			if (scene -> getSpecificationVersion () not_eq X3D::VRML_V2_0)
 			{
-				executionContext -> setEncoding ("VRML");
-				executionContext -> setSpecificationVersion ("2.0");
+				scene -> setEncoding ("VRML");
+				scene -> setSpecificationVersion (X3D::VRML_V2_0);
 			}
 		}
 		else  // ".x3dv"
 		{
-			if (executionContext -> getVersion () == X3D::VRML_V2_0)
+			if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
 			{
-				executionContext -> setEncoding ("X3D");
-				executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
+				scene -> setEncoding ("X3D");
+				scene -> setSpecificationVersion (X3D::LATEST_VERSION);
 			}
 		}
 
@@ -519,11 +519,11 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress)
 
 			if (file)
 			{
-				setWorldURL (executionContext, worldURL, std::make_shared <UndoStep> (""));
+				setWorldURL (scene, worldURL, std::make_shared <UndoStep> (""));
 
 				file
 					<< X3D::SmallestStyle
-					<< executionContext;
+					<< scene;
 
 				if (file)
 					return true;
@@ -535,11 +535,11 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress)
 
 			if (file)
 			{
-				setWorldURL (executionContext, worldURL, std::make_shared <UndoStep> (""));
+				setWorldURL (scene, worldURL, std::make_shared <UndoStep> (""));
 
 				file
 					<< X3D::NicestStyle
-					<< executionContext;
+					<< scene;
 
 				if (file)
 					return true;
@@ -557,25 +557,25 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress)
 }
 
 void
-X3DBrowserWidget::setWorldURL (const X3D::X3DExecutionContextPtr & executionContext, const basic::uri & worldURL, const UndoStepPtr & undoStep)
+X3DBrowserWidget::setWorldURL (const X3D::X3DScenePtr & scene, const basic::uri & worldURL, const UndoStepPtr & undoStep)
 {
-	if (worldURL == executionContext -> getWorldURL ())
+	if (worldURL == scene -> getWorldURL ())
 		return;
 
 	using namespace std::placeholders;
 
-	X3D::traverse (executionContext,
-	               std::bind (&X3DBrowserWidget::transform, executionContext -> getWorldURL (), worldURL, undoStep, _1),
+	X3D::traverse (scene,
+	               std::bind (&X3DBrowserWidget::transform, scene -> getWorldURL (), worldURL, undoStep, _1),
 	               true,
 	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
 	               X3D::TRAVERSE_PROTO_DECLARATIONS |
 	               X3D::TRAVERSE_ROOT_NODES);
 
-	executionContext -> setWorldURL (worldURL);
+	scene -> setWorldURL (worldURL);
 
 	worldURL_changed () .processInterests ();
 
-	aboutTab -> loadPreview (executionContext -> getBrowser ());
+	aboutTab -> loadPreview (scene -> getBrowser ());
 }
 
 bool

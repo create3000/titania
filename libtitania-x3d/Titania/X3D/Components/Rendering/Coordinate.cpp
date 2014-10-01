@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string Coordinate::componentName  = "Rendering";
-const std::string Coordinate::typeName       = "Coordinate";
-const std::string Coordinate::containerField = "coord";
+const ComponentType Coordinate::component      = ComponentType::RENDERING;
+const std::string   Coordinate::typeName       = "Coordinate";
+const std::string   Coordinate::containerField = "coord";
 
 Coordinate::Fields::Fields () :
 	point (new MFVec3f ())

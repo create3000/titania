@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string DirectionalLight::componentName  = "Lighting";
-const std::string DirectionalLight::typeName       = "DirectionalLight";
-const std::string DirectionalLight::containerField = "children";
+const ComponentType DirectionalLight::component      = ComponentType::LIGHTING;
+const std::string   DirectionalLight::typeName       = "DirectionalLight";
+const std::string   DirectionalLight::containerField = "children";
 
 DirectionalLight::Fields::Fields () :
 	direction (new SFVec3f (0, 0, -1))

@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string Route::componentName  = "Browser";
-const std::string Route::typeName       = "Route";
-const std::string Route::containerField = "route";
+const ComponentType Route::component      = ComponentType::TITANIA;
+const std::string   Route::typeName       = "Route";
+const std::string   Route::containerField = "route";
 
 Route::Route (X3DExecutionContext* const executionContext,
               const SFNode & _sourceNode,      X3DFieldDefinition* const _sourceField,
@@ -227,8 +227,8 @@ Route::toStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	const std::string & sourceNodeName      = Generator::GetLocalName (getSourceNode ());
-	const std::string & destinationNodeName = Generator::GetLocalName (getDestinationNode ());
+	const std::string & sourceNodeName      = Generator::LocalName (getSourceNode ());
+	const std::string & destinationNodeName = Generator::LocalName (getDestinationNode ());
 
 	if (not getComments () .empty ())
 	{
@@ -278,8 +278,8 @@ Route::toXMLStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	const std::string & sourceNodeName      = Generator::GetLocalName (getSourceNode ());
-	const std::string & destinationNodeName = Generator::GetLocalName (getDestinationNode ());
+	const std::string & sourceNodeName      = Generator::LocalName (getSourceNode ());
+	const std::string & destinationNodeName = Generator::LocalName (getDestinationNode ());
 
 	ostream
 		<< Generator::Indent

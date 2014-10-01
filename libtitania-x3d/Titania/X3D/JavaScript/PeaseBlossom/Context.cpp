@@ -86,9 +86,9 @@ struct now
 
 } // global
 
-const std::string Context::componentName  = "Browser";
-const std::string Context::typeName       = "Context";
-const std::string Context::containerField = "context";
+const ComponentType Context::component      = ComponentType::TITANIA;
+const std::string   Context::typeName       = "Context";
+const std::string   Context::containerField = "context";
 
 Context::Context (Script* const script, const std::string & ecmascript, const basic::uri & uri)
 throw (std::exception) :

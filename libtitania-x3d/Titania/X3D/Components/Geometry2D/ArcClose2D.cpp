@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string ArcClose2D::componentName  = "Geometry2D";
-const std::string ArcClose2D::typeName       = "ArcClose2D";
-const std::string ArcClose2D::containerField = "geometry";
+const ComponentType ArcClose2D::component      = ComponentType::GEOMETRY_2D;
+const std::string   ArcClose2D::typeName       = "ArcClose2D";
+const std::string   ArcClose2D::containerField = "geometry";
 
 ArcClose2D::Fields::Fields () :
 	closureType (new SFString ("PIE")),

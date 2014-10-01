@@ -62,7 +62,7 @@ namespace titania {
 namespace X3D {
 
 X3DBrowserContext::X3DBrowserContext () :
-	           X3DExecutionContext (),
+	                      X3DScene (),
 	                X3DCoreContext (),
 	          X3DGeometry2DContext (),
 	          X3DGeometry3DContext (),
@@ -102,13 +102,13 @@ X3DBrowserContext::X3DBrowserContext () :
 	             notification,
 	             console);
 
-	initialized () .setName ("initialized");
+	isPrivate (true);
 }
 
 void
 X3DBrowserContext::initialize ()
 {
-	X3DExecutionContext::initialize ();
+	X3DScene::initialize ();
 	X3DCoreContext::initialize ();
 	X3DGeometry2DContext::initialize ();
 	X3DGeometry3DContext::initialize ();
@@ -307,7 +307,7 @@ X3DBrowserContext::dispose ()
 	X3DGeometry3DContext::dispose ();
 	X3DGeometry2DContext::dispose ();
 	X3DCoreContext::dispose ();
-	X3DExecutionContext::dispose ();
+	X3DScene::dispose ();
 }
 
 X3DBrowserContext::~X3DBrowserContext ()

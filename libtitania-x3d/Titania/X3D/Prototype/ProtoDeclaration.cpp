@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string ProtoDeclaration::componentName  = "Browser";
-const std::string ProtoDeclaration::typeName       = "PROTO";
-const std::string ProtoDeclaration::containerField = "proto";
+const ComponentType ProtoDeclaration::component      = ComponentType::TITANIA;
+const std::string   ProtoDeclaration::typeName       = "PROTO";
+const std::string   ProtoDeclaration::containerField = "proto";
 
 ProtoDeclaration::ProtoDeclaration (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
@@ -72,18 +72,6 @@ ProtoDeclaration::ProtoDeclaration (X3DExecutionContext* const executionContext)
 
 	addField (inputOutput, "metadata", metadata ());
 	addChildren (getRootNodes ());
-
-	setEncoding             (executionContext -> getEncoding ());
-	setSpecificationVersion (executionContext -> getSpecificationVersion ());
-	setCharacterEncoding    (executionContext -> getCharacterEncoding ());
-	setComment              (executionContext -> getComment ());
-
-	setProfile (executionContext -> getProfile ());
-
-	for (const auto & component : executionContext -> getComponents ())
-		addComponent (component);
-
-	setUnits (executionContext -> getUnits ());
 }
 
 ProtoDeclaration*
@@ -204,7 +192,7 @@ ProtoDeclaration::toStream (std::ostream & ostream) const
 		<< Generator::TidySpace
 		<< '[';
 
-	Generator::PushContext ();
+	Generator::EnterScope ();
 
 	const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
 
@@ -287,7 +275,7 @@ ProtoDeclaration::toStream (std::ostream & ostream) const
 
 	ostream << ']';
 
-	Generator::PopContext ();
+	Generator::LeaveScope ();
 
 	ostream << Generator::TidyBreak;
 
@@ -355,7 +343,7 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 
 	// <ProtoInterface>
 
-	Generator::PushContext ();
+	Generator::EnterScope ();
 
 	const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
 
@@ -440,7 +428,7 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 			<< Generator::DecIndent;
 	}
 
-	Generator::PopContext ();
+	Generator::LeaveScope ();
 
 	// </ProtoInterface>
 

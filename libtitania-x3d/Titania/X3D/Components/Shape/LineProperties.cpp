@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string LineProperties::componentName  = "Shape";
-const std::string LineProperties::typeName       = "LineProperties";
-const std::string LineProperties::containerField = "lineProperties";
+const ComponentType LineProperties::component      = ComponentType::SHAPE;
+const std::string   LineProperties::typeName       = "LineProperties";
+const std::string   LineProperties::containerField = "lineProperties";
 
 LineProperties::Fields::Fields () :
 	             applied (new SFBool (true)),

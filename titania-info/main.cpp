@@ -90,7 +90,7 @@ nodeIndex ()
 		std::cout
 			<< '\t'
 			<< "componentName = "
-			<< node -> getComponentName ()
+			<< X3D::getBrowser () -> getSupportedComponents () .rfind (node -> getComponent ()) -> getName ()
 			<< std::endl;
 
 		std::cout << std::endl;

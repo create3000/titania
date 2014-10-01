@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string GridTool::componentName  = "Tools";
-const std::string GridTool::typeName       = "GridTool";
-const std::string GridTool::containerField = "grid";
+const ComponentType GridTool::component      = ComponentType::TITANIA;
+const std::string   GridTool::typeName       = "GridTool";
+const std::string   GridTool::containerField = "grid";
 
 GridTool::Fields::Fields () :
 	      dimension (new MFInt32 ({ 10, 10, 10 })),

@@ -111,10 +111,106 @@ public:
 	throw (Error <DISPOSED>)
 	{ return false; }
 
+	/***
+	 *  @name Member access
+	 */
+
 	virtual
 	std::string
 	getTitle () const
 	throw (Error <DISPOSED>) = 0;
+
+	virtual
+	const basic::uri &
+	getWorldURL () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
+
+	virtual
+	const std::string &
+	getEncoding () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
+
+	virtual
+	SpecificationVersionType
+	getSpecificationVersion () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
+
+	virtual
+	const std::string &
+	getCharacterEncoding () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
+
+	virtual
+	const std::string &
+	getComment () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
+
+	/***
+	 *  @name Profile/Component handling
+	 */
+
+	virtual
+	const ProfileInfoPtr &
+	getProfile ()  const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
+
+	virtual
+	const ComponentInfoArray &
+	getComponents () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
+
+	/***
+	 *  @name Unit handling
+	 */
+
+	virtual
+	const UnitArray &
+	getUnits () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
+
+	double
+	fromRadians (const double) const
+	throw (Error <DISPOSED>);
+
+	double
+	toRadians (const double) const
+	throw (Error <DISPOSED>);
+
+	double
+	fromNewton (const double) const
+	throw (Error <DISPOSED>);
+
+	double
+	toNewton (const double) const
+	throw (Error <DISPOSED>);
+
+	double
+	fromMetre (const double) const
+	throw (Error <DISPOSED>);
+
+	double
+	toMetre (const double) const
+	throw (Error <DISPOSED>);
+
+	double
+	fromKilogram (const double) const
+	throw (Error <DISPOSED>);
+
+	double
+	toKilogram (const double) const
+	throw (Error <DISPOSED>);
+
+	/***
+	 *  @name WorldInfo handling
+	 */
 
 	void
 	setWorldInfo (const WorldInfoPtr & value)
@@ -124,110 +220,9 @@ public:
 	getWorldInfo () const
 	throw (Error <DISPOSED>);
 
-	virtual
-	void
-	setWorldURL (const basic::uri & value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
-
-	virtual
-	const basic::uri &
-	getWorldURL () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
-
-	//{ put this in proto and proto instance and browser
-
-	void
-	setEncoding (const std::string & value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ encoding = value; }
-
-	const std::string &
-	getEncoding () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return encoding; }
-
-	void
-	setSpecificationVersion (const std::string & value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ specificationVersion = value; }
-
-	const std::string &
-	getSpecificationVersion () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return specificationVersion; }
-
-	VersionType
-	getVersion () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	void
-	setCharacterEncoding (const std::string & value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ characterEncoding = value; }
-
-	const std::string &
-	getCharacterEncoding () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return characterEncoding; }
-
-	void
-	setComment (const std::string & value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ comment = value; }
-
-	const std::string &
-	getComment () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return comment; }
-
-	void
-	setProfile (const ProfileInfoPtr & value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ profile = value; }
-
-	const ProfileInfoPtr &
-	getProfile ()  const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return profile; }
-
-	void
-	addComponent (const ComponentInfoPtr & component)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ components .add (component); }
-
-	const ComponentInfoArray &
-	getComponents () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return components .get (); }
-
-	void
-	updateUnit (const std::string &, const std::string &, const double)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	const UnitArray &
-	getUnits () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return units; }
-
-	//} put this in proto and proto instance
+	/***
+	 *  @name Node handling
+	 */
 	
 	SFNode
 	createNode (const std::string &)
@@ -398,6 +393,7 @@ public:
 	virtual
 	bool
 	isProtoDeclaration () const
+	throw (Error <DISPOSED>)
 	{ return false; }
 
 	ProtoDeclarationPtr
@@ -634,14 +630,6 @@ protected:
 	initialize () override;
 
 	/***
-	 *  @name Unit handling
-	 */
-
-	void
-	setUnits (const UnitArray & value)
-	{ units = value; }
-
-	/***
 	 *  @name Import handling
 	 */
 
@@ -739,39 +727,22 @@ private:
 	importRoutes (X3DExecutionContext* const);
 
 	/***
-	 *  @name Static members
-	 */
-
-	static const UnitIndex unitCategories;
-	static const UnitArray standardUnits;
-
-	/***
 	 *  @name Members
 	 */
 
 	X3DWeakPtr <WorldInfo> worldInfo; 
-
-	std::string encoding;
-	std::string specificationVersion;
-	std::string characterEncoding;
-	std::string comment;
-
-	ProfileInfoPtr      profile;
-	SupportedComponents components;
-	UnitArray           units;
-
-	NamedNodeIndex     namedNodes;
-	SFTime             namedNodesOutput;
-	ImportedNodeIndex  importedNodes;
-	ImportedNamesIndex importedNames;
-	SFTime             importedNodesOutput;
-	ProtoArray         prototypes;
-	SFTime             prototypesOutput;
-	ExternProtoArray   externProtos;
-	SFTime             externProtosOutput;
-	RouteArray         routes;
-	MFNode* const      rootNodes;
-	SFTime             sceneGraphOutput;
+	NamedNodeIndex         namedNodes;
+	SFTime                 namedNodesOutput;
+	ImportedNodeIndex      importedNodes;
+	ImportedNamesIndex     importedNames;
+	SFTime                 importedNodesOutput;
+	ProtoArray             prototypes;
+	SFTime                 prototypesOutput;
+	ExternProtoArray       externProtos;
+	SFTime                 externProtosOutput;
+	RouteArray             routes;
+	MFNode* const          rootNodes;
+	SFTime                 sceneGraphOutput;
 
 	MFNode uninitializedNodes;
 

@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string ColorRGBA::componentName  = "Rendering";
-const std::string ColorRGBA::typeName       = "ColorRGBA";
-const std::string ColorRGBA::containerField = "color";
+const ComponentType ColorRGBA::component      = ComponentType::RENDERING;
+const std::string   ColorRGBA::typeName       = "ColorRGBA";
+const std::string   ColorRGBA::containerField = "color";
 
 ColorRGBA::Fields::Fields () :
 	color (new MFColorRGBA ())

@@ -51,6 +51,8 @@
 #ifndef __TITANIA_X3D_CONFIGURATION_COMPONENT_INFO_H__
 #define __TITANIA_X3D_CONFIGURATION_COMPONENT_INFO_H__
 
+#include "../Bits/X3DConstants.h"
+
 #include <memory>
 #include <string>
 #include <iostream>
@@ -64,9 +66,13 @@ public:
 
 	///  @name Construction
 
-	ComponentInfo (const std::string &, const std::string &, const size_t);
+	ComponentInfo (const ComponentType, const std::string &, const std::string &, const size_t);
 
 	///  @name Member access
+
+	ComponentType
+	getType () const
+	{ return type; }
 
 	const std::string &
 	getTitle () const
@@ -97,10 +103,11 @@ private:
 
 	///  @name Members
 
-	const std::string title;
-	const std::string name;
-	const size_t      level;
-	const std::string providerUrl;
+	const ComponentType type;
+	const std::string   title;
+	const std::string   name;
+	const size_t        level;
+	const std::string   providerUrl;
 
 };
 

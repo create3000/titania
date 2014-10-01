@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string PointLight::componentName  = "Lighting";
-const std::string PointLight::typeName       = "PointLight";
-const std::string PointLight::containerField = "children";
+const ComponentType PointLight::component      = ComponentType::LIGHTING;
+const std::string   PointLight::typeName       = "PointLight";
+const std::string   PointLight::containerField = "children";
 
 PointLight::Fields::Fields () :
 	attenuation (new SFVec3f (1, 0, 0)),

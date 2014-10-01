@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string CoordinateDamper::componentName  = "Followers";
-const std::string CoordinateDamper::typeName       = "CoordinateDamper";
-const std::string CoordinateDamper::containerField = "children";
+const ComponentType CoordinateDamper::component      = ComponentType::FOLLOWERS;
+const std::string   CoordinateDamper::typeName       = "CoordinateDamper";
+const std::string   CoordinateDamper::containerField = "children";
 
 CoordinateDamper::Fields::Fields () :
 	         set_value (new MFVec3f ()),

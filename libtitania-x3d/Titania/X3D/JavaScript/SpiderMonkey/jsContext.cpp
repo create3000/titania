@@ -89,9 +89,9 @@ namespace MozillaSpiderMonkey {
 
 // mutex test: http://www.web3d.org/x3d/content/examples/Basic/StudentProjects/DeadReckoningComparisons.x3d
 
-const std::string jsContext::componentName  = "Browser";
-const std::string jsContext::typeName       = "jsContext";
-const std::string jsContext::containerField = "context";
+const ComponentType jsContext::component      = ComponentType::TITANIA;
+const std::string   jsContext::typeName       = "jsContext";
+const std::string   jsContext::containerField = "context";
 
 JSClass jsContext::GlobalClass = {
 	"global",

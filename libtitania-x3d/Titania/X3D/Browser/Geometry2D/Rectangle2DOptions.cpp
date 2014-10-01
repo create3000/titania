@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string Rectangle2DOptions::componentName  = "Browser";
-const std::string Rectangle2DOptions::typeName       = "Rectangle2DOptions";
-const std::string Rectangle2DOptions::containerField = "rectangle2DOptions";
+const ComponentType Rectangle2DOptions::component      = ComponentType::TITANIA;
+const std::string   Rectangle2DOptions::typeName       = "Rectangle2DOptions";
+const std::string   Rectangle2DOptions::containerField = "rectangle2DOptions";
 
 Rectangle2DOptions::Rectangle2DOptions (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),

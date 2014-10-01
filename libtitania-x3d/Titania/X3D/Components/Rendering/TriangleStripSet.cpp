@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string TriangleStripSet::componentName  = "Rendering";
-const std::string TriangleStripSet::typeName       = "TriangleStripSet";
-const std::string TriangleStripSet::containerField = "geometry";
+const ComponentType TriangleStripSet::component      = ComponentType::RENDERING;
+const std::string   TriangleStripSet::typeName       = "TriangleStripSet";
+const std::string   TriangleStripSet::containerField = "geometry";
 
 TriangleStripSet::Fields::Fields () :
 	stripCount (new MFInt32 ())

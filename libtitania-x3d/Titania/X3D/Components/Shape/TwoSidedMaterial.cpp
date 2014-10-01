@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string TwoSidedMaterial::componentName  = "Shape";
-const std::string TwoSidedMaterial::typeName       = "TwoSidedMaterial";
-const std::string TwoSidedMaterial::containerField = "material";
+const ComponentType TwoSidedMaterial::component      = ComponentType::SHAPE;
+const std::string   TwoSidedMaterial::typeName       = "TwoSidedMaterial";
+const std::string   TwoSidedMaterial::containerField = "material";
 
 TwoSidedMaterial::Fields::Fields () :
 	   separateBackColor (new SFBool ()),

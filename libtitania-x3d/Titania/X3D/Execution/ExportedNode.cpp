@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string ExportedNode::componentName  = "Browser";
-const std::string ExportedNode::typeName       = "ExportedNode";
-const std::string ExportedNode::containerField = "exportedNode";
+const ComponentType ExportedNode::component      = ComponentType::TITANIA;
+const std::string   ExportedNode::typeName       = "ExportedNode";
+const std::string   ExportedNode::containerField = "exportedNode";
 
 ExportedNode::ExportedNode (X3DScene* const scene,
                             const std::string & exportedName,
@@ -138,7 +138,7 @@ ExportedNode::toStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	const std::string & localName = Generator::GetLocalName (getLocalNode ());
+	const std::string & localName = Generator::LocalName (getLocalNode ());
 
 	if (not getComments () .empty ())
 	{
@@ -179,7 +179,7 @@ ExportedNode::toXMLStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	const std::string & localName = Generator::GetLocalName (getLocalNode ());
+	const std::string & localName = Generator::LocalName (getLocalNode ());
 
 	ostream
 		<< Generator::Indent

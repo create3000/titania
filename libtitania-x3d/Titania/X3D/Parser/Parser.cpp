@@ -63,9 +63,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string Parser::componentName  = "Browser";
-const std::string Parser::typeName       = "Parser";
-const std::string Parser::containerField = "parser";
+const ComponentType Parser::component      = ComponentType::TITANIA;
+const std::string   Parser::typeName       = "Parser";
+const std::string   Parser::containerField = "parser";
 
 Parser::AccessTypes::AccessTypes ()
 {
@@ -411,7 +411,7 @@ Parser::componentStatements ()
 
 	while (_componentStatement)
 	{
-		scene -> addComponent (_componentStatement);
+		scene -> updateComponent (_componentStatement);
 		_componentStatement = componentStatement ();
 	}
 

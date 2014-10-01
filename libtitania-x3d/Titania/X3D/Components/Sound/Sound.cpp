@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string Sound::componentName  = "Sound";
-const std::string Sound::typeName       = "Sound";
-const std::string Sound::containerField = "children";
+const ComponentType Sound::component      = ComponentType::SOUND;
+const std::string   Sound::typeName       = "Sound";
+const std::string   Sound::containerField = "children";
 
 Sound::Fields::Fields () :
 	 intensity (new SFFloat (1)),

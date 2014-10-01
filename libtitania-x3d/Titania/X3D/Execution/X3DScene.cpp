@@ -68,17 +68,40 @@
 namespace titania {
 namespace X3D {
 
+const UnitIndex X3DScene::unitCategories = {
+	std::make_pair ("angle",  UnitCategory::ANGLE),
+	std::make_pair ("force",  UnitCategory::FORCE),
+	std::make_pair ("length", UnitCategory::LENGTH),
+	std::make_pair ("mass",   UnitCategory::MASS)
+
+};
+
+const UnitArray X3DScene::standardUnits = {
+	Unit ("angle",  "radian",   1),
+	Unit ("force",  "newton",   1),
+	Unit ("length", "metre",    1),
+	Unit ("mass",   "kilogram", 1)
+
+};
+
 static std::default_random_engine
 random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
 X3DScene::X3DScene () :
-	        X3DBaseNode (),
-	X3DExecutionContext (),
-	           worldURL (),
-	          metadatas (),
-	      exportedNodes (),
-	exportedNodesOutput (),
-	         compressed (false)
+	         X3DBaseNode (),
+	 X3DExecutionContext (),
+	            worldURL (),
+	            encoding ("X3D"),
+	specificationVersion (LATEST_VERSION),
+	   characterEncoding ("utf8"),
+	             comment ("Titania"),
+	             profile (),
+	          components (),
+	               units (standardUnits),
+	           metadatas (),
+	       exportedNodes (),
+	 exportedNodesOutput (),
+	          compressed (false)
 {
 	addType (X3DConstants::X3DScene);
 
@@ -106,10 +129,77 @@ throw (Error <DISPOSED>)
 		if (not title .empty ())
 			return title;
 	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	catch (const Error <INVALID_NAME> &)
 	{ }
 
 	return getWorldURL () .basename ();
+}
+
+void
+X3DScene::setSpecificationVersion (const std::string & value)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	static const std::map <std::string, SpecificationVersionType> specificationVersions = {
+		std::make_pair ("2.0", VRML_V2_0),
+		std::make_pair ("3.0",  X3D_V3_0),
+		std::make_pair ("3.1",  X3D_V3_1),
+		std::make_pair ("3.2",  X3D_V3_2),
+		std::make_pair ("3.3",  X3D_V3_3)
+	};
+
+	try
+	{
+		specificationVersion = specificationVersions .at (value);
+	}
+	catch (const std::out_of_range &)
+	{
+		specificationVersion = LATEST_VERSION;
+	}
+}
+
+// Profile/Component handling
+
+void
+X3DScene::updateComponent (const ComponentInfoPtr & component)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	try
+	{
+		const ComponentInfoPtr & existing = components .rfind (component -> getType ());
+
+		if (existing -> getLevel () < component -> getLevel ())
+		{
+			components .erase (existing -> getType ());
+
+			components .push_back (component -> getType (), component);
+		}
+	}
+	catch (const std::out_of_range &)
+	{
+		components .push_back (component -> getType (), component);
+	}
+}
+
+// Unit handling
+
+void
+X3DScene::updateUnit (const std::string & category, const std::string & name, const double conversion)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	try
+	{
+		const auto & unitCategory = unitCategories .at (category);
+
+		units [size_t (unitCategory)] = Unit (category, name, conversion);
+	}
+	catch (const std::out_of_range &)
+	{
+		throw Error <INVALID_NAME> ("Unkown base unit category '" + category + "'.");
+	}
 }
 
 // MetaData handling
@@ -283,6 +373,18 @@ throw (Error <INVALID_NAME>,
 
 	if (lock)
 	{
+		if (getProfile () or not getComponents () .empty ())
+		{
+			if (executionContext -> getProfile ())
+			{
+				for (const auto & component : executionContext -> getProfile () -> getComponents ())
+					updateComponent (component);
+			}
+
+			for (const auto & component : executionContext -> getComponents ())
+				updateComponent (component);
+		}
+
 		//importMetaData (executionContext);
 
 		const auto scene = dynamic_cast <X3DScene*> (executionContext);
@@ -363,11 +465,11 @@ X3DScene::toStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-	const auto version = getVersion ();
+	const auto specificationVersion = getSpecificationVersion ();
 
-	Generator::Version (version);
+	Generator::SpecificationVersion (specificationVersion);
 
-	if (version not_eq VRML_V2_0)
+	if (specificationVersion not_eq VRML_V2_0)
 	{
 		// VRML files are saved as is, but we do not add extra stuff!
 
@@ -400,7 +502,7 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	ostream
 		<< '#'
-		<< version
+		<< specificationVersion
 		<< Generator::Space
 		<< getCharacterEncoding ();
 
@@ -495,8 +597,8 @@ X3DScene::toStream (std::ostream & ostream) const
 	// Scene
 
 	Generator::PushExecutionContext (this);
-	Generator::PushContext ();
-	Generator::setExportedNodes (getExportedNodes ());
+	Generator::EnterScope ();
+	Generator::ExportedNodes (getExportedNodes ());
 
 	X3DExecutionContext::toStream (ostream);
 
@@ -515,7 +617,7 @@ X3DScene::toStream (std::ostream & ostream) const
 		}
 	}
 
-	Generator::PopContext ();
+	Generator::LeaveScope ();
 	Generator::PopExecutionContext ();
 
 	// ~Scene
@@ -542,14 +644,14 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-	auto version = getVersion ();
+	auto specificationVersion = getSpecificationVersion ();
 
-	if (version == VRML_V2_0)
-		version = LATEST_VERSION;
+	if (specificationVersion == VRML_V2_0)
+		specificationVersion = LATEST_VERSION;
 
-	const std::string versionString = XMLEncode (version);
+	const std::string versionString = XMLEncode (specificationVersion);
 
-	Generator::Version (version);
+	Generator::SpecificationVersion (specificationVersion);
 
 	{
 		const_cast <X3DScene*> (this) -> setMetaData ("generator", getBrowser () -> getName () + " V" + getBrowser () -> getVersion () + ", http://titania.create3000.de");
@@ -667,8 +769,8 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 	// <Scene>
 
 	Generator::PushExecutionContext (this);
-	Generator::PushContext ();
-	Generator::setExportedNodes (getExportedNodes ());
+	Generator::EnterScope ();
+	Generator::ExportedNodes (getExportedNodes ());
 
 	X3DExecutionContext::toXMLStream (ostream);
 
@@ -684,7 +786,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		{ }
 	}
 
-	Generator::PopContext ();
+	Generator::LeaveScope ();
 	Generator::PopExecutionContext ();
 
 	// </Scene>

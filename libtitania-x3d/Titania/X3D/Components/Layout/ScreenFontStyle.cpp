@@ -428,9 +428,9 @@ ScreenText::~ScreenText ()
 	}
 }
 
-const std::string ScreenFontStyle::componentName  = "Layout";
-const std::string ScreenFontStyle::typeName       = "ScreenFontStyle";
-const std::string ScreenFontStyle::containerField = "fontStyle";
+const ComponentType ScreenFontStyle::component      = ComponentType::LAYOUT;
+const std::string   ScreenFontStyle::typeName       = "ScreenFontStyle";
+const std::string   ScreenFontStyle::containerField = "fontStyle";
 
 ScreenFontStyle::Fields::Fields () :
 	pointSize (new SFFloat (12))

@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string SpiderMonkey::componentName  = "Browser";
-const std::string SpiderMonkey::typeName       = "SpiderMonkey";
-const std::string SpiderMonkey::containerField = "javaScript";
+const ComponentType SpiderMonkey::component      = ComponentType::TITANIA;
+const std::string   SpiderMonkey::typeName       = "SpiderMonkey";
+const std::string   SpiderMonkey::containerField = "javaScript";
 
 SpiderMonkey::SpiderMonkey (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),

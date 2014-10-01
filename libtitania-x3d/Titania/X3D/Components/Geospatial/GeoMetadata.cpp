@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string GeoMetadata::componentName  = "Geospatial";
-const std::string GeoMetadata::typeName       = "GeoMetadata";
-const std::string GeoMetadata::containerField = "children";
+const ComponentType GeoMetadata::component      = ComponentType::GEOSPATIAL;
+const std::string   GeoMetadata::typeName       = "GeoMetadata";
+const std::string   GeoMetadata::containerField = "children";
 
 GeoMetadata::Fields::Fields () :
 	    url (new MFString ()),

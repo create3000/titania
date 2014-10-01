@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string CollisionCollection::componentName  = "RigidBodyPhysics";
-const std::string CollisionCollection::typeName       = "CollisionCollection";
-const std::string CollisionCollection::containerField = "collidables";
+const ComponentType CollisionCollection::component      = ComponentType::RIGID_BODY_PHYSICS;
+const std::string   CollisionCollection::typeName       = "CollisionCollection";
+const std::string   CollisionCollection::containerField = "collidables";
 
 CollisionCollection::Fields::Fields () :
 	appliedParameters (new MFString ({ "BOUNCE" })),

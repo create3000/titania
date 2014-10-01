@@ -65,9 +65,9 @@ namespace X3D {
 //	CLASSIC_VRML_ENCODING   Boolean              The browser supports the Classic VRML encoding.
 //	BINARY_ENCODING         Boolean              The browser supports the binary file format encoding.
 
-const std::string BrowserProperties::componentName  = "Browser";
-const std::string BrowserProperties::typeName       = "BrowserProperties";
-const std::string BrowserProperties::containerField = "browserProperties";
+const ComponentType BrowserProperties::component      = ComponentType::TITANIA;
+const std::string   BrowserProperties::typeName       = "BrowserProperties";
+const std::string   BrowserProperties::containerField = "browserProperties";
 
 BrowserProperties::Fields::Fields () :
 	       abstractNodes (new SFBool (true)),

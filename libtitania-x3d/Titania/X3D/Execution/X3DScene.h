@@ -83,19 +83,116 @@ public:
 	getTitle () const
 	throw (Error <DISPOSED>) final override;
 
-	virtual
 	void
 	setWorldURL (const basic::uri & value)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	       Error <DISPOSED>)
 	{ worldURL = value; }
 
-	virtual
 	const basic::uri &
 	getWorldURL () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	       Error <DISPOSED>)
 	{ return worldURL; }
+
+	void
+	setEncoding (const std::string & value)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ encoding = value; }
+
+	virtual
+	const std::string &
+	getEncoding () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return encoding; }
+
+	void
+	setSpecificationVersion (const std::string &)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	setSpecificationVersion (const SpecificationVersionType value)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ specificationVersion = value; }
+
+	virtual
+	SpecificationVersionType
+	getSpecificationVersion () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return specificationVersion; }
+
+	void
+	setCharacterEncoding (const std::string & value)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ characterEncoding = value; }
+
+	virtual
+	const std::string &
+	getCharacterEncoding () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return characterEncoding; }
+
+	void
+	setComment (const std::string & value)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ comment = value; }
+
+	virtual
+	const std::string &
+	getComment () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return comment; }
+
+	///  @name Profile/Component handling
+
+	void
+	setProfile (const ProfileInfoPtr & value)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ profile = value; }
+
+	virtual
+	const ProfileInfoPtr &
+	getProfile ()  const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return profile; }
+
+	void
+	updateComponent (const ComponentInfoPtr & component)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	virtual
+	const ComponentInfoArray &
+	getComponents () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return components; }
+
+	///  @name Unit handling
+
+	void
+	updateUnit (const std::string &, const std::string &, const double)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	virtual
+	const UnitArray &
+	getUnits () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return units; }
 
 	///  @name MetaData handling
 
@@ -244,7 +341,9 @@ protected:
 
 private:
 
-	///  @name Operations
+	/***
+	 *  @name Operations
+	 */
 
 	std::string
 	getUniqueExportedName (const X3DScene* const, std::string = "") const;
@@ -252,13 +351,29 @@ private:
 	void
 	updateExportedNodes (X3DScene* const) const;
 
-	///  @name Members
+	/***
+	 *  @name Static members
+	 */
 
-	basic::uri        worldURL;
-	MetaDataIndex     metadatas;
-	ExportedNodeIndex exportedNodes;
-	SFTime            exportedNodesOutput;
-	bool              compressed;
+	static const UnitIndex unitCategories;
+	static const UnitArray standardUnits;
+
+	/***
+	 *  @name Members
+	 */
+
+	basic::uri               worldURL;
+	std::string              encoding;
+	SpecificationVersionType specificationVersion;
+	std::string              characterEncoding;
+	std::string              comment;
+	ProfileInfoPtr           profile;
+	ComponentInfoArray       components;
+	UnitArray                units;
+	MetaDataIndex            metadatas;
+	ExportedNodeIndex        exportedNodes;
+	SFTime                   exportedNodesOutput;
+	bool                     compressed;
 
 };
 

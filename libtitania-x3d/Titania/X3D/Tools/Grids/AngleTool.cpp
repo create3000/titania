@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string AngleTool::componentName  = "Grids";
-const std::string AngleTool::typeName       = "AngleTool";
-const std::string AngleTool::containerField = "grid";
+const ComponentType AngleTool::component      = ComponentType::TITANIA;
+const std::string   AngleTool::typeName       = "AngleTool";
+const std::string   AngleTool::containerField = "grid";
 
 AngleTool::Fields::Fields () :
 	      dimension (new MFInt32 ({ 5, 16 })),

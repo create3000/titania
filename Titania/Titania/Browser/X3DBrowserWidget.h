@@ -232,7 +232,7 @@ private:
 	///  @name Operations
 	
 	void
-	setWorldURL (const X3D::X3DExecutionContextPtr &, const basic::uri &, const UndoStepPtr &);
+	setWorldURL (const X3D::X3DScenePtr &, const basic::uri &, const UndoStepPtr &);
 
 	void
 	loadIcon ();

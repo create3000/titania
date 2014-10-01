@@ -109,9 +109,10 @@ public:
 	///  @name Common members
 
 	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
 
 	virtual
 	const std::string &
@@ -121,7 +122,8 @@ public:
 
 	virtual
 	const std::string &
-	getContainerField () const final override
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
 	///  @name Member access
@@ -223,9 +225,9 @@ private:
 
 	///  @name Static members
 
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
 
 	static JSClass GlobalClass;
 

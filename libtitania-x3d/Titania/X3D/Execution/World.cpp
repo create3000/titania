@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string World::componentName  = "Browser";
-const std::string World::typeName       = "World";
-const std::string World::containerField = "world";
+const ComponentType World::component      = ComponentType::TITANIA;
+const std::string   World::typeName       = "World";
+const std::string   World::containerField = "world";
 
 World::World (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),

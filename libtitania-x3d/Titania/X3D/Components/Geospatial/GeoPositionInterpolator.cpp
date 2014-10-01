@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string GeoPositionInterpolator::componentName  = "Geospatial";
-const std::string GeoPositionInterpolator::typeName       = "GeoPositionInterpolator";
-const std::string GeoPositionInterpolator::containerField = "children";
+const ComponentType GeoPositionInterpolator::component      = ComponentType::GEOSPATIAL;
+const std::string   GeoPositionInterpolator::typeName       = "GeoPositionInterpolator";
+const std::string   GeoPositionInterpolator::containerField = "children";
 
 GeoPositionInterpolator::Fields::Fields () :
 	        keyValue (new MFVec3d ()),

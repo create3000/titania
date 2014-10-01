@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string RigidBodyCollection::componentName  = "RigidBodyPhysics";
-const std::string RigidBodyCollection::typeName       = "RigidBodyCollection";
-const std::string RigidBodyCollection::containerField = "children";
+const ComponentType RigidBodyCollection::component      = ComponentType::RIGID_BODY_PHYSICS;
+const std::string   RigidBodyCollection::typeName       = "RigidBodyCollection";
+const std::string   RigidBodyCollection::containerField = "children";
 
 RigidBodyCollection::Fields::Fields () :
 	set_contacts (new MFNode ()),

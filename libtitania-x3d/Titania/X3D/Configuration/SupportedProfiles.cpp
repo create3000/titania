@@ -215,16 +215,11 @@ SupportedProfiles::SupportedProfiles (const SupportedComponents & supportedCompo
 }
 
 void
-SupportedProfiles::add (const std::string & title, const std::string & name, std::initializer_list <ComponentInfoPtr> component_list)
+SupportedProfiles::add (const std::string & title, const std::string & name, std::initializer_list <ComponentInfoPtr> componentList)
 {
 	//std::clog << "\tAdding profile " << name << ": " << std::flush;
 
-	ComponentInfoArray components;
-
-	for (const auto & component : component_list)
-		components .push_back (component -> getName (), component);
-
-	add (ProfileInfoPtr (new ProfileInfo (title, name, std::move (components))));
+	add (ProfileInfoPtr (new ProfileInfo (title, name, componentList)));
 
 	//std::clog << "Done." << std::endl;
 }

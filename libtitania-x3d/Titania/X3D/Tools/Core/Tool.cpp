@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string Tool::componentName  = "Tools";
-const std::string Tool::typeName       = "Tool";
-const std::string Tool::containerField = "friends";
+const ComponentType Tool::component      = ComponentType::TITANIA;
+const std::string   Tool::typeName       = "Tool";
+const std::string   Tool::containerField = "friends";
 
 Tool::Tool (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),

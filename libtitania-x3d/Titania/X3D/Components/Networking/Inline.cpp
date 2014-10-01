@@ -60,9 +60,9 @@ namespace X3D {
 
 static constexpr bool X3D_PARALLEL = true;
 
-const std::string Inline::componentName  = "Networking";
-const std::string Inline::typeName       = "Inline";
-const std::string Inline::containerField = "children";
+const ComponentType Inline::component      = ComponentType::NETWORKING;
+const std::string   Inline::typeName       = "Inline";
+const std::string   Inline::containerField = "children";
 
 Inline::Fields::Fields () :
 	load (new SFBool (true))

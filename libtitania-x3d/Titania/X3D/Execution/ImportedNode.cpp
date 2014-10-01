@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string ImportedNode::componentName  = "Browser";
-const std::string ImportedNode::typeName       = "ImportedNode";
-const std::string ImportedNode::containerField = "importedNode";
+const ComponentType ImportedNode::component      = ComponentType::TITANIA;
+const std::string   ImportedNode::typeName       = "ImportedNode";
+const std::string   ImportedNode::containerField = "importedNode";
 
 ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
                             const InlinePtr & inlineNode_,
@@ -177,7 +177,7 @@ ImportedNode::toStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< "IMPORT"
 				<< Generator::Space
-				<< Generator::GetName (getInlineNode ())
+				<< Generator::Name (getInlineNode ())
 				<< '.'
 				<< exportedName;
 
@@ -211,7 +211,7 @@ ImportedNode::toXMLStream (std::ostream & ostream) const
 			<< "<IMPORT"
 			<< Generator::Space
 			<< "inlineDEF='"
-			<< XMLEncode (Generator::GetName (getInlineNode ()))
+			<< XMLEncode (Generator::Name (getInlineNode ()))
 			<< "'"
 			<< Generator::Space
 			<< "exportedDEF='"

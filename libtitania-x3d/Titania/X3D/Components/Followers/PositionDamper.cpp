@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string PositionDamper::componentName  = "Followers";
-const std::string PositionDamper::typeName       = "PositionDamper";
-const std::string PositionDamper::containerField = "children";
+const ComponentType PositionDamper::component      = ComponentType::FOLLOWERS;
+const std::string   PositionDamper::typeName       = "PositionDamper";
+const std::string   PositionDamper::containerField = "children";
 
 PositionDamper::Fields::Fields () :
 	         set_value (new SFVec3f ()),

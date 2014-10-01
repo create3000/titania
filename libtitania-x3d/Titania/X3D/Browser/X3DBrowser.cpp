@@ -68,9 +68,9 @@ namespace X3D {
 
 const std::string X3DBrowser::version = "0.7.4";
 
-const std::string X3DBrowser::componentName  = "Browser";
-const std::string X3DBrowser::typeName       = "Browser";
-const std::string X3DBrowser::containerField = "browser";
+const ComponentType X3DBrowser::component      = ComponentType::TITANIA;
+const std::string   X3DBrowser::typeName       = "Browser";
+const std::string   X3DBrowser::containerField = "browser";
 
 X3DBrowser::X3DBrowser () :
 	        X3DBaseNode (),
@@ -80,10 +80,10 @@ X3DBrowser::X3DBrowser () :
 	   currentFrameRate (0),
 	    supportedFields (),
 	     supportedNodes (this),
-	supportedComponents (true),
+	supportedComponents (),
 	  supportedProfiles (supportedComponents),
-	     browserOptions (new BrowserOptions      (this)),
-	  browserProperties (new BrowserProperties   (this)),
+	     browserOptions (new BrowserOptions (this)),
+	  browserProperties (new BrowserProperties (this)),
 	renderingProperties (new RenderingProperties (this)),
 	   executionContext (createScene ()),
 	           urlError (),
@@ -269,7 +269,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	scene -> setProfile (profile);
 
 	for (const auto & component : components)
-		scene -> addComponent (component);
+		scene -> updateComponent (component);
 
 	return scene;
 }

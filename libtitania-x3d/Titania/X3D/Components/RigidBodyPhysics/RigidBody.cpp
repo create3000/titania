@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string RigidBody::componentName  = "RigidBodyPhysics";
-const std::string RigidBody::typeName       = "RigidBody";
-const std::string RigidBody::containerField = "bodies";
+const ComponentType RigidBody::component      = ComponentType::RIGID_BODY_PHYSICS;
+const std::string   RigidBody::typeName       = "RigidBody";
+const std::string   RigidBody::containerField = "bodies";
 
 RigidBody::Fields::Fields () :
 	angularDampingFactor (new SFFloat (0.001)),

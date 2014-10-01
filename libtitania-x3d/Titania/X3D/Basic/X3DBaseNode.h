@@ -170,8 +170,9 @@ public:
 
 	///  Returns the component name this node belongs to.
 	virtual
-	const std::string &
-	getComponentName () const = 0;
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) = 0;
 
 	///  Returns a array of types of this node.
 	const NodeTypeArray &
@@ -188,7 +189,8 @@ public:
 	///  Returns the XML container field for this node type.
 	virtual
 	const std::string &
-	getContainerField () const = 0;
+	getContainerField () const
+	throw (Error <DISPOSED>) = 0;
 
 	///  Returns for X3DProtoypeInstances the innermost root node.
 	virtual
@@ -522,7 +524,7 @@ protected:
 
 	///  Adds a field for X3D @a version.
 	void
-	addField (const VersionType, const std::string &, const std::string &)
+	addField (const SpecificationVersionType, const std::string &, const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <DISPOSED>);
 
@@ -551,7 +553,7 @@ private:
 
 	struct FlatCopyType { };
 
-	using FieldAliasIndex = std::map <VersionType, std::pair <std::map <std::string, std::string>, std::map <std::string, std::string>>>;
+	using FieldAliasIndex = std::map <SpecificationVersionType, std::pair <std::map <std::string, std::string>, std::map <std::string, std::string>>>;
 
 	/***
 	 *  @name Construction
@@ -592,7 +594,7 @@ private:
 
 	///  Returns the standard field name for @a alias depending on @a version.
 	const std::string &
-	getFieldName (const std::string &, const VersionType) const;
+	getFieldName (const std::string &, const SpecificationVersionType) const;
 
 	/***
 	 *  @name Input/Output

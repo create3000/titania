@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string MultiTexture::componentName  = "Texturing";
-const std::string MultiTexture::typeName       = "MultiTexture";
-const std::string MultiTexture::containerField = "texture";
+const ComponentType MultiTexture::component      = ComponentType::TEXTURING;
+const std::string   MultiTexture::typeName       = "MultiTexture";
+const std::string   MultiTexture::containerField = "texture";
 
 MultiTexture::Fields::Fields () :
 	   color (new SFColor (1, 1, 1)),

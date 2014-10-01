@@ -50,9 +50,10 @@ public:
 	///  @name Common members
 
 	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
 
 	virtual
 	const std::string &
@@ -62,7 +63,8 @@ public:
 
 	virtual
 	const std::string &
-	getContainerField () const final override
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
 	///  @name Member access
@@ -94,20 +96,6 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return currentFrameRate; }
-
-	virtual
-	void
-	setWorldURL (const basic::uri & value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ return getExecutionContext () -> setWorldURL (value); }
-
-	virtual
-	const basic::uri &
-	getWorldURL () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ return getExecutionContext () -> getWorldURL (); }
 
 	const X3DFieldDefinition*
 	getSupportedField (const std::string &) const
@@ -141,13 +129,20 @@ public:
 	getProfile (const std::string &) const
 	throw (Error <NOT_SUPPORTED>);
 
+	///  @name Execution context handling
+
+	virtual
+	const basic::uri &
+	getWorldURL () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return getExecutionContext () -> getWorldURL (); }
+
 	const X3DExecutionContextPtr &
 	getExecutionContext () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return executionContext; }
-
-	///  @name X3D Creation Handling
 
 	X3DScenePtr
 	createScene () const
@@ -338,9 +333,9 @@ private:
 	///  @name Static members
 
 	static const std::string version;
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
 
 	///  @name Members
 

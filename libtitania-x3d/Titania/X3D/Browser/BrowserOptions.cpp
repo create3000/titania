@@ -87,9 +87,9 @@ namespace X3D {
 // AnimateStairWalks       Boolean                                  False                        Animate stair walks. This can give unexpected results when the floor is animated.
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
 
-const std::string BrowserOptions::componentName  = "Browser";
-const std::string BrowserOptions::typeName       = "BrowserOptions";
-const std::string BrowserOptions::containerField = "browserOptions";
+const ComponentType BrowserOptions::component      = ComponentType::TITANIA;
+const std::string   BrowserOptions::typeName       = "BrowserOptions";
+const std::string   BrowserOptions::containerField = "browserOptions";
 
 BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	          splashScreen (new SFBool (false)),

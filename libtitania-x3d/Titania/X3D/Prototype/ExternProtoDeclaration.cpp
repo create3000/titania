@@ -62,9 +62,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string ExternProtoDeclaration::componentName  = "Browser";
-const std::string ExternProtoDeclaration::typeName       = "EXTERNPROTO";
-const std::string ExternProtoDeclaration::containerField = "externProto";
+const ComponentType ExternProtoDeclaration::component      = ComponentType::TITANIA;
+const std::string   ExternProtoDeclaration::typeName       = "EXTERNPROTO";
+const std::string   ExternProtoDeclaration::containerField = "externProto";
 
 ExternProtoDeclaration::ExternProtoDeclaration (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),

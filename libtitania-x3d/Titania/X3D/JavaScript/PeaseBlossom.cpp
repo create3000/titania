@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string PeaseBlossom::componentName  = "Browser";
-const std::string PeaseBlossom::typeName       = "PeaseBlossom";
-const std::string PeaseBlossom::containerField = "javaScript";
+const ComponentType PeaseBlossom::component      = ComponentType::TITANIA;
+const std::string   PeaseBlossom::typeName       = "PeaseBlossom";
+const std::string   PeaseBlossom::containerField = "javaScript";
 
 PeaseBlossom::PeaseBlossom (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),

@@ -86,7 +86,7 @@ X3DGeospatialObject::initialize ()
 	geoSystem () .addInterest (this, &X3DGeospatialObject::set_geoSystem);
 	geoOrigin () .addInterest (this, &X3DGeospatialObject::set_geoOrigin);
 
-	switch (getExecutionContext () -> getVersion ())
+	switch (getExecutionContext () -> getSpecificationVersion ())
 	{
 		case VRML_V2_0:
 		case X3D_V3_0:

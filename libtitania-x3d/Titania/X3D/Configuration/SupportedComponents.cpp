@@ -57,81 +57,61 @@ namespace titania {
 namespace X3D {
 
 SupportedComponents::SupportedComponents () :
-	components ()
-{ }
-
-SupportedComponents::SupportedComponents (const bool) :
-	components ()
+	componentIndex (),
+	    components ()
 {
 	//std::clog << "\tCreating component index:" << std::endl;
 
-	add ("Computer-Aided Design (CAD) model geometry", "CADGeometry",          2);
-	add ("Core",                                       "Core",                 2);
-	add ("Cube map environmental texturing",           "CubeMapTexturing",     3);
-	add ("Distributed interactive simulation (DIS)",   "DIS",                  2);
-	add ("Environmental effects",                      "EnvironmentalEffects", 4);
-	add ("Environmental sensor",                       "EnvironmentalSensor",  3);
-	add ("Event utilities",                            "EventUtilities",       1);
-	add ("Followers",                                  "Followers",            1);
-	add ("Geometry2D",                                 "Geometry2D",           2);
-	add ("Geometry3D",                                 "Geometry3D",           4);
-	add ("Geospatial",                                 "Geospatial",           2);
-	add ("Grouping",                                   "Grouping",             3);
-	add ("Humanoid animation (H-Anim)",                "H-Anim",               1);
-	add ("Interpolation",                              "Interpolation",        5);
-	add ("Key device sensor",                          "KeyDeviceSensor",      2);
-	add ("Layering",                                   "Layering",             1);
-	add ("Layout",                                     "Layout",               2);
-	add ("Lighting",                                   "Lighting",             3);
-	add ("Navigation",                                 "Navigation",           3);
-	add ("Networking",                                 "Networking",           4);
-	add ("Non-uniform Rational B-Spline (NURBS)",      "NURBS",                4);
-	add ("Particle systems",                           "ParticleSystems",      3);
-	add ("Picking sensor",                             "Picking",              3);
-	add ("Pointing device sensor",                     "PointingDeviceSensor", 1);
-	add ("Programmable shaders",                       "Shaders",              1);
-	add ("Rendering",                                  "Rendering",            5);
-	add ("Rigid body physics",                         "RigidBodyPhysics",     2);
-	add ("Scripting",                                  "Scripting",            1);
-	add ("Shape",                                      "Shape",                4);
-	add ("Sound",                                      "Sound",                1);
-	add ("Text",                                       "Text",                 1);
-	add ("Texturing",                                  "Texturing",            3);
-	add ("Texturing3D",                                "Texturing3D",          2);
-	add ("Time",                                       "Time",                 2);
-//	add ("Volume rendering",                           "VolumeRendering",      4);
+	add (ComponentType::CAD_GEOMETRY,           "Computer-Aided Design (CAD) model geometry", "CADGeometry",          2);
+	add (ComponentType::CORE,                   "Core",                                       "Core",                 2);
+	add (ComponentType::CUBE_MAP_TEXTURING,     "Cube map environmental texturing",           "CubeMapTexturing",     3);
+	add (ComponentType::DIS,                    "Distributed interactive simulation (DIS)",   "DIS",                  2);
+	add (ComponentType::ENVIRONMENTAL_EFFECTS,  "Environmental effects",                      "EnvironmentalEffects", 4);
+	add (ComponentType::ENVIRONMENTAL_SENSOR,   "Environmental sensor",                       "EnvironmentalSensor",  3);
+	add (ComponentType::EVENT_UTILITIES,        "Event utilities",                            "EventUtilities",       1);
+	add (ComponentType::FOLLOWERS,              "Followers",                                  "Followers",            1);
+	add (ComponentType::GEOMETRY_2D,            "Geometry2D",                                 "Geometry2D",           2);
+	add (ComponentType::GEOMETRY_3D,            "Geometry3D",                                 "Geometry3D",           4);
+	add (ComponentType::GEOSPATIAL,             "Geospatial",                                 "Geospatial",           2);
+	add (ComponentType::GROUPING,               "Grouping",                                   "Grouping",             3);
+	add (ComponentType::H_ANIM,                 "Humanoid animation (H-Anim)",                "H-Anim",               1);
+	add (ComponentType::INTERPOLATION,          "Interpolation",                              "Interpolation",        5);
+	add (ComponentType::KEY_DEVICE_SENSOR,      "Key device sensor",                          "KeyDeviceSensor",      2);
+	add (ComponentType::LAYERING,               "Layering",                                   "Layering",             1);
+	add (ComponentType::LAYOUT,                 "Layout",                                     "Layout",               2);
+	add (ComponentType::LIGHTING,               "Lighting",                                   "Lighting",             3);
+	add (ComponentType::NAVIGATION,             "Navigation",                                 "Navigation",           3);
+	add (ComponentType::NETWORKING,             "Networking",                                 "Networking",           4);
+	add (ComponentType::NURBS,                  "Non-uniform Rational B-Spline (NURBS)",      "NURBS",                4);
+	add (ComponentType::PARTICLE_SYSTEMS,       "Particle systems",                           "ParticleSystems",      3);
+	add (ComponentType::PICKING,                "Picking sensor",                             "Picking",              3);
+	add (ComponentType::POINTING_DEVICE_SENSOR, "Pointing device sensor",                     "PointingDeviceSensor", 1);
+	add (ComponentType::SHADERS,                "Programmable shaders",                       "Shaders",              1);
+	add (ComponentType::RENDERING,              "Rendering",                                  "Rendering",            5);
+	add (ComponentType::RIGID_BODY_PHYSICS,     "Rigid body physics",                         "RigidBodyPhysics",     2);
+	add (ComponentType::SCRIPTING,              "Scripting",                                  "Scripting",            1);
+	add (ComponentType::SHAPE,                  "Shape",                                      "Shape",                4);
+	add (ComponentType::SOUND,                  "Sound",                                      "Sound",                1);
+	add (ComponentType::TEXT,                   "Text",                                       "Text",                 1);
+	add (ComponentType::TEXTURING,              "Texturing",                                  "Texturing",            3);
+	add (ComponentType::TEXTURING_3D,           "Texturing3D",                                "Texturing3D",          2);
+	add (ComponentType::TIME,                   "Time",                                       "Time",                 2);
+	add (ComponentType::VOLUME_RENDERING,       "Volume rendering",                           "VolumeRendering",      4);
 
-	add ("Titania",                                    "Titania",              1);
+	add (ComponentType::TITANIA,                "Titania",                                    "Titania",              1); // Non standard.
 
 	//std::clog << "\tDone creating component index." << std::endl;
 }
 
 void
-SupportedComponents::add (const std::string & title, const std::string & name, const int32_t level)
+SupportedComponents::add (const ComponentType type, const std::string & title, const std::string & name, const int32_t level)
 {
 	//std::clog << "\t\tAdding component " << name << " : " << level << std::endl;
 
-	components .push_back (name, ComponentInfoPtr (new ComponentInfo (title, name, level)));
-}
+	const auto component = ComponentInfoPtr (new ComponentInfo (type, title, name, level));
 
-void
-SupportedComponents::add (const ComponentInfoPtr & component)
-{
-	try
-	{
-		const ComponentInfoPtr & existing = components .rfind (component -> getName ());
-
-		if (existing -> getLevel () < component -> getLevel ())
-		{
-			components .erase (existing -> getName ());
-
-			components .push_back (component -> getName (), component);
-		}
-	}
-	catch (const std::out_of_range &)
-	{
-		components .push_back (component -> getName (), component);
-	}
+	componentIndex .emplace (name, component);
+	components .push_back (type, component);
 }
 
 ComponentInfoPtr
@@ -141,7 +121,7 @@ throw (Error <NOT_SUPPORTED>)
 	const ComponentInfoPtr & component = get (name);
 
 	if (level <= component -> getLevel ())
-		return ComponentInfoPtr (new ComponentInfo (component -> getTitle (), name, level));
+		return ComponentInfoPtr (new ComponentInfo (component -> getType (), component -> getTitle (), name, level));
 
 	else
 		throw Error <NOT_SUPPORTED> ("Component '" + name + "' at level '" + basic::to_string (level) + "' is not supported.");
@@ -153,7 +133,7 @@ throw (Error <NOT_SUPPORTED>)
 {
 	try
 	{
-		return components .rfind (name);
+		return componentIndex .at (name);
 	}
 	catch (const std::out_of_range &)
 	{

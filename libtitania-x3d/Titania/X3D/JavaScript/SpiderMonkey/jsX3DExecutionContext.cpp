@@ -146,7 +146,7 @@ jsX3DExecutionContext::specificationVersion (JSContext* context, JSObject* obj, 
 {
 	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
 
-	return JS_NewStringValue (context, executionContext -> getSpecificationVersion (), vp);
+	return JS_NewStringValue (context, XMLEncode (executionContext -> getSpecificationVersion ()), vp);
 }
 
 JSBool

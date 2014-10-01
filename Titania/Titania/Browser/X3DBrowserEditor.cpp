@@ -520,7 +520,7 @@ X3DBrowserEditor::exportNodes (std::ostream & ostream, X3D::MFNode & nodes) cons
 	ostream .imbue (std::locale::classic ());
 
 	ostream
-		<< "#X3D V3.3 utf8 " << getBrowser () -> getName ()
+		<< "#" << X3D::LATEST_VERSION << " utf8 " << getBrowser () -> getName ()
 		<< std::endl
 		<< std::endl
 		<< '#' << getExecutionContext () -> getWorldURL ()
@@ -528,7 +528,7 @@ X3DBrowserEditor::exportNodes (std::ostream & ostream, X3D::MFNode & nodes) cons
 		<< std::endl;
 
 	X3D::Generator::CompactStyle ();
-	X3D::Generator::PushContext ();
+	X3D::Generator::EnterScope ();
 
 	if (not protoNodes .empty ())
 	{
@@ -549,7 +549,7 @@ X3DBrowserEditor::exportNodes (std::ostream & ostream, X3D::MFNode & nodes) cons
 			ostream << *route << std::endl;
 	}
 
-	X3D::Generator::PopContext ();
+	X3D::Generator::LeaveScope ();
 }
 
 std::vector <X3D::X3DProtoDeclarationNodePtr>

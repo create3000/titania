@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const std::string Collision::componentName  = "Navigation";
-const std::string Collision::typeName       = "Collision";
-const std::string Collision::containerField = "children";
+const ComponentType Collision::component      = ComponentType::NAVIGATION;
+const std::string   Collision::typeName       = "Collision";
+const std::string   Collision::containerField = "children";
 
 Collision::Fields::Fields () :
 	collideTime (new SFTime ()),

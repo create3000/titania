@@ -65,12 +65,7 @@ public:
 
 	SupportedComponents ();
 
-	SupportedComponents (const bool);
-
 	///  @name Operations
-
-	void
-	add (const ComponentInfoPtr &);
 
 	ComponentInfoPtr
 	get (const std::string &, const size_t) const
@@ -90,11 +85,12 @@ private:
 	///  @name Operations
 
 	void
-	add (const std::string &, const std::string &, const int32_t);
+	add (const ComponentType, const std::string &, const std::string &, const int32_t);
 
 	///  @name Members
 
-	ComponentInfoArray components;
+	std::map <std::string, ComponentInfoPtr> componentIndex;
+	ComponentInfoArray                       components;
 
 };
 

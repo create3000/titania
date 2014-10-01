@@ -66,8 +66,8 @@
 namespace titania {
 namespace X3D {
 
-const std::string X3DPrototypeInstance::componentName  = "Core";
-const std::string X3DPrototypeInstance::containerField = "children";
+const ComponentType X3DPrototypeInstance::component      = ComponentType::CORE;
+const std::string   X3DPrototypeInstance::containerField = "children";
 
 X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoDeclarationNodePtr & protoNode_) :
 	            //throw (Error <INVALID_NAME>,
@@ -99,26 +99,12 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		          *userDefinedField -> copy (FLAT_COPY));
 	}
 
-	// X3DExecutionContext // XXX: deleteable if all get/set virtual
-
-	setEncoding             (prototype -> getEncoding ());
-	setSpecificationVersion (prototype -> getSpecificationVersion ());
-	setCharacterEncoding    (prototype -> getCharacterEncoding ());
-	setComment              (prototype -> getComment ());
-
-	setProfile (prototype -> getProfile ());
-
-	for (const auto & component : prototype -> getComponents ())
-		addComponent (component);
-
-	setUnits (prototype -> getUnits ());
-
 	// Assign protos and root nodes
 
 	try
 	{
-		importExternProtos (prototype); // XXX: deleteable if all get/set virtual
-		importProtos (prototype);       // XXX: deleteable if all get/set virtual
+		importExternProtos (prototype); // XXX: deletable if all get/set are virtual
+		importProtos (prototype);       // XXX: deletable if all get/set are virtual
 		copyRootNodes (prototype);
 	}
 	catch (const X3DError & error)
@@ -309,9 +295,9 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 		return;
 	}
 
-	Generator::PushContext ();
+	Generator::EnterScope ();
 
-	const std::string & name = Generator::GetName (this);
+	const std::string & name = Generator::Name (this);
 
 	if (not name .empty ())
 	{
@@ -325,7 +311,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 				<< XMLEncode (name)
 				<< "'";
 
-			const auto containerField = Generator::GetContainerField ();
+			const auto containerField = Generator::ContainerField ();
 
 			if (containerField)
 			{
@@ -341,7 +327,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 
 			ostream << "/>";
 
-			Generator::PopContext ();
+			Generator::LeaveScope ();
 
 			return;
 		}
@@ -366,7 +352,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 			<< "'";
 	}
 
-	const auto containerField = Generator::GetContainerField ();
+	const auto containerField = Generator::ContainerField ();
 
 	if (containerField)
 	{
@@ -402,7 +388,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 
 			bool mustOutputValue = false;
 
-			if (Generator::GetExecutionContext () and not Generator::IsSharedNode (this))
+			if (Generator::ExecutionContext () and not Generator::IsSharedNode (this))
 			{
 				if (field -> getAccessType () == inputOutput and not field -> getIsReferences () .empty ())
 				{
@@ -426,7 +412,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 			// If we have no execution context we are not in a proto and must not generate IS references the same is true
 			// if the node is a shared node as the node does not belong to the execution context.
 
-			if ((field -> getIsReferences () .empty () or not Generator::GetExecutionContext () or Generator::IsSharedNode (this)) or mustOutputValue)
+			if ((field -> getIsReferences () .empty () or not Generator::ExecutionContext () or Generator::IsSharedNode (this)) or mustOutputValue)
 			{
 				if (mustOutputValue)
 					references .emplace_back (field);
@@ -560,7 +546,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 			<< "</ProtoInstance>";
 	}
 
-	Generator::PopContext ();
+	Generator::LeaveScope ();
 }
 
 void

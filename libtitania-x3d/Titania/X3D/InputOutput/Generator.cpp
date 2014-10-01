@@ -70,7 +70,7 @@ Generator::AccessTypesIndex::AccessTypesIndex ()
 const std::string &
 Generator::AccessTypesIndex::operator [ ] (const X3DFieldDefinition* const fieldDefinition) const
 {
-	if (version == VRML_V2_0)
+	if (specificationVersion == VRML_V2_0)
 		return VrmlAccessTypes [fieldDefinition];
 
 	return X3DAccessTypes [fieldDefinition];
@@ -429,8 +429,8 @@ const Generator::X3DAccessTypesIndex  Generator::X3DAccessTypes;
 const Generator::VrmlAccessTypesIndex Generator::VrmlAccessTypes;
 const Generator::NodeTypeIndex        Generator::NodeTypes;
 
-Generator::StyleType Generator::style   = NICEST;
-VersionType          Generator::version = LATEST_VERSION;
+Generator::StyleType     Generator::style                = NICEST;
+SpecificationVersionType Generator::specificationVersion = LATEST_VERSION;
 
 Generator::ExecutionContextStack Generator::executionContextStack (1);
 size_t                           Generator::level = 0;
@@ -574,7 +574,7 @@ Generator::PopExecutionContext ()
 }
 
 void
-Generator::PushContext ()
+Generator::EnterScope ()
 {
 	if (level == 0)
 		newName = 0;
@@ -583,7 +583,7 @@ Generator::PushContext ()
 }
 
 void
-Generator::PopContext ()
+Generator::LeaveScope ()
 {
 	-- level;
 
@@ -597,7 +597,7 @@ Generator::PopContext ()
 }
 
 void
-Generator::setExportedNodes (const ExportedNodeIndex & exportedNodes)
+Generator::ExportedNodes (const ExportedNodeIndex & exportedNodes)
 {
 	auto & index = exportedNodesIndex .at (executionContextStack .back ());
 
@@ -613,7 +613,7 @@ Generator::setExportedNodes (const ExportedNodeIndex & exportedNodes)
 }
 
 void
-Generator::setImportedNodes (const ImportedNodeIndex & importedNodes)
+Generator::ImportedNodes (const ImportedNodeIndex & importedNodes)
 {
 	auto & index = importedNodesIndex .at (executionContextStack .back ());
 
@@ -650,7 +650,7 @@ Generator::AddNode (const X3DBaseNode* const baseNode)
 }
 
 const std::string &
-Generator::GetName (const X3DBaseNode* const baseNode)
+Generator::Name (const X3DBaseNode* const baseNode)
 {
 	// Is the node already in index
 
@@ -774,7 +774,7 @@ Generator::AddImportedNode (const X3DBaseNode* const exportedNode, const std::st
 }
 
 const std::string &
-Generator::GetLocalName (const X3DBaseNode* node)
+Generator::LocalName (const X3DBaseNode* node)
 {
 	try
 	{
@@ -783,14 +783,14 @@ Generator::GetLocalName (const X3DBaseNode* node)
 	catch (...)
 	{
 		if (ExistsNode (node))
-			return GetName (node);
+			return Name (node);
 	}
 
 	throw Error <INVALID_NODE> ("Couldn't get local name for node '" + node -> getTypeName () + "'.");
 }
 
 void
-Generator::XMLEncodeToStream (std::ostream & ostream, const std::string & string)
+Generator::XMLEncode (std::ostream & ostream, const std::string & string)
 {
 	for (const auto & c : string)
 	{
