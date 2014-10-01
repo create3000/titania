@@ -92,10 +92,15 @@ get_name_from_uri (const basic::uri & uri)
 
 static
 basic::ifilestream
-golden_x3d (basic::ifilestream && istream)
+golden_x3dv (const basic::uri & uri, basic::ifilestream && istream)
 {
-	static std::string x3d2vrml = "x3d2vrml";
+	return std::move (istream);
+}
 
+static
+basic::ifilestream
+golden_program (const std::string & to_x3dv, basic::ifilestream && istream)
+{
 	int    stdin     = 0;
 	int    stdout    = 0;
 	int    stderr    = 0;
@@ -104,9 +109,9 @@ golden_x3d (basic::ifilestream && istream)
 
 	// Open pipe
 
-	if (os::popen3 (x3d2vrml, &stdin, &stdout, &stderr) <= 0)
+	if (os::popen3 (to_x3dv, &stdin, &stdout, &stderr) <= 0)
 	{
-		__LOG__ << "Couldn't open " << x3d2vrml << "." << std::endl;
+		__LOG__ << "Couldn't open " << to_x3dv << "." << std::endl;
 		throw false;
 	}
 
@@ -142,7 +147,25 @@ golden_x3d (basic::ifilestream && istream)
 
 static
 basic::ifilestream
-golden_text (basic::ifilestream && istream)
+golden_x3d (const basic::uri & uri, basic::ifilestream && istream)
+{
+	static const std::string x3d2vrml = "x3d2vrml";
+
+	return golden_program (x3d2vrml, std::move (istream));
+}
+
+static
+basic::ifilestream
+golden_obj (const basic::uri & uri, basic::ifilestream && istream)
+{
+	const std::string obj2wrl = "perl '" + os::find_data_file ("titania/goldengate/obj2wrl.pl") + "'";
+
+	return golden_program (obj2wrl, std::move (istream));
+}
+
+static
+basic::ifilestream
+golden_text (const basic::uri & uri, basic::ifilestream && istream)
 {
 	static const std::string X3D_XML = "<X3D ";
 
@@ -165,14 +188,14 @@ golden_text (basic::ifilestream && istream)
 	// Test
 
 	if (std::string (data, istream .gcount ()) == "<X3D ")
-		return golden_x3d (std::move (istream));
+		return golden_x3d (uri, std::move (istream));
 
 	throw false;
 }
 
 static
 basic::ifilestream
-golden_image (const basic::uri & uri)
+golden_image (const basic::uri & uri, basic::ifilestream && istream)
 {
 	Magick::Image image;
 	image .read (uri);
@@ -193,7 +216,7 @@ golden_image (const basic::uri & uri)
 
 static
 basic::ifilestream
-golden_audio (const basic::uri & uri)
+golden_audio (const basic::uri & uri, basic::ifilestream && istream)
 {
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/audio.wrl"));
 
@@ -206,7 +229,7 @@ golden_audio (const basic::uri & uri)
 
 static
 basic::ifilestream
-golden_video (const basic::uri & uri)
+golden_video (const basic::uri & uri, basic::ifilestream && istream)
 {
 	MediaStream mediaStream;
 
@@ -237,41 +260,50 @@ golden_video (const basic::uri & uri)
 basic::ifilestream
 golden_gate (const basic::uri & uri, basic::ifilestream && istream)
 {
+	using GoldenFunction = std::function <basic::ifilestream (const basic::uri & uri, basic::ifilestream && istream)>;
+
+	static const std::map <std::string, GoldenFunction> contentTypes = {
+		std::make_pair ("model/vrml",      &golden_x3dv),
+		std::make_pair ("x-world/x-vrml",  &golden_x3dv),
+		std::make_pair ("model/x3d+vrml",  &golden_x3dv),
+		std::make_pair ("model/x3d+xml",   &golden_x3d),
+		std::make_pair ("application/xml", &golden_x3d),
+		std::make_pair ("text/plain",      &golden_text),
+		std::make_pair ("application/ogg", &golden_video)
+	};
+
+	static const std::map <std::string, GoldenFunction> suffixes = {
+		std::make_pair (".obj", &golden_obj)
+	};
+
 	try
 	{
 		const std::string contentType = istream .response_headers () .at ("Content-Type");
 	
 		//__LOG__ << contentType << " : " << uri << std::endl;
 
-		if (contentType == "model/vrml")
-			return std::move (istream);
+		try
+		{
+			return contentTypes .at (contentType) (uri, std::move (istream));
+		}
+		catch (const std::out_of_range &)
+		{
+			try
+			{
+				return suffixes .at (uri .suffix ()) (uri, std::move (istream));
+			}
+			catch (const std::out_of_range &)
+			{
+				if (Gio::content_type_is_a (contentType, "image/*"))
+					return golden_image (uri, std::move (istream));
 
-		if (contentType == "x-world/x-vrml")
-			return std::move (istream);
+				if (Gio::content_type_is_a (contentType, "audio/*"))
+					return golden_audio (uri, std::move (istream));
 
-		if (contentType == "model/x3d+vrml")
-			return std::move (istream);
-
-		if (contentType == "model/x3d+xml")
-			return golden_x3d (std::move (istream));
-
-		if (contentType == "application/xml")
-			return golden_x3d (std::move (istream));
-
-		if (contentType == "text/plain")
-			return golden_text (std::move (istream));
-
-		if (Gio::content_type_is_a (contentType, "image/*"))
-			return golden_image (uri);
-
-		if (Gio::content_type_is_a (contentType, "audio/*"))
-			return golden_audio (uri);
-
-		if (Gio::content_type_is_a (contentType, "video/*"))
-			return golden_video (uri);
-
-		if (contentType == "application/ogg")
-			return golden_video (uri);
+				if (Gio::content_type_is_a (contentType, "video/*"))
+					return golden_video (uri, std::move (istream));
+			}
+		}
 	}
 	catch (...)
 	{ }

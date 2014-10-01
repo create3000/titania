@@ -790,6 +790,7 @@
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\HitArray.h" />
     <None Include="Titania\X3D\Components\PointingDeviceSensor\TouchGroup.h" />
     <None Include="Titania\X3D\Tools\PointingDeviceSensor\TouchGroupTool.h" />
+    <None Include="share\titania\goldengate\obj2wrl.pl" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

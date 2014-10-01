@@ -38,6 +38,7 @@
       <pattern>*.wrl</pattern>
       <pattern>*.wrz</pattern>
       <pattern>*.wrl.gz</pattern>
+      <pattern>*.obj</pattern>
     </patterns>
   </object>
   <object class="GtkImage" id="ImportImage">

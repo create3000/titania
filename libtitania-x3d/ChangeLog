@@ -1,5 +1,12 @@
 2014-10-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* obj2wrl.pl:
+	* GoldenGate.cpp:
+	* X3DRenderingContext.cpp: 
+
+2014-10-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFString.cpp:
 	* X3DPtrArray.h:
 	* X3DLayerNode.cpp: 

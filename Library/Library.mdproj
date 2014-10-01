@@ -2467,6 +2467,12 @@
     <None Include="Prototypes\Button\DiskSensor.x3dv" />
     <None Include="Prototypes\Button\ScrolledWindow\example.x3dv" />
     <None Include="Tests\Shape\Dimmly.x3dv" />
+    <None Include="Examples\DLMF\5.3.F4.wrl" />
+    <None Include="Examples\DLMF\5.3.F4.x3d" />
+    <None Include="Examples\DLMF\6.3.F3.wrl" />
+    <None Include="Examples\DLMF\6.3.F3.x3d" />
+    <None Include="Examples\DLMF\21.4.F1a.wrl" />
+    <None Include="Examples\DLMF\21.4.F1a.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

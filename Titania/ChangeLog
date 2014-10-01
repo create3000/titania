@@ -1,5 +1,10 @@
 2014-10-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* FileOpenDialog.xml:
+	* FileImportDialog.xml: 
+
+2014-10-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserWidget.h:
 	* X3DBrowserEditor.cpp:
 	* X3DBrowserWidget.cpp:

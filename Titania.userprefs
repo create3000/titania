@@ -2,103 +2,76 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.h" Line="136" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/X3DGridEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/GridEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/GridEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/GridTool.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/GridTool.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/AngleTool.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/AngleTool.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/X3DAngleEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GridEditor/X3DAngleEditor.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="153" Column="44" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="258" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DViewportNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/Viewport.cpp" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="miscellaneous" expanded="True">
-            <Node name="glade2c++" expanded="True" />
-          </Node>
-          <Node name="build" expanded="True" />
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
-            <Node name="Materials" expanded="True" />
             <Node name="Tests" expanded="True">
-              <Node name="images" expanded="True" />
+              <Node name="Basic" expanded="True" />
               <Node name="Shape" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="Math" expanded="True">
-                <Node name="Numbers" expanded="True" />
-              </Node>
+              <Node name="Basic" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
-                <Node name="pages" expanded="True">
-                  <Node name="about" expanded="True" />
-                </Node>
                 <Node name="tools" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="ParticleSystems" expanded="True" />
-                  <Node name="Picking" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
+                  <Node name="Layering" expanded="True">
+                    <Node name="X3DLayerNode.cpp" selected="True" />
+                  </Node>
                 </Node>
-                <Node name="Tools" expanded="True">
-                  <Node name="Grids" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
-                  <Node name="Picking" expanded="True" />
-                </Node>
+                <Node name="Configuration" expanded="True" />
+                <Node name="Execution" expanded="True" />
               </Node>
             </Node>
           </Node>
-          <Node name="Papers" expanded="True">
-            <Node name="CosmoWorlds" expanded="True" />
-          </Node>
           <Node name="Titania" expanded="True">
-            <Node name="scripts" expanded="True" />
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
-                <Node name="pages" expanded="True">
-                  <Node name="about" expanded="True" />
-                </Node>
                 <Node name="ui" expanded="True">
-                  <Node name="Dialogs" expanded="True" />
                   <Node name="Editors" expanded="True" />
-                  <Node name="icons" expanded="True" />
                 </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
               <Node name="Configuration" expanded="True" />
               <Node name="Dialogs" expanded="True">
-                <Node name="NodeIndex" expanded="True">
-                  <Node name="NodeIndex.cpp" selected="True" />
-                </Node>
+                <Node name="NodeIndex" expanded="True" />
               </Node>
               <Node name="Editors" expanded="True">
                 <Node name="GridEditor" expanded="True" />
+                <Node name="NodePropertiesEditor" expanded="True" />
               </Node>
               <Node name="Widgets" expanded="True">
                 <Node name="Console" expanded="True" />
+                <Node name="OutlineEditor" expanded="True">
+                  <Node name="CellRenderer" expanded="True" />
+                </Node>
                 <Node name="ScriptEditor" expanded="True" />
               </Node>
             </Node>
           </Node>
+          <Node name="titania-info" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
