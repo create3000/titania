@@ -57,6 +57,8 @@
 namespace titania {
 namespace X3D {
 
+class TouchSensor;
+
 class Anchor :
 	public X3DGroupingNode, public X3DUrlObject
 {
@@ -118,16 +120,6 @@ public:
 	parameter () const
 	{ return *fields .parameter; }
 
-	///  @name Event handlers
-
-	virtual
-	void
-	set_over (const bool);
-
-	virtual
-	void
-	set_active (const bool);
-
 	///  @name Operations
 
 	virtual
@@ -147,6 +139,9 @@ public:
 	virtual
 	void
 	dispose () override;
+	
+	virtual
+	~Anchor ();
 
 
 protected:
@@ -178,7 +173,7 @@ private:
 
 	Fields fields;
 
-	bool isOver;
+	X3DPtr <TouchSensor> touchSensorNode;
 
 };
 

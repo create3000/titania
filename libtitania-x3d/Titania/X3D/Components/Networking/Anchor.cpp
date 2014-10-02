@@ -50,6 +50,7 @@
 
 #include "Anchor.h"
 
+#include "../PointingDeviceSensor/TouchSensor.h"
 #include "../../Browser/Notification.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -73,7 +74,7 @@ Anchor::Anchor (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	   X3DUrlObject (),
 	         fields (),
-	         isOver (false)
+	touchSensorNode (new TouchSensor (executionContext))
 {
 	addType (X3DConstants::Anchor);
 
@@ -86,6 +87,8 @@ Anchor::Anchor (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "addChildren",    addChildren ());
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
+	
+	X3DChildNode::addChildren (touchSensorNode);
 }
 
 X3DBaseNode*
@@ -99,6 +102,13 @@ Anchor::initialize ()
 {
 	X3DGroupingNode::initialize ();
 	X3DUrlObject::initialize ();
+	
+	touchSensorNode -> touchTime () .addInterest (this, &Anchor::requestImmediateLoad);
+	
+	description () .addInterest (touchSensorNode -> description ());
+
+	touchSensorNode -> description () = description ();
+	touchSensorNode -> setup ();
 }
 
 void
@@ -106,27 +116,10 @@ Anchor::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	touchSensorNode -> setExecutionContext (executionContext);
+
 	X3DUrlObject::setExecutionContext (executionContext);
 	X3DGroupingNode::setExecutionContext (executionContext);
-}
-
-void
-Anchor::set_over (const bool value)
-{
-	if (value not_eq isOver)
-	{
-		isOver = value;
-
-		if (isOver and not description () .empty ())
-			getBrowser () -> getNotification () -> string () = description ();
-	}
-}
-
-void
-Anchor::set_active (const bool value)
-{
-	if (isOver and not value)
-		requestImmediateLoad ();
 }
 
 void
@@ -153,18 +146,13 @@ Anchor::traverse (const TraverseType type)
 	{
 		case TraverseType::POINTER:
 		{
-			if (getExecutionContext () -> isLive () and isLive ())
-			{
-				getBrowser () -> getSensors () .emplace_back ();
-				getBrowser () -> getSensors () .back () .emplace (this);
+			getBrowser () -> getSensors () .emplace_back ();
+			touchSensorNode -> push ();
 
-				X3DGroupingNode::traverse (type);
+			X3DGroupingNode::traverse (type);
 
-				getBrowser () -> getSensors () .pop_back ();
-				break;
-			}
-			
-			// else proceed with next case.
+			getBrowser () -> getSensors () .pop_back ();
+			break;
 		}
 		default:
 		{
@@ -186,6 +174,9 @@ Anchor::dispose ()
 	X3DUrlObject::dispose ();
 	X3DGroupingNode::dispose ();
 }
+
+Anchor::~Anchor ()
+{ }
 
 } // X3D
 } // titania

@@ -99,18 +99,6 @@ public:
 	parameter () const final override
 	{ return getNode () -> parameter (); }
 
-	///  @name Event handlers
-
-	virtual
-	void
-	set_over (const bool value) final override
-	{ return getNode () -> set_over (value); }
-
-	virtual
-	void
-	set_active (const bool value) final override
-	{ return getNode () -> set_over (value); }
-
 	///  @name Operations
 
 	virtual

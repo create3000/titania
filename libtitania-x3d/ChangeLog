@@ -1,5 +1,18 @@
 2014-10-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* AnchorTool.h:
+	* Anchor.h:
+	* Anchor.cpp:
+	* Hit.h:
+	* Hit.cpp:
+	* PointingDevice.h:
+	* PointingDevice.cpp:
+	* X3DPointingDeviceSensorContext.h:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorContext.cpp: 
+
+2014-10-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DConstants.h:
 	* X3DBaseNode.cpp:
 	* obj2wrl.pl:

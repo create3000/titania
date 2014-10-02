@@ -98,7 +98,7 @@ public:
 	bool
 	isPointerInRectangle (const Vector4i &) const;
 
-	std::vector <NodeSet> &
+	std::vector <PointingDeviceSensorSet> &
 	getSensors ()
 	{ return enabledSensors; }
 
@@ -167,16 +167,16 @@ private:
 
 	//  @name Members
 
-	SFBool                sensitive;
-	Vector2d              pointer;
-	Line3d                hitRay;
-	HitArray              hits;
-	std::vector <NodeSet> enabledSensors;
-	MFNode                overSensors;
-	MFNode                activeSensors;
-	X3DLayerNodePtr       selectedLayer;
-	time_type             pressTime;
-	bool                  hasMoved;
+	SFBool                                    sensitive;
+	Vector2d                                  pointer;
+	Line3d                                    hitRay;
+	HitArray                                  hits;
+	std::vector <PointingDeviceSensorSet>     enabledSensors;
+	X3DPtrArray <X3DPointingDeviceSensorNode> overSensors;
+	X3DPtrArray <X3DPointingDeviceSensorNode> activeSensors;
+	X3DLayerNodePtr                           selectedLayer;
+	time_type                                 pressTime;
+	bool                                      hasMoved;
 
 };
 

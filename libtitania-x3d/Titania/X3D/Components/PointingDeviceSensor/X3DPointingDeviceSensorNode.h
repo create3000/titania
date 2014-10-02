@@ -92,11 +92,6 @@ public:
 
 	virtual
 	void
-	set_touch ()
-	{ }
-
-	virtual
-	void
 	set_over (const HitPtr &, const bool);
 
 	virtual

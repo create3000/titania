@@ -60,7 +60,7 @@ Hit::Hit (const Vector2d & pointer,
           const Matrix4d & modelViewMatrix,
           const Line3d & hitRay,
           const IntersectionPtr & intersection,
-          const NodeSet & sensors,
+          const PointingDeviceSensorSet & sensors,
           const X3DShapeNodePtr shape,
           const X3DLayerNodePtr layer) :
 	        pointer (pointer),

@@ -72,9 +72,17 @@ PointingDevice::initialize ()
 {
 	X3DBrowserObject::initialize ();
 
+	getBrowser () -> initialized () .addInterest (this, &PointingDevice::set_initialized);
 	getBrowser () -> isSensitive () .addInterest (this, &PointingDevice::set_sensitive);
 
 	set_sensitive ();
+}
+
+void
+PointingDevice::set_initialized ()
+{
+	button = 0;
+	isOver = false;
 }
 
 void

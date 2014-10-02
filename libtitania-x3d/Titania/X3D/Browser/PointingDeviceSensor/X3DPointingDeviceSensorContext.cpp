@@ -50,7 +50,6 @@
 
 #include "X3DPointingDeviceSensorContext.h"
 
-#include "../../Components/Networking/Anchor.h"
 #include "../../Components/PointingDeviceSensor/X3DDragSensorNode.h"
 #include "../../Components/PointingDeviceSensor/X3DTouchSensorNode.h"
 #include "../../Execution/World.h"
@@ -70,7 +69,7 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	       pointer (),
 	        hitRay (),
 	          hits (),
-	enabledSensors ({ NodeSet () }),
+	enabledSensors ({ PointingDeviceSensorSet () }),
 	   overSensors (),
 	 activeSensors (),
 	 selectedLayer (),
@@ -120,7 +119,7 @@ X3DPointingDeviceSensorContext::click (const double x, const double y)
 
 	std::stable_sort (hits .begin (), hits .end (), HitComp { });
 
-	enabledSensors = { NodeSet () };
+	enabledSensors = { PointingDeviceSensorSet () };
 }
 
 bool
@@ -168,7 +167,7 @@ X3DPointingDeviceSensorContext::motion ()
 {
 	// Set isOver to FALSE for appropriate nodes
 
-	std::vector <X3DBaseNode*> difference;
+	std::vector <X3DPointingDeviceSensorNode*> difference;
 
 	if (getHits () .empty ())
 		difference .assign (overSensors .begin (), overSensors .end ());
@@ -182,21 +181,8 @@ X3DPointingDeviceSensorContext::motion ()
 		                     std::back_inserter (difference));
 	}
 
-	for (const auto & node : difference)
-	{
-		const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
-
-		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_over (getNearestHit (), false);
-
-		else
-		{
-			const auto anchor = dynamic_cast <Anchor*> (node);
-
-			if (anchor)
-				anchor -> set_over (false);
-		}
-	}
+	for (const auto & pointingDeviceSensorNode : difference)
+		pointingDeviceSensorNode -> set_over (getNearestHit (), false);
 
 	// Set isOver to TRUE for appropriate nodes
 
@@ -208,33 +194,20 @@ X3DPointingDeviceSensorContext::motion ()
 		overSensors .assign (getNearestHit () -> sensors .begin (),
 		                     getNearestHit () -> sensors .end ());
 
-		for (const auto & node : overSensors)
-		{
-			const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
-
-			if (pointingDeviceSensorNode)
-				pointingDeviceSensorNode -> set_over (getNearestHit (), true);
-
-			else
-			{
-				const auto anchor = dynamic_cast <Anchor*> (node .getValue ());
-
-				if (anchor)
-					anchor -> set_over (true);
-			}
-		}
+		for (const auto & pointingDeviceSensorNode : overSensors)
+			pointingDeviceSensorNode -> set_over (getNearestHit (), true);
 	}
 
 	// Forward motion event to active drag sensor nodes
 
-	for (const auto & node : activeSensors)
+	for (const auto & pointingDeviceSensorNode : activeSensors)
 	{
-		const auto dragSensorNode = dynamic_cast <X3DDragSensorNode*> (node .getValue ());
+		const auto dragSensorNode = dynamic_cast <X3DDragSensorNode*> (pointingDeviceSensorNode .getValue ());
 
 		if (dragSensorNode)
 		{
 			dragSensorNode -> set_motion (getHits () .empty ()
-			                              ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr, nullptr)
+			                              ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, nullptr)
 													: getNearestHit ());
 		}
 	}
@@ -259,21 +232,8 @@ X3DPointingDeviceSensorContext::buttonPressEvent (const double x, const double y
 	activeSensors .assign (getNearestHit () -> sensors .begin (),
 	                       getNearestHit () -> sensors .end ());
 
-	for (const auto & node : activeSensors)
-	{
-		const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
-
-		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_active (getNearestHit (), true);
-
-		else
-		{
-			const auto anchor = dynamic_cast <Anchor*> (node .getValue ());
-
-			if (anchor)
-				anchor -> set_active (true);
-		}
-	}
+	for (const auto & pointingDeviceSensorNode : activeSensors)
+		pointingDeviceSensorNode -> set_active (getNearestHit (), true);
 
 	return true;
 }
@@ -289,22 +249,9 @@ X3DPointingDeviceSensorContext::buttonReleaseEvent ()
 
 	selectedLayer = nullptr;
 
-	for (const auto & node : activeSensors)
-	{
-		const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
-
-		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr, nullptr),
-			                                        false);
-
-		else
-		{
-			const auto anchor = dynamic_cast <Anchor*> (node .getValue ());
-
-			if (anchor)
-				anchor -> set_active (false);
-		}
-	}
+	for (const auto & pointingDeviceSensorNode : activeSensors)
+		pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, nullptr),
+			                                     false);
 
 	activeSensors .clear ();
 
