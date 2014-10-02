@@ -709,7 +709,7 @@ X3DBaseNode::getPreDefinedFields () const
 
 	for (const auto & field : std::make_pair (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
 	{
-		if (field -> getRealAccessType () & AccessType::HIDDEN)
+		if (field -> isHidden ())
 			continue;
 
 		try

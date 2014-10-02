@@ -1,3 +1,14 @@
+2014-10-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DConstants.h:
+	* X3DBaseNode.cpp:
+	* obj2wrl.pl:
+	* Generator.cpp:
+	* X3DFieldDefinition.h:
+	* GeoViewpoint.h:
+	* jsContext.cpp:
+	* GeoViewpoint.cpp: 
+
 2014-10-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

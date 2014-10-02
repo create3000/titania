@@ -91,6 +91,12 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
+
 	///  @name Fields
 
 	virtual
@@ -187,6 +193,10 @@ public:
 	virtual
 	void
 	reshape (const double, const double) final override;
+
+	virtual
+	void
+	traverse (const TraverseType) override;
 
 	virtual
 	void

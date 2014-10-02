@@ -270,12 +270,12 @@ for ( $i=0; $i<$nLines; $i++ )
 {
 	chop( $line = $OBJ[$i] );
 
-	next if ( $line =~ /^#/ );  # Skip comments
-	next if ( $line =~ /^$/ );  # Skip blank lines
+	next if ( $line =~ /^#/o );  # Skip comments
+	next if ( $line =~ /^$/o );  # Skip blank lines
 
-	if ( $line =~ /^v / )
+	if ( $line =~ /^v /o )
 	{
-		( $v, $x, $y, $z, @junk ) = split( /\s+/, $line );
+		( $v, $x, $y, $z, @junk ) = split( /\s+/o, $line );
 		$vertices{$nVerts} = join( " ", $x, $y, $z );
 
 		if ( $x_max eq "" )
@@ -299,16 +299,16 @@ for ( $i=0; $i<$nLines; $i++ )
 
 		$nVerts++;
 	}
-	elsif ( $line =~ /^f / )
+	elsif ( $line =~ /^f /o )
 	{
-		@temp1 = split( /\s+/, $line );
+		@temp1 = split( /\s+/o, $line );
 		shift( @temp1 );  # Toss the "f "
 		@temp2 = ();
 		for ( $j=0; $j<=$#temp1; $j++ )
 		{
-			( $index, @junk ) = split( /\//, $temp1[$j] );
+			( $index, @junk ) = split( /\//o, $temp1[$j] );
 			$index -= 1;
-			if ( $input_name =~ /eel/ ) { $index += 1; } # HACK
+			if ( $input_name =~ /eel/o ) { $index += 1; } # HACK
 			@temp2 = ( @temp2, $index );
 		}
 
@@ -316,10 +316,10 @@ for ( $i=0; $i<$nLines; $i++ )
 
 		$nPolys++;
 	}
-	elsif ( $line =~ /^vt / )
+	elsif ( $line =~ /^vt /o )
 	{
 	}
-	elsif ( $line =~ /^vn / )
+	elsif ( $line =~ /^vn /o )
 	{
 	}
 	else

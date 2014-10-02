@@ -2473,6 +2473,7 @@
     <None Include="Examples\DLMF\6.3.F3.x3d" />
     <None Include="Examples\DLMF\21.4.F1a.wrl" />
     <None Include="Examples\DLMF\21.4.F1a.x3d" />
+    <None Include="Tests\Geospatial\GeoViewpoint3.3.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

@@ -144,10 +144,6 @@ public:
 
 	AccessType
 	getAccessType () const
-	{ realize (); return AccessType (io -> accessType & ~AccessType::HIDDEN); }
-
-	AccessType
-	getRealAccessType () const
 	{ realize (); return io -> accessType; }
 
 	bool
@@ -167,6 +163,14 @@ public:
 	virtual
 	bool
 	isDefaultValue () const = 0;
+
+	void
+	isHidden (const bool value)
+	{ realize (); io -> hidden = value; }
+
+	bool
+	isHidden () const
+	{ realize (); return io -> hidden; }
 
 	/***
 	 *  @name Reference handling
@@ -300,15 +304,17 @@ private:
 	struct IO
 	{
 		IO () :
-			accessType (initializeOnly)
+			accessType (initializeOnly),
+			    hidden (false)
 		{ }
 
-		AccessType accessType;
-		FieldDefinitionSet references;
-		RouteSet inputRoutes;
-		RouteSet outputRoutes;
+		AccessType                           accessType;
+		FieldDefinitionSet                   references;
+		RouteSet                             inputRoutes;
+		RouteSet                             outputRoutes;
 		std::set <const X3DFieldDefinition*> inputInterests;
-		FieldDefinitionSet outputInterests;
+		std::set <X3DFieldDefinition*>       outputInterests;
+		bool                                 hidden;
 	};
 
 	mutable std::unique_ptr <IO> io;

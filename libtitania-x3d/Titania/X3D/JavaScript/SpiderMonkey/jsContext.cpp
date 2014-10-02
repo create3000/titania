@@ -254,8 +254,6 @@ jsContext::setFields ()
 				defineProperty (context .get (), global, field, field -> getName () + "_changed", 0);
 				break;
 			}
-			default:
-				break;
 		}
 	}
 }

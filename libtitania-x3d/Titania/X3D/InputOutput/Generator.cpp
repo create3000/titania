@@ -89,8 +89,6 @@ Generator::X3DAccessTypesIndex::operator [ ] (const X3DFieldDefinition* const fi
 		case inputOnly:      return array [1];
 		case outputOnly:     return array [2];
 		case inputOutput:    return array [3];
-		default:
-			break;
 	}
 
 	assert (false);
@@ -109,8 +107,6 @@ Generator::VrmlAccessTypesIndex::operator [ ] (const X3DFieldDefinition* const f
 		case inputOnly:      return array [1];
 		case outputOnly:     return array [2];
 		case inputOutput:    return array [3];
-		default:
-			break;
 	}
 
 	assert (false);

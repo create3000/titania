@@ -1,0 +1,20 @@
+#X3D V3.3 utf8 Titania V0.7.4
+
+META "comment" "World of Titania"
+META "created" "Thu, 02 Oct 2014 02:17:16 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Thu, 02 Oct 2014 02:22:06 GMT"
+
+DEF Gray Background {
+  skyColor 0.2 0.2 0.2
+}
+
+DEF Zero GeoViewpoint {
+  description "Zero"
+  position 0 0 13621864
+  orientation -1 0 0 1.5708
+  navType "EXAMINE"
+}
+
+ROUTE Zero.isBound TO Zero.set_headlight

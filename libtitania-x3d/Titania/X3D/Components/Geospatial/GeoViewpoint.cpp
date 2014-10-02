@@ -70,8 +70,8 @@ GeoViewpoint::Fields::Fields () :
 	centerOfRotation (new SFVec3d ()),
 	     fieldOfView (new SFFloat (0.785398)),
 	     speedFactor (new SFFloat (1)),
-	         navType (nullptr),
-	       headlight (nullptr)
+	         navType (new MFString ({ "EXAMINE", "ANY" })),
+	       headlight (new SFBool (true))
 { }
 
 GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
@@ -81,7 +81,7 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 	             fields (),
 	              coord (),
 	          elevation (0),
-	 navigationInfoNode ()
+	 navigationInfoNode (new NavigationInfo (executionContext))
 {
 	addType (X3DConstants::GeoViewpoint);
 
@@ -95,33 +95,27 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "fieldOfView",       fieldOfView ());
 	addField (inputOutput,    "jump",              jump ());
 	addField (inputOutput,    "retainUserOffsets", retainUserOffsets ());
+	addField (inputOutput,    "navType",           navType ());           // Obsolete since 3.3.
+	addField (inputOutput,    "headlight",         headlight ());         // Obsolete since 3.3.
+	addField (initializeOnly, "speedFactor",       speedFactor ());
+	addField (outputOnly,     "isBound",           isBound ());
+	addField (outputOnly,     "bindTime",          bindTime ());
+	addField (initializeOnly, "geoOrigin",         geoOrigin ());
 
-	switch (executionContext -> getSpecificationVersion ())
+	switch (getExecutionContext () -> getSpecificationVersion ())
 	{
 		case VRML_V2_0:
 		case X3D_V3_0:
 		case X3D_V3_1:
 		case X3D_V3_2:
-		{
-			navigationInfoNode .set (new NavigationInfo (executionContext));
-
-			fields .navType   = new MFString ({ "EXAMINE", "ANY" });
-			fields .headlight = new SFBool (true);
-
-			addField (inputOutput, "navType",   navType ());
-			addField (inputOutput, "headlight", headlight ());
-
-			addChildren (navigationInfoNode);
 			break;
-		}
 		default:
+			navType ()   .isHidden (true);
+			headlight () .isHidden (true);
 			break;
 	}
 
-	addField (initializeOnly, "speedFactor",       speedFactor ());
-	addField (outputOnly,     "isBound",           isBound ());
-	addField (outputOnly,     "bindTime",          bindTime ());
-	addField (initializeOnly, "geoOrigin",         geoOrigin ());
+	addChildren (navigationInfoNode);
 }
 
 X3DBaseNode*
@@ -138,16 +132,37 @@ GeoViewpoint::initialize ()
 
 	position ()       .addInterest (this, &GeoViewpoint::set_position);
 	positionOffset () .addInterest (this, &GeoViewpoint::set_position);
+	navType ()        .addInterest (navigationInfoNode -> type ());
+	headlight ()      .addInterest (navigationInfoNode -> headlight ());
+
+	navigationInfoNode -> setup ();
 
 	set_position ();
+}
 
-	if (navigationInfoNode)
+void
+GeoViewpoint::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	navigationInfoNode -> setExecutionContext (executionContext);
+
+	switch (executionContext -> getSpecificationVersion ())
 	{
-		navType ()   .addInterest (navigationInfoNode -> type ());
-		headlight () .addInterest (navigationInfoNode -> headlight ());
-
-		navigationInfoNode -> setup ();
+		case VRML_V2_0:
+		case X3D_V3_0:
+		case X3D_V3_1:
+		case X3D_V3_2:
+			navType ()   .isHidden (false);
+			headlight () .isHidden (false);
+			break;
+		default:
+			navType ()   .isHidden (true);
+			headlight () .isHidden (true);
+			break;
 	}
+
+	X3DViewpointNode::setExecutionContext (executionContext);
 }
 
 void
@@ -244,7 +259,7 @@ GeoViewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 void
 GeoViewpoint::bindToLayer (X3DLayerNode* const layer)
 {
-	if (navigationInfoNode)
+	if (not navType () .isHidden ())
 		navigationInfoNode -> bindToLayer (layer);
 
 	X3DViewpointNode::bindToLayer (layer);
@@ -253,7 +268,7 @@ GeoViewpoint::bindToLayer (X3DLayerNode* const layer)
 void
 GeoViewpoint::unbindFromLayer (X3DLayerNode* const layer)
 {
-	if (navigationInfoNode)
+	if (not navType () .isHidden ())
 		navigationInfoNode -> unbindFromLayer (layer);
 
 	X3DViewpointNode::unbindFromLayer (layer);
@@ -262,7 +277,7 @@ GeoViewpoint::unbindFromLayer (X3DLayerNode* const layer)
 void
 GeoViewpoint::removeFromLayer (X3DLayerNode* const layer)
 {
-	if (navigationInfoNode)
+	if (not navType () .isHidden ())
 		navigationInfoNode -> removeFromLayer (layer);
 
 	X3DViewpointNode::removeFromLayer (layer);
@@ -291,6 +306,15 @@ GeoViewpoint::reshape (const double zNear, const double zFar)
 	glLoadMatrixd (perspective (getFieldOfView (), geoZNear, geoZFar, Viewport4i ()) .data ());
 
 	glMatrixMode (GL_MODELVIEW);
+}
+
+void
+GeoViewpoint::traverse (const TraverseType type)
+{
+	X3DViewpointNode::traverse (type);
+
+	if (not navType () .isHidden ())
+		navigationInfoNode -> traverse (type);
 }
 
 void
