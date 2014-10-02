@@ -90,10 +90,7 @@ public:
 		X3DField <ValueType*> (value)
 	{
 		if (value)
-		{
-			value -> addWeakParent (this);
 			value -> disposed () .addInterest (this, &X3DWeakPtr::set_disposed);
-		}
 	}
 
 	template <class Up>
@@ -150,15 +147,6 @@ public:
 	getTypeName () const
 	throw (Error <DISPOSED>) final override
 	{ return typeName; }
-
-	///  @name X3DChildObject
-	virtual
-	bool
-	hasRootedObjects (ChildObjectSet &) final override
-	{
-		// Weak pointers are no roots.
-		return false;
-	}
 
 	///  @name Boolean operator
 
@@ -279,10 +267,7 @@ X3DWeakPtr <ValueType>::addObject (ValueType* const value)
 	if (getValue () not_eq value)
 	{
 		if (value)
-		{
-			value -> addWeakParent (this);
 			value -> disposed () .addInterest (this, &X3DWeakPtr::set_disposed);
-		}
 
 		removeObject (getValue ());
 	}
@@ -296,7 +281,6 @@ X3DWeakPtr <ValueType>::removeObject (ValueType* const value)
 	{
 		reset ();
 
-		value -> removeWeakParent (this);
 		value -> disposed () .removeInterest (this, &X3DWeakPtr::set_disposed);
 	}
 }

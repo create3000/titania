@@ -70,8 +70,7 @@ X3DChildObject::addParent (X3DChildObject* const parent)
 
 	// Add parent
 
-	if (parents .emplace (parent) .second)
-		addReference ();
+	parents .emplace (parent);
 }
 
 void
@@ -89,12 +88,8 @@ X3DChildObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObj
 	// Replace parent
 
 	if (parents .erase (parentToRemove))
-	{
-		if (parents .emplace (parentToAdd) .second)
-			addReference ();
+		parents .emplace (parentToAdd);
 
-		removeReference ();
-	}
 	else
 		addParent (parentToAdd);
 }
@@ -115,11 +110,9 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		if (root == parent)
 			root = nullptr;
 
-		removeReference ();
-
 		if (getReferenceCount () == 0)
 		{
-			parents .clear ();
+			unReference ();
 
 			processShutdown ();
 			dispose ();
@@ -133,50 +126,28 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		if (hasRootedObjects (circle))
 			return;
 
-		for (auto & child : circle)
+		// We have found circular references.
+
+		for (const auto & child : circle)
 		{
-			child -> unReference ();
 			child -> parents .clear ();
+			child -> unReference ();
 		}
 
-		for (auto & child : circle)
+		for (const auto & child : circle)
 			child -> processShutdown ();
 
-		for (auto & child : circle)
+		for (const auto & child : circle)
 			child -> dispose ();
 
 		addDisposedObjects (circle .begin (), circle .end ());
 	}
 }
 
-void
-X3DChildObject::addWeakParent (X3DChildObject* const parent)
-{
-	// Determine the best guess for the shortest way to a rooted object.
-
-	if ((not root)
-	    or (parent -> getParents () .size () < root -> getParents () .size ()))
-	{
-		root = parent;
-	}
-
-	// Add parent
-
-	parents .emplace (parent);
-}
-
-void
-X3DChildObject::removeWeakParent (X3DChildObject* const parent)
-{
-	if (root == parent)
-		root = nullptr;
-
-	parents .erase (parent);
-}
-
 /***
  *  This is the main function that determines if the object has a rooted object in the hierarchy of its parents.  An
- *  object is a root object if it has no parents.
+ *  object is a root object if it has no parents.  If we haven't found rooted object then we have found circular
+ *  references, that are returned in @a seen.
  */
 bool
 X3DChildObject::hasRootedObjects (ChildObjectSet & seen)
@@ -196,7 +167,7 @@ X3DChildObject::hasRootedObjects (ChildObjectSet & seen)
 
 		// Test all other ways and save the good way.
 
-		for (auto & parent : parents)
+		for (const auto & parent : parents)
 		{
 			if (parent -> hasRootedObjects (seen))
 			{

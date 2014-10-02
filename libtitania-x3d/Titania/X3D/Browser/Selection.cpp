@@ -183,111 +183,110 @@ Selection::select ()
 	if (getBrowser () -> getHits () .empty ())
 	{
 		clear ();
+		return false;
+	}
+
+	const auto hierarchy = find (getBrowser () -> getExecutionContext () -> getRootNodes (),
+	                             getBrowser () -> getNearestHit () -> shape,
+	                             TRAVERSE_ROOT_NODES |
+	                             TRAVERSE_PROTOTYPE_INSTANCES |
+	                             TRAVERSE_INLINE_NODES |
+	                             TRAVERSE_TOOL_OBJECTS |
+	                             TRAVERSE_VISIBLE_NODES);
+
+
+	if (hierarchy .empty ())
+		return false;
+
+	SFNode node;
+
+	if (selectLowest)
+	{
+		for (const auto & object : basic::make_reverse_range (hierarchy))
+		{
+			const SFNode lowest (object);
+
+			if (not lowest)
+				continue;
+
+			if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+				continue;
+				
+			if (not node)
+				node = lowest;
+
+			if (dynamic_cast <Transform*> (lowest .getValue ()))
+			{
+				node = lowest;
+				break;
+			}
+		}
 	}
 	else
 	{
-		const auto hierarchy = find (getBrowser () -> getExecutionContext () -> getRootNodes (),
-		                             getBrowser () -> getNearestHit () -> shape,
-		                             TRAVERSE_ROOT_NODES |
-		                             TRAVERSE_PROTOTYPE_INSTANCES |
-		                             TRAVERSE_INLINE_NODES |
-		                             TRAVERSE_TOOL_OBJECTS |
-		                             TRAVERSE_VISIBLE_NODES);
-
-
-		if (not hierarchy .empty ())
+		// Find highest Transform
+	
+		for (const auto & object : hierarchy)
 		{
-			SFNode node;
+			const SFNode highest (object);
 
-			if (selectLowest)
+			if (not highest)
+				continue;
+
+			if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+				continue;
+
+			if (not node)
+				node = highest;
+
+			if (dynamic_cast <Transform*> (highest .getValue ()))
 			{
-				for (const auto & object : basic::make_reverse_range (hierarchy))
+				node = highest;
+				break;
+			}
+		}
+
+		// If highest is a LayerSet, no Transform is found and we search for the highest X3DChildNode.
+
+		if (x3d_cast <LayerSet*> (node))
+		{
+			for (const auto & object : hierarchy)
+			{
+				const SFNode highest (object);
+
+				if (not highest)
+					continue;
+
+				if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+					continue;
+
+				if (x3d_cast <X3DChildNode*> (highest))
 				{
-					const SFNode lowest (object);
-
-					if (not lowest)
-						continue;
-
-					if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-						continue;
-						
-					if (not node)
-						node = lowest;
-
-					if (dynamic_cast <Transform*> (lowest .getValue ()))
-					{
-						node = lowest;
-						break;
-					}
+					node = highest;
+					break;
 				}
 			}
+		}
+	}
+
+	if (node)
+	{
+		if (isSelected (node))
+		{
+			if (getMode () == Selection::MULTIPLE)
+				removeChildren ({ node });
 			else
-			{
-				// Find highest Transform
-			
-				for (const auto & object : hierarchy)
-				{
-					const SFNode highest (object);
+				node -> addTool ();
+		}
+		else
+		{
+			if (getMode () == Selection::MULTIPLE)
+				addChildren ({ node });
+			else
+				setChildren ({ node });
 
-					if (not highest)
-						continue;
-
-					if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-						continue;
-
-					if (not node)
-						node = highest;
-
-					if (dynamic_cast <Transform*> (highest .getValue ()))
-					{
-						node = highest;
-						break;
-					}
-				}
-
-				// If highest is a LayerSet, no Transform is found and we search for the highest X3DChildNode.
-
-				if (x3d_cast <LayerSet*> (node))
-				{
-					for (const auto & object : hierarchy)
-					{
-						const SFNode highest (object);
-
-						if (not highest)
-							continue;
-
-						if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-							continue;
-
-						if (x3d_cast <X3DChildNode*> (highest))
-						{
-							node = highest;
-							break;
-						}
-					}
-				}
-			}
-
-			if (node)
-			{
-				if (isSelected (node))
-				{
-					if (getMode () == Selection::MULTIPLE)
-						removeChildren ({ node });
-					else
-						node -> addTool ();
-				}
-				else
-				{
-					if (getMode () == Selection::MULTIPLE)
-						addChildren ({ node });
-					else
-						setChildren ({ node });
-
-					touchTime = getCurrentTime ();
-					return true;
-				}
-			}
+			touchTime = getCurrentTime ();
+			return true;
 		}
 	}
 	

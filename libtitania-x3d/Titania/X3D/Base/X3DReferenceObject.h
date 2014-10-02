@@ -66,21 +66,6 @@ class X3DReferenceObject :
 public:
 
 	/***
-	 *  @name Reference handling
-	 */
-
-	///  Returns the number of strong references of this object.  Weak references are not counted.
-	virtual
-	size_t
-	getReferenceCount () const final override
-	{ return referenceCount; }
-
-	///  Returns number of weak references of this object.
-	size_t
-	getWeakReferenceCount () const
-	{ return getParents () .size () - getReferenceCount (); }
-
-	/***
 	 *  @name Parent handling
 	 */
 
@@ -98,16 +83,6 @@ public:
 	virtual
 	void
 	removeParent (X3DChildObject* const) final override;
-
-	///  Add a parent to this object.
-	virtual
-	void
-	addWeakParent (X3DChildObject* const) final override;
-
-	///  Remove a parent from this object.
-	virtual
-	void
-	removeWeakParent (X3DChildObject* const) final override;
 
 	/***
 	 *  @name Shutdown handling
@@ -143,20 +118,10 @@ protected:
 	 *  @name Reference handling
 	 */
 
-	///  Increment the reference count for this object.
-	virtual
-	void
-	addReference () override;
-
-	///  Decrement the reference count for this object.
-	virtual
-	void
-	removeReference () override;
-
 	///  Sets the reference count for this object to 0.
 	virtual
 	void
-	unReference () override;
+	unReference () final override;
 
 	///  Processes all interests of shutdown.
 	virtual
@@ -170,7 +135,6 @@ private:
 	 *  @name Members
 	 */
 
-	size_t referenceCount;
 	bool   inShutdown;
 	Output shutdownOutput;
 

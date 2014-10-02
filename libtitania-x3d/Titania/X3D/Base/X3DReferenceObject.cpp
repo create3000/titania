@@ -55,7 +55,6 @@ namespace X3D {
 
 X3DReferenceObject::X3DReferenceObject () :
 	X3DChildObject (),
-	referenceCount (0),
 	    inShutdown (false),
 	shutdownOutput ()
 { }
@@ -88,45 +87,9 @@ X3DReferenceObject::removeParent (X3DChildObject* const parent)
 }
 
 void
-X3DReferenceObject::addWeakParent (X3DChildObject* const parent)
-{
-	if (inShutdown)
-		return;
-
-	X3DChildObject::addWeakParent (parent);
-}
-
-void
-X3DReferenceObject::removeWeakParent (X3DChildObject* const parent)
-{
-	if (inShutdown)
-		return;
-
-	X3DChildObject::removeWeakParent (parent);
-}
-
-void
-X3DReferenceObject::addReference ()
-{
-	++ referenceCount;
-}
-
-void
-X3DReferenceObject::removeReference ()
-{
-	-- referenceCount;
-
-	if (referenceCount)
-		return;
-
-	inShutdown = true;
-}
-
-void
 X3DReferenceObject::unReference ()
 {
-	referenceCount = 0;
-	inShutdown     = true;
+	inShutdown = true;
 }
 
 void

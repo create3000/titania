@@ -1,5 +1,14 @@
 2014-10-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DWeakPtr.h:
+	* Selection.cpp:
+	* X3DChildObject.h:
+	* X3DChildObject.cpp:
+	* X3DReferenceObject.h:
+	* X3DReferenceObject.cpp: 
+
+2014-10-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Loader.cpp:
 	* GeoLOD.cpp:
 	* Inline.cpp:
