@@ -164,6 +164,7 @@ GeoLOD::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	rootGroup    -> setExecutionContext (executionContext -> getBrowser () -> getPrivateScene ());
 	rootInline   -> setExecutionContext (executionContext);
 	child1Inline -> setExecutionContext (executionContext);
 	child2Inline -> setExecutionContext (executionContext);

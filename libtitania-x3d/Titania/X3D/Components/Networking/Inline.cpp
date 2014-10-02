@@ -196,13 +196,13 @@ Inline::setScene (X3DScenePtr && value)
 		value -> isLive () = getExecutionContext () -> isLive () and isLive ();
 		value -> isPrivate (getRootContext () -> isPrivate ());
 		value -> getRootNodes () .addInterest (group -> children ());
+
+		if (isInitialized ())
+			value -> setup ();
+
+		else
+			getExecutionContext () -> addUninitializedNode (value);
 	}
-
-	if (isInitialized ())
-		value -> setup ();
-
-	else
-		getExecutionContext () -> addUninitializedNode (value);
 
 	// then assign.
 

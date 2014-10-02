@@ -168,6 +168,11 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	getExecutionContext () -> isLive () .removeInterest (this, &ExternProtoDeclaration::set_live);
 
+	if (scene == getExecutionContext () -> getBrowser () -> getPrivateScene ())
+		scene = executionContext -> getBrowser () -> getPrivateScene ();
+	else if (scene)
+		scene -> setExecutionContext (executionContext);
+
 	X3DUrlObject::setExecutionContext (executionContext);
 	X3DProtoDeclarationNode::setExecutionContext (executionContext);
 

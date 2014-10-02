@@ -69,8 +69,8 @@ void
 GridTool::realize ()
 {
 	this -> tool = isEnabled ()
-	               ? X3D::createNode <X3D::GridTool> (getBrowser ())
-	               : X3D::createNode <X3D::GridTool> (getBrowserWindow () -> getMasterBrowser ());
+	               ? X3D::createNode <X3D::GridTool> (getBrowser () -> getPrivateScene ())
+	               : X3D::createNode <X3D::GridTool> (getBrowserWindow () -> getMasterBrowser () -> getPrivateScene ());
 
 	configure ();
 
@@ -127,7 +127,7 @@ GridTool::set_enabled ()
 void
 GridTool::set_browser (const X3D::BrowserPtr & browser)
 {
-	getTool () -> setExecutionContext (browser);
+	getTool () -> setExecutionContext (browser -> getPrivateScene ());
 }
 
 void

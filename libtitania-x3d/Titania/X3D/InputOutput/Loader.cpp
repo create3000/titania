@@ -107,11 +107,9 @@ throw (Error <INVALID_X3D>,
 
 	basic::ifilestream goldenistream = golden_gate ("<stream>", std::move (istream));
 
-	if (executionContext not_eq executionContext -> getBrowser ())
-	{
-		scene -> setExecutionContext (executionContext);
-		scene -> isLive () = executionContext -> isLive ();
-	}
+	scene -> setExecutionContext (executionContext);
+	scene -> isLive () = executionContext -> isLive ();
+	scene -> isPrivate (executionContext -> getRootContext () -> isPrivate ());
 
 	scene -> isCompressed (istream .is_compressed ());
 	scene -> fromStream (worldURL, goldenistream);
@@ -129,12 +127,9 @@ throw (Error <INVALID_URL>,
 
 	parseIntoScene (scene, url);
 
-	if (executionContext not_eq executionContext -> getBrowser ())
-	{
-		scene -> setExecutionContext (executionContext);
-		scene -> isLive () = executionContext -> isLive ();
-	}
-
+	scene -> setExecutionContext (executionContext);
+	scene -> isLive () = executionContext -> isLive ();
+	scene -> isPrivate (executionContext -> getRootContext () -> isPrivate ());
 	scene -> setup ();
 
 	return scene;

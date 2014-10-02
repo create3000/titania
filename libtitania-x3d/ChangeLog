@@ -1,5 +1,12 @@
 2014-10-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Loader.cpp:
+	* GeoLOD.cpp:
+	* Inline.cpp:
+	* ExternProtoDeclaration.cpp: 
+
+2014-10-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* AnchorTool.h:
 	* Anchor.h:
 	* Anchor.cpp:
