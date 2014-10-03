@@ -62,46 +62,25 @@ namespace X3D {
 static constexpr int32_t BVH_NODE     = 0;
 static constexpr int32_t BVH_TRIANGLE = 1;
 
-struct BVH::SortComparator
+class BVH::SortComparator
 {
-	SortComparator (BVH* const tree) :
-		tree (tree)
+public:
+
+	SortComparator (BVH* const tree, const size_t axis) :
+		tree (tree),
+		axis (axis)
 	{ }
 
 	bool
-	operator () (const size_t & a, const size_t & b, size_t axis) const
+	operator () (const size_t & a, const size_t & b) const
 	{
-		return min (a, axis) < min (b, axis);
+		return min (a) < min (b);
 	}
+
+private:
 
 	float
-	min (size_t triangle, size_t axis) const
-	{
-		size_t i = triangle * 3;
-
-		return std::min ({ tree -> vertices [i] [axis],
-		                   tree -> vertices [i + 1] [axis],
-		                   tree -> vertices [i + 2] [axis] });
-	}
-
-	BVH* const tree;
-
-};
-
-struct BVH::MedianComparator
-{
-	MedianComparator (BVH* const tree) :
-		tree (tree)
-	{ }
-
-	bool
-	operator () (const size_t & a, const float & value, size_t axis) const
-	{
-		return min (a, axis) < value;
-	}
-
-	float
-	min (size_t triangle, size_t axis) const
+	min (const size_t triangle) const
 	{
 		const size_t i = triangle * 3;
 
@@ -110,7 +89,40 @@ struct BVH::MedianComparator
 		                   tree -> vertices [i + 2] [axis] });
 	}
 
-	BVH* const tree;
+	BVH* const   tree;
+	const size_t axis;
+
+};
+
+class BVH::MedianComparator
+{
+public:
+
+	MedianComparator (BVH* const tree, const size_t axis) :
+		tree (tree),
+		axis (axis)
+	{ }
+
+	bool
+	operator () (const size_t & a, const float & value) const
+	{
+		return min (a) < value;
+	}
+
+private:
+
+	float
+	min (const size_t triangle) const
+	{
+		const size_t i = triangle * 3;
+
+		return std::min ({ tree -> vertices [i] [axis],
+		                   tree -> vertices [i + 1] [axis],
+		                   tree -> vertices [i + 2] [axis] });
+	}
+
+	BVH* const   tree;
+	const size_t axis;
 
 };
 
@@ -124,12 +136,18 @@ public:
 		tree (tree)
 	{ }
 
+	virtual
+	size_t
+	toArray (std::vector <ArrayValue> &) const = 0;
+
+protected:
+
 	const Vector3f &
-	getVertex (size_t triangle, size_t index) const
+	getVertex (const size_t triangle, const size_t index) const
 	{ return tree -> vertices [triangle * 3 + index]; }
 
 	float
-	getMin (size_t triangle, size_t axis) const
+	getMin (const size_t triangle, const size_t axis) const
 	{
 		const size_t i = triangle * 3;
 
@@ -138,9 +156,7 @@ public:
 		                   tree -> vertices [i + 2] [axis] });
 	}
 
-	virtual
-	size_t
-	toArray (std::vector <ArrayValue> &) const = 0;
+private:
 
 	///  @name Members
 
@@ -171,7 +187,10 @@ public:
 		return index;
 	}
 
-	size_t triangle;
+
+private:
+
+	const size_t triangle;
 
 };
 
@@ -220,12 +239,12 @@ public:
 
 			const size_t axis = getLongestAxis (min, max);
 
-			std::sort (begin, end, std::bind (SortComparator (tree), _1, _2, axis));
+			std::sort (begin, end, SortComparator (tree, axis));
 
 			// Split array
 
 			const float value = (getMin (*begin, axis) + getMin (*(end - 1), axis)) / 2;
-			const auto  iter  = std::lower_bound (begin, end, value, std::bind (MedianComparator (tree), _1, _2, axis));
+			const auto  iter  = std::lower_bound (begin, end, value, MedianComparator (tree, axis));
 
 			leftSize = iter - begin;
 

@@ -69,7 +69,7 @@ public:
 	void
 	setExecutionContext (X3DExecutionContext* const)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>) override;
 
 	///  @name Destruction
 

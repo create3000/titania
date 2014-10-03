@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Titania 0.1
+#VRML V2.0 utf8 Titania V0.7.4
 
 EXTERNPROTO Torus [
   exposedField SFFloat minorRadius
@@ -20,17 +20,25 @@ Viewpoint {
   position 0 0 20
 }
 
-Transform {
+DEF _1 Transform {
   children Shape {
     appearance Appearance {
+      fillProperties FillProperties {
+        filled FALSE
+        hatched FALSE
+      }
+      lineProperties LineProperties {
+        linewidthScaleFactor 1
+      }
       material Material {
-        transparency 1
+        diffuseColor 0 0 0
       }
     }
-    geometry DEF _1 Torus {
+    geometry DEF _2 Torus {
       majorRadius 4
       minorDimension 16
       majorDimension 20
+      solid FALSE
       creaseAngle 0
     }
   }
@@ -51,6 +59,6 @@ ParticleSystem {
     }
   }
   physics BoundedPhysicsModel {
-    geometry USE _1
+    geometry USE _2
   }
 }

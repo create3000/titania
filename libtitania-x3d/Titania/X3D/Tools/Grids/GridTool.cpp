@@ -51,7 +51,12 @@
 #include "GridTool.h"
 
 #include "../../Bits/config.h"
+#include "../../Browser/Selection.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+
+#include "../../Components/Grouping/Transform.h"
+#include "../Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
 namespace X3D {
@@ -69,7 +74,9 @@ GridTool::Fields::Fields () :
 GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGridTool (),
-	     fields ()
+	     fields (),
+	  selection (),
+	   children ()
 {
 	addType (X3DConstants::GridTool);
 
@@ -83,6 +90,8 @@ GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "color",           color ());
 	addField (inputOutput, "lineColor",       lineColor ());
 	addField (inputOutput, "majorLineColor",  majorLineColor ());
+
+	addChildren (selection, children);
 }
 
 X3DBaseNode*
@@ -97,6 +106,19 @@ GridTool::initialize ()
 	X3DGridTool::initialize ();
 
 	requestAsyncLoad ({ get_tool ("GridTool.x3dv") .str () });
+
+	set_selection (getExecutionContext () -> getBrowser () -> getSelection ());
+}
+
+void
+GridTool::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+
+{
+	X3DGridTool::setExecutionContext (executionContext);
+
+	set_selection (getBrowser () -> getSelection ());
 }
 
 void
@@ -123,6 +145,133 @@ GridTool::realize ()
 	}
 	catch (const X3DError & error)
 	{ }
+}
+
+void
+GridTool::set_selection (const SelectionPtr & value)
+{
+	__LOG__ << std::endl;
+
+	if (selection)
+		selection -> getChildren () .removeInterest (this, &GridTool::set_children);
+
+	selection = value;
+	selection -> getChildren () .addInterest (this, &GridTool::set_children);
+
+	set_children (selection -> getChildren ());
+}
+
+void
+GridTool::set_children (const MFNode & value)
+{
+	__LOG__ << value .size () << std::endl;
+
+	for (const auto & node : children)
+	{
+		const X3DPtr <X3DTransformNode> transform (node);
+
+		if (transform)
+		{
+			transform -> translation () .removeInterest (this, &GridTool::set_translation);
+		}
+	}
+
+	children = value;
+
+	for (const auto & node : children)
+	{
+		const X3DPtr <X3DTransformNode> transform (node);
+
+		if (transform)
+		{
+			transform -> translation () .addInterest (this, &GridTool::set_translation, transform);
+		}
+	}
+}
+
+void
+GridTool::set_translation (const X3DPtr <X3DTransformNode> & transform)
+{
+	if (not getBrowser () -> getSelection () -> isActive ())
+		return;
+
+	const X3DPtr <X3DTransformNodeTool <Transform>> tool (transform);
+
+	if (not tool)
+		return;
+
+	for (const auto & node : children)
+	{
+		const auto transform = dynamic_cast <X3DTransformNode*> (node .getValue ());
+
+		if (transform)
+		{
+			transform -> translation () .removeInterest (this, &GridTool::set_translation);
+			transform -> translation () .addInterest (this, &GridTool::connectTranslation, transform);
+		}
+	}
+
+	// Get absolute translation.
+
+	Vector3d translation = transform -> translation () .getValue ();
+	translation = translation * tool -> getTransformationMatrix ();
+
+	// Calculate snap position.
+
+	constexpr float snapDistance = 0.2;
+
+	translation = translation * ~Rotation4d (rotation () .getValue ());
+
+	if (scale () .getX ())
+	{
+		const auto x = getTranslation (0, translation);
+
+		if (std::abs (x - translation .x ()) < std::abs (scale () .getX () * snapDistance))
+			translation .x (x);
+	}
+
+	if (scale () .getY ())
+	{
+		const auto y = getTranslation (1, translation);
+
+		if (std::abs (y - translation .y ()) < std::abs (scale () .getY () * snapDistance))
+			translation .y (y);
+	}
+
+	if (scale () .getZ ())
+	{
+		const auto z = getTranslation (2, translation);
+
+		if (std::abs (z - translation .z ()) < std::abs (scale () .getZ () * snapDistance))
+			translation .z (z);
+	}
+
+	translation = translation * Rotation4d (rotation () .getValue ());
+
+	// Apply relative translation.
+
+	translation = translation * ~tool -> getTransformationMatrix ();
+
+	transform -> translation () = translation;
+
+}
+
+double
+GridTool::getTranslation (const size_t i, const Vector3d & position)
+{
+	const auto o  = dimension () .get1Value (i) % 2 * 0.5;
+	const auto p  = std::round (position [i] / scale () .get1Value (i)) * scale () .get1Value (i);
+	const auto p1 = p - o * scale () .get1Value (i) + translation () .get1Value (i);
+	const auto p2 = p + o * scale () .get1Value (i) + translation () .get1Value (i);
+
+	return std::abs (p1 - position [i]) < std::abs (p2 - position [i]) ? p1 : p2;
+}
+
+void
+GridTool::connectTranslation (const X3DPtr <X3DTransformNode> & transform)
+{
+	transform -> translation () .removeInterest (this, &GridTool::connectTranslation);
+	transform -> translation () .addInterest (this, &GridTool::set_translation, transform);
 }
 
 } // X3D

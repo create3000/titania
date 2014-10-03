@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class X3DTransformNode;
+
 class GridTool :
 	public X3DGridTool
 {
@@ -88,6 +90,12 @@ public:
 	getContainerField () const
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
 
 	///  @name Fields
 
@@ -128,6 +136,23 @@ private:
 	void
 	realize () final override;
 
+	///  @name Event handlers
+
+	void
+	set_selection (const SelectionPtr &);
+
+	void
+	set_children (const MFNode &);
+
+	void
+	set_translation (const X3DPtr <X3DTransformNode> &);
+
+	double
+	getTranslation (const size_t, const Vector3d &);
+
+	void
+	connectTranslation (const X3DPtr <X3DTransformNode> &);
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -146,6 +171,9 @@ private:
 	};
 
 	Fields fields;
+	
+	SelectionPtr selection;
+	MFNode       children;
 
 };
 

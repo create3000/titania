@@ -1,0 +1,55 @@
+#X3D V3.0 utf8 Titania V0.7.4
+
+META "comment" "World of Titania"
+META "created" "Thu, 02 Oct 2014 18:52:51 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Thu, 02 Oct 2014 19:37:50 GMT"
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      shaders DEF Phong ComposedShader {
+        language "GLSL"
+        parts [
+          ShaderPart {
+            url "data:text/plain,
+#version 120
+
+varying vec3 N;
+
+void
+main ()  
+{     
+	N = normalize (gl_NormalMatrix * gl_Normal);
+
+	gl_Position = ftransform ();
+}
+"
+          }
+          ShaderPart {
+            type "FRAGMENT"
+            url "data:text/plain,
+#version 120
+
+varying vec3 N;
+
+void
+main ()
+{	
+	gl_FragColor = vec4 (N, 1);
+}
+"
+          }
+        ]
+      }
+    }
+    geometry Sphere {
+      solid FALSE
+    }
+  }
+}

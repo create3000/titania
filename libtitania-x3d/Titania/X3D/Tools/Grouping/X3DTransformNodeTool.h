@@ -130,6 +130,10 @@ public:
 	void
 	setMatrixWithCenter (const Matrix4d &, const Vector3f &) final override;
 
+	const Matrix4d &
+	getTransformationMatrix () const
+	{ return parentMatrix; }
+
 	///  @name Operatations
 
 	virtual
