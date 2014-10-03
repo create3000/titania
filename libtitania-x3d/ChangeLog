@@ -1,5 +1,21 @@
 2014-10-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFColor.h:
+	* SFColor.cpp:
+	* SFColorRGBA.h:
+	* SFColorRGBA.cpp:
+	* GridTool.cpp:
+	* X3DGridTool.cpp:
+	* Material.cpp:
+	* SpotLight.cpp:
+	* PointLight.cpp:
+	* TwoSidedMaterial.cpp:
+	* MultiTexture.cpp:
+	* DirectionalLight.cpp:
+	* X3DFogObject.cpp: 
+
+2014-10-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BVH.cpp:
 	* GridTool.h:
 	* GridTool.cpp:

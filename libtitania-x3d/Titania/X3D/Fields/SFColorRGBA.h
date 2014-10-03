@@ -113,31 +113,31 @@ public:
 	///  @name Member access
 
 	void
-	setR (const value_type &);
+	setRed (const value_type &);
 
 	value_type
-	getR () const
+	getRed () const
 	{ return getValue () .r (); }
 
 	void
-	setG (const value_type &);
+	setGreen (const value_type &);
 
 	value_type
-	getG () const
+	getGreen () const
 	{ return getValue () .g (); }
 
 	void
-	setB (const value_type &);
+	setBlue (const value_type &);
 
 	value_type
-	getB () const
+	getBlue () const
 	{ return getValue () .b (); }
 
 	void
-	setA (const value_type &);
+	setAlpha (const value_type &);
 
 	value_type
-	getA () const
+	getAlpha () const
 	{ return getValue () .a (); }
 
 	void

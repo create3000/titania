@@ -1,4 +1,4 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V0.7.4
 
 PROTO Button [
   exposedField SFString description ""
@@ -19,7 +19,40 @@ PROTO Button [
   }
 }
 
-DEF _0 Transform {
+WorldInfo {
+  metadata MetadataSet {
+    name "Titania"
+    value [
+      MetadataSet {
+        name "AngleGrid"
+        value MetadataBoolean {
+          name "enabled"
+          value FALSE
+        }
+      }
+      MetadataSet {
+        name "Grid"
+        value [
+          MetadataBoolean {
+            name "enabled"
+            value TRUE
+          }
+          MetadataInteger {
+            name "dimension"
+            value [
+              8,
+              10,
+              20
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "Viewpoint"
+}
+
+Transform {
   translation 4 0 0
   rotation 0.267261 0.534522 0.801784 4
   scale 2 2 2
@@ -35,7 +68,10 @@ DEF _0 Transform {
     }
     Button {
       description "Change viewpoint!"
-      url [ "#bah", "#Anchor" ]
+      url [
+        "#bah",
+        "#Anchor"
+      ]
     }
     Anchor {
       description "Load textured cube!"
@@ -53,4 +89,8 @@ DEF _0 Transform {
       }
     }
   ]
+}
+
+DEF Default Viewpoint {
+  description "Default"
 }

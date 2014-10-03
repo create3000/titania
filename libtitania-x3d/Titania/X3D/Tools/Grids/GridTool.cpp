@@ -211,55 +211,59 @@ GridTool::set_translation (const X3DPtr <X3DTransformNode> & transform)
 		}
 	}
 
-	// Get absolute translation.
-
-	Vector3d translation = transform -> translation () .getValue ();
-	translation = translation * tool -> getTransformationMatrix ();
-
-	// Calculate snap position.
-
-	constexpr float snapDistance = 0.2;
-
-	translation = translation * ~Rotation4d (rotation () .getValue ());
-
-	if (scale () .getX ())
+	try
 	{
-		const auto x = getTranslation (0, translation);
+		// Get absolute translation.
 
-		if (std::abs (x - translation .x ()) < std::abs (scale () .getX () * snapDistance))
-			translation .x (x);
+		Vector3d translation = transform -> translation () .getValue ();
+		translation = translation * tool -> getTransformationMatrix ();
+
+		// Calculate snap position.
+
+		constexpr float snapDistance = 0.2;
+
+		translation = translation * ~Rotation4d (rotation () .getValue ());
+
+		if (scale () .getX ())
+		{
+			const auto x = getTranslation (0, translation);
+
+			if (std::abs (x - translation .x ()) < std::abs (scale () .getX () * snapDistance))
+				translation .x (x);
+		}
+
+		if (scale () .getY ())
+		{
+			const auto y = getTranslation (1, translation);
+
+			if (std::abs (y - translation .y ()) < std::abs (scale () .getY () * snapDistance))
+				translation .y (y);
+		}
+
+		if (scale () .getZ ())
+		{
+			const auto z = getTranslation (2, translation);
+
+			if (std::abs (z - translation .z ()) < std::abs (scale () .getZ () * snapDistance))
+				translation .z (z);
+		}
+
+		translation = translation * Rotation4d (rotation () .getValue ());
+
+		// Apply relative translation.
+
+		translation = translation * ~tool -> getTransformationMatrix ();
+
+		transform -> translation () = translation;
 	}
-
-	if (scale () .getY ())
-	{
-		const auto y = getTranslation (1, translation);
-
-		if (std::abs (y - translation .y ()) < std::abs (scale () .getY () * snapDistance))
-			translation .y (y);
-	}
-
-	if (scale () .getZ ())
-	{
-		const auto z = getTranslation (2, translation);
-
-		if (std::abs (z - translation .z ()) < std::abs (scale () .getZ () * snapDistance))
-			translation .z (z);
-	}
-
-	translation = translation * Rotation4d (rotation () .getValue ());
-
-	// Apply relative translation.
-
-	translation = translation * ~tool -> getTransformationMatrix ();
-
-	transform -> translation () = translation;
-
+	catch (const std::domain_error &)
+	{ }
 }
 
 double
 GridTool::getTranslation (const size_t i, const Vector3d & position)
 {
-	const auto o  = dimension () .get1Value (i) % 2 * 0.5;
+	const auto o  = dimension () .get1Value (i) % 2 * 0.5; // Add a half scale if dimension is odd.
 	const auto p  = std::round (position [i] / scale () .get1Value (i)) * scale () .get1Value (i);
 	const auto p1 = p - o * scale () .get1Value (i) + translation () .get1Value (i);
 	const auto p2 = p + o * scale () .get1Value (i) + translation () .get1Value (i);

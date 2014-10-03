@@ -316,7 +316,7 @@ SFColorRGBAButton::set_buffer ()
 			const auto   rgba  = to_rgba (field);
 
 			field .getHSV (hsva [0], hsva [1], hsva [2]);
-			hsva [3] = field .getA ();
+			hsva [3] = field .getAlpha ();
 
 			dialog .get_color_selection () -> set_current_rgba (rgba);
 			dialog .get_color_selection () -> set_previous_rgba (rgba);

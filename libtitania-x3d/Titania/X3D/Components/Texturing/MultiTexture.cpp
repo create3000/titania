@@ -304,7 +304,7 @@ MultiTexture::draw ()
 
 			// Setup color
 
-			Color4f texEnvColor (color () .getR (), color () .getG (), color () .getB (), alpha ());
+			Color4f texEnvColor (color () .getRed (), color () .getGreen (), color () .getBlue (), alpha ());
 			glTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, texEnvColor .data ());
 
 			// 

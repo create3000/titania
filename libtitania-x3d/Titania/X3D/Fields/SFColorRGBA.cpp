@@ -78,28 +78,28 @@ SFColorRGBA::SFColorRGBA (const value_type & r, const value_type & g, const valu
 { }
 
 void
-SFColorRGBA::setR (const value_type & r)
+SFColorRGBA::setRed (const value_type & r)
 {
 	get () .r (r);
 	addEvent ();
 }
 
 void
-SFColorRGBA::setG (const value_type & g)
+SFColorRGBA::setGreen (const value_type & g)
 {
 	get () .g (g);
 	addEvent ();
 }
 
 void
-SFColorRGBA::setB (const value_type & b)
+SFColorRGBA::setBlue (const value_type & b)
 {
 	get () .b (b);
 	addEvent ();
 }
 
 void
-SFColorRGBA::setA (const value_type & a)
+SFColorRGBA::setAlpha (const value_type & a)
 {
 	get () .a (a);
 	addEvent ();
@@ -127,10 +127,10 @@ SFColorRGBA::setValue (const value_type & r, const value_type & g, const value_t
 void
 SFColorRGBA::getValue (value_type & r, value_type & g, value_type & b, value_type & a) const
 {
-	r = getR ();
-	g = getG ();
-	b = getB ();
-	a = getA ();
+	r = getRed ();
+	g = getGreen ();
+	b = getBlue ();
+	a = getAlpha ();
 }
 
 void

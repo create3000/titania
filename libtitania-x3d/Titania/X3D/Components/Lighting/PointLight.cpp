@@ -107,14 +107,14 @@ PointLight::eventsProcessed ()
 	const float glAmbientIntensity = math::clamp <float> (ambientIntensity (), 0, 1);
 	const float glIntensity        = math::clamp <float> (intensity (), 0, 1);
 
-	glAmbient [0] = color () .getR () * glAmbientIntensity;
-	glAmbient [1] = color () .getG () * glAmbientIntensity;
-	glAmbient [2] = color () .getB () * glAmbientIntensity;
+	glAmbient [0] = glAmbientIntensity * color () .getRed ();
+	glAmbient [1] = glAmbientIntensity * color () .getGreen ();
+	glAmbient [2] = glAmbientIntensity * color () .getBlue ();
 	glAmbient [3] = 1;
 
-	glDiffuseSpecular [0] = color () .getR () * glIntensity;
-	glDiffuseSpecular [1] = color () .getG () * glIntensity;
-	glDiffuseSpecular [2] = color () .getB () * glIntensity;
+	glDiffuseSpecular [0] = glIntensity * color () .getRed ();
+	glDiffuseSpecular [1] = glIntensity * color () .getGreen ();
+	glDiffuseSpecular [2] = glIntensity * color () .getBlue ();
 	glDiffuseSpecular [3] = 1;
 
 	glPosition [0] = location () .getX ();

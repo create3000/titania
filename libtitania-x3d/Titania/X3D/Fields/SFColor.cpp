@@ -78,21 +78,21 @@ SFColor::SFColor (const value_type & r, const value_type & g, const value_type &
 { }
 
 void
-SFColor::setR (const value_type & r)
+SFColor::setRed (const value_type & r)
 {
 	get () .r (r);
 	addEvent ();
 }
 
 void
-SFColor::setG (const value_type & g)
+SFColor::setGreen (const value_type & g)
 {
 	get () .g (g);
 	addEvent ();
 }
 
 void
-SFColor::setB (const value_type & b)
+SFColor::setBlue (const value_type & b)
 {
 	get () .b (b);
 	addEvent ();
@@ -120,9 +120,9 @@ SFColor::setValue (const value_type & r, const value_type & g, const value_type 
 void
 SFColor::getValue (value_type & r, value_type & g, value_type & b) const
 {
-	r = getR ();
-	g = getG ();
-	b = getB ();
+	r = getRed ();
+	g = getGreen ();
+	b = getBlue ();
 }
 
 void

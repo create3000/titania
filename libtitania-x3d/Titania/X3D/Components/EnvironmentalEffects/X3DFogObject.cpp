@@ -129,9 +129,9 @@ X3DFogObject::getDensitiy (const float visibilityRange)
 void
 X3DFogObject::set_color ()
 {
-	glColor [0] = color () .getR ();
-	glColor [1] = color () .getG ();
-	glColor [2] = color () .getB ();
+	glColor [0] = color () .getRed ();
+	glColor [1] = color () .getGreen ();
+	glColor [2] = color () .getBlue ();
 }
 
 void

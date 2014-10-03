@@ -111,24 +111,24 @@ Material::eventsProcessed ()
 {
 	const float alpha = 1 - math::clamp <float> (transparency (), 0, 1);
 
-	glAmbientColor [0] = ambientIntensity () * diffuseColor () .getR ();
-	glAmbientColor [1] = ambientIntensity () * diffuseColor () .getG ();
-	glAmbientColor [2] = ambientIntensity () * diffuseColor () .getB ();
+	glAmbientColor [0] = ambientIntensity () * diffuseColor () .getRed ();
+	glAmbientColor [1] = ambientIntensity () * diffuseColor () .getGreen ();
+	glAmbientColor [2] = ambientIntensity () * diffuseColor () .getBlue ();
 	glAmbientColor [3] = alpha;
 
-	glDiffuseColor [0] = diffuseColor () .getR ();
-	glDiffuseColor [1] = diffuseColor () .getG ();
-	glDiffuseColor [2] = diffuseColor () .getB ();
+	glDiffuseColor [0] = diffuseColor () .getRed ();
+	glDiffuseColor [1] = diffuseColor () .getGreen ();
+	glDiffuseColor [2] = diffuseColor () .getBlue ();
 	glDiffuseColor [3] = alpha;
 
-	glSpecularColor [0] = specularColor () .getR ();
-	glSpecularColor [1] = specularColor () .getG ();
-	glSpecularColor [2] = specularColor () .getB ();
+	glSpecularColor [0] = specularColor () .getRed ();
+	glSpecularColor [1] = specularColor () .getGreen ();
+	glSpecularColor [2] = specularColor () .getBlue ();
 	glSpecularColor [3] = alpha;
 
-	glEmissiveColor [0] = emissiveColor () .getR ();
-	glEmissiveColor [1] = emissiveColor () .getG ();
-	glEmissiveColor [2] = emissiveColor () .getB ();
+	glEmissiveColor [0] = emissiveColor () .getRed ();
+	glEmissiveColor [1] = emissiveColor () .getGreen ();
+	glEmissiveColor [2] = emissiveColor () .getBlue ();
 	glEmissiveColor [3] = alpha;
 
 	glShininess = math::clamp <float> (shininess (), 0, 1) * 128;
