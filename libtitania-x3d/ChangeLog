@@ -1,5 +1,9 @@
 2014-10-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* GridTool.cpp: 
+
+2014-10-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFColor.h:
 	* SFColor.cpp:
 	* SFColorRGBA.h:

@@ -215,8 +215,20 @@ GridTool::set_translation (const X3DPtr <X3DTransformNode> & transform)
 	{
 		// Get absolute translation.
 
-		Vector3d translation = transform -> translation () .getValue ();
-		translation = translation * tool -> getTransformationMatrix ();
+		Matrix4d matrix;
+		matrix .set (transform -> translation () .getValue (),
+		             transform -> rotation () .getValue (),
+		             transform -> scale () .getValue (),
+		             transform -> scaleOrientation () .getValue (),
+		             transform -> center () .getValue ());
+
+		matrix *= tool -> getTransformationMatrix ();
+		
+		const auto bbox = Box3d (transform -> getBBox () * ~transform -> getMatrix ()) * matrix;
+
+		Vector3d translation = bbox .center ();
+
+		__LOG__ << translation << std::endl;
 
 		// Calculate snap position.
 
@@ -251,10 +263,20 @@ GridTool::set_translation (const X3DPtr <X3DTransformNode> & transform)
 		translation = translation * Rotation4d (rotation () .getValue ());
 
 		// Apply relative translation.
+		
+		Matrix4d snap;
+		snap .set (translation - bbox .center ());
+		
+		matrix = matrix * snap * ~tool -> getTransformationMatrix ();
 
-		translation = translation * ~tool -> getTransformationMatrix ();
+		Vector3d t, s;
+		Rotation4d r, so;
+		matrix .get (t, r, s, so, Vector3d (transform -> center () .getValue ()));
 
-		transform -> translation () = translation;
+		transform -> translation () = t;
+		transform -> rotation () = r;
+		transform -> scale () = s;
+		transform -> scaleOrientation () = so;
 	}
 	catch (const std::domain_error &)
 	{ }
