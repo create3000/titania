@@ -130,42 +130,33 @@ GridTool::realize ()
 Vector3d
 GridTool::getSnapPosition (const Vector3d & position)
 {
-	auto translation = position * ~Rotation4d (rotation () .getValue ());
+	auto translation = position;
 
-	if (scale () .getX ())
-	{
-		const auto x = getSnapPosition (0, translation);
+	const auto x = getSnapPosition (0, translation);
 
-		if (std::abs (x - translation .x ()) < std::abs (scale () .getX () * snapDistance ()))
-			translation .x (x);
-	}
+	if (std::abs (x - translation .x ()) < std::abs (snapDistance ()))
+		translation .x (x);
 
-	if (scale () .getY ())
-	{
-		const auto y = getSnapPosition (1, translation);
+	const auto y = getSnapPosition (1, translation);
 
-		if (std::abs (y - translation .y ()) < std::abs (scale () .getY () * snapDistance ()))
-			translation .y (y);
-	}
+	if (std::abs (y - translation .y ()) < std::abs (snapDistance ()))
+		translation .y (y);
 
-	if (scale () .getZ ())
-	{
-		const auto z = getSnapPosition (2, translation);
+	const auto z = getSnapPosition (2, translation);
 
-		if (std::abs (z - translation .z ()) < std::abs (scale () .getZ () * snapDistance ()))
-			translation .z (z);
-	}
+	if (std::abs (z - translation .z ()) < std::abs (snapDistance ()))
+		translation .z (z);
 
-	return translation * Rotation4d (rotation () .getValue ());
+	return translation;
 }
 
 double
 GridTool::getSnapPosition (const size_t axis, const Vector3d & position)
 {
 	const auto o  = dimension () .get1Value (axis) % 2 * 0.5; // Add a half scale if dimension is odd.
-	const auto p  = std::round (position [axis] / scale () .get1Value (axis)) * scale () .get1Value (axis);
-	const auto p1 = p - o * scale () .get1Value (axis) + translation () .get1Value (axis);
-	const auto p2 = p + o * scale () .get1Value (axis) + translation () .get1Value (axis);
+	const auto p  = std::round (position [axis]);
+	const auto p1 = p - o;
+	const auto p2 = p + o;
 
 	return std::abs (p1 - position [axis]) < std::abs (p2 - position [axis]) ? p1 : p2;
 }

@@ -1,5 +1,11 @@
 2014-10-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* GridTool.cpp:
+	* AngleTool.cpp:
+	* X3DGridTool.cpp: 
+
+2014-10-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DPtr.h:
 	* X3DWeakPtr.h:
 	* GridTool.x3dv:

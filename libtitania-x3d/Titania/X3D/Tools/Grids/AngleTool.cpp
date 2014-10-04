@@ -53,6 +53,8 @@
 #include "../../Bits/config.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include <complex>
+
 namespace titania {
 namespace X3D {
 
@@ -130,7 +132,32 @@ AngleTool::realize ()
 Vector3d
 AngleTool::getSnapPosition (const Vector3d & position)
 {
-	return position;
+	auto p = position;
+
+	// Calculate snap radius and snap angle
+
+	std::complex <double> polar (p .x (), p .z ());
+
+	constexpr double offset = M_PI / 2;
+
+	auto phi        = 2 * M_PI / dimension () [1];
+	auto radius     = std::abs (polar);
+	auto angle      = std::arg (polar);
+	auto snapRadius = std::round (radius);
+	auto snapAngle  = std::round ((angle - offset) / phi) * phi + offset;
+
+	if (std::abs (snapRadius - radius) > std::abs (snapDistance ()))
+		snapRadius = radius;
+
+	if (std::abs (snapAngle - angle) > std::abs (snapDistance () * phi))
+		snapAngle = angle;
+
+	polar = std::polar (snapRadius, snapAngle);
+
+	p .x (polar .real ());
+	p .z (polar .imag ());
+
+	return p;
 }
 
 } // X3D

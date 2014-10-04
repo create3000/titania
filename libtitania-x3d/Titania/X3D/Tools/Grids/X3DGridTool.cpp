@@ -254,9 +254,12 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & transform)
 		}
 
 		// Calculate snap position and apply relative translation.
+		
+		Matrix4d grid;
+		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
 
 		Matrix4d snap;
-		snap .set (getSnapPosition (position) - position);
+		snap .set (getSnapPosition (position * ~grid) * grid - position);
 
 		transform -> setMatrix (matrix * snap * ~transform -> getTransformationMatrix ());
 	}
