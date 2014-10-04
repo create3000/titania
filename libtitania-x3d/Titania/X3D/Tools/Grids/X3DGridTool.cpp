@@ -50,8 +50,14 @@
 
 #include "X3DGridTool.h"
 
+#include "../../Browser/Selection.h"
+#include "../../Browser/X3DBrowser.h"
+#include "../../Components/Grouping/X3DTransformNode.h"
+
 namespace titania {
 namespace X3D {
+
+constexpr bool snapToCenter = true;
 
 X3DGridTool::Fields::Fields () :
 	   translation (new SFVec3f ()),
@@ -64,9 +70,32 @@ X3DGridTool::Fields::Fields () :
 
 X3DGridTool::X3DGridTool () :
 	X3DActiveLayerTool (),
-	            fields ()
+	            fields (),
+	         selection (),
+	          children ()
 {
 	addType (X3DConstants::X3DGridTool);
+
+	addChildren (selection, children);
+}
+
+void
+X3DGridTool::initialize ()
+{
+	X3DActiveLayerTool::initialize ();
+
+	set_selection (getExecutionContext () -> getBrowser () -> getSelection ());
+}
+
+void
+X3DGridTool::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+
+{
+	X3DActiveLayerTool::setExecutionContext (executionContext);
+
+	set_selection (getBrowser () -> getSelection ());
 }
 
 void
@@ -150,6 +179,103 @@ X3DGridTool::set_majorLineColor ()
 	{ }
 
 }
+
+// Snaping
+
+void
+X3DGridTool::set_selection (const SelectionPtr & value)
+{
+	if (selection)
+		selection -> getChildren () .removeInterest (this, &X3DGridTool::set_children);
+
+	selection = value;
+	selection -> getChildren () .addInterest (this, &X3DGridTool::set_children);
+
+	set_children (selection -> getChildren ());
+}
+
+void
+X3DGridTool::set_children (const MFNode & value)
+{
+	for (const auto & node : children)
+	{
+		const X3DPtr <X3DTransformNode> transform (node);
+
+		if (transform)
+		{
+			transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
+		}
+	}
+
+	children = value;
+
+	for (const auto & node : children)
+	{
+		const X3DPtr <X3DTransformNode> transform (node);
+
+		if (transform)
+		{
+			transform -> translation () .addInterest (this, &X3DGridTool::set_translation, transform);
+		}
+	}
+}
+
+void
+X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & transform)
+{
+	if (getBrowser () -> getSelection () -> activeTool_changed () not_eq Selection::MOVE_TOOL)
+		return;
+
+	for (const auto & node : children)
+	{
+		const auto transform = dynamic_cast <X3DTransformNode*> (node .getValue ());
+
+		if (transform)
+		{
+			transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
+			transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
+		}
+	}
+
+	try
+	{
+		// Get absolute position.
+
+		const auto matrix = transform -> getCurrentMatrix () * transform -> getTransformationMatrix ();
+
+		Vector3d position;
+
+		if (snapToCenter)
+			position = Vector3d (transform -> center () .getValue ()) * matrix;
+		else
+		{
+			const auto bbox = Box3d (transform -> X3DGroupingNode::getBBox ()) * matrix;
+			position = bbox .center ();
+		}
+
+		// Calculate snap position and apply relative translation.
+
+		Matrix4d snap;
+		snap .set (getSnapPosition (position) - position);
+
+		transform -> setMatrix (matrix * snap * ~transform -> getTransformationMatrix ());
+	}
+	catch (const std::exception &)
+	{
+		// Catch NOT_SUPPORTED from getTransformationMatrix,
+		// Catch std::domain_error from matrix inverse.
+	}
+}
+
+void
+X3DGridTool::connectTranslation (const X3DPtr <X3DTransformNode> & transform)
+{
+	transform -> translation () .removeInterest (this, &X3DGridTool::connectTranslation);
+	transform -> translation () .addInterest (this, &X3DGridTool::set_translation, transform);
+}
+
+X3DGridTool::~X3DGridTool ()
+{ }
 
 } // X3D
 } // titania

@@ -128,6 +128,12 @@ private:
 	void
 	realize () final override;
 
+	///  @name Operations
+
+	virtual
+	Vector3d
+	getSnapPosition (const Vector3d &) final override;
+
 	///  @name Static members
 
 	static const ComponentType component;

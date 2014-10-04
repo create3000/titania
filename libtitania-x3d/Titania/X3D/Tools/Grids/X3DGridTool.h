@@ -56,10 +56,20 @@
 namespace titania {
 namespace X3D {
 
+class X3DTransformNode;
+
 class X3DGridTool :
 	public X3DActiveLayerTool
 {
 public:
+
+	///  @name Common members
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
 
 	///  @name Fields
 
@@ -111,6 +121,9 @@ public:
 	majorLineColor () const
 	{ return *fields .majorLineColor; }
 
+	///  @name Destruction
+
+	~X3DGridTool ();
 
 protected:
 
@@ -120,7 +133,17 @@ protected:
 
 	virtual
 	void
+	initialize () override;
+
+	virtual
+	void
 	realize () override;
+
+	///  @name Operations
+
+	virtual
+	Vector3d
+	getSnapPosition (const Vector3d &) = 0;
 
 
 private:
@@ -135,6 +158,18 @@ private:
 
 	void
 	set_majorLineColor ();
+
+	void
+	set_selection (const SelectionPtr &);
+
+	void
+	set_children (const MFNode &);
+
+	void
+	set_translation (const X3DPtr <X3DTransformNode> &);
+
+	void
+	connectTranslation (const X3DPtr <X3DTransformNode> &);
 
 	///  @name Members
 
@@ -151,6 +186,9 @@ private:
 	};
 
 	Fields fields;
+	
+	SelectionPtr selection;
+	MFNode       children;
 
 };
 

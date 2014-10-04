@@ -125,5 +125,11 @@ AngleTool::realize ()
 	{ }
 }
 
+Vector3d
+AngleTool::getSnapPosition (const Vector3d & position)
+{
+	return position;
+}
+
 } // X3D
 } // titania
