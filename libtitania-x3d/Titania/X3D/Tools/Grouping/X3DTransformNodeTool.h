@@ -121,6 +121,11 @@ public:
 	{ return getNode () -> center (); }
 
 	///  @name Member access
+	
+	virtual
+	Matrix4d
+	getCurrentMatrix () const final override
+	{ return getNode () -> getCurrentMatrix (); }
 
 	virtual
 	void

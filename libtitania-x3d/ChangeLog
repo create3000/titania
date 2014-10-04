@@ -1,5 +1,13 @@
 2014-10-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* GridTool.cpp:
+	* X3DTransformNodeTool.h:
+	* X3DTransformNode.h:
+	* X3DGroupingNode.cpp:
+	* X3DTransformNode.cpp: 
+
+2014-10-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Selection.h:
 	* Selection.cpp:
 	* X3DBrowser.cpp:

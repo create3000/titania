@@ -107,7 +107,7 @@ Box3f
 X3DGroupingNode::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
-		return X3DBoundedObject::getBBox (childNodes);
+		return X3DBoundedObject::getBBox (children ());
 
 	return Box3f (bboxSize (), bboxCenter ());
 }

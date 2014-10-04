@@ -207,16 +207,9 @@ GridTool::set_translation (const X3DPtr <X3DTransformNode> & transform)
 
 	try
 	{
-		// Get absolute translation.
+		// Get absolute position.
 
-		Matrix4d matrix;
-		matrix .set (transform -> translation () .getValue (),
-		             transform -> rotation () .getValue (),
-		             transform -> scale () .getValue (),
-		             transform -> scaleOrientation () .getValue (),
-		             transform -> center () .getValue ());
-
-		matrix *= transform -> getTransformationMatrix ();
+		const auto matrix = transform -> getCurrentMatrix () * transform -> getTransformationMatrix ();
 
 		Vector3d position;
 
@@ -224,7 +217,7 @@ GridTool::set_translation (const X3DPtr <X3DTransformNode> & transform)
 			position = Vector3d (transform -> center () .getValue ()) * matrix;
 		else
 		{
-			const auto bbox = Box3d (transform -> getBBox () * ~transform -> getMatrix ()) * matrix;
+			const auto bbox = Box3d (transform -> X3DGroupingNode::getBBox ()) * matrix;
 			position = bbox .center ();
 		}
 

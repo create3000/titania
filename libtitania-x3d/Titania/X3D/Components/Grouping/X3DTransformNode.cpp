@@ -92,6 +92,20 @@ X3DTransformNode::eventsProcessed ()
 	                                     center ());
 }
 
+Matrix4d
+X3DTransformNode::getCurrentMatrix () const
+{
+	Matrix4d matrix;
+
+	matrix .set (translation () .getValue (),
+	             rotation () .getValue (),
+	             scale () .getValue (),
+	             scaleOrientation () .getValue (),
+	             center () .getValue ());
+
+	return matrix;
+}
+
 void
 X3DTransformNode::setMatrix (const Matrix4d & matrix)
 {
