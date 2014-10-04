@@ -119,6 +119,8 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GridMajorLineColorBox", m_GridMajorLineColorBox);
 	m_builder -> get_widget ("GridMajorLineColorButton", m_GridMajorLineColorButton);
 	m_builder -> get_widget ("GridScaleBox", m_GridScaleBox);
+	m_builder -> get_widget ("GridUniformScaleButton", m_GridUniformScaleButton);
+	m_builder -> get_widget ("GridUniformScaleImage", m_GridUniformScaleImage);
 	m_builder -> get_widget ("GridMajorLineOffsetBox", m_GridMajorLineOffsetBox);
 	m_builder -> get_widget ("GridMajorGridSpinButton", m_GridMajorGridSpinButton);
 	m_builder -> get_widget ("GridAddMajorGridButton", m_GridAddMajorGridButton);
@@ -137,6 +139,8 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AngleMajorLineColorBox", m_AngleMajorLineColorBox);
 	m_builder -> get_widget ("AngleMajorLineColorButton", m_AngleMajorLineColorButton);
 	m_builder -> get_widget ("AngleScaleBox", m_AngleScaleBox);
+	m_builder -> get_widget ("AngleUniformScaleButton", m_AngleUniformScaleButton);
+	m_builder -> get_widget ("AngleUniformScaleImage", m_AngleUniformScaleImage);
 	m_builder -> get_widget ("AngleMajorLineOffsetBox", m_AngleMajorLineOffsetBox);
 	m_builder -> get_widget ("AngleMajorGridSpinButton", m_AngleMajorGridSpinButton);
 	m_builder -> get_widget ("AngleAddMajorGridButton", m_AngleAddMajorGridButton);
@@ -145,6 +149,9 @@ X3DGridEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ComboBoxText with id 'GridPlaneComboBoxText'.
 	m_GridPlaneComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_plane_changed));
+
+	// Connect object Gtk::ToggleButton with id 'GridUniformScaleButton'.
+	m_GridUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_uniform_scale_clicked));
 
 	// Connect object Gtk::SpinButton with id 'GridMajorGridSpinButton'.
 	m_GridMajorGridSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_major_line_grid_value_changed));
@@ -158,6 +165,9 @@ X3DGridEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ComboBoxText with id 'AnglePlaneComboBoxText'.
 	m_AnglePlaneComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_angle_plane_changed));
+
+	// Connect object Gtk::ToggleButton with id 'AngleUniformScaleButton'.
+	m_AngleUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_angle_uniform_scale_clicked));
 
 	// Connect object Gtk::SpinButton with id 'AngleMajorGridSpinButton'.
 	m_AngleMajorGridSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_angle_major_line_grid_value_changed));

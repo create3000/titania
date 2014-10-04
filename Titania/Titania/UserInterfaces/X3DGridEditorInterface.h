@@ -322,6 +322,14 @@ public:
 	getGridScaleBox () const
 	{ return *m_GridScaleBox; }
 
+	Gtk::ToggleButton &
+	getGridUniformScaleButton () const
+	{ return *m_GridUniformScaleButton; }
+
+	Gtk::Image &
+	getGridUniformScaleImage () const
+	{ return *m_GridUniformScaleImage; }
+
 	Gtk::Box &
 	getGridMajorLineOffsetBox () const
 	{ return *m_GridMajorLineOffsetBox; }
@@ -394,6 +402,14 @@ public:
 	getAngleScaleBox () const
 	{ return *m_AngleScaleBox; }
 
+	Gtk::ToggleButton &
+	getAngleUniformScaleButton () const
+	{ return *m_AngleUniformScaleButton; }
+
+	Gtk::Image &
+	getAngleUniformScaleImage () const
+	{ return *m_AngleUniformScaleImage; }
+
 	Gtk::Box &
 	getAngleMajorLineOffsetBox () const
 	{ return *m_AngleMajorLineOffsetBox; }
@@ -420,6 +436,10 @@ public:
 
 	virtual
 	void
+	on_grid_uniform_scale_clicked () = 0;
+
+	virtual
+	void
 	on_major_line_grid_value_changed () = 0;
 
 	virtual
@@ -437,6 +457,10 @@ public:
 	virtual
 	void
 	on_angle_plane_changed () = 0;
+
+	virtual
+	void
+	on_angle_uniform_scale_clicked () = 0;
 
 	virtual
 	void
@@ -519,6 +543,8 @@ private:
 	Gtk::Box*                      m_GridMajorLineColorBox;
 	Gtk::Button*                   m_GridMajorLineColorButton;
 	Gtk::Box*                      m_GridScaleBox;
+	Gtk::ToggleButton*             m_GridUniformScaleButton;
+	Gtk::Image*                    m_GridUniformScaleImage;
 	Gtk::Box*                      m_GridMajorLineOffsetBox;
 	Gtk::SpinButton*               m_GridMajorGridSpinButton;
 	Gtk::Button*                   m_GridAddMajorGridButton;
@@ -537,6 +563,8 @@ private:
 	Gtk::Box*                      m_AngleMajorLineColorBox;
 	Gtk::Button*                   m_AngleMajorLineColorButton;
 	Gtk::Box*                      m_AngleScaleBox;
+	Gtk::ToggleButton*             m_AngleUniformScaleButton;
+	Gtk::Image*                    m_AngleUniformScaleImage;
 	Gtk::Box*                      m_AngleMajorLineOffsetBox;
 	Gtk::SpinButton*               m_AngleMajorGridSpinButton;
 	Gtk::Button*                   m_AngleAddMajorGridButton;

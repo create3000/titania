@@ -124,6 +124,8 @@ X3DAngleEditor::X3DAngleEditor () :
 void
 X3DAngleEditor::initialize ()
 {
+	getAngleUniformScaleButton () .set_active (getConfig () .getBoolean ("angleUniformScale"));
+
 	const auto & angleTool  = getBrowserWindow () -> getAngleTool ();
 	X3D::MFNode  angleTools = { angleTool };
 
@@ -208,6 +210,21 @@ X3DAngleEditor::connectRotation (const X3D::SFRotation & field)
 }
 
 void
+X3DAngleEditor::on_angle_uniform_scale_clicked ()
+{
+	if (getAngleUniformScaleButton () .get_active ())
+	{
+		getAngleUniformScaleImage () .set_from_icon_name ("connect_established", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		scale .setUniform (true);
+	}
+	else
+	{
+		getAngleUniformScaleImage () .set_from_icon_name ("connect_no", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		scale .setUniform (false);
+	}
+}
+
+void
 X3DAngleEditor::on_angle_major_line_grid_value_changed ()
 {
 	const int index = getAngleMajorGridAdjustment () -> get_value () - 1;
@@ -269,7 +286,9 @@ X3DAngleEditor::set_majorLineEvery ()
 }
 
 X3DAngleEditor::~X3DAngleEditor ()
-{ }
+{
+	getConfig () .setItem ("angleUniformScale", getAngleUniformScaleButton () .get_active ());
+}
 
 } // puck
 } // titania

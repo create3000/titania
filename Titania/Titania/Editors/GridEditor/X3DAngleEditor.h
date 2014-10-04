@@ -107,6 +107,10 @@ private:
 
 	virtual
 	void
+	on_angle_uniform_scale_clicked () final override;
+
+	virtual
+	void
 	on_angle_major_line_grid_value_changed () final override;
 
 	void

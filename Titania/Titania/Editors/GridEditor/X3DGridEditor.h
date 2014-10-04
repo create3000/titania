@@ -107,6 +107,10 @@ private:
 
 	virtual
 	void
+	on_grid_uniform_scale_clicked () final override;
+
+	virtual
+	void
 	on_major_line_grid_value_changed () final override;
 
 	void

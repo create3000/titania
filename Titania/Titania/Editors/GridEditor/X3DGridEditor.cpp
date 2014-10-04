@@ -127,6 +127,8 @@ X3DGridEditor::X3DGridEditor () :
 void
 X3DGridEditor::initialize ()
 {
+	getGridUniformScaleButton () .set_active (getConfig () .getBoolean ("gridUniformScale"));
+
 	const auto & gridTool  = getBrowserWindow () -> getGridTool ();
 	X3D::MFNode  gridTools = { gridTool };
 
@@ -211,6 +213,21 @@ X3DGridEditor::connectRotation (const X3D::SFRotation & field)
 }
 
 void
+X3DGridEditor::on_grid_uniform_scale_clicked ()
+{
+	if (getGridUniformScaleButton () .get_active ())
+	{
+		getGridUniformScaleImage () .set_from_icon_name ("connect_established", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		scale .setUniform (true);
+	}
+	else
+	{
+		getGridUniformScaleImage () .set_from_icon_name ("connect_no", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		scale .setUniform (false);
+	}
+}
+
+void
 X3DGridEditor::on_major_line_grid_value_changed ()
 {
 	const int index = getGridMajorGridAdjustment () -> get_value () - 1;
@@ -272,7 +289,9 @@ X3DGridEditor::set_majorLineEvery ()
 }
 
 X3DGridEditor::~X3DGridEditor ()
-{ }
+{
+	getConfig () .setItem ("gridUniformScale", getGridUniformScaleButton () .get_active ());
+}
 
 } // puck
 } // titania

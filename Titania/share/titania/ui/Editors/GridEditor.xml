@@ -815,7 +815,6 @@
                                 <property name="can_focus">False</property>
                                 <property name="halign">start</property>
                                 <property name="spacing">2</property>
-                                <property name="homogeneous">True</property>
                                 <child>
                                   <object class="GtkSpinButton" id="spinbutton22">
                                     <property name="visible">True</property>
@@ -865,6 +864,29 @@
                                     <property name="expand">False</property>
                                     <property name="fill">True</property>
                                     <property name="position">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkToggleButton" id="GridUniformScaleButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="tooltip_text" translatable="yes">If connected, change all axes by the same proportion.</property>
+                                    <property name="halign">start</property>
+                                    <signal name="toggled" handler="on_grid_uniform_scale_clicked" swapped="no"/>
+                                    <child>
+                                      <object class="GtkImage" id="GridUniformScaleImage">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="icon_name">connect_no</property>
+                                        <property name="icon_size">1</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">3</property>
                                   </packing>
                                 </child>
                               </object>
@@ -1667,7 +1689,6 @@
                                 <property name="can_focus">False</property>
                                 <property name="halign">start</property>
                                 <property name="spacing">2</property>
-                                <property name="homogeneous">True</property>
                                 <child>
                                   <object class="GtkSpinButton" id="spinbutton15">
                                     <property name="visible">True</property>
@@ -1717,6 +1738,29 @@
                                     <property name="expand">False</property>
                                     <property name="fill">True</property>
                                     <property name="position">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkToggleButton" id="AngleUniformScaleButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="tooltip_text" translatable="yes">If connected, change all axes by the same proportion.</property>
+                                    <property name="halign">start</property>
+                                    <signal name="toggled" handler="on_angle_uniform_scale_clicked" swapped="no"/>
+                                    <child>
+                                      <object class="GtkImage" id="AngleUniformScaleImage">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="icon_name">connect_no</property>
+                                        <property name="icon_size">1</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">3</property>
                                   </packing>
                                 </child>
                               </object>

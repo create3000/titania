@@ -88,7 +88,7 @@ X3DLayoutEditor::X3DLayoutEditor () :
 void
 X3DLayoutEditor::initialize ()
 {
-	getLayoutUniformSizeButton () .set_active (true);
+	getLayoutUniformSizeButton () .set_active (getConfig () .getBoolean ("layoutUniformSize"));
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DLayoutEditor::set_layout);
 
@@ -229,7 +229,9 @@ X3DLayoutEditor::on_layout_uniform_size_clicked ()
 }
 
 X3DLayoutEditor::~X3DLayoutEditor ()
-{ }
+{
+	getConfig () .setItem ("layoutUniformSize", getLayoutUniformSizeButton () .get_active ());
+}
 
 } // puck
 } // titania

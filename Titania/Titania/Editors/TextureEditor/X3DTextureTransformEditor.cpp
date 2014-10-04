@@ -81,7 +81,7 @@ X3DTextureTransformEditor::X3DTextureTransformEditor () :
 void
 X3DTextureTransformEditor::initialize ()
 {
-	getTextureTransformUniformScaleButton () .set_active (true);
+	getTextureTransformUniformScaleButton () .set_active (getConfig () .getBoolean ("textureTransformUniformScale"));
 }
 
 void
@@ -140,6 +140,11 @@ X3DTextureTransformEditor::on_texture_transform_uniform_scale_clicked ()
 		getTextureTransformUniformScaleImage () .set_from_icon_name ("connect_no", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		scale .setUniform (false);
 	}
+}
+
+X3DTextureTransformEditor::~X3DTextureTransformEditor ()
+{
+	getConfig () .setItem ("textureTransformUniformScale", getTextureTransformUniformScaleButton () .get_active ());
 }
 
 } // puck

@@ -119,7 +119,7 @@ X3DGeoTransformEditor::X3DGeoTransformEditor () :
 void
 X3DGeoTransformEditor::initialize ()
 {
-	getGeoTransformUniformScaleButton () .set_active (true);
+	getGeoTransformUniformScaleButton () .set_active (getConfig () .getBoolean ("geoTransformUniformScale"));
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DGeoTransformEditor::set_selection);
 
@@ -161,7 +161,9 @@ X3DGeoTransformEditor::on_geo_transform_uniform_scale_clicked ()
 }
 
 X3DGeoTransformEditor::~X3DGeoTransformEditor ()
-{ }
+{
+	getConfig () .setItem ("geoTransformUniformScale", getGeoTransformUniformScaleButton () .get_active ());
+}
 
 } // puck
 } // titania

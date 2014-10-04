@@ -96,7 +96,7 @@ X3DTransformEditor::X3DTransformEditor () :
 void
 X3DTransformEditor::initialize ()
 {
-	getTransformUniformScaleButton () .set_active (true);
+	getTransformUniformScaleButton () .set_active (getConfig () .getBoolean ("transformUniformScale"));
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DTransformEditor::set_selection);
 
@@ -162,7 +162,9 @@ X3DTransformEditor::on_transform_move_center_button ()
 }
 
 X3DTransformEditor::~X3DTransformEditor ()
-{ }
+{
+	getConfig () .setItem ("transformUniformScale", getTransformUniformScaleButton () .get_active ());
+}
 
 } // puck
 } // titania

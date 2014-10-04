@@ -1,5 +1,21 @@
 2014-10-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* GridEditor.xml:
+	* X3DGridEditor.h:
+	* X3DAngleEditor.h:
+	* X3DGridEditor.cpp:
+	* X3DAngleEditor.cpp:
+	* X3DGridEditorInterface.h:
+	* X3DGridEditorInterface.cpp:
+	* X3DTextureTransformEditor.h:
+	* X3DTextureTransformEditor.cpp:
+	* X3DLayoutEditor.cpp:
+	* X3DTransformEditor.cpp:
+	* X3DGeoTransformEditor.cpp:
+	* PrecisionPlacementPanel.cpp: 
+
+2014-10-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TextureEditor.xml:
 	* X3DFieldAdjustment3.h:
 	* X3DFieldAdjustment4.h:
