@@ -296,13 +296,12 @@ public:
 	void
 	set (const internal_type & value) final override
 	{
-		if (value not_eq getValue ())
-		{
-			// First add Object to avoid dispose.
-			addObject (value);
-			removeObject (getValue ());
-		}
+		if (value == getValue ())
+			return;
 
+		// FIRST ADD OBJECT TO AVOID DISPOSE!!!
+		addObject (value);
+		removeObject (getValue ());
 		setObject (value);
 	}
 
@@ -500,7 +499,7 @@ private:
 		{
 			value -> addParent (this);
 			value -> addClones (cloneCount);
-			value -> disposed () .addInterest (this, &X3DPtr::set_disposed);
+			value -> X3DInput::disposed () .addInterest (this, &X3DPtr::set_disposed);
 		}
 	}
 
@@ -514,8 +513,8 @@ private:
 			other .get () -> replaceParent (&other, this);
 			other .get () -> addClones (cloneCount);
 			other .get () -> removeClones (other .cloneCount);
-			other .get () -> disposed () .removeInterest (other, &X3DPtr::set_disposed);
-			other .get () -> disposed () .addInterest (this, &X3DPtr::set_disposed);
+			other .get () -> X3DInput::disposed () .removeInterest (other, &X3DPtr::set_disposed);
+			other .get () -> X3DInput::disposed () .addInterest (this, &X3DPtr::set_disposed);
 			other .setObject (nullptr);
 			other .addEvent ();
 		}
@@ -532,8 +531,8 @@ private:
 			other .get () -> replaceParent (&other, this);
 			other .get () -> addClones (cloneCount);
 			other .get () -> removeClones (other .cloneCount);
-			other .get () -> disposed () .removeInterest (other, &X3DPtr <Up>::set_disposed);
-			other .get () -> disposed () .addInterest (this, &X3DPtr::set_disposed);
+			other .get () -> X3DInput::disposed () .removeInterest (other, &X3DPtr <Up>::set_disposed);
+			other .get () -> X3DInput::disposed () .addInterest (this, &X3DPtr::set_disposed);
 			other .setObject (nullptr);
 			other .addEvent ();
 		}
@@ -548,9 +547,9 @@ private:
 		{
 			setObject (nullptr);
 
-			value -> removeParent (this);
+			value -> X3DInput::disposed () .removeInterest (this, &X3DPtr::set_disposed);
 			value -> removeClones (cloneCount);
-			value -> disposed () .removeInterest (this, &X3DPtr::set_disposed);
+			value -> removeParent (this);
 		}
 	}
 

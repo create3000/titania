@@ -103,8 +103,12 @@ public:
 	{ return m_AngleColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getAngleDimensionXAdjustment () const
-	{ return m_AngleDimensionXAdjustment; }
+	getAngleDimension0Adjustment () const
+	{ return m_AngleDimension0Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleDimension1Adjustment () const
+	{ return m_AngleDimension1Adjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getAngleDimensionYAdjustment () const
@@ -131,12 +135,20 @@ public:
 	{ return m_AngleMajorLineEvery1Adjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleMajorLineEveryYAdjustment () const
+	{ return m_AngleMajorLineEveryYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getAngleMajorLineOffset0Adjustment () const
 	{ return m_AngleMajorLineOffset0Adjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getAngleMajorLineOffset1Adjustment () const
 	{ return m_AngleMajorLineOffset1Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleMajorLineOffsetYAdjustment () const
+	{ return m_AngleMajorLineOffsetYAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getAngleScaleXAdjustment () const
@@ -488,15 +500,18 @@ private:
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_AngleDimensionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleDimension0Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleDimension1Adjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleDimensionYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleLineColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorGridAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineEvery0Adjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineEvery1Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineEveryYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineOffset0Adjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineOffset1Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleMajorLineOffsetYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleScaleXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleScaleYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleScaleZAdjustment;

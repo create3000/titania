@@ -220,10 +220,13 @@ AngleTool::configure ()
 
 		if (v .size () < 2)
 			getTool () -> dimension () .resize (2, X3D::SFInt32 (16));
+
+		if (v .size () < 3)
+			getTool () -> dimension () .resize (3, X3D::SFInt32 (10));
 	}
 	catch (...)
 	{
-		getTool () -> dimension () = { 5, 16 };
+		getTool () -> dimension () = { 5, 16, 10 };
 	}
 
 	try
@@ -234,7 +237,7 @@ AngleTool::configure ()
 	}
 	catch (...)
 	{
-		getTool () -> majorLineEvery () = { 5, 2 };
+		getTool () -> majorLineEvery () = { 5, 2, 5 };
 	}
 
 	try
@@ -245,7 +248,7 @@ AngleTool::configure ()
 	}
 	catch (...)
 	{
-		getTool () -> majorLineOffset () = { 0, 0 };
+		getTool () -> majorLineOffset () = { 0, 0, 0 };
 	}
 
 	try

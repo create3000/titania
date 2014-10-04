@@ -7,16 +7,21 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="AngleDimensionXAdjustment">
+  <object class="GtkAdjustment" id="AngleDimension0Adjustment">
     <property name="lower">1</property>
     <property name="upper">10000</property>
     <property name="value">5</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
-  <object class="GtkAdjustment" id="AngleDimensionYAdjustment">
+  <object class="GtkAdjustment" id="AngleDimension1Adjustment">
     <property name="upper">10000</property>
     <property name="value">16</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="AngleDimensionYAdjustment">
+    <property name="upper">10000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
@@ -47,6 +52,11 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
+  <object class="GtkAdjustment" id="AngleMajorLineEveryYAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkAdjustment" id="AngleMajorLineOffset0Adjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
@@ -54,6 +64,12 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="AngleMajorLineOffset1Adjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="AngleMajorLineOffsetYAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">1</property>
@@ -1452,10 +1468,10 @@
                                   <object class="GtkSpinButton" id="spinbutton13">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="tooltip_text" translatable="yes">Dimension</property>
+                                    <property name="tooltip_text" translatable="yes">Rings</property>
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">2</property>
-                                    <property name="adjustment">AngleDimensionXAdjustment</property>
+                                    <property name="adjustment">AngleDimension0Adjustment</property>
                                     <property name="climb_rate">1</property>
                                     <property name="numeric">True</property>
                                     <property name="value">2</property>
@@ -1473,7 +1489,7 @@
                                     <property name="tooltip_text" translatable="yes">Sectors</property>
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">2</property>
-                                    <property name="adjustment">AngleDimensionYAdjustment</property>
+                                    <property name="adjustment">AngleDimension1Adjustment</property>
                                     <property name="climb_rate">1</property>
                                     <property name="numeric">True</property>
                                     <property name="value">2</property>
@@ -1482,6 +1498,24 @@
                                     <property name="expand">False</property>
                                     <property name="fill">True</property>
                                     <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="spinbutton25">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="tooltip_text" translatable="yes">Height</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">2</property>
+                                    <property name="adjustment">AngleDimensionYAdjustment</property>
+                                    <property name="climb_rate">1</property>
+                                    <property name="numeric">True</property>
+                                    <property name="value">10</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">2</property>
                                   </packing>
                                 </child>
                               </object>
@@ -1547,6 +1581,24 @@
                                     <property name="expand">False</property>
                                     <property name="fill">True</property>
                                     <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="spinbutton29">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="tooltip_text" translatable="yes">Height</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">5</property>
+                                    <property name="adjustment">AngleMajorLineEveryYAdjustment</property>
+                                    <property name="climb_rate">1</property>
+                                    <property name="numeric">True</property>
+                                    <property name="value">5</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">2</property>
                                   </packing>
                                 </child>
                               </object>
@@ -1826,6 +1878,24 @@
                                     <property name="expand">False</property>
                                     <property name="fill">True</property>
                                     <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="spinbutton30">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="tooltip_text" translatable="yes">Height</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">5</property>
+                                    <property name="adjustment">AngleMajorLineOffsetYAdjustment</property>
+                                    <property name="climb_rate">1</property>
+                                    <property name="numeric">True</property>
+                                    <property name="value">5</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">2</property>
                                   </packing>
                                 </child>
                               </object>

@@ -235,7 +235,14 @@ NodeIndex::getNodes ()
 		return nodes;
 
 	for (const auto pair : getExecutionContext () -> getNamedNodes ())
-		nodes .emplace_back (pair .second -> getLocalNode ());
+	{
+		try
+		{
+			nodes .emplace_back (pair .second -> getLocalNode ());
+		}
+		catch (...)
+		{ }
+	}
 
 	std::sort (nodes .begin (), nodes .end (), [ ] (const X3D::SFNode & lhs, const X3D::SFNode & rhs)
 	           {

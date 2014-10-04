@@ -61,7 +61,7 @@ static const auto X_PLANE_ROTATION = X3D::Rotation4f (0, 0, -1, M_PI / 2) * X3D:
 static const auto Y_PLANE_ROTATION = X3D::Rotation4f ();
 static const auto Z_PLANE_ROTATION = X3D::Rotation4f (1, 0, 0, M_PI / 2);
 
-static constexpr int INDICES = 2;
+static constexpr int INDICES = 3;
 
 X3DAngleEditor::X3DAngleEditor () :
 	X3DGridEditorInterface (),
@@ -78,18 +78,21 @@ X3DAngleEditor::X3DAngleEditor () :
 	                        getAngleScaleBox (),
 	                        "scale"),
 	             dimension (getBrowserWindow (),
-	                        getAngleDimensionXAdjustment (),
+	                        getAngleDimension0Adjustment (),
+	                        getAngleDimension1Adjustment (),
 	                        getAngleDimensionYAdjustment (),
 	                        getAngleDimensionBox (),
 	                        "dimension"),
 	        majorLineEvery (getBrowserWindow (),
 	                        getAngleMajorLineEvery0Adjustment (),
 	                        getAngleMajorLineEvery1Adjustment (),
+	                        getAngleMajorLineEveryYAdjustment (),
 	                        getAngleMajorLineEveryBox (),
 	                        "majorLineEvery"),
 	       majorLineOffset (getBrowserWindow (),
 	                        getAngleMajorLineOffset0Adjustment (),
 	                        getAngleMajorLineOffset1Adjustment (),
+	                        getAngleMajorLineOffsetYAdjustment (),
 	                        getAngleMajorLineOffsetBox (),
 	                        "majorLineOffset"),
 	                 color (getBrowserWindow (),

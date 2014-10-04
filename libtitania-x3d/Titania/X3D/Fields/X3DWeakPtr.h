@@ -88,10 +88,7 @@ public:
 	//explicit
 	X3DWeakPtr (ValueType* const value) :
 		X3DField <ValueType*> (value)
-	{
-		if (value)
-			value -> disposed () .addInterest (this, &X3DWeakPtr::set_disposed);
-	}
+	{ addObject (value); }
 
 	template <class Up>
 	explicit
@@ -189,10 +186,16 @@ public:
 
 	virtual
 	void
-	dispose () final override;
+	dispose () final override
+	{
+		removeObject (getValue ());
+
+		X3DField <ValueType*>::dispose ();
+	}
 
 	virtual
-	~X3DWeakPtr ();
+	~X3DWeakPtr ()
+	{ removeObject (getValue ()); }
 
 
 private:
@@ -201,7 +204,6 @@ private:
 	friend class X3DWeakPtr;
 
 	using X3DField <ValueType*>::getValue;
-	using X3DField <ValueType*>::reset;
 	using X3DField <ValueType*>::operator const value_type &;
 	using X3DField <ValueType*>::operator ==;
 	using X3DField <ValueType*>::operator not_eq;
@@ -210,17 +212,47 @@ private:
 
 	virtual
 	void
-	set (const internal_type &) final override;
+	set (const internal_type & value) final override
+	{
+		if (value == getValue ())
+			return;
+
+		// FIRST ADD OBJECT TO AVOID DISPOSE!!!
+		addObject (value);
+		removeObject (getValue ());
+		setObject (value);
+	}
 
 	virtual
 	void
-	set (const X3DChildObject &) final override;
+	set (const X3DChildObject & field) final override
+	{
+		X3DChildObject* const object = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
+
+		set (dynamic_cast <internal_type> (object));
+	}
 
 	void
-	addObject (ValueType* const);
+	addObject (ValueType* const value)
+	{
+		if (value)
+			value -> X3DInput::disposed () .addInterest (this, &X3DWeakPtr::set_disposed);
+	}
 
 	void
-	removeObject (ValueType* const);
+	removeObject (ValueType* const value)
+	{
+		if (value)
+		{
+			setObject (nullptr);
+
+			value -> X3DInput::disposed () .removeInterest (this, &X3DWeakPtr::set_disposed);
+		}
+	}
+
+	void
+	setObject (ValueType* const value)
+	{ X3DField <ValueType*>::set (value); }
 
 	virtual
 	X3DChildObject*
@@ -233,7 +265,8 @@ private:
 	}
 
 	void
-	set_disposed ();
+	set_disposed ()
+	{ setObject (nullptr); }
 
 	///  TypeName identifer for X3DFields.
 	static const std::string typeName;
@@ -242,72 +275,6 @@ private:
 
 template <class ValueType>
 const std::string X3DWeakPtr <ValueType>::typeName ("SFNode");
-
-template <class ValueType>
-void
-X3DWeakPtr <ValueType>::set (const internal_type & value)
-{
-	addObject (value);
-	X3DField <ValueType*>::set (value);
-}
-
-template <class ValueType>
-void
-X3DWeakPtr <ValueType>::set (const X3DChildObject & field)
-{
-	X3DChildObject* const object = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
-
-	set (dynamic_cast <internal_type> (object));
-}
-
-template <class ValueType>
-void
-X3DWeakPtr <ValueType>::addObject (ValueType* const value)
-{
-	if (getValue () not_eq value)
-	{
-		if (value)
-			value -> disposed () .addInterest (this, &X3DWeakPtr::set_disposed);
-
-		removeObject (getValue ());
-	}
-}
-
-template <class ValueType>
-void
-X3DWeakPtr <ValueType>::removeObject (ValueType* const value)
-{
-	if (value)
-	{
-		reset ();
-
-		value -> disposed () .removeInterest (this, &X3DWeakPtr::set_disposed);
-	}
-}
-
-template <class ValueType>
-void
-X3DWeakPtr <ValueType>::set_disposed ()
-{
-	reset ();
-	addEvent ();
-}
-
-template <class ValueType>
-void
-X3DWeakPtr <ValueType>::dispose ()
-{
-	removeObject (getValue ());
-
-	X3DField <ValueType*>::dispose ();
-}
-
-template <class ValueType>
-inline
-X3DWeakPtr <ValueType>::~X3DWeakPtr ()
-{
-	removeObject (getValue ());
-}
 
 ///  @relates X3DWeakPtr
 ///  @name Comparision operations

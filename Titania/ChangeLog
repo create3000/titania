@@ -1,6 +1,16 @@
 2014-10-04  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GridEditor.xml:
+	* NodeIndex.cpp:
+	* AngleTool.cpp:
+	* X3DAngleEditor.h:
+	* X3DAngleEditor.cpp:
+	* X3DGridEditorInterface.h:
+	* X3DGridEditorInterface.cpp: 
+
+2014-10-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* GridEditor.xml:
 	* X3DGridEditor.h:
 	* X3DAngleEditor.h:
 	* X3DGridEditor.cpp:

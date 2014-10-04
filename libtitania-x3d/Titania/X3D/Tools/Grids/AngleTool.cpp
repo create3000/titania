@@ -61,9 +61,9 @@ const std::string   AngleTool::typeName       = "AngleTool";
 const std::string   AngleTool::containerField = "grid";
 
 AngleTool::Fields::Fields () :
-	      dimension (new MFInt32 ({ 5, 16 })),
-	 majorLineEvery (new MFInt32 ({ 5, 2 })),
-	majorLineOffset (new MFInt32 ({ 0, 0 }))
+	      dimension (new MFInt32 ({ 5, 16, 10 })),
+	 majorLineEvery (new MFInt32 ({ 5, 2, 5 })),
+	majorLineOffset (new MFInt32 ({ 0, 0, 0 }))
 { }
 
 AngleTool::AngleTool (X3DExecutionContext* const executionContext) :

@@ -87,11 +87,8 @@ X3DChildObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObj
 
 	// Replace parent
 
-	if (parents .erase (parentToRemove))
-		parents .emplace (parentToAdd);
-
-	else
-		addParent (parentToAdd);
+	parents .erase (parentToRemove);
+	parents .emplace (parentToAdd);
 }
 
 /***
