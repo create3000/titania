@@ -133,6 +133,8 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TransformScaleOrientationBox", m_TransformScaleOrientationBox);
 	m_builder -> get_widget ("TransformScaleOrientationToolBox", m_TransformScaleOrientationToolBox);
 	m_builder -> get_widget ("TransformScaleBox", m_TransformScaleBox);
+	m_builder -> get_widget ("TransformUniformScaleButton", m_TransformUniformScaleButton);
+	m_builder -> get_widget ("TransformUniformScaleImage", m_TransformUniformScaleImage);
 	m_builder -> get_widget ("TransformCenterBox", m_TransformCenterBox);
 	m_builder -> get_widget ("TransformMoveCenterButton", m_TransformMoveCenterButton);
 	m_builder -> get_widget ("BillboardExpander", m_BillboardExpander);
@@ -150,6 +152,8 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LayoutSizeBox", m_LayoutSizeBox);
 	m_builder -> get_widget ("LayoutSizeXSpinButton", m_LayoutSizeXSpinButton);
 	m_builder -> get_widget ("LayoutSizeYSpinButton", m_LayoutSizeYSpinButton);
+	m_builder -> get_widget ("LayoutUniformSizeButton", m_LayoutUniformSizeButton);
+	m_builder -> get_widget ("LayoutUniformSizeImage", m_LayoutUniformSizeImage);
 	m_builder -> get_widget ("LayoutAlignXComboBoxText", m_LayoutAlignXComboBoxText);
 	m_builder -> get_widget ("LayoutAlignYComboBoxText", m_LayoutAlignYComboBoxText);
 	m_builder -> get_widget ("LayoutOffsetUnitsXComboBoxText", m_LayoutOffsetUnitsXComboBoxText);
@@ -171,6 +175,8 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeoTransformScaleOrientationBox", m_GeoTransformScaleOrientationBox);
 	m_builder -> get_widget ("GeoTransformScaleOrientationToolBox", m_GeoTransformScaleOrientationToolBox);
 	m_builder -> get_widget ("GeoTransformScaleBox", m_GeoTransformScaleBox);
+	m_builder -> get_widget ("GeoTransformUniformScaleButton", m_GeoTransformUniformScaleButton);
+	m_builder -> get_widget ("GeoTransformUniformScaleImage", m_GeoTransformUniformScaleImage);
 	m_builder -> get_widget ("GeoTransformGeoCenterBox", m_GeoTransformGeoCenterBox);
 	m_builder -> get_widget ("GeoTransformGeoCenterXSpinButton", m_GeoTransformGeoCenterXSpinButton);
 	m_builder -> get_widget ("GeoTransformGeoCenterYSpinButton", m_GeoTransformGeoCenterYSpinButton);
@@ -201,12 +207,19 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BBoxSizeXSpinButton", m_BBoxSizeXSpinButton);
 	m_builder -> get_widget ("BBoxSizeYSpinButton", m_BBoxSizeYSpinButton);
 	m_builder -> get_widget ("BBoxSizeZSpinButton", m_BBoxSizeZSpinButton);
+	m_builder -> get_widget ("BBoxUniformSizeButton", m_BBoxUniformSizeButton);
+	m_builder -> get_widget ("BBoxUniformSizeImage", m_BBoxUniformSizeImage);
 	m_builder -> get_widget ("BBoxCenterBox", m_BBoxCenterBox);
 	m_builder -> get_widget ("BBoxCenterXSpinButton", m_BBoxCenterXSpinButton);
 	m_builder -> get_widget ("BBoxCenterYSpinButton", m_BBoxCenterYSpinButton);
 	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
 	m_builder -> get_widget ("FillBoundingBoxFieldsButton", m_FillBoundingBoxFieldsButton);
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_index_clicked));
+
+	// Connect object Gtk::ToggleButton with id 'TransformUniformScaleButton'.
+	m_TransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_transform_uniform_scale_clicked));
+
+	// Connect object Gtk::Button with id 'TransformMoveCenterButton'.
 	m_TransformMoveCenterButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_transform_move_center_button));
 
 	// Connect object Gtk::ComboBoxText with id 'BillboardAxisOfRotationComboBoxText'.
@@ -214,7 +227,16 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 
 	// Connect object Gtk::CheckButton with id 'LayoutCheckButton'.
 	m_LayoutCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_layout_toggled));
+
+	// Connect object Gtk::ToggleButton with id 'LayoutUniformSizeButton'.
+	m_LayoutUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_layout_uniform_size_clicked));
+
+	// Connect object Gtk::CheckButton with id 'ViewportCheckButton'.
 	m_ViewportCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_viewport_toggled));
+
+	// Connect object Gtk::ToggleButton with id 'GeoTransformUniformScaleButton'.
+	m_GeoTransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geo_transform_uniform_scale_clicked));
+	m_BBoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_bbox_uniform_size_clicked));
 
 	// Connect object Gtk::Button with id 'FillBoundingBoxFieldsButton'.
 	m_FillBoundingBoxFieldsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_fill_bounding_box_fields_clicked));

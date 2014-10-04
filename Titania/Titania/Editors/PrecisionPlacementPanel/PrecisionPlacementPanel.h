@@ -103,6 +103,10 @@ private:
 
 	virtual
 	void
+	on_bbox_uniform_size_clicked () final override;
+
+	virtual
+	void
 	on_fill_bounding_box_fields_clicked () final override;
 
 	///  @name Members

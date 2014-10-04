@@ -1,5 +1,28 @@
 2014-10-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TextureEditor.xml:
+	* X3DFieldAdjustment3.h:
+	* X3DFieldAdjustment4.h:
+	* X3DFieldAdjustment2.h:
+	* X3DTextureEditorInterface.h:
+	* X3DTextureEditorInterface.cpp:
+	* PrecisionPlacementPanel.xml:
+	* X3DLayoutEditor.h:
+	* X3DTextureTransformEditor.h:
+	* X3DLayoutEditor.cpp:
+	* X3DTextureTransformEditor.cpp:
+	* X3DTransformEditor.h:
+	* X3DPrecisionPlacementPanelInterface.h:
+	* X3DPrecisionPlacementPanelInterface.cpp:
+	* X3DTransformEditor.cpp:
+	* X3DTextureTransformNodeEditor.cpp:
+	* X3DGeoTransformEditor.h:
+	* X3DGeoTransformEditor.cpp:
+	* PrecisionPlacementPanel.h:
+	* PrecisionPlacementPanel.cpp: 
+
+2014-10-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* PrecisionPlacementPanel.xml:
 	* X3DTransformEditor.h:
 	* X3DPrecisionPlacementPanelInterface.h:

@@ -137,6 +137,8 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextureTransformScaleBox", m_TextureTransformScaleBox);
 	m_builder -> get_widget ("TextureTransformScaleXSpinButton", m_TextureTransformScaleXSpinButton);
 	m_builder -> get_widget ("TextureTransformScaleYSpinButton", m_TextureTransformScaleYSpinButton);
+	m_builder -> get_widget ("TextureTransformUniformScaleButton", m_TextureTransformUniformScaleButton);
+	m_builder -> get_widget ("TextureTransformUniformScaleImage", m_TextureTransformUniformScaleImage);
 	m_builder -> get_widget ("TextureTransformCenterBox", m_TextureTransformCenterBox);
 	m_builder -> get_widget ("TextureTransformCenterXSpinButton", m_TextureTransformCenterXSpinButton);
 	m_builder -> get_widget ("TextureTransformCenterYSpinButton", m_TextureTransformCenterYSpinButton);
@@ -168,6 +170,9 @@ X3DTextureEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Button with id 'TextureTransformUnlinkButton'.
 	m_TextureTransformUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_unlink_clicked));
+
+	// Connect object Gtk::ToggleButton with id 'TextureTransformUniformScaleButton'.
+	m_TextureTransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_transform_uniform_scale_clicked));
 
 	// Connect object Gtk::CheckButton with id 'TextureCoordinateGeneratorCheckButton'.
 	m_TextureCoordinateGeneratorCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureCoordinateGenerator_toggled));

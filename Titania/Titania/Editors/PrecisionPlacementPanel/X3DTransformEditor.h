@@ -90,6 +90,10 @@ private:
 	
 	virtual
 	void
+	on_transform_uniform_scale_clicked () final override;
+	
+	virtual
+	void
 	on_transform_move_center_button () final override;
 
 	///  @name Members

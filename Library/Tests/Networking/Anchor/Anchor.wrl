@@ -1,13 +1,16 @@
-#VRML V2.0 utf8 Titania
+#VRML V2.0 utf8 Titania V0.7.4
 
 DEF VP Viewpoint {
   description "Viewpoint1"
 }
 
-DEF _0 Anchor {
+Anchor {
   description "Go back!"
-  url [ "this-world-does-not-exists.wrl", "../Anchor.wrl" ]
-  children Transform {
+  url [
+    "this-world-does-not-exists.wrl",
+    "../Anchor.wrl"
+  ]
+  children DEF _1 Transform {
     translation 1 0 0
     rotation 0.267261 0.534522 0.801784 4
     scale 2 2 2
@@ -19,7 +22,7 @@ DEF _0 Anchor {
         textureTransform TextureTransform {
           translation 0.25 0.25
           rotation 0.5
-          scale 2 2
+          scale 16.04 16.04
           center 1 1
         }
       }

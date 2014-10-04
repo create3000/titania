@@ -394,6 +394,14 @@ public:
 	getTextureTransformScaleYSpinButton () const
 	{ return *m_TextureTransformScaleYSpinButton; }
 
+	Gtk::ToggleButton &
+	getTextureTransformUniformScaleButton () const
+	{ return *m_TextureTransformUniformScaleButton; }
+
+	Gtk::Image &
+	getTextureTransformUniformScaleImage () const
+	{ return *m_TextureTransformUniformScaleImage; }
+
 	Gtk::Box &
 	getTextureTransformCenterBox () const
 	{ return *m_TextureTransformCenterBox; }
@@ -469,6 +477,10 @@ public:
 	virtual
 	void
 	on_textureTransform_unlink_clicked () = 0;
+
+	virtual
+	void
+	on_texture_transform_uniform_scale_clicked () = 0;
 
 	virtual
 	void
@@ -565,6 +577,8 @@ private:
 	Gtk::Box*                              m_TextureTransformScaleBox;
 	Gtk::SpinButton*                       m_TextureTransformScaleXSpinButton;
 	Gtk::SpinButton*                       m_TextureTransformScaleYSpinButton;
+	Gtk::ToggleButton*                     m_TextureTransformUniformScaleButton;
+	Gtk::Image*                            m_TextureTransformUniformScaleImage;
 	Gtk::Box*                              m_TextureTransformCenterBox;
 	Gtk::SpinButton*                       m_TextureTransformCenterXSpinButton;
 	Gtk::SpinButton*                       m_TextureTransformCenterYSpinButton;

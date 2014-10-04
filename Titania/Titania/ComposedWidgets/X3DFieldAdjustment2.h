@@ -92,6 +92,14 @@ public:
 	{ return normalize; }
 
 	void
+	setUniform (const bool value)
+	{ uniform = value; }
+
+	bool
+	getUniform () const
+	{ return uniform; }
+
+	void
 	setNodes (const X3D::MFNode &);
 
 	const X3D::MFNode &
@@ -123,17 +131,17 @@ private:
 
 	///  @name Members
 
-	const Glib::RefPtr <Gtk::Adjustment> adjustment1;
-	const Glib::RefPtr <Gtk::Adjustment> adjustment2;
-	Gtk::Widget &                        widget;
-	X3D::MFNode                          nodes;
-	const std::string                    name;
-	int                                  index;
-	UndoStepPtr                          undoStep;
-	int                                  input;
-	bool                                 changing;
-	X3D::SFTime                          buffer;
-	bool                                 normalize;
+	const std::vector <Glib::RefPtr <Gtk::Adjustment>> adjustments;
+	Gtk::Widget &                                      widget;
+	X3D::MFNode                                        nodes;
+	const std::string                                  name;
+	int                                                index;
+	UndoStepPtr                                        undoStep;
+	int                                                input;
+	bool                                               changing;
+	X3D::SFTime                                        buffer;
+	bool                                               normalize;
+	bool                                               uniform;
 
 };
 
@@ -145,8 +153,7 @@ X3DFieldAdjustment2 <Type>::X3DFieldAdjustment2 (X3DBrowserWindow* const browser
                                                  const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	 X3DComposedWidget (),
-	     adjustment1 (adjustment1),
-	     adjustment2 (adjustment2),
+	     adjustments ({ adjustment1, adjustment2 }),
 	          widget (widget),
 	           nodes (),
 	            name (name),
@@ -155,13 +162,14 @@ X3DFieldAdjustment2 <Type>::X3DFieldAdjustment2 (X3DBrowserWindow* const browser
 	           input (-1),
 	        changing (false),
 	          buffer (),
-	       normalize (false)
+	       normalize (false),
+	         uniform (false)
 {
 	addChildren (buffer);
 	buffer .addInterest (this, &X3DFieldAdjustment2::set_buffer);
 
-	adjustment1 -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment2::on_value_changed), 0));
-	adjustment2 -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment2::on_value_changed), 1));
+	adjustments [0] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment2::on_value_changed), 0));
+	adjustments [1] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment2::on_value_changed), 1));
 	setup ();
 }
 
@@ -217,11 +225,25 @@ X3DFieldAdjustment2 <Type>::on_value_changed (const int id)
 			field .removeInterest (this, &X3DFieldAdjustment2::set_field);
 			field .addInterest (this, &X3DFieldAdjustment2::connect);
 
-			X3D::Vector2d vector (adjustment1 -> get_value (),
-			                      adjustment2 -> get_value ());
+			X3D::Vector2d vector (adjustments [0] -> get_value (),
+			                      adjustments [1] -> get_value ());
 
 			if (normalize)
 				vector .normalize ();
+
+			if (uniform)
+			{
+				changing = true;
+
+				const auto scale  = vector [id] / field .get1Value (id);
+				const auto index1 = (id + 1) % 2;
+
+				vector [index1] *= scale;
+
+				adjustments [index1] -> set_value (vector [index1]);
+
+				changing = false;
+			}
 
 			field .set1Value (index + 0, vector .x ());
 			field .set1Value (index + 1, vector .y ());
@@ -260,8 +282,8 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 			{
 				auto & field = node -> getField <Type> (name);
 			
-				adjustment1 -> set_value (field .get1Value (index + 0));
-				adjustment2 -> set_value (field .get1Value (index + 1));
+				adjustments [0] -> set_value (field .get1Value (index + 0));
+				adjustments [1] -> set_value (field .get1Value (index + 1));
 
 				hasField = true;
 				break;
@@ -273,8 +295,8 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 
 	if (not hasField)
 	{
-		adjustment1 -> set_value (adjustment1 -> get_lower () / 2 + adjustment1 -> get_upper () / 2);
-		adjustment2 -> set_value (adjustment2 -> get_lower () / 2 + adjustment2 -> get_upper () / 2);
+		adjustments [0] -> set_value (adjustments [0] -> get_lower () / 2 + adjustments [0] -> get_upper () / 2);
+		adjustments [1] -> set_value (adjustments [1] -> get_lower () / 2 + adjustments [1] -> get_upper () / 2);
 	}
 
 	widget .set_sensitive (hasField);

@@ -119,6 +119,8 @@ X3DGeoTransformEditor::X3DGeoTransformEditor () :
 void
 X3DGeoTransformEditor::initialize ()
 {
+	getGeoTransformUniformScaleButton () .set_active (true);
+
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DGeoTransformEditor::set_selection);
 
 	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
@@ -141,6 +143,21 @@ X3DGeoTransformEditor::set_selection (const X3D::MFNode & selection)
 
 	rotationTool -> setNodes (transforms);
 	scaleOrientationTool -> setNodes (transforms);
+}
+
+void
+X3DGeoTransformEditor::on_geo_transform_uniform_scale_clicked ()
+{
+	if (getGeoTransformUniformScaleButton () .get_active ())
+	{
+		getGeoTransformUniformScaleImage () .set_from_icon_name ("connect_established", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		scale .setUniform (true);
+	}
+	else
+	{
+		getGeoTransformUniformScaleImage () .set_from_icon_name ("connect_no", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		scale .setUniform (false);
+	}
 }
 
 X3DGeoTransformEditor::~X3DGeoTransformEditor ()

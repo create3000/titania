@@ -378,6 +378,14 @@ public:
 	getTransformScaleBox () const
 	{ return *m_TransformScaleBox; }
 
+	Gtk::ToggleButton &
+	getTransformUniformScaleButton () const
+	{ return *m_TransformUniformScaleButton; }
+
+	Gtk::Image &
+	getTransformUniformScaleImage () const
+	{ return *m_TransformUniformScaleImage; }
+
 	Gtk::Box &
 	getTransformCenterBox () const
 	{ return *m_TransformCenterBox; }
@@ -445,6 +453,14 @@ public:
 	Gtk::SpinButton &
 	getLayoutSizeYSpinButton () const
 	{ return *m_LayoutSizeYSpinButton; }
+
+	Gtk::ToggleButton &
+	getLayoutUniformSizeButton () const
+	{ return *m_LayoutUniformSizeButton; }
+
+	Gtk::Image &
+	getLayoutUniformSizeImage () const
+	{ return *m_LayoutUniformSizeImage; }
 
 	Gtk::ComboBoxText &
 	getLayoutAlignXComboBoxText () const
@@ -529,6 +545,14 @@ public:
 	Gtk::Box &
 	getGeoTransformScaleBox () const
 	{ return *m_GeoTransformScaleBox; }
+
+	Gtk::ToggleButton &
+	getGeoTransformUniformScaleButton () const
+	{ return *m_GeoTransformUniformScaleButton; }
+
+	Gtk::Image &
+	getGeoTransformUniformScaleImage () const
+	{ return *m_GeoTransformUniformScaleImage; }
 
 	Gtk::Box &
 	getGeoTransformGeoCenterBox () const
@@ -650,6 +674,14 @@ public:
 	getBBoxSizeZSpinButton () const
 	{ return *m_BBoxSizeZSpinButton; }
 
+	Gtk::ToggleButton &
+	getBBoxUniformSizeButton () const
+	{ return *m_BBoxUniformSizeButton; }
+
+	Gtk::Image &
+	getBBoxUniformSizeImage () const
+	{ return *m_BBoxUniformSizeImage; }
+
 	Gtk::Box &
 	getBBoxCenterBox () const
 	{ return *m_BBoxCenterBox; }
@@ -676,6 +708,10 @@ public:
 
 	virtual
 	void
+	on_transform_uniform_scale_clicked () = 0;
+
+	virtual
+	void
 	on_transform_move_center_button () = 0;
 
 	virtual
@@ -688,7 +724,19 @@ public:
 
 	virtual
 	void
+	on_layout_uniform_size_clicked () = 0;
+
+	virtual
+	void
 	on_viewport_toggled () = 0;
+
+	virtual
+	void
+	on_geo_transform_uniform_scale_clicked () = 0;
+
+	virtual
+	void
+	on_bbox_uniform_size_clicked () = 0;
 
 	virtual
 	void
@@ -777,6 +825,8 @@ private:
 	Gtk::Box*                      m_TransformScaleOrientationBox;
 	Gtk::Box*                      m_TransformScaleOrientationToolBox;
 	Gtk::Box*                      m_TransformScaleBox;
+	Gtk::ToggleButton*             m_TransformUniformScaleButton;
+	Gtk::Image*                    m_TransformUniformScaleImage;
 	Gtk::Box*                      m_TransformCenterBox;
 	Gtk::Button*                   m_TransformMoveCenterButton;
 	Gtk::Expander*                 m_BillboardExpander;
@@ -794,6 +844,8 @@ private:
 	Gtk::Box*                      m_LayoutSizeBox;
 	Gtk::SpinButton*               m_LayoutSizeXSpinButton;
 	Gtk::SpinButton*               m_LayoutSizeYSpinButton;
+	Gtk::ToggleButton*             m_LayoutUniformSizeButton;
+	Gtk::Image*                    m_LayoutUniformSizeImage;
 	Gtk::ComboBoxText*             m_LayoutAlignXComboBoxText;
 	Gtk::ComboBoxText*             m_LayoutAlignYComboBoxText;
 	Gtk::ComboBoxText*             m_LayoutOffsetUnitsXComboBoxText;
@@ -815,6 +867,8 @@ private:
 	Gtk::Box*                      m_GeoTransformScaleOrientationBox;
 	Gtk::Box*                      m_GeoTransformScaleOrientationToolBox;
 	Gtk::Box*                      m_GeoTransformScaleBox;
+	Gtk::ToggleButton*             m_GeoTransformUniformScaleButton;
+	Gtk::Image*                    m_GeoTransformUniformScaleImage;
 	Gtk::Box*                      m_GeoTransformGeoCenterBox;
 	Gtk::SpinButton*               m_GeoTransformGeoCenterXSpinButton;
 	Gtk::SpinButton*               m_GeoTransformGeoCenterYSpinButton;
@@ -845,6 +899,8 @@ private:
 	Gtk::SpinButton*               m_BBoxSizeXSpinButton;
 	Gtk::SpinButton*               m_BBoxSizeYSpinButton;
 	Gtk::SpinButton*               m_BBoxSizeZSpinButton;
+	Gtk::ToggleButton*             m_BBoxUniformSizeButton;
+	Gtk::Image*                    m_BBoxUniformSizeImage;
 	Gtk::Box*                      m_BBoxCenterBox;
 	Gtk::SpinButton*               m_BBoxCenterXSpinButton;
 	Gtk::SpinButton*               m_BBoxCenterYSpinButton;

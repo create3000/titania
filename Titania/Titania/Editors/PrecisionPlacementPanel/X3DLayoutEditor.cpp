@@ -88,6 +88,8 @@ X3DLayoutEditor::X3DLayoutEditor () :
 void
 X3DLayoutEditor::initialize ()
 {
+	getLayoutUniformSizeButton () .set_active (true);
+
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DLayoutEditor::set_layout);
 
 	set_layout ();
@@ -209,6 +211,21 @@ X3DLayoutEditor::connectLayout (const X3D::SFNode & field)
 {
 	field .removeInterest (this, &X3DLayoutEditor::connectLayout);
 	field .addInterest (this, &X3DLayoutEditor::set_layout);
+}
+
+void
+X3DLayoutEditor::on_layout_uniform_size_clicked ()
+{
+	if (getLayoutUniformSizeButton () .get_active ())
+	{
+		getLayoutUniformSizeImage () .set_from_icon_name ("connect_established", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		size .setUniform (true);
+	}
+	else
+	{
+		getLayoutUniformSizeImage () .set_from_icon_name ("connect_no", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		size .setUniform (false);
+	}
 }
 
 X3DLayoutEditor::~X3DLayoutEditor ()

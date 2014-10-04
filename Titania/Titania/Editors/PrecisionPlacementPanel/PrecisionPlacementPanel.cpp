@@ -94,6 +94,8 @@ PrecisionPlacementPanel::initialize ()
 	X3DViewportEditor::initialize ();
 	X3DGeoTransformEditor::initialize ();
 	X3DGeoLocationEditor::initialize ();
+	
+	getBBoxUniformSizeButton () .set_active (true);
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &PrecisionPlacementPanel::set_selection);
 
@@ -124,14 +126,31 @@ PrecisionPlacementPanel::on_index_clicked ()
 }
 
 void
+PrecisionPlacementPanel::on_bbox_uniform_size_clicked ()
+{
+	if (getBBoxUniformSizeButton () .get_active ())
+	{
+		getBBoxUniformSizeImage () .set_from_icon_name ("connect_established", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		bboxSize .setUniform (true);
+	}
+	else
+	{
+		getBBoxUniformSizeImage () .set_from_icon_name ("connect_no", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		bboxSize .setUniform (false);
+	}
+}
+
+void
 PrecisionPlacementPanel::on_fill_bounding_box_fields_clicked ()
 {
 	using setValue = void (X3D::SFVec3f::*) (const X3D::Vector3f &);
 
+	X3D::X3DPtr <X3D::X3DGroupingNode> group (boundedObject);
+
 	boundedObject -> bboxSize ()   = X3D::Vector3f (-1, -1, -1);
 	boundedObject -> bboxCenter () = X3D::Vector3f ();
 
-	const auto bbox       = boundedObject -> getBBox ();
+	const auto bbox       = group ? group -> X3DGroupingNode::getBBox () : boundedObject -> getBBox ();
 	const auto bboxSize   = bbox .size ();
 	const auto bboxCenter = bbox .center ();
 	const auto undoStep   = std::make_shared <UndoStep> (_ ("Fill Bounding Box Fields"));

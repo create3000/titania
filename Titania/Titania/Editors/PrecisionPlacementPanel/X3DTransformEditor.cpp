@@ -96,6 +96,8 @@ X3DTransformEditor::X3DTransformEditor () :
 void
 X3DTransformEditor::initialize ()
 {
+	getTransformUniformScaleButton () .set_active (true);
+
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DTransformEditor::set_selection);
 
 	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
@@ -117,6 +119,21 @@ X3DTransformEditor::set_selection (const X3D::MFNode & selection)
 
 	rotationTool -> setNodes (transforms);
 	scaleOrientationTool -> setNodes (transforms);
+}
+
+void
+X3DTransformEditor::on_transform_uniform_scale_clicked ()
+{
+	if (getTransformUniformScaleButton () .get_active ())
+	{
+		getTransformUniformScaleImage () .set_from_icon_name ("connect_established", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		scale .setUniform (true);
+	}
+	else
+	{
+		getTransformUniformScaleImage () .set_from_icon_name ("connect_no", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		scale .setUniform (false);
+	}
 }
 
 void

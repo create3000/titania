@@ -1153,7 +1153,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="halign">start</property>
-                                <property name="width_chars">-1</property>
                                 <property name="text" translatable="yes">1,000</property>
                                 <property name="adjustment">TexturePropertiesAnisotropicDegreeAdjustment</property>
                                 <property name="climb_rate">0.01</property>
@@ -1523,7 +1522,6 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                                        <property name="width_chars">-1</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">TextureTransformTranslationXAdjustment</property>
                                         <property name="climb_rate">0.01</property>
@@ -1541,7 +1539,6 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                                        <property name="width_chars">-1</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">TextureTransformTranslationYAdjustment</property>
                                         <property name="climb_rate">0.01</property>
@@ -1583,13 +1580,11 @@
                                     <property name="halign">start</property>
                                     <property name="hexpand">True</property>
                                     <property name="spacing">2</property>
-                                    <property name="homogeneous">True</property>
                                     <child>
                                       <object class="GtkSpinButton" id="TextureTransformScaleXSpinButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                                        <property name="width_chars">-1</property>
                                         <property name="text" translatable="yes">1,000</property>
                                         <property name="adjustment">TextureTransformScaleXAdjustment</property>
                                         <property name="climb_rate">0.01</property>
@@ -1608,7 +1603,6 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                                        <property name="width_chars">-1</property>
                                         <property name="text" translatable="yes">1,000</property>
                                         <property name="adjustment">TextureTransformScaleYAdjustment</property>
                                         <property name="climb_rate">0.01</property>
@@ -1620,6 +1614,29 @@
                                         <property name="expand">False</property>
                                         <property name="fill">True</property>
                                         <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkToggleButton" id="TextureTransformUniformScaleButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="tooltip_text" translatable="yes">If connected, change all axes by the same proportion.</property>
+                                        <property name="halign">start</property>
+                                        <signal name="toggled" handler="on_texture_transform_uniform_scale_clicked" swapped="no"/>
+                                        <child>
+                                          <object class="GtkImage" id="TextureTransformUniformScaleImage">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="icon_name">connect_no</property>
+                                            <property name="icon_size">1</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">2</property>
                                       </packing>
                                     </child>
                                   </object>
@@ -1643,7 +1660,6 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                                        <property name="width_chars">-1</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">TextureTransformCenterXAdjustment</property>
                                         <property name="climb_rate">0.01</property>
@@ -1660,7 +1676,6 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                                        <property name="width_chars">-1</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">TextureTransformCenterYAdjustment</property>
                                         <property name="climb_rate">0.01</property>
@@ -1714,7 +1729,6 @@
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">Angle</property>
                                     <property name="halign">start</property>
-                                    <property name="width_chars">-1</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">TextureTransformRotationAdjustment</property>
                                     <property name="climb_rate">0.01</property>

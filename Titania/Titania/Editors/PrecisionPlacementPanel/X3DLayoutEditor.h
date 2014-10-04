@@ -99,6 +99,10 @@ private:
 	void
 	connectLayout (const X3D::SFNode &);
 
+	virtual
+	void
+	on_layout_uniform_size_clicked () final override;
+
 	///  @name Members
 
 	X3D::MFNode               nodes;

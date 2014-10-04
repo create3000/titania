@@ -74,6 +74,9 @@ protected:
 	///  @name Construction
 
 	X3DTextureTransformEditor ();
+	
+	void
+	initialize ();
 
 	///  @name Construction
 
@@ -85,6 +88,12 @@ protected:
 
 
 private:
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_texture_transform_uniform_scale_clicked () final override;
 
 	///  @name Members
 

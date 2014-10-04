@@ -89,6 +89,10 @@ private:
 	void
 	set_selection (const X3D::MFNode &);
 
+	virtual
+	void
+	on_geo_transform_uniform_scale_clicked () final override;
+
 	///  @name Members
 
 	std::unique_ptr <MFStringGeoSystem>   geoSystem;

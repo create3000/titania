@@ -79,6 +79,12 @@ X3DTextureTransformEditor::X3DTextureTransformEditor () :
 { }
 
 void
+X3DTextureTransformEditor::initialize ()
+{
+	getTextureTransformUniformScaleButton () .set_active (true);
+}
+
+void
 X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> & value)
 {
 	textureTransform = value;
@@ -119,6 +125,21 @@ X3DTextureTransformEditor::getTextureTransform (const X3D::X3DPtr <X3D::X3DTextu
 	}
 
 	return textureTransform;
+}
+
+void
+X3DTextureTransformEditor::on_texture_transform_uniform_scale_clicked ()
+{
+	if (getTextureTransformUniformScaleButton () .get_active ())
+	{
+		getTextureTransformUniformScaleImage () .set_from_icon_name ("connect_established", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		scale .setUniform (true);
+	}
+	else
+	{
+		getTextureTransformUniformScaleImage () .set_from_icon_name ("connect_no", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		scale .setUniform (false);
+	}
 }
 
 } // puck
