@@ -132,32 +132,48 @@ AngleTool::realize ()
 Vector3d
 AngleTool::getSnapPosition (const Vector3d & position)
 {
-	auto p = position;
+	auto translation = position;
 
 	// Calculate snap radius and snap angle
 
-	std::complex <double> polar (p .x (), p .z ());
+	std::complex <double> polar (translation .x (), translation .z ());
 
 	constexpr double offset = M_PI / 2;
 
-	auto phi        = 2 * M_PI / dimension () [1];
-	auto radius     = std::abs (polar);
-	auto angle      = std::arg (polar);
-	auto snapRadius = std::round (radius);
-	auto snapAngle  = std::round ((angle - offset) / phi) * phi + offset;
+	const auto phi        = 2 * M_PI / dimension () [1];
+	const auto radius     = std::abs (polar);
+	const auto angle      = std::arg (polar);
+	auto       snapRadius = std::round (radius);
+	auto       snapAngle  = std::round ((angle - offset) / phi) * phi + offset;
 
 	if (std::abs (snapRadius - radius) > std::abs (snapDistance ()))
 		snapRadius = radius;
 
-	if (std::abs (snapAngle - angle) > std::abs (snapDistance () * phi))
+	if (std::abs (snapAngle - angle) > std::abs (snapDistance () * phi) or dimension () [1] == 0)
 		snapAngle = angle;
 
 	polar = std::polar (snapRadius, snapAngle);
 
-	p .x (polar .real ());
-	p .z (polar .imag ());
+	translation .x (polar .real ());
+	translation .z (polar .imag ());
 
-	return p;
+	const auto y = getSnapPosition (translation .y ());
+
+	if (std::abs (y - translation .y ()) < std::abs (snapDistance ()))
+		translation .y (y);
+
+	return translation;
+}
+
+double
+AngleTool::getSnapPosition (const double position)
+{
+	const auto o  = dimension () .get1Value (2) % 2 * 0.5; // Add a half scale if dimension is odd.
+	const auto p  = std::round (position);
+	const auto p1 = p - o;
+	const auto p2 = p + o;
+
+	return std::abs (p1 - position) < std::abs (p2 - position) ? p1 : p2;
 }
 
 } // X3D

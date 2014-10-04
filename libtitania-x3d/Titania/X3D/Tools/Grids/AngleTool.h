@@ -134,6 +134,9 @@ private:
 	Vector3d
 	getSnapPosition (const Vector3d &) final override;
 
+	double
+	getSnapPosition (const double);
+
 	///  @name Static members
 
 	static const ComponentType component;
