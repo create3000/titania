@@ -382,6 +382,10 @@ public:
 	getTransformCenterBox () const
 	{ return *m_TransformCenterBox; }
 
+	Gtk::Button &
+	getTransformMoveCenterButton () const
+	{ return *m_TransformMoveCenterButton; }
+
 	Gtk::Expander &
 	getBillboardExpander () const
 	{ return *m_BillboardExpander; }
@@ -672,6 +676,10 @@ public:
 
 	virtual
 	void
+	on_transform_move_center_button () = 0;
+
+	virtual
+	void
 	on_axisOfRotation_changed () = 0;
 
 	virtual
@@ -770,6 +778,7 @@ private:
 	Gtk::Box*                      m_TransformScaleOrientationToolBox;
 	Gtk::Box*                      m_TransformScaleBox;
 	Gtk::Box*                      m_TransformCenterBox;
+	Gtk::Button*                   m_TransformMoveCenterButton;
 	Gtk::Expander*                 m_BillboardExpander;
 	Gtk::Grid*                     m_BillboardBox;
 	Gtk::Box*                      m_BillboardAxisOfRotationToolBox;

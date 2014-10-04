@@ -87,6 +87,10 @@ private:
 
 	void
 	set_selection (const X3D::MFNode &);
+	
+	virtual
+	void
+	on_transform_move_center_button () final override;
 
 	///  @name Members
 

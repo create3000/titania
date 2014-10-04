@@ -2,6 +2,40 @@
 
 META "title" "CADLayer"
 
+WorldInfo {
+  metadata MetadataSet {
+    name "Titania"
+    value [
+      MetadataSet {
+        name "AngleGrid"
+        value MetadataBoolean {
+          name "enabled"
+          value FALSE
+        }
+      }
+      MetadataSet {
+        name "Grid"
+        value [
+          MetadataBoolean {
+            name "enabled"
+            value TRUE
+          }
+          MetadataFloat {
+            name "rotation"
+            value [
+              1,
+              0,
+              0,
+              1.5708
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "CADLayer"
+}
+
 Background {
   skyColor 0.2 0.2 0.2
 }

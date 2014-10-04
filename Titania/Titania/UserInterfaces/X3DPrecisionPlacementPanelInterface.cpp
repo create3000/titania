@@ -134,6 +134,7 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TransformScaleOrientationToolBox", m_TransformScaleOrientationToolBox);
 	m_builder -> get_widget ("TransformScaleBox", m_TransformScaleBox);
 	m_builder -> get_widget ("TransformCenterBox", m_TransformCenterBox);
+	m_builder -> get_widget ("TransformMoveCenterButton", m_TransformMoveCenterButton);
 	m_builder -> get_widget ("BillboardExpander", m_BillboardExpander);
 	m_builder -> get_widget ("BillboardBox", m_BillboardBox);
 	m_builder -> get_widget ("BillboardAxisOfRotationToolBox", m_BillboardAxisOfRotationToolBox);
@@ -206,6 +207,7 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
 	m_builder -> get_widget ("FillBoundingBoxFieldsButton", m_FillBoundingBoxFieldsButton);
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_index_clicked));
+	m_TransformMoveCenterButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_transform_move_center_button));
 
 	// Connect object Gtk::ComboBoxText with id 'BillboardAxisOfRotationComboBoxText'.
 	m_BillboardAxisOfRotationComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_axisOfRotation_changed));
