@@ -148,7 +148,7 @@ ProximitySensor::update ()
 			centerOfRotationMatrix .translate (viewpoint -> getUserCenterOfRotation ());
 			centerOfRotationMatrix *= inverse (modelViewMatrix);
 
-			modelViewMatrix *= viewpoint -> getInverseTransformationMatrix ();
+			modelViewMatrix *= viewpoint -> getInverseCameraSpaceMatrix ();
 
 			Vector3f   translation, scale;
 			Rotation4f rotation;

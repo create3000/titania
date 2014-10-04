@@ -61,6 +61,9 @@
 namespace titania {
 namespace X3D {
 
+constexpr bool  snapToCenter = true;
+constexpr float snapDistance = 0.2;
+
 const ComponentType GridTool::component      = ComponentType::TITANIA;
 const std::string   GridTool::typeName       = "GridTool";
 const std::string   GridTool::containerField = "grid";
@@ -150,8 +153,6 @@ GridTool::realize ()
 void
 GridTool::set_selection (const SelectionPtr & value)
 {
-	__LOG__ << std::endl;
-
 	if (selection)
 		selection -> getChildren () .removeInterest (this, &GridTool::set_children);
 
@@ -164,8 +165,6 @@ GridTool::set_selection (const SelectionPtr & value)
 void
 GridTool::set_children (const MFNode & value)
 {
-	__LOG__ << value .size () << std::endl;
-
 	for (const auto & node : children)
 	{
 		const X3DPtr <X3DTransformNode> transform (node);
@@ -192,12 +191,7 @@ GridTool::set_children (const MFNode & value)
 void
 GridTool::set_translation (const X3DPtr <X3DTransformNode> & transform)
 {
-	if (not getBrowser () -> getSelection () -> isActive ())
-		return;
-
-	const X3DPtr <X3DTransformNodeTool <Transform>> tool (transform);
-
-	if (not tool)
+	if (getBrowser () -> getSelection () -> activeTool_changed () not_eq Selection::MOVE_TOOL)
 		return;
 
 	for (const auto & node : children)
@@ -222,75 +216,73 @@ GridTool::set_translation (const X3DPtr <X3DTransformNode> & transform)
 		             transform -> scaleOrientation () .getValue (),
 		             transform -> center () .getValue ());
 
-		matrix *= tool -> getTransformationMatrix ();
-		
-		const auto bbox = Box3d (transform -> getBBox () * ~transform -> getMatrix ()) * matrix;
+		matrix *= transform -> getTransformationMatrix ();
 
-		Vector3d translation = bbox .center ();
+		Vector3d position;
 
-		__LOG__ << translation << std::endl;
-
-		// Calculate snap position.
-
-		constexpr float snapDistance = 0.2;
-
-		translation = translation * ~Rotation4d (rotation () .getValue ());
-
-		if (scale () .getX ())
+		if (snapToCenter)
+			position = Vector3d (transform -> center () .getValue ()) * matrix;
+		else
 		{
-			const auto x = getTranslation (0, translation);
-
-			if (std::abs (x - translation .x ()) < std::abs (scale () .getX () * snapDistance))
-				translation .x (x);
+			const auto bbox = Box3d (transform -> getBBox () * ~transform -> getMatrix ()) * matrix;
+			position = bbox .center ();
 		}
 
-		if (scale () .getY ())
-		{
-			const auto y = getTranslation (1, translation);
+		// Calculate snap position and apply relative translation.
 
-			if (std::abs (y - translation .y ()) < std::abs (scale () .getY () * snapDistance))
-				translation .y (y);
-		}
-
-		if (scale () .getZ ())
-		{
-			const auto z = getTranslation (2, translation);
-
-			if (std::abs (z - translation .z ()) < std::abs (scale () .getZ () * snapDistance))
-				translation .z (z);
-		}
-
-		translation = translation * Rotation4d (rotation () .getValue ());
-
-		// Apply relative translation.
-		
 		Matrix4d snap;
-		snap .set (translation - bbox .center ());
-		
-		matrix = matrix * snap * ~tool -> getTransformationMatrix ();
+		snap .set (getTranslation (position) - position);
 
-		Vector3d t, s;
-		Rotation4d r, so;
-		matrix .get (t, r, s, so, Vector3d (transform -> center () .getValue ()));
-
-		transform -> translation () = t;
-		transform -> rotation () = r;
-		transform -> scale () = s;
-		transform -> scaleOrientation () = so;
+		transform -> setMatrix (matrix * snap * ~transform -> getTransformationMatrix ());
 	}
-	catch (const std::domain_error &)
-	{ }
+	catch (const std::exception &)
+	{
+		// Catch NOT_SUPPORTED from getTransformationMatrix,
+		// Catch std::domain_error from matrix inverse.
+	}
+}
+
+Vector3d
+GridTool::getTranslation (const Vector3d & position)
+{
+	auto translation = position * ~Rotation4d (rotation () .getValue ());
+
+	if (scale () .getX ())
+	{
+		const auto x = getTranslation (0, translation);
+
+		if (std::abs (x - translation .x ()) < std::abs (scale () .getX () * snapDistance))
+			translation .x (x);
+	}
+
+	if (scale () .getY ())
+	{
+		const auto y = getTranslation (1, translation);
+
+		if (std::abs (y - translation .y ()) < std::abs (scale () .getY () * snapDistance))
+			translation .y (y);
+	}
+
+	if (scale () .getZ ())
+	{
+		const auto z = getTranslation (2, translation);
+
+		if (std::abs (z - translation .z ()) < std::abs (scale () .getZ () * snapDistance))
+			translation .z (z);
+	}
+
+	return translation * Rotation4d (rotation () .getValue ());
 }
 
 double
-GridTool::getTranslation (const size_t i, const Vector3d & position)
+GridTool::getTranslation (const size_t axis, const Vector3d & position)
 {
-	const auto o  = dimension () .get1Value (i) % 2 * 0.5; // Add a half scale if dimension is odd.
-	const auto p  = std::round (position [i] / scale () .get1Value (i)) * scale () .get1Value (i);
-	const auto p1 = p - o * scale () .get1Value (i) + translation () .get1Value (i);
-	const auto p2 = p + o * scale () .get1Value (i) + translation () .get1Value (i);
+	const auto o  = dimension () .get1Value (axis) % 2 * 0.5; // Add a half scale if dimension is odd.
+	const auto p  = std::round (position [axis] / scale () .get1Value (axis)) * scale () .get1Value (axis);
+	const auto p1 = p - o * scale () .get1Value (axis) + translation () .get1Value (axis);
+	const auto p2 = p + o * scale () .get1Value (axis) + translation () .get1Value (axis);
 
-	return std::abs (p1 - position [i]) < std::abs (p2 - position [i]) ? p1 : p2;
+	return std::abs (p1 - position [axis]) < std::abs (p2 - position [axis]) ? p1 : p2;
 }
 
 void

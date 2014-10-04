@@ -172,7 +172,7 @@ void
 X3DBrowser::set_prepareEvents ()
 {
 	if (getActiveLayer ())
-		currentSpeed .setPosition (getActiveLayer () -> getViewpoint () -> getTransformationMatrix () .origin (), currentFrameRate);
+		currentSpeed .setPosition (getActiveLayer () -> getViewpoint () -> getCameraSpaceMatrix () .origin (), currentFrameRate);
 
 	else
 		currentSpeed .setPosition (Vector3f (), 0);

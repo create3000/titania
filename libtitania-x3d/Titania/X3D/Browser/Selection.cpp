@@ -74,12 +74,20 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	selectLowest (false),
 	        over (),
 	      active (),
+	  activeTool (NO_TOOL),
 	   touchTime (),
 	    children ()
 {
 	addType (X3DConstants::Selection);
 
-	X3DParentObject::addChildren (enabled, mode, selectLowest, over, active, touchTime, children);
+	X3DParentObject::addChildren (enabled,
+	                              mode,
+	                              selectLowest,
+	                              over,
+	                              active,
+	                              activeTool,
+	                              touchTime,
+	                              children);
 }
 
 X3DBaseNode*

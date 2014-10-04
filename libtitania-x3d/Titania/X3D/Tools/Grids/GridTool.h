@@ -147,6 +147,9 @@ private:
 	void
 	set_translation (const X3DPtr <X3DTransformNode> &);
 
+	Vector3d
+	getTranslation (const Vector3d &);
+
 	double
 	getTranslation (const size_t, const Vector3d &);
 

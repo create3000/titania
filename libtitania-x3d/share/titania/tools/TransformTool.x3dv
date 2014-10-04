@@ -62,6 +62,7 @@ PROTO TransformTool [
   # required fields
   inputOnly   SFBool     set_enabled
   outputOnly  SFBool     isActive
+  outputOnly  SFInt32    activeTool_changed
   inputOutput SFBool     controlKey FALSE
   inputOutput SFBool     shiftKey FALSE
   inputOutput SFBool     altKey FALSE
@@ -869,6 +870,7 @@ function eventsProcessed ()
     inputOutput    SFBool  constrainMotion IS controlKey
     inputOutput    SFVec3f bboxSize IS bboxSize
     inputOutput    SFNode  transform IS transform
+    outputOnly     SFInt32 activeTool_changed IS activeTool_changed
     initializeOnly SFVec3f translation 0 0 0
     inputOutput    SFVec3f center 0 0 0
     initializeOnly SFVec3f size 0 0 0
@@ -877,9 +879,16 @@ function eventsProcessed ()
     url "vrmlscript:
 function set_active (value)
 {
-	translation = transform .translation;
-	center      = transform .center;
-	size        = bboxSize;
+	if (value)
+	{
+		activeTool_changed = 1;
+
+		translation = transform .translation;
+		center      = transform .center;
+		size        = bboxSize;
+	}
+	else
+		activeTool_changed = 0;
 }
 
 function constrainValue (value, xScale, yScale)
@@ -1115,6 +1124,7 @@ function isActive (sensorA, sensorB, sensorC)
     inputOnly      SFRotation set_zRotation
     inputOutput    SFBool     constrainRotation IS controlKey
     inputOutput    SFNode     transform IS transform
+    outputOnly     SFInt32    activeTool_changed IS activeTool_changed
     initializeOnly SFRotation rotation 0 0 1 0
     initializeOnly SFVec3f    scale 1 1 1
     initializeOnly SFRotation scaleOrientation 0 0 1 0
@@ -1124,6 +1134,8 @@ function set_active (value)
 {
 	if (value)
 	{
+		activeTool_changed = 2;
+
 		// Normalize scale rotation matrix.
 
 		var scaleRotation = new SFMatrix4f ();
@@ -1138,6 +1150,8 @@ function set_active (value)
 		transform .scale            = scale;
 		transform .scaleOrientation = scaleOrientation;
 	}
+	else
+		activeTool_changed = 0;
 }
 
 function set_xRotation (value)
@@ -1241,6 +1255,7 @@ function eventsProcessed ()
     inputOutput    SFVec3f    bboxSize IS bboxSize
     inputOutput    SFVec3f    bboxCenter IS bboxCenter
     inputOutput    SFNode     transform IS transform
+    outputOnly     SFInt32    activeTool_changed IS activeTool_changed
     initializeOnly SFVec3f    translation 0 0 0
     initializeOnly SFVec3f    scaleFactor 0 0 0
     initializeOnly SFVec3f    center 0 0 0
@@ -1291,6 +1306,8 @@ function set_active (value)
 {
 	if (value)
 	{
+		activeTool_changed = 3;
+	
 		translation = transform .translation;
 		scaleFactor = transform .scale;
 		center      = transform .center;
@@ -1303,6 +1320,8 @@ function set_active (value)
 
 		distanceFromCenter = bboxCenter .subtract (transform .center);
 	}
+	else
+		activeTool_changed = 0;
 }
 
 // isActive

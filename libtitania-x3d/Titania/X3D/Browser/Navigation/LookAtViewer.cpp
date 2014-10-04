@@ -108,7 +108,7 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 		if (not motion and click (event -> x, event -> y))
 		{
 			const auto hit             = getBrowser () -> getNearestHit ();
-			const auto modelViewMatrix = Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getTransformationMatrix ();
+			const auto modelViewMatrix = Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getCameraSpaceMatrix ();
 			const auto bbox            = hit -> shape -> getBBox () * modelViewMatrix;
 
 			getActiveViewpoint () -> lookAt (bbox, 2 - M_PHI);

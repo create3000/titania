@@ -130,8 +130,10 @@ public:
 	void
 	setMatrixWithCenter (const Matrix4d &, const Vector3f &) final override;
 
+	virtual
 	const Matrix4d &
 	getTransformationMatrix () const
+	throw (Error <NOT_SUPPORTED>) final override
 	{ return parentMatrix; }
 
 	///  @name Operatations
@@ -219,6 +221,7 @@ X3DTransformNodeTool <Type>::realize ()
 		getBrowser () -> hasShiftKey () .addInterest (getToolNode () -> getField ("shiftKey"));
 		getBrowser () -> hasAltKey () .addInterest (getToolNode () -> getField ("altKey"));
 		getToolNode () -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
+		getToolNode () -> getField ("activeTool_changed") -> addInterest (getBrowser () -> getSelection () -> activeTool_changed ());
 
 		getToolNode () -> template setField <SFBool> ("controlKey", getBrowser () -> hasControlKey ());
 		getToolNode () -> template setField <SFBool> ("shiftKey",   getBrowser () -> hasShiftKey ());

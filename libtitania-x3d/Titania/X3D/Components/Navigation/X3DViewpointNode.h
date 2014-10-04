@@ -192,12 +192,12 @@ public:
 	{ return 1; }
 
 	const Matrix4f &
-	getTransformationMatrix () const
-	{ return transformationMatrix; }
+	getCameraSpaceMatrix () const
+	{ return cameraSpaceMatrix; }
 
 	const Matrix4f &
-	getInverseTransformationMatrix () const
-	{ return inverseTransformationMatrix; }
+	getInverseCameraSpaceMatrix () const
+	{ return inverseCameraSpaceMatrix; }
 
 	const Matrix4f &
 	getParentMatrix () const
@@ -347,8 +347,8 @@ private:
 	Fields fields;
 
 	Matrix4f parentMatrix;
-	Matrix4f transformationMatrix;
-	Matrix4f inverseTransformationMatrix;
+	Matrix4f cameraSpaceMatrix;
+	Matrix4f inverseCameraSpaceMatrix;
 
 	X3DPtr <TimeSensor>              timeSensor;
 	X3DPtr <EaseInEaseOut>           easeInEaseOut;

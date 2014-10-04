@@ -1,3 +1,19 @@
+2014-10-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Selection.h:
+	* Selection.cpp:
+	* X3DBrowser.cpp:
+	* GridTool.h:
+	* GridTool.cpp:
+	* TransformTool.x3dv:
+	* X3DNode.cpp:
+	* LookAtViewer.cpp:
+	* X3DTransformNodeTool.h:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp:
+	* X3DTransformMatrix4DNode.h:
+	* ProximitySensor.cpp: 
+
 2014-10-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GridTool.cpp: 

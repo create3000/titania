@@ -68,6 +68,15 @@ public:
 
 	};
 
+	enum ToolType
+	{
+		NO_TOOL,
+		MOVE_TOOL,
+		ROTATE_TOOL,
+		SCALE_TOOL	
+
+	};
+
 	///  @name Construction
 
 	Selection (X3DExecutionContext* const);
@@ -139,6 +148,14 @@ public:
 	isActive () const
 	{ return active; }
 
+	SFInt32 &
+	activeTool_changed ()
+	{ return activeTool; }
+
+	const SFInt32 &
+	activeTool_changed () const
+	{ return activeTool; }
+
 	const SFBool &
 	getPickedTime () const
 	{ return touchTime; }
@@ -191,6 +208,7 @@ private:
 	SFBool                 selectLowest;
 	SFBool                 over;
 	SFBool                 active;
+	SFInt32                activeTool;
 	SFBool                 touchTime;
 	MFNode                 children;
 

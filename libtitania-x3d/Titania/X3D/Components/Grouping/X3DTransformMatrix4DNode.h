@@ -77,6 +77,12 @@ public:
 	getMatrix () const
 	{ return matrix; }
 
+	virtual
+	const Matrix4d &
+	getTransformationMatrix () const
+	throw (Error <NOT_SUPPORTED>)
+	{ throw Error <NOT_SUPPORTED> ("X3DTransformMatrix4DNode::getTransformationMatrix"); }
+
 	///  @name Operations
 
 	virtual

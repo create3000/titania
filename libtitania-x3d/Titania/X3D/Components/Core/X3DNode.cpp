@@ -497,13 +497,13 @@ X3DNode::getCurrentViewpoint () const
 const Matrix4f &
 X3DNode::getCameraSpaceMatrix () const
 {
-	return getCurrentViewpoint () -> getTransformationMatrix ();
+	return getCurrentViewpoint () -> getCameraSpaceMatrix ();
 }
 
 const Matrix4f &
 X3DNode::getInverseCameraSpaceMatrix () const
 {
-	return getCurrentViewpoint () -> getInverseTransformationMatrix ();
+	return getCurrentViewpoint () -> getInverseCameraSpaceMatrix ();
 }
 
 Matrix4f

@@ -81,8 +81,8 @@ X3DViewpointNode::X3DViewpointNode () :
 	          X3DViewpointObject (),
 	                      fields (),
 	                parentMatrix (),
-	        transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),
-	 inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
+	           cameraSpaceMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),
+	    inverseCameraSpaceMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
 	                  timeSensor (new TimeSensor (getBrowser () -> getPrivateScene ())),
 	               easeInEaseOut (new EaseInEaseOut (getBrowser () -> getPrivateScene ())),
 	        positionInterpolator (new PositionInterpolator (getBrowser () -> getPrivateScene ())),
@@ -184,7 +184,7 @@ X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoi
                                              Vector3f & relativeScale,
                                              Rotation4f & relativeScaleOrientation) const
 {
-	const Matrix4f differenceMatrix = ~(getParentMatrix () * fromViewpoint -> getInverseTransformationMatrix ());
+	const Matrix4f differenceMatrix = ~(getParentMatrix () * fromViewpoint -> getInverseCameraSpaceMatrix ());
 
 	differenceMatrix .get (relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
 
@@ -197,8 +197,8 @@ X3DViewpointNode::setTransformationMatrix (Matrix4f value)
 {
 	try
 	{
-		transformationMatrix        = value;
-		inverseTransformationMatrix = ~value;
+		cameraSpaceMatrix        = value;
+		inverseCameraSpaceMatrix = ~value;
 	}
 	catch (const std::domain_error &)
 	{ }
@@ -488,7 +488,7 @@ X3DViewpointNode::reshape ()
 void
 X3DViewpointNode::transform ()
 {
-	getModelViewMatrix () .set (getInverseTransformationMatrix ());
+	getModelViewMatrix () .set (getInverseCameraSpaceMatrix ());
 }
 
 void
