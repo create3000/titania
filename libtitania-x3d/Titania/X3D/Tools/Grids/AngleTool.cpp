@@ -83,6 +83,8 @@ AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "color",           color ());
 	addField (inputOutput, "lineColor",       lineColor ());
 	addField (inputOutput, "majorLineColor",  majorLineColor ());
+	addField (inputOutput, "snapToCenter",    snapToCenter ());
+	addField (inputOutput, "snapDistance",    snapDistance ());
 }
 
 X3DBaseNode*

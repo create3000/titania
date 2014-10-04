@@ -121,6 +121,22 @@ public:
 	majorLineColor () const
 	{ return *fields .majorLineColor; }
 
+	SFBool &
+	snapToCenter ()
+	{ return *fields .snapToCenter; }
+
+	const SFBool &
+	snapToCenter () const
+	{ return *fields .snapToCenter; }
+
+	SFFloat &
+	snapDistance ()
+	{ return *fields .snapDistance; }
+
+	const SFFloat &
+	snapDistance () const
+	{ return *fields .snapDistance; }
+
 	///  @name Destruction
 
 	~X3DGridTool ();
@@ -183,6 +199,8 @@ private:
 		SFColorRGBA* const color;
 		SFColorRGBA* const lineColor;
 		SFColorRGBA* const majorLineColor;
+		SFBool* const snapToCenter;
+		SFFloat* const snapDistance;
 	};
 
 	Fields fields;

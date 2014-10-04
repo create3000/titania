@@ -57,15 +57,15 @@
 namespace titania {
 namespace X3D {
 
-constexpr bool snapToCenter = true;
-
 X3DGridTool::Fields::Fields () :
 	   translation (new SFVec3f ()),
 	      rotation (new SFRotation ()),
 	         scale (new SFVec3f (1, 1, 1)),
 	         color (new SFColorRGBA (0.5, 0.5, 0.5, 0.2)),
 	     lineColor (new SFColorRGBA (1, 0.7, 0.7, 0.2)),
-	majorLineColor (new SFColorRGBA (1, 0.7, 0.7, 0.4))
+	majorLineColor (new SFColorRGBA (1, 0.7, 0.7, 0.4)),
+	  snapToCenter (new SFBool (true)),
+	  snapDistance (new SFFloat (0.2))
 { }
 
 X3DGridTool::X3DGridTool () :
@@ -245,7 +245,7 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & transform)
 
 		Vector3d position;
 
-		if (snapToCenter)
+		if (snapToCenter ())
 			position = Vector3d (transform -> center () .getValue ()) * matrix;
 		else
 		{

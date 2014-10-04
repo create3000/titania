@@ -56,8 +56,6 @@
 namespace titania {
 namespace X3D {
 
-constexpr float snapDistance = 0.2;
-
 const ComponentType GridTool::component      = ComponentType::TITANIA;
 const std::string   GridTool::typeName       = "GridTool";
 const std::string   GridTool::containerField = "grid";
@@ -85,6 +83,8 @@ GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "color",           color ());
 	addField (inputOutput, "lineColor",       lineColor ());
 	addField (inputOutput, "majorLineColor",  majorLineColor ());
+	addField (inputOutput, "snapToCenter",    snapToCenter ());
+	addField (inputOutput, "snapDistance",    snapDistance ());
 }
 
 X3DBaseNode*
@@ -136,7 +136,7 @@ GridTool::getSnapPosition (const Vector3d & position)
 	{
 		const auto x = getSnapPosition (0, translation);
 
-		if (std::abs (x - translation .x ()) < std::abs (scale () .getX () * snapDistance))
+		if (std::abs (x - translation .x ()) < std::abs (scale () .getX () * snapDistance ()))
 			translation .x (x);
 	}
 
@@ -144,7 +144,7 @@ GridTool::getSnapPosition (const Vector3d & position)
 	{
 		const auto y = getSnapPosition (1, translation);
 
-		if (std::abs (y - translation .y ()) < std::abs (scale () .getY () * snapDistance))
+		if (std::abs (y - translation .y ()) < std::abs (scale () .getY () * snapDistance ()))
 			translation .y (y);
 	}
 
@@ -152,7 +152,7 @@ GridTool::getSnapPosition (const Vector3d & position)
 	{
 		const auto z = getSnapPosition (2, translation);
 
-		if (std::abs (z - translation .z ()) < std::abs (scale () .getZ () * snapDistance))
+		if (std::abs (z - translation .z ()) < std::abs (scale () .getZ () * snapDistance ()))
 			translation .z (z);
 	}
 
