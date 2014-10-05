@@ -256,9 +256,8 @@ public:
 		if (&other == this)
 			return *this;
 
-		removeObject (getValue ());
-		moveObject (other);
-		addEvent ();
+		if (moveObject (other))
+			addEvent ();
 
 		return *this;
 	}
@@ -271,9 +270,8 @@ public:
 		if (&other == this)
 			return *this;
 
-		removeObject (getValue ());
-		moveObject (other);
-		addEvent ();
+		if (moveObject (other))
+			addEvent ();
 
 		return *this;
 	}
@@ -503,41 +501,63 @@ private:
 		}
 	}
 
-	void
+	bool
 	moveObject (X3DPtr & other)
 	{
-		setObject (other .getValue ());
-
-		if (getValue ())
+		const auto value = other .getValue ();
+		
+		if (value == getValue ())
 		{
-			other .get () -> replaceParent (&other, this);
-			other .get () -> addClones (cloneCount);
-			other .get () -> removeClones (other .cloneCount);
-			other .get () -> X3DInput::disposed () .removeInterest (other, &X3DPtr::set_disposed);
-			other .get () -> X3DInput::disposed () .addInterest (this, &X3DPtr::set_disposed);
+			// If both values are NULL or equal, only set other to NULL.
+			other = nullptr;
+			return false;
+		}
+
+		if (value)
+		{
+			value -> replaceParent (&other, this);
+			value -> addClones (cloneCount);
+			value -> removeClones (other .cloneCount);
+			value -> X3DInput::disposed () .removeInterest (other, &X3DPtr::set_disposed);
+			value -> X3DInput::disposed () .addInterest (this, &X3DPtr::set_disposed);
 			other .setObject (nullptr);
 			other .addEvent ();
 		}
+
+		removeObject (getValue ());
+		setObject (value);
+		return true;
 	}
 
 	template <class Up>
-	void
+	bool
 	moveObject (X3DPtr <Up> & other)
 	{
-		setObject (dynamic_cast <ValueType*> (other .getValue ()));
+		const auto value = dynamic_cast <ValueType*> (other .getValue ());
 
-		if (getValue ())
+		if (value == getValue ())
 		{
-			other .get () -> replaceParent (&other, this);
-			other .get () -> addClones (cloneCount);
-			other .get () -> removeClones (other .cloneCount);
-			other .get () -> X3DInput::disposed () .removeInterest (other, &X3DPtr <Up>::set_disposed);
-			other .get () -> X3DInput::disposed () .addInterest (this, &X3DPtr::set_disposed);
+			// If both values are NULL or equal, only set other to NULL.
+			other = nullptr;
+			return false;
+		}
+
+		if (value)
+		{
+			value -> replaceParent (&other, this);
+			value -> addClones (cloneCount);
+			value -> removeClones (other .cloneCount);
+			value -> X3DInput::disposed () .removeInterest (other, &X3DPtr <Up>::set_disposed);
+			value -> X3DInput::disposed () .addInterest (this, &X3DPtr::set_disposed);
 			other .setObject (nullptr);
 			other .addEvent ();
 		}
 		else
 			other = nullptr;
+
+		removeObject (getValue ());
+		setObject (value);
+		return true;
 	}
 
 	void

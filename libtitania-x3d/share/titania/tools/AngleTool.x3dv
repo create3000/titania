@@ -8,7 +8,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sat, 04 Oct 2014 08:50:20 GMT"
+META "modified" "Sat, 04 Oct 2014 23:49:11 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -426,18 +426,7 @@ DEF AngleTool Transform {
   children [
     DEF AngleGrid TouchGroup {
       enabled FALSE
-      children DEF _2 AngleGrid {
-        dimension [
-          5,
-          16,
-          5
-        ]
-        majorLineEvery [
-          5,
-          2,
-          10
-        ]
-      }
+      children DEF _2 AngleGrid { }
     }
     DEF Center_1 Transform {
       children [
@@ -555,7 +544,8 @@ DEF AngleScript Script {
   inputOnly   SFRotation set_rotation
   inputOutput MFInt32    dimension [
     5,
-    16
+    16,
+    10
   ]
   outputOnly  SFFloat    angle_changed
   outputOnly  SFRotation rotation_changed
