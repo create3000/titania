@@ -583,6 +583,12 @@ private:
 	//void
 	//on_motion_blur_editor_clicked () final override;
 
+	///  @name Geometry handling
+
+	virtual
+	void
+	on_hammer_clicked () final override;
+
 	///  @name Browser dashboard handling
 
 	void

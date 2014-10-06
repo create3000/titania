@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,9 +48,14 @@
  *
  ******************************************************************************/
 
+#include "../../../X3D.h"
+
 #include "BoxOptions.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Texturing/TextureCoordinate.h"
 
 namespace titania {
 namespace X3D {
@@ -178,6 +183,58 @@ BoxOptions::build ()
 	getTexCoords () .emplace_back (0, 1, 0, 1);
 	getNormals   () .emplace_back (-1, 0, 0);
 	getVertices  () .emplace_back (-1, 1, -1);
+}
+
+SFNode
+BoxOptions::toPolygonObject (X3DExecutionContext* const executionContext) const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto texCoord = createNode <TextureCoordinate> (executionContext);
+	const auto coord    = createNode <Coordinate> (executionContext);
+	const auto geometry = createNode <IndexedFaceSet> (executionContext);
+
+	geometry -> texCoord () = texCoord;
+	geometry -> coord ()    = coord;
+
+	// Texture Coordinates
+	texCoord -> point  () .emplace_back (0, 0);
+	texCoord -> point  () .emplace_back (1, 0);
+	texCoord -> point  () .emplace_back (1, 1);
+	texCoord -> point  () .emplace_back (0, 1);
+
+	// Front Face
+	coord -> point  () .emplace_back (-1, -1, 1);
+	coord -> point  () .emplace_back (1, -1, 1);
+	coord -> point  () .emplace_back (1, 1, 1);
+	coord -> point  () .emplace_back (-1, 1, 1);
+
+	// Back Face
+	coord -> point  () .emplace_back (-1, -1, -1);
+	coord -> point  () .emplace_back (1, -1, -1);
+	coord -> point  () .emplace_back (1, 1, -1);
+	coord -> point  () .emplace_back (-1, 1, -1);
+
+	geometry -> texCoordIndex () = {
+		0, 1, 2, 3, -1, // front
+		0, 1, 2, 3, -1, // back
+		0, 1, 2, 3, -1, // top
+		0, 1, 2, 3, -1, // bottom
+		0, 1, 2, 3, -1, // right
+		0, 1, 2, 3, -1  // left
+	};
+
+	geometry -> coordIndex () = {
+		0, 1, 2, 3, -1, // front
+		5, 4, 7, 6, -1, // back
+		3, 2, 6, 7, -1, // top
+		4, 5, 1, 0, -1, // bottom
+		4, 0, 3, 7, -1, // left
+		1, 5, 6, 2, -1  // right
+	};
+
+	executionContext -> realize ();
+	return SFNode (geometry);
 }
 
 } // X3D

@@ -73,6 +73,11 @@ public:
 	getUndo () const
 	{ return undo; }
 
+	template <class NodeType>
+	static
+	X3D::X3DPtrArray <NodeType>
+	getNodes (X3D::MFNode &, const std::set <X3D::X3DConstants::NodeType> &);
+
 	///  @name Destruction
 
 	virtual
@@ -111,10 +116,6 @@ protected:
 	template <class NodeType>
 	X3D::X3DPtrArray <NodeType>
 	getSelection (const std::set <X3D::X3DConstants::NodeType> &) const;
-
-	template <class NodeType>
-	X3D::X3DPtrArray <NodeType>
-	getNodes (X3D::MFNode &, const std::set <X3D::X3DConstants::NodeType> &) const;
 
 	template <class FieldType, class NodeType>
 	static
@@ -194,7 +195,7 @@ X3DEditorObject::getSelection (const std::set <X3D::X3DConstants::NodeType> & ty
  */
 template <class NodeType>
 X3D::X3DPtrArray <NodeType>
-X3DEditorObject::getNodes (X3D::MFNode & selection, const std::set <X3D::X3DConstants::NodeType> & types) const
+X3DEditorObject::getNodes (X3D::MFNode & selection, const std::set <X3D::X3DConstants::NodeType> & types)
 {
 	// Find X3DGeometryNodes
 

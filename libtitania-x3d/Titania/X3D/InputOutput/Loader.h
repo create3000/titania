@@ -110,7 +110,7 @@ public:
 	       Error <URL_UNAVAILABLE>);
 
 	void
-	parseIntoScene (X3DScene* const scene, const MFString & url)
+	parseIntoScene (const X3DScenePtr & scene, const MFString & url)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
 

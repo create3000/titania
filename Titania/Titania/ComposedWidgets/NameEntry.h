@@ -174,10 +174,22 @@ inline
 bool
 NameEntry::on_key_press_event (GdkEventKey* event)
 {
-	if (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter)
+	switch (event -> keyval)
 	{
-		on_clicked ();
-		return true;
+		case GDK_KEY_Return:
+		case GDK_KEY_KP_Enter:
+		{
+			on_clicked ();
+			return true;
+		}
+		case GDK_KEY_Escape:
+		{
+			entry .set_text (node -> getName ());
+			button .grab_focus ();
+			return true;
+		}
+		default:
+			break;
 	}
 
 	return false;

@@ -50,6 +50,8 @@
 
 #include "BrowserWindow.h"
 
+#include "../Base/X3DEditorObject.h"
+
 #include "../Dialogs/FileImportDialog/FileImportDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
@@ -1808,6 +1810,35 @@ void
 BrowserWindow::on_node_index_clicked ()
 {
 	std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex")) -> setNamedNodes ();
+}
+
+// Geometry handling
+
+void
+BrowserWindow::on_hammer_clicked ()
+{
+	const auto undoStep  = std::make_shared <UndoStep> ("Smash Selection");
+	auto       selection = getSelection () -> getChildren ();
+
+	for (const auto & shape : X3DEditorObject::getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode }))
+	{
+		try
+		{
+			const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry ());
+
+			if (geometry)
+			{
+				shape -> geometry () = geometry -> toPolygonObject ();
+
+				undoStep -> addUndoFunction (&X3D::SFNode::setValue, std::ref (shape -> geometry ()), X3D::SFNode (geometry));
+				undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (shape -> geometry ()), shape -> geometry ());
+			}
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	addUndoStep (undoStep);
 }
 
 // Browser dashboard handling

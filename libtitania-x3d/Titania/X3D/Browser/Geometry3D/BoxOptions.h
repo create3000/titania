@@ -92,6 +92,12 @@ public:
 	getVertexMode () const final override
 	{ return GL_QUADS; }
 
+	virtual
+	SFNode
+	toPolygonObject (X3DExecutionContext* const) const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
+
 
 private:
 

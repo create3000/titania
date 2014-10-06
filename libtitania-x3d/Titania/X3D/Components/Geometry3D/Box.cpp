@@ -141,5 +141,25 @@ Box::build ()
 	setTextureCoordinate (nullptr);
 }
 
+SFNode
+Box::toPolygonObject () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto & options  = getBrowser () -> getBoxOptions ();
+	const auto   geometry = options -> toPolygonObject (getExecutionContext ());
+	
+	if (size () == Vector3f (2, 2, 2))
+		return geometry;
+
+	const auto size1_2 = size () / 2.0f;
+
+	for (auto & point : geometry -> getField <SFNode> ("coord") -> getField <MFVec3f> ("point"))
+		point *= size1_2;
+
+	geometry -> setField <SFBool> ("solid", solid ());
+	return geometry;
+}
+
 } // X3D
 } // titania

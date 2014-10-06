@@ -50,6 +50,8 @@
 
 #include "X3DGeometricOptionNode.h"
 
+#include "../../Components/Geometry3D/IndexedFaceSet.h"
+
 namespace titania {
 namespace X3D {
 

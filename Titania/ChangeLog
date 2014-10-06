@@ -1,3 +1,14 @@
+2014-10-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DEditorObject.h:
+	* BrowserWindow.h:
+	* Hammer.svg:
+	* BrowserWindow.cpp:
+	* BrowserWindow.xml:
+	* NameEntry.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
 2014-10-04  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GridEditor.xml:

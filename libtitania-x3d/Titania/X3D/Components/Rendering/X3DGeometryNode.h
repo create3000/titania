@@ -124,6 +124,13 @@ public:
 	void
 	draw (const bool, const bool, const bool);
 
+	virtual
+	SFNode
+	toPolygonObject () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>)
+	{ throw Error <NOT_SUPPORTED> ("X3DGeometryNode::toPolygonObject"); }
+
 	///  @name Destruction
 
 	virtual

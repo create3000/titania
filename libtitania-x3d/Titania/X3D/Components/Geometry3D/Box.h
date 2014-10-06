@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class IndexedFaceSet;
+
 class Box :
 	public X3DGeometryNode
 {
@@ -113,6 +115,12 @@ public:
 	bool
 	isLineGeometry () const final override
 	{ return false; }
+
+	virtual
+	SFNode
+	toPolygonObject () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
 
 
 private:

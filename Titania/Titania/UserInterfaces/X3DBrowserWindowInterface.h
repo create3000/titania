@@ -682,6 +682,10 @@ public:
 	getNodeIndexButton () const
 	{ return *m_NodeIndexButton; }
 
+	Gtk::ToolButton &
+	getHammerButton () const
+	{ return *m_HammerButton; }
+
 	Gtk::Paned &
 	getVPaned () const
 	{ return *m_VPaned; }
@@ -1240,6 +1244,10 @@ public:
 
 	virtual
 	void
+	on_hammer_clicked () = 0;
+
+	virtual
+	void
 	on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
 
 	virtual
@@ -1449,6 +1457,7 @@ private:
 	Gtk::ToolButton*                 m_PrecisionPlacementPanelButton;
 	Gtk::ToolButton*                 m_CreatePrototypeInstanceButton;
 	Gtk::ToolButton*                 m_NodeIndexButton;
+	Gtk::ToolButton*                 m_HammerButton;
 	Gtk::Paned*                      m_VPaned;
 	Gtk::Paned*                      m_HPaned;
 	Gtk::Box*                        m_SplashBox;

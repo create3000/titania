@@ -51,6 +51,8 @@
 #ifndef __TITANIA_X3D_BITS_GOLDEN_GATE_H__
 #define __TITANIA_X3D_BITS_GOLDEN_GATE_H__
 
+#include "../Execution/X3DScene.h"
+
 #include <Titania/Basic/URI.h>
 #include <Titania/Stream/InputFileStream.h>
 #include <string>
@@ -61,8 +63,8 @@ namespace X3D {
 std::string
 get_name_from_uri (const basic::uri &);
 
-basic::ifilestream
-golden_gate (const basic::uri &, basic::ifilestream &&);
+void
+golden_gate (const X3DScenePtr &, const basic::uri &, basic::ifilestream &&);
 
 } // X3D
 } // titania

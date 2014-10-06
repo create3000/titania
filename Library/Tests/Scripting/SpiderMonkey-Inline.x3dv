@@ -1,0 +1,1044 @@
+#X3D V3.3 utf8 Titania V0.7.4
+
+META "comment" "World of Titania"
+META "created" "Sun, 05 Oct 2014 11:53:22 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Sun, 05 Oct 2014 23:30:41 GMT"
+
+WorldInfo {
+  metadata MetadataSet {
+    name "Titania"
+    value [
+      MetadataSet {
+        name "AngleGrid"
+        value MetadataBoolean {
+          name "enabled"
+          value FALSE
+        }
+      }
+      MetadataSet {
+        name "Grid"
+        value [
+          MetadataBoolean {
+            name "enabled"
+            value TRUE
+          }
+          MetadataFloat {
+            name "rotation"
+            value [
+              1,
+              0,
+              0,
+              1.5708
+            ]
+          }
+          MetadataFloat {
+            name "scale"
+            value [
+              1.5,
+              1.5,
+              1.5
+            ]
+          }
+          MetadataInteger {
+            name "dimension"
+            value [
+              22,
+              22,
+              22
+            ]
+          }
+          MetadataInteger {
+            name "majorLineEvery"
+            value [
+              2,
+              0,
+              2
+            ]
+          }
+          MetadataInteger {
+            name "majorLineOffset"
+            value [
+              -4,
+              0,
+              -4
+            ]
+          }
+          MetadataFloat {
+            name "translation"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "SpiderMonkey-Inline"
+}
+
+Viewpoint {
+  position 0 0 41.3624
+}
+
+Transform {
+  children [
+    DEF SpiderMonkey_1 Transform {
+      translation -13.5 13.5 -1.0869e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey Transform {
+      translation -13.5 10.5 -1.9241e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_2 Transform {
+      translation -13.5 7.5 -1.9956e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_3 Transform {
+      translation -13.5 4.5 -5.16035e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_4 Transform {
+      translation -13.5 1.5 7.03972e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_5 Transform {
+      translation -13.5 -1.5 -9.01497e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_6 Transform {
+      translation -13.5 -4.5 -2.03143e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_7 Transform {
+      translation -13.5 -7.5 -2.83499e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_8 Transform {
+      translation -13.5 -10.5 -1.36495e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_9 Transform {
+      translation -13.5 -13.5 -1.94779e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 3 0 0
+  children [
+    DEF SpiderMonkey_10 Transform {
+      translation -13.5 13.5 -1.0869e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_11 Transform {
+      translation -13.5 10.5 -1.9241e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_12 Transform {
+      translation -13.5 7.5 -1.9956e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_13 Transform {
+      translation -13.5 4.5 -5.16035e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_14 Transform {
+      translation -13.5 1.5 7.03972e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_15 Transform {
+      translation -13.5 -1.5 -9.01497e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_16 Transform {
+      translation -13.5 -4.5 -2.03143e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_17 Transform {
+      translation -13.5 -7.5 -2.83499e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_18 Transform {
+      translation -13.5 -10.5 -1.36495e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_19 Transform {
+      translation -13.5 -13.5 -1.94779e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 6 0 0
+  children [
+    DEF SpiderMonkey_20 Transform {
+      translation -13.5 13.5 -1.0869e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_21 Transform {
+      translation -13.5 10.5 -1.9241e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_22 Transform {
+      translation -13.5 7.5 -1.9956e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_23 Transform {
+      translation -13.5 4.5 -5.16035e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_24 Transform {
+      translation -13.5 1.5 7.03972e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_25 Transform {
+      translation -13.5 -1.5 -9.01497e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_26 Transform {
+      translation -13.5 -4.5 -2.03143e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_27 Transform {
+      translation -13.5 -7.5 -2.83499e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_28 Transform {
+      translation -13.5 -10.5 -1.36495e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_29 Transform {
+      translation -13.5 -13.5 -1.94779e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 9 0 0
+  children [
+    DEF SpiderMonkey_30 Transform {
+      translation -13.5 13.5 -1.0869e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_31 Transform {
+      translation -13.5 10.5 -1.9241e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_32 Transform {
+      translation -13.5 7.5 -1.9956e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_33 Transform {
+      translation -13.5 4.5 -5.16035e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_34 Transform {
+      translation -13.5 1.5 7.03972e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_35 Transform {
+      translation -13.5 -1.5 -9.01497e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_36 Transform {
+      translation -13.5 -4.5 -2.03143e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_37 Transform {
+      translation -13.5 -7.5 -2.83499e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_38 Transform {
+      translation -13.5 -10.5 -1.36495e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_39 Transform {
+      translation -13.5 -13.5 -1.94779e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 12 0 0
+  children [
+    DEF SpiderMonkey_40 Transform {
+      translation -13.5 13.5 -1.0869e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_41 Transform {
+      translation -13.5 10.5 -1.9241e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_42 Transform {
+      translation -13.5 7.5 -1.9956e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_43 Transform {
+      translation -13.5 4.5 -5.16035e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_44 Transform {
+      translation -13.5 1.5 7.03972e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_45 Transform {
+      translation -13.5 -1.5 -9.01497e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_46 Transform {
+      translation -13.5 -4.5 -2.03143e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_47 Transform {
+      translation -13.5 -7.5 -2.83499e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_48 Transform {
+      translation -13.5 -10.5 -1.36495e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_49 Transform {
+      translation -13.5 -13.5 -1.94779e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 15 0 0
+  children [
+    DEF SpiderMonkey_50 Transform {
+      translation -13.5 13.5 -1.0869e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_51 Transform {
+      translation -13.5 10.5 -1.9241e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_52 Transform {
+      translation -13.5 7.5 -1.9956e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_53 Transform {
+      translation -13.5 4.5 -5.16035e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_54 Transform {
+      translation -13.5 1.5 7.03972e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_55 Transform {
+      translation -13.5 -1.5 -9.01497e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_56 Transform {
+      translation -13.5 -4.5 -2.03143e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_57 Transform {
+      translation -13.5 -7.5 -2.83499e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_58 Transform {
+      translation -13.5 -10.5 -1.36495e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_59 Transform {
+      translation -13.5 -13.5 -1.94779e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 18 0 0
+  children [
+    DEF SpiderMonkey_60 Transform {
+      translation -13.5 13.5 -1.0869e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_61 Transform {
+      translation -13.5 10.5 -1.9241e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_62 Transform {
+      translation -13.5 7.5 -1.9956e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_63 Transform {
+      translation -13.5 4.5 -5.16035e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_64 Transform {
+      translation -13.5 1.5 7.03972e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_65 Transform {
+      translation -13.5 -1.5 -9.01497e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_66 Transform {
+      translation -13.5 -4.5 -2.03143e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_67 Transform {
+      translation -13.5 -7.5 -2.83499e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_68 Transform {
+      translation -13.5 -10.5 -1.36495e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_69 Transform {
+      translation -13.5 -13.5 -1.94779e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 21 0 0
+  children [
+    DEF SpiderMonkey_70 Transform {
+      translation -13.5 13.5 -1.0869e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_71 Transform {
+      translation -13.5 10.5 -1.9241e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_72 Transform {
+      translation -13.5 7.5 -1.9956e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_73 Transform {
+      translation -13.5 4.5 -5.16035e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_74 Transform {
+      translation -13.5 1.5 7.03972e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_75 Transform {
+      translation -13.5 -1.5 -9.01497e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_76 Transform {
+      translation -13.5 -4.5 -2.03143e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_77 Transform {
+      translation -13.5 -7.5 -2.83499e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_78 Transform {
+      translation -13.5 -10.5 -1.36495e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_79 Transform {
+      translation -13.5 -13.5 -1.94779e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 24 0 0
+  children [
+    DEF SpiderMonkey_80 Transform {
+      translation -13.5 13.5 -1.0869e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_81 Transform {
+      translation -13.5 10.5 -1.9241e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_82 Transform {
+      translation -13.5 7.5 -1.9956e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_83 Transform {
+      translation -13.5 4.5 -5.16035e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_84 Transform {
+      translation -13.5 1.5 7.03972e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_85 Transform {
+      translation -13.5 -1.5 -9.01497e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_86 Transform {
+      translation -13.5 -4.5 -2.03143e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_87 Transform {
+      translation -13.5 -7.5 -2.83499e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_88 Transform {
+      translation -13.5 -10.5 -1.36495e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_89 Transform {
+      translation -13.5 -13.5 -1.94779e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+  ]
+}
+
+Transform {
+  translation 27 0 0
+  children [
+    DEF SpiderMonkey_90 Transform {
+      translation -13.5 13.5 -1.0869e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_91 Transform {
+      translation -13.5 10.5 -1.9241e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_92 Transform {
+      translation -13.5 7.5 -1.9956e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_93 Transform {
+      translation -13.5 4.5 -5.16035e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_94 Transform {
+      translation -13.5 1.5 7.03972e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_95 Transform {
+      translation -13.5 -1.5 -9.01497e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_96 Transform {
+      translation -13.5 -4.5 -2.03143e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_97 Transform {
+      translation -13.5 -7.5 -2.83499e-09
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_98 Transform {
+      translation -13.5 -10.5 -1.36495e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+    DEF SpiderMonkey_99 Transform {
+      translation -13.5 -13.5 -1.94779e-08
+      children Inline {
+        url [
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv",
+          "file:///home/holger/Projekte/Titania/Library/Tests/Scripting/SpiderMonkey.x3dv"
+        ]
+      }
+    }
+  ]
+}

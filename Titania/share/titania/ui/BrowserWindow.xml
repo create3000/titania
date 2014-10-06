@@ -12,10 +12,11 @@
       <source stock-id="Library" filename="icons/Library.svg"/>
       <source stock-id="GroupNodes" filename="icons/Group.svg"/>
       <source stock-id="Grid" filename="icons/Grid.svg"/>
+      <source stock-id="Hammer" filename="icons/Hammer.svg"/>
       <source stock-id="Text" filename="icons/Text.svg"/>
-      <source stock-id="Arrow" filename="icons/Arrow.png"/>
       <source stock-id="Appearance" filename="icons/Appearance.svg"/>
       <source stock-id="LOD" filename="icons/LOD.svg"/>
+      <source stock-id="Arrow" filename="icons/Arrow.png"/>
       <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
       <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
       <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
@@ -1784,6 +1785,31 @@
                             <property name="use_underline">True</property>
                             <property name="stock_id">Index</property>
                             <signal name="clicked" handler="on_node_index_clicked" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSeparatorToolItem" id="separatortoolitem1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkToolButton" id="HammerButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">Smash Selection: this converts the selection into a polygon object.</property>
+                            <property name="label" translatable="yes">Smash</property>
+                            <property name="use_underline">True</property>
+                            <property name="stock_id">Hammer</property>
+                            <signal name="clicked" handler="on_hammer_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>

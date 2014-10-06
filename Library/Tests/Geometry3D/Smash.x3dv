@@ -1,0 +1,96 @@
+#X3D V3.3 utf8 Titania V0.7.4
+
+META "comment" "World of Titania"
+META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Mon, 06 Oct 2014 01:42:14 GMT"
+
+WorldInfo {
+  metadata MetadataSet {
+    name "Titania"
+    value [
+      MetadataSet {
+        name "AngleGrid"
+        value MetadataBoolean {
+          name "enabled"
+          value FALSE
+        }
+      }
+      MetadataSet {
+        name "Grid"
+        value [
+          MetadataBoolean {
+            name "enabled"
+            value TRUE
+          }
+          MetadataFloat {
+            name "rotation"
+            value [
+              1,
+              0,
+              0,
+              1.5708
+            ]
+          }
+          MetadataInteger {
+            name "dimension"
+            value [
+              22,
+              10,
+              22
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "Smash"
+}
+
+DEF Gray_1 Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  description "Home"
+  position 0 0 27.9361
+}
+
+DEF Box_1 Transform {
+  translation -5 5 1.83735e-05
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url [
+          "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
+        ]
+        repeatS FALSE
+        repeatT FALSE
+      }
+    }
+    geometry Box { }
+  }
+}
+
+DEF Box Transform {
+  translation -2 5 1.83735e-05
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url [
+          "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
+        ]
+        repeatS FALSE
+        repeatT FALSE
+      }
+    }
+    geometry Box {
+      size 1 2 3
+    }
+  }
+}

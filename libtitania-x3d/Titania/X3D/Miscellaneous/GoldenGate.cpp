@@ -91,15 +91,16 @@ get_name_from_uri (const basic::uri & uri)
 }
 
 static
-basic::ifilestream
-golden_x3dv (const basic::uri & uri, basic::ifilestream && istream)
+void
+golden_x3dv (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && goldenstream)
 {
-	return std::move (istream);
+	scene -> fromStream (uri, goldenstream);
 }
 
 static
-basic::ifilestream
-golden_program (const std::string & to_x3dv, basic::ifilestream && istream)
+std::string
+golden_pipe (const std::string & program, const std::string & input)
+//throw (Error <URL_UNAVAILABLE>)
 {
 	int    stdin     = 0;
 	int    stdout    = 0;
@@ -107,65 +108,66 @@ golden_program (const std::string & to_x3dv, basic::ifilestream && istream)
 	size_t bytesRead = 0;
 	char   buffer [1024];
 
-	// Open pipe
+	// Open pipe.
 
-	if (os::popen3 (to_x3dv, &stdin, &stdout, &stderr) <= 0)
-	{
-		__LOG__ << "Couldn't open " << to_x3dv << "." << std::endl;
-		throw false;
-	}
+	if (os::popen3 (program, &stdin, &stdout, &stderr) <= 0)
+		throw Error <URL_UNAVAILABLE> ("Couldn't open program '" + program + "'.");
 
-	// Write to pipe
+	// Write to pipe.
 
-	std::string x3d = basic::to_string (istream);
-
-	if (write (stdin, x3d .c_str (), x3d .size ()) not_eq (int) x3d .size ())
-		__LOG__ << "write to pipe failed." << std::endl;
+	if (write (stdin, input .c_str (), input .size ()) not_eq (int) input .size ())
+		throw Error <URL_UNAVAILABLE> ("Write to pipe failed.");
 
 	close (stdin);
 
-	// Read from pipe
+	// Read from pipe.
 
-	std::string string;
+	std::string output;
 
 	while ((bytesRead = read (stdout, buffer, sizeof (buffer))) > 0)
-		string .append (buffer, bytesRead);
+		output .append (buffer, bytesRead);
 
 	close (stdout);
 
-	// Read error from pipe
+	// Read error from pipe.
 
 	while ((bytesRead = read (stderr, buffer, sizeof (buffer))) > 0)
 		std::clog .write (buffer, bytesRead);
 
 	close (stderr);
 
-	// Return stream
-
-	return basic::ifilestream (string);
+	return output;
 }
 
 static
-basic::ifilestream
-golden_x3d (const basic::uri & uri, basic::ifilestream && istream)
+void
+golden_x3d (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
 {
 	static const std::string x3d2vrml = "x3d2vrml";
 
-	return golden_program (x3d2vrml, std::move (istream));
+	// Parse into stream.
+
+	basic::ifilestream goldenstream (golden_pipe (x3d2vrml, basic::to_string (istream)));
+
+	scene -> fromStream (uri, goldenstream);
 }
 
 static
-basic::ifilestream
-golden_obj (const basic::uri & uri, basic::ifilestream && istream)
+void
+golden_obj (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
 {
 	const std::string obj2wrl = "perl '" + os::find_data_file ("titania/goldengate/obj2wrl.pl") + "'";
 
-	return golden_program (obj2wrl, std::move (istream));
+	// Parse into stream.
+
+	basic::ifilestream goldenstream (golden_pipe (obj2wrl, basic::to_string (istream)));
+
+	scene -> fromStream (uri, goldenstream);
 }
 
 static
-basic::ifilestream
-golden_text (const basic::uri & uri, basic::ifilestream && istream)
+void
+golden_text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
 {
 	static const std::string X3D_XML = "<X3D ";
 
@@ -188,14 +190,14 @@ golden_text (const basic::uri & uri, basic::ifilestream && istream)
 	// Test
 
 	if (std::string (data, istream .gcount ()) == "<X3D ")
-		return golden_x3d (uri, std::move (istream));
+		return golden_x3d (scene, uri, std::move (istream));
 
-	throw false;
+	return golden_x3dv (scene, uri, std::move (istream));
 }
 
 static
-basic::ifilestream
-golden_image (const basic::uri & uri, basic::ifilestream && istream)
+void
+golden_image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
 {
 	Magick::Image image;
 	image .read (uri);
@@ -211,12 +213,16 @@ golden_image (const basic::uri & uri, basic::ifilestream && istream)
 	Height .GlobalReplace (basic::to_string (height), &file);
 	URL    .GlobalReplace ("[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]", &file);
 
-	return basic::ifilestream (file);
+	// Parse into scene.
+
+	basic::ifilestream goldenstream (file);
+	
+	scene -> fromStream (uri, goldenstream);
 }
 
 static
-basic::ifilestream
-golden_audio (const basic::uri & uri, basic::ifilestream && istream)
+void
+golden_audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
 {
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/audio.wrl"));
 
@@ -224,12 +230,16 @@ golden_audio (const basic::uri & uri, basic::ifilestream && istream)
 	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);
 	URL         .GlobalReplace ("[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]", &file);
 
-	return basic::ifilestream (file);
+	// Parse into scene.
+
+	basic::ifilestream goldenstream (file);
+	
+	scene -> fromStream (uri, goldenstream);
 }
 
 static
-basic::ifilestream
-golden_video (const basic::uri & uri, basic::ifilestream && istream)
+void
+golden_video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
 {
 	MediaStream mediaStream;
 
@@ -254,13 +264,17 @@ golden_video (const basic::uri & uri, basic::ifilestream && istream)
 	Height      .GlobalReplace (basic::to_string (height), &file);
 	URL         .GlobalReplace ("[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]", &file);
 
-	return basic::ifilestream (file);
+	// Parse into scene.
+
+	basic::ifilestream goldenstream (file);
+	
+	scene -> fromStream (uri, goldenstream);
 }
 
-basic::ifilestream
-golden_gate (const basic::uri & uri, basic::ifilestream && istream)
+void
+golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
 {
-	using GoldenFunction = std::function <basic::ifilestream (const basic::uri & uri, basic::ifilestream && istream)>;
+	using GoldenFunction = std::function <void (const X3DScenePtr &, const basic::uri &, basic::ifilestream &&)>;
 
 	static const std::map <std::string, GoldenFunction> contentTypes = {
 		std::make_pair ("model/vrml",      &golden_x3dv),
@@ -284,31 +298,31 @@ golden_gate (const basic::uri & uri, basic::ifilestream && istream)
 
 		try
 		{
-			return contentTypes .at (contentType) (uri, std::move (istream));
+			return contentTypes .at (contentType) (scene, uri, std::move (istream));
 		}
 		catch (const std::out_of_range &)
 		{
 			try
 			{
-				return suffixes .at (uri .suffix ()) (uri, std::move (istream));
+				return suffixes .at (uri .suffix ()) (scene, uri, std::move (istream));
 			}
 			catch (const std::out_of_range &)
 			{
 				if (Gio::content_type_is_a (contentType, "image/*"))
-					return golden_image (uri, std::move (istream));
+					return golden_image (scene, uri, std::move (istream));
 
 				if (Gio::content_type_is_a (contentType, "audio/*"))
-					return golden_audio (uri, std::move (istream));
+					return golden_audio (scene, uri, std::move (istream));
 
 				if (Gio::content_type_is_a (contentType, "video/*"))
-					return golden_video (uri, std::move (istream));
+					return golden_video (scene, uri, std::move (istream));
 			}
 		}
 	}
-	catch (...)
+	catch (const std::out_of_range &)
 	{ }
 
-	return std::move (istream);
+	golden_x3dv (scene, uri, std::move (istream));
 }
 
 } // X3D

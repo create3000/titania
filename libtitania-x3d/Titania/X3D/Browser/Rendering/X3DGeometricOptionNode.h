@@ -53,6 +53,7 @@
 
 #include "../Core/X3DOptionNode.h"
 
+#include "../../Fields/SFNode.h"
 #include "../../Rendering/OpenGL.h"
 
 namespace titania {
@@ -80,6 +81,13 @@ public:
 	virtual
 	GLenum
 	getVertexMode () const = 0;
+
+	virtual
+	SFNode
+	toPolygonObject (X3DExecutionContext* const) const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>)
+	{ throw Error <NOT_SUPPORTED> ("X3DGeometricOptionNode::toPolygonObject"); }
 
 
 protected:
