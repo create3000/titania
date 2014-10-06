@@ -82,6 +82,12 @@ X3DBaseInterface::setup ()
 }
 
 const X3D::BrowserPtr &
+X3DBaseInterface::getMasterBrowser () const
+{
+	return browserWindow -> getMasterBrowser ();
+}
+
+const X3D::BrowserPtr &
 X3DBaseInterface::getBrowser () const
 {
 	return browserWindow -> getBrowser ();

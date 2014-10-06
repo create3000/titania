@@ -69,8 +69,8 @@ void
 GridTool::realize ()
 {
 	this -> tool = isEnabled ()
-	               ? X3D::createNode <X3D::GridTool> (getBrowser () -> getPrivateScene ())
-	               : X3D::createNode <X3D::GridTool> (getBrowserWindow () -> getMasterBrowser () -> getPrivateScene ());
+	               ? getBrowser () -> getPrivateScene () -> createNode <X3D::GridTool> ()
+	               : getMasterBrowser () -> getPrivateScene () -> createNode <X3D::GridTool> ();
 
 	configure ();
 
@@ -92,7 +92,7 @@ GridTool::isEnabled (const bool value, const bool metadata)
 		if (tool)
 		{
 			getBrowser () .removeInterest (this, &GridTool::set_browser);
-			set_browser (getBrowserWindow () -> getMasterBrowser ());
+			set_browser (getMasterBrowser ());
 		}
 	}
 

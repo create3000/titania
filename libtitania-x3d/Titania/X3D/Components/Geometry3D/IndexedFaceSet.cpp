@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/IndexedLineSet.h"
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../Rendering/X3DNormalNode.h"
@@ -467,6 +468,26 @@ IndexedFaceSet::tessellate (PolygonArray & polygons)
 				break;
 		}
 	}
+}
+
+SFNode
+IndexedFaceSet::toPolygonObject () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
+
+	geometry -> metadata ()       = metadata ();
+	geometry -> colorIndex ()     = colorIndex ();
+	geometry -> coordIndex ()     = coordIndex ();
+	geometry -> colorPerVertex () = colorPerVertex ();
+	geometry -> attrib ()         = attrib ();
+	geometry -> fogCoord ()       = fogCoord ();
+	geometry -> color ()          = color ();
+	geometry -> coord ()          = coord ();
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
 }
 
 } // X3D

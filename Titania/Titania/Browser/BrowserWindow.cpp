@@ -1827,12 +1827,7 @@ BrowserWindow::on_hammer_clicked ()
 			const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry ());
 
 			if (geometry)
-			{
-				shape -> geometry () = geometry -> toPolygonObject ();
-
-				undoStep -> addUndoFunction (&X3D::SFNode::setValue, std::ref (shape -> geometry ()), X3D::SFNode (geometry));
-				undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (shape -> geometry ()), shape -> geometry ());
-			}
+				replaceNode (X3D::SFNode (shape), shape -> geometry (), geometry -> toPolygonObject (), undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }

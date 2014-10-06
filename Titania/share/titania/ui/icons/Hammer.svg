@@ -221,12 +221,12 @@
     <g
        id="g3819"
        transform="matrix(1.1790265,-1.1365399,1.1365399,1.1790265,-51.434549,59.289722)"
-       style="filter:url(#filter4926-8-3-1);fill:#3c3c3c;fill-opacity:1">
+       style="filter:url(#filter4926-8-3-1);fill:#323232;fill-opacity:1">
       <g
          id="g3826"
-         style="fill:#3c3c3c;fill-opacity:1">
+         style="fill:#323232;fill-opacity:1">
         <path
-           style="fill:#3c3c3c;fill-opacity:1;stroke:none"
+           style="fill:#323232;fill-opacity:1;stroke:none"
            d="M 25.139373,35.013783 66.583959,34.253348 66.298796,18.711628 40.39593,19.1869 z"
            id="path3815"
            inkscape:connector-curvature="0"
@@ -236,7 +236,7 @@
            inkscape:connector-curvature="0"
            id="rect3817"
            d="M 43.176325,29.50052 56.127758,29.262883 56.79314,65.526896 43.841706,65.764533 z"
-           style="fill:#3c3c3c;fill-opacity:1;stroke:none" />
+           style="fill:#323232;fill-opacity:1;stroke:none" />
       </g>
     </g>
   </g>

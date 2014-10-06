@@ -94,6 +94,10 @@ public:
 
 	virtual
 	const X3D::BrowserPtr &
+	getMasterBrowser () const;
+
+	virtual
+	const X3D::BrowserPtr &
 	getBrowser () const;
 
 	virtual

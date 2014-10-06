@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/PointSet.h"
 
 namespace titania {
 namespace X3D {
@@ -322,6 +323,26 @@ IndexedLineSet::draw ()
 {
 	glDisable (GL_LIGHTING);
 	X3DGeometryNode::draw ();
+}
+
+SFNode
+IndexedLineSet::toPolygonObject () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto geometry = getExecutionContext () -> createNode <PointSet> ();
+
+	geometry -> metadata () = metadata ();
+	geometry -> attrib ()   = attrib ();
+	geometry -> fogCoord () = fogCoord ();
+
+	if (colorPerVertex ())
+		geometry -> color () = color ();
+
+	geometry -> coord () = coord ();
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
 }
 
 } // X3D

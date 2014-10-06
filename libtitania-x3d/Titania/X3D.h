@@ -99,17 +99,6 @@ createBrowser (const BrowserPtr &)
 throw (Error <INVALID_NODE>,
        Error <BROWSER_UNAVAILABLE>);
 
-template <class Type>
-X3DPtr <Type>
-createNode (X3DExecutionContext* const executionContext)
-{
-	const X3DPtr <Type> node = new Type (executionContext);
-
-	executionContext -> addUninitializedNode (node);
-
-	return node;
-}
-
 } // X3D
 } // titania
 

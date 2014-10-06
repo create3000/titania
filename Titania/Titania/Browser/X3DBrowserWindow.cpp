@@ -174,7 +174,7 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 		if (not create)
 			throw X3D::Error <X3D::NOT_SUPPORTED> ("X3DBrowserWindow::getWorldInfo: not supported.");
 	
-		worldInfo = X3D::createNode <X3D::WorldInfo> (getRootContext ());
+		worldInfo = getRootContext () -> createNode <X3D::WorldInfo> ();
 		worldInfo -> title () = getRootContext () -> getWorldURL () .basename (false);
 
 		getRootContext () -> getRootNodes () .emplace_front (worldInfo);

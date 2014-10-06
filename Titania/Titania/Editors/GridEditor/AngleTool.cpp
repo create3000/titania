@@ -69,8 +69,8 @@ void
 AngleTool::realize ()
 {
 	this -> tool = isEnabled ()
-	               ? X3D::createNode <X3D::AngleTool> (getBrowser () -> getPrivateScene ())
-						: X3D::createNode <X3D::AngleTool> (getBrowserWindow () -> getMasterBrowser () -> getPrivateScene ());
+	               ? getBrowser () -> getPrivateScene () -> createNode <X3D::AngleTool> ()
+						: getMasterBrowser () -> getPrivateScene () -> createNode <X3D::AngleTool> ();
 
 	configure ();
 
@@ -92,7 +92,7 @@ AngleTool::isEnabled (const bool value, const bool metadata)
 		if (tool)
 		{
 			getBrowser () .removeInterest (this, &AngleTool::set_browser);
-			set_browser (getBrowserWindow () -> getMasterBrowser ());
+			set_browser (getMasterBrowser ());
 		}
 	}
 

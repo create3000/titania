@@ -149,7 +149,7 @@ public:
 	coord () const
 	{ return *fields .coord; }
 
-	///  @name Tests
+	///  @name Member access
 
 	virtual
 	bool
@@ -169,6 +169,12 @@ public:
 	virtual
 	void
 	draw () final override;
+
+	virtual
+	SFNode
+	toPolygonObject () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
 
 
 private:

@@ -1,5 +1,16 @@
 2014-10-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseInterface.h:
+	* Hammer.svg:
+	* X3DBaseInterface.cpp:
+	* BrowserWindow.cpp:
+	* X3DBrowserWindow.cpp:
+	* GridTool.cpp:
+	* AngleTool.cpp:
+	* X3DPaletteEditor.cpp: 
+
+2014-10-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* GeometryPropertiesEditor.h:
 	* GeometryPropertiesEditor.cpp: 
 

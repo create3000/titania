@@ -140,12 +140,20 @@ public:
 	coordIndex () const
 	{ return *fields .coordIndex; }
 
-	///  @name Tests
+	///  @name Member access
 
 	virtual
 	bool
 	isLineGeometry () const final override
 	{ return false; }
+
+	///  @name Operations
+
+	virtual
+	SFNode
+	toPolygonObject () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
 
 
 private:

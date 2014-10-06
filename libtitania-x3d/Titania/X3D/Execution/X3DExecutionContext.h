@@ -223,7 +223,18 @@ public:
 	/***
 	 *  @name Node handling
 	 */
-	
+
+	template <class Type>
+	X3DPtr <Type>
+	createNode ()
+	{
+		const X3DPtr <Type> node = new Type (this);
+
+		addUninitializedNode (node);
+
+		return node;
+	}
+
 	SFNode
 	createNode (const std::string &)
 	throw (Error <INVALID_NAME>,

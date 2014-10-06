@@ -148,7 +148,10 @@ throw (Error <NOT_SUPPORTED>,
 {
 	const auto & options  = getBrowser () -> getBoxOptions ();
 	const auto   geometry = options -> toPolygonObject (getExecutionContext ());
-	
+
+	geometry -> getField <SFNode> ("metadata") = metadata ();
+	geometry -> getField <SFBool> ("solid")    = solid ();
+
 	if (size () == Vector3f (2, 2, 2))
 		return geometry;
 
@@ -157,7 +160,6 @@ throw (Error <NOT_SUPPORTED>,
 	for (auto & point : geometry -> getField <SFNode> ("coord") -> getField <MFVec3f> ("point"))
 		point *= size1_2;
 
-	geometry -> setField <SFBool> ("solid", solid ());
 	return geometry;
 }
 

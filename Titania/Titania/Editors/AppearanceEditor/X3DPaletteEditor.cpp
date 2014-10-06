@@ -176,9 +176,9 @@ X3DPaletteEditor::addMaterial (const size_t i, const std::string & uri)
 	const int column = i % COLUMNS;
 	const int row    = i / COLUMNS;
 
-	const auto inlineNode  = X3D::createNode <X3D::Inline> (preview -> getExecutionContext ());
-	const auto touchSensor = X3D::createNode <X3D::TouchSensor> (preview -> getExecutionContext ());
-	const auto transform   = X3D::createNode <X3D::Transform> (preview -> getExecutionContext ());
+	const auto inlineNode  = preview -> getExecutionContext () -> createNode <X3D::Inline> ();
+	const auto touchSensor = preview -> getExecutionContext () -> createNode <X3D::TouchSensor> ();
+	const auto transform   = preview -> getExecutionContext () -> createNode <X3D::Transform> ();
 
 	touchSensor -> touchTime () .addInterest (this, &X3DPaletteEditor::set_touchTime, i);
 

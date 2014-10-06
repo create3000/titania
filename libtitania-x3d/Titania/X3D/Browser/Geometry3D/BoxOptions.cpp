@@ -48,8 +48,6 @@
  *
  ******************************************************************************/
 
-#include "../../../X3D.h"
-
 #include "BoxOptions.h"
 
 #include "../../Execution/X3DExecutionContext.h"
@@ -190,9 +188,9 @@ BoxOptions::toPolygonObject (X3DExecutionContext* const executionContext) const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
-	const auto texCoord = createNode <TextureCoordinate> (executionContext);
-	const auto coord    = createNode <Coordinate> (executionContext);
-	const auto geometry = createNode <IndexedFaceSet> (executionContext);
+	const auto texCoord = executionContext -> createNode <TextureCoordinate> ();
+	const auto coord    = executionContext -> createNode <Coordinate> ();
+	const auto geometry = executionContext -> createNode <IndexedFaceSet> ();
 
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
