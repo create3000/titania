@@ -48,79 +48,87 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_X3DGEOMETRY2DCONTEXT_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY2D_X3DGEOMETRY2DCONTEXT_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_CYLINDER_OPTIONS_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_CYLINDER_OPTIONS_H__
 
-#include "../../Basic/X3DBaseNode.h"
-#include "../../Fields/X3DPtr.h"
+#include "../Core/X3DOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-class Arc2DOptions;
-class ArcClose2DOptions;
-class Circle2DOptions;
-class Disk2DOptions;
-class Rectangle2DOptions;
-
-class X3DGeometry2DContext :
-	virtual public X3DBaseNode
+class CylinderOptions :
+	public X3DOptionNode
 {
 public:
 
-	///  @name Member access
-
-	const X3DPtr <Arc2DOptions> &
-	getArc2DOptions () const
-	{ return arc2DOptions; }
-
-	const X3DPtr <ArcClose2DOptions> &
-	getArcClose2DOptions () const
-	{ return arcClose2DOptions; }
-
-	const X3DPtr <Circle2DOptions> &
-	getCircle2DOptions () const
-	{ return circle2DOptions; }
-
-	const X3DPtr <Disk2DOptions> &
-	getDisk2DOptions () const
-	{ return disk2DOptions; }
-
-	const X3DPtr <Rectangle2DOptions> &
-	getRectangle2DOptions () const
-	{ return rectangle2DOptions; }
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override
-	{ }
-
-	virtual
-	~X3DGeometry2DContext ();
-
-
-protected:
-
 	///  @name Construction
 
-	X3DGeometry2DContext ();
+	CylinderOptions (X3DExecutionContext* const);
+
+	///  @name Common members
 
 	virtual
-	void
-	initialize () override;
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Fields
+
+	SFInt32 &
+	uDimension ()
+	{ return *fields .uDimension; }
+
+	const SFInt32 &
+	uDimension () const
+	{ return *fields .uDimension; }
+
+	SFInt32 &
+	vDimension ()
+	{ return *fields .vDimension; }
+
+	const SFInt32 &
+	vDimension () const
+	{ return *fields .vDimension; }
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	CylinderOptions*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
 	///  @name Members
 
-	X3DPtr <Arc2DOptions>       arc2DOptions;
-	X3DPtr <ArcClose2DOptions>  arcClose2DOptions;
-	X3DPtr <Circle2DOptions>    circle2DOptions;
-	X3DPtr <Disk2DOptions>      disk2DOptions;
-	X3DPtr <Rectangle2DOptions> rectangle2DOptions;
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const uDimension;
+		SFInt32* const vDimension;
+	};
+
+	Fields fields;
 
 };
 

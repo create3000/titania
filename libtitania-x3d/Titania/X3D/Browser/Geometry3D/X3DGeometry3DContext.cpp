@@ -51,25 +51,29 @@
 #include "X3DGeometry3DContext.h"
 
 #include "../Geometry3D/BoxOptions.h"
+#include "../Geometry3D/CylinderOptions.h"
 #include "../Geometry3D/QuadSphereOptions.h"
 
 namespace titania {
 namespace X3D {
 
 X3DGeometry3DContext::X3DGeometry3DContext () :
-	  X3DBaseNode (),
-	   boxOptions (new BoxOptions (getExecutionContext ())),
-	sphereOptions (new QuadSphereOptions (getExecutionContext ()))
+	     X3DBaseNode (),
+	     boxOptions (new BoxOptions (getExecutionContext ())),
+	cylinderOptions (new CylinderOptions (getExecutionContext ())),
+	  sphereOptions (new QuadSphereOptions (getExecutionContext ()))
 {
 	addChildren (boxOptions,
+	             cylinderOptions,
 	             sphereOptions);
 }
 
 void
 X3DGeometry3DContext::initialize ()
 {
-	boxOptions    -> setup ();
-	sphereOptions -> setup ();
+	boxOptions      -> setup ();
+	cylinderOptions -> setup ();
+	sphereOptions   -> setup ();
 }
 
 X3DGeometry3DContext::~X3DGeometry3DContext ()

@@ -57,6 +57,7 @@
 #include "../Browser/Geometry2D/Disk2DOptions.h"
 #include "../Browser/Geometry2D/Rectangle2DOptions.h"
 #include "../Browser/Geometry3D/BoxOptions.h"
+#include "../Browser/Geometry3D/CylinderOptions.h"
 #include "../Browser/Geometry3D/QuadSphereOptions.h"
 #include "../Browser/Rendering/MotionBlur.h"
 #include "../Browser/RenderingProperties.h"
@@ -244,10 +245,11 @@ BrowserOptions::set_primitiveQuality ()
 {
 	if (primitiveQuality () == "HIGH")
 	{
-		getBrowser () -> getArc2DOptions ()      -> minAngle () = M_PI / 40;
-		getBrowser () -> getArcClose2DOptions () -> minAngle () = M_PI / 40;
-		getBrowser () -> getCircle2DOptions ()   -> segments () = 100;
-		getBrowser () -> getDisk2DOptions ()     -> segments () = 100;
+		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = M_PI / 40;
+		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 40;
+		getBrowser () -> getCircle2DOptions ()   -> segments ()   = 100;
+		getBrowser () -> getDisk2DOptions ()     -> segments ()   = 100;
+		getBrowser () -> getCylinderOptions ()   -> uDimension () = 24;
 
 		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
@@ -262,10 +264,11 @@ BrowserOptions::set_primitiveQuality ()
 
 	if (primitiveQuality () == "LOW")
 	{
-		getBrowser () -> getArc2DOptions ()      -> minAngle () = M_PI / 10;
-		getBrowser () -> getArcClose2DOptions () -> minAngle () = M_PI / 10;
-		getBrowser () -> getCircle2DOptions ()   -> segments () = 20;
-		getBrowser () -> getDisk2DOptions ()     -> segments () = 20;
+		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = M_PI / 10;
+		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 10;
+		getBrowser () -> getCircle2DOptions ()   -> segments ()   = 20;
+		getBrowser () -> getDisk2DOptions ()     -> segments ()   = 20;
+		getBrowser () -> getCylinderOptions ()   -> uDimension () = 16;
 
 		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
@@ -280,10 +283,11 @@ BrowserOptions::set_primitiveQuality ()
 
 	// MEDIUM
 
-	getBrowser () -> getArc2DOptions ()      -> minAngle ()  = M_PI / 20;
-	getBrowser () -> getArcClose2DOptions () -> minAngle ()  = M_PI / 20;
-	getBrowser () -> getCircle2DOptions ()    -> segments () = 60;
-	getBrowser () -> getDisk2DOptions ()     -> segments ()  = 60;
+	getBrowser () -> getArc2DOptions ()      -> minAngle ()   = M_PI / 20;
+	getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 20;
+	getBrowser () -> getCircle2DOptions ()   -> segments ()   = 60;
+	getBrowser () -> getDisk2DOptions ()     -> segments ()   = 60;
+	getBrowser () -> getCylinderOptions ()   -> uDimension () = 20;
 
 	const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 

@@ -40,6 +40,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Geometry2D/Rectangle2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/X3DGeometry2DContext.cpp \
 	Titania/X3D/Browser/Geometry3D/BoxOptions.cpp \
+	Titania/X3D/Browser/Geometry3D/CylinderOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/QuadSphereOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DGeometry3DContext.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DSphereOptionNode.cpp \

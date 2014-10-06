@@ -315,7 +315,7 @@ Extrusion::build ()
 
 	const Vector2f capSize = max - min;
 
-	const bool hasCaps        = capSize .x () and capSize .y ();
+	const bool   hasCaps      = capSize .x () and capSize .y ();
 	const size_t numCapPoints = closedCrossSection ? crossSection () .size () - 1 : crossSection () .size ();
 
 	// Create

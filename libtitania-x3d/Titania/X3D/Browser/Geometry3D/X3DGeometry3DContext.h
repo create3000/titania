@@ -58,6 +58,7 @@ namespace titania {
 namespace X3D {
 
 class BoxOptions;
+class CylinderOptions;
 class X3DSphereOptionNode;
 
 class X3DGeometry3DContext :
@@ -71,6 +72,10 @@ public:
 	getBoxOptions () const
 	{ return boxOptions; }
 
+	const X3DPtr <CylinderOptions> &
+	getCylinderOptions () const
+	{ return cylinderOptions; }
+
 	const X3DPtr <X3DSphereOptionNode> &
 	getSphereOptions () const
 	{ return sphereOptions; }
@@ -82,6 +87,7 @@ public:
 	dispose () override
 	{ }
 
+	virtual
 	~X3DGeometry3DContext ();
 
 
@@ -101,6 +107,7 @@ private:
 	///  @name Members
 
 	X3DPtr <BoxOptions>          boxOptions;
+	X3DPtr <CylinderOptions>     cylinderOptions;
 	X3DPtr <X3DSphereOptionNode> sphereOptions;
 
 };

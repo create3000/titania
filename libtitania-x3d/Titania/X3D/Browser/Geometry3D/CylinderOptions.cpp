@@ -48,83 +48,36 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_X3DGEOMETRY2DCONTEXT_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY2D_X3DGEOMETRY2DCONTEXT_H__
+#include "CylinderOptions.h"
 
-#include "../../Basic/X3DBaseNode.h"
-#include "../../Fields/X3DPtr.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-class Arc2DOptions;
-class ArcClose2DOptions;
-class Circle2DOptions;
-class Disk2DOptions;
-class Rectangle2DOptions;
+const ComponentType CylinderOptions::component      = ComponentType::TITANIA;
+const std::string   CylinderOptions::typeName       = "CylinderOptions";
+const std::string   CylinderOptions::containerField = "cylinderOptions";
 
-class X3DGeometry2DContext :
-	virtual public X3DBaseNode
+CylinderOptions::Fields::Fields () :
+	uDimension (new SFInt32 (20)),
+	vDimension (new SFInt32 (1))
+{ }
+
+CylinderOptions::CylinderOptions (X3DExecutionContext* const executionContext) :
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DOptionNode (),
+	       fields ()
 {
-public:
+	addField (inputOutput, "uDimension", uDimension ());
+	addField (inputOutput, "vDimension", vDimension ());
+}
 
-	///  @name Member access
-
-	const X3DPtr <Arc2DOptions> &
-	getArc2DOptions () const
-	{ return arc2DOptions; }
-
-	const X3DPtr <ArcClose2DOptions> &
-	getArcClose2DOptions () const
-	{ return arcClose2DOptions; }
-
-	const X3DPtr <Circle2DOptions> &
-	getCircle2DOptions () const
-	{ return circle2DOptions; }
-
-	const X3DPtr <Disk2DOptions> &
-	getDisk2DOptions () const
-	{ return disk2DOptions; }
-
-	const X3DPtr <Rectangle2DOptions> &
-	getRectangle2DOptions () const
-	{ return rectangle2DOptions; }
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override
-	{ }
-
-	virtual
-	~X3DGeometry2DContext ();
-
-
-protected:
-
-	///  @name Construction
-
-	X3DGeometry2DContext ();
-
-	virtual
-	void
-	initialize () override;
-
-
-private:
-
-	///  @name Members
-
-	X3DPtr <Arc2DOptions>       arc2DOptions;
-	X3DPtr <ArcClose2DOptions>  arcClose2DOptions;
-	X3DPtr <Circle2DOptions>    circle2DOptions;
-	X3DPtr <Disk2DOptions>      disk2DOptions;
-	X3DPtr <Rectangle2DOptions> rectangle2DOptions;
-
-};
+CylinderOptions*
+CylinderOptions::create (X3DExecutionContext* const executionContext) const
+{
+	return new CylinderOptions (executionContext);
+}
 
 } // X3D
 } // titania
-
-#endif

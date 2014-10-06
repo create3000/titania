@@ -1,5 +1,19 @@
 2014-10-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* BrowserOptions.cpp:
+	* Cylinder.h:
+	* Cylinder.cpp:
+	* Extrusion.cpp:
+	* CylinderOptions.h:
+	* CylinderOptions.cpp:
+	* X3DGeometry2DContext.h:
+	* X3DGeometry3DContext.h:
+	* X3DGeometry3DContext.cpp: 
+
+2014-10-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Box.cpp:
 	* Sphere.h:
 	* BoxOptions.h:

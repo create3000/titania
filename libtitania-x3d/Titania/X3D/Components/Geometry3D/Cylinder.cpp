@@ -50,10 +50,12 @@
 
 #include "Cylinder.h"
 
+#include "../../Browser/Geometry3D/CylinderOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-
-#define SEGMENTS 16.0
+#include "../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Texturing/TextureCoordinate.h"
 
 namespace titania {
 namespace X3D {
@@ -93,6 +95,27 @@ Cylinder::create (X3DExecutionContext* const executionContext) const
 	return new Cylinder (executionContext);
 }
 
+void
+Cylinder::initialize ()
+{
+	X3DGeometryNode::initialize ();
+
+	getBrowser () -> getCylinderOptions () .addInterest (this, &Cylinder::update);
+}
+
+void
+Cylinder::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getCylinderOptions () .removeInterest (this, &Cylinder::update);
+
+	X3DGeometryNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		getBrowser () -> getCylinderOptions () .addInterest (this, &Cylinder::update);
+}
+
 Box3f
 Cylinder::createBBox ()
 {
@@ -114,6 +137,9 @@ Cylinder::createBBox ()
 void
 Cylinder::build ()
 {
+	const auto & options    = getBrowser () -> getCylinderOptions ();
+	const float  uDimension = options -> uDimension ();
+
 	getTexCoords () .emplace_back ();
 
 	const float y1 = height () / 2;
@@ -121,14 +147,14 @@ Cylinder::build ()
 
 	if (side ())
 	{
-		for (int i = 0; i < SEGMENTS; ++ i)
+		for (int32_t i = 0; i < uDimension; ++ i)
 		{
-			const float u1     = i / SEGMENTS;
+			const float u1     = i / uDimension;
 			const float theta1 = 2 * M_PI * u1;
 			const float x1     = -std::sin (theta1);
 			const float z1     = -std::cos (theta1);
 
-			const float u2     = (i + 1) / SEGMENTS;
+			const float u2     = (i + 1) / uDimension;
 			const float theta2 = 2 * M_PI * u2;
 			const float x2     = -std::sin (theta2);
 			const float z2     = -std::cos (theta2);
@@ -158,45 +184,92 @@ Cylinder::build ()
 			getVertices () .emplace_back (x2 * radius (), y1, z2 * radius ());
 		}
 
-		addElements (GL_QUADS, SEGMENTS * 4);
+		addElements (GL_QUADS, uDimension * 4);
 	}
 
 	if (top ())
 	{
-		for (int i = 0; i < SEGMENTS; ++ i)
+		for (int32_t i = 0; i < uDimension; ++ i)
 		{
-			const float u1     = i / SEGMENTS;
-			const float theta1 = 2 * M_PI * u1;
-			const float x1     = -std::sin (theta1);
-			const float z1     = -std::cos (theta1);
+			const float u     = i / uDimension;
+			const float theta = 2 * M_PI * u;
+			const float x     = -std::sin (theta);
+			const float z     = -std::cos (theta);
 
-			getTexCoords () [0] .emplace_back (+(x1 + 1) / 2, -(z1 - 1) / 2, 0, 1);
+			getTexCoords () [0] .emplace_back ((x + 1) / 2, -(z - 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, 1, 0);
-			getVertices () .emplace_back (x1 * radius (), y1, z1 * radius ());
+			getVertices () .emplace_back (x * radius (), y1, z * radius ());
 		}
 
-		addElements (GL_POLYGON, SEGMENTS);
+		addElements (GL_POLYGON, uDimension);
 	}
 
 	if (bottom ())
 	{
-		for (int i = SEGMENTS - 1; i > -1; -- i)
+		for (int32_t i = uDimension - 1; i > -1; -- i)
 		{
-			const float u1     = i / SEGMENTS;
-			const float theta1 = 2 * M_PI * u1;
-			const float x1     = -std::sin (theta1);
-			const float z1     = -std::cos (theta1);
+			const float u     = i / uDimension;
+			const float theta = 2 * M_PI * u;
+			const float x     = -std::sin (theta);
+			const float z     = -std::cos (theta);
 
-			getTexCoords () [0] .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2, 0, 1);
+			getTexCoords () [0] .emplace_back ((x + 1) / 2, (z + 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, -1, 0);
-			getVertices () .emplace_back (x1 * radius (), y2, z1 * radius ());
+			getVertices () .emplace_back (x * radius (), y2, z * radius ());
 		}
 
-		addElements (GL_POLYGON, SEGMENTS);
+		addElements (GL_POLYGON, uDimension);
 	}
 
 	setSolid (solid ());
 	setTextureCoordinate (nullptr);
+}
+
+SFNode
+Cylinder::toPolygonObject () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto & options    = getBrowser () -> getCylinderOptions ();
+	const float  uDimension = options -> uDimension ();
+
+	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
+	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
+	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
+
+	geometry -> texCoord () = texCoord;
+	geometry -> coord ()    = coord;
+
+	geometry -> getField <SFNode> ("metadata") = metadata ();
+	geometry -> getField <SFBool> ("solid")    = solid ();
+
+	const float y1 = height () / 2;
+	const float y2 = -y1;
+
+	for (int32_t i = 0; i < uDimension; ++ i)
+	{
+		const float u     = i / uDimension;
+		const float theta = 2 * M_PI * u;
+		const float x     = -std::sin (theta);
+		const float z     = -std::cos (theta);
+
+		texCoord -> point () .emplace_back ((x + 1) / 2, -(z - 1) / 2);
+		coord -> point ()    .emplace_back (x * radius (), y1, z * radius ());
+	}
+
+	for (int32_t i = 0; i < uDimension; ++ i)
+	{
+		const float u     = i / uDimension;
+		const float theta = 2 * M_PI * u;
+		const float x     = -std::sin (theta);
+		const float z     = -std::cos (theta);
+
+		texCoord -> point () .emplace_back ((x + 1) / 2, (z + 1) / 2);
+		coord -> point ()    .emplace_back (x * radius (), y2, z * radius ());
+	}
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
 }
 
 } // X3D
