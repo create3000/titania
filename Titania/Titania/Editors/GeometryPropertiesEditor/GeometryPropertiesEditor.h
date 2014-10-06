@@ -82,6 +82,12 @@ private:
 
 	void
 	set_selection ();
+	
+	void
+	set_nodes ();
+	
+	void
+	set_buffer ();
 
 	///  @name Members
 
@@ -89,6 +95,9 @@ private:
 	X3DFieldToggleButton <X3D::SFBool> ccw;
 	X3DFieldToggleButton <X3D::SFBool> convex;
 	X3DFieldAdjustment <X3D::SFFloat>  creaseAngle;
+
+	X3D::X3DPtrArray <X3D::X3DShapeNode> shapes;
+	X3D::SFTime                          nodesBuffer;
 
 };
 

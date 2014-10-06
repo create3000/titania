@@ -61,8 +61,13 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                                solid (browserWindow, getSolidCheckButton (),  "solid"),
 	                                  ccw (browserWindow, getCCWCheckButton (),    "ccw"),
 	                               convex (browserWindow, getConvexCheckButton (), "convex"),
-	                          creaseAngle (browserWindow, getCreaseAngleAdjustment (), getCreaseAngleBox (), "creaseAngle")
+	                          creaseAngle (browserWindow, getCreaseAngleAdjustment (), getCreaseAngleBox (), "creaseAngle"),
+	                               shapes (),
+	                          nodesBuffer ()
 {
+	nodesBuffer .addInterest (this, &GeometryPropertiesEditor::set_buffer);
+	addChildren (nodesBuffer);
+
 	getCreaseAngleAdjustment () -> set_upper (M_PI); // getExecutionContext () .fromRadiant (M_PI);
 	setup ();
 }
@@ -79,6 +84,26 @@ GeometryPropertiesEditor::initialize ()
 
 void
 GeometryPropertiesEditor::set_selection ()
+{
+	for (const auto & shape : shapes)
+		shape -> geometry () .removeInterest (this, &GeometryPropertiesEditor::set_nodes);
+
+	shapes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
+	
+	for (const auto & shape : shapes)
+		shape -> geometry () .addInterest (this, &GeometryPropertiesEditor::set_nodes);
+
+	set_nodes ();
+}
+
+void
+GeometryPropertiesEditor::set_nodes ()
+{
+	nodesBuffer .addEvent ();
+}
+
+void
+GeometryPropertiesEditor::set_buffer ()
 {
 	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
 
