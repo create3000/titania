@@ -103,10 +103,20 @@ public:
 	vDimension () const
 	{ return *fields .vDimension; }
 
+	///  @name Member access
+
 	virtual
 	GLenum
 	getVertexMode () const final override
 	{ return GL_QUADS; }
+
+	///  @name Operations
+
+	virtual
+	SFNode
+	toPolygonObject (X3DExecutionContext* const) const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
 
 
 private:
@@ -120,16 +130,16 @@ private:
 	///  @name Operations
 
 	std::vector <int32_t>
-	createTexIndices ();
+	createTexCoordIndex () const;
 
 	std::vector <Vector4f>
-	createTexCoord ();
+	createTexCoord () const;
 
 	std::vector <int32_t>
-	createCoordIndices ();
+	createCoordIndex () const;
 
 	std::vector <Vector3f>
-	createPoints ();
+	createPoints () const;
 
 	virtual
 	void

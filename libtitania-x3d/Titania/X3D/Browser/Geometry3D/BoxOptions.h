@@ -92,6 +92,8 @@ public:
 	getVertexMode () const final override
 	{ return GL_QUADS; }
 
+	///  @name Operations
+
 	virtual
 	SFNode
 	toPolygonObject (X3DExecutionContext* const) const

@@ -66,13 +66,25 @@ public:
 
 	///  @name Member access
 
+	std::vector <Vector4f> &
+	getTexCoords ()
+	{ return texCoord; }
+
 	const std::vector <Vector4f> &
 	getTexCoords () const
 	{ return texCoord; }
 
+	std::vector <Vector3f> &
+	getNormals ()
+	{ return normals; }
+
 	const std::vector <Vector3f> &
 	getNormals () const
 	{ return normals; }
+
+	std::vector <Vector3f> &
+	getVertices ()
+	{ return vertices; }
 
 	const std::vector <Vector3f> &
 	getVertices () const
@@ -99,20 +111,6 @@ protected:
 	virtual
 	void
 	initialize () override;
-
-	///  @name Member access
-
-	std::vector <Vector4f> &
-	getTexCoords ()
-	{ return texCoord; }
-
-	std::vector <Vector3f> &
-	getNormals ()
-	{ return normals; }
-
-	std::vector <Vector3f> &
-	getVertices ()
-	{ return vertices; }
 
 	///  @name Operations
 

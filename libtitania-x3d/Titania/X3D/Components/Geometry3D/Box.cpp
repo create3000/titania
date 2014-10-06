@@ -114,7 +114,7 @@ Box::createBBox ()
 void
 Box::build ()
 {
-	const BoxOptions* const options = getBrowser () -> getBoxOptions ();
+	const auto & options = getBrowser () -> getBoxOptions ();
 
 	getTexCoords () .emplace_back ();
 	getTexCoords () [0] .reserve (options -> getTexCoords () .size ());

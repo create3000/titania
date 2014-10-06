@@ -116,7 +116,7 @@ Sphere::createBBox ()
 void
 Sphere::build ()
 {
-	const X3DSphereOptionNode* const options = getBrowser () -> getSphereOptions ();
+	const auto & options = getBrowser () -> getSphereOptions ();
 
 	getTexCoords () .emplace_back ();
 	getTexCoords () [0] .reserve (options -> getTexCoords () .size ());
@@ -139,6 +139,26 @@ Sphere::build ()
 	addElements (options -> getVertexMode (), getVertices () .size ());
 	setSolid (solid ());
 	setTextureCoordinate (nullptr);
+}
+
+SFNode
+Sphere::toPolygonObject () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto & options  = getBrowser () -> getSphereOptions ();
+	const auto   geometry = options -> toPolygonObject (getExecutionContext ());
+
+	geometry -> getField <SFNode> ("metadata") = metadata ();
+	geometry -> getField <SFBool> ("solid")    = solid ();
+
+	if (radius () == 1.0f)
+		return geometry;
+
+	for (auto & point : geometry -> getField <SFNode> ("coord") -> getField <MFVec3f> ("point"))
+		point *= radius () .getValue ();
+
+	return geometry;
 }
 
 } // X3D

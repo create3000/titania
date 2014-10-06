@@ -1,5 +1,15 @@
 2014-10-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Box.cpp:
+	* Sphere.h:
+	* BoxOptions.h:
+	* Sphere.cpp:
+	* QuadSphereOptions.h:
+	* QuadSphereOptions.cpp:
+	* X3DGeometricOptionNode.h: 
+
+2014-10-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3D.h:
 	* Box.h:
 	* Box.cpp:

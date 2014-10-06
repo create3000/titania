@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Mon, 06 Oct 2014 01:42:14 GMT"
+META "modified" "Mon, 06 Oct 2014 07:52:43 GMT"
 
 WorldInfo {
   metadata MetadataSet {
@@ -41,6 +41,14 @@ WorldInfo {
               22
             ]
           }
+          MetadataInteger {
+            name "majorLineEvery"
+            value [
+              3,
+              3,
+              3
+            ]
+          }
         ]
       }
     ]
@@ -58,7 +66,7 @@ Viewpoint {
 }
 
 DEF Box_1 Transform {
-  translation -5 5 1.83735e-05
+  translation -6 6 2.20482e-05
   children Shape {
     appearance Appearance {
       material Material { }
@@ -76,7 +84,7 @@ DEF Box_1 Transform {
 }
 
 DEF Box Transform {
-  translation -2 5 1.83735e-05
+  translation -3 6 2.20482e-05
   children Shape {
     appearance Appearance {
       material Material { }
@@ -91,6 +99,37 @@ DEF Box Transform {
     }
     geometry Box {
       size 1 2 3
+    }
+  }
+}
+
+DEF Sphere_1 Transform {
+  translation 0 6 2.20482e-05
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture DEF _1 ImageTexture {
+        url [
+          "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
+        ]
+        repeatS FALSE
+        repeatT FALSE
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere Transform {
+  translation 3 6 2.20482e-05
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _1
+    }
+    geometry Sphere {
+      radius 0.5
     }
   }
 }

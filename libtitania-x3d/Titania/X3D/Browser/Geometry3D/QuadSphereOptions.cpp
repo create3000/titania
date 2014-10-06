@@ -50,8 +50,11 @@
 
 #include "QuadSphereOptions.h"
 
-#include "../../Components/Geometry3D/Sphere.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Texturing/TextureCoordinate.h"
+
 #include <complex>
 
 namespace titania {
@@ -74,9 +77,9 @@ QuadSphereOptions::QuadSphereOptions (X3DExecutionContext* const executionContex
 	addField (inputOutput, "uDimension", uDimension ());
 	addField (inputOutput, "vDimension", vDimension ());
 
-	//addField (inputOutput, "texIndices", texIndices ());
+	//addField (inputOutput, "texCoordIndices", texCoordIndices ());
 	//addField (inputOutput, "texCoord",   texCoord ());
-	//addField (inputOutput, "indices",    indices ());
+	//addField (inputOutput, "coordIndices",    coordIndices ());
 	//addField (inputOutput, "points",     points ());
 }
 
@@ -87,26 +90,26 @@ QuadSphereOptions::create (X3DExecutionContext* const executionContext) const
 }
 
 std::vector <int32_t>
-QuadSphereOptions::createTexIndices ()
+QuadSphereOptions::createTexCoordIndex () const
 {
-	std::vector <int32_t> texIndices;
+	std::vector <int32_t> texCoordIndices;
 
 	for (int32_t p = 0, v = 0; v < vDimension () - 1; ++ v, ++ p)
 	{
 		for (int32_t u = 0; u < uDimension () - 1; ++ u, ++ p)
 		{
-			texIndices .emplace_back (p);
-			texIndices .emplace_back (p + uDimension ());
-			texIndices .emplace_back (p + uDimension () + 1);
-			texIndices .emplace_back (p + 1);
+			texCoordIndices .emplace_back (p);
+			texCoordIndices .emplace_back (p + uDimension ());
+			texCoordIndices .emplace_back (p + uDimension () + 1);
+			texCoordIndices .emplace_back (p + 1);
 		}
 	}
 
-	return texIndices;
+	return texCoordIndices;
 }
 
 std::vector <Vector4f>
-QuadSphereOptions::createTexCoord ()
+QuadSphereOptions::createTexCoord () const
 {
 	std::vector <Vector4f> texCoord;
 
@@ -127,31 +130,31 @@ QuadSphereOptions::createTexCoord ()
 }
 
 std::vector <int32_t>
-QuadSphereOptions::createCoordIndices ()
+QuadSphereOptions::createCoordIndex () const
 {
-	std::vector <int32_t> indices;
+	std::vector <int32_t> coordIndices;
 
 	for (int32_t p = 0, v = 0; v < vDimension () - 1; ++ v, ++ p)
 	{
 		for (int32_t u = 0; u < uDimension () - 2; ++ u, ++ p)
 		{
-			indices .emplace_back (p);
-			indices .emplace_back (p + uDimension () - 1);
-			indices .emplace_back (p + uDimension ());
-			indices .emplace_back (p + 1);
+			coordIndices .emplace_back (p);
+			coordIndices .emplace_back (p + uDimension () - 1);
+			coordIndices .emplace_back (p + uDimension ());
+			coordIndices .emplace_back (p + 1);
 		}
 
-		indices .emplace_back (p);
-		indices .emplace_back (p + uDimension () - 1);
-		indices .emplace_back (p + 1);
-		indices .emplace_back (p - uDimension () + 2);
+		coordIndices .emplace_back (p);
+		coordIndices .emplace_back (p + uDimension () - 1);
+		coordIndices .emplace_back (p + 1);
+		coordIndices .emplace_back (p - uDimension () + 2);
 	}
 
-	return indices;
+	return coordIndices;
 }
 
 std::vector <Vector3f>
-QuadSphereOptions::createPoints ()
+QuadSphereOptions::createPoints () const
 {
 	std::vector <Vector3f> points;
 
@@ -182,26 +185,69 @@ QuadSphereOptions::createPoints ()
 void
 QuadSphereOptions::build ()
 {
-	const std::vector <int32_t>  texIndices = createTexIndices ();
-	const std::vector <Vector4f> texCoord   = createTexCoord ();
-	const std::vector <int32_t>  indices    = createCoordIndices ();
-	const std::vector <Vector3f> points     = createPoints ();
+	const std::vector <int32_t>  texCoordIndices = createTexCoordIndex ();
+	const std::vector <Vector4f> texCoords       = createTexCoord ();
+	const std::vector <int32_t>  coordIndices    = createCoordIndex ();
+	const std::vector <Vector3f> points          = createPoints ();
 
-	auto index    = indices .begin ();
-	auto texIndex = texIndices .begin ();
+	auto texCoordIndex = texCoordIndices .begin ();
+	auto coordIndex    = coordIndices .begin ();
 
-	while (index not_eq indices .end ())
+	for ( ; coordIndex not_eq coordIndices .end (); ++ coordIndex, ++ texCoordIndex)
 	{
-		for (size_t i = 0; i < 4; ++ i, ++ index, ++ texIndex)
-		{
-			const auto & point = points [*index];
+		const auto & point = points [*coordIndex];
 
-			getTexCoords () .emplace_back (texCoord [*texIndex]);
-			getNormals   () .emplace_back (point);
-			getVertices  () .emplace_back (point);
-		}
+		getTexCoords () .emplace_back (texCoords [*texCoordIndex]);
+		getNormals   () .emplace_back (point);
+		getVertices  () .emplace_back (point);
 	}
 }
+
+SFNode
+QuadSphereOptions::toPolygonObject (X3DExecutionContext* const executionContext) const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const std::vector <int32_t>  texCoordIndices = createTexCoordIndex ();
+	const std::vector <Vector4f> texCoords       = createTexCoord ();
+	const std::vector <int32_t>  coordIndices    = createCoordIndex ();
+	const std::vector <Vector3f> points          = createPoints ();
+
+	const auto texCoord = executionContext -> createNode <TextureCoordinate> ();
+	const auto coord    = executionContext -> createNode <Coordinate> ();
+	const auto geometry = executionContext -> createNode <IndexedFaceSet> ();
+
+	geometry -> creaseAngle () = M_PI;
+	geometry -> texCoord ()    = texCoord;
+	geometry -> coord ()       = coord;
+
+	for (size_t i = 0, size = texCoordIndices .size (); i < size; i += 4)
+	{
+		geometry -> texCoordIndex () .emplace_back (texCoordIndices [i]);
+		geometry -> texCoordIndex () .emplace_back (texCoordIndices [i + 1]);
+		geometry -> texCoordIndex () .emplace_back (texCoordIndices [i + 2]);
+		geometry -> texCoordIndex () .emplace_back (texCoordIndices [i + 3]);
+		geometry -> texCoordIndex () .emplace_back (-1);
+	}
+
+	for (size_t i = 0, size = coordIndices .size (); i < size; i += 4)
+	{
+		geometry -> coordIndex () .emplace_back (coordIndices [i]);
+		geometry -> coordIndex () .emplace_back (coordIndices [i + 1]);
+		geometry -> coordIndex () .emplace_back (coordIndices [i + 2]);
+		geometry -> coordIndex () .emplace_back (coordIndices [i + 3]);
+		geometry -> coordIndex () .emplace_back (-1);
+	}
+
+	for (const auto point : texCoords)
+		texCoord -> point () .emplace_back (point .x (), point .y ());
+
+	coord -> point () .assign (points .begin (), points .end ());
+
+	executionContext -> realize ();
+	return SFNode (geometry);
+}
+
 
 } // X3D
 } // titania
