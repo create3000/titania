@@ -132,8 +132,8 @@ SphereSensor::set_active (const HitPtr & hit, const bool active)
 			fromVector            = hitPoint - sphere .center ();
 			startPoint            = hit -> point;
 			startOffset           = offset () .getValue ();
-			trackPoint_changed () = hitPoint;
-			rotation_changed ()   = offset ();
+			//trackPoint_changed () = hitPoint;
+			//rotation_changed ()   = offset ();
 		}
 		else
 		{

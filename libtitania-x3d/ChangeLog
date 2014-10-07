@@ -1,3 +1,13 @@
+2014-10-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* GridTool.x3dv:
+	* X3DGridTool.cpp:
+	* Cylinder.cpp:
+	* X3DGeometryNode.h:
+	* PlaneSensor.cpp:
+	* SphereSensor.cpp:
+	* CylinderSensor.cpp: 
+
 2014-10-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

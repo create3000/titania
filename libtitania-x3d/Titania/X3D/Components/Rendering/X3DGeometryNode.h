@@ -140,7 +140,19 @@ public:
 
 protected:
 
-	typedef std::map <size_t, std::vector <size_t>>  NormalIndex;
+	using NormalIndex = std::map <size_t, std::vector <size_t>>;
+
+	struct Element
+	{
+		Element (GLenum vertexMode, size_t count) :
+			vertexMode (vertexMode),
+			     count (count)
+	          	{ }
+
+		GLenum vertexMode;
+		size_t count;
+
+	};
 
 	///  @name Construction
 
@@ -154,6 +166,14 @@ protected:
 	std::vector <Color4f> &
 	getColors ()
 	{ return colors; }
+	
+	const std::vector <Color4f> &
+	getColors () const
+	{ return colors; }
+
+	const TexCoordArray &
+	getTexCoords () const
+	{ return texCoords; }
 
 	TexCoordArray &
 	getTexCoords ()
@@ -166,8 +186,16 @@ protected:
 	getNormals ()
 	{ return normals; }
 
+	const std::vector <Vector3f> &
+	getNormals () const
+	{ return normals; }
+
 	std::vector <Vector3f> &
 	getVertices ()
+	{ return vertices; }
+
+	const std::vector <Vector3f> &
+	getVertices () const
 	{ return vertices; }
 
 	void
@@ -196,6 +224,10 @@ protected:
 	void
 	addElements (const GLenum count, size_t vertexCount)
 	{ elements .emplace_back (count, vertexCount); }
+	
+	const std::vector <Element> &
+	getElements () const
+	{ return elements; }
 
 	///  @name Operations
 
@@ -226,18 +258,6 @@ protected:
 
 
 private:
-
-	struct Element
-	{
-		Element (GLenum vertexMode, size_t count) :
-			vertexMode (vertexMode),
-			     count (count)
-	          	{ }
-
-		GLenum vertexMode;
-		size_t count;
-
-	};
 
 	///  @name Operations
 

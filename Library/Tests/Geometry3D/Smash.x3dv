@@ -4,7 +4,32 @@ META "comment" "World of Titania"
 META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Mon, 06 Oct 2014 09:36:47 GMT"
+META "modified" "Tue, 07 Oct 2014 02:02:01 GMT"
+
+EXTERNPROTO Torus [
+  inputOutput    SFFloat minorRadius
+  inputOutput    SFFloat majorRadius
+  inputOutput    SFInt32 minorDimension
+  inputOutput    SFInt32 majorDimension
+  initializeOnly SFBool  solid
+]
+[
+  "../../../Titania/share/titania/Prototypes/0.1/Geometry3D/Torus.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Geometry3D/Torus.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/Torus.x3dv"
+]
+
+EXTERNPROTO IcoSphere [
+  inputOutput    SFString type
+  inputOutput    SFInt32  order
+  inputOutput    SFFloat  radius
+  initializeOnly SFBool   solid
+]
+[
+  "../../../Titania/share/titania/Prototypes/0.1/Geometry3D/IcoSphere.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Geometry3D/IcoSphere.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/IcoSphere.x3dv"
+]
 
 WorldInfo {
   metadata MetadataSet {
@@ -142,6 +167,33 @@ DEF Cylinder Transform {
       top FALSE
       bottom FALSE
       radius 0.5
+    }
+  }
+}
+
+DEF Torus_1 Transform {
+  translation -6 3 1.10241e-05
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _1
+    }
+    geometry Torus {
+      minorRadius 0.5
+      majorRadius 0.5
+    }
+  }
+}
+
+DEF Octahedron_1 Transform {
+  translation -3 3 1.10241e-05
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _1
+    }
+    geometry IcoSphere {
+      type "OCTAHEDRON"
     }
   }
 }

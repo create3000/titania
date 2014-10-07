@@ -1822,15 +1822,54 @@ BrowserWindow::on_hammer_clicked ()
 
 	for (const auto & shape : X3DEditorObject::getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode }))
 	{
-		try
+		if (not shape -> geometry ())
+			continue;
+			
+		for (const auto & type : basic::make_reverse_range (shape -> geometry () -> getType ()))
 		{
-			const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry ());
+			switch (type)
+			{
+				case X3D::X3DConstants::X3DPrototypeInstance:
+				{
+					try
+					{
+						const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry () -> getInnerNode ());
+						
+						if (geometry)
+						{
+							X3D::MFNode exports ({ geometry });
+							basic::ifilestream text (exportNodes (exports));
 
-			if (geometry)
-				replaceNode (X3D::SFNode (shape), shape -> geometry (), geometry -> toPolygonObject (), undoStep);
+							const auto scene = getBrowser () -> createX3DFromStream (getExecutionContext () -> getWorldURL (), text);
+							const auto nodes = importScene (scene, getExecutionContext () -> getRootNodes (), undoStep);
+
+							addToGroup (X3D::SFNode (shape), nodes, undoStep);
+						}
+					}
+					catch (const X3D::X3DError &)
+					{ }
+	
+					break;
+				}
+				case X3D::X3DConstants::X3DGeometryNode:
+				{
+					try
+					{
+						const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry ());
+
+						replaceNode (X3D::SFNode (shape), shape -> geometry (), geometry -> toPolygonObject (), undoStep);
+					}
+					catch (const X3D::X3DError &)
+					{ }
+					
+					break;
+				}
+				default:
+					continue;
+			}
+			
+			break;
 		}
-		catch (const X3D::X3DError &)
-		{ }
 	}
 
 	addUndoStep (undoStep);

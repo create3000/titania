@@ -8,7 +8,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sat, 04 Oct 2014 08:27:25 GMT"
+META "modified" "Tue, 07 Oct 2014 02:03:56 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -397,7 +397,7 @@ DEF GridTool Collision {
         DEF _3 Transform {
           children ScreenGroup {
             children DEF Sphere Transform {
-              scale 6 6 6
+              scale 4 4 4
               children Shape {
                 appearance DEF _4 Appearance {
                   shaders ToolShader {

@@ -240,32 +240,64 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
 
-	geometry -> getField <SFNode> ("metadata") = metadata ();
-	geometry -> getField <SFBool> ("solid")    = solid ();
+	geometry -> metadata () = metadata ();
+	geometry -> solid ()    = solid ();
 
 	const float y1 = height () / 2;
 	const float y2 = -y1;
 
-	for (int32_t i = 0; i < uDimension; ++ i)
+	if (top ())
 	{
-		const float u     = i / uDimension;
-		const float theta = 2 * M_PI * u;
-		const float x     = -std::sin (theta);
-		const float z     = -std::cos (theta);
+		for (int32_t i = 0; i < uDimension; ++ i)
+		{
+			const float u     = i / uDimension;
+			const float theta = 2 * M_PI * u;
+			const float x     = -std::sin (theta);
+			const float z     = -std::cos (theta);
 
-		texCoord -> point () .emplace_back ((x + 1) / 2, -(z - 1) / 2);
-		coord -> point ()    .emplace_back (x * radius (), y1, z * radius ());
+			texCoord -> point () .emplace_back ((x + 1) / 2, -(z - 1) / 2);
+			coord -> point ()    .emplace_back (x * radius (), y1, z * radius ());
+		}
 	}
 
-	for (int32_t i = 0; i < uDimension; ++ i)
+	if (bottom ())
 	{
-		const float u     = i / uDimension;
-		const float theta = 2 * M_PI * u;
-		const float x     = -std::sin (theta);
-		const float z     = -std::cos (theta);
+		for (int32_t i = 0; i < uDimension; ++ i)
+		{
+			const float u     = i / uDimension;
+			const float theta = 2 * M_PI * u;
+			const float x     = -std::sin (theta);
+			const float z     = -std::cos (theta);
 
-		texCoord -> point () .emplace_back ((x + 1) / 2, (z + 1) / 2);
-		coord -> point ()    .emplace_back (x * radius (), y2, z * radius ());
+			texCoord -> point () .emplace_back ((x + 1) / 2, (z + 1) / 2);
+			coord -> point ()    .emplace_back (x * radius (), y2, z * radius ());
+		}
+	}
+
+	if (top ())
+	{
+		for (int32_t i = 0; i < uDimension; ++ i)
+		{
+			geometry -> texCoordIndex () .emplace_back (i);
+			geometry -> coordIndex ()    .emplace_back (i);
+		}
+		
+		geometry -> texCoordIndex () .emplace_back (-1);
+		geometry -> coordIndex ()    .emplace_back (-1);
+	}
+
+	if (bottom ())
+	{
+		const int32_t first = geometry -> coordIndex () .size () - top ();
+	
+		for (int32_t i = first + uDimension - 1; i >= first; -- i)
+		{
+			geometry -> texCoordIndex () .emplace_back (i);
+			geometry -> coordIndex ()    .emplace_back (i);
+		}
+
+		geometry -> texCoordIndex () .emplace_back (-1);
+		geometry -> coordIndex ()    .emplace_back (-1);
 	}
 
 	getExecutionContext () -> realize ();

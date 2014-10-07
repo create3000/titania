@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 05 Oct 2014 11:53:22 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sun, 05 Oct 2014 23:30:41 GMT"
+META "modified" "Tue, 07 Oct 2014 02:58:16 GMT"
 
 WorldInfo {
   metadata MetadataSet {
@@ -84,7 +84,7 @@ Viewpoint {
   position 0 0 41.3624
 }
 
-Transform {
+DEF T1 Transform {
   children [
     DEF SpiderMonkey_1 Transform {
       translation -13.5 13.5 -1.0869e-08
@@ -179,7 +179,7 @@ Transform {
   ]
 }
 
-Transform {
+DEF T2 Transform {
   translation 3 0 0
   children [
     DEF SpiderMonkey_10 Transform {
