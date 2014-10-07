@@ -8,7 +8,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sat, 04 Oct 2014 23:49:11 GMT"
+META "modified" "Tue, 07 Oct 2014 06:39:13 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -437,7 +437,7 @@ DEF AngleTool Transform {
         DEF _4 Transform {
           children ScreenGroup {
             children DEF Sphere_1 Transform {
-              scale 6 6 6
+              scale 4 4 4
               children Shape {
                 appearance DEF _5 Appearance {
                   shaders ToolShader {
