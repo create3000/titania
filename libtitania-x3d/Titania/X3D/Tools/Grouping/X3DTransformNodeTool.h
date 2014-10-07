@@ -136,6 +136,11 @@ public:
 	setMatrixWithCenter (const Matrix4d &, const Vector3f &) final override;
 
 	virtual
+	void
+	addAbsoluteMatrix (const Matrix4d &)
+	throw (Error <NOT_SUPPORTED>) final override;
+
+	virtual
 	const Matrix4d &
 	getTransformationMatrix () const
 	throw (Error <NOT_SUPPORTED>) final override
@@ -182,16 +187,13 @@ private:
 	///  @name Operatations
 
 	void
-	addAbsoluteMatrix (const Matrix4d &);
-
-	void
 	reshape ();
 
 	///  @name Members
 
 	Matrix4d parentMatrix;
 	Matrix4d matrix;
-	size_t   interestEvents;
+	bool     changing;
 
 };
 
@@ -200,7 +202,7 @@ X3DTransformNodeTool <Type>::X3DTransformNodeTool () :
 	X3DTransformMatrix4DNodeTool <Type> (ToolColors::GREEN),
 	                       parentMatrix (),
 	                             matrix (),
-	                     interestEvents (0)
+	                           changing (false)
 {
 	addType (X3DConstants::X3DTransformNodeTool);
 }
@@ -242,12 +244,15 @@ X3DTransformNodeTool <Type>::realize ()
 template <class Type>
 void
 X3DTransformNodeTool <Type>::addAbsoluteMatrix (const Matrix4d & absoluteMatrix)
+throw (Error <NOT_SUPPORTED>)
 {
 	try
 	{
-		++ interestEvents;
+		const auto matrix = Matrix4d (getMatrix ()) * parentMatrix * absoluteMatrix * ~parentMatrix;
+	
+		changing = true;
 
-		getNode () -> setMatrix (Matrix4d (getMatrix ()) * parentMatrix * absoluteMatrix * ~parentMatrix);
+		getNode () -> setMatrix (matrix);
 	}
 	catch (const std::domain_error &)
 	{ }
@@ -257,7 +262,7 @@ template <class Type>
 void
 X3DTransformNodeTool <Type>::setMatrix (const Matrix4d & matrix)
 {
-	++ interestEvents;
+	changing = true;
 
 	getNode () -> setMatrix (matrix);
 }
@@ -266,7 +271,7 @@ template <class Type>
 void
 X3DTransformNodeTool <Type>::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f & center)
 {
-	++ interestEvents;
+	changing = true;
 
 	getNode () -> setMatrixWithCenter (matrix, center);
 }
@@ -277,8 +282,8 @@ X3DTransformNodeTool <Type>::eventsProcessed ()
 {
 	try
 	{
-		if (interestEvents)
-			-- interestEvents;
+		if (changing)
+			changing = false;
 
 		else
 		{
@@ -286,13 +291,18 @@ X3DTransformNodeTool <Type>::eventsProcessed ()
 
 			for (const auto & node : getBrowser () -> getSelection () -> getChildren ())
 			{
-				if (node == this)
-					continue;
+				try
+				{
+					if (node == this)
+						continue;
 
-				const auto tool = dynamic_cast <X3DTransformNodeTool*> (node .getValue ());
+					const auto transform = dynamic_cast <X3DTransformNode*> (node .getValue ());
 
-				if (tool)
-					tool -> addAbsoluteMatrix (differenceMatrix);
+					if (transform)
+						transform -> addAbsoluteMatrix (differenceMatrix);
+				}
+				catch (const Error <NOT_SUPPORTED> &)
+				{ }
 			}
 		}
 	}

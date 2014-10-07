@@ -252,8 +252,8 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & leader)
 
 		const Matrix4d matrix        = Matrix4d (leader -> getMatrix ()) * leader -> getTransformationMatrix ();
 		const Matrix4d currentMatrix = absoluteMatrix * snap * ~leader -> getTransformationMatrix ();
-		leader -> setMatrix (currentMatrix);
 
+		leader -> setMatrix (currentMatrix);
 		leader -> translation () .removeInterest (this, &X3DGridTool::set_translation);
 		leader -> translation () .addInterest (this, &X3DGridTool::connectTranslation, leader);
 
@@ -275,12 +275,11 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & leader)
 					const Matrix4d absoluteMatrix = transform -> getCurrentMatrix () * transform -> getTransformationMatrix ();
 
 					transform -> setMatrix (absoluteMatrix * differenceMatrix * ~transform -> getTransformationMatrix ());
-		
 					transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
 					transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
 				}
 			}
-			catch (const std::domain_error &)
+			catch (const std::exception &)
 			{ }
 		}
 	}

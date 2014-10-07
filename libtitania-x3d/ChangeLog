@@ -1,5 +1,12 @@
 2014-10-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DGridTool.cpp:
+	* X3DTransformNodeTool.h:
+	* X3DTransformNode.h:
+	* X3DTransformMatrix4DNode.h: 
+
+2014-10-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* AngleTool.x3dv: 
 
 2014-10-07  Holger Seelig  <holger.seelig@yahoo.de>

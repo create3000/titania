@@ -127,6 +127,18 @@ public:
 	void
 	setMatrixWithCenter (const Matrix4d &, const Vector3f &);
 
+	virtual
+	void
+	addAbsoluteMatrix (const Matrix4d &)
+	throw (Error <NOT_SUPPORTED>)
+	{ throw Error <NOT_SUPPORTED> ("X3DTransformNode::addAbsoluteMatrix"); }
+
+	virtual
+	const Matrix4d &
+	getTransformationMatrix () const
+	throw (Error <NOT_SUPPORTED>)
+	{ throw Error <NOT_SUPPORTED> ("X3DTransformNode::getTransformationMatrix"); }
+
 
 protected:
 

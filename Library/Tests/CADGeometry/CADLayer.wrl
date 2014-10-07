@@ -89,3 +89,13 @@ CADAssembly {
     ]
   }
 }
+
+DEF Box_1 Transform {
+  translation 0 -3 -1.10241e-05
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box { }
+  }
+}
