@@ -142,12 +142,12 @@ Box::build ()
 }
 
 SFNode
-Box::toPolygonObject () const
+Box::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	const auto & options  = getBrowser () -> getBoxOptions ();
-	const auto   geometry = options -> toPolygonObject (getExecutionContext ());
+	const auto   geometry = options -> toPrimitive (getExecutionContext ());
 
 	geometry -> getField <SFNode> ("metadata") = metadata ();
 	geometry -> getField <SFBool> ("solid")    = solid ();

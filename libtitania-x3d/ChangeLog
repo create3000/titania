@@ -1,5 +1,26 @@
 2014-10-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Box.h:
+	* Cone.h:
+	* Box.cpp:
+	* Cone.cpp:
+	* Sphere.h:
+	* BoxOptions.h:
+	* Sphere.cpp:
+	* Cylinder.h:
+	* BoxOptions.cpp:
+	* Cylinder.cpp:
+	* IndexedLineSet.h:
+	* IndexedFaceSet.h:
+	* X3DGeometryNode.h:
+	* QuadSphereOptions.h:
+	* IndexedLineSet.cpp:
+	* IndexedFaceSet.cpp:
+	* QuadSphereOptions.cpp:
+	* X3DGeometricOptionNode.h: 
+
+2014-10-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* BrowserOptions.cpp:

@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Wed, 08 Oct 2014 01:07:03 GMT"
+META "modified" "Wed, 08 Oct 2014 06:01:47 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -166,6 +166,7 @@ DEF Cylinder Transform {
     geometry Cylinder {
       top FALSE
       bottom FALSE
+      height 1
       radius 0.5
     }
   }
@@ -212,7 +213,9 @@ DEF Cone_1 Transform {
         repeatT FALSE
       }
     }
-    geometry Cone { }
+    geometry Cone {
+      bottomRadius 1.5
+    }
   }
 }
 
@@ -225,6 +228,7 @@ DEF Cone Transform {
     }
     geometry Cone {
       bottom FALSE
+      height 1
     }
   }
 }

@@ -471,7 +471,7 @@ IndexedFaceSet::tessellate (PolygonArray & polygons)
 }
 
 SFNode
-IndexedFaceSet::toPolygonObject () const
+IndexedFaceSet::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {

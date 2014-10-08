@@ -226,7 +226,7 @@ Cylinder::build ()
 }
 
 SFNode
-Cylinder::toPolygonObject () const
+Cylinder::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
@@ -315,10 +315,10 @@ throw (Error <NOT_SUPPORTED>,
 
 	if (bottom ())
 	{
-		for (int32_t i = 0, ts = t + vDimension, cs = c + vDimension; i < vDimension; ++ i)
+		for (int32_t i = 0, ts = t + vDimension - 1, cs = c + vDimension - 1; i < vDimension; ++ i)
 		{
-			geometry -> texCoordIndex () .emplace_back (ts - i - 1);
-			geometry -> coordIndex ()    .emplace_back (cs - i - 1);
+			geometry -> texCoordIndex () .emplace_back (ts - i);
+			geometry -> coordIndex ()    .emplace_back (cs - i);
 		}
 
 		geometry -> texCoordIndex () .emplace_back (-1);
@@ -331,7 +331,7 @@ throw (Error <NOT_SUPPORTED>,
 	{
 		for (int32_t i = 0, size = vDimension - 1; i < size; ++ i)
 		{
-			const int32_t i2 = 2 * i;
+			const int32_t i2 = i * 2;
 		
 			geometry -> texCoordIndex () .emplace_back (t + i2);
 			geometry -> texCoordIndex () .emplace_back (t + i2 + 1);

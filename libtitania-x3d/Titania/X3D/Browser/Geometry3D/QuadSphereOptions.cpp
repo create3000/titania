@@ -169,7 +169,7 @@ QuadSphereOptions::createPoints () const
 
 		for (int32_t u = 0; u < uDimension () - 1; ++ u)
 		{
-			std::complex <float> yPlane = std::polar <float> (zPlane .imag (), (2 * M_PI) * (u / float (uDimension () - 1)));
+			std::complex <float> yPlane = std::polar <float> (zPlane .imag (), 2 * M_PI * (u / float (uDimension () - 1)));
 
 			points .emplace_back (yPlane .imag (), zPlane .real (), yPlane .real ());
 		}
@@ -204,7 +204,7 @@ QuadSphereOptions::build ()
 }
 
 SFNode
-QuadSphereOptions::toPolygonObject (X3DExecutionContext* const executionContext) const
+QuadSphereOptions::toPrimitive (X3DExecutionContext* const executionContext) const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {

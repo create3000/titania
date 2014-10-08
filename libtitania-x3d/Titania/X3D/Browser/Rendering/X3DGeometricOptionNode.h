@@ -96,10 +96,10 @@ public:
 
 	virtual
 	SFNode
-	toPolygonObject (X3DExecutionContext* const) const
+	toPrimitive (X3DExecutionContext* const) const
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>)
-	{ throw Error <NOT_SUPPORTED> ("X3DGeometricOptionNode::toPolygonObject"); }
+	{ throw Error <NOT_SUPPORTED> ("X3DGeometricOptionNode::toPrimitive"); }
 
 
 protected:

@@ -126,10 +126,10 @@ public:
 
 	virtual
 	SFNode
-	toPolygonObject () const
+	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>)
-	{ throw Error <NOT_SUPPORTED> ("X3DGeometryNode::toPolygonObject"); }
+	{ throw Error <NOT_SUPPORTED> ("X3DGeometryNode::toPrimitive"); }
 
 	///  @name Destruction
 

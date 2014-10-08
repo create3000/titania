@@ -184,7 +184,7 @@ BoxOptions::build ()
 }
 
 SFNode
-BoxOptions::toPolygonObject (X3DExecutionContext* const executionContext) const
+BoxOptions::toPrimitive (X3DExecutionContext* const executionContext) const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {

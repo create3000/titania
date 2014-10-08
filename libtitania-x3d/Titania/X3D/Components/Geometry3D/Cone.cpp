@@ -57,6 +57,8 @@
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 
+#include <complex>
+
 namespace titania {
 namespace X3D {
 
@@ -139,23 +141,25 @@ Cone::build ()
 
 	const float y1 = height () / 2;
 	const float y2 = -y1;
-	const float ny = std::atan (bottomRadius () / height ());
+	const auto  nz = std::polar <float> (1, -M_PI / 2 + std::atan (bottomRadius () / height ()));
 
 	if (side ())
 	{
-		for (int i = 0; i < vDimension; ++ i)
+		for (int32_t i = 0; i < vDimension; ++ i)
 		{
-			const float u1     = i / vDimension;
+			const float u1     = (i + 0.5f) / vDimension;
 			const float theta1 = 2 * M_PI * u1;
-			const float x1     = -std::sin (theta1);
-			const float z1     = -std::cos (theta1);
+			const auto  n1     = std::polar <float> (nz .imag (), theta1);
 
-			const float u2     = (i + 1) / vDimension;
+			const float u2     = i / vDimension;
 			const float theta2 = 2 * M_PI * u2;
-			const float x2     = -std::sin (theta2);
-			const float z2     = -std::cos (theta2);
+			const auto  p2     = std::polar <float> (-bottomRadius (), theta2);
+			const auto  n2     = std::polar <float> (nz .imag (), theta2);
 
-			const float u3 = (i + 0.5) / vDimension;
+			const float u3     = (i + 1) / vDimension;
+			const float theta3 = 2 * M_PI * u3;
+			const auto  p3     = std::polar <float> (-bottomRadius (), theta3);
+			const auto  n3     = std::polar <float> (nz .imag (), theta3);
 
 			/*    p1
 			 *   /  \
@@ -164,19 +168,19 @@ Cone::build ()
 			 */
 
 			// p1
-			getTexCoords () [0] .emplace_back (u3, 1, 0, 1);
-			getNormals  () .emplace_back (x1, ny, z1);
+			getTexCoords () [0] .emplace_back (u1, 1, 0, 1);
+			getNormals  () .emplace_back (n1 .imag (), nz .real (), n1 .real ());
 			getVertices () .emplace_back (0, y1, 0);
 
 			// p2
-			getTexCoords () [0] .emplace_back (u1, 0, 0, 1);
-			getNormals  () .emplace_back (x1, ny, z1);
-			getVertices () .emplace_back (x1 * bottomRadius (), y2, z1 * bottomRadius ());
+			getTexCoords () [0] .emplace_back (u2, 0, 0, 1);
+			getNormals  () .emplace_back (n2 .imag (), nz .real (), n2 .real ());
+			getVertices () .emplace_back (p2 .imag (), y2, p2 .real ());
 
 			// p3
-			getTexCoords () [0] .emplace_back (u2, 0, 0, 1);
-			getNormals  () .emplace_back (x2, ny, z2);
-			getVertices () .emplace_back (x2 * bottomRadius (), y2, z2 * bottomRadius ());
+			getTexCoords () [0] .emplace_back (u3, 0, 0, 1);
+			getNormals  () .emplace_back (n3 .imag (), nz .real (), n3 .real ());
+			getVertices () .emplace_back (p3 .imag (), y2, p3 .real ());
 		}
 
 		addElements (GL_TRIANGLES, getVertices () .size ());
@@ -184,16 +188,17 @@ Cone::build ()
 
 	if (bottom ())
 	{
-		for (int i = vDimension - 1; i > -1; -- i)
+		for (int32_t i = vDimension - 1; i > -1; -- i)
 		{
-			const float u1     = i / vDimension;
-			const float theta1 = 2 * M_PI * u1;
-			const float x1     = -std::sin (theta1);
-			const float z1     = -std::cos (theta1);
+			const float u     = i / vDimension;
+			const float theta = 2 * M_PI * u;
+			auto        p     = std::polar <float> (-1, theta);
 
-			getTexCoords () [0] .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2, 0, 1);
+			getTexCoords () [0] .emplace_back ((p .imag () + 1) / 2, (p .real () + 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, -1, 0);
-			getVertices () .emplace_back (x1 * bottomRadius (), y2, z1 * bottomRadius ());
+
+			p *= bottomRadius ();
+			getVertices () .emplace_back (p .imag (), y2, p .real ());
 		}
 
 		addElements (GL_POLYGON, vDimension);
@@ -204,7 +209,7 @@ Cone::build ()
 }
 
 SFNode
-Cone::toPolygonObject () const
+Cone::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
@@ -222,7 +227,88 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> solid ()       = solid ();
 	geometry -> creaseAngle () = 1;
 
+	const float y1 = height () / 2;
+	const float y2 = -y1;
 
+	if (side ())
+	{
+		coord -> point () .emplace_back (0, y1, 0);
+
+		for (int32_t i = 0; i < vDimension; ++ i)
+		{
+			const float u1 = (i + 0.5f) / vDimension;
+			const float u2 = i / vDimension;
+
+			texCoord -> point () .emplace_back (u1, 1);
+			texCoord -> point () .emplace_back (u2, 0);
+		}
+
+		texCoord -> point () .emplace_back (1, 0);
+	}
+
+	if (bottom () or side ())
+	{
+		for (int32_t i = 0; i < vDimension; ++ i)
+		{
+			const float u     = i / vDimension;
+			const float theta = 2 * M_PI * u;
+			auto        p     = std::polar <float> (-1, theta);
+
+			if (bottom ())
+				texCoord -> point () .emplace_back ((p .imag () + 1) / 2, (p .real () + 1) / 2);
+
+			p *= bottomRadius ();
+			coord -> point () .emplace_back (p .imag (), y2, p .real ());
+		}
+	}
+
+	int32_t c = 0;
+	int32_t t = 0;
+
+	if (side ())
+	{
+		for (int32_t i = 1; i < vDimension; ++ i)
+		{
+			const int32_t i2 = i * 2;
+
+			geometry -> texCoordIndex () .emplace_back (i2 - 2);
+			geometry -> texCoordIndex () .emplace_back (i2 - 1);
+			geometry -> texCoordIndex () .emplace_back (i2 + 1);
+			geometry -> texCoordIndex () .emplace_back (-1);
+
+			geometry -> coordIndex () .emplace_back (0);
+			geometry -> coordIndex () .emplace_back (i);
+			geometry -> coordIndex () .emplace_back (i + 1);
+			geometry -> coordIndex () .emplace_back (-1);
+		}
+
+		const int32_t vDimension2 = vDimension * 2;
+
+		geometry -> texCoordIndex () .emplace_back (vDimension2 - 2);
+		geometry -> texCoordIndex () .emplace_back (vDimension2 - 1);
+		geometry -> texCoordIndex () .emplace_back (vDimension2);
+		geometry -> texCoordIndex () .emplace_back (-1);
+
+		geometry -> coordIndex () .emplace_back (0);
+		geometry -> coordIndex () .emplace_back (vDimension);
+		geometry -> coordIndex () .emplace_back (1);
+		geometry -> coordIndex () .emplace_back (-1);
+
+		c += 1;
+		t += vDimension2 + 1;
+	}
+
+	if (bottom ())
+	{
+		for (int32_t i = 0, ts = t + vDimension - 1, cs = c + vDimension - 1; i < vDimension; ++ i)
+		{
+			geometry -> texCoordIndex () .emplace_back (ts - i);
+			geometry -> coordIndex ()    .emplace_back (cs - i);
+		}
+
+		geometry -> texCoordIndex () .emplace_back (-1);
+		geometry -> coordIndex ()    .emplace_back (-1);
+	}
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);

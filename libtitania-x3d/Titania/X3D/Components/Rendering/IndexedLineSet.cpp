@@ -326,7 +326,7 @@ IndexedLineSet::draw ()
 }
 
 SFNode
-IndexedLineSet::toPolygonObject () const
+IndexedLineSet::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {

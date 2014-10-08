@@ -1857,7 +1857,7 @@ BrowserWindow::on_hammer_clicked ()
 					{
 						const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry ());
 
-						replaceNode (X3D::SFNode (shape), shape -> geometry (), geometry -> toPolygonObject (), undoStep);
+						replaceNode (X3D::SFNode (shape), shape -> geometry (), geometry -> toPrimitive (), undoStep);
 					}
 					catch (const X3D::X3DError &)
 					{ }
