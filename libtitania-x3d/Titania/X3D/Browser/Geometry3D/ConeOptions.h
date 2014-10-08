@@ -48,37 +48,91 @@
  *
  ******************************************************************************/
 
-#include "CylinderOptions.h"
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_CONE_OPTIONS_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_CONE_OPTIONS_H__
 
-#include "../../Execution/X3DExecutionContext.h"
+#include "../Core/X3DOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType CylinderOptions::component      = ComponentType::TITANIA;
-const std::string   CylinderOptions::typeName       = "CylinderOptions";
-const std::string   CylinderOptions::containerField = "cylinderOptions";
-
-CylinderOptions::Fields::Fields () :
-	uDimension (new SFInt32 (1)),
-	vDimension (new SFInt32 (20))
-{ }
-
-CylinderOptions::CylinderOptions (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DOptionNode (),
-	       fields ()
+class ConeOptions :
+	public X3DOptionNode
 {
-	addField (inputOutput, "uDimension", uDimension ());
-	addField (inputOutput, "vDimension", vDimension ());
-	//addField (inputOutput, "hDimension", hDimension ());
-}
+public:
 
-CylinderOptions*
-CylinderOptions::create (X3DExecutionContext* const executionContext) const
-{
-	return new CylinderOptions (executionContext);
-}
+	///  @name Construction
+
+	ConeOptions (X3DExecutionContext* const);
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Fields
+
+	SFInt32 &
+	uDimension ()
+	{ return *fields .uDimension; }
+
+	const SFInt32 &
+	uDimension () const
+	{ return *fields .uDimension; }
+
+	SFInt32 &
+	vDimension ()
+	{ return *fields .vDimension; }
+
+	const SFInt32 &
+	vDimension () const
+	{ return *fields .vDimension; }
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	ConeOptions*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const uDimension;
+		SFInt32* const vDimension;
+	};
+
+	Fields fields;
+
+};
 
 } // X3D
 } // titania
+
+#endif

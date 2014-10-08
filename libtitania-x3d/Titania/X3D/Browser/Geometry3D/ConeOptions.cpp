@@ -48,23 +48,23 @@
  *
  ******************************************************************************/
 
-#include "CylinderOptions.h"
+#include "ConeOptions.h"
 
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType CylinderOptions::component      = ComponentType::TITANIA;
-const std::string   CylinderOptions::typeName       = "CylinderOptions";
-const std::string   CylinderOptions::containerField = "cylinderOptions";
+const ComponentType ConeOptions::component      = ComponentType::TITANIA;
+const std::string   ConeOptions::typeName       = "ConeOptions";
+const std::string   ConeOptions::containerField = "coneOptions";
 
-CylinderOptions::Fields::Fields () :
+ConeOptions::Fields::Fields () :
 	uDimension (new SFInt32 (1)),
 	vDimension (new SFInt32 (20))
 { }
 
-CylinderOptions::CylinderOptions (X3DExecutionContext* const executionContext) :
+ConeOptions::ConeOptions (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DOptionNode (),
 	       fields ()
@@ -74,10 +74,10 @@ CylinderOptions::CylinderOptions (X3DExecutionContext* const executionContext) :
 	//addField (inputOutput, "hDimension", hDimension ());
 }
 
-CylinderOptions*
-CylinderOptions::create (X3DExecutionContext* const executionContext) const
+ConeOptions*
+ConeOptions::create (X3DExecutionContext* const executionContext) const
 {
-	return new CylinderOptions (executionContext);
+	return new ConeOptions (executionContext);
 }
 
 } // X3D

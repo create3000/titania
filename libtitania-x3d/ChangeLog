@@ -1,5 +1,19 @@
 2014-10-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* BrowserOptions.cpp:
+	* Cone.h:
+	* Cone.cpp:
+	* ConeOptions.h:
+	* Cylinder.cpp:
+	* ConeOptions.cpp:
+	* CylinderOptions.cpp:
+	* X3DGeometry3DContext.h:
+	* X3DGeometry3DContext.cpp: 
+
+2014-10-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Cylinder.cpp:
 	* X3DPointingDeviceSensorContext.h:
 	* X3DPointingDeviceSensorContext.cpp: 

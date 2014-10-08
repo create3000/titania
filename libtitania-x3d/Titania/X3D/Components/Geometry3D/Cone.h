@@ -89,6 +89,12 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
 	///  @name Fields
 
 	SFBool &
@@ -131,15 +137,29 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
-	///  @name Tests
+	///  @name Member access
 
 	virtual
 	bool
 	isLineGeometry () const final override
 	{ return false; }
 
+	///  @name Operations
+
+	virtual
+	SFNode
+	toPolygonObject () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
+
 
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Operations
 

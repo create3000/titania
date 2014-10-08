@@ -50,10 +50,12 @@
 
 #include "Cone.h"
 
+#include "../../Browser/Geometry3D/ConeOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-
-#define SEGMENTS 16.0
+#include "../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Texturing/TextureCoordinate.h"
 
 namespace titania {
 namespace X3D {
@@ -91,6 +93,27 @@ Cone::create (X3DExecutionContext* const executionContext) const
 	return new Cone (executionContext);
 }
 
+void
+Cone::initialize ()
+{
+	X3DGeometryNode::initialize ();
+
+	getBrowser () -> getCylinderOptions () .addInterest (this, &Cone::update);
+}
+
+void
+Cone::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getCylinderOptions () .removeInterest (this, &Cone::update);
+
+	X3DGeometryNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		getBrowser () -> getCylinderOptions () .addInterest (this, &Cone::update);
+}
+
 Box3f
 Cone::createBBox ()
 {
@@ -109,6 +132,9 @@ Cone::createBBox ()
 void
 Cone::build ()
 {
+	const auto & options    = getBrowser () -> getConeOptions ();
+	const float  vDimension = options -> vDimension ();
+
 	getTexCoords () .emplace_back ();
 
 	const float y1 = height () / 2;
@@ -117,19 +143,19 @@ Cone::build ()
 
 	if (side ())
 	{
-		for (int i = 0; i < SEGMENTS; ++ i)
+		for (int i = 0; i < vDimension; ++ i)
 		{
-			const float u1     = i / SEGMENTS;
+			const float u1     = i / vDimension;
 			const float theta1 = 2 * M_PI * u1;
 			const float x1     = -std::sin (theta1);
 			const float z1     = -std::cos (theta1);
 
-			const float u2     = (i + 1) / SEGMENTS;
+			const float u2     = (i + 1) / vDimension;
 			const float theta2 = 2 * M_PI * u2;
 			const float x2     = -std::sin (theta2);
 			const float z2     = -std::cos (theta2);
 
-			const float u3 = (i + 0.5) / SEGMENTS;
+			const float u3 = (i + 0.5) / vDimension;
 
 			/*    p1
 			 *   /  \
@@ -158,9 +184,9 @@ Cone::build ()
 
 	if (bottom ())
 	{
-		for (int i = SEGMENTS - 1; i > -1; -- i)
+		for (int i = vDimension - 1; i > -1; -- i)
 		{
-			const float u1     = i / SEGMENTS;
+			const float u1     = i / vDimension;
 			const float theta1 = 2 * M_PI * u1;
 			const float x1     = -std::sin (theta1);
 			const float z1     = -std::cos (theta1);
@@ -170,14 +196,37 @@ Cone::build ()
 			getVertices () .emplace_back (x1 * bottomRadius (), y2, z1 * bottomRadius ());
 		}
 
-		addElements (GL_POLYGON, SEGMENTS);
+		addElements (GL_POLYGON, vDimension);
 	}
 
 	setSolid (solid ());
 	setTextureCoordinate (nullptr);
 }
 
+SFNode
+Cone::toPolygonObject () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto & options    = getBrowser () -> getConeOptions ();
+	const float  vDimension = options -> vDimension ();
+
+	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
+	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
+	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
+
+	geometry -> texCoord () = texCoord;
+	geometry -> coord ()    = coord;
+
+	geometry -> metadata ()    = metadata ();
+	geometry -> solid ()       = solid ();
+	geometry -> creaseAngle () = 1;
+
+
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
+}
+
 } // X3D
 } // titania
-
-#undef SEGMENTS

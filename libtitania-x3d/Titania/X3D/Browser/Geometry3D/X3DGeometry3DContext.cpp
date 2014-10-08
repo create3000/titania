@@ -51,6 +51,7 @@
 #include "X3DGeometry3DContext.h"
 
 #include "../Geometry3D/BoxOptions.h"
+#include "../Geometry3D/ConeOptions.h"
 #include "../Geometry3D/CylinderOptions.h"
 #include "../Geometry3D/QuadSphereOptions.h"
 
@@ -60,10 +61,12 @@ namespace X3D {
 X3DGeometry3DContext::X3DGeometry3DContext () :
 	     X3DBaseNode (),
 	     boxOptions (new BoxOptions (getExecutionContext ())),
+	    coneOptions (new ConeOptions (getExecutionContext ())),
 	cylinderOptions (new CylinderOptions (getExecutionContext ())),
 	  sphereOptions (new QuadSphereOptions (getExecutionContext ()))
 {
 	addChildren (boxOptions,
+	             coneOptions,
 	             cylinderOptions,
 	             sphereOptions);
 }
@@ -72,6 +75,7 @@ void
 X3DGeometry3DContext::initialize ()
 {
 	boxOptions      -> setup ();
+	coneOptions     -> setup ();
 	cylinderOptions -> setup ();
 	sphereOptions   -> setup ();
 }

@@ -1805,7 +1805,7 @@
                           <object class="GtkToolButton" id="HammerButton">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Smash Selection: this converts the selection into a polygon object.</property>
+                            <property name="tooltip_text" translatable="yes">Smash Selection: converts the geometry to the next lower primitive.</property>
                             <property name="label" translatable="yes">Smash</property>
                             <property name="use_underline">True</property>
                             <property name="stock_id">Hammer</property>

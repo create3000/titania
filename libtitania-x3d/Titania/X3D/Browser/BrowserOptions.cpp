@@ -57,6 +57,7 @@
 #include "../Browser/Geometry2D/Disk2DOptions.h"
 #include "../Browser/Geometry2D/Rectangle2DOptions.h"
 #include "../Browser/Geometry3D/BoxOptions.h"
+#include "../Browser/Geometry3D/ConeOptions.h"
 #include "../Browser/Geometry3D/CylinderOptions.h"
 #include "../Browser/Geometry3D/QuadSphereOptions.h"
 #include "../Browser/Rendering/MotionBlur.h"
@@ -249,7 +250,8 @@ BrowserOptions::set_primitiveQuality ()
 		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 40;
 		getBrowser () -> getCircle2DOptions ()   -> segments ()   = 100;
 		getBrowser () -> getDisk2DOptions ()     -> segments ()   = 100;
-		getBrowser () -> getCylinderOptions ()   -> uDimension () = 24;
+		getBrowser () -> getConeOptions ()       -> vDimension () = 24;
+		getBrowser () -> getCylinderOptions ()   -> vDimension () = 24;
 
 		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
@@ -268,7 +270,8 @@ BrowserOptions::set_primitiveQuality ()
 		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 10;
 		getBrowser () -> getCircle2DOptions ()   -> segments ()   = 20;
 		getBrowser () -> getDisk2DOptions ()     -> segments ()   = 20;
-		getBrowser () -> getCylinderOptions ()   -> uDimension () = 16;
+		getBrowser () -> getConeOptions ()       -> vDimension () = 16;
+		getBrowser () -> getCylinderOptions ()   -> vDimension () = 16;
 
 		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
@@ -287,7 +290,8 @@ BrowserOptions::set_primitiveQuality ()
 	getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 20;
 	getBrowser () -> getCircle2DOptions ()   -> segments ()   = 60;
 	getBrowser () -> getDisk2DOptions ()     -> segments ()   = 60;
-	getBrowser () -> getCylinderOptions ()   -> uDimension () = 20;
+	getBrowser () -> getConeOptions ()       -> vDimension () = 20;
+	getBrowser () -> getCylinderOptions ()   -> vDimension () = 20;
 
 	const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
