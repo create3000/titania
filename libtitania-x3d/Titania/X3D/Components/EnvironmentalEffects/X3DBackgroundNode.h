@@ -191,7 +191,7 @@ private:
 	build ();
 
 	void
-	build (const float, const MFFloat &, const MFFloat &, const MFColor &, const float, const bool);
+	build (const float, const std::vector <float> &, const MFFloat &, const MFColor &, const float, const bool);
 
 	void
 	drawSphere ();

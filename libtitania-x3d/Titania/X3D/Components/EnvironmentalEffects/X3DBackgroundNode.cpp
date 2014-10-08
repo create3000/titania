@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,19 +56,16 @@
 #include "../Layering/X3DLayerNode.h"
 #include "../Navigation/X3DViewpointNode.h"
 
+#include <complex>
+
 namespace titania {
 namespace X3D {
 
 static constexpr float SIZE = 10000;
 
-// LOW
-//static constexpr int SPHERE_USEG = 16;
-
-// HIGH
-//static constexpr int SPHERE_USEG = 32;
-
-// MEDIUM
-static constexpr int SPHERE_USEG = 22;
+//static constexpr float U_DIMENSION = 16;// LOW
+//static constexpr float U_DIMENSION = 24;// HIGH
+static constexpr float U_DIMENSION = 20; // MEDIUM
 
 X3DBackgroundNode::Fields::Fields () :
 	 groundAngle (new MFFloat ()),
@@ -142,91 +139,76 @@ X3DBackgroundNode::removeFromLayer (X3DLayerNode* const layer)
 Color3f
 X3DBackgroundNode::getColor (const float theta, const MFColor & color, const MFFloat & angle)
 {
-	const auto   iter  = std::upper_bound (angle .cbegin (), angle .cend (), theta);
-	const size_t index = iter - angle .cbegin ();
+	const auto iter  = std::upper_bound (angle .cbegin (), angle .cend (), theta);
+	const auto index = iter - angle .cbegin ();
 
 	return color [index];
 }
 
 void
-X3DBackgroundNode::build (const float radius, const MFFloat & vangle, const MFFloat & angle, const MFColor & color, const float opacity, const bool bottom)
+X3DBackgroundNode::build (const float radius, const std::vector <float> & vangle, const MFFloat & angle, const MFColor & color, const float opacity, const bool bottom)
 {
 	// p1 --- p4
 	//  |     |
 	//  |     |
 	// p2 --- p3
 
-	const float useg1 = SPHERE_USEG - 1;
+	float phi = 0;
 
-	for (size_t v = 0, size = vangle .size () - 1; v < size; ++ v)
+	std::complex <float> y;
+	Vector3f             p;
+	
+	const int32_t V_DIMENSION = vangle .size () - 1;
+
+	numIndices += 4 * U_DIMENSION * V_DIMENSION;
+
+	for (int32_t v = 0; v < V_DIMENSION; ++ v)
 	{
-		float theta  = math::clamp <float> (vangle [v], 0, M_PI);
-		float theta1 = math::clamp <float> (vangle [v + 1], 0, M_PI);
+		float theta1 = math::clamp <float> (vangle [v], 0, M_PI);
+		float theta2 = math::clamp <float> (vangle [v + 1], 0, M_PI);
 
 		if (bottom)
 		{
-			theta  = M_PI - theta;
 			theta1 = M_PI - theta1;
+			theta2 = M_PI - theta2;
 		}
 
-		const float y  = cos (theta);
-		const float y1 = cos (theta1);
+		const auto z1 = std::polar (radius, theta1);
+		const auto z2 = std::polar (radius, theta2);
 
-		const float r  = sin (theta);
-		const float r1 = sin (theta1);
+		const Color3f c1 = getColor (vangle [v],     color, angle);
+		const Color3f c2 = getColor (vangle [v + 1], color, angle);
 
-		const Color3f c  = getColor (vangle [v],     color, angle);
-		const Color3f c1 = getColor (vangle [v + 1], color, angle);
-
-		for (size_t u = 0; u < useg1; ++ u)
+		for (size_t u = 0; u < U_DIMENSION; ++ u)
 		{
 			// The last point is the first one.
-			const size_t u1 = u < useg1 - 1 ? u + 1 : 0;
-
-			float    x, z, phi;
-			Vector3f p;
+			const size_t u1 = u < U_DIMENSION - 1 ? u + 1 : 0;
 
 			// p1
-			phi = M_PI2 * (u / useg1);
-			x   = -sin (phi) * r;
-			z   = -cos (phi) * r;
-			p   = Vector3f (x, y, z) * radius;
+			phi = M_PI2 * (u / U_DIMENSION);
+			y   = std::polar (-z1 .imag (), phi);
 
-			glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
-			glPoints .emplace_back (p);
-
-			++ numIndices;
+			glColors .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
+			glPoints .emplace_back (y .imag (), z1 .real (), y .real ());
 
 			// p2
-			x = -sin (phi) * r1;
-			z = -cos (phi) * r1;
-			p = Vector3f (x, y1, z) * radius;
+			y = std::polar (-z2 .imag (), phi);
 
-			glColors .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
-			glPoints .emplace_back (p);
-
-			++ numIndices;
+			glColors .emplace_back (c2 .r (), c2 .g (), c2 .b (), opacity);
+			glPoints .emplace_back (y .imag (), z2 .real (), y .real ());
 
 			// p3
-			phi = M_PI2 * (u1 / useg1);
-			x   = -sin (phi) * r1;
-			z   = -cos (phi) * r1;
-			p   = Vector3f (x, y1, z) * radius;
+			phi = M_PI2 * (u1 / U_DIMENSION);
+			y   = std::polar (-z2 .imag (), phi);
 
-			glColors .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
-			glPoints .emplace_back (p);
-
-			++ numIndices;
+			glColors .emplace_back (c2 .r (), c2 .g (), c2 .b (), opacity);
+			glPoints .emplace_back (y .imag (), z2 .real (), y .real ());
 
 			// p4
-			x = -sin (phi) * r;
-			z = -cos (phi) * r;
-			p = Vector3f (x, y, z) * radius;
+			y = std::polar (-z1 .imag (), phi);
 
-			glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
-			glPoints .emplace_back (p);
-
-			++ numIndices;
+			glColors .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
+			glPoints .emplace_back (y .imag (), z1 .real (), y .real ());
 		}
 	}
 }
@@ -300,10 +282,10 @@ X3DBackgroundNode::build ()
 
 		if (skyColor () .size () > skyAngle () .size ())
 		{
-			MFFloat vangle = skyAngle ();
+			std::vector <float> vangle (skyAngle () .begin (), skyAngle () .end ());
 
 			if (vangle .empty () or vangle .front () > 0)
-				vangle .emplace_front (0);
+				vangle .insert (vangle .begin (), 0);
 
 			if (vangle .back () < M_PI1_2)
 				vangle .emplace_back (M_PI1_2);
@@ -316,11 +298,10 @@ X3DBackgroundNode::build ()
 
 		if (groundColor () .size () > groundAngle () .size ())
 		{
-			MFFloat vangle;
-			vangle .assign (groundAngle () .rbegin (), groundAngle () .rend ());
+			std::vector <float> vangle (groundAngle () .rbegin (), groundAngle () .rend ());
 
 			if (vangle .empty () or vangle .front () < M_PI1_2)
-				vangle .emplace_front (M_PI1_2);
+				vangle .insert (vangle .begin (), M_PI1_2);
 
 			if (vangle .back () > 0)
 				vangle .emplace_back (0);
