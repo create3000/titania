@@ -192,12 +192,11 @@ Cone::build ()
 		{
 			const float u     = i / vDimension;
 			const float theta = 2 * M_PI * u;
-			auto        p     = std::polar <float> (-1, theta);
+			const auto  t     = std::polar <float> (-1, theta);
+			const auto  p     = t * bottomRadius () .getValue ();
 
-			getTexCoords () [0] .emplace_back ((p .imag () + 1) / 2, (p .real () + 1) / 2, 0, 1);
+			getTexCoords () [0] .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, -1, 0);
-
-			p *= bottomRadius ();
 			getVertices () .emplace_back (p .imag (), y2, p .real ());
 		}
 
@@ -252,12 +251,12 @@ throw (Error <NOT_SUPPORTED>,
 		{
 			const float u     = i / vDimension;
 			const float theta = 2 * M_PI * u;
-			auto        p     = std::polar <float> (-1, theta);
+			const auto  t     = std::polar <float> (-1, theta);
+			const auto  p     = t * bottomRadius () .getValue ();
 
 			if (bottom ())
-				texCoord -> point () .emplace_back ((p .imag () + 1) / 2, (p .real () + 1) / 2);
+				texCoord -> point () .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2);
 
-			p *= bottomRadius ();
 			coord -> point () .emplace_back (p .imag (), y2, p .real ());
 		}
 	}

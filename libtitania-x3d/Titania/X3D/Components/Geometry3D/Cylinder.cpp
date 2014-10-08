@@ -57,6 +57,8 @@
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 
+#include <complex>
+
 namespace titania {
 namespace X3D {
 
@@ -151,13 +153,13 @@ Cylinder::build ()
 		{
 			const float u1     = i / vDimension;
 			const float theta1 = 2 * M_PI * u1;
-			const float x1     = -std::sin (theta1);
-			const float z1     = -std::cos (theta1);
+			const auto  n1     = std::polar <float> (-1, theta1);
+			const auto  p1     = n1 * radius () .getValue ();
 
 			const float u2     = (i + 1) / vDimension;
 			const float theta2 = 2 * M_PI * u2;
-			const float x2     = -std::sin (theta2);
-			const float z2     = -std::cos (theta2);
+			const auto  n2     = std::polar <float> (-1, theta2);
+			const auto  p2     = n2 * radius () .getValue ();
 
 			// p1 - p4
 			//  |   |
@@ -165,23 +167,23 @@ Cylinder::build ()
 
 			// p1
 			getTexCoords () [0] .emplace_back (u1, 1, 0, 1);
-			getNormals  () .emplace_back (x1, 0, z1);
-			getVertices () .emplace_back (x1 * radius (), y1, z1 * radius ());
+			getNormals  () .emplace_back (n1 .imag (), 0, n1 .real ());
+			getVertices () .emplace_back (p1 .imag (), y1, p1 .real ());
 
 			// p2
 			getTexCoords () [0] .emplace_back (u1, 0, 0, 1);
-			getNormals  () .emplace_back (x1, 0, z1);
-			getVertices () .emplace_back (x1 * radius (), y2, z1 * radius ());
+			getNormals  () .emplace_back (n1 .imag (), 0, n1 .real ());
+			getVertices () .emplace_back (p1 .imag (), y2, p1 .real ());
 
 			// p3
 			getTexCoords () [0] .emplace_back (u2, 0, 0, 1);
-			getNormals  () .emplace_back (x2, 0, z2);
-			getVertices () .emplace_back (x2 * radius (), y2, z2 * radius ());
+			getNormals  () .emplace_back (n2 .imag (), 0, n2 .real ());
+			getVertices () .emplace_back (p2 .imag (), y2, p2 .real ());
 
 			// p4
 			getTexCoords () [0] .emplace_back (u2, 1, 0, 1);
-			getNormals  () .emplace_back (x2, 0, z2);
-			getVertices () .emplace_back (x2 * radius (), y1, z2 * radius ());
+			getNormals  () .emplace_back (n2 .imag (), 0, n2 .real ());
+			getVertices () .emplace_back (p2 .imag (), y1, p2 .real ());
 		}
 
 		addElements (GL_QUADS, vDimension * 4);
@@ -193,12 +195,12 @@ Cylinder::build ()
 		{
 			const float u     = i / vDimension;
 			const float theta = 2 * M_PI * u;
-			const float x     = -std::sin (theta);
-			const float z     = -std::cos (theta);
+			const auto  t     = std::polar <float> (-1, theta);
+			const auto  p     = t * radius () .getValue ();
 
-			getTexCoords () [0] .emplace_back ((x + 1) / 2, -(z - 1) / 2, 0, 1);
+			getTexCoords () [0] .emplace_back ((t .imag () + 1) / 2, -(t .real () - 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, 1, 0);
-			getVertices () .emplace_back (x * radius (), y1, z * radius ());
+			getVertices () .emplace_back (p .imag (), y1, p .real ());
 		}
 
 		addElements (GL_POLYGON, vDimension);
@@ -210,12 +212,12 @@ Cylinder::build ()
 		{
 			const float u     = i / vDimension;
 			const float theta = 2 * M_PI * u;
-			const float x     = -std::sin (theta);
-			const float z     = -std::cos (theta);
+			const auto  t     = std::polar <float> (-1, theta);
+			const auto  p     = t * radius () .getValue ();
 
-			getTexCoords () [0] .emplace_back ((x + 1) / 2, (z + 1) / 2, 0, 1);
+			getTexCoords () [0] .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, -1, 0);
-			getVertices () .emplace_back (x * radius (), y2, z * radius ());
+			getVertices () .emplace_back (p .imag (), y2, p .real ());
 		}
 
 		addElements (GL_POLYGON, vDimension);
@@ -253,13 +255,13 @@ throw (Error <NOT_SUPPORTED>,
 		{
 			const float u     = i / vDimension;
 			const float theta = 2 * M_PI * u;
-			const float x     = -std::sin (theta);
-			const float z     = -std::cos (theta);
+			const auto  t     = std::polar <float> (-1, theta);
+			const auto  p     = t * radius () .getValue ();
 
 			if (top ())
-				texCoord -> point () .emplace_back ((x + 1) / 2, -(z - 1) / 2);
+				texCoord -> point () .emplace_back ((t .imag () + 1) / 2, -(t .real () - 1) / 2);
 
-			coord -> point () .emplace_back (x * radius (), y1, z * radius ());
+			coord -> point () .emplace_back (p .imag (), y1, p .real ());
 		}
 	}
 
@@ -269,13 +271,13 @@ throw (Error <NOT_SUPPORTED>,
 		{
 			const float u     = i / vDimension;
 			const float theta = 2 * M_PI * u;
-			const float x     = -std::sin (theta);
-			const float z     = -std::cos (theta);
+			const auto  t     = std::polar <float> (-1, theta);
+			const auto  p     = t * radius () .getValue ();
 
 			if (bottom ())
-				texCoord -> point () .emplace_back ((x + 1) / 2, (z + 1) / 2);
+				texCoord -> point () .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2);
 
-			coord -> point () .emplace_back (x * radius (), y2, z * radius ());
+			coord -> point () .emplace_back (p .imag (), y2, p .real ());
 		}
 	}
 

@@ -1,5 +1,10 @@
 2014-10-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Cone.cpp:
+	* Cylinder.cpp: 
+
+2014-10-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Box.h:
 	* Cone.h:
 	* Box.cpp:
