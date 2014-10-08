@@ -270,10 +270,6 @@ X3DPointingDeviceSensorContext::leaveNotifyEvent ()
 	motion ();
 }
 
-void
-X3DPointingDeviceSensorContext::dispose ()
-{ }
-
 X3DPointingDeviceSensorContext::~X3DPointingDeviceSensorContext ()
 { }
 

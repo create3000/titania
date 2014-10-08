@@ -130,7 +130,8 @@ public:
 
 	virtual
 	void
-	dispose () override;
+	dispose () override
+	{ }
 
 	virtual
 	~X3DPointingDeviceSensorContext ();

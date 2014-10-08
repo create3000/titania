@@ -240,13 +240,14 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
 
-	geometry -> metadata () = metadata ();
-	geometry -> solid ()    = solid ();
+	geometry -> metadata ()    = metadata ();
+	geometry -> solid ()       = solid ();
+	geometry -> creaseAngle () = 1;
 
 	const float y1 = height () / 2;
 	const float y2 = -y1;
 
-	if (top ())
+	if (top () or side ())
 	{
 		for (int32_t i = 0; i < uDimension; ++ i)
 		{
@@ -255,12 +256,14 @@ throw (Error <NOT_SUPPORTED>,
 			const float x     = -std::sin (theta);
 			const float z     = -std::cos (theta);
 
-			texCoord -> point () .emplace_back ((x + 1) / 2, -(z - 1) / 2);
-			coord -> point ()    .emplace_back (x * radius (), y1, z * radius ());
+			if (top ())
+				texCoord -> point () .emplace_back ((x + 1) / 2, -(z - 1) / 2);
+
+			coord -> point () .emplace_back (x * radius (), y1, z * radius ());
 		}
 	}
 
-	if (bottom ())
+	if (bottom () or side ())
 	{
 		for (int32_t i = 0; i < uDimension; ++ i)
 		{
@@ -269,10 +272,29 @@ throw (Error <NOT_SUPPORTED>,
 			const float x     = -std::sin (theta);
 			const float z     = -std::cos (theta);
 
-			texCoord -> point () .emplace_back ((x + 1) / 2, (z + 1) / 2);
-			coord -> point ()    .emplace_back (x * radius (), y2, z * radius ());
+			if (bottom ())
+				texCoord -> point () .emplace_back ((x + 1) / 2, (z + 1) / 2);
+
+			coord -> point () .emplace_back (x * radius (), y2, z * radius ());
 		}
 	}
+
+	if (side ())
+	{
+		for (int32_t i = 0; i < uDimension; ++ i)
+		{
+			const float u = i / uDimension;
+
+			texCoord -> point () .emplace_back (u, 1);
+			texCoord -> point () .emplace_back (u, 0);
+		}
+
+		texCoord -> point () .emplace_back (1, 1);
+		texCoord -> point () .emplace_back (1, 0);
+	}
+
+	int32_t t = 0;
+	int32_t c = 0;
 
 	if (top ())
 	{
@@ -284,21 +306,170 @@ throw (Error <NOT_SUPPORTED>,
 		
 		geometry -> texCoordIndex () .emplace_back (-1);
 		geometry -> coordIndex ()    .emplace_back (-1);
+
+		t += uDimension;
+		c += uDimension;
 	}
+	else if (side ())
+		c += uDimension;
 
 	if (bottom ())
 	{
-		const int32_t first = geometry -> coordIndex () .size () - top ();
-	
-		for (int32_t i = first + uDimension - 1; i >= first; -- i)
+		for (int32_t i = 0, ts = t + uDimension, cs = c + uDimension; i < uDimension; ++ i)
 		{
-			geometry -> texCoordIndex () .emplace_back (i);
-			geometry -> coordIndex ()    .emplace_back (i);
+			geometry -> texCoordIndex () .emplace_back (ts - i - 1);
+			geometry -> coordIndex ()    .emplace_back (cs - i - 1);
 		}
 
 		geometry -> texCoordIndex () .emplace_back (-1);
 		geometry -> coordIndex ()    .emplace_back (-1);
+	
+		t += uDimension;
 	}
+
+	if (side ())
+	{
+		for (int32_t i = 0, size = uDimension - 1; i < size; ++ i)
+		{
+			const int32_t i2 = 2 * i;
+		
+			geometry -> texCoordIndex () .emplace_back (t + i2);
+			geometry -> texCoordIndex () .emplace_back (t + i2 + 1);
+			geometry -> texCoordIndex () .emplace_back (t + i2 + 3);
+			geometry -> texCoordIndex () .emplace_back (t + i2 + 2);
+			geometry -> texCoordIndex () .emplace_back (-1);
+
+			geometry -> coordIndex () .emplace_back (i);
+			geometry -> coordIndex () .emplace_back (i + uDimension);
+			geometry -> coordIndex () .emplace_back (i + uDimension + 1);
+			geometry -> coordIndex () .emplace_back (i + 1);
+			geometry -> coordIndex () .emplace_back (-1);
+		}
+
+		const int32_t uDimension2 = uDimension * 2;
+
+		geometry -> texCoordIndex () .emplace_back (t + uDimension2 - 2);
+		geometry -> texCoordIndex () .emplace_back (t + uDimension2 - 1);
+		geometry -> texCoordIndex () .emplace_back (t + uDimension2 + 1);
+		geometry -> texCoordIndex () .emplace_back (t + uDimension2);
+		geometry -> texCoordIndex () .emplace_back (-1);
+
+		geometry -> coordIndex () .emplace_back (uDimension - 1);
+		geometry -> coordIndex () .emplace_back (uDimension - 1 + uDimension);
+		geometry -> coordIndex () .emplace_back (uDimension);
+		geometry -> coordIndex () .emplace_back (0);
+		geometry -> coordIndex () .emplace_back (-1);
+	}
+
+//	if (top ())
+//	{
+//		for (int32_t i = 0; i < uDimension; ++ i)
+//		{
+//			const float u     = i / uDimension;
+//			const float theta = 2 * M_PI * u;
+//			const float x     = -std::sin (theta);
+//			const float z     = -std::cos (theta);
+//
+//			texCoord -> point () .emplace_back ((x + 1) / 2, -(z - 1) / 2);
+//			coord -> point ()    .emplace_back (x * radius (), y1, z * radius ());
+//		}
+//	}
+//
+//	if (bottom ())
+//	{
+//		for (int32_t i = 0; i < uDimension; ++ i)
+//		{
+//			const float u     = i / uDimension;
+//			const float theta = 2 * M_PI * u;
+//			const float x     = -std::sin (theta);
+//			const float z     = -std::cos (theta);
+//
+//			texCoord -> point () .emplace_back ((x + 1) / 2, (z + 1) / 2);
+//			coord -> point ()    .emplace_back (x * radius (), y2, z * radius ());
+//		}
+//	}
+//
+//	if (side ())
+//	{
+//		for (int32_t i = 0; i < uDimension; ++ i)
+//		{
+//			const float u     = i / uDimension;
+//			const float theta = 2 * M_PI * u;
+//			const float x     = -std::sin (theta);
+//			const float z     = -std::cos (theta);
+//
+//			texCoord -> point () .emplace_back (u, 1);
+//			texCoord -> point () .emplace_back (u, 0);
+//
+//			coord -> point () .emplace_back (x * radius (), y1, z * radius ());
+//			coord -> point () .emplace_back (x * radius (), y2, z * radius ());
+//		}
+//
+//		texCoord -> point () .emplace_back (1, 1);
+//		texCoord -> point () .emplace_back (1, 0);
+//	}
+//	
+//	int32_t first = 0;
+//
+//	if (top ())
+//	{
+//		for (int32_t i = first; i < uDimension; ++ i)
+//		{
+//			geometry -> texCoordIndex () .emplace_back (i);
+//			geometry -> coordIndex ()    .emplace_back (i);
+//		}
+//		
+//		geometry -> texCoordIndex () .emplace_back (-1);
+//		geometry -> coordIndex ()    .emplace_back (-1);
+//		
+//		first += uDimension;
+//	}
+//
+//	if (bottom ())
+//	{
+//		for (int32_t i = first + uDimension - 1; i >= first; -- i)
+//		{
+//			geometry -> texCoordIndex () .emplace_back (i);
+//			geometry -> coordIndex ()    .emplace_back (i);
+//		}
+//
+//		geometry -> texCoordIndex () .emplace_back (-1);
+//		geometry -> coordIndex ()    .emplace_back (-1);
+//
+//		first += uDimension;
+//	}
+//
+//	if (side ())
+//	{
+//		const int32_t uDimension2 = uDimension * 2;
+//	
+//		for (int32_t i = 0, size = uDimension2 - 2; i < size; i += 2)
+//		{
+//			geometry -> texCoordIndex () .emplace_back (first + i);
+//			geometry -> texCoordIndex () .emplace_back (first + i + 1);
+//			geometry -> texCoordIndex () .emplace_back (first + i + 3);
+//			geometry -> texCoordIndex () .emplace_back (first + i + 2);
+//			geometry -> texCoordIndex () .emplace_back (-1);
+//	
+//			geometry -> coordIndex () .emplace_back (first + i);
+//			geometry -> coordIndex () .emplace_back (first + i + 1);
+//			geometry -> coordIndex () .emplace_back (first + i + 3);
+//			geometry -> coordIndex () .emplace_back (first + i + 2);
+//			geometry -> coordIndex () .emplace_back (-1);
+//		}
+//
+//		geometry -> texCoordIndex () .emplace_back (first + uDimension2 - 2);
+//		geometry -> texCoordIndex () .emplace_back (first + uDimension2 - 1);
+//		geometry -> texCoordIndex () .emplace_back (first + uDimension2 + 1);
+//		geometry -> texCoordIndex () .emplace_back (first + uDimension2);
+//		geometry -> texCoordIndex () .emplace_back (-1);
+//
+//		geometry -> coordIndex () .emplace_back (first + uDimension2 - 2);
+//		geometry -> coordIndex () .emplace_back (first + uDimension2 - 1);
+//		geometry -> coordIndex () .emplace_back (first + 1);
+//		geometry -> coordIndex () .emplace_back (first + 0);
+//		geometry -> coordIndex () .emplace_back (-1);
+//	}
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
