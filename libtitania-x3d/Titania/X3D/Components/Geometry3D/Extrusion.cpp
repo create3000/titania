@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,6 +50,9 @@
 
 #include "Extrusion.h"
 
+#include "../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 #include <Titania/Utility/Range.h>
@@ -315,7 +318,7 @@ Extrusion::build ()
 
 	const Vector2f capSize = max - min;
 
-	const bool   hasCaps      = capSize .x () and capSize .y ();
+	const bool hasCaps        = capSize .x () and capSize .y ();
 	const size_t numCapPoints = closedCrossSection ? crossSection () .size () - 1 : crossSection () .size ();
 
 	// Create
@@ -330,7 +333,7 @@ Extrusion::build ()
 	getNormals  () .reserve (reserve);
 
 	// Build body.
-	
+
 	const float numCrossSection_1 = crossSection () .size () - 1;
 	const float numSpine_1        = spine () .size () - 1;
 
@@ -469,9 +472,9 @@ Extrusion::build ()
 
 void
 Extrusion::tessellateCap (const Tessellator & tessellator,
-                         std::vector <Vector3f> & points,
-                         const Vector2f & min,
-                         const Vector2f & capSize)
+                          std::vector <Vector3f> & points,
+                          const Vector2f & min,
+                          const Vector2f & capSize)
 {
 	#define I 0
 	#define K 1
@@ -605,10 +608,70 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 	#undef K
 }
 
-void
-Extrusion::dispose ()
+SFNode
+Extrusion::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
 {
-	X3DGeometryNode::dispose ();
+	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
+	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
+	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
+
+	geometry -> metadata ()    = metadata ();
+	geometry -> solid ()       = solid ();
+	geometry -> ccw ()         = ccw ();
+	geometry -> convex ()      = convex ();
+	geometry -> creaseAngle () = creaseAngle ();
+	geometry -> texCoord ()    = texCoord;
+	geometry -> coord ()       = coord;
+
+	const bool closedSpine        = spine () .front () == spine () .back ();
+	const bool closedCrossSection = crossSection () .front () == crossSection () .back ();
+	const auto crossSectionSize   = crossSection () .size () - closedCrossSection;
+
+	for (size_t n = 0, size = spine () .size (); n < size; ++ n)
+	{
+		for (size_t k = 0, size = crossSection () .size () - 1; k < size; ++ k)
+		{
+			const size_t i1 = k + n * crossSectionSize;
+			const size_t i2 = closedCrossSection and k == size - 1 ? n * crossSectionSize : i1 + 1;
+
+			if (n == spine () .size () - 1)
+			{
+				const size_t v = (k + (n - 1) * (crossSection () .size () - 1)) * 4 + 3;
+				coord -> point () .emplace_back (getVertices () [v]);
+				continue;
+			}
+
+			const size_t v = (k + n * (crossSection () .size () - 1)) * 4;
+			coord -> point () .emplace_back (getVertices () [v]);
+
+			geometry -> coordIndex () .emplace_back (i1);
+			geometry -> coordIndex () .emplace_back (i2);
+			geometry -> coordIndex () .emplace_back (i2 + crossSectionSize);
+			geometry -> coordIndex () .emplace_back (i1 + crossSectionSize);
+			geometry -> coordIndex () .emplace_back (-1);
+		}
+
+		if (not closedCrossSection)
+		{
+			const size_t k = crossSection () .size () - 2;
+			const size_t v = n == spine () .size () - 1
+			                 ? (k + (n - 1) * (crossSection () .size () - 1)) * 4 + 2
+			                 : (k + n * (crossSection () .size () - 1)) * 4 + 1;
+
+			coord -> point () .emplace_back (getVertices () [v]);
+		}
+	}
+
+	if (beginCap ())
+	{ }
+
+	if (endCap ())
+	{ }
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
 }
 
 } // X3D

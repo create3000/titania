@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Wed, 08 Oct 2014 12:24:11 GMT"
+META "modified" "Wed, 08 Oct 2014 15:56:27 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -30,6 +30,16 @@ EXTERNPROTO IcoSphere [
   "file:///usr/share/titania/Prototypes/0.1/Geometry3D/IcoSphere.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/IcoSphere.x3dv"
 ]
+
+EXTERNPROTO ToolShader [
+  inputOutput SFFloat ambientIntensity
+  inputOutput SFColor diffuseColor
+  inputOutput SFColor specularColor
+  inputOutput SFColor emissiveColor
+  inputOutput SFFloat shininess
+  inputOutput SFFloat transparency
+]
+"../../../libtitania-x3d/share/titania/tools/library/ToolShader.x3dv"
 
 WorldInfo {
   metadata MetadataSet {
@@ -87,7 +97,9 @@ DEF Gray_1 Background {
 
 Viewpoint {
   description "Home"
-  position 0 0 27.9361
+  position 1.75434 -4.37231 3.23018
+  orientation -0.415127 0.899118 0.138768 0.844044
+  centerOfRotation -2.32128 -6.57125 -0.9597
 }
 
 DEF Box_1 Transform {
@@ -173,7 +185,7 @@ DEF Cylinder Transform {
 }
 
 DEF Torus_1 Transform {
-  translation -6 -6 -2.20482e-05
+  translation -6 -9 -3.30723e-05
   children Shape {
     appearance Appearance {
       material Material { }
@@ -187,7 +199,7 @@ DEF Torus_1 Transform {
 }
 
 DEF Octahedron_1 Transform {
-  translation -3 -6 -2.20482e-05
+  translation -3 -9 -3.30723e-05
   children Shape {
     appearance Appearance {
       material Material { }
@@ -326,7 +338,7 @@ DEF ElevationGrid Transform {
     geometry ElevationGrid {
       xDimension 9
       zDimension 9
-      creaseAngle 1.5708
+      creaseAngle 1.19952
       height [
         0,
         0,
@@ -409,6 +421,154 @@ DEF ElevationGrid Transform {
         0.5,
         0,
         0
+      ]
+    }
+  }
+}
+
+Transform {
+  translation -6 -7 -0.53025
+  scale 0.543962 0.543962 0.543962
+  children Shape {
+    appearance Appearance {
+      material DEF _3 Material { }
+      texture USE _1
+    }
+    geometry Extrusion {
+      endCap FALSE
+      solid FALSE
+      creaseAngle 1
+      crossSection [
+        1 0,
+        0.92 -0.38,
+        0.71 -0.71,
+        0.38 -0.92,
+        0 -1,
+        -0.38 -0.92,
+        -0.71 -0.71,
+        -0.92 -0.38,
+        -1 -0,
+        -0.92 0.38,
+        -0.71 0.71,
+        -0.38 0.92,
+        0 1,
+        0.38 0.92,
+        0.71 0.71,
+        0.92 0.38,
+        1 0
+      ]
+      scale [
+        1.8 1.8,
+        1.95 1.95,
+        2 2,
+        1.95 1.95,
+        1.8 1.8,
+        1.5 1.5,
+        1.2 1.2,
+        1.05 1.05,
+        1 1,
+        1.05 1.05,
+        1.15 1.15
+      ]
+      spine [
+        0 0 0,
+        0 0.4 0,
+        0 0.8 0,
+        0 1.2 0,
+        0 1.6 0,
+        0 2 0,
+        0 2.4 0,
+        0 2.8 0,
+        0 3.2 0,
+        0 3.6 0,
+        0 4 0
+      ]
+    }
+  }
+}
+
+DEF Edge_1 Transform {
+  translation -2 -6 -2.20482e-05
+  scale 0.319951 0.319951 0.319951
+  children Shape {
+    appearance Appearance {
+      material USE _3
+      texture USE _1
+    }
+    geometry Extrusion {
+      convex FALSE
+      crossSection [
+        1 1,
+        1 -5,
+        -1 -5,
+        -1 -1,
+        -5 -1,
+        -5 1,
+        1 1
+      ]
+      spine [
+        0 -1 0,
+        0 1 0
+      ]
+    }
+  }
+}
+
+Transform {
+  translation 0 -7 -0.53025
+  scale 0.543962 0.543962 0.543962
+  children Shape {
+    appearance Appearance {
+      material USE _3
+      texture USE _1
+    }
+    geometry Extrusion {
+      endCap FALSE
+      solid FALSE
+      creaseAngle 1
+      crossSection [
+        1 0,
+        0.92 -0.38,
+        0.71 -0.71,
+        0.38 -0.92,
+        0 -1,
+        -0.38 -0.92,
+        -0.71 -0.71,
+        -0.92 -0.38,
+        -1 -0,
+        -0.92 0.38,
+        -0.71 0.71,
+        -0.38 0.92,
+        0 1,
+        0.38 0.92,
+        0.71 0.71,
+        0.92 0.38
+      ]
+      scale [
+        1.8 1.8,
+        1.95 1.95,
+        2 2,
+        1.95 1.95,
+        1.8 1.8,
+        1.5 1.5,
+        1.2 1.2,
+        1.05 1.05,
+        1 1,
+        1.05 1.05,
+        1.15 1.15
+      ]
+      spine [
+        0 0 0,
+        0 0.4 0,
+        0 0.8 0,
+        0 1.2 0,
+        0 1.6 0,
+        0 2 0,
+        0 2.4 0,
+        0 2.8 0,
+        0 3.2 0,
+        0 3.6 0,
+        0 4 0
       ]
     }
   }

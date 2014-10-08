@@ -438,8 +438,6 @@ throw (Error <NOT_SUPPORTED>,
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
 
-	geometry -> texCoord () = texCoord;
-
 	geometry -> metadata ()        = metadata ();
 	geometry -> solid ()           = solid ();
 	geometry -> ccw ()             = ccw ();
@@ -479,8 +477,6 @@ throw (Error <NOT_SUPPORTED>,
 		geometry -> coordIndex () .emplace_back (coordIndex [i + 2]);
 		geometry -> coordIndex () .emplace_back (-1);
 	}
-
-	//geometry -> texCoordIndex () = geometry -> coordIndex ();
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
