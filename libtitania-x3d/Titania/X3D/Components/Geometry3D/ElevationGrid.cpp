@@ -52,6 +52,9 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Texturing/TextureCoordinate.h"
 
 namespace titania {
 namespace X3D {
@@ -268,17 +271,16 @@ ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::
 
 	NormalIndex normalIndex;
 
-	for (auto index = coordIndex .cbegin (); index not_eq coordIndex .cend (); index += 6)
+	for (auto index = coordIndex .cbegin (); index not_eq coordIndex .cend (); index += 3)
 	{
-		for (size_t i = 0; i < 6; ++ i)
+		for (size_t i = 0; i < 3; ++ i)
 			normalIndex [*(index + i)] .emplace_back (normals .size () + i);
 
 		const Vector3f normal = math::normal (points [*(index)],
 		                                      points [*(index + 1)],
-		                                      points [*(index + 3)],
 		                                      points [*(index + 2)]);
 
-		normals .resize (normals .size () + 6, normal);
+		normals .resize (normals .size () + 3, normal);
 	}
 
 	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
@@ -425,6 +427,63 @@ ElevationGrid::build ()
 	setCCW (ccw ());
 	setAttribs (attribNodes, attribArrays);
 	setTextureCoordinate (texCoordNode);
+}
+
+SFNode
+ElevationGrid::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto texCoord = texCoordNode ? X3DPtr <TextureCoordinate> () : getExecutionContext () -> createNode <TextureCoordinate> ();
+	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
+	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
+
+	geometry -> texCoord () = texCoord;
+
+	geometry -> metadata ()        = metadata ();
+	geometry -> solid ()           = solid ();
+	geometry -> ccw ()             = ccw ();
+	geometry -> creaseAngle ()     = creaseAngle ();
+	geometry -> colorPerVertex ()  = colorPerVertex ();
+	geometry -> normalPerVertex () = normalPerVertex ();
+
+	geometry -> attrib ()   = attrib ();
+	geometry -> fogCoord () = fogCoord ();
+	geometry -> color ()    = color ();
+
+	if (texCoordNode)
+		geometry -> texCoord () = texCoordNode;
+	else
+		geometry -> texCoord () = texCoord;
+
+	geometry -> normal () = normal ();
+	geometry -> coord ()  = coord;
+
+	const auto coordIndex = createCoordIndex ();
+	const auto points     = createPoints ();
+
+	coord -> point () .assign (points .begin (), points .end ());
+
+	if (texCoord)
+	{
+		const auto texCoords = createTexCoord ();
+		
+		for (const auto & point : texCoords)
+			texCoord -> point () .emplace_back (point .x (), point .y ());
+	}
+
+	for (size_t i = 0, size = coordIndex .size (); i < size; i += 3)
+	{
+		geometry -> coordIndex () .emplace_back (coordIndex [i]);
+		geometry -> coordIndex () .emplace_back (coordIndex [i + 1]);
+		geometry -> coordIndex () .emplace_back (coordIndex [i + 2]);
+		geometry -> coordIndex () .emplace_back (-1);
+	}
+
+	//geometry -> texCoordIndex () = geometry -> coordIndex ();
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
 }
 
 } // X3D

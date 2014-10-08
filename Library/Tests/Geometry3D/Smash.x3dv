@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Wed, 08 Oct 2014 06:01:47 GMT"
+META "modified" "Wed, 08 Oct 2014 12:24:11 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -173,7 +173,7 @@ DEF Cylinder Transform {
 }
 
 DEF Torus_1 Transform {
-  translation -6 -3 -1.10241e-05
+  translation -6 -6 -2.20482e-05
   children Shape {
     appearance Appearance {
       material Material { }
@@ -187,7 +187,7 @@ DEF Torus_1 Transform {
 }
 
 DEF Octahedron_1 Transform {
-  translation -3 -3 -1.10241e-05
+  translation -3 -6 -2.20482e-05
   children Shape {
     appearance Appearance {
       material Material { }
@@ -297,6 +297,119 @@ DEF Cylinder_4 Transform {
     geometry Cylinder {
       top FALSE
       solid FALSE
+    }
+  }
+}
+
+DEF ElevationGrid_1 Transform {
+  translation -7 -3 -1.10241e-05
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _2
+    }
+    geometry ElevationGrid {
+      xDimension 4
+      zDimension 4
+    }
+  }
+}
+
+DEF ElevationGrid Transform {
+  translation -2 -4 -1.46988e-05
+  scale 0.358296 0.358296 0.358296
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _2
+    }
+    geometry ElevationGrid {
+      xDimension 9
+      zDimension 9
+      creaseAngle 1.5708
+      height [
+        0,
+        0,
+        0.5,
+        1,
+        0.5,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2.5,
+        0.5,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.5,
+        0.5,
+        3,
+        1,
+        0.5,
+        0,
+        1,
+        0,
+        0,
+        0.5,
+        2,
+        4.5,
+        2.5,
+        1,
+        1.5,
+        0.5,
+        1,
+        2.5,
+        3,
+        4.5,
+        5.5,
+        3.5,
+        3,
+        1,
+        0,
+        0.5,
+        2,
+        2,
+        2.5,
+        3.5,
+        4,
+        2,
+        0.5,
+        0,
+        0,
+        0,
+        0.5,
+        1.5,
+        1,
+        2,
+        3,
+        1.5,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        1.5,
+        0.5,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.5,
+        0,
+        0
+      ]
     }
   }
 }
