@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Wed, 08 Oct 2014 15:56:27 GMT"
+META "modified" "Thu, 09 Oct 2014 00:25:21 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -514,7 +514,7 @@ DEF Edge_1 Transform {
   }
 }
 
-Transform {
+DEF _4 Transform {
   translation 0 -7 -0.53025
   scale 0.543962 0.543962 0.543962
   children Shape {
@@ -569,6 +569,48 @@ Transform {
         0 3.2 0,
         0 3.6 0,
         0 4 0
+      ]
+    }
+  }
+}
+
+DEF Torus Transform {
+  translation 3 -6 -2.20482e-05
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _1
+    }
+    #file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Smash.x3dv
+    geometry DEF Geometry_1 Extrusion {
+      beginCap FALSE
+      endCap FALSE
+      creaseAngle 3.14159
+      crossSection [
+        0 0.5,
+        0.293893 0.404509,
+        0.475528 0.154509,
+        0.475528 -0.154509,
+        0.293893 -0.404509,
+        6.12323e-17 -0.5,
+        -0.293893 -0.404509,
+        -0.475528 -0.154509,
+        -0.475528 0.154509,
+        -0.293893 0.404509,
+        0 0.5
+      ]
+      spine [
+        0 0 0.5,
+        0.293893 0 0.404509,
+        0.475528 0 0.154509,
+        0.475528 0 -0.154509,
+        0.293893 0 -0.404509,
+        6.12323e-17 0 -0.5,
+        -0.293893 0 -0.404509,
+        -0.475528 0 -0.154509,
+        -0.475528 0 0.154509,
+        -0.293893 0 0.404509,
+        0 0 0.5
       ]
     }
   }

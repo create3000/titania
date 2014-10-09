@@ -631,36 +631,56 @@ throw (Error <NOT_SUPPORTED>,
 
 	for (size_t n = 0, size = spine () .size (); n < size; ++ n)
 	{
+		const size_t o = closedSpine and n == spine () .size () - 2 ? (n + 1) * crossSectionSize : 0;
+
 		for (size_t k = 0, size = crossSection () .size () - 1; k < size; ++ k)
 		{
-			const size_t i1 = k + n * crossSectionSize;
-			const size_t i2 = closedCrossSection and k == size - 1 ? n * crossSectionSize : i1 + 1;
-
 			if (n == spine () .size () - 1)
 			{
 				const size_t v = (k + (n - 1) * (crossSection () .size () - 1)) * 4 + 3;
-				coord -> point () .emplace_back (getVertices () [v]);
+
+				texCoord -> point () .emplace_back (getTexCoords () [0] [v] .x (), getTexCoords () [0] [v] .y ());
+
+				if (not closedSpine)
+					coord -> point () .emplace_back (getVertices () [v]);
+
 				continue;
 			}
 
 			const size_t v = (k + n * (crossSection () .size () - 1)) * 4;
-			coord -> point () .emplace_back (getVertices () [v]);
+			texCoord -> point () .emplace_back (getTexCoords () [0] [v] .x (), getTexCoords () [0] [v] .y ());
+			coord -> point ()    .emplace_back (getVertices () [v]);
 
-			geometry -> coordIndex () .emplace_back (i1);
-			geometry -> coordIndex () .emplace_back (i2);
-			geometry -> coordIndex () .emplace_back (i2 + crossSectionSize);
-			geometry -> coordIndex () .emplace_back (i1 + crossSectionSize);
+			// coordIndex
+
+			const size_t t1 = k + n * crossSection () .size ();
+			const size_t c1 = k + n * crossSectionSize;
+			const size_t c2 = closedCrossSection and k == size - 1 ? n * crossSectionSize : c1 + 1;
+
+			geometry -> texCoordIndex () .emplace_back (t1);
+			geometry -> texCoordIndex () .emplace_back (t1 + 1);
+			geometry -> texCoordIndex () .emplace_back (t1 + crossSection () .size () + 1);
+			geometry -> texCoordIndex () .emplace_back (t1 + crossSection () .size ());
+			geometry -> texCoordIndex () .emplace_back (-1);
+
+			geometry -> coordIndex () .emplace_back (c1);
+			geometry -> coordIndex () .emplace_back (c2);
+			geometry -> coordIndex () .emplace_back (c2 + crossSectionSize - o);
+			geometry -> coordIndex () .emplace_back (c1 + crossSectionSize - o);
 			geometry -> coordIndex () .emplace_back (-1);
 		}
 
-		if (not closedCrossSection)
+		if (true)
 		{
 			const size_t k = crossSection () .size () - 2;
 			const size_t v = n == spine () .size () - 1
 			                 ? (k + (n - 1) * (crossSection () .size () - 1)) * 4 + 2
 			                 : (k + n * (crossSection () .size () - 1)) * 4 + 1;
 
-			coord -> point () .emplace_back (getVertices () [v]);
+			texCoord -> point () .emplace_back (getTexCoords () [0] [v] .x (), getTexCoords () [0] [v] .y ());
+
+			if (not closedCrossSection)
+				coord -> point () .emplace_back (getVertices () [v]);
 		}
 	}
 
