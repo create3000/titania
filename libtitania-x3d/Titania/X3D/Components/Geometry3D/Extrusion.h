@@ -214,7 +214,7 @@ private:
 	tessellateCap (const Tessellator &,
 	              std::vector <Vector3f> &,
 	              const Vector2f &,
-	              const Vector2f &);
+	              const float);
 
 
 	///  @name Static members

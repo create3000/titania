@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Thu, 09 Oct 2014 00:25:21 GMT"
+META "modified" "Thu, 09 Oct 2014 02:10:43 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -97,9 +97,9 @@ DEF Gray_1 Background {
 
 Viewpoint {
   description "Home"
-  position 1.75434 -4.37231 3.23018
-  orientation -0.415127 0.899118 0.138768 0.844044
-  centerOfRotation -2.32128 -6.57125 -0.9597
+  position -1.10338 -8.09269 1.4748
+  orientation -0.82298 -0.253963 -0.50814 5.24467
+  centerOfRotation -2.48276 -5.99639 -0.586098
 }
 
 DEF Box_1 Transform {
@@ -514,7 +514,7 @@ DEF Edge_1 Transform {
   }
 }
 
-DEF _4 Transform {
+Transform {
   translation 0 -7 -0.53025
   scale 0.543962 0.543962 0.543962
   children Shape {
@@ -578,13 +578,13 @@ DEF Torus Transform {
   translation 3 -6 -2.20482e-05
   children Shape {
     appearance Appearance {
-      material Material { }
+      material Material {
+        transparency 0.375
+      }
       texture USE _1
     }
     #file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Smash.x3dv
     geometry DEF Geometry_1 Extrusion {
-      beginCap FALSE
-      endCap FALSE
       creaseAngle 3.14159
       crossSection [
         0 0.5,
