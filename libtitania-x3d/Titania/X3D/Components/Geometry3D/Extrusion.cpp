@@ -355,7 +355,9 @@ Extrusion::build ()
 			const auto p2 = INDEX (n,  k1);
 			const auto p3 = INDEX (n1, k1);
 			const auto p4 = INDEX (n1, k);
-			
+
+			// Use quad normal calculation as it makes nicer normals.
+
 			const auto normal = math::normal (points [p1], points [p2], points [p3], points [p4]);
 
 			// p1
