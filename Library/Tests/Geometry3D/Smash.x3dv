@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Thu, 09 Oct 2014 02:10:43 GMT"
+META "modified" "Thu, 09 Oct 2014 07:32:01 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -525,6 +525,7 @@ Transform {
     geometry Extrusion {
       endCap FALSE
       solid FALSE
+      convex FALSE
       creaseAngle 1
       crossSection [
         1 0,
@@ -611,6 +612,122 @@ DEF Torus Transform {
         -0.475528 0 0.154509,
         -0.293893 0 0.404509,
         0 0 0.5
+      ]
+    }
+  }
+}
+
+DEF _4 Transform {
+  translation 6 -6 -2.20482e-05
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _1
+    }
+    geometry Extrusion {
+      convex FALSE
+      crossSection [
+        1 0,
+        0.67 -0.27,
+        0.71 -0.71,
+        0.27 -0.67,
+        0 -1,
+        -0.27 -0.67,
+        -0.71 -0.71,
+        -0.67 -0.27,
+        -1 0,
+        -0.67 0.27,
+        -0.71 0.71,
+        -0.27 0.67,
+        0 1,
+        0.27 0.67,
+        0.71 0.71,
+        0.67 0.27,
+        1 0
+      ]
+      spine [
+        0 0 1,
+        0 0 -1
+      ]
+    }
+  }
+}
+
+DEF _5 Transform {
+  translation 9 -6 -2.20482e-05
+  children Shape {
+    appearance Appearance {
+      material Material {
+        specularColor 0.47 0.24 0.13
+        shininess 1
+      }
+      texture USE _1
+    }
+    geometry Extrusion {
+      beginCap FALSE
+      endCap FALSE
+      solid FALSE
+      creaseAngle 2
+      crossSection [
+        1 0,
+        0.924 -0.383,
+        0.707 -0.707,
+        0.383 -0.924,
+        0 -1,
+        -0.383 -0.924,
+        -0.707 -0.707,
+        -0.924 -0.383,
+        -1 0,
+        -0.924 0.383,
+        -0.707 0.707,
+        -0.383 0.924,
+        0 1,
+        0.383 0.924,
+        0.707 0.707,
+        0.924 0.383,
+        1 0
+      ]
+      orientation [
+        0 0 1 0,
+        0 0 1 0,
+        0 0 1 0,
+        0 0 1 0,
+        0 0 1 0,
+        0 0 1 0,
+        0 0 1 0,
+        0 0 1 0,
+        0 0 1 0,
+        0 0 1 0,
+        0 0 1 0,
+        0 0 1 0
+      ]
+      scale [
+        0.31 0.31,
+        0.32 0.32,
+        0.31 0.31,
+        0.3 0.3,
+        0.28 0.28,
+        0.22 0.22,
+        0.2 0.2,
+        0.18 0.18,
+        0.15 0.15,
+        0.09 0.11,
+        0.06 0.09,
+        0.03 0.07
+      ]
+      spine [
+        -1 0.5 0,
+        -1 0.15 0,
+        -1 -0.1 0,
+        -0.94 -0.2 0,
+        -0.83 -0.26 0,
+        -0.66 -0.31 0,
+        -0.55 -0.28 0,
+        -0.18 -0.1 0,
+        0.05 0.1 0,
+        0.35 0.3 0,
+        0.7 0.37 0,
+        1 0.39 0
       ]
     }
   }

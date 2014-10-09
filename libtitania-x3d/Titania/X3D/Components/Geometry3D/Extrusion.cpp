@@ -351,29 +351,36 @@ Extrusion::build ()
 			//  |       |
 			// p1 ----- p2   n
 
+			const auto p1 = INDEX (n,  k);
+			const auto p2 = INDEX (n,  k1);
+			const auto p3 = INDEX (n1, k1);
+			const auto p4 = INDEX (n1, k);
+			
+			const auto normal = math::normal (points [p1], points [p2], points [p3], points [p4]);
+
 			// p1
 			getTexCoords () [0] .emplace_back (k / numCrossSection_1, n / numSpine_1, 0, 1);
-			coordIndex .emplace_back (INDEX (n, k));
+			coordIndex .emplace_back (p1);
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (math::normal (points [INDEX (n1, k)], points [INDEX (n, k)], points [INDEX (n, k1)]));
+			getNormals () .emplace_back (normal);
 
 			// p2
 			getTexCoords () [0] .emplace_back ((k + 1) / numCrossSection_1, n / numSpine_1, 0, 1);
-			coordIndex .emplace_back (INDEX (n, k1));
+			coordIndex .emplace_back (p2);
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (math::normal (points [INDEX (n, k)], points [INDEX (n, k1)], points [INDEX (n1, k1)]));
+			getNormals () .emplace_back (normal);
 
 			// p3
 			getTexCoords () [0] .emplace_back ((k + 1) / numCrossSection_1, (n + 1) / numSpine_1, 0, 1);
-			coordIndex .emplace_back (INDEX (n1, k1));
+			coordIndex .emplace_back (p3);
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (math::normal (points [INDEX (n, k1)], points [INDEX (n1, k1)], points [INDEX (n1, k)]));
+			getNormals () .emplace_back (normal);
 
 			// p4
 			getTexCoords () [0] .emplace_back (k / numCrossSection_1, (n + 1) / numSpine_1, 0, 1);
-			coordIndex .emplace_back (INDEX (n1, k));
+			coordIndex .emplace_back (p4);
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (math::normal (points [INDEX (n1, k1)], points [INDEX (n1, k)], points [INDEX (n, k)]));
+			getNormals () .emplace_back (normal);
 		}
 	}
 
@@ -381,13 +388,8 @@ Extrusion::build ()
 
 	refineNormals (normalIndex, getNormals (), creaseAngle (), ccw ());
 
-	for (size_t i = 0, size = coordIndex .size (); i < size; i += 4)
-	{
+	for (size_t i = 0, size = coordIndex .size (); i < size; ++ i)
 		getVertices () .emplace_back (points [coordIndex [i]]);
-		getVertices () .emplace_back (points [coordIndex [i + 1]]);
-		getVertices () .emplace_back (points [coordIndex [i + 2]]);
-		getVertices () .emplace_back (points [coordIndex [i + 3]]);
-	}
 
 	addElements (GL_QUADS, getVertices () .size ());
 
@@ -524,7 +526,7 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 		}
 	}
 
-	normal = normalize (normal);
+	normal .normalize ();
 
 	for (const auto & polygonElement : tessellator .polygon ())
 	{
@@ -556,7 +558,7 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 			{
 				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
 				{
-					Vector2f t = (crossSection () [std::get < K > (polygonElement [is_odd (i) ? i + 1 : i] .data ())]) - min / capMax;
+					Vector2f t = (crossSection () [std::get < K > (polygonElement [is_odd (i) ? i + 1 : i] .data ())] - min) / capMax;
 					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
 					getNormals () .emplace_back (normal);
 					getVertices () .emplace_back (points [std::get < I > (polygonElement [is_odd (i) ? i + 1 : i] .data ())]);
