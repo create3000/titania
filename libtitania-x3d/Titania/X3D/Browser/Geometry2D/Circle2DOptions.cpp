@@ -61,7 +61,7 @@ const std::string   Circle2DOptions::typeName       = "Circle2DOptions";
 const std::string   Circle2DOptions::containerField = "circle2DOptions";
 
 Circle2DOptions::Fields::Fields () :
-	segments (new SFInt32 (60))
+	segments (new SFInt32 (32))
 { }
 
 Circle2DOptions::Circle2DOptions (X3DExecutionContext* const executionContext) :

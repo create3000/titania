@@ -248,17 +248,17 @@ BrowserOptions::set_primitiveQuality ()
 	{
 		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = M_PI / 40;
 		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 40;
-		getBrowser () -> getCircle2DOptions ()   -> segments ()   = 100;
-		getBrowser () -> getDisk2DOptions ()     -> segments ()   = 100;
-		getBrowser () -> getConeOptions ()       -> vDimension () = 24;
-		getBrowser () -> getCylinderOptions ()   -> vDimension () = 24;
+		getBrowser () -> getCircle2DOptions ()   -> segments ()   = 80;
+		getBrowser () -> getDisk2DOptions ()     -> segments ()   = 80;
+		getBrowser () -> getConeOptions ()       -> vDimension () = 32;
+		getBrowser () -> getCylinderOptions ()   -> vDimension () = 32;
 
 		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
 		if (quadSphere)
 		{
-			quadSphere -> uDimension () = 80;
-			quadSphere -> vDimension () = 40;
+			quadSphere -> uDimension () = 63;
+			quadSphere -> vDimension () = 31;
 		}
 
 		return;
@@ -277,8 +277,8 @@ BrowserOptions::set_primitiveQuality ()
 
 		if (quadSphere)
 		{
-			quadSphere -> uDimension () = 20;
-			quadSphere -> vDimension () = 10;
+			quadSphere -> uDimension () = 21;
+			quadSphere -> vDimension () = 9;
 		}
 
 		return;
@@ -288,8 +288,8 @@ BrowserOptions::set_primitiveQuality ()
 
 	getBrowser () -> getArc2DOptions ()      -> minAngle ()   = M_PI / 20;
 	getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 20;
-	getBrowser () -> getCircle2DOptions ()   -> segments ()   = 60;
-	getBrowser () -> getDisk2DOptions ()     -> segments ()   = 60;
+	getBrowser () -> getCircle2DOptions ()   -> segments ()   = 40;
+	getBrowser () -> getDisk2DOptions ()     -> segments ()   = 40;
 	getBrowser () -> getConeOptions ()       -> vDimension () = 20;
 	getBrowser () -> getCylinderOptions ()   -> vDimension () = 20;
 
@@ -297,8 +297,8 @@ BrowserOptions::set_primitiveQuality ()
 
 	if (quadSphere)
 	{
-		quadSphere -> uDimension () = 40;
-		quadSphere -> vDimension () = 20;
+		quadSphere -> uDimension () = 31;
+		quadSphere -> vDimension () = 15;
 	}
 }
 

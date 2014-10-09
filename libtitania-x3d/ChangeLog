@@ -1,5 +1,12 @@
 2014-10-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserOptions.cpp:
+	* Circle2D.h:
+	* Circle2D.cpp:
+	* Circle2DOptions.cpp: 
+
+2014-10-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Extrusion.cpp:
 	* ElevationGrid.cpp: 
 

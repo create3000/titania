@@ -53,6 +53,8 @@
 #include "../../Browser/Geometry2D/Circle2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Components/Rendering/IndexedLineSet.h"
+#include "../../Components/Rendering/Coordinate.h"
 
 namespace titania {
 namespace X3D {
@@ -136,6 +138,30 @@ Circle2D::draw ()
 {
 	glDisable (GL_LIGHTING);
 	X3DGeometryNode::draw ();
+}
+
+SFNode
+Circle2D::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
+	const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
+
+	geometry -> metadata () = metadata ();
+	geometry -> coord ()    = coord;
+
+	for (const auto & vertex : getVertices ())
+		coord -> point () .emplace_back (vertex);
+
+	for (int32_t i = 0, size = getVertices () .size (); i < size; ++ i)
+		geometry -> coordIndex () .emplace_back (i);
+
+	geometry -> coordIndex () .emplace_back (0);
+	geometry -> coordIndex () .emplace_back (-1);
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
 }
 
 } // X3D
