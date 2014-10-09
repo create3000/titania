@@ -263,6 +263,32 @@ ElevationGrid::createTexCoord () const
 	return texCoord;
 }
 
+//std::vector <Vector3f>
+//ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::vector <size_t> & coordIndex) const
+//{
+//	std::vector <Vector3f> normals;
+//	normals .reserve (coordIndex .size ());
+//
+//	NormalIndex normalIndex;
+//
+//	for (auto index = coordIndex .cbegin (); index not_eq coordIndex .cend (); index += 6)
+//	{
+//		for (size_t i = 0; i < 6; ++ i)
+//			normalIndex [*(index + i)] .emplace_back (normals .size () + i);
+//
+//		const Vector3f normal = math::normal (points [*(index)],
+//		                                      points [*(index + 1)],
+//		                                      points [*(index + 3)],
+//		                                      points [*(index + 2)]);
+//
+//		normals .resize (normals .size () + 6, normal);
+//	}
+//
+//	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
+//
+//	return normals;
+//}
+
 std::vector <Vector3f>
 ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::vector <size_t> & coordIndex) const
 {

@@ -194,12 +194,12 @@ tessellator <Args ...>::tessellator () :
 	if (tess)
 	{
 		gluTessProperty (tess, GLU_TESS_BOUNDARY_ONLY, GLU_FALSE);
-		gluTessCallback (tess, GLU_TESS_BEGIN_DATA, _GLUfuncptr (&tessellator::tessBeginData));
+		gluTessCallback (tess, GLU_TESS_BEGIN_DATA,  _GLUfuncptr (&tessellator::tessBeginData));
 		gluTessCallback (tess, GLU_TESS_VERTEX_DATA, _GLUfuncptr (&tessellator::tessVertexData));
 
-		//gluTessCallback(tessellator, GLU_TESS_COMBINE_DATA, (_GLUfuncptr)&IndexedFaceSet::tessCombineData);
-		gluTessCallback (tess, GLU_TESS_END_DATA, _GLUfuncptr (&tessellator::tessEndData));
-		gluTessCallback (tess, GLU_TESS_ERROR, _GLUfuncptr (&tessellator::tessError));
+		gluTessCallback (tess, GLU_TESS_COMBINE_DATA, _GLUfuncptr (&tessellator::tessCombineData));
+		gluTessCallback (tess, GLU_TESS_END_DATA,     _GLUfuncptr (&tessellator::tessEndData));
+		gluTessCallback (tess, GLU_TESS_ERROR,        _GLUfuncptr (&tessellator::tessError));
 	}
 }
 
@@ -260,7 +260,7 @@ tessellator <Args ...>::tessCombineData (GLdouble coords [3], void* vertex_data 
                                          GLfloat weight [4], void** outData,
                                          void* polygon_data)
 {
-	// Not used yet
+	*outData = vertex_data [0];
 }
 
 template <class ... Args>

@@ -1,20 +1,19 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V0.7.4
 
-DEF Viewpoint1 Viewpoint {
-  fieldOfView 0.785398
-  jump TRUE
+DEF Viewpoint1_1 Viewpoint {
   position 4.95781 0.359057 -2.55696
   orientation -0.0362412 0.998775 -0.0336861 2.0648
   centerOfRotation 0.373292 0.451315 -0.0987954
 }
 
-Transform {
+DEF _1 Transform {
   translation 0.453438 -1.05497 -0.220753
   children Shape {
     appearance Appearance {
       material Material { }
     }
     geometry Extrusion {
+      ccw FALSE
       convex FALSE
       creaseAngle 0.785399
       crossSection [
@@ -53,16 +52,20 @@ Transform {
         -0.35883 -3.13699e-08
       ]
       spine [
-         0.0170381 0.904368 -1.10851,
+        0.0170381 0.904368 -1.10851,
         0.0193279 1.39235 -0.193229,
         -0.0144363 1.84505 0.751505,
-        -0.180068 2.24377 1.27323,
+        -0.180068 2.24377 1.27323
       ]
-      solid FALSE
     }
   }
 }
+
 DEF Viewpoint1 Viewpoint {
   position 2.50761 -8.73553 4.17843
   orientation 0.168888 0.579895 -0.796993 2.20957
+}
+
+DEF Gray_1 Background {
+  skyColor 0.2 0.2 0.2
 }

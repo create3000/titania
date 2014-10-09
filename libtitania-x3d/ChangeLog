@@ -1,5 +1,11 @@
 2014-10-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Tessellator.h:
+	* Extrusion.cpp:
+	* ElevationGrid.cpp: 
+
+2014-10-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Extrusion.cpp: 
 
 2014-10-09  Holger Seelig  <holger.seelig@yahoo.de>

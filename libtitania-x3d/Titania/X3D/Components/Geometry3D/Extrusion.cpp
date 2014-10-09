@@ -403,9 +403,12 @@ Extrusion::build ()
 
 			if (convex ())
 			{
-				const Vector3f normal = math::normal (points [INDEX (j, 2)],
-				                                      points [INDEX (j, 1)],
-				                                      points [INDEX (j, 0)]);
+				Vector3f normal = math::normal (points [INDEX (j, 2)],
+				                                points [INDEX (j, 1)],
+				                                points [INDEX (j, 0)]);
+
+				if (not ccw ())
+					normal .negate ();
 
 				for (size_t k = 0; k < numCapPoints; ++ k)
 				{
@@ -436,9 +439,12 @@ Extrusion::build ()
 
 			if (convex ())
 			{
-				const Vector3f normal = math::normal (points [INDEX (j, 0)],
-				                                      points [INDEX (j, 1)],
-				                                      points [INDEX (j, 2)]);
+				Vector3f normal = math::normal (points [INDEX (j, 0)],
+				                                points [INDEX (j, 1)],
+				                                points [INDEX (j, 2)]);
+
+				if (not ccw ())
+					normal .negate ();
 
 				for (size_t k = 0; k < numCapPoints; ++ k)
 				{
@@ -527,6 +533,9 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 	}
 
 	normal .normalize ();
+
+	if (not ccw ())
+		normal .negate ();
 
 	for (const auto & polygonElement : tessellator .polygon ())
 	{
