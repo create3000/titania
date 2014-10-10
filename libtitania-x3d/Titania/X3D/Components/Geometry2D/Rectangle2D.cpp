@@ -53,8 +53,6 @@
 #include "../../Browser/Geometry2D/Rectangle2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../Components/Rendering/Coordinate.h"
-#include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -117,7 +115,7 @@ Rectangle2D::createBBox ()
 void
 Rectangle2D::build ()
 {
-	const Rectangle2DOptions* const options = getBrowser () -> getRectangle2DOptions ();
+	const auto & options = getBrowser () -> getRectangle2DOptions ();
 
 	size_t elements = solid () ? 1 : 2;
 
@@ -156,17 +154,19 @@ Rectangle2D::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
-	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
-	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
-	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
+	const auto & options  = getBrowser () -> getRectangle2DOptions ();
+	const auto   geometry = options -> toPrimitive (getExecutionContext ());
 
-	geometry -> metadata () = metadata ();
-	geometry -> solid ()    = solid ();
-	geometry -> texCoord () = texCoord;
-	geometry -> coord ()    = coord;
+	geometry -> getField <SFNode> ("metadata") = metadata ();
+
+	if (solid ())
+	{
+		geometry -> getField <MFInt32> ("texCoordIndex") .resize (5);
+		geometry -> getField <MFInt32> ("coordIndex")    .resize (5);
+	}
 
 	getExecutionContext () -> realize ();
-	return SFNode (geometry);
+	return geometry;
 }
 
 } // X3D

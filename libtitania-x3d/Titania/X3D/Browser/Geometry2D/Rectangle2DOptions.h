@@ -92,6 +92,14 @@ public:
 	getVertexMode () const final override
 	{ return GL_QUADS; }
 
+	///  @name Operations
+
+	virtual
+	SFNode
+	toPrimitive (X3DExecutionContext* const) const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
+
 
 private:
 

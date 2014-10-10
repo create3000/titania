@@ -1,5 +1,11 @@
 2014-10-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Rectangle2D.cpp:
+	* Rectangle2DOptions.h:
+	* Rectangle2DOptions.cpp: 
+
+2014-10-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Arc2D.h:
 	* Disk2D.h:
 	* Cone.cpp:

@@ -977,7 +977,6 @@
                             </child>
                             <child>
                               <object class="GtkMenuItem" id="ShowHideEnvironmentalEffectsMenuItem">
-                                <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Show/Hide Environmental Effects</property>
                                 <property name="use_underline">True</property>

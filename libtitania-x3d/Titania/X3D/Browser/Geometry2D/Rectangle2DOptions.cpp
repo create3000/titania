@@ -51,6 +51,9 @@
 #include "Rectangle2DOptions.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Texturing/TextureCoordinate.h"
 
 namespace titania {
 namespace X3D {
@@ -93,6 +96,39 @@ Rectangle2DOptions::build ()
 	getTexCoords () .emplace_back (0, 1, 0, 1);
 	getNormals   () .emplace_back (0, 0, 1);
 	getVertices  () .emplace_back (-1, 1, 0);
+}
+
+SFNode
+Rectangle2DOptions::toPrimitive (X3DExecutionContext* const executionContext) const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto texCoord = executionContext -> createNode <TextureCoordinate> ();
+	const auto coord    = executionContext -> createNode <Coordinate> ();
+	const auto geometry = executionContext -> createNode <IndexedFaceSet> ();
+
+	geometry -> texCoord () = texCoord;
+	geometry -> coord ()    = coord;
+
+	texCoord -> point () = {
+		Vector2f (0, 0),
+		Vector2f (1, 0),
+		Vector2f (1, 1),
+		Vector2f (0, 1),
+	};
+
+	coord -> point () = {
+		Vector3f (-1, -1, 0),
+		Vector3f (1, -1, 0),
+		Vector3f (1, 1, 0),
+		Vector3f (-1, 1, 0)
+	};
+
+	geometry -> texCoordIndex () = { 0, 1, 2, 3, -1, 2, 3, 0, 1, -1 };
+	geometry -> coordIndex ()    = { 0, 1, 2, 3, -1, 3, 2, 1, 0, -1 };
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
 }
 
 } // X3D
