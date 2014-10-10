@@ -191,14 +191,51 @@ ArcClose2D::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
+	if (getElements () .empty ())
+		throw Error <DISPOSED> ("ArcClose2D::toPrimitive");
+
 	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
 
 	geometry -> metadata () = metadata ();
-	geometry -> solid ()    = solid ();
+	geometry -> convex ()   = false;
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
+
+	for (int32_t i = 0, size = getElements () [0] .count; i < size; ++ i)
+		texCoord -> point () .emplace_back (getTexCoords () [0] [i] .x (), getTexCoords () [0] [i] .y ());
+
+	coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count);
+
+	for (int32_t i = 0, size = getElements () [0] .count; i < size; ++ i)
+	{
+		geometry -> texCoordIndex () .emplace_back (i);
+		geometry -> coordIndex ()    .emplace_back (i);
+	}
+
+	geometry -> texCoordIndex () .emplace_back (-1);
+	geometry -> coordIndex ()    .emplace_back (-1);
+	
+	if (not solid ())
+	{
+		for (int32_t i = getElements () [0] .count, size = 2 * getElements () [0] .count; i < size; ++ i)
+		{
+			texCoord -> point () .emplace_back (getTexCoords () [0] [i] .x (), getTexCoords () [0] [i] .y ());
+			geometry -> texCoordIndex () .emplace_back (i);
+		}
+
+		geometry -> texCoordIndex () .emplace_back (-1);
+
+		// coordIndex
+
+		geometry -> coordIndex () .emplace_back (0);
+	
+		for (int32_t i = 1, size = getElements () [0] .count; i < size; ++ i)
+			geometry -> coordIndex () .emplace_back (size - i);
+
+		geometry -> coordIndex () .emplace_back (-1);
+	}
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);

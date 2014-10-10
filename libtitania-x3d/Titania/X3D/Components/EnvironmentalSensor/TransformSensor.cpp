@@ -60,9 +60,9 @@ const std::string   TransformSensor::typeName       = "TransformSensor";
 const std::string   TransformSensor::containerField = "children";
 
 TransformSensor::Fields::Fields () :
-	targetObject (new SFNode ()),
+	       targetObject (new SFNode ()),
 	orientation_changed (new SFRotation ()),
-	position_changed (new SFVec3f ())
+	   position_changed (new SFVec3f ())
 { }
 
 TransformSensor::TransformSensor (X3DExecutionContext* const executionContext) :
@@ -79,9 +79,9 @@ TransformSensor::TransformSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "enterTime",           enterTime ());
 	addField (outputOnly,  "exitTime",            exitTime ());
 	addField (outputOnly,  "isActive",            isActive ());
-	addField (inputOutput, "targetObject",        targetObject ());
 	addField (outputOnly,  "orientation_changed", orientation_changed ());
 	addField (outputOnly,  "position_changed",    position_changed ());
+	addField (inputOutput, "targetObject",        targetObject ());
 }
 
 X3DBaseNode*

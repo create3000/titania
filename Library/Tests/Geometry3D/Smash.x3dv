@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Fri, 10 Oct 2014 06:10:03 GMT"
+META "modified" "Fri, 10 Oct 2014 07:53:48 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -97,8 +97,8 @@ DEF Gray_1 Background {
 
 Viewpoint {
   description "Home"
-  position 5.86968 1.28405 8.81824
-  centerOfRotation 5.86968 1.28405 3.3021e-05
+  position 6.20318 -5.67019 8.81824
+  centerOfRotation 6.20318 -5.67019 3.3021e-05
 }
 
 DEF Box_1 Transform {
@@ -737,6 +737,9 @@ Transform {
   translation 3 9 3.30723e-05
   children Shape {
     appearance Appearance {
+      lineProperties DEF _4 LineProperties {
+        linewidthScaleFactor 4.55
+      }
       material Material {
         emissiveColor 1 0 0
       }
@@ -751,6 +754,7 @@ Transform {
   translation 3 6 2.20482e-05
   children Shape {
     appearance Appearance {
+      lineProperties USE _4
       material Material {
         emissiveColor 1 0 0
       }
@@ -765,6 +769,7 @@ Transform {
   translation 6 6 2.20482e-05
   children Shape {
     appearance Appearance {
+      lineProperties USE _4
       material Material {
         emissiveColor 1 0 0
       }
@@ -780,9 +785,7 @@ Transform {
   translation 3 3 1.10241e-05
   children Shape {
     appearance Appearance {
-      lineProperties LineProperties {
-        linewidthScaleFactor 8.56
-      }
+      lineProperties USE _4
       material Material {
         emissiveColor 1 0 0
       }
@@ -804,9 +807,7 @@ Transform {
   scale 0.681115 0.681115 0.681115
   children Shape {
     appearance Appearance {
-      lineProperties LineProperties {
-        linewidthScaleFactor 4.55
-      }
+      lineProperties USE _4
       material Material {
         emissiveColor 1 0 0
       }
@@ -823,10 +824,9 @@ Transform {
   }
 }
 
-DEF _4 Transform {
+Transform {
   translation 3 -3.00002 -1.10241e-05
   rotation 0 1 0 4.71239
-  scale 1 1 1
   children Shape {
     appearance Appearance {
       material Material { }
@@ -836,7 +836,7 @@ DEF _4 Transform {
   }
 }
 
-DEF _5 Transform {
+Transform {
   translation 6 -3.00002 -1.10241e-05
   rotation 0 -1 0 1.5708
   children Shape {
@@ -845,6 +845,78 @@ DEF _5 Transform {
       texture USE _1
     }
     geometry Rectangle2D {
+      solid FALSE
+    }
+  }
+}
+
+Transform {
+  translation 3 -6 0.999978
+  children Shape {
+    appearance Appearance {
+      material DEF _5 Material { }
+      texture USE _1
+    }
+    geometry ArcClose2D {
+      endAngle 0
+      solid FALSE
+    }
+  }
+}
+
+Transform {
+  translation 6 -6 0.999978
+  children Shape {
+    appearance Appearance {
+      material USE _5
+      texture USE _1
+    }
+    geometry ArcClose2D {
+      solid FALSE
+    }
+  }
+}
+
+Transform {
+  translation 6 -6 0.999978
+  children Shape {
+    appearance Appearance {
+      material USE _5
+      texture USE _1
+    }
+    geometry ArcClose2D {
+      startAngle 2
+      endAngle 6
+      solid FALSE
+    }
+  }
+}
+
+Transform {
+  translation 9 -6 0.999978
+  children Shape {
+    appearance Appearance {
+      material USE _5
+      texture USE _1
+    }
+    geometry ArcClose2D {
+      closureType "CHORD"
+      solid FALSE
+    }
+  }
+}
+
+Transform {
+  translation 9 -6 0.999978
+  children Shape {
+    appearance Appearance {
+      material USE _5
+      texture USE _1
+    }
+    geometry ArcClose2D {
+      closureType "CHORD"
+      startAngle 2
+      endAngle 6
       solid FALSE
     }
   }
