@@ -447,10 +447,9 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> creaseAngle ()     = creaseAngle ();
 	geometry -> colorPerVertex ()  = colorPerVertex ();
 	geometry -> normalPerVertex () = normalPerVertex ();
-
-	geometry -> attrib ()   = attrib ();
-	geometry -> fogCoord () = fogCoord ();
-	geometry -> color ()    = color ();
+	geometry -> attrib ()          = attrib ();
+	geometry -> fogCoord ()        = fogCoord ();
+	geometry -> color ()           = color ();
 
 	if (texCoordNode)
 		geometry -> texCoord () = texCoordNode;

@@ -1,3 +1,24 @@
+2014-10-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Arc2D.h:
+	* Disk2D.h:
+	* Cone.cpp:
+	* Arc2D.cpp:
+	* Disk2D.cpp:
+	* Polyline2D.h:
+	* Circle2D.cpp:
+	* Cylinder.cpp:
+	* ArcClose2D.h:
+	* Rectangle2D.h:
+	* Polypoint2D.h:
+	* ArcClose2D.cpp:
+	* Polyline2D.cpp:
+	* Polypoint2D.cpp:
+	* Rectangle2D.cpp:
+	* TriangleSet2D.h:
+	* TriangleSet2D.cpp:
+	* ElevationGrid.cpp: 
+
 2014-10-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserOptions.cpp:

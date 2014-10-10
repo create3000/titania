@@ -113,12 +113,20 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
-	///  @name Tests
+	///  @name Member access
 
 	virtual
 	bool
 	isLineGeometry () const final override
 	{ return false; }
+
+	///  @name Operations
+
+	virtual
+	SFNode
+	toPrimitive () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
 
 
 private:

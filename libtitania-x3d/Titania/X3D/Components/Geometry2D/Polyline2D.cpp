@@ -50,6 +50,8 @@
 
 #include "Polyline2D.h"
 
+#include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Rendering/IndexedLineSet.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -99,6 +101,29 @@ Polyline2D::draw ()
 {
 	glDisable (GL_LIGHTING);
 	X3DGeometryNode::draw ();
+}
+
+SFNode
+Polyline2D::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
+	const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
+
+	geometry -> metadata () = metadata ();
+	geometry -> coord ()    = coord;
+
+	for (const auto & vertex : getVertices ())
+		coord -> point () .emplace_back (vertex);
+
+	for (int32_t i = 0, size = getVertices () .size (); i < size; ++ i)
+		geometry -> coordIndex () .emplace_back (i);
+
+	geometry -> coordIndex () .emplace_back (-1);
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
 }
 
 } // X3D

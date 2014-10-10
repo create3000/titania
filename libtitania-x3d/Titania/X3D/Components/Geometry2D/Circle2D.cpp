@@ -52,9 +52,9 @@
 
 #include "../../Browser/Geometry2D/Circle2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Execution/X3DExecutionContext.h"
-#include "../../Components/Rendering/IndexedLineSet.h"
 #include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Rendering/IndexedLineSet.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {

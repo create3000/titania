@@ -219,12 +219,11 @@ throw (Error <NOT_SUPPORTED>,
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
 
-	geometry -> texCoord () = texCoord;
-	geometry -> coord ()    = coord;
-
 	geometry -> metadata ()    = metadata ();
 	geometry -> solid ()       = solid ();
 	geometry -> creaseAngle () = 1;
+	geometry -> texCoord ()    = texCoord;
+	geometry -> coord ()       = coord;
 
 	const float y1 = height () / 2;
 	const float y2 = -y1;

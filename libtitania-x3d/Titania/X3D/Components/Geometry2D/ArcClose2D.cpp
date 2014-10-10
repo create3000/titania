@@ -52,6 +52,9 @@
 
 #include "../../Browser/Geometry2D/ArcClose2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 #include <complex>
@@ -181,6 +184,24 @@ ArcClose2D::build ()
 
 	if (not solid ())
 		addMirrorVertices (GL_POLYGON, false);
+}
+
+SFNode
+ArcClose2D::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
+	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
+	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
+
+	geometry -> metadata () = metadata ();
+	geometry -> solid ()    = solid ();
+	geometry -> texCoord () = texCoord;
+	geometry -> coord ()    = coord;
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
 }
 
 } // X3D

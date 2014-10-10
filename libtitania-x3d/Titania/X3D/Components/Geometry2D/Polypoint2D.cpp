@@ -50,6 +50,8 @@
 
 #include "Polypoint2D.h"
 
+#include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Rendering/PointSet.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -95,6 +97,24 @@ Polypoint2D::draw ()
 {
 	glDisable (GL_LIGHTING);
 	X3DGeometryNode::draw ();
+}
+
+SFNode
+Polypoint2D::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
+	const auto geometry = getExecutionContext () -> createNode <PointSet> ();
+
+	geometry -> metadata () = metadata ();
+	geometry -> coord ()    = coord;
+
+	for (const auto & vertex : getVertices ())
+		coord -> point () .emplace_back (vertex);
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
 }
 
 } // X3D

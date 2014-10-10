@@ -1,18 +1,29 @@
-#VRML V2.0 utf8 Comment
+#VRML V2.0 utf8 Titania V0.7.4
 
 META "title" "Polypoint2D"
 
 Background {
-	skyColor 0.2 0.2 0.2
+  skyColor 0.2 0.2 0.2
 }
 
 Transform {
   children Shape {
     appearance Appearance {
-      material Material { emissiveColor 1 0 0 }
+      lineProperties LineProperties {
+        linewidthScaleFactor 8.56
+      }
+      material Material {
+        emissiveColor 1 0 0
+      }
     }
     geometry Polypoint2D {
-      point [ 0 0, 1 0, 0 1, -1 0, 0 -1 ]
+      point [
+        0 0,
+        1 0,
+        0 1,
+        -1 0,
+        0 -1
+      ]
     }
   }
 }
