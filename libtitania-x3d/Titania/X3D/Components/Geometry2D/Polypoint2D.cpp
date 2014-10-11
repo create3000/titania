@@ -113,8 +113,7 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> metadata () = metadata ();
 	geometry -> coord ()    = coord;
 
-	for (const auto & vertex : getVertices ())
-		coord -> point () .emplace_back (vertex);
+	coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);

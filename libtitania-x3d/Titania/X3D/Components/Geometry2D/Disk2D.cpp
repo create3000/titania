@@ -298,8 +298,8 @@ throw (Error <NOT_SUPPORTED>,
 	{
 		// Disk
 
-		for (int32_t i = 0, size = getElements () [0] .count; i < size; ++ i)
-			texCoord -> point () .emplace_back (getTexCoords () [0] [i] .x (), getTexCoords () [0] [i] .y ());
+		for (const auto & point : getTexCoords () [0])
+			texCoord -> point () .emplace_back (point .x (), point .y ());
 
 		coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count);
 
@@ -337,8 +337,8 @@ throw (Error <NOT_SUPPORTED>,
 
 		coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count - 2);
 
-		for (int32_t i = 0, size = getElements () [0] .count; i < size; ++ i)
-			texCoord -> point () .emplace_back (getTexCoords () [0] [i] .x (), getTexCoords () [0] [i] .y ());
+		for (const auto & point : getTexCoords () [0])
+			texCoord -> point () .emplace_back (point .x (), point .y ());
 
 		int32_t       i    = 0;
 		const int32_t size = getElements () [0] .count - 4;
@@ -374,8 +374,8 @@ throw (Error <NOT_SUPPORTED>,
 		{
 			const int32_t tb = texCoord -> point () .size ();
 
-			for (int32_t i = 0, size = getElements () [0] .count; i < size; ++ i)
-				texCoord -> point () .emplace_back (1 - getTexCoords () [0] [i] .x (), getTexCoords () [0] [i] .y ());
+			for (const auto & point : getTexCoords () [0])
+				texCoord -> point () .emplace_back (point .x (), point .y ());
 
 			i = 0;
 

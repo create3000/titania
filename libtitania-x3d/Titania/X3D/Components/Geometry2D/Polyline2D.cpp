@@ -117,8 +117,7 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> metadata () = metadata ();
 	geometry -> coord ()    = coord;
 
-	for (const auto & vertex : getVertices ())
-		coord -> point () .emplace_back (vertex);
+	coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
 
 	for (int32_t i = 0, size = getVertices () .size (); i < size; ++ i)
 		geometry -> coordIndex () .emplace_back (i);

@@ -203,8 +203,8 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
 
-	for (int32_t i = 0, size = getElements () [0] .count; i < size; ++ i)
-		texCoord -> point () .emplace_back (getTexCoords () [0] [i] .x (), getTexCoords () [0] [i] .y ());
+	for (const auto & point : getTexCoords () [0])
+		texCoord -> point () .emplace_back (point .x (), point .y ());
 
 	coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count);
 

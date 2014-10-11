@@ -149,9 +149,26 @@ throw (Error <NOT_SUPPORTED>,
 	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
 
 	geometry -> metadata () = metadata ();
-	geometry -> solid ()    = solid ();
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
+
+	for (const auto & point : getTexCoords () [0])
+		texCoord -> point () .emplace_back (point .x (), point .y ());
+
+	coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
+
+	for (int32_t i = 0, size = getVertices () .size (); i < size; i += 3)
+	{
+		geometry -> texCoordIndex () .emplace_back (i);
+		geometry -> texCoordIndex () .emplace_back (i + 1);
+		geometry -> texCoordIndex () .emplace_back (i + 2);
+		geometry -> texCoordIndex () .emplace_back (-1);
+
+		geometry -> coordIndex () .emplace_back (i);
+		geometry -> coordIndex () .emplace_back (i + 1);
+		geometry -> coordIndex () .emplace_back (i + 2);
+		geometry -> coordIndex () .emplace_back (-1);
+	}
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
