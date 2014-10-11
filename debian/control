@@ -54,10 +54,10 @@ Depends: ${shlibs:Depends},
 Conflicts:
 Replaces:
 Provides: titania
-Description: Titania X3D Viewer
- Titania is a X3D/VRML browser for Ubuntu. The goal is a full standard X3D browser for future
- releases of Gnome. For now, Titania implements to 99% the VRML standard and the X3D/VRML
- JavaScript standard.
+Description: Titania X3D Browser
+ Titania is a X3D/VRML editor and browser for Ubuntu. The goal is a full standard compliant X3D browser
+ for future releases of Ubuntu. For now, Titania fully supports the Moving Worlds specification for
+ VRML 2.0 and already many parts of the X3D specification.
  .
  It can be used as a simple 3D viewer for .wrl files, as high quality 3D animation rendering engine, 
  for advanced science simulations, live data visualization, or as easy to use gaming engine.
