@@ -154,6 +154,9 @@ Rectangle2D::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
+	if (getElements () .empty ())
+		throw Error <DISPOSED> ("Rectangle2D::toPrimitive");
+
 	const auto & options  = getBrowser () -> getRectangle2DOptions ();
 	const auto   geometry = options -> toPrimitive (getExecutionContext ());
 

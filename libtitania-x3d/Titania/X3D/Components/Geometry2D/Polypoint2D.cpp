@@ -104,6 +104,9 @@ Polypoint2D::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
+	if (getElements () .empty ())
+		throw Error <DISPOSED> ("Polypoint2D::toPrimitive");
+
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry = getExecutionContext () -> createNode <PointSet> ();
 

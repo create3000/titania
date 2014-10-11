@@ -171,6 +171,9 @@ Arc2D::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
+	if (getElements () .empty ())
+		throw Error <DISPOSED> ("Arc2D::toPrimitive");
+
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
 

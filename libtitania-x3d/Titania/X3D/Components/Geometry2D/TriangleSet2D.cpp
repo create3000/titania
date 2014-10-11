@@ -141,6 +141,9 @@ TriangleSet2D::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
+	if (getElements () .empty ())
+		throw Error <DISPOSED> ("TriangleSet2D::toPrimitive");
+
 	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
