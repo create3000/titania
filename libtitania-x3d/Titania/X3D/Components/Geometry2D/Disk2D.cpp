@@ -273,8 +273,7 @@ throw (Error <NOT_SUPPORTED>,
 		geometry -> metadata () = metadata ();
 		geometry -> coord ()    = coord;
 
-		for (const auto & vertex : getVertices ())
-			coord -> point () .emplace_back (vertex);
+		coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
 
 		for (int32_t i = 0, size = getVertices () .size (); i < size; ++ i)
 			geometry -> coordIndex () .emplace_back (i);
@@ -297,14 +296,12 @@ throw (Error <NOT_SUPPORTED>,
 	if (getElements () [0] .vertexMode == GL_POLYGON)
 	{
 		// Disk
-
-		for (const auto & point : getTexCoords () [0])
-			texCoord -> point () .emplace_back (point .x (), point .y ());
-
+	
 		coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count);
 
 		for (int32_t i = 0, size = getElements () [0] .count; i < size; ++ i)
 		{
+			texCoord -> point () .emplace_back (getTexCoords () [0] [i] .x (), getTexCoords () [0] [i] .y ());
 			geometry -> texCoordIndex () .emplace_back (i);
 			geometry -> coordIndex ()    .emplace_back (i);
 		}
@@ -337,7 +334,7 @@ throw (Error <NOT_SUPPORTED>,
 
 		coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count - 2);
 
-		for (const auto & point : getTexCoords () [0])
+		for (const auto & point : std::make_pair (getTexCoords () [0] .begin (), getTexCoords () [0] .begin () + getElements () [0] .count))
 			texCoord -> point () .emplace_back (point .x (), point .y ());
 
 		int32_t       i    = 0;
@@ -374,8 +371,8 @@ throw (Error <NOT_SUPPORTED>,
 		{
 			const int32_t tb = texCoord -> point () .size ();
 
-			for (const auto & point : getTexCoords () [0])
-				texCoord -> point () .emplace_back (point .x (), point .y ());
+			for (const auto & point : std::make_pair (getTexCoords () [0] .begin (), getTexCoords () [0] .begin () + getElements () [0] .count))
+				texCoord -> point () .emplace_back (1 - point .x (), point .y ());
 
 			i = 0;
 

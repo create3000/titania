@@ -311,6 +311,8 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	getHideUnselectedObjectsMenuItem () .set_sensitive (haveSelection);
 	getShowSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
 
+	getHammerButton () .set_sensitive (haveSelection);
+
 	getSelectParentButton ()    .set_sensitive (haveSelection);
 	getSelectChildrenButton ()  .set_sensitive (haveSelection);
 	getLookAtSelectionButton () .set_sensitive (haveSelection);
