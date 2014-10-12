@@ -94,13 +94,21 @@ void
 QuadSet::build ()
 {
 	if (getCoord ())
-		buildPolygons (4, getCoord () -> getSize ());
+		X3DComposedGeometryNode::build (4, getCoord () -> getSize ());
 }
 
 void
 QuadSet::buildNormals (size_t vertexCount, size_t size)
 {
 	buildFaceNormals (vertexCount, size);
+}
+
+SFNode
+QuadSet::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	return X3DComposedGeometryNode::toPrimitive (4, getCoord () ? getCoord () -> getSize () : 0);
 }
 
 } // X3D

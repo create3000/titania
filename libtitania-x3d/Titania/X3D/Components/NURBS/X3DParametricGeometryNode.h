@@ -59,6 +59,15 @@ namespace X3D {
 class X3DParametricGeometryNode :
 	public X3DGeometryNode
 {
+public:
+
+	virtual
+	SFNode
+	toPrimitive () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
+
+
 protected:
 
 	X3DParametricGeometryNode ();

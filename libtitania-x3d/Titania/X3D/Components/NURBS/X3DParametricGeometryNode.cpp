@@ -59,5 +59,13 @@ X3DParametricGeometryNode::X3DParametricGeometryNode () :
 	addType (X3DConstants::X3DParametricGeometryNode);
 }
 
+SFNode
+X3DParametricGeometryNode::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	throw Error <NOT_SUPPORTED> ("X3DParametricGeometryNode::toPrimitive");
+}
+
 } // X3D
 } // titania

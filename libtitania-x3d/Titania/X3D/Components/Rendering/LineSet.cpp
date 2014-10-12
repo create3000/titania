@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/IndexedLineSet.h"
 
 namespace titania {
 namespace X3D {
@@ -221,6 +222,54 @@ LineSet::draw ()
 {
 	glDisable (GL_LIGHTING);
 	X3DGeometryNode::draw ();
+}
+
+SFNode
+LineSet::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
+
+	geometry -> metadata () = metadata ();
+	geometry -> attrib ()   = attrib ();
+	geometry -> fogCoord () = fogCoord ();
+	geometry -> color ()    = color ();
+	geometry -> coord ()    = coord ();
+
+//	size_t       index = 0;
+//	const size_t size  = coordNode -> getSize ();
+//
+//	for (const auto count : vertexCount ())
+//	{
+//		// Create two vertices for each line.
+//
+//		if (index + count > size)
+//			break;
+//
+//		if (count > 1)
+//		{
+//			for (size_t i = 0; i < (size_t) count; ++ i, ++ index)
+//			{
+//				for (size_t a = 0, size = attribNodes .size (); a < size; ++ a)
+//					attribNodes [a] -> addValue (attribArrays [a], index);
+//
+//				if (colorNode)
+//					colorNode -> addColor (getColors (), index);
+//
+//				coordNode -> addVertex (getVertices (), index);
+//			}
+//
+//			addElements (GL_LINE_STRIP, count);
+//		}
+//		else
+//		{
+//			if (count > 0)
+//				++ index;
+//		}
+//	}
+
+	return SFNode (geometry);
 }
 
 } // X3D

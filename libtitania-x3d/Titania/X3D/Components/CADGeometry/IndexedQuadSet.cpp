@@ -98,7 +98,15 @@ IndexedQuadSet::create (X3DExecutionContext* const executionContext) const
 void
 IndexedQuadSet::build ()
 {
-	buildPolygons (4, index () .size ());
+	X3DComposedGeometryNode::build (4, index () .size ());
+}
+
+SFNode
+IndexedQuadSet::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	return X3DComposedGeometryNode::toPrimitive (4, index () .size ());
 }
 
 } // X3D

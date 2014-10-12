@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sat, 11 Oct 2014 11:32:18 GMT"
+META "modified" "Sun, 12 Oct 2014 06:51:53 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -71,7 +71,7 @@ WorldInfo {
           MetadataInteger {
             name "dimension"
             value [
-              44,
+              60,
               10,
               32
             ]
@@ -82,6 +82,14 @@ WorldInfo {
               3,
               3,
               3
+            ]
+          }
+          MetadataFloat {
+            name "translation"
+            value [
+              7,
+              0,
+              0
             ]
           }
         ]
@@ -95,10 +103,10 @@ DEF Gray_1 Background {
   skyColor 0.2 0.2 0.2
 }
 
-DEF _1 Viewpoint {
+Viewpoint {
   description "Home"
-  position 0.0825469 -0.29764 42.1748
-  centerOfRotation 0.0825469 -0.29764 3.3021e-05
+  position 9.39472 -0.0810777 42.1748
+  centerOfRotation 9.39472 -0.0810777 3.3021e-05
 }
 
 DEF Box_1 Transform {
@@ -106,7 +114,7 @@ DEF Box_1 Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture DEF _2 ImageTexture {
+      texture DEF _1 ImageTexture {
         url [
           "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
           "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
@@ -124,7 +132,7 @@ DEF Box Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _2
+      texture USE _1
     }
     geometry Box {
       size 1 2 3
@@ -137,7 +145,7 @@ DEF Sphere_1 Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _2
+      texture USE _1
     }
     geometry Sphere { }
   }
@@ -148,7 +156,7 @@ DEF Sphere Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _2
+      texture USE _1
     }
     geometry Sphere {
       radius 0.5
@@ -161,7 +169,7 @@ DEF Cylinder_1 Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _2
+      texture USE _1
     }
     geometry Cylinder { }
   }
@@ -172,7 +180,7 @@ DEF Cylinder Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _2
+      texture USE _1
     }
     geometry Cylinder {
       top FALSE
@@ -188,7 +196,7 @@ DEF Torus_1 Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _2
+      texture USE _1
     }
     geometry Torus {
       minorRadius 0.5
@@ -202,7 +210,7 @@ DEF Octahedron_1 Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _2
+      texture USE _1
     }
     geometry IcoSphere {
       type "OCTAHEDRON"
@@ -215,7 +223,7 @@ DEF Cone_1 Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture DEF _3 ImageTexture {
+      texture DEF _2 ImageTexture {
         url [
           "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
           "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
@@ -235,7 +243,7 @@ DEF Cone Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _3
+      texture USE _2
     }
     geometry Cone {
       bottom FALSE
@@ -249,7 +257,7 @@ DEF Cone_2 Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _3
+      texture USE _2
     }
     geometry Cone {
       side FALSE
@@ -284,7 +292,7 @@ DEF Cylinder_3 Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _3
+      texture USE _2
     }
     geometry Cylinder {
       bottom FALSE
@@ -318,7 +326,7 @@ DEF ElevationGrid_1 Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _3
+      texture USE _2
     }
     geometry ElevationGrid {
       xDimension 4
@@ -333,7 +341,7 @@ DEF ElevationGrid Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _3
+      texture USE _2
     }
     geometry ElevationGrid {
       xDimension 9
@@ -431,8 +439,8 @@ Transform {
   scale 0.543962 0.543962 0.543962
   children Shape {
     appearance Appearance {
-      material DEF _4 Material { }
-      texture USE _2
+      material DEF _3 Material { }
+      texture USE _1
     }
     geometry Extrusion {
       endCap FALSE
@@ -492,8 +500,8 @@ DEF Edge_1 Transform {
   scale 0.319951 0.319951 0.319951
   children Shape {
     appearance Appearance {
-      material USE _4
-      texture USE _2
+      material USE _3
+      texture USE _1
     }
     geometry Extrusion {
       convex FALSE
@@ -519,8 +527,8 @@ Transform {
   scale 0.543962 0.543962 0.543962
   children Shape {
     appearance Appearance {
-      material USE _4
-      texture USE _2
+      material USE _3
+      texture USE _1
     }
     geometry Extrusion {
       endCap FALSE
@@ -582,7 +590,7 @@ DEF Torus Transform {
       material Material {
         transparency 0.375
       }
-      texture USE _2
+      texture USE _1
     }
     #file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Smash.x3dv
     geometry DEF Geometry_1 Extrusion {
@@ -622,7 +630,7 @@ Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _2
+      texture USE _1
     }
     geometry Extrusion {
       convex FALSE
@@ -661,7 +669,7 @@ Transform {
         specularColor 0.47 0.24 0.13
         shininess 1
       }
-      texture USE _2
+      texture USE _1
     }
     geometry Extrusion {
       beginCap FALSE
@@ -737,7 +745,7 @@ Transform {
   translation 3 12 4.40964e-05
   children Shape {
     appearance Appearance {
-      lineProperties DEF _5 LineProperties {
+      lineProperties DEF _4 LineProperties {
         linewidthScaleFactor 4.55
       }
       material Material {
@@ -754,7 +762,7 @@ Transform {
   translation 3 9 3.30723e-05
   children Shape {
     appearance Appearance {
-      lineProperties USE _5
+      lineProperties USE _4
       material Material {
         emissiveColor 1 0 0
       }
@@ -769,7 +777,7 @@ Transform {
   translation 6 9 3.30723e-05
   children Shape {
     appearance Appearance {
-      lineProperties USE _5
+      lineProperties USE _4
       material Material {
         emissiveColor 1 0 0
       }
@@ -785,7 +793,7 @@ Transform {
   translation 3 5.99999 2.20482e-05
   children Shape {
     appearance Appearance {
-      lineProperties USE _5
+      lineProperties USE _4
       material Material {
         emissiveColor 1 0 0
       }
@@ -807,7 +815,7 @@ Transform {
   scale 0.681115 0.681115 0.681115
   children Shape {
     appearance Appearance {
-      lineProperties USE _5
+      lineProperties USE _4
       material Material {
         emissiveColor 1 0 0
       }
@@ -830,7 +838,7 @@ Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _2
+      texture USE _1
     }
     geometry Rectangle2D { }
   }
@@ -842,7 +850,7 @@ Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _2
+      texture USE _1
     }
     geometry Rectangle2D {
       solid FALSE
@@ -854,8 +862,8 @@ Transform {
   translation 3 -3 0.999989
   children Shape {
     appearance Appearance {
-      material DEF _6 Material { }
-      texture USE _2
+      material DEF _5 Material { }
+      texture USE _1
     }
     geometry ArcClose2D {
       endAngle 0
@@ -868,8 +876,8 @@ Transform {
   translation 6 -3 0.999989
   children Shape {
     appearance Appearance {
-      material USE _6
-      texture USE _2
+      material USE _5
+      texture USE _1
     }
     geometry ArcClose2D {
       solid FALSE
@@ -881,8 +889,8 @@ Transform {
   translation 6 -3 0.999989
   children Shape {
     appearance Appearance {
-      material USE _6
-      texture USE _2
+      material USE _5
+      texture USE _1
     }
     geometry ArcClose2D {
       startAngle 2
@@ -896,8 +904,8 @@ Transform {
   translation 9 -3 0.999989
   children Shape {
     appearance Appearance {
-      material USE _6
-      texture USE _2
+      material USE _5
+      texture USE _1
     }
     geometry ArcClose2D {
       closureType "CHORD"
@@ -910,8 +918,8 @@ Transform {
   translation 9 -3 0.999989
   children Shape {
     appearance Appearance {
-      material USE _6
-      texture USE _2
+      material USE _5
+      texture USE _1
     }
     geometry ArcClose2D {
       closureType "CHORD"
@@ -926,7 +934,7 @@ Transform {
   translation 3 -6.00001 -2.20483e-05
   children Shape {
     appearance Appearance {
-      lineProperties USE _5
+      lineProperties USE _4
       material Material {
         emissiveColor 1 0 0
       }
@@ -942,7 +950,7 @@ Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _2
+      texture USE _1
     }
     geometry Disk2D {
       solid FALSE
@@ -954,7 +962,7 @@ Transform {
   translation 9 -6.00001 0.999978
   children Shape {
     appearance Appearance {
-      texture USE _2
+      texture USE _1
     }
     geometry Disk2D {
       innerRadius 0.5
@@ -969,7 +977,7 @@ Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _2
+      texture USE _1
     }
     geometry TriangleSet2D {
       vertices [
@@ -994,7 +1002,7 @@ Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _2
+      texture USE _1
     }
     geometry TriangleSet2D {
       vertices [
@@ -1008,6 +1016,257 @@ Transform {
         -1 -9,
         8 -4
       ]
+    }
+  }
+}
+
+Transform {
+  translation 15 12 1.00004
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _1
+    }
+    geometry IndexedQuadSet {
+      solid FALSE
+      index [
+        0,
+        1,
+        2,
+        3,
+        1,
+        4,
+        5,
+        2
+      ]
+      coord Coordinate {
+        point [
+          -1 -1 0,
+          1 -1 0,
+          1 1 0,
+          -1 1 0,
+          3 -1 0,
+          3 1 0
+        ]
+      }
+    }
+  }
+}
+
+Transform {
+  translation 16 9 1.00003
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _1
+    }
+    geometry QuadSet {
+      solid FALSE
+      coord Coordinate {
+        point [
+          -1 -1 0,
+          1 -1 0,
+          1 1 0,
+          -1 1 0
+        ]
+      }
+    }
+  }
+}
+
+Transform {
+  translation 16 6 1.00002
+  scale 0.607466 0.607466 0.607466
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _1
+    }
+    geometry IndexedTriangleFanSet {
+      solid FALSE
+      normalPerVertex FALSE
+      index [
+        0,
+        1,
+        2,
+        3,
+        -1,
+        4,
+        5,
+        6,
+        7,
+        8,
+        -1
+      ]
+      coord Coordinate {
+        point [
+          -1 -1 0,
+          1 -1 -1,
+          1 1 0,
+          -1 1 0,
+          5 0 0,
+          5 -1 0,
+          6 -2 0,
+          7 -1 0,
+          7 0 0
+        ]
+      }
+    }
+  }
+}
+
+Transform {
+  translation 16 3 1.00001
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _1
+    }
+    geometry IndexedTriangleSet {
+      solid FALSE
+      index [
+        0,
+        1,
+        2,
+        0,
+        2,
+        3
+      ]
+      coord Coordinate {
+        point [
+          -1 -1 0,
+          1 -1 0,
+          1 1 0,
+          -1 1 0
+        ]
+      }
+    }
+  }
+}
+
+Transform {
+  translation 15 -3.6747e-06 1
+  scale 0.575613 0.575613 0.575613
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _1
+    }
+    geometry IndexedTriangleStripSet {
+      solid FALSE
+      index [
+        0,
+        1,
+        2,
+        3,
+        -1,
+        4,
+        5,
+        6,
+        7,
+        8,
+        -1
+      ]
+      coord Coordinate {
+        point [
+          -1 -1 0,
+          1 -1 -1,
+          1 1 0,
+          2 1 0,
+          5 0 0,
+          5 -1 0,
+          6 -2 0,
+          5 -3 0,
+          6 -3 0
+        ]
+      }
+    }
+  }
+}
+
+Transform {
+  translation 15 -3 0.999989
+  scale 0.541327 0.541327 0.541327
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _1
+    }
+    geometry TriangleFanSet {
+      solid FALSE
+      normalPerVertex FALSE
+      fanCount [
+        4,
+        5
+      ]
+      coord Coordinate {
+        point [
+          -1 -1 0,
+          1 -1 -1,
+          1 1 0,
+          -1 1 0,
+          5 0 0,
+          5 -1 0,
+          6 -2 0,
+          7 -1 0,
+          7 0 0
+        ]
+      }
+    }
+  }
+}
+
+DEF _6 Transform {
+  translation 16 -6 0.999978
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _1
+    }
+    geometry TriangleSet {
+      solid FALSE
+      coord Coordinate {
+        point [
+          -1 -1 0,
+          1 -1 0,
+          1 1 0,
+          -1 -1 0,
+          1 1 0,
+          -1 1 0
+        ]
+      }
+    }
+  }
+}
+
+DEF _7 Transform {
+  translation 15 -9 0.732057
+  rotation 0 0 0 0.000690534
+  scale 0.464181 0.464181 0.464181
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE _1
+    }
+    geometry TriangleStripSet {
+      solid FALSE
+      stripCount [
+        4,
+        5
+      ]
+      coord Coordinate {
+        point [
+          -1 -1 0,
+          1 -1 -1,
+          1 1 0,
+          2 1 0,
+          5 0 0,
+          5 -1 0,
+          6 -2 0,
+          5 -3 0,
+          6 -3 0
+        ]
+      }
     }
   }
 }

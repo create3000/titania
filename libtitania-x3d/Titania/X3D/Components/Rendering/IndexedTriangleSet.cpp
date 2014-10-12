@@ -97,7 +97,15 @@ IndexedTriangleSet::create (X3DExecutionContext* const executionContext) const
 void
 IndexedTriangleSet::build ()
 {
-	buildPolygons (3, index () .size ());
+	X3DComposedGeometryNode::build (3, index () .size ());
+}
+
+SFNode
+IndexedTriangleSet::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	return X3DComposedGeometryNode::toPrimitive (3, index () .size ());
 }
 
 } // X3D

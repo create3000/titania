@@ -51,6 +51,8 @@
 #include "X3DComposedGeometryNode.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include "../Geometry3D/IndexedFaceSet.h"
 #include "../Shaders/X3DVertexAttributeNode.h"
 
 namespace titania {
@@ -190,7 +192,7 @@ X3DComposedGeometryNode::createBBox ()
 }
 
 void
-X3DComposedGeometryNode::buildPolygons (const size_t vertexCount, size_t size)
+X3DComposedGeometryNode::build (const size_t vertexCount, size_t size)
 {
 	if (not coordNode or coordNode -> isEmpty ())
 		return;
@@ -308,6 +310,42 @@ X3DComposedGeometryNode::buildFaceNormals (const size_t vertexCount, const size_
 
 	if (not ccw ())
 		std::for_each (getNormals () .begin (), getNormals () .end (), std::mem_fn (&Vector3f::negate));
+}
+
+SFNode
+X3DComposedGeometryNode::toPrimitive (const size_t vertexCount, size_t size) const
+{
+	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
+
+	geometry -> metadata ()        = metadata ();
+	geometry -> colorPerVertex ()  = colorPerVertex ();
+	geometry -> normalPerVertex () = normalPerVertex ();
+	geometry -> solid ()           = solid ();
+	geometry -> ccw ()             = ccw ();
+
+	geometry -> attrib ()   = attrib ();
+	geometry -> fogCoord () = fogCoord ();
+	geometry -> color ()    = color ();
+	geometry -> texCoord () = texCoord ();
+	geometry -> normal ()   = normal ();
+	geometry -> coord ()    = coord ();
+
+	// Set size to a multiple of vertexCount.
+
+	size -= size % vertexCount;
+
+	// Fill GeometryNode
+
+	for (size_t i = 0; i < size; )
+	{
+		for (size_t v = 0; v < vertexCount; ++ v, ++ i)
+			geometry -> coordIndex () .emplace_back (getIndex (i));
+
+		geometry -> coordIndex () .emplace_back (-1);
+	}
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
 }
 
 } // X3D

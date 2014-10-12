@@ -136,7 +136,15 @@ TriangleFanSet::set_fanCount ()
 void
 TriangleFanSet::build ()
 {
-	buildPolygons (3, coordIndex .size ());
+	X3DComposedGeometryNode::build (3, coordIndex .size ());
+}
+
+SFNode
+TriangleFanSet::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	return X3DComposedGeometryNode::toPrimitive (3, coordIndex .size ());
 }
 
 } // X3D

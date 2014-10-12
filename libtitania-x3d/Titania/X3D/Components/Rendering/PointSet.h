@@ -143,6 +143,13 @@ public:
 	void
 	draw () final override;
 
+	virtual
+	SFNode
+	toPrimitive () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override
+	{ throw Error <NOT_SUPPORTED> ("PointSet::toPrimitive"); }
+
 
 private:
 

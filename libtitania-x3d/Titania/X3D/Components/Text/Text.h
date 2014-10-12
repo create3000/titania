@@ -193,6 +193,12 @@ public:
 	void
 	draw () final override;
 
+	virtual
+	SFNode
+	toPrimitive () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
+
 	///  @name Destruction
 
 	virtual

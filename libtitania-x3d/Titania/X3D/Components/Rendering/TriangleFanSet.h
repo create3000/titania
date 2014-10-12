@@ -97,12 +97,20 @@ public:
 	fanCount () const
 	{ return *fields .fanCount; }
 
-	///  @name Tests
+	///  @name Member access
 
 	virtual
 	bool
 	isLineGeometry () const final override
 	{ return false; }
+
+	///  @name Operations
+
+	virtual
+	SFNode
+	toPrimitive () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
 
 
 private:
@@ -113,7 +121,7 @@ private:
 
 	virtual
 	size_t
-	getIndex (size_t index) final override
+	getIndex (const size_t index) const final override
 	{ return coordIndex [index]; }
 
 	void

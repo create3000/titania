@@ -128,8 +128,7 @@ public:
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>)
-	{ throw Error <NOT_SUPPORTED> ("X3DGeometryNode::toPrimitive"); }
+	       Error <DISPOSED>) = 0;
 
 	///  @name Destruction
 
@@ -161,7 +160,7 @@ protected:
 	///  @name Member access
 
 	void
-	setAttribs (const X3DPtrArray <X3DVertexAttributeNode> &, const std::vector <std::vector <float>>    &);
+	setAttribs (const X3DPtrArray <X3DVertexAttributeNode> &, const std::vector <std::vector <float>> &);
 
 	std::vector <Color4f> &
 	getColors ()
@@ -244,10 +243,10 @@ protected:
 	getTexCoordParams (Vector3f &, float &, int &, int &);
 
 	void
-	refineNormals (const NormalIndex &, std::vector <Vector3f> &, float, bool) const;
+	refineNormals (const NormalIndex &, std::vector <Vector3f> &, const float, const bool) const;
 
 	void
-	addMirrorVertices (GLenum, const bool);
+	addMirrorVertices (const GLenum, const bool);
 
 	void
 	update ();
@@ -262,7 +261,7 @@ private:
 	///  @name Operations
 
 	bool
-	intersect (const Line3f &, size_t, size_t, size_t, const Matrix4f &, std::vector <IntersectionPtr>&) const;
+	intersect (const Line3f &, const size_t, const size_t, const size_t, const Matrix4f &, std::vector <IntersectionPtr>&) const;
 
 	bool
 	isClipped (const Vector3f &, const Matrix4f &) const;
@@ -271,7 +270,7 @@ private:
 	isClipped (const Vector3f &, const Matrix4f &, const CollectableObjectArray &) const;
 
 	void
-	triangulate (size_t, size_t, size_t, std::vector <Color4f>&, TexCoordArray &, std::vector <Vector3f>&, std::vector <Vector3f>&) const;
+	triangulate (const size_t, const size_t, const size_t, std::vector <Color4f>&, TexCoordArray &, std::vector <Vector3f>&, std::vector <Vector3f>&) const;
 
 	void
 	clear ();

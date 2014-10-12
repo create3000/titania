@@ -113,7 +113,7 @@ IndexedTriangleFanSet::set_index ()
 
 	for (size_t i = 0, size = index () .size (); i < size; ++ i)
 	{
-		int32_t first = index () [i];
+		const int32_t first = index () [i];
 
 		++ i;
 
@@ -136,7 +136,15 @@ IndexedTriangleFanSet::set_index ()
 void
 IndexedTriangleFanSet::build ()
 {
-	buildPolygons (3, coordIndex .size ());
+	X3DComposedGeometryNode::build (3, coordIndex .size ());
+}
+
+SFNode
+IndexedTriangleFanSet::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	return X3DComposedGeometryNode::toPrimitive (3, coordIndex .size ());
 }
 
 } // X3D

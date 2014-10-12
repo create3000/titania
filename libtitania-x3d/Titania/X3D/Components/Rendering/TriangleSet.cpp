@@ -94,13 +94,21 @@ void
 TriangleSet::build ()
 {
 	if (getCoord ())
-		buildPolygons (3, getCoord () -> getSize ());
+		X3DComposedGeometryNode::build (3, getCoord () -> getSize ());
 }
 
 void
 TriangleSet::buildNormals (size_t vertexCount, size_t size)
 {
 	buildFaceNormals (vertexCount, size);
+}
+
+SFNode
+TriangleSet::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	return X3DComposedGeometryNode::toPrimitive (3, getCoord () ? getCoord () -> getSize () : 0);
 }
 
 } // X3D

@@ -195,7 +195,7 @@ X3DGeometryNode::intersect (Line3f line, std::vector <IntersectionPtr> & interse
 }
 
 bool
-X3DGeometryNode::intersect (const Line3f & line, size_t i1, size_t i2, size_t i3, const Matrix4f & modelViewMatrix, std::vector <IntersectionPtr> & intersections) const
+X3DGeometryNode::intersect (const Line3f & line, const size_t i1, const size_t i2, const size_t i3, const Matrix4f & modelViewMatrix, std::vector <IntersectionPtr> & intersections) const
 {
 	float u, v, t;
 
@@ -378,7 +378,7 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & colors_, TexCoordArray & t
 }
 
 void
-X3DGeometryNode::triangulate (size_t i1, size_t i2, size_t i3, std::vector <Color4f> & colors_, TexCoordArray & texCoords_, std::vector <Vector3f> & normals_, std::vector <Vector3f> & vertices_) const
+X3DGeometryNode::triangulate (const size_t i1, const size_t i2, const size_t i3, std::vector <Color4f> & colors_, TexCoordArray & texCoords_, std::vector <Vector3f> & normals_, std::vector <Vector3f> & vertices_) const
 {
 	if (not colors .empty ())
 	{
@@ -506,7 +506,7 @@ X3DGeometryNode::getTexCoordParams (Vector3f & min, float & Ssize, int & Sindex,
  */
 
 void
-X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Vector3f> & normals, float creaseAngle, bool ccw) const
+X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Vector3f> & normals, const float creaseAngle, const bool ccw) const
 {
 	if (not ccw)
 		std::for_each (normals .begin (), normals .end (), std::mem_fn (&Vector3f::negate));
@@ -544,7 +544,7 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
  */
 
 void
-X3DGeometryNode::addMirrorVertices (GLenum vertexMode, const bool convex)
+X3DGeometryNode::addMirrorVertices (const GLenum vertexMode, const bool convex)
 {
 	auto & texCoords = this -> texCoords [0];
 

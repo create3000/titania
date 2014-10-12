@@ -388,6 +388,14 @@ GeoElevationGrid::build ()
 	setTextureCoordinate (texCoordNode);
 }
 
+SFNode
+GeoElevationGrid::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	throw Error <NOT_SUPPORTED> ("GeoElevationGrid::toPrimitive");
+}
+
 void
 GeoElevationGrid::dispose ()
 {

@@ -1,3 +1,35 @@
+2014-10-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Text.h:
+	* Text.cpp:
+	* LineSet.h:
+	* PointSet.h:
+	* LineSet.cpp:
+	* QuadSet.h:
+	* TriangleSet.h:
+	* QuadSet.cpp:
+	* TriangleSet.cpp:
+	* TriangleFanSet.h:
+	* X3DGeometryNode.h:
+	* TriangleFanSet.cpp:
+	* TriangleStripSet.h:
+	* IndexedQuadSet.h:
+	* GeoElevationGrid.h:
+	* X3DGeometryNode.cpp:
+	* IndexedQuadSet.cpp:
+	* IndexedTriangleSet.h:
+	* TriangleStripSet.cpp:
+	* GeoElevationGrid.cpp:
+	* IndexedTriangleSet.cpp:
+	* X3DParametricGeometryNode.h:
+	* IndexedTriangleFanSet.h:
+	* X3DComposedGeometryNode.h:
+	* IndexedTriangleStripSet.h:
+	* X3DParametricGeometryNode.cpp:
+	* IndexedTriangleFanSet.cpp:
+	* IndexedTriangleStripSet.cpp:
+	* X3DComposedGeometryNode.cpp: 
+
 2014-10-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Disk2D.cpp:

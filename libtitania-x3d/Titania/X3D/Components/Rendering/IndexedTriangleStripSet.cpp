@@ -142,7 +142,15 @@ IndexedTriangleStripSet::set_index ()
 void
 IndexedTriangleStripSet::build ()
 {
-	buildPolygons (3, coordIndex .size ());
+	X3DComposedGeometryNode::build (3, coordIndex .size ());
+}
+
+SFNode
+IndexedTriangleStripSet::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	return X3DComposedGeometryNode::toPrimitive (3, coordIndex .size ());
 }
 
 } // X3D

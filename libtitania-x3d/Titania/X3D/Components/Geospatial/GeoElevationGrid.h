@@ -216,7 +216,7 @@ public:
 	height () const
 	{ return *fields .height; }
 
-	///  @name Tests
+	///  @name Member access
 
 	virtual
 	bool
@@ -227,6 +227,14 @@ public:
 	bool
 	isLineGeometry () const final override
 	{ return false; }
+
+	///  @name Operations
+
+	virtual
+	SFNode
+	toPrimitive () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
 
 	///  @name Destruction
 

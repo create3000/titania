@@ -99,12 +99,20 @@ public:
 	index () const
 	{ return *fields .index; }
 
-	///  @name Tests
+	///  @name Member access
 
 	virtual
 	bool
 	isLineGeometry () const final override
 	{ return false; }
+
+	///  @name Operations
+
+	virtual
+	SFNode
+	toPrimitive () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
 
 
 private:
@@ -113,7 +121,7 @@ private:
 
 	virtual
 	size_t
-	getIndex (size_t i) final override
+	getIndex (const size_t i) const final override
 	{ return index () [i]; }
 
 	virtual

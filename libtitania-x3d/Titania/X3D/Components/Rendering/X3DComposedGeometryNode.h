@@ -207,7 +207,7 @@ protected:
 
 	virtual
 	size_t
-	getIndex (size_t index)
+	getIndex (const size_t index) const
 	{ return index; }
 
 	///  @name Operations
@@ -217,7 +217,7 @@ protected:
 	createBBox () final override;
 
 	void
-	buildPolygons (const size_t, size_t);
+	build (const size_t, size_t);
 
 	virtual
 	void
@@ -225,6 +225,9 @@ protected:
 
 	void
 	buildFaceNormals (const size_t, const size_t);
+
+	SFNode
+	toPrimitive (const size_t, size_t) const;
 
 
 private:

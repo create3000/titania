@@ -197,6 +197,14 @@ Text::draw ()
 	textGeometry -> display ();
 }
 
+SFNode
+Text::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	throw Error <NOT_SUPPORTED> ("Text::toPrimitive");
+}
+
 void
 Text::dispose ()
 {
