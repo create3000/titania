@@ -1015,6 +1015,18 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode,
 
 	undoStep -> addObjects (parent);
 
+	//
+
+	const auto undoRemoveNode = std::make_shared <UndoStep> ();
+
+	removeNodeFromSceneIfNotExists (getExecutionContext (), newValue, undoRemoveNode);
+
+	undoStep -> addUndoFunction (&UndoStep::redoChanges, undoRemoveNode);
+	undoStep -> addRedoFunction (&UndoStep::undoChanges, undoRemoveNode);
+	undoRemoveNode -> undoChanges ();
+
+	//
+
 	undoStep -> addUndoFunction (&X3D::SFNode::setValue, std::ref (sfnode), sfnode);
 	undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (sfnode), newValue);
 
@@ -1044,11 +1056,23 @@ X3DBrowserEditor::replaceNodes (const X3D::SFNode & parent, X3D::MFNode & mfnode
 void
 X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const size_t index, const X3D::SFNode & newValue, const UndoStepPtr & undoStep) const
 {
+	using set1Value = void (X3D::MFNode::*) (const X3D::MFNode::size_type, const X3D::SFNode &);
+
 	const X3D::SFNode oldValue = mfnode [index];
 
 	undoStep -> addObjects (parent);
 
-	using set1Value = void (X3D::MFNode::*) (const X3D::MFNode::size_type, const X3D::SFNode &);
+	//
+
+	const auto undoRemoveNode = std::make_shared <UndoStep> ();
+
+	removeNodeFromSceneIfNotExists (getExecutionContext (), newValue, undoRemoveNode);
+
+	undoStep -> addUndoFunction (&UndoStep::redoChanges, undoRemoveNode);
+	undoStep -> addRedoFunction (&UndoStep::undoChanges, undoRemoveNode);
+	undoRemoveNode -> undoChanges ();
+
+	//
 
 	undoStep -> addUndoFunction ((set1Value) & X3D::MFNode::set1Value, std::ref (mfnode), index, mfnode [index]);
 	undoStep -> addRedoFunction ((set1Value) & X3D::MFNode::set1Value, std::ref (mfnode), index, newValue);
