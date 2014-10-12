@@ -94,11 +94,11 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	addField (initializeOnly, "geoSystem",       geoSystem ());
 	addField (initializeOnly, "geoGridOrigin",   geoGridOrigin ());
 
-	addField (inputOutput,    "yScale",          yScale ());
 	addField (initializeOnly, "xDimension",      xDimension ());
-	addField (initializeOnly, "xSpacing",        xSpacing ());
 	addField (initializeOnly, "zDimension",      zDimension ());
+	addField (initializeOnly, "xSpacing",        xSpacing ());
 	addField (initializeOnly, "zSpacing",        zSpacing ());
+	addField (inputOutput,    "yScale",          yScale ());
 
 	addField (initializeOnly, "solid",           solid ());
 	addField (initializeOnly, "ccw",             ccw ());

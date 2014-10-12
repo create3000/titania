@@ -104,14 +104,6 @@ public:
 	geoGridOrigin () const
 	{ return *fields .geoGridOrigin; }
 
-	SFFloat &
-	yScale ()
-	{ return *fields .yScale; }
-
-	const SFFloat &
-	yScale () const
-	{ return *fields .yScale; }
-
 	SFInt32 &
 	xDimension ()
 	{ return *fields .xDimension; }
@@ -119,14 +111,6 @@ public:
 	const SFInt32 &
 	xDimension () const
 	{ return *fields .xDimension; }
-
-	SFDouble &
-	xSpacing ()
-	{ return *fields .xSpacing; }
-
-	const SFDouble &
-	xSpacing () const
-	{ return *fields .xSpacing; }
 
 	SFInt32 &
 	zDimension ()
@@ -137,12 +121,28 @@ public:
 	{ return *fields .zDimension; }
 
 	SFDouble &
+	xSpacing ()
+	{ return *fields .xSpacing; }
+
+	const SFDouble &
+	xSpacing () const
+	{ return *fields .xSpacing; }
+
+	SFDouble &
 	zSpacing ()
 	{ return *fields .zSpacing; }
 
 	const SFDouble &
 	zSpacing () const
 	{ return *fields .zSpacing; }
+
+	SFFloat &
+	yScale ()
+	{ return *fields .yScale; }
+
+	const SFFloat &
+	yScale () const
+	{ return *fields .yScale; }
 
 	SFBool &
 	solid ()

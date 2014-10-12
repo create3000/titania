@@ -1,5 +1,11 @@
 2014-10-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* GeoElevationGrid.h:
+	* GeoElevationGrid.cpp:
+	* X3DNurbsSurfaceGeometryNode.cpp: 
+
+2014-10-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* LineSet.cpp: 
 
 2014-10-12  Holger Seelig  <holger.seelig@yahoo.de>
