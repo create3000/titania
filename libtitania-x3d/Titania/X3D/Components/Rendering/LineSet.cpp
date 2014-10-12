@@ -186,8 +186,6 @@ LineSet::build ()
 
 	for (const auto count : vertexCount ())
 	{
-		// Create two vertices for each line.
-
 		if (index + count > size)
 			break;
 
@@ -207,10 +205,7 @@ LineSet::build ()
 			addElements (GL_LINE_STRIP, count);
 		}
 		else
-		{
-			if (count > 0)
-				++ index;
-		}
+			index += count;
 	}
 
 	setSolid (false);
@@ -237,38 +232,26 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> color ()    = color ();
 	geometry -> coord ()    = coord ();
 
-//	size_t       index = 0;
-//	const size_t size  = coordNode -> getSize ();
-//
-//	for (const auto count : vertexCount ())
-//	{
-//		// Create two vertices for each line.
-//
-//		if (index + count > size)
-//			break;
-//
-//		if (count > 1)
-//		{
-//			for (size_t i = 0; i < (size_t) count; ++ i, ++ index)
-//			{
-//				for (size_t a = 0, size = attribNodes .size (); a < size; ++ a)
-//					attribNodes [a] -> addValue (attribArrays [a], index);
-//
-//				if (colorNode)
-//					colorNode -> addColor (getColors (), index);
-//
-//				coordNode -> addVertex (getVertices (), index);
-//			}
-//
-//			addElements (GL_LINE_STRIP, count);
-//		}
-//		else
-//		{
-//			if (count > 0)
-//				++ index;
-//		}
-//	}
+	size_t       index = 0;
+	const size_t size  = coordNode -> getSize ();
 
+	for (const auto count : vertexCount ())
+	{
+		if (index + count > size)
+			break;
+
+		if (count > 1)
+		{
+			for (size_t i = 0; i < (size_t) count; ++ i, ++ index)
+				geometry -> coordIndex () .emplace_back (index);
+
+			geometry -> coordIndex () .emplace_back (-1);
+		}
+		else
+			index += count;
+	}
+
+	getExecutionContext () -> realize ();
 	return SFNode (geometry);
 }
 

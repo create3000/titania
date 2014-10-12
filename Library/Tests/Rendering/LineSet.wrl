@@ -1,4 +1,4 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V0.7.4
 
 Transform {
   children Shape {
@@ -9,9 +9,23 @@ Transform {
       }
     }
     geometry LineSet {
-      vertexCount 8
+      vertexCount [
+        8,
+        2
+      ]
       coord Coordinate {
-        point [ -1 1 1, -1 -1 1, 1 -1 1, 1 1 1, -1 1 -1, -1 -1 -1, 1 -1 -1, 1 1 -1 ]
+        point [
+          -1 1 1,
+          -1 -1 1,
+          1 -1 1,
+          1 1 1,
+          -1 1 -1,
+          -1 -1 -1,
+          1 -1 -1,
+          1 1 -1,
+          -1 0 0,
+          1 0 0
+        ]
       }
     }
   }

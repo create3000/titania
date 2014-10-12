@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sun, 12 Oct 2014 06:51:53 GMT"
+META "modified" "Sun, 12 Oct 2014 08:44:51 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -811,7 +811,7 @@ Transform {
 }
 
 Transform {
-  translation 3 1.99999 7.34935e-06
+  translation 3 2 7.3494e-06
   scale 0.681115 0.681115 0.681115
   children Shape {
     appearance Appearance {
@@ -1216,7 +1216,7 @@ Transform {
   }
 }
 
-DEF _6 Transform {
+Transform {
   translation 16 -6 0.999978
   children Shape {
     appearance Appearance {
@@ -1239,9 +1239,8 @@ DEF _6 Transform {
   }
 }
 
-DEF _7 Transform {
+Transform {
   translation 15 -9 0.732057
-  rotation 0 0 0 0.000690534
   scale 0.464181 0.464181 0.464181
   children Shape {
     appearance Appearance {
@@ -1265,6 +1264,38 @@ DEF _7 Transform {
           6 -2 0,
           5 -3 0,
           6 -3 0
+        ]
+      }
+    }
+  }
+}
+
+DEF _6 Transform {
+  translation 25 12 4.40964e-05
+  children Shape {
+    appearance Appearance {
+      lineProperties USE _4
+      material Material {
+        emissiveColor 1 0 0
+      }
+    }
+    geometry LineSet {
+      vertexCount [
+        8,
+        2
+      ]
+      coord Coordinate {
+        point [
+          -1 1 1,
+          -1 -1 1,
+          1 -1 1,
+          1 1 1,
+          -1 1 -1,
+          -1 -1 -1,
+          1 -1 -1,
+          1 1 -1,
+          -1 0 0,
+          1 0 0
         ]
       }
     }
