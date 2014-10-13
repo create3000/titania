@@ -271,19 +271,19 @@ ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::
 
 	NormalIndex normalIndex;
 
-	for (auto index = coordIndex .cbegin (); index not_eq coordIndex .cend (); index += 6)
+	for (auto index = coordIndex .cbegin (); index not_eq coordIndex .cend (); index += 4)
 	{
-		for (size_t i = 0; i < 6; ++ i)
+		for (size_t i = 0; i < 4; ++ i)
 			normalIndex [*(index + i)] .emplace_back (normals .size () + i);
 
 		// Use quad normal calculation as it makes nicer normals.
 
 		const Vector3f normal = math::normal (points [*(index)],
 		                                      points [*(index + 1)],
-		                                      points [*(index + 3)],
-		                                      points [*(index + 2)]);
+		                                      points [*(index + 2)],
+		                                      points [*(index + 3)]);
 
-		normals .resize (normals .size () + 6, normal);
+		normals .resize (normals .size () + 4, normal);
 	}
 
 	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
@@ -291,29 +291,24 @@ ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::
 	return normals;
 }
 
-// p1 - p4 
-//  | / |
-// p2 - p3
+// p4 - p3 
+//  |   |
+// p1 - p2
 
 std::vector <size_t>
 ElevationGrid::createCoordIndex () const
 {
 	std::vector <size_t> coordIndex;
-	coordIndex .reserve ((xDimension () - 1) * (zDimension () - 1) * 6);
+	coordIndex .reserve ((xDimension () - 1) * (zDimension () - 1) * 4);
 
 	for (int32_t z = 0, size = zDimension () - 1; z < size; ++ z)
 	{
 		for (int32_t x = 0, size = xDimension () - 1; x < size; ++ x)
 		{
-			// Triangle one
-			coordIndex .emplace_back (      z * xDimension () + x);         // p1
-			coordIndex .emplace_back ((z + 1) * xDimension () + x);         // p2
-			coordIndex .emplace_back (      z * xDimension () + (x + 1));   // p4
-
-			// Triangle two
-			coordIndex .emplace_back ((z + 1) * xDimension () + (x + 1));   // p3
-			coordIndex .emplace_back (      z * xDimension () + (x + 1));   // p4
-			coordIndex .emplace_back ((z + 1) * xDimension () + x);         // p2
+			coordIndex .emplace_back ((z + 1) * xDimension () + x);         // p1
+			coordIndex .emplace_back ((z + 1) * xDimension () + (x + 1));   // p2
+			coordIndex .emplace_back (      z * xDimension () + (x + 1));   // p3
+			coordIndex .emplace_back (      z * xDimension () + x);         // p4
 		}
 	}
 
@@ -390,7 +385,7 @@ ElevationGrid::build ()
 
 	for (index = coordIndex .begin (); index not_eq coordIndex .end (); ++ face)
 	{
-		for (int32_t p = 0; p < 6; ++ p, ++ index)
+		for (int32_t p = 0; p < 4; ++ p, ++ index)
 		{
 			const size_t i = *index;
 
@@ -425,7 +420,7 @@ ElevationGrid::build ()
 		}
 	}
 
-	addElements (GL_TRIANGLES, getVertices () .size ());
+	addElements (GL_QUADS, getVertices () .size ());
 	setSolid (solid ());
 	setCCW (ccw ());
 	setAttribs (attribNodes, attribArrays);
@@ -472,11 +467,12 @@ throw (Error <NOT_SUPPORTED>,
 			texCoord -> point () .emplace_back (point .x (), point .y ());
 	}
 
-	for (size_t i = 0, size = coordIndex .size (); i < size; i += 3)
+	for (size_t i = 0, size = coordIndex .size (); i < size; i += 4)
 	{
 		geometry -> coordIndex () .emplace_back (coordIndex [i]);
 		geometry -> coordIndex () .emplace_back (coordIndex [i + 1]);
 		geometry -> coordIndex () .emplace_back (coordIndex [i + 2]);
+		geometry -> coordIndex () .emplace_back (coordIndex [i + 3]);
 		geometry -> coordIndex () .emplace_back (-1);
 	}
 

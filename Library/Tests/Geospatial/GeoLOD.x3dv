@@ -12,9 +12,9 @@ Viewpoint {
 
 GeoLOD {
   geoSystem "GC"
-  rootUrl "root.wrl"
-  child1Url "child1.wrl"
-  child2Url "child2.wrl"
-  child3Url "child3.wrl"
-  child4Url "child4.wrl"
+  rootUrl "root.x3dv"
+  child1Url "child1.x3dv"
+  child2Url "child2.x3dv"
+  child3Url "child3.x3dv"
+  child4Url "child4.x3dv"
 }

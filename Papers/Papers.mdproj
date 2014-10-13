@@ -254,6 +254,7 @@
     <None Include="V8\v8X3DObject.h" />
     <None Include="V8.h" />
     <None Include="xxx\TransformTool.h" />
+    <None Include="newell.c" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

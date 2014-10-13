@@ -1,3 +1,33 @@
+2014-10-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
+	* tie.wrl:
+	* root.wrl:
+	* test.wrl:
+	* tie.x3dv:
+	* wrong2.wrl:
+	* test.x3dv:
+	* root.x3dv:
+	* child4.wrl:
+	* GeoLOD.wrl:
+	* child2.wrl:
+	* Smash.x3dv:
+	* child3.wrl:
+	* child1.wrl:
+	* GeoLOD.x3dv:
+	* child1.x3dv:
+	* child2.x3dv:
+	* child3.x3dv:
+	* child4.x3dv:
+	* GeoCoordinate.wrl:
+	* GeoCoordinate.x3dv:
+	* GeoTouchSensor.wrl:
+	* GeoTouchSensor.x3dv:
+	* GeoElevationGrid.wrl:
+	* GeoElevationGrid.x3dv:
+	* GeoElevationGrid2.x3dv:
+	* AnimatedNurbsPatchSurfaceHead.x3dv: 
+
 2014-10-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Smash.x3dv:

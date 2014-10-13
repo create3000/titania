@@ -123,7 +123,21 @@ GeoCoordinate::getNormal (const size_t index1, const size_t index2, const size_t
 		                     points [index2],
 		                     points [index3]);
 
-	return Vector3f (0, 0, 1);
+	return Vector3f (0, 0, 0);
+}
+
+Vector3f
+GeoCoordinate::getNormal (const size_t index1, const size_t index2, const size_t index3, const size_t index4) const
+{
+	const size_t size = points .size ();
+
+	if (index1 < size and index2 < size and index3 < size and index4 < size)
+		return math::normal (points [index1],
+		                     points [index2],
+		                     points [index3],
+		                     points [index4]);
+
+	return Vector3f (0, 0, 0);
 }
 
 void

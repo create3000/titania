@@ -29110,8 +29110,8 @@ DEF Satellite Transform {
         DEF tie Transform {
           children Inline {
             url [
-              "tie.wrl",
-              "file:///home/holger/Projekte/Titania/Library/Tests/Geospatial/tie.wrl"
+              "tie.x3dv",
+              "file:///home/holger/Projekte/Titania/Library/Tests/Geospatial/tie.x3dv"
             ]
           }
         }

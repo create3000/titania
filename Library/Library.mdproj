@@ -2381,17 +2381,6 @@
     <None Include="Tests\Geometry3D\vertabrae.wrl" />
     <None Include="Tests\ParticleSystems\Rain.wrl" />
     <None Include="Tests\Grouping\StaticGroup.wrl" />
-    <None Include="Tests\Geospatial\GeoCoordinate.wrl" />
-    <None Include="Tests\Geospatial\GeoLOD.wrl" />
-    <None Include="Tests\Geospatial\child1.wrl" />
-    <None Include="Tests\Geospatial\child2.wrl" />
-    <None Include="Tests\Geospatial\child3.wrl" />
-    <None Include="Tests\Geospatial\child4.wrl" />
-    <None Include="Tests\Geospatial\root.wrl" />
-    <None Include="Tests\Geospatial\GeoElevationGrid.wrl" />
-    <None Include="Tests\Geospatial\tie.wrl" />
-    <None Include="Tests\Geospatial\GeoTouchSensor.wrl" />
-    <None Include="Tests\Geospatial\test.wrl" />
     <None Include="Tests\Basic\UNIT.wrl" />
     <None Include="Tests\Shaders\VertexAttibutes.wrl" />
     <None Include="Tests\ParticleSystems\uft8.wrl" />
@@ -2478,6 +2467,19 @@
     <None Include="Tests\Scripting\SpiderMonkey.x3dv" />
     <None Include="Tests\Scripting\SpiderMonkey-Inline.x3dv" />
     <None Include="Tests\Geometry3D\Smash.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurface\AnimatedNurbsPatchSurfaceHead.x3dv" />
+    <None Include="Tests\Geospatial\child1.x3dv" />
+    <None Include="Tests\Geospatial\child2.x3dv" />
+    <None Include="Tests\Geospatial\child3.x3dv" />
+    <None Include="Tests\Geospatial\child4.x3dv" />
+    <None Include="Tests\Geospatial\GeoCoordinate.x3dv" />
+    <None Include="Tests\Geospatial\GeoElevationGrid.x3dv" />
+    <None Include="Tests\Geospatial\GeoElevationGrid2.x3dv" />
+    <None Include="Tests\Geospatial\GeoLOD.x3dv" />
+    <None Include="Tests\Geospatial\GeoTouchSensor.x3dv" />
+    <None Include="Tests\Geospatial\root.x3dv" />
+    <None Include="Tests\Geospatial\test.x3dv" />
+    <None Include="Tests\Geospatial\tie.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

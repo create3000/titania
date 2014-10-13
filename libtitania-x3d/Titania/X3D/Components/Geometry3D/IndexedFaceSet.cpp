@@ -275,25 +275,52 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 
 	for (const auto & polygon : polygons)
 	{
-		// Determine polygon normal.
+		const auto & vertices = polygon .vertices;
+	
 		Vector3f normal;
 
-		for (const auto & element : polygon .elements)
+		switch (vertices .size ())
 		{
-			for (size_t i = 1, size = element .size () - 1; i < size; ++ i)
+			case 3:
 			{
-				normal += getCoord () -> getNormal (coordIndex () [element [0]],
-				                                    coordIndex () [element [i]],
-				                                    coordIndex () [element [i + 1]]);
+				normal = getCoord () -> getNormal (coordIndex () [vertices [0]],
+				                                   coordIndex () [vertices [1]],
+				                                   coordIndex () [vertices [2]]);
+				break;
+			}
+			case 4:
+			{
+				normal = getCoord () -> getNormal (coordIndex () [vertices [0]],
+				                                   coordIndex () [vertices [1]],
+				                                   coordIndex () [vertices [2]],
+				                                   coordIndex () [vertices [3]]);
+				break;
+			}
+			default:
+			{
+				// Determine polygon normal.
+				// Or use Newell's method http://tog.acm.org/resources/GraphicsGems/gemsiii/newell.c
+			
+				for (const auto & element : polygon .elements)
+				{
+					for (size_t i = 0, size = element .size (); i < size; ++ i)
+					{
+						normal += getCoord () -> getNormal (coordIndex () [element [i]],
+						                                    coordIndex () [element [(i + 1) % size]],
+						                                    coordIndex () [element [(i + 2) % size]]);
+					}
+				}
+				
+				normal .normalize ();
 			}
 		}
 
 		// Add a normal index for each point.
-		for (size_t i = 0, size = polygon .vertices .size (); i < size; ++ i)
-			normalIndex [coordIndex () [polygon .vertices [i]]] .emplace_back (normals .size () + i);
+		for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+			normalIndex [coordIndex () [vertices [i]]] .emplace_back (normals .size () + i);
 
 		// Add this normal for each vertex.
-		normals .resize (normals .size () + polygon .vertices .size (), normalize (normal));
+		normals .resize (normals .size () + vertices .size (), normal);
 		normals .emplace_back ();
 	}
 

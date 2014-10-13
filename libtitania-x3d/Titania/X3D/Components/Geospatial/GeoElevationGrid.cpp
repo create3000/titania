@@ -52,6 +52,9 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../Components/Geospatial/GeoCoordinate.h"
+#include "../../Components/Texturing/TextureCoordinate.h"
 
 namespace titania {
 namespace X3D {
@@ -211,24 +214,24 @@ GeoElevationGrid::createTexCoord () const
 }
 
 std::vector <Vector3f>
-GeoElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::vector <size_t> & coordIndex) const
+GeoElevationGrid::createNormals (const std::vector <Vector3d> & points, const std::vector <size_t> & coordIndex) const
 {
 	std::vector <Vector3f> normals;
 	normals .reserve (coordIndex .size ());
 
 	NormalIndex normalIndex;
 
-	for (auto index = coordIndex .cbegin (); index not_eq coordIndex .cend (); index += 6)
+	for (auto index = coordIndex .cbegin (); index not_eq coordIndex .cend (); index += 4)
 	{
-		for (size_t i = 0; i < 6; ++ i)
+		for (size_t i = 0; i < 4; ++ i)
 			normalIndex [*(index + i)] .emplace_back (normals .size () + i);
 
-		const Vector3f normal = math::normal (points [*(index)],
+		const Vector3d normal = math::normal (points [*(index)],
 		                                      points [*(index + 1)],
-		                                      points [*(index + 4)],
-		                                      points [*(index + 2)]);
+		                                      points [*(index + 2)],
+		                                      points [*(index + 3)]);
 
-		normals .resize (normals .size () + 6, normal);
+		normals .resize (normals .size () + 4, normal);
 	}
 
 	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
@@ -236,39 +239,46 @@ GeoElevationGrid::createNormals (const std::vector <Vector3f> & points, const st
 	return normals;
 }
 
-// p2 - p3
-//  | \ |
-// p1 - p4 
+// p4 - p3
+//  |   |
+// p1 - p2
 
 std::vector <size_t>
 GeoElevationGrid::createCoordIndex () const
 {
 	std::vector <size_t> coordIndex;
-	coordIndex .reserve ((xDimension () - 1) * (zDimension () - 1) * 6);
+	coordIndex .reserve ((xDimension () - 1) * (zDimension () - 1) * 4);
 
 	for (int32_t z = 0, size = zDimension () - 1; z < size; ++ z)
 	{
 		for (int32_t x = 0, size = xDimension () - 1; x < size; ++ x)
 		{
-			// Triangle one
 			coordIndex .emplace_back (z * xDimension () + x);             // p1
-			coordIndex .emplace_back (z * xDimension () + (x + 1));       // p4
-			coordIndex .emplace_back ((z + 1) * xDimension () + x);       // p2
-
-			// Triangle two
-			coordIndex .emplace_back (z * xDimension () + (x + 1));       // p4
+			coordIndex .emplace_back (z * xDimension () + (x + 1));       // p2
 			coordIndex .emplace_back ((z + 1) * xDimension () + (x + 1)); // p3
-			coordIndex .emplace_back ((z + 1) * xDimension () + x);       // p2
+			coordIndex .emplace_back ((z + 1) * xDimension () + x);       // p4
 		}
 	}
 
 	return coordIndex;
 }
 
-std::vector <Vector3f>
+std::vector <Vector3d>
 GeoElevationGrid::createPoints () const
 {
-	std::vector <Vector3f> points;
+	using namespace std::placeholders;
+
+	std::vector <Vector3d> points = createGeoPoints ();
+
+	std::transform (points .begin (), points .end (), points .begin (), std::bind (&GeoElevationGrid::getCoord, this, _1));
+
+	return points;
+}
+
+std::vector <Vector3d>
+GeoElevationGrid::createGeoPoints () const
+{
+	std::vector <Vector3d> points;
 	points .reserve (xDimension () * zDimension ());
 
 	// When the geoSystem is "GD", xSpacing refers to the number of units of longitude in angle base units between
@@ -284,9 +294,9 @@ GeoElevationGrid::createPoints () const
 		{
 			for (int32_t x = 0; x < xDimension (); ++ x)
 			{
-				points .emplace_back (getCoord (Vector3d (zSpacing () * z, // latitude, northing
-				                                          xSpacing () * x, // longitude, easting
-				                                          getHeight (x + z * xDimension ())) + geoGridOrigin ()));
+				points .emplace_back (Vector3d (zSpacing () * z, // latitude, northing
+				                                xSpacing () * x, // longitude, easting
+				                                getHeight (x + z * xDimension ())) + geoGridOrigin ());
 			}
 		}
 	}
@@ -296,9 +306,9 @@ GeoElevationGrid::createPoints () const
 		{
 			for (int32_t x = 0; x < xDimension (); ++ x)
 			{
-				points .emplace_back (getCoord (Vector3d (xSpacing () * x, // longitude, easting
-				                                          zSpacing () * z, // latitude, northing
-				                                          getHeight (x + z * xDimension ())) + geoGridOrigin ()));
+				points .emplace_back (Vector3d (xSpacing () * x, // longitude, easting
+				                                zSpacing () * z, // latitude, northing
+				                                getHeight (x + z * xDimension ())) + geoGridOrigin ());
 			}
 		}
 	}
@@ -313,7 +323,7 @@ GeoElevationGrid::build ()
 		return;
 
 	const std::vector <size_t>   coordIndex = createCoordIndex ();
-	const std::vector <Vector3f> points     = createPoints ();
+	const std::vector <Vector3d> points     = createPoints ();
 
 	getVertices () .reserve (coordIndex .size ());
 
@@ -350,7 +360,7 @@ GeoElevationGrid::build ()
 
 	for (index = coordIndex .begin (); index not_eq coordIndex .end (); ++ face)
 	{
-		for (int32_t p = 0; p < 6; ++ p, ++ index)
+		for (int32_t p = 0; p < 4; ++ p, ++ index)
 		{
 			const size_t i = *index;
 
@@ -382,7 +392,7 @@ GeoElevationGrid::build ()
 		}
 	}
 
-	addElements (GL_TRIANGLES, getVertices () .size ());
+	addElements (GL_QUADS, getVertices () .size ());
 	setSolid (solid ());
 	setCCW (ccw ());
 	setTextureCoordinate (texCoordNode);
@@ -393,7 +403,53 @@ GeoElevationGrid::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
-	throw Error <NOT_SUPPORTED> ("GeoElevationGrid::toPrimitive");
+	const auto texCoord = texCoordNode ? X3DPtr <TextureCoordinate> () : getExecutionContext () -> createNode <TextureCoordinate> ();
+	const auto coord    = getExecutionContext () -> createNode <GeoCoordinate> ();
+	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
+
+	coord -> geoSystem () = geoSystem ();
+	coord -> geoOrigin () = geoOrigin ();
+
+	geometry -> metadata ()        = metadata ();
+	geometry -> solid ()           = solid ();
+	geometry -> ccw ()             = ccw ();
+	geometry -> creaseAngle ()     = creaseAngle ();
+	geometry -> colorPerVertex ()  = colorPerVertex ();
+	geometry -> normalPerVertex () = normalPerVertex ();;
+	geometry -> color ()           = color ();
+
+	if (texCoordNode)
+		geometry -> texCoord () = texCoordNode;
+	else
+		geometry -> texCoord () = texCoord;
+
+	geometry -> normal () = normal ();
+	geometry -> coord ()  = coord;
+
+	const auto coordIndex = createCoordIndex ();
+	const auto points     = createGeoPoints ();
+
+	coord -> point () .assign (points .begin (), points .end ());
+
+	if (texCoord)
+	{
+		const auto texCoords = createTexCoord ();
+		
+		for (const auto & point : texCoords)
+			texCoord -> point () .emplace_back (point .x (), point .y ());
+	}
+
+	for (size_t i = 0, size = coordIndex .size (); i < size; i += 4)
+	{
+		geometry -> coordIndex () .emplace_back (coordIndex [i]);
+		geometry -> coordIndex () .emplace_back (coordIndex [i + 1]);
+		geometry -> coordIndex () .emplace_back (coordIndex [i + 2]);
+		geometry -> coordIndex () .emplace_back (coordIndex [i + 3]);
+		geometry -> coordIndex () .emplace_back (-1);
+	}
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
 }
 
 void

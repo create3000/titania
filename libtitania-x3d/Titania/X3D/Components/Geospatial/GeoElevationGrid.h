@@ -271,13 +271,16 @@ private:
 	createTexCoord () const;
 
 	std::vector <Vector3f>
-	createNormals (const std::vector <Vector3f> &, const std::vector <size_t> &) const;
+	createNormals (const std::vector <Vector3d> &, const std::vector <size_t> &) const;
 
 	std::vector <size_t>
 	createCoordIndex () const;
 
-	std::vector <Vector3f>
+	std::vector <Vector3d>
 	createPoints () const;
+
+	std::vector <Vector3d>
+	createGeoPoints () const;
 
 	virtual
 	void

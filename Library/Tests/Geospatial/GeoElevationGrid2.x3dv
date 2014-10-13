@@ -1,0 +1,123 @@
+#X3D V3.3 utf8 Titania V0.7.4
+
+META "comment" "World of Titania"
+META "created" "Mon, 13 Oct 2014 00:37:06 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Mon, 13 Oct 2014 00:49:53 GMT"
+
+NavigationInfo { }
+
+DEF Gray Background {
+  skyColor 0.2 0.2 0.2
+}
+
+GeoViewpoint {
+  description "GeoViewpoint"
+  position 0 0 13000000
+  orientation -1 0 0 1.5708
+}
+
+DEF GeoElevationGrid Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url [
+          "../images/earth.png",
+          "file:///home/holger/Projekte/Titania/Library/Tests/images/earth.png"
+        ]
+      }
+    }
+    geometry GeoElevationGrid {
+      geoGridOrigin -1.570963 3.1415927 0
+      xDimension 2
+      zDimension 2
+      xSpacing 0.31415927
+      zSpacing 0.31415927
+      creaseAngle 3.14159
+    }
+  }
+}
+
+DEF Axes Transform {
+  scale 1e+07 1e+07 1e+07
+  children Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex [
+        0,
+        1,
+        2
+      ]
+      coordIndex [
+        0,
+        1,
+        -1,
+        2,
+        3,
+        -1,
+        4,
+        5,
+        -1
+      ]
+      color Color {
+        color [
+          1 0 0,
+          0 1 0,
+          0 0 1
+        ]
+      }
+      coord Coordinate {
+        point [
+          -1 0 0,
+          1 0 0,
+          0 -1 0,
+          0 1 0,
+          0 0 -1,
+          0 0 1
+        ]
+      }
+    }
+  }
+}
+
+DEF ZeroMarker GeoTransform {
+  scale 1e+06 1e+06 1e+06
+  children Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex [
+        0,
+        1,
+        2
+      ]
+      coordIndex [
+        0,
+        1,
+        -1,
+        0,
+        2,
+        -1,
+        0,
+        3,
+        -1
+      ]
+      color Color {
+        color [
+          1 0 0,
+          0 1 0,
+          0 0 1
+        ]
+      }
+      coord Coordinate {
+        point [
+          0 0 0,
+          1 0 0,
+          0 1 0,
+          0 0 1
+        ]
+      }
+    }
+  }
+}

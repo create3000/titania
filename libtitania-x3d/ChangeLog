@@ -1,3 +1,17 @@
+2014-10-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Coordinate.h:
+	* Coordinate.cpp:
+	* CoordinateDouble.h:
+	* GeoCoordinate.h:
+	* CoordinateDouble.cpp:
+	* ElevationGrid.cpp:
+	* GeoCoordinate.cpp:
+	* GeoElevationGrid.h:
+	* IndexedFaceSet.cpp:
+	* X3DCoordinateNode.h:
+	* GeoElevationGrid.cpp: 
+
 2014-10-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GeoElevationGrid.h:

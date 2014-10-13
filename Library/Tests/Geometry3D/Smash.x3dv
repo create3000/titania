@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sun, 12 Oct 2014 08:44:51 GMT"
+META "modified" "Mon, 13 Oct 2014 04:12:21 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -40,6 +40,18 @@ EXTERNPROTO ToolShader [
   inputOutput SFFloat transparency
 ]
 "../../../libtitania-x3d/share/titania/tools/library/ToolShader.x3dv"
+
+EXTERNPROTO QuadSphere [
+  inputOutput    SFInt32 uDimension
+  inputOutput    SFInt32 vDimension
+  inputOutput    SFFloat radius
+  initializeOnly SFBool  solid
+]
+[
+  "../../../Titania/share/titania/Prototypes/0.1/Geometry3D/QuadSphere.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Geometry3D/QuadSphere.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/QuadSphere.x3dv"
+]
 
 WorldInfo {
   metadata MetadataSet {
@@ -1270,7 +1282,7 @@ Transform {
   }
 }
 
-DEF _6 Transform {
+Transform {
   translation 25 12 4.40964e-05
   children Shape {
     appearance Appearance {
@@ -1299,5 +1311,15 @@ DEF _6 Transform {
         ]
       }
     }
+  }
+}
+
+DEF QuadSphere_1 Transform {
+  translation -12 -3 -1.10241e-05
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry QuadSphere { }
   }
 }
