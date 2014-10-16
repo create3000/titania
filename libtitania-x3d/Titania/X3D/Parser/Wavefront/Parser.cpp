@@ -179,7 +179,9 @@ Parser::statement ()
 
 	if (g ())
 		return true;
-	
+
+	if (s ())
+		return true;
 
 	return false;
 }
@@ -297,6 +299,54 @@ Parser::s (int32_t & shadingGroup)
 }
 
 bool
+Parser::vt (Vector2f & value)
+{
+	//__LOG__ << this << " " << std::endl;
+	
+	comments ();
+
+	if (Grammar::vt (istream))
+	{
+		if (Vector2f (value))
+			return true;
+	}
+
+	return false;
+}
+
+bool
+Parser::vn (Vector3f & value)
+{
+	//__LOG__ << this << " " << std::endl;
+	
+	comments ();
+
+	if (Grammar::vn (istream))
+	{
+		if (Vec3f (value))
+			return true;
+	}
+
+	return false;
+}
+
+bool
+Parser::v (Vector3f & value)
+{
+	//__LOG__ << this << " " << std::endl;
+	
+	comments ();
+
+	if (Grammar::v (istream))
+	{
+		if (Vec32f (value))
+			return true;
+	}
+
+	return false;
+}
+
+bool
 Parser::Int32 (int32_t & value)
 {
 	//__LOG__ << this << " " << std::endl;
@@ -312,7 +362,22 @@ Parser::Int32 (int32_t & value)
 }
 
 bool
-Parser::Float (float & value)
+Parser::Vec2f (Vector2f & value)
+{
+	//__LOG__ << this << " " << std::endl;
+	
+	comments ();
+
+	if (istream >> value)
+		return true;
+
+	istream .clear ();
+
+	return false;
+}
+
+bool
+Parser::Vec3f (Vector3f & value)
 {
 	//__LOG__ << this << " " << std::endl;
 	

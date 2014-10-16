@@ -98,12 +98,24 @@ private:
 
 	bool
 	s (int32_t &);
-	
+
+	bool
+	v (Vector3f &);
+
+	bool
+	vt (Vector2f &);
+
+	bool
+	vn (Vector3f &);
+
 	bool
 	Int32 (int32_t &);
-	
+
 	bool
-	Float (float &);
+	Vec2f (Vector2f &);
+
+	bool
+	Vec3f (Vector3f &);
 
 	///  @name Members
 
