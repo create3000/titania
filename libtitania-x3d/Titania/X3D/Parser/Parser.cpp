@@ -331,7 +331,7 @@ Parser::comments ()
 	//__LOG__ << this << " " << std::endl;
 
 	while (comment ())
-;
+		;
 }
 
 bool
@@ -479,7 +479,7 @@ Parser::unitStatements ()
 	//__LOG__ << this << " " << std::endl;
 
 	while (unitStatement ())
-;
+		;
 }
 
 bool
@@ -623,7 +623,7 @@ Parser::metaStatements ()
 	//__LOG__ << this << " " << std::endl;
 
 	while (metaStatement ())
-;
+		;
 }
 
 bool
@@ -663,7 +663,7 @@ Parser::statements ()
 	//__LOG__ << this << " " << std::endl;
 
 	while (statement ())
-;
+		;
 
 	//__LOG__ << this << " " << std::endl;
 }
@@ -797,7 +797,7 @@ Parser::protoStatements ()
 	//__LOG__ << this << " " << std::endl;
 
 	while (protoStatement ())
-;
+		;
 }
 
 bool
@@ -1436,7 +1436,7 @@ Parser::scriptBody (X3DBaseNode* const _baseNode)
 	//__LOG__ << this << " " << std::endl;
 
 	while (scriptBodyElement (_baseNode))
-;
+		;
 }
 
 bool
@@ -1599,7 +1599,7 @@ Parser::nodeBody (X3DBaseNode* const _baseNode)
 	//__LOG__ << this << " " << std::endl;
 
 	while (nodeBodyElement (_baseNode))
-;
+		;
 }
 
 bool

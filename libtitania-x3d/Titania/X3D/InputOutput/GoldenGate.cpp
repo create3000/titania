@@ -53,6 +53,7 @@
 #include "../Fields.h"
 #include "../Miscellaneous/MediaStream.h"
 #include "../Parser/Filter.h"
+#include "../Parser/Wavefront/Parser.h"
 
 #include <Titania/OS.h>
 #include <Titania/Physics/Constants.h>
@@ -156,13 +157,15 @@ static
 void
 golden_obj (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
 {
-	const std::string obj2wrl = "perl '" + os::find_data_file ("titania/goldengate/obj2wrl.pl") + "'";
+	Wavefront::Parser (scene, uri, istream) .parseIntoScene ();
 
-	// Parse into stream.
-
-	basic::ifilestream goldenstream (golden_pipe (obj2wrl, basic::to_string (istream)));
-
-	scene -> fromStream (uri, goldenstream);
+//	const std::string obj2wrl = "perl '" + os::find_data_file ("titania/goldengate/obj2wrl.pl") + "'";
+//
+//	// Parse into stream.
+//
+//	basic::ifilestream goldenstream (golden_pipe (obj2wrl, basic::to_string (istream)));
+//
+//	scene -> fromStream (uri, goldenstream);
 }
 
 static

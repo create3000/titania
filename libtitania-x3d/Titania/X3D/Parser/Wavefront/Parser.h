@@ -55,6 +55,13 @@
 
 namespace titania {
 namespace X3D {
+
+class TextureCoordinate;
+class Normal;
+class Coordinate;
+class IndexedFaceSet;
+class Shape;
+
 namespace Wavefront {
 
 class Parser
@@ -65,6 +72,8 @@ public:
 
 	void
 	parseIntoScene ();
+
+	~Parser ();
 
 
 private:
@@ -97,16 +106,37 @@ private:
 	g ();
 
 	bool
-	s (int32_t &);
+	s ();
 
 	bool
-	v (Vector3f &);
+	vts ();
 
 	bool
-	vt (Vector2f &);
+	vt ();
 
 	bool
-	vn (Vector3f &);
+	vns ();
+
+	bool
+	vn ();
+
+	bool
+	vs ();
+
+	bool
+	v ();
+
+	bool
+	fs ();
+
+	bool
+	f ();
+
+	bool
+	ff ();
+
+	int32_t
+	getIndex (const int32_t, const int32_t, const int32_t);
 
 	bool
 	Int32 (int32_t &);
@@ -126,6 +156,18 @@ private:
 	std::string               whiteSpaceCharacters;
 	std::string               commentCharacters;
 	std::vector <std::string> currentComments;
+	
+	X3DPtr <TextureCoordinate> texCoord;
+	X3DPtr <Normal>            normal;
+	X3DPtr <Coordinate>        coord;
+	X3DPtr <IndexedFaceSet>    geometry;
+	X3DPtr <Shape>             shape;
+	X3DPtr <Transform>         group;
+	X3DPtr <Transform>         object;
+
+	int32_t texCoordIndex;
+	int32_t normalIndex;
+	int32_t coordIndex;
 
 };
 
