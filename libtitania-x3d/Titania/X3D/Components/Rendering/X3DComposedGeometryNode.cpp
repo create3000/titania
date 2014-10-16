@@ -182,15 +182,6 @@ X3DComposedGeometryNode::set_coord ()
 		coordNode -> addInterest (this);
 }
 
-Box3f
-X3DComposedGeometryNode::createBBox ()
-{
-	if (getCoord ())
-		return getCoord () -> getBBox ();
-
-	return Box3f ();
-}
-
 void
 X3DComposedGeometryNode::build (const size_t vertexCount, size_t size)
 {

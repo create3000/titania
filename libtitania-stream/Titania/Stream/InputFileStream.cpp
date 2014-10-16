@@ -234,7 +234,10 @@ ifilestream::send ()
 		istream = file_istream .get ();
 
 	if (not istream)
-		istream = url_istream .get ();
+	{
+		istream               = url_istream .get ();
+		file_response_headers = url_istream -> response_headers ();
+	}
 
 	try
 	{
@@ -248,7 +251,18 @@ ifilestream::send ()
 	}
 	catch (const std::invalid_argument &)
 	{
-		guess_content_type (url (), this);
+		try
+		{
+			if (file_response_headers .at ("Content-Type") .empty ())
+			{
+				file_response_headers .erase ("Content-Type");
+				guess_content_type (url (), this);
+			}
+		}
+		catch (const std::out_of_range &)
+		{
+			guess_content_type (url (), this);
+		}
 	}
 }
 
@@ -257,18 +271,18 @@ ifilestream::guess_content_type (const basic::uri & url, std::istream* const ist
 {
 	static constexpr size_t BUFFER_SIZE = 255;
 
-	auto state = istream -> rdstate ();
-	auto pos   = istream -> tellg ();
+	const auto state = istream -> rdstate ();
+	const auto pos   = istream -> tellg ();
 
 	// Guess content type.
 
-	char   data [BUFFER_SIZE];
-	size_t data_size = istream -> rdbuf () -> sgetn (data, BUFFER_SIZE);
+	char         data [BUFFER_SIZE];
+	const size_t data_size = istream -> rdbuf () -> sgetn (data, BUFFER_SIZE);
 
 	bool        result_uncertain;
 	std::string content_type = Gio::content_type_guess (url .path (), (guchar*) data, data_size, result_uncertain);
 
-	file_response_headers .emplace ("Content-Type", content_type);
+	file_response_headers .emplace ("Content-Type", std::move (content_type));
 
 	// Reset stream.
 
@@ -309,9 +323,6 @@ ifilestream::request_headers () const
 const ifilestream::headers_type &
 ifilestream::response_headers () const
 {
-	if (url_istream)
-		return url_istream -> response_headers ();
-
 	return file_response_headers;
 }
 

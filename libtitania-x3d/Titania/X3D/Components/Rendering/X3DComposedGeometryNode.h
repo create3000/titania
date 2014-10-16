@@ -212,10 +212,6 @@ protected:
 
 	///  @name Operations
 
-	virtual
-	Box3f
-	createBBox () final override;
-
 	void
 	build (const size_t, size_t);
 

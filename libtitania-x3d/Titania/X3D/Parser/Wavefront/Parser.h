@@ -61,6 +61,7 @@ class Normal;
 class Coordinate;
 class IndexedFaceSet;
 class Shape;
+class Material;
 
 namespace Wavefront {
 
@@ -85,7 +86,10 @@ private:
 	comment ();
 
 	void
-	lines (const std::string &);
+	whiteSpaces ();
+
+	void
+	whiteSpacesNoLineTerminator ();
 
 	void
 	statements ();
@@ -133,7 +137,7 @@ private:
 	f ();
 
 	bool
-	ff ();
+	Index ();
 
 	int32_t
 	getIndex (const int32_t, const int32_t, const int32_t);
@@ -157,6 +161,7 @@ private:
 	std::string               commentCharacters;
 	std::vector <std::string> currentComments;
 	
+	X3DPtr <Material>          material;
 	X3DPtr <TextureCoordinate> texCoord;
 	X3DPtr <Normal>            normal;
 	X3DPtr <Coordinate>        coord;
@@ -168,6 +173,7 @@ private:
 	int32_t texCoordIndex;
 	int32_t normalIndex;
 	int32_t coordIndex;
+	float   creaseAngle;
 
 };
 

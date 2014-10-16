@@ -74,6 +74,7 @@ public:
 
 	///  @name General
 	static const io::sequence            WhiteSpaces;
+	static const io::sequence            WhiteSpacesNoLineTerminator;
 	static const io::single_line_comment Comment;
 
 	///  @name Keywords
@@ -93,6 +94,7 @@ public:
 };
 
 const io::sequence            Grammar::WhiteSpaces ("\r\n \t");
+const io::sequence            Grammar::WhiteSpacesNoLineTerminator (" \t");
 const io::single_line_comment Grammar::Comment ("#");
 
 const io::string         Grammar::mtllib ("mtllib");
@@ -116,20 +118,20 @@ Parser::Parser (const X3DScenePtr & scene, const basic::uri & uri, std::istream 
 	whiteSpaceCharacters (),
 	   commentCharacters (),
 	     currentComments (),
+	            material (scene -> createNode ("Material")),
 	            texCoord (),
 	              normal (),
 	               coord (),
 	            geometry (),
 	               shape (),
-	               group (),
-	              object (),
+	               group (scene -> createNode ("Transform")),
+	              object (scene -> createNode ("Transform")),
 	       texCoordIndex (1),
 	         normalIndex (1),
-	          coordIndex (1)
+	          coordIndex (1),
+	         creaseAngle (0)
 {
-	group  = X3DPtr <Transform> (scene -> createNode ("Transform"));
-	object = X3DPtr <Transform> (scene -> createNode ("Transform"));
-
+	scene -> addUninitializedNode (material);
 	scene -> addUninitializedNode (group);
 	scene -> addUninitializedNode (object);
 
@@ -170,11 +172,7 @@ Parser::comment ()
 {
 	//__LOG__ << this << " " << std::endl;
 
-	Grammar::WhiteSpaces (istream, whiteSpaceCharacters);
-
-	lines (whiteSpaceCharacters);
-
-	whiteSpaceCharacters .clear ();
+	whiteSpaces ();
 
 	if (Grammar::Comment (istream, commentCharacters))
 	{
@@ -188,11 +186,25 @@ Parser::comment ()
 }
 
 void
-Parser::lines (const std::string & string)
+Parser::whiteSpaces ()
 {
 	//__LOG__ << this << " " << std::endl;
 
-	lineNumber += std::count (string .begin (), string .end (), '\n');
+	Grammar::WhiteSpaces (istream, whiteSpaceCharacters);
+
+	lineNumber += std::count (whiteSpaceCharacters .begin (), whiteSpaceCharacters .end (), '\n');
+
+	whiteSpaceCharacters .clear ();
+}
+
+void
+Parser::whiteSpacesNoLineTerminator ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	Grammar::WhiteSpacesNoLineTerminator (istream, whiteSpaceCharacters);
+
+	whiteSpaceCharacters .clear ();
 }
 
 void
@@ -255,7 +267,7 @@ Parser::mtllib ()
 
 	if (Grammar::mtllib (istream))
 	{
-		comments ();
+		whiteSpacesNoLineTerminator ();
 
 		std::string uri;
 
@@ -277,13 +289,13 @@ Parser::usemtl ()
 
 	comments ();
 
-	if (Grammar::mtllib (istream))
+	if (Grammar::usemtl (istream))
 	{
-		comments ();
+		whiteSpacesNoLineTerminator ();
 
-		std::string nameCharacters;
+		std::string name;
 
-		if (Grammar::string (istream, nameCharacters))
+		if (Grammar::string (istream, name))
 		{
 			return true;
 		}
@@ -303,17 +315,26 @@ Parser::Parser::o ()
 
 	if (Grammar::o (istream))
 	{
-		comments ();
+		whiteSpacesNoLineTerminator ();
 
-		std::string nameCharacters;
+		std::string name;
 
-		if (Grammar::string (istream, nameCharacters))
+		if (Grammar::string (istream, name))
 		{
-			object = X3DPtr <Transform> (scene -> createNode ("Transform"));
+			if (not group -> children () .empty ())
+			{
+				object = X3DPtr <Transform> (scene -> createNode ("Transform"));
+				group  = X3DPtr <Transform> (scene -> createNode ("Transform"));
 
-			scene -> addUninitializedNode (object);
+				scene -> addUninitializedNode (object);
+				scene -> addUninitializedNode (group);
 	
-			scene -> getRootNodes () .emplace_back (object);
+				object -> children () .emplace_back (group);
+				scene -> getRootNodes () .emplace_back (object);
+			}
+
+			if (not name .empty ())
+				scene -> updateNamedNode (name, SFNode (object));
 
 			return true;
 		}
@@ -333,17 +354,23 @@ Parser::g ()
 
 	if (Grammar::g (istream))
 	{
-		comments ();
+		whiteSpacesNoLineTerminator ();
 
-		std::string nameCharacters;
+		std::string name;
 
-		if (Grammar::string (istream, nameCharacters))
+		if (Grammar::string (istream, name))
 		{
-			group = X3DPtr <Transform> (scene -> createNode ("Transform"));
+			if (not group -> children () .empty ())
+			{
+				group = X3DPtr <Transform> (scene -> createNode ("Transform"));
 
-			scene -> addUninitializedNode (group);
+				scene -> addUninitializedNode (group);
 			
-			object -> children () .emplace_back (group);
+				object -> children () .emplace_back (group);
+			}
+
+			if (not name .empty ())
+				scene -> updateNamedNode (name, SFNode (group));
 
 			return true;
 		}
@@ -365,16 +392,20 @@ Parser::s ()
 
 	if (Grammar::s (istream))
 	{
-		comments ();
+		whiteSpacesNoLineTerminator ();
 
 		if (Grammar::off (istream))
 		{
+			creaseAngle = 0;
 			return true;
 		}
 
 		if (Int32 (shadingGroup))
+		{
+			creaseAngle = M_PI;
 			return true;
-			
+		}
+
 		throw Error <INVALID_X3D> ("Expected shading group number of 'off'.");
 	}
 
@@ -535,19 +566,18 @@ Parser::fs ()
 	if (Grammar::f .lookahead (istream))
 	{
 		const auto appearance = X3DPtr <Appearance> (scene -> createNode ("Appearance"));
-		const auto material   = scene -> createNode ("Material");
 
 		geometry = X3DPtr <IndexedFaceSet> (scene -> createNode ("IndexedFaceSet"));
 		shape    = X3DPtr <Shape> (scene -> createNode ("Shape"));
 
-		scene -> addUninitializedNode (material);
 		scene -> addUninitializedNode (appearance);
 		scene -> addUninitializedNode (geometry);
 		scene -> addUninitializedNode (shape);
 
-		appearance -> material () = material;
-		shape -> appearance ()    = appearance;
-		shape -> geometry ()      = geometry;
+		appearance -> material ()  = material;
+		geometry -> creaseAngle () = creaseAngle;
+		shape -> appearance ()     = appearance;
+		shape -> geometry ()       = geometry;
 
 		group -> children () .emplace_back (shape);
 
@@ -580,32 +610,24 @@ Parser::f ()
 		const size_t texCoords = geometry -> texCoordIndex () .size ();
 		const size_t normals   = geometry -> normalIndex () .size ();
 
-		if (ff ())
-		{
-			if (ff ())
-			{
-				if (ff ())
-				{
-					if (geometry -> texCoordIndex () .size () - texCoords)
-						geometry -> texCoordIndex () .emplace_back (-1);
-				
-					if (geometry -> normalIndex () .size () - normals)
-						geometry -> normalIndex () .emplace_back (-1);
-	
-					geometry -> coordIndex () .emplace_back (-1);
-					return true;
-				}
-			}
-		}
+		while (Index ())
+			;
 
-		throw Error <INVALID_X3D> ("Expected face index.");
+		if (geometry -> texCoordIndex () .size () not_eq texCoords)
+			geometry -> texCoordIndex () .emplace_back (-1);
+
+		if (geometry -> normalIndex () .size () not_eq normals)
+			geometry -> normalIndex () .emplace_back (-1);
+
+		geometry -> coordIndex () .emplace_back (-1);
+		return true;
 	}
 
 	return false;
 }
 
 bool
-Parser::ff ()
+Parser::Index ()
 {
 	//__LOG__ << this << " " << std::endl;
 	
@@ -613,8 +635,6 @@ Parser::ff ()
 
 	if (Int32 (value))
 	{
-		comments ();
-		
 		geometry -> coordIndex () .emplace_back (getIndex (value, coordIndex, coord -> point () .size ()));
 	
 		if (Grammar::Slash (istream))
@@ -624,8 +644,6 @@ Parser::ff ()
 				geometry -> texCoordIndex () .emplace_back (getIndex (value, texCoordIndex, texCoord -> point () .size ()));
 			}
 
-			comments ();
-		
 			if (Grammar::Slash (istream))
 			{
 				if (Int32 (value))
@@ -658,7 +676,7 @@ Parser::Int32 (int32_t & value)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	comments ();
+	whiteSpacesNoLineTerminator ();
 
 	if (istream >> value)
 		return true;
@@ -673,7 +691,7 @@ Parser::Vec2f (Vector2f & value)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	comments ();
+	whiteSpacesNoLineTerminator ();
 
 	if (istream >> value)
 		return true;
@@ -688,7 +706,7 @@ Parser::Vec3f (Vector3f & value)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	comments ();
+	whiteSpacesNoLineTerminator ();
 
 	if (istream >> value)
 		return true;

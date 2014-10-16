@@ -1,5 +1,13 @@
 2014-10-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.h:
+	* GoldenGate.cpp:
+	* Parser.cpp:
+	* X3DComposedGeometryNode.h:
+	* X3DComposedGeometryNode.cpp: 
+
+2014-10-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.cpp:
 	* Parser.h:
 	* GoldenGate.cpp:

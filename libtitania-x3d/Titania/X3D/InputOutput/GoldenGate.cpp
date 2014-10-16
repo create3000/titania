@@ -285,7 +285,6 @@ golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 		std::make_pair ("model/x3d+vrml",  &golden_x3dv),
 		std::make_pair ("model/x3d+xml",   &golden_x3d),
 		std::make_pair ("application/xml", &golden_x3d),
-		std::make_pair ("text/plain",      &golden_text),
 		std::make_pair ("application/ogg", &golden_video)
 	};
 
@@ -325,7 +324,7 @@ golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 	catch (const std::out_of_range &)
 	{ }
 
-	golden_x3dv (scene, uri, std::move (istream));
+	golden_text (scene, uri, std::move (istream));
 }
 
 } // X3D
