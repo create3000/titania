@@ -57,6 +57,7 @@
     <None Include="logo\logo1024.png" />
     <None Include="logo\logo192.png" />
     <None Include="logo\logo64.png" />
+    <None Include="website\x3d-export.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="website\" />

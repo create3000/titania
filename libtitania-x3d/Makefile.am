@@ -404,6 +404,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Fields/SFVec4.cpp \
 	Titania/X3D/Fields/X3DScalar.cpp \
 	Titania/X3D/InputOutput/Generator.cpp \
+	Titania/X3D/InputOutput/GoldenGate.cpp \
 	Titania/X3D/InputOutput/Loader.cpp \
 	Titania/X3D/InputOutput/X3DBaseGenerator.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom.cpp \
@@ -454,7 +455,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/X3DJavaScriptEngine.cpp \
 	Titania/X3D/Miscellaneous/BVH.cpp \
 	Titania/X3D/Miscellaneous/FontConfig.cpp \
-	Titania/X3D/Miscellaneous/GoldenGate.cpp \
 	Titania/X3D/Miscellaneous/Keys.cpp \
 	Titania/X3D/Miscellaneous/MediaStream.cpp \
 	Titania/X3D/Miscellaneous/Random.cpp \
@@ -466,6 +466,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Parser/Grammar.cpp \
 	Titania/X3D/Parser/Parser.cpp \
 	Titania/X3D/Parser/RegEx.cpp \
+	Titania/X3D/Parser/Wavefront/Parser.cpp \
 	Titania/X3D/Parser/X3DParser.cpp \
 	Titania/X3D/PeaseBlossom/Base/vsChildObject.cpp \
 	Titania/X3D/PeaseBlossom/Base/vsGarbargeCollector.cpp \

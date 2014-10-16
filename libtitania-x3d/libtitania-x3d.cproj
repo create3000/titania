@@ -520,7 +520,6 @@
     <None Include="Titania\X3D\Parser\Filter.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsError.h" />
     <None Include="Titania\X3D\Rendering\OpenGL.h" />
-    <None Include="Titania\X3D\Miscellaneous\GoldenGate.h" />
     <None Include="Titania\X3D\Miscellaneous\Keys.h" />
     <None Include="Titania\X3D\Miscellaneous\Texture.h" />
     <None Include="Titania\X3D\Miscellaneous\FontConfig.h" />
@@ -793,6 +792,9 @@
     <None Include="share\titania\goldengate\obj2wrl.pl" />
     <None Include="Titania\X3D\Browser\Geometry3D\CylinderOptions.h" />
     <None Include="Titania\X3D\Browser\Geometry3D\ConeOptions.h" />
+    <None Include="Titania\X3D\InputOutput\GoldenGate.h" />
+    <None Include="Titania\X3D\Parser\Wavefront\Parser.h" />
+    <None Include="EmptyCHeaderFile.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1189,7 +1191,6 @@
     <Compile Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionNode.cpp" />
     <Compile Include="Titania\X3D\Parser\Filter.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsError.cpp" />
-    <Compile Include="Titania\X3D\Miscellaneous\GoldenGate.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\Keys.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\Texture.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\FontConfig.cpp" />
@@ -1312,6 +1313,8 @@
     <Compile Include="Titania\X3D\Tools\PointingDeviceSensor\TouchGroupTool.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\CylinderOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\ConeOptions.cpp" />
+    <Compile Include="Titania\X3D\InputOutput\GoldenGate.cpp" />
+    <Compile Include="Titania\X3D\Parser\Wavefront\Parser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1384,6 +1387,7 @@
     <Folder Include="Titania\X3D\Tools\Layering\" />
     <Folder Include="Titania\X3D\Tools\Picking\" />
     <Folder Include="Titania\X3D\Tools\PointingDeviceSensor\" />
+    <Folder Include="Titania\X3D\Parser\Wavefront\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

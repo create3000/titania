@@ -53,7 +53,7 @@
 #include "../../X3D.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/X3DScene.h"
-#include "../Miscellaneous/GoldenGate.h"
+#include "../InputOutput/GoldenGate.h"
 
 #include <Titania/String/to_string.h>
 

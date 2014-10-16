@@ -48,56 +48,76 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_H__
-#define __TITANIA_X3D_H__
+#ifndef __TITANIA_X3D_PARSER_WAVEFRONT_PARSER_H__
+#define __TITANIA_X3D_PARSER_WAVEFRONT_PARSER_H__
 
-// Include Browser at first.
-#include "X3D/Browser/Browser.h"
-#include "X3D/Browser/BrowserApplication.h"
-
-#include "X3D/Basic/FieldSet.h"
-
-#include "X3D/Bits/Cast.h"
-#include "X3D/Bits/Error.h"
-#include "X3D/Bits/Traverse.h"
-#include "X3D/Components.h"
-#include "X3D/Prototype/ExternProtoDeclaration.h"
-#include "X3D/Prototype/ProtoDeclaration.h"
-
-#include "X3D/Execution/BindableNodeList.h"
-#include "X3D/Execution/BindableNodeStack.h"
-#include "X3D/Execution/ExportedNode.h"
-#include "X3D/Execution/ImportedNode.h"
-#include "X3D/Execution/NamedNode.h"
-
-#include "X3D/Browser/BrowserOptions.h"
-#include "X3D/Browser/BrowserProperties.h"
-#include "X3D/Browser/Notification.h"
-#include "X3D/Browser/Rendering/MotionBlur.h"
-#include "X3D/Browser/RenderingProperties.h"
-#include "X3D/Browser/Selection.h"
-#include "X3D/InputOutput/Loader.h"
-#include "X3D/Miscellaneous/Keys.h"
-#include "X3D/Miscellaneous/MediaStream.h"
-#include "X3D/Parser/Filter.h"
-#include "X3D/Parser/RegEx.h"
+#include "../../Execution/X3DScene.h"
 
 namespace titania {
 namespace X3D {
+namespace Wavefront {
 
-const BrowserApplicationPtr &
-getBrowser (/* parameter */)
-throw (Error <BROWSER_UNAVAILABLE>);
+class Parser
+{
+public:
 
-BrowserPtr
-createBrowser ()
-throw (Error <BROWSER_UNAVAILABLE>);
+	Parser (const X3DScenePtr &, const basic::uri &, std::istream &);
 
-BrowserPtr
-createBrowser (const BrowserPtr &)
-throw (Error <INVALID_NODE>,
-       Error <BROWSER_UNAVAILABLE>);
+	void
+	parseIntoScene ();
 
+
+private:
+
+	void
+	comments ();
+
+	bool
+	comment ();
+
+	void
+	lines (const std::string &);
+
+	void
+	statements ();
+
+	bool
+	statement ();
+
+	bool
+	mtllib ();
+
+	bool
+	usemtl ();
+
+	bool
+	o ();
+
+	bool
+	g ();
+
+	bool
+	s (int32_t &);
+	
+	bool
+	Int32 (int32_t &);
+	
+	bool
+	Float (float &);
+
+	///  @name Members
+
+	const X3DScenePtr &       scene;
+	const basic::uri          uri;
+	std::istream &            istream;
+	size_t                    lineNumber;
+	std::string               whiteSpaceCharacters;
+	std::string               commentCharacters;
+	std::vector <std::string> currentComments;
+
+};
+
+} // Wavefront
 } // X3D
 } // titania
 

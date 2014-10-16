@@ -54,8 +54,9 @@
 #include "../../Configuration/config.h"
 #include "../../Dialogs/FileSaveDialog/FileSaveDialog.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
-
 #include "../../ComposedWidgets/MFStringURLWidget.h"
+
+#include <Titania/X3D/InputOutput/GoldenGate.h>
 
 namespace titania {
 namespace puck {

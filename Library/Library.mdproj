@@ -2480,6 +2480,12 @@
     <None Include="Tests\Geospatial\root.x3dv" />
     <None Include="Tests\Geospatial\test.x3dv" />
     <None Include="Tests\Geospatial\tie.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurface\NurbsCurveExample.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurface\NurbsPatchSolid.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurface\NurbsPatchSurfaceExampleWithOahuTexture.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurface\NurbsPositionInterpolatorExample.x3dv" />
+    <None Include="Tests\NURBS\NurbsTrimmedSurface\StampX3dLetters.x3d" />
+    <None Include="Tests\NURBS\NurbsTrimmedSurface\StampX3dLettersHalloween.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

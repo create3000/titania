@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Mon, 13 Oct 2014 04:12:21 GMT"
+META "modified" "Mon, 13 Oct 2014 10:04:50 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -348,7 +348,7 @@ DEF ElevationGrid_1 Transform {
 }
 
 DEF ElevationGrid Transform {
-  translation -14 2.00002 7.34937e-06
+  translation -12 2 7.3494e-06
   scale 0.358296 0.358296 0.358296
   children Shape {
     appearance Appearance {

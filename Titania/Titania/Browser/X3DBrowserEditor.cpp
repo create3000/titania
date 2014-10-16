@@ -57,6 +57,7 @@
 #include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
 
+#include <Titania/X3D/InputOutput/GoldenGate.h>
 #include <Titania/InputOutput/MultiLineComment.h>
 #include <Titania/OS.h>
 #include <Titania/String.h>
@@ -273,11 +274,13 @@ X3DBrowserEditor::isSaved (const X3D::BrowserPtr & browser)
 				return false;
 			}
 			default:
-				break;
+			{
+				userData -> saveConfirmed = true;
+				return true;
+			}
 		}
 	}
 
-	userData -> saveConfirmed = true;
 	return true;
 }
 

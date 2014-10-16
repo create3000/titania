@@ -1,23 +1,40 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Geometry3D/CylinderOptions.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Parser/Wavefront/Parser.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Cylinder.h" Line="148" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Cylinder.cpp" Line="321" Column="60" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="216" Column="24" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="696" Column="17" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1838" Column="20" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="918" Column="52" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/BrowserOptions.cpp" Line="290" Column="47" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Geometry3D/CylinderOptions.cpp" Line="56" Column="16" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="216" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="694" Column="39" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Box.cpp" Line="146" Column="13" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="61" Column="1" />
+      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.cpp" Line="60" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Wavefront/Parser.h" Line="62" Column="8" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Wavefront/Parser.cpp" Line="68" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="miscellaneous" expanded="True">
+            <Node name="logo" expanded="True">
+              <Node name="website" expanded="True" />
+            </Node>
+          </Node>
           <Node name="build" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Geometry3D" expanded="True" />
+              <Node name="NURBS" expanded="True">
+                <Node name="NurbsPatchSurface" expanded="True" />
+                <Node name="NurbsTrimmedSurface" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Math" expanded="True">
+                <Node name="Geometry" expanded="True" />
+                <Node name="Utility" expanded="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -35,10 +52,7 @@
                 <Node name="Browser" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="Geometry2D" expanded="True" />
-                  <Node name="Geometry3D" expanded="True">
-                    <Node name="CylinderOptions.cpp" selected="True" />
-                    <Node name="CylinderOptions.h" selected="True" />
-                  </Node>
+                  <Node name="Geometry3D" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                 </Node>
@@ -46,20 +60,18 @@
                   <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="Geometry2D" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
+                  <Node name="Geospatial" expanded="True" />
+                  <Node name="NURBS" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                 </Node>
-                <Node name="Execution" expanded="True" />
-                <Node name="Tools" expanded="True">
-                  <Node name="Grids" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
+                <Node name="InputOutput" expanded="True" />
+                <Node name="Parser" expanded="True">
+                  <Node name="Wavefront" expanded="True">
+                    <Node name="Parser.h" selected="True" />
+                  </Node>
                 </Node>
               </Node>
             </Node>
-          </Node>
-          <Node name="Papers" expanded="True">
-            <Node name="CosmoWorlds" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
@@ -86,11 +98,6 @@
                 <Node name="GeometryPropertiesEditor" expanded="True" />
                 <Node name="GridEditor" expanded="True" />
                 <Node name="InlineEditor" expanded="True" />
-              </Node>
-              <Node name="Widgets" expanded="True">
-                <Node name="OutlineEditor" expanded="True">
-                  <Node name="CellRenderer" expanded="True" />
-                </Node>
               </Node>
             </Node>
           </Node>

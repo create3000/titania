@@ -325,7 +325,7 @@ X3DNurbsSurfaceGeometryNode::build ()
 	                 uOrder (), vOrder (),
 	                 GL_MAP2_VERTEX_4);
 
-	trimSurface (nurbsRenderer);
+	//trimSurface (nurbsRenderer);
 
 	gluEndSurface (nurbsRenderer);
 
