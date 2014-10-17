@@ -233,6 +233,8 @@ LibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 				const auto undoStep = std::make_shared <UndoStep> (_ ("Import From Library"));
 				const auto nodes    = getBrowserWindow () -> importURL ({ file -> get_uri () }, false, undoStep);
 
+				__LOG__ << nodes << std::endl;
+
 				getBrowserWindow () -> getSelection () -> setChildren (nodes, undoStep);
 				getBrowserWindow () -> addUndoStep (undoStep);
 				break;

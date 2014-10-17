@@ -199,14 +199,17 @@ private:
 	d ();
 
 	bool
+	Tr ();
+
+	bool
 	illum ();
-	
+
 	bool
 	Int32 (int32_t &);
-	
+
 	bool
 	Float (float &);
-	
+
 	bool
 	Color (Color3f &);
 
@@ -218,8 +221,8 @@ private:
 	std::string       whiteSpaceCharacters;
 	std::string       commentCharacters;
 
-	std::map <std::string, X3DPtr <Material>> materials;
-	X3DPtr <Material>                         material;
+	std::map <std::string, X3DPtr <Material>>  materials;
+	X3DPtr <Material>                          material;
 
 };
 
@@ -327,6 +330,9 @@ MaterialParser::statement ()
 	if (d ())
 		return true;
 
+	if (Tr ())
+		return true;
+
 	if (illum ())
 		return true;
 
@@ -378,7 +384,7 @@ MaterialParser::Ka ()
 	if (Grammar::Ka (istream))
 	{
 		Color3f color;
-	
+
 		if (Color (color))
 		{
 			float h, s, v;
@@ -396,7 +402,6 @@ MaterialParser::Ka ()
 	return false;
 }
 
-
 bool
 MaterialParser::Kd ()
 {
@@ -407,7 +412,7 @@ MaterialParser::Kd ()
 	if (Grammar::Kd (istream))
 	{
 		Color3f color;
-	
+
 		if (Color (color))
 		{
 			material -> diffuseColor () = color;
@@ -420,7 +425,6 @@ MaterialParser::Kd ()
 	return false;
 }
 
-
 bool
 MaterialParser::Ks ()
 {
@@ -431,7 +435,7 @@ MaterialParser::Ks ()
 	if (Grammar::Ks (istream))
 	{
 		Color3f color;
-	
+
 		if (Color (color))
 		{
 			material -> specularColor () = color;
@@ -454,7 +458,7 @@ MaterialParser::Ns ()
 	if (Grammar::Ns (istream))
 	{
 		float value;
-	
+
 		if (Float (value))
 		{
 			material -> shininess () = value / 1000;
@@ -467,7 +471,6 @@ MaterialParser::Ns ()
 	return false;
 }
 
-
 bool
 MaterialParser::d ()
 {
@@ -475,10 +478,33 @@ MaterialParser::d ()
 
 	comments ();
 
-	if (Grammar::d (istream) or Grammar::Tr (istream))
+	if (Grammar::d (istream))
 	{
 		float value;
-	
+
+		if (Float (value))
+		{
+			material -> transparency () = 1 - value;
+			return true;
+		}
+
+		throw Error <INVALID_X3D> ("Expected a float.");
+	}
+
+	return false;
+}
+
+bool
+MaterialParser::Tr ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	comments ();
+
+	if (Grammar::Tr (istream))
+	{
+		float value;
+
 		if (Float (value))
 		{
 			material -> transparency () = value;
@@ -491,7 +517,6 @@ MaterialParser::d ()
 	return false;
 }
 
-
 bool
 MaterialParser::illum ()
 {
@@ -502,7 +527,7 @@ MaterialParser::illum ()
 	if (Grammar::illum (istream))
 	{
 		int32_t value;
-	
+
 		if (Int32 (value))
 		{
 			// Don't know what to do with illum value in X3D.
@@ -514,7 +539,7 @@ MaterialParser::illum ()
 
 	return false;
 }
-	
+
 bool
 MaterialParser::Int32 (int32_t & value)
 {
@@ -555,7 +580,7 @@ MaterialParser::Color (Color3f & value)
 
 }
 
-} // anon namespace
+}        // anon namespace
 
 Parser::Parser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
 	               scene (scene),
@@ -574,8 +599,8 @@ Parser::Parser (const X3DScenePtr & scene, const basic::uri & uri, std::istream 
 	               shape (),
 	               group (scene -> createNode ("Transform")),
 	              object (scene -> createNode ("Transform")),
-	        smoothingGroup (0),
-	       smoothingGroups ()
+	      smoothingGroup (0),
+	     smoothingGroups ()
 {
 	scene -> addUninitializedNode (defaultMaterial);
 	scene -> addUninitializedNode (texCoord);
@@ -592,7 +617,7 @@ void
 Parser::parseIntoScene ()
 {
 	//__LOG__ << this << " " << std::endl;
-	
+
 	scene -> setWorldURL (uri);
 
 	istream .imbue (std::locale::classic ());
@@ -723,7 +748,7 @@ Parser::mtllib ()
 		if (Grammar::string (istream, string))
 		{
 			const auto mtllibs = basic::split (string, " ");
-		
+
 			for (const auto & mtllib : mtllibs)
 			{
 				try
@@ -800,7 +825,7 @@ Parser::Parser::o ()
 		{
 			if (not name .empty ())
 				name = get_name_from_string (name);
-		
+
 			if (not group -> children () .empty ())
 			{
 				object = scene -> createNode ("Transform");
@@ -842,7 +867,7 @@ Parser::g ()
 		{
 			if (not name .empty ())
 				name = get_name_from_string (name);
-		
+
 			try
 			{
 				group = scene -> getNamedNode <Transform> (name);

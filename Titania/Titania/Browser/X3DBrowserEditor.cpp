@@ -377,11 +377,11 @@ X3DBrowserEditor::importURL (const std::vector <basic::uri> & uris, const bool i
 			const auto scene = getBrowser () -> createX3DFromURL ({ worldURL .str () });
 
 			if (MagicImport (getBrowserWindow ()) .import (selection, scene, undoStep))
-				continue;
+				return selection;
 
 			const auto importedNodes = importScene (scene, getExecutionContext () -> getRootNodes (), undoStep);
 
-			nodes .insert (nodes .end (), importedNodes .begin (), importedNodes .end());
+			nodes .insert (nodes .end (), importedNodes .begin (), importedNodes .end ());
 		}
 		catch (const X3D::X3DError & error)
 		{
