@@ -1,3 +1,13 @@
+2014-10-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Filter.h:
+	* X3DPtr.h:
+	* Filter.cpp:
+	* GoldenGate.h:
+	* Parser.h:
+	* GoldenGate.cpp:
+	* Parser.cpp: 
+
 2014-10-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.h:

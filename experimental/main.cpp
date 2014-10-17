@@ -297,6 +297,23 @@ t (const std::string & v = "test")
 }
 
 
+class A
+{
+public:
+};
+
+class B :
+	public A
+{
+public:
+};
+
+class C :
+	public A
+{
+public:
+};
+
 int
 main (int argc, char** argv)
 {
@@ -311,35 +328,11 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-{
-    std::istringstream stream(" 1.000000 -1.000000 -1.000000");
-    stream .imbue (std::locale::classic ());
 
-    float f1, f2, f3;
-
- 
-    stream >> f1 >> f2 >> f3;
-    std::cout << bool (stream) << '\n';
-    
- 
-    // extract the rest using the streambuf overload
-    stream >> std::cout.rdbuf();
-    std::cout << '\n';
-}
-	std::istringstream is (" 1.000000 -1.000000 -1.000000");
-	is .imbue (std::locale::classic ());
-
-	float f;
-	Vector3f v;
-
-	__LOG__ << bool (is >> f) << std::endl;
-	__LOG__ << bool (is >> f) << std::endl;
-	__LOG__ << bool (is >> f) << std::endl;
-	__LOG__ << is .rdbuf () << std::endl;
-
-	__LOG__ << bool (is >> v) << std::endl;
-	__LOG__ << is .rdbuf () << std::endl;
-	__LOG__ << v << std::endl;
+	B* b = new B ();
+	C* c = new C ();
+	
+	__LOG__ << (static_cast <A*> (b) == static_cast <A*> (c)) << std::endl;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

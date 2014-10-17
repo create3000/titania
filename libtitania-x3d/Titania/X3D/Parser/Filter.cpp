@@ -55,6 +55,29 @@
 namespace titania {
 namespace X3D {
 
+std::string
+get_name_from_uri (const basic::uri & uri)
+{
+	return get_name_from_string (uri .basename (false));
+}
+
+std::string
+get_name_from_string (const std::string & name_)
+{
+	static const pcrecpp::RE Spaces ("\\s+");
+
+	auto name = name_;
+
+	Spaces .GlobalReplace ("_", &name);
+
+	filter_non_id_characters (name);
+
+	if (not name .empty ())
+		return name;
+
+	return "Unnamed";
+}
+
 void
 filter_non_id_characters (std::string & string)
 {

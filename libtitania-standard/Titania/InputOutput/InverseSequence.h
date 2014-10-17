@@ -48,147 +48,81 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PARSER_WAVEFRONT_PARSER_H__
-#define __TITANIA_X3D_PARSER_WAVEFRONT_PARSER_H__
+#ifndef __TITANIA_INPUT_OUTPUT_INVERSE_SEQUENCE_H__
+#define __TITANIA_INPUT_OUTPUT_INVERSE_SEQUENCE_H__
 
-#include "../../Execution/X3DScene.h"
+#include "Sequence.h"
+
+#include <istream>
+#include <string>
 
 namespace titania {
-namespace X3D {
+namespace io {
 
-class TextureCoordinate;
-class Normal;
-class Coordinate;
-class IndexedFaceSet;
-class Shape;
-class Material;
-
-namespace Wavefront {
-
-class Parser
+/**
+ *  Template to represent a inverse string match agains a std::basic_istream.
+ *
+ *  Extern instantiations for char and wchar are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  CharT   Type of characters.
+ *  @param  Traits  Character traits
+ */
+template <class CharT, class Traits = std::char_traits <CharT>> 
+class basic_inverse_sequence
 {
 public:
 
 	///  @name Construction
 
-	Parser (const X3DScenePtr &, const basic::uri &, std::istream &);
+	///  Constructs the io::basic_inverse_sequence from @a string.  A std::basic_istream can then be tested against the string.
+	constexpr
+	basic_inverse_sequence (const std::basic_string <CharT> & delimiter) :
+		delimiter (delimiter)
+	{ }
 
-	///  @name Operations
-
-	void
-	parseIntoScene ();
-
-	///  @name Destruction
-
-	virtual
-	~Parser ();
+	///  Reads all characters into @a string until delimiter is found.  If delimiter is found it return true.  On EOF it
+	///  returns false.
+	bool
+	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &) const;
 
 
 private:
 
-	///  @name Operations
-
-	void
-	comments ();
-
-	bool
-	comment ();
-
-	void
-	whiteSpaces ();
-
-	void
-	whiteSpacesNoLineTerminator ();
-
-	void
-	statements ();
-
-	bool
-	statement ();
-
-	bool
-	mtllib ();
-
-	bool
-	usemtl ();
-
-	bool
-	o ();
-
-	bool
-	g ();
-
-	bool
-	s ();
-
-	bool
-	vts ();
-
-	bool
-	vt ();
-
-	bool
-	vns ();
-
-	bool
-	vn ();
-
-	bool
-	vs ();
-
-	bool
-	v ();
-
-	bool
-	fs ();
-
-	bool
-	f ();
-
-	bool
-	indices ();
-
-	int32_t
-	getIndex (const int32_t, const int32_t);
-
-	bool
-	Int32 (int32_t &);
-
-	bool
-	Vec2f (Vector2f &);
-
-	bool
-	Vec3f (Vector3f &);
-
-	///  @name Members
-
-	const X3DScenePtr         scene;
-	const basic::uri          uri;
-	std::istream &            istream;
-	size_t                    lineNumber;
-	std::string               whiteSpaceCharacters;
-	std::string               commentCharacters;
-	std::vector <std::string> currentComments;
-
-	X3DPtr <Material>          defaultMaterial;
-	X3DPtr <Material>          material;
-	X3DPtr <TextureCoordinate> texCoord;
-	X3DPtr <Normal>            normal;
-	X3DPtr <Coordinate>        coord;
-	X3DPtr <IndexedFaceSet>    geometry;
-	X3DPtr <Shape>             shape;
-	X3DPtr <Transform>         group;
-	X3DPtr <Transform>         object;
-
-	int32_t                                                    smoothingGroup;
-	std::map <std::string, std::map <int32_t, X3DPtr <Shape>>> smoothingGroups;
-
-	std::map <std::string, X3DPtr <Material>> materials;
+	const io::basic_sequence <CharT, Traits> delimiter;
 
 };
 
-} // Wavefront
-} // X3D
+template <class CharT, class Traits>
+bool
+basic_inverse_sequence <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string) const
+{
+	std::basic_string <CharT> sequence;
+
+	if (istream)
+	{
+		do
+		{
+			if (delimiter (istream, sequence))
+				return true;
+
+			string .push_back (istream .get ());
+		}
+		while (istream);
+
+		string .pop_back ();
+	}
+
+	return false;
+}
+
+typedef basic_inverse_sequence <char>    inverse_sequence;
+typedef basic_inverse_sequence <wchar_t> winverse_sequence;
+
+extern template class basic_inverse_sequence <char>;
+extern template class basic_inverse_sequence <wchar_t>;
+
+} // io
 } // titania
 
 #endif

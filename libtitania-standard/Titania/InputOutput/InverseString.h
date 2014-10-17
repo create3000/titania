@@ -104,15 +104,20 @@ template <class CharT, class Traits>
 bool
 basic_inverse_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string) const
 {
-	while (istream)
+	if (istream)
 	{
-		if (delimiter (istream))
-			return true;
+		do
+		{
+			if (delimiter (istream))
+				return true;
 
-		string .push_back (istream .get ());
+			string .push_back (istream .get ());
+		}
+		while (istream);
+
+		string .pop_back ();
 	}
 
-	string .pop_back ();
 	return false;
 }
 

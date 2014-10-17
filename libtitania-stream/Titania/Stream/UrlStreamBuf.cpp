@@ -170,17 +170,13 @@ urlstreambuf::wait ()
 	curl_multi_timeout (multi_handle, &curl_timeout);
 
 	struct timeval timeout;
-	timeout .tv_sec  = 1;
+	timeout .tv_sec  = this -> timeout ();
 	timeout .tv_usec = 0;
 
 	if (curl_timeout >= 0)
 	{
-		timeout .tv_sec = curl_timeout / 1000;
-
-		if (timeout.tv_sec > 1)
-			timeout .tv_sec = 1;
-		else
-			timeout .tv_usec = (curl_timeout % 1000) * 1000;
+		timeout .tv_sec  = curl_timeout / 1000;
+		timeout .tv_usec = (curl_timeout % 1000) * 1000;
 	}
 
 	// get file descriptors from the transfers

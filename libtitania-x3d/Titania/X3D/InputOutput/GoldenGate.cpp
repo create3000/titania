@@ -74,23 +74,6 @@ static const pcrecpp::RE Width       ("__WIDTH__");
 static const pcrecpp::RE Height      ("__HEIGHT__");
 static const pcrecpp::RE URL         ("__URL__");
 
-std::string
-get_name_from_uri (const basic::uri & uri)
-{
-	static const pcrecpp::RE Spaces ("\\s+");
-
-	std::string name = uri .basename (false);
-
-	Spaces .GlobalReplace ("_", &name);
-
-	filter_non_id_characters (name);
-
-	if (not name .empty ())
-		return name;
-
-	return "Unnamed";
-}
-
 static
 void
 golden_x3dv (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && goldenstream)

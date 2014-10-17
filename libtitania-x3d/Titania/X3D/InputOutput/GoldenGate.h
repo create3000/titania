@@ -60,9 +60,6 @@
 namespace titania {
 namespace X3D {
 
-std::string
-get_name_from_uri (const basic::uri &);
-
 void
 golden_gate (const X3DScenePtr &, const basic::uri &, basic::ifilestream &&);
 

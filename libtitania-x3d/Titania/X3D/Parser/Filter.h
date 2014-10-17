@@ -51,10 +51,17 @@
 #ifndef __TITANIA_X3D_PARSER_FILTER_H__
 #define __TITANIA_X3D_PARSER_FILTER_H__
 
+#include <Titania/Basic/URI.h>
 #include <string>
 
 namespace titania {
 namespace X3D {
+
+std::string
+get_name_from_uri (const basic::uri &);
+
+std::string
+get_name_from_string (const std::string &);
 
 void
 filter_non_id_characters (std::string &);

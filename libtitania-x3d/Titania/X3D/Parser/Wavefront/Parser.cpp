@@ -50,19 +50,21 @@
 
 #include "Parser.h"
 
-#include "../Filter.h"
-#include "../../Components/Texturing/TextureCoordinate.h"
-#include "../../Components/Rendering/Normal.h"
-#include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../Components/Shape/Shape.h"
 #include "../../Components/Grouping/Group.h"
 #include "../../Components/Grouping/Transform.h"
-#include "../../Components/Shape/Material.h"
+#include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Rendering/Normal.h"
 #include "../../Components/Shape/Appearance.h"
+#include "../../Components/Shape/Material.h"
+#include "../../Components/Shape/Shape.h"
+#include "../../Components/Texturing/TextureCoordinate.h"
+#include "../../InputOutput/Loader.h"
+#include "../Filter.h"
 
 // Grammar
 #include <Titania/InputOutput.h>
+#include <Titania/InputOutput/InverseSequence.h>
 
 namespace titania {
 namespace X3D {
@@ -78,18 +80,27 @@ public:
 	static const io::single_line_comment Comment;
 
 	///  @name Keywords
-	static const io::string         mtllib;
-	static const io::string         usemtl;
-	static const io::inverse_string string;
-	static const io::character      o;
-	static const io::string         v;
-	static const io::string         vt;
-	static const io::string         vn;
-	static const io::character      g;
-	static const io::character      s;
-	static const io::string         off;
-	static const io::character      f;
-	static const io::character      Slash;
+	static const io::string    mtllib;
+	static const io::string    usemtl;
+	static const io::string    newmtl;
+	static const io::string    Ka;
+	static const io::string    Kd;
+	static const io::string    Ks;
+	static const io::string    Ns;
+	static const io::character d;
+	static const io::string    Tr;
+	static const io::string    illum;
+
+	static const io::inverse_sequence string;
+	static const io::character        o;
+	static const io::string           v;
+	static const io::string           vt;
+	static const io::string           vn;
+	static const io::character        g;
+	static const io::character        s;
+	static const io::string           off;
+	static const io::character        f;
+	static const io::character        Slash;
 
 };
 
@@ -97,18 +108,454 @@ const io::sequence            Grammar::WhiteSpaces ("\r\n \t");
 const io::sequence            Grammar::WhiteSpacesNoLineTerminator (" \t");
 const io::single_line_comment Grammar::Comment ("#");
 
-const io::string         Grammar::mtllib ("mtllib");
-const io::string         Grammar::usemtl ("usemtl");
-const io::inverse_string Grammar::string ("\n");
-const io::character      Grammar::o ('o');
-const io::string         Grammar::v ("v ");
-const io::string         Grammar::vt ("vt");
-const io::string         Grammar::vn ("vn");
-const io::character      Grammar::g ('g');
-const io::character      Grammar::s ('s');
-const io::string         Grammar::off ("off");
-const io::character      Grammar::f ('f');
-const io::character      Grammar::Slash ('/');
+const io::string    Grammar::mtllib ("mtllib");
+const io::string    Grammar::usemtl ("usemtl");
+const io::string    Grammar::newmtl ("newmtl");
+const io::string    Grammar::Ka ("Ka");
+const io::string    Grammar::Kd ("Kd");
+const io::string    Grammar::Ks ("Ks");
+const io::string    Grammar::Ns ("Ns");
+const io::character Grammar::d ('d');
+const io::string    Grammar::Tr ("Tr");
+const io::string    Grammar::illum ("illum");
+
+const io::inverse_sequence Grammar::string ("\r\n");
+const io::character        Grammar::o ('o');
+const io::string           Grammar::v ("v ");
+const io::string           Grammar::vt ("vt");
+const io::string           Grammar::vn ("vn");
+const io::character        Grammar::g ('g');
+const io::character        Grammar::s ('s');
+const io::string           Grammar::off ("off");
+const io::character        Grammar::f ('f');
+const io::character        Grammar::Slash ('/');
+
+namespace {
+
+class MaterialParser
+{
+public:
+
+	///  @name Construction
+
+	MaterialParser (const X3DScenePtr &, std::istream &);
+
+	///  @name Member access
+
+	const std::map <std::string, X3DPtr <Material>> &
+	getMaterials () const
+	{ return materials; }
+
+	///  @name Operations
+
+	void
+	parse ();
+
+	///  @name Destruction
+
+	virtual
+	~MaterialParser ()
+	{ }
+
+
+private:
+
+	///  @name Operations
+
+	void
+	comments ();
+
+	bool
+	comment ();
+
+	void
+	whiteSpaces ();
+
+	void
+	whiteSpacesNoLineTerminator ();
+
+	void
+	statements ();
+
+	bool
+	statement ();
+
+	bool
+	newmtl ();
+
+	bool
+	Ka ();
+
+	bool
+	Kd ();
+
+	bool
+	Ks ();
+
+	bool
+	Ns ();
+
+	bool
+	d ();
+
+	bool
+	illum ();
+	
+	bool
+	Int32 (int32_t &);
+	
+	bool
+	Float (float &);
+	
+	bool
+	Color (Color3f &);
+
+	///  @name Members
+
+	const X3DScenePtr scene;
+	std::istream &    istream;
+	size_t            lineNumber;
+	std::string       whiteSpaceCharacters;
+	std::string       commentCharacters;
+
+	std::map <std::string, X3DPtr <Material>> materials;
+	X3DPtr <Material>                         material;
+
+};
+
+MaterialParser::MaterialParser (const X3DScenePtr & scene, std::istream & istream) :
+	               scene (scene),
+	             istream (istream),
+	          lineNumber (0),
+	whiteSpaceCharacters (),
+	   commentCharacters (),
+	           materials (),
+	            material (scene -> createNode ("Material"))
+{
+	scene -> addUninitializedNode (material);
+}
+
+void
+MaterialParser::parse ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	istream .imbue (std::locale::classic ());
+
+	try
+	{
+		statements ();
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+		__LOG__ << istream .rdbuf () << std::endl;
+		throw;
+	}
+}
+
+void
+MaterialParser::comments ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	while (comment ())
+		;
+}
+
+bool
+MaterialParser::comment ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	whiteSpaces ();
+
+	return Grammar::Comment (istream, commentCharacters);
+}
+
+void
+MaterialParser::whiteSpaces ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	Grammar::WhiteSpaces (istream, whiteSpaceCharacters);
+
+	lineNumber += std::count (whiteSpaceCharacters .begin (), whiteSpaceCharacters .end (), '\n');
+
+	whiteSpaceCharacters .clear ();
+}
+
+void
+MaterialParser::whiteSpacesNoLineTerminator ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	Grammar::WhiteSpacesNoLineTerminator (istream, whiteSpaceCharacters);
+
+	whiteSpaceCharacters .clear ();
+}
+
+void
+MaterialParser::statements ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	while (statement ())
+		;
+}
+
+bool
+MaterialParser::statement ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	if (newmtl ())
+		return true;
+
+	if (Ka ())
+		return true;
+
+	if (Kd ())
+		return true;
+
+	if (Ks ())
+		return true;
+
+	if (Ns ())
+		return true;
+
+	if (d ())
+		return true;
+
+	if (illum ())
+		return true;
+
+	// Skip empty and unkown lines.
+
+	if (Grammar::string (istream, whiteSpaceCharacters))
+		return true;
+
+	return false;
+}
+
+bool
+MaterialParser::newmtl ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	comments ();
+
+	if (Grammar::newmtl (istream))
+	{
+		whiteSpacesNoLineTerminator ();
+
+		std::string name;
+
+		if (Grammar::string (istream, name))
+		{
+			material = scene -> createNode ("Material");
+
+			scene -> addUninitializedNode (material);
+
+			materials [name] = material;
+
+			return true;
+		}
+
+		throw Error <INVALID_X3D> ("Expected a name.");
+	}
+
+	return false;
+}
+
+bool
+MaterialParser::Ka ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	comments ();
+
+	if (Grammar::Ka (istream))
+	{
+		Color3f color;
+	
+		if (Color (color))
+		{
+			float h, s, v;
+
+			color .get_hsv (h, s, v);
+
+			material -> ambientIntensity () = v;
+
+			return true;
+		}
+
+		throw Error <INVALID_X3D> ("Expected a color.");
+	}
+
+	return false;
+}
+
+
+bool
+MaterialParser::Kd ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	comments ();
+
+	if (Grammar::Kd (istream))
+	{
+		Color3f color;
+	
+		if (Color (color))
+		{
+			material -> diffuseColor () = color;
+			return true;
+		}
+
+		throw Error <INVALID_X3D> ("Expected a color.");
+	}
+
+	return false;
+}
+
+
+bool
+MaterialParser::Ks ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	comments ();
+
+	if (Grammar::Ks (istream))
+	{
+		Color3f color;
+	
+		if (Color (color))
+		{
+			material -> specularColor () = color;
+			return true;
+		}
+
+		throw Error <INVALID_X3D> ("Expected a color.");
+	}
+
+	return false;
+}
+
+bool
+MaterialParser::Ns ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	comments ();
+
+	if (Grammar::Ns (istream))
+	{
+		float value;
+	
+		if (Float (value))
+		{
+			material -> shininess () = value / 1000;
+			return true;
+		}
+
+		throw Error <INVALID_X3D> ("Expected a float.");
+	}
+
+	return false;
+}
+
+
+bool
+MaterialParser::d ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	comments ();
+
+	if (Grammar::d (istream) or Grammar::Tr (istream))
+	{
+		float value;
+	
+		if (Float (value))
+		{
+			material -> transparency () = value;
+			return true;
+		}
+
+		throw Error <INVALID_X3D> ("Expected a float.");
+	}
+
+	return false;
+}
+
+
+bool
+MaterialParser::illum ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	comments ();
+
+	if (Grammar::illum (istream))
+	{
+		int32_t value;
+	
+		if (Int32 (value))
+		{
+			// Don't know what to do with illum value in X3D.
+			return true;
+		}
+
+		throw Error <INVALID_X3D> ("Expected a integer.");
+	}
+
+	return false;
+}
+	
+bool
+MaterialParser::Int32 (int32_t & value)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	if (istream >> value)
+		return true;
+
+	istream .clear ();
+
+	return false;
+}
+
+bool
+MaterialParser::Float (float & value)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	if (istream >> value)
+		return true;
+
+	istream .clear ();
+
+	return false;
+}
+
+bool
+MaterialParser::Color (Color3f & value)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	if (istream >> value)
+		return true;
+
+	istream .clear ();
+
+	return false;
+
+}
+
+} // anon namespace
 
 Parser::Parser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
 	               scene (scene),
@@ -118,20 +565,22 @@ Parser::Parser (const X3DScenePtr & scene, const basic::uri & uri, std::istream 
 	whiteSpaceCharacters (),
 	   commentCharacters (),
 	     currentComments (),
-	            material (scene -> createNode ("Material")),
-	            texCoord (),
-	              normal (),
-	               coord (),
+	     defaultMaterial (scene -> createNode ("Material")),
+	            material (defaultMaterial),
+	            texCoord (scene -> createNode ("TextureCoordinate")),
+	              normal (scene -> createNode ("Normal")),
+	               coord (scene -> createNode ("Coordinate")),
 	            geometry (),
 	               shape (),
 	               group (scene -> createNode ("Transform")),
 	              object (scene -> createNode ("Transform")),
-	       texCoordIndex (1),
-	         normalIndex (1),
-	          coordIndex (1),
-	         creaseAngle (0)
+	        smoothingGroup (0),
+	       smoothingGroups ()
 {
-	scene -> addUninitializedNode (material);
+	scene -> addUninitializedNode (defaultMaterial);
+	scene -> addUninitializedNode (texCoord);
+	scene -> addUninitializedNode (normal);
+	scene -> addUninitializedNode (coord);
 	scene -> addUninitializedNode (group);
 	scene -> addUninitializedNode (object);
 
@@ -144,6 +593,8 @@ Parser::parseIntoScene ()
 {
 	//__LOG__ << this << " " << std::endl;
 	
+	scene -> setWorldURL (uri);
+
 	istream .imbue (std::locale::classic ());
 
 	try
@@ -248,11 +699,9 @@ Parser::statement ()
 	if (fs ())
 		return true;
 
-	// Skip unkown lines.
+	// Skip empty and unkown lines.
 
-	std::string string;
-
-	if (Grammar::string (istream, string))
+	if (Grammar::string (istream, whiteSpaceCharacters))
 		return true;
 
 	return false;
@@ -269,14 +718,33 @@ Parser::mtllib ()
 	{
 		whiteSpacesNoLineTerminator ();
 
-		std::string uri;
+		std::string string;
 
-		if (Grammar::string (istream, uri))
+		if (Grammar::string (istream, string))
 		{
+			const auto mtllibs = basic::split (string, " ");
+		
+			for (const auto & mtllib : mtllibs)
+			{
+				try
+				{
+					auto material_istream = Loader (scene) .loadStream (uri .transform (mtllib));
+
+					MaterialParser materialParser (scene, material_istream);
+
+					materialParser .parse ();
+
+					for (const auto & material : materialParser .getMaterials ())
+						materials [material .first] = material .second;
+				}
+				catch (const X3DError &)
+				{ }
+			}
+
 			return true;
 		}
-			
-		throw Error <INVALID_X3D> ("Expected uri.");
+
+		throw Error <INVALID_X3D> ("Expected a uri.");
 	}
 
 	return false;
@@ -297,9 +765,18 @@ Parser::usemtl ()
 
 		if (Grammar::string (istream, name))
 		{
+			try
+			{
+				material = materials .at (name);
+			}
+			catch (const std::out_of_range &)
+			{
+				material = defaultMaterial;
+			}
+
 			return true;
 		}
-			
+
 		throw Error <INVALID_X3D> ("Expected material name.");
 	}
 
@@ -321,14 +798,17 @@ Parser::Parser::o ()
 
 		if (Grammar::string (istream, name))
 		{
+			if (not name .empty ())
+				name = get_name_from_string (name);
+		
 			if (not group -> children () .empty ())
 			{
-				object = X3DPtr <Transform> (scene -> createNode ("Transform"));
-				group  = X3DPtr <Transform> (scene -> createNode ("Transform"));
+				object = scene -> createNode ("Transform");
+				group  = scene -> createNode ("Transform");
 
 				scene -> addUninitializedNode (object);
 				scene -> addUninitializedNode (group);
-	
+
 				object -> children () .emplace_back (group);
 				scene -> getRootNodes () .emplace_back (object);
 			}
@@ -338,7 +818,7 @@ Parser::Parser::o ()
 
 			return true;
 		}
-			
+
 		throw Error <INVALID_X3D> ("Expected object name.");
 	}
 
@@ -360,21 +840,31 @@ Parser::g ()
 
 		if (Grammar::string (istream, name))
 		{
-			if (not group -> children () .empty ())
-			{
-				group = X3DPtr <Transform> (scene -> createNode ("Transform"));
-
-				scene -> addUninitializedNode (group);
-			
-				object -> children () .emplace_back (group);
-			}
-
 			if (not name .empty ())
-				scene -> updateNamedNode (name, SFNode (group));
+				name = get_name_from_string (name);
+		
+			try
+			{
+				group = scene -> getNamedNode <Transform> (name);
+			}
+			catch (const X3DError &)
+			{
+				if (not group -> children () .empty ())
+				{
+					group = scene -> createNode ("Transform");
+
+					scene -> addUninitializedNode (group);
+
+					object -> children () .emplace_back (group);
+				}
+
+				if (not name .empty ())
+					scene -> updateNamedNode (name, SFNode (group));
+			}
 
 			return true;
 		}
-			
+
 		throw Error <INVALID_X3D> ("Expected group name.");
 	}
 
@@ -387,8 +877,6 @@ Parser::s ()
 	//__LOG__ << this << " " << std::endl;
 
 	comments ();
-	
-	int32_t shadingGroup;
 
 	if (Grammar::s (istream))
 	{
@@ -396,15 +884,12 @@ Parser::s ()
 
 		if (Grammar::off (istream))
 		{
-			creaseAngle = 0;
+			smoothingGroup = 0;
 			return true;
 		}
 
-		if (Int32 (shadingGroup))
-		{
-			creaseAngle = M_PI;
+		if (Int32 (smoothingGroup))
 			return true;
-		}
 
 		throw Error <INVALID_X3D> ("Expected shading group number of 'off'.");
 	}
@@ -421,18 +906,12 @@ Parser::vts ()
 
 	if (Grammar::vt .lookahead (istream))
 	{
-		texCoord = X3DPtr <TextureCoordinate> (scene -> createNode ("TextureCoordinate"));
-
-		scene -> addUninitializedNode (texCoord);
-	
 		while (vt ())
-			;
-
-		texCoordIndex += texCoord -> point () .size ();
+		;
 
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -448,13 +927,13 @@ Parser::vt ()
 		Vector2f value;
 
 		if (Vec2f (value))
-		{		
+		{
 			texCoord -> point () .emplace_back (value);
 
 			return true;
 		}
 
-		throw Error <INVALID_X3D> ("Expected texture coodinate.");
+		throw Error <INVALID_X3D> ("Expected a texture coodinate.");
 	}
 
 	return false;
@@ -469,18 +948,12 @@ Parser::vns ()
 
 	if (Grammar::vn .lookahead (istream))
 	{
-		normal = X3DPtr <Normal> (scene -> createNode ("Normal"));
-
-		scene -> addUninitializedNode (normal);
-
 		while (vn ())
-			;
+		;
 
-		normalIndex += normal -> vector () .size ();
-		
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -498,11 +971,11 @@ Parser::vn ()
 		if (Vec3f (value))
 		{
 			normal -> vector () .emplace_back (value);
-	
+
 			return true;
 		}
-		
-		throw Error <INVALID_X3D> ("Expected normal vector.");
+
+		throw Error <INVALID_X3D> ("Expected a normal vector.");
 	}
 
 	return false;
@@ -517,18 +990,12 @@ Parser::vs ()
 
 	if (Grammar::v .lookahead (istream))
 	{
-		coord = X3DPtr <Coordinate> (scene -> createNode ("Coordinate"));
-
-		scene -> addUninitializedNode (coord);
-
 		while (v ())
-			;
-
-		coordIndex += coord -> point () .size ();
+		;
 
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -544,13 +1011,13 @@ Parser::v ()
 		Vector3f value;
 
 		if (Vec3f (value))
-		{		
+		{
 			coord -> point () .emplace_back (value);
 
 			return true;
 		}
-		
-		throw Error <INVALID_X3D> ("Expected vertex coordinate.");
+
+		throw Error <INVALID_X3D> ("Expected a vertex coordinate.");
 	}
 
 	return false;
@@ -565,24 +1032,34 @@ Parser::fs ()
 
 	if (Grammar::f .lookahead (istream))
 	{
-		const auto appearance = X3DPtr <Appearance> (scene -> createNode ("Appearance"));
+		try
+		{
+			shape    = smoothingGroups .at (group -> getName ()) .at (smoothingGroup);
+			geometry = shape -> geometry ();
+		}
+		catch (const std::out_of_range &)
+		{
+			const auto appearance = X3DPtr <Appearance> (scene -> createNode ("Appearance"));
 
-		geometry = X3DPtr <IndexedFaceSet> (scene -> createNode ("IndexedFaceSet"));
-		shape    = X3DPtr <Shape> (scene -> createNode ("Shape"));
+			geometry = scene -> createNode ("IndexedFaceSet");
+			shape    = scene -> createNode ("Shape");
 
-		scene -> addUninitializedNode (appearance);
-		scene -> addUninitializedNode (geometry);
-		scene -> addUninitializedNode (shape);
+			scene -> addUninitializedNode (appearance);
+			scene -> addUninitializedNode (geometry);
+			scene -> addUninitializedNode (shape);
 
-		appearance -> material ()  = material;
-		geometry -> creaseAngle () = creaseAngle;
-		shape -> appearance ()     = appearance;
-		shape -> geometry ()       = geometry;
+			appearance -> material ()  = material;
+			geometry -> creaseAngle () = smoothingGroup ? M_PI : 0;
+			shape -> appearance ()     = appearance;
+			shape -> geometry ()       = geometry;
 
-		group -> children () .emplace_back (shape);
+			group -> children () .emplace_back (shape);
+
+			smoothingGroups [group -> getName ()] [smoothingGroup] = shape;
+		}
 
 		while (f ())
-			;
+		;
 
 		if (geometry -> texCoordIndex () .size ())
 			geometry -> texCoord () = texCoord;
@@ -594,7 +1071,7 @@ Parser::fs ()
 
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -610,8 +1087,8 @@ Parser::f ()
 		const size_t texCoords = geometry -> texCoordIndex () .size ();
 		const size_t normals   = geometry -> normalIndex () .size ();
 
-		while (Index ())
-			;
+		while (indices ())
+		;
 
 		if (geometry -> texCoordIndex () .size () not_eq texCoords)
 			geometry -> texCoordIndex () .emplace_back (-1);
@@ -627,28 +1104,28 @@ Parser::f ()
 }
 
 bool
-Parser::Index ()
+Parser::indices ()
 {
 	//__LOG__ << this << " " << std::endl;
-	
+
 	int32_t value;
 
 	if (Int32 (value))
 	{
-		geometry -> coordIndex () .emplace_back (getIndex (value, coordIndex, coord -> point () .size ()));
-	
+		geometry -> coordIndex () .emplace_back (getIndex (value, coord -> point () .size ()));
+
 		if (Grammar::Slash (istream))
 		{
 			if (Int32 (value))
 			{
-				geometry -> texCoordIndex () .emplace_back (getIndex (value, texCoordIndex, texCoord -> point () .size ()));
+				geometry -> texCoordIndex () .emplace_back (getIndex (value, texCoord -> point () .size ()));
 			}
 
 			if (Grammar::Slash (istream))
 			{
 				if (Int32 (value))
 				{
-					geometry -> normalIndex () .emplace_back (getIndex (value, normalIndex, normal -> vector () .size ()));
+					geometry -> normalIndex () .emplace_back (getIndex (value, normal -> vector () .size ()));
 				}
 			}
 		}
@@ -660,7 +1137,7 @@ Parser::Index ()
 }
 
 int32_t
-Parser::getIndex (const int32_t index, const int32_t counter, const int32_t size)
+Parser::getIndex (const int32_t index, const int32_t size)
 {
 	if (index == 0)
 		throw Error <INVALID_X3D> ("Invalid index.");
@@ -668,15 +1145,13 @@ Parser::getIndex (const int32_t index, const int32_t counter, const int32_t size
 	if (index < 0)
 		return size - index;
 
-	return index - counter + size;
+	return index - 1;
 }
 
 bool
 Parser::Int32 (int32_t & value)
 {
 	//__LOG__ << this << " " << std::endl;
-
-	whiteSpacesNoLineTerminator ();
 
 	if (istream >> value)
 		return true;
@@ -691,8 +1166,6 @@ Parser::Vec2f (Vector2f & value)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	whiteSpacesNoLineTerminator ();
-
 	if (istream >> value)
 		return true;
 
@@ -705,8 +1178,6 @@ bool
 Parser::Vec3f (Vector3f & value)
 {
 	//__LOG__ << this << " " << std::endl;
-
-	whiteSpacesNoLineTerminator ();
 
 	if (istream >> value)
 		return true;

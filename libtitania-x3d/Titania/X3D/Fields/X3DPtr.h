@@ -267,7 +267,7 @@ public:
 	X3DPtr &
 	operator = (X3DPtr <Up> && other)
 	{
-		if (&other == this)
+		if (static_cast <X3DFieldDefinition*> (&other) == static_cast <X3DFieldDefinition*> (this))
 			return *this;
 
 		if (moveObject (other))

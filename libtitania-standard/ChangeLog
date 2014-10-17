@@ -1,3 +1,11 @@
+2014-10-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-standard.cproj:
+	* InverseString.h:
+	* InverseSequence.h:
+	* InverseSequence.cpp: 
+
 2014-09-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* find_data_file.cpp: 
