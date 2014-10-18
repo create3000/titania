@@ -94,8 +94,8 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ImageTextureURLBox", m_ImageTextureURLBox);
 	m_builder -> get_widget ("ImageTextureURLTreeView", m_ImageTextureURLTreeView);
 	m_builder -> get_widget ("ImageTextureURLAddButton", m_ImageTextureURLAddButton);
-	m_builder -> get_widget ("ImageTextureEmbedButton", m_ImageTextureEmbedButton);
 	m_builder -> get_widget ("ImageTextureURLRemoveButton", m_ImageTextureURLRemoveButton);
+	m_builder -> get_widget ("ImageTextureEmbedButton", m_ImageTextureEmbedButton);
 	m_builder -> get_widget ("ImageTextureURLReloadButton", m_ImageTextureURLReloadButton);
 	m_builder -> get_widget ("PixelTextureBox", m_PixelTextureBox);
 	m_builder -> get_widget ("MovieTextureBox", m_MovieTextureBox);

@@ -137,6 +137,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserMenuItem", m_BrowserMenuItem);
 	m_builder -> get_widget ("EditorMenuItem", m_EditorMenuItem);
 	m_builder -> get_widget ("BrowserOptionsSeparator", m_BrowserOptionsSeparator);
+	m_builder -> get_widget ("MotionBlurMenuItem", m_MotionBlurMenuItem);
 	m_builder -> get_widget ("ShadingMenuItem", m_ShadingMenuItem);
 	m_builder -> get_widget ("PhongMenuItem", m_PhongMenuItem);
 	m_builder -> get_widget ("GouraudMenuItem", m_GouraudMenuItem);
@@ -318,6 +319,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::RadioMenuItem with id 'BrowserMenuItem'.
 	m_BrowserMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_browser_toggled));
 	m_EditorMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_editor_toggled));
+
+	// Connect object Gtk::ImageMenuItem with id 'MotionBlurMenuItem'.
+	m_MotionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_motion_blur_activate));
+
+	// Connect object Gtk::RadioMenuItem with id 'PhongMenuItem'.
 	m_PhongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_phong_activate));
 	m_GouraudMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_gouraud_activate));
 	m_FlatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_flat_activate));

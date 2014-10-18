@@ -1,5 +1,23 @@
 2014-10-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* DialogFactory.h:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.xml:
+	* MotionBlurEditor.xml:
+	* X3DTextureEditorInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* Transparent.x3dv:
+	* MotionBlurEditor.h:
+	* X3DTextureEditorInterface.cpp:
+	* X3DBrowserWindowInterface.cpp:
+	* MotionBlurEditor.cpp:
+	* X3DMotionBlurEditorInterface.h:
+	* X3DMotionBlurEditorInterface.cpp: 
+
+2014-10-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.xml:
 	* X3DBrowserEditor.cpp:
 	* Palette.x3dv:

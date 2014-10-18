@@ -98,29 +98,29 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getIntensityAdjustment () const
+	{ return m_IntensityAdjustment; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
 
-	Gtk::Table &
+	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::HScale &
-	getIntensity () const
-	{ return *m_Intensity; }
-
 	Gtk::CheckButton &
-	getEnabled () const
-	{ return *m_Enabled; }
+	getEnabledCheckButton () const
+	{ return *m_EnabledCheckButton; }
 
-	virtual
-	void
-	on_intensity_changed () = 0;
+	Gtk::Box &
+	getIntensityBox () const
+	{ return *m_IntensityBox; }
 
-	virtual
-	void
-	on_enabled_toggled () = 0;
+	Gtk::Scale &
+	getIntensityScale () const
+	{ return *m_IntensityScale; }
 
 	virtual
 	~X3DMotionBlurEditorInterface ();
@@ -133,12 +133,14 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                 filename;
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Window*                m_Window;
-	Gtk::Table*                 m_Widget;
-	Gtk::HScale*                m_Intensity;
-	Gtk::CheckButton*           m_Enabled;
+	std::string                    filename;
+	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_IntensityAdjustment;
+	Gtk::Window*                   m_Window;
+	Gtk::Box*                      m_Widget;
+	Gtk::CheckButton*              m_EnabledCheckButton;
+	Gtk::Box*                      m_IntensityBox;
+	Gtk::Scale*                    m_IntensityScale;
 
 };
 

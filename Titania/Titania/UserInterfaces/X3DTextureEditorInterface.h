@@ -223,12 +223,12 @@ public:
 	{ return *m_ImageTextureURLAddButton; }
 
 	Gtk::Button &
-	getImageTextureEmbedButton () const
-	{ return *m_ImageTextureEmbedButton; }
-
-	Gtk::Button &
 	getImageTextureURLRemoveButton () const
 	{ return *m_ImageTextureURLRemoveButton; }
+
+	Gtk::Button &
+	getImageTextureEmbedButton () const
+	{ return *m_ImageTextureEmbedButton; }
 
 	Gtk::Button &
 	getImageTextureURLReloadButton () const
@@ -534,8 +534,8 @@ private:
 	Gtk::Box*                              m_ImageTextureURLBox;
 	Gtk::TreeView*                         m_ImageTextureURLTreeView;
 	Gtk::Button*                           m_ImageTextureURLAddButton;
-	Gtk::Button*                           m_ImageTextureEmbedButton;
 	Gtk::Button*                           m_ImageTextureURLRemoveButton;
+	Gtk::Button*                           m_ImageTextureEmbedButton;
 	Gtk::Button*                           m_ImageTextureURLReloadButton;
 	Gtk::Box*                              m_PixelTextureBox;
 	Gtk::Box*                              m_MovieTextureBox;

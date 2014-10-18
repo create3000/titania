@@ -394,6 +394,10 @@ public:
 	getBrowserOptionsSeparator () const
 	{ return *m_BrowserOptionsSeparator; }
 
+	Gtk::ImageMenuItem &
+	getMotionBlurMenuItem () const
+	{ return *m_MotionBlurMenuItem; }
+
 	Gtk::MenuItem &
 	getShadingMenuItem () const
 	{ return *m_ShadingMenuItem; }
@@ -1032,6 +1036,10 @@ public:
 
 	virtual
 	void
+	on_motion_blur_activate () = 0;
+
+	virtual
+	void
 	on_phong_activate () = 0;
 
 	virtual
@@ -1385,6 +1393,7 @@ private:
 	Gtk::RadioMenuItem*              m_BrowserMenuItem;
 	Gtk::RadioMenuItem*              m_EditorMenuItem;
 	Gtk::SeparatorMenuItem*          m_BrowserOptionsSeparator;
+	Gtk::ImageMenuItem*              m_MotionBlurMenuItem;
 	Gtk::MenuItem*                   m_ShadingMenuItem;
 	Gtk::RadioMenuItem*              m_PhongMenuItem;
 	Gtk::RadioMenuItem*              m_GouraudMenuItem;

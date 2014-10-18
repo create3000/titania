@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,10 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MOTION_BLUR_EDITOR_MOTION_BLUR_EDITOR_H__
-#define __TITANIA_MOTION_BLUR_EDITOR_MOTION_BLUR_EDITOR_H__
+#ifndef __TITANIA_EDITORS_MOTION_BLUR_EDITOR_MOTION_BLUR_EDITOR_H__
+#define __TITANIA_EDITORS_MOTION_BLUR_EDITOR_MOTION_BLUR_EDITOR_H__
 
 #include "../../UserInterfaces/X3DMotionBlurEditorInterface.h"
+#include "../../ComposedWidgets.h"
 
 namespace titania {
 namespace puck {
@@ -63,7 +64,11 @@ class MotionBlurEditor :
 {
 public:
 
+	///  @name Construction
+
 	MotionBlurEditor (X3DBrowserWindow* const);
+
+	///  @name Destruction
 
 	virtual
 	~MotionBlurEditor ();
@@ -71,17 +76,19 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
-
-	virtual
+	
 	void
-	on_enabled_toggled () final override;
+	set_browser (const X3D::BrowserPtr &);
 
-	virtual
-	void
-	on_intensity_changed () final override;
+	///  @name Members
+
+	X3DFieldToggleButton <X3D::SFBool> enabled;
+	X3DFieldAdjustment <X3D::SFFloat>  intensity;
 
 };
 

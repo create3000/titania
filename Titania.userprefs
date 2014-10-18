@@ -1,26 +1,24 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Parser/Wavefront/Parser.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="216" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="694" Column="39" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Box.cpp" Line="146" Column="13" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="61" Column="1" />
-      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.cpp" Line="60" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Wavefront/Parser.h" Line="62" Column="8" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Wavefront/Parser.cpp" Line="68" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Wavefront/Parser.h" Line="163" Column="20" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Wavefront/Parser.cpp" Line="343" Column="1" />
+      <File FileName="libtitania-stream/Titania/Stream/InputUrlStream.cpp" Line="73" Column="41" />
+      <File FileName="libtitania-stream/Titania/Stream/UrlStreamBuf.cpp" Line="34" Column="17" />
+      <File FileName="libtitania-stream/Titania/Stream/InputFileStream.cpp" Line="60" Column="1" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/AppearanceEditor.cpp" Line="26" Column="62" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True">
-            <Node name="logo" expanded="True">
-              <Node name="website" expanded="True" />
-            </Node>
+            <Node name="uncrustify-all" expanded="True" />
           </Node>
           <Node name="build" expanded="True" />
+          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
+            <Node name="Models" expanded="True" />
             <Node name="Tests" expanded="True">
               <Node name="Geometry3D" expanded="True" />
               <Node name="NURBS" expanded="True">
@@ -29,12 +27,9 @@
               </Node>
             </Node>
           </Node>
-          <Node name="libtitania-standard" expanded="True">
+          <Node name="libtitania-stream" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="Math" expanded="True">
-                <Node name="Geometry" expanded="True" />
-                <Node name="Utility" expanded="True" />
-              </Node>
+              <Node name="Stream" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -49,19 +44,9 @@
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Geometry2D" expanded="True" />
-                  <Node name="Geometry3D" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
-                </Node>
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="EnvironmentalEffects" expanded="True" />
-                  <Node name="Geometry2D" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
-                  <Node name="Geospatial" expanded="True" />
-                  <Node name="NURBS" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                 </Node>
                 <Node name="InputOutput" expanded="True" />
@@ -74,8 +59,13 @@
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
+            <Node name="config" expanded="True" />
+            <Node name="scripts" expanded="True" />
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
+                <Node name="Library" expanded="True">
+                  <Node name="Textures" expanded="True" />
+                </Node>
                 <Node name="pages" expanded="True">
                   <Node name="about" expanded="True">
                     <Node name="library" expanded="True" />
@@ -91,6 +81,7 @@
               <Node name="Browser" expanded="True" />
               <Node name="Configuration" expanded="True" />
               <Node name="Dialogs" expanded="True">
+                <Node name="FileSaveWarningDialog" expanded="True" />
                 <Node name="NodeIndex" expanded="True" />
               </Node>
               <Node name="Editors" expanded="True">
@@ -98,6 +89,9 @@
                 <Node name="GeometryPropertiesEditor" expanded="True" />
                 <Node name="GridEditor" expanded="True" />
                 <Node name="InlineEditor" expanded="True" />
+              </Node>
+              <Node name="Widgets" expanded="True">
+                <Node name="LibraryView" expanded="True" />
               </Node>
             </Node>
           </Node>

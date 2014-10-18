@@ -61,18 +61,14 @@ X3DMotionBlurEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_IntensityAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IntensityAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("Intensity", m_Intensity);
-	m_builder -> get_widget ("Enabled", m_Enabled);
-
-	// Connect object Gtk::HScale with id 'Intensity'.
-	m_Intensity -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMotionBlurEditorInterface::on_intensity_changed));
-
-	// Connect object Gtk::CheckButton with id 'Enabled'.
-	m_Enabled -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DMotionBlurEditorInterface::on_enabled_toggled));
+	m_builder -> get_widget ("EnabledCheckButton", m_EnabledCheckButton);
+	m_builder -> get_widget ("IntensityBox", m_IntensityBox);
+	m_builder -> get_widget ("IntensityScale", m_IntensityScale);
 
 	// Call construct handler of base class.
 	construct ();

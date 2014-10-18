@@ -72,6 +72,7 @@
 #include "../Editors/TextureEditor/TextureEditor.h"
 #include "../Editors/NavigationInfoEditor/NavigationInfoEditor.h"
 #include "../Editors/ViewpointEditor/ViewpointEditor.h"
+#include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
 
 namespace titania {
 namespace puck {
@@ -102,8 +103,8 @@ public:
 		         std::make_pair ("LightEditor",              constructDialog <LightEditor>),
 		         std::make_pair ("InlineEditor",             constructDialog <InlineEditor>),
 		         std::make_pair ("PrecisionPlacementPanel",  constructDialog <PrecisionPlacementPanel>),
-		         std::make_pair ("PrototypeInstanceDialog",  constructDialog <PrototypeInstanceDialog>)
-		         //std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>)
+		         std::make_pair ("PrototypeInstanceDialog",  constructDialog <PrototypeInstanceDialog>),
+		         std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>)
 				         })
 	{ }
 

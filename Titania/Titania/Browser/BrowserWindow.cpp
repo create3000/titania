@@ -1020,6 +1020,7 @@ BrowserWindow::isEditor (const bool enabled)
 	getRemoveUnusedPrototypesMenuItem ()       .set_visible (enabled);
 	getEditMenuItem ()                         .set_visible (enabled);
 	getBrowserOptionsSeparator ()              .set_visible (enabled);
+	getMotionBlurMenuItem ()                   .set_visible (enabled);
 	getShadingMenuItem ()                      .set_visible (enabled);
 	getPrimitiveQualityMenuItem ()             .set_visible (enabled);
 	getShowHideEnvironmentalEffectsMenuItem () .set_visible (enabled);
@@ -1052,6 +1053,12 @@ BrowserWindow::isEditor (const bool enabled)
 		getArrowButton () .set_active (true);
 	else
 		getHandButton () .set_active (true);
+}
+
+void
+BrowserWindow::on_motion_blur_activate ()
+{
+	addDialog ("MotionBlurEditor");
 }
 
 // Shading menu

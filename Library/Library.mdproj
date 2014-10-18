@@ -148,7 +148,6 @@
     <None Include="Tests\EXTERNPROTO\externproto.wrl" />
     <None Include="Tests\Geometry3D\Achteck.wrl" />
     <None Include="Tests\Basic\UTF8.wrl" />
-    <None Include="Examples\LogoPieces\logo pieces.wrl" />
     <None Include="Tests\Networking\Anchor\Anchor.wrl" />
     <None Include="Tests\Interpolation\CoordinateInterpolator.wrl" />
     <None Include="Tests\Interpolation\Interpolators.wrl" />
@@ -2486,6 +2485,7 @@
     <None Include="Tests\NURBS\NurbsPatchSurface\NurbsPositionInterpolatorExample.x3dv" />
     <None Include="Tests\NURBS\NurbsTrimmedSurface\StampX3dLetters.x3d" />
     <None Include="Tests\NURBS\NurbsTrimmedSurface\StampX3dLettersHalloween.x3d" />
+    <None Include="Examples\LogoPieces\Web3dX3dLogoAnimated.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

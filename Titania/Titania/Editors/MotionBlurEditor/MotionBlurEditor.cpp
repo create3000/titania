@@ -58,9 +58,16 @@ namespace puck {
 
 MotionBlurEditor::MotionBlurEditor (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DMotionBlurEditorInterface (get_ui ("MotionBlurEditor.xml"), gconf_dir ())
+	X3DMotionBlurEditorInterface (get_ui ("MotionBlurEditor.xml"), gconf_dir ()),
+	                     enabled (getBrowserWindow (), getEnabledCheckButton (), "enabled"),
+	                   intensity (getBrowserWindow (),
+	                              getIntensityAdjustment (),
+	                              getIntensityBox (),
+	                              "intensity")
 {
-	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
+	enabled   .setUndo (false);
+	intensity .setUndo (false);
+
 	setup ();
 }
 
@@ -69,21 +76,16 @@ MotionBlurEditor::initialize ()
 {
 	X3DMotionBlurEditorInterface::initialize ();
 
-	getIntensity () .set_value (getBrowser () -> getMotionBlur () -> intensity ());
+	getBrowser () .addInterest (this, &MotionBlurEditor::set_browser);
+
+	set_browser (getBrowser ());
 }
 
 void
-MotionBlurEditor::on_enabled_toggled ()
+MotionBlurEditor::set_browser (const X3D::BrowserPtr & browser)
 {
-	getBrowser () -> getMotionBlur () -> enabled () = getEnabled () .get_active ();
-}
-
-void
-MotionBlurEditor::on_intensity_changed ()
-{
-	float x = getIntensity () .get_value ();
-
-	getBrowser () -> getMotionBlur () -> intensity () = -x * x + 2 * x;
+	enabled   .setNodes ({ browser -> getMotionBlur () });
+	intensity .setNodes ({ browser -> getMotionBlur () });
 }
 
 MotionBlurEditor::~MotionBlurEditor ()
