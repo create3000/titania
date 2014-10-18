@@ -1,3 +1,13 @@
+2014-10-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.xml:
+	* X3DBrowserEditor.cpp:
+	* Palette.x3dv:
+	* TextureEditor.xml:
+	* LibraryView.cpp:
+	* FileSaveWarningDialog.h:
+	* FileSaveWarningDialog.cpp: 
+
 2014-10-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserEditor.cpp:

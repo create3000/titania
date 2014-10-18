@@ -321,6 +321,7 @@
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_save" swapped="no"/>
+                                <accelerator key="s" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -587,8 +588,8 @@
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activate" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>

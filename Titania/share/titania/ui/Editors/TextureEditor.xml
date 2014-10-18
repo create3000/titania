@@ -447,17 +447,15 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <object class="GtkButton" id="ImageTextureEmbedButton">
+                                              <object class="GtkButton" id="ImageTextureURLRemoveButton">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">True</property>
-                                                <property name="tooltip_text" translatable="yes">Embed image.</property>
-                                                <signal name="clicked" handler="on_embed_image_clicked" swapped="no"/>
                                                 <child>
-                                                  <object class="GtkImage" id="image12">
+                                                  <object class="GtkImage" id="image7">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="icon_name">document-import</property>
+                                                    <property name="stock">gtk-remove</property>
                                                     <property name="icon_size">1</property>
                                                   </object>
                                                 </child>
@@ -469,15 +467,17 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <object class="GtkButton" id="ImageTextureURLRemoveButton">
+                                              <object class="GtkButton" id="ImageTextureEmbedButton">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">True</property>
+                                                <property name="tooltip_text" translatable="yes">Embed image.</property>
+                                                <signal name="clicked" handler="on_embed_image_clicked" swapped="no"/>
                                                 <child>
-                                                  <object class="GtkImage" id="image7">
+                                                  <object class="GtkImage" id="image12">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="stock">gtk-remove</property>
+                                                    <property name="icon_name">document-import</property>
                                                     <property name="icon_size">1</property>
                                                   </object>
                                                 </child>

@@ -258,7 +258,7 @@ X3DBrowserEditor::isSaved (const X3D::BrowserPtr & browser)
 	
 		getBrowserNotebook () .set_current_page (pageNumber);
 
-		const auto responseId = std::dynamic_pointer_cast <FileSaveWarningDialog> (addDialog ("FileSaveWarningDialog", false)) -> run ();
+		const auto responseId = std::dynamic_pointer_cast <FileSaveWarningDialog> (addDialog ("FileSaveWarningDialog", false)) -> run (browser);
 
 		switch (responseId)
 		{

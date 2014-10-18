@@ -62,16 +62,19 @@ FileSaveWarningDialog::FileSaveWarningDialog (X3DBrowserWindow* const browserWin
 	                 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DFileSaveWarningDialogInterface (get_ui ("Dialogs/FileSaveWarningDialog.xml"), gconf_dir ())
 {
-	getMessage () .set_text (basic::sprintf (_ ("Do you want to save changes to document »%s« before closing?"),
-	                                         getScene () -> getWorldURL () .empty ()
-	                                         ? _ ("no title")
-														  : getScene () -> getWorldURL () .basename () .c_str ()));
 	setup ();
 }
 
 int
-FileSaveWarningDialog::run ()
+FileSaveWarningDialog::run (const X3D::BrowserPtr & browser)
 {
+	const auto worlURL = browser -> getExecutionContext () -> getMasterContext () -> getWorldURL ();
+
+	getMessage () .set_text (basic::sprintf (_ ("Do you want to save changes to document »%s« before closing?"),
+	                                         worlURL .empty ()
+	                                         ? _ ("no title")
+														  : worlURL .basename () .c_str ()));
+
 	const auto responseId = getWindow () .run ();
 
 	quit ();

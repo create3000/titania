@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 16 Sep 2014 13:16:50 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sat, 27 Sep 2014 17:27:44 GMT"
+META "modified" "Fri, 17 Oct 2014 18:18:10 GMT"
 META "titania magic" "Material"
 
 WorldInfo {
@@ -185,4 +185,14 @@ DEF Grid Transform {
       children USE _1
     }
   ]
+}
+
+DEF PrimitiveQuality Script {
+  url "vrmlscript:
+function initialize ()
+{
+	Browser .setBrowserOption ('PrimitiveQuality', 'HIGH');
+}
+"
+  directOutput TRUE
 }

@@ -31,7 +31,7 @@
 #include <Titania/LOG.h>
 #include <cstring>
 
-#include <netdb.h>
+#include <regex>
 
 namespace titania {
 namespace basic {
@@ -64,22 +64,21 @@ urlstreambuf::open (const basic::uri & URL, size_t Timeout)
 
 	close ();
 
-	// Test if host exists.
-
-	// struct addrinfo* result;
-	// int error = getaddrinfo (url () .host () .c_str (), nullptr, nullptr, &result);
-
-	// if (error not_eq 0)
-	//    return nullptr;
-
 	// Init CURL.
 
 	easy_handle = curl_easy_init ();
 
 	if (not easy_handle)
 		return nullptr;
+	
+	static const std::regex whiteSpaces (" ");
 
-	curl_easy_setopt (easy_handle, CURLOPT_URL,               url () .filename (url () .is_network ()) .str () .c_str ());
+	std::string curlURL = url () .filename (url () .is_network ());
+	//curlURL = std::regex_replace (curlURL, whiteSpaces, std::string ("%20")); // XXX: uncomment this when gcc 4.9 is ready and test url's with spaces.
+
+	//std::clog << curlURL << std::endl;
+
+	curl_easy_setopt (easy_handle, CURLOPT_URL,               curlURL .c_str ());
 	curl_easy_setopt (easy_handle, CURLOPT_BUFFERSIZE,        bufferSize);
 	curl_easy_setopt (easy_handle, CURLOPT_USE_SSL,           CURLUSESSL_TRY);
 	curl_easy_setopt (easy_handle, CURLOPT_HEADER,            false);

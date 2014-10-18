@@ -368,7 +368,8 @@ MaterialParser::newmtl ()
 			return true;
 		}
 
-		throw Error <INVALID_X3D> ("Expected a name.");
+		Grammar::string (istream, whiteSpaceCharacters); // Parse until end of line.
+		return true;
 	}
 
 	return false;
@@ -396,7 +397,8 @@ MaterialParser::Ka ()
 			return true;
 		}
 
-		throw Error <INVALID_X3D> ("Expected a color.");
+		Grammar::string (istream, whiteSpaceCharacters); // Parse until end of line.
+		return true;
 	}
 
 	return false;
@@ -419,7 +421,8 @@ MaterialParser::Kd ()
 			return true;
 		}
 
-		throw Error <INVALID_X3D> ("Expected a color.");
+		Grammar::string (istream, whiteSpaceCharacters); // Parse until end of line.
+		return true;
 	}
 
 	return false;
@@ -442,7 +445,8 @@ MaterialParser::Ks ()
 			return true;
 		}
 
-		throw Error <INVALID_X3D> ("Expected a color.");
+		Grammar::string (istream, whiteSpaceCharacters); // Parse until end of line.
+		return true;
 	}
 
 	return false;
@@ -465,7 +469,8 @@ MaterialParser::Ns ()
 			return true;
 		}
 
-		throw Error <INVALID_X3D> ("Expected a float.");
+		Grammar::string (istream, whiteSpaceCharacters); // Parse until end of line.
+		return true;
 	}
 
 	return false;
@@ -488,7 +493,8 @@ MaterialParser::d ()
 			return true;
 		}
 
-		throw Error <INVALID_X3D> ("Expected a float.");
+		Grammar::string (istream, whiteSpaceCharacters); // Parse until end of line.
+		return true;
 	}
 
 	return false;
@@ -511,7 +517,8 @@ MaterialParser::Tr ()
 			return true;
 		}
 
-		throw Error <INVALID_X3D> ("Expected a float.");
+		Grammar::string (istream, whiteSpaceCharacters); // Parse until end of line.
+		return true;
 	}
 
 	return false;
@@ -534,7 +541,8 @@ MaterialParser::illum ()
 			return true;
 		}
 
-		throw Error <INVALID_X3D> ("Expected a integer.");
+		Grammar::string (istream, whiteSpaceCharacters); // Parse until end of line.
+		return true;
 	}
 
 	return false;
