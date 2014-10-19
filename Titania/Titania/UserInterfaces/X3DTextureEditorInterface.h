@@ -170,9 +170,13 @@ public:
 	getWindow () const
 	{ return *m_Window; }
 
-	Gtk::ScrolledWindow &
+	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
+
+	Gtk::Notebook &
+	getTextureChildNotebook () const
+	{ return *m_TextureChildNotebook; }
 
 	Gtk::Expander &
 	getTextureExpander () const
@@ -442,6 +446,26 @@ public:
 	getTextureCoordinateGeneratorModeComboBoxText () const
 	{ return *m_TextureCoordinateGeneratorModeComboBoxText; }
 
+	Gtk::Box &
+	getPaletteBox () const
+	{ return *m_PaletteBox; }
+
+	Gtk::Box &
+	getPalettePreviewBox () const
+	{ return *m_PalettePreviewBox; }
+
+	Gtk::ComboBoxText &
+	getPaletteComboBoxText () const
+	{ return *m_PaletteComboBoxText; }
+
+	Gtk::Button &
+	getPalettePreviousButton () const
+	{ return *m_PalettePreviousButton; }
+
+	Gtk::Button &
+	getPaletteNextButton () const
+	{ return *m_PaletteNextButton; }
+
 	virtual
 	void
 	on_texture_changed () = 0;
@@ -521,7 +545,8 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_MovieTextureURLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_MovieTextureURLCellrendererPixbuf;
 	Gtk::Window*                           m_Window;
-	Gtk::ScrolledWindow*                   m_Widget;
+	Gtk::Box*                              m_Widget;
+	Gtk::Notebook*                         m_TextureChildNotebook;
 	Gtk::Expander*                         m_TextureExpander;
 	Gtk::Box*                              m_TextureBox;
 	Gtk::ComboBoxText*                     m_TextureComboBoxText;
@@ -589,6 +614,11 @@ private:
 	Gtk::Button*                           m_TextureCoordinateGeneratorUnlinkButton;
 	Gtk::Grid*                             m_TextureCoordinateGeneratorBox;
 	Gtk::ComboBoxText*                     m_TextureCoordinateGeneratorModeComboBoxText;
+	Gtk::Box*                              m_PaletteBox;
+	Gtk::Box*                              m_PalettePreviewBox;
+	Gtk::ComboBoxText*                     m_PaletteComboBoxText;
+	Gtk::Button*                           m_PalettePreviousButton;
+	Gtk::Button*                           m_PaletteNextButton;
 
 };
 

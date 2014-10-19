@@ -773,11 +773,9 @@ Parser::mtllib ()
 				catch (const X3DError &)
 				{ }
 			}
-
-			return true;
 		}
 
-		throw Error <INVALID_X3D> ("Expected a uri.");
+		return true;
 	}
 
 	return false;
@@ -806,11 +804,9 @@ Parser::usemtl ()
 			{
 				material = defaultMaterial;
 			}
-
-			return true;
 		}
 
-		throw Error <INVALID_X3D> ("Expected material name.");
+		return true;
 	}
 
 	return false;
@@ -848,11 +844,9 @@ Parser::Parser::o ()
 
 			if (not name .empty ())
 				scene -> updateNamedNode (name, SFNode (object));
-
-			return true;
 		}
 
-		throw Error <INVALID_X3D> ("Expected object name.");
+		return true;
 	}
 
 	return false;
@@ -894,11 +888,9 @@ Parser::g ()
 				if (not name .empty ())
 					scene -> updateNamedNode (name, SFNode (group));
 			}
-
-			return true;
 		}
 
-		throw Error <INVALID_X3D> ("Expected group name.");
+		return true;
 	}
 
 	return false;
@@ -924,7 +916,7 @@ Parser::s ()
 		if (Int32 (smoothingGroup))
 			return true;
 
-		throw Error <INVALID_X3D> ("Expected shading group number of 'off'.");
+		return true;
 	}
 
 	return false;

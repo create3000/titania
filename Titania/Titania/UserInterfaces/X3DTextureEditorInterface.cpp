@@ -82,6 +82,7 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("TextureChildNotebook", m_TextureChildNotebook);
 	m_builder -> get_widget ("TextureExpander", m_TextureExpander);
 	m_builder -> get_widget ("TextureBox", m_TextureBox);
 	m_builder -> get_widget ("TextureComboBoxText", m_TextureComboBoxText);
@@ -149,6 +150,11 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextureCoordinateGeneratorUnlinkButton", m_TextureCoordinateGeneratorUnlinkButton);
 	m_builder -> get_widget ("TextureCoordinateGeneratorBox", m_TextureCoordinateGeneratorBox);
 	m_builder -> get_widget ("TextureCoordinateGeneratorModeComboBoxText", m_TextureCoordinateGeneratorModeComboBoxText);
+	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
+	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
+	m_builder -> get_widget ("PaletteComboBoxText", m_PaletteComboBoxText);
+	m_builder -> get_widget ("PalettePreviousButton", m_PalettePreviousButton);
+	m_builder -> get_widget ("PaletteNextButton", m_PaletteNextButton);
 
 	// Connect object Gtk::ComboBoxText with id 'TextureComboBoxText'.
 	m_TextureComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_changed));
