@@ -148,8 +148,8 @@ DEF bwa Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "../../../Titania/share/titania/Library/Textures/Animations/foam.7.png",
-          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Animations/foam.7.png"
+          "../../../Titania/share/titania/Library/Textures/Game/zoom.gif",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Game/zoom.gif"
         ]
       }
       textureTransform TextureTransform {
@@ -281,3 +281,5 @@ Background {
     0 0.5 1
   ]
 }
+
+EXPORT bwa_1

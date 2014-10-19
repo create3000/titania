@@ -160,8 +160,8 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, c
 	                  return true;
 						});
 
-	X3D::X3DPtr <X3D::X3DTexture2DNode> texture2D (texture);
-	X3D::X3DPtr <X3D::X3DTexture3DNode> texture3D (texture);
+	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2D (texture);
+	const X3D::X3DPtr <X3D::X3DTexture3DNode> texture3D (texture);
 
 	// Assign texture to all appearances in selection
 
@@ -171,8 +171,8 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, c
 
 	                  if (appearance)
 	                  {
-								X3D::X3DPtr <X3D::X3DTexture2DNode> oldTexture2D (appearance -> texture ());
-								X3D::X3DPtr <X3D::X3DTexture3DNode> oldTexture3D (appearance -> texture ());
+								const X3D::X3DPtr <X3D::X3DTexture2DNode> oldTexture2D (appearance -> texture ());
+								const X3D::X3DPtr <X3D::X3DTexture3DNode> oldTexture3D (appearance -> texture ());
 
 	                     if (oldTexture2D and texture2D)
 	                     {
