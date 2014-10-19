@@ -186,6 +186,13 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'TextureCoordinateGeneratorUnlinkButton'.
 	m_TextureCoordinateGeneratorUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureCoordinateGenerator_unlink_clicked));
 
+	// Connect object Gtk::ComboBoxText with id 'PaletteComboBoxText'.
+	m_PaletteComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_palette_changed));
+
+	// Connect object Gtk::Button with id 'PalettePreviousButton'.
+	m_PalettePreviousButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_palette_previous_clicked));
+	m_PaletteNextButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_palette_next_clicked));
+
 	// Call construct handler of base class.
 	construct ();
 }

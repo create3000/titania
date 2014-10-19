@@ -60,38 +60,38 @@ DEF Water2 Transform {
           inputOutput SFNode  texture ComposedCubeMapTexture {
             front ImageTexture {
               url [
-                "../Textures/CubeMapTextures/LostValley/lostvalley_south.jpg",
-                "/usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_south.jpg"
+                "../CubeMapTextures/LostValley/lostvalley_south.jpg",
+                "/usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg"
               ]
             }
             back ImageTexture {
               url [
-                "../Textures/CubeMapTextures/LostValley/lostvalley_north.jpg",
-                "/usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_north.jpg"
+                "../CubeMapTextures/LostValley/lostvalley_north.jpg",
+                "/usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_north.jpg"
               ]
             }
             left ImageTexture {
               url [
-                "../Textures/CubeMapTextures/LostValley/lostvalley_west.jpg",
-                "/usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_west.jpg"
+                "../CubeMapTextures/LostValley/lostvalley_west.jpg",
+                "/usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_west.jpg"
               ]
             }
             right ImageTexture {
               url [
-                "../Textures/CubeMapTextures/LostValley/lostvalley_east.jpg",
-                "/usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_east.jpg"
+                "../CubeMapTextures/LostValley/lostvalley_east.jpg",
+                "/usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_east.jpg"
               ]
             }
             bottom ImageTexture {
               url [
-                "../Textures/CubeMapTextures/LostValley/lostvalley_down.jpg",
-                "/usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_down.jpg"
+                "../CubeMapTextures/LostValley/lostvalley_down.jpg",
+                "/usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_down.jpg"
               ]
             }
             top ImageTexture {
               url [
-                "../Textures/CubeMapTextures/LostValley/lostvalley_up.jpg",
-                "/usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_up.jpg"
+                "../CubeMapTextures/LostValley/lostvalley_up.jpg",
+                "/usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_up.jpg"
               ]
             }
           }

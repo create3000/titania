@@ -11,42 +11,42 @@ DEF LostValley Transform {
         front ImageTexture {
           url [
             "lostvalley_south.jpg",
-            "file:///usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_south.jpg"
+            "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg"
             "http://titania.create3000.de/Library/Textures/0.1/CubeMapTextures/LostValley/lostvalley_south.jpg"
           ]
         }
         back ImageTexture {
           url [
             "lostvalley_north.jpg",
-            "file:///usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_south.jpg"
+            "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg"
             "http://titania.create3000.de/Library/Textures/0.1/CubeMapTextures/LostValley/lostvalley_south.jpg"
           ]
         }
         left ImageTexture {
           url [
             "lostvalley_west.jpg",
-            "file:///usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_south.jpg"
+            "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg"
             "fhttp://titania.create3000.de/Library/Textures/0.1/CubeMapTextures/LostValley/lostvalley_south.jpg"
           ]
         }
         right ImageTexture {
           url [
             "lostvalley_east.jpg",
-            "file:///usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_south.jpg"
+            "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg"
             "http://titania.create3000.de/Library/Textures/0.1/CubeMapTextures/LostValley/lostvalley_south.jpg"
           ]
         }
         bottom ImageTexture {
           url [
             "lostvalley_down.jpg",
-            "file:///usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_south.jpg"
+            "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg"
             "http://titania.create3000.de/Library/Textures/0.1/CubeMapTextures/LostValley/lostvalley_south.jpg"
           ]
         }
         top ImageTexture {
           url [
             "lostvalley_up.jpg",
-            "file:///usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_south.jpg"
+            "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg"
             "http://titania.create3000.de/Library/Textures/0.1/CubeMapTextures/LostValley/lostvalley_south.jpg"
           ]
         }

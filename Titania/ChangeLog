@@ -1,5 +1,43 @@
 2014-10-19  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* MagicImport.cpp:
+	* Water2.x3dv:
+	* TextureEditor.xml:
+	* LibraryView.cpp:
+	* Funny.x3dv:
+	* TextureEditor.h:
+	* Lena.jpg:
+	* TextureEditor.cpp:
+	* LostValley.x3dv:
+	* X3DTextureEditorInterface.h:
+	* X3DPaletteEditor.h:
+	* AppearanceEditor.h:
+	* X3DTextureEditorInterface.cpp:
+	* AppearanceEditor.cpp:
+	* X3DPaletteEditor.cpp:
+	* X3DTexturePaletteEditor.h:
+	* X3DTexturePaletteEditor.cpp:
+	* X3DMaterialPaletteEditor.h:
+	* X3DMaterialPaletteEditor.cpp:
+	* lostvalley_up.jpg:
+	* lostvalley_down.jpg:
+	* lostvalley_east.jpg:
+	* lostvalley_west.jpg:
+	* lostvalley_south.jpg:
+	* lostvalley_north.jpg:
+	* lostvalley_up.jpg:
+	* ComposedCubeMapTexture.x3dv:
+	* lostvalley_west.jpg:
+	* lostvalley_east.jpg:
+	* lostvalley_down.jpg:
+	* lostvalley_north.jpg:
+	* lostvalley_south.jpg:
+	* ComposedCubeMapTexture.x3dv: 
+
+2014-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TextureEditor.xml:
 	* TextureEditor.cpp:
 	* X3DTextureEditorInterface.h:

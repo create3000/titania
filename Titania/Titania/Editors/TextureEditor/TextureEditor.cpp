@@ -61,7 +61,8 @@ TextureEditor::TextureEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DTextureEditorInterface (get_ui ("Editors/TextureEditor.xml"), gconf_dir ()),
 	               X3DTextureNodeEditor (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
 	      X3DTextureTransformNodeEditor (),
-	X3DTextureCoordinateGeneratorEditor ()
+	X3DTextureCoordinateGeneratorEditor (),
+	            X3DTexturePaletteEditor ()
 {
 	getTextureChildNotebook () .set_current_page (getConfig () .getInteger ("currentPage"));
 
@@ -75,6 +76,7 @@ TextureEditor::initialize ()
 	X3DTextureNodeEditor::initialize ();
 	X3DTextureTransformNodeEditor::initialize ();
 	X3DTextureCoordinateGeneratorEditor::initialize ();
+	X3DTexturePaletteEditor::initialize ();
 }
 
 TextureEditor::~TextureEditor ()

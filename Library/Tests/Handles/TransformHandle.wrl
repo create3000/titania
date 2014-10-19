@@ -1,4 +1,4 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V0.7.5
 
 META "title" "TransformHandle"
 
@@ -23,7 +23,10 @@ EXTERNPROTO Rotor [
   exposedField SFTime     stopTime
   eventOut     SFRotation rotation_changed
 ]
-[ "../../../Titania/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv", "file:///usr/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv" ]
+[
+  "../../../Titania/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv",
+  "file:///usr/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv"
+]
 
 NavigationInfo { }
 
@@ -61,8 +64,9 @@ Transform {
   children [
     Transform {
       translation 9.13001 -0.205781 -5
-      rotation 0 1 0 4.71239
+      rotation 0 -1 0 1.5708
       scale 1 2 3
+      scaleOrientation 0 0 1 0
       children [
         Viewpoint {
           description "Inside"
@@ -101,6 +105,7 @@ DEF Three Transform {
         translation -19.1921 1.03601e-05 -0.423022
         rotation 4.34001e-07 1 -6.24773e-07 0.669766
         scale 1.4214 0.322302 1
+        scaleOrientation 0 0 1 0
         children [
           Transform {
             translation 5.00001 -6.97649 4.72069e-05
@@ -191,7 +196,7 @@ Transform {
 DEF A Transform {
   translation 0 0 -2
   scale 2 1 1
-  children DEF _1 Transform {
+  children Transform {
     translation 9.79508e-08 0 7.86781e-06
     scale 2 1 1
     center -0.5 0 0
@@ -224,6 +229,27 @@ DEF B Transform {
       geometry Box {
         size 1 1 1
       }
+    }
+  }
+}
+
+DEF bwa_1 Transform {
+  translation 1.5331 -2.26627 0
+  scale 1 1 300
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url [
+          "../../../Titania/share/titania/Library/Textures/Animal/cowhorns1.jpg",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Animal/cowhorns1.jpg"
+        ]
+      }
+      textureTransform TextureTransform {
+        scale 3 3
+      }
+    }
+    geometry Rectangle2D {
+      solid FALSE
     }
   }
 }

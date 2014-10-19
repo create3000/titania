@@ -48,43 +48,78 @@
  *
  ******************************************************************************/
 
-#include "AppearanceEditor.h"
+#ifndef __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE_PALETTE_EDITOR_H__
+#define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE_PALETTE_EDITOR_H__
 
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
+#include "../../UserInterfaces/X3DTextureEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
-	            X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DAppearanceEditorInterface (get_ui ("Editors/AppearanceEditor.xml"), gconf_dir ()),
-	           X3DMaterialEditor (),
-	     X3DFillPropertiesEditor (),
-	     X3DLinePropertiesEditor (),
-	    X3DMaterialPaletteEditor ()
+class X3DTexturePaletteEditor :
+	virtual public X3DTextureEditorInterface
 {
-	getAppearanceChildNotebook () .set_current_page (getConfig () .getInteger ("currentPage"));
+public:
 
-	setup ();
-}
+	///  @name Destruction
 
-void
-AppearanceEditor::initialize ()
-{
-	X3DAppearanceEditorInterface::initialize ();
-	X3DMaterialEditor::initialize ();
-	X3DFillPropertiesEditor::initialize ();
-	X3DLinePropertiesEditor::initialize ();
-	X3DMaterialPaletteEditor::initialize ();
-}
+	virtual
+	~X3DTexturePaletteEditor ();
 
-AppearanceEditor::~AppearanceEditor ()
-{
-	getConfig () .setItem ("currentPage", getAppearanceChildNotebook () .get_current_page ());
 
-	dispose ();
-}
+protected:
+
+	///  @name Construction
+
+	X3DTexturePaletteEditor ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Construction
+
+	void
+	set_initialized ();
+
+	void
+	setCurrentFolder (const size_t);
+
+	void
+	addTexture (const size_t, const std::string &);
+
+	void
+	disable ();
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_palette_previous_clicked () final override;
+
+	virtual
+	void
+	on_palette_next_clicked () final override;
+
+	virtual
+	void
+	on_palette_changed () final override;
+
+	void
+	set_touchTime (const size_t);
+
+	///  @name Members
+
+	X3D::BrowserPtr           preview;
+	std::vector <std::string> folders;
+	std::vector <std::string> files;
+
+};
 
 } // puck
 } // titania
+
+#endif

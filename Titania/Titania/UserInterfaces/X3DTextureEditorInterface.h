@@ -515,6 +515,18 @@ public:
 	on_textureCoordinateGenerator_unlink_clicked () = 0;
 
 	virtual
+	void
+	on_palette_changed () = 0;
+
+	virtual
+	void
+	on_palette_previous_clicked () = 0;
+
+	virtual
+	void
+	on_palette_next_clicked () = 0;
+
+	virtual
 	~X3DTextureEditorInterface ();
 
 

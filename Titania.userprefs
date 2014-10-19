@@ -1,13 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/TextureEditor/X3DTexturePaletteEditor.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Wavefront/Parser.h" Line="163" Column="20" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Wavefront/Parser.cpp" Line="343" Column="1" />
-      <File FileName="libtitania-stream/Titania/Stream/InputUrlStream.cpp" Line="73" Column="41" />
-      <File FileName="libtitania-stream/Titania/Stream/UrlStreamBuf.cpp" Line="34" Column="17" />
-      <File FileName="libtitania-stream/Titania/Stream/InputFileStream.cpp" Line="60" Column="1" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/AppearanceEditor.cpp" Line="26" Column="62" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp" Line="91" Column="4" />
+      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTexturePaletteEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTexturePaletteEditor.cpp" Line="77" Column="2" />
+      <File FileName="Titania/Titania/Browser/MagicImport.cpp" Line="168" Column="30" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTextureNode.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/LibraryView/LibraryView.cpp" Line="133" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,9 +16,17 @@
           <Node name="miscellaneous" expanded="True">
             <Node name="uncrustify-all" expanded="True" />
           </Node>
-          <Node name="build" expanded="True" />
+          <Node name="build" expanded="True">
+            <Node name="debian" expanded="True" />
+          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
+            <Node name="Examples" expanded="True">
+              <Node name="LogoPieces" expanded="True" />
+              <Node name="Pong" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
+            </Node>
             <Node name="Models" expanded="True" />
             <Node name="Tests" expanded="True">
               <Node name="Geometry3D" expanded="True" />
@@ -44,16 +53,17 @@
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Rendering" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Geometry3D" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
+                  <Node name="Texturing3D" expanded="True" />
                 </Node>
                 <Node name="InputOutput" expanded="True" />
                 <Node name="Parser" expanded="True">
-                  <Node name="Wavefront" expanded="True">
-                    <Node name="Parser.h" selected="True" />
-                  </Node>
+                  <Node name="Wavefront" expanded="True" />
                 </Node>
               </Node>
             </Node>
@@ -64,7 +74,10 @@
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
                 <Node name="Library" expanded="True">
-                  <Node name="Textures" expanded="True" />
+                  <Node name="CubeMapTextures" expanded="True" />
+                  <Node name="Textures" expanded="True">
+                    <Node name="CubeMapTextures" selected="True" />
+                  </Node>
                 </Node>
                 <Node name="pages" expanded="True">
                   <Node name="about" expanded="True">
@@ -73,6 +86,7 @@
                 </Node>
                 <Node name="ui" expanded="True">
                   <Node name="Editors" expanded="True" />
+                  <Node name="icons" expanded="True" />
                 </Node>
               </Node>
             </Node>
@@ -86,9 +100,8 @@
               </Node>
               <Node name="Editors" expanded="True">
                 <Node name="AppearanceEditor" expanded="True" />
-                <Node name="GeometryPropertiesEditor" expanded="True" />
-                <Node name="GridEditor" expanded="True" />
-                <Node name="InlineEditor" expanded="True" />
+                <Node name="MotionBlurEditor" expanded="True" />
+                <Node name="TextureEditor" expanded="True" />
               </Node>
               <Node name="Widgets" expanded="True">
                 <Node name="LibraryView" expanded="True" />

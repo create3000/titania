@@ -55,6 +55,7 @@
 #include "X3DTextureTransformNodeEditor.h"
 #include "X3DTextureNodeEditor.h"
 #include "X3DTextureCoordinateGeneratorEditor.h"
+#include "X3DTexturePaletteEditor.h"
 
 namespace titania {
 namespace puck {
@@ -65,7 +66,8 @@ class TextureEditor :
 	virtual public X3DTextureEditorInterface,
 	public X3DTextureNodeEditor,
 	public X3DTextureTransformNodeEditor,
-	public X3DTextureCoordinateGeneratorEditor
+	public X3DTextureCoordinateGeneratorEditor,
+	public X3DTexturePaletteEditor
 {
 public:
 

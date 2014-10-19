@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Titania V0.7.4
+#VRML V2.0 utf8 Titania V0.7.5
 
 Background {
   skyColor 0.2 0.2 0.2
@@ -9,6 +9,8 @@ DEF Viewpoints Group {
   children [
     Viewpoint {
       description "Home"
+      position 1.22117 -2.50424 3.30594
+      centerOfRotation 1.22117 -2.50424 0
     }
     Viewpoint {
       description "Back"
@@ -140,23 +142,18 @@ Transform {
 }
 
 DEF bwa Transform {
-  translation 1.22117 -2.50424 0
-  scale 0.968288 0.968288 281.147
+  translation -0.117066 -2.74042 0
+  center -0.212097 -0.146004 0
   children Shape {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "../../../../../Dokumente/bwa.png",
-          "file:///home/holger/Dokumente/bwa.png"
+          "../../../Titania/share/titania/Library/Textures/Animations/foam.7.png",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Animations/foam.7.png"
         ]
-        repeatS FALSE
-        repeatT FALSE
-        textureProperties TextureProperties {
-          generateMipMaps TRUE
-          boundaryModeS "CLAMP_TO_EDGE"
-          boundaryModeT "CLAMP_TO_EDGE"
-          boundaryModeR "CLAMP_TO_EDGE"
-        }
+      }
+      textureTransform TextureTransform {
+        scale 3 3
       }
     }
     geometry Rectangle2D {
@@ -252,4 +249,35 @@ DEF LOD Transform {
       }
     ]
   }
+}
+
+DEF bwa_1 Transform {
+  translation 2.67508 -2.74042 0
+  center -0.212097 -0.146004 0
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url [
+          "../../../Titania/share/titania/Library/Textures/Animations/torch.4.png",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Animations/torch.4.png"
+        ]
+      }
+    }
+    geometry Rectangle2D {
+      solid FALSE
+    }
+  }
+}
+
+Background {
+  skyAngle 1.5708
+  skyColor [
+    0 1 1,
+    0 0.5 1
+  ]
+  groundAngle 1.5708
+  groundColor [
+    1 0 1,
+    0 0.5 1
+  ]
 }

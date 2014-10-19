@@ -1,0 +1,8 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+Background {
+  skyAngle 1.5708
+  skyColor [ 0 1 1, 0 0.5 1 ]
+  groundAngle 1.5708
+  groundColor [ 1 0 1, 0 0.5 1 ]
+}

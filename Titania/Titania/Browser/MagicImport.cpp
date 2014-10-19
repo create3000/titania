@@ -119,8 +119,6 @@ MagicImport::material (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, 
 
 	// Assign material to all appearances in selection
 
-	//undoStep -> addUndoFunction (&X3D::X3DBrowser::update, getBrowser ());
-
 	X3D::traverse (selection, [this, &material, &undoStep] (X3D::SFNode & node)
 	               {
 	                  const auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
@@ -131,10 +129,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, 
 	                  return true;
 						});
 
-	//undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
-
 	getExecutionContext () -> realize ();
-	//getBrowser () -> update ();
 	return true;
 }
 
@@ -146,7 +141,7 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, c
 	if (not lock)
 		return false;
 
-	// Find first material node in scene
+	// Find first texture node in scene
 
 	X3D::SFNode texture;
 
@@ -165,24 +160,41 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, c
 	                  return true;
 						});
 
-	// Assign material to all appearances in selection
+	X3D::X3DPtr <X3D::X3DTexture2DNode> texture2D (texture);
+	X3D::X3DPtr <X3D::X3DTexture3DNode> texture3D (texture);
 
-	//undoStep -> addUndoFunction (&X3D::X3DBrowser::update, getBrowser ());
+	// Assign texture to all appearances in selection
 
-	X3D::traverse (selection, [this, &texture, &undoStep] (X3D::SFNode & node)
+	X3D::traverse (selection, [&] (X3D::SFNode & node)
 	               {
 	                  const auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
 
 	                  if (appearance)
+	                  {
+								X3D::X3DPtr <X3D::X3DTexture2DNode> oldTexture2D (appearance -> texture ());
+								X3D::X3DPtr <X3D::X3DTexture3DNode> oldTexture3D (appearance -> texture ());
+
+	                     if (oldTexture2D and texture2D)
+	                     {
+	                        texture2D -> repeatS ()           = oldTexture2D -> repeatS ();
+	                        texture2D -> repeatT ()           = oldTexture2D -> repeatT ();
+	                        texture2D -> textureProperties () = oldTexture2D -> textureProperties ();
+	                     }
+                        else if (oldTexture3D and texture3D)
+	                     {
+	                        texture3D -> repeatS ()           = oldTexture3D -> repeatS ();
+	                        texture3D -> repeatT ()           = oldTexture3D -> repeatT ();
+	                        texture3D -> repeatR ()           = oldTexture3D -> repeatR ();
+	                        texture3D -> textureProperties () = oldTexture3D -> textureProperties ();
+	                     }
+
 	                     getBrowserWindow () -> replaceNode (node, appearance -> texture (), texture, undoStep);
+	                  }
 
 	                  return true;
 						});
 
-	//undoStep -> addRedoFunction (&X3D::X3DBrowser::update, getBrowser ());
-
 	getExecutionContext () -> realize ();
-	//getBrowser () -> update ();
 	return true;
 }
 

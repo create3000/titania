@@ -51,16 +51,12 @@
 #ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DPALETTE_EDITOR_H__
 #define __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DPALETTE_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
-#include "../../Undo/UndoStep.h"
 #include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-
-class X3DPaletteEditor :
+class X3DMaterialPaletteEditor :
 	virtual public X3DAppearanceEditorInterface
 {
 public:
@@ -68,14 +64,14 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DPaletteEditor ();
+	~X3DMaterialPaletteEditor ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DPaletteEditor ();
+	X3DMaterialPaletteEditor ();
 
 	virtual
 	void

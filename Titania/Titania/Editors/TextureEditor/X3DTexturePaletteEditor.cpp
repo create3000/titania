@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "X3DPaletteEditor.h"
+#include "X3DTexturePaletteEditor.h"
 
 #include "../../Browser/MagicImport.h"
 #include "../../Browser/X3DBrowserWindow.h"
@@ -63,36 +63,30 @@ static constexpr size_t ROWS      = 6;
 static constexpr size_t PAGE_SIZE = COLUMNS * ROWS;
 static constexpr double DISTANCE  = 2.5;
 
-X3DPaletteEditor::X3DPaletteEditor () :
-	X3DAppearanceEditorInterface (),
-	                     preview (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
-	                     folders (),
-	                       files ()
+X3DTexturePaletteEditor::X3DTexturePaletteEditor () :
+	X3DTextureEditorInterface (),
+	                  preview (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
+	                  folders (),
+	                    files ()
 {
 	preview -> set_antialiasing (4);
 }
 
 void
-X3DPaletteEditor::initialize ()
+X3DTexturePaletteEditor::initialize ()
 {
 	// Find material folders.
 
 	try
 	{
-		const auto folder = Gio::File::create_for_path (find_data_file ("Library/Materials"));
+		const auto folder = Gio::File::create_for_path (find_data_file ("Library/Textures"));
 
 		for (const auto & fileInfo : LibraryView::getChildren (folder))
 		{
-			switch (fileInfo -> get_file_type ())
+			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
 			{
-				case Gio::FILE_TYPE_DIRECTORY :
-					{
-						folders .emplace_back (folder -> get_uri () + "/" + fileInfo -> get_name ());
-						getPaletteComboBoxText () .append (fileInfo -> get_name ());
-						break;
-					}
-				default:
-					break;
+				folders .emplace_back (folder -> get_child (fileInfo -> get_name ()) -> get_uri ());
+				getPaletteComboBoxText () .append (fileInfo -> get_name ());
 			}
 		}
 	}
@@ -104,13 +98,13 @@ X3DPaletteEditor::initialize ()
 	getPalettePreviewBox () .pack_start (*preview, true, true, 0);
 
 	preview -> show ();
-	preview -> initialized () .addInterest (this, &X3DPaletteEditor::set_initialized);
+	preview -> initialized () .addInterest (this, &X3DTexturePaletteEditor::set_initialized);
 }
 
 void
-X3DPaletteEditor::set_initialized ()
+X3DTexturePaletteEditor::set_initialized ()
 {
-	preview -> initialized () .removeInterest (this, &X3DPaletteEditor::set_initialized);
+	preview -> initialized () .removeInterest (this, &X3DTexturePaletteEditor::set_initialized);
 
 	if (folders .empty ())
 	{
@@ -127,7 +121,7 @@ X3DPaletteEditor::set_initialized ()
 }
 
 void
-X3DPaletteEditor::setCurrentFolder (const size_t index)
+X3DTexturePaletteEditor::setCurrentFolder (const size_t index)
 {
 	getConfig () .setItem ("palette", (int) index);
 
@@ -149,8 +143,8 @@ X3DPaletteEditor::setCurrentFolder (const size_t index)
 				case Gio::FILE_TYPE_REGULAR       :
 				case Gio::FILE_TYPE_SYMBOLIC_LINK :
 					{
-						const std::string uri = folder -> get_uri () + "/" + fileInfo -> get_name ();
-						addMaterial (files .size (), uri);
+						const std::string uri = Glib::uri_unescape_string (folder -> get_child (fileInfo -> get_name ()) -> get_uri ());
+						addTexture (files .size (), uri);
 						files .emplace_back (uri);
 						break;
 					}
@@ -171,51 +165,60 @@ X3DPaletteEditor::setCurrentFolder (const size_t index)
 }
 
 void
-X3DPaletteEditor::addMaterial (const size_t i, const std::string & uri)
+X3DTexturePaletteEditor::addTexture (const size_t i, const std::string & uri)
 {
 	const int column = i % COLUMNS;
 	const int row    = i / COLUMNS;
 
-	const auto inlineNode  = preview -> getExecutionContext () -> createNode <X3D::Inline> ();
+	const auto texture     = preview -> getExecutionContext () -> createNode <X3D::ImageTexture> ();
+	const auto appearance  = preview -> getExecutionContext () -> createNode <X3D::Appearance> ();
+	const auto rectangle   = preview -> getExecutionContext () -> createNode <X3D::Rectangle2D> ();
+	const auto shape       = preview -> getExecutionContext () -> createNode <X3D::Shape> ();
 	const auto touchSensor = preview -> getExecutionContext () -> createNode <X3D::TouchSensor> ();
 	const auto transform   = preview -> getExecutionContext () -> createNode <X3D::Transform> ();
 
-	touchSensor -> touchTime () .addInterest (this, &X3DPaletteEditor::set_touchTime, i);
+	touchSensor -> touchTime () .addInterest (this, &X3DTexturePaletteEditor::set_touchTime, i);
+	touchSensor -> description () = basic::uri (uri) .basename ();
 
-	inlineNode -> url ()        = { uri };
+	texture -> url ()           = { uri };
+	texture -> repeatS ()       = false;
+	texture -> repeatT ()       = false;
+	appearance -> texture ()    = texture;
+	shape -> appearance ()      = appearance;
+	shape -> geometry ()        = rectangle;
 	transform -> translation () = X3D::Vector3f (column * DISTANCE, -row * DISTANCE, 0);
-	transform -> children ()    = { inlineNode, touchSensor };
+	transform -> children ()    = { shape, touchSensor };
 
 	preview -> getExecutionContext () -> getRootNodes () .emplace_back (transform);
 	preview -> getExecutionContext () -> realize ();
 }
 
 void
-X3DPaletteEditor::disable ()
+X3DTexturePaletteEditor::disable ()
 {
 	getPaletteBox () .set_sensitive (false);
 }
 
 void
-X3DPaletteEditor::on_palette_previous_clicked ()
+X3DTexturePaletteEditor::on_palette_previous_clicked ()
 {
 	getPaletteComboBoxText () .set_active (getPaletteComboBoxText () .get_active_row_number () - 1);
 }
 
 void
-X3DPaletteEditor::on_palette_next_clicked ()
+X3DTexturePaletteEditor::on_palette_next_clicked ()
 {
 	getPaletteComboBoxText () .set_active (getPaletteComboBoxText () .get_active_row_number () + 1);
 }
 
 void
-X3DPaletteEditor::on_palette_changed ()
+X3DTexturePaletteEditor::on_palette_changed ()
 {
 	setCurrentFolder (getPaletteComboBoxText () .get_active_row_number ());
 }
 
 void
-X3DPaletteEditor::set_touchTime (const size_t i)
+X3DTexturePaletteEditor::set_touchTime (const size_t i)
 {
 	try
 	{
@@ -224,7 +227,7 @@ X3DPaletteEditor::set_touchTime (const size_t i)
 		if (selection .empty ())
 			return;
 
-		const auto undoStep = std::make_shared <UndoStep> (_ ("Apply Material From Palette"));
+		const auto undoStep = std::make_shared <UndoStep> (_ ("Apply Texture From Palette"));
 		const auto scene    = getBrowser () -> createX3DFromURL ({ files [i] });
 
 		if (MagicImport (getBrowserWindow ()) .import (selection, scene, undoStep))
@@ -234,7 +237,7 @@ X3DPaletteEditor::set_touchTime (const size_t i)
 	{ }
 }
 
-X3DPaletteEditor::~X3DPaletteEditor ()
+X3DTexturePaletteEditor::~X3DTexturePaletteEditor ()
 { }
 
 } // puck

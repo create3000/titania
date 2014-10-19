@@ -128,6 +128,9 @@ LibraryView::getChildren (const Glib::RefPtr <Gio::File> & directory)
 
 		while (fileInfo)
 		{
+			if (fileInfo -> is_hidden ())
+				continue;
+
 			fileInfos .emplace_back (fileInfo);
 			fileInfo = enumerator -> next_file ();
 		}
