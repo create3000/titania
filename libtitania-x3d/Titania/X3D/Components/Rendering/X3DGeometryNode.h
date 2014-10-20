@@ -275,6 +275,9 @@ private:
 	void
 	clear ();
 
+	void
+	transfer ();
+
 	virtual
 	void
 	buildTexCoords ();
@@ -283,7 +286,6 @@ private:
 
 	Box3f                                 bbox;
 	std::vector <X3DVertexAttributeNode*> attribNodes;
-	std::vector <GLuint>                  attribBuffers;
 	std::vector <Color4f>                 colors;
 	X3DPtr <X3DTextureCoordinateNode>     texCoordNode;
 	TexCoordArray                         texCoords;
@@ -292,6 +294,12 @@ private:
 	bool                                  solid;
 	GLenum                                frontFace;
 	std::vector <Element>                 elements;
+
+	std::vector <GLuint> attribBufferIds;
+	GLuint               colorBufferId;
+	std::vector <GLuint> texCoordBufferIds;
+	GLuint               normalBufferId;
+	GLuint               vertexBufferId;
 
 };
 

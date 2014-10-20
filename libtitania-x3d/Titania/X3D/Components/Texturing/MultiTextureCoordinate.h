@@ -114,11 +114,11 @@ public:
 
 	virtual
 	void
-	enable (const TexCoordArray &) const final override;
+	enable (const std::vector <GLuint> &) const final override;
 
 	virtual
 	void
-	enable (const int32_t, const size_t, const TexCoordArray &) const final override
+	enable (const int32_t, const size_t, const std::vector <GLuint> &) const final override
 	{ }
 
 	virtual

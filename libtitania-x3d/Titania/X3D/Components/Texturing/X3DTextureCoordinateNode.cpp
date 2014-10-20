@@ -62,17 +62,17 @@ X3DTextureCoordinateNode::X3DTextureCoordinateNode () :
 }
 
 void
-X3DTextureCoordinateNode::enable (const TexCoordArray & texCoords) const
+X3DTextureCoordinateNode::enable (const std::vector <GLuint> & texCoordBufferIds) const
 {
 	if (getBrowser () -> getTextureStages () .empty ())
-		enable (0, 0, texCoords);
+		enable (0, 0, texCoordBufferIds);
 
 	else
 	{
 		for (const auto & unit : getBrowser () -> getTextureStages ())
 		{
 			if (unit >= 0)
-				enable (unit, 0, texCoords);
+				enable (unit, 0, texCoordBufferIds);
 		}
 	}
 }

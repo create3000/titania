@@ -9,8 +9,8 @@ DEF Viewpoints Group {
   children [
     Viewpoint {
       description "Home"
-      position 1.22117 -2.50424 3.30594
-      centerOfRotation 1.22117 -2.50424 0
+      position 1.14304 -0.511869 10.0209
+      centerOfRotation 1.14304 -0.511869 9.53674e-07
     }
     Viewpoint {
       description "Back"

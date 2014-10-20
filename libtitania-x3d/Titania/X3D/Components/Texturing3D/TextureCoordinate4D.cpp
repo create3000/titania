@@ -106,11 +106,12 @@ TextureCoordinate4D::getTexCoord (std::vector <Vector4f> & texCoords) const
 }
 
 void
-TextureCoordinate4D::enable (const int32_t unit, const size_t channel, const TexCoordArray & texCoords) const
+TextureCoordinate4D::enable (const int32_t unit, const size_t channel, const std::vector <GLuint> & texCoordBufferIds) const
 {
 	glClientActiveTexture (GL_TEXTURE0 + unit);
+	glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferIds [channel]);
 	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-	glTexCoordPointer (4, GL_FLOAT, 0, texCoords [channel] .data ());
+	glTexCoordPointer (4, GL_FLOAT, 0, 0);
 }
 
 void

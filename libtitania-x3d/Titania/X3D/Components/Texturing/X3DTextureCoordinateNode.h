@@ -82,11 +82,11 @@ public:
 
 	virtual
 	void
-	enable (const TexCoordArray & texCoords) const;
+	enable (const std::vector <GLuint> &) const;
 
 	virtual
 	void
-	enable (const int32_t, const size_t, const TexCoordArray &) const = 0;
+	enable (const int32_t, const size_t, const std::vector <GLuint> &) const = 0;
 
 	virtual
 	void

@@ -120,25 +120,24 @@ MultiTextureCoordinate::addTexCoord (const size_t, TexCoordArray & texCoords, co
 }
 
 void
-MultiTextureCoordinate::enable (const TexCoordArray & texCoords) const
+MultiTextureCoordinate::enable (const std::vector <GLuint> & texCoordBufferIds) const
 {
 	X3DTextureCoordinateNode* last    = nullptr;
 	size_t                    channel = 0;
-	size_t                    size    = getBrowser () -> getTextureStages () .size ();
+	const size_t              size    = getBrowser () -> getTextureStages () .size ();
 
 	for (const auto & node : texCoord ())
 	{
 		if (x3d_cast <MultiTextureCoordinate*> (node))
 			continue;
 
-		const int32_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
-		
-		auto textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (node);
+		const int32_t unit              = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
+		const auto    textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (node);
 
 		if (textureCoordinate)
 		{
 			if (unit >= 0)
-				textureCoordinate -> enable (unit, channel, texCoords);
+				textureCoordinate -> enable (unit, channel, texCoordBufferIds);
 
 			last = textureCoordinate;
 			++ channel;
@@ -155,7 +154,7 @@ MultiTextureCoordinate::enable (const TexCoordArray & texCoords) const
 			const int32_t unit = getBrowser () -> getTextureStages () [channel];
 		
 			if (unit >= 0)
-				last -> enable (unit, lastChannel, texCoords);
+				last -> enable (unit, lastChannel, texCoordBufferIds);
 		}
 	}
 }

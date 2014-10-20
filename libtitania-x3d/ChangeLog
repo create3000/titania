@@ -1,3 +1,20 @@
+2014-10-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DGeometryNode.h:
+	* X3DGeometryNode.cpp:
+	* TextureCoordinate.h:
+	* TextureCoordinate.cpp:
+	* TextureCoordinate3D.h:
+	* TextureCoordinate4D.h:
+	* MultiTextureCoordinate.h:
+	* TextureCoordinate4D.cpp:
+	* TextureCoordinate3D.cpp:
+	* X3DTextureCoordinateNode.h:
+	* MultiTextureCoordinate.cpp:
+	* X3DTextureCoordinateNode.cpp:
+	* TextureCoordinateGenerator.h:
+	* TextureCoordinateGenerator.cpp: 
+
 2014-10-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.cpp: 

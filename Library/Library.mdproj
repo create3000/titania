@@ -2486,6 +2486,7 @@
     <None Include="Tests\NURBS\NurbsTrimmedSurface\StampX3dLetters.x3d" />
     <None Include="Tests\NURBS\NurbsTrimmedSurface\StampX3dLettersHalloween.x3d" />
     <None Include="Examples\LogoPieces\Web3dX3dLogoAnimated.x3d" />
+    <None Include="Tests\Geometry3D\vectorSG2.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
