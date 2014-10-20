@@ -1,5 +1,9 @@
 2014-10-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Extrusion.cpp: 
+
+2014-10-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DGeometryNode.h:
 	* X3DGeometryNode.cpp:
 	* TextureCoordinate.h:

@@ -239,7 +239,7 @@ Extrusion::createRotations ()
 		SCPzAxis = normalize (cross (spine () [i + 1] - spine () [i],
 		                             spine () [i - 1] - spine () [i]));
 
-		// d.
+		// g.
 		if (dot (SCPzAxisPrevious, SCPzAxis) < 0)
 			SCPzAxis = -SCPzAxis;
 
@@ -271,7 +271,7 @@ Extrusion::createRotations ()
 			SCPzAxis = normalize (cross (spine () [spine () .size () - 1] - spine () [spine () .size () - 2],
 			                             spine () [spine () .size () - 3] - spine () [spine () .size () - 2]));
 
-		// d.
+		// g.
 		if (dot (SCPzAxisPrevious, SCPzAxis) < 0)
 			SCPzAxis = -SCPzAxis;
 
@@ -293,7 +293,7 @@ Extrusion::createRotations ()
 void
 Extrusion::build ()
 {
-	if (spine () .size () < 2 or crossSection () .size () < 3)
+	if (spine () .size () < 2 or crossSection () .size () < 2)
 		return;
 
 	getTexCoords () .emplace_back ();
@@ -340,8 +340,8 @@ Extrusion::build ()
 	{
 		for (size_t k = 0, size = crossSection () .size () - 1; k < size; ++ k)
 		{
-			size_t n1 = closedSpine and n == spine () .size () - 2 ? 0 : n + 1;
-			size_t k1 = closedCrossSection and k == crossSection () .size () - 2 ? 0 : k + 1;
+			const size_t n1 = closedSpine and n == spine () .size () - 2 ? 0 : n + 1;
+			const size_t k1 = closedCrossSection and k == crossSection () .size () - 2 ? 0 : k + 1;
 
 			// k      k+1
 			//
