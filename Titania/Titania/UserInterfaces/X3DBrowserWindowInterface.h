@@ -527,6 +527,14 @@ public:
 	{ return *m_FollowPrimarySelectionMenuItem; }
 
 	Gtk::MenuItem &
+	getObjectMenuItem () const
+	{ return *m_ObjectMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getCombineMenuItem () const
+	{ return *m_CombineMenuItem; }
+
+	Gtk::MenuItem &
 	getLayoutMenuItem () const
 	{ return *m_LayoutMenuItem; }
 
@@ -1148,6 +1156,10 @@ public:
 
 	virtual
 	void
+	on_combine_activate () = 0;
+
+	virtual
+	void
 	on_grid_layout_tool_toggled () = 0;
 
 	virtual
@@ -1426,6 +1438,8 @@ private:
 	Gtk::MenuItem*                   m_ShowAllObjectsMenuItem;
 	Gtk::CheckMenuItem*              m_SelectLowestMenuItem;
 	Gtk::CheckMenuItem*              m_FollowPrimarySelectionMenuItem;
+	Gtk::MenuItem*                   m_ObjectMenuItem;
+	Gtk::ImageMenuItem*              m_CombineMenuItem;
 	Gtk::MenuItem*                   m_LayoutMenuItem;
 	Gtk::CheckMenuItem*              m_GridLayoutToolMenuItem;
 	Gtk::CheckMenuItem*              m_AngleLayoutToolMenuItem;

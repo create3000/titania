@@ -107,6 +107,14 @@ public:
 	getBBox () const final override;
 
 	virtual
+	void
+	set1Point (const size_t, const Vector3d &) final override;
+
+	virtual
+	Vector3d
+	get1Point (const size_t) final override;
+
+	virtual
 	Vector3f
 	getNormal (const size_t, const size_t, const size_t) const final override;
 

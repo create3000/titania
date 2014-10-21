@@ -1,3 +1,15 @@
+2014-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Extrusion.h:
+	* Coordinate.h:
+	* Extrusion.cpp:
+	* Coordinate.cpp:
+	* CoordinateDouble.h:
+	* CoordinateDouble.cpp:
+	* GeoCoordinate.h:
+	* GeoCoordinate.cpp:
+	* X3DCoordinateNode.h: 
+
 2014-10-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Extrusion.cpp: 

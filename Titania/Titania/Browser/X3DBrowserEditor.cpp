@@ -2110,6 +2110,172 @@ X3DBrowserEditor::createParentGroup (const X3D::X3DPtr <X3D::X3DGroupingNode> & 
 	}
 }
 
+X3D::Matrix4d
+X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node) const
+{
+	X3D::Matrix4d modelViewMatrix;
+
+	auto hierarchy = X3D::find (getExecutionContext (), node, X3D::TRAVERSE_ROOT_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+
+	if (hierarchy .empty ())
+		return modelViewMatrix;
+
+	hierarchy .pop_back ();
+
+	for (const auto & object : basic::make_reverse_range (hierarchy))
+	{
+		const auto node = dynamic_cast <X3D::X3DBaseNode*> (object);
+		
+		if (not node)
+			continue;
+
+		for (const auto & type : basic::make_reverse_range (node -> getType ()))
+		{
+			switch (type)
+			{
+				case X3D::X3DConstants::X3DLayerNode :
+				case X3D::X3DConstants::X3DProtoDeclarationNode:
+				case X3D::X3DConstants::X3DScriptNode:
+				case X3D::X3DConstants::X3DProgrammableShaderObject:
+				case X3D::X3DConstants::X3DBaseNode:
+					goto END;
+				case X3D::X3DConstants::X3DTransformMatrix4DNode:
+				{
+					const auto transform = dynamic_cast <X3D::X3DTransformMatrix4DNode*> (object);
+
+					modelViewMatrix .mult_right (transform -> getMatrix ());
+					break;
+				}
+				case X3D::X3DConstants::X3DNode:
+					break;
+				default:
+					continue;
+			}
+
+			break;
+		}
+	}
+
+END:
+	return modelViewMatrix;
+}
+
+//X3D::Matrix4d
+//X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node) const
+//{
+//	X3D::Matrix4d modelViewMatrix;
+//
+//	std::set <X3D::X3DBaseNode*> seen;
+//
+//	for (const auto & parentNode : getParentNodes (node))
+//	{
+//		if (findModelViewMatrix (parentNode, modelViewMatrix, seen))
+//			break;
+//	}
+//
+//	return modelViewMatrix;
+//}
+
+bool
+X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix4d & modelViewMatrix, std::set <X3D::X3DBaseNode*> & seen) const
+{
+	if (not seen .emplace (node) .second)
+		return false;
+
+	if (node == getExecutionContext ())
+		return true;
+
+	for (const auto & type : basic::make_reverse_range (node -> getType ()))
+	{
+		switch (type)
+		{
+			case X3D::X3DConstants::X3DLayerNode :
+				return true;
+			case X3D::X3DConstants::X3DProtoDeclarationNode:
+			case X3D::X3DConstants::X3DScriptNode:
+			case X3D::X3DConstants::X3DProgrammableShaderObject:
+			case X3D::X3DConstants::X3DBaseNode:
+				return false;
+			case X3D::X3DConstants::X3DNode:
+				break;
+			default:
+				continue;
+		}
+
+		break;
+	}
+
+	// Iterate over parents
+
+	for (const auto & parentNode : getParentNodes (node))
+	{
+		if (findModelViewMatrix (parentNode, modelViewMatrix, seen))
+		{
+			const auto transform = dynamic_cast <X3D::X3DTransformMatrix4DNode*> (node);
+
+			if (transform)
+				modelViewMatrix .mult_left (transform -> getMatrix ());
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+std::vector <X3D::X3DBaseNode*>
+X3DBrowserEditor::getParentNodes (X3D::X3DBaseNode* const child) const
+{
+	std::vector <X3D::X3DBaseNode*> parentNodes;
+
+	for (const auto & parent : child -> getParents ())
+	{
+		const auto sfnode = dynamic_cast <X3D::SFNode*> (parent);
+
+		if (sfnode)
+		{
+			for (const auto & secondParent : sfnode -> getParents ())
+			{
+				const auto mfnode = dynamic_cast <X3D::MFNode*> (secondParent);
+
+				if (mfnode)
+				{
+					for (const auto & thirdParent : mfnode -> getParents ())
+					{
+						const auto baseNode = dynamic_cast <X3D::X3DBaseNode*> (thirdParent);
+
+						if (baseNode)
+						{
+							if (baseNode not_eq child)
+							{
+								if (not baseNode -> isPrivate ())
+									parentNodes .emplace_back (baseNode);
+							}
+						}
+					}
+
+					continue;
+				}
+
+				const auto baseNode = dynamic_cast <X3D::X3DBaseNode*> (secondParent);
+
+				if (baseNode)
+				{
+					if (baseNode not_eq child)
+					{
+						if (not baseNode -> isPrivate ())
+							parentNodes .emplace_back (baseNode);
+					}
+
+					continue;
+				}
+			}
+		}
+	}
+
+	return parentNodes;
+}
+
 void
 X3DBrowserEditor::addPrototypeInstance (const std::string & name)
 {
@@ -2236,122 +2402,6 @@ X3DBrowserEditor::undoEraseNode (X3D::MFNode & field, const X3D::SFNode & value,
 }
 
 // Misc
-
-X3D::Matrix4d
-X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node) const
-{
-	X3D::Matrix4d modelViewMatrix;
-
-	std::set <X3D::X3DBaseNode*> seen;
-
-	for (const auto & parentNode : getParentNodes (node))
-	{
-		if (findModelViewMatrix (parentNode, modelViewMatrix, seen))
-			break;
-	}
-
-	return modelViewMatrix;
-}
-
-bool
-X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix4d & modelViewMatrix, std::set <X3D::X3DBaseNode*> & seen) const
-{
-	if (not seen .emplace (node) .second)
-		return false;
-
-	if (node == getExecutionContext ())
-		return true;
-
-	for (const auto & type : basic::make_reverse_range (node -> getType ()))
-	{
-		switch (type)
-		{
-			case X3D::X3DConstants::X3DLayerNode :
-				return true;
-			case X3D::X3DConstants::X3DProtoDeclarationNode:
-			case X3D::X3DConstants::X3DScriptNode:
-			case X3D::X3DConstants::X3DProgrammableShaderObject:
-			case X3D::X3DConstants::X3DBaseNode:
-				return false;
-			case X3D::X3DConstants::X3DNode:
-				break;
-			default:
-				continue;
-		}
-
-		break;
-	}
-
-	// Iterate over parents
-
-	for (const auto & parentNode : getParentNodes (node))
-	{
-		if (findModelViewMatrix (parentNode, modelViewMatrix, seen))
-		{
-			const auto transform = dynamic_cast <X3D::X3DTransformMatrix4DNode*> (node);
-
-			if (transform)
-				modelViewMatrix .mult_left (transform -> getMatrix ());
-
-			return true;
-		}
-	}
-
-	return false;
-}
-
-std::vector <X3D::X3DBaseNode*>
-X3DBrowserEditor::getParentNodes (X3D::X3DBaseNode* const child) const
-{
-	std::vector <X3D::X3DBaseNode*> parentNodes;
-
-	for (const auto & parent : child -> getParents ())
-	{
-		const auto sfnode = dynamic_cast <X3D::SFNode*> (parent);
-
-		if (sfnode)
-		{
-			for (const auto & secondParent : sfnode -> getParents ())
-			{
-				const auto mfnode = dynamic_cast <X3D::MFNode*> (secondParent);
-
-				if (mfnode)
-				{
-					for (const auto & thirdParent : mfnode -> getParents ())
-					{
-						const auto baseNode = dynamic_cast <X3D::X3DBaseNode*> (thirdParent);
-
-						if (baseNode)
-						{
-							if (baseNode not_eq child)
-							{
-								if (not baseNode -> isPrivate ())
-									parentNodes .emplace_back (baseNode);
-							}
-						}
-					}
-
-					continue;
-				}
-
-				const auto baseNode = dynamic_cast <X3D::X3DBaseNode*> (secondParent);
-
-				if (baseNode)
-				{
-					if (baseNode not_eq child)
-					{
-						if (not baseNode -> isPrivate ())
-							parentNodes .emplace_back (baseNode);
-					}
-
-					continue;
-				}
-			}
-		}
-	}
-
-	return parentNodes;
-}
 
 X3D::X3DFieldDefinition*
 X3DBrowserEditor::getContainerField (const X3D::SFNode & parent, const X3D::SFNode & child) const

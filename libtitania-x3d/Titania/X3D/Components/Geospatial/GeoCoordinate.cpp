@@ -113,6 +113,18 @@ GeoCoordinate::getBBox () const
 	return Box3d (points .begin (), points .end (), math::iterator_type ());
 }
 
+void
+GeoCoordinate::set1Point (const size_t index, const Vector3d & value)
+{
+	point () .set1Value (index, getGeoCoord (value));
+}
+
+Vector3d
+GeoCoordinate::get1Point (const size_t index)
+{
+	return getCoord (point () .get1Value (index));
+}
+
 Vector3f
 GeoCoordinate::getNormal (const size_t index1, const size_t index2, const size_t index3) const
 {

@@ -229,6 +229,12 @@ public:
 	X3D::SFNode
 	createParentGroup (const std::string &, const X3D::MFNode &, const UndoStepPtr &) const;
 
+	X3D::Matrix4d
+	findModelViewMatrix (X3D::X3DBaseNode* const) const;
+
+	std::vector <X3D::X3DBaseNode*>
+	getParentNodes (X3D::X3DBaseNode* const) const;
+
 	void
 	addPrototypeInstance (const std::string &);
 
@@ -294,14 +300,6 @@ protected:
 
 	bool
 	getPasteStatus () const;
-
-	///  @name Grouping
-
-	X3D::Matrix4d
-	findModelViewMatrix (X3D::X3DBaseNode* const) const;
-
-	std::vector <X3D::X3DBaseNode*>
-	getParentNodes (X3D::X3DBaseNode* const) const;
 
 
 private:

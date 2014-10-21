@@ -87,6 +87,18 @@ Coordinate::getBBox () const
 	return Box3f (point () .begin (), point () .end (), math::iterator_type ());
 }
 
+void
+Coordinate::set1Point (const size_t index, const Vector3d & value)
+{
+	point () .set1Value (index, value);
+}
+
+Vector3d
+Coordinate::get1Point (const size_t index)
+{
+	return Vector3d (point () .get1Value (index) .getValue ());
+}
+
 Vector3f
 Coordinate::getNormal (const size_t index1, const size_t index2, const size_t index3) const
 {

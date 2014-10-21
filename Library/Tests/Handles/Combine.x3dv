@@ -1,0 +1,355 @@
+#X3D V3.3 utf8 Titania V0.7.5
+
+META "comment" "World of Titania"
+META "created" "Tue, 21 Oct 2014 04:28:19 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.5, http://titania.create3000.de"
+META "modified" "Tue, 21 Oct 2014 14:21:42 GMT"
+
+WorldInfo {
+  metadata MetadataSet {
+    name "Titania"
+    value [
+      MetadataSet {
+        name "AngleGrid"
+        value MetadataBoolean {
+          name "enabled"
+          value FALSE
+        }
+      }
+      MetadataSet {
+        name "Grid"
+        value [
+          MetadataBoolean {
+            name "enabled"
+            value TRUE
+          }
+          MetadataFloat {
+            name "rotation"
+            value [
+              1,
+              0,
+              0,
+              1.5708
+            ]
+          }
+          MetadataInteger {
+            name "dimension"
+            value [
+              20,
+              10,
+              10
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "Combine"
+}
+
+Viewpoint {
+  position 0 0 13.4587
+}
+
+DEF Box_1 Transform {
+  translation 5 0 0
+  children Shape {
+    appearance DEF _1 Appearance {
+      material Material { }
+    }
+    geometry DEF _2 IndexedFaceSet {
+      texCoordIndex [
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1
+      ]
+      coordIndex [
+        0,
+        1,
+        2,
+        3,
+        -1,
+        5,
+        4,
+        7,
+        6,
+        -1,
+        3,
+        2,
+        6,
+        7,
+        -1,
+        4,
+        5,
+        1,
+        0,
+        -1,
+        4,
+        0,
+        3,
+        7,
+        -1,
+        1,
+        5,
+        6,
+        2,
+        -1
+      ]
+      texCoord TextureCoordinate {
+        point [
+          0 0,
+          1 0,
+          1 1,
+          0 1
+        ]
+      }
+      coord Coordinate {
+        point [
+          -1 -1 1,
+          1 -1 1,
+          1 1 1,
+          -1 1 1,
+          -1 -1 -1,
+          1 -1 -1,
+          1 1 -1,
+          -1 1 -1
+        ]
+      }
+    }
+  }
+}
+
+DEF Box_2 Transform {
+  translation 5 3 1.10241e-05
+  children Shape {
+    appearance USE _1
+    geometry USE _2
+  }
+}
+
+DEF Box Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry IndexedFaceSet {
+      texCoordIndex [
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1
+      ]
+      coordIndex [
+        0,
+        1,
+        2,
+        3,
+        -1,
+        5,
+        4,
+        7,
+        6,
+        -1,
+        3,
+        2,
+        6,
+        7,
+        -1,
+        4,
+        5,
+        1,
+        0,
+        -1,
+        4,
+        0,
+        3,
+        7,
+        -1,
+        1,
+        5,
+        6,
+        2,
+        -1
+      ]
+      texCoord TextureCoordinate {
+        point [
+          0 0,
+          1 0,
+          1 1,
+          0 1
+        ]
+      }
+      coord Coordinate {
+        point [
+          -1 -1 1,
+          1 -1 1,
+          1 1 1,
+          -1 1 1,
+          -1 -1 -1,
+          1 -1 -1,
+          1 1 -1,
+          -1 1 -1
+        ]
+      }
+    }
+  }
+}
+
+Transform {
+  children [
+    Transform {
+      children DEF Box_3 Transform {
+        translation 5 -3 -1.10241e-05
+        children Shape {
+          appearance Appearance {
+            material Material { }
+          }
+          geometry IndexedFaceSet {
+            texCoordIndex [
+              0,
+              1,
+              2,
+              3,
+              -1,
+              0,
+              1,
+              2,
+              3,
+              -1,
+              0,
+              1,
+              2,
+              3,
+              -1,
+              0,
+              1,
+              2,
+              3,
+              -1,
+              0,
+              1,
+              2,
+              3,
+              -1,
+              0,
+              1,
+              2,
+              3,
+              -1
+            ]
+            coordIndex [
+              0,
+              1,
+              2,
+              3,
+              -1,
+              5,
+              4,
+              7,
+              6,
+              -1,
+              3,
+              2,
+              6,
+              7,
+              -1,
+              4,
+              5,
+              1,
+              0,
+              -1,
+              4,
+              0,
+              3,
+              7,
+              -1,
+              1,
+              5,
+              6,
+              2,
+              -1
+            ]
+            texCoord TextureCoordinate {
+              point [
+                0 0,
+                1 0,
+                1 1,
+                0 1
+              ]
+            }
+            coord Coordinate {
+              point [
+                -1 -1 1,
+                1 -1 1,
+                1 1 1,
+                -1 1 1,
+                -1 -1 -1,
+                1 -1 -1,
+                1 1 -1,
+                -1 1 -1
+              ]
+            }
+          }
+        }
+      }
+    }
+    Transform {
+      translation -10 0 0
+      children USE Box_3
+    }
+  ]
+}

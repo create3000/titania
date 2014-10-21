@@ -1,14 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/TextureEditor/X3DTexturePaletteEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DObjectOperations.cpp">
     <Files>
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp" Line="91" Column="4" />
-      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTexturePaletteEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTexturePaletteEditor.cpp" Line="77" Column="2" />
-      <File FileName="Titania/Titania/Browser/MagicImport.cpp" Line="168" Column="30" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTextureNode.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/LibraryView/LibraryView.cpp" Line="133" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DObjectOperations.h" Line="74" Column="10" />
+      <File FileName="Titania/Titania/Browser/X3DObjectOperations.cpp" Line="57" Column="1" />
+      <File FileName="Titania/Titania/Base/X3DEditorObject.h" Line="198" Column="106" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -21,24 +17,15 @@
           </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True">
-              <Node name="LogoPieces" expanded="True" />
-              <Node name="Pong" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="Models" expanded="True" />
             <Node name="Tests" expanded="True">
-              <Node name="Geometry3D" expanded="True" />
-              <Node name="NURBS" expanded="True">
-                <Node name="NurbsPatchSurface" expanded="True" />
-                <Node name="NurbsTrimmedSurface" expanded="True" />
-              </Node>
+              <Node name="Handles" expanded="True" />
             </Node>
           </Node>
-          <Node name="libtitania-stream" expanded="True">
+          <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="Stream" expanded="True" />
+              <Node name="Math" expanded="True">
+                <Node name="Numbers" expanded="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -50,16 +37,12 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True" />
-                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Rendering" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Geometry3D" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
-                  <Node name="Texturing3D" expanded="True" />
+                  <Node name="Rendering" expanded="True" />
                 </Node>
                 <Node name="InputOutput" expanded="True" />
                 <Node name="Parser" expanded="True">
@@ -69,43 +52,16 @@
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
-            <Node name="config" expanded="True" />
-            <Node name="scripts" expanded="True" />
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
-                <Node name="Library" expanded="True">
-                  <Node name="CubeMapTextures" expanded="True" />
-                  <Node name="Textures" expanded="True">
-                    <Node name="CubeMapTextures" selected="True" />
-                  </Node>
-                </Node>
-                <Node name="pages" expanded="True">
-                  <Node name="about" expanded="True">
-                    <Node name="library" expanded="True" />
-                  </Node>
-                </Node>
-                <Node name="ui" expanded="True">
-                  <Node name="Editors" expanded="True" />
-                  <Node name="icons" expanded="True" />
-                </Node>
+                <Node name="ui" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
+              <Node name="Base" expanded="True">
+                <Node name="X3DEditorObject.h" selected="True" />
+              </Node>
               <Node name="Browser" expanded="True" />
-              <Node name="Configuration" expanded="True" />
-              <Node name="Dialogs" expanded="True">
-                <Node name="FileSaveWarningDialog" expanded="True" />
-                <Node name="NodeIndex" expanded="True" />
-              </Node>
-              <Node name="Editors" expanded="True">
-                <Node name="AppearanceEditor" expanded="True" />
-                <Node name="MotionBlurEditor" expanded="True" />
-                <Node name="TextureEditor" expanded="True" />
-              </Node>
-              <Node name="Widgets" expanded="True">
-                <Node name="LibraryView" expanded="True" />
-              </Node>
             </Node>
           </Node>
           <Node name="titania-info" expanded="True" />

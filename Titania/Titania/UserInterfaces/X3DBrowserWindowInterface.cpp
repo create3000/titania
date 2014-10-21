@@ -170,6 +170,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ShowAllObjectsMenuItem", m_ShowAllObjectsMenuItem);
 	m_builder -> get_widget ("SelectLowestMenuItem", m_SelectLowestMenuItem);
 	m_builder -> get_widget ("FollowPrimarySelectionMenuItem", m_FollowPrimarySelectionMenuItem);
+	m_builder -> get_widget ("ObjectMenuItem", m_ObjectMenuItem);
+	m_builder -> get_widget ("CombineMenuItem", m_CombineMenuItem);
 	m_builder -> get_widget ("LayoutMenuItem", m_LayoutMenuItem);
 	m_builder -> get_widget ("GridLayoutToolMenuItem", m_GridLayoutToolMenuItem);
 	m_builder -> get_widget ("AngleLayoutToolMenuItem", m_AngleLayoutToolMenuItem);
@@ -363,6 +365,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::CheckMenuItem with id 'SelectLowestMenuItem'.
 	m_SelectLowestMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_lowest_toggled));
 	m_FollowPrimarySelectionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
+
+	// Connect object Gtk::ImageMenuItem with id 'CombineMenuItem'.
+	m_CombineMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_combine_activate));
+
+	// Connect object Gtk::CheckMenuItem with id 'GridLayoutToolMenuItem'.
 	m_GridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
 	m_AngleLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
 

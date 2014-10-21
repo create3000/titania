@@ -322,7 +322,7 @@ Extrusion::build ()
 
 	// Create
 
-	std::vector <Vector3f> points = createPoints (capMax);
+	const std::vector <Vector3f> points = createPoints (capMax);
 	std::vector <size_t> coordIndex;
 	NormalIndex normalIndex;
 
@@ -481,7 +481,7 @@ Extrusion::build ()
 
 void
 Extrusion::tessellateCap (const Tessellator & tessellator,
-                          std::vector <Vector3f> & points,
+                          const std::vector <Vector3f> & points,
                           const Vector2f & min,
                           const float capMax)
 {

@@ -14,9 +14,10 @@
       <source stock-id="Grid" filename="icons/Grid.svg"/>
       <source stock-id="Hammer" filename="icons/Hammer.svg"/>
       <source stock-id="Droplet" filename="icons/Droplet.svg"/>
-      <source stock-id="Appearance" filename="icons/Appearance.svg"/>
+      <source stock-id="Combine" filename="icons/Combine.svg"/>
       <source stock-id="LOD" filename="icons/LOD.svg"/>
       <source stock-id="Text" filename="icons/Text.svg"/>
+      <source stock-id="Appearance" filename="icons/Appearance.svg"/>
       <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
       <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
       <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
@@ -31,8 +32,8 @@
       <source stock-id="ExternProto" filename="icons/Node/ExternProto.96.svg"/>
       <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
       <source stock-id="History" filename="icons/History.svg"/>
-      <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
+      <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="Texture" filename="icons/Texture.svg"/>
       <source stock-id="Prototype" filename="icons/Node/Prototype.96.svg"/>
       <source stock-id="PlaneViewer" filename="icons/PlaneViewer.svg"/>
@@ -171,6 +172,12 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">Droplet</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image13">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Combine</property>
     <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image4">
@@ -595,8 +602,8 @@
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activate" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -1255,6 +1262,31 @@
                                 <property name="label" translatable="yes">Follow Primary Selection</property>
                                 <property name="use_underline">True</property>
                                 <signal name="toggled" handler="on_follow_primary_selection_toggled" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="ObjectMenuItem">
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Object</property>
+                        <property name="use_underline">True</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="menu4">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkImageMenuItem" id="CombineMenuItem">
+                                <property name="label" translatable="yes">_Combine</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="use_underline">True</property>
+                                <property name="image">image13</property>
+                                <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
+                                <signal name="activate" handler="on_combine_activate" swapped="no"/>
                               </object>
                             </child>
                           </object>

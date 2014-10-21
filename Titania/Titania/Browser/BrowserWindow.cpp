@@ -76,6 +76,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	         X3DBaseInterface (this, browser),
 	X3DBrowserWindowInterface (get_ui ("BrowserWindow.xml"), gconf_dir ()),
 	         X3DBrowserWindow (browser),
+	      X3DObjectOperations (),
 	                 changing (false),
 	                   viewer (X3D::ViewerType::NONE)
 {
@@ -91,6 +92,7 @@ void
 BrowserWindow::initialize ()
 {
 	X3DBrowserWindow::initialize ();
+	X3DObjectOperations::initialize ();
 
 	loadStyles ();
 
@@ -310,6 +312,8 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	getHideSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
 	getHideUnselectedObjectsMenuItem () .set_sensitive (haveSelection);
 	getShowSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
+
+	getObjectMenuItem () .set_sensitive (haveSelection);
 
 	getHammerButton () .set_sensitive (haveSelection);
 
@@ -1026,6 +1030,7 @@ BrowserWindow::isEditor (const bool enabled)
 	getShowHideEnvironmentalEffectsMenuItem () .set_visible (enabled);
 	getObjectIconsMenuItem ()                  .set_visible (enabled);
 	getSelectionMenuItem ()                    .set_visible (enabled);
+	getObjectMenuItem ()                       .set_visible (enabled);
 	getLayoutMenuItem ()                       .set_visible (enabled);
 
 	getLocationBar () .set_visible (not enabled);

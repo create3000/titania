@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,71 +48,50 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_RENDERING_X3DCOORDINATE_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_RENDERING_X3DCOORDINATE_NODE_H__
+#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
+#define __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
 
-#include "../Rendering/X3DGeometricPropertyNode.h"
-#include "../../Rendering/Tessellator.h"
-#include "../../Types/Geometry.h"
+#include "../UserInterfaces/X3DBrowserWindowInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class X3DCoordinateNode :
-	public X3DGeometricPropertyNode
+class X3DObjectOperations :
+	virtual public X3DBrowserWindowInterface
 {
 public:
 
-	///  @name Operations
+	///  @name Construction
+
+	X3DObjectOperations ();
+
+	///  @name Destruction
 
 	virtual
-	Box3f
-	getBBox () const = 0;
-	
-	virtual
-	void
-	set1Point (const size_t, const Vector3d &) = 0;
-
-	virtual
-	Vector3d
-	get1Point (const size_t) = 0;
-
-	virtual
-	Vector3f
-	getNormal (const size_t, const size_t, const size_t) const = 0;
-
-	virtual
-	Vector3f
-	getNormal (const size_t, const size_t, const size_t, const size_t) const = 0;
-
-	virtual
-	void
-	addVertex (opengl::tessellator <size_t> &, const size_t, const size_t) const = 0;
-
-	virtual
-	void
-	addVertex (std::vector <Vector3f>&, const size_t) const = 0;
-
-	virtual
-	std::vector <Vector4f>
-	getControlPoints (const MFDouble & weight) const = 0;
-
-	virtual
-	bool
-	isEmpty () const = 0;
-
-	virtual
-	size_t
-	getSize () const = 0;
+	~X3DObjectOperations ();
 
 
 protected:
 
-	X3DCoordinateNode ();
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override
+	{ }
+
+
+private:
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_combine_activate () final override;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif
