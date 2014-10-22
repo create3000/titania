@@ -144,6 +144,10 @@ public:
 	getSize () const final override
 	{ return point () .size (); }
 
+	virtual
+	void
+	resize (const size_t) final override;
+
 	///  @name Destruction
 	
 	virtual

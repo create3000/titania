@@ -173,5 +173,11 @@ CoordinateDouble::getControlPoints (const MFDouble & weight) const
 	return controlPoints;
 }
 
+void
+CoordinateDouble::resize (const size_t size)
+{
+	point () .resize (size);
+}
+
 } // X3D
 } // titania

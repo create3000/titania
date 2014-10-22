@@ -202,6 +202,12 @@ GeoCoordinate::getControlPoints (const MFDouble & weight) const
 }
 
 void
+GeoCoordinate::resize (const size_t size)
+{
+	point () .resize (size);
+}
+
+void
 GeoCoordinate::dispose ()
 {
 	X3DGeospatialObject::dispose ();

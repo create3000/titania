@@ -1,5 +1,13 @@
 2014-10-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DEditorObject.h:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* X3DObjectOperations.h:
+	* X3DObjectOperations.cpp: 
+
+2014-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania:
 	* Makefile.am:
 	* Eye.svg:

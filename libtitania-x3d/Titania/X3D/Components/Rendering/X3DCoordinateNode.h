@@ -105,6 +105,10 @@ public:
 	size_t
 	getSize () const = 0;
 
+	virtual
+	void
+	resize (const size_t) = 0;
+
 
 protected:
 

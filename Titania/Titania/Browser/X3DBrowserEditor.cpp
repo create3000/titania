@@ -1161,7 +1161,7 @@ X3DBrowserEditor::removeNodesFromScene (const X3D::X3DExecutionContextPtr & exec
 	// Remove exported nodes
 
 	if (doRemoveFromSceneGraph)
-		removeNodeFromSceneGraph (executionContext, std::set <X3D::SFNode> ( nodes .begin (), nodes .end () ), undoStep);
+		removeNodesFromSceneGraph (executionContext, std::set <X3D::SFNode> ( nodes .begin (), nodes .end () ), undoStep);
 
 	// Delete children of node if not in scene graph
 
@@ -1226,7 +1226,7 @@ X3DBrowserEditor::removeNodesFromExecutionContext (const X3D::X3DExecutionContex
 	// If it is previously known that the node isn't in the scene graph anymore, it must not removed.
 
 	if (doRemoveFromSceneGraph)
-		removeNodeFromSceneGraph (executionContext, nodes, undoStep);
+		removeNodesFromSceneGraph (executionContext, nodes, undoStep);
 
 	// Hide node
 
@@ -1245,16 +1245,20 @@ X3DBrowserEditor::removeNodesFromExecutionContext (const X3D::X3DExecutionContex
 }
 
 void
-X3DBrowserEditor::removeNodeFromSceneGraph (const X3D::X3DExecutionContextPtr & executionContext, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep)
+X3DBrowserEditor::removeNodesFromSceneGraph (const X3D::X3DExecutionContextPtr & executionContext, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep)
 {
 	const X3D::SFNode executionContextNode (executionContext);
 
 	for (const auto & node : nodes)
 		removeNode (executionContextNode, executionContext -> getRootNodes (), node, undoStep);
 
-	// Remove node from scene graph
+	removeNodesFromSceneGraph (executionContext -> getRootNodes (), nodes, undoStep);
+}
 
-	X3D::traverse (executionContext -> getRootNodes (), [&] (X3D::SFNode & parent)
+void
+X3DBrowserEditor::removeNodesFromSceneGraph (const X3D::MFNode & array, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep)
+{
+	X3D::traverse (const_cast <X3D::MFNode &> (array), [&] (X3D::SFNode & parent)
 	               {
 	                  for (auto & field: parent -> getFieldDefinitions ())
 	                  {
@@ -1291,7 +1295,8 @@ X3DBrowserEditor::removeNodeFromSceneGraph (const X3D::X3DExecutionContextPtr & 
 
 	                  return true;
 						},
-	               true, X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	               true,
+	               X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
 void
@@ -1787,7 +1792,7 @@ X3DBrowserEditor::groupNodes (const std::string & typeName,
 
 		// Remove child from scene graph
 
-		removeNodeFromSceneGraph (getExecutionContext (), { child }, undoStep);
+		removeNodesFromSceneGraph (getExecutionContext (), { child }, undoStep);
 
 		// Add to group
 
@@ -1930,7 +1935,7 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group,
 
 			// Remove child from scene graph
 
-			removeNodeFromSceneGraph (getExecutionContext (), { child }, undoStep);
+			removeNodesFromSceneGraph (getExecutionContext (), { child }, undoStep);
 
 			// Add child to group
 
@@ -1992,7 +1997,7 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children,
 
 		// Remove child from scene graph
 
-		removeNodeFromSceneGraph (getExecutionContext (), { child }, undoStep);
+		removeNodesFromSceneGraph (getExecutionContext (), { child }, undoStep);
 
 		// Add to layers
 

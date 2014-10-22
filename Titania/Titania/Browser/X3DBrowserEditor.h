@@ -184,9 +184,16 @@ public:
 	void
 	removeNode (const X3D::SFNode &, X3D::MFNode &, const size_t, const UndoStepPtr &) const;
 
+	void
+	removeNodeFromSceneIfNotExists (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const UndoStepPtr &) const;
+
 	static
 	void
 	removeNodesFromScene (const X3D::X3DExecutionContextPtr &, X3D::MFNode, const UndoStepPtr &, const bool = true);
+
+	static
+	void
+	removeNodesFromSceneGraph (const X3D::MFNode &, const std::set <X3D::SFNode> &, const UndoStepPtr &);
 
 	static
 	void
@@ -339,9 +346,6 @@ private:
 	void
 	eraseNode (X3D::MFNode &, const size_t, const X3D::SFNode &) const;
 
-	void
-	removeNodeFromSceneIfNotExists (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const UndoStepPtr &) const;
-
 	static
 	void
 	removeNode (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &);
@@ -352,7 +356,7 @@ private:
 
 	static
 	void
-	removeNodeFromSceneGraph (const X3D::X3DExecutionContextPtr &, const std::set <X3D::SFNode> &, const UndoStepPtr &);
+	removeNodesFromSceneGraph (const X3D::X3DExecutionContextPtr &, const std::set <X3D::SFNode> &, const UndoStepPtr &);
 	
 	static
 	void

@@ -52,6 +52,7 @@
 #define __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
 
 #include "../UserInterfaces/X3DBrowserWindowInterface.h"
+#include "../Undo/UndoStep.h"
 
 namespace titania {
 namespace puck {
@@ -88,6 +89,9 @@ private:
 	virtual
 	void
 	on_combine_activate () final override;
+
+	void
+	removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> &, const X3D::MFNode &, const X3D::X3DPtr <X3D::X3DShapeNode> &, const UndoStepPtr &);
 
 };
 

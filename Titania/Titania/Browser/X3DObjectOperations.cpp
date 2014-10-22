@@ -68,30 +68,40 @@ X3DObjectOperations::on_combine_activate ()
 
 	try
 	{
-		const auto undoStep = std::make_shared <UndoStep> (_ ("Combine Objects"));
+		const auto undoStep  = std::make_shared <UndoStep> (_ ("Combine Objects"));
+		const auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
+		const auto shapes    = X3DEditorObject::getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 
-		auto selection  = getBrowserWindow () -> getSelection () -> getChildren ();
-		auto shapes     = X3DEditorObject::getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
-
-		if (shapes .size () < 2)
+		if (shapes .size () < 1)
 			return;
 
 		// Choose master
 
 		const auto masterShape = shapes .back ();
-		shapes .pop_back ();
 
-		const X3D::X3DPtr <X3D::IndexedFaceSet> masterGeometry (masterShape -> geometry ());
-		
-		if (not masterGeometry)
-			return;
+		X3D::X3DPtr <X3D::IndexedFaceSet>    masterGeometry (masterShape -> geometry ());
+		X3D::X3DPtr <X3D::X3DCoordinateNode> masterCoord (masterGeometry -> coord ());
 
-		const X3D::X3DPtr <X3D::X3DCoordinateNode> masterCoord (masterGeometry -> coord ());
+		if (masterGeometry)
+		{
+			masterGeometry = masterGeometry -> create (getExecutionContext ());
+			getExecutionContext () -> addUninitializedNode (masterGeometry);
+		}
+		else
+			masterGeometry = getExecutionContext () -> createNode <X3D::IndexedFaceSet> ();
 
-		if (not masterCoord)
-			return;
+		if (masterCoord)
+		{
+			masterCoord = masterCoord -> create (getExecutionContext ());
+			getExecutionContext () -> addUninitializedNode (masterCoord);
+		}
+		else
+			masterCoord = getExecutionContext () -> createNode <X3D::Coordinate> ();
 
 		const auto masterMatrix = ~getBrowserWindow () -> findModelViewMatrix (masterShape);
+
+		undoStep -> addObjects (masterGeometry);
+		undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (masterGeometry -> coordIndex ()), masterGeometry -> coordIndex ());
 
 		// Combine geometries
 
@@ -129,6 +139,16 @@ X3DObjectOperations::on_combine_activate ()
 				masterCoord -> set1Point (masterCoord -> getSize (), coord -> get1Point (index .second) * matrix);
 		}
 
+		undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (masterGeometry -> coordIndex ()), masterGeometry -> coordIndex ());
+		getBrowserWindow () -> replaceNode (X3D::SFNode (masterGeometry), masterGeometry -> coord (), X3D::SFNode (masterCoord),    undoStep);
+		getBrowserWindow () -> replaceNode (X3D::SFNode (masterShape),    masterShape -> geometry (), X3D::SFNode (masterGeometry), undoStep);
+
+		// Remove shapes
+
+		removeShapes (shapes, selection, masterShape, undoStep);
+
+		// Select master
+
 		const auto hierarchy = X3D::find (selection, masterShape, X3D::TRAVERSE_ROOT_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 		getBrowserWindow () -> getSelection () -> setChildren ({ X3D::SFNode (hierarchy .front ()) }, undoStep);
@@ -138,6 +158,50 @@ X3DObjectOperations::on_combine_activate ()
 	}
 	catch (const std::exception &)
 	{ }
+}
+
+void
+X3DObjectOperations::removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> & shapes, const X3D::MFNode & selection, const X3D::X3DPtr <X3D::X3DShapeNode> & masterShape, const UndoStepPtr & undoStep)
+{
+	// Remove Shape nodes that are direct selected.
+
+	X3D::MFNode nodes;
+
+	for (const auto node : selection)
+	{
+		X3D::X3DPtr <X3D::X3DShapeNode> shape (node);
+
+		if (not shape or shape == masterShape)
+			continue;
+
+		nodes .emplace_back (node);
+	}
+
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), nodes, undoStep);
+
+	// Remove Shape nodes from selection.
+
+	nodes .assign (shapes .begin (), shapes .end ());
+	nodes .remove (X3D::SFNode (masterShape));
+
+	getBrowserWindow () -> removeNodesFromSceneGraph (selection, std::set <X3D::SFNode> (nodes .begin (), nodes .end ()), undoStep);
+
+	for (const auto & node : nodes)
+		getBrowserWindow () -> removeNodeFromSceneIfNotExists (getExecutionContext (), node, undoStep);
+
+	// Find empty groups in selection and remove from scene.
+
+	const auto groups = X3DEditorObject::getNodes <X3D::X3DGroupingNode> (selection, { X3D::X3DConstants::X3DGroupingNode });
+
+	nodes .clear ();
+
+	for (const auto & group : groups)
+	{
+		if (group -> children () .empty ())
+			nodes .emplace_back (group);
+	}
+
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), nodes, undoStep);
 }
 
 X3DObjectOperations::~X3DObjectOperations ()
