@@ -62,6 +62,7 @@ class Coordinate;
 class IndexedFaceSet;
 class Shape;
 class Material;
+class ImageTexture;
 
 namespace Wavefront {
 
@@ -172,6 +173,7 @@ private:
 
 	X3DPtr <Material>          defaultMaterial;
 	X3DPtr <Material>          material;
+	X3DPtr <ImageTexture>      texture;
 	X3DPtr <TextureCoordinate> texCoord;
 	X3DPtr <Normal>            normal;
 	X3DPtr <Coordinate>        coord;
@@ -183,7 +185,8 @@ private:
 	int32_t                                                    smoothingGroup;
 	std::map <std::string, std::map <int32_t, X3DPtr <Shape>>> smoothingGroups;
 
-	std::map <std::string, X3DPtr <Material>> materials;
+	std::map <std::string, X3DPtr <Material>>     materials;
+	std::map <std::string, X3DPtr <ImageTexture>> textures;
 
 };
 

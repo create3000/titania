@@ -1,0 +1,43 @@
+#X3D V3.3 utf8 Titania V0.7.5
+
+META "comment" "World of Titania"
+META "created" "Wed, 22 Oct 2014 10:04:57 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.5, http://titania.create3000.de"
+META "modified" "Wed, 22 Oct 2014 10:04:57 GMT"
+
+DEF Tetrahedron Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry IndexedFaceSet {
+      coordIndex [
+        0,
+        2,
+        1,
+        -1,
+        0,
+        3,
+        2,
+        -1,
+        0,
+        1,
+        3,
+        -1,
+        1,
+        2,
+        3,
+        -1
+      ]
+      coord Coordinate {
+        point [
+          1 1 1,
+          2 1 1,
+          1 2 1,
+          1 1 2
+        ]
+      }
+    }
+  }
+}

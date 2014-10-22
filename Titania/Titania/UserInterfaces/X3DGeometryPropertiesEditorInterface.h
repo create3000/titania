@@ -138,6 +138,14 @@ public:
 	getCreaseAngleScale () const
 	{ return *m_CreaseAngleScale; }
 
+	Gtk::Button &
+	getRemoveNormalsButton () const
+	{ return *m_RemoveNormalsButton; }
+
+	virtual
+	void
+	on_remove_normals_clicked () = 0;
+
 	virtual
 	~X3DGeometryPropertiesEditorInterface ();
 
@@ -161,6 +169,7 @@ private:
 	Gtk::Box*                      m_CreaseAngleBox;
 	Gtk::SpinButton*               m_CreaseAngleScaleSpinButton;
 	Gtk::Scale*                    m_CreaseAngleScale;
+	Gtk::Button*                   m_RemoveNormalsButton;
 
 };
 

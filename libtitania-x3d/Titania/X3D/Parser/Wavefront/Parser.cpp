@@ -58,6 +58,7 @@
 #include "../../Components/Shape/Appearance.h"
 #include "../../Components/Shape/Material.h"
 #include "../../Components/Shape/Shape.h"
+#include "../../Components/Texturing/ImageTexture.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../InputOutput/Loader.h"
 #include "../Filter.h"
@@ -65,6 +66,7 @@
 // Grammar
 #include <Titania/InputOutput.h>
 #include <Titania/InputOutput/InverseSequence.h>
+#include <Titania/String.h>
 
 namespace titania {
 namespace X3D {
@@ -90,6 +92,7 @@ public:
 	static const io::character d;
 	static const io::string    Tr;
 	static const io::string    illum;
+	static const io::string    map_Kd;
 
 	static const io::inverse_sequence string;
 	static const io::character        o;
@@ -118,6 +121,7 @@ const io::string    Grammar::Ns ("Ns");
 const io::character Grammar::d ('d');
 const io::string    Grammar::Tr ("Tr");
 const io::string    Grammar::illum ("illum");
+const io::string    Grammar::map_Kd ("map_Kd");
 
 const io::inverse_sequence Grammar::string ("\r\n");
 const io::character        Grammar::o ('o');
@@ -145,6 +149,10 @@ public:
 	const std::map <std::string, X3DPtr <Material>> &
 	getMaterials () const
 	{ return materials; }
+
+	const std::map <std::string, X3DPtr <ImageTexture>> &
+	getTextures () const
+	{ return textures; }
 
 	///  @name Operations
 
@@ -205,6 +213,9 @@ private:
 	illum ();
 
 	bool
+	map_Kd ();
+
+	bool
 	Int32 (int32_t &);
 
 	bool
@@ -221,8 +232,10 @@ private:
 	std::string       whiteSpaceCharacters;
 	std::string       commentCharacters;
 
-	std::map <std::string, X3DPtr <Material>>  materials;
-	X3DPtr <Material>                          material;
+	std::map <std::string, X3DPtr <Material>>      materials;
+	X3DPtr <Material>                              material;
+	std::string                                    name;
+	std::map <std::string, X3DPtr <ImageTexture>>  textures;
 
 };
 
@@ -233,7 +246,9 @@ MaterialParser::MaterialParser (const X3DScenePtr & scene, std::istream & istrea
 	whiteSpaceCharacters (),
 	   commentCharacters (),
 	           materials (),
-	            material (scene -> createNode ("Material"))
+	            material (scene -> createNode ("Material")),
+	                name (),
+	            textures ()
 {
 	scene -> addUninitializedNode (material);
 }
@@ -336,6 +351,9 @@ MaterialParser::statement ()
 	if (illum ())
 		return true;
 
+	if (map_Kd ())
+		return true;
+
 	// Skip empty and unkown lines.
 
 	if (Grammar::string (istream, whiteSpaceCharacters))
@@ -354,8 +372,8 @@ MaterialParser::newmtl ()
 	if (Grammar::newmtl (istream))
 	{
 		whiteSpacesNoLineTerminator ();
-
-		std::string name;
+		
+		name .clear ();
 
 		if (Grammar::string (istream, name))
 		{
@@ -549,6 +567,50 @@ MaterialParser::illum ()
 }
 
 bool
+MaterialParser::map_Kd ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	comments ();
+
+	if (Grammar::map_Kd (istream))
+	{
+		whiteSpacesNoLineTerminator ();
+
+		std::string string;
+
+		if (Grammar::string (istream, string))
+		{
+			if (not string .empty () and not name .empty ())
+			{
+				const auto url = basic::split (basic::trim (string), " ");
+				
+				if (not url .empty ())
+				{
+					const X3DPtr <ImageTexture> texture (scene -> createNode ("ImageTexture"));
+
+					scene -> addUninitializedNode (texture);
+
+					texture -> url () = {
+						url .back (),
+						scene -> getWorldURL () .transform (url .back ()) .str ()
+					};
+
+					textures [name] = texture;
+				}
+			}
+
+			return true;
+		}
+
+		Grammar::string (istream, whiteSpaceCharacters); // Parse until end of line.
+		return true;
+	}
+
+	return false;
+}
+
+bool
 MaterialParser::Int32 (int32_t & value)
 {
 	//__LOG__ << this << " " << std::endl;
@@ -600,6 +662,7 @@ Parser::Parser (const X3DScenePtr & scene, const basic::uri & uri, std::istream 
 	     currentComments (),
 	     defaultMaterial (scene -> createNode ("Material")),
 	            material (defaultMaterial),
+	             texture (),
 	            texCoord (scene -> createNode ("TextureCoordinate")),
 	              normal (scene -> createNode ("Normal")),
 	               coord (scene -> createNode ("Coordinate")),
@@ -608,7 +671,9 @@ Parser::Parser (const X3DScenePtr & scene, const basic::uri & uri, std::istream 
 	               group (scene -> createNode ("Transform")),
 	              object (scene -> createNode ("Transform")),
 	      smoothingGroup (0),
-	     smoothingGroups ()
+	     smoothingGroups (),
+	           materials (),
+	            textures ()
 {
 	scene -> addUninitializedNode (defaultMaterial);
 	scene -> addUninitializedNode (texCoord);
@@ -769,6 +834,9 @@ Parser::mtllib ()
 
 					for (const auto & material : materialParser .getMaterials ())
 						materials [material .first] = material .second;
+
+					for (const auto & texture : materialParser .getTextures ())
+						textures [texture .first] = texture .second;
 				}
 				catch (const X3DError &)
 				{ }
@@ -803,6 +871,15 @@ Parser::usemtl ()
 			catch (const std::out_of_range &)
 			{
 				material = defaultMaterial;
+			}
+
+			try
+			{
+				texture = textures .at (name);
+			}
+			catch (const std::out_of_range &)
+			{
+				texture = nullptr;
 			}
 		}
 
@@ -1074,6 +1151,7 @@ Parser::fs ()
 			scene -> addUninitializedNode (shape);
 
 			appearance -> material ()  = material;
+			appearance -> texture ()   = texture;
 			geometry -> creaseAngle () = smoothingGroup ? M_PI : 0;
 			shape -> appearance ()     = appearance;
 			shape -> geometry ()       = geometry;

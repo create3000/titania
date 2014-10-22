@@ -88,6 +88,10 @@ private:
 	
 	void
 	set_buffer ();
+	
+	virtual
+	void
+	on_remove_normals_clicked () final override;
 
 	///  @name Members
 

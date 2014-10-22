@@ -1,5 +1,97 @@
 2014-10-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* top.x3dv:
+	* pear.x3dv:
+	* al.x3dv:
+	* lamp.x3dv:
+	* dart.x3dv:
+	* teddy.x3dv:
+	* apple.x3dv:
+	* king.x3dv:
+	* pawn.x3dv:
+	* rook.x3dv:
+	* gourd.x3dv:
+	* cow.x3dv:
+	* cannon.x3dv:
+	* banana.x3dv:
+	* queen.x3dv:
+	* pig.x3dv:
+	* knight.x3dv:
+	* venus.x3dv:
+	* 767.x3dv:
+	* tie.x3dv:
+	* x29.x3dv:
+	* bishop.x3dv:
+	* moon.x3dv:
+	* legoDog.x3dv:
+	* f16.x3dv:
+	* bird.x3dv:
+	* star.x3dv:
+	* cylMan.x3dv:
+	* heart.x3dv:
+	* mushroom.x3dv:
+	* mug.x3dv:
+	* shell.x3dv:
+	* eagle.x3dv:
+	* shark.x3dv:
+	* gift.x3dv:
+	* vase.x3dv:
+	* pump.x3dv:
+	* plug.x3dv:
+	* pipe.x3dv:
+	* cubeMan.x3dv:
+	* fiero.x3dv:
+	* enemy.x3dv:
+	* plant.x3dv:
+	* aircar.x3dv:
+	* magnolia.x3dv:
+	* rocket.x3dv:
+	* diamond.x3dv:
+	* earth.x3dv:
+	* couch.x3dv:
+	* chair.x3dv:
+	* table.x3dv:
+	* cessna.x3dv:
+	* soccerball.x3dv:
+	* shuttle.x3dv:
+	* sphereMan.x3dv:
+	* gunstar.x3dv:
+	* shamrock.x3dv:
+	* castle.x3dv:
+	* galleon.x3dv:
+	* slotMachine.x3dv:
+	* beethoven.x3dv:
+	* outlet.x3dv:
+	* teapot.x3dv:
+	* coasts.x3dv:
+	* martini.x3dv:
+	* jackInTheBox.x3dv:
+	* ncc1701b.x3dv:
+	* windmill.x3dv:
+	* kittyHawk.x3dv:
+	* lavalamp.x3dv:
+	* spongetri4.x3dv:
+	* octahedron.x3dv:
+	* tetrahedron.x3dv:
+	* rose+vase.x3dv:
+	* icosahedron.x3dv:
+	* dragon-head.x3dv:
+	* minicooper.x3dv:
+	* GeometryPropertiesEditor.xml:
+	* dodecahedron.x3dv:
+	* skyscraper.x3dv:
+	* spacestation.x3dv:
+	* trackLights.x3dv:
+	* ceilingLamp.x3dv:
+	* world_curved.x3dv:
+	* manillaFolder.x3dv:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* X3DGeometryPropertiesEditorInterface.cpp:
+	* GeometryPropertiesEditor.h:
+	* GeometryPropertiesEditor.cpp: 
+
+2014-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DObjectOperations.h:
 	* X3DObjectOperations.cpp:
 	* goat2.jpg:

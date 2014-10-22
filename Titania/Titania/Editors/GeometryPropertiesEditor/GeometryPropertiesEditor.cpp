@@ -94,6 +94,8 @@ GeometryPropertiesEditor::set_selection ()
 		shape -> geometry () .addInterest (this, &GeometryPropertiesEditor::set_nodes);
 
 	set_nodes ();
+	
+	getRemoveNormalsButton () .set_sensitive (not shapes .empty ());
 }
 
 void
@@ -111,6 +113,39 @@ GeometryPropertiesEditor::set_buffer ()
 	ccw         .setNodes (nodes);
 	convex      .setNodes (nodes);
 	creaseAngle .setNodes (nodes);
+}
+
+void
+GeometryPropertiesEditor::on_remove_normals_clicked ()
+{
+	const auto geometries = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
+	const auto undoStep   = std::make_shared <UndoStep> (_ ("Remove Normals"));
+
+	for (const auto geometry : geometries)
+	{
+		try
+		{
+			auto & normalIndex = geometry -> getField <X3D::MFInt32> ("normalIndex");
+
+			undoStep -> addObjects (geometry);
+			undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (normalIndex), normalIndex);
+			undoStep -> addRedoFunction (&X3D::MFInt32::clear, std::ref (normalIndex));
+			normalIndex .clear ();
+		}
+		catch (const X3D::X3DError &)
+		{ }
+
+		try
+		{
+			auto & normal = geometry -> getField <X3D::SFNode> ("normal");
+
+			getBrowserWindow () -> replaceNode (geometry, normal, nullptr, undoStep);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 GeometryPropertiesEditor::~GeometryPropertiesEditor ()
