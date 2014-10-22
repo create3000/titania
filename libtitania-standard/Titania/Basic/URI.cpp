@@ -72,41 +72,11 @@ const char basic_uri <std::string>::Signs::NumberSign = '#';
 template <>
 const char basic_uri <std::string>::Signs::Dot = '.';
 
-template <>
-const std::wstring basic_uri <std::wstring>::DataSchemeId = L"data";
-
-template <>
-const std::wstring basic_uri <std::wstring>::FileSchemeId = L"file";
-
-template <>
-const wchar_t basic_uri <std::wstring>::Signs::Zero = L'0';
-template <>
-const wchar_t basic_uri <std::wstring>::Signs::Colon = L':';
-template <>
-const wchar_t basic_uri <std::wstring>::Signs::Slash = L'/';
-template <>
-const wchar_t basic_uri <std::wstring>::Signs::QuestionMark = L'?';
-template <>
-const wchar_t basic_uri <std::wstring>::Signs::NumberSign = L'#';
-template <>
-const wchar_t basic_uri <std::wstring>::Signs::Dot = L'.';
-
-template <>
-std::map <std::wstring, size_t> basic_uri <std::wstring>::well_known_ports = {
-	std::make_pair (L"ftp",    21),
-	std::make_pair (L"http",   80),
-	std::make_pair (L"https", 443),
-	std::make_pair (L"ftps",  990)
-
-};
-
 //
 template class basic_uri <std::string>;
-template class basic_uri <std::wstring>;
 
 //
 template std::ostream & operator << (std::ostream &, const uri &);
-template std::wostream & operator << (std::wostream &, const wuri &);
 
 } // X3D
 } // titania

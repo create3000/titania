@@ -157,6 +157,28 @@ X3DExecutionContext::realize ()
 	//	throw Error <INVALID_OPERATION_TIMING> ("Couldn't realize nodes.");
 }
 
+// Component/Profile handling
+
+bool
+X3DExecutionContext::hasComponent (const ComponentType & component) const
+{
+	if (getProfile () or not getComponents () .empty ())
+	{
+		if (getProfile ())
+		{
+			if (getProfile () -> getComponents () .count (component))
+				return true;
+		}
+
+		if (getComponents () .count (component))
+			return true;
+
+		return false;;
+	}
+
+	return true;
+}
+
 // Unit handling
 
 double
@@ -241,21 +263,10 @@ throw (Error <INVALID_NAME>,
 {
 	const X3DBaseNode* const declaration = getBrowser () -> getSupportedNode (name);
 
-	if (getProfile () or not getComponents () .empty ())
-	{
-		if (getProfile ())
-		{
-			if (getProfile () -> getComponents () .count (declaration -> getComponent ()))
-				return declaration -> create (this);
-		}
+	if (hasComponent (declaration -> getComponent ()))
+		return declaration -> create (this);
 
-		if (getComponents () .count (declaration -> getComponent ()))
-			return declaration -> create (this);
-
-		throw Error <INVALID_NAME> ("Node type '" + name + "' not supported by profile or component specification.");
-	}
-
-	return declaration -> create (this);
+	throw Error <INVALID_NAME> ("Node type '" + name + "' not supported by profile or component specification.");
 }
 
 X3DPrototypeInstancePtr

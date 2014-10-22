@@ -64,90 +64,58 @@ X3DObjectOperations::X3DObjectOperations () :
 void
 X3DObjectOperations::on_combine_activate ()
 {
-	__LOG__ << std::endl;
-
 	try
 	{
+		if (not getExecutionContext () -> hasComponent (X3D::ComponentType::GEOMETRY_3D))
+			getExecutionContext () -> updateComponent (getBrowser () -> getComponent ("Geometry3D", 2));
+
 		const auto undoStep  = std::make_shared <UndoStep> (_ ("Combine Objects"));
 		const auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
 		const auto shapes    = X3DEditorObject::getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 
-		if (shapes .size () < 1)
+		if (shapes .empty ())
 			return;
 
-		// Choose master
+		// Choose target
 
 		const auto masterShape = shapes .back ();
-
+	
 		X3D::X3DPtr <X3D::IndexedFaceSet>    masterGeometry (masterShape -> geometry ());
-		X3D::X3DPtr <X3D::X3DCoordinateNode> masterCoord (masterGeometry -> coord ());
+		X3D::X3DPtr <X3D::X3DCoordinateNode> masterCoord (masterGeometry ? masterGeometry -> coord () : nullptr);
 
-		if (masterGeometry)
-		{
-			masterGeometry = masterGeometry -> create (getExecutionContext ());
-			getExecutionContext () -> addUninitializedNode (masterGeometry);
-		}
-		else
-			masterGeometry = getExecutionContext () -> createNode <X3D::IndexedFaceSet> ();
+		X3D::X3DPtr <X3D::IndexedFaceSet>    targetGeometry (getExecutionContext () -> createNode <X3D::IndexedFaceSet> ());
+		X3D::X3DPtr <X3D::X3DCoordinateNode> targetCoord;
 
 		if (masterCoord)
 		{
-			masterCoord = masterCoord -> create (getExecutionContext ());
-			getExecutionContext () -> addUninitializedNode (masterCoord);
+			targetCoord = masterCoord -> create (getExecutionContext ());
+			getExecutionContext () -> addUninitializedNode (targetCoord);
 		}
 		else
-			masterCoord = getExecutionContext () -> createNode <X3D::Coordinate> ();
-
-		const auto masterMatrix = ~getBrowserWindow () -> findModelViewMatrix (masterShape);
-
-		undoStep -> addObjects (masterGeometry);
-		undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (masterGeometry -> coordIndex ()), masterGeometry -> coordIndex ());
-
-		// Combine geometries
-
-		for (const auto & shape : shapes)
 		{
-			const X3D::X3DPtr <X3D::IndexedFaceSet> geometry (shape -> geometry ());
+			if (not getExecutionContext () -> hasComponent (X3D::ComponentType::RENDERING))
+				getExecutionContext () -> updateComponent (getBrowser () -> getComponent ("Rendering", 1));
 
-			if (not geometry)
-				continue;
-
-			const X3D::X3DPtr <X3D::X3DCoordinateNode> coord (geometry -> coord ());
-
-			if (not coord)
-				continue;
-
-			const auto matrix = getBrowserWindow () -> findModelViewMatrix (shape) * masterMatrix;
-
-			std::map <int32_t, int32_t> coordIndex;
-
-			for (const auto & index : geometry -> coordIndex ())
-			{
-				if (index >= 0)
-					coordIndex .emplace (index, coordIndex .size ());
-			}
-
-			for (const auto & index : geometry -> coordIndex ())
-			{
-				if (index < 0)
-					masterGeometry -> coordIndex () .emplace_back (-1);
-				else
-					masterGeometry -> coordIndex () .emplace_back (coordIndex [index] + masterCoord -> getSize ());
-			}
-
-			for (const auto & index : basic::reverse (coordIndex))
-				masterCoord -> set1Point (masterCoord -> getSize (), coord -> get1Point (index .second) * matrix);
+			targetCoord = getExecutionContext () -> createNode <X3D::Coordinate> ();
 		}
+		
+		targetGeometry -> coord () = targetCoord;
 
-		undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (masterGeometry -> coordIndex ()), masterGeometry -> coordIndex ());
-		getBrowserWindow () -> replaceNode (X3D::SFNode (masterGeometry), masterGeometry -> coord (), X3D::SFNode (masterCoord),    undoStep);
-		getBrowserWindow () -> replaceNode (X3D::SFNode (masterShape),    masterShape -> geometry (), X3D::SFNode (masterGeometry), undoStep);
+		// Combine Coordinates
+
+		const auto targetMatrix = ~getBrowserWindow () -> findModelViewMatrix (masterShape);
+
+		combineCoordinates (shapes, targetGeometry, targetCoord, targetMatrix);
+
+		getBrowserWindow () -> replaceNode (X3D::SFNode (masterShape), masterShape -> geometry (), X3D::SFNode (targetGeometry), undoStep);
+	
+		//combineNormals (shapes, targetGeometry);
 
 		// Remove shapes
 
 		removeShapes (shapes, selection, masterShape, undoStep);
 
-		// Select master
+		// Select target
 
 		const auto hierarchy = X3D::find (selection, masterShape, X3D::TRAVERSE_ROOT_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
@@ -158,6 +126,47 @@ X3DObjectOperations::on_combine_activate ()
 	}
 	catch (const std::exception &)
 	{ }
+}
+
+void
+X3DObjectOperations::combineCoordinates (const X3D::X3DPtrArray <X3D::X3DShapeNode> & shapes,
+                                         const X3D::X3DPtr <X3D::IndexedFaceSet> & targetGeometry,
+                                         const X3D::X3DPtr <X3D::X3DCoordinateNode> & targetCoord,
+                                         const X3D::Matrix4d & targetMatrix)
+{
+	for (const auto & shape : shapes)
+	{
+		const X3D::X3DPtr <X3D::IndexedFaceSet> geometry (shape -> geometry ());
+
+		if (not geometry)
+			continue;
+
+		const X3D::X3DPtr <X3D::X3DCoordinateNode> coord (geometry -> coord ());
+
+		if (not coord)
+			continue;
+
+		const auto matrix = getBrowserWindow () -> findModelViewMatrix (shape) * targetMatrix;
+
+		std::map <int32_t, int32_t> coordIndex;
+
+		for (const auto & index : geometry -> coordIndex ())
+		{
+			if (index >= 0)
+				coordIndex .emplace (index, coordIndex .size ());
+		}
+
+		for (const auto & index : geometry -> coordIndex ())
+		{
+			if (index < 0)
+				targetGeometry -> coordIndex () .emplace_back (-1);
+			else
+				targetGeometry -> coordIndex () .emplace_back (coordIndex [index] + targetCoord -> getSize ());
+		}
+
+		for (const auto & index : basic::reverse (coordIndex))
+			targetCoord -> set1Point (targetCoord -> getSize (), coord -> get1Point (index .second) * matrix);
+	}
 }
 
 void

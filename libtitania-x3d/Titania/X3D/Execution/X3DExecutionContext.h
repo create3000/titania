@@ -161,10 +161,19 @@ public:
 	       Error <DISPOSED>) = 0;
 
 	virtual
+	void
+	updateComponent (const ComponentInfoPtr & component)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
+
+	virtual
 	const ComponentInfoArray &
 	getComponents () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) = 0;
+
+	bool
+	hasComponent (const ComponentType &) const;
 
 	/***
 	 *  @name Unit handling

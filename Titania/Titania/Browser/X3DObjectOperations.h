@@ -48,11 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
-#define __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
+#ifndef __TITANIA_BROWSER_X3DOBJECT_OPERATIONS_H__
+#define __TITANIA_BROWSER_X3DOBJECT_OPERATIONS_H__
 
-#include "../UserInterfaces/X3DBrowserWindowInterface.h"
 #include "../Undo/UndoStep.h"
+#include "../UserInterfaces/X3DBrowserWindowInterface.h"
 
 namespace titania {
 namespace puck {
@@ -89,6 +89,12 @@ private:
 	virtual
 	void
 	on_combine_activate () final override;
+
+	void
+	combineCoordinates (const X3D::X3DPtrArray <X3D::X3DShapeNode> &,
+	                    const X3D::X3DPtr <X3D::IndexedFaceSet> &,
+	                    const X3D::X3DPtr <X3D::X3DCoordinateNode> &,
+	                    const X3D::Matrix4d &);
 
 	void
 	removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> &, const X3D::MFNode &, const X3D::X3DPtr <X3D::X3DShapeNode> &, const UndoStepPtr &);

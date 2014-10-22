@@ -1,3 +1,10 @@
+2014-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URI.h:
+	* Path.h:
+	* URI.cpp:
+	* Path.cpp: 
+
 2014-10-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

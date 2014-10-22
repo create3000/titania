@@ -362,6 +362,14 @@ public:
 	basic_uri
 	add_file_scheme () const;
 
+	///  Escapes the uri.
+	basic_uri
+	escape () const;
+
+	///  Unescapes the uri.
+	basic_uri
+	unescape () const;
+
 
 private:
 
@@ -833,6 +841,48 @@ basic_uri <StringT>::add_file_scheme () const
 	return *this;
 }
 
+template <class StringT>
+basic_uri <StringT>
+basic_uri <StringT>::escape () const
+{
+	if (is_local () and is_absolute ())
+	{
+		return basic_uri ({ is_local (),
+		                    is_absolute (),
+		                    scheme (),
+		                    value .slashs,
+		                    authority (),
+		                    host (),
+		                    port (),
+		                    basic_path <string_type> (path (), string_type (1, Signs::Slash)) .escape () .str (),
+		                    query (),
+		                    fragment () });
+	}
+
+	return *this;
+}
+
+template <class StringT>
+basic_uri <StringT>
+basic_uri <StringT>::unescape () const
+{
+	if (is_local () and is_absolute ())
+	{
+		return basic_uri ({ is_local (),
+		                    is_absolute (),
+		                    scheme (),
+		                    value .slashs,
+		                    authority (),
+		                    host (),
+		                    port (),
+		                    basic_path <string_type> (path (), string_type (1, Signs::Slash)) .unescape () .str (),
+		                    query (),
+		                    fragment () });
+	}
+
+	return *this;
+}
+
 // Private Funtions
 
 template <class StringT>
@@ -1267,15 +1317,12 @@ operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream
 ///  @relates basic_uri
 
 typedef basic_uri <std::string>  uri;
-typedef basic_uri <std::wstring> wuri;
 
 //
 extern template class basic_uri <std::string>;
-extern template class basic_uri <std::wstring>;
 
 //
 extern template std::ostream & operator << (std::ostream &, const uri &);
-extern template std::wostream & operator << (std::wostream &, const wuri &);
 
 } // basic
 } // titania
@@ -1292,19 +1339,6 @@ struct hash <titania::basic::uri>
 	}
 
 	hash <std::string> m_hash;
-
-};
-
-template <>
-struct hash <titania::basic::wuri>
-{
-	size_t
-	operator () (const titania::basic::wuri & uri) const
-	{
-		return m_hash (uri .str ());
-	}
-
-	hash <std::wstring> m_hash;
 
 };
 

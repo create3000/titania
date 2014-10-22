@@ -184,6 +184,13 @@ public:
 	{ return getExecutionContext () -> getProfile (); }
 
 	virtual
+	void
+	updateComponent (const ComponentInfoPtr & component)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return getExecutionContext () -> updateComponent (component); }
+
+	virtual
 	const ComponentInfoArray &
 	getComponents () const
 	throw (Error <INVALID_OPERATION_TIMING>,

@@ -1,5 +1,19 @@
 2014-10-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DObjectOperations.h:
+	* X3DObjectOperations.cpp:
+	* goat2.jpg:
+	* bone9.jpg:
+	* bone7.jpg:
+	* bone6.jpg:
+	* bone5.jpg:
+	* bone4.jpg:
+	* zebra1.jpg:
+	* flesh_rotten_red.jpg:
+	* flesh_rotten_orange.jpg: 
+
+2014-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DEditorObject.h:
 	* X3DBrowserEditor.h:
 	* X3DBrowserEditor.cpp:

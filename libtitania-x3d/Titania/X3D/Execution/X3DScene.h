@@ -164,19 +164,20 @@ public:
 	const ProfileInfoPtr &
 	getProfile ()  const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
+	       Error <DISPOSED>) final override
 	{ return profile; }
 
+	virtual
 	void
 	updateComponent (const ComponentInfoPtr & component)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>) final override;
 
 	virtual
 	const ComponentInfoArray &
 	getComponents () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
+	       Error <DISPOSED>) final override
 	{ return components; }
 
 	///  @name Unit handling

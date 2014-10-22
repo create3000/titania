@@ -54,6 +54,8 @@
 #include "../LOG.h"
 #include "../String/split.h"
 #include "../Utility/Range.h"
+
+#include <glibmm/uriutils.h>
 #include <algorithm>
 #include <deque>
 #include <iterator>
@@ -96,6 +98,11 @@ public:
 
 	///  @name Constructors
 
+	basic_path (const basic_path & other) :
+		std::deque <StringT> (),
+		               value (value)
+	{ }
+
 	explicit
 	basic_path (const string_type & separator) :
 		std::deque <StringT> (),
@@ -137,6 +144,14 @@ public:
 	///  Remove dot segments.
 	basic_path
 	remove_dot_segments () const;
+
+	///  Returns an escaped path.
+	basic_path
+	escape () const;
+
+	///  Returns an unescaped path.
+	basic_path
+	unescape () const;
 
 	///  Returns the string representation of this Path.
 	string_type
@@ -310,6 +325,30 @@ basic_path <StringT>::remove_dot_segments () const
 }
 
 template <class StringT>
+basic_path <StringT>
+basic_path <StringT>::escape () const
+{
+	basic_path path (*this);
+
+	for (auto & segment : path)
+		segment = Glib::uri_escape_string (segment);
+
+	return path;
+}
+
+template <class StringT>
+basic_path <StringT>
+basic_path <StringT>::unescape () const
+{
+	basic_path path (*this);
+
+	for (auto & segment : path)
+		segment = Glib::uri_unescape_string (segment);
+
+	return path;
+}
+
+template <class StringT>
 typename basic_path <StringT>::string_type
 basic_path <StringT>::str () const
 {
@@ -349,13 +388,10 @@ operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream
 	return ostream;
 }
 
-typedef basic_path <std::string>  path;
-typedef basic_path <std::wstring> wpath;
+typedef basic_path <std::string> path;
 
 extern template class basic_path <std::string>;
-extern template class basic_path <std::wstring>;
 extern template std::ostream & operator << (std::ostream &, const path &);
-extern template std::wostream & operator << (std::wostream &, const wpath &);
 
 } // basic
 } // titania

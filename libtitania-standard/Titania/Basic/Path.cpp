@@ -56,16 +56,11 @@ namespace basic {
 template <>
 const std::wstring basic_path <std::wstring>::dot = L".";
 
-template <>
-const std::wstring basic_path <std::wstring>::dots = L"..";
-
 //
 template class basic_path <std::string>;
-template class basic_path <std::wstring>;
 
 //
 template std::ostream & operator << (std::ostream &, const path &);
-template std::wostream & operator << (std::wostream &, const wpath &);
 
 } // X3D
 } // titania

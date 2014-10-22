@@ -1,5 +1,13 @@
 2014-10-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DScene.h:
+	* ProtoDeclaration.h:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* X3DPrototypeInstance.h: 
+
+2014-10-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Coordinate.h:
 	* Coordinate.cpp:
 	* CoordinateDouble.h:
