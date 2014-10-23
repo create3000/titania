@@ -1246,7 +1246,7 @@ Parser::getIndex (const int32_t index, const int32_t size)
 		throw Error <INVALID_X3D> ("Invalid index.");
 
 	if (index < 0)
-		return size - index;
+		return size + index;
 
 	return index - 1;
 }

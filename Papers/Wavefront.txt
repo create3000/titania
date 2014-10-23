@@ -1,0 +1,6 @@
+
+OBJ Spec:
+	http://paulbourke.net/dataformats/obj/
+
+MTL Spec:
+	http://paulbourke.net/dataformats/mtl/

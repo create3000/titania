@@ -256,6 +256,7 @@
     <None Include="xxx\TransformTool.h" />
     <None Include="newell.c" />
     <None Include="OBJ.spec" />
+    <None Include="Wavefront.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
