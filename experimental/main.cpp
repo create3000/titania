@@ -329,10 +329,21 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	B* b = new B ();
-	C* c = new C ();
+	basic::uri u ("http://titania.create3000.de/Library/Examples/hello world.x3dv");
+	basic::uri o (u);
 	
-	__LOG__ << (static_cast <A*> (b) == static_cast <A*> (c)) << std::endl;
+	__LOG__ << u << std::endl;
+	__LOG__ << u .scheme () << std::endl;
+	__LOG__ << u .authority () << std::endl;
+	__LOG__ << u .host () << std::endl;
+	__LOG__ << u .port () << std::endl;
+	__LOG__ << u .path () << std::endl;
+	__LOG__ << u .query () << std::endl;
+	__LOG__ << u .fragment () << std::endl;
+
+	__LOG__ << std::endl;
+	__LOG__ << u .escape () << std::endl;
+	__LOG__ << o .escape () << std::endl;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

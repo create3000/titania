@@ -99,8 +99,8 @@ public:
 	///  @name Constructors
 
 	basic_path (const basic_path & other) :
-		std::deque <StringT> (),
-		               value (value)
+		std::deque <StringT> (other),
+		               value (other .value)
 	{ }
 
 	explicit

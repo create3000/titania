@@ -845,42 +845,32 @@ template <class StringT>
 basic_uri <StringT>
 basic_uri <StringT>::escape () const
 {
-	if (is_local () and is_absolute ())
-	{
-		return basic_uri ({ is_local (),
-		                    is_absolute (),
-		                    scheme (),
-		                    value .slashs,
-		                    authority (),
-		                    host (),
-		                    port (),
-		                    basic_path <string_type> (path (), string_type (1, Signs::Slash)) .escape () .str (),
-		                    query (),
-		                    fragment () });
-	}
-
-	return *this;
+	return basic_uri ({ is_local (),
+	                    is_absolute (),
+	                    scheme (),
+	                    value .slashs,
+	                    authority (),
+	                    host (),
+	                    port (),
+	                    basic_path <string_type> (path (), string_type (1, Signs::Slash)) .escape () .str (),
+	                    query (),
+	                    fragment () });
 }
 
 template <class StringT>
 basic_uri <StringT>
 basic_uri <StringT>::unescape () const
 {
-	if (is_local () and is_absolute ())
-	{
-		return basic_uri ({ is_local (),
-		                    is_absolute (),
-		                    scheme (),
-		                    value .slashs,
-		                    authority (),
-		                    host (),
-		                    port (),
-		                    basic_path <string_type> (path (), string_type (1, Signs::Slash)) .unescape () .str (),
-		                    query (),
-		                    fragment () });
-	}
-
-	return *this;
+	return basic_uri ({ is_local (),
+	                    is_absolute (),
+	                    scheme (),
+	                    value .slashs,
+	                    authority (),
+	                    host (),
+	                    port (),
+	                    basic_path <string_type> (path (), string_type (1, Signs::Slash)) .unescape () .str (),
+	                    query (),
+	                    fragment () });
 }
 
 // Private Funtions

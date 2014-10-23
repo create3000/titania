@@ -45,7 +45,7 @@ urlstreambuf::urlstreambuf () :
 	         m_url (),
 	     m_timeout (0),
 	     m_headers (),
-	    bufferSize (1024),
+	    bufferSize (16384),
 	        buffer (nullptr),
 	     bytesRead (0),
 	backBufferSize (0),
@@ -70,21 +70,20 @@ urlstreambuf::open (const basic::uri & URL, size_t Timeout)
 
 	if (not easy_handle)
 		return nullptr;
-	
-	static const std::regex whiteSpaces (" ");
 
-	std::string curlURL = url () .filename (url () .is_network ());
-	//curlURL = std::regex_replace (curlURL, whiteSpaces, std::string ("%20")); // XXX: uncomment this when gcc 4.9 is ready and test url's with spaces.
+	const std::string curlURL = url () .filename (url () .is_network ()) .escape ();
 
-	//std::clog << curlURL << std::endl;
+	//std::clog << std::string (80, '+') << std::endl;
+	//std::clog << std::string (80, '+') << " : " << curlURL << std::endl;
+	//std::clog << std::string (80, '+') << " : " << url () .escape () << std::endl;
 
 	curl_easy_setopt (easy_handle, CURLOPT_URL,               curlURL .c_str ());
 	curl_easy_setopt (easy_handle, CURLOPT_BUFFERSIZE,        bufferSize);
 	curl_easy_setopt (easy_handle, CURLOPT_USE_SSL,           CURLUSESSL_TRY);
 	curl_easy_setopt (easy_handle, CURLOPT_HEADER,            false);
 	curl_easy_setopt (easy_handle, CURLOPT_FOLLOWLOCATION,    true);
+	curl_easy_setopt (easy_handle, CURLOPT_TIMEOUT_MS,        0); // Timeout for the ENTIRE request
 	curl_easy_setopt (easy_handle, CURLOPT_CONNECTTIMEOUT_MS, timeout ());
-	curl_easy_setopt (easy_handle, CURLOPT_TIMEOUT_MS,        timeout ());
 	curl_easy_setopt (easy_handle, CURLOPT_ACCEPTTIMEOUT_MS,  timeout ());
 	curl_easy_setopt (easy_handle, CURLOPT_ACCEPT_ENCODING,   "");
 	curl_easy_setopt (easy_handle, CURLOPT_FAILONERROR,       true);
@@ -169,7 +168,7 @@ urlstreambuf::wait ()
 	curl_multi_timeout (multi_handle, &curl_timeout);
 
 	struct timeval timeout;
-	timeout .tv_sec  = this -> timeout ();
+	timeout .tv_sec  = 0;
 	timeout .tv_usec = 0;
 
 	if (curl_timeout >= 0)
