@@ -110,6 +110,13 @@ make_reverse_range (Range && range)
 	return std::make_pair (make_reverse_iterator (std::end (range)), make_reverse_iterator (std::begin (range)));
 }
 
+template <class Iterator>
+std::pair <Iterator, Iterator>
+make_range (const Iterator & first, const typename std::iterator_traits <Iterator>::difference_type size)
+{
+	return std::make_pair (first, first + size);
+}
+
 } // basic
 } // titania
 

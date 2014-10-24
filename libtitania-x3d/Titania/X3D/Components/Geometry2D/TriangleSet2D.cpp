@@ -152,7 +152,7 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
 
-	for (const auto & point : std::make_pair (getTexCoords () [0] .begin (), getTexCoords () [0] .begin () + getElements () [0] .count))
+	for (const auto & point : basic::make_range (getTexCoords () [0] .begin (), getElements () [0] .count))
 		texCoord -> point () .emplace_back (point .x (), point .y ());
 
 	coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count);
@@ -174,7 +174,7 @@ throw (Error <NOT_SUPPORTED>,
 	{
 		const int32_t tb = texCoord -> point () .size ();
 
-		for (const auto & point : std::make_pair (getTexCoords () [0] .begin (), getTexCoords () [0] .begin () + getElements () [0] .count))
+		for (const auto & point : basic::make_range (getTexCoords () [0] .begin (), getElements () [0] .count))
 			texCoord -> point () .emplace_back (1 - point .x (), point .y ());
 
 		for (int32_t i = 0, size = getVertices () .size (); i < size; i += 3)

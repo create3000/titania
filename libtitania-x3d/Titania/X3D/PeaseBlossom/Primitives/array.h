@@ -493,7 +493,7 @@ basic_array <Type>::insert (const iterator & location, const size_type count, co
 
 	const auto iter = value .begin () + pos;
 
-	for (auto & element : std::make_pair (iter, iter + count))
+	for (auto & element : basic::make_range (iter, count))
 	{
 		element = new Type (e);
 
@@ -515,7 +515,7 @@ basic_array <Type>::insert (const iterator & location, InputIterator first, cons
 
 	const auto iter = value .begin () + pos;
 
-	for (auto & element : std::make_pair (iter, iter + count))
+	for (auto & element : basic::make_range (iter, count))
 	{
 		element = new Type (*first);
 

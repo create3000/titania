@@ -765,7 +765,7 @@ X3DArrayField <ValueType>::insert (const iterator & location, const size_type co
 
 	const auto iter = get () .begin () + pos;
 
-	for (auto & field : std::make_pair (iter, iter + count))
+	for (auto & field : basic::make_range (iter, count))
 	{
 		field = new ValueType (value);
 
@@ -788,7 +788,7 @@ X3DArrayField <ValueType>::insert (const iterator & location, InputIterator firs
 
 	const auto iter = get () .begin () + pos;
 
-	for (auto & field : std::make_pair (iter, iter + count))
+	for (auto & field : basic::make_range (iter, count))
 	{
 		field = new ValueType (*first);
 

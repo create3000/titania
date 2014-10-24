@@ -227,7 +227,7 @@ X3DRenderer::draw ()
 		glDepthMask (GL_TRUE);
 		glDisable (GL_BLEND);
 
-		for (const auto & shape : std::make_pair (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
+		for (const auto & shape : basic::make_range (shapes .cbegin (), numOpaqueShapes))
 			shape -> draw ();
 
 		// Render transparent objects
@@ -237,7 +237,7 @@ X3DRenderer::draw ()
 
 		std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, ShapeContainerComp { });
 
-		for (const auto & shape : std::make_pair (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentShapes))
+		for (const auto & shape : basic::make_range (transparentShapes .cbegin (), numTransparentShapes))
 			shape -> draw ();
 
 		glDepthMask (GL_TRUE);
@@ -257,7 +257,7 @@ X3DRenderer::draw ()
 
 		glEnable (GL_BLEND);
 
-		for (const auto & shape : std::make_pair (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentShapes))
+		for (const auto & shape : basic::make_range (transparentShapes .cbegin (), numTransparentShapes))
 		{
 			glDepthFunc (GL_GREATER);
 			glDepthMask (GL_FALSE);
@@ -279,14 +279,14 @@ X3DRenderer::draw ()
 		glBlendFunc (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA);
 		glBlendFuncSeparate (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-		for (const auto & shape : std::make_pair (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
+		for (const auto & shape : basic::make_range (shapes .cbegin (), numOpaqueShapes))
 			shape -> draw ();
 
 		glDisable (GL_BLEND);
 		glDepthFunc (GL_LEQUAL);
 		glDepthMask (GL_TRUE);
 
-		for (const auto & shape : std::make_pair (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
+		for (const auto & shape : basic::make_range (shapes .cbegin (), numOpaqueShapes))
 			shape -> draw ();
 	}
 
@@ -315,7 +315,7 @@ X3DRenderer::navigation ()
 
 	// Render all objects
 
-	for (const auto & shape : std::make_pair (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
+	for (const auto & shape : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
 		shape -> draw ();
 
 	distance = depthBuffer -> getDistance (zNear, zFar);
@@ -330,7 +330,7 @@ X3DRenderer::collide ()
 
 	const Sphere3f collisionSphere (getCurrentNavigationInfo () -> getCollisionRadius () * 1.1f, Vector3f ());
 
-	for (const auto & shape : std::make_pair (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
+	for (const auto & shape : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
 	{
 		if (shape -> intersect (collisionSphere))
 		{
@@ -396,7 +396,7 @@ X3DRenderer::gravite ()
 
 	// Render as opaque objects
 
-	for (const auto & shape : std::make_pair (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
+	for (const auto & shape : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
 		shape -> draw ();
 
 	// Get distance and unbind buffer

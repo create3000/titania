@@ -1,5 +1,17 @@
 2014-10-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DObject.h:
+	* X3DArrayField.h:
+	* X3DRenderer.h:
+	* X3DRenderer.cpp:
+	* array.h:
+	* Disk2D.cpp:
+	* Extrusion.cpp:
+	* TriangleSet2D.cpp:
+	* ParticleSystem.cpp: 
+
+2014-10-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Traverse.h:
 	* Traverse.cpp:
 	* X3DBaseNode.cpp:

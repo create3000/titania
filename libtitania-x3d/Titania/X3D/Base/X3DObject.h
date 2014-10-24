@@ -154,7 +154,7 @@ public:
 
 	///  Extracts the value for this object from @a string with locale support.
 	bool
-	fromLocaleString (const std::string &, const std::locale &)
+	fromLocaleString (const std::string &, const std::locale & = std::locale ())
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -166,7 +166,7 @@ public:
 
 	///  Generates a string representation of this object with locale support.
 	std::string
-	toLocaleString (const std::locale &) const;
+	toLocaleString (const std::locale & = std::locale ()) const;
 
 	///  Generates a string representation of this object in X3D XML Encoding.
 	std::string

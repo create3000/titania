@@ -113,13 +113,13 @@ public:
 	getNumOpaqueShapes () const
 	{ return numOpaqueShapes; }
 
+	const ShapeContainerArray &
+	getOpaqueShapes () const
+	{ return shapes; }
+
 	size_t
 	getNumTransparentShapes () const
 	{ return numTransparentShapes; }
-
-	const ShapeContainerArray &
-	getShapes () const
-	{ return shapes; }
 
 	const ShapeContainerArray &
 	getTransparentShapes () const

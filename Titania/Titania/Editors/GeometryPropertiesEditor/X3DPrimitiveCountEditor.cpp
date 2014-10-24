@@ -154,7 +154,7 @@ X3DPrimitiveCountEditor::update ()
 		{
 			for (const auto & layer : getWorld () -> getLayerSet () -> getLayers ())
 			{
-				for (const auto & container : std::make_pair (layer -> getShapes () .begin (), layer -> getShapes () .begin () + layer -> getNumOpaqueShapes ()))
+				for (const auto & container : basic::make_range (layer -> getOpaqueShapes () .begin (), layer -> getNumOpaqueShapes ()))
 				{
 					const auto & geometry = container -> getShape () -> getGeometry ();
 
@@ -165,7 +165,7 @@ X3DPrimitiveCountEditor::update ()
 					}
 				}
 
-				for (const auto & container : std::make_pair (layer -> getTransparentShapes () .begin (), layer -> getTransparentShapes () .begin () + layer -> getNumTransparentShapes ()))
+				for (const auto & container : basic::make_range (layer -> getTransparentShapes () .begin (), layer -> getNumTransparentShapes ()))
 				{
 					const auto & geometry = container -> getShape () -> getGeometry ();
 
@@ -196,9 +196,9 @@ X3DPrimitiveCountEditor::update ()
 		}
 	}
 
-	getPrimitiveCountPointsLabel ()    .set_text (X3D::SFInt32 (points)    .toLocaleString (std::locale ()));
-	getPrimitiveCountLinesLabel ()     .set_text (X3D::SFInt32 (lines)     .toLocaleString (std::locale ()));
-	getPrimitiveCountTrianglesLabel () .set_text (X3D::SFInt32 (triangles) .toLocaleString (std::locale ()));
+	getPrimitiveCountPointsLabel ()    .set_text (X3D::SFInt32 (points)    .toLocaleString ());
+	getPrimitiveCountLinesLabel ()     .set_text (X3D::SFInt32 (lines)     .toLocaleString ());
+	getPrimitiveCountTrianglesLabel () .set_text (X3D::SFInt32 (triangles) .toLocaleString ());
 }
 
 bool

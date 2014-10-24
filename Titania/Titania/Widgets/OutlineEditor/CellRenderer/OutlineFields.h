@@ -101,7 +101,7 @@ array_to_string (const Type & array, const bool ellipsize)
 
 	const size_t lines = ellipsize ? std::min <size_t> (VALUES_MAX, array .size ()) : array .size ();
 
-	for (const auto & value : std::make_pair (array .begin (), array .begin () + lines - 1))
+	for (const auto & value : basic::make_range (array .begin (), lines - 1))
 	{
 		ostream
 			<< value
@@ -133,7 +133,7 @@ array_to_string (const X3D::MFImage & array, const bool ellipsize)
 
 		const size_t lines = ellipsize ? std::min <size_t> (VALUES_MAX, array .size ()) : array .size ();
 
-		for (const auto & value : std::make_pair (array .begin (), array .begin () + lines - 1))
+		for (const auto & value : basic::make_range (array .begin (), lines - 1))
 		{
 			ostream
 				<< get_field_value (value, true)
@@ -236,7 +236,7 @@ get_field_value (X3D::X3DFieldDefinition* const field, const bool ellipsize)
 			return array_to_string (*static_cast <X3D::MFVec4f*> (field), ellipsize);
 
 		default:
-			return field -> toLocaleString (std::locale ());
+			return field -> toLocaleString ();
 	}
 }
 
