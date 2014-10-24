@@ -57,7 +57,8 @@ namespace titania {
 namespace puck {
 
 class X3DTextViewEditable :
-	public Gtk::ScrolledWindow, public Gtk::CellEditable
+	public Gtk::CellEditable,
+	public Gtk::ScrolledWindow
 {
 public:
 

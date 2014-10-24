@@ -56,9 +56,8 @@ namespace titania {
 namespace puck {
 
 X3DTextViewEditable::X3DTextViewEditable (const bool multiline) :
-	         Glib::ObjectBase (typeid (X3DTextViewEditable)),
-	      Gtk::ScrolledWindow (),
 	        Gtk::CellEditable (),
+	      Gtk::ScrolledWindow (),
 	editing_canceled_property (*this, "editing-canceled", false),
 	                 textview (),
 	                multiline (multiline),

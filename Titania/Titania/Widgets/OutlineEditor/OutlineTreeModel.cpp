@@ -60,10 +60,10 @@ namespace puck {
 
 OutlineTreeModel::OutlineTreeModel (const X3D::X3DExecutionContextPtr & executionContext) :
 	   Glib::ObjectBase (typeid (OutlineTreeModel)),
-	       Glib::Object (),
 	     Gtk::TreeModel (),
 	Gtk::TreeDragSource (),
 	  Gtk::TreeDragDest (),
+	       Glib::Object (),
 	   executionContext (executionContext),
 	               tree (),
 	              stamp (reinterpret_cast <long int> (this)),

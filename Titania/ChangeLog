@@ -1,5 +1,13 @@
 2014-10-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* OutlineTreeModel.h:
+	* OutlineTreeModel.cpp:
+	* X3DOutlineTreeView.cpp:
+	* X3DTextViewEditable.h:
+	* X3DTextViewEditable.cpp: 
+
+2014-10-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineFields.h:
 	* X3DPrimitiveCountEditor.cpp: 
 

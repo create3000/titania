@@ -65,10 +65,10 @@ namespace titania {
 namespace puck {
 
 class OutlineTreeModel :
-	public Glib::Object,
 	public Gtk::TreeModel,
 	public Gtk::TreeDragSource,
-	public Gtk::TreeDragDest
+	public Gtk::TreeDragDest,
+	public Glib::Object
 {
 public:
 
