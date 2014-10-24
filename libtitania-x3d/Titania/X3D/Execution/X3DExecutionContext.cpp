@@ -124,10 +124,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	X3DBaseNode::setExecutionContext (value);
 
-	for (auto & parent : ChildObjectSet (getParents ()))
-	{
-		const auto node = dynamic_cast <X3DBaseNode*> (parent);
+	const MFNode nodes (getParents () .begin (), getParents () .end ());
 
+	for (const auto & node : nodes)
+	{
 		if (not node)
 			continue;
 
@@ -1228,10 +1228,10 @@ X3DExecutionContext::importNodes (const X3DExecutionContext* const executionCont
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	for (auto & parent : ChildObjectSet (executionContext -> getParents ()))
-	{
-		const auto node = dynamic_cast <X3DBaseNode*> (parent);
+	const MFNode nodes (executionContext -> getParents () .begin (), executionContext -> getParents () .end ());
 
+	for (const auto & node : nodes)
+	{
 		if (not node)
 			continue;
 
