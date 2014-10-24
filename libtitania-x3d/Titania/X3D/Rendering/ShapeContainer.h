@@ -82,6 +82,10 @@ public:
 	        const Matrix4f &,
 	        const float);
 
+	X3DShapeNode*
+	getShape () const
+	{ return shape; }
+
 	float
 	getDistance () const
 	{ return distance; }

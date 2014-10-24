@@ -74,6 +74,11 @@ class X3DRenderer :
 {
 public:
 
+	///  @name Member types
+
+	using ShapeContainerArray = std::vector <std::unique_ptr <ShapeContainer>> ;
+	using CollisionShapeArray = std::vector <std::unique_ptr <CollisionShape>> ;
+
 	///  @name Common members
 
 	virtual
@@ -112,17 +117,29 @@ public:
 	getNumTransparentShapes () const
 	{ return numTransparentShapes; }
 
+	const ShapeContainerArray &
+	getShapes () const
+	{ return shapes; }
+
+	const ShapeContainerArray &
+	getTransparentShapes () const
+	{ return transparentShapes; }
+
 	void
 	addShape (X3DShapeNode* const);
 
 	void
 	addCollision (X3DShapeNode* const);
 
+	///  @name Operations
+
 	void
 	render (const TraverseType);
 
 	void
 	gravite ();
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -134,11 +151,15 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DRenderer ();
 
 	virtual
 	void
 	initialize () override;
+
+	///  @name Member access
 
 	virtual
 	X3DFogObject*
@@ -147,8 +168,7 @@ protected:
 
 private:
 
-	using ShapeContainerArray = std::vector <std::unique_ptr <ShapeContainer>> ;
-	using CollisionShapeArray = std::vector <std::unique_ptr <CollisionShape>> ;
+	///  @name Operations
 
 	virtual
 	void
@@ -168,6 +188,8 @@ private:
 
 	void
 	addStepUp ();
+
+	///  @name Members
 
 	ViewVolumeStack        viewVolumeStack;
 	CollectableObjectArray globalObjects;

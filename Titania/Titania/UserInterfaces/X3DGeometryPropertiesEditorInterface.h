@@ -110,6 +110,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Notebook &
+	getGeometryChildNotebook () const
+	{ return *m_GeometryChildNotebook; }
+
 	Gtk::Expander &
 	getGeometryExpander () const
 	{ return *m_GeometryExpander; }
@@ -142,9 +146,49 @@ public:
 	getRemoveNormalsButton () const
 	{ return *m_RemoveNormalsButton; }
 
+	Gtk::EventBox &
+	getPrimitiveCountEventBox () const
+	{ return *m_PrimitiveCountEventBox; }
+
+	Gtk::Box &
+	getPrimitiveCountBox () const
+	{ return *m_PrimitiveCountBox; }
+
+	Gtk::Label &
+	getPrimitiveCountPointsLabel () const
+	{ return *m_PrimitiveCountPointsLabel; }
+
+	Gtk::Label &
+	getPrimitiveCountLinesLabel () const
+	{ return *m_PrimitiveCountLinesLabel; }
+
+	Gtk::Label &
+	getPrimitiveCountTrianglesLabel () const
+	{ return *m_PrimitiveCountTrianglesLabel; }
+
+	Gtk::ComboBoxText &
+	getPrimitiveCountCountButton () const
+	{ return *m_PrimitiveCountCountButton; }
+
 	virtual
 	void
 	on_remove_normals_clicked () = 0;
+
+	virtual
+	bool
+	on_crossing_notify_event (GdkEventCrossing* event) = 0;
+
+	virtual
+	void
+	on_map_primitive_count () = 0;
+
+	virtual
+	void
+	on_unmap_primitive_count () = 0;
+
+	virtual
+	void
+	on_primitive_count_count_changed () = 0;
 
 	virtual
 	~X3DGeometryPropertiesEditorInterface ();
@@ -162,6 +206,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_CreaseAngleAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
+	Gtk::Notebook*                 m_GeometryChildNotebook;
 	Gtk::Expander*                 m_GeometryExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;
@@ -170,6 +215,12 @@ private:
 	Gtk::SpinButton*               m_CreaseAngleScaleSpinButton;
 	Gtk::Scale*                    m_CreaseAngleScale;
 	Gtk::Button*                   m_RemoveNormalsButton;
+	Gtk::EventBox*                 m_PrimitiveCountEventBox;
+	Gtk::Box*                      m_PrimitiveCountBox;
+	Gtk::Label*                    m_PrimitiveCountPointsLabel;
+	Gtk::Label*                    m_PrimitiveCountLinesLabel;
+	Gtk::Label*                    m_PrimitiveCountTrianglesLabel;
+	Gtk::ComboBoxText*             m_PrimitiveCountCountButton;
 
 };
 

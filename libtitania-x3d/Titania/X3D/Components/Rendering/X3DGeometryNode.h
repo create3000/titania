@@ -69,6 +69,20 @@ class X3DGeometryNode :
 {
 public:
 
+	///  @name Member types
+
+	struct Element
+	{
+		Element (GLenum vertexMode, size_t count) :
+			vertexMode (vertexMode),
+			     count (count)
+	          	{ }
+
+		const GLenum vertexMode;
+		const size_t count;
+
+	};
+
 	///  @name Construction
 
 	virtual
@@ -104,6 +118,10 @@ public:
 	size_t
 	getMultiTexCoords () const
 	{ return texCoords .size (); }
+	
+	const std::vector <Element> &
+	getElements () const
+	{ return elements; }
 
 	///  @name Operations
 
@@ -139,19 +157,9 @@ public:
 
 protected:
 
+	///  @name Member types
+
 	using NormalIndex = std::map <size_t, std::vector <size_t>>;
-
-	struct Element
-	{
-		Element (GLenum vertexMode, size_t count) :
-			vertexMode (vertexMode),
-			     count (count)
-	          	{ }
-
-		GLenum vertexMode;
-		size_t count;
-
-	};
 
 	///  @name Construction
 
@@ -221,12 +229,8 @@ protected:
 	}
 
 	void
-	addElements (const GLenum count, size_t vertexCount)
+	addElements (const GLenum count, const size_t vertexCount)
 	{ elements .emplace_back (count, vertexCount); }
-	
-	const std::vector <Element> &
-	getElements () const
-	{ return elements; }
 
 	///  @name Operations
 

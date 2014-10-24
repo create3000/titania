@@ -1,3 +1,17 @@
+2014-10-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* style.css:
+	* X3DLightEditorInterface.cpp:
+	* GeometryPropertiesEditor.xml:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* X3DGeometryPropertiesEditorInterface.cpp:
+	* X3DPrimitiveCountEditor.h:
+	* GeometryPropertiesEditor.h:
+	* X3DPrimitiveCountEditor.cpp:
+	* GeometryPropertiesEditor.cpp: 
+
 2014-10-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* top.x3dv:

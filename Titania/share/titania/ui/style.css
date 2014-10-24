@@ -84,6 +84,12 @@ GtkExpander > GtkLabel {
 }
 
 /*
+GtkNotebook GtkGrid {
+	padding: 4px;
+}
+*/
+
+/*
 
 GtkComboBox
 {

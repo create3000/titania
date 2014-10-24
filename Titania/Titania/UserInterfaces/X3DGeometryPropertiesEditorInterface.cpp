@@ -66,6 +66,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("GeometryChildNotebook", m_GeometryChildNotebook);
 	m_builder -> get_widget ("GeometryExpander", m_GeometryExpander);
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);
@@ -74,7 +75,24 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("CreaseAngleScaleSpinButton", m_CreaseAngleScaleSpinButton);
 	m_builder -> get_widget ("CreaseAngleScale", m_CreaseAngleScale);
 	m_builder -> get_widget ("RemoveNormalsButton", m_RemoveNormalsButton);
+	m_builder -> get_widget ("PrimitiveCountEventBox", m_PrimitiveCountEventBox);
+	m_builder -> get_widget ("PrimitiveCountBox", m_PrimitiveCountBox);
+	m_builder -> get_widget ("PrimitiveCountPointsLabel", m_PrimitiveCountPointsLabel);
+	m_builder -> get_widget ("PrimitiveCountLinesLabel", m_PrimitiveCountLinesLabel);
+	m_builder -> get_widget ("PrimitiveCountTrianglesLabel", m_PrimitiveCountTrianglesLabel);
+	m_builder -> get_widget ("PrimitiveCountCountButton", m_PrimitiveCountCountButton);
 	m_RemoveNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_remove_normals_clicked));
+
+	// Connect object Gtk::EventBox with id 'PrimitiveCountEventBox'.
+	m_PrimitiveCountEventBox -> signal_enter_notify_event () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_crossing_notify_event));
+	m_PrimitiveCountEventBox -> signal_leave_notify_event () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_crossing_notify_event));
+
+	// Connect object Gtk::Box with id 'PrimitiveCountBox'.
+	m_PrimitiveCountBox -> signal_map () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_map_primitive_count));
+	m_PrimitiveCountBox -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_unmap_primitive_count));
+
+	// Connect object Gtk::ComboBoxText with id 'PrimitiveCountCountButton'.
+	m_PrimitiveCountCountButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_primitive_count_count_changed));
 
 	// Call construct handler of base class.
 	construct ();

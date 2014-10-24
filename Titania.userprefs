@@ -1,31 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DObjectOperations.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DObjectOperations.h" Line="74" Column="10" />
-      <File FileName="Titania/Titania/Browser/X3DObjectOperations.cpp" Line="57" Column="1" />
-      <File FileName="Titania/Titania/Base/X3DEditorObject.h" Line="198" Column="106" />
+      <File FileName="Titania/Titania/Browser/X3DObjectOperations.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DObjectOperations.cpp" Line="110" Column="134" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="765" Column="5" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.h" Line="90" Column="34" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp" Line="51" Column="37" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h" Line="57" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="miscellaneous" expanded="True">
-            <Node name="uncrustify-all" expanded="True" />
-          </Node>
-          <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
-          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Handles" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Math" expanded="True">
-                <Node name="Numbers" expanded="True" />
-              </Node>
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -37,31 +27,48 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Rendering" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="Core" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
+                  <Node name="Geospatial" expanded="True" />
+                  <Node name="NURBS" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                 </Node>
+                <Node name="Execution" expanded="True" />
                 <Node name="InputOutput" expanded="True" />
                 <Node name="Parser" expanded="True">
                   <Node name="Wavefront" expanded="True" />
                 </Node>
+                <Node name="Prototype" expanded="True" />
               </Node>
             </Node>
+          </Node>
+          <Node name="Papers" expanded="True">
+            <Node name="CosmoWorlds" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
-                <Node name="ui" expanded="True" />
+                <Node name="ui" expanded="True">
+                  <Node name="Editors" expanded="True">
+                    <Node name="GeometryPropertiesEditor.xml" selected="True" />
+                  </Node>
+                </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True">
-                <Node name="X3DEditorObject.h" selected="True" />
-              </Node>
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
+              <Node name="Editors" expanded="True">
+                <Node name="GeometryPropertiesEditor" expanded="True" />
+                <Node name="GridEditor" expanded="True" />
+              </Node>
+              <Node name="UserInterfaces" expanded="True" />
             </Node>
           </Node>
           <Node name="titania-info" expanded="True" />

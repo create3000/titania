@@ -148,6 +148,17 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 	if (not node)
 		return true;
 
+	if (flags & TRAVERSE_VISIBLE_NODES)
+	{
+		switch (node -> getType () .back ())
+		{
+			case X3DConstants::Script:
+				return true;
+			default:
+				break;
+		}
+	}
+
 	if (seen .emplace (node) .second)
 	{
 		for (const auto & field : node -> getFieldDefinitions ())
@@ -155,17 +166,90 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 			switch (field -> getType ())
 			{
 				case X3DConstants::SFNode :
+				{
+					const auto sfnode = static_cast <X3D::SFNode*> (field);
+
+					if (flags & TRAVERSE_VISIBLE_NODES)
 					{
-						const auto sfnode = static_cast <X3D::SFNode*> (field);
-
-						if (traverse (*sfnode, callback, distinct, flags, seen))
-							continue;
-
-						return false;
+						for (const auto & type : basic::make_reverse_range (node -> getType ()))
+						{
+							switch (type)
+							{
+								case X3DConstants::Collision:
+								{
+									if (sfnode == &dynamic_cast <Collision*> (node .getValue ()) -> proxy ())
+										goto CONTINUE;		
+									break;
+								}
+								case X3DConstants::X3DNode:
+								{
+									if (sfnode == &dynamic_cast <X3DNode*> (node .getValue ()) -> metadata ())
+										goto CONTINUE;		
+									break;
+								}
+								default:
+									break;
+							}
+						}
 					}
+
+					if (traverse (*sfnode, callback, distinct, flags, seen))
+						continue;
+
+					return false;
+				}
 				case X3DConstants::MFNode:
 				{
 					const auto mfnode = static_cast <X3D::MFNode*> (field);
+	
+					if (flags & TRAVERSE_VISIBLE_NODES)
+					{
+						switch (node -> getType () .back ())
+						{
+							case X3DConstants::SwitchTool:
+							case X3DConstants::Switch:
+							{
+								const auto switchNode = dynamic_cast <Switch*> (node .getValue ());
+									
+								if (mfnode == &switchNode -> children ())
+								{
+									if (switchNode -> whichChoice () >= 0 and switchNode -> whichChoice () < (int32_t) switchNode -> children () .size ())
+									{
+										if (traverse (switchNode -> children () [switchNode -> whichChoice ()], callback, distinct, flags, seen))
+											continue;
+										
+										return false;
+									}
+
+									continue;
+								}
+
+								break;
+							}
+							case X3DConstants::LODTool:
+							case X3DConstants::LOD:
+							{
+								const auto lod = dynamic_cast <LOD*> (node .getValue ());
+									
+								if (mfnode == &lod -> children ())
+								{
+									if (lod -> level_changed () >= 0 and lod -> level_changed () < (int32_t) lod -> children () .size ())
+									{
+										if (traverse (lod -> children () [lod -> level_changed ()], callback, distinct, flags, seen))
+											continue;
+										
+										return false;
+									}
+
+									continue;
+								}
+
+								break;
+							}
+							default:
+								break;
+						}
+					}
 
 					for (auto & value : *mfnode)
 					{
@@ -180,6 +264,8 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 				default:
 					break;
 			}
+
+CONTINUE:;
 		}
 	}
 	else
@@ -261,7 +347,12 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 	}
 
 	if (callback (node))
+	{
+		if (flags & TRAVERSE_CLONED_NODES)
+			seen .erase (node);
+
 		return true;
+	}
 
 	return false;
 }
@@ -398,7 +489,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 		{
 			case X3DConstants::SFNode:
 			{
-				auto sfnode = static_cast <X3D::SFNode*> (field);
+				const auto sfnode = static_cast <X3D::SFNode*> (field);
 
 				if (flags & TRAVERSE_VISIBLE_NODES)
 				{
@@ -409,12 +500,14 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 							case X3DConstants::Collision:
 							{
 								if (sfnode == &dynamic_cast <Collision*> (node) -> proxy ())
-									continue;
+									goto CONTINUE;
+								break;
 							}
 							case X3DConstants::X3DNode:
 							{
 								if (sfnode == &dynamic_cast <X3DNode*> (node) -> metadata ())
-									continue;
+									goto CONTINUE;
+								break;
 							}
 							default:
 								break;
@@ -434,13 +527,14 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 			}
 			case X3DConstants::MFNode:
 			{
-				auto mfnode = static_cast <X3D::MFNode*> (field);
+				const auto mfnode = static_cast <X3D::MFNode*> (field);
 
 				if (flags & TRAVERSE_VISIBLE_NODES)
 				{
 					switch (node -> getType () .back ())
 					{
 						case X3DConstants::Switch:
+						case X3DConstants::SwitchTool:
 						{
 							const auto switchNode = dynamic_cast <Switch*> (node);
 								
@@ -462,6 +556,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 							break;
 						}
 						case X3DConstants::LOD:
+						case X3DConstants::LODTool:
 						{
 							const auto lod = dynamic_cast <LOD*> (node);
 								
@@ -503,6 +598,8 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 			default:
 				break;
 		}
+
+CONTINUE:;
 	}
 
 	if (flags & ~TRAVERSE_ROOT_NODES)

@@ -48,30 +48,35 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
-#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
+#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DPRIMITIVE_COUNT_EDITOR_H__
+#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DPRIMITIVE_COUNT_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
-#include "X3DPrimitiveCountEditor.h"
 
 namespace titania {
 namespace puck {
 
-class GeometryPropertiesEditor :
-	virtual public X3DGeometryPropertiesEditorInterface,
-	public X3DPrimitiveCountEditor
+class X3DPrimitiveCountEditor :
+	virtual public X3DGeometryPropertiesEditorInterface
 {
 public:
-
-	///  @name Construction
-
-	GeometryPropertiesEditor (X3DBrowserWindow* const);
 
 	///  @name Destruction
 
 	virtual
-	~GeometryPropertiesEditor ();
+	~X3DPrimitiveCountEditor ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DPrimitiveCountEditor ();
+
+	virtual
+	void
+	initialize () override
+	{ }
 
 
 private:
@@ -80,30 +85,42 @@ private:
 
 	virtual
 	void
-	initialize () final override;
-
-	void
-	set_selection ();
-
-	void
-	set_nodes ();
-
-	void
-	set_buffer ();
+	on_map_primitive_count () final override;
 
 	virtual
 	void
-	on_remove_normals_clicked () final override;
+	on_unmap_primitive_count () final override;
+
+	virtual
+	bool
+	on_crossing_notify_event (GdkEventCrossing*) final override;
+
+	virtual
+	void
+	on_primitive_count_count_changed () final override;
+
+	void
+	update ();
+
+	bool
+	traverse (X3D::SFNode &);
+
+	void
+	count (const X3D::X3DGeometryNode::Element &);
+
+	void
+	set_browser ();
+
+	void
+	set_executionContext ();
 
 	///  @name Members
 
-	X3DFieldToggleButton <X3D::SFBool> solid;
-	X3DFieldToggleButton <X3D::SFBool> ccw;
-	X3DFieldToggleButton <X3D::SFBool> convex;
-	X3DFieldAdjustment <X3D::SFFloat>  creaseAngle;
-
-	X3D::X3DPtrArray <X3D::X3DShapeNode> shapes;
-	X3D::SFTime                          nodesBuffer;
+	X3D::BrowserPtr             browser;
+	X3D::X3DExecutionContextPtr executionContext;
+	size_t                      points;
+	size_t                      lines;
+	size_t                      triangles;
 
 };
 

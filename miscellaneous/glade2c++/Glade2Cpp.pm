@@ -714,3 +714,5 @@ item_activated
   virtual void on_item_activated();
 selection_changed
   virtual void on_selection_changed();
+enter_notify_event
+  virtual bool on_enter_notify_event(GdkEventCrossing* event);

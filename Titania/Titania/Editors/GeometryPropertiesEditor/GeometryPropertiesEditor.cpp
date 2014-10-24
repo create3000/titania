@@ -58,6 +58,7 @@ namespace puck {
 GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const browserWindow) :
 	                     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	 X3DGeometryPropertiesEditorInterface (get_ui ("Editors/GeometryPropertiesEditor.xml"), gconf_dir ()),
+	              X3DPrimitiveCountEditor (),
 	                                solid (browserWindow, getSolidCheckButton (),  "solid"),
 	                                  ccw (browserWindow, getCCWCheckButton (),    "ccw"),
 	                               convex (browserWindow, getConvexCheckButton (), "convex"),
@@ -69,6 +70,9 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	addChildren (nodesBuffer);
 
 	getCreaseAngleAdjustment () -> set_upper (M_PI); // getExecutionContext () .fromRadiant (M_PI);
+
+	getGeometryChildNotebook () .set_current_page (getConfig () .getInteger ("currentPage"));
+
 	setup ();
 }
 
@@ -76,6 +80,7 @@ void
 GeometryPropertiesEditor::initialize ()
 {
 	X3DGeometryPropertiesEditorInterface::initialize ();
+	X3DPrimitiveCountEditor::initialize ();
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &GeometryPropertiesEditor::set_selection);
 
@@ -150,6 +155,8 @@ GeometryPropertiesEditor::on_remove_normals_clicked ()
 
 GeometryPropertiesEditor::~GeometryPropertiesEditor ()
 {
+	getConfig () .setItem ("currentPage", getGeometryChildNotebook () .get_current_page ());
+
 	dispose ();
 }
 

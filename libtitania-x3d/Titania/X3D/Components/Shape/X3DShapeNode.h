@@ -95,6 +95,20 @@ public:
 	const SFNode &
 	geometry () const
 	{ return *fields .geometry; }
+	
+	///  @name Member access
+
+	const X3DPtr <X3DAppearanceNode> &
+	getAppearance () const
+	{ return appearanceNode; }
+
+	const X3DPtr <X3DGeometryNode> &
+	getGeometry () const
+	{ return geometryNode; }
+
+	virtual
+	bool
+	isLineGeometry () const = 0;
 
 	///  @name Operations
 
@@ -139,22 +153,6 @@ protected:
 	virtual
 	void
 	initialize () override;
-	
-	///  @name Member access
-	
-	const X3DPtr <X3DAppearanceNode> &
-	getAppearance () const
-	{ return appearanceNode; }
-
-	const X3DPtr <X3DGeometryNode> &
-	getGeometry () const
-	{ return geometryNode; }
-
-	///  @name Operations
-	
-	virtual
-	bool
-	isLineGeometry () const = 0;
 
 	virtual
 	void
