@@ -80,9 +80,9 @@ X3DRenderingContext::initialize ()
 
 		glDepthFunc (GL_LEQUAL);
 
-		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		//glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		//glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
+		//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
 
 		glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
 

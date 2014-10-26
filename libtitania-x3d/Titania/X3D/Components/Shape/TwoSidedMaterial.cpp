@@ -141,7 +141,7 @@ TwoSidedMaterial::eventsProcessed ()
 
 	glDiffuseColor [0] = diffuseColor () .getRed ();
 	glDiffuseColor [1] = diffuseColor () .getGreen ();
-	glDiffuseColor [2] = diffuseColor () .getBlue ();
+	glDiffuseColor [2] = diffuseColor () .getBlue () + 0.0001;
 	glDiffuseColor [3] = alpha;
 
 	glSpecularColor [0] = specularColor () .getRed ();
@@ -169,7 +169,7 @@ TwoSidedMaterial::eventsProcessed ()
 
 		glBackDiffuseColor [0] = backDiffuseColor () .getRed ();
 		glBackDiffuseColor [1] = backDiffuseColor () .getGreen ();
-		glBackDiffuseColor [2] = backDiffuseColor () .getBlue ();
+		glBackDiffuseColor [2] = backDiffuseColor () .getBlue () + 0.0001;
 		glBackDiffuseColor [3] = backAlpha;
 
 		glBackSpecularColor [0] = backSpecularColor () .getRed ();

@@ -1,3 +1,9 @@
+2014-10-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Material.cpp:
+	* TwoSidedMaterial.cpp:
+	* X3DRenderingContext.cpp: 
+
 2014-10-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DExecutionContext.cpp: 

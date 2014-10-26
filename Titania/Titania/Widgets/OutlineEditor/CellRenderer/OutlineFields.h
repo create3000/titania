@@ -114,7 +114,7 @@ array_to_string (const Type & array, const bool ellipsize)
 	{
 		ostream
 			<< X3D::Generator::ForceBreak
-			<< "…";
+			<< '[' << array .size () << "]  …";
 	}
 
 	return ostream .str ();
@@ -146,7 +146,7 @@ array_to_string (const X3D::MFImage & array, const bool ellipsize)
 		{
 			ostream
 				<< X3D::Generator::ForceBreak
-				<< "…";
+				<< '[' << array .size () << "] …";
 		}
 
 		return ostream .str ();
