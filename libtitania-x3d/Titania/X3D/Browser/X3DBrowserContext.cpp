@@ -179,10 +179,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 		// Process image.
 
-		// The next two lines avoid having a totaly gray image, which would cause IM to write a monochome image to file in some cases.
-		if (pixels [0] == pixels [1] and pixels [0] == pixels [2])
-			pixels [0] += pixels [0] > 127 ? -1 : 1;
-
 		const auto image = std::make_shared <Magick::Image> (width, height, "RGBA", Magick::CharPixel, pixels .data ());
 
 		pixels .resize (0);
