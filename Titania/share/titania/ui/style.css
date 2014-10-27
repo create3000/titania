@@ -74,8 +74,8 @@ GtkExpander > GtkLabel {
 	border-right-width: 0px;
 }
 
-#OutlineTreeViewEditor .textview-editable,
-#OutlineTreeViewEditor .textview-editable GtkTextView,
+#OutlineTreeViewEditor .titania-textview-editable,
+#OutlineTreeViewEditor .titania-textview-editable GtkTextView,
 #OutlineTreeViewEditor .cell
 {
 	margin: 0px;

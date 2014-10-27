@@ -73,6 +73,7 @@ public:
 	 */
 
 	///  Returns the number of strong references of this object.  Weak references are not counted.
+	virtual
 	size_t
 	getReferenceCount () const
 	{ return parents .size (); }
@@ -181,6 +182,28 @@ protected:
 	/***
 	 *  @name Reference handling
 	 */
+
+	///  Add a weak parent to this object.
+	virtual
+	void
+	addWeakParent (X3DChildObject* const);
+
+	///  Remove a weak parent from this object.
+	virtual
+	void
+	removeWeakParent (X3DChildObject* const);
+
+	///  Handler that is called when the reference count should be incremented.
+	virtual
+	void
+	addReference ()
+	{ }
+
+	///  Handler that is called when the reference count should be decremented.
+	virtual
+	void
+	removeReference ()
+	{ }
 
 	///  Handler that is called when the reference count should be set to 0.
 	virtual

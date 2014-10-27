@@ -140,11 +140,11 @@ BrowserWindow::loadStyles () const
 
 	std::string string;
 
-	string += "#OutlineTreeViewEditor .textview-editable GtkTextView {";
+	string += "#OutlineTreeViewEditor .titania-textview-editable GtkTextView {";
 	string += "  background-color: mix (" + bg_selected .to_string () + ", " + bg_normal .to_string () + ", 0.9);";
 	string += "}";
 	string += "";
-	string += "#OutlineTreeViewEditor .textview-editable GtkTextView:selected {";
+	string += "#OutlineTreeViewEditor .titania-textview-editable GtkTextView:selected {";
 	string += "  color: " + fg_selected .to_string () + ";";
 	string += "  background-color: " + bg_selected .to_string () + ";";
 	string += "}";

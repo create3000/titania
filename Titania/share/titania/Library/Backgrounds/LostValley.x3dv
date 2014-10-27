@@ -1,6 +1,10 @@
-#X3D V3.3 utf8 Titania V0.6.7
+#X3D V3.3 utf8 Titania V0.7.5
 
-META "generator" "Titania V0.6.7, http://titania.create3000.de"
+META "comment" "World of Titania"
+META "created" "Sun, 26 Oct 2014 17:17:28 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.5, http://titania.create3000.de"
+META "modified" "Sun, 26 Oct 2014 17:19:30 GMT"
 
 DEF LostValley Background {
   frontUrl [
@@ -10,8 +14,8 @@ DEF LostValley Background {
   ]
   backUrl [
     "../CubeMapTextures/LostValleylostvalley_north.jpg",
-    "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg",
-    "http://titania.create3000.de/Library/Textures/0.1/CubeMapTextures/LostValley/lostvalley_south.jpg"
+    "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_north.jpg",
+    "http://titania.create3000.de/Library/Textures/0.1/CubeMapTextures/LostValley/lostvalley_north.jpg"
   ]
   leftUrl [
     "../CubeMapTextures/LostValleylostvalley_east.jpg",

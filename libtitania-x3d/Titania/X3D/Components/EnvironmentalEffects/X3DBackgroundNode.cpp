@@ -146,7 +146,7 @@ X3DBackgroundNode::getColor (const float theta, const MFColor & color, const MFF
 }
 
 void
-X3DBackgroundNode::build (const float radius, const std::vector <float> & vangle, const MFFloat & angle, const MFColor & color, const float opacity, const bool bottom)
+X3DBackgroundNode::build (const float radius, const std::vector <float> & vAngle, const MFFloat & angle, const MFColor & color, const float opacity, const bool bottom)
 {
 	// p1 --- p4
 	//  |     |
@@ -158,14 +158,15 @@ X3DBackgroundNode::build (const float radius, const std::vector <float> & vangle
 	std::complex <float> y;
 	Vector3f             p;
 	
-	const int32_t V_DIMENSION = vangle .size () - 1;
+	const auto    vAngleMax   = bottom ? M_PI1_2 : M_PI;
+	const int32_t V_DIMENSION = vAngle .size () - 1;
 
 	numIndices += 4 * U_DIMENSION * V_DIMENSION;
 
 	for (int32_t v = 0; v < V_DIMENSION; ++ v)
 	{
-		float theta1 = math::clamp <float> (vangle [v], 0, M_PI);
-		float theta2 = math::clamp <float> (vangle [v + 1], 0, M_PI);
+		float theta1 = math::clamp <float> (vAngle [v],     0, vAngleMax);
+		float theta2 = math::clamp <float> (vAngle [v + 1], 0, vAngleMax);
 
 		if (bottom)
 		{
@@ -176,8 +177,8 @@ X3DBackgroundNode::build (const float radius, const std::vector <float> & vangle
 		const auto z1 = std::polar (radius, theta1);
 		const auto z2 = std::polar (radius, theta2);
 
-		const Color3f c1 = getColor (vangle [v],     color, angle);
-		const Color3f c2 = getColor (vangle [v + 1], color, angle);
+		const Color3f c1 = getColor (vAngle [v],     color, angle);
+		const Color3f c2 = getColor (vAngle [v + 1], color, angle);
 
 		for (size_t u = 0; u < U_DIMENSION; ++ u)
 		{
@@ -282,31 +283,30 @@ X3DBackgroundNode::build ()
 
 		if (skyColor () .size () > skyAngle () .size ())
 		{
-			std::vector <float> vangle (skyAngle () .begin (), skyAngle () .end ());
+			std::vector <float> vAngle (skyAngle () .begin (), skyAngle () .end ());
 
-			if (vangle .empty () or vangle .front () > 0)
-				vangle .insert (vangle .begin (), 0);
+			if (vAngle .empty () or vAngle .front () > 0)
+				vAngle .insert (vAngle .begin (), 0);
 
-			if (vangle .back () < M_PI1_2)
-				vangle .emplace_back (M_PI1_2);
+			const auto vAngleMax = groundColor () .size () > groundAngle () .size () ? M_PI1_2 : M_PI;
 
-			if (groundColor () .size () <= groundAngle () .size () and vangle .back () < M_PI)
-				vangle .emplace_back (M_PI);
+			if (vAngle .back () < vAngleMax)
+				vAngle .emplace_back (vAngleMax);
 
-			build (radius, vangle, skyAngle (), skyColor (), opacity, false);
+			build (radius, vAngle, skyAngle (), skyColor (), opacity, false);
 		}
 
 		if (groundColor () .size () > groundAngle () .size ())
 		{
-			std::vector <float> vangle (groundAngle () .rbegin (), groundAngle () .rend ());
+			std::vector <float> vAngle (groundAngle () .rbegin (), groundAngle () .rend ());
 
-			if (vangle .empty () or vangle .front () < M_PI1_2)
-				vangle .insert (vangle .begin (), M_PI1_2);
+			if (vAngle .empty () or vAngle .front () < M_PI1_2)
+				vAngle .insert (vAngle .begin (), M_PI1_2);
 
-			if (vangle .back () > 0)
-				vangle .emplace_back (0);
+			if (vAngle .back () > 0)
+				vAngle .emplace_back (0);
 
-			build (radius, vangle, groundAngle (), groundColor (), opacity, true);
+			build (radius, vAngle, groundAngle (), groundColor (), opacity, true);
 		}
 	}
 }

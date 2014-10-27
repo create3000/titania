@@ -70,7 +70,8 @@ X3DChildObject::addParent (X3DChildObject* const parent)
 
 	// Add parent
 
-	parents .emplace (parent);
+	if (parents .emplace (parent) .second)
+		addReference ();
 }
 
 void
@@ -87,8 +88,15 @@ X3DChildObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObj
 
 	// Replace parent
 
-	parents .erase (parentToRemove);
-	parents .emplace (parentToAdd);
+	if (parents .erase (parentToRemove))
+	{
+		if (parents .emplace (parentToAdd) .second)
+			addReference ();
+
+		removeReference ();
+	}
+	else
+		addParent (parentToAdd);
 }
 
 /***
@@ -107,9 +115,12 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		if (root == parent)
 			root = nullptr;
 
+		removeReference ();
+
 		if (getReferenceCount () == 0)
 		{
 			unReference ();
+			parents .clear ();
 
 			processShutdown ();
 			dispose ();
@@ -127,8 +138,8 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 
 		for (const auto & child : circle)
 		{
-			child -> parents .clear ();
 			child -> unReference ();
+			child -> parents .clear ();
 		}
 
 		for (const auto & child : circle)
@@ -139,6 +150,26 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 
 		addDisposedObjects (circle .begin (), circle .end ());
 	}
+}
+
+void
+X3DChildObject::addWeakParent (X3DChildObject* const parent)
+{
+	// addWeakParent and removeWeakParent ensure that weak pointers can be found during traversal, for instance this is important
+	// for X3DBaseNode::replace.
+
+	// Add parent
+
+	parents .emplace (parent);
+}
+
+void
+X3DChildObject::removeWeakParent (X3DChildObject* const parent)
+{
+	if (root == parent)
+		root = nullptr;
+
+	parents .erase (parent);
 }
 
 /***

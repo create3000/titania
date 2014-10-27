@@ -584,7 +584,10 @@ private:
 
 	void
 	set_disposed ()
-	{ setObject (nullptr); }
+	{
+		setObject (nullptr);
+		addEvent ();
+	}
 
 	/**
 	 *  @name Static members

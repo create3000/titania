@@ -145,6 +145,15 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
+	///  @name X3DChildObject
+	virtual
+	bool
+	hasRootedObjects (ChildObjectSet &) final override
+	{
+		// Weak pointers are no roots.
+		return false;
+	}
+
 	///  @name Boolean operator
 
 	operator bool () const
@@ -236,7 +245,10 @@ private:
 	addObject (ValueType* const value)
 	{
 		if (value)
+		{
+			value -> addWeakParent (this);
 			value -> X3DInput::disposed () .addInterest (this, &X3DWeakPtr::set_disposed);
+		}
 	}
 
 	void
@@ -247,6 +259,7 @@ private:
 			setObject (nullptr);
 
 			value -> X3DInput::disposed () .removeInterest (this, &X3DWeakPtr::set_disposed);
+			value -> removeWeakParent (this);
 		}
 	}
 
@@ -266,7 +279,10 @@ private:
 
 	void
 	set_disposed ()
-	{ setObject (nullptr); }
+	{
+		setObject (nullptr);
+		addEvent ();
+	}
 
 	///  TypeName identifer for X3DFields.
 	static const std::string typeName;

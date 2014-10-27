@@ -21,6 +21,7 @@ Build-Depends: debhelper (>= 5),
                intltool,
                gettext,
                libtool,
+               libtool-bin,
                firefox-dev,
                libgtop2-dev
 

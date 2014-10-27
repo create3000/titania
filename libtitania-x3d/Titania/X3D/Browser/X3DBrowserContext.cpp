@@ -154,7 +154,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (getWorld () and lock)
 	{
-		const auto backgroundColor = alphaChannel ? X3D::Color4f () : getBrowser () -> getBackgroundColor ();
+		const auto backgroundColor  = alphaChannel ? X3D::Color4f () : getBrowser () -> getBackgroundColor ();
+		const bool backgroundHidden = getWorld () -> getLayerSet () -> getLayer0 () -> getBackground () -> isHidden ();
+	
+		getWorld () -> getLayerSet () -> getLayer0 () -> getBackground () -> isHidden (alphaChannel);
+
+		// Render to frame buffer.
 
 		std::vector <uint8_t> pixels;
 		FrameBuffer           frameBuffer (this, width, height, antialiasing);
@@ -169,6 +174,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		frameBuffer .get (pixels);
 		frameBuffer .unbind ();
 		const_cast <X3DBrowserContext*> (this) -> reshape ();
+
+		getWorld () -> getLayerSet () -> getLayer0 () -> getBackground () -> isHidden (backgroundHidden);
+
+		// Process image.
 
 		const auto image = std::make_shared <Magick::Image> (width, height, "RGBA", Magick::CharPixel, pixels .data ());
 

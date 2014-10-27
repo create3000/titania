@@ -122,6 +122,10 @@ public:
 	setLayer0 (const X3DLayerNodePtr &);
 
 	const X3DLayerNodePtr &
+	getLayer0 () const
+	{ return layerNode0; }
+
+	const X3DLayerNodePtr &
 	getActiveLayer () const
 	{ return activeLayerNode; }
 

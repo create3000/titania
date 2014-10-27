@@ -1,19 +1,34 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/OutlineEditor/CellRenderer/X3DTextViewEditable.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DObjectOperations.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DObjectOperations.cpp" Line="110" Column="134" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="765" Column="5" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.h" Line="112" Column="13" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp" Line="180" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/ComposedShader.cpp" Line="115" Column="2" />
+      <File FileName="Titania/Titania/Browser/X3DObjectOperations.h" Line="12" Column="42" />
+      <File FileName="Titania/Titania/Browser/X3DObjectOperations.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="147" Column="45" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp" Line="203" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="163" Column="1" />
+      <File FileName="Titania/share/titania/ui/style.css" Line="78" Column="33" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/X3DTextViewEditable.cpp" Line="65" Column="23" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="miscellaneous" expanded="True">
+            <Node name="logo" expanded="True">
+              <Node name="website" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="build" expanded="True">
+            <Node name="debian" expanded="True" />
+          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
+            <Node name="Examples" expanded="True">
+              <Node name="TreasureIsland" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
+            </Node>
             <Node name="Tests" expanded="True">
               <Node name="Handles" expanded="True" />
             </Node>
@@ -41,22 +56,15 @@
                   <Node name="Rendering" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Followers" expanded="True" />
-                  <Node name="Geometry2D" expanded="True" />
-                  <Node name="Geometry3D" expanded="True" />
-                  <Node name="Geospatial" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
+                  <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="Layering" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
-                  <Node name="NURBS" expanded="True" />
-                  <Node name="ParticleSystems" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
-                  <Node name="Shaders" expanded="True">
-                    <Node name="ComposedShader.cpp" selected="True" />
-                  </Node>
                 </Node>
                 <Node name="Execution" expanded="True" />
+                <Node name="Rendering" expanded="True" />
+                <Node name="Tools" expanded="True">
+                  <Node name="Core" expanded="True" />
+                  <Node name="Layout" expanded="True" />
+                </Node>
               </Node>
             </Node>
           </Node>
@@ -66,6 +74,13 @@
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
+                <Node name="Library" expanded="True">
+                  <Node name="Backgrounds" expanded="True" />
+                  <Node name="CubeMapTextures" expanded="True" />
+                  <Node name="Models" expanded="True">
+                    <Node name="Vehicles" expanded="True" />
+                  </Node>
+                </Node>
                 <Node name="pages" expanded="True">
                   <Node name="about" expanded="True" />
                 </Node>
@@ -86,7 +101,9 @@
               </Node>
               <Node name="Widgets" expanded="True">
                 <Node name="OutlineEditor" expanded="True">
-                  <Node name="CellRenderer" expanded="True" />
+                  <Node name="CellRenderer" expanded="True">
+                    <Node name="X3DTextViewEditable.cpp" selected="True" />
+                  </Node>
                 </Node>
               </Node>
             </Node>

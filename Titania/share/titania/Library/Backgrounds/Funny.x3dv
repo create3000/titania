@@ -1,8 +1,19 @@
-#X3D V3.3 utf8 Titania V0.6.7
+#X3D V3.3 utf8 Titania V0.7.5
+
+META "comment" "World of Titania"
+META "created" "Sun, 26 Oct 2014 17:14:36 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.5, http://titania.create3000.de"
+META "modified" "Sun, 26 Oct 2014 17:14:36 GMT"
 
 Background {
-  skyAngle 1.5708
-  skyColor [ 0 1 1, 0 0.5 1 ]
-  groundAngle 1.5708
-  groundColor [ 1 0 1, 0 0.5 1 ]
+  skyAngle [
+    1.5708,
+    3.41517
+  ]
+  skyColor [
+    0 1 1,
+    0 0.5 1,
+    1 0 1
+  ]
 }

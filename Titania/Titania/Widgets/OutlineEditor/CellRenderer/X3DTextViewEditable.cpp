@@ -64,7 +64,7 @@ X3DTextViewEditable::X3DTextViewEditable (const bool multiline) :
 	                validated (false),
 	           handleFocusOut (true)
 {
-	get_style_context () -> add_class ("textview-editable");
+	get_style_context () -> add_class ("titania-textview-editable");
 	get_style_context () -> add_class ("entry");
 	set_policy (Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 	set_visible (true);
