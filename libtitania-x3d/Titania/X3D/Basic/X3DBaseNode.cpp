@@ -366,7 +366,7 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 			parents .emplace_back (parent);
 	}
 
-	// We must hold a reference of both nodes until the replace is done to avoid disposal,
+	// We must hold a reference to both nodes until the replace is done to avoid disposal,
 	// as there are pointer and weak pointer.
 
 	const SFNode previous (node);

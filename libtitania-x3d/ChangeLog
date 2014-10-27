@@ -1,5 +1,12 @@
 2014-10-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.cpp:
+	* Material.cpp:
+	* X3DBrowserContext.cpp:
+	* TwoSidedMaterial.cpp: 
+
+2014-10-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DPtr.h:
 	* X3DWeakPtr.h:
 	* X3DBaseNode.cpp:

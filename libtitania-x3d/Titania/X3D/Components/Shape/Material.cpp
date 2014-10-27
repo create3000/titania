@@ -118,7 +118,7 @@ Material::eventsProcessed ()
 
 	glDiffuseColor [0] = diffuseColor () .getRed ();
 	glDiffuseColor [1] = diffuseColor () .getGreen ();
-	glDiffuseColor [2] = diffuseColor () .getBlue () + 0.0001;
+	glDiffuseColor [2] = diffuseColor () .getBlue ();
 	glDiffuseColor [3] = alpha;
 
 	glSpecularColor [0] = specularColor () .getRed ();
