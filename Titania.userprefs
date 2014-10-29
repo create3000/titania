@@ -1,114 +1,63 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/OutlineEditor/CellRenderer/X3DTextViewEditable.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/TransformSensor.h">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DObjectOperations.h" Line="12" Column="42" />
-      <File FileName="Titania/Titania/Browser/X3DObjectOperations.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="147" Column="45" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp" Line="203" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="163" Column="1" />
-      <File FileName="Titania/share/titania/ui/style.css" Line="78" Column="33" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/X3DTextViewEditable.cpp" Line="65" Column="23" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/TransformSensor.h" Line="120" Column="9" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/TransformSensor.cpp" Line="78" Column="40" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="miscellaneous" expanded="True">
-            <Node name="logo" expanded="True">
-              <Node name="website" expanded="True" />
-            </Node>
-          </Node>
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
-          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True">
-              <Node name="TreasureIsland" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
-            </Node>
             <Node name="Tests" expanded="True">
-              <Node name="Handles" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Utility" expanded="True" />
+              <Node name="EnvironmentalSensors" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="goldengate" expanded="True" />
-                <Node name="tools" expanded="True" />
+              <Node name="icons" expanded="True">
+                <Node name="hicolor" expanded="True">
+                  <Node name="scalable" expanded="True">
+                    <Node name="mimetypes" expanded="True" />
+                  </Node>
+                </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
-                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
-                  <Node name="Networking" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="EnvironmentalEffects" expanded="True" />
-                  <Node name="Layering" expanded="True" />
+                  <Node name="EnvironmentalSensor" expanded="True">
+                    <Node name="TransformSensor.h" selected="True" />
+                  </Node>
                 </Node>
                 <Node name="Execution" expanded="True" />
+                <Node name="Fields" expanded="True" />
                 <Node name="Rendering" expanded="True" />
+                <Node name="Routing" expanded="True" />
                 <Node name="Tools" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Layout" expanded="True" />
+                  <Node name="EnvironmentalSensor" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
                 </Node>
               </Node>
             </Node>
-          </Node>
-          <Node name="Papers" expanded="True">
-            <Node name="CosmoWorlds" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="Library" expanded="True">
-                  <Node name="Backgrounds" expanded="True" />
-                  <Node name="CubeMapTextures" expanded="True" />
-                  <Node name="Models" expanded="True">
-                    <Node name="Vehicles" expanded="True" />
-                  </Node>
-                </Node>
-                <Node name="pages" expanded="True">
-                  <Node name="about" expanded="True" />
-                </Node>
-                <Node name="ui" expanded="True">
-                  <Node name="Editors" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
               <Node name="Dialogs" expanded="True">
-                <Node name="NodeIndex" expanded="True" />
+                <Node name="FileSaveDialog" expanded="True" />
               </Node>
-              <Node name="Editors" expanded="True">
-                <Node name="AppearanceEditor" expanded="True" />
-                <Node name="GeometryPropertiesEditor" expanded="True" />
-              </Node>
-              <Node name="Widgets" expanded="True">
-                <Node name="OutlineEditor" expanded="True">
-                  <Node name="CellRenderer" expanded="True">
-                    <Node name="X3DTextViewEditable.cpp" selected="True" />
-                  </Node>
-                </Node>
-              </Node>
+              <Node name="Editors" expanded="True" />
             </Node>
           </Node>
-          <Node name="titania-info" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

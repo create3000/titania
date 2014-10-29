@@ -50,7 +50,306 @@
 
 #include "TransformSensor.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/EnvironmentalSensor/TransformSensorTool.h"
+#include "../Grouping/X3DBoundedObject.h"
+
+//namespace titania {
+//namespace math {
+//
+//template <class Type>
+//bool
+//disjoint (const matrix3 <Type> & B, const vector3 <Type> & T, const vector3 <Type> & a, const vector3 <Type> & b)
+//{
+//	const matrix3 <Type> Bf (std::abs (B [0] [0]), std::abs (B [0] [1]), std::abs (B [0] [2]),
+//	                         std::abs (B [1] [0]), std::abs (B [1] [1]), std::abs (B [1] [2]),
+//	                         std::abs (B [2] [0]), std::abs (B [2] [1]), std::abs (B [2] [2]));
+//
+//	const matrix3 <Type> BfT = transpose (Bf);
+//	const matrix3 <Type> BT  = transpose (B);
+//
+//	// if any of these tests are one-sided, then the polyhedra are disjoint
+//
+//	float t, s;
+//
+//	// A1 x A2 = A0
+//	t = T [0] < 0 ? -T [0] : T [0];
+//
+//	if (t > a [0] + dot (Bf [0], b))
+//		return true;
+//
+//	// B1 x B2 = B0
+//	s = dot (BT [0], T);
+//	t = s < 0 ? -s : s;
+//
+//	if (t > b [0] + dot (BfT [0], a))
+//		return true;
+//
+//	// A2 x A0 = A1
+//	t = T [1] < 0 ? -T [1] : T [1];
+//
+//	if (t > a [1] + dot (Bf [1], b))
+//		return true;
+//
+//	// A0 x A1 = A2
+//	t = T [2] < 0 ? -T [2] : T [2];
+//
+//	if (t > a [2] + dot (Bf [2], b))
+//		return true;
+//
+//	// B2 x B0 = B1
+//	s = dot (BT [1], T);
+//	t = s < 0 ? -s : s;
+//
+//	if (t > b [1] + dot (BfT [1], a))
+//		return true;
+//
+//	// B0 x B1 = B2
+//	s = dot (BT [2], T);
+//	t = s < 0 ? -s : s;
+//
+//	if (t > b [2] + dot (BfT [2], a))
+//		return true;
+//
+//	// A0 x B0
+//	s = T [2] * B [1] [0] - T [1] * B [2] [0];
+//	t = s < 0 ? -s : s;
+//
+//	if (t > (a [1] * Bf [2] [0] + a [2] * Bf [1] [0] +
+//	         b [1] * Bf [0] [2] + b [2] * Bf [0] [1]))
+//		return true;
+//
+//	// A0 x B1
+//	s = T [2] * B [1] [1] - T [1] * B [2] [1];
+//	t = s < 0 ? -s : s;
+//
+//	if (t > (a [1] * Bf [2] [1] + a [2] * Bf [1] [1] +
+//	         b [0] * Bf [0] [2] + b [2] * Bf [0] [0]))
+//		return true;
+//
+//	// A0 x B2
+//	s = T [2] * B [1] [2] - T [1] * B [2] [2];
+//	t = s < 0 ? -s : s;
+//
+//	if (t > (a [1] * Bf [2] [2] + a [2] * Bf [1] [2] +
+//	         b [0] * Bf [0] [1] + b [1] * Bf [0] [0]))
+//		return true;
+//
+//	// A1 x B0
+//	s = T [0] * B [2] [0] - T [2] * B [0] [0];
+//	t = s < 0 ? -s : s;
+//
+//	if (t > (a [0] * Bf [2] [0] + a [2] * Bf [0] [0] +
+//	         b [1] * Bf [1] [2] + b [2] * Bf [1] [1]))
+//		return true;
+//
+//	// A1 x B1
+//	s = T [0] * B [2] [1] - T [2] * B [0] [1];
+//	t = s < 0 ? -s : s;
+//
+//	if (t > (a [0] * Bf [2] [1] + a [2] * Bf [0] [1] +
+//	         b [0] * Bf [1] [2] + b [2] * Bf [1] [0]))
+//		return true;
+//
+//	// A1 x B2
+//	s = T [0] * B [2] [2] - T [2] * B [0] [2];
+//	t = s < 0 ? -s : s;
+//
+//	if (t > (a [0] * Bf [2] [2] + a [2] * Bf [0] [2] +
+//	         b [0] * Bf [1] [1] + b [1] * Bf [1] [0]))
+//		return true;
+//
+//	// A2 x B0
+//	s = T [1] * B [0] [0] - T [0] * B [1] [0];
+//	t = s < 0 ? -s : s;
+//
+//	if (t > (a [0] * Bf [1] [0] + a [1] * Bf [0] [0] +
+//	         b [1] * Bf [2] [2] + b [2] * Bf [2] [1]))
+//		return true;
+//
+//	// A2 x B1
+//	s = T [1] * B [0] [1] - T [0] * B [1] [1];
+//	t = s < 0 ? -s : s;
+//
+//	if (t > (a [0] * Bf [1] [1] + a [1] * Bf [0] [1] +
+//	         b [0] * Bf [2] [2] + b [2] * Bf [2] [0]))
+//		return true;
+//
+//	// A2 x B2
+//	s = T [1] * B [0] [2] - T [0] * B [1] [2];
+//	t = s < 0 ? -s : s;
+//
+//	if (t > (a [0] * Bf [1] [2] + a [1] * Bf [0] [2] +
+//	         b [0] * Bf [2] [1] + b [1] * Bf [2] [0]))
+//		return true;
+//
+//	return false;
+//}
+//
+//template <class Type>
+//bool
+//intersect (const box3 <Type> & self, const box3 <Type> & other)
+//{
+//	// http://gamma.cs.unc.edu/FCL/fcl_docs/webpage/generated/OBB_8h-source.html
+//	// http://gamma.cs.unc.edu/FCL/fcl_docs/webpage/generated/OBB_8cpp-source.html
+//
+//	const matrix3 <Type> m1 (self .matrix ());
+//	const matrix3 <Type> m2 (other .matrix ());
+//
+//	const auto xAxis1 = normalize (m1 [0]);
+//	const auto yAxis1 = normalize (m1 [2]);
+//	const auto zAxis1 = normalize (m1 [3]);
+//
+//	const auto xAxis2 = normalize (m2 [0]);
+//	const auto yAxis2 = normalize (m2 [1]);
+//	const auto zAxis2 = normalize (m2 [2]);
+//
+//	const vector3 <Type> extent1 (abs (m1 [0]), abs (m1 [1]), abs (m1 [2]));
+//	const vector3 <Type> extent2 (abs (m2 [0]), abs (m2 [1]), abs (m2 [2]));
+//
+//	//
+//
+//	const auto t = other .center () - self .center ();
+//
+//	const vector3 <Type> T (dot (t, xAxis1), dot (t, yAxis1), dot (t, zAxis1));
+//
+//	const matrix3 <Type> R (dot (xAxis1, xAxis2), dot (xAxis1, yAxis2), dot (xAxis1, zAxis2),
+//	                        dot (yAxis1, xAxis2), dot (yAxis1, yAxis2), dot (yAxis1, zAxis2),
+//	                        dot (zAxis1, xAxis2), dot (zAxis1, yAxis2), dot (zAxis1, zAxis2));
+//
+//	return not disjoint (R, T, extent1, extent2);
+//}
+//
+//} // math
+//} // titania
+
+namespace titania {
+namespace math {
+
+template <class Type>
+std::vector <vector3 <Type>> 
+points (const box3 <Type> & self)
+{
+	std::vector <vector3 <Type>>  points;
+
+	const auto x = self .matrix () .x ();
+	const auto y = self .matrix () .y ();
+	const auto z = self .matrix () .z ();
+
+	const auto r1 = y + z;
+	const auto r2 = z - y;
+
+	points .emplace_back (x + r1);
+	points .emplace_back (x + r2);
+	points .emplace_back (r1 - x);
+	points .emplace_back (r2 - x);
+
+	points .emplace_back (-points [0]);
+	points .emplace_back (-points [1]);
+	points .emplace_back (-points [2]);
+	points .emplace_back (-points [3]);
+
+	for (auto & point : points)
+		point += self .center ();
+
+	return points;
+}
+
+template <class Type>
+std::vector <vector3 <Type>> 
+normals (const box3 <Type> & self)
+{
+	std::vector <vector3 <Type>>  normals;
+
+	const auto x = normalize (self .matrix () .x ());
+	const auto y = normalize (self .matrix () .y ());
+	const auto z = normalize (self .matrix () .z ());
+
+	normals .emplace_back (cross (y, z));
+	normals .emplace_back (cross (x, z));
+	normals .emplace_back (cross (x, y));
+
+	return normals;
+}
+
+template <class Type>
+void
+sat_test (const vector3 <Type> & axis, const std::vector <vector3 <Type>>  & points, Type & min, Type & max)
+{
+	min = std::numeric_limits <Type>::infinity ();
+	max = -min;
+
+	for (const auto & point : points)
+	{
+		// Just dot it to get the min and max along this axis.
+
+		const Type dotVal = dot (point, axis);
+
+		if (dotVal < min)
+			min = dotVal;
+
+		if (dotVal > max)
+			max = dotVal;
+	}
+}
+
+template <class Type>
+inline
+bool
+is_between (const Type value, const Type lowerBound, const Type upperBound)
+{
+	return lowerBound <= value and value <= upperBound;
+}
+
+template <class Type>
+bool
+sat_overlaps (const Type min1, const Type max1, const Type min2, const Type max2)
+{
+	return is_between (min2, min1, max1) or is_between (min1, min2, max2);
+}
+
+template <class Type>
+bool
+sat_overlaps (const std::vector <vector3 <Type>> & normals, const std::vector <vector3 <Type>>  & points1, const std::vector <vector3 <Type>>  & points2)
+{
+	for (const auto & normal : normals)
+	{
+		Type min1, max1, min2, max2;
+
+		sat_test (normal, points1, min1, max1);
+		sat_test (normal, points2, min2, max2);
+
+		if (not sat_overlaps (min1, max1, min2, max2))
+			return false;
+	}
+
+	return true;
+}
+
+template <class Type>
+bool
+intersect (const box3 <Type> & self, const box3 <Type> & other)
+{
+	// http://gamedev.stackexchange.com/questions/25397/obb-vs-obb-collision-detection
+
+	const std::vector <vector3 <Type>>  points1  = points (self);
+	const std::vector <vector3 <Type>>  points2  = points (other);
+	const std::vector <vector3 <Type>>  normals1 = normals (self);
+
+	if (not sat_overlaps (normals1, points1, points2))
+		return false;
+
+	const std::vector <vector3 <Type>>  normals2 = normals (other);
+
+	if (not sat_overlaps (normals2, points1, points2))
+		return false;
+
+	return true;
+}
+
+} // math
+} // titania
 
 namespace titania {
 namespace X3D {
@@ -60,15 +359,17 @@ const std::string   TransformSensor::typeName       = "TransformSensor";
 const std::string   TransformSensor::containerField = "children";
 
 TransformSensor::Fields::Fields () :
-	       targetObject (new SFNode ()),
+	   position_changed (new SFVec3f ()),
 	orientation_changed (new SFRotation ()),
-	   position_changed (new SFVec3f ())
+	       targetObject (new SFNode ())
 { }
 
 TransformSensor::TransformSensor (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentalSensorNode (),
-	                    fields ()
+	                    fields (),
+	          targetObjectNode (),
+	                   visible (false)
 {
 	addType (X3DConstants::TransformSensor);
 
@@ -79,8 +380,8 @@ TransformSensor::TransformSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "enterTime",           enterTime ());
 	addField (outputOnly,  "exitTime",            exitTime ());
 	addField (outputOnly,  "isActive",            isActive ());
-	addField (outputOnly,  "orientation_changed", orientation_changed ());
 	addField (outputOnly,  "position_changed",    position_changed ());
+	addField (outputOnly,  "orientation_changed", orientation_changed ());
 	addField (inputOutput, "targetObject",        targetObject ());
 }
 
@@ -88,6 +389,110 @@ X3DBaseNode*
 TransformSensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new TransformSensor (executionContext);
+}
+
+void
+TransformSensor::initialize ()
+{
+	X3DEnvironmentalSensorNode::initialize ();
+
+	getExecutionContext () -> isLive () .addInterest (this, &TransformSensor::set_enabled);
+	isLive () .addInterest (this, &TransformSensor::set_enabled);
+
+	enabled ()      .addInterest (this, &TransformSensor::set_enabled);
+	size ()         .addInterest (this, &TransformSensor::set_enabled);
+	targetObject () .addInterest (this, &TransformSensor::set_targetObject);
+
+	set_targetObject ();
+}
+
+void
+TransformSensor::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> sensors ()         .removeInterest (this, &TransformSensor::update);
+	getExecutionContext () -> isLive () .removeInterest (this, &TransformSensor::set_enabled);
+
+	X3DEnvironmentalSensorNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (this, &TransformSensor::set_enabled);
+
+		set_enabled ();
+	}
+}
+
+void
+TransformSensor::set_enabled ()
+{
+	if (enabled () and isLive () and getExecutionContext () -> isLive () and targetObjectNode and size () not_eq Vector3f ())
+		getBrowser () -> sensors () .addInterest (this, &TransformSensor::update);
+
+	else
+		getBrowser () -> sensors () .removeInterest (this, &TransformSensor::update);
+}
+
+void
+TransformSensor::set_targetObject ()
+{
+	targetObjectNode .set (x3d_cast <X3DBoundedObject*> (targetObject ()));
+
+	set_enabled ();
+}
+
+void
+TransformSensor::update ()
+{
+	if (visible)
+	{
+		const auto sourceBBox = Box3f (size (), center ());
+		const auto targetBBox = targetObjectNode -> getBBox ();
+
+		if (size () == Vector3f (-1, -1, -1) or math::intersect (sourceBBox, targetBBox))
+		{
+			if (not isActive ())
+			{
+				isActive ()  = true;
+				enterTime () = getCurrentTime ();
+			}
+
+			Vector3f   translation;
+			Rotation4f rotation;
+
+			targetBBox .matrix () .get (translation, rotation);
+
+			if (translation not_eq position_changed ())
+				position_changed () = translation;
+
+			if (rotation not_eq orientation_changed ())
+				orientation_changed () = rotation;
+		}
+		else
+		{
+			if (isActive ())
+			{
+				isActive () = false;
+				exitTime () = getCurrentTime ();
+			}
+		}
+
+		visible = false;
+	}
+}
+
+void
+TransformSensor::traverse (const TraverseType type)
+{
+	if (type == TraverseType::CAMERA)
+		visible = true;
+}
+
+void
+TransformSensor::addTool ()
+{
+	X3DEnvironmentalSensorNode::addTool (new TransformSensorTool (this));
 }
 
 } // X3D

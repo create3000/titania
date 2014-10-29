@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,135 +48,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_SENSOR_TRANSFORM_SENSOR_H__
-#define __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_SENSOR_TRANSFORM_SENSOR_H__
+#ifndef __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_TRANSFORM_SENSOR_TOOL_H__
+#define __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_TRANSFORM_SENSOR_TOOL_H__
 
-#include "../EnvironmentalSensor/X3DEnvironmentalSensorNode.h"
+#include "../EnvironmentalSensor/X3DEnvironmentalSensorNodeTool.h"
+#include "../ToolColors.h"
+
+#include "../../Components/EnvironmentalSensor/TransformSensor.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DBoundedObject;
-
-class TransformSensor :
-	public X3DEnvironmentalSensorNode
+class TransformSensorTool :
+	public X3DEnvironmentalSensorNodeTool <TransformSensor>
 {
 public:
 
 	///  @name Construction
 
-	TransformSensor (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFVec3f &
-	position_changed ()
-	{ return *fields .position_changed; }
-
-	const SFVec3f &
-	position_changed () const
-	{ return *fields .position_changed; }
-
-	SFRotation &
-	orientation_changed ()
-	{ return *fields .orientation_changed; }
-
-	const SFRotation &
-	orientation_changed () const
-	{ return *fields .orientation_changed; }
-
-	SFNode &
-	targetObject ()
-	{ return *fields .targetObject; }
-
-	const SFNode &
-	targetObject () const
-	{ return *fields .targetObject; }
-
-	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType) override;
-
-	virtual
-	void
-	addTool () override;
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () override;
-
-
-private:
-
-	///  @name Event handlers
-
-	void
-	set_enabled ();
-
-	void
-	set_targetObject ();
-
-	void
-	update ();
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
+	TransformSensorTool (TransformSensor* const node) :
+		                                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                   X3DBaseTool <TransformSensor> (node),
+		X3DEnvironmentalSensorNodeTool <TransformSensor> (Color3f (0, 1, 0))
 	{
-		Fields ();
-
-		SFVec3f* const position_changed;
-		SFRotation* const orientation_changed;
-		SFNode* const targetObject;
-	};
-
-	Fields fields;
-	
-	X3DPtr <X3DBoundedObject> targetObjectNode;
-	bool                      visible;
+		//addType (X3DConstants::TransformSensorTool);
+	}
 
 };
 

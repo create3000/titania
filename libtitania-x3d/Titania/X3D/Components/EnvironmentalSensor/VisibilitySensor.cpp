@@ -127,6 +127,29 @@ VisibilitySensor::set_enabled ()
 }
 
 void
+VisibilitySensor::update ()
+{
+	if (visible)
+	{
+		if (not isActive ())
+		{
+			isActive ()  = true;
+			enterTime () = getCurrentTime ();
+		}
+
+		visible = false;
+	}
+	else
+	{
+		if (isActive ())
+		{
+			isActive () = false;
+			exitTime () = getCurrentTime ();
+		}
+	}
+}
+
+void
 VisibilitySensor::traverse (const TraverseType type)
 {
 	switch (type)
@@ -149,29 +172,6 @@ VisibilitySensor::traverse (const TraverseType type)
 		default:
 			break;
 	}
-}
-
-void
-VisibilitySensor::update ()
-{
-	if (visible)
-	{
-		if (not isActive ())
-		{
-			isActive ()  = true;
-			enterTime () = getCurrentTime ();
-		}
-	}
-	else
-	{
-		if (isActive ())
-		{
-			isActive () = false;
-			exitTime () = getCurrentTime ();
-		}
-	}
-
-	visible = false;
 }
 
 void

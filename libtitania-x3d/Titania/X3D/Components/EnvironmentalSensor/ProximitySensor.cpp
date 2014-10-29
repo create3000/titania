@@ -178,6 +178,8 @@ ProximitySensor::update ()
 				if (centerOfRotation_changed () not_eq centerOfRotation)
 					centerOfRotation_changed () = centerOfRotation;
 			}
+
+			inside = false;
 		}
 		else
 		{
@@ -187,8 +189,6 @@ ProximitySensor::update ()
 				exitTime () = getCurrentTime ();
 			}
 		}
-
-		inside = false;
 	}
 	catch (const std::domain_error &)
 	{ }

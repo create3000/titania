@@ -795,6 +795,7 @@
     <None Include="Titania\X3D\InputOutput\GoldenGate.h" />
     <None Include="Titania\X3D\Parser\Wavefront\Parser.h" />
     <None Include="EmptyCHeaderFile.h" />
+    <None Include="Titania\X3D\Tools\EnvironmentalSensor\TransformSensorTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
