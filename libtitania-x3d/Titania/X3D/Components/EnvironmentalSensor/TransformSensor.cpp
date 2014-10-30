@@ -126,19 +126,27 @@ template <class Type>
 bool
 intersect (const box3 <Type> & self, const box3 <Type> & other)
 {
-	// http://gamedev.stackexchange.com/questions/25397/obb-vs-obb-collision-detection
+	// Test special cases.
+
+	if (self .empty ())
+		return false;
+
+	if (other .empty ())
+		return false;
+
+	// Get points.
 
 	const std::vector <vector3 <Type>>  points1 = points (self);
 	const std::vector <vector3 <Type>>  points2 = points (other);
 
 	// Test the three planes spanned by the normal vectors of the faces of the first parallelepiped.
 
-	if (not sat::overlaps (planes (self), points1, points2))
+	if (sat::separated (planes (self), points1, points2))
 		return false;
 
 	// Test the three planes spanned by the normal vectors of the faces of the second parallelepiped.
 
-	if (not sat::overlaps (planes (other), points1, points2))
+	if (sat::separated (planes (other), points1, points2))
 		return false;
 
 	// Test the nine other planes spanned by the edges of each parallelepiped.
@@ -151,8 +159,10 @@ intersect (const box3 <Type> & self, const box3 <Type> & other)
 			axes9 .emplace_back (cross (axis1, axis2));
 	}
 
-	if (not sat::overlaps (axes9, points1, points2))
+	if (sat::separated (axes9, points1, points2))
 		return false;
+
+	// Both boxes intersect.
 
 	return true;
 }
@@ -261,16 +271,19 @@ TransformSensor::update ()
 
 		if (size () == Vector3f (-1, -1, -1) or math::intersect (sourceBBox, targetBBox))
 		{
-			if (not isActive ())
-			{
-				isActive ()  = true;
-				enterTime () = getCurrentTime ();
-			}
-
 			Vector3f   translation;
 			Rotation4f rotation;
 
 			targetBBox .matrix () .get (translation, rotation);
+
+			if (not isActive ())
+			{
+				isActive ()  = true;
+				enterTime () = getCurrentTime ();
+
+				position_changed ()    = translation;
+				orientation_changed () = rotation;
+			}
 
 			if (translation not_eq position_changed ())
 				position_changed () = translation;

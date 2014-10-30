@@ -105,6 +105,7 @@ ProximitySensor::initialize ()
 	isLive () .addInterest (this, &ProximitySensor::set_enabled);
 
 	enabled () .addInterest (this, &ProximitySensor::set_enabled);
+	size ()    .addInterest (this, &ProximitySensor::set_enabled);
 
 	set_enabled ();
 }
@@ -130,7 +131,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 ProximitySensor::set_enabled ()
 {
-	if (enabled () and isLive () and getExecutionContext () -> isLive ())
+	if (enabled () and isLive () and getExecutionContext () -> isLive () and size () not_eq Vector3f ())
 		getBrowser () -> sensors () .addInterest (this, &ProximitySensor::update);
 
 	else

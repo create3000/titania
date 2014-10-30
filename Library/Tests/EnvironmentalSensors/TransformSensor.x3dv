@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 28 Oct 2014 06:07:32 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Thu, 30 Oct 2014 11:11:30 GMT"
+META "modified" "Thu, 30 Oct 2014 15:37:12 GMT"
 META "title" "ProximitySensor"
 
 WorldInfo {
@@ -22,7 +22,7 @@ WorldInfo {
         name "Grid"
         value MetadataBoolean {
           name "enabled"
-          value TRUE
+          value FALSE
         }
       }
     ]
@@ -47,7 +47,6 @@ Transform {
       children [
         DEF _1 TimeSensor {
           cycleInterval 30
-          loop TRUE
         }
         DEF _2 PositionInterpolator {
           key [
@@ -60,9 +59,10 @@ Transform {
           ]
         }
         DEF Box Transform {
-          translation -4.3311 0 0
-          scale 2 1 4
-          scaleOrientation 0.682427 -0.696628 -0.221365 2.08763
+          translation -0.530984 -0.144911 0.625867
+          rotation 0.75229 -0.281998 -0.59543 1.12375
+          scale 4 2 1
+          scaleOrientation -0.487041 -0.748451 0.450124 0.677876
           children Shape {
             appearance Appearance {
               material Material { }
@@ -83,7 +83,7 @@ Transform {
       children Shape {
         appearance Appearance {
           material DEF _4 Material {
-            diffuseColor 0 1 0
+            diffuseColor 1 0 0
             transparency 0.5
           }
         }

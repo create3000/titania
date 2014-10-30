@@ -65,18 +65,20 @@ class sat
 {
 public:
 
-	///  Returns true if the object defined by @a points1 overlaps the object defined by @a points2, otherwise false.
-	///  You must provide suitable axes for this test to operate on.  This test only gives reasonable result for convex
-	///  objects.  For 2d objects it is sufficient to use the normal vectors of the edges as axes.  For 3d objects you
-	///  must find suitable axes, a good start are the normal vectors of the faces of the objects.  It is not needed to
-	///  provide normalized axes.
+	///  Returns true if the object defined by @a points1 and the object defined by @a points2 are separated, otherwise
+	///  false.  You must provide suitable axes for this test to operate on.  This test only gives reasonable result for
+	///  convex objects.  For 2d objects it is sufficient to use the normal vectors of the edges as axes.  For 3d
+	///  objects, the axes are the normal vectors of the faces of each object and the cross product of each edge from one
+	///  object with each edge from the other object.  It is not needed to provide normalized axes.
 	template <class Type>
 	static
 	bool
-	overlaps (const std::vector <vector3 <Type>> & axes,
-	          const std::vector <vector3 <Type>> & points1,
-	          const std::vector <vector3 <Type>> & points2)
+	separated (const std::vector <vector3 <Type>> & axes,
+	           const std::vector <vector3 <Type>> & points1,
+	           const std::vector <vector3 <Type>> & points2)
 	{
+		// http://gamedev.stackexchange.com/questions/25397/obb-vs-obb-collision-detection
+
 		for (const auto & axis : axes)
 		{
 			Type min1, max1, min2, max2;
@@ -84,11 +86,13 @@ public:
 			project (points1, axis, min1, max1);
 			project (points2, axis, min2, max2);
 
-			if (not overlaps (min1, max1, min2, max2))
-				return false;
+			if (overlaps (min1, max1, min2, max2))
+				continue;
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 private:

@@ -1,6 +1,13 @@
 2014-10-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DExecutionContext.cpp:
+	* TransformSensor.cpp:
+	* ProximitySensor.cpp:
+	* VisibilitySensor.cpp: 
+
+2014-10-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DExecutionContext.cpp:
 	* TransformSensor.cpp: 
 
 2014-10-30  Holger Seelig  <holger.seelig@yahoo.de>

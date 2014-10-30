@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Wed, 29 Oct 2014 14:50:47 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Thu, 30 Oct 2014 11:53:20 GMT"
+META "modified" "Thu, 30 Oct 2014 12:10:07 GMT"
 
 PROTO FallingBox [
   inputOutput SFVec3f translation 0 0 0
@@ -78,7 +78,7 @@ PROTO FallingBox [
 
 function set_enterTime (value)
 {
-	if (contacts > 50)
+	if (contacts > 5)
 	{
 		stopTime = value;
 		return;
@@ -104,8 +104,9 @@ function reflect (vector, normal)
 }
 
 PROTO FallingBoxes [
-  inputOutput SFTime startTime 0
-  inputOutput SFNode targetObject NULL
+  initializeOnly SFInt32 numBoxes 10
+  inputOutput    SFTime  startTime 0
+  inputOutput    SFNode  targetObject NULL
 ]
 {
   DEF _3 Group { }
@@ -115,6 +116,7 @@ PROTO FallingBoxes [
     inputOnly      SFTime  set_exitTime
     initializeOnly SFNode  group USE _3
     inputOutput    SFNode  targetObject IS targetObject
+    initializeOnly SFInt32 numBoxes IS numBoxes
     initializeOnly SFInt32 count 0
     initializeOnly MFNode  boxes [ ]
 
@@ -135,6 +137,9 @@ function set_exitTime (value)
 {
 	if (count >= numBoxes)
 		return;
+	
+	if (count)
+		Browser .deleteRoute (boxes [count - 1], \"exitTime\", Browser .currentScene .getNamedNode (\"FallingBoxes\"), \"set_exitTime\");
 
 	addBox (count);
 
@@ -1998,7 +2003,8 @@ DEF Floor_1 Transform {
 }
 
 DEF _4 FallingBoxes {
-  startTime 1414667625.41543
+  numBoxes 200
+  startTime 1414670943.64604
   targetObject DEF _5 StaticGroup {
     children USE Floor
   }
