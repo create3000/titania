@@ -463,6 +463,10 @@ public:
 	{ return *m_ProximitySensorsMenuItem; }
 
 	Gtk::CheckMenuItem &
+	getTransformSensorsMenuItem () const
+	{ return *m_TransformSensorsMenuItem; }
+
+	Gtk::CheckMenuItem &
 	getVisibilitySensorsMenuItem () const
 	{ return *m_VisibilitySensorsMenuItem; }
 
@@ -1096,6 +1100,10 @@ public:
 
 	virtual
 	void
+	on_transform_sensors_toggled () = 0;
+
+	virtual
+	void
 	on_visibility_sensors_toggled () = 0;
 
 	virtual
@@ -1422,6 +1430,7 @@ private:
 	Gtk::MenuItem*                   m_ObjectIconsMenuItem;
 	Gtk::CheckMenuItem*              m_LightsMenuItem;
 	Gtk::CheckMenuItem*              m_ProximitySensorsMenuItem;
+	Gtk::CheckMenuItem*              m_TransformSensorsMenuItem;
 	Gtk::CheckMenuItem*              m_VisibilitySensorsMenuItem;
 	Gtk::CheckMenuItem*              m_ViewpointsMenuItem;
 	Gtk::MenuItem*                   m_HideAllObjectIconsMenuItem;

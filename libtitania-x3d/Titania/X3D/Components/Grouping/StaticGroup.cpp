@@ -111,6 +111,16 @@ StaticGroup::initialize ()
 }
 
 void
+StaticGroup::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	group -> setExecutionContext (executionContext);
+
+	X3DChildNode::setExecutionContext (executionContext);
+}
+
+void
 StaticGroup::set_children ()
 {
 	bbox = group -> getBBox ();
@@ -126,6 +136,18 @@ void
 StaticGroup::traverse (const TraverseType type)
 {
 	group -> traverse (type);
+}
+
+void
+StaticGroup::addTool ()
+{
+	group -> addTool ();
+}
+
+void
+StaticGroup::removeTool (const bool really)
+{
+	group -> removeTool (really);
 }
 
 void

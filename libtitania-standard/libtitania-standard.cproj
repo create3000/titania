@@ -141,6 +141,7 @@
     <None Include="Titania\InputOutput\MultiLineComment.h" />
     <None Include="Titania\Utility\Range.h" />
     <None Include="Titania\InputOutput\InverseSequence.h" />
+    <None Include="Titania\Math\Algorithms\SAT.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

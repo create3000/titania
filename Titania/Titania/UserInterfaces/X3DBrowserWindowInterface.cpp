@@ -154,6 +154,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ObjectIconsMenuItem", m_ObjectIconsMenuItem);
 	m_builder -> get_widget ("LightsMenuItem", m_LightsMenuItem);
 	m_builder -> get_widget ("ProximitySensorsMenuItem", m_ProximitySensorsMenuItem);
+	m_builder -> get_widget ("TransformSensorsMenuItem", m_TransformSensorsMenuItem);
 	m_builder -> get_widget ("VisibilitySensorsMenuItem", m_VisibilitySensorsMenuItem);
 	m_builder -> get_widget ("ViewpointsMenuItem", m_ViewpointsMenuItem);
 	m_builder -> get_widget ("HideAllObjectIconsMenuItem", m_HideAllObjectIconsMenuItem);
@@ -340,6 +341,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_FogsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fogs_toggled));
 	m_LightsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_lights_toggled));
 	m_ProximitySensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_proximity_sensors_toggled));
+	m_TransformSensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_sensors_toggled));
 	m_VisibilitySensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_visibility_sensors_toggled));
 	m_ViewpointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewpoints_toggled));
 

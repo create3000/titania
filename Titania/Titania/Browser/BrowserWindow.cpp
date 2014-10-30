@@ -64,6 +64,7 @@
 #include "../Configuration/config.h"
 
 #include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
+#include <Titania/X3D/Tools/EnvironmentalSensor/TransformSensorTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.h>
 
 #include <Titania/OS.h>
@@ -215,6 +216,7 @@ BrowserWindow::set_scene ()
 	getFogsMenuItem ()              .set_active (true);
 	getLightsMenuItem ()            .set_active (false);
 	getProximitySensorsMenuItem ()  .set_active (false);
+	getTransformSensorsMenuItem ()  .set_active (false);
 	getVisibilitySensorsMenuItem () .set_active (false);
 	getViewpointsMenuItem ()        .set_active (false);
 	
@@ -339,6 +341,15 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 		if (X3D::x3d_cast <X3D::ProximitySensor*> (node))
 		{
 			getProximitySensorsMenuItem () .set_active (true);
+			break;
+		}
+	}
+
+	for (const auto & node : selection)
+	{
+		if (X3D::x3d_cast <X3D::TransformSensor*> (node))
+		{
+			getTransformSensorsMenuItem () .set_active (true);
 			break;
 		}
 	}
@@ -989,18 +1000,7 @@ BrowserWindow::on_browser_toggled ()
 		if (not getFogsMenuItem () .get_active ())
 			getFogsMenuItem () .set_active (true);
 
-		if (getLightsMenuItem () .get_active ())
-			getLightsMenuItem () .set_active (false);
-
-		if (getProximitySensorsMenuItem () .get_active ())
-			getProximitySensorsMenuItem () .set_active (false);
-
-		if (getVisibilitySensorsMenuItem () .get_active ())
-			getVisibilitySensorsMenuItem () .set_active (false);
-
-		if (getViewpointsMenuItem () .get_active ())
-			getViewpointsMenuItem () .set_active (false);
-
+		on_hide_all_object_icons_activate ();
 		on_show_all_objects_activate ();
 	}
 }
@@ -1332,6 +1332,42 @@ BrowserWindow::on_proximity_sensors_toggled ()
 }
 
 void
+BrowserWindow::on_transform_sensors_toggled ()
+{
+	if (changing)
+		return;
+
+	if (getTransformSensorsMenuItem () .get_active ())
+	{
+		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		               {
+		                  const auto tool = dynamic_cast <X3D::TransformSensor*> (node .getValue ());
+
+		                  if (tool)
+									tool -> addTool ();
+
+		                  return true;
+							},
+		               true,
+		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	}
+	else
+	{
+		X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		               {
+		                  const auto tool = dynamic_cast <X3D::TransformSensorTool*> (node .getValue ());
+
+		                  if (tool and not getSelection () -> isSelected (node))
+									tool -> removeTool (true);
+
+		                  return true;
+							},
+		               true,
+		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	}
+}
+
+void
 BrowserWindow::on_visibility_sensors_toggled ()
 {
 	if (changing)
@@ -1420,6 +1456,9 @@ BrowserWindow::on_hide_all_object_icons_activate ()
 
 	if (getProximitySensorsMenuItem () .get_active ())
 		getProximitySensorsMenuItem () .set_active (false);
+
+	if (getTransformSensorsMenuItem () .get_active ())
+		getTransformSensorsMenuItem () .set_active (false);
 
 	if (getVisibilitySensorsMenuItem () .get_active ())
 		getVisibilitySensorsMenuItem () .set_active (false);

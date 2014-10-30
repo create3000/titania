@@ -72,6 +72,12 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
+
 	///  @name Common members
 
 	virtual
@@ -113,6 +119,14 @@ public:
 	virtual
 	void
 	traverse (const TraverseType) final override;
+
+	virtual
+	void
+	addTool () override;
+
+	virtual
+	void
+	removeTool (const bool = false) final override;
 
 	///  @name Desruction
 

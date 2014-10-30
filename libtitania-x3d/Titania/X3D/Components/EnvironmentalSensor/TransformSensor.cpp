@@ -55,6 +55,8 @@
 #include "../../Tools/EnvironmentalSensor/TransformSensorTool.h"
 #include "../Grouping/X3DBoundedObject.h"
 
+#include <Titania/Math/Algorithms/SAT.h>
+
 //namespace titania {
 //namespace math {
 //
@@ -278,72 +280,6 @@ sat_axes (const box3 <Type> & self)
 }
 
 template <class Type>
-class SAT
-{
-public:
-
-	static
-	bool
-	overlaps (const std::vector <vector3 <Type>> & axes,
-	          const std::vector <vector3 <Type>> & points1,
-	          const std::vector <vector3 <Type>> & points2)
-	{
-		for (const auto & axis : axes)
-		{
-			Type min1, max1, min2, max2;
-
-			projection (axis, points1, min1, max1);
-			projection (axis, points2, min2, max2);
-
-			if (not overlaps (min1, max1, min2, max2))
-				return false;
-		}
-
-		return true;
-	}
-
-private:
-
-	static
-	void
-	projection (const vector3 <Type> & axis, const std::vector <vector3 <Type>>     & points, Type & min, Type & max)
-	{
-		min = std::numeric_limits <Type>::infinity ();
-		max = -min;
-
-		for (const auto & point : points)
-		{
-			// Just dot it to get the min and max along this axis.
-			// NOTE: the axis must be normalized to get accurate projections to calculate the MTV, but if it is only needed to
-			// know whether it overlaps, every axis can be used.
-
-			const Type dotVal = dot (point, axis);
-
-			if (dotVal < min)
-				min = dotVal;
-
-			if (dotVal > max)
-				max = dotVal;
-		}
-	}
-
-	static
-	bool
-	overlaps (const Type min1, const Type max1, const Type min2, const Type max2)
-	{
-		return is_between (min2, min1, max1) or is_between (min1, min2, max2);
-	}
-
-	static
-	inline
-	bool
-	is_between (const Type value, const Type lowerBound, const Type upperBound)
-	{
-		return lowerBound <= value and value <= upperBound;
-	}
-};
-
-template <class Type>
 bool
 intersect (const box3 <Type> & self, const box3 <Type> & other)
 {
@@ -353,12 +289,12 @@ intersect (const box3 <Type> & self, const box3 <Type> & other)
 	const std::vector <vector3 <Type>>  points2 = points (other);
 	const std::vector <vector3 <Type>>  axes1   = sat_axes (self);
 
-	if (not SAT <Type>::overlaps (axes1, points1, points2))
+	if (not SAT::overlaps (axes1, points1, points2))
 		return false;
 
 	const std::vector <vector3 <Type>>  axes2 = sat_axes (other);
 
-	if (not SAT <Type>::overlaps (axes2, points1, points2))
+	if (not SAT::overlaps (axes2, points1, points2))
 		return false;
 
 	std::vector <vector3 <Type>>  axes3;
@@ -368,7 +304,7 @@ intersect (const box3 <Type> & self, const box3 <Type> & other)
 		for (const auto & point : points2)
 			axes3 .emplace_back (cross (axis, point));
 
-	if (not SAT <Type>::overlaps (axes3, points1, points2))
+	if (not SAT::overlaps (axes3, points1, points2))
 		return false;
 
 	std::vector <vector3 <Type>>  axes4;
@@ -378,7 +314,7 @@ intersect (const box3 <Type> & self, const box3 <Type> & other)
 		for (const auto & point : points1)
 			axes4 .emplace_back (cross (axis, point));
 
-	if (not SAT <Type>::overlaps (axes4, points1, points2))
+	if (not SAT::overlaps (axes4, points1, points2))
 		return false;
 
 	return true;

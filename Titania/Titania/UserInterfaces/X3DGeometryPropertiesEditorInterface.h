@@ -150,6 +150,10 @@ public:
 	getPrimitiveCountEventBox () const
 	{ return *m_PrimitiveCountEventBox; }
 
+	Gtk::Expander &
+	getPrimitiveCountExpander () const
+	{ return *m_PrimitiveCountExpander; }
+
 	Gtk::Box &
 	getPrimitiveCountBox () const
 	{ return *m_PrimitiveCountBox; }
@@ -216,6 +220,7 @@ private:
 	Gtk::Scale*                    m_CreaseAngleScale;
 	Gtk::Button*                   m_RemoveNormalsButton;
 	Gtk::EventBox*                 m_PrimitiveCountEventBox;
+	Gtk::Expander*                 m_PrimitiveCountExpander;
 	Gtk::Box*                      m_PrimitiveCountBox;
 	Gtk::Label*                    m_PrimitiveCountPointsLabel;
 	Gtk::Label*                    m_PrimitiveCountLinesLabel;
