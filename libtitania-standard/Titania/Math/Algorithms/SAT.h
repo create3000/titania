@@ -61,7 +61,7 @@ namespace math {
 /**
  *  Class to represent the Separating Axis Theorem.
  */
-class SAT
+class sat
 {
 public:
 

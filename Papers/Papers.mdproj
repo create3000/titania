@@ -257,6 +257,7 @@
     <None Include="newell.c" />
     <None Include="OBJ.spec" />
     <None Include="Wavefront.txt" />
+    <None Include="Separating Axis Theorem for Oriented Bounding Boxes.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

@@ -56,175 +56,7 @@
 #include "../Grouping/X3DBoundedObject.h"
 
 #include <Titania/Math/Algorithms/SAT.h>
-
-//namespace titania {
-//namespace math {
-//
-//template <class Type>
-//bool
-//disjoint (const matrix3 <Type> & B, const vector3 <Type> & T, const vector3 <Type> & a, const vector3 <Type> & b)
-//{
-//	const matrix3 <Type> Bf (std::abs (B [0] [0]), std::abs (B [0] [1]), std::abs (B [0] [2]),
-//	                         std::abs (B [1] [0]), std::abs (B [1] [1]), std::abs (B [1] [2]),
-//	                         std::abs (B [2] [0]), std::abs (B [2] [1]), std::abs (B [2] [2]));
-//
-//	const matrix3 <Type> BfT = transpose (Bf);
-//	const matrix3 <Type> BT  = transpose (B);
-//
-//	// if any of these tests are one-sided, then the polyhedra are disjoint
-//
-//	float t, s;
-//
-//	// A1 x A2 = A0
-//	t = T [0] < 0 ? -T [0] : T [0];
-//
-//	if (t > a [0] + dot (Bf [0], b))
-//		return true;
-//
-//	// B1 x B2 = B0
-//	s = dot (BT [0], T);
-//	t = s < 0 ? -s : s;
-//
-//	if (t > b [0] + dot (BfT [0], a))
-//		return true;
-//
-//	// A2 x A0 = A1
-//	t = T [1] < 0 ? -T [1] : T [1];
-//
-//	if (t > a [1] + dot (Bf [1], b))
-//		return true;
-//
-//	// A0 x A1 = A2
-//	t = T [2] < 0 ? -T [2] : T [2];
-//
-//	if (t > a [2] + dot (Bf [2], b))
-//		return true;
-//
-//	// B2 x B0 = B1
-//	s = dot (BT [1], T);
-//	t = s < 0 ? -s : s;
-//
-//	if (t > b [1] + dot (BfT [1], a))
-//		return true;
-//
-//	// B0 x B1 = B2
-//	s = dot (BT [2], T);
-//	t = s < 0 ? -s : s;
-//
-//	if (t > b [2] + dot (BfT [2], a))
-//		return true;
-//
-//	// A0 x B0
-//	s = T [2] * B [1] [0] - T [1] * B [2] [0];
-//	t = s < 0 ? -s : s;
-//
-//	if (t > (a [1] * Bf [2] [0] + a [2] * Bf [1] [0] +
-//	         b [1] * Bf [0] [2] + b [2] * Bf [0] [1]))
-//		return true;
-//
-//	// A0 x B1
-//	s = T [2] * B [1] [1] - T [1] * B [2] [1];
-//	t = s < 0 ? -s : s;
-//
-//	if (t > (a [1] * Bf [2] [1] + a [2] * Bf [1] [1] +
-//	         b [0] * Bf [0] [2] + b [2] * Bf [0] [0]))
-//		return true;
-//
-//	// A0 x B2
-//	s = T [2] * B [1] [2] - T [1] * B [2] [2];
-//	t = s < 0 ? -s : s;
-//
-//	if (t > (a [1] * Bf [2] [2] + a [2] * Bf [1] [2] +
-//	         b [0] * Bf [0] [1] + b [1] * Bf [0] [0]))
-//		return true;
-//
-//	// A1 x B0
-//	s = T [0] * B [2] [0] - T [2] * B [0] [0];
-//	t = s < 0 ? -s : s;
-//
-//	if (t > (a [0] * Bf [2] [0] + a [2] * Bf [0] [0] +
-//	         b [1] * Bf [1] [2] + b [2] * Bf [1] [1]))
-//		return true;
-//
-//	// A1 x B1
-//	s = T [0] * B [2] [1] - T [2] * B [0] [1];
-//	t = s < 0 ? -s : s;
-//
-//	if (t > (a [0] * Bf [2] [1] + a [2] * Bf [0] [1] +
-//	         b [0] * Bf [1] [2] + b [2] * Bf [1] [0]))
-//		return true;
-//
-//	// A1 x B2
-//	s = T [0] * B [2] [2] - T [2] * B [0] [2];
-//	t = s < 0 ? -s : s;
-//
-//	if (t > (a [0] * Bf [2] [2] + a [2] * Bf [0] [2] +
-//	         b [0] * Bf [1] [1] + b [1] * Bf [1] [0]))
-//		return true;
-//
-//	// A2 x B0
-//	s = T [1] * B [0] [0] - T [0] * B [1] [0];
-//	t = s < 0 ? -s : s;
-//
-//	if (t > (a [0] * Bf [1] [0] + a [1] * Bf [0] [0] +
-//	         b [1] * Bf [2] [2] + b [2] * Bf [2] [1]))
-//		return true;
-//
-//	// A2 x B1
-//	s = T [1] * B [0] [1] - T [0] * B [1] [1];
-//	t = s < 0 ? -s : s;
-//
-//	if (t > (a [0] * Bf [1] [1] + a [1] * Bf [0] [1] +
-//	         b [0] * Bf [2] [2] + b [2] * Bf [2] [0]))
-//		return true;
-//
-//	// A2 x B2
-//	s = T [1] * B [0] [2] - T [0] * B [1] [2];
-//	t = s < 0 ? -s : s;
-//
-//	if (t > (a [0] * Bf [1] [2] + a [1] * Bf [0] [2] +
-//	         b [0] * Bf [2] [1] + b [1] * Bf [2] [0]))
-//		return true;
-//
-//	return false;
-//}
-//
-//template <class Type>
-//bool
-//intersect (const box3 <Type> & self, const box3 <Type> & other)
-//{
-//	// http://gamma.cs.unc.edu/FCL/fcl_docs/webpage/generated/OBB_8h-source.html
-//	// http://gamma.cs.unc.edu/FCL/fcl_docs/webpage/generated/OBB_8cpp-source.html
-//
-//	const matrix3 <Type> m1 (self .matrix ());
-//	const matrix3 <Type> m2 (other .matrix ());
-//
-//	const auto xAxis1 = normalize (m1 [0]);
-//	const auto yAxis1 = normalize (m1 [2]);
-//	const auto zAxis1 = normalize (m1 [3]);
-//
-//	const auto xAxis2 = normalize (m2 [0]);
-//	const auto yAxis2 = normalize (m2 [1]);
-//	const auto zAxis2 = normalize (m2 [2]);
-//
-//	const vector3 <Type> extent1 (abs (m1 [0]), abs (m1 [1]), abs (m1 [2]));
-//	const vector3 <Type> extent2 (abs (m2 [0]), abs (m2 [1]), abs (m2 [2]));
-//
-//	//
-//
-//	const auto t = other .center () - self .center ();
-//
-//	const vector3 <Type> T (dot (t, xAxis1), dot (t, yAxis1), dot (t, zAxis1));
-//
-//	const matrix3 <Type> R (dot (xAxis1, xAxis2), dot (xAxis1, yAxis2), dot (xAxis1, zAxis2),
-//	                        dot (yAxis1, xAxis2), dot (yAxis1, yAxis2), dot (yAxis1, zAxis2),
-//	                        dot (zAxis1, xAxis2), dot (zAxis1, yAxis2), dot (zAxis1, zAxis2));
-//
-//	return not disjoint (R, T, extent1, extent2);
-//}
-//
-//} // math
-//} // titania
+#include <array>
 
 namespace titania {
 namespace math {
@@ -261,7 +93,7 @@ points (const box3 <Type> & self)
 
 template <class Type>
 std::vector <vector3 <Type>>
-sat_axes (const box3 <Type> & self)
+planes (const box3 <Type> & self)
 {
 	// The sat axes for the box are the normal vectors of its faces. It is not needed to normalize these axes.
 
@@ -280,6 +112,17 @@ sat_axes (const box3 <Type> & self)
 }
 
 template <class Type>
+std::array <vector3 <Type>, 3>
+axes (const box3 <Type> & self)
+{
+	return std::array <vector3 <Type>, 3> {
+		self .matrix () .x (),
+		self .matrix () .y (),
+		self .matrix () .z ()
+	};
+}
+
+template <class Type>
 bool
 intersect (const box3 <Type> & self, const box3 <Type> & other)
 {
@@ -287,34 +130,28 @@ intersect (const box3 <Type> & self, const box3 <Type> & other)
 
 	const std::vector <vector3 <Type>>  points1 = points (self);
 	const std::vector <vector3 <Type>>  points2 = points (other);
-	const std::vector <vector3 <Type>>  axes1   = sat_axes (self);
 
-	if (not SAT::overlaps (axes1, points1, points2))
+	// Test the three planes spanned by the normal vectors of the faces of the first parallelepiped.
+
+	if (not sat::overlaps (planes (self), points1, points2))
 		return false;
 
-	const std::vector <vector3 <Type>>  axes2 = sat_axes (other);
+	// Test the three planes spanned by the normal vectors of the faces of the second parallelepiped.
 
-	if (not SAT::overlaps (axes2, points1, points2))
+	if (not sat::overlaps (planes (other), points1, points2))
 		return false;
 
-	std::vector <vector3 <Type>>  axes3;
-	axes3 .reserve (axes1 .size () * points2 .size ());
+	// Test the nine other planes spanned by the edges of each parallelepiped.
 
-	for (const auto & axis : axes1)
-		for (const auto & point : points2)
-			axes3 .emplace_back (cross (axis, point));
+	std::vector <vector3 <Type>>  axes9;
+	
+	for (const auto & axis1 : axes (self))
+	{
+		for (const auto & axis2 : axes (other))
+			axes9 .emplace_back (cross (axis1, axis2));
+	}
 
-	if (not SAT::overlaps (axes3, points1, points2))
-		return false;
-
-	std::vector <vector3 <Type>>  axes4;
-	axes4 .reserve (axes2 .size () * points1 .size ());
-
-	for (const auto & axis : axes2)
-		for (const auto & point : points1)
-			axes4 .emplace_back (cross (axis, point));
-
-	if (not SAT::overlaps (axes4, points1, points2))
+	if (not sat::overlaps (axes9, points1, points2))
 		return false;
 
 	return true;
@@ -440,6 +277,14 @@ TransformSensor::update ()
 
 			if (rotation not_eq orientation_changed ())
 				orientation_changed () = rotation;
+		}
+		else
+		{
+			if (isActive ())
+			{
+				isActive () = false;
+				exitTime () = getCurrentTime ();
+			}
 		}
 
 		visible = false;

@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Wed, 29 Oct 2014 14:50:47 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Wed, 29 Oct 2014 16:30:15 GMT"
+META "modified" "Thu, 30 Oct 2014 11:53:20 GMT"
 
 PROTO FallingBox [
   inputOutput SFVec3f translation 0 0 0
@@ -42,7 +42,7 @@ PROTO FallingBox [
           targetObject IS targetObject
         }
         DEF Particle_1 Particle {
-          mass 20000000000
+          mass 1
           acceleration 0 -1 0
           translation IS translation
           rotation 0 1 0 3.14159
@@ -68,8 +68,39 @@ PROTO FallingBox [
     }
   }
 
+  DEF _2 Script {
+    inputOnly      SFTime  set_enterTime
+    inputOutput    SFVec3f velocity 0 0 0
+    outputOnly     SFTime  stopTime
+    initializeOnly SFInt32 contacts 0
+
+    url "javascript:
+
+function set_enterTime (value)
+{
+	if (contacts > 50)
+	{
+		stopTime = value;
+		return;
+	}
+
+	++ contacts;
+
+	velocity = reflect (velocity, new SFVec3f (0, 1, 0)) .multiply (0.9);
+}
+
+function reflect (vector, normal)
+{
+	return vector .subtract (normal .multiply (2 * vector .dot (normal)));
+}
+"
+  }
+
   ROUTE Particle_1.translation_changed TO _1.set_center
-  ROUTE _1.enterTime TO Particle_1.set_stopTime
+  ROUTE _1.enterTime TO _2.set_enterTime
+  ROUTE _2.stopTime TO Particle_1.set_stopTime
+  ROUTE Particle_1.velocity_changed TO _2.set_velocity
+  ROUTE _2.velocity_changed TO Particle_1.set_velocity
 }
 
 PROTO FallingBoxes [
@@ -77,41 +108,47 @@ PROTO FallingBoxes [
   inputOutput SFNode targetObject NULL
 ]
 {
-  DEF _2 Group {
-  }
+  DEF _3 Group { }
 
   DEF FallingBoxes Script {
-    inputOutput    SFTime startTime IS startTime
-    inputOnly      SFTime set_exitTime
-    initializeOnly SFNode group USE _2
-    inputOutput    SFNode targetObject IS targetObject
-    field          SFInt32 count 0
+    inputOutput    SFTime  startTime IS startTime
+    inputOnly      SFTime  set_exitTime
+    initializeOnly SFNode  group USE _3
+    inputOutput    SFNode  targetObject IS targetObject
+    initializeOnly SFInt32 count 0
+    initializeOnly MFNode  boxes [ ]
 
     url "javascript:
 
 function initialize ()
 {
-	createBox ();
+	for (var i = 0; i < numBoxes; ++ i)
+		createBox ();
 }
 
 function set_startTime (value)
 {
-	group .children [group .children .length - 1] .startTime = value;
+	set_exitTime (value)
 }
 
 function set_exitTime (value)
 {
-	if (count > 200)
+	if (count >= numBoxes)
 		return;
-	
+
+	addBox (count);
+
 	++ count;
-
-	createBox ();
-
-	set_startTime (value);
 }
 
-function createBox ()
+function addBox (index, time)
+{
+	boxes [index] .startTime = time;
+
+	group .addChildren = new MFNode (boxes [index]);
+}
+
+function createBox (time)
 {
 	var box = Browser .currentScene .createProto (\"FallingBox\");
 	
@@ -121,7 +158,7 @@ function createBox ()
 	box .color        = new SFColor (Math .random (), Math .random (), Math .random ());
 	box .targetObject = targetObject;
 
-	group .children [group .children .length] = box;
+	boxes [boxes .length] = box;
 }
 
 function random (min, max)
@@ -1960,13 +1997,13 @@ DEF Floor_1 Transform {
   }
 }
 
-DEF _3 FallingBoxes {
-  startTime 1414600125.88953
-  targetObject DEF _4 StaticGroup {
+DEF _4 FallingBoxes {
+  startTime 1414667625.41543
+  targetObject DEF _5 StaticGroup {
     children USE Floor
   }
 }
 
-DEF _5 TouchSensor { }
+DEF _6 TouchSensor { }
 
-ROUTE _5.touchTime TO _3.set_startTime
+ROUTE _6.touchTime TO _4.set_startTime

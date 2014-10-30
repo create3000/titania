@@ -1004,10 +1004,8 @@ throw (Error <INVALID_NODE>,
 
 		auto & route = addRoute (new Route (this, sourceNode, routeKey .first, destinationNode, routeKey .second));
 
-		if (isInitialized ())
-			route -> setup ();
-		else
-			addUninitializedNode (route);
+		// Routes must and can be setuped immediately, to ensure that toStream operates correctly.
+		route -> setup ();
 
 		return route;
 	}
