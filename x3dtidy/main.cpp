@@ -61,6 +61,8 @@ using namespace titania;
 int
 main (int argc, char** argv)
 {
+	// It never hurts to be tidy.
+
 	AnyOption options;
 
 	options .addUsage ("NAME");

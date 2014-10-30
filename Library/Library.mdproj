@@ -2371,6 +2371,7 @@
     <None Include="Examples\MovieTruck\preview.gif" />
     <None Include="Examples\MovieTruck\index.wrl" />
     <None Include="Tests\EnvironmentalSensors\TransformSensor.x3dv" />
+    <None Include="Tests\EnvironmentalSensors\FallingBoxes.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

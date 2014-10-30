@@ -68,7 +68,8 @@ StaticGroup::StaticGroup (X3DExecutionContext* const executionContext) :
 	    X3DChildNode (),
 	X3DBoundedObject (),
 	          fields (),
-	           group (new Group (executionContext))
+	           group (new Group (executionContext)),
+	            bbox ()
 {
 	addType (X3DConstants::StaticGroup);
 
@@ -102,12 +103,23 @@ StaticGroup::initialize ()
 
 	group -> isPrivate (true);
 	group -> setup ();
+
+	// Connect after Group setup.
+	group -> children () .addInterest (this, &StaticGroup::set_children);
+
+	set_children ();
+}
+
+void
+StaticGroup::set_children ()
+{
+	bbox = group -> getBBox ();
 }
 
 Box3f
 StaticGroup::getBBox () const
 {
-	return group -> getBBox ();
+	return bbox;
 }
 
 void

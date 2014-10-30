@@ -128,6 +128,11 @@ private:
 	virtual
 	void
 	initialize () final override;
+	
+	///  @name Event handlers
+
+	void
+	set_children ();
 
 	///  @name Static members
 
@@ -147,6 +152,7 @@ private:
 	Fields fields;
 
 	GroupPtr group;
+	Box3f    bbox;
 
 };
 

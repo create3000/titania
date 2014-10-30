@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -228,10 +228,11 @@ namespace titania {
 namespace math {
 
 template <class Type>
-std::vector <vector3 <Type>> 
+std::vector <vector3 <Type>>
 points (const box3 <Type> & self)
 {
 	std::vector <vector3 <Type>>  points;
+	points .reserve (8);
 
 	const auto x = self .matrix () .x ();
 	const auto y = self .matrix () .y ();
@@ -257,75 +258,90 @@ points (const box3 <Type> & self)
 }
 
 template <class Type>
-std::vector <vector3 <Type>> 
-normals (const box3 <Type> & self)
+std::vector <vector3 <Type>>
+sat_axes (const box3 <Type> & self)
 {
-	std::vector <vector3 <Type>>  normals;
+	// The sat axes for the box are the normal vectors of its faces. It is not needed to normalize these axes.
 
-	const auto x = normalize (self .matrix () .x ());
-	const auto y = normalize (self .matrix () .y ());
-	const auto z = normalize (self .matrix () .z ());
+	std::vector <vector3 <Type>>  axes;
+	axes .reserve (3);
 
-	normals .emplace_back (cross (y, z));
-	normals .emplace_back (cross (x, z));
-	normals .emplace_back (cross (x, y));
+	const auto x = self .matrix () .x ();
+	const auto y = self .matrix () .y ();
+	const auto z = self .matrix () .z ();
 
-	return normals;
+	axes .emplace_back (cross (y, z));
+	axes .emplace_back (cross (z, x));
+	axes .emplace_back (cross (x, y));
+
+	return axes;
 }
 
 template <class Type>
-void
-sat_test (const vector3 <Type> & axis, const std::vector <vector3 <Type>>  & points, Type & min, Type & max)
+class SAT
 {
-	min = std::numeric_limits <Type>::infinity ();
-	max = -min;
+public:
 
-	for (const auto & point : points)
+	static
+	bool
+	overlaps (const std::vector <vector3 <Type>> & axes,
+	          const std::vector <vector3 <Type>> & points1,
+	          const std::vector <vector3 <Type>> & points2)
 	{
-		// Just dot it to get the min and max along this axis.
+		for (const auto & axis : axes)
+		{
+			Type min1, max1, min2, max2;
 
-		const Type dotVal = dot (point, axis);
+			projection (axis, points1, min1, max1);
+			projection (axis, points2, min2, max2);
 
-		if (dotVal < min)
-			min = dotVal;
+			if (not overlaps (min1, max1, min2, max2))
+				return false;
+		}
 
-		if (dotVal > max)
-			max = dotVal;
-	}
-}
-
-template <class Type>
-inline
-bool
-is_between (const Type value, const Type lowerBound, const Type upperBound)
-{
-	return lowerBound <= value and value <= upperBound;
-}
-
-template <class Type>
-bool
-sat_overlaps (const Type min1, const Type max1, const Type min2, const Type max2)
-{
-	return is_between (min2, min1, max1) or is_between (min1, min2, max2);
-}
-
-template <class Type>
-bool
-sat_overlaps (const std::vector <vector3 <Type>> & normals, const std::vector <vector3 <Type>>  & points1, const std::vector <vector3 <Type>>  & points2)
-{
-	for (const auto & normal : normals)
-	{
-		Type min1, max1, min2, max2;
-
-		sat_test (normal, points1, min1, max1);
-		sat_test (normal, points2, min2, max2);
-
-		if (not sat_overlaps (min1, max1, min2, max2))
-			return false;
+		return true;
 	}
 
-	return true;
-}
+private:
+
+	static
+	void
+	projection (const vector3 <Type> & axis, const std::vector <vector3 <Type>>     & points, Type & min, Type & max)
+	{
+		min = std::numeric_limits <Type>::infinity ();
+		max = -min;
+
+		for (const auto & point : points)
+		{
+			// Just dot it to get the min and max along this axis.
+			// NOTE: the axis must be normalized to get accurate projections to calculate the MTV, but if it is only needed to
+			// know whether it overlaps, every axis can be used.
+
+			const Type dotVal = dot (point, axis);
+
+			if (dotVal < min)
+				min = dotVal;
+
+			if (dotVal > max)
+				max = dotVal;
+		}
+	}
+
+	static
+	bool
+	overlaps (const Type min1, const Type max1, const Type min2, const Type max2)
+	{
+		return is_between (min2, min1, max1) or is_between (min1, min2, max2);
+	}
+
+	static
+	inline
+	bool
+	is_between (const Type value, const Type lowerBound, const Type upperBound)
+	{
+		return lowerBound <= value and value <= upperBound;
+	}
+};
 
 template <class Type>
 bool
@@ -333,16 +349,36 @@ intersect (const box3 <Type> & self, const box3 <Type> & other)
 {
 	// http://gamedev.stackexchange.com/questions/25397/obb-vs-obb-collision-detection
 
-	const std::vector <vector3 <Type>>  points1  = points (self);
-	const std::vector <vector3 <Type>>  points2  = points (other);
-	const std::vector <vector3 <Type>>  normals1 = normals (self);
+	const std::vector <vector3 <Type>>  points1 = points (self);
+	const std::vector <vector3 <Type>>  points2 = points (other);
+	const std::vector <vector3 <Type>>  axes1   = sat_axes (self);
 
-	if (not sat_overlaps (normals1, points1, points2))
+	if (not SAT <Type>::overlaps (axes1, points1, points2))
 		return false;
 
-	const std::vector <vector3 <Type>>  normals2 = normals (other);
+	const std::vector <vector3 <Type>>  axes2 = sat_axes (other);
 
-	if (not sat_overlaps (normals2, points1, points2))
+	if (not SAT <Type>::overlaps (axes2, points1, points2))
+		return false;
+
+	std::vector <vector3 <Type>>  axes3;
+	axes3 .reserve (axes1 .size () * points2 .size ());
+
+	for (const auto & axis : axes1)
+		for (const auto & point : points2)
+			axes3 .emplace_back (cross (axis, point));
+
+	if (not SAT <Type>::overlaps (axes3, points1, points2))
+		return false;
+
+	std::vector <vector3 <Type>>  axes4;
+	axes4 .reserve (axes2 .size () * points1 .size ());
+
+	for (const auto & axis : axes2)
+		for (const auto & point : points1)
+			axes4 .emplace_back (cross (axis, point));
+
+	if (not SAT <Type>::overlaps (axes4, points1, points2))
 		return false;
 
 	return true;
@@ -469,22 +505,24 @@ TransformSensor::update ()
 			if (rotation not_eq orientation_changed ())
 				orientation_changed () = rotation;
 		}
-		else
-		{
-			if (isActive ())
-			{
-				isActive () = false;
-				exitTime () = getCurrentTime ();
-			}
-		}
 
 		visible = false;
+	}
+	else
+	{
+		if (isActive ())
+		{
+			isActive () = false;
+			exitTime () = getCurrentTime ();
+		}
 	}
 }
 
 void
 TransformSensor::traverse (const TraverseType type)
 {
+	// Store whether the sensor is part of the »visible« scene graph.
+
 	if (type == TraverseType::CAMERA)
 		visible = true;
 }

@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 28 Oct 2014 06:07:32 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Wed, 29 Oct 2014 03:17:51 GMT"
+META "modified" "Wed, 29 Oct 2014 14:16:46 GMT"
 META "title" "ProximitySensor"
 
 WorldInfo {
@@ -22,7 +22,7 @@ WorldInfo {
         name "Grid"
         value MetadataBoolean {
           name "enabled"
-          value TRUE
+          value FALSE
         }
       }
     ]
@@ -36,9 +36,9 @@ DEF Gray_1 Background {
 
 Viewpoint {
   description "Home"
-  position 3.53822 6.47456 9.91409
-  orientation -0.865931 0.497792 0.048654 0.742544
-  centerOfRotation -0.326972 -0.553913 1.15801
+  position -3.64537 -4.12097 1.16009
+  orientation 0.761401 -0.435996 -0.479766 1.63444
+  centerOfRotation 1.26279 -0.918668 0.0802239
 }
 
 Transform {
@@ -47,7 +47,6 @@ Transform {
       children [
         DEF _1 TimeSensor {
           cycleInterval 30
-          loop TRUE
         }
         DEF _2 PositionInterpolator {
           key [
@@ -60,9 +59,9 @@ Transform {
           ]
         }
         DEF Box Transform {
-          translation -4.86527 0 0
-          rotation 0 -1 0 1.5708
-          scale 4 3 2
+          translation 1.77648 -1.62642 -0.0362127
+          rotation 0.836823 -0.100807 -0.538112 2.06089
+          scale 2 1 4
           children Shape {
             appearance Appearance {
               material Material { }
@@ -75,16 +74,14 @@ Transform {
       ]
     }
     DEF _3 TransformSensor {
-      size 2 1 1
-      center 1 0 0
+      size 2 1 3
       targetObject USE Box
     }
     DEF TransformSensorBox Transform {
-      translation 1 0 0
-      scale 2 1 1
+      scale 2 1 3
       children Shape {
         appearance Appearance {
-          material Material {
+          material DEF _4 Material {
             diffuseColor 0 1 0
             transparency 0.5
           }
@@ -97,51 +94,59 @@ Transform {
   ]
 }
 
-DEF _4 Script {
-  inputOnly SFTime     set_enterTime
-  inputOnly SFTime     set_exitTime
-  inputOnly SFBool     set_active
-  inputOnly SFVec3f    set_position
-  inputOnly SFRotation set_orientation
+DEF _5 Script {
+  inputOnly  SFTime     set_enterTime
+  inputOnly  SFTime     set_exitTime
+  inputOnly  SFBool     set_active
+  inputOnly  SFVec3f    set_position
+  inputOnly  SFRotation set_orientation
+  outputOnly SFColor    color_changed
 
   url "javascript:
 
 function set_enterTime (value)
 {
-	print (\"enterTime: \", value)
+	print (\"enterTime: \", value);
 }
 
 function set_exitTime (value)
 {
-	print (\"exitTime: \", value)
+	print (\"exitTime: \", value);
 }
 
 function set_active (value)
 {
-	print (\"isActive: \", value)
+	print (\"isActive: \", value);
+
+	color_changed = value ? new SFColor (1, 0, 0) : new SFColor (0, 1, 0);
 }
 
 function set_position (value)
 {
-	print (\"position: \", value)
+	print (\"position: \", value);
 }
 
 function set_orientation (value)
 {
-	print (\"orientation: \", value)
+	print (\"orientation: \", value);
 }
 
 "
 }
 
+Viewpoint {
+  description "Front"
+}
+
 ROUTE _1.fraction_changed TO _2.set_fraction
 ROUTE _2.value_changed TO Box.set_translation
-ROUTE _3.enterTime TO _4.set_enterTime
-ROUTE _3.exitTime TO _4.set_exitTime
-ROUTE _3.isActive TO _4.set_active
-ROUTE _3.position_changed TO _4.set_position
-ROUTE _3.orientation_changed TO _4.set_orientation
+ROUTE _3.enterTime TO _5.set_enterTime
+ROUTE _3.exitTime TO _5.set_exitTime
+ROUTE _3.isActive TO _5.set_active
+ROUTE _3.position_changed TO _5.set_position
+ROUTE _3.orientation_changed TO _5.set_orientation
 ROUTE TransformSensorBox.scale_changed TO _3.set_size
 ROUTE _3.size_changed TO TransformSensorBox.set_scale
 ROUTE TransformSensorBox.translation_changed TO _3.set_center
 ROUTE _3.center_changed TO TransformSensorBox.set_translation
+ROUTE _5.color_changed TO _4.set_diffuseColor

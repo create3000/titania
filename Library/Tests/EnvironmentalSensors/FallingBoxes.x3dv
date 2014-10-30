@@ -1,0 +1,1972 @@
+#X3D V3.3 utf8 Titania V0.7.5
+
+META "comment" "World of Titania"
+META "created" "Wed, 29 Oct 2014 14:50:47 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.5, http://titania.create3000.de"
+META "modified" "Wed, 29 Oct 2014 16:30:15 GMT"
+
+PROTO FallingBox [
+  inputOutput SFVec3f translation 0 0 0
+  inputOutput SFColor color 1 0 1
+  inputOutput SFTime  startTime 0
+  outputOnly  SFTime  exitTime
+  inputOutput SFNode  targetObject NULL
+]
+{
+  EXTERNPROTO Particle [
+    inputOutput SFBool     enabled
+    inputOutput SFDouble   maximumSpeed
+    inputOutput SFDouble   mass
+    inputOutput SFVec3f    acceleration
+    inputOutput SFVec3f    velocity
+    inputOutput SFVec3f    translation
+    inputOutput SFRotation rotation
+    inputOutput SFTime     startTime
+    inputOutput SFTime     stopTime
+    outputOnly  SFBool     isActive
+    inputOutput MFNode     friends
+    inputOnly   MFNode     addChildren
+    inputOnly   MFNode     removeChildren
+    inputOutput MFNode     children
+  ]
+  "../PROTO/Particle/Particle.wrl"
+
+  Group {
+    children DEF FallingBox_1 Transform {
+      children [
+        DEF _1 TransformSensor {
+          size 1 1 1
+          center 0 10 0
+          enterTime IS exitTime
+          targetObject IS targetObject
+        }
+        DEF Particle_1 Particle {
+          mass 20000000000
+          acceleration 0 -1 0
+          translation IS translation
+          rotation 0 1 0 3.14159
+          startTime IS startTime
+          stopTime 1
+          children DEF Box_1 Transform {
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo14_1 Material {
+                  ambientIntensity 0.226102
+                  diffuseColor IS color
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box {
+                size 1 1 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+
+  ROUTE Particle_1.translation_changed TO _1.set_center
+  ROUTE _1.enterTime TO Particle_1.set_stopTime
+}
+
+PROTO FallingBoxes [
+  inputOutput SFTime startTime 0
+  inputOutput SFNode targetObject NULL
+]
+{
+  DEF _2 Group {
+  }
+
+  DEF FallingBoxes Script {
+    inputOutput    SFTime startTime IS startTime
+    inputOnly      SFTime set_exitTime
+    initializeOnly SFNode group USE _2
+    inputOutput    SFNode targetObject IS targetObject
+    field          SFInt32 count 0
+
+    url "javascript:
+
+function initialize ()
+{
+	createBox ();
+}
+
+function set_startTime (value)
+{
+	group .children [group .children .length - 1] .startTime = value;
+}
+
+function set_exitTime (value)
+{
+	if (count > 200)
+		return;
+	
+	++ count;
+
+	createBox ();
+
+	set_startTime (value);
+}
+
+function createBox ()
+{
+	var box = Browser .currentScene .createProto (\"FallingBox\");
+	
+	Browser .addRoute (box, \"exitTime\", Browser .currentScene .getNamedNode (\"FallingBoxes\"), \"set_exitTime\");
+
+	box .translation  = new SFVec3f (random (-10, 10), 10, random (-10, 10));
+	box .color        = new SFColor (Math .random (), Math .random (), Math .random ());
+	box .targetObject = targetObject;
+
+	group .children [group .children .length] = box;
+}
+
+function random (min, max)
+{
+	return min + Math .random () * (max - min);
+}"
+  }
+}
+
+WorldInfo {
+  metadata MetadataSet {
+    name "Titania"
+    value [
+      MetadataSet {
+        name "AngleGrid"
+        value MetadataBoolean {
+          name "enabled"
+          value FALSE
+        }
+      }
+      MetadataSet {
+        name "Grid"
+        value [
+          MetadataBoolean {
+            name "enabled"
+            value FALSE
+          }
+          MetadataInteger {
+            name "dimension"
+            value [
+              22,
+              10,
+              22
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "FallingBoxes"
+}
+
+DEF Summer_1 Background {
+  skyAngle [
+    0.8,
+    1.3,
+    1.4,
+    1.5708
+  ]
+  skyColor [
+    0.21 0.31 0.59,
+    0.33 0.45 0.7,
+    0.57 0.66 0.85,
+    0.6 0.73 0.89,
+    0.7 0.83 0.98
+  ]
+  groundAngle [
+    0.6,
+    1.2,
+    1.3,
+    1.5708
+  ]
+  groundColor [
+    0.21 0.31 0.59,
+    0.33 0.45 0.7,
+    0.57 0.66 0.85,
+    0.6 0.73 0.89,
+    0.7 0.83 0.98
+  ]
+}
+
+Viewpoint {
+  description "Home"
+  position 5.05967 14.3846 24.1121
+  orientation -0.942973 0.332847 0.00379292 0.563908
+}
+
+DEF PointLight Transform {
+  translation 0 2.71321 0
+  children PointLight { }
+}
+
+DEF Floor_1 Transform {
+  children DEF Floor Transform {
+    children [
+      Transform {
+        translation 0 0 -10
+        children [
+          DEF Box_2 Transform {
+            translation -10 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_1 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_3 Transform {
+            translation -8 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_1 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_4 Transform {
+            translation -6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_1 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_5 Transform {
+            translation -4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_1 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_6 Transform {
+            translation 4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_2 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_7 Transform {
+            translation 2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_2 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_8 Transform {
+            translation 2.38419e-07 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_2 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_9 Transform {
+            translation -2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo35_1 Material {
+                  ambientIntensity 0.0499912
+                  diffuseColor 0.195355 0.197924 0.199965
+                  specularColor 0.430303 0.430303 0.430303
+                  shininess 0.406061
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_10 Transform {
+            translation 10 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_3 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_11 Transform {
+            translation 8 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_2 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_12 Transform {
+            translation 6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_3 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 6 0 -8
+        children [
+          DEF Box_13 Transform {
+            translation -10 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_4 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_14 Transform {
+            translation -8 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_3 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_15 Transform {
+            translation -6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_4 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_16 Transform {
+            translation -4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_3 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_17 Transform {
+            translation 4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_4 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_18 Transform {
+            translation 2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_5 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_19 Transform {
+            translation 2.38419e-07 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_5 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_20 Transform {
+            translation -2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo35_2 Material {
+                  ambientIntensity 0.0499912
+                  diffuseColor 0.195355 0.197924 0.199965
+                  specularColor 0.430303 0.430303 0.430303
+                  shininess 0.406061
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_21 Transform {
+            translation -12 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_6 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_22 Transform {
+            translation -13.9638 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_4 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_23 Transform {
+            translation -16 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_6 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 4 0 -6
+        children [
+          DEF Box_24 Transform {
+            translation -10 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_7 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_25 Transform {
+            translation -8 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_5 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_26 Transform {
+            translation -6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_7 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_27 Transform {
+            translation -4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_5 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_28 Transform {
+            translation 4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_6 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_29 Transform {
+            translation 2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_8 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_30 Transform {
+            translation 2.38419e-07 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_8 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_31 Transform {
+            translation -2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo35_3 Material {
+                  ambientIntensity 0.0499912
+                  diffuseColor 0.195355 0.197924 0.199965
+                  specularColor 0.430303 0.430303 0.430303
+                  shininess 0.406061
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_32 Transform {
+            translation -12 -1 4.76837e-07
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_9 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_33 Transform {
+            translation -14 -1 -0.0440024
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_6 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_34 Transform {
+            translation 6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_9 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 10 0 -4
+        children [
+          DEF Box_35 Transform {
+            translation -10 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_10 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_36 Transform {
+            translation -8 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_7 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_37 Transform {
+            translation -6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_10 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_38 Transform {
+            translation -4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_7 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_39 Transform {
+            translation -18 -1 4.76837e-07
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_8 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_40 Transform {
+            translation -20 -1 4.76837e-07
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_11 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_41 Transform {
+            translation 2.38419e-07 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_11 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_42 Transform {
+            translation -2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo35_4 Material {
+                  ambientIntensity 0.0499912
+                  diffuseColor 0.195355 0.197924 0.199965
+                  specularColor 0.430303 0.430303 0.430303
+                  shininess 0.406061
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_43 Transform {
+            translation -12 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_12 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_44 Transform {
+            translation -13.9638 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_8 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_45 Transform {
+            translation -16 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_12 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 1.95653 0 -2
+        children [
+          DEF Box_46 Transform {
+            translation -10 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_13 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_47 Transform {
+            translation -8 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_9 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_48 Transform {
+            translation -6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_13 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_49 Transform {
+            translation -4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_9 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_50 Transform {
+            translation 4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_10 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_51 Transform {
+            translation 2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_14 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_52 Transform {
+            translation 2.38419e-07 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_14 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_53 Transform {
+            translation -2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo35_5 Material {
+                  ambientIntensity 0.0499912
+                  diffuseColor 0.195355 0.197924 0.199965
+                  specularColor 0.430303 0.430303 0.430303
+                  shininess 0.406061
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_54 Transform {
+            translation -12 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_15 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_55 Transform {
+            translation 8 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_10 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_56 Transform {
+            translation 6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_15 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 6 0 2
+        children [
+          DEF Box_57 Transform {
+            translation -10 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo35_6 Material {
+                  ambientIntensity 0.0499912
+                  diffuseColor 0.195355 0.197924 0.199965
+                  specularColor 0.430303 0.430303 0.430303
+                  shininess 0.406061
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_58 Transform {
+            translation -8 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_11 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_59 Transform {
+            translation -6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_16 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_60 Transform {
+            translation -4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_11 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_61 Transform {
+            translation 4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_12 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_62 Transform {
+            translation 2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_16 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_63 Transform {
+            translation 2.38419e-07 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_17 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_64 Transform {
+            translation -2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo35_7 Material {
+                  ambientIntensity 0.0499912
+                  diffuseColor 0.195355 0.197924 0.199965
+                  specularColor 0.430303 0.430303 0.430303
+                  shininess 0.406061
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_65 Transform {
+            translation -12 -1 4.76837e-07
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_17 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_66 Transform {
+            translation -14 -1 -0.0440024
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_12 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_67 Transform {
+            translation -16 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_18 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 8 0 0
+        children [
+          DEF Box_68 Transform {
+            translation -10 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_18 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_69 Transform {
+            translation -8 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_13 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_70 Transform {
+            translation -6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_19 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_71 Transform {
+            translation -4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_13 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_72 Transform {
+            translation -18 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_14 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_73 Transform {
+            translation 2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_19 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_74 Transform {
+            translation 2.38419e-07 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_20 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_75 Transform {
+            translation -2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo35_8 Material {
+                  ambientIntensity 0.0499912
+                  diffuseColor 0.195355 0.197924 0.199965
+                  specularColor 0.430303 0.430303 0.430303
+                  shininess 0.406061
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_76 Transform {
+            translation -12 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_20 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_77 Transform {
+            translation -13.9638 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_14 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_78 Transform {
+            translation -16 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_21 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 12 0 4
+        children [
+          DEF Box_79 Transform {
+            translation -10 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_21 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_80 Transform {
+            translation -8 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_15 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_81 Transform {
+            translation -6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_22 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_82 Transform {
+            translation -4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_15 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_83 Transform {
+            translation -18 -1 4.76837e-07
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_16 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_84 Transform {
+            translation -20 -1 4.76837e-07
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_23 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_85 Transform {
+            translation -22 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_24 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_86 Transform {
+            translation -2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo35_9 Material {
+                  ambientIntensity 0.0499912
+                  diffuseColor 0.195355 0.197924 0.199965
+                  specularColor 0.430303 0.430303 0.430303
+                  shininess 0.406061
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_87 Transform {
+            translation -12 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_25 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_88 Transform {
+            translation -13.9638 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_16 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_89 Transform {
+            translation -16 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_22 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 6 0 6
+        children [
+          DEF Box_90 Transform {
+            translation -10 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_26 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_91 Transform {
+            translation -8 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_17 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_92 Transform {
+            translation -6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_23 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_93 Transform {
+            translation -4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_17 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_94 Transform {
+            translation 4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_18 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_95 Transform {
+            translation 2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_27 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_96 Transform {
+            translation 2.38419e-07 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_24 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_97 Transform {
+            translation -2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo35_10 Material {
+                  ambientIntensity 0.0499912
+                  diffuseColor 0.195355 0.197924 0.199965
+                  specularColor 0.430303 0.430303 0.430303
+                  shininess 0.406061
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_98 Transform {
+            translation -12 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_28 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_99 Transform {
+            translation -13.9638 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_18 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_100 Transform {
+            translation -16 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_25 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 4 0 8
+        children [
+          DEF Box_101 Transform {
+            translation -10 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_19 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_102 Transform {
+            translation -8 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_19 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_103 Transform {
+            translation -6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_26 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_104 Transform {
+            translation -4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_20 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_105 Transform {
+            translation 4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_20 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_106 Transform {
+            translation 2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_29 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_107 Transform {
+            translation 2.38419e-07 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_27 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_108 Transform {
+            translation -2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo35_11 Material {
+                  ambientIntensity 0.0499912
+                  diffuseColor 0.195355 0.197924 0.199965
+                  specularColor 0.430303 0.430303 0.430303
+                  shininess 0.406061
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_109 Transform {
+            translation -12 -1 4.76837e-07
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_30 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_110 Transform {
+            translation -14 -1 -0.0440024
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_21 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_111 Transform {
+            translation 6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_28 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 10 0 10
+        children [
+          DEF Box_112 Transform {
+            translation -10 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_22 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_113 Transform {
+            translation -8 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_21 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_114 Transform {
+            translation -6 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_29 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_115 Transform {
+            translation -4 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_23 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_116 Transform {
+            translation -18 -1 4.76837e-07
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo33_22 Material {
+                  ambientIntensity 0.110166
+                  diffuseColor 0.430504 0.436165 0.440663
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.684848
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_117 Transform {
+            translation -20 -1 4.76837e-07
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_31 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_118 Transform {
+            translation 2.38419e-07 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_32 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_119 Transform {
+            translation -2 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo35_12 Material {
+                  ambientIntensity 0.0499912
+                  diffuseColor 0.195355 0.197924 0.199965
+                  specularColor 0.430303 0.430303 0.430303
+                  shininess 0.406061
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_120 Transform {
+            translation -12 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo31_33 Material {
+                  ambientIntensity 0.187004
+                  diffuseColor 0.730772 0.740381 0.748016
+                  specularColor 0.251984 0.251984 0.251984
+                  shininess 0.25
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_121 Transform {
+            translation -13.9638 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo34_24 Material {
+                  ambientIntensity 0.0548466
+                  diffuseColor 0.219386 0.218587 0.216188
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+          DEF Box_122 Transform {
+            translation -16 -1 0
+            children Shape {
+              appearance Appearance {
+                material DEF Rococo32_30 Material {
+                  ambientIntensity 0.193939
+                  diffuseColor 0.581818 0.579698 0.573336
+                  specularColor 0.0955906 0.0955906 0.0955906
+                  shininess 0.078125
+                }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+
+DEF _3 FallingBoxes {
+  startTime 1414600125.88953
+  targetObject DEF _4 StaticGroup {
+    children USE Floor
+  }
+}
+
+DEF _5 TouchSensor { }
+
+ROUTE _5.touchTime TO _3.set_startTime
