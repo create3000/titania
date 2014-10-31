@@ -100,7 +100,14 @@ QuadSet::build ()
 void
 QuadSet::buildNormals (size_t vertexCount, size_t size)
 {
-	buildFaceNormals (vertexCount, size);
+	getNormals () = createFaceNormals (vertexCount, size);
+}
+
+void
+QuadSet::addNormals ()
+{
+	if (getCoord ())
+		X3DComposedGeometryNode::addNormals (4, getCoord () -> getSize ());
 }
 
 SFNode

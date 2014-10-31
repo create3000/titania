@@ -74,6 +74,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("CreaseAngleBox", m_CreaseAngleBox);
 	m_builder -> get_widget ("CreaseAngleScaleSpinButton", m_CreaseAngleScaleSpinButton);
 	m_builder -> get_widget ("CreaseAngleScale", m_CreaseAngleScale);
+	m_builder -> get_widget ("NormalsBox", m_NormalsBox);
 	m_builder -> get_widget ("AddNormalsButton", m_AddNormalsButton);
 	m_builder -> get_widget ("RemoveNormalsButton", m_RemoveNormalsButton);
 	m_builder -> get_widget ("PrimitiveCountEventBox", m_PrimitiveCountEventBox);

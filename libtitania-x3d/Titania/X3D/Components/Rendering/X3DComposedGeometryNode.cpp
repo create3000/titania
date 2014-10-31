@@ -54,6 +54,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry3D/IndexedFaceSet.h"
 #include "../Shaders/X3DVertexAttributeNode.h"
+#include "../Rendering/Normal.h"
 
 namespace titania {
 namespace X3D {
@@ -268,7 +269,30 @@ X3DComposedGeometryNode::build (const size_t vertexCount, size_t size)
 void
 X3DComposedGeometryNode::buildNormals (const size_t vertexCount, const size_t size)
 {
-	buildFaceNormals (vertexCount, size);
+	getNormals () = createNormals (vertexCount, size);
+}
+
+void
+X3DComposedGeometryNode::addNormals (const size_t vertexCount, size_t size)
+{
+	// Set size to a multiple of vertexCount.
+
+	size -= size % vertexCount;
+
+	const auto normals    = createNormals (vertexCount, size);
+	const auto normalNode = getExecutionContext () -> createNode <Normal> ();
+
+	normalNode -> vector () .assign (normals .begin (), normals .end ());
+
+	normal () = normalNode;
+
+	getExecutionContext () -> realize ();
+}
+
+std::vector <Vector3f>
+X3DComposedGeometryNode::createNormals (const size_t vertexCount, const size_t size) const
+{
+	std::vector <Vector3f> normals = createFaceNormals (vertexCount, size);
 
 	if (normalPerVertex ())
 	{
@@ -277,13 +301,19 @@ X3DComposedGeometryNode::buildNormals (const size_t vertexCount, const size_t si
 		for (size_t i = 0; i < size; ++ i)
 			normalIndex [getIndex (i)] .emplace_back (i);
 
-		refineNormals (normalIndex, getNormals (), M_PI, true);
+		refineNormals (normalIndex, normals, M_PI, true);
 	}
+
+	return normals;
 }
 
-void
-X3DComposedGeometryNode::buildFaceNormals (const size_t vertexCount, const size_t size)
+std::vector <Vector3f>
+X3DComposedGeometryNode::createFaceNormals (const size_t vertexCount, const size_t size) const
 {
+	std::vector <Vector3f> normals;
+
+	normals .reserve (size);
+
 	for (size_t index = 0; index < size; index += vertexCount)
 	{
 		Vector3f normal;
@@ -296,11 +326,13 @@ X3DComposedGeometryNode::buildFaceNormals (const size_t vertexCount, const size_
 			                                  getIndex (index + i + 1));
 		}
 
-		getNormals () .resize (getNormals () .size () + vertexCount, vertexCount == 3 ? normal : normalize (normal));
+		normals .resize (normals .size () + vertexCount, vertexCount == 3 ? normal : normalize (normal));
 	}
 
 	if (not ccw ())
-		std::for_each (getNormals () .begin (), getNormals () .end (), std::mem_fn (&Vector3f::negate));
+		std::for_each (normals .begin (), normals .end (), std::mem_fn (&Vector3f::negate));
+
+	return normals;
 }
 
 SFNode

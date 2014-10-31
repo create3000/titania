@@ -139,6 +139,12 @@ IndexedTriangleFanSet::build ()
 	X3DComposedGeometryNode::build (3, coordIndex .size ());
 }
 
+void
+IndexedTriangleFanSet::addNormals ()
+{
+	X3DComposedGeometryNode::addNormals (3, coordIndex .size ());
+}
+
 SFNode
 IndexedTriangleFanSet::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,

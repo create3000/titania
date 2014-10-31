@@ -1,5 +1,28 @@
 2014-10-31  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* QuadSet.h:
+	* QuadSet.cpp:
+	* TriangleSet.h:
+	* TriangleSet.cpp:
+	* TriangleFanSet.h:
+	* IndexedFaceSet.h:
+	* IndexedQuadSet.h:
+	* TriangleStripSet.h:
+	* TriangleFanSet.cpp:
+	* IndexedFaceSet.cpp:
+	* IndexedTriangleSet.h:
+	* IndexedQuadSet.cpp:
+	* TriangleStripSet.cpp:
+	* IndexedTriangleSet.cpp:
+	* IndexedTriangleFanSet.h:
+	* IndexedTriangleStripSet.h:
+	* X3DComposedGeometryNode.h:
+	* IndexedTriangleFanSet.cpp:
+	* IndexedTriangleStripSet.cpp:
+	* X3DComposedGeometryNode.cpp: 
+
+2014-10-31  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* IndexedFaceSet.h:
 	* IndexedFaceSet.cpp: 
 

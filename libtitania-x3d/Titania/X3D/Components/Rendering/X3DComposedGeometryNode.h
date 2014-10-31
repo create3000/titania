@@ -148,12 +148,18 @@ public:
 	coord () const
 	{ return *fields .coord; }
 
-	///  @name Tests
+	///  @name Member access
 
 	virtual
 	bool
 	isTransparent () const final override
 	{ return transparent; }
+
+	///  @name Operations
+
+	virtual
+	void
+	addNormals () = 0;
 
 
 protected:
@@ -220,7 +226,13 @@ protected:
 	buildNormals (const size_t, const size_t);
 
 	void
-	buildFaceNormals (const size_t, const size_t);
+	addNormals (const size_t, size_t);
+
+	std::vector <Vector3f>
+	createNormals (const size_t, const size_t) const;
+
+	std::vector <Vector3f>
+	createFaceNormals (const size_t, const size_t) const;
 
 	SFNode
 	toPrimitive (const size_t, size_t) const;

@@ -265,122 +265,7 @@ IndexedFaceSet::build ()
 	setAttribs (getAttrib (), attribArrays);
 	setTextureCoordinate (getTexCoord ());
 }
-
-void
-IndexedFaceSet::addNormals ()
-{
-	PolygonArray polygons;
-	size_t       reserve = 0;
-
-	tessellate (true, polygons, reserve);
-
-	const auto normals    = createNormals (polygons);
-	const auto normalNode = getExecutionContext () -> createNode <Normal> ();
-
-	normal () = normalNode;
 	
-	normalIndex () .clear ();
-
-	size_t i      = 0;
-	auto   normal = normals .begin ();
-
-	for (const auto & index : coordIndex ())
-	{
-		if (index < 0)
-			normalIndex () .emplace_back (-1);
-
-		else
-		{
-			normalIndex () .emplace_back (i ++);
-			normalNode -> vector () .emplace_back (*normal);
-		}
-
-		++ normal;
-	}
-
-	getExecutionContext () -> realize ();
-}
-
-std::vector <Vector3f>
-IndexedFaceSet::createNormals (const PolygonArray & polygons) const
-{
-	std::vector <Vector3f> normals;
-
-	NormalIndex normalIndex;
-
-	for (const auto & polygon : polygons)
-	{
-		const auto & vertices = polygon .vertices;
-	
-		Vector3f normal;
-
-		switch (vertices .size ())
-		{
-			case 3:
-			{
-				normal = getCoord () -> getNormal (coordIndex () [vertices [0]],
-				                                   coordIndex () [vertices [1]],
-				                                   coordIndex () [vertices [2]]);
-				break;
-			}
-			case 4:
-			{
-				normal = getCoord () -> getNormal (coordIndex () [vertices [0]],
-				                                   coordIndex () [vertices [1]],
-				                                   coordIndex () [vertices [2]],
-				                                   coordIndex () [vertices [3]]);
-				break;
-			}
-			default:
-			{
-				// Determine polygon normal.
-				// Or use Newell's method http://tog.acm.org/resources/GraphicsGems/gemsiii/newell.c
-			
-				for (const auto & element : polygon .elements)
-				{
-					for (size_t i = 0, size = element .size (); i < size; ++ i)
-					{
-						normal += getCoord () -> getNormal (coordIndex () [element [i]],
-						                                    coordIndex () [element [(i + 1) % size]],
-						                                    coordIndex () [element [(i + 2) % size]]);
-					}
-				}
-				
-				normal .normalize ();
-			}
-		}
-
-		// Add a normal index for each point.
-		for (size_t i = 0, size = vertices .size (); i < size; ++ i)
-			normalIndex [coordIndex () [vertices [i]]] .emplace_back (normals .size () + i);
-
-		// Add this normal for each vertex.
-		normals .resize (normals .size () + vertices .size (), normal);
-		normals .emplace_back ();
-	}
-
-	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
-
-	return normals;
-}
-
-void
-IndexedFaceSet::buildNormals (const PolygonArray & polygons)
-{
-	const auto normals = createNormals (polygons);
-
-	for (const auto & polygon : polygons)
-	{
-		for (const auto & element : polygon .elements)
-		{
-			for (const auto & i : element)
-			{
-				getNormals () .emplace_back (normals [i]);
-			}
-		}
-	}
-}
-		
 void
 IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t & numVertices)
 {
@@ -540,6 +425,121 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons)
 	}
 }
 
+void
+IndexedFaceSet::buildNormals (const PolygonArray & polygons)
+{
+	const auto normals = createNormals (polygons);
+
+	for (const auto & polygon : polygons)
+	{
+		for (const auto & element : polygon .elements)
+		{
+			for (const auto & i : element)
+			{
+				getNormals () .emplace_back (normals [i]);
+			}
+		}
+	}
+}
+
+void
+IndexedFaceSet::addNormals ()
+{
+	PolygonArray polygons;
+	size_t       reserve = 0;
+
+	tessellate (true, polygons, reserve);
+
+	const auto normals    = createNormals (polygons);
+	const auto normalNode = getExecutionContext () -> createNode <Normal> ();
+
+	normal () = normalNode;
+	
+	normalIndex () .clear ();
+
+	size_t i      = 0;
+	auto   normal = normals .begin ();
+
+	for (const auto & index : coordIndex ())
+	{
+		if (index < 0)
+			normalIndex () .emplace_back (-1);
+
+		else
+		{
+			normalIndex () .emplace_back (i ++);
+			normalNode -> vector () .emplace_back (*normal);
+		}
+
+		++ normal;
+	}
+
+	getExecutionContext () -> realize ();
+}
+
+std::vector <Vector3f>
+IndexedFaceSet::createNormals (const PolygonArray & polygons) const
+{
+	std::vector <Vector3f> normals;
+
+	NormalIndex normalIndex;
+
+	for (const auto & polygon : polygons)
+	{
+		const auto & vertices = polygon .vertices;
+	
+		Vector3f normal;
+
+		switch (vertices .size ())
+		{
+			case 3:
+			{
+				normal = getCoord () -> getNormal (coordIndex () [vertices [0]],
+				                                   coordIndex () [vertices [1]],
+				                                   coordIndex () [vertices [2]]);
+				break;
+			}
+			case 4:
+			{
+				normal = getCoord () -> getNormal (coordIndex () [vertices [0]],
+				                                   coordIndex () [vertices [1]],
+				                                   coordIndex () [vertices [2]],
+				                                   coordIndex () [vertices [3]]);
+				break;
+			}
+			default:
+			{
+				// Determine polygon normal.
+				// Or use Newell's method http://tog.acm.org/resources/GraphicsGems/gemsiii/newell.c
+			
+				for (const auto & element : polygon .elements)
+				{
+					for (size_t i = 0, size = element .size (); i < size; ++ i)
+					{
+						normal += getCoord () -> getNormal (coordIndex () [element [i]],
+						                                    coordIndex () [element [(i + 1) % size]],
+						                                    coordIndex () [element [(i + 2) % size]]);
+					}
+				}
+				
+				normal .normalize ();
+			}
+		}
+
+		// Add a normal index for each point.
+		for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+			normalIndex [coordIndex () [vertices [i]]] .emplace_back (normals .size () + i);
+
+		// Add this normal for each vertex.
+		normals .resize (normals .size () + vertices .size (), normal);
+		normals .emplace_back ();
+	}
+
+	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
+
+	return normals;
+}
+	
 SFNode
 IndexedFaceSet::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,

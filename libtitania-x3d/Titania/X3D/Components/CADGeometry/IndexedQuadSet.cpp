@@ -101,6 +101,12 @@ IndexedQuadSet::build ()
 	X3DComposedGeometryNode::build (4, index () .size ());
 }
 
+void
+IndexedQuadSet::addNormals ()
+{
+	X3DComposedGeometryNode::addNormals (4, index () .size ());
+}
+
 SFNode
 IndexedQuadSet::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,

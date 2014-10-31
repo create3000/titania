@@ -3,6 +3,13 @@
 	* GeometryPropertiesEditor.xml:
 	* X3DGeometryPropertiesEditorInterface.h:
 	* X3DGeometryPropertiesEditorInterface.cpp:
+	* GeometryPropertiesEditor.cpp: 
+
+2014-10-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* GeometryPropertiesEditor.xml:
+	* X3DGeometryPropertiesEditorInterface.h:
+	* X3DGeometryPropertiesEditorInterface.cpp:
 	* GeometryPropertiesEditor.h:
 	* GeometryPropertiesEditor.cpp: 
 

@@ -142,6 +142,10 @@ public:
 	getCreaseAngleScale () const
 	{ return *m_CreaseAngleScale; }
 
+	Gtk::Box &
+	getNormalsBox () const
+	{ return *m_NormalsBox; }
+
 	Gtk::Button &
 	getAddNormalsButton () const
 	{ return *m_AddNormalsButton; }
@@ -226,6 +230,7 @@ private:
 	Gtk::Box*                      m_CreaseAngleBox;
 	Gtk::SpinButton*               m_CreaseAngleScaleSpinButton;
 	Gtk::Scale*                    m_CreaseAngleScale;
+	Gtk::Box*                      m_NormalsBox;
 	Gtk::Button*                   m_AddNormalsButton;
 	Gtk::Button*                   m_RemoveNormalsButton;
 	Gtk::EventBox*                 m_PrimitiveCountEventBox;

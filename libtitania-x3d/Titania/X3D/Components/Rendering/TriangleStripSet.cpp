@@ -136,6 +136,12 @@ TriangleStripSet::build ()
 	X3DComposedGeometryNode::build (3, coordIndex .size ());
 }
 
+void
+TriangleStripSet::addNormals ()
+{
+	X3DComposedGeometryNode::addNormals (3, coordIndex .size ());
+}
+
 SFNode
 TriangleStripSet::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,

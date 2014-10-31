@@ -97,6 +97,10 @@ public:
 	///  @name Operations
 
 	virtual
+	void
+	addNormals () final override;
+
+	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,

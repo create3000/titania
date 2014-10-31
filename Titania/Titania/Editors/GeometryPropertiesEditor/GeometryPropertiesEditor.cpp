@@ -99,8 +99,6 @@ GeometryPropertiesEditor::set_selection ()
 		shape -> geometry () .addInterest (this, &GeometryPropertiesEditor::set_nodes);
 
 	set_nodes ();
-	
-	getRemoveNormalsButton () .set_sensitive (not shapes .empty ());
 }
 
 void
@@ -118,6 +116,19 @@ GeometryPropertiesEditor::set_buffer ()
 	ccw         .setNodes (nodes);
 	convex      .setNodes (nodes);
 	creaseAngle .setNodes (nodes);
+
+	// Normals Box
+
+	getNormalsBox () .set_sensitive (false);
+
+	for (const auto & node : nodes)
+	{
+		if (node -> hasField ("normal"))
+		{
+			getNormalsBox () .set_sensitive (true);
+			break;
+		}
+	}
 }
 
 void
@@ -134,20 +145,35 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 			{
 				case X3D::X3DConstants::IndexedFaceSet:
 				{
-					const auto composedGeometryNode = dynamic_cast <X3D::IndexedFaceSet*> (geometry .getValue ());
+					const auto indexedFaceSet = dynamic_cast <X3D::IndexedFaceSet*> (geometry .getValue ());
 
 					undoStep -> addObjects (geometry);
-					undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (composedGeometryNode -> normalIndex ()), composedGeometryNode -> normalIndex ());
+					undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> normalIndex ()), indexedFaceSet -> normalIndex ());
+					getBrowserWindow () -> replaceNode (geometry, indexedFaceSet -> normal (), nullptr, undoStep);
+
+					indexedFaceSet -> addNormals ();
+
+					undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> normalIndex ()), indexedFaceSet -> normalIndex ());
+					undoStep -> addRedoFunction (&X3D::SFNode::setValue,  std::ref (indexedFaceSet -> normal ()),      indexedFaceSet -> normal ());
+					break;
+				}
+				case X3D::X3DConstants::X3DComposedGeometryNode:
+				{
+					const auto composedGeometryNode = dynamic_cast <X3D::X3DComposedGeometryNode*> (geometry .getValue ());
+
+					undoStep -> addObjects (geometry);
 					getBrowserWindow () -> replaceNode (geometry, composedGeometryNode -> normal (), nullptr, undoStep);
 
 					composedGeometryNode -> addNormals ();
 
-					undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (composedGeometryNode -> normalIndex ()), composedGeometryNode -> normalIndex ());
-					undoStep -> addRedoFunction (&X3D::SFNode::setValue,  std::ref (composedGeometryNode -> normal ()),      composedGeometryNode -> normal ());
+					undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (composedGeometryNode -> normal ()), composedGeometryNode -> normal ());
+					break;
 				}
 				default:
-					break;
+					continue;
 			}
+
+			break;
 		}
 	}
 

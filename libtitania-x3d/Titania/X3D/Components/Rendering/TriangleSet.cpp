@@ -100,7 +100,14 @@ TriangleSet::build ()
 void
 TriangleSet::buildNormals (size_t vertexCount, size_t size)
 {
-	buildFaceNormals (vertexCount, size);
+	getNormals () = createFaceNormals (vertexCount, size);
+}
+
+void
+TriangleSet::addNormals ()
+{
+	if (getCoord ())
+		X3DComposedGeometryNode::addNormals (3, getCoord () -> getSize ());
 }
 
 SFNode

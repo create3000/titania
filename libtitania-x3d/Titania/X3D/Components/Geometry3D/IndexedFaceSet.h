@@ -149,8 +149,9 @@ public:
 
 	///  @name Operations
 
+	virtual
 	void
-	addNormals ();
+	addNormals () final override;
 
 	virtual
 	SFNode

@@ -100,6 +100,12 @@ IndexedTriangleSet::build ()
 	X3DComposedGeometryNode::build (3, index () .size ());
 }
 
+void
+IndexedTriangleSet::addNormals ()
+{
+	X3DComposedGeometryNode::addNormals (3, index () .size ());
+}
+
 SFNode
 IndexedTriangleSet::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
