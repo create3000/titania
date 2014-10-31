@@ -24,7 +24,7 @@ distance (in Plane3 plane, in vec3 point)
 
 /* Plane intersect line */
 bool
-intersect (in Plane3 plane, in Line3 line, out vec3 point)
+intersects (in Plane3 plane, in Line3 line, out vec3 point)
 {
 	point = vec3 (0.0f);
 

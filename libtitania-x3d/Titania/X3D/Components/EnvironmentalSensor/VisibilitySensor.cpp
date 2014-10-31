@@ -165,7 +165,7 @@ VisibilitySensor::traverse (const TraverseType type)
 
 			else
 			{
-				visible = getCurrentLayer () -> getViewVolumeStack () .back () .intersect (Box3f (size (), center ()) * getModelViewMatrix (type));
+				visible = getCurrentLayer () -> getViewVolumeStack () .back () .intersects (Box3f (size (), center ()) * getModelViewMatrix (type));
 			}
 
 			break;

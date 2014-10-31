@@ -55,121 +55,6 @@
 #include "../../Tools/EnvironmentalSensor/TransformSensorTool.h"
 #include "../Grouping/X3DBoundedObject.h"
 
-#include <Titania/Math/Algorithms/SAT.h>
-#include <array>
-
-namespace titania {
-namespace math {
-
-template <class Type>
-std::vector <vector3 <Type>>
-points (const box3 <Type> & self)
-{
-	std::vector <vector3 <Type>>  points;
-	points .reserve (8);
-
-	const auto x = self .matrix () .x ();
-	const auto y = self .matrix () .y ();
-	const auto z = self .matrix () .z ();
-
-	const auto r1 = y + z;
-	const auto r2 = z - y;
-
-	points .emplace_back (x + r1);
-	points .emplace_back (x + r2);
-	points .emplace_back (r1 - x);
-	points .emplace_back (r2 - x);
-
-	points .emplace_back (-points [0]);
-	points .emplace_back (-points [1]);
-	points .emplace_back (-points [2]);
-	points .emplace_back (-points [3]);
-
-	for (auto & point : points)
-		point += self .center ();
-
-	return points;
-}
-
-template <class Type>
-std::vector <vector3 <Type>>
-planes (const box3 <Type> & self)
-{
-	// The sat axes for the box are the normal vectors of its faces. It is not needed to normalize these axes.
-
-	std::vector <vector3 <Type>>  axes;
-	axes .reserve (3);
-
-	const auto x = self .matrix () .x ();
-	const auto y = self .matrix () .y ();
-	const auto z = self .matrix () .z ();
-
-	axes .emplace_back (cross (y, z));
-	axes .emplace_back (cross (z, x));
-	axes .emplace_back (cross (x, y));
-
-	return axes;
-}
-
-template <class Type>
-std::array <vector3 <Type>, 3>
-axes (const box3 <Type> & self)
-{
-	return std::array <vector3 <Type>, 3> {
-		self .matrix () .x (),
-		self .matrix () .y (),
-		self .matrix () .z ()
-	};
-}
-
-template <class Type>
-bool
-intersect (const box3 <Type> & self, const box3 <Type> & other)
-{
-	// Test special cases.
-
-	if (self .empty ())
-		return false;
-
-	if (other .empty ())
-		return false;
-
-	// Get points.
-
-	const std::vector <vector3 <Type>>  points1 = points (self);
-	const std::vector <vector3 <Type>>  points2 = points (other);
-
-	// Test the three planes spanned by the normal vectors of the faces of the first parallelepiped.
-
-	if (sat::separated (planes (self), points1, points2))
-		return false;
-
-	// Test the three planes spanned by the normal vectors of the faces of the second parallelepiped.
-
-	if (sat::separated (planes (other), points1, points2))
-		return false;
-
-	// Test the nine other planes spanned by the edges of each parallelepiped.
-
-	std::vector <vector3 <Type>>  axes9;
-	
-	for (const auto & axis1 : axes (self))
-	{
-		for (const auto & axis2 : axes (other))
-			axes9 .emplace_back (cross (axis1, axis2));
-	}
-
-	if (sat::separated (axes9, points1, points2))
-		return false;
-
-	// Both boxes intersect.
-
-	return true;
-}
-
-} // math
-} // titania
-
 namespace titania {
 namespace X3D {
 
@@ -269,7 +154,7 @@ TransformSensor::update ()
 		const auto sourceBBox = Box3f (size (), center ());
 		const auto targetBBox = targetObjectNode -> getBBox ();
 
-		if (size () == Vector3f (-1, -1, -1) or math::intersect (sourceBBox, targetBBox))
+		if (size () == Vector3f (-1, -1, -1) or sourceBBox .intersects (targetBBox))
 		{
 			Vector3f   translation;
 			Rotation4f rotation;

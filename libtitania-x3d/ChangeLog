@@ -1,3 +1,30 @@
+2014-10-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* ViewVolume.h:
+	* Shape.h:
+	* ViewVolume.cpp:
+	* X3DRenderer.cpp:
+	* Shape.cpp:
+	* CollisionShape.h:
+	* CollisionShape.cpp:
+	* X3DShapeNodeTool.h:
+	* X3DShapeNode.h:
+	* BVH.h:
+	* Box3.h:
+	* X3DGeometryNode.h:
+	* Line3.h:
+	* Plane3.h:
+	* X3DGeometryNode.cpp:
+	* ParticleSystem.h:
+	* ParticleSystem.cpp:
+	* PlaneSensor.cpp:
+	* SphereSensor.cpp:
+	* TransformSensor.cpp:
+	* CylinderSensor.cpp:
+	* ProximitySensor.cpp:
+	* X3DProgrammableShaderObject.cpp:
+	* VisibilitySensor.cpp: 
+
 2014-10-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DExecutionContext.cpp:

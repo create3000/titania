@@ -468,6 +468,15 @@ normalize (const vector2 <Type> & vector)
 	return result;
 }
 
+///  Returns the reflection vector for an incident vector.
+template <class Type>
+inline
+vector2 <Type>
+reflect (const vector2 <Type> & vector, const vector2 <Type> & normal)
+{
+	return vector - (normal * (2 * dot (vector, normal)));
+}
+
 /**
  * @returns the lesser of each component.
  * @param a, b Items to compare.\n

@@ -140,6 +140,7 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderLabel", m_HeaderLabel);
+	m_builder -> get_widget ("NodeChildNotebook", m_NodeChildNotebook);
 	m_builder -> get_widget ("NodePropertiesExpander", m_NodePropertiesExpander);
 	m_builder -> get_widget ("TypeNameLabel", m_TypeNameLabel);
 	m_builder -> get_widget ("NameLabel", m_NameLabel);

@@ -16,7 +16,7 @@ line3 (in vec3 point1, in vec3 point2)
 /* Line intersect triangle */
 
 bool
-intersect (in Line3 line, in vec3 a, in vec3 b, in vec3 c, inout float u, inout float v)
+intersects (in Line3 line, in vec3 a, in vec3 b, in vec3 c, inout float u, inout float v)
 {
 	// find vectors for two edges sharing vert0
 	vec3 edge1 = b - a;

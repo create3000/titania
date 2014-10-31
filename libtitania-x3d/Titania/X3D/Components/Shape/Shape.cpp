@@ -121,9 +121,9 @@ Shape::getBBox () const
 }
 
 bool
-Shape::intersect (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & localObjects)
+Shape::intersects (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & localObjects)
 {
-	return getGeometry () -> intersect (sphere, matrix, localObjects);
+	return getGeometry () -> intersects (sphere, matrix, localObjects);
 }
 
 void
@@ -167,13 +167,13 @@ Shape::click ()
 		{
 			const Box3f bbox = getBBox () * getModelViewMatrix () .get ();
 
-			if (getCurrentLayer () -> getViewVolumeStack () .back () .intersect (bbox))
+			if (getCurrentLayer () -> getViewVolumeStack () .back () .intersects (bbox))
 			{
 				const Line3f hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ()); // Attention!! returns a Line3d
 
 				std::vector <IntersectionPtr> itersections;
 
-				if (getGeometry () -> intersect (hitRay, itersections))
+				if (getGeometry () -> intersects (hitRay, itersections))
 				{
 					for (auto & itersection : itersections)
 						itersection -> hitPoint = itersection -> hitPoint * getModelViewMatrix () .get ();

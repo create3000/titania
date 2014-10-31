@@ -126,10 +126,10 @@ public:
 	///  @name Operations
 
 	bool
-	intersect (Line3f, std::vector <IntersectionPtr> &) const;
+	intersects (Line3f, std::vector <IntersectionPtr> &) const;
 
 	bool
-	intersect (const Sphere3f &, Matrix4f, const CollectableObjectArray &) const;
+	intersects (const Sphere3f &, Matrix4f, const CollectableObjectArray &) const;
 
 	void
 	triangulate (std::vector <Color4f> &, TexCoordArray &, std::vector <Vector3f> &, std::vector <Vector3f> &) const;
@@ -265,7 +265,7 @@ private:
 	///  @name Operations
 
 	bool
-	intersect (const Line3f &, const size_t, const size_t, const size_t, const Matrix4f &, std::vector <IntersectionPtr>&) const;
+	intersects (const Line3f &, const size_t, const size_t, const size_t, const Matrix4f &, std::vector <IntersectionPtr>&) const;
 
 	bool
 	isClipped (const Vector3f &, const Matrix4f &) const;

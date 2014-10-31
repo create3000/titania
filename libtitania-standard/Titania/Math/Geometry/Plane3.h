@@ -165,13 +165,13 @@ public:
 	closest_point (const vector3 <Type> & point)
 	{
 		vector3 <Type> closest_point;
-		intersect (line3 <Type> (point, value .normal), closest_point);
+		intersects (line3 <Type> (point, value .normal), closest_point);
 		return closest_point;
 	}
 
 	///  Returns true if @a line intersects with this box3. The intersection point is stored in @a point.
 	bool
-	intersect (const line3 <Type> &, vector3 <Type> &) const;
+	intersects (const line3 <Type> &, vector3 <Type> &) const;
 
 
 private:
@@ -253,7 +253,7 @@ plane3 <Type>::distance (const vector3 <Type> & point) const
 ///  point is stored in @a point.
 template <class Type>
 bool
-plane3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & point) const
+plane3 <Type>::intersects (const line3 <Type> & line, vector3 <Type> & point) const
 {
 	// Check if the line is parallel to the plane.
 	const Type theta = dot (line .direction (), normal ());

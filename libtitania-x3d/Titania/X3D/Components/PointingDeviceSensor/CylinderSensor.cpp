@@ -109,7 +109,7 @@ CylinderSensor::isBehind (const Line3d & hitRay, const Vector3d & hitPoint) cons
 {
 	Vector3d enter, exit;
 
-	cylinder .intersect (hitRay, enter, exit);
+	cylinder .intersects (hitRay, enter, exit);
 
 	return abs (hitPoint - enter) > abs (hitPoint - exit);
 }
@@ -119,7 +119,7 @@ CylinderSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, con
 {
 	Vector3d zPoint;
 
-	zPlane .intersect (hitRay, zPoint);
+	zPlane .intersects (hitRay, zPoint);
 
 	const auto axisPoint = zPoint + cylinder .axis () .perpendicular_vector (zPoint);
 	const auto distance  = sxPlane .distance (zPoint) / cylinder .radius ();
@@ -188,7 +188,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 			Vector3d trackPoint;
 
 			if (disk)
-				yPlane .intersect (hitRay, trackPoint);
+				yPlane .intersects (hitRay, trackPoint);
 			else
 				getTrackPoint (hitRay, trackPoint, behind);
 
@@ -218,7 +218,7 @@ CylinderSensor::set_motion (const HitPtr & hit)
 		Vector3d trackPoint;
 
 		if (disk)
-			yPlane .intersect (hitRay, trackPoint);
+			yPlane .intersects (hitRay, trackPoint);
 		else
 			getTrackPoint (hitRay, trackPoint, behind);
 

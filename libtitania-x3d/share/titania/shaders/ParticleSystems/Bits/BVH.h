@@ -93,7 +93,7 @@ getIntersections (in samplerBuffer bvh, in Line3 line, in samplerBuffer surfaceM
 			
 				++ bvhDebug;
 
-				if (intersect (getBVHMin (bvh), getBVHMax (bvh), line))
+				if (intersects (getBVHMin (bvh), getBVHMax (bvh), line))
 				{
 					stack [++ id] = current;
 
@@ -117,7 +117,7 @@ getIntersections (in samplerBuffer bvh, in Line3 line, in samplerBuffer surfaceM
 				vec3 b = texelFetch (surfaceMap, i + 1) .xyz;
 				vec3 c = texelFetch (surfaceMap, i + 2) .xyz;
 
-				if (intersect (line, a, b, c, u, v))
+				if (intersects (line, a, b, c, u, v))
 					points [count ++] = (1 - u - v) * a + u * b + v * c;
 			}
 		}
@@ -157,7 +157,7 @@ getIntersections (in samplerBuffer bvh, in Line3 line, in samplerBuffer normalMa
 			
 				++ bvhDebug;
 
-				if (intersect (getBVHMin (bvh), getBVHMax (bvh), line))
+				if (intersects (getBVHMin (bvh), getBVHMax (bvh), line))
 				{
 					stack [++ id] = current;
 
@@ -181,7 +181,7 @@ getIntersections (in samplerBuffer bvh, in Line3 line, in samplerBuffer normalMa
 				vec3 b = texelFetch (surfaceMap, i + 1) .xyz;
 				vec3 c = texelFetch (surfaceMap, i + 2) .xyz;
 
-				if (intersect (line, a, b, c, u, v))
+				if (intersects (line, a, b, c, u, v))
 				{
 					points [count] = (1 - u - v) * a + u * b + v * c;
 				

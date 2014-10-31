@@ -106,8 +106,8 @@ public:
 
 	virtual
 	bool
-	intersect (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & collectableObjects) final override
-	{ return getNode () -> intersect (sphere, matrix, collectableObjects); }
+	intersects (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & collectableObjects) final override
+	{ return getNode () -> intersects (sphere, matrix, collectableObjects); }
 
 	/// @name Operations
 

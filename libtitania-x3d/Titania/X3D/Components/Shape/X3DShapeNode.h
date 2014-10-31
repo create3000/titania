@@ -127,7 +127,7 @@ public:
 	
 	virtual
 	bool
-	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) = 0;
+	intersects (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) = 0;
 
 	virtual
 	void

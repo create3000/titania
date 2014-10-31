@@ -1014,16 +1014,16 @@ ParticleSystem::set_particle_buffers ()
 {
 	// Initialize array buffers
 
-	size_t maxParticles = std::max (0, this -> maxParticles () .getValue ());
+	const size_t maxParticles = std::max (0, this -> maxParticles () .getValue ());
 
 	// Particle buffers
 
-	Particle particleArray [maxParticles];
+	std::vector <Particle> particleArray (maxParticles);
 
 	for (size_t i = 0; i < 2; ++ i)
 	{
 		glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [i]);
-		glBufferData (GL_ARRAY_BUFFER, sizeof (particleArray), particleArray, GL_STATIC_COPY);
+		glBufferData (GL_ARRAY_BUFFER, particleArray .size () * sizeof (Particle), particleArray .data (), GL_STATIC_COPY);
 	}
 
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
@@ -1043,14 +1043,14 @@ ParticleSystem::set_vertex_buffer ()
 {
 	// Initialize array buffers
 
-	size_t maxParticles = std::max (0, this -> maxParticles () .getValue ());
+	const size_t maxParticles = std::max (0, this -> maxParticles () .getValue ());
 
 	// Vertex buffer
 
-	Vertex vertexArray [maxParticles * numVertices];
+	std::vector <Vertex> vertexArray (maxParticles * numVertices);
 
 	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (vertexArray), vertexArray, GL_STATIC_COPY);
+	glBufferData (GL_ARRAY_BUFFER, vertexArray .size () * sizeof (Vertex), vertexArray .data (), GL_STATIC_COPY);
 
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }
@@ -1193,7 +1193,7 @@ ParticleSystem::set_geometry_shader_texture_buffers ()
 }
 
 bool
-ParticleSystem::intersect (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & localObjects)
+ParticleSystem::intersects (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & localObjects)
 {
 	return false;
 }

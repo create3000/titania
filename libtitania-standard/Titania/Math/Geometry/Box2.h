@@ -215,9 +215,9 @@ public:
 
 	///  @name Intersection
 
-	///  Returns true if @a point is inside this box3 min and max extend.
+	///  Returns true if @a point is inside this box min and max extents.
 	bool
-	intersect (const vector2 <Type> &) const;
+	intersects (const vector2 <Type> &) const;
 
 	///  Returns true if this box contains @a box.
 	bool
@@ -293,7 +293,7 @@ box2 <Type>::operator += (const box2 <Up> & box)
 
 template <class Type>
 bool
-box2 <Type>::intersect (const vector2 <Type> & point) const
+box2 <Type>::intersects (const vector2 <Type> & point) const
 {
 	vector2 <Type> min, max;
 

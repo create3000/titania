@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 28 Oct 2014 06:07:32 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Thu, 30 Oct 2014 15:37:12 GMT"
+META "modified" "Thu, 30 Oct 2014 16:26:25 GMT"
 META "title" "ProximitySensor"
 
 WorldInfo {
@@ -22,7 +22,7 @@ WorldInfo {
         name "Grid"
         value MetadataBoolean {
           name "enabled"
-          value FALSE
+          value TRUE
         }
       }
     ]
@@ -47,6 +47,7 @@ Transform {
       children [
         DEF _1 TimeSensor {
           cycleInterval 30
+          loop TRUE
         }
         DEF _2 PositionInterpolator {
           key [
@@ -58,31 +59,35 @@ Transform {
             5 0 0
           ]
         }
-        DEF Box Transform {
-          translation -0.530984 -0.144911 0.625867
-          rotation 0.75229 -0.281998 -0.59543 1.12375
-          scale 4 2 1
-          scaleOrientation -0.487041 -0.748451 0.450124 0.677876
-          children Shape {
-            appearance Appearance {
-              material Material { }
-            }
-            geometry Box {
-              size 1 1 1
+        DEF _3 Transform {
+          children DEF Box Transform {
+            translation 1.10181 0 0
+            rotation 0.75229 -0.281998 -0.59543 1.12375
+            scale 4 2 1
+            scaleOrientation -0.487041 -0.748451 0.450124 0.677876
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  transparency 0.509804
+                }
+              }
+              geometry Box {
+                size 1 1 1
+              }
             }
           }
         }
       ]
     }
-    DEF _3 TransformSensor {
+    DEF _4 TransformSensor {
       size 2 1 3
-      targetObject USE Box
+      targetObject USE _3
     }
     DEF TransformSensorBox Transform {
       scale 2 1 3
       children Shape {
         appearance Appearance {
-          material DEF _4 Material {
+          material DEF _5 Material {
             diffuseColor 1 0 0
             transparency 0.5
           }
@@ -95,7 +100,7 @@ Transform {
   ]
 }
 
-DEF _5 Script {
+DEF _6 Script {
   inputOnly  SFTime     set_enterTime
   inputOnly  SFTime     set_exitTime
   inputOnly  SFBool     set_active
@@ -139,15 +144,61 @@ Viewpoint {
   description "Front"
 }
 
+DEF IndexedLineSet_1 Transform {
+  translation 1.10181 0 0
+  rotation 0.75229 -0.281998 -0.59543 1.12375
+  scale 2.39949 2.39949 2.39949
+  children Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex [
+        0,
+        1,
+        2
+      ]
+      coordIndex [
+        0,
+        1,
+        -1,
+        2,
+        3,
+        -1,
+        4,
+        5,
+        -1
+      ]
+      color Color {
+        color [
+          1 0 0,
+          0 1 0,
+          0 0 1
+        ]
+      }
+      coord Coordinate {
+        point [
+          -1 0 0,
+          1 0 0,
+          0 -1 0,
+          0 1 0,
+          0 0 -1,
+          0 0 1
+        ]
+      }
+    }
+  }
+}
+
 ROUTE _1.fraction_changed TO _2.set_fraction
 ROUTE _2.value_changed TO Box.set_translation
-ROUTE _3.enterTime TO _5.set_enterTime
-ROUTE _3.exitTime TO _5.set_exitTime
-ROUTE _3.isActive TO _5.set_active
-ROUTE _3.position_changed TO _5.set_position
-ROUTE _3.orientation_changed TO _5.set_orientation
-ROUTE TransformSensorBox.scale_changed TO _3.set_size
-ROUTE _3.size_changed TO TransformSensorBox.set_scale
-ROUTE TransformSensorBox.translation_changed TO _3.set_center
-ROUTE _3.center_changed TO TransformSensorBox.set_translation
-ROUTE _5.color_changed TO _4.set_diffuseColor
+ROUTE _4.enterTime TO _6.set_enterTime
+ROUTE _4.exitTime TO _6.set_exitTime
+ROUTE _4.isActive TO _6.set_active
+ROUTE _4.position_changed TO _6.set_position
+ROUTE _4.orientation_changed TO _6.set_orientation
+ROUTE TransformSensorBox.scale_changed TO _4.set_size
+ROUTE _4.size_changed TO TransformSensorBox.set_scale
+ROUTE TransformSensorBox.translation_changed TO _4.set_center
+ROUTE _4.center_changed TO TransformSensorBox.set_translation
+ROUTE _6.color_changed TO _5.set_diffuseColor
+ROUTE _4.position_changed TO IndexedLineSet_1.set_translation
+ROUTE _4.orientation_changed TO IndexedLineSet_1.set_rotation

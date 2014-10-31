@@ -112,13 +112,13 @@ public:
 	radius () const { return value .radius; }
 
 	bool
-	intersect (const line3 <Type> &, vector3 <Type> &, vector3 <Type> &) const;
+	intersects (const line3 <Type> &, vector3 <Type> &, vector3 <Type> &) const;
 
 
 private:
 
 	bool
-	unit_cylinder_intersect (const line3 <Type> &, vector3 <Type> &, vector3 <Type> &) const;
+	unit_cylinder_intersects (const line3 <Type> &, vector3 <Type> &, vector3 <Type> &) const;
 
 	struct Value
 	{
@@ -141,7 +141,7 @@ private:
 
 template <class Type>
 bool
-cylinder3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & enter, vector3 <Type> & exit) const
+cylinder3 <Type>::intersects (const line3 <Type> & line, vector3 <Type> & enter, vector3 <Type> & exit) const
 {
 	// The intersection will actually be done on a radius 1 cylinder
 	// aligned with the y axis, so we transform the line into that
@@ -166,7 +166,7 @@ cylinder3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & enter, 
 
 	// find the intersection on the unit cylinder
 	vector3 <Type> cylEnter, cylExit;
-	const bool     intersected = unit_cylinder_intersect (cylLine, cylEnter, cylExit);
+	const bool     intersected = unit_cylinder_intersects (cylLine, cylEnter, cylExit);
 
 	if (intersected)
 	{
@@ -201,7 +201,7 @@ cylinder3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & enter, 
 
 template <class Type>
 bool
-cylinder3 <Type>::unit_cylinder_intersect (const line3 <Type> & line, vector3 <Type> & enter, vector3 <Type> & exit) const
+cylinder3 <Type>::unit_cylinder_intersects (const line3 <Type> & line, vector3 <Type> & enter, vector3 <Type> & exit) const
 {
 	Type t0, t1;
 

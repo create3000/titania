@@ -162,11 +162,11 @@ PlaneSensor::set_active (const HitPtr & hit, const bool active)
 
 			if (planeSensor)
 			{
-				if (plane .intersect (hitRay, startPoint))
+				if (plane .intersects (hitRay, startPoint))
 				{
 					Vector3d trackPoint;
 
-					Plane3d (Vector3d (), plane .normal ()) .intersect (hitRay, trackPoint);
+					Plane3d (Vector3d (), plane .normal ()) .intersects (hitRay, trackPoint);
 
 					trackStart (trackPoint);
 				}
@@ -219,9 +219,9 @@ PlaneSensor::set_motion (const HitPtr & hit)
 
 			Vector3d endPoint, trackPoint;
 
-			if (plane .intersect (hitRay, endPoint))
+			if (plane .intersects (hitRay, endPoint))
 			{
-				Plane3d (Vector3d (), plane .normal ()) .intersect (hitRay, trackPoint);
+				Plane3d (Vector3d (), plane .normal ()) .intersects (hitRay, trackPoint);
 
 				track (endPoint, trackPoint);
 			}

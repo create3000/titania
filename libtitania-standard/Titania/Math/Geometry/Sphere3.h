@@ -113,18 +113,18 @@ public:
 
 	///  Returns true if the @a point intersects with this sphere.
 	bool
-	intersect (const vector3 <Type> & point) const
+	intersects (const vector3 <Type> & point) const
 	{
 		return abs (point - center ()) <= radius ();
 	}
 
 	///  Returns true if the @a line intersects with this sphere.
 	bool
-	intersect (const line3 <Type> &, vector3 <Type> &, vector3 <Type> &) const;
+	intersects (const line3 <Type> &, vector3 <Type> &, vector3 <Type> &) const;
 
 	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this sphere.
 	bool
-	intersect (vector3 <Type>, vector3 <Type>, vector3 <Type>) const;
+	intersects (vector3 <Type>, vector3 <Type>, vector3 <Type>) const;
 
 
 private:
@@ -141,7 +141,7 @@ private:
 
 template <class Type>
 bool
-sphere3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & intersection1, vector3 <Type> & intersection2) const
+sphere3 <Type>::intersects (const line3 <Type> & line, vector3 <Type> & intersection1, vector3 <Type> & intersection2) const
 {
 	const auto L   = center () - line .point ();
 	const Type tca = dot (L, line .direction ());
@@ -171,7 +171,7 @@ sphere3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & intersect
 
 template <class Type>
 bool
-sphere3 <Type>::intersect (vector3 <Type> A, vector3 <Type> B, vector3 <Type> C) const
+sphere3 <Type>::intersects (vector3 <Type> A, vector3 <Type> B, vector3 <Type> C) const
 {
 	const auto P = center ();
 	const auto r = radius ();

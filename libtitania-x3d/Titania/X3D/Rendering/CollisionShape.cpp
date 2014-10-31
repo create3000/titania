@@ -86,12 +86,12 @@ CollisionShape::assign (X3DShapeNode* const shape,
 }
 
 bool
-CollisionShape::intersect (const Sphere3f & sphere) const
+CollisionShape::intersects (const Sphere3f & sphere) const
 {
 	if (collisions .empty ())
 		return false;
 
-	return shape -> intersect (sphere, matrix, localObjects);
+	return shape -> intersects (sphere, matrix, localObjects);
 }
 
 void

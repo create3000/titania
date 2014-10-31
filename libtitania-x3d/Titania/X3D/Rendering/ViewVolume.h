@@ -76,7 +76,7 @@ public:
 	{ return scissor; }
 
 	bool
-	intersect (const Box3f &) const;
+	intersects (const Box3f &) const;
 
 	static
 	Vector3d

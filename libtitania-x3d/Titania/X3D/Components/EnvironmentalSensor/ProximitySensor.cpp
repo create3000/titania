@@ -215,7 +215,7 @@ ProximitySensor::traverse (const TraverseType type)
 				inside = true;
 
 			else
-				inside = Box3f (size (), center ()) .intersect (inverse (getModelViewMatrix () .get ()) .origin ());
+				inside = Box3f (size (), center ()) .intersects (inverse (getModelViewMatrix () .get ()) .origin ());
 
 			break;
 		}

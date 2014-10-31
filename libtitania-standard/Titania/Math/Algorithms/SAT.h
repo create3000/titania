@@ -53,6 +53,7 @@
 
 #include "../Numbers/Vector3.h"
 
+#include <limits>
 #include <vector>
 
 namespace titania {
@@ -70,18 +71,18 @@ public:
 	///  convex objects.  For 2d objects it is sufficient to use the normal vectors of the edges as axes.  For 3d
 	///  objects, the axes are the normal vectors of the faces of each object and the cross product of each edge from one
 	///  object with each edge from the other object.  It is not needed to provide normalized axes.
-	template <class Type>
+	template <class Vector>
 	static
 	bool
-	separated (const std::vector <vector3 <Type>> & axes,
-	           const std::vector <vector3 <Type>> & points1,
-	           const std::vector <vector3 <Type>> & points2)
+	separated (const std::vector <Vector> & axes,
+	           const std::vector <Vector> & points1,
+	           const std::vector <Vector> & points2)
 	{
 		// http://gamedev.stackexchange.com/questions/25397/obb-vs-obb-collision-detection
 
 		for (const auto & axis : axes)
 		{
-			Type min1, max1, min2, max2;
+			typename Vector::value_type min1, max1, min2, max2;
 
 			project (points1, axis, min1, max1);
 			project (points2, axis, min2, max2);
@@ -98,15 +99,15 @@ public:
 private:
 
 	///  Projects @a points to @a axis and returns the minimum and maximum bounds.
-	template <class Type>
+	template <class Vector>
 	static
 	void
-	project (const std::vector <vector3 <Type>> & points,
-	         const vector3 <Type> & axis,
-	         Type & min,
-	         Type & max)
+	project (const std::vector <Vector> & points,
+	         const Vector & axis,
+	         typename Vector::value_type & min,
+	         typename Vector::value_type & max)
 	{
-		min = std::numeric_limits <Type>::infinity ();
+		min = std::numeric_limits <typename Vector::value_type>::infinity ();
 		max = -min;
 
 		for (const auto & point : points)
@@ -115,7 +116,7 @@ private:
 			// NOTE: the axis must be normalized to get accurate projections to calculate the MTV, but if it is only needed to
 			// know whether it overlaps, every axis can be used.
 
-			const Type dotVal = dot (point, axis);
+			const typename Vector::value_type dotVal = dot (point, axis);
 
 			if (dotVal < min)
 				min = dotVal;

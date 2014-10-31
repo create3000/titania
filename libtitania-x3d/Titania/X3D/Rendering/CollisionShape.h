@@ -90,7 +90,7 @@ public:
 	{ return collisions; }
 
 	bool
-	intersect (const Sphere3f &) const;
+	intersects (const Sphere3f &) const;
 
 	void
 	draw ();

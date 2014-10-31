@@ -112,7 +112,7 @@ ViewVolume::ViewVolume (const Matrix4d & projection, const Vector4i & scissor) :
 }
 
 bool
-ViewVolume::intersect (const Box3f & bbox) const
+ViewVolume::intersects (const Box3f & bbox) const
 {
 	if (valid)
 	{

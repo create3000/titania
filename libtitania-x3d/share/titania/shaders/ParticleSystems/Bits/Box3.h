@@ -13,13 +13,13 @@
 );
 
 bool
-intersect (in vec3 min, in vec3 max, in Line3 line)
+intersects (in vec3 min, in vec3 max, in Line3 line)
 {
 	vec3 intersection = vec3 (0.0f);
 
 	for (int i = 0; i < 5; ++ i)
 	{
-		if (intersect (plane3 ((i & 1) == 1 ? min : max, BOX3_NORMALS [i]), line, intersection))
+		if (intersects (plane3 ((i & 1) == 1 ? min : max, BOX3_NORMALS [i]), line, intersection))
 		{
 			switch (i)
 			{

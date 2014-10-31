@@ -259,7 +259,7 @@ public:
 
 	virtual
 	bool
-	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) override;
+	intersects (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) override;
 
 	virtual
 	void

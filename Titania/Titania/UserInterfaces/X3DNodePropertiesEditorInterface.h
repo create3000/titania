@@ -406,6 +406,10 @@ public:
 	getHeaderLabel () const
 	{ return *m_HeaderLabel; }
 
+	Gtk::Notebook &
+	getNodeChildNotebook () const
+	{ return *m_NodeChildNotebook; }
+
 	Gtk::Expander &
 	getNodePropertiesExpander () const
 	{ return *m_NodePropertiesExpander; }
@@ -672,6 +676,7 @@ private:
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
 	Gtk::Label*                            m_HeaderLabel;
+	Gtk::Notebook*                         m_NodeChildNotebook;
 	Gtk::Expander*                         m_NodePropertiesExpander;
 	Gtk::Label*                            m_TypeNameLabel;
 	Gtk::Label*                            m_NameLabel;

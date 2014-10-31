@@ -886,7 +886,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 
 		const X3D::Box2f box (X3D::Vector2f (minimum_width, minimum_height), X3D::Vector2f (x + minimum_width / 2, y + height / 2));
 
-		if (box .intersect (point))
+		if (box .intersects (point))
 			return OutlineCellContent::ICON;
 
 		x += minimum_width;
@@ -901,7 +901,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 
 		const X3D::Box2f box (X3D::Vector2f (minimum_width, minimum_height), X3D::Vector2f (x + minimum_width / 2, y + height / 2));
 
-		if (box .intersect (point))
+		if (box .intersects (point))
 			return OutlineCellContent::NAME;
 
 		x += minimum_width;
@@ -935,7 +935,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 				{
 					const X3D::Box2f box (X3D::Vector2f (INPUT_WIDTH, minimum_height), X3D::Vector2f (x + INPUT_WIDTH / 2, y + height / 2));
 
-					if (box .intersect (point))
+					if (box .intersects (point))
 						return OutlineCellContent::INPUT;
 
 					x += INPUT_WIDTH;
@@ -946,7 +946,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 
 						const X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
 
-						if (box .intersect (point))
+						if (box .intersects (point))
 							return OutlineCellContent::INPUT_CONNECTOR;
 					}
 
@@ -956,7 +956,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 				{
 					const X3D::Box2f box (X3D::Vector2f (OUTPUT_WIDTH, minimum_height), X3D::Vector2f (x + OUTPUT_WIDTH / 2, y + height / 2));
 
-					if (box .intersect (point))
+					if (box .intersects (point))
 						return OutlineCellContent::OUTPUT;
 
 					x += OUTPUT_WIDTH;
@@ -967,7 +967,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 
 						X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
 
-						if (box .intersect (point))
+						if (box .intersects (point))
 							return OutlineCellContent::OUTPUT_CONNECTOR;
 					}
 
@@ -978,7 +978,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 					{
 						const X3D::Box2f box (X3D::Vector2f (INPUT_WIDTH, minimum_height), X3D::Vector2f (x + INPUT_WIDTH / 2, y + height / 2));
 
-						if (box .intersect (point))
+						if (box .intersects (point))
 							return OutlineCellContent::INPUT;
 
 						x += INPUT_WIDTH;
@@ -987,7 +987,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 					{
 						const X3D::Box2f box (X3D::Vector2f (OUTPUT_WIDTH, minimum_height), X3D::Vector2f (x + OUTPUT_WIDTH / 2, y + height / 2));
 
-						if (box .intersect (point))
+						if (box .intersects (point))
 							return OutlineCellContent::OUTPUT;
 
 						x += OUTPUT_WIDTH;
@@ -1003,7 +1003,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 
 						const X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
 
-						if (box .intersect (point))
+						if (box .intersects (point))
 							return OutlineCellContent::INPUT_CONNECTOR;
 
 						x += CONNECTOR_WIDTH;
@@ -1015,7 +1015,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 
 						const X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
 
-						if (box .intersect (point))
+						if (box .intersects (point))
 							return OutlineCellContent::OUTPUT_CONNECTOR;
 
 						x += CONNECTOR_WIDTH;
@@ -1033,7 +1033,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 		{
 			const X3D::Box2f box (X3D::Vector2f (INPUT_WIDTH, minimum_height), X3D::Vector2f (x + INPUT_WIDTH / 2, y + height / 2));
 
-			if (box .intersect (point))
+			if (box .intersects (point))
 				return OutlineCellContent::INPUT;
 
 			x += INPUT_WIDTH;
@@ -1044,7 +1044,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 
 				const X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
 
-				if (box .intersect (point))
+				if (box .intersects (point))
 					return OutlineCellContent::INPUT_CONNECTOR;
 			}
 
@@ -1054,7 +1054,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 		{
 			const X3D::Box2f box (X3D::Vector2f (OUTPUT_WIDTH, minimum_height), X3D::Vector2f (x + OUTPUT_WIDTH / 2, y + height / 2));
 
-			if (box .intersect (point))
+			if (box .intersects (point))
 				return OutlineCellContent::OUTPUT;
 
 			x += OUTPUT_WIDTH;
@@ -1065,7 +1065,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 
 				const X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
 
-				if (box .intersect (point))
+				if (box .intersects (point))
 					return OutlineCellContent::OUTPUT_CONNECTOR;
 			}
 

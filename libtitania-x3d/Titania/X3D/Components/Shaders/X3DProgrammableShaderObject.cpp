@@ -104,7 +104,8 @@ throw (Error <INVALID_NAME>,
 {
 	X3DBaseNode::addUserDefinedField (accessType, name, field);
 
-	field -> addInterest (this, &X3DProgrammableShaderObject::set_field, field);
+	if (isInitialized ())
+		field -> addInterest (this, &X3DProgrammableShaderObject::set_field, field);
 }
 
 void

@@ -221,7 +221,7 @@ public:
 
 	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this line.
 	bool
-	intersect (const vector3 <Type> &, const vector3 <Type> &, const vector3 <Type> &,
+	intersects (const vector3 <Type> &, const vector3 <Type> &, const vector3 <Type> &,
 	           Type &, Type &, Type &) const;
 
 
@@ -239,7 +239,7 @@ private:
 
 template <class Type>
 bool
-line3 <Type>::intersect (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C,
+line3 <Type>::intersects (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C,
                          Type & u, Type & v, Type & t) const
 {
 	// find vectors for two edges sharing vert0

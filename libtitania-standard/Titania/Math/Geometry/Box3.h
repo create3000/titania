@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,14 +51,16 @@
 #ifndef __TITANIA_MATH_GEOMETRY_BOX3_H__
 #define __TITANIA_MATH_GEOMETRY_BOX3_H__
 
+#include "../../Utility/Range.h"
 #include "../Geometry/Line3.h"
 #include "../Geometry/Plane3.h"
 #include "../Geometry/Sphere3.h"
 #include "../Numbers/Matrix4.h"
 #include "../Numbers/Vector3.h"
 #include "../Utility/Types.h"
-#include "../../Utility/Range.h"
+#include "../Algorithms/SAT.h"
 #include <array>
+#include <vector>
 
 namespace titania {
 namespace math {
@@ -124,8 +126,8 @@ public:
 
 		while (++ first not_eq last)
 		{
-			min = math::min (min, (vector3 <Type>) *first);
-			max = math::max (max, (vector3 <Type>) *first);
+			min = math::min (min, (vector3 <Type>) * first);
+			max = math::max (max, (vector3 <Type>) * first);
 		}
 
 		*this = box3 (min, max, extents_type ());
@@ -160,6 +162,14 @@ public:
 	vector3 <Type>
 	center () const
 	{ return value .origin (); }
+
+	///  Returns the transformed points of this box.
+	std::vector <vector3 <Type>> 
+	points () const;
+
+	///  Returns the scaled axes of this box.
+	std::array <vector3 <Type>, 3> 
+	axes () const;
 
 	///  Returns whether this box is an empty box.
 	bool
@@ -219,24 +229,32 @@ public:
 
 	///  @name Intersection
 
-	///  Returns true if @a point is inside this box3 min and max extend.
+	///  Returns true if @a point is inside this box min and max extents.
 	bool
-	intersect (const vector3 <Type> &) const;
+	intersects (const vector3 <Type> &) const;
 
-	///  Returns true if @a line intersects with this box3.
+	///  Returns true if @a line intersects with this box's min and max extends.
 	bool
-	intersect (const line3 <Type> &) const;
+	intersects (const line3 <Type> &) const;
 
-	///  Returns true if @a sphere intersects with this box3.
+	///  Returns true if @a sphere intersects with this box min and max extends.
 	bool
-	intersect (const sphere3 <Type> &) const;
+	intersects (const sphere3 <Type> &) const;
 
-	///  Returns true if this box contains @a box.
+	///  Returns true if @a box intersects with this box.
+	bool
+	intersects (const box3 &) const;
+
+	///  Returns true if @a box is within this box's min and max extends.
 	bool
 	contains (const box3 &) const;
 
 
 private:
+
+	///  Returns the three unnormalized unique normals of this box.
+	std::vector <vector3 <Type>> 
+	planes () const;
 
 	///  Returns the absolute min and max extents of this box.
 	void
@@ -245,6 +263,77 @@ private:
 	matrix4 <Type> value;
 
 };
+
+template <class Type>
+std::vector <vector3 <Type>> 
+box3 <Type>::points () const
+{
+	/*
+	 * p6 ---------- p5
+	 * | \           | \
+	 * | p2------------ p1
+	 * |  |          |  |
+	 * |  |          |  |
+	 * p7 |_________ p8 |
+	 *  \ |           \ |
+	 *   \|            \|
+	 *    p3 ---------- p4
+	 */
+
+	std::vector <vector3 <Type>>  points;
+	points .reserve (8);
+
+	const auto x = matrix () .x ();
+	const auto y = matrix () .y ();
+	const auto z = matrix () .z ();
+
+	const auto r1 = y + z;
+	const auto r2 = z - y;
+
+	points .emplace_back (x + r1);
+	points .emplace_back (r1 - x);
+	points .emplace_back (r2 - x);
+	points .emplace_back (x + r2);
+
+	points .emplace_back (-points [2]);
+	points .emplace_back (-points [3]);
+	points .emplace_back (-points [0]);
+	points .emplace_back (-points [1]);
+
+	for (auto & point : points)
+		point += center ();
+
+	return points;
+}
+
+template <class Type>
+std::array <vector3 <Type>, 3> 
+box3 <Type>::axes () const
+{
+	return std::array <vector3 <Type>, 3> ({
+		matrix () .x (),
+		matrix () .y (),
+		matrix () .z ()
+	});
+}
+
+template <class Type>
+std::vector <vector3 <Type>> 
+box3 <Type>::planes () const
+{
+	std::vector <vector3 <Type>>  axes;
+	axes .reserve (3);
+
+	const auto x = matrix () .x ();
+	const auto y = matrix () .y ();
+	const auto z = matrix () .z ();
+
+	axes .emplace_back (cross (y, z));
+	axes .emplace_back (cross (z, x));
+	axes .emplace_back (cross (x, y));
+
+	return axes;
+}
 
 template <class Type>
 inline
@@ -273,22 +362,22 @@ template <class Type>
 void
 box3 <Type>::absolute_extents (vector3 <Type> & min, vector3 <Type> & max) const
 {
-	vector3 <Type> x (value .x ());
-	vector3 <Type> y (value .y ());
-	vector3 <Type> z (value .z ());
+	const vector3 <Type> x (value .x ());
+	const vector3 <Type> y (value .y ());
+	const vector3 <Type> z (value .z ());
 
 	const auto r1 = y + z;
 	const auto r2 = z - y;
 
 	const auto p1 =  x + r1;
-	const auto p2 =  x + r2;
-	const auto p3 = r1 -  x;
-	const auto p4 = r2 -  x;
+	const auto p2 = r1 - x;
+	const auto p3 = r2 - x;
+	const auto p4 =  x + r2;
 
-	const auto p5 = -p1;
-	const auto p6 = -p2;
-	const auto p7 = -p3;
-	const auto p8 = -p4;
+	const auto p5 = -p3;
+	const auto p6 = -p4;
+	const auto p7 = -p1;
+	const auto p8 = -p2;
 
 	min = math::min ({ p1, p2, p3, p4, p5, p6, p7, p8 });
 	max = math::max ({ p1, p2, p3, p4, p5, p6, p7, p8 });
@@ -306,7 +395,7 @@ box3 <Type>::operator += (const box3 <Up> & box)
 		return *this;
 
 	vector3 <Type> lhs_min, lhs_max, rhs_min, rhs_max;
-	
+
 	extents (lhs_min, lhs_max);
 	box .extents (rhs_min, rhs_max);
 
@@ -315,7 +404,7 @@ box3 <Type>::operator += (const box3 <Up> & box)
 
 template <class Type>
 bool
-box3 <Type>::intersect (const vector3 <Type> & point) const
+box3 <Type>::intersects (const vector3 <Type> & point) const
 {
 	vector3 <Type> min, max;
 
@@ -331,7 +420,7 @@ box3 <Type>::intersect (const vector3 <Type> & point) const
 
 template <class Type>
 bool
-box3 <Type>::intersect (const line3 <Type> & line) const
+box3 <Type>::intersects (const line3 <Type> & line) const
 {
 	vector3 <Type> min, max;
 
@@ -350,7 +439,7 @@ box3 <Type>::intersect (const line3 <Type> & line) const
 
 	for (size_t i = 0; i < 5; ++ i)
 	{
-		if (plane3 <Type> (is_odd (i) ? min : max, normals [i]) .intersect (line, intersection))
+		if (plane3 <Type> (is_odd (i) ? min : max, normals [i]) .intersects (line, intersection))
 		{
 			switch (i)
 			{
@@ -389,7 +478,7 @@ box3 <Type>::intersect (const line3 <Type> & line) const
 
 template <class Type>
 bool
-box3 <Type>::intersect (const sphere3 <Type> & sphere) const
+box3 <Type>::intersects (const sphere3 <Type> & sphere) const
 {
 	vector3 <Type> min, max;
 
@@ -408,15 +497,60 @@ box3 <Type>::intersect (const sphere3 <Type> & sphere) const
 
 template <class Type>
 bool
-box3 <Type>::contains (const box3 <Type> & box) const
+box3 <Type>::intersects (const box3 & other) const
 {
-	if (empty () or box .empty ())
+	// Test special cases.
+
+	if (empty ())
+		return false;
+
+	if (other .empty ())
+		return false;
+
+	// Get points.
+
+	const std::vector <vector3 <Type>>  points1 = points ();
+	const std::vector <vector3 <Type>>  points2 = other .points ();
+
+	// Test the three planes spanned by the normal vectors of the faces of the first parallelepiped.
+
+	if (sat::separated (planes (), points1, points2))
+		return false;
+
+	// Test the three planes spanned by the normal vectors of the faces of the second parallelepiped.
+
+	if (sat::separated (other .planes (), points1, points2))
+		return false;
+
+	// Test the nine other planes spanned by the edges of each parallelepiped.
+
+	std::vector <vector3 <Type>>  axes9;
+
+	for (const auto & axis1 : axes ())
+	{
+		for (const auto & axis2 : other .axes ())
+			axes9 .emplace_back (cross (axis1, axis2));
+	}
+
+	if (sat::separated (axes9, points1, points2))
+		return false;
+
+	// Both boxes intersect.
+
+	return true;
+}
+
+template <class Type>
+bool
+box3 <Type>::contains (const box3 <Type> & other) const
+{
+	if (empty () or other .empty ())
 		return false;
 
 	vector3 <Type> min1, max1, min2, max2;
 
 	extents (min1, max1);
-	box .extents (min2, max2);
+	other .extents (min2, max2);
 
 	if (min2 .x () < min1 .x () or min2 .y () < min1 .y () or min2 .z () < min1 .z ())
 		return false;

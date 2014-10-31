@@ -53,26 +53,8 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/Utility/Map.h>
-
 namespace titania {
 namespace puck {
-
-//static
-//X3D::FieldDefinitionArray
-//operator - (X3D::FieldDefinitionArray lhs, X3D::FieldDefinitionArray rhs)
-//{
-//	X3D::FieldDefinitionArray result;
-//
-//	std::sort (lhs .begin (), lhs .end ());
-//	std::sort (rhs .begin (), rhs .end ());
-//
-//	std::set_difference (lhs .begin (), lhs .end (),
-//	                     rhs .begin (), rhs .end (),
-//	                     std::back_inserter (result));
-//
-//	return result;
-//}
 
 NodePropertiesEditor::NodePropertiesEditor (X3DBrowserWindow* const browserWindow) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
@@ -98,6 +80,8 @@ NodePropertiesEditor::initialize ()
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &NodePropertiesEditor::set_selection);
 
 	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
+
+	getNodeChildNotebook () .set_current_page (getConfig () .getInteger ("currentPage"));
 }
 
 void
@@ -150,6 +134,8 @@ NodePropertiesEditor::on_edit_cdata_clicked ()
 
 NodePropertiesEditor::~NodePropertiesEditor ()
 {
+	getConfig () .setItem ("currentPage", getNodeChildNotebook () .get_current_page ());
+
 	dispose ();
 }
 

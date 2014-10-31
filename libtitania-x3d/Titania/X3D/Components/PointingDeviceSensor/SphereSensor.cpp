@@ -100,7 +100,7 @@ SphereSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, const
 {
 	Vector3d exit;
 
-	if (sphere .intersect (hitRay, trackPoint, exit))
+	if (sphere .intersects (hitRay, trackPoint, exit))
 	{
 		if ((abs (hitRay .point () - exit) < abs (hitRay .point () - trackPoint)) - behind)
 			trackPoint = exit;
@@ -165,7 +165,7 @@ SphereSensor::set_motion (const HitPtr & hit)
 			// Find trackPoint on the plane with sphere
 
 			Vector3d tangentPoint;
-			zPlane .intersect (hitRay, tangentPoint);
+			zPlane .intersects (hitRay, tangentPoint);
 
 			hitRay = Line3d (tangentPoint, sphere .center (), point_type ());
 
