@@ -93,6 +93,10 @@ private:
 
 	virtual
 	void
+	on_add_normals_clicked () final override;
+
+	virtual
+	void
 	on_remove_normals_clicked () final override;
 
 	///  @name Members

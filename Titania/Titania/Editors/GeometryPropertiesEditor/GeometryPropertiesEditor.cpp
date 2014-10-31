@@ -121,6 +121,40 @@ GeometryPropertiesEditor::set_buffer ()
 }
 
 void
+GeometryPropertiesEditor::on_add_normals_clicked ()
+{
+	const auto geometries = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
+	const auto undoStep   = std::make_shared <UndoStep> (_ ("Add Normals"));
+
+	for (const auto geometry : geometries)
+	{
+		for (const auto & type : basic::make_reverse_range (geometry -> getType ()))
+		{
+			switch (type)
+			{
+				case X3D::X3DConstants::IndexedFaceSet:
+				{
+					const auto composedGeometryNode = dynamic_cast <X3D::IndexedFaceSet*> (geometry .getValue ());
+
+					undoStep -> addObjects (geometry);
+					undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (composedGeometryNode -> normalIndex ()), composedGeometryNode -> normalIndex ());
+					getBrowserWindow () -> replaceNode (geometry, composedGeometryNode -> normal (), nullptr, undoStep);
+
+					composedGeometryNode -> addNormals ();
+
+					undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (composedGeometryNode -> normalIndex ()), composedGeometryNode -> normalIndex ());
+					undoStep -> addRedoFunction (&X3D::SFNode::setValue,  std::ref (composedGeometryNode -> normal ()),      composedGeometryNode -> normal ());
+				}
+				default:
+					break;
+			}
+		}
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
 GeometryPropertiesEditor::on_remove_normals_clicked ()
 {
 	const auto geometries = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });

@@ -143,6 +143,10 @@ public:
 	{ return *m_CreaseAngleScale; }
 
 	Gtk::Button &
+	getAddNormalsButton () const
+	{ return *m_AddNormalsButton; }
+
+	Gtk::Button &
 	getRemoveNormalsButton () const
 	{ return *m_RemoveNormalsButton; }
 
@@ -173,6 +177,10 @@ public:
 	Gtk::ComboBoxText &
 	getPrimitiveCountCountButton () const
 	{ return *m_PrimitiveCountCountButton; }
+
+	virtual
+	void
+	on_add_normals_clicked () = 0;
 
 	virtual
 	void
@@ -218,6 +226,7 @@ private:
 	Gtk::Box*                      m_CreaseAngleBox;
 	Gtk::SpinButton*               m_CreaseAngleScaleSpinButton;
 	Gtk::Scale*                    m_CreaseAngleScale;
+	Gtk::Button*                   m_AddNormalsButton;
 	Gtk::Button*                   m_RemoveNormalsButton;
 	Gtk::EventBox*                 m_PrimitiveCountEventBox;
 	Gtk::Expander*                 m_PrimitiveCountExpander;

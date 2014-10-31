@@ -149,6 +149,9 @@ public:
 
 	///  @name Operations
 
+	void
+	addNormals ();
+
 	virtual
 	SFNode
 	toPrimitive () const
@@ -192,14 +195,17 @@ private:
 	void
 	build () final override;
 
+	std::vector <Vector3f>
+	createNormals (const PolygonArray &) const;
+
 	void
 	buildNormals (const PolygonArray &);
 
 	void
-	tessellate (PolygonArray &, size_t &);
+	tessellate (const bool, PolygonArray &, size_t &);
 
 	void
-	tessellate (PolygonArray &);
+	tessellate (const bool, PolygonArray &);
 
 
 	///  @name Static members

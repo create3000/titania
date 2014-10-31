@@ -55,7 +55,7 @@
 #include "../Rendering/IndexedLineSet.h"
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
-#include "../Rendering/X3DNormalNode.h"
+#include "../Rendering/Normal.h"
 #include "../Texturing/X3DTextureCoordinateNode.h"
 
 namespace titania {
@@ -162,7 +162,7 @@ IndexedFaceSet::build ()
 	PolygonArray polygons;
 	size_t       reserve = 0;
 
-	tessellate (polygons, reserve);
+	tessellate (convex (), polygons, reserve);
 
 	// Build arrays
 
@@ -267,7 +267,42 @@ IndexedFaceSet::build ()
 }
 
 void
-IndexedFaceSet::buildNormals (const PolygonArray & polygons)
+IndexedFaceSet::addNormals ()
+{
+	PolygonArray polygons;
+	size_t       reserve = 0;
+
+	tessellate (true, polygons, reserve);
+
+	const auto normals    = createNormals (polygons);
+	const auto normalNode = getExecutionContext () -> createNode <Normal> ();
+
+	normal () = normalNode;
+	
+	normalIndex () .clear ();
+
+	size_t i      = 0;
+	auto   normal = normals .begin ();
+
+	for (const auto & index : coordIndex ())
+	{
+		if (index < 0)
+			normalIndex () .emplace_back (-1);
+
+		else
+		{
+			normalIndex () .emplace_back (i ++);
+			normalNode -> vector () .emplace_back (*normal);
+		}
+
+		++ normal;
+	}
+
+	getExecutionContext () -> realize ();
+}
+
+std::vector <Vector3f>
+IndexedFaceSet::createNormals (const PolygonArray & polygons) const
 {
 	std::vector <Vector3f> normals;
 
@@ -326,6 +361,14 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 
 	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
 
+	return normals;
+}
+
+void
+IndexedFaceSet::buildNormals (const PolygonArray & polygons)
+{
+	const auto normals = createNormals (polygons);
+
 	for (const auto & polygon : polygons)
 	{
 		for (const auto & element : polygon .elements)
@@ -339,7 +382,7 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 }
 		
 void
-IndexedFaceSet::tessellate (PolygonArray & polygons, size_t & numVertices)
+IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t & numVertices)
 {
 	if (not getCoord ())
 		return;
@@ -402,11 +445,11 @@ IndexedFaceSet::tessellate (PolygonArray & polygons, size_t & numVertices)
 						}
 						default:
 						{
-							numVertices += convex () ? vertices .size () : (vertices .size () - 2) * 3;
+							numVertices += convex ? vertices .size () : (vertices .size () - 2) * 3;
 
 							// Tessellate polygons.
 
-							tessellate (polygons);
+							tessellate (convex, polygons);
 
 							if (polygons .back () .elements .empty ())
 								vertices .clear ();
@@ -430,12 +473,12 @@ IndexedFaceSet::tessellate (PolygonArray & polygons, size_t & numVertices)
 }
 
 void
-IndexedFaceSet::tessellate (PolygonArray & polygons)
+IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons)
 {
 	Vertices &     vertices = polygons .back () .vertices;
 	ElementArray & elements = polygons .back () .elements;
 
-	if (convex ())
+	if (convex)
 	{
 		elements .emplace_back (vertices);
 		return;
