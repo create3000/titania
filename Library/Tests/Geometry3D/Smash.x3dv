@@ -1,10 +1,10 @@
-#X3D V3.3 utf8 Titania V0.7.4
+#X3D V3.3 utf8 Titania V0.7.5
 
 META "comment" "World of Titania"
 META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Mon, 13 Oct 2014 10:04:50 GMT"
+META "generator" "Titania V0.7.5, http://titania.create3000.de"
+META "modified" "Sun, 02 Nov 2014 06:34:49 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -117,8 +117,9 @@ DEF Gray_1 Background {
 
 Viewpoint {
   description "Home"
-  position 9.39472 -0.0810777 42.1748
-  centerOfRotation 9.39472 -0.0810777 3.3021e-05
+  position -8.51289 6.05384 5.42912
+  orientation -0.761296 0.611331 0.216108 0.764928
+  centerOfRotation -10.5668 2.98531 1.43319
 }
 
 DEF Box_1 Transform {
@@ -359,6 +360,7 @@ DEF ElevationGrid Transform {
       xDimension 9
       zDimension 9
       creaseAngle 1.19952
+      normalPerVertex FALSE
       height [
         0,
         0,

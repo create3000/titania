@@ -143,11 +143,31 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 		{
 			switch (type)
 			{
+				case X3D::X3DConstants::ElevationGrid:
+				{
+					const auto elevationGrid = dynamic_cast <X3D::ElevationGrid*> (geometry .getValue ());
+
+					undoStep -> addObjects (geometry);
+					undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (elevationGrid -> normalPerVertex ()), elevationGrid -> normalPerVertex ());
+					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (elevationGrid -> normalPerVertex ()), true);
+					elevationGrid -> normalPerVertex () = true;
+
+					getBrowserWindow () -> replaceNode (geometry, elevationGrid -> normal (), nullptr, undoStep);
+
+					elevationGrid -> addNormals ();
+
+					undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (elevationGrid -> normal ()), elevationGrid -> normal ());
+					break;
+				}
 				case X3D::X3DConstants::IndexedFaceSet:
 				{
 					const auto indexedFaceSet = dynamic_cast <X3D::IndexedFaceSet*> (geometry .getValue ());
 
 					undoStep -> addObjects (geometry);
+					undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (indexedFaceSet -> normalPerVertex ()), indexedFaceSet -> normalPerVertex ());
+					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (indexedFaceSet -> normalPerVertex ()), true);
+					indexedFaceSet -> normalPerVertex () = true;
+
 					undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> normalIndex ()), indexedFaceSet -> normalIndex ());
 					getBrowserWindow () -> replaceNode (geometry, indexedFaceSet -> normal (), nullptr, undoStep);
 

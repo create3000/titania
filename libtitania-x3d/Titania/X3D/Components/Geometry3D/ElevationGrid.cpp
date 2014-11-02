@@ -54,6 +54,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Rendering/Normal.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 
 namespace titania {
@@ -264,7 +265,7 @@ ElevationGrid::createTexCoord () const
 }
 
 std::vector <Vector3f>
-ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::vector <size_t> & coordIndex) const
+ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::vector <size_t> & coordIndex, const float creaseAngle) const
 {
 	std::vector <Vector3f> normals;
 	normals .reserve (coordIndex .size ());
@@ -286,14 +287,14 @@ ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::
 		normals .resize (normals .size () + 4, normal);
 	}
 
-	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
+	refineNormals (normalIndex, normals, creaseAngle, ccw ());
 
 	return normals;
 }
 
-// p4 - p3 
+// p1 - p4 
 //  |   |
-// p1 - p2
+// p2 - p3
 
 std::vector <size_t>
 ElevationGrid::createCoordIndex () const
@@ -305,10 +306,10 @@ ElevationGrid::createCoordIndex () const
 	{
 		for (int32_t x = 0, size = xDimension () - 1; x < size; ++ x)
 		{
-			coordIndex .emplace_back ((z + 1) * xDimension () + x);         // p1
-			coordIndex .emplace_back ((z + 1) * xDimension () + (x + 1));   // p2
-			coordIndex .emplace_back (      z * xDimension () + (x + 1));   // p3
-			coordIndex .emplace_back (      z * xDimension () + x);         // p4
+			coordIndex .emplace_back (      z * xDimension () + x);         // p1
+			coordIndex .emplace_back ((z + 1) * xDimension () + x);         // p2
+			coordIndex .emplace_back ((z + 1) * xDimension () + (x + 1));   // p3
+			coordIndex .emplace_back (      z * xDimension () + (x + 1));   // p4
 		}
 	}
 
@@ -375,7 +376,7 @@ ElevationGrid::build ()
 	if (normalNode)
 		getNormals () .reserve (coordIndex .size ());
 	else
-		getNormals () = std::move (createNormals (points, coordIndex));
+		getNormals () = createNormals (points, coordIndex, creaseAngle ());
 
 	// Build geometry
 
@@ -425,6 +426,50 @@ ElevationGrid::build ()
 	setCCW (ccw ());
 	setAttribs (attribNodes, attribArrays);
 	setTextureCoordinate (texCoordNode);
+}
+
+void
+ElevationGrid::addNormals ()
+{
+	const auto coordIndex   = createCoordIndex ();
+	const auto points       = createPoints ();
+	const auto normals      = createNormals (points, coordIndex, M_PI);
+	const auto normalNode   = getExecutionContext () -> createNode <Normal> ();
+	const auto xDimension_1 = xDimension () - 1;
+	const auto zDimension_1 = zDimension () - 1;
+	const auto xDimension_2 = xDimension () - 2;
+	const auto zDimension_2 = zDimension () - 2;
+
+	for (int32_t z = 0; z < zDimension_1; ++ z)
+	{
+		for (int32_t x = 0; x < xDimension_1; ++ x)
+		{
+			const auto i = (x + z * xDimension_1) * 4;
+
+			normalNode -> vector () .emplace_back (normals [i]);
+		}
+
+		const auto i = (xDimension_2 + z * xDimension_1) * 4;
+
+		normalNode -> vector () .emplace_back (normals [i + 3]);
+	}
+
+	for (int32_t x = 0; x < xDimension_1; ++ x)
+	{
+		const auto i = (x + zDimension_2 * xDimension_1) * 4;
+
+		normalNode -> vector () .emplace_back (normals [i + 1]);
+	}
+
+	const auto i = (xDimension_2 + zDimension_2 * xDimension_1) * 4;
+
+	normalNode -> vector () .emplace_back (normals [i + 2]);
+
+	//
+
+	normal () = normalNode;
+
+	getExecutionContext () -> realize ();
 }
 
 SFNode
