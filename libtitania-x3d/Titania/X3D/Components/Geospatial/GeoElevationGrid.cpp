@@ -215,7 +215,7 @@ GeoElevationGrid::createTexCoord () const
 }
 
 std::vector <Vector3f>
-GeoElevationGrid::createNormals (const std::vector <Vector3d> & points, const std::vector <size_t> & coordIndex, const float creaseAngle) const
+GeoElevationGrid::createNormals (const std::vector <Vector3d> & points, const std::vector <size_t> & coordIndex, const double creaseAngle) const
 {
 	std::vector <Vector3f> normals;
 	normals .reserve (coordIndex .size ());
