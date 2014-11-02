@@ -230,6 +230,9 @@ public:
 
 	///  @name Operations
 
+	void
+	addNormals ();
+
 	virtual
 	SFNode
 	toPrimitive () const
@@ -271,7 +274,7 @@ private:
 	createTexCoord () const;
 
 	std::vector <Vector3f>
-	createNormals (const std::vector <Vector3d> &, const std::vector <size_t> &) const;
+	createNormals (const std::vector <Vector3d> &, const std::vector <size_t> &, const float) const;
 
 	std::vector <size_t>
 	createCoordIndex () const;

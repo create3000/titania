@@ -1,6 +1,10 @@
-#X3D V3.0 utf8 Titania V0.6.7
+#X3D V3.0 utf8 Titania V0.7.5
 
-META "generator" "Titania V0.6.7, http://titania.create3000.de"
+META "comment" "World of Titania"
+META "created" "Sun, 02 Nov 2014 08:24:22 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.5, http://titania.create3000.de"
+META "modified" "Sun, 02 Nov 2014 08:24:22 GMT"
 META "title" "Water Shader 2"
 
 DEF Water2 Transform {
@@ -26,7 +30,7 @@ DEF Water2 Transform {
       appearance Appearance {
         shaders DEF WaterShader2 ComposedShader {
           inputOnly   SFFloat set_time
-          inputOutput SFVec3f position -0 0 10
+          inputOutput SFVec3f position 29.2858 85.2161 83.1894
           inputOutput SFInt32 waves 5
           inputOutput MFFloat amplitude [
             0.2,
@@ -50,11 +54,11 @@ DEF Water2 Transform {
             0.37
           ]
           inputOutput MFVec2f direction [
-            0.1 0.2,
-            0.3 0.4,
-            0.5 0.6,
-            0.7 0.8,
-            0.9 0.1
+            0.1 -0.2,
+            0.3 -0.4,
+            0.5 -0.6,
+            0.7 -0.8,
+            0.9 -0.1
           ]
           inputOutput SFFloat transparency 0.5
           inputOutput SFNode  texture ComposedCubeMapTexture {

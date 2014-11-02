@@ -1,10 +1,10 @@
-#X3D V3.3 utf8 Titania V0.7.4
+#X3D V3.3 utf8 Titania V0.7.5
 
 META "comment" "World of Titania"
 META "created" "Mon, 13 Oct 2014 00:37:06 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Mon, 13 Oct 2014 00:49:53 GMT"
+META "generator" "Titania V0.7.5, http://titania.create3000.de"
+META "modified" "Sun, 02 Nov 2014 09:09:15 GMT"
 
 NavigationInfo { }
 
@@ -31,10 +31,10 @@ DEF GeoElevationGrid Transform {
     }
     geometry GeoElevationGrid {
       geoGridOrigin -1.570963 3.1415927 0
-      xDimension 2
-      zDimension 2
-      xSpacing 0.31415927
-      zSpacing 0.31415927
+      xDimension 201
+      zDimension 20
+      xSpacing 0.031415927
+      zSpacing 0.031415927
       creaseAngle 3.14159
     }
   }

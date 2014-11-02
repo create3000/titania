@@ -54,6 +54,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/Geospatial/GeoCoordinate.h"
+#include "../../Components/Rendering/Normal.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 
 namespace titania {
@@ -214,7 +215,7 @@ GeoElevationGrid::createTexCoord () const
 }
 
 std::vector <Vector3f>
-GeoElevationGrid::createNormals (const std::vector <Vector3d> & points, const std::vector <size_t> & coordIndex) const
+GeoElevationGrid::createNormals (const std::vector <Vector3d> & points, const std::vector <size_t> & coordIndex, const float creaseAngle) const
 {
 	std::vector <Vector3f> normals;
 	normals .reserve (coordIndex .size ());
@@ -234,7 +235,7 @@ GeoElevationGrid::createNormals (const std::vector <Vector3d> & points, const st
 		normals .resize (normals .size () + 4, normal);
 	}
 
-	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
+	refineNormals (normalIndex, normals, creaseAngle, ccw ());
 
 	return normals;
 }
@@ -350,7 +351,7 @@ GeoElevationGrid::build ()
 	if (normalNode)
 		getNormals () .reserve (coordIndex .size ());
 	else
-		getNormals () = std::move (createNormals (points, coordIndex));
+		getNormals () = createNormals (points, coordIndex, creaseAngle ());
 
 	// Build geometry
 
@@ -396,6 +397,50 @@ GeoElevationGrid::build ()
 	setSolid (solid ());
 	setCCW (ccw ());
 	setTextureCoordinate (texCoordNode);
+}
+
+void
+GeoElevationGrid::addNormals ()
+{
+	const auto coordIndex   = createCoordIndex ();
+	const auto points       = createPoints ();
+	const auto normals      = createNormals (points, coordIndex, M_PI);
+	const auto normalNode   = getExecutionContext () -> createNode <Normal> ();
+	const auto xDimension_1 = xDimension () - 1;
+	const auto zDimension_1 = zDimension () - 1;
+	const auto xDimension_2 = xDimension () - 2;
+	const auto zDimension_2 = zDimension () - 2;
+
+	for (int32_t z = 0; z < zDimension_1; ++ z)
+	{
+		for (int32_t x = 0; x < xDimension_1; ++ x)
+		{
+			const auto i = (x + z * xDimension_1) * 4;
+
+			normalNode -> vector () .emplace_back (normals [i]);
+		}
+
+		const auto i = (xDimension_2 + z * xDimension_1) * 4;
+
+		normalNode -> vector () .emplace_back (normals [i + 3]);
+	}
+
+	for (int32_t x = 0; x < xDimension_1; ++ x)
+	{
+		const auto i = (x + zDimension_2 * xDimension_1) * 4;
+
+		normalNode -> vector () .emplace_back (normals [i + 1]);
+	}
+
+	const auto i = (xDimension_2 + zDimension_2 * xDimension_1) * 4;
+
+	normalNode -> vector () .emplace_back (normals [i + 2]);
+
+	//
+
+	normal () = normalNode;
+
+	getExecutionContext () -> realize ();
 }
 
 SFNode

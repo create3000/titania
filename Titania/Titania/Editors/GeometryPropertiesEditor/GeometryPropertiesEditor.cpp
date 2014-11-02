@@ -159,6 +159,22 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 					undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (elevationGrid -> normal ()), elevationGrid -> normal ());
 					break;
 				}
+				case X3D::X3DConstants::GeoElevationGrid:
+				{
+					const auto geoElevationGrid = dynamic_cast <X3D::GeoElevationGrid*> (geometry .getValue ());
+
+					undoStep -> addObjects (geometry);
+					undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (geoElevationGrid -> normalPerVertex ()), geoElevationGrid -> normalPerVertex ());
+					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (geoElevationGrid -> normalPerVertex ()), true);
+					geoElevationGrid -> normalPerVertex () = true;
+
+					getBrowserWindow () -> replaceNode (geometry, geoElevationGrid -> normal (), nullptr, undoStep);
+
+					geoElevationGrid -> addNormals ();
+
+					undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (geoElevationGrid -> normal ()), geoElevationGrid -> normal ());
+					break;
+				}
 				case X3D::X3DConstants::IndexedFaceSet:
 				{
 					const auto indexedFaceSet = dynamic_cast <X3D::IndexedFaceSet*> (geometry .getValue ());

@@ -1,6 +1,10 @@
-#X3D V3.3 utf8 Titania V0.6.7
+#X3D V3.3 utf8 Titania V0.7.5
 
-META "generator" "Titania V0.6.7, http://titania.create3000.de"
+META "comment" "World of Titania"
+META "created" "Sun, 02 Nov 2014 08:16:44 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.5, http://titania.create3000.de"
+META "modified" "Sun, 02 Nov 2014 08:23:51 GMT"
 META "title" "Water Shader 1"
 
 DEF Water1 Transform {
@@ -46,11 +50,11 @@ DEF Water1 Transform {
             1
           ]
           inputOutput MFVec2f direction [
-            0.1 0.2,
-            0.3 0.4,
-            0.5 0.6,
-            0.7 0.8,
-            0.9 0.1
+            0.1 -0.2,
+            0.3 -0.4,
+            0.5 -0.6,
+            0.7 -0.8,
+            0.9 -0.1
           ]
           inputOutput SFColor color 1 1 1
           inputOutput SFFloat transparency 0
