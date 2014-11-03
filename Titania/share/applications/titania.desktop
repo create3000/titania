@@ -12,12 +12,7 @@ Categories=Graphics;GNOME;GTK;
 MimeType=x-world/x-vrml;model/vrml;model/x3d+vrml;model/x3d+xml;
 GenericName=Titania X3D Browser
 
-[Desktop Action Window]
-Name=Open a New Window
-Exec=titania "about:blank"
-OnlyShowIn=Unity;
-
 [Desktop Action Document]
 Name=Open a New Document
-Exec=titania "about:blank"
+Exec=titania
 OnlyShowIn=Unity;

@@ -1,3 +1,8 @@
+2014-11-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DGridTool.h:
+	* X3DGridTool.cpp: 
+
 2014-11-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GeoElevationGrid.h:

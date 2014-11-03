@@ -182,10 +182,19 @@ private:
 	set_children (const MFNode &);
 
 	void
+	set_matrix (const X3DPtr <X3DTransformNode> &);
+
+	void
 	set_translation (const X3DPtr <X3DTransformNode> &);
 
 	void
+	set_scale (const X3DPtr <X3DTransformNode> &);
+
+	void
 	connectTranslation (const X3DPtr <X3DTransformNode> &);
+
+	void
+	connectScale (const X3DPtr <X3DTransformNode> &);
 
 	///  @name Members
 
