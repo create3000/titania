@@ -129,8 +129,8 @@ DEF Box_1 Transform {
       material Material { }
       texture DEF _1 ImageTexture {
         url [
-          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.png",
-          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.png"
+          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg"
         ]
         repeatS FALSE
         repeatT FALSE
@@ -238,8 +238,8 @@ DEF Cone_1 Transform {
       material Material { }
       texture DEF _2 ImageTexture {
         url [
-          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.png",
-          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.png"
+          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg"
         ]
         repeatS FALSE
         repeatT FALSE
@@ -286,8 +286,8 @@ DEF Cylinder_2 Transform {
       material Material { }
       texture ImageTexture {
         url [
-          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.png",
-          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.png"
+          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg"
         ]
         repeatS FALSE
         repeatT FALSE
@@ -320,8 +320,8 @@ DEF Cylinder_4 Transform {
       material Material { }
       texture ImageTexture {
         url [
-          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.png",
-          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.png"
+          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

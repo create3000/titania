@@ -82,8 +82,8 @@ DEF Lena Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.png",
-          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.png"
+          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

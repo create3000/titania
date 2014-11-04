@@ -6,7 +6,7 @@ DEF _1 LoadSensor {
       url "Cube.wrl"
     }
     ImageTexture {
-      url "../images/lena.png"
+      url "../images/lena.jpg"
     }
     ImageTexture {
       url "http://titania.create3000.de/Library/Examples/earth.jpg"
