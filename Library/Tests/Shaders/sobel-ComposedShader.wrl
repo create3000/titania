@@ -3,7 +3,7 @@
 Shape {
   appearance Appearance {
     texture DEF Lena ImageTexture {
-      url "../images/lena.jpg"
+      url "../images/lena.png"
     }
     shaders ComposedShader {
       field MFVec2f offsets [ -1 1, -2 0, -1 -1, 0 2, 0 0, 0 -2, 1 1, 2 0, 1 -1 ]

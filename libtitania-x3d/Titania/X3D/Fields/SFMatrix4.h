@@ -206,7 +206,7 @@ public:
 	              rotation4f_type &,
 	              vector3_type &,
 	              rotation4f_type &,
-	              vector3_type &) const;
+	              const vector3_type &) const;
 
 	value_type
 	determinant3 () const
@@ -457,7 +457,7 @@ SFMatrix4 <ValueType>::getTransform (vector3_type & translation,
                                      rotation4f_type & rotation,
                                      vector3_type & scale,
                                      rotation4f_type & scaleOrientation,
-                                     vector3_type & center) const
+                                     const vector3_type & center) const
 {
 	typename vector3_type::internal_type t, s, c;
 	typename rotation4_type::internal_type r, so;
@@ -468,7 +468,6 @@ SFMatrix4 <ValueType>::getTransform (vector3_type & translation,
 	rotation         = r;
 	scale            = s;
 	scaleOrientation = so;
-	center           = c;
 }
 
 template <class ValueType>

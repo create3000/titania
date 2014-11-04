@@ -32,8 +32,8 @@ Collision {
                       }
                       texture DEF _2 ImageTexture {
                         url [
-                          "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
-                          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
+                          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.png",
+                          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.png"
                         ]
                         repeatS FALSE
                         repeatT FALSE
@@ -21530,8 +21530,8 @@ Collision {
           }
           texture ImageTexture {
             url [
-              "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
-              "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
+              "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.png",
+              "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.png"
             ]
             repeatS FALSE
             repeatT FALSE

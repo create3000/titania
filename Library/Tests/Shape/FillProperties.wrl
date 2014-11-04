@@ -451,7 +451,7 @@ DEF OverallAdjustment Transform {
                 diffuseColor 0.3 0.3 0.3
               }
               texture ImageTexture {
-                url "../images/lena.jpg"
+                url "../images/lena.png"
               }
             }
             geometry Box { }

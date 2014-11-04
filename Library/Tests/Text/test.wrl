@@ -17,8 +17,8 @@ DEF Text Transform {
       }
       texture DEF _1 ImageTexture {
         url [
-          "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
-          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
+          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.png",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.png"
         ]
         textureProperties TextureProperties { }
       }

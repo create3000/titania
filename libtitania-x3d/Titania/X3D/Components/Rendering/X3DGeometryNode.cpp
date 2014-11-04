@@ -438,6 +438,7 @@ X3DGeometryNode::buildTexCoords ()
 	}
 }
 
+///  Determine the min extent of the bbox, the largest size of the bbox and the two largest indices.
 void
 X3DGeometryNode::getTexCoordParams (Vector3f & min, float & Ssize, int & Sindex, int & Tindex)
 {
@@ -446,40 +447,54 @@ X3DGeometryNode::getTexCoordParams (Vector3f & min, float & Ssize, int & Sindex,
 
 	min = bbox .center () - size / 2.0f;
 
-	const float Xsize = size .x ();
-	const float Ysize = size .y ();
-	const float Zsize = size .z ();
+	Sindex = 0;
 
-	if ((Xsize >= Ysize) and (Xsize >= Zsize))
-	{
-		// X size largest
-		Ssize = Xsize; Sindex = 0;
+	if (size [1] >= size [Sindex])
+		Sindex = 1;
 
-		if (Ysize >= Zsize)
-			Tindex = 1;
-		else
-			Tindex = 2;
-	}
-	else if ((Ysize >= Xsize) and (Ysize >= Zsize))
-	{
-		// Y size largest
-		Ssize = Ysize; Sindex = 1;
+	if (size [2] >= size [Sindex])
+		Sindex = 2;
 
-		if (Xsize >= Zsize)
-			Tindex = 0;
-		else
-			Tindex = 2;
-	}
-	else
-	{
-		// Z is the largest
-		Ssize = Zsize; Sindex = 2;
+	const auto t1 = (Sindex + 1) % 3;
+	const auto t2 = (Sindex + 2) % 3;
 
-		if (Xsize >= Ysize)
-			Tindex = 0;
-		else
-			Tindex = 1;
-	}
+	Tindex = (size [t1] >= size [t2] ? t1 : t2);
+	Ssize  = size [Sindex];
+
+//	const float Xsize = size .x ();
+//	const float Ysize = size .y ();
+//	const float Zsize = size .z ();
+//
+//	if ((Xsize >= Ysize) and (Xsize >= Zsize))
+//	{
+//		// X size largest
+//		Ssize = Xsize; Sindex = 0;
+//
+//		if (Ysize >= Zsize)
+//			Tindex = 1;
+//		else
+//			Tindex = 2;
+//	}
+//	else if ((Ysize >= Xsize) and (Ysize >= Zsize))
+//	{
+//		// Y size largest
+//		Ssize = Ysize; Sindex = 1;
+//
+//		if (Xsize >= Zsize)
+//			Tindex = 0;
+//		else
+//			Tindex = 2;
+//	}
+//	else
+//	{
+//		// Z is the largest
+//		Ssize = Zsize; Sindex = 2;
+//
+//		if (Xsize >= Ysize)
+//			Tindex = 0;
+//		else
+//			Tindex = 1;
+//	}
 }
 
 /*

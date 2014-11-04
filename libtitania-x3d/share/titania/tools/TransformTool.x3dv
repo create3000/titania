@@ -1435,11 +1435,23 @@ function set_scale (value, sgn, centerOffset)
 
 function scale (value, centerOffset)
 {
-	var scale = scaleFactor .multVec (value);
-	
-	if (scale .x && scale .y && scale .z)
+	var scale = SFMatrix4f ();
+	scale .setTransform (new SFVec3f (), new SFRotation (), value);
+
+	var scaledMatrix = matrix .multLeft (scale);
+	var t            = new SFVec3f ();
+	var r            = new SFRotation ();
+	var s            = new SFVec3f ();
+	var so           = new SFRotation ();
+
+	scaledMatrix .getTransform (t, r, s, so, center);
+
+	if (s .x && s .y && s .z)
 	{
-		transform .scale = scale;
+		transform .translation      = t;
+		transform .rotation         = r;
+		transform .scale            = s;
+		transform .scaleOrientation = so;
 
 		if (keepCenter)
 			translateKeepCenter (distanceFromCenter .add (centerOffset));

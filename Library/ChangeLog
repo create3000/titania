@@ -1,3 +1,20 @@
+2014-11-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* test.wrl:
+	* test.x3dv:
+	* 1728.x3dv:
+	* Border.wrl:
+	* Smash.x3dv:
+	* FillProperties.wrl:
+	* LoadSensor.wrl:
+	* OutlineEditor.wrl:
+	* MultiTexture.wrl:
+	* ScreenFontStyle.wrl:
+	* Geometry.wrl:
+	* sobel-ComposedShader.wrl:
+	* OutlineEditor-EXPORT.x3dv:
+	* ComposedTexture3D.wrl: 
+
 2014-11-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* test.x3dv: 

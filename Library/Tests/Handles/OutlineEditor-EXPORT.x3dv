@@ -207,8 +207,8 @@ DEF Export3 Transform {
       material Material { }
       texture ImageTexture {
         url [
-          "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
-          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
+          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.png",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.png"
         ]
         repeatS FALSE
         repeatT FALSE

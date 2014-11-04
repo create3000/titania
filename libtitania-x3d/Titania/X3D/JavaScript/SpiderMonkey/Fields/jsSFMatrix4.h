@@ -405,7 +405,7 @@ template <class Type>
 JSBool
 jsSFMatrix4 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
 {
-	if (argc < 5)
+	if (argc < 6)
 	{
 		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
@@ -413,16 +413,74 @@ jsSFMatrix4 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
 		JSObject* rotationObj         = nullptr;
 		JSObject* scaleObj            = nullptr;
 		JSObject* scaleOrientationObj = nullptr;
+		JSObject* centerObj           = nullptr;
 
 		jsval* const argv = JS_ARGV (context, vp);
 
-		if (not JS_ConvertArguments (context, argc, argv, "/oooo", &translationObj, &rotationObj, &scaleObj, &scaleOrientationObj))
+		if (not JS_ConvertArguments (context, argc, argv, "/ooooo", &translationObj, &rotationObj, &scaleObj, &scaleOrientationObj, &centerObj))
 			return JS_FALSE;
 
+		vector3_field_type  translation;
+		rotation_field_type rotation;
+		vector3_field_type  scale;
+		rotation_field_type scaleOrientation;
+		vector3_field_type  center;
+	
+		if (centerObj)
+		{
+			if (JS_InstanceOfError (context, centerObj, vector3_type::getClass ()))
+				return JS_FALSE;
+
+			else
+				center = *(vector3_field_type*) JS_GetPrivate (context, centerObj);
+		}
+		
+		self -> getTransform (translation, rotation, scale, scaleOrientation, center);
+		
+		// Assign values:
+
+		if (translationObj)
+		{
+			if (JS_InstanceOfError (context, translationObj, vector3_type::getClass ()))
+				return JS_FALSE;
+
+			else
+				*(vector3_field_type*) JS_GetPrivate (context, translationObj) = translation;
+		}
+	
+		if (rotationObj)
+		{
+			if (JS_InstanceOfError (context, rotationObj, jsSFRotation::getClass ()))
+				return JS_FALSE;
+
+			else
+				*(rotation_field_type*) JS_GetPrivate (context, rotationObj) = rotation;
+		}
+
+		if (scaleObj)
+		{
+			if (JS_InstanceOfError (context, scaleObj, vector3_type::getClass ()))
+				return JS_FALSE;
+
+			else
+				*(vector3_field_type*) JS_GetPrivate (context, scaleObj) = scale;
+		}
+	
+		if (scaleOrientationObj)
+		{
+			if (JS_InstanceOfError (context, scaleOrientationObj, jsSFRotation::getClass ()))
+				return JS_FALSE;
+
+			else
+				*(rotation_field_type*) JS_GetPrivate (context, scaleOrientationObj) = scaleOrientation;
+		}
+
+/*
 		vector3_field_type*  translation      = nullptr;
 		rotation_field_type* rotation         = nullptr;
 		vector3_field_type*  scale            = nullptr;
 		rotation_field_type* scaleOrientation = nullptr;
+		vector3_field_type*  center           = nullptr;
 
 		bool noTranslation      = false;
 		bool noRotation         = false;
@@ -484,7 +542,7 @@ jsSFMatrix4 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
 
 		if (scaleOrientationObj)
 		{
-			if (JS_InstanceOfError (context, scaleObj, vector3_type::getClass ()))
+			if (JS_InstanceOfError (context, scaleOrientationObj, jsSFRotation::getClass ()))
 			{
 				if (noTranslation)
 					delete translation;
@@ -506,6 +564,32 @@ jsSFMatrix4 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
 			noScaleOrientation = true;
 		}
 
+		if (centerObj)
+		{
+			if (JS_InstanceOfError (context, centerObj, vector3_type::getClass ()))
+			{
+				if (noTranslation)
+					delete translation;
+
+				if (noRotation)
+					delete rotation;
+
+				if (noScale)
+					delete scale;
+
+				if (noScaleOrientation)
+					delete scaleOrientation;
+
+				return JS_FALSE;
+			}
+			else
+				center = (vector3_field_type*) JS_GetPrivate (context, centerObj);
+		}
+		else if (argc > 4)
+		{
+			-- argc;
+		}
+
 		switch (argc)
 		{
 			case 0:
@@ -522,6 +606,9 @@ jsSFMatrix4 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
 			case 4:
 				self -> getTransform (*translation, *rotation, *scale, *scaleOrientation);
 				break;
+			case 5:
+				self -> getTransform (*translation, *rotation, *scale, *scaleOrientation, *center);
+				break;
 		}
 
 		if (noTranslation)
@@ -535,6 +622,7 @@ jsSFMatrix4 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
 
 		if (noScaleOrientation)
 			delete scaleOrientation;
+*/
 
 		JS_SET_RVAL (context, vp, JSVAL_VOID);
 

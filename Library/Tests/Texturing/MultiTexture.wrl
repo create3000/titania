@@ -41,7 +41,7 @@ DEF MultiTexture Transform {
             loop TRUE
           }
           ImageTexture {
-            url "../images/lena.jpg"
+            url "../images/lena.png"
           }
         ]
       }

@@ -129,7 +129,7 @@ Transform {
           }
           texture [
             ImageTexture {
-              url "../images/lena.jpg"
+              url "../images/lena.png"
             }
             ImageTexture {
               url "../images/ubuntu.png"

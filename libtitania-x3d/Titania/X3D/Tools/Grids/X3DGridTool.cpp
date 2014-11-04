@@ -253,6 +253,9 @@ X3DGridTool::set_matrix (const X3DPtr <X3DTransformNode> & master)
 void
 X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 {
+	// The position is transformed to an absolute position and then transformed into the coordinate systwm of the grid
+	// for easier snap position calculation.
+
 	// Get absolute position.
 
 	const auto absoluteMatrix = master -> getCurrentMatrix () * master -> getTransformationMatrix ();
@@ -326,21 +329,47 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 
 	// Calculate snap position and apply absolute relative translation.
 	
+	Matrix4d snap;
+	Matrix4d currentMatrix;
+
 	Matrix4d grid;
 	grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
 
-	Matrix4d snap;
-	snap .set (Vector3d (),
-	           Rotation4d (),
-	           (getSnapPosition (scalePosition * ~grid) * grid - position) / (scalePosition - position));
+	const auto before = scalePosition - position;
+	const auto after  = getSnapPosition (scalePosition * ~grid) * grid - position;
+	
+	if (0)
+	{
+	
+	}
+	else
+	{
+		auto   delta  = after - before;
+		size_t i      = 0;
 
-	Matrix4d offset;
-	offset .set (position - snap .mult_dir_matrix (position));
+		if (delta [1] and delta [1] < delta [i])
+			i = 1;
 
-	snap *= offset;
+		if (delta [2] and delta [2] < delta [i])
+			i = 2;
 
-	const Matrix4d matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
-	const Matrix4d currentMatrix = absoluteMatrix * snap * ~master -> getTransformationMatrix ();
+		if (not after [i])
+			return;
+
+		const auto min   = after [i] / before [i];
+		const auto scale = Vector3d (min, min, min);
+
+		snap .set (Vector3d (), Rotation4d (), scale);
+
+		Matrix4d offset;
+		offset .set (position - snap .mult_dir_matrix (position));
+
+		snap *= offset;
+
+		currentMatrix = absoluteMatrix * snap * ~master -> getTransformationMatrix ();
+	}
+
+	const Matrix4d matrix = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
 
 	master -> setMatrix (currentMatrix);
 	master -> translation () .removeInterest (this, &X3DGridTool::set_matrix);
