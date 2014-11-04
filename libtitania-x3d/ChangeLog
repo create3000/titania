@@ -1,5 +1,10 @@
 2014-11-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TransformTool.x3dv:
+	* X3DGridTool.cpp: 
+
+2014-11-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFMatrix4.h:
 	* TransformTool.x3dv:
 	* X3DGridTool.cpp:

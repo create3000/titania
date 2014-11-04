@@ -1454,35 +1454,21 @@ function scale (value, centerOffset)
 		transform .scaleOrientation = so;
 
 		if (keepCenter)
-			translateKeepCenter (distanceFromCenter .add (centerOffset));
+			translateKeepCenter (scaledMatrix, distanceFromCenter .add (centerOffset));
 		else
-			translate (distanceFromCenter .add (centerOffset));
+			translate (scaledMatrix, distanceFromCenter .add (centerOffset));
 	}
 }
 
-function translate (distanceFromCenter)
+function translate (scaledMatrix, distanceFromCenter)
 {
-	var scaledMatrix = new SFMatrix4f ();
-	scaledMatrix .setTransform (transform .translation,
-	                            transform .rotation,
-	                            transform .scale,
-	                            transform .scaleOrientation,
-	                            transform .center);
-
 	var centerOffset = scaledMatrix .multDirMatrix (distanceFromCenter) .subtract (matrix .multDirMatrix (distanceFromCenter));
 
 	transform .translation = translation .subtract (centerOffset);
 }
 
-function translateKeepCenter (distanceFromCenter)
+function translateKeepCenter (scaledMatrix, distanceFromCenter)
 {
-	var scaledMatrix = new SFMatrix4f ();
-	scaledMatrix .setTransform (transform .translation,
-	                            transform .rotation,
-	                            transform .scale,
-	                            transform .scaleOrientation,
-	                            transform .center);
-
 	var centerOffset = scaledMatrix .inverse () .multDirMatrix (scaledMatrix .multDirMatrix (distanceFromCenter) .subtract (matrix .multDirMatrix (distanceFromCenter)));
 
 	transform .translation = translation .subtract (centerOffset);

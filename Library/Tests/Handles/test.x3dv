@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 03 Nov 2014 06:41:21 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Tue, 04 Nov 2014 04:13:48 GMT"
+META "modified" "Tue, 04 Nov 2014 08:26:54 GMT"
 
 WorldInfo {
   metadata MetadataSet {
@@ -19,10 +19,20 @@ WorldInfo {
       }
       MetadataSet {
         name "Grid"
-        value MetadataBoolean {
-          name "enabled"
-          value TRUE
-        }
+        value [
+          MetadataBoolean {
+            name "enabled"
+            value TRUE
+          }
+          MetadataInteger {
+            name "dimension"
+            value [
+              12,
+              10,
+              12
+            ]
+          }
+        ]
       }
     ]
   }
@@ -36,7 +46,7 @@ Viewpoint {
 }
 
 DEF Box_1 Transform {
-  translation 2 0 -0.697062
+  translation 1.69222 0 -1
   rotation 0 1 0 0.59103
   children Shape {
     appearance Appearance {
@@ -50,7 +60,6 @@ Transform {
   rotation 0 1 0 0.589049
   children DEF Box Transform {
     translation -3.60555 0 -0.0037728
-    rotation 0 0 1 0
     children Shape {
       appearance Appearance {
         material Material { }
@@ -148,6 +157,17 @@ Transform {
 DEF Box_2 Transform {
   translation 1 0 4
   scale 1.5 1 1
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box { }
+  }
+}
+
+DEF Box_3 Transform {
+  translation 4 0 -4
+  scale 0.201089 0.201 0.201089
   children Shape {
     appearance Appearance {
       material Material { }

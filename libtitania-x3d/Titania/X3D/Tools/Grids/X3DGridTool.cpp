@@ -322,41 +322,43 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 	// Get absolute position.
 
 	const auto absoluteMatrix = master -> getCurrentMatrix () * master -> getTransformationMatrix ();
-	const auto bbox           = Box3d (master -> X3DGroupingNode::getBBox ()) * master -> getCurrentMatrix ();
-	const auto absoluteBBox   = bbox * master -> getTransformationMatrix ();
-	const auto position       = absoluteBBox .center ();
-	const auto scalePosition  = (bbox .center () + bbox .size () / 2.0) * master -> getTransformationMatrix ();
+	const auto bbox           = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
+	const auto position       = bbox .center ();
+	const auto points         = bbox .points ();
 
-	// Calculate snap position and apply absolute relative translation.
-	
 	Matrix4d snap;
 	Matrix4d currentMatrix;
 
-	Matrix4d grid;
-	grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
-
-	const auto before = scalePosition - position;
-	const auto after  = getSnapPosition (scalePosition * ~grid) * grid - position;
-	
 	if (0)
 	{
 	
 	}
 	else
 	{
-		auto   delta  = after - before;
-		size_t i      = 0;
+		// Calculate snap position and apply absolute relative translation.
 
-		if (delta [1] and delta [1] < delta [i])
-			i = 1;
+		Matrix4d grid;
+		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
 
-		if (delta [2] and delta [2] < delta [i])
-			i = 2;
+		double min = std::numeric_limits <double>::infinity ();
 
-		if (not after [i])
+		for (const auto & point : points)
+		{
+			const auto before = point - position;
+			const auto after  = getSnapPosition (point * ~grid) * grid - position;
+			const auto delta  = after - before;
+			const auto ratio  = after / before;
+
+			for (size_t i = 0; i < 3; ++ i)
+			{
+				if (delta [i] and std::abs (ratio [i] - 1) < std::abs (min - 1))
+					min = ratio [i];	
+			}
+		}
+
+		if (min == 0 or min == std::numeric_limits <double>::infinity ())
 			return;
 
-		const auto min   = after [i] / before [i];
 		const auto scale = Vector3d (min, min, min);
 
 		snap .set (Vector3d (), Rotation4d (), scale);
