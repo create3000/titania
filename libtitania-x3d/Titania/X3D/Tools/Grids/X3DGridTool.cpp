@@ -288,7 +288,11 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 void
 X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 {
-	if (getBrowser () -> getSelection () -> activeTool_changed () not_eq Selection::SCALE_TOOL)
+	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
+
+	const int32_t tool = getBrowser () -> getSelection () -> activeTool_changed () - Selection::SCALE_TOOL;
+
+	if (tool < 0)
 		return;
 		
 	constexpr double infinity = std::numeric_limits <double>::infinity ();
@@ -302,15 +306,18 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 	const auto shape          = Box3d (geometry .size (), geometry .center ());
 	const auto bbox           = shape * absoluteMatrix;
 	const auto position       = bbox .center ();
+	
+	__LOG__ << std::endl;
+	__LOG__ << tool << std::endl;
 
-	if (1)
+	if (tool < 3)
 	{
-		// Calculate snap scale and apply absolute relative translation.
+		// Calculate snap scale for one axis. The ratio is calculated in transforms sub space.
 
 		Matrix4d grid;
 		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
 
-		const size_t axis      = 0;
+		const size_t axis      = tool;
 		const auto   direction = bbox .axes () [axis];
 		const auto   point     = direction + position;
 		const auto   after     = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (direction))) * grid * ~absoluteMatrix - shape .center ();
@@ -318,7 +325,6 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 		const auto   delta     = after - before;
 		auto         ratio     = after / before;
 
-		__LOG__ << std::endl;
 		__LOG__ << before << std::endl;
 		__LOG__ << after << std::endl;
 		__LOG__ << delta << std::endl;

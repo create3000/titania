@@ -1266,6 +1266,9 @@ function eventsProcessed ()
     initializeOnly SFMatrix4f matrix 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
     # Sensors below are not used anymore
     initializeOnly MFNode     sensors [
+      USE XScaleSensor
+      USE YScaleSensor
+      USE ZScaleSensor
       USE ScaleSensor1
       USE ScaleSensor2
       USE ScaleSensor3
@@ -1307,41 +1310,17 @@ function set_linetype (scale)
 		lineProperties .linetype = 2;
 }
 
-function set_xActive (value)
-{
-	if (value)
-		activeTool_changed = 3;
-	else
-		activeTool_changed = 0;
-
-	set_active (value)
-}
-
-function set_yActive (value)
-{
-	if (value)
-		activeTool_changed = 4;
-	else
-		activeTool_changed = 0;
-
-	set_active (value)
-}
-
-function set_zActive (value)
-{
-	if (value)
-		activeTool_changed = 5;
-	else
-		activeTool_changed = 0;
-
-	set_active (value)
-}
-
 function set_active (value)
 {
 	if (value)
 	{
-		activeTool_changed = 3;
+		for (i in sensors)
+		{
+			if (sensors [i] .isActive)
+				activeTool_changed = 3 + parseInt (i);
+		}
+
+		print (activeTool_changed);
 
 		translation = transform .translation;
 		scaleFactor = transform .scale;
