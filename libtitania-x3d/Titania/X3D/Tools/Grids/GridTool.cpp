@@ -132,22 +132,38 @@ GridTool::getSnapPosition (const Vector3d & position)
 {
 	auto translation = position;
 
-	const auto x = getSnapPosition (0, translation);
+	for (size_t i = 0; i < 3; ++ i)
+	{
+		const auto value = getSnapPosition (i, position);
 
-	if (std::abs (x - translation .x ()) < std::abs (snapDistance ()))
-		translation .x (x);
-
-	const auto y = getSnapPosition (1, translation);
-
-	if (std::abs (y - translation .y ()) < std::abs (snapDistance ()))
-		translation .y (y);
-
-	const auto z = getSnapPosition (2, translation);
-
-	if (std::abs (z - translation .z ()) < std::abs (snapDistance ()))
-		translation .z (z);
+		if (std::abs (value - translation [i]) < std::abs (snapDistance ()))
+			translation [i] = value;
+	}
 
 	return translation;
+}
+
+Vector3d
+GridTool::getSnapPosition (const Vector3d & position, const Vector3d & direction)
+{
+	for (size_t i = 0; i < 3; ++ i)
+	{
+		const auto translation = getSnapPosition (0, position, direction);
+
+		if (abs (translation - position) < std::abs (snapDistance ()))
+			return translation;
+	}
+
+	return position;
+}
+
+Vector3d
+GridTool::getSnapPosition (const size_t axis, const Vector3d & position, const Vector3d & direction)
+{
+	const auto value = getSnapPosition (axis, position);
+	const auto t     = (value - position [axis]) / direction [axis];
+
+	return position + t * direction;
 }
 
 double

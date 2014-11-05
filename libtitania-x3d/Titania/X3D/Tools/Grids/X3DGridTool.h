@@ -161,6 +161,10 @@ protected:
 	Vector3d
 	getSnapPosition (const Vector3d &) = 0;
 
+	virtual
+	Vector3d
+	getSnapPosition (const Vector3d &, const Vector3d &) = 0;
+
 
 private:
 
@@ -180,9 +184,6 @@ private:
 
 	void
 	set_children (const MFNode &);
-
-	void
-	set_matrix (const X3DPtr <X3DTransformNode> &);
 
 	void
 	set_translation (const X3DPtr <X3DTransformNode> &);

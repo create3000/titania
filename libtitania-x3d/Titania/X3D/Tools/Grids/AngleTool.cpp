@@ -165,6 +165,12 @@ AngleTool::getSnapPosition (const Vector3d & position)
 	return translation;
 }
 
+Vector3d
+AngleTool::getSnapPosition (const Vector3d & position, const Vector3d & direction)
+{
+	return position;
+}
+
 double
 AngleTool::getSnapPosition (const double position)
 {
