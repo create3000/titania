@@ -297,8 +297,9 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 
 	auto       currentMatrix  = master -> getCurrentMatrix ();
 	const auto absoluteMatrix = currentMatrix * master -> getTransformationMatrix ();
-	const auto groupBBox      = Box3d (master -> X3DGroupingNode::getBBox ());
-	const auto bbox           = groupBBox * absoluteMatrix;
+	const auto geometry       = Box3d (master -> X3DGroupingNode::getBBox ());
+	const auto shape          = Box3d (geometry .size (), geometry .center ());
+	const auto bbox           = shape * absoluteMatrix;
 	const auto position       = bbox .center ();
 
 	Matrix4d snap;
@@ -312,8 +313,8 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 
 		const size_t axis   = 0;
 		const auto   point  = bbox .axes () [axis] + position;
-		const auto   after  = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (point))) * grid * ~absoluteMatrix - groupBBox .center ();
-		const auto   before = groupBBox .axes () [axis];
+		const auto   after  = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (point))) * grid * ~absoluteMatrix - shape .center ();
+		const auto   before = shape .axes () [axis];
 		const auto   delta  = after - before;
 		auto         ratio  = after / before;
 
@@ -336,7 +337,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 			snap .scale (ratio);
 
 			Matrix4d offset;
-			offset .set (groupBBox .center () - snap .mult_dir_matrix (groupBBox .center ()));
+			offset .set (shape .center () - snap .mult_dir_matrix (shape .center ()));
 
 			snap *= offset;
 
