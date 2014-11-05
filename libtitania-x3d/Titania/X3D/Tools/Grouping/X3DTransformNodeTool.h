@@ -249,10 +249,8 @@ throw (Error <NOT_SUPPORTED>)
 	try
 	{
 		const auto matrix = Matrix4d (getMatrix ()) * parentMatrix * absoluteMatrix * ~parentMatrix;
-	
-		changing = true;
 
-		getNode () -> setMatrix (matrix);
+		setMatrix (matrix);
 	}
 	catch (const std::domain_error &)
 	{ }

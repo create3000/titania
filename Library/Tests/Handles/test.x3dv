@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 03 Nov 2014 06:41:21 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Tue, 04 Nov 2014 08:26:54 GMT"
+META "modified" "Wed, 05 Nov 2014 03:23:18 GMT"
 
 WorldInfo {
   metadata MetadataSet {
@@ -40,14 +40,15 @@ WorldInfo {
 }
 
 Viewpoint {
-  position 8.24917 7.89547 3.49167
-  orientation -0.527885 0.771452 0.355245 1.40485
+  position -0.129097 9.12526 6.65425
+  orientation -0.971809 -0.170719 -0.162613 1.0333
   centerOfRotation 0.735406 -1.4226 0.127842
 }
 
-DEF Box_1 Transform {
-  translation 1.69222 0 -1
+DEF Box1 Transform {
+  translation 2.17248 0 -1.10114
   rotation 0 1 0 0.59103
+  scale 1.04138 1.04138 1.04138
   children Shape {
     appearance Appearance {
       material Material { }
@@ -58,8 +59,10 @@ DEF Box_1 Transform {
 
 Transform {
   rotation 0 1 0 0.589049
-  children DEF Box Transform {
-    translation -3.60555 0 -0.0037728
+  children DEF Box2 Transform {
+    translation -3.64693 0 -0.00377274
+    rotation 0 0 1 0
+    scale 1.04138 1.04138 1.04138
     children Shape {
       appearance Appearance {
         material Material { }
@@ -154,18 +157,21 @@ Transform {
   }
 }
 
-DEF Box_2 Transform {
-  translation 1 0 4
-  scale 1.5 1 1
-  children Shape {
-    appearance Appearance {
-      material Material { }
+Transform {
+  rotation 0 1 0 0.816334
+  children DEF Box_1 Transform {
+    translation 1.00798 0 3.9925
+    scale 1.36629 0.91086 0.91086
+    children Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box { }
     }
-    geometry Box { }
   }
 }
 
-DEF Box_3 Transform {
+DEF Box_2 Transform {
   translation 4 0 -4
   scale 0.201089 0.201 0.201089
   children Shape {

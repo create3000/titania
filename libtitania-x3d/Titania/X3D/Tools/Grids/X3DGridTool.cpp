@@ -203,8 +203,8 @@ X3DGridTool::set_children (const MFNode & value)
 
 		if (transform)
 		{
-			transform -> translation () .removeInterest (this, &X3DGridTool::set_matrix);
-			transform -> scale ()       .removeInterest (this, &X3DGridTool::set_matrix);
+			transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
+			transform -> scale ()       .removeInterest (this, &X3DGridTool::set_scale);
 		}
 	}
 
@@ -216,8 +216,8 @@ X3DGridTool::set_children (const MFNode & value)
 
 		if (transform)
 		{
-			transform -> translation () .addInterest (this, &X3DGridTool::set_matrix, transform);
-			transform -> scale ()       .addInterest (this, &X3DGridTool::set_matrix, transform);
+			transform -> translation () .addInterest (this, &X3DGridTool::set_translation, transform);
+			transform -> scale ()       .addInterest (this, &X3DGridTool::set_scale,       transform);
 		}
 	}
 }
@@ -253,6 +253,9 @@ X3DGridTool::set_matrix (const X3DPtr <X3DTransformNode> & master)
 void
 X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 {
+	if (getBrowser () -> getSelection () -> activeTool_changed () not_eq Selection::MOVE_TOOL)
+		return;
+
 	// The position is transformed to an absolute position and then transformed into the coordinate systwm of the grid
 	// for easier snap position calculation.
 
@@ -282,10 +285,8 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 	const Matrix4d currentMatrix = absoluteMatrix * snap * ~master -> getTransformationMatrix ();
 
 	master -> setMatrix (currentMatrix);
-	master -> translation () .removeInterest (this, &X3DGridTool::set_matrix);
-	master -> scale ()       .removeInterest (this, &X3DGridTool::set_matrix);
+	master -> translation () .removeInterest (this, &X3DGridTool::set_translation);
 	master -> translation () .addInterest (this, &X3DGridTool::connectTranslation, master);
-	master -> scale ()       .addInterest (this, &X3DGridTool::connectScale,       master);
 
 	// Apply translation to translation group.
 
@@ -302,13 +303,9 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 
 			if (transform)
 			{
-				const Matrix4d absoluteMatrix = transform -> getCurrentMatrix () * transform -> getTransformationMatrix ();
-
-				transform -> setMatrix (absoluteMatrix * differenceMatrix * ~transform -> getTransformationMatrix ());
-				transform -> translation () .removeInterest (this, &X3DGridTool::set_matrix);
-				transform -> scale ()       .removeInterest (this, &X3DGridTool::set_matrix);
+				transform -> addAbsoluteMatrix (differenceMatrix);
+				transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
 				transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
-				transform -> scale ()       .addInterest (this, &X3DGridTool::connectScale,       transform);
 			}
 		}
 		catch (const std::exception &)
@@ -319,28 +316,48 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 void
 X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 {
+	if (getBrowser () -> getSelection () -> activeTool_changed () not_eq Selection::SCALE_TOOL)
+		return;
+
+__LOG__ << master .getValue () << std::endl;
+
 	// Get absolute position.
 
 	const auto absoluteMatrix = master -> getCurrentMatrix () * master -> getTransformationMatrix ();
 	const auto bbox           = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
 	const auto position       = bbox .center ();
-	const auto points         = bbox .points ();
 
 	Matrix4d snap;
 	Matrix4d currentMatrix;
 
 	if (0)
 	{
-	
-	}
-	else
-	{
-		// Calculate snap position and apply absolute relative translation.
+		// Calculate snap scale and apply absolute relative translation.
 
 		Matrix4d grid;
 		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
 
-		double min = std::numeric_limits <double>::infinity ();
+		const size_t i      = 0;
+		const auto   w      = bbox .matrix () [i];
+		const auto   point  = bbox .center () + Vector3d (w .x (), w .y (), w .z ());
+		const auto   before = point - position;
+		const auto   after  = getSnapPosition (point * ~grid) * grid - position;
+		const auto   delta  = after - before;
+
+		if (delta == Vector3d (0, 0, 0))
+			;
+		
+		
+	}
+	else
+	{
+		// Calculate snap scale and apply absolute relative translation.
+
+		Matrix4d grid;
+		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
+
+		const auto points = bbox .points ();
+		double     min    = std::numeric_limits <double>::infinity ();
 
 		for (const auto & point : points)
 		{
@@ -351,17 +368,17 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 
 			for (size_t i = 0; i < 3; ++ i)
 			{
-				if (delta [i] and std::abs (ratio [i] - 1) < std::abs (min - 1))
+				const auto r = std::abs (ratio [i] - 1);
+
+				if (delta [i] and r < snapDistance () and r < std::abs (min - 1))
 					min = ratio [i];	
 			}
 		}
 
 		if (min == 0 or min == std::numeric_limits <double>::infinity ())
-			return;
+			min = 1; // We must procced with a scale 1, for correct grouped event handling.
 
-		const auto scale = Vector3d (min, min, min);
-
-		snap .set (Vector3d (), Rotation4d (), scale);
+		snap .scale (Vector3d (min, min, min));
 
 		Matrix4d offset;
 		offset .set (position - snap .mult_dir_matrix (position));
@@ -374,10 +391,8 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 	const Matrix4d matrix = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
 
 	master -> setMatrix (currentMatrix);
-	master -> translation () .removeInterest (this, &X3DGridTool::set_matrix);
-	master -> scale ()       .removeInterest (this, &X3DGridTool::set_matrix);
-	master -> translation () .addInterest (this, &X3DGridTool::connectTranslation, master);
-	master -> scale ()       .addInterest (this, &X3DGridTool::connectScale,       master);
+	master -> scale () .removeInterest (this, &X3DGridTool::set_scale);
+	master -> scale () .addInterest (this, &X3DGridTool::connectScale, master);
 
 	// Apply translation to translation group.
 
@@ -394,13 +409,9 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 
 			if (transform)
 			{
-				const Matrix4d absoluteMatrix = transform -> getCurrentMatrix () * transform -> getTransformationMatrix ();
-
-				transform -> setMatrix (absoluteMatrix * differenceMatrix * ~transform -> getTransformationMatrix ());
-				transform -> translation () .removeInterest (this, &X3DGridTool::set_matrix);
-				transform -> scale ()       .removeInterest (this, &X3DGridTool::set_matrix);
-				transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
-				transform -> scale ()       .addInterest (this, &X3DGridTool::connectScale,       transform);
+				transform -> addAbsoluteMatrix (differenceMatrix);
+				transform -> scale () .removeInterest (this, &X3DGridTool::set_scale);
+				transform -> scale () .addInterest (this, &X3DGridTool::connectScale, transform);
 			}
 		}
 		catch (const std::exception &)
@@ -412,14 +423,16 @@ void
 X3DGridTool::connectTranslation (const X3DPtr <X3DTransformNode> & transform)
 {
 	transform -> translation () .removeInterest (this, &X3DGridTool::connectTranslation);
-	transform -> translation () .addInterest (this, &X3DGridTool::set_matrix, transform);
+	transform -> translation () .addInterest (this, &X3DGridTool::set_translation, transform);
 }
 
 void
 X3DGridTool::connectScale (const X3DPtr <X3DTransformNode> & transform)
 {
-	transform -> translation () .removeInterest (this, &X3DGridTool::connectScale);
-	transform -> translation () .addInterest (this, &X3DGridTool::set_matrix, transform);
+__LOG__ << transform .getValue () << std::endl;
+
+	transform -> scale () .removeInterest (this, &X3DGridTool::connectScale);
+	transform -> scale () .addInterest (this, &X3DGridTool::set_scale, transform);
 }
 
 X3DGridTool::~X3DGridTool ()
