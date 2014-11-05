@@ -148,7 +148,7 @@ GridTool::getSnapPosition (const Vector3d & position, const Vector3d & direction
 {
 	for (size_t i = 0; i < 3; ++ i)
 	{
-		const auto translation = getSnapPosition (0, position, direction);
+		const auto translation = getSnapPosition (i, position, direction);
 
 		if (abs (translation - position) < std::abs (snapDistance ()))
 			return translation;

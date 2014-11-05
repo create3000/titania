@@ -292,6 +292,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 		return;
 		
 	constexpr double infinity = std::numeric_limits <double>::infinity ();
+	constexpr double eps      = 1e-6;
 
 	// Get absolute position.
 
@@ -302,8 +303,6 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 	const auto bbox           = shape * absoluteMatrix;
 	const auto position       = bbox .center ();
 
-	Matrix4d snap;
-
 	if (1)
 	{
 		// Calculate snap scale and apply absolute relative translation.
@@ -311,12 +310,13 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 		Matrix4d grid;
 		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
 
-		const size_t axis   = 0;
-		const auto   point  = bbox .axes () [axis] + position;
-		const auto   after  = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (point))) * grid * ~absoluteMatrix - shape .center ();
-		const auto   before = shape .axes () [axis];
-		const auto   delta  = after - before;
-		auto         ratio  = after / before;
+		const size_t axis      = 0;
+		const auto   direction = bbox .axes () [axis];
+		const auto   point     = direction + position;
+		const auto   after     = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (direction))) * grid * ~absoluteMatrix - shape .center ();
+		const auto   before    = shape .axes () [axis];
+		const auto   delta     = after - before;
+		auto         ratio     = after / before;
 
 		__LOG__ << std::endl;
 		__LOG__ << before << std::endl;
@@ -326,7 +326,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 
 		for (size_t i = 0; i < 3; ++ i)
 		{
-			if (std::abs (delta [i]) < 1e-5 or std::isnan (ratio [i]) or std::abs (ratio [i]) == infinity)
+			if (std::abs (delta [i]) < eps or std::isnan (ratio [i]) or std::abs (ratio [i]) == infinity)
 				ratio [i] = 1;
 		}
 
@@ -334,6 +334,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 		{
 			// else: We must procced with the original current matrix and a snap scale of [1 1 1], for correct grouped event handling.
 
+			Matrix4d snap;
 			snap .scale (ratio);
 
 			Matrix4d offset;
@@ -374,6 +375,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 		{
 			// else: We must procced with the original current matrix and a snap scale of [1 1 1], for correct grouped event handling.
 
+			Matrix4d snap;
 			snap .scale (Vector3d (min, min, min));
 
 			Matrix4d offset;
@@ -393,7 +395,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 
 	// Apply translation to translation group.
 
-	const Matrix4d differenceMatrix = ~matrix * (absoluteMatrix * snap);
+	const Matrix4d differenceMatrix = ~matrix * currentMatrix * master -> getTransformationMatrix ();
 
 	for (const auto & node : children)
 	{

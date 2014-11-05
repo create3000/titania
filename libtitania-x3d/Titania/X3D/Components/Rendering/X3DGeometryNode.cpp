@@ -94,11 +94,11 @@ X3DGeometryNode::setup ()
 		glGenBuffers (1, &colorBufferId);
 		glGenBuffers (1, &normalBufferId);
 		glGenBuffers (1, &vertexBufferId);
+
+		addInterest (this, &X3DGeometryNode::update);
+
+		update ();
 	}
-
-	addInterest (this, &X3DGeometryNode::update);
-
-	update ();
 }
 
 Box3f

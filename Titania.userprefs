@@ -1,20 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="debian/postinst">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/share/titania/tools/TransformTool.x3dv">
     <Files>
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp" Line="109" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DComposedGeometryNode.h" Line="230" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DComposedGeometryNode.cpp" Line="287" Column="8" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.h" Line="155" Column="1" />
-      <File FileName="debian/postinst" Line="29" Column="18" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/GridTool.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/tools/TransformTool.x3dv" Line="10" Column="32" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="build" expanded="True">
-            <Node name="debian" expanded="True">
-              <Node name="postinst" selected="True" />
-            </Node>
+            <Node name="debian" expanded="True" />
           </Node>
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True" />
@@ -42,10 +38,8 @@
                 </Node>
               </Node>
               <Node name="titania" expanded="True">
-                <Node name="shaders" expanded="True">
-                  <Node name="ParticleSystems" expanded="True">
-                    <Node name="Bits" expanded="True" />
-                  </Node>
+                <Node name="tools" expanded="True">
+                  <Node name="TransformTool.x3dv" selected="True" />
                 </Node>
               </Node>
             </Node>
@@ -69,6 +63,7 @@
                 <Node name="Routing" expanded="True" />
                 <Node name="Tools" expanded="True">
                   <Node name="EnvironmentalSensor" expanded="True" />
+                  <Node name="Grids" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                 </Node>
               </Node>
