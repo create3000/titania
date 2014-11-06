@@ -191,6 +191,12 @@ private:
 	void
 	set_scale (const X3DPtr <X3DTransformNode> &);
 
+	Matrix4d
+	getScaleMatrix (const X3DPtr <X3DTransformNode> &, const size_t);
+
+	Matrix4d
+	getUniformScaleMatrix (const X3DPtr <X3DTransformNode> &, const size_t);
+
 	void
 	connectTranslation (const X3DPtr <X3DTransformNode> &);
 

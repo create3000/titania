@@ -112,7 +112,7 @@ X3DGridTool::realize ()
 
 		auto & set_rotation = getToolNode () -> getField <SFRotation> ("set_rotation");
 		rotation ()  .addInterest (set_rotation);
-		set_rotation .addInterest (rotation ());		
+		set_rotation .addInterest (rotation ());
 		set_rotation .addEvent (rotation ());
 
 		auto & set_scale = getToolNode () -> getField <SFVec3f> ("set_scale");
@@ -246,7 +246,7 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 	}
 
 	// Calculate snap position and apply absolute relative translation.
-	
+
 	Matrix4d grid;
 	grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
 
@@ -294,106 +294,9 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 
 	if (tool < 0)
 		return;
-		
-	constexpr double infinity = std::numeric_limits <double>::infinity ();
-	constexpr double eps      = 1e-6;
 
-	// Get absolute position.
-
-	auto       currentMatrix  = master -> getCurrentMatrix ();
-	const auto absoluteMatrix = currentMatrix * master -> getTransformationMatrix ();
-	const auto geometry       = Box3d (master -> X3DGroupingNode::getBBox ());
-	const auto shape          = Box3d (geometry .size (), geometry .center ());
-	const auto bbox           = shape * absoluteMatrix;
-	const auto position       = bbox .center ();
-	
-	__LOG__ << std::endl;
-	__LOG__ << tool << std::endl;
-
-	if (tool < 3)
-	{
-		// Calculate snap scale for one axis. The ratio is calculated in transforms sub space.
-
-		Matrix4d grid;
-		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
-
-		const size_t axis      = tool;
-		const auto   direction = bbox .axes () [axis];
-		const auto   point     = direction + position;
-		const auto   after     = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (direction))) * grid * ~absoluteMatrix - shape .center ();
-		const auto   before    = shape .axes () [axis];
-		const auto   delta     = after - before;
-		auto         ratio     = after / before;
-
-		__LOG__ << before << std::endl;
-		__LOG__ << after << std::endl;
-		__LOG__ << delta << std::endl;
-		__LOG__ << ratio << std::endl;
-
-		for (size_t i = 0; i < 3; ++ i)
-		{
-			if (std::abs (delta [i]) < eps or std::isnan (ratio [i]) or std::abs (ratio [i]) == infinity)
-				ratio [i] = 1;
-		}
-
-		if (ratio .x () and ratio .y () and ratio .z ())
-		{
-			// else: We must procced with the original current matrix and a snap scale of [1 1 1], for correct grouped event handling.
-
-			Matrix4d snap;
-			snap .scale (ratio);
-
-			Matrix4d offset;
-			offset .set (shape .center () - snap .mult_dir_matrix (shape .center ()));
-
-			snap *= offset;
-
-			currentMatrix = snap * currentMatrix;
-		}
-	}
-	else
-	{
-		// Calculate snap scale and apply absolute relative translation.
-
-		Matrix4d grid;
-		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
-
-		const auto points = bbox .points ();
-		double     min    = infinity;
-
-		for (const auto & point : points)
-		{
-			const auto before = point - position;
-			const auto after  = getSnapPosition (point * ~grid) * grid - position;
-			const auto delta  = after - before;
-			const auto ratio  = after / before;
-
-			for (size_t i = 0; i < 3; ++ i)
-			{
-				const auto r = std::abs (ratio [i] - 1);
-
-				if (delta [i] and r < snapDistance () and r < std::abs (min - 1))
-					min = ratio [i];	
-			}
-		}
-
-		if (min not_eq 0 and min not_eq infinity)
-		{
-			// else: We must procced with the original current matrix and a snap scale of [1 1 1], for correct grouped event handling.
-
-			Matrix4d snap;
-			snap .scale (Vector3d (min, min, min));
-
-			Matrix4d offset;
-			offset .set (position - snap .mult_dir_matrix (position));
-
-			snap *= offset;
-
-			currentMatrix = absoluteMatrix * snap * ~master -> getTransformationMatrix ();
-		}
-	}
-
-	const Matrix4d matrix = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
+	const Matrix4d currentMatrix = tool < 3 ? getScaleMatrix (master, tool) : getUniformScaleMatrix (master, tool);
+	const Matrix4d matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
 
 	master -> setMatrix (currentMatrix);
 	master -> scale () .removeInterest (this, &X3DGridTool::set_scale);
@@ -401,7 +304,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 
 	// Apply translation to translation group.
 
-	const Matrix4d differenceMatrix = ~matrix * currentMatrix * master -> getTransformationMatrix ();
+	const Matrix4d differenceMatrix = ~matrix* currentMatrix* master -> getTransformationMatrix ();
 
 	for (const auto & node : children)
 	{
@@ -422,6 +325,124 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 		catch (const std::exception &)
 		{ }
 	}
+}
+
+Matrix4d
+X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const size_t tool)
+{
+	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
+
+	constexpr double infinity = std::numeric_limits <double>::infinity ();
+	constexpr double eps      = 1e-6;
+
+	// Get absolute position.
+
+	auto       currentMatrix  = master -> getCurrentMatrix ();
+	const auto absoluteMatrix = currentMatrix * master -> getTransformationMatrix ();
+	const auto geometry       = Box3d (master -> X3DGroupingNode::getBBox ());
+	const auto shape          = Box3d (geometry .size (), geometry .center ());
+	const auto bbox           = shape * absoluteMatrix;
+	const auto position       = bbox .center ();
+
+	__LOG__ << std::endl;
+	__LOG__ << tool << std::endl;
+
+	// Calculate snap scale for one axis. The ratio is calculated in transforms sub space.
+
+	Matrix4d grid;
+	grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
+
+	const size_t axis         = tool;
+	const auto   direction    = bbox .axes () [axis];
+	const auto   point        = direction + position;
+	const auto   snapPosition = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (direction))) * grid;
+	const auto   after        = snapPosition * ~absoluteMatrix - shape .center ();
+	const auto   before       = shape .axes () [axis];
+	const auto   delta        = after - before;
+	auto         ratio        = after / before;
+
+	__LOG__ << before << std::endl;
+	__LOG__ << after << std::endl;
+	__LOG__ << delta << std::endl;
+	__LOG__ << ratio << std::endl;
+
+	for (size_t i = 0; i < 3; ++ i)
+	{
+		if (std::abs (delta [i]) < eps or std::isnan (ratio [i]) or std::abs (ratio [i]) == infinity)
+			ratio [i] = 1;
+	}
+
+	// We must procced with the original current matrix and a snap scale of [1 1 1], for correct grouped event handling.
+
+	if (ratio .x () == 0 or ratio .y () == 0 or ratio .z () == 0)
+		return currentMatrix;
+
+	Matrix4d snap;
+	snap .scale (ratio);
+
+	Matrix4d offset;
+	offset .set (shape .center () - snap .mult_dir_matrix (shape .center ()));
+
+	snap *= offset;
+
+	return snap * currentMatrix;
+}
+
+Matrix4d
+X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, const size_t tool)
+{
+	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
+
+	constexpr double infinity = std::numeric_limits <double>::infinity ();
+
+	// Get absolute position.
+
+	auto       currentMatrix  = master -> getCurrentMatrix ();
+	const auto absoluteMatrix = currentMatrix * master -> getTransformationMatrix ();
+	const auto geometry       = Box3d (master -> X3DGroupingNode::getBBox ());  // BBox of the geometry.
+	const auto shape          = Box3d (geometry .size (), geometry .center ()); // AABB BBox
+	const auto bbox           = shape * absoluteMatrix;                         // Absolute OBB of AABB
+	const auto position       = bbox .center ();                                // Absolute position
+
+	// Calculate snap scale and apply absolute relative translation.
+
+	Matrix4d grid;
+
+	grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
+
+	const auto points = bbox .points ();
+	double     min    = infinity;
+
+	for (const auto & point : points)
+	{
+		const auto before = point - position;
+		const auto after  = getSnapPosition (point * ~grid) * grid - position;
+		const auto delta  = after - before;
+		const auto ratio  = after / before;
+
+		for (size_t i = 0; i < 3; ++ i)
+		{
+			const auto r = std::abs (ratio [i] - 1);
+
+			if (delta [i] and r < snapDistance () and r < std::abs (min - 1))
+				min = ratio [i];
+		}
+	}
+
+	// We must procced with the original current matrix and a snap scale of [1 1 1], for correct grouped event handling.
+
+	if (min == 0 or min == infinity)
+		return currentMatrix;
+
+	Matrix4d snap;
+	snap .scale (Vector3d (min, min, min));
+
+	Matrix4d offset;
+	offset .set (position - snap .mult_dir_matrix (position));
+
+	snap *= offset;
+
+	return absoluteMatrix * snap * ~master -> getTransformationMatrix ();
 }
 
 void
