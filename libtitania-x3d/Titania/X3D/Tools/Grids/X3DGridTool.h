@@ -197,6 +197,9 @@ private:
 	Matrix4d
 	getUniformScaleMatrix (const X3DPtr <X3DTransformNode> &, const size_t);
 
+	Matrix4d
+	getOffset (const Box3d &, const Matrix4d, const Vector3d &);
+
 	void
 	connectTranslation (const X3DPtr <X3DTransformNode> &);
 

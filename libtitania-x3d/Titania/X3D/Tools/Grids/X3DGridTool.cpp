@@ -356,36 +356,53 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 	const auto   direction    = bbox .axes () [axis];
 	const auto   point        = direction + position;
 	const auto   snapPosition = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (direction))) * grid;
-	const auto   after        = snapPosition * ~absoluteMatrix - shape .center ();
-	const auto   before       = shape .axes () [axis];
-	const auto   delta        = after - before;
-	auto         ratio        = after / before;
+	auto         after        = (snapPosition * ~absoluteMatrix - shape .center ()) [axis];
+	auto         before       = shape .axes () [axis] [axis];
 
-	__LOG__ << before << std::endl;
-	__LOG__ << after << std::endl;
-	__LOG__ << delta << std::endl;
-	__LOG__ << ratio << std::endl;
-
-	for (size_t i = 0; i < 3; ++ i)
+	if (getBrowser () -> hasControlKey ())
 	{
-		if (std::abs (delta [i]) < eps or std::isnan (ratio [i]) or std::abs (ratio [i]) == infinity)
-			ratio [i] = 1;
+		after  += before;
+		before *= 2;
 	}
+
+	const auto delta = after - before;
+	auto       ratio = after / before;
+
+	//__LOG__ << before << std::endl;
+	//__LOG__ << after << std::endl;
+	//__LOG__ << delta << std::endl;
+	//__LOG__ << ratio << std::endl;
 
 	// We must procced with the original current matrix and a snap scale of [1 1 1], for correct grouped event handling.
 
-	if (ratio .x () == 0 or ratio .y () == 0 or ratio .z () == 0)
+	if (std::abs (delta) < eps or ratio == 0 or std::isnan (ratio) or std::abs (ratio) == infinity)
 		return currentMatrix;
 
+	Vector3d scale (1, 1, 1);
+	scale [axis] = ratio;
+
 	Matrix4d snap;
-	snap .scale (ratio);
+	snap .scale (scale);
 
-	Matrix4d offset;
-	offset .set (shape .center () - snap .mult_dir_matrix (shape .center ()));
-
-	snap *= offset;
+	snap *= getOffset (shape, snap, shape .axes () [axis]);
 
 	return snap * currentMatrix;
+}
+
+Matrix4d
+X3DGridTool::getOffset (const Box3d & bbox, const Matrix4d scaledMatrix, const Vector3d & centerOffset)
+{
+	// To keep the bbox center at its point we must compute a translation offset.
+
+	Vector3d distanceFromCenter = bbox .center ();
+
+	if (getBrowser () -> hasControlKey ())
+		distanceFromCenter -= centerOffset;
+
+	Matrix4d offset;
+	offset .set (distanceFromCenter - scaledMatrix .mult_dir_matrix (distanceFromCenter));
+
+	return offset;
 }
 
 Matrix4d
