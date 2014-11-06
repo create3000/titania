@@ -1,10 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/share/titania/tools/TransformTool.x3dv">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.h" Line="202" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.cpp" Line="463" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/GridTool.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/tools/TransformTool.x3dv" Line="10" Column="32" />
+      <File FileName="libtitania-x3d/share/titania/tools/TransformTool.x3dv" Line="1486" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DTransformNode.h" Line="137" Column="39" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DTransformNode.cpp" Line="136" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h" Line="280" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -38,13 +42,14 @@
                 </Node>
               </Node>
               <Node name="titania" expanded="True">
-                <Node name="tools" expanded="True">
-                  <Node name="TransformTool.x3dv" selected="True" />
-                </Node>
+                <Node name="tools" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Browser" expanded="True">
+                  <Node name="KeyDeviceSensor" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
                   <Node name="CADGeometry" expanded="True" />
                   <Node name="Core" expanded="True" />
@@ -63,7 +68,10 @@
                 <Node name="Routing" expanded="True" />
                 <Node name="Tools" expanded="True">
                   <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Grids" expanded="True" />
+                  <Node name="Grids" expanded="True">
+                    <Node name="X3DGridTool.cpp" selected="True" />
+                  </Node>
+                  <Node name="Grouping" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                 </Node>
               </Node>

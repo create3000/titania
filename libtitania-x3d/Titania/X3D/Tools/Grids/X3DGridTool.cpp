@@ -377,14 +377,14 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 	const auto delta = after - before;
 	auto       ratio = after / before;
 
-	//__LOG__ << before << std::endl;
-	//__LOG__ << after << std::endl;
-	//__LOG__ << delta << std::endl;
-	//__LOG__ << ratio << std::endl;
+	__LOG__ << before << std::endl;
+	__LOG__ << after << std::endl;
+	__LOG__ << delta << std::endl;
+	__LOG__ << ratio << std::endl;
 
 	// We must procced with the original current matrix and a snap scale of [1 1 1], for correct grouped event handling.
 
-	if (std::abs (delta) < eps or ratio == 0 or std::isnan (ratio) or std::abs (ratio) == infinity)
+	if (std::abs (delta) < eps or std::abs (ratio) < 1e-4 or std::isnan (ratio) or std::abs (ratio) == infinity)
 		return currentMatrix;
 
 	Vector3d scale (1, 1, 1);
