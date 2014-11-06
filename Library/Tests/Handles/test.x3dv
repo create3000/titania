@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 03 Nov 2014 06:41:21 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Wed, 05 Nov 2014 14:59:02 GMT"
+META "modified" "Thu, 06 Nov 2014 10:02:25 GMT"
 
 WorldInfo {
   metadata MetadataSet {
@@ -40,9 +40,9 @@ WorldInfo {
 }
 
 Viewpoint {
-  position 0.90035 10.9734 -0.826705
-  orientation -0.999916 0.0129939 -0.000292601 1.64765
-  centerOfRotation 0.735406 -1.4226 0.127842
+  position -2.81944 5.11681 10.0144
+  orientation -0.886625 -0.437453 -0.150103 0.639329
+  centerOfRotation 0.0991445 -1.62198 -0.0190461
 }
 
 Transform {
@@ -59,13 +59,12 @@ Transform {
   }
 }
 
-DEF _1 Transform {
+Transform {
   rotation 0 1 0 0.785399
   children DEF Box2 Transform {
     translation -3.65685 0 -2.26498e-06
     rotation 0 -1 0 0.28395
     scale 1.82843 1 1
-    scaleOrientation 0 0 1 0
     children Shape {
       appearance Appearance {
         material Material { }

@@ -295,7 +295,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 	if (tool < 0)
 		return;
 
-	const Matrix4d currentMatrix = tool < 3 ? getScaleMatrix (master, tool) : getUniformScaleMatrix (master, tool);
+	const Matrix4d currentMatrix = tool < 3 ? getScaleMatrix (master, tool) : getUniformScaleMatrix (master, tool - 3);
 	const Matrix4d matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
 
 	master -> setMatrix (currentMatrix);
@@ -337,12 +337,12 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 
 	// Get absolute position.
 
-	auto       currentMatrix  = master -> getCurrentMatrix ();
+	const auto currentMatrix  = master -> getCurrentMatrix ();
 	const auto absoluteMatrix = currentMatrix * master -> getTransformationMatrix ();
-	const auto geometry       = Box3d (master -> X3DGroupingNode::getBBox ());
-	const auto shape          = Box3d (geometry .size (), geometry .center ());
-	const auto bbox           = shape * absoluteMatrix;
-	const auto position       = bbox .center ();
+	const auto geometry       = Box3d (master -> X3DGroupingNode::getBBox ());  // BBox of the geometry.
+	const auto shape          = Box3d (geometry .size (), geometry .center ()); // AABB BBox
+	const auto bbox           = shape * absoluteMatrix;                         // Absolute OBB of AABB
+	const auto position       = bbox .center ();                                // Absolute position
 
 	__LOG__ << std::endl;
 	__LOG__ << tool << std::endl;
@@ -414,7 +414,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 
 	// Get absolute position.
 
-	auto       currentMatrix  = master -> getCurrentMatrix ();
+	const auto currentMatrix  = master -> getCurrentMatrix ();
 	const auto absoluteMatrix = currentMatrix * master -> getTransformationMatrix ();
 	const auto geometry       = Box3d (master -> X3DGroupingNode::getBBox ());  // BBox of the geometry.
 	const auto shape          = Box3d (geometry .size (), geometry .center ()); // AABB BBox
@@ -424,16 +424,20 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 	// Calculate snap scale and apply absolute relative translation.
 
 	Matrix4d grid;
-
 	grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
 
 	const auto points = bbox .points ();
 	double     min    = infinity;
 
-	for (const auto & point : points)
+	if (getBrowser () -> hasControlKey ())
 	{
-		const auto before = point - position;
-		const auto after  = getSnapPosition (point * ~grid) * grid - position;
+		const auto point  = points [tool];
+		auto before = point - position;
+		auto after  = getSnapPosition (point * ~grid) * grid - position;
+		
+		after  += before;
+		before *= 2;
+	
 		const auto delta  = after - before;
 		const auto ratio  = after / before;
 
@@ -443,6 +447,24 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 
 			if (delta [i] and r < snapDistance () and r < std::abs (min - 1))
 				min = ratio [i];
+		}		
+	}
+	else
+	{
+		for (const auto & point : points)
+		{
+			const auto before = point - position;
+			const auto after  = getSnapPosition (point * ~grid) * grid - position;
+			const auto delta  = after - before;
+			const auto ratio  = after / before;
+
+			for (size_t i = 0; i < 3; ++ i)
+			{
+				const auto r = std::abs (ratio [i] - 1);
+
+				if (delta [i] and r < snapDistance () and r < std::abs (min - 1))
+					min = ratio [i];
+			}
 		}
 	}
 
@@ -454,10 +476,9 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 	Matrix4d snap;
 	snap .scale (Vector3d (min, min, min));
 
-	Matrix4d offset;
-	offset .set (position - snap .mult_dir_matrix (position));
-
-	snap *= offset;
+	snap *= getBrowser () -> hasControlKey ()
+		     ? getOffset (bbox, snap, points [tool] - bbox .center ())
+	        : getOffset (bbox, snap, Vector3d ());
 
 	return absoluteMatrix * snap * ~master -> getTransformationMatrix ();
 }
