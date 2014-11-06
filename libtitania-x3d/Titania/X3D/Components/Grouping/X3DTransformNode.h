@@ -116,6 +116,11 @@ public:
 	///  @name Member access
 
 	virtual
+	bool
+	getKeepCenter () const
+	{ return false; }
+
+	virtual
 	Matrix4d
 	getCurrentMatrix () const;
 
@@ -126,6 +131,10 @@ public:
 	virtual
 	void
 	setMatrixWithCenter (const Matrix4d &, const Vector3f &);
+
+	virtual
+	void
+	setMatrixKeepCenter (const Matrix4d &);
 
 	virtual
 	void

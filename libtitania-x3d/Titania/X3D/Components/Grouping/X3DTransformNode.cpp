@@ -127,5 +127,20 @@ X3DTransformNode::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f &
 	center ()           = c;
 }
 
+void
+X3DTransformNode::setMatrixKeepCenter (const Matrix4d & matrix)
+{
+	try
+	{
+		Vector3f centerOffset = center () + translation () - Vector3f (matrix .origin ());
+
+		centerOffset = (~matrix) .mult_dir_matrix (centerOffset);
+
+		setMatrixWithCenter (matrix, centerOffset);
+	}
+	catch (...)
+	{ }
+}
+
 } // X3D
 } // titania

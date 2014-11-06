@@ -62,6 +62,7 @@ PROTO TransformTool [
   # required fields
   inputOnly   SFBool     set_enabled
   outputOnly  SFBool     isActive
+  outputOnly  SFBool     keepCenter_changed
   outputOnly  SFInt32    activeTool_changed
   inputOutput SFBool     controlKey FALSE
   inputOutput SFBool     shiftKey FALSE
@@ -988,7 +989,7 @@ function translate (value)
   DEF CenterScript Script {
     inputOnly      SFVec3f set_center
     inputOnly      SFTime  set_doubleClickTime
-    outputOnly     SFBool  keepCenter_changed
+    outputOnly     SFBool  keepCenter_changed IS keepCenter_changed
     inputOutput    SFVec3f bboxSize IS bboxSize
     inputOutput    SFVec3f bboxCenter IS bboxCenter
     inputOutput    SFNode  transform IS transform
@@ -1319,8 +1320,6 @@ function set_active (value)
 			if (sensors [i] .isActive)
 				activeTool_changed = 3 + parseInt (i);
 		}
-
-		print (activeTool_changed);
 
 		translation = transform .translation;
 		scaleFactor = transform .scale;

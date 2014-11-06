@@ -298,13 +298,17 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 	const Matrix4d currentMatrix = tool < 3 ? getScaleMatrix (master, tool) : getUniformScaleMatrix (master, tool - 3);
 	const Matrix4d matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
 
-	master -> setMatrix (currentMatrix);
+	if (master -> getKeepCenter ())
+		master -> setMatrixKeepCenter (currentMatrix);
+	else
+		master -> setMatrix (currentMatrix);
+
 	master -> scale () .removeInterest (this, &X3DGridTool::set_scale);
 	master -> scale () .addInterest (this, &X3DGridTool::connectScale, master);
 
 	// Apply translation to translation group.
 
-	const Matrix4d differenceMatrix = ~matrix* currentMatrix* master -> getTransformationMatrix ();
+	const Matrix4d differenceMatrix = ~matrix * currentMatrix* master -> getTransformationMatrix ();
 
 	for (const auto & node : children)
 	{
@@ -390,22 +394,6 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 }
 
 Matrix4d
-X3DGridTool::getOffset (const Box3d & bbox, const Matrix4d scaledMatrix, const Vector3d & centerOffset)
-{
-	// To keep the bbox center at its point we must compute a translation offset.
-
-	Vector3d distanceFromCenter = bbox .center ();
-
-	if (getBrowser () -> hasControlKey ())
-		distanceFromCenter -= centerOffset;
-
-	Matrix4d offset;
-	offset .set (distanceFromCenter - scaledMatrix .mult_dir_matrix (distanceFromCenter));
-
-	return offset;
-}
-
-Matrix4d
 X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, const size_t tool)
 {
 	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
@@ -481,6 +469,22 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 	        : getOffset (bbox, snap, Vector3d ());
 
 	return absoluteMatrix * snap * ~master -> getTransformationMatrix ();
+}
+
+Matrix4d
+X3DGridTool::getOffset (const Box3d & bbox, const Matrix4d scaledMatrix, const Vector3d & offset) const
+{
+	// To keep the bbox center at its point we must compute a translation offset.
+
+	Vector3d distanceFromCenter = bbox .center ();
+
+	if (getBrowser () -> hasControlKey ())
+		distanceFromCenter -= offset;
+
+	Matrix4d translation;
+	translation .set (distanceFromCenter - scaledMatrix .mult_dir_matrix (distanceFromCenter));
+
+	return translation;
 }
 
 void

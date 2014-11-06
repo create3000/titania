@@ -121,7 +121,11 @@ public:
 	{ return getNode () -> center (); }
 
 	///  @name Member access
-	
+
+	virtual
+	bool
+	getKeepCenter () const final override;
+
 	virtual
 	Matrix4d
 	getCurrentMatrix () const final override
@@ -134,6 +138,10 @@ public:
 	virtual
 	void
 	setMatrixWithCenter (const Matrix4d &, const Vector3f &) final override;
+
+	virtual
+	void
+	setMatrixKeepCenter (const Matrix4d &) final override;
 
 	virtual
 	void
@@ -239,6 +247,20 @@ X3DTransformNodeTool <Type>::realize ()
 	{ }
 }
 
+template <class Type>
+bool
+X3DTransformNodeTool <Type>::getKeepCenter () const
+{
+	try
+	{
+		return getToolNode () -> template getField <SFBool> ("keepCenter_changed");
+	}
+	catch (const X3DError & error)
+	{
+		return false;
+	}
+}
+
 // Functions for grouping X3DTransformNodeTools together
 
 template <class Type>
@@ -272,6 +294,15 @@ X3DTransformNodeTool <Type>::setMatrixWithCenter (const Matrix4d & matrix, const
 	changing = true;
 
 	getNode () -> setMatrixWithCenter (matrix, center);
+}
+
+template <class Type>
+void
+X3DTransformNodeTool <Type>::setMatrixKeepCenter (const Matrix4d & matrix)
+{
+	changing = true;
+
+	getNode () -> setMatrixKeepCenter (matrix);
 }
 
 template <class Type>
