@@ -237,10 +237,11 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 
 	Vector3d position;
 
-	if (snapToCenter ())
+	if (snapToCenter () and not master -> getKeepCenter ())
 		position = Vector3d (master -> center () .getValue ()) * absoluteMatrix;
 	else
 	{
+		// Snap to bbox center.
 		const auto bbox = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
 		position = bbox .center ();
 	}
@@ -256,7 +257,11 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 	const Matrix4d matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
 	const Matrix4d currentMatrix = absoluteMatrix * snap * ~master -> getTransformationMatrix ();
 
-	master -> setMatrix (currentMatrix);
+	if (master -> getKeepCenter ())
+		master -> setMatrixKeepCenter (currentMatrix);
+	else
+		master -> setMatrix (currentMatrix);
+
 	master -> translation () .removeInterest (this, &X3DGridTool::set_translation);
 	master -> translation () .addInterest (this, &X3DGridTool::connectTranslation, master);
 
