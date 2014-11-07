@@ -538,7 +538,7 @@ public:
 	getCombineMenuItem () const
 	{ return *m_CombineMenuItem; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getPaintPolygonsMenuItem () const
 	{ return *m_PaintPolygonsMenuItem; }
 
@@ -1457,7 +1457,7 @@ private:
 	Gtk::CheckMenuItem*              m_FollowPrimarySelectionMenuItem;
 	Gtk::MenuItem*                   m_ObjectMenuItem;
 	Gtk::ImageMenuItem*              m_CombineMenuItem;
-	Gtk::MenuItem*                   m_PaintPolygonsMenuItem;
+	Gtk::ImageMenuItem*              m_PaintPolygonsMenuItem;
 	Gtk::MenuItem*                   m_LayoutMenuItem;
 	Gtk::CheckMenuItem*              m_GridLayoutToolMenuItem;
 	Gtk::CheckMenuItem*              m_AngleLayoutToolMenuItem;

@@ -1,14 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="491" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="2508" Column="1" />
-      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.h" Line="98" Column="45" />
-      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="110" Column="35" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.h" Line="110" Column="50" />
+      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="128" Column="4" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="91" Column="44" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="496" Column="60" />
+      <File FileName="Titania/Titania/ComposedWidgets/MFColorRGBAButton.h" Line="334" Column="30" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -47,6 +46,7 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="KeyDeviceSensor" expanded="True" />
                 </Node>
@@ -56,12 +56,11 @@
                   <Node name="EnvironmentalSensor" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
                   <Node name="Grouping" expanded="True" />
-                  <Node name="Layering" expanded="True">
-                    <Node name="X3DLayerNode.cpp" selected="True" />
-                  </Node>
+                  <Node name="Layering" expanded="True" />
                   <Node name="ParticleSystems" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                   <Node name="Shaders" expanded="True" />
+                  <Node name="Shape" expanded="True" />
                   <Node name="Time" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
@@ -90,13 +89,16 @@
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
+              <Node name="ComposedWidgets" expanded="True" />
               <Node name="Editors" expanded="True">
                 <Node name="AppearanceEditor" expanded="True" />
                 <Node name="ColorPerVertexEditor" expanded="True" />
                 <Node name="GeometryPropertiesEditor" expanded="True" />
               </Node>
               <Node name="Undo" expanded="True" />
+              <Node name="UserInterfaces" expanded="True" />
             </Node>
+            <Node name="titania" selected="True" />
           </Node>
           <Node name="x3dtidy" expanded="True" />
         </State>

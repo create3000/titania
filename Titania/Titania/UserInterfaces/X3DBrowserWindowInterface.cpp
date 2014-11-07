@@ -371,8 +371,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ImageMenuItem with id 'CombineMenuItem'.
 	m_CombineMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_combine_activate));
-
-	// Connect object Gtk::MenuItem with id 'PaintPolygonsMenuItem'.
 	m_PaintPolygonsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paint_polygons_activate));
 
 	// Connect object Gtk::CheckMenuItem with id 'GridLayoutToolMenuItem'.

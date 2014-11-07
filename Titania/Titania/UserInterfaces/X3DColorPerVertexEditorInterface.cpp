@@ -84,10 +84,16 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
+	m_builder -> get_widget ("ColorBox", m_ColorBox);
 	m_builder -> get_widget ("ColorButton", m_ColorButton);
+	m_builder -> get_widget ("AddColorButton", m_AddColorButton);
+	m_builder -> get_widget ("ColorsScrolledWindow", m_ColorsScrolledWindow);
 
 	// Connect object Gtk::ToolButton with id 'LookAtButton'.
 	m_LookAtButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_look_at_all_clicked));
+
+	// Connect object Gtk::Button with id 'AddColorButton'.
+	m_AddColorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_add_color_clicked));
 
 	// Call construct handler of base class.
 	construct ();

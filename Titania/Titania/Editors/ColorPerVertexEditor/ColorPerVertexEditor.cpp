@@ -64,7 +64,12 @@ ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindo
 	                           coord (),
 	                  indexedFaceSet (),
 	                           color (),
-	                     colorButton (getBrowserWindow (), getColorButton (), getColorAdjustment (), getColorButton (), "color")
+	                     colorButton (getBrowserWindow (),
+	                                  getColorButton (),
+	                                  getColorAdjustment (),
+	                                  getColorBox (),
+	                                  getColorsScrolledWindow (),
+	                                  "color")
 {
 	preview -> set_antialiasing (4);
 	colorButton .setUndo (false);
@@ -170,16 +175,35 @@ ColorPerVertexEditor::on_look_at_all_clicked ()
 }
 
 void
+ColorPerVertexEditor::on_add_color_clicked ()
+{
+	color -> color () .emplace_back (color -> color () .back ());
+
+	colorButton .setIndex (color -> color () .size () - 1);
+}
+
+void
 ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 {
 	if (not coord)
 		return;
 
-	set_cross (hitPoint);
+	const auto index = getPointIndex (hitPoint);
+	const auto point = coord -> get1Point (index);
+
+	set_crossHair (point);
 }
 
 void
-ColorPerVertexEditor::set_cross (const X3D::Vector3f & hitPoint)
+ColorPerVertexEditor::set_crossHair (const X3D::Vector3f & point)
+{
+	const auto cross = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Cross");
+
+	cross -> translation () = point;
+}
+
+size_t
+ColorPerVertexEditor::getPointIndex (const X3D::Vector3f & hitPoint) const
 {
 	float  min   = std::numeric_limits <float>::infinity ();
 	size_t index = 0;
@@ -195,9 +219,7 @@ ColorPerVertexEditor::set_cross (const X3D::Vector3f & hitPoint)
 		}
 	}
 
-	const auto cross = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Cross");
-
-	cross -> translation () = coord -> get1Point (index);
+	return index;
 }
 
 ColorPerVertexEditor::~ColorPerVertexEditor ()

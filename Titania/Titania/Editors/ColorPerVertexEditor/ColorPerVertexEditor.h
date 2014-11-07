@@ -93,12 +93,20 @@ private:
 	
 	void
 	on_look_at_all_clicked () final override;
+	
+	void
+	on_add_color_clicked () final override;
 
 	void
 	set_hitPoint (const X3D::Vector3f &);
 
 	void
-	set_cross (const X3D::Vector3f &);
+	set_crossHair (const X3D::Vector3f &);
+
+	///  @name Operations
+
+	size_t
+	getPointIndex (const X3D::Vector3f &) const;
 
 	///  @name Members
 

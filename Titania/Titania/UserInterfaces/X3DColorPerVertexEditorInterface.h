@@ -182,13 +182,29 @@ public:
 	getLookAtButton () const
 	{ return *m_LookAtButton; }
 
+	Gtk::Box &
+	getColorBox () const
+	{ return *m_ColorBox; }
+
 	Gtk::Button &
 	getColorButton () const
 	{ return *m_ColorButton; }
 
+	Gtk::Button &
+	getAddColorButton () const
+	{ return *m_AddColorButton; }
+
+	Gtk::ScrolledWindow &
+	getColorsScrolledWindow () const
+	{ return *m_ColorsScrolledWindow; }
+
 	virtual
 	void
 	on_look_at_all_clicked () = 0;
+
+	virtual
+	void
+	on_add_color_clicked () = 0;
 
 	virtual
 	~X3DColorPerVertexEditorInterface ();
@@ -224,7 +240,10 @@ private:
 	Gtk::Box*                      m_Widget;
 	Gtk::Box*                      m_PreviewBox;
 	Gtk::ToolButton*               m_LookAtButton;
+	Gtk::Box*                      m_ColorBox;
 	Gtk::Button*                   m_ColorButton;
+	Gtk::Button*                   m_AddColorButton;
+	Gtk::ScrolledWindow*           m_ColorsScrolledWindow;
 
 };
 

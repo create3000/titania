@@ -8,6 +8,7 @@
       <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
       <source stock-id="Index" filename="icons/Index.svg"/>
       <source stock-id="Placement" filename="icons/Placement.svg"/>
+      <source stock-id="PaintBrush" filename="icons/PaintBrush.svg"/>
       <source stock-id="Icon" filename="icons/icon.svg"/>
       <source stock-id="Library" filename="icons/Library.svg"/>
       <source stock-id="GroupNodes" filename="icons/Group.svg"/>
@@ -179,6 +180,11 @@
     <property name="can_focus">False</property>
     <property name="stock">Combine</property>
     <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image14">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">PaintBrush</property>
   </object>
   <object class="GtkImage" id="image4">
     <property name="visible">True</property>
@@ -1305,11 +1311,13 @@
                               </object>
                             </child>
                             <child>
-                              <object class="GtkMenuItem" id="PaintPolygonsMenuItem">
+                              <object class="GtkImageMenuItem" id="PaintPolygonsMenuItem">
+                                <property name="label" translatable="yes">_Paint Polygons...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Paint Polygons</property>
                                 <property name="use_underline">True</property>
+                                <property name="image">image14</property>
+                                <property name="use_stock">False</property>
                                 <signal name="activate" handler="on_paint_polygons_activate" swapped="no"/>
                               </object>
                             </child>
@@ -1353,6 +1361,7 @@
                                 <property name="label" translatable="yes">Grid _Properties ...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="use_underline">True</property>
                                 <property name="image">image10</property>
                                 <property name="use_stock">False</property>
                                 <signal name="activate" handler="on_grid_properties_activate" swapped="no"/>
