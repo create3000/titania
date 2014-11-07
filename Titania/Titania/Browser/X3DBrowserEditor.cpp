@@ -71,7 +71,9 @@ X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
 	                  enabled (false),
 	             currentScene (),
 	                selection (new BrowserSelection (getBrowserWindow ())),
-	             undoMatrices ()
+	             undoMatrices (),
+	                 undoStep (),
+	                     tool (NONE_TOOL)
 {
 	addChildren (enabled);
 }
@@ -2305,17 +2307,29 @@ X3DBrowserEditor::addPrototypeInstance (const std::string & name)
 // Undo functions
 
 void
-X3DBrowserEditor::translateSelection (const X3D::Vector3f & translation, const bool alongFrontPlane)
+X3DBrowserEditor::translateSelection (const X3D::Vector3f & translation, const bool alongFrontPlane, const ToolType currentTool)
 {
+	using setValue = void (X3D::SFVec3f::*) (const X3D::Vector3f &);
+
+	static const std::vector <const char*> undoText = {
+		"Nudge Left",
+		"Nudge Right",
+		"Nudge Up",
+		"Nudge Down",
+		"Nudge Front",
+		"Nudge Back"
+	};
+
 	for (const auto & node : basic::make_reverse_range (getSelection () -> getChildren ()))
 	{
 		X3D::X3DTransformNodePtr transform (node);
 
 		if (transform)
 		{
-			using setValue = void (X3D::SFVec3f::*) (const X3D::Vector3f &);
+			if (currentTool not_eq tool or undoStep not_eq getBrowserWindow () -> getUndoStep ())
+				undoStep = std::make_shared <UndoStep> (_ (undoText [currentTool - NUDGE_LEFT]));
 
-			const auto undoStep = std::make_shared <UndoStep> (_ ("Nudge"));
+			tool = currentTool;
 
 			getSelection () -> redoRestoreSelection (undoStep);
 
@@ -2327,7 +2341,8 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & translation, const b
 
 			getSelection () -> undoRestoreSelection (undoStep);
 
-			addUndoStep (undoStep);
+			if (undoStep not_eq getBrowserWindow () -> getUndoStep ())
+				addUndoStep (undoStep);
 			break;
 		}
 	}

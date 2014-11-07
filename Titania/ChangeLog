@@ -1,3 +1,9 @@
+2014-11-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp: 
+
 2014-11-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* titania: 

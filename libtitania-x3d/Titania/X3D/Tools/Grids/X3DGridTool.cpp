@@ -374,12 +374,12 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 	const auto delta = after - before;
 	auto       ratio = after / before;
 
-	__LOG__ << std::endl;
-	__LOG__ << tool << std::endl;
-	__LOG__ << before << std::endl;
-	__LOG__ << after << std::endl;
-	__LOG__ << delta << std::endl;
-	__LOG__ << ratio << std::endl;
+	//	__LOG__ << std::endl;
+	//	__LOG__ << tool << std::endl;
+	//	__LOG__ << before << std::endl;
+	//	__LOG__ << after << std::endl;
+	//	__LOG__ << delta << std::endl;
+	//	__LOG__ << ratio << std::endl;
 
 	// We must procced with the original current matrix and a snap scale of [1 1 1], for correct grouped event handling.
 

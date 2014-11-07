@@ -410,29 +410,29 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 			case GDK_KEY_Up:
 			{
 				if (getKeys () .control ())
-					translateSelection (X3D::Vector3f (0, 0, -nudge), alongFrontPlane);
+					translateSelection (X3D::Vector3f (0, 0, -nudge), alongFrontPlane, NUDGE_BACK);
 				else
-					translateSelection (X3D::Vector3f (0, nudge, 0), alongFrontPlane);
+					translateSelection (X3D::Vector3f (0, nudge, 0), alongFrontPlane, NUDGE_UP);
 
 				return true;
 			}
 			case GDK_KEY_Down:
 			{
 				if (getKeys () .control ())
-					translateSelection (X3D::Vector3f (0, 0, nudge), alongFrontPlane);
+					translateSelection (X3D::Vector3f (0, 0, nudge), alongFrontPlane, NUDGE_FRONT);
 				else
-					translateSelection (X3D::Vector3f (0, -nudge, 0), alongFrontPlane);
+					translateSelection (X3D::Vector3f (0, -nudge, 0), alongFrontPlane, NUDGE_DOWN);
 
 				return true;
 			}
 			case GDK_KEY_Left:
 			{
-				translateSelection (X3D::Vector3f (-nudge, 0, 0), alongFrontPlane);
+				translateSelection (X3D::Vector3f (-nudge, 0, 0), alongFrontPlane, NUDGE_LEFT);
 				return true;
 			}
 			case GDK_KEY_Right:
 			{
-				translateSelection (X3D::Vector3f (nudge, 0, 0), alongFrontPlane);
+				translateSelection (X3D::Vector3f (nudge, 0, 0), alongFrontPlane, NUDGE_RIGHT);
 				return true;
 			}
 			default:

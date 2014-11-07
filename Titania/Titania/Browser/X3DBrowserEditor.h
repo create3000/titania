@@ -246,9 +246,6 @@ public:
 	addPrototypeInstance (const std::string &);
 
 	void
-	translateSelection (const X3D::Vector3f &, const bool);
-
-	void
 	saveMatrix (const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
@@ -279,6 +276,19 @@ protected:
 
 	friend class X3DBrowserSelection;
 
+	///  @name Member types
+	
+	enum ToolType
+	{
+		NONE_TOOL,
+		NUDGE_LEFT,
+		NUDGE_RIGHT,
+		NUDGE_UP,
+		NUDGE_DOWN,
+		NUDGE_FRONT,
+		NUDGE_BACK
+	};
+
 	/// @name Construction
 
 	X3DBrowserEditor (const X3D::BrowserPtr &);
@@ -307,6 +317,9 @@ protected:
 
 	bool
 	getPasteStatus () const;
+
+	void
+	translateSelection (const X3D::Vector3f &, const bool, const ToolType);
 
 
 private:
@@ -408,6 +421,8 @@ private:
 	X3D::X3DExecutionContextPtr        currentScene;
 	std::unique_ptr <BrowserSelection> selection;
 	UndoMatrixIndex                    undoMatrices;
+	UndoStepPtr                        undoStep;
+	ToolType                           tool;
 
 };
 
