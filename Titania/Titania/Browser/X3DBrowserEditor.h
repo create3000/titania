@@ -422,6 +422,7 @@ private:
 	std::unique_ptr <BrowserSelection> selection;
 	UndoMatrixIndex                    undoMatrices;
 	UndoStepPtr                        undoStep;
+	double                             undoTime;
 	ToolType                           tool;
 
 };

@@ -66,6 +66,8 @@
 namespace titania {
 namespace puck {
 
+static constexpr double UNDO_TIME = 0.6; // Key press delay time + 0.1???
+
 X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
 	         X3DBrowserWidget (browser),
 	                  enabled (false),
@@ -73,6 +75,7 @@ X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
 	                selection (new BrowserSelection (getBrowserWindow ())),
 	             undoMatrices (),
 	                 undoStep (),
+	                 undoTime (0),
 	                     tool (NONE_TOOL)
 {
 	addChildren (enabled);
@@ -2326,10 +2329,11 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & translation, const b
 
 		if (transform)
 		{
-			if (currentTool not_eq tool or undoStep not_eq getBrowserWindow () -> getUndoStep ())
+			if (currentTool not_eq tool or chrono::now () - undoTime > UNDO_TIME or undoStep not_eq getBrowserWindow () -> getUndoStep ())
 				undoStep = std::make_shared <UndoStep> (_ (undoText [currentTool - NUDGE_LEFT]));
 
-			tool = currentTool;
+			tool     = currentTool;
+			undoTime = chrono::now ();
 
 			getSelection () -> redoRestoreSelection (undoStep);
 
