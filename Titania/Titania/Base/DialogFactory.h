@@ -73,6 +73,7 @@
 #include "../Editors/NavigationInfoEditor/NavigationInfoEditor.h"
 #include "../Editors/ViewpointEditor/ViewpointEditor.h"
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
+#include "../Editors/ColorPerVertexEditor/ColorPerVertexEditor.h"
 
 namespace titania {
 namespace puck {
@@ -90,6 +91,7 @@ public:
 		         std::make_pair ("FileImportDialog",         constructDialog <FileImportDialog>),
 		         std::make_pair ("FileSaveDialog",           constructDialog <FileSaveDialog>),
 		         std::make_pair ("FileSaveWarningDialog",    constructDialog <FileSaveWarningDialog>),
+		         std::make_pair ("ColorPerVertexEditor",     constructDialog <ColorPerVertexEditor>),
 		         std::make_pair ("GridEditor",               constructDialog <GridEditor>),
 		         std::make_pair ("NodeIndex",                constructDialog <NodeIndex>),
 		         std::make_pair ("NodePropertiesEditor",     constructDialog <NodePropertiesEditor>),

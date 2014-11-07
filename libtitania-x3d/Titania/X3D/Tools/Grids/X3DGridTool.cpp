@@ -427,7 +427,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 
 		const auto point  = points [tool];
 		auto before = point - position;
-		auto after  = getSnapPosition (point * ~grid) * grid - position;
+		auto after  = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (before))) * grid - position;
 		
 		after  += before;
 		before *= 2;
@@ -439,7 +439,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 		{
 			const auto r = std::abs (ratio [i] - 1);
 
-			if (delta [i] and r < snapDistance () and r < std::abs (min - 1))
+			if (delta [i] and r < std::abs (min - 1))
 				min = ratio [i];
 		}		
 	}
@@ -448,7 +448,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 		for (const auto & point : points)
 		{
 			const auto before = point - position;
-			const auto after  = getSnapPosition (point * ~grid) * grid - position;
+			const auto after  = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (before))) * grid - position;
 			const auto delta  = after - before;
 			const auto ratio  = after / before;
 
@@ -456,7 +456,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 			{
 				const auto r = std::abs (ratio [i] - 1);
 
-				if (delta [i] and r < snapDistance () and r < std::abs (min - 1))
+				if (delta [i] and r < std::abs (min - 1))
 					min = ratio [i];
 			}
 		}

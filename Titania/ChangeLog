@@ -1,5 +1,26 @@
 2014-11-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* DialogFactory.h:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.xml:
+	* SFColorButton.h:
+	* SFColorRGBAButton.h:
+	* MFColorRGBAButton.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DColorPerVertexEditorInterface.h:
+	* ColorPerVertexEditorPreview.x3dv:
+	* X3DColorPerVertexEditorInterface.cpp:
+	* ColorPerVertexEditor.h:
+	* ColorPerVertexEditor.cpp:
+	* X3DPrecisionPlacementPanelInterface.cpp: 
+
+2014-11-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserEditor.cpp: 
 
 2014-11-07  Holger Seelig  <holger.seelig@yahoo.de>

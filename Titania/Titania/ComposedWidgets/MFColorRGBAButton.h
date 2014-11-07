@@ -48,29 +48,40 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_SFCOLOR_BUTTON_H__
-#define __TITANIA_COMPOSED_WIDGETS_SFCOLOR_BUTTON_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_MFCOLOR_RGBABUTTON_H__
+#define __TITANIA_COMPOSED_WIDGETS_MFCOLOR_RGBABUTTON_H__
 
-#include "../ComposedWidgets/X3DComposedWidget.h"
 #include "../ComposedWidgets/Cairo.h"
+#include "../ComposedWidgets/X3DComposedWidget.h"
 
 namespace titania {
 namespace puck {
 
-class SFColorButton :
+class MFColorRGBAButton :
 	public X3DComposedWidget
 {
 public:
 
 	///  @name Construction
 
-	SFColorButton (X3DBrowserWindow* const,
-	               Gtk::Button &,
-	               const Glib::RefPtr <Gtk::Adjustment> &,
-	               Gtk::Widget &,
-	               const std::string &);
+	MFColorRGBAButton (X3DBrowserWindow* const,
+	                   Gtk::Button &,
+	                   const Glib::RefPtr <Gtk::Adjustment> &,
+	                   Gtk::Widget &,
+	                   const std::string &);
 
 	///  @name Member access
+
+	void
+	setIndex (const int value)
+	{
+		index = value;
+		set_field ();
+	}
+
+	int
+	getIndex () const
+	{ return index; }
 
 	void
 	setNodes (const X3D::MFNode &);
@@ -82,7 +93,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~SFColorButton ();
+	~MFColorRGBAButton ();
 
 
 private:
@@ -96,7 +107,7 @@ private:
 	on_value_changed ();
 
 	void
-	set_color (const int, const X3D::Color3f &);
+	set_color (const int, const X3D::Color4f &);
 
 	void
 	set_field ();
@@ -105,7 +116,7 @@ private:
 	set_buffer ();
 
 	void
-	connect (const X3D::SFColor &);
+	connect (const X3D::MFColorRGBA &);
 
 	bool
 	on_draw (const Cairo::RefPtr <Cairo::Context> &);
@@ -114,7 +125,7 @@ private:
 	on_clicked ();
 
 	Gdk::RGBA
-	to_rgba (const X3D::Color3f &);
+	to_rgba (const X3D::Color4f &);
 
 	///  @name Members
 
@@ -129,16 +140,17 @@ private:
 	int                                  input;
 	bool                                 changing;
 	X3D::SFTime                          buffer;
-	float                                hsv [3];
+	float                                hsva [4];
+	int                                  index;
 
 };
 
 inline
-SFColorButton::SFColorButton (X3DBrowserWindow* const browserWindow,
-                              Gtk::Button & colorButton,
-                              const Glib::RefPtr <Gtk::Adjustment> & valueAdjustment,
-                              Gtk::Widget & widget,
-                              const std::string & name) :
+MFColorRGBAButton::MFColorRGBAButton (X3DBrowserWindow* const browserWindow,
+                                      Gtk::Button & colorButton,
+                                      const Glib::RefPtr <Gtk::Adjustment> & valueAdjustment,
+                                      Gtk::Widget & widget,
+                                      const std::string & name) :
 	 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DComposedWidget (),
 	      colorButton (colorButton),
@@ -152,32 +164,33 @@ SFColorButton::SFColorButton (X3DBrowserWindow* const browserWindow,
 	            input (-1),
 	         changing (false),
 	           buffer (),
-	              hsv ()
+	             hsva (),
+	            index (0)
 {
 	// Buffer
 
 	addChildren (buffer);
-	buffer .addInterest (this, &SFColorButton::set_buffer);
+	buffer .addInterest (this, &MFColorRGBAButton::set_buffer);
 
 	// Button
 
-	colorButton .signal_clicked () .connect (sigc::mem_fun (*this, &SFColorButton::on_clicked));
+	colorButton .signal_clicked () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_clicked));
 	colorButton .add (drawingArea);
 
 	// Drawing Area
 
-	drawingArea .signal_draw () .connect (sigc::mem_fun (*this, &SFColorButton::on_draw));
+	drawingArea .signal_draw () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_draw));
 	drawingArea .show ();
 
 	// Value Adjustment
 
-	valueAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &SFColorButton::on_value_changed));
+	valueAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_value_changed));
 
 	// Dialog
 
 	dialog .set_title (refineName (name));
-	dialog .get_color_selection () -> signal_color_changed () .connect (sigc::mem_fun (*this, &SFColorButton::on_color_changed));
-	dialog .get_color_selection () -> set_has_opacity_control (false);
+	dialog .get_color_selection () -> signal_color_changed () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_color_changed));
+	dialog .get_color_selection () -> set_has_opacity_control (true);
 	dialog .get_color_selection () -> set_has_palette (true);
 
 	dialog .property_ok_button () .get_value () -> hide ();
@@ -190,13 +203,13 @@ SFColorButton::SFColorButton (X3DBrowserWindow* const browserWindow,
 
 inline
 void
-SFColorButton::setNodes (const X3D::MFNode & value)
+MFColorRGBAButton::setNodes (const X3D::MFNode & value)
 {
 	for (const auto & node : nodes)
 	{
 		try
 		{
-			node -> getField <X3D::SFColor> (name) .removeInterest (this, &SFColorButton::set_field);
+			node -> getField <X3D::MFColorRGBA> (name) .removeInterest (this, &MFColorRGBAButton::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -208,7 +221,7 @@ SFColorButton::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFColor> (name) .addInterest (this, &SFColorButton::set_field);
+			node -> getField <X3D::MFColorRGBA> (name) .addInterest (this, &MFColorRGBAButton::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -219,7 +232,7 @@ SFColorButton::setNodes (const X3D::MFNode & value)
 
 inline
 void
-SFColorButton::on_color_changed ()
+MFColorRGBAButton::on_color_changed ()
 {
 	drawingArea .queue_draw ();
 
@@ -227,30 +240,32 @@ SFColorButton::on_color_changed ()
 		return;
 
 	const auto rgba  = dialog .get_color_selection () -> get_current_rgba ();
-	const auto color = X3D::Color3f (rgba .get_red (), rgba .get_green (), rgba .get_blue ());
+	const auto color = X3D::Color4f (rgba .get_red (), rgba .get_green (), rgba .get_blue (), rgba .get_alpha ());
 
-	color .get_hsv (hsv [0], hsv [1], hsv [2]);
+	color .get_hsv (hsva [0], hsva [1], hsva [2]);
+	hsva [3] = color .a ();
 
 	set_color (0, color);
 
 	changing = true;
-	valueAdjustment -> set_value (hsv [2]);
+	valueAdjustment -> set_value (hsva [2]);
 	changing = false;
 }
 
 inline
 void
-SFColorButton::on_value_changed ()
+MFColorRGBAButton::on_value_changed ()
 {
 	drawingArea .queue_draw ();
 
 	if (changing)
 		return;
 
-	hsv [2] = valueAdjustment -> get_value ();
+	hsva [2] = valueAdjustment -> get_value ();
 
-	X3D::Color3f color;
-	color .set_hsv (hsv [0], hsv [1], hsv [2]);
+	X3D::Color4f color;
+	color .set_hsv (hsva [0], hsva [1], hsva [2]);
+	color .a (hsva [3]);
 
 	set_color (1, color);
 
@@ -261,43 +276,43 @@ SFColorButton::on_value_changed ()
 
 inline
 void
-SFColorButton::set_color (const int id, const X3D::Color3f & color)
+MFColorRGBAButton::set_color (const int id, const X3D::Color4f & color)
 {
 	if (id not_eq input)
 		undoStep .reset ();
 
 	input = id;
 
-	addUndoFunction <X3D::SFColor> (nodes, name, undoStep);
+	addUndoFunction <X3D::MFColorRGBA> (nodes, name, undoStep);
 
 	for (const auto & node : nodes)
 	{
 		try
 		{
-			auto & field = node -> getField <X3D::SFColor> (name);
+			auto & field = node -> getField <X3D::MFColorRGBA> (name);
 
-			field .removeInterest (this, &SFColorButton::set_field);
-			field .addInterest (this, &SFColorButton::connect);
+			field .removeInterest (this, &MFColorRGBAButton::set_field);
+			field .addInterest (this, &MFColorRGBAButton::connect);
 
-			field = color;
+			field .set1Value (index, color);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
-	addRedoFunction <X3D::SFColor> (nodes, name, undoStep);
+	addRedoFunction <X3D::MFColorRGBA> (nodes, name, undoStep);
 }
 
 inline
 void
-SFColorButton::set_field ()
+MFColorRGBAButton::set_field ()
 {
 	buffer .addEvent ();
 }
 
 inline
 void
-SFColorButton::set_buffer ()
+MFColorRGBAButton::set_buffer ()
 {
 	undoStep .reset ();
 
@@ -311,14 +326,16 @@ SFColorButton::set_buffer ()
 	{
 		try
 		{
-			const auto & field = node -> getField <X3D::SFColor> (name);
-			const auto   rgba  = to_rgba (field);
+			auto &       field = node -> getField <X3D::MFColorRGBA> (name);
+			const auto & value = field .get1Value (index);
+			const auto   rgba  = to_rgba (value);
 
-			field .getHSV (hsv [0], hsv [1], hsv [2]);
+			value .getHSV (hsva [0], hsva [1], hsva [2]);
+			hsva [3] = value .getAlpha ();
 
 			dialog .get_color_selection () -> set_current_rgba (rgba);
 			dialog .get_color_selection () -> set_previous_rgba (rgba);
-			valueAdjustment -> set_value (hsv [2]);
+			valueAdjustment -> set_value (hsva [2]);
 
 			hasField = true;
 			break;
@@ -340,27 +357,32 @@ SFColorButton::set_buffer ()
 
 inline
 void
-SFColorButton::connect (const X3D::SFColor & field)
+MFColorRGBAButton::connect (const X3D::MFColorRGBA & field)
 {
-	field .removeInterest (this, &SFColorButton::connect);
-	field .addInterest (this, &SFColorButton::set_field);
+	field .removeInterest (this, &MFColorRGBAButton::connect);
+	field .addInterest (this, &MFColorRGBAButton::set_field);
 }
 
 inline
 bool
-SFColorButton::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
+MFColorRGBAButton::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 {
+	const auto color    = dialog .get_color_selection () -> get_current_rgba ();
+	const int  width1_2 = drawingArea .get_width () / 2;
+
 	draw_checker_board (context,
 	                    8, 8,
 	                    X3D::Color4f (0.6, 0.6, 0.6, 1),
 	                    X3D::Color4f (0.4, 0.4, 0.4, 1),
 	                    0, 0,
-	                    drawingArea .get_width (), drawingArea .get_height ());
-
-	const auto color = dialog .get_color_selection () -> get_current_rgba ();
+	                    width1_2, drawingArea .get_height ());
 
 	context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
-	context -> rectangle (0, 0, drawingArea .get_width (), drawingArea .get_height ());
+	context -> rectangle (0, 0, width1_2, drawingArea .get_height ());
+	context -> fill ();
+
+	context -> set_source_rgb (color .get_red (), color .get_green (), color .get_blue ());
+	context -> rectangle (width1_2, 0, drawingArea .get_width () - width1_2, drawingArea .get_height ());
 	context -> fill ();
 
 	if (colorButton .get_style_context () -> get_state () & Gtk::STATE_FLAG_INSENSITIVE)
@@ -378,23 +400,23 @@ SFColorButton::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 
 inline
 void
-SFColorButton::on_clicked ()
+MFColorRGBAButton::on_clicked ()
 {
 	dialog .present ();
 }
 
 inline
 Gdk::RGBA
-SFColorButton::to_rgba (const X3D::Color3f & value)
+MFColorRGBAButton::to_rgba (const X3D::Color4f & value)
 {
 	Gdk::RGBA color;
 
-	color .set_rgba (value .r (), value .g (), value .b (), 1);
+	color .set_rgba (value .r (), value .g (), value .b (), value .a ());
 	return color;
 }
 
 inline
-SFColorButton::~SFColorButton ()
+MFColorRGBAButton::~MFColorRGBAButton ()
 {
 	colorButton .remove ();
 	dispose ();

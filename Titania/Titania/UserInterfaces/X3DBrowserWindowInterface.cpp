@@ -173,6 +173,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FollowPrimarySelectionMenuItem", m_FollowPrimarySelectionMenuItem);
 	m_builder -> get_widget ("ObjectMenuItem", m_ObjectMenuItem);
 	m_builder -> get_widget ("CombineMenuItem", m_CombineMenuItem);
+	m_builder -> get_widget ("PaintPolygonsMenuItem", m_PaintPolygonsMenuItem);
 	m_builder -> get_widget ("LayoutMenuItem", m_LayoutMenuItem);
 	m_builder -> get_widget ("GridLayoutToolMenuItem", m_GridLayoutToolMenuItem);
 	m_builder -> get_widget ("AngleLayoutToolMenuItem", m_AngleLayoutToolMenuItem);
@@ -370,6 +371,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ImageMenuItem with id 'CombineMenuItem'.
 	m_CombineMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_combine_activate));
+
+	// Connect object Gtk::MenuItem with id 'PaintPolygonsMenuItem'.
+	m_PaintPolygonsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paint_polygons_activate));
 
 	// Connect object Gtk::CheckMenuItem with id 'GridLayoutToolMenuItem'.
 	m_GridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));

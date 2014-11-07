@@ -151,7 +151,8 @@ SFColorRGBAButton::SFColorRGBAButton (X3DBrowserWindow* const browserWindow,
 	        undoStep (),
 	           input (-1),
 	        changing (false),
-	          buffer ()
+	          buffer (),
+	            hsva ()
 {
 	// Buffer
 

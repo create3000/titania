@@ -48,72 +48,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GRIDS_GRID_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GRIDS_GRID_TOOL_H__
+#ifndef __TITANIA_EDITORS_COLOR_PER_VERTEX_EDITOR_COLOR_PER_VERTEX_EDITOR_H__
+#define __TITANIA_EDITORS_COLOR_PER_VERTEX_EDITOR_COLOR_PER_VERTEX_EDITOR_H__
 
-#include "../Grids/X3DGridTool.h"
+#include "../../UserInterfaces/X3DColorPerVertexEditorInterface.h"
+
+#include "../../ComposedWidgets/MFColorRGBAButton.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class GridTool :
-	public X3DGridTool
+class BrowserWindow;
+
+class ColorPerVertexEditor :
+	public X3DColorPerVertexEditorInterface
 {
 public:
 
 	///  @name Construction
 
-	GridTool (X3DExecutionContext* const);
+	ColorPerVertexEditor (X3DBrowserWindow* const);
+
+	///  @name Destruction
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	MFInt32 &
-	dimension ()
-	{ return *fields .dimension; }
-
-	const MFInt32 &
-	dimension () const
-	{ return *fields .dimension; }
-
-	MFInt32 &
-	majorLineEvery ()
-	{ return *fields .majorLineEvery; }
-
-	const MFInt32 &
-	majorLineEvery () const
-	{ return *fields .majorLineEvery; }
-
-	MFInt32 &
-	majorLineOffset ()
-	{ return *fields .majorLineOffset; }
-
-	const MFInt32 &
-	majorLineOffset () const
-	{ return *fields .majorLineOffset; }
+	~ColorPerVertexEditor ();
 
 
 private:
@@ -124,48 +83,35 @@ private:
 	void
 	initialize () final override;
 
-	virtual
 	void
-	realize () final override;
+	set_initialized ();
 
-	///  @name Operations
+	void
+	set_selection ();
 
-	virtual
-	Vector3d
-	getSnapPosition (const Vector3d &) final override;
+	///  @name Event handlers
+	
+	void
+	on_look_at_all_clicked () final override;
 
-	double
-	getSnapPosition (const size_t, const Vector3d &);
+	void
+	set_hitPoint (const X3D::Vector3f &);
 
-	virtual
-	Vector3d
-	getSnapPosition (const Vector3d &, const Vector3d &) final override;
-
-	Vector3d
-	getSnapPosition (const size_t, const Vector3d &, const Vector3d &);
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
+	void
+	set_cross (const X3D::Vector3f &);
 
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		MFInt32* const dimension;
-		MFInt32* const majorLineEvery;
-		MFInt32* const majorLineOffset;
-	};
-
-	Fields fields;
+	X3D::BrowserPtr                      preview;
+	X3D::X3DPtr <X3D::IndexedFaceSet>    selection;
+	X3D::X3DPtr <X3D::X3DCoordinateNode> coord;
+	X3D::X3DPtr <X3D::IndexedFaceSet>    indexedFaceSet;
+	X3D::X3DPtr <X3D::ColorRGBA>         color;
+	MFColorRGBAButton                    colorButton;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

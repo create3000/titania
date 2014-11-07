@@ -143,6 +143,17 @@ GridTool::getSnapPosition (const Vector3d & position)
 	return translation;
 }
 
+double
+GridTool::getSnapPosition (const size_t axis, const Vector3d & position)
+{
+	const auto o  = dimension () .get1Value (axis) % 2 * 0.5; // Add a half scale if dimension is odd.
+	const auto p  = std::round (position [axis]);
+	const auto p1 = p - o;
+	const auto p2 = p + o;
+
+	return std::abs (p1 - position [axis]) < std::abs (p2 - position [axis]) ? p1 : p2;
+}
+
 Vector3d
 GridTool::getSnapPosition (const Vector3d & position, const Vector3d & direction)
 {
@@ -164,17 +175,6 @@ GridTool::getSnapPosition (const size_t axis, const Vector3d & position, const V
 	const auto t     = (value - position [axis]) / direction [axis];
 
 	return position + t * direction;
-}
-
-double
-GridTool::getSnapPosition (const size_t axis, const Vector3d & position)
-{
-	const auto o  = dimension () .get1Value (axis) % 2 * 0.5; // Add a half scale if dimension is odd.
-	const auto p  = std::round (position [axis]);
-	const auto p1 = p - o;
-	const auto p2 = p + o;
-
-	return std::abs (p1 - position [axis]) < std::abs (p2 - position [axis]) ? p1 : p2;
 }
 
 } // X3D

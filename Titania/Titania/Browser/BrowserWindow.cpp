@@ -1624,6 +1624,14 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 // Layout
 
 void
+BrowserWindow::on_paint_polygons_activate ()
+{
+	addDialog ("ColorPerVertexEditor");
+}
+
+// Layout
+
+void
 BrowserWindow::on_grid_layout_tool_toggled ()
 {
 	if (changing)

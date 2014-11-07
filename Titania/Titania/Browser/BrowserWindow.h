@@ -487,6 +487,12 @@ private:
 
 	virtual
 	void
+	on_paint_polygons_activate () final override;
+
+	///  @name Layout
+
+	virtual
+	void
 	on_grid_layout_tool_toggled () final override;
 
 	virtual

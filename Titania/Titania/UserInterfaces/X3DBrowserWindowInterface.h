@@ -539,6 +539,10 @@ public:
 	{ return *m_CombineMenuItem; }
 
 	Gtk::MenuItem &
+	getPaintPolygonsMenuItem () const
+	{ return *m_PaintPolygonsMenuItem; }
+
+	Gtk::MenuItem &
 	getLayoutMenuItem () const
 	{ return *m_LayoutMenuItem; }
 
@@ -1168,6 +1172,10 @@ public:
 
 	virtual
 	void
+	on_paint_polygons_activate () = 0;
+
+	virtual
+	void
 	on_grid_layout_tool_toggled () = 0;
 
 	virtual
@@ -1449,6 +1457,7 @@ private:
 	Gtk::CheckMenuItem*              m_FollowPrimarySelectionMenuItem;
 	Gtk::MenuItem*                   m_ObjectMenuItem;
 	Gtk::ImageMenuItem*              m_CombineMenuItem;
+	Gtk::MenuItem*                   m_PaintPolygonsMenuItem;
 	Gtk::MenuItem*                   m_LayoutMenuItem;
 	Gtk::CheckMenuItem*              m_GridLayoutToolMenuItem;
 	Gtk::CheckMenuItem*              m_AngleLayoutToolMenuItem;

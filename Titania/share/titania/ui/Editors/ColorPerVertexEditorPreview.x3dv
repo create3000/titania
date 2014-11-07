@@ -1,0 +1,81 @@
+#X3D V3.3 utf8 Titania V0.7.5
+
+META "comment" "World of Titania"
+META "created" "Fri, 07 Nov 2014 09:33:25 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.5, http://titania.create3000.de"
+META "modified" "Fri, 07 Nov 2014 11:01:05 GMT"
+
+DEF Gray_1 Background {
+  skyColor 0.5 0.5 0.5
+}
+
+Group {
+  children [
+    DEF Shape Shape { }
+    DEF TouchSensor TouchSensor { }
+  ]
+}
+
+DEF Cross Transform {
+  children DEF _1 Switch {
+    whichChoice 1
+    children [
+      Group {
+        children DEF CrossScript Script {
+          inputOnly  SFBool  set_active
+          outputOnly SFInt32 whichChoice_changed
+
+          url "javascript:
+
+function initialize ()
+{
+	whichChoice_changed = false;
+}
+
+function set_active (value)
+{
+	whichChoice_changed = value;
+}"
+        }
+      }
+      Shape {
+        geometry IndexedLineSet {
+          colorPerVertex FALSE
+          colorIndex [
+            0,
+            0,
+            0
+          ]
+          coordIndex [
+            0,
+            1,
+            -1,
+            2,
+            3,
+            -1,
+            4,
+            5,
+            -1
+          ]
+          color Color {
+            color 1 0 0
+          }
+          coord Coordinate {
+            point [
+              -1 0 0,
+              1 0 0,
+              0 -1 0,
+              0 1 0,
+              0 0 -1,
+              0 0 1
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
+
+ROUTE TouchSensor.isOver TO CrossScript.set_active
+ROUTE CrossScript.whichChoice_changed TO _1.set_whichChoice

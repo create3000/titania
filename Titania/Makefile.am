@@ -32,6 +32,7 @@ titania_SOURCES =  \
 	Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp \
+	Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp \
 	Titania/Editors/GridEditor/AngleTool.cpp \
@@ -83,6 +84,7 @@ titania_SOURCES =  \
 	Titania/Undo/UndoStep.cpp \
 	Titania/UserInterfaces/X3DAppearanceEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
+	Titania/UserInterfaces/X3DColorPerVertexEditorInterface.cpp \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \
 	Titania/UserInterfaces/X3DFileImportDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileOpenDialogInterface.cpp \
