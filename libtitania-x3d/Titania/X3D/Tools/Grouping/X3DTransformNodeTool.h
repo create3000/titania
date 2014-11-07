@@ -145,7 +145,7 @@ public:
 
 	virtual
 	void
-	addAbsoluteMatrix (const Matrix4d &)
+	addAbsoluteMatrix (const Matrix4d &, const bool)
 	throw (Error <NOT_SUPPORTED>) final override;
 
 	virtual
@@ -265,21 +265,6 @@ X3DTransformNodeTool <Type>::getKeepCenter () const
 
 template <class Type>
 void
-X3DTransformNodeTool <Type>::addAbsoluteMatrix (const Matrix4d & absoluteMatrix)
-throw (Error <NOT_SUPPORTED>)
-{
-	try
-	{
-		const auto matrix = Matrix4d (getMatrix ()) * parentMatrix * absoluteMatrix * ~parentMatrix;
-
-		setMatrix (matrix);
-	}
-	catch (const std::domain_error &)
-	{ }
-}
-
-template <class Type>
-void
 X3DTransformNodeTool <Type>::setMatrix (const Matrix4d & matrix)
 {
 	changing = true;
@@ -307,6 +292,24 @@ X3DTransformNodeTool <Type>::setMatrixKeepCenter (const Matrix4d & matrix)
 
 template <class Type>
 void
+X3DTransformNodeTool <Type>::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const bool keepCenter)
+throw (Error <NOT_SUPPORTED>)
+{
+	try
+	{
+		const auto matrix = Matrix4d (getMatrix ()) * parentMatrix * absoluteMatrix * ~parentMatrix;
+
+		if (keepCenter)
+			setMatrixKeepCenter (matrix);
+		else
+			setMatrix (matrix);
+	}
+	catch (const std::domain_error &)
+	{ }
+}
+
+template <class Type>
+void
 X3DTransformNodeTool <Type>::eventsProcessed ()
 {
 	try
@@ -328,7 +331,7 @@ X3DTransformNodeTool <Type>::eventsProcessed ()
 					const auto transform = dynamic_cast <X3DTransformNode*> (node .getValue ());
 
 					if (transform)
-						transform -> addAbsoluteMatrix (differenceMatrix);
+						transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
 				}
 				catch (const Error <NOT_SUPPORTED> &)
 				{ }

@@ -138,7 +138,7 @@ X3DTransformNode::setMatrixKeepCenter (const Matrix4d & matrix)
 
 		setMatrixWithCenter (matrix, centerOffset);
 	}
-	catch (...)
+	catch (const std::exception &)
 	{ }
 }
 

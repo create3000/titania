@@ -1253,7 +1253,7 @@ function eventsProcessed ()
     inputOnly      SFVec3f    set_scale7
     inputOnly      SFVec3f    set_scale8
     inputOnly      SFVec3f    set_linetype
-    inputOutput    SFBool     scaleFromEdge IS controlKey
+    inputOutput    SFBool     scaleFromCorner IS controlKey
     inputOutput    SFBool     altKey IS altKey
     inputOutput    SFBool     keepCenter FALSE
     inputOutput    SFVec3f    bboxSize IS bboxSize
@@ -1341,7 +1341,7 @@ function set_active (value)
 
 function set_xScale (value)
 {
-	if (scaleFromEdge)
+	if (scaleFromCorner)
 		scale (new SFVec3f (1 + value .x / bboxSize .x, 1, 1),
 		       new SFVec3f (-bboxSize .x / 2, 0, 0));
 
@@ -1352,7 +1352,7 @@ function set_xScale (value)
 
 function set_yScale (value)
 {
-	if (scaleFromEdge)
+	if (scaleFromCorner)
 		scale (new SFVec3f (1, 1 + value .y / bboxSize .y, 1),
 		       new SFVec3f (0, -bboxSize .y / 2, 0));
 	
@@ -1363,7 +1363,7 @@ function set_yScale (value)
 
 function set_zScale (value)
 {
-	if (scaleFromEdge)
+	if (scaleFromCorner)
 		scale (new SFVec3f (1, 1, 1 + value .z / bboxSize .z),
 		       new SFVec3f (0, 0, -bboxSize .z / 2));
 
@@ -1430,7 +1430,7 @@ function set_scale8 (value)
 
 function set_scale (value, sgn, centerOffset)
 {
-	if (scaleFromEdge)
+	if (scaleFromCorner)
 	{
 		centerOffset = centerOffset .multVec (bboxSize .divide (2));
 

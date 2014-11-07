@@ -138,7 +138,13 @@ public:
 
 	virtual
 	void
-	addAbsoluteMatrix (const Matrix4d &)
+	addAbsoluteMatrix (const Matrix4d &, const bool)
+	throw (Error <NOT_SUPPORTED>)
+	{ throw Error <NOT_SUPPORTED> ("X3DTransformNode::addAbsoluteMatrix"); }
+
+	virtual
+	void
+	addAbsoluteMatrixKeepCenter (const Matrix4d &)
 	throw (Error <NOT_SUPPORTED>)
 	{ throw Error <NOT_SUPPORTED> ("X3DTransformNode::addAbsoluteMatrix"); }
 

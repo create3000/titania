@@ -280,7 +280,7 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 
 			if (transform)
 			{
-				transform -> addAbsoluteMatrix (differenceMatrix);
+				transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
 				transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
 				transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
 			}
@@ -326,7 +326,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 
 			if (transform)
 			{
-				transform -> addAbsoluteMatrix (differenceMatrix);
+				transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
 				transform -> scale () .removeInterest (this, &X3DGridTool::set_scale);
 				transform -> scale () .addInterest (this, &X3DGridTool::connectScale, transform);
 			}
@@ -353,9 +353,6 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 	const auto bbox           = shape * absoluteMatrix;                         // Absolute OBB of AABB
 	const auto position       = bbox .center ();                                // Absolute position
 
-	__LOG__ << std::endl;
-	__LOG__ << tool << std::endl;
-
 	// Calculate snap scale for one axis. The ratio is calculated in transforms sub space.
 
 	Matrix4d grid;
@@ -368,7 +365,7 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 	auto         after        = (snapPosition * ~absoluteMatrix - shape .center ()) [axis];
 	auto         before       = shape .axes () [axis] [axis];
 
-	if (getBrowser () -> hasControlKey ())
+	if (getBrowser () -> hasControlKey ()) // Scale from corner.
 	{
 		after  += before;
 		before *= 2;
@@ -377,6 +374,8 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 	const auto delta = after - before;
 	auto       ratio = after / before;
 
+	__LOG__ << std::endl;
+	__LOG__ << tool << std::endl;
 	__LOG__ << before << std::endl;
 	__LOG__ << after << std::endl;
 	__LOG__ << delta << std::endl;
@@ -384,7 +383,7 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 
 	// We must procced with the original current matrix and a snap scale of [1 1 1], for correct grouped event handling.
 
-	if (std::abs (delta) < eps or std::abs (ratio) < 1e-4 or std::isnan (ratio) or std::abs (ratio) == infinity)
+	if (std::abs (delta) < eps or std::abs (ratio) < 1e-3 or std::isnan (ratio) or std::abs (ratio) == infinity)
 		return currentMatrix;
 
 	Vector3d scale (1, 1, 1);
@@ -424,6 +423,8 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 
 	if (getBrowser () -> hasControlKey ())
 	{
+		// Uniform scale from corner.
+
 		const auto point  = points [tool];
 		auto before = point - position;
 		auto after  = getSnapPosition (point * ~grid) * grid - position;
@@ -469,9 +470,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 	Matrix4d snap;
 	snap .scale (Vector3d (min, min, min));
 
-	snap *= getBrowser () -> hasControlKey ()
-		     ? getOffset (bbox, snap, points [tool] - bbox .center ())
-	        : getOffset (bbox, snap, Vector3d ());
+	snap *= getOffset (bbox, snap, points [tool] - bbox .center ());
 
 	return absoluteMatrix * snap * ~master -> getTransformationMatrix ();
 }
@@ -483,7 +482,7 @@ X3DGridTool::getOffset (const Box3d & bbox, const Matrix4d scaledMatrix, const V
 
 	Vector3d distanceFromCenter = bbox .center ();
 
-	if (getBrowser () -> hasControlKey ())
+	if (getBrowser () -> hasControlKey ()) // Scale from corner.
 		distanceFromCenter -= offset;
 
 	Matrix4d translation;
