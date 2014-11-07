@@ -50,6 +50,7 @@
 
 #include "X3DBrowserEditor.h"
 
+#include "../Base/X3DEditorObject.h"
 #include "../Browser/BrowserUserData.h"
 #include "../Browser/MagicImport.h"
 #include "../Browser/X3DBrowserWindow.h"
@@ -2310,7 +2311,7 @@ X3DBrowserEditor::addPrototypeInstance (const std::string & name)
 // Undo functions
 
 void
-X3DBrowserEditor::translateSelection (const X3D::Vector3f & translation, const bool alongFrontPlane, const ToolType currentTool)
+X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool alongFrontPlane, const ToolType currentTool)
 {
 	using setValue = void (X3D::SFVec3f::*) (const X3D::Vector3f &);
 
@@ -2337,11 +2338,48 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & translation, const b
 
 			getSelection () -> redoRestoreSelection (undoStep);
 
-			undoStep -> addObjects (node);
-			undoStep -> addUndoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (transform -> translation ()), transform -> translation ());
-			undoStep -> addRedoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (transform -> translation ()), transform -> translation () + translation);
+			if (transform -> getKeepCenter ())
+			{
+				X3D::Matrix4d matrix;
+				matrix .set (offset);
+				matrix = transform -> getCurrentMatrix () * matrix;
 
-			transform -> translation () += translation;
+				undoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center ());
+				undoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixKeepCenter, transform, matrix);
+				transform -> setMatrixKeepCenter (matrix);
+				
+				// If we use setMatrixKeepCenter we must do the group translation by ourself.
+
+				matrix .set (offset);
+				matrix *= transform -> getTransformationMatrix ();
+				
+				bool first = true;
+	
+				for (const auto & node : basic::make_reverse_range (getSelection () -> getChildren ()))
+				{
+					X3D::X3DTransformNodePtr transform (node);
+
+					if (not transform)
+						continue;
+
+					if (first)
+					{
+						first = false;
+						continue;
+					}
+
+					undoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center ());
+					transform -> addAbsoluteMatrix (matrix, transform -> getKeepCenter ());
+					undoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getCurrentMatrix (), transform -> center ());
+				}
+			}
+			else
+			{
+				undoStep -> addObjects (node);	
+				undoStep -> addUndoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (transform -> translation ()), transform -> translation ());
+				undoStep -> addRedoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (transform -> translation ()), transform -> translation () + offset);
+				transform -> translation () += offset;
+			}
 
 			getSelection () -> undoRestoreSelection (undoStep);
 
