@@ -1,3 +1,15 @@
+2014-11-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.xml:
+	* ColorSingleFace.svg:
+	* MFColorRGBAButton.h:
+	* ColorWholeObject.svg:
+	* ColorSingleVertex.svg:
+	* ColorAdjacentVertices.svg:
+	* X3DColorPerVertexEditorInterface.h:
+	* X3DColorPerVertexEditorInterface.cpp:
+	* ColorPerVertexEditor.cpp: 
+
 2014-11-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.xml:

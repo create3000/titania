@@ -53,6 +53,8 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Miscellaneous/Random.h>
+
 namespace titania {
 namespace puck {
 
@@ -67,7 +69,7 @@ ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindo
 	                     colorButton (getBrowserWindow (),
 	                                  getColorButton (),
 	                                  getColorAdjustment (),
-	                                  getColorBox (),
+	                                  getWidget (),
 	                                  getColorsScrolledWindow (),
 	                                  "color")
 {
@@ -177,7 +179,8 @@ ColorPerVertexEditor::on_look_at_all_clicked ()
 void
 ColorPerVertexEditor::on_add_color_clicked ()
 {
-	color -> color () .emplace_back (color -> color () .back ());
+	//color -> color () .emplace_back (color -> color () .back ());
+	color -> color () .emplace_back (X3D::random1 (0, 1), X3D::random1 (0, 1), X3D::random1 (0, 1), X3D::random1 (0, 1));
 
 	colorButton .setIndex (color -> color () .size () - 1);
 }

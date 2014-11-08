@@ -16,11 +16,12 @@
       <source stock-id="Hammer" filename="icons/Hammer.svg"/>
       <source stock-id="Droplet" filename="icons/Droplet.svg"/>
       <source stock-id="Combine" filename="icons/Combine.svg"/>
-      <source stock-id="LOD" filename="icons/LOD.svg"/>
+      <source stock-id="ColorWholeObject" filename="icons/ColorWholeObject.svg"/>
       <source stock-id="Text" filename="icons/Text.svg"/>
       <source stock-id="Appearance" filename="icons/Appearance.svg"/>
       <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
       <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
+      <source stock-id="LOD" filename="icons/LOD.svg"/>
       <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
       <source stock-id="Arrow" filename="icons/Arrow.png"/>
       <source stock-id="Geometry" filename="icons/Geometry.svg"/>
@@ -36,8 +37,11 @@
       <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="Texture" filename="icons/Texture.svg"/>
+      <source stock-id="ColorAdjacentVertices" filename="icons/ColorAdjacentVertices.svg"/>
       <source stock-id="Prototype" filename="icons/Node/Prototype.96.svg"/>
+      <source stock-id="ColorSingleVertex" filename="icons/ColorSingleVertex.svg"/>
       <source stock-id="PlaneViewer" filename="icons/PlaneViewer.svg"/>
+      <source stock-id="ColorSingleFace" filename="icons/ColorSingleFace.svg"/>
       <source stock-id="Navigation" filename="icons/Navigation.svg"/>
     </sources>
   </object>

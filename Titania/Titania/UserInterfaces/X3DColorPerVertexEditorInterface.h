@@ -99,72 +99,8 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getAmbientIntensityAdjustment () const
-	{ return m_AmbientIntensityAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getBackAmbientIntensityAdjustment () const
-	{ return m_BackAmbientIntensityAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getBackDiffuseColorAdjustment () const
-	{ return m_BackDiffuseColorAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getBackEmissiveColorAdjustment () const
-	{ return m_BackEmissiveColorAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getBackShininessAdjustment () const
-	{ return m_BackShininessAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getBackSpecularColorAdjustment () const
-	{ return m_BackSpecularColorAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getBackTransparencyAdjustment () const
-	{ return m_BackTransparencyAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
 	getColorAdjustment () const
 	{ return m_ColorAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getDiffuseColorAdjustment () const
-	{ return m_DiffuseColorAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getEmissiveColorAdjustment () const
-	{ return m_EmissiveColorAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getFillPropertiesHatchColorAdjustment () const
-	{ return m_FillPropertiesHatchColorAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getFillPropertiesHatchStyleAdjustment () const
-	{ return m_FillPropertiesHatchStyleAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getLinePropertiesLinetypeAdjustment () const
-	{ return m_LinePropertiesLinetypeAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getLinePropertiesLinewidthScaleFactorAdjustment () const
-	{ return m_LinePropertiesLinewidthScaleFactorAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getShininessAdjustment () const
-	{ return m_ShininessAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getSpecularColorAdjustment () const
-	{ return m_SpecularColorAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getTransparencyAdjustment () const
-	{ return m_TransparencyAdjustment; }
 
 	Gtk::Window &
 	getWindow () const
@@ -194,6 +130,10 @@ public:
 	getAddColorButton () const
 	{ return *m_AddColorButton; }
 
+	Gtk::Button &
+	getRemoveColorButton () const
+	{ return *m_RemoveColorButton; }
+
 	Gtk::ScrolledWindow &
 	getColorsScrolledWindow () const
 	{ return *m_ColorsScrolledWindow; }
@@ -219,23 +159,7 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_AmbientIntensityAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BackAmbientIntensityAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BackDiffuseColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BackEmissiveColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BackShininessAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BackSpecularColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BackTransparencyAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_DiffuseColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_EmissiveColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_FillPropertiesHatchColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_FillPropertiesHatchStyleAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_LinePropertiesLinetypeAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_LinePropertiesLinewidthScaleFactorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ShininessAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SpecularColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_TransparencyAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Box*                      m_PreviewBox;
@@ -243,6 +167,7 @@ private:
 	Gtk::Box*                      m_ColorBox;
 	Gtk::Button*                   m_ColorButton;
 	Gtk::Button*                   m_AddColorButton;
+	Gtk::Button*                   m_RemoveColorButton;
 	Gtk::ScrolledWindow*           m_ColorsScrolledWindow;
 
 };
