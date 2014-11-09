@@ -66,7 +66,7 @@ TextEditor::TextEditor (X3DBrowserWindow* const browserWindow) :
 	                  text (),
 	              undoStep (),
 	              changing (false),
-	             maxExtent (browserWindow,
+	             maxExtent (this,
 	                        getTextMaxExtentAdjustment (),
 	                        getTextMaxExtentSpinButton (),
 	                        "maxExtent")

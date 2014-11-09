@@ -475,15 +475,15 @@ public:
 
 	///  @name Construction
 
-	MFStringWidget (X3DBrowserWindow* const browserWindow,
+	MFStringWidget (X3DBaseInterface* const editor,
 	                Gtk::TreeView & treeView,
 	                const Glib::RefPtr <Gtk::CellRendererText> & cellRenderer,
 	                Gtk::Button & addButton,
 	                Gtk::Button & removeButton,
 	                const std::string & name,
 	                const Glib::ustring & defaultValue) :
-		 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-		X3DMFStringWidget (browserWindow, treeView, cellRenderer, addButton, removeButton, name, defaultValue)
+		 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+		X3DMFStringWidget (editor, treeView, cellRenderer, addButton, removeButton, name, defaultValue)
 	{ }
 
 	///  @name Destruction

@@ -55,19 +55,19 @@ namespace puck {
 
 X3DPointLightEditor::X3DPointLightEditor () :
 	X3DLightEditorInterface (),
-	            attenuation (getBrowserWindow (),
+	            attenuation (this,
 	                         getPointLightAttenuationXAdjustment (),
 	                         getPointLightAttenuationYAdjustment (),
 	                         getPointLightAttenuationZAdjustment (),
 	                         getPointLightAttenuationBox (),
 	                         "attenuation"),
-	               location (getBrowserWindow (),
+	               location (this,
 	                         getPointLightLocationXAdjustment (),
 	                         getPointLightLocationYAdjustment (),
 	                         getPointLightLocationZAdjustment (),
 	                         getPointLightLocationBox (),
 	                         "location"),
-	                 radius (getBrowserWindow (), getPointLightRadiusAdjustment (), getPointLightRadiusSpinButton (), "radius")
+	                 radius (this, getPointLightRadiusAdjustment (), getPointLightRadiusSpinButton (), "radius")
 { }
 
 void

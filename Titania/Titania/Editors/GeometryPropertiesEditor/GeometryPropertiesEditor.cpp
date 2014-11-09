@@ -59,10 +59,10 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	 X3DGeometryPropertiesEditorInterface (get_ui ("Editors/GeometryPropertiesEditor.xml"), gconf_dir ()),
 	              X3DPrimitiveCountEditor (),
-	                                solid (browserWindow, getSolidCheckButton (),  "solid"),
-	                                  ccw (browserWindow, getCCWCheckButton (),    "ccw"),
-	                               convex (browserWindow, getConvexCheckButton (), "convex"),
-	                          creaseAngle (browserWindow, getCreaseAngleAdjustment (), getCreaseAngleBox (), "creaseAngle"),
+	                                solid (this, getSolidCheckButton (),  "solid"),
+	                                  ccw (this, getCCWCheckButton (),    "ccw"),
+	                               convex (this, getConvexCheckButton (), "convex"),
+	                          creaseAngle (this, getCreaseAngleAdjustment (), getCreaseAngleBox (), "creaseAngle"),
 	                               shapes (),
 	                          nodesBuffer ()
 {

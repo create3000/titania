@@ -57,13 +57,13 @@ namespace puck {
 
 X3DDirectionalLightEditor::X3DDirectionalLightEditor () :
 	X3DLightEditorInterface (),
-	              direction (getBrowserWindow (),
+	              direction (this,
 	                         getDirectionalLightDirectionXAdjustment (),
 	                         getDirectionalLightDirectionYAdjustment (),
 	                         getDirectionalLightDirectionZAdjustment (),
 	                         getDirectionalLightDirectionBox (),
 	                         "direction"),
-	          directionTool (new NormalTool (getBrowserWindow (), getDirectionalLightNormalToolBox (), "direction"))
+	          directionTool (new NormalTool (this, getDirectionalLightNormalToolBox (), "direction"))
 {
 	direction .setNormalize (true);
 }

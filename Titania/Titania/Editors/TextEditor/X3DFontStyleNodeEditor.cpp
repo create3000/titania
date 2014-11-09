@@ -73,20 +73,20 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	                        getFontStyleFamilyRemoveButton (),
 	                        getFontStyleFamilyChooserColumn (),
 	                        "family")),
-	                  size (getBrowserWindow (),
+	                  size (this,
 	                        getFontStyleSizeAdjustment (),
 	                        getFontStyleSizeSpinButton (),
 	                        "size"),
-	             pointSize (getBrowserWindow (),
+	             pointSize (this,
 	                        getFontStylePointSizeAdjustment (),
 	                        getFontStylePointSizeSpinButton (),
 	                        "pointSize"),
-	               spacing (getBrowserWindow (), getFontStyleSpacingAdjustment (), getFontStyleSpacingSpinButton (), "spacing"),
-	            horizontal (getBrowserWindow (), getFontStyleHorizontalCheckButton (),  "horizontal"),
-	           leftToRight (getBrowserWindow (), getFontStyleLeftToRightCheckButton (), "leftToRight"),
-	           topToBottom (getBrowserWindow (), getFontStyleTopToBottomCheckButton (), "topToBottom"),
-	        majorAlignment (getBrowserWindow (), getFontStyleMajorAlignmentComboBoxText (), "justify", 0, "BEGIN"),
-	        minorAlignment (getBrowserWindow (), getFontStyleMinorAlignmentComboBoxText (), "justify", 1, "FIRST")
+	               spacing (this, getFontStyleSpacingAdjustment (), getFontStyleSpacingSpinButton (), "spacing"),
+	            horizontal (this, getFontStyleHorizontalCheckButton (),  "horizontal"),
+	           leftToRight (this, getFontStyleLeftToRightCheckButton (), "leftToRight"),
+	           topToBottom (this, getFontStyleTopToBottomCheckButton (), "topToBottom"),
+	        majorAlignment (this, getFontStyleMajorAlignmentComboBoxText (), "justify", 0, "BEGIN"),
+	        minorAlignment (this, getFontStyleMinorAlignmentComboBoxText (), "justify", 1, "FIRST")
 {
 	addChildren (fontStyleNodeBuffer);
 	fontStyleNodeBuffer .addInterest (this, &X3DFontStyleNodeEditor::set_node);

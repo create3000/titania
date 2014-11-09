@@ -57,13 +57,13 @@ namespace puck {
 
 X3DBillboardEditor::X3DBillboardEditor () :
 	X3DPrecisionPlacementPanelInterface (),
-	                     axisOfRotation (getBrowserWindow (),
+	                     axisOfRotation (this,
 	                                     getBillboardAxisOfRotationXAdjustment (),
 	                                     getBillboardAxisOfRotationYAdjustment (),
 	                                     getBillboardAxisOfRotationZAdjustment (),
 	                                     getBillboardAxisOfRotationBox (),
 	                                     "axisOfRotation"),
-	                 axisOfRotationTool (new NormalTool (getBrowserWindow (), getBillboardAxisOfRotationToolBox (), "axisOfRotation")),
+	                 axisOfRotationTool (new NormalTool (this, getBillboardAxisOfRotationToolBox (), "axisOfRotation")),
 	                          billboard (),
 	                           undoStep (),
 	                           changing (false)

@@ -60,7 +60,7 @@ X3DTextureCoordinateGeneratorEditor::X3DTextureCoordinateGeneratorEditor () :
 	      textureCoordinateGenerator (),
 	                        undoStep (),
 	                        changing (false),
-	                            mode (getBrowserWindow (), getTextureCoordinateGeneratorModeComboBoxText (), "mode")
+	                            mode (this, getTextureCoordinateGeneratorModeComboBoxText (), "mode")
 {
 	addChildren (textureCoordinateGeneratorBuffer);
 	textureCoordinateGeneratorBuffer .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_node);

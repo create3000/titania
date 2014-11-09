@@ -57,28 +57,28 @@ namespace puck {
 
 X3DSpotLightEditor::X3DSpotLightEditor () :
 	X3DLightEditorInterface (),
-	            attenuation (getBrowserWindow (),
+	            attenuation (this,
 	                         getSpotLightAttenuationXAdjustment (),
 	                         getSpotLightAttenuationYAdjustment (),
 	                         getSpotLightAttenuationZAdjustment (),
 	                         getSpotLightAttenuationBox (),
 	                         "attenuation"),
-	               location (getBrowserWindow (),
+	               location (this,
 	                         getSpotLightLocationXAdjustment (),
 	                         getSpotLightLocationYAdjustment (),
 	                         getSpotLightLocationZAdjustment (),
 	                         getSpotLightLocationBox (),
 	                         "location"),
-	              direction (getBrowserWindow (),
+	              direction (this,
 	                         getSpotLightDirectionXAdjustment (),
 	                         getSpotLightDirectionYAdjustment (),
 	                         getSpotLightDirectionZAdjustment (),
 	                         getSpotLightDirectionBox (),
 	                         "direction"),
-	          directionTool (new NormalTool (getBrowserWindow (), getSpotLightNormalToolBox (), "direction")),
-	                 radius (getBrowserWindow (), getSpotLightRadiusAdjustment (), getSpotLightRadiusSpinButton (), "radius"),
-	              beamWidth (getBrowserWindow (), getSpotLightBeamWidthAdjustment (), getSpotLightBeamWidthSpinButton (), "beamWidth"),
-	            cutOffAngle (getBrowserWindow (), getSpotLightCutOffAngleAdjustment (), getSpotLightCutOffAngleSpinButton (), "cutOffAngle")
+	          directionTool (new NormalTool (this, getSpotLightNormalToolBox (), "direction")),
+	                 radius (this, getSpotLightRadiusAdjustment (), getSpotLightRadiusSpinButton (), "radius"),
+	              beamWidth (this, getSpotLightBeamWidthAdjustment (), getSpotLightBeamWidthSpinButton (), "beamWidth"),
+	            cutOffAngle (this, getSpotLightCutOffAngleAdjustment (), getSpotLightCutOffAngleSpinButton (), "cutOffAngle")
 {
 	direction .setNormalize (true);
 

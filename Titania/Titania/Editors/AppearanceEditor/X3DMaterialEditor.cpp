@@ -67,19 +67,19 @@ X3DMaterialEditor::X3DMaterialEditor () :
 	          isTwoSidedMaterial (false),
 	                    undoStep (),
 	                    changing (false),
-	                diffuseColor (getBrowserWindow (), getDiffuseColorButton (), getDiffuseColorAdjustment (), getDiffuseColorBox (), "diffuseColor"),
-	               specularColor (getBrowserWindow (), getSpecularColorButton (), getSpecularColorAdjustment (), getSpecularColorBox (), "specularColor"),
-	               emissiveColor (getBrowserWindow (), getEmissiveColorButton (), getEmissiveColorAdjustment (), getEmissiveColorBox (), "emissiveColor"),
-	            ambientIntensity (getBrowserWindow (), getAmbientIntensityAdjustment (), getAmbientIntensityBox (), "ambientIntensity"),
-	                   shininess (getBrowserWindow (), getShininessAdjustment (), getShininessBox (), "shininess"),
-	                transparency (getBrowserWindow (), getTransparencyAdjustment (), getTransparencyBox (), "transparency"),
-	           separateBackColor (getBrowserWindow (), getSeparateBackColorCheckButton (),  "separateBackColor"),
-	            backDiffuseColor (getBrowserWindow (), getBackDiffuseColorButton (), getBackDiffuseColorAdjustment (), getBackDiffuseColorBox (), "backDiffuseColor"),
-	           backSpecularColor (getBrowserWindow (), getBackSpecularColorButton (), getBackSpecularColorAdjustment (), getBackSpecularColorBox (), "backSpecularColor"),
-	           backEmissiveColor (getBrowserWindow (), getBackEmissiveColorButton (), getBackEmissiveColorAdjustment (), getBackEmissiveColorBox (), "backEmissiveColor"),
-	        backAmbientIntensity (getBrowserWindow (), getBackAmbientIntensityAdjustment (), getBackAmbientIntensityBox (), "backAmbientIntensity"),
-	               backShininess (getBrowserWindow (), getBackShininessAdjustment (), getBackShininessBox (), "backShininess"),
-	            backTransparency (getBrowserWindow (), getBackTransparencyAdjustment (), getBackTransparencyBox (), "backTransparency")
+	                diffuseColor (this, getDiffuseColorButton (), getDiffuseColorAdjustment (), getDiffuseColorBox (), "diffuseColor"),
+	               specularColor (this, getSpecularColorButton (), getSpecularColorAdjustment (), getSpecularColorBox (), "specularColor"),
+	               emissiveColor (this, getEmissiveColorButton (), getEmissiveColorAdjustment (), getEmissiveColorBox (), "emissiveColor"),
+	            ambientIntensity (this, getAmbientIntensityAdjustment (), getAmbientIntensityBox (), "ambientIntensity"),
+	                   shininess (this, getShininessAdjustment (), getShininessBox (), "shininess"),
+	                transparency (this, getTransparencyAdjustment (), getTransparencyBox (), "transparency"),
+	           separateBackColor (this, getSeparateBackColorCheckButton (),  "separateBackColor"),
+	            backDiffuseColor (this, getBackDiffuseColorButton (), getBackDiffuseColorAdjustment (), getBackDiffuseColorBox (), "backDiffuseColor"),
+	           backSpecularColor (this, getBackSpecularColorButton (), getBackSpecularColorAdjustment (), getBackSpecularColorBox (), "backSpecularColor"),
+	           backEmissiveColor (this, getBackEmissiveColorButton (), getBackEmissiveColorAdjustment (), getBackEmissiveColorBox (), "backEmissiveColor"),
+	        backAmbientIntensity (this, getBackAmbientIntensityAdjustment (), getBackAmbientIntensityBox (), "backAmbientIntensity"),
+	               backShininess (this, getBackShininessAdjustment (), getBackShininessBox (), "backShininess"),
+	            backTransparency (this, getBackTransparencyAdjustment (), getBackTransparencyBox (), "backTransparency")
 {
 	addChildren (materialNodeBuffer);
 	materialNodeBuffer .addInterest (this, &X3DMaterialEditor::set_node);

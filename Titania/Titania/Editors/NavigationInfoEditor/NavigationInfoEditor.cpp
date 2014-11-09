@@ -61,7 +61,7 @@ namespace puck {
 NavigationInfoEditor::NavigationInfoEditor (X3DBrowserWindow* const browserWindow) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DNavigationInfoEditorInterface (get_ui ("Editors/NavigationInfoEditor.xml"), gconf_dir ()),
-	                        nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
+	                        nodeName (this, getNameEntry (), getRenameButton ()),
 	                            type (new MFStringWidget (browserWindow,
 	                                  getTypeTreeView (),
 	                                  getTypeCellRendererText (),
@@ -69,23 +69,23 @@ NavigationInfoEditor::NavigationInfoEditor (X3DBrowserWindow* const browserWindo
 	                                  getTypeRemoveButton (),
 	                                  "type",
 	                                  "EXAMINE")),
-	                      avatarSize (getBrowserWindow (),
+	                      avatarSize (this,
 	                                  getCollisionRadiusAdjustment (),
 	                                  getHeightAdjustment (),
 	                                  getStepHeightAdjustment (),
 	                                  getAvatarSizeBox (),
 	                                  "avatarSize"),
-	                           speed (browserWindow, getSpeedAdjustment (), getSpeedSpinButton (), "speed"),
-	                       headlight (browserWindow, getHeadlightCheckButton (),  "headlight"),
-	                 visibilityLimit (browserWindow, getVisibilityLimitAdjustment (), getVisibilityLimitSpinButton (), "visibilityLimit"),
-	                  transitionType (new MFStringWidget (browserWindow,
+	                           speed (this, getSpeedAdjustment (), getSpeedSpinButton (), "speed"),
+	                       headlight (this, getHeadlightCheckButton (),  "headlight"),
+	                 visibilityLimit (this, getVisibilityLimitAdjustment (), getVisibilityLimitSpinButton (), "visibilityLimit"),
+	                  transitionType (new MFStringWidget (this,
 	                                  getTransitionTypeTreeView (),
 	                                  getTransitionTypeCellRendererText (),
 	                                  getTransitionTypeAddButton (),
 	                                  getTransitionTypeRemoveButton (),
 	                                  "transitionType",
 	                                  "LINEAR")),
-	                  transitionTime (browserWindow, getTransitionTimeAdjustment (), getTransitionTimeSpinButton (), "transitionTime")
+	                  transitionTime (this, getTransitionTimeAdjustment (), getTransitionTimeSpinButton (), "transitionTime")
 {
 	setup ();
 }

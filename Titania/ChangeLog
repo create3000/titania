@@ -1,5 +1,41 @@
 2014-11-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MFStringWidget.h:
+	* TextEditor.cpp:
+	* X3DLODEditor.cpp:
+	* LightEditor.cpp:
+	* X3DGridEditor.cpp:
+	* InlineEditor.cpp:
+	* X3DAngleEditor.cpp:
+	* X3DSpotLightEditor.cpp:
+	* ViewpointEditor.cpp:
+	* X3DPointLightEditor.cpp:
+	* X3DFontStyleNodeEditor.cpp:
+	* MotionBlurEditor.cpp:
+	* X3DMaterialEditor.cpp:
+	* X3DViewpointEditor.cpp:
+	* X3DTexture2DNodeEditor.cpp:
+	* X3DDirectionalLightEditor.cpp:
+	* X3DGeoViewpointEditor.cpp:
+	* X3DTextureTransformEditor.cpp:
+	* X3DLayoutEditor.cpp:
+	* X3DOrthoViewpointEditor.cpp:
+	* X3DTexturePropertiesEditor.cpp:
+	* X3DFillPropertiesEditor.cpp:
+	* X3DLinePropertiesEditor.cpp:
+	* NavigationInfoEditor.cpp:
+	* NodePropertiesEditor.cpp:
+	* X3DViewportEditor.cpp:
+	* X3DTransformEditor.cpp:
+	* X3DBillboardEditor.cpp:
+	* X3DGeoLocationEditor.cpp:
+	* X3DGeoTransformEditor.cpp:
+	* PrecisionPlacementPanel.cpp:
+	* GeometryPropertiesEditor.cpp:
+	* X3DTextureCoordinateGeneratorEditor.cpp: 
+
+2014-11-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* NameEntry.h:
 	* NormalTool.h:
 	* RotationTool.h:

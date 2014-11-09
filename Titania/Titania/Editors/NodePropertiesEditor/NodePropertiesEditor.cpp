@@ -63,7 +63,7 @@ NodePropertiesEditor::NodePropertiesEditor (X3DBrowserWindow* const browserWindo
 	          X3DImportedNodesEditor (),
 	          X3DExportedNodesEditor (),
 	                            node (),
-	                        nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ())
+	                        nodeName (this, getNameEntry (), getRenameButton ())
 
 {
 	setup ();

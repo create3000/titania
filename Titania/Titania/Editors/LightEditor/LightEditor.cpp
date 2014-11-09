@@ -63,12 +63,12 @@ LightEditor::LightEditor (X3DBrowserWindow* const browserWindow) :
 	X3DDirectionalLightEditor (),
 	      X3DPointLightEditor (),
 	       X3DSpotLightEditor (),
-	                 nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
-	                   global (getBrowserWindow (), getGlobalCheckButton (), "global"),
-	                       on (getBrowserWindow (), getOnCheckButton (), "on"),
-	                    color (getBrowserWindow (), getColorButton (), getColorAdjustment (), getColorBox (), "color"),
-	                intensity (getBrowserWindow (), getIntensityAdjustment (), getIntensityBox (), "intensity"),
-	         ambientIntensity (getBrowserWindow (), getAmbientIntensityAdjustment (), getAmbientIntensityBox (), "ambientIntensity")
+	                 nodeName (this, getNameEntry (), getRenameButton ()),
+	                   global (this, getGlobalCheckButton (), "global"),
+	                       on (this, getOnCheckButton (), "on"),
+	                    color (this, getColorButton (), getColorAdjustment (), getColorBox (), "color"),
+	                intensity (this, getIntensityAdjustment (), getIntensityBox (), "intensity"),
+	         ambientIntensity (this, getAmbientIntensityAdjustment (), getAmbientIntensityBox (), "ambientIntensity")
 {
 	setup ();
 }

@@ -60,17 +60,17 @@ X3DTexturePropertiesEditor::X3DTexturePropertiesEditor () :
 	        textureProperties (),
 	                 undoStep (),
 	                 changing (false),
-	              borderColor (getBrowserWindow (), getTexturePropertiesBorderColorButton (), getTexturePropertiesBorderColorAdjustment (), getTexturePropertiesBorderColorBox (), "borderColor"),
-	              borderWidth (getBrowserWindow (), getTexturePropertiesBorderWidthAdjustment (), getTexturePropertiesBorderWidthSpinButton (), "borderWidth"),
-	        anisotropicDegree (getBrowserWindow (), getTexturePropertiesAnisotropicDegreeAdjustment (), getTexturePropertiesAnisotropicDegreeSpinButton (), "anisotropicDegree"),
-	          generateMipMaps (getBrowserWindow (), getTexturePropertiesGenerateMipMapsCheckButton (), "generateMipMaps"),
-	       minificationFilter (getBrowserWindow (), getTexturePropertiesMinificationFilterComboBoxText (), "minificationFilter"),
-	      magnificationFilter (getBrowserWindow (), getTexturePropertiesMagnificationFilterComboBoxText (), "magnificationFilter"),
-	            boundaryModeS (getBrowserWindow (), getTexturePropertiesBoundaryModeSComboBoxText (), "boundaryModeS"),
-	            boundaryModeT (getBrowserWindow (), getTexturePropertiesBoundaryModeTComboBoxText (), "boundaryModeT"),
-	            boundaryModeR (getBrowserWindow (), getTexturePropertiesBoundaryModeRComboBoxText (), "boundaryModeR"),
-	       textureCompression (getBrowserWindow (), getTexturePropertiesTextureCompressionComboBoxText (), "textureCompression"),
-	          texturePriority (getBrowserWindow (), getTexturePropertiesTexturePriorityAdjustment (), getTexturePropertiesTexturePrioritySpinButton (), "texturePriority")
+	              borderColor (this, getTexturePropertiesBorderColorButton (), getTexturePropertiesBorderColorAdjustment (), getTexturePropertiesBorderColorBox (), "borderColor"),
+	              borderWidth (this, getTexturePropertiesBorderWidthAdjustment (), getTexturePropertiesBorderWidthSpinButton (), "borderWidth"),
+	        anisotropicDegree (this, getTexturePropertiesAnisotropicDegreeAdjustment (), getTexturePropertiesAnisotropicDegreeSpinButton (), "anisotropicDegree"),
+	          generateMipMaps (this, getTexturePropertiesGenerateMipMapsCheckButton (), "generateMipMaps"),
+	       minificationFilter (this, getTexturePropertiesMinificationFilterComboBoxText (), "minificationFilter"),
+	      magnificationFilter (this, getTexturePropertiesMagnificationFilterComboBoxText (), "magnificationFilter"),
+	            boundaryModeS (this, getTexturePropertiesBoundaryModeSComboBoxText (), "boundaryModeS"),
+	            boundaryModeT (this, getTexturePropertiesBoundaryModeTComboBoxText (), "boundaryModeT"),
+	            boundaryModeR (this, getTexturePropertiesBoundaryModeRComboBoxText (), "boundaryModeR"),
+	       textureCompression (this, getTexturePropertiesTextureCompressionComboBoxText (), "textureCompression"),
+	          texturePriority (this, getTexturePropertiesTexturePriorityAdjustment (), getTexturePropertiesTexturePrioritySpinButton (), "texturePriority")
 {
 	addChildren (texturePropertiesBuffer);
 	texturePropertiesBuffer .addInterest (this, &X3DTexturePropertiesEditor::set_node);

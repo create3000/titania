@@ -62,7 +62,7 @@ X3DViewportEditor::X3DViewportEditor () :
 	                           viewport (),
 	                           undoStep (),
 	                           changing (false),
-	                       clipBoundary (getBrowserWindow (),
+	                       clipBoundary (this,
 	                                     getViewportClipBoundaryLeftAdjustment (),
 	                                     getViewportClipBoundaryRightAdjustment (),
 	                                     getViewportClipBoundaryBottomAdjustment (),

@@ -57,7 +57,7 @@ namespace puck {
 
 X3DGeoLocationEditor::X3DGeoLocationEditor () :
 	X3DPrecisionPlacementPanelInterface (),
-	                          geoSystem (new MFStringGeoSystem (getBrowserWindow (),
+	                          geoSystem (new MFStringGeoSystem (this,
 	                                     getGeoLocationCoordinateSystemComboBoxText (),
 	                                     getGeoLocationEllipsoidComboBoxText (),
 	                                     getGeoLocationGDOrderComboBoxText (),
@@ -67,7 +67,7 @@ X3DGeoLocationEditor::X3DGeoLocationEditor () :
 	                                     getGeoLocationEllipsoidBox (),
 	                                     getGeoLocationGDOrderComboBoxText (),
 	                                     getGeoLocationGeoSystemUTMBox ())),
-	                          geoCoords (getBrowserWindow (),
+	                          geoCoords (this,
 	                                     getGeoLocationGeoCoordsXAdjustment (),
 	                                     getGeoLocationGeoCoordsYAdjustment (),
 	                                     getGeoLocationGeoCoordsZAdjustment (),

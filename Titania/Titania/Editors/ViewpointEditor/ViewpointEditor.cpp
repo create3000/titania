@@ -65,10 +65,10 @@ ViewpointEditor::ViewpointEditor (X3DBrowserWindow* const browserWindow) :
 	      X3DGeoViewpointEditor (),
 	                    browser (getBrowser ()),
 	              viewpointList (new ViewpointList (browserWindow)),
-	                   nodeName (getBrowserWindow (), getViewpointNameEntry (), getViewpointRenameButton ()),
-	                description (getBrowserWindow (), getViewpointDescriptionTextView (), "description"),
-	                       jump (getBrowserWindow (), getViewpointJumpCheckButton (), "jump"),
-	          retainUserOffsets (getBrowserWindow (), getViewpointRetainUserOffsetsCheckButton (), "retainUserOffsets")
+	                   nodeName (this, getViewpointNameEntry (), getViewpointRenameButton ()),
+	                description (this, getViewpointDescriptionTextView (), "description"),
+	                       jump (this, getViewpointJumpCheckButton (), "jump"),
+	          retainUserOffsets (this, getViewpointRetainUserOffsetsCheckButton (), "retainUserOffsets")
 {
 	setup ();
 

@@ -61,8 +61,8 @@ X3DTexture2DNodeEditor::X3DTexture2DNodeEditor (const X3D::BrowserPtr & preview)
 	    X3DMovieTextureEditor (),
 	                  preview (preview),
 	            texture2DNode (),
-	                  repeatS (getBrowserWindow (), getTexture2DNodeRepeatSCheckButton (), "repeatS"),
-	                  repeatT (getBrowserWindow (), getTexture2DNodeRepeatTCheckButton (), "repeatT")
+	                  repeatS (this, getTexture2DNodeRepeatSCheckButton (), "repeatS"),
+	                  repeatT (this, getTexture2DNodeRepeatTCheckButton (), "repeatT")
 {
 	preview -> signal_configure_event () .connect (sigc::mem_fun (this, &X3DTexture2DNodeEditor::on_configure_event));
 }
