@@ -155,10 +155,6 @@ public:
 	on_look_at_all_clicked () = 0;
 
 	virtual
-	void
-	on_add_color_clicked () = 0;
-
-	virtual
 	~X3DColorPerVertexEditorInterface ();
 
 

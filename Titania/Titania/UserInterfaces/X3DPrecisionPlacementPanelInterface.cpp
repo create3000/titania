@@ -214,6 +214,8 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BBoxCenterYSpinButton", m_BBoxCenterYSpinButton);
 	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
 	m_builder -> get_widget ("FillBoundingBoxFieldsButton", m_FillBoundingBoxFieldsButton);
+
+	// Connect object Gtk::Button with id 'IndexButton'.
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_index_clicked));
 
 	// Connect object Gtk::ToggleButton with id 'TransformUniformScaleButton'.

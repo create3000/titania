@@ -65,7 +65,7 @@ X3DGridTool::Fields::Fields () :
 	     lineColor (new SFColorRGBA (1, 0.7, 0.7, 0.2)),
 	majorLineColor (new SFColorRGBA (1, 0.7, 0.7, 0.4)),
 	  snapToCenter (new SFBool (true)),
-	  snapDistance (new SFFloat (0.2))
+	  snapDistance (new SFFloat (0.25))
 { }
 
 X3DGridTool::X3DGridTool () :

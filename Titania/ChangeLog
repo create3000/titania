@@ -1,5 +1,14 @@
 2014-11-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MFColorRGBAButton.h:
+	* X3DColorPerVertexEditorInterface.h:
+	* ColorPerVertexEditor.h:
+	* X3DColorPerVertexEditorInterface.cpp:
+	* ColorPerVertexEditor.cpp:
+	* X3DPrecisionPlacementPanelInterface.cpp: 
+
+2014-11-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MFStringWidget.h:
 	* TextEditor.cpp:
 	* X3DLODEditor.cpp:

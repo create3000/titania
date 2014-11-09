@@ -68,6 +68,8 @@ public:
 	                   Gtk::Button &,
 	                   const Glib::RefPtr <Gtk::Adjustment> &,
 	                   Gtk::Widget &,
+                      Gtk::Button &,
+                      Gtk::Button &,
 	                   Gtk::ScrolledWindow &,
 	                   const std::string &);
 
@@ -152,6 +154,12 @@ private:
 	Gdk::RGBA
 	to_rgba (const X3D::Color4f &);
 
+	void
+	on_add_color_clicked ();
+
+	void
+	on_remove_color_clicked ();
+
 	bool
 	on_colors_configure_event (GdkEventConfigure* const);
 
@@ -172,6 +180,8 @@ private:
 	Gtk::Button &                        colorButton;
 	const Glib::RefPtr <Gtk::Adjustment> valueAdjustment;
 	Gtk::Widget &                        widget;
+	Gtk::Button &                        addColorButton;
+	Gtk::Button &                        removeColorButton;
 	Gtk::ScrolledWindow &                colorsScrolledWindow;
 	Gtk::DrawingArea                     drawingArea;
 	Gtk::ColorSelectionDialog            dialog;
@@ -196,6 +206,8 @@ MFColorRGBAButton::MFColorRGBAButton (X3DBaseInterface* const editor,
                                       Gtk::Button & colorButton,
                                       const Glib::RefPtr <Gtk::Adjustment> & valueAdjustment,
                                       Gtk::Widget & widget,
+                                      Gtk::Button & addColorButton,
+                                      Gtk::Button & removeColorButton,
                                       Gtk::ScrolledWindow & colorsScrolledWindow,
                                       const std::string & name) :
 	    X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
@@ -203,6 +215,8 @@ MFColorRGBAButton::MFColorRGBAButton (X3DBaseInterface* const editor,
 	         colorButton (colorButton),
 	     valueAdjustment (valueAdjustment),
 	              widget (widget),
+	      addColorButton (addColorButton),
+	   removeColorButton (removeColorButton),
 	colorsScrolledWindow (colorsScrolledWindow),
 	         drawingArea (),
 	              dialog (),
@@ -248,6 +262,11 @@ MFColorRGBAButton::MFColorRGBAButton (X3DBaseInterface* const editor,
 
 	dialog .property_ok_button () .get_value () -> hide ();
 	dialog .property_cancel_button () .get_value () -> hide ();
+
+	// Colors Add/Remove Buttons
+	
+	addColorButton    .signal_clicked () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_add_color_clicked));
+	removeColorButton .signal_clicked () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_remove_color_clicked));
 
 	// Colors Drawing Area
 
@@ -389,12 +408,25 @@ MFColorRGBAButton::set_buffer ()
 	// Find last field.
 
 	bool hasField = false;
+	bool isEmpty  = false;
 
 	for (const auto & node : basic::make_reverse_range (nodes))
 	{
 		try
 		{
-			auto &       field = node -> getField <X3D::MFColorRGBA> (name);
+			auto & field = node -> getField <X3D::MFColorRGBA> (name);
+	
+			if (field .empty ())
+			{
+				index   = 0;
+				hasField = true;
+				isEmpty  = true;
+				break;
+			}
+
+			if (index >= field .size ())
+				index = field .size () - 1;
+
 			const auto & value = field .get1Value (index);
 			const auto   rgba  = to_rgba (value);
 
@@ -413,7 +445,7 @@ MFColorRGBAButton::set_buffer ()
 		{ }
 	}
 
-	if (not hasField)
+	if (not hasField or isEmpty)
 	{
 		this -> node = nullptr;
 		dialog .get_color_selection () -> set_current_rgba (Gdk::RGBA ());
@@ -484,6 +516,40 @@ MFColorRGBAButton::to_rgba (const X3D::Color4f & value)
 
 	color .set_rgba (value .r (), value .g (), value .b (), value .a ());
 	return color;
+}
+
+inline
+void
+MFColorRGBAButton::on_add_color_clicked ()
+{
+	undoStep .reset ();
+
+	addUndoFunction <X3D::MFColorRGBA> (nodes, name, undoStep);
+
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			auto & field = node -> getField <X3D::MFColorRGBA> (name);
+
+			if (index < field .size ())
+				field .emplace_back (field .get1Value (index));
+			else
+				field .emplace_back (1, 1, 1, 1);
+
+			setIndex (field .size () - 1);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	addRedoFunction <X3D::MFColorRGBA> (nodes, name, undoStep);
+}
+
+inline
+void
+MFColorRGBAButton::on_remove_color_clicked ()
+{
 }
 
 inline
@@ -623,10 +689,8 @@ MFColorRGBAButton::on_colors_button_release_event (GdkEventButton* event)
 		const size_t row     = (event -> y - colorsBorder [3] + colorsGap / 2.0) / (colorsSize + colorsGap);
 		const size_t index   = columns * row + column;
 
-		if (field .empty ())
-			setIndex (0);
-		else
-			setIndex (std::min (index, field .size () - 1));
+		if (index < field .size ())
+			setIndex (index);
 
 		colorsDrawingArea .grab_focus ();
 	}
