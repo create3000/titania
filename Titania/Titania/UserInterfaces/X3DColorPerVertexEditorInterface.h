@@ -126,6 +126,10 @@ public:
 	getLookAtButton () const
 	{ return *m_LookAtButton; }
 
+	Gtk::MenuToolButton &
+	getShadingButton () const
+	{ return *m_ShadingButton; }
+
 	Gtk::Button &
 	getColorButton () const
 	{ return *m_ColorButton; }
@@ -142,6 +146,30 @@ public:
 	getColorsScrolledWindow () const
 	{ return *m_ColorsScrolledWindow; }
 
+	Gtk::Menu &
+	getShadingMenu () const
+	{ return *m_ShadingMenu; }
+
+	Gtk::RadioMenuItem &
+	getPhongMenuItem () const
+	{ return *m_PhongMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getGouraudMenuItem () const
+	{ return *m_GouraudMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getFlatMenuItem () const
+	{ return *m_FlatMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getWireFrameMenuItem () const
+	{ return *m_WireFrameMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getPointSetMenuItem () const
+	{ return *m_PointSetMenuItem; }
+
 	virtual
 	void
 	on_undo_activate () = 0;
@@ -153,6 +181,26 @@ public:
 	virtual
 	void
 	on_look_at_all_clicked () = 0;
+
+	virtual
+	void
+	on_phong_activate () = 0;
+
+	virtual
+	void
+	on_gouraud_activate () = 0;
+
+	virtual
+	void
+	on_flat_activate () = 0;
+
+	virtual
+	void
+	on_wireframe_activate () = 0;
+
+	virtual
+	void
+	on_pointset_activate () = 0;
 
 	virtual
 	~X3DColorPerVertexEditorInterface ();
@@ -174,10 +222,17 @@ private:
 	Gtk::ImageMenuItem*            m_RedoMenuItem;
 	Gtk::Box*                      m_PreviewBox;
 	Gtk::ToolButton*               m_LookAtButton;
+	Gtk::MenuToolButton*           m_ShadingButton;
 	Gtk::Button*                   m_ColorButton;
 	Gtk::Button*                   m_AddColorButton;
 	Gtk::Button*                   m_RemoveColorButton;
 	Gtk::ScrolledWindow*           m_ColorsScrolledWindow;
+	Gtk::Menu*                     m_ShadingMenu;
+	Gtk::RadioMenuItem*            m_PhongMenuItem;
+	Gtk::RadioMenuItem*            m_GouraudMenuItem;
+	Gtk::RadioMenuItem*            m_FlatMenuItem;
+	Gtk::RadioMenuItem*            m_WireFrameMenuItem;
+	Gtk::RadioMenuItem*            m_PointSetMenuItem;
 
 };
 

@@ -139,11 +139,9 @@ ColorRGBA::getHSVA (std::vector <Vector4f> & colors) const
 void
 ColorRGBA::set_color ()
 {
-	const auto iter = std::find_if (color () .begin (),
-	                                color () .end (),
-	                                [ ] (const Color4f & value) { return value .a () < 1; });
-
-	transparent = iter not_eq color () .end ();
+	transparent = std::any_of (color () .begin (),
+	                           color () .end (),
+	                           [ ] (const Color4f & value) { return value .a () < 1; });
 }
 
 } // X3D

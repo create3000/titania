@@ -62,10 +62,6 @@ ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindo
 	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DColorPerVertexEditorInterface (get_ui ("Editors/ColorPerVertexEditor.xml"), gconf_dir ()),
 	                         preview (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
-	                       selection (),
-	                           coord (),
-	                  indexedFaceSet (),
-	                           color (),
 	                     colorButton (this,
 	                                  getColorButton (),
 	                                  getColorAdjustment (),
@@ -74,9 +70,18 @@ ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindo
 	                                  getRemoveColorButton (),
 	                                  getColorsScrolledWindow (),
 	                                  "color"),
+	                       selection (),
+	                           coord (),
+	                  indexedFaceSet (),
+	                           color (),
+	                       faceIndex (),
+	                            face (0, 0),
+	                           faces (),
 	                     undoHistory ()
 {
 	preview -> set_antialiasing (4);
+	
+	getShadingButton () .set_menu (getShadingMenu ());
 
 	setup ();
 }
@@ -150,6 +155,7 @@ ColorPerVertexEditor::set_selection ()
 			shape -> geometry () = indexedFaceSet;
 
 			setColor ();
+			setFaceIndex ();
 
 			colorButton .setIndex (0);
 			colorButton .setNodes ({ color });
@@ -166,8 +172,6 @@ ColorPerVertexEditor::set_selection ()
 void
 ColorPerVertexEditor::on_undo_activate ()
 {
-	__LOG__ << std::endl;
-
 	preview -> grab_focus ();
 
 	undoHistory .undoChanges ();
@@ -176,8 +180,6 @@ ColorPerVertexEditor::on_undo_activate ()
 void
 ColorPerVertexEditor::on_redo_activate ()
 {
-	__LOG__ << std::endl;
-
 	preview -> grab_focus ();
 
 	undoHistory .redoChanges ();
@@ -190,6 +192,49 @@ ColorPerVertexEditor::on_look_at_all_clicked ()
 		preview -> getActiveLayer () -> lookAt ();
 }
 
+// Shading menu
+
+void
+ColorPerVertexEditor::on_phong_activate ()
+{
+	if (getPhongMenuItem () .get_active ())
+		on_shading_activate ("PHONG");
+}
+
+void
+ColorPerVertexEditor::on_gouraud_activate ()
+{
+	if (getGouraudMenuItem () .get_active ())
+		on_shading_activate ("GOURAUD");
+}
+
+void
+ColorPerVertexEditor::on_flat_activate ()
+{
+	if (getFlatMenuItem () .get_active ())
+		on_shading_activate ("FLAT");
+}
+
+void
+ColorPerVertexEditor::on_wireframe_activate ()
+{
+	if (getWireFrameMenuItem () .get_active ())
+		on_shading_activate ("WIREFRAME");
+}
+
+void
+ColorPerVertexEditor::on_pointset_activate ()
+{
+	if (getPointSetMenuItem () .get_active ())
+		on_shading_activate ("POINTSET");
+}
+
+void
+ColorPerVertexEditor::on_shading_activate (const std::string & value)
+{
+	preview -> getBrowserOptions () -> shading () = value;
+}
+
 void
 ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 {
@@ -199,15 +244,40 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 	const auto index = getPointIndex (hitPoint);
 	const auto point = coord -> get1Point (index);
 
+	setFaces (hitPoint, index);
+
 	set_crossHair (point);
 }
 
 void
 ColorPerVertexEditor::set_crossHair (const X3D::Vector3f & point)
 {
-	const auto cross = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Cross");
+	const auto crossHair           = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("CrossHair");
+	const auto crossHairCoordinate = preview -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("CrossHairCoordinate");
+	const auto points              = getPoints (face .first);
 
-	cross -> translation () = point;
+	if (points .size () < 3)
+		return;
+
+	const auto vertex = face .second;
+	const auto i1     = indexedFaceSet -> coordIndex () [points [vertex == 0 ? points .size () - 1 : vertex - 1]];
+	const auto i2     = indexedFaceSet -> coordIndex () [points [vertex]];
+	const auto i3     = indexedFaceSet -> coordIndex () [points [(vertex + 1) % points .size ()]];
+	const auto p1     = coord -> get1Point (i1);
+	const auto p2     = coord -> get1Point (i2);
+	const auto p3     = coord -> get1Point (i3);
+
+	const auto edge1  = p1 - p2;
+	const auto edge2  = p3 - p2;
+	const auto normal = X3D::normal (p1, p2, p3) * X3D::abs (edge1 + edge2) / 2.0;
+
+	crossHairCoordinate -> point () = {
+		-normal, normal,
+		X3D::Vector3d (), edge1,
+		X3D::Vector3d (), edge2
+	};
+
+	crossHair -> translation () = point;
 }
 
 void
@@ -278,6 +348,105 @@ ColorPerVertexEditor::getPointIndex (const X3D::Vector3f & hitPoint) const
 	}
 
 	return index;
+}
+
+void
+ColorPerVertexEditor::setFaceIndex ()
+{
+	faceIndex .clear ();
+
+	size_t face   = 0;
+	size_t vertex = 0;
+
+	for (const int32_t index : indexedFaceSet -> coordIndex ())
+	{
+		if (index < 0)
+		{
+			face  += vertex + 1;
+			vertex = 0;
+			continue;
+		}
+			
+		faceIndex .emplace (index, std::make_pair (face, vertex));
+
+		++ vertex;
+	}
+}
+
+void
+ColorPerVertexEditor::setFaces (const X3D::Vector3f & hitPoint, const size_t point)
+{
+	faces .clear ();
+
+	const auto range = faceIndex .equal_range (point);
+
+	for (const auto & face : range)
+		faces .emplace_back (face .second);
+
+	if (faces .empty ())
+		return;
+
+	// Get distances of faces to hitPoint.
+
+	std::vector <float> distances;
+
+	for (const auto & face : faces)
+	{
+		const auto points = getPoints (face .first);
+
+		if (points .size () < 3)
+		{
+			distances .emplace_back (std::numeric_limits <float>::infinity ());
+			continue;
+		}
+
+		const auto vertex = face .second;
+		const auto i1     = indexedFaceSet -> coordIndex () [points [vertex == 0 ? points .size () - 1 : vertex - 1]];
+		const auto i2     = indexedFaceSet -> coordIndex () [points [vertex]];
+		const auto i3     = indexedFaceSet -> coordIndex () [points [(vertex + 1) % points .size ()]];
+		const auto p1     = coord -> get1Point (i1);
+		const auto p2     = coord -> get1Point (i2);
+		const auto p3     = coord -> get1Point (i3);
+
+		const X3D::Plane3f plane (p1, p2, p3);
+
+		distances .emplace_back (std::abs (plane .distance (hitPoint)));
+	}
+
+	// Determine face.
+
+	const auto iter  = std::min_element (distances .begin (), distances .end ());
+	const auto index = iter - distances .begin ();
+
+	face = faces [index];
+
+	// DEBUG
+	auto d = distances .begin ();
+	__LOG__ << std::endl;
+	__LOG__ << faces .size () << std::endl;
+
+	for (const auto & face : faces)
+		__LOG__ << *d++ << " : " << face .first << " : " << face .second << std::endl;
+
+	__LOG__ << face .first << " : " << face .second << std::endl;
+}
+
+std::vector <size_t>
+ColorPerVertexEditor::getPoints (const size_t face) const
+{
+	std::vector <size_t> points;
+
+	for (size_t i = face, size = indexedFaceSet -> coordIndex () .size (); i < size; ++ i)
+	{
+		const auto index = indexedFaceSet -> coordIndex () [i];
+
+		if (index < 0)
+			break;
+
+		points .emplace_back (i);
+	}
+
+	return points;
 }
 
 ColorPerVertexEditor::~ColorPerVertexEditor ()

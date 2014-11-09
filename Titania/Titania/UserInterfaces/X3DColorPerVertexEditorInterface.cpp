@@ -70,10 +70,17 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("RedoMenuItem", m_RedoMenuItem);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
+	m_builder -> get_widget ("ShadingButton", m_ShadingButton);
 	m_builder -> get_widget ("ColorButton", m_ColorButton);
 	m_builder -> get_widget ("AddColorButton", m_AddColorButton);
 	m_builder -> get_widget ("RemoveColorButton", m_RemoveColorButton);
 	m_builder -> get_widget ("ColorsScrolledWindow", m_ColorsScrolledWindow);
+	m_builder -> get_widget ("ShadingMenu", m_ShadingMenu);
+	m_builder -> get_widget ("PhongMenuItem", m_PhongMenuItem);
+	m_builder -> get_widget ("GouraudMenuItem", m_GouraudMenuItem);
+	m_builder -> get_widget ("FlatMenuItem", m_FlatMenuItem);
+	m_builder -> get_widget ("WireFrameMenuItem", m_WireFrameMenuItem);
+	m_builder -> get_widget ("PointSetMenuItem", m_PointSetMenuItem);
 
 	// Connect object Gtk::ImageMenuItem with id 'UndoMenuItem'.
 	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_undo_activate));
@@ -81,6 +88,13 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToolButton with id 'LookAtButton'.
 	m_LookAtButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_look_at_all_clicked));
+
+	// Connect object Gtk::RadioMenuItem with id 'PhongMenuItem'.
+	m_PhongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_phong_activate));
+	m_GouraudMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_gouraud_activate));
+	m_FlatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_flat_activate));
+	m_WireFrameMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_wireframe_activate));
+	m_PointSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_pointset_activate));
 
 	// Call construct handler of base class.
 	construct ();

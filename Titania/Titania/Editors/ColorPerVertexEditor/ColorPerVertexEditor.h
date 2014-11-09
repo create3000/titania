@@ -90,8 +90,8 @@ private:
 	void
 	set_selection ();
 
-	///  @name Event handlers
-	
+	///  @name Toolbar
+
 	virtual
 	void
 	on_undo_activate () final override;
@@ -103,6 +103,33 @@ private:
 	virtual
 	void
 	on_look_at_all_clicked () final override;
+
+	/// @name Shading
+
+	virtual
+	void
+	on_phong_activate () final override;
+
+	virtual
+	void
+	on_gouraud_activate () final override;
+
+	virtual
+	void
+	on_flat_activate () final override;
+
+	virtual
+	void
+	on_wireframe_activate () final override;
+
+	virtual
+	void
+	on_pointset_activate () final override;
+
+	void
+	on_shading_activate (const std::string &);
+
+	///  @name Preview
 
 	void
 	set_hitPoint (const X3D::Vector3f &);
@@ -130,18 +157,30 @@ private:
 	void
 	setColor ();
 
+	void
+	setFaceIndex ();
+
 	size_t
 	getPointIndex (const X3D::Vector3f &) const;
 
+	void
+	setFaces (const X3D::Vector3f &, const size_t);
+
+	std::vector <size_t>
+	getPoints (const size_t) const;
+
 	///  @name Members
 
-	X3D::BrowserPtr                      preview;
-	X3D::X3DPtr <X3D::IndexedFaceSet>    selection;
-	X3D::X3DPtr <X3D::X3DCoordinateNode> coord;
-	X3D::X3DPtr <X3D::IndexedFaceSet>    indexedFaceSet;
-	X3D::X3DPtr <X3D::ColorRGBA>         color;
-	MFColorRGBAButton                    colorButton;
-	UndoHistory                          undoHistory;
+	X3D::BrowserPtr                                     preview;
+	MFColorRGBAButton                                   colorButton;
+	X3D::X3DPtr <X3D::IndexedFaceSet>                   selection;
+	X3D::X3DPtr <X3D::X3DCoordinateNode>                coord;
+	X3D::X3DPtr <X3D::IndexedFaceSet>                   indexedFaceSet;
+	X3D::X3DPtr <X3D::ColorRGBA>                        color;
+	std::multimap <int32_t, std::pair <size_t, size_t>> faceIndex;
+	std::pair <size_t, size_t>                          face;
+	std::vector <std::pair <size_t, size_t>>            faces;
+	UndoHistory                                         undoHistory;
 
 };
 

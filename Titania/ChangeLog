@@ -1,5 +1,15 @@
 2014-11-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.xml:
+	* Shading.svg:
+	* ColorPerVertexEditorPreview.x3dv:
+	* X3DColorPerVertexEditorInterface.h:
+	* ColorPerVertexEditor.h:
+	* X3DColorPerVertexEditorInterface.cpp:
+	* ColorPerVertexEditor.cpp: 
+
+2014-11-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MFColorRGBAButton.h:
 	* X3DColorPerVertexEditorInterface.h:
 	* ColorPerVertexEditor.h:
