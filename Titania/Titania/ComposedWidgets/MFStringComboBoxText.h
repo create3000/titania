@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	MFStringComboBoxText (X3DBrowserWindow* const,
+	MFStringComboBoxText (X3DBaseInterface* const,
 	                      Gtk::ComboBoxText &,
 	                      const std::string &,
 	                      const size_t,
@@ -119,21 +119,21 @@ private:
 };
 
 inline
-MFStringComboBoxText::MFStringComboBoxText (X3DBrowserWindow* const browserWindow,
+MFStringComboBoxText::MFStringComboBoxText (X3DBaseInterface* const editor,
                                             Gtk::ComboBoxText & comboBoxText,
                                             const std::string & name,
                                             const size_t index,
                                             const std::string & defaultValue) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (browserWindow),
-	    comboBoxText (comboBoxText),
-	           nodes (),
-	            name (name),
-	           index (index),
-	    defaultValue (defaultValue),
-	        undoStep (),
-	        changing (false),
-	          buffer ()
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	X3DComposedWidget (editor),
+	     comboBoxText (comboBoxText),
+	            nodes (),
+	             name (name),
+	            index (index),
+	     defaultValue (defaultValue),
+	         undoStep (),
+	         changing (false),
+	           buffer ()
 {
 	addChildren (buffer);
 	buffer .addInterest (this, &MFStringComboBoxText::set_buffer);
@@ -272,7 +272,7 @@ MFStringComboBoxText::getString (const X3D::X3DPtrArray <NodeType> & nodes, cons
 				{
 					found = defaultValue;
 				}
-		
+
 				active = not found .empty ();
 			}
 			else if (field .at (index) not_eq found)

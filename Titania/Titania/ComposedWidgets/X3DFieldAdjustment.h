@@ -64,7 +64,7 @@ public:
 
 	///  @name Construction
 
-	X3DFieldAdjustment (X3DBrowserWindow* const,
+	X3DFieldAdjustment (X3DBaseInterface* const,
 	                    const Glib::RefPtr <Gtk::Adjustment> &,
 	                    Gtk::Widget &,
 	                    const std::string &);
@@ -79,7 +79,7 @@ public:
 	{ return nodes; }
 
 	///  @name Destruction
-	
+
 	virtual
 	~X3DFieldAdjustment ()
 	{ dispose (); }
@@ -114,19 +114,19 @@ private:
 };
 
 template <class Type>
-X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBrowserWindow* const browserWindow,
+X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBaseInterface* const editor,
                                                const Glib::RefPtr <Gtk::Adjustment> & adjustment,
                                                Gtk::Widget & widget,
                                                const std::string & name) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (browserWindow),
-	      adjustment (adjustment),
-	          widget (widget),
-	           nodes (),
-	            name (name),
-	        undoStep (),
-	        changing (false),
-	          buffer ()
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	X3DComposedWidget (editor),
+	       adjustment (adjustment),
+	           widget (widget),
+	            nodes (),
+	             name (name),
+	         undoStep (),
+	         changing (false),
+	           buffer ()
 {
 	addChildren (buffer);
 	buffer .addInterest (this, &X3DFieldAdjustment::set_buffer);

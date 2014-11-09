@@ -64,7 +64,7 @@ public:
 
 	///  @name Construction
 
-	NormalTool (X3DBrowserWindow* const,
+	NormalTool (X3DBaseInterface* const,
 	            Gtk::Box &,
 	            const std::string &);
 
@@ -119,17 +119,17 @@ private:
 };
 
 inline
-NormalTool::NormalTool (X3DBrowserWindow* const browserWindow,
+NormalTool::NormalTool (X3DBaseInterface* const editor,
                         Gtk::Box & box,
                         const std::string & name) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (browserWindow),
-	             box (box),
-	         browser (X3D::createBrowser (browserWindow -> getBrowser ())),
-	           nodes (),
-	            name (name),
-	        undoStep (),
-	          buffer ()
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	X3DComposedWidget (editor),
+	              box (box),
+	          browser (X3D::createBrowser (editor -> getBrowser ())),
+	            nodes (),
+	             name (name),
+	         undoStep (),
+	           buffer ()
 {
 	// Buffer
 

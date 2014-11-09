@@ -64,7 +64,7 @@ public:
 
 	///  @name Construction
 
-	X3DFieldAdjustment4 (X3DBrowserWindow* const,
+	X3DFieldAdjustment4 (X3DBaseInterface* const,
 	                     const Glib::RefPtr <Gtk::Adjustment> &,
 	                     const Glib::RefPtr <Gtk::Adjustment> &,
 	                     const Glib::RefPtr <Gtk::Adjustment> &,
@@ -133,41 +133,41 @@ private:
 
 	///  @name Members
 
-	const std::vector <Glib::RefPtr <Gtk::Adjustment>> adjustments;
-	Gtk::Widget &                        widget;
-	X3D::MFNode                          nodes;
-	const std::string                    name;
-	int                                  index;
-	UndoStepPtr                          undoStep;
-	int                                  input;
-	bool                                 changing;
-	X3D::SFTime                          buffer;
-	bool                                 normalize;
-	bool                                 uniform;
+	const std::vector <Glib::RefPtr <Gtk::Adjustment>>  adjustments;
+	Gtk::Widget &                                       widget;
+	X3D::MFNode                                         nodes;
+	const std::string                                   name;
+	int                                                 index;
+	UndoStepPtr                                         undoStep;
+	int                                                 input;
+	bool                                                changing;
+	X3D::SFTime                                         buffer;
+	bool                                                normalize;
+	bool                                                uniform;
 
 };
 
 template <class Type>
-X3DFieldAdjustment4 <Type>::X3DFieldAdjustment4 (X3DBrowserWindow* const browserWindow,
+X3DFieldAdjustment4 <Type>::X3DFieldAdjustment4 (X3DBaseInterface* const editor,
                                                  const Glib::RefPtr <Gtk::Adjustment> & adjustment1,
                                                  const Glib::RefPtr <Gtk::Adjustment> & adjustment2,
                                                  const Glib::RefPtr <Gtk::Adjustment> & adjustment3,
                                                  const Glib::RefPtr <Gtk::Adjustment> & adjustment4,
                                                  Gtk::Widget & widget,
                                                  const std::string & name) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (browserWindow),
-	     adjustments ({ adjustment1, adjustment2, adjustment3, adjustment4 }),
-	          widget (widget),
-	           nodes (),
-	            name (name),
-	           index (0),
-	        undoStep (),
-	           input (-1),
-	        changing (false),
-	          buffer (),
-	       normalize (false),
-	         uniform (false)
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	X3DComposedWidget (editor),
+	      adjustments ({ adjustment1, adjustment2, adjustment3, adjustment4 }),
+	           widget (widget),
+	            nodes (),
+	             name (name),
+	            index (0),
+	         undoStep (),
+	            input (-1),
+	         changing (false),
+	           buffer (),
+	        normalize (false),
+	          uniform (false)
 {
 	addChildren (buffer);
 	buffer .addInterest (this, &X3DFieldAdjustment4::set_buffer);

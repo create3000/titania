@@ -64,7 +64,7 @@ public:
 
 	///  @name Construction
 
-	MFColorRGBAButton (X3DBaseInterface* const editor,
+	MFColorRGBAButton (X3DBaseInterface* const,
 	                   Gtk::Button &,
 	                   const Glib::RefPtr <Gtk::Adjustment> &,
 	                   Gtk::Widget &,
@@ -157,7 +157,7 @@ private:
 
 	bool
 	on_colors_key_press_event (GdkEventKey*);
-	
+
 	bool
 	on_colors_button_release_event (GdkEventButton*);
 
@@ -198,27 +198,27 @@ MFColorRGBAButton::MFColorRGBAButton (X3DBaseInterface* const editor,
                                       Gtk::Widget & widget,
                                       Gtk::ScrolledWindow & colorsScrolledWindow,
                                       const std::string & name) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
-	X3DComposedWidget (editor),
-	      colorButton (colorButton),
-	  valueAdjustment (valueAdjustment),
-	           widget (widget),
+	    X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	   X3DComposedWidget (editor),
+	         colorButton (colorButton),
+	     valueAdjustment (valueAdjustment),
+	              widget (widget),
 	colorsScrolledWindow (colorsScrolledWindow),
-	      drawingArea (),
-	           dialog (),
-	colorsDrawingArea (),
-	            nodes (),
-	             node (),
-	             name (name),
-	            index (0),
-	         undoStep (),
-	            input (-1),
-	         changing (false),
-	           buffer (),
-	             hsva (),
-	       colorsSize (32),
-	        colorsGap (2),
-	     colorsBorder (2, 2, 2, 2)
+	         drawingArea (),
+	              dialog (),
+	   colorsDrawingArea (),
+	               nodes (),
+	                node (),
+	                name (name),
+	               index (0),
+	            undoStep (),
+	               input (-1),
+	            changing (false),
+	              buffer (),
+	                hsva (),
+	          colorsSize (32),
+	           colorsGap (2),
+	        colorsBorder (2, 2, 2, 2)
 {
 	// Buffer
 
@@ -517,13 +517,13 @@ MFColorRGBAButton::on_colors_key_press_event (GdkEventKey* event)
 {
 	if (not node)
 		return false;
-	
+
 	try
 	{
 		const auto & field   = node -> getField <X3D::MFColorRGBA> (name);
 		const auto   width   = colorsDrawingArea .get_width ();
 		const size_t columns = getColumns (width, colorsSize, colorsGap, colorsBorder);
-		
+
 		if (field .empty ())
 		{
 			setIndex (0);
@@ -539,7 +539,7 @@ MFColorRGBAButton::on_colors_key_press_event (GdkEventKey* event)
 					// First row.
 					const auto column = index % columns;
 					const auto rest   = field .size () % columns;
-					
+
 					if (column)
 					{
 						if (column - 1 < rest)
@@ -581,7 +581,7 @@ MFColorRGBAButton::on_colors_key_press_event (GdkEventKey* event)
 			{
 				if (index > 0)
 					setIndex (index - 1);
-				
+
 				else
 					setIndex (field .size () - 1);
 
@@ -591,7 +591,7 @@ MFColorRGBAButton::on_colors_key_press_event (GdkEventKey* event)
 			{
 				if (index + 1 < field .size ())
 					setIndex (index + 1);
-				
+
 				else
 					setIndex (0);
 
@@ -613,7 +613,7 @@ MFColorRGBAButton::on_colors_button_release_event (GdkEventButton* event)
 {
 	if (not node)
 		return true;
-	
+
 	try
 	{
 		const auto & field   = node -> getField <X3D::MFColorRGBA> (name);
@@ -632,7 +632,7 @@ MFColorRGBAButton::on_colors_button_release_event (GdkEventButton* event)
 	}
 	catch (const X3D::X3DError &)
 	{ }
-	
+
 	return true;
 }
 
@@ -655,7 +655,7 @@ MFColorRGBAButton::on_colors_draw (const Cairo::RefPtr <Cairo::Context> & contex
 			const int    column = i % columns;
 			const int    row    = i / columns;
 			const double x      = colorsBorder [0] + column * colorsSize + column * colorsGap;
-			const double y      = colorsBorder [3] + row    * colorsSize + row    * colorsGap;
+			const double y      = colorsBorder [3] + row * colorsSize + row * colorsGap;
 
 			context -> set_source_rgba (color .getRed (), color .getGreen (), color .getBlue (), color .getAlpha ());
 			context -> rectangle (x, y, colorsSize, colorsSize);
@@ -666,7 +666,7 @@ MFColorRGBAButton::on_colors_draw (const Cairo::RefPtr <Cairo::Context> & contex
 		const int    column = index % columns;
 		const int    row    = index / columns;
 		const double x      = colorsBorder [0] + column * colorsSize + column * colorsGap - colorsGap / 2.0;
-		const double y      = colorsBorder [3] + row    * colorsSize + row    * colorsGap - colorsGap / 2.0;
+		const double y      = colorsBorder [3] + row * colorsSize + row * colorsGap - colorsGap / 2.0;
 
 		context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
 		context -> rectangle (x, y, colorsSize + colorsGap, colorsSize + colorsGap);

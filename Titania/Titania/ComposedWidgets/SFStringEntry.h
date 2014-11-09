@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	SFStringEntry (X3DBrowserWindow* const,
+	SFStringEntry (X3DBaseInterface* const,
 	               Gtk::Entry &,
 	               const std::string &);
 
@@ -111,17 +111,17 @@ private:
 };
 
 inline
-SFStringEntry::SFStringEntry (X3DBrowserWindow* const browserWindow,
+SFStringEntry::SFStringEntry (X3DBaseInterface* const editor,
                               Gtk::Entry & entry,
                               const std::string & name) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (browserWindow),
-	           entry (entry),
-	           nodes (),
-	            name (name),
-	        undoStep (),
-	        changing (false),
-	          buffer ()
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	X3DComposedWidget (editor),
+	            entry (entry),
+	            nodes (),
+	             name (name),
+	         undoStep (),
+	         changing (false),
+	           buffer ()
 {
 	addChildren (buffer);
 	buffer .addInterest (this, &SFStringEntry::set_buffer);

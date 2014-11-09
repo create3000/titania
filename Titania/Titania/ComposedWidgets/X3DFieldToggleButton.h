@@ -64,7 +64,7 @@ public:
 
 	///  @name Construction
 
-	X3DFieldToggleButton (X3DBrowserWindow* const,
+	X3DFieldToggleButton (X3DBaseInterface* const,
 	                      Gtk::ToggleButton &,
 	                      const std::string &);
 
@@ -82,7 +82,7 @@ public:
 	{ return undoStep; }
 
 	///  @name Destruction
-	
+
 	virtual
 	~X3DFieldToggleButton ()
 	{ dispose (); }
@@ -116,21 +116,21 @@ private:
 };
 
 template <class Type>
-X3DFieldToggleButton <Type>::X3DFieldToggleButton (X3DBrowserWindow* const browserWindow,
+X3DFieldToggleButton <Type>::X3DFieldToggleButton (X3DBaseInterface* const editor,
                                                    Gtk::ToggleButton & toggleButton,
                                                    const std::string & name) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DComposedWidget (browserWindow),
-	    toggleButton (toggleButton),
-	           nodes (),
-	            name (name),
-	        undoStep (),
-	        changing (false),
-	          buffer ()
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	X3DComposedWidget (editor),
+	     toggleButton (toggleButton),
+	            nodes (),
+	             name (name),
+	         undoStep (),
+	         changing (false),
+	           buffer ()
 {
 	addChildren (buffer);
 	buffer .addInterest (this, &X3DFieldToggleButton::set_buffer);
-	
+
 	toggleButton .signal_toggled () .connect (sigc::mem_fun (*this, &X3DFieldToggleButton::on_toggled));
 
 	setup ();

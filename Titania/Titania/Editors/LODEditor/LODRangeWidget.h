@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	LODRangeWidget (X3DBrowserWindow* const,
+	LODRangeWidget (X3DBaseInterface* const,
 	                const Glib::RefPtr <Gtk::Adjustment> &,
 	                const Glib::RefPtr <Gtk::Adjustment> &,
 	                Gtk::SpinButton &,
@@ -124,15 +124,15 @@ private:
 };
 
 inline
-LODRangeWidget::LODRangeWidget (X3DBrowserWindow* const browserWindow,
+LODRangeWidget::LODRangeWidget (X3DBaseInterface* const editor,
                                 const Glib::RefPtr <Gtk::Adjustment> & adjustment1,
                                 const Glib::RefPtr <Gtk::Adjustment> & adjustment2,
                                 Gtk::SpinButton & spinButton1,
                                 Gtk::SpinButton & spinButton2,
                                 Gtk::CheckButton & maxButton,
                                 Gtk::Widget & widget) :
-	 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DComposedWidget (browserWindow),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	X3DComposedWidget (editor),
 	      adjustment1 (adjustment1),
 	      adjustment2 (adjustment2),
 	      spinButton1 (spinButton1),

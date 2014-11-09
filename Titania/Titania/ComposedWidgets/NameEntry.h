@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	NameEntry (X3DBrowserWindow* const browserWindow,
+	NameEntry (X3DBaseInterface* const,
 	           Gtk::Entry &,
 	           Gtk::Button &);
 
@@ -92,7 +92,7 @@ private:
 
 	void
 	on_delete_text (int, int);
-	
+
 	bool
 	on_key_press_event (GdkEventKey*);
 
@@ -115,14 +115,14 @@ private:
 };
 
 inline
-NameEntry::NameEntry (X3DBrowserWindow* const browserWindow,
+NameEntry::NameEntry (X3DBaseInterface* const editor,
                       Gtk::Entry & entry,
                       Gtk::Button & button) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (browserWindow),
-	           entry (entry),
-	          button (button),
-	            node ()
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	X3DComposedWidget (editor),
+	            entry (entry),
+	           button (button),
+	             node ()
 {
 	entry  .signal_insert_text ()     .connect (sigc::mem_fun (*this, &NameEntry::on_insert_text), false);
 	entry  .signal_delete_text ()     .connect (sigc::mem_fun (*this, &NameEntry::on_delete_text), false);

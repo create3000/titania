@@ -64,7 +64,7 @@ public:
 
 	///  @name Construction
 
-	RotationTool (X3DBrowserWindow* const,
+	RotationTool (X3DBaseInterface* const,
 	              Gtk::Box &,
 	              const std::string &);
 
@@ -119,13 +119,13 @@ private:
 };
 
 inline
-RotationTool::RotationTool (X3DBrowserWindow* const browserWindow,
+RotationTool::RotationTool (X3DBaseInterface* const editor,
                             Gtk::Box & box,
                             const std::string & name) :
-	 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DComposedWidget (browserWindow),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	X3DComposedWidget (editor),
 	              box (box),
-	          browser (X3D::createBrowser (browserWindow -> getBrowser ())),
+	          browser (X3D::createBrowser (editor -> getBrowser ())),
 	            nodes (),
 	             name (name),
 	         undoStep (),

@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	SFStringComboBoxText (X3DBrowserWindow* const,
+	SFStringComboBoxText (X3DBaseInterface* const,
 	                      Gtk::ComboBoxText &,
 	                      const std::string &);
 
@@ -77,7 +77,7 @@ public:
 	{ return nodes; }
 
 	///  @name Destruction
-	
+
 	virtual
 	~SFStringComboBoxText ()
 	{ dispose (); }
@@ -111,17 +111,17 @@ private:
 };
 
 inline
-SFStringComboBoxText::SFStringComboBoxText (X3DBrowserWindow* const browserWindow,
+SFStringComboBoxText::SFStringComboBoxText (X3DBaseInterface* const editor,
                                             Gtk::ComboBoxText & comboBoxText,
                                             const std::string & name) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (browserWindow),
-	    comboBoxText (comboBoxText),
-	           nodes (),
-	            name (name),
-	        undoStep (),
-	        changing (false),
-	          buffer ()
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	X3DComposedWidget (editor),
+	     comboBoxText (comboBoxText),
+	            nodes (),
+	             name (name),
+	         undoStep (),
+	         changing (false),
+	           buffer ()
 {
 	addChildren (buffer);
 	buffer .addInterest (this, &SFStringComboBoxText::set_buffer);

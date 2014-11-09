@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_SFSTRING_ENTRY_H__
-#define __TITANIA_COMPOSED_WIDGETS_SFSTRING_ENTRY_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_SFSTRING_TEXT_VIEW_H__
+#define __TITANIA_COMPOSED_WIDGETS_SFSTRING_TEXT_VIEW_H__
 
 #include "../ComposedWidgets/X3DComposedWidget.h"
 
@@ -63,9 +63,9 @@ public:
 
 	///  @name Construction
 
-	SFStringTextView (X3DBrowserWindow* const,
-	               Gtk::TextView &,
-	               const std::string &);
+	SFStringTextView (X3DBaseInterface* const,
+	                  Gtk::TextView &,
+	                  const std::string &);
 
 	///  @name Member access
 
@@ -111,17 +111,17 @@ private:
 };
 
 inline
-SFStringTextView::SFStringTextView (X3DBrowserWindow* const browserWindow,
-                              Gtk::TextView & textView,
-                              const std::string & name) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (browserWindow),
-	        textView (textView),
-	           nodes (),
-	            name (name),
-	        undoStep (),
-	        changing (false),
-	          buffer ()
+SFStringTextView::SFStringTextView (X3DBaseInterface* const editor,
+                                    Gtk::TextView & textView,
+                                    const std::string & name) :
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	X3DComposedWidget (editor),
+	         textView (textView),
+	            nodes (),
+	             name (name),
+	         undoStep (),
+	         changing (false),
+	           buffer ()
 {
 	addChildren (buffer);
 	buffer .addInterest (this, &SFStringTextView::set_buffer);

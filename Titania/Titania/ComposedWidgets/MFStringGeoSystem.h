@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	MFStringGeoSystem (X3DBrowserWindow* const,
+	MFStringGeoSystem (X3DBaseInterface* const,
 	                   Gtk::ComboBoxText &,
 	                   Gtk::ComboBoxText &,
 	                   Gtk::ComboBoxText &,
@@ -118,7 +118,7 @@ private:
 };
 
 inline
-MFStringGeoSystem::MFStringGeoSystem (X3DBrowserWindow* const browserWindow,
+MFStringGeoSystem::MFStringGeoSystem (X3DBaseInterface* const editor,
                                       Gtk::ComboBoxText & coordinateSystem,
                                       Gtk::ComboBoxText & ellipsoid,
                                       Gtk::ComboBoxText & gdOrder,
@@ -128,8 +128,8 @@ MFStringGeoSystem::MFStringGeoSystem (X3DBrowserWindow* const browserWindow,
                                       Gtk::Widget & ellipsoidBox,
                                       Gtk::Widget & gdBox,
                                       Gtk::Widget & utmBox) :
-	 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DComposedWidget (browserWindow),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	X3DComposedWidget (editor),
 	 coordinateSystem (coordinateSystem),
 	        ellipsoid (ellipsoid),
 	          gdOrder (gdOrder),
