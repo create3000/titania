@@ -78,7 +78,7 @@ public:
 	{ return nodes; }
 
 	const UndoStepPtr &
-	getUndoStep () const
+	getOwnUndoStep () const
 	{ return undoStep; }
 
 	///  @name Destruction
@@ -120,7 +120,7 @@ X3DFieldToggleButton <Type>::X3DFieldToggleButton (X3DBrowserWindow* const brows
                                                    Gtk::ToggleButton & toggleButton,
                                                    const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DComposedWidget (),
+	X3DComposedWidget (browserWindow),
 	    toggleButton (toggleButton),
 	           nodes (),
 	            name (name),

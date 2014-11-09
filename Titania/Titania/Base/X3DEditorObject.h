@@ -53,7 +53,6 @@
 
 #include "../Base/X3DBaseInterface.h"
 #include "../Browser/X3DBrowserWindow.h"
-#include "../Undo/UndoStep.h"
 
 #include <Titania/String/sprintf.h>
 
@@ -364,7 +363,7 @@ X3DEditorObject::unlinkClone (const X3D::X3DPtrArray <NodeType> & nodes, const s
 		first = false;
 	}
 
-	getBrowserWindow () -> addUndoStep (undoStep);
+	addUndoStep (undoStep);
 	nodes [0] -> getExecutionContext () -> realize ();
 
 	undoStep .reset ();
@@ -377,7 +376,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 	if (not undo)
 		return;
 
-	const auto lastUndoStep = getBrowserWindow () -> getUndoStep ();
+	const auto lastUndoStep = getUndoStep ();
 
 	if (undoStep and lastUndoStep == undoStep and fieldName == currentField)
 	{
@@ -460,7 +459,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 		{ }
 	}
 
-	getBrowserWindow () -> addUndoStep (undoStep);
+	addUndoStep (undoStep);
 
 	undoSize = undoStep -> getUndoFunctions () .size ();
 }
@@ -486,7 +485,7 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 				{
 					undoStep .reset ();
 
-					getBrowserWindow () -> removeUndoStep ();
+					removeUndoStep ();
 					return;
 				}
 			}
@@ -524,7 +523,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 		return;
 
 	const auto fieldName    = node -> getTypeName () + "." + field .getName ();
-	const auto lastUndoStep = getBrowserWindow () -> getUndoStep ();
+	const auto lastUndoStep = getUndoStep ();
 
 	if (undoStep and lastUndoStep == undoStep and fieldName == currentField)
 	{
@@ -552,7 +551,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 	undoStep -> addUndoFunction ((setValue) & FieldType::setValue, std::ref (field), field);
 
-	getBrowserWindow () -> addUndoStep (undoStep);
+	addUndoStep (undoStep);
 
 	undoSize = undoStep -> getUndoFunctions () .size ();
 }
@@ -570,7 +569,7 @@ X3DEditorObject::addRedoFunction (FieldType & field, UndoStepPtr & undoStep)
 
 		undoStep .reset ();
 
-		getBrowserWindow () -> removeUndoStep ();
+		removeUndoStep ();
 	}
 	else
 	{

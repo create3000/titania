@@ -81,7 +81,8 @@ protected:
 
 	///  @name Construction
 
-	X3DMFStringWidget (Gtk::TreeView &,
+	X3DMFStringWidget (X3DBaseInterface* const editor,
+	                   Gtk::TreeView &,
 	                   const Glib::RefPtr <Gtk::CellRendererText> &,
 	                   Gtk::Button &,
 	                   Gtk::Button &,
@@ -185,13 +186,14 @@ private:
 };
 
 inline
-X3DMFStringWidget::X3DMFStringWidget (Gtk::TreeView & treeView,
+X3DMFStringWidget::X3DMFStringWidget (X3DBaseInterface* const editor,
+                                      Gtk::TreeView & treeView,
                                       const Glib::RefPtr <Gtk::CellRendererText> & cellRenderer,
                                       Gtk::Button & addButton,
                                       Gtk::Button & removeButton,
                                       const std::string & name,
                                       const Glib::ustring & defaultValue) :
-	X3DComposedWidget (),
+	X3DComposedWidget (editor),
 	         treeView (treeView),
 	          columns (),
 	        listStore (Gtk::ListStore::create (columns)),
@@ -481,7 +483,7 @@ public:
 	                const std::string & name,
 	                const Glib::ustring & defaultValue) :
 		 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-		X3DMFStringWidget (treeView, cellRenderer, addButton, removeButton, name, defaultValue)
+		X3DMFStringWidget (browserWindow, treeView, cellRenderer, addButton, removeButton, name, defaultValue)
 	{ }
 
 	///  @name Destruction

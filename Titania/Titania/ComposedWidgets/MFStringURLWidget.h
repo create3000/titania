@@ -107,7 +107,7 @@ MFStringURLWidget::MFStringURLWidget (X3DUserInterface* const userInterface,
                                       const Glib::RefPtr <Gtk::TreeViewColumn> & URLChooserColumn,
                                       const std::string & name) :
 	 X3DBaseInterface (userInterface -> getBrowserWindow (), userInterface -> getBrowser ()),
-	X3DMFStringWidget (treeView, cellRenderer, addButton, removeButton, name, ""),
+	X3DMFStringWidget (userInterface, treeView, cellRenderer, addButton, removeButton, name, ""),
 	    userInterface (userInterface),
 	 URLChooserColumn (URLChooserColumn),
 	   fileOpenDialog ()

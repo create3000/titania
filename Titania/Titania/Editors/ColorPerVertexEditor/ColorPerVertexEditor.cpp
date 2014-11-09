@@ -66,15 +66,15 @@ ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindo
 	                           coord (),
 	                  indexedFaceSet (),
 	                           color (),
-	                     colorButton (getBrowserWindow (),
+	                     colorButton (this,
 	                                  getColorButton (),
 	                                  getColorAdjustment (),
 	                                  getWidget (),
 	                                  getColorsScrolledWindow (),
-	                                  "color")
+	                                  "color"),
+	                     undoHistory ()
 {
 	preview -> set_antialiasing (4);
-	colorButton .setUndo (false);
 
 	setup ();
 }
@@ -116,13 +116,12 @@ ColorPerVertexEditor::set_initialized ()
 void
 ColorPerVertexEditor::set_selection ()
 {
+	undoHistory .clear ();
+
 	try
 	{
 		const auto indexedFaceSets = getSelection <X3D::IndexedFaceSet> ({ X3D::X3DConstants::IndexedFaceSet });
 		const auto shape           = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
-		const auto cross           = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Cross");
-
-		cross -> translation () = X3D::Vector3f ();
 
 		if (indexedFaceSets .empty ())
 		{
@@ -148,14 +147,7 @@ ColorPerVertexEditor::set_selection ()
 
 			shape -> geometry () = indexedFaceSet;
 
-			// Generate color and colorIndex.
-
-			for (const auto & index : indexedFaceSet -> coordIndex ())
-				indexedFaceSet -> colorIndex () .emplace_back (index < 0 ? -1 : 0);
-
-			color = preview -> getExecutionContext () -> createNode <X3D::ColorRGBA> ();
-			color -> color () .emplace_back (X3D::Color4f (1, 1, 1, 1));
-			indexedFaceSet -> color () = color;
+			setColor ();
 
 			colorButton .setIndex (0);
 			colorButton .setNodes ({ color });
@@ -167,6 +159,26 @@ ColorPerVertexEditor::set_selection ()
 	}
 	catch (const X3D::X3DError &)
 	{ }
+}
+
+void
+ColorPerVertexEditor::on_undo_activate ()
+{
+	__LOG__ << std::endl;
+
+	preview -> grab_focus ();
+
+	undoHistory .undoChanges ();
+}
+
+void
+ColorPerVertexEditor::on_redo_activate ()
+{
+	__LOG__ << std::endl;
+
+	preview -> grab_focus ();
+
+	undoHistory .redoChanges ();
 }
 
 void
@@ -203,6 +215,56 @@ ColorPerVertexEditor::set_crossHair (const X3D::Vector3f & point)
 	const auto cross = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Cross");
 
 	cross -> translation () = point;
+}
+
+void
+ColorPerVertexEditor::setColor ()
+{
+	// Generate color and colorIndex.
+
+	const X3D::X3DPtr <X3D::X3DColorNode> colorNode (selection -> color ());
+
+	color = preview -> getExecutionContext () -> createNode <X3D::ColorRGBA> ();
+	color -> setDynamicTransparency (true);
+
+	indexedFaceSet -> color () = color;
+
+	if (colorNode)
+	{
+		if (selection -> colorPerVertex ())
+		{
+			indexedFaceSet -> colorIndex () = selection -> colorIndex ();
+		}
+		else
+		{
+			size_t face = 0;
+
+			for (const auto & index : indexedFaceSet -> coordIndex ())
+			{
+				if (index < 0)
+				{
+					++ face;
+					indexedFaceSet -> colorIndex () .emplace_back (-1);
+					continue;
+				}
+
+				if (face < selection -> colorIndex () .size ())
+					indexedFaceSet -> colorIndex () .emplace_back (selection -> colorIndex () .get1Value (face));
+				else
+					indexedFaceSet -> colorIndex () .emplace_back (face);
+			}
+		}
+
+		for (size_t i = 0, size = colorNode -> getSize (); i < size; ++ i)
+			color -> color () .emplace_back (colorNode -> get1Color (i));
+	}
+	else
+	{
+		for (const auto & index : indexedFaceSet -> coordIndex ())
+			indexedFaceSet -> colorIndex () .emplace_back (index < 0 ? -1 : 0);
+
+		color -> color () .emplace_back (X3D::Color4f (1, 1, 1, 1));
+	}
 }
 
 size_t

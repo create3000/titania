@@ -115,7 +115,7 @@ SFStringTextView::SFStringTextView (X3DBrowserWindow* const browserWindow,
                               Gtk::TextView & textView,
                               const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (),
+	 X3DComposedWidget (browserWindow),
 	        textView (textView),
 	           nodes (),
 	            name (name),

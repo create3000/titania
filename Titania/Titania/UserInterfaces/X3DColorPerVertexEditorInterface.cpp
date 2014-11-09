@@ -66,13 +66,18 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("UndoMenuItem", m_UndoMenuItem);
+	m_builder -> get_widget ("RedoMenuItem", m_RedoMenuItem);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
-	m_builder -> get_widget ("ColorBox", m_ColorBox);
 	m_builder -> get_widget ("ColorButton", m_ColorButton);
 	m_builder -> get_widget ("AddColorButton", m_AddColorButton);
 	m_builder -> get_widget ("RemoveColorButton", m_RemoveColorButton);
 	m_builder -> get_widget ("ColorsScrolledWindow", m_ColorsScrolledWindow);
+
+	// Connect object Gtk::ImageMenuItem with id 'UndoMenuItem'.
+	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_undo_activate));
+	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_redo_activate));
 
 	// Connect object Gtk::ToolButton with id 'LookAtButton'.
 	m_LookAtButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_look_at_all_clicked));

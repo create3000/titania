@@ -119,7 +119,7 @@ NameEntry::NameEntry (X3DBrowserWindow* const browserWindow,
                       Gtk::Entry & entry,
                       Gtk::Button & button) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (),
+	 X3DComposedWidget (browserWindow),
 	           entry (entry),
 	          button (button),
 	            node ()

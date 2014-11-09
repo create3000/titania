@@ -135,16 +135,28 @@ void
 PointSet::set_color ()
 {
 	if (colorNode)
+	{
 		colorNode -> removeInterest (this);
+		colorNode -> removeInterest (this, &PointSet::set_transparency);
+	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
 
 	if (colorNode)
+	{
 		colorNode -> addInterest (this);
+		colorNode -> addInterest (this, &PointSet::set_transparency);
+		
+		set_transparency ();
+	}
+	else
+		transparent = false;
+}
 
-	// Transparent
-
-	transparent = colorNode and colorNode -> isTransparent ();
+void
+PointSet::set_transparency ()
+{
+	transparent = colorNode -> isTransparent ();
 }
 
 void

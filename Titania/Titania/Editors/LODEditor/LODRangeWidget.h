@@ -66,9 +66,9 @@ public:
 	LODRangeWidget (X3DBrowserWindow* const,
 	                const Glib::RefPtr <Gtk::Adjustment> &,
 	                const Glib::RefPtr <Gtk::Adjustment> &,
-                   Gtk::SpinButton &,
-                   Gtk::SpinButton &,
-                   Gtk::CheckButton &,
+	                Gtk::SpinButton &,
+	                Gtk::SpinButton &,
+	                Gtk::CheckButton &,
 	                Gtk::Widget &);
 
 	///  @name Member access
@@ -110,9 +110,9 @@ private:
 
 	const Glib::RefPtr <Gtk::Adjustment> adjustment1;
 	const Glib::RefPtr <Gtk::Adjustment> adjustment2;
-   Gtk::SpinButton &                    spinButton1;
-   Gtk::SpinButton &                    spinButton2;
-   Gtk::CheckButton &                   maxButton;
+	Gtk::SpinButton &                    spinButton1;
+	Gtk::SpinButton &                    spinButton2;
+	Gtk::CheckButton &                   maxButton;
 	Gtk::Widget &                        widget;
 	X3D::MFNode                          nodes;
 	UndoStepPtr                          undoStep;
@@ -131,20 +131,20 @@ LODRangeWidget::LODRangeWidget (X3DBrowserWindow* const browserWindow,
                                 Gtk::SpinButton & spinButton2,
                                 Gtk::CheckButton & maxButton,
                                 Gtk::Widget & widget) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (),
-	     adjustment1 (adjustment1),
-	     adjustment2 (adjustment2),
-	     spinButton1 (spinButton1),
-	     spinButton2 (spinButton2),
-	       maxButton (maxButton),
-	          widget (widget),
-	           nodes (),
-	        undoStep (),
-	           input (-1),
-	        changing (false),
-	          buffer (),
-	       normalize (false)
+	 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	X3DComposedWidget (browserWindow),
+	      adjustment1 (adjustment1),
+	      adjustment2 (adjustment2),
+	      spinButton1 (spinButton1),
+	      spinButton2 (spinButton2),
+	        maxButton (maxButton),
+	           widget (widget),
+	            nodes (),
+	         undoStep (),
+	            input (-1),
+	         changing (false),
+	           buffer (),
+	        normalize (false)
 {
 	addChildren (buffer);
 	buffer .addInterest (this, &LODRangeWidget::set_buffer);
@@ -305,7 +305,7 @@ LODRangeWidget::set_buffer ()
 			auto & range    = node -> getField <X3D::MFFloat> ("range");
 			auto & level    = node -> getField <X3D::SFInt32> ("level_changed");
 			auto & children = node -> getField <X3D::MFNode> ("children");
-			
+
 			const int32_t size = std::min (children .size (), range .size ());
 
 			if (level < size)

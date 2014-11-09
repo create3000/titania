@@ -1,4 +1,4 @@
-#X3D V3.0 utf8
+#VRML V2.0 utf8 Titania V0.7.5
 
 Background {
   transparency 1
@@ -47,6 +47,17 @@ Transform {
         diffuseColor 0 0 1
         transparency 0.5
       }
+    }
+    geometry Box { }
+  }
+}
+
+Transform {
+  translation 0 0 -9
+  scale 2 2 1
+  children DEF Blue_1 Shape {
+    appearance Appearance {
+      material Material { }
     }
     geometry Box { }
   }

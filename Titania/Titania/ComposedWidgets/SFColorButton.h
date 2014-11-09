@@ -140,7 +140,7 @@ SFColorButton::SFColorButton (X3DBrowserWindow* const browserWindow,
                               Gtk::Widget & widget,
                               const std::string & name) :
 	 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DComposedWidget (),
+	X3DComposedWidget (browserWindow),
 	      colorButton (colorButton),
 	  valueAdjustment (valueAdjustment),
 	           widget (widget),

@@ -134,6 +134,24 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 }
 
 void
+X3DBaseInterface::addUndoStep (const UndoStepPtr & undoStep)
+{
+	browserWindow -> addUndoStep (undoStep);
+}
+
+void
+X3DBaseInterface::removeUndoStep ()
+{
+	browserWindow -> removeUndoStep ();
+}
+
+const std::shared_ptr <UndoStep> &
+X3DBaseInterface::getUndoStep () const
+{
+	return browserWindow -> getUndoStep ();
+}
+
+void
 X3DBaseInterface::set_browser (const X3D::BrowserPtr & value)
 {
 	setBrowser (value);

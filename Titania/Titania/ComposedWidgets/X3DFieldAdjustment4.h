@@ -156,7 +156,7 @@ X3DFieldAdjustment4 <Type>::X3DFieldAdjustment4 (X3DBrowserWindow* const browser
                                                  Gtk::Widget & widget,
                                                  const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (),
+	 X3DComposedWidget (browserWindow),
 	     adjustments ({ adjustment1, adjustment2, adjustment3, adjustment4 }),
 	          widget (widget),
 	           nodes (),

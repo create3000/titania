@@ -62,7 +62,9 @@ class X3DComposedWidget :
 {
 public:
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 	
 	virtual
 	void
@@ -72,7 +74,28 @@ public:
 		X3DEditorObject::setup ();
 	}
 
-	///  @name Destruction
+	/***
+	 *  @name Undo/redo handling
+	 */
+
+	virtual
+	void
+	addUndoStep (const UndoStepPtr & undoStep) final override
+	{ editor -> addUndoStep (undoStep); }
+
+	virtual
+	void
+	removeUndoStep () final override
+	{ editor -> removeUndoStep (); }
+
+	virtual
+	const std::shared_ptr <UndoStep> &
+	getUndoStep () const final override
+	{ return editor -> getUndoStep (); }
+
+	/***
+	 *  @name Destruction
+	 */
 	
 	virtual
 	void
@@ -89,10 +112,21 @@ public:
 
 protected:
 
-	X3DComposedWidget () :
+	/***
+	 *  @name Construction
+	 */
+
+	X3DComposedWidget (X3DBaseInterface* const editor) :
 		X3DBaseInterface (),
-		 X3DEditorObject ()
+		 X3DEditorObject (),
+		          editor (editor)
 	{ }
+
+	/***
+	 *  @name Members
+	 */
+
+	X3DBaseInterface* const editor;
 
 };
 

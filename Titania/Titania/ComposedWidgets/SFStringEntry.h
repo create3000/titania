@@ -115,7 +115,7 @@ SFStringEntry::SFStringEntry (X3DBrowserWindow* const browserWindow,
                               Gtk::Entry & entry,
                               const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (),
+	 X3DComposedWidget (browserWindow),
 	           entry (entry),
 	           nodes (),
 	            name (name),

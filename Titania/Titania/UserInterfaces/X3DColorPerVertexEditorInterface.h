@@ -110,6 +110,14 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::ImageMenuItem &
+	getUndoMenuItem () const
+	{ return *m_UndoMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRedoMenuItem () const
+	{ return *m_RedoMenuItem; }
+
 	Gtk::Box &
 	getPreviewBox () const
 	{ return *m_PreviewBox; }
@@ -117,10 +125,6 @@ public:
 	Gtk::ToolButton &
 	getLookAtButton () const
 	{ return *m_LookAtButton; }
-
-	Gtk::Box &
-	getColorBox () const
-	{ return *m_ColorBox; }
 
 	Gtk::Button &
 	getColorButton () const
@@ -137,6 +141,14 @@ public:
 	Gtk::ScrolledWindow &
 	getColorsScrolledWindow () const
 	{ return *m_ColorsScrolledWindow; }
+
+	virtual
+	void
+	on_undo_activate () = 0;
+
+	virtual
+	void
+	on_redo_activate () = 0;
 
 	virtual
 	void
@@ -162,9 +174,10 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
+	Gtk::ImageMenuItem*            m_UndoMenuItem;
+	Gtk::ImageMenuItem*            m_RedoMenuItem;
 	Gtk::Box*                      m_PreviewBox;
 	Gtk::ToolButton*               m_LookAtButton;
-	Gtk::Box*                      m_ColorBox;
 	Gtk::Button*                   m_ColorButton;
 	Gtk::Button*                   m_AddColorButton;
 	Gtk::Button*                   m_RemoveColorButton;

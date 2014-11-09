@@ -54,6 +54,7 @@
 #include "../../UserInterfaces/X3DColorPerVertexEditorInterface.h"
 
 #include "../../ComposedWidgets/MFColorRGBAButton.h"
+#include "../../Undo/UndoHistory.h"
 
 namespace titania {
 namespace puck {
@@ -91,9 +92,19 @@ private:
 
 	///  @name Event handlers
 	
+	virtual
+	void
+	on_undo_activate () final override;
+	
+	virtual
+	void
+	on_redo_activate () final override;
+
+	virtual
 	void
 	on_look_at_all_clicked () final override;
 	
+	virtual
 	void
 	on_add_color_clicked () final override;
 
@@ -104,6 +115,24 @@ private:
 	set_crossHair (const X3D::Vector3f &);
 
 	///  @name Operations
+
+	virtual
+	void
+	addUndoStep (const UndoStepPtr & undoStep) final override
+	{ undoHistory .addUndoStep (undoStep); }
+
+	virtual
+	void
+	removeUndoStep () final override
+	{ undoHistory .removeUndoStep (); }
+
+	virtual
+	const std::shared_ptr <UndoStep> &
+	getUndoStep () const final override
+	{ return undoHistory .getUndoStep (); }
+
+	void
+	setColor ();
 
 	size_t
 	getPointIndex (const X3D::Vector3f &) const;
@@ -116,6 +145,7 @@ private:
 	X3D::X3DPtr <X3D::IndexedFaceSet>    indexedFaceSet;
 	X3D::X3DPtr <X3D::ColorRGBA>         color;
 	MFColorRGBAButton                    colorButton;
+	UndoHistory                          undoHistory;
 
 };
 

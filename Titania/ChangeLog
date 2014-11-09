@@ -1,3 +1,36 @@
+2014-11-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DEditorObject.h:
+	* X3DBaseInterface.h:
+	* X3DBaseInterface.cpp:
+	* X3DBrowserEditor.h:
+	* NameEntry.h:
+	* NormalTool.h:
+	* RotationTool.h:
+	* SFStringEntry.h:
+	* SFColorButton.h:
+	* MFStringWidget.h:
+	* SFStringTextView.h:
+	* LODRangeWidget.h:
+	* X3DComposedWidget.h:
+	* SFColorRGBAButton.h:
+	* MFStringGeoSystem.h:
+	* MFStringURLWidget.h:
+	* MFColorRGBAButton.h:
+	* X3DFieldAdjustment.h:
+	* X3DFieldAdjustment4.h:
+	* X3DFieldAdjustment3.h:
+	* X3DFieldAdjustment2.h:
+	* InlineEditor.cpp:
+	* SFStringComboBoxText.h:
+	* X3DFieldToggleButton.h:
+	* MFStringComboBoxText.h:
+	* MFStringFamilyWidget.h:
+	* X3DColorPerVertexEditorInterface.h:
+	* ColorPerVertexEditor.h:
+	* X3DColorPerVertexEditorInterface.cpp:
+	* ColorPerVertexEditor.cpp: 
+
 2014-11-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.xml:

@@ -223,8 +223,8 @@ InlineEditor::on_load_clicked ()
 		return;
 
 	// Inline is loaded and should be unloaded.  Now create undo step for imported nodes.
-	if (loadState and load .getUndoStep ())
-		getBrowserWindow () -> removeImportedNodes (inlineNode -> getExecutionContext (), { inlineNode }, load .getUndoStep ());				
+	if (loadState and load .getOwnUndoStep ())
+		getBrowserWindow () -> removeImportedNodes (inlineNode -> getExecutionContext (), { inlineNode }, load .getOwnUndoStep ());				
 
 	loadState = inlineNode -> load ();
 }

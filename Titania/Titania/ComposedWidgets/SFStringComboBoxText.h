@@ -115,7 +115,7 @@ SFStringComboBoxText::SFStringComboBoxText (X3DBrowserWindow* const browserWindo
                                             Gtk::ComboBoxText & comboBoxText,
                                             const std::string & name) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (),
+	 X3DComposedWidget (browserWindow),
 	    comboBoxText (comboBoxText),
 	           nodes (),
 	            name (name),

@@ -81,6 +81,20 @@ Color::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+Color::set1Color (const size_t index, const Color4f & value)
+{
+	color () .set1Value (index, Color3f (value .r (), value .g (), value .b ()));
+}
+
+Color4f
+Color::get1Color (const size_t index)
+{
+	const auto & value = color () .get1Value (index);
+	
+	return Color4f (value .getRed (), value .getGreen (), value .getBlue (), 1);
+}
+
+void
 Color::addColor (std::vector <Color4f> & colors, const size_t index) const
 {
 	if (index < color () .size ())

@@ -168,16 +168,28 @@ void
 ElevationGrid::set_color ()
 {
 	if (colorNode)
+	{
 		colorNode -> removeInterest (this);
+		colorNode -> removeInterest (this, &ElevationGrid::set_transparency);
+	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
 
 	if (colorNode)
+	{
 		colorNode -> addInterest (this);
+		colorNode -> addInterest (this, &ElevationGrid::set_transparency);
+		
+		set_transparency ();
+	}
+	else
+		transparent = false;
+}
 
-	// Transparent
-
-	transparent = colorNode and colorNode -> isTransparent ();
+void
+ElevationGrid::set_transparency ()
+{
+	transparent = colorNode -> isTransparent ();
 }
 
 void

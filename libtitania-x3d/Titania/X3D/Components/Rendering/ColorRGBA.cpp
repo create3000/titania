@@ -64,9 +64,11 @@ ColorRGBA::Fields::Fields () :
 { }
 
 ColorRGBA::ColorRGBA (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DColorNode (),
-	      fields ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       X3DColorNode (),
+	             fields (),
+	        transparent (true),
+	dynamicTransparency (false)
 {
 	addType (X3DConstants::ColorRGBA);
 
@@ -78,6 +80,37 @@ X3DBaseNode*
 ColorRGBA::create (X3DExecutionContext* const executionContext) const
 {
 	return new ColorRGBA (executionContext);
+}
+
+void
+ColorRGBA::setDynamicTransparency (const bool value)
+{
+	dynamicTransparency = value;
+	
+	if (dynamicTransparency)
+	{
+		color () .addInterest (this, &ColorRGBA::set_color);
+
+		set_color ();
+	}
+	else
+	{
+		color () .removeInterest (this, &ColorRGBA::set_color);
+
+		transparent = true;
+	}
+}
+
+void
+ColorRGBA::set1Color (const size_t index, const Color4f & value)
+{
+	color () .set1Value (index, value);
+}
+
+Color4f
+ColorRGBA::get1Color (const size_t index)
+{
+	return color () .get1Value (index);
 }
 
 void
@@ -101,6 +134,16 @@ ColorRGBA::getHSVA (std::vector <Vector4f> & colors) const
 		color4 .get_hsv (h, s, v);
 		colors .emplace_back (h, s, v, color4 .a ());
 	}
+}
+
+void
+ColorRGBA::set_color ()
+{
+	const auto iter = std::find_if (color () .begin (),
+	                                color () .end (),
+	                                [ ] (const Color4f & value) { return value .a () < 1; });
+
+	transparent = iter not_eq color () .end ();
 }
 
 } // X3D

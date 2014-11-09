@@ -181,6 +181,9 @@ protected:
 	set_color ();
 
 	void
+	set_transparency ();
+
+	void
 	set_texCoord ();
 
 	void

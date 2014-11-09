@@ -136,15 +136,18 @@ public:
 	const UndoHistory &
 	getUndoHistory (const X3D::BrowserPtr &) const;
 
+	virtual
 	void
-	addUndoStep (const UndoStepPtr &);
-	
+	addUndoStep (const UndoStepPtr &) final override;
+
+	virtual
 	void
-	removeUndoStep ()
+	removeUndoStep () final override
 	{ getUndoHistory (getBrowser ()) .removeUndoStep (); }
 
+	virtual
 	const std::shared_ptr <UndoStep> &
-	getUndoStep () const
+	getUndoStep () const final override
 	{ return getUndoHistory (getBrowser ()) .getUndoStep (); }
 
 	void

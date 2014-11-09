@@ -67,6 +67,14 @@ public:
 
 	virtual
 	void
+	set1Color (const size_t, const Color4f &) = 0;
+
+	virtual
+	Color4f
+	get1Color (const size_t) = 0;
+
+	virtual
+	void
 	addColor (std::vector <Color4f>&, const size_t) const = 0;
 
 	virtual

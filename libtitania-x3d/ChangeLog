@@ -1,3 +1,21 @@
+2014-11-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Color.h:
+	* Color.cpp:
+	* LineSet.h:
+	* PointSet.h:
+	* ColorRGBA.h:
+	* LineSet.cpp:
+	* PointSet.cpp:
+	* ColorRGBA.cpp:
+	* X3DColorNode.h:
+	* ElevationGrid.h:
+	* IndexedLineSet.h:
+	* IndexedLineSet.cpp:
+	* ElevationGrid.cpp:
+	* X3DComposedGeometryNode.h:
+	* X3DComposedGeometryNode.cpp: 
+
 2014-11-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GridTool.h:

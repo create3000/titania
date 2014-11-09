@@ -125,7 +125,7 @@ MFStringComboBoxText::MFStringComboBoxText (X3DBrowserWindow* const browserWindo
                                             const size_t index,
                                             const std::string & defaultValue) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 X3DComposedWidget (),
+	 X3DComposedWidget (browserWindow),
 	    comboBoxText (comboBoxText),
 	           nodes (),
 	            name (name),

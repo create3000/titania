@@ -123,7 +123,7 @@ RotationTool::RotationTool (X3DBrowserWindow* const browserWindow,
                             Gtk::Box & box,
                             const std::string & name) :
 	 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DComposedWidget (),
+	X3DComposedWidget (browserWindow),
 	              box (box),
 	          browser (X3D::createBrowser (browserWindow -> getBrowser ())),
 	            nodes (),

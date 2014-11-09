@@ -64,7 +64,7 @@ public:
 
 	///  @name Construction
 
-	MFColorRGBAButton (X3DBrowserWindow* const,
+	MFColorRGBAButton (X3DBaseInterface* const editor,
 	                   Gtk::Button &,
 	                   const Glib::RefPtr <Gtk::Adjustment> &,
 	                   Gtk::Widget &,
@@ -192,14 +192,14 @@ private:
 };
 
 inline
-MFColorRGBAButton::MFColorRGBAButton (X3DBrowserWindow* const browserWindow,
+MFColorRGBAButton::MFColorRGBAButton (X3DBaseInterface* const editor,
                                       Gtk::Button & colorButton,
                                       const Glib::RefPtr <Gtk::Adjustment> & valueAdjustment,
                                       Gtk::Widget & widget,
                                       Gtk::ScrolledWindow & colorsScrolledWindow,
                                       const std::string & name) :
-	 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DComposedWidget (),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	X3DComposedWidget (editor),
 	      colorButton (colorButton),
 	  valueAdjustment (valueAdjustment),
 	           widget (widget),
@@ -415,6 +415,7 @@ MFColorRGBAButton::set_buffer ()
 
 	if (not hasField)
 	{
+		this -> node = nullptr;
 		dialog .get_color_selection () -> set_current_rgba (Gdk::RGBA ());
 		valueAdjustment -> set_value (0);
 	}
@@ -491,7 +492,7 @@ MFColorRGBAButton::on_colors_configure_event (GdkEventConfigure* const)
 {
 	if (not node)
 	{
-		colorsDrawingArea .set_size_request (-1, colorsSize + colorsBorder [2] + colorsBorder [3]);
+		colorsDrawingArea .set_size_request (-1, -1);
 		return false;
 	}
 

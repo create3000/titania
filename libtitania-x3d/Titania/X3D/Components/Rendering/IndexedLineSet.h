@@ -194,6 +194,9 @@ private:
 	set_color ();
 
 	void
+	set_transparency ();
+
+	void
 	set_coord ();
 
 	///  @name Operations

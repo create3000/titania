@@ -102,7 +102,22 @@ public:
 	virtual
 	bool
 	isTransparent () const final override
-	{ return true; }
+	{ return transparent; }
+
+	void
+	setDynamicTransparency (const bool value);
+
+	bool
+	getDynamicTransparency () const
+	{ return dynamicTransparency; }
+
+	virtual
+	void
+	set1Color (const size_t, const Color4f &) final override;
+
+	virtual
+	Color4f
+	get1Color (const size_t) final override;
 
 	virtual
 	void
@@ -125,6 +140,10 @@ public:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_color ();
 
 	///  @name Static members
 
@@ -142,6 +161,9 @@ private:
 	};
 
 	Fields fields;
+	
+	bool transparent;
+	bool dynamicTransparency;
 
 };
 

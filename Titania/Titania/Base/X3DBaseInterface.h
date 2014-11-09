@@ -53,6 +53,7 @@
 
 #include <Titania/X3D.h>
 #include <sigc++/trackable.h>
+#include "../Undo/UndoStep.h"
 
 namespace titania {
 namespace puck {
@@ -130,6 +131,22 @@ public:
 	X3D::WorldInfoPtr
 	getWorldInfo (const bool = false) const
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
+
+	/***
+	 *  @name Undo/redo handling
+	 */
+
+	virtual
+	void
+	addUndoStep (const UndoStepPtr &);
+	
+	virtual
+	void
+	removeUndoStep ();
+
+	virtual
+	const std::shared_ptr <UndoStep> &
+	getUndoStep () const;
 
 	/***
 	 *  @name Input/Output

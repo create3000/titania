@@ -103,6 +103,14 @@ public:
 	bool
 	isTransparent () const final override
 	{ return false; }
+
+	virtual
+	void
+	set1Color (const size_t, const Color4f &) final override;
+
+	virtual
+	Color4f
+	get1Color (const size_t) final override;
 	
 	virtual
 	void
