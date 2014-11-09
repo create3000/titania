@@ -78,6 +78,16 @@ public:
 
 private:
 
+	///  @name Member types
+	
+	enum ModeType {
+		SINGLE_VERTEX,
+		ADJACENT_VERTICES,
+		SINGLE_FACE,
+		WHOLE_OBJECT
+	
+	};
+
 	///  @name Construction
 
 	virtual
@@ -128,6 +138,22 @@ private:
 
 	void
 	on_shading_activate (const std::string &);
+	
+	virtual
+	void
+	on_single_vertex_clicked () final override;
+	
+	virtual
+	void
+	on_adjacent_vertices_clicked () final override;
+
+	virtual
+	void
+	on_single_face_clicked () final override;
+
+	virtual
+	void
+	on_whole_object_clicked () final override;
 
 	///  @name Preview
 
@@ -176,6 +202,7 @@ private:
 
 	X3D::BrowserPtr                                     preview;
 	MFColorRGBAButton                                   colorButton;
+	ModeType                                            mode;
 	X3D::X3DPtr <X3D::IndexedFaceSet>                   selection;
 	X3D::X3DPtr <X3D::X3DCoordinateNode>                coord;
 	X3D::X3DPtr <X3D::IndexedFaceSet>                   indexedFaceSet;

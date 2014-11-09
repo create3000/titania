@@ -70,6 +70,7 @@ ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindo
 	                                  getRemoveColorButton (),
 	                                  getColorsScrolledWindow (),
 	                                  "color"),
+	                            mode (SINGLE_VERTEX),
 	                       selection (),
 	                           coord (),
 	                  indexedFaceSet (),
@@ -237,6 +238,30 @@ ColorPerVertexEditor::on_shading_activate (const std::string & value)
 }
 
 void
+ColorPerVertexEditor::on_single_vertex_clicked ()
+{
+	mode = SINGLE_VERTEX;
+}
+
+void
+ColorPerVertexEditor::on_adjacent_vertices_clicked ()
+{
+	mode = ADJACENT_VERTICES;
+}
+
+void
+ColorPerVertexEditor::on_single_face_clicked ()
+{
+	mode = SINGLE_FACE;
+}
+
+void
+ColorPerVertexEditor::on_whole_object_clicked ()
+{
+	mode = WHOLE_OBJECT;
+}
+
+void
 ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 {
 	if (not coord)
@@ -245,9 +270,55 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 	const auto index = getPointIndex (hitPoint);
 	const auto point = coord -> get1Point (index);
 
+	// Determine face and faces
+
 	setFaces (hitPoint, index);
 
+	// Setup cross hair
+
 	set_crossHair (point);
+
+	// Colorize vertices
+
+	const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
+
+	if (touchSensor -> isActive ())
+	{
+		switch (mode)
+		{
+			case SINGLE_VERTEX:
+			{
+				const auto index = face .first + face .second;
+			
+				indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
+				break;
+			}
+			case ADJACENT_VERTICES:
+			{
+				for (const auto & face : faces)
+				{
+					const auto index = face .first + face .second;
+				
+					indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
+				}
+				break;
+			}
+			case SINGLE_FACE:
+			{
+				for (const auto & point : getPoints (face .first))
+					indexedFaceSet -> colorIndex () .set1Value (point, colorButton .getIndex ());
+				break;
+			}
+			case WHOLE_OBJECT:
+			{
+				indexedFaceSet -> colorIndex () .clear ();
+			
+				for (const auto & index : indexedFaceSet -> coordIndex ())
+					indexedFaceSet -> colorIndex () .emplace_back (index < 0 ? -1 : colorButton .getIndex ());
+				break;
+			}
+		}
+	}
 }
 
 void
