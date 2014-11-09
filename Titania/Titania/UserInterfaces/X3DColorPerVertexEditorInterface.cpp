@@ -75,6 +75,10 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ColorButton", m_ColorButton);
 	m_builder -> get_widget ("AddColorButton", m_AddColorButton);
 	m_builder -> get_widget ("RemoveColorButton", m_RemoveColorButton);
+	m_builder -> get_widget ("SingleVertexButton", m_SingleVertexButton);
+	m_builder -> get_widget ("AdjacentVerticesButton", m_AdjacentVerticesButton);
+	m_builder -> get_widget ("SingleFaceButton", m_SingleFaceButton);
+	m_builder -> get_widget ("WholeObjectButton", m_WholeObjectButton);
 	m_builder -> get_widget ("ColorsScrolledWindow", m_ColorsScrolledWindow);
 	m_builder -> get_widget ("ShadingMenu", m_ShadingMenu);
 	m_builder -> get_widget ("PhongMenuItem", m_PhongMenuItem);
@@ -89,6 +93,12 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToolButton with id 'LookAtButton'.
 	m_LookAtButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_look_at_all_clicked));
+
+	// Connect object Gtk::RadioButton with id 'SingleVertexButton'.
+	m_SingleVertexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_single_vertex_clicked));
+	m_AdjacentVerticesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_adjacent_vertices_clicked));
+	m_SingleFaceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_single_face_clicked));
+	m_WholeObjectButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_whole_object_clicked));
 
 	// Connect object Gtk::RadioMenuItem with id 'PhongMenuItem'.
 	m_PhongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_phong_activate));

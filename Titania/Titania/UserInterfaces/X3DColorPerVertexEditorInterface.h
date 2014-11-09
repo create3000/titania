@@ -146,6 +146,22 @@ public:
 	getRemoveColorButton () const
 	{ return *m_RemoveColorButton; }
 
+	Gtk::RadioButton &
+	getSingleVertexButton () const
+	{ return *m_SingleVertexButton; }
+
+	Gtk::RadioButton &
+	getAdjacentVerticesButton () const
+	{ return *m_AdjacentVerticesButton; }
+
+	Gtk::RadioButton &
+	getSingleFaceButton () const
+	{ return *m_SingleFaceButton; }
+
+	Gtk::RadioButton &
+	getWholeObjectButton () const
+	{ return *m_WholeObjectButton; }
+
 	Gtk::ScrolledWindow &
 	getColorsScrolledWindow () const
 	{ return *m_ColorsScrolledWindow; }
@@ -185,6 +201,22 @@ public:
 	virtual
 	void
 	on_look_at_all_clicked () = 0;
+
+	virtual
+	void
+	on_single_vertex_clicked () = 0;
+
+	virtual
+	void
+	on_adjacent_vertices_clicked () = 0;
+
+	virtual
+	void
+	on_single_face_clicked () = 0;
+
+	virtual
+	void
+	on_whole_object_clicked () = 0;
 
 	virtual
 	void
@@ -231,6 +263,10 @@ private:
 	Gtk::Button*                   m_ColorButton;
 	Gtk::Button*                   m_AddColorButton;
 	Gtk::Button*                   m_RemoveColorButton;
+	Gtk::RadioButton*              m_SingleVertexButton;
+	Gtk::RadioButton*              m_AdjacentVerticesButton;
+	Gtk::RadioButton*              m_SingleFaceButton;
+	Gtk::RadioButton*              m_WholeObjectButton;
 	Gtk::ScrolledWindow*           m_ColorsScrolledWindow;
 	Gtk::Menu*                     m_ShadingMenu;
 	Gtk::RadioMenuItem*            m_PhongMenuItem;
