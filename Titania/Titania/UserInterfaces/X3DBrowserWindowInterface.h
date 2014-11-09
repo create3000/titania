@@ -398,7 +398,7 @@ public:
 	getMotionBlurMenuItem () const
 	{ return *m_MotionBlurMenuItem; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getShadingMenuItem () const
 	{ return *m_ShadingMenuItem; }
 
@@ -1422,7 +1422,7 @@ private:
 	Gtk::RadioMenuItem*              m_EditorMenuItem;
 	Gtk::SeparatorMenuItem*          m_BrowserOptionsSeparator;
 	Gtk::ImageMenuItem*              m_MotionBlurMenuItem;
-	Gtk::MenuItem*                   m_ShadingMenuItem;
+	Gtk::ImageMenuItem*              m_ShadingMenuItem;
 	Gtk::RadioMenuItem*              m_PhongMenuItem;
 	Gtk::RadioMenuItem*              m_GouraudMenuItem;
 	Gtk::RadioMenuItem*              m_FlatMenuItem;

@@ -1,5 +1,16 @@
 2014-11-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Arrow.svg:
+	* Select.svg:
+	* BrowserWindow.xml:
+	* X3DBrowserWindowInterface.h:
+	* X3DColorPerVertexEditorInterface.h:
+	* ColorPerVertexEditor.h:
+	* X3DColorPerVertexEditorInterface.cpp:
+	* ColorPerVertexEditor.cpp: 
+
+2014-11-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.xml:
 	* Shading.svg:
 	* ColorPerVertexEditorPreview.x3dv:

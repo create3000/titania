@@ -113,6 +113,7 @@ ColorPerVertexEditor::set_initialized ()
 
 		shape -> geometry ()               .addInterest (this, &ColorPerVertexEditor::on_look_at_all_clicked);
 		touchSensor -> hitPoint_changed () .addInterest (this, &ColorPerVertexEditor::set_hitPoint);
+		touchSensor -> touchTime ()        .addInterest (this, &ColorPerVertexEditor::set_touchTime);
 
 		set_selection ();
 	}
@@ -250,6 +251,20 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 }
 
 void
+ColorPerVertexEditor::set_touchTime ()
+{
+	if (getSelectColorButton () .get_active ())
+	{
+		getSelectColorButton () .set_active (false);
+
+		const auto index = indexedFaceSet -> colorIndex () .get1Value (face .first + face .second);
+
+		colorButton .setIndex (index);
+		return;
+	}
+}
+
+void
 ColorPerVertexEditor::set_crossHair (const X3D::Vector3f & point)
 {
 	const auto crossHair           = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("CrossHair");
@@ -296,7 +311,10 @@ ColorPerVertexEditor::setColor ()
 	{
 		if (selection -> colorPerVertex ())
 		{
-			indexedFaceSet -> colorIndex () = selection -> colorIndex ();
+			if (selection -> colorIndex () .empty ())
+				indexedFaceSet -> colorIndex () = indexedFaceSet -> coordIndex ();
+			else
+				indexedFaceSet -> colorIndex () = selection -> colorIndex ();
 		}
 		else
 		{

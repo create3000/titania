@@ -122,13 +122,17 @@ public:
 	getPreviewBox () const
 	{ return *m_PreviewBox; }
 
+	Gtk::MenuToolButton &
+	getShadingButton () const
+	{ return *m_ShadingButton; }
+
 	Gtk::ToolButton &
 	getLookAtButton () const
 	{ return *m_LookAtButton; }
 
-	Gtk::MenuToolButton &
-	getShadingButton () const
-	{ return *m_ShadingButton; }
+	Gtk::ToggleButton &
+	getSelectColorButton () const
+	{ return *m_SelectColorButton; }
 
 	Gtk::Button &
 	getColorButton () const
@@ -221,8 +225,9 @@ private:
 	Gtk::ImageMenuItem*            m_UndoMenuItem;
 	Gtk::ImageMenuItem*            m_RedoMenuItem;
 	Gtk::Box*                      m_PreviewBox;
-	Gtk::ToolButton*               m_LookAtButton;
 	Gtk::MenuToolButton*           m_ShadingButton;
+	Gtk::ToolButton*               m_LookAtButton;
+	Gtk::ToggleButton*             m_SelectColorButton;
 	Gtk::Button*                   m_ColorButton;
 	Gtk::Button*                   m_AddColorButton;
 	Gtk::Button*                   m_RemoveColorButton;

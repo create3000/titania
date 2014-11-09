@@ -34,13 +34,14 @@
       <source stock-id="Hand" filename="icons/Hand.png"/>
       <source stock-id="ExternProto" filename="icons/Node/ExternProto.96.svg"/>
       <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
-      <source stock-id="Arrow" filename="icons/Arrow.png"/>
+      <source stock-id="Arrow" filename="icons/Arrow.svg"/>
       <source stock-id="History" filename="icons/History.svg"/>
       <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
       <source stock-id="Texture" filename="icons/Texture.svg"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="Prototype" filename="icons/Node/Prototype.96.svg"/>
       <source stock-id="ColorSingleVertex" filename="icons/ColorSingleVertex.svg"/>
+      <source stock-id="Select" filename="icons/Select.svg"/>
       <source stock-id="ColorAdjacentVertices" filename="icons/ColorAdjacentVertices.svg"/>
       <source stock-id="PlaneViewer" filename="icons/PlaneViewer.svg"/>
       <source stock-id="Navigation" filename="icons/Navigation.svg"/>

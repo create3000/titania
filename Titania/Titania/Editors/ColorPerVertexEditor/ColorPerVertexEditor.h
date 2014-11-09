@@ -133,6 +133,9 @@ private:
 
 	void
 	set_hitPoint (const X3D::Vector3f &);
+	
+	void
+	set_touchTime ();
 
 	void
 	set_crossHair (const X3D::Vector3f &);

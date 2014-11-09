@@ -69,8 +69,9 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UndoMenuItem", m_UndoMenuItem);
 	m_builder -> get_widget ("RedoMenuItem", m_RedoMenuItem);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
-	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
 	m_builder -> get_widget ("ShadingButton", m_ShadingButton);
+	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
+	m_builder -> get_widget ("SelectColorButton", m_SelectColorButton);
 	m_builder -> get_widget ("ColorButton", m_ColorButton);
 	m_builder -> get_widget ("AddColorButton", m_AddColorButton);
 	m_builder -> get_widget ("RemoveColorButton", m_RemoveColorButton);
