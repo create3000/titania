@@ -377,10 +377,43 @@ ColorPerVertexEditor::set_initialized ()
 		touchSensor -> hitPoint_changed () .addInterest (this, &ColorPerVertexEditor::set_hitPoint);
 		touchSensor -> touchTime ()        .addInterest (this, &ColorPerVertexEditor::set_touchTime);
 
+		configure ();
 		set_selection ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
+}
+
+void
+ColorPerVertexEditor::configure ()
+{
+	getCheckerBoardButton () .set_active (getConfig () .getBoolean ("checkerBoard"));
+
+	switch (getConfig () .getInteger ("mode"))
+	{
+		case SINGLE_VERTEX:
+		{
+			getSingleVertexButton () .set_active (true);
+			break;
+		}
+		case ADJACENT_VERTICES:
+		{
+			getAdjacentVerticesButton () .set_active (true);
+			break;
+		}
+		case SINGLE_FACE:
+		{
+			getSingleFaceButton () .set_active (true);
+			break;
+		}
+		case WHOLE_OBJECT:
+		{
+			getWholeObjectButton () .set_active (true);
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 void
@@ -552,6 +585,8 @@ ColorPerVertexEditor::on_checkerboard_toggled ()
 			layerSet -> order () = { 2, 3, 4 };
 		else
 			layerSet -> order () = { 1, 3, 4 };
+
+		getConfig () .setItem ("checkerBoard", getCheckerBoardButton () .get_active ());
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -611,24 +646,32 @@ void
 ColorPerVertexEditor::on_single_vertex_clicked ()
 {
 	mode = SINGLE_VERTEX;
+
+	getConfig () .setItem ("mode", mode);
 }
 
 void
 ColorPerVertexEditor::on_adjacent_vertices_clicked ()
 {
 	mode = ADJACENT_VERTICES;
+
+	getConfig () .setItem ("mode", mode);
 }
 
 void
 ColorPerVertexEditor::on_single_face_clicked ()
 {
 	mode = SINGLE_FACE;
+
+	getConfig () .setItem ("mode", mode);
 }
 
 void
 ColorPerVertexEditor::on_whole_object_clicked ()
 {
 	mode = WHOLE_OBJECT;
+
+	getConfig () .setItem ("mode", mode);
 }
 
 void

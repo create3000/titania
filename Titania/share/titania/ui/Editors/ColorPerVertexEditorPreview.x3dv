@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 07 Nov 2014 09:33:25 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Mon, 10 Nov 2014 12:45:42 GMT"
+META "modified" "Mon, 10 Nov 2014 17:16:34 GMT"
 
 DEF LayerSet LayerSet {
   activeLayer 3
@@ -15,11 +15,13 @@ DEF LayerSet LayerSet {
   ]
   layers [
     DEF Background Layer {
+      isPickable FALSE
       children DEF Gray_1 Background {
         skyColor 0.5 0.5 0.5
       }
     }
     DEF CheckerBoard_1 LayoutLayer {
+      isPickable FALSE
       layout Layout {
         scaleMode [
           "PIXEL",
@@ -65,6 +67,7 @@ DEF LayerSet LayerSet {
       ]
     }
     DEF TriangleLayer Layer {
+      isPickable FALSE
       children [
         DEF Viewpoint_1 Group {
           children USE _1

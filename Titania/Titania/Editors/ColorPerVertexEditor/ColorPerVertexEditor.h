@@ -99,6 +99,9 @@ private:
 	set_initialized ();
 
 	void
+	configure ();
+
+	void
 	set_selection ();
 
 	///  @name Menubar
