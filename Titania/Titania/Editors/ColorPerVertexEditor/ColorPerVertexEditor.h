@@ -79,13 +79,14 @@ public:
 private:
 
 	///  @name Member types
-	
-	enum ModeType {
+
+	enum ModeType
+	{
 		SINGLE_VERTEX,
 		ADJACENT_VERTICES,
 		SINGLE_FACE,
 		WHOLE_OBJECT
-	
+
 	};
 
 	///  @name Construction
@@ -105,7 +106,7 @@ private:
 	virtual
 	void
 	on_undo_activate () final override;
-	
+
 	virtual
 	void
 	on_redo_activate () final override;
@@ -145,11 +146,11 @@ private:
 
 	void
 	on_shading_activate (const std::string &);
-	
+
 	virtual
 	void
 	on_single_vertex_clicked () final override;
-	
+
 	virtual
 	void
 	on_adjacent_vertices_clicked () final override;
@@ -182,7 +183,7 @@ private:
 
 	void
 	set_hitPoint (const X3D::Vector3f &);
-	
+
 	void
 	set_touchTime ();
 
@@ -223,17 +224,17 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr                                     preview;
-	MFColorRGBAButton                                   colorButton;
-	ModeType                                            mode;
-	X3D::X3DPtr <X3D::IndexedFaceSet>                   selection;
-	X3D::X3DPtr <X3D::X3DCoordinateNode>                coord;
-	X3D::X3DPtr <X3D::IndexedFaceSet>                   indexedFaceSet;
-	X3D::X3DPtr <X3D::ColorRGBA>                        color;
-	std::multimap <int32_t, std::pair <size_t, size_t>> faceIndex;
-	std::pair <size_t, size_t>                          face;
-	std::vector <std::pair <size_t, size_t>>            faces;
-	UndoHistory                                         undoHistory;
+	X3D::BrowserPtr                                      preview;
+	MFColorRGBAButton                                    colorButton;
+	ModeType                                             mode;
+	X3D::X3DPtr <X3D::IndexedFaceSet>                    selection;
+	X3D::X3DPtr <X3D::X3DCoordinateNode>                 coord;
+	X3D::X3DPtr <X3D::IndexedFaceSet>                    indexedFaceSet;
+	X3D::X3DPtr <X3D::ColorRGBA>                         color;
+	std::multimap <int32_t, std::pair <size_t, size_t>>  faceIndex;
+	std::pair <size_t, size_t>                           face;
+	std::vector <std::pair <size_t, size_t>>             faces;
+	UndoHistory                                          undoHistory;
 
 };
 

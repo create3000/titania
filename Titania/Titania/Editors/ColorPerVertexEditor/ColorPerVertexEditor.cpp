@@ -81,7 +81,7 @@ ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindo
 	                     undoHistory ()
 {
 	preview -> set_antialiasing (4);
-	
+
 	getShadingButton () .set_menu (getShadingMenu ());
 
 	setup ();
@@ -228,6 +228,53 @@ ColorPerVertexEditor::set_undoHistory ()
 void
 ColorPerVertexEditor::on_remove_unused_colors_activate ()
 {
+	std::set <int32_t> indexIndex;
+
+	for (const auto & index : indexedFaceSet -> colorIndex ())
+		indexIndex .emplace (index);
+
+	std::vector <int32_t> remap (color -> color () .size ());
+	X3D::MFColorRGBA      colors;
+
+	for (int32_t index = 0, size = color -> color () .size (); index < size; ++ index)
+	{
+		if (indexIndex .count (index))
+		{
+			remap [index] = colors .size ();
+			colors .emplace_back (color -> color () [index]);
+		}
+	}
+
+	X3D::MFInt32 colorIndex;
+
+	for (const auto & index : indexedFaceSet -> colorIndex ())
+	{
+		try
+		{
+			colorIndex .emplace_back (index < 0 ? -1 : remap .at (index));
+		}
+		catch (const std::out_of_range &)
+		{
+			colorIndex .emplace_back (0);
+		}
+	}
+
+	// Assign colorIndex and color.
+
+	if (colors .size () == color -> color () .size ())
+		return;
+
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Unused Colors"));
+
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> colorIndex ()), indexedFaceSet -> colorIndex ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> colorIndex ()), colorIndex);
+	indexedFaceSet -> colorIndex () = std::move (colorIndex);
+
+	undoStep -> addUndoFunction (&X3D::MFColorRGBA::setValue, std::ref (color -> color ()), color -> color ());
+	undoStep -> addRedoFunction (&X3D::MFColorRGBA::setValue, std::ref (color -> color ()), colors);
+	color -> color () = std::move (colors);
+
+	addUndoStep (undoStep);
 }
 
 void
@@ -236,7 +283,7 @@ ColorPerVertexEditor::on_checkerboard_toggled ()
 	try
 	{
 		const auto layerSet = preview -> getExecutionContext () -> getNamedNode <X3D::LayerSet> ("LayerSet");
-		
+
 		if (getCheckerBoardButton () .get_active ())
 			layerSet -> order () = { 2, 3, 4 };
 		else
@@ -323,7 +370,7 @@ ColorPerVertexEditor::on_whole_object_clicked ()
 void
 ColorPerVertexEditor::on_remove_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> ("Remove Colored Polygons");
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Colored Polygons"));
 
 	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (selection -> colorPerVertex ()), selection -> colorPerVertex ());
 	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (selection -> colorPerVertex ()), true);
@@ -341,7 +388,7 @@ ColorPerVertexEditor::on_remove_clicked ()
 void
 ColorPerVertexEditor::on_apply_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> ("Apply Colored Polygons");
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Apply Colored Polygons"));
 
 	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (selection -> colorPerVertex ()), selection -> colorPerVertex ());
 	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (selection -> colorPerVertex ()), true);
@@ -356,7 +403,7 @@ ColorPerVertexEditor::on_apply_clicked ()
 		const auto color = selection -> getExecutionContext () -> createNode <X3D::ColorRGBA> ();
 
 		color -> color () = this -> color -> color ();
-	
+
 		getBrowserWindow () -> replaceNode (X3D::SFNode (selection), selection -> color (), X3D::SFNode (color), undoStep);
 	}
 	else
@@ -370,7 +417,7 @@ ColorPerVertexEditor::on_apply_clicked ()
 	}
 
 	selection -> getExecutionContext () -> realize ();
-	
+
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -409,34 +456,35 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 				case SINGLE_VERTEX:
 				{
 					const auto index = face .first + face .second;
-				
+
 					if (indexedFaceSet -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 					{
-						const auto undoStep = std::make_shared <UndoStep> ("Colorize Singe Vertex");
-						
+						const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Singe Vertex"));
+
 						undoStep -> addObjects (indexedFaceSet);
-						undoStep -> addUndoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
-						undoStep -> addRedoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
+						undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
+						undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
 						indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
-						
+
 						addUndoStep (undoStep);
 					}
+
 					break;
 				}
 				case ADJACENT_VERTICES:
 				{
-					const auto undoStep = std::make_shared <UndoStep> ("Colorize Adjacent Vertices");
+					const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Adjacent Vertices"));
 
 					undoStep -> addObjects (indexedFaceSet);
 
 					for (const auto & face : faces)
 					{
 						const auto index = face .first + face .second;
-					
+
 						if (indexedFaceSet -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 						{
-							undoStep -> addUndoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
-							undoStep -> addRedoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
+							undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
+							undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
 							indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
 						}
 					}
@@ -446,7 +494,7 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 				}
 				case SINGLE_FACE:
 				{
-					const auto undoStep = std::make_shared <UndoStep> ("Colorize Single Face");
+					const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Single Face"));
 
 					undoStep -> addObjects (indexedFaceSet);
 
@@ -454,8 +502,8 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 					{
 						if (indexedFaceSet -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 						{
-							undoStep -> addUndoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
-							undoStep -> addRedoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
+							undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
+							undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
 							indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
 						}
 					}
@@ -466,13 +514,13 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 				case WHOLE_OBJECT:
 				{
 					X3D::MFInt32 colorIndex;
-				
+
 					for (const auto & index : indexedFaceSet -> coordIndex ())
 						colorIndex .emplace_back (index < 0 ? -1 : colorButton .getIndex ());
-						
+
 					if (indexedFaceSet -> colorIndex () not_eq colorIndex)
 					{
-						const auto undoStep = std::make_shared <UndoStep> ("Colorize Whole Object");
+						const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Whole Object"));
 
 						undoStep -> addObjects (indexedFaceSet);
 
@@ -482,6 +530,7 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 						addUndoStep (undoStep);
 					}
+
 					break;
 				}
 			}
@@ -630,7 +679,7 @@ ColorPerVertexEditor::setFaceIndex ()
 			vertex = 0;
 			continue;
 		}
-			
+
 		faceIndex .emplace (index, std::make_pair (face, vertex));
 
 		++ vertex;
@@ -690,7 +739,7 @@ ColorPerVertexEditor::setFaces (const X3D::Vector3f & hitPoint, const size_t poi
 	__LOG__ << faces .size () << std::endl;
 
 	for (const auto & face : faces)
-		__LOG__ << *d++ << " : " << face .first << " : " << face .second << std::endl;
+		__LOG__ << *d ++ << " : " << face .first << " : " << face .second << std::endl;
 
 	__LOG__ << face .first << " : " << face .second << std::endl;
 }
