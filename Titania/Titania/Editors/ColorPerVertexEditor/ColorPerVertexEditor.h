@@ -121,6 +121,10 @@ private:
 
 	virtual
 	void
+	on_checkerboard_toggled () final override;
+
+	virtual
+	void
 	on_phong_activate () final override;
 
 	virtual

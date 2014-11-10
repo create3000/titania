@@ -150,6 +150,10 @@ public:
 	getPreviewBox () const
 	{ return *m_PreviewBox; }
 
+	Gtk::ToggleToolButton &
+	getCheckerBoardButton () const
+	{ return *m_CheckerBoardButton; }
+
 	Gtk::MenuToolButton &
 	getShadingButton () const
 	{ return *m_ShadingButton; }
@@ -232,6 +236,10 @@ public:
 
 	virtual
 	void
+	on_checkerboard_toggled () = 0;
+
+	virtual
+	void
 	on_look_at_all_clicked () = 0;
 
 	virtual
@@ -280,6 +288,7 @@ private:
 	Gtk::ImageMenuItem*            m_RedoMenuItem;
 	Gtk::ImageMenuItem*            m_RemoveUnusedColorsMenuItem;
 	Gtk::Box*                      m_PreviewBox;
+	Gtk::ToggleToolButton*         m_CheckerBoardButton;
 	Gtk::MenuToolButton*           m_ShadingButton;
 	Gtk::ToolButton*               m_LookAtButton;
 	Gtk::ToggleButton*             m_SelectColorButton;

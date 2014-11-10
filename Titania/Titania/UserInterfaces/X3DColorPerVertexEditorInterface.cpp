@@ -76,6 +76,7 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("RedoMenuItem", m_RedoMenuItem);
 	m_builder -> get_widget ("RemoveUnusedColorsMenuItem", m_RemoveUnusedColorsMenuItem);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
+	m_builder -> get_widget ("CheckerBoardButton", m_CheckerBoardButton);
 	m_builder -> get_widget ("ShadingButton", m_ShadingButton);
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
 	m_builder -> get_widget ("SelectColorButton", m_SelectColorButton);
@@ -100,6 +101,9 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_undo_activate));
 	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_redo_activate));
 	m_RemoveUnusedColorsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_remove_unused_colors_activate));
+
+	// Connect object Gtk::ToggleToolButton with id 'CheckerBoardButton'.
+	m_CheckerBoardButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_checkerboard_toggled));
 
 	// Connect object Gtk::ToolButton with id 'LookAtButton'.
 	m_LookAtButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_look_at_all_clicked));

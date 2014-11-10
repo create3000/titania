@@ -4,20 +4,52 @@ META "comment" "World of Titania"
 META "created" "Fri, 07 Nov 2014 09:33:25 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Sun, 09 Nov 2014 12:00:07 GMT"
+META "modified" "Mon, 10 Nov 2014 01:42:46 GMT"
 
-LayerSet {
-  activeLayer 2
+DEF LayerSet LayerSet {
+  activeLayer 3
   order [
     1,
-    2,
-    3
+    3,
+    4
   ]
   layers [
     DEF Background Layer {
       children DEF Gray_1 Background {
         skyColor 0.5 0.5 0.5
       }
+    }
+    DEF CheckerBoard_1 LayoutLayer {
+      layout Layout {
+        scaleMode [
+          "PIXEL",
+          "PIXEL"
+        ]
+      }
+      children [
+        DEF Gray_2 Background {
+          skyColor 0.4 0.4 0.4
+        }
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 0 0
+              emissiveColor 0.6 0.6 0.6
+            }
+            texture PixelTexture {
+              image 2 2 2
+                0xffff 0
+                0 0xffff
+            }
+            textureTransform TextureTransform {
+              scale 5000 5000
+            }
+          }
+          geometry Rectangle2D {
+            size 80000 80000
+          }
+        }
+      ]
     }
     DEF Object Layer {
       children [

@@ -230,6 +230,22 @@ ColorPerVertexEditor::on_remove_unused_colors_activate ()
 {
 }
 
+void
+ColorPerVertexEditor::on_checkerboard_toggled ()
+{
+	try
+	{
+		const auto layerSet = preview -> getExecutionContext () -> getNamedNode <X3D::LayerSet> ("LayerSet");
+		
+		if (getCheckerBoardButton () .get_active ())
+			layerSet -> order () = { 2, 3, 4 };
+		else
+			layerSet -> order () = { 1, 3, 4 };
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
 // Shading menu
 
 void
@@ -355,97 +371,102 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 	// Colorize vertices
 
-	const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
-
-	if (touchSensor -> isActive ())
+	try
 	{
-		if (getSelectColorButton () .get_active ())
-			return;
+		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 
-		using set1Value = void (X3D::MFInt32::*) (const X3D::MFInt32::size_type, const int32_t &);
-
-		switch (mode)
+		if (touchSensor -> isActive ())
 		{
-			case SINGLE_VERTEX:
-			{
-				const auto index = face .first + face .second;
-			
-				if (indexedFaceSet -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
-				{
-					const auto undoStep = std::make_shared <UndoStep> ("Colorize Singe Vertex");
-					
-					undoStep -> addObjects (indexedFaceSet);
-					undoStep -> addUndoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
-					undoStep -> addRedoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
-					indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
-					
-					addUndoStep (undoStep);
-				}
-				break;
-			}
-			case ADJACENT_VERTICES:
-			{
-				const auto undoStep = std::make_shared <UndoStep> ("Colorize Adjacent Vertices");
+			if (getSelectColorButton () .get_active ())
+				return;
 
-				undoStep -> addObjects (indexedFaceSet);
+			using set1Value = void (X3D::MFInt32::*) (const X3D::MFInt32::size_type, const int32_t &);
 
-				for (const auto & face : faces)
+			switch (mode)
+			{
+				case SINGLE_VERTEX:
 				{
 					const auto index = face .first + face .second;
 				
 					if (indexedFaceSet -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 					{
+						const auto undoStep = std::make_shared <UndoStep> ("Colorize Singe Vertex");
+						
+						undoStep -> addObjects (indexedFaceSet);
 						undoStep -> addUndoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
 						undoStep -> addRedoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
 						indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
+						
+						addUndoStep (undoStep);
 					}
+					break;
 				}
-
-				addUndoStep (undoStep);
-				break;
-			}
-			case SINGLE_FACE:
-			{
-				const auto undoStep = std::make_shared <UndoStep> ("Colorize Single Face");
-
-				undoStep -> addObjects (indexedFaceSet);
-
-				for (const auto & index : getPoints (face .first))
+				case ADJACENT_VERTICES:
 				{
-					if (indexedFaceSet -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
-					{
-						undoStep -> addUndoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
-						undoStep -> addRedoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
-						indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
-					}
-				}
-
-				addUndoStep (undoStep);
-				break;
-			}
-			case WHOLE_OBJECT:
-			{
-				X3D::MFInt32 colorIndex;
-			
-				for (const auto & index : indexedFaceSet -> coordIndex ())
-					colorIndex .emplace_back (index < 0 ? -1 : colorButton .getIndex ());
-					
-				if (indexedFaceSet -> colorIndex () not_eq colorIndex)
-				{
-					const auto undoStep = std::make_shared <UndoStep> ("Colorize Whole Object");
+					const auto undoStep = std::make_shared <UndoStep> ("Colorize Adjacent Vertices");
 
 					undoStep -> addObjects (indexedFaceSet);
 
-					undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> colorIndex ()), indexedFaceSet -> colorIndex ());
-					undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> colorIndex ()), colorIndex);
-					indexedFaceSet -> colorIndex () = std::move (colorIndex);
+					for (const auto & face : faces)
+					{
+						const auto index = face .first + face .second;
+					
+						if (indexedFaceSet -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
+						{
+							undoStep -> addUndoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
+							undoStep -> addRedoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
+							indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
+						}
+					}
 
 					addUndoStep (undoStep);
+					break;
 				}
-				break;
+				case SINGLE_FACE:
+				{
+					const auto undoStep = std::make_shared <UndoStep> ("Colorize Single Face");
+
+					undoStep -> addObjects (indexedFaceSet);
+
+					for (const auto & index : getPoints (face .first))
+					{
+						if (indexedFaceSet -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
+						{
+							undoStep -> addUndoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
+							undoStep -> addRedoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
+							indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
+						}
+					}
+
+					addUndoStep (undoStep);
+					break;
+				}
+				case WHOLE_OBJECT:
+				{
+					X3D::MFInt32 colorIndex;
+				
+					for (const auto & index : indexedFaceSet -> coordIndex ())
+						colorIndex .emplace_back (index < 0 ? -1 : colorButton .getIndex ());
+						
+					if (indexedFaceSet -> colorIndex () not_eq colorIndex)
+					{
+						const auto undoStep = std::make_shared <UndoStep> ("Colorize Whole Object");
+
+						undoStep -> addObjects (indexedFaceSet);
+
+						undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> colorIndex ()), indexedFaceSet -> colorIndex ());
+						undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> colorIndex ()), colorIndex);
+						indexedFaceSet -> colorIndex () = std::move (colorIndex);
+
+						addUndoStep (undoStep);
+					}
+					break;
+				}
 			}
 		}
 	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void
@@ -465,32 +486,37 @@ ColorPerVertexEditor::set_touchTime ()
 void
 ColorPerVertexEditor::set_crossHair (const X3D::Vector3f & point)
 {
-	const auto crossHair           = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("CrossHair");
-	const auto crossHairCoordinate = preview -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("CrossHairCoordinate");
-	const auto points              = getPoints (face .first);
+	try
+	{
+		const auto crossHair           = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("CrossHair");
+		const auto crossHairCoordinate = preview -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("CrossHairCoordinate");
+		const auto points              = getPoints (face .first);
 
-	if (points .size () < 3)
-		return;
+		if (points .size () < 3)
+			return;
 
-	const auto vertex = face .second;
-	const auto i1     = indexedFaceSet -> coordIndex () [points [vertex == 0 ? points .size () - 1 : vertex - 1]];
-	const auto i2     = indexedFaceSet -> coordIndex () [points [vertex]];
-	const auto i3     = indexedFaceSet -> coordIndex () [points [(vertex + 1) % points .size ()]];
-	const auto p1     = coord -> get1Point (i1);
-	const auto p2     = coord -> get1Point (i2);
-	const auto p3     = coord -> get1Point (i3);
+		const auto vertex = face .second;
+		const auto i1     = indexedFaceSet -> coordIndex () [points [vertex == 0 ? points .size () - 1 : vertex - 1]];
+		const auto i2     = indexedFaceSet -> coordIndex () [points [vertex]];
+		const auto i3     = indexedFaceSet -> coordIndex () [points [(vertex + 1) % points .size ()]];
+		const auto p1     = coord -> get1Point (i1);
+		const auto p2     = coord -> get1Point (i2);
+		const auto p3     = coord -> get1Point (i3);
 
-	const auto edge1  = p1 - p2;
-	const auto edge2  = p3 - p2;
-	const auto normal = X3D::normal (p1, p2, p3) * X3D::abs (edge1 + edge2) / 2.0;
+		const auto edge1  = p1 - p2;
+		const auto edge2  = p3 - p2;
+		const auto normal = X3D::normal (p1, p2, p3) * X3D::abs (edge1 + edge2) / 2.0;
 
-	crossHairCoordinate -> point () = {
-		-normal, normal,
-		X3D::Vector3d (), edge1,
-		X3D::Vector3d (), edge2
-	};
+		crossHairCoordinate -> point () = {
+			-normal, normal,
+			X3D::Vector3d (), edge1,
+			X3D::Vector3d (), edge2
+		};
 
-	crossHair -> translation () = point;
+		crossHair -> translation () = point;
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void
