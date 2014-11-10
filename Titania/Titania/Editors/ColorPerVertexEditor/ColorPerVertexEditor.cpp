@@ -236,6 +236,8 @@ ColorPerVertexEditor::on_remove_unused_colors_activate ()
 	std::vector <int32_t> remap (color -> color () .size ());
 	X3D::MFColorRGBA      colors;
 
+	colors .reserve (color -> color () .size ());
+
 	for (int32_t index = 0, size = color -> color () .size (); index < size; ++ index)
 	{
 		if (indexIndex .count (index))
@@ -246,6 +248,8 @@ ColorPerVertexEditor::on_remove_unused_colors_activate ()
 	}
 
 	X3D::MFInt32 colorIndex;
+
+	colorIndex .reserve (indexedFaceSet -> colorIndex () .size ());
 
 	for (const auto & index : indexedFaceSet -> colorIndex ())
 	{
