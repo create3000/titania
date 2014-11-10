@@ -110,11 +110,12 @@ GeoTouchSensor::set_over (const HitPtr & hit, const bool over)
 
 		if (isOver ())
 		{
+			const auto &     intersection    = hit -> intersection;
 			const Matrix4d & modelViewMatrix = getMatrices () .at (hit -> layer) .modelViewMatrix;
-			const Vector3d   hitPoint        = hit -> point * ~modelViewMatrix;
+			const Vector3d   hitPoint        = Vector3d (intersection -> point) * ~modelViewMatrix;
 
-			hitTexCoord_changed () = Vector2f (hit -> texCoord .x (), hit -> texCoord .y ());
-			hitNormal_changed ()   = hit -> normal;
+			hitTexCoord_changed () = Vector2f (intersection -> texCoord .x (), intersection -> texCoord .y ());
+			hitNormal_changed ()   = intersection -> normal;
 			hitPoint_changed ()    = hitPoint;
 			hitGeoCoord_changed () = getGeoCoord (hitPoint);
 		}

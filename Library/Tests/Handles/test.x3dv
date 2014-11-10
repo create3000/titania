@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 03 Nov 2014 06:41:21 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Mon, 10 Nov 2014 02:35:33 GMT"
+META "modified" "Mon, 10 Nov 2014 16:30:45 GMT"
 
 WorldInfo {
   metadata MetadataSet {
@@ -328,7 +328,7 @@ Transform {
         6,
         7,
         1,
-        0,
+        8,
         -1,
         2,
         3,
@@ -365,7 +365,8 @@ Transform {
           1 1 -1,
           1 -1 -1,
           -1 1 -1,
-          -1 -1 -1
+          -1 -1 -1,
+          -1 1 1
         ]
       }
     }
@@ -6982,7 +6983,7 @@ DEF Sphere_1 Transform {
           1 0
         ]
       }
-      coord DEF _1 Coordinate {
+      coord Coordinate {
         point [
           0 1 0,
           -0 0.974928 -0.222521,

@@ -1,3 +1,25 @@
+2014-11-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Shape.h:
+	* Shape.cpp:
+	* LookAtViewer.h:
+	* Hit.h:
+	* X3DLayerNode.h:
+	* LookAtViewer.cpp:
+	* X3DLayerNode.cpp:
+	* Hit.cpp:
+	* GeoTouchSensor.cpp:
+	* X3DGeometryNode.cpp:
+	* Intersection.h:
+	* TouchSensor.h:
+	* TouchSensor.cpp:
+	* PointingDevice.cpp:
+	* PlaneSensor.cpp:
+	* SphereSensor.cpp:
+	* CylinderSensor.cpp:
+	* X3DPointingDeviceSensorContext.h:
+	* X3DPointingDeviceSensorContext.cpp: 
+
 2014-11-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* QuadSphereOptions.cpp: 

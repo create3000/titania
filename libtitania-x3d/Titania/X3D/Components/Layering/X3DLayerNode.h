@@ -266,7 +266,7 @@ private:
 	set_viewport ();
 
 	void
-	click ();
+	pointer ();
 
 	void
 	camera ();

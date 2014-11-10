@@ -93,7 +93,7 @@ public:
 	///  @name Operations
 
 	void
-	click (const double, const double);
+	touch (const double, const double);
 
 	bool
 	isPointerInRectangle (const Vector4i &) const;

@@ -375,7 +375,7 @@ X3DLayerNode::traverse (const TraverseType type)
 	{
 		case TraverseType::POINTER:
 		{
-			click ();
+			pointer ();
 			break;
 		}
 		case TraverseType::CAMERA:
@@ -407,7 +407,7 @@ X3DLayerNode::traverse (const TraverseType type)
 }
 
 void
-X3DLayerNode::click ()
+X3DLayerNode::pointer ()
 {
 	if (isPickable ())
 	{

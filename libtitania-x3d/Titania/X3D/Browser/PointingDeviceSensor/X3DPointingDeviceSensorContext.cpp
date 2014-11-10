@@ -96,7 +96,7 @@ X3DPointingDeviceSensorContext::set_shutdown ()
 }
 
 void
-X3DPointingDeviceSensorContext::click (const double x, const double y)
+X3DPointingDeviceSensorContext::touch (const double x, const double y)
 {
 	pointer = Vector2d (x, y);
 
@@ -155,7 +155,7 @@ X3DPointingDeviceSensorContext::motionNotifyEvent (const double x, const double 
 {
 	hasMoved |= pointer .x () not_eq x or pointer .y () not_eq y;
 
-	click (x, y);
+	touch (x, y);
 
 	motion ();
 
@@ -219,7 +219,7 @@ X3DPointingDeviceSensorContext::buttonPressEvent (const double x, const double y
 	pressTime = chrono::now ();
 	hasMoved  = false;
 
-	click (x, y);
+	touch (x, y);
 
 	if (getHits () .empty ())
 		return false;

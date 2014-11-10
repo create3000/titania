@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 07 Nov 2014 09:33:25 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Mon, 10 Nov 2014 01:42:46 GMT"
+META "modified" "Mon, 10 Nov 2014 12:45:42 GMT"
 
 DEF LayerSet LayerSet {
   activeLayer 3
@@ -64,12 +64,12 @@ DEF LayerSet LayerSet {
         }
       ]
     }
-    DEF CrossHair_1 Layer {
+    DEF TriangleLayer Layer {
       children [
         DEF Viewpoint_1 Group {
           children USE _1
         }
-        DEF CrossHair Transform {
+        DEF Triangle Transform {
           children DEF _2 Switch {
             whichChoice 0
             children [
@@ -91,39 +91,65 @@ function set_active (value)
 }"
                 }
               }
-              Shape {
-                geometry IndexedLineSet {
-                  colorPerVertex FALSE
-                  colorIndex [
-                    0,
-                    0,
-                    0
-                  ]
-                  coordIndex [
-                    0,
-                    1,
-                    -1,
-                    2,
-                    3,
-                    -1,
-                    4,
-                    5,
-                    -1
-                  ]
-                  color Color {
-                    color 1 0 0
+              Group {
+                children [
+                  Shape {
+                    appearance Appearance {
+                      lineProperties LineProperties {
+                        linewidthScaleFactor 4
+                      }
+                    }
+                    geometry IndexedLineSet {
+                      colorPerVertex FALSE
+                      colorIndex [
+                        0,
+                        0
+                      ]
+                      coordIndex [
+                        0,
+                        1,
+                        -1,
+                        2,
+                        3,
+                        -1
+                      ]
+                      color Color {
+                        color 0 0 0
+                      }
+                      coord DEF TriangleCoordinate Coordinate {
+                        point [
+                          -1 0 0,
+                          1 0 0,
+                          0 -1 0,
+                          0 1 0,
+                          0 0 -1,
+                          0 0 1
+                        ]
+                      }
+                    }
                   }
-                  coord DEF CrossHairCoordinate Coordinate {
-                    point [
-                      -1 0 0,
-                      1 0 0,
-                      0 -1 0,
-                      0 1 0,
-                      0 0 -1,
-                      0 0 1
-                    ]
+                  Shape {
+                    geometry IndexedLineSet {
+                      colorPerVertex FALSE
+                      colorIndex [
+                        0,
+                        0
+                      ]
+                      coordIndex [
+                        0,
+                        1,
+                        -1,
+                        2,
+                        3,
+                        -1
+                      ]
+                      color Color {
+                        color 1 1 1
+                      }
+                      coord USE TriangleCoordinate
+                    }
                   }
-                }
+                ]
               }
             ]
           }

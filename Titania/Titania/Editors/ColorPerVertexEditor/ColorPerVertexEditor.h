@@ -188,7 +188,7 @@ private:
 	set_touchTime ();
 
 	void
-	set_crossHair (const X3D::Vector3f &);
+	set_triangle (const X3D::Vector3f &);
 
 	///  @name Operations
 
@@ -213,11 +213,11 @@ private:
 	void
 	setFaceIndex ();
 
-	size_t
-	getPointIndex (const X3D::Vector3f &) const;
+	std::vector <size_t>
+	getPointIndices (const X3D::Vector3f &, const X3D::MFVec3f &) const;
 
 	void
-	setFaces (const X3D::Vector3f &, const size_t);
+	setFaces (const X3D::Vector3d &, const std::vector <size_t> &);
 
 	std::vector <size_t>
 	getPoints (const size_t) const;

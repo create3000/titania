@@ -115,6 +115,14 @@ public:
 	hitPoint_changed () const
 	{ return *fields .hitPoint_changed; }
 
+	MFVec3f &
+	hitTriangle_changed ()
+	{ return hitTriangle; }
+
+	const MFVec3f &
+	hitTriangle_changed () const
+	{ return hitTriangle; }
+
 	///  @name Event handlers
 
 	virtual
@@ -142,6 +150,8 @@ private:
 	};
 
 	Fields fields;
+
+	MFVec3f hitTriangle;
 
 };
 

@@ -105,7 +105,7 @@ private:
 	getOrientationOffset ();
 
 	bool
-	click (const double, const double);
+	touch (const double, const double);
 
 	///  @name Members
 

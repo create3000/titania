@@ -80,9 +80,7 @@ public:
 	const Vector2d                pointer;
 	const Matrix4d                modelViewMatrix;
 	const Line3d                  hitRay;
-	const Vector4d                texCoord;
-	const Vector3d                normal;
-	const Vector3d                point;
+	const IntersectionPtr         intersection;                
 	const float                   distance;
 	const PointingDeviceSensorSet sensors;
 	const X3DShapeNodePtr         shape;

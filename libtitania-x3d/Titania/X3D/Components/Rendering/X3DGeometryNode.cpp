@@ -221,13 +221,13 @@ X3DGeometryNode::intersects (const Line3f & line, const size_t i1, const size_t 
 		if (i1 < texCoordSize)
 			texCoord = t * texCoords [0] [i1] + u * texCoords [0] [i2] + v * texCoords [0] [i3];
 
-		Vector3f normal = normalize (t * normals  [i1] + u * normals  [i2] + v * normals  [i3]);
-		Vector3f point  = t * vertices [i1] + u * vertices [i2] + v * vertices [i3];
+		const Vector3f normal = normalize (t * normals  [i1] + u * normals  [i2] + v * normals  [i3]);
+		const Vector3f point  = t * vertices [i1] + u * vertices [i2] + v * vertices [i3];
 
 		if (isClipped (point, modelViewMatrix))
 			return false;
 
-		intersections .emplace_back (new Intersection { texCoord, normal, point });
+		intersections .emplace_back (new Intersection { texCoord, normal, point, std::array <Vector3f, 3> { vertices [i1], vertices [i2], vertices [i3] } });
 		return true;
 	}
 

@@ -161,8 +161,8 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 		{
 			inverseModelViewMatrix = ~getMatrices () .at (hit -> layer) .modelViewMatrix;
 
-			const auto hitRay  = hit -> hitRay * inverseModelViewMatrix;
-			const auto hitPoint = hit -> point * inverseModelViewMatrix;
+			const auto hitRay   = hit -> hitRay * inverseModelViewMatrix;
+			const auto hitPoint = Vector3d (hit -> intersection -> point) * inverseModelViewMatrix;
 
 			const auto     yAxis      = Vector3d (0, 1, 0) * Rotation4d (axisRotation () .getValue ());
 			const Vector3d cameraBack = normalize (inverseModelViewMatrix .mult_dir_matrix (Vector3d (0, 0, 1)));

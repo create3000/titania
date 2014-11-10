@@ -105,7 +105,7 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 {
 	if (event -> button == 1)
 	{
-		if (not motion and click (event -> x, event -> y))
+		if (not motion and touch (event -> x, event -> y))
 		{
 			const auto hit             = getBrowser () -> getNearestHit ();
 			const auto modelViewMatrix = Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getCameraSpaceMatrix ();
@@ -123,7 +123,7 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 bool
 LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 {
-	if (click (event -> x, event -> y))
+	if (touch (event -> x, event -> y))
 	{
 		if (not isOver)
 		{
@@ -169,9 +169,9 @@ LookAtViewer::getOrientationOffset ()
 }
 
 bool
-LookAtViewer::click (const double x, const double y)
+LookAtViewer::touch (const double x, const double y)
 {
-	getBrowser () -> click (x, getBrowser () -> get_height () - y);
+	getBrowser () -> touch (x, getBrowser () -> get_height () - y);
 
 	return not getBrowser () -> getHits () .empty ();
 }

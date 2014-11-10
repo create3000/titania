@@ -70,7 +70,8 @@ TouchSensor::Fields::Fields () :
 TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTouchSensorNode (),
-	            fields ()
+	            fields (),
+	       hitTriangle ()
 {
 	addType (X3DConstants::TouchSensor);
 
@@ -83,6 +84,8 @@ TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "isOver",              isOver ());
 	addField (outputOnly,  "isActive",            isActive ());
 	addField (outputOnly,  "touchTime",           touchTime ());
+
+	addChildren (hitTriangle);
 }
 
 X3DBaseNode*
@@ -100,11 +103,13 @@ TouchSensor::set_over (const HitPtr & hit, const bool over)
 
 		if (isOver ())
 		{
+			const auto &     intersection    = hit -> intersection;
 			const Matrix4d & modelViewMatrix = getMatrices () .at (hit -> layer) .modelViewMatrix;
 
-			hitTexCoord_changed () = Vector2f (hit -> texCoord .x (), hit -> texCoord .y ());
-			hitNormal_changed ()   = hit -> normal;
-			hitPoint_changed ()    = hit -> point * ~modelViewMatrix;
+			hitTexCoord_changed () = Vector2f (intersection -> texCoord .x (), intersection -> texCoord .y ());
+			hitNormal_changed ()   = intersection -> normal;
+			hitPoint_changed ()    = Vector3d (intersection -> point) * ~modelViewMatrix;
+			hitTriangle_changed () .assign (intersection -> triangle .begin (), intersection -> triangle .end ());
 		}
 	}
 	catch (const std::exception &)

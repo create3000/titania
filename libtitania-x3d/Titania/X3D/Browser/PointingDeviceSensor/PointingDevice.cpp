@@ -179,7 +179,7 @@ PointingDevice::on_button_press_event (GdkEventButton* event)
 		}
 		case 2:
 		{
-			//const bool clicked = click (event -> x, event -> y);
+			//const bool clicked = touch (event -> x, event -> y);
 
 			getBrowser () -> setCursor (Gdk::FLEUR);
 			break;

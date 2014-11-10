@@ -133,7 +133,7 @@ Shape::traverse (const TraverseType type)
 	{
 		case TraverseType::POINTER:
 		{
-			click ();
+			pointer ();
 			break;
 		}
 		case TraverseType::NAVIGATION:
@@ -157,7 +157,7 @@ Shape::traverse (const TraverseType type)
 }
 
 void
-Shape::click ()
+Shape::pointer ()
 {
 	// All geometries must be picked
 
@@ -176,20 +176,20 @@ Shape::click ()
 				if (getGeometry () -> intersects (hitRay, itersections))
 				{
 					for (auto & itersection : itersections)
-						itersection -> hitPoint = itersection -> hitPoint * getModelViewMatrix () .get ();
+						itersection -> point = itersection -> point * getModelViewMatrix () .get ();
 
 					// Sort desc
 					std::sort (itersections .begin (), itersections .end (),
 					           [ ] (const IntersectionPtr &lhs, const IntersectionPtr &rhs) -> bool
 					           {
-					              return lhs -> hitPoint .z () > rhs -> hitPoint .z ();
+					              return lhs -> point .z () > rhs -> point .z ();
 								  });
 
 					// Find first point that is not greater than near plane;
 					const auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearPlane (),
 					                                           [ ] (const IntersectionPtr &lhs, const float & rhs) -> bool
 					                                           {
-					                                              return lhs -> hitPoint .z () > rhs;
+					                                              return lhs -> point .z () > rhs;
 																			 });
 
 					if (itersection not_eq itersections .end ())

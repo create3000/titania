@@ -53,7 +53,266 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/X3D/Miscellaneous/Random.h>
+namespace titania {
+namespace math {
+
+///  Returns the squared distance from the triangle defined by @a p1, @a p2, @a p3 to @a point.
+template <class Type>
+Type
+triangle_distance_to_point (const vector3 <Type> & p1, const vector3 <Type> & p2, const vector3 <Type> & p3, const vector3 <Type> & point)
+{
+	// http://www.geometrictools.com/GTEngine/Include/GteDistPoint3Triangle3.inl
+
+	Type sqrDistance;
+
+	vector3 <Type> diff  = p1 - point;
+	vector3 <Type> edge0 = p2 - p1;
+	vector3 <Type> edge1 = p3 - p1;
+	Type           a00   = dot (edge0, edge0);
+	Type           a01   = dot (edge0, edge1);
+	Type           a11   = dot (edge1, edge1);
+	Type           b0    = dot (diff, edge0);
+	Type           b1    = dot (diff, edge1);
+	Type           c     = dot (diff, diff);
+	Type           det   = std::abs (a00 * a11 - a01 * a01);
+	Type           s     = a01 * b1 - a11 * b0;
+	Type           t     = a01 * b0 - a00 * b1;
+
+	if (s + t <= det)
+	{
+		if (s < 0)
+		{
+			if (t < 0)  // region 4
+			{
+				if (b0 < 0)
+				{
+					t = 0;
+
+					if (-b0 >= a00)
+					{
+						s           = 1;
+						sqrDistance = a00 + 2 * b0 + c;
+					}
+					else
+					{
+						s           = -b0 / a00;
+						sqrDistance = b0 * s + c;
+					}
+				}
+				else
+				{
+					s = 0;
+
+					if (b1 >= 0)
+					{
+						t           = 0;
+						sqrDistance = c;
+					}
+					else if (-b1 >= a11)
+					{
+						t           = 1;
+						sqrDistance = a11 + 2 * b1 + c;
+					}
+					else
+					{
+						t           = -b1 / a11;
+						sqrDistance = b1 * t + c;
+					}
+				}
+			}
+			else  // region 3
+			{
+				s = 0;
+
+				if (b1 >= 0)
+				{
+					t           = 0;
+					sqrDistance = c;
+				}
+				else if (-b1 >= a11)
+				{
+					t           = 1;
+					sqrDistance = a11 + 2 * b1 + c;
+				}
+				else
+				{
+					t           = -b1 / a11;
+					sqrDistance = b1 * t + c;
+				}
+			}
+		}
+		else if (t < 0)  // region 5
+		{
+			t = 0;
+
+			if (b0 >= 0)
+			{
+				s           = 0;
+				sqrDistance = c;
+			}
+			else if (-b0 >= a00)
+			{
+				s           = 1;
+				sqrDistance = a00 + 2 * b0 + c;
+			}
+			else
+			{
+				s           = -b0 / a00;
+				sqrDistance = b0 * s + c;
+			}
+		}
+		else  // region 0
+		{
+			// minimum at interior point
+			Type invDet = 1 / det;
+			s          *= invDet;
+			t          *= invDet;
+			sqrDistance = s * (a00 * s + a01 * t + 2 * b0) +
+			              t * (a01 * s + a11 * t + 2 * b1) + c;
+		}
+	}
+	else
+	{
+		Type tmp0, tmp1, numer, denom;
+
+		if (s < 0)  // region 2
+		{
+			tmp0 = a01 + b0;
+			tmp1 = a11 + b1;
+
+			if (tmp1 > tmp0)
+			{
+				numer = tmp1 - tmp0;
+				denom = a00 - 2 * a01 + a11;
+
+				if (numer >= denom)
+				{
+					s           = 1;
+					t           = 0;
+					sqrDistance = a00 + 2 * b0 + c;
+				}
+				else
+				{
+					s           = numer / denom;
+					t           = 1 - s;
+					sqrDistance = s * (a00 * s + a01 * t + 2 * b0) +
+					              t * (a01 * s + a11 * t + 2 * b1) + c;
+				}
+			}
+			else
+			{
+				s = 0;
+
+				if (tmp1 <= 0)
+				{
+					t           = 1;
+					sqrDistance = a11 + 2 * b1 + c;
+				}
+				else if (b1 >= 0)
+				{
+					t           = 0;
+					sqrDistance = c;
+				}
+				else
+				{
+					t           = -b1 / a11;
+					sqrDistance = b1 * t + c;
+				}
+			}
+		}
+		else if (t < 0)  // region 6
+		{
+			tmp0 = a01 + b1;
+			tmp1 = a00 + b0;
+
+			if (tmp1 > tmp0)
+			{
+				numer = tmp1 - tmp0;
+				denom = a00 - 2 * a01 + a11;
+
+				if (numer >= denom)
+				{
+					t           = 1;
+					s           = 0;
+					sqrDistance = a11 + 2 * b1 + c;
+				}
+				else
+				{
+					t           = numer / denom;
+					s           = 1 - t;
+					sqrDistance = s * (a00 * s + a01 * t + 2 * b0) +
+					              t * (a01 * s + a11 * t + 2 * b1) + c;
+				}
+			}
+			else
+			{
+				t = 0;
+
+				if (tmp1 <= 0)
+				{
+					s           = 1;
+					sqrDistance = a00 + 2 * b0 + c;
+				}
+				else if (b0 >= 0)
+				{
+					s           = 0;
+					sqrDistance = c;
+				}
+				else
+				{
+					s           = -b0 / a00;
+					sqrDistance = b0 * s + c;
+				}
+			}
+		}
+		else  // region 1
+		{
+			numer = a11 + b1 - a01 - b0;
+
+			if (numer <= 0)
+			{
+				s           = 0;
+				t           = 1;
+				sqrDistance = a11 + 2 * b1 + c;
+			}
+			else
+			{
+				denom = a00 - 2 * a01 + a11;
+
+				if (numer >= denom)
+				{
+					s           = 1;
+					t           = 0;
+					sqrDistance = a00 + 2 * b0 + c;
+				}
+				else
+				{
+					s           = numer / denom;
+					t           = 1 - s;
+					sqrDistance = s * (a00 * s + a01 * t + 2 * b0) +
+					              t * (a01 * s + a11 * t + 2 * b1) + c;
+				}
+			}
+		}
+	}
+
+	// Account for numerical round-off error.
+	if (sqrDistance < 0)
+	{
+		sqrDistance = 0;
+	}
+
+	return sqrDistance;
+
+	//    result.triangleClosestPoint = triangle.v[0] + s*edge0 + t*edge1;
+	//    result.triangleParameter[1] = s;
+	//    result.triangleParameter[2] = t;
+	//    result.triangleParameter[0] = 1 - s - t;
+	//    return result;
+}
+
+} // math
+} // titania
 
 namespace titania {
 namespace puck {
@@ -148,6 +407,7 @@ ColorPerVertexEditor::set_selection ()
 			indexedFaceSet = preview -> getExecutionContext () -> createNode <X3D::IndexedFaceSet> ();
 
 			indexedFaceSet -> solid ()           = selection -> solid ();
+			indexedFaceSet -> convex ()          = selection -> convex ();
 			indexedFaceSet -> ccw ()             = selection -> ccw ();
 			indexedFaceSet -> creaseAngle ()     = selection -> creaseAngle ();
 			indexedFaceSet -> normalPerVertex () = selection -> normalPerVertex ();
@@ -428,25 +688,26 @@ ColorPerVertexEditor::on_apply_clicked ()
 void
 ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 {
-	if (not coord)
-		return;
-
-	const auto index = getPointIndex (hitPoint);
-	const auto point = coord -> get1Point (index);
-
-	// Determine face and faces
-
-	setFaces (hitPoint, index);
-
-	// Setup cross hair
-
-	set_crossHair (point);
-
-	// Colorize vertices
-
 	try
 	{
+		if (not coord)
+			return;
+
 		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
+		const auto indices     = getPointIndices (hitPoint, touchSensor -> hitTriangle_changed ());
+		
+		if (indices .empty ())
+			return;
+
+		// Determine face and faces
+
+		setFaces (hitPoint, indices);
+
+		// Setup cross hair
+
+		set_triangle (coord -> get1Point (indices [0]));
+
+		// Colorize vertices
 
 		if (touchSensor -> isActive ())
 		{
@@ -559,13 +820,12 @@ ColorPerVertexEditor::set_touchTime ()
 }
 
 void
-ColorPerVertexEditor::set_crossHair (const X3D::Vector3f & point)
+ColorPerVertexEditor::set_triangle (const X3D::Vector3f & point)
 {
 	try
 	{
-		const auto crossHair           = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("CrossHair");
-		const auto crossHairCoordinate = preview -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("CrossHairCoordinate");
-		const auto points              = getPoints (face .first);
+		const auto triangleCoordinate = preview -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("TriangleCoordinate");
+		const auto points             = getPoints (face .first);
 
 		if (points .size () < 3)
 			return;
@@ -578,17 +838,10 @@ ColorPerVertexEditor::set_crossHair (const X3D::Vector3f & point)
 		const auto p2     = coord -> get1Point (i2);
 		const auto p3     = coord -> get1Point (i3);
 
-		const auto edge1  = p1 - p2;
-		const auto edge2  = p3 - p2;
-		const auto normal = X3D::normal (p1, p2, p3) * X3D::abs (edge1 + edge2) / 2.0;
-
-		crossHairCoordinate -> point () = {
-			-normal, normal,
-			X3D::Vector3d (), edge1,
-			X3D::Vector3d (), edge2
+		triangleCoordinate -> point () = {
+			p1, p2,
+			p2, p3
 		};
-
-		crossHair -> translation () = point;
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -647,24 +900,28 @@ ColorPerVertexEditor::setColor ()
 	}
 }
 
-size_t
-ColorPerVertexEditor::getPointIndex (const X3D::Vector3f & hitPoint) const
+std::vector <size_t>
+ColorPerVertexEditor::getPointIndices (const X3D::Vector3f & hitPoint, const X3D::MFVec3f & hitTriangle) const
 {
-	float  min   = std::numeric_limits <float>::infinity ();
-	size_t index = 0;
+	const std::array <float, 3> distances = {
+		math::abs (hitPoint - hitTriangle [0]),
+		math::abs (hitPoint - hitTriangle [1]),
+		math::abs (hitPoint - hitTriangle [2])
+	};
+
+	const auto iter           = std::min_element (distances .begin (), distances .end ());
+	const auto index          = iter - distances .begin ();
+	const X3D::Vector3d point = hitTriangle [index] .getValue ();
+
+	std::vector <size_t> indices;
 
 	for (size_t i = 0, size = coord -> getSize (); i < size; ++ i)
 	{
-		const auto distance = math::abs (hitPoint - X3D::Vector3f (coord -> get1Point (i)));
-
-		if (distance < min)
-		{
-			min   = distance;
-			index = i;
-		}
+		if (coord -> get1Point (i) == point)
+			indices .emplace_back (i);
 	}
 
-	return index;
+	return indices;
 }
 
 void
@@ -691,21 +948,24 @@ ColorPerVertexEditor::setFaceIndex ()
 }
 
 void
-ColorPerVertexEditor::setFaces (const X3D::Vector3f & hitPoint, const size_t point)
+ColorPerVertexEditor::setFaces (const X3D::Vector3d & hitPoint, const std::vector <size_t> & indices)
 {
 	faces .clear ();
 
-	const auto range = faceIndex .equal_range (point);
+	for (const auto & index : indices)
+	{
+		const auto range = faceIndex .equal_range (index);
 
-	for (const auto & face : range)
-		faces .emplace_back (face .second);
+		for (const auto & face : range)
+			faces .emplace_back (face .second);
+	}
 
 	if (faces .empty ())
 		return;
 
 	// Get distances of faces to hitPoint.
 
-	std::vector <float> distances;
+	std::vector <float>  distances;
 
 	for (const auto & face : faces)
 	{
@@ -725,9 +985,7 @@ ColorPerVertexEditor::setFaces (const X3D::Vector3f & hitPoint, const size_t poi
 		const auto p2     = coord -> get1Point (i2);
 		const auto p3     = coord -> get1Point (i3);
 
-		const X3D::Plane3f plane (p1, p2, p3);
-
-		distances .emplace_back (std::abs (plane .distance (hitPoint)));
+		distances .emplace_back (triangle_distance_to_point (p1, p2, p3, hitPoint));
 	}
 
 	// Determine face.
@@ -737,15 +995,15 @@ ColorPerVertexEditor::setFaces (const X3D::Vector3f & hitPoint, const size_t poi
 
 	face = faces [index];
 
-	// DEBUG
-	auto d = distances .begin ();
-	__LOG__ << std::endl;
-	__LOG__ << faces .size () << std::endl;
-
-	for (const auto & face : faces)
-		__LOG__ << *d ++ << " : " << face .first << " : " << face .second << std::endl;
-
-	__LOG__ << face .first << " : " << face .second << std::endl;
+	//	// DEBUG
+	//	auto d = distances .begin ();
+	//	__LOG__ << std::endl;
+	//	__LOG__ << faces .size () << std::endl;
+	//
+	//	for (const auto & face : faces)
+	//		__LOG__ << *d << " : " << face .first << " : " << face .second << std::endl;
+	//
+	//	__LOG__ << face .first << " : " << face .second << std::endl;
 }
 
 std::vector <size_t>
