@@ -100,7 +100,7 @@ private:
 	void
 	set_selection ();
 
-	///  @name Toolbar
+	///  @name Menubar
 
 	virtual
 	void
@@ -110,9 +110,12 @@ private:
 	void
 	on_redo_activate () final override;
 
+	void
+	set_undoHistory ();
+
 	virtual
 	void
-	on_look_at_all_clicked () final override;
+	on_remove_unused_colors_activate () final override;
 
 	/// @name Shading
 
@@ -154,6 +157,18 @@ private:
 	virtual
 	void
 	on_whole_object_clicked () final override;
+
+	///  @name Look At
+
+	virtual
+	void
+	on_look_at_all_clicked () final override;
+
+	///  @name Apply
+
+	virtual
+	void
+	on_apply_clicked () final override;
 
 	///  @name Preview
 

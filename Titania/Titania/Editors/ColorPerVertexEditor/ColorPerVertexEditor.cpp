@@ -98,6 +98,8 @@ ColorPerVertexEditor::initialize ()
 	preview -> initialized () .addInterest (this, &ColorPerVertexEditor::set_initialized);
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &ColorPerVertexEditor::set_selection);
+
+	undoHistory .addInterest (this, &ColorPerVertexEditor::set_undoHistory);
 }
 
 void
@@ -171,6 +173,8 @@ ColorPerVertexEditor::set_selection ()
 	{ }
 }
 
+// Menubar
+
 void
 ColorPerVertexEditor::on_undo_activate ()
 {
@@ -188,10 +192,42 @@ ColorPerVertexEditor::on_redo_activate ()
 }
 
 void
-ColorPerVertexEditor::on_look_at_all_clicked ()
+ColorPerVertexEditor::set_undoHistory ()
 {
-	if (preview -> getActiveLayer ())
-		preview -> getActiveLayer () -> lookAt ();
+	if (undoHistory .hasUndo ())
+	{
+		getUndoMenuItem () .set_label (undoHistory .getUndoDescription ());
+		//getUndoButton ()   .set_tooltip_text (undoHistory .getUndoDescription ());
+		getUndoMenuItem () .set_sensitive (true);
+		//getUndoButton ()   .set_sensitive (true);
+	}
+	else
+	{
+		getUndoMenuItem () .set_label (_ ("Undo"));
+		//getUndoButton ()   .set_tooltip_text (_ ("Undo last action (Ctrl-Z)."));
+		getUndoMenuItem () .set_sensitive (false);
+		//getUndoButton ()   .set_sensitive (false);
+	}
+
+	if (undoHistory .hasRedo ())
+	{
+		getRedoMenuItem () .set_label (undoHistory .getRedoDescription ());
+		//getRedoButton ()   .set_tooltip_text (undoHistory .getRedoDescription ());
+		getRedoMenuItem () .set_sensitive (true);
+		//getRedoButton ()   .set_sensitive (true);
+	}
+	else
+	{
+		getRedoMenuItem () .set_label (_ ("Redo"));
+		//getRedoButton ()   .set_tooltip_text (_ ("Redo last action (Ctrl-Shift-Z)."));
+		getRedoMenuItem () .set_sensitive (false);
+		//getRedoButton ()   .set_sensitive (false);
+	}
+}
+
+void
+ColorPerVertexEditor::on_remove_unused_colors_activate ()
+{
 }
 
 // Shading menu
@@ -238,6 +274,13 @@ ColorPerVertexEditor::on_shading_activate (const std::string & value)
 }
 
 void
+ColorPerVertexEditor::on_look_at_all_clicked ()
+{
+	if (preview -> getActiveLayer ())
+		preview -> getActiveLayer () -> lookAt ();
+}
+
+void
 ColorPerVertexEditor::on_single_vertex_clicked ()
 {
 	mode = SINGLE_VERTEX;
@@ -259,6 +302,33 @@ void
 ColorPerVertexEditor::on_whole_object_clicked ()
 {
 	mode = WHOLE_OBJECT;
+}
+
+void
+ColorPerVertexEditor::on_apply_clicked ()
+{
+	selection -> colorIndex () = indexedFaceSet -> colorIndex ();
+
+	if (this -> color -> isTransparent ())
+	{
+		const auto color = selection -> getExecutionContext () -> createNode <X3D::ColorRGBA> ();
+
+		color -> color () = this -> color -> color ();
+
+		selection -> color () = color;
+	
+	}
+	else
+	{
+		const auto color = selection -> getExecutionContext () -> createNode <X3D::Color> ();
+
+		for (const auto & c : this -> color -> color ())
+			color -> color () .emplace_back (c .getRed (), c .getGreen (), c .getBlue ());
+
+		selection -> color () = color;
+	}
+
+	selection -> getExecutionContext () -> realize ();
 }
 
 void
@@ -284,37 +354,89 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 	if (touchSensor -> isActive ())
 	{
+		if (getSelectColorButton () .get_active ())
+			return;
+
+		using set1Value = void (X3D::MFInt32::*) (const X3D::MFInt32::size_type, const int32_t &);
+
 		switch (mode)
 		{
 			case SINGLE_VERTEX:
 			{
 				const auto index = face .first + face .second;
 			
-				indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
+				if (indexedFaceSet -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
+				{
+					const auto undoStep = std::make_shared <UndoStep> ("Colorize Singe Vertex");
+					
+					undoStep -> addObjects (indexedFaceSet);
+					undoStep -> addUndoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
+					undoStep -> addRedoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
+					indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
+					
+					addUndoStep (undoStep);
+				}
 				break;
 			}
 			case ADJACENT_VERTICES:
 			{
+				const auto undoStep = std::make_shared <UndoStep> ("Colorize Adjacent Vertices");
+
+				undoStep -> addObjects (indexedFaceSet);
+
 				for (const auto & face : faces)
 				{
 					const auto index = face .first + face .second;
 				
-					indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
+					if (indexedFaceSet -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
+					{
+						undoStep -> addUndoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
+						undoStep -> addRedoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
+						indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
+					}
 				}
+
+				addUndoStep (undoStep);
 				break;
 			}
 			case SINGLE_FACE:
 			{
-				for (const auto & point : getPoints (face .first))
-					indexedFaceSet -> colorIndex () .set1Value (point, colorButton .getIndex ());
+				const auto undoStep = std::make_shared <UndoStep> ("Colorize Single Face");
+
+				undoStep -> addObjects (indexedFaceSet);
+
+				for (const auto & index : getPoints (face .first))
+				{
+					if (indexedFaceSet -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
+					{
+						undoStep -> addUndoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
+						undoStep -> addRedoFunction ((set1Value) &X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
+						indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
+					}
+				}
+
+				addUndoStep (undoStep);
 				break;
 			}
 			case WHOLE_OBJECT:
 			{
-				indexedFaceSet -> colorIndex () .clear ();
+				X3D::MFInt32 colorIndex;
 			
 				for (const auto & index : indexedFaceSet -> coordIndex ())
-					indexedFaceSet -> colorIndex () .emplace_back (index < 0 ? -1 : colorButton .getIndex ());
+					colorIndex .emplace_back (index < 0 ? -1 : colorButton .getIndex ());
+					
+				if (indexedFaceSet -> colorIndex () not_eq colorIndex)
+				{
+					const auto undoStep = std::make_shared <UndoStep> ("Colorize Whole Object");
+
+					undoStep -> addObjects (indexedFaceSet);
+
+					undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> colorIndex ()), indexedFaceSet -> colorIndex ());
+					undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> colorIndex ()), colorIndex);
+					indexedFaceSet -> colorIndex () = std::move (colorIndex);
+
+					addUndoStep (undoStep);
+				}
 				break;
 			}
 		}
