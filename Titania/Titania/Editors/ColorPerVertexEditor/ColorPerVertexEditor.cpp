@@ -307,6 +307,10 @@ ColorPerVertexEditor::on_whole_object_clicked ()
 void
 ColorPerVertexEditor::on_apply_clicked ()
 {
+	const auto undoStep = std::make_shared <UndoStep> ("Apply Colored Polygons");
+
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (selection -> colorIndex ()), selection -> colorIndex ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (selection -> colorIndex ()), indexedFaceSet -> colorIndex ());
 	selection -> colorIndex () = indexedFaceSet -> colorIndex ();
 
 	if (this -> color -> isTransparent ())
@@ -314,9 +318,8 @@ ColorPerVertexEditor::on_apply_clicked ()
 		const auto color = selection -> getExecutionContext () -> createNode <X3D::ColorRGBA> ();
 
 		color -> color () = this -> color -> color ();
-
-		selection -> color () = color;
 	
+		getBrowserWindow () -> replaceNode (X3D::SFNode (selection), selection -> color (), X3D::SFNode (color), undoStep);
 	}
 	else
 	{
@@ -325,10 +328,12 @@ ColorPerVertexEditor::on_apply_clicked ()
 		for (const auto & c : this -> color -> color ())
 			color -> color () .emplace_back (c .getRed (), c .getGreen (), c .getBlue ());
 
-		selection -> color () = color;
+		getBrowserWindow () -> replaceNode (X3D::SFNode (selection), selection -> color (), X3D::SFNode (color), undoStep);
 	}
 
 	selection -> getExecutionContext () -> realize ();
+	
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
