@@ -199,6 +199,10 @@ public:
 	{ return *m_ColorsScrolledWindow; }
 
 	Gtk::Button &
+	getRemoveButton () const
+	{ return *m_RemoveButton; }
+
+	Gtk::Button &
 	getApplyButton () const
 	{ return *m_ApplyButton; }
 
@@ -260,6 +264,10 @@ public:
 
 	virtual
 	void
+	on_remove_clicked () = 0;
+
+	virtual
+	void
 	on_apply_clicked () = 0;
 
 	virtual
@@ -300,6 +308,7 @@ private:
 	Gtk::RadioButton*              m_SingleFaceButton;
 	Gtk::RadioButton*              m_WholeObjectButton;
 	Gtk::ScrolledWindow*           m_ColorsScrolledWindow;
+	Gtk::Button*                   m_RemoveButton;
 	Gtk::Button*                   m_ApplyButton;
 
 };

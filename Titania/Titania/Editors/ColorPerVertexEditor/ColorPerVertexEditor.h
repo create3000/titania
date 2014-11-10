@@ -172,6 +172,10 @@ private:
 
 	virtual
 	void
+	on_remove_clicked () final override;
+
+	virtual
+	void
 	on_apply_clicked () final override;
 
 	///  @name Preview

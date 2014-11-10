@@ -321,9 +321,31 @@ ColorPerVertexEditor::on_whole_object_clicked ()
 }
 
 void
+ColorPerVertexEditor::on_remove_clicked ()
+{
+	const auto undoStep = std::make_shared <UndoStep> ("Remove Colored Polygons");
+
+	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (selection -> colorPerVertex ()), selection -> colorPerVertex ());
+	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (selection -> colorPerVertex ()), true);
+	selection -> colorPerVertex () = true;
+
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (selection -> colorIndex ()), selection -> colorIndex ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::clear, std::ref (selection -> colorIndex ()));
+	selection -> colorIndex () .clear ();
+
+	getBrowserWindow () -> replaceNode (X3D::SFNode (selection), selection -> color (), X3D::SFNode (), undoStep);
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
 ColorPerVertexEditor::on_apply_clicked ()
 {
 	const auto undoStep = std::make_shared <UndoStep> ("Apply Colored Polygons");
+
+	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (selection -> colorPerVertex ()), selection -> colorPerVertex ());
+	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (selection -> colorPerVertex ()), true);
+	selection -> colorPerVertex () = true;
 
 	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (selection -> colorIndex ()), selection -> colorIndex ());
 	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (selection -> colorIndex ()), indexedFaceSet -> colorIndex ());

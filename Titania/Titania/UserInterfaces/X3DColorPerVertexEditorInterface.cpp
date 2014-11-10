@@ -88,6 +88,7 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SingleFaceButton", m_SingleFaceButton);
 	m_builder -> get_widget ("WholeObjectButton", m_WholeObjectButton);
 	m_builder -> get_widget ("ColorsScrolledWindow", m_ColorsScrolledWindow);
+	m_builder -> get_widget ("RemoveButton", m_RemoveButton);
 	m_builder -> get_widget ("ApplyButton", m_ApplyButton);
 
 	// Connect object Gtk::RadioMenuItem with id 'PhongMenuItem'.
@@ -114,7 +115,8 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 	m_SingleFaceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_single_face_clicked));
 	m_WholeObjectButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_whole_object_clicked));
 
-	// Connect object Gtk::Button with id 'ApplyButton'.
+	// Connect object Gtk::Button with id 'RemoveButton'.
+	m_RemoveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_remove_clicked));
 	m_ApplyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_apply_clicked));
 
 	// Call construct handler of base class.

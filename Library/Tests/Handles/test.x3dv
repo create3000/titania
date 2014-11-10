@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 03 Nov 2014 06:41:21 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Mon, 10 Nov 2014 01:36:30 GMT"
+META "modified" "Mon, 10 Nov 2014 02:35:33 GMT"
 
 WorldInfo {
   metadata MetadataSet {
@@ -377,7 +377,9 @@ DEF Sphere_1 Transform {
   scale 2 2 2
   children Shape {
     appearance Appearance {
-      material Material { }
+      material Material {
+        diffuseColor 0.725425 0.850248 0.131017
+      }
     }
     geometry IndexedFaceSet {
       creaseAngle 3.14159
@@ -6980,7 +6982,7 @@ DEF Sphere_1 Transform {
           1 0
         ]
       }
-      coord Coordinate {
+      coord DEF _1 Coordinate {
         point [
           0 1 0,
           -0 0.974928 -0.222521,
