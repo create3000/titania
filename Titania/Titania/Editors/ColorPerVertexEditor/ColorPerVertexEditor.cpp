@@ -330,10 +330,11 @@ ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindo
 	                                  getColorsScrolledWindow (),
 	                                  "color"),
 	                            mode (SINGLE_VERTEX),
-	                       selection (),
+	                           shape (),
+	                        geometry (),
 	                           coord (),
-	                  indexedFaceSet (),
-	                           color (),
+	                 previewGeometry (),
+	                           previewColor (),
 	                       faceIndex (),
 	                            face (0, 0),
 	                           faces (),
@@ -371,8 +372,10 @@ ColorPerVertexEditor::set_initialized ()
 		preview -> loadURL ({ get_ui ("Editors/ColorPerVertexEditorPreview.x3dv") });
 
 		const auto shape       = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
+		const auto appearance  = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 
+		appearance -> isPrivate (true);
 		shape -> geometry ()               .addInterest (this, &ColorPerVertexEditor::on_look_at_all_clicked);
 		touchSensor -> hitPoint_changed () .addInterest (this, &ColorPerVertexEditor::set_hitPoint);
 		touchSensor -> touchTime ()        .addInterest (this, &ColorPerVertexEditor::set_touchTime);
@@ -388,6 +391,7 @@ void
 ColorPerVertexEditor::configure ()
 {
 	getCheckerBoardButton () .set_active (getConfig () .getBoolean ("checkerBoard"));
+	getTextureButton ()      .set_active (getConfig () .getBoolean ("texture"));
 
 	switch (getConfig () .getInteger ("mode"))
 	{
@@ -423,47 +427,77 @@ ColorPerVertexEditor::set_selection ()
 
 	try
 	{
-		const auto indexedFaceSets = getSelection <X3D::IndexedFaceSet> ({ X3D::X3DConstants::IndexedFaceSet });
-		const auto shape           = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
-
-		if (indexedFaceSets .empty ())
+		if (shape)
 		{
-			selection            = nullptr;
-			indexedFaceSet       = nullptr;
-			shape -> geometry () = nullptr;
-			colorButton .setNodes ({ });
+			shape -> geometry () .removeInterest (this, &ColorPerVertexEditor::set_selection);
 		}
-		else
+	
+		const auto shapes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
+		
+		if (shapes .empty ())
 		{
-			selection      = indexedFaceSets .back ();
-			coord          = selection -> coord ();
-			indexedFaceSet = preview -> getExecutionContext () -> createNode <X3D::IndexedFaceSet> ();
-
-			indexedFaceSet -> solid ()           = selection -> solid ();
-			indexedFaceSet -> convex ()          = selection -> convex ();
-			indexedFaceSet -> ccw ()             = selection -> ccw ();
-			indexedFaceSet -> creaseAngle ()     = selection -> creaseAngle ();
-			indexedFaceSet -> normalPerVertex () = selection -> normalPerVertex ();
-			indexedFaceSet -> normalIndex ()     = selection -> normalIndex ();
-			indexedFaceSet -> coordIndex ()      = selection -> coordIndex ();
-			indexedFaceSet -> normal ()          = selection -> normal ();
-			indexedFaceSet -> coord ()           = selection -> coord ();
-
-			shape -> geometry () = indexedFaceSet;
-
-			setColor ();
-			setFaceIndex ();
-
-			colorButton .setIndex (0);
-			colorButton .setNodes ({ color });
-
-			// Initialize all.
-
-			preview -> getExecutionContext () -> realize ();
+			disable ();
+			return;
 		}
+		
+		shape    = shapes .back ();
+		geometry = shape -> geometry ();
+
+		shape -> geometry () .addInterest (this, &ColorPerVertexEditor::set_selection);
+
+		if (not geometry)
+		{
+			disable ();
+			return;
+		}
+
+		const auto previewShape = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
+
+		coord           = geometry -> coord ();
+		previewGeometry = preview -> getExecutionContext () -> createNode <X3D::IndexedFaceSet> ();
+
+		previewGeometry -> isPrivate (true);
+		previewGeometry -> solid ()           = geometry -> solid ();
+		previewGeometry -> convex ()          = geometry -> convex ();
+		previewGeometry -> ccw ()             = geometry -> ccw ();
+		previewGeometry -> creaseAngle ()     = geometry -> creaseAngle ();
+		previewGeometry -> normalPerVertex () = geometry -> normalPerVertex ();
+		previewGeometry -> normalIndex ()     = geometry -> normalIndex ();
+		previewGeometry -> texCoordIndex ()   = geometry -> texCoordIndex ();
+		previewGeometry -> coordIndex ()      = geometry -> coordIndex ();
+		previewGeometry -> normal ()          = geometry -> normal ();
+		previewGeometry -> texCoord ()        = geometry -> texCoord ();
+		previewGeometry -> coord ()           = geometry -> coord ();
+
+		previewShape -> geometry () = previewGeometry;
+
+		setColor ();
+		setFaceIndex ();
+
+		colorButton .setIndex (0);
+		colorButton .setNodes ({ previewColor });
+		on_texture_toggled ();
+
+		// Initialize all.
+
+		preview -> getExecutionContext () -> realize ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
+}
+void
+ColorPerVertexEditor::disable ()
+{
+	const auto previewShape      = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
+	const auto previewAppearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+
+	geometry                                 = nullptr;
+	shape                                    = nullptr;
+	previewGeometry                          = nullptr;
+	previewShape -> geometry ()              = nullptr;
+	previewAppearance -> texture ()          = nullptr;
+	previewAppearance -> textureTransform () = nullptr;
+	colorButton .setNodes ({ });
 }
 
 // Menubar
@@ -523,28 +557,28 @@ ColorPerVertexEditor::on_remove_unused_colors_activate ()
 {
 	std::set <int32_t> indexIndex;
 
-	for (const auto & index : indexedFaceSet -> colorIndex ())
+	for (const auto & index : previewGeometry -> colorIndex ())
 		indexIndex .emplace (index);
 
-	std::vector <int32_t> remap (color -> color () .size ());
+	std::vector <int32_t> remap (previewColor -> color () .size ());
 	X3D::MFColorRGBA      colors;
 
-	colors .reserve (color -> color () .size ());
+	colors .reserve (previewColor -> color () .size ());
 
-	for (int32_t index = 0, size = color -> color () .size (); index < size; ++ index)
+	for (int32_t index = 0, size = previewColor -> color () .size (); index < size; ++ index)
 	{
 		if (indexIndex .count (index))
 		{
 			remap [index] = colors .size ();
-			colors .emplace_back (color -> color () [index]);
+			colors .emplace_back (previewColor -> color () [index]);
 		}
 	}
 
 	X3D::MFInt32 colorIndex;
 
-	colorIndex .reserve (indexedFaceSet -> colorIndex () .size ());
+	colorIndex .reserve (previewGeometry -> colorIndex () .size ());
 
-	for (const auto & index : indexedFaceSet -> colorIndex ())
+	for (const auto & index : previewGeometry -> colorIndex ())
 	{
 		try
 		{
@@ -558,18 +592,18 @@ ColorPerVertexEditor::on_remove_unused_colors_activate ()
 
 	// Assign colorIndex and color.
 
-	if (colors .size () == color -> color () .size ())
+	if (colors .size () == previewColor -> color () .size ())
 		return;
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Unused Colors"));
 
-	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> colorIndex ()), indexedFaceSet -> colorIndex ());
-	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> colorIndex ()), colorIndex);
-	indexedFaceSet -> colorIndex () = std::move (colorIndex);
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> colorIndex ()), previewGeometry -> colorIndex ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> colorIndex ()), colorIndex);
+	previewGeometry -> colorIndex () = std::move (colorIndex);
 
-	undoStep -> addUndoFunction (&X3D::MFColorRGBA::setValue, std::ref (color -> color ()), color -> color ());
-	undoStep -> addRedoFunction (&X3D::MFColorRGBA::setValue, std::ref (color -> color ()), colors);
-	color -> color () = std::move (colors);
+	undoStep -> addUndoFunction (&X3D::MFColorRGBA::setValue, std::ref (previewColor -> color ()), previewColor -> color ());
+	undoStep -> addRedoFunction (&X3D::MFColorRGBA::setValue, std::ref (previewColor -> color ()), colors);
+	previewColor -> color () = std::move (colors);
 
 	addUndoStep (undoStep);
 }
@@ -636,6 +670,34 @@ ColorPerVertexEditor::on_shading_activate (const std::string & value)
 }
 
 void
+ColorPerVertexEditor::on_texture_toggled ()
+{
+	try
+	{
+		if (not shape)
+			return;
+	
+		const auto previewAppearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+		const X3D::X3DPtr <X3D::Appearance> appearance (shape -> appearance ());
+
+		if (getTextureButton () .get_active () and appearance)
+		{
+			previewAppearance -> texture ()          = appearance -> texture ();
+			previewAppearance -> textureTransform () = appearance -> textureTransform ();
+		}
+		else
+		{
+			previewAppearance -> texture ()          = nullptr;
+			previewAppearance -> textureTransform () = nullptr;
+		}
+
+		getConfig () .setItem ("texture", getTextureButton () .get_active ());
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
+void
 ColorPerVertexEditor::on_look_at_all_clicked ()
 {
 	if (preview -> getActiveLayer ())
@@ -679,15 +741,15 @@ ColorPerVertexEditor::on_remove_clicked ()
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Colored Polygons"));
 
-	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (selection -> colorPerVertex ()), selection -> colorPerVertex ());
-	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (selection -> colorPerVertex ()), true);
-	selection -> colorPerVertex () = true;
+	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (geometry -> colorPerVertex ()), geometry -> colorPerVertex ());
+	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (geometry -> colorPerVertex ()), true);
+	geometry -> colorPerVertex () = true;
 
-	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (selection -> colorIndex ()), selection -> colorIndex ());
-	undoStep -> addRedoFunction (&X3D::MFInt32::clear, std::ref (selection -> colorIndex ()));
-	selection -> colorIndex () .clear ();
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (geometry -> colorIndex ()), geometry -> colorIndex ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::clear, std::ref (geometry -> colorIndex ()));
+	geometry -> colorIndex () .clear ();
 
-	getBrowserWindow () -> replaceNode (X3D::SFNode (selection), selection -> color (), X3D::SFNode (), undoStep);
+	getBrowserWindow () -> replaceNode (X3D::SFNode (geometry), geometry -> color (), X3D::SFNode (), undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -697,33 +759,33 @@ ColorPerVertexEditor::on_apply_clicked ()
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Apply Colored Polygons"));
 
-	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (selection -> colorPerVertex ()), selection -> colorPerVertex ());
-	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (selection -> colorPerVertex ()), true);
-	selection -> colorPerVertex () = true;
+	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (geometry -> colorPerVertex ()), geometry -> colorPerVertex ());
+	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (geometry -> colorPerVertex ()), true);
+	geometry -> colorPerVertex () = true;
 
-	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (selection -> colorIndex ()), selection -> colorIndex ());
-	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (selection -> colorIndex ()), indexedFaceSet -> colorIndex ());
-	selection -> colorIndex () = indexedFaceSet -> colorIndex ();
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (geometry -> colorIndex ()), geometry -> colorIndex ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (geometry -> colorIndex ()), previewGeometry -> colorIndex ());
+	geometry -> colorIndex () = previewGeometry -> colorIndex ();
 
-	if (this -> color -> isTransparent ())
+	if (previewColor -> isTransparent ())
 	{
-		const auto color = selection -> getExecutionContext () -> createNode <X3D::ColorRGBA> ();
+		const auto color = geometry -> getExecutionContext () -> createNode <X3D::ColorRGBA> ();
 
-		color -> color () = this -> color -> color ();
+		color -> color () = previewColor -> color ();
 
-		getBrowserWindow () -> replaceNode (X3D::SFNode (selection), selection -> color (), X3D::SFNode (color), undoStep);
+		getBrowserWindow () -> replaceNode (X3D::SFNode (geometry), geometry -> color (), X3D::SFNode (color), undoStep);
 	}
 	else
 	{
-		const auto color = selection -> getExecutionContext () -> createNode <X3D::Color> ();
+		const auto color = geometry -> getExecutionContext () -> createNode <X3D::Color> ();
 
-		for (const auto & c : this -> color -> color ())
+		for (const auto & c : previewColor -> color ())
 			color -> color () .emplace_back (c .getRed (), c .getGreen (), c .getBlue ());
 
-		getBrowserWindow () -> replaceNode (X3D::SFNode (selection), selection -> color (), X3D::SFNode (color), undoStep);
+		getBrowserWindow () -> replaceNode (X3D::SFNode (geometry), geometry -> color (), X3D::SFNode (color), undoStep);
 	}
 
-	selection -> getExecutionContext () -> realize ();
+	geometry -> getExecutionContext () -> realize ();
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -765,14 +827,14 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 				{
 					const auto index = face .first + face .second;
 
-					if (indexedFaceSet -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
+					if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 					{
 						const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Singe Vertex"));
 
-						undoStep -> addObjects (indexedFaceSet);
-						undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
-						undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
-						indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
+						undoStep -> addObjects (previewGeometry);
+						undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, previewGeometry -> colorIndex () .get1Value (index));
+						undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, colorButton .getIndex ());
+						previewGeometry -> colorIndex () .set1Value (index, colorButton .getIndex ());
 
 						addUndoStep (undoStep);
 					}
@@ -783,17 +845,17 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 				{
 					const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Adjacent Vertices"));
 
-					undoStep -> addObjects (indexedFaceSet);
+					undoStep -> addObjects (previewGeometry);
 
 					for (const auto & face : faces)
 					{
 						const auto index = face .first + face .second;
 
-						if (indexedFaceSet -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
+						if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 						{
-							undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
-							undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
-							indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
+							undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, previewGeometry -> colorIndex () .get1Value (index));
+							undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, colorButton .getIndex ());
+							previewGeometry -> colorIndex () .set1Value (index, colorButton .getIndex ());
 						}
 					}
 
@@ -804,15 +866,15 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 				{
 					const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Single Face"));
 
-					undoStep -> addObjects (indexedFaceSet);
+					undoStep -> addObjects (previewGeometry);
 
 					for (const auto & index : getPoints (face .first))
 					{
-						if (indexedFaceSet -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
+						if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 						{
-							undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, indexedFaceSet -> colorIndex () .get1Value (index));
-							undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (indexedFaceSet -> colorIndex ()), index, colorButton .getIndex ());
-							indexedFaceSet -> colorIndex () .set1Value (index, colorButton .getIndex ());
+							undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, previewGeometry -> colorIndex () .get1Value (index));
+							undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, colorButton .getIndex ());
+							previewGeometry -> colorIndex () .set1Value (index, colorButton .getIndex ());
 						}
 					}
 
@@ -823,18 +885,18 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 				{
 					X3D::MFInt32 colorIndex;
 
-					for (const auto & index : indexedFaceSet -> coordIndex ())
+					for (const auto & index : previewGeometry -> coordIndex ())
 						colorIndex .emplace_back (index < 0 ? -1 : colorButton .getIndex ());
 
-					if (indexedFaceSet -> colorIndex () not_eq colorIndex)
+					if (previewGeometry -> colorIndex () not_eq colorIndex)
 					{
 						const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Whole Object"));
 
-						undoStep -> addObjects (indexedFaceSet);
+						undoStep -> addObjects (previewGeometry);
 
-						undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> colorIndex ()), indexedFaceSet -> colorIndex ());
-						undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> colorIndex ()), colorIndex);
-						indexedFaceSet -> colorIndex () = std::move (colorIndex);
+						undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> colorIndex ()), previewGeometry -> colorIndex ());
+						undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> colorIndex ()), colorIndex);
+						previewGeometry -> colorIndex () = std::move (colorIndex);
 
 						addUndoStep (undoStep);
 					}
@@ -855,7 +917,7 @@ ColorPerVertexEditor::set_touchTime ()
 	{
 		getSelectColorButton () .set_active (false);
 
-		const auto index = indexedFaceSet -> colorIndex () .get1Value (face .first + face .second);
+		const auto index = previewGeometry -> colorIndex () .get1Value (face .first + face .second);
 
 		colorButton .setIndex (index);
 		return;
@@ -867,24 +929,32 @@ ColorPerVertexEditor::set_triangle (const X3D::Vector3f & point)
 {
 	try
 	{
-		const auto triangleCoordinate = preview -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("TriangleCoordinate");
-		const auto points             = getPoints (face .first);
+		const auto triangleBackGeometry = preview -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("TriangleBackGeometry");
+		const auto triangleGeometry     = preview -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("TriangleGeometry");
+		const auto triangleCoordinate   = preview -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("TriangleCoordinate");
+		const auto points               = getPoints (face .first);
 
 		if (points .size () < 3)
 			return;
 
 		const auto vertex = face .second;
-		const auto i1     = indexedFaceSet -> coordIndex () [points [vertex == 0 ? points .size () - 1 : vertex - 1]];
-		const auto i2     = indexedFaceSet -> coordIndex () [points [vertex]];
-		const auto i3     = indexedFaceSet -> coordIndex () [points [(vertex + 1) % points .size ()]];
-		const auto p1     = coord -> get1Point (i1);
-		const auto p2     = coord -> get1Point (i2);
-		const auto p3     = coord -> get1Point (i3);
+		const auto i1     = vertex == 0 ? points .size () - 1 : vertex - 1;
+		const auto i2     = vertex;
+		const auto i3     = (vertex + 1) % points .size ();
 
-		triangleCoordinate -> point () = {
-			p1, p2,
-			p2, p3
-		};
+		triangleGeometry -> coordIndex () .clear ();
+		triangleGeometry -> coordIndex () = { i1, i2, i3, -1 };
+		
+		for (size_t i = i3, size = i3 + points .size () - 1; i < size; ++ i)
+			triangleGeometry -> coordIndex () .emplace_back (i % points .size ());
+
+		triangleGeometry -> coordIndex () .emplace_back (-1);
+		triangleBackGeometry -> coordIndex () = triangleGeometry -> coordIndex ();
+
+		triangleCoordinate -> point () .clear ();
+
+		for (const auto & index : points)
+			triangleCoordinate -> point () .emplace_back (coord -> get1Point (previewGeometry -> coordIndex () [index]));
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -895,51 +965,51 @@ ColorPerVertexEditor::setColor ()
 {
 	// Generate color and colorIndex.
 
-	const X3D::X3DPtr <X3D::X3DColorNode> colorNode (selection -> color ());
+	const X3D::X3DPtr <X3D::X3DColorNode> colorNode (geometry -> color ());
 
-	color = preview -> getExecutionContext () -> createNode <X3D::ColorRGBA> ();
-	color -> setDynamicTransparency (true);
+	previewColor = preview -> getExecutionContext () -> createNode <X3D::ColorRGBA> ();
+	previewColor -> setDynamicTransparency (true);
 
-	indexedFaceSet -> color () = color;
+	previewGeometry -> color () = previewColor;
 
 	if (colorNode)
 	{
-		if (selection -> colorPerVertex ())
+		if (geometry -> colorPerVertex ())
 		{
-			if (selection -> colorIndex () .empty ())
-				indexedFaceSet -> colorIndex () = indexedFaceSet -> coordIndex ();
+			if (geometry -> colorIndex () .empty ())
+				previewGeometry -> colorIndex () = previewGeometry -> coordIndex ();
 			else
-				indexedFaceSet -> colorIndex () = selection -> colorIndex ();
+				previewGeometry -> colorIndex () = geometry -> colorIndex ();
 		}
 		else
 		{
 			size_t face = 0;
 
-			for (const auto & index : indexedFaceSet -> coordIndex ())
+			for (const auto & index : previewGeometry -> coordIndex ())
 			{
 				if (index < 0)
 				{
 					++ face;
-					indexedFaceSet -> colorIndex () .emplace_back (-1);
+					previewGeometry -> colorIndex () .emplace_back (-1);
 					continue;
 				}
 
-				if (face < selection -> colorIndex () .size ())
-					indexedFaceSet -> colorIndex () .emplace_back (selection -> colorIndex () .get1Value (face));
+				if (face < geometry -> colorIndex () .size ())
+					previewGeometry -> colorIndex () .emplace_back (geometry -> colorIndex () .get1Value (face));
 				else
-					indexedFaceSet -> colorIndex () .emplace_back (face);
+					previewGeometry -> colorIndex () .emplace_back (face);
 			}
 		}
 
 		for (size_t i = 0, size = colorNode -> getSize (); i < size; ++ i)
-			color -> color () .emplace_back (colorNode -> get1Color (i));
+			previewColor -> color () .emplace_back (colorNode -> get1Color (i));
 	}
 	else
 	{
-		for (const auto & index : indexedFaceSet -> coordIndex ())
-			indexedFaceSet -> colorIndex () .emplace_back (index < 0 ? -1 : 0);
+		for (const auto & index : previewGeometry -> coordIndex ())
+			previewGeometry -> colorIndex () .emplace_back (index < 0 ? -1 : 0);
 
-		color -> color () .emplace_back (X3D::Color4f (1, 1, 1, 1));
+		previewColor -> color () .emplace_back (X3D::Color4f (1, 1, 1, 1));
 	}
 }
 
@@ -975,7 +1045,7 @@ ColorPerVertexEditor::setFaceIndex ()
 	size_t face   = 0;
 	size_t vertex = 0;
 
-	for (const int32_t index : indexedFaceSet -> coordIndex ())
+	for (const int32_t index : previewGeometry -> coordIndex ())
 	{
 		if (index < 0)
 		{
@@ -1021,9 +1091,9 @@ ColorPerVertexEditor::setFaces (const X3D::Vector3d & hitPoint, const std::vecto
 		}
 
 		const auto vertex = face .second;
-		const auto i1     = indexedFaceSet -> coordIndex () [points [vertex == 0 ? points .size () - 1 : vertex - 1]];
-		const auto i2     = indexedFaceSet -> coordIndex () [points [vertex]];
-		const auto i3     = indexedFaceSet -> coordIndex () [points [(vertex + 1) % points .size ()]];
+		const auto i1     = previewGeometry -> coordIndex () [points [vertex == 0 ? points .size () - 1 : vertex - 1]];
+		const auto i2     = previewGeometry -> coordIndex () [points [vertex]];
+		const auto i3     = previewGeometry -> coordIndex () [points [(vertex + 1) % points .size ()]];
 		const auto p1     = coord -> get1Point (i1);
 		const auto p2     = coord -> get1Point (i2);
 		const auto p3     = coord -> get1Point (i3);
@@ -1054,9 +1124,9 @@ ColorPerVertexEditor::getPoints (const size_t face) const
 {
 	std::vector <size_t> points;
 
-	for (size_t i = face, size = indexedFaceSet -> coordIndex () .size (); i < size; ++ i)
+	for (size_t i = face, size = previewGeometry -> coordIndex () .size (); i < size; ++ i)
 	{
-		const auto index = indexedFaceSet -> coordIndex () [i];
+		const auto index = previewGeometry -> coordIndex () [i];
 
 		if (index < 0)
 			break;

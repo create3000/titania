@@ -103,6 +103,9 @@ private:
 
 	void
 	set_selection ();
+	
+	void
+	disable ();
 
 	///  @name Menubar
 
@@ -149,6 +152,10 @@ private:
 
 	void
 	on_shading_activate (const std::string &);
+
+	virtual
+	void
+	on_texture_toggled () final override;
 
 	virtual
 	void
@@ -230,10 +237,11 @@ private:
 	X3D::BrowserPtr                                      preview;
 	MFColorRGBAButton                                    colorButton;
 	ModeType                                             mode;
-	X3D::X3DPtr <X3D::IndexedFaceSet>                    selection;
+	X3D::X3DPtr <X3D::X3DShapeNode>                      shape;
+	X3D::X3DPtr <X3D::IndexedFaceSet>                    geometry;
 	X3D::X3DPtr <X3D::X3DCoordinateNode>                 coord;
-	X3D::X3DPtr <X3D::IndexedFaceSet>                    indexedFaceSet;
-	X3D::X3DPtr <X3D::ColorRGBA>                         color;
+	X3D::X3DPtr <X3D::IndexedFaceSet>                    previewGeometry;
+	X3D::X3DPtr <X3D::ColorRGBA>                         previewColor;
 	std::multimap <int32_t, std::pair <size_t, size_t>>  faceIndex;
 	std::pair <size_t, size_t>                           face;
 	std::vector <std::pair <size_t, size_t>>             faces;

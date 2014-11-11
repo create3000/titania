@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 07 Nov 2014 09:33:25 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Mon, 10 Nov 2014 17:16:34 GMT"
+META "modified" "Mon, 10 Nov 2014 23:47:40 GMT"
 
 DEF LayerSet LayerSet {
   activeLayer 3
@@ -60,7 +60,9 @@ DEF LayerSet LayerSet {
         }
         Group {
           children [
-            DEF Shape Shape { }
+            DEF Shape Shape {
+              appearance DEF Appearance Appearance { }
+            }
             DEF TouchSensor TouchSensor { }
           ]
         }
@@ -102,7 +104,7 @@ function set_active (value)
                         linewidthScaleFactor 4
                       }
                     }
-                    geometry IndexedLineSet {
+                    geometry DEF TriangleBackGeometry IndexedLineSet {
                       colorPerVertex FALSE
                       colorIndex [
                         0,
@@ -132,11 +134,11 @@ function set_active (value)
                     }
                   }
                   Shape {
-                    geometry IndexedLineSet {
+                    geometry DEF TriangleGeometry IndexedLineSet {
                       colorPerVertex FALSE
                       colorIndex [
                         0,
-                        0
+                        1
                       ]
                       coordIndex [
                         0,
@@ -147,7 +149,10 @@ function set_active (value)
                         -1
                       ]
                       color Color {
-                        color 1 1 1
+                        color [
+                          1 0 0,
+                          1 1 1
+                        ]
                       }
                       coord USE TriangleCoordinate
                     }

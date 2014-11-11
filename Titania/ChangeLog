@@ -1,3 +1,11 @@
+2014-11-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* ColorPerVertexEditorPreview.x3dv:
+	* X3DColorPerVertexEditorInterface.h:
+	* ColorPerVertexEditor.h:
+	* X3DColorPerVertexEditorInterface.cpp:
+	* ColorPerVertexEditor.cpp: 
+
 2014-11-10  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ColorPerVertexEditorPreview.x3dv:

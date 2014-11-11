@@ -158,6 +158,10 @@ public:
 	getShadingButton () const
 	{ return *m_ShadingButton; }
 
+	Gtk::ToggleToolButton &
+	getTextureButton () const
+	{ return *m_TextureButton; }
+
 	Gtk::ToolButton &
 	getLookAtButton () const
 	{ return *m_LookAtButton; }
@@ -244,6 +248,10 @@ public:
 
 	virtual
 	void
+	on_texture_toggled () = 0;
+
+	virtual
+	void
 	on_look_at_all_clicked () = 0;
 
 	virtual
@@ -298,6 +306,7 @@ private:
 	Gtk::Box*                      m_PreviewBox;
 	Gtk::ToggleToolButton*         m_CheckerBoardButton;
 	Gtk::MenuToolButton*           m_ShadingButton;
+	Gtk::ToggleToolButton*         m_TextureButton;
 	Gtk::ToolButton*               m_LookAtButton;
 	Gtk::ToggleButton*             m_SelectColorButton;
 	Gtk::Button*                   m_ColorButton;

@@ -78,6 +78,7 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("CheckerBoardButton", m_CheckerBoardButton);
 	m_builder -> get_widget ("ShadingButton", m_ShadingButton);
+	m_builder -> get_widget ("TextureButton", m_TextureButton);
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
 	m_builder -> get_widget ("SelectColorButton", m_SelectColorButton);
 	m_builder -> get_widget ("ColorButton", m_ColorButton);
@@ -105,6 +106,7 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToggleToolButton with id 'CheckerBoardButton'.
 	m_CheckerBoardButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_checkerboard_toggled));
+	m_TextureButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_texture_toggled));
 
 	// Connect object Gtk::ToolButton with id 'LookAtButton'.
 	m_LookAtButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_look_at_all_clicked));
