@@ -337,7 +337,7 @@ ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindo
 	                        geometry (),
 	                           coord (),
 	                 previewGeometry (),
-	                           previewColor (),
+	                    previewColor (),
 	                       faceIndex (),
 	                            face (0, 0),
 	                           faces (),
@@ -347,6 +347,7 @@ ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindo
 
 	getShadingButton () .set_menu (getShadingMenu ());
 
+	addChildren (coord);
 	setup ();
 }
 

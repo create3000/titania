@@ -1,5 +1,9 @@
 2014-11-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ColorPerVertexEditor.cpp: 
+
+2014-11-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ColorPerVertexEditorPreview.x3dv:
 	* ColorPerVertexEditor.h:
 	* ColorPerVertexEditor.cpp: 
