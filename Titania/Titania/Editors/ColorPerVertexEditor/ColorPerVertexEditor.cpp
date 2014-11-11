@@ -428,10 +428,15 @@ ColorPerVertexEditor::set_selection ()
 	try
 	{
 		if (shape)
-		{
 			shape -> geometry () .removeInterest (this, &ColorPerVertexEditor::set_selection);
+
+		if (geometry)
+		{
+			geometry -> colorIndex () .removeInterest (this, &ColorPerVertexEditor::set_selection);
+			geometry -> coordIndex () .removeInterest (this, &ColorPerVertexEditor::set_coordIndex);
+			geometry -> coord ()      .removeInterest (coord);		
 		}
-	
+
 		const auto shapes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
 		
 		if (shapes .empty ())
@@ -456,6 +461,22 @@ ColorPerVertexEditor::set_selection ()
 		coord           = geometry -> coord ();
 		previewGeometry = preview -> getExecutionContext () -> createNode <X3D::IndexedFaceSet> ();
 
+		geometry -> solid ()           .addInterest (previewGeometry -> solid ());
+		geometry -> convex ()          .addInterest (previewGeometry -> convex ());
+		geometry -> ccw ()             .addInterest (previewGeometry -> ccw ());
+		geometry -> creaseAngle ()     .addInterest (previewGeometry -> creaseAngle ());
+		geometry -> normalPerVertex () .addInterest (previewGeometry -> normalPerVertex ());
+		geometry -> normalIndex ()     .addInterest (previewGeometry -> normalIndex ());
+		geometry -> texCoordIndex ()   .addInterest (previewGeometry -> texCoordIndex ());
+		geometry -> coordIndex ()      .addInterest (previewGeometry -> coordIndex ());
+		geometry -> normal ()          .addInterest (previewGeometry -> normal ());
+		geometry -> texCoord ()        .addInterest (previewGeometry -> texCoord ());
+		geometry -> coord ()           .addInterest (previewGeometry -> coord ());		
+		geometry -> coord ()           .addInterest (coord);		
+
+		geometry -> colorIndex () .addInterest (this, &ColorPerVertexEditor::set_selection);
+		geometry -> coordIndex () .addInterest (this, &ColorPerVertexEditor::set_coordIndex);
+
 		previewGeometry -> isPrivate (true);
 		previewGeometry -> solid ()           = geometry -> solid ();
 		previewGeometry -> convex ()          = geometry -> convex ();
@@ -472,7 +493,7 @@ ColorPerVertexEditor::set_selection ()
 		previewShape -> geometry () = previewGeometry;
 
 		setColor ();
-		setFaceIndex ();
+		set_coordIndex ();
 
 		colorButton .setIndex (0);
 		colorButton .setNodes ({ previewColor });
@@ -791,6 +812,29 @@ ColorPerVertexEditor::on_apply_clicked ()
 }
 
 void
+ColorPerVertexEditor::set_coordIndex ()
+{
+	faceIndex .clear ();
+
+	size_t face   = 0;
+	size_t vertex = 0;
+
+	for (const int32_t index : previewGeometry -> coordIndex ())
+	{
+		if (index < 0)
+		{
+			face  += vertex + 1;
+			vertex = 0;
+			continue;
+		}
+
+		faceIndex .emplace (index, std::make_pair (face, vertex));
+
+		++ vertex;
+	}
+}
+
+void
 ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 {
 	try
@@ -1035,29 +1079,6 @@ ColorPerVertexEditor::getPointIndices (const X3D::Vector3f & hitPoint, const X3D
 	}
 
 	return indices;
-}
-
-void
-ColorPerVertexEditor::setFaceIndex ()
-{
-	faceIndex .clear ();
-
-	size_t face   = 0;
-	size_t vertex = 0;
-
-	for (const int32_t index : previewGeometry -> coordIndex ())
-	{
-		if (index < 0)
-		{
-			face  += vertex + 1;
-			vertex = 0;
-			continue;
-		}
-
-		faceIndex .emplace (index, std::make_pair (face, vertex));
-
-		++ vertex;
-	}
 }
 
 void

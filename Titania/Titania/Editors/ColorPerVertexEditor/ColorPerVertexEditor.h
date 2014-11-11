@@ -189,7 +189,10 @@ private:
 	void
 	on_apply_clicked () final override;
 
-	///  @name Preview
+	///  @name Event handler
+
+	void
+	set_coordIndex ();
 
 	void
 	set_hitPoint (const X3D::Vector3f &);
@@ -219,9 +222,6 @@ private:
 
 	void
 	setColor ();
-
-	void
-	setFaceIndex ();
 
 	std::vector <size_t>
 	getPointIndices (const X3D::Vector3f &, const X3D::MFVec3f &) const;
