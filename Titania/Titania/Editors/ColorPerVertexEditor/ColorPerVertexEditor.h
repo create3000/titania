@@ -189,7 +189,31 @@ private:
 	void
 	on_apply_clicked () final override;
 
+	void
+	connectColorIndex ();
+
+	void
+	connectColor ();
+
 	///  @name Event handler
+
+	void
+	set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> &);
+
+	void
+	set_appearance (const X3D::SFNode &);
+
+	void
+	set_texture (const X3D::SFNode &);
+
+	void
+	set_textureTransform (const X3D::SFNode &);
+
+	void
+	setTexture (const bool);
+
+	void
+	set_colorIndex ();
 
 	void
 	set_coordIndex ();
@@ -220,9 +244,6 @@ private:
 	getUndoStep () const final override
 	{ return undoHistory .getUndoStep (); }
 
-	void
-	setColor ();
-
 	std::vector <size_t>
 	getPointIndices (const X3D::Vector3f &, const X3D::MFVec3f &) const;
 
@@ -238,6 +259,9 @@ private:
 	MFColorRGBAButton                                    colorButton;
 	ModeType                                             mode;
 	X3D::X3DPtr <X3D::X3DShapeNode>                      shape;
+	X3D::X3DPtr <X3D::Appearance>                        appearance;
+	X3D::SFNode                                          texture;
+	X3D::SFNode                                          textureTransform;
 	X3D::X3DPtr <X3D::IndexedFaceSet>                    geometry;
 	X3D::X3DPtr <X3D::X3DCoordinateNode>                 coord;
 	X3D::X3DPtr <X3D::IndexedFaceSet>                    previewGeometry;

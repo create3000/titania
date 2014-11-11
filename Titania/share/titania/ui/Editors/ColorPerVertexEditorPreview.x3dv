@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 07 Nov 2014 09:33:25 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Mon, 10 Nov 2014 23:47:40 GMT"
+META "modified" "Tue, 11 Nov 2014 00:52:17 GMT"
 
 DEF LayerSet LayerSet {
   activeLayer 3
@@ -55,8 +55,13 @@ DEF LayerSet LayerSet {
     }
     DEF Object Layer {
       children [
-        DEF Viewpoint Group {
-          children DEF _1 Viewpoint { }
+        DEF Navigation Group {
+          children [
+            DEF _1 Viewpoint { }
+            DEF NavigationInfo NavigationInfo {
+              transitionType "TELEPORT"
+            }
+          ]
         }
         Group {
           children [
@@ -71,8 +76,11 @@ DEF LayerSet LayerSet {
     DEF TriangleLayer Layer {
       isPickable FALSE
       children [
-        DEF Viewpoint_1 Group {
-          children USE _1
+        DEF Navigation_1 Group {
+          children [
+            USE _1
+            USE NavigationInfo
+          ]
         }
         DEF Triangle Transform {
           children DEF _2 Switch {
