@@ -852,6 +852,7 @@ ColorPerVertexEditor::set_appearance (const X3D::SFNode & value)
 	{
 		appearance -> texture ()          .removeInterest (this, &ColorPerVertexEditor::set_texture);
 		appearance -> textureTransform () .removeInterest (this, &ColorPerVertexEditor::set_textureTransform);
+		setTexture (false);
 	}
 
 	appearance = value;
@@ -869,7 +870,6 @@ ColorPerVertexEditor::set_appearance (const X3D::SFNode & value)
 	{
 		set_texture (nullptr);
 		set_textureTransform (nullptr);
-		setTexture (false);
 	}
 }
 
@@ -906,23 +906,23 @@ ColorPerVertexEditor::setTexture (const bool value)
 {
 	try
 	{
-		const auto previewAppearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
-
 		if (value and appearance)
 		{
-			appearance -> texture ()          .addInterest (previewAppearance -> texture ());
-			appearance -> textureTransform () .addInterest (previewAppearance -> textureTransform ());
+			appearance -> texture ()          .addInterest (this, &ColorPerVertexEditor::set_multi_texture);
+			appearance -> textureTransform () .addInterest (this, &ColorPerVertexEditor::set_multi_textureTransform);
 
-			previewAppearance -> texture ()          = appearance -> texture ();
-			previewAppearance -> textureTransform () = appearance -> textureTransform ();
+			set_multi_texture ();
+			set_multi_textureTransform ();
 		}
 		else
 		{
 			if (appearance)
 			{
-				appearance -> texture ()          .removeInterest (previewAppearance -> texture ());
-				appearance -> textureTransform () .removeInterest (previewAppearance -> textureTransform ());
+				appearance -> texture ()          .removeInterest (this, &ColorPerVertexEditor::set_multi_texture);
+				appearance -> textureTransform () .removeInterest (this, &ColorPerVertexEditor::set_multi_textureTransform);
 			}
+
+			const auto previewAppearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 
 			previewAppearance -> texture ()          = nullptr;
 			previewAppearance -> textureTransform () = nullptr;
@@ -930,6 +930,38 @@ ColorPerVertexEditor::setTexture (const bool value)
 	}
 	catch (const X3D::X3DError &)
 	{ }
+}
+
+void
+ColorPerVertexEditor::set_multi_texture ()
+{
+	const auto previewAppearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+
+	const X3D::X3DPtr <X3D::MultiTexture> multiTexture (appearance -> texture ());
+
+	if (multiTexture)
+	{
+		previewAppearance -> texture () = appearance -> texture () -> copy (previewAppearance -> getExecutionContext (), X3D::FLAT_COPY);
+		previewAppearance -> getExecutionContext () -> realize ();
+	}
+	else
+		previewAppearance -> texture () = appearance -> texture ();
+}
+
+void
+ColorPerVertexEditor::set_multi_textureTransform ()
+{
+	const auto previewAppearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+
+	const X3D::X3DPtr <X3D::MultiTextureTransform> multiTextureTransform (appearance -> textureTransform ());
+
+	if (multiTextureTransform)
+	{
+		previewAppearance -> textureTransform () = appearance -> textureTransform () -> copy (previewAppearance -> getExecutionContext (), X3D::FLAT_COPY);
+		previewAppearance -> getExecutionContext () -> realize ();
+	}
+	else
+		previewAppearance -> textureTransform () = appearance -> textureTransform ();
 }
 
 void

@@ -211,6 +211,12 @@ private:
 
 	void
 	setTexture (const bool);
+	
+	void
+	set_multi_texture ();
+
+	void
+	set_multi_textureTransform ();
 
 	void
 	set_colorIndex ();

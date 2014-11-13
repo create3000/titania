@@ -1,5 +1,11 @@
 2014-11-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ColorPerVertexEditor.h:
+	* ColorPerVertexEditor.cpp:
+	* TextureCoordinateEditor.cpp: 
+
+2014-11-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MFBool.svg:
 	* TextureCoordinateEditor.xml:
 	* X3DTextureCoordinateEditorInterface.h:

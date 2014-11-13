@@ -70,7 +70,8 @@ MultiTextureCoordinate::Fields::Fields () :
 MultiTextureCoordinate::MultiTextureCoordinate (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTextureCoordinateNode (),
-	                  fields ()
+	                  fields (),
+	               texCoords ()
 {
 	addType (X3DConstants::MultiTextureCoordinate);
 
@@ -85,37 +86,56 @@ MultiTextureCoordinate::create (X3DExecutionContext* const executionContext) con
 }
 
 void
-MultiTextureCoordinate::init (TexCoordArray & texCoords, const size_t reserve) const
+MultiTextureCoordinate::initialize ()
 {
-	for (const auto & node : texCoord ())
-	{
-		if (x3d_cast <MultiTextureCoordinate*> (node))
-			continue;
+	X3DTextureCoordinateNode::initialize ();
 
-		auto textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (node);
-
-		if (textureCoordinate)
-			textureCoordinate -> init (texCoords, reserve);
-	}
+	texCoord () .addInterest (this, &MultiTextureCoordinate::set_texCoord);
+	
+	set_texCoord ();
 }
 
 void
-MultiTextureCoordinate::addTexCoord (const size_t, TexCoordArray & texCoords, const size_t index) const
+MultiTextureCoordinate::set_texCoord ()
 {
-	size_t channel = 0;
+	for (const auto & node : texCoords)
+		node -> removeInterest (this);
+
+	std::vector <X3DTextureCoordinateNode*> value;
 
 	for (const auto & node : texCoord ())
 	{
 		if (x3d_cast <MultiTextureCoordinate*> (node))
 			continue;
 
-		auto textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (node);
-
+		const auto textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (node);
+		
 		if (textureCoordinate)
-		{
-			textureCoordinate -> addTexCoord (channel, texCoords, index);
-			++ channel;
-		}
+			value .emplace_back (textureCoordinate);
+	}
+
+	texCoords .set (value .begin (), value .end ());
+
+	for (const auto & node : texCoords)
+		node -> addInterest (this);
+}
+
+void
+MultiTextureCoordinate::init (TexCoordArray & texCoordArray, const size_t reserve) const
+{
+	for (const auto & textureCoordinate : texCoords)
+		textureCoordinate -> init (texCoordArray, reserve);
+}
+
+void
+MultiTextureCoordinate::addTexCoord (const size_t, TexCoordArray & texCoordArray, const size_t index) const
+{
+	size_t channel = 0;
+
+	for (const auto & textureCoordinate : texCoords)
+	{
+		textureCoordinate -> addTexCoord (channel, texCoordArray, index);
+		++ channel;
 	}
 }
 
@@ -126,25 +146,18 @@ MultiTextureCoordinate::enable (const std::vector <GLuint> & texCoordBufferIds) 
 	size_t                    channel = 0;
 	const size_t              size    = getBrowser () -> getTextureStages () .size ();
 
-	for (const auto & node : texCoord ())
+	for (const auto & textureCoordinate : texCoords)
 	{
-		if (x3d_cast <MultiTextureCoordinate*> (node))
-			continue;
+		const int32_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
 
-		const int32_t unit              = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
-		const auto    textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (node);
+		if (unit >= 0)
+			textureCoordinate -> enable (unit, channel, texCoordBufferIds);
 
-		if (textureCoordinate)
-		{
-			if (unit >= 0)
-				textureCoordinate -> enable (unit, channel, texCoordBufferIds);
+		last = textureCoordinate;
+		++ channel;
 
-			last = textureCoordinate;
-			++ channel;
-
-			if (channel >= size)
-				break;
-		}
+		if (channel >= size)
+			break;
 	}
 
 	if (last)
@@ -166,26 +179,18 @@ MultiTextureCoordinate::disable () const
 	size_t                    channel = 0;
 	const  size_t             size    = getBrowser () -> getTextureStages () .size ();
 
-	for (const auto & node : texCoord ())
+	for (const auto & textureCoordinate : texCoords)
 	{
-		if (x3d_cast <MultiTextureCoordinate*> (node))
-			continue;
-
 		int32_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
 		
-		auto textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (node);
+		if (unit >= 0)
+			textureCoordinate -> disable (unit);
 
-		if (textureCoordinate)
-		{
-			if (unit >= 0)
-				textureCoordinate -> disable (unit);
+		last = textureCoordinate;
+		++ channel;
 
-			last = textureCoordinate;
-			++ channel;
-
-			if (channel >= size)
-				break;
-		}
+		if (channel >= size)
+			break;
 	}
 
 	if (last)

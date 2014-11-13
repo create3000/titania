@@ -475,28 +475,13 @@ TextureCoordinateEditor::set_texCoord (const X3D::SFNode & value)
 
 	if (multiTextureCoordinate)
 	{
-		for (const auto node : multiTextureCoordinate -> texCoord ())
-		{
-			const X3D::X3DPtr <X3D::TextureCoordinate> textureCoordinate (node);
-			
-			if (textureCoordinate)
-				texCoords .emplace_back (textureCoordinate);
-		}
+		if (multiTextureCoordinate -> getTexCoord () .empty ())
+			texCoord = nullptr;
+		else
+			texCoord = multiTextureCoordinate -> getTexCoord () [std::min (stage, multiTextureCoordinate -> getTexCoord () .size () - 1)];
 	}
 	else
-	{
-		const X3D::X3DPtr <X3D::TextureCoordinate> textureCoordinate (value);
-		
-		if (textureCoordinate)
-			texCoords .emplace_back (textureCoordinate);
-	}
-	
-	if (texCoords .empty ())
-		texCoord = nullptr;
-	else if (stage < texCoords .size ())
-		texCoord = texCoords [stage];
-	else
-		texCoord = texCoords .back ();
+		texCoord = value;
 
 	if (previewGeometry)
 	{

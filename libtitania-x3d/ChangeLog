@@ -1,5 +1,10 @@
 2014-11-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MultiTextureCoordinate.h:
+	* MultiTextureCoordinate.cpp: 
+
+2014-11-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MultiTexture.h:
 	* MultiTexture.cpp:
 	* MultiTextureTransform.h:

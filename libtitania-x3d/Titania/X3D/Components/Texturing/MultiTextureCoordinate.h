@@ -98,6 +98,12 @@ public:
 	{ return *fields .texCoord; }
 
 	///  @name Operations
+	
+	const X3DPtrArray <X3DTextureCoordinateNode> &
+	getTexCoord () const
+	{ return texCoords; }
+
+	///  @name Operations
 
 	virtual
 	void
@@ -143,6 +149,14 @@ public:
 
 private:
 
+	///  @name Construction
+
+	void
+	initialize ();
+	
+	void
+	set_texCoord ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -159,6 +173,8 @@ private:
 	};
 
 	Fields fields;
+
+	X3DPtrArray <X3DTextureCoordinateNode> texCoords;
 
 };
 
