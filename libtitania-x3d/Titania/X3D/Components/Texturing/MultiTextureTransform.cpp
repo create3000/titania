@@ -68,7 +68,8 @@ MultiTextureTransform::Fields::Fields () :
 MultiTextureTransform::MultiTextureTransform (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTextureTransformNode (),
-	                 fields ()
+	                 fields (),
+	  textureTransformNodes ()
 {
 	addType (X3DConstants::MultiTextureTransform);
 
@@ -83,38 +84,63 @@ MultiTextureTransform::create (X3DExecutionContext* const executionContext) cons
 }
 
 void
-MultiTextureTransform::draw ()
+MultiTextureTransform::initialize ()
 {
-	X3DTextureTransformNode* defaultTextureTransform = getBrowser () -> getTextureTransform ();
-	X3DTextureTransformNode* last                    = defaultTextureTransform;
-	size_t                   channel                 = 0;
-	size_t                   size                    = getBrowser () -> getTextureStages () .size ();
+	X3DTextureTransformNode::initialize ();
+	
+	textureTransform () .addInterest (this, &MultiTextureTransform::set_textureTransform);
+}
+
+void
+MultiTextureTransform::set_textureTransform ()
+{
+	for (const auto & node : textureTransformNodes)
+		node -> removeInterest (this);
+
+	std::vector <X3DTextureTransformNode*> value;
 
 	for (const auto & node : textureTransform ())
 	{
 		if (x3d_cast <MultiTextureTransform*> (node))
 			continue;
 
-		int32_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
+		const auto textureTransformNode = x3d_cast <X3DTextureTransformNode*> (node);
+		
+		if (textureTransformNode)
+			value .emplace_back (textureTransformNode);
+	}
 
-		auto textureTransform = node ? x3d_cast <X3DTextureTransformNode*> (node) : defaultTextureTransform;
+	textureTransformNodes .set (value .begin (), value .end ());
 
-		if (textureTransform)
-		{
-			if (unit >= 0)
-				textureTransform -> draw (unit);
+	for (const auto & node : textureTransformNodes)
+		node -> addInterest (this);
+}
 
-			last = textureTransform;
-			++ channel;
+void
+MultiTextureTransform::draw ()
+{
+	X3DTextureTransformNode* const defaultTextureTransform = getBrowser () -> getTextureTransform ();
+	X3DTextureTransformNode*       last                    = defaultTextureTransform;
+	size_t                         channel                 = 0;
+	const size_t                   size                    = getBrowser () -> getTextureStages () .size ();
 
-			if (channel >= size)
-				break;
-		}
+	for (const auto & textureTransform : textureTransformNodes)
+	{
+		const int32_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
+
+		if (unit >= 0)
+			textureTransform -> draw (unit);
+
+		last = textureTransform;
+		++ channel;
+
+		if (channel >= size)
+			break;
 	}
 
 	for ( ; channel < size; ++ channel)
 	{
-		int32_t unit = getBrowser () -> getTextureStages () [channel];
+		const int32_t unit = getBrowser () -> getTextureStages () [channel];
 
 		if (unit >= 0)
 			last -> draw (unit);

@@ -63,8 +63,14 @@ TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browse
 	                              right (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
 	                        initialized (0),
 	                              shape (),
+	                         appearance (),
+	                           material (),
+	                            texture (),
+	                   textureTransform (),
 	                           geometry (),
+	                    previewGeometry (),
 	                           texCoord (),
+	                              stage (0),
 	                        undoHistory ()
 {
 	left  -> set_antialiasing (4);
@@ -101,7 +107,7 @@ TextureCoordinateEditor::set_left_initialized ()
 	try
 	{
 		left -> loadURL ({ get_ui ("Editors/TextureCoordinateEditorLeftPreview.x3dv") });
-		
+
 		set_initialized ();
 	}
 	catch (const X3D::X3DError &)
@@ -133,10 +139,10 @@ TextureCoordinateEditor::set_initialized ()
 
 	try
 	{
-		const auto previewShape = right -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
+		const auto rightShape = right -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
 
-		previewShape -> geometry () .addInterest (this, &TextureCoordinateEditor::on_look_at_all_right_clicked);
-	}	
+		rightShape -> geometry () .addInterest (this, &TextureCoordinateEditor::on_look_at_all_right_clicked);
+	}
 	catch (const X3D::X3DError &)
 	{ }
 
@@ -156,10 +162,10 @@ TextureCoordinateEditor::set_selection ()
 	try
 	{
 		const auto shapes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
-		
+
 		if (shapes .empty ())
 			set_shape (nullptr);
-			
+
 		else
 			set_shape (shapes .back ());
 	}
@@ -245,18 +251,166 @@ void
 TextureCoordinateEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 {
 	if (shape)
-		shape -> geometry () .removeInterest (this, &TextureCoordinateEditor::set_geometry);
+	{
+		shape -> appearance () .removeInterest (this, &TextureCoordinateEditor::set_appearance);
+		shape -> geometry ()   .removeInterest (this, &TextureCoordinateEditor::set_geometry);
+	}
 
 	shape = value;
 
 	if (shape)
 	{
-		shape -> geometry () .addInterest (this, &TextureCoordinateEditor::set_geometry);
-	
+		shape -> appearance () .addInterest (this, &TextureCoordinateEditor::set_appearance);
+		shape -> geometry ()   .addInterest (this, &TextureCoordinateEditor::set_geometry);
+
+		set_appearance (shape -> appearance ());
 		set_geometry (shape -> geometry ());
 	}
 	else
+	{
+		set_appearance (nullptr);
 		set_geometry (nullptr);
+	}
+}
+
+void
+TextureCoordinateEditor::set_appearance (const X3D::SFNode & value)
+{
+	if (appearance)
+	{
+		appearance -> material ()         .removeInterest (this, &TextureCoordinateEditor::set_material);
+		appearance -> texture ()          .removeInterest (this, &TextureCoordinateEditor::set_texture_stage);
+		appearance -> textureTransform () .removeInterest (this, &TextureCoordinateEditor::set_textureTransform);
+	}
+
+	appearance = value;
+
+	if (appearance)
+	{
+		appearance -> material ()         .addInterest (this, &TextureCoordinateEditor::set_material);
+		appearance -> texture ()          .addInterest (this, &TextureCoordinateEditor::set_texture_stage);
+		appearance -> textureTransform () .addInterest (this, &TextureCoordinateEditor::set_textureTransform);
+
+		set_material (appearance -> material ());
+		set_texture_stage (appearance -> texture ());
+		set_textureTransform (appearance -> textureTransform ());
+	}
+	else
+	{
+		set_material (nullptr);
+		set_texture_stage (nullptr);
+		set_textureTransform (nullptr);
+	}
+}
+
+void
+TextureCoordinateEditor::set_material (const X3D::SFNode & value)
+{
+	if (material)
+		material -> removeInterest (*right, &X3D::Browser::addEvent);
+
+	material = value;
+
+	if (material)
+		material -> addInterest (*right,  &X3D::Browser::addEvent);
+
+	right -> addEvent ();
+}
+
+void
+TextureCoordinateEditor::set_texture_stage (const X3D::SFNode & value)
+{
+	const X3D::X3DPtr <X3D::MultiTexture> multiTexture (value);
+
+	const size_t textureStages = multiTexture ? multiTexture -> getTexture () .size () : 1;
+
+	getTextureStageAdjustment () -> set_upper (textureStages);
+	getTextureStageAdjustment () -> set_value (std::min <size_t> (getTextureStageAdjustment () -> get_value (), textureStages));
+
+	set_texture (value);
+}
+
+void
+TextureCoordinateEditor::set_texture (const X3D::SFNode & value)
+{
+	if (texture)
+	{
+		texture -> removeInterest (*left,  &X3D::Browser::addEvent);
+		texture -> removeInterest (*right, &X3D::Browser::addEvent);
+	}
+
+	const X3D::X3DPtr <X3D::MultiTexture> multiTexture (value);
+
+	if (multiTexture)
+	{
+		if (stage < multiTexture -> getTexture () .size ())
+			texture = multiTexture -> getTexture () [stage];
+		else
+			texture = nullptr;
+	}
+	else
+		texture = value;
+
+	try
+	{
+		const auto imageSwitch     = left  -> getExecutionContext () -> getNamedNode <X3D::Switch> ("ImageSwitch");
+		const auto leftAppearance  = left  -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+		const auto rightAppearance = right -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+
+		imageSwitch -> whichChoice () = texture;
+		leftAppearance  -> texture () = texture;
+		rightAppearance -> texture () = texture;
+	}
+	catch (const X3D::X3DError &)
+	{ }
+
+	if (texture)
+	{
+		texture -> addInterest (*left,  &X3D::Browser::addEvent);
+		texture -> addInterest (*right, &X3D::Browser::addEvent);
+	}
+}
+
+void
+TextureCoordinateEditor::set_textureTransform (const X3D::SFNode & value)
+{
+	if (textureTransform)
+	{
+		textureTransform -> removeInterest (*left,  &X3D::Browser::addEvent);
+		textureTransform -> removeInterest (*right, &X3D::Browser::addEvent);
+	}
+
+	const X3D::X3DPtr <X3D::MultiTextureTransform> multiTextureTransform (value);
+
+	if (multiTextureTransform)
+	{
+		if (multiTextureTransform -> getTextureTransform () .empty ())
+			textureTransform = nullptr;
+		else
+			textureTransform = multiTextureTransform -> getTextureTransform () [std::min (stage, multiTextureTransform -> getTextureTransform () .size () - 1)];
+	}
+	else
+		textureTransform = value;
+
+	try
+	{
+		const auto leftAppearance  = left  -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+		const auto rightAppearance = right -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+
+		leftAppearance  -> textureTransform () = textureTransform;
+		rightAppearance -> textureTransform () = textureTransform;
+	}
+	catch (const X3D::X3DError &)
+	{ }
+
+	if (textureTransform)
+	{
+		textureTransform -> addInterest (*left,  &X3D::Browser::addEvent);
+		textureTransform -> addInterest (*right, &X3D::Browser::addEvent);
+	}
+
+	left  -> addEvent ();
+	right -> addEvent ();
 }
 
 void
@@ -266,7 +420,7 @@ TextureCoordinateEditor::set_geometry (const X3D::SFNode & value)
 	{
 		try
 		{
-			geometry -> getField <X3D::SFNode> ("texCoord") .removeInterest (this, &TextureCoordinateEditor::set_texCoord); 
+			geometry -> getField <X3D::SFNode> ("texCoord") .removeInterest (this, &TextureCoordinateEditor::set_texCoord);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -276,21 +430,29 @@ TextureCoordinateEditor::set_geometry (const X3D::SFNode & value)
 
 	try
 	{
-		const auto previewShape = right -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
-		
-		previewShape -> geometry () = geometry;
-	}	
-	catch (const X3D::X3DError &)
-	{
-		set_texCoord (nullptr);
+		const auto rightShape = right -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
+
+		if (geometry)
+		{
+			previewGeometry = geometry -> copy (rightShape -> getExecutionContext (), X3D::FLAT_COPY);
+			rightShape -> geometry () = previewGeometry;
+			rightShape -> getExecutionContext () -> realize ();
+		}
+		else
+		{
+			previewGeometry = nullptr;
+			rightShape -> geometry () = nullptr;
+		}
 	}
-	
+	catch (const X3D::X3DError &)
+	{ }
+
 	if (geometry)
 	{
 		try
 		{
 			geometry -> getField <X3D::SFNode> ("texCoord") .addInterest (this, &TextureCoordinateEditor::set_texCoord);
-			
+
 			set_texCoord (geometry -> getField <X3D::SFNode> ("texCoord"));
 		}
 		catch (const X3D::X3DError &)
@@ -300,12 +462,87 @@ TextureCoordinateEditor::set_geometry (const X3D::SFNode & value)
 	}
 	else
 		set_texCoord (nullptr);
+
+	right -> addEvent ();
 }
 
 void
 TextureCoordinateEditor::set_texCoord (const X3D::SFNode & value)
 {
-	texCoord = value;
+	X3D::X3DPtrArray <X3D::X3DTextureCoordinateNode> texCoords; 
+
+	const X3D::X3DPtr <X3D::MultiTextureCoordinate> multiTextureCoordinate (value);
+
+	if (multiTextureCoordinate)
+	{
+		for (const auto node : multiTextureCoordinate -> texCoord ())
+		{
+			const X3D::X3DPtr <X3D::TextureCoordinate> textureCoordinate (node);
+			
+			if (textureCoordinate)
+				texCoords .emplace_back (textureCoordinate);
+		}
+	}
+	else
+	{
+		const X3D::X3DPtr <X3D::TextureCoordinate> textureCoordinate (value);
+		
+		if (textureCoordinate)
+			texCoords .emplace_back (textureCoordinate);
+	}
+	
+	if (texCoords .empty ())
+		texCoord = nullptr;
+	else if (stage < texCoords .size ())
+		texCoord = texCoords [stage];
+	else
+		texCoord = texCoords .back ();
+
+	if (previewGeometry)
+	{
+		try
+		{
+			previewGeometry -> getField <X3D::SFNode> ("texCoord") = texCoord;
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	left  -> addEvent ();
+	right -> addEvent ();
+}
+
+void
+TextureCoordinateEditor::on_texture_stage_changed ()
+{
+	stage = getTextureStageAdjustment () -> get_value () - 1;
+
+	if (appearance)
+	{
+		set_texture (appearance -> texture ());
+		set_textureTransform (appearance -> textureTransform ());
+	}
+	else
+	{
+		set_texture (nullptr);
+		set_textureTransform (nullptr);
+	}
+
+	if (geometry)
+	{
+		try
+		{
+			set_texCoord (geometry -> getField <X3D::SFNode> ("texCoord"));
+		}
+		catch (const X3D::X3DError &)
+		{
+			set_texCoord (nullptr);
+		}
+	}
+	else
+		set_texCoord (nullptr);
+
+	__LOG__ << stage << std::endl;
 }
 
 TextureCoordinateEditor::~TextureCoordinateEditor ()

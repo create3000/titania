@@ -99,8 +99,8 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getColorAdjustment () const
-	{ return m_ColorAdjustment; }
+	getTextureStageAdjustment () const
+	{ return m_TextureStageAdjustment; }
 
 	Gtk::Window &
 	getWindow () const
@@ -144,6 +144,10 @@ public:
 
 	virtual
 	void
+	on_texture_stage_changed () = 0;
+
+	virtual
+	void
 	on_undo_activate () = 0;
 
 	virtual
@@ -179,7 +183,7 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureStageAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::ImageMenuItem*            m_UndoMenuItem;

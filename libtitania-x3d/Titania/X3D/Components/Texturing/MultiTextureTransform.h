@@ -99,6 +99,12 @@ public:
 	textureTransform () const
 	{ return *fields .textureTransform; }
 
+	///  @name Member access
+
+	const X3DPtrArray <X3DTextureTransformNode> &
+	getTextureTransform () const
+	{ return textureTransformNodes; }
+
 	///  @name Operations
 
 	virtual
@@ -113,6 +119,16 @@ public:
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+	
+	void
+	set_textureTransform ();
 
 	///  @name Static members
 
@@ -130,6 +146,8 @@ private:
 	};
 
 	Fields fields;
+
+	X3DPtrArray <X3DTextureTransformNode> textureTransformNodes;
 
 };
 

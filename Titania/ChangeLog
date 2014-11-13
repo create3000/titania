@@ -1,5 +1,14 @@
 2014-11-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MFBool.svg:
+	* TextureCoordinateEditor.xml:
+	* X3DTextureCoordinateEditorInterface.h:
+	* X3DTextureCoordinateEditorInterface.cpp:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditor.cpp: 
+
+2014-11-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TextureCoordinate.svg: 
 
 2014-11-13  Holger Seelig  <holger.seelig@yahoo.de>

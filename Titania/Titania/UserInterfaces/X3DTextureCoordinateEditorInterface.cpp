@@ -61,7 +61,7 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_ColorAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ColorAdjustment"));
+	m_TextureStageAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureStageAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -74,6 +74,9 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
 	m_builder -> get_widget ("RemoveButton", m_RemoveButton);
 	m_builder -> get_widget ("ApplyButton", m_ApplyButton);
+
+	// Connect object Gtk::Adjustment with id 'TextureStageAdjustment'.
+	m_TextureStageAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_texture_stage_changed));
 
 	// Connect object Gtk::ImageMenuItem with id 'UndoMenuItem'.
 	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_undo_activate));

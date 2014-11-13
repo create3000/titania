@@ -150,6 +150,10 @@ public:
 	checkLoadState () const final override
 	{ return loadState; }
 
+	const X3DPtrArray <X3DTextureNode> &
+	getTexture () const
+	{ return textureNodes; }
+
 	///  @name Operations
 
 	virtual
@@ -222,6 +226,9 @@ private:
 	void
 	set_function ();
 
+	void
+	set_texture ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -244,12 +251,12 @@ private:
 
 	Fields fields;
 
-	std::vector <ModeType>     modes;
-	std::vector <ModeType>     alphaModes;
-	std::vector <SourceType>   sources;
-	std::vector <FunctionType> functions;
-	
-	SFEnum <LoadState> loadState;
+	std::vector <ModeType>       modes;
+	std::vector <ModeType>       alphaModes;
+	std::vector <SourceType>     sources;
+	std::vector <FunctionType>   functions;
+	X3DPtrArray <X3DTextureNode> textureNodes;
+	SFEnum <LoadState>           loadState;
 
 };
 

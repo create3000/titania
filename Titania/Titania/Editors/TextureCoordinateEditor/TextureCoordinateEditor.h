@@ -135,10 +135,29 @@ private:
 	set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> &);
 
 	void
+	set_appearance (const X3D::SFNode &);
+
+	void
+	set_material (const X3D::SFNode &);
+
+	void
+	set_texture (const X3D::SFNode &);
+
+	void
+	set_texture_stage (const X3D::SFNode &);
+
+	void
+	set_textureTransform (const X3D::SFNode &);
+
+	void
 	set_geometry (const X3D::SFNode &);
 
 	void
 	set_texCoord (const X3D::SFNode &);
+
+	virtual
+	void
+	on_texture_stage_changed () final override;
 
 	///  @name Operations
 
@@ -163,8 +182,14 @@ private:
 	X3D::BrowserPtr                             right;
 	int                                         initialized;
 	X3D::X3DPtr <X3D::X3DShapeNode>             shape;
+	X3D::X3DPtr <X3D::Appearance>               appearance;
+	X3D::SFNode                                 material;
+	X3D::SFNode                                 texture;
+	X3D::SFNode                                 textureTransform;
 	X3D::SFNode                                 geometry;
-	X3D::X3DPtr <X3D::X3DTextureCoordinateNode> texCoord;                
+	X3D::X3DPtr <X3D::X3DGeometryNode>          previewGeometry; 
+	X3D::X3DPtr <X3D::X3DTextureCoordinateNode> texCoord; 
+	size_t                                      stage;               
 	UndoHistory                                 undoHistory;
 
 };
