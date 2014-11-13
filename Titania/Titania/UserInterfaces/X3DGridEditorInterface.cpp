@@ -148,6 +148,8 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AngleMajorGridSpinButton", m_AngleMajorGridSpinButton);
 	m_builder -> get_widget ("AngleAddMajorGridButton", m_AngleAddMajorGridButton);
 	m_builder -> get_widget ("AngleRemoveMajorGridButton", m_AngleRemoveMajorGridButton);
+
+	// Connect object Gtk::CheckButton with id 'GridCheckButton'.
 	m_GridCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_toggled));
 
 	// Connect object Gtk::ComboBoxText with id 'GridPlaneComboBoxText'.

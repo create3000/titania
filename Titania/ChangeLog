@@ -1,3 +1,21 @@
+2014-11-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* DialogFactory.h:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.xml:
+	* X3DGridEditorInterface.cpp:
+	* X3DBrowserWindowInterface.h:
+	* TextureCoordinateEditor.xml:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DTextureCoordinateEditorInterface.h:
+	* X3DTextureCoordinateEditorInterface.cpp:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditor.cpp: 
+
 2014-11-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ColorPerVertexEditor.cpp: 

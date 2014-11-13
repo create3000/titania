@@ -487,6 +487,10 @@ private:
 
 	virtual
 	void
+	on_edit_texture_coordinates_activate () final override;
+
+	virtual
+	void
 	on_paint_polygons_activate () final override;
 
 	///  @name Layout

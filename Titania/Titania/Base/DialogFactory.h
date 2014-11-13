@@ -74,6 +74,7 @@
 #include "../Editors/ViewpointEditor/ViewpointEditor.h"
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
 #include "../Editors/ColorPerVertexEditor/ColorPerVertexEditor.h"
+#include "../Editors/TextureCoordinateEditor/TextureCoordinateEditor.h"
 
 namespace titania {
 namespace puck {
@@ -91,6 +92,7 @@ public:
 		         std::make_pair ("FileImportDialog",         constructDialog <FileImportDialog>),
 		         std::make_pair ("FileSaveDialog",           constructDialog <FileSaveDialog>),
 		         std::make_pair ("FileSaveWarningDialog",    constructDialog <FileSaveWarningDialog>),
+		         std::make_pair ("TextureCoordinateEditor",  constructDialog <TextureCoordinateEditor>),
 		         std::make_pair ("ColorPerVertexEditor",     constructDialog <ColorPerVertexEditor>),
 		         std::make_pair ("GridEditor",               constructDialog <GridEditor>),
 		         std::make_pair ("NodeIndex",                constructDialog <NodeIndex>),

@@ -1624,6 +1624,12 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 // Layout
 
 void
+BrowserWindow::on_edit_texture_coordinates_activate ()
+{
+	addDialog ("TextureCoordinateEditor");
+}
+
+void
 BrowserWindow::on_paint_polygons_activate ()
 {
 	addDialog ("ColorPerVertexEditor");

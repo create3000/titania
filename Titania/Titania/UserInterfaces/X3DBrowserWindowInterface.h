@@ -539,6 +539,10 @@ public:
 	{ return *m_CombineMenuItem; }
 
 	Gtk::ImageMenuItem &
+	getTextureCoordinateEditorMenuItem () const
+	{ return *m_TextureCoordinateEditorMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getPaintPolygonsMenuItem () const
 	{ return *m_PaintPolygonsMenuItem; }
 
@@ -1172,6 +1176,10 @@ public:
 
 	virtual
 	void
+	on_edit_texture_coordinates_activate () = 0;
+
+	virtual
+	void
 	on_paint_polygons_activate () = 0;
 
 	virtual
@@ -1457,6 +1465,7 @@ private:
 	Gtk::CheckMenuItem*              m_FollowPrimarySelectionMenuItem;
 	Gtk::MenuItem*                   m_ObjectMenuItem;
 	Gtk::ImageMenuItem*              m_CombineMenuItem;
+	Gtk::ImageMenuItem*              m_TextureCoordinateEditorMenuItem;
 	Gtk::ImageMenuItem*              m_PaintPolygonsMenuItem;
 	Gtk::MenuItem*                   m_LayoutMenuItem;
 	Gtk::CheckMenuItem*              m_GridLayoutToolMenuItem;

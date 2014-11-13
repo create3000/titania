@@ -63,6 +63,7 @@ titania_SOURCES =  \
 	Titania/Editors/PrototypeInstanceDialog/PrototypeInstanceDialog.cpp \
 	Titania/Editors/TextEditor/TextEditor.cpp \
 	Titania/Editors/TextEditor/X3DFontStyleNodeEditor.cpp \
+	Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.cpp \
 	Titania/Editors/TextureEditor/TextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DImageTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DMovieTextureEditor.cpp \
@@ -107,6 +108,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DPrototypeInstanceDialogInterface.cpp \
 	Titania/UserInterfaces/X3DScriptEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextEditorInterface.cpp \
+	Titania/UserInterfaces/X3DTextureCoordinateEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointListInterface.cpp \

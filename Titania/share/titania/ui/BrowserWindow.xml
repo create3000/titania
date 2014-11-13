@@ -31,7 +31,7 @@
       <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
       <source stock-id="Checkerboard" filename="icons/Checkerboard.svg"/>
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>
-      <source stock-id="Hand" filename="icons/Hand.png"/>
+      <source stock-id="Hand" filename="icons/Hand.svg"/>
       <source stock-id="ExternProto" filename="icons/Node/ExternProto.96.svg"/>
       <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
       <source stock-id="Arrow" filename="icons/Arrow.svg"/>
@@ -46,6 +46,7 @@
       <source stock-id="PlaneViewer" filename="icons/PlaneViewer.svg"/>
       <source stock-id="ColorSingleVertex" filename="icons/ColorSingleVertex.svg"/>
       <source stock-id="Navigation" filename="icons/Navigation.svg"/>
+      <source stock-id="TextureCoordinate" filename="icons/TextureCoordinate.svg"/>
     </sources>
   </object>
   <object class="GtkToggleAction" id="AngleToolAction"/>
@@ -192,11 +193,19 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">PaintBrush</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image15">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">Shading</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image16">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">TextureCoordinate</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image4">
     <property name="visible">True</property>
@@ -1321,6 +1330,18 @@
                               <object class="GtkSeparatorMenuItem" id="separatormenuitem18">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="TextureCoordinateEditorMenuItem">
+                                <property name="label" translatable="yes">Edit Texture Coordinates...</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="use_underline">True</property>
+                                <property name="image">image16</property>
+                                <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
+                                <signal name="activate" handler="on_edit_texture_coordinates_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
