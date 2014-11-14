@@ -222,6 +222,9 @@ public:
 	straightenView (const Rotation4f &) const;
 
 	void
+	lookAt (Vector3f, const float = 1, const bool = false);
+
+	void
 	lookAt (Box3f, const float = 1, const bool = false);
 
 	void
@@ -318,9 +321,12 @@ private:
 	void
 	getRelativeTransformation (X3DViewpointNode* const, Vector3f &, Rotation4f &, Vector3f &, Rotation4f &) const;
 
+	void
+	lookAt (const Vector3f &, const float, const float, const bool);
+
 	virtual
-	Vector3f
-	getLookAtPositionOffset (const Box3f &) const = 0;
+	float
+	getLookAtDistance (const Box3f &) const = 0;
 
 	void
 	set_isActive (const bool);

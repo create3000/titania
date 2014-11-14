@@ -240,20 +240,10 @@ GeoViewpoint::getScreenScale (const double distance, const Vector4i & viewport) 
 }
 
 ///  Same as in Viewpoint
-Vector3f
-GeoViewpoint::getLookAtPositionOffset (const Box3f & bbox) const
+float
+GeoViewpoint::getLookAtDistance (const Box3f & bbox) const
 {
-	if (getBrowser () -> getActiveLayer ())
-	{
-		const float distance    = (abs (bbox .size ()) / 2) / std::tan (getFieldOfView () / 2);
-		const float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
-
-		return bbox .center ()
-		       + Vector3f (0, 0, std::max (distance, minDistance)) * getUserOrientation ()
-		       - getPosition ();
-	}
-
-	return Vector3f ();
+	return (abs (bbox .size ()) / 2) / std::tan (getFieldOfView () / 2);
 }
 
 void

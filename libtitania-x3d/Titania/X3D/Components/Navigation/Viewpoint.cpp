@@ -120,20 +120,10 @@ Viewpoint::getScreenScale (const double distance, const Vector4i & viewport) con
 	return Vector3d (size, size, size);
 }
 
-Vector3f
-Viewpoint::getLookAtPositionOffset (const Box3f & bbox) const
+float
+Viewpoint::getLookAtDistance (const Box3f & bbox) const
 {
-	if (getBrowser () -> getActiveLayer ())
-	{
-		const float distance    = (abs (bbox .size ()) / 2) / std::tan (getFieldOfView () / 2);
-		const float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
-
-		return bbox .center ()
-		       + Vector3f (0, 0, std::max (distance, minDistance)) * getUserOrientation ()
-		       - position ();
-	}
-
-	return Vector3f ();
+	return (abs (bbox .size ()) / 2) / std::tan (getFieldOfView () / 2);
 }
 
 void

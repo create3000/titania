@@ -288,41 +288,70 @@ X3DViewpointNode::straightenView (const Rotation4f & orientation) const
 }
 
 void
-X3DViewpointNode::lookAt (Box3f bbox, const float distance, const bool straighten)
+X3DViewpointNode::lookAt (Vector3f point, const float factor, const bool straighten)
 {
+	if (not getBrowser () -> getActiveLayer ())
+		return;
+
+	try
+	{
+		point = point * ~getParentMatrix ();
+	
+		const float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
+	
+		lookAt (point, minDistance, factor, straighten);
+	}
+	catch (const std::domain_error &)
+	{ }
+}
+
+void
+X3DViewpointNode::lookAt (Box3f bbox, const float factor, const bool straighten)
+{
+	if (not getBrowser () -> getActiveLayer ())
+		return;
+
 	try
 	{
 		bbox *= ~getParentMatrix ();
 
-		for (const auto & layer : getLayers ())
-			layer -> getNavigationInfo () -> transitionStart () = true;
-
-		timeSensor -> cycleInterval () = 0.2;
-		timeSensor -> stopTime ()      = getCurrentTime ();
-		timeSensor -> startTime ()     = getCurrentTime ();
-		timeSensor -> isActive () .addInterest (this, &X3DViewpointNode::set_isActive);
-
-		easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
-
-		const auto translation = lerp <Vector3f> (positionOffset (), getLookAtPositionOffset (bbox), distance);
-		const auto direction   = getPosition () + translation - bbox .center ();
-		auto       rotation    = orientationOffset () * Rotation4f (zAxis * getUserOrientation (), direction);
-
-		if (straighten)
-			rotation = ~getOrientation () * straightenHorizon (getOrientation () * rotation);
-
-		positionInterpolator         -> keyValue () = { positionOffset (), translation };
-		orientationInterpolator      -> keyValue () = { orientationOffset (), rotation };
-		scaleInterpolator            -> keyValue () = { scaleOffset (), scaleOffset () };
-		scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset (), scaleOrientationOffset () };
-
-		centerOfRotationOffset () = bbox .center () - getCenterOfRotation ();
-		set_bind ()               = true;
+		const float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
+		
+		lookAt (bbox .center (), std::max (minDistance, getLookAtDistance (bbox)), factor, straighten);
 	}
 	catch (const std::domain_error &)
-	{
-		// Catch error from matrix inverse.
-	}
+	{ }
+}
+
+void
+X3DViewpointNode::lookAt (const Vector3f & point, const float distance, const float factor, const bool straighten)
+{
+   const auto offset = point + Vector3f (0, 0, distance) * getUserOrientation () - getPosition ();
+ 
+	for (const auto & layer : getLayers ())
+		layer -> getNavigationInfo () -> transitionStart () = true;
+
+	timeSensor -> cycleInterval () = 0.2;
+	timeSensor -> stopTime ()      = getCurrentTime ();
+	timeSensor -> startTime ()     = getCurrentTime ();
+	timeSensor -> isActive () .addInterest (this, &X3DViewpointNode::set_isActive);
+
+	easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
+
+	const auto translation = lerp <Vector3f> (positionOffset (), offset, factor);
+	const auto direction   = getPosition () + translation - point;
+	auto       rotation    = orientationOffset () * Rotation4f (zAxis * getUserOrientation (), direction);
+
+	if (straighten)
+		rotation = ~getOrientation () * straightenHorizon (getOrientation () * rotation);
+
+	positionInterpolator         -> keyValue () = { positionOffset (), translation };
+	orientationInterpolator      -> keyValue () = { orientationOffset (), rotation };
+	scaleInterpolator            -> keyValue () = { scaleOffset (), scaleOffset () };
+	scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset (), scaleOrientationOffset () };
+
+	centerOfRotationOffset () = point - getCenterOfRotation ();
+	set_bind ()               = true;
 }
 
 void

@@ -184,8 +184,8 @@ private:
 	getSizeY () const;
 
 	virtual
-	Vector3f
-	getLookAtPositionOffset (const Box3f &) const final override;
+	float
+	getLookAtDistance (const Box3f &) const final override;
 
 	///  @name Static members
 

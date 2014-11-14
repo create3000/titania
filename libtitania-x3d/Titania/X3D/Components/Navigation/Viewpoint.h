@@ -165,8 +165,8 @@ private:
 	double
 	getFieldOfView () const;
 
-	Vector3f
-	getLookAtPositionOffset (const Box3f &) const;
+	float
+	getLookAtDistance (const Box3f &) const;
 
 	///  @name Static members
 

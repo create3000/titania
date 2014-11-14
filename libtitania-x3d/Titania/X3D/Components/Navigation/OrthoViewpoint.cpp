@@ -166,12 +166,10 @@ OrthoViewpoint::getViewportSize (const Vector4i & viewport) const
 	return Vector2d (getSizeX (), getSizeX () / aspect);
 }
 
-Vector3f
-OrthoViewpoint::getLookAtPositionOffset (const Box3f & bbox) const
+float
+OrthoViewpoint::getLookAtDistance (const Box3f & bbox) const
 {
-	return bbox .center ()
-	       + Vector3f (0, 0, abs (bbox .size ()) / 2 + 10) * getUserOrientation ()
-	       - position ();
+	return abs (bbox .size ()) / 2 + 10;
 }
 
 void

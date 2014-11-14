@@ -1,9 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.h" Line="56" Column="1" />
-      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.cpp" Line="56" Column="1" />
+      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.h" Line="190" Column="61" />
+      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.cpp" Line="478" Column="29" />
+      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.h" Line="220" Column="1" />
+      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="1235" Column="55" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/LookAtViewer.cpp" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -59,16 +62,14 @@
                   <Node name="Rendering" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Geometry3D" expanded="True" />
-                  <Node name="Geospatial" expanded="True" />
                   <Node name="Layering" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                   <Node name="Shape" expanded="True" />
                   <Node name="Texturing" expanded="True" />
                 </Node>
-                <Node name="Execution" expanded="True" />
-                <Node name="Fields" expanded="True" />
+                <Node name="Rendering" expanded="True" />
                 <Node name="Tools" expanded="True">
                   <Node name="Grids" expanded="True" />
                 </Node>
@@ -84,6 +85,7 @@
               <Node name="titania" expanded="True">
                 <Node name="ui" expanded="True">
                   <Node name="Editors" expanded="True" />
+                  <Node name="icons" expanded="True" />
                 </Node>
               </Node>
             </Node>
@@ -93,11 +95,11 @@
               <Node name="ComposedWidgets" expanded="True" />
               <Node name="Editors" expanded="True">
                 <Node name="AppearanceEditor" expanded="True" />
-                <Node name="ColorPerVertexEditor" expanded="True" />
-                <Node name="GeometryPropertiesEditor" expanded="True" />
-                <Node name="TextureCoordinateEditor" expanded="True">
-                  <Node name="TextureCoordinateEditor.h" selected="True" />
+                <Node name="ColorPerVertexEditor" expanded="True">
+                  <Node name="ColorPerVertexEditor.cpp" selected="True" />
                 </Node>
+                <Node name="GeometryPropertiesEditor" expanded="True" />
+                <Node name="TextureCoordinateEditor" expanded="True" />
               </Node>
               <Node name="Undo" expanded="True" />
             </Node>

@@ -103,15 +103,29 @@ LookAtViewer::on_button_press_event (GdkEventButton* event)
 bool
 LookAtViewer::on_button_release_event (GdkEventButton* event)
 {
+	constexpr bool seek = true;
+
 	if (event -> button == 1)
 	{
 		if (not motion and touch (event -> x, event -> y))
 		{
-			const auto hit             = getBrowser () -> getNearestHit ();
-			const auto modelViewMatrix = Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getCameraSpaceMatrix ();
-			const auto bbox            = hit -> shape -> getBBox () * modelViewMatrix;
+			const auto hit = getBrowser () -> getNearestHit ();
+	
+			if (seek)
+			{
+				// Seek: look at selected point and fly a little closer.
 
-			getActiveViewpoint () -> lookAt (bbox, 2 - M_PHI);
+				getActiveViewpoint () -> lookAt (hit -> intersection -> point * getActiveViewpoint () -> getCameraSpaceMatrix (), 2 - M_PHI);
+			}
+			else
+			{
+				// Look at as specification say.
+
+				const auto modelViewMatrix = Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getCameraSpaceMatrix ();
+				const auto bbox            = hit -> shape -> getBBox () * modelViewMatrix;
+
+				getActiveViewpoint () -> lookAt (bbox, 2 - M_PHI);
+			}
 		}
 	}
 
