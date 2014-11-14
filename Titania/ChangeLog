@@ -1,5 +1,12 @@
 2014-11-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ColorPerVertexEditor.h:
+	* ColorPerVertexEditor.cpp:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditor.cpp: 
+
+2014-11-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* titania: 
 
 2014-11-14  Holger Seelig  <holger.seelig@yahoo.de>

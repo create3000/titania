@@ -198,6 +198,9 @@ private:
 	///  @name Event handler
 
 	void
+	set_viewer ();
+
+	void
 	set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> &);
 
 	void

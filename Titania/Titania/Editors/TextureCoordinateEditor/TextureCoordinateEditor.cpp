@@ -141,7 +141,7 @@ TextureCoordinateEditor::set_initialized ()
 	{
 		const auto rightShape = right -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
 
-		rightShape -> geometry () .addInterest (this, &TextureCoordinateEditor::on_look_at_all_right_clicked);
+		rightShape -> geometry () .addInterest (this, &TextureCoordinateEditor::set_right_viewer);
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -246,6 +246,26 @@ TextureCoordinateEditor::on_remove_clicked ()
 void
 TextureCoordinateEditor::on_apply_clicked ()
 { }
+
+void
+TextureCoordinateEditor::set_left_viewer ()
+{
+	if (left -> getActiveLayer ())
+	{
+		left -> getActiveLayer () -> getViewpoint () -> resetUserOffsets ();
+		left -> getActiveLayer () -> lookAt ();
+	}
+}
+
+void
+TextureCoordinateEditor::set_right_viewer ()
+{
+	if (right -> getActiveLayer ())
+	{
+		right -> getActiveLayer () -> getViewpoint () -> resetUserOffsets ();
+		right -> getActiveLayer () -> lookAt ();
+	}
+}
 
 void
 TextureCoordinateEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)

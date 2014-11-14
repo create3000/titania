@@ -380,7 +380,7 @@ ColorPerVertexEditor::set_initialized ()
 		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 
 		appearance -> isPrivate (true);
-		shape -> geometry ()               .addInterest (this, &ColorPerVertexEditor::on_look_at_all_clicked);
+		shape -> geometry ()               .addInterest (this, &ColorPerVertexEditor::set_viewer);
 		touchSensor -> hitPoint_changed () .addInterest (this, &ColorPerVertexEditor::set_hitPoint);
 		touchSensor -> touchTime ()        .addInterest (this, &ColorPerVertexEditor::set_touchTime);
 
@@ -821,6 +821,16 @@ ColorPerVertexEditor::connectColor ()
 {
 	geometry -> color () .removeInterest (this, &ColorPerVertexEditor::connectColorIndex);
 	geometry -> color () .addInterest (this, &ColorPerVertexEditor::set_colorIndex);
+}
+
+void
+ColorPerVertexEditor::set_viewer ()
+{
+	if (preview -> getActiveLayer ())
+	{
+		preview -> getActiveLayer () -> getViewpoint () -> resetUserOffsets ();
+		preview -> getActiveLayer () -> lookAt ();
+	}
 }
 
 void

@@ -132,6 +132,12 @@ private:
 	///  @name Event handlers
 
 	void
+	set_left_viewer ();
+
+	void
+	set_right_viewer ();
+
+	void
 	set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> &);
 
 	void
