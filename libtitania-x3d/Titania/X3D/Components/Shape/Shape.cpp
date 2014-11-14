@@ -161,43 +161,63 @@ Shape::pointer ()
 {
 	// All geometries must be picked
 
-	if (getGeometry ())
+	if (not getGeometry ())
+		return;
+
+	if (not getBrowser () -> isPointerInRectangle (getCurrentLayer () -> getViewVolumeStack () .back () .getScissor ()))
+		return;
+
+	const Box3f bbox = getBBox () * getModelViewMatrix () .get ();
+
+	if (not getCurrentLayer () -> getViewVolumeStack () .back () .intersects (bbox))
+		return;
+
+	const Line3f hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ()); // Attention: returns a Line3d.
+
+	std::vector <IntersectionPtr> itersections;
+
+	if (not getGeometry () -> intersects (hitRay, itersections))
+		return;
+
+	// Finally we have intersections and must now find the closest hit in front of the camera.
+
+	// Transform hitPoints to absolute space.
+	for (auto & itersection : itersections)
+		itersection -> point = itersection -> point * getModelViewMatrix () .get ();
+
+	// Sort desc
+	std::sort (itersections .begin (), itersections .end (),
+	           [ ] (const IntersectionPtr &lhs, const IntersectionPtr &rhs) -> bool
+	           {
+	              return lhs -> point .z () > rhs -> point .z ();
+				  });
+
+	// Find first point that is not greater than near plane;
+	const auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearPlane (),
+	                                           [ ] (const IntersectionPtr &lhs, const float & rhs) -> bool
+	                                           {
+	                                              return lhs -> point .z () > rhs;
+															 });
+
+	// There are only intersections behind the camera.
+	if (itersection == itersections .end ())
+		return;
+
+	try
 	{
-		if (getBrowser () -> isPointerInRectangle (getCurrentLayer () -> getViewVolumeStack () .back () .getScissor ()))
-		{
-			const Box3f bbox = getBBox () * getModelViewMatrix () .get ();
-
-			if (getCurrentLayer () -> getViewVolumeStack () .back () .intersects (bbox))
-			{
-				const Line3f hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ()); // Attention!! returns a Line3d
-
-				std::vector <IntersectionPtr> itersections;
-
-				if (getGeometry () -> intersects (hitRay, itersections))
-				{
-					for (auto & itersection : itersections)
-						itersection -> point = itersection -> point * getModelViewMatrix () .get ();
-
-					// Sort desc
-					std::sort (itersections .begin (), itersections .end (),
-					           [ ] (const IntersectionPtr &lhs, const IntersectionPtr &rhs) -> bool
-					           {
-					              return lhs -> point .z () > rhs -> point .z ();
-								  });
-
-					// Find first point that is not greater than near plane;
-					const auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearPlane (),
-					                                           [ ] (const IntersectionPtr &lhs, const float & rhs) -> bool
-					                                           {
-					                                              return lhs -> point .z () > rhs;
-																			 });
-
-					if (itersection not_eq itersections .end ())
-						getBrowser () -> addHit (getModelViewMatrix () .get (), *itersection, this, getCurrentLayer ());
-				}
-			}
-		}
+		// Transform hitNormal to absolute space.
+		(*itersection) -> normal = normalize (inverse (getModelViewMatrix () .get ()) .mult_matrix_dir ((*itersection) -> normal));
 	}
+	catch (const std::domain_error &)
+	{
+		return;
+	}
+
+	// Transform hitTriangle to absolute space.
+	for (auto & vertex : (*itersection) -> triangle)
+		vertex = vertex * getModelViewMatrix () .get ();
+
+	getBrowser () -> addHit (getModelViewMatrix () .get (), *itersection, this, getCurrentLayer ());
 }
 
 void

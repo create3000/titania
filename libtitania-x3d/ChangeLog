@@ -1,3 +1,11 @@
+2014-11-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Shape.cpp:
+	* Hit.cpp:
+	* X3DGeometryNode.cpp:
+	* TouchSensor.cpp:
+	* X3DPointingDeviceSensorContext.cpp: 
+
 2014-11-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MultiTextureCoordinate.h:

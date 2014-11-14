@@ -64,9 +64,9 @@ Hit::Hit (const Vector2d & pointer,
           const X3DShapeNodePtr shape,
           const X3DLayerNodePtr layer) :
 	        pointer (pointer),
-	modelViewMatrix (modelViewMatrix),
-	        hitRay (hitRay),
-	   intersection (intersection),
+	modelViewMatrix (modelViewMatrix), // Shapes model view matrix.
+	         hitRay (hitRay),                   // Hit ray in absolute space.
+	   intersection (intersection),       // All values are transform to absolute space.
 	       distance (std::abs (intersection -> point .z ())),
 	        sensors (sensors),
 	          shape (shape),

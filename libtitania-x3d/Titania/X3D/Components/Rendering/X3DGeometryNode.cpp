@@ -142,16 +142,18 @@ X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 bool
 X3DGeometryNode::intersects (Line3f line, std::vector <IntersectionPtr> & intersections) const
 {
-	bool intersected = false;
-
-	if (getBBox () .intersects (line))
+	try
 	{
+		if (not getBBox () .intersects (line))
+			return false;
+
 		const Matrix4f matrix          = getMatrix ();                           // Get the current matrix from screen nodes.
 		const Matrix4f modelViewMatrix = matrix * getModelViewMatrix () .get (); // This matrix is for clipping only.
 
 		line *= ~matrix;
 
-		size_t first = 0;
+		bool   intersected = false;
+		size_t first       = 0;
 
 		for (const auto & element : elements)
 		{
@@ -201,9 +203,13 @@ X3DGeometryNode::intersects (Line3f line, std::vector <IntersectionPtr> & inters
 
 			first += element .count;
 		}
-	}
 
-	return intersected;
+		return intersected;
+	}
+	catch (const std::domain_error &)
+	{
+		return false;
+	}
 }
 
 bool
@@ -211,27 +217,25 @@ X3DGeometryNode::intersects (const Line3f & line, const size_t i1, const size_t 
 {
 	float u, v, t;
 
-	if (line .intersects (vertices [i1], vertices [i2], vertices [i3], u, v, t))
-	{
-		const float t = 1 - u - v;
+	if (not line .intersects (vertices [i1], vertices [i2], vertices [i3], u, v, t))
+		return false;
 
-		Vector4f     texCoord (0, 0, 0, 1);
-		const size_t texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
+	t = 1 - u - v;
 
-		if (i1 < texCoordSize)
-			texCoord = t * texCoords [0] [i1] + u * texCoords [0] [i2] + v * texCoords [0] [i3];
+	Vector4f     texCoord (0, 0, 0, 1);
+	const size_t texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
 
-		const Vector3f normal = normalize (t * normals  [i1] + u * normals  [i2] + v * normals  [i3]);
-		const Vector3f point  = t * vertices [i1] + u * vertices [i2] + v * vertices [i3];
+	if (i1 < texCoordSize)
+		texCoord = t * texCoords [0] [i1] + u * texCoords [0] [i2] + v * texCoords [0] [i3];
 
-		if (isClipped (point, modelViewMatrix))
-			return false;
+	const Vector3f normal = normalize (t * normals  [i1] + u * normals  [i2] + v * normals  [i3]);
+	const Vector3f point  = t * vertices [i1] + u * vertices [i2] + v * vertices [i3];
 
-		intersections .emplace_back (new Intersection { texCoord, normal, point, std::array <Vector3f, 3> { vertices [i1], vertices [i2], vertices [i3] } });
-		return true;
-	}
+	if (isClipped (point, modelViewMatrix))
+		return false;
 
-	return false;
+	intersections .emplace_back (new Intersection { texCoord, normal, point, std::array <Vector3f, 3> { vertices [i1], vertices [i2], vertices [i3] } });
+	return true;
 }
 
 bool
@@ -243,92 +247,88 @@ X3DGeometryNode::isClipped (const Vector3f & point, const Matrix4f & modelViewMa
 bool
 X3DGeometryNode::isClipped (const Vector3f & point, const Matrix4f & modelViewMatrix, const CollectableObjectArray & localObjects) const
 {
-	for (const auto & node : localObjects)
-	{
-		if (node -> isClipped (point, modelViewMatrix))
-			return true;
-	}
-
-	return false;
+	return std::any_of (localObjects .begin (),
+	                    localObjects .end (),
+	                    [&point, &modelViewMatrix] (const std::shared_ptr <X3DCollectableObject> & node) { return node -> isClipped (point, modelViewMatrix); });
 }
 
 bool
 X3DGeometryNode::intersects (const Sphere3f & sphere, Matrix4f modelViewMatrix, const CollectableObjectArray & localObjects) const
 {
-	if ((getBBox () * modelViewMatrix) .intersects (sphere))
+	if (not (getBBox () * modelViewMatrix) .intersects (sphere))
+		return false;
+
+	modelViewMatrix .mult_left (getMatrix ()); // Multiply by current matrix from screen nodes.
+
+	size_t first = 0;
+
+	for (const auto & element : elements)
 	{
-		modelViewMatrix .mult_left (getMatrix ()); // Multiply by current matrix from screen nodes.
-
-		size_t first = 0;
-
-		for (const auto & element : elements)
+		switch (element .vertexMode)
 		{
-			switch (element .vertexMode)
+			case GL_TRIANGLES :
+				{
+					for (size_t i = first, size = first + element .count; i < size; i += 3)
+					{
+						if (isClipped (vertices [i], modelViewMatrix, localObjects))
+							continue;
+
+						if (sphere .intersects (vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
+							return true;
+					}
+
+					break;
+				}
+			case GL_QUADS:
 			{
-				case GL_TRIANGLES :
-					{
-						for (size_t i = first, size = first + element .count; i < size; i += 3)
-						{
-							if (isClipped (vertices [i], modelViewMatrix, localObjects))
-								continue;
-
-							if (sphere .intersects (vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
-								return true;
-						}
-
-						break;
-					}
-				case GL_QUADS:
+				for (size_t i = first, size = first + element .count; i < size; i += 4)
 				{
-					for (size_t i = first, size = first + element .count; i < size; i += 4)
-					{
-						if (isClipped (vertices [i], modelViewMatrix, localObjects))
-							continue;
+					if (isClipped (vertices [i], modelViewMatrix, localObjects))
+						continue;
 
-						if (sphere .intersects (vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
-							return true;
+					if (sphere .intersects (vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
+						return true;
 
-						if (sphere .intersects (vertices [i] * modelViewMatrix, vertices [i + 2] * modelViewMatrix, vertices [i + 3] * modelViewMatrix))
-							return true;
-					}
-
-					break;
+					if (sphere .intersects (vertices [i] * modelViewMatrix, vertices [i + 2] * modelViewMatrix, vertices [i + 3] * modelViewMatrix))
+						return true;
 				}
-				case GL_QUAD_STRIP:
-				{
-					for (size_t i = first, size = first + element .count - 2; i < size; i += 4)
-					{
-						if (isClipped (vertices [i], modelViewMatrix, localObjects))
-							continue;
 
-						if (sphere .intersects (vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
-							return true;
-
-						if (sphere .intersects (vertices [i + 1] * modelViewMatrix, vertices [i + 3] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
-							return true;
-					}
-
-					break;
-				}
-				case GL_POLYGON:
-				{
-					for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
-					{
-						if (isClipped (vertices [first], modelViewMatrix, localObjects))
-							continue;
-
-						if (sphere .intersects (vertices [first] * modelViewMatrix, vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix))
-							return true;
-					}
-
-					break;
-				}
-				default:
-					break;
+				break;
 			}
+			case GL_QUAD_STRIP:
+			{
+				for (size_t i = first, size = first + element .count - 2; i < size; i += 4)
+				{
+					if (isClipped (vertices [i], modelViewMatrix, localObjects))
+						continue;
 
-			first += element .count;
+					if (sphere .intersects (vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
+						return true;
+
+					if (sphere .intersects (vertices [i + 1] * modelViewMatrix, vertices [i + 3] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
+						return true;
+				}
+
+				break;
+			}
+			case GL_POLYGON:
+			{
+				for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
+				{
+					if (isClipped (vertices [first], modelViewMatrix, localObjects))
+						continue;
+
+					if (sphere .intersects (vertices [first] * modelViewMatrix, vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix))
+						return true;
+				}
+
+				break;
+			}
+			default:
+				break;
 		}
+
+		first += element .count;
 	}
 
 	return false;

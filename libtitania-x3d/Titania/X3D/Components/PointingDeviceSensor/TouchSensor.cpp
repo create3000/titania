@@ -103,13 +103,18 @@ TouchSensor::set_over (const HitPtr & hit, const bool over)
 
 		if (isOver ())
 		{
-			const auto &     intersection    = hit -> intersection;
-			const Matrix4d & modelViewMatrix = getMatrices () .at (hit -> layer) .modelViewMatrix;
+			const auto &     intersection       = hit -> intersection;
+			const Matrix4d & modelViewMatrix    = getMatrices () .at (hit -> layer) .modelViewMatrix;
+			const Matrix4d   invModelViewMatrix = ~modelViewMatrix;
 
 			hitTexCoord_changed () = Vector2f (intersection -> texCoord .x (), intersection -> texCoord .y ());
-			hitNormal_changed ()   = intersection -> normal;
-			hitPoint_changed ()    = Vector3d (intersection -> point) * ~modelViewMatrix;
-			hitTriangle_changed () .assign (intersection -> triangle .begin (), intersection -> triangle .end ());
+			hitNormal_changed ()   = normalize (modelViewMatrix .mult_matrix_dir (intersection -> normal));
+			hitPoint_changed ()    = Vector3d (intersection -> point) * invModelViewMatrix;
+
+			hitTriangle_changed () .clear ();
+
+			for (const auto & vertex : intersection -> triangle)
+				hitTriangle_changed () .emplace_back (Vector3d (vertex) * invModelViewMatrix);
 		}
 	}
 	catch (const std::exception &)

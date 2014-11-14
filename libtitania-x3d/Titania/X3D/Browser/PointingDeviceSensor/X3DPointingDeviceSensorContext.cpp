@@ -125,9 +125,9 @@ X3DPointingDeviceSensorContext::touch (const double x, const double y)
 bool
 X3DPointingDeviceSensorContext::isPointerInRectangle (const Vector4i & rectangle) const
 {
-	return pointer .x () > rectangle .x () and 
+	return pointer .x () > rectangle .x () and
 	       pointer .x () < rectangle .x () + rectangle .z () and
-	       pointer .y () > rectangle .y () and 
+	       pointer .y () > rectangle .y () and
 	       pointer .y () < rectangle .y () + rectangle .w ();
 }
 
@@ -153,7 +153,7 @@ X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, c
 bool
 X3DPointingDeviceSensorContext::motionNotifyEvent (const double x, const double y)
 {
-	hasMoved |= pointer .x () not_eq x or pointer .y () not_eq y;
+	hasMoved |= pointer not_eq Vector2d (x, y);
 
 	touch (x, y);
 
@@ -223,7 +223,7 @@ X3DPointingDeviceSensorContext::buttonPressEvent (const double x, const double y
 
 	if (getHits () .empty ())
 		return false;
-		
+
 	if (getNearestHit () -> sensors .empty ())
 		return false;
 

@@ -1216,6 +1216,8 @@ ColorPerVertexEditor::set_triangle (const X3D::Vector3f & point)
 std::vector <size_t>
 ColorPerVertexEditor::getPointIndices (const X3D::Vector3f & hitPoint, const X3D::MFVec3f & hitTriangle) const
 {
+	constexpr double eps = 1e-5;
+
 	const std::array <float, 3> distances = {
 		math::abs (hitPoint - hitTriangle [0]),
 		math::abs (hitPoint - hitTriangle [1]),
@@ -1230,7 +1232,7 @@ ColorPerVertexEditor::getPointIndices (const X3D::Vector3f & hitPoint, const X3D
 
 	for (size_t i = 0, size = coord -> getSize (); i < size; ++ i)
 	{
-		if (coord -> get1Point (i) == point)
+		if (math::abs (coord -> get1Point (i) - point) < eps)
 			indices .emplace_back (i);
 	}
 
