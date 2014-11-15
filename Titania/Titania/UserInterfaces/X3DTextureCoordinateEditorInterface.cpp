@@ -69,9 +69,11 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UndoMenuItem", m_UndoMenuItem);
 	m_builder -> get_widget ("RedoMenuItem", m_RedoMenuItem);
 	m_builder -> get_widget ("LeftBox", m_LeftBox);
-	m_builder -> get_widget ("LookAtButton1", m_LookAtButton1);
+	m_builder -> get_widget ("LeftArrowButton", m_LeftArrowButton);
+	m_builder -> get_widget ("LeftLookAtButton", m_LeftLookAtButton);
 	m_builder -> get_widget ("RightBox", m_RightBox);
-	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
+	m_builder -> get_widget ("RightArrowButton", m_RightArrowButton);
+	m_builder -> get_widget ("RightLookAtButton", m_RightLookAtButton);
 	m_builder -> get_widget ("RemoveButton", m_RemoveButton);
 	m_builder -> get_widget ("ApplyButton", m_ApplyButton);
 
@@ -82,9 +84,17 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_undo_activate));
 	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_redo_activate));
 
-	// Connect object Gtk::ToolButton with id 'LookAtButton1'.
-	m_LookAtButton1 -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_look_at_all_left_clicked));
-	m_LookAtButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_look_at_all_right_clicked));
+	// Connect object Gtk::ToggleToolButton with id 'LeftArrowButton'.
+	m_LeftArrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_arrow_toggled));
+
+	// Connect object Gtk::ToolButton with id 'LeftLookAtButton'.
+	m_LeftLookAtButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_look_at_all_clicked));
+
+	// Connect object Gtk::ToggleToolButton with id 'RightArrowButton'.
+	m_RightArrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_right_arrow_toggled));
+
+	// Connect object Gtk::ToolButton with id 'RightLookAtButton'.
+	m_RightLookAtButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_right_look_at_all_clicked));
 
 	// Connect object Gtk::Button with id 'RemoveButton'.
 	m_RemoveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_remove_clicked));

@@ -48,33 +48,26 @@
  *
  ******************************************************************************/
 
-#include "Hit.h"
+#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DSELECTOR_H__
+#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DSELECTOR_H__
 
-#include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Components/Shape/X3DShapeNode.h"
+#include "../X3DBrowserObject.h"
 
 namespace titania {
 namespace X3D {
 
-Hit::Hit (const Vector2d & pointer,
-          const Matrix4d & modelViewMatrix,
-          const Line3d & hitRay,
-          const IntersectionPtr & intersection,
-          const PointingDeviceSensorSet & sensors,
-          const X3DShapeNodePtr shape,
-          const X3DLayerNodePtr layer) :
-	        pointer (pointer),
-	modelViewMatrix (modelViewMatrix), // Shapes model view matrix.
-	         hitRay (hitRay),                   // Hit ray in absolute space (null space).
-	   intersection (intersection),       // All values are transform to absolute space (null space).
-	       distance (std::abs (intersection -> point .z ())),
-	        sensors (sensors),
-	          shape (shape),
-	          layer (layer)
-{ }
+class X3DSelector :
+	public X3DBrowserObject
+{
+protected:
 
-Hit::~Hit ()
-{ }
+	///  @name Constructors
+
+	X3DSelector (Browser* const);
+
+};
 
 } // X3D
 } // titania
+
+#endif

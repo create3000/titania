@@ -110,11 +110,19 @@ private:
 
 	virtual
 	void
-	on_look_at_all_left_clicked () final override;
+	on_left_arrow_toggled () final override;
 
 	virtual
 	void
-	on_look_at_all_right_clicked () final override;
+	on_left_look_at_all_clicked () final override;
+
+	virtual
+	void
+	on_right_arrow_toggled () final override;
+
+	virtual
+	void
+	on_right_look_at_all_clicked () final override;
 
 	void
 	set_undoHistory ();

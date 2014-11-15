@@ -1,3 +1,11 @@
+2014-11-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* TextureCoordinateEditor.xml:
+	* X3DTextureCoordinateEditorInterface.h:
+	* X3DTextureCoordinateEditorInterface.cpp:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditor.cpp: 
+
 2014-11-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ColorPerVertexEditor.h:

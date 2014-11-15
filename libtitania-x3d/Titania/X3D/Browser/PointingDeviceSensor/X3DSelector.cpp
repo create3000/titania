@@ -48,32 +48,13 @@
  *
  ******************************************************************************/
 
-#include "Hit.h"
-
-#include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Components/Shape/X3DShapeNode.h"
+#include "X3DSelector.h"
 
 namespace titania {
 namespace X3D {
 
-Hit::Hit (const Vector2d & pointer,
-          const Matrix4d & modelViewMatrix,
-          const Line3d & hitRay,
-          const IntersectionPtr & intersection,
-          const PointingDeviceSensorSet & sensors,
-          const X3DShapeNodePtr shape,
-          const X3DLayerNodePtr layer) :
-	        pointer (pointer),
-	modelViewMatrix (modelViewMatrix), // Shapes model view matrix.
-	         hitRay (hitRay),                   // Hit ray in absolute space (null space).
-	   intersection (intersection),       // All values are transform to absolute space (null space).
-	       distance (std::abs (intersection -> point .z ())),
-	        sensors (sensors),
-	          shape (shape),
-	          layer (layer)
-{ }
-
-Hit::~Hit ()
+X3DSelector::X3DSelector (Browser* const browser) :
+	X3DBrowserObject (browser)
 { }
 
 } // X3D

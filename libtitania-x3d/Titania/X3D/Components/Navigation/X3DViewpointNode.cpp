@@ -287,6 +287,9 @@ X3DViewpointNode::straightenView (const Rotation4f & orientation) const
 	return Rotation4f (yAxis * orientation, getUpVector ());
 }
 
+///  Flys to @a point in world coordinates to a distance of @a factor and centers the point within the browser surface.
+///  If @a straighten is true the camera up vector is rotate into the plane defined by the local y-axis and the cameras
+///  direction vector.
 void
 X3DViewpointNode::lookAt (Vector3f point, const float factor, const bool straighten)
 {
@@ -305,6 +308,9 @@ X3DViewpointNode::lookAt (Vector3f point, const float factor, const bool straigh
 	{ }
 }
 
+///  Given a @a bbox in world coordinates the camera flys to the box to a distance of @a factor and centers the box
+///  within the browser surface.  If @a straighten is true the camera up vector is rotate into the plane defined by the
+///  local y-axis and the cameras direction vector.
 void
 X3DViewpointNode::lookAt (Box3f bbox, const float factor, const bool straighten)
 {
@@ -354,6 +360,12 @@ X3DViewpointNode::lookAt (const Vector3f & point, const float distance, const fl
 	set_bind ()               = true;
 }
 
+///  Starts a transition from @a fromViewpoint to this viewpoints position and orientation.  The transitionType from the
+///  currently bound NavigationInfo is used.  The user offsets are reseted if retainUserOffsets is false.  You can use: 
+///
+///      viewpoint -> transitionStart (viewpoint);
+///
+///  to fly to the original position of the viewpoint.
 void
 X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 {

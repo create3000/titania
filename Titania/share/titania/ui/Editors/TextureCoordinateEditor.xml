@@ -128,12 +128,14 @@
                                     <property name="toolbar_style">icons</property>
                                     <property name="icon_size">1</property>
                                     <child>
-                                      <object class="GtkToolButton" id="toolbutton2">
+                                      <object class="GtkToggleToolButton" id="LeftArrowButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Toggle between selection and plane viewer.</property>
                                         <property name="label" translatable="yes">Select</property>
                                         <property name="use_underline">True</property>
                                         <property name="stock_id">Arrow</property>
+                                        <signal name="toggled" handler="on_left_arrow_toggled" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
@@ -151,14 +153,14 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkToolButton" id="LookAtButton1">
+                                      <object class="GtkToolButton" id="LeftLookAtButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="tooltip_text" translatable="yes">Look At Object.</property>
                                         <property name="label" translatable="yes">Look At</property>
                                         <property name="use_underline">True</property>
                                         <property name="stock_id">gtk-zoom-fit</property>
-                                        <signal name="clicked" handler="on_look_at_all_left_clicked" swapped="no"/>
+                                        <signal name="clicked" handler="on_left_look_at_all_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
@@ -220,12 +222,14 @@
                                     <property name="toolbar_style">icons</property>
                                     <property name="icon_size">1</property>
                                     <child>
-                                      <object class="GtkToolButton" id="toolbutton1">
+                                      <object class="GtkToggleToolButton" id="RightArrowButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Toggle between selection and examine viewer.</property>
                                         <property name="label" translatable="yes">Select</property>
                                         <property name="use_underline">True</property>
                                         <property name="stock_id">Arrow</property>
+                                        <signal name="toggled" handler="on_right_arrow_toggled" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
@@ -243,14 +247,14 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkToolButton" id="LookAtButton">
+                                      <object class="GtkToolButton" id="RightLookAtButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="tooltip_text" translatable="yes">Look At Object.</property>
                                         <property name="label" translatable="yes">Look At</property>
                                         <property name="use_underline">True</property>
                                         <property name="stock_id">gtk-zoom-fit</property>
-                                        <signal name="clicked" handler="on_look_at_all_right_clicked" swapped="no"/>
+                                        <signal name="clicked" handler="on_right_look_at_all_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>

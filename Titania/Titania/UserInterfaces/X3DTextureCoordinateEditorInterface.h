@@ -122,17 +122,25 @@ public:
 	getLeftBox () const
 	{ return *m_LeftBox; }
 
+	Gtk::ToggleToolButton &
+	getLeftArrowButton () const
+	{ return *m_LeftArrowButton; }
+
 	Gtk::ToolButton &
-	getLookAtButton1 () const
-	{ return *m_LookAtButton1; }
+	getLeftLookAtButton () const
+	{ return *m_LeftLookAtButton; }
 
 	Gtk::Box &
 	getRightBox () const
 	{ return *m_RightBox; }
 
+	Gtk::ToggleToolButton &
+	getRightArrowButton () const
+	{ return *m_RightArrowButton; }
+
 	Gtk::ToolButton &
-	getLookAtButton () const
-	{ return *m_LookAtButton; }
+	getRightLookAtButton () const
+	{ return *m_RightLookAtButton; }
 
 	Gtk::Button &
 	getRemoveButton () const
@@ -156,11 +164,19 @@ public:
 
 	virtual
 	void
-	on_look_at_all_left_clicked () = 0;
+	on_left_arrow_toggled () = 0;
 
 	virtual
 	void
-	on_look_at_all_right_clicked () = 0;
+	on_left_look_at_all_clicked () = 0;
+
+	virtual
+	void
+	on_right_arrow_toggled () = 0;
+
+	virtual
+	void
+	on_right_look_at_all_clicked () = 0;
 
 	virtual
 	void
@@ -189,9 +205,11 @@ private:
 	Gtk::ImageMenuItem*            m_UndoMenuItem;
 	Gtk::ImageMenuItem*            m_RedoMenuItem;
 	Gtk::Box*                      m_LeftBox;
-	Gtk::ToolButton*               m_LookAtButton1;
+	Gtk::ToggleToolButton*         m_LeftArrowButton;
+	Gtk::ToolButton*               m_LeftLookAtButton;
 	Gtk::Box*                      m_RightBox;
-	Gtk::ToolButton*               m_LookAtButton;
+	Gtk::ToggleToolButton*         m_RightArrowButton;
+	Gtk::ToolButton*               m_RightLookAtButton;
 	Gtk::Button*                   m_RemoveButton;
 	Gtk::Button*                   m_ApplyButton;
 

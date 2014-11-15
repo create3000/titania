@@ -63,7 +63,11 @@ class NoneViewer :
 {
 public:
 
+	///  @name Construction
+
 	NoneViewer (Browser* const);
+
+	///  @name Member access
 
 	virtual
 	ViewerType

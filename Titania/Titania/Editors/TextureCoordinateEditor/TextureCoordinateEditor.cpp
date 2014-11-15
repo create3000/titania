@@ -226,14 +226,28 @@ TextureCoordinateEditor::set_undoHistory ()
 }
 
 void
-TextureCoordinateEditor::on_look_at_all_left_clicked ()
+TextureCoordinateEditor::on_left_arrow_toggled ()
+{
+}
+
+void
+TextureCoordinateEditor::on_left_look_at_all_clicked ()
 {
 	if (left -> getActiveLayer ())
 		left -> getActiveLayer () -> lookAt ();
 }
 
 void
-TextureCoordinateEditor::on_look_at_all_right_clicked ()
+TextureCoordinateEditor::on_right_arrow_toggled ()
+{
+	if (getRightArrowButton () .get_active ())
+		right -> setSelector (X3D::SelectorType::LASSO);
+	else
+		right -> setSelector (X3D::SelectorType::NONE);
+}
+
+void
+TextureCoordinateEditor::on_right_look_at_all_clicked ()
 {
 	if (right -> getActiveLayer ())
 		right -> getActiveLayer () -> lookAt ();

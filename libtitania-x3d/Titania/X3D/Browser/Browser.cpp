@@ -59,6 +59,7 @@
 #include "../Browser/Navigation/PlaneViewer.h"
 #include "../Browser/Navigation/WalkViewer.h"
 #include "../Browser/Navigation/X3DViewer.h"
+#include "../Browser/PointingDeviceSensor/LassoSelection.h"
 #include "../Browser/PointingDeviceSensor/PointingDevice.h"
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
@@ -83,7 +84,9 @@ Browser::Browser () :
 	opengl::Surface (),
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
-	pointingDevice  (new PointingDevice (this))
+	pointingDevice  (new PointingDevice (this)),
+	       selector (),
+	   selectorType (SelectorType::NONE)
 {
 	addType (X3DConstants::Browser);
 }
@@ -117,7 +120,6 @@ Browser::initialize ()
 
 	getViewer () .addInterest (this, &Browser::set_viewer);
 	changed ()   .addInterest (this, &Gtk::Widget::queue_draw);
-	//changed ()   .addInterest (this, &Browser::set_changed);
 
 	setCursor (Gdk::ARROW);
 
@@ -152,6 +154,25 @@ Browser::getBackgroundColor () const
 }
 
 void
+Browser::setSelector (const SelectorType value)
+{
+	selectorType = value;
+
+	switch (selectorType)
+	{
+		case SelectorType::NONE:
+			selector .reset ();
+			break;
+		case SelectorType::LASSO:
+			selector .reset (new LassoSelection (this));
+			break;
+	}
+	
+	if (selector)
+		selector -> setup ();
+}
+
+void
 Browser::on_map ()
 {
 	opengl::Surface::on_map ();
@@ -176,18 +197,6 @@ Browser::on_unmap ()
 	}
 
 	opengl::Surface::on_unmap ();
-}
-
-void
-Browser::set_changed ()
-{
-	//Glib::signal_idle () .connect_once (sigc::mem_fun (*this, &Gtk::Widget::queue_draw));
-
-	//queue_draw ();
-
-	//get_window () -> invalidate_rect (get_allocation (), false);
-
-	//get_window () -> process_updates (false);
 }
 
 void
@@ -241,6 +250,7 @@ Browser::dispose ()
 	viewer         .reset ();
 	keyDevice      .reset ();
 	pointingDevice .reset ();
+	selector       .reset ();
 
 	X3DBrowser::dispose ();
 	opengl::Surface::dispose ();

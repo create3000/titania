@@ -1,3 +1,20 @@
+2014-11-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Browser.h:
+	* Browser.cpp:
+	* NoneViewer.h:
+	* LookAtViewer.h:
+	* X3DFlyViewer.cpp:
+	* Hit.cpp:
+	* X3DSelector.h:
+	* X3DViewpointNode.cpp:
+	* SelectorType.h:
+	* X3DSelector.cpp:
+	* LassoSelection.h:
+	* LassoSelection.cpp: 
+
 2014-11-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Viewpoint.h:

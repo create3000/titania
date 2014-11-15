@@ -81,6 +81,7 @@ public:
 
 	///  @name Destruction
 
+	virtual
 	~LookAtViewer ();
 
 
@@ -91,6 +92,8 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Event handlers
 
 	bool
 	on_button_press_event (GdkEventButton*);

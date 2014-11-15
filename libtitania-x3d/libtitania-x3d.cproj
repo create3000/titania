@@ -796,6 +796,9 @@
     <None Include="Titania\X3D\Parser\Wavefront\Parser.h" />
     <None Include="EmptyCHeaderFile.h" />
     <None Include="Titania\X3D\Tools\EnvironmentalSensor\TransformSensorTool.h" />
+    <None Include="Titania\X3D\Browser\PointingDeviceSensor\LassoSelection.h" />
+    <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.h" />
+    <None Include="Titania\X3D\Browser\PointingDeviceSensor\SelectorType.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1316,6 +1319,8 @@
     <Compile Include="Titania\X3D\Browser\Geometry3D\ConeOptions.cpp" />
     <Compile Include="Titania\X3D\InputOutput\GoldenGate.cpp" />
     <Compile Include="Titania\X3D\Parser\Wavefront\Parser.cpp" />
+    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\LassoSelection.cpp" />
+    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
