@@ -93,13 +93,18 @@ private:
 	on_motion_notify_event (GdkEventMotion*);
 
 	void
+	addPoint (const double, const double);
+
+	void
+	clear ();
+
+	void
 	display ();
 
 	///  @name Members
 
 	bool                   sensitive;
 	int                    button;
-	std::vector <Vector2d> pointer;
 	std::vector <Vector3f> points;
 
 };

@@ -63,7 +63,6 @@ LassoSelection::LassoSelection (Browser* const browser) :
 	X3DSelector (browser),
 	  sensitive (browser -> isSensitive ()),
 	     button (0),
-	    pointer (),
 	     points ()
 { }
 
@@ -100,8 +99,8 @@ LassoSelection::on_button_press_event (GdkEventButton* event)
 		
 		getBrowser () -> displayed () .addInterest (this, &LassoSelection::display);
 		
-		pointer .clear ();
-		pointer .emplace_back (event -> x, event -> y);
+		clear ();
+		addPoint (event -> x, event -> y);
 
 		return true;
 	}
@@ -139,12 +138,27 @@ LassoSelection::on_motion_notify_event (GdkEventMotion* event)
 
 	if (button == 1)
 	{
-		pointer .emplace_back (event -> x, event -> y);
+		addPoint (event -> x, event -> y);
 
 		return true;
 	}
 
 	return false;
+}
+
+void
+LassoSelection::addPoint (const double x, const double y)
+{
+	const auto & viewport = getBrowser () -> getRectangle ();
+	const double height   = viewport [3];
+
+	points .emplace_back (x, height - y, 0);
+}
+
+void
+LassoSelection::clear ()
+{
+	points .clear ();
 }
 
 void
@@ -156,11 +170,10 @@ LassoSelection::display ()
 	{
 		// Configure HUD
 
-		const Vector4i viewport = getBrowser () -> getRectangle ();
-		const int      width    = viewport [2];
-		const int      height   = viewport [3];
+		const auto & viewport = getBrowser () -> getRectangle ();
+		const int    width    = viewport [2];
+		const int    height   = viewport [3];
 
-		const Matrix4d modelview; // Use identity
 		const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
 
 		glDisable (GL_DEPTH_TEST);
@@ -171,11 +184,6 @@ LassoSelection::display ()
 
 		// Display Lasso.
 		// Draw a black and a white line.
-
-		points .clear ();
-
-		for (const auto & point : pointer)
-			points .emplace_back (ViewVolume::unProjectPoint (point .x (), height - point .y (), 0, modelview, projection, viewport));
 
 		glLoadIdentity ();
 

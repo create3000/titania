@@ -1,5 +1,11 @@
 2014-11-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DFlyViewer.cpp:
+	* LassoSelection.h:
+	* LassoSelection.cpp: 
+
+2014-11-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Browser.h:

@@ -386,11 +386,10 @@ X3DFlyViewer::display ()
 	{
 		// Configure HUD
 
-		const Vector4i viewport = getBrowser () -> getRectangle ();
-		const int      width    = viewport [2];
-		const int      height   = viewport [3];
+		const auto & viewport = getBrowser () -> getRectangle ();
+		const int    width    = viewport [2];
+		const int    height   = viewport [3];
 
-		const Matrix4d modelview; // Use identity
 		const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
 
 		glDisable (GL_DEPTH_TEST);
@@ -403,8 +402,8 @@ X3DFlyViewer::display ()
 
 		glLoadIdentity ();
 
-		const Vector3d fromPoint = ViewVolume::unProjectPoint (fromVector .x (), height - fromVector .z (), 0, modelview, projection, viewport);
-		const Vector3d toPoint   = ViewVolume::unProjectPoint (toVector   .x (), height - toVector   .z (), 0, modelview, projection, viewport);
+		const Vector3d fromPoint (fromVector .x (), height - fromVector .z (), 0);
+		const Vector3d toPoint   (toVector   .x (), height - toVector   .z (), 0);
 
 		// Draw a black and a white line.
 		glLineWidth (2);
