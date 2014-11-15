@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_RENDERING_TESSELLATOR_H__
 #define __TITANIA_X3D_RENDERING_TESSELLATOR_H__
 
+#include <Titania/Basic/ReferenceIterator.h>
 #include <Titania/Math/Numbers/Vector3.h>
 #include <iostream>
 #include <tuple>
@@ -60,6 +61,8 @@
 
 namespace titania {
 namespace opengl {
+
+// http://www.glprogramming.com/red/chapter11.html
 
 template <class ... Args>
 class tessellator;
@@ -102,9 +105,10 @@ class polygon_element
 {
 public:
 
-	using Vertex      = tessellator_vertex <Args ...>;
-	using VertexArray = std::vector <Vertex*>;
-	using size_type   = typename VertexArray::size_type;
+	using Vertex         = tessellator_vertex <Args ...>;
+	using VertexArray    = std::vector <Vertex*>;
+	using const_iterator = basic::reference_iterator <typename VertexArray::const_iterator, Vertex>;
+	using size_type      = typename VertexArray::size_type;
 
 	polygon_element (GLenum type) :
 		    m_type (type),
@@ -118,6 +122,14 @@ public:
 	const Vertex &
 	operator [ ] (size_t i) const
 	{ return *m_vertices [i]; }
+
+	const_iterator
+	begin () const
+	{ return const_iterator (m_vertices .begin ()); }
+
+	const_iterator
+	end () const
+	{ return const_iterator (m_vertices .end ()); }
 
 	size_type
 	size () const
@@ -142,6 +154,9 @@ public:
 	using Vertex  = tessellator_vertex <Args ...>;
 
 	tessellator ();
+
+	void
+	property (const GLenum, const GLdouble);
 
 	template <class ... A>
 	void
@@ -194,13 +209,20 @@ tessellator <Args ...>::tessellator () :
 	if (tess)
 	{
 		gluTessProperty (tess, GLU_TESS_BOUNDARY_ONLY, GLU_FALSE);
-		gluTessCallback (tess, GLU_TESS_BEGIN_DATA,  _GLUfuncptr (&tessellator::tessBeginData));
-		gluTessCallback (tess, GLU_TESS_VERTEX_DATA, _GLUfuncptr (&tessellator::tessVertexData));
-
+		gluTessCallback (tess, GLU_TESS_BEGIN_DATA,   _GLUfuncptr (&tessellator::tessBeginData));
+		gluTessCallback (tess, GLU_TESS_VERTEX_DATA,  _GLUfuncptr (&tessellator::tessVertexData));
 		gluTessCallback (tess, GLU_TESS_COMBINE_DATA, _GLUfuncptr (&tessellator::tessCombineData));
 		gluTessCallback (tess, GLU_TESS_END_DATA,     _GLUfuncptr (&tessellator::tessEndData));
 		gluTessCallback (tess, GLU_TESS_ERROR,        _GLUfuncptr (&tessellator::tessError));
 	}
+}
+
+template <class ... Args>
+inline
+void
+tessellator <Args ...>::property (const GLenum property, const GLdouble value)
+{
+	gluTessProperty (tess, property, value);
 }
 
 template <class ... Args>

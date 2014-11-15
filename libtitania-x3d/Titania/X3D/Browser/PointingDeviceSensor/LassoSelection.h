@@ -101,11 +101,14 @@ private:
 	void
 	display ();
 
+	void
+	polygon ();
+
 	///  @name Members
 
 	bool                   sensitive;
 	int                    button;
-	std::vector <Vector3f> points;
+	std::vector <Vector3d> points;
 
 };
 

@@ -51,6 +51,7 @@
 #include "GeoCoordinate.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/Tessellator.h"
 
 namespace titania {
 namespace X3D {

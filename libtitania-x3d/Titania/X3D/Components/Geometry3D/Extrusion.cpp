@@ -54,6 +54,7 @@
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/Tessellator.h"
 
 #include <Titania/Utility/Range.h>
 

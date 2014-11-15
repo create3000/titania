@@ -51,8 +51,16 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY3D_EXTRUSION_H__
 #define __TITANIA_X3D_COMPONENTS_GEOMETRY3D_EXTRUSION_H__
 
-#include "../../Rendering/Tessellator.h"
 #include "../Rendering/X3DGeometryNode.h"
+
+namespace titania {
+namespace opengl {
+
+template <class ... Args>
+class tessellator;
+
+} // opengl
+} // titania
 
 namespace titania {
 namespace X3D {

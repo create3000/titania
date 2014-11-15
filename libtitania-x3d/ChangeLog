@@ -1,5 +1,18 @@
 2014-11-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Tessellator.h:
+	* Extrusion.h:
+	* Extrusion.cpp:
+	* Coordinate.cpp:
+	* CoordinateDouble.cpp:
+	* GeoCoordinate.cpp:
+	* X3DCoordinateNode.h:
+	* IndexedFaceSet.cpp:
+	* LassoSelection.h:
+	* LassoSelection.cpp: 
+
+2014-11-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DFlyViewer.cpp:
 	* LassoSelection.h:
 	* LassoSelection.cpp: 

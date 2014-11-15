@@ -53,6 +53,7 @@
 #include "LassoSelection.h"
 
 #include "../../Components/Layering/X3DLayerNode.h"
+#include "../../Rendering/Tessellator.h"
 
 #include <Titania/Math/Geometry/Camera.h>
 
@@ -69,8 +70,6 @@ LassoSelection::LassoSelection (Browser* const browser) :
 void
 LassoSelection::initialize ()
 {
-	__LOG__ << std::endl;
-
 	X3DSelector::initialize ();
 
 	getBrowser () -> signal_button_press_event ()   .connect (sigc::mem_fun (*this, &LassoSelection::on_button_press_event),   false);
@@ -83,8 +82,6 @@ LassoSelection::initialize ()
 bool
 LassoSelection::on_button_press_event (GdkEventButton* event)
 {
-	__LOG__ << std::endl;
-	
 	if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
 		return false;
 
@@ -164,8 +161,6 @@ LassoSelection::clear ()
 void
 LassoSelection::display ()
 {
-	__LOG__ << std::endl;
-
 	try
 	{
 		// Configure HUD
@@ -187,18 +182,19 @@ LassoSelection::display ()
 
 		glLoadIdentity ();
 
-		glLineWidth (2);
-		glColor3f (0, 0, 0);
+		glDisable (GL_CULL_FACE);
+		glColor3f (1, 1, 1);
+		polygon ();
 
 		glEnableClientState (GL_VERTEX_ARRAY);
-		glVertexPointer (3, GL_FLOAT, 0, points .data ());
+		glVertexPointer (3, GL_DOUBLE, 0, points .data ());
 
+		glLineWidth (2);
+		glColor3f (0, 0, 0);
 		glDrawArrays (GL_LINE_LOOP, 0, points .size ());
 
 		glLineWidth (1);
 		glColor3f (1, 1, 1);
-	
-		glVertexPointer (3, GL_FLOAT, 0, points .data ());
 		glDrawArrays (GL_LINE_LOOP, 0, points .size ());
 
 		glDisableClientState (GL_VERTEX_ARRAY);
@@ -210,10 +206,29 @@ LassoSelection::display ()
 	}
 }
 
+void
+LassoSelection::polygon ()
+{
+	opengl::tessellator <int> tessellator;
+
+	for (const auto & point : points)
+		tessellator .add_vertex (point, 0);
+
+	tessellator .tessellate ();
+
+	for (const auto & element : tessellator .polygon ())
+	{
+		glBegin (element .type ());
+
+		for (const auto & vertex : element)
+			glVertex3dv (vertex .point () .data ());
+
+		glEnd ();
+	}
+}
+
 LassoSelection::~LassoSelection ()
 {
-	__LOG__ << std::endl;
-
 	getBrowser () -> isSensitive (sensitive);
 }
 

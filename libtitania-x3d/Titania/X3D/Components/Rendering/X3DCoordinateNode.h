@@ -52,8 +52,16 @@
 #define __TITANIA_X3D_COMPONENTS_RENDERING_X3DCOORDINATE_NODE_H__
 
 #include "../Rendering/X3DGeometricPropertyNode.h"
-#include "../../Rendering/Tessellator.h"
 #include "../../Types/Geometry.h"
+
+namespace titania {
+namespace opengl {
+
+template <class ... Args>
+class tessellator;
+
+} // opengl
+} // titania
 
 namespace titania {
 namespace X3D {

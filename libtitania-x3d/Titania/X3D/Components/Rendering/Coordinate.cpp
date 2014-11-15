@@ -52,6 +52,7 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Types/Geometry.h"
+#include "../../Rendering/Tessellator.h"
 
 namespace titania {
 namespace X3D {
