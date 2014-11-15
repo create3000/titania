@@ -426,11 +426,14 @@ Extrusion::build ()
 			else
 			{
 				Tessellator tessellator;
+				tessellator .begin_polygon ();
+				tessellator .begin_contour ();
 
 				for (size_t k = 0; k < numCapPoints; ++ k)
 					tessellator .add_vertex (points [INDEX (j, numCapPoints - 1 - k)], INDEX (j, numCapPoints - 1 - k), numCapPoints - 1 - k);
 
-				tessellator .tessellate ();
+				tessellator .end_contour ();
+				tessellator .end_polygon ();
 
 				tessellateCap (tessellator, points, min, capMax);
 			}
@@ -462,11 +465,14 @@ Extrusion::build ()
 			else
 			{
 				Tessellator tessellator;
+				tessellator .begin_polygon ();
+				tessellator .begin_contour ();
 
 				for (size_t k = 0; k < numCapPoints; ++ k)
 					tessellator .add_vertex (points [INDEX (j, k)], INDEX (j, k), k);
 
-				tessellator .tessellate ();
+				tessellator .end_contour ();
+				tessellator .end_polygon ();
 
 				tessellateCap (tessellator, points, min, capMax);
 			}

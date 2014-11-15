@@ -55,6 +55,15 @@
 #include <array>
 
 namespace titania {
+namespace opengl {
+
+template <class ... Args>
+class tessellator;
+
+} // opengl
+} // titania
+
+namespace titania {
 namespace X3D {
 
 class IndexedFaceSet :
@@ -162,6 +171,8 @@ public:
 
 private:
 
+	///  @name Member types
+
 	typedef std::vector <size_t>  Vertices;
 	typedef std::vector <size_t>  Element;
 	typedef std::vector <Element> ElementArray;
@@ -173,7 +184,8 @@ private:
 
 	};
 
-	typedef std::vector <Polygon> PolygonArray;
+	typedef std::vector <Polygon>        PolygonArray;
+	typedef opengl::tessellator <size_t> Tessellator;
 
 	///  @name Operations
 
@@ -206,8 +218,7 @@ private:
 	tessellate (const bool, PolygonArray &, size_t &);
 
 	void
-	tessellate (const bool, PolygonArray &);
-
+	tessellate (const std::unique_ptr <Tessellator> &, PolygonArray &);
 
 	///  @name Static members
 

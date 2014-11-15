@@ -275,6 +275,11 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 
 	if (not coordIndex () .empty ())
 	{
+		std::unique_ptr <Tessellator> tessellator;
+	
+		if (not convex)
+			tessellator .reset (new Tessellator ());
+	
 		// Add -1 (polygon end marker) to coordIndex if not present.
 		if (coordIndex () .back () > -1)
 			coordIndex () .emplace_back (-1);
@@ -335,7 +340,7 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 
 							// Tessellate polygons.
 
-							tessellate (convex, polygons);
+							tessellate (tessellator, polygons);
 
 							if (polygons .back () .elements .empty ())
 								vertices .clear ();
@@ -358,26 +363,29 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 	}
 }
 
+
 void
-IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons)
+IndexedFaceSet::tessellate (const std::unique_ptr <Tessellator> & tessellator, PolygonArray & polygons)
 {
 	Vertices &     vertices = polygons .back () .vertices;
 	ElementArray & elements = polygons .back () .elements;
 
-	if (convex)
+	if (not tessellator)
 	{
 		elements .emplace_back (vertices);
 		return;
 	}
 
-	opengl::tessellator <size_t> tessellator;
+	tessellator -> begin_polygon ();
+	tessellator -> begin_contour ();
 
 	for (const auto & i : vertices)
-		getCoord () -> addVertex (tessellator, coordIndex () [i], i);
+		getCoord () -> addVertex (*tessellator, coordIndex () [i], i);
 
-	tessellator .tessellate ();
+	tessellator -> end_contour ();
+	tessellator -> end_polygon ();
 
-	for (const auto & polygonElement : tessellator .polygon ())
+	for (const auto & polygonElement : tessellator -> polygon ())
 	{
 		switch (polygonElement .type ())
 		{

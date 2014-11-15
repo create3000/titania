@@ -1,6 +1,14 @@
 2014-11-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Tessellator.h:
+	* Extrusion.cpp:
+	* IndexedFaceSet.h:
+	* IndexedFaceSet.cpp:
+	* LassoSelection.cpp: 
+
+2014-11-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Tessellator.h:
 	* Extrusion.h:
 	* Extrusion.cpp:
 	* Coordinate.cpp:

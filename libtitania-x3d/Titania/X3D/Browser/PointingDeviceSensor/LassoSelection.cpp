@@ -171,8 +171,6 @@ LassoSelection::display ()
 
 		const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
 
-		glDisable (GL_DEPTH_TEST);
-
 		glMatrixMode (GL_PROJECTION);
 		glLoadMatrixd (projection .data ());
 		glMatrixMode (GL_MODELVIEW);
@@ -180,11 +178,14 @@ LassoSelection::display ()
 		// Display Lasso.
 		// Draw a black and a white line.
 
+		glDisable (GL_DEPTH_TEST);
 		glLoadIdentity ();
 
+		glEnable (GL_BLEND);
 		glDisable (GL_CULL_FACE);
-		glColor3f (1, 1, 1);
+		glColor4f (1, 1, 1, 0.2);
 		polygon ();
+		glDisable (GL_BLEND);
 
 		glEnableClientState (GL_VERTEX_ARRAY);
 		glVertexPointer (3, GL_DOUBLE, 0, points .data ());
@@ -211,10 +212,14 @@ LassoSelection::polygon ()
 {
 	opengl::tessellator <int> tessellator;
 
+	tessellator .begin_polygon ();
+	tessellator .begin_contour ();
+
 	for (const auto & point : points)
 		tessellator .add_vertex (point, 0);
 
-	tessellator .tessellate ();
+	tessellator .end_contour ();
+	tessellator .end_polygon ();
 
 	for (const auto & element : tessellator .polygon ())
 	{
