@@ -96,8 +96,8 @@ void
 X3DFlyViewer::initialize ()
 {
 	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_press_event));
-	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_release_event));
-	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_motion_notify_event), false);
+	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_release_event), false);
+	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_motion_notify_event),  false);
 	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_scroll_event));
 
 	getBrowser () -> hasControlKey () .addInterest (this, &X3DFlyViewer::disconnect);
@@ -116,16 +116,22 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
+		getBrowser () -> setCursor (Gdk::FLEUR);
+
 		getActiveViewpoint () -> transitionStop ();
 
 		if (getBrowser () -> hasControlKey ())
 		{
+			// Look around.
+		
 			orientation = getActiveViewpoint () -> getUserOrientation ();
 
 			fromVector = trackballProjectToSphere (event -> x, event -> y);
 		}
 		else
 		{
+			// Move.
+
 			fromVector = toVector = Vector3f (event -> x, 0, event -> y);
 
 			if (getBrowser () -> getBrowserOptions () -> rubberBand ())
@@ -135,6 +141,8 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 
 	else if (button == 2)
 	{
+		getBrowser () -> setCursor (Gdk::FLEUR);
+
 		getActiveViewpoint () -> transitionStop ();
 
 		fromVector = toVector = Vector3f (event -> x, -event -> y, 0);
@@ -147,7 +155,10 @@ bool
 X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 {
 	disconnect ();
+	
+	getBrowser () -> setCursor (Gdk::ARROW);
 
+	button = 0;
 	return false;
 }
 

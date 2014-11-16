@@ -124,6 +124,16 @@ private:
 	void
 	on_remove_unused_colors_activate () final override;
 
+	/// @name Selection
+
+	virtual
+	void
+	on_hand_toggled () final override;
+
+	virtual
+	void
+	on_arrow_toggled () final override;
+
 	/// @name Shading
 
 	virtual
@@ -178,6 +188,10 @@ private:
 	virtual
 	void
 	on_look_at_all_clicked () final override;
+
+	virtual
+	void
+	on_look_at_toggled () final override;
 
 	///  @name Apply
 

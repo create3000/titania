@@ -194,23 +194,25 @@ void
 plane3 <Type>::mult_plane_matrix (const matrix4 <Type> & matrix)
 throw (std::domain_error)
 {
-    // Find the point on the plane along the normal from the origin
-    auto	point = distance_from_origin () * normal ();
+	// Taken from Inventor:
 
-    // Transform the plane normal by the matrix
-    // to get the new normal. Use the inverse transpose
-    // of the matrix so that normals are not scaled incorrectly.
-    // n' = n * !~m = ~m * n
-    const auto inv       = inverse (matrix);
-    const auto newNormal = normalize (inv .mult_matrix_dir (normal ()));
+	// Find the point on the plane along the normal from the origin
+	auto	point = distance_from_origin () * normal ();
 
-    // Transform the point by the matrix
-    point = matrix .mult_vec_matrix (point);
+	// Transform the plane normal by the matrix
+	// to get the new normal. Use the inverse transpose
+	// of the matrix so that normals are not scaled incorrectly.
+	// n' = n * !~m = ~m * n
+	const auto inv       = inverse (matrix);
+	const auto newNormal = normalize (inv .mult_matrix_dir (normal ()));
 
-    // The new distance is the projected distance of the vector to the
-    // transformed point onto the (unit) transformed normal. This is
-    // just a dot product.
-    *this = plane3 (point, newNormal);
+	// Transform the point by the matrix
+	point = matrix .mult_vec_matrix (point);
+
+	// The new distance is the projected distance of the vector to the
+	// transformed point onto the (unit) transformed normal. This is
+	// just a dot product.
+	*this = plane3 (point, newNormal);
 }
 
 template <class Type>
@@ -218,23 +220,25 @@ void
 plane3 <Type>::mult_matrix_plane (const matrix4 <Type> & matrix)
 throw (std::domain_error)
 {
-    // Find the point on the plane along the normal from the origin
-    auto	point = distance_from_origin () * normal ();
+	// Taken from Inventor:
 
-    // Transform the plane normal by the matrix
-    // to get the new normal. Use the inverse transpose
-    // of the matrix so that normals are not scaled incorrectly.
-    // n' = !~m * n = n * ~m
-    const auto inv       = inverse (matrix);
-    const auto newNormal = normalize (inv .mult_dir_matrix (normal ()));
+	// Find the point on the plane along the normal from the origin
+	auto	point = distance_from_origin () * normal ();
 
-    // Transform the point by the matrix
-    point = matrix .mult_matrix_vec (point);
+	// Transform the plane normal by the matrix
+	// to get the new normal. Use the inverse transpose
+	// of the matrix so that normals are not scaled incorrectly.
+	// n' = !~m * n = n * ~m
+	const auto inv       = inverse (matrix);
+	const auto newNormal = normalize (inv .mult_dir_matrix (normal ()));
 
-    // The new distance is the projected distance of the vector to the
-    // transformed point onto the (unit) transformed normal. This is
-    // just a dot product.
-    *this = plane3 (point, newNormal);
+	// Transform the point by the matrix
+	point = matrix .mult_matrix_vec (point);
+
+	// The new distance is the projected distance of the vector to the
+	// transformed point onto the (unit) transformed normal. This is
+	// just a dot product.
+	*this = plane3 (point, newNormal);
 }
 
 ///  Returns the distance from @a point.

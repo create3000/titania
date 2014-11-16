@@ -128,10 +128,26 @@
                                     <property name="toolbar_style">icons</property>
                                     <property name="icon_size">1</property>
                                     <child>
-                                      <object class="GtkToggleToolButton" id="LeftArrowButton">
+                                      <object class="GtkRadioToolButton" id="LeftHandButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="tooltip_text" translatable="yes">Toggle between selection and plane viewer.</property>
+                                        <property name="tooltip_text" translatable="yes">Toggle browser mode.</property>
+                                        <property name="label" translatable="yes">Browser</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">Hand</property>
+                                        <property name="group">LeftArrowButton</property>
+                                        <signal name="toggled" handler="on_left_hand_toggled" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkRadioToolButton" id="LeftArrowButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Toggle selection mode.</property>
                                         <property name="label" translatable="yes">Select</property>
                                         <property name="use_underline">True</property>
                                         <property name="stock_id">Arrow</property>
@@ -222,10 +238,26 @@
                                     <property name="toolbar_style">icons</property>
                                     <property name="icon_size">1</property>
                                     <child>
-                                      <object class="GtkToggleToolButton" id="RightArrowButton">
+                                      <object class="GtkRadioToolButton" id="RightHandButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="tooltip_text" translatable="yes">Toggle between selection and examine viewer.</property>
+                                        <property name="tooltip_text" translatable="yes">Toggle browser mode.</property>
+                                        <property name="label" translatable="yes">Browser</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">Hand</property>
+                                        <property name="group">RightArrowButton</property>
+                                        <signal name="toggled" handler="on_right_hand_toggled" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkRadioToolButton" id="RightArrowButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Toggle selection mode.</property>
                                         <property name="label" translatable="yes">Select</property>
                                         <property name="use_underline">True</property>
                                         <property name="stock_id">Arrow</property>
@@ -247,14 +279,29 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkToolButton" id="RightLookAtButton">
+                                      <object class="GtkToolButton" id="RightLookAtAllButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="tooltip_text" translatable="yes">Look At Object.</property>
-                                        <property name="label" translatable="yes">Look At</property>
+                                        <property name="label" translatable="yes">Look At All</property>
                                         <property name="use_underline">True</property>
                                         <property name="stock_id">gtk-zoom-fit</property>
                                         <signal name="clicked" handler="on_right_look_at_all_clicked" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkToggleToolButton" id="RightLookAtButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Look at.</property>
+                                        <property name="label" translatable="yes">Look At</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">gtk-zoom-in</property>
+                                        <signal name="toggled" handler="on_right_look_at_toggled" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>

@@ -54,6 +54,7 @@
 #include <cmath>
 #include <istream>
 #include <ostream>
+#include <tuple>
 
 namespace titania {
 namespace math {
@@ -317,6 +318,46 @@ operator not_eq (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 {
 	return lhs .x () not_eq rhs .x () or
 	       lhs .y () not_eq rhs .y ();
+}
+
+///  Lexicographically compares two vector2 numbers.
+///  Returns true if @a lhs less than @a rhs.
+template <class Type>
+inline
+bool
+operator < (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
+{
+	return std::tie (lhs .x (), lhs .y ()) < std::tie (rhs .x (), rhs .y ());
+}
+
+///  Lexicographically compares two vector2 numbers.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator > (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
+{
+	return rhs < lhs;
+}
+
+///  Lexicographically compares two vector2 numbers.
+///  Returns true if @a lhs greater than @a rhs.
+template <class Type>
+inline
+bool
+operator <= (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
+{
+	return not (rhs < lhs);
+}
+
+///  Lexicographically compares two vector2 numbers.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator >= (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
+{
+	return not (lhs < rhs);
 }
 
 ///  @relates vector2

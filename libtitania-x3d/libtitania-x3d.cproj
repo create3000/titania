@@ -798,7 +798,6 @@
     <None Include="Titania\X3D\Tools\EnvironmentalSensor\TransformSensorTool.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\LassoSelection.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.h" />
-    <None Include="Titania\X3D\Browser\PointingDeviceSensor\SelectorType.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

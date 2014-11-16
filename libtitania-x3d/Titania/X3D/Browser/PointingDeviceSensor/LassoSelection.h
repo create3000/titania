@@ -106,8 +106,8 @@ private:
 
 	///  @name Members
 
-	bool                   sensitive;
-	int                    button;
+	bool                   pickable;
+	guint                  button;
 	std::vector <Vector3d> points;
 
 };

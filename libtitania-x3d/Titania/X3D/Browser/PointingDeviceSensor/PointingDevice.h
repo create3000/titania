@@ -85,7 +85,7 @@ private:
 	set_initialized ();
 
 	void
-	set_sensitive ();
+	set_pickable ();
 
 	bool
 	on_motion_notify_event (GdkEventMotion*);
@@ -112,8 +112,9 @@ private:
 	sigc::connection motion_notify_conncection;
 	sigc::connection leave_notify_conncection;
 
-	size_t button;
-	bool   isOver;
+	Gdk::CursorType cursor;
+	size_t          button;
+	bool            isOver;
 
 };
 

@@ -54,6 +54,7 @@
 #include <cmath>
 #include <istream>
 #include <ostream>
+#include <tuple>
 
 #include "../Functional.h"
 #include "Vector3.h"
@@ -492,6 +493,46 @@ operator not_eq (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 	   lhs .y () not_eq rhs .y () or
 	   lhs .z () not_eq rhs .z () or
 	   lhs .w () not_eq rhs .w ();
+}
+
+///  Lexicographically compares two quaternion numbers.
+///  Returns true if @a lhs less than @a rhs.
+template <class Type>
+inline
+bool
+operator < (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
+{
+	return std::tie (lhs .x (), lhs .y (), lhs .z (), lhs .w ()) < std::tie (rhs .x (), rhs .y (), rhs .z (), rhs .w ());
+}
+
+///  Lexicographically compares two quaternion numbers.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator > (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
+{
+	return rhs < lhs;
+}
+
+///  Lexicographically compares two quaternion numbers.
+///  Returns true if @a lhs greater than @a rhs.
+template <class Type>
+inline
+bool
+operator <= (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
+{
+	return not (rhs < lhs);
+}
+
+///  Lexicographically compares two quaternion numbers.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator >= (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
+{
+	return not (lhs < rhs);
 }
 
 ///  @relates quaternion

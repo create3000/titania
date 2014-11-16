@@ -59,7 +59,6 @@
 #include "../Browser/Navigation/PlaneViewer.h"
 #include "../Browser/Navigation/WalkViewer.h"
 #include "../Browser/Navigation/X3DViewer.h"
-#include "../Browser/PointingDeviceSensor/LassoSelection.h"
 #include "../Browser/PointingDeviceSensor/PointingDevice.h"
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
@@ -85,8 +84,7 @@ Browser::Browser () :
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),
-	       selector (),
-	   selectorType (SelectorType::NONE)
+	         cursor (Gdk::X_CURSOR)
 {
 	addType (X3DConstants::Browser);
 }
@@ -97,9 +95,12 @@ Browser::Browser (const Browser & other) :
 	opengl::Surface (other),
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
-	pointingDevice  (new PointingDevice (this))
+	pointingDevice  (new PointingDevice (this)),
+	         cursor (Gdk::X_CURSOR)
 {
 	addType (X3DConstants::Browser);
+
+	addChildren (cursor);
 }
 
 Browser*
@@ -118,10 +119,9 @@ Browser::initialize ()
 	keyDevice      -> setup ();
 	pointingDevice -> setup ();
 
+	getCursor () .addInterest (this, &Browser::set_cursor);
 	getViewer () .addInterest (this, &Browser::set_viewer);
 	changed ()   .addInterest (this, &Gtk::Widget::queue_draw);
-
-	setCursor (Gdk::ARROW);
 
 	add_events (Gdk::BUTTON_PRESS_MASK |
 	            Gdk::POINTER_MOTION_MASK |
@@ -135,6 +135,8 @@ Browser::initialize ()
 
 	set_can_focus (true);
 	grab_focus ();
+
+	setCursor (Gdk::ARROW);
 }
 
 Color4f
@@ -151,25 +153,6 @@ Browser::getBackgroundColor () const
 	const auto color = get_toplevel () -> get_style_context () -> get_background_color (Gtk::STATE_FLAG_NORMAL);
 
 	return Color4f (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
-}
-
-void
-Browser::setSelector (const SelectorType value)
-{
-	selectorType = value;
-
-	switch (selectorType)
-	{
-		case SelectorType::NONE:
-			selector .reset ();
-			break;
-		case SelectorType::LASSO:
-			selector .reset (new LassoSelection (this));
-			break;
-	}
-	
-	if (selector)
-		selector -> setup ();
 }
 
 void
@@ -197,6 +180,12 @@ Browser::on_unmap ()
 	}
 
 	opengl::Surface::on_unmap ();
+}
+
+void
+Browser::set_cursor (const Gdk::CursorType value)
+{
+	get_window () -> set_cursor (Gdk::Cursor::create (value));
 }
 
 void
@@ -250,7 +239,6 @@ Browser::dispose ()
 	viewer         .reset ();
 	keyDevice      .reset ();
 	pointingDevice .reset ();
-	selector       .reset ();
 
 	X3DBrowser::dispose ();
 	opengl::Surface::dispose ();

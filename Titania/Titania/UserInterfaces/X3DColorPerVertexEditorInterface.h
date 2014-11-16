@@ -150,6 +150,14 @@ public:
 	getPreviewBox () const
 	{ return *m_PreviewBox; }
 
+	Gtk::RadioToolButton &
+	getHandButton () const
+	{ return *m_HandButton; }
+
+	Gtk::RadioToolButton &
+	getArrowButton () const
+	{ return *m_ArrowButton; }
+
 	Gtk::ToggleToolButton &
 	getCheckerBoardButton () const
 	{ return *m_CheckerBoardButton; }
@@ -163,6 +171,10 @@ public:
 	{ return *m_TextureButton; }
 
 	Gtk::ToolButton &
+	getLookAtAllButton () const
+	{ return *m_LookAtAllButton; }
+
+	Gtk::ToggleToolButton &
 	getLookAtButton () const
 	{ return *m_LookAtButton; }
 
@@ -244,6 +256,14 @@ public:
 
 	virtual
 	void
+	on_hand_toggled () = 0;
+
+	virtual
+	void
+	on_arrow_toggled () = 0;
+
+	virtual
+	void
 	on_checkerboard_toggled () = 0;
 
 	virtual
@@ -253,6 +273,10 @@ public:
 	virtual
 	void
 	on_look_at_all_clicked () = 0;
+
+	virtual
+	void
+	on_look_at_toggled () = 0;
 
 	virtual
 	void
@@ -304,10 +328,13 @@ private:
 	Gtk::ImageMenuItem*            m_RedoMenuItem;
 	Gtk::ImageMenuItem*            m_RemoveUnusedColorsMenuItem;
 	Gtk::Box*                      m_PreviewBox;
+	Gtk::RadioToolButton*          m_HandButton;
+	Gtk::RadioToolButton*          m_ArrowButton;
 	Gtk::ToggleToolButton*         m_CheckerBoardButton;
 	Gtk::MenuToolButton*           m_ShadingButton;
 	Gtk::ToggleToolButton*         m_TextureButton;
-	Gtk::ToolButton*               m_LookAtButton;
+	Gtk::ToolButton*               m_LookAtAllButton;
+	Gtk::ToggleToolButton*         m_LookAtButton;
 	Gtk::ToggleButton*             m_SelectColorButton;
 	Gtk::Button*                   m_ColorButton;
 	Gtk::Button*                   m_AddColorButton;

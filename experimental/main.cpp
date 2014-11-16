@@ -329,21 +329,11 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	basic::uri u ("http://titania.create3000.de/Library/Examples/hello world.x3dv");
-	basic::uri o (u);
-	
-	__LOG__ << u << std::endl;
-	__LOG__ << u .scheme () << std::endl;
-	__LOG__ << u .authority () << std::endl;
-	__LOG__ << u .host () << std::endl;
-	__LOG__ << u .port () << std::endl;
-	__LOG__ << u .path () << std::endl;
-	__LOG__ << u .query () << std::endl;
-	__LOG__ << u .fragment () << std::endl;
+	Box2f b2 (Vector2f (2,2),   Vector2f ());
+	Box3f b3 (Vector3f (2,2,2), Vector3f ());
 
-	__LOG__ << std::endl;
-	__LOG__ << u .escape () << std::endl;
-	__LOG__ << o .escape () << std::endl;
+	__LOG__ << b2 .area () << std::endl;
+	__LOG__ << b3 .volume () << std::endl;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

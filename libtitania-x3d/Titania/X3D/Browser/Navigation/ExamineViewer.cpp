@@ -84,8 +84,8 @@ void
 ExamineViewer::initialize ()
 {
 	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_press_event));
-	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_release_event));
-	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event), false);
+	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_release_event), false);
+	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event),  false);
 	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
 
 	getNavigationInfo () -> transitionStart () .addInterest (this, &ExamineViewer::set_transitionStart);
@@ -119,6 +119,8 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
+		getBrowser () -> setCursor (Gdk::FLEUR);
+
 		getActiveViewpoint () -> transitionStop ();
 
 		set_viewpoint ();
@@ -131,6 +133,8 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 	else if (button == 2)
 	{
+		getBrowser () -> setCursor (Gdk::FLEUR);
+
 		getActiveViewpoint () -> transitionStop ();
 
 		set_viewpoint ();
@@ -146,11 +150,18 @@ ExamineViewer::on_button_release_event (GdkEventButton* event)
 {
 	if (button == 1)
 	{
+		getBrowser () -> setCursor (Gdk::ARROW);
+
 		if (std::abs (rotation .angle ()) > SPIN_ANGLE and chrono::now () - motionTime < SPIN_RELEASE_TIME)
 		{
 			rotation = slerp (Rotation4f (), rotation, SPIN_FACTOR);
 			addSpinning ();
 		}
+	}
+
+	else if (button == 2)
+	{
+		getBrowser () -> setCursor (Gdk::ARROW);
 	}
 
 	button = 0;

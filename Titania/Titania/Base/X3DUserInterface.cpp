@@ -118,6 +118,8 @@ X3DUserInterface::on_constructed ()
 {
 	constructed_connection .disconnect ();
 
+	getWidget () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
+
 	getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
 
 	on_map ();

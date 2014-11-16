@@ -112,9 +112,8 @@ private:
 
 	///  @name Members
 
-	bool sensitive;
-	bool isOver;
-
+	bool       pickable;
+	bool       isOver;
 	Rotation4f orientation;
 	Rotation4f rotation;
 	Vector3f   fromVector;

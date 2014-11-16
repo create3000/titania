@@ -69,12 +69,12 @@ public:
 	///  @name Outputs
 
 	void
-	isSensitive (const bool value)
-	{ sensitive = value; }
+	isPickable (const bool value)
+	{ pickable = value; }
 
 	const SFBool &
-	isSensitive () const
-	{ return sensitive; }
+	isPickable () const
+	{ return pickable; }
 
 	///  @name Member access
 
@@ -168,7 +168,7 @@ private:
 
 	//  @name Members
 
-	SFBool                                    sensitive;
+	SFBool                                    pickable;
 	Vector2d                                  pointer;
 	Line3d                                    hitRay;
 	HitArray                                  hits;

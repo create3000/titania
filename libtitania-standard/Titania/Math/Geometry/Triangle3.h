@@ -104,6 +104,261 @@ normal (const vector3 <Type> & v1, const vector3 <Type> & v2, const vector3 <Typ
 	return normalize (cross (v3 - v1, v4 - v2));
 }
 
+///  Returns the squared distance from the triangle defined by @a p1, @a p2, @a p3 to @a point.
+template <class Type>
+Type
+triangle_distance_to_point (const vector3 <Type> & p1, const vector3 <Type> & p2, const vector3 <Type> & p3, const vector3 <Type> & point)
+{
+	// http://www.geometrictools.com/GTEngine/Include/GteDistPoint3Triangle3.inl
+
+	Type sqrDistance;
+
+	vector3 <Type> diff  = p1 - point;
+	vector3 <Type> edge0 = p2 - p1;
+	vector3 <Type> edge1 = p3 - p1;
+	Type           a00   = dot (edge0, edge0);
+	Type           a01   = dot (edge0, edge1);
+	Type           a11   = dot (edge1, edge1);
+	Type           b0    = dot (diff, edge0);
+	Type           b1    = dot (diff, edge1);
+	Type           c     = dot (diff, diff);
+	Type           det   = std::abs (a00 * a11 - a01 * a01);
+	Type           s     = a01 * b1 - a11 * b0;
+	Type           t     = a01 * b0 - a00 * b1;
+
+	if (s + t <= det)
+	{
+		if (s < 0)
+		{
+			if (t < 0)  // region 4
+			{
+				if (b0 < 0)
+				{
+					t = 0;
+
+					if (-b0 >= a00)
+					{
+						s           = 1;
+						sqrDistance = a00 + 2 * b0 + c;
+					}
+					else
+					{
+						s           = -b0 / a00;
+						sqrDistance = b0 * s + c;
+					}
+				}
+				else
+				{
+					s = 0;
+
+					if (b1 >= 0)
+					{
+						t           = 0;
+						sqrDistance = c;
+					}
+					else if (-b1 >= a11)
+					{
+						t           = 1;
+						sqrDistance = a11 + 2 * b1 + c;
+					}
+					else
+					{
+						t           = -b1 / a11;
+						sqrDistance = b1 * t + c;
+					}
+				}
+			}
+			else  // region 3
+			{
+				s = 0;
+
+				if (b1 >= 0)
+				{
+					t           = 0;
+					sqrDistance = c;
+				}
+				else if (-b1 >= a11)
+				{
+					t           = 1;
+					sqrDistance = a11 + 2 * b1 + c;
+				}
+				else
+				{
+					t           = -b1 / a11;
+					sqrDistance = b1 * t + c;
+				}
+			}
+		}
+		else if (t < 0)  // region 5
+		{
+			t = 0;
+
+			if (b0 >= 0)
+			{
+				s           = 0;
+				sqrDistance = c;
+			}
+			else if (-b0 >= a00)
+			{
+				s           = 1;
+				sqrDistance = a00 + 2 * b0 + c;
+			}
+			else
+			{
+				s           = -b0 / a00;
+				sqrDistance = b0 * s + c;
+			}
+		}
+		else  // region 0
+		{
+			// minimum at interior point
+			Type invDet = 1 / det;
+			s          *= invDet;
+			t          *= invDet;
+			sqrDistance = s * (a00 * s + a01 * t + 2 * b0) +
+			              t * (a01 * s + a11 * t + 2 * b1) + c;
+		}
+	}
+	else
+	{
+		Type tmp0, tmp1, numer, denom;
+
+		if (s < 0)  // region 2
+		{
+			tmp0 = a01 + b0;
+			tmp1 = a11 + b1;
+
+			if (tmp1 > tmp0)
+			{
+				numer = tmp1 - tmp0;
+				denom = a00 - 2 * a01 + a11;
+
+				if (numer >= denom)
+				{
+					s           = 1;
+					t           = 0;
+					sqrDistance = a00 + 2 * b0 + c;
+				}
+				else
+				{
+					s           = numer / denom;
+					t           = 1 - s;
+					sqrDistance = s * (a00 * s + a01 * t + 2 * b0) +
+					              t * (a01 * s + a11 * t + 2 * b1) + c;
+				}
+			}
+			else
+			{
+				s = 0;
+
+				if (tmp1 <= 0)
+				{
+					t           = 1;
+					sqrDistance = a11 + 2 * b1 + c;
+				}
+				else if (b1 >= 0)
+				{
+					t           = 0;
+					sqrDistance = c;
+				}
+				else
+				{
+					t           = -b1 / a11;
+					sqrDistance = b1 * t + c;
+				}
+			}
+		}
+		else if (t < 0)  // region 6
+		{
+			tmp0 = a01 + b1;
+			tmp1 = a00 + b0;
+
+			if (tmp1 > tmp0)
+			{
+				numer = tmp1 - tmp0;
+				denom = a00 - 2 * a01 + a11;
+
+				if (numer >= denom)
+				{
+					t           = 1;
+					s           = 0;
+					sqrDistance = a11 + 2 * b1 + c;
+				}
+				else
+				{
+					t           = numer / denom;
+					s           = 1 - t;
+					sqrDistance = s * (a00 * s + a01 * t + 2 * b0) +
+					              t * (a01 * s + a11 * t + 2 * b1) + c;
+				}
+			}
+			else
+			{
+				t = 0;
+
+				if (tmp1 <= 0)
+				{
+					s           = 1;
+					sqrDistance = a00 + 2 * b0 + c;
+				}
+				else if (b0 >= 0)
+				{
+					s           = 0;
+					sqrDistance = c;
+				}
+				else
+				{
+					s           = -b0 / a00;
+					sqrDistance = b0 * s + c;
+				}
+			}
+		}
+		else  // region 1
+		{
+			numer = a11 + b1 - a01 - b0;
+
+			if (numer <= 0)
+			{
+				s           = 0;
+				t           = 1;
+				sqrDistance = a11 + 2 * b1 + c;
+			}
+			else
+			{
+				denom = a00 - 2 * a01 + a11;
+
+				if (numer >= denom)
+				{
+					s           = 1;
+					t           = 0;
+					sqrDistance = a00 + 2 * b0 + c;
+				}
+				else
+				{
+					s           = numer / denom;
+					t           = 1 - s;
+					sqrDistance = s * (a00 * s + a01 * t + 2 * b0) +
+					              t * (a01 * s + a11 * t + 2 * b1) + c;
+				}
+			}
+		}
+	}
+
+	// Account for numerical round-off error.
+	if (sqrDistance < 0)
+	{
+		sqrDistance = 0;
+	}
+
+	return sqrDistance;
+
+	//    result.triangleClosestPoint = triangle.v[0] + s*edge0 + t*edge1;
+	//    result.triangleParameter[1] = s;
+	//    result.triangleParameter[2] = t;
+	//    result.triangleParameter[0] = 1 - s - t;
+	//    return result;
+}
+
 } // math
 } // titania
 

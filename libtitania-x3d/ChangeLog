@@ -1,3 +1,21 @@
+2014-11-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* Browser.h:
+	* Browser.cpp:
+	* LookAtViewer.h:
+	* PlaneViewer.cpp:
+	* LookAtViewer.cpp:
+	* X3DFlyViewer.cpp:
+	* ExamineViewer.cpp:
+	* SelectorType.h:
+	* PointingDevice.h:
+	* LassoSelection.h:
+	* PointingDevice.cpp:
+	* LassoSelection.cpp:
+	* X3DPointingDeviceSensorContext.h:
+	* X3DPointingDeviceSensorContext.cpp: 
+
 2014-11-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Tessellator.h:

@@ -623,6 +623,46 @@ operator not_eq (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs)
 	return lhs .quat () not_eq rhs .quat ();
 }
 
+///  Lexicographically compares two rotation4 numbers.
+///  Returns true if @a lhs less than @a rhs.
+template <class Type>
+inline
+bool
+operator < (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs)
+{
+	return lhs .quat () < rhs .quat ();;
+}
+
+///  Lexicographically compares two rotation4 numbers.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator > (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs)
+{
+	return rhs < lhs;
+}
+
+///  Lexicographically compares two rotation4 numbers.
+///  Returns true if @a lhs greater than @a rhs.
+template <class Type>
+inline
+bool
+operator <= (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs)
+{
+	return not (rhs < lhs);
+}
+
+///  Lexicographically compares two rotation4 numbers.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator >= (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs)
+{
+	return not (lhs < rhs);
+}
+
 ///  @relates rotation4
 ///  @name Arithmetic operations
 

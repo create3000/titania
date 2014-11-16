@@ -76,9 +76,12 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("RedoMenuItem", m_RedoMenuItem);
 	m_builder -> get_widget ("RemoveUnusedColorsMenuItem", m_RemoveUnusedColorsMenuItem);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
+	m_builder -> get_widget ("HandButton", m_HandButton);
+	m_builder -> get_widget ("ArrowButton", m_ArrowButton);
 	m_builder -> get_widget ("CheckerBoardButton", m_CheckerBoardButton);
 	m_builder -> get_widget ("ShadingButton", m_ShadingButton);
 	m_builder -> get_widget ("TextureButton", m_TextureButton);
+	m_builder -> get_widget ("LookAtAllButton", m_LookAtAllButton);
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
 	m_builder -> get_widget ("SelectColorButton", m_SelectColorButton);
 	m_builder -> get_widget ("ColorButton", m_ColorButton);
@@ -104,12 +107,19 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_redo_activate));
 	m_RemoveUnusedColorsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_remove_unused_colors_activate));
 
+	// Connect object Gtk::RadioToolButton with id 'HandButton'.
+	m_HandButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_hand_toggled));
+	m_ArrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_arrow_toggled));
+
 	// Connect object Gtk::ToggleToolButton with id 'CheckerBoardButton'.
 	m_CheckerBoardButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_checkerboard_toggled));
 	m_TextureButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_texture_toggled));
 
-	// Connect object Gtk::ToolButton with id 'LookAtButton'.
-	m_LookAtButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_look_at_all_clicked));
+	// Connect object Gtk::ToolButton with id 'LookAtAllButton'.
+	m_LookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_look_at_all_clicked));
+
+	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
+	m_LookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_look_at_toggled));
 
 	// Connect object Gtk::RadioButton with id 'SingleVertexButton'.
 	m_SingleVertexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_single_vertex_clicked));

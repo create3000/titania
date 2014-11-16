@@ -65,7 +65,7 @@ static constexpr time_type SELECTION_TIME = 0.01; // Use ExamineViewer SPIN_RELE
 
 X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	   X3DBaseNode (),
-	     sensitive (true),
+	       pickable (true),
 	       pointer (),
 	        hitRay (),
 	          hits (),
@@ -76,7 +76,7 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	     pressTime (0),
 	      hasMoved (false)
 {
-	addChildren (sensitive,
+	addChildren (pickable,
 	             overSensors,
 	             activeSensors);
 }

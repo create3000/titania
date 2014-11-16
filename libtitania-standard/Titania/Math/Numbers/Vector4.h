@@ -54,6 +54,7 @@
 #include <cmath>
 #include <istream>
 #include <ostream>
+#include <tuple>
 
 namespace titania {
 namespace math {
@@ -358,6 +359,46 @@ operator not_eq (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 	   lhs .y () not_eq rhs .y () or
 	   lhs .z () not_eq rhs .z () or
 	   lhs .w () not_eq rhs .w ();
+}
+
+///  Lexicographically compares two vector4 numbers.
+///  Returns true if @a lhs less than @a rhs.
+template <class Type>
+inline
+bool
+operator < (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+{
+	return std::tie (lhs .x (), lhs .y (), lhs .z (), lhs .w ()) < std::tie (rhs .x (), rhs .y (), rhs .z (), rhs .w ());
+}
+
+///  Lexicographically compares two vector4 numbers.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator > (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+{
+	return rhs < lhs;
+}
+
+///  Lexicographically compares two vector4 numbers.
+///  Returns true if @a lhs greater than @a rhs.
+template <class Type>
+inline
+bool
+operator <= (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+{
+	return not (rhs < lhs);
+}
+
+///  Lexicographically compares two vector4 numbers.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator >= (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+{
+	return not (lhs < rhs);
 }
 
 ///  @relates vector4

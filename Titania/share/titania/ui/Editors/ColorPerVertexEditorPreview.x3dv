@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 07 Nov 2014 09:33:25 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Tue, 11 Nov 2014 00:52:17 GMT"
+META "modified" "Sun, 16 Nov 2014 08:06:37 GMT"
 
 DEF LayerSet LayerSet {
   activeLayer 3
@@ -87,7 +87,7 @@ DEF LayerSet LayerSet {
             whichChoice 0
             children [
               Group {
-                children DEF CrossScript Script {
+                children DEF SwitchScript Script {
                   inputOnly  SFBool  set_active
                   outputOnly SFInt32 whichChoice_changed
 
@@ -175,5 +175,5 @@ function set_active (value)
   ]
 }
 
-ROUTE TouchSensor.isOver TO CrossScript.set_active
-ROUTE CrossScript.whichChoice_changed TO _2.set_whichChoice
+ROUTE TouchSensor.isOver TO SwitchScript.set_active
+ROUTE SwitchScript.whichChoice_changed TO _2.set_whichChoice

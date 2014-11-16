@@ -74,8 +74,8 @@ PlaneViewer::initialize ()
 	X3DViewer::initialize ();
 
 	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PlaneViewer::on_button_press_event));
-	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PlaneViewer::on_button_release_event));
-	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PlaneViewer::on_motion_notify_event), false);
+	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PlaneViewer::on_button_release_event), false);
+	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PlaneViewer::on_motion_notify_event),  false);
 	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &PlaneViewer::on_scroll_event));
 }
 
@@ -86,6 +86,8 @@ PlaneViewer::on_button_press_event (GdkEventButton* event)
 
 	if (button == 2)
 	{
+		getBrowser () -> setCursor (Gdk::FLEUR);
+
 		getActiveViewpoint () -> transitionStop ();
 
 		fromPoint = getPointOnCenterPlane (event -> x, event -> y);
@@ -97,6 +99,8 @@ PlaneViewer::on_button_press_event (GdkEventButton* event)
 bool
 PlaneViewer::on_button_release_event (GdkEventButton* event)
 {
+	getBrowser () -> setCursor (Gdk::ARROW);
+
 	button = 0;
 	return false;
 }

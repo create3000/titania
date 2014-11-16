@@ -54,7 +54,6 @@
 #include <Titania/OpenGL/Surface.h>
 
 #include "../Browser/X3DBrowser.h"
-#include "../Browser/PointingDeviceSensor/SelectorType.h"
 
 namespace titania {
 namespace X3D {
@@ -92,15 +91,12 @@ public:
 	getBackgroundColor () const final override;
 
 	void
-	setCursor (const Gdk::CursorType cursorType)
-	{ get_window () -> set_cursor (Gdk::Cursor::create (cursorType)); }
+	setCursor (const Gdk::CursorType value)
+	{ cursor = value; }
 
-	void
-	setSelector (const SelectorType);
-	
-	const SFEnum <SelectorType> &
-	getSelector () const
-	{ return selectorType; }
+	const SFEnum <Gdk::CursorType> &
+	getCursor () const
+	{ return cursor; }
 
 	///  @name Operations
 
@@ -153,6 +149,9 @@ private:
 	on_unmap () override;
 
 	void
+	set_cursor (const Gdk::CursorType);
+
+	void
 	set_viewer (ViewerType);
 
 	///  @name Operations
@@ -172,8 +171,7 @@ private:
 	std::unique_ptr <X3DViewer>      viewer;
 	std::unique_ptr <KeyDevice>      keyDevice;
 	std::unique_ptr <PointingDevice> pointingDevice;
-	std::unique_ptr <X3DSelector>    selector;
-	SFEnum <SelectorType>            selectorType;
+	SFEnum <Gdk::CursorType>         cursor;
 };
 
 } // X3D

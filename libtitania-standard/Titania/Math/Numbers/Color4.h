@@ -57,6 +57,7 @@
 #include <ostream>
 #include <sstream>
 #include <stdexcept>
+#include <tuple>
 
 #include "../Functional.h"
 
@@ -328,6 +329,46 @@ operator not_eq (const color4 <Type> & a, const color4 <Type> & b)
 	       a .g () not_eq b .g () or
 	       a .b () not_eq b .b () or
 	       a .a () not_eq b .a ();
+}
+
+///  Lexicographically compares two color4 numbers.
+///  Returns true if @a lhs less than @a rhs.
+template <class Type>
+inline
+bool
+operator < (const color4 <Type> & lhs, const color4 <Type> & rhs)
+{
+	return std::tie (lhs .r (), lhs .g (), lhs .b (), lhs .a ()) < std::tie (rhs .r (), rhs .g (), rhs .b (), rhs .a ());
+}
+
+///  Lexicographically compares two color4 numbers.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator > (const color4 <Type> & lhs, const color4 <Type> & rhs)
+{
+	return rhs < lhs;
+}
+
+///  Lexicographically compares two color4 numbers.
+///  Returns true if @a lhs greater than @a rhs.
+template <class Type>
+inline
+bool
+operator <= (const color4 <Type> & lhs, const color4 <Type> & rhs)
+{
+	return not (rhs < lhs);
+}
+
+///  Lexicographically compares two color4 numbers.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator >= (const color4 <Type> & lhs, const color4 <Type> & rhs)
+{
+	return not (lhs < rhs);
 }
 
 ///  @relates color4

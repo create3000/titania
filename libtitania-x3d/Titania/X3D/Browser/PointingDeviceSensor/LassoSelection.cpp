@@ -62,7 +62,7 @@ namespace X3D {
 
 LassoSelection::LassoSelection (Browser* const browser) :
 	X3DSelector (browser),
-	  sensitive (browser -> isSensitive ()),
+	   pickable (browser -> isPickable ()),
 	     button (0),
 	     points ()
 { }
@@ -76,7 +76,7 @@ LassoSelection::initialize ()
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &LassoSelection::on_button_release_event), false);
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &LassoSelection::on_motion_notify_event),  false);
 
-	getBrowser () -> isSensitive (false);
+	getBrowser () -> isPickable (false);
 }
 
 bool
@@ -85,11 +85,11 @@ LassoSelection::on_button_press_event (GdkEventButton* event)
 	if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
 		return false;
 
-	getBrowser () -> addEvent ();
-
 	button = event -> button;
 
-	if (event -> button == 1)
+	getBrowser () -> addEvent ();
+
+	if (button == 1)
 	{
 		if (getBrowser () -> getActiveLayer ())
 			getBrowser () -> getActiveLayer () -> getViewpoint () -> transitionStop ();
@@ -108,12 +108,13 @@ LassoSelection::on_button_press_event (GdkEventButton* event)
 bool
 LassoSelection::on_button_release_event (GdkEventButton* event)
 {
+	if (event -> button not_eq button)
+		return false;
+
 	if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
 		return false;
 
 	getBrowser () -> addEvent ();
-
-	button = 0;
 
 	if (event -> button == 1)
 	{
@@ -121,6 +122,8 @@ LassoSelection::on_button_release_event (GdkEventButton* event)
 
 		return true;
 	}
+
+	button = 0;
 
 	return false;
 }
@@ -234,7 +237,7 @@ LassoSelection::polygon ()
 
 LassoSelection::~LassoSelection ()
 {
-	getBrowser () -> isSensitive (sensitive);
+	getBrowser () -> isPickable (pickable);
 }
 
 } // X3D

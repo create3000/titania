@@ -154,6 +154,11 @@ public:
 	void
 	extents (vector3 <Type> &, vector3 <Type> &) const;
 
+	///  Returns whether this box is an empty box.
+	bool
+	empty () const
+	{ return value [3] [3] == 0; }
+
 	///  Returns the size of this box.
 	vector3 <Type>
 	size () const;
@@ -171,10 +176,10 @@ public:
 	std::array <vector3 <Type>, 3> 
 	axes () const;
 
-	///  Returns whether this box is an empty box.
-	bool
-	empty () const
-	{ return value [3] [3] == 0; }
+	///  Returns the volume of this box.
+	Type
+	volume () const
+	{ return std::abs (determinant3 (matrix ())) * 8; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this box3 inplace.

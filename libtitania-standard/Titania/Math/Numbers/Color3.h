@@ -55,6 +55,7 @@
 #include <cmath>
 #include <istream>
 #include <ostream>
+#include <tuple>
 
 #include "../Functional.h"
 
@@ -313,6 +314,46 @@ operator not_eq (const color3 <Type> & a, const color3 <Type> & b)
 	return a .r () not_eq b .r () or
 	       a .g () not_eq b .g () or
 	       a .b () not_eq b .b ();
+}
+
+///  Lexicographically compares two color3 numbers.
+///  Returns true if @a lhs less than @a rhs.
+template <class Type>
+inline
+bool
+operator < (const color3 <Type> & lhs, const color3 <Type> & rhs)
+{
+	return std::tie (lhs .r (), lhs .g (), lhs .b ()) < std::tie (rhs .r (), rhs .g (), rhs .b ());
+}
+
+///  Lexicographically compares two color3 numbers.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator > (const color3 <Type> & lhs, const color3 <Type> & rhs)
+{
+	return rhs < lhs;
+}
+
+///  Lexicographically compares two color3 numbers.
+///  Returns true if @a lhs greater than @a rhs.
+template <class Type>
+inline
+bool
+operator <= (const color3 <Type> & lhs, const color3 <Type> & rhs)
+{
+	return not (rhs < lhs);
+}
+
+///  Lexicographically compares two color3 numbers.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator >= (const color3 <Type> & lhs, const color3 <Type> & rhs)
+{
+	return not (lhs < rhs);
 }
 
 ///  @relates color3

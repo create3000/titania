@@ -56,7 +56,9 @@
 #include "../Utility/Types.h"
 #include "../Functional.h"
 #include "../../Utility/Range.h"
+
 #include <array>
+#include <vector>
 
 namespace titania {
 namespace math {
@@ -148,6 +150,11 @@ public:
 	void
 	extents (vector2 <Type> &, vector2 <Type> &) const;
 
+	///  Returns whether this box is an empty box.
+	bool
+	empty () const
+	{ return value [2] [2] == 0; }
+
 	///  Returns the size of this box.
 	vector2 <Type>
 	size () const;
@@ -157,10 +164,18 @@ public:
 	center () const
 	{ return value .origin (); }
 
-	///  Returns whether this box is an empty box.
-	bool
-	empty () const
-	{ return value [2] [2] == 0; }
+	///  Returns the transformed points of this box.
+	std::vector <vector2 <Type>> 
+	points () const;
+
+	///  Returns the scaled axes of this box.
+	std::array <vector2 <Type>, 2> 
+	axes () const;
+
+	///  Returns the area of this box.
+	Type
+	area () const
+	{ return std::abs (determinant2 (matrix ())) * 4; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this box2 inplace.
@@ -254,6 +269,50 @@ box2 <Type>::size () const
 	absolute_extents (min, max);
 
 	return max - min;
+}
+
+template <class Type>
+std::vector <vector2 <Type>> 
+box2 <Type>::points () const
+{
+	/*
+	 *  p2------------ p1
+	 *  |             |
+	 *  |             |
+	 *  |             |
+	 *  |             |
+	 *  |             |
+	 *  p3 ---------- p4
+	 */
+
+	std::vector <vector2 <Type>>  points;
+	points .reserve (4);
+
+	const auto x = matrix () .x ();
+	const auto y = matrix () .y ();
+
+	const auto p1 = x + y;
+	const auto p2 = y - x;
+
+	points .emplace_back (p1);
+	points .emplace_back (p2);
+	points .emplace_back (-p1);
+	points .emplace_back (-p2);
+
+	for (auto & point : points)
+		point += center ();
+
+	return points;
+}
+
+template <class Type>
+std::array <vector2 <Type>, 2> 
+box2 <Type>::axes () const
+{
+	return std::array <vector2 <Type>, 2> ({
+		matrix () .x (),
+		matrix () .y ()
+	});
 }
 
 template <class Type>

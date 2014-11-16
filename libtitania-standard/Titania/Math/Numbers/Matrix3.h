@@ -972,6 +972,46 @@ operator not_eq (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 	return lhs .vector () not_eq rhs .vector ();
 }
 
+///  Lexicographically compares two matrix3 numbers.
+///  Returns true if @a lhs less than @a rhs.
+template <class Type>
+inline
+bool
+operator < (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
+{
+	return lhs .vector () < rhs .vector ();;
+}
+
+///  Lexicographically compares two matrix4 numbers.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator > (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
+{
+	return rhs < lhs;
+}
+
+///  Lexicographically compares two matrix4 numbers.
+///  Returns true if @a lhs greater than @a rhs.
+template <class Type>
+inline
+bool
+operator <= (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
+{
+	return not (rhs < lhs);
+}
+
+///  Lexicographically compares two matrix4 numbers.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class Type>
+inline
+bool
+operator >= (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
+{
+	return not (lhs < rhs);
+}
+
 ///  @relates matrix3
 ///  @name Arithmetic operations
 
