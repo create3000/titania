@@ -213,10 +213,6 @@ Shape::pointer ()
 		return;
 	}
 
-	// Transform hitTriangle to absolute space.
-	for (auto & vertex : (*itersection) -> triangle)
-		vertex = vertex * getModelViewMatrix () .get ();
-
 	getBrowser () -> addHit (getModelViewMatrix () .get (), *itersection, this, getCurrentLayer ());
 }
 

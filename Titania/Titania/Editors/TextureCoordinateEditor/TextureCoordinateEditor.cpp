@@ -50,6 +50,7 @@
 
 #include "TextureCoordinateEditor.h"
 
+#include "../FaceSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
@@ -72,9 +73,7 @@ TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browse
 	                    previewGeometry (),
 	                           texCoord (),
 	                              stage (0),
-	                          faceIndex (),
-	                               face (),
-	                              faces (),
+	                     rightSelection (new FaceSelection ()),
 	                        undoHistory ()
 {
 	left  -> set_antialiasing (4);
@@ -523,16 +522,21 @@ TextureCoordinateEditor::set_geometry (const X3D::SFNode & value)
 
 			previewGeometry = geometry -> copy (rightShape -> getExecutionContext (), X3D::FLAT_COPY);
 			previewGeometry -> isPrivate (true);
+
 			rightShape -> geometry () = previewGeometry;
 			rightShape -> getExecutionContext () -> realize ();
 
 			selectionBack -> coord ()  = previewGeometry -> coord ();
 			selectionFront -> coord () = previewGeometry -> coord ();
 
-			set_coordIndex ();
+			rightSelection -> setGeometry (geometry);
+			rightSelection -> setCoord (coord);
 		}
 		else
 		{
+			rightSelection -> setGeometry (nullptr);
+			rightSelection -> setCoord (nullptr);
+
 			coord                      = nullptr;
 			previewGeometry            = nullptr;
 			rightShape -> geometry ()  = nullptr;
@@ -565,24 +569,7 @@ TextureCoordinateEditor::set_geometry (const X3D::SFNode & value)
 void
 TextureCoordinateEditor::set_coordIndex ()
 {
-	faceIndex .clear ();
-
-	size_t face   = 0;
-	size_t vertex = 0;
-
-	for (const int32_t index : previewGeometry -> coordIndex ())
-	{
-		if (index < 0)
-		{
-			face  += vertex + 1;
-			vertex = 0;
-			continue;
-		}
-
-		faceIndex .emplace (index, std::make_pair (face, vertex));
-
-		++ vertex;
-	}
+	rightSelection -> setGeometry (previewGeometry);
 }
 
 void
@@ -656,14 +643,14 @@ TextureCoordinateEditor::set_right_hitPoint (const X3D::Vector3f & hitPoint)
 			return;
 
 		const auto touchSensor = right -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
-		const auto indices     = getPointIndices (hitPoint, touchSensor -> hitTriangle_changed ());
+		const auto indices     = rightSelection -> getIndices (hitPoint, touchSensor -> hitTriangle_changed ());
 		
 		if (indices .empty ())
 			return;
 
 		// Determine face and faces
 
-		setFaces (hitPoint, indices);
+		rightSelection -> setHitPoint (hitPoint, indices);
 
 		// Setup cross hair
 
@@ -680,7 +667,7 @@ TextureCoordinateEditor::set_right_selection (const X3D::Vector3f & point)
 	{
 		const auto selectionBack  = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionBack");
 		const auto selectionFront = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionFront");
-		const auto points         = getPoints (face .first);
+		const auto points         = rightSelection -> getPoints (rightSelection -> getFace () .first);
 
 		if (points .size () < 3)
 			return;
@@ -696,99 +683,6 @@ TextureCoordinateEditor::set_right_selection (const X3D::Vector3f & point)
 	}
 	catch (const X3D::X3DError &)
 	{ }
-}
-
-std::vector <size_t>
-TextureCoordinateEditor::getPointIndices (const X3D::Vector3f & hitPoint, const X3D::MFVec3f & hitTriangle) const
-{
-	constexpr double eps = 1e-5;
-
-	const std::array <float, 3> distances = {
-		math::abs (hitPoint - hitTriangle [0]),
-		math::abs (hitPoint - hitTriangle [1]),
-		math::abs (hitPoint - hitTriangle [2])
-	};
-
-	const auto iter           = std::min_element (distances .begin (), distances .end ());
-	const auto index          = iter - distances .begin ();
-	const X3D::Vector3d point = hitTriangle [index] .getValue ();
-
-	std::vector <size_t> indices;
-
-	for (size_t i = 0, size = coord -> getSize (); i < size; ++ i)
-	{
-		if (math::abs (coord -> get1Point (i) - point) < eps)
-			indices .emplace_back (i);
-	}
-
-	return indices;
-}
-
-void
-TextureCoordinateEditor::setFaces (const X3D::Vector3d & hitPoint, const std::vector <size_t> & indices)
-{
-	faces .clear ();
-
-	for (const auto & index : indices)
-	{
-		const auto range = faceIndex .equal_range (index);
-
-		for (const auto & face : range)
-			faces .emplace_back (face .second);
-	}
-
-	if (faces .empty ())
-		return;
-
-	// Get distances of faces to hitPoint.
-
-	std::vector <float>  distances;
-
-	for (const auto & face : faces)
-	{
-		const auto points = getPoints (face .first);
-
-		if (points .size () < 3)
-		{
-			distances .emplace_back (std::numeric_limits <float>::infinity ());
-			continue;
-		}
-
-		const auto vertex = face .second;
-		const auto i1     = previewGeometry -> coordIndex () [points [vertex == 0 ? points .size () - 1 : vertex - 1]];
-		const auto i2     = previewGeometry -> coordIndex () [points [vertex]];
-		const auto i3     = previewGeometry -> coordIndex () [points [(vertex + 1) % points .size ()]];
-		const auto p1     = coord -> get1Point (i1);
-		const auto p2     = coord -> get1Point (i2);
-		const auto p3     = coord -> get1Point (i3);
-
-		distances .emplace_back (triangle_distance_to_point (p1, p2, p3, hitPoint));
-	}
-
-	// Determine face.
-
-	const auto iter  = std::min_element (distances .begin (), distances .end ());
-	const auto index = iter - distances .begin ();
-
-	face = faces [index];
-}
-
-std::vector <size_t>
-TextureCoordinateEditor::getPoints (const size_t face) const
-{
-	std::vector <size_t> points;
-
-	for (size_t i = face, size = previewGeometry -> coordIndex () .size (); i < size; ++ i)
-	{
-		const auto index = previewGeometry -> coordIndex () [i];
-
-		if (index < 0)
-			break;
-
-		points .emplace_back (i);
-	}
-
-	return points;
 }
 
 TextureCoordinateEditor::~TextureCoordinateEditor ()

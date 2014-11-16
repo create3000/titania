@@ -66,7 +66,7 @@ Hit::Hit (const Vector2d & pointer,
 	        pointer (pointer),
 	modelViewMatrix (modelViewMatrix), // Shapes model view matrix.
 	         hitRay (hitRay),                   // Hit ray in absolute space (null space).
-	   intersection (intersection),       // All values are transform to absolute space (null space).
+	   intersection (intersection),       // All values are transform to absolute space (null space), except intersection -> triangle, this isn't transformed.
 	       distance (std::abs (intersection -> point .z ())),
 	        sensors (sensors),
 	          shape (shape),

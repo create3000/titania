@@ -58,7 +58,7 @@
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
+class FaceSelection;
 
 class TextureCoordinateEditor :
 	public X3DTextureCoordinateEditorInterface
@@ -211,15 +211,6 @@ private:
 	getUndoStep () const final override
 	{ return undoHistory .getUndoStep (); }
 
-	std::vector <size_t>
-	getPointIndices (const X3D::Vector3f &, const X3D::MFVec3f &) const;
-
-	void
-	setFaces (const X3D::Vector3d &, const std::vector <size_t> &);
-
-	std::vector <size_t>
-	getPoints (const size_t) const;
-
 	///  @name Members
 
 	X3D::BrowserPtr                                      left;
@@ -234,10 +225,8 @@ private:
 	X3D::X3DPtr <X3D::X3DCoordinateNode>                 coord;
 	X3D::X3DPtr <X3D::IndexedFaceSet>                    previewGeometry; 
 	X3D::X3DPtr <X3D::X3DTextureCoordinateNode>          texCoord; 
-	size_t                                               stage;               
-	std::multimap <int32_t, std::pair <size_t, size_t>>  faceIndex;
-	std::pair <size_t, size_t>                           face;
-	std::vector <std::pair <size_t, size_t>>             faces;
+	size_t                                               stage;
+	std::unique_ptr <FaceSelection>                      rightSelection;             
 	UndoHistory                                          undoHistory;
 
 };

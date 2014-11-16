@@ -1,5 +1,18 @@
 2014-11-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* titania:
+	* Makefile.am:
+	* FaceSelection.h:
+	* FaceSelection.cpp:
+	* AppearanceEditor.h:
+	* TextureCoordinateEditor.xml:
+	* ColorPerVertexEditor.h:
+	* ColorPerVertexEditor.cpp:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditor.cpp: 
+
+2014-11-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DUserInterface.cpp:
 	* BrowserWindow.xml:
 	* TextureCoordinateEditor.xml:

@@ -131,7 +131,7 @@
                                       <object class="GtkRadioToolButton" id="LeftHandButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="tooltip_text" translatable="yes">Toggle browser mode.</property>
+                                        <property name="tooltip_text" translatable="yes">Switch to browser mode.</property>
                                         <property name="label" translatable="yes">Browser</property>
                                         <property name="use_underline">True</property>
                                         <property name="stock_id">Hand</property>
@@ -147,7 +147,7 @@
                                       <object class="GtkRadioToolButton" id="LeftArrowButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="tooltip_text" translatable="yes">Toggle selection mode.</property>
+                                        <property name="tooltip_text" translatable="yes">Switch to selection mode.</property>
                                         <property name="label" translatable="yes">Select</property>
                                         <property name="use_underline">True</property>
                                         <property name="stock_id">Arrow</property>
@@ -241,7 +241,7 @@
                                       <object class="GtkRadioToolButton" id="RightHandButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="tooltip_text" translatable="yes">Toggle browser mode.</property>
+                                        <property name="tooltip_text" translatable="yes">Switch to browser mode.</property>
                                         <property name="label" translatable="yes">Browser</property>
                                         <property name="use_underline">True</property>
                                         <property name="stock_id">Hand</property>
@@ -257,7 +257,7 @@
                                       <object class="GtkRadioToolButton" id="RightArrowButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="tooltip_text" translatable="yes">Toggle selection mode.</property>
+                                        <property name="tooltip_text" translatable="yes">Switch to selection mode.</property>
                                         <property name="label" translatable="yes">Select</property>
                                         <property name="use_underline">True</property>
                                         <property name="stock_id">Arrow</property>

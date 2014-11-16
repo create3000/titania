@@ -48,43 +48,54 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
-#define __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
+#ifndef __TITANIA_EDITORS_FACE_SELECTION_H__
+#define __TITANIA_EDITORS_FACE_SELECTION_H__
 
-#include "../../ComposedWidgets.h"
-#include "X3DMaterialEditor.h"
-#include "X3DFillPropertiesEditor.h"
-#include "X3DLinePropertiesEditor.h"
-#include "X3DMaterialPaletteEditor.h"
+#include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 
 namespace titania {
 namespace puck {
 
-class AppearanceEditor :
-	public X3DMaterialEditor,
-	public X3DFillPropertiesEditor,
-	public X3DLinePropertiesEditor,
-	public X3DMaterialPaletteEditor
+class FaceSelection
 {
 public:
 
-	///  @name Construction
+	FaceSelection ();
 
-	AppearanceEditor (X3DBrowserWindow* const);
+	void
+	setGeometry (const X3D::X3DPtr <X3D::IndexedFaceSet> &);
 
-	///  @name Destruction
+	void
+	setCoord (const X3D::X3DPtr <X3D::X3DCoordinateNode> & value)
+	{ coord = value; }
 
-	virtual
-	~AppearanceEditor ();
+	std::vector <size_t>
+	getIndices (const X3D::Vector3f &, const X3D::MFVec3f &) const;
+
+	void
+	setHitPoint (const X3D::Vector3d &, const std::vector <size_t> &);
+
+	std::vector <size_t>
+	getPoints (const size_t) const;
+
+	const std::pair <size_t, size_t> &
+	getFace () const
+	{ return face; }
+
+	const std::vector <std::pair <size_t, size_t>> &
+	getFaces () const
+	{ return faces; }
+
+	~FaceSelection ();
 
 
 private:
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
+	X3D::X3DPtr <X3D::IndexedFaceSet>                    geometry;
+	X3D::X3DPtr <X3D::X3DCoordinateNode>                 coord;
+	std::multimap <int32_t, std::pair <size_t, size_t>>  faceIndex;
+	std::pair <size_t, size_t>                           face;
+	std::vector <std::pair <size_t, size_t>>             faces;
 
 };
 

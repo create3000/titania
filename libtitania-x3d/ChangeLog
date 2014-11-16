@@ -1,5 +1,11 @@
 2014-11-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Shape.cpp:
+	* Hit.cpp:
+	* TouchSensor.cpp: 
+
+2014-11-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* Browser.h:
 	* Browser.cpp:

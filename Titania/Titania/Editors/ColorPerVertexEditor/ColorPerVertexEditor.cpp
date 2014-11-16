@@ -50,6 +50,7 @@
 
 #include "ColorPerVertexEditor.h"
 
+#include "../FaceSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
@@ -77,9 +78,7 @@ ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindo
 	                           coord (),
 	                 previewGeometry (),
 	                    previewColor (),
-	                       faceIndex (),
-	                            face (0, 0),
-	                           faces (),
+	                       selection (new FaceSelection ()),
 	                     undoHistory ()
 {
 	preview -> set_antialiasing (4);
@@ -180,7 +179,10 @@ ColorPerVertexEditor::set_selection ()
 			geometry -> colorIndex () .removeInterest (this, &ColorPerVertexEditor::set_colorIndex);
 			geometry -> coordIndex () .removeInterest (this, &ColorPerVertexEditor::set_coordIndex);
 			geometry -> color ()      .removeInterest (this, &ColorPerVertexEditor::set_colorIndex);
-			geometry -> coord ()      .removeInterest (coord);		
+			geometry -> coord ()      .removeInterest (coord);
+
+			selection -> setGeometry (nullptr);
+			selection -> setCoord (nullptr);
 		}
 
 		set_shape (nullptr);
@@ -241,8 +243,10 @@ ColorPerVertexEditor::set_selection ()
 
 		previewShape -> geometry () = previewGeometry;
 
+		selection -> setGeometry (previewGeometry);
+		selection -> setCoord (coord);
+
 		set_colorIndex ();
-		set_coordIndex ();
 
 		// Initialize all.
 
@@ -806,24 +810,7 @@ ColorPerVertexEditor::set_colorIndex ()
 void
 ColorPerVertexEditor::set_coordIndex ()
 {
-	faceIndex .clear ();
-
-	size_t face   = 0;
-	size_t vertex = 0;
-
-	for (const int32_t index : previewGeometry -> coordIndex ())
-	{
-		if (index < 0)
-		{
-			face  += vertex + 1;
-			vertex = 0;
-			continue;
-		}
-
-		faceIndex .emplace (index, std::make_pair (face, vertex));
-
-		++ vertex;
-	}
+	selection -> setGeometry (previewGeometry);
 }
 
 void
@@ -835,14 +822,14 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 			return;
 
 		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
-		const auto indices     = getPointIndices (hitPoint, touchSensor -> hitTriangle_changed ());
+		const auto indices     = selection -> getIndices (hitPoint, touchSensor -> hitTriangle_changed ());
 		
 		if (indices .empty ())
 			return;
 
 		// Determine face and faces
 
-		setFaces (hitPoint, indices);
+		selection -> setHitPoint (hitPoint, indices);
 
 		// Setup cross hair
 
@@ -861,7 +848,7 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 			{
 				case SINGLE_VERTEX:
 				{
-					const auto index = face .first + face .second;
+					const auto index = selection -> getFace () .first + selection -> getFace () .second;
 
 					if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 					{
@@ -883,7 +870,7 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 					undoStep -> addObjects (previewGeometry);
 
-					for (const auto & face : faces)
+					for (const auto & face : selection -> getFaces ())
 					{
 						const auto index = face .first + face .second;
 
@@ -904,7 +891,7 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 					undoStep -> addObjects (previewGeometry);
 
-					for (const auto & index : getPoints (face .first))
+					for (const auto & index : selection -> getPoints (selection -> getFace () .first))
 					{
 						if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 						{
@@ -953,7 +940,7 @@ ColorPerVertexEditor::set_touchTime ()
 	{
 		getSelectColorButton () .set_active (false);
 
-		const auto index = previewGeometry -> colorIndex () .get1Value (face .first + face .second);
+		const auto index = previewGeometry -> colorIndex () .get1Value (selection -> getFace () .first + selection -> getFace () .second);
 
 		colorButton .setIndex (index);
 		return;
@@ -968,12 +955,12 @@ ColorPerVertexEditor::set_triangle (const X3D::Vector3f & point)
 		const auto triangleBackGeometry = preview -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("TriangleBackGeometry");
 		const auto triangleGeometry     = preview -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("TriangleGeometry");
 		const auto triangleCoordinate   = preview -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("TriangleCoordinate");
-		const auto points               = getPoints (face .first);
+		const auto points               = selection -> getPoints (selection -> getFace () .first);
 
 		if (points .size () < 3)
 			return;
 
-		const auto vertex = face .second;
+		const auto vertex = selection -> getFace () .second;
 		const auto i1     = vertex == 0 ? points .size () - 1 : vertex - 1;
 		const auto i2     = vertex;
 		const auto i3     = (vertex + 1) % points .size ();
@@ -994,109 +981,6 @@ ColorPerVertexEditor::set_triangle (const X3D::Vector3f & point)
 	}
 	catch (const X3D::X3DError &)
 	{ }
-}
-
-std::vector <size_t>
-ColorPerVertexEditor::getPointIndices (const X3D::Vector3f & hitPoint, const X3D::MFVec3f & hitTriangle) const
-{
-	constexpr double eps = 1e-5;
-
-	const std::array <float, 3> distances = {
-		math::abs (hitPoint - hitTriangle [0]),
-		math::abs (hitPoint - hitTriangle [1]),
-		math::abs (hitPoint - hitTriangle [2])
-	};
-
-	const auto iter           = std::min_element (distances .begin (), distances .end ());
-	const auto index          = iter - distances .begin ();
-	const X3D::Vector3d point = hitTriangle [index] .getValue ();
-
-	std::vector <size_t> indices;
-
-	for (size_t i = 0, size = coord -> getSize (); i < size; ++ i)
-	{
-		if (math::abs (coord -> get1Point (i) - point) < eps)
-			indices .emplace_back (i);
-	}
-
-	return indices;
-}
-
-void
-ColorPerVertexEditor::setFaces (const X3D::Vector3d & hitPoint, const std::vector <size_t> & indices)
-{
-	faces .clear ();
-
-	for (const auto & index : indices)
-	{
-		const auto range = faceIndex .equal_range (index);
-
-		for (const auto & face : range)
-			faces .emplace_back (face .second);
-	}
-
-	if (faces .empty ())
-		return;
-
-	// Get distances of faces to hitPoint.
-
-	std::vector <float>  distances;
-
-	for (const auto & face : faces)
-	{
-		const auto points = getPoints (face .first);
-
-		if (points .size () < 3)
-		{
-			distances .emplace_back (std::numeric_limits <float>::infinity ());
-			continue;
-		}
-
-		const auto vertex = face .second;
-		const auto i1     = previewGeometry -> coordIndex () [points [vertex == 0 ? points .size () - 1 : vertex - 1]];
-		const auto i2     = previewGeometry -> coordIndex () [points [vertex]];
-		const auto i3     = previewGeometry -> coordIndex () [points [(vertex + 1) % points .size ()]];
-		const auto p1     = coord -> get1Point (i1);
-		const auto p2     = coord -> get1Point (i2);
-		const auto p3     = coord -> get1Point (i3);
-
-		distances .emplace_back (triangle_distance_to_point (p1, p2, p3, hitPoint));
-	}
-
-	// Determine face.
-
-	const auto iter  = std::min_element (distances .begin (), distances .end ());
-	const auto index = iter - distances .begin ();
-
-	face = faces [index];
-
-	//	// DEBUG
-	//	auto d = distances .begin ();
-	//	__LOG__ << std::endl;
-	//	__LOG__ << faces .size () << std::endl;
-	//
-	//	for (const auto & face : faces)
-	//		__LOG__ << *d << " : " << face .first << " : " << face .second << std::endl;
-	//
-	//	__LOG__ << face .first << " : " << face .second << std::endl;
-}
-
-std::vector <size_t>
-ColorPerVertexEditor::getPoints (const size_t face) const
-{
-	std::vector <size_t> points;
-
-	for (size_t i = face, size = previewGeometry -> coordIndex () .size (); i < size; ++ i)
-	{
-		const auto index = previewGeometry -> coordIndex () [i];
-
-		if (index < 0)
-			break;
-
-		points .emplace_back (i);
-	}
-
-	return points;
 }
 
 ColorPerVertexEditor::~ColorPerVertexEditor ()
