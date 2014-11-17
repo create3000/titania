@@ -1,3 +1,10 @@
+2014-11-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* FaceSelection.h:
+	* FaceSelection.cpp:
+	* ColorPerVertexEditor.cpp:
+	* TextureCoordinateEditor.cpp: 
+
 2014-11-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* titania:

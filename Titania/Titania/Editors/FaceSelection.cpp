@@ -85,7 +85,7 @@ FaceSelection::setGeometry (const X3D::X3DPtr <X3D::IndexedFaceSet> & value)
 }
 
 std::vector <size_t>
-FaceSelection::getIndices (const X3D::Vector3f & hitPoint, const X3D::MFVec3f & hitTriangle) const
+FaceSelection::createIndices (const X3D::Vector3f & hitPoint, const X3D::MFVec3f & hitTriangle) const
 {
 	const std::array <float, 3> distances = {
 		math::abs (hitPoint - hitTriangle [0]),
@@ -109,8 +109,10 @@ FaceSelection::getIndices (const X3D::Vector3f & hitPoint, const X3D::MFVec3f & 
 }
 
 void
-FaceSelection::setHitPoint (const X3D::Vector3d & hitPoint, const std::vector <size_t> & indices)
+FaceSelection::setHitPoint (const X3D::Vector3d & hitPoint, const X3D::MFVec3f & hitTriangle)
 {
+	indices = createIndices (hitPoint, hitTriangle);
+
 	faces .clear ();
 
 	for (const auto & index : indices)

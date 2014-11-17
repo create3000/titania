@@ -822,18 +822,17 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 			return;
 
 		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
-		const auto indices     = selection -> getIndices (hitPoint, touchSensor -> hitTriangle_changed ());
 		
-		if (indices .empty ())
-			return;
-
 		// Determine face and faces
 
-		selection -> setHitPoint (hitPoint, indices);
+		selection -> setHitPoint (hitPoint, touchSensor -> hitTriangle_changed ());
+
+		if (selection -> getIndices () .empty ())
+			return;
 
 		// Setup cross hair
 
-		set_triangle (coord -> get1Point (indices [0]));
+		set_triangle (coord -> get1Point (selection -> getIndices () [0]));
 
 		// Colorize vertices
 

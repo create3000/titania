@@ -643,18 +643,17 @@ TextureCoordinateEditor::set_right_hitPoint (const X3D::Vector3f & hitPoint)
 			return;
 
 		const auto touchSensor = right -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
-		const auto indices     = rightSelection -> getIndices (hitPoint, touchSensor -> hitTriangle_changed ());
-		
-		if (indices .empty ())
-			return;
 
 		// Determine face and faces
 
-		rightSelection -> setHitPoint (hitPoint, indices);
+		rightSelection -> setHitPoint (hitPoint, touchSensor -> hitTriangle_changed ());
+		
+		if (rightSelection -> getIndices () .empty ())
+			return;
 
 		// Setup cross hair
 
-		set_right_selection (coord -> get1Point (indices [0]));
+		set_right_selection (coord -> get1Point (rightSelection -> getIndices () [0]));
 	}
 	catch (const X3D::X3DError &)
 	{ }
