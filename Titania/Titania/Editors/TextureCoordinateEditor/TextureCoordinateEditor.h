@@ -194,6 +194,12 @@ private:
 	void
 	set_right_selection (const X3D::Vector3f &);
 
+	void
+	set_right_active (const bool);
+
+	void
+	set_right_touchTime ();
+
 	///  @name Operations
 
 	virtual
@@ -226,7 +232,9 @@ private:
 	X3D::X3DPtr <X3D::IndexedFaceSet>                    previewGeometry; 
 	X3D::X3DPtr <X3D::X3DTextureCoordinateNode>          texCoord; 
 	size_t                                               stage;
-	std::unique_ptr <FaceSelection>                      rightSelection;             
+	std::unique_ptr <FaceSelection>                      rightSelection;
+	bool                                                 rightPaintSelecion;
+	std::set <size_t>                                    selectedFaces;
 	UndoHistory                                          undoHistory;
 
 };

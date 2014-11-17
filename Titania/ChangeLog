@@ -1,6 +1,13 @@
 2014-11-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* FaceSelection.h:
+	* ColorPerVertexEditor.cpp:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditor.cpp: 
+
+2014-11-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* FaceSelection.h:
 	* FaceSelection.cpp: 
 
 2014-11-17  Holger Seelig  <holger.seelig@yahoo.de>

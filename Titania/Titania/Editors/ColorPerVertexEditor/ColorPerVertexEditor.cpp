@@ -118,6 +118,7 @@ ColorPerVertexEditor::set_initialized ()
 		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 
 		appearance -> isPrivate (true);
+
 		shape -> geometry ()               .addInterest (this, &ColorPerVertexEditor::set_viewer);
 		touchSensor -> hitPoint_changed () .addInterest (this, &ColorPerVertexEditor::set_hitPoint);
 		touchSensor -> touchTime ()        .addInterest (this, &ColorPerVertexEditor::set_touchTime);
@@ -729,6 +730,7 @@ ColorPerVertexEditor::set_multi_texture ()
 	if (multiTexture)
 	{
 		previewAppearance -> texture () = appearance -> texture () -> copy (previewAppearance -> getExecutionContext (), X3D::FLAT_COPY);
+		previewAppearance -> texture () -> isPrivate (true);
 		previewAppearance -> getExecutionContext () -> realize ();
 	}
 	else
@@ -745,6 +747,7 @@ ColorPerVertexEditor::set_multi_textureTransform ()
 	if (multiTextureTransform)
 	{
 		previewAppearance -> textureTransform () = appearance -> textureTransform () -> copy (previewAppearance -> getExecutionContext (), X3D::FLAT_COPY);
+		previewAppearance -> textureTransform () -> isPrivate (true);
 		previewAppearance -> getExecutionContext () -> realize ();
 	}
 	else
@@ -818,16 +821,13 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 {
 	try
 	{
-		if (not coord)
-			return;
-
 		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 		
 		// Determine face and faces
 
 		selection -> setHitPoint (hitPoint, touchSensor -> hitTriangle_changed ());
 
-		if (selection -> getIndices () .empty ())
+		if (selection -> isEmpty ())
 			return;
 
 		// Setup cross hair
@@ -836,95 +836,95 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 		// Colorize vertices
 
-		if (touchSensor -> isActive ())
+		if (not touchSensor -> isActive ())
+			return;
+
+		if (getSelectColorButton () .get_active ())
+			return;
+
+		using set1Value = void (X3D::MFInt32::*) (const X3D::MFInt32::size_type, const int32_t &);
+
+		switch (mode)
 		{
-			if (getSelectColorButton () .get_active ())
-				return;
-
-			using set1Value = void (X3D::MFInt32::*) (const X3D::MFInt32::size_type, const int32_t &);
-
-			switch (mode)
+			case SINGLE_VERTEX:
 			{
-				case SINGLE_VERTEX:
+				const auto index = selection -> getFace () .first + selection -> getFace () .second;
+
+				if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 				{
-					const auto index = selection -> getFace () .first + selection -> getFace () .second;
+					const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Singe Vertex"));
+
+					undoStep -> addObjects (previewGeometry);
+					undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, previewGeometry -> colorIndex () .get1Value (index));
+					undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, colorButton .getIndex ());
+					previewGeometry -> colorIndex () .set1Value (index, colorButton .getIndex ());
+
+					addUndoStep (undoStep);
+				}
+
+				break;
+			}
+			case ADJACENT_VERTICES:
+			{
+				const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Adjacent Vertices"));
+
+				undoStep -> addObjects (previewGeometry);
+
+				for (const auto & face : selection -> getAdjacentFaces ())
+				{
+					const auto index = face .first + face .second;
 
 					if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 					{
-						const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Singe Vertex"));
-
-						undoStep -> addObjects (previewGeometry);
 						undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, previewGeometry -> colorIndex () .get1Value (index));
 						undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, colorButton .getIndex ());
 						previewGeometry -> colorIndex () .set1Value (index, colorButton .getIndex ());
-
-						addUndoStep (undoStep);
 					}
-
-					break;
 				}
-				case ADJACENT_VERTICES:
+
+				addUndoStep (undoStep);
+				break;
+			}
+			case SINGLE_FACE:
+			{
+				const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Single Face"));
+
+				undoStep -> addObjects (previewGeometry);
+
+				for (const auto & index : selection -> getPoints (selection -> getFace () .first))
 				{
-					const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Adjacent Vertices"));
+					if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
+					{
+						undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, previewGeometry -> colorIndex () .get1Value (index));
+						undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, colorButton .getIndex ());
+						previewGeometry -> colorIndex () .set1Value (index, colorButton .getIndex ());
+					}
+				}
+
+				addUndoStep (undoStep);
+				break;
+			}
+			case WHOLE_OBJECT:
+			{
+				X3D::MFInt32 colorIndex;
+
+				for (const auto & index : previewGeometry -> coordIndex ())
+					colorIndex .emplace_back (index < 0 ? -1 : colorButton .getIndex ());
+
+				if (previewGeometry -> colorIndex () not_eq colorIndex)
+				{
+					const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Whole Object"));
 
 					undoStep -> addObjects (previewGeometry);
 
-					for (const auto & face : selection -> getFaces ())
-					{
-						const auto index = face .first + face .second;
-
-						if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
-						{
-							undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, previewGeometry -> colorIndex () .get1Value (index));
-							undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, colorButton .getIndex ());
-							previewGeometry -> colorIndex () .set1Value (index, colorButton .getIndex ());
-						}
-					}
+					undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> colorIndex ()), previewGeometry -> colorIndex ());
+					undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> colorIndex ()), colorIndex);
+					previewGeometry -> colorIndex () = std::move (colorIndex);
 
 					addUndoStep (undoStep);
-					break;
 				}
-				case SINGLE_FACE:
-				{
-					const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Single Face"));
 
-					undoStep -> addObjects (previewGeometry);
-
-					for (const auto & index : selection -> getPoints (selection -> getFace () .first))
-					{
-						if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
-						{
-							undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, previewGeometry -> colorIndex () .get1Value (index));
-							undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, colorButton .getIndex ());
-							previewGeometry -> colorIndex () .set1Value (index, colorButton .getIndex ());
-						}
-					}
-
-					addUndoStep (undoStep);
-					break;
-				}
-				case WHOLE_OBJECT:
-				{
-					X3D::MFInt32 colorIndex;
-
-					for (const auto & index : previewGeometry -> coordIndex ())
-						colorIndex .emplace_back (index < 0 ? -1 : colorButton .getIndex ());
-
-					if (previewGeometry -> colorIndex () not_eq colorIndex)
-					{
-						const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Whole Object"));
-
-						undoStep -> addObjects (previewGeometry);
-
-						undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> colorIndex ()), previewGeometry -> colorIndex ());
-						undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> colorIndex ()), colorIndex);
-						previewGeometry -> colorIndex () = std::move (colorIndex);
-
-						addUndoStep (undoStep);
-					}
-
-					break;
-				}
+				break;
 			}
 		}
 	}

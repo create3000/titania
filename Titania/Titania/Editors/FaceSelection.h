@@ -87,8 +87,12 @@ public:
 	{ return face; }
 
 	const std::vector <std::pair <size_t, size_t>> &
-	getFaces () const
+	getAdjacentFaces () const
 	{ return faces; }
+
+	bool
+	isEmpty () const
+	{ return indices .empty (); }
 
 	///  @name Destruction
 
