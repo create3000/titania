@@ -123,9 +123,13 @@ GeoCoordinate::set1Point (const size_t index, const Vector3d & value)
 Vector3d
 GeoCoordinate::get1Point (const size_t index)
 {
-	return getCoord (point () .get1Value (index));
+	if (index < points .size ())
+		return points [index];
+
+	return origin;
 }
 
+// Normal calculation must take place in the coordinate node to get correct geo mormal.
 Vector3f
 GeoCoordinate::getNormal (const size_t index1, const size_t index2, const size_t index3) const
 {
@@ -139,6 +143,7 @@ GeoCoordinate::getNormal (const size_t index1, const size_t index2, const size_t
 	return Vector3f (0, 0, 0);
 }
 
+// Normal calculation must take place in the coordinate node to get correct geo mormal.
 Vector3f
 GeoCoordinate::getNormal (const size_t index1, const size_t index2, const size_t index3, const size_t index4) const
 {

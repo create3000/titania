@@ -173,9 +173,8 @@ private:
 
 	///  @name Member types
 
-	typedef std::vector <size_t>  Vertices;
-	typedef std::vector <size_t>  Element;
-	typedef std::vector <Element> ElementArray;
+	typedef std::vector <size_t>   Vertices;
+	typedef std::vector <Vertices> ElementArray;
 
 	struct Polygon
 	{

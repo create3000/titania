@@ -512,7 +512,7 @@ IndexedFaceSet::createNormals (const PolygonArray & polygons) const
 			default:
 			{
 				// Determine polygon normal.
-				// Or use Newell's method http://tog.acm.org/resources/GraphicsGems/gemsiii/newell.c
+				// Or use Newell's method https://www.opengl.org/wiki/Calculating_a_Surface_Normal
 			
 				for (const auto & element : polygon .elements)
 				{

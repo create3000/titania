@@ -97,7 +97,10 @@ Coordinate::set1Point (const size_t index, const Vector3d & value)
 Vector3d
 Coordinate::get1Point (const size_t index)
 {
-	return Vector3d (point () .get1Value (index) .getValue ());
+	if (index < point () .size ())
+		return Vector3d (point () [index] .getValue ());
+
+	return Vector3d ();
 }
 
 Vector3f

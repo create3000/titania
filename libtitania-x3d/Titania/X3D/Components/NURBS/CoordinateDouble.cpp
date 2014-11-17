@@ -97,7 +97,10 @@ CoordinateDouble::set1Point (const size_t index, const Vector3d & value)
 Vector3d
 CoordinateDouble::get1Point (const size_t index)
 {
-	return point () .get1Value (index);
+	if (index < point () .size ())
+		return point () [index];
+
+	return Vector3d ();
 }
 
 Vector3f

@@ -1,5 +1,14 @@
 2014-11-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Coordinate.cpp:
+	* CoordinateDouble.cpp:
+	* IndexedFaceSet.h:
+	* GeoCoordinate.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp: 
+
+2014-11-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* IndexedFaceSet.cpp: 
 
 2014-11-16  Holger Seelig  <holger.seelig@yahoo.de>
