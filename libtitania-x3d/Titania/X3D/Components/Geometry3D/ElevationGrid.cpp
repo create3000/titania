@@ -315,13 +315,18 @@ ElevationGrid::createCoordIndex () const
 	{
 		for (int32_t x = 0, size = xDimension () - 1; x < size; ++ x)
 		{
-			coordIndex .emplace_back (      z * xDimension () + x);         // p1
-			coordIndex .emplace_back ((z + 1) * xDimension () + x);         // p2
-			coordIndex .emplace_back ((z + 1) * xDimension () + (x + 1));   // p3
+			const auto i1 =       z * xDimension () + x;
+			const auto i2 = (z + 1) * xDimension () + x;
+			const auto i3 = (z + 1) * xDimension () + (x + 1);
+			const auto i4 =       z * xDimension () + (x + 1);
 
-			coordIndex .emplace_back (      z * xDimension () + x);         // p1
-			coordIndex .emplace_back ((z + 1) * xDimension () + (x + 1));   // p3
-			coordIndex .emplace_back (      z * xDimension () + (x + 1));   // p4
+			coordIndex .emplace_back (i1); // p1
+			coordIndex .emplace_back (i2); // p2
+			coordIndex .emplace_back (i3); // p3
+
+			coordIndex .emplace_back (i1); // p1
+			coordIndex .emplace_back (i3); // p3
+			coordIndex .emplace_back (i4); // p4
 		}
 	}
 
@@ -524,16 +529,11 @@ throw (Error <NOT_SUPPORTED>,
 			texCoord -> point () .emplace_back (point .x (), point .y ());
 	}
 
-	for (size_t i = 0, size = coordIndex .size (); i < size; i += 6)
+	for (size_t i = 0, size = coordIndex .size (); i < size; i += 3)
 	{
 		geometry -> coordIndex () .emplace_back (coordIndex [i]);
 		geometry -> coordIndex () .emplace_back (coordIndex [i + 1]);
 		geometry -> coordIndex () .emplace_back (coordIndex [i + 2]);
-		geometry -> coordIndex () .emplace_back (-1);
-
-		geometry -> coordIndex () .emplace_back (coordIndex [i + 3]);
-		geometry -> coordIndex () .emplace_back (coordIndex [i + 4]);
-		geometry -> coordIndex () .emplace_back (coordIndex [i + 5]);
 		geometry -> coordIndex () .emplace_back (-1);
 	}
 

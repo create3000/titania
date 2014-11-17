@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 13 Oct 2014 00:37:06 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Sun, 02 Nov 2014 09:09:15 GMT"
+META "modified" "Mon, 17 Nov 2014 17:45:23 GMT"
 
 NavigationInfo { }
 
@@ -14,8 +14,8 @@ DEF Gray Background {
 
 GeoViewpoint {
   description "GeoViewpoint"
-  position 0 0 13000000
-  orientation -1 0 0 1.5708
+  position -1.56916564493711 1.51205864114507 1294130.91503381
+  orientation -0.703825 0.50231 0.50231 1.91503
 }
 
 DEF GeoElevationGrid Transform {
@@ -32,7 +32,7 @@ DEF GeoElevationGrid Transform {
     geometry GeoElevationGrid {
       geoGridOrigin -1.570963 3.1415927 0
       xDimension 201
-      zDimension 20
+      zDimension 2
       xSpacing 0.031415927
       zSpacing 0.031415927
       creaseAngle 3.14159
