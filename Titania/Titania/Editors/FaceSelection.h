@@ -70,8 +70,7 @@ public:
 	setGeometry (const X3D::X3DPtr <X3D::IndexedFaceSet> &);
 
 	void
-	setCoord (const X3D::X3DPtr <X3D::X3DCoordinateNode> & value)
-	{ coord = value; }
+	setCoord (const X3D::X3DPtr <X3D::X3DCoordinateNode> &);
 
 	void
 	setHitPoint (const X3D::Vector3d &, const X3D::MFVec3f &);
@@ -108,6 +107,7 @@ private:
 	X3D::X3DPtr <X3D::IndexedFaceSet>                    geometry;
 	X3D::X3DPtr <X3D::X3DCoordinateNode>                 coord;
 	std::vector <size_t>                                 indices;
+	std::multimap <X3D::Vector3f, size_t>                pointIndex;
 	std::multimap <int32_t, std::pair <size_t, size_t>>  faceIndex;
 	std::pair <size_t, size_t>                           face;
 	std::vector <std::pair <size_t, size_t>>             faces;

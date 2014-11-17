@@ -1,16 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.h" Line="138" Column="11" />
-      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.cpp" Line="129" Column="1" />
-      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.h" Line="201" Column="14" />
-      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="835" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.h" Line="213" Column="18" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/LassoSelection.h" Line="86" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/LassoSelection.cpp" Line="112" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DFlyViewer.cpp" Line="430" Column="20" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="2381" Column="35" />
+      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.h" Line="62" Column="1" />
+      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.cpp" Line="648" Column="1" />
+      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.h" Line="63" Column="1" />
+      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="829" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -18,6 +13,7 @@
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
+          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True" />
             <Node name="Tests" expanded="True">
@@ -56,19 +52,18 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Basic" expanded="True" />
                 <Node name="Browser" expanded="True">
+                  <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Geospatial" expanded="True" />
-                  <Node name="Layering" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
+                  <Node name="Geometry3D" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                   <Node name="Shape" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
                 </Node>
                 <Node name="Rendering" expanded="True" />
                 <Node name="Tools" expanded="True">
@@ -91,14 +86,16 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Browser" expanded="True">
-                <Node name="BrowserWindow.cpp" selected="True" />
-              </Node>
+              <Node name="Base" expanded="True" />
+              <Node name="Browser" expanded="True" />
               <Node name="ComposedWidgets" expanded="True" />
               <Node name="Editors" expanded="True">
                 <Node name="AppearanceEditor" expanded="True" />
-                <Node name="ColorPerVertexEditor" expanded="True" />
+                <Node name="ColorPerVertexEditor" expanded="True">
+                  <Node name="ColorPerVertexEditor.cpp" selected="True" />
+                </Node>
                 <Node name="GeometryPropertiesEditor" expanded="True" />
+                <Node name="GridEditor" expanded="True" />
                 <Node name="TextureCoordinateEditor" expanded="True" />
               </Node>
               <Node name="Undo" expanded="True" />

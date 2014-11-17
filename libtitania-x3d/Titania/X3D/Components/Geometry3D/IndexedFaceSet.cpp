@@ -323,15 +323,8 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 
 							// Add polygon with one triangle.
 		
-							ElementArray & elements = polygons .back () .elements;
-
-							elements .emplace_back ();
-							elements .back () .emplace_back (vertices [0]);
-							elements .back () .emplace_back (vertices [1]);
-							elements .back () .emplace_back (vertices [2]);
-
+							polygons .back () .elements .emplace_back (std::move (vertices));
 							polygons .emplace_back ();
-
 							break;
 						}
 						default:
@@ -372,7 +365,7 @@ IndexedFaceSet::tessellate (const std::unique_ptr <Tessellator> & tessellator, P
 
 	if (not tessellator)
 	{
-		elements .emplace_back (vertices);
+		elements .emplace_back (std::move (vertices));
 		return;
 	}
 
@@ -495,7 +488,7 @@ IndexedFaceSet::createNormals (const PolygonArray & polygons) const
 
 	for (const auto & polygon : polygons)
 	{
-		const auto & vertices = polygon .vertices;
+		const auto & vertices = polygon .vertices .empty () ? polygon .elements [0] : polygon .vertices;
 	
 		Vector3f normal;
 

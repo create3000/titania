@@ -84,6 +84,20 @@ FaceSelection::setGeometry (const X3D::X3DPtr <X3D::IndexedFaceSet> & value)
 	}
 }
 
+void
+FaceSelection::setCoord (const X3D::X3DPtr <X3D::X3DCoordinateNode> & value)
+{
+	coord = value;
+	
+	if (not coord)
+		return;
+
+	pointIndex .clear ();
+
+	for (size_t i = 0, size = coord -> getSize (); i < size; ++ i)
+		pointIndex .emplace (coord -> get1Point (i), i);
+}
+
 std::vector <size_t>
 FaceSelection::createIndices (const X3D::Vector3f & hitPoint, const X3D::MFVec3f & hitTriangle) const
 {
@@ -96,14 +110,11 @@ FaceSelection::createIndices (const X3D::Vector3f & hitPoint, const X3D::MFVec3f
 	const auto iter  = std::min_element (distances .begin (), distances .end ());
 	const auto index = iter - distances .begin ();
 	const auto point = hitTriangle [index] .getValue ();
-
+	
 	std::vector <size_t> indices;
 
-	for (size_t i = 0, size = coord -> getSize (); i < size; ++ i)
-	{
-		if (X3D::Vector3f (coord -> get1Point (i)) == point)
-			indices .emplace_back (i);
-	}
+	for (const auto & index : pointIndex .equal_range (point))
+		indices .emplace_back (index .second);
 
 	return indices;
 }
