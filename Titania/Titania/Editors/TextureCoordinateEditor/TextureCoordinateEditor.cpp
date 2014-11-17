@@ -530,11 +530,9 @@ TextureCoordinateEditor::set_geometry (const X3D::SFNode & value)
 
 	try
 	{
-		const auto rightShape          = right -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
-		const auto rightSelectedBack   = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedBack");
-		const auto rightSelectedFront  = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedFront");
-		const auto rightSelectionBack  = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionBack");
-		const auto rightSelectionFront = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionFront");
+		const auto rightShape             = right -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
+		const auto rightSelectedGeometry  = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedGeometry");
+		const auto rightSelectionGeometry = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionGeometry");
 
 		if (geometry)
 		{
@@ -546,15 +544,11 @@ TextureCoordinateEditor::set_geometry (const X3D::SFNode & value)
 			rightShape -> geometry () = previewGeometry;
 			rightShape -> getExecutionContext () -> realize ();
 
-			rightSelectedBack   -> coordIndex () .clear ();
-			rightSelectedFront  -> coordIndex () .clear ();
-			rightSelectionBack  -> coordIndex () .clear ();
-			rightSelectionFront -> coordIndex () .clear ();
+			rightSelectedGeometry  -> coordIndex () .clear ();
+			rightSelectionGeometry -> coordIndex () .clear ();
 
-			rightSelectedBack   -> coord () = coord;
-			rightSelectedFront  -> coord () = coord;
-			rightSelectionBack  -> coord () = coord;
-			rightSelectionFront -> coord () = coord;
+			rightSelectedGeometry  -> coord () = coord;
+			rightSelectionGeometry -> coord () = coord;
 
 			rightSelection -> setGeometry (geometry);
 			rightSelection -> setCoord (coord);
@@ -564,13 +558,11 @@ TextureCoordinateEditor::set_geometry (const X3D::SFNode & value)
 			rightSelection -> setGeometry (nullptr);
 			rightSelection -> setCoord (nullptr);
 
-			coord                           = nullptr;
-			previewGeometry                 = nullptr;
-			rightShape -> geometry ()       = nullptr;
-			rightSelectedBack   -> coord () = nullptr;
-			rightSelectedFront  -> coord () = nullptr;
-			rightSelectionBack  -> coord () = nullptr;
-			rightSelectionFront -> coord () = nullptr;
+			coord                              = nullptr;
+			previewGeometry                    = nullptr;
+			rightShape -> geometry ()          = nullptr;
+			rightSelectedGeometry  -> coord () = nullptr;
+			rightSelectionGeometry -> coord () = nullptr;
 		}
 	}
 	catch (const X3D::X3DError &)
@@ -696,21 +688,19 @@ TextureCoordinateEditor::set_right_selection (const X3D::Vector3f & point)
 {
 	try
 	{
-		const auto selectionBack  = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionBack");
-		const auto selectionFront = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionFront");
-		const auto points         = rightSelection -> getPoints (rightSelection -> getFace () .first);
+		const auto selectionGeometry = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionGeometry");
+		const auto points            = rightSelection -> getPoints (rightSelection -> getFace () .first);
 
 		if (points .size () < 3)
 			return;
 
-		selectionFront -> coordIndex () .clear ();
+		selectionGeometry -> coordIndex () .clear ();
 		
 		for (const auto & i : points)
-			selectionFront -> coordIndex () .emplace_back (previewGeometry -> coordIndex () [i]);
+			selectionGeometry -> coordIndex () .emplace_back (previewGeometry -> coordIndex () [i]);
 
-		selectionFront -> coordIndex () .emplace_back (selectionFront -> coordIndex () .front ());
-		selectionFront -> coordIndex () .emplace_back (-1);
-		selectionBack  -> coordIndex () = selectionFront -> coordIndex ();
+		selectionGeometry -> coordIndex () .emplace_back (selectionGeometry -> coordIndex () .front ());
+		selectionGeometry -> coordIndex () .emplace_back (-1);
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -740,10 +730,9 @@ TextureCoordinateEditor::set_right_touchTime ()
 		else if (not selectedFaces .emplace (rightSelection -> getFace () .first) .second)
 			return;
 
-		const auto selectedBack  = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedBack");
-		const auto selectedFront = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedFront");
+		const auto selectedGeometry = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedGeometry");
 		
-		selectedFront -> coordIndex () .clear ();
+		selectedGeometry -> coordIndex () .clear ();
 
 		for (const auto & face : selectedFaces)
 		{
@@ -752,16 +741,14 @@ TextureCoordinateEditor::set_right_touchTime ()
 			if (points .size () < 3)
 				continue;
 
-			const auto first = selectedFront -> coordIndex () .size ();
+			const auto first = selectedGeometry -> coordIndex () .size ();
 
 			for (const auto & i : points)
-				selectedFront -> coordIndex () .emplace_back (previewGeometry -> coordIndex () [i]);
+				selectedGeometry -> coordIndex () .emplace_back (previewGeometry -> coordIndex () [i]);
 
-			selectedFront -> coordIndex () .emplace_back (selectedFront -> coordIndex () [first]);
-			selectedFront -> coordIndex () .emplace_back (-1);
+			selectedGeometry -> coordIndex () .emplace_back (selectedGeometry -> coordIndex () [first]);
+			selectedGeometry -> coordIndex () .emplace_back (-1);
 		}
-
-		selectedBack -> coordIndex () = selectedFront -> coordIndex ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
