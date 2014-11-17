@@ -347,9 +347,9 @@ Extrusion::build ()
 			// k      k+1
 			//
 			// p4 ----- p3   n+1
-			//  |       |
-			//  |       |
-			//  |       |
+			//  |     / |
+			//  |   /   |
+			//  | /     |
 			// p1 ----- p2   n
 
 			const auto p1 = INDEX (n,  k);
@@ -359,31 +359,44 @@ Extrusion::build ()
 
 			// Use quad normal calculation as it makes nicer normals.
 
-			const auto normal = math::normal (points [p1], points [p2], points [p3], points [p4]);
+			const auto normal1 = math::normal (points [p1], points [p2], points [p3]);
+			const auto normal2 = math::normal (points [p1], points [p3], points [p4]);
 
 			// p1
 			getTexCoords () [0] .emplace_back (k / numCrossSection_1, n / numSpine_1, 0, 1);
 			coordIndex .emplace_back (p1);
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (normal);
+			getNormals () .emplace_back (normal1);
 
 			// p2
 			getTexCoords () [0] .emplace_back ((k + 1) / numCrossSection_1, n / numSpine_1, 0, 1);
 			coordIndex .emplace_back (p2);
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (normal);
+			getNormals () .emplace_back (normal1);
 
 			// p3
 			getTexCoords () [0] .emplace_back ((k + 1) / numCrossSection_1, (n + 1) / numSpine_1, 0, 1);
 			coordIndex .emplace_back (p3);
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (normal);
+			getNormals () .emplace_back (normal1);
+
+			// p1
+			getTexCoords () [0] .emplace_back (k / numCrossSection_1, n / numSpine_1, 0, 1);
+			coordIndex .emplace_back (p1);
+			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
+			getNormals () .emplace_back (normal2);
+
+			// p3
+			getTexCoords () [0] .emplace_back ((k + 1) / numCrossSection_1, (n + 1) / numSpine_1, 0, 1);
+			coordIndex .emplace_back (p3);
+			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
+			getNormals () .emplace_back (normal2);
 
 			// p4
 			getTexCoords () [0] .emplace_back (k / numCrossSection_1, (n + 1) / numSpine_1, 0, 1);
 			coordIndex .emplace_back (p4);
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (normal);
+			getNormals () .emplace_back (normal2);
 		}
 	}
 
@@ -394,7 +407,7 @@ Extrusion::build ()
 	for (size_t i = 0, size = coordIndex .size (); i < size; ++ i)
 		getVertices () .emplace_back (points [coordIndex [i]]);
 
-	addElements (GL_QUADS, getVertices () .size ());
+	addElements (GL_TRIANGLES, getVertices () .size ());
 
 	// Build caps
 
@@ -656,7 +669,7 @@ throw (Error <NOT_SUPPORTED>,
 		{
 			if (n == spine () .size () - 1)
 			{
-				const size_t v = (k + (n - 1) * (crossSection () .size () - 1)) * 4 + 3;
+				const size_t v = (k + (n - 1) * (crossSection () .size () - 1)) * 6 + 5;
 
 				texCoord -> point () .emplace_back (getTexCoords () [0] [v] .x (), getTexCoords () [0] [v] .y ());
 
@@ -666,7 +679,7 @@ throw (Error <NOT_SUPPORTED>,
 				continue;
 			}
 
-			const size_t v = (k + n * (crossSection () .size () - 1)) * 4;
+			const size_t v = (k + n * (crossSection () .size () - 1)) * 6;
 			texCoord -> point () .emplace_back (getTexCoords () [0] [v] .x (), getTexCoords () [0] [v] .y ());
 			coord -> point ()    .emplace_back (getVertices () [v]);
 
@@ -679,11 +692,19 @@ throw (Error <NOT_SUPPORTED>,
 			geometry -> texCoordIndex () .emplace_back (t1);
 			geometry -> texCoordIndex () .emplace_back (t1 + 1);
 			geometry -> texCoordIndex () .emplace_back (t1 + crossSection () .size () + 1);
+			geometry -> texCoordIndex () .emplace_back (-1);
+
+			geometry -> texCoordIndex () .emplace_back (t1);
+			geometry -> texCoordIndex () .emplace_back (t1 + crossSection () .size () + 1);
 			geometry -> texCoordIndex () .emplace_back (t1 + crossSection () .size ());
 			geometry -> texCoordIndex () .emplace_back (-1);
 
 			geometry -> coordIndex () .emplace_back (c1);
 			geometry -> coordIndex () .emplace_back (c2);
+			geometry -> coordIndex () .emplace_back (c2 + crossSectionSize - o);
+			geometry -> coordIndex () .emplace_back (-1);
+
+			geometry -> coordIndex () .emplace_back (c1);
 			geometry -> coordIndex () .emplace_back (c2 + crossSectionSize - o);
 			geometry -> coordIndex () .emplace_back (c1 + crossSectionSize - o);
 			geometry -> coordIndex () .emplace_back (-1);
@@ -693,8 +714,8 @@ throw (Error <NOT_SUPPORTED>,
 		{
 			const size_t k = crossSection () .size () - 2;
 			const size_t v = n == spine () .size () - 1
-			                 ? (k + (n - 1) * (crossSection () .size () - 1)) * 4 + 2
-			                 : (k + n * (crossSection () .size () - 1)) * 4 + 1;
+			                 ? (k + (n - 1) * (crossSection () .size () - 1)) * 6 + 2
+			                 : (k + n * (crossSection () .size () - 1)) * 6 + 1;
 
 			texCoord -> point () .emplace_back (getTexCoords () [0] [v] .x (), getTexCoords () [0] [v] .y ());
 
