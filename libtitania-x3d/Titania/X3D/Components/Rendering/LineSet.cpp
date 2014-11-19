@@ -177,10 +177,7 @@ LineSet::set_coord ()
 Box3f
 LineSet::createBBox ()
 {
-	if (coordNode)
-		return coordNode -> getBBox ();
-
-	return Box3f ();
+	return X3DGeometryNode::createBBox (); 
 }
 
 void

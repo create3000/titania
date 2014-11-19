@@ -179,6 +179,9 @@ private:
 	set_geometry (const X3D::SFNode &);
 	
 	void
+	set_texCoordIndex ();
+
+	void
 	set_coordIndex ();
 
 	void
@@ -188,6 +191,21 @@ private:
 	void
 	on_texture_stage_changed () final override;
 	
+	void
+	clear ();
+	
+	void
+	set_selected_faces ();
+	
+	void
+	set_left_coord ();
+
+	void
+	set_left_image ();
+
+	void
+	set_left_selected_faces ();
+
 	void
 	set_right_hitPoint (const X3D::Vector3f &);
 	
@@ -199,6 +217,9 @@ private:
 
 	void
 	set_right_touchTime ();
+
+	void	
+	set_right_selected_faces ();
 
 	///  @name Operations
 
@@ -219,23 +240,23 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr                                      left;
-	X3D::BrowserPtr                                      right;
-	int                                                  initialized;
-	X3D::X3DPtr <X3D::X3DShapeNode>                      shape;
-	X3D::X3DPtr <X3D::Appearance>                        appearance;
-	X3D::SFNode                                          material;
-	X3D::SFNode                                          texture;
-	X3D::SFNode                                          textureTransform;
-	X3D::X3DPtr <X3D::IndexedFaceSet>                    geometry;
-	X3D::X3DPtr <X3D::X3DCoordinateNode>                 coord;
-	X3D::X3DPtr <X3D::IndexedFaceSet>                    previewGeometry; 
-	X3D::X3DPtr <X3D::X3DTextureCoordinateNode>          texCoord; 
-	size_t                                               stage;
-	std::unique_ptr <FaceSelection>                      rightSelection;
-	bool                                                 rightPaintSelecion;
-	std::set <size_t>                                    selectedFaces;
-	UndoHistory                                          undoHistory;
+	X3D::BrowserPtr                      left;
+	X3D::BrowserPtr                      right;
+	int                                  initialized;
+	X3D::X3DPtr <X3D::X3DShapeNode>      shape;
+	X3D::X3DPtr <X3D::Appearance>        appearance;
+	X3D::SFNode                          material;
+	X3D::SFNode                          texture;
+	X3D::SFNode                          textureTransform;
+	X3D::X3DPtr <X3D::IndexedFaceSet>    geometry;
+	X3D::X3DPtr <X3D::X3DCoordinateNode> coord;
+	X3D::X3DPtr <X3D::IndexedFaceSet>    previewGeometry; 
+	X3D::X3DPtr <X3D::TextureCoordinate> texCoord; 
+	size_t                               stage;
+	std::unique_ptr <FaceSelection>      rightSelection;
+	bool                                 rightPaintSelecion;
+	std::set <size_t>                    selectedFaces;
+	UndoHistory                          undoHistory;
 
 };
 

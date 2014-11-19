@@ -1,3 +1,8 @@
+2014-11-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* LineSet.cpp:
+	* IndexedLineSet.cpp: 
+
 2014-11-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ElevationGrid.cpp: 

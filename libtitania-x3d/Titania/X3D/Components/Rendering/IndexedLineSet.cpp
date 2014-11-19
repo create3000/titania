@@ -178,13 +178,11 @@ IndexedLineSet::set_coord ()
 		coordNode -> addInterest (this);
 }
 
+///  XXX delete me.
 Box3f
 IndexedLineSet::createBBox ()
 {
-	if (coordNode)
-		return coordNode -> getBBox ();
-
-	return Box3f ();
+	return X3DGeometryNode::createBBox (); 
 }
 
 size_t
