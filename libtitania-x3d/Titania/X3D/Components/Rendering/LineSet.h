@@ -183,10 +183,6 @@ private:
 	///  @name Operations
 
 	virtual
-	Box3f
-	createBBox () final override;
-
-	virtual
 	void
 	build () final override;
 

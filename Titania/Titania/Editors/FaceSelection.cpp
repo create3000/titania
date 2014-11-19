@@ -139,7 +139,7 @@ FaceSelection::setHitPoint (const X3D::Vector3d & hitPoint, const X3D::MFVec3f &
 
 	// Get distances of faces to hitPoint.
 
-	std::vector <float>  distances;
+	std::vector <double>  distances;
 
 	for (const auto & face : faces)
 	{
@@ -147,7 +147,7 @@ FaceSelection::setHitPoint (const X3D::Vector3d & hitPoint, const X3D::MFVec3f &
 
 		if (points .size () < 3)
 		{
-			distances .emplace_back (std::numeric_limits <float>::infinity ());
+			distances .emplace_back (std::numeric_limits <double>::infinity ());
 			continue;
 		}
 

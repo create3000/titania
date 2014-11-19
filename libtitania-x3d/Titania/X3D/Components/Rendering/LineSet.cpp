@@ -174,12 +174,6 @@ LineSet::set_coord ()
 		coordNode -> addInterest (this);
 }
 
-Box3f
-LineSet::createBBox ()
-{
-	return X3DGeometryNode::createBBox (); 
-}
-
 void
 LineSet::build ()
 {

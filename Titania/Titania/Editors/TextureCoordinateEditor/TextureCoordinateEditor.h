@@ -207,6 +207,21 @@ private:
 	set_left_selected_faces ();
 
 	void
+	set_left_hitPoint (const X3D::Vector3f &);
+
+	void
+	set_left_point (const X3D::Vector3d &, const bool);
+	
+	int32_t
+	getPointIndex (const X3D::Vector3d &) const;
+
+	void
+	set_left_active (const bool);
+
+	void
+	set_left_touchTime ();
+
+	void
 	set_right_hitPoint (const X3D::Vector3f &);
 	
 	void
@@ -256,6 +271,8 @@ private:
 	std::unique_ptr <FaceSelection>      rightSelection;
 	bool                                 rightPaintSelecion;
 	std::set <size_t>                    selectedFaces;
+	int32_t                              pointIndex;
+	X3D::Vector2f                        pointOffset;
 	UndoHistory                          undoHistory;
 
 };

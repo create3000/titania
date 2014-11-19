@@ -54,8 +54,12 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Browser/ContextLock.h>
+
 namespace titania {
 namespace puck {
+
+constexpr double POINT_SIZE = 6; // Use linewidthScaleFactor / 2 + 2.
 
 TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browserWindow) :
 	                   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
@@ -76,6 +80,8 @@ TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browse
 	                     rightSelection (new FaceSelection ()),
 	                 rightPaintSelecion (false),
 	                      selectedFaces (),
+	                         pointIndex (-1),
+	                        pointOffset (),
 	                        undoHistory ()
 {
 	left  -> set_antialiasing (4);
@@ -144,10 +150,14 @@ TextureCoordinateEditor::set_initialized ()
 
 	try
 	{
+		const auto appearance       = left -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+		const auto touchSensor      = left -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 		const auto selectedGeometry = left -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedGeometry");
-		const auto appearance   = left -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 
-		selectedGeometry -> addInterest (this, &TextureCoordinateEditor::set_left_image);
+		touchSensor -> isActive ()         .addInterest (this, &TextureCoordinateEditor::set_left_active);
+		touchSensor -> hitPoint_changed () .addInterest (this, &TextureCoordinateEditor::set_left_hitPoint);
+		touchSensor -> touchTime ()        .addInterest (this, &TextureCoordinateEditor::set_left_touchTime);
+		selectedGeometry ->                 addInterest (this, &TextureCoordinateEditor::set_left_image);
 
 		appearance -> isPrivate (true);
 	}
@@ -210,8 +220,6 @@ TextureCoordinateEditor::set_selection ()
 
 		else
 			set_shape (shapes .back ());
-
-		selectedFaces .clear ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -746,10 +754,10 @@ TextureCoordinateEditor::set_left_image ()
 		X3D::Vector3f min, max;
 		bbox .extents (min, max);
 
-		min .x (std::floor (min .x ()));
-		min .y (std::floor (min .y ()));
-		max .x (std::ceil (max .x ()));
-		max .y (std::ceil (max .y ()));
+		min .x (std::floor (min .x () - 0.5));
+		min .y (std::floor (min .y () - 0.5));
+		max .x (std::ceil  (max .x () + 0.5));
+		max .y (std::ceil  (max .y () + 0.5));
 
 		imageTexCoord -> point () = {
 			X3D::Vector2f (min .x (), min .y ()),
@@ -767,6 +775,143 @@ TextureCoordinateEditor::set_left_image ()
 	}
 	catch (const X3D::X3DError &)
 	{ }
+}
+
+void
+TextureCoordinateEditor::set_left_hitPoint (const X3D::Vector3f & hitPoint)
+{
+	try
+	{
+		const auto touchSensor = left -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
+
+		if (touchSensor -> isActive ())
+		{
+			if (pointIndex >= 0 and (size_t) pointIndex < texCoord -> point () .size ())
+			{
+				const auto point = X3D::Vector2f (hitPoint .x (), hitPoint .y ()) + pointOffset;
+			
+				set_left_point (X3D::Vector3d (point .x (), point .y (), 0), true);
+
+				texCoord -> point () [pointIndex] = point;
+			}
+		}
+		else
+			set_left_point (hitPoint, false);
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
+void
+TextureCoordinateEditor::set_left_point (const X3D::Vector3d & hitPoint, const bool active)
+{
+	try
+	{
+		const auto selectedCoord = left -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("SelectedCoord");
+		const auto pointCoord    = left -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("PointCoordinate");
+
+		if (active)
+		{
+			pointCoord -> point () = { hitPoint };
+			return;
+		}
+
+		pointIndex = getPointIndex (hitPoint);
+		
+		if (pointIndex < 0)
+			pointCoord -> point () .clear ();
+
+		else
+		{
+			X3D::ContextLock lock (left);
+
+			if (lock)
+			{
+				// Set red point if pointer is very close.
+				left -> getActiveLayer () -> getViewpoint () -> reshape (0, -10);
+
+				const X3D::Matrix4d modelview; // Use identity
+				const auto          projection = X3D::ProjectionMatrix4d ();
+				const auto          viewport   = left -> getActiveLayer () -> getViewport () -> getRectangle ();
+
+				const auto point = selectedCoord -> get1Point (pointIndex);
+				auto       p     = X3D::ViewVolume::projectPoint (point, modelview, projection, viewport);
+				auto       h     = X3D::ViewVolume::projectPoint (hitPoint, modelview, projection, viewport);
+				
+				p .z (0);
+				h .z (0);
+
+				const auto distance = math::abs (h - p);
+
+				if (distance < POINT_SIZE)
+					pointCoord -> point () = { point };
+				else
+					pointCoord -> point () .clear ();
+			}
+		}
+	}
+	catch (const X3D::X3DError & error)
+	{ }
+}
+
+int32_t
+TextureCoordinateEditor::getPointIndex (const X3D::Vector3d & hitPoint) const
+{
+	try
+	{
+		const auto selectedGeometry = left -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedGeometry");
+		const auto selectedCoord    = left -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("SelectedCoord");
+
+		// Determine pointIndex of nearest point to hitPoint.
+
+		if (selectedGeometry -> coordIndex () .empty ())
+			return -1;
+
+		if (selectedCoord -> point () .empty ())
+			return -1;
+
+		std::map <double, int32_t> distances;
+
+		for (const auto & index : selectedGeometry -> coordIndex ())
+		{
+			if (index >= 0)
+				distances .emplace (math::abs (hitPoint - selectedCoord -> get1Point (index)), index);
+		}
+
+		return distances .begin () -> second;
+	}
+	catch (const X3D::X3DError &)
+	{
+		return -1;
+	}
+}
+
+void
+TextureCoordinateEditor::set_left_active (const bool value)
+{
+	if (not value)
+		return;
+
+	if (pointIndex < 0)
+		return;
+		
+	if ((size_t) pointIndex >= texCoord -> point () .size ())
+		return;
+
+	try
+	{
+		const auto          touchSensor = left -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
+		const X3D::Vector3f hitPoint    = touchSensor -> hitPoint_changed ();
+
+		pointOffset = texCoord -> point () [pointIndex] - X3D::Vector2f (hitPoint .x (), hitPoint .y ());
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
+void
+TextureCoordinateEditor::set_left_touchTime ()
+{
 }
 
 void
@@ -793,7 +938,6 @@ TextureCoordinateEditor::set_left_selected_faces ()
 			selectedGeometry -> coordIndex () .emplace_back (selectedGeometry -> coordIndex () [first]);
 			selectedGeometry -> coordIndex () .emplace_back (-1);
 		}
-
 	}
 	catch (const X3D::X3DError &)
 	{ }

@@ -201,10 +201,6 @@ private:
 
 	///  @name Operations
 
-	virtual
-	Box3f
-	createBBox () final override;
-
 	size_t
 	getColorIndex (const size_t, const bool) const;
 

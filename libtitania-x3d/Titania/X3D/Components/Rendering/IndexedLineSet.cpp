@@ -178,13 +178,6 @@ IndexedLineSet::set_coord ()
 		coordNode -> addInterest (this);
 }
 
-///  XXX delete me.
-Box3f
-IndexedLineSet::createBBox ()
-{
-	return X3DGeometryNode::createBBox (); 
-}
-
 size_t
 IndexedLineSet::getColorIndex (const size_t index, const bool) const
 {
