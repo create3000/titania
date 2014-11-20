@@ -1,5 +1,9 @@
 2014-11-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Selection.cpp: 
+
+2014-11-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Rectangle2D.cpp:
 	* MultiTexture.cpp:
 	* QuadSphereOptions.cpp: 

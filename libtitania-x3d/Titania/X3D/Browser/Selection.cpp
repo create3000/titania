@@ -159,25 +159,36 @@ Selection::removeChildren (const MFNode & value)
 void
 Selection::setChildren (const MFNode & value)
 {
-	if (not children .empty ())
+	if (children .empty ())
 	{
-		MFNode sortedValue = value;
-		MFNode difference;
-
-		std::sort (children .begin (), children .end ());
-		std::sort (sortedValue .begin (), sortedValue .end ());
-
-		std::set_difference (children .begin (), children .end (),
-		                     sortedValue .begin (), sortedValue .end (),
-		                     std::back_inserter (difference));
-
-		for (const auto & child : difference)
-			child -> removeTool ();
-
-		children .clear ();
+		addChildren (value);
+		return;
 	}
 
-	addChildren (value);
+	MFNode sortedChildren = children;
+	MFNode sortedValue    = value;
+	MFNode difference;
+	
+	std::sort (sortedChildren .begin (), sortedChildren .end ());
+	std::sort (sortedValue .begin (), sortedValue .end ());
+
+	// Remove
+
+	std::set_difference (sortedChildren .begin (), sortedChildren .end (),
+	                     sortedValue .begin (), sortedValue .end (),
+	                     std::back_inserter (difference));
+
+	removeChildren (difference);
+	
+	// Add
+	
+	difference .clear ();
+
+	std::set_difference (sortedValue .begin (), sortedValue .end (),
+	                     sortedChildren .begin (), sortedChildren .end (),
+	                     std::back_inserter (difference));
+
+	addChildren (difference);
 }
 
 bool
