@@ -68,6 +68,9 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("UndoMenuItem", m_UndoMenuItem);
 	m_builder -> get_widget ("RedoMenuItem", m_RedoMenuItem);
+	m_builder -> get_widget ("SelectionMenuItem", m_SelectionMenuItem);
+	m_builder -> get_widget ("SelectAllMenuItem", m_SelectAllMenuItem);
+	m_builder -> get_widget ("DeselectAllMenuItem", m_DeselectAllMenuItem);
 	m_builder -> get_widget ("LeftBox", m_LeftBox);
 	m_builder -> get_widget ("LeftHandButton", m_LeftHandButton);
 	m_builder -> get_widget ("LeftArrowButton", m_LeftArrowButton);
@@ -86,6 +89,10 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'UndoMenuItem'.
 	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_undo_activate));
 	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_redo_activate));
+	m_SelectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_select_all_activate));
+
+	// Connect object Gtk::MenuItem with id 'DeselectAllMenuItem'.
+	m_DeselectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_deselect_all_activate));
 
 	// Connect object Gtk::RadioToolButton with id 'LeftHandButton'.
 	m_LeftHandButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_hand_toggled));

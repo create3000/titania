@@ -118,6 +118,18 @@ public:
 	getRedoMenuItem () const
 	{ return *m_RedoMenuItem; }
 
+	Gtk::MenuItem &
+	getSelectionMenuItem () const
+	{ return *m_SelectionMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getSelectAllMenuItem () const
+	{ return *m_SelectAllMenuItem; }
+
+	Gtk::MenuItem &
+	getDeselectAllMenuItem () const
+	{ return *m_DeselectAllMenuItem; }
+
 	Gtk::Box &
 	getLeftBox () const
 	{ return *m_LeftBox; }
@@ -176,6 +188,14 @@ public:
 
 	virtual
 	void
+	on_select_all_activate () = 0;
+
+	virtual
+	void
+	on_deselect_all_activate () = 0;
+
+	virtual
+	void
 	on_left_hand_toggled () = 0;
 
 	virtual
@@ -228,6 +248,9 @@ private:
 	Gtk::Box*                      m_Widget;
 	Gtk::ImageMenuItem*            m_UndoMenuItem;
 	Gtk::ImageMenuItem*            m_RedoMenuItem;
+	Gtk::MenuItem*                 m_SelectionMenuItem;
+	Gtk::ImageMenuItem*            m_SelectAllMenuItem;
+	Gtk::MenuItem*                 m_DeselectAllMenuItem;
 	Gtk::Box*                      m_LeftBox;
 	Gtk::RadioToolButton*          m_LeftHandButton;
 	Gtk::RadioToolButton*          m_LeftArrowButton;
