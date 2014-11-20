@@ -119,6 +119,34 @@ public:
 	{ return *m_RedoMenuItem; }
 
 	Gtk::MenuItem &
+	getMappingsMenuItem () const
+	{ return *m_MappingsMenuItem; }
+
+	Gtk::MenuItem &
+	getXPlaneMenuItem () const
+	{ return *m_XPlaneMenuItem; }
+
+	Gtk::MenuItem &
+	getYPlaneMenuItem () const
+	{ return *m_YPlaneMenuItem; }
+
+	Gtk::MenuItem &
+	getZPlaneMenuItem () const
+	{ return *m_ZPlaneMenuItem; }
+
+	Gtk::MenuItem &
+	getBoxMenuItem () const
+	{ return *m_BoxMenuItem; }
+
+	Gtk::MenuItem &
+	getCylinderMenuItem () const
+	{ return *m_CylinderMenuItem; }
+
+	Gtk::MenuItem &
+	getSphereMenuItem () const
+	{ return *m_SphereMenuItem; }
+
+	Gtk::MenuItem &
 	getSelectionMenuItem () const
 	{ return *m_SelectionMenuItem; }
 
@@ -196,6 +224,30 @@ public:
 
 	virtual
 	void
+	on_x_plane_activate () = 0;
+
+	virtual
+	void
+	on_y_plane_activate () = 0;
+
+	virtual
+	void
+	on_z_plane_activate () = 0;
+
+	virtual
+	void
+	on_box_activate () = 0;
+
+	virtual
+	void
+	on_cylinder_activate () = 0;
+
+	virtual
+	void
+	on_sphere_activate () = 0;
+
+	virtual
+	void
 	on_select_all_activate () = 0;
 
 	virtual
@@ -256,6 +308,13 @@ private:
 	Gtk::Box*                      m_Widget;
 	Gtk::ImageMenuItem*            m_UndoMenuItem;
 	Gtk::ImageMenuItem*            m_RedoMenuItem;
+	Gtk::MenuItem*                 m_MappingsMenuItem;
+	Gtk::MenuItem*                 m_XPlaneMenuItem;
+	Gtk::MenuItem*                 m_YPlaneMenuItem;
+	Gtk::MenuItem*                 m_ZPlaneMenuItem;
+	Gtk::MenuItem*                 m_BoxMenuItem;
+	Gtk::MenuItem*                 m_CylinderMenuItem;
+	Gtk::MenuItem*                 m_SphereMenuItem;
 	Gtk::MenuItem*                 m_SelectionMenuItem;
 	Gtk::ImageMenuItem*            m_SelectAllMenuItem;
 	Gtk::MenuItem*                 m_DeselectAllMenuItem;
