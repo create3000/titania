@@ -75,6 +75,7 @@ TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browse
 	                            texture (),
 	                   textureTransform (),
 	                           geometry (),
+	                      multiTexCoord (),
 	                              coord (),
 	                    previewGeometry (),
 	                           texCoord (),
@@ -89,7 +90,8 @@ TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browse
 	                      startPosition (),
 	                     startPositions (),
 	                               keys (),
-	                        undoHistory ()
+	                        undoHistory (),
+	                           undoStep ()
 {
 	left  -> set_antialiasing (4);
 	right -> set_antialiasing (4);
@@ -410,7 +412,79 @@ TextureCoordinateEditor::on_remove_clicked ()
 
 void
 TextureCoordinateEditor::on_apply_clicked ()
-{ }
+{
+	geometry -> texCoordIndex () .removeInterest (this, &TextureCoordinateEditor::set_texCoordIndex);
+	geometry -> texCoordIndex () .addInterest (this, &TextureCoordinateEditor::connectTexCoordIndex);
+	geometry -> texCoord ()      .removeInterest (this, &TextureCoordinateEditor::set_texCoord);
+	geometry -> texCoord ()      .addInterest (this, &TextureCoordinateEditor::connectTexCoord);
+
+	if (multiTexCoord)
+	{
+		multiTexCoord -> removeInterest (this, &TextureCoordinateEditor::set_texCoord);
+		multiTexCoord -> addInterest (this, &TextureCoordinateEditor::connectMultiTexCoord);
+	}
+
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Apply Texture Coordinates"));
+
+	undoStep -> addObjects (geometry);
+
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (geometry -> texCoordIndex ()), geometry -> texCoordIndex ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (geometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
+	geometry -> texCoordIndex () = previewGeometry -> texCoordIndex ();
+
+	// Replace texCoord or multiTexCoord.
+
+	const auto texCoordNode = texCoord -> copy (geometry -> getExecutionContext (), X3D::FLAT_COPY);
+	const X3D::X3DPtr <X3D::MultiTextureCoordinate> multiTextureCoordinate (geometry -> texCoord ());
+
+	if (multiTextureCoordinate)
+	{
+		X3D::MFNode texCoords (multiTextureCoordinate -> getTexCoord () .begin (), multiTextureCoordinate -> getTexCoord () .end ());
+
+		if (texCoords .empty ())
+		{
+			// XXX: Fill with default texture coordinates.
+			for (size_t i = 0, size = stage; i < size; ++ i)
+			 	texCoords .emplace_back (texCoordNode);
+		}
+		else
+		{
+			for (size_t i = texCoords .size () - 1, size = stage; i < size; ++ i)
+				texCoords .emplace_back (texCoords .back ());
+		}
+
+		texCoords .set1Value (stage, texCoordNode);
+
+		getBrowserWindow () -> replaceNodes (X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), texCoords, undoStep);
+	}
+	else
+		getBrowserWindow () -> replaceNode (X3D::SFNode (geometry), geometry -> texCoord (), X3D::SFNode (texCoordNode), undoStep);
+
+	geometry -> getExecutionContext () -> realize ();
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+TextureCoordinateEditor::connectTexCoordIndex ()
+{
+	geometry -> texCoordIndex () .removeInterest (this, &TextureCoordinateEditor::connectTexCoordIndex);
+	geometry -> texCoordIndex () .addInterest (this, &TextureCoordinateEditor::set_texCoordIndex);
+}
+
+void
+TextureCoordinateEditor::connectTexCoord ()
+{
+	geometry -> texCoord () .removeInterest (this, &TextureCoordinateEditor::connectTexCoord);
+	geometry -> texCoord () .addInterest (this, &TextureCoordinateEditor::set_texCoord);
+}
+
+void
+TextureCoordinateEditor::connectMultiTexCoord ()
+{
+	multiTexCoord -> removeInterest (this, &TextureCoordinateEditor::connectMultiTexCoord);
+	multiTexCoord -> addInterest (this, &TextureCoordinateEditor::set_texCoord, X3D::SFNode (multiTexCoord));
+}
 
 void
 TextureCoordinateEditor::set_left_viewer ()
@@ -603,12 +677,7 @@ TextureCoordinateEditor::set_geometry (const X3D::SFNode & value)
 {
 	if (geometry)
 	{
-		try
-		{
-			geometry -> getField <X3D::SFNode> ("texCoord") .removeInterest (this, &TextureCoordinateEditor::set_texCoord);
-		}
-		catch (const X3D::X3DError &)
-		{ }
+		geometry -> texCoord () .removeInterest (this, &TextureCoordinateEditor::set_texCoord);
 	}
 
 	geometry = value;
@@ -621,6 +690,8 @@ TextureCoordinateEditor::set_geometry (const X3D::SFNode & value)
 
 		if (geometry)
 		{
+			geometry -> texCoord () .addInterest (this, &TextureCoordinateEditor::set_texCoord);
+
 			coord = geometry -> coord ();
 
 			previewGeometry = geometry -> copy (rightShape -> getExecutionContext (), X3D::FLAT_COPY);
@@ -630,6 +701,7 @@ TextureCoordinateEditor::set_geometry (const X3D::SFNode & value)
 			rightShape -> getExecutionContext () -> realize ();
 
 			set_texCoordIndex ();
+			set_texCoord (geometry -> texCoord ());
 
 			rightSelectedGeometry  -> coordIndex () .clear ();
 			rightSelectionGeometry -> coordIndex () .clear ();
@@ -639,37 +711,27 @@ TextureCoordinateEditor::set_geometry (const X3D::SFNode & value)
 
 			rightSelection -> setGeometry (geometry);
 			rightSelection -> setCoord (coord);
+
+			getWidget () .set_sensitive (true);
 		}
 		else
 		{
 			rightSelection -> setGeometry (nullptr);
 			rightSelection -> setCoord (nullptr);
 
-			coord                              = nullptr;
+			set_texCoord (nullptr);
+			set_coord (nullptr);
+
 			previewGeometry                    = nullptr;
 			rightShape -> geometry ()          = nullptr;
 			rightSelectedGeometry  -> coord () = nullptr;
 			rightSelectionGeometry -> coord () = nullptr;
+
+			getWidget () .set_sensitive (false);
 		}
 	}
 	catch (const X3D::X3DError &)
 	{ }
-
-	if (geometry)
-	{
-		try
-		{
-			geometry -> getField <X3D::SFNode> ("texCoord") .addInterest (this, &TextureCoordinateEditor::set_texCoord);
-
-			set_texCoord (geometry -> getField <X3D::SFNode> ("texCoord"));
-		}
-		catch (const X3D::X3DError &)
-		{
-			set_texCoord (nullptr);
-		}
-	}
-	else
-		set_texCoord (nullptr);
 
 	right -> addEvent ();
 }
@@ -677,6 +739,8 @@ TextureCoordinateEditor::set_geometry (const X3D::SFNode & value)
 void
 TextureCoordinateEditor::set_texCoordIndex ()
 {
+	undoHistory .clear ();
+
 	// Generate texCoordIndex.
 
 	if (geometry -> texCoordIndex () .empty ())
@@ -691,23 +755,33 @@ void
 TextureCoordinateEditor::set_coordIndex ()
 {
 	rightSelection -> setGeometry (previewGeometry);
+
+	if (geometry -> texCoordIndex () .empty ())
+		set_texCoordIndex ();
 }
 
 void
 TextureCoordinateEditor::set_texCoord (const X3D::SFNode & value)
 {
+	undoHistory .clear ();
+
+	if (multiTexCoord)
+		multiTexCoord -> removeInterest (this, &TextureCoordinateEditor::set_texCoord);
+
 	// Determine texCoord.
 
 	X3D::X3DPtr <X3D::TextureCoordinate> texCoordNode;
 
-	const X3D::X3DPtr <X3D::MultiTextureCoordinate> multiTextureCoordinate (value);
+	multiTexCoord = value;
 
-	if (multiTextureCoordinate)
+	if (multiTexCoord)
 	{
-		if (multiTextureCoordinate -> getTexCoord () .empty ())
+		multiTexCoord -> addInterest (this, &TextureCoordinateEditor::set_texCoord, value);
+
+		if (multiTexCoord -> getTexCoord () .empty ())
 			texCoordNode = nullptr;
 		else
-			texCoordNode = multiTextureCoordinate -> getTexCoord () [std::min (stage, multiTextureCoordinate -> getTexCoord () .size () - 1)];
+			texCoordNode = multiTexCoord -> getTexCoord () [std::min (stage, multiTexCoord -> getTexCoord () .size () - 1)];
 	}
 	else
 		texCoordNode = value;
@@ -771,6 +845,14 @@ TextureCoordinateEditor::on_texture_stage_changed ()
 	}
 	else
 		set_texCoord (nullptr);
+}
+
+void
+TextureCoordinateEditor::set_coord (const X3D::SFNode & value)
+{
+	coord = value;
+
+	rightSelection -> setCoord (coord);
 }
 
 void
@@ -893,11 +975,38 @@ TextureCoordinateEditor::set_left_selected_faces ()
 void
 TextureCoordinateEditor::set_left_active (const bool value)
 {
+	using set1Value = void (X3D::MFVec2f::*) (const X3D::MFVec2f::size_type, const X3D::SFVec2f &);
+
+	if (value)
+	{
+		set_startDrag ();
+		
+		// Init undo step.
+
+		undoStep = std::make_shared <UndoStep> (_ ("Transform Points"));
+		undoStep -> addObjects (texCoord);
+
+		for (const auto & index : selectedPoints)
+			undoStep -> addUndoFunction ((set1Value) &X3D::MFVec2f::set1Value, std::ref (texCoord -> point ()), index, texCoord -> point () [index]);
+	}
+	else
+	{
+		// Drag has started.
+		if (startHitPoint == infinity2f)
+		{
+			for (const auto & index : selectedPoints)
+				undoStep -> addRedoFunction ((set1Value) &X3D::MFVec2f::set1Value, std::ref (texCoord -> point ()), index, texCoord -> point () [index]);	
+			
+			addUndoStep (undoStep);
+		}
+	}
+}
+
+void
+TextureCoordinateEditor::set_startDrag ()
+{
 	try
 	{
-		if (not value)
-			return;
-	
 		if ((size_t) activePoint >= texCoord -> point () .size ())
 			return;
 

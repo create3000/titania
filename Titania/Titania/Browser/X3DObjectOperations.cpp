@@ -196,7 +196,7 @@ X3DObjectOperations::removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> & 
 	getBrowserWindow () -> removeNodesFromSceneGraph (selection, std::set <X3D::SFNode> (nodes .begin (), nodes .end ()), undoStep);
 
 	for (const auto & node : nodes)
-		getBrowserWindow () -> removeNodeFromSceneIfNotExists (getExecutionContext (), node, undoStep);
+		getBrowserWindow () -> removeNodesFromSceneIfNotExists (getExecutionContext (), { node }, undoStep);
 
 	// Find empty groups in selection and remove from scene.
 

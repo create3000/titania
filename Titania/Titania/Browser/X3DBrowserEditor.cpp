@@ -1028,7 +1028,7 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode,
 
 	const auto undoRemoveNode = std::make_shared <UndoStep> ();
 
-	removeNodeFromSceneIfNotExists (getExecutionContext (), newValue, undoRemoveNode);
+	removeNodesFromSceneIfNotExists (getExecutionContext (), { newValue }, undoRemoveNode);
 
 	undoStep -> addUndoFunction (&UndoStep::redoChanges, undoRemoveNode);
 	undoStep -> addRedoFunction (&UndoStep::undoChanges, undoRemoveNode);
@@ -1041,7 +1041,37 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode,
 
 	sfnode = newValue;
 
-	removeNodeFromSceneIfNotExists (getExecutionContext (), oldValue, undoStep);
+	removeNodesFromSceneIfNotExists (getExecutionContext (), { oldValue }, undoStep);
+}
+
+/***
+ *  Sets @a mfnode to @a newValue.
+ */
+void
+X3DBrowserEditor::replaceNodes (const X3D::SFNode & parent, X3D::MFNode & mfnode, const X3D::MFNode & newValue, const UndoStepPtr & undoStep) const
+{
+	const auto oldValue = mfnode;
+
+	undoStep -> addObjects (parent);
+
+	//
+
+	const auto undoRemoveNode = std::make_shared <UndoStep> ();
+
+	removeNodesFromSceneIfNotExists (getExecutionContext (), newValue, undoRemoveNode);
+
+	undoStep -> addUndoFunction (&UndoStep::redoChanges, undoRemoveNode);
+	undoStep -> addRedoFunction (&UndoStep::undoChanges, undoRemoveNode);
+	undoRemoveNode -> undoChanges ();
+
+	//
+
+	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
+	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (mfnode), newValue);
+
+	mfnode = newValue;
+
+	removeNodesFromSceneIfNotExists (getExecutionContext (), oldValue, undoStep);
 }
 
 /***
@@ -1075,7 +1105,7 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode,
 
 	const auto undoRemoveNode = std::make_shared <UndoStep> ();
 
-	removeNodeFromSceneIfNotExists (getExecutionContext (), newValue, undoRemoveNode);
+	removeNodesFromSceneIfNotExists (getExecutionContext (), { newValue }, undoRemoveNode);
 
 	undoStep -> addUndoFunction (&UndoStep::redoChanges, undoRemoveNode);
 	undoStep -> addRedoFunction (&UndoStep::undoChanges, undoRemoveNode);
@@ -1088,7 +1118,7 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode,
 
 	mfnode [index] = newValue;
 
-	removeNodeFromSceneIfNotExists (getExecutionContext (), oldValue, undoStep);
+	removeNodesFromSceneIfNotExists (getExecutionContext (), { oldValue }, undoStep);
 }
 
 void
@@ -1135,7 +1165,7 @@ X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, 
 
 	eraseNode (mfnode, index, oldValue);
 
-	removeNodeFromSceneIfNotExists (getExecutionContext (), oldValue, undoStep);
+	removeNodesFromSceneIfNotExists (getExecutionContext (), { oldValue }, undoStep);
 }
 
 void
@@ -1149,13 +1179,18 @@ X3DBrowserEditor::eraseNode (X3D::MFNode & mfnode, const size_t index, const X3D
  *  Removes @a node completely from scene if not exists in scene graph anymore.
  */
 void
-X3DBrowserEditor::removeNodeFromSceneIfNotExists (const X3D::X3DExecutionContextPtr & executionContext, const X3D::SFNode & node, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::removeNodesFromSceneIfNotExists (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes, const UndoStepPtr & undoStep) const
 {
-	if (node)
+	X3D::MFNode remove;
+	
+	for (const auto & node : nodes)
 	{
 		if (node -> getCloneCount () == 0)
-			removeNodesFromScene (executionContext, { node }, undoStep, false);
-	}
+			remove .emplace_back (node);
+	 }
+		
+	if (not remove .empty ())
+		removeNodesFromScene (executionContext, remove, undoStep, false);
 }
 
 /***

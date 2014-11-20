@@ -131,21 +131,21 @@ QuadSphereOptions::createTexCoord () const
 {
 	std::vector <Vector4f> texCoord;
 
-	const auto polOffset = 1 / float (uDimension () - 1);
+	const auto polOffset = 1 / (2 * float (uDimension () - 1));
 
 	for (int u = 0; u < uDimension () - 1; ++ u)
 	{
-		float x = u / float (uDimension () - 1) + polOffset;
+		const float x = u / float (uDimension () - 1) + polOffset;
 		texCoord .emplace_back (x, 1, 0, 1);
 	}
 
 	for (int32_t v = 1; v < vDimension () - 1; ++ v)
 	{
-		float y = v / float (vDimension () - 1);
+		const float y = v / float (vDimension () - 1);
 
 		for (int u = 0; u < uDimension () - 1; ++ u)
 		{
-			float x = u / float (uDimension () - 1);
+			const float x = u / float (uDimension () - 1);
 			texCoord .emplace_back (x, 1 - y, 0, 1);
 		}
 
@@ -154,7 +154,7 @@ QuadSphereOptions::createTexCoord () const
 
 	for (int u = 0; u < uDimension () - 1; ++ u)
 	{
-		float x = u / float (uDimension () - 1) + polOffset;
+		const float x = u / float (uDimension () - 1) + polOffset;
 		texCoord .emplace_back (x, 0, 0, 1);
 	}
 
@@ -197,11 +197,11 @@ QuadSphereOptions::createPoints () const
 	// sphere segments
 	for (int32_t v = 1; v < vDimension () - 1; ++ v)
 	{
-		std::complex <float> zPlane = std::polar <float> (1, -M_PI * (v / float (vDimension () - 1)));
+		const auto zPlane = std::polar <float> (1, -M_PI * (v / float (vDimension () - 1)));
 
 		for (int32_t u = 0; u < uDimension () - 1; ++ u)
 		{
-			std::complex <float> yPlane = std::polar <float> (zPlane .imag (), 2 * M_PI * (u / float (uDimension () - 1)));
+			const auto yPlane = std::polar <float> (zPlane .imag (), 2 * M_PI * (u / float (uDimension () - 1)));
 
 			points .emplace_back (yPlane .imag (), zPlane .real (), yPlane .real ());
 		}

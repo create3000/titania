@@ -176,6 +176,9 @@ public:
 	replaceNode (const X3D::SFNode &, X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
+	replaceNodes (const X3D::SFNode &, X3D::MFNode &, const X3D::MFNode &, const UndoStepPtr &) const;
+
+	void
 	replaceNodes (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
@@ -188,7 +191,7 @@ public:
 	removeNode (const X3D::SFNode &, X3D::MFNode &, const size_t, const UndoStepPtr &) const;
 
 	void
-	removeNodeFromSceneIfNotExists (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const UndoStepPtr &) const;
+	removeNodesFromSceneIfNotExists (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const UndoStepPtr &) const;
 
 	static
 	void

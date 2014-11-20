@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Wed, 19 Nov 2014 23:51:32 GMT"
+META "modified" "Thu, 20 Nov 2014 11:47:27 GMT"
 
 PROTO IndexedPointSet [
   inputOnly      MFInt32 set_coordIndex
@@ -204,7 +204,9 @@ LayerSet {
                 emissiveColor 0 0 1
               }
             }
-            geometry DEF SelectedPointSet IndexedPointSet { coord USE SelectedCoord }
+            geometry DEF SelectedPointSet IndexedPointSet {
+              coord USE SelectedCoord
+            }
           }
         }
         DEF ActivePoint Switch {

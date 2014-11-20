@@ -168,6 +168,14 @@ throw (Error <NOT_SUPPORTED>,
 		geometry -> getField <MFInt32> ("coordIndex")    .resize (5);
 	}
 
+	if (size () not_eq Vector2f (2, 2))
+	{
+		const auto size1_2 = Vector3f (size () .getX (), size () .getY (), 0) / 2.0f;
+
+		for (auto & point : geometry -> getField <SFNode> ("coord") -> getField <MFVec3f> ("point"))
+			point *= size1_2;
+	}
+
 	getExecutionContext () -> realize ();
 	return geometry;
 }

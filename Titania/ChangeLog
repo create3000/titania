@@ -1,5 +1,16 @@
 2014-11-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* X3DObjectOperations.cpp:
+	* ColorPerVertexEditor.h:
+	* ColorPerVertexEditor.cpp:
+	* TextureCoordinateEditorLeftPreview.x3dv:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditor.cpp: 
+
+2014-11-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* FaceSelection.h:
 	* FaceSelection.cpp:
 	* TextureCoordinateEditor.xml:

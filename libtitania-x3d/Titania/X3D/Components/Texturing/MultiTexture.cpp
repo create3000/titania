@@ -271,8 +271,8 @@ MultiTexture::set_function ()
 void
 MultiTexture::set_texture ()
 {
-	for (const auto & node : textureNodes)
-		node -> removeInterest (this);
+	//for (const auto & node : textureNodes)
+	//	node -> removeInterest (this);
 
 	std::vector <X3DTextureNode*> value;
 
@@ -289,8 +289,8 @@ MultiTexture::set_texture ()
 
 	textureNodes .set (value .begin (), value .end ());
 
-	for (const auto & node : textureNodes)
-		node -> addInterest (this);
+	//for (const auto & node : textureNodes)
+	//	node -> addInterest (this);
 }
 
 void
@@ -312,7 +312,7 @@ MultiTexture::draw ()
 
 		// Get texture unit.
 
-		int32_t unit = getBrowser () -> getTextureUnits () .top ();
+		const int32_t unit = getBrowser () -> getTextureUnits () .top ();
 		getBrowser () -> getTextureUnits () .pop ();
 
 		getBrowser () -> getTextureStages () .emplace_back (unit);

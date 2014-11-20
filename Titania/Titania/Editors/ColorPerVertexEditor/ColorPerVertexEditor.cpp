@@ -85,7 +85,6 @@ ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindo
 
 	getShadingButton () .set_menu (getShadingMenu ());
 
-	addChildren (coord);
 	setup ();
 }
 
@@ -180,7 +179,7 @@ ColorPerVertexEditor::set_selection ()
 			geometry -> colorIndex () .removeInterest (this, &ColorPerVertexEditor::set_colorIndex);
 			geometry -> coordIndex () .removeInterest (this, &ColorPerVertexEditor::set_coordIndex);
 			geometry -> color ()      .removeInterest (this, &ColorPerVertexEditor::set_colorIndex);
-			geometry -> coord ()      .removeInterest (coord);
+			geometry -> coord ()      .removeInterest (this, &ColorPerVertexEditor::set_coord );
 
 			selection -> setGeometry (nullptr);
 			selection -> setCoord (nullptr);
@@ -223,11 +222,11 @@ ColorPerVertexEditor::set_selection ()
 		geometry -> normal ()          .addInterest (previewGeometry -> normal ());
 		geometry -> texCoord ()        .addInterest (previewGeometry -> texCoord ());
 		geometry -> coord ()           .addInterest (previewGeometry -> coord ());		
-		geometry -> coord ()           .addInterest (coord);		
 
 		geometry -> colorIndex () .addInterest (this, &ColorPerVertexEditor::set_colorIndex);
 		geometry -> coordIndex () .addInterest (this, &ColorPerVertexEditor::set_coordIndex);
 		geometry -> color ()      .addInterest (this, &ColorPerVertexEditor::set_colorIndex);
+		geometry -> coord ()      .addInterest (this, &ColorPerVertexEditor::set_coord);		
 
 		previewGeometry -> isPrivate (true);
 		previewGeometry -> solid ()           = geometry -> solid ();
@@ -528,7 +527,7 @@ ColorPerVertexEditor::on_remove_clicked ()
 	geometry -> color ()      .removeInterest (this, &ColorPerVertexEditor::set_colorIndex);
 	geometry -> color ()      .addInterest (this, &ColorPerVertexEditor::connectColor);
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Colored Polygons"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Polygon Colors"));
 
 	undoStep -> addObjects (geometry);
 
@@ -552,7 +551,7 @@ ColorPerVertexEditor::on_apply_clicked ()
 	geometry -> color ()      .removeInterest (this, &ColorPerVertexEditor::set_colorIndex);
 	geometry -> color ()      .addInterest (this, &ColorPerVertexEditor::connectColor);
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Apply Colored Polygons"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Apply Polygon Colors"));
 
 	undoStep -> addObjects (geometry);
 
@@ -757,6 +756,8 @@ ColorPerVertexEditor::set_multi_textureTransform ()
 void
 ColorPerVertexEditor::set_colorIndex ()
 {
+	undoHistory .clear ();
+
 	// Generate color and colorIndex.
 
 	const X3D::X3DPtr <X3D::X3DColorNode> colorNode (geometry -> color ());
@@ -814,6 +815,17 @@ void
 ColorPerVertexEditor::set_coordIndex ()
 {
 	selection -> setGeometry (previewGeometry);
+	
+	if (geometry -> colorIndex () .empty ())
+		set_colorIndex ();
+}
+
+void
+ColorPerVertexEditor::set_coord (const X3D::SFNode & value)
+{
+	coord = value;
+
+	selection -> setCoord (coord);
 }
 
 void

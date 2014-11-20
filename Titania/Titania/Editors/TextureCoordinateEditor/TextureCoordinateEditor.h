@@ -169,6 +169,15 @@ private:
 	void
 	on_apply_clicked () final override;
 
+	void
+	connectTexCoordIndex ();
+
+	void
+	connectTexCoord ();
+
+	void
+	connectMultiTexCoord ();
+
 	///  @name Event handlers
 
 	void
@@ -205,6 +214,9 @@ private:
 	set_coordIndex ();
 
 	void
+	set_coord (const X3D::SFNode &);
+
+	void
 	set_texCoord (const X3D::SFNode &);
 
 	virtual
@@ -228,6 +240,9 @@ private:
 
 	void
 	set_left_active (const bool);
+	
+	void
+	set_startDrag ();
 
 	void
 	set_left_touchTime ();
@@ -291,6 +306,7 @@ private:
 	X3D::SFNode                                      texture;
 	X3D::SFNode                                      textureTransform;
 	X3D::X3DPtr <X3D::IndexedFaceSet>                geometry;
+	X3D::X3DPtr <X3D::MultiTextureCoordinate>        multiTexCoord;
 	X3D::X3DPtr <X3D::X3DCoordinateNode>             coord;
 	X3D::X3DPtr <X3D::IndexedFaceSet>                previewGeometry; 
 	X3D::X3DPtr <X3D::TextureCoordinate>             texCoord; 
@@ -306,6 +322,7 @@ private:
 	std::vector <std::pair <int32_t, X3D::Vector2f>> startPositions;
 	X3D::Keys                                        keys;
 	UndoHistory                                      undoHistory;
+	UndoStepPtr                                      undoStep;
 
 };
 
