@@ -903,7 +903,7 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 				undoStep -> addObjects (previewGeometry);
 
-				for (const auto & index : selection -> getPoints (selection -> getFace () .first))
+				for (const auto & index : selection -> getVertices (selection -> getFace () .first))
 				{
 					if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 					{
@@ -966,28 +966,28 @@ ColorPerVertexEditor::set_triangle (const X3D::Vector3f & point)
 		const auto triangleBackGeometry = preview -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("TriangleBackGeometry");
 		const auto triangleGeometry     = preview -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("TriangleGeometry");
 		const auto triangleCoordinate   = preview -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("TriangleCoordinate");
-		const auto points               = selection -> getPoints (selection -> getFace () .first);
+		const auto vertices             = selection -> getVertices (selection -> getFace () .first);
 
-		if (points .size () < 3)
+		if (vertices .size () < 3)
 			return;
 
 		const auto vertex = selection -> getFace () .second;
-		const auto i1     = vertex == 0 ? points .size () - 1 : vertex - 1;
+		const auto i1     = vertex == 0 ? vertices .size () - 1 : vertex - 1;
 		const auto i2     = vertex;
-		const auto i3     = (vertex + 1) % points .size ();
+		const auto i3     = (vertex + 1) % vertices .size ();
 
 		triangleGeometry -> coordIndex () .clear ();
 		triangleGeometry -> coordIndex () = { i1, i2, i3, -1 };
 		
-		for (size_t i = i3, size = i3 + points .size () - 1; i < size; ++ i)
-			triangleGeometry -> coordIndex () .emplace_back (i % points .size ());
+		for (size_t i = i3, size = i3 + vertices .size () - 1; i < size; ++ i)
+			triangleGeometry -> coordIndex () .emplace_back (i % vertices .size ());
 
 		triangleGeometry -> coordIndex () .emplace_back (-1);
 		triangleBackGeometry -> coordIndex () = triangleGeometry -> coordIndex ();
 
 		triangleCoordinate -> point () .clear ();
 
-		for (const auto & index : points)
+		for (const auto & index : vertices)
 			triangleCoordinate -> point () .emplace_back (coord -> get1Point (previewGeometry -> coordIndex () [index]));
 	}
 	catch (const X3D::X3DError &)

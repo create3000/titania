@@ -171,22 +171,22 @@ FaceSelection::setHitPoint (const X3D::Vector3d & hitPoint, const X3D::MFVec3f &
 
 	// Get distances of faces to hitPoint.
 
-	std::vector <double>  distances;
+	std::vector <double> distances;
 
 	for (const auto & face : faces)
 	{
-		const auto points = getPoints (face .first);
+		const auto vertices = getVertices (face .first);
 
-		if (points .size () < 3)
+		if (vertices .size () < 3)
 		{
 			distances .emplace_back (std::numeric_limits <double>::infinity ());
 			continue;
 		}
 
 		const auto vertex = face .second;
-		const auto i1     = geometry -> coordIndex () [points [vertex == 0 ? points .size () - 1 : vertex - 1]];
-		const auto i2     = geometry -> coordIndex () [points [vertex]];
-		const auto i3     = geometry -> coordIndex () [points [(vertex + 1) % points .size ()]];
+		const auto i1     = geometry -> coordIndex () [vertices [vertex == 0 ? vertices .size () - 1 : vertex - 1]];
+		const auto i2     = geometry -> coordIndex () [vertices [vertex]];
+		const auto i3     = geometry -> coordIndex () [vertices [(vertex + 1) % vertices .size ()]];
 		const auto p1     = coord -> get1Point (i1);
 		const auto p2     = coord -> get1Point (i2);
 		const auto p3     = coord -> get1Point (i3);
@@ -203,9 +203,9 @@ FaceSelection::setHitPoint (const X3D::Vector3d & hitPoint, const X3D::MFVec3f &
 }
 
 std::vector <size_t>
-FaceSelection::getPoints (const size_t face) const
+FaceSelection::getVertices (const size_t face) const
 {
-	std::vector <size_t> points;
+	std::vector <size_t> vertices;
 
 	for (size_t i = face, size = geometry -> coordIndex () .size (); i < size; ++ i)
 	{
@@ -214,10 +214,10 @@ FaceSelection::getPoints (const size_t face) const
 		if (index < 0)
 			break;
 
-		points .emplace_back (i);
+		vertices .emplace_back (i);
 	}
 
-	return points;
+	return vertices;
 }
 
 FaceSelection::~FaceSelection ()

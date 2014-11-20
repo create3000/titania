@@ -67,6 +67,74 @@
               </object>
             </child>
             <child>
+              <object class="GtkMenuItem" id="MappingsMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">_Mappings</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu3">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem" id="XPlaneMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_X-Plane</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_x_plane_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="YPlaneMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Y-Plane</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_y_plane_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="ZPlaneMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Z-Plane</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_z_plane_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="BoxMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Box</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_box_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="CylinderMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Cylinder</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_cylinder_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="SphereMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Sphere</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_sphere_activate" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
               <object class="GtkMenuItem" id="SelectionMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>

@@ -1185,6 +1185,9 @@ X3DBrowserEditor::removeNodesFromSceneIfNotExists (const X3D::X3DExecutionContex
 	
 	for (const auto & node : nodes)
 	{
+		if (not node)
+			continue;
+	
 		if (node -> getCloneCount () == 0)
 			remove .emplace_back (node);
 	 }

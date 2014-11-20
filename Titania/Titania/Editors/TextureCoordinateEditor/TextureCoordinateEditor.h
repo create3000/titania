@@ -108,7 +108,7 @@ private:
 	bool
 	on_key_release_event (GdkEventKey*) final override;
 
-	///  @name Menubar
+	///  @name Edit
 
 	virtual
 	void
@@ -117,6 +117,34 @@ private:
 	virtual
 	void
 	on_redo_activate () final override;
+
+	///  @name Mappings
+	
+	virtual
+	void
+	on_x_plane_activate () final override;
+	
+	virtual
+	void
+	on_y_plane_activate () final override;
+	
+	virtual
+	void
+	on_z_plane_activate () final override;
+	
+	virtual
+	void
+	on_box_activate () final override;
+	
+	virtual
+	void
+	on_cylinder_activate () final override;
+	
+	virtual
+	void
+	on_sphere_activate () final override;
+
+	///  @name Selection
 
 	virtual
 	void

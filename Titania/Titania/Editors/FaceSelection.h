@@ -80,7 +80,7 @@ public:
 	{ return indices; }
 
 	std::vector <size_t>
-	getPoints (const size_t) const;
+	getVertices (const size_t) const;
 
 	const std::pair <size_t, size_t> &
 	getFace () const
