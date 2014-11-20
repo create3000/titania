@@ -194,6 +194,9 @@ bool
 Surface::set_construct (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
 	construct_connection .disconnect ();
+	
+	if (draw_connection .connected ())
+		return false;
 
 	if (makeCurrent ())
 	{

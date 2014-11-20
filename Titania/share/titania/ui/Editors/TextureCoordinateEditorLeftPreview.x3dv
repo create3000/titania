@@ -1,0 +1,252 @@
+#X3D V3.3 utf8 Titania V0.7.5
+
+META "comment" "World of Titania"
+META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.5, http://titania.create3000.de"
+META "modified" "Wed, 19 Nov 2014 23:51:32 GMT"
+
+PROTO IndexedPointSet [
+  inputOnly      MFInt32 set_coordIndex
+  initializeOnly MFInt32 coordIndex [ ]
+  inputOutput    MFNode  attrib [ ]
+  inputOutput    SFNode  fogCoord NULL
+  inputOutput    SFNode  color NULL
+  inputOutput    SFNode  coord NULL
+]
+{
+  PointSet {
+    attrib IS attrib
+    fogCoord IS fogCoord
+    color IS color
+    coord DEF Points Coordinate { }
+  }
+
+  DEF IndexedPointSetScript Script {
+    inputOnly      MFInt32 set_coordIndex IS set_coordIndex
+    inputOnly      MFVec3f set_point
+    initializeOnly MFInt32 coordIndex IS coordIndex
+    inputOutput    SFNode  coord IS coord
+    initializeOnly SFNode  currentCoord NULL
+    initializeOnly SFNode  points USE Points
+    initializeOnly SFNode  self USE IndexedPointSetScript
+
+    url "javascript:
+
+function initialize ()
+{
+	set_coord ();
+	eventsProcessed ();
+}
+
+function set_coordIndex (value)
+{
+	coordIndex = value;
+}
+
+function set_coord ()
+{
+	if (currentCoord != 'NULL')
+		Browser .deleteRoute (currentCoord, 'point_changed', self, 'set_point');
+
+	currentCoord = coord;
+
+	if (currentCoord != 'NULL')
+		Browser .addRoute (currentCoord, 'point_changed', self, 'set_point');
+}
+
+function eventsProcessed ()
+{
+	if (currentCoord == 'NULL')
+	{
+		points .point .length = 0;
+	}
+	else
+	{
+		points .point .length = coordIndex .length;
+
+		for (var i in coordIndex)
+		{
+			var index = coordIndex [i];
+
+			if (index < 0 || index >= currentCoord .point .legth)
+				continue;
+
+			points .point [i] = currentCoord .point [index];
+		}
+	}
+}
+"
+  }
+}
+
+LayerSet {
+  activeLayer 2
+  order [
+    1,
+    2,
+    3
+  ]
+  layers [
+    DEF Background Layer {
+      isPickable FALSE
+      children DEF Gray_1 Background {
+        skyColor 0.5 0.5 0.5
+      }
+    }
+    DEF ImageLayer Layer {
+      children [
+        DEF Navigation_1 Group {
+          children [
+            DEF _1 OrthoViewpoint {
+              position 0.5 0.5 10
+            }
+            DEF _2 NavigationInfo {
+              type [
+                "PLANE_create3000.de",
+                "ANY"
+              ]
+            }
+          ]
+        }
+        DEF ImageSwitch Switch {
+          whichChoice 0
+          children [
+            Group { }
+            DEF Image Transform {
+              children Shape {
+                appearance DEF Appearance Appearance {
+                  texture ImageTexture {
+                    url [
+                      "../../Library/Textures/Miscellaneous/lena.jpg",
+                      "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg"
+                    ]
+                    repeatS FALSE
+                    repeatT FALSE
+                  }
+                }
+                geometry DEF ImageGeometry IndexedFaceSet {
+                  coordIndex [
+                    0,
+                    1,
+                    2,
+                    3,
+                    -1
+                  ]
+                  texCoord DEF ImageTextureCoordinate TextureCoordinate {
+                    point [
+                      0 0,
+                      1 0,
+                      1 1,
+                      0 1
+                    ]
+                  }
+                  coord DEF ImageCoordinate Coordinate {
+                    point [
+                      0 0 0,
+                      1 0 0,
+                      1 1 0,
+                      0 1 0
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+        DEF TouchSensor TouchSensor { }
+      ]
+    }
+    DEF TextureCoordinate Layer {
+      isPickable FALSE
+      children [
+        DEF Navigation Group {
+          children [
+            USE _2
+            USE _1
+          ]
+        }
+        DEF SelectedFaces Transform {
+          children [
+            Shape {
+              appearance Appearance {
+                lineProperties LineProperties {
+                  linewidthScaleFactor 2
+                }
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry DEF SelectedGeometry IndexedLineSet {
+                coord DEF SelectedCoord Coordinate { }
+              }
+            }
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                  emissiveColor 1 0 0
+                }
+              }
+              geometry USE SelectedGeometry
+            }
+          ]
+        }
+        DEF SelectedPoints Transform {
+          translation 0 0 1
+          children Shape {
+            appearance Appearance {
+              lineProperties DEF _3 LineProperties {
+                linewidthScaleFactor 8
+              }
+              material Material {
+                diffuseColor 0 0 0
+                emissiveColor 0 0 1
+              }
+            }
+            geometry DEF SelectedPointSet IndexedPointSet { coord USE SelectedCoord }
+          }
+        }
+        DEF ActivePoint Switch {
+          whichChoice 0
+          children [
+            DEF PointScript Script {
+              inputOnly  SFBool  set_active
+              outputOnly SFInt32 whichChoice_changed
+
+              url "javascript:
+
+function initialize ()
+{
+	whichChoice_changed = false;
+}
+
+function set_active (value)
+{
+	whichChoice_changed = value;
+}"
+            }
+            DEF PointSet_1 Transform {
+              translation 0 0 2
+              children Shape {
+                appearance Appearance {
+                  lineProperties USE _3
+                  material Material {
+                    diffuseColor 0 0 0
+                    emissiveColor 1 0 0
+                  }
+                }
+                geometry DEF ActivePointSet IndexedPointSet {
+                  coord USE SelectedCoord
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+ROUTE TouchSensor.isOver TO PointScript.set_active
+ROUTE PointScript.whichChoice_changed TO ActivePoint.set_whichChoice

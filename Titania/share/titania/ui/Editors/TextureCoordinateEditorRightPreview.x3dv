@@ -1,0 +1,118 @@
+#X3D V3.3 utf8 Titania V0.7.5
+
+META "comment" "World of Titania"
+META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.5, http://titania.create3000.de"
+META "modified" "Mon, 17 Nov 2014 08:42:20 GMT"
+
+LayerSet {
+  activeLayer 2
+  order [
+    1,
+    2,
+    3
+  ]
+  layers [
+    DEF Background Layer {
+      isPickable FALSE
+      children DEF Gray_1 Background {
+        skyColor 0.5 0.5 0.5
+      }
+    }
+    DEF Object Layer {
+      children [
+        DEF Navigation Group {
+          children DEF _1 Viewpoint { }
+        }
+        DEF Shape Shape {
+          appearance DEF Appearance Appearance {
+            material Material { }
+          }
+          geometry Sphere { }
+        }
+        DEF TouchSensor TouchSensor { }
+      ]
+    }
+    DEF TextureCoordinate Layer {
+      isPickable FALSE
+      children [
+        DEF Navigation_1 Group {
+          children USE _1
+        }
+        DEF SelectedFaces Group {
+          children [
+            Shape {
+              appearance Appearance {
+                lineProperties LineProperties {
+                  linewidthScaleFactor 2
+                }
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry DEF SelectedGeometry IndexedLineSet { }
+            }
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                  emissiveColor 0.35 1 0.7
+                }
+              }
+              geometry USE SelectedGeometry
+            }
+          ]
+        }
+        DEF _2 Switch {
+          whichChoice 0
+          children [
+            DEF CrossScript_1 Script {
+              inputOnly  SFBool  set_active
+              outputOnly SFInt32 whichChoice_changed
+
+              url "javascript:
+
+function initialize ()
+{
+	whichChoice_changed = false;
+}
+
+function set_active (value)
+{
+	whichChoice_changed = value;
+}"
+            }
+            DEF Selection Group {
+              children [
+                Shape {
+                  appearance Appearance {
+                    lineProperties LineProperties {
+                      linewidthScaleFactor 2
+                    }
+                    material Material {
+                      diffuseColor 0 0 0
+                    }
+                  }
+                  geometry DEF SelectionGeometry IndexedLineSet { }
+                }
+                Shape {
+                  appearance Appearance {
+                    material Material {
+                      diffuseColor 0 0 0
+                      emissiveColor 1 0 0
+                    }
+                  }
+                  geometry USE SelectionGeometry
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+ROUTE TouchSensor.isOver TO CrossScript_1.set_active
+ROUTE CrossScript_1.whichChoice_changed TO _2.set_whichChoice

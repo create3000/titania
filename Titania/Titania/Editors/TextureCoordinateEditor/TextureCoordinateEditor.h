@@ -110,6 +110,16 @@ private:
 
 	virtual
 	void
+	on_select_all_activate () final override;
+
+	virtual
+	void
+	on_deselect_all_activate () final override;
+
+	///  @name Toolbars
+
+	virtual
+	void
 	on_left_hand_toggled () final override;
 
 	virtual
@@ -207,22 +217,22 @@ private:
 	set_left_selected_faces ();
 
 	void
-	set_left_hitPoint (const X3D::Vector3f &);
-
-	void
-	set_left_point (const X3D::Vector3d &, const bool);
-	
-	int32_t
-	getPointIndex (const X3D::Vector3d &) const;
-
-	void
 	set_left_active (const bool);
 
 	void
 	set_left_touchTime ();
 
 	void
-	set_right_hitPoint (const X3D::Vector3f &);
+	set_left_hitPoint (const X3D::Vector3f &);
+
+	void
+	set_left_point (const X3D::Vector3d &);
+	
+	int32_t
+	getPointIndex (const X3D::Vector3d &) const;
+	
+	void
+	set_selectedPoints ();
 	
 	void
 	set_right_selection (const X3D::Vector3f &);
@@ -235,6 +245,13 @@ private:
 
 	void	
 	set_right_selected_faces ();
+
+	void
+	set_right_hitPoint (const X3D::Vector3f &);
+	
+	X3D::Vector2d
+	projectPoint (const X3D::Vector3d &, const X3D::BrowserPtr &) const
+	throw (std::domain_error);
 
 	///  @name Operations
 
@@ -255,25 +272,29 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr                      left;
-	X3D::BrowserPtr                      right;
-	int                                  initialized;
-	X3D::X3DPtr <X3D::X3DShapeNode>      shape;
-	X3D::X3DPtr <X3D::Appearance>        appearance;
-	X3D::SFNode                          material;
-	X3D::SFNode                          texture;
-	X3D::SFNode                          textureTransform;
-	X3D::X3DPtr <X3D::IndexedFaceSet>    geometry;
-	X3D::X3DPtr <X3D::X3DCoordinateNode> coord;
-	X3D::X3DPtr <X3D::IndexedFaceSet>    previewGeometry; 
-	X3D::X3DPtr <X3D::TextureCoordinate> texCoord; 
-	size_t                               stage;
-	std::unique_ptr <FaceSelection>      rightSelection;
-	bool                                 rightPaintSelecion;
-	std::set <size_t>                    selectedFaces;
-	int32_t                              pointIndex;
-	X3D::Vector2f                        pointOffset;
-	UndoHistory                          undoHistory;
+	X3D::BrowserPtr                                  left;
+	X3D::BrowserPtr                                  right;
+	int                                              initialized;
+	X3D::X3DPtr <X3D::X3DShapeNode>                  shape;
+	X3D::X3DPtr <X3D::Appearance>                    appearance;
+	X3D::SFNode                                      material;
+	X3D::SFNode                                      texture;
+	X3D::SFNode                                      textureTransform;
+	X3D::X3DPtr <X3D::IndexedFaceSet>                geometry;
+	X3D::X3DPtr <X3D::X3DCoordinateNode>             coord;
+	X3D::X3DPtr <X3D::IndexedFaceSet>                previewGeometry; 
+	X3D::X3DPtr <X3D::TextureCoordinate>             texCoord; 
+	size_t                                           stage;
+	std::unique_ptr <FaceSelection>                  rightSelection;
+	bool                                             rightPaintSelecion;
+	std::set <size_t>                                selectedFaces;
+	int32_t                                          activePoint;     // texCoord index of red point
+	std::set <int32_t>                               selectedPoints;  // texCoord indices of blue points
+	X3D::Vector2d                                    startHitPoint;
+	X3D::Vector2f                                    pointOffset;
+	X3D::Vector2f                                    startPosition;
+	std::vector <std::pair <int32_t, X3D::Vector2f>> startPositions;
+	UndoHistory                                      undoHistory;
 
 };
 

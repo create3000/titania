@@ -1,3 +1,12 @@
+2014-11-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.xml:
+	* TextureCoordinateEditor.xml:
+	* TextureCoordinateEditorLeftPreview.x3dv:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditorRightPreview.x3dv:
+	* TextureCoordinateEditor.cpp: 
+
 2014-11-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* FaceSelection.cpp:
