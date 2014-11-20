@@ -90,6 +90,9 @@ public:
 	getAdjacentFaces () const
 	{ return faces; }
 
+	std::set <size_t>
+	getFaces () const;
+
 	bool
 	isEmpty () const
 	{ return indices .empty (); }

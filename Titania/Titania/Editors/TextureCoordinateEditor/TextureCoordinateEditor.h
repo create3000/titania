@@ -98,6 +98,16 @@ private:
 	void
 	set_selection ();
 
+	///  @name Keyboard
+
+	virtual
+	bool
+	on_key_press_event (GdkEventKey*) final override;
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey*) final override;
+
 	///  @name Menubar
 
 	virtual
@@ -294,6 +304,7 @@ private:
 	X3D::Vector2f                                    pointOffset;
 	X3D::Vector2f                                    startPosition;
 	std::vector <std::pair <int32_t, X3D::Vector2f>> startPositions;
+	X3D::Keys                                        keys;
 	UndoHistory                                      undoHistory;
 
 };

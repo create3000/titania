@@ -86,6 +86,10 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Adjustment with id 'TextureStageAdjustment'.
 	m_TextureStageAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_texture_stage_changed));
 
+	// Connect object Gtk::Box with id 'Widget'.
+	m_Widget -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_key_press_event));
+	m_Widget -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_key_release_event));
+
 	// Connect object Gtk::ImageMenuItem with id 'UndoMenuItem'.
 	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_undo_activate));
 	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_redo_activate));

@@ -84,6 +84,38 @@ FaceSelection::setGeometry (const X3D::X3DPtr <X3D::IndexedFaceSet> & value)
 	}
 }
 
+std::set <size_t>
+FaceSelection::getFaces () const
+{
+	std::set <size_t> faces;
+
+	if (not geometry)
+		return faces;
+
+	size_t face   = 0;
+	size_t vertex = 0;
+
+	for (const int32_t index : geometry -> coordIndex ())
+	{
+		if (index < 0)
+		{
+			if (vertex < 3)
+				faces .erase (face);
+
+			face  += vertex + 1;
+			vertex = 0;
+			continue;
+		}
+
+		if (vertex == 0)
+			faces .emplace (face);
+
+		++ vertex;
+	}
+
+	return faces;
+}
+
 void
 FaceSelection::setCoord (const X3D::X3DPtr <X3D::X3DCoordinateNode> & value)
 {

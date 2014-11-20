@@ -88,6 +88,7 @@ TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browse
 	                        pointOffset (),
 	                      startPosition (),
 	                     startPositions (),
+	                               keys (),
 	                        undoHistory ()
 {
 	left  -> set_antialiasing (4);
@@ -231,6 +232,22 @@ TextureCoordinateEditor::set_selection ()
 	{ }
 }
 
+// Keyboard
+
+bool
+TextureCoordinateEditor::on_key_press_event (GdkEventKey* event)
+{
+	keys .press (event);
+	return false;
+}
+
+bool
+TextureCoordinateEditor::on_key_release_event (GdkEventKey* event)
+{
+	keys .release (event);
+	return false;
+}
+
 // Menubar
 
 void
@@ -286,13 +303,48 @@ TextureCoordinateEditor::set_undoHistory ()
 void
 TextureCoordinateEditor::on_select_all_activate ()
 {
+	if (left -> has_focus ())
+	{
+		try
+		{
+			const auto selectedGeometry = left -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedGeometry");
 
+			for (const auto & index : selectedGeometry -> coordIndex ())
+			{
+				if (index >= 0)
+					selectedPoints .emplace (index);
+			}
+
+			set_selectedPoints ();
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	else if (right -> has_focus ())
+	{
+		selectedFaces = rightSelection -> getFaces ();
+
+		set_selected_faces ();
+	}
 }
 
 void
 TextureCoordinateEditor::on_deselect_all_activate ()
 {
+	if (left -> has_focus ())
+	{
+		selectedPoints .clear ();
 
+		set_selectedPoints ();
+	}
+
+	else if (right -> has_focus ())
+	{
+		selectedFaces .clear ();
+
+		set_selected_faces ();
+	}
 }
 
 void
@@ -865,7 +917,7 @@ TextureCoordinateEditor::set_left_active (const bool value)
 
 		// Clear selection.
 	
-		if (left -> hasShiftKey ())
+		if (keys .shift ())
 			return;
 	
 		if (selectedPoints .count (activePoint))
@@ -890,7 +942,7 @@ TextureCoordinateEditor::set_left_touchTime ()
 		if ((size_t) activePoint >= texCoord -> point () .size ())
 			return;
 
-		if (not left -> hasShiftKey ())
+		if (not keys .shift ())
 			return;
 
 		if (startHitPoint == infinity2f)
@@ -919,7 +971,7 @@ TextureCoordinateEditor::set_left_hitPoint (const X3D::Vector3f & hitPoint)
 	{
 		const auto touchSensor = left -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 
-		if ((not left -> hasShiftKey () or startHitPoint == infinity2f) and touchSensor -> isActive ())
+		if ((not keys .shift () or startHitPoint == infinity2f) and touchSensor -> isActive ())
 		{
 			if ((size_t) activePoint < texCoord -> point () .size ())
 			{
@@ -931,7 +983,7 @@ TextureCoordinateEditor::set_left_hitPoint (const X3D::Vector3f & hitPoint)
 					const auto point       = X3D::Vector2f (hitPoint .x (), hitPoint .y ()) + pointOffset;
 					auto       translation = point - startPosition;
 
-					if (left -> hasControlKey ())
+					if (keys .control ())
 					{
 						if (std::abs (translation .x ()) > std::abs (translation .y ()))
 							translation .y (0);
@@ -1070,10 +1122,10 @@ TextureCoordinateEditor::set_right_touchTime ()
 	if (rightSelection -> isEmpty ())
 		return;
 
-	if (not right -> hasShiftKey () and not right -> hasControlKey () and not rightPaintSelecion)
+	if (not keys .shift () and not keys .control () and not rightPaintSelecion)
 		selectedFaces .clear ();
 
-	if (right -> hasControlKey ())
+	if (keys .control ())
 		selectedFaces .erase (rightSelection -> getFace () .first);
 
 	else if (not selectedFaces .emplace (rightSelection -> getFace () .first) .second)
@@ -1129,7 +1181,7 @@ TextureCoordinateEditor::set_right_hitPoint (const X3D::Vector3f & hitPoint)
 
 		set_right_selection (coord -> get1Point (rightSelection -> getIndices () [0]));
 
-		if (touchSensor -> isActive () and (right -> hasShiftKey () or right -> hasControlKey ()))
+		if (touchSensor -> isActive () and (keys .shift () or keys .control ()))
 		{
 			rightPaintSelecion = true;
 			set_right_touchTime ();

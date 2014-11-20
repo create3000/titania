@@ -179,6 +179,14 @@ public:
 	on_texture_stage_changed () = 0;
 
 	virtual
+	bool
+	on_key_press_event (GdkEventKey* event) = 0;
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey* event) = 0;
+
+	virtual
 	void
 	on_undo_activate () = 0;
 
