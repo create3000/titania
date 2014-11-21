@@ -1,5 +1,18 @@
 2014-11-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Flop.svg:
+	* Flip.svg:
+	* Shading.svg:
+	* BrowserWindow.xml:
+	* TextureCoordinateEditor.xml:
+	* X3DTextureCoordinateEditorInterface.h:
+	* ColorPerVertexEditor.cpp:
+	* X3DTextureCoordinateEditorInterface.cpp:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditor.cpp: 
+
+2014-11-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TextureCoordinateEditor.cpp: 
 
 2014-11-20  Holger Seelig  <holger.seelig@yahoo.de>

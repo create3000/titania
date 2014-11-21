@@ -118,6 +118,14 @@ public:
 	getRedoMenuItem () const
 	{ return *m_RedoMenuItem; }
 
+	Gtk::ImageMenuItem &
+	getFlipMenuItem () const
+	{ return *m_FlipMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getFlopMenuItem () const
+	{ return *m_FlopMenuItem; }
+
 	Gtk::MenuItem &
 	getMappingsMenuItem () const
 	{ return *m_MappingsMenuItem; }
@@ -224,6 +232,14 @@ public:
 
 	virtual
 	void
+	on_flip_horizontally_activate () = 0;
+
+	virtual
+	void
+	on_flip_vertically_activate () = 0;
+
+	virtual
+	void
 	on_x_plane_activate () = 0;
 
 	virtual
@@ -308,6 +324,8 @@ private:
 	Gtk::Box*                      m_Widget;
 	Gtk::ImageMenuItem*            m_UndoMenuItem;
 	Gtk::ImageMenuItem*            m_RedoMenuItem;
+	Gtk::ImageMenuItem*            m_FlipMenuItem;
+	Gtk::ImageMenuItem*            m_FlopMenuItem;
 	Gtk::MenuItem*                 m_MappingsMenuItem;
 	Gtk::MenuItem*                 m_XPlaneMenuItem;
 	Gtk::MenuItem*                 m_YPlaneMenuItem;

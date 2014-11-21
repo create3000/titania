@@ -118,6 +118,17 @@ private:
 	void
 	on_redo_activate () final override;
 
+	virtual
+	void
+	on_flip_horizontally_activate () final override;
+
+	virtual
+	void
+	on_flip_vertically_activate () final override;
+
+	void
+	on_remove_unused_texCoord_activate ();
+
 	///  @name Mappings
 	
 	virtual
@@ -143,6 +154,12 @@ private:
 	virtual
 	void
 	on_sphere_activate () final override;
+
+	X3D::Box2f
+	getTexBBox () const;
+
+	X3D::Box2f
+	getBBox () const;
 
 	///  @name Selection
 

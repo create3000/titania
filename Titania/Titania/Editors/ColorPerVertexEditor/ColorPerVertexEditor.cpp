@@ -774,7 +774,17 @@ ColorPerVertexEditor::set_colorIndex ()
 			if (geometry -> colorIndex () .empty ())
 				previewGeometry -> colorIndex () = previewGeometry -> coordIndex ();
 			else
+			{
 				previewGeometry -> colorIndex () = geometry -> colorIndex ();
+
+				// Verify colorIndex.
+
+				for (size_t i = 0, size = geometry -> coordIndex () .size (); i < size; ++ i)
+				{
+					if (geometry -> coordIndex () [i] < 0)
+						previewGeometry -> colorIndex () .set1Value (i, -1);
+				}
+			}
 		}
 		else
 		{

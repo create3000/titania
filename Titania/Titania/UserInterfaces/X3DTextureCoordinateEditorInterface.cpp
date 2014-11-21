@@ -68,6 +68,8 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("UndoMenuItem", m_UndoMenuItem);
 	m_builder -> get_widget ("RedoMenuItem", m_RedoMenuItem);
+	m_builder -> get_widget ("FlipMenuItem", m_FlipMenuItem);
+	m_builder -> get_widget ("FlopMenuItem", m_FlopMenuItem);
 	m_builder -> get_widget ("MappingsMenuItem", m_MappingsMenuItem);
 	m_builder -> get_widget ("XPlaneMenuItem", m_XPlaneMenuItem);
 	m_builder -> get_widget ("YPlaneMenuItem", m_YPlaneMenuItem);
@@ -100,6 +102,8 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'UndoMenuItem'.
 	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_undo_activate));
 	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_redo_activate));
+	m_FlipMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_flip_horizontally_activate));
+	m_FlopMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_flip_vertically_activate));
 
 	// Connect object Gtk::MenuItem with id 'XPlaneMenuItem'.
 	m_XPlaneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_x_plane_activate));
