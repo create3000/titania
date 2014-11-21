@@ -172,32 +172,25 @@ OrthoViewpoint::getLookAtDistance (const Box3f & bbox) const
 	return abs (bbox .size ()) / 2 + 10;
 }
 
-void
-OrthoViewpoint::reshape (const double zNear, const double zFar)
+Matrix4d
+OrthoViewpoint::getProjectionMatrix (const double zNear, const double zFar, const Vector4i & viewport)
 {
-	glMatrixMode (GL_PROJECTION);
-
-	const Vector4i viewport = Viewport4i ();
-	const double   width    = viewport [2];
-	const double   height   = viewport [3];
-	const double   aspect   = width / height;
+	const double width  = viewport [2];
+	const double height = viewport [3];
+	const double aspect = width / height;
 
 	if (aspect > getSizeX () / getSizeY ())
 	{
 		const double center  = (getMinimumX () + getMaximumX ()) / 2;
 		const double size1_2 = (getSizeY () * aspect) / 2;
 
-		glLoadMatrixd (ortho (center - size1_2, center + size1_2, getMinimumY (), getMaximumY (), zNear, zFar) .data ());
-	}
-	else
-	{
-		const double center  = (getMinimumY () + getMaximumY ()) / 2;
-		const double size1_2 = (getSizeX () / aspect) / 2;
-
-		glLoadMatrixd (ortho (getMinimumX (), getMaximumX (), center - size1_2, center + size1_2, zNear, zFar) .data ());
+		return ortho (center - size1_2, center + size1_2, getMinimumY (), getMaximumY (), zNear, zFar);
 	}
 
-	glMatrixMode (GL_MODELVIEW);
+	const double center  = (getMinimumY () + getMaximumY ()) / 2;
+	const double size1_2 = (getSizeX () / aspect) / 2;
+
+	return ortho (getMinimumX (), getMaximumX (), center - size1_2, center + size1_2, zNear, zFar);
 }
 
 void

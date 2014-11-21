@@ -74,6 +74,7 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("XPlaneMenuItem", m_XPlaneMenuItem);
 	m_builder -> get_widget ("YPlaneMenuItem", m_YPlaneMenuItem);
 	m_builder -> get_widget ("ZPlaneMenuItem", m_ZPlaneMenuItem);
+	m_builder -> get_widget ("CameraMenuItem", m_CameraMenuItem);
 	m_builder -> get_widget ("BoxMenuItem", m_BoxMenuItem);
 	m_builder -> get_widget ("CylinderMenuItem", m_CylinderMenuItem);
 	m_builder -> get_widget ("SphereMenuItem", m_SphereMenuItem);
@@ -109,6 +110,7 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_XPlaneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_x_plane_activate));
 	m_YPlaneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_y_plane_activate));
 	m_ZPlaneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_z_plane_activate));
+	m_CameraMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_camera_activate));
 	m_BoxMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_box_activate));
 	m_CylinderMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_cylinder_activate));
 	m_SphereMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_sphere_activate));

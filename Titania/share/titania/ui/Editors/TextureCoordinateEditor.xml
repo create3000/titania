@@ -144,6 +144,15 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="CameraMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">C_amera</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_camera_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="BoxMenuItem">
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">_Box</property>

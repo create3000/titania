@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 03 Nov 2014 06:41:21 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Thu, 20 Nov 2014 18:13:56 GMT"
+META "modified" "Fri, 21 Nov 2014 10:44:22 GMT"
 
 WorldInfo {
   metadata MetadataSet {
@@ -549,6 +549,14 @@ DEF Sphere_1 Transform {
     appearance Appearance {
       material Material {
         diffuseColor 0.725425 0.850248 0.131017
+      }
+      texture ImageTexture {
+        url [
+          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg",
+          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg"
+        ]
+        repeatS FALSE
+        repeatT FALSE
       }
     }
     geometry IndexedFaceSet {

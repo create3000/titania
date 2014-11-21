@@ -191,6 +191,10 @@ public:
 	getSpeedFactor () const
 	{ return 1; }
 
+	virtual
+	Matrix4d
+	getProjectionMatrix (const double, const double, const Vector4i &) = 0;
+
 	const Matrix4f &
 	getCameraSpaceMatrix () const
 	{ return cameraSpaceMatrix; }
@@ -239,13 +243,12 @@ public:
 	background (const double, const double);
 
 	///  Setup projection matrix.
-	virtual
-	void
-	reshape (const double, const double) = 0;
-
-	///  Setup projection matrix.
 	void
 	reshape ();
+
+	///  Setup custom projection matrix.
+	void
+	reshape (const double, const double);
 
 	///  Setup modelview matrix.
 	void

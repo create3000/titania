@@ -54,8 +54,6 @@
 #include "../../Configuration/config.h"
 #include "../FaceSelection.h"
 
-#include <Titania/X3D/Browser/ContextLock.h>
-
 namespace titania {
 namespace puck {
 
@@ -427,7 +425,6 @@ TextureCoordinateEditor::on_x_plane_activate ()
 	const auto undoStep = std::make_shared <UndoStep> (_ ("X-Plane Mapping"));
 
 	undoStep -> addObjects (previewGeometry, texCoord);
-	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
 
 	// Determine bbox extents.
@@ -452,7 +449,6 @@ TextureCoordinateEditor::on_x_plane_activate ()
 		}
 	}
 
-	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
 	
 	addUndoStep (undoStep);
@@ -464,7 +460,6 @@ TextureCoordinateEditor::on_y_plane_activate ()
 	const auto undoStep = std::make_shared <UndoStep> (_ ("X-Plane Mapping"));
 
 	undoStep -> addObjects (previewGeometry, texCoord);
-	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
 
 	// Determine bbox extents.
@@ -489,7 +484,6 @@ TextureCoordinateEditor::on_y_plane_activate ()
 		}
 	}
 
-	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
 	
 	addUndoStep (undoStep);
@@ -501,7 +495,6 @@ TextureCoordinateEditor::on_z_plane_activate ()
 	const auto undoStep = std::make_shared <UndoStep> (_ ("X-Plane Mapping"));
 
 	undoStep -> addObjects (previewGeometry, texCoord);
-	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
 
 	// Determine bbox extents.
@@ -526,10 +519,48 @@ TextureCoordinateEditor::on_z_plane_activate ()
 		}
 	}
 
-	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
 	
 	addUndoStep (undoStep);
+}
+
+void
+TextureCoordinateEditor::on_camera_activate ()
+{
+	try
+	{
+		const auto & activeLayer = right -> getActiveLayer ();
+	
+		if (not activeLayer)
+			return;
+
+		const auto undoStep = std::make_shared <UndoStep> (_ ("Camera Mapping"));
+
+		undoStep -> addObjects (previewGeometry, texCoord);
+		undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+
+		// Apply camera projection.
+	
+		const auto          viewport   = X3D::Vector4i (0, 0, 1, 1);
+		const auto          projection = activeLayer -> getViewpoint () -> getProjectionMatrix (0.125, -10000000.0, viewport);
+		const X3D::Matrix4d modelview  = activeLayer -> getViewpoint () -> getInverseCameraSpaceMatrix ();
+
+		for (const auto & face : selectedFaces)
+		{
+			for (const auto & vertex : rightSelection -> getVertices (face))
+			{
+				const auto point = coord -> get1Point (previewGeometry -> coordIndex () [vertex]);
+				const auto p     = X3D::ViewVolume::projectPoint (point, modelview, projection, viewport);
+				texCoord -> point () .set1Value (previewGeometry -> texCoordIndex () [vertex], X3D::Vector2f (p .x (), p .y ()));
+			}
+		}
+
+		undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+		
+		addUndoStep (undoStep);
+	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void
@@ -1051,8 +1082,7 @@ TextureCoordinateEditor::set_coordIndex ()
 {
 	rightSelection -> setGeometry (previewGeometry);
 
-	if (geometry -> texCoordIndex () .empty ())
-		set_texCoordIndex ();
+	set_texCoordIndex ();
 }
 
 void
@@ -1599,22 +1629,17 @@ X3D::Vector2d
 TextureCoordinateEditor::projectPoint (const X3D::Vector3d & point, const X3D::BrowserPtr & browser) const
 throw (std::domain_error)
 {
-	X3D::ContextLock lock (left);
+	const auto & activeLayer = browser -> getActiveLayer ();
 
-	if (lock and browser -> getActiveLayer ())
-	{
-		// Set red point if pointer is very close.
-		browser -> getActiveLayer () -> getViewpoint () -> reshape (0, -10);
+	if (not activeLayer)
+		throw std::domain_error ("No active layer.");
 
-		const X3D::Matrix4d modelview; // Use identity
-		const auto          projection = X3D::ProjectionMatrix4d ();
-		const auto          viewport   = browser -> getActiveLayer () -> getViewport () -> getRectangle ();
-		const auto          p          = X3D::ViewVolume::projectPoint (point, modelview, projection, viewport);
+	const auto viewport   = activeLayer -> getViewport () -> getRectangle ();
+	const auto projection = activeLayer -> getViewpoint () -> getProjectionMatrix (0, -10, viewport);
+	const auto modelview  = X3D::Matrix4d ();
+	const auto p          = X3D::ViewVolume::projectPoint (point, modelview, projection, viewport);
 
-		return X3D::Vector2d (p. x (), p .y ());
-	}
-
-	throw std::domain_error ("Couldn't accquire browser lock.");
+	return X3D::Vector2d (p. x (), p .y ());
 }
 
 TextureCoordinateEditor::~TextureCoordinateEditor ()

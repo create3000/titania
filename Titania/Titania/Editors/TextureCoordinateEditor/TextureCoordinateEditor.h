@@ -145,6 +145,10 @@ private:
 	
 	virtual
 	void
+	on_camera_activate () final override;
+	
+	virtual
+	void
 	on_box_activate () final override;
 	
 	virtual

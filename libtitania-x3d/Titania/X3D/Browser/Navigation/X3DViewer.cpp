@@ -52,7 +52,6 @@
 
 #include "X3DViewer.h"
 
-#include "../../Browser/ContextLock.h"
 #include "../../Components/Navigation/OrthoViewpoint.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Rendering/ViewVolume.h"
@@ -74,36 +73,27 @@ X3DViewer::getActiveViewpoint () const
 Vector3f
 X3DViewer::getPointOnCenterPlane (const double x, const double y)
 {
-	ContextLock lock (getBrowser ());
-
-	if (lock)
+	try
 	{
-		try
-		{
-			const auto viewpoint = getActiveViewpoint ();
+		const auto     viewpoint  = getActiveViewpoint ();
+		const auto     viewport   = getBrowser () -> getActiveLayer () -> getViewport () -> getRectangle ();
+		const auto     projection = viewpoint -> getProjectionMatrix (getNavigationInfo () -> getNearPlane (), getNavigationInfo () -> getFarPlane (viewpoint), viewport);
+		const Matrix4d modelview; // Use identity
 
-			viewpoint -> reshape (getNavigationInfo () -> getNearPlane (), getNavigationInfo () -> getFarPlane (viewpoint));
+		// Far plane point
+		const Vector3d far = ViewVolume::unProjectPoint (x, getBrowser () -> get_height () - y, 0.9, modelview, projection, viewport);
 
-			const Matrix4d modelview; // Use identity
-			const Matrix4d projection = ProjectionMatrix4d ();
+		if (dynamic_cast <OrthoViewpoint*> (viewpoint))
+			return Vector3f (far .x (), far .y (), -abs (getDistanceToCenter ()));
 
-			const auto viewport = getBrowser () -> getActiveLayer () -> getViewport () -> getRectangle ();
+		const Vector3f direction = normalize (far);
 
-			// Far plane point
-			const Vector3d far = ViewVolume::unProjectPoint (x, getBrowser () -> get_height () - y, 0.9, modelview, projection, viewport);
-
-			if (dynamic_cast <OrthoViewpoint*> (viewpoint))
-				return Vector3f (far .x (), far .y (), -abs (getDistanceToCenter ()));
-
-			const Vector3f direction = normalize (far);
-
-			return direction * abs (getDistanceToCenter ()) / dot (direction, Vector3f (0, 0, -1));
-		}
-		catch (const std::domain_error & error)
-		{ }
+		return direction * abs (getDistanceToCenter ()) / dot (direction, Vector3f (0, 0, -1));
 	}
-
-	return Vector3f ();
+	catch (const std::domain_error & error)
+	{
+		return Vector3f ();
+	}
 }
 
 Vector3f

@@ -162,11 +162,11 @@ public:
 	Vector2d
 	getViewportSize (const Vector4i &) const;
 
-	///  @name Operations
-
 	virtual
-	void
-	reshape (const double, const double) final override;
+	Matrix4d
+	getProjectionMatrix (const double, const double, const Vector4i &) final override;
+
+	///  @name Operations
 
 	virtual
 	void

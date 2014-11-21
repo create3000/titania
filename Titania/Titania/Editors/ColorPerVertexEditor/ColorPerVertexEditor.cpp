@@ -826,8 +826,7 @@ ColorPerVertexEditor::set_coordIndex ()
 {
 	selection -> setGeometry (previewGeometry);
 	
-	if (geometry -> colorIndex () .empty ())
-		set_colorIndex ();
+	set_colorIndex ();
 }
 
 void

@@ -126,14 +126,10 @@ Viewpoint::getLookAtDistance (const Box3f & bbox) const
 	return (abs (bbox .size ()) / 2) / std::tan (getFieldOfView () / 2);
 }
 
-void
-Viewpoint::reshape (const double zNear, const double zFar)
+Matrix4d
+Viewpoint::getProjectionMatrix (const double zNear, const double zFar, const Vector4i & viewport)
 {
-	glMatrixMode (GL_PROJECTION);
-
-	glLoadMatrixd (perspective (getFieldOfView (), zNear, zFar, Viewport4i ()) .data ());
-
-	glMatrixMode (GL_MODELVIEW);
+	return perspective (getFieldOfView (), zNear, zFar, viewport);
 }
 
 void

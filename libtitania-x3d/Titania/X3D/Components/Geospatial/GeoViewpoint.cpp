@@ -284,18 +284,13 @@ GeoViewpoint::background (const double zNear, const double zFar)
 	glMatrixMode (GL_MODELVIEW);
 }
 
-///  Main reshape function.
-void
-GeoViewpoint::reshape (const double zNear, const double zFar)
+Matrix4d
+GeoViewpoint::getProjectionMatrix (const double zNear, const double zFar, const Vector4i & viewport)
 {
 	const double geoZNear = zNear * std::max (elevation / 100, 1.0);
 	const double geoZFar  = zFar;
 
-	glMatrixMode (GL_PROJECTION);
-
-	glLoadMatrixd (perspective (getFieldOfView (), geoZNear, geoZFar, Viewport4i ()) .data ());
-
-	glMatrixMode (GL_MODELVIEW);
+	return perspective (getFieldOfView (), geoZNear, geoZFar, viewport);
 }
 
 void

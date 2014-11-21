@@ -143,6 +143,10 @@ public:
 	{ return *m_ZPlaneMenuItem; }
 
 	Gtk::MenuItem &
+	getCameraMenuItem () const
+	{ return *m_CameraMenuItem; }
+
+	Gtk::MenuItem &
 	getBoxMenuItem () const
 	{ return *m_BoxMenuItem; }
 
@@ -252,6 +256,10 @@ public:
 
 	virtual
 	void
+	on_camera_activate () = 0;
+
+	virtual
+	void
 	on_box_activate () = 0;
 
 	virtual
@@ -330,6 +338,7 @@ private:
 	Gtk::MenuItem*                 m_XPlaneMenuItem;
 	Gtk::MenuItem*                 m_YPlaneMenuItem;
 	Gtk::MenuItem*                 m_ZPlaneMenuItem;
+	Gtk::MenuItem*                 m_CameraMenuItem;
 	Gtk::MenuItem*                 m_BoxMenuItem;
 	Gtk::MenuItem*                 m_CylinderMenuItem;
 	Gtk::MenuItem*                 m_SphereMenuItem;

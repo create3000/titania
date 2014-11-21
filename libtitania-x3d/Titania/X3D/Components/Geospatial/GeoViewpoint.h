@@ -184,15 +184,15 @@ public:
 	Vector3d
 	getScreenScale (const double, const Vector4i &) const final override;
 
+	virtual
+	Matrix4d
+	getProjectionMatrix (const double, const double, const Vector4i &) final override;
+
 	///  @name Operations
 
 	virtual
 	void
 	background (const double, const double) final override;
-
-	virtual
-	void
-	reshape (const double, const double) final override;
 
 	virtual
 	void
