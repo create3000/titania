@@ -9,16 +9,6 @@
     <property name="page_increment">1</property>
     <signal name="value-changed" handler="on_texture_stage_changed" swapped="no"/>
   </object>
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Flip</property>
-  </object>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Flop</property>
-  </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Paint Polygons</property>
@@ -70,36 +60,6 @@
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_redo_activate" swapped="no"/>
                         <accelerator key="z" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="FlipMenuItem">
-                        <property name="label" translatable="yes">Flip _Horizontally</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="image">image1</property>
-                        <property name="use_stock">False</property>
-                        <property name="always_show_image">True</property>
-                        <signal name="activate" handler="on_flip_horizontally_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="FlopMenuItem">
-                        <property name="label" translatable="yes">Flip _Vertically</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="image">image2</property>
-                        <property name="use_stock">False</property>
-                        <property name="always_show_image">True</property>
-                        <signal name="activate" handler="on_flip_vertically_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -221,6 +181,79 @@
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolbar" id="toolbar3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="toolbar_style">icons</property>
+            <property name="icon_size">1</property>
+            <child>
+              <object class="GtkToolButton" id="RotateCounterlockwiseButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Rotate selected faces 90° counterclockwise.</property>
+                <property name="label" translatable="yes">90° Counterclockwise</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">Counterclockwise</property>
+                <signal name="clicked" handler="on_rotate_counterclockwise" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="RotateClockwiseButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Rotate selected faces 90° clockwise.</property>
+                <property name="label" translatable="yes">90°Clockwise</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">Clockwise</property>
+                <signal name="clicked" handler="on_rotate_clockwise" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="FlipButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Flip selected faces horizontally.</property>
+                <property name="label" translatable="yes">Flip</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">Flip</property>
+                <signal name="clicked" handler="on_flip" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="FlopButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Flip selected faces vertically.</property>
+                <property name="label" translatable="yes">Flop</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">Flop</property>
+                <signal name="clicked" handler="on_flop" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -589,7 +622,7 @@
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>

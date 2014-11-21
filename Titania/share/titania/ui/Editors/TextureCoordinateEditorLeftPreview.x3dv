@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Fri, 21 Nov 2014 02:28:33 GMT"
+META "modified" "Fri, 21 Nov 2014 17:24:18 GMT"
 
 PROTO IndexedPointSet [
   inputOnly      MFInt32 set_coordIndex
@@ -281,7 +281,6 @@ function set_active (value)
                       }
                     }
                     DEF IndexedLineSet_1 Transform {
-                      scale 1.41 1.41 1
                       children Shape {
                         appearance USE _5
                         geometry DEF _7 IndexedLineSet {
@@ -291,14 +290,24 @@ function set_active (value)
                             -1,
                             2,
                             3,
+                            -1,
+                            4,
+                            5,
+                            -1,
+                            6,
+                            7,
                             -1
                           ]
                           coord Coordinate {
                             point [
-                              -1 0 0,
-                              1 0 0,
-                              0 -1 0,
-                              0 1 0
+                              -1.5 0 0,
+                              -0.25 0 0,
+                              0 -1.5 0,
+                              0 -0.25 0,
+                              1.5 0 0,
+                              0.25 0 0,
+                              0 1.5 0,
+                              0 0.25 0
                             ]
                           }
                         }
@@ -327,7 +336,6 @@ function set_active (value)
                       }
                     }
                     DEF IndexedLineSet Transform {
-                      scale 1.41 1.41 1
                       children Shape {
                         appearance USE _8
                         geometry USE _7

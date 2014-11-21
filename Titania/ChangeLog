@@ -1,5 +1,17 @@
 2014-11-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.xml:
+	* Clockwise.svg:
+	* Counterclockwise.svg:
+	* TextureCoordinateEditor.xml:
+	* X3DTextureCoordinateEditorInterface.h:
+	* X3DTextureCoordinateEditorInterface.cpp:
+	* TextureCoordinateEditorLeftPreview.x3dv:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditor.cpp: 
+
+2014-11-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TextureCoordinateEditor.xml:
 	* X3DTextureCoordinateEditorInterface.h:
 	* ColorPerVertexEditor.cpp:

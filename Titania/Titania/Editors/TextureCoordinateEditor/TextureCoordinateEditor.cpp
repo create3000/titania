@@ -253,16 +253,12 @@ TextureCoordinateEditor::on_key_release_event (GdkEventKey* event)
 void
 TextureCoordinateEditor::on_undo_activate ()
 {
-	left -> grab_focus ();
-
 	undoHistory .undoChanges ();
 }
 
 void
 TextureCoordinateEditor::on_redo_activate ()
 {
-	left -> grab_focus ();
-
 	undoHistory .redoChanges ();
 }
 
@@ -298,76 +294,6 @@ TextureCoordinateEditor::set_undoHistory ()
 		getRedoMenuItem () .set_sensitive (false);
 		//getRedoButton ()   .set_sensitive (false);
 	}
-}
-
-void
-TextureCoordinateEditor::on_flip_horizontally_activate ()
-{
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Flip Horizontally"));
-
-	undoStep -> addObjects (previewGeometry, texCoord);
-	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
-
-	// Determine bbox extents.
-
-	const auto bbox    = getTexBBox ();
-	const auto center2 = 2 * bbox .center () .x ();
-
-	// Apply mapping.
-	
-	std::set <int32_t> vertices;
-
-	for (const auto & face : selectedFaces)
-	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
-			vertices .emplace (previewGeometry -> texCoordIndex () .get1Value (vertex));
-	}
-	
-	for (const auto & vertex : vertices)
-	{
-		auto &     point = texCoord -> point () .get1Value (vertex);
-		const auto x     = point .getX ();
-		point .setX (center2 - x);
-	}
-
-	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
-	
-	addUndoStep (undoStep);
-}
-
-void
-TextureCoordinateEditor::on_flip_vertically_activate ()
-{
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Flip Vertically"));
-
-	undoStep -> addObjects (previewGeometry, texCoord);
-	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
-
-	// Determine bbox extents.
-
-	const auto bbox    = getTexBBox ();
-	const auto center2 = 2 * bbox .center () .y ();
-
-	// Apply mapping.
-	
-	std::set <int32_t> vertices;
-
-	for (const auto & face : selectedFaces)
-	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
-			vertices .emplace (previewGeometry -> texCoordIndex () .get1Value (vertex));
-	}
-	
-	for (const auto & vertex : vertices)
-	{
-		auto &     point = texCoord -> point () .get1Value (vertex);
-		const auto y     = point .getY ();
-		point .setY (center2 - y);
-	}
-
-	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
-	
-	addUndoStep (undoStep);
 }
 
 void
@@ -664,6 +590,129 @@ TextureCoordinateEditor::on_deselect_all_activate ()
 		set_selected_faces ();
 	}
 }
+
+// Toolbar
+
+void
+TextureCoordinateEditor::on_rotate_counterclockwise ()
+{
+	on_rotate ("Rotate 90° Counterclockwise", M_PI / 2);
+}
+
+void
+TextureCoordinateEditor::on_rotate_clockwise ()
+{
+	on_rotate ("Rotate 90° Clockwise", -M_PI / 2);
+}
+
+void
+TextureCoordinateEditor::on_rotate (const char* description, const double angle)
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ (description));
+
+	undoStep -> addObjects (previewGeometry, texCoord);
+	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+
+	// Determine bbox extents.
+
+	const auto bbox     = getTexBBox ();
+	const auto center   = bbox .center ();
+	const auto rotation = X3D::Matrix3f (angle);
+
+	// Apply mapping.
+	
+	std::set <int32_t> vertices;
+
+	for (const auto & face : selectedFaces)
+	{
+		for (const auto & vertex : rightSelection -> getVertices (face))
+			vertices .emplace (previewGeometry -> texCoordIndex () .get1Value (vertex));
+	}
+	
+	for (const auto & vertex : vertices)
+	{
+		auto &     point   = texCoord -> point () .get1Value (vertex);
+		const auto rotated = (point .getValue () - center) * rotation + center;
+		point .setValue (rotated);
+	}
+
+	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+	
+	addUndoStep (undoStep);
+}
+
+
+void
+TextureCoordinateEditor::on_flip ()
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Flip Horizontally"));
+
+	undoStep -> addObjects (previewGeometry, texCoord);
+	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+
+	// Determine bbox extents.
+
+	const auto bbox    = getTexBBox ();
+	const auto center2 = 2 * bbox .center () .x ();
+
+	// Apply mapping.
+	
+	std::set <int32_t> vertices;
+
+	for (const auto & face : selectedFaces)
+	{
+		for (const auto & vertex : rightSelection -> getVertices (face))
+			vertices .emplace (previewGeometry -> texCoordIndex () .get1Value (vertex));
+	}
+	
+	for (const auto & vertex : vertices)
+	{
+		auto &     point = texCoord -> point () .get1Value (vertex);
+		const auto x     = point .getX ();
+		point .setX (center2 - x);
+	}
+
+	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+	
+	addUndoStep (undoStep);
+}
+
+void
+TextureCoordinateEditor::on_flop ()
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Flip Vertically"));
+
+	undoStep -> addObjects (previewGeometry, texCoord);
+	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+
+	// Determine bbox extents.
+
+	const auto bbox    = getTexBBox ();
+	const auto center2 = 2 * bbox .center () .y ();
+
+	// Apply mapping.
+	
+	std::set <int32_t> vertices;
+
+	for (const auto & face : selectedFaces)
+	{
+		for (const auto & vertex : rightSelection -> getVertices (face))
+			vertices .emplace (previewGeometry -> texCoordIndex () .get1Value (vertex));
+	}
+	
+	for (const auto & vertex : vertices)
+	{
+		auto &     point = texCoord -> point () .get1Value (vertex);
+		const auto y     = point .getY ();
+		point .setY (center2 - y);
+	}
+
+	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+	
+	addUndoStep (undoStep);
+}
+
+// Dashboard
 
 void
 TextureCoordinateEditor::on_left_hand_toggled ()

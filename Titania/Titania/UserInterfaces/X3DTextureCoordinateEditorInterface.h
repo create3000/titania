@@ -118,14 +118,6 @@ public:
 	getRedoMenuItem () const
 	{ return *m_RedoMenuItem; }
 
-	Gtk::ImageMenuItem &
-	getFlipMenuItem () const
-	{ return *m_FlipMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getFlopMenuItem () const
-	{ return *m_FlopMenuItem; }
-
 	Gtk::MenuItem &
 	getMappingsMenuItem () const
 	{ return *m_MappingsMenuItem; }
@@ -169,6 +161,22 @@ public:
 	Gtk::MenuItem &
 	getDeselectAllMenuItem () const
 	{ return *m_DeselectAllMenuItem; }
+
+	Gtk::ToolButton &
+	getRotateCounterlockwiseButton () const
+	{ return *m_RotateCounterlockwiseButton; }
+
+	Gtk::ToolButton &
+	getRotateClockwiseButton () const
+	{ return *m_RotateClockwiseButton; }
+
+	Gtk::ToolButton &
+	getFlipButton () const
+	{ return *m_FlipButton; }
+
+	Gtk::ToolButton &
+	getFlopButton () const
+	{ return *m_FlopButton; }
 
 	Gtk::Box &
 	getLeftBox () const
@@ -236,14 +244,6 @@ public:
 
 	virtual
 	void
-	on_flip_horizontally_activate () = 0;
-
-	virtual
-	void
-	on_flip_vertically_activate () = 0;
-
-	virtual
-	void
 	on_x_plane_activate () = 0;
 
 	virtual
@@ -277,6 +277,22 @@ public:
 	virtual
 	void
 	on_deselect_all_activate () = 0;
+
+	virtual
+	void
+	on_rotate_counterclockwise () = 0;
+
+	virtual
+	void
+	on_rotate_clockwise () = 0;
+
+	virtual
+	void
+	on_flip () = 0;
+
+	virtual
+	void
+	on_flop () = 0;
 
 	virtual
 	void
@@ -332,8 +348,6 @@ private:
 	Gtk::Box*                      m_Widget;
 	Gtk::ImageMenuItem*            m_UndoMenuItem;
 	Gtk::ImageMenuItem*            m_RedoMenuItem;
-	Gtk::ImageMenuItem*            m_FlipMenuItem;
-	Gtk::ImageMenuItem*            m_FlopMenuItem;
 	Gtk::MenuItem*                 m_MappingsMenuItem;
 	Gtk::MenuItem*                 m_XPlaneMenuItem;
 	Gtk::MenuItem*                 m_YPlaneMenuItem;
@@ -345,6 +359,10 @@ private:
 	Gtk::MenuItem*                 m_SelectionMenuItem;
 	Gtk::ImageMenuItem*            m_SelectAllMenuItem;
 	Gtk::MenuItem*                 m_DeselectAllMenuItem;
+	Gtk::ToolButton*               m_RotateCounterlockwiseButton;
+	Gtk::ToolButton*               m_RotateClockwiseButton;
+	Gtk::ToolButton*               m_FlipButton;
+	Gtk::ToolButton*               m_FlopButton;
 	Gtk::Box*                      m_LeftBox;
 	Gtk::RadioToolButton*          m_LeftHandButton;
 	Gtk::RadioToolButton*          m_LeftArrowButton;

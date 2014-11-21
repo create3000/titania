@@ -46,9 +46,11 @@
       <source stock-id="Select" filename="icons/Select.svg"/>
       <source stock-id="PlaneViewer" filename="icons/PlaneViewer.svg"/>
       <source stock-id="Flop" filename="icons/Flop.svg"/>
+      <source stock-id="Clockwise" filename="icons/Clockwise.svg"/>
       <source stock-id="ColorSingleVertex" filename="icons/ColorSingleVertex.svg"/>
       <source stock-id="Navigation" filename="icons/Navigation.svg"/>
       <source stock-id="TextureCoordinate" filename="icons/TextureCoordinate.svg"/>
+      <source stock-id="Counterclockwise" filename="icons/Counterclockwise.svg"/>
     </sources>
   </object>
   <object class="GtkToggleAction" id="AngleToolAction"/>

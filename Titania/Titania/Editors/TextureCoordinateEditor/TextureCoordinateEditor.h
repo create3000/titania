@@ -118,14 +118,6 @@ private:
 	void
 	on_redo_activate () final override;
 
-	virtual
-	void
-	on_flip_horizontally_activate () final override;
-
-	virtual
-	void
-	on_flip_vertically_activate () final override;
-
 	void
 	on_remove_unused_texCoord_activate ();
 
@@ -175,7 +167,28 @@ private:
 	void
 	on_deselect_all_activate () final override;
 
-	///  @name Toolbars
+	///  @name Toolbar
+
+	virtual
+	void
+	on_rotate_counterclockwise () final override;
+
+	virtual
+	void
+	on_rotate_clockwise () final override;
+
+	void
+	on_rotate (const char*, const double);
+
+	virtual
+	void
+	on_flip () final override;
+
+	virtual
+	void
+	on_flop () final override;
+
+	///  @name Dashboard
 
 	virtual
 	void
