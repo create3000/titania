@@ -145,7 +145,6 @@
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="BoxMenuItem">
-                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">_Box</property>
                         <property name="use_underline">True</property>
@@ -154,7 +153,6 @@
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="CylinderMenuItem">
-                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">_Cylinder</property>
                         <property name="use_underline">True</property>
@@ -163,7 +161,6 @@
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="SphereMenuItem">
-                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">_Sphere</property>
                         <property name="use_underline">True</property>

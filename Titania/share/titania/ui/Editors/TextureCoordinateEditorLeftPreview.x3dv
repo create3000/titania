@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Thu, 20 Nov 2014 11:47:27 GMT"
+META "modified" "Fri, 21 Nov 2014 02:28:33 GMT"
 
 PROTO IndexedPointSet [
   inputOnly      MFInt32 set_coordIndex
@@ -85,7 +85,8 @@ LayerSet {
   order [
     1,
     2,
-    3
+    3,
+    4
   ]
   layers [
     DEF Background Layer {
@@ -247,8 +248,131 @@ function set_active (value)
         }
       ]
     }
+    DEF CenterPoint Layer {
+      children [
+        DEF Navigation_2 Group {
+          children [
+            USE _2
+            USE _1
+          ]
+        }
+        DEF _4 Transform {
+          children ScreenGroup {
+            children Transform {
+              scale 8 8 1
+              children [
+                DEF Back Group {
+                  children [
+                    DEF Circle2D_1 Transform {
+                      children Shape {
+                        appearance DEF _5 Appearance {
+                          fillProperties FillProperties {
+                            filled FALSE
+                            hatched FALSE
+                          }
+                          lineProperties LineProperties {
+                            linewidthScaleFactor 2.5
+                          }
+                          material Material {
+                            diffuseColor 0 0 0
+                          }
+                        }
+                        geometry DEF _6 Rectangle2D { }
+                      }
+                    }
+                    DEF IndexedLineSet_1 Transform {
+                      scale 1.41 1.41 1
+                      children Shape {
+                        appearance USE _5
+                        geometry DEF _7 IndexedLineSet {
+                          coordIndex [
+                            0,
+                            1,
+                            -1,
+                            2,
+                            3,
+                            -1
+                          ]
+                          coord Coordinate {
+                            point [
+                              -1 0 0,
+                              1 0 0,
+                              0 -1 0,
+                              0 1 0
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+                DEF Front Group {
+                  children [
+                    DEF Circle2D Transform {
+                      children Shape {
+                        appearance DEF _8 Appearance {
+                          fillProperties FillProperties {
+                            filled FALSE
+                            hatched FALSE
+                          }
+                          lineProperties LineProperties {
+                            linewidthScaleFactor 1
+                          }
+                          material Material {
+                            diffuseColor 0 0 0
+                            emissiveColor 1 0 0
+                          }
+                        }
+                        geometry USE _6
+                      }
+                    }
+                    DEF IndexedLineSet Transform {
+                      scale 1.41 1.41 1
+                      children Shape {
+                        appearance USE _8
+                        geometry USE _7
+                      }
+                    }
+                  ]
+                }
+                DEF Rectangle2D_1 Transform {
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        transparency 1
+                      }
+                    }
+                    geometry USE _6
+                  }
+                }
+              ]
+            }
+          }
+        }
+        DEF CenterSensor PlaneSensor { }
+        DEF CenterPointScript Script {
+          inputOnly  SFBool set_active
+          outputOnly SFBool isPickable
+
+          url "javascript:
+
+function initialize ()
+{
+	isPickable = true;
+}
+
+function set_active (value)
+{
+	isPickable = !value;
+}"
+        }
+      ]
+    }
   ]
 }
 
 ROUTE TouchSensor.isOver TO PointScript.set_active
 ROUTE PointScript.whichChoice_changed TO ActivePoint.set_whichChoice
+ROUTE CenterSensor.translation_changed TO _4.set_translation
+ROUTE TouchSensor.isActive TO CenterPointScript.set_active
+ROUTE CenterPointScript.isPickable TO CenterPoint.set_isPickable
