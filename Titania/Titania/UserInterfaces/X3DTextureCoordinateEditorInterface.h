@@ -119,6 +119,18 @@ public:
 	{ return *m_RedoMenuItem; }
 
 	Gtk::MenuItem &
+	getSelectionMenuItem () const
+	{ return *m_SelectionMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getSelectAllMenuItem () const
+	{ return *m_SelectAllMenuItem; }
+
+	Gtk::MenuItem &
+	getDeselectAllMenuItem () const
+	{ return *m_DeselectAllMenuItem; }
+
+	Gtk::MenuItem &
 	getMappingsMenuItem () const
 	{ return *m_MappingsMenuItem; }
 
@@ -149,18 +161,6 @@ public:
 	Gtk::MenuItem &
 	getSphereMenuItem () const
 	{ return *m_SphereMenuItem; }
-
-	Gtk::MenuItem &
-	getSelectionMenuItem () const
-	{ return *m_SelectionMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getSelectAllMenuItem () const
-	{ return *m_SelectAllMenuItem; }
-
-	Gtk::MenuItem &
-	getDeselectAllMenuItem () const
-	{ return *m_DeselectAllMenuItem; }
 
 	Gtk::ToolButton &
 	getUndoButton () const
@@ -205,6 +205,10 @@ public:
 	Gtk::RadioToolButton &
 	getScaleButton () const
 	{ return *m_ScaleButton; }
+
+	Gtk::ToggleToolButton &
+	getSnapCenterButton () const
+	{ return *m_SnapCenterButton; }
 
 	Gtk::ToolButton &
 	getLeftLookAtButton () const
@@ -260,6 +264,14 @@ public:
 
 	virtual
 	void
+	on_select_all_activate () = 0;
+
+	virtual
+	void
+	on_deselect_all_activate () = 0;
+
+	virtual
+	void
 	on_x_plane_activate () = 0;
 
 	virtual
@@ -285,14 +297,6 @@ public:
 	virtual
 	void
 	on_sphere_activate () = 0;
-
-	virtual
-	void
-	on_select_all_activate () = 0;
-
-	virtual
-	void
-	on_deselect_all_activate () = 0;
 
 	virtual
 	void
@@ -325,6 +329,10 @@ public:
 	virtual
 	void
 	on_left_scale_toggled () = 0;
+
+	virtual
+	void
+	on_left_snap_center_toggled () = 0;
 
 	virtual
 	void
@@ -372,6 +380,9 @@ private:
 	Gtk::Box*                      m_Widget;
 	Gtk::ImageMenuItem*            m_UndoMenuItem;
 	Gtk::ImageMenuItem*            m_RedoMenuItem;
+	Gtk::MenuItem*                 m_SelectionMenuItem;
+	Gtk::ImageMenuItem*            m_SelectAllMenuItem;
+	Gtk::MenuItem*                 m_DeselectAllMenuItem;
 	Gtk::MenuItem*                 m_MappingsMenuItem;
 	Gtk::MenuItem*                 m_XPlaneMenuItem;
 	Gtk::MenuItem*                 m_YPlaneMenuItem;
@@ -380,9 +391,6 @@ private:
 	Gtk::MenuItem*                 m_BoxMenuItem;
 	Gtk::MenuItem*                 m_CylinderMenuItem;
 	Gtk::MenuItem*                 m_SphereMenuItem;
-	Gtk::MenuItem*                 m_SelectionMenuItem;
-	Gtk::ImageMenuItem*            m_SelectAllMenuItem;
-	Gtk::MenuItem*                 m_DeselectAllMenuItem;
 	Gtk::ToolButton*               m_UndoButton;
 	Gtk::ToolButton*               m_RedoButton;
 	Gtk::ToolButton*               m_RotateCounterlockwiseButton;
@@ -394,6 +402,7 @@ private:
 	Gtk::RadioToolButton*          m_LeftArrowButton;
 	Gtk::RadioToolButton*          m_RotateButton;
 	Gtk::RadioToolButton*          m_ScaleButton;
+	Gtk::ToggleToolButton*         m_SnapCenterButton;
 	Gtk::ToolButton*               m_LeftLookAtButton;
 	Gtk::Box*                      m_RightBox;
 	Gtk::RadioToolButton*          m_RightHandButton;

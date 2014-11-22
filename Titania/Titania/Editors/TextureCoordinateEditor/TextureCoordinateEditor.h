@@ -216,6 +216,10 @@ private:
 	virtual
 	void
 	on_left_scale_toggled () final override;
+	
+	virtual
+	void
+	on_left_snap_center_toggled () final override;
 
 	virtual
 	void
@@ -341,10 +345,13 @@ private:
 	set_left_point (const X3D::Vector3d &);
 	
 	int32_t
-	getPointIndex (const X3D::Vector3d &) const;
-	
+	getNearestPoint (const X3D::Vector3d &) const;
+
 	void
 	set_selectedPoints ();
+
+	void
+	set_left_center (const X3D::Vector3f &);
 	
 	void
 	set_right_selection (const X3D::Vector3f &);

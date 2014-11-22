@@ -51,6 +51,7 @@
       <source stock-id="ColorSingleVertex" filename="icons/ColorSingleVertex.svg"/>
       <source stock-id="Navigation" filename="icons/Navigation.svg"/>
       <source stock-id="TextureCoordinate" filename="icons/TextureCoordinate.svg"/>
+      <source stock-id="SnapCenter" filename="icons/SnapCenter.svg"/>
       <source stock-id="Counterclockwise" filename="icons/Counterclockwise.svg"/>
       <source stock-id="Rotate" filename="icons/Rotate.svg"/>
     </sources>

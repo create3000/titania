@@ -57,7 +57,9 @@
 namespace titania {
 namespace puck {
 
-constexpr double POINT_SIZE = 6; // Use linewidthScaleFactor / 2 + 2.
+constexpr double POINT_SIZE    = 6; // Use linewidthScaleFactor / 2 + 2.
+constexpr double SNAP_DISTANCE = POINT_SIZE;
+
 constexpr X3D::Vector2d
 infinity2f (std::numeric_limits <float>::infinity (), std::numeric_limits <float>::infinity ());
 
@@ -162,11 +164,13 @@ TextureCoordinateEditor::set_initialized ()
 		const auto appearance       = left -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 		const auto touchSensor      = left -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 		const auto selectedGeometry = left -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedGeometry");
+		const auto centerSensor     = left -> getExecutionContext () -> getNamedNode <X3D::PlaneSensor> ("CenterSensor");
 
-		touchSensor -> isActive ()         .addInterest (this, &TextureCoordinateEditor::set_left_active);
-		touchSensor -> touchTime ()        .addInterest (this, &TextureCoordinateEditor::set_left_touchTime);
-		touchSensor -> hitPoint_changed () .addInterest (this, &TextureCoordinateEditor::set_left_hitPoint);
-		selectedGeometry -> addInterest (this, &TextureCoordinateEditor::set_left_image);
+		touchSensor -> isActive ()             .addInterest (this, &TextureCoordinateEditor::set_left_active);
+		touchSensor -> touchTime ()            .addInterest (this, &TextureCoordinateEditor::set_left_touchTime);
+		touchSensor -> hitPoint_changed ()     .addInterest (this, &TextureCoordinateEditor::set_left_hitPoint);
+		selectedGeometry ->                     addInterest (this, &TextureCoordinateEditor::set_left_image);
+		centerSensor -> translation_changed () .addInterest (this, &TextureCoordinateEditor::set_left_center);
 
 		appearance -> isPrivate (true);
 	}
@@ -200,6 +204,7 @@ TextureCoordinateEditor::set_initialized ()
 void
 TextureCoordinateEditor::configure ()
 {
+	getSnapCenterButton () .set_active (getConfig () .getBoolean ("snapCenter"));
 }
 
 void
@@ -732,6 +737,12 @@ TextureCoordinateEditor::on_left_scale_toggled ()
 	tool = ToolType::SCALE;
 	left -> isPickable (true);
 	left -> grab_focus ();
+}
+
+void
+TextureCoordinateEditor::on_left_snap_center_toggled ()
+{
+	getConfig () .setItem ("snapCenter", getSnapCenterButton () .get_active ());
 }
 
 void
@@ -1447,9 +1458,9 @@ TextureCoordinateEditor::set_startDrag ()
 
 		// Rotate and Scale
 
-		const auto centerSensor = left -> getExecutionContext () -> getNamedNode <X3D::PlaneSensor> ("CenterSensor");
-		const auto center       = X3D::Vector2f (centerSensor -> translation_changed () .getX (), centerSensor -> translation_changed () .getY ());
-		const auto point        = X3D::Vector2f (hitPoint .x (), hitPoint .y ());
+		const auto centerPoint = left -> getExecutionContext () -> getNamedNode <X3D::Transform> ("CenterPoint");
+		const auto center      = X3D::Vector2f (centerPoint -> translation () .getX (), centerPoint -> translation () .getY ());
+		const auto point       = X3D::Vector2f (hitPoint .x (), hitPoint .y ());
 
 		startDistance = point - center;
 
@@ -1577,11 +1588,11 @@ TextureCoordinateEditor::rotate (const X3D::Vector3f & hitPoint)
 {
 	try
 	{
-		const auto centerSensor = left -> getExecutionContext () -> getNamedNode <X3D::PlaneSensor> ("CenterSensor");
-		const auto center       = X3D::Vector2f (centerSensor -> translation_changed () .getX (), centerSensor -> translation_changed () .getY ());
-		const auto point        = X3D::Vector2f (hitPoint .x (), hitPoint .y ());
-		const auto distance     = point - center;
-		auto       rotation     = std::atan2 (startDistance .x (), startDistance .y ()) - std::atan2 (distance .x (), distance .y ());
+		const auto centerPoint = left -> getExecutionContext () -> getNamedNode <X3D::Transform> ("CenterPoint");
+		const auto center      = X3D::Vector2f (centerPoint -> translation () .getX (), centerPoint -> translation () .getY ());
+		const auto point       = X3D::Vector2f (hitPoint .x (), hitPoint .y ());
+		const auto distance    = point - center;
+		auto       rotation    = std::atan2 (startDistance .x (), startDistance .y ()) - std::atan2 (distance .x (), distance .y ());
 
 		if (keys .control ())
 		{
@@ -1605,10 +1616,10 @@ TextureCoordinateEditor::scale (const X3D::Vector3f & hitPoint)
 {
 	try
 	{
-		const auto centerSensor = left -> getExecutionContext () -> getNamedNode <X3D::PlaneSensor> ("CenterSensor");
-		const auto center       = X3D::Vector2f (centerSensor -> translation_changed () .getX (), centerSensor -> translation_changed () .getY ());
-		const auto point        = X3D::Vector2f (hitPoint .x (), hitPoint .y ());
-		const auto distance     = point - center;
+		const auto centerPoint = left -> getExecutionContext () -> getNamedNode <X3D::Transform> ("CenterPoint");
+		const auto center      = X3D::Vector2f (centerPoint -> translation () .getX (), centerPoint -> translation () .getY ());
+		const auto point       = X3D::Vector2f (hitPoint .x (), hitPoint .y ());
+		const auto distance    = point - center;
 
 		if (startDistance .x () == 0 or startDistance .y () == 0)
 			return;
@@ -1646,17 +1657,16 @@ TextureCoordinateEditor::set_left_point (const X3D::Vector3d & hitPoint)
 		const auto selectedCoord  = left -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("SelectedCoord");
 		const auto activePointSet = left -> getExecutionContext () -> getNamedNode ("ActivePointSet");
 
-		activePoint = getPointIndex (hitPoint);
+		activePoint = getNearestPoint (hitPoint);
 
 		if (activePoint < 0)
 			activePointSet -> getField <X3D::MFInt32> ("set_coordIndex") .clear ();
 
 		else
 		{
-			const auto point = selectedCoord -> get1Point (activePoint);
-			const auto p     = projectPoint (point, left);    // point in pixel coordinates.
-			const auto h     = projectPoint (hitPoint, left); // hitPoint in pixel coordinates.
-
+			const auto point    = selectedCoord -> get1Point (activePoint);
+			const auto p        = projectPoint (point, left);    // point in pixel coordinates.
+			const auto h        = projectPoint (hitPoint, left); // hitPoint in pixel coordinates.
 			const auto distance = math::abs (h - p);
 
 			if (distance < POINT_SIZE)
@@ -1675,7 +1685,7 @@ TextureCoordinateEditor::set_left_point (const X3D::Vector3d & hitPoint)
 }
 
 int32_t
-TextureCoordinateEditor::getPointIndex (const X3D::Vector3d & hitPoint) const
+TextureCoordinateEditor::getNearestPoint (const X3D::Vector3d & hitPoint) const
 {
 	try
 	{
@@ -1716,6 +1726,39 @@ TextureCoordinateEditor::set_selectedPoints ()
 		selectedPointSet -> getField <X3D::MFInt32> ("set_coordIndex") .assign (selectedPoints .begin (), selectedPoints .end ());
 	}
 	catch (const X3D::X3DError &)
+	{ }
+}
+
+void
+TextureCoordinateEditor::set_left_center (const X3D::Vector3f & value)
+{
+	try
+	{
+		auto       translation = value;
+		const auto centerPoint = left -> getExecutionContext () -> getNamedNode <X3D::Transform> ("CenterPoint");
+
+		if (getSnapCenterButton () .get_active ())
+		{
+			const auto selectedCoord = left -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("SelectedCoord");
+			const auto index         = getNearestPoint (translation);
+			
+			if (index >= 0)
+			{
+				const auto nearestPoint = selectedCoord -> get1Point (index);
+				const auto n            = projectPoint (nearestPoint, left);
+				const auto t            = projectPoint (translation, left);
+				const auto distance     = math::abs (t - n);
+
+				if (distance < SNAP_DISTANCE)
+					translation = nearestPoint;
+			}
+		}
+
+		centerPoint -> translation () = translation;
+	}
+	catch (const X3D::X3DError &)
+	{ }
+	catch (const std::domain_error &)
 	{ }
 }
 

@@ -1,5 +1,16 @@
 2014-11-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.xml:
+	* SnapCenter.svg:
+	* TextureCoordinateEditor.xml:
+	* X3DTextureCoordinateEditorInterface.h:
+	* X3DTextureCoordinateEditorInterface.cpp:
+	* TextureCoordinateEditorLeftPreview.x3dv:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditor.cpp: 
+
+2014-11-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TextureCoordinateEditor.cpp: 
 
 2014-11-22  Holger Seelig  <holger.seelig@yahoo.de>

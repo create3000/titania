@@ -428,6 +428,31 @@
                                       </packing>
                                     </child>
                                     <child>
+                                      <object class="GtkToggleToolButton" id="SnapCenterButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Snap center point to vertices.</property>
+                                        <property name="label" translatable="yes">Snap Center</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">SnapCenter</property>
+                                        <signal name="toggled" handler="on_left_snap_center_toggled" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSeparatorToolItem" id="separatortoolitem4">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">False</property>
+                                      </packing>
+                                    </child>
+                                    <child>
                                       <object class="GtkToolButton" id="LeftLookAtButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
