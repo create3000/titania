@@ -554,12 +554,14 @@ TextureCoordinateEditor::on_cylinder_activate ()
 
 	// Determine bbox extents.
 
-	const auto bbox = getBBox (0, 1);
+	const auto bbox   = getBBox (0, 2);
+	const auto center = bbox .center ();
+	const auto bboxY  = getBBox (0, 1);
 
-	X3D::Vector2f min, max;
-	bbox .extents (min, max);
+	X3D::Vector2f minY, maxY;
+	bboxY .extents (minY, maxY);
 
-	const auto size = bbox .size ();
+	const auto sizeY = bboxY .size ();
 
 	// Apply mapping.
 	
@@ -574,8 +576,8 @@ TextureCoordinateEditor::on_cylinder_activate ()
 	for (const auto pair : indices)
 	{
 		const auto point    = coord -> get1Point (pair .first);
-		const auto complex  = std::complex <double> (point .z (), point .x ());
-		const auto texPoint = X3D::Vector2f (std::arg (complex) / (M_PI * 2) + 0.5, (point .y () - min .y ()) / size .y ());
+		const auto complex  = std::complex <float> (point .z () - center .y (), point .x () - center .x ());
+		const auto texPoint = X3D::Vector2f (std::arg (complex) / (M_PI * 2) + 0.5, (point .y () - minY .y ()) / sizeY .y ());
 
 		for (const auto & vertex : pair .second)
 			previewGeometry -> texCoordIndex () [vertex] = texCoord -> point () .size ();
