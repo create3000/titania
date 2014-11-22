@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Mon, 17 Nov 2014 08:42:20 GMT"
+META "modified" "Sat, 22 Nov 2014 00:47:49 GMT"
 
 LayerSet {
   activeLayer 2
@@ -23,22 +23,12 @@ LayerSet {
     DEF Object Layer {
       children [
         DEF Navigation Group {
-          children DEF _1 Viewpoint { }
+          children Viewpoint { }
         }
         DEF Shape Shape {
           appearance DEF Appearance Appearance {
             material Material { }
           }
-          geometry Sphere { }
-        }
-        DEF TouchSensor TouchSensor { }
-      ]
-    }
-    DEF TextureCoordinate Layer {
-      isPickable FALSE
-      children [
-        DEF Navigation_1 Group {
-          children USE _1
         }
         DEF SelectedFaces Group {
           children [
@@ -64,7 +54,7 @@ LayerSet {
             }
           ]
         }
-        DEF _2 Switch {
+        DEF ActiveFace Switch {
           whichChoice 0
           children [
             DEF CrossScript_1 Script {
@@ -109,10 +99,11 @@ function set_active (value)
             }
           ]
         }
+        DEF TouchSensor TouchSensor { }
       ]
     }
   ]
 }
 
 ROUTE TouchSensor.isOver TO CrossScript_1.set_active
-ROUTE CrossScript_1.whichChoice_changed TO _2.set_whichChoice
+ROUTE CrossScript_1.whichChoice_changed TO ActiveFace.set_whichChoice

@@ -178,7 +178,7 @@ private:
 	on_rotate_clockwise () final override;
 
 	void
-	on_rotate (const char*, const double);
+	on_rotate (const std::string &, const double);
 
 	virtual
 	void

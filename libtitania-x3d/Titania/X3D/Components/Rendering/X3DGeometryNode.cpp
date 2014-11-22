@@ -702,7 +702,7 @@ X3DGeometryNode::draw (const bool solid, const bool texture, const bool lighting
 	else
 		glDisable (GL_CULL_FACE);
 
-	glFrontFace (ModelViewMatrix4f () .determinant3 () > 0 ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
+	glFrontFace (determinant3 (ModelViewMatrix4f ()) > 0 ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
 
 	if (not attribNodes .empty ())
 	{

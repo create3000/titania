@@ -209,7 +209,8 @@ ColorPerVertexEditor::set_selection ()
 		const auto previewShape = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
 
 		coord           = geometry -> coord ();
-		previewGeometry = preview -> getExecutionContext () -> createNode <X3D::IndexedFaceSet> ();
+		previewGeometry = geometry -> copy (previewShape -> getExecutionContext (), X3D::FLAT_COPY);
+		previewGeometry -> isPrivate (true);
 
 		geometry -> solid ()           .addInterest (previewGeometry -> solid ());
 		geometry -> convex ()          .addInterest (previewGeometry -> convex ());
@@ -227,19 +228,6 @@ ColorPerVertexEditor::set_selection ()
 		geometry -> coordIndex () .addInterest (this, &ColorPerVertexEditor::set_coordIndex);
 		geometry -> color ()      .addInterest (this, &ColorPerVertexEditor::set_colorIndex);
 		geometry -> coord ()      .addInterest (this, &ColorPerVertexEditor::set_coord);		
-
-		previewGeometry -> isPrivate (true);
-		previewGeometry -> solid ()           = geometry -> solid ();
-		previewGeometry -> convex ()          = geometry -> convex ();
-		previewGeometry -> ccw ()             = geometry -> ccw ();
-		previewGeometry -> creaseAngle ()     = geometry -> creaseAngle ();
-		previewGeometry -> normalPerVertex () = geometry -> normalPerVertex ();
-		previewGeometry -> normalIndex ()     = geometry -> normalIndex ();
-		previewGeometry -> texCoordIndex ()   = geometry -> texCoordIndex ();
-		previewGeometry -> coordIndex ()      = geometry -> coordIndex ();
-		previewGeometry -> normal ()          = geometry -> normal ();
-		previewGeometry -> texCoord ()        = geometry -> texCoord ();
-		previewGeometry -> coord ()           = geometry -> coord ();
 
 		previewShape -> geometry () = previewGeometry;
 
