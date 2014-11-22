@@ -187,9 +187,22 @@ LayerSet::bind ()
 void
 LayerSet::traverse (const TraverseType type)
 {
-	for (const auto & layerNode : layerNodes)
+	if (type == TraverseType::POINTER)
 	{
-		layerNode -> traverse (type);
+		size_t layerNumber = 0;
+
+		for (const auto & layerNode : layerNodes)
+		{
+			getBrowser () -> setLayerNumber (layerNumber ++);
+			layerNode -> traverse (type);
+		}
+	}
+	else
+	{
+		for (const auto & layerNode : layerNodes)
+		{
+			layerNode -> traverse (type);
+		}
 	}
 }
 

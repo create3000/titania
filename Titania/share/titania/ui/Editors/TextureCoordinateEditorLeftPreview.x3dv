@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Sat, 22 Nov 2014 10:44:18 GMT"
+META "modified" "Sat, 22 Nov 2014 12:56:41 GMT"
 
 PROTO IndexedPointSet [
   inputOnly      MFInt32 set_coordIndex
@@ -256,113 +256,109 @@ function set_active (value)
             USE _1
           ]
         }
-        Transform {
+        DEF CenterPoint Transform {
           translation 0 0 3
-          children [
-            DEF CenterPoint Transform {
-              children ScreenGroup {
-                children Transform {
-                  scale 8 8 1
+          children ScreenGroup {
+            children Transform {
+              scale 8 8 1
+              children [
+                DEF Back Group {
                   children [
-                    DEF Back Group {
-                      children [
-                        DEF Circle2D_1 Transform {
-                          children Shape {
-                            appearance DEF _4 Appearance {
-                              fillProperties FillProperties {
-                                filled FALSE
-                                hatched FALSE
-                              }
-                              lineProperties LineProperties {
-                                linewidthScaleFactor 2.5
-                              }
-                              material Material {
-                                diffuseColor 0 0 0
-                              }
-                            }
-                            geometry DEF _5 Rectangle2D { }
-                          }
-                        }
-                        DEF IndexedLineSet_1 Transform {
-                          children Shape {
-                            appearance USE _4
-                            geometry DEF _6 IndexedLineSet {
-                              coordIndex [
-                                0,
-                                1,
-                                -1,
-                                2,
-                                3,
-                                -1,
-                                4,
-                                5,
-                                -1,
-                                6,
-                                7,
-                                -1
-                              ]
-                              coord Coordinate {
-                                point [
-                                  -1.5 0 0,
-                                  -0.25 0 0,
-                                  0 -1.5 0,
-                                  0 -0.25 0,
-                                  1.5 0 0,
-                                  0.25 0 0,
-                                  0 1.5 0,
-                                  0 0.25 0
-                                ]
-                              }
-                            }
-                          }
-                        }
-                      ]
-                    }
-                    DEF Front Group {
-                      children [
-                        DEF Circle2D Transform {
-                          children Shape {
-                            appearance DEF _7 Appearance {
-                              fillProperties FillProperties {
-                                filled FALSE
-                                hatched FALSE
-                              }
-                              lineProperties LineProperties {
-                                linewidthScaleFactor 1
-                              }
-                              material Material {
-                                diffuseColor 0 0 0
-                                emissiveColor 1 0 0
-                              }
-                            }
-                            geometry USE _5
-                          }
-                        }
-                        DEF IndexedLineSet Transform {
-                          children Shape {
-                            appearance USE _7
-                            geometry USE _6
-                          }
-                        }
-                      ]
-                    }
-                    DEF Rectangle2D_1 Transform {
+                    DEF Circle2D_1 Transform {
                       children Shape {
-                        appearance Appearance {
+                        appearance DEF _4 Appearance {
+                          fillProperties FillProperties {
+                            filled FALSE
+                            hatched FALSE
+                          }
+                          lineProperties LineProperties {
+                            linewidthScaleFactor 2.5
+                          }
                           material Material {
-                            transparency 1
+                            diffuseColor 0 0 0
+                          }
+                        }
+                        geometry DEF _5 Rectangle2D { }
+                      }
+                    }
+                    DEF IndexedLineSet_1 Transform {
+                      children Shape {
+                        appearance USE _4
+                        geometry DEF _6 IndexedLineSet {
+                          coordIndex [
+                            0,
+                            1,
+                            -1,
+                            2,
+                            3,
+                            -1,
+                            4,
+                            5,
+                            -1,
+                            6,
+                            7,
+                            -1
+                          ]
+                          coord Coordinate {
+                            point [
+                              -1.5 0 0,
+                              -0.25 0 0,
+                              0 -1.5 0,
+                              0 -0.25 0,
+                              1.5 0 0,
+                              0.25 0 0,
+                              0 1.5 0,
+                              0 0.25 0
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+                DEF Front Group {
+                  children [
+                    DEF Circle2D Transform {
+                      children Shape {
+                        appearance DEF _7 Appearance {
+                          fillProperties FillProperties {
+                            filled FALSE
+                            hatched FALSE
+                          }
+                          lineProperties LineProperties {
+                            linewidthScaleFactor 1
+                          }
+                          material Material {
+                            diffuseColor 0 0 0
+                            emissiveColor 1 0 0
                           }
                         }
                         geometry USE _5
                       }
                     }
+                    DEF IndexedLineSet Transform {
+                      children Shape {
+                        appearance USE _7
+                        geometry USE _6
+                      }
+                    }
                   ]
                 }
-              }
+                DEF Rectangle2D_1 Transform {
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        transparency 1
+                      }
+                    }
+                    geometry USE _5
+                  }
+                }
+              ]
             }
-            DEF CenterSensor PlaneSensor { }
-          ]
+          }
         }
+        DEF CenterSensor PlaneSensor { }
         DEF CenterPointScript Script {
           inputOnly  SFBool set_active
           outputOnly SFBool isPickable

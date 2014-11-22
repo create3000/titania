@@ -57,6 +57,7 @@
 #include "Intersection.h"
 
 #include <memory>
+#include <tuple>
 
 namespace titania {
 namespace X3D {
@@ -75,7 +76,8 @@ public:
 	     const IntersectionPtr &,
 	     const PointingDeviceSensorSet &,
 	     const X3DShapeNodePtr,
-	     const X3DLayerNodePtr);
+	     const X3DLayerNodePtr,
+	     const size_t);
 
 	const Vector2d                pointer;
 	const Matrix4d                modelViewMatrix;
@@ -85,6 +87,7 @@ public:
 	const PointingDeviceSensorSet sensors;
 	const X3DShapeNodePtr         shape;
 	const X3DLayerNodePtr         layer;
+	const size_t                  layerNumber;
 
 	~Hit ();
 
@@ -99,7 +102,7 @@ public:
 	bool
 	operator () (const HitPtr & lhs, const HitPtr & rhs) const
 	{
-		return lhs -> distance < rhs -> distance;
+		return std::tie (lhs -> layerNumber, lhs -> distance) < std::tie (rhs -> layerNumber, rhs -> distance);
 	}
 
 };

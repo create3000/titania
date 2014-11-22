@@ -73,6 +73,7 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	   overSensors (),
 	 activeSensors (),
 	 selectedLayer (),
+	   layerNumber (0),
 	     pressTime (0),
 	      hasMoved (false)
 {
@@ -147,7 +148,7 @@ X3DPointingDeviceSensorContext::getHitRay (const Matrix4d & modelViewMatrix, con
 void
 X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer)
 {
-	hits .emplace_front (new Hit (pointer, transformationMatrix, hitRay, intersection, enabledSensors .back (), shape, layer));
+	hits .emplace_front (new Hit (pointer, transformationMatrix, hitRay, intersection, enabledSensors .back (), shape, layer, layerNumber));
 }
 
 bool
@@ -207,7 +208,7 @@ X3DPointingDeviceSensorContext::motion ()
 		if (dragSensorNode)
 		{
 			dragSensorNode -> set_motion (getHits () .empty ()
-			                              ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, nullptr)
+			                              ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, nullptr, 0)
 													: getNearestHit ());
 		}
 	}
@@ -250,7 +251,7 @@ X3DPointingDeviceSensorContext::buttonReleaseEvent ()
 	selectedLayer = nullptr;
 
 	for (const auto & pointingDeviceSensorNode : activeSensors)
-		pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, nullptr),
+		pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, nullptr, 0),
 			                                     false);
 
 	activeSensors .clear ();

@@ -80,7 +80,7 @@ public:
 
 	const HitPtr &
 	getNearestHit () const
-	{ return getHits () .front (); }
+	{ return getHits () .back (); }
 
 	const HitArray &
 	getHits () const
@@ -89,6 +89,14 @@ public:
 	X3DLayerNode*
 	getSelectedLayer () const
 	{ return selectedLayer; }
+
+	void
+	setLayerNumber (const size_t value)
+	{ layerNumber = value; }
+
+	size_t
+	getLayerNumber () const
+	{ return layerNumber; }
 
 	///  @name Operations
 
@@ -176,6 +184,7 @@ private:
 	X3DPtrArray <X3DPointingDeviceSensorNode> overSensors;
 	X3DPtrArray <X3DPointingDeviceSensorNode> activeSensors;
 	X3DLayerNodePtr                           selectedLayer;
+	size_t                                    layerNumber;
 	time_type                                 pressTime;
 	bool                                      hasMoved;
 
