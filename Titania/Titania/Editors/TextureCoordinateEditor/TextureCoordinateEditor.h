@@ -166,7 +166,7 @@ private:
 	getTexBBox () const;
 
 	X3D::Box2f
-	getBBox () const;
+	getBBox (const size_t, const size_t) const;
 
 	///  @name Selection
 

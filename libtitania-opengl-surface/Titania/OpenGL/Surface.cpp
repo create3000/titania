@@ -246,6 +246,8 @@ Surface::dispose ()
 
 	context .reset ();
 	sharingContext .reset ();
+
+	notify_callbacks ();
 }
 
 Surface::~Surface ()

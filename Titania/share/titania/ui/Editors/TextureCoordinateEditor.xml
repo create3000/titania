@@ -372,7 +372,7 @@
                                       <object class="GtkRadioToolButton" id="LeftArrowButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="tooltip_text" translatable="yes">Switch to selection mode.</property>
+                                        <property name="tooltip_text" translatable="yes">Select and move points.</property>
                                         <property name="label" translatable="yes">Select</property>
                                         <property name="use_underline">True</property>
                                         <property name="stock_id">Arrow</property>
