@@ -162,6 +162,9 @@ private:
 	void
 	on_sphere_activate () final override;
 
+	void
+	resolveOverlaps ();
+
 	X3D::Box2f
 	getTexBBox () const;
 

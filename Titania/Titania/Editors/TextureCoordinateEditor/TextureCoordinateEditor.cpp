@@ -546,13 +546,94 @@ TextureCoordinateEditor::on_box_activate ()
 void
 TextureCoordinateEditor::on_cylinder_activate ()
 {
-	__LOG__ << std::endl;
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Cylinder Mapping"));
+
+	undoStep -> addObjects (previewGeometry, texCoord);
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
+	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+
+	// Determine bbox extents.
+
+	const auto bbox = getBBox (0, 1);
+
+	X3D::Vector2f min, max;
+	bbox .extents (min, max);
+
+	const auto size = bbox .size ();
+
+	// Apply mapping.
+	
+	std::map <int32_t, std::vector <size_t>> indices;
+	
+	for (const auto & face : selectedFaces)
+	{
+		for (const auto & vertex : rightSelection -> getVertices (face))
+			indices [previewGeometry -> coordIndex () [vertex]] .emplace_back (vertex);
+	}
+
+	for (const auto pair : indices)
+	{
+		const auto point    = coord -> get1Point (pair .first);
+		const auto complex  = std::complex <double> (point .z (), point .x ());
+		const auto texPoint = X3D::Vector2f (std::arg (complex) / (M_PI * 2) + 0.5, (point .y () - min .y ()) / size .y ());
+
+		for (const auto & vertex : pair .second)
+			previewGeometry -> texCoordIndex () [vertex] = texCoord -> point () .size ();
+
+		texCoord -> point () .emplace_back (texPoint);
+	}
+	
+	resolveOverlaps ();
+
+	on_remove_unused_texCoord_activate ();
+
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
+	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+
+	addUndoStep (undoStep);
 }
 
 void
 TextureCoordinateEditor::on_sphere_activate ()
 {
 	__LOG__ << std::endl;
+}
+
+void
+TextureCoordinateEditor::resolveOverlaps ()
+{
+	// Resolve overlaps.
+
+	constexpr double OVERLAP_THRESHOLD = 0.5;
+
+	for (const auto & face : selectedFaces)
+	{
+		const auto vertices = rightSelection -> getVertices (face);
+		
+		if (vertices .empty ())
+			continue;
+
+		const auto          index1 = previewGeometry -> texCoordIndex () [vertices [0]];
+		const X3D::Vector2f point1 = texCoord -> point () [index1];
+
+		for (size_t i = 1, size = vertices .size (); i < size; ++ i)
+		{
+			const auto          index2   = previewGeometry -> texCoordIndex () [vertices [i]];
+			const X3D::Vector2f point2   = texCoord -> point () [index2];
+			const auto          distance = point1 .x () - point2 .x ();
+	
+			if (distance > OVERLAP_THRESHOLD)
+			{
+				previewGeometry -> texCoordIndex () [vertices [i]] = texCoord -> point () .size ();
+				texCoord -> point () .emplace_back (point2 .x () + 1, point2 .y ());
+			}
+			else if (distance < -OVERLAP_THRESHOLD)
+			{
+				previewGeometry -> texCoordIndex () [vertices [i]] = texCoord -> point () .size ();
+				texCoord -> point () .emplace_back (point2 .x () - 1, point2 .y ());
+			}
+		}
+	}
 }
 
 X3D::Box2f

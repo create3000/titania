@@ -1,5 +1,11 @@
 2014-11-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TextureCoordinateEditor.xml:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditor.cpp: 
+
+2014-11-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DUserInterface.cpp:
 	* TextureCoordinateEditor.xml:
 	* TextureCoordinateEditor.h:
