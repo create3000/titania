@@ -1445,7 +1445,7 @@ TextureCoordinateEditor::set_startDrag ()
 		for (const auto & index : selectedPoints)
 			startPositions .emplace_back (index, texCoord -> point () .get1Value (index));
 
-		// Scale
+		// Rotate and Scale
 
 		const auto centerSensor = left -> getExecutionContext () -> getNamedNode <X3D::PlaneSensor> ("CenterSensor");
 		const auto center       = X3D::Vector2f (centerSensor -> translation_changed () .getX (), centerSensor -> translation_changed () .getY ());
@@ -1575,7 +1575,29 @@ TextureCoordinateEditor::move (const X3D::Vector3f & hitPoint)
 void
 TextureCoordinateEditor::rotate (const X3D::Vector3f & hitPoint)
 {
+	try
+	{
+		const auto centerSensor = left -> getExecutionContext () -> getNamedNode <X3D::PlaneSensor> ("CenterSensor");
+		const auto center       = X3D::Vector2f (centerSensor -> translation_changed () .getX (), centerSensor -> translation_changed () .getY ());
+		const auto point        = X3D::Vector2f (hitPoint .x (), hitPoint .y ());
+		const auto distance     = point - center;
+		auto       rotation     = std::atan2 (startDistance .x (), startDistance .y ()) - std::atan2 (distance .x (), distance .y ());
 
+		if (keys .control ())
+		{
+			constexpr double snapAngle = 11.25 / 180 * M_PI;
+
+			rotation = std::round (rotation / snapAngle) * snapAngle;
+		}
+
+		X3D::Matrix3f matrix;
+		matrix .rotate (rotation);
+
+		for (const auto & pair : startPositions)
+			texCoord -> point () .set1Value (pair .first, (pair .second - center) * matrix + center);
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void
