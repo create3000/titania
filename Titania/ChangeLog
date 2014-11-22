@@ -1,5 +1,17 @@
 2014-11-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Scale.svg:
+	* Rotate.svg:
+	* BrowserWindow.xml:
+	* TextureCoordinateEditor.xml:
+	* X3DTextureCoordinateEditorInterface.h:
+	* ColorPerVertexEditor.cpp:
+	* X3DTextureCoordinateEditorInterface.cpp:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditor.cpp: 
+
+2014-11-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ColorPerVertexEditor.cpp:
 	* TextureCoordinateEditor.h:
 	* TextureCoordinateEditorRightPreview.x3dv:

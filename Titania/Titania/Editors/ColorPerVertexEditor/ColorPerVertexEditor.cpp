@@ -132,11 +132,6 @@ ColorPerVertexEditor::set_initialized ()
 void
 ColorPerVertexEditor::configure ()
 {
-	if (getConfig () .getBoolean ("arrow"))
-		getArrowButton () .set_active (true);
-	else
-		getHandButton () .set_active (true);
-
 	getCheckerBoardButton () .set_active (getConfig () .getBoolean ("checkerBoard"));
 	getTextureButton ()      .set_active (getConfig () .getBoolean ("texture"));
 
@@ -369,14 +364,12 @@ void
 ColorPerVertexEditor::on_hand_toggled ()
 {
 	preview -> isPickable (false);
-	getConfig () .setItem ("arrow", false);
 }
 
 void
 ColorPerVertexEditor::on_arrow_toggled ()
 {
 	preview -> isPickable (true);
-	getConfig () .setItem ("arrow", true);
 }
 
 void

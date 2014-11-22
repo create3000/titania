@@ -79,6 +79,8 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SelectionMenuItem", m_SelectionMenuItem);
 	m_builder -> get_widget ("SelectAllMenuItem", m_SelectAllMenuItem);
 	m_builder -> get_widget ("DeselectAllMenuItem", m_DeselectAllMenuItem);
+	m_builder -> get_widget ("UndoButton", m_UndoButton);
+	m_builder -> get_widget ("RedoButton", m_RedoButton);
 	m_builder -> get_widget ("RotateCounterlockwiseButton", m_RotateCounterlockwiseButton);
 	m_builder -> get_widget ("RotateClockwiseButton", m_RotateClockwiseButton);
 	m_builder -> get_widget ("FlipButton", m_FlipButton);
@@ -86,6 +88,8 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LeftBox", m_LeftBox);
 	m_builder -> get_widget ("LeftHandButton", m_LeftHandButton);
 	m_builder -> get_widget ("LeftArrowButton", m_LeftArrowButton);
+	m_builder -> get_widget ("RotateButton", m_RotateButton);
+	m_builder -> get_widget ("ScaleButton", m_ScaleButton);
 	m_builder -> get_widget ("LeftLookAtButton", m_LeftLookAtButton);
 	m_builder -> get_widget ("RightBox", m_RightBox);
 	m_builder -> get_widget ("RightHandButton", m_RightHandButton);
@@ -103,8 +107,8 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_Widget -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_key_release_event));
 
 	// Connect object Gtk::ImageMenuItem with id 'UndoMenuItem'.
-	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_undo_activate));
-	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_redo_activate));
+	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_undo));
+	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_redo));
 
 	// Connect object Gtk::MenuItem with id 'XPlaneMenuItem'.
 	m_XPlaneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_x_plane_activate));
@@ -121,7 +125,9 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::MenuItem with id 'DeselectAllMenuItem'.
 	m_DeselectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_deselect_all_activate));
 
-	// Connect object Gtk::ToolButton with id 'RotateCounterlockwiseButton'.
+	// Connect object Gtk::ToolButton with id 'UndoButton'.
+	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_undo));
+	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_redo));
 	m_RotateCounterlockwiseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_rotate_counterclockwise));
 	m_RotateClockwiseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_rotate_clockwise));
 	m_FlipButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_flip));
@@ -130,6 +136,8 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::RadioToolButton with id 'LeftHandButton'.
 	m_LeftHandButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_hand_toggled));
 	m_LeftArrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_arrow_toggled));
+	m_RotateButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_rotate_toggled));
+	m_ScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_scale_toggled));
 
 	// Connect object Gtk::ToolButton with id 'LeftLookAtButton'.
 	m_LeftLookAtButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_look_at_all_clicked));

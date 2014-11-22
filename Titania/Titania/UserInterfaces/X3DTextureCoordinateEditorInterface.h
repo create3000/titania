@@ -163,6 +163,14 @@ public:
 	{ return *m_DeselectAllMenuItem; }
 
 	Gtk::ToolButton &
+	getUndoButton () const
+	{ return *m_UndoButton; }
+
+	Gtk::ToolButton &
+	getRedoButton () const
+	{ return *m_RedoButton; }
+
+	Gtk::ToolButton &
 	getRotateCounterlockwiseButton () const
 	{ return *m_RotateCounterlockwiseButton; }
 
@@ -189,6 +197,14 @@ public:
 	Gtk::RadioToolButton &
 	getLeftArrowButton () const
 	{ return *m_LeftArrowButton; }
+
+	Gtk::RadioToolButton &
+	getRotateButton () const
+	{ return *m_RotateButton; }
+
+	Gtk::RadioToolButton &
+	getScaleButton () const
+	{ return *m_ScaleButton; }
 
 	Gtk::ToolButton &
 	getLeftLookAtButton () const
@@ -236,11 +252,11 @@ public:
 
 	virtual
 	void
-	on_undo_activate () = 0;
+	on_undo () = 0;
 
 	virtual
 	void
-	on_redo_activate () = 0;
+	on_redo () = 0;
 
 	virtual
 	void
@@ -304,6 +320,14 @@ public:
 
 	virtual
 	void
+	on_left_rotate_toggled () = 0;
+
+	virtual
+	void
+	on_left_scale_toggled () = 0;
+
+	virtual
+	void
 	on_left_look_at_all_clicked () = 0;
 
 	virtual
@@ -359,6 +383,8 @@ private:
 	Gtk::MenuItem*                 m_SelectionMenuItem;
 	Gtk::ImageMenuItem*            m_SelectAllMenuItem;
 	Gtk::MenuItem*                 m_DeselectAllMenuItem;
+	Gtk::ToolButton*               m_UndoButton;
+	Gtk::ToolButton*               m_RedoButton;
 	Gtk::ToolButton*               m_RotateCounterlockwiseButton;
 	Gtk::ToolButton*               m_RotateClockwiseButton;
 	Gtk::ToolButton*               m_FlipButton;
@@ -366,6 +392,8 @@ private:
 	Gtk::Box*                      m_LeftBox;
 	Gtk::RadioToolButton*          m_LeftHandButton;
 	Gtk::RadioToolButton*          m_LeftArrowButton;
+	Gtk::RadioToolButton*          m_RotateButton;
+	Gtk::RadioToolButton*          m_ScaleButton;
 	Gtk::ToolButton*               m_LeftLookAtButton;
 	Gtk::Box*                      m_RightBox;
 	Gtk::RadioToolButton*          m_RightHandButton;

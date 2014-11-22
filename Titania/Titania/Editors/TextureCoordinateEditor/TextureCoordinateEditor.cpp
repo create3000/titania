@@ -78,6 +78,7 @@ TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browse
 	                    previewGeometry (),
 	                           texCoord (),
 	                              stage (0),
+	                               tool (ToolType::MOVE),
 	                     rightSelection (new FaceSelection ()),
 	                 rightPaintSelecion (false),
 	                      selectedFaces (),
@@ -87,6 +88,7 @@ TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browse
 	                        pointOffset (),
 	                      startPosition (),
 	                     startPositions (),
+	                      startDistance (),
 	                               keys (),
 	                        undoHistory (),
 	                           undoStep ()
@@ -198,19 +200,6 @@ TextureCoordinateEditor::set_initialized ()
 void
 TextureCoordinateEditor::configure ()
 {
-	// Left
-
-	if (getConfig () .getBoolean ("leftArrow"))
-		getLeftArrowButton () .set_active (true);
-	else
-		getLeftHandButton () .set_active (true);
-
-	// Right
-
-	if (getConfig () .getBoolean ("rightArrow"))
-		getRightArrowButton () .set_active (true);
-	else
-		getRightHandButton () .set_active (true);
 }
 
 void
@@ -251,13 +240,13 @@ TextureCoordinateEditor::on_key_release_event (GdkEventKey* event)
 // Edit
 
 void
-TextureCoordinateEditor::on_undo_activate ()
+TextureCoordinateEditor::on_undo ()
 {
 	undoHistory .undoChanges ();
 }
 
 void
-TextureCoordinateEditor::on_redo_activate ()
+TextureCoordinateEditor::on_redo ()
 {
 	undoHistory .redoChanges ();
 }
@@ -268,31 +257,31 @@ TextureCoordinateEditor::set_undoHistory ()
 	if (undoHistory .hasUndo ())
 	{
 		getUndoMenuItem () .set_label (undoHistory .getUndoDescription ());
-		//getUndoButton ()   .set_tooltip_text (undoHistory .getUndoDescription ());
+		getUndoButton ()   .set_tooltip_text (undoHistory .getUndoDescription ());
 		getUndoMenuItem () .set_sensitive (true);
-		//getUndoButton ()   .set_sensitive (true);
+		getUndoButton ()   .set_sensitive (true);
 	}
 	else
 	{
 		getUndoMenuItem () .set_label (_ ("Undo"));
-		//getUndoButton ()   .set_tooltip_text (_ ("Undo last action (Ctrl-Z)."));
+		getUndoButton ()   .set_tooltip_text (_ ("Undo last action (Ctrl-Z)."));
 		getUndoMenuItem () .set_sensitive (false);
-		//getUndoButton ()   .set_sensitive (false);
+		getUndoButton ()   .set_sensitive (false);
 	}
 
 	if (undoHistory .hasRedo ())
 	{
 		getRedoMenuItem () .set_label (undoHistory .getRedoDescription ());
-		//getRedoButton ()   .set_tooltip_text (undoHistory .getRedoDescription ());
+		getRedoButton ()   .set_tooltip_text (undoHistory .getRedoDescription ());
 		getRedoMenuItem () .set_sensitive (true);
-		//getRedoButton ()   .set_sensitive (true);
+		getRedoButton ()   .set_sensitive (true);
 	}
 	else
 	{
 		getRedoMenuItem () .set_label (_ ("Redo"));
-		//getRedoButton ()   .set_tooltip_text (_ ("Redo last action (Ctrl-Shift-Z)."));
+		getRedoButton ()   .set_tooltip_text (_ ("Redo last action (Ctrl-Shift-Z)."));
 		getRedoMenuItem () .set_sensitive (false);
-		//getRedoButton ()   .set_sensitive (false);
+		getRedoButton ()   .set_sensitive (false);
 	}
 }
 
@@ -718,14 +707,31 @@ void
 TextureCoordinateEditor::on_left_hand_toggled ()
 {
 	left -> isPickable (false);
-	getConfig () .setItem ("leftArrow", false);
+	left -> grab_focus ();
 }
 
 void
 TextureCoordinateEditor::on_left_arrow_toggled ()
 {
+	tool = ToolType::MOVE;
 	left -> isPickable (true);
-	getConfig () .setItem ("leftArrow", true);
+	left -> grab_focus ();
+}
+
+void
+TextureCoordinateEditor::on_left_rotate_toggled ()
+{
+	tool = ToolType::ROTATE;
+	left -> isPickable (true);
+	left -> grab_focus ();
+}
+
+void
+TextureCoordinateEditor::on_left_scale_toggled ()
+{
+	tool = ToolType::SCALE;
+	left -> isPickable (true);
+	left -> grab_focus ();
 }
 
 void
@@ -733,20 +739,22 @@ TextureCoordinateEditor::on_left_look_at_all_clicked ()
 {
 	if (left -> getActiveLayer ())
 		left -> getActiveLayer () -> lookAt ();
+
+	left -> grab_focus ();
 }
 
 void
 TextureCoordinateEditor::on_right_hand_toggled ()
 {
 	right -> isPickable (false);
-	getConfig () .setItem ("rightArrow", false);
+	right -> grab_focus ();
 }
 
 void
 TextureCoordinateEditor::on_right_arrow_toggled ()
 {
 	right -> isPickable (true);
-	getConfig () .setItem ("rightArrow", true);
+	right -> grab_focus ();
 }
 
 void
@@ -754,6 +762,8 @@ TextureCoordinateEditor::on_right_look_at_all_clicked ()
 {
 	if (right -> getActiveLayer ())
 		right -> getActiveLayer () -> lookAt ();
+
+	right -> grab_focus ();
 }
 
 void
@@ -769,6 +779,8 @@ TextureCoordinateEditor::on_right_look_at_toggled ()
 		if (right -> getViewer () not_eq X3D::ViewerType::EXAMINE)
 			right -> setViewer (X3D::ViewerType::EXAMINE);
 	}
+
+	right -> grab_focus ();
 }
 
 void
@@ -1067,7 +1079,7 @@ TextureCoordinateEditor::set_geometry (const X3D::SFNode & value)
 			geometry -> ccw ()             .addInterest (previewGeometry -> ccw ());
 			geometry -> creaseAngle ()     .addInterest (previewGeometry -> creaseAngle ());
 			geometry -> normalPerVertex () .addInterest (previewGeometry -> normalPerVertex ());
-			geometry -> texCoordIndex ()   .addInterest (previewGeometry -> colorIndex ());
+			geometry -> colorIndex ()      .addInterest (previewGeometry -> colorIndex ());
 			geometry -> normalIndex ()     .addInterest (previewGeometry -> normalIndex ());
 			geometry -> coordIndex ()      .addInterest (previewGeometry -> coordIndex ());
 			geometry -> color ()           .addInterest (previewGeometry -> color ());
@@ -1374,7 +1386,25 @@ TextureCoordinateEditor::set_left_active (const bool value)
 
 		// Init undo step.
 
-		undoStep = std::make_shared <UndoStep> (_ ("Transform Points"));
+		switch (tool)
+		{
+			case ToolType::MOVE:
+			{
+				undoStep = std::make_shared <UndoStep> (_ ("Move Points"));
+				break;
+			}
+			case ToolType::ROTATE:
+			{
+				undoStep = std::make_shared <UndoStep> (_ ("Rotate Points"));
+				break;
+			}
+			case ToolType::SCALE:
+			{
+				undoStep = std::make_shared <UndoStep> (_ ("Scale Points"));
+				break;
+			}
+		}
+
 		undoStep -> addObjects (texCoord);
 
 		for (const auto & index : selectedPoints)
@@ -1401,7 +1431,7 @@ TextureCoordinateEditor::set_startDrag ()
 		if ((size_t) activePoint >= texCoord -> point () .size ())
 			return;
 
-		// Determine pointOffset.
+		// Move
 
 		const auto          touchSensor = left -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 		const X3D::Vector3f hitPoint    = touchSensor -> hitPoint_changed ();
@@ -1415,7 +1445,18 @@ TextureCoordinateEditor::set_startDrag ()
 		for (const auto & index : selectedPoints)
 			startPositions .emplace_back (index, texCoord -> point () .get1Value (index));
 
+		// Scale
+
+		const auto centerSensor = left -> getExecutionContext () -> getNamedNode <X3D::PlaneSensor> ("CenterSensor");
+		const auto center       = X3D::Vector2f (centerSensor -> translation_changed () .getX (), centerSensor -> translation_changed () .getY ());
+		const auto point        = X3D::Vector2f (hitPoint .x (), hitPoint .y ());
+
+		startDistance = point - center;
+
 		// Clear selection.
+
+		if (tool not_eq ToolType::MOVE)
+			return;
 
 		if (keys .shift ())
 			return;
@@ -1439,17 +1480,20 @@ TextureCoordinateEditor::set_left_touchTime ()
 {
 	try
 	{
-		if ((size_t) activePoint >= texCoord -> point () .size ())
-			return;
-
-		if (not keys .shift ())
-			return;
-
 		if (startHitPoint == infinity2f)
 		{
 			startHitPoint = X3D::Vector2d ();
 			return;
 		}
+
+		if (tool not_eq ToolType::MOVE)
+			return;
+
+		if (not keys .shift ())
+			return;
+
+		if ((size_t) activePoint >= texCoord -> point () .size ())
+			return;
 
 		const auto selectedPoint = selectedPoints .find (activePoint);
 
@@ -1480,19 +1524,24 @@ TextureCoordinateEditor::set_left_hitPoint (const X3D::Vector3f & hitPoint)
 				{
 					startHitPoint = infinity2f; // Drag has started.
 
-					const auto point       = X3D::Vector2f (hitPoint .x (), hitPoint .y ()) + pointOffset;
-					auto       translation = point - startPosition;
-
-					if (keys .control ())
+					switch (tool)
 					{
-						if (std::abs (translation .x ()) > std::abs (translation .y ()))
-							translation .y (0);
-						else
-							translation .x (0);
+						case ToolType::MOVE:
+						{
+							move (hitPoint);
+							break;
+						}
+						case ToolType::ROTATE:
+						{
+							rotate (hitPoint);
+							break;
+						}
+						case ToolType::SCALE:
+						{
+							scale (hitPoint);
+							break;
+						}
 					}
-
-					for (const auto & pair : startPositions)
-						texCoord -> point () .set1Value (pair .first, pair .second + translation);
 				}
 			}
 		}
@@ -1502,6 +1551,68 @@ TextureCoordinateEditor::set_left_hitPoint (const X3D::Vector3f & hitPoint)
 	catch (const X3D::X3DError &)
 	{ }
 	catch (const std::domain_error &)
+	{ }
+}
+
+void
+TextureCoordinateEditor::move (const X3D::Vector3f & hitPoint)
+{
+	const auto point       = X3D::Vector2f (hitPoint .x (), hitPoint .y ()) + pointOffset;
+	auto       translation = point - startPosition;
+
+	if (keys .control ())
+	{
+		if (std::abs (translation .x ()) > std::abs (translation .y ()))
+			translation .y (0);
+		else
+			translation .x (0);
+	}
+
+	for (const auto & pair : startPositions)
+		texCoord -> point () .set1Value (pair .first, pair .second + translation);
+}
+
+void
+TextureCoordinateEditor::rotate (const X3D::Vector3f & hitPoint)
+{
+
+}
+
+void
+TextureCoordinateEditor::scale (const X3D::Vector3f & hitPoint)
+{
+	try
+	{
+		const auto centerSensor = left -> getExecutionContext () -> getNamedNode <X3D::PlaneSensor> ("CenterSensor");
+		const auto center       = X3D::Vector2f (centerSensor -> translation_changed () .getX (), centerSensor -> translation_changed () .getY ());
+		const auto point        = X3D::Vector2f (hitPoint .x (), hitPoint .y ());
+		const auto distance     = point - center;
+
+		if (startDistance .x () == 0 or startDistance .y () == 0)
+			return;
+
+		if (distance .x () == 0 or distance .y () == 0)
+			return;
+
+		X3D::Matrix3f matrix;
+
+		if (keys .control ())
+		{
+			const float sgn    = math::dot (startDistance, distance) > 0 ? 1 : -1;
+			const auto  length = sgn * math::abs (distance) / math::abs (startDistance);
+
+			if (length == 0)
+				return;
+
+			matrix .scale (X3D::Vector2f (length, length));
+		}
+		else
+			matrix .scale (distance / startDistance);
+
+		for (const auto & pair : startPositions)
+			texCoord -> point () .set1Value (pair .first, (pair .second - center) * matrix + center);
+	}
+	catch (const X3D::X3DError &)
 	{ }
 }
 

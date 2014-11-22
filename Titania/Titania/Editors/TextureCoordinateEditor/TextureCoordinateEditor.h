@@ -77,6 +77,14 @@ public:
 
 private:
 
+	///  @name Member types
+	
+	enum class ToolType {
+		MOVE,
+		ROTATE,
+		SCALE
+	};
+
 	///  @name Construction
 
 	virtual
@@ -112,11 +120,14 @@ private:
 
 	virtual
 	void
-	on_undo_activate () final override;
+	on_undo () final override;
 
 	virtual
 	void
-	on_redo_activate () final override;
+	on_redo () final override;
+
+	void
+	set_undoHistory ();
 
 	void
 	on_remove_unused_texCoord_activate ();
@@ -200,6 +211,14 @@ private:
 
 	virtual
 	void
+	on_left_rotate_toggled () final override;
+
+	virtual
+	void
+	on_left_scale_toggled () final override;
+
+	virtual
+	void
 	on_left_look_at_all_clicked () final override;
 
 	virtual
@@ -217,9 +236,6 @@ private:
 	virtual
 	void
 	on_right_look_at_toggled () final override;
-
-	void
-	set_undoHistory ();
 
 	///  @name Apply
 
@@ -313,6 +329,15 @@ private:
 	set_left_hitPoint (const X3D::Vector3f &);
 
 	void
+	move (const X3D::Vector3f &);
+
+	void
+	rotate (const X3D::Vector3f &);
+
+	void
+	scale (const X3D::Vector3f &);
+
+	void
 	set_left_point (const X3D::Vector3d &);
 	
 	int32_t
@@ -373,6 +398,7 @@ private:
 	X3D::X3DPtr <X3D::IndexedFaceSet>                previewGeometry; 
 	X3D::X3DPtr <X3D::TextureCoordinate>             texCoord; 
 	size_t                                           stage;
+	ToolType                                         tool;
 	std::unique_ptr <FaceSelection>                  rightSelection;
 	bool                                             rightPaintSelecion;
 	std::set <size_t>                                selectedFaces;
@@ -382,6 +408,7 @@ private:
 	X3D::Vector2f                                    pointOffset;
 	X3D::Vector2f                                    startPosition;
 	std::vector <std::pair <int32_t, X3D::Vector2f>> startPositions;
+	X3D::Vector2f                                    startDistance;
 	X3D::Keys                                        keys;
 	UndoHistory                                      undoHistory;
 	UndoStepPtr                                      undoStep;
