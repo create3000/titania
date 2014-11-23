@@ -236,6 +236,9 @@ private:
 	set_multi_textureTransform ();
 
 	void
+	set_geometry (const X3D::SFNode &);
+
+	void
 	set_colorIndex ();
 
 	void

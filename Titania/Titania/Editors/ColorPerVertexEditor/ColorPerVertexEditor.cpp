@@ -169,85 +169,16 @@ ColorPerVertexEditor::set_selection ()
 
 	try
 	{
-		if (geometry)
-		{
-			geometry -> colorIndex () .removeInterest (this, &ColorPerVertexEditor::set_colorIndex);
-			geometry -> coordIndex () .removeInterest (this, &ColorPerVertexEditor::set_coordIndex);
-			geometry -> color ()      .removeInterest (this, &ColorPerVertexEditor::set_colorIndex);
-			geometry -> coord ()      .removeInterest (this, &ColorPerVertexEditor::set_coord );
-
-			selection -> setGeometry (nullptr);
-			selection -> setCoord (nullptr);
-		}
-
-		set_shape (nullptr);
-
 		const auto shapes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
-		
+
 		if (shapes .empty ())
-		{
-			disable ();
-			return;
-		}
+			set_shape (nullptr);
 
-		set_shape (shapes .back ());
-		geometry = shape -> geometry ();
-
-		shape -> geometry () .addInterest (this, &ColorPerVertexEditor::set_selection);
-
-		if (not geometry)
-		{
-			disable ();
-			return;
-		}
-
-		const auto previewShape = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
-
-		coord           = geometry -> coord ();
-		previewGeometry = geometry -> copy (previewShape -> getExecutionContext (), X3D::FLAT_COPY);
-		previewGeometry -> isPrivate (true);
-
-		geometry -> solid ()           .addInterest (previewGeometry -> solid ());
-		geometry -> convex ()          .addInterest (previewGeometry -> convex ());
-		geometry -> ccw ()             .addInterest (previewGeometry -> ccw ());
-		geometry -> creaseAngle ()     .addInterest (previewGeometry -> creaseAngle ());
-		geometry -> normalPerVertex () .addInterest (previewGeometry -> normalPerVertex ());
-		geometry -> normalIndex ()     .addInterest (previewGeometry -> normalIndex ());
-		geometry -> texCoordIndex ()   .addInterest (previewGeometry -> texCoordIndex ());
-		geometry -> coordIndex ()      .addInterest (previewGeometry -> coordIndex ());
-		geometry -> normal ()          .addInterest (previewGeometry -> normal ());
-		geometry -> texCoord ()        .addInterest (previewGeometry -> texCoord ());
-		geometry -> coord ()           .addInterest (previewGeometry -> coord ());		
-
-		geometry -> colorIndex () .addInterest (this, &ColorPerVertexEditor::set_colorIndex);
-		geometry -> coordIndex () .addInterest (this, &ColorPerVertexEditor::set_coordIndex);
-		geometry -> color ()      .addInterest (this, &ColorPerVertexEditor::set_colorIndex);
-		geometry -> coord ()      .addInterest (this, &ColorPerVertexEditor::set_coord);		
-
-		previewShape -> geometry () = previewGeometry;
-
-		selection -> setGeometry (previewGeometry);
-		selection -> setCoord (coord);
-
-		set_colorIndex ();
-
-		// Initialize all.
-
-		preview -> getExecutionContext () -> realize ();
+		else
+			set_shape (shapes .back ());
 	}
 	catch (const X3D::X3DError &)
 	{ }
-}
-void
-ColorPerVertexEditor::disable ()
-{
-	const auto previewShape = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
-
-	coord                       = nullptr;
-	geometry                    = nullptr;
-	previewGeometry             = nullptr;
-	previewShape -> geometry () = nullptr;
-	colorButton .setNodes ({ });
 }
 
 // Menubar
@@ -592,7 +523,7 @@ ColorPerVertexEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 	if (shape)
 	{
 		shape -> appearance () .removeInterest (this, &ColorPerVertexEditor::set_appearance);
-		shape -> geometry ()   .removeInterest (this, &ColorPerVertexEditor::set_selection);
+		shape -> geometry ()   .removeInterest (this, &ColorPerVertexEditor::set_geometry);
 	}
 
 	shape = value;
@@ -600,12 +531,16 @@ ColorPerVertexEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 	if (shape)
 	{
 		shape -> appearance () .addInterest (this, &ColorPerVertexEditor::set_appearance);
-		shape -> geometry ()   .addInterest (this, &ColorPerVertexEditor::set_selection);
+		shape -> geometry ()   .addInterest (this, &ColorPerVertexEditor::set_geometry);
 
 		set_appearance (shape -> appearance ());
+		set_geometry (shape -> geometry ());
 	}
 	else
+	{
 		set_appearance (nullptr);
+		set_geometry (nullptr);
+	}
 }
 
 void
@@ -730,6 +665,75 @@ ColorPerVertexEditor::set_multi_textureTransform ()
 }
 
 void
+ColorPerVertexEditor::set_geometry (const X3D::SFNode & value)
+{
+	undoHistory .clear ();
+
+	try
+	{
+		const auto previewShape = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
+
+		if (geometry)
+		{
+			geometry -> colorIndex () .removeInterest (this, &ColorPerVertexEditor::set_colorIndex);
+			geometry -> coordIndex () .removeInterest (this, &ColorPerVertexEditor::set_coordIndex);
+			geometry -> color ()      .removeInterest (this, &ColorPerVertexEditor::set_colorIndex);
+			geometry -> coord ()      .removeInterest (this, &ColorPerVertexEditor::set_coord );
+		}
+
+		geometry = value;
+
+		if (geometry)
+		{
+			coord           = geometry -> coord ();
+			previewGeometry = geometry -> copy (previewShape -> getExecutionContext (), X3D::FLAT_COPY);
+			previewGeometry -> isPrivate (true);
+
+			geometry -> solid ()           .addInterest (previewGeometry -> solid ());
+			geometry -> convex ()          .addInterest (previewGeometry -> convex ());
+			geometry -> ccw ()             .addInterest (previewGeometry -> ccw ());
+			geometry -> creaseAngle ()     .addInterest (previewGeometry -> creaseAngle ());
+			geometry -> normalPerVertex () .addInterest (previewGeometry -> normalPerVertex ());
+			geometry -> normalIndex ()     .addInterest (previewGeometry -> normalIndex ());
+			geometry -> texCoordIndex ()   .addInterest (previewGeometry -> texCoordIndex ());
+			geometry -> coordIndex ()      .addInterest (previewGeometry -> coordIndex ());
+			geometry -> normal ()          .addInterest (previewGeometry -> normal ());
+			geometry -> texCoord ()        .addInterest (previewGeometry -> texCoord ());
+			geometry -> coord ()           .addInterest (previewGeometry -> coord ());		
+
+			geometry -> colorIndex () .addInterest (this, &ColorPerVertexEditor::set_colorIndex);
+			geometry -> coordIndex () .addInterest (this, &ColorPerVertexEditor::set_coordIndex);
+			geometry -> color ()      .addInterest (this, &ColorPerVertexEditor::set_colorIndex);
+			geometry -> coord ()      .addInterest (this, &ColorPerVertexEditor::set_coord);		
+
+			previewShape -> geometry () = previewGeometry;
+
+			selection -> setGeometry (previewGeometry);
+			selection -> setCoord (coord);
+
+			set_colorIndex ();
+
+			// Initialize all.
+
+			preview -> getExecutionContext () -> realize ();
+		}
+		else
+		{
+			coord                       = nullptr;
+			geometry                    = nullptr;
+			previewGeometry             = nullptr;
+			previewShape -> geometry () = nullptr;
+			colorButton .setNodes ({ });
+
+			selection -> setGeometry (nullptr);
+			selection -> setCoord (nullptr);
+		}
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
+void
 ColorPerVertexEditor::set_colorIndex ()
 {
 	undoHistory .clear ();
@@ -787,6 +791,10 @@ ColorPerVertexEditor::set_colorIndex ()
 	}
 	else
 	{
+		previewGeometry -> colorIndex () .clear ();
+
+		// Verify colorIndex.
+
 		for (const auto & index : previewGeometry -> coordIndex ())
 			previewGeometry -> colorIndex () .emplace_back (index < 0 ? -1 : 0);
 
@@ -795,6 +803,8 @@ ColorPerVertexEditor::set_colorIndex ()
 
 	colorButton .setIndex (0);
 	colorButton .setNodes ({ previewColor });
+
+	preview -> getExecutionContext () -> realize ();
 }
 
 void
