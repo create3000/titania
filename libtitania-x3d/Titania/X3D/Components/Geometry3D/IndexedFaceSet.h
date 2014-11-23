@@ -158,6 +158,9 @@ public:
 
 	///  @name Operations
 
+	void
+	addTexCoords ();
+
 	virtual
 	void
 	addNormals () final override;

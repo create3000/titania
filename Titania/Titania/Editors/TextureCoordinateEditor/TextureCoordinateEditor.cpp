@@ -1607,31 +1607,33 @@ TextureCoordinateEditor::set_texCoord (const X3D::SFNode & value)
 	else
 		texCoordNode = value;
 
-	// Create preview texCoord node.
+	if (texCoordNode or not previewGeometry)
+	{
+		// Create preview texCoord node.
 
-	texCoord = right -> getExecutionContext () -> createNode <X3D::TextureCoordinate> ();
+		texCoord = right -> getExecutionContext () -> createNode <X3D::TextureCoordinate> ();
+
+		if (texCoordNode)
+			texCoord -> point () = texCoordNode -> point ();
+
+		if (previewGeometry)
+			previewGeometry -> texCoord () = texCoord;
+
+		right -> getExecutionContext () -> realize ();
+	}
+	else
+	{
+		// Create default texCoord.
+
+		previewGeometry -> addTexCoords ();
+
+		texCoord = previewGeometry -> texCoord ();
+	}
 
 	texCoord -> point () .addInterest (this, &TextureCoordinateEditor::set_left_coord);
 
-	if (texCoordNode)
-		texCoord -> point () = texCoordNode -> point ();
-
-	right -> getExecutionContext () -> realize ();
-
 	clear ();
 	set_left_coord ();
-
-	// Add texCoord.
-
-	if (previewGeometry)
-	{
-		try
-		{
-			previewGeometry -> getField <X3D::SFNode> ("texCoord") = texCoord;
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
 
 	left  -> addEvent ();
 	right -> addEvent ();

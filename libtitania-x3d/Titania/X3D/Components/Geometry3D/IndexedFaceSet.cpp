@@ -57,7 +57,7 @@
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../Rendering/Normal.h"
-#include "../Texturing/X3DTextureCoordinateNode.h"
+#include "../Texturing/TextureCoordinate.h"
 
 namespace titania {
 namespace X3D {
@@ -445,6 +445,48 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 }
 
 void
+IndexedFaceSet::addTexCoords ()
+{
+	const auto texCoordNode = getExecutionContext () -> createNode <TextureCoordinate> ();
+	
+	texCoordIndex () .clear ();
+	texCoord () = texCoordNode;
+
+	Vector3f min;
+	float    Ssize;
+	int      Sindex, Tindex;
+
+	getTexCoordParams (min, Ssize, Sindex, Tindex);
+
+	std::map <int32_t, size_t> indices; // coord index, texCoord index
+	
+	for (const auto & index : coordIndex ())
+	{
+		if (index < 0)
+			continue;
+
+		if (indices .emplace (index, texCoordNode -> point () .size ()) .second)
+		{
+			const auto vertex = getCoord () -> get1Point (index);
+
+			texCoordNode -> point () .emplace_back ((vertex [Sindex] - min [Sindex]) / Ssize,
+		                                           (vertex [Tindex] - min [Tindex]) / Ssize);
+		}
+	}
+
+	for (const auto & index : coordIndex ())
+	{
+		if (index < 0)
+			texCoordIndex () .emplace_back (-1);
+
+		else
+			texCoordIndex () .emplace_back (indices [index]);
+	}
+
+	getExecutionContext () -> realize ();
+}
+
+void
 IndexedFaceSet::addNormals ()
 {
 	PolygonArray polygons;
@@ -455,10 +497,9 @@ IndexedFaceSet::addNormals ()
 	const auto normals    = createNormals (polygons);
 	const auto normalNode = getExecutionContext () -> createNode <Normal> ();
 
+	normalIndex () .clear ();
 	normal () = normalNode;
 	
-	normalIndex () .clear ();
-
 	size_t i      = 0;
 	auto   normal = normals .begin ();
 
