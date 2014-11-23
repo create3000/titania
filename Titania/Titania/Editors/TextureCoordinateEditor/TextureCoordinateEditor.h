@@ -424,6 +424,7 @@ private:
 	bool                                             rightPaintSelecion;
 	std::set <size_t>                                selectedFaces;
 	int32_t                                          activePoint;     // texCoord index of red point
+	int32_t                                          masterPoint;     // texCoord index of red point
 	std::set <int32_t>                               selectedPoints;  // texCoord indices of blue points
 	X3D::Vector2d                                    startHitPoint;
 	X3D::Vector2f                                    pointOffset;

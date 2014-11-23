@@ -96,6 +96,7 @@ TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browse
 	                 rightPaintSelecion (false),
 	                      selectedFaces (),
 	                        activePoint (-1),
+	                        masterPoint (-1),
 	                     selectedPoints (),
 	                      startHitPoint (),
 	                        pointOffset (),
@@ -982,6 +983,29 @@ TextureCoordinateEditor::on_flop ()
 void
 TextureCoordinateEditor::on_merge_points ()
 {
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Split Selected Points"));
+
+	undoStep -> addObjects (previewGeometry, texCoord);
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
+	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+
+	for (const auto & face : selectedFaces)
+	{
+		for (const auto & vertex : rightSelection -> getVertices (face))
+		{
+			const auto index = previewGeometry -> texCoordIndex () [vertex];
+
+			if (selectedPoints .count (index))
+				 previewGeometry -> texCoordIndex () [vertex] = masterPoint;
+		}
+	}
+
+	on_remove_unused_texCoord_activate ();
+
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
+	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+
+	addUndoStep (undoStep);
 }
 
 void
@@ -1831,6 +1855,8 @@ TextureCoordinateEditor::set_left_touchTime ()
 			selectedPoints .emplace (activePoint);
 		else
 			selectedPoints .erase (selectedPoint);
+
+		masterPoint = activePoint;
 
 		set_selectedPoints ();
 	}
