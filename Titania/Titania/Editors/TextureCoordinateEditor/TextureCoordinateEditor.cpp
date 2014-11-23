@@ -1185,7 +1185,18 @@ TextureCoordinateEditor::on_right_look_at_toggled ()
 
 void
 TextureCoordinateEditor::on_remove_clicked ()
-{ }
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Texture Coordinates"));
+
+	undoStep -> addObjects (geometry);
+
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (geometry -> texCoordIndex ()), geometry -> texCoordIndex ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::clear, std::ref (geometry -> texCoordIndex ()));
+	geometry -> texCoordIndex () .clear ();
+
+	getBrowserWindow () -> replaceNode (X3D::SFNode (geometry), geometry -> texCoord (), X3D::SFNode (), undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
 
 void
 TextureCoordinateEditor::on_apply_clicked ()

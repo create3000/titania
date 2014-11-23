@@ -503,11 +503,6 @@ ColorPerVertexEditor::on_whole_object_clicked ()
 void
 ColorPerVertexEditor::on_remove_clicked ()
 {
-	geometry -> colorIndex () .removeInterest (this, &ColorPerVertexEditor::set_colorIndex);
-	geometry -> colorIndex () .addInterest (this, &ColorPerVertexEditor::connectColorIndex);
-	geometry -> color ()      .removeInterest (this, &ColorPerVertexEditor::set_colorIndex);
-	geometry -> color ()      .addInterest (this, &ColorPerVertexEditor::connectColor);
-
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Polygon Colors"));
 
 	undoStep -> addObjects (geometry);
