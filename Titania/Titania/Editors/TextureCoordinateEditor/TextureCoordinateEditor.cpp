@@ -59,6 +59,15 @@
 namespace titania {
 namespace puck {
 
+using math::M_PI2;
+
+// Cylinder and Sphere Mapping Constants
+constexpr double POLE_TRHESHOLD       = 0.001;
+constexpr double NORTH_POLE_THRESHOLD = 1 - POLE_TRHESHOLD;
+constexpr double SOUTH_POLE_THRESHOLD = POLE_TRHESHOLD;
+constexpr double OVERLAP_THRESHOLD    = 0.6;
+
+// Constants for the left Editor
 constexpr double POINT_SIZE    = 6; // Use linewidthScaleFactor / 2 + 2.
 constexpr double SNAP_DISTANCE = POINT_SIZE;
 
@@ -554,14 +563,13 @@ TextureCoordinateEditor::on_cylinder_activate ()
 
 	// Determine bbox extents.
 
-	const auto bbox   = getBBox (0, 2);
+	const auto bbox   = getBBox ();
 	const auto center = bbox .center ();
-	const auto bboxY  = getBBox (0, 1);
 
-	X3D::Vector2f minY, maxY;
-	bboxY .extents (minY, maxY);
+	X3D::Vector3f min, max;
+	bbox .extents (min, max);
 
-	const auto sizeY = bboxY .size ();
+	const auto size = bbox .size ();
 
 	// Apply mapping.
 	
@@ -576,8 +584,8 @@ TextureCoordinateEditor::on_cylinder_activate ()
 	for (const auto pair : indices)
 	{
 		const auto point    = coord -> get1Point (pair .first);
-		const auto complex  = std::complex <float> (point .z () - center .y (), point .x () - center .x ());
-		const auto texPoint = X3D::Vector2f (std::arg (complex) / (M_PI * 2) + 0.5, (point .y () - minY .y ()) / sizeY .y ());
+		const auto complex  = std::complex <float> (point .z () - center .z (), point .x () - center .x ());
+		const auto texPoint = X3D::Vector2f (std::arg (complex) / M_PI2 + 0.5, (point .y () - min .y ()) / size .y ());
 
 		for (const auto & vertex : pair .second)
 			previewGeometry -> texCoordIndex () [vertex] = texCoord -> point () .size ();
@@ -598,15 +606,93 @@ TextureCoordinateEditor::on_cylinder_activate ()
 void
 TextureCoordinateEditor::on_sphere_activate ()
 {
-	__LOG__ << std::endl;
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Sphere Mapping"));
+
+	undoStep -> addObjects (previewGeometry, texCoord);
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
+	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+
+	// Determine bbox extents.
+
+	const auto          bbox   = getBBox ();
+	const X3D::Vector3d center = bbox .center ();
+
+	// Apply mapping.
+	
+	std::map <int32_t, std::vector <size_t>> indices;
+	
+	for (const auto & face : selectedFaces)
+	{
+		for (const auto & vertex : rightSelection -> getVertices (face))
+			indices [previewGeometry -> coordIndex () [vertex]] .emplace_back (vertex);
+	}
+
+	for (const auto pair : indices)
+	{
+		const auto point    = math::normalize (coord -> get1Point (pair .first) - center);
+		const auto texPoint = X3D::Vector2f (std::atan2 (point .x (), point .z ()) / M_PI2 + 0.5, std::asin (point .y ()) / M_PI + 0.5);
+
+		for (const auto & vertex : pair .second)
+			previewGeometry -> texCoordIndex () [vertex] = texCoord -> point () .size ();
+
+		texCoord -> point () .emplace_back (texPoint);
+	}
+	
+	resolveOverlaps ();
+
+	for (const auto & face : selectedFaces)
+	{
+		const auto vertices = rightSelection -> getVertices (face);
+
+		float min = 1;
+		float max = 0;
+
+		for (const auto & vertex : vertices)
+		{
+			const auto          index    = previewGeometry -> texCoordIndex () [vertex];
+			const X3D::Vector2f texPoint = texCoord -> point () [index];
+			
+			if (texPoint .y () < NORTH_POLE_THRESHOLD and texPoint .y () > SOUTH_POLE_THRESHOLD)
+			{
+				min = std::min (min, texPoint .x ());
+				max = std::max (max, texPoint .x ());
+			}
+		}
+		
+		const auto center = (min + max) / 2;
+
+		for (const auto & vertex : vertices)
+		{
+			const auto          index    = previewGeometry -> texCoordIndex () [vertex];
+			const X3D::Vector2f texPoint = texCoord -> point () [index];
+
+			if (texPoint .y () >= NORTH_POLE_THRESHOLD)
+			{
+				previewGeometry -> texCoordIndex () [vertex] = texCoord -> point () .size ();
+				texCoord -> point () .emplace_back (center, texPoint .y ());
+				continue;
+			}
+
+			if (texPoint .y () <= SOUTH_POLE_THRESHOLD)
+			{
+				previewGeometry -> texCoordIndex () [vertex] = texCoord -> point () .size ();
+				texCoord -> point () .emplace_back (center, texPoint .y ());
+			}
+		}
+	}
+
+	on_remove_unused_texCoord_activate ();
+
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
+	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+
+	addUndoStep (undoStep);
 }
 
 void
 TextureCoordinateEditor::resolveOverlaps ()
 {
-	// Resolve overlaps.
-
-	constexpr double OVERLAP_THRESHOLD = 0.5;
+	std::map <int32_t, size_t> remap;
 
 	for (const auto & face : selectedFaces)
 	{
@@ -615,24 +701,58 @@ TextureCoordinateEditor::resolveOverlaps ()
 		if (vertices .empty ())
 			continue;
 
-		const auto          index1 = previewGeometry -> texCoordIndex () [vertices [0]];
-		const X3D::Vector2f point1 = texCoord -> point () [index1];
+		// Find first point not north pole or south pole.  This is a good start point to calculate
+		// the distance to the other points.
 
-		for (size_t i = 1, size = vertices .size (); i < size; ++ i)
+		size_t first = 0;
+		
+		for (size_t size = vertices .size (); first < size; ++ first)
 		{
-			const auto          index2   = previewGeometry -> texCoordIndex () [vertices [i]];
-			const X3D::Vector2f point2   = texCoord -> point () [index2];
-			const auto          distance = point1 .x () - point2 .x ();
+			const auto          index    = previewGeometry -> texCoordIndex () [vertices [first]];
+			const X3D::Vector2f texPoint = texCoord -> point () [index];
+			
+			if (texPoint .y () < NORTH_POLE_THRESHOLD and texPoint .y () > SOUTH_POLE_THRESHOLD)
+				break;
+		}
+
+		if (first == vertices .size ())
+			first = 0;
+
+		// Remap
+
+		const auto          index1    = previewGeometry -> texCoordIndex () [vertices [first]];
+		const X3D::Vector2f texPoint1 = texCoord -> point () [index1];
+
+		for (size_t j = first + 1, size = first + vertices .size (); j < size; ++ j)
+		{
+			const auto          i         = j % vertices .size ();
+			const auto          index2    = previewGeometry -> texCoordIndex () [vertices [i]];
+			const X3D::Vector2f texPoint2 = texCoord -> point () [index2];
+			const auto          distance  = texPoint1 .x () - texPoint2 .x ();
 	
 			if (distance > OVERLAP_THRESHOLD)
 			{
-				previewGeometry -> texCoordIndex () [vertices [i]] = texCoord -> point () .size ();
-				texCoord -> point () .emplace_back (point2 .x () + 1, point2 .y ());
+				const auto pair = remap .emplace (previewGeometry -> texCoordIndex () [vertices [i]], texCoord -> point () .size ());
+			
+				if (pair .second)
+				{
+					previewGeometry -> texCoordIndex () [vertices [i]] = texCoord -> point () .size ();
+					texCoord -> point () .emplace_back (texPoint2 .x () + 1, texPoint2 .y ());
+				}
+				else
+					previewGeometry -> texCoordIndex () [vertices [i]] = pair .first -> second;
 			}
 			else if (distance < -OVERLAP_THRESHOLD)
 			{
-				previewGeometry -> texCoordIndex () [vertices [i]] = texCoord -> point () .size ();
-				texCoord -> point () .emplace_back (point2 .x () - 1, point2 .y ());
+				const auto pair = remap .emplace (previewGeometry -> texCoordIndex () [vertices [i]], texCoord -> point () .size ());
+			
+				if (pair .second)
+				{
+					previewGeometry -> texCoordIndex () [vertices [i]] = texCoord -> point () .size ();
+					texCoord -> point () .emplace_back (texPoint2 .x () - 1, texPoint2 .y ());
+				}
+				else
+					previewGeometry -> texCoordIndex () [vertices [i]] = pair .first -> second;
 			}
 		}
 	}
@@ -671,6 +791,22 @@ TextureCoordinateEditor::getBBox (const size_t i1, const size_t i2) const
 	}
 
 	return X3D::Box2f (points .begin (), points .end (), math::iterator_type ());
+}
+
+X3D::Box3f
+TextureCoordinateEditor::getBBox () const
+{
+	// Determine bbox extents.
+
+	std::vector <X3D::Vector3f> points;
+
+	for (const auto & face : selectedFaces)
+	{
+		for (const auto & vertex : rightSelection -> getVertices (face))
+			points .emplace_back (coord -> get1Point (previewGeometry -> coordIndex () [vertex]));
+	}
+
+	return X3D::Box3f (points .begin (), points .end (), math::iterator_type ());
 }
 
 // Selection

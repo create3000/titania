@@ -167,6 +167,7 @@
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="SphereMenuItem">
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">_Sphere</property>
                         <property name="use_underline">True</property>
