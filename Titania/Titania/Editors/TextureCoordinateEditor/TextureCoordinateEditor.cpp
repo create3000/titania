@@ -319,7 +319,7 @@ TextureCoordinateEditor::on_remove_unused_texCoord_activate ()
 		if (indexIndex .count (index))
 		{
 			remap [index] = texCoords .size ();
-			texCoords .emplace_back (texCoord -> point () [index]);
+			texCoords .emplace_back (texCoord -> point () .get1Value (index));
 		}
 	}
 
@@ -650,7 +650,7 @@ TextureCoordinateEditor::on_sphere_activate ()
 		for (const auto & vertex : vertices)
 		{
 			const auto          index    = previewGeometry -> texCoordIndex () [vertex];
-			const X3D::Vector2f texPoint = texCoord -> point () [index];
+			const X3D::Vector2f texPoint = texCoord -> point () .get1Value (index);
 			
 			if (texPoint .y () < NORTH_POLE_THRESHOLD and texPoint .y () > SOUTH_POLE_THRESHOLD)
 			{
@@ -664,7 +664,7 @@ TextureCoordinateEditor::on_sphere_activate ()
 		for (const auto & vertex : vertices)
 		{
 			const auto          index    = previewGeometry -> texCoordIndex () [vertex];
-			const X3D::Vector2f texPoint = texCoord -> point () [index];
+			const X3D::Vector2f texPoint = texCoord -> point () .get1Value (index);
 
 			if (texPoint .y () >= NORTH_POLE_THRESHOLD)
 			{
@@ -709,7 +709,7 @@ TextureCoordinateEditor::resolveOverlaps ()
 		for (size_t size = vertices .size (); first < size; ++ first)
 		{
 			const auto          index    = previewGeometry -> texCoordIndex () [vertices [first]];
-			const X3D::Vector2f texPoint = texCoord -> point () [index];
+			const X3D::Vector2f texPoint = texCoord -> point () .get1Value (index);
 			
 			if (texPoint .y () < NORTH_POLE_THRESHOLD and texPoint .y () > SOUTH_POLE_THRESHOLD)
 				break;
@@ -721,13 +721,13 @@ TextureCoordinateEditor::resolveOverlaps ()
 		// Remap
 
 		const auto          index1    = previewGeometry -> texCoordIndex () [vertices [first]];
-		const X3D::Vector2f texPoint1 = texCoord -> point () [index1];
+		const X3D::Vector2f texPoint1 = texCoord -> point () .get1Value (index1);
 
 		for (size_t j = first + 1, size = first + vertices .size (); j < size; ++ j)
 		{
 			const auto          i         = j % vertices .size ();
 			const auto          index2    = previewGeometry -> texCoordIndex () [vertices [i]];
-			const X3D::Vector2f texPoint2 = texCoord -> point () [index2];
+			const X3D::Vector2f texPoint2 = texCoord -> point () .get1Value (index2);
 			const auto          distance  = texPoint1 .x () - texPoint2 .x ();
 	
 			if (distance > OVERLAP_THRESHOLD)
@@ -929,7 +929,7 @@ TextureCoordinateEditor::on_flip ()
 	for (const auto & face : selectedFaces)
 	{
 		for (const auto & vertex : rightSelection -> getVertices (face))
-			vertices .emplace (previewGeometry -> texCoordIndex () .get1Value (vertex));
+			vertices .emplace (previewGeometry -> texCoordIndex () [vertex]);
 	}
 
 	for (const auto & vertex : vertices)
@@ -964,7 +964,7 @@ TextureCoordinateEditor::on_flop ()
 	for (const auto & face : selectedFaces)
 	{
 		for (const auto & vertex : rightSelection -> getVertices (face))
-			vertices .emplace (previewGeometry -> texCoordIndex () .get1Value (vertex));
+			vertices .emplace (previewGeometry -> texCoordIndex () [vertex]);
 	}
 
 	for (const auto & vertex : vertices)
@@ -974,6 +974,56 @@ TextureCoordinateEditor::on_flop ()
 		point .setY (center2 - y);
 	}
 
+	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+
+	addUndoStep (undoStep);
+}
+
+void
+TextureCoordinateEditor::on_merge_points ()
+{
+}
+
+void
+TextureCoordinateEditor::on_split_point ()
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Split Selected Points"));
+
+	undoStep -> addObjects (previewGeometry, texCoord);
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
+	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
+
+	std::map <int32_t, std::vector <size_t>> points;
+
+	for (const auto & face : selectedFaces)
+	{
+		for (const auto & vertex : rightSelection -> getVertices (face))
+		{
+			const auto index = previewGeometry -> texCoordIndex () [vertex];
+		
+			if (selectedPoints .count (index))
+				points [index] .emplace_back (vertex);
+		}
+	}
+	
+	for (const auto & point : points)
+	{
+		const auto & indices = point .second;
+
+		if (indices .size () < 2)
+			return;
+
+		const auto vertex   = previewGeometry -> texCoordIndex () [indices .front ()];
+		const auto texPoint = texCoord -> point () .get1Value (vertex);
+
+		for (const auto & index : std::make_pair (indices .begin () + 1, indices .end ()))
+		{
+			previewGeometry -> texCoordIndex () [index] = texCoord -> point () .size ();
+			texCoord -> point () .emplace_back (texPoint);
+		}
+	}
+
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
 
 	addUndoStep (undoStep);

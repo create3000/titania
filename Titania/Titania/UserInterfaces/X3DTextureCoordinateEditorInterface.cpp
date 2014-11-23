@@ -85,6 +85,8 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("RotateClockwiseButton", m_RotateClockwiseButton);
 	m_builder -> get_widget ("FlipButton", m_FlipButton);
 	m_builder -> get_widget ("FlopButton", m_FlopButton);
+	m_builder -> get_widget ("MergePointsButton", m_MergePointsButton);
+	m_builder -> get_widget ("SplitPointButton", m_SplitPointButton);
 	m_builder -> get_widget ("LeftBox", m_LeftBox);
 	m_builder -> get_widget ("LeftHandButton", m_LeftHandButton);
 	m_builder -> get_widget ("LeftArrowButton", m_LeftArrowButton);
@@ -129,6 +131,8 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_RotateClockwiseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_rotate_clockwise));
 	m_FlipButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_flip));
 	m_FlopButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_flop));
+	m_MergePointsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_merge_points));
+	m_SplitPointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_split_point));
 
 	// Connect object Gtk::RadioToolButton with id 'LeftHandButton'.
 	m_LeftHandButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_hand_toggled));

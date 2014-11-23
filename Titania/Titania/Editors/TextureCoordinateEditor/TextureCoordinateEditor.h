@@ -205,6 +205,14 @@ private:
 	void
 	on_flop () final override;
 
+	virtual
+	void
+	on_merge_points () final override;
+
+	virtual
+	void
+	on_split_point () final override;
+
 	///  @name Dashboard
 
 	virtual

@@ -1,5 +1,16 @@
 2014-11-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.xml:
+	* SplitPoint.svg:
+	* MergePoints.svg:
+	* TextureCoordinateEditor.xml:
+	* X3DTextureCoordinateEditorInterface.h:
+	* X3DTextureCoordinateEditorInterface.cpp:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditor.cpp: 
+
+2014-11-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TextureCoordinateEditor.xml:
 	* TextureCoordinateEditor.h:
 	* TextureCoordinateEditor.cpp: 

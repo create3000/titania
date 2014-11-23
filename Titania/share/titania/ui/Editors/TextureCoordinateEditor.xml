@@ -291,6 +291,46 @@
                 <property name="homogeneous">True</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkSeparatorToolItem" id="separatortoolitem5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="MergePointsButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Merge selected points.</property>
+                <property name="label" translatable="yes">Merge Points</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">MergePoints</property>
+                <signal name="clicked" handler="on_merge_points" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="SplitPointButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Split selected points.</property>
+                <property name="label" translatable="yes">Split Point</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">SplitPoint</property>
+                <signal name="clicked" handler="on_split_point" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>

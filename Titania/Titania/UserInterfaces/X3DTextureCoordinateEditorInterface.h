@@ -186,6 +186,14 @@ public:
 	getFlopButton () const
 	{ return *m_FlopButton; }
 
+	Gtk::ToolButton &
+	getMergePointsButton () const
+	{ return *m_MergePointsButton; }
+
+	Gtk::ToolButton &
+	getSplitPointButton () const
+	{ return *m_SplitPointButton; }
+
 	Gtk::Box &
 	getLeftBox () const
 	{ return *m_LeftBox; }
@@ -316,6 +324,14 @@ public:
 
 	virtual
 	void
+	on_merge_points () = 0;
+
+	virtual
+	void
+	on_split_point () = 0;
+
+	virtual
+	void
 	on_left_hand_toggled () = 0;
 
 	virtual
@@ -397,6 +413,8 @@ private:
 	Gtk::ToolButton*               m_RotateClockwiseButton;
 	Gtk::ToolButton*               m_FlipButton;
 	Gtk::ToolButton*               m_FlopButton;
+	Gtk::ToolButton*               m_MergePointsButton;
+	Gtk::ToolButton*               m_SplitPointButton;
 	Gtk::Box*                      m_LeftBox;
 	Gtk::RadioToolButton*          m_LeftHandButton;
 	Gtk::RadioToolButton*          m_LeftArrowButton;
