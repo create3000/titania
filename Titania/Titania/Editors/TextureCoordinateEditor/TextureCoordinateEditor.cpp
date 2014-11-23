@@ -1192,13 +1192,16 @@ TextureCoordinateEditor::on_apply_clicked ()
 {
 	geometry -> texCoordIndex () .removeInterest (this, &TextureCoordinateEditor::set_texCoordIndex);
 	geometry -> texCoordIndex () .addInterest (this, &TextureCoordinateEditor::connectTexCoordIndex);
-	geometry -> texCoord ()      .removeInterest (this, &TextureCoordinateEditor::set_texCoord);
-	geometry -> texCoord ()      .addInterest (this, &TextureCoordinateEditor::connectTexCoord);
 
 	if (multiTexCoord)
 	{
 		multiTexCoord -> removeInterest (this, &TextureCoordinateEditor::set_texCoord);
 		multiTexCoord -> addInterest (this, &TextureCoordinateEditor::connectMultiTexCoord);
+	}
+	else
+	{
+		geometry -> texCoord () .removeInterest (this, &TextureCoordinateEditor::set_texCoord);
+		geometry -> texCoord () .addInterest (this, &TextureCoordinateEditor::connectTexCoord);
 	}
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Apply Texture Coordinates"));
@@ -1216,23 +1219,25 @@ TextureCoordinateEditor::on_apply_clicked ()
 
 	if (multiTextureCoordinate)
 	{
-		X3D::MFNode texCoords (multiTextureCoordinate -> getTexCoord () .begin (), multiTextureCoordinate -> getTexCoord () .end ());
+		//		X3D::MFNode texCoords (multiTextureCoordinate -> getTexCoord () .begin (), multiTextureCoordinate -> getTexCoord () .end ());
+		//
+		//		if (texCoords .empty ())
+		//		{
+		//			// XXX: Fill with default texture coordinates.
+		//			for (size_t i = 0, size = stage; i < size; ++ i)
+		//			 	texCoords .emplace_back (texCoordNode);
+		//		}
+		//		else
+		//		{
+		//			for (size_t i = texCoords .size () - 1, size = stage; i < size; ++ i)
+		//				texCoords .emplace_back (texCoords .back ());
+		//		}
+		//
+		//		texCoords .set1Value (stage, texCoordNode);
+		//
+		//		getBrowserWindow () -> replaceNodes (X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), texCoords, undoStep);
 
-		if (texCoords .empty ())
-		{
-			// XXX: Fill with default texture coordinates.
-			for (size_t i = 0, size = stage; i < size; ++ i)
-			 	texCoords .emplace_back (texCoordNode);
-		}
-		else
-		{
-			for (size_t i = texCoords .size () - 1, size = stage; i < size; ++ i)
-				texCoords .emplace_back (texCoords .back ());
-		}
-
-		texCoords .set1Value (stage, texCoordNode);
-
-		getBrowserWindow () -> replaceNodes (X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), texCoords, undoStep);
+		getBrowserWindow () -> replaceNodes (X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), { texCoordNode }, undoStep);
 	}
 	else
 		getBrowserWindow () -> replaceNode (X3D::SFNode (geometry), geometry -> texCoord (), X3D::SFNode (texCoordNode), undoStep);
@@ -2120,8 +2125,8 @@ TextureCoordinateEditor::set_selectedPoints ()
 
 		selectedPointSet -> getField <X3D::MFInt32> ("set_coordIndex") .assign (selectedPoints .begin (), selectedPoints .end ());
 
-		getMergePointsButton () .set_sensitive (selectedPoints .size () > 1);
-		getSplitPointButton ()  .set_sensitive (not selectedPoints .empty ());
+		getMergePointsButton () .set_sensitive (not multiTexCoord and selectedPoints .size () > 1);
+		getSplitPointButton ()  .set_sensitive (not multiTexCoord and not selectedPoints .empty ());
 	}
 	catch (const X3D::X3DError &)
 	{ }
