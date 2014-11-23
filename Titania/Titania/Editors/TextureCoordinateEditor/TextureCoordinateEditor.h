@@ -171,9 +171,6 @@ private:
 	X3D::Box2f
 	getBBox (const size_t, const size_t) const;
 
-	X3D::Box3f
-	getBBox () const;
-
 	///  @name Selection
 
 	virtual

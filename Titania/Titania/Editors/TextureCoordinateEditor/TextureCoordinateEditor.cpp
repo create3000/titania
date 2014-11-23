@@ -564,7 +564,7 @@ TextureCoordinateEditor::on_cylinder_activate ()
 
 	// Determine bbox extents.
 
-	const auto bbox   = getBBox ();
+	const auto bbox   = previewGeometry -> getBBox ();
 	const auto center = bbox .center ();
 
 	X3D::Vector3f min, max;
@@ -615,7 +615,7 @@ TextureCoordinateEditor::on_sphere_activate ()
 
 	// Determine bbox extents.
 
-	const auto          bbox   = getBBox ();
+	const auto          bbox   = previewGeometry -> getBBox ();
 	const X3D::Vector3d center = bbox .center ();
 
 	// Apply mapping.
@@ -778,7 +778,7 @@ TextureCoordinateEditor::getTexBBox () const
 X3D::Box2f
 TextureCoordinateEditor::getBBox (const size_t i1, const size_t i2) const
 {
-	// Determine bbox extents.
+	// Determine bbox of selected faces.
 
 	std::vector <X3D::Vector2f> points;
 
@@ -792,22 +792,6 @@ TextureCoordinateEditor::getBBox (const size_t i1, const size_t i2) const
 	}
 
 	return X3D::Box2f (points .begin (), points .end (), math::iterator_type ());
-}
-
-X3D::Box3f
-TextureCoordinateEditor::getBBox () const
-{
-	// Determine bbox extents.
-
-	std::vector <X3D::Vector3f> points;
-
-	for (const auto & face : selectedFaces)
-	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
-			points .emplace_back (coord -> get1Point (previewGeometry -> coordIndex () [vertex]));
-	}
-
-	return X3D::Box3f (points .begin (), points .end (), math::iterator_type ());
 }
 
 // Selection
@@ -1001,6 +985,9 @@ TextureCoordinateEditor::on_merge_points ()
 	}
 
 	on_remove_unused_texCoord_activate ();
+	
+	selectedPoints .clear ();
+	set_selectedPoints ();
 
 	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
@@ -1034,18 +1021,23 @@ TextureCoordinateEditor::on_split_point ()
 	{
 		const auto & indices = point .second;
 
-		if (indices .size () < 2)
-			return;
+		if (indices .empty ())
+			continue;
 
 		const auto vertex   = previewGeometry -> texCoordIndex () [indices .front ()];
 		const auto texPoint = texCoord -> point () .get1Value (vertex);
 
-		for (const auto & index : std::make_pair (indices .begin () + 1, indices .end ()))
+		for (const auto & index : indices)
 		{
 			previewGeometry -> texCoordIndex () [index] = texCoord -> point () .size ();
 			texCoord -> point () .emplace_back (texPoint);
 		}
 	}
+
+	on_remove_unused_texCoord_activate ();
+	
+	selectedPoints .clear ();
+	set_selectedPoints ();
 
 	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
@@ -1631,6 +1623,14 @@ TextureCoordinateEditor::set_selected_faces ()
 {
 	set_left_selected_faces ();
 	set_right_selected_faces ();
+
+	const bool haveSelection = not selectedFaces .empty ();
+
+	getMappingsMenuItem ()            .set_sensitive (haveSelection);
+	getRotateCounterlockwiseButton () .set_sensitive (haveSelection);
+	getRotateClockwiseButton ()       .set_sensitive (haveSelection);
+	getFlipButton ()                  .set_sensitive (haveSelection);
+	getFlopButton ()                  .set_sensitive (haveSelection);
 }
 
 void
@@ -2069,6 +2069,9 @@ TextureCoordinateEditor::set_selectedPoints ()
 		const auto selectedPointSet = left -> getExecutionContext () -> getNamedNode ("SelectedPointSet");
 
 		selectedPointSet -> getField <X3D::MFInt32> ("set_coordIndex") .assign (selectedPoints .begin (), selectedPoints .end ());
+
+		getMergePointsButton () .set_sensitive (selectedPoints .size () > 1);
+		getSplitPointButton ()  .set_sensitive (not selectedPoints .empty ());
 	}
 	catch (const X3D::X3DError &)
 	{ }

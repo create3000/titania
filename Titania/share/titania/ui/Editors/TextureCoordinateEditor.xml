@@ -105,6 +105,7 @@
             <child>
               <object class="GtkMenuItem" id="MappingsMenuItem">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Mappings</property>
                 <property name="use_underline">True</property>
@@ -194,6 +195,7 @@
             <child>
               <object class="GtkToolButton" id="UndoButton">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Undo last action (Ctrl-Z).</property>
                 <property name="label" translatable="yes">Undo</property>
@@ -209,6 +211,7 @@
             <child>
               <object class="GtkToolButton" id="RedoButton">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Redo last action (Ctrl-Shift-Z).</property>
                 <property name="label" translatable="yes">Redo</property>
@@ -234,6 +237,7 @@
             <child>
               <object class="GtkToolButton" id="RotateCounterlockwiseButton">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Rotate selected faces 90° counterclockwise.</property>
                 <property name="label" translatable="yes">90° Counterclockwise</property>
@@ -249,6 +253,7 @@
             <child>
               <object class="GtkToolButton" id="RotateClockwiseButton">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Rotate selected faces 90° clockwise.</property>
                 <property name="label" translatable="yes">90°Clockwise</property>
@@ -264,6 +269,7 @@
             <child>
               <object class="GtkToolButton" id="FlipButton">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Flip selected faces horizontally.</property>
                 <property name="label" translatable="yes">Flip</property>
@@ -279,6 +285,7 @@
             <child>
               <object class="GtkToolButton" id="FlopButton">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Flip selected faces vertically.</property>
                 <property name="label" translatable="yes">Flop</property>
@@ -304,6 +311,7 @@
             <child>
               <object class="GtkToolButton" id="MergePointsButton">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Merge selected points.</property>
                 <property name="label" translatable="yes">Merge Points</property>
@@ -319,6 +327,7 @@
             <child>
               <object class="GtkToolButton" id="SplitPointButton">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Split selected points.</property>
                 <property name="label" translatable="yes">Split Point</property>
