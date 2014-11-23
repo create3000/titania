@@ -129,7 +129,7 @@ private:
 	void
 	set_undoHistory ();
 
-	void
+	std::vector <int32_t>
 	on_remove_unused_texCoord_activate ();
 
 	///  @name Mappings

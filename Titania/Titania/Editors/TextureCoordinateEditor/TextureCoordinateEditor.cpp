@@ -302,7 +302,7 @@ TextureCoordinateEditor::set_undoHistory ()
 	}
 }
 
-void
+std::vector <int32_t>
 TextureCoordinateEditor::on_remove_unused_texCoord_activate ()
 {
 	std::set <int32_t> indexIndex;
@@ -343,10 +343,12 @@ TextureCoordinateEditor::on_remove_unused_texCoord_activate ()
 	// Assign texCoordIndex and color.
 
 	if (texCoords .size () == texCoord -> point () .size ())
-		return;
+		return remap;
 
 	previewGeometry -> texCoordIndex () = std::move (texCoordIndex);
 	texCoord -> point () = std::move (texCoords);
+
+	return remap;
 }
 
 // Mappings
@@ -973,6 +975,8 @@ TextureCoordinateEditor::on_merge_points ()
 	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
 
+	// Merge.
+	
 	for (const auto & face : selectedFaces)
 	{
 		for (const auto & vertex : rightSelection -> getVertices (face))
@@ -984,11 +988,19 @@ TextureCoordinateEditor::on_merge_points ()
 		}
 	}
 
-	on_remove_unused_texCoord_activate ();
+	// Set new selected point.
 	
-	selectedPoints .clear ();
+	const auto remap = on_remove_unused_texCoord_activate ();
+	
+	if ((size_t) masterPoint < remap .size ())
+		selectedPoints = { masterPoint = remap [masterPoint] };
+	else
+		selectedPoints .clear ();
+
 	set_selectedPoints ();
 
+	// Redo.
+	
 	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
 
@@ -1004,6 +1016,8 @@ TextureCoordinateEditor::on_split_point ()
 	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
 
+	// Split.
+	
 	std::map <int32_t, std::vector <size_t>> points;
 
 	for (const auto & face : selectedFaces)
@@ -1017,6 +1031,8 @@ TextureCoordinateEditor::on_split_point ()
 		}
 	}
 	
+	std::vector <size_t> selection;
+	
 	for (const auto & point : points)
 	{
 		const auto & indices = point .second;
@@ -1027,18 +1043,34 @@ TextureCoordinateEditor::on_split_point ()
 		const auto vertex   = previewGeometry -> texCoordIndex () [indices .front ()];
 		const auto texPoint = texCoord -> point () .get1Value (vertex);
 
+		selection .emplace_back (texCoord -> point () .size ());
+
 		for (const auto & index : indices)
 		{
 			previewGeometry -> texCoordIndex () [index] = texCoord -> point () .size ();
 			texCoord -> point () .emplace_back (texPoint);
 		}
 	}
-
-	on_remove_unused_texCoord_activate ();
+	
+	const auto remap = on_remove_unused_texCoord_activate ();
+	
+	// Set new selected points.
 	
 	selectedPoints .clear ();
+
+	for (const auto & point : selection)
+	{
+		if (point < remap .size ())
+			selectedPoints .emplace (remap [point]);
+	}
+
+	if (not selectedPoints .empty ())
+		masterPoint = *selectedPoints .begin ();
+
 	set_selectedPoints ();
 
+	// Redo.
+	
 	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
 
