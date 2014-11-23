@@ -395,6 +395,9 @@ TextureCoordinateEditor::on_x_plane_activate ()
 
 	on_remove_unused_texCoord_activate ();
 
+	selectedPoints .clear ();
+	set_selectedPoints ();
+
 	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
 
@@ -442,6 +445,9 @@ TextureCoordinateEditor::on_y_plane_activate ()
 	}
 
 	on_remove_unused_texCoord_activate ();
+
+	selectedPoints .clear ();
+	set_selectedPoints ();
 
 	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
@@ -491,6 +497,9 @@ TextureCoordinateEditor::on_z_plane_activate ()
 
 	on_remove_unused_texCoord_activate ();
 
+	selectedPoints .clear ();
+	set_selectedPoints ();
+
 	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
 
@@ -539,6 +548,9 @@ TextureCoordinateEditor::on_camera_activate ()
 		}
 
 		on_remove_unused_texCoord_activate ();
+
+		selectedPoints .clear ();
+		set_selectedPoints ();
 
 		undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 		undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
@@ -599,6 +611,9 @@ TextureCoordinateEditor::on_cylinder_activate ()
 	resolveOverlaps ();
 
 	on_remove_unused_texCoord_activate ();
+
+	selectedPoints .clear ();
+	set_selectedPoints ();
 
 	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
@@ -685,6 +700,9 @@ TextureCoordinateEditor::on_sphere_activate ()
 	}
 
 	on_remove_unused_texCoord_activate ();
+
+	selectedPoints .clear ();
+	set_selectedPoints ();
 
 	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
