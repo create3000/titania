@@ -2125,8 +2125,8 @@ TextureCoordinateEditor::set_selectedPoints ()
 
 		selectedPointSet -> getField <X3D::MFInt32> ("set_coordIndex") .assign (selectedPoints .begin (), selectedPoints .end ());
 
-		getMergePointsButton () .set_sensitive (not multiTexCoord and selectedPoints .size () > 1);
-		getSplitPointButton ()  .set_sensitive (not multiTexCoord and not selectedPoints .empty ());
+		getMergePointsButton () .set_sensitive (selectedPoints .size () > 1);
+		getSplitPointButton ()  .set_sensitive (not selectedPoints .empty ());
 	}
 	catch (const X3D::X3DError &)
 	{ }
