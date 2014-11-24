@@ -156,8 +156,19 @@ private:
 	
 	virtual
 	void
-	on_cylinder_activate () final override;
+	on_cylinder_x_activate () final override;
 	
+	virtual
+	void
+	on_cylinder_y_activate () final override;
+	
+	virtual
+	void
+	on_cylinder_z_activate () final override;
+
+	void
+	on_cylinder_activate (const size_t, const size_t, const size_t);
+
 	virtual
 	void
 	on_sphere_activate () final override;

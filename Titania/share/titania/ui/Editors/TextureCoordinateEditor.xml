@@ -158,12 +158,28 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="CylinderMenuItem">
+                      <object class="GtkMenuItem" id="CylinderXMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Cylinder</property>
+                        <property name="label" translatable="yes">Cylinder X</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_cylinder_activate" swapped="no"/>
+                        <signal name="activate" handler="on_cylinder_x_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="CylinderYMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Cylinder Y</property>
+                        <signal name="activate" handler="on_cylinder_y_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="CylinderZMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Cylinder Z</property>
+                        <signal name="activate" handler="on_cylinder_z_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>

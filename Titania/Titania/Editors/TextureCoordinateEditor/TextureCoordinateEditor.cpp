@@ -568,7 +568,25 @@ TextureCoordinateEditor::on_box_activate ()
 }
 
 void
-TextureCoordinateEditor::on_cylinder_activate ()
+TextureCoordinateEditor::on_cylinder_x_activate ()
+{
+	on_cylinder_activate (1, 0, 2);
+}
+
+void
+TextureCoordinateEditor::on_cylinder_y_activate ()
+{
+	on_cylinder_activate (0, 1, 2);
+}
+
+void
+TextureCoordinateEditor::on_cylinder_z_activate ()
+{
+	on_cylinder_activate (0, 2, 1);
+}
+
+void
+TextureCoordinateEditor::on_cylinder_activate (const size_t x, const size_t y, const size_t z)
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Cylinder Mapping"));
 
@@ -599,8 +617,8 @@ TextureCoordinateEditor::on_cylinder_activate ()
 	for (const auto pair : indices)
 	{
 		const auto point    = coord -> get1Point (pair .first);
-		const auto complex  = std::complex <float> (point .z () - center .z (), point .x () - center .x ());
-		const auto texPoint = X3D::Vector2f (std::arg (complex) / M_PI2 + 0.5, (point .y () - min .y ()) / size .y ());
+		const auto complex  = std::complex <float> (point [z] - center [z], point [x] - center [x]);
+		const auto texPoint = X3D::Vector2f (std::arg (complex) / M_PI2 + 0.5, (point [y] - min [y]) / size [y]);
 
 		for (const auto & vertex : pair .second)
 			previewGeometry -> texCoordIndex () [vertex] = texCoord -> point () .size ();

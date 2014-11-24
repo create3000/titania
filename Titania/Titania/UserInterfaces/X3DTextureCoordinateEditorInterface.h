@@ -155,8 +155,16 @@ public:
 	{ return *m_BoxMenuItem; }
 
 	Gtk::MenuItem &
-	getCylinderMenuItem () const
-	{ return *m_CylinderMenuItem; }
+	getCylinderXMenuItem () const
+	{ return *m_CylinderXMenuItem; }
+
+	Gtk::MenuItem &
+	getCylinderYMenuItem () const
+	{ return *m_CylinderYMenuItem; }
+
+	Gtk::MenuItem &
+	getCylinderZMenuItem () const
+	{ return *m_CylinderZMenuItem; }
 
 	Gtk::MenuItem &
 	getSphereMenuItem () const
@@ -300,7 +308,15 @@ public:
 
 	virtual
 	void
-	on_cylinder_activate () = 0;
+	on_cylinder_x_activate () = 0;
+
+	virtual
+	void
+	on_cylinder_y_activate () = 0;
+
+	virtual
+	void
+	on_cylinder_z_activate () = 0;
 
 	virtual
 	void
@@ -405,7 +421,9 @@ private:
 	Gtk::MenuItem*                 m_ZPlaneMenuItem;
 	Gtk::MenuItem*                 m_CameraMenuItem;
 	Gtk::MenuItem*                 m_BoxMenuItem;
-	Gtk::MenuItem*                 m_CylinderMenuItem;
+	Gtk::MenuItem*                 m_CylinderXMenuItem;
+	Gtk::MenuItem*                 m_CylinderYMenuItem;
+	Gtk::MenuItem*                 m_CylinderZMenuItem;
 	Gtk::MenuItem*                 m_SphereMenuItem;
 	Gtk::ToolButton*               m_UndoButton;
 	Gtk::ToolButton*               m_RedoButton;
