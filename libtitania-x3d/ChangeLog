@@ -1,3 +1,8 @@
+2014-11-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DRenderer.h:
+	* ShapeContainer.h: 
+
 2014-11-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* IndexedFaceSet.h:

@@ -2113,15 +2113,24 @@ TextureCoordinateEditor::getNearestPoint (const X3D::Vector3d & hitPoint) const
 		if (selectedCoord -> point () .empty ())
 			return -1;
 
-		std::map <double, int32_t> distances;
+		double  minDistance = std::numeric_limits <double>::infinity ();
+		int32_t minIndex    = -1;
 
 		for (const auto & index : selectedGeometry -> coordIndex ())
 		{
 			if (index >= 0)
-				distances .emplace (math::abs (hitPoint - selectedCoord -> get1Point (index)), index);
+			{
+				const auto distance = math::abs (hitPoint - selectedCoord -> get1Point (index));
+			
+				if (distance < minDistance)
+				{
+					minDistance = distance;
+					minIndex    = index;
+				}
+			}
 		}
 
-		return distances .begin () -> second;
+		return minIndex;
 	}
 	catch (const X3D::X3DError &)
 	{

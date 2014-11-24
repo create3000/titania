@@ -110,7 +110,7 @@ class ShapeContainerComp
 public:
 
 	bool
-	operator () (const std::unique_ptr <ShapeContainer> & lhs, const std::unique_ptr <ShapeContainer> & rhs) const
+	operator () (const std::shared_ptr <ShapeContainer> & lhs, const std::shared_ptr <ShapeContainer> & rhs) const
 	{
 		return lhs -> getDistance () < rhs -> getDistance ();
 	}

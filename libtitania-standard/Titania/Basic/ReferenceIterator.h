@@ -72,6 +72,10 @@ public:
 	typedef size_t size_type;
 	typedef size_t difference_type;
 
+	reference_iterator () :
+		iter ()
+	{ }
+
 	explicit
 	reference_iterator (const IteratorType & iter) :
 		iter (iter)

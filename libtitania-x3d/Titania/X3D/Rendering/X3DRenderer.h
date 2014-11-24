@@ -76,7 +76,7 @@ public:
 
 	///  @name Member types
 
-	using ShapeContainerArray = std::vector <std::unique_ptr <ShapeContainer>> ;
+	using ShapeContainerArray = std::vector <std::shared_ptr <ShapeContainer>> ;
 	using CollisionShapeArray = std::vector <std::unique_ptr <CollisionShape>> ;
 
 	///  @name Common members

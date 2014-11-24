@@ -170,8 +170,10 @@ FaceSelection::setHitPoint (const X3D::Vector3d & hitPoint, const X3D::MFVec3f &
 		return;
 
 	// Get distances of faces to hitPoint.
-
-	std::vector <double> distances;
+	
+	double minDistance = std::numeric_limits <double>::infinity ();
+	size_t minIndex    = 0;
+	size_t i           = 0;
 
 	for (const auto & face : faces)
 	{
@@ -179,27 +181,29 @@ FaceSelection::setHitPoint (const X3D::Vector3d & hitPoint, const X3D::MFVec3f &
 
 		if (vertices .size () < 3)
 		{
-			distances .emplace_back (std::numeric_limits <double>::infinity ());
+			++ i;
 			continue;
 		}
 
-		const auto vertex = face .second;
-		const auto i1     = geometry -> coordIndex () [vertices [vertex == 0 ? vertices .size () - 1 : vertex - 1]];
-		const auto i2     = geometry -> coordIndex () [vertices [vertex]];
-		const auto i3     = geometry -> coordIndex () [vertices [(vertex + 1) % vertices .size ()]];
-		const auto p1     = coord -> get1Point (i1);
-		const auto p2     = coord -> get1Point (i2);
-		const auto p3     = coord -> get1Point (i3);
+		const auto vertex   = face .second;
+		const auto i1       = geometry -> coordIndex () [vertices [vertex == 0 ? vertices .size () - 1 : vertex - 1]];
+		const auto i2       = geometry -> coordIndex () [vertices [vertex]];
+		const auto i3       = geometry -> coordIndex () [vertices [(vertex + 1) % vertices .size ()]];
+		const auto p1       = coord -> get1Point (i1);
+		const auto p2       = coord -> get1Point (i2);
+		const auto p3       = coord -> get1Point (i3);
+		const auto distance = triangle_distance_to_point (p1, p2, p3, hitPoint);
+		
+		if (distance < minDistance)
+		{
+			minDistance = distance;
+			minIndex    = i;
+		}
 
-		distances .emplace_back (triangle_distance_to_point (p1, p2, p3, hitPoint));
+		++ i;
 	}
 
-	// Determine face.
-
-	const auto iter  = std::min_element (distances .begin (), distances .end ());
-	const auto index = iter - distances .begin ();
-
-	face = faces [index];
+	face = faces [minIndex];
 }
 
 std::vector <size_t>
