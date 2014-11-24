@@ -1343,7 +1343,7 @@
                             </child>
                             <child>
                               <object class="GtkImageMenuItem" id="TextureCoordinateEditorMenuItem">
-                                <property name="label" translatable="yes">Edit Texture Coordinates...</property>
+                                <property name="label" translatable="yes">Edit _Texture Mapping...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="use_underline">True</property>

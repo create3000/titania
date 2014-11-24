@@ -176,24 +176,15 @@ X3DRenderer::render (const TraverseType type)
 	{
 		case TraverseType::NAVIGATION:
 		{
-			depthBuffer -> bind ();
-
 			collect (type);
 			navigation ();
-
-			depthBuffer -> unbind ();
 			break;
 		}
 		case TraverseType::COLLISION:
 		{
 			// Collect for collide and gravite
-
-			depthBuffer -> bind ();
-
 			collect (type);
 			collide ();
-
-			depthBuffer -> unbind ();
 			break;
 		}
 		case TraverseType::DISPLAY:
@@ -315,10 +306,14 @@ X3DRenderer::navigation ()
 
 	// Render all objects
 
+	depthBuffer -> bind ();
+
 	for (const auto & shape : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
 		shape -> draw ();
 
 	distance = depthBuffer -> getDistance (zNear, zFar);
+
+	depthBuffer -> unbind ();
 }
 
 void

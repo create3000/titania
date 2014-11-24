@@ -391,7 +391,6 @@ X3DLayerNode::traverse (const TraverseType type)
 		case TraverseType::COLLISION:
 		{
 			collision ();
-			gravite ();
 			break;
 		}
 		case TraverseType::DISPLAY:
@@ -480,9 +479,9 @@ X3DLayerNode::collision ()
 
 		const double zNear           = navigationInfo -> getNearPlane ();
 		const double zFar            = navigationInfo -> getFarPlane (getViewpoint ());
-		const double collisionRadius = zNear / std::sqrt (2.0f); // Use zNear instead of navigationInfo -> getCollisionRatius ();
+		const double collisionRadius = navigationInfo -> getCollisionRadius ();
 
-		// Reshape viewpoint
+		// Reshape viewpoint for gravite
 
 		glMatrixMode (GL_PROJECTION);
 		glLoadMatrixd (ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar) .data ());
@@ -505,6 +504,8 @@ X3DLayerNode::collision ()
 		currentViewport -> push (TraverseType::COLLISION);
 		render (TraverseType::COLLISION);
 		currentViewport -> pop (TraverseType::COLLISION);
+
+		gravite ();
 	}
 	catch (const std::domain_error &)
 	{ }
