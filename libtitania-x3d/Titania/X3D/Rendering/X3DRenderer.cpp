@@ -323,7 +323,7 @@ X3DRenderer::collide ()
 
 	std::vector <Collision*> collisions;
 
-	const Sphere3f collisionSphere (getCurrentNavigationInfo () -> getCollisionRadius () * 1.1f, Vector3f ());
+	const Sphere3f collisionSphere (getCurrentNavigationInfo () -> getCollisionRadius () * 1.2f, Vector3f ());
 
 	for (const auto & shape : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
 	{
