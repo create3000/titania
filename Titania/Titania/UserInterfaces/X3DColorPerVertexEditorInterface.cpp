@@ -75,6 +75,8 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UndoMenuItem", m_UndoMenuItem);
 	m_builder -> get_widget ("RedoMenuItem", m_RedoMenuItem);
 	m_builder -> get_widget ("RemoveUnusedColorsMenuItem", m_RemoveUnusedColorsMenuItem);
+	m_builder -> get_widget ("UndoButton", m_UndoButton);
+	m_builder -> get_widget ("RedoButton", m_RedoButton);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("HandButton", m_HandButton);
 	m_builder -> get_widget ("ArrowButton", m_ArrowButton);
@@ -103,9 +105,13 @@ X3DColorPerVertexEditorInterface::create (const std::string & filename)
 	m_PointSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_pointset_activate));
 
 	// Connect object Gtk::ImageMenuItem with id 'UndoMenuItem'.
-	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_undo_activate));
-	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_redo_activate));
+	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_undo));
+	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_redo));
 	m_RemoveUnusedColorsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_remove_unused_colors_activate));
+
+	// Connect object Gtk::ToolButton with id 'UndoButton'.
+	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_undo));
+	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_redo));
 
 	// Connect object Gtk::RadioToolButton with id 'HandButton'.
 	m_HandButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorPerVertexEditorInterface::on_hand_toggled));

@@ -111,11 +111,11 @@ private:
 
 	virtual
 	void
-	on_undo_activate () final override;
+	on_undo () final override;
 
 	virtual
 	void
-	on_redo_activate () final override;
+	on_redo () final override;
 
 	void
 	set_undoHistory ();

@@ -184,7 +184,7 @@ ColorPerVertexEditor::set_selection ()
 // Menubar
 
 void
-ColorPerVertexEditor::on_undo_activate ()
+ColorPerVertexEditor::on_undo ()
 {
 	preview -> grab_focus ();
 
@@ -192,7 +192,7 @@ ColorPerVertexEditor::on_undo_activate ()
 }
 
 void
-ColorPerVertexEditor::on_redo_activate ()
+ColorPerVertexEditor::on_redo ()
 {
 	preview -> grab_focus ();
 
@@ -205,31 +205,31 @@ ColorPerVertexEditor::set_undoHistory ()
 	if (undoHistory .hasUndo ())
 	{
 		getUndoMenuItem () .set_label (undoHistory .getUndoDescription ());
-		//getUndoButton ()   .set_tooltip_text (undoHistory .getUndoDescription ());
+		getUndoButton ()   .set_tooltip_text (undoHistory .getUndoDescription ());
 		getUndoMenuItem () .set_sensitive (true);
-		//getUndoButton ()   .set_sensitive (true);
+		getUndoButton ()   .set_sensitive (true);
 	}
 	else
 	{
 		getUndoMenuItem () .set_label (_ ("Undo"));
-		//getUndoButton ()   .set_tooltip_text (_ ("Undo last action (Ctrl-Z)."));
+		getUndoButton ()   .set_tooltip_text (_ ("Undo last action (Ctrl-Z)."));
 		getUndoMenuItem () .set_sensitive (false);
-		//getUndoButton ()   .set_sensitive (false);
+		getUndoButton ()   .set_sensitive (false);
 	}
 
 	if (undoHistory .hasRedo ())
 	{
 		getRedoMenuItem () .set_label (undoHistory .getRedoDescription ());
-		//getRedoButton ()   .set_tooltip_text (undoHistory .getRedoDescription ());
+		getRedoButton ()   .set_tooltip_text (undoHistory .getRedoDescription ());
 		getRedoMenuItem () .set_sensitive (true);
-		//getRedoButton ()   .set_sensitive (true);
+		getRedoButton ()   .set_sensitive (true);
 	}
 	else
 	{
 		getRedoMenuItem () .set_label (_ ("Redo"));
-		//getRedoButton ()   .set_tooltip_text (_ ("Redo last action (Ctrl-Shift-Z)."));
+		getRedoButton ()   .set_tooltip_text (_ ("Redo last action (Ctrl-Shift-Z)."));
 		getRedoMenuItem () .set_sensitive (false);
-		//getRedoButton ()   .set_sensitive (false);
+		getRedoButton ()   .set_sensitive (false);
 	}
 }
 

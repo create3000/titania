@@ -146,6 +146,14 @@ public:
 	getRemoveUnusedColorsMenuItem () const
 	{ return *m_RemoveUnusedColorsMenuItem; }
 
+	Gtk::ToolButton &
+	getUndoButton () const
+	{ return *m_UndoButton; }
+
+	Gtk::ToolButton &
+	getRedoButton () const
+	{ return *m_RedoButton; }
+
 	Gtk::Box &
 	getPreviewBox () const
 	{ return *m_PreviewBox; }
@@ -244,11 +252,11 @@ public:
 
 	virtual
 	void
-	on_undo_activate () = 0;
+	on_undo () = 0;
 
 	virtual
 	void
-	on_redo_activate () = 0;
+	on_redo () = 0;
 
 	virtual
 	void
@@ -327,6 +335,8 @@ private:
 	Gtk::ImageMenuItem*            m_UndoMenuItem;
 	Gtk::ImageMenuItem*            m_RedoMenuItem;
 	Gtk::ImageMenuItem*            m_RemoveUnusedColorsMenuItem;
+	Gtk::ToolButton*               m_UndoButton;
+	Gtk::ToolButton*               m_RedoButton;
 	Gtk::Box*                      m_PreviewBox;
 	Gtk::RadioToolButton*          m_HandButton;
 	Gtk::RadioToolButton*          m_ArrowButton;
