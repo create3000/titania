@@ -80,7 +80,9 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("CylinderXMenuItem", m_CylinderXMenuItem);
 	m_builder -> get_widget ("CylinderYMenuItem", m_CylinderYMenuItem);
 	m_builder -> get_widget ("CylinderZMenuItem", m_CylinderZMenuItem);
-	m_builder -> get_widget ("SphereMenuItem", m_SphereMenuItem);
+	m_builder -> get_widget ("SphereXMenuItem", m_SphereXMenuItem);
+	m_builder -> get_widget ("SphereYMenuItem", m_SphereYMenuItem);
+	m_builder -> get_widget ("SphereZMenuItem", m_SphereZMenuItem);
 	m_builder -> get_widget ("UndoButton", m_UndoButton);
 	m_builder -> get_widget ("RedoButton", m_RedoButton);
 	m_builder -> get_widget ("RotateCounterlockwiseButton", m_RotateCounterlockwiseButton);
@@ -126,7 +128,9 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_CylinderXMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_cylinder_x_activate));
 	m_CylinderYMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_cylinder_y_activate));
 	m_CylinderZMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_cylinder_z_activate));
-	m_SphereMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_sphere_activate));
+	m_SphereXMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_sphere_x_activate));
+	m_SphereYMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_sphere_y_activate));
+	m_SphereZMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_sphere_z_activate));
 
 	// Connect object Gtk::ToolButton with id 'UndoButton'.
 	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_undo));

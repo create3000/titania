@@ -332,8 +332,22 @@ main (int argc, char** argv)
 	Box2f b2 (Vector2f (2,2),   Vector2f ());
 	Box3f b3 (Vector3f (2,2,2), Vector3f ());
 
-	__LOG__ << b2 .area () << std::endl;
-	__LOG__ << b3 .volume () << std::endl;
+	__LOG__ << std::numeric_limits <float>::infinity () << std::endl;
+	__LOG__ << +std::numeric_limits <float>::infinity () << std::endl;
+	__LOG__ << -std::numeric_limits <float>::infinity () << std::endl;
+
+	__LOG__ << std::numeric_limits <float>::quiet_NaN () << std::endl;
+	__LOG__ << +std::numeric_limits <float>::quiet_NaN () << std::endl;
+	__LOG__ << -std::numeric_limits <float>::quiet_NaN () << std::endl;
+
+
+	std::istringstream is (std::to_string (-std::numeric_limits <float>::infinity ()));
+
+	float v;
+	is >> v;
+	
+	__LOG__ << v << std::endl;
+	__LOG__ << is .rdbuf () << std::endl;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

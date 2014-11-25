@@ -1,3 +1,13 @@
+2014-11-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* TextureCoordinateEditor.xml:
+	* IcoSphere.x3dv:
+	* QuadSphere.x3dv:
+	* X3DTextureCoordinateEditorInterface.h:
+	* X3DTextureCoordinateEditorInterface.cpp:
+	* TextureCoordinateEditor.h:
+	* TextureCoordinateEditor.cpp: 
+
 2014-11-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* TextureCoordinateEditor.xml:

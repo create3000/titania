@@ -107,12 +107,94 @@ const io::quoted_string Grammar::String ('\"');
 const io::sequence      Grammar::ComponentName ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-");
 
 // Values
+const io::string Grammar::inf ("inf");
+const io::string Grammar::neg_inf ("-inf");
+const io::string Grammar::nan ("nan");
+const io::string Grammar::neg_nan ("-nan");
 const io::string Grammar::hex ("0x");
 const io::string Grammar::HEX ("0X");
 
 // Locale
 
 const io::sequence Grammar::WhiteSpacesNoComma ("\r\n \t");
+
+bool
+Grammar::Double (std::istream & istream, double & value)
+{
+	const auto pos = istream .tellg ();
+
+	if (istream >> value)
+		return true;
+
+	istream .clear ();
+	istream .seekg (pos - istream .tellg (), std::ios_base::cur);
+
+	if (inf (istream))
+	{
+		value = std::numeric_limits <double>::infinity ();
+		return true;
+	}
+
+	if (neg_inf (istream))
+	{
+		value = -std::numeric_limits <double>::infinity ();
+		return true;
+	}
+
+	if (nan (istream))
+	{
+		value = std::numeric_limits <double>::quiet_NaN ();
+		return true;
+	}
+
+	if (neg_nan (istream))
+	{
+		value = -std::numeric_limits <double>::quiet_NaN ();
+		return true;
+	}
+
+	istream .setstate (std::ios::failbit);
+	return false;
+}
+
+bool
+Grammar::Float (std::istream & istream, float & value)
+{
+	const auto pos = istream .tellg ();
+
+	if (istream >> value)
+		return true;
+
+	istream .clear ();
+	istream .seekg (pos - istream .tellg (), std::ios_base::cur);
+
+	if (inf (istream))
+	{
+		value = std::numeric_limits <float>::infinity ();
+		return true;
+	}
+
+	if (neg_inf (istream))
+	{
+		value = -std::numeric_limits <float>::infinity ();
+		return true;
+	}
+
+	if (nan (istream))
+	{
+		value = std::numeric_limits <float>::quiet_NaN ();
+		return true;
+	}
+
+	if (neg_nan (istream))
+	{
+		value = -std::numeric_limits <float>::quiet_NaN ();
+		return true;
+	}
+
+	istream .setstate (std::ios::failbit);
+	return false;
+}
 
 bool
 Grammar::Int32 (std::istream & istream, int32_t & value)

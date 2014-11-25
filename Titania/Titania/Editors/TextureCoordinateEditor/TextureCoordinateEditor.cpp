@@ -570,23 +570,23 @@ TextureCoordinateEditor::on_box_activate ()
 void
 TextureCoordinateEditor::on_cylinder_x_activate ()
 {
-	on_cylinder_activate (1, 0, 2);
+	on_cylinder_activate (1, 0, 2, true, 0);
 }
 
 void
 TextureCoordinateEditor::on_cylinder_y_activate ()
 {
-	on_cylinder_activate (0, 1, 2);
+	on_cylinder_activate (0, 1, 2, false, 0);
 }
 
 void
 TextureCoordinateEditor::on_cylinder_z_activate ()
 {
-	on_cylinder_activate (0, 2, 1);
+	on_cylinder_activate (0, 2, 1, true, 1);
 }
 
 void
-TextureCoordinateEditor::on_cylinder_activate (const size_t x, const size_t y, const size_t z)
+TextureCoordinateEditor::on_cylinder_activate (const size_t x, const size_t y, const size_t z, const bool flip, const size_t f)
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Cylinder Mapping"));
 
@@ -618,7 +618,10 @@ TextureCoordinateEditor::on_cylinder_activate (const size_t x, const size_t y, c
 	{
 		const auto point    = coord -> get1Point (pair .first);
 		const auto complex  = std::complex <float> (point [z] - center [z], point [x] - center [x]);
-		const auto texPoint = X3D::Vector2f (std::arg (complex) / M_PI2 + 0.5, (point [y] - min [y]) / size [y]);
+		auto       texPoint = X3D::Vector2f (std::arg (complex) / M_PI2 + 0.5, (point [y] - min [y]) / size [y]);
+
+		if (flip)
+			texPoint [f] = 1 - texPoint [f];
 
 		for (const auto & vertex : pair .second)
 			previewGeometry -> texCoordIndex () [vertex] = texCoord -> point () .size ();
@@ -640,7 +643,25 @@ TextureCoordinateEditor::on_cylinder_activate (const size_t x, const size_t y, c
 }
 
 void
-TextureCoordinateEditor::on_sphere_activate ()
+TextureCoordinateEditor::on_sphere_x_activate ()
+{
+	on_sphere_activate (1, 0, 2, true, 0);
+}
+
+void
+TextureCoordinateEditor::on_sphere_y_activate ()
+{
+	on_sphere_activate (0, 1, 2, false, 0);
+}
+
+void
+TextureCoordinateEditor::on_sphere_z_activate ()
+{
+	on_sphere_activate (0, 2, 1, true, 1);
+}
+
+void
+TextureCoordinateEditor::on_sphere_activate (const size_t x, const size_t y, const size_t z, const bool flip, const size_t f)
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Sphere Mapping"));
 
@@ -654,7 +675,7 @@ TextureCoordinateEditor::on_sphere_activate ()
 	const X3D::Vector3d center = bbox .center ();
 
 	// Apply mapping.
-	
+
 	std::map <int32_t, std::vector <size_t>> indices;
 	
 	for (const auto & face : selectedFaces)
@@ -666,14 +687,17 @@ TextureCoordinateEditor::on_sphere_activate ()
 	for (const auto pair : indices)
 	{
 		const auto point    = math::normalize (coord -> get1Point (pair .first) - center);
-		const auto texPoint = X3D::Vector2f (std::atan2 (point .x (), point .z ()) / M_PI2 + 0.5, std::asin (point .y ()) / M_PI + 0.5);
+		auto       texPoint = X3D::Vector2f (std::atan2 (point [x], point [z]) / M_PI2 + 0.5, std::asin (point [y]) / M_PI + 0.5);
+
+		if (flip)
+			texPoint [f] = 1 - texPoint [f];
 
 		for (const auto & vertex : pair .second)
 			previewGeometry -> texCoordIndex () [vertex] = texCoord -> point () .size ();
 
 		texCoord -> point () .emplace_back (texPoint);
 	}
-	
+
 	resolveOverlaps ();
 
 	for (const auto & face : selectedFaces)

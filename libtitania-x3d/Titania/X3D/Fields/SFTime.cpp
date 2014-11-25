@@ -109,7 +109,7 @@ throw (Error <INVALID_X3D>,
 
 	time_type value = 0;
 
-	if (istream >> value)
+	if (Grammar::Double (istream, value))
 		setValue (value);
 }
 

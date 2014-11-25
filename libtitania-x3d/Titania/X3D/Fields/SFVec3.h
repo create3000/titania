@@ -542,11 +542,23 @@ throw (Error <INVALID_X3D>,
        Error <DISPOSED>)
 {
 	std::string whiteSpaces;
+
+	value_type x, y, z;
 	
 	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
-	if (istream >> get ())
-		addEvent ();
+	if (Grammar::Number <value_type> (istream, x))
+	{
+		Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+
+		if (Grammar::Number <value_type> (istream, y))
+		{
+			Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+
+			if (Grammar::Number <value_type> (istream, z))
+				setValue (x, y, z);
+	   }
+	}
 }
 
 template <class ValueType>

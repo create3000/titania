@@ -119,8 +119,8 @@ throw (Error <INVALID_X3D>,
 	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
 	double value = 0;
-
-	if (istream >> value)
+	
+	if (Grammar::Double (istream, value))
 		setValue (value);
 }
 
@@ -138,7 +138,7 @@ throw (Error <INVALID_X3D>,
 
 	float value = 0;
 
-	if (istream >> value)
+	if (Grammar::Float (istream, value))
 		setValue (value);
 }
 

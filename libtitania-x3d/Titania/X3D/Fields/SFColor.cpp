@@ -153,16 +153,32 @@ throw (Error <INVALID_X3D>,
 
 	if (Grammar::Hex (istream, value))
 	{
-		const float r = (value >> 16 & 0xff) / 255.0f;
-		const float g = (value >> 8 & 0xff) / 255.0f;
-		const float b = (value & 0xff) / 255.0f;
+		const value_type r = (value >> 16 & 0xff) / 255.0f;
+		const value_type g = (value >> 8 & 0xff) / 255.0f;
+		const value_type b = (value & 0xff) / 255.0f;
 
 		setValue (Color3f (r, g, b));
 	}
 	else
 	{
-		if (istream >> get ())
-			addEvent ();
+		std::string whiteSpaces;
+
+		value_type r, g, b;
+		
+		Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+
+		if (Grammar::Number <value_type> (istream, r))
+		{
+			Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+
+			if (Grammar::Number <value_type> (istream, g))
+			{
+				Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+
+				if (Grammar::Number <value_type> (istream, b))
+					setValue (r, g, b);
+		   }
+		}
 	}
 }
 

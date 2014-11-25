@@ -171,6 +171,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Cylinder Y</property>
+                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_cylinder_y_activate" swapped="no"/>
                       </object>
                     </child>
@@ -179,16 +180,35 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Cylinder Z</property>
+                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_cylinder_z_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="SphereMenuItem">
+                      <object class="GtkMenuItem" id="SphereXMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Sphere</property>
+                        <property name="label" translatable="yes">Sphere X</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_sphere_activate" swapped="no"/>
+                        <signal name="activate" handler="on_sphere_x_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="SphereYMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Sphere Y</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_sphere_y_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="SphereZMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Sphere Z</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_sphere_z_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>

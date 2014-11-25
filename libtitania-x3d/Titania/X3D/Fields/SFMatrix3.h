@@ -520,11 +520,59 @@ throw (Error <INVALID_X3D>,
        Error <DISPOSED>)
 {
 	std::string whiteSpaces;
+
+	value_type e11, e12, e13;
+	value_type e21, e22, e23;
+	value_type e31, e32, e33;
 	
 	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
-	if (istream >> get ())
-		addEvent ();
+	if (Grammar::Number <value_type> (istream, e11))
+	{
+		Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+
+		if (Grammar::Number <value_type> (istream, e12))
+		{
+			Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+
+			if (Grammar::Number <value_type> (istream, e13))
+			{
+				Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+
+				if (Grammar::Number <value_type> (istream, e21))
+				{
+					Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+
+					if (Grammar::Number <value_type> (istream, e22))
+					{
+						Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+
+						if (Grammar::Number <value_type> (istream, e23))
+						{
+							Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+
+							if (Grammar::Number <value_type> (istream, e31))
+							{
+								Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+
+								if (Grammar::Number <value_type> (istream, e32))
+								{
+									Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+
+									if (Grammar::Number <value_type> (istream, e33))
+									{
+										setValue (e11, e12, e13,
+										          e21, e22, e23,
+										          e31, e32, e33);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 template <class ValueType>

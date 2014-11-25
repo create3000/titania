@@ -167,11 +167,22 @@ private:
 	on_cylinder_z_activate () final override;
 
 	void
-	on_cylinder_activate (const size_t, const size_t, const size_t);
+	on_cylinder_activate (const size_t, const size_t, const size_t, const bool, const size_t);
 
 	virtual
 	void
-	on_sphere_activate () final override;
+	on_sphere_x_activate () final override;
+
+	virtual
+	void
+	on_sphere_y_activate () final override;
+
+	virtual
+	void
+	on_sphere_z_activate () final override;
+
+	void
+	on_sphere_activate (const size_t, const size_t, const size_t, const bool, const size_t);
 
 	void
 	resolveOverlaps ();

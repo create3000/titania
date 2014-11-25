@@ -1933,7 +1933,7 @@ Parser::Double (double & _value)
 
 	comments ();
 
-	if (istream >> _value)
+	if (Grammar::Double (istream, _value))
 		return true;
 
 	istream .clear ();
@@ -1948,7 +1948,7 @@ Parser::Float (float & _value)
 
 	comments ();
 
-	if (istream >> _value)
+	if (Grammar::Float (istream, _value))
 		return true;
 
 	istream .clear ();

@@ -63,6 +63,20 @@ class Grammar
 {
 public:
 
+	template <class Type>
+	static
+	bool
+	Number (std::istream &, Type &)
+	{ return false; }
+
+	static
+	bool
+	Double (std::istream &, double &);
+
+	static
+	bool
+	Float (std::istream &, float &);
+
 	static
 	bool
 	Int32 (std::istream &, int32_t &);
@@ -131,10 +145,32 @@ private:
 	getSupportedFields ();
 
 	///  @name Values
+	static const io::string inf;
+	static const io::string neg_inf;
+	static const io::string nan;
+	static const io::string neg_nan;
 	static const io::string hex;
 	static const io::string HEX;
 
 };
+
+template <>
+inline
+bool
+Grammar::Number <double> (std::istream & istream, double & value)
+{ return Double (istream, value); }
+
+template <>
+inline
+bool
+Grammar::Number <float> (std::istream & istream, float & value)
+{ return Float (istream, value); }
+
+template <>
+inline
+bool
+Grammar::Number <int32_t> (std::istream & istream, int32_t & value)
+{ return Int32 (istream, value); }
 
 } // X3D
 } // titania

@@ -1,3 +1,19 @@
+2014-11-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFVec2.h:
+	* SFVec4.h:
+	* SFVec3.h:
+	* Grammar.h:
+	* SFTime.cpp:
+	* Parser.cpp:
+	* SFMatrix3.h:
+	* SFMatrix4.h:
+	* SFColor.cpp:
+	* Grammar.cpp:
+	* X3DScalar.cpp:
+	* SFRotation4.h:
+	* SFColorRGBA.cpp: 
+
 2014-11-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DRenderer.cpp: 

@@ -167,8 +167,16 @@ public:
 	{ return *m_CylinderZMenuItem; }
 
 	Gtk::MenuItem &
-	getSphereMenuItem () const
-	{ return *m_SphereMenuItem; }
+	getSphereXMenuItem () const
+	{ return *m_SphereXMenuItem; }
+
+	Gtk::MenuItem &
+	getSphereYMenuItem () const
+	{ return *m_SphereYMenuItem; }
+
+	Gtk::MenuItem &
+	getSphereZMenuItem () const
+	{ return *m_SphereZMenuItem; }
 
 	Gtk::ToolButton &
 	getUndoButton () const
@@ -320,7 +328,15 @@ public:
 
 	virtual
 	void
-	on_sphere_activate () = 0;
+	on_sphere_x_activate () = 0;
+
+	virtual
+	void
+	on_sphere_y_activate () = 0;
+
+	virtual
+	void
+	on_sphere_z_activate () = 0;
 
 	virtual
 	void
@@ -424,7 +440,9 @@ private:
 	Gtk::MenuItem*                 m_CylinderXMenuItem;
 	Gtk::MenuItem*                 m_CylinderYMenuItem;
 	Gtk::MenuItem*                 m_CylinderZMenuItem;
-	Gtk::MenuItem*                 m_SphereMenuItem;
+	Gtk::MenuItem*                 m_SphereXMenuItem;
+	Gtk::MenuItem*                 m_SphereYMenuItem;
+	Gtk::MenuItem*                 m_SphereZMenuItem;
 	Gtk::ToolButton*               m_UndoButton;
 	Gtk::ToolButton*               m_RedoButton;
 	Gtk::ToolButton*               m_RotateCounterlockwiseButton;

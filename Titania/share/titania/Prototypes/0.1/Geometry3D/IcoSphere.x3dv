@@ -254,9 +254,10 @@ IcoSphere .prototype .sphericalMapping = function (coordIndex, point)
 	
 	for (var i = 0; i < point .length; ++ i)
 	{
-		// Normaly we would use normalized points, but this one are already normalized.
-		texPoint [i] = new SFVec2f (Math .atan2 (point [i] .x, point [i] .z) / (2 * Math .PI) + 0.5,
-		                            Math .asin (point [i] .y) / Math .PI + 0.5);
+		// Always normalize to get rid of floating point errors.
+		var normal   = point [i] .normalize ();
+		texPoint [i] = new SFVec2f (Math .atan2 (normal .x, normal .z) / (2 * Math .PI) + 0.5,
+		                            Math .asin (normal .y) / Math .PI + 0.5);
 	}
 
 	this .texCoordIndex = texCoordIndex;
@@ -298,9 +299,9 @@ IcoSphere .prototype .sphericalMapping = function (coordIndex, point)
 		// North pole found
 		if (i0 > -1)
 		{
-			var index0 = texCoordIndex [i0];
-			var index1 = this. resolveOverlap (i1, i2);
-			var index2 = texCoordIndex [i2];
+			var index0 = texCoordIndex [i0]; // North pole
+			var index1 = texCoordIndex [i1];
+			var index2 = this. resolveOverlap (i1, i2);
 		
 			texCoordIndex [i0]          = texPoint .length;
 			texPoint [texPoint .length] = new SFVec2f ((texPoint [index1] .x + texPoint [index2] .x) / 2,
@@ -332,12 +333,12 @@ IcoSphere .prototype .sphericalMapping = function (coordIndex, point)
 			i2 = i + 1;
 		}
 
-		// North pole found
+		// South pole found
 		if (i0 > -1)
 		{
-			var index0 = texCoordIndex [i0];
-			var index1 = this. resolveOverlap (i1, i2);
-			var index2 = texCoordIndex [i2];
+			var index0 = texCoordIndex [i0]; // South pole
+			var index1 = texCoordIndex [i1];
+			var index2 = this. resolveOverlap (i1, i2);
 
 			texCoordIndex [i0]          = texPoint .length;
 			texPoint [texPoint .length] = new SFVec2f ((texPoint [index1] .x + texPoint [index2] .x) / 2,

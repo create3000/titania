@@ -1,8 +1,8 @@
 #X3D V3.3 utf8 Titania
 
 PROTO QuadSphere [
-  inputOutput    SFInt32 uDimension 20
-  inputOutput    SFInt32 vDimension 10
+  inputOutput    SFInt32 uDimension 21
+  inputOutput    SFInt32 vDimension 11
   inputOutput    SFFloat radius 1
   initializeOnly SFBool  solid TRUE
 ]
@@ -85,13 +85,14 @@ function texCoord ()
 {
 	var texCoord = new MFVec2f ();
 
-	var i = 0;
+	var poleOffset = -0.5 / (uDimension - 1);
+	var i          = 0;
 
 	// North pole
 	
 	for (var u = 1; u < uDimension; ++ u)
 	{
-		var x = u / uDimension + 0.5;
+		var x = u / (uDimension - 1) + poleOffset;
 		
 		texCoord [i ++] = new SFVec2f (x, 1);
 	}
@@ -104,7 +105,7 @@ function texCoord ()
 		
 		for (var u = 0; u < uDimension; ++ u)
 		{
-			var x = u / (uDimension - 1) + 0.5;
+			var x = u / (uDimension - 1);
 			
 			texCoord [i ++] = new SFVec2f (x, y);
 		}
@@ -114,7 +115,7 @@ function texCoord ()
 	
 	for (var u = 1; u < uDimension; ++ u)
 	{
-		var x = u / uDimension + 0.5;
+		var x = u / (uDimension - 1) + poleOffset;
 		
 		texCoord [i ++] = new SFVec2f (x, 0);
 	}
@@ -132,7 +133,7 @@ function coordIndex ()
 	
 	for (var u = 1; u < uDimension - 1; ++ u)
 	{
-		index [i ++]     = 0;
+		index [i ++] = 0;
 		index [i ++] = u;
 		index [i ++] = u + 1;
 		index [i ++] = -1;
@@ -194,13 +195,15 @@ function points ()
 
 	for (var v = 1; v < vDimension - 1; ++ v)
 	{
-		var y = Math .cos (Math .PI * (v / (vDimension - 1)));
-		var r = Math .sin (Math .PI * (v / (vDimension - 1)));
-		
+		var p = Math .PI * (v / (vDimension - 1));
+		var y = Math .cos (p);
+		var r = Math .sin (p);
+
 		for (u = 0; u < uDimension - 1; ++ u)
 		{
-			var x = Math .sin ((2 * Math .PI) * (u / (uDimension - 1))) * r;
-			var z = Math .cos ((2 * Math .PI) * (u / (uDimension - 1))) * r;
+			var t = 2 * Math .PI * (u / (uDimension - 1) + 0.5);
+			var x = Math .sin (t) * r;
+			var z = Math .cos (t) * r;
 
 			point [i ++] = new SFVec3f (x, y, z) .multiply (radius);
 		}
