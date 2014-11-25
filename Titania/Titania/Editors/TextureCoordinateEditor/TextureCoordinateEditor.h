@@ -145,7 +145,10 @@ private:
 	virtual
 	void
 	on_z_plane_activate () final override;
-	
+
+	void
+	on_plane_activate (const size_t, const size_t, const bool);
+
 	virtual
 	void
 	on_camera_activate () final override;

@@ -356,109 +356,25 @@ TextureCoordinateEditor::on_remove_unused_texCoord_activate ()
 void
 TextureCoordinateEditor::on_x_plane_activate ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("X-Plane Mapping"));
-
-	undoStep -> addObjects (previewGeometry, texCoord);
-	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
-	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
-
-	// Determine bbox extents.
-
-	const auto bbox = getBBox (2, 1);
-
-	X3D::Vector2f min, max;
-	bbox .extents (min, max);
-
-	const auto size = bbox .size ();
-	const auto m    = size .x () >= size .y () ? 0 : 1;
-
-	// Apply mapping.
-	
-	std::map <int32_t, std::vector <size_t>> indices;
-	
-	for (const auto & face : selectedFaces)
-	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
-			indices [previewGeometry -> coordIndex () [vertex]] .emplace_back (vertex);
-	}
-
-	for (const auto pair : indices)
-	{
-		const auto point    = coord -> get1Point (pair .first);
-		const auto texPoint = (X3D::Vector2f (point .z (), point .y ()) - min) / size [m];
-
-		for (const auto & vertex : pair .second)
-			previewGeometry -> texCoordIndex () [vertex] = texCoord -> point () .size ();
-
-		texCoord -> point () .emplace_back (texPoint);
-	}
-
-	on_remove_unused_texCoord_activate ();
-
-	selectedPoints .clear ();
-	set_selectedPoints ();
-
-	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
-	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
-
-	addUndoStep (undoStep);
+	on_plane_activate (2, 1, false);
 }
 
 void
 TextureCoordinateEditor::on_y_plane_activate ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("X-Plane Mapping"));
-
-	undoStep -> addObjects (previewGeometry, texCoord);
-	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
-	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
-
-	// Determine bbox extents.
-
-	const auto bbox = getBBox (0, 2);
-
-	X3D::Vector2f min, max;
-	bbox .extents (min, max);
-
-	const auto size = bbox .size ();
-	const auto m    = size .x () >= size .y () ? 0 : 1;
-
-	// Apply mapping.
-	
-	std::map <int32_t, std::vector <size_t>> indices;
-	
-	for (const auto & face : selectedFaces)
-	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
-			indices [previewGeometry -> coordIndex () [vertex]] .emplace_back (vertex);
-	}
-
-	for (const auto pair : indices)
-	{
-		const auto point    = coord -> get1Point (pair .first);
-		const auto texPoint = X3D::Vector2f (point .x () - min .x (), -point .z () + max .y ()) / size [m];
-
-		for (const auto & vertex : pair .second)
-			previewGeometry -> texCoordIndex () [vertex] = texCoord -> point () .size ();
-
-		texCoord -> point () .emplace_back (texPoint);
-	}
-
-	on_remove_unused_texCoord_activate ();
-
-	selectedPoints .clear ();
-	set_selectedPoints ();
-
-	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
-	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
-
-	addUndoStep (undoStep);
+	on_plane_activate (0, 2, true);
 }
 
 void
 TextureCoordinateEditor::on_z_plane_activate ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("X-Plane Mapping"));
+	on_plane_activate (0, 1, false);
+}
+
+void
+TextureCoordinateEditor::on_plane_activate (const size_t x, const size_t y, const bool flop)
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Plane Mapping"));
 
 	undoStep -> addObjects (previewGeometry, texCoord);
 	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
@@ -466,7 +382,7 @@ TextureCoordinateEditor::on_z_plane_activate ()
 
 	// Determine bbox extents.
 
-	const auto bbox = getBBox (0, 1);
+	const auto bbox = getBBox (x, y);
 
 	X3D::Vector2f min, max;
 	bbox .extents (min, max);
@@ -487,7 +403,10 @@ TextureCoordinateEditor::on_z_plane_activate ()
 	for (const auto pair : indices)
 	{
 		const auto point    = coord -> get1Point (pair .first);
-		const auto texPoint = (X3D::Vector2f (point .x (), point .y ()) - min) / size [m];
+		auto       texPoint = (X3D::Vector2f (point [x], point [y]) - min) / size [m];
+
+		if (flop)
+			texPoint [1] = 1 - texPoint [1];
 
 		for (const auto & vertex : pair .second)
 			previewGeometry -> texCoordIndex () [vertex] = texCoord -> point () .size ();
