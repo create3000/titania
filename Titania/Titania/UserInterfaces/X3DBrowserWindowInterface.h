@@ -811,6 +811,10 @@ public:
 	{ return *m_ScriptEditorBox; }
 
 	Gtk::Box &
+	getAnimationEditorBox () const
+	{ return *m_AnimationEditorBox; }
+
+	Gtk::Box &
 	getSideBar () const
 	{ return *m_SideBar; }
 
@@ -1533,6 +1537,7 @@ private:
 	Gtk::Notebook*                   m_FooterNotebook;
 	Gtk::Box*                        m_ConsoleBox;
 	Gtk::Box*                        m_ScriptEditorBox;
+	Gtk::Box*                        m_AnimationEditorBox;
 	Gtk::Box*                        m_SideBar;
 	Gtk::Label*                      m_SideBarLabel;
 	Gtk::Notebook*                   m_SideBarNotebook;

@@ -1,11 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserWindow.cpp">
     <Files>
-      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.h" Line="179" Column="1" />
-      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.cpp" Line="1091" Column="13" />
-      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.h" Line="282" Column="34" />
-      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="212" Column="51" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.h" Line="76" Column="8" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.cpp" Line="89" Column="34" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,16 +20,11 @@
               <Node name="EnvironmentalSensors" expanded="True" />
             </Node>
           </Node>
-          <Node name="libtitania-opengl-surface" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="OpenGL" expanded="True">
-                <Node name="Context" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Algorithm" expanded="True" />
+              <Node name="Basic" expanded="True" />
+              <Node name="InputOutput" expanded="True" />
               <Node name="Math" expanded="True">
                 <Node name="Algorithms" expanded="True" />
                 <Node name="Geometry" expanded="True" />
@@ -63,13 +58,15 @@
                   <Node name="Rendering" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Geometry2D" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
-                  <Node name="Geospatial" expanded="True" />
+                  <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                   <Node name="Rendering" expanded="True" />
+                  <Node name="Shape" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
                 </Node>
                 <Node name="Fields" expanded="True" />
+                <Node name="Parser" expanded="True" />
                 <Node name="Rendering" expanded="True" />
                 <Node name="Tools" expanded="True">
                   <Node name="Grids" expanded="True" />
@@ -85,25 +82,23 @@
             <Node name="share" expanded="True">
               <Node name="applications" expanded="True" />
               <Node name="titania" expanded="True">
-                <Node name="ui" expanded="True">
-                  <Node name="Editors" expanded="True" />
-                  <Node name="icons" expanded="True" />
+                <Node name="Prototypes" expanded="True">
+                  <Node name="0.1" expanded="True">
+                    <Node name="Geometry3D" expanded="True" />
+                  </Node>
                 </Node>
+                <Node name="ui" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True" />
-              <Node name="Editors" expanded="True">
-                <Node name="AppearanceEditor" expanded="True" />
-                <Node name="ColorPerVertexEditor" expanded="True" />
-                <Node name="GeometryPropertiesEditor" expanded="True" />
-                <Node name="GridEditor" expanded="True" />
-                <Node name="TextureCoordinateEditor" expanded="True">
-                  <Node name="TextureCoordinateEditor.cpp" selected="True" />
-                </Node>
+              <Node name="Browser" expanded="True">
+                <Node name="X3DBrowserWindow.cpp" selected="True" />
               </Node>
               <Node name="Undo" expanded="True" />
+              <Node name="Widgets" expanded="True">
+                <Node name="AnimationEditor" expanded="True" />
+                <Node name="Console" expanded="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="x3dtidy" expanded="True" />

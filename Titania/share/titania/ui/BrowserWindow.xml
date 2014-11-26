@@ -28,8 +28,8 @@
       <source stock-id="SplitPoint" filename="icons/SplitPoint.svg"/>
       <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
       <source stock-id="Inline" filename="icons/Inline.svg"/>
-      <source stock-id="DotClear" filename="icons/dot-clear.png"/>
       <source stock-id="Geometry" filename="icons/Geometry.svg"/>
+      <source stock-id="DotClear" filename="icons/dot-clear.png"/>
       <source stock-id="Light" filename="icons/Light.svg"/>
       <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
       <source stock-id="Checkerboard" filename="icons/Checkerboard.svg"/>
@@ -638,8 +638,8 @@
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activate" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -2396,6 +2396,56 @@
                                 <property name="tab_fill">False</property>
                               </packing>
                             </child>
+                            <child>
+                              <object class="GtkBox" id="AnimationEditorBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                            <child type="tab">
+                              <object class="GtkBox" id="box30">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="spacing">4</property>
+                                <child>
+                                  <object class="GtkImage" id="image40">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="stock">gtk-media-record</property>
+                                    <property name="icon_size">1</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label40">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="yalign">0.99000000953674316</property>
+                                    <property name="label" translatable="yes">Keyframe Animation</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">2</property>
+                                <property name="tab_fill">False</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -2420,7 +2470,7 @@
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkBox" id="box3">
+                      <object class="GtkBox" id="box6">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>

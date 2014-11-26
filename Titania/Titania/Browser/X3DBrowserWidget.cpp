@@ -394,8 +394,6 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 void
 X3DBrowserWidget::set_splashScreen (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
-	loadTime = chrono::now ();
-
 	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
 
 	load (browser, URL);
@@ -406,6 +404,8 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
 	if (browser == getBrowser ())
 		aboutTab -> loadPreview (getBrowser ());
+
+	loadTime = chrono::now ();
 
 	try
 	{

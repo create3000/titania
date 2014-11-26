@@ -1,3 +1,19 @@
+2014-11-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* Makefile.am:
+	* BrowserWindow.xml:
+	* X3DBrowserWindow.h:
+	* X3DBrowserWindow.cpp:
+	* X3DBrowserWidget.cpp:
+	* AnimationEditor.xml:
+	* AnimationEditor.h:
+	* X3DBrowserWindowInterface.h:
+	* AnimationEditor.cpp:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DAnimationEditorInterface.h:
+	* X3DAnimationEditorInterface.cpp: 
+
 2014-11-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* TextureCoordinateEditor.h:

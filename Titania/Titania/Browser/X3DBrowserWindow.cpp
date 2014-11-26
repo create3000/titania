@@ -59,6 +59,7 @@
 #include "../Widgets/OutlineEditor/OutlineEditor.h"
 #include "../Widgets/OutlineEditor/OutlineTreeModel.h"
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
+#include "../Widgets/AnimationEditor/AnimationEditor.h"
 #include "../Widgets/ScriptEditor/ScriptEditor.h"
 #include "../Widgets/ViewpointList/ViewpointList.h"
 
@@ -75,6 +76,7 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
 	            outlineEditor (new OutlineEditor (this)),
 	                  console (new Console (this)),
 	             scriptEditor (new ScriptEditor (this)),
+	          animationEditor (new AnimationEditor (this)),
 	                 gridTool (new GridTool (this)),
 	                angleTool (new AngleTool (this)),
 	                     keys (),
@@ -86,12 +88,13 @@ X3DBrowserWindow::initialize ()
 {
 	X3DBrowserEditor::initialize ();
 
-	viewpointList -> reparent (getViewpointListBox (), getWindow ());
-	historyEditor -> reparent (getHistoryViewBox (),   getWindow ());
-	libraryView   -> reparent (getLibraryViewBox (),   getWindow ());
-	outlineEditor -> reparent (getOutlineEditorBox (), getWindow ());
-	console       -> reparent (getConsoleBox (),       getWindow ());
-	scriptEditor  -> reparent (getScriptEditorBox (),  getWindow ());
+	viewpointList   -> reparent (getViewpointListBox (),   getWindow ());
+	historyEditor   -> reparent (getHistoryViewBox (),     getWindow ());
+	libraryView     -> reparent (getLibraryViewBox (),     getWindow ());
+	outlineEditor   -> reparent (getOutlineEditorBox (),   getWindow ());
+	console         -> reparent (getConsoleBox (),         getWindow ());
+	scriptEditor    -> reparent (getScriptEditorBox (),    getWindow ());
+	animationEditor -> reparent (getAnimationEditorBox (), getWindow ());
 }
 
 void

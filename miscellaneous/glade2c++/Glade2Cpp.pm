@@ -48,12 +48,13 @@ $objects {$_} = true foreach qw(
 	Gtk::ToggleAction
 	Gtk::ListStore
 	Gtk::TreeStore
-	Gtk::TextBuffer
+	Gtk::TreeModelFilter
+	Gtk::TreeSelection
 	Gtk::TreeViewColumn
 	Gtk::CellRendererText
 	Gtk::CellRendererToggle
 	Gtk::CellRendererPixbuf
-	Gtk::TreeSelection
+	Gtk::TextBuffer
 );
 
 sub new

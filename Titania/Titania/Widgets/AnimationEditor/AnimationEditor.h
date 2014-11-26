@@ -48,132 +48,109 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
-#define __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
+#ifndef __TITANIA_WIDGETS_ANIMATION_EDITOR_ANIMATION_EDITOR_H__
+#define __TITANIA_WIDGETS_ANIMATION_EDITOR_ANIMATION_EDITOR_H__
 
-#include "../Browser/X3DBrowserEditor.h"
-
-namespace titania {
-namespace X3D {
-
-class GridTool;
-class AngleTool;
-
-} // X3D
-} // titania
+#include "../../ComposedWidgets.h"
+#include "../../Base/X3DEditorObject.h"
+#include "../../UserInterfaces/X3DAnimationEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class HistoryView;
-class LibraryView;
-class MotionBlurEditor;
-class OutlineEditor;
-class OutlineTreeViewEditor;
-class ViewpointList;
-class Console;
-class ScriptEditor;
-class AnimationEditor;
-class GridTool;
-class AngleTool;
+class BrowserWindow;
 
-class X3DBrowserWindow :
-	public X3DBrowserEditor
+class AnimationEditor :
+	public X3DAnimationEditorInterface,
+	public X3DEditorObject
 {
 public:
 
-	/// @name Member access
+	///  @name Construction
 
-	X3D::Keys &
-	getKeys ()
-	{ return keys; }
-
-	const X3D::Keys &
-	getKeys () const
-	{ return keys; }
-
-	void
-	hasAccelerators (const bool);
-
-	bool
-	hasAccelerators () const
-	{ return accelerators; }
-
-	void
-	hasGridTool (const bool);
-
-	bool
-	hasGridTool () const;
-
-	const X3D::X3DPtr <X3D::GridTool> &
-	getGridTool () const;
-
-	void
-	hasAngleTool (const bool);
-
-	bool
-	hasAngleTool () const;
-
-	const X3D::X3DPtr <X3D::AngleTool> &
-	getAngleTool () const;
-
-	virtual
-	X3D::WorldInfoPtr
-	getWorldInfo (const bool = false) const
-	throw (X3D::Error <X3D::NOT_SUPPORTED>) final override;
-
-	/// @name Operations
-
-	void
-	expandNodes (const X3D::MFNode &);
+	AnimationEditor (X3DBrowserWindow* const);
 
 	///  @name Destruction
 
 	virtual
-	~X3DBrowserWindow ();
-
-
-protected:
-
-	/// @name Construction
-
-	X3DBrowserWindow (const X3D::BrowserPtr &);
-
-	virtual
-	void
-	initialize ();
-
-	virtual
-	void
-	setBrowser (const X3D::BrowserPtr &) override;
+	~AnimationEditor ();
 
 
 private:
 
-	/// @name Member access
+	///  @name Construction
 
-	const std::shared_ptr <OutlineTreeViewEditor> &
-	getOutlineTreeView () const;
+	virtual
+	void
+	initialize () final override;
 
-	/// @name Operations
+	virtual
+	void
+	on_map () final override;
+
+	virtual
+	void
+	on_unmap () final override;
 
 	void
-	expandNodesImpl (const X3D::MFNode &);
+	set_selection ();
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_new () final override;
+
+	virtual
+	void
+	on_new_name_insert_text (const Glib::ustring &, int*) final override;
+
+	virtual
+	void
+	on_new_name_delete_text (int, int) final override;
+
+	virtual
+	void
+	on_new_name_changed () final override;
+
+	virtual
+	void
+	on_open () final override;
+
+	void
+	set_animation (const X3D::X3DPtr <X3D::Group> &);
+
+	virtual
+	void
+	on_add_object () final override;
+
+	void
+	addNode (const X3D::SFNode &);
+
+	void
+	addFields (const X3D::SFNode &, Gtk::TreeIter &);
+
+	std::string
+	getNodeName (const X3D::SFNode &) const;
+
+	void
+	set_name (const size_t id, const Gtk::TreePath &);
+
+	void
+	set_fields (const size_t id, const Gtk::TreePath &);
+
+	void
+	set_live (const size_t id, const Gtk::TreePath &);
+
+	void
+	set_field (X3D::X3DFieldDefinition* const, const Gtk::TreePath &);
 
 	///  @name Members
 
-	std::unique_ptr <ViewpointList>   viewpointList;
-	std::unique_ptr <HistoryView>     historyEditor;
-	std::unique_ptr <LibraryView>     libraryView;
-	std::unique_ptr <OutlineEditor>   outlineEditor;
-	std::unique_ptr <Console>         console;
-	std::unique_ptr <ScriptEditor>    scriptEditor;
-	std::unique_ptr <AnimationEditor> animationEditor;
-	std::unique_ptr <GridTool>        gridTool;
-	std::unique_ptr <AngleTool>       angleTool;
-
-	X3D::Keys keys;
-	bool      accelerators;
+	NameEntry                        nodeName;
+	X3D::X3DPtr <X3D::Group>         animation;
+	X3D::X3DPtr <X3D::TimeSensor>    timeSensor;
+	std::map <uint64_t, X3D::SFNode> nodes;
 
 };
 

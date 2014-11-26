@@ -84,6 +84,7 @@ titania_SOURCES =  \
 	Titania/Undo/UndoGroup.cpp \
 	Titania/Undo/UndoHistory.cpp \
 	Titania/Undo/UndoStep.cpp \
+	Titania/UserInterfaces/X3DAnimationEditorInterface.cpp \
 	Titania/UserInterfaces/X3DAppearanceEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
 	Titania/UserInterfaces/X3DColorPerVertexEditorInterface.cpp \
@@ -113,6 +114,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DTextureEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointListInterface.cpp \
+	Titania/Widgets/AnimationEditor/AnimationEditor.cpp \
 	Titania/Widgets/Console/Console.cpp \
 	Titania/Widgets/HistoryView/History.cpp \
 	Titania/Widgets/HistoryView/HistoryView.cpp \
