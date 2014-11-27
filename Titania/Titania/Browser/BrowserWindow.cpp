@@ -1884,7 +1884,7 @@ BrowserWindow::on_node_index_clicked ()
 void
 BrowserWindow::on_hammer_clicked ()
 {
-	const auto undoStep  = std::make_shared <UndoStep> ("Smash Selection");
+	const auto undoStep  = std::make_shared <UndoStep> (_ ("Smash Selection"));
 	auto       selection = getSelection () -> getChildren ();
 
 	for (const auto & shape : X3DEditorObject::getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode }))

@@ -1128,28 +1128,6 @@ X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::SFNode & node, co
 }
 
 void
-X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const X3D::SFNode & node, const UndoStepPtr & undoStep)
-{
-	const auto indices = mfnode .indices_of (node);
-
-	if (indices .empty ())
-		return;
-
-	undoStep -> addObjects (parent);
-
-	undoStep -> addUndoFunction (&X3DBrowserEditor::undoEraseNode,
-	                             std::ref (mfnode),
-	                             node,
-	                             indices);
-
-	using removeNode = void (X3D::MFNode::*) (const X3D::SFNode &);
-
-	undoStep -> addRedoFunction ((removeNode) & X3D::MFNode::remove, std::ref (mfnode), node);
-
-	mfnode .remove (node);
-}
-
-void
 X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const size_t index, const UndoStepPtr & undoStep) const
 {
 	const X3D::SFNode oldValue = mfnode [index];
@@ -1341,6 +1319,28 @@ X3DBrowserEditor::removeNodesFromSceneGraph (const X3D::MFNode & array, const st
 						},
 	               true,
 	               X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+}
+
+void
+X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const X3D::SFNode & node, const UndoStepPtr & undoStep)
+{
+	const auto indices = mfnode .indices_of (node);
+
+	if (indices .empty ())
+		return;
+
+	undoStep -> addObjects (parent);
+
+	undoStep -> addUndoFunction (&X3DBrowserEditor::undoEraseNode,
+	                             std::ref (mfnode),
+	                             node,
+	                             indices);
+
+	using removeNode = void (X3D::MFNode::*) (const X3D::SFNode &);
+
+	undoStep -> addRedoFunction ((removeNode) & X3D::MFNode::remove, std::ref (mfnode), node);
+
+	mfnode .remove (node);
 }
 
 void

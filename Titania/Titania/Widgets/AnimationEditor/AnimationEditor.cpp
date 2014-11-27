@@ -79,6 +79,8 @@ void
 AnimationEditor::initialize ()
 {
 	X3DAnimationEditorInterface::initialize ();
+
+	getBrowser () .addInterest (this, &AnimationEditor::set_browser);
 }
 
 void
@@ -100,16 +102,23 @@ AnimationEditor::on_unmap ()
 void
 AnimationEditor::set_selection ()
 {
-	const auto groups = getSelection <X3D::X3DGroupingNode> ({ X3D::X3DConstants::X3DGroupingNode });
-	
+	const auto groups        = getSelection <X3D::X3DGroupingNode> ({ X3D::X3DConstants::X3DGroupingNode });
 	const bool haveSelection = not groups .empty ();
 
 	getNewButton () .set_sensitive (haveSelection);
 }
 
 void
+AnimationEditor::set_browser (const X3D::BrowserPtr &)
+{
+	set_animation (nullptr);
+}
+
+void
 AnimationEditor::on_new ()
 {
+	// Open »New Animation Dialog«.
+
 	getNewNameEntry () .set_text ("");
 
 	const auto responseId = getNewDialog () .run ();
@@ -119,25 +128,33 @@ AnimationEditor::on_new ()
 	if (responseId not_eq Gtk::RESPONSE_OK)
 		return;
 
-	const auto name   = getExecutionContext () -> getUniqueName (getNewNameEntry () .get_text ());
-	const auto groups = getSelection <X3D::X3DGroupingNode> ({ X3D::X3DConstants::X3DGroupingNode });
-	const auto group  = groups .back ();
+	// Create new animation.
 
-	animation  = getExecutionContext () -> createNode <X3D::Group> ();
-	timeSensor = getExecutionContext () -> createNode <X3D::TimeSensor> ();
+	const auto undoStep  = std::make_shared <UndoStep> (_ ("Create New Animation"));
+	const auto name      = getExecutionContext () -> getUniqueName (getNewNameEntry () .get_text ());
+	const auto groups    = getSelection <X3D::X3DGroupingNode> ({ X3D::X3DConstants::X3DGroupingNode });
+	const auto group     = groups .back ();
+	const auto animation = getExecutionContext () -> createNode <X3D::Group> ();
 
-	group     -> children () .emplace_front (animation);
-	animation -> children () .emplace_back (timeSensor);
+	group -> children () .emplace_front (animation);
 
 	getExecutionContext () -> updateNamedNode (name, X3D::SFNode (animation));
 	animation -> setMetaData <int32_t> ("/Animation/duration",        10);
 	animation -> setMetaData <int32_t> ("/Animation/framesPerSecond", 10);
 
-	nodeName .setNode  (X3D::SFNode (animation));
-
 	getExecutionContext () -> realize ();
 
 	set_animation (animation);
+
+	// Undo/Redo
+
+	const auto undoRemoveNode = std::make_shared <UndoStep> ();
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { animation }, undoRemoveNode);
+	undoStep -> addUndoFunction (&UndoStep::redoChanges, undoRemoveNode);
+	undoStep -> addRedoFunction (&UndoStep::undoChanges, undoRemoveNode);
+	undoRemoveNode -> undoChanges ();
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
@@ -166,9 +183,15 @@ AnimationEditor::on_open ()
 }
 
 void
-AnimationEditor::set_animation (const X3D::X3DPtr <X3D::Group> & animation)
+AnimationEditor::set_animation (const X3D::X3DPtr <X3D::Group> & value)
 {
 	// Remove animation.
+	
+	if (animation)
+	{
+		animation ->  isLive () .removeInterest (this, &AnimationEditor::set_remove_animation);
+		timeSensor -> isLive () .removeInterest (this, &AnimationEditor::set_remove_animation);
+	}
 
 	for (const auto & pair : nodes)
 	{
@@ -182,11 +205,43 @@ AnimationEditor::set_animation (const X3D::X3DPtr <X3D::Group> & animation)
 
 	// Reset all.
 
+	animation  = value;
+	timeSensor = nullptr;
+
+	if (animation)
+	{
+		animation -> isLive () .addInterest (this, &AnimationEditor::set_remove_animation);
+
+		const auto timeSensors = getNodes <X3D::TimeSensor> ({ animation }, { X3D::X3DConstants::TimeSensor });
+
+		if (timeSensors .empty ())
+		{
+			timeSensor = getExecutionContext () -> createNode <X3D::TimeSensor> ();
+
+			animation -> children () .emplace_front (timeSensor);
+
+			getExecutionContext () -> realize ();
+		}
+		else
+			timeSensor = timeSensors .back ();
+
+		timeSensor -> isLive () .addInterest (this, &AnimationEditor::set_remove_animation);
+	}
+
 	getAddObjectButton () .set_sensitive (animation);
+	getAnimationBox ()    .set_sensitive (animation);
 
 	getTreeStore () -> clear ();
 	nodes .clear ();
 
+	nodeName .setNode  (X3D::SFNode (animation));
+}
+
+void
+AnimationEditor::set_remove_animation (const bool value)
+{
+	if (not value)
+		set_animation (nullptr);
 }
 
 void
@@ -268,24 +323,6 @@ AnimationEditor::set_name (const size_t id, const Gtk::TreePath & path)
 }
 
 void
-AnimationEditor::set_fields (const size_t id, const Gtk::TreePath & path)
-{
-	try
-	{
-		const auto & node = nodes .at (id);
-
-		auto parent = getTreeStore () -> get_iter (path);
-
-		for (auto child = parent -> children () .begin (); child; child = getTreeStore () -> erase (*child))
-			;
-		
-		addFields (node, parent);
-	}
-	catch (const std::out_of_range &)
-	{ }
-}
-
-void
 AnimationEditor::set_live (const size_t id, const Gtk::TreePath & path)
 {
 	try
@@ -309,6 +346,24 @@ AnimationEditor::set_field (X3D::X3DFieldDefinition* const field, const Gtk::Tre
 	auto iter = getTreeStore () -> get_iter (path);
 
 	iter -> set_value (NAME_COLUMN, "<i>" + Glib::Markup::escape_text (field -> getName ()) + "</i>");
+}
+
+void
+AnimationEditor::set_fields (const size_t id, const Gtk::TreePath & path)
+{
+	try
+	{
+		const auto & node = nodes .at (id);
+
+		auto parent = getTreeStore () -> get_iter (path);
+
+		for (auto child = parent -> children () .begin (); child; child = getTreeStore () -> erase (*child))
+			;
+		
+		addFields (node, parent);
+	}
+	catch (const std::out_of_range &)
+	{ }
 }
 
 AnimationEditor::~AnimationEditor ()

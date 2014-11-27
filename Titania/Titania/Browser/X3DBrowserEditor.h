@@ -367,16 +367,16 @@ private:
 
 	static
 	void
-	removeNode (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &);
-
-	static
-	void
 	removeNodesFromExecutionContext (const X3D::X3DExecutionContextPtr &, const std::set <X3D::SFNode> &, const UndoStepPtr &, const bool);
 
 	static
 	void
 	removeNodesFromSceneGraph (const X3D::X3DExecutionContextPtr &, const std::set <X3D::SFNode> &, const UndoStepPtr &);
 	
+	static
+	void
+	removeNode (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &);
+
 	static
 	void
 	removeExportedNodes (const X3D::X3DScenePtr &, const std::set <X3D::SFNode> &, const UndoStepPtr &);

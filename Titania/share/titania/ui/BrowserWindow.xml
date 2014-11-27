@@ -5,7 +5,7 @@
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
       <source stock-id="MergePoints" filename="icons/MergePoints.svg"/>
-      <source stock-id="Shading" filename="icons/Shading.svg"/>
+      <source stock-id="Blue" filename="icons/Blue.svg"/>
       <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.96.svg"/>
       <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
       <source stock-id="Index" filename="icons/Index.svg"/>
@@ -36,24 +36,27 @@
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>
       <source stock-id="Hand" filename="icons/Hand.svg"/>
       <source stock-id="ExternProto" filename="icons/Node/ExternProto.96.svg"/>
+      <source stock-id="Green" filename="icons/Green.svg"/>
       <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
-      <source stock-id="Arrow" filename="icons/Arrow.svg"/>
       <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
       <source stock-id="LOD" filename="icons/LOD.svg"/>
       <source stock-id="History" filename="icons/History.svg"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
+      <source stock-id="Shading" filename="icons/Shading.svg"/>
       <source stock-id="Prototype" filename="icons/Node/Prototype.96.svg"/>
-      <source stock-id="Texture" filename="icons/Texture.svg"/>
-      <source stock-id="Select" filename="icons/Select.svg"/>
+      <source stock-id="Arrow" filename="icons/Arrow.svg"/>
       <source stock-id="ColorAdjacentVertices" filename="icons/ColorAdjacentVertices.svg"/>
       <source stock-id="PlaneViewer" filename="icons/PlaneViewer.svg"/>
-      <source stock-id="Clockwise" filename="icons/Clockwise.svg"/>
+      <source stock-id="Texture" filename="icons/Texture.svg"/>
       <source stock-id="Scale" filename="icons/Scale.svg"/>
-      <source stock-id="ColorSingleVertex" filename="icons/ColorSingleVertex.svg"/>
+      <source stock-id="Clockwise" filename="icons/Clockwise.svg"/>
       <source stock-id="Navigation" filename="icons/Navigation.svg"/>
+      <source stock-id="Red" filename="icons/Red.svg"/>
       <source stock-id="TextureCoordinate" filename="icons/TextureCoordinate.svg"/>
       <source stock-id="Flop" filename="icons/Flop.svg"/>
       <source stock-id="SnapCenter" filename="icons/SnapCenter.svg"/>
+      <source stock-id="Select" filename="icons/Select.svg"/>
+      <source stock-id="ColorSingleVertex" filename="icons/ColorSingleVertex.svg"/>
       <source stock-id="Counterclockwise" filename="icons/Counterclockwise.svg"/>
       <source stock-id="Rotate" filename="icons/Rotate.svg"/>
     </sources>

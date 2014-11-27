@@ -243,7 +243,7 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 
 					// Reorder extern protos.
 
-					const auto undoStep = std::make_shared <UndoStep> ("Reorder Extern Prototypes");
+					const auto undoStep = std::make_shared <UndoStep> (_ ("Reorder Extern Prototypes"));
 
 					// Remove extern protos.
 					

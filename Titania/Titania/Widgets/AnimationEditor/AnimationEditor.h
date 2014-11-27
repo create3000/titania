@@ -95,6 +95,9 @@ private:
 	void
 	set_selection ();
 
+	void
+	set_browser (const X3D::BrowserPtr &);
+
 	///  @name Event handlers
 
 	virtual
@@ -120,6 +123,9 @@ private:
 	void
 	set_animation (const X3D::X3DPtr <X3D::Group> &);
 
+	void
+	set_remove_animation (const bool);
+
 	virtual
 	void
 	on_add_object () final override;
@@ -137,13 +143,13 @@ private:
 	set_name (const size_t id, const Gtk::TreePath &);
 
 	void
-	set_fields (const size_t id, const Gtk::TreePath &);
-
-	void
 	set_live (const size_t id, const Gtk::TreePath &);
 
 	void
 	set_field (X3D::X3DFieldDefinition* const, const Gtk::TreePath &);
+
+	void
+	set_fields (const size_t id, const Gtk::TreePath &);
 
 	///  @name Members
 

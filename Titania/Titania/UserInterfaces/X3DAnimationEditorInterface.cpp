@@ -77,11 +77,15 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PasteButton", m_PasteButton);
 	m_builder -> get_widget ("PlayButton", m_PlayButton);
 	m_builder -> get_widget ("FrameSpinButton", m_FrameSpinButton);
+	m_builder -> get_widget ("AnimationBox", m_AnimationBox);
 	m_builder -> get_widget ("TreeView", m_TreeView);
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
 	m_builder -> get_widget ("DrawingArea", m_DrawingArea);
+	m_builder -> get_widget ("RedButton", m_RedButton);
+	m_builder -> get_widget ("GreenButton", m_GreenButton);
+	m_builder -> get_widget ("BlueButton", m_BlueButton);
 	m_builder -> get_widget ("NewDialog", m_NewDialog);
 	m_builder -> get_widget ("NewCancelButton", m_NewCancelButton);
 	m_builder -> get_widget ("NewOkButton", m_NewOkButton);

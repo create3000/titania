@@ -154,6 +154,10 @@ public:
 	getFrameSpinButton () const
 	{ return *m_FrameSpinButton; }
 
+	Gtk::Paned &
+	getAnimationBox () const
+	{ return *m_AnimationBox; }
+
 	Gtk::TreeView &
 	getTreeView () const
 	{ return *m_TreeView; }
@@ -173,6 +177,18 @@ public:
 	Gtk::DrawingArea &
 	getDrawingArea () const
 	{ return *m_DrawingArea; }
+
+	Gtk::ToggleToolButton &
+	getRedButton () const
+	{ return *m_RedButton; }
+
+	Gtk::ToggleToolButton &
+	getGreenButton () const
+	{ return *m_GreenButton; }
+
+	Gtk::ToggleToolButton &
+	getBlueButton () const
+	{ return *m_BlueButton; }
 
 	Gtk::Dialog &
 	getNewDialog () const
@@ -249,11 +265,15 @@ private:
 	Gtk::ToolButton*                    m_PasteButton;
 	Gtk::ToolButton*                    m_PlayButton;
 	Gtk::SpinButton*                    m_FrameSpinButton;
+	Gtk::Paned*                         m_AnimationBox;
 	Gtk::TreeView*                      m_TreeView;
 	Gtk::Box*                           m_NameBox;
 	Gtk::Entry*                         m_NameEntry;
 	Gtk::Button*                        m_RenameButton;
 	Gtk::DrawingArea*                   m_DrawingArea;
+	Gtk::ToggleToolButton*              m_RedButton;
+	Gtk::ToggleToolButton*              m_GreenButton;
+	Gtk::ToggleToolButton*              m_BlueButton;
 	Gtk::Dialog*                        m_NewDialog;
 	Gtk::Button*                        m_NewCancelButton;
 	Gtk::Button*                        m_NewOkButton;
