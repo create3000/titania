@@ -1,5 +1,16 @@
 2014-11-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWidget.x3dv:
+	* AnimationEditor.xml:
+	* NodeIndex.h:
+	* NodeIndex.cpp:
+	* AnimationEditor.h:
+	* AnimationEditor.cpp:
+	* X3DAnimationEditorInterface.h:
+	* X3DAnimationEditorInterface.cpp: 
+
+2014-11-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.cpp:
 	* X3DBrowserEditor.h:
 	* BrowserWindow.xml:

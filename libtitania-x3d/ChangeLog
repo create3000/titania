@@ -1,3 +1,9 @@
+2014-11-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DOutput.cpp:
+	* MetadataSet.h:
+	* MetadataSet.cpp: 
+
 2014-11-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SFVec2.h:

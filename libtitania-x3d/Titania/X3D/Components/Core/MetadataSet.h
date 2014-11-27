@@ -156,6 +156,9 @@ private:
 	void
 	initialize () final override;
 
+	void
+	addMetaData (const SFNode &);
+
 	///  @name Event handlers
 
 	void

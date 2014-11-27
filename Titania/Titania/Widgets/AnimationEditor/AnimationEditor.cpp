@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
+#include "../../Dialogs/NodeIndex/NodeIndex.h"
 
 namespace titania {
 namespace puck {
@@ -65,10 +66,14 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DAnimationEditorInterface (get_ui ("AnimationEditor.xml"), gconf_dir ()),
 	            X3DEditorObject (),
+	                  nodeIndex (new NodeIndex (browserWindow)),
 	                   nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                  animation (),
 	                 timeSensor (),
-	                      nodes ()
+	              interpolators (),
+	                      nodes (),
+	                translation (),
+	                      scale (1)
 {
 	getTreeModelFilter () -> set_visible_column (VISIBLE_COLUMN);
 
@@ -81,6 +86,44 @@ AnimationEditor::initialize ()
 	X3DAnimationEditorInterface::initialize ();
 
 	getBrowser () .addInterest (this, &AnimationEditor::set_browser);
+
+	nodeIndex -> getNode () .addInterest (this, &AnimationEditor::set_animation);
+}
+
+int32_t
+AnimationEditor::getDuration () const
+{
+	try
+	{
+		if (animation)
+		{
+			const auto & v = animation -> getMetaData <X3D::MFInt32> ("/Animation/duration");
+
+			return v .at (0);
+		}
+	}
+	catch (...)
+	{ }
+	
+	return 10;
+}
+
+int32_t
+AnimationEditor::getFramesPerSecond () const
+{
+	try
+	{
+		if (animation)
+		{
+			const auto & v = animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond");
+
+			return v .at (0);
+		}
+	}
+	catch (...)
+	{ }
+
+	return 10;
 }
 
 void
@@ -144,7 +187,7 @@ AnimationEditor::on_new ()
 
 	getExecutionContext () -> realize ();
 
-	set_animation (animation);
+	set_animation (X3D::SFNode (animation));
 
 	// Undo/Redo
 
@@ -180,10 +223,12 @@ AnimationEditor::on_new_name_changed ()
 void
 AnimationEditor::on_open ()
 {
+	nodeIndex -> getWindow () .show ();
+	nodeIndex -> setAnimations ();
 }
 
 void
-AnimationEditor::set_animation (const X3D::X3DPtr <X3D::Group> & value)
+AnimationEditor::set_animation (const X3D::SFNode & value)
 {
 	// Remove animation.
 	
@@ -232,9 +277,15 @@ AnimationEditor::set_animation (const X3D::X3DPtr <X3D::Group> & value)
 	getAnimationBox ()    .set_sensitive (animation);
 
 	getTreeStore () -> clear ();
-	nodes .clear ();
 
-	nodeName .setNode  (X3D::SFNode (animation));
+	nodeName .setNode (X3D::SFNode (animation));
+	
+	interpolators .clear ();
+	nodes .clear ();
+	translation = X3D::Vector2d ();
+	scale       = 1;
+
+	getDrawingArea () .queue_draw ();
 }
 
 void
@@ -364,6 +415,67 @@ AnimationEditor::set_fields (const size_t id, const Gtk::TreePath & path)
 	}
 	catch (const std::out_of_range &)
 	{ }
+}
+
+void
+AnimationEditor::on_enabled_toggled (const Glib::ustring & path)
+{
+	bool       enabled = false;
+	const auto iter    = getTreeModelFilter () -> get_iter (path);
+
+	iter -> get_value (ENABLED_COLUMN, enabled);
+	iter -> set_value (ENABLED_COLUMN, not enabled);
+}
+
+bool
+AnimationEditor::on_tree_view_draw (const Cairo::RefPtr <Cairo::Context> &)
+{
+	getDrawingArea () .queue_draw ();
+	return false;
+}
+
+bool
+AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
+{
+	const int  width  = getDrawingArea () .get_width ();
+	const int  height = getDrawingArea () .get_height ();
+	const auto fc     = getDrawingArea () .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
+	const auto sc     = getDrawingArea () .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+
+	context -> set_source_rgba (fc .get_red (), fc .get_green (), fc .get_blue (), fc .get_alpha ());
+	context -> set_line_width (1);
+
+	Gtk::TreePath firstPath, lastPath;
+	getTreeView () .get_visible_range (firstPath, lastPath);
+  
+	while (not firstPath .empty () and firstPath <= lastPath)
+	{
+		const auto iter = getTreeModelFilter () -> get_iter (firstPath);
+
+		if (iter)
+		{
+			Gdk::Rectangle rectangle;
+			getTreeView () .get_cell_area (firstPath, *getNameColumn () .operator -> (), rectangle); 
+
+			context -> move_to (0,     rectangle .get_y () + rectangle .get_height () + 0.5);
+			context -> line_to (width, rectangle .get_y () + rectangle .get_height () + 0.5);
+
+			if (getTreeView () .row_expanded (firstPath))
+				firstPath .down ();
+			else
+				firstPath .next ();
+		}
+		else
+		{
+			firstPath .up ();
+
+			if (not firstPath .empty ())
+				firstPath .next ();
+		}
+	}
+
+	context -> stroke ();
+	return false;
 }
 
 AnimationEditor::~AnimationEditor ()

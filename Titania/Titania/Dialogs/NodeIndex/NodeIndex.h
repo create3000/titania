@@ -76,6 +76,9 @@ public:
 	void
 	setTypes (const std::set <X3D::X3DConstants::NodeType> & value);
 
+	void
+	setAnimations ();
+
 	const X3D::SFNode &
 	getNode () const
 	{ return node; }
@@ -91,8 +94,8 @@ private:
 	enum IndexType
 	{
 		NAMED_NODES_INDEX,
-		TYPE_INDEX
-
+		TYPE_INDEX,
+		ANIMATION_INDEX
 	};
 
 	///  @name Construction

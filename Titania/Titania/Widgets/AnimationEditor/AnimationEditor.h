@@ -59,6 +59,7 @@ namespace titania {
 namespace puck {
 
 class BrowserWindow;
+class NodeIndex;
 
 class AnimationEditor :
 	public X3DAnimationEditorInterface,
@@ -83,6 +84,12 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	int32_t
+	getDuration () const;
+
+	int32_t
+	getFramesPerSecond () const;
 
 	virtual
 	void
@@ -121,7 +128,7 @@ private:
 	on_open () final override;
 
 	void
-	set_animation (const X3D::X3DPtr <X3D::Group> &);
+	set_animation (const X3D::SFNode &);
 
 	void
 	set_remove_animation (const bool);
@@ -150,13 +157,29 @@ private:
 
 	void
 	set_fields (const size_t id, const Gtk::TreePath &);
+	
+	virtual
+	void
+	on_enabled_toggled (const Glib::ustring &) final override;
+
+	virtual
+	bool
+	on_tree_view_draw (const Cairo::RefPtr <Cairo::Context> &) final override;
+
+	virtual
+	bool
+	on_draw (const Cairo::RefPtr <Cairo::Context> &) final override;
 
 	///  @name Members
 
-	NameEntry                        nodeName;
-	X3D::X3DPtr <X3D::Group>         animation;
-	X3D::X3DPtr <X3D::TimeSensor>    timeSensor;
-	std::map <uint64_t, X3D::SFNode> nodes;
+	std::unique_ptr <NodeIndex>                 nodeIndex;
+	NameEntry                                   nodeName;
+	X3D::X3DPtr <X3D::Group>                    animation;
+	X3D::X3DPtr <X3D::TimeSensor>               timeSensor;
+	X3D::X3DPtrArray <X3D::X3DInterpolatorNode> interpolators;
+	std::map <uint64_t, X3D::SFNode>            nodes;
+	X3D::Vector2d                               translation;
+	double                                      scale;
 
 };
 

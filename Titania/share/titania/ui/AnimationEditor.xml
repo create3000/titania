@@ -213,11 +213,12 @@
                         <property name="rules_hint">True</property>
                         <property name="enable_search">False</property>
                         <property name="search_column">0</property>
+                        <signal name="draw" handler="on_tree_view_draw" swapped="no"/>
                         <child internal-child="selection">
                           <object class="GtkTreeSelection" id="treeview-selection"/>
                         </child>
                         <child>
-                          <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                          <object class="GtkTreeViewColumn" id="NameColumn">
                             <property name="sizing">autosize</property>
                             <property name="title" translatable="yes">Name</property>
                             <property name="expand">True</property>
@@ -235,7 +236,9 @@
                             <property name="sizing">autosize</property>
                             <property name="title" translatable="yes">Enabled</property>
                             <child>
-                              <object class="GtkCellRendererToggle" id="cellrenderertoggle1"/>
+                              <object class="GtkCellRendererToggle" id="EnabledCellRendererToggle">
+                                <signal name="toggled" handler="on_enabled_toggled" swapped="no"/>
+                              </object>
                               <attributes>
                                 <attribute name="visible">3</attribute>
                                 <attribute name="active">1</attribute>
@@ -312,6 +315,7 @@
                           <object class="GtkDrawingArea" id="DrawingArea">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <signal name="draw" handler="on_draw" swapped="no"/>
                           </object>
                         </child>
                       </object>

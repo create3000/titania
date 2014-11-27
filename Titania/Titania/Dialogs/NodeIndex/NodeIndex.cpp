@@ -109,6 +109,25 @@ NodeIndex::refresh ()
 			setNodes (getNodes (types));
 			break;
 		}
+		case ANIMATION_INDEX:
+		{
+			X3D::MFNode animations;
+			
+			for (const auto & basenode : getNodes ({ X3D::X3DConstants::Group }))
+			{
+				try
+				{
+					X3D::X3DPtr <X3D::X3DNode> node (basenode);
+					node -> getMetaData <X3D::MFInt32> ("/Animation/duration");
+					animations .emplace_back (basenode);
+				}
+				catch (const X3D::X3DError &)
+				{ }
+			}
+
+			setNodes (std::move (animations));
+			break;
+		}
 	}
 }
 
@@ -129,6 +148,15 @@ NodeIndex::setTypes (const std::set <X3D::X3DConstants::NodeType> & value)
 	index = TYPE_INDEX;
 	types = value;
 	setNodes (getNodes (types));
+}
+
+void
+NodeIndex::setAnimations ()
+{
+	executionContext -> sceneGraph_changed () .addInterest (this, &NodeIndex::refresh);
+
+	index = ANIMATION_INDEX;
+	refresh ();
 }
 
 std::shared_ptr <UserData::NodeIndex>

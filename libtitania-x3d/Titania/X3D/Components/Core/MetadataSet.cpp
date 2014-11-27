@@ -161,6 +161,7 @@ throw (Error <DISPOSED>)
 	node -> setup ();
 
 	value () .emplace_back (node);
+	addMetaData (value () .back ());
 }
 
 template <>
@@ -191,6 +192,7 @@ throw (Error <DISPOSED>)
 	node -> setup ();
 
 	value () .emplace_back (node);
+	addMetaData (value () .back ());
 }
 
 template <>
@@ -221,6 +223,7 @@ throw (Error <DISPOSED>)
 	node -> setup ();
 
 	value () .emplace_back (node);
+	addMetaData (value () .back ());
 }
 
 template <>
@@ -251,6 +254,7 @@ throw (Error <DISPOSED>)
 	node -> setup ();
 
 	value () .emplace_back (node);
+	addMetaData (value () .back ());
 }
 
 template <>
@@ -281,6 +285,7 @@ throw (Error <DISPOSED>)
 	node -> setup ();
 
 	value () .emplace_back (node);
+	addMetaData (value () .back ());
 }
 
 X3DFieldDefinition*
@@ -314,6 +319,35 @@ throw (Error <DISPOSED>)
 }
 
 void
+MetadataSet::addMetaData (const SFNode & node)
+{
+	const auto metadata = x3d_cast <X3DMetadataObject*> (node);
+
+	if (not metadata)
+		return;
+
+	if (metadata == this)
+		return;
+
+	const auto set = dynamic_cast <MetadataSet*> (metadata);
+
+	if (set)
+	{
+		setIndex .emplace (set -> name (), set) .first -> second .addParent (this);
+		return;
+	}
+
+	if (metadata -> name () .empty ())
+		return;
+
+	const auto field = metadata -> getField ("value");
+
+	field -> addParent (this);
+
+	fieldIndex .emplace (metadata -> name (), field);
+}
+
+void
 MetadataSet::removeMetaData ()
 throw (Error <DISPOSED>)
 {
@@ -331,32 +365,7 @@ MetadataSet::set_value ()
 	removeMetaData ();
 
 	for (const auto & node : value ())
-	{
-		const auto metadata = x3d_cast <X3DMetadataObject*> (node);
-
-		if (not metadata)
-			continue;
-
-		if (metadata == this)
-			continue;
-
-		const auto set = dynamic_cast <MetadataSet*> (metadata);
-
-		if (set)
-		{
-			setIndex .emplace (set -> name (), set) .first -> second .addParent (this);
-			continue;
-		}
-
-		if (metadata -> name () .empty ())
-			continue;
-
-		const auto field = metadata -> getField ("value");
-
-		field -> addParent (this);
-
-		fieldIndex .emplace (metadata -> name (), field);
-	}
+		addMetaData (node);
 }
 
 void
