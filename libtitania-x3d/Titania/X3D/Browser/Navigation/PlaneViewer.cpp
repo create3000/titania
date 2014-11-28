@@ -131,14 +131,14 @@ PlaneViewer::on_scroll_event (GdkEventScroll* event)
 
 	viewpoint -> transitionStop ();
 
-	Vector3f fromPoint = getPointOnCenterPlane (event -> x, event -> y);
+	const Vector3f fromPoint = getPointOnCenterPlane (event -> x, event -> y);
 
-	if (event -> direction == 0)      // Move backwards.
+	if (event -> direction == GDK_SCROLL_UP)      // Move backwards.
 	{
 		viewpoint -> fieldOfViewScale () = std::max (0.00001f, viewpoint -> fieldOfViewScale () * (1 - SCROLL_FACTOR));
 	}
 
-	else if (event -> direction == 1) // Move forwards.
+	else if (event -> direction == GDK_SCROLL_DOWN) // Move forwards.
 	{
 		viewpoint -> fieldOfViewScale () = viewpoint -> fieldOfViewScale () * (1 + SCROLL_FACTOR);
 

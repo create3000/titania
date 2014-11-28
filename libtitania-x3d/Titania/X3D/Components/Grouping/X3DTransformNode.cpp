@@ -120,11 +120,20 @@ X3DTransformNode::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f &
 
 	matrix .get (t, r, s, so, c);
 
-	translation ()      = t;
-	rotation ()         = r;
-	scale ()            = s;
-	scaleOrientation () = so;
-	center ()           = c;
+	if (t not_eq translation ())
+		translation () = t;
+
+	if (r not_eq rotation ())
+		rotation () = r;
+
+	if (s not_eq scale ())
+		scale () = s;
+
+	if (so not_eq scaleOrientation ())
+		scaleOrientation () = so;
+
+	if (c not_eq center ())
+		center () = c;
 }
 
 void

@@ -102,9 +102,6 @@ private:
 	void
 	set_selection ();
 
-	void
-	set_browser (const X3D::BrowserPtr &);
-
 	///  @name Event handlers
 
 	virtual
@@ -157,10 +154,26 @@ private:
 
 	void
 	set_fields (const size_t id, const Gtk::TreePath &);
-	
+
+	virtual
+	bool
+	on_button_press_event (GdkEventButton*) final override;
+
+	virtual
+	bool
+	on_button_release_event (GdkEventButton*) final override;
+
+	virtual
+	bool
+	on_motion_notify_event (GdkEventMotion*) final override;
+
+	virtual
+	bool
+	on_scroll_event (GdkEventScroll*) final override;
+
 	virtual
 	void
-	on_enabled_toggled (const Glib::ustring &) final override;
+	on_current_frame_changed () final override;
 
 	virtual
 	bool
@@ -178,9 +191,11 @@ private:
 	X3D::X3DPtr <X3D::TimeSensor>               timeSensor;
 	X3D::X3DPtrArray <X3D::X3DInterpolatorNode> interpolators;
 	std::map <uint64_t, X3D::SFNode>            nodes;
-	X3D::Vector2d                               translation;
+	X3D::Vector2d                               fromPoint;
+	double                                      translation;
 	double                                      scale;
-
+	guint                                       button;
+	
 };
 
 } // puck

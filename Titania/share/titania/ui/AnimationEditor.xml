@@ -6,14 +6,12 @@
     <property name="upper">10</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
+    <signal name="value-changed" handler="on_current_frame_changed" swapped="no"/>
   </object>
-  <object class="GtkTextBuffer" id="TextBuffer"/>
   <object class="GtkTreeStore" id="TreeStore">
     <columns>
       <!-- column-name Name -->
       <column type="gchararray"/>
-      <!-- column-name Enabled -->
-      <column type="gboolean"/>
       <!-- column-name ID -->
       <column type="guint64"/>
       <!-- column-name Visible -->
@@ -172,6 +170,7 @@
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">Current frame</property>
                     <property name="adjustment">FrameAdjustment</property>
                     <property name="numeric">True</property>
                   </object>
@@ -225,23 +224,7 @@
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext1"/>
                               <attributes>
-                                <attribute name="visible">3</attribute>
                                 <attribute name="markup">0</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkTreeViewColumn" id="treeviewcolumn2">
-                            <property name="sizing">autosize</property>
-                            <property name="title" translatable="yes">Enabled</property>
-                            <child>
-                              <object class="GtkCellRendererToggle" id="EnabledCellRendererToggle">
-                                <signal name="toggled" handler="on_enabled_toggled" swapped="no"/>
-                              </object>
-                              <attributes>
-                                <attribute name="visible">3</attribute>
-                                <attribute name="active">1</attribute>
                               </attributes>
                             </child>
                           </object>
@@ -299,94 +282,19 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="box2">
+              <object class="GtkDrawingArea" id="DrawingArea">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkScrolledWindow" id="scrolledwindow2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="shadow_type">in</property>
-                    <child>
-                      <object class="GtkViewport" id="viewport1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <child>
-                          <object class="GtkDrawingArea" id="DrawingArea">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <signal name="draw" handler="on_draw" swapped="no"/>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkToolbar" id="toolbar2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="orientation">vertical</property>
-                    <property name="toolbar_style">icons</property>
-                    <property name="icon_size">1</property>
-                    <child>
-                      <object class="GtkToggleToolButton" id="RedButton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Red</property>
-                        <property name="use_underline">True</property>
-                        <property name="stock_id">Red</property>
-                        <property name="active">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkToggleToolButton" id="GreenButton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Green</property>
-                        <property name="use_underline">True</property>
-                        <property name="stock_id">Green</property>
-                        <property name="active">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkToggleToolButton" id="BlueButton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Blue</property>
-                        <property name="use_underline">True</property>
-                        <property name="stock_id">Blue</property>
-                        <property name="active">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
+                <property name="events">GDK_BUTTON1_MOTION_MASK | GDK_BUTTON2_MOTION_MASK | GDK_BUTTON3_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
+                <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+                <signal name="button-release-event" handler="on_button_release_event" swapped="no"/>
+                <signal name="draw" handler="on_draw" swapped="no"/>
+                <signal name="motion-notify-event" handler="on_motion_notify_event" swapped="no"/>
+                <signal name="scroll-event" handler="on_scroll_event" swapped="no"/>
               </object>
               <packing>
                 <property name="resize">True</property>
-                <property name="shrink">False</property>
+                <property name="shrink">True</property>
               </packing>
             </child>
           </object>

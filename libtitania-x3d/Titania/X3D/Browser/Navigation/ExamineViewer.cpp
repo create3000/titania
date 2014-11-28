@@ -217,12 +217,12 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 	const Vector3f step           = getDistanceToCenter () * SCROLL_FACTOR;
 	const Vector3f positionOffset = Vector3f (0, 0, abs (step)) * viewpoint -> getUserOrientation ();
 
-	if (event -> direction == 0)      // Move backwards.
+	if (event -> direction == GDK_SCROLL_DOWN)      // Move backwards.
 	{
 		viewpoint -> positionOffset () += positionOffset;
 	}
 
-	else if (event -> direction == 1) // Move forwards.
+	else if (event -> direction == GDK_SCROLL_UP) // Move forwards.
 	{
 		viewpoint -> positionOffset () -= positionOffset;
 	}

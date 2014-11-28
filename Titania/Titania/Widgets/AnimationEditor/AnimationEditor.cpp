@@ -58,9 +58,13 @@ namespace titania {
 namespace puck {
 
 static constexpr int NAME_COLUMN    = 0;
-static constexpr int ENABLED_COLUMN = 1;
-static constexpr int ID_COLUMN      = 2;
-static constexpr int VISIBLE_COLUMN = 3;
+static constexpr int ID_COLUMN      = 1;
+static constexpr int VISIBLE_COLUMN = 2;
+
+static constexpr double DEFAULT_TRANSLATION = 8;
+static constexpr double DEFAULT_SCALE       = 16;
+static constexpr double KEY_FRAME_SIZE      = 7;
+static constexpr double SCROLL_FACTOR       = 1 + 1 / 16.0;
 
 AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
@@ -72,8 +76,10 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	                 timeSensor (),
 	              interpolators (),
 	                      nodes (),
-	                translation (),
-	                      scale (1)
+	                  fromPoint (),
+	                translation (0),
+	                      scale (1),
+	                     button (0)
 {
 	getTreeModelFilter () -> set_visible_column (VISIBLE_COLUMN);
 
@@ -85,8 +91,8 @@ AnimationEditor::initialize ()
 {
 	X3DAnimationEditorInterface::initialize ();
 
-	getBrowser () .addInterest (this, &AnimationEditor::set_browser);
-
+	getBrowser ()           .addInterest (this, &AnimationEditor::set_animation, nullptr);
+	getExecutionContext ()  .addInterest (this, &AnimationEditor::set_animation, nullptr);
 	nodeIndex -> getNode () .addInterest (this, &AnimationEditor::set_animation);
 }
 
@@ -145,16 +151,11 @@ AnimationEditor::on_unmap ()
 void
 AnimationEditor::set_selection ()
 {
+	const bool haveSelection = not getBrowserWindow () -> getSelection () -> getChildren () .empty ();
 	const auto groups        = getSelection <X3D::X3DGroupingNode> ({ X3D::X3DConstants::X3DGroupingNode });
-	const bool haveSelection = not groups .empty ();
 
-	getNewButton () .set_sensitive (haveSelection);
-}
-
-void
-AnimationEditor::set_browser (const X3D::BrowserPtr &)
-{
-	set_animation (nullptr);
+	getAddObjectButton () .set_sensitive (animation and haveSelection);
+	getNewButton ()       .set_sensitive (not groups .empty ());
 }
 
 void
@@ -273,7 +274,9 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 		timeSensor -> isLive () .addInterest (this, &AnimationEditor::set_remove_animation);
 	}
 
-	getAddObjectButton () .set_sensitive (animation);
+	set_selection ();
+
+	getFrameSpinButton () .set_sensitive (animation);
 	getAnimationBox ()    .set_sensitive (animation);
 
 	getTreeStore () -> clear ();
@@ -281,9 +284,13 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	nodeName .setNode (X3D::SFNode (animation));
 	
 	interpolators .clear ();
-	nodes .clear ();
-	translation = X3D::Vector2d ();
-	scale       = 1;
+	nodes         .clear ();
+
+	translation = DEFAULT_TRANSLATION;
+	scale       = DEFAULT_SCALE;
+
+	getFrameAdjustment () -> set_upper (getDuration ());
+	getFrameAdjustment () -> set_value (0);
 
 	getDrawingArea () .queue_draw ();
 }
@@ -311,7 +318,6 @@ AnimationEditor::addNode (const X3D::SFNode & node)
 	auto parent = getTreeStore () -> append ();
 	parent -> set_value (ID_COLUMN,      (size_t) node -> getId ());
 	parent -> set_value (NAME_COLUMN,    getNodeName (node));
-	parent -> set_value (ENABLED_COLUMN, true);
 	parent -> set_value (VISIBLE_COLUMN, true);
 
 	node -> name_changed ()   .addInterest (this, &AnimationEditor::set_name,   (size_t) node -> getId (), getTreeStore () -> get_path (parent));
@@ -325,6 +331,10 @@ void
 AnimationEditor::addFields (const X3D::SFNode & node, Gtk::TreeIter & parent)
 {
 	static const std::set <X3D::X3DConstants::FieldType> fieldTypes = {
+		X3D::X3DConstants::SFColor,
+		X3D::X3DConstants::SFFloat,
+		X3D::X3DConstants::SFRotation,
+		X3D::X3DConstants::SFVec2f,
 		X3D::X3DConstants::SFVec3f
 	};
 
@@ -341,7 +351,6 @@ AnimationEditor::addFields (const X3D::SFNode & node, Gtk::TreeIter & parent)
 		auto child = getTreeStore () -> append (parent -> children ());
 		child -> set_value (ID_COLUMN,      i);
 		child -> set_value (NAME_COLUMN,    Glib::Markup::escape_text (field -> getName ()));
-		child -> set_value (ENABLED_COLUMN, true);
 		child -> set_value (VISIBLE_COLUMN, true);
 		
 		field -> addInterest (this, &AnimationEditor::set_field, field, getTreeStore () -> get_path (child));
@@ -417,14 +426,76 @@ AnimationEditor::set_fields (const size_t id, const Gtk::TreePath & path)
 	{ }
 }
 
-void
-AnimationEditor::on_enabled_toggled (const Glib::ustring & path)
+bool
+AnimationEditor::on_button_press_event (GdkEventButton* event)
 {
-	bool       enabled = false;
-	const auto iter    = getTreeModelFilter () -> get_iter (path);
+	button = event -> button;
 
-	iter -> get_value (ENABLED_COLUMN, enabled);
-	iter -> set_value (ENABLED_COLUMN, not enabled);
+	if (button == 2)
+	{
+		getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::FLEUR));
+
+		fromPoint = X3D::Vector2d (event -> x, event -> y);
+	}
+
+	return false;
+}
+
+bool
+AnimationEditor::on_button_release_event (GdkEventButton* event)
+{
+	getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
+
+	button = 0;
+	return false;
+}
+
+bool
+AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
+{
+	if (button == 2)
+	{
+		const auto toPoint = X3D::Vector2d (event -> x, event -> y);
+		const auto offset  = toPoint - fromPoint;
+
+		translation += offset .x ();
+		//translation  = std::min (translation, DEFAULT_TRANSLATION);
+		fromPoint    = toPoint;
+	}
+
+	getDrawingArea () .queue_draw ();
+	return false;
+}
+
+
+bool
+AnimationEditor::on_scroll_event (GdkEventScroll* event)
+{
+	const auto fromFrame = (event -> x - translation) / scale;
+
+	if (event -> direction == GDK_SCROLL_DOWN)     // Move backwards.
+	{
+		scale /= SCROLL_FACTOR;
+	}
+
+	else if (event -> direction == GDK_SCROLL_UP) // Move forwards.
+	{
+		scale *= SCROLL_FACTOR;
+	}
+
+	const auto toFrame = (event -> x - translation) / scale;
+	const auto offset  = (toFrame - fromFrame) * scale;
+
+	translation += offset;
+
+	getDrawingArea () .queue_draw ();
+	return false;
+}
+
+void
+AnimationEditor::on_current_frame_changed ()
+{
+	getDrawingArea () .queue_draw ();
 }
 
 bool
@@ -441,24 +512,54 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 	const int  height = getDrawingArea () .get_height ();
 	const auto fc     = getDrawingArea () .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
 	const auto sc     = getDrawingArea () .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+	const auto sb     = getDrawingArea () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
 
-	context -> set_source_rgba (fc .get_red (), fc .get_green (), fc .get_blue (), fc .get_alpha ());
-	context -> set_line_width (1);
+	getDrawingArea () .get_style_context () -> render_background (context, 0, 0, width, height);
+
+	// Draw all time lines.
 
 	Gtk::TreePath firstPath, lastPath;
 	getTreeView () .get_visible_range (firstPath, lastPath);
-  
+
+	context -> set_source_rgba (fc .get_red (), fc .get_green (), fc .get_blue (), fc .get_alpha ());
+
 	while (not firstPath .empty () and firstPath <= lastPath)
 	{
 		const auto iter = getTreeModelFilter () -> get_iter (firstPath);
 
 		if (iter)
 		{
-			Gdk::Rectangle rectangle;
-			getTreeView () .get_cell_area (firstPath, *getNameColumn () .operator -> (), rectangle); 
+			// Draw one time line.
 
-			context -> move_to (0,     rectangle .get_y () + rectangle .get_height () + 0.5);
-			context -> line_to (width, rectangle .get_y () + rectangle .get_height () + 0.5);
+			int32_t       firstFrame = std::max <int32_t> (0, std::floor (-translation / scale));
+			const int32_t lastFrame  = std::min <int32_t> (getDuration (), std::ceil ((width - translation) / scale)) + 1;
+
+			Gdk::Rectangle rectangle;
+			getTreeView () .get_cell_area (firstPath, *getNameColumn () .operator -> (), rectangle);
+
+			// Draw horizontal line.
+
+			const int32_t x0 = firstFrame * scale + translation;
+			const int32_t x1 = lastFrame  * scale + translation - scale + 1;
+
+			context -> move_to (x0, rectangle .get_y () + rectangle .get_height () - 0.5);
+			context -> line_to (x1, rectangle .get_y () + rectangle .get_height () - 0.5);
+
+			// Draw vertical lines.
+
+			for (; firstFrame < lastFrame; ++ firstFrame)
+			{
+				const bool    s = firstFrame % 5;
+				const int32_t x = firstFrame * scale + translation;
+
+				context -> move_to (x + 0.5, rectangle .get_y () + rectangle .get_height () * (s ? 0.75 : 0.5));
+				context -> line_to (x + 0.5, rectangle .get_y () + rectangle .get_height ());
+			}
+
+			context -> set_line_width (firstPath .size () > 1 ? 1 : 3);
+			context -> stroke ();
+
+			// Step to next path.
 
 			if (getTreeView () .row_expanded (firstPath))
 				firstPath .down ();
@@ -474,7 +575,18 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 		}
 	}
 
+	// Draw frame cursor.
+
+	const int32_t x = getFrameAdjustment () -> get_value () * scale + translation;
+
+	context -> move_to (x + 0.5, 0);
+	context -> line_to (x + 0.5, height);
+
+	context -> set_source_rgba (sb .get_red (), sb .get_green (), sb .get_blue (), sb .get_alpha ());
+	context -> set_dash (std::vector <double> { 2.0, 2.0 }, 0.0);
+	context -> set_line_width (1);
 	context -> stroke ();
+
 	return false;
 }
 

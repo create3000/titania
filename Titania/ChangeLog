@@ -1,3 +1,15 @@
+2014-11-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Red.svg:
+	* Blue.svg:
+	* Green.svg:
+	* AnimationEditor.xml:
+	* NodeIndex.cpp:
+	* AnimationEditor.h:
+	* AnimationEditor.cpp:
+	* X3DAnimationEditorInterface.h:
+	* X3DAnimationEditorInterface.cpp: 
+
 2014-11-27  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWidget.x3dv:

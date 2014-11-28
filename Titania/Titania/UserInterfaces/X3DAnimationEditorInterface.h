@@ -102,10 +102,6 @@ public:
 	getFrameAdjustment () const
 	{ return m_FrameAdjustment; }
 
-	const Glib::RefPtr <Gtk::TextBuffer> &
-	getTextBuffer () const
-	{ return m_TextBuffer; }
-
 	const Glib::RefPtr <Gtk::TreeStore> &
 	getTreeStore () const
 	{ return m_TreeStore; }
@@ -117,10 +113,6 @@ public:
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getNameColumn () const
 	{ return m_NameColumn; }
-
-	const Glib::RefPtr <Gtk::CellRendererToggle> &
-	getEnabledCellRendererToggle () const
-	{ return m_EnabledCellRendererToggle; }
 
 	Gtk::Window &
 	getWindow () const
@@ -186,18 +178,6 @@ public:
 	getDrawingArea () const
 	{ return *m_DrawingArea; }
 
-	Gtk::ToggleToolButton &
-	getRedButton () const
-	{ return *m_RedButton; }
-
-	Gtk::ToggleToolButton &
-	getGreenButton () const
-	{ return *m_GreenButton; }
-
-	Gtk::ToggleToolButton &
-	getBlueButton () const
-	{ return *m_BlueButton; }
-
 	Gtk::Dialog &
 	getNewDialog () const
 	{ return *m_NewDialog; }
@@ -213,6 +193,10 @@ public:
 	Gtk::Entry &
 	getNewNameEntry () const
 	{ return *m_NewNameEntry; }
+
+	virtual
+	void
+	on_current_frame_changed () = 0;
 
 	virtual
 	void
@@ -239,12 +223,24 @@ public:
 	on_tree_view_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
 
 	virtual
-	void
-	on_enabled_toggled (const Glib::ustring &) = 0;
+	bool
+	on_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
+	bool
+	on_button_release_event (GdkEventButton* event) = 0;
 
 	virtual
 	bool
 	on_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
+
+	virtual
+	bool
+	on_motion_notify_event (GdkEventMotion* event) = 0;
+
+	virtual
+	bool
+	on_scroll_event (GdkEventScroll* event) = 0;
 
 	virtual
 	void
@@ -269,37 +265,32 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                            filename;
-	Glib::RefPtr <Gtk::Builder>            m_builder;
-	Glib::RefPtr <Gtk::Adjustment>         m_FrameAdjustment;
-	Glib::RefPtr <Gtk::TextBuffer>         m_TextBuffer;
-	Glib::RefPtr <Gtk::TreeStore>          m_TreeStore;
-	Glib::RefPtr <Gtk::TreeModelFilter>    m_TreeModelFilter;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_NameColumn;
-	Glib::RefPtr <Gtk::CellRendererToggle> m_EnabledCellRendererToggle;
-	Gtk::Window*                           m_Window;
-	Gtk::Box*                              m_Widget;
-	Gtk::ToolButton*                       m_NewButton;
-	Gtk::ToolButton*                       m_OpenButton;
-	Gtk::ToolButton*                       m_AddObjectButton;
-	Gtk::ToolButton*                       m_CutButton;
-	Gtk::ToolButton*                       m_CopyButton;
-	Gtk::ToolButton*                       m_PasteButton;
-	Gtk::ToolButton*                       m_PlayButton;
-	Gtk::SpinButton*                       m_FrameSpinButton;
-	Gtk::Paned*                            m_AnimationBox;
-	Gtk::TreeView*                         m_TreeView;
-	Gtk::Box*                              m_NameBox;
-	Gtk::Entry*                            m_NameEntry;
-	Gtk::Button*                           m_RenameButton;
-	Gtk::DrawingArea*                      m_DrawingArea;
-	Gtk::ToggleToolButton*                 m_RedButton;
-	Gtk::ToggleToolButton*                 m_GreenButton;
-	Gtk::ToggleToolButton*                 m_BlueButton;
-	Gtk::Dialog*                           m_NewDialog;
-	Gtk::Button*                           m_NewCancelButton;
-	Gtk::Button*                           m_NewOkButton;
-	Gtk::Entry*                            m_NewNameEntry;
+	std::string                         filename;
+	Glib::RefPtr <Gtk::Builder>         m_builder;
+	Glib::RefPtr <Gtk::Adjustment>      m_FrameAdjustment;
+	Glib::RefPtr <Gtk::TreeStore>       m_TreeStore;
+	Glib::RefPtr <Gtk::TreeModelFilter> m_TreeModelFilter;
+	Glib::RefPtr <Gtk::TreeViewColumn>  m_NameColumn;
+	Gtk::Window*                        m_Window;
+	Gtk::Box*                           m_Widget;
+	Gtk::ToolButton*                    m_NewButton;
+	Gtk::ToolButton*                    m_OpenButton;
+	Gtk::ToolButton*                    m_AddObjectButton;
+	Gtk::ToolButton*                    m_CutButton;
+	Gtk::ToolButton*                    m_CopyButton;
+	Gtk::ToolButton*                    m_PasteButton;
+	Gtk::ToolButton*                    m_PlayButton;
+	Gtk::SpinButton*                    m_FrameSpinButton;
+	Gtk::Paned*                         m_AnimationBox;
+	Gtk::TreeView*                      m_TreeView;
+	Gtk::Box*                           m_NameBox;
+	Gtk::Entry*                         m_NameEntry;
+	Gtk::Button*                        m_RenameButton;
+	Gtk::DrawingArea*                   m_DrawingArea;
+	Gtk::Dialog*                        m_NewDialog;
+	Gtk::Button*                        m_NewCancelButton;
+	Gtk::Button*                        m_NewOkButton;
+	Gtk::Entry*                         m_NewNameEntry;
 
 };
 

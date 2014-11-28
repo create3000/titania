@@ -359,10 +359,22 @@ NodeIndex::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewCol
 
 	getUserData (getExecutionContext ()) -> node = node;
 
-	const X3D::MFNode selection = { node };
+	// Select node.
 
-	node -> getBrowser () -> getSelection () -> setChildren (selection);
-	getBrowserWindow () -> expandNodes (selection);
+	switch (index)
+	{
+		case NAMED_NODES_INDEX:
+		case TYPE_INDEX:
+		{
+			const X3D::MFNode selection = { node };
+
+			node -> getBrowser () -> getSelection () -> setChildren (selection);
+			getBrowserWindow () -> expandNodes (selection);
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 void

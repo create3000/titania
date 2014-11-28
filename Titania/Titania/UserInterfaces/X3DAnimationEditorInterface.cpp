@@ -61,12 +61,10 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_FrameAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FrameAdjustment"));
-	m_TextBuffer                = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("TextBuffer"));
-	m_TreeStore                 = Glib::RefPtr <Gtk::TreeStore>::cast_dynamic (m_builder -> get_object ("TreeStore"));
-	m_TreeModelFilter           = Glib::RefPtr <Gtk::TreeModelFilter>::cast_dynamic (m_builder -> get_object ("TreeModelFilter"));
-	m_NameColumn                = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
-	m_EnabledCellRendererToggle = Glib::RefPtr <Gtk::CellRendererToggle>::cast_dynamic (m_builder -> get_object ("EnabledCellRendererToggle"));
+	m_FrameAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FrameAdjustment"));
+	m_TreeStore       = Glib::RefPtr <Gtk::TreeStore>::cast_dynamic (m_builder -> get_object ("TreeStore"));
+	m_TreeModelFilter = Glib::RefPtr <Gtk::TreeModelFilter>::cast_dynamic (m_builder -> get_object ("TreeModelFilter"));
+	m_NameColumn      = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -85,13 +83,13 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
 	m_builder -> get_widget ("DrawingArea", m_DrawingArea);
-	m_builder -> get_widget ("RedButton", m_RedButton);
-	m_builder -> get_widget ("GreenButton", m_GreenButton);
-	m_builder -> get_widget ("BlueButton", m_BlueButton);
 	m_builder -> get_widget ("NewDialog", m_NewDialog);
 	m_builder -> get_widget ("NewCancelButton", m_NewCancelButton);
 	m_builder -> get_widget ("NewOkButton", m_NewOkButton);
 	m_builder -> get_widget ("NewNameEntry", m_NewNameEntry);
+
+	// Connect object Gtk::Adjustment with id 'FrameAdjustment'.
+	m_FrameAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_current_frame_changed));
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_map));
@@ -105,11 +103,12 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_draw () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_tree_view_draw));
 
-	// Connect object Gtk::CellRendererToggle with id 'EnabledCellRendererToggle'.
-	m_EnabledCellRendererToggle -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_enabled_toggled));
-
 	// Connect object Gtk::DrawingArea with id 'DrawingArea'.
+	m_DrawingArea -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_button_press_event));
+	m_DrawingArea -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_button_release_event));
 	m_DrawingArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_draw));
+	m_DrawingArea -> signal_motion_notify_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_motion_notify_event));
+	m_DrawingArea -> signal_scroll_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_scroll_event));
 
 	// Connect object Gtk::Entry with id 'NewNameEntry'.
 	m_NewNameEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new_name_changed));

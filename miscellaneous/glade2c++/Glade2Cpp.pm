@@ -717,3 +717,7 @@ selection_changed
   virtual void on_selection_changed();
 enter_notify_event
   virtual bool on_enter_notify_event(GdkEventCrossing* event);
+scroll_event
+  virtual bool on_scroll_event(GdkEventScroll* event);
+motion_notify_event
+  virtual bool on_motion_notify_event(GdkEventMotion* event);
