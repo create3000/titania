@@ -99,6 +99,14 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getDurationAdjustment () const
+	{ return m_DurationAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getFPSAdjustment () const
+	{ return m_FPSAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getFrameAdjustment () const
 	{ return m_FrameAdjustment; }
 
@@ -147,12 +155,28 @@ public:
 	{ return *m_PasteButton; }
 
 	Gtk::ToolButton &
-	getPlayButton () const
-	{ return *m_PlayButton; }
+	getFirstFrameButton () const
+	{ return *m_FirstFrameButton; }
+
+	Gtk::ToolButton &
+	getPlayPauseButton () const
+	{ return *m_PlayPauseButton; }
+
+	Gtk::ToolButton &
+	getLastFrameButton () const
+	{ return *m_LastFrameButton; }
 
 	Gtk::SpinButton &
 	getFrameSpinButton () const
 	{ return *m_FrameSpinButton; }
+
+	Gtk::ToolButton &
+	getTimeButton () const
+	{ return *m_TimeButton; }
+
+	Gtk::Label &
+	getTimeLabel () const
+	{ return *m_TimeLabel; }
 
 	Gtk::Paned &
 	getAnimationBox () const
@@ -178,9 +202,29 @@ public:
 	getDrawingArea () const
 	{ return *m_DrawingArea; }
 
+	Gtk::ToolButton &
+	getZoomOutButton () const
+	{ return *m_ZoomOutButton; }
+
+	Gtk::ToolButton &
+	getZoomInButton () const
+	{ return *m_ZoomInButton; }
+
+	Gtk::ToolButton &
+	getZoomFitButton () const
+	{ return *m_ZoomFitButton; }
+
 	Gtk::Dialog &
-	getNewDialog () const
-	{ return *m_NewDialog; }
+	getPropertiesDialog () const
+	{ return *m_PropertiesDialog; }
+
+	Gtk::Entry &
+	getNewNameEntry () const
+	{ return *m_NewNameEntry; }
+
+	Gtk::CheckButton &
+	getLoopCheckButton () const
+	{ return *m_LoopCheckButton; }
 
 	Gtk::Button &
 	getNewCancelButton () const
@@ -189,10 +233,6 @@ public:
 	Gtk::Button &
 	getNewOkButton () const
 	{ return *m_NewOkButton; }
-
-	Gtk::Entry &
-	getNewNameEntry () const
-	{ return *m_NewNameEntry; }
 
 	virtual
 	void
@@ -217,6 +257,22 @@ public:
 	virtual
 	void
 	on_add_object () = 0;
+
+	virtual
+	void
+	on_first_frame () = 0;
+
+	virtual
+	void
+	on_play_pause () = 0;
+
+	virtual
+	void
+	on_last_frame () = 0;
+
+	virtual
+	void
+	on_time () = 0;
 
 	virtual
 	bool
@@ -244,6 +300,18 @@ public:
 
 	virtual
 	void
+	on_zoom_out_clicked () = 0;
+
+	virtual
+	void
+	on_zoom_in_clicked () = 0;
+
+	virtual
+	void
+	on_zoom_fit_clicked () = 0;
+
+	virtual
+	void
 	on_new_name_changed () = 0;
 
 	virtual
@@ -267,6 +335,8 @@ private:
 
 	std::string                         filename;
 	Glib::RefPtr <Gtk::Builder>         m_builder;
+	Glib::RefPtr <Gtk::Adjustment>      m_DurationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>      m_FPSAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>      m_FrameAdjustment;
 	Glib::RefPtr <Gtk::TreeStore>       m_TreeStore;
 	Glib::RefPtr <Gtk::TreeModelFilter> m_TreeModelFilter;
@@ -279,18 +349,26 @@ private:
 	Gtk::ToolButton*                    m_CutButton;
 	Gtk::ToolButton*                    m_CopyButton;
 	Gtk::ToolButton*                    m_PasteButton;
-	Gtk::ToolButton*                    m_PlayButton;
+	Gtk::ToolButton*                    m_FirstFrameButton;
+	Gtk::ToolButton*                    m_PlayPauseButton;
+	Gtk::ToolButton*                    m_LastFrameButton;
 	Gtk::SpinButton*                    m_FrameSpinButton;
+	Gtk::ToolButton*                    m_TimeButton;
+	Gtk::Label*                         m_TimeLabel;
 	Gtk::Paned*                         m_AnimationBox;
 	Gtk::TreeView*                      m_TreeView;
 	Gtk::Box*                           m_NameBox;
 	Gtk::Entry*                         m_NameEntry;
 	Gtk::Button*                        m_RenameButton;
 	Gtk::DrawingArea*                   m_DrawingArea;
-	Gtk::Dialog*                        m_NewDialog;
+	Gtk::ToolButton*                    m_ZoomOutButton;
+	Gtk::ToolButton*                    m_ZoomInButton;
+	Gtk::ToolButton*                    m_ZoomFitButton;
+	Gtk::Dialog*                        m_PropertiesDialog;
+	Gtk::Entry*                         m_NewNameEntry;
+	Gtk::CheckButton*                   m_LoopCheckButton;
 	Gtk::Button*                        m_NewCancelButton;
 	Gtk::Button*                        m_NewOkButton;
-	Gtk::Entry*                         m_NewNameEntry;
 
 };
 

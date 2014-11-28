@@ -1,23 +1,33 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserWindow.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.h" Line="76" Column="8" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.cpp" Line="89" Column="34" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="165" Column="1" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="517" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DNode.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="364" Column="15" />
+      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.h" Line="146" Column="46" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/PlaneViewer.cpp" Line="135" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/PlaneViewer.h" Line="103" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.cpp" Line="188" Column="19" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
+          <Node name="miscellaneous" expanded="True">
+            <Node name="glade2c++" expanded="True" />
           </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True" />
             <Node name="Tests" expanded="True">
               <Node name="EnvironmentalSensors" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="libtitania-opengl-surface" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="OpenGL" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
@@ -42,6 +52,11 @@
                 </Node>
               </Node>
               <Node name="titania" expanded="True">
+                <Node name="shaders" expanded="True">
+                  <Node name="ParticleSystems" expanded="True">
+                    <Node name="Bits" expanded="True" />
+                  </Node>
+                </Node>
                 <Node name="tools" expanded="True" />
               </Node>
             </Node>
@@ -58,17 +73,24 @@
                   <Node name="Rendering" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="Core" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
+                  <Node name="Interpolation" expanded="True" />
                   <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                   <Node name="Shape" expanded="True" />
                   <Node name="Texturing" expanded="True" />
                 </Node>
+                <Node name="Extensions" expanded="True">
+                  <Node name="CosmoWorlds" expanded="True" />
+                </Node>
                 <Node name="Fields" expanded="True" />
                 <Node name="Parser" expanded="True" />
                 <Node name="Rendering" expanded="True" />
                 <Node name="Tools" expanded="True">
+                  <Node name="Core" expanded="True" />
                   <Node name="Grids" expanded="True" />
                   <Node name="Grouping" expanded="True" />
                 </Node>
@@ -91,13 +113,21 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Browser" expanded="True">
-                <Node name="X3DBrowserWindow.cpp" selected="True" />
+              <Node name="Browser" expanded="True" />
+              <Node name="Dialogs" expanded="True">
+                <Node name="NodeIndex" expanded="True" />
               </Node>
-              <Node name="Undo" expanded="True" />
+              <Node name="Editors" expanded="True">
+                <Node name="GridEditor" expanded="True" />
+                <Node name="PrecisionPlacementPanel" expanded="True" />
+              </Node>
               <Node name="Widgets" expanded="True">
-                <Node name="AnimationEditor" expanded="True" />
+                <Node name="AnimationEditor" expanded="True">
+                  <Node name="AnimationEditor.cpp" selected="True" />
+                </Node>
                 <Node name="Console" expanded="True" />
+                <Node name="LibraryView" expanded="True" />
+                <Node name="ScriptEditor" expanded="True" />
               </Node>
             </Node>
           </Node>

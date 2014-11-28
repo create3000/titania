@@ -165,14 +165,13 @@ InlineEditor::on_convert_master_selection_clicked ()
 	if (fileSaveDialog -> exportNodes (nodes, worldURL, undoStep))
 	{
 		const auto           name       = X3D::get_name_from_uri (worldURL);
-		const auto           uniqueName = getExecutionContext () -> getUniqueName (name);
 		const X3D::InlinePtr inlineNode = new X3D::Inline (getExecutionContext ());
 		const X3D::MFString  url        = { getExecutionContext () -> getWorldURL () .relative_path (worldURL) .str (), worldURL .str () };
 
 		inlineNode -> url () = url;
 		inlineNode -> setup ();
 
-		getBrowserWindow () -> updateNamedNode (getExecutionContext (), uniqueName, X3D::SFNode (inlineNode), undoStep);
+		getBrowserWindow () -> updateNamedNode (getExecutionContext (), name, X3D::SFNode (inlineNode), undoStep);
 		getBrowserWindow () -> replaceNodes (masterSelection, X3D::SFNode (inlineNode), undoStep);
 		getBrowserWindow () -> getSelection () -> setChildren ({ inlineNode }, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
@@ -195,12 +194,11 @@ InlineEditor::on_fold_back_into_scene_clicked ()
 	const auto        scene            = inlineNode -> getInternalScene ();
 	const X3D::SFNode group            = new X3D::Group (getExecutionContext ());
 	const auto        name             = X3D::get_name_from_uri (scene -> getWorldURL ());
-	const auto        uniqueName       = getExecutionContext () -> getUniqueName (name);
 	const auto        importedRoutes   = getBrowserWindow () -> getImportedRoutes (getExecutionContext (), scene);
 
 	const X3D::GroupPtr groupNode (group);
 
-	getBrowserWindow () -> updateNamedNode (getExecutionContext (), uniqueName, group, undoStep);
+	getBrowserWindow () -> updateNamedNode (getExecutionContext (), name, group, undoStep);
 	getBrowserWindow () -> replaceNodes (X3D::SFNode (inlineNode), group, undoStep);
 	getBrowserWindow () -> importScene (scene, groupNode -> children (), undoStep);
 	group -> setup ();

@@ -1373,12 +1373,20 @@ X3DBrowserEditor::updateNamedNode (const X3D::X3DExecutionContextPtr & execution
 {
 	try
 	{
-		if (name .empty ())
+		if (name == node -> getName ())
 			return;
 
-		executionContext -> updateNamedNode (name, node);
-		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeNamedNode, executionContext, name);
-		undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateNamedNode, executionContext, name, node);
+		const auto uniqueName = executionContext -> getUniqueName (name);
+		
+		undoStep -> addObjects (executionContext);
+
+		if (node -> getName () .empty ())
+			undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeNamedNode, executionContext, uniqueName);
+		else
+			undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateNamedNode, executionContext, node -> getName (), node);
+
+		undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateNamedNode, executionContext, uniqueName, node);
+		executionContext -> updateNamedNode (uniqueName, node);
 	}
 	catch (...)
 	{ }

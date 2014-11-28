@@ -1,5 +1,17 @@
 2014-11-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Time.svg:
+	* BrowserWindow.xml:
+	* X3DBrowserEditor.cpp:
+	* AnimationEditor.xml:
+	* InlineEditor.cpp:
+	* AnimationEditor.h:
+	* AnimationEditor.cpp:
+	* X3DAnimationEditorInterface.h:
+	* X3DAnimationEditorInterface.cpp: 
+
+2014-11-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Red.svg:
 	* Blue.svg:
 	* Green.svg:

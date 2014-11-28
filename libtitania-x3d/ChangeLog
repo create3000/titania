@@ -1,5 +1,11 @@
 2014-11-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MetadataSet.cpp:
+	* X3DTimeDependentNode.h:
+	* X3DTimeDependentNode.cpp: 
+
+2014-11-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* PlaneViewer.cpp:
 	* ExamineViewer.cpp:
 	* X3DTransformNode.cpp: 

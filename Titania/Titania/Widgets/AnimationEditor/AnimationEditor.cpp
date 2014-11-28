@@ -164,28 +164,38 @@ AnimationEditor::on_new ()
 	// Open »New Animation Dialog«.
 
 	getNewNameEntry () .set_text ("");
+	getDurationAdjustment () -> set_value (10);
+	getFPSAdjustment () -> set_value (10);
+	getLoopCheckButton () .set_active (false);
 
-	const auto responseId = getNewDialog () .run ();
+	const auto responseId = getPropertiesDialog () .run ();
 
-	getNewDialog () .hide ();
+	getPropertiesDialog () .hide ();
 
 	if (responseId not_eq Gtk::RESPONSE_OK)
 		return;
 
 	// Create new animation.
 
-	const auto undoStep  = std::make_shared <UndoStep> (_ ("Create New Animation"));
-	const auto name      = getExecutionContext () -> getUniqueName (getNewNameEntry () .get_text ());
-	const auto groups    = getSelection <X3D::X3DGroupingNode> ({ X3D::X3DConstants::X3DGroupingNode });
-	const auto group     = groups .back ();
-	const auto animation = getExecutionContext () -> createNode <X3D::Group> ();
+	const auto undoStep   = std::make_shared <UndoStep> (_ ("Create New Animation"));
+	const auto name       = getExecutionContext () -> getUniqueName (getNewNameEntry () .get_text ());
+	const auto groups     = getSelection <X3D::X3DGroupingNode> ({ X3D::X3DConstants::X3DGroupingNode });
+	const auto group      = groups .back ();
+	const auto animation  = getExecutionContext () -> createNode <X3D::Group> ();
+	const auto timeSensor = getExecutionContext () -> createNode <X3D::TimeSensor> ();
 
 	group -> children () .emplace_front (animation);
+	animation -> children () .emplace_front (timeSensor);
 
 	getExecutionContext () -> updateNamedNode (name, X3D::SFNode (animation));
-	animation -> setMetaData <int32_t> ("/Animation/duration",        10);
-	animation -> setMetaData <int32_t> ("/Animation/framesPerSecond", 10);
+	animation -> setMetaData <int32_t> ("/Animation/duration",        getDurationAdjustment () -> get_value ());
+	animation -> setMetaData <int32_t> ("/Animation/framesPerSecond", getFPSAdjustment () -> get_value ());
 
+	animation -> getMetaData <X3D::MFInt32> ("/Animation/duration")        .addInterest (this, &AnimationEditor::set_duration);
+	animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond") .addInterest (this, &AnimationEditor::set_frames_per_second);
+	
+	timeSensor -> loop ()     = getLoopCheckButton () .get_active ();
+	timeSensor -> stopTime () = 1;
 	getExecutionContext () -> realize ();
 
 	set_animation (X3D::SFNode (animation));
@@ -238,6 +248,14 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 		animation ->  isLive () .removeInterest (this, &AnimationEditor::set_remove_animation);
 		timeSensor -> isLive () .removeInterest (this, &AnimationEditor::set_remove_animation);
 	}
+	
+	if (timeSensor)
+	{
+		timeSensor -> isLive ()           .removeInterest (this, &AnimationEditor::set_remove_animation);
+		timeSensor -> isPaused ()         .removeInterest (this, &AnimationEditor::set_active);
+		timeSensor -> fraction_changed () .removeInterest (this, &AnimationEditor::set_fraction);
+		timeSensor -> isEvenLive (false);
+	}
 
 	for (const auto & pair : nodes)
 	{
@@ -271,13 +289,25 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 		else
 			timeSensor = timeSensors .back ();
 
-		timeSensor -> isLive () .addInterest (this, &AnimationEditor::set_remove_animation);
+		timeSensor -> isLive ()           .addInterest (this, &AnimationEditor::set_remove_animation);
+		timeSensor -> isPaused ()         .addInterest (this, &AnimationEditor::set_active);
+		timeSensor -> isActive ()         .addInterest (this, &AnimationEditor::set_active);
+		timeSensor -> fraction_changed () .addInterest (this, &AnimationEditor::set_fraction);
+
+		timeSensor -> isEvenLive (true);
+		timeSensor -> cycleInterval () = getDuration () / (double) getFramesPerSecond ();
+
+		set_active ();
 	}
 
 	set_selection ();
 
-	getFrameSpinButton () .set_sensitive (animation);
-	getAnimationBox ()    .set_sensitive (animation);
+	getFirstFrameButton () .set_sensitive (animation);
+	getPlayPauseButton ()  .set_sensitive (animation);
+	getLastFrameButton ()  .set_sensitive (animation);
+	getFrameSpinButton ()  .set_sensitive (animation);
+	getTimeButton ()       .set_sensitive (animation);
+	getAnimationBox ()     .set_sensitive (animation);
 
 	getTreeStore () -> clear ();
 
@@ -426,6 +456,191 @@ AnimationEditor::set_fields (const size_t id, const Gtk::TreePath & path)
 	{ }
 }
 
+void
+AnimationEditor::on_first_frame ()
+{
+	timeSensor -> stopTime () = chrono::now ();
+
+	getFrameAdjustment () -> set_value (0);
+}
+
+void
+AnimationEditor::on_play_pause ()
+{
+	if (timeSensor -> isActive ())
+	{
+		if (timeSensor -> isPaused ())
+			timeSensor -> resumeTime () = chrono::now ();
+		else
+			timeSensor -> pauseTime () = chrono::now ();
+	}
+	else
+		timeSensor -> startTime () = chrono::now ();
+}
+
+void
+AnimationEditor::on_last_frame ()
+{
+	timeSensor -> stopTime () = chrono::now ();
+
+	getFrameAdjustment () -> set_value (getDuration ());
+}
+
+void
+AnimationEditor::on_current_frame_changed ()
+{
+	size_t time = getFrameAdjustment () -> get_value ();
+
+	const size_t frames = time % getFramesPerSecond ();
+	time /= getFramesPerSecond ();
+
+	const size_t seconds = time % 60;
+	time /= 60;
+
+	const size_t minutes = time % 60;
+	time /= 60;
+
+	const size_t hours = time;
+
+	std::ostringstream osstream;
+	
+	osstream
+		<< std::setfill ('0')
+		<< std::setw (2) << hours << ":"
+		<< std::setw (2) << minutes << ":" 
+		<< std::setw (2) << seconds << ":" 
+		<< std::setw (2) << frames;
+
+	getTimeLabel () .set_text (osstream .str ());
+
+	getDrawingArea () .queue_draw ();
+}
+
+void
+AnimationEditor::on_time ()
+{
+	getNewNameEntry () .set_text (animation -> getName ());
+	getDurationAdjustment () -> set_value (getDuration ());
+	getFPSAdjustment () -> set_value (getFramesPerSecond ());
+	getLoopCheckButton () .set_active (timeSensor -> loop ());
+
+	const auto responseId = getPropertiesDialog () .run ();
+
+	getPropertiesDialog () .hide ();
+
+	if (responseId not_eq Gtk::RESPONSE_OK)
+		return;
+
+	using setMetaData = void (X3D::X3DNode::*) (const std::string &, const int32_t &);
+
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Keyframe Animation Properties"));
+	const auto name     = getNewNameEntry () .get_text ();
+
+	undoStep -> addObjects (timeSensor);
+
+	getBrowserWindow () -> updateNamedNode (getExecutionContext (), name, X3D::SFNode (animation), undoStep);
+
+	undoStep -> addUndoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/duration", getDuration ());
+	undoStep -> addRedoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/duration", getDurationAdjustment () -> get_value ());
+	animation -> setMetaData <int32_t> ("/Animation/duration", getDurationAdjustment () -> get_value ());
+	animation -> getMetaData <X3D::MFInt32> ("/Animation/duration") .addInterest (this, &AnimationEditor::set_duration);
+
+	undoStep -> addUndoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/framesPerSecond", getFramesPerSecond ());
+	undoStep -> addRedoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/framesPerSecond", getFPSAdjustment () -> get_value ());
+	animation -> setMetaData <int32_t> ("/Animation/framesPerSecond", getFPSAdjustment () -> get_value ());
+	animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond") .addInterest (this, &AnimationEditor::set_frames_per_second);
+
+	const auto cycleInterval = getDuration () / (double) getFramesPerSecond ();
+	undoStep -> addUndoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> cycleInterval ()), timeSensor -> cycleInterval ());
+	undoStep -> addRedoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> cycleInterval ()), cycleInterval);
+	timeSensor -> cycleInterval () = cycleInterval;
+
+	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (timeSensor -> loop ()), timeSensor -> loop ());
+	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (timeSensor -> loop ()), getLoopCheckButton () .get_active ());
+	timeSensor -> loop () = getLoopCheckButton () .get_active ();
+
+	undoStep -> addUndoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&chrono::now));
+	undoStep -> addRedoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&chrono::now));
+	timeSensor -> stopTime () = chrono::now ();
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+AnimationEditor::set_duration ()
+{
+	getFrameAdjustment () -> set_upper (getDuration ());
+	getDrawingArea () .queue_draw ();
+}
+
+void
+AnimationEditor::set_frames_per_second ()
+{
+}
+
+void
+AnimationEditor::set_active ()
+{
+	const bool active = timeSensor -> isActive () and not timeSensor -> isPaused ();
+
+	getPlayPauseButton () .set_stock_id (Gtk::StockID (active ? "gtk-media-pause" : "gtk-media-play"));
+}
+	
+void
+AnimationEditor::set_fraction (const float value)
+{
+	const int32_t currentFrame = getDuration () * value;
+
+	getFrameAdjustment () -> set_value (currentFrame);
+}
+
+void
+AnimationEditor::on_zoom_out_clicked ()
+{
+	on_zoom (getDrawingArea () .get_width () / 2, GDK_SCROLL_DOWN);
+}
+
+void
+AnimationEditor::on_zoom_in_clicked ()
+{
+	on_zoom (getDrawingArea () .get_width () / 2, GDK_SCROLL_UP);
+}
+
+void
+AnimationEditor::on_zoom (const double position, const GdkScrollDirection direction)
+{
+	const auto fromFrame = (position - translation) / scale;
+
+	if (direction == GDK_SCROLL_DOWN)     // Move backwards.
+	{
+		scale /= SCROLL_FACTOR;
+	}
+
+	else if (direction == GDK_SCROLL_UP) // Move forwards.
+	{
+		scale *= SCROLL_FACTOR;
+	}
+
+	const auto toFrame = (position - translation) / scale;
+	const auto offset  = (toFrame - fromFrame) * scale;
+
+	translation += offset;
+	translation  = std::min (translation, DEFAULT_TRANSLATION);
+
+	getDrawingArea () .queue_draw ();
+}
+
+void
+AnimationEditor::on_zoom_fit_clicked ()
+{
+	const double width = getDrawingArea () .get_width () - 2 * DEFAULT_TRANSLATION;
+
+	translation = DEFAULT_TRANSLATION;
+	scale       = width / getDuration ();
+
+	getDrawingArea () .queue_draw ();
+}
+
 bool
 AnimationEditor::on_button_press_event (GdkEventButton* event)
 {
@@ -459,7 +674,7 @@ AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 		const auto offset  = toPoint - fromPoint;
 
 		translation += offset .x ();
-		//translation  = std::min (translation, DEFAULT_TRANSLATION);
+		translation  = std::min (translation, DEFAULT_TRANSLATION);
 		fromPoint    = toPoint;
 	}
 
@@ -471,31 +686,8 @@ AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 bool
 AnimationEditor::on_scroll_event (GdkEventScroll* event)
 {
-	const auto fromFrame = (event -> x - translation) / scale;
-
-	if (event -> direction == GDK_SCROLL_DOWN)     // Move backwards.
-	{
-		scale /= SCROLL_FACTOR;
-	}
-
-	else if (event -> direction == GDK_SCROLL_UP) // Move forwards.
-	{
-		scale *= SCROLL_FACTOR;
-	}
-
-	const auto toFrame = (event -> x - translation) / scale;
-	const auto offset  = (toFrame - fromFrame) * scale;
-
-	translation += offset;
-
-	getDrawingArea () .queue_draw ();
+	on_zoom (event -> x, event -> direction);
 	return false;
-}
-
-void
-AnimationEditor::on_current_frame_changed ()
-{
-	getDrawingArea () .queue_draw ();
 }
 
 bool
@@ -510,11 +702,9 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 {
 	const int  width  = getDrawingArea () .get_width ();
 	const int  height = getDrawingArea () .get_height ();
-	const auto fc     = getDrawingArea () .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
-	const auto sc     = getDrawingArea () .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
-	const auto sb     = getDrawingArea () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
-
-	getDrawingArea () .get_style_context () -> render_background (context, 0, 0, width, height);
+	const auto fc     = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
+	const auto sc     = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+	const auto sb     = getTreeView () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
 
 	// Draw all time lines.
 
@@ -547,10 +737,14 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 
 			// Draw vertical lines.
 
-			for (; firstFrame < lastFrame; ++ firstFrame)
+			const auto frameParams = getFrameParams ();
+			const auto frameStep   = frameParams .first;
+			const auto frameFactor = frameParams .second;
+
+			for (auto frame = firstFrame - (firstFrame % frameStep); frame < lastFrame; frame += frameStep)
 			{
-				const bool    s = firstFrame % 5;
-				const int32_t x = firstFrame * scale + translation;
+				const bool    s = frame % frameFactor;
+				const int32_t x = frame * scale + translation;
 
 				context -> move_to (x + 0.5, rectangle .get_y () + rectangle .get_height () * (s ? 0.75 : 0.5));
 				context -> line_to (x + 0.5, rectangle .get_y () + rectangle .get_height ());
@@ -588,6 +782,28 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 	context -> stroke ();
 
 	return false;
+}
+
+std::pair <int32_t, int32_t>
+AnimationEditor::getFrameParams () const
+{
+	static const std::map <double, std::pair <int32_t, int32_t>> params = {
+		std::make_pair (5 / 1.0,        std::make_pair (10,        50)),
+		std::make_pair (5 / 10.0,       std::make_pair (100,       500)),
+		std::make_pair (5 / 100.0,      std::make_pair (1000,      5000)),
+		std::make_pair (5 / 1000.0,     std::make_pair (10000,     50000)),
+		std::make_pair (5 / 10000.0,    std::make_pair (100000,    500000)),
+		std::make_pair (5 / 100000.0,   std::make_pair (1000000,   5000000)),
+		std::make_pair (5 / 1000000.0,  std::make_pair (10000000,  50000000)),
+		std::make_pair (5 / 10000000.0, std::make_pair (100000000, 500000000)),
+	};
+
+	const auto iter = params .upper_bound (scale);
+
+	if (iter not_eq params .end ())
+		return iter -> second;
+
+	return std::make_pair (1, 5);
 }
 
 AnimationEditor::~AnimationEditor ()

@@ -156,6 +156,53 @@ private:
 	set_fields (const size_t id, const Gtk::TreePath &);
 
 	virtual
+	void
+	on_first_frame () final override;
+
+	virtual
+	void
+	on_play_pause () final override;
+
+	virtual
+	void
+	on_last_frame () final override;
+
+	virtual
+	void
+	on_current_frame_changed () final override;
+
+	virtual
+	void
+	on_time () final override;
+
+	void
+	set_duration ();
+
+	void
+	set_frames_per_second ();
+	
+	void
+	set_active ();
+	
+	void
+	set_fraction (const float);
+
+	virtual
+	void
+	on_zoom_out_clicked () final override;
+
+	virtual
+	void
+	on_zoom_in_clicked () final override;
+
+	void
+	on_zoom (const double, const GdkScrollDirection);
+
+	virtual
+	void
+	on_zoom_fit_clicked () final override;
+
+	virtual
 	bool
 	on_button_press_event (GdkEventButton*) final override;
 
@@ -172,16 +219,15 @@ private:
 	on_scroll_event (GdkEventScroll*) final override;
 
 	virtual
-	void
-	on_current_frame_changed () final override;
-
-	virtual
 	bool
 	on_tree_view_draw (const Cairo::RefPtr <Cairo::Context> &) final override;
 
 	virtual
 	bool
 	on_draw (const Cairo::RefPtr <Cairo::Context> &) final override;
+
+	std::pair <int32_t, int32_t>
+	getFrameParams () const;
 
 	///  @name Members
 

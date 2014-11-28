@@ -126,8 +126,8 @@ throw (Error <INVALID_NAME>,
 		auto & node = setIndex .emplace (name, set) .first -> second;
 
 		node .addParent (set);
-		node -> name () = name;
 		node -> setup ();
+		node -> name () = name;
 
 		return node;
 	}
@@ -156,9 +156,9 @@ throw (Error <DISPOSED>)
 
 	const auto node = new MetadataBoolean (getExecutionContext ());
 
+	node -> setup ();
 	node -> name ()  = name;
 	node -> value () = boolean;
-	node -> setup ();
 
 	value () .emplace_back (node);
 	addMetaData (value () .back ());
@@ -187,9 +187,9 @@ throw (Error <DISPOSED>)
 
 	const auto node = new MetadataDouble (getExecutionContext ());
 
+	node -> setup ();
 	node -> name ()  = name;
 	node -> value () = double_;
-	node -> setup ();
 
 	value () .emplace_back (node);
 	addMetaData (value () .back ());
@@ -218,9 +218,9 @@ throw (Error <DISPOSED>)
 
 	const auto node = new MetadataFloat (getExecutionContext ());
 
+	node -> setup ();
 	node -> name ()  = name;
 	node -> value () = float_;
-	node -> setup ();
 
 	value () .emplace_back (node);
 	addMetaData (value () .back ());
@@ -249,9 +249,9 @@ throw (Error <DISPOSED>)
 
 	const auto node = new MetadataInteger (getExecutionContext ());
 
+	node -> setup ();
 	node -> name ()  = name;
 	node -> value () = integer;
-	node -> setup ();
 
 	value () .emplace_back (node);
 	addMetaData (value () .back ());
@@ -280,9 +280,9 @@ throw (Error <DISPOSED>)
 
 	const auto node = new MetadataString (getExecutionContext ());
 
+	node -> setup ();
 	node -> name ()  = name;
 	node -> value () = string;
-	node -> setup ();
 
 	value () .emplace_back (node);
 	addMetaData (value () .back ());

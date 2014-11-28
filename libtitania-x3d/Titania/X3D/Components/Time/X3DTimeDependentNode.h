@@ -153,6 +153,16 @@ public:
 	elapsedTime () const
 	{ return *fields .elapsedTime; }
 
+	///  @name Member access
+	
+	const SFBool &
+	isEvenLive () const
+	{ return evenLive; }
+
+	void
+	isEvenLive (const bool value)
+	{ evenLive = value; }
+
 	///  @name Destruction
 	
 	virtual
@@ -209,7 +219,14 @@ protected:
 
 private:
 
+	///  @name Member types
+
 	using TimeoutHandler = void (X3DTimeDependentNode::*) ();
+
+	///  @name Member access
+
+	bool
+	getLive () const;
 
 	///  @name Event handling
 
@@ -292,7 +309,8 @@ private:
 	sigc::connection resumeTimeout;
 	sigc::connection stopTimeout;
 
-	bool disabled;
+	SFBool evenLive;
+	bool   disabled;
 
 };
 

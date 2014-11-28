@@ -84,11 +84,12 @@ X3DTimeDependentNode::X3DTimeDependentNode () :
 	   pauseTimeout (),
 	  resumeTimeout (),
 	    stopTimeout (),
+	       evenLive (),
 	       disabled (false)
 {
 	addType (X3DConstants::X3DTimeDependentNode);
 
-	addChildren (initialized);
+	addChildren (initialized, evenLive);
 }
 
 void
@@ -97,7 +98,8 @@ X3DTimeDependentNode::initialize ()
 	X3DChildNode::initialize ();
 
 	getExecutionContext () -> isLive () .addInterest (this, &X3DTimeDependentNode::set_live);
-	isLive () .addInterest (this, &X3DTimeDependentNode::set_live);
+	isEvenLive () .addInterest (this, &X3DTimeDependentNode::set_live);
+	isLive ()     .addInterest (this, &X3DTimeDependentNode::set_live);
 
 	initialized   .addInterest (this, &X3DTimeDependentNode::set_loop);
 	enabled ()    .addInterest (this, &X3DTimeDependentNode::set_enabled);
@@ -139,12 +141,18 @@ X3DTimeDependentNode::getElapsedTime () const
 	return getCurrentTime () - start - pauseInterval;
 }
 
+bool
+X3DTimeDependentNode::getLive () const
+{
+	return (getExecutionContext () -> isLive () or isEvenLive ()) and isLive ();
+}
+
 // Event callbacks
 
 void
 X3DTimeDependentNode::set_live ()
 {
-	if (getExecutionContext () -> isLive () and isLive ())
+	if (getLive ())
 	{
 		if (disabled)
 		{
@@ -284,7 +292,7 @@ X3DTimeDependentNode::do_start ()
 
 		set_start ();
 
-		if (getExecutionContext () -> isLive () and isLive ())
+		if (getLive ())
 		{
 			getBrowser () -> prepareEvents () .addInterest (this, &X3DTimeDependentNode::prepareEvents);
 		}
@@ -309,7 +317,7 @@ X3DTimeDependentNode::do_pause ()
 		if (pauseTimeValue not_eq getCurrentTime ())
 			pauseTimeValue = getCurrentTime ();
 
-		if (getExecutionContext () -> isLive () and isLive ())
+		if (getLive ())
 			real_pause ();
 	}
 }
@@ -334,7 +342,7 @@ X3DTimeDependentNode::do_resume ()
 		if (resumeTimeValue not_eq getCurrentTime ())
 			resumeTimeValue = getCurrentTime ();
 
-		if (getExecutionContext () -> isLive () and isLive ())
+		if (getLive ())
 			real_resume ();
 	}
 }
@@ -374,7 +382,7 @@ X3DTimeDependentNode::stop ()
 
 		isActive () = false;
 
-		if (getExecutionContext () -> isLive () and isLive ())
+		if (getLive ())
 			getBrowser () -> prepareEvents () .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
 	}
 }
