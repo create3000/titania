@@ -721,3 +721,5 @@ scroll_event
   virtual bool on_scroll_event(GdkEventScroll* event);
 motion_notify_event
   virtual bool on_motion_notify_event(GdkEventMotion* event);
+configure_event
+  virtual bool on_configure_event(GdkEventConfigure* event);

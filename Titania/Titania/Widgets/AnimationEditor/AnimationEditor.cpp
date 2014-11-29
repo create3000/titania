@@ -81,6 +81,8 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	                      scale (1),
 	                     button (0)
 {
+	getTranslationAdjustment () -> set_lower (-DEFAULT_TRANSLATION);
+	getTranslationAdjustment () -> set_upper (-DEFAULT_TRANSLATION);
 	getTreeModelFilter () -> set_visible_column (VISIBLE_COLUMN);
 
 	setup ();
@@ -130,6 +132,49 @@ AnimationEditor::getFramesPerSecond () const
 	{ }
 
 	return 10;
+}
+
+void
+AnimationEditor::on_translation_changed ()
+{
+	translation = -getTranslationAdjustment () -> get_value ();
+
+	getDrawingArea () .queue_draw ();
+}
+
+void
+AnimationEditor::setTranslation (const double value)
+{
+	const auto width = getDrawingArea () .get_width ();
+	const auto max   = (width - DEFAULT_TRANSLATION) - (getDuration () * getScale ());
+
+	translation  = value;
+	translation  = std::max (translation, max);
+	translation  = std::min (translation, DEFAULT_TRANSLATION);
+
+	getTranslationAdjustment () -> set_value (-translation);
+}
+
+void
+AnimationEditor::setLowerTranslation ()
+{
+	const auto width = getDrawingArea () .get_width ();
+	const auto max   = (width - DEFAULT_TRANSLATION) - (getDuration () * getScale ());
+	const auto lower = std::min (DEFAULT_TRANSLATION, max);
+
+	//getTranslationSlider () .set_visible (lower < DEFAULT_TRANSLATION);
+
+	getTranslationAdjustment () -> set_page_size (getDrawingArea () .get_width ());
+	getTranslationAdjustment () -> set_upper (-lower + getDrawingArea () .get_width ());
+}
+
+void
+AnimationEditor::setScale (const double value)
+{
+	scale = value;
+
+	setLowerTranslation ();
+	getDrawingArea () .queue_draw ();
 }
 
 void
@@ -316,8 +361,8 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	interpolators .clear ();
 	nodes         .clear ();
 
-	translation = DEFAULT_TRANSLATION;
-	scale       = DEFAULT_SCALE;
+	setScale (DEFAULT_SCALE);
+	setTranslation (DEFAULT_TRANSLATION);
 
 	getFrameAdjustment () -> set_upper (getDuration ());
 	getFrameAdjustment () -> set_value (0);
@@ -569,13 +614,16 @@ AnimationEditor::on_time ()
 void
 AnimationEditor::set_duration ()
 {
+	getFrameAdjustment () -> set_value (std::min <double> (getFrameAdjustment () -> get_value (), getDuration ()));
 	getFrameAdjustment () -> set_upper (getDuration ());
-	getDrawingArea () .queue_draw ();
+	setTranslation (getTranslation ());
+	setLowerTranslation ();
 }
 
 void
 AnimationEditor::set_frames_per_second ()
 {
+	setTranslation (getTranslation ());
 }
 
 void
@@ -609,25 +657,22 @@ AnimationEditor::on_zoom_in_clicked ()
 void
 AnimationEditor::on_zoom (const double position, const GdkScrollDirection direction)
 {
-	const auto fromFrame = (position - translation) / scale;
+	const auto fromFrame = (position - getTranslation ()) / getScale ();
 
 	if (direction == GDK_SCROLL_DOWN)     // Move backwards.
 	{
-		scale /= SCROLL_FACTOR;
+		setScale (getScale () / SCROLL_FACTOR);
 	}
 
 	else if (direction == GDK_SCROLL_UP) // Move forwards.
 	{
-		scale *= SCROLL_FACTOR;
+		setScale (getScale () * SCROLL_FACTOR);
 	}
 
-	const auto toFrame = (position - translation) / scale;
-	const auto offset  = (toFrame - fromFrame) * scale;
+	const auto toFrame = (position - getTranslation ()) / getScale ();
+	const auto offset  = (toFrame - fromFrame) * getScale ();
 
-	translation += offset;
-	translation  = std::min (translation, DEFAULT_TRANSLATION);
-
-	getDrawingArea () .queue_draw ();
+	setTranslation (getTranslation () + offset);
 }
 
 void
@@ -635,10 +680,15 @@ AnimationEditor::on_zoom_fit_clicked ()
 {
 	const double width = getDrawingArea () .get_width () - 2 * DEFAULT_TRANSLATION;
 
-	translation = DEFAULT_TRANSLATION;
-	scale       = width / getDuration ();
+	setScale (width / getDuration ());
+	setTranslation (DEFAULT_TRANSLATION);
+}
 
-	getDrawingArea () .queue_draw ();
+bool
+AnimationEditor::on_configure_event (GdkEventConfigure*)
+{
+	setLowerTranslation ();
+	return false;
 }
 
 bool
@@ -646,7 +696,14 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 {
 	button = event -> button;
 
-	if (button == 2)
+	if (button == 1)
+	{
+		getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::XTERM));
+
+		getFrameAdjustment () -> set_value (std::floor ((event -> x - getTranslation ()) / getScale ()));
+	}
+
+	else if (button == 2)
 	{
 		getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::FLEUR));
 
@@ -668,20 +725,22 @@ AnimationEditor::on_button_release_event (GdkEventButton* event)
 bool
 AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 {
-	if (button == 2)
+	if (button == 1)
+	{
+		getFrameAdjustment () -> set_value (std::floor ((event -> x - getTranslation ()) / getScale ()));
+	}
+
+	else if (button == 2)
 	{
 		const auto toPoint = X3D::Vector2d (event -> x, event -> y);
 		const auto offset  = toPoint - fromPoint;
 
-		translation += offset .x ();
-		translation  = std::min (translation, DEFAULT_TRANSLATION);
-		fromPoint    = toPoint;
+		setTranslation (getTranslation () + offset .x ());
+		fromPoint = toPoint;
 	}
 
-	getDrawingArea () .queue_draw ();
 	return false;
 }
-
 
 bool
 AnimationEditor::on_scroll_event (GdkEventScroll* event)
@@ -721,16 +780,16 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 		{
 			// Draw one time line.
 
-			int32_t       firstFrame = std::max <int32_t> (0, std::floor (-translation / scale));
-			const int32_t lastFrame  = std::min <int32_t> (getDuration (), std::ceil ((width - translation) / scale)) + 1;
+			int32_t       firstFrame = std::max <int32_t> (0, std::floor (-getTranslation () / getScale ()));
+			const int32_t lastFrame  = std::min <int32_t> (getDuration (), std::ceil ((width - getTranslation ()) / getScale ())) + 1;
 
 			Gdk::Rectangle rectangle;
 			getTreeView () .get_cell_area (firstPath, *getNameColumn () .operator -> (), rectangle);
 
 			// Draw horizontal line.
 
-			const int32_t x0 = firstFrame * scale + translation;
-			const int32_t x1 = lastFrame  * scale + translation - scale + 1;
+			const int32_t x0 = firstFrame * getScale () + getTranslation ();
+			const int32_t x1 = lastFrame  * getScale () + getTranslation () - getScale () + 1;
 
 			context -> move_to (x0, rectangle .get_y () + rectangle .get_height () - 0.5);
 			context -> line_to (x1, rectangle .get_y () + rectangle .get_height () - 0.5);
@@ -744,7 +803,7 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 			for (auto frame = firstFrame - (firstFrame % frameStep); frame < lastFrame; frame += frameStep)
 			{
 				const bool    s = frame % frameFactor;
-				const int32_t x = frame * scale + translation;
+				const int32_t x = frame * getScale () + getTranslation ();
 
 				context -> move_to (x + 0.5, rectangle .get_y () + rectangle .get_height () * (s ? 0.75 : 0.5));
 				context -> line_to (x + 0.5, rectangle .get_y () + rectangle .get_height ());
@@ -771,7 +830,7 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 
 	// Draw frame cursor.
 
-	const int32_t x = getFrameAdjustment () -> get_value () * scale + translation;
+	const int32_t x = getFrameAdjustment () -> get_value () * getScale () + getTranslation ();
 
 	context -> move_to (x + 0.5, 0);
 	context -> line_to (x + 0.5, height);
@@ -798,7 +857,7 @@ AnimationEditor::getFrameParams () const
 		std::make_pair (5 / 10000000.0, std::make_pair (100000000, 500000000)),
 	};
 
-	const auto iter = params .upper_bound (scale);
+	const auto iter = params .upper_bound (getScale ());
 
 	if (iter not_eq params .end ())
 		return iter -> second;

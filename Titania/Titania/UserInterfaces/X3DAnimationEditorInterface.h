@@ -110,6 +110,10 @@ public:
 	getFrameAdjustment () const
 	{ return m_FrameAdjustment; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTranslationAdjustment () const
+	{ return m_TranslationAdjustment; }
+
 	const Glib::RefPtr <Gtk::TreeStore> &
 	getTreeStore () const
 	{ return m_TreeStore; }
@@ -202,6 +206,10 @@ public:
 	getDrawingArea () const
 	{ return *m_DrawingArea; }
 
+	Gtk::Scrollbar &
+	getTranslationSlider () const
+	{ return *m_TranslationSlider; }
+
 	Gtk::ToolButton &
 	getZoomOutButton () const
 	{ return *m_ZoomOutButton; }
@@ -237,6 +245,10 @@ public:
 	virtual
 	void
 	on_current_frame_changed () = 0;
+
+	virtual
+	void
+	on_translation_changed () = 0;
 
 	virtual
 	void
@@ -285,6 +297,10 @@ public:
 	virtual
 	bool
 	on_button_release_event (GdkEventButton* event) = 0;
+
+	virtual
+	bool
+	on_configure_event (GdkEventConfigure* event) = 0;
 
 	virtual
 	bool
@@ -338,6 +354,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment>      m_DurationAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>      m_FPSAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>      m_FrameAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>      m_TranslationAdjustment;
 	Glib::RefPtr <Gtk::TreeStore>       m_TreeStore;
 	Glib::RefPtr <Gtk::TreeModelFilter> m_TreeModelFilter;
 	Glib::RefPtr <Gtk::TreeViewColumn>  m_NameColumn;
@@ -361,6 +378,7 @@ private:
 	Gtk::Entry*                         m_NameEntry;
 	Gtk::Button*                        m_RenameButton;
 	Gtk::DrawingArea*                   m_DrawingArea;
+	Gtk::Scrollbar*                     m_TranslationSlider;
 	Gtk::ToolButton*                    m_ZoomOutButton;
 	Gtk::ToolButton*                    m_ZoomInButton;
 	Gtk::ToolButton*                    m_ZoomFitButton;

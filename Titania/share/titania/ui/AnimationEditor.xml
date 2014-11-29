@@ -22,6 +22,11 @@
     <property name="page_increment">10</property>
     <signal name="value-changed" handler="on_current_frame_changed" swapped="no"/>
   </object>
+  <object class="GtkAdjustment" id="TranslationAdjustment">
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+    <signal name="value-changed" handler="on_translation_changed" swapped="no"/>
+  </object>
   <object class="GtkTreeStore" id="TreeStore">
     <columns>
       <!-- column-name Name -->
@@ -367,15 +372,40 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkDrawingArea" id="DrawingArea">
+                  <object class="GtkBox" id="box5">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="events">GDK_BUTTON1_MOTION_MASK | GDK_BUTTON2_MOTION_MASK | GDK_BUTTON3_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
-                    <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-                    <signal name="button-release-event" handler="on_button_release_event" swapped="no"/>
-                    <signal name="draw" handler="on_draw" swapped="no"/>
-                    <signal name="motion-notify-event" handler="on_motion_notify_event" swapped="no"/>
-                    <signal name="scroll-event" handler="on_scroll_event" swapped="no"/>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkDrawingArea" id="DrawingArea">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="events">GDK_BUTTON1_MOTION_MASK | GDK_BUTTON2_MOTION_MASK | GDK_BUTTON3_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
+                        <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+                        <signal name="button-release-event" handler="on_button_release_event" swapped="no"/>
+                        <signal name="configure-event" handler="on_configure_event" swapped="no"/>
+                        <signal name="draw" handler="on_draw" swapped="no"/>
+                        <signal name="motion-notify-event" handler="on_motion_notify_event" swapped="no"/>
+                        <signal name="scroll-event" handler="on_scroll_event" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkScrollbar" id="TranslationSlider">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="adjustment">TranslationAdjustment</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">True</property>

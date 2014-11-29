@@ -93,6 +93,27 @@ private:
 
 	virtual
 	void
+	on_translation_changed () final override;
+
+	void
+	setTranslation (const double);
+
+	void
+	setLowerTranslation ();
+
+	double
+	getTranslation () const
+	{ return translation; }
+
+	void
+	setScale (const double);
+
+	double
+	getScale () const
+	{ return scale; }
+
+	virtual
+	void
 	on_map () final override;
 
 	virtual
@@ -201,6 +222,10 @@ private:
 	virtual
 	void
 	on_zoom_fit_clicked () final override;
+
+	virtual
+	bool
+	on_configure_event (GdkEventConfigure*) final override;
 
 	virtual
 	bool
