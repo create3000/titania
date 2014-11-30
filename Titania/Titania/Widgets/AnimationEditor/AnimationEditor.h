@@ -67,11 +67,15 @@ class AnimationEditor :
 {
 public:
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 */
 
 	AnimationEditor (X3DBrowserWindow* const);
 
-	///  @name Destruction
+	/***
+	 *  @name Destruction
+	 **/
 
 	virtual
 	~AnimationEditor ();
@@ -79,7 +83,9 @@ public:
 
 private:
 
-	///  @name Construction
+	/***
+	 *  @name Construction
+	 **/
 
 	virtual
 	void
@@ -98,6 +104,9 @@ private:
 
 	int32_t
 	getFramesPerSecond () const;
+
+	bool
+	isActive () const;
 
 	virtual
 	void
@@ -131,7 +140,9 @@ private:
 	void
 	set_selection ();
 
-	///  @name Event handlers
+	/***
+	 *  New and Open Animation
+	 **/
 
 	virtual
 	void
@@ -184,10 +195,20 @@ private:
 	set_live (const size_t id, const Gtk::TreePath &);
 
 	void
-	set_field (X3D::X3DFieldDefinition* const, const Gtk::TreePath &);
+	set_tainted (const Gtk::TreePath &);
+	
+	void
+	setTainted (const Gtk::TreePath &, const bool);
+
+	bool
+	hasTaintedChildren (const Gtk::TreeIter &) const;
 
 	void
-	set_fields (const size_t id, const Gtk::TreePath &);
+	set_user_defined_fields (const size_t id, const Gtk::TreePath &);
+
+	/***
+	 *  Frame and Time
+	 **/
 
 	virtual
 	void
@@ -221,24 +242,45 @@ private:
 	void
 	set_fraction (const float);
 
-	virtual
-	void
-	on_zoom_out_clicked () final override;
+	/***
+	 *  Zoom
+	 **/
 
 	virtual
 	void
-	on_zoom_in_clicked () final override;
+	on_zoom_out () final override;
+
+	virtual
+	void
+	on_zoom_in () final override;
 
 	void
 	on_zoom (const double, const GdkScrollDirection);
 
 	virtual
 	void
-	on_zoom_fit_clicked () final override;
+	on_zoom_fit () final override;
+
+	void
+	on_zoom_1 ();
+
+	/***
+	 *  Tree View
+	 **/
 
 	virtual
 	void
 	on_row_activated (const Gtk::TreePath &, Gtk::TreeViewColumn*) final override;
+
+	virtual
+	void
+	on_tainted_toggled (const Glib::ustring &) final override;
+
+	void
+	addKeyframe (const Gtk::TreePath &);
+	
+	void
+	addKeyframe (const Gtk::TreePath &, const Gtk::TreePath &);
 
 	void
 	addKeyframe (const X3D::SFNode &, const X3D::X3DFieldDefinition* const, const int32_t);
@@ -263,6 +305,13 @@ private:
 
 	X3D::X3DPtr <X3D::X3DInterpolatorNode>
 	getInterpolator (const std::string &, const X3D::SFNode &, const X3D::X3DFieldDefinition* const, const UndoStepPtr &);
+
+	std::string
+	getInterpolatorName (const X3D::SFNode &, const X3D::X3DFieldDefinition* const);
+
+	/***
+	 *  Drawing Area
+	 **/
 
 	virtual
 	bool
@@ -292,10 +341,15 @@ private:
 	bool
 	on_draw (const Cairo::RefPtr <Cairo::Context> &) final override;
 
+	void
+	on_draw_keyframes (const Cairo::RefPtr <Cairo::Context> &, const Gtk::TreeIter &, const int32_t, const int32_t, const double);
+
 	std::pair <int32_t, int32_t>
 	getFrameParams () const;
 
-	//  @name Member types
+	/***
+	 *  @name Member types
+	 **/
 
 	class Columns :
 		public Gtk::TreeModel::ColumnRecord
@@ -308,6 +362,7 @@ private:
 			add (type);
 			add (name);
 			add (accessType);
+			add (tainted);
 			add (visible);
 		}
 
@@ -315,13 +370,16 @@ private:
 		Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  type;
 		Gtk::TreeModelColumn <std::string>                 name;
 		Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  accessType;
+		Gtk::TreeModelColumn <bool>                        tainted;
 		Gtk::TreeModelColumn <bool>                        visible;
 
 	};
 
 	using InterpolatorIndex = std::map <const X3D::X3DFieldDefinition*, X3D::X3DPtr <X3D::X3DInterpolatorNode>>;
 
-	///  @name Members
+	/***
+	 *  @name Members
+	 **/
 
 	Columns                             columns;
 	Glib::RefPtr <Gtk::TreeStore>       treeStore;
@@ -336,6 +394,7 @@ private:
 	double                              translation;
 	double                              scale;
 	guint                               button;
+	size_t                              frameChange;
 
 };
 

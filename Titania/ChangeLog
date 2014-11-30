@@ -6,6 +6,14 @@
 	* X3DAnimationEditorInterface.h:
 	* X3DAnimationEditorInterface.cpp: 
 
+2014-11-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* AnimationEditor.xml:
+	* AnimationEditor.h:
+	* AnimationEditor.cpp:
+	* X3DAnimationEditorInterface.h:
+	* X3DAnimationEditorInterface.cpp: 
+
 2014-11-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* AnimationEditor.xml:

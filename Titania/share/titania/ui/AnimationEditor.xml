@@ -237,6 +237,39 @@
               </packing>
             </child>
             <child>
+              <object class="GtkSeparatorToolItem" id="separatortoolitem3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolItem" id="toolitem2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkComboBoxText" id="KeyTypeButton">
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">False</property>
+                    <property name="active">1</property>
+                    <items>
+                      <item translatable="yes">CONSTANT</item>
+                      <item translatable="yes">LINEAR</item>
+                      <item translatable="yes">SPLINE</item>
+                    </items>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkToolItem" id="toolbutton1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -298,6 +331,19 @@
                               <object class="GtkCellRendererText" id="NameCellRenderer"/>
                               <attributes>
                                 <attribute name="markup">2</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="TaintedColumn">
+                            <property name="title" translatable="yes">Tainted</property>
+                            <child>
+                              <object class="GtkCellRendererToggle" id="TaintedCellRenderer">
+                                <signal name="toggled" handler="on_tainted_toggled" swapped="no"/>
+                              </object>
+                              <attributes>
+                                <attribute name="active">4</attribute>
                               </attributes>
                             </child>
                           </object>
@@ -415,7 +461,7 @@
                         <property name="label" translatable="yes">Zoom Out</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-zoom-out</property>
-                        <signal name="clicked" handler="on_zoom_out_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_zoom_out" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -430,7 +476,7 @@
                         <property name="label" translatable="yes">Zoom In</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-zoom-in</property>
-                        <signal name="clicked" handler="on_zoom_in_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_zoom_in" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -445,7 +491,7 @@
                         <property name="label" translatable="yes">Zoom Fit</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-zoom-fit</property>
-                        <signal name="clicked" handler="on_zoom_fit_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_zoom_fit" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
