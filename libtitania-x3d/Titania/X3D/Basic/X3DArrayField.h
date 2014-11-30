@@ -441,12 +441,14 @@ public:
 	clear ();
 
 	///  Inserts elements.
+	template <class Arg>
 	iterator
-	insert (const iterator &, const ValueType &);
+	insert (const iterator &, Arg &&);
 
 	///  Inserts elements.
+	template <class Arg>
 	iterator
-	insert (const iterator &, const size_type, const ValueType &);
+	insert (const iterator &, const size_type, Arg &&);
 
 	///  Inserts elements.
 	template <class InputIterator>
@@ -744,10 +746,11 @@ X3DArrayField <ValueType>::clear ()
 }
 
 template <class ValueType>
+template <class Arg>
 typename X3DArrayField <ValueType>::iterator
-X3DArrayField <ValueType>::insert (const iterator & location, const ValueType & value)
+X3DArrayField <ValueType>::insert (const iterator & location, Arg && value)
 {
-	const auto iter = get () .insert (location .base (), new ValueType (value));
+	const auto iter = get () .insert (location .base (), new ValueType (std::forward <Arg> (value)));
 
 	addChild (*iter);
 
@@ -756,8 +759,9 @@ X3DArrayField <ValueType>::insert (const iterator & location, const ValueType & 
 }
 
 template <class ValueType>
+template <class Arg>
 typename X3DArrayField <ValueType>::iterator
-X3DArrayField <ValueType>::insert (const iterator & location, const size_type count, const ValueType & value)
+X3DArrayField <ValueType>::insert (const iterator & location, const size_type count, Arg && value)
 {
 	const size_type pos = location - begin ();
 

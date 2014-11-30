@@ -282,6 +282,19 @@ throw (Error <INVALID_NAME>,
 }
 
 template <>
+MFBool &
+X3DNode::getMetaData <MFBool> (const std::string & key, const bool create)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names, create);
+
+	return set -> getMetaData <MFBool> (names .back (), create);
+}
+
+template <>
 const MFBool &
 X3DNode::getMetaData <MFBool> (const std::string & key) const
 throw (Error <INVALID_NAME>,
@@ -292,6 +305,19 @@ throw (Error <INVALID_NAME>,
 	const auto set   = getMetadataSet (names);
 
 	return set -> getMetaData <MFBool> (names .back ());
+}
+
+template <>
+MFDouble &
+X3DNode::getMetaData <MFDouble> (const std::string & key, const bool create)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names, create);
+
+	return set -> getMetaData <MFDouble> (names .back (), create);
 }
 
 template <>
@@ -308,6 +334,19 @@ throw (Error <INVALID_NAME>,
 }
 
 template <>
+MFFloat &
+X3DNode::getMetaData <MFFloat> (const std::string & key, const bool create)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names, create);
+
+	return set -> getMetaData <MFFloat> (names .back (), create);
+}
+
+template <>
 const MFFloat &
 X3DNode::getMetaData <MFFloat> (const std::string & key) const
 throw (Error <INVALID_NAME>,
@@ -318,6 +357,19 @@ throw (Error <INVALID_NAME>,
 	const auto set   = getMetadataSet (names);
 
 	return set -> getMetaData <MFFloat> (names .back ());
+}
+
+template <>
+MFInt32 &
+X3DNode::getMetaData <MFInt32> (const std::string & key, const bool create)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names, create);
+
+	return set -> getMetaData <MFInt32> (names .back (), create);
 }
 
 template <>
@@ -334,6 +386,19 @@ throw (Error <INVALID_NAME>,
 }
 
 template <>
+MFString &
+X3DNode::getMetaData <MFString> (const std::string & key, const bool create)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto names = basic::split (key, "/");
+	const auto set   = getMetadataSet (names, create);
+
+	return set -> getMetaData <MFString> (names .back (), create);
+}
+
+template <>
 const MFString &
 X3DNode::getMetaData <MFString> (const std::string & key) const
 throw (Error <INVALID_NAME>,
@@ -345,28 +410,6 @@ throw (Error <INVALID_NAME>,
 
 	return set -> getMetaData <MFString> (names .back ());
 }
-
-//try
-//{
-//	const auto & t = worldInfo -> getMetaData <MFFloat> ("/X3D/Grid/translation");
-//
-//	getGrid () -> translation () .setValue (t .at (0), t .at (1), t .at (2));
-//}
-//catch (...)
-//{
-//	getGrid () -> translation () = X3D::Vector3f ();
-//}
-//
-//try
-//{
-//	getGrid () -> transparency () = worldInfo -> getMetaData <MFFloat> ("/X3D/Grid/transparency") .at (0);
-//}
-//catch (...)
-//{
-//	getGrid () -> transparency () = 0.75;
-//}
-//
-//worldInfo -> setMetaData <X3D::Vector3f> ("/X3D/Grid/translation", getGrid () -> translation ());
 
 MetadataSet*
 X3DNode::getMetadataSet (const std::deque <std::string> & names, const bool create) const

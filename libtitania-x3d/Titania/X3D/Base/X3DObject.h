@@ -82,15 +82,9 @@ public:
 
 	///  Returns the id of this object.  This is usefull for comparing object.
 	virtual
-	X3DBase*
-	getId ()
-	{ return this; }
-
-	///  Returns the id of this object.  This is usefull for comparing object.
-	virtual
-	const X3DBase*
+	size_t
 	getId () const
-	{ return this; }
+	{ return reinterpret_cast <size_t> (this); }
 
 	///  Sets the name of this object.
 	virtual

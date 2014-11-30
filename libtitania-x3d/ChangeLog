@@ -1,3 +1,14 @@
+2014-11-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DPtr.h:
+	* X3DObject.h:
+	* X3DArrayField.h:
+	* X3DBaseTool.h:
+	* X3DNode.h:
+	* X3DNode.cpp:
+	* MetadataSet.h:
+	* X3DExecutionContext.h: 
+
 2014-11-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MetadataSet.cpp:

@@ -2,15 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="165" Column="1" />
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="517" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DNode.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="364" Column="15" />
-      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.h" Line="146" Column="46" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/PlaneViewer.cpp" Line="135" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/PlaneViewer.h" Line="103" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.cpp" Line="188" Column="19" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="285" Column="1" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="705" Column="1" />
+      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.h" Line="121" Column="40" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp" Line="806" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="263" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -81,7 +77,7 @@
                   <Node name="Navigation" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                   <Node name="Shape" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
+                  <Node name="Time" expanded="True" />
                 </Node>
                 <Node name="Extensions" expanded="True">
                   <Node name="CosmoWorlds" expanded="True" />
@@ -109,7 +105,9 @@
                     <Node name="Geometry3D" expanded="True" />
                   </Node>
                 </Node>
-                <Node name="ui" expanded="True" />
+                <Node name="ui" expanded="True">
+                  <Node name="icons" expanded="True" />
+                </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
@@ -119,14 +117,18 @@
               </Node>
               <Node name="Editors" expanded="True">
                 <Node name="GridEditor" expanded="True" />
-                <Node name="PrecisionPlacementPanel" expanded="True" />
+                <Node name="InlineEditor" expanded="True" />
+                <Node name="NodePropertiesEditor" expanded="True">
+                  <Node name="NodePropertiesEditor.cpp" selected="True" />
+                </Node>
               </Node>
               <Node name="Widgets" expanded="True">
-                <Node name="AnimationEditor" expanded="True">
-                  <Node name="AnimationEditor.cpp" selected="True" />
-                </Node>
+                <Node name="AnimationEditor" expanded="True" />
                 <Node name="Console" expanded="True" />
                 <Node name="LibraryView" expanded="True" />
+                <Node name="OutlineEditor" expanded="True">
+                  <Node name="CellRenderer" expanded="True" />
+                </Node>
                 <Node name="ScriptEditor" expanded="True" />
               </Node>
             </Node>

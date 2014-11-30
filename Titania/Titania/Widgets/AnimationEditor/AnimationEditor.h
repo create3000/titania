@@ -85,6 +85,14 @@ private:
 	void
 	initialize () final override;
 
+	const Glib::RefPtr <Gtk::TreeStore> &
+	getTreeStore () const
+	{ return treeStore; }
+
+	const Glib::RefPtr <Gtk::TreeModelFilter>
+	getTreeModelFilter () const
+	{ return treeModelFilter; }
+
 	int32_t
 	getDuration () const;
 
@@ -149,9 +157,14 @@ private:
 	set_animation (const X3D::SFNode &);
 
 	void
-	set_remove_animation (const bool);
+	set_animation_live (const bool);
+	
+	void
+	set_interpolators ();
 
-	virtual
+	void
+	removeInterpolators ();
+
 	void
 	on_add_object () final override;
 
@@ -224,6 +237,34 @@ private:
 	on_zoom_fit_clicked () final override;
 
 	virtual
+	void
+	on_row_activated (const Gtk::TreePath &, Gtk::TreeViewColumn*) final override;
+
+	void
+	addKeyframe (const X3D::SFNode &, const X3D::X3DFieldDefinition* const, const int32_t);
+
+	void
+	addKeyframe (const X3D::SFNode &, const X3D::SFColor &, const int32_t, const UndoStepPtr &);
+
+	void
+	addKeyframe (const X3D::SFNode &, const X3D::SFFloat &, const int32_t, const UndoStepPtr &);
+
+	void
+	addKeyframe (const X3D::SFNode &, const X3D::SFRotation &, const int32_t, const UndoStepPtr &);
+
+	void
+	addKeyframe (const X3D::SFNode &, const X3D::SFVec2f &, const int32_t, const UndoStepPtr &);
+
+	void
+	addKeyframe (const X3D::SFNode &, const X3D::SFVec3f &, const int32_t, const UndoStepPtr &);
+
+	void
+	setInterpolator (const X3D::X3DPtr <X3D::PositionInterpolator> &, const UndoStepPtr &);
+
+	X3D::X3DPtr <X3D::X3DInterpolatorNode>
+	getInterpolator (const std::string &, const X3D::SFNode &, const X3D::X3DFieldDefinition* const, const UndoStepPtr &);
+
+	virtual
 	bool
 	on_configure_event (GdkEventConfigure*) final override;
 
@@ -254,19 +295,48 @@ private:
 	std::pair <int32_t, int32_t>
 	getFrameParams () const;
 
+	//  @name Member types
+
+	class Columns :
+		public Gtk::TreeModel::ColumnRecord
+	{
+	public:
+
+		Columns ()
+		{
+			add (id);
+			add (type);
+			add (name);
+			add (accessType);
+			add (visible);
+		}
+
+		Gtk::TreeModelColumn <size_t>                      id;
+		Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  type;
+		Gtk::TreeModelColumn <std::string>                 name;
+		Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  accessType;
+		Gtk::TreeModelColumn <bool>                        visible;
+
+	};
+
+	using InterpolatorIndex = std::map <const X3D::X3DFieldDefinition*, X3D::X3DPtr <X3D::X3DInterpolatorNode>>;
+
 	///  @name Members
 
-	std::unique_ptr <NodeIndex>                 nodeIndex;
-	NameEntry                                   nodeName;
-	X3D::X3DPtr <X3D::Group>                    animation;
-	X3D::X3DPtr <X3D::TimeSensor>               timeSensor;
-	X3D::X3DPtrArray <X3D::X3DInterpolatorNode> interpolators;
-	std::map <uint64_t, X3D::SFNode>            nodes;
-	X3D::Vector2d                               fromPoint;
-	double                                      translation;
-	double                                      scale;
-	guint                                       button;
-	
+	Columns                             columns;
+	Glib::RefPtr <Gtk::TreeStore>       treeStore;
+	Glib::RefPtr <Gtk::TreeModelFilter> treeModelFilter;
+	std::unique_ptr <NodeIndex>         nodeIndex;
+	NameEntry                           nodeName;
+	X3D::X3DPtr <X3D::Group>            animation;
+	X3D::X3DPtr <X3D::TimeSensor>       timeSensor;
+	InterpolatorIndex                   interpolatorIndex;
+	std::map <size_t, X3D::SFNode>      nodes;
+	X3D::Vector2d                       fromPoint;
+	double                              translation;
+	double                              scale;
+	guint                               button;
+
 };
 
 } // puck

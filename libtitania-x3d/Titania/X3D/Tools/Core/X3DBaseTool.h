@@ -65,14 +65,9 @@ public:
 	///  @name Member access
 
 	virtual
-	Type*
-	getId () final override
-	{ return node; }
-
-	virtual
-	const Type*
+	size_t
 	getId () const final override
-	{ return node; }
+	{ return reinterpret_cast <size_t> (node); }
 
 	virtual
 	void

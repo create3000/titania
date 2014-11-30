@@ -115,7 +115,7 @@ public:
 	///  Return the field with @a name.
 	template <class Type>
 	Type &
-	getMetaData (const std::string & name)
+	getMetaData (const std::string & name, const bool = false)
 	throw (Error <INVALID_FIELD>,
 	       Error <INVALID_NAME>,
 	       Error <DISPOSED>);
@@ -220,19 +220,33 @@ throw (Error <DISPOSED>);
 ///  Return the field with @a name.
 template <class Type>
 Type &
-MetadataSet::getMetaData (const std::string & name)
+MetadataSet::getMetaData (const std::string & name, const bool create)
 throw (Error <INVALID_FIELD>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	X3DFieldDefinition* const fieldDefinition = getMetaData (name);
+	try
+	{
+		X3DFieldDefinition* const fieldDefinition = getMetaData (name);
 
-	Type* const field = dynamic_cast <Type*> (fieldDefinition);
+		Type* const field = dynamic_cast <Type*> (fieldDefinition);
 
-	if (field)
-		return *field;
+		if (field)
+			return *field;
 
-	throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + fieldDefinition -> getTypeName () + ".");
+		throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + fieldDefinition -> getTypeName () + ".");
+	}
+	catch (const X3DError &)
+	{
+		if (create)
+		{
+			setMetaData <Type> (name, Type ());
+
+			return getMetaData <Type> (name);
+		}
+
+		throw;
+	}
 }
 
 ///  Return the field with @a name.

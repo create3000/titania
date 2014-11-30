@@ -382,8 +382,8 @@ public:
 	{
 		const auto rhs = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
 
-		const X3DBase* const a = getValue () ? getValue () -> getId () : nullptr;
-		const X3DBase* const b = rhs ? rhs -> getId () : nullptr;
+		const size_t a = getValue () ? getValue () -> getId () : 0;
+		const size_t b = rhs ? rhs -> getId () : 0;
 
 		return a == b;
 	}
@@ -395,8 +395,8 @@ public:
 	{
 		const auto rhs = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
 
-		const X3DBase* const a = getValue () ? getValue () -> getId () : nullptr;
-		const X3DBase* const b = rhs ? rhs -> getId () : nullptr;
+		const size_t a = getValue () ? getValue () -> getId () : 0;
+		const size_t b = rhs ? rhs -> getId () : 0;
 
 		return a not_eq b;
 	}
@@ -616,8 +616,8 @@ inline
 bool
 operator == (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 {
-	const X3DBase* const a = lhs ? lhs -> getId () : nullptr;
-	const X3DBase* const b = rhs ? rhs -> getId () : nullptr;
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
 
 	return a == b;
 }
@@ -629,8 +629,8 @@ inline
 bool
 operator not_eq (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 {
-	const X3DBase* const a = lhs ? lhs -> getId () : nullptr;
-	const X3DBase* const b = rhs ? rhs -> getId () : nullptr;
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
 
 	return a not_eq b;
 }
@@ -642,8 +642,8 @@ inline
 bool
 operator < (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 {
-	const X3DBase* const a = lhs ? lhs -> getId () : nullptr;
-	const X3DBase* const b = rhs ? rhs -> getId () : nullptr;
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
 
 	return a < b;
 }
@@ -655,8 +655,8 @@ inline
 bool
 operator <= (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 {
-	const X3DBase* const a = lhs ? lhs -> getId () : nullptr;
-	const X3DBase* const b = rhs ? rhs -> getId () : nullptr;
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
 
 	return a <= b;
 }
@@ -668,8 +668,8 @@ inline
 bool
 operator > (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 {
-	const X3DBase* const a = lhs ? lhs -> getId () : nullptr;
-	const X3DBase* const b = rhs ? rhs -> getId () : nullptr;
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
 
 	return a > b;
 }
@@ -681,8 +681,8 @@ inline
 bool
 operator >= (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 {
-	const X3DBase* const a = lhs ? lhs -> getId () : nullptr;
-	const X3DBase* const b = rhs ? rhs -> getId () : nullptr;
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
 
 	return a >= b;
 }

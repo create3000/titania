@@ -685,7 +685,7 @@ private:
 	 *  @name Member types
 	 */
 
-	using ImportedNamesIndex = std::multimap <X3DBase*, std::string>;
+	using ImportedNamesIndex = std::multimap <size_t, std::string>;
 
 	/***
 	 *  @name Operations

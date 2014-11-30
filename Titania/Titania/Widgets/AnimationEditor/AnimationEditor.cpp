@@ -57,10 +57,6 @@
 namespace titania {
 namespace puck {
 
-static constexpr int NAME_COLUMN    = 0;
-static constexpr int ID_COLUMN      = 1;
-static constexpr int VISIBLE_COLUMN = 2;
-
 static constexpr double DEFAULT_TRANSLATION = 8;
 static constexpr double DEFAULT_SCALE       = 16;
 static constexpr double KEY_FRAME_SIZE      = 7;
@@ -70,11 +66,14 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DAnimationEditorInterface (get_ui ("AnimationEditor.xml"), gconf_dir ()),
 	            X3DEditorObject (),
+	                    columns (),
+	                  treeStore (Gtk::TreeStore::create (columns)),
+	            treeModelFilter (Gtk::TreeModelFilter::create (treeStore)),
 	                  nodeIndex (new NodeIndex (browserWindow)),
 	                   nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                  animation (),
 	                 timeSensor (),
-	              interpolators (),
+	          interpolatorIndex (),
 	                      nodes (),
 	                  fromPoint (),
 	                translation (0),
@@ -83,7 +82,9 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 {
 	getTranslationAdjustment () -> set_lower (-DEFAULT_TRANSLATION);
 	getTranslationAdjustment () -> set_upper (-DEFAULT_TRANSLATION);
-	getTreeModelFilter () -> set_visible_column (VISIBLE_COLUMN);
+
+	getTreeModelFilter () -> set_visible_column (columns .visible);
+	getTreeView () .set_model (getTreeModelFilter ());
 
 	setup ();
 }
@@ -290,13 +291,12 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	
 	if (animation)
 	{
-		animation ->  isLive () .removeInterest (this, &AnimationEditor::set_remove_animation);
-		timeSensor -> isLive () .removeInterest (this, &AnimationEditor::set_remove_animation);
+		animation -> isLive () .removeInterest (this, &AnimationEditor::set_animation_live);
 	}
-	
+
 	if (timeSensor)
 	{
-		timeSensor -> isLive ()           .removeInterest (this, &AnimationEditor::set_remove_animation);
+		timeSensor -> isLive ()           .removeInterest (this, &AnimationEditor::set_animation_live);
 		timeSensor -> isPaused ()         .removeInterest (this, &AnimationEditor::set_active);
 		timeSensor -> fraction_changed () .removeInterest (this, &AnimationEditor::set_fraction);
 		timeSensor -> isEvenLive (false);
@@ -306,20 +306,28 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	{
 		pair .second -> name_changed ()   .removeInterest (this, &AnimationEditor::set_name);
 		pair .second -> fields_changed () .removeInterest (this, &AnimationEditor::set_fields);
-		pair .second -> isLive ()         .removeInterest (this, &AnimationEditor::set_live);
+		pair .second -> isLive ()         .removeInterest (this, &AnimationEditor::set_animation_live);
 
 		for (const auto & field : pair .second -> getFieldDefinitions ())
 			field -> removeInterest (this, &AnimationEditor::set_field);
 	}
 
+	removeInterpolators ();
+
 	// Reset all.
 
 	animation  = value;
 	timeSensor = nullptr;
+	nodes .clear ();
+
+	getTreeStore () -> clear ();
+	auto master = getTreeStore () -> append ();
+	(*master) [columns .name]    = "<b>" + Glib::Markup::escape_text (_ ("Master")) + "</b>";
+	(*master) [columns .visible] = true;
 
 	if (animation)
 	{
-		animation -> isLive () .addInterest (this, &AnimationEditor::set_remove_animation);
+		animation -> isLive () .addInterest (this, &AnimationEditor::set_animation_live);
 
 		const auto timeSensors = getNodes <X3D::TimeSensor> ({ animation }, { X3D::X3DConstants::TimeSensor });
 
@@ -334,7 +342,7 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 		else
 			timeSensor = timeSensors .back ();
 
-		timeSensor -> isLive ()           .addInterest (this, &AnimationEditor::set_remove_animation);
+		timeSensor -> isLive ()           .addInterest (this, &AnimationEditor::set_animation_live);
 		timeSensor -> isPaused ()         .addInterest (this, &AnimationEditor::set_active);
 		timeSensor -> isActive ()         .addInterest (this, &AnimationEditor::set_active);
 		timeSensor -> fraction_changed () .addInterest (this, &AnimationEditor::set_fraction);
@@ -343,6 +351,7 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 		timeSensor -> cycleInterval () = getDuration () / (double) getFramesPerSecond ();
 
 		set_active ();
+		set_interpolators ();
 	}
 
 	set_selection ();
@@ -354,13 +363,8 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	getTimeButton ()       .set_sensitive (animation);
 	getAnimationBox ()     .set_sensitive (animation);
 
-	getTreeStore () -> clear ();
-
 	nodeName .setNode (X3D::SFNode (animation));
 	
-	interpolators .clear ();
-	nodes         .clear ();
-
 	setScale (DEFAULT_SCALE);
 	setTranslation (DEFAULT_TRANSLATION);
 
@@ -371,10 +375,49 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 }
 
 void
-AnimationEditor::set_remove_animation (const bool value)
+AnimationEditor::set_animation_live (const bool value)
 {
 	if (not value)
 		set_animation (nullptr);
+}
+
+void
+AnimationEditor::set_interpolators ()
+{
+	removeInterpolators ();
+
+	const auto interpolators = getNodes <X3D::X3DInterpolatorNode> ({ animation }, { X3D::X3DConstants::X3DInterpolatorNode });
+
+	for (const auto interpolator : interpolators)
+	{
+		const auto value_changed = interpolator -> getField ("value_changed");
+		
+		for (const auto & route : value_changed -> getOutputRoutes ())
+		{
+			try
+			{
+				const auto node  = route -> getDestinationNode ();
+				const auto field = node -> getField (route -> getDestinationField ());
+
+				addNode (node);
+				interpolatorIndex .emplace (field, interpolator);
+				interpolator -> isLive () .addInterest (this, &AnimationEditor::set_interpolators);
+			}
+			catch (const X3D::X3DError &)
+			{ }
+		}
+	}
+
+	getDrawingArea () .queue_draw ();
+}
+
+void
+AnimationEditor::removeInterpolators ()
+{
+	for (const auto & pair : interpolatorIndex)
+		pair .second -> isLive () .removeInterest (this, &AnimationEditor::set_interpolators);
+
+	interpolatorIndex .clear ();
 }
 
 void
@@ -387,17 +430,21 @@ AnimationEditor::on_add_object ()
 void
 AnimationEditor::addNode (const X3D::SFNode & node)
 {
-	if (not nodes .emplace ((size_t) node -> getId (), node) .second)
+	if (not nodes .emplace (node -> getId (), node) .second)
 		return;
 
-	auto parent = getTreeStore () -> append ();
-	parent -> set_value (ID_COLUMN,      (size_t) node -> getId ());
-	parent -> set_value (NAME_COLUMN,    getNodeName (node));
-	parent -> set_value (VISIBLE_COLUMN, true);
+	const auto master = getTreeStore () -> get_iter (Gtk::TreePath ("0"));
 
-	node -> name_changed ()   .addInterest (this, &AnimationEditor::set_name,   (size_t) node -> getId (), getTreeStore () -> get_path (parent));
-	node -> fields_changed () .addInterest (this, &AnimationEditor::set_fields, (size_t) node -> getId (), getTreeStore () -> get_path (parent));
-	node -> isLive ()         .addInterest (this, &AnimationEditor::set_live,   (size_t) node -> getId (), getTreeStore () -> get_path (parent));
+	auto parent = getTreeStore () -> append (master -> children ());
+	(*parent) [columns .id]      = node -> getId ();
+	(*parent) [columns .name]    = getNodeName (node);
+	(*parent) [columns .visible] = true;
+
+	getTreeView () .expand_row (Gtk::TreePath ("0"), false);
+
+	node -> name_changed ()   .addInterest (this, &AnimationEditor::set_name,   node -> getId (), getTreeStore () -> get_path (parent));
+	node -> fields_changed () .addInterest (this, &AnimationEditor::set_fields, node -> getId (), getTreeStore () -> get_path (parent));
+	node -> isLive ()         .addInterest (this, &AnimationEditor::set_live,   node -> getId (), getTreeStore () -> get_path (parent));
 
 	addFields (node, parent);
 }
@@ -424,10 +471,10 @@ AnimationEditor::addFields (const X3D::SFNode & node, Gtk::TreeIter & parent)
 			continue;
 
 		auto child = getTreeStore () -> append (parent -> children ());
-		child -> set_value (ID_COLUMN,      i);
-		child -> set_value (NAME_COLUMN,    Glib::Markup::escape_text (field -> getName ()));
-		child -> set_value (VISIBLE_COLUMN, true);
-		
+		(*child) [columns .id]      = i;
+		(*child) [columns .name]    = Glib::Markup::escape_text (field -> getName ());
+		(*child) [columns .visible] = true;
+
 		field -> addInterest (this, &AnimationEditor::set_field, field, getTreeStore () -> get_path (child));
 	}
 }
@@ -451,7 +498,7 @@ AnimationEditor::set_name (const size_t id, const Gtk::TreePath & path)
 
 		auto iter = getTreeStore () -> get_iter (path);
 
-		iter -> set_value (NAME_COLUMN, getNodeName (node));
+		(*iter) [columns .name] = getNodeName (node);
 	}
 	catch (const std::out_of_range &)
 	{ }
@@ -466,7 +513,7 @@ AnimationEditor::set_live (const size_t id, const Gtk::TreePath & path)
 
 		auto iter = getTreeStore () -> get_iter (path);
 
-		iter -> set_value (VISIBLE_COLUMN, node -> isLive () .getValue ());
+		(*iter) [columns .visible] = node -> isLive () .getValue ();
 
 		getTreeModelFilter () -> row_has_child_toggled (getTreeModelFilter () -> convert_child_path_to_path (path),
 		                                                getTreeModelFilter () -> convert_child_iter_to_iter (iter));
@@ -480,7 +527,7 @@ AnimationEditor::set_field (X3D::X3DFieldDefinition* const field, const Gtk::Tre
 {
 	auto iter = getTreeStore () -> get_iter (path);
 
-	iter -> set_value (NAME_COLUMN, "<i>" + Glib::Markup::escape_text (field -> getName ()) + "</i>");
+	(*iter) [columns .name] = "<i>" + Glib::Markup::escape_text (field -> getName ()) + "</i>";
 }
 
 void
@@ -576,6 +623,11 @@ AnimationEditor::on_time ()
 	if (responseId not_eq Gtk::RESPONSE_OK)
 		return;
 
+	if (getDurationAdjustment () -> get_value () < getDuration ())
+	{
+		// Remove key frames greater than getDurationAdjustment () -> get_value ().
+	}
+
 	using setMetaData = void (X3D::X3DNode::*) (const std::string &, const int32_t &);
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Keyframe Animation Properties"));
@@ -607,6 +659,8 @@ AnimationEditor::on_time ()
 	undoStep -> addUndoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&chrono::now));
 	undoStep -> addRedoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&chrono::now));
 	timeSensor -> stopTime () = chrono::now ();
+
+	// Build interpolators.
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -682,6 +736,223 @@ AnimationEditor::on_zoom_fit_clicked ()
 
 	setScale (width / getDuration ());
 	setTranslation (DEFAULT_TRANSLATION);
+}
+
+void
+AnimationEditor::on_row_activated (const Gtk::TreePath & path, Gtk::TreeViewColumn* column)
+{
+	if (timeSensor -> isActive ())
+		return;
+
+	if (path .size () < 2)
+		return;
+
+	try
+	{
+		auto parentPath = path;
+		parentPath .up ();
+
+		const auto   parent = getTreeModelFilter () -> get_iter (parentPath);
+		const auto   child  = getTreeModelFilter () -> get_iter (path);
+		const size_t id     = (*parent) [columns .id];
+		const size_t i      = (*child) [columns .id];
+		const auto & node   = nodes .at (id);
+
+		addKeyframe (node, node -> getFieldDefinitions () .at (i), getFrameAdjustment () -> get_value ());
+
+		(*child) [columns .name] = Glib::Markup::escape_text (field -> getName ());
+	}
+	catch (const std::out_of_range &)
+	{ }
+}
+
+void
+AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefinition* const field, const int32_t frame)
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Add Keyframe"));
+
+	switch (field -> getType ())
+	{
+		case X3D::X3DConstants::SFColor:
+			addKeyframe (node, *static_cast <const X3D::SFColor*> (field), frame, undoStep);
+			break;
+		case X3D::X3DConstants::SFFloat:
+			addKeyframe (node, *static_cast <const X3D::SFFloat*> (field), frame, undoStep);
+			break;
+		case X3D::X3DConstants::SFRotation:
+			addKeyframe (node, *static_cast <const X3D::SFRotation*> (field), frame, undoStep);
+			break;
+		case X3D::X3DConstants::SFVec2f:
+			addKeyframe (node, *static_cast <const X3D::SFVec2f*> (field), frame, undoStep);
+			break;
+		case X3D::X3DConstants::SFVec3f:
+			addKeyframe (node, *static_cast <const X3D::SFVec3f*> (field), frame, undoStep);
+			break;
+		default:
+			break;
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::SFColor & field, const int32_t frame, const UndoStepPtr & undoStep)
+{
+}
+
+void
+AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::SFFloat & field, const int32_t frame, const UndoStepPtr & undoStep)
+{
+}
+
+void
+AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::SFRotation & field, const int32_t frame, const UndoStepPtr & undoStep)
+{
+}
+
+void
+AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::SFVec2f & field, const int32_t frame, const UndoStepPtr & undoStep)
+{
+}
+
+void
+AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::SFVec3f & field, const int32_t frame, const UndoStepPtr & undoStep)
+{
+	const X3D::X3DPtr <X3D::PositionInterpolator> interpolator (getInterpolator ("PositionInterpolator", node, &field, undoStep));
+
+	auto &     key      = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",      true);
+	auto &     keyValue = interpolator -> getMetaData <X3D::MFFloat> ("/Interpolator/keyValue", true);
+	auto &     keyType  = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType", true);
+	const auto iter     = std::lower_bound (key .begin (), key .end (), frame);
+	const auto index    = iter - key .begin ();
+	const auto index3   = index * 3;
+
+	keyValue .resize (key .size () * 3);
+	keyType  .resize (key .size ());
+
+	// Set meta data
+
+	using setMetaDataInteger = void (X3D::X3DNode::*) (const std::string &, const X3D::MFInt32 &);
+	using setMetaDataFloat   = void (X3D::X3DNode::*) (const std::string &, const X3D::MFFloat &);
+	using setMetaDataString  = void (X3D::X3DNode::*) (const std::string &, const X3D::MFString &);
+
+	undoStep -> addUndoFunction ((setMetaDataInteger) &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/key",      key);
+	undoStep -> addUndoFunction ((setMetaDataFloat)   &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyValue", keyValue);
+	undoStep -> addUndoFunction ((setMetaDataString)  &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyType",  keyType);
+
+	if (iter == key .end () or frame == key .get1Value (index))
+	{
+		key .set1Value (index, frame);
+		keyValue .set1Value (index3 + 0, field .getX ());
+		keyValue .set1Value (index3 + 1, field .getY ());
+		keyValue .set1Value (index3 + 2, field .getZ ());
+		keyType .set1Value (index, "LINEAR");
+	}
+	else
+	{
+		key .insert (key .begin () + index, frame);
+		keyValue .insert (keyValue .begin () + index3, field .getZ ());
+		keyValue .insert (keyValue .begin () + index3, field .getY ());
+		keyValue .insert (keyValue .begin () + index3, field .getX ());
+		keyType .insert (keyType .begin () + index, "LINEAR");
+	}
+
+	undoStep -> addRedoFunction ((setMetaDataInteger) &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/key",      key);
+	undoStep -> addRedoFunction ((setMetaDataFloat)   &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyValue", keyValue);
+	undoStep -> addRedoFunction ((setMetaDataString)  &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyType",  keyType);
+
+	// Build interpolator.
+
+	setInterpolator (interpolator, undoStep);
+}
+
+void
+AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::PositionInterpolator> & interpolator, const UndoStepPtr & undoStep)
+{
+	interpolator -> key ()      .clear ();
+	interpolator -> keyValue () .clear ();
+
+	const auto & key      = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",      true);
+	auto &       keyValue = interpolator -> getMetaData <X3D::MFFloat> ("/Interpolator/keyValue", true);
+	auto &       keyType  = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType", true);
+
+	keyValue .resize (key .size () * 3);
+	keyType  .resize (key .size ());
+
+	if (key .empty ())
+		return;
+
+	undoStep -> addObjects (interpolator);
+	undoStep -> addUndoFunction (&X3D::MFFloat::setValue, std::ref (interpolator -> key ()),      interpolator -> key ());
+	undoStep -> addUndoFunction (&X3D::MFVec3f::setValue, std::ref (interpolator -> keyValue ()), interpolator -> keyValue ());
+
+	size_t       i        = 0;
+	size_t       i3       = 0;
+	const size_t size     = key .size ();
+	const auto   duration = getDuration ();
+	const float  eps      = 0.000001;
+
+	for (; i < size; ++ i, i3 += 3)
+	{
+		const auto fraction = key [i] / (float) duration;
+		const auto value    = X3D::Vector3f (keyValue [i3], keyValue [i3 + 1], keyValue [i3 + 2]);
+
+		if (keyType [i] == "CONSTANT")
+		{
+			interpolator -> key ()      .emplace_back (fraction);
+			interpolator -> keyValue () .emplace_back (value);
+
+			if (key [i] < duration)
+			{
+				const auto nextFraction = (i == size - 1 ? 1 : key [i + 1] / (float) duration - eps);
+
+				interpolator -> key ()      .emplace_back (nextFraction);
+				interpolator -> keyValue () .emplace_back (value);
+			}
+		}
+		else if (keyType [i] == "LINEAR")
+		{
+			interpolator -> key ()      .emplace_back (fraction);
+			interpolator -> keyValue () .emplace_back (value);
+		}
+		else if (keyType [i] == "SPLINE")
+		{
+		
+		}
+	}
+
+	undoStep -> addRedoFunction (&X3D::MFFloat::setValue, std::ref (interpolator -> key ()),      interpolator -> key ());
+	undoStep -> addRedoFunction (&X3D::MFVec3f::setValue, std::ref (interpolator -> keyValue ()), interpolator -> keyValue ());
+}
+
+X3D::X3DPtr <X3D::X3DInterpolatorNode>
+AnimationEditor::getInterpolator (const std::string & typeName, 
+                                  const X3D::SFNode & node,
+                                  const X3D::X3DFieldDefinition* const field,
+                                  const UndoStepPtr & undoStep)
+{
+	try
+	{
+		return interpolatorIndex .at (field);
+	}
+	catch (const std::out_of_range &)
+	{
+		const auto interpolator = getExecutionContext () -> createNode (typeName);
+		
+		interpolator -> isLive () .addInterest (this, &AnimationEditor::set_interpolators);
+
+		getExecutionContext () -> addUninitializedNode (interpolator);
+		getExecutionContext () -> realize ();
+
+		const X3D::X3DPtr <X3D::X3DInterpolatorNode> interpolatorNode (interpolator);
+		interpolatorIndex .emplace (field, interpolatorNode);
+
+		undoStep -> addObjects (animation);
+		getBrowserWindow () -> emplaceBack (animation -> children (), interpolator, undoStep);
+		getBrowserWindow () -> addRoute (getExecutionContext (), X3D::SFNode (timeSensor), "fraction_changed", interpolator, "set_fraction", undoStep);
+		getBrowserWindow () -> addRoute (getExecutionContext (), interpolator, "value_changed", node, field -> getName (), undoStep);
+		return interpolatorNode;
+	}
 }
 
 bool
@@ -764,13 +1035,12 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 	const auto fc     = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
 	const auto sc     = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
 	const auto sb     = getTreeView () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
+	const auto yPad   = getNameCellRenderer () -> property_ypad ();
 
 	// Draw all time lines.
 
 	Gtk::TreePath firstPath, lastPath;
 	getTreeView () .get_visible_range (firstPath, lastPath);
-
-	context -> set_source_rgba (fc .get_red (), fc .get_green (), fc .get_blue (), fc .get_alpha ());
 
 	while (not firstPath .empty () and firstPath <= lastPath)
 	{
@@ -790,9 +1060,10 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 
 			const int32_t x0 = firstFrame * getScale () + getTranslation ();
 			const int32_t x1 = lastFrame  * getScale () + getTranslation () - getScale () + 1;
+			const int32_t y1 = rectangle .get_y () + rectangle .get_height () - yPad;
 
-			context -> move_to (x0, rectangle .get_y () + rectangle .get_height () - 0.5);
-			context -> line_to (x1, rectangle .get_y () + rectangle .get_height () - 0.5);
+			context -> move_to (x0, y1 - 0.5);
+			context -> line_to (x1, y1 - 0.5);
 
 			// Draw vertical lines.
 
@@ -805,11 +1076,14 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 				const bool    s = frame % frameFactor;
 				const int32_t x = frame * getScale () + getTranslation ();
 
-				context -> move_to (x + 0.5, rectangle .get_y () + rectangle .get_height () * (s ? 0.75 : 0.5));
-				context -> line_to (x + 0.5, rectangle .get_y () + rectangle .get_height ());
+				context -> move_to (x + 0.5, rectangle .get_y () + rectangle .get_height () * (s ? 0.75 : 0.5) - yPad);
+				context -> line_to (x + 0.5, y1);
 			}
 
-			context -> set_line_width (firstPath .size () > 1 ? 1 : 3);
+			const auto & c = firstPath .size () > 1 ? fc : sb;
+
+			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+			context -> set_line_width (firstPath .size () > 2 ? 1 : 3);
 			context -> stroke ();
 
 			// Step to next path.
@@ -836,8 +1110,8 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 	context -> line_to (x + 0.5, height);
 
 	context -> set_source_rgba (sb .get_red (), sb .get_green (), sb .get_blue (), sb .get_alpha ());
-	context -> set_dash (std::vector <double> { 2.0, 2.0 }, 0.0);
-	context -> set_line_width (1);
+	//context -> set_dash (std::vector <double> { 2.0, 2.0 }, 0.0);
+	context -> set_line_width (3);
 	context -> stroke ();
 
 	return false;

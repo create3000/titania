@@ -94,6 +94,13 @@ public:
 	       Error <DISPOSED>);
 
 	template <class Type>
+	Type &
+	getMetaData (const std::string &, const bool = false)
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>);
+
+	template <class Type>
 	const Type &
 	getMetaData (const std::string &) const
 	throw (Error <INVALID_NAME>,
@@ -317,6 +324,16 @@ throw (Error <INVALID_NAME>,
 // get
 
 template <class Type>
+Type &
+X3DNode::getMetaData (const std::string & key, const bool create)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	throw Error <NOT_SUPPORTED> ("X3DNode::getMetaData: type is not supported.");
+}
+
+template <class Type>
 const Type &
 X3DNode::getMetaData (const std::string & key) const
 throw (Error <INVALID_NAME>,
@@ -327,8 +344,22 @@ throw (Error <INVALID_NAME>,
 }
 
 template <>
+MFBool &
+X3DNode::getMetaData <MFBool> (const std::string &, const bool)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
 const MFBool &
 X3DNode::getMetaData <MFBool> (const std::string &) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+MFDouble &
+X3DNode::getMetaData <MFDouble> (const std::string &, const bool )
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>,
        Error <DISPOSED>);
@@ -341,6 +372,13 @@ throw (Error <INVALID_NAME>,
        Error <DISPOSED>);
 
 template <>
+MFFloat &
+X3DNode::getMetaData <MFFloat> (const std::string &, const bool)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
 const MFFloat &
 X3DNode::getMetaData <MFFloat> (const std::string &) const
 throw (Error <INVALID_NAME>,
@@ -348,8 +386,22 @@ throw (Error <INVALID_NAME>,
        Error <DISPOSED>);
 
 template <>
+MFInt32 &
+X3DNode::getMetaData <MFInt32> (const std::string &, const bool)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
 const MFInt32 &
 X3DNode::getMetaData <MFInt32> (const std::string &) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <DISPOSED>);
+
+template <>
+MFString &
+X3DNode::getMetaData <MFString> (const std::string &, const bool)
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>,
        Error <DISPOSED>);
