@@ -367,6 +367,9 @@ private:
 	void
 	setInterpolator (const X3D::X3DPtr <X3D::PositionInterpolator> &, const UndoStepPtr &);
 
+	void
+	resizeInterpolator (const X3D::X3DPtr <X3D::X3DInterpolatorNode> &, const size_t, const UndoStepPtr &);
+
 	X3D::X3DPtr <X3D::X3DInterpolatorNode>
 	getInterpolator (const std::string &, const X3D::SFNode &, const X3D::X3DFieldDefinition* const, const UndoStepPtr &);
 

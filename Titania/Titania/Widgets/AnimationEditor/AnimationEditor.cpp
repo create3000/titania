@@ -299,7 +299,8 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	
 	if (animation)
 	{
-		animation -> isLive () .removeInterest (this, &AnimationEditor::set_animation_live);
+		animation -> isLive ()   .removeInterest (this, &AnimationEditor::set_animation_live);
+		animation -> children () .removeInterest (this, &AnimationEditor::set_interpolators);
 	}
 
 	if (timeSensor)
@@ -336,7 +337,8 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 
 	if (animation)
 	{
-		animation -> isLive () .addInterest (this, &AnimationEditor::set_animation_live);
+		animation -> isLive ()   .addInterest (this, &AnimationEditor::set_animation_live);
+		animation -> children () .addInterest (this, &AnimationEditor::set_interpolators);
 
 		const auto timeSensors = getNodes <X3D::TimeSensor> ({ animation }, { X3D::X3DConstants::TimeSensor });
 
@@ -403,10 +405,13 @@ AnimationEditor::set_interpolators ()
 {
 	removeInterpolators ();
 
-	const auto interpolators = getNodes <X3D::X3DInterpolatorNode> ({ animation }, { X3D::X3DConstants::X3DInterpolatorNode });
-
-	for (const auto interpolator : interpolators)
+	for (const auto node : animation -> children ())
 	{
+		const X3D::X3DPtr <X3D::X3DInterpolatorNode> interpolator (node);
+		
+		if (not interpolator)
+			continue;
+
 		const auto value_changed = interpolator -> getField ("value_changed");
 		
 		for (const auto & route : value_changed -> getOutputRoutes ())
@@ -419,7 +424,6 @@ AnimationEditor::set_interpolators ()
 				addNode (node);
 				interpolatorIndex .emplace (field, interpolator);
 				interpolator -> addInterest (this, &AnimationEditor::queue_draw);
-				interpolator -> isLive () .addInterest (this, &AnimationEditor::set_interpolators);
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -433,10 +437,7 @@ void
 AnimationEditor::removeInterpolators ()
 {
 	for (const auto & pair : interpolatorIndex)
-	{
 		pair .second -> removeInterest (this, &AnimationEditor::queue_draw);
-		pair .second -> isLive () .removeInterest (this, &AnimationEditor::set_interpolators);
-	}
 
 	interpolatorIndex .clear ();
 }
@@ -1277,6 +1278,18 @@ AnimationEditor::removeKeyframes ()
 	for (const auto & interpolator : affectedInterpolators)
 		setInterpolator (interpolator, undoStep);
 
+	// Remove empty interpolators.
+
+	X3D::MFNode interpolatorsToRemove;
+
+	for (const auto & interpolator : interpolatorIndex)
+	{
+		if (interpolator .second -> getMetaData <X3D::MFInt32> ("/Interpolator/key", true) .empty ())
+			interpolatorsToRemove .emplace_back (interpolator .second);
+	}
+
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), interpolatorsToRemove, undoStep);
+
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -1378,26 +1391,31 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::X3DInterpolatorNode> &
 	{
 		case X3D::X3DConstants::ColorInterpolator:
 		{
+			resizeInterpolator (interpolator, 3, undoStep);
 			setInterpolator (X3D::X3DPtr <X3D::ColorInterpolator> (interpolator), undoStep);
 			break;
 		}
 		case X3D::X3DConstants::ScalarInterpolator:
 		{
+			resizeInterpolator (interpolator, 1, undoStep);
 			setInterpolator (X3D::X3DPtr <X3D::ScalarInterpolator> (interpolator), undoStep);
 			break;
 		}
 		case X3D::X3DConstants::OrientationInterpolator:
 		{
+			resizeInterpolator (interpolator, 4, undoStep);
 			setInterpolator (X3D::X3DPtr <X3D::OrientationInterpolator> (interpolator), undoStep);
 			break;
 		}
 		case X3D::X3DConstants::PositionInterpolator2D:
 		{
+			resizeInterpolator (interpolator, 2, undoStep);
 			setInterpolator (X3D::X3DPtr <X3D::PositionInterpolator2D> (interpolator), undoStep);
 			break;
 		}
 		case X3D::X3DConstants::PositionInterpolator:
 		{
+			resizeInterpolator (interpolator, 3, undoStep);
 			setInterpolator (X3D::X3DPtr <X3D::PositionInterpolator> (interpolator), undoStep);
 			break;
 		}
@@ -1485,6 +1503,31 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::PositionInterpolator> 
 	undoStep -> addRedoFunction (&X3D::MFVec3f::setValue, std::ref (interpolator -> keyValue ()), interpolator -> keyValue ());
 }
 
+void
+AnimationEditor::resizeInterpolator (const X3D::X3DPtr <X3D::X3DInterpolatorNode> & interpolator, const size_t components, const UndoStepPtr & undoStep)
+{
+	auto &     key      = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",      true);
+	auto &     keyValue = interpolator -> getMetaData <X3D::MFFloat> ("/Interpolator/keyValue", true);
+	auto &     keyType  = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType", true);
+	const auto iter     = std::upper_bound (key .begin (), key .end (), getDuration ());
+	const auto size     = iter - key .begin ();
+	const auto sizeN    = size * components;
+
+	// Remove frames greater than duration.
+
+	undoStep -> addUndoFunction ((setMetaDataInteger) &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/key",      key);
+	undoStep -> addUndoFunction ((setMetaDataFloat)   &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyValue", keyValue);
+	undoStep -> addUndoFunction ((setMetaDataString)  &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyType",  keyType);
+
+	key      .resize (size);
+	keyValue .resize (sizeN);
+	keyType  .resize (size);
+
+	undoStep -> addRedoFunction ((setMetaDataInteger) &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/key",      key);
+	undoStep -> addRedoFunction ((setMetaDataFloat)   &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyValue", keyValue);
+	undoStep -> addRedoFunction ((setMetaDataString)  &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyType",  keyType);
+}
+
 X3D::X3DPtr <X3D::X3DInterpolatorNode>
 AnimationEditor::getInterpolator (const std::string & typeName, 
                                   const X3D::SFNode & node,
@@ -1501,7 +1544,6 @@ AnimationEditor::getInterpolator (const std::string & typeName,
 		const auto name         = getInterpolatorName (node, field);
 		
 		interpolator -> addInterest (this, &AnimationEditor::queue_draw);
-		interpolator -> isLive () .addInterest (this, &AnimationEditor::set_interpolators);
 
 		getExecutionContext () -> addUninitializedNode (interpolator);
 		getExecutionContext () -> realize ();
