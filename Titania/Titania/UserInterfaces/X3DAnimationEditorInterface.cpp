@@ -131,6 +131,10 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_DrawingArea -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_button_release_event));
 	m_DrawingArea -> signal_configure_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_configure_event));
 	m_DrawingArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_draw));
+	m_DrawingArea -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_focus_in_event));
+	m_DrawingArea -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_focus_out_event));
+	m_DrawingArea -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_key_press_event));
+	m_DrawingArea -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_key_release_event));
 	m_DrawingArea -> signal_motion_notify_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_motion_notify_event));
 	m_DrawingArea -> signal_scroll_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_scroll_event));
 

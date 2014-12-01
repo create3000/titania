@@ -311,10 +311,58 @@ private:
 	moveKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> &, const int32_t, const int32_t, const UndoStepPtr &);
 
 	void
+	moveKeyframe (const X3D::X3DPtr <X3D::ColorInterpolator> &, const int32_t, const int32_t, const UndoStepPtr &);
+
+	void
+	moveKeyframe (const X3D::X3DPtr <X3D::ScalarInterpolator> &, const int32_t, const int32_t, const UndoStepPtr &);
+
+	void
+	moveKeyframe (const X3D::X3DPtr <X3D::OrientationInterpolator> &, const int32_t, const int32_t, const UndoStepPtr &);
+
+	void
+	moveKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator2D> &, const int32_t, const int32_t, const UndoStepPtr &);
+
+	void
 	moveKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator> &, const int32_t, const int32_t, const UndoStepPtr &);
 
 	void
+	removeKeyframes ();
+
+	void
+	removeKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> &, const int32_t, const UndoStepPtr &);
+
+	void
+	removeKeyframe (const X3D::X3DPtr <X3D::ColorInterpolator> &, const int32_t, const UndoStepPtr &);
+
+	void
+	removeKeyframe (const X3D::X3DPtr <X3D::ScalarInterpolator> &, const int32_t, const UndoStepPtr &);
+
+	void
+	removeKeyframe (const X3D::X3DPtr <X3D::OrientationInterpolator> &, const int32_t, const UndoStepPtr &);
+
+	void
+	removeKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator2D> &, const int32_t, const UndoStepPtr &);
+
+	void
 	removeKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator> &, const int32_t, const UndoStepPtr &);
+
+	void
+	setInterpolators (const UndoStepPtr &);
+
+	void
+	setInterpolator (const X3D::X3DPtr <X3D::X3DInterpolatorNode> &, const UndoStepPtr &);
+
+	void
+	setInterpolator (const X3D::X3DPtr <X3D::ColorInterpolator> &, const UndoStepPtr &);
+
+	void
+	setInterpolator (const X3D::X3DPtr <X3D::ScalarInterpolator> &, const UndoStepPtr &);
+
+	void
+	setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolator> &, const UndoStepPtr &);
+
+	void
+	setInterpolator (const X3D::X3DPtr <X3D::PositionInterpolator2D> &, const UndoStepPtr &);
 
 	void
 	setInterpolator (const X3D::X3DPtr <X3D::PositionInterpolator> &, const UndoStepPtr &);
@@ -332,6 +380,22 @@ private:
 	virtual
 	bool
 	on_configure_event (GdkEventConfigure*) final override;
+	
+	virtual
+	bool
+	on_focus_in_event (GdkEventFocus*) final override;
+
+	virtual
+	bool
+	on_focus_out_event (GdkEventFocus*) final override;
+
+	virtual
+	bool
+	on_key_press_event (GdkEventKey*) final override;
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey*) final override;
 
 	virtual
 	bool
@@ -454,6 +518,7 @@ private:
 	std::set <FrameKey>                 selectedFrames;
 	std::pair <int32_t, int32_t>        selectedBounds;
 	std::vector <FrameKey>              movedFrames;
+	X3D::Keys                           keys;
 
 };
 

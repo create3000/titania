@@ -87,7 +87,8 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	               activeFrames (),
 	             selectedFrames (),
 	             selectedBounds (),
-	                movedFrames ()
+	                movedFrames (),
+	                       keys ()
 {
 	getTranslationAdjustment () -> set_lower (-DEFAULT_TRANSLATION);
 	getTranslationAdjustment () -> set_upper (-DEFAULT_TRANSLATION);
@@ -727,6 +728,11 @@ AnimationEditor::on_current_frame_changed ()
 			// Clear tainted states.
 			
 			setTainted (Gtk::TreePath ("0"), false);
+			
+			// Stop TimeSensor.
+			
+			if (chrono::now () - timeSensor -> pauseTime () > 0.5)
+				timeSensor -> stopTime () = chrono::now ();
 
 			// Update interpolator fraction.
 
@@ -792,7 +798,8 @@ AnimationEditor::on_time ()
 	undoStep -> addRedoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&chrono::now));
 	timeSensor -> stopTime () = chrono::now ();
 
-	// XXX: Build interpolators.
+	// Build interpolators.
+	setInterpolators (undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -971,37 +978,43 @@ void
 AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefinition* const field, const int32_t frame)
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Add Keyframe"));
+	const auto type     = "LINEAR";
 
 	switch (field -> getType ())
 	{
 		case X3D::X3DConstants::SFColor:
 		{
 			const X3D::X3DPtr <X3D::ColorInterpolator> interpolator (getInterpolator ("ColorInterpolator", node, field, undoStep));
-			addKeyframe (interpolator, frame, *static_cast <const X3D::SFColor*> (field), "LINEAR", undoStep);
+			addKeyframe (interpolator, frame, *static_cast <const X3D::SFColor*> (field), type, undoStep);
+			setInterpolator (interpolator, undoStep);
 			break;
 		}
 		case X3D::X3DConstants::SFFloat:
 		{
 			const X3D::X3DPtr <X3D::ScalarInterpolator> interpolator (getInterpolator ("ScalarInterpolator", node, field, undoStep));
-			addKeyframe (interpolator, frame, *static_cast <const X3D::SFFloat*> (field), "LINEAR", undoStep);
+			addKeyframe (interpolator, frame, *static_cast <const X3D::SFFloat*> (field), type, undoStep);
+			setInterpolator (interpolator, undoStep);
 			break;
 		}
 		case X3D::X3DConstants::SFRotation:
 		{
 			const X3D::X3DPtr <X3D::OrientationInterpolator> interpolator (getInterpolator ("OrientationInterpolator", node, field, undoStep));
-			addKeyframe (interpolator, frame, *static_cast <const X3D::SFRotation*> (field), "LINEAR", undoStep);
+			addKeyframe (interpolator, frame, *static_cast <const X3D::SFRotation*> (field), type, undoStep);
+			setInterpolator (interpolator, undoStep);
 			break;
 		}
 		case X3D::X3DConstants::SFVec2f:
 		{
 			const X3D::X3DPtr <X3D::PositionInterpolator2D> interpolator (getInterpolator ("PositionInterpolator2D", node, field, undoStep));
-			addKeyframe (interpolator, frame, *static_cast <const X3D::SFVec2f*> (field), "LINEAR", undoStep);
+			addKeyframe (interpolator, frame, *static_cast <const X3D::SFVec2f*> (field), type, undoStep);
+			setInterpolator (interpolator, undoStep);
 			break;
 		}
 		case X3D::X3DConstants::SFVec3f:
 		{
 			const X3D::X3DPtr <X3D::PositionInterpolator> interpolator (getInterpolator ("PositionInterpolator", node, field, undoStep));
-			addKeyframe (interpolator, frame, *static_cast <const X3D::SFVec3f*> (field), "LINEAR", undoStep);
+			addKeyframe (interpolator, frame, *static_cast <const X3D::SFVec3f*> (field), type, undoStep);
+			setInterpolator (interpolator, undoStep);
 			break;
 		}
 		default:
@@ -1090,10 +1103,6 @@ AnimationEditor::addKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator> & in
 	undoStep -> addRedoFunction ((setMetaDataInteger) &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/key",      key);
 	undoStep -> addRedoFunction ((setMetaDataFloat)   &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyValue", keyValue);
 	undoStep -> addRedoFunction ((setMetaDataString)  &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyType",  keyType);
-
-	// Build interpolator.
-
-	setInterpolator (interpolator, undoStep);
 }
 
 void
@@ -1135,15 +1144,24 @@ AnimationEditor::moveKeyframes ()
 
 	// Move
 
+	std::set <X3D::X3DPtr <X3D::X3DInterpolatorNode>> affectedInterpolators;
+
 	for (const auto & frame : framesToMove)
 	{
 		try
 		{
-			moveKeyframe (interpolatorIndex .at (std::get <2> (frame)), std::get <0> (frame), std::get <1> (frame), undoStep);
+			const auto & interpolator = interpolatorIndex .at (std::get <2> (frame));
+		
+			affectedInterpolators .emplace (interpolator);
+
+			moveKeyframe (interpolator, std::get <0> (frame), std::get <1> (frame), undoStep);
 		}
 		catch (...)
 		{ }
 	}
+
+	for (const auto & interpolator : affectedInterpolators)
+		setInterpolator (interpolator, undoStep);
 
 	selectedFrames .clear ();
 	selectedFrames .insert (movedFrames .begin (), movedFrames .end ());
@@ -1160,6 +1178,26 @@ AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> & in
 
 	switch (interpolator -> getType () .back ())
 	{
+		case X3D::X3DConstants::ColorInterpolator:
+		{
+			moveKeyframe (X3D::X3DPtr <X3D::ColorInterpolator> (interpolator), fromFrame, toFrame, undoStep);
+			break;
+		}
+		case X3D::X3DConstants::ScalarInterpolator:
+		{
+			moveKeyframe (X3D::X3DPtr <X3D::ScalarInterpolator> (interpolator), fromFrame, toFrame, undoStep);
+			break;
+		}
+		case X3D::X3DConstants::OrientationInterpolator:
+		{
+			moveKeyframe (X3D::X3DPtr <X3D::OrientationInterpolator> (interpolator), fromFrame, toFrame, undoStep);
+			break;
+		}
+		case X3D::X3DConstants::PositionInterpolator2D:
+		{
+			moveKeyframe (X3D::X3DPtr <X3D::PositionInterpolator2D> (interpolator), fromFrame, toFrame, undoStep);
+			break;
+		}
 		case X3D::X3DConstants::PositionInterpolator:
 		{
 			moveKeyframe (X3D::X3DPtr <X3D::PositionInterpolator> (interpolator), fromFrame, toFrame, undoStep);
@@ -1168,6 +1206,26 @@ AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> & in
 		default:
 			break;
 	}
+}
+
+void
+AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::ColorInterpolator> & interpolator, const int32_t fromFrame, const int32_t toFrame, const UndoStepPtr & undoStep)
+{
+}
+
+void
+AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::ScalarInterpolator> & interpolator, const int32_t fromFrame, const int32_t toFrame, const UndoStepPtr & undoStep)
+{
+}
+
+void
+AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::OrientationInterpolator> & interpolator, const int32_t fromFrame, const int32_t toFrame, const UndoStepPtr & undoStep)
+{
+}
+
+void
+AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator2D> & interpolator, const int32_t fromFrame, const int32_t toFrame, const UndoStepPtr & undoStep)
+{
 }
 
 void
@@ -1191,6 +1249,90 @@ AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator> & i
 
 	removeKeyframe (interpolator, fromFrame, undoStep);
 	addKeyframe (interpolator, toFrame, value, type, undoStep);
+}
+
+void
+AnimationEditor::removeKeyframes ()
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Keyframes"));
+
+	std::set <X3D::X3DPtr <X3D::X3DInterpolatorNode>> affectedInterpolators;
+
+	for (const auto & frame : selectedFrames)
+	{
+		try
+		{
+			const auto & interpolator = interpolatorIndex .at (std::get <1> (frame));
+		
+			affectedInterpolators .emplace (interpolator);
+
+			removeKeyframe (interpolator, std::get <0> (frame), undoStep);
+		}
+		catch (...)
+		{ }
+	}
+
+	selectedFrames .clear ();
+
+	for (const auto & interpolator : affectedInterpolators)
+		setInterpolator (interpolator, undoStep);
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+AnimationEditor::removeKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> & interpolator, const int32_t frame, const UndoStepPtr & undoStep)
+{
+	switch (interpolator -> getType () .back ())
+	{
+		case X3D::X3DConstants::ColorInterpolator:
+		{
+			removeKeyframe (X3D::X3DPtr <X3D::ColorInterpolator> (interpolator), frame, undoStep);
+			break;
+		}
+		case X3D::X3DConstants::ScalarInterpolator:
+		{
+			removeKeyframe (X3D::X3DPtr <X3D::ScalarInterpolator> (interpolator), frame, undoStep);
+			break;
+		}
+		case X3D::X3DConstants::OrientationInterpolator:
+		{
+			removeKeyframe (X3D::X3DPtr <X3D::OrientationInterpolator> (interpolator), frame, undoStep);
+			break;
+		}
+		case X3D::X3DConstants::PositionInterpolator2D:
+		{
+			removeKeyframe (X3D::X3DPtr <X3D::PositionInterpolator2D> (interpolator), frame, undoStep);
+			break;
+		}
+		case X3D::X3DConstants::PositionInterpolator:
+		{
+			removeKeyframe (X3D::X3DPtr <X3D::PositionInterpolator> (interpolator), frame, undoStep);
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+void
+AnimationEditor::removeKeyframe (const X3D::X3DPtr <X3D::ColorInterpolator> & interpolator, const int32_t frame, const UndoStepPtr & undoStep)
+{
+}
+
+void
+AnimationEditor::removeKeyframe (const X3D::X3DPtr <X3D::ScalarInterpolator> & interpolator, const int32_t frame, const UndoStepPtr & undoStep)
+{
+}
+
+void
+AnimationEditor::removeKeyframe (const X3D::X3DPtr <X3D::OrientationInterpolator> & interpolator, const int32_t frame, const UndoStepPtr & undoStep)
+{
+}
+
+void
+AnimationEditor::removeKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator2D> & interpolator, const int32_t frame, const UndoStepPtr & undoStep)
+{
 }
 
 void
@@ -1220,10 +1362,68 @@ AnimationEditor::removeKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator> &
 	undoStep -> addRedoFunction ((setMetaDataInteger) &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/key",      key);
 	undoStep -> addRedoFunction ((setMetaDataFloat)   &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyValue", keyValue);
 	undoStep -> addRedoFunction ((setMetaDataString)  &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyType",  keyType);
+}
 
-	// Build interpolator.
+void
+AnimationEditor::setInterpolators (const UndoStepPtr & undoStep)
+{
+	for (const auto & pair : interpolatorIndex)
+		setInterpolator (pair .second, undoStep);
+}
 
-	setInterpolator (interpolator, undoStep);
+void
+AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::X3DInterpolatorNode> & interpolator, const UndoStepPtr & undoStep)
+{
+	switch (interpolator -> getType () .back ())
+	{
+		case X3D::X3DConstants::ColorInterpolator:
+		{
+			setInterpolator (X3D::X3DPtr <X3D::ColorInterpolator> (interpolator), undoStep);
+			break;
+		}
+		case X3D::X3DConstants::ScalarInterpolator:
+		{
+			setInterpolator (X3D::X3DPtr <X3D::ScalarInterpolator> (interpolator), undoStep);
+			break;
+		}
+		case X3D::X3DConstants::OrientationInterpolator:
+		{
+			setInterpolator (X3D::X3DPtr <X3D::OrientationInterpolator> (interpolator), undoStep);
+			break;
+		}
+		case X3D::X3DConstants::PositionInterpolator2D:
+		{
+			setInterpolator (X3D::X3DPtr <X3D::PositionInterpolator2D> (interpolator), undoStep);
+			break;
+		}
+		case X3D::X3DConstants::PositionInterpolator:
+		{
+			setInterpolator (X3D::X3DPtr <X3D::PositionInterpolator> (interpolator), undoStep);
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+void
+AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::ColorInterpolator> & interpolator, const UndoStepPtr & undoStep)
+{
+}
+
+void
+AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::ScalarInterpolator> & interpolator, const UndoStepPtr & undoStep)
+{
+}
+
+void
+AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolator> & interpolator, const UndoStepPtr & undoStep)
+{
+}
+
+void
+AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::PositionInterpolator2D> & interpolator, const UndoStepPtr & undoStep)
+{
 }
 
 void
@@ -1335,6 +1535,50 @@ AnimationEditor::on_configure_event (GdkEventConfigure*)
 }
 
 bool
+AnimationEditor::on_focus_in_event (GdkEventFocus*)
+{
+	getBrowserWindow () -> hasAccelerators (false);
+	//getBrowserWindow () -> getWindow () .add_accel_group (getAccelGroup ());
+	getDrawingArea () .queue_draw ();
+	return false;
+}
+
+bool
+AnimationEditor::on_focus_out_event (GdkEventFocus*)
+{
+	//getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
+	getBrowserWindow () -> hasAccelerators (true);
+	getDrawingArea () .queue_draw ();
+	return false;
+}
+
+bool
+AnimationEditor::on_key_press_event (GdkEventKey* event)
+{
+	keys .press (event);
+
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Delete:
+		{
+			removeKeyframes ();
+			return true;
+		}
+		default:
+			break;
+	}
+
+	return false;
+}
+
+bool
+AnimationEditor::on_key_release_event (GdkEventKey* event)
+{
+	keys .release (event);
+	return false;
+}
+
+bool
 AnimationEditor::on_button_press_event (GdkEventButton* event)
 {
 	if (isActive ())
@@ -1342,13 +1586,15 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 	
 	button = event -> button;
 
+	getDrawingArea () .grab_focus ();
+
 	if (button == 1)
 	{
 		if (pick (X3D::Vector2d (event -> x, event -> y)))
 		{
 			fromPoint = X3D::Vector2d (event -> x, event -> y);
 
-			if (not getBrowserWindow () -> getKeys () .shift ())
+			if (not keys .shift ())
 			{
 				if (not isSelected ())
 					selectedFrames = activeFrames;
@@ -1397,7 +1643,7 @@ AnimationEditor::on_button_release_event (GdkEventButton* event)
 		{
 			// Select or erase active frames.
 		
-			if (getBrowserWindow () -> getKeys () .shift ())
+			if (keys .shift ())
 			{
 				if (pick (X3D::Vector2d (event -> x, event -> y)))
 				{
@@ -1427,7 +1673,7 @@ AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 
 	if (button == 1)
 	{
-		if (getBrowserWindow () -> getKeys () .shift ())
+		if (keys .shift ())
 			return false;
 
 		if (not selectedFrames .empty () or not movedFrames .empty ())
@@ -1645,12 +1891,12 @@ AnimationEditor::on_tree_view_draw (const Cairo::RefPtr <Cairo::Context> &)
 bool
 AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 {
-	const int  width  = getDrawingArea () .get_width ();
-	const int  height = getDrawingArea () .get_height ();
-	const auto fc     = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
-	const auto sc     = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
-	const auto sb     = getTreeView () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
-	const auto yPad   = getNameCellRenderer () -> property_ypad ();
+	const int  width   = getDrawingArea () .get_width ();
+	const int  height  = getDrawingArea () .get_height ();
+	const auto fc      = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
+	const auto sc      = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+	const auto sb      = getTreeView () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
+	const auto yPad    = getNameCellRenderer () -> property_ypad ();
 
 	// Draw all time lines.
 

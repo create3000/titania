@@ -1,5 +1,13 @@
 2014-12-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* AnimationEditor.xml:
+	* AnimationEditor.h:
+	* AnimationEditor.cpp:
+	* X3DAnimationEditorInterface.h:
+	* X3DAnimationEditorInterface.cpp: 
+
+2014-12-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* AnimationEditor.h:
 	* AnimationEditor.cpp: 
 

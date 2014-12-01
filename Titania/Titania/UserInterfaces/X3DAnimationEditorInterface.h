@@ -324,6 +324,22 @@ public:
 
 	virtual
 	bool
+	on_focus_in_event (GdkEventFocus* event) = 0;
+
+	virtual
+	bool
+	on_focus_out_event (GdkEventFocus* event) = 0;
+
+	virtual
+	bool
+	on_key_press_event (GdkEventKey* event) = 0;
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey* event) = 0;
+
+	virtual
+	bool
 	on_motion_notify_event (GdkEventMotion* event) = 0;
 
 	virtual
