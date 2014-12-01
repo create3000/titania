@@ -336,12 +336,22 @@ private:
 	virtual
 	bool
 	on_scroll_event (GdkEventScroll*) final override;
-	
-	bool
-	pick (const X3D::Vector2d &);
-	
+
 	bool
 	isSelected () const;
+
+	bool
+	pick (const X3D::Vector2d &);
+
+	bool
+	buildFrames (const Gtk::TreePath &, const Gtk::TreeIter &, const int32_t, const int32_t);
+
+	void
+	addKeyframes (const Gtk::TreePath &,
+	              const Gtk::TreeIter &,
+	              const int32_t,
+	              const int32_t,
+	              const double y);
 
 	virtual
 	bool

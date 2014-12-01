@@ -1233,18 +1233,6 @@ AnimationEditor::on_button_release_event (GdkEventButton* event)
 }
 
 bool
-AnimationEditor::isSelected () const
-{
-	for (const auto & activeFrame : activeFrames)
-	{
-		if (selectedFrames .count (activeFrame))
-			return true;
-	}
-	
-	return false;
-}
-
-bool
 AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 {
 	if (isActive ())
@@ -1277,8 +1265,28 @@ AnimationEditor::on_scroll_event (GdkEventScroll* event)
 }
 
 bool
+AnimationEditor::isSelected () const
+{
+	for (const auto & activeFrame : activeFrames)
+	{
+		if (selectedFrames .count (activeFrame))
+			return true;
+	}
+	
+	return false;
+}
+
+bool
 AnimationEditor::pick (const X3D::Vector2d & point)
 {
+	const int     width      = getDrawingArea () .get_width ();
+	const int32_t firstFrame = std::max <int32_t> (0, std::floor (-getTranslation () / getScale ()));
+	const int32_t lastFrame  = std::min <int32_t> (getDuration (), std::ceil ((width - getTranslation ()) / getScale ())) + 1;
+
+	frames .clear ();
+
+	getTreeModelFilter () -> foreach (sigc::bind (sigc::mem_fun (*this, &AnimationEditor::buildFrames), firstFrame, lastFrame));
+
 	// Find all keyframes that intersect with the pointer.
 
 	std::set <FrameKey> intersections;
@@ -1313,6 +1321,87 @@ AnimationEditor::pick (const X3D::Vector2d & point)
 }
 
 bool
+AnimationEditor::buildFrames (const Gtk::TreePath & path, const Gtk::TreeIter & iter, const int32_t firstFrame, const int32_t lastFrame)
+{
+	try
+	{
+		Gdk::Rectangle rectangle;
+		getTreeView () .get_cell_area (path, *getNameColumn () .operator -> (), rectangle);
+
+		const auto yPad = getNameCellRenderer () -> property_ypad ();
+		const int32_t y = rectangle .get_y () + rectangle .get_height () * 0.5 - yPad;
+
+		switch (path .size ())
+		{
+			case 1:
+			{
+				for (const auto & parent : iter -> children ())
+				{
+					for (const auto & child : parent -> children ())
+						addKeyframes (path, child, firstFrame, lastFrame, y);
+				}
+
+				break;
+			}
+			case 2:
+			{
+				for (const auto & child : iter -> children ())
+					addKeyframes (path, child, firstFrame, lastFrame, y);
+
+				break;
+			}
+			case 3:
+			{
+				addKeyframes (path, iter, firstFrame, lastFrame, y);
+				break;
+			}
+			default:
+				break;
+		}
+	}
+	catch (const std::out_of_range &)
+	{ }
+	
+	return false;
+}
+
+void
+AnimationEditor::addKeyframes (const Gtk::TreePath & path,
+                               const Gtk::TreeIter & child,
+                               const int32_t firstFrame,
+                               const int32_t lastFrame,
+                               const double y)
+{
+	try
+	{
+		const auto   parent       = child -> parent ();
+		const auto   id           = (*parent) [columns .id];
+		const auto   i            = (*child) [columns .id];
+		const auto & node         = nodes .at (id);
+		const auto   field        = node -> getFieldDefinitions () .at (i);
+		const auto & interpolator = interpolatorIndex .at (field);
+		const auto & key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key");
+		const auto   first        = std::lower_bound (key .begin (), key .end (), firstFrame);
+		const auto   last         = std::upper_bound (key .begin (), key .end (), lastFrame);
+		const auto   y1           = y - (FRAME_SIZE / 2 - 1);
+		const auto   y2           = y1 + FRAME_SIZE;
+
+		for (const auto & frame : std::make_pair (first, last))
+		{
+			const int32_t x    = frame * getScale () + getTranslation ();
+			const double  x1   = x - (FRAME_SIZE / 2);
+			const double  x2   = x1 + FRAME_SIZE;
+			const auto    key  = std::make_tuple (frame, field, path);
+			const auto    bbox = X3D::Box2d (X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), math::extents_type ());
+
+			frames .emplace_back (key, bbox);
+		}
+	}
+	catch (...)
+	{ }
+}
+
+bool
 AnimationEditor::on_tree_view_draw (const Cairo::RefPtr <Cairo::Context> &)
 {
 	getDrawingArea () .queue_draw ();
@@ -1328,8 +1417,6 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 	const auto sc     = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
 	const auto sb     = getTreeView () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
 	const auto yPad   = getNameCellRenderer () -> property_ypad ();
-
-	frames .clear ();
 
 	// Draw all time lines.
 
@@ -1469,15 +1556,12 @@ AnimationEditor::on_draw_keyframes (const Cairo::RefPtr <Cairo::Context> & conte
 		const auto   first        = std::lower_bound (key .begin (), key .end (), firstFrame);
 		const auto   last         = std::upper_bound (key .begin (), key .end (), lastFrame);
 		const auto   y1           = y - (FRAME_SIZE / 2 - 1);
-		const auto   y2           = y1 + FRAME_SIZE;
 
 		for (const auto & frame : std::make_pair (first, last))
 		{
-			const int32_t x    = frame * getScale () + getTranslation ();
-			const double  x1   = x - (FRAME_SIZE / 2);
-			const double  x2   = x1 + FRAME_SIZE;
-			const auto    key  = std::make_tuple (frame, field, path);
-			const auto    bbox = X3D::Box2d (X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), math::extents_type ());
+			const int32_t x   = frame * getScale () + getTranslation ();
+			const double  x1  = x - (FRAME_SIZE / 2);
+			const auto    key = std::make_tuple (frame, field, path);
 
 			if (activeFrames .count (key) or selectedFrames .count (key))
 				context -> set_source_rgba (sc .get_red (), sc .get_green (), sc .get_blue (), sc .get_alpha ());
@@ -1486,8 +1570,6 @@ AnimationEditor::on_draw_keyframes (const Cairo::RefPtr <Cairo::Context> & conte
 
 			context -> rectangle (x1, y1, FRAME_SIZE, FRAME_SIZE);
 			context -> fill ();
-
-			frames .emplace_back (key, bbox);
 		}
 	}
 	catch (...)
