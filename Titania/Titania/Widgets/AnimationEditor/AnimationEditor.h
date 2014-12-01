@@ -290,19 +290,31 @@ private:
 	addKeyframe (const X3D::SFNode &, const X3D::X3DFieldDefinition* const, const int32_t);
 
 	void
-	addKeyframe (const X3D::SFNode &, const X3D::SFColor &, const int32_t, const UndoStepPtr &);
+	addKeyframe (const X3D::X3DPtr <X3D::ColorInterpolator> &, const int32_t, const X3D::Color3f &, const std::string &, const UndoStepPtr &);
 
 	void
-	addKeyframe (const X3D::SFNode &, const X3D::SFFloat &, const int32_t, const UndoStepPtr &);
+	addKeyframe (const X3D::X3DPtr <X3D::ScalarInterpolator> &, const int32_t, const float, const std::string &, const UndoStepPtr &);
 
 	void
-	addKeyframe (const X3D::SFNode &, const X3D::SFRotation &, const int32_t, const UndoStepPtr &);
+	addKeyframe (const X3D::X3DPtr <X3D::OrientationInterpolator> &, const int32_t, const X3D::Rotation4f &, const std::string &, const UndoStepPtr &);
 
 	void
-	addKeyframe (const X3D::SFNode &, const X3D::SFVec2f &, const int32_t, const UndoStepPtr &);
+	addKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator2D> &, const int32_t, const X3D::Vector2f &, const std::string &, const UndoStepPtr &);
 
 	void
-	addKeyframe (const X3D::SFNode &, const X3D::SFVec3f &, const int32_t, const UndoStepPtr &);
+	addKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator> &, const int32_t, const X3D::Vector3f &, const std::string &, const UndoStepPtr &);
+
+	void
+	moveKeyframes ();
+
+	void
+	moveKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> &, const int32_t, const int32_t, const UndoStepPtr &);
+
+	void
+	moveKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator> &, const int32_t, const int32_t, const UndoStepPtr &);
+
+	void
+	removeKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator> &, const int32_t, const UndoStepPtr &);
 
 	void
 	setInterpolator (const X3D::X3DPtr <X3D::PositionInterpolator> &, const UndoStepPtr &);
@@ -340,6 +352,9 @@ private:
 	bool
 	isSelected () const;
 
+	std::pair <int32_t, int32_t>
+	getSelectedBounds () const;
+
 	bool
 	pick (const X3D::Vector2d &);
 
@@ -352,6 +367,9 @@ private:
 	              const int32_t,
 	              const int32_t,
 	              const double y);
+
+	void
+	queue_draw ();
 
 	virtual
 	bool
@@ -370,6 +388,9 @@ private:
 	                   const double,
 	                   const Gdk::RGBA &,
 	                   const Gdk::RGBA &);
+
+	void
+	on_draw_moved_keyframes (const Cairo::RefPtr <Cairo::Context> &, const Gdk::RGBA &);
 
 	std::pair <int32_t, int32_t>
 	getFrameParams () const;
@@ -406,6 +427,10 @@ private:
 	using FrameKey          = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath>;
 	using FrameArray        = std::vector <std::pair <FrameKey, X3D::Box2d>>;
 
+	using setMetaDataInteger = void (X3D::X3DNode::*) (const std::string &, const X3D::MFInt32 &);
+	using setMetaDataFloat   = void (X3D::X3DNode::*) (const std::string &, const X3D::MFFloat &);
+	using setMetaDataString  = void (X3D::X3DNode::*) (const std::string &, const X3D::MFString &);
+
 	/***
 	 *  @name Members
 	 **/
@@ -427,6 +452,8 @@ private:
 	FrameArray                          frames;
 	std::set <FrameKey>                 activeFrames;
 	std::set <FrameKey>                 selectedFrames;
+	std::pair <int32_t, int32_t>        selectedBounds;
+	std::vector <FrameKey>              movedFrames;
 
 };
 
