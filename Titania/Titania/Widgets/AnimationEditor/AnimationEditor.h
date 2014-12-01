@@ -91,6 +91,21 @@ private:
 	void
 	initialize () final override;
 
+	virtual
+	void
+	on_map () final override;
+
+	virtual
+	void
+	on_unmap () final override;
+
+	void
+	set_selection ();
+
+	/***
+	 *  @name Member access
+	 **/
+
 	const Glib::RefPtr <Gtk::TreeStore> &
 	getTreeStore () const
 	{ return treeStore; }
@@ -128,17 +143,6 @@ private:
 	double
 	getScale () const
 	{ return scale; }
-
-	virtual
-	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
-
-	void
-	set_selection ();
 
 	/***
 	 *  New and Open Animation
@@ -332,6 +336,12 @@ private:
 	virtual
 	bool
 	on_scroll_event (GdkEventScroll*) final override;
+	
+	bool
+	pick (const X3D::Vector2d &);
+	
+	bool
+	isSelected () const;
 
 	virtual
 	bool
@@ -342,7 +352,14 @@ private:
 	on_draw (const Cairo::RefPtr <Cairo::Context> &) final override;
 
 	void
-	on_draw_keyframes (const Cairo::RefPtr <Cairo::Context> &, const Gtk::TreeIter &, const int32_t, const int32_t, const double);
+	on_draw_keyframes (const Cairo::RefPtr <Cairo::Context> &,
+	                   const Gtk::TreePath &,
+	                   const Gtk::TreeIter &,
+	                   const int32_t,
+	                   const int32_t,
+	                   const double,
+	                   const Gdk::RGBA &,
+	                   const Gdk::RGBA &);
 
 	std::pair <int32_t, int32_t>
 	getFrameParams () const;
@@ -376,6 +393,8 @@ private:
 	};
 
 	using InterpolatorIndex = std::map <const X3D::X3DFieldDefinition*, X3D::X3DPtr <X3D::X3DInterpolatorNode>>;
+	using FrameKey          = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath>;
+	using FrameArray        = std::vector <std::pair <FrameKey, X3D::Box2d>>;
 
 	/***
 	 *  @name Members
@@ -395,6 +414,9 @@ private:
 	double                              scale;
 	guint                               button;
 	size_t                              frameChange;
+	FrameArray                          frames;
+	std::set <FrameKey>                 activeFrames;
+	std::set <FrameKey>                 selectedFrames;
 
 };
 

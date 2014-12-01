@@ -57,10 +57,11 @@
 namespace titania {
 namespace puck {
 
-static constexpr double DEFAULT_TRANSLATION = 8;
-static constexpr double DEFAULT_SCALE       = 16;
-static constexpr double KEY_FRAME_SIZE      = 7;
-static constexpr double SCROLL_FACTOR       = 1 + 1 / 16.0;
+static constexpr int32_t FRAME_SIZE          = 7;
+static constexpr double  DEFAULT_TRANSLATION = 8;
+static constexpr double  DEFAULT_SCALE       = 16;
+static constexpr double  KEY_FRAME_SIZE      = 7;
+static constexpr double  SCROLL_FACTOR       = 1 + 1 / 16.0;
 
 AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
@@ -79,7 +80,10 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	                translation (0),
 	                      scale (1),
 	                     button (0),
-	                frameChange (0)
+	                frameChange (0),
+	                     frames (),
+	               activeFrames (),
+	             selectedFrames ()
 {
 	getTranslationAdjustment () -> set_lower (-DEFAULT_TRANSLATION);
 	getTranslationAdjustment () -> set_upper (-DEFAULT_TRANSLATION);
@@ -98,6 +102,41 @@ AnimationEditor::initialize ()
 	getBrowser ()           .addInterest (this, &AnimationEditor::set_animation, nullptr);
 	getExecutionContext ()  .addInterest (this, &AnimationEditor::set_animation, nullptr);
 	nodeIndex -> getNode () .addInterest (this, &AnimationEditor::set_animation);
+}
+
+void
+AnimationEditor::setScale (const double value)
+{
+	scale = value;
+
+	setLowerTranslation ();
+	getDrawingArea () .queue_draw ();
+}
+
+void
+AnimationEditor::on_map ()
+{
+	getBrowserWindow () -> getFooterLabel () .set_text (_ ("Keyframe Animation"));
+
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &AnimationEditor::set_selection);
+
+	set_selection ();
+}
+
+void
+AnimationEditor::on_unmap ()
+{
+	getBrowserWindow () -> getSelection () -> getChildren () .removeInterest (this, &AnimationEditor::set_selection);
+}
+
+void
+AnimationEditor::set_selection ()
+{
+	const bool haveSelection = not getBrowserWindow () -> getSelection () -> getChildren () .empty ();
+	const auto groups        = getSelection <X3D::X3DGroupingNode> ({ X3D::X3DConstants::X3DGroupingNode });
+
+	getAddObjectButton () .set_sensitive (animation and haveSelection);
+	getNewButton ()       .set_sensitive (not groups .empty ());
 }
 
 int32_t
@@ -166,41 +205,6 @@ AnimationEditor::setLowerTranslation ()
 
 	getTranslationAdjustment () -> set_page_size (getDrawingArea () .get_width ());
 	getTranslationAdjustment () -> set_upper (-lower + getDrawingArea () .get_width ());
-}
-
-void
-AnimationEditor::setScale (const double value)
-{
-	scale = value;
-
-	setLowerTranslation ();
-	getDrawingArea () .queue_draw ();
-}
-
-void
-AnimationEditor::on_map ()
-{
-	getBrowserWindow () -> getFooterLabel () .set_text (_ ("Keyframe Animation"));
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &AnimationEditor::set_selection);
-
-	set_selection ();
-}
-
-void
-AnimationEditor::on_unmap ()
-{
-	getBrowserWindow () -> getSelection () -> getChildren () .removeInterest (this, &AnimationEditor::set_selection);
-}
-
-void
-AnimationEditor::set_selection ()
-{
-	const bool haveSelection = not getBrowserWindow () -> getSelection () -> getChildren () .empty ();
-	const auto groups        = getSelection <X3D::X3DGroupingNode> ({ X3D::X3DConstants::X3DGroupingNode });
-
-	getAddObjectButton () .set_sensitive (animation and haveSelection);
-	getNewButton ()       .set_sensitive (not groups .empty ());
 }
 
 void
@@ -318,6 +322,7 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	animation  = value;
 	timeSensor = nullptr;
 	nodes .clear ();
+	selectedFrames .clear ();
 
 	getTreeStore () -> clear ();
 	auto master = getTreeStore () -> append ();
@@ -703,18 +708,21 @@ AnimationEditor::on_current_frame_changed ()
 
 	getTimeLabel () .set_text (osstream .str ());
 
-	if (not isActive ())
+	if (animation)
 	{
-		// Clear tainted states.
-		
-		setTainted (Gtk::TreePath ("0"), false);
+		if (not isActive ())
+		{
+			// Clear tainted states.
+			
+			setTainted (Gtk::TreePath ("0"), false);
 
-		// Update interpolator fraction.
+			// Update interpolator fraction.
 
-		for (const auto & pair : interpolatorIndex)
-			pair .second -> set_fraction () = getFrameAdjustment () -> get_value () / getDuration ();
+			for (const auto & pair : interpolatorIndex)
+				pair .second -> set_fraction () = getFrameAdjustment () -> get_value () / getDuration ();
 
-		frameChange = interpolatorIndex .size ();
+			frameChange = interpolatorIndex .size ();
+		}
 	}
 
 	getDrawingArea () .queue_draw ();
@@ -1161,9 +1169,25 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
-		getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::XTERM));
+		if (pick (X3D::Vector2d (event -> x, event -> y)))
+		{
+			button = 0;
 
-		getFrameAdjustment () -> set_value (std::floor ((event -> x - getTranslation ()) / getScale ()));
+			if (not getBrowserWindow () -> getKeys () .shift ())
+			{
+				if (not isSelected ())
+					selectedFrames = activeFrames;
+			}
+		}
+
+		else
+		{
+			getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::XTERM));
+
+			getFrameAdjustment () -> set_value (std::floor ((event -> x - getTranslation ()) / getScale ()));
+
+			selectedFrames .clear ();
+		}
 	}
 
 	else if (button == 2)
@@ -1184,7 +1208,39 @@ AnimationEditor::on_button_release_event (GdkEventButton* event)
 
 	getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
 
+	if (button == 0)
+	{
+		if (event -> button == 1)
+		{
+			if (getBrowserWindow () -> getKeys () .shift ())
+			{
+				if (pick (X3D::Vector2d (event -> x, event -> y)))
+				{
+					if (isSelected ())
+					{
+						for (const auto & activeFrame : activeFrames)
+							selectedFrames .erase (activeFrame);
+					}
+					else
+						selectedFrames .insert (activeFrames .begin (), activeFrames .end ());
+				}
+			}
+		}
+	}
+
 	button = 0;
+	return false;
+}
+
+bool
+AnimationEditor::isSelected () const
+{
+	for (const auto & activeFrame : activeFrames)
+	{
+		if (selectedFrames .count (activeFrame))
+			return true;
+	}
+	
 	return false;
 }
 
@@ -1193,6 +1249,8 @@ AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 {
 	if (isActive ())
 		return false;
+
+	pick (X3D::Vector2d (event -> x, event -> y));
 
 	if (button == 1)
 	{
@@ -1219,6 +1277,42 @@ AnimationEditor::on_scroll_event (GdkEventScroll* event)
 }
 
 bool
+AnimationEditor::pick (const X3D::Vector2d & point)
+{
+	// Find all keyframes that intersect with the pointer.
+
+	std::set <FrameKey> intersections;
+
+	for (const auto & frame : frames)
+	{
+		if (frame .second .intersects (point))
+			intersections .emplace (frame .first);
+	}
+
+	activeFrames = intersections;
+	
+	// Add all keyframes to activeFrames that are a descendant of the intersection keyframe.
+
+	for (const auto & i : intersections)
+	{
+		for (const auto & frame : frames)
+		{
+			const auto & f = frame .first;
+		
+			if (std::tie (std::get <0> (i), std::get <1> (i)) == std::tie (std::get <0> (f), std::get <1> (f)))
+			{
+				if (std::get <2> (i) .is_ancestor (std::get <2> (f)))
+					activeFrames .emplace (f);
+			}
+		}
+	}
+
+	getDrawingArea () .queue_draw ();
+
+	return not activeFrames .empty ();
+}
+
+bool
 AnimationEditor::on_tree_view_draw (const Cairo::RefPtr <Cairo::Context> &)
 {
 	getDrawingArea () .queue_draw ();
@@ -1235,11 +1329,13 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 	const auto sb     = getTreeView () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
 	const auto yPad   = getNameCellRenderer () -> property_ypad ();
 
+	frames .clear ();
+
 	// Draw all time lines.
 
 	Gtk::TreePath firstPath, lastPath;
 	getTreeView () .get_visible_range (firstPath, lastPath);
-
+	
 	while (not firstPath .empty () and firstPath <= lastPath)
 	{
 		const auto iter = getTreeModelFilter () -> get_iter (firstPath);
@@ -1294,29 +1390,24 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 				{
 					case 1:
 					{
-						context -> set_source_rgba (fc .get_red (), fc .get_green (), fc .get_blue (), fc .get_alpha ());
-
 						for (const auto & parent : iter -> children ())
 						{
 							for (const auto & child : parent -> children ())
-								on_draw_keyframes (context, child, firstFrame, lastFrame, y - 2);
+								on_draw_keyframes (context, firstPath, child, firstFrame, lastFrame, y, fc, sb);
 						}
 
 						break;
 					}
 					case 2:
 					{
-						context -> set_source_rgba (sb .get_red (), sb .get_green (), sb .get_blue (), sb .get_alpha ());
-
 						for (const auto & child : iter -> children ())
-							on_draw_keyframes (context, child, firstFrame, lastFrame, y - 2);
+							on_draw_keyframes (context, firstPath, child, firstFrame, lastFrame, y, sb, fc);
 
 						break;
 					}
 					case 3:
 					{
-						context -> set_source_rgba (sb .get_red (), sb .get_green (), sb .get_blue (), sb .get_alpha ());
-						on_draw_keyframes (context, iter, firstFrame, lastFrame, y - 2);
+						on_draw_keyframes (context, firstPath, iter, firstFrame, lastFrame, y, sb, fc);
 						break;
 					}
 					default:
@@ -1358,10 +1449,13 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 
 void
 AnimationEditor::on_draw_keyframes (const Cairo::RefPtr <Cairo::Context> & context,
+                                    const Gtk::TreePath & path,
                                     const Gtk::TreeIter & child,
                                     const int32_t firstFrame,
                                     const int32_t lastFrame,
-                                    const double y)
+                                    const double y,
+                                    const Gdk::RGBA & fc,
+                                    const Gdk::RGBA & sc)
 {
 	try
 	{
@@ -1374,13 +1468,26 @@ AnimationEditor::on_draw_keyframes (const Cairo::RefPtr <Cairo::Context> & conte
 		const auto & key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key");
 		const auto   first        = std::lower_bound (key .begin (), key .end (), firstFrame);
 		const auto   last         = std::upper_bound (key .begin (), key .end (), lastFrame);
+		const auto   y1           = y - (FRAME_SIZE / 2 - 1);
+		const auto   y2           = y1 + FRAME_SIZE;
 
 		for (const auto & frame : std::make_pair (first, last))
 		{
-			const int32_t x = frame * getScale () + getTranslation () - 3;
+			const int32_t x    = frame * getScale () + getTranslation ();
+			const double  x1   = x - (FRAME_SIZE / 2);
+			const double  x2   = x1 + FRAME_SIZE;
+			const auto    key  = std::make_tuple (frame, field, path);
+			const auto    bbox = X3D::Box2d (X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), math::extents_type ());
 
-			context -> rectangle (x, y, 7, 7);
+			if (activeFrames .count (key) or selectedFrames .count (key))
+				context -> set_source_rgba (sc .get_red (), sc .get_green (), sc .get_blue (), sc .get_alpha ());
+			else
+				context -> set_source_rgba (fc .get_red (), fc .get_green (), fc .get_blue (), fc .get_alpha ());
+
+			context -> rectangle (x1, y1, FRAME_SIZE, FRAME_SIZE);
 			context -> fill ();
+
+			frames .emplace_back (key, bbox);
 		}
 	}
 	catch (...)
