@@ -96,6 +96,7 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ZoomOutButton", m_ZoomOutButton);
 	m_builder -> get_widget ("ZoomInButton", m_ZoomInButton);
 	m_builder -> get_widget ("ZoomFitButton", m_ZoomFitButton);
+	m_builder -> get_widget ("Zoom100Button", m_Zoom100Button);
 	m_builder -> get_widget ("PropertiesDialog", m_PropertiesDialog);
 	m_builder -> get_widget ("NewNameEntry", m_NewNameEntry);
 	m_builder -> get_widget ("LoopCheckButton", m_LoopCheckButton);
@@ -142,6 +143,7 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_ZoomOutButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_zoom_out));
 	m_ZoomInButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_zoom_in));
 	m_ZoomFitButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_zoom_fit));
+	m_Zoom100Button -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_zoom_100));
 
 	// Connect object Gtk::Entry with id 'NewNameEntry'.
 	m_NewNameEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new_name_changed));

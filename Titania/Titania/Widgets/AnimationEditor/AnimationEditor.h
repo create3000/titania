@@ -265,8 +265,9 @@ private:
 	void
 	on_zoom_fit () final override;
 
+	virtual
 	void
-	on_zoom_1 ();
+	on_zoom_100 () final override;
 
 	/***
 	 *  Tree View

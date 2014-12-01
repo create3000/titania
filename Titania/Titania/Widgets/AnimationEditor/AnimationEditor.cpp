@@ -57,11 +57,15 @@
 namespace titania {
 namespace puck {
 
-static constexpr int32_t FRAME_SIZE          = 7;
-static constexpr double  DEFAULT_TRANSLATION = 8;
-static constexpr double  DEFAULT_SCALE       = 16;
-static constexpr double  KEY_FRAME_SIZE      = 7;
-static constexpr double  SCROLL_FACTOR       = 1 + 1 / 16.0;
+using math::M_PHI;
+
+// Maximum duration is 1,000,000 frames as epsilon is 0.000001 as we can only save 6 digits.
+static constexpr float epsilon = 0.000001;
+
+static constexpr int32_t FRAME_SIZE          = 7;            // in pixel
+static constexpr double  DEFAULT_TRANSLATION = 8;            // in pixel
+static constexpr double  DEFAULT_SCALE       = 16;           // in pixel
+static constexpr double  SCROLL_FACTOR       = 1 + 1 / 16.0; // something nice
 
 static constexpr double infinity = std::numeric_limits <double>::infinity ();
 
@@ -385,10 +389,10 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 		on_zoom_fit ();
 
 		if (getScale () > DEFAULT_SCALE)
-			on_zoom_1 ();
+			on_zoom_100 ();
 	}
 	else
-		on_zoom_1 ();
+		on_zoom_100 ();
 
 	getDrawingArea () .queue_draw ();
 }
@@ -724,10 +728,21 @@ AnimationEditor::on_current_frame_changed ()
 
 	if (animation)
 	{
-		if (not isActive ())
+		if (isActive ())
+		{
+			// Follow cursor if animation is active.
+
+			const int32_t frame = getFrameAdjustment () -> get_value ();
+			const int32_t x     = frame * getScale () + getTranslation ();
+			const int32_t width = getDrawingArea () .get_width ();
+
+			if (x < 0 or x > width)
+				setTranslation (width * (2 - M_PHI) - frame * getScale ());
+		}
+		else
 		{
 			// Clear tainted states.
-			
+
 			setTainted (Gtk::TreePath ("0"), false);
 			
 			// Stop TimeSensor.
@@ -739,6 +754,8 @@ AnimationEditor::on_current_frame_changed ()
 
 			for (const auto & pair : interpolatorIndex)
 				pair .second -> set_fraction () = getFrameAdjustment () -> get_value () / getDuration ();
+
+			// Prevent fields from being set tainted.
 
 			frameChange = interpolatorIndex .size ();
 		}
@@ -888,10 +905,13 @@ AnimationEditor::on_zoom_fit ()
 }
 
 void
-AnimationEditor::on_zoom_1 ()
+AnimationEditor::on_zoom_100 ()
 {
+	const int32_t frame = getFrameAdjustment () -> get_value ();
+	const int32_t x     = frame * getScale () + getTranslation ();
+
 	setScale (DEFAULT_SCALE);
-	setTranslation (DEFAULT_TRANSLATION);
+	setTranslation (x - getFrameAdjustment () -> get_value () * DEFAULT_SCALE);
 }
 
 void
@@ -1462,7 +1482,6 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::PositionInterpolator> 
 	size_t       i3       = 0;
 	const size_t size     = key .size ();
 	const auto   duration = getDuration ();
-	const float  eps      = 0.000001;
 
 	interpolator -> key ()      .clear ();
 	interpolator -> keyValue () .clear ();
@@ -1482,7 +1501,7 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::PositionInterpolator> 
 
 			if (key [i] < duration)
 			{
-				const auto nextFraction = (i == size - 1 ? 1 : key [i + 1] / (float) duration - eps);
+				const auto nextFraction = (i == size - 1 ? 1 : key [i + 1] / (float) duration - epsilon);
 
 				interpolator -> key ()      .emplace_back (nextFraction);
 				interpolator -> keyValue () .emplace_back (value);

@@ -230,6 +230,10 @@ public:
 	getZoomFitButton () const
 	{ return *m_ZoomFitButton; }
 
+	Gtk::ToolButton &
+	getZoom100Button () const
+	{ return *m_Zoom100Button; }
+
 	Gtk::Dialog &
 	getPropertiesDialog () const
 	{ return *m_PropertiesDialog; }
@@ -360,6 +364,10 @@ public:
 
 	virtual
 	void
+	on_zoom_100 () = 0;
+
+	virtual
+	void
 	on_new_name_changed () = 0;
 
 	virtual
@@ -416,6 +424,7 @@ private:
 	Gtk::ToolButton*                       m_ZoomOutButton;
 	Gtk::ToolButton*                       m_ZoomInButton;
 	Gtk::ToolButton*                       m_ZoomFitButton;
+	Gtk::ToolButton*                       m_Zoom100Button;
 	Gtk::Dialog*                           m_PropertiesDialog;
 	Gtk::Entry*                            m_NewNameEntry;
 	Gtk::CheckButton*                      m_LoopCheckButton;

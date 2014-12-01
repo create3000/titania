@@ -4,7 +4,7 @@
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkAdjustment" id="DurationAdjustment">
     <property name="lower">1</property>
-    <property name="upper">10000000</property>
+    <property name="upper">1000000</property>
     <property name="value">10</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -496,6 +496,21 @@
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-zoom-fit</property>
                         <signal name="clicked" handler="on_zoom_fit" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="Zoom100Button">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Zoom to normal size.</property>
+                        <property name="label" translatable="yes">Zoom 100</property>
+                        <property name="use_underline">True</property>
+                        <property name="stock_id">gtk-zoom-100</property>
+                        <signal name="clicked" handler="on_zoom_100" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
