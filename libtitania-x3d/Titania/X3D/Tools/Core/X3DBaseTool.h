@@ -67,7 +67,7 @@ public:
 	virtual
 	size_t
 	getId () const final override
-	{ return reinterpret_cast <size_t> (node); }
+	{ return node -> getId (); }
 
 	virtual
 	void
