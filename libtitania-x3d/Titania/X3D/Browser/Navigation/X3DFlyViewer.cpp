@@ -79,7 +79,6 @@ static constexpr Vector3f yAxis (0, 1, 0);
 X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* const navigationInfo) :
 	          X3DViewer (browser),
 	     navigationInfo (navigationInfo),
-	        orientation (),
 	         fromVector (),
 	           toVector (),
 	          direction (),
@@ -123,8 +122,6 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 		if (getBrowser () -> hasControlKey ())
 		{
 			// Look around.
-		
-			orientation = getActiveViewpoint () -> getUserOrientation ();
 
 			fromVector = trackballProjectToSphere (event -> x, event -> y);
 		}
@@ -175,7 +172,8 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 
 			const auto viewpoint = getActiveViewpoint ();
 
-			const Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
+			auto       orientation = getActiveViewpoint () -> getUserOrientation ();
+			const auto toVector    = trackballProjectToSphere (event -> x, event -> y);
 
 			orientation  = Rotation4f (toVector, fromVector) * orientation;
 			orientation *= viewpoint -> straightenHorizon (orientation);

@@ -214,6 +214,15 @@ public:
 	///  @name Operations
 
 	void
+	isLockedToCamera (const bool);
+
+	bool
+	isLockedToCamera () const;
+
+	void
+	applyUserOffsets ();
+
+	void
 	resetUserOffsets ();
 
 	void

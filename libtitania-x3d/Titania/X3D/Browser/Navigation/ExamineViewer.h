@@ -86,10 +86,7 @@ private:
 	initialize () final override;
 
 	void
-	set_transitionStart ();
-
-	void
-	set_viewpoint ();
+	disconnect ();
 
 	bool
 	on_button_press_event (GdkEventButton*);
@@ -117,8 +114,7 @@ private:
 
 	NavigationInfo* const navigationInfo;
 
-	Vector3f         distance;
-	Rotation4f       orientation;
+	Rotation4f       orientationOffset;
 	Rotation4f       rotation;
 	Vector3f         fromVector;
 	Vector3f         fromPoint;

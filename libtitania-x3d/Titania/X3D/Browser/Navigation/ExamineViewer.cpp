@@ -67,17 +67,16 @@ static constexpr float     SCROLL_FACTOR     = 1.0f / 50.0f;
 static constexpr time_type FRAME_RATE        = 60;
 
 ExamineViewer::ExamineViewer (Browser* const browser, NavigationInfo* const navigationInfo) :
-	     X3DViewer (browser),
-	navigationInfo (navigationInfo),
-	      distance (),
-	   orientation (),
-	      rotation (),
-	    fromVector (),
-	     fromPoint (),
-	     pressTime (0),
-	    motionTime (0),
-	        button (0),
-	       spin_id ()
+	        X3DViewer (browser),
+	   navigationInfo (navigationInfo),
+	orientationOffset (),
+	         rotation (),
+	       fromVector (),
+	        fromPoint (),
+	        pressTime (0),
+	       motionTime (0),
+	           button (0),
+	          spin_id ()
 { }
 
 void
@@ -88,27 +87,14 @@ ExamineViewer::initialize ()
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event),  false);
 	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
 
-	getNavigationInfo () -> transitionStart () .addInterest (this, &ExamineViewer::set_transitionStart);
-	getBrowser () -> getActiveViewpointEvent () .addInterest (this, &ExamineViewer::set_viewpoint);
+	getNavigationInfo () -> transitionStart () .addInterest (this, &ExamineViewer::disconnect);
+	getBrowser () -> getActiveViewpointEvent () .addInterest (this, &ExamineViewer::disconnect);
 }
 
 void
-ExamineViewer::set_transitionStart ()
+ExamineViewer::disconnect ()
 {
 	spin_id .disconnect ();
-}
-
-void
-ExamineViewer::set_viewpoint ()
-{
-	// Update distance and orientationOffset.
-
-	spin_id .disconnect ();
-
-	const auto viewpoint = getActiveViewpoint ();
-
-	orientation = viewpoint -> getUserOrientation ();
-	distance    = getDistanceToCenter ();
 }
 
 bool
@@ -119,11 +105,10 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
-		getBrowser () -> setCursor (Gdk::FLEUR);
-
+		disconnect ();
 		getActiveViewpoint () -> transitionStop ();
 
-		set_viewpoint ();
+		getBrowser () -> setCursor (Gdk::FLEUR);
 
 		fromVector = trackballProjectToSphere (event -> x, event -> y);
 		rotation   = Rotation4f ();
@@ -133,11 +118,10 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 	else if (button == 2)
 	{
-		getBrowser () -> setCursor (Gdk::FLEUR);
-
+		disconnect ();
 		getActiveViewpoint () -> transitionStop ();
 
-		set_viewpoint ();
+		getBrowser () -> setCursor (Gdk::FLEUR);
 
 		fromPoint = getPointOnCenterPlane (event -> x, event -> y);
 	}
@@ -178,7 +162,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 
 		const Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
 
-		rotation = ~Rotation4f (fromVector, toVector);
+		rotation = Rotation4f (toVector, fromVector);
 
 		if (std::abs (rotation .angle ()) < SPIN_ANGLE and chrono::now () - pressTime < MOTION_TIME)
 			return false;
@@ -217,7 +201,7 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 	const Vector3f step           = getDistanceToCenter () * SCROLL_FACTOR;
 	const Vector3f positionOffset = Vector3f (0, 0, abs (step)) * viewpoint -> getUserOrientation ();
 
-	if (event -> direction == GDK_SCROLL_DOWN)      // Move backwards.
+	if (event -> direction == GDK_SCROLL_DOWN)    // Move backwards.
 	{
 		viewpoint -> positionOffset () += positionOffset;
 	}
@@ -226,8 +210,6 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 	{
 		viewpoint -> positionOffset () -= positionOffset;
 	}
-
-	distance = getDistanceToCenter ();
 
 	return false;
 }
@@ -254,10 +236,9 @@ Vector3f
 ExamineViewer::getPositionOffset () const
 {
 	const auto viewpoint = getActiveViewpoint ();
+	const auto distance  = getDistanceToCenter ();
 
-	return viewpoint -> getUserCenterOfRotation ()
-	       + distance* viewpoint -> orientationOffset ()
-	       - viewpoint -> getPosition ();
+	return distance * (~orientationOffset * viewpoint -> orientationOffset ()) - distance + viewpoint -> positionOffset ();
 }
 
 Rotation4f
@@ -265,9 +246,9 @@ ExamineViewer::getOrientationOffset ()
 {
 	const auto viewpoint = getActiveViewpoint ();
 
-	orientation = rotation * orientation;
+	orientationOffset = viewpoint -> orientationOffset ();
 
-	return ~viewpoint -> getOrientation () * orientation;
+	return ~viewpoint -> getOrientation () * rotation * viewpoint -> getUserOrientation ();
 }
 
 } // X3D

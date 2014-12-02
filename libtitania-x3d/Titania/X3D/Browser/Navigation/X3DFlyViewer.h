@@ -131,7 +131,6 @@ private:
 
 	NavigationInfo* const navigationInfo;
 
-	Rotation4f       orientation;
 	Vector3f         fromVector;
 	Vector3f         toVector;
 	Vector3f         direction;

@@ -1,5 +1,15 @@
 2014-12-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DViewer.cpp:
+	* X3DFlyViewer.h:
+	* ExamineViewer.h:
+	* X3DFlyViewer.cpp:
+	* ExamineViewer.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp: 
+
+2014-12-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OrientationInterpolator.cpp:
 	* SquadOrientationInterpolator.cpp: 
 

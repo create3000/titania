@@ -103,6 +103,13 @@ private:
 	void
 	on_update_viewpoint_clicked () final override;
 
+	virtual
+	void
+	on_lock_to_camera_toggled () final override;
+
+	void
+	update (const UndoStepPtr &);
+
 	///  @name Members
 
 	X3D::BrowserPtr                    browser;

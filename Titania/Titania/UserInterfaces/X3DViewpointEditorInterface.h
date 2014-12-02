@@ -306,6 +306,10 @@ public:
 	getUpdateViewpointButton () const
 	{ return *m_UpdateViewpointButton; }
 
+	Gtk::ToggleButton &
+	getLockToCameraButton () const
+	{ return *m_LockToCameraButton; }
+
 	Gtk::Expander &
 	getPerspectiveViewpointExpander () const
 	{ return *m_PerspectiveViewpointExpander; }
@@ -451,6 +455,10 @@ public:
 	on_update_viewpoint_clicked () = 0;
 
 	virtual
+	void
+	on_lock_to_camera_toggled () = 0;
+
+	virtual
 	~X3DViewpointEditorInterface ();
 
 
@@ -515,6 +523,7 @@ private:
 	Gtk::Button*                   m_ViewpointRenameButton;
 	Gtk::TextView*                 m_ViewpointDescriptionTextView;
 	Gtk::Button*                   m_UpdateViewpointButton;
+	Gtk::ToggleButton*             m_LockToCameraButton;
 	Gtk::Expander*                 m_PerspectiveViewpointExpander;
 	Gtk::Grid*                     m_PerspectiveViewpointBox;
 	Gtk::Box*                      m_PerspectiveViewpointFieldOfViewBox;

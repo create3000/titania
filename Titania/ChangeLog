@@ -1,5 +1,13 @@
 2014-12-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ViewpointEditor.xml:
+	* ViewpointEditor.h:
+	* ViewpointEditor.cpp:
+	* X3DViewpointEditorInterface.h:
+	* X3DViewpointEditorInterface.cpp: 
+
+2014-12-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* AnimationEditor.xml:
 	* AnimationEditor.h:
 	* AnimationEditor.cpp:

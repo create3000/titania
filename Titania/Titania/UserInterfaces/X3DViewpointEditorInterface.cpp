@@ -115,6 +115,7 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ViewpointRenameButton", m_ViewpointRenameButton);
 	m_builder -> get_widget ("ViewpointDescriptionTextView", m_ViewpointDescriptionTextView);
 	m_builder -> get_widget ("UpdateViewpointButton", m_UpdateViewpointButton);
+	m_builder -> get_widget ("LockToCameraButton", m_LockToCameraButton);
 	m_builder -> get_widget ("PerspectiveViewpointExpander", m_PerspectiveViewpointExpander);
 	m_builder -> get_widget ("PerspectiveViewpointBox", m_PerspectiveViewpointBox);
 	m_builder -> get_widget ("PerspectiveViewpointFieldOfViewBox", m_PerspectiveViewpointFieldOfViewBox);
@@ -151,6 +152,9 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeoViewpointHemisphereComboBoxText", m_GeoViewpointHemisphereComboBoxText);
 	m_builder -> get_widget ("GeoViewpointUTMOrderComboBoxText", m_GeoViewpointUTMOrderComboBoxText);
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_update_viewpoint_clicked));
+
+	// Connect object Gtk::ToggleButton with id 'LockToCameraButton'.
+	m_LockToCameraButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_lock_to_camera_toggled));
 
 	// Call construct handler of base class.
 	construct ();

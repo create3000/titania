@@ -227,6 +227,47 @@ X3DViewpointNode::removeFromLayer (X3DLayerNode* const layer)
 }
 
 void
+X3DViewpointNode::isLockedToCamera (const bool value)
+{
+	if (value)
+		addInterest (this, &X3DViewpointNode::applyUserOffsets);
+		
+	else
+		removeInterest (this, &X3DViewpointNode::applyUserOffsets);
+}
+
+bool
+X3DViewpointNode::isLockedToCamera () const
+{
+	return hasInterest (this, &X3DViewpointNode::applyUserOffsets);
+}
+
+void
+X3DViewpointNode::applyUserOffsets ()
+{
+	if (timeSensor -> isActive ())
+		return;
+
+	if (positionOffset () not_eq Vector3f ())
+	{
+		setPosition (getUserPosition ());
+		positionOffset () = Vector3f ();
+	}
+
+	if (orientationOffset () not_eq Rotation4f ())
+	{
+		setOrientation (getUserOrientation ());
+		orientationOffset () = Rotation4f ();
+	}
+
+	if (centerOfRotationOffset () not_eq Vector3f ())
+	{
+		setCenterOfRotation (getUserCenterOfRotation ());
+		centerOfRotationOffset () = Vector3f ();
+	}
+}
+
+void
 X3DViewpointNode::resetUserOffsets ()
 {
 	positionOffset ()         = Vector3f ();
