@@ -99,7 +99,11 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Zoom100Button", m_Zoom100Button);
 	m_builder -> get_widget ("PropertiesDialog", m_PropertiesDialog);
 	m_builder -> get_widget ("NewNameEntry", m_NewNameEntry);
-	m_builder -> get_widget ("LoopCheckButton", m_LoopCheckButton);
+	m_builder -> get_widget ("DurationSspinButton", m_DurationSspinButton);
+	m_builder -> get_widget ("FPSSpinButton", m_FPSSpinButton);
+	m_builder -> get_widget ("ScaleKeyframesButton", m_ScaleKeyframesButton);
+	m_builder -> get_widget ("LoopSwitch", m_LoopSwitch);
+	m_builder -> get_widget ("CycleIntervalLabel", m_CycleIntervalLabel);
 	m_builder -> get_widget ("NewCancelButton", m_NewCancelButton);
 	m_builder -> get_widget ("NewOkButton", m_NewOkButton);
 
@@ -149,6 +153,10 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_NewNameEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new_name_changed));
 	m_NewNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new_name_delete_text), false);
 	m_NewNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new_name_insert_text), false);
+
+	// Connect object Gtk::SpinButton with id 'DurationSspinButton'.
+	m_DurationSspinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new_cycle_interval_changed));
+	m_FPSSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new_cycle_interval_changed));
 
 	// Call construct handler of base class.
 	construct ();

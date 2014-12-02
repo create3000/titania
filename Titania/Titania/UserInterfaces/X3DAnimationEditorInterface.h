@@ -242,9 +242,25 @@ public:
 	getNewNameEntry () const
 	{ return *m_NewNameEntry; }
 
+	Gtk::SpinButton &
+	getDurationSspinButton () const
+	{ return *m_DurationSspinButton; }
+
+	Gtk::SpinButton &
+	getFPSSpinButton () const
+	{ return *m_FPSSpinButton; }
+
 	Gtk::CheckButton &
-	getLoopCheckButton () const
-	{ return *m_LoopCheckButton; }
+	getScaleKeyframesButton () const
+	{ return *m_ScaleKeyframesButton; }
+
+	Gtk::Switch &
+	getLoopSwitch () const
+	{ return *m_LoopSwitch; }
+
+	Gtk::Label &
+	getCycleIntervalLabel () const
+	{ return *m_CycleIntervalLabel; }
 
 	Gtk::Button &
 	getNewCancelButton () const
@@ -379,6 +395,10 @@ public:
 	on_new_name_insert_text (const Glib::ustring & text, int* position) = 0;
 
 	virtual
+	void
+	on_new_cycle_interval_changed () = 0;
+
+	virtual
 	~X3DAnimationEditorInterface ();
 
 
@@ -427,7 +447,11 @@ private:
 	Gtk::ToolButton*                       m_Zoom100Button;
 	Gtk::Dialog*                           m_PropertiesDialog;
 	Gtk::Entry*                            m_NewNameEntry;
-	Gtk::CheckButton*                      m_LoopCheckButton;
+	Gtk::SpinButton*                       m_DurationSspinButton;
+	Gtk::SpinButton*                       m_FPSSpinButton;
+	Gtk::CheckButton*                      m_ScaleKeyframesButton;
+	Gtk::Switch*                           m_LoopSwitch;
+	Gtk::Label*                            m_CycleIntervalLabel;
 	Gtk::Button*                           m_NewCancelButton;
 	Gtk::Button*                           m_NewOkButton;
 

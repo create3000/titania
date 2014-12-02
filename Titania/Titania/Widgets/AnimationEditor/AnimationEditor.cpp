@@ -69,6 +69,35 @@ static constexpr double  SCROLL_FACTOR       = 1 + 1 / 16.0; // something nice
 
 static constexpr double infinity = std::numeric_limits <double>::infinity ();
 
+static
+std::string
+strfframes (const size_t value, const size_t framesPerSecond)
+{
+	size_t time = value;
+
+	const size_t frames = time % framesPerSecond;
+	time /= framesPerSecond;
+
+	const size_t seconds = time % 60;
+	time /= 60;
+
+	const size_t minutes = time % 60;
+	time /= 60;
+
+	const size_t hours = time;
+
+	std::ostringstream osstream;
+	
+	osstream
+		<< std::setfill ('0')
+		<< std::setw (2) << hours << ":"
+		<< std::setw (2) << minutes << ":" 
+		<< std::setw (2) << seconds << ":" 
+		<< std::setw (2) << frames;
+
+	return osstream .str ();
+}
+
 AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DAnimationEditorInterface (get_ui ("AnimationEditor.xml"), gconf_dir ()),
@@ -94,6 +123,8 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	                movedFrames (),
 	                       keys ()
 {
+	getScaleKeyframesButton () .set_active (getConfig () .getBoolean ("scaleKeyframes"));
+
 	getTranslationAdjustment () -> set_lower (-DEFAULT_TRANSLATION);
 	getTranslationAdjustment () -> set_upper (-DEFAULT_TRANSLATION);
 
@@ -224,7 +255,7 @@ AnimationEditor::on_new ()
 	getNewNameEntry () .set_text ("");
 	getDurationAdjustment () -> set_value (10);
 	getFPSAdjustment () -> set_value (10);
-	getLoopCheckButton () .set_active (false);
+	getLoopSwitch () .set_active (false);
 
 	const auto responseId = getPropertiesDialog () .run ();
 
@@ -252,7 +283,7 @@ AnimationEditor::on_new ()
 	animation -> getMetaData <X3D::MFInt32> ("/Animation/duration")        .addInterest (this, &AnimationEditor::set_duration);
 	animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond") .addInterest (this, &AnimationEditor::set_frames_per_second);
 	
-	timeSensor -> loop ()     = getLoopCheckButton () .get_active ();
+	timeSensor -> loop ()     = getLoopSwitch () .get_active ();
 	timeSensor -> stopTime () = 1;
 	getExecutionContext () -> realize ();
 
@@ -287,6 +318,12 @@ AnimationEditor::on_new_name_changed ()
 	const std::string name = getNewNameEntry () .get_text ();
 
 	getNewOkButton () .set_sensitive (not name .empty ());
+}
+
+void
+AnimationEditor::on_new_cycle_interval_changed ()
+{
+	getCycleIntervalLabel () .set_text (strfframes (getDurationAdjustment () -> get_value (), getFPSAdjustment () -> get_value ()));
 }
 
 void
@@ -702,29 +739,7 @@ AnimationEditor::on_current_frame_changed ()
 {
 	// Display current time frame.
 
-	size_t time = getFrameAdjustment () -> get_value ();
-
-	const size_t frames = time % getFramesPerSecond ();
-	time /= getFramesPerSecond ();
-
-	const size_t seconds = time % 60;
-	time /= 60;
-
-	const size_t minutes = time % 60;
-	time /= 60;
-
-	const size_t hours = time;
-
-	std::ostringstream osstream;
-	
-	osstream
-		<< std::setfill ('0')
-		<< std::setw (2) << hours << ":"
-		<< std::setw (2) << minutes << ":" 
-		<< std::setw (2) << seconds << ":" 
-		<< std::setw (2) << frames;
-
-	getTimeLabel () .set_text (osstream .str ());
+	getTimeLabel () .set_text (strfframes (getFrameAdjustment () -> get_value (), getFramesPerSecond ()));
 
 	if (animation)
 	{
@@ -770,7 +785,7 @@ AnimationEditor::on_time ()
 	getNewNameEntry () .set_text (animation -> getName ());
 	getDurationAdjustment () -> set_value (getDuration ());
 	getFPSAdjustment () -> set_value (getFramesPerSecond ());
-	getLoopCheckButton () .set_active (timeSensor -> loop ());
+	getLoopSwitch () .set_active (timeSensor -> loop ());
 
 	const auto responseId = getPropertiesDialog () .run ();
 
@@ -779,15 +794,13 @@ AnimationEditor::on_time ()
 	if (responseId not_eq Gtk::RESPONSE_OK)
 		return;
 
-	if (getDurationAdjustment () -> get_value () < getDuration ())
-	{
-		// Remove key frames greater than getDurationAdjustment () -> get_value ().
-	}
-
 	using setMetaData = void (X3D::X3DNode::*) (const std::string &, const int32_t &);
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Keyframe Animation Properties"));
 	const auto name     = getNewNameEntry () .get_text ();
+
+	if (getScaleKeyframesButton () .get_active ())
+		scaleKeyframes (getDuration (), getDurationAdjustment () -> get_value (), undoStep);
 
 	undoStep -> addObjects (timeSensor);
 
@@ -809,8 +822,8 @@ AnimationEditor::on_time ()
 	timeSensor -> cycleInterval () = cycleInterval;
 
 	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (timeSensor -> loop ()), timeSensor -> loop ());
-	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (timeSensor -> loop ()), getLoopCheckButton () .get_active ());
-	timeSensor -> loop () = getLoopCheckButton () .get_active ();
+	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (timeSensor -> loop ()), getLoopSwitch () .get_active ());
+	timeSensor -> loop () = getLoopSwitch () .get_active ();
 
 	undoStep -> addUndoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&chrono::now));
 	undoStep -> addRedoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&chrono::now));
@@ -1441,6 +1454,31 @@ AnimationEditor::removeKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> & 
 	undoStep -> addRedoFunction ((setMetaDataInteger) &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/key",      key);
 	undoStep -> addRedoFunction ((setMetaDataFloat)   &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyValue", keyValue);
 	undoStep -> addRedoFunction ((setMetaDataString)  &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyType",  keyType);
+}
+
+void
+AnimationEditor::scaleKeyframes (const int32_t fromDuration, const int32_t toDuration, const UndoStepPtr & undoStep)
+{
+	if (fromDuration == toDuration)
+		return;
+
+	for (const auto & interpolator : interpolatorIndex)
+		scaleKeyframes (interpolator .second, fromDuration, toDuration, undoStep);
+}
+
+void
+AnimationEditor::scaleKeyframes (const X3D::X3DPtr <X3D::X3DInterpolatorNode> & interpolator, const int32_t fromDuration, const int32_t toDuration, const UndoStepPtr & undoStep)
+{
+	auto & key = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key", true);
+
+	undoStep -> addUndoFunction ((setMetaDataInteger) &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/key", key);
+
+	for (auto & frame : key)
+	{
+		frame = std::round (frame / (float) fromDuration * toDuration);
+	}
+
+	undoStep -> addRedoFunction ((setMetaDataInteger) &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/key", key);
 }
 
 void
@@ -2393,6 +2431,8 @@ AnimationEditor::getFrameParams () const
 
 AnimationEditor::~AnimationEditor ()
 {
+	getConfig () .setItem ("scaleKeyframes", getScaleKeyframesButton () .get_active ());
+
 	dispose ();
 }
 

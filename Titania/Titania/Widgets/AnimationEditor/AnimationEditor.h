@@ -166,6 +166,10 @@ private:
 
 	virtual
 	void
+	on_new_cycle_interval_changed () final override;
+
+	virtual
+	void
 	on_open () final override;
 
 	void
@@ -334,6 +338,12 @@ private:
 
 	void
 	removeKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> &, const size_t, const int32_t, const UndoStepPtr &);
+
+	void
+	scaleKeyframes (const int32_t, const int32_t, const UndoStepPtr &);
+
+	void
+	scaleKeyframes (const X3D::X3DPtr <X3D::X3DInterpolatorNode> & interpolator, const int32_t, const int32_t, const UndoStepPtr &);
 
 	void
 	setInterpolators (const UndoStepPtr &);
