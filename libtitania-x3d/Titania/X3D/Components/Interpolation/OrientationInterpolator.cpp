@@ -106,10 +106,8 @@ OrientationInterpolator::interpolate (size_t index0, size_t index1, const float 
 	{
 		value_changed () = math::slerp <float> (keyValue () [index0], keyValue () [index1], weight);
 	}
-	catch (const std::domain_error & error)
-	{
-		std::clog << "OrientationInterpolator: " << error .what () << std::endl;
-	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 } // X3D

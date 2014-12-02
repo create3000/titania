@@ -1553,15 +1553,14 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolato
 		}
 		else if (keyType [i] == "SPLINE")
 		{
-			std::vector <float> keys;
+			std::vector <int32_t> keys;
 			std::vector <Type> keyValues;
 
 			for (; i < size; ++ i, iN += COMPONENTS)
 			{
-				const auto fraction = key [i] / (float) duration;
-				const auto value    = Type (keyValue [iN], keyValue [iN + 1], keyValue [iN + 2], keyValue [iN + 3]);
+				const auto value = Type (keyValue [iN], keyValue [iN + 1], keyValue [iN + 2], keyValue [iN + 3]);
 
-				keys .emplace_back (fraction);
+				keys .emplace_back (key [i]);
 				keyValues .emplace_back (value);
 
 				if (keyType [i] not_eq "SPLINE")
@@ -1576,25 +1575,33 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolato
 				break;
 			}
 	
-			const bool closed = keys .front () == 0 and keys .back () == 1 and keyValues .front () == keyValues .back ();
+			const bool closed = keys .front () == 0 and keys .back () == duration and keyValues .front () == keyValues .back ();
 
 			math::squad_interpolator <Type, float> squad;
 			squad .generate (closed, keys, keyValues);
 
 			for (size_t k = 0, size = keys .size () - 1; k < size; ++ k)
 			{
-				const double distance = keys [k + 1] - keys [k];
-				const double step     = 1 / (distance * duration);
+				const int32_t frames   = keys [k + 1] - keys [k];
+				const float   fraction = keys [k] / (float) duration;
+				const float   distance = frames / (float) duration;
 
-				if (distance == 0 or duration == 0)
-					continue;
-
-				for (double weight = 0; weight < 1; weight += step)
+				for (int32_t f = 0; f < frames; ++ f)
 				{
-					const auto value = squad .interpolate (k, k + 1, weight, keyValues);
+					const auto weight = f / (float) frames;
+	
+					try
+					{
+						const auto value = squad .interpolate (k, k + 1, weight, keyValues);
 
-					interpolator -> key ()      .emplace_back (keys [k] + weight * distance);
-					interpolator -> keyValue () .emplace_back (value);
+						interpolator -> key ()      .emplace_back (fraction + weight * distance);
+						interpolator -> keyValue () .emplace_back (value);
+					}
+					catch (const std::domain_error &)
+					{
+						interpolator -> key ()      .emplace_back (fraction + weight * distance);
+						interpolator -> keyValue () .emplace_back (interpolator -> keyValue () .empty () ? keyValues [k] : interpolator -> keyValue () .back ());
+					}
 				}
 			}
 
@@ -1675,16 +1682,15 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::PositionInterpolator> 
 		}
 		else if (keyType [i] == "SPLINE")
 		{
-			std::vector <float> keys;
+			std::vector <int32_t> keys;
 			std::vector <Type> keyValues;
 			std::vector <Type> keyVelocitys;
 
 			for (; i < size; ++ i, iN += COMPONENTS)
 			{
-				const auto fraction = key [i] / (float) duration;
-				const auto value    = Type (keyValue [iN], keyValue [iN + 1], keyValue [iN + 2]);
+				const auto value = Type (keyValue [iN], keyValue [iN + 1], keyValue [iN + 2]);
 
-				keys .emplace_back (fraction);
+				keys .emplace_back (key [i]);
 				keyValues .emplace_back (value);
 
 				if (keyType [i] not_eq "SPLINE")
@@ -1707,17 +1713,16 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::PositionInterpolator> 
 
 			for (size_t k = 0, size = keys .size () - 1; k < size; ++ k)
 			{
-				const double distance = keys [k + 1] - keys [k];
-				const double step     = 1 / (distance * duration);
+				const int32_t frames   = keys [k + 1] - keys [k];
+				const float   fraction = keys [k] / (float) duration;
+				const float   distance = frames / (float) duration;
 
-				if (distance == 0 or duration == 0)
-					continue;
-
-				for (double weight = 0; weight < 1; weight += step)
+				for (int32_t f = 0; f < frames; ++ f)
 				{
-					const auto value = spline .interpolate (k, k + 1, weight, keyValues);
+					const auto weight = f / (float) frames;
+					const auto value  = spline .interpolate (k, k + 1, weight, keyValues);
 
-					interpolator -> key ()      .emplace_back (keys [k] + weight * distance);
+					interpolator -> key ()      .emplace_back (fraction + weight * distance);
 					interpolator -> keyValue () .emplace_back (value);
 				}
 			}

@@ -123,7 +123,12 @@ SquadOrientationInterpolator::set_keyValue ()
 void
 SquadOrientationInterpolator::interpolate (size_t index0, size_t index1, const float weight)
 {
-	value_changed () = squad .interpolate (index0, index1, weight, keyValue ());
+	try
+	{
+		value_changed () = squad .interpolate (index0, index1, weight, keyValue ());
+	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 } // X3D
