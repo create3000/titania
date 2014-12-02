@@ -333,19 +333,7 @@ private:
 	removeKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> &, const int32_t, const UndoStepPtr &);
 
 	void
-	removeKeyframe (const X3D::X3DPtr <X3D::ColorInterpolator> &, const int32_t, const UndoStepPtr &);
-
-	void
-	removeKeyframe (const X3D::X3DPtr <X3D::ScalarInterpolator> &, const int32_t, const UndoStepPtr &);
-
-	void
-	removeKeyframe (const X3D::X3DPtr <X3D::OrientationInterpolator> &, const int32_t, const UndoStepPtr &);
-
-	void
-	removeKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator2D> &, const int32_t, const UndoStepPtr &);
-
-	void
-	removeKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator> &, const int32_t, const UndoStepPtr &);
+	removeKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> &, const size_t, const int32_t, const UndoStepPtr &);
 
 	void
 	setInterpolators (const UndoStepPtr &);
