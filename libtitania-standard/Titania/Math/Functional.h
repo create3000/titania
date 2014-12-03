@@ -222,7 +222,7 @@ slerp (const Type & source, Type destination, const T & t)
 template <typename Type, typename T>
 static
 Type
-simple_slerp (const Type & source, const Type & destination, T t)
+simple_slerp (const Type & source, const Type & destination, const T & t)
 {
 	const T cosom = dot (source, destination);
 

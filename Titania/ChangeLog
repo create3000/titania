@@ -1,3 +1,9 @@
+2014-12-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* AnimationEditor.h:
+	* AnimationEditor.cpp:
+	* SquadInterpolator.h: 
+
 2014-12-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* AnimationEditor.xml:

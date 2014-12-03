@@ -1,3 +1,13 @@
+2014-12-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-standard.cproj:
+	* Functional.h:
+	* Quaternion.h:
+	* SquadInterpolator.h:
+	* SquadInterpolator.cpp:
+	* CatmullRomSplineInterpolator.h: 
+
 2014-11-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ReferenceIterator.h: 

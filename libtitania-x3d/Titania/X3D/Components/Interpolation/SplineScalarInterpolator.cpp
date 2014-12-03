@@ -52,6 +52,8 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
+#include <Titania/Math/Algorithms/CatmullRomSplineInterpolator.h>
+
 namespace titania {
 namespace X3D {
 
@@ -70,7 +72,8 @@ SplineScalarInterpolator::Fields::Fields () :
 SplineScalarInterpolator::SplineScalarInterpolator (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DInterpolatorNode (),
-	             fields ()
+	             fields (),
+	             spline (new math::catmull_rom_spline_interpolator <float, float> ())
 {
 	addType (X3DConstants::SplineScalarInterpolator);
 
@@ -117,13 +120,13 @@ SplineScalarInterpolator::set_keyVelocity ()
 			keyVelocity () .resize (key () .size ());
 	}
 
-	spline .generate (closed (), key (), keyValue (), keyVelocity (), normalizeVelocity ());
+	spline -> generate (closed (), key (), keyValue (), keyVelocity (), normalizeVelocity ());
 }
 
 void
 SplineScalarInterpolator::interpolate (size_t index0, size_t index1, const float weight)
 {
-	value_changed () = spline .interpolate (index0, index1, weight, keyValue ());
+	value_changed () = spline -> interpolate (index0, index1, weight, keyValue ());
 }
 
 } // X3D

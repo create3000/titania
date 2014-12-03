@@ -173,7 +173,6 @@
     <Compile Include="Titania\InputOutput\Sequence.cpp" />
     <Compile Include="Titania\InputOutput\String.cpp" />
     <Compile Include="Titania\Math\Algorithms\CatmullRomSplineInterpolator.cpp" />
-    <Compile Include="Titania\Math\Algorithms\SquadInterpolator.cpp" />
     <Compile Include="Titania\Backtrace.cpp" />
     <Compile Include="Titania\String\sprintf.cpp" />
     <Compile Include="Titania\String\split.cpp" />

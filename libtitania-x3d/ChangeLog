@@ -1,3 +1,15 @@
+2014-12-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DInterpolatorNode.cpp:
+	* SplineScalarInterpolator.h:
+	* SplineScalarInterpolator.cpp:
+	* SplinePositionInterpolator.h:
+	* SplinePositionInterpolator2D.h:
+	* SplinePositionInterpolator.cpp:
+	* SquadOrientationInterpolator.h:
+	* SplinePositionInterpolator2D.cpp:
+	* SquadOrientationInterpolator.cpp: 
+
 2014-12-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DViewer.cpp:

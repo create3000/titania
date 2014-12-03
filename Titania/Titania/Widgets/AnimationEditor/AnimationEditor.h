@@ -314,7 +314,7 @@ private:
 	addKeyframe (const X3D::SFNode &, const X3D::X3DFieldDefinition* const);
 
 	void
-	addKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> &, const int32_t, const std::vector <float> &, const std::string &, const UndoStepPtr &);
+	addKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> &, const int32_t, const std::vector <double> &, const std::string &, const UndoStepPtr &);
 
 	void
 	moveKeyframes ();
@@ -486,11 +486,11 @@ private:
 
 	using InterpolatorIndex = std::map <const X3D::X3DFieldDefinition*, X3D::X3DPtr <X3D::X3DInterpolatorNode>>;
 	using FrameKey          = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath>;
-	using CopiedFrame       = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath, std::vector <float>, std::string>;
+	using CopiedFrame       = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath, std::vector <double>, std::string>;
 	using FrameArray        = std::vector <std::pair <FrameKey, X3D::Box2d>>;
 
 	using setMetaDataInteger = void (X3D::X3DNode::*) (const std::string &, const X3D::MFInt32 &);
-	using setMetaDataFloat   = void (X3D::X3DNode::*) (const std::string &, const X3D::MFFloat &);
+	using setMetaDataDouble  = void (X3D::X3DNode::*) (const std::string &, const X3D::MFDouble &);
 	using setMetaDataString  = void (X3D::X3DNode::*) (const std::string &, const X3D::MFString &);
 
 	/***

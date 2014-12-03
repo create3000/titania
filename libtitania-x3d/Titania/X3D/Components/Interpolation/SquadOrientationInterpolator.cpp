@@ -52,6 +52,8 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
+#include <Titania/Math/Algorithms/SquadInterpolator.h>
+
 namespace titania {
 namespace X3D {
 
@@ -71,7 +73,7 @@ SquadOrientationInterpolator::SquadOrientationInterpolator (X3DExecutionContext*
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DInterpolatorNode (),
 	             fields (),
-	              squad ()
+	              squad (new math::squad_interpolator <Rotation4f, float> ())
 {
 	addType (X3DConstants::SquadOrientationInterpolator);
 
@@ -105,7 +107,7 @@ SquadOrientationInterpolator::set_keyValue ()
 	if (keyValue () .size () < key () .size ())
 		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFRotation ());
 
-	squad .generate (closed (), key (), keyValue ());
+	squad -> generate (closed (), key (), keyValue ());
 }
 
 //void
@@ -117,7 +119,7 @@ SquadOrientationInterpolator::set_keyValue ()
 //			keyVelocity () .resize (key () .size ());
 //	}
 //
-//	squad .generate (closed (), key (), keyValue (), keyVelocity (), normalizeVelocity ());
+//	squad -> generate (closed (), key (), keyValue (), keyVelocity (), normalizeVelocity ());
 //}
 
 void
@@ -125,7 +127,7 @@ SquadOrientationInterpolator::interpolate (size_t index0, size_t index1, const f
 {
 	try
 	{
-		value_changed () = squad .interpolate (index0, index1, weight, keyValue ());
+		value_changed () = squad -> interpolate (index0, index1, weight, keyValue ());
 	}
 	catch (const std::domain_error &)
 	{ }

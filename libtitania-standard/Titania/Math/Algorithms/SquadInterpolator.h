@@ -64,8 +64,16 @@ class squad_interpolator
 {
 public:
 
-	squad_interpolator ()
+	squad_interpolator () :
+		s ()
 	{ }
+
+	template <class Key, class KeyValue>
+	squad_interpolator (const bool closed,
+                       const Key & key,
+                       const KeyValue & keyValue) :
+      squad_interpolator ()
+	{ generate (closed, key, keyValue); }
 
 	template <class Key, class KeyValue>
 	void
@@ -73,12 +81,12 @@ public:
 
 	template <class KeyValue>
 	Type
-	interpolate (const size_t, const size_t, const Scalar &, const KeyValue &);
+	interpolate (const size_t, const size_t, const Scalar &, const KeyValue &) const;
 
 
 private:
 
-	std::vector <Type> a;
+	std::vector <Type> s;
 
 };
 
@@ -89,43 +97,42 @@ squad_interpolator <Type, Scalar>::generate (const bool closed,
                                              const Key & key,
                                              const KeyValue & keyValue)
 {
-	std::vector <Type> a;
+	s .clear ();
+	s. reserve (key .size ());
 
 	if (key .size () > 1)
 	{
 		if (closed)
 		{
-			a .emplace_back (spline <Scalar> (keyValue [keyValue .size () - 2],
+			s .emplace_back (spline <Scalar> (keyValue [key .size () - 2],
 			                                  keyValue [0],
 			                                  keyValue [1]));
 		}
 		else
 		{
-			a .emplace_back (keyValue .front ());
+			s .emplace_back (keyValue .front ());
 		}
 
-		for (size_t i = 1, size = keyValue .size () - 1; i < size; ++ i)
+		for (size_t i = 1, size = key .size () - 1; i < size; ++ i)
 		{
-			a .emplace_back (spline <Scalar> (keyValue [i - 1],
+			s .emplace_back (spline <Scalar> (keyValue [i - 1],
 			                                  keyValue [i],
 			                                  keyValue [i + 1]));
 		}
 
 		if (closed)
 		{
-			a .emplace_back (spline <Scalar> (keyValue [keyValue .size () - 2],
-			                                  keyValue .back (),
+			s .emplace_back (spline <Scalar> (keyValue [key .size () - 2],
+			                                  keyValue [key .size () - 1],
 			                                  keyValue [1]));
 		}
 		else
 		{
-			a .emplace_back (keyValue .back ());
+			s .emplace_back (keyValue [key .size () - 1]);
 		}
 	}
 	else if (key .size () > 0)
-		a .emplace_back (keyValue .front ());
-
-	this -> a = std::move (a);
+		s .emplace_back (keyValue .front ());
 }
 
 template <class Type, class Scalar>
@@ -134,9 +141,9 @@ Type
 squad_interpolator <Type, Scalar>::interpolate (const size_t index0,
                                                 const size_t index1,
                                                 const Scalar & weight,
-                                                const KeyValue & keyValue)
+                                                const KeyValue & keyValue) const
 {
-	return squad <Scalar> (keyValue [index0], a [index0], a [index1], keyValue [index1], weight);
+	return squad <Scalar> (keyValue [index0], s [index0], s [index1], keyValue [index1], weight);
 }
 
 } // math

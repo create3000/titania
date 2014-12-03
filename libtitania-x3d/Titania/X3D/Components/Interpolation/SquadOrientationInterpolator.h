@@ -52,7 +52,15 @@
 #define __TITANIA_X3D_COMPONENTS_INTERPOLATION_SQUAD_ORIENTATION_INTERPOLATOR_H__
 
 #include "../Interpolation/X3DInterpolatorNode.h"
-#include <Titania/Math/Algorithms/SquadInterpolator.h>
+
+namespace titania {
+namespace math {
+
+template <class Type, class Scalar>
+class squad_interpolator;
+
+} // math
+} // titania
 
 namespace titania {
 namespace X3D {
@@ -177,7 +185,7 @@ private:
 
 	Fields fields;
 
-	math::squad_interpolator <Rotation4f, float> squad;
+	const std::unique_ptr <math::squad_interpolator <Rotation4f, float>> squad;
 
 };
 

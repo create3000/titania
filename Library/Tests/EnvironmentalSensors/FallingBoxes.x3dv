@@ -280,7 +280,7 @@ Transform {
                   3000
                 ]
               }
-              MetadataFloat {
+              MetadataDouble {
                 name "keyValue"
                 value [
                   5.05967,
@@ -6353,7 +6353,7 @@ Transform {
                   3000
                 ]
               }
-              MetadataFloat {
+              MetadataDouble {
                 name "keyValue"
                 value [
                   -0.942973,

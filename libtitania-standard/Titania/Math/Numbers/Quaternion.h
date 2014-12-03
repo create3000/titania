@@ -746,6 +746,7 @@ normalize (const quaternion <Type> & quat)
 }
 
 ///  Raise @a quaternion to @a quaternion power.
+///  http://cpansearch.perl.org/src/JCHIN/Math-Quaternion-0.07/lib/Math/Quaternion.pm
 template <class Type>
 inline
 quaternion <Type>
@@ -757,71 +758,79 @@ pow (const quaternion <Type> & base, const quaternion <Type> & exponent)
 }
 
 ///  Raise @a quaternion to @a scalar power.
+///  http://cpansearch.perl.org/src/JCHIN/Math-Quaternion-0.07/lib/Math/Quaternion.pm
 template <class Type>
 quaternion <Type>
 pow (const quaternion <Type> & base, const Type & exponent)
 {
-	const Type n     = norm (base);
-	const Type theta = std::acos (base .w () / n);
-	const Type ni    = norm (imag (base));
-	const Type ntov  = std::pow (n, exponent);
-	const Type vt    = exponent * theta;
-	const Type scale = ntov / ni* std::sin (vt);
+	if (is_real (base))
+		return quaternion <Type> (0, 0, 0, std::pow (base .w (), exponent));
+
+	const Type l     = abs (base);
+	const Type theta = std::acos (base .w () / l);
+	const Type li    = abs (imag (base));
+	const Type ltoe  = std::pow (l, exponent);
+	const Type et    = exponent * theta;
+	const Type scale = ltoe / li * std::sin (et);
 
 	return quaternion <Type> (base .x () * scale,
 	                          base .y () * scale,
 	                          base .z () * scale,
-	                          ntov * std::cos (vt));
+	                          ltoe * std::cos (et));
 }
 
 ///  Returns the logarithm of its argument. The logarithm of a negative
 ///  real quaternion can take any value of them form (log(-q0),u*pi) for
 ///  any unit vector u. In these cases, u is chosen to be (1,0,0).
+///  http://cpansearch.perl.org/src/JCHIN/Math-Quaternion-0.07/lib/Math/Quaternion.pm
 template <class Type>
 quaternion <Type>
-log (const quaternion <Type> & quad)
+log (const quaternion <Type> & quat)
 {
-	if (is_real (quad))
+	if (is_real (quat))
 	{
-		if (quad .w () > 0)
-			return quaternion <Type> (0, 0, 0, std::log (quad .w ()));
+		if (quat .w () > 0)
+			return quaternion <Type> (0, 0, 0, std::log (quat .w ()));
 
 		else
-			return quaternion <Type> (M_PI, 0, 0, std::log (-quad .w ()));
+			return quaternion <Type> (M_PI, 0, 0, std::log (-quat .w ()));
 	}
 
-	const Type vl = norm (imag (quad)); // mod of quat part
-	const Type vs = std::atan2 (vl, quad .w ()) / vl;
-	const Type ln = std::log (norm (quad));
+	const Type l  = abs (quat);
+	const Type w  = std::log (l);
+	const Type li = abs (imag (quat));
+	const Type y  = std::atan2 (li, quat .w ());
+	const Type c  = y / li;
 
-	return quaternion <Type> (vs * quad .x (),
-	                          vs * quad .y (),
-	                          vs * quad .z (),
-	                          ln);
+	return quaternion <Type> (c * quat .x (),
+	                          c * quat .y (),
+	                          c * quat .z (),
+	                          w);
 }
 
 ///  Exponential operator e^q.
+///  http://cpansearch.perl.org/src/JCHIN/Math-Quaternion-0.07/lib/Math/Quaternion.pm
 template <class Type>
 quaternion <Type>
-exp (const quaternion <Type> & quad)
+exp (const quaternion <Type> & quat)
 {
-	if (is_real (quad))
-		return quaternion <Type> (0, 0, 0, std::exp (quad .w ()));
+	if (is_real (quat))
+		return quaternion <Type> (0, 0, 0, std::exp (quat .w ()));
 
-	const Type vl = norm (imag (quad)); // length of pure-quat part
+	const Type li = abs (imag (quat)); // length of pure-quat part
 
 	// unit vector
-	const Type ux = quad .x () / vl;
-	const Type uy = quad .y () / vl;
-	const Type uz = quad .z () / vl;
+	const Type ux = quat .x () / li;
+	const Type uy = quat .y () / li;
+	const Type uz = quat .z () / li;
 
-	const Type ws = std::exp (quad .w ());
-	const Type vs = ws * std::sin (vl);
+	const Type ws = std::exp (quat .w ());
+	const Type vs = ws * std::sin (li);
 
 	return quaternion <Type> (vs * ux,
 	                          vs * uy,
 	                          vs * uz,
-	                          ws * std::cos (vl));
+	                          ws * std::cos (li));
 }
 
 ///  Spherical cubic interpolation of @a source, @a a, @a b and @a destination by an amout of @a t.
@@ -853,7 +862,7 @@ bezier (const quaternion <Type> & q0,
 	return simple_slerp (simple_slerp (q11, q12, t), simple_slerp (q12, q13, t), t);
 }
 
-//! Given 3 quaternions, qn-1,qn and qn+1, calculate a control point to be used in squad interpolation
+//! Given 3 quaternions, qn-1,qn and qn+1, calculate a control point to be used in squat interpolation
 template <class Type>
 inline
 quaternion <Type>
@@ -865,47 +874,6 @@ spline (const quaternion <Type> & q0,
 
 	return normalize (q1 * exp ((log (q1_i * q2) + log (q1_i * q0)) * Type (-0.25)));
 }
-
-///  Spherical linear interpolate between @a source quaternion and @a destination quaternion by an amout of @a t.
-//template <class Type>
-//quaternion <Type>
-//slerp (const quaternion <Type> & source,
-//       const quaternion <Type> & destination,
-//       const Type & t)
-//{
-//	quaternion <Type> _destination;
-//
-//	Type dotprod = dot (source, destination);
-//
-//	if (dotprod < 0)
-//	{
-//		// Reverse signs so we travel the short way round
-//		dotprod      = -dotprod;
-//		_destination = -destination;
-//	}
-//	else
-//		_destination = destination;
-//
-//	Type scale0, scale1;
-//
-//	/* calculate coefficients */
-//	if ((1 - dotprod) > 1e-5)
-//	{
-//		/* standard case (SLERP) */
-//		Type omega = std::acos (dotprod);
-//		Type sinom = std::sin (omega);
-//		scale0 = std::sin ((1 - t) * omega) / sinom;
-//		scale1 = std::sin (t * omega) / sinom;
-//	}
-//	else
-//	{
-//		/* q1 & q2 are very close, so do linear interpolation */
-//		scale0 = 1 - t;
-//		scale1 = t;
-//	}
-//
-//	return source * scale0 + _destination * scale1;
-//}
 
 ///  @relates quaternion
 ///  @name Input/Output operations

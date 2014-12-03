@@ -70,8 +70,19 @@ public:
 
 	typedef typename std::vector <Type>::size_type size_type;
 
-	catmull_rom_spline_interpolator ()
+	catmull_rom_spline_interpolator () :
+		T0 (),
+		T1 ()
 	{ }
+
+	template <class Key, class KeyValue, class KeyVelocity>
+	catmull_rom_spline_interpolator (const bool closed,
+                                    const Key & key,
+                                    const KeyValue & keyValue,
+                                    const KeyVelocity & keyVelocity,
+                                    const bool normalizeVelocity) :
+		catmull_rom_spline_interpolator ()
+	{ generate (closed, key, keyValue, keyVelocity, normalizeVelocity); }
 
 	template <class Key, class KeyValue, class KeyVelocity>
 	void
@@ -79,7 +90,7 @@ public:
 
 	template <class KeyValue>
 	Type
-	interpolate (const size_type, const size_type, const Scalar &, const KeyValue &);
+	interpolate (const size_type, const size_type, const Scalar &, const KeyValue &) const;
 
 
 private:
@@ -98,7 +109,10 @@ catmull_rom_spline_interpolator <Type, Scalar>::generate (const bool closed,
                                                           const KeyVelocity & keyVelocity,
                                                           const bool normalizeVelocity)
 {
-	std::vector <Type>   T, T0, T1;
+	T0 .clear ();
+	T1 .clear ();
+
+	std::vector <Type>   T;
 	std::vector <Scalar> Fp, Fm;
 
 	T  .reserve (key .size ());
@@ -114,13 +128,13 @@ catmull_rom_spline_interpolator <Type, Scalar>::generate (const bool closed,
 		if (keyVelocity .empty ())
 		{
 			if (closed)
-				T .emplace_back ((keyValue [1] - keyValue [keyValue .size () - 2]) / 2.0f);
+				T .emplace_back ((keyValue [1] - keyValue [keyValue .size () - 2]) / Scalar (2));
 
 			else
 				T .emplace_back ();
 
 			for (size_t i = 1, size = keyValue .size () - 1; i < size; ++ i)
-				T .emplace_back ((keyValue [i + 1] - keyValue [i - 1]) / 2.0f);
+				T .emplace_back ((keyValue [i + 1] - keyValue [i - 1]) / Scalar (2));
 
 			T .emplace_back (T . front ());
 		}
@@ -182,9 +196,6 @@ catmull_rom_spline_interpolator <Type, Scalar>::generate (const bool closed,
 		T0 .emplace_back ();
 		T1 .emplace_back ();
 	}
-
-	this -> T0 = std::move (T0);
-	this -> T1 = std::move (T1);
 }
 
 template <class Type, class Scalar>
@@ -193,7 +204,7 @@ Type
 catmull_rom_spline_interpolator <Type, Scalar>::interpolate (const size_type index0,
                                                              const size_type index1,
                                                              const Scalar & weight,
-                                                             const KeyValue & keyValue)
+                                                             const KeyValue & keyValue) const
 {
 	const vector4 <Scalar> S (std::pow (weight, 3), math::sqr (weight), weight, 1);
 

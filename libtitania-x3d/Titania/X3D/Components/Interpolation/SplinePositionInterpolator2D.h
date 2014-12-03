@@ -52,7 +52,15 @@
 #define __TITANIA_X3D_COMPONENTS_INTERPOLATION_SPLINE_POSITION_INTERPOLATOR2D_H__
 
 #include "../Interpolation/X3DInterpolatorNode.h"
-#include <Titania/Math/Algorithms/CatmullRomSplineInterpolator.h>
+
+namespace titania {
+namespace math {
+
+template <class Type, class Scalar>
+class catmull_rom_spline_interpolator;
+
+} // math
+} // titania
 
 namespace titania {
 namespace X3D {
@@ -177,7 +185,7 @@ private:
 
 	Fields fields;
 
-	math::catmull_rom_spline_interpolator <Vector2f, float> spline;
+	const std::unique_ptr <math::catmull_rom_spline_interpolator <Vector2f, float>> spline;
 
 };
 
