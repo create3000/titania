@@ -98,6 +98,10 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::AccelGroup> &
+	getAccelGroup () const
+	{ return m_AccelGroup; }
+
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getDurationAdjustment () const
 	{ return m_DurationAdjustment; }
@@ -300,6 +304,18 @@ public:
 
 	virtual
 	void
+	on_cut () = 0;
+
+	virtual
+	void
+	on_copy () = 0;
+
+	virtual
+	void
+	on_paste () = 0;
+
+	virtual
+	void
 	on_first_frame () = 0;
 
 	virtual
@@ -411,6 +427,7 @@ private:
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::AccelGroup>         m_AccelGroup;
 	Glib::RefPtr <Gtk::Adjustment>         m_DurationAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_FPSAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_FrameAdjustment;

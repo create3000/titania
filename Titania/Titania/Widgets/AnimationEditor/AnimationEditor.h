@@ -215,6 +215,25 @@ private:
 	set_user_defined_fields (const size_t id, const Gtk::TreePath &);
 
 	/***
+	 *  Cut, Copy and Paste
+	 **/
+
+	virtual
+	void
+	on_cut () final override;
+
+	virtual
+	void
+	on_copy () final override;
+
+	virtual
+	void
+	on_paste () final override;
+
+	void
+	on_clear_clipboard ();
+
+	/***
 	 *  Frame and Time
 	 **/
 
@@ -292,22 +311,10 @@ private:
 	addKeyframe (const Gtk::TreePath &, const Gtk::TreePath &);
 
 	void
-	addKeyframe (const X3D::SFNode &, const X3D::X3DFieldDefinition* const, const int32_t);
+	addKeyframe (const X3D::SFNode &, const X3D::X3DFieldDefinition* const);
 
 	void
-	addKeyframe (const X3D::X3DPtr <X3D::ColorInterpolator> &, const int32_t, const X3D::Color3f &, const std::string &, const UndoStepPtr &);
-
-	void
-	addKeyframe (const X3D::X3DPtr <X3D::ScalarInterpolator> &, const int32_t, const float, const std::string &, const UndoStepPtr &);
-
-	void
-	addKeyframe (const X3D::X3DPtr <X3D::OrientationInterpolator> &, const int32_t, const X3D::Rotation4f &, const std::string &, const UndoStepPtr &);
-
-	void
-	addKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator2D> &, const int32_t, const X3D::Vector2f &, const std::string &, const UndoStepPtr &);
-
-	void
-	addKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator> &, const int32_t, const X3D::Vector3f &, const std::string &, const UndoStepPtr &);
+	addKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> &, const int32_t, const std::vector <float> &, const std::string &, const UndoStepPtr &);
 
 	void
 	moveKeyframes ();
@@ -316,19 +323,7 @@ private:
 	moveKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> &, const int32_t, const int32_t, const UndoStepPtr &);
 
 	void
-	moveKeyframe (const X3D::X3DPtr <X3D::ColorInterpolator> &, const int32_t, const int32_t, const UndoStepPtr &);
-
-	void
-	moveKeyframe (const X3D::X3DPtr <X3D::ScalarInterpolator> &, const int32_t, const int32_t, const UndoStepPtr &);
-
-	void
-	moveKeyframe (const X3D::X3DPtr <X3D::OrientationInterpolator> &, const int32_t, const int32_t, const UndoStepPtr &);
-
-	void
-	moveKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator2D> &, const int32_t, const int32_t, const UndoStepPtr &);
-
-	void
-	moveKeyframe (const X3D::X3DPtr <X3D::PositionInterpolator> &, const int32_t, const int32_t, const UndoStepPtr &);
+	moveKeyframe (const X3D::X3DPtr <X3D::X3DInterpolatorNode> &, const size_t, const int32_t, const int32_t, const UndoStepPtr &);
 
 	void
 	removeKeyframes ();
@@ -491,11 +486,18 @@ private:
 
 	using InterpolatorIndex = std::map <const X3D::X3DFieldDefinition*, X3D::X3DPtr <X3D::X3DInterpolatorNode>>;
 	using FrameKey          = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath>;
+	using CopiedFrame       = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath, std::vector <float>, std::string>;
 	using FrameArray        = std::vector <std::pair <FrameKey, X3D::Box2d>>;
 
 	using setMetaDataInteger = void (X3D::X3DNode::*) (const std::string &, const X3D::MFInt32 &);
 	using setMetaDataFloat   = void (X3D::X3DNode::*) (const std::string &, const X3D::MFFloat &);
 	using setMetaDataString  = void (X3D::X3DNode::*) (const std::string &, const X3D::MFString &);
+
+	/***
+	 *  @name Static members
+	 **/
+
+	static const std::map <X3D::X3DConstants::NodeType, size_t> interpolatorComponents;
 
 	/***
 	 *  @name Members
@@ -520,6 +522,7 @@ private:
 	std::set <FrameKey>                 selectedFrames;
 	std::pair <int32_t, int32_t>        selectedBounds;
 	std::vector <FrameKey>              movedFrames;
+	std::vector <CopiedFrame>           copiedFrames;
 	X3D::Keys                           keys;
 
 };
