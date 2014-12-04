@@ -284,7 +284,7 @@ X3DViewpointNode::straighten (const bool horizon)
 	for (const auto & layer : getLayers ())
 		layer -> getNavigationInfo () -> transitionStart () = true;
 
-	timeSensor -> cycleInterval () = 0.2;
+	timeSensor -> cycleInterval () = 0.4;
 	timeSensor -> stopTime ()      = getCurrentTime ();
 	timeSensor -> startTime ()     = getCurrentTime ();
 	timeSensor -> isActive () .addInterest (this, &X3DViewpointNode::set_isActive);

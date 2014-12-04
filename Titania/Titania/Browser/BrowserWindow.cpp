@@ -2472,7 +2472,12 @@ void
 BrowserWindow::on_straighten_clicked ()
 {
 	if (getBrowser () -> getActiveLayer ())
-		getBrowser () -> getActiveLayer () -> getViewpoint () -> straighten ();
+	{
+		if (getBrowser () -> getViewer () == X3D::ViewerType::EXAMINE)
+			getBrowser () -> getActiveLayer () -> getViewpoint () -> straighten (true);
+		else
+			getBrowser () -> getActiveLayer () -> getViewpoint () -> straighten ();
+	}
 }
 
 /*

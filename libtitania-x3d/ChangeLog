@@ -1,5 +1,10 @@
 2014-12-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DFlyViewer.cpp:
+	* X3DViewpointNode.cpp: 
+
+2014-12-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SquadOrientationInterpolator.cpp: 
 
 2014-12-04  Holger Seelig  <holger.seelig@yahoo.de>
