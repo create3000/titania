@@ -131,6 +131,8 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	               activeFrames (),
 	             selectedFrames (),
 	             selectedBounds (),
+	              selectedRange (),
+	            activeSelection (false),
 	                movedFrames (),
 	               copiedFrames (),
 	                       keys ()
@@ -201,7 +203,7 @@ AnimationEditor::getDuration () const
 	try
 	{
 		if (animation)
-			return animation -> getMetaData <X3D::MFInt32> ("/Animation/duration") .at (0);
+			return std::max <int32_t> (animation -> getMetaData <X3D::MFInt32> ("/Animation/duration") .at (0), 1);
 	}
 	catch (...)
 	{ }
@@ -215,7 +217,7 @@ AnimationEditor::getFramesPerSecond () const
 	try
 	{
 		if (animation)
-			return animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond") .at (0);
+			return std::max <int32_t> (animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond") .at (0), 1);
 	}
 	catch (...)
 	{ }
@@ -1154,7 +1156,7 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 		}
 		case X3D::X3DConstants::SFFloat:
 		{
-			const auto   interpolator = getInterpolator ("ColorInterpolator", node, field, undoStep);
+			const auto   interpolator = getInterpolator ("ScalarInterpolator", node, field, undoStep);
 			const auto & scalar       = *static_cast <const X3D::SFFloat*> (field);
 
 			value .emplace_back (scalar);
@@ -1165,7 +1167,7 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 		}
 		case X3D::X3DConstants::SFRotation:
 		{
-			const auto   interpolator = getInterpolator ("ColorInterpolator", node, field, undoStep);
+			const auto   interpolator = getInterpolator ("OrientationInterpolator", node, field, undoStep);
 			const auto & rotation     = *static_cast <const X3D::SFRotation*> (field);
 
 			value .emplace_back (rotation .getX ());
@@ -1179,7 +1181,7 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 		}
 		case X3D::X3DConstants::SFVec2f:
 		{
-			const auto   interpolator = getInterpolator ("ColorInterpolator", node, field, undoStep);
+			const auto   interpolator = getInterpolator ("PositionInterpolator2D", node, field, undoStep);
 			const auto & vector       = *static_cast <const X3D::SFVec2f*> (field);
 
 			value .emplace_back (vector .getX ());
@@ -1191,7 +1193,7 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 		}
 		case X3D::X3DConstants::SFVec3f:
 		{
-			const auto   interpolator = getInterpolator ("ColorInterpolator", node, field, undoStep);
+			const auto   interpolator = getInterpolator ("PositionInterpolator", node, field, undoStep);
 			const auto & vector       = *static_cast <const X3D::SFVec3f*> (field);
 
 			value .emplace_back (vector .getX ());
@@ -1860,7 +1862,7 @@ AnimationEditor::getInterpolatorName (const X3D::SFNode & node, const X3D::X3DFi
 	Glib::ustring name = field -> getName ();
 	name .replace (0, 1, Glib::ustring (1, name [0]) .uppercase ());
 
-	return node -> getName () + name + "Interpolator";
+	return X3D::get_display_name (node) + name + "Interpolator";
 }
 
 bool
@@ -1937,15 +1939,29 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 
 				selectedBounds = getSelectedBounds ();
 			}
+			
+			activeSelection = true;
 		}
 
 		else
 		{
 			getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::XTERM));
+			
+			const auto frame = std::round ((event -> x - getTranslation ()) / getScale ());
+		
+			if (keys .shift ())
+				on_expand_selected_range (frame);
 
-			getFrameAdjustment () -> set_value (std::round ((event -> x - getTranslation ()) / getScale ()));
+			else
+			{
+				selectedRange .first  = frame;
+				selectedRange .second = frame;
+			}
+
+			getFrameAdjustment () -> set_value (frame);
 
 			selectedFrames .clear ();
+			activeSelection = false;
 		}
 	}
 
@@ -2009,11 +2025,11 @@ AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 
 	if (button == 1)
 	{
-		if (keys .shift ())
-			return false;
-
-		if (not selectedFrames .empty () or not movedFrames .empty ())
+		if (activeSelection)
 		{
+			if (keys .shift ())
+				return false;
+
 			// Drag selected frames.
 
 			const int32_t fromFrame = std::round ((fromPoint .x () - getTranslation ()) / getScale ());
@@ -2036,7 +2052,17 @@ AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 		}
 		else
 		{
-			getFrameAdjustment () -> set_value (std::round ((event -> x - getTranslation ()) / getScale ()));
+			const auto frame = std::round ((event -> x - getTranslation ()) / getScale ());
+		
+			if (keys .shift ())
+				on_expand_selected_range (frame);
+
+			else
+				selectedRange .second = frame;
+
+			on_select_range ();
+	
+			getFrameAdjustment () -> set_value (frame);
 		}
 	}
 
@@ -2057,6 +2083,54 @@ AnimationEditor::on_scroll_event (GdkEventScroll* event)
 {
 	on_zoom (event -> x, event -> direction);
 	return false;
+}
+
+void
+AnimationEditor::on_expand_selected_range (const int32_t frame)
+{
+	const auto medium = (selectedRange .first + selectedRange .second) / 2;
+
+	if (selectedRange .first < selectedRange .second)
+	{
+		if (frame <= medium)
+			selectedRange .first = frame;
+
+		else
+			selectedRange .second = frame;
+	}
+	else
+	{
+		if (frame >= medium)
+			selectedRange .first = frame;
+
+		else
+			selectedRange .second = frame;			
+	}
+}
+
+void
+AnimationEditor::on_select_range ()
+{
+	if (selectedRange .first == selectedRange .second)
+		return;
+
+	int32_t firstFrame = selectedRange .first;
+	int32_t lastFrame  = selectedRange .second;
+	
+	if (firstFrame > lastFrame)
+		std::swap (firstFrame, lastFrame);
+
+	selectedFrames .clear ();
+
+	for (const auto & frame : frames)
+	{
+		const auto & f = frame .first;
+	
+		std::get <0> (f);
+
+		if (std::get <0> (f) >= firstFrame and std::get <0> (f) <= lastFrame)
+			selectedFrames .emplace (f);
+	}
 }
 
 bool
@@ -2089,13 +2163,9 @@ AnimationEditor::getSelectedBounds () const
 bool
 AnimationEditor::pick (const X3D::Vector2d & point)
 {
-	const int     width      = getDrawingArea () .get_width ();
-	const int32_t firstFrame = std::max <int32_t> (0, std::floor (-getTranslation () / getScale ()));
-	const int32_t lastFrame  = std::min <int32_t> (getDuration (), std::ceil ((width - getTranslation ()) / getScale ())) + 1;
-
 	frames .clear ();
 
-	getTreeModelFilter () -> foreach (sigc::bind (sigc::mem_fun (*this, &AnimationEditor::buildFrames), firstFrame, lastFrame));
+	getTreeModelFilter () -> foreach (sigc::mem_fun (*this, &AnimationEditor::buildFrames));
 
 	// Find all keyframes that intersect with the pointer.
 
@@ -2131,7 +2201,7 @@ AnimationEditor::pick (const X3D::Vector2d & point)
 }
 
 bool
-AnimationEditor::buildFrames (const Gtk::TreePath & path, const Gtk::TreeIter & iter, const int32_t firstFrame, const int32_t lastFrame)
+AnimationEditor::buildFrames (const Gtk::TreePath & path, const Gtk::TreeIter & iter)
 {
 	try
 	{
@@ -2148,7 +2218,7 @@ AnimationEditor::buildFrames (const Gtk::TreePath & path, const Gtk::TreeIter & 
 				for (const auto & parent : iter -> children ())
 				{
 					for (const auto & child : parent -> children ())
-						addKeyframes (path, child, firstFrame, lastFrame, y);
+						addKeyframes (path, child, y);
 				}
 
 				break;
@@ -2156,13 +2226,13 @@ AnimationEditor::buildFrames (const Gtk::TreePath & path, const Gtk::TreeIter & 
 			case 2:
 			{
 				for (const auto & child : iter -> children ())
-					addKeyframes (path, child, firstFrame, lastFrame, y);
+					addKeyframes (path, child, y);
 
 				break;
 			}
 			case 3:
 			{
-				addKeyframes (path, iter, firstFrame, lastFrame, y);
+				addKeyframes (path, iter, y);
 				break;
 			}
 			default:
@@ -2178,8 +2248,6 @@ AnimationEditor::buildFrames (const Gtk::TreePath & path, const Gtk::TreeIter & 
 void
 AnimationEditor::addKeyframes (const Gtk::TreePath & path,
                                const Gtk::TreeIter & child,
-                               const int32_t firstFrame,
-                               const int32_t lastFrame,
                                const double y)
 {
 	try
@@ -2191,12 +2259,10 @@ AnimationEditor::addKeyframes (const Gtk::TreePath & path,
 		const auto   field        = node -> getFieldDefinitions () .at (i);
 		const auto & interpolator = interpolatorIndex .at (field);
 		const auto & key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key");
-		const auto   first        = std::lower_bound (key .begin (), key .end (), firstFrame);
-		const auto   last         = std::upper_bound (key .begin (), key .end (), lastFrame);
 		const auto   y1           = y - (FRAME_SIZE / 2 - 1);
 		const auto   y2           = y1 + FRAME_SIZE;
 
-		for (const auto & frame : std::make_pair (first, last))
+		for (const auto & frame : key)
 		{
 			const int32_t x    = frame * getScale () + getTranslation ();
 			const double  x1   = x - (FRAME_SIZE / 2);
@@ -2227,12 +2293,29 @@ AnimationEditor::on_tree_view_draw (const Cairo::RefPtr <Cairo::Context> &)
 bool
 AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 {
-	const int  width   = getDrawingArea () .get_width ();
-	const int  height  = getDrawingArea () .get_height ();
-	const auto fc      = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
-	const auto sc      = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
-	const auto sb      = getTreeView () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
-	const auto yPad    = getNameCellRenderer () -> property_ypad ();
+	const int  width      = getDrawingArea () .get_width ();
+	const int  height     = getDrawingArea () .get_height ();
+	const auto fc         = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
+	const auto sc         = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+	const auto bc         = getTreeView () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_NORMAL);
+	const auto sb         = getTreeView () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
+	const auto yPad       = getNameCellRenderer () -> property_ypad ();
+	const auto firstFrame = std::max <int32_t> (0, std::floor (-getTranslation () / getScale ()));
+	const auto lastFrame  = std::min <int32_t> (getDuration (), std::ceil ((width - getTranslation ()) / getScale ())) + 1;
+
+	// Draw selection range.
+
+	if (selectedRange .first not_eq selectedRange .second)
+	{
+		const auto    minFrame = math::clamp (selectedRange .first,  firstFrame, lastFrame - 1);
+		const auto    maxFrame = math::clamp (selectedRange .second, firstFrame, lastFrame - 1);
+		const int32_t x0       = minFrame * getScale () + getTranslation ();
+		const int32_t x1       = maxFrame * getScale () + getTranslation ();
+
+		context -> set_source_rgba (sb .get_red (), sb .get_green (), sb .get_blue (), sb .get_alpha () * (2 - M_PHI));
+		context -> rectangle (std::min (x0, x1), 0, std::abs (x1 - x0), height);
+		context -> fill ();
+	}
 
 	// Draw all time lines.
 
@@ -2246,9 +2329,6 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 		if (iter)
 		{
 			// Draw one time line.
-
-			int32_t       firstFrame = std::max <int32_t> (0, std::floor (-getTranslation () / getScale ()));
-			const int32_t lastFrame  = std::min <int32_t> (getDuration (), std::ceil ((width - getTranslation ()) / getScale ())) + 1;
 
 			Gdk::Rectangle rectangle;
 			getTreeView () .get_cell_area (firstPath, *getNameColumn () .operator -> (), rectangle);

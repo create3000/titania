@@ -51,11 +51,16 @@
 #ifndef __TITANIA_X3D_PARSER_FILTER_H__
 #define __TITANIA_X3D_PARSER_FILTER_H__
 
+#include "../Fields/SFNode.h"
+
 #include <Titania/Basic/URI.h>
 #include <string>
 
 namespace titania {
 namespace X3D {
+
+std::string
+get_display_name (const SFNode &);
 
 std::string
 get_name_from_uri (const basic::uri &);

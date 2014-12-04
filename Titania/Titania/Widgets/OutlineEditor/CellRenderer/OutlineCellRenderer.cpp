@@ -1314,7 +1314,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 	const auto selectedColor = selected & OUTLINE_SELECTED ? selectedForegroundColor : property_cell_background_rgba () .get_value ();
 
 	//	context -> set_source_rgb (0.9, 0.9, 0.9);
-	//	context -> rectangle (x, y , width, height);
+	//	context -> rectangle (x, y, width, height);
 	//	context -> fill ();
 
 	context -> reset_clip ();

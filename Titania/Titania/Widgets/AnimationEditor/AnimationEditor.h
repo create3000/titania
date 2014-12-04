@@ -410,6 +410,12 @@ private:
 	bool
 	on_scroll_event (GdkEventScroll*) final override;
 
+	void
+	on_expand_selected_range (const int32_t);
+
+	void
+	on_select_range ();
+
 	bool
 	isSelected () const;
 
@@ -420,14 +426,10 @@ private:
 	pick (const X3D::Vector2d &);
 
 	bool
-	buildFrames (const Gtk::TreePath &, const Gtk::TreeIter &, const int32_t, const int32_t);
+	buildFrames (const Gtk::TreePath &, const Gtk::TreeIter &);
 
 	void
-	addKeyframes (const Gtk::TreePath &,
-	              const Gtk::TreeIter &,
-	              const int32_t,
-	              const int32_t,
-	              const double y);
+	addKeyframes (const Gtk::TreePath &, const Gtk::TreeIter &, const double y);
 
 	void
 	queue_draw ();
@@ -521,6 +523,8 @@ private:
 	std::set <FrameKey>                 activeFrames;
 	std::set <FrameKey>                 selectedFrames;
 	std::pair <int32_t, int32_t>        selectedBounds;
+	std::pair <int32_t, int32_t>        selectedRange;
+	bool                                activeSelection;
 	std::vector <FrameKey>              movedFrames;
 	std::vector <CopiedFrame>           copiedFrames;
 	X3D::Keys                           keys;

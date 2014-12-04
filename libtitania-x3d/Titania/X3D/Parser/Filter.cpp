@@ -50,10 +50,25 @@
 
 #include "Filter.h"
 
+#include "RegEx.h"
+
 #include <pcrecpp.h>
 
 namespace titania {
 namespace X3D {
+
+std::string
+get_display_name (const SFNode & node)
+{
+	if (not node)
+		return "NULL";
+
+	auto name = node -> getName ();
+
+	RegEx::LastNumber_ .Replace ("", &name);
+
+	return name;
+}
 
 std::string
 get_name_from_uri (const basic::uri & uri)
