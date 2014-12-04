@@ -57,8 +57,6 @@
 #include <Titania/Math/Algorithms/CatmullRomSplineInterpolator.h>
 #include <Titania/Math/Algorithms/SquadInterpolator.h>
 
-#include "SquadInterpolator.h"
-
 namespace titania {
 namespace puck {
 
@@ -1628,7 +1626,7 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolato
 	
 			const bool closed = keys .front () == 0 and keys .back () == duration and keyValues .front () == keyValues .back ();
 
-			const test::squad_interpolator <Type, double> squad (closed, keys, keyValues);
+			const math::squad_interpolator <Type, double> squad (closed, keys, keyValues);
 
 			for (size_t k = 0, size = keys .size () - 1; k < size; ++ k)
 			{

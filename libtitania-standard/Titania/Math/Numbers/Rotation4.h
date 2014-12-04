@@ -725,7 +725,7 @@ slerp (const rotation4 <Type> & source,
        const rotation4 <Type> & destination,
        const Type & t)
 {
-	return rotation4 <Type> (math::slerp (source .quat (), destination .quat (), t));
+	return rotation4 <Type> (slerp (source .quat (), destination .quat (), t));
 }
 
 ///  Spherical cubic interpolation of @a source, @a ab, @a b and @a destination by an amout of @a t.
@@ -738,7 +738,7 @@ squad (const rotation4 <Type> & source,
        const rotation4 <Type> & destination,
        const Type & t)
 {
-	return rotation4 <Type> (math::squad (source .quat (), a .quat (), b .quat (), destination .quat (), t));
+	return rotation4 <Type> (squad (source .quat (), a .quat (), b .quat (), destination .quat (), t));
 }
 
 ///  Shoemake-Bezier interpolation using De Castlejau algorithm
@@ -746,10 +746,10 @@ template <class Type, class T>
 rotation4 <Type>
 bezier (const rotation4 <Type> & source, const rotation4 <Type> & a, const rotation4 <Type> & b, const rotation4 <Type> & destination, T t)
 {
-	return rotation4 <Type> (math::bezier (source .quat (), a .quat (), b .quat (), destination .quat (), t));
+	return rotation4 <Type> (bezier (source .quat (), a .quat (), b .quat (), destination .quat (), t));
 }
 
-//! Given 3 quaternions, qn-1,qn and qn+1, calculate a control point to be used in squad interpolation
+/// Given 3 quaternions, qn-1,qn and qn+1, calculate a control point to be used in squad interpolation.
 template <class Type>
 inline
 rotation4 <Type>
@@ -757,7 +757,7 @@ spline (const rotation4 <Type> & q0,
         const rotation4 <Type> & q1,
         const rotation4 <Type> & q2)
 {
-	return rotation4 <Type> (math::spline (q0 .quat (), q1 .quat (), q2 .quat ()));
+	return rotation4 <Type> (spline (q0 .quat (), q1 .quat (), q2 .quat ()));
 }
 
 ///  @relates rotation4

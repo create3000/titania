@@ -746,7 +746,6 @@ normalize (const quaternion <Type> & quat)
 }
 
 ///  Raise @a quaternion to @a quaternion power.
-///  http://cpansearch.perl.org/src/JCHIN/Math-Quaternion-0.07/lib/Math/Quaternion.pm
 template <class Type>
 inline
 quaternion <Type>
@@ -759,6 +758,7 @@ pow (const quaternion <Type> & base, const quaternion <Type> & exponent)
 
 ///  Raise @a quaternion to @a scalar power.
 ///  http://cpansearch.perl.org/src/JCHIN/Math-Quaternion-0.07/lib/Math/Quaternion.pm
+///  XXX: not testet yet
 template <class Type>
 quaternion <Type>
 pow (const quaternion <Type> & base, const Type & exponent)
@@ -779,10 +779,8 @@ pow (const quaternion <Type> & base, const Type & exponent)
 	                          ltoe * std::cos (et));
 }
 
-///  Returns the logarithm of its argument. The logarithm of a negative
-///  real quaternion can take any value of them form (log(-q0),u*pi) for
-///  any unit vector u. In these cases, u is chosen to be (1,0,0).
-///  http://cpansearch.perl.org/src/JCHIN/Math-Quaternion-0.07/lib/Math/Quaternion.pm
+///  Returns the logarithm of its argument.
+///  http://de.wikipedia.org/wiki/Quaternion
 template <class Type>
 quaternion <Type>
 log (const quaternion <Type> & quat)
@@ -796,20 +794,15 @@ log (const quaternion <Type> & quat)
 			return quaternion <Type> (M_PI, 0, 0, std::log (-quat .w ()));
 	}
 
-	const Type l  = abs (quat);
-	const Type w  = std::log (l);
-	const Type li = abs (imag (quat));
-	const Type y  = std::atan2 (li, quat .w ());
-	const Type c  = y / li;
+	const Type l = abs (quat);
+	const auto v = normalize (imag (quat)) * std::acos (quat .w () / l);
+	const Type w = std::log (l);
 
-	return quaternion <Type> (c * quat .x (),
-	                          c * quat .y (),
-	                          c * quat .z (),
-	                          w);
+	return quaternion <Type> (v .x (), v .y (), v .z (), w);
 }
 
 ///  Exponential operator e^q.
-///  http://cpansearch.perl.org/src/JCHIN/Math-Quaternion-0.07/lib/Math/Quaternion.pm
+///  http://de.wikipedia.org/wiki/Quaternion
 template <class Type>
 quaternion <Type>
 exp (const quaternion <Type> & quat)
@@ -817,20 +810,13 @@ exp (const quaternion <Type> & quat)
 	if (is_real (quat))
 		return quaternion <Type> (0, 0, 0, std::exp (quat .w ()));
 
-	const Type li = abs (imag (quat)); // length of pure-quat part
+	const auto i  = imag (quat);
+	const Type li = abs (i);
+	const Type ew = std::exp (quat .w ());
+	const Type w  = ew * std::cos (li);
+	const auto v  = i * (ew * std::sin (li) / li);
 
-	// unit vector
-	const Type ux = quat .x () / li;
-	const Type uy = quat .y () / li;
-	const Type uz = quat .z () / li;
-
-	const Type ws = std::exp (quat .w ());
-	const Type vs = ws * std::sin (li);
-
-	return quaternion <Type> (vs * ux,
-	                          vs * uy,
-	                          vs * uz,
-	                          ws * std::cos (li));
+	return quaternion <Type> (v .x (), v .y (), v .z (), w);
 }
 
 ///  Spherical cubic interpolation of @a source, @a a, @a b and @a destination by an amout of @a t.
@@ -843,10 +829,12 @@ squad (const quaternion <Type> & source,
        const quaternion <Type> & destination,
        const Type & t)
 {
-	return simple_slerp (simple_slerp (source, destination, t), simple_slerp (a, b, t), 2 * t * (1 - t));
+	// We must use shortest path slerp to prevent flipping.  Also see spline.
+
+	return slerp (slerp (source, destination, t), slerp (a, b, t), 2 * t * (1 - t));
 }
 
-///  Shoemake-Bezier interpolation using De Castlejau algorithm
+///  Shoemake-Bezier interpolation using De Castlejau algorithm.
 template <class Type>
 quaternion <Type>
 bezier (const quaternion <Type> & q0,
@@ -855,24 +843,35 @@ bezier (const quaternion <Type> & q0,
         const quaternion <Type> & q1,
         Type t)
 {
-	const quaternion <Type> q11 = simple_slerp (q0, a, t);
-	const quaternion <Type> q12 = simple_slerp (a, b, t);
-	const quaternion <Type> q13 = simple_slerp (b, q1, t);
+	const quaternion <Type> q11 = slerp (q0, a, t);
+	const quaternion <Type> q12 = slerp (a, b, t);
+	const quaternion <Type> q13 = slerp (b, q1, t);
 
-	return simple_slerp (simple_slerp (q11, q12, t), simple_slerp (q12, q13, t), t);
+	return slerp (slerp (q11, q12, t), slerp (q12, q13, t), t);
 }
 
-//! Given 3 quaternions, qn-1,qn and qn+1, calculate a control point to be used in squat interpolation
+/// Given 3 quaternions, qn-1, qn and qn+1, calculate a control point for qn to be used in squat interpolation.
 template <class Type>
 inline
 quaternion <Type>
-spline (const quaternion <Type> & q0,
+spline (quaternion <Type> q0,
         const quaternion <Type> & q1,
-        const quaternion <Type> & q2)
+        quaternion <Type> q2)
 {
+	// If the dot product is smaller than 0 we must negate the quaternion to prevent flipping. If we negate all
+	// the terms we get a different quaternion but it represents the same rotation.
+
+	if (dot (q0, q1) < 0)
+		q0 .negate ();
+
+	if (dot (q2, q1) < 0)
+		q2 .negate ();
+
 	const quaternion <Type> q1_i = ~q1;
 
-	return normalize (q1 * exp ((log (q1_i * q2) + log (q1_i * q0)) * Type (-0.25)));
+	// The result must be normalized as it will be used in slerp and we can only slerp normalized vectors.
+
+	return normalize (q1 * exp ((log (q1_i * q0) + log (q1_i * q2)) / Type (-4)));
 }
 
 ///  @relates quaternion

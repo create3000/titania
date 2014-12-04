@@ -19,7 +19,7 @@ Viewpoint {
 }
 
 DEF Cone Transform {
-  rotation 0.251079 0.937392 0.241363 5.15561
+  rotation 0.246451 0.938826 0.240557 4.94603
   children ParticleShape {
     color 1 0 1
   }
@@ -33,7 +33,7 @@ Shape {
   }
   geometry DEF Trail LineTrail {
     cycleInterval 0.1
-    point -0.812205 0.356043 0.46212
+    point -0.867759 0.41331 0.275987
     dimension 100
   }
 }
@@ -44,6 +44,7 @@ DEF Timer TimeSensor {
 }
 
 DEF Interpolator SquadOrientationInterpolator {
+  closed TRUE
   #closed TRUE
   #key [ 0, 0.25, 0.5, 0.75, 1 ]
   #keyValue [ -0 -1 -0 0.785398, 1 0 0 0.785398, 0 1 0 0.785398, -1 -0 -0 0.785398, -0 -1 -0 0.785398 ]

@@ -1,5 +1,9 @@
 2014-12-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SquadOrientationInterpolator.cpp: 
+
+2014-12-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DInterpolatorNode.cpp:
 	* SplineScalarInterpolator.h:
 	* SplineScalarInterpolator.cpp:

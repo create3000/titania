@@ -62,11 +62,10 @@ const std::string   SquadOrientationInterpolator::typeName       = "SquadOrienta
 const std::string   SquadOrientationInterpolator::containerField = "children";
 
 SquadOrientationInterpolator::Fields::Fields () :
-	  closed (new SFBool ()),
-	keyValue (new MFRotation ()),
-	//	keyVelocity (new MFFloat ()),
+	              closed (new SFBool ()), // XXX: non standard
+	            keyValue (new MFRotation ()),
 	//	normalizeVelocity (new SFBool ()),
-	value_changed (new SFRotation ())
+	       value_changed (new SFRotation ())
 { }
 
 SquadOrientationInterpolator::SquadOrientationInterpolator (X3DExecutionContext* const executionContext) :
@@ -79,10 +78,9 @@ SquadOrientationInterpolator::SquadOrientationInterpolator (X3DExecutionContext*
 
 	addField (inputOutput, "metadata",          metadata ());
 	addField (inputOnly,   "set_fraction",      set_fraction ());
-	addField (inputOutput, "closed",            closed ());
+	addField (inputOutput, "closed",            closed ());           // XXX: non standard
 	addField (inputOutput, "key",               key ());
 	addField (inputOutput, "keyValue",          keyValue ());
-	//	addField (inputOutput, "keyVelocity",       keyVelocity ());
 	//	addField (inputOutput, "normalizeVelocity", normalizeVelocity ());
 	addField (outputOnly,  "value_changed",     value_changed ());
 }
@@ -109,18 +107,6 @@ SquadOrientationInterpolator::set_keyValue ()
 
 	squad -> generate (closed (), key (), keyValue ());
 }
-
-//void
-//SquadOrientationInterpolator::set_keyVelocity ()
-//{
-//	if (not keyVelocity () .empty ())
-//	{
-//		if (keyVelocity () .size () < key () .size ())
-//			keyVelocity () .resize (key () .size ());
-//	}
-//
-//	squad -> generate (closed (), key (), keyValue (), keyVelocity (), normalizeVelocity ());
-//}
 
 void
 SquadOrientationInterpolator::interpolate (size_t index0, size_t index1, const float weight)

@@ -1,5 +1,11 @@
 2014-12-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Rotation4.h:
+	* Quaternion.h:
+	* SquadInterpolator.h: 
+
+2014-12-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-standard.cproj:
 	* Functional.h:

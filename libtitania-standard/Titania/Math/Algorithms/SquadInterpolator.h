@@ -64,6 +64,8 @@ class squad_interpolator
 {
 public:
 
+	///  @name Construction
+
 	squad_interpolator () :
 		s ()
 	{ }
@@ -75,6 +77,8 @@ public:
       squad_interpolator ()
 	{ generate (closed, key, keyValue); }
 
+	///  @name Operations
+
 	template <class Key, class KeyValue>
 	void
 	generate (const bool, const Key &, const KeyValue &);
@@ -85,6 +89,8 @@ public:
 
 
 private:
+
+	///  @name Memebers
 
 	std::vector <Type> s;
 
