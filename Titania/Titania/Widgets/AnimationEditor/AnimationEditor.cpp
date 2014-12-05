@@ -457,14 +457,7 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	getFrameAdjustment () -> set_value (0);
 
 	if (animation)
-	{
 		on_zoom_fit ();
-
-		if (getScale () > DEFAULT_SCALE)
-			on_zoom_100 ();
-	}
-	else
-		on_zoom_100 ();
 
 	getDrawingArea () .queue_draw ();
 }
@@ -875,13 +868,17 @@ AnimationEditor::on_play_pause ()
 			std::swap (firstFrame, lastFrame);
 
 		if (firstFrame == lastFrame)
-			timeSensor -> range () = { 0, currentFrame / duration, 1 };
-		else
 		{
+			firstFrame = 0;
+			lastFrame  = getDuration ();
+		}
+		else
 			currentFrame = math::clamp <double> (currentFrame, firstFrame, lastFrame);
 
-			timeSensor -> range () = { firstFrame / duration, currentFrame / duration, lastFrame / duration };
-		}
+		if (currentFrame >= lastFrame)
+			currentFrame = firstFrame;
+
+		timeSensor -> range () = { firstFrame / duration, currentFrame / duration, lastFrame / duration };
 	}
 
 	// Start TimeSensor.
