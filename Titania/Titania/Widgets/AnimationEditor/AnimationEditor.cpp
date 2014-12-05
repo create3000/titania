@@ -393,9 +393,12 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 
 	animation  = value;
 	timeSensor = nullptr;
-	nodes .clear ();
+	nodes          .clear ();
+	activeFrames   .clear ();
 	selectedFrames .clear ();
 	movedFrames    .clear ();
+	selectedBounds = std::make_pair (0, 0);
+	selectedRange  = std::make_pair (0, 0);
 	on_clear_clipboard ();
 
 	getTreeStore () -> clear ();
@@ -2115,10 +2118,10 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
+		fromPoint = X3D::Vector2d (event -> x, event -> y);
+
 		if (pick (X3D::Vector2d (event -> x, event -> y)))
 		{
-			fromPoint = X3D::Vector2d (event -> x, event -> y);
-
 			if (not keys .shift ())
 			{
 				if (not isSelected ())
@@ -2209,6 +2212,14 @@ AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 
 	if (button == 1)
 	{
+		const auto toPoint = X3D::Vector2d (event -> x, event -> y);
+		const auto length  = math::abs (toPoint - fromPoint);
+	
+		if (length < FRAME_SIZE)
+			return false;
+
+		fromPoint .y (infinity); // Drag has started.
+
 		if (activeSelection)
 		{
 			if (keys .shift ())
@@ -2219,13 +2230,6 @@ AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 			const int32_t fromFrame = std::round ((fromPoint .x () - getTranslation ()) / getScale ());
 			const int32_t toFrame   = std::round ((event -> x - getTranslation ()) / getScale ());
 			const int32_t distance  = math::clamp (toFrame - fromFrame, -selectedBounds .first, getDuration () - selectedBounds .second);
-			const auto    toPoint   = X3D::Vector2d (event -> x, event -> y);
-			const auto    length    = math::abs (toPoint - fromPoint);
-
-			if (length < FRAME_SIZE)
-				return false;
-
-			fromPoint .y (infinity); // Drag has started.
 
 			// Perform drag.
 
