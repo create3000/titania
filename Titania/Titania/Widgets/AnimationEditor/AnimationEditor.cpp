@@ -809,7 +809,7 @@ AnimationEditor::on_paste ()
 		return std::get <0> (lhs) < std::get <0> (rhs);
 	});
 
-	const int32_t offset = getFrameAdjustment () -> get_value () - std::get <0> (copiedFrames .front ());
+	const int32_t offset = std::round (getFrameAdjustment () -> get_value ()) - std::get <0> (copiedFrames .front ());
 
 	std::set <X3D::X3DPtr <X3D::X3DNode>> affectedInterpolators;
 
@@ -853,20 +853,39 @@ AnimationEditor::on_first_frame ()
 {
 	timeSensor -> stopTime () = chrono::now ();
 
-	getFrameAdjustment () -> set_value (0);
+	getFrameAdjustment () -> set_value (0.6);
 }
 
 void
 AnimationEditor::on_play_pause ()
 {
-	if (timeSensor -> isActive ())
+	// Determine range to play and frame where the animation should start.
+
+	if (not timeSensor -> isActive ())
 	{
-		if (timeSensor -> isPaused ())
-			timeSensor -> resumeTime () = chrono::now ();
+		const double  duration     = getDuration ();
+		int32_t       firstFrame   = selectedRange .first;
+		int32_t       lastFrame    = selectedRange .second;
+		double        currentFrame = getFrameAdjustment () -> get_value ();
+
+		if (firstFrame > lastFrame)
+			std::swap (firstFrame, lastFrame);
+
+		if (firstFrame == lastFrame)
+			timeSensor -> range () = { 0, currentFrame / duration, 1 };
 		else
-			timeSensor -> pauseTime () = chrono::now ();
+		{
+			currentFrame = math::clamp <double> (currentFrame, firstFrame, lastFrame);
+
+			timeSensor -> range () = { firstFrame / duration, currentFrame / duration, lastFrame / duration };
+		}
 	}
-	else
+
+	// Start TimeSensor.
+
+	timeSensor -> stopTime () = chrono::now ();
+
+	if (not isActive ())
 		timeSensor -> startTime () = chrono::now ();
 
 	// Clear tainted states.
@@ -886,8 +905,10 @@ void
 AnimationEditor::on_current_frame_changed ()
 {
 	// Display current time frame.
+	
+	const int32_t frame = std::round (getFrameAdjustment () -> get_value ());
 
-	getTimeLabel () .set_text (strfframes (getFrameAdjustment () -> get_value (), getFramesPerSecond ()));
+	getTimeLabel () .set_text (strfframes (frame, getFramesPerSecond ()));
 
 	if (animation)
 	{
@@ -895,7 +916,6 @@ AnimationEditor::on_current_frame_changed ()
 		{
 			// Follow cursor if animation is active.
 
-			const int32_t frame = getFrameAdjustment () -> get_value ();
 			const int32_t x     = frame * getScale () + getTranslation ();
 			const int32_t width = getDrawingArea () .get_width ();
 
@@ -917,11 +937,6 @@ AnimationEditor::on_update_fraction ()
 	// Clear tainted states.
 
 	setTainted (Gtk::TreePath ("0"), false);
-	
-	// Stop TimeSensor.
-	
-	if (chrono::now () - timeSensor -> pauseTime () > 0.5)
-		timeSensor -> stopTime () = chrono::now ();
 
 	// Update interpolator fraction.
 	
@@ -932,7 +947,7 @@ AnimationEditor::on_update_fraction ()
 		try
 		{
 			const auto & interpolator = pair .second;
-			const float  fraction     = getFrameAdjustment () -> get_value () / getDuration ();
+			const double fraction     = getFrameAdjustment () -> get_value () / getDuration ();
 			auto &       set_fraction = interpolator -> getField <X3D::SFFloat> ("set_fraction");
 
 			// Prevent fields from being displayed set tainted.
@@ -1057,11 +1072,7 @@ AnimationEditor::set_active ()
 void
 AnimationEditor::set_fraction (const float value)
 {
-	// Convert currentFrame to integer!
-
-	const int32_t currentFrame = getDuration () * value;
-
-	getFrameAdjustment () -> set_value (currentFrame);
+	getFrameAdjustment () -> set_value (getDuration () * value);
 }
 
 void
@@ -1109,11 +1120,11 @@ AnimationEditor::on_zoom_fit ()
 void
 AnimationEditor::on_zoom_100 ()
 {
-	const int32_t frame = getFrameAdjustment () -> get_value ();
-	const int32_t x     = frame * getScale () + getTranslation ();
+	const auto frame = getFrameAdjustment () -> get_value ();
+	const auto x     = frame * getScale () + getTranslation ();
 
 	setScale (DEFAULT_SCALE);
-	setTranslation (x - getFrameAdjustment () -> get_value () * DEFAULT_SCALE);
+	setTranslation (x - frame * DEFAULT_SCALE);
 }
 
 void
@@ -1201,7 +1212,7 @@ void
 AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefinition* const field)
 {
 	const auto    undoStep = std::make_shared <UndoStep> (_ ("Add Keyframe"));
-	const int32_t frame    = getFrameAdjustment () -> get_value ();
+	const int32_t frame    = std::round (getFrameAdjustment () -> get_value ());
 	const auto    type     = getKeyTypeButton () .get_active_row_number () < 0 ? "SPLINE" : getKeyTypeButton () .get_active_text ();
 
 	std::vector <double> value;
@@ -2052,6 +2063,7 @@ AnimationEditor::on_focus_in_event (GdkEventFocus*)
 bool
 AnimationEditor::on_focus_out_event (GdkEventFocus*)
 {
+	keys .clear ();
 	getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
 	getBrowserWindow () -> hasAccelerators (true);
 	getDrawingArea () .queue_draw ();
@@ -2125,19 +2137,21 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 			const auto frame = std::round ((event -> x - getTranslation ()) / getScale ());
 		
 			if (keys .shift ())
+			{
 				on_expand_selected_range (frame);
-
+				on_select_range ();
+			}
 			else
 			{
+				selectedFrames .clear ();
 				selectedRange .first  = frame;
 				selectedRange .second = frame;
 			}
 
+			activeSelection = false;
+
 			if (not isActive ())	
 				getFrameAdjustment () -> set_value (frame);
-
-			selectedFrames .clear ();
-			activeSelection = false;
 		}
 	}
 
@@ -2464,11 +2478,13 @@ AnimationEditor::on_tree_view_draw (const Cairo::RefPtr <Cairo::Context> &)
 bool
 AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 {
+	if (not animation)
+		return false;
+
 	const int  width      = getDrawingArea () .get_width ();
 	const int  height     = getDrawingArea () .get_height ();
 	const auto fc         = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
 	const auto sc         = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
-	const auto bc         = getTreeView () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_NORMAL);
 	const auto sb         = getTreeView () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
 	const auto yPad       = getNameCellRenderer () -> property_ypad ();
 	const auto firstFrame = std::max <int32_t> (0, std::floor (-getTranslation () / getScale ()));
@@ -2484,7 +2500,7 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 		const int32_t x1       = maxFrame * getScale () + getTranslation ();
 
 		context -> set_source_rgba (sb .get_red (), sb .get_green (), sb .get_blue (), sb .get_alpha () * (2 - M_PHI));
-		context -> rectangle (std::min (x0, x1), 0, std::abs (x1 - x0), height);
+		context -> rectangle (std::min (x0, x1) - 1, 0, std::abs (x1 - x0) + 3, height);
 		context -> fill ();
 	}
 
@@ -2589,7 +2605,8 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 
 	// Draw frame cursor.
 
-	const int32_t x = getFrameAdjustment () -> get_value () * getScale () + getTranslation ();
+	const auto    frame = getFrameAdjustment () -> get_value ();
+	const int32_t x     = (isActive () ? frame : std::round (frame)) * getScale () + getTranslation ();
 
 	context -> move_to (x + 0.5, 0);
 	context -> line_to (x + 0.5, height);

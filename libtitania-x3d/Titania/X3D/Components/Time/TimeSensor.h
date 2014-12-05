@@ -110,6 +110,14 @@ public:
 	cycleInterval () const
 	{ return *fields .cycleInterval; }
 
+	MFFloat &
+	range ()
+	{ return fields .range; }
+
+	const MFFloat &
+	range () const
+	{ return fields .range; }
+
 	SFFloat &
 	fraction_changed ()
 	{ return *fields .fraction_changed; }
@@ -174,6 +182,7 @@ private:
 		Fields ();
 
 		SFTime* const cycleInterval;
+		MFFloat range;
 		SFFloat* const fraction_changed;
 		SFTime* const time;
 	};
@@ -182,6 +191,10 @@ private:
 
 	time_type cycle;
 	time_type interval;
+	time_type first;
+	time_type last;
+	time_type offset;
+	time_type scale;
 
 };
 

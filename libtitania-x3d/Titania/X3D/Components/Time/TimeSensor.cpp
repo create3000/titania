@@ -62,8 +62,13 @@ const ComponentType TimeSensor::component      = ComponentType::TIME;
 const std::string   TimeSensor::typeName       = "TimeSensor";
 const std::string   TimeSensor::containerField = "children";
 
+// The field range (min fraction, current, max fraction) is NOT PUBLIC; all values should be in the interval [0, 1].
+// It constrains the output of fraction_changed to the interval [min fraction, max fraction] and the start point of
+// fraction_changed within this interval is current, that mean current must be min fraction < current < max fraction.
+
 TimeSensor::Fields::Fields () :
 	   cycleInterval (new SFTime (1)),
+	           range ({ 0, 0, 1 }),
 	fraction_changed (new SFFloat ()),
 	            time (new SFTime ())
 { }
@@ -74,7 +79,11 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	X3DTimeDependentNode (),
 	              fields (),
 	               cycle (0),
-	            interval (0)
+	            interval (0),
+	               first (0),
+	                last (1),
+	              offset (0),
+	               scale (1)
 {
 	addType (X3DConstants::TimeSensor);
 
@@ -110,13 +119,13 @@ TimeSensor::prepareEvents ()
 		if (loop ())
 		{
 			cycle              += interval * std::floor ((getCurrentTime () - cycle) / interval);
-			fraction_changed () = 1;
+			fraction_changed () = last;
 			elapsedTime ()      = getElapsedTime ();
 			cycleTime ()        = getCurrentTime ();
 		}
 		else
 		{
-			fraction_changed () = 1;
+			fraction_changed () = last;
 			stop ();
 		}
 	}
@@ -124,7 +133,7 @@ TimeSensor::prepareEvents ()
 	{
 		time_type intpart;
 
-		fraction_changed () = std::modf ((getCurrentTime () - cycle) / interval, &intpart);
+		fraction_changed () = first + std::modf ((getCurrentTime () - cycle) / interval, &intpart) * scale;
 		elapsedTime ()      = getElapsedTime ();
 	}
 
@@ -134,10 +143,15 @@ TimeSensor::prepareEvents ()
 void
 TimeSensor::set_start ()
 {
-	cycle    = getCurrentTime ();
-	interval = cycleInterval ();
+	first  = range () [0];
+	last   = range () [2];
+	scale  = last - first;
+	offset = (range () [1] - first) * cycleInterval ();
 
-	fraction_changed () = 0;
+	interval = cycleInterval () * scale;
+	cycle    = getCurrentTime () - offset;
+
+	fraction_changed () = range () [1];
 	time ()             = getCurrentTime ();
 }
 

@@ -1,5 +1,10 @@
 2014-12-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TimeSensor.h:
+	* TimeSensor.cpp: 
+
+2014-12-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DSequencerNode.cpp: 
 
 2014-12-04  Holger Seelig  <holger.seelig@yahoo.de>
