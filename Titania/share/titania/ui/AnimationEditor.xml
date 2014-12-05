@@ -332,6 +332,12 @@
                             <property name="title" translatable="yes">Name</property>
                             <property name="expand">True</property>
                             <child>
+                              <object class="GtkCellRendererPixbuf" id="IconCellRenderer"/>
+                              <attributes>
+                                <attribute name="pixbuf">1</attribute>
+                              </attributes>
+                            </child>
+                            <child>
                               <object class="GtkCellRendererText" id="NameCellRenderer">
                                 <property name="style">oblique</property>
                               </object>
@@ -343,6 +349,7 @@
                         </child>
                         <child>
                           <object class="GtkTreeViewColumn" id="TaintedColumn">
+                            <property name="sizing">autosize</property>
                             <property name="title" translatable="yes">Tainted</property>
                             <child>
                               <object class="GtkCellRendererToggle" id="TaintedCellRenderer">

@@ -33,7 +33,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="22.627416"
-     inkscape:cx="10.844882"
+     inkscape:cx="5.9393285"
      inkscape:cy="-0.89575834"
      inkscape:document-units="px"
      inkscape:current-layer="layer8"
@@ -95,7 +95,8 @@
   <g
      inkscape:groupmode="layer"
      id="layer7"
-     inkscape:label="Shadow">
+     inkscape:label="Shadow"
+     style="display:none">
     <g
        id="g6614"
        transform="translate(0,-1)"

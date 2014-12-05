@@ -141,6 +141,9 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 {
 	getScaleKeyframesButton () .set_active (getConfig () .getBoolean ("scaleKeyframes"));
 
+	if (getConfig () .hasItem ("hPaned"))
+		getAnimationBox () .set_position (getConfig () .getInteger ("hPaned"));
+
 	getTranslationAdjustment () -> set_lower (-DEFAULT_TRANSLATION);
 	getTranslationAdjustment () -> set_upper (-DEFAULT_TRANSLATION);
 
@@ -396,8 +399,10 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	on_clear_clipboard ();
 
 	getTreeStore () -> clear ();
-	auto master = getTreeStore () -> append ();
+	const auto master = getTreeStore () -> append ();
 	(*master) [columns .name]    = "<b>" + Glib::Markup::escape_text (_ ("Master")) + "</b>";
+	(*master) [columns .type]    = Gdk::Pixbuf::create_from_file (get_ui ("icons/Master.svg"));
+	(*master) [columns .tainted] = false;
 	(*master) [columns .visible] = true;
 
 	if (animation)
@@ -535,10 +540,11 @@ AnimationEditor::addNode (const X3D::SFNode & node)
 		return;
 
 	const auto master = getTreeStore () -> get_iter (Gtk::TreePath ("0"));
-
-	auto parent = getTreeStore () -> append (master -> children ());
+	auto       parent = getTreeStore () -> append (master -> children ());
 	(*parent) [columns .id]      = node -> getId ();
+	(*parent) [columns .type]    = Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg"));
 	(*parent) [columns .name]    = getNodeName (node);
+	(*parent) [columns .tainted] = false;
 	(*parent) [columns .visible] = true;
 
 	getTreeView () .expand_row (Gtk::TreePath ("0"), false);
@@ -573,9 +579,11 @@ AnimationEditor::addFields (const X3D::SFNode & node, Gtk::TreeIter & parent)
 		if (not fieldTypes .count (field -> getType ()))
 			continue;
 
-		auto child = getTreeStore () -> append (parent -> children ());
+		const auto child = getTreeStore () -> append (parent -> children ());
 		(*child) [columns .id]      = i;
+		(*child) [columns .type]    = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field -> getTypeName () + ".svg"));
 		(*child) [columns .name]    = Glib::Markup::escape_text (field -> getName ());
+		(*child) [columns .tainted] = false;
 		(*child) [columns .visible] = true;
 
 		field -> addInterest (this, &AnimationEditor::set_tainted, getTreeStore () -> get_path (child));
@@ -860,6 +868,10 @@ AnimationEditor::on_play_pause ()
 	}
 	else
 		timeSensor -> startTime () = chrono::now ();
+
+	// Clear tainted states.
+
+	setTainted (Gtk::TreePath ("0"), false);
 }
 
 void
@@ -2053,6 +2065,16 @@ AnimationEditor::on_key_press_event (GdkEventKey* event)
 
 	switch (event -> keyval)
 	{
+		case GDK_KEY_z:
+		{
+			if (event -> state == GDK_CONTROL_MASK)
+				getBrowserWindow () -> on_undo ();
+
+			else if (event -> state == (GDK_CONTROL_MASK | GDK_SHIFT_MASK))
+				getBrowserWindow () -> on_redo ();
+
+			return true;
+		}
 		case GDK_KEY_Delete:
 		{
 			removeKeyframes ();
@@ -2640,9 +2662,9 @@ AnimationEditor::on_draw_moved_keyframes (const Cairo::RefPtr <Cairo::Context> &
 		getTreeView () .get_cell_area (std::get <2> (frame), *getNameColumn () .operator -> (), rectangle);
 
 		const int32_t x  = std::get <0> (frame) * getScale () + getTranslation ();
-		const double  x1 = x - (FRAME_SIZE / 2);
 		const int32_t y  = rectangle .get_y () + rectangle .get_height () * 0.5 - yPad;
-		const auto    y1 = y - (FRAME_SIZE / 2 - 1);
+		const double  x1 = x - (FRAME_SIZE / 2);
+		const double  y1 = y - (FRAME_SIZE / 2 - 1);
 
 		context -> rectangle (x1, y1, FRAME_SIZE, FRAME_SIZE);
 		context -> fill ();
@@ -2674,6 +2696,7 @@ AnimationEditor::getFrameParams () const
 AnimationEditor::~AnimationEditor ()
 {
 	getConfig () .setItem ("scaleKeyframes", getScaleKeyframesButton () .get_active ());
+	getConfig () .setItem ("hPaned",         getAnimationBox () .get_position ());
 
 	dispose ();
 }

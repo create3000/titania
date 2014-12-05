@@ -122,6 +122,10 @@ public:
 	getNameColumn () const
 	{ return m_NameColumn; }
 
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getIconCellRenderer () const
+	{ return m_IconCellRenderer; }
+
 	const Glib::RefPtr <Gtk::CellRendererText> &
 	getNameCellRenderer () const
 	{ return m_NameCellRenderer; }
@@ -433,6 +437,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment>         m_FrameAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TranslationAdjustment;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_NameColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconCellRenderer;
 	Glib::RefPtr <Gtk::CellRendererText>   m_NameCellRenderer;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_TaintedColumn;
 	Glib::RefPtr <Gtk::CellRendererToggle> m_TaintedCellRenderer;

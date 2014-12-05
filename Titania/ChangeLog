@@ -1,5 +1,16 @@
 2014-12-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Master.svg:
+	* BrowserWindow.cpp:
+	* AnimationEditor.xml:
+	* MFBool.svg:
+	* AnimationEditor.cpp:
+	* X3DExecutionContext.svg:
+	* X3DAnimationEditorInterface.h:
+	* X3DAnimationEditorInterface.cpp: 
+
+2014-12-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* AnimationEditor.xml:
 	* AnimationEditor.h:
 	* AnimationEditor.cpp: 

@@ -1049,10 +1049,11 @@ BrowserWindow::isEditor (const bool enabled)
 	getViewerSeparator ()       .set_visible (enabled);
 	getLookAtSelectionButton () .set_visible (enabled);
 
-	getLibraryViewBox ()   .set_visible (enabled);
-	getOutlineEditorBox () .set_visible (enabled);
-	getScriptEditorBox ()  .set_visible (enabled);
-	getBrowserNotebook ()  .set_tab_pos (enabled ? Gtk::POS_BOTTOM : Gtk::POS_TOP);
+	getLibraryViewBox ()     .set_visible (enabled);
+	getOutlineEditorBox ()   .set_visible (enabled);
+	getScriptEditorBox ()    .set_visible (enabled);
+	getAnimationEditorBox () .set_visible (enabled);
+	getBrowserNotebook ()    .set_tab_pos (enabled ? Gtk::POS_BOTTOM : Gtk::POS_TOP);
 
 	if (enabled and getConfig () .getBoolean ("arrow"))
 		getArrowButton () .set_active (true);
