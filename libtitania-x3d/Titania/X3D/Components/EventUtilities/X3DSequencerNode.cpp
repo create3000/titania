@@ -87,10 +87,10 @@ X3DSequencerNode::set_fraction_ ()
 
 	size_t i = 0;
 
-	if (key () .size () == 1 or set_fraction () <= key () [0])
+	if (key () .size () == 1 or set_fraction () <= key () .front ())
 		i = 0;
 
-	else if (set_fraction () >= key () [key () .size () - 1])
+	else if (set_fraction () >= key () .back ())
 		i = getSize () - 1;
 
 	else

@@ -332,7 +332,9 @@
                             <property name="title" translatable="yes">Name</property>
                             <property name="expand">True</property>
                             <child>
-                              <object class="GtkCellRendererText" id="NameCellRenderer"/>
+                              <object class="GtkCellRendererText" id="NameCellRenderer">
+                                <property name="style">oblique</property>
+                              </object>
                               <attributes>
                                 <attribute name="markup">2</attribute>
                               </attributes>
