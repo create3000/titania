@@ -360,26 +360,23 @@ private:
 	void
 	setInterpolator (const X3D::X3DPtr <X3D::X3DNode> &, const UndoStepPtr &);
 
+	template <class Interpolator, class Field, class Type>
 	void
-	setInterpolator (const X3D::X3DPtr <X3D::BooleanSequencer> &, const UndoStepPtr &);
+	setSequencer (const X3D::X3DPtr <Interpolator> &, const UndoStepPtr &);
 
+	template <class Interpolator, class Field, class Type>
 	void
-	setInterpolator (const X3D::X3DPtr <X3D::IntegerSequencer> &, const UndoStepPtr &);
+	setInterpolator (const X3D::X3DPtr <Interpolator> &, const UndoStepPtr &);
 
 	void
 	setInterpolator (const X3D::X3DPtr <X3D::ColorInterpolator> &, const UndoStepPtr &);
 
 	void
-	setInterpolator (const X3D::X3DPtr <X3D::ScalarInterpolator> &, const UndoStepPtr &);
-
-	void
 	setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolator> &, const UndoStepPtr &);
 
-	void
-	setInterpolator (const X3D::X3DPtr <X3D::PositionInterpolator2D> &, const UndoStepPtr &);
-
-	void
-	setInterpolator (const X3D::X3DPtr <X3D::PositionInterpolator> &, const UndoStepPtr &);
+	template <class Type>
+	Type
+	getValue (const X3D::MFDouble &, const size_t) const;
 
 	void
 	resizeInterpolator (const X3D::X3DPtr <X3D::X3DNode> &, const size_t, const UndoStepPtr &);
@@ -525,6 +522,9 @@ private:
 	 *  @name Static members
 	 **/
 
+	// Maximum duration is 1,000,000 frames, thus epsilon is 0.000001 as we can only save 6 digits.
+	static constexpr double epsilon = 0.000001;
+
 	static const std::map <X3D::X3DConstants::NodeType, size_t> interpolatorComponents;
 
 	/***
@@ -558,6 +558,196 @@ private:
 	X3D::Keys                           keys;
 
 };
+
+template <class Interpolator, class Field, class Type>
+void
+AnimationEditor::setSequencer (const X3D::X3DPtr <Interpolator> & interpolator, const UndoStepPtr & undoStep)
+{
+	const auto   components = interpolatorComponents .at (interpolator -> getType () .back ());
+	const auto & key        = interpolator -> template getMetaData <X3D::MFInt32> ("/Interpolator/key",       true);
+	auto &       keyValue   = interpolator -> template getMetaData <X3D::MFDouble> ("/Interpolator/keyValue", true);
+	auto &       keyType    = interpolator -> template getMetaData <X3D::MFString> ("/Interpolator/keyType",  true);
+
+	keyValue .resize (key .size () * components);
+	keyType  .resize (key .size ());
+
+	undoStep -> addObjects (interpolator);
+	undoStep -> addUndoFunction (&X3D::MFFloat::setValue, std::ref (interpolator -> key ()),      interpolator -> key ());
+	undoStep -> addUndoFunction (&Field::setValue,        std::ref (interpolator -> keyValue ()), interpolator -> keyValue ());
+
+	size_t       i        = 0;
+	size_t       iN       = 0;
+	const size_t size     = key .size ();
+	const auto   duration = getDuration ();
+
+	interpolator -> key ()      .clear ();
+	interpolator -> keyValue () .clear ();
+
+	while (i < size)
+	{
+		if (key [i] < 0 or key [i] > duration)
+			continue;
+
+		const auto fraction = key [i] / (double) duration;
+		const auto value    = Type (keyValue [iN]);
+
+		interpolator -> key ()      .emplace_back (fraction);
+		interpolator -> keyValue () .emplace_back (value);
+
+		++ i;
+		iN += components;
+	}
+
+	undoStep -> addRedoFunction (&X3D::MFFloat::setValue, std::ref (interpolator -> key ()),      interpolator -> key ());
+	undoStep -> addRedoFunction (&Field::setValue,        std::ref (interpolator -> keyValue ()), interpolator -> keyValue ());
+}
+
+template <class Interpolator, class Field, class Type>
+void
+AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolator, const UndoStepPtr & undoStep)
+{
+	const auto   components = interpolatorComponents .at (interpolator -> getType () .back ());
+	const auto & key        = interpolator -> template getMetaData <X3D::MFInt32> ("/Interpolator/key",      true);
+	auto &       keyValue   = interpolator -> template getMetaData <X3D::MFDouble> ("/Interpolator/keyValue", true);
+	auto &       keyType    = interpolator -> template getMetaData <X3D::MFString> ("/Interpolator/keyType", true);
+
+	keyValue .resize (key .size () * components);
+	keyType  .resize (key .size ());
+
+	undoStep -> addObjects (interpolator);
+	undoStep -> addUndoFunction (&X3D::MFFloat::setValue, std::ref (interpolator -> key ()),      interpolator -> key ());
+	undoStep -> addUndoFunction (&Field::setValue,        std::ref (interpolator -> keyValue ()), interpolator -> keyValue ());
+
+	size_t       i        = 0;
+	size_t       iN       = 0;
+	const size_t size     = key .size ();
+	const auto   duration = getDuration ();
+
+	interpolator -> key ()      .clear ();
+	interpolator -> keyValue () .clear ();
+
+	while (i < size)
+	{
+		if (key [i] < 0 or key [i] > duration)
+			continue;
+
+		const auto fraction = key [i] / (double) duration;
+		const auto value    = getValue <Type> (keyValue, iN);
+
+		if (keyType [i] == "CONSTANT")
+		{
+			interpolator -> key ()      .emplace_back (fraction);
+			interpolator -> keyValue () .emplace_back (value);
+
+			if (key [i] < duration)
+			{
+				const auto nextFraction = (i == size - 1 ? 1 : key [i + 1] / (double) duration - epsilon);
+
+				interpolator -> key ()      .emplace_back (nextFraction);
+				interpolator -> keyValue () .emplace_back (value);
+			}
+		}
+		else if (keyType [i] == "LINEAR")
+		{
+			interpolator -> key ()      .emplace_back (fraction);
+			interpolator -> keyValue () .emplace_back (value);
+		}
+		else if (keyType [i] == "SPLINE")
+		{
+			std::vector <int32_t> keys;
+			std::vector <Type> keyValues;
+			std::vector <Type> keyVelocitys;
+
+			for (; i < size; ++ i, iN += components)
+			{
+				const auto value = getValue <Type> (keyValue, iN);
+
+				keys .emplace_back (key [i]);
+				keyValues .emplace_back (value);
+
+				if (keyType [i] not_eq "SPLINE")
+					break;
+			}
+	
+			if (keys .size () < 2)
+			{
+				// This can happen if only the last frame is of type SPLINE.
+				interpolator -> key ()      .emplace_back (fraction);
+				interpolator -> keyValue () .emplace_back (value);
+				break;
+			}
+	
+			const bool normalizeVelocity = false;
+			const bool closed            = keys .front () == 0 and keys .back () == 1 and keyValues .front () == keyValues .back ();
+
+			const math::catmull_rom_spline_interpolator <Type, double> spline (closed, keys, keyValues, keyVelocitys, normalizeVelocity);
+
+			for (size_t k = 0, size = keys .size () - 1; k < size; ++ k)
+			{
+				const int32_t frames   = keys [k + 1] - keys [k];
+				const double  fraction = keys [k] / (double) duration;
+				const double  distance = frames / (double) duration;
+
+				for (int32_t f = 0; f < frames; ++ f)
+				{
+					const auto weight = f / (double) frames;
+					const auto value  = spline .interpolate (k, k + 1, weight, keyValues);
+
+					interpolator -> key ()      .emplace_back (fraction + weight * distance);
+					interpolator -> keyValue () .emplace_back (value);
+				}
+			}
+
+			if (i == size)
+			{
+				// If this is the last part then we must insert the last keyframe.
+				interpolator -> key ()      .emplace_back (keys .back () / (double) duration);
+				interpolator -> keyValue () .emplace_back (keyValues .back ());
+				break;
+			}
+
+			continue;
+		}
+
+		++ i;
+		iN += components;
+	}
+
+	undoStep -> addRedoFunction (&X3D::MFFloat::setValue, std::ref (interpolator -> key ()),      interpolator -> key ());
+	undoStep -> addRedoFunction (&Field::setValue,        std::ref (interpolator -> keyValue ()), interpolator -> keyValue ());
+}
+
+template <class Type>
+inline
+Type
+AnimationEditor::getValue (const X3D::MFDouble & keyValue, const size_t index) const
+{
+	throw std::domain_error ("getValue is not defined");
+}
+
+template <>
+inline
+double
+AnimationEditor::getValue <double> (const X3D::MFDouble & keyValue, const size_t index) const
+{
+	return keyValue [index];
+}
+
+template <>
+inline
+X3D::Vector2d
+AnimationEditor::getValue <X3D::Vector2d> (const X3D::MFDouble & keyValue, const size_t index) const
+{
+	return X3D::Vector2d (keyValue [index], keyValue [index + 1]);
+}
+
+template <>
+inline
+X3D::Vector3d
+AnimationEditor::getValue <X3D::Vector3d> (const X3D::MFDouble & keyValue, const size_t index) const
+{
+	return X3D::Vector3d (keyValue [index], keyValue [index + 1], keyValue [index + 2]);
+}
 
 } // puck
 } // titania

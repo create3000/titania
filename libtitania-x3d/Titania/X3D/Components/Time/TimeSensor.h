@@ -193,7 +193,6 @@ private:
 	time_type interval;
 	time_type first;
 	time_type last;
-	time_type offset;
 	time_type scale;
 
 };

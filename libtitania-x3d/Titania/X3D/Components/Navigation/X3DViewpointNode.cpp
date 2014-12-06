@@ -57,7 +57,10 @@
 #include "../Layering/X3DLayerNode.h"
 #include "../Navigation/NavigationInfo.h"
 
-#include "../Geospatial/GeoViewpoint.h"
+#include "../Interpolation/EaseInEaseOut.h"
+#include "../Interpolation/PositionInterpolator.h"
+#include "../Interpolation/OrientationInterpolator.h"
+#include "../Time/TimeSensor.h"
 
 namespace titania {
 namespace X3D {
@@ -589,6 +592,9 @@ X3DViewpointNode::dispose ()
 	X3DViewpointObject::dispose ();
 	X3DBindableNode::dispose ();
 }
+
+X3DViewpointNode::~X3DViewpointNode ()
+{ }
 
 } // X3D
 } // titania

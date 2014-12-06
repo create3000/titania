@@ -56,13 +56,13 @@
 #include "../Core/X3DBindableNode.h"
 #include "../Navigation/X3DViewpointObject.h"
 
-#include "../Interpolation/EaseInEaseOut.h"
-#include "../Interpolation/PositionInterpolator.h"
-#include "../Interpolation/OrientationInterpolator.h"
-#include "../Time/TimeSensor.h"
-
 namespace titania {
 namespace X3D {
+
+class EaseInEaseOut;
+class PositionInterpolator;
+class OrientationInterpolator;
+class TimeSensor;
 
 class X3DViewpointNode :
 	public X3DBindableNode, public X3DViewpointObject
@@ -272,6 +272,9 @@ public:
 	virtual
 	void
 	dispose () override;
+
+	virtual
+	~X3DViewpointNode ();
 
 
 protected:
