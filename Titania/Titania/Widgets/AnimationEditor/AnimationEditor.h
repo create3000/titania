@@ -271,7 +271,10 @@ private:
 	
 	void
 	set_fraction (const float);
-	
+
+	void
+	set_value ();
+
 	/***
 	 *  Keyframes
 	 **/

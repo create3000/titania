@@ -495,7 +495,7 @@ AnimationEditor::set_interpolators ()
 
 					addNode (node);
 					interpolatorIndex .emplace (field, interpolator);
-					interpolator -> addInterest (this, &AnimationEditor::queue_draw);
+					interpolator -> getField ("value_changed") -> addInterest (this, &AnimationEditor::set_value);
 				}
 				catch (const X3D::X3DError &)
 				{ }
@@ -512,7 +512,7 @@ void
 AnimationEditor::removeInterpolators ()
 {
 	for (const auto & pair : interpolatorIndex)
-		pair .second -> removeInterest (this, &AnimationEditor::queue_draw);
+		pair .second -> getField ("value_changed") -> removeInterest (this, &AnimationEditor::set_value);
 
 	interpolatorIndex .clear ();
 }
@@ -627,9 +627,6 @@ AnimationEditor::set_live (const size_t id, const Gtk::TreePath & path)
 void
 AnimationEditor::set_tainted (const Gtk::TreePath & path)
 {
-	if (isActive ())
-		return;
-
 	if (frameChange)
 	{
 		-- frameChange;
@@ -933,41 +930,14 @@ AnimationEditor::on_update_fraction ()
 	setTainted (Gtk::TreePath ("0"), false);
 
 	// Update interpolator fraction.
-	
-	frameChange = 0;
+
+	const double fraction = getFrameAdjustment () -> get_value () / getDuration ();
 
 	for (const auto & pair : interpolatorIndex)
 	{
 		try
 		{
-			const auto & interpolator = pair .second;
-			const double fraction     = getFrameAdjustment () -> get_value () / getDuration ();
-			auto &       set_fraction = interpolator -> getField <X3D::SFFloat> ("set_fraction");
-
-			// Prevent fields from being displayed set tainted.
-
-			switch (interpolator -> getType () .back ())
-			{
-				case X3D::X3DConstants::BooleanSequencer:
-				case X3D::X3DConstants::IntegerSequencer:
-				{
-					const auto & key      = interpolator -> getField <X3D::MFFloat> ("key");
-					const auto   previous = std::upper_bound (key .begin (), key .end (), set_fraction);
-					const auto   next     = std::upper_bound (key .begin (), key .end (), fraction);
-
-					if (next == previous)
-						break;
-
-					// Proceed with next step:
-				}
-				default:
-				{
-					++ frameChange;
-					break;
-				}
-			}
-		
-			set_fraction = fraction;
+			pair .second -> getField <X3D::SFFloat> ("set_fraction") = fraction;
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -1058,34 +1028,18 @@ AnimationEditor::set_active ()
 	getTimeButton ()       .set_sensitive (not active);
 
 	getPlayPauseButton () .set_stock_id (Gtk::StockID (active ? "gtk-media-pause" : "gtk-media-play"));
-
-	if (not active)
-	{
-		frameChange = 0;
-
-		for (const auto & pair : interpolatorIndex)
-		{
-			const auto & interpolator = pair .second;
-
-			switch (interpolator -> getType () .back ())
-			{
-				case X3D::X3DConstants::BooleanSequencer:
-				case X3D::X3DConstants::IntegerSequencer:
-					break;
-				default:
-				{
-					++ frameChange;
-					break;
-				}
-			}
-		}
-	}
 }
 
 void
 AnimationEditor::set_fraction (const float value)
 {
 	getFrameAdjustment () -> set_value (getDuration () * value);
+}
+
+void
+AnimationEditor::set_value ()
+{
+	++ frameChange;
 }
 
 void
@@ -2087,7 +2041,7 @@ AnimationEditor::getInterpolator (const std::string & typeName,
 		const auto interpolator = getExecutionContext () -> createNode (typeName);
 		const auto name         = getInterpolatorName (node, field);
 		
-		interpolator -> addInterest (this, &AnimationEditor::queue_draw);
+		interpolator -> getField ("value_changed") -> addInterest (this, &AnimationEditor::set_value);
 
 		getExecutionContext () -> addUninitializedNode (interpolator);
 		getExecutionContext () -> realize ();

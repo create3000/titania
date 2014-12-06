@@ -1,5 +1,9 @@
 2014-12-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DTransformNode.cpp: 
+
+2014-12-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TimeSensor.h:
 	* TimeSensor.cpp:
 	* X3DViewpointNode.h:

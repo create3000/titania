@@ -1,3 +1,8 @@
+2014-12-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-standard.cproj:
+	* almost_equal.h: 
+
 2014-12-04  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Rotation4.h:

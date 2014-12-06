@@ -50,6 +50,8 @@
 
 #include "X3DTransformNode.h"
 
+#include <Titania/Math/Utility/almost_equal.h>
+
 namespace titania {
 namespace X3D {
 
@@ -120,19 +122,19 @@ X3DTransformNode::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f &
 
 	matrix .get (t, r, s, so, c);
 
-	if (t not_eq translation ())
+	if (not almost_equal (t, translation () .getValue (), 2))
 		translation () = t;
 
-	if (r not_eq rotation ())
+	if (not almost_equal (r, rotation () .getValue (), 2))
 		rotation () = r;
 
-	if (s not_eq scale ())
+	if (not almost_equal (s, scale () .getValue (), 2))
 		scale () = s;
 
-	if (so not_eq scaleOrientation ())
+	if (not almost_equal (so, scaleOrientation () .getValue (), 2))
 		scaleOrientation () = so;
 
-	if (c not_eq center ())
+	if (not almost_equal (c, center () .getValue (), 2))
 		center () = c;
 }
 
