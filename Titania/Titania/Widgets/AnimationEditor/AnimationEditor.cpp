@@ -1060,7 +1060,26 @@ AnimationEditor::set_active ()
 	getPlayPauseButton () .set_stock_id (Gtk::StockID (active ? "gtk-media-pause" : "gtk-media-play"));
 
 	if (not active)
-		frameChange = interpolatorIndex .size ();
+	{
+		frameChange = 0;
+
+		for (const auto & pair : interpolatorIndex)
+		{
+			const auto & interpolator = pair .second;
+
+			switch (interpolator -> getType () .back ())
+			{
+				case X3D::X3DConstants::BooleanSequencer:
+				case X3D::X3DConstants::IntegerSequencer:
+					break;
+				default:
+				{
+					++ frameChange;
+					break;
+				}
+			}
+		}
+	}
 }
 
 void
