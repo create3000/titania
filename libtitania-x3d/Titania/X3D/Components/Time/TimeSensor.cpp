@@ -82,7 +82,7 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	            interval (0),
 	               first (0),
 	                last (1),
-	              offset (0),
+	              offset (0), // XXX: delete me, localy defined.
 	               scale (1)
 {
 	addType (X3DConstants::TimeSensor);

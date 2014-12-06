@@ -129,6 +129,9 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_LastFrameButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_last_frame));
 	m_TimeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_time));
 
+	// Connect object Gtk::ComboBoxText with id 'KeyTypeButton'.
+	m_KeyTypeButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_key_type_changed));
+
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_draw () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_tree_view_draw));
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_row_activated));

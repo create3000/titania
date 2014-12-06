@@ -335,6 +335,10 @@ public:
 	on_time () = 0;
 
 	virtual
+	void
+	on_key_type_changed () = 0;
+
+	virtual
 	bool
 	on_tree_view_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
 

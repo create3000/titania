@@ -265,6 +265,7 @@
                       <item>LINEAR</item>
                       <item>SPLINE</item>
                     </items>
+                    <signal name="changed" handler="on_key_type_changed" swapped="no"/>
                   </object>
                 </child>
               </object>

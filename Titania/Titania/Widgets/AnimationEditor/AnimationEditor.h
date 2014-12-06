@@ -271,6 +271,17 @@ private:
 	
 	void
 	set_fraction (const float);
+	
+	/***
+	 *  Keyframes
+	 **/
+
+	virtual
+	void
+	on_key_type_changed () final override;
+	
+	void
+	set_key_type ();
 
 	/***
 	 *  Zoom
@@ -420,6 +431,12 @@ private:
 	on_scroll_event (GdkEventScroll*) final override;
 
 	void
+	on_selection_changed ();
+
+	void
+	on_clear_selection ();
+
+	void
 	on_expand_selected_range (const int32_t);
 
 	void
@@ -536,6 +553,8 @@ private:
 	bool                                activeSelection;
 	std::vector <FrameKey>              movedFrames;
 	std::vector <CopiedFrame>           copiedFrames;
+	std::string                         activeType;
+	bool                                changing;
 	X3D::Keys                           keys;
 
 };

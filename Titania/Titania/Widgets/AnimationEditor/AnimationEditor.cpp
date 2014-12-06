@@ -137,6 +137,8 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	            activeSelection (false),
 	                movedFrames (),
 	               copiedFrames (),
+	                 activeType ("SPLINE"),
+	                   changing (false),
 	                       keys ()
 {
 	getScaleKeyframesButton () .set_active (getConfig () .getBoolean ("scaleKeyframes"));
@@ -393,12 +395,8 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 
 	animation  = value;
 	timeSensor = nullptr;
-	nodes          .clear ();
-	activeFrames   .clear ();
-	selectedFrames .clear ();
-	movedFrames    .clear ();
-	selectedBounds = std::make_pair (0, 0);
-	selectedRange  = std::make_pair (0, 0);
+	nodes .clear ();
+	on_clear_selection ();
 	on_clear_clipboard ();
 
 	getTreeStore () -> clear ();
@@ -729,9 +727,7 @@ AnimationEditor::set_user_defined_fields (const size_t id, const Gtk::TreePath &
 {
 	// A Script node's fields have changed.  We must update all children of path now.
 	
-	activeFrames   .clear ();
-	selectedFrames .clear ();
-	movedFrames    .clear ();
+	on_clear_selection ();
 	on_clear_clipboard ();
 
 	try
@@ -809,8 +805,7 @@ AnimationEditor::on_paste ()
 
 	std::set <X3D::X3DPtr <X3D::X3DNode>> affectedInterpolators;
 
-	selectedFrames .clear ();
-	movedFrames    .clear ();
+	on_clear_selection ();
 
 	for (auto & frame : copiedFrames)
 	{
@@ -829,6 +824,8 @@ AnimationEditor::on_paste ()
 		catch (const std::out_of_range &)
 		{ }
 	}
+
+	on_selection_changed ();
 
 	for (const auto & interpolator : affectedInterpolators)
 		setInterpolator (interpolator, undoStep);
@@ -1076,6 +1073,139 @@ AnimationEditor::set_fraction (const float value)
 }
 
 void
+AnimationEditor::on_key_type_changed ()
+{
+	if (changing)
+		return;
+
+	// Set active key frame type choice.
+
+	static std::vector <std::string> keyTypes = {
+		"CONSTANT",
+		"LINEAR",
+		"SPLINE"
+	};
+
+	try
+	{
+		activeType = keyTypes .at (getKeyTypeButton () .get_active_row_number ());
+	}
+	catch (const std::out_of_range &)
+	{
+		activeType = "SPLINE";
+	}
+
+	// Change key frame type of selection.
+
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Keyframe Type"));
+
+	std::set <X3D::X3DPtr <X3D::X3DNode>> affectedInterpolators;
+
+	for (const auto & frame : selectedFrames)
+	{
+		try
+		{
+			const auto & interpolator = interpolatorIndex .at (std::get <1> (frame));
+			const auto & key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",      true);
+			auto &       keyType      = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType", true);
+			const auto   iter         = std::lower_bound (key .begin (), key .end (), std::get <0> (frame));
+			const auto   index        = iter - key .begin ();
+
+			if (key .at (index) not_eq std::get <0> (frame))
+				continue;
+
+			if (affectedInterpolators .emplace (interpolator) .second)
+				undoStep -> addUndoFunction ((setMetaDataString) &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyType", keyType);
+	
+			switch (interpolator -> getType () .back ())
+			{
+				case X3D::X3DConstants::BooleanSequencer:
+				case X3D::X3DConstants::IntegerSequencer:
+				{
+					keyType .set1Value (index, "CONSTANT");
+					break;
+				}
+				case X3D::X3DConstants::ColorInterpolator:
+				case X3D::X3DConstants::ScalarInterpolator:
+				case X3D::X3DConstants::OrientationInterpolator:
+				case X3D::X3DConstants::PositionInterpolator2D:
+				case X3D::X3DConstants::PositionInterpolator:
+				{
+					keyType .set1Value (index, activeType);
+					break;
+				}
+				default:
+					break;
+			}
+		}
+		catch (const std::exception &)
+		{ }		
+	}
+
+	for (const auto & interpolator : affectedInterpolators)
+	{
+		try
+		{
+			const auto & keyType = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType", true);
+
+			undoStep -> addRedoFunction ((setMetaDataString) &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/keyType", keyType);
+		}
+		catch (const std::exception &)
+		{ }		
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+AnimationEditor::set_key_type ()
+{
+	bool first        = true;
+	bool inconsistent = false;
+	auto currentType  = activeType;
+
+	for (const auto frame : selectedFrames)
+	{
+		try
+		{
+			const auto & interpolator = interpolatorIndex .at (std::get <1> (frame));
+			auto &       key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key");
+			auto &       keyType      = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType");
+			const auto   iter         = std::lower_bound (key .begin (), key .end (), std::get <0> (frame));
+			const auto   index        = iter - key .begin ();
+
+			if (key .at (index) not_eq std::get <0> (frame))
+				continue;
+
+			if (first)
+			{
+				currentType = keyType .at (index);
+				first       = false;
+			}
+			else
+			{
+				if (keyType .at (index) not_eq currentType)
+				{
+					inconsistent = true;
+					break;
+				}
+			}
+		}
+		catch (const std::exception &)
+		{ }		
+	}
+
+	changing = true;
+
+	if (inconsistent)
+		getKeyTypeButton () .set_active (-1);
+	else
+		getKeyTypeButton () .set_active_text (currentType);
+
+	changing = false;
+}
+
+void
 AnimationEditor::on_zoom_out ()
 {
 	on_zoom (getDrawingArea () .get_width () / 2, GDK_SCROLL_DOWN);
@@ -1213,7 +1343,6 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 {
 	const auto    undoStep = std::make_shared <UndoStep> (_ ("Add Keyframe"));
 	const int32_t frame    = std::round (getFrameAdjustment () -> get_value ());
-	const auto    type     = getKeyTypeButton () .get_active_row_number () < 0 ? "SPLINE" : getKeyTypeButton () .get_active_text ();
 
 	std::vector <double> value;
 
@@ -1226,7 +1355,7 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 
 			value .emplace_back (boolean);
 
-			addKeyframe (interpolator, frame, value, type, undoStep);
+			addKeyframe (interpolator, frame, value, "CONSTANT", undoStep);
 			setInterpolator (interpolator, undoStep);
 			break;
 		}
@@ -1237,7 +1366,7 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 
 			value .emplace_back (integer);
 
-			addKeyframe (interpolator, frame, value, type, undoStep);
+			addKeyframe (interpolator, frame, value, "CONSTANT", undoStep);
 			setInterpolator (interpolator, undoStep);
 			break;
 		}
@@ -1250,7 +1379,7 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 			value .emplace_back (color .getGreen ());
 			value .emplace_back (color .getBlue ());
 
-			addKeyframe (interpolator, frame, value, type, undoStep);
+			addKeyframe (interpolator, frame, value, activeType, undoStep);
 			setInterpolator (interpolator, undoStep);
 			break;
 		}
@@ -1261,7 +1390,7 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 
 			value .emplace_back (scalar);
 
-			addKeyframe (interpolator, frame, value, type, undoStep);
+			addKeyframe (interpolator, frame, value, activeType, undoStep);
 			setInterpolator (interpolator, undoStep);
 			break;
 		}
@@ -1275,7 +1404,7 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 			value .emplace_back (rotation .getZ ());
 			value .emplace_back (rotation .getAngle ());
 
-			addKeyframe (interpolator, frame, value, type, undoStep);
+			addKeyframe (interpolator, frame, value, activeType, undoStep);
 			setInterpolator (interpolator, undoStep);
 			break;
 		}
@@ -1287,7 +1416,7 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 			value .emplace_back (vector .getX ());
 			value .emplace_back (vector .getY ());
 
-			addKeyframe (interpolator, frame, value, type, undoStep);
+			addKeyframe (interpolator, frame, value, activeType, undoStep);
 			setInterpolator (interpolator, undoStep);
 			break;
 		}
@@ -1300,7 +1429,7 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 			value .emplace_back (vector .getY ());
 			value .emplace_back (vector .getZ ());
 
-			addKeyframe (interpolator, frame, value, type, undoStep);
+			addKeyframe (interpolator, frame, value, activeType, undoStep);
 			setInterpolator (interpolator, undoStep);
 			break;
 		}
@@ -1419,6 +1548,7 @@ AnimationEditor::moveKeyframes ()
 	selectedFrames .clear ();
 	selectedFrames .insert (movedFrames .begin (), movedFrames .end ());
 	movedFrames .clear ();
+	on_selection_changed ();
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -1485,7 +1615,7 @@ AnimationEditor::removeKeyframes ()
 		{ }
 	}
 
-	selectedFrames .clear ();
+	on_clear_selection ();
 
 	for (const auto & interpolator : affectedInterpolators)
 		setInterpolator (interpolator, undoStep);
@@ -2077,14 +2207,40 @@ AnimationEditor::on_key_press_event (GdkEventKey* event)
 
 	switch (event -> keyval)
 	{
+		case GDK_KEY_a:
+		{
+			if (event -> state == GDK_CONTROL_MASK)
+			{
+				selectedFrames .clear ();
+				selectedRange .first  = 0;
+				selectedRange .second = 0;
+				on_expand_selected_range (getDuration ());
+				on_selection_changed ();
+			}
+
+			return true;
+		}
+		case GDK_KEY_A:
+		{
+			if (event -> state == (GDK_CONTROL_MASK | GDK_SHIFT_MASK))
+				on_clear_selection ();
+
+			return true;
+		}
 		case GDK_KEY_z:
 		{
 			if (event -> state == GDK_CONTROL_MASK)
 				getBrowserWindow () -> on_undo ();
 
-			else if (event -> state == (GDK_CONTROL_MASK | GDK_SHIFT_MASK))
+			getDrawingArea () .grab_focus ();
+			return true;
+		}
+		case GDK_KEY_Z:
+		{
+			if (event -> state == (GDK_CONTROL_MASK | GDK_SHIFT_MASK))
 				getBrowserWindow () -> on_redo ();
 
+			getDrawingArea () .grab_focus ();
 			return true;
 		}
 		case GDK_KEY_Delete:
@@ -2122,7 +2278,10 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 			if (not keys .shift ())
 			{
 				if (not isSelected ())
+				{
 					selectedFrames = activeFrames;
+					on_selection_changed ();
+				}
 
 				selectedBounds = getSelectedBounds ();
 			}
@@ -2146,6 +2305,7 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 				selectedFrames .clear ();
 				selectedRange .first  = frame;
 				selectedRange .second = frame;
+				on_selection_changed ();
 			}
 
 			activeSelection = false;
@@ -2193,6 +2353,8 @@ AnimationEditor::on_button_release_event (GdkEventButton* event)
 					}
 					else
 						selectedFrames .insert (activeFrames .begin (), activeFrames .end ());
+						
+					on_selection_changed ();
 				}
 			}
 		}
@@ -2272,6 +2434,25 @@ AnimationEditor::on_scroll_event (GdkEventScroll* event)
 }
 
 void
+AnimationEditor::on_selection_changed ()
+{
+	set_key_type ();
+	getDrawingArea () .queue_draw ();
+}
+
+void
+AnimationEditor::on_clear_selection ()
+{
+	activeSelection = false;
+	activeFrames   .clear ();
+	selectedFrames .clear ();
+	movedFrames    .clear ();
+	selectedBounds = std::make_pair (0, 0);
+	selectedRange  = std::make_pair (0, 0);
+	on_selection_changed ();
+}
+
+void
 AnimationEditor::on_expand_selected_range (const int32_t frame)
 {
 	const auto medium = (selectedRange .first + selectedRange .second) / 2;
@@ -2317,6 +2498,8 @@ AnimationEditor::on_select_range ()
 		if (std::get <0> (f) >= firstFrame and std::get <0> (f) <= lastFrame)
 			selectedFrames .emplace (f);
 	}
+
+	on_selection_changed ();
 }
 
 bool
@@ -2324,11 +2507,11 @@ AnimationEditor::isSelected () const
 {
 	for (const auto & activeFrame : activeFrames)
 	{
-		if (selectedFrames .count (activeFrame))
-			return true;
+		if (not selectedFrames .count (activeFrame))
+			return false;
 	}
-	
-	return false;
+
+	return true;
 }
 
 std::pair <int32_t, int32_t>
@@ -2342,6 +2525,9 @@ AnimationEditor::getSelectedBounds () const
 		min = std::min (min, std::get <0> (selectedFrame));
 		max = std::max (max, std::get <0> (selectedFrame));
 	}
+
+	if (min > max)
+		return std::make_pair (0, 0);
 
 	return std::make_pair (min, max);
 }
