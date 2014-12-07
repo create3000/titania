@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 07 Nov 2014 09:33:25 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Sun, 16 Nov 2014 08:06:37 GMT"
+META "modified" "Sun, 07 Dec 2014 02:17:20 GMT"
 
 DEF LayerSet LayerSet {
   activeLayer 3
@@ -64,12 +64,14 @@ DEF LayerSet LayerSet {
           ]
         }
         Group {
-          children [
-            DEF Shape Shape {
-              appearance DEF Appearance Appearance { }
-            }
-            DEF TouchSensor TouchSensor { }
-          ]
+          children DEF Transform Transform {
+            children [
+              DEF Shape Shape {
+                appearance DEF Appearance Appearance { }
+              }
+              DEF TouchSensor TouchSensor { }
+            ]
+          }
         }
       ]
     }
@@ -177,3 +179,8 @@ function set_active (value)
 
 ROUTE TouchSensor.isOver TO SwitchScript.set_active
 ROUTE SwitchScript.whichChoice_changed TO _2.set_whichChoice
+ROUTE Transform.translation_changed TO Triangle.set_translation
+ROUTE Transform.rotation_changed TO Triangle.set_rotation
+ROUTE Transform.scale_changed TO Triangle.set_scale
+ROUTE Transform.scaleOrientation_changed TO Triangle.set_scaleOrientation
+ROUTE Transform.center_changed TO Triangle.set_center

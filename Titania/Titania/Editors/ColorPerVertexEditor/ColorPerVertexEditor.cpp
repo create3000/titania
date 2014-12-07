@@ -112,13 +112,13 @@ ColorPerVertexEditor::set_initialized ()
 	{
 		preview -> loadURL ({ get_ui ("Editors/ColorPerVertexEditorPreview.x3dv") });
 
-		const auto shape       = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
+		const auto transform   = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
 		const auto appearance  = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 
 		appearance -> isPrivate (true);
 
-		shape -> geometry ()               .addInterest (this, &ColorPerVertexEditor::set_viewer);
+		transform -> addInterest (this, &ColorPerVertexEditor::set_viewer);
 		touchSensor -> hitPoint_changed () .addInterest (this, &ColorPerVertexEditor::set_hitPoint);
 		touchSensor -> touchTime ()        .addInterest (this, &ColorPerVertexEditor::set_touchTime);
 
@@ -520,27 +520,37 @@ ColorPerVertexEditor::set_viewer ()
 void
 ColorPerVertexEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 {
-	if (shape)
+	try
 	{
-		shape -> appearance () .removeInterest (this, &ColorPerVertexEditor::set_appearance);
-		shape -> geometry ()   .removeInterest (this, &ColorPerVertexEditor::set_geometry);
-	}
+		if (shape)
+		{
+			shape -> appearance () .removeInterest (this, &ColorPerVertexEditor::set_appearance);
+			shape -> geometry ()   .removeInterest (this, &ColorPerVertexEditor::set_geometry);
+		}
 
-	shape = value;
+		shape = value;
 
-	if (shape)
-	{
-		shape -> appearance () .addInterest (this, &ColorPerVertexEditor::set_appearance);
-		shape -> geometry ()   .addInterest (this, &ColorPerVertexEditor::set_geometry);
+		if (shape)
+		{
+			const auto transform       = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
+			const auto modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (shape);
 
-		set_appearance (shape -> appearance ());
-		set_geometry (shape -> geometry ());
+			transform -> setMatrix (modelViewMatrix);
+
+			shape -> appearance () .addInterest (this, &ColorPerVertexEditor::set_appearance);
+			shape -> geometry ()   .addInterest (this, &ColorPerVertexEditor::set_geometry);
+
+			set_appearance (shape -> appearance ());
+			set_geometry (shape -> geometry ());
+		}
+		else
+		{
+			set_appearance (nullptr);
+			set_geometry (nullptr);
+		}
 	}
-	else
-	{
-		set_appearance (nullptr);
-		set_geometry (nullptr);
-	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void

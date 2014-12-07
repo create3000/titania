@@ -191,13 +191,13 @@ TextureCoordinateEditor::set_initialized ()
 
 	try
 	{
-		const auto shape             = right -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
+		const auto transform         = right -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
 		const auto appearance        = right -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 		const auto touchSensor       = right -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 		const auto selectedGeometry  = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedGeometry");
 		const auto selectionGeometry = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionGeometry");
 
-		shape -> geometry ()               .addInterest (this, &TextureCoordinateEditor::set_right_viewer);
+		transform -> addInterest (this, &TextureCoordinateEditor::set_right_viewer);
 		touchSensor -> isActive ()         .addInterest (this, &TextureCoordinateEditor::set_right_active);
 		touchSensor -> touchTime ()        .addInterest (this, &TextureCoordinateEditor::set_right_touchTime);
 		touchSensor -> hitPoint_changed () .addInterest (this, &TextureCoordinateEditor::set_right_hitPoint);
@@ -1263,27 +1263,37 @@ TextureCoordinateEditor::set_right_viewer ()
 void
 TextureCoordinateEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 {
-	if (shape)
+	try
 	{
-		shape -> appearance () .removeInterest (this, &TextureCoordinateEditor::set_appearance);
-		shape -> geometry ()   .removeInterest (this, &TextureCoordinateEditor::set_geometry);
-	}
+		if (shape)
+		{
+			shape -> appearance () .removeInterest (this, &TextureCoordinateEditor::set_appearance);
+			shape -> geometry ()   .removeInterest (this, &TextureCoordinateEditor::set_geometry);
+		}
 
-	shape = value;
+		shape = value;
 
-	if (shape)
-	{
-		shape -> appearance () .addInterest (this, &TextureCoordinateEditor::set_appearance);
-		shape -> geometry ()   .addInterest (this, &TextureCoordinateEditor::set_geometry);
+		if (shape)
+		{
+			const auto transform       = right -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
+			const auto modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (shape);
 
-		set_appearance (shape -> appearance ());
-		set_geometry (shape -> geometry ());
+			transform -> setMatrix (modelViewMatrix);
+
+			shape -> appearance () .addInterest (this, &TextureCoordinateEditor::set_appearance);
+			shape -> geometry ()   .addInterest (this, &TextureCoordinateEditor::set_geometry);
+
+			set_appearance (shape -> appearance ());
+			set_geometry (shape -> geometry ());
+		}
+		else
+		{
+			set_appearance (nullptr);
+			set_geometry (nullptr);
+		}
 	}
-	else
-	{
-		set_appearance (nullptr);
-		set_geometry (nullptr);
-	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void

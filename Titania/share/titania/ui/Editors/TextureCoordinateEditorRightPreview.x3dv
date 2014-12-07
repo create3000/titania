@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Sat, 22 Nov 2014 00:47:49 GMT"
+META "modified" "Sun, 07 Dec 2014 02:25:20 GMT"
 
 LayerSet {
   activeLayer 2
@@ -25,55 +25,14 @@ LayerSet {
         DEF Navigation Group {
           children Viewpoint { }
         }
-        DEF Shape Shape {
-          appearance DEF Appearance Appearance {
-            material Material { }
-          }
-        }
-        DEF SelectedFaces Group {
+        DEF Transform Transform {
           children [
-            Shape {
-              appearance Appearance {
-                lineProperties LineProperties {
-                  linewidthScaleFactor 2
-                }
-                material Material {
-                  diffuseColor 0 0 0
-                }
+            DEF Shape Shape {
+              appearance DEF Appearance Appearance {
+                material Material { }
               }
-              geometry DEF SelectedGeometry IndexedLineSet { }
             }
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.35 1 0.7
-                }
-              }
-              geometry USE SelectedGeometry
-            }
-          ]
-        }
-        DEF ActiveFace Switch {
-          whichChoice 0
-          children [
-            DEF CrossScript_1 Script {
-              inputOnly  SFBool  set_active
-              outputOnly SFInt32 whichChoice_changed
-
-              url "javascript:
-
-function initialize ()
-{
-	whichChoice_changed = false;
-}
-
-function set_active (value)
-{
-	whichChoice_changed = value;
-}"
-            }
-            DEF Selection Group {
+            DEF SelectedFaces Group {
               children [
                 Shape {
                   appearance Appearance {
@@ -84,22 +43,67 @@ function set_active (value)
                       diffuseColor 0 0 0
                     }
                   }
-                  geometry DEF SelectionGeometry IndexedLineSet { }
+                  geometry DEF SelectedGeometry IndexedLineSet { }
                 }
                 Shape {
                   appearance Appearance {
                     material Material {
                       diffuseColor 0 0 0
-                      emissiveColor 1 0 0
+                      emissiveColor 0.35 1 0.7
                     }
                   }
-                  geometry USE SelectionGeometry
+                  geometry USE SelectedGeometry
                 }
               ]
             }
+            DEF ActiveFace Switch {
+              whichChoice 0
+              children [
+                DEF CrossScript_1 Script {
+                  inputOnly  SFBool  set_active
+                  outputOnly SFInt32 whichChoice_changed
+
+                  url "javascript:
+
+function initialize ()
+{
+	whichChoice_changed = false;
+}
+
+function set_active (value)
+{
+	whichChoice_changed = value;
+}"
+                }
+                DEF Selection Group {
+                  children [
+                    Shape {
+                      appearance Appearance {
+                        lineProperties LineProperties {
+                          linewidthScaleFactor 2
+                        }
+                        material Material {
+                          diffuseColor 0 0 0
+                        }
+                      }
+                      geometry DEF SelectionGeometry IndexedLineSet { }
+                    }
+                    Shape {
+                      appearance Appearance {
+                        material Material {
+                          diffuseColor 0 0 0
+                          emissiveColor 1 0 0
+                        }
+                      }
+                      geometry USE SelectionGeometry
+                    }
+                  ]
+                }
+              ]
+            }
+            DEF TouchSensor TouchSensor { }
           ]
         }
-        DEF TouchSensor TouchSensor { }
       ]
     }
   ]
