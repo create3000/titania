@@ -130,22 +130,19 @@ template <class Type>
 bool
 almost_equal (const quaternion <Type> & lhs, const quaternion <Type> & rhs, const int unitsInTheLastPlace)
 {
-	return (almost_equal (lhs .x (), rhs .x (), unitsInTheLastPlace) and
-	        almost_equal (lhs .y (), rhs .y (), unitsInTheLastPlace) and
-	        almost_equal (lhs .z (), rhs .z (), unitsInTheLastPlace) and
-	        almost_equal (lhs .w (), rhs .w (), unitsInTheLastPlace))
-	       or
-	          (almost_equal (-lhs .x (), rhs .x (), unitsInTheLastPlace) and
-	          almost_equal (-lhs .y (), rhs .y (), unitsInTheLastPlace) and
-	          almost_equal (-lhs .z (), rhs .z (), unitsInTheLastPlace) and
-	          almost_equal (-lhs .w (), rhs .w (), unitsInTheLastPlace));
+	return almost_equal (lhs .x (), rhs .x (), unitsInTheLastPlace) and
+	       almost_equal (lhs .y (), rhs .y (), unitsInTheLastPlace) and
+	       almost_equal (lhs .z (), rhs .z (), unitsInTheLastPlace) and
+	       almost_equal (lhs .w (), rhs .w (), unitsInTheLastPlace);
 }
 
 template <class Type>
 bool
 almost_equal (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs, const int unitsInTheLastPlace)
 {
-	return almost_equal (lhs .quat (), rhs .quat (), unitsInTheLastPlace);
+	return almost_equal (lhs .quat (), rhs .quat (), unitsInTheLastPlace)
+	       or
+	       almost_equal (-lhs .quat (), rhs .quat (), unitsInTheLastPlace);
 }
 
 } // math

@@ -108,7 +108,7 @@ private:
 	using int_type = typename std::basic_istream <CharT, Traits>::int_type;
 
 	const std::basic_string <CharT> value;
-	const size_t                    size;
+	const int                       size;
 
 };
 
@@ -125,7 +125,7 @@ basic_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & 
 {
 	const auto state = istream .rdstate ();
 
-	for (size_t i = 0; i < size; ++ i)
+	for (int i = 0; i < size; ++ i)
 	{
 		if (istream .peek () not_eq (int_type) value [i])
 		{
