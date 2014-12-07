@@ -879,6 +879,7 @@ function eventsProcessed ()
     initializeOnly SFVec3f translation 0 0 0
     inputOutput    SFVec3f center 0 0 0
     initializeOnly SFVec3f size 0 0 0
+    initializeOnly SFInt32 events 0
 
     url "vrmlscript:
 function set_active (value)
@@ -890,6 +891,8 @@ function set_active (value)
 		translation = transform .translation;
 		center      = transform .center;
 		size        = bboxSize;
+
+		events = 4;
 	}
 	else
 		activeTool_changed = 0;
@@ -964,6 +967,13 @@ function translate_with_bbox (value)
 
 function translate (value)
 {
+	if (events)
+	{
+		// Prevent accidentially move.
+		-- events;
+		return;
+	}
+
 	if (keepCenter)
 	{
 		transform .translation = translation .add (value);
@@ -1132,6 +1142,7 @@ function isActive (sensorA, sensorB, sensorC)
     initializeOnly SFRotation rotation 0 0 1 0
     initializeOnly SFVec3f    scale 1 1 1
     initializeOnly SFRotation scaleOrientation 0 0 1 0
+    initializeOnly SFInt32    events 0
 
     url "vrmlscript:
 function set_active (value)
@@ -1153,6 +1164,8 @@ function set_active (value)
 		transform .rotation         = rotation;
 		transform .scale            = scale;
 		transform .scaleOrientation = scaleOrientation;
+
+		events = 4;
 	}
 	else
 		activeTool_changed = 0;
@@ -1175,6 +1188,13 @@ function set_zRotation (value)
 
 function rotate (value)
 {
+	if (events)
+	{
+		// Prevent accidentially move.
+		-- events;
+		return;
+	}
+
 	if (constrainRotation)
 	{
 		var snapAngle = 11.25 / 180 * Math .PI;
@@ -1282,6 +1302,7 @@ function eventsProcessed ()
     # Sensors above are not used anymore
     initializeOnly SFNode     lineProperties USE LineProperties
     initializeOnly SFNode     self USE ScaleScript
+    initializeOnly SFInt32    events 0
 
     url "vrmlscript:
 
@@ -1332,6 +1353,8 @@ function set_active (value)
 		                      transform .center);
 
 		distanceFromCenter = bboxCenter .subtract (transform .center);
+
+		events = 4;
 	}
 	else
 		activeTool_changed = 0;
@@ -1448,6 +1471,13 @@ function set_scale (value, sgn, centerOffset)
 
 function scale (value, centerOffset)
 {
+	if (events)
+	{
+		// Prevent accidentially move.
+		-- events;
+		return;
+	}
+
 	var scale = SFMatrix4f ();
 	scale .setTransform (new SFVec3f (), new SFRotation (), value);
 

@@ -122,19 +122,19 @@ X3DTransformNode::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f &
 
 	matrix .get (t, r, s, so, c);
 
-	if (not almost_equal (t, translation () .getValue (), 2))
+	if (not almost_equal (t, translation () .getValue (), 17))
 		translation () = t;
 
-	if (not almost_equal (r, rotation () .getValue (), 2))
+	if (not almost_equal (r, rotation () .getValue (), 17))
 		rotation () = r;
 
-	if (not almost_equal (s, scale () .getValue (), 2))
+	if (not almost_equal (s, scale () .getValue (), 17))
 		scale () = s;
 
-	if (not almost_equal (so, scaleOrientation () .getValue (), 2))
+	if (not almost_equal (so, scaleOrientation () .getValue (), 17))
 		scaleOrientation () = so;
 
-	if (not almost_equal (c, center () .getValue (), 2))
+	if (not almost_equal (c, center () .getValue (), 17))
 		center () = c;
 }
 

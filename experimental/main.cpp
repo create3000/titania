@@ -72,6 +72,7 @@
 #include <Titania/Math/Numbers/Vector2.h>
 #include <Titania/Math/Numbers/Vector3.h>
 #include <Titania/Math/Numbers/Vector4.h>
+#include <Titania/Math/Utility/almost_equal.h>
 #include <Titania/OS.h>
 #include <Titania/Stream/InputFileStream.h>
 #include <Titania/Stream/InputUrlStream.h>
@@ -314,6 +315,20 @@ class C :
 public:
 };
 
+template <class Type>
+void
+test_almost_equal (Type f1, Type f2)
+{
+	__LOG__ << f1 << " : " << f2;
+
+	for (int i = 0; i < 2000000000; ++ i)
+		if (almost_equal (f1, f2, i))
+		{
+			__LOG__ << " : " << i << std::endl;
+			break;
+		}
+}
+
 int
 main (int argc, char** argv)
 {
@@ -328,26 +343,9 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-
-	Box2f b2 (Vector2f (2,2),   Vector2f ());
-	Box3f b3 (Vector3f (2,2,2), Vector3f ());
-
-	__LOG__ << std::numeric_limits <float>::infinity () << std::endl;
-	__LOG__ << +std::numeric_limits <float>::infinity () << std::endl;
-	__LOG__ << -std::numeric_limits <float>::infinity () << std::endl;
-
-	__LOG__ << std::numeric_limits <float>::quiet_NaN () << std::endl;
-	__LOG__ << +std::numeric_limits <float>::quiet_NaN () << std::endl;
-	__LOG__ << -std::numeric_limits <float>::quiet_NaN () << std::endl;
-
-
-	std::istringstream is (std::to_string (-std::numeric_limits <float>::infinity ()));
-
-	float v;
-	is >> v;
 	
-	__LOG__ << v << std::endl;
-	__LOG__ << is .rdbuf () << std::endl;
+	test_almost_equal (1.000000f, 1.000004f);
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
