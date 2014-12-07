@@ -1,5 +1,10 @@
 2014-12-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ColorPerVertexEditor.cpp:
+	* TextureCoordinateEditor.cpp: 
+
+2014-12-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ColorPerVertexEditorPreview.x3dv:
 	* ColorPerVertexEditor.cpp:
 	* TextureCoordinateEditorRightPreview.x3dv:

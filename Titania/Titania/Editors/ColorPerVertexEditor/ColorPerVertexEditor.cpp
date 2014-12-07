@@ -113,12 +113,14 @@ ColorPerVertexEditor::set_initialized ()
 		preview -> loadURL ({ get_ui ("Editors/ColorPerVertexEditorPreview.x3dv") });
 
 		const auto transform   = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
+		const auto shape       = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
 		const auto appearance  = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 
 		appearance -> isPrivate (true);
 
 		transform -> addInterest (this, &ColorPerVertexEditor::set_viewer);
+		shape -> geometry ()               .addInterest (this, &ColorPerVertexEditor::set_viewer);
 		touchSensor -> hitPoint_changed () .addInterest (this, &ColorPerVertexEditor::set_hitPoint);
 		touchSensor -> touchTime ()        .addInterest (this, &ColorPerVertexEditor::set_touchTime);
 

@@ -192,12 +192,14 @@ TextureCoordinateEditor::set_initialized ()
 	try
 	{
 		const auto transform         = right -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
+		const auto shape             = right -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
 		const auto appearance        = right -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 		const auto touchSensor       = right -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 		const auto selectedGeometry  = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedGeometry");
 		const auto selectionGeometry = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionGeometry");
 
 		transform -> addInterest (this, &TextureCoordinateEditor::set_right_viewer);
+		shape -> geometry ()               .addInterest (this, &TextureCoordinateEditor::set_right_viewer);
 		touchSensor -> isActive ()         .addInterest (this, &TextureCoordinateEditor::set_right_active);
 		touchSensor -> touchTime ()        .addInterest (this, &TextureCoordinateEditor::set_right_touchTime);
 		touchSensor -> hitPoint_changed () .addInterest (this, &TextureCoordinateEditor::set_right_hitPoint);
