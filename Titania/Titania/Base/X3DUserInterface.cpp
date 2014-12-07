@@ -194,11 +194,7 @@ X3DUserInterface::removeDialog (const std::string & name)
 void
 X3DUserInterface::removeDialogImpl (const std::string & name)
 {
-	__LOG__ << name << std::endl;
-
 	dialogs -> erase (name);
-	
-	__LOG__ << name << std::endl;
 }
 
 void

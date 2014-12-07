@@ -1,5 +1,9 @@
 2014-12-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DUserInterface.cpp: 
+
+2014-12-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ColorPerVertexEditor.cpp:
 	* TextureCoordinateEditor.cpp: 
 

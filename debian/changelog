@@ -1,3 +1,12 @@
+titania (0.7.6) trusty; urgency=medium
+
+  * Added Keyframe Editor
+  * Added Color Per Vertex Editor
+  * Added Texture Coordinate Editor
+  * Fixes some bugs
+
+ -- Holger Seelig <holger.seelig@yahoo.de>  Tue, 07 Dec 2014 14:12:00 +0200
+
 titania (0.7.5) trusty; urgency=medium
 
   * Added Grid Editor

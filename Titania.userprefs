@@ -1,17 +1,20 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h">
     <Files>
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="274" Column="1" />
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="1094" Column="6" />
-      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="120" Column="34" />
-      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.cpp" Line="203" Column="33" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="254" Column="6" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.cpp" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True">
             <Node name="glade2c++" expanded="True" />
+          </Node>
+          <Node name="build" expanded="True">
+            <Node name="debian" expanded="True" />
           </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
@@ -24,6 +27,7 @@
           </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
+              <Node name="InputOutput" expanded="True" />
               <Node name="Math" expanded="True">
                 <Node name="Numbers" expanded="True" />
                 <Node name="Utility" expanded="True" />
@@ -39,12 +43,17 @@
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Basic" expanded="True" />
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
                   <Node name="EventUtilities" expanded="True" />
                   <Node name="Grouping" expanded="True" />
                   <Node name="Time" expanded="True" />
                 </Node>
                 <Node name="Fields" expanded="True" />
+                <Node name="Parser" expanded="True" />
+                <Node name="PeaseBlossom" expanded="True">
+                  <Node name="Parser" expanded="True" />
+                </Node>
                 <Node name="Tools" expanded="True">
                   <Node name="Grouping" expanded="True" />
                 </Node>
@@ -59,6 +68,9 @@
             <Node name="share" expanded="True">
               <Node name="applications" expanded="True" />
               <Node name="titania" expanded="True">
+                <Node name="pages" expanded="True">
+                  <Node name="about" expanded="True" />
+                </Node>
                 <Node name="Prototypes" expanded="True">
                   <Node name="0.1" expanded="True">
                     <Node name="Geometry3D" expanded="True" />
@@ -70,6 +82,7 @@
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
               <Node name="ComposedWidgets" expanded="True" />
               <Node name="Editors" expanded="True">
@@ -80,7 +93,7 @@
               </Node>
               <Node name="Widgets" expanded="True">
                 <Node name="AnimationEditor" expanded="True">
-                  <Node name="AnimationEditor.cpp" selected="True" />
+                  <Node name="AnimationEditor.h" selected="True" />
                 </Node>
                 <Node name="Console" expanded="True" />
                 <Node name="LibraryView" expanded="True" />

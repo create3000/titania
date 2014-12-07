@@ -1,5 +1,9 @@
 2014-12-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowser.cpp: 
+
+2014-12-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TransformTool.x3dv:
 	* X3DTransformNode.cpp: 
 
