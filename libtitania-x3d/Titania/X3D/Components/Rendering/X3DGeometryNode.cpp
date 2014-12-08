@@ -533,7 +533,7 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 
 	std::vector <Vector3f> normals_ (normals .size ());
 
-	for (const auto & point : normalIndex)
+	std::for_each (normalIndex .begin (), normalIndex .end (), [&normals, &normals_, &cosCreaseAngle] (const NormalIndex::value_type & point)
 	{
 		for (const auto & index : point .second)
 		{
@@ -546,9 +546,11 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 					n += normals [index];
 			}
 
-			normals_ [index] = normalize (n);
+			normals_ [index] = n;
 		}
-	}
+	});
+
+	std::for_each (normals_ .begin (), normals_ .end (), std::mem_fn (&Vector3f::normalize));
 
 	normals .swap (normals_);
 }

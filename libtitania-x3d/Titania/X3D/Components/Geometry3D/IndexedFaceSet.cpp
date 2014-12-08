@@ -349,8 +349,6 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 			++ i;
 		}
 
-		// Sometimes there are no elements, propbably due to the need of a combine callback.
-
 		if (polygons .back () .elements .empty ())
 			polygons .pop_back ();
 	}
