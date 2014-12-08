@@ -1,4 +1,4 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V0.7.6
 
 EXTERNPROTO Delay [
   exposedField SFTime cycleInterval
@@ -192,7 +192,9 @@ IntegerSequencer { }
 
 IntegerTrigger { }
 
-KeySensor { }
+KeySensor {
+  enabled FALSE
+}
 
 LOD { }
 
