@@ -1,10 +1,10 @@
-#X3D V3.3 utf8 Titania V0.7.4
+#X3D V3.3 utf8 Titania V0.7.6
 
 META "comment" "World of Titania"
 META "created" "Thu, 07 Aug 2014 10:10:14 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Tue, 26 Aug 2014 21:58:05 GMT"
+META "generator" "Titania V0.7.6, http://titania.create3000.de"
+META "modified" "Mon, 08 Dec 2014 14:48:34 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -98,6 +98,9 @@ DEF Objects Transform {
               rotation 0 0 -1 1.5708
               children Shape {
                 appearance DEF Red_1 Appearance {
+                  material Material {
+                    diffuseColor 1 0 0
+                  }
                   shaders ToolShader {
                     diffuseColor 1 0 0
                   }
@@ -117,6 +120,9 @@ DEF Objects Transform {
               translation 0 6 0
               children Shape {
                 appearance DEF Green_1 Appearance {
+                  material Material {
+                    diffuseColor 0 1 0
+                  }
                   shaders ToolShader {
                     diffuseColor 0 1 0
                   }
@@ -134,6 +140,9 @@ DEF Objects Transform {
               rotation 1 0 0 1.5708
               children Shape {
                 appearance DEF Blue_1 Appearance {
+                  material Material {
+                    diffuseColor 0 0 1
+                  }
                   shaders ToolShader {
                     diffuseColor 0 0 1
                   }
@@ -203,6 +212,9 @@ DEF Axis_1 Transform {
           rotation 1 0 0 1.5708
           children Shape {
             appearance DEF White Appearance {
+              material Material {
+                diffuseColor 1 1 1
+              }
               shaders ToolShader {
                 diffuseColor 1 1 1
               }
