@@ -150,12 +150,12 @@ X3DGeoTransformEditor::on_geo_transform_uniform_scale_clicked ()
 {
 	if (getGeoTransformUniformScaleButton () .get_active ())
 	{
-		getGeoTransformUniformScaleImage () .set_from_icon_name ("connect_established", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		getGeoTransformUniformScaleImage () .set (Gtk::StockID ("Connected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		scale .setUniform (true);
 	}
 	else
 	{
-		getGeoTransformUniformScaleImage () .set_from_icon_name ("connect_no", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		getGeoTransformUniformScaleImage () .set (Gtk::StockID ("Disconnected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		scale .setUniform (false);
 	}
 }

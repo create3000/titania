@@ -217,12 +217,12 @@ X3DGridEditor::on_grid_uniform_scale_clicked ()
 {
 	if (getGridUniformScaleButton () .get_active ())
 	{
-		getGridUniformScaleImage () .set_from_icon_name ("connect_established", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		getGridUniformScaleImage () .set (Gtk::StockID ("Connected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		scale .setUniform (true);
 	}
 	else
 	{
-		getGridUniformScaleImage () .set_from_icon_name ("connect_no", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		getGridUniformScaleImage () .set (Gtk::StockID ("Disconnected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		scale .setUniform (false);
 	}
 }

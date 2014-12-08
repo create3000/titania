@@ -130,12 +130,12 @@ PrecisionPlacementPanel::on_bbox_uniform_size_clicked ()
 {
 	if (getBBoxUniformSizeButton () .get_active ())
 	{
-		getBBoxUniformSizeImage () .set_from_icon_name ("connect_established", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		getBBoxUniformSizeImage () .set (Gtk::StockID ("Connected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		bboxSize .setUniform (true);
 	}
 	else
 	{
-		getBBoxUniformSizeImage () .set_from_icon_name ("connect_no", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		getBBoxUniformSizeImage () .set (Gtk::StockID ("Disconnected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		bboxSize .setUniform (false);
 	}
 }

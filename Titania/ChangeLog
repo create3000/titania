@@ -1,3 +1,25 @@
+2014-12-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Recent.svg:
+	* BrowserWindow.xml:
+	* Connected.svg:
+	* Environment.svg:
+	* GridEditor.xml:
+	* Disconnected.svg:
+	* TextureEditor.xml:
+	* ViewpointEditor.xml:
+	* X3DGridEditor.cpp:
+	* X3DAngleEditor.cpp:
+	* ViewpointEditor.cpp:
+	* X3DViewpointEditorInterface.h:
+	* PrecisionPlacementPanel.xml:
+	* X3DViewpointEditorInterface.cpp:
+	* X3DTextureTransformEditor.cpp:
+	* X3DLayoutEditor.cpp:
+	* X3DTransformEditor.cpp:
+	* X3DGeoTransformEditor.cpp:
+	* PrecisionPlacementPanel.cpp: 
+
 2014-12-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DUserInterface.cpp: 

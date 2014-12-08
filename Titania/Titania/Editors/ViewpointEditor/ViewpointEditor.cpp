@@ -156,10 +156,20 @@ ViewpointEditor::on_lock_to_camera_toggled ()
 {
 	if (not getBrowser () -> getActiveLayer ())
 		return;
+	
+	const X3D::X3DViewpointNodePtr viewpoint = getBrowser () -> getActiveLayer () -> getViewpoint ();
+
+	if (getLockToCameraButton () .get_active ())
+		getLockToCameraImage () .set (Gtk::StockID ("Connected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+	else
+		getLockToCameraImage () .set (Gtk::StockID ("Disconnected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+
+	if (viewpoint -> isLockedToCamera () == getLockToCameraButton () .get_active ())
+		return;
+
+	// Do it.
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Lock Viewpoint To Camera"));
-
-	const X3D::X3DViewpointNodePtr viewpoint = getBrowser () -> getActiveLayer () -> getViewpoint ();
 
 	using isLockedToCamera = void (X3D::X3DViewpointNode::*) (const bool);
 

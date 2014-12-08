@@ -228,6 +228,12 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkTextBuffer" id="ViewpointDescriptionTextBuffer"/>
+  <object class="GtkListStore" id="ViewpointListStore"/>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-refresh</property>
+  </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">400</property>
     <property name="can_focus">False</property>
@@ -495,6 +501,7 @@
                         <property name="receives_default">True</property>
                         <property name="tooltip_text" translatable="yes">Update position and orientation from current view.</property>
                         <property name="hexpand">True</property>
+                        <property name="image">image3</property>
                         <signal name="clicked" handler="on_update_viewpoint_clicked" swapped="no"/>
                       </object>
                       <packing>
@@ -512,10 +519,11 @@
                         <property name="always_show_image">True</property>
                         <signal name="toggled" handler="on_lock_to_camera_toggled" swapped="no"/>
                         <child>
-                          <object class="GtkImage" id="image2">
+                          <object class="GtkImage" id="LockToCameraImage">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="stock">gtk-refresh</property>
+                            <property name="stock">Disconnected</property>
+                            <property name="icon_size">1</property>
                           </object>
                         </child>
                       </object>
@@ -2094,5 +2102,4 @@
       </object>
     </child>
   </object>
-  <object class="GtkListStore" id="ViewpointListStore"/>
 </interface>

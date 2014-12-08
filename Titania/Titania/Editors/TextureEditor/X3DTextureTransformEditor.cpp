@@ -132,12 +132,12 @@ X3DTextureTransformEditor::on_texture_transform_uniform_scale_clicked ()
 {
 	if (getTextureTransformUniformScaleButton () .get_active ())
 	{
-		getTextureTransformUniformScaleImage () .set_from_icon_name ("connect_established", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		getTextureTransformUniformScaleImage () .set (Gtk::StockID ("Connected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		scale .setUniform (true);
 	}
 	else
 	{
-		getTextureTransformUniformScaleImage () .set_from_icon_name ("connect_no", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		getTextureTransformUniformScaleImage () .set (Gtk::StockID ("Disconnected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		scale .setUniform (false);
 	}
 }

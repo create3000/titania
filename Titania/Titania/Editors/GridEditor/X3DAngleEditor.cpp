@@ -217,12 +217,12 @@ X3DAngleEditor::on_angle_uniform_scale_clicked ()
 {
 	if (getAngleUniformScaleButton () .get_active ())
 	{
-		getAngleUniformScaleImage () .set_from_icon_name ("connect_established", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		getAngleUniformScaleImage () .set (Gtk::StockID ("Connected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		scale .setUniform (true);
 	}
 	else
 	{
-		getAngleUniformScaleImage () .set_from_icon_name ("connect_no", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		getAngleUniformScaleImage () .set (Gtk::StockID ("Disconnected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		scale .setUniform (false);
 	}
 }

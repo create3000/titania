@@ -116,6 +116,7 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ViewpointDescriptionTextView", m_ViewpointDescriptionTextView);
 	m_builder -> get_widget ("UpdateViewpointButton", m_UpdateViewpointButton);
 	m_builder -> get_widget ("LockToCameraButton", m_LockToCameraButton);
+	m_builder -> get_widget ("LockToCameraImage", m_LockToCameraImage);
 	m_builder -> get_widget ("PerspectiveViewpointExpander", m_PerspectiveViewpointExpander);
 	m_builder -> get_widget ("PerspectiveViewpointBox", m_PerspectiveViewpointBox);
 	m_builder -> get_widget ("PerspectiveViewpointFieldOfViewBox", m_PerspectiveViewpointFieldOfViewBox);

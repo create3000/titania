@@ -218,12 +218,12 @@ X3DLayoutEditor::on_layout_uniform_size_clicked ()
 {
 	if (getLayoutUniformSizeButton () .get_active ())
 	{
-		getLayoutUniformSizeImage () .set_from_icon_name ("connect_established", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		getLayoutUniformSizeImage () .set (Gtk::StockID ("Connected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		size .setUniform (true);
 	}
 	else
 	{
-		getLayoutUniformSizeImage () .set_from_icon_name ("connect_no", Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		getLayoutUniformSizeImage () .set (Gtk::StockID ("Disconnected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		size .setUniform (false);
 	}
 }
