@@ -1,10 +1,10 @@
-#X3D V3.3 utf8 Titania V0.7.5
+#X3D V3.3 utf8 Titania V0.7.6
 
 META "comment" "World of Titania"
 META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Sat, 22 Nov 2014 12:56:41 GMT"
+META "generator" "Titania V0.7.6, http://titania.create3000.de"
+META "modified" "Mon, 08 Dec 2014 15:15:23 GMT"
 
 PROTO IndexedPointSet [
   inputOnly      MFInt32 set_coordIndex
@@ -169,18 +169,24 @@ LayerSet {
         }
         DEF SelectedFaces Transform {
           children [
-            Shape {
-              appearance Appearance {
-                lineProperties LineProperties {
-                  linewidthScaleFactor 2
+            DEF _3 Switch {
+              whichChoice 1
+              children [
+                Group { }
+                Shape {
+                  appearance Appearance {
+                    lineProperties LineProperties {
+                      linewidthScaleFactor 2
+                    }
+                    material Material {
+                      diffuseColor 0 0 0
+                    }
+                  }
+                  geometry DEF SelectedGeometry IndexedLineSet {
+                    coord DEF SelectedCoord Coordinate { }
+                  }
                 }
-                material Material {
-                  diffuseColor 0 0 0
-                }
-              }
-              geometry DEF SelectedGeometry IndexedLineSet {
-                coord DEF SelectedCoord Coordinate { }
-              }
+              ]
             }
             Shape {
               appearance Appearance {
@@ -197,7 +203,7 @@ LayerSet {
           translation 0 0 1
           children Shape {
             appearance Appearance {
-              lineProperties DEF _3 LineProperties {
+              lineProperties DEF _4 LineProperties {
                 linewidthScaleFactor 8
               }
               material Material {
@@ -233,7 +239,7 @@ function set_active (value)
               translation 0 0 2
               children Shape {
                 appearance Appearance {
-                  lineProperties USE _3
+                  lineProperties USE _4
                   material Material {
                     diffuseColor 0 0 0
                     emissiveColor 1 0 0
@@ -262,57 +268,63 @@ function set_active (value)
             children Transform {
               scale 8 8 1
               children [
-                DEF Back Group {
+                DEF _5 Switch {
+                  whichChoice 1
                   children [
-                    DEF Circle2D_1 Transform {
-                      children Shape {
-                        appearance DEF _4 Appearance {
-                          fillProperties FillProperties {
-                            filled FALSE
-                            hatched FALSE
-                          }
-                          lineProperties LineProperties {
-                            linewidthScaleFactor 2.5
-                          }
-                          material Material {
-                            diffuseColor 0 0 0
-                          }
-                        }
-                        geometry DEF _5 Rectangle2D { }
-                      }
-                    }
-                    DEF IndexedLineSet_1 Transform {
-                      children Shape {
-                        appearance USE _4
-                        geometry DEF _6 IndexedLineSet {
-                          coordIndex [
-                            0,
-                            1,
-                            -1,
-                            2,
-                            3,
-                            -1,
-                            4,
-                            5,
-                            -1,
-                            6,
-                            7,
-                            -1
-                          ]
-                          coord Coordinate {
-                            point [
-                              -1.5 0 0,
-                              -0.25 0 0,
-                              0 -1.5 0,
-                              0 -0.25 0,
-                              1.5 0 0,
-                              0.25 0 0,
-                              0 1.5 0,
-                              0 0.25 0
-                            ]
+                    Group { }
+                    DEF Back Group {
+                      children [
+                        DEF Circle2D_1 Transform {
+                          children Shape {
+                            appearance DEF _6 Appearance {
+                              fillProperties FillProperties {
+                                filled FALSE
+                                hatched FALSE
+                              }
+                              lineProperties LineProperties {
+                                linewidthScaleFactor 2.5
+                              }
+                              material Material {
+                                diffuseColor 0 0 0
+                              }
+                            }
+                            geometry DEF _7 Rectangle2D { }
                           }
                         }
-                      }
+                        DEF IndexedLineSet_1 Transform {
+                          children Shape {
+                            appearance USE _6
+                            geometry DEF _8 IndexedLineSet {
+                              coordIndex [
+                                0,
+                                1,
+                                -1,
+                                2,
+                                3,
+                                -1,
+                                4,
+                                5,
+                                -1,
+                                6,
+                                7,
+                                -1
+                              ]
+                              coord Coordinate {
+                                point [
+                                  -1.5 0 0,
+                                  -0.25 0 0,
+                                  0 -1.5 0,
+                                  0 -0.25 0,
+                                  1.5 0 0,
+                                  0.25 0 0,
+                                  0 1.5 0,
+                                  0 0.25 0
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
                     }
                   ]
                 }
@@ -320,7 +332,7 @@ function set_active (value)
                   children [
                     DEF Circle2D Transform {
                       children Shape {
-                        appearance DEF _7 Appearance {
+                        appearance DEF _9 Appearance {
                           fillProperties FillProperties {
                             filled FALSE
                             hatched FALSE
@@ -333,13 +345,13 @@ function set_active (value)
                             emissiveColor 1 0 0
                           }
                         }
-                        geometry USE _5
+                        geometry USE _7
                       }
                     }
                     DEF IndexedLineSet Transform {
                       children Shape {
-                        appearance USE _7
-                        geometry USE _6
+                        appearance USE _9
+                        geometry USE _8
                       }
                     }
                   ]
@@ -351,7 +363,7 @@ function set_active (value)
                         transparency 1
                       }
                     }
-                    geometry USE _5
+                    geometry USE _7
                   }
                 }
               ]
@@ -380,7 +392,21 @@ function set_active (value)
   ]
 }
 
+DEF BackScript_1 Script {
+  outputOnly SFInt32 whichChoice_changed
+
+  url "javascript:
+
+function initialize ()
+{
+	whichChoice_changed = Browser .getRenderingProperty ('Antialiased');
+}
+"
+}
+
 ROUTE TouchSensor.isOver TO PointScript.set_active
 ROUTE PointScript.whichChoice_changed TO ActivePoint.set_whichChoice
 ROUTE TouchSensor.isActive TO CenterPointScript.set_active
 ROUTE CenterPointScript.isPickable TO Center.set_isPickable
+ROUTE BackScript_1.whichChoice_changed TO _5.set_whichChoice
+ROUTE BackScript_1.whichChoice_changed TO _3.set_whichChoice

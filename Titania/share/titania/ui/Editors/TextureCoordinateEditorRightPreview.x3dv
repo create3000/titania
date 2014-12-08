@@ -1,10 +1,10 @@
-#X3D V3.3 utf8 Titania V0.7.5
+#X3D V3.3 utf8 Titania V0.7.6
 
 META "comment" "World of Titania"
 META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Sun, 07 Dec 2014 02:25:20 GMT"
+META "generator" "Titania V0.7.6, http://titania.create3000.de"
+META "modified" "Mon, 08 Dec 2014 15:17:24 GMT"
 
 LayerSet {
   activeLayer 2
@@ -34,16 +34,22 @@ LayerSet {
             }
             DEF SelectedFaces Group {
               children [
-                Shape {
-                  appearance Appearance {
-                    lineProperties LineProperties {
-                      linewidthScaleFactor 2
+                DEF _1 Switch {
+                  whichChoice 1
+                  children [
+                    Group { }
+                    Shape {
+                      appearance Appearance {
+                        lineProperties LineProperties {
+                          linewidthScaleFactor 2
+                        }
+                        material Material {
+                          diffuseColor 0 0 0
+                        }
+                      }
+                      geometry DEF SelectedGeometry IndexedLineSet { }
                     }
-                    material Material {
-                      diffuseColor 0 0 0
-                    }
-                  }
-                  geometry DEF SelectedGeometry IndexedLineSet { }
+                  ]
                 }
                 Shape {
                   appearance Appearance {
@@ -77,16 +83,22 @@ function set_active (value)
                 }
                 DEF Selection Group {
                   children [
-                    Shape {
-                      appearance Appearance {
-                        lineProperties LineProperties {
-                          linewidthScaleFactor 2
+                    DEF _2 Switch {
+                      whichChoice 1
+                      children [
+                        Group { }
+                        Shape {
+                          appearance Appearance {
+                            lineProperties LineProperties {
+                              linewidthScaleFactor 2
+                            }
+                            material Material {
+                              diffuseColor 0 0 0
+                            }
+                          }
+                          geometry DEF SelectionGeometry IndexedLineSet { }
                         }
-                        material Material {
-                          diffuseColor 0 0 0
-                        }
-                      }
-                      geometry DEF SelectionGeometry IndexedLineSet { }
+                      ]
                     }
                     Shape {
                       appearance Appearance {
@@ -109,5 +121,19 @@ function set_active (value)
   ]
 }
 
+DEF BackScript Script {
+  outputOnly SFInt32 whichChoice_changed
+
+  url "javascript:
+
+function initialize ()
+{
+	whichChoice_changed = Browser .getRenderingProperty ('Antialiased');
+}
+"
+}
+
 ROUTE TouchSensor.isOver TO CrossScript_1.set_active
 ROUTE CrossScript_1.whichChoice_changed TO ActiveFace.set_whichChoice
+ROUTE BackScript.whichChoice_changed TO _2.set_whichChoice
+ROUTE BackScript.whichChoice_changed TO _1.set_whichChoice
