@@ -1,5 +1,12 @@
 2014-12-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DGarbargeCollector.cpp:
+	* X3DFlyViewer.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp: 
+
+2014-12-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* IndexedFaceSet.cpp:
 	* X3DGeometryNode.cpp: 
 

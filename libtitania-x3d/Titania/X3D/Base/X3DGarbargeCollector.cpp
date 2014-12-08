@@ -52,7 +52,9 @@
 
 #include "../Base/X3DChildObject.h"
 
+#include <algorithm>
 #include <malloc.h>
+#include <memory>
 #include <thread>
 
 namespace titania {
@@ -91,8 +93,7 @@ X3DGarbageCollector::deleteObjectsAsync ()
 void
 X3DGarbageCollector::deleteObjects (ObjectArray objects)
 {
-	for (const auto & object : objects)
-		delete object;
+	std::for_each (objects .begin (), objects .end (), std::default_delete <const X3DChildObject> ());
 }
 
 } // X3D

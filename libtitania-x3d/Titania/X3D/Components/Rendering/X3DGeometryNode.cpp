@@ -418,15 +418,13 @@ X3DGeometryNode::triangulate (const size_t i1, const size_t i2, const size_t i3,
 void
 X3DGeometryNode::buildTexCoords ()
 {
-	getTexCoords () .emplace_back ();
-	getTexCoords () .reserve (getVertices () .size ());
-
 	Vector3f min;
 	float    Ssize;
 	int      Sindex, Tindex;
 
 	getTexCoordParams (min, Ssize, Sindex, Tindex);
 
+	getTexCoords () .emplace_back ();
 	getTexCoords () [0] .reserve (getVertices () .size ());
 
 	for (const auto & vertex : getVertices ())

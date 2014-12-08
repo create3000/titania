@@ -524,12 +524,11 @@ IndexedFaceSet::createNormals (const PolygonArray & polygons) const
 	std::vector <Vector3f> normals;
 
 	NormalIndex normalIndex;
+	Vector3f    normal;
 
 	for (const auto & polygon : polygons)
 	{
 		const auto & vertices = polygon .vertices .empty () ? polygon .elements [0] : polygon .vertices;
-	
-		Vector3f normal;
 
 		switch (vertices .size ())
 		{
@@ -552,7 +551,9 @@ IndexedFaceSet::createNormals (const PolygonArray & polygons) const
 			{
 				// Determine polygon normal.
 				// Or use Newell's method https://www.opengl.org/wiki/Calculating_a_Surface_Normal
-			
+
+				normal = Vector3f ();
+
 				for (const auto & element : polygon .elements)
 				{
 					for (size_t i = 0, size = element .size (); i < size; ++ i)
@@ -571,9 +572,8 @@ IndexedFaceSet::createNormals (const PolygonArray & polygons) const
 		for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 			normalIndex [coordIndex () [vertices [i]]] .emplace_back (normals .size () + i);
 
-		// Add this normal for each vertex.
-		normals .resize (normals .size () + vertices .size (), normal);
-		normals .emplace_back ();
+		// Add this normal for each vertex and for -1.
+		normals .resize (normals .size () + vertices .size () + 1, normal);
 	}
 
 	refineNormals (normalIndex, normals, creaseAngle (), ccw ());

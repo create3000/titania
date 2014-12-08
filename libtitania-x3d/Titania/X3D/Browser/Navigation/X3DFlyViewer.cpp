@@ -101,7 +101,7 @@ X3DFlyViewer::initialize ()
 
 	getBrowser () -> hasControlKey () .addInterest (this, &X3DFlyViewer::disconnect);
 
-	getActiveViewpoint () -> straighten (true);
+	//getActiveViewpoint () -> straighten (true); // Do this only with Walk Viewer, wenn überhaupt.
 }
 
 bool
