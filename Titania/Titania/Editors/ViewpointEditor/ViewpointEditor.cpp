@@ -68,7 +68,8 @@ ViewpointEditor::ViewpointEditor (X3DBrowserWindow* const browserWindow) :
 	                   nodeName (this, getViewpointNameEntry (), getViewpointRenameButton ()),
 	                description (this, getViewpointDescriptionTextView (), "description"),
 	                       jump (this, getViewpointJumpCheckButton (), "jump"),
-	          retainUserOffsets (this, getViewpointRetainUserOffsetsCheckButton (), "retainUserOffsets")
+	          retainUserOffsets (this, getViewpointRetainUserOffsetsCheckButton (), "retainUserOffsets"),
+	              viewpointNode ()
 {
 	setup ();
 
@@ -119,8 +120,16 @@ ViewpointEditor::set_active_viewpoint ()
 }
 
 void
-ViewpointEditor::set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode)
+ViewpointEditor::set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & value)
 {
+	if (viewpointNode)
+		viewpointNode -> isLockedToCamera () .removeInterest (this, &ViewpointEditor::set_lock_to_camera);
+
+	viewpointNode = value;
+
+	if (viewpointNode)
+		viewpointNode -> isLockedToCamera () .addInterest (this, &ViewpointEditor::set_lock_to_camera);
+
 	const bool inScene = (viewpointNode and viewpointNode -> getExecutionContext () == getExecutionContext () and not inPrototypeInstance ());
 
 	setViewpoint (viewpointNode, inScene);
@@ -156,27 +165,25 @@ ViewpointEditor::on_lock_to_camera_toggled ()
 {
 	if (not getBrowser () -> getActiveLayer ())
 		return;
-	
-	const X3D::X3DViewpointNodePtr viewpoint = getBrowser () -> getActiveLayer () -> getViewpoint ();
 
 	if (getLockToCameraButton () .get_active ())
 		getLockToCameraImage () .set (Gtk::StockID ("Connected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 	else
 		getLockToCameraImage () .set (Gtk::StockID ("Disconnected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
-	if (viewpoint -> isLockedToCamera () == getLockToCameraButton () .get_active ())
+	if (viewpointNode -> isLockedToCamera () == getLockToCameraButton () .get_active ())
 		return;
 
 	// Do it.
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Lock Viewpoint To Camera"));
-
 	using isLockedToCamera = void (X3D::X3DViewpointNode::*) (const bool);
 
-	undoStep -> addObjects (viewpoint);
-	undoStep -> addUndoFunction ((isLockedToCamera) &X3D::X3DViewpointNode::isLockedToCamera, viewpoint, viewpoint -> isLockedToCamera ());
-	undoStep -> addRedoFunction ((isLockedToCamera) &X3D::X3DViewpointNode::isLockedToCamera, viewpoint, getLockToCameraButton () .get_active ());
-	viewpoint -> isLockedToCamera (getLockToCameraButton () .get_active ());
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Lock Viewpoint To Camera"));
+
+	undoStep -> addObjects (viewpointNode);
+	undoStep -> addUndoFunction ((isLockedToCamera) &X3D::X3DViewpointNode::isLockedToCamera, viewpointNode, viewpointNode -> isLockedToCamera ());
+	undoStep -> addRedoFunction ((isLockedToCamera) &X3D::X3DViewpointNode::isLockedToCamera, viewpointNode, getLockToCameraButton () .get_active ());
+	viewpointNode -> isLockedToCamera (getLockToCameraButton () .get_active ());
 
 	if (getLockToCameraButton () .get_active ())
 		update (undoStep);
@@ -185,29 +192,33 @@ ViewpointEditor::on_lock_to_camera_toggled ()
 }
 
 void
+ViewpointEditor::set_lock_to_camera ()
+{
+	getLockToCameraButton () .set_active (viewpointNode -> isLockedToCamera ());
+}
+
+void
 ViewpointEditor::update (const UndoStepPtr & undoStep)
 {
-	const X3D::X3DViewpointNodePtr viewpoint = getBrowser () -> getActiveLayer () -> getViewpoint ();
+	undoStep -> addObjects (viewpointNode);
+	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::transitionStart,     viewpointNode, viewpointNode);
+	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::resetUserOffsets,    viewpointNode);
+	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setCenterOfRotation, viewpointNode, viewpointNode -> getCenterOfRotation ());
+	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setOrientation,      viewpointNode, viewpointNode -> getOrientation ());
+	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setPosition,         viewpointNode, viewpointNode -> getPosition ());
+	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (viewpointNode -> set_bind ()), true);
 
-	undoStep -> addObjects (viewpoint);
-	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::transitionStart, viewpoint, viewpoint);
-	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::resetUserOffsets, viewpoint);
-	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setCenterOfRotation, viewpoint, viewpoint -> getCenterOfRotation ());
-	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setOrientation, viewpoint, viewpoint -> getOrientation ());
-	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setPosition, viewpoint, viewpoint -> getPosition ());
-	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (viewpoint -> set_bind ()), true);
+	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (viewpointNode -> set_bind ()), true);
+	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setPosition,         viewpointNode, viewpointNode -> getUserPosition ());
+	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setOrientation,      viewpointNode, viewpointNode -> getUserOrientation ());
+	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setCenterOfRotation, viewpointNode, viewpointNode -> getUserCenterOfRotation ());
+	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::resetUserOffsets,    viewpointNode);
+	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::transitionStart,     viewpointNode, viewpointNode);
 
-	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (viewpoint -> set_bind ()), true);
-	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setPosition, viewpoint, viewpoint -> getUserPosition ());
-	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setOrientation, viewpoint, viewpoint -> getUserOrientation ());
-	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setCenterOfRotation, viewpoint, viewpoint -> getUserCenterOfRotation ());
-	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::resetUserOffsets, viewpoint);
-	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::transitionStart, viewpoint, viewpoint);
-
-	viewpoint -> setPosition (viewpoint -> getUserPosition ());
-	viewpoint -> setOrientation (viewpoint -> getUserOrientation ());
-	viewpoint -> setCenterOfRotation (viewpoint -> getUserCenterOfRotation ());
-	viewpoint -> resetUserOffsets ();
+	viewpointNode -> setPosition (viewpointNode -> getUserPosition ());
+	viewpointNode -> setOrientation (viewpointNode -> getUserOrientation ());
+	viewpointNode -> setCenterOfRotation (viewpointNode -> getUserCenterOfRotation ());
+	viewpointNode -> resetUserOffsets ();
 }
 
 ViewpointEditor::~ViewpointEditor ()

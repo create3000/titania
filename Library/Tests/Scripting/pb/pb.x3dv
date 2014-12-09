@@ -1,10 +1,10 @@
-#X3D V3.3 utf8 Titania V0.7.0
+#X3D V3.3 utf8 Titania V0.7.6
 
 META "comment" "World of Titania"
 META "created" "Sun, 01 Jun 2014 03:00:06 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.0, http://titania.create3000.de"
-META "modified" "Sat, 14 Jun 2014 15:13:24 GMT"
+META "generator" "Titania V0.7.6, http://titania.create3000.de"
+META "modified" "Tue, 09 Dec 2014 02:34:07 GMT"
 
 DEF Sunset Background {
   skyAngle [
@@ -28,7 +28,7 @@ DEF Sunset Background {
 Transform {
   children [
     DEF _1 TouchSensor {
-      description "Script 1"
+      description "Peaseblossom"
     }
     Transform {
       translation -1.64145 0.0135657 0
@@ -45,7 +45,7 @@ Transform {
 Transform {
   children [
     DEF _2 TouchSensor {
-      description "Script 2"
+      description "Spidermonkey"
     }
     Transform {
       translation 1.37013 0 0
@@ -62,11 +62,10 @@ Transform {
 DEF Script1 Script {
   inputOnly SFTime set_time
 
-  url [
-#   "peaseblossom:
-#'';
-#"
-    "peaseblossom:
+  #   "peaseblossom:
+  #'';
+  #"
+  url "peaseblossom:
 /*
 function initialize ()
 {
@@ -347,27 +346,26 @@ function set_time (value, time)
 	//print ('fibonacci_recursive: ', n);
 	//print ('time: ',                now () - t0);
 
-	//var t0 = now ();
-	//print ('fibonacci_iterative: ', fibonacci_iterative (8000000));
-	//print ('time: ',                now () - t0);
-
 	var t0 = now ();
-	print ('result: ', for_time (2000000));
-	print ('time: ',   now () - t0);
+	print ('fibonacci_iterative: ', fibonacci_iterative (80));
+	print ('time: ',                now () - t0);
+
+	//var t0 = now ();
+	//print ('result: ', for_time (2000000));
+	//print ('time: ',   now () - t0);
 }
 "
-  ]
   directOutput TRUE
 }
 
 DEF Script2 Script {
-  inputOnly SFTime set_time
-  field SFFloat now 1
-  field SFNode node Script {
-  exposedField SFDouble result 0
-  exposedField SFDouble h1 0
-  exposedField SFDouble h2 1
-  
+  inputOnly      SFTime  set_time
+  initializeOnly SFFloat now 1
+  initializeOnly SFNode  node Script {
+    inputOutput SFDouble result 0
+    inputOutput SFDouble h1 0
+    inputOutput SFDouble h2 1
+
   }
 
   url "javascript:
@@ -426,7 +424,7 @@ function set_time (value, time)
 	//print ('time: ',   (Date .now () - t0) / 1000);
 
 	var t0 = Date .now ();
-	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, 1000000));
+	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, 80));
 	print ('time: ',   (Date .now () - t0) / 1000);
 
 	//var t0 = Date .now ();

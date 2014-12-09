@@ -706,8 +706,6 @@
     <None Include="Titania\X3D\PeaseBlossom\Execution\GlobalObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\NativeFunction.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\ControlFlowException.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Base\vsBase.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Base\vsChildObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\vsGarbageCollector.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\vsInputStreamObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\vsOutputStreamObject.h" />
@@ -798,6 +796,8 @@
     <None Include="Titania\X3D\Tools\EnvironmentalSensor\TransformSensorTool.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\LassoSelection.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Base\vsBase.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Base\vsChildObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1289,7 +1289,6 @@
     <Compile Include="Titania\X3D\PeaseBlossom\Primitives\UInt32.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\GlobalObject.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Objects\Function.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Base\vsChildObject.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Base\vsGarbargeCollector.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\vsExecutionContext.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Expressions\vsExpression.cpp" />
@@ -1320,6 +1319,7 @@
     <Compile Include="Titania\X3D\Parser\Wavefront\Parser.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\LassoSelection.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Base\vsChildObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

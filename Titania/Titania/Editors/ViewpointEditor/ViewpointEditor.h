@@ -108,16 +108,20 @@ private:
 	on_lock_to_camera_toggled () final override;
 
 	void
+	set_lock_to_camera ();
+
+	void
 	update (const UndoStepPtr &);
 
 	///  @name Members
 
-	X3D::BrowserPtr                    browser;
-	std::unique_ptr <ViewpointList>    viewpointList;
-	NameEntry                          nodeName;
-	SFStringTextView                   description;
-	X3DFieldToggleButton <X3D::SFBool> jump;
-	X3DFieldToggleButton <X3D::SFBool> retainUserOffsets;
+	X3D::BrowserPtr                     browser;
+	std::unique_ptr <ViewpointList>     viewpointList;
+	NameEntry                           nodeName;
+	SFStringTextView                    description;
+	X3DFieldToggleButton <X3D::SFBool>  jump;
+	X3DFieldToggleButton <X3D::SFBool>  retainUserOffsets;
+	X3D::X3DPtr <X3D::X3DViewpointNode> viewpointNode;
 
 };
 

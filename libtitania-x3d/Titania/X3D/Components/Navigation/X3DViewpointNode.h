@@ -216,8 +216,9 @@ public:
 	void
 	isLockedToCamera (const bool);
 
-	bool
-	isLockedToCamera () const;
+	const SFBool &
+	isLockedToCamera () const
+	{ return lockToCamera; }
 
 	void
 	applyUserOffsets ();
@@ -377,6 +378,8 @@ private:
 	X3DPtr <OrientationInterpolator> orientationInterpolator;
 	X3DPtr <PositionInterpolator>    scaleInterpolator;
 	X3DPtr <OrientationInterpolator> scaleOrientationInterpolator;
+	
+	SFBool lockToCamera;
 
 };
 

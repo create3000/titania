@@ -91,7 +91,8 @@ X3DViewpointNode::X3DViewpointNode () :
 	        positionInterpolator (new PositionInterpolator (getBrowser () -> getPrivateScene ())),
 	     orientationInterpolator (new OrientationInterpolator (getBrowser () -> getPrivateScene ())),
 	           scaleInterpolator (new PositionInterpolator (getBrowser () -> getPrivateScene ())),
-	scaleOrientationInterpolator (new OrientationInterpolator (getBrowser () -> getPrivateScene ()))
+	scaleOrientationInterpolator (new OrientationInterpolator (getBrowser () -> getPrivateScene ())),
+	                lockToCamera ()
 {
 	addType (X3DConstants::X3DViewpointNode);
 
@@ -106,7 +107,8 @@ X3DViewpointNode::X3DViewpointNode () :
 	             positionInterpolator,
 	             orientationInterpolator,
 	             scaleInterpolator,
-	             scaleOrientationInterpolator);
+	             scaleOrientationInterpolator,
+	             lockToCamera);
 }
 
 void
@@ -232,17 +234,13 @@ X3DViewpointNode::removeFromLayer (X3DLayerNode* const layer)
 void
 X3DViewpointNode::isLockedToCamera (const bool value)
 {
-	if (value)
+	lockToCamera = value;
+
+	if (lockToCamera)
 		addInterest (this, &X3DViewpointNode::applyUserOffsets);
 		
 	else
 		removeInterest (this, &X3DViewpointNode::applyUserOffsets);
-}
-
-bool
-X3DViewpointNode::isLockedToCamera () const
-{
-	return hasInterest (this, &X3DViewpointNode::applyUserOffsets);
 }
 
 void
