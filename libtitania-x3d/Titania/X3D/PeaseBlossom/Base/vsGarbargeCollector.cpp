@@ -91,7 +91,7 @@ vsGarbageCollector::deleteObjectsAsync ()
 }
 
 void
-vsGarbageCollector::deleteObjects (ObjectArray objects)
+vsGarbageCollector::deleteObjects (const ObjectArray & objects)
 {
 	for (const auto & object : objects)
 		delete object;

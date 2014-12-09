@@ -1,5 +1,12 @@
 2014-12-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DGarbageCollector.h:
+	* X3DGarbargeCollector.cpp:
+	* vsGarbageCollector.h:
+	* vsGarbargeCollector.cpp: 
+
+2014-12-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* X3DGarbargeCollector.cpp:
 	* X3DViewpointNode.h:

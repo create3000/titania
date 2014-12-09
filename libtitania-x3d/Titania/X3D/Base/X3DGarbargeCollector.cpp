@@ -89,7 +89,7 @@ X3DGarbageCollector::deleteObjectsAsync ()
 }
 
 void
-X3DGarbageCollector::deleteObjects (ObjectArray objects)
+X3DGarbageCollector::deleteObjects (const ObjectArray & objects)
 {
 	for (const auto & object : objects)
 		delete object;

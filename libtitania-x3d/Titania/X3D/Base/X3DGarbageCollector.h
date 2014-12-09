@@ -110,7 +110,7 @@ private:
 
 	static
 	void
-	deleteObjects (ObjectArray);
+	deleteObjects (const ObjectArray &);
 
 	///  @name Static members
 
