@@ -693,7 +693,7 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolato
 			}
 	
 			const bool normalizeVelocity = false;
-			const bool closed            = keys .front () == 0 and keys .back () == 1 and keyValues .front () == keyValues .back ();
+			const bool closed            = keys .front () == 0 and keys .back () == duration and keyValues .front () == keyValues .back ();
 
 			const math::catmull_rom_spline_interpolator <Type, double> spline (closed, keys, keyValues, keyVelocitys, normalizeVelocity);
 

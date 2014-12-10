@@ -279,6 +279,7 @@
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Keyframe type menu</property>
                     <property name="active">2</property>
                     <items>
                       <item>CONSTANT</item>
