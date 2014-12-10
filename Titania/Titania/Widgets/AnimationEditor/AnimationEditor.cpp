@@ -377,14 +377,7 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	}
 
 	for (const auto & pair : nodes)
-	{
-		pair .second -> name_changed ()   .removeInterest (this, &AnimationEditor::set_name);
-		pair .second -> fields_changed () .removeInterest (this, &AnimationEditor::set_user_defined_fields);
-		pair .second -> isLive ()         .removeInterest (this, &AnimationEditor::set_animation_live);
-
-		for (const auto & field : pair .second -> getFieldDefinitions ())
-			field -> removeInterest (this, &AnimationEditor::set_tainted);
-	}
+		removeNode (pair .second);
 
 	removeInterpolators ();
 
@@ -517,8 +510,11 @@ AnimationEditor::set_interpolators ()
 	                     nodes .value_comp ());
 
 	for (const auto & pair : difference)
+	{
+		removeNode (pair .second);	
 		nodes .erase (pair .first);
-		
+	}
+
 	for (const auto & master : getTreeStore () -> children ())
 	{
 		for (const auto & parent : master -> children ())
@@ -588,11 +584,19 @@ AnimationEditor::on_remove_member ()
 					catch (const std::out_of_range &)
 					{ }
 				}
-	
-				const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Animation Member"));
 
-				getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), interpolators, undoStep);
-				getBrowserWindow () -> addUndoStep (undoStep);
+				if (not interpolators .empty ())
+				{
+					const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Animation Member"));
+
+					getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), interpolators, undoStep);
+					getBrowserWindow () -> addUndoStep (undoStep);
+				}
+
+				// Must be explicitly removed if no interpolator is connected to member.
+				removeNode (node);
+				nodes .erase ((*selected) [columns .id]);
+				(*selected) [columns .visible] = false;
 			}
 			catch (const std::out_of_range &)
 			{ }
@@ -650,6 +654,17 @@ AnimationEditor::addNode (const X3D::SFNode & node)
 	node -> isLive ()         .addInterest (this, &AnimationEditor::set_live,                node -> getId (), getTreeStore () -> get_path (parent));
 
 	addFields (node, parent);
+}
+
+void
+AnimationEditor::removeNode (const X3D::SFNode & node)
+{
+	node -> name_changed ()   .removeInterest (this, &AnimationEditor::set_name);
+	node -> fields_changed () .removeInterest (this, &AnimationEditor::set_user_defined_fields);
+	node -> isLive ()         .removeInterest (this, &AnimationEditor::set_animation_live);
+
+	for (const auto & field : node -> getFieldDefinitions ())
+		field -> removeInterest (this, &AnimationEditor::set_tainted);
 }
 
 void

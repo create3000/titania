@@ -200,6 +200,9 @@ private:
 	addNode (const X3D::SFNode &);
 
 	void
+	removeNode (const X3D::SFNode &);
+
+	void
 	addFields (const X3D::SFNode &, Gtk::TreeIter &);
 
 	std::string
