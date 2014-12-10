@@ -66,6 +66,7 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_FPSAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FPSAdjustment"));
 	m_FrameAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FrameAdjustment"));
 	m_TranslationAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TranslationAdjustment"));
+	m_TreeViewSelection     = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("TreeViewSelection"));
 	m_NameColumn            = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
 	m_IconCellRenderer      = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("IconCellRenderer"));
 	m_NameCellRenderer      = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameCellRenderer"));
@@ -77,7 +78,8 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("NewButton", m_NewButton);
 	m_builder -> get_widget ("OpenButton", m_OpenButton);
-	m_builder -> get_widget ("AddObjectButton", m_AddObjectButton);
+	m_builder -> get_widget ("AddMemberButton", m_AddMemberButton);
+	m_builder -> get_widget ("RemoveMemberButton", m_RemoveMemberButton);
 	m_builder -> get_widget ("CutButton", m_CutButton);
 	m_builder -> get_widget ("CopyButton", m_CopyButton);
 	m_builder -> get_widget ("PasteButton", m_PasteButton);
@@ -120,7 +122,8 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::ToolButton with id 'NewButton'.
 	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new));
 	m_OpenButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_open));
-	m_AddObjectButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_add_object));
+	m_AddMemberButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_add_member));
+	m_RemoveMemberButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_remove_member));
 	m_CutButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_cut));
 	m_CopyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_copy));
 	m_PasteButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_paste));
@@ -135,6 +138,9 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_draw () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_tree_view_draw));
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_row_activated));
+
+	// Connect object Gtk::TreeSelection with id 'TreeViewSelection'.
+	m_TreeViewSelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_tree_view_selection_changed));
 
 	// Connect object Gtk::CellRendererToggle with id 'TaintedCellRenderer'.
 	m_TaintedCellRenderer -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_tainted_toggled));

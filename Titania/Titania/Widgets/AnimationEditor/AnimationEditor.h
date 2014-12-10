@@ -184,8 +184,17 @@ private:
 	void
 	removeInterpolators ();
 
+	virtual
 	void
-	on_add_object () final override;
+	on_add_member () final override;
+
+	virtual
+	void
+	on_remove_member () final override;
+
+	virtual
+	void
+	on_tree_view_selection_changed () final override;
 
 	void
 	addNode (const X3D::SFNode &);

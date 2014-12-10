@@ -118,6 +118,10 @@ public:
 	getTranslationAdjustment () const
 	{ return m_TranslationAdjustment; }
 
+	const Glib::RefPtr <Gtk::TreeSelection> &
+	getTreeViewSelection () const
+	{ return m_TreeViewSelection; }
+
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getNameColumn () const
 	{ return m_NameColumn; }
@@ -155,8 +159,12 @@ public:
 	{ return *m_OpenButton; }
 
 	Gtk::ToolButton &
-	getAddObjectButton () const
-	{ return *m_AddObjectButton; }
+	getAddMemberButton () const
+	{ return *m_AddMemberButton; }
+
+	Gtk::ToolButton &
+	getRemoveMemberButton () const
+	{ return *m_RemoveMemberButton; }
 
 	Gtk::ToolButton &
 	getCutButton () const
@@ -304,7 +312,11 @@ public:
 
 	virtual
 	void
-	on_add_object () = 0;
+	on_add_member () = 0;
+
+	virtual
+	void
+	on_remove_member () = 0;
 
 	virtual
 	void
@@ -345,6 +357,10 @@ public:
 	virtual
 	void
 	on_row_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
+
+	virtual
+	void
+	on_tree_view_selection_changed () = 0;
 
 	virtual
 	void
@@ -440,6 +456,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment>         m_FPSAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_FrameAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TranslationAdjustment;
+	Glib::RefPtr <Gtk::TreeSelection>      m_TreeViewSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_NameColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconCellRenderer;
 	Glib::RefPtr <Gtk::CellRendererText>   m_NameCellRenderer;
@@ -449,7 +466,8 @@ private:
 	Gtk::Box*                              m_Widget;
 	Gtk::ToolButton*                       m_NewButton;
 	Gtk::ToolButton*                       m_OpenButton;
-	Gtk::ToolButton*                       m_AddObjectButton;
+	Gtk::ToolButton*                       m_AddMemberButton;
+	Gtk::ToolButton*                       m_RemoveMemberButton;
 	Gtk::ToolButton*                       m_CutButton;
 	Gtk::ToolButton*                       m_CopyButton;
 	Gtk::ToolButton*                       m_PasteButton;

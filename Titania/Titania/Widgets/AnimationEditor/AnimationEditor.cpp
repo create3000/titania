@@ -199,7 +199,7 @@ AnimationEditor::set_selection ()
 	const bool haveSelection = not getBrowserWindow () -> getSelection () -> getChildren () .empty ();
 	const auto groups        = getSelection <X3D::X3DGroupingNode> ({ X3D::X3DConstants::X3DGroupingNode });
 
-	getAddObjectButton () .set_sensitive (animation and haveSelection);
+	getAddMemberButton () .set_sensitive (animation and haveSelection);
 	getNewButton ()       .set_sensitive (not groups .empty ());
 }
 
@@ -469,6 +469,8 @@ AnimationEditor::set_interpolators ()
 {
 	removeInterpolators ();
 
+	std::map <size_t, X3D::SFNode> foundNodes;
+
 	for (const auto node : animation -> children ())
 	{
 		try
@@ -485,7 +487,7 @@ AnimationEditor::set_interpolators ()
 				continue;
 
 			const auto value_changed = interpolator -> getField ("value_changed");
-
+			
 			for (const auto & route : value_changed -> getOutputRoutes ())
 			{
 				try
@@ -493,7 +495,7 @@ AnimationEditor::set_interpolators ()
 					const auto node  = route -> getDestinationNode ();
 					const auto field = node -> getField (route -> getDestinationField ());
 
-					addNode (node);
+					foundNodes .emplace (node -> getId (), node);
 					interpolatorIndex .emplace (field, interpolator);
 					interpolator -> getField ("value_changed") -> addInterest (this, &AnimationEditor::set_value);
 				}
@@ -504,6 +506,32 @@ AnimationEditor::set_interpolators ()
 		catch (const X3D::X3DError &)
 		{ }
 	}
+
+	// Remove interpolators not found.
+
+	std::vector <std::pair <size_t, X3D::SFNode>> difference;
+
+	std::set_difference (nodes .begin (), nodes .end (),
+	                     foundNodes .begin (), foundNodes .end (),
+	                     std::back_inserter (difference),
+	                     nodes .value_comp ());
+
+	for (const auto & pair : difference)
+		nodes .erase (pair .first);
+		
+	for (const auto & master : getTreeStore () -> children ())
+	{
+		for (const auto & parent : master -> children ())
+		{
+			if (not nodes .count ((*parent) [columns .id]))
+				(*parent) [columns .visible] = false;
+		}
+	}
+
+	// Add newly found interpolators.
+
+	for (const auto & node : foundNodes)
+		addNode (node .second);
 
 	getDrawingArea () .queue_draw ();
 }
@@ -518,10 +546,87 @@ AnimationEditor::removeInterpolators ()
 }
 
 void
-AnimationEditor::on_add_object ()
+AnimationEditor::on_add_member ()
 {
 	for (const auto & node : getBrowserWindow () -> getSelection () -> getChildren ())
 		addNode (node);
+}
+
+void
+AnimationEditor::on_remove_member ()
+{
+	if (getTreeView () .get_selection () -> get_selected_rows () .empty ())
+		return;
+	
+	const auto selected = getTreeView () .get_selection () -> get_selected ();
+	const auto path     = getTreeModelFilter () -> get_path (selected);
+	
+	switch (path .size ())
+	{
+		case 1:
+		{
+			const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Animation"));
+
+			getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { animation }, undoStep);
+			getBrowserWindow () -> addUndoStep (undoStep);
+			break;
+		}
+		case 2:
+		{
+			try
+			{
+				const auto & node = nodes .at ((*selected) [columns .id]);
+				
+				X3D::MFNode interpolators;
+
+				for (const auto & field : node -> getFieldDefinitions ())
+				{
+					try
+					{
+						interpolators .emplace_back (interpolatorIndex .at (field));
+					}
+					catch (const std::out_of_range &)
+					{ }
+				}
+	
+				const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Animation Member"));
+
+				getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), interpolators, undoStep);
+				getBrowserWindow () -> addUndoStep (undoStep);
+			}
+			catch (const std::out_of_range &)
+			{ }
+			
+			break;
+		}
+		case 3:
+		{
+			try
+			{
+				const auto   parent       = selected -> parent ();
+				const auto & node         = nodes .at ((*parent) [columns .id]);
+				const auto   field        = node -> getFieldDefinitions () .at ((*selected) [columns .id]);
+				const auto & interpolator = interpolatorIndex .at (field);
+				
+				const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Interpolator"));
+
+				getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { interpolator }, undoStep);
+				getBrowserWindow () -> addUndoStep (undoStep);			
+			}
+			catch (const std::out_of_range &)
+			{ }
+
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+void
+AnimationEditor::on_tree_view_selection_changed ()
+{
+	getRemoveMemberButton () .set_sensitive (not getTreeView () .get_selection () -> get_selected_rows () .empty ());
 }
 
 void
