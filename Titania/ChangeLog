@@ -2,6 +2,12 @@
 
 	* AnimationEditor.xml:
 	* AnimationEditor.h:
+	* AnimationEditor.cpp: 
+
+2014-12-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* AnimationEditor.xml:
+	* AnimationEditor.h:
 	* AnimationEditor.cpp:
 	* TextureCoordinateEditor.xml:
 	* X3DAnimationEditorInterface.h:

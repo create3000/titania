@@ -664,7 +664,7 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolato
 			interpolator -> key ()      .emplace_back (fraction);
 			interpolator -> keyValue () .emplace_back (value);
 		}
-		else if (keyType [i] == "SPLINE")
+		else if (keyType [i] == "SPLINE" or keyType [i] == "SPLIT")
 		{
 			std::vector <int32_t> keys;
 			std::vector <Type> keyValues;
@@ -676,6 +676,9 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolato
 
 				keys .emplace_back (key [i]);
 				keyValues .emplace_back (value);
+				
+				if (keys .size () == 1)
+					continue;
 
 				if (keyType [i] not_eq "SPLINE")
 					break;

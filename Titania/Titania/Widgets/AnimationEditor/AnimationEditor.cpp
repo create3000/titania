@@ -1158,7 +1158,8 @@ AnimationEditor::on_key_type_changed ()
 	static std::vector <std::string> keyTypes = {
 		"CONSTANT",
 		"LINEAR",
-		"SPLINE"
+		"SPLINE",
+		"SPLIT"
 	};
 
 	try
@@ -1887,7 +1888,7 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::ColorInterpolator> & i
 			interpolator -> key ()      .emplace_back (fraction);
 			interpolator -> keyValue () .emplace_back (value);
 		}
-		else if (keyType [i] == "SPLINE")
+		else if (keyType [i] == "SPLINE" or keyType [i] == "SPLIT")
 		{
 			std::vector <int32_t> keys;
 			std::vector <X3D::Rotation4d> keyValuesH;
@@ -1906,6 +1907,9 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::ColorInterpolator> & i
 				keyValuesH  .emplace_back (0, 0, 1, h);
 				keyValuesSV .emplace_back (s, v);
 				keyValues .emplace_back (value);
+				
+				if (keys .size () == 1)
+					continue;
 
 				if (keyType [i] not_eq "SPLINE")
 					break;
@@ -2030,7 +2034,7 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolato
 			interpolator -> key ()      .emplace_back (fraction);
 			interpolator -> keyValue () .emplace_back (value);
 		}
-		else if (keyType [i] == "SPLINE")
+		else if (keyType [i] == "SPLINE" or keyType [i] == "SPLIT")
 		{
 			std::vector <int32_t> keys;
 			std::vector <Type> keyValues;
@@ -2041,6 +2045,9 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolato
 
 				keys .emplace_back (key [i]);
 				keyValues .emplace_back (value);
+				
+				if (keys .size () == 1)
+					continue;
 
 				if (keyType [i] not_eq "SPLINE")
 					break;

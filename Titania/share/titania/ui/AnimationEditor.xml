@@ -284,6 +284,7 @@
                       <item>CONSTANT</item>
                       <item>LINEAR</item>
                       <item>SPLINE</item>
+                      <item translatable="yes">SPLIT</item>
                     </items>
                     <signal name="changed" handler="on_key_type_changed" swapped="no"/>
                   </object>
