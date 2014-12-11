@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,8 +50,8 @@
 
 #include "MagicImport.h"
 
-#include "X3DBrowserWindow.h"
 #include "BrowserSelection.h"
+#include "X3DBrowserWindow.h"
 
 #include <Titania/X3D/Browser/ContextLock.h>
 
@@ -63,7 +63,7 @@ using namespace std::placeholders;
 MagicImport::MagicImport (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	 importFunctions ({ std::make_pair ("Material", std::bind (&MagicImport::material, this, _1, _2, _3)),
-	                    std::make_pair ("Texture",  std::bind (&MagicImport::texture,  this, _1, _2, _3)) })
+	                  std::make_pair ("Texture",  std::bind (&MagicImport::texture,  this, _1, _2, _3)) })
 {
 	setup ();
 }
@@ -109,7 +109,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, 
 	                  if (appearance and X3D::x3d_cast <X3D::X3DMaterialNode*> (appearance -> material ()))
 	                  {
 	                     importProtoDeclaration (appearance -> material (), undoStep);
-	                     
+
 	                     material = appearance -> material () -> copy (getExecutionContext (), X3D::FLAT_COPY);
 	                     return false;
 							}
@@ -124,7 +124,40 @@ MagicImport::material (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, 
 	                  const auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
 
 	                  if (appearance)
-	                     getBrowserWindow () -> replaceNode (node, appearance -> material (), material, undoStep);
+	                  {
+	                     const X3D::X3DPtr <X3D::Material> lhs (appearance -> material ());
+	                     const X3D::X3DPtr <X3D::Material> rhs (material);
+
+	                     if (lhs and rhs and lhs -> getExecutionContext () == getExecutionContext ())
+	                     {
+	                        using setValue = void (X3D::SFColor::*) (const X3D::Color3f &);
+
+	                        undoStep -> addUndoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> ambientIntensity ()), lhs -> ambientIntensity ());
+	                        undoStep -> addUndoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> diffuseColor ()),     lhs -> diffuseColor ());
+	                        undoStep -> addUndoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> specularColor ()),    lhs -> specularColor ());
+	                        undoStep -> addUndoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> emissiveColor ()),    lhs -> emissiveColor ());
+	                        undoStep -> addUndoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> shininess ()),        lhs -> shininess ());
+	                        undoStep -> addUndoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> transparency ()),     lhs -> transparency ());
+
+	                        undoStep -> addRedoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> ambientIntensity ()), rhs -> ambientIntensity ());
+	                        undoStep -> addRedoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> diffuseColor ()),     rhs -> diffuseColor ());
+	                        undoStep -> addRedoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> specularColor ()),    rhs -> specularColor ());
+	                        undoStep -> addRedoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> emissiveColor ()),    rhs -> emissiveColor ());
+	                        undoStep -> addRedoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> shininess ()),        rhs -> shininess ());
+	                        undoStep -> addRedoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> transparency ()),     rhs -> transparency ());
+
+	                        lhs -> ambientIntensity () = rhs -> ambientIntensity ();
+	                        lhs -> diffuseColor ()     = rhs -> diffuseColor ();
+	                        lhs -> specularColor ()    = rhs -> specularColor ();
+	                        lhs -> emissiveColor ()    = rhs -> emissiveColor ();
+	                        lhs -> shininess ()        = rhs -> shininess ();
+	                        lhs -> transparency ()     = rhs -> transparency ();
+
+	                        getBrowserWindow () -> updateNamedNode (getExecutionContext (), rhs -> getName (), appearance -> material (), undoStep);
+								}
+	                     else
+									getBrowserWindow () -> replaceNode (node, appearance -> material (), material, undoStep);
+							}
 
 	                  return true;
 						});
@@ -152,7 +185,7 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, c
 	                  if (appearance and X3D::x3d_cast <X3D::X3DTextureNode*> (appearance -> texture ()))
 	                  {
 	                     importProtoDeclaration (appearance -> texture (), undoStep);
-	                     
+
 	                     texture = appearance -> texture () -> copy (getExecutionContext (), X3D::FLAT_COPY);
 	                     return false;
 							}
@@ -171,25 +204,25 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, c
 
 	                  if (appearance)
 	                  {
-								const X3D::X3DPtr <X3D::X3DTexture2DNode> oldTexture2D (appearance -> texture ());
-								const X3D::X3DPtr <X3D::X3DTexture3DNode> oldTexture3D (appearance -> texture ());
+	                     const X3D::X3DPtr <X3D::X3DTexture2DNode> oldTexture2D (appearance -> texture ());
+	                     const X3D::X3DPtr <X3D::X3DTexture3DNode> oldTexture3D (appearance -> texture ());
 
 	                     if (oldTexture2D and texture2D)
 	                     {
 	                        texture2D -> repeatS ()           = oldTexture2D -> repeatS ();
 	                        texture2D -> repeatT ()           = oldTexture2D -> repeatT ();
 	                        texture2D -> textureProperties () = oldTexture2D -> textureProperties ();
-	                     }
-                        else if (oldTexture3D and texture3D)
+								}
+	                     else if (oldTexture3D and texture3D)
 	                     {
 	                        texture3D -> repeatS ()           = oldTexture3D -> repeatS ();
 	                        texture3D -> repeatT ()           = oldTexture3D -> repeatT ();
 	                        texture3D -> repeatR ()           = oldTexture3D -> repeatR ();
 	                        texture3D -> textureProperties () = oldTexture3D -> textureProperties ();
-	                     }
+								}
 
 	                     getBrowserWindow () -> replaceNode (node, appearance -> texture (), texture, undoStep);
-	                  }
+							}
 
 	                  return true;
 						});
@@ -211,7 +244,7 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 		try
 		{
 			const auto protoDeclaration = getExecutionContext () -> getProtoDeclaration (name);
-			
+
 			undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration,
 			                             getExecutionContext (),
 			                             name,
@@ -222,7 +255,7 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 			try
 			{
 				const auto externProtoDeclaration = getExecutionContext () -> getExternProtoDeclaration (name);
-				
+
 				undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration,
 				                             getExecutionContext (),
 				                             name,
@@ -246,7 +279,7 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 		}
 
 		const auto protoNode = prototypeInstance -> getProtoNode () -> copy (getExecutionContext (), X3D::COPY_OR_CLONE);
-		
+
 		if (isExternProto)
 		{
 			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration,
@@ -260,7 +293,7 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 			                             getExecutionContext (),
 			                             name,
 			                             X3D::ProtoDeclarationPtr (protoNode));
-		}	
+		}
 	}
 }
 
