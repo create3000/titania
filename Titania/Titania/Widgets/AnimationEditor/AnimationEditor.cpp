@@ -396,6 +396,17 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	(*master) [columns .tainted] = false;
 	(*master) [columns .visible] = true;
 
+	getCutButton ()        .set_sensitive (animation);
+	getCopyButton ()       .set_sensitive (animation);
+	getPasteButton ()      .set_sensitive (animation);
+	getFirstFrameButton () .set_sensitive (animation);
+	getPlayPauseButton ()  .set_sensitive (animation);
+	getLastFrameButton ()  .set_sensitive (animation);
+	getFrameSpinButton ()  .set_sensitive (animation);
+	getTimeButton ()       .set_sensitive (animation);
+	getKeyTypeButton ()    .set_sensitive (animation);
+	getAnimationBox ()     .set_sensitive (animation);
+
 	if (animation)
 	{
 		animation -> isLive ()   .addInterest (this, &AnimationEditor::set_animation_live);
@@ -427,17 +438,6 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	}
 
 	set_selection ();
-
-	getCutButton ()        .set_sensitive (animation);
-	getCopyButton ()       .set_sensitive (animation);
-	getPasteButton ()      .set_sensitive (animation);
-	getFirstFrameButton () .set_sensitive (animation);
-	getPlayPauseButton ()  .set_sensitive (animation);
-	getLastFrameButton ()  .set_sensitive (animation);
-	getFrameSpinButton ()  .set_sensitive (animation);
-	getTimeButton ()       .set_sensitive (animation);
-	getKeyTypeButton ()    .set_sensitive (animation);
-	getAnimationBox ()     .set_sensitive (animation);
 
 	nodeName .setNode (X3D::SFNode (animation));
 
