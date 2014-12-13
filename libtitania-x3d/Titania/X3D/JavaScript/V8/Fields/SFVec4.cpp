@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,16 +48,21 @@
  *
  ******************************************************************************/
 
-#include "RegEx.h"
+#include "SFVec4.h"
 
 namespace titania {
 namespace X3D {
+namespace GoogleV8 {
 
-const pcrecpp::RE RegEx::Id (R"/(\A[^\x30-\x39\x00-\x20\x22\x23\x27\x2b\x2c\x2d\x2e\x5b\x5c\x5d\x7b\x7d\x7f]{1}[^\x00-\x20\x22\x23\x27\x2c\x2e\x5b\x5c\x5d\x7b\x7d\x7f]*$)/");
+template <>
+const std::string X3DObject <X3D::SFVec4d>::typeName ("SFVec4d");
 
-const pcrecpp::RE RegEx::LastNumber_ (R"/((_\d+)$)/");
-const pcrecpp::RE RegEx::LastNumber (R"/((\d+)$)/");
-const pcrecpp::RE RegEx::ECMAScript (R"/(\A\s*(vrmlscript|javascript|ecmascript|v8|peaseblossom)\:(.*)$)/", pcrecpp::RE_Options () .set_dotall (true));
+template <>
+const std::string X3DObject <X3D::SFVec4f>::typeName ("SFVec4f");
 
+template class SFVec4 <X3D::SFVec4d>;
+template class SFVec4 <X3D::SFVec4f>;
+
+} // GoogleV8
 } // X3D
 } // titania

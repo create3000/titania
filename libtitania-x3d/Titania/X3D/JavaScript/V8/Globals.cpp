@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,16 +48,39 @@
  *
  ******************************************************************************/
 
-#include "RegEx.h"
+#include "Globals.h"
+
+#include "../../Browser/X3DBrowser.h"
+#include "String.h"
 
 namespace titania {
 namespace X3D {
+namespace GoogleV8 {
 
-const pcrecpp::RE RegEx::Id (R"/(\A[^\x30-\x39\x00-\x20\x22\x23\x27\x2b\x2c\x2d\x2e\x5b\x5c\x5d\x7b\x7d\x7f]{1}[^\x00-\x20\x22\x23\x27\x2c\x2e\x5b\x5c\x5d\x7b\x7d\x7f]*$)/");
+void
+Globals::initialize (Context* const context, const v8::Local <v8::Object> & globalObject)
+{
+	globalObject -> Set (make_v8_string ("NULL"),  v8::Null (),              v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	globalObject -> Set (make_v8_string ("FALSE"), v8::Boolean::New (false), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	globalObject -> Set (make_v8_string ("TRUE"),  v8::Boolean::New (true),  v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
 
-const pcrecpp::RE RegEx::LastNumber_ (R"/((_\d+)$)/");
-const pcrecpp::RE RegEx::LastNumber (R"/((\d+)$)/");
-const pcrecpp::RE RegEx::ECMAScript (R"/(\A\s*(vrmlscript|javascript|ecmascript|v8|peaseblossom)\:(.*)$)/", pcrecpp::RE_Options () .set_dotall (true));
+	globalObject -> Set (make_v8_string ("print"), v8::FunctionTemplate::New (print, v8::External::New (context)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	globalObject -> Set (make_v8_string ("trace"), v8::FunctionTemplate::New (print, v8::External::New (context)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+}
 
+v8::Handle <v8::Value>
+Globals::print (const v8::Arguments & args)
+{
+	const auto browser = getContext (args) -> getBrowser ();
+
+	for (size_t i = 0, size = args .Length (); i < size; ++ i)
+		browser -> print (get_utf8_string (args [i]));
+
+	browser -> print ("\n");
+
+	return v8::Undefined ();
+}
+
+} // GoogleV8
 } // X3D
 } // titania

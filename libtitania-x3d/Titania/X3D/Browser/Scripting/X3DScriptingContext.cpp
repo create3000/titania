@@ -52,6 +52,7 @@
 
 #include "../../JavaScript/PeaseBlossom.h"
 #include "../../JavaScript/SpiderMonkey.h"
+#include "../../JavaScript/V8.h"
 
 namespace titania {
 namespace X3D {
@@ -59,8 +60,9 @@ namespace X3D {
 X3DScriptingContext::X3DScriptingContext () :
 	X3DBaseNode (),
 	javaScriptEngines ({
-	                      std::make_pair ("javascript", new SpiderMonkey (getExecutionContext ())),
+	                      std::make_pair ("javascript",   new SpiderMonkey (getExecutionContext ())),
 	                      std::make_pair ("peaseblossom", new PeaseBlossom (getExecutionContext ())),
+	                      std::make_pair ("v8",           new V8 (getExecutionContext ())),
 							 })
 {
 	for (auto & javaScriptEngine : javaScriptEngines)

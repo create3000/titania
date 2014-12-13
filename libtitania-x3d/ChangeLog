@@ -1,3 +1,25 @@
+2014-12-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* V8.h:
+	* RegEx.cpp:
+	* V8.cpp:
+	* String.h:
+	* Fields.h:
+	* Browser.h:
+	* Context.h:
+	* Globals.h:
+	* X3DField.h:
+	* Browser.cpp:
+	* X3DObject.h:
+	* Globals.cpp:
+	* Context.cpp:
+	* SFVec4.h:
+	* SFVec4.cpp:
+	* X3DFieldDefinition.h:
+	* X3DScriptingContext.cpp: 
+
 2014-12-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DGarbageCollector.h:

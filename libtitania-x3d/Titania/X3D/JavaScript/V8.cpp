@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,16 +48,65 @@
  *
  ******************************************************************************/
 
-#include "RegEx.h"
+#include "V8/Context.h"
+
+#include "../JavaScript/V8.h"
+
+#include "../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-const pcrecpp::RE RegEx::Id (R"/(\A[^\x30-\x39\x00-\x20\x22\x23\x27\x2b\x2c\x2d\x2e\x5b\x5c\x5d\x7b\x7d\x7f]{1}[^\x00-\x20\x22\x23\x27\x2c\x2e\x5b\x5c\x5d\x7b\x7d\x7f]*$)/");
+const ComponentType V8::component      = ComponentType::TITANIA;
+const std::string   V8::typeName       = "V8";
+const std::string   V8::containerField = "javaScript";
 
-const pcrecpp::RE RegEx::LastNumber_ (R"/((_\d+)$)/");
-const pcrecpp::RE RegEx::LastNumber (R"/((\d+)$)/");
-const pcrecpp::RE RegEx::ECMAScript (R"/(\A\s*(vrmlscript|javascript|ecmascript|v8|peaseblossom)\:(.*)$)/", pcrecpp::RE_Options () .set_dotall (true));
+V8::V8 (X3DExecutionContext* const executionContext) :
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DJavaScriptEngine (),
+	             vendor ("Google"),
+	        description (),
+	            version ()
+{
+	setName ("V8");
+}
+
+V8*
+V8::create (X3DExecutionContext* const executionContext)  const
+{
+	return new V8 (executionContext);
+}
+
+void
+V8::initialize ()
+{
+	X3DJavaScriptEngine::initialize ();
+
+	description = "";
+	version     = v8::V8::GetVersion ();
+}
+
+X3DPtr <X3DJavaScriptContext>
+V8::createContext (Script* script, const std::string & ecmascript, const basic::uri & uri)
+{
+	return new GoogleV8::Context (script, ecmascript, uri);
+}
+
+void
+V8::toStream (std::ostream & stream) const
+{
+	stream
+		<< "\tCurrent Javascript Engine" << std::endl
+		<< "\t\tName: " << vendor << ' ' << getName () << std::endl
+		<< "\t\tDescription: " << description << std::endl
+		<< "\t\tVersion: " << version;
+}
+
+void
+V8::dispose ()
+{
+	X3DJavaScriptEngine::dispose ();
+}
 
 } // X3D
 } // titania

@@ -48,16 +48,47 @@
  *
  ******************************************************************************/
 
-#include "RegEx.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_V8STRING_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_V8STRING_H__
+
+#include <string>
+#include <v8.h>
 
 namespace titania {
 namespace X3D {
+namespace GoogleV8 {
 
-const pcrecpp::RE RegEx::Id (R"/(\A[^\x30-\x39\x00-\x20\x22\x23\x27\x2b\x2c\x2d\x2e\x5b\x5c\x5d\x7b\x7d\x7f]{1}[^\x00-\x20\x22\x23\x27\x2c\x2e\x5b\x5c\x5d\x7b\x7d\x7f]*$)/");
+inline
+v8::Local <v8::String>
+make_v8_string (const char* string)
+{
+	return v8::String::New (string);
+}
 
-const pcrecpp::RE RegEx::LastNumber_ (R"/((_\d+)$)/");
-const pcrecpp::RE RegEx::LastNumber (R"/((\d+)$)/");
-const pcrecpp::RE RegEx::ECMAScript (R"/(\A\s*(vrmlscript|javascript|ecmascript|v8|peaseblossom)\:(.*)$)/", pcrecpp::RE_Options () .set_dotall (true));
+inline
+v8::Local <v8::String>
+make_v8_string (const std::string & string)
+{
+	return v8::String::New (string .c_str (), string .size ());
+}
 
+template <class Type>
+inline
+std::string
+get_utf8_string (const Type & value)
+{
+	try
+	{
+		return *v8::String::Utf8Value (value);
+	}
+	catch (...)
+	{
+		return "";
+	}
+}
+
+} // GoogleV8
 } // X3D
 } // titania
+
+#endif

@@ -48,16 +48,29 @@
  *
  ******************************************************************************/
 
-#include "RegEx.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_V8FIELDS_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_V8FIELDS_H__
 
-namespace titania {
-namespace X3D {
+#include "../../Fields.h"
 
-const pcrecpp::RE RegEx::Id (R"/(\A[^\x30-\x39\x00-\x20\x22\x23\x27\x2b\x2c\x2d\x2e\x5b\x5c\x5d\x7b\x7d\x7f]{1}[^\x00-\x20\x22\x23\x27\x2c\x2e\x5b\x5c\x5d\x7b\x7d\x7f]*$)/");
+//#include "Fields/SFColor.h"
+//#include "Fields/SFColorRGBA.h"
+//#include "Fields/SFImage.h"
+//#include "Fields/SFMatrix3.h"
+//#include "Fields/SFMatrix4.h"
+//#include "Fields/SFNode.h"
+//#include "Fields/SFRotation.h"
+//#include "Fields/SFVec2.h"
+//#include "Fields/SFVec3.h"
+#include "Fields/SFVec4.h"
 
-const pcrecpp::RE RegEx::LastNumber_ (R"/((_\d+)$)/");
-const pcrecpp::RE RegEx::LastNumber (R"/((\d+)$)/");
-const pcrecpp::RE RegEx::ECMAScript (R"/(\A\s*(vrmlscript|javascript|ecmascript|v8|peaseblossom)\:(.*)$)/", pcrecpp::RE_Options () .set_dotall (true));
+//#include "Fields/ArrayFields.h"
+//#include "Fields/MFBool.h"
+//#include "Fields/MFDouble.h"
+//#include "Fields/MFFloat.h"
+//#include "Fields/MFInt32.h"
+//#include "Fields/MFNode.h"
+//#include "Fields/MFString.h"
+//#include "Fields/MFTime.h"
 
-} // X3D
-} // titania
+#endif

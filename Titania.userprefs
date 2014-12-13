@@ -1,34 +1,45 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Makefile.am">
     <Files>
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="254" Column="6" />
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.h" Line="177" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.cpp" Line="51" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/X3DJavaScriptContext.h" Line="76" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFVec4.h" Line="58" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/X3DObject.h" Line="58" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/X3DFieldDefinition.h" Line="54" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/X3DField.h" Line="54" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/String.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Globals.h" Line="56" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Globals.cpp" Line="54" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields.h" Line="66" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Browser.h" Line="56" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Browser.cpp" Line="51" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFVec4.cpp" Line="52" Column="1" />
+      <File FileName="libtitania-x3d/Makefile.am" Line="551" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="miscellaneous" expanded="True">
-            <Node name="glade2c++" expanded="True" />
-          </Node>
-          <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
-          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True" />
             <Node name="Tests" expanded="True">
+              <Node name="Basic" expanded="True" />
               <Node name="EnvironmentalSensors" expanded="True" />
               <Node name="Geometry3D" expanded="True" />
               <Node name="Interpolation" expanded="True" />
+              <Node name="Navigation" expanded="True" />
+              <Node name="Scripting" expanded="True">
+                <Node name="pb" expanded="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="InputOutput" expanded="True" />
               <Node name="Math" expanded="True">
+                <Node name="Geometry" expanded="True" />
                 <Node name="Numbers" expanded="True" />
                 <Node name="Utility" expanded="True" />
               </Node>
@@ -42,66 +53,47 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Basic" expanded="True" />
-                <Node name="Browser" expanded="True" />
-                <Node name="Components" expanded="True">
-                  <Node name="EventUtilities" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="Time" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Scripting" expanded="True" />
                 </Node>
-                <Node name="Fields" expanded="True" />
+                <Node name="JavaScript" expanded="True">
+                  <Node name="V8" expanded="True">
+                    <Node name="Fields" expanded="True" />
+                  </Node>
+                </Node>
                 <Node name="Parser" expanded="True" />
-                <Node name="PeaseBlossom" expanded="True">
-                  <Node name="Parser" expanded="True" />
-                </Node>
-                <Node name="Tools" expanded="True">
-                  <Node name="Grouping" expanded="True" />
-                </Node>
               </Node>
             </Node>
+            <Node name="Makefile.am" selected="True" />
           </Node>
           <Node name="Papers" expanded="True">
             <Node name="CosmoWorlds" expanded="True" />
             <Node name="Quaternion" expanded="True" />
+            <Node name="V8" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="applications" expanded="True" />
               <Node name="titania" expanded="True">
-                <Node name="pages" expanded="True">
-                  <Node name="about" expanded="True" />
-                </Node>
-                <Node name="Prototypes" expanded="True">
-                  <Node name="0.1" expanded="True">
-                    <Node name="Geometry3D" expanded="True" />
-                  </Node>
-                </Node>
                 <Node name="ui" expanded="True">
+                  <Node name="Editors" expanded="True" />
                   <Node name="icons" expanded="True" />
                 </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
-              <Node name="ComposedWidgets" expanded="True" />
               <Node name="Editors" expanded="True">
                 <Node name="ColorPerVertexEditor" expanded="True" />
-                <Node name="InlineEditor" expanded="True" />
+                <Node name="GridEditor" expanded="True" />
                 <Node name="NodePropertiesEditor" expanded="True" />
+                <Node name="PrecisionPlacementPanel" expanded="True" />
                 <Node name="TextureCoordinateEditor" expanded="True" />
+                <Node name="TextureEditor" expanded="True" />
+                <Node name="ViewpointEditor" expanded="True" />
               </Node>
               <Node name="Widgets" expanded="True">
-                <Node name="AnimationEditor" expanded="True">
-                  <Node name="AnimationEditor.h" selected="True" />
-                </Node>
-                <Node name="Console" expanded="True" />
-                <Node name="LibraryView" expanded="True" />
-                <Node name="OutlineEditor" expanded="True">
-                  <Node name="CellRenderer" expanded="True" />
-                </Node>
-                <Node name="ScriptEditor" expanded="True" />
-                <Node name="ViewpointList" expanded="True" />
+                <Node name="AnimationEditor" expanded="True" />
               </Node>
             </Node>
           </Node>

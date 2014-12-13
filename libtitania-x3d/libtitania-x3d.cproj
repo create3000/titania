@@ -798,6 +798,18 @@
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\vsBase.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\vsChildObject.h" />
+    <None Include="Titania\X3D\JavaScript\V8.h" />
+    <None Include="Titania\X3D\JavaScript\V8\Fields\SFVec4.h" />
+    <None Include="Titania\X3D\JavaScript\V8\Browser.h" />
+    <None Include="Titania\X3D\JavaScript\V8\Context.h" />
+    <None Include="Titania\X3D\JavaScript\V8\Fields.h" />
+    <None Include="Titania\X3D\JavaScript\V8\Globals.h" />
+    <None Include="Titania\X3D\JavaScript\V8\String.h">
+      <DependentUpon>v8String.h</DependentUpon>
+    </None>
+    <None Include="Titania\X3D\JavaScript\V8\X3DField.h" />
+    <None Include="Titania\X3D\JavaScript\V8\X3DFieldDefinition.h" />
+    <None Include="Titania\X3D\JavaScript\V8\X3DObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1320,6 +1332,11 @@
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\LassoSelection.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Base\vsChildObject.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFVec4.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8\Browser.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8\Globals.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8\Context.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

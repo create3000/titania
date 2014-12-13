@@ -48,16 +48,25 @@
  *
  ******************************************************************************/
 
-#include "RegEx.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_V8X3DFIELD_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_V8X3DFIELD_H__
+
+#include "X3DFieldDefinition.h"
 
 namespace titania {
 namespace X3D {
+namespace GoogleV8 {
 
-const pcrecpp::RE RegEx::Id (R"/(\A[^\x30-\x39\x00-\x20\x22\x23\x27\x2b\x2c\x2d\x2e\x5b\x5c\x5d\x7b\x7d\x7f]{1}[^\x00-\x20\x22\x23\x27\x2c\x2e\x5b\x5c\x5d\x7b\x7d\x7f]*$)/");
+template <class Type>
+class X3DField :
+	public X3DFieldDefinition <Type>
+{
+public:
 
-const pcrecpp::RE RegEx::LastNumber_ (R"/((_\d+)$)/");
-const pcrecpp::RE RegEx::LastNumber (R"/((\d+)$)/");
-const pcrecpp::RE RegEx::ECMAScript (R"/(\A\s*(vrmlscript|javascript|ecmascript|v8|peaseblossom)\:(.*)$)/", pcrecpp::RE_Options () .set_dotall (true));
+};
 
+} // GoogleV8
 } // X3D
 } // titania
+
+#endif
