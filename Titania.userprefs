@@ -1,19 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFColor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4.h">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.cpp" Line="129" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/X3DObject.h" Line="1" Column="1" />
       <File FileName="Library/Tests/Scripting/V8.x3dv" Line="174" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFColorRGBA.h" Line="165" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFColorRGBA.cpp" Line="211" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFVec2.h" Line="393" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFColorRGBA.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFColor.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFColor.cpp" Line="102" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields.h" Line="53" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFVec2.h" Line="497" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFMatrix4.h" Line="234" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFMatrix4.cpp" Line="18" Column="81" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4.h" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -32,7 +29,6 @@
               <Node name="Navigation" expanded="True" />
               <Node name="Scripting" expanded="True">
                 <Node name="pb" expanded="True" />
-                <Node name="V8.x3dv" selected="True" />
               </Node>
             </Node>
           </Node>
@@ -62,7 +58,9 @@
                 <Node name="Fields" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="SpiderMonkey" expanded="True">
-                    <Node name="Fields" expanded="True" />
+                    <Node name="Fields" expanded="True">
+                      <Node name="jsSFMatrix4.h" selected="True" />
+                    </Node>
                   </Node>
                   <Node name="V8" expanded="True">
                     <Node name="Fields" expanded="True" />

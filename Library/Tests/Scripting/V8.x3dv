@@ -180,6 +180,51 @@ function fields ()
 	print ('SFColor .b:      ', c3 .b);
 	print ('SFColor .getHSV: ', hsv);
 
+	var m16 = new SFMatrix4f (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+	print ('SFMatrix4f:      ', m16);
+	print ('SFMatrix4f [ 0]: ', m16 [ 0]);
+	print ('SFMatrix4f [ 1]: ', m16 [ 1]);
+	print ('SFMatrix4f [ 2]: ', m16 [ 2]);
+	print ('SFMatrix4f [ 3]: ', m16 [ 3]);
+	print ('SFMatrix4f [ 4]: ', m16 [ 4]);
+	print ('SFMatrix4f [ 5]: ', m16 [ 5]);
+	print ('SFMatrix4f [ 6]: ', m16 [ 6]);
+	print ('SFMatrix4f [ 7]: ', m16 [ 7]);
+	print ('SFMatrix4f [ 8]: ', m16 [ 8]);
+	print ('SFMatrix4f [ 9]: ', m16 [ 9]);
+	print ('SFMatrix4f [10]: ', m16 [10]);
+	print ('SFMatrix4f [11]: ', m16 [11]);
+	print ('SFMatrix4f [12]: ', m16 [12]);
+	print ('SFMatrix4f [13]: ', m16 [13]);
+	print ('SFMatrix4f [14]: ', m16 [14]);
+	print ('SFMatrix4f [15]: ', m16 [15]);
+	print ('SFMatrix4f .transpose:     ', m16 .transpose ());
+	print ('SFMatrix4f .multLeft:      ', m16 .multLeft (m16));
+	print ('SFMatrix4f .multRight:     ', m16 .multRight (m16));
+	print ('SFMatrix4f .multVecMatrix: ', m16 .multVecMatrix (new SFVec3f (1, 2, 3)));
+	print ('SFMatrix4f .multMatrixVec: ', m16 .multMatrixVec (new SFVec3f (1, 2, 3)));
+	print ('SFMatrix4f .multDirMatrix: ', m16 .multDirMatrix (new SFVec3f (1, 2, 3)));
+	print ('SFMatrix4f .multMatrixDir: ', m16 .multMatrixDir (new SFVec3f (1, 2, 3)));
+
+	var m9 = new SFMatrix3f (1, 2, 3, 4, 5, 6, 7, 8, 9);
+	print ('SFMatrix3f:     ', m9);
+	print ('SFMatrix3f [0]: ', m9 [0]);
+	print ('SFMatrix3f [1]: ', m9 [1]);
+	print ('SFMatrix3f [2]: ', m9 [2]);
+	print ('SFMatrix3f [3]: ', m9 [3]);
+	print ('SFMatrix3f [4]: ', m9 [4]);
+	print ('SFMatrix3f [5]: ', m9 [5]);
+	print ('SFMatrix3f [6]: ', m9 [6]);
+	print ('SFMatrix3f [7]: ', m9 [7]);
+	print ('SFMatrix3f [8]: ', m9 [8]);
+	print ('SFMatrix3f .transpose:     ', m9 .transpose ());
+	print ('SFMatrix3f .multLeft:      ', m9 .multLeft (m9));
+	print ('SFMatrix3f .multRight:     ', m9 .multRight (m9));
+	print ('SFMatrix3f .multVecMatrix: ', m9 .multVecMatrix (new SFVec2f (1, 2)));
+	print ('SFMatrix3f .multMatrixVec: ', m9 .multMatrixVec (new SFVec2f (1, 2)));
+	print ('SFMatrix3f .multDirMatrix: ', m9 .multDirMatrix (new SFVec2f (1, 2)));
+	print ('SFMatrix3f .multMatrixDir: ', m9 .multMatrixDir (new SFVec2f (1, 2)));
+
 	//var f = v .toString;
 	//f .call (Browser);
 }

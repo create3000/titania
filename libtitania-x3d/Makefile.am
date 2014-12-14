@@ -458,6 +458,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/V8/Context.cpp \
 	Titania/X3D/JavaScript/V8/Fields/SFColor.cpp \
 	Titania/X3D/JavaScript/V8/Fields/SFColorRGBA.cpp \
+	Titania/X3D/JavaScript/V8/Fields/SFMatrix3.cpp \
+	Titania/X3D/JavaScript/V8/Fields/SFMatrix4.cpp \
 	Titania/X3D/JavaScript/V8/Fields/SFRotation4.cpp \
 	Titania/X3D/JavaScript/V8/Fields/SFVec2.cpp \
 	Titania/X3D/JavaScript/V8/Fields/SFVec3.cpp \

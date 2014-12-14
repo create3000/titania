@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,39 +48,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_OBJECT_TYPE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_V8_OBJECT_TYPE_H__
-
-#include <string>
-#include <v8.h>
+#include "SFMatrix4.h"
 
 namespace titania {
 namespace X3D {
 namespace GoogleV8 {
 
-enum class ObjectType :
-	size_t
-{
+template <>
+const std::string X3DObject <X3D::SFMatrix4d>::typeName = "SFMatrix4d";
 
-	SFColor,
-	SFColorRGBA,
-	SFMatrix3d,
-	SFMatrix3f,
-	SFMatrix4d,
-	SFMatrix4f,
-	SFRotation,
-	SFVec2d,
-	SFVec2f,
-	SFVec3d,
-	SFVec3f,
-	SFVec4d,
-	SFVec4f,
+template <>
+const std::string X3DObject <X3D::SFMatrix4f>::typeName = "SFMatrix4f";
 
-	SIZE
-};
+template <>
+const ObjectType X3DObject <X3D::SFMatrix4d>::type = ObjectType::SFMatrix4d;
+
+template <>
+const ObjectType X3DObject <X3D::SFMatrix4f>::type = ObjectType::SFMatrix4f;
+
+template class SFMatrix4 <X3D::SFMatrix4d>;
+template class SFMatrix4 <X3D::SFMatrix4f>;
 
 } // GoogleV8
 } // X3D
 } // titania
-
-#endif
