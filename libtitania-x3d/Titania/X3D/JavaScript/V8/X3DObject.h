@@ -123,7 +123,14 @@ protected:
 
 	static
 	T*
-	getObject (const v8::Arguments &)
+	getObject (const v8::Arguments & args)
+	throw (X3D::Error <X3D::INVALID_FIELD>,
+          std::out_of_range)
+   { return getObject (getContext (args), args); }
+
+	static
+	T*
+	getObject (Context* const, const v8::Arguments &)
 	throw (X3D::Error <X3D::INVALID_FIELD>,
           std::out_of_range);
 
@@ -233,11 +240,11 @@ X3DObject <T>::addObject (Context* const context, const v8::Local <v8::Object> &
 
 template <class T>
 T*
-X3DObject <T>::getObject (const v8::Arguments & args)
+X3DObject <T>::getObject (Context* const context, const v8::Arguments & args)
 throw (X3D::Error <X3D::INVALID_FIELD>,
        std::out_of_range)
 {
-	if (getContext (args) -> getClass (type) -> HasInstance (args .This ()))
+	if (context -> getClass (type) -> HasInstance (args .This ()))
 		return getObject (args .This ());
 
 	throw X3D::Error <X3D::INVALID_FIELD> ("RuntimeError: function must be called with object of type " + typeName + ".");
@@ -324,24 +331,23 @@ X3DObject <T>::finalize (v8::Persistent <v8::Value> value, void* parameter)
 template <class T>
 inline
 T*
-getArg (const v8::Local <v8::Value> & value)
+getArgument (const v8::Local <v8::Value> & value)
 {
 	return static_cast <T*> (v8::Handle <v8::External>::Cast (value -> ToObject () -> GetInternalField (0)) -> Value ());
 }
 
 template <class T>
-T*
-getArg (Context* const context, const ObjectType type, const v8::Arguments & args, const size_t index)
+typename T::value_type*
+getArgument (Context* const context, const v8::Arguments & args, const size_t index)
 throw (X3D::Error <X3D::INVALID_FIELD>,
        std::out_of_range)
 {
-	const auto value  = args [index];
-	const auto class_ = context -> getClass (type);
+	const auto value = args [index];
 
-	if (class_ -> HasInstance (value))
-		return getArg <T> (value);
+	if (context -> getClass (T::Type ()) -> HasInstance (value))
+		return getArgument <typename T::value_type> (value);
 
-	throw X3D::Error <X3D::INVALID_FIELD> ("RuntimeError: parameter " + std::to_string (index + 1) + " has wrong type, must be " + to_string (class_ -> GetFunction () -> GetName ()) + ".");
+	throw X3D::Error <X3D::INVALID_FIELD> ("RuntimeError: parameter " + std::to_string (index + 1) + " has wrong type, must be " + T::TypeName () + ".");
 }
 
 } // GoogleV8

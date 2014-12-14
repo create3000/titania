@@ -146,6 +146,10 @@ function fields ()
 	print ('SFVec4f .multVec:     ', v .multVec (v));
 	print ('SFVec4f .divVec:      ', v .divVec (v));
 
+	print ('SFRotation:          ', new SFRotation (1,2,3,4));
+	print ('SFRotation:          ', new SFRotation (new SFVec3f (1,2,3) ,4));
+	print ('SFRotation .getAxis: ', new SFRotation (1,2,3,4) .getAxis ());
+
 	print ('Enumerate:');
 	for (var i in v)
 		print ('SFVec4f [', i, ']: ', v [i]);

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,27 +48,20 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_V8FIELDS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_V8_V8FIELDS_H__
+#include "SFRotation4.h"
 
-//#include "Fields/SFColor.h"
-//#include "Fields/SFColorRGBA.h"
-//#include "Fields/SFImage.h"
-//#include "Fields/SFMatrix3.h"
-//#include "Fields/SFMatrix4.h"
-//#include "Fields/SFNode.h"
-#include "Fields/SFRotation4.h"
-#include "Fields/SFVec2.h"
-#include "Fields/SFVec3.h"
-#include "Fields/SFVec4.h"
+namespace titania {
+namespace X3D {
+namespace GoogleV8 {
 
-//#include "Fields/ArrayFields.h"
-//#include "Fields/MFBool.h"
-//#include "Fields/MFDouble.h"
-//#include "Fields/MFFloat.h"
-//#include "Fields/MFInt32.h"
-//#include "Fields/MFNode.h"
-//#include "Fields/MFString.h"
-//#include "Fields/MFTime.h"
+template <>
+const std::string X3DObject <X3D::SFRotation>::typeName = "SFRotation";
 
-#endif
+template <>
+const ObjectType X3DObject <X3D::SFRotation>::type = ObjectType::SFRotation;
+
+template class SFRotation4 <X3D::SFRotation>;
+
+} // GoogleV8
+} // X3D
+} // titania

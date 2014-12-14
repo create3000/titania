@@ -62,6 +62,9 @@ enum class ObjectType :
 	size_t
 {
 
+	SFRotation,
+	SFVec2d,
+	SFVec2f,
 	SFVec3d,
 	SFVec3f,
 	SFVec4d,

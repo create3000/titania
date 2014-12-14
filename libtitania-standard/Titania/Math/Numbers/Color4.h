@@ -83,6 +83,8 @@ public:
 	// Size typedef.  Used for size and indices.
 	typedef size_t size_type;
 
+	///  @name Constructors
+
 	///  Default constructor.  All values default to 0.
 	constexpr
 	color4 () :
@@ -111,11 +113,7 @@ public:
 
 	{ }
 
-	///  Return number of components.
-	static
-	constexpr size_type
-	size ()
-	{ return 4; }
+	///  @name Element access
 
 	///  Set red component of this color.
 	void
@@ -176,6 +174,17 @@ public:
 	const Type*
 	data () const
 	{ return value; }
+
+	///  @name Capacity
+
+	///  Returns number of components.
+	static
+	constexpr
+	size_type
+	size ()
+	{ return 4; }
+
+	///  @name Arithmetic operations
 
 	///  Return hsv components of this color.
 	void

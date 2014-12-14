@@ -1,26 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Makefile.am">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/V8/X3DObject.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.h" Line="177" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.cpp" Line="51" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/X3DJavaScriptContext.h" Line="76" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFVec4.h" Line="58" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/X3DObject.h" Line="58" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/X3DFieldDefinition.h" Line="54" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/X3DField.h" Line="54" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/String.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Globals.h" Line="56" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Globals.cpp" Line="54" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields.h" Line="66" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Browser.h" Line="56" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Browser.cpp" Line="51" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFVec4.cpp" Line="52" Column="1" />
-      <File FileName="libtitania-x3d/Makefile.am" Line="551" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.h" Line="104" Column="37" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.cpp" Line="127" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="507" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/X3DObject.h" Line="228" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFVec4.h" Line="510" Column="49" />
+      <File FileName="Library/Tests/Scripting/V8.x3dv" Line="131" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/ObjectType.h" Line="69" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="build" expanded="True">
+            <Node name="debian" expanded="True" />
+          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True" />
@@ -53,18 +48,25 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Scripting" expanded="True" />
                 </Node>
+                <Node name="Fields" expanded="True" />
                 <Node name="JavaScript" expanded="True">
+                  <Node name="SpiderMonkey" expanded="True">
+                    <Node name="Fields" expanded="True" />
+                  </Node>
                   <Node name="V8" expanded="True">
                     <Node name="Fields" expanded="True" />
+                    <Node name="X3DObject.h" selected="True" />
                   </Node>
                 </Node>
                 <Node name="Parser" expanded="True" />
+                <Node name="Rendering" expanded="True" />
               </Node>
             </Node>
-            <Node name="Makefile.am" selected="True" />
           </Node>
           <Node name="Papers" expanded="True">
             <Node name="CosmoWorlds" expanded="True" />

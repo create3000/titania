@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_V8SFVEC4_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_V8SFVEC4_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_SFVEC4_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_SFVEC4_H__
 
 #include <v8.h>
 
@@ -65,6 +65,8 @@ class SFVec4 :
 	public X3DField <T>
 {
 public:
+
+	using value_type = T;
 
 	using X3DField <T>::TypeName;
 	using X3DField <T>::Type;
@@ -260,11 +262,11 @@ SFVec4 <T>::construct (const v8::Arguments & args)
 			case 1:
 			{
 				const auto arg = args [0];
-			
+
 				if (arg -> IsExternal ())
 				{
 					const auto value = getObject (arg);
-				
+
 					if (value -> getParents () .empty ())
 						addObject (context, object, value);
 					else
@@ -340,7 +342,7 @@ SFVec4 <T>::negate (const v8::Arguments & args)
 			return v8::ThrowException (String (TypeName () + ".negate: wrong number of arguments."));
 
 		const auto context = getContext (args);
-		const auto lhs     = getObject (args);
+		const auto lhs     = getObject (context, args);
 
 		return context -> createObject (Type (), lhs -> negate ());
 	}
@@ -360,8 +362,8 @@ SFVec4 <T>::add (const v8::Arguments & args)
 			return v8::ThrowException (String (TypeName () + ".add: wrong number of arguments."));
 
 		const auto context = getContext (args);
-		const auto lhs     = getObject (args);
-		const auto rhs     = getArg <T> (context, Type (), args, 0);
+		const auto lhs     = getObject (context, args);
+		const auto rhs     = getArgument <SFVec4> (context, args, 0);
 
 		return context -> createObject (Type (), lhs -> add (*rhs));
 	}
@@ -381,8 +383,8 @@ SFVec4 <T>::subtract (const v8::Arguments & args)
 			return v8::ThrowException (String (TypeName () + ".subtract: wrong number of arguments."));
 
 		const auto context = getContext (args);
-		const auto lhs     = getObject (args);
-		const auto rhs     = getArg <T> (context, Type (), args, 0);
+		const auto lhs     = getObject (context, args);
+		const auto rhs     = getArgument <SFVec4> (context, args, 0);
 
 		return context -> createObject (Type (), lhs -> subtract (*rhs));
 	}
@@ -402,7 +404,7 @@ SFVec4 <T>::multiply (const v8::Arguments & args)
 			return v8::ThrowException (String (TypeName () + ".multiply: wrong number of arguments."));
 
 		const auto context = getContext (args);
-		const auto lhs     = getObject (args);
+		const auto lhs     = getObject (context, args);
 		const auto rhs     = args [0] -> ToNumber () -> Value ();
 
 		return context -> createObject (Type (), lhs -> multiply (rhs));
@@ -423,8 +425,8 @@ SFVec4 <T>::multVec (const v8::Arguments & args)
 			return v8::ThrowException (String (TypeName () + ".multVec: wrong number of arguments."));
 
 		const auto context = getContext (args);
-		const auto lhs     = getObject (args);
-		const auto rhs     = getArg <T> (context, Type (), args, 0);
+		const auto lhs     = getObject (context, args);
+		const auto rhs     = getArgument <SFVec4> (context, args, 0);
 
 		return context -> createObject (Type (), lhs -> multiply (*rhs));
 	}
@@ -444,7 +446,7 @@ SFVec4 <T>::divide (const v8::Arguments & args)
 			return v8::ThrowException (String (TypeName () + ".divide: wrong number of arguments."));
 
 		const auto context = getContext (args);
-		const auto lhs     = getObject (args);
+		const auto lhs     = getObject (context, args);
 		const auto rhs     = args [0] -> ToNumber () -> Value ();
 
 		return context -> createObject (Type (), lhs -> divide (rhs));
@@ -465,8 +467,8 @@ SFVec4 <T>::divVec (const v8::Arguments & args)
 			return v8::ThrowException (String (TypeName () + ".divVec: wrong number of arguments."));
 
 		const auto context = getContext (args);
-		const auto lhs     = getObject (args);
-		const auto rhs     = getArg <T> (context, Type (), args, 0);
+		const auto lhs     = getObject (context, args);
+		const auto rhs     = getArgument <SFVec4> (context, args, 0);
 
 		return context -> createObject (Type (), lhs -> divide (*rhs));
 	}
@@ -486,7 +488,7 @@ SFVec4 <T>::normalize (const v8::Arguments & args)
 			return v8::ThrowException (String (TypeName () + ".normalize: wrong number of arguments."));
 
 		const auto context = getContext (args);
-		const auto lhs     = getObject (args);
+		const auto lhs     = getObject (context, args);
 
 		return context -> createObject (Type (), lhs -> normalize ());
 	}
@@ -506,8 +508,8 @@ SFVec4 <T>::dot (const v8::Arguments & args)
 			return v8::ThrowException (String (TypeName () + ".dot: wrong number of arguments."));
 
 		const auto context = getContext (args);
-		const auto lhs     = getObject (args);
-		const auto rhs     = getArg <T> (context, Type (), args, 0);
+		const auto lhs     = getObject (context, args);
+		const auto rhs     = getArgument <SFVec4> (context, args, 0);
 
 		return v8::Number::New (lhs -> dot (*rhs));
 	}

@@ -48,20 +48,21 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_SFVEC3_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_SFVEC3_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_SFROTATION4_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_SFROTATION4_H__
 
 #include <v8.h>
 
 #include "../Context.h"
 #include "../X3DField.h"
+#include "SFVec3.h"
 
 namespace titania {
 namespace X3D {
 namespace GoogleV8 {
 
 template <class T>
-class SFVec3 :
+class SFRotation4 :
 	public X3DField <T>
 {
 public:
@@ -147,19 +148,29 @@ private:
 	z (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 	{ return v8::Number::New (getObject (info) -> getZ ()); }
 
+	static
+	void
+	angle (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
+	{ getObject (info) -> setAngle (value -> ToNumber () -> Value ()); }
+
+	static
+	v8::Handle <v8::Value>
+	angle (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+	{ return v8::Number::New (getObject (info) -> getAngle ()); }
+
 	///  @name Functions
 
 	static
 	v8::Handle <v8::Value>
-	negate (const v8::Arguments &);
+	setAxis (const v8::Arguments &);
 
 	static
 	v8::Handle <v8::Value>
-	add (const v8::Arguments &);
+	getAxis (const v8::Arguments &);
 
 	static
 	v8::Handle <v8::Value>
-	subtract (const v8::Arguments &);
+	inverse (const v8::Arguments &);
 
 	static
 	v8::Handle <v8::Value>
@@ -171,41 +182,22 @@ private:
 
 	static
 	v8::Handle <v8::Value>
-	divide (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	divVec (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	normalize (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	cross (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	dot (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	length (const v8::Arguments &);
+	slerp (const v8::Arguments &);
 
 };
 
 template <class T>
 v8::Local <v8::FunctionTemplate>
-SFVec3 <T>::initialize (const v8::Local <v8::External> & context)
+SFRotation4 <T>::initialize (const v8::Local <v8::External> & context)
 {
 	const auto functionTemplate = createFunctionTemplate (context, construct);
 	const auto instanceTemplate = functionTemplate -> InstanceTemplate ();
 
 	instanceTemplate -> SetIndexedPropertyHandler (get1Value, set1Value, hasIndex, nullptr, getIndices);
-	instanceTemplate -> SetAccessor (String ("x"), x, x, v8::Handle <v8::Value> (), v8::DEFAULT, getPropertyAttributes ());
-	instanceTemplate -> SetAccessor (String ("y"), y, y, v8::Handle <v8::Value> (), v8::DEFAULT, getPropertyAttributes ());
-	instanceTemplate -> SetAccessor (String ("z"), z, z, v8::Handle <v8::Value> (), v8::DEFAULT, getPropertyAttributes ());
+	instanceTemplate -> SetAccessor (String ("x"),         x,     x, v8::Handle <v8::Value> (), v8::DEFAULT, getPropertyAttributes ());
+	instanceTemplate -> SetAccessor (String ("y"),         y,     y, v8::Handle <v8::Value> (), v8::DEFAULT, getPropertyAttributes ());
+	instanceTemplate -> SetAccessor (String ("z"),         z,     z, v8::Handle <v8::Value> (), v8::DEFAULT, getPropertyAttributes ());
+	instanceTemplate -> SetAccessor (String ("angle"), angle, angle, v8::Handle <v8::Value> (), v8::DEFAULT, getPropertyAttributes ());
 
 	instanceTemplate -> Set (String ("getName"),     v8::FunctionTemplate::New (getName,     context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("getTypeName"), v8::FunctionTemplate::New (getTypeName, context) -> GetFunction (), getFunctionAttributes ());
@@ -213,17 +205,12 @@ SFVec3 <T>::initialize (const v8::Local <v8::External> & context)
 	instanceTemplate -> Set (String ("isReadable"),  v8::FunctionTemplate::New (isReadable,  context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("isWritable"),  v8::FunctionTemplate::New (isWritable,  context) -> GetFunction (), getFunctionAttributes ());
 
-	instanceTemplate -> Set (String ("negate"),      v8::FunctionTemplate::New (negate,      context) -> GetFunction (), getFunctionAttributes ());
-	instanceTemplate -> Set (String ("add"),         v8::FunctionTemplate::New (add,         context) -> GetFunction (), getFunctionAttributes ());
-	instanceTemplate -> Set (String ("subtract"),    v8::FunctionTemplate::New (subtract,    context) -> GetFunction (), getFunctionAttributes ());
+	instanceTemplate -> Set (String ("setAxis"),     v8::FunctionTemplate::New (setAxis,     context) -> GetFunction (), getFunctionAttributes ());
+	instanceTemplate -> Set (String ("getAxis"),     v8::FunctionTemplate::New (getAxis,     context) -> GetFunction (), getFunctionAttributes ());
+	instanceTemplate -> Set (String ("inverse"),     v8::FunctionTemplate::New (inverse,     context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("multiply"),    v8::FunctionTemplate::New (multiply,    context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("multVec"),     v8::FunctionTemplate::New (multVec,     context) -> GetFunction (), getFunctionAttributes ());
-	instanceTemplate -> Set (String ("divide"),      v8::FunctionTemplate::New (divide,      context) -> GetFunction (), getFunctionAttributes ());
-	instanceTemplate -> Set (String ("divVec"),      v8::FunctionTemplate::New (divVec,      context) -> GetFunction (), getFunctionAttributes ());
-	instanceTemplate -> Set (String ("normalize"),   v8::FunctionTemplate::New (normalize,   context) -> GetFunction (), getFunctionAttributes ());
-	instanceTemplate -> Set (String ("cross"),       v8::FunctionTemplate::New (cross,       context) -> GetFunction (), getFunctionAttributes ());
-	instanceTemplate -> Set (String ("dot"),         v8::FunctionTemplate::New (dot,         context) -> GetFunction (), getFunctionAttributes ());
-	instanceTemplate -> Set (String ("length"),      v8::FunctionTemplate::New (length,      context) -> GetFunction (), getFunctionAttributes ());
+	instanceTemplate -> Set (String ("slerp"),       v8::FunctionTemplate::New (slerp,       context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("toString"),    v8::FunctionTemplate::New (toString,    context) -> GetFunction (), getFunctionAttributes ());
 
 	return functionTemplate;
@@ -231,7 +218,7 @@ SFVec3 <T>::initialize (const v8::Local <v8::External> & context)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec3 <T>::construct (const v8::Arguments & args)
+SFRotation4 <T>::construct (const v8::Arguments & args)
 {
 	if (args .IsConstructCall ())
 	{
@@ -245,11 +232,38 @@ SFVec3 <T>::construct (const v8::Arguments & args)
 				addObject (context, object, new T ());
 				break;
 			}
-			case 3:
+			case 2:
+			{
+				try
+				{
+					const auto arg1 = getArgument <SFVec3 <typename T::vector3_type>> (context, args, 0);
+
+					try
+					{
+						const auto arg2 = getArgument <SFVec3 <typename T::vector3_type>> (context, args, 1);
+
+						addObject (context, object, new T (*arg1, *arg2));			
+					}
+					catch (const std::exception &)
+					{
+						const auto arg2 = args [1] -> ToNumber () -> Value ();
+						
+						addObject (context, object, new T (*arg1, arg2));			
+					}
+				}
+				catch (const std::exception & error)
+				{
+					return v8::ThrowException (String (error .what ()));
+				}
+
+				break;
+			}
+			case 4:
 			{
 				addObject (context, object, new T (args [0] -> ToNumber () -> Value (),
 				                                   args [1] -> ToNumber () -> Value (),
-				                                   args [2] -> ToNumber () -> Value ()));
+				                                   args [2] -> ToNumber () -> Value (),
+				                                   args [3] -> ToNumber () -> Value ()));
 				break;
 			}
 			case 1:
@@ -282,7 +296,7 @@ SFVec3 <T>::construct (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Integer>
-SFVec3 <T>::hasIndex (uint32_t index, const v8::AccessorInfo & info)
+SFRotation4 <T>::hasIndex (uint32_t index, const v8::AccessorInfo & info)
 {
 	if (index < T::internal_type::size ())
 		return v8::Integer::New (index);
@@ -292,7 +306,7 @@ SFVec3 <T>::hasIndex (uint32_t index, const v8::AccessorInfo & info)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec3 <T>::get1Value (uint32_t index, const v8::AccessorInfo & info)
+SFRotation4 <T>::get1Value (uint32_t index, const v8::AccessorInfo & info)
 {
 	if (index < T::internal_type::size ())
 		return v8::Number::New (getObject (info) -> get1Value (index));
@@ -302,7 +316,7 @@ SFVec3 <T>::get1Value (uint32_t index, const v8::AccessorInfo & info)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec3 <T>::set1Value (uint32_t index, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
+SFRotation4 <T>::set1Value (uint32_t index, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
 {
 	if (index < T::internal_type::size ())
 	{
@@ -315,7 +329,7 @@ SFVec3 <T>::set1Value (uint32_t index, v8::Local <v8::Value> value, const v8::Ac
 
 template <class T>
 v8::Handle <v8::Array>
-SFVec3 <T>::getIndices (const v8::AccessorInfo & info)
+SFRotation4 <T>::getIndices (const v8::AccessorInfo & info)
 {
 	const auto indices = v8::Array::New ();
 
@@ -327,17 +341,40 @@ SFVec3 <T>::getIndices (const v8::AccessorInfo & info)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec3 <T>::negate (const v8::Arguments & args)
+SFRotation4 <T>::setAxis (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 1)
+			return v8::ThrowException (String (TypeName () + ".setAxis: wrong number of arguments."));
+
+		const auto context = getContext (args);
+		const auto lhs     = getObject (context, args);
+		const auto rhs     = getArgument <SFVec3 <typename T::vector3_type>> (context, args, 0);
+
+		lhs -> setAxis (*rhs);
+
+		return v8::Undefined ();
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
+}
+
+template <class T>
+v8::Handle <v8::Value>
+SFRotation4 <T>::getAxis (const v8::Arguments & args)
 {
 	try
 	{
 		if (args .Length () not_eq 0)
-			return v8::ThrowException (String (TypeName () + ".negate: wrong number of arguments."));
+			return v8::ThrowException (String (TypeName () + ".getAxis: wrong number of arguments."));
 
 		const auto context = getContext (args);
 		const auto lhs     = getObject (context, args);
 
-		return context -> createObject (Type (), lhs -> negate ());
+		return context -> createObject (SFVec3 <typename T::vector3_type>::Type (), lhs -> getAxis ());
 	}
 	catch (const std::exception & error)
 	{
@@ -347,18 +384,17 @@ SFVec3 <T>::negate (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec3 <T>::add (const v8::Arguments & args)
+SFRotation4 <T>::inverse (const v8::Arguments & args)
 {
 	try
 	{
-		if (args .Length () not_eq 1)
-			return v8::ThrowException (String (TypeName () + ".add: wrong number of arguments."));
+		if (args .Length () not_eq 0)
+			return v8::ThrowException (String (TypeName () + ".inverse: wrong number of arguments."));
 
 		const auto context = getContext (args);
 		const auto lhs     = getObject (context, args);
-		const auto rhs     = getArgument <SFVec3> (context, args, 0);
 
-		return context -> createObject (Type (), lhs -> add (*rhs));
+		return context -> createObject (SFRotation4::Type (), lhs -> inverse ());
 	}
 	catch (const std::exception & error)
 	{
@@ -368,28 +404,7 @@ SFVec3 <T>::add (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec3 <T>::subtract (const v8::Arguments & args)
-{
-	try
-	{
-		if (args .Length () not_eq 1)
-			return v8::ThrowException (String (TypeName () + ".subtract: wrong number of arguments."));
-
-		const auto context = getContext (args);
-		const auto lhs     = getObject (context, args);
-		const auto rhs     = getArgument <SFVec3> (context, args, 0);
-
-		return context -> createObject (Type (), lhs -> subtract (*rhs));
-	}
-	catch (const std::exception & error)
-	{
-		return v8::ThrowException (String (error .what ()));
-	}
-}
-
-template <class T>
-v8::Handle <v8::Value>
-SFVec3 <T>::multiply (const v8::Arguments & args)
+SFRotation4 <T>::multiply (const v8::Arguments & args)
 {
 	try
 	{
@@ -398,28 +413,7 @@ SFVec3 <T>::multiply (const v8::Arguments & args)
 
 		const auto context = getContext (args);
 		const auto lhs     = getObject (context, args);
-		const auto rhs     = args [0] -> ToNumber () -> Value ();
-
-		return context -> createObject (Type (), lhs -> multiply (rhs));
-	}
-	catch (const std::exception & error)
-	{
-		return v8::ThrowException (String (error .what ()));
-	}
-}
-
-template <class T>
-v8::Handle <v8::Value>
-SFVec3 <T>::multVec (const v8::Arguments & args)
-{
-	try
-	{
-		if (args .Length () not_eq 1)
-			return v8::ThrowException (String (TypeName () + ".multVec: wrong number of arguments."));
-
-		const auto context = getContext (args);
-		const auto lhs     = getObject (context, args);
-		const auto rhs     = getArgument <SFVec3> (context, args, 0);
+		const auto rhs     = getArgument <SFRotation4> (context, args, 0);
 
 		return context -> createObject (Type (), lhs -> multiply (*rhs));
 	}
@@ -431,18 +425,18 @@ SFVec3 <T>::multVec (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec3 <T>::divide (const v8::Arguments & args)
+SFRotation4 <T>::multVec (const v8::Arguments & args)
 {
 	try
 	{
 		if (args .Length () not_eq 1)
-			return v8::ThrowException (String (TypeName () + ".divide: wrong number of arguments."));
+			return v8::ThrowException (String (TypeName () + ".multVec: wrong number of arguments."));
 
 		const auto context = getContext (args);
 		const auto lhs     = getObject (context, args);
-		const auto rhs     = args [0] -> ToNumber () -> Value ();
+		const auto rhs     = getArgument <SFVec3 <typename T::vector3_type>> (context, args, 0);
 
-		return context -> createObject (Type (), lhs -> divide (rhs));
+		return context -> createObject (SFVec3 <typename T::vector3_type>::Type (), lhs -> multVec (*rhs));
 	}
 	catch (const std::exception & error)
 	{
@@ -452,18 +446,19 @@ SFVec3 <T>::divide (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec3 <T>::divVec (const v8::Arguments & args)
+SFRotation4 <T>::slerp (const v8::Arguments & args)
 {
 	try
 	{
-		if (args .Length () not_eq 1)
-			return v8::ThrowException (String (TypeName () + ".divVec: wrong number of arguments."));
+		if (args .Length () not_eq 2)
+			return v8::ThrowException (String (TypeName () + ".slerp: wrong number of arguments."));
 
 		const auto context = getContext (args);
 		const auto lhs     = getObject (context, args);
-		const auto rhs     = getArgument <SFVec3> (context, args, 0);
+		const auto rhs     = getArgument <SFRotation4> (context, args, 0);
+		const auto t       = args [1] -> ToNumber () -> Value ();
 
-		return context -> createObject (Type (), lhs -> divide (*rhs));
+		return context -> createObject (Type (), lhs -> slerp (*rhs, t));
 	}
 	catch (const std::exception & error)
 	{
@@ -471,92 +466,9 @@ SFVec3 <T>::divVec (const v8::Arguments & args)
 	}
 }
 
-template <class T>
-v8::Handle <v8::Value>
-SFVec3 <T>::normalize (const v8::Arguments & args)
-{
-	try
-	{
-		if (args .Length () not_eq 0)
-			return v8::ThrowException (String (TypeName () + ".normalize: wrong number of arguments."));
+extern template class SFRotation4 <X3D::SFRotation>;
 
-		const auto context = getContext (args);
-		const auto lhs     = getObject (context, args);
-
-		return context -> createObject (Type (), lhs -> normalize ());
-	}
-	catch (const std::exception & error)
-	{
-		return v8::ThrowException (String (error .what ()));
-	}
-}
-
-template <class T>
-v8::Handle <v8::Value>
-SFVec3 <T>::cross (const v8::Arguments & args)
-{
-	try
-	{
-		if (args .Length () not_eq 1)
-			return v8::ThrowException (String (TypeName () + ".cross: wrong number of arguments."));
-
-		const auto context = getContext (args);
-		const auto lhs     = getObject (context, args);
-		const auto rhs     = getArgument <SFVec3> (context, args, 0);
-
-		return context -> createObject (Type (), lhs -> cross (*rhs));
-	}
-	catch (const std::exception & error)
-	{
-		return v8::ThrowException (String (error .what ()));
-	}
-}
-
-template <class T>
-v8::Handle <v8::Value>
-SFVec3 <T>::dot (const v8::Arguments & args)
-{
-	try
-	{
-		if (args .Length () not_eq 1)
-			return v8::ThrowException (String (TypeName () + ".dot: wrong number of arguments."));
-
-		const auto context = getContext (args);
-		const auto lhs     = getObject (context, args);
-		const auto rhs     = getArgument <SFVec3> (context, args, 0);
-
-		return v8::Number::New (lhs -> dot (*rhs));
-	}
-	catch (const std::exception & error)
-	{
-		return v8::ThrowException (String (error .what ()));
-	}
-}
-
-template <class T>
-v8::Handle <v8::Value>
-SFVec3 <T>::length (const v8::Arguments & args)
-{
-	try
-	{
-		if (args .Length () not_eq 0)
-			return v8::ThrowException (String (TypeName () + ".length: wrong number of arguments."));
-
-		const auto lhs = getObject (args);
-
-		return v8::Number::New (lhs -> length ());
-	}
-	catch (const std::exception & error)
-	{
-		return v8::ThrowException (String (error .what ()));
-	}
-}
-
-extern template class SFVec3 <X3D::SFVec3d>;
-extern template class SFVec3 <X3D::SFVec3f>;
-
-using SFVec3d = SFVec3 <X3D::SFVec3d>;
-using SFVec3f = SFVec3 <X3D::SFVec3f>;
+using SFRotation = SFRotation4 <X3D::SFRotation>;
 
 } // GoogleV8
 } // X3D

@@ -217,6 +217,15 @@ public:
 	quat () const
 	{ return value; }
 
+	///  @name Capacity
+
+	///  Returns number of components.
+	static
+	constexpr
+	size_type
+	size ()
+	{ return 4; }
+
 	///  @name Arithmetic operations
 
 	///  Invert this quaternion in place.
