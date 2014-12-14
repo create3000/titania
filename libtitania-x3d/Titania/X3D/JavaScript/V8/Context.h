@@ -55,6 +55,7 @@
 
 #include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"
+#include "ObjectType.h"
 
 namespace titania {
 namespace X3D {
@@ -97,16 +98,13 @@ public:
 
 	///  @name Member access
 
-	void
-	addClass (const std::string &, const v8::Local <v8::FunctionTemplate> &);
-
 	const v8::Persistent <v8::FunctionTemplate> &
-	getClass (const std::string & name)
+	getClass (const ObjectType type)
 	throw (std::out_of_range)
-	{ return classes .at (name); }
+	{ return classes .at (size_t (type)); }
 
 	v8::Local <v8::Object>
-	createObject (X3D::X3DFieldDefinition* const) const
+	createObject (const ObjectType, X3D::X3DFieldDefinition* const) const
 	throw (std::out_of_range);
 
 	void
@@ -139,6 +137,9 @@ private:
 
 	void
 	setFields ();
+
+	void
+	addClass (const ObjectType, const v8::Local <v8::FunctionTemplate> &);
 
 	v8::Local <v8::Function>
 	getFunction (const std::string &) const;
@@ -187,7 +188,7 @@ private:
 	v8::Persistent <v8::Context> context;
 	v8::Persistent <v8::Script>  program;
 
-	std::map <std::string, v8::Persistent <v8::FunctionTemplate>>    classes;
+	std::vector <v8::Persistent <v8::FunctionTemplate>>              classes;
 	std::map <X3D::X3DFieldDefinition*, v8::Persistent <v8::Object>> objects;
 	std::map <X3DFieldDefinition*, v8::Persistent <v8::Function>>    functions;
 

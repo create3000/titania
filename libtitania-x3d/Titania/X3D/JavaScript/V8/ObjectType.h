@@ -48,29 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_V8FIELDS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_V8_V8FIELDS_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_OBJECT_TYPE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_OBJECT_TYPE_H__
 
-#include "../../Fields.h"
+#include <string>
+#include <v8.h>
 
-//#include "Fields/SFColor.h"
-//#include "Fields/SFColorRGBA.h"
-//#include "Fields/SFImage.h"
-//#include "Fields/SFMatrix3.h"
-//#include "Fields/SFMatrix4.h"
-//#include "Fields/SFNode.h"
-//#include "Fields/SFRotation.h"
-//#include "Fields/SFVec2.h"
-#include "Fields/SFVec3.h"
-#include "Fields/SFVec4.h"
+namespace titania {
+namespace X3D {
+namespace GoogleV8 {
 
-//#include "Fields/ArrayFields.h"
-//#include "Fields/MFBool.h"
-//#include "Fields/MFDouble.h"
-//#include "Fields/MFFloat.h"
-//#include "Fields/MFInt32.h"
-//#include "Fields/MFNode.h"
-//#include "Fields/MFString.h"
-//#include "Fields/MFTime.h"
+enum class ObjectType :
+	size_t
+{
+
+	SFVec3d,
+	SFVec3f,
+	SFVec4d,
+	SFVec4f,
+
+	SIZE
+};
+
+} // GoogleV8
+} // X3D
+} // titania
 
 #endif

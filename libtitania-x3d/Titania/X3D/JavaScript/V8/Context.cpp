@@ -100,8 +100,8 @@ Context::Context (Script* const script, const std::string & ecmascript, const ba
 	v8::TryCatch trycatch;
 	program = v8::Persistent <v8::Script>::New (v8::Script::Compile (String (getECMAScript ()),
 	                                                                 String (worldURL .back () == getExecutionContext () -> getWorldURL ()
-	                                                                                 ? "<inline>"
-																												: worldURL .back ())));
+	                                                                         ? "<inline>"
+																									 : worldURL .back ())));
 
 	if (program .IsEmpty ())
 	{
@@ -110,25 +110,6 @@ Context::Context (Script* const script, const std::string & ecmascript, const ba
 	}
 }
 
-void
-Context::setContext ()
-{
-	// v8::Context::Scope
-
-	const auto global   = context -> Global ();
-	const auto external = v8::External::New (this);
-
-	Globals::initialize (external, global);
-	Browser::initialize (external, global);
-
-	addClass (SFVec4d::TypeName (), SFVec4d::initialize (external));
-	addClass (SFVec4f::TypeName (), SFVec4f::initialize (external));
-}
-
-void
-Context::setFields ()
-{ }
-
 X3DBaseNode*
 Context::create (X3DExecutionContext* const) const
 {
@@ -136,24 +117,45 @@ Context::create (X3DExecutionContext* const) const
 }
 
 void
-Context::addClass (const std::string & typeName, const v8::Local <v8::FunctionTemplate> & functionTemplate)
+Context::setContext ()
+{
+	const auto global   = context -> Global ();
+	const auto external = v8::External::New (this);
+
+	Globals::initialize (external, global);
+	Browser::initialize (external, global);
+
+	classes .resize (size_t (ObjectType::SIZE));
+
+	addClass (SFVec3d::Type (), SFVec3d::initialize (external));
+	addClass (SFVec3f::Type (), SFVec3f::initialize (external));
+	addClass (SFVec4d::Type (), SFVec4d::initialize (external));
+	addClass (SFVec4f::Type (), SFVec4f::initialize (external));
+}
+
+void
+Context::setFields ()
+{ }
+
+void
+Context::addClass (const ObjectType type, const v8::Local <v8::FunctionTemplate> & functionTemplate)
 {
 	const auto function = functionTemplate -> GetFunction ();
 
 	context -> Global () -> Set (function -> GetName () -> ToString (), function, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
 
-	classes .emplace (typeName, v8::Persistent <v8::FunctionTemplate>::New (functionTemplate));
+	classes [size_t (type)] = v8::Persistent <v8::FunctionTemplate>::New (functionTemplate);
 }
 
 v8::Local <v8::Object>
-Context::createObject (X3D::X3DFieldDefinition* const field) const
+Context::createObject (const ObjectType type, X3D::X3DFieldDefinition* const field) const
 throw (std::out_of_range)
 {
 	constexpr size_t argc = 1;
 
 	v8::Handle <v8::Value> argv [argc] = { v8::External::New (field) };
 
-	return classes .at (field -> getTypeName ()) -> GetFunction () -> NewInstance (argc, argv);
+	return classes .at (size_t (type)) -> GetFunction () -> NewInstance (argc, argv);
 }
 
 void
@@ -330,6 +332,7 @@ Context::prepareEvents ()
 	v8::Context::Scope contextScope (context);
 
 	v8::TryCatch tryCatch;
+
 	prepareEventsFn -> Call (context -> Global (), 0, nullptr);
 
 	if (tryCatch .HasCaught ())
@@ -348,7 +351,7 @@ Context::set_field (X3D::X3DFieldDefinition* const field)
 
 	field -> isTainted (true);
 
-	static constexpr int argc = 2;
+	constexpr size_t argc = 2;
 
 	v8::Handle <v8::Value> argv [argc] = {
 		v8::Undefined (), //getValue (field),
@@ -375,6 +378,7 @@ Context::eventsProcessed ()
 	v8::Context::Scope contextScope (context);
 
 	v8::TryCatch tryCatch;
+
 	eventsProcessedFn -> Call (context -> Global (), 0, nullptr);
 
 	if (tryCatch .HasCaught ())
@@ -403,6 +407,7 @@ Context::set_shutdown ()
 	v8::Context::Scope contextScope (context);
 
 	v8::TryCatch tryCatch;
+
 	shutdownFn -> Call (context -> Global (), 0, nullptr);
 
 	if (tryCatch .HasCaught ())
@@ -434,7 +439,7 @@ Context::dispose ()
 		v8::Isolate::Scope isolateScope (isolate);
 		v8::HandleScope    handleScope;
 		v8::Context::Scope contextScope (context);
-	
+
 		const auto global = context -> Global ();
 		const auto names  = global -> GetPropertyNames ();
 

@@ -456,6 +456,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/V8.cpp \
 	Titania/X3D/JavaScript/V8/Browser.cpp \
 	Titania/X3D/JavaScript/V8/Context.cpp \
+	Titania/X3D/JavaScript/V8/Fields/SFVec3.cpp \
 	Titania/X3D/JavaScript/V8/Fields/SFVec4.cpp \
 	Titania/X3D/JavaScript/V8/Globals.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptContext.cpp \

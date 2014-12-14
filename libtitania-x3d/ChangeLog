@@ -1,5 +1,21 @@
 2014-12-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Fields.h:
+	* Context.h:
+	* X3DField.h:
+	* Context.cpp:
+	* X3DObject.h:
+	* ObjectType.h:
+	* SFVec3.h:
+	* SFVec4.h:
+	* SFVec4.cpp:
+	* SFVec3.cpp:
+	* X3DFieldDefinition.h: 
+
+2014-12-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* String.h:
 	* Globals.h:
 	* Context.h:

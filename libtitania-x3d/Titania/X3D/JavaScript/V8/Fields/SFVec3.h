@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_V8SFVEC4_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_V8SFVEC4_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_SFVEC3_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_SFVEC3_H__
 
 #include <v8.h>
 
@@ -61,7 +61,7 @@ namespace X3D {
 namespace GoogleV8 {
 
 template <class T>
-class SFVec4 :
+class SFVec3 :
 	public X3DField <T>
 {
 public:
@@ -145,16 +145,6 @@ private:
 	z (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 	{ return v8::Number::New (getObject (info) -> getZ ()); }
 
-	static
-	void
-	w (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
-	{ getObject (info) -> setW (value -> ToNumber () -> Value ()); }
-
-	static
-	v8::Handle <v8::Value>
-	w (v8::Local <v8::String> property, const v8::AccessorInfo & info)
-	{ return v8::Number::New (getObject (info) -> getW ()); }
-
 	///  @name Functions
 
 	static
@@ -191,6 +181,10 @@ private:
 
 	static
 	v8::Handle <v8::Value>
+	cross (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
 	dot (const v8::Arguments &);
 
 	static
@@ -201,7 +195,7 @@ private:
 
 template <class T>
 v8::Local <v8::FunctionTemplate>
-SFVec4 <T>::initialize (const v8::Local <v8::External> & context)
+SFVec3 <T>::initialize (const v8::Local <v8::External> & context)
 {
 	const auto functionTemplate = createFunctionTemplate (context, construct);
 	const auto instanceTemplate = functionTemplate -> InstanceTemplate ();
@@ -210,7 +204,6 @@ SFVec4 <T>::initialize (const v8::Local <v8::External> & context)
 	instanceTemplate -> SetAccessor (String ("x"), x, x, v8::Handle <v8::Value> (), v8::DEFAULT, getPropertyAttributes ());
 	instanceTemplate -> SetAccessor (String ("y"), y, y, v8::Handle <v8::Value> (), v8::DEFAULT, getPropertyAttributes ());
 	instanceTemplate -> SetAccessor (String ("z"), z, z, v8::Handle <v8::Value> (), v8::DEFAULT, getPropertyAttributes ());
-	instanceTemplate -> SetAccessor (String ("w"), w, w, v8::Handle <v8::Value> (), v8::DEFAULT, getPropertyAttributes ());
 
 	instanceTemplate -> Set (String ("getName"),     v8::FunctionTemplate::New (getName,     context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("getTypeName"), v8::FunctionTemplate::New (getTypeName, context) -> GetFunction (), getFunctionAttributes ());
@@ -226,6 +219,7 @@ SFVec4 <T>::initialize (const v8::Local <v8::External> & context)
 	instanceTemplate -> Set (String ("divide"),      v8::FunctionTemplate::New (divide,      context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("divVec"),      v8::FunctionTemplate::New (divVec,      context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("normalize"),   v8::FunctionTemplate::New (normalize,   context) -> GetFunction (), getFunctionAttributes ());
+	instanceTemplate -> Set (String ("cross"),       v8::FunctionTemplate::New (cross,       context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("dot"),         v8::FunctionTemplate::New (dot,         context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("length"),      v8::FunctionTemplate::New (length,      context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("toString"),    v8::FunctionTemplate::New (toString,    context) -> GetFunction (), getFunctionAttributes ());
@@ -235,7 +229,7 @@ SFVec4 <T>::initialize (const v8::Local <v8::External> & context)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec4 <T>::construct (const v8::Arguments & args)
+SFVec3 <T>::construct (const v8::Arguments & args)
 {
 	if (args .IsConstructCall ())
 	{
@@ -249,22 +243,21 @@ SFVec4 <T>::construct (const v8::Arguments & args)
 				addObject (context, object, new T ());
 				break;
 			}
-			case 4:
+			case 3:
 			{
 				addObject (context, object, new T (args [0] -> ToNumber () -> Value (),
 				                                   args [1] -> ToNumber () -> Value (),
-				                                   args [2] -> ToNumber () -> Value (),
-				                                   args [3] -> ToNumber () -> Value ()));
+				                                   args [2] -> ToNumber () -> Value ()));
 				break;
 			}
 			case 1:
 			{
 				const auto arg = args [0];
-			
+
 				if (arg -> IsExternal ())
 				{
 					const auto value = getObject (arg);
-				
+
 					if (value -> getParents () .empty ())
 						addObject (context, object, value);
 					else
@@ -287,7 +280,7 @@ SFVec4 <T>::construct (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Integer>
-SFVec4 <T>::hasIndex (uint32_t index, const v8::AccessorInfo & info)
+SFVec3 <T>::hasIndex (uint32_t index, const v8::AccessorInfo & info)
 {
 	if (index < T::internal_type::size ())
 		return v8::Integer::New (index);
@@ -297,7 +290,7 @@ SFVec4 <T>::hasIndex (uint32_t index, const v8::AccessorInfo & info)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec4 <T>::get1Value (uint32_t index, const v8::AccessorInfo & info)
+SFVec3 <T>::get1Value (uint32_t index, const v8::AccessorInfo & info)
 {
 	if (index < T::internal_type::size ())
 		return v8::Number::New (getObject (info) -> get1Value (index));
@@ -307,7 +300,7 @@ SFVec4 <T>::get1Value (uint32_t index, const v8::AccessorInfo & info)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec4 <T>::set1Value (uint32_t index, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
+SFVec3 <T>::set1Value (uint32_t index, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
 {
 	if (index < T::internal_type::size ())
 	{
@@ -320,7 +313,7 @@ SFVec4 <T>::set1Value (uint32_t index, v8::Local <v8::Value> value, const v8::Ac
 
 template <class T>
 v8::Handle <v8::Array>
-SFVec4 <T>::getIndices (const v8::AccessorInfo & info)
+SFVec3 <T>::getIndices (const v8::AccessorInfo & info)
 {
 	const auto indices = v8::Array::New ();
 
@@ -332,7 +325,7 @@ SFVec4 <T>::getIndices (const v8::AccessorInfo & info)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec4 <T>::negate (const v8::Arguments & args)
+SFVec3 <T>::negate (const v8::Arguments & args)
 {
 	try
 	{
@@ -352,7 +345,7 @@ SFVec4 <T>::negate (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec4 <T>::add (const v8::Arguments & args)
+SFVec3 <T>::add (const v8::Arguments & args)
 {
 	try
 	{
@@ -373,7 +366,7 @@ SFVec4 <T>::add (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec4 <T>::subtract (const v8::Arguments & args)
+SFVec3 <T>::subtract (const v8::Arguments & args)
 {
 	try
 	{
@@ -394,7 +387,7 @@ SFVec4 <T>::subtract (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec4 <T>::multiply (const v8::Arguments & args)
+SFVec3 <T>::multiply (const v8::Arguments & args)
 {
 	try
 	{
@@ -415,7 +408,7 @@ SFVec4 <T>::multiply (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec4 <T>::multVec (const v8::Arguments & args)
+SFVec3 <T>::multVec (const v8::Arguments & args)
 {
 	try
 	{
@@ -436,7 +429,7 @@ SFVec4 <T>::multVec (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec4 <T>::divide (const v8::Arguments & args)
+SFVec3 <T>::divide (const v8::Arguments & args)
 {
 	try
 	{
@@ -457,7 +450,7 @@ SFVec4 <T>::divide (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec4 <T>::divVec (const v8::Arguments & args)
+SFVec3 <T>::divVec (const v8::Arguments & args)
 {
 	try
 	{
@@ -478,7 +471,7 @@ SFVec4 <T>::divVec (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec4 <T>::normalize (const v8::Arguments & args)
+SFVec3 <T>::normalize (const v8::Arguments & args)
 {
 	try
 	{
@@ -498,7 +491,28 @@ SFVec4 <T>::normalize (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec4 <T>::dot (const v8::Arguments & args)
+SFVec3 <T>::cross (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 1)
+			return v8::ThrowException (String (TypeName () + ".cross: wrong number of arguments."));
+
+		const auto context = getContext (args);
+		const auto lhs     = getObject (args);
+		const auto rhs     = getArg <T> (context, Type (), args, 0);
+
+		return context -> createObject (Type (), lhs -> cross (*rhs));
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
+}
+
+template <class T>
+v8::Handle <v8::Value>
+SFVec3 <T>::dot (const v8::Arguments & args)
 {
 	try
 	{
@@ -519,7 +533,7 @@ SFVec4 <T>::dot (const v8::Arguments & args)
 
 template <class T>
 v8::Handle <v8::Value>
-SFVec4 <T>::length (const v8::Arguments & args)
+SFVec3 <T>::length (const v8::Arguments & args)
 {
 	try
 	{
@@ -536,11 +550,11 @@ SFVec4 <T>::length (const v8::Arguments & args)
 	}
 }
 
-extern template class SFVec4 <X3D::SFVec4d>;
-extern template class SFVec4 <X3D::SFVec4f>;
+extern template class SFVec3 <X3D::SFVec3d>;
+extern template class SFVec3 <X3D::SFVec3f>;
 
-using SFVec4d = SFVec4 <X3D::SFVec4d>;
-using SFVec4f = SFVec4 <X3D::SFVec4f>;
+using SFVec3d = SFVec3 <X3D::SFVec3d>;
+using SFVec3f = SFVec3 <X3D::SFVec3f>;
 
 } // GoogleV8
 } // X3D

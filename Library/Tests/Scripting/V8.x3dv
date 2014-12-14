@@ -129,6 +129,7 @@ function fields ()
 	v .y = 6;
 	v .z = 7;
 	v .w = 8;
+	print ('SFVec4f .getName:     ', v .getName ());
 	print ('SFVec4f .getTypeName: ', v .getTypeName ());
 	print ('SFVec4f .getType:     ', v .getType ());
 	print ('SFVec4f .isReadable:  ', v .isReadable ());

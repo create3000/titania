@@ -810,6 +810,10 @@
     <None Include="Titania\X3D\JavaScript\V8\X3DField.h" />
     <None Include="Titania\X3D\JavaScript\V8\X3DFieldDefinition.h" />
     <None Include="Titania\X3D\JavaScript\V8\X3DObject.h" />
+    <None Include="Titania\X3D\JavaScript\V8\Fields\SFVec3.h" />
+    <None Include="Titania\X3D\JavaScript\V8\ObjectType.h">
+      <DependentUpon>v8String.h</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1337,6 +1341,7 @@
     <Compile Include="Titania\X3D\JavaScript\V8\Browser.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\Globals.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\Context.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFVec3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

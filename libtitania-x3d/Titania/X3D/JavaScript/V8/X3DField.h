@@ -57,18 +57,18 @@ namespace titania {
 namespace X3D {
 namespace GoogleV8 {
 
-template <class Type>
+template <class T>
 class X3DField :
-	public X3DFieldDefinition <Type>
+	public X3DFieldDefinition <T>
 {
 public:
 
-	using X3DFieldDefinition <Type>::TypeName;
+	using X3DFieldDefinition <T>::TypeName;
 
 
 protected:
 
-	using X3DFieldDefinition <Type>::getObject;
+	using X3DFieldDefinition <T>::getObject;
 
 	///  @name Functions
 
@@ -86,9 +86,9 @@ protected:
 
 };
 
-template <class Type>
+template <class T>
 v8::Handle <v8::Value>
-X3DField <Type>::getType (const v8::Arguments & args)
+X3DField <T>::getType (const v8::Arguments & args)
 {
 	try
 	{
@@ -105,9 +105,9 @@ X3DField <Type>::getType (const v8::Arguments & args)
 	}
 }
 
-template <class Type>
+template <class T>
 v8::Handle <v8::Value>
-X3DField <Type>::isReadable (const v8::Arguments & args)
+X3DField <T>::isReadable (const v8::Arguments & args)
 {
 	try
 	{
@@ -124,9 +124,9 @@ X3DField <Type>::isReadable (const v8::Arguments & args)
 	}
 }
 
-template <class Type>
+template <class T>
 v8::Handle <v8::Value>
-X3DField <Type>::isWritable (const v8::Arguments & args)
+X3DField <T>::isWritable (const v8::Arguments & args)
 {
 	try
 	{
