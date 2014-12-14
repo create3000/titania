@@ -62,6 +62,8 @@ enum class ObjectType :
 	size_t
 {
 
+	SFColor,
+	SFColorRGBA,
 	SFRotation,
 	SFVec2d,
 	SFVec2f,

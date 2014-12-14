@@ -815,7 +815,9 @@
       <DependentUpon>v8String.h</DependentUpon>
     </None>
     <None Include="Titania\X3D\JavaScript\V8\Fields\SFVec2.h" />
+    <None Include="Titania\X3D\JavaScript\V8\Fields\SFColorRGBA.h" />
     <None Include="Titania\X3D\JavaScript\V8\Fields\SFRotation4.h" />
+    <None Include="Titania\X3D\JavaScript\V8\Fields\SFColor.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1345,7 +1347,9 @@
     <Compile Include="Titania\X3D\JavaScript\V8\Context.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFVec3.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFVec2.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFColorRGBA.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFRotation4.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFColor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

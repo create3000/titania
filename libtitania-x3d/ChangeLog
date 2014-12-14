@@ -3,6 +3,19 @@
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Fields.h:
+	* Context.cpp:
+	* ObjectType.h:
+	* SFColor.h:
+	* SFColor.cpp:
+	* SFColorRGBA.h:
+	* SFRotation4.h:
+	* SFColorRGBA.cpp: 
+
+2014-12-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Fields.h:
 	* X3DObject.h:
 	* Context.cpp:
 	* ObjectType.h:

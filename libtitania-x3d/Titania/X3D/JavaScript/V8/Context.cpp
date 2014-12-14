@@ -127,13 +127,15 @@ Context::setContext ()
 
 	classes .resize (size_t (ObjectType::SIZE));
 
-	addClass (SFRotation::Type (), SFRotation::initialize (external));
-	addClass (SFVec2d::Type (),    SFVec2d::initialize (external));
-	addClass (SFVec2f::Type (),    SFVec2f::initialize (external));
-	addClass (SFVec3d::Type (),    SFVec3d::initialize (external));
-	addClass (SFVec3f::Type (),    SFVec3f::initialize (external));
-	addClass (SFVec4d::Type (),    SFVec4d::initialize (external));
-	addClass (SFVec4f::Type (),    SFVec4f::initialize (external));
+	addClass (SFColor::Type (),     SFColor::initialize (external));
+	addClass (SFColorRGBA::Type (), SFColorRGBA::initialize (external));
+	addClass (SFRotation::Type (),  SFRotation::initialize (external));
+	addClass (SFVec2d::Type (),     SFVec2d::initialize (external));
+	addClass (SFVec2f::Type (),     SFVec2f::initialize (external));
+	addClass (SFVec3d::Type (),     SFVec3d::initialize (external));
+	addClass (SFVec3f::Type (),     SFVec3f::initialize (external));
+	addClass (SFVec4d::Type (),     SFVec4d::initialize (external));
+	addClass (SFVec4f::Type (),     SFVec4f::initialize (external));
 }
 
 void

@@ -1,14 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/V8/X3DObject.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFColor.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.h" Line="104" Column="37" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.cpp" Line="127" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="507" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/X3DObject.h" Line="228" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFVec4.h" Line="510" Column="49" />
-      <File FileName="Library/Tests/Scripting/V8.x3dv" Line="131" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/ObjectType.h" Line="69" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.cpp" Line="129" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/X3DObject.h" Line="1" Column="1" />
+      <File FileName="Library/Tests/Scripting/V8.x3dv" Line="174" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFColorRGBA.h" Line="165" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFColorRGBA.cpp" Line="211" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFVec2.h" Line="393" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFColorRGBA.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFColor.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFColor.cpp" Line="102" Column="10" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields.h" Line="53" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -27,6 +32,7 @@
               <Node name="Navigation" expanded="True" />
               <Node name="Scripting" expanded="True">
                 <Node name="pb" expanded="True" />
+                <Node name="V8.x3dv" selected="True" />
               </Node>
             </Node>
           </Node>
@@ -60,7 +66,6 @@
                   </Node>
                   <Node name="V8" expanded="True">
                     <Node name="Fields" expanded="True" />
-                    <Node name="X3DObject.h" selected="True" />
                   </Node>
                 </Node>
                 <Node name="Parser" expanded="True" />

@@ -146,13 +146,39 @@ function fields ()
 	print ('SFVec4f .multVec:     ', v .multVec (v));
 	print ('SFVec4f .divVec:      ', v .divVec (v));
 
-	print ('SFRotation:          ', new SFRotation (1,2,3,4));
-	print ('SFRotation:          ', new SFRotation (new SFVec3f (1,2,3) ,4));
-	print ('SFRotation .getAxis: ', new SFRotation (1,2,3,4) .getAxis ());
-
 	print ('Enumerate:');
 	for (var i in v)
 		print ('SFVec4f [', i, ']: ', v [i]);
+
+	var r = new SFRotation (1, 2, 3, 4);
+	print ('SFRotation:           ', r);
+	print ('SFRotation:           ', new SFRotation (new SFVec3f (1, 2, 3) ,4));
+	print ('SFRotation .x:        ', r .x);
+	print ('SFRotation .y:        ', r .y);
+	print ('SFRotation .z:        ', r .z);
+	print ('SFRotation .angle:    ', r .angle);
+	print ('SFRotation .getAxis:  ', r .getAxis ());
+	print ('SFRotation .inverse:  ', r .inverse ());
+	print ('SFRotation .multiply: ', r .multiply (r));
+	print ('SFRotation .multVec:  ', r .multVec (new SFVec3f (0, 0, 1)));
+	print ('SFRotation .slerp:    ', r .slerp (r, 0.5));
+
+	var c4 = new SFColorRGBA (0.1, 0.2, 0.3, 0.4)
+	var hsv = c4 .getHSV ();
+	print ('SFColorRGBA:         ', c4);
+	print ('SFColorRGBA .r:      ', c4 .r);
+	print ('SFColorRGBA .g:      ', c4 .g);
+	print ('SFColorRGBA .b:      ', c4 .b);
+	print ('SFColorRGBA .a:      ', c4 .a);
+	print ('SFColorRGBA .getHSV: ', hsv);
+
+	var c3 = new SFColor (0.1, 0.2, 0.3)
+	var hsv = c3 .getHSV ();
+	print ('SFColor:         ', c3);
+	print ('SFColor .r:      ', c3 .r);
+	print ('SFColor .g:      ', c3 .g);
+	print ('SFColor .b:      ', c3 .b);
+	print ('SFColor .getHSV: ', hsv);
 
 	//var f = v .toString;
 	//f .call (Browser);

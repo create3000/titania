@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_V8FIELDS_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_V8_V8FIELDS_H__
 
-//#include "Fields/SFColor.h"
-//#include "Fields/SFColorRGBA.h"
+#include "Fields/SFColor.h"
+#include "Fields/SFColorRGBA.h"
 //#include "Fields/SFImage.h"
 //#include "Fields/SFMatrix3.h"
 //#include "Fields/SFMatrix4.h"
