@@ -85,10 +85,8 @@ Context::Context (Script* const script, const std::string & ecmascript, const ba
 	__LOG__ << std::endl;
 
 	v8::Locker         locker (isolate);
-	v8::Isolate::Scope isolate_scope (isolate);
+	v8::Isolate::Scope isolateScope (isolate);
 	v8::HandleScope    handleScope;
-
-	//v8::V8::AdjustAmountOfExternalAllocatedMemory (std::numeric_limits <int16_t>::max ());
 
 	context = v8::Context::New (nullptr, v8::ObjectTemplate::New ());
 
@@ -100,8 +98,8 @@ Context::Context (Script* const script, const std::string & ecmascript, const ba
 	// Compile.
 
 	v8::TryCatch trycatch;
-	program = v8::Persistent <v8::Script>::New (v8::Script::Compile (make_v8_string (getECMAScript ()),
-	                                                                 make_v8_string (worldURL .back () == getExecutionContext () -> getWorldURL ()
+	program = v8::Persistent <v8::Script>::New (v8::Script::Compile (String (getECMAScript ()),
+	                                                                 String (worldURL .back () == getExecutionContext () -> getWorldURL ()
 	                                                                                 ? "<inline>"
 																												: worldURL .back ())));
 
@@ -117,14 +115,14 @@ Context::setContext ()
 {
 	// v8::Context::Scope
 
-	const auto globalObject = context -> Global ();
-	const auto self         = v8::External::New (this);
+	const auto global   = context -> Global ();
+	const auto external = v8::External::New (this);
 
-	Globals::initialize (this, globalObject);
-	Browser::initialize (this, globalObject);
+	Globals::initialize (external, global);
+	Browser::initialize (external, global);
 
-	addClass (SFVec4d::getTypeName (), SFVec4d::initialize (self));
-	addClass (SFVec4f::getTypeName (), SFVec4f::initialize (self));
+	addClass (SFVec4d::TypeName (), SFVec4d::initialize (external));
+	addClass (SFVec4f::TypeName (), SFVec4f::initialize (external));
 }
 
 void
@@ -159,15 +157,13 @@ throw (std::out_of_range)
 }
 
 void
-Context::addObject (X3D::X3DFieldDefinition* const field, const v8::Local <v8::Object> & object, void* parameters, v8::WeakReferenceCallback callback)
+Context::addObject (X3D::X3DFieldDefinition* const field, const v8::Persistent <v8::Object> & object)
 throw (Error <INVALID_FIELD>)
 {
-	const auto iter = objects .emplace (field, v8::Persistent <v8::Object>::New (object));
+	const auto iter = objects .emplace (field, object);
 
 	if (not iter .second)
 		throw Error <INVALID_FIELD> ("Object already exists in v8 Context.");
-
-	iter .first -> second .MakeWeak (parameters, callback);
 
 	field -> addParent (this);
 }
@@ -175,7 +171,7 @@ throw (Error <INVALID_FIELD>)
 void
 Context::removeObject (X3D::X3DFieldDefinition* const field)
 {
-	__LOG__ << this << std::endl;
+	__LOG__ << this << " : " << field -> getTypeName () << std::endl;
 
 	if (objects .erase (field))
 		field -> removeParent (this);
@@ -191,7 +187,7 @@ throw (std::out_of_range)
 v8::Local <v8::Function>
 Context::getFunction (const std::string & name) const
 {
-	return v8::Local <v8::Function>::Cast (context -> Global () -> GetRealNamedProperty (make_v8_string (name)));
+	return v8::Local <v8::Function>::Cast (context -> Global () -> GetRealNamedProperty (String (name)));
 }
 
 void
@@ -202,17 +198,17 @@ Context::initialize ()
 	X3D::X3DJavaScriptContext::initialize ();
 
 	v8::Locker         locker (isolate);
-	v8::Isolate::Scope isolate_scope (isolate);
+	v8::Isolate::Scope isolateScope (isolate);
 	v8::HandleScope    handleScope;
 	v8::Context::Scope contextScope (context);
 
 	// Run program.
 
-	v8::TryCatch           trycatch;
-	v8::Handle <v8::Value> result = program -> Run ();
+	v8::TryCatch tryCatch;
+	program -> Run ();
 
-	if (result .IsEmpty ())
-		error (trycatch);
+	if (tryCatch .HasCaught ())
+		error (tryCatch);
 
 	setEventHandler ();
 
@@ -222,7 +218,15 @@ Context::initialize ()
 	set_live ();
 
 	if (not initializeFn .IsEmpty ())
+	{
+		v8::TryCatch tryCatch;
 		initializeFn -> Call (context -> Global (), 0, nullptr);
+
+		if (tryCatch .HasCaught ())
+			error (tryCatch);
+	}
+
+	v8::V8::LowMemoryNotification ();
 }
 
 void
@@ -232,6 +236,9 @@ Context::setEventHandler ()
 	prepareEventsFn   = v8::Persistent <v8::Function>::New (getFunction ("prepareEvents"));
 	eventsProcessedFn = v8::Persistent <v8::Function>::New (getFunction ("eventsProcessed"));
 	shutdownFn        = v8::Persistent <v8::Function>::New (getFunction ("shutdown"));
+
+	if (not shutdownFn .IsEmpty ())
+		shutdown () .addInterest (this, &Context::set_shutdown);
 
 	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 	{
@@ -318,18 +325,24 @@ void
 Context::prepareEvents ()
 {
 	v8::Locker         locker (isolate);
-	v8::Isolate::Scope isolate_scope (isolate);
+	v8::Isolate::Scope isolateScope (isolate);
 	v8::HandleScope    handleScope;
 	v8::Context::Scope contextScope (context);
 
+	v8::TryCatch tryCatch;
 	prepareEventsFn -> Call (context -> Global (), 0, nullptr);
+
+	if (tryCatch .HasCaught ())
+		error (tryCatch);
 }
 
 void
 Context::set_field (X3D::X3DFieldDefinition* const field)
 {
+	const auto t0 = chrono::now ();
+
 	v8::Locker         locker (isolate);
-	v8::Isolate::Scope isolate_scope (isolate);
+	v8::Isolate::Scope isolateScope (isolate);
 	v8::HandleScope    handleScope;
 	v8::Context::Scope contextScope (context);
 
@@ -342,55 +355,73 @@ Context::set_field (X3D::X3DFieldDefinition* const field)
 		v8::Number::New (getCurrentTime ())
 	};
 
+	v8::TryCatch tryCatch;
 	functions [field] -> Call (context -> Global (), argc, argv);
 
+	if (tryCatch .HasCaught ())
+		error (tryCatch);
+
 	field -> isTainted (false);
+
+	__LOG__ << chrono::now () - t0 << std::endl;
 }
 
 void
 Context::eventsProcessed ()
 {
 	v8::Locker         locker (isolate);
-	v8::Isolate::Scope isolate_scope (isolate);
+	v8::Isolate::Scope isolateScope (isolate);
 	v8::HandleScope    handleScope;
 	v8::Context::Scope contextScope (context);
 
+	v8::TryCatch tryCatch;
 	eventsProcessedFn -> Call (context -> Global (), 0, nullptr);
+
+	if (tryCatch .HasCaught ())
+		error (tryCatch);
 }
 
 void
 Context::finish ()
 {
 	v8::Locker         locker (isolate);
-	v8::Isolate::Scope isolate_scope (isolate);
+	v8::Isolate::Scope isolateScope (isolate);
 	v8::HandleScope    handleScope;
 	v8::Context::Scope contextScope (context);
 
-	while (not v8::V8::IdleNotification ())
-		;
+	v8::V8::LowMemoryNotification ();
 
 	__LOG__ << getScriptNode () -> getName () << std::endl;
 }
 
 void
-Context::shutdown ()
-{
-	//shutdownFn -> Call (context -> Global (), 0, nullptr);
-}
-
-void
-Context::error (const v8::TryCatch & trycatch) const
+Context::set_shutdown ()
 {
 	v8::Locker         locker (isolate);
-	v8::Isolate::Scope isolate_scope (isolate);
+	v8::Isolate::Scope isolateScope (isolate);
 	v8::HandleScope    handleScope;
 	v8::Context::Scope contextScope (context);
 
-	X3D::X3DJavaScriptContext::error (get_utf8_string (trycatch .Exception ()),
-	                                  get_utf8_string (trycatch .Message () -> GetScriptResourceName ()),
-	                                  trycatch .Message () -> GetLineNumber (),
-	                                  trycatch .Message () -> GetStartColumn (),
-	                                  get_utf8_string (trycatch .Message () -> GetSourceLine ()));
+	v8::TryCatch tryCatch;
+	shutdownFn -> Call (context -> Global (), 0, nullptr);
+
+	if (tryCatch .HasCaught ())
+		error (tryCatch);
+}
+
+void
+Context::error (const v8::TryCatch & tryCatch) const
+{
+	v8::Locker         locker (isolate);
+	v8::Isolate::Scope isolateScope (isolate);
+	v8::HandleScope    handleScope;
+	v8::Context::Scope contextScope (context);
+
+	X3D::X3DJavaScriptContext::error (to_string (tryCatch .Exception ()),
+	                                  to_string (tryCatch .Message () -> GetScriptResourceName ()),
+	                                  tryCatch .Message () -> GetLineNumber (),
+	                                  tryCatch .Message () -> GetStartColumn (),
+	                                  to_string (tryCatch .Message () -> GetSourceLine ()));
 }
 
 void
@@ -400,32 +431,23 @@ Context::dispose ()
 
 	{
 		v8::Locker         locker (isolate);
-		v8::Isolate::Scope isolate_scope (isolate);
+		v8::Isolate::Scope isolateScope (isolate);
 		v8::HandleScope    handleScope;
 		v8::Context::Scope contextScope (context);
-
-		shutdown ();
-
-		initializeFn      .Dispose ();
-		prepareEventsFn   .Dispose ();
-		eventsProcessedFn .Dispose ();
-		shutdownFn        .Dispose ();
-
-		functions .clear ();
-		classes   .clear ();
 	
-		program .Dispose ();
-		context .Dispose ();
-		context .Clear ();
+		const auto global = context -> Global ();
+		const auto names  = global -> GetPropertyNames ();
+
+		for (size_t i = 0, size = names -> Length (); i < size; ++ i)
+			global -> ForceDelete (names -> Get (i));
+
+		v8::V8::LowMemoryNotification ();
 	}
 
 	isolate -> Dispose ();
 
-	while (not v8::V8::IdleNotification ())
-		;
-
 	__LOG__ << this << " : " << objects .size () << std::endl;
-	
+
 	assert (objects .empty ());
 
 	X3D::X3DJavaScriptContext::dispose ();

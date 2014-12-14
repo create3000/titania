@@ -66,6 +66,8 @@ class SFVec4 :
 {
 public:
 
+	using X3DField <Type>::TypeName;
+
 	static
 	v8::Local <v8::FunctionTemplate>
 	initialize (const v8::Local <v8::External> &);
@@ -73,9 +75,13 @@ public:
 
 private:
 
-	using X3DField <Type>::getObject;
 	using X3DField <Type>::createFunctionTemplate;
-	using X3DField <Type>::realize;
+	using X3DField <Type>::addObject;
+	using X3DField <Type>::getObject;
+	using X3DField <Type>::getTypeName;
+	using X3DField <Type>::getType;
+	using X3DField <Type>::isReadable;
+	using X3DField <Type>::isWritable;
 	using X3DField <Type>::toString;
 
 	///  @name Construction
@@ -101,6 +107,8 @@ private:
 	static
 	v8::Handle <v8::Array>
 	getIndices (const v8::AccessorInfo &);
+
+	///  @name Properties
 
 	static
 	void
@@ -142,6 +150,48 @@ private:
 	w (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 	{ return v8::Number::New (getObject (info) -> getW ()); }
 
+	///  @name Functions
+
+	static
+	v8::Handle <v8::Value>
+	negate (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	add (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	subtract (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	multiply (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	multVec (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	divide (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	divVec (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	normalize (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	dot (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	length (const v8::Arguments &);
+
 };
 
 template <class Type>
@@ -152,12 +202,26 @@ SFVec4 <Type>::initialize (const v8::Local <v8::External> & context)
 	const auto instanceTemplate = functionTemplate -> InstanceTemplate ();
 
 	instanceTemplate -> SetIndexedPropertyHandler (get1Value, set1Value, hasIndex, nullptr, getIndices);
-	instanceTemplate -> SetAccessor (make_v8_string ("x"), x, x, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete | v8::DontEnum));
-	instanceTemplate -> SetAccessor (make_v8_string ("y"), y, y, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete | v8::DontEnum));
-	instanceTemplate -> SetAccessor (make_v8_string ("z"), z, z, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete | v8::DontEnum));
-	instanceTemplate -> SetAccessor (make_v8_string ("w"), w, w, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> SetAccessor (String ("x"), x, x, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> SetAccessor (String ("y"), y, y, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> SetAccessor (String ("z"), z, z, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> SetAccessor (String ("w"), w, w, v8::Handle <v8::Value> (), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete | v8::DontEnum));
 
-	instanceTemplate -> Set (make_v8_string ("toString"), v8::FunctionTemplate::New (toString, context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("getTypeName"), v8::FunctionTemplate::New (getTypeName, context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("getType"),     v8::FunctionTemplate::New (getType,     context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("isReadable"),  v8::FunctionTemplate::New (isReadable,  context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("isWritable"),  v8::FunctionTemplate::New (isWritable,  context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("negate"),      v8::FunctionTemplate::New (negate,      context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("add"),         v8::FunctionTemplate::New (add,         context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("subtract"),    v8::FunctionTemplate::New (subtract,    context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("multiply"),    v8::FunctionTemplate::New (multiply,    context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("multVec"),     v8::FunctionTemplate::New (multVec,     context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("divide"),      v8::FunctionTemplate::New (divide,      context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("divVec"),      v8::FunctionTemplate::New (divVec,      context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("normalize"),   v8::FunctionTemplate::New (normalize,   context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("dot"),         v8::FunctionTemplate::New (dot,         context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("length"),      v8::FunctionTemplate::New (length,      context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("toString"),    v8::FunctionTemplate::New (toString,    context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
 
 	return functionTemplate;
 }
@@ -175,29 +239,29 @@ SFVec4 <Type>::construct (const v8::Arguments & args)
 		{
 			case 0:
 			{
-				realize (context, object, new Type ());
+				addObject (context, object, new Type ());
 				break;
 			}
 			case 4:
 			{
-				realize (context, object, new Type (args [0] -> ToNumber () -> Value (),
-				                                    args [1] -> ToNumber () -> Value (),
-				                                    args [2] -> ToNumber () -> Value (),
-				                                    args [3] -> ToNumber () -> Value ()));
+				addObject (context, object, new Type (args [0] -> ToNumber () -> Value (),
+				                                      args [1] -> ToNumber () -> Value (),
+				                                      args [2] -> ToNumber () -> Value (),
+				                                      args [3] -> ToNumber () -> Value ()));
 				break;
 			}
 			case 1:
 			{
 				if (args [0] -> IsExternal ())
 				{
-					realize (context, object, getObject (args [0]));
+					addObject (context, object, getObject (args [0]));
 					break;
 				}
 
 				// Proceed with next case.
 			}
 			default:
-				return v8::ThrowException (make_v8_string ("RuntimeError: wrong number of arguments."));
+				return v8::ThrowException (String ("RuntimeError: wrong number of arguments."));
 		}
 
 		return v8::Undefined ();
@@ -249,6 +313,212 @@ SFVec4 <Type>::getIndices (const v8::AccessorInfo & info)
 		indices -> Set (index, v8::Number::New (index));
 
 	return indices;
+}
+
+template <class Type>
+v8::Handle <v8::Value>
+SFVec4 <Type>::negate (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 0)
+			return v8::ThrowException (String (TypeName () + ".negate: wrong number of arguments."));
+
+		const auto context = getContext (args);
+		const auto lhs     = getObject (args);
+
+		return context -> createObject (lhs -> negate ());
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
+}
+
+template <class Type>
+v8::Handle <v8::Value>
+SFVec4 <Type>::add (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 1)
+			return v8::ThrowException (String (TypeName () + ".add: wrong number of arguments."));
+
+		const auto context = getContext (args);
+		const auto lhs     = getObject (args);
+		const auto rhs     = getArg <Type> (context, TypeName (), args, 0);
+
+		return context -> createObject (lhs -> add (*rhs));
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
+}
+
+template <class Type>
+v8::Handle <v8::Value>
+SFVec4 <Type>::subtract (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 1)
+			return v8::ThrowException (String (TypeName () + ".subtract: wrong number of arguments."));
+
+		const auto context = getContext (args);
+		const auto lhs     = getObject (args);
+		const auto rhs     = getArg <Type> (context, TypeName (), args, 0);
+
+		return context -> createObject (lhs -> subtract (*rhs));
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
+}
+
+template <class Type>
+v8::Handle <v8::Value>
+SFVec4 <Type>::multiply (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 1)
+			return v8::ThrowException (String (TypeName () + ".multiply: wrong number of arguments."));
+
+		const auto context = getContext (args);
+		const auto lhs     = getObject (args);
+		const auto rhs     = args [0] -> ToNumber () -> Value ();
+
+		return context -> createObject (lhs -> multiply (rhs));
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
+}
+
+template <class Type>
+v8::Handle <v8::Value>
+SFVec4 <Type>::multVec (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 1)
+			return v8::ThrowException (String (TypeName () + ".multVec: wrong number of arguments."));
+
+		const auto context = getContext (args);
+		const auto lhs     = getObject (args);
+		const auto rhs     = getArg <Type> (context, TypeName (), args, 0);
+
+		return context -> createObject (lhs -> multiply (*rhs));
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
+}
+
+template <class Type>
+v8::Handle <v8::Value>
+SFVec4 <Type>::divide (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 1)
+			return v8::ThrowException (String (TypeName () + ".divide: wrong number of arguments."));
+
+		const auto context = getContext (args);
+		const auto lhs     = getObject (args);
+		const auto rhs     = args [0] -> ToNumber () -> Value ();
+
+		return context -> createObject (lhs -> divide (rhs));
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
+}
+
+template <class Type>
+v8::Handle <v8::Value>
+SFVec4 <Type>::divVec (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 1)
+			return v8::ThrowException (String (TypeName () + ".divVec: wrong number of arguments."));
+
+		const auto context = getContext (args);
+		const auto lhs     = getObject (args);
+		const auto rhs     = getArg <Type> (context, TypeName (), args, 0);
+
+		return context -> createObject (lhs -> divide (*rhs));
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
+}
+
+template <class Type>
+v8::Handle <v8::Value>
+SFVec4 <Type>::normalize (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 0)
+			return v8::ThrowException (String (TypeName () + ".normalize: wrong number of arguments."));
+
+		const auto context = getContext (args);
+		const auto lhs     = getObject (args);
+
+		return context -> createObject (lhs -> normalize ());
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
+}
+
+template <class Type>
+v8::Handle <v8::Value>
+SFVec4 <Type>::dot (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 1)
+			return v8::ThrowException (String (TypeName () + ".dot: wrong number of arguments."));
+
+		const auto context = getContext (args);
+		const auto lhs     = getObject (args);
+		const auto rhs     = getArg <Type> (context, TypeName (), args, 0);
+
+		return v8::Number::New (lhs -> dot (*rhs));
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
+}
+
+template <class Type>
+v8::Handle <v8::Value>
+SFVec4 <Type>::length (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 0)
+			return v8::ThrowException (String (TypeName () + ".length: wrong number of arguments."));
+
+		const auto lhs = getObject (args);
+
+		return v8::Number::New (lhs -> length ());
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
 }
 
 extern template class SFVec4 <X3D::SFVec4d>;

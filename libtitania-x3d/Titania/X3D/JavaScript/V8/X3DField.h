@@ -63,7 +63,85 @@ class X3DField :
 {
 public:
 
+	using X3DFieldDefinition <Type>::TypeName;
+
+
+protected:
+
+	using X3DFieldDefinition <Type>::getObject;
+
+	///  @name Functions
+
+	static
+	v8::Handle <v8::Value>
+	getType (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	isReadable (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	isWritable (const v8::Arguments &);
+
 };
+
+template <class Type>
+v8::Handle <v8::Value>
+X3DField <Type>::getType (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 0)
+			return v8::ThrowException (String (TypeName () + ".getType: wrong number of arguments."));
+
+		const auto lhs = getObject (args);
+
+		return v8::Number::New (lhs -> getType ());
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
+}
+
+template <class Type>
+v8::Handle <v8::Value>
+X3DField <Type>::isReadable (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 0)
+			return v8::ThrowException (String (TypeName () + ".isReadable: wrong number of arguments."));
+
+		const auto lhs = getObject (args);
+
+		return v8::Boolean::New (lhs -> getAccessType () not_eq inputOnly);
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
+}
+
+template <class Type>
+v8::Handle <v8::Value>
+X3DField <Type>::isWritable (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 0)
+			return v8::ThrowException (String (TypeName () + ".isWritable: wrong number of arguments."));
+
+		const auto lhs = getObject (args);
+
+		return v8::Boolean::New (lhs -> getAccessType () not_eq initializeOnly);
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
+}
 
 } // GoogleV8
 } // X3D

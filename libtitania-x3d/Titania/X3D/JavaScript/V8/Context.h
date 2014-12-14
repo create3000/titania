@@ -110,7 +110,7 @@ public:
 	throw (std::out_of_range);
 
 	void
-	addObject (X3D::X3DFieldDefinition* const, const v8::Local <v8::Object> &, void*, v8::WeakReferenceCallback)
+	addObject (X3D::X3DFieldDefinition* const, const v8::Persistent <v8::Object> &)
 	throw (Error <INVALID_FIELD>);
 
 	void
@@ -168,7 +168,7 @@ private:
 	finish ();
 
 	void
-	shutdown ();
+	set_shutdown ();
 
 	void
 	error (const v8::TryCatch &) const;

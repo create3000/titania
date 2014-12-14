@@ -69,7 +69,7 @@ public:
 	
 	static
 	const std::string &
-	getTypeName ()
+	TypeName ()
 	{ return typeName; }
 
 	///  @name Construction
@@ -82,20 +82,30 @@ public:
 
 protected:
 
+	///  @name Construction
+
+	static
+	v8::Local <v8::FunctionTemplate>
+	createFunctionTemplate (const v8::Local <v8::External> & context, v8::InvocationCallback);
+
+	static
+	void
+	addObject (Context* const, const v8::Local <v8::Object> &, Type* const);
+
 	///  @name Member access
 
 	static
 	Type*
 	getObject (const v8::AccessorInfo & info)
-	{
-		return getObject (info .This ());
-	}
+	{ return getObject (info .This ()); }
 
 	static
 	Type*
 	getObject (const v8::Arguments &)
 	throw (X3D::Error <X3D::INVALID_FIELD>,
           std::out_of_range);
+
+	///  @name Member access
 
 	static
 	Type*
@@ -111,17 +121,11 @@ protected:
 		return static_cast <Type*> (v8::Handle <v8::External>::Cast (value) -> Value ());
 	}
 
-	///  @name Construction
+	///  @name Functions
 
 	static
-	v8::Local <v8::FunctionTemplate>
-	createFunctionTemplate (const v8::Local <v8::External> & context, v8::InvocationCallback);
-
-	static
-	void
-	realize (Context* const, const v8::Local <v8::Object> &, Type* const);
-
-	///  @name Operations
+	v8::Handle <v8::Value>
+	getTypeName (const v8::Arguments &);
 
 	static
 	v8::Handle <v8::Value>
@@ -158,22 +162,10 @@ throw (std::out_of_range)
 }
 
 template <class Type>
-Type*
-X3DObject <Type>::getObject (const v8::Arguments & args)
-throw (X3D::Error <X3D::INVALID_FIELD>,
-       std::out_of_range)
-{
-	if (getContext (args) -> getClass (typeName) -> HasInstance (args .This ()))
-		return getObject (args .This ());
-
-	throw X3D::Error <X3D::INVALID_FIELD> ("RuntimeError: function must be called with object of type " + typeName + ".");
-}
-
-template <class Type>
 v8::Local <v8::FunctionTemplate>
 X3DObject <Type>::createFunctionTemplate (const v8::Local <v8::External> & context, v8::InvocationCallback callback)
 {
-	const auto className        = make_v8_string (typeName);
+	const auto className        = String (typeName);
 	const auto functionTemplate = v8::FunctionTemplate::New ();
 
 	functionTemplate -> SetCallHandler (callback, context);	
@@ -186,13 +178,46 @@ X3DObject <Type>::createFunctionTemplate (const v8::Local <v8::External> & conte
 
 template <class Type>
 void
-X3DObject <Type>::realize (Context* const context, const v8::Local <v8::Object> & object, Type* const field)
+X3DObject <Type>::addObject (Context* const context, const v8::Local <v8::Object> & object, Type* const field)
 {
 	object -> SetInternalField (0, v8::External::New (field));
 
-	context -> addObject (field, object, context, finalize);
+	auto persistent = v8::Persistent <v8::Object>::New (object);
 
-	v8::V8::AdjustAmountOfExternalAllocatedMemory (sizeof (Type));
+	persistent .MakeWeak (context, finalize);
+
+	context -> addObject (field, persistent);
+}
+
+template <class Type>
+Type*
+X3DObject <Type>::getObject (const v8::Arguments & args)
+throw (X3D::Error <X3D::INVALID_FIELD>,
+       std::out_of_range)
+{
+	if (getContext (args) -> getClass (typeName) -> HasInstance (args .This ()))
+		return getObject (args .This ());
+
+	throw X3D::Error <X3D::INVALID_FIELD> ("RuntimeError: function must be called with object of type " + typeName + ".");
+}
+
+template <class Type>
+v8::Handle <v8::Value>
+X3DObject <Type>::getTypeName (const v8::Arguments & args)
+{
+	try
+	{
+		if (args .Length () not_eq 0)
+			return v8::ThrowException (String (TypeName () + ".getTypeName: wrong number of arguments."));
+
+		const auto lhs = getObject (args);
+
+		return String (lhs -> getTypeName ());
+	}
+	catch (const std::exception & error)
+	{
+		return v8::ThrowException (String (error .what ()));
+	}
 }
 
 template <class Type>
@@ -205,11 +230,11 @@ X3DObject <Type>::toString (const v8::Arguments & args)
 
 		X3D::Generator::NicestStyle ();
 
-		return make_v8_string (field -> toString ());
+		return String (field -> toString ());
 	}
 	catch (const std::exception & error)
 	{
-		return v8::ThrowException (make_v8_string (error .what ()));
+		return v8::ThrowException (String (error .what ()));
 	}
 }
 
@@ -221,10 +246,28 @@ X3DObject <Type>::finalize (v8::Persistent <v8::Value> value, void* parameter)
 	const auto field   = getObject (value -> ToObject ());
 
 	context -> removeObject (field);
+}
 
-	v8::V8::AdjustAmountOfExternalAllocatedMemory (-sizeof (Type));
+template <class T>
+inline
+T*
+getArg (const v8::Local <v8::Value> & value)
+{
+	return static_cast <T*> (v8::Handle <v8::External>::Cast (value -> ToObject () -> GetInternalField (0)) -> Value ());
+}
 
-	__LOG__ << context << " : " << field -> getTypeName () << std::endl;
+template <class T>
+T*
+getArg (Context* const context, const std::string & typeName, const v8::Arguments & args, const size_t index)
+throw (X3D::Error <X3D::INVALID_FIELD>,
+       std::out_of_range)
+{
+	const auto value = args [index];
+
+	if (context -> getClass (typeName) -> HasInstance (value))
+		return getArg <T> (value);
+
+	throw X3D::Error <X3D::INVALID_FIELD> ("RuntimeError: parameter " + std::to_string (index + 1) + " has wrong type, must be " + typeName + ".");
 }
 
 } // GoogleV8

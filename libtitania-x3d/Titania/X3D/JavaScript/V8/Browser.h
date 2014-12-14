@@ -65,7 +65,7 @@ public:
 
 	static
 	void
-	initialize (Context* const, const v8::Local <v8::Object> &);
+	initialize (const v8::Local <v8::External> &, const v8::Local <v8::Object> &);
 
 
 private:

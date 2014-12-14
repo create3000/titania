@@ -60,14 +60,14 @@ namespace GoogleV8 {
 
 inline
 v8::Local <v8::String>
-make_v8_string (const char* string)
+String (const char* string)
 {
 	return v8::String::New (string);
 }
 
 inline
 v8::Local <v8::String>
-make_v8_string (const std::string & string)
+String (const std::string & string)
 {
 	return v8::String::New (string .c_str (), string .size ());
 }
@@ -75,7 +75,7 @@ make_v8_string (const std::string & string)
 template <class Type>
 inline
 std::string
-get_utf8_string (const Type & value)
+to_string (const Type & value)
 {
 	try
 	{

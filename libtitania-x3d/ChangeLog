@@ -1,3 +1,17 @@
+2014-12-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* String.h:
+	* Globals.h:
+	* Context.h:
+	* Browser.h:
+	* X3DField.h:
+	* Context.cpp:
+	* Globals.cpp:
+	* Browser.cpp:
+	* X3DObject.h:
+	* SFVec4.h:
+	* jsX3DField.h: 
+
 2014-12-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

@@ -62,6 +62,8 @@ class jsX3DField :
 {
 public:
 
+	///  @name Functions
+
 	static JSBool
 	getType (JSContext *, uintN, jsval*);
 

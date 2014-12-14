@@ -58,14 +58,14 @@ namespace X3D {
 namespace GoogleV8 {
 
 void
-Globals::initialize (Context* const context, const v8::Local <v8::Object> & globalObject)
+Globals::initialize (const v8::Local <v8::External> & context, const v8::Local <v8::Object> & global)
 {
-	globalObject -> Set (make_v8_string ("NULL"),  v8::Null (),              v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
-	globalObject -> Set (make_v8_string ("FALSE"), v8::Boolean::New (false), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
-	globalObject -> Set (make_v8_string ("TRUE"),  v8::Boolean::New (true),  v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	global -> Set (String ("NULL"),  v8::Null (),              v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	global -> Set (String ("FALSE"), v8::Boolean::New (false), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	global -> Set (String ("TRUE"),  v8::Boolean::New (true),  v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
 
-	globalObject -> Set (make_v8_string ("print"), v8::FunctionTemplate::New (print, v8::External::New (context)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
-	globalObject -> Set (make_v8_string ("trace"), v8::FunctionTemplate::New (print, v8::External::New (context)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	global -> Set (String ("print"), v8::FunctionTemplate::New (print, context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	global -> Set (String ("trace"), v8::FunctionTemplate::New (print, context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
 }
 
 v8::Handle <v8::Value>
@@ -74,7 +74,7 @@ Globals::print (const v8::Arguments & args)
 	const auto browser = getContext (args) -> getBrowser ();
 
 	for (size_t i = 0, size = args .Length (); i < size; ++ i)
-		browser -> print (get_utf8_string (args [i]));
+		browser -> print (to_string (args [i]));
 
 	browser -> print ("\n");
 

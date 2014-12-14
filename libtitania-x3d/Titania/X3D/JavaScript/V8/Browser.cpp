@@ -58,39 +58,39 @@ namespace X3D {
 namespace GoogleV8 {
 
 void
-Browser::initialize (Context* const context, const v8::Local <v8::Object> & globalObject)
+Browser::initialize (const v8::Local <v8::External> & context, const v8::Local <v8::Object> & global)
 {
 	const auto functionTemplate = v8::FunctionTemplate::New ();
 
-	functionTemplate -> SetClassName (make_v8_string ("Browser"));
+	functionTemplate -> SetClassName (String ("Browser"));
 
 	// X3D properties
 
 	const auto instanceTemplate = functionTemplate -> InstanceTemplate ();
 
-	instanceTemplate -> SetAccessor (make_v8_string ("name"),                name,                nullptr,     v8::External::New (context), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
-	instanceTemplate -> SetAccessor (make_v8_string ("version"),             version,             nullptr,     v8::External::New (context), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
-	instanceTemplate -> SetAccessor (make_v8_string ("currentSpeed"),        currentSpeed,        nullptr,     v8::External::New (context), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
-	instanceTemplate -> SetAccessor (make_v8_string ("currentFrameRate"),    currentFrameRate,    nullptr,     v8::External::New (context), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
-	instanceTemplate -> SetAccessor (make_v8_string ("description"),         description,         description, v8::External::New (context), v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete));
-//	instanceTemplate -> SetAccessor (make_v8_string ("supportedComponents"), supportedComponents, nullptr,     v8::External::New (context), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
-//	instanceTemplate -> SetAccessor (make_v8_string ("supportedProfiles"),   supportedProfiles,   nullptr,     v8::External::New (context), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete);
-	instanceTemplate -> SetAccessor (make_v8_string ("currentScene"),        currentScene,        nullptr,     v8::External::New (context), v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	instanceTemplate -> SetAccessor (String ("name"),                name,                nullptr,     context, v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	instanceTemplate -> SetAccessor (String ("version"),             version,             nullptr,     context, v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	instanceTemplate -> SetAccessor (String ("currentSpeed"),        currentSpeed,        nullptr,     context, v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	instanceTemplate -> SetAccessor (String ("currentFrameRate"),    currentFrameRate,    nullptr,     context, v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	instanceTemplate -> SetAccessor (String ("description"),         description,         description, context, v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete));
+//	instanceTemplate -> SetAccessor (String ("supportedComponents"), supportedComponents, nullptr,     context, v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+//	instanceTemplate -> SetAccessor (String ("supportedProfiles"),   supportedProfiles,   nullptr,     context, v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete);
+	instanceTemplate -> SetAccessor (String ("currentScene"),        currentScene,        nullptr,     context, v8::DEFAULT, v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
 
 	// VRML functions
 
-	instanceTemplate -> Set (make_v8_string ("getName"),              v8::FunctionTemplate::New (getName,              v8::External::New (context)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
-	instanceTemplate -> Set (make_v8_string ("getVersion"),           v8::FunctionTemplate::New (getVersion,           v8::External::New (context)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
-	instanceTemplate -> Set (make_v8_string ("getCurrentSpeed"),      v8::FunctionTemplate::New (getCurrentSpeed,      v8::External::New (context)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
-	instanceTemplate -> Set (make_v8_string ("getCurrentFrameRate"),  v8::FunctionTemplate::New (getCurrentFrameRate,  v8::External::New (context)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
-	instanceTemplate -> Set (make_v8_string ("getWorldURL"),          v8::FunctionTemplate::New (getWorldURL,          v8::External::New (context)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
-	instanceTemplate -> Set (make_v8_string ("setDescription"),       v8::FunctionTemplate::New (setDescription,       v8::External::New (context)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
-	instanceTemplate -> Set (make_v8_string ("createVrmlFromString"), v8::FunctionTemplate::New (createVrmlFromString, v8::External::New (context)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
-	instanceTemplate -> Set (make_v8_string ("createVrmlFromURL"),    v8::FunctionTemplate::New (createVrmlFromURL,    v8::External::New (context)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
-	instanceTemplate -> Set (make_v8_string ("addRoute"),             v8::FunctionTemplate::New (addRoute,             v8::External::New (context)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
-	instanceTemplate -> Set (make_v8_string ("deleteRoute"),          v8::FunctionTemplate::New (deleteRoute,          v8::External::New (context)) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("getName"),              v8::FunctionTemplate::New (getName,              context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("getVersion"),           v8::FunctionTemplate::New (getVersion,           context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("getCurrentSpeed"),      v8::FunctionTemplate::New (getCurrentSpeed,      context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("getCurrentFrameRate"),  v8::FunctionTemplate::New (getCurrentFrameRate,  context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("getWorldURL"),          v8::FunctionTemplate::New (getWorldURL,          context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("setDescription"),       v8::FunctionTemplate::New (setDescription,       context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("createVrmlFromString"), v8::FunctionTemplate::New (createVrmlFromString, context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("createVrmlFromURL"),    v8::FunctionTemplate::New (createVrmlFromURL,    context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("addRoute"),             v8::FunctionTemplate::New (addRoute,             context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
+	instanceTemplate -> Set (String ("deleteRoute"),          v8::FunctionTemplate::New (deleteRoute,          context) -> GetFunction (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete | v8::DontEnum));
 
-	globalObject -> Set (make_v8_string ("Browser"), functionTemplate -> GetFunction () -> NewInstance (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
+	global -> Set (String ("Browser"), functionTemplate -> GetFunction () -> NewInstance (), v8::PropertyAttribute (v8::ReadOnly | v8::DontDelete));
 }
 
 // X3D properties
@@ -100,7 +100,7 @@ Browser::name (v8::Local <v8::String> property, const v8::AccessorInfo & info)
 {
 	const auto browser = getContext (info) -> getBrowser ();
 
-	return make_v8_string (browser -> getName ());
+	return String (browser -> getName ());
 }
 
 v8::Handle <v8::Value>
@@ -108,7 +108,7 @@ Browser::version (v8::Local <v8::String> property, const v8::AccessorInfo & info
 {
 	const auto browser = getContext (info) -> getBrowser ();
 
-	return make_v8_string (browser -> getVersion ());
+	return String (browser -> getVersion ());
 }
 
 v8::Handle <v8::Value>
@@ -132,7 +132,7 @@ Browser::description (v8::Local <v8::String> property, v8::Local <v8::Value> val
 {
 	const auto browser = getContext (info) -> getBrowser ();
 
-	browser -> setDescription (get_utf8_string (value));
+	browser -> setDescription (to_string (value));
 }
 
 v8::Handle <v8::Value>
@@ -140,7 +140,7 @@ Browser::description (v8::Local <v8::String> property, const v8::AccessorInfo & 
 {
 	const auto browser = getContext (info) -> getBrowser ();
 
-	return make_v8_string (browser -> getDescription ());
+	return String (browser -> getDescription ());
 }
 
 //v8::Handle <v8::Value>
@@ -174,7 +174,7 @@ Browser::getName (const v8::Arguments & args)
 {
 	const auto browser = getContext (args) -> getBrowser ();
 
-	return make_v8_string (browser -> getName ());
+	return String (browser -> getName ());
 }
 
 v8::Handle <v8::Value>
@@ -182,7 +182,7 @@ Browser::getVersion (const v8::Arguments & args)
 {
 	const auto browser = getContext (args) -> getBrowser ();
 
-	return make_v8_string (browser -> getVersion ());
+	return String (browser -> getVersion ());
 }
 
 v8::Handle <v8::Value>
@@ -206,7 +206,7 @@ Browser::getWorldURL (const v8::Arguments & args)
 {
 	const auto browser = getContext (args) -> getBrowser ();
 
-	return make_v8_string (browser -> getWorldURL ());
+	return String (browser -> getWorldURL ());
 }
 
 v8::Handle <v8::Value>
@@ -216,12 +216,12 @@ Browser::setDescription (const v8::Arguments & args)
 	{
 		const auto browser = getContext (args) -> getBrowser ();
 
-		browser -> setDescription (get_utf8_string (args [0]));
+		browser -> setDescription (to_string (args [0]));
 
 		return v8::Undefined ();
 	}
 
-	return v8::ThrowException (make_v8_string ("RuntimeError: wrong number of arguments."));
+	return v8::ThrowException (String ("RuntimeError: wrong number of arguments."));
 }
 
 v8::Handle <v8::Value>

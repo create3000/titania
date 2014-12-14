@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 01 Jun 2014 03:00:06 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.6, http://titania.create3000.de"
-META "modified" "Sat, 13 Dec 2014 09:13:57 GMT"
+META "modified" "Sun, 14 Dec 2014 08:51:30 GMT"
 
 Transform {
   children [
@@ -49,7 +49,7 @@ function initialize ()
 {
 	//global ();
 	//browser ();
-	//fields ();
+	fields ();
 }
 
 function global ()
@@ -129,11 +129,25 @@ function fields ()
 	v .y = 6;
 	v .z = 7;
 	v .w = 8;
-	print ('SFVec4f .toString:   ', v);
+	print ('SFVec4f .getTypeName: ', v .getTypeName ());
+	print ('SFVec4f .getType:     ', v .getType ());
+	print ('SFVec4f .isReadable:  ', v .isReadable ());
+	print ('SFVec4f .isWritable:  ', v .isWritable ());
+	print ('SFVec4f .toString:    ', v);
+	print ('SFVec4f .negate:      ', v .negate ());
+	print ('SFVec4f .add:         ', v .add (v));
+	print ('SFVec4f .subtract:    ', v .subtract (v));
+	print ('SFVec4f .multiply:    ', v .multiply (2));
+	print ('SFVec4f .divide:      ', v .divide (2));
+	print ('SFVec4f .normalize:   ', v .normalize ());
+	print ('SFVec4f .dot:         ', v .dot (v));
+	print ('SFVec4f .length:      ', v .length ());
+	print ('SFVec4f .multVec:     ', v .multVec (v));
+	print ('SFVec4f .divVec:      ', v .divVec (v));
 
 	print ('Enumerate:');
 	for (var i in v)
-		print ('SFVec4f: ', i, ' = ', v [i]);
+		print ('SFVec4f [', i, ']: ', v [i]);
 
 	//var f = v .toString;
 	//f .call (Browser);
@@ -159,9 +173,15 @@ DEF Script2 Script {
 
   url "v8:
 
+var v1 = new SFVec4f ();
+var v2 = new SFVec4f ();
+
 function initialize ()
 {
-	//var v = new SFVec4f ();
+	var v = new SFVec4f (1,2,3,4);
+	print ('initialize: ', v);
+	print ('initialize: ', v .add (v));
+	print ('initialize: ', v .add (new SFVec4f (2,3,4,5)));
 }
 
 function set_time (value, time)
