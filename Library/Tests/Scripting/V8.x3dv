@@ -238,6 +238,8 @@ function fields ()
 	for (var i in v)
 		print ('SFNode [', i, ']: ', v [i]);
 
+	print ('SFImage: ', new SFImage ());
+
 	//var f = v .toString;
 	//f .call (Browser);
 }

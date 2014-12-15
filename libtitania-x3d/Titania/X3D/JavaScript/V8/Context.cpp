@@ -129,6 +129,7 @@ Context::setContext ()
 
 	addClass (SFColor::Type (),     SFColor::initialize (external));
 	addClass (SFColorRGBA::Type (), SFColorRGBA::initialize (external));
+	addClass (SFImage::Type (),     SFImage::initialize (external));
 	addClass (SFMatrix3d::Type (),  SFMatrix3d::initialize (external));
 	addClass (SFMatrix3f::Type (),  SFMatrix3f::initialize (external));
 	addClass (SFMatrix4d::Type (),  SFMatrix4d::initialize (external));

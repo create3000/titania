@@ -53,7 +53,7 @@
 
 #include "Fields/SFColor.h"
 #include "Fields/SFColorRGBA.h"
-//#include "Fields/SFImage.h"
+#include "Fields/SFImage.h"
 #include "Fields/SFMatrix3.h"
 #include "Fields/SFMatrix4.h"
 #include "Fields/SFNode.h"

@@ -77,9 +77,9 @@ SFColor::initialize (const v8::Local <v8::External> & context)
 	instanceTemplate -> Set (String ("isReadable"),  v8::FunctionTemplate::New (isReadable,  context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("isWritable"),  v8::FunctionTemplate::New (isWritable,  context) -> GetFunction (), getFunctionAttributes ());
 
-	instanceTemplate -> Set (String ("toString"),    v8::FunctionTemplate::New (toString,    context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("setHSV"),      v8::FunctionTemplate::New (setHSV,      context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("getHSV"),      v8::FunctionTemplate::New (getHSV,      context) -> GetFunction (), getFunctionAttributes ());
+	instanceTemplate -> Set (String ("toString"),    v8::FunctionTemplate::New (toString,    context) -> GetFunction (), getFunctionAttributes ());
 
 	return functionTemplate;
 }

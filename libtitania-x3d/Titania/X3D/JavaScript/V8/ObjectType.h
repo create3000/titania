@@ -64,6 +64,7 @@ enum class ObjectType :
 
 	SFColor,
 	SFColorRGBA,
+	SFImage,
 	SFMatrix3d,
 	SFMatrix3f,
 	SFMatrix4d,
