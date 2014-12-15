@@ -193,12 +193,12 @@ throw (std::out_of_range)
 
 void
 Context::addObject (X3D::X3DFieldDefinition* const field, const v8::Persistent <v8::Object> & object)
-throw (Error <INVALID_FIELD>)
+throw (std::invalid_argument)
 {
 	const auto iter = objects .emplace (field, object);
 
 	if (not iter .second)
-		throw Error <INVALID_FIELD> ("Object already exists in v8 Context.");
+		throw std::invalid_argument ("Object already exists in v8 Context.");
 
 	field -> addParent (this);
 }

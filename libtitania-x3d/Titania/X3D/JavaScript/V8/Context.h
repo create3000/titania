@@ -109,7 +109,7 @@ public:
 
 	void
 	addObject (X3D::X3DFieldDefinition* const, const v8::Persistent <v8::Object> &)
-	throw (Error <INVALID_FIELD>);
+	throw (std::invalid_argument);
 
 	void
 	removeObject (X3D::X3DFieldDefinition* const);

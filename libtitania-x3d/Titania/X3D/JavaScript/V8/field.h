@@ -48,101 +48,23 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_X3DSCALAR_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_X3DSCALAR_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_V8GLOBALS_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_V8GLOBALS_H__
 
-#include "../../../Fields/SFString.h"
-#include "../../../Fields/SFTime.h"
-#include "../../../Fields/X3DScalar.h"
+#include <v8.h>
 
-#include "../Context.h"
-#include "../String.h"
+#include "Context.h"
 
 namespace titania {
 namespace X3D {
 namespace GoogleV8 {
 
-template <class T>
-class X3DScalar
-{
-public:
-
-	using value_type = T;
-
-	static
-	v8::Handle <v8::Value>
-	create (Context* const, T* const field)
-	{
-		return v8::Number::New (field -> getValue ());
-	}
-
-	static
-	v8::Handle <v8::Value>
-	setValue (Context* const, T* const field, const v8::Local <v8::Value> & value)
-	{
-		field -> setValue (value -> ToNumber () -> Value ());
-		return value;
-	}
-
-};
-
-template <>
-inline
 v8::Handle <v8::Value>
-X3DScalar <X3D::SFBool>::create (Context* const, X3D::SFBool* const field)
-{
-	return v8::Boolean::New (field -> getValue ());
-}
+setValue (Context* const, X3D::X3DFieldDefinition* const, const v8::Local <v8::Value> &)
+throw (std::invalid_argument);
 
-template <>
-inline
 v8::Handle <v8::Value>
-X3DScalar <X3D::SFInt32>::create (Context* const, X3D::SFInt32* const field)
-{
-	return v8::Int32::New (field -> getValue ());
-}
-
-template <>
-inline
-v8::Handle <v8::Value>
-X3DScalar <X3D::SFString>::create (Context* const, X3D::SFString* const field)
-{
-	return String (field -> str ());
-}
-
-template <>
-inline
-v8::Handle <v8::Value>
-X3DScalar <X3D::SFBool>::setValue (Context* const, X3D::SFBool* const field, const v8::Local <v8::Value> & value)
-{
-	field -> setValue (value -> ToBoolean () -> Value ());
-	return value;
-}
-
-template <>
-inline
-v8::Handle <v8::Value>
-X3DScalar <X3D::SFInt32>::setValue (Context* const, X3D::SFInt32* const field, const v8::Local <v8::Value> & value)
-{
-	field -> setValue (value -> ToInt32 () -> Value ());
-	return value;
-}
-
-template <>
-inline
-v8::Handle <v8::Value>
-X3DScalar <X3D::SFString>::setValue (Context* const, X3D::SFString* const field, const v8::Local <v8::Value> & value)
-{
-	field -> setValue (to_string (value));
-	return value;
-}
-
-using SFBool   = X3DScalar <X3D::SFBool>;
-using SFDouble = X3DScalar <X3D::SFDouble>;
-using SFFloat  = X3DScalar <X3D::SFFloat>;
-using SFInt32  = X3DScalar <X3D::SFInt32>;
-using SFString = X3DScalar <X3D::SFString>;
-using SFTime   = X3DScalar <X3D::SFTime>;
+getValue (Context* const, X3D::X3DFieldDefinition* const);
 
 } // GoogleV8
 } // X3D

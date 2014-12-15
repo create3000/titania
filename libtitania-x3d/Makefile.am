@@ -456,6 +456,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/V8.cpp \
 	Titania/X3D/JavaScript/V8/Browser.cpp \
 	Titania/X3D/JavaScript/V8/Context.cpp \
+	Titania/X3D/JavaScript/V8/field.cpp \
 	Titania/X3D/JavaScript/V8/Fields/ArrayFields.cpp \
 	Titania/X3D/JavaScript/V8/Fields/SFColor.cpp \
 	Titania/X3D/JavaScript/V8/Fields/SFColorRGBA.cpp \

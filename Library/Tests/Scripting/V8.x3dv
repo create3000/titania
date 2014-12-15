@@ -50,7 +50,8 @@ function initialize ()
 	//global ();
 	//browser ();
 	//fields ();
-	arrays ();
+	//arrays ();
+	node ();
 }
 
 function global ()
@@ -251,7 +252,7 @@ function arrays ()
 	print ('MFColor:         ', a);
 	print ('MFColor .length: ', a .length);
 
-	var a = new MFColor (new SFColor (0.1, 0.2, 0.3), new SFColor (0.2, 0.3, 0.4));
+	var a = new MFColor (new SFColor (0.1, 0.2, 0.3), new SFColor (0.2, 0.3, 0.4), false);
 	print ('MFColor: ', a);
 	print ('MFColor .length: ', a .length);
 	print ('MFColor [0]: ', a [0]);
@@ -273,6 +274,22 @@ function arrays ()
 
 	a [1] = true;
 	print ('MFBool: ', a);
+}
+
+function node ()
+{
+	var v = new SFNode ('DEF V Viewpoint { }');
+
+	print ('Viewpoint: ', v);
+	print ('Viewpoint .position: ', v .position);
+
+	v .position = new SFVec3f (1, 2, 3);
+	print ('Viewpoint .position: ', v .position);
+
+	v .position [0] = 2;
+	v .position [1] = 3;
+	v .position [2] = 4;
+	print ('Viewpoint .position: ', v .position);
 }
 
 function set_time (value, time)

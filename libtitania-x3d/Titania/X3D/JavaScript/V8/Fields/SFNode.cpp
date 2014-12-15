@@ -50,6 +50,7 @@
 
 #include "SFNode.h"
 
+#include "../field.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../../../InputOutput/Loader.h"
 
@@ -69,7 +70,7 @@ SFNode::initialize (const v8::Local <v8::External> & context)
 	const auto functionTemplate = createFunctionTemplate (context, construct);
 	const auto instanceTemplate = functionTemplate -> InstanceTemplate ();
 
-	instanceTemplate -> SetNamedPropertyHandler (getProperty, setProperty, hasProperty, nullptr, getPropertyNames);
+	instanceTemplate -> SetNamedPropertyHandler (getProperty, setProperty, hasProperty, nullptr, getPropertyNames, context);
 
 	instanceTemplate -> Set (String ("getName"),             v8::FunctionTemplate::New (getName,      context) -> GetFunction (), getFunctionAttributes ());
 	instanceTemplate -> Set (String ("getTypeName"),         v8::FunctionTemplate::New (getTypeName,  context) -> GetFunction (), getFunctionAttributes ());
@@ -165,8 +166,9 @@ SFNode::setProperty (v8::Local <v8::String> property, v8::Local <v8::Value> valu
 {
 	try
 	{
-		const auto lhs  = getObject (info);
-		const auto node = lhs -> getValue ();
+		const auto context = getContext (info);
+		const auto lhs     = getObject (info);
+		const auto node    = lhs -> getValue ();
 
 		if (not node)
 			return v8::Undefined ();
@@ -176,12 +178,14 @@ SFNode::setProperty (v8::Local <v8::String> property, v8::Local <v8::Value> valu
 		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::outputOnly)
 			return v8::Undefined ();
 
-		//if (setValue (field, value))
-		// return value;
-		//
-		//return v8::ThrowException (String (lhs -> getValue () -> getTypeName () + "." + to_string (property) + ": couldn't assign value."));
-
-		return value;
+		try
+		{
+			return GoogleV8::setValue (context, field, value);
+		}
+		catch (const std::exception & error)
+		{
+			return v8::ThrowException (String (error .what ()));
+		}
 	}
 	catch (const std::exception &)
 	{
@@ -194,8 +198,9 @@ SFNode::getProperty (v8::Local <v8::String> property, const v8::AccessorInfo & i
 {
 	try
 	{
-		const auto lhs  = getObject (info);
-		const auto node = lhs -> getValue ();
+		const auto context = getContext (info);
+		const auto lhs     = getObject (info);
+		const auto node    = lhs -> getValue ();
 
 		if (not node)
 			return v8::Undefined ();
@@ -205,8 +210,7 @@ SFNode::getProperty (v8::Local <v8::String> property, const v8::AccessorInfo & i
 		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::inputOnly)
 			return v8::Undefined ();
 
-		//return getValue (field);
-		return v8::Boolean::New (true);
+		return getValue (context, field);
 	}
 	catch (const std::exception &)
 	{

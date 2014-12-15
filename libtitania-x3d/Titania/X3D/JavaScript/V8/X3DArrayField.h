@@ -215,7 +215,7 @@ X3DArrayField <T, S>::set1Value (uint32_t index, v8::Local <v8::Value> value, co
 			return value;
 		}
 
-		return v8::ThrowException (String ("RuntimeError: couldn't assign array value."));
+		return v8::ThrowException (String ("RuntimeError: couldn't assign value for index " + std::to_string (index) + ", value has wrong type, must be " + S::TypeName () + "."));
 	}
 	catch (const std::bad_alloc &)
 	{

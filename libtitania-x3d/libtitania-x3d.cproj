@@ -827,6 +827,7 @@
     </None>
     <None Include="Titania\X3D\JavaScript\V8\Fields\ArrayFields.h" />
     <None Include="Titania\X3D\JavaScript\V8\Fields\X3DScalar.h" />
+    <None Include="Titania\X3D\JavaScript\V8\field.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1364,6 +1365,7 @@
     <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFNode.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFImage.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\Fields\ArrayFields.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8\field.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

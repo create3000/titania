@@ -64,6 +64,14 @@ class X3DField :
 public:
 
 	using X3DFieldDefinition <T>::TypeName;
+	using X3DFieldDefinition <T>::Type;
+
+	///  @name Operations
+
+	static
+	v8::Handle <v8::Value>
+	setValue (Context* const, T* const, const v8::Local <v8::Value> &)
+	throw (std::invalid_argument);
 
 
 protected:
@@ -85,6 +93,20 @@ protected:
 	isWritable (const v8::Arguments &);
 
 };
+
+template <class T>
+v8::Handle <v8::Value>
+X3DField <T>::setValue (Context* const context, T* const field, const v8::Local <v8::Value> & value)
+throw (std::invalid_argument)
+{
+	if (context -> getClass (Type ()) -> HasInstance (value))
+	{
+		field -> setValue (*getArgument <T> (value));
+		return value;
+	}
+
+	throw std::invalid_argument ("RuntimeError: couldn't assign value to field '" + field -> getName () + "', value has wrong type, must be " + TypeName () + ".");
+}
 
 template <class T>
 v8::Handle <v8::Value>

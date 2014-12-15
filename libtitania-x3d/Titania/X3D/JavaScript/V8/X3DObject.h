@@ -125,14 +125,14 @@ protected:
 	static
 	T*
 	getObject (const v8::Arguments & args)
-	throw (X3D::Error <X3D::INVALID_FIELD>,
+	throw (std::invalid_argument,
           std::out_of_range)
    { return getObject (getContext (args), args); }
 
 	static
 	T*
 	getObject (Context* const, const v8::Arguments &)
-	throw (X3D::Error <X3D::INVALID_FIELD>,
+	throw (std::invalid_argument,
           std::out_of_range);
 
 	///  @name Object access
@@ -238,7 +238,7 @@ X3DObject <T>::addObject (Context* const context, const v8::Local <v8::Object> &
 template <class T>
 T*
 X3DObject <T>::getObject (Context* const context, const v8::Arguments & args)
-throw (X3D::Error <X3D::INVALID_FIELD>,
+throw (std::invalid_argument,
        std::out_of_range)
 {
 	const auto object = args .This ();
@@ -246,7 +246,7 @@ throw (X3D::Error <X3D::INVALID_FIELD>,
 	if (context -> getClass (type) -> HasInstance (object))
 		return getObject (object);
 
-	throw X3D::Error <X3D::INVALID_FIELD> ("RuntimeError: function must be called with object of type " + typeName + ".");
+	throw std::invalid_argument ("RuntimeError: function must be called with object of type " + typeName + ".");
 }
 
 template <class T>
@@ -351,7 +351,7 @@ getArgument (const v8::Local <v8::Value> & value)
 template <class T>
 typename T::value_type*
 getArgument (Context* const context, const v8::Arguments & args, const size_t index)
-throw (X3D::Error <X3D::INVALID_FIELD>,
+throw (std::invalid_argument,
        std::out_of_range)
 {
 	const auto value = args [index];
@@ -359,7 +359,7 @@ throw (X3D::Error <X3D::INVALID_FIELD>,
 	if (context -> getClass (T::Type ()) -> HasInstance (value))
 		return getArgument <typename T::value_type> (value);
 
-	throw X3D::Error <X3D::INVALID_FIELD> ("RuntimeError: parameter " + std::to_string (index + 1) + " has wrong type, must be " + T::TypeName () + ".");
+	throw std::invalid_argument ("RuntimeError: parameter " + std::to_string (index + 1) + " has wrong type, must be " + T::TypeName () + ".");
 }
 
 } // GoogleV8
