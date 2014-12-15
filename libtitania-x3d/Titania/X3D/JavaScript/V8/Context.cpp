@@ -133,6 +133,7 @@ Context::setContext ()
 	addClass (SFMatrix3f::Type (),  SFMatrix3f::initialize (external));
 	addClass (SFMatrix4d::Type (),  SFMatrix4d::initialize (external));
 	addClass (SFMatrix4f::Type (),  SFMatrix4f::initialize (external));
+	addClass (SFNode::Type (),      SFNode::initialize (external));
 	addClass (SFRotation::Type (),  SFRotation::initialize (external));
 	addClass (SFVec2d::Type (),     SFVec2d::initialize (external));
 	addClass (SFVec2f::Type (),     SFVec2f::initialize (external));

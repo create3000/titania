@@ -1,3 +1,21 @@
+2014-12-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Fields.h:
+	* Context.cpp:
+	* X3DObject.h:
+	* ObjectType.h:
+	* SFNode.h:
+	* SFVec4.h:
+	* SFVec3.h:
+	* SFVec2.h:
+	* SFNode.cpp:
+	* SFColor.cpp:
+	* SFMatrix4.h:
+	* SFRotation4.h:
+	* SFColorRGBA.cpp: 
+
 2014-12-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

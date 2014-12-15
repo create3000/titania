@@ -133,7 +133,7 @@ SFColorRGBA::construct (const v8::Arguments & args)
 		return v8::Undefined ();
 	}
 
-	return v8::ThrowException (v8::String::New ("RuntimeError: cannot call constructor as function."));
+	return v8::ThrowException (String ("RuntimeError: cannot call constructor as function."));
 }
 
 v8::Handle <v8::Integer>
@@ -151,7 +151,7 @@ SFColorRGBA::get1Value (uint32_t index, const v8::AccessorInfo & info)
 	if (index < T::internal_type::size ())
 		return v8::Number::New (getObject (info) -> get1Value (index));
 
-	return v8::ThrowException (v8::String::New ("RuntimeError: index out of range."));
+	return v8::ThrowException (String ("RuntimeError: index out of range."));
 }
 
 v8::Handle <v8::Value>
@@ -163,7 +163,7 @@ SFColorRGBA::set1Value (uint32_t index, v8::Local <v8::Value> value, const v8::A
 		return value;
 	}
 
-	return v8::ThrowException (v8::String::New ("RuntimeError: index out of range."));
+	return v8::ThrowException (String ("RuntimeError: index out of range."));
 }
 
 v8::Handle <v8::Array>

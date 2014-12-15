@@ -119,6 +119,7 @@ protected:
 	static
 	T*
 	getObject (const v8::AccessorInfo & info)
+	throw (std::out_of_range)
 	{ return getObject (info .This ()); }
 
 	static
@@ -138,17 +139,13 @@ protected:
 
 	static
 	T*
-	getObject (const v8::Local <v8::Object> & object)
-	{
-		return getObject (object -> GetInternalField (0));
-	}
+	getObject (const v8::Local <v8::Object> &)
+	throw (std::out_of_range);
 
 	static
 	T*
 	getObject (const v8::Handle <v8::Value> & value)
-	{
-		return static_cast <T*> (v8::Handle <v8::External>::Cast (value) -> Value ());
-	}
+	{ return static_cast <T*> (v8::Handle <v8::External>::Cast (value) -> Value ()); }
 
 	///  @name Functions
 
@@ -244,10 +241,25 @@ X3DObject <T>::getObject (Context* const context, const v8::Arguments & args)
 throw (X3D::Error <X3D::INVALID_FIELD>,
        std::out_of_range)
 {
-	if (context -> getClass (type) -> HasInstance (args .This ()))
-		return getObject (args .This ());
+	const auto object = args .This ();
+
+	if (context -> getClass (type) -> HasInstance (object))
+		return getObject (object);
 
 	throw X3D::Error <X3D::INVALID_FIELD> ("RuntimeError: function must be called with object of type " + typeName + ".");
+}
+
+template <class T>
+T*
+X3DObject <T>::getObject (const v8::Local <v8::Object> & object)
+throw (std::out_of_range)
+{
+	const auto value = object -> GetInternalField (0);
+
+	if (value -> IsExternal ())
+		return getObject (value);
+	
+	throw std::out_of_range ("getObject");
 }
 
 template <class T>

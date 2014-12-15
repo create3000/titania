@@ -1,16 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFNode.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.cpp" Line="129" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Context.cpp" Line="136" Column="40" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/X3DObject.h" Line="1" Column="1" />
-      <File FileName="Library/Tests/Scripting/V8.x3dv" Line="174" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFVec2.h" Line="497" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFMatrix4.h" Line="234" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFMatrix4.cpp" Line="18" Column="81" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFMatrix4.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/X3DObject.h" Line="148" Column="1" />
+      <File FileName="Library/Tests/Scripting/V8.x3dv" Line="238" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFVec2.h" Line="271" Column="35" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFNode.h" Line="104" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/V8/Fields/SFNode.cpp" Line="221" Column="13" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFNode.cpp" Line="281" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -58,12 +58,12 @@
                 <Node name="Fields" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="SpiderMonkey" expanded="True">
-                    <Node name="Fields" expanded="True">
-                      <Node name="jsSFMatrix4.h" selected="True" />
-                    </Node>
+                    <Node name="Fields" expanded="True" />
                   </Node>
                   <Node name="V8" expanded="True">
-                    <Node name="Fields" expanded="True" />
+                    <Node name="Fields" expanded="True">
+                      <Node name="SFVec2.h" selected="True" />
+                    </Node>
                   </Node>
                 </Node>
                 <Node name="Parser" expanded="True" />

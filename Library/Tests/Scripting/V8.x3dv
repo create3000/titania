@@ -225,6 +225,19 @@ function fields ()
 	print ('SFMatrix3f .multDirMatrix: ', m9 .multDirMatrix (new SFVec2f (1, 2)));
 	print ('SFMatrix3f .multMatrixDir: ', m9 .multMatrixDir (new SFVec2f (1, 2)));
 
+	var t = new SFNode ('DEF T Transform { }');
+	var v = new SFNode ('DEF V Viewpoint { }');
+	print ('SFNode:               ', new SFNode ());
+	print ('SFNode .toVRMLString: ', v .toVRMLString ());
+	print ('SFNode .toXMLString:  ', v .toXMLString ());
+	print ('SFNode .getNodeName:  ', v .getNodeName ());
+	print ('SFNode .getNodeType:  ', v .getNodeType ());
+	print ('SFNode .set_bind:     ', 'set_bind' in v);
+	print ('SFNode .unknown:      ', 'unknown' in v);
+
+	for (var i in v)
+		print ('SFNode [', i, ']: ', v [i]);
+
 	//var f = v .toString;
 	//f .call (Browser);
 }

@@ -820,6 +820,7 @@
     <None Include="Titania\X3D\JavaScript\V8\Fields\SFColor.h" />
     <None Include="Titania\X3D\JavaScript\V8\Fields\SFMatrix4.h" />
     <None Include="Titania\X3D\JavaScript\V8\Fields\SFMatrix3.h" />
+    <None Include="Titania\X3D\JavaScript\V8\Fields\SFNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1354,6 +1355,7 @@
     <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFColor.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFMatrix4.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFMatrix3.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

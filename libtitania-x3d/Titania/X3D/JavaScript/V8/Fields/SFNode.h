@@ -48,27 +48,102 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_V8FIELDS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_V8_V8FIELDS_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_SFNODE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_SFNODE_H__
 
-#include "Fields/SFColor.h"
-#include "Fields/SFColorRGBA.h"
-//#include "Fields/SFImage.h"
-#include "Fields/SFMatrix3.h"
-#include "Fields/SFMatrix4.h"
-#include "Fields/SFNode.h"
-#include "Fields/SFRotation4.h"
-#include "Fields/SFVec2.h"
-#include "Fields/SFVec3.h"
-#include "Fields/SFVec4.h"
+#include <v8.h>
 
-//#include "Fields/ArrayFields.h"
-//#include "Fields/MFBool.h"
-//#include "Fields/MFDouble.h"
-//#include "Fields/MFFloat.h"
-//#include "Fields/MFInt32.h"
-//#include "Fields/MFNode.h"
-//#include "Fields/MFString.h"
-//#include "Fields/MFTime.h"
+#include "../Context.h"
+#include "../X3DField.h"
+
+namespace titania {
+namespace X3D {
+namespace GoogleV8 {
+
+class SFNode :
+	public X3DField <X3D::SFNode>
+{
+public:
+
+	using T          = X3D::SFNode;
+	using value_type = T;
+
+	using X3DField <T>::TypeName;
+	using X3DField <T>::Type;
+
+	static
+	v8::Local <v8::FunctionTemplate>
+	initialize (const v8::Local <v8::External> &);
+
+
+private:
+
+	using X3DField <T>::createFunctionTemplate;
+	using X3DField <T>::getPropertyAttributes;
+	using X3DField <T>::getFunctionAttributes;
+	using X3DField <T>::addProperty;
+	using X3DField <T>::addObject;
+	using X3DField <T>::getObject;
+	using X3DField <T>::getName;
+	using X3DField <T>::getTypeName;
+	using X3DField <T>::getType;
+	using X3DField <T>::isReadable;
+	using X3DField <T>::isWritable;
+
+	///  @name Construction
+
+	static
+	v8::Handle <v8::Value>
+	construct (const v8::Arguments &);
+
+	///  @name Member access
+
+	static
+	v8::Handle <v8::Integer>
+	hasProperty (v8::Local <v8::String>, const v8::AccessorInfo &);
+
+	static
+	v8::Handle <v8::Value>
+	setProperty (v8::Local <v8::String>, v8::Local <v8::Value>, const v8::AccessorInfo &);
+
+	static
+	v8::Handle <v8::Value>
+	getProperty (v8::Local <v8::String>, const v8::AccessorInfo &);
+
+	static
+	v8::Handle <v8::Array>
+	getNames (const v8::AccessorInfo &);
+
+	///  @name Functions
+
+	static
+	v8::Handle <v8::Value>
+	getNodeName (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	getNodeType (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	getFieldDefinitions (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	toVRMLString (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	toXMLString (const v8::Arguments &);
+
+	static
+	v8::Handle <v8::Value>
+	toString (const v8::Arguments &);
+
+};
+
+} // GoogleV8
+} // X3D
+} // titania
 
 #endif

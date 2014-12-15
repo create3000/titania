@@ -68,6 +68,7 @@ enum class ObjectType :
 	SFMatrix3f,
 	SFMatrix4d,
 	SFMatrix4f,
+	SFNode,
 	SFRotation,
 	SFVec2d,
 	SFVec2f,
