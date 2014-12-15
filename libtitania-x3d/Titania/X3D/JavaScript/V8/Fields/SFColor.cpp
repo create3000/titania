@@ -144,15 +144,6 @@ SFColor::hasIndex (uint32_t index, const v8::AccessorInfo & info)
 }
 
 v8::Handle <v8::Value>
-SFColor::get1Value (uint32_t index, const v8::AccessorInfo & info)
-{
-	if (index < T::internal_type::size ())
-		return v8::Number::New (getObject (info) -> get1Value (index));
-
-	return v8::ThrowException (String ("RuntimeError: index out of range."));
-}
-
-v8::Handle <v8::Value>
 SFColor::set1Value (uint32_t index, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
 {
 	if (index < T::internal_type::size ())
@@ -160,6 +151,15 @@ SFColor::set1Value (uint32_t index, v8::Local <v8::Value> value, const v8::Acces
 		getObject (info) -> set1Value (index, value -> ToNumber () -> Value ());
 		return value;
 	}
+
+	return v8::ThrowException (String ("RuntimeError: index out of range."));
+}
+
+v8::Handle <v8::Value>
+SFColor::get1Value (uint32_t index, const v8::AccessorInfo & info)
+{
+	if (index < T::internal_type::size ())
+		return v8::Number::New (getObject (info) -> get1Value (index));
 
 	return v8::ThrowException (String ("RuntimeError: index out of range."));
 }

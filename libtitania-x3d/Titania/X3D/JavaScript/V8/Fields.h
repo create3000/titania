@@ -62,13 +62,6 @@
 #include "Fields/SFVec3.h"
 #include "Fields/SFVec4.h"
 
-//#include "Fields/ArrayFields.h"
-//#include "Fields/MFBool.h"
-//#include "Fields/MFDouble.h"
-//#include "Fields/MFFloat.h"
-//#include "Fields/MFInt32.h"
-//#include "Fields/MFNode.h"
-//#include "Fields/MFString.h"
-//#include "Fields/MFTime.h"
+#include "Fields/ArrayFields.h"
 
 #endif

@@ -822,6 +822,11 @@
     <None Include="Titania\X3D\JavaScript\V8\Fields\SFMatrix3.h" />
     <None Include="Titania\X3D\JavaScript\V8\Fields\SFNode.h" />
     <None Include="Titania\X3D\JavaScript\V8\Fields\SFImage.h" />
+    <None Include="Titania\X3D\JavaScript\V8\X3DArrayField.h">
+      <DependentUpon>v8String.h</DependentUpon>
+    </None>
+    <None Include="Titania\X3D\JavaScript\V8\Fields\ArrayFields.h" />
+    <None Include="Titania\X3D\JavaScript\V8\Fields\X3DScalar.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1358,6 +1363,7 @@
     <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFMatrix3.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFNode.cpp" />
     <Compile Include="Titania\X3D\JavaScript\V8\Fields\SFImage.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\V8\Fields\ArrayFields.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

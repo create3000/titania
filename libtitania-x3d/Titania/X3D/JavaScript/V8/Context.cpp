@@ -142,6 +142,28 @@ Context::setContext ()
 	addClass (SFVec3f::Type (),     SFVec3f::initialize (external));
 	addClass (SFVec4d::Type (),     SFVec4d::initialize (external));
 	addClass (SFVec4f::Type (),     SFVec4f::initialize (external));
+
+	addClass (MFBool::Type (),      MFBool::initialize (external));
+	addClass (MFColor::Type (),     MFColor::initialize (external));
+	addClass (MFColorRGBA::Type (), MFColorRGBA::initialize (external));
+	addClass (MFDouble::Type (),    MFDouble::initialize (external));
+	addClass (MFFloat::Type (),     MFFloat::initialize (external));
+	addClass (MFImage::Type (),     MFImage::initialize (external));
+	addClass (MFInt32::Type (),     MFInt32::initialize (external));
+	addClass (MFMatrix3d::Type (),  MFMatrix3d::initialize (external));
+	addClass (MFMatrix3f::Type (),  MFMatrix3f::initialize (external));
+	addClass (MFMatrix4d::Type (),  MFMatrix4d::initialize (external));
+	addClass (MFMatrix4f::Type (),  MFMatrix4f::initialize (external));
+	addClass (MFNode::Type (),      MFNode::initialize (external));
+	addClass (MFRotation::Type (),  MFRotation::initialize (external));
+	addClass (MFString::Type (),    MFString::initialize (external));
+	addClass (MFTime::Type (),      MFTime::initialize (external));
+	addClass (MFVec2d::Type (),     MFVec2d::initialize (external));
+	addClass (MFVec2f::Type (),     MFVec2f::initialize (external));
+	addClass (MFVec3d::Type (),     MFVec3d::initialize (external));
+	addClass (MFVec3f::Type (),     MFVec3f::initialize (external));
+	addClass (MFVec4d::Type (),     MFVec4d::initialize (external));
+	addClass (MFVec4f::Type (),     MFVec4f::initialize (external));
 }
 
 void

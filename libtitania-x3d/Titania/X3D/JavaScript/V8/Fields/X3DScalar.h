@@ -48,99 +48,66 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_SFNODE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_SFNODE_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_X3DSCALAR_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_X3DSCALAR_H__
 
-#include <v8.h>
+#include "../../../Fields/SFString.h"
+#include "../../../Fields/SFTime.h"
+#include "../../../Fields/X3DScalar.h"
 
 #include "../Context.h"
-#include "../X3DField.h"
+#include "../String.h"
 
 namespace titania {
 namespace X3D {
 namespace GoogleV8 {
 
-class SFNode :
-	public X3DField <X3D::SFNode>
+template <class T>
+class X3DScalar
 {
 public:
 
-	using T          = X3D::SFNode;
 	using value_type = T;
 
-	using X3DField <T>::TypeName;
-	using X3DField <T>::Type;
-
-	static
-	v8::Local <v8::FunctionTemplate>
-	initialize (const v8::Local <v8::External> &);
-
-
-private:
-
-	using X3DField <T>::createFunctionTemplate;
-	using X3DField <T>::getPropertyAttributes;
-	using X3DField <T>::getFunctionAttributes;
-	using X3DField <T>::addProperty;
-	using X3DField <T>::addObject;
-	using X3DField <T>::getObject;
-	using X3DField <T>::getName;
-	using X3DField <T>::getTypeName;
-	using X3DField <T>::getType;
-	using X3DField <T>::isReadable;
-	using X3DField <T>::isWritable;
-
-	///  @name Construction
-
 	static
 	v8::Handle <v8::Value>
-	construct (const v8::Arguments &);
-
-	///  @name Member access
-
-	static
-	v8::Handle <v8::Integer>
-	hasProperty (v8::Local <v8::String>, const v8::AccessorInfo &);
-
-	static
-	v8::Handle <v8::Value>
-	setProperty (v8::Local <v8::String>, v8::Local <v8::Value>, const v8::AccessorInfo &);
-
-	static
-	v8::Handle <v8::Value>
-	getProperty (v8::Local <v8::String>, const v8::AccessorInfo &);
-
-	static
-	v8::Handle <v8::Array>
-	getPropertyNames (const v8::AccessorInfo &);
-
-	///  @name Functions
-
-	static
-	v8::Handle <v8::Value>
-	getNodeName (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	getNodeType (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	getFieldDefinitions (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	toVRMLString (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	toXMLString (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	toString (const v8::Arguments &);
+	create (Context* const, T* const value)
+	{
+		return v8::Number::New (value -> getValue ());
+	}
 
 };
+
+template <>
+inline
+v8::Handle <v8::Value>
+X3DScalar <SFBool>::create (Context* const, SFBool* const value)
+{
+	return v8::Boolean::New (value -> getValue ());
+}
+
+template <>
+inline
+v8::Handle <v8::Value>
+X3DScalar <SFInt32>::create (Context* const, SFInt32* const value)
+{
+	return v8::Int32::New (value -> getValue ());
+}
+
+template <>
+inline
+v8::Handle <v8::Value>
+X3DScalar <SFString>::create (Context* const, SFString* const value)
+{
+	return String (value -> str ());
+}
+
+using SFBool   = X3DScalar <SFBool>;
+using SFDouble = X3DScalar <SFDouble>;
+using SFFloat  = X3DScalar <SFFloat>;
+using SFInt32  = X3DScalar <SFInt32>;
+using SFString = X3DScalar <SFString>;
+using SFTime   = X3DScalar <SFTime>;
 
 } // GoogleV8
 } // X3D

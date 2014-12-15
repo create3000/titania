@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 01 Jun 2014 03:00:06 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.6, http://titania.create3000.de"
-META "modified" "Sun, 14 Dec 2014 08:51:30 GMT"
+META "modified" "Mon, 15 Dec 2014 12:27:03 GMT"
 
 Transform {
   children [
@@ -49,7 +49,8 @@ function initialize ()
 {
 	//global ();
 	//browser ();
-	fields ();
+	//fields ();
+	arrays ();
 }
 
 function global ()
@@ -244,6 +245,35 @@ function fields ()
 	//f .call (Browser);
 }
 
+function arrays ()
+{
+	var a = new MFColor ();
+	print ('MFColor:         ', a);
+	print ('MFColor .length: ', a .length);
+
+	var a = new MFColor (new SFColor (0.1, 0.2, 0.3), new SFColor (0.2, 0.3, 0.4));
+	print ('MFColor: ', a);
+	print ('MFColor .length: ', a .length);
+	print ('MFColor [0]: ', a [0]);
+	print ('MFColor [1]: ', a [1]);
+	print ('MFColor [2]: ', a [2]);
+	print ('MFColor [2]: ', a [2] === a [2]);
+
+	a [2] [0] = 0.3;
+	print ('MFColor [2]: ', a [2]);
+	
+	a .length = 2;
+	print ('MFColor: ', a);
+	
+	var a = new MFBool (true, false, true);
+	print ('MFBool: ', a);
+	print ('MFBool [0]: ', a [0]);
+	print ('MFBool [1]: ', a [1]);
+	print ('MFBool [2]: ', a [2]);
+
+	a [1] = true;
+	print ('MFBool: ', a);
+}
 
 function set_time (value, time)
 {
@@ -269,10 +299,6 @@ var v2 = new SFVec4f ();
 
 function initialize ()
 {
-	var v = new SFVec4f (1,2,3,4);
-	print ('initialize: ', v);
-	print ('initialize: ', v .add (v));
-	print ('initialize: ', v .add (new SFVec4f (2,3,4,5)));
 }
 
 function set_time (value, time)
