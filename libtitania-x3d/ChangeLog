@@ -1,5 +1,12 @@
 2014-12-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* field.h:
+	* Context.h:
+	* Context.cpp:
+	* SFNode.cpp: 
+
+2014-12-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* field.h:

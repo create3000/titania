@@ -56,6 +56,7 @@
 #include "Fields.h"
 #include "Globals.h"
 #include "String.h"
+#include "field.h"
 
 #include <cassert>
 
@@ -88,24 +89,25 @@ Context::Context (Script* const script, const std::string & ecmascript, const ba
 	v8::Isolate::Scope isolateScope (isolate);
 	v8::HandleScope    handleScope;
 
-	context = v8::Context::New (nullptr, v8::ObjectTemplate::New ());
+	const auto globalTemplate = v8::ObjectTemplate::New ();
+	addProperties (globalTemplate);
 
+	context = v8::Context::New (nullptr, globalTemplate);
 	v8::Context::Scope contextScope (context);
-
-	setContext ();
-	setFields ();
+	addClasses ();
+	addFields ();
 
 	// Compile.
 
-	v8::TryCatch trycatch;
+	v8::TryCatch tryCatch;
 	program = v8::Persistent <v8::Script>::New (v8::Script::Compile (String (getECMAScript ()),
-	                                                                 String (worldURL .back () == getExecutionContext () -> getWorldURL ()
+	                                                                 String (worldURL .front () == getExecutionContext () -> getWorldURL ()
 	                                                                         ? "<inline>"
 																									 : worldURL .back ())));
 
-	if (program .IsEmpty ())
+	if (program .IsEmpty () or tryCatch .HasCaught ())
 	{
-		error (trycatch);
+		error (tryCatch);
 		throw std::invalid_argument ("Couldn't not compile JavaScript.");
 	}
 }
@@ -117,7 +119,7 @@ Context::create (X3DExecutionContext* const) const
 }
 
 void
-Context::setContext ()
+Context::addClasses ()
 {
 	const auto global   = context -> Global ();
 	const auto external = v8::External::New (this);
@@ -165,10 +167,6 @@ Context::setContext ()
 	addClass (MFVec4d::Type (),     MFVec4d::initialize (external));
 	addClass (MFVec4f::Type (),     MFVec4f::initialize (external));
 }
-
-void
-Context::setFields ()
-{ }
 
 void
 Context::addClass (const ObjectType type, const v8::Local <v8::FunctionTemplate> & functionTemplate)
@@ -226,6 +224,69 @@ Context::getFunction (const std::string & name) const
 }
 
 void
+Context::addProperties (const v8::Local <v8::ObjectTemplate> & globalTemplate)
+{
+	const auto external = v8::External::New (this);
+
+	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
+	{
+		switch (field -> getAccessType ())
+		{
+			case initializeOnly:
+			case outputOnly:
+			{
+				globalTemplate -> SetAccessor (String (field -> getName ()), getProperty, setProperty, external, v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete));
+				break;
+			}
+			case inputOnly:
+				break;
+			case inputOutput:
+			{
+				globalTemplate -> SetAccessor (String (field -> getName ()),              getProperty, setProperty, external, v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete));
+				globalTemplate -> SetAccessor (String (field -> getName () + "_changed"), getProperty, setProperty, external, v8::DEFAULT, v8::PropertyAttribute (v8::DontDelete));
+				break;
+			}
+		}
+	}
+}
+
+void
+Context::setProperty (v8::Local <v8::String> property, v8::Local <v8::Value> value, const v8::AccessorInfo & info)
+{
+	__LOG__ << to_string (property) << std::endl;
+
+	const auto context = getContext (info);
+
+	setValue (context, context -> getScriptNode () -> getField (to_string (property)), value);
+}
+
+v8::Handle <v8::Value>
+Context::getProperty (v8::Local <v8::String> property, const v8::AccessorInfo & info)
+{
+	__LOG__ << to_string (property) << std::endl;
+
+	const auto context = getContext (info);
+
+	return getValue (context, context -> getScriptNode () -> getField (to_string (property)));
+}
+
+void
+Context::addFields ()
+{
+	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
+	{
+		try
+		{
+			getValue (this, field);
+			objects .at (field) .ClearWeak ();
+			field -> removeParent (this);
+		}
+		catch (const std::out_of_range &)
+		{ }
+	}
+}
+
+void
 Context::initialize ()
 {
 	__LOG__ << std::endl;
@@ -272,8 +333,7 @@ Context::setEventHandler ()
 	eventsProcessedFn = v8::Persistent <v8::Function>::New (getFunction ("eventsProcessed"));
 	shutdownFn        = v8::Persistent <v8::Function>::New (getFunction ("shutdown"));
 
-	if (not shutdownFn .IsEmpty ())
-		shutdown () .addInterest (this, &Context::set_shutdown);
+	shutdown () .addInterest (this, &Context::set_shutdown);
 
 	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 	{
@@ -387,7 +447,7 @@ Context::set_field (X3D::X3DFieldDefinition* const field)
 	constexpr size_t argc = 2;
 
 	v8::Handle <v8::Value> argv [argc] = {
-		v8::Undefined (), //getValue (field),
+		GoogleV8::getValue (this, field),
 		v8::Number::New (getCurrentTime ())
 	};
 
@@ -439,12 +499,18 @@ Context::set_shutdown ()
 	v8::HandleScope    handleScope;
 	v8::Context::Scope contextScope (context);
 
-	v8::TryCatch tryCatch;
+	if (not shutdownFn .IsEmpty ())
+	{
+		v8::TryCatch tryCatch;
 
-	shutdownFn -> Call (context -> Global (), 0, nullptr);
+		shutdownFn -> Call (context -> Global (), 0, nullptr);
 
-	if (tryCatch .HasCaught ())
-		error (tryCatch);
+		if (tryCatch .HasCaught ())
+			error (tryCatch);
+	}
+
+	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
+		objects .erase (field);
 }
 
 void
@@ -478,6 +544,17 @@ Context::dispose ()
 
 		for (size_t i = 0, size = names -> Length (); i < size; ++ i)
 			global -> ForceDelete (names -> Get (i));
+
+		initializeFn      .Dispose ();
+		prepareEventsFn   .Dispose ();
+		eventsProcessedFn .Dispose ();
+		shutdownFn        .Dispose ();
+
+		classes   .clear ();
+		functions .clear ();
+
+		program .Dispose ();
+		context .Dispose ();
 
 		v8::V8::LowMemoryNotification ();
 	}

@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 01 Jun 2014 03:00:06 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.6, http://titania.create3000.de"
-META "modified" "Mon, 15 Dec 2014 12:27:03 GMT"
+META "modified" "Mon, 15 Dec 2014 16:09:07 GMT"
 
 Transform {
   children [
@@ -42,6 +42,8 @@ Transform {
 
 DEF Script1 Script {
   inputOnly SFTime set_time
+  field SFBool  boolean TRUE
+  field SFVec3d vector 1 2 3
 
   url "v8:
 
@@ -294,20 +296,24 @@ function node ()
 
 function set_time (value, time)
 {
-	print ('Script 2. value:   ', value);
-	print ('Script 2. value:   ', time);
-	print ('Script 2. SFVec4f: ', new SFVec4f ());
+	print ('Script 1. value:   ', value);
+	print ('Script 1. time:    ', time);
+	print ('Script 1. boolean: ', boolean);
+	print ('Script 1. vector:  ', vector);
 	
-	var a = [ ];
-	for (var i = 0; i < 1000; ++ i)
-		a .push (new SFVec4f ());
+	boolean = !boolean;
+	vector  = vector .multiply (2);
+
+	print ('Script 1. boolean: ', boolean);
+	print ('Script 1. vector:  ', vector);
 }
 "
   directOutput TRUE
 }
 
 DEF Script2 Script {
-  inputOnly SFTime set_time
+  inputOnly SFVec3f set_hitPoint
+  inputOnly SFTime  set_time
 
   url "v8:
 
@@ -318,10 +324,16 @@ function initialize ()
 {
 }
 
+function set_hitPoint (value, time)
+{
+	print ('Script .set_hitPoint. value: ', value);
+	print ('Script .set_hitPoint. time:  ', time);
+}
+
 function set_time (value, time)
 {
 	print ('Script 2. value:   ', value);
-	print ('Script 2. value:   ', time);
+	print ('Script 2. time:    ', time);
 	print ('Script 2. SFVec4f: ', new SFVec4f ());
 	
 	var a = [ ];
@@ -334,3 +346,4 @@ function set_time (value, time)
 
 ROUTE _2.touchTime TO Script2.set_time
 ROUTE _1.touchTime TO Script1.set_time
+ROUTE _2.hitPoint_changed TO Script2.set_hitPoint

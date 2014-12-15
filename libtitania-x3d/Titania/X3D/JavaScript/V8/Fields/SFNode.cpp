@@ -210,7 +210,7 @@ SFNode::getProperty (v8::Local <v8::String> property, const v8::AccessorInfo & i
 		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::inputOnly)
 			return v8::Undefined ();
 
-		return getValue (context, field);
+		return GoogleV8::getValue (context, field);
 	}
 	catch (const std::exception &)
 	{

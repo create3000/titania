@@ -133,16 +133,27 @@ private:
 	///  @name Operations
 
 	void
-	setContext ();
-
-	void
-	setFields ();
+	addClasses ();
 
 	void
 	addClass (const ObjectType, const v8::Local <v8::FunctionTemplate> &);
 
 	v8::Local <v8::Function>
 	getFunction (const std::string &) const;
+
+	void
+	addProperties (const v8::Local <v8::ObjectTemplate> &);
+
+	static
+	void
+	setProperty (v8::Local <v8::String>, v8::Local <v8::Value>, const v8::AccessorInfo &);
+
+	static
+	v8::Handle <v8::Value>
+	getProperty (v8::Local <v8::String>, const v8::AccessorInfo &);
+
+	void
+	addFields ();
 
 	/// Event handlers
 
