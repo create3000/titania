@@ -1,3 +1,52 @@
+2014-12-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* V8.h:
+	* V8.cpp:
+	* field.h:
+	* String.h:
+	* Fields.h:
+	* Browser.h:
+	* field.cpp:
+	* Globals.h:
+	* Context.h:
+	* X3DField.h:
+	* Context.cpp:
+	* Browser.cpp:
+	* X3DObject.h:
+	* Globals.cpp:
+	* ObjectType.h:
+	* SFVec3.h:
+	* SFNode.h:
+	* SFVec2.h:
+	* SFVec4.h:
+	* X3DArrayField.h:
+	* SFImage.h:
+	* SFColor.h:
+	* SFVec4.cpp:
+	* SFVec3.cpp:
+	* SFVec2.cpp:
+	* SFNode.cpp:
+	* X3DScalar.h:
+	* SFColor.cpp:
+	* SFMatrix4.h:
+	* SFImage.cpp:
+	* ArrayFields.h:
+	* X3DFieldDefinition.h:
+	* SFColorRGBA.h:
+	* SFRotation4.h:
+	* SFMatrix4.cpp:
+	* SFMatrix3.cpp:
+	* jsContext.h:
+	* ArrayFields.cpp:
+	* SFColorRGBA.cpp:
+	* SFRotation4.cpp:
+	* jsBrowser.cpp:
+	* jsContext.cpp:
+	* X3DScriptingContext.cpp:
+	* X3DTouchSensorNode.cpp: 
+
 2014-12-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* field.h:

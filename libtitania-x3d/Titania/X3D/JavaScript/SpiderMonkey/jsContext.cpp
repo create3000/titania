@@ -89,6 +89,8 @@ namespace MozillaSpiderMonkey {
 
 // mutex test: http://www.web3d.org/x3d/content/examples/Basic/StudentProjects/DeadReckoningComparisons.x3d
 
+static size_t count = 0;
+
 const ComponentType jsContext::component      = ComponentType::TITANIA;
 const std::string   jsContext::typeName       = "jsContext";
 const std::string   jsContext::containerField = "context";
@@ -126,25 +128,27 @@ jsContext::jsContext (Script* const script, const std::string & ecmascript, cons
 	               files (),
 	              future ()
 {
+	__LOG__ << ++ count << std::endl;
+
 	// Get a JS runtime.
-	runtime .reset (JS_NewRuntime (64 * 1024 * 1024)); // 64 MB runtime memory
+	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 
 	if (runtime == nullptr)
 		throw std::invalid_argument ("Couldn't not create JavaScript runtime.");
 
 	// Create a context.
-	context .reset (JS_NewContext (runtime .get (), 512));
+	context = JS_NewContext (runtime, 512);
 
 	if (context == nullptr)
 		throw std::invalid_argument ("Couldn't not create JavaScript context.");
 
 	JS_SetCStringsAreUTF8 ();
-	JS_SetOptions (context .get (), JSOPTION_ATLINE | JSOPTION_VAROBJFIX | JSOPTION_JIT | JSOPTION_METHODJIT);
-	JS_SetVersion (context .get (), JSVERSION_LATEST);
-	JS_SetErrorReporter (context .get (), error);
+	JS_SetOptions (context, JSOPTION_ATLINE | JSOPTION_VAROBJFIX | JSOPTION_JIT | JSOPTION_METHODJIT);
+	JS_SetVersion (context, JSVERSION_LATEST);
+	JS_SetErrorReporter (context, error);
 
 	// Create the global object.
-	global = JS_NewCompartmentAndGlobalObject (context .get (), &globalClass, nullptr);
+	global = JS_NewCompartmentAndGlobalObject (context, &globalClass, nullptr);
 
 	if (global == nullptr)
 		throw std::invalid_argument ("Couldn't not create JavaScript global object.");
@@ -164,77 +168,77 @@ void
 jsContext::setContext ()
 {
 	// Populate the global object with the standard globals, like Object and Array.
-	if (not JS_InitStandardClasses (context .get (), global))
+	if (not JS_InitStandardClasses (context, global))
 		return;
 
-	JS_SetContextPrivate (context .get (), this);
+	JS_SetContextPrivate (context, this);
 
-	jsBrowser::init (context .get (), global);
-	jsX3DConstants::init (context .get (), global);
+	jsBrowser::init (context, global);
+	jsX3DConstants::init (context, global);
 
-	JSObject* executionContext = jsX3DExecutionContext::init (context .get (), global);
-	jsX3DScene::init (context .get (), global, executionContext);
+	JSObject* executionContext = jsX3DExecutionContext::init (context, global);
+	jsX3DScene::init (context, global, executionContext);
 
-	jsComponentInfo::init             (context .get (), global);
-	jsProfileInfo::init               (context .get (), global);
-	jsX3DFieldDefinition::init        (context .get (), global);
-	jsX3DExternProtoDeclaration::init (context .get (), global);
-	jsX3DProtoDeclaration::init       (context .get (), global);
-	jsX3DRoute::init                  (context .get (), global);
+	jsComponentInfo::init             (context, global);
+	jsProfileInfo::init               (context, global);
+	jsX3DFieldDefinition::init        (context, global);
+	jsX3DExternProtoDeclaration::init (context, global);
+	jsX3DProtoDeclaration::init       (context, global);
+	jsX3DRoute::init                  (context, global);
 
-	jsFieldDefinitionArray::init        (context .get (), global);
-	jsComponentInfoArray::init          (context .get (), global);
-	jsProfileInfoArray::init            (context .get (), global);
-	jsExternProtoDeclarationArray::init (context .get (), global);
-	jsProtoDeclarationArray::init       (context .get (), global);
-	jsRouteArray::init                  (context .get (), global);
+	jsFieldDefinitionArray::init        (context, global);
+	jsComponentInfoArray::init          (context, global);
+	jsProfileInfoArray::init            (context, global);
+	jsExternProtoDeclarationArray::init (context, global);
+	jsProtoDeclarationArray::init       (context, global);
+	jsRouteArray::init                  (context, global);
 
-	jsSFColor::init     (context .get (), global);
-	jsSFColorRGBA::init (context .get (), global);
-	jsSFImage::init     (context .get (), global);
-	jsSFMatrix3d::init  (context .get (), global);
-	jsSFMatrix3f::init  (context .get (), global);
-	jsSFMatrix4d::init  (context .get (), global);
-	jsSFMatrix4f::init  (context .get (), global);
-	jsSFNode::init      (context .get (), global);
-	jsSFRotation::init  (context .get (), global);
-	jsSFVec2d::init     (context .get (), global);
-	jsSFVec2f::init     (context .get (), global);
-	jsSFVec3d::init     (context .get (), global);
-	jsSFVec3f::init     (context .get (), global);
-	jsSFVec4d::init     (context .get (), global);
-	jsSFVec4f::init     (context .get (), global);
-	jsVrmlMatrix::init  (context .get (), global);
+	jsSFColor::init     (context, global);
+	jsSFColorRGBA::init (context, global);
+	jsSFImage::init     (context, global);
+	jsSFMatrix3d::init  (context, global);
+	jsSFMatrix3f::init  (context, global);
+	jsSFMatrix4d::init  (context, global);
+	jsSFMatrix4f::init  (context, global);
+	jsSFNode::init      (context, global);
+	jsSFRotation::init  (context, global);
+	jsSFVec2d::init     (context, global);
+	jsSFVec2f::init     (context, global);
+	jsSFVec3d::init     (context, global);
+	jsSFVec3f::init     (context, global);
+	jsSFVec4d::init     (context, global);
+	jsSFVec4f::init     (context, global);
+	jsVrmlMatrix::init  (context, global);
 
-	jsMFBool::init      (context .get (), global);
-	jsMFColor::init     (context .get (), global);
-	jsMFColorRGBA::init (context .get (), global);
-	jsMFDouble::init    (context .get (), global);
-	jsMFFloat::init     (context .get (), global);
-	jsMFImage::init     (context .get (), global);
-	jsMFInt32::init     (context .get (), global);
-	jsMFMatrix3d::init  (context .get (), global);
-	jsMFMatrix3f::init  (context .get (), global);
-	jsMFMatrix4d::init  (context .get (), global);
-	jsMFMatrix4f::init  (context .get (), global);
-	jsMFNode::init      (context .get (), global);
-	jsMFRotation::init  (context .get (), global);
-	jsMFString::init    (context .get (), global);
-	jsMFTime::init      (context .get (), global);
-	jsMFVec2d::init     (context .get (), global);
-	jsMFVec2f::init     (context .get (), global);
-	jsMFVec3d::init     (context .get (), global);
-	jsMFVec3f::init     (context .get (), global);
-	jsMFVec4d::init     (context .get (), global);
-	jsMFVec4f::init     (context .get (), global);
+	jsMFBool::init      (context, global);
+	jsMFColor::init     (context, global);
+	jsMFColorRGBA::init (context, global);
+	jsMFDouble::init    (context, global);
+	jsMFFloat::init     (context, global);
+	jsMFImage::init     (context, global);
+	jsMFInt32::init     (context, global);
+	jsMFMatrix3d::init  (context, global);
+	jsMFMatrix3f::init  (context, global);
+	jsMFMatrix4d::init  (context, global);
+	jsMFMatrix4f::init  (context, global);
+	jsMFNode::init      (context, global);
+	jsMFRotation::init  (context, global);
+	jsMFString::init    (context, global);
+	jsMFTime::init      (context, global);
+	jsMFVec2d::init     (context, global);
+	jsMFVec2f::init     (context, global);
+	jsMFVec3d::init     (context, global);
+	jsMFVec3f::init     (context, global);
+	jsMFVec4d::init     (context, global);
+	jsMFVec4f::init     (context, global);
 
-	jsGlobals::init (context .get (), global);
+	jsGlobals::init (context, global);
 }
 
 void
 jsContext::setFields ()
 {
-	for (auto & field : getScriptNode () -> getUserDefinedFields ())
+	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 	{
 		switch (field -> getAccessType ())
 		{
@@ -242,7 +246,7 @@ jsContext::setFields ()
 			case outputOnly     :
 				{
 					addUserDefinedField (field);
-					defineProperty (context .get (), global, field, field -> getName (), JSPROP_ENUMERATE);
+					defineProperty (context, global, field, field -> getName (), JSPROP_ENUMERATE);
 					break;
 				}
 			case inputOnly:
@@ -250,8 +254,8 @@ jsContext::setFields ()
 			case inputOutput:
 			{
 				addUserDefinedField (field);
-				defineProperty (context .get (), global, field, field -> getName (),              JSPROP_ENUMERATE);
-				defineProperty (context .get (), global, field, field -> getName () + "_changed", 0);
+				defineProperty (context, global, field, field -> getName (),              JSPROP_ENUMERATE);
+				defineProperty (context, global, field, field -> getName () + "_changed", 0);
 				break;
 			}
 		}
@@ -274,10 +278,10 @@ jsContext::addUserDefinedField (X3DFieldDefinition* const field)
 		{
 			jsval vp;
 
-			if (JS_NewFieldValue (context .get (), field, &vp))
+			if (JS_NewFieldValue (context, field, &vp))
 			{
 				fields [field -> getName ()] = vp;
-				JS_AddValueRoot (context .get (), &fields [field -> getName ()]);
+				JS_AddValueRoot (context, &fields [field -> getName ()]);
 			}
 
 			break;
@@ -411,7 +415,7 @@ jsContext::require (const basic::uri & uri, jsval & rval)
 		{
 			files .emplace (resolvedURL, rval);
 
-			JS_AddValueRoot (context .get (), &files [resolvedURL]);
+			JS_AddValueRoot (context, &files [resolvedURL]);
 
 			return JS_TRUE;
 		}
@@ -441,11 +445,11 @@ jsContext::evaluate (const std::string & string, const std::string & filename, j
 
 	if (error)
 	{
-		JS_ReportError (context .get (), "jsContext::evaluate: %s: %d: %s.", g_quark_to_string (error -> domain), error -> code, error -> message);
+		JS_ReportError (context, "jsContext::evaluate: %s: %d: %s.", g_quark_to_string (error -> domain), error -> code, error -> message);
 		return JS_FALSE;
 	}
 
-	const JSBool retval = JS_EvaluateUCScript (context .get (), global,
+	const JSBool retval = JS_EvaluateUCScript (context, global,
 	                                           utf16_string, items_written,
 	                                           filename .empty () ? nullptr : filename .c_str (),
 	                                           1,
@@ -600,11 +604,11 @@ jsContext::set_field (X3DFieldDefinition* const field, const jsval & function)
 
 	jsval argv [2];
 
-	JS_NewFieldValue (context .get (), field, &argv [0]);
-	JS_NewNumberValue (context .get (), getCurrentTime (), &argv [1]);
+	JS_NewFieldValue (context, field, &argv [0]);
+	JS_NewNumberValue (context, getCurrentTime (), &argv [1]);
 
 	jsval rval;
-	JS_CallFunctionValue (context .get (), global, function, 2, argv, &rval);
+	JS_CallFunctionValue (context, global, function, 2, argv, &rval);
 
 	field -> isTainted (false);
 }
@@ -624,7 +628,7 @@ jsContext::set_shutdown ()
 void
 jsContext::finish ()
 {
-	JS_GC (context .get ());
+	JS_GC (context);
 }
 
 jsval
@@ -633,7 +637,7 @@ jsContext::getFunction (const std::string & name) const
 	jsval     function = JSVAL_VOID;
 	JSObject* objp     = nullptr;
 
-	JSBool result = JS_GetMethod (context .get (), global, name .c_str (), &objp, &function);
+	JSBool result = JS_GetMethod (context, global, name .c_str (), &objp, &function);
 
 	if (result)
 		return function;
@@ -647,7 +651,7 @@ jsContext::callFunction (const std::string & name) const
 	jsval     function = JSVAL_VOID;
 	JSObject* objp     = nullptr;
 
-	JSBool result = JS_GetMethod (context .get (), global, name .c_str (), &objp, &function);
+	JSBool result = JS_GetMethod (context, global, name .c_str (), &objp, &function);
 
 	if (not result or JSVAL_IS_VOID (function))
 		return;
@@ -660,7 +664,7 @@ jsContext::callFunction (jsval function) const
 {
 	jsval rval;
 
-	JS_CallFunctionValue (context .get (), global, function, 0, nullptr, &rval);
+	JS_CallFunctionValue (context, global, function, 0, nullptr, &rval);
 }
 
 void
@@ -702,6 +706,8 @@ jsContext::error (JSContext* context, const char* message, JSErrorReport* report
 void
 jsContext::dispose ()
 {
+	__LOG__ << -- count << std::endl;
+
 	if (future)
 	{
 		future -> dispose ();
@@ -709,14 +715,14 @@ jsContext::dispose ()
 	}
 
 	for (auto & field : fields)
-		JS_RemoveValueRoot (context .get (), &field .second);
+		JS_RemoveValueRoot (context, &field .second);
 
 	for (auto & file : files)
-		JS_RemoveValueRoot (context .get (), &file .second);
+		JS_RemoveValueRoot (context, &file .second);
 
 	// Cleanup.
-	context .reset ();
-	runtime .reset ();
+	JS_DestroyContext (context);
+	JS_DestroyRuntime (runtime);
 
 	assert (objects .empty ());
 

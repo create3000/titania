@@ -896,7 +896,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 			}
 			catch (const Error <INVALID_NAME> &)
 			{
-			JS_ReportError (context, ("Browser .createVrmlFromURL: no such field '" + JS_GetString (context, event) + "'") .c_str ());
+				JS_ReportError (context, ("Browser .createVrmlFromURL: no such field '" + JS_GetString (context, event) + "'") .c_str ());
 			}
 		}
 		else

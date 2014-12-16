@@ -1,3 +1,24 @@
+2014-12-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* V8.h:
+	* V8.cpp:
+	* v8Fields.h:
+	* Papers.mdproj:
+	* v8String.h:
+	* v8Browser.h:
+	* v8Globals.h:
+	* v8Context.h:
+	* V8.h:
+	* v8X3DField.h:
+	* v8Globals.cpp:
+	* v8Browser.cpp:
+	* v8X3DObject.h:
+	* v8Context.cpp:
+	* V8.cpp:
+	* v8SFVec4.h:
+	* v8SFVec4.cpp:
+	* v8X3DFieldDefinition.h: 
+
 2014-10-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Papers.mdproj:

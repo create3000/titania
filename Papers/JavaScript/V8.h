@@ -48,35 +48,112 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_V8GLOBALS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_V8_V8GLOBALS_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_V8_H__
 
 #include <v8.h>
 
-#include "v8Context.h"
+#include "../JavaScript/X3DJavaScriptEngine.h"
 
 namespace titania {
 namespace X3D {
-namespace GoogleV8 {
 
-class Globals
+class V8 :
+	public X3DJavaScriptEngine
 {
 public:
 
-	static
+	///  @name Construction
+
+	V8 (X3DExecutionContext* const);
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Member access
+
+	virtual
+	const std::string &
+	getVendor () const final override
+	{ return vendor; }
+
+	virtual
+	const std::string &
+	getDescription () const final override
+	{ return description; }
+
+	virtual
+	const std::string &
+	getVersion () const final override
+	{ return version; }
+
+	///  @name Operations
+
+	virtual
+	X3DPtr <X3DJavaScriptContext>
+	createContext (Script*, const std::string &, const basic::uri &) final override;
+
+	///  @name Input/Output
+
+	virtual
 	void
-	initialize (Context* const, const v8::Local <v8::Object> &);
+	toStream (std::ostream &) const final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
 
 
 private:
 
-	static
-	v8::Handle <v8::Value>
-	print (const v8::Arguments & args);
+	///  @name Construction
+
+	virtual
+	V8*
+	create (X3DExecutionContext* const)  const;
+
+	virtual
+	void
+	initialize () final override;
+
+	void
+	set_finished ();
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Members
+
+	std::string vendor;
+	std::string description;
+	std::string version;
+
+	v8::Isolate* isolate;
 
 };
 
-} // GoogleV8
 } // X3D
 } // titania
 

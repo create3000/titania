@@ -44,6 +44,8 @@ DEF Script1 Script {
   inputOnly SFTime set_time
   field SFBool  boolean TRUE
   field SFVec3d vector 1 2 3
+  field SFNode viewpoint Viewpoint { }
+  field SFNode null_ NULL
 
   url "v8:
 
@@ -280,9 +282,20 @@ function arrays ()
 
 function node ()
 {
+	var n = new SFNode ();
 	var v = new SFNode ('DEF V Viewpoint { }');
 
+	print ('NULL: ', n);
+	print ('NULL: ', n instanceof SFNode);
+
+	print ('NULL: ', null_);
+	print ('NULL: ', null_ instanceof SFNode);
+
 	print ('Viewpoint: ', v);
+	print ('Viewpoint: ', v instanceof SFNode);
+	print ('Viewpoint: ', v .getTypeName ());
+	print ('Viewpoint ==: ', v == 'Viewpoint { }');
+	print ('Viewpoint ==: ', viewpoint == 'Viewpoint { }');
 	print ('Viewpoint .position: ', v .position);
 
 	v .position = new SFVec3f (1, 2, 3);

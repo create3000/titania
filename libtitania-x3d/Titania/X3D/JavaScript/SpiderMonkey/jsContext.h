@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,26 +66,6 @@ namespace X3D {
 class SceneLoader;
 
 namespace MozillaSpiderMonkey {
-
-struct RuntimeDeleter
-{
-	void
-	operator () (JSRuntime* runtime) const
-	{
-		JS_DestroyRuntime (runtime);
-	}
-
-};
-
-struct ContextDeleter
-{
-	void
-	operator () (JSContext* context) const
-	{
-		JS_DestroyContext (context);
-	}
-
-};
 
 class jsContext :
 	public X3DJavaScriptContext
@@ -173,7 +153,7 @@ private:
 
 	static
 	void
-	defineProperty (JSContext* const, JSObject* const, X3DFieldDefinition * const, const std::string &, const uintN);
+	defineProperty (JSContext* const, JSObject* const, X3DFieldDefinition* const, const std::string &, const uintN);
 
 	JSBool
 	evaluate (const std::string &, const std::string &);
@@ -233,11 +213,11 @@ private:
 
 	///  @name Members
 
-	std::unique_ptr <JSRuntime, RuntimeDeleter> runtime;
-	std::unique_ptr <JSContext, ContextDeleter> context;
-	JSClass                                     globalClass;
-	JSObject*                                   global;
-	std::vector <basic::uri>                    worldURL;
+	JSRuntime*               runtime;
+	JSContext*               context;
+	JSClass                  globalClass;
+	JSObject*                global;
+	std::vector <basic::uri> worldURL;
 
 	jsval initializeFn;
 	jsval prepareEventsFn;

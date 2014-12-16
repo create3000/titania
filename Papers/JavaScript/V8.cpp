@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,102 +48,85 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_SFNODE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_V8_FIELDS_SFNODE_H__
+#include "V8/Context.h"
 
-#include <v8.h>
-
-#include "../Context.h"
-#include "../X3DField.h"
+#include "../Browser/X3DBrowser.h"
+#include "../Execution/X3DExecutionContext.h"
+#include "../JavaScript/V8.h"
 
 namespace titania {
 namespace X3D {
-namespace GoogleV8 {
 
-class SFNode :
-	public X3DField <X3D::SFNode>
+const ComponentType V8::component      = ComponentType::TITANIA;
+const std::string   V8::typeName       = "V8";
+const std::string   V8::containerField = "javaScript";
+
+V8::V8 (X3DExecutionContext* const executionContext) :
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DJavaScriptEngine (),
+	             vendor ("Google"),
+	        description (),
+	            version (),
+	            isolate (v8::Isolate::New ())
 {
-public:
+	setName ("V8");
+}
 
-	using T          = X3D::SFNode;
-	using value_type = T;
+V8*
+V8::create (X3DExecutionContext* const executionContext)  const
+{
+	return new V8 (executionContext);
+}
 
-	using X3DField <T>::TypeName;
-	using X3DField <T>::Type;
+void
+V8::initialize ()
+{
+	X3DJavaScriptEngine::initialize ();
 
-	static
-	v8::Local <v8::FunctionTemplate>
-	initialize (const v8::Local <v8::External> &);
+	description = "";
+	version     = v8::V8::GetVersion ();
+	
+	getBrowser () -> finished () .addInterest (this, &V8::set_finished);
+}
 
+X3DPtr <X3DJavaScriptContext>
+V8::createContext (Script* script, const std::string & ecmascript, const basic::uri & uri)
+{
+	return new GoogleV8::Context (script, ecmascript, uri);
+}
 
-private:
+void
+V8::set_finished ()
+{
+	v8::Locker         locker (isolate);
+	v8::Isolate::Scope isolateScope (isolate);
+	v8::HandleScope    handleScope;
 
-	using X3DField <T>::createFunctionTemplate;
-	using X3DField <T>::getPropertyAttributes;
-	using X3DField <T>::getFunctionAttributes;
-	using X3DField <T>::addProperty;
-	using X3DField <T>::addObject;
-	using X3DField <T>::getObject;
-	using X3DField <T>::getName;
-	using X3DField <T>::getTypeName;
-	using X3DField <T>::getType;
-	using X3DField <T>::isReadable;
-	using X3DField <T>::isWritable;
+	v8::V8::LowMemoryNotification ();
 
-	///  @name Construction
+	//v8::V8::IdleNotification ();
 
-	static
-	v8::Handle <v8::Value>
-	construct (const v8::Arguments &);
+	//while (not v8::V8::IdleNotification ())
+	//	;
+}
 
-	///  @name Member access
+void
+V8::toStream (std::ostream & stream) const
+{
+	stream
+		<< "\tCurrent Javascript Engine" << std::endl
+		<< "\t\tName: " << vendor << ' ' << getName () << std::endl
+		<< "\t\tDescription: " << description << std::endl
+		<< "\t\tVersion: " << version;
+}
 
-	static
-	v8::Handle <v8::Integer>
-	hasProperty (v8::Local <v8::String>, const v8::AccessorInfo &);
+void
+V8::dispose ()
+{
+	isolate -> Dispose ();
 
-	static
-	v8::Handle <v8::Value>
-	setProperty (v8::Local <v8::String>, v8::Local <v8::Value>, const v8::AccessorInfo &);
+	X3DJavaScriptEngine::dispose ();
+}
 
-	static
-	v8::Handle <v8::Value>
-	getProperty (v8::Local <v8::String>, const v8::AccessorInfo &);
-
-	static
-	v8::Handle <v8::Array>
-	getPropertyNames (const v8::AccessorInfo &);
-
-	///  @name Functions
-
-	static
-	v8::Handle <v8::Value>
-	getNodeName (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	getNodeType (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	getFieldDefinitions (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	toVRMLString (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	toXMLString (const v8::Arguments &);
-
-	static
-	v8::Handle <v8::Value>
-	toString (const v8::Arguments &);
-
-};
-
-} // GoogleV8
 } // X3D
 } // titania
-
-#endif
