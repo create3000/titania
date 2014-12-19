@@ -143,18 +143,18 @@ JSPropertySpec jsX3DArrayField <Type, InternalType>::properties [ ] = {
 
 template <class Type, class InternalType>
 JSFunctionSpec jsX3DArrayField <Type, InternalType>::functions [ ] = {
-	{ "getName",     getName <InternalType>,     0, 0 },
-	{ "getTypeName", getTypeName <InternalType>, 0, 0 },
-	{ "getType",     getType,                    0, 0 },
-	{ "isReadable",  isReadable,                 0, 0 },
-	{ "isWritable",  isWritable,                 0, 0 },
+	{ "getName",     getName <jsX3DArrayField>,     0, 0 },
+	{ "getTypeName", getTypeName <jsX3DArrayField>, 0, 0 },
+	{ "getType",     getType <jsX3DArrayField>,     0, 0 },
+	{ "isReadable",  isReadable <jsX3DArrayField>,  0, 0 },
+	{ "isWritable",  isWritable <jsX3DArrayField>,  0, 0 },
 
 	{ "unshift",     unshift, 1, 0 },
 	{ "push",        push,    1, 0 },
 	{ "shift",       shift,   0, 0 },
 	{ "pop",         pop,     0, 0 },
 
-	{ "toString",    toString <InternalType>,    0, 0 },
+	{ "toString",    toString <jsX3DArrayField>, 0, 0 },
 
 	{ 0 }
 

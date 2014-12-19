@@ -128,11 +128,11 @@ JSClass jsSFMatrix4 <Type>::static_class = {
 
 template <class Type>
 JSFunctionSpec jsSFMatrix4 <Type>::functions [ ] = {
-	{ "getName",       getName <Type>,     0, 0 },
-	{ "getTypeName",   getTypeName <Type>, 0, 0 },
-	{ "getType",       getType,            0, 0 },
-	{ "isReadable",    isReadable,         0, 0 },
-	{ "isWritable",    isWritable,         0, 0 },
+	{ "getName",       getName <jsSFMatrix4>,      0, 0 },
+	{ "getTypeName",   getTypeName <jsSFMatrix4>,  0, 0 },
+	{ "getType",       getType <jsSFMatrix4>,      0, 0 },
+	{ "isReadable",    isReadable <jsSFMatrix4>,   0, 0 },
+	{ "isWritable",    isWritable <jsSFMatrix4>,   0, 0 },
 
 	{ "setTransform",  setTransform,  5, 0 },
 	{ "getTransform",  getTransform,  3, 0 },
@@ -146,7 +146,7 @@ JSFunctionSpec jsSFMatrix4 <Type>::functions [ ] = {
 	{ "multDirMatrix", multDirMatrix, 1, 0 },
 	{ "multMatrixDir", multMatrixDir, 1, 0 },
 
-	{ "toString",      toString <Type>, 0, 0 },
+	{ "toString",      toString <jsSFMatrix4>, 0, 0 },
 
 	{ 0 }
 
@@ -156,7 +156,7 @@ template <class Type>
 void
 jsSFMatrix4 <Type>::init (JSContext* const cx, JSObject* const global)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, properties, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, nullptr, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");

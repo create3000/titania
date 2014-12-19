@@ -73,11 +73,11 @@ JSClass jsSFNode::static_class = {
 };
 
 JSFunctionSpec jsSFNode::functions [ ] = {
-	{ "getName",             getName <SFNode>,     0, 0 },
-	{ "getTypeName",         getTypeName <SFNode>, 0, 0 },
-	{ "getType",             getType,              0, 0 },
-	{ "isReadable",          isReadable,           0, 0 },
-	{ "isWritable",          isWritable,           0, 0 },
+	{ "getName",             getName <jsSFNode>,     0, 0 },
+	{ "getTypeName",         getTypeName <jsSFNode>, 0, 0 },
+	{ "getType",             getType <jsSFNode>,     0, 0 },
+	{ "isReadable",          isReadable <jsSFNode>,  0, 0 },
+	{ "isWritable",          isWritable <jsSFNode>,  0, 0 },
 
 	{ "getNodeName",         getNodeName,         0, 0 },
 	{ "getNodeType",         getNodeType,         0, 0 },

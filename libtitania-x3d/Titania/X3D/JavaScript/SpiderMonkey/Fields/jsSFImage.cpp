@@ -78,13 +78,13 @@ JSPropertySpec jsSFImage::properties [ ] = {
 };
 
 JSFunctionSpec jsSFImage::functions [ ] = {
-	{ "getName",     getName <SFImage>,     0, 0 },
-	{ "getTypeName", getTypeName <SFImage>, 0, 0 },
-	{ "getType",     getType,               0, 0 },
-	{ "isReadable",  isReadable,            0, 0 },
-	{ "isWritable",  isWritable,            0, 0 },
+	{ "getName",     getName <jsSFImage>,     0, 0 },
+	{ "getTypeName", getTypeName <jsSFImage>, 0, 0 },
+	{ "getType",     getType <jsSFImage>,     0, 0 },
+	{ "isReadable",  isReadable <jsSFImage>,  0, 0 },
+	{ "isWritable",  isWritable <jsSFImage>,  0, 0 },
 
-	{ "toString",    toString <SFImage>,    0, 0 },
+	{ "toString",    toString <jsSFImage>, 0, 0 },
 
 	{ 0 }
 

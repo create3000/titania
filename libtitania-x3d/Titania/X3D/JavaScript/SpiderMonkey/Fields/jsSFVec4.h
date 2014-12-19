@@ -134,11 +134,11 @@ JSPropertySpec jsSFVec4 <Type>::properties [ ] = {
 
 template <class Type>
 JSFunctionSpec jsSFVec4 <Type>::functions [ ] = {
-	{ "getName",     getName <Type>,     0, 0 },
-	{ "getTypeName", getTypeName <Type>, 0, 0 },
-	{ "getType",     getType,            0, 0 },
-	{ "isReadable",  isReadable,         0, 0 },
-	{ "isWritable",  isWritable,         0, 0 },
+	{ "getName",     getName <jsSFVec4>,     0, 0 },
+	{ "getTypeName", getTypeName <jsSFVec4>, 0, 0 },
+	{ "getType",     getType <jsSFVec4>,     0, 0 },
+	{ "isReadable",  isReadable <jsSFVec4>,  0, 0 },
+	{ "isWritable",  isWritable <jsSFVec4>,  0, 0 },
 
 	{ "negate",      negate,      0, 0 },
 	{ "add",         add,         1, 0 },
@@ -151,7 +151,7 @@ JSFunctionSpec jsSFVec4 <Type>::functions [ ] = {
 	{ "dot",         dot,         1, 0 },
 	{ "length",      length,      0, 0 },
 
-	{ "toString",    toString <Type>, 0, 0 },
+	{ "toString",    toString <jsSFVec4>, 0, 0 },
 
 	{ 0 }
 

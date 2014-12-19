@@ -1,27 +1,26 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsArguments.h">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="639" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsBrowser.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DExecutionContext.cpp" Line="1" Column="1" />
-      <File FileName="Library/Tests/EnvironmentalSensors/FallingBoxes.x3dv" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFNode.cpp" Line="1" Column="1" />
-      <File FileName="Library/Tests/PROTO/Particle/Particle.wrl" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsArguments.h" Line="122" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec4.h" Line="223" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec3.h" Line="497" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFRotation.cpp" Line="372" Column="87" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.h" Line="156" Column="18" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="211" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsArguments.h" Line="64" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DField.h" Line="103" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DField.cpp" Line="92" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DObject.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec4.h" Line="210" Column="1" />
+      <File FileName="Library/Tests/Scripting/V8.x3dv" Line="351" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DExecutionContext.cpp" Line="75" Column="67" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
+          <Node name="miscellaneous" expanded="True">
+            <Node name="uncrustify-all" expanded="True" />
           </Node>
+          <Node name="build" expanded="True" />
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
@@ -31,10 +30,7 @@
             </Node>
             <Node name="Tests" expanded="True">
               <Node name="EnvironmentalSensors" expanded="True" />
-              <Node name="PROTO" expanded="True">
-                <Node name="Particle" expanded="True" />
-              </Node>
-              <Node name="Rendering" expanded="True" />
+              <Node name="Scripting" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -45,7 +41,7 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
+                <Node name="Basic" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Scripting" expanded="True" />
                 </Node>
@@ -55,11 +51,12 @@
                   <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Scripting" expanded="True" />
                 </Node>
+                <Node name="Fields" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="PeaseBlossom" expanded="True" />
                   <Node name="SpiderMonkey" expanded="True">
                     <Node name="Fields" expanded="True" />
-                    <Node name="jsContext.cpp" selected="True" />
+                    <Node name="jsArguments.h" selected="True" />
                   </Node>
                 </Node>
                 <Node name="Miscellaneous" expanded="True" />
@@ -72,30 +69,8 @@
             <Node name="Quaternion" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="applications" expanded="True" />
-              <Node name="titania" expanded="True">
-                <Node name="ui" expanded="True">
-                  <Node name="Editors" expanded="True" />
-                  <Node name="icons" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
             <Node name="Titania" expanded="True">
               <Node name="Browser" expanded="True" />
-              <Node name="Editors" expanded="True">
-                <Node name="ColorPerVertexEditor" expanded="True" />
-                <Node name="GridEditor" expanded="True" />
-                <Node name="NodePropertiesEditor" expanded="True" />
-                <Node name="PrecisionPlacementPanel" expanded="True" />
-                <Node name="TextureCoordinateEditor" expanded="True" />
-                <Node name="TextureEditor" expanded="True" />
-                <Node name="ViewpointEditor" expanded="True" />
-              </Node>
-              <Node name="Widgets" expanded="True">
-                <Node name="AnimationEditor" expanded="True" />
-                <Node name="OutlineEditor" expanded="True" />
-              </Node>
             </Node>
           </Node>
           <Node name="x3dtidy" expanded="True" />

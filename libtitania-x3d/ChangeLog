@@ -1,6 +1,27 @@
 2014-12-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:
+	* jsX3DField.h:
+	* jsX3DObject.h:
+	* jsBrowser.cpp:
+	* jsX3DField.cpp:
+	* jsX3DArrayField.h:
+	* jsSFVec4.h:
+	* jsSFVec3.h:
+	* jsSFVec2.h:
+	* jsSFNode.cpp:
+	* jsSFImage.cpp:
+	* jsSFMatrix3.h:
+	* jsSFMatrix4.h:
+	* jsSFColor.cpp:
+	* jsX3DFieldDefinition.h:
+	* jsSFRotation.cpp:
+	* jsX3DFieldDefinition.cpp:
+	* jsSFColorRGBA.cpp: 
+
+2014-12-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
 	* Browser.cpp:
 	* X3DBrowser.h:
 	* X3DBrowser.cpp:

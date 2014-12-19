@@ -76,16 +76,16 @@ JSPropertySpec jsSFColor::properties [ ] = {
 };
 
 JSFunctionSpec jsSFColor::functions [ ] = {
-	{ "getName",     getName <SFColor>,     0, 0 },
-	{ "getTypeName", getTypeName <SFColor>, 0, 0 },
-	{ "getType",     getType,               0, 0 },
-	{ "isReadable",  isReadable,            0, 0 },
-	{ "isWritable",  isWritable,            0, 0 },
+	{ "getName",     getName <jsSFColor>,     0, 0 },
+	{ "getTypeName", getTypeName <jsSFColor>, 0, 0 },
+	{ "getType",     getType <jsSFColor>,     0, 0 },
+	{ "isReadable",  isReadable <jsSFColor>,  0, 0 },
+	{ "isWritable",  isWritable <jsSFColor>,  0, 0 },
 
 	{ "getHSV",      getHSV,   0, 0 },
 	{ "setHSV",      setHSV,   3, 0 },
 
-	{ "toString",    toString <SFColor>, 0, 0 },
+	{ "toString",    toString <jsSFColor>, 0, 0 },
 
 	{ 0 }
 

@@ -441,7 +441,6 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFBool.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsfield.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DArrayField.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DObject.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DFieldDefinition.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DField.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFDouble.h" />

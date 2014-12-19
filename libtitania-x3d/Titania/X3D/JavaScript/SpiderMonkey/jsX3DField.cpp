@@ -56,55 +56,6 @@ namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-JSBool
-jsX3DField::getType (JSContext* cx, uint32_t argc, jsval* vp)
-{
-	if (argc == 0)
-	{
-		const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (cx, JS_THIS_OBJECT (cx, vp)));
-
-		return JS_NewNumberValue (cx, field -> getType (), vp);
-	}
-
-	JS_ReportError (cx, "wrong number of arguments");
-
-	return false;
-}
-
-JSBool
-jsX3DField::isReadable (JSContext* cx, uint32_t argc, jsval* vp)
-{
-	if (argc == 0)
-	{
-		const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (cx, JS_THIS_OBJECT (cx, vp)));
-
-		JS_SET_RVAL (cx, vp, field -> getAccessType () not_eq inputOnly ? JSVAL_TRUE : JSVAL_FALSE);
-
-		return true;
-	}
-
-	JS_ReportError (cx, "wrong number of arguments");
-
-	return false;
-}
-
-JSBool
-jsX3DField::isWritable (JSContext* cx, uint32_t argc, jsval* vp)
-{
-	if (argc == 0)
-	{
-		const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (cx, JS_THIS_OBJECT (cx, vp)));
-
-		JS_SET_RVAL (cx, vp, field -> getAccessType () not_eq initializeOnly ? JSVAL_TRUE : JSVAL_FALSE);
-
-		return true;
-	}
-
-	JS_ReportError (cx, "wrong number of arguments");
-
-	return false;
-}
-
 void
 jsX3DField::finalize (JSContext* cx, JSObject* obj)
 {

@@ -50,8 +50,9 @@
 
 #include "jsX3DFieldDefinition.h"
 
-#include "../../Fields/FieldPtr.h"
+#include "jsArguments.h"
 #include "jsContext.h"
+#include "jsError.h"
 #include "jsString.h"
 
 namespace titania {
@@ -67,9 +68,9 @@ JSClass jsX3DFieldDefinition::static_class = {
 };
 
 JSPropertySpec jsX3DFieldDefinition::properties [ ] = {
-	{ "name",       NAME,       JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, name,       NULL },
-	{ "accessType", ACCESSTYPE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, accessType, NULL },
-	{ "dataType",   DATATYPE,   JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, dataType,   NULL },
+	{ "name",       NAME,        JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, name,       nullptr },
+	{ "accessType", ACCESS_TYPE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, accessType, nullptr },
+	{ "dataType",   DATA_TYPE,   JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, dataType,   nullptr },
 	{ 0 }
 
 };
@@ -77,62 +78,81 @@ JSPropertySpec jsX3DFieldDefinition::properties [ ] = {
 void
 jsX3DFieldDefinition::init (JSContext* const cx, JSObject* const global)
 {
-	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, NULL, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, nullptr, 0, properties, nullptr, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 }
 
 JSBool
-jsX3DFieldDefinition::create (JSContext* const cx, const X3DFieldDefinition* const field, jsval* const vp)
+jsX3DFieldDefinition::create (JSContext* const cx, const X3D::X3DFieldDefinition* const field, jsval* const vp)
 {
-	const auto context = getContext (cx);
+	const auto result = JS_NewObject (cx, &static_class, nullptr, nullptr);
 
-	JSObject* const result = JS_NewObject (cx, &static_class, NULL, NULL);
-
-	if (result == NULL)
+	if (result == nullptr)
 		return false;
 
-	const auto fieldPtr = new FieldPtr (const_cast <X3DFieldDefinition*> (field));
+	const auto context  = getContext (cx);
+	const auto fieldPtr = new X3D::FieldPtr (const_cast <X3D::X3DFieldDefinition*> (field));
 
 	fieldPtr -> addParent (context);
 
 	JS_SetPrivate (cx, result, fieldPtr);
 
 	*vp = OBJECT_TO_JSVAL (result);
-
 	return true;
 }
 
 JSBool
 jsX3DFieldDefinition::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto fieldPtr = getObject <FieldPtr*> (cx, obj);
+	try
+	{
+		const auto lhs = getThis <jsX3DFieldDefinition> (cx, obj);
 
-	return JS_NewStringValue (cx, fieldPtr -> getValue () -> getName (), vp);
+		return JS_NewStringValue (cx, lhs -> getValue () -> getName (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .name: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DFieldDefinition::accessType (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto fieldPtr = getObject <FieldPtr*> (cx, obj);
+	try
+	{
+		const auto lhs = getThis <jsX3DFieldDefinition> (cx, obj);
 
-	return JS_NewNumberValue (cx, fieldPtr -> getValue () -> getAccessType (), vp);
+		return JS_NewNumberValue (cx, lhs -> getValue () -> getAccessType (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .accessType: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DFieldDefinition::dataType (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto fieldPtr = getObject <FieldPtr*> (cx, obj);
+	try
+	{
+		const auto lhs = getThis <jsX3DFieldDefinition> (cx, obj);
 
-	return JS_NewNumberValue (cx, fieldPtr -> getValue () -> getType (), vp);
+		return JS_NewNumberValue (cx, lhs -> getValue () -> getType (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .accessType: %s.", getClass () -> name, error .what ());
+	}
 }
 
 void
 jsX3DFieldDefinition::finalize (JSContext* cx, JSObject* obj)
 {
 	const auto context  = getContext (cx);
-	const auto fieldPtr = getObject <FieldPtr*> (cx, obj);
+	const auto fieldPtr = getObject <X3D::FieldPtr*> (cx, obj);
 
 	// Proto objects have no private
 

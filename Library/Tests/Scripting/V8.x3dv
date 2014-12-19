@@ -327,6 +327,7 @@ function set_time (value, time)
 DEF Script2 Script {
   inputOnly SFVec3f set_hitPoint
   inputOnly SFTime  set_time
+  inputOutput SFNode n Viewpoint { }
 
   url "v8:
 
@@ -347,22 +348,11 @@ function set_time (value, time)
 {
 	print ('Script 2. value:   ', value);
 	print ('Script 2. time:    ', time);
-	
-	var v = new SFVec4f (1, 2, 3, 4);
-	print ('Script 2. SFVec4f: ', v);
-	print ('Script 2. SFVec4f: ', v .add (v));
 
-	v [0] = 2;
-	v [1] = 3;
-	v [2] = 4;
-	v [3] = 5;
-	print ('Script 2. SFVec4f []: ', v);
+	var fd = n .getFieldDefinitions ();
 	
-	var m = SFMatrix4f ();
-	print ('SFMatrix4f: ', m);
-	m [0] = 2;
-	print ('SFMatrix4f: ', m);
-	print ('SFMatrix4f: ', m .getTypeName ());
+	print (fd [0] .name)
+
 
 	var a = [ ];
 	for (var i = 0; i < 1000; ++ i)

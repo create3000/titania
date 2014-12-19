@@ -51,18 +51,22 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DFIELD_DEFINITION_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DFIELD_DEFINITION_H__
 
-#include "jsX3DObject.h"
-
 #include "../../Basic/X3DFieldDefinition.h"
+#include "../../Fields/FieldPtr.h"
+
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-class jsX3DFieldDefinition :
-	public jsX3DObject
+class jsX3DFieldDefinition
 {
 public:
+
+	///  @name Member type
+
+	using internal_type = X3D::FieldPtr;
 
 	///  @name Construction
 
@@ -72,7 +76,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext* const, const X3DFieldDefinition* const, jsval* const);
+	create (JSContext* const, const X3D::X3DFieldDefinition* const, jsval* const);
 
 	static
 	JSClass*
@@ -95,7 +99,7 @@ private:
 
 	///  @name Member types
 
-	enum Property {NAME, ACCESSTYPE, DATATYPE};
+	enum Property {NAME, ACCESS_TYPE, DATA_TYPE};
 
 	///  @name Static members
 

@@ -126,7 +126,8 @@ JSFunctionSpec jsBrowser::functions [ ] = {
 	{ "createVrmlFromURL",    createVrmlFromURL,    3, 0 },
 	{ "addRoute",             addRoute,             4, 0 },
 	{ "deleteRoute",          deleteRoute,          4, 0 },
-	{ 0, 0, 0, 0 }
+
+	{ 0 }
 
 };
 
