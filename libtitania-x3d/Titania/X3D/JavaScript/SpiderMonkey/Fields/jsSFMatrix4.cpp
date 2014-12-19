@@ -55,7 +55,7 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 template <>
-JSClass jsSFMatrix4 <SFMatrix4d>::static_class = {
+JSClass jsSFMatrix4 <X3D::SFMatrix4d>::static_class = {
 	"SFMatrix4d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
@@ -64,7 +64,7 @@ JSClass jsSFMatrix4 <SFMatrix4d>::static_class = {
 };
 
 template <>
-JSClass jsSFMatrix4 <SFMatrix4f>::static_class = {
+JSClass jsSFMatrix4 <X3D::SFMatrix4f>::static_class = {
 	"SFMatrix4f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
@@ -73,7 +73,7 @@ JSClass jsSFMatrix4 <SFMatrix4f>::static_class = {
 };
 
 template <>
-JSClass jsSFMatrix4 <VrmlMatrix>::static_class = {
+JSClass jsSFMatrix4 <X3D::VrmlMatrix>::static_class = {
 	"VrmlMatrix", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
@@ -81,9 +81,9 @@ JSClass jsSFMatrix4 <VrmlMatrix>::static_class = {
 
 };
 
-template class jsSFMatrix4 <SFMatrix4d>;
-template class jsSFMatrix4 <SFMatrix4f>;
-template class jsSFMatrix4 <VrmlMatrix>;
+template class jsSFMatrix4 <X3D::SFMatrix4d>;
+template class jsSFMatrix4 <X3D::SFMatrix4f>;
+template class jsSFMatrix4 <X3D::VrmlMatrix>;
 
 } // MozillaSpiderMonkey
 } // X3D

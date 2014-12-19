@@ -52,16 +52,16 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_EXTERN_PROTO_DECLARATION_ARRAY_H__
 
 #include "../../Prototype/ExternProtoArray.h"
-#include "jsConstArray.h"
+#include "jsX3DConstArray.h"
 #include "jsX3DExternProtoDeclaration.h"
 
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-typedef jsConstArray <ExternProtoArray, jsX3DExternProtoDeclaration> jsExternProtoDeclarationArray;
+typedef jsX3DConstArray <ExternProtoArray, jsX3DExternProtoDeclaration> jsExternProtoDeclarationArray;
 
-extern template class jsConstArray <ExternProtoArray, jsX3DExternProtoDeclaration>;
+extern template class jsX3DConstArray <ExternProtoArray, jsX3DExternProtoDeclaration>;
 
 } // MozillaSpiderMonkey
 } // X3D

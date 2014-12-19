@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ class jsSFColorRGBA :
 {
 public:
 
-	typedef SFColorRGBA field_type;
+	using internal_type = X3D::SFColorRGBA;
 
 	static
 	void
@@ -75,21 +75,22 @@ public:
 
 	static
 	JSClass*
-	getClass () { return &static_class; }
+	getClass ()
+	{ return &static_class; }
 
 
 private:
 
 	enum Property {R, G, B, A};
 
-	static JSBool construct (JSContext *, uintN, jsval*);
-	static JSBool enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
+	static JSBool construct (JSContext*, uint32_t, jsval*);
+	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
 
-	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
 
-	static JSBool getHSV (JSContext *, uintN, jsval*);
-	static JSBool setHSV (JSContext *, uintN, jsval*);
+	static JSBool getHSV (JSContext*, uint32_t, jsval*);
+	static JSBool setHSV (JSContext*, uint32_t, jsval*);
 
 	static const size_t   size;
 	static JSClass        static_class;

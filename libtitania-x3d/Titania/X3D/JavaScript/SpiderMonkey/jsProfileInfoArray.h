@@ -52,16 +52,16 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_PROFILE_INFO_ARRAY_H__
 
 #include "../../Configuration/ProfileInfoArray.h"
-#include "jsConstArray.h"
+#include "jsX3DConstArray.h"
 #include "jsProfileInfo.h"
 
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-typedef jsConstArray <ProfileInfoArray, jsProfileInfo> jsProfileInfoArray;
+typedef jsX3DConstArray <ProfileInfoArray, jsProfileInfo> jsProfileInfoArray;
 
-extern template class jsConstArray <ProfileInfoArray, jsProfileInfo>;
+extern template class jsX3DConstArray <ProfileInfoArray, jsProfileInfo>;
 
 } // MozillaSpiderMonkey
 } // X3D

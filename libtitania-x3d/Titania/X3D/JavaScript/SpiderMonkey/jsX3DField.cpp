@@ -57,52 +57,64 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 JSBool
-jsX3DField::getType (JSContext* context, uintN argc, jsval* vp)
+jsX3DField::getType (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (cx, JS_THIS_OBJECT (cx, vp)));
 
-		return JS_NewNumberValue (context, field -> getType (), vp);
+		return JS_NewNumberValue (cx, field -> getType (), vp);
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (cx, "wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DField::isReadable (JSContext* context, uintN argc, jsval* vp)
+jsX3DField::isReadable (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (cx, JS_THIS_OBJECT (cx, vp)));
 
-		JS_SET_RVAL (context, vp, field -> getAccessType () not_eq inputOnly ? JSVAL_TRUE : JSVAL_FALSE);
+		JS_SET_RVAL (cx, vp, field -> getAccessType () not_eq inputOnly ? JSVAL_TRUE : JSVAL_FALSE);
 
-		return JS_TRUE;
+		return true;
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (cx, "wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DField::isWritable (JSContext* context, uintN argc, jsval* vp)
+jsX3DField::isWritable (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (cx, JS_THIS_OBJECT (cx, vp)));
 
-		JS_SET_RVAL (context, vp, field -> getAccessType () not_eq initializeOnly ? JSVAL_TRUE : JSVAL_FALSE);
+		JS_SET_RVAL (cx, vp, field -> getAccessType () not_eq initializeOnly ? JSVAL_TRUE : JSVAL_FALSE);
 
-		return JS_TRUE;
+		return true;
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (cx, "wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
+}
+
+void
+jsX3DField::finalize (JSContext* cx, JSObject* obj)
+{
+	const auto context = getContext (cx);
+	const auto field   = getObject <X3DFieldDefinition*> (cx, obj);
+
+	// Proto objects have no private
+
+	if (field)
+		context -> removeObject (field);
 }
 
 } // MozillaSpiderMonkey

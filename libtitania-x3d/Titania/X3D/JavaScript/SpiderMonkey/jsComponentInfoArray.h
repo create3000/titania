@@ -53,15 +53,15 @@
 
 #include "../../Configuration/ComponentInfoArray.h"
 #include "jsComponentInfo.h"
-#include "jsConstArray.h"
+#include "jsX3DConstArray.h"
 
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-typedef jsConstArray <ComponentInfoArray, jsComponentInfo> jsComponentInfoArray;
+typedef jsX3DConstArray <ComponentInfoArray, jsComponentInfo> jsComponentInfoArray;
 
-extern template class jsConstArray <ComponentInfoArray, jsComponentInfo>;
+extern template class jsX3DConstArray <ComponentInfoArray, jsComponentInfo>;
 
 } // MozillaSpiderMonkey
 } // X3D

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ class jsSFNode :
 {
 public:
 
-	typedef SFNode field_type;
+	using internal_type = SFNode;
 
 	static
 	void
@@ -75,25 +75,26 @@ public:
 
 	static
 	JSClass*
-	getClass () { return &static_class; }
+	getClass ()
+	{ return &static_class; }
 
 
 private:
 
-	static JSBool construct (JSContext *, uintN, jsval*);
-	static JSBool enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
+	static JSBool construct (JSContext*, uint32_t, jsval*);
+	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
 
-	static JSBool getProperty (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool setProperty (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool getProperty (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool setProperty (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
-	static JSBool getNodeName (JSContext *, uintN, jsval*);
-	static JSBool getNodeType (JSContext *, uintN, jsval*);
+	static JSBool getNodeName (JSContext*, uint32_t, jsval*);
+	static JSBool getNodeType (JSContext*, uint32_t, jsval*);
 
-	static JSBool getFieldDefinitions (JSContext *, uintN, jsval*);
+	static JSBool getFieldDefinitions (JSContext*, uint32_t, jsval*);
 
-	static JSBool toVRMLString (JSContext *, uintN, jsval*);
-	static JSBool toXMLString  (JSContext *, uintN, jsval*);
-	static JSBool toString     (JSContext *, uintN, jsval*);
+	static JSBool toVRMLString (JSContext*, uint32_t, jsval*);
+	static JSBool toXMLString  (JSContext*, uint32_t, jsval*);
+	static JSBool toString     (JSContext*, uint32_t, jsval*);
 
 	static JSClass        static_class;
 	static JSFunctionSpec functions [ ];

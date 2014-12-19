@@ -77,104 +77,106 @@ JSPropertySpec jsX3DRoute::properties [ ] = {
 };
 
 void
-jsX3DRoute::init (JSContext* const context, JSObject* const global)
+jsX3DRoute::init (JSContext* const cx, JSObject* const global)
 {
-	JS_InitClass (context, global, NULL, &static_class, NULL,
-	              0, properties, NULL, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, NULL, NULL, NULL);
+
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 }
 
 JSBool
-jsX3DRoute::create (JSContext* const context, const RoutePtr & route, jsval* const vp)
+jsX3DRoute::create (JSContext* const cx, const RoutePtr & route, jsval* const vp)
 {
-	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
+	JSObject* const result = JS_NewObject (cx, &static_class, NULL, NULL);
 
 	if (result == NULL)
-		return JS_FALSE;
+		return false;
 
 	const auto field = new RoutePtr (route);
 
-	JS_SetPrivate (context, result, field);
+	JS_SetPrivate (cx, result, field);
 
-	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addObject (field, result);
+	getContext (cx) -> addObject (field, result);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
-	return JS_TRUE;
+	return true;
 }
 
 // Properties
 
 JSBool
-jsX3DRoute::sourceNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DRoute::sourceNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (context, obj));
+		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (cx, obj));
 
-		return jsSFNode::create (context, new SFNode (route -> getSourceNode ()), vp);
+		return jsSFNode::create (cx, new SFNode (route -> getSourceNode ()), vp);
 	}
 	catch (const X3DError & error)
 	{
-		JS_ReportError (context, error .what ());
-		return JS_FALSE;
+		JS_ReportError (cx, error .what ());
+		return false;
 	}
 }
 
 JSBool
-jsX3DRoute::sourceField (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DRoute::sourceField (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (context, obj));
+		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (cx, obj));
 
-		return JS_NewStringValue (context, route -> getSourceField (), vp);
+		return JS_NewStringValue (cx, route -> getSourceField (), vp);
 	}
 	catch (const X3DError & error)
 	{
-		JS_ReportError (context, error .what ());
-		return JS_FALSE;
+		JS_ReportError (cx, error .what ());
+		return false;
 	}
 }
 
 JSBool
-jsX3DRoute::destinationNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DRoute::destinationNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (context, obj));
+		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (cx, obj));
 
-		return jsSFNode::create (context, new SFNode (route -> getDestinationNode ()), vp);
+		return jsSFNode::create (cx, new SFNode (route -> getDestinationNode ()), vp);
 	}
 	catch (const X3DError & error)
 	{
-		JS_ReportError (context, error .what ());
-		return JS_FALSE;
+		JS_ReportError (cx, error .what ());
+		return false;
 	}
 }
 
 JSBool
-jsX3DRoute::destinationField (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DRoute::destinationField (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (context, obj));
+		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (cx, obj));
 
-		return JS_NewStringValue (context, route -> getDestinationField (), vp);
+		return JS_NewStringValue (cx, route -> getDestinationField (), vp);
 	}
 	catch (const X3DError & error)
 	{
-		JS_ReportError (context, error .what ());
-		return JS_FALSE;
+		JS_ReportError (cx, error .what ());
+		return false;
 	}
 }
 
 void
-jsX3DRoute:: finalize (JSContext* context, JSObject* obj)
+jsX3DRoute::finalize (JSContext* cx, JSObject* obj)
 {
-	const auto route = static_cast <RoutePtr*> (JS_GetPrivate (context, obj));
+	const auto route = static_cast <RoutePtr*> (JS_GetPrivate (cx, obj));
 
 	if (route)
-		static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (route);
+		getContext (cx) -> removeObject (route);
 }
 
 } // MozillaSpiderMonkey

@@ -55,7 +55,7 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 template <>
-JSClass jsConstArray <ProfileInfoArray, jsProfileInfo>::static_class = {
+JSClass jsX3DConstArray <ProfileInfoArray, jsProfileInfo>::static_class = {
 	"ProfileInfoArray", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
@@ -63,7 +63,7 @@ JSClass jsConstArray <ProfileInfoArray, jsProfileInfo>::static_class = {
 
 };
 
-template class jsConstArray <ProfileInfoArray, jsProfileInfo>;
+template class jsX3DConstArray <ProfileInfoArray, jsProfileInfo>;
 
 } // MozillaSpiderMonkey
 } // X3D

@@ -55,7 +55,7 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 template <>
-JSClass jsX3DArrayField <jsSFNode, MFNode>::static_class = {
+JSClass jsX3DArrayField <jsSFNode, X3D::MFNode>::static_class = {
 	"MFNode", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -65,146 +65,136 @@ JSClass jsX3DArrayField <jsSFNode, MFNode>::static_class = {
 
 template <>
 JSBool
-jsX3DArrayField <jsSFNode, MFNode>::construct (JSContext* context, uintN argc, jsval* vp)
+jsX3DArrayField <jsSFNode, X3D::MFNode>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 0)
+	try
 	{
-		return create (context, new field_type (), &JS_RVAL (context, vp));
-	}
-	else
-	{
-		field_type* const field = new field_type ();
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		for (uintN i = 0; i < argc; ++ i)
+		if (argc == 0)
 		{
-			JSObject* value = nullptr;
+			return create (cx, new X3D::MFNode (), &JS_RVAL (cx, vp));
+		}
+		else
+		{
+			const auto array = new X3D::MFNode ();
+			const auto argv  = JS_ARGV (cx, vp);
 
-			if (not JS_ValueToObject (context, argv [i], &value))
-				return JS_FALSE;
-			
-			if (value)
+			for (uint32_t i = 0; i < argc; ++ i)
 			{
-				if (JS_InstanceOfError (context, value, jsSFNode::getClass ()))
-					return JS_FALSE;
-
-				field -> emplace_back (*(SFNode*) JS_GetPrivate (context, value));
+				try
+				{
+					array -> emplace_back (*getArgument <jsSFNode> (cx, argv, i));
+				}
+				catch (const std::domain_error &)
+				{
+					array -> emplace_back ();
+				}	
 			}
-			else
-				field -> emplace_back ();
+
+			return create (cx, array, &JS_RVAL (cx, vp));
 		}
-
-		return create (context, field, &JS_RVAL (context, vp));
 	}
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .new: %s.", getClass () -> name, error .what ());
+	}
 }
 
 template <>
 JSBool
-jsX3DArrayField <jsSFNode, MFNode>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsX3DArrayField <jsSFNode, X3D::MFNode>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	if (not JSID_IS_INT (id))
-		return JS_TRUE;
-
-	const int32 index = JSID_TO_INT (id);
-
-	if (index < 0)
+	try
 	{
-		JS_ReportError (context, "index out of range");
-		return JS_FALSE;
+		if (not JSID_IS_INT (id))
+			return true;
+
+		const auto array = getThis <jsX3DArrayField <jsSFNode, X3D::MFNode>> (cx, obj);
+		const auto index = JSID_TO_INT (id);
+
+		if (index < 0)
+			return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
+
+		try
+		{
+			array -> set1Value (index, *getArgument <jsSFNode> (cx, vp, 0));
+		}
+		catch (const std::domain_error &)
+		{
+			array -> set1Value (index, nullptr);
+		}
+
+		*vp = JSVAL_VOID;
+		return true;
 	}
+	catch (const std::bad_alloc &)
+	{
+		return ThrowException (cx, "%s: out of memory.", getClass () -> name);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .set1Value: %s.", getClass () -> name, error .what ());
+	}
+}
 
-	MFNode* const field = (MFNode*) JS_GetPrivate (context, obj);
+template <>
+JSBool
+jsX3DArrayField <jsSFNode, X3D::MFNode>::unshift (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .unshift: wrong number of arguments.", getClass () -> name);
 
-	JSObject* value = nullptr;
-
-	if (not JS_ValueToObject (context, *vp, &value))
-		return JS_FALSE;
+	try
+	{
+		const auto argv  = JS_ARGV (cx, vp);
+		const auto array = getThis <jsX3DArrayField <jsSFNode, X3D::MFNode>> (cx, vp);
 		
-	if (value)
-	{
-		if (JS_InstanceOfError (context, value, jsSFNode::getClass ()))
-			return JS_FALSE;
+		try
+		{
+			array -> emplace_front (*getArgument <jsSFNode> (cx, argv, 0));
+		}
+		catch (const std::domain_error &)
+		{
+			array -> emplace_front (nullptr);
+		}
 
-		field -> set1Value (index, *(SFNode*) JS_GetPrivate (context, value));
+		return JS_NewNumberValue (cx, array -> size (), vp);
 	}
-	else
-		field -> set1Value (index, nullptr);
-
-	*vp = JSVAL_VOID;
-
-	return JS_TRUE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .unshift: %s.", getClass () -> name, error .what ());
+	}
 }
 
 template <>
 JSBool
-jsX3DArrayField <jsSFNode, MFNode>::unshift (JSContext* context, uintN argc, jsval* vp)
+jsX3DArrayField <jsSFNode, X3D::MFNode>::push (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .push: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		MFNode* const field = (MFNode*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-
-		JSObject* value = nullptr;
-
-		jsval* argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "o", &value))
-			return JS_FALSE;
-			
-		if (value)
+		const auto argv  = JS_ARGV (cx, vp);
+		const auto array = getThis <jsX3DArrayField <jsSFNode, X3D::MFNode>> (cx, vp);
+		
+		try
 		{
-			if (JS_InstanceOfError (context, value, jsSFNode::getClass ()))
-				return JS_FALSE;
-
-			field -> emplace_front (*(SFNode*) JS_GetPrivate (context, value));
+			array -> emplace_back (*getArgument <jsSFNode> (cx, argv, 0));
 		}
-		else
-			field -> emplace_front ();
+		catch (const std::domain_error &)
+		{
+			array -> emplace_back (nullptr);
+		}
 
-		return JS_NewNumberValue (context, field -> size (), vp);
+		return JS_NewNumberValue (cx, array -> size (), vp);
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .push: %s.", getClass () -> name, error .what ());
+	}
 }
 
-template <>
-JSBool
-jsX3DArrayField <jsSFNode, MFNode>::push (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 1)
-	{
-		MFNode* const field = (MFNode*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-
-		JSObject* value = nullptr;
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "o", &value))
-			return JS_FALSE;
-
-		if (value)
-		{
-			if (JS_InstanceOfError (context, value, jsSFNode::getClass ()))
-				return JS_FALSE;
-
-			field -> emplace_back (*(SFNode*) JS_GetPrivate (context, value));
-		}
-		else
-			field -> emplace_back ();
-
-		return JS_NewNumberValue (context, field -> size (), vp);
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-template class jsX3DArrayField <jsSFNode, MFNode>;
+template class jsX3DArrayField <jsSFNode, X3D::MFNode>;
 
 } // MozillaSpiderMonkey
 } // X3D

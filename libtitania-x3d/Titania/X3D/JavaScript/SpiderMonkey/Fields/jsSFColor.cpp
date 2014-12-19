@@ -51,6 +51,7 @@
 #include "jsSFColor.h"
 
 #include "../jsContext.h"
+#include "../jsError.h"
 
 namespace titania {
 namespace X3D {
@@ -91,73 +92,61 @@ JSFunctionSpec jsSFColor::functions [ ] = {
 };
 
 void
-jsSFColor::init (JSContext* context, JSObject* global)
+jsSFColor::init (JSContext* cx, JSObject* global)
 {
-	JSObject* proto = JS_InitClass (context, global, NULL, &static_class, construct,
-	                                0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
-	JS_DefineProperty (context, proto, (char*) R, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
-	JS_DefineProperty (context, proto, (char*) G, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
-	JS_DefineProperty (context, proto, (char*) B, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+
+	JS_DefineProperty (cx, proto, (char*) R, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (cx, proto, (char*) G, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (cx, proto, (char*) B, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 }
 
 JSBool
-jsSFColor::create (JSContext* const context, SFColor* const field, jsval* const vp)
+jsSFColor::create (JSContext* const cx, SFColor* const field, jsval* const vp)
 {
-	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	return jsX3DField::create (cx, &static_class, field, vp);
+}
 
+JSBool
+jsSFColor::construct (JSContext* cx, uint32_t argc, jsval* vp)
+{
 	try
 	{
-		*vp = OBJECT_TO_JSVAL (javaScript -> getObject (field));
+		switch (argc)
+		{
+			case 0:
+			{
+				return create (cx, new X3D::SFColor (), &JS_RVAL (cx, vp));
+			}
+			case 3:
+			{
+				const auto argv = JS_ARGV (cx, vp);
+				const auto r    = getArgument <double> (cx, argv, R);
+				const auto g    = getArgument <double> (cx, argv, G);
+				const auto b    = getArgument <double> (cx, argv, B);
+
+				return create (cx, new X3D::SFColor (r, g, b), &JS_RVAL (cx, vp));
+			}
+			default:
+				return ThrowException (cx, "%s .new: wrong number of arguments.", getClass () -> name);
+		}
 	}
-	catch (const std::out_of_range &)
+	catch (const std::exception & error)
 	{
-		JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
-
-		if (result == NULL)
-			return JS_FALSE;
-
-		JS_SetPrivate (context, result, field);
-
-		javaScript -> addObject (field, result);
-
-		*vp = OBJECT_TO_JSVAL (result);
+		return ThrowException (cx, "%s .new: %s.", getClass () -> name, error .what ());
 	}
-
-	return JS_TRUE;
 }
 
 JSBool
-jsSFColor::construct (JSContext* context, uintN argc, jsval* vp)
+jsSFColor::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
-	if (argc == 0)
-	{
-		return create (context, new SFColor (), &JS_RVAL (context, vp));
-	}
-	else if (argc == size)
-	{
-		jsdouble r, g, b;
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "ddd", &r, &g, &b))
-			return JS_FALSE;
-
-		return create (context, new SFColor (r, g, b), &JS_RVAL (context, vp));
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-JSBool
-jsSFColor::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
-{
-	if (not JS_GetPrivate (context, obj))
+	if (not JS_GetPrivate (cx, obj))
 	{
 		*statep = JSVAL_NULL;
-		return JS_TRUE;
+		return true;
 	}
 
 	size_t* index;
@@ -198,90 +187,104 @@ jsSFColor::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, js
 		}
 	}
 
-	return JS_TRUE;
+	return true;
 }
 
 JSBool
-jsSFColor::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsSFColor::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	SFColor* const sfcolor = (SFColor*) JS_GetPrivate (context, obj);
-
-	return JS_NewNumberValue (context, sfcolor -> get1Value (JSID_TO_INT (id)), vp);
-}
-
-JSBool
-jsSFColor::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
-{
-	SFColor* const sfcolor = (SFColor*) JS_GetPrivate (context, obj);
-
-	jsdouble value;
-
-	if (not JS_ValueToNumber (context, *vp, &value))
-		return JS_FALSE;
-
-	sfcolor -> set1Value (JSID_TO_INT (id), value);
-
-	return JS_TRUE;
-}
-
-JSBool
-jsSFColor::getHSV (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 0)
+	try
 	{
-		SFColor* const sfcolor = (SFColor*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		const auto lhs   = getThis <jsSFColor> (cx, obj);
+		const auto value = getArgument <double> (cx, vp, 0);
 
+		lhs -> set1Value (JSID_TO_INT (id), value);
+
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .set1Value: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+jsSFColor::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	try
+	{
+		const auto lhs = getThis <jsSFColor> (cx, obj);
+
+		return JS_NewNumberValue (cx, lhs -> get1Value (JSID_TO_INT (id)), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .get1Value: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+jsSFColor::getHSV (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .getHSV: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto lhs = getThis <jsSFColor> (cx, vp);
+		
 		float h, s, v;
 
-		sfcolor -> getHSV (h, s, v);
+		lhs -> getHSV (h, s, v);
 
-		jsval vector [3];
+		jsval array [3];
 
-		if (not JS_NewNumberValue (context, h, &vector [0]))
-			return JS_FALSE;
+		if (not JS_NewNumberValue (cx, h, &array [0]))
+			return false;
 
-		if (not JS_NewNumberValue (context, s, &vector [1]))
-			return JS_FALSE;
+		if (not JS_NewNumberValue (cx, s, &array [1]))
+			return false;
 
-		if (not JS_NewNumberValue (context, v, &vector [2]))
-			return JS_FALSE;
+		if (not JS_NewNumberValue (cx, v, &array [2]))
+			return false;
 
-		JSObject* const result = JS_NewArrayObject (context, 3, vector);
+		const auto result = JS_NewArrayObject (cx, 3, array);
 
-		JS_SET_RVAL (context, vp, OBJECT_TO_JSVAL (result));
+		if (result == nullptr)
+			return ThrowException (cx, "out of memory");
 
-		return JS_TRUE;
+		JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (result));
+		return true;
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .getHSV: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
-jsSFColor::setHSV (JSContext* context, uintN argc, jsval* vp)
+jsSFColor::setHSV (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 3)
+	if (argc not_eq 3)
+		return ThrowException (cx, "%s .setHSV: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		SFColor* const sfcolor = (SFColor*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFColor> (cx, vp);
+		const auto h    = getArgument <double> (cx, argv, 0);
+		const auto s    = getArgument <double> (cx, argv, 1);
+		const auto v    = getArgument <double> (cx, argv, 2);
 
-		jsdouble h, s, v;
+		lhs -> setHSV (h, s, v);
 
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "ddd", &h, &s, &v))
-			return JS_FALSE;
-
-		sfcolor -> setHSV (h, s, v);
-
-		JS_SET_RVAL (context, vp, JSVAL_VOID);
-
-		return JS_TRUE;
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
+		return true;
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .setHSV: %s.", getClass () -> name, error .what ());
+	}
 }
 
 } // MozillaSpiderMonkey

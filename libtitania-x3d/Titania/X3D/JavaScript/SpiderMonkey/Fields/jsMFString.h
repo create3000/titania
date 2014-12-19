@@ -61,23 +61,23 @@ namespace MozillaSpiderMonkey {
 
 template <>
 JSBool
-jsX3DArrayField <jsSFString, MFString>::construct (JSContext *, uintN, jsval*);
+jsX3DArrayField <jsSFString, X3D::MFString>::construct (JSContext *, uint32_t, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFString, MFString>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+jsX3DArrayField <jsSFString, X3D::MFString>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFString, MFString>::unshift (JSContext *, uintN, jsval*);
+jsX3DArrayField <jsSFString, X3D::MFString>::unshift (JSContext *, uint32_t, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFString, MFString>::push (JSContext *, uintN, jsval*);
+jsX3DArrayField <jsSFString, X3D::MFString>::push (JSContext *, uint32_t, jsval*);
 
-extern template class jsX3DArrayField <jsSFString, MFString>;
+extern template class jsX3DArrayField <jsSFString, X3D::MFString>;
 
-typedef jsX3DArrayField <jsSFString, MFString> jsMFString;
+using jsMFString = jsX3DArrayField <jsSFString, X3D::MFString>;
 
 } // MozillaSpiderMonkey
 } // X3D

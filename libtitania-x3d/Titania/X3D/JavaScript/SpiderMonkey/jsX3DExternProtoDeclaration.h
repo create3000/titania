@@ -93,8 +93,8 @@ private:
 	static JSBool isExternProto (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool loadState     (JSContext *, JSObject *, jsid, jsval*);
 
-	static JSBool newInstance (JSContext *, uintN, jsval*);
-	static JSBool loadNow     (JSContext *, uintN, jsval*);
+	static JSBool newInstance (JSContext *, uint32_t, jsval*);
+	static JSBool loadNow     (JSContext *, uint32_t, jsval*);
 
 	static
 	void

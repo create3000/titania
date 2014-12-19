@@ -267,6 +267,13 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	/// @name Begin/End update service
+
+	virtual
+	void
+	beginUpdate ()
+	throw (Error <DISPOSED>) final override;
+
 	///  @name print
 
 	template <typename ... Args>

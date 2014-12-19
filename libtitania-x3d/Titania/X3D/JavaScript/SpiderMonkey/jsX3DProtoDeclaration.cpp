@@ -84,80 +84,81 @@ JSFunctionSpec jsX3DProtoDeclaration::functions [ ] = {
 };
 
 void
-jsX3DProtoDeclaration::init (JSContext* const context, JSObject* const global)
+jsX3DProtoDeclaration::init (JSContext* const cx, JSObject* const global)
 {
-	JS_InitClass (context, global, NULL, &static_class, NULL,
-	              0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, functions, NULL, NULL);
+
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 }
 
 JSBool
-jsX3DProtoDeclaration::create (JSContext* const context, const ProtoDeclarationPtr & proto, jsval* const vp)
+jsX3DProtoDeclaration::create (JSContext* const cx, const ProtoDeclarationPtr & proto, jsval* const vp)
 {
-	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
+	JSObject* const result = JS_NewObject (cx, &static_class, NULL, NULL);
 
 	if (result == NULL)
-		return JS_FALSE;
+		return false;
 
 	const auto field = new ProtoDeclarationPtr (proto);
 
-	JS_SetPrivate (context, result, field);
+	JS_SetPrivate (cx, result, field);
 
-	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addObject (field, result);
+	getContext (cx) -> addObject (field, result);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
-	return JS_TRUE;
+	return true;
 }
 
 // Properties
 
 JSBool
-jsX3DProtoDeclaration::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DProtoDeclaration::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & proto = *static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (context, obj));
+	const auto & proto = *static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (cx, obj));
 
-	return JS_NewStringValue (context, proto -> getName (), vp);
+	return JS_NewStringValue (cx, proto -> getName (), vp);
 }
 
 JSBool
-jsX3DProtoDeclaration::fields (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DProtoDeclaration::fields (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & proto = *static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (context, obj));
+	auto & proto = *static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (cx, obj));
 
-	return jsFieldDefinitionArray::create (context, &proto -> getFieldDefinitions (), vp);
+	return jsFieldDefinitionArray::create (cx, &proto -> getFieldDefinitions (), vp);
 }
 
 JSBool
-jsX3DProtoDeclaration::isExternProto (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DProtoDeclaration::isExternProto (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & proto = *static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (context, obj));
+	const auto & proto = *static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (cx, obj));
 
 	*vp = proto -> isExternproto () ? JSVAL_TRUE : JSVAL_FALSE;
 
-	return JS_TRUE;
+	return true;
 }
 
 // Functions
 
 JSBool
-jsX3DProtoDeclaration::newInstance (JSContext* context, uintN argc, jsval* vp)
+jsX3DProtoDeclaration::newInstance (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	const auto & proto = *static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
-
-	X3DPrototypeInstancePtr instance = proto -> createInstance ();
+	const auto & proto    = *static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (cx, JS_THIS_OBJECT (cx, vp)));
+	auto         instance = proto -> createInstance ();
 
 	instance -> setup ();
 
-	return jsSFNode::create (context, new SFNode (instance), &JS_RVAL (context, vp));
+	return jsSFNode::create (cx, new SFNode (std::move (instance)), &JS_RVAL (cx, vp));
 }
 
 void
-jsX3DProtoDeclaration::finalize (JSContext* context, JSObject* obj)
+jsX3DProtoDeclaration::finalize (JSContext* cx, JSObject* obj)
 {
-	const auto proto = static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (context, obj));
+	const auto proto = static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (cx, obj));
 
 	if (proto)
-		static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (proto);
+		getContext (cx) -> removeObject (proto);
 }
 
 } // MozillaSpiderMonkey

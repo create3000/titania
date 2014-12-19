@@ -50,7 +50,7 @@
 
 #include "jsX3DFieldDefinition.h"
 
-#include "../../Fields/X3DScalar.h"
+#include "../../Fields/FieldPtr.h"
 #include "jsContext.h"
 #include "jsString.h"
 
@@ -58,12 +58,10 @@ namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-using jsX3DFieldDefinitionPrivate = X3DScalar <const X3DFieldDefinition*>;
-
 JSClass jsX3DFieldDefinition::static_class = {
 	"X3DFieldDefinition", JSCLASS_HAS_PRIVATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, privateFinalize,
+	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -77,85 +75,69 @@ JSPropertySpec jsX3DFieldDefinition::properties [ ] = {
 };
 
 void
-jsX3DFieldDefinition::init (JSContext* const context, JSObject* const global)
+jsX3DFieldDefinition::init (JSContext* const cx, JSObject* const global)
 {
-	JS_InitClass (context, global, NULL, &static_class, NULL,
-	              0, properties, NULL, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, NULL, NULL, NULL);
+
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 }
 
 JSBool
-jsX3DFieldDefinition::create (JSContext* const context, const X3DFieldDefinition* const field, jsval* const vp)
+jsX3DFieldDefinition::create (JSContext* const cx, const X3DFieldDefinition* const field, jsval* const vp)
 {
-	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto context = getContext (cx);
 
-	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
+	JSObject* const result = JS_NewObject (cx, &static_class, NULL, NULL);
 
 	if (result == NULL)
-		return JS_FALSE;
+		return false;
 
-	const auto privateField = new jsX3DFieldDefinitionPrivate (field);
+	const auto fieldPtr = new FieldPtr (const_cast <X3DFieldDefinition*> (field));
 
-	privateField -> addParent (javaScript);
-	const_cast <X3DFieldDefinition*> (field) -> addParent (privateField);
+	fieldPtr -> addParent (context);
 
-	JS_SetPrivate (context, result, privateField);
+	JS_SetPrivate (cx, result, fieldPtr);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
-	return JS_TRUE;
+	return true;
 }
 
 JSBool
-jsX3DFieldDefinition::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DFieldDefinition::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto field = static_cast <jsX3DFieldDefinitionPrivate*> (JS_GetPrivate (context, obj));
+	const auto fieldPtr = getObject <FieldPtr*> (cx, obj);
 
-	return JS_NewStringValue (context, field -> getValue () -> getName (), vp);
+	return JS_NewStringValue (cx, fieldPtr -> getValue () -> getName (), vp);
 }
 
 JSBool
-jsX3DFieldDefinition::accessType (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DFieldDefinition::accessType (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto field = static_cast <jsX3DFieldDefinitionPrivate*> (JS_GetPrivate (context, obj));
+	const auto fieldPtr = getObject <FieldPtr*> (cx, obj);
 
-	return JS_NewNumberValue (context, field -> getValue () -> getAccessType (), vp);
+	return JS_NewNumberValue (cx, fieldPtr -> getValue () -> getAccessType (), vp);
 }
 
 JSBool
-jsX3DFieldDefinition::dataType (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DFieldDefinition::dataType (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto field = static_cast <jsX3DFieldDefinitionPrivate*> (JS_GetPrivate (context, obj));
+	const auto fieldPtr = getObject <FieldPtr*> (cx, obj);
 
-	return JS_NewNumberValue (context, field -> getValue () -> getType (), vp);
+	return JS_NewNumberValue (cx, fieldPtr -> getValue () -> getType (), vp);
 }
 
 void
-jsX3DFieldDefinition::privateFinalize (JSContext* context, JSObject* obj)
+jsX3DFieldDefinition::finalize (JSContext* cx, JSObject* obj)
 {
-	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-	const auto field      = static_cast <jsX3DFieldDefinitionPrivate*> (JS_GetPrivate (context, obj));
+	const auto context  = getContext (cx);
+	const auto fieldPtr = getObject <FieldPtr*> (cx, obj);
 
 	// Proto objects have no private
 
-	if (field)
-	{
-		const_cast <X3DFieldDefinition*> (field -> getValue ()) -> removeParent (field);
-		field -> removeParent (javaScript);
-	}
-}
-
-// This function is for concrete fields only.
-
-void
-jsX3DFieldDefinition::finalize (JSContext* context, JSObject* obj)
-{
-	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-	const auto field      = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
-
-	// Proto objects have no private
-
-	if (field)
-		javaScript -> removeObject (field);
+	if (fieldPtr)
+		fieldPtr -> removeParent (context);
 }
 
 } // MozillaSpiderMonkey

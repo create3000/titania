@@ -61,21 +61,46 @@ namespace MozillaSpiderMonkey {
 JSBool
 JS_NewStringValue (JSContext* const, const std::string &, jsval*);
 
+// to_string
+
 std::string
-JS_GetString (JSContext*, JSString*);
+to_string (JSContext* const, JSString* const);
 
 inline
 std::string
-JS_GetString (JSContext* const context, jsval & value)
+to_string (JSContext* const cx, jsval & value)
 {
-	return JS_GetString (context, JS_ValueToString (context, value));
+	return to_string (cx, JS_ValueToString (cx, value));
 }
 
 inline
 std::string
-JS_GetString (JSContext* const context, jsid & value)
+to_string (JSContext* const cx, jsid & value)
 {
-	return JS_GetString (context, JSID_TO_STRING (value));
+	return to_string (cx, JSID_TO_STRING (value));
+}
+
+// depreciated
+
+inline
+std::string
+JS_GetString (JSContext* const cx, JSString* const value)
+{
+	return to_string (cx, value);
+}
+
+inline
+std::string
+JS_GetString (JSContext* const cx, jsval & value)
+{
+	return to_string (cx, value);
+}
+
+inline
+std::string
+JS_GetString (JSContext* const cx, jsid & value)
+{
+	return to_string (cx, value);
 }
 
 } // MozillaSpiderMonkey

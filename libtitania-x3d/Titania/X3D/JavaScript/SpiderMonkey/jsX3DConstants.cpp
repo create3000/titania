@@ -460,2107 +460,2108 @@ JSFunctionSpec jsX3DConstants::functions [ ] = {
 };
 
 void
-jsX3DConstants::init (JSContext* const context, JSObject* const global)
+jsX3DConstants::init (JSContext* const cx, JSObject* const global)
 {
-	JS_InitClass (context, global, NULL, &static_class, NULL,
-	              0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, functions, NULL, NULL);
 
-	JS_DefineObject (context, global, "X3DConstants", &static_class, NULL,
-	                 JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT);
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+
+	JS_DefineObject (cx, global, "X3DConstants", &static_class, NULL, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT);
 }
 
 // Event types
 
 JSBool
-jsX3DConstants::INITIALIZED_EVENT (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::INITIALIZED_EVENT (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::INITIALIZED_EVENT, vp);
+	return JS_NewNumberValue (cx, X3DConstants::INITIALIZED_EVENT, vp);
 }
 
 JSBool
-jsX3DConstants::SHUTDOWN_EVENT (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SHUTDOWN_EVENT (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SHUTDOWN_EVENT, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SHUTDOWN_EVENT, vp);
 }
 
 // Error types
 
 JSBool
-jsX3DConstants::CONNECTION_ERROR (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CONNECTION_ERROR (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CONNECTION_ERROR, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CONNECTION_ERROR, vp);
 }
 
 JSBool
-jsX3DConstants::INITIALIZED_ERROR (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::INITIALIZED_ERROR (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::INITIALIZED_ERROR, vp);
+	return JS_NewNumberValue (cx, X3DConstants::INITIALIZED_ERROR, vp);
 }
 
 // Load state
 
 JSBool
-jsX3DConstants::NOT_STARTED_STATE (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::NOT_STARTED_STATE (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::NOT_STARTED_STATE, vp);
+	return JS_NewNumberValue (cx, X3DConstants::NOT_STARTED_STATE, vp);
 }
 
 JSBool
-jsX3DConstants::IN_PROGRESS_STATE (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::IN_PROGRESS_STATE (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::IN_PROGRESS_STATE, vp);
+	return JS_NewNumberValue (cx, X3DConstants::IN_PROGRESS_STATE, vp);
 }
 
 JSBool
-jsX3DConstants::COMPLETE_STATE (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::COMPLETE_STATE (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::COMPLETE_STATE, vp);
+	return JS_NewNumberValue (cx, X3DConstants::COMPLETE_STATE, vp);
 }
 
 JSBool
-jsX3DConstants::FAILED_STATE (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::FAILED_STATE (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::FAILED_STATE, vp);
+	return JS_NewNumberValue (cx, X3DConstants::FAILED_STATE, vp);
 }
 
 // Access types
 
 JSBool
-jsX3DConstants::initializeOnly (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::initializeOnly (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::initializeOnly, vp);
+	return JS_NewNumberValue (cx, X3DConstants::initializeOnly, vp);
 }
 
 JSBool
-jsX3DConstants::inputOnly (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::inputOnly (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::inputOnly, vp);
+	return JS_NewNumberValue (cx, X3DConstants::inputOnly, vp);
 }
 
 JSBool
-jsX3DConstants::outputOnly (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::outputOnly (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::outputOnly, vp);
+	return JS_NewNumberValue (cx, X3DConstants::outputOnly, vp);
 }
 
 JSBool
-jsX3DConstants::inputOutput (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::inputOutput (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::inputOutput, vp);
+	return JS_NewNumberValue (cx, X3DConstants::inputOutput, vp);
 }
 
 // X3D properties
 
 JSBool
-jsX3DConstants::SFBool (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFBool (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFBool, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFBool, vp);
 }
 
 JSBool
-jsX3DConstants::SFColor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFColor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFColor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFColor, vp);
 }
 
 JSBool
-jsX3DConstants::SFColorRGBA (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFColorRGBA (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFColorRGBA, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFColorRGBA, vp);
 }
 
 JSBool
-jsX3DConstants::SFDouble (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFDouble (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFDouble, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFDouble, vp);
 }
 
 JSBool
-jsX3DConstants::SFFloat (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFFloat (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFFloat, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFFloat, vp);
 }
 
 JSBool
-jsX3DConstants::SFInt32 (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFInt32 (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFInt32, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFInt32, vp);
 }
 
 JSBool
-jsX3DConstants::SFImage (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFImage (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFImage, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFImage, vp);
 }
 
 JSBool
-jsX3DConstants::SFMatrix3d (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFMatrix3d (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFMatrix3d, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFMatrix3d, vp);
 }
 
 JSBool
-jsX3DConstants::SFMatrix3f (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFMatrix3f (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFMatrix3f, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFMatrix3f, vp);
 }
 
 JSBool
-jsX3DConstants::SFMatrix4d (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFMatrix4d (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFMatrix4d, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFMatrix4d, vp);
 }
 
 JSBool
-jsX3DConstants::SFMatrix4f (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFMatrix4f (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFMatrix4f, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFMatrix4f, vp);
 }
 
 JSBool
-jsX3DConstants::SFNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFNode, vp);
 }
 
 JSBool
-jsX3DConstants::SFRotation (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFRotation (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFRotation, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFRotation, vp);
 }
 
 JSBool
-jsX3DConstants::SFString (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFString (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFString, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFString, vp);
 }
 
 JSBool
-jsX3DConstants::SFTime (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFTime (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFTime, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFTime, vp);
 }
 
 JSBool
-jsX3DConstants::SFVec2d (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFVec2d (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFVec2d, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFVec2d, vp);
 }
 
 JSBool
-jsX3DConstants::SFVec2f (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFVec2f (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFVec2f, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFVec2f, vp);
 }
 
 JSBool
-jsX3DConstants::SFVec3d (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFVec3d (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFVec3d, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFVec3d, vp);
 }
 
 JSBool
-jsX3DConstants::SFVec3f (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFVec3f (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFVec3f, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFVec3f, vp);
 }
 
 JSBool
-jsX3DConstants::SFVec4d (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFVec4d (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFVec4d, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFVec4d, vp);
 }
 
 JSBool
-jsX3DConstants::SFVec4f (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SFVec4f (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SFVec4f, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SFVec4f, vp);
 }
 
 JSBool
-jsX3DConstants::MFBool (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFBool (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFBool, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFBool, vp);
 }
 
 JSBool
-jsX3DConstants::MFColor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFColor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFColor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFColor, vp);
 }
 
 JSBool
-jsX3DConstants::MFColorRGBA (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFColorRGBA (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFColorRGBA, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFColorRGBA, vp);
 }
 
 JSBool
-jsX3DConstants::MFDouble (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFDouble (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFDouble, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFDouble, vp);
 }
 
 JSBool
-jsX3DConstants::MFFloat (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFFloat (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFFloat, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFFloat, vp);
 }
 
 JSBool
-jsX3DConstants::MFImage (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFImage (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFImage, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFImage, vp);
 }
 
 JSBool
-jsX3DConstants::MFInt32 (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFInt32 (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFInt32, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFInt32, vp);
 }
 
 JSBool
-jsX3DConstants::MFMatrix3d (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFMatrix3d (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFMatrix3d, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFMatrix3d, vp);
 }
 
 JSBool
-jsX3DConstants::MFMatrix3f (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFMatrix3f (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFMatrix3f, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFMatrix3f, vp);
 }
 
 JSBool
-jsX3DConstants::MFMatrix4d (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFMatrix4d (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFMatrix4d, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFMatrix4d, vp);
 }
 
 JSBool
-jsX3DConstants::MFMatrix4f (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFMatrix4f (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFMatrix4f, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFMatrix4f, vp);
 }
 
 JSBool
-jsX3DConstants::MFNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFNode, vp);
 }
 
 JSBool
-jsX3DConstants::MFRotation (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFRotation (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFRotation, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFRotation, vp);
 }
 
 JSBool
-jsX3DConstants::MFString (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFString (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFString, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFString, vp);
 }
 
 JSBool
-jsX3DConstants::MFTime (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFTime (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFTime, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFTime, vp);
 }
 
 JSBool
-jsX3DConstants::MFVec2d (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFVec2d (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFVec2d, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFVec2d, vp);
 }
 
 JSBool
-jsX3DConstants::MFVec2f (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFVec2f (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFVec2f, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFVec2f, vp);
 }
 
 JSBool
-jsX3DConstants::MFVec3d (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFVec3d (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFVec3d, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFVec3d, vp);
 }
 
 JSBool
-jsX3DConstants::MFVec3f (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFVec3f (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFVec3f, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFVec3f, vp);
 }
 
 JSBool
-jsX3DConstants::MFVec4d (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFVec4d (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFVec4d, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFVec4d, vp);
 }
 
 JSBool
-jsX3DConstants::MFVec4f (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MFVec4f (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MFVec4f, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MFVec4f, vp);
 }
 
 // Base node type
 
 JSBool
-jsX3DConstants::X3DBaseNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DBaseNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DBaseNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DBaseNode, vp);
 }
 
 // Basic node types
 
 JSBool
-jsX3DConstants::Anchor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Anchor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Anchor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Anchor, vp);
 }
 
 JSBool
-jsX3DConstants::Appearance (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Appearance (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Appearance, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Appearance, vp);
 }
 
 JSBool
-jsX3DConstants::Arc2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Arc2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Arc2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Arc2D, vp);
 }
 
 JSBool
-jsX3DConstants::ArcClose2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ArcClose2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ArcClose2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ArcClose2D, vp);
 }
 
 JSBool
-jsX3DConstants::AudioClip (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::AudioClip (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::AudioClip, vp);
+	return JS_NewNumberValue (cx, X3DConstants::AudioClip, vp);
 }
 
 JSBool
-jsX3DConstants::Background (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Background (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Background, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Background, vp);
 }
 
 JSBool
-jsX3DConstants::BallJoint (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::BallJoint (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::BallJoint, vp);
+	return JS_NewNumberValue (cx, X3DConstants::BallJoint, vp);
 }
 
 JSBool
-jsX3DConstants::Billboard (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Billboard (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Billboard, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Billboard, vp);
 }
 
 JSBool
-jsX3DConstants::BooleanFilter (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::BooleanFilter (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::BooleanFilter, vp);
+	return JS_NewNumberValue (cx, X3DConstants::BooleanFilter, vp);
 }
 
 JSBool
-jsX3DConstants::BooleanSequencer (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::BooleanSequencer (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::BooleanSequencer, vp);
+	return JS_NewNumberValue (cx, X3DConstants::BooleanSequencer, vp);
 }
 
 JSBool
-jsX3DConstants::BooleanToggle (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::BooleanToggle (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::BooleanToggle, vp);
+	return JS_NewNumberValue (cx, X3DConstants::BooleanToggle, vp);
 }
 
 JSBool
-jsX3DConstants::BooleanTrigger (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::BooleanTrigger (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::BooleanTrigger, vp);
+	return JS_NewNumberValue (cx, X3DConstants::BooleanTrigger, vp);
 }
 
 JSBool
-jsX3DConstants::BoundedPhysicsModel (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::BoundedPhysicsModel (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::BoundedPhysicsModel, vp);
+	return JS_NewNumberValue (cx, X3DConstants::BoundedPhysicsModel, vp);
 }
 
 JSBool
-jsX3DConstants::Box (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Box (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Box, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Box, vp);
 }
 
 JSBool
-jsX3DConstants::CADAssembly (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CADAssembly (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CADAssembly, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CADAssembly, vp);
 }
 
 JSBool
-jsX3DConstants::CADFace (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CADFace (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CADFace, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CADFace, vp);
 }
 
 JSBool
-jsX3DConstants::CADLayer (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CADLayer (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CADLayer, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CADLayer, vp);
 }
 
 JSBool
-jsX3DConstants::CADPart (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CADPart (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CADPart, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CADPart, vp);
 }
 
 JSBool
-jsX3DConstants::Circle2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Circle2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Circle2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Circle2D, vp);
 }
 
 JSBool
-jsX3DConstants::ClipPlane (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ClipPlane (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ClipPlane, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ClipPlane, vp);
 }
 
 JSBool
-jsX3DConstants::CollidableOffset (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CollidableOffset (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CollidableOffset, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CollidableOffset, vp);
 }
 
 JSBool
-jsX3DConstants::CollidableShape (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CollidableShape (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CollidableShape, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CollidableShape, vp);
 }
 
 JSBool
-jsX3DConstants::Collision (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Collision (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Collision, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Collision, vp);
 }
 
 JSBool
-jsX3DConstants::CollisionCollection (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CollisionCollection (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CollisionCollection, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CollisionCollection, vp);
 }
 
 JSBool
-jsX3DConstants::CollisionSensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CollisionSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CollisionSensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CollisionSensor, vp);
 }
 
 JSBool
-jsX3DConstants::CollisionSpace (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CollisionSpace (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CollisionSpace, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CollisionSpace, vp);
 }
 
 JSBool
-jsX3DConstants::Color (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Color (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Color, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Color, vp);
 }
 
 JSBool
-jsX3DConstants::ColorChaser (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ColorChaser (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ColorChaser, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ColorChaser, vp);
 }
 
 JSBool
-jsX3DConstants::ColorDamper (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ColorDamper (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ColorDamper, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ColorDamper, vp);
 }
 
 JSBool
-jsX3DConstants::ColorInterpolator (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ColorInterpolator (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ColorInterpolator, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ColorInterpolator, vp);
 }
 
 JSBool
-jsX3DConstants::ColorRGBA (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ColorRGBA (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ColorRGBA, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ColorRGBA, vp);
 }
 
 JSBool
-jsX3DConstants::ComposedCubeMapTexture (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ComposedCubeMapTexture (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ComposedCubeMapTexture, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ComposedCubeMapTexture, vp);
 }
 
 JSBool
-jsX3DConstants::ComposedShader (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ComposedShader (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ComposedShader, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ComposedShader, vp);
 }
 
 JSBool
-jsX3DConstants::ComposedTexture3D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ComposedTexture3D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ComposedTexture3D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ComposedTexture3D, vp);
 }
 
 JSBool
-jsX3DConstants::Cone (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Cone (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Cone, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Cone, vp);
 }
 
 JSBool
-jsX3DConstants::ConeEmitter (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ConeEmitter (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ConeEmitter, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ConeEmitter, vp);
 }
 
 JSBool
-jsX3DConstants::Contact (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Contact (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Contact, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Contact, vp);
 }
 
 JSBool
-jsX3DConstants::Contour2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Contour2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Contour2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Contour2D, vp);
 }
 
 JSBool
-jsX3DConstants::ContourPolyline2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ContourPolyline2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ContourPolyline2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ContourPolyline2D, vp);
 }
 
 JSBool
-jsX3DConstants::Coordinate (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Coordinate (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Coordinate, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Coordinate, vp);
 }
 
 JSBool
-jsX3DConstants::CoordinateChaser (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CoordinateChaser (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CoordinateChaser, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CoordinateChaser, vp);
 }
 
 JSBool
-jsX3DConstants::CoordinateDamper (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CoordinateDamper (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CoordinateDamper, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CoordinateDamper, vp);
 }
 
 JSBool
-jsX3DConstants::CoordinateDouble (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CoordinateDouble (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CoordinateDouble, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CoordinateDouble, vp);
 }
 
 JSBool
-jsX3DConstants::CoordinateInterpolator (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CoordinateInterpolator (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CoordinateInterpolator, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CoordinateInterpolator, vp);
 }
 
 JSBool
-jsX3DConstants::CoordinateInterpolator2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CoordinateInterpolator2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CoordinateInterpolator2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CoordinateInterpolator2D, vp);
 }
 
 JSBool
-jsX3DConstants::Cylinder (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Cylinder (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Cylinder, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Cylinder, vp);
 }
 
 JSBool
-jsX3DConstants::CylinderSensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::CylinderSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::CylinderSensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::CylinderSensor, vp);
 }
 
 JSBool
-jsX3DConstants::DISEntityManager (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::DISEntityManager (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::DISEntityManager, vp);
+	return JS_NewNumberValue (cx, X3DConstants::DISEntityManager, vp);
 }
 
 JSBool
-jsX3DConstants::DISEntityTypeMapping (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::DISEntityTypeMapping (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::DISEntityTypeMapping, vp);
+	return JS_NewNumberValue (cx, X3DConstants::DISEntityTypeMapping, vp);
 }
 
 JSBool
-jsX3DConstants::DirectionalLight (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::DirectionalLight (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::DirectionalLight, vp);
+	return JS_NewNumberValue (cx, X3DConstants::DirectionalLight, vp);
 }
 
 JSBool
-jsX3DConstants::Disk2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Disk2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Disk2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Disk2D, vp);
 }
 
 JSBool
-jsX3DConstants::DoubleAxisHingeJoint (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::DoubleAxisHingeJoint (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::DoubleAxisHingeJoint, vp);
+	return JS_NewNumberValue (cx, X3DConstants::DoubleAxisHingeJoint, vp);
 }
 
 JSBool
-jsX3DConstants::EaseInEaseOut (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::EaseInEaseOut (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::EaseInEaseOut, vp);
+	return JS_NewNumberValue (cx, X3DConstants::EaseInEaseOut, vp);
 }
 
 JSBool
-jsX3DConstants::ElevationGrid (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ElevationGrid (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ElevationGrid, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ElevationGrid, vp);
 }
 
 JSBool
-jsX3DConstants::EspduTransform (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::EspduTransform (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::EspduTransform, vp);
+	return JS_NewNumberValue (cx, X3DConstants::EspduTransform, vp);
 }
 
 JSBool
-jsX3DConstants::ExplosionEmitter (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ExplosionEmitter (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ExplosionEmitter, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ExplosionEmitter, vp);
 }
 
 JSBool
-jsX3DConstants::Extrusion (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Extrusion (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Extrusion, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Extrusion, vp);
 }
 
 JSBool
-jsX3DConstants::FillProperties (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::FillProperties (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::FillProperties, vp);
+	return JS_NewNumberValue (cx, X3DConstants::FillProperties, vp);
 }
 
 JSBool
-jsX3DConstants::FloatVertexAttribute (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::FloatVertexAttribute (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::FloatVertexAttribute, vp);
+	return JS_NewNumberValue (cx, X3DConstants::FloatVertexAttribute, vp);
 }
 
 JSBool
-jsX3DConstants::Fog (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Fog (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Fog, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Fog, vp);
 }
 
 JSBool
-jsX3DConstants::FogCoordinate (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::FogCoordinate (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::FogCoordinate, vp);
+	return JS_NewNumberValue (cx, X3DConstants::FogCoordinate, vp);
 }
 
 JSBool
-jsX3DConstants::FontStyle (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::FontStyle (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::FontStyle, vp);
+	return JS_NewNumberValue (cx, X3DConstants::FontStyle, vp);
 }
 
 JSBool
-jsX3DConstants::ForcePhysicsModel (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ForcePhysicsModel (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ForcePhysicsModel, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ForcePhysicsModel, vp);
 }
 
 JSBool
-jsX3DConstants::GeneratedCubeMapTexture (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::GeneratedCubeMapTexture (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::GeneratedCubeMapTexture, vp);
+	return JS_NewNumberValue (cx, X3DConstants::GeneratedCubeMapTexture, vp);
 }
 
 JSBool
-jsX3DConstants::GeoCoordinate (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::GeoCoordinate (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::GeoCoordinate, vp);
+	return JS_NewNumberValue (cx, X3DConstants::GeoCoordinate, vp);
 }
 
 JSBool
-jsX3DConstants::GeoElevationGrid (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::GeoElevationGrid (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::GeoElevationGrid, vp);
+	return JS_NewNumberValue (cx, X3DConstants::GeoElevationGrid, vp);
 }
 
 JSBool
-jsX3DConstants::GeoLOD (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::GeoLOD (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::GeoLOD, vp);
+	return JS_NewNumberValue (cx, X3DConstants::GeoLOD, vp);
 }
 
 JSBool
-jsX3DConstants::GeoLocation (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::GeoLocation (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::GeoLocation, vp);
+	return JS_NewNumberValue (cx, X3DConstants::GeoLocation, vp);
 }
 
 JSBool
-jsX3DConstants::GeoMetadata (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::GeoMetadata (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::GeoMetadata, vp);
+	return JS_NewNumberValue (cx, X3DConstants::GeoMetadata, vp);
 }
 
 JSBool
-jsX3DConstants::GeoOrigin (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::GeoOrigin (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::GeoOrigin, vp);
+	return JS_NewNumberValue (cx, X3DConstants::GeoOrigin, vp);
 }
 
 JSBool
-jsX3DConstants::GeoPositionInterpolator (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::GeoPositionInterpolator (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::GeoPositionInterpolator, vp);
+	return JS_NewNumberValue (cx, X3DConstants::GeoPositionInterpolator, vp);
 }
 
 JSBool
-jsX3DConstants::GeoProximitySensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::GeoProximitySensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::GeoProximitySensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::GeoProximitySensor, vp);
 }
 
 JSBool
-jsX3DConstants::GeoTouchSensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::GeoTouchSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::GeoTouchSensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::GeoTouchSensor, vp);
 }
 
 JSBool
-jsX3DConstants::GeoTransform (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::GeoTransform (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::GeoTransform, vp);
+	return JS_NewNumberValue (cx, X3DConstants::GeoTransform, vp);
 }
 
 JSBool
-jsX3DConstants::GeoViewpoint (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::GeoViewpoint (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::GeoViewpoint, vp);
+	return JS_NewNumberValue (cx, X3DConstants::GeoViewpoint, vp);
 }
 
 JSBool
-jsX3DConstants::Group (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Group (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Group, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Group, vp);
 }
 
 JSBool
-jsX3DConstants::HAnimDisplacer (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::HAnimDisplacer (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::HAnimDisplacer, vp);
+	return JS_NewNumberValue (cx, X3DConstants::HAnimDisplacer, vp);
 }
 
 JSBool
-jsX3DConstants::HAnimHumanoid (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::HAnimHumanoid (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::HAnimHumanoid, vp);
+	return JS_NewNumberValue (cx, X3DConstants::HAnimHumanoid, vp);
 }
 
 JSBool
-jsX3DConstants::HAnimJoint (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::HAnimJoint (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::HAnimJoint, vp);
+	return JS_NewNumberValue (cx, X3DConstants::HAnimJoint, vp);
 }
 
 JSBool
-jsX3DConstants::HAnimSegment (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::HAnimSegment (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::HAnimSegment, vp);
+	return JS_NewNumberValue (cx, X3DConstants::HAnimSegment, vp);
 }
 
 JSBool
-jsX3DConstants::HAnimSite (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::HAnimSite (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::HAnimSite, vp);
+	return JS_NewNumberValue (cx, X3DConstants::HAnimSite, vp);
 }
 
 JSBool
-jsX3DConstants::ImageCubeMapTexture (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ImageCubeMapTexture (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ImageCubeMapTexture, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ImageCubeMapTexture, vp);
 }
 
 JSBool
-jsX3DConstants::ImageTexture (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ImageTexture (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ImageTexture, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ImageTexture, vp);
 }
 
 JSBool
-jsX3DConstants::ImageTexture3D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ImageTexture3D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ImageTexture3D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ImageTexture3D, vp);
 }
 
 JSBool
-jsX3DConstants::IndexedFaceSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::IndexedFaceSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::IndexedFaceSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::IndexedFaceSet, vp);
 }
 
 JSBool
-jsX3DConstants::IndexedLineSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::IndexedLineSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::IndexedLineSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::IndexedLineSet, vp);
 }
 
 JSBool
-jsX3DConstants::IndexedQuadSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::IndexedQuadSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::IndexedQuadSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::IndexedQuadSet, vp);
 }
 
 JSBool
-jsX3DConstants::IndexedTriangleFanSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::IndexedTriangleFanSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::IndexedTriangleFanSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::IndexedTriangleFanSet, vp);
 }
 
 JSBool
-jsX3DConstants::IndexedTriangleSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::IndexedTriangleSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::IndexedTriangleSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::IndexedTriangleSet, vp);
 }
 
 JSBool
-jsX3DConstants::IndexedTriangleStripSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::IndexedTriangleStripSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::IndexedTriangleStripSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::IndexedTriangleStripSet, vp);
 }
 
 JSBool
-jsX3DConstants::Inline (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Inline (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Inline, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Inline, vp);
 }
 
 JSBool
-jsX3DConstants::IntegerSequencer (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::IntegerSequencer (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::IntegerSequencer, vp);
+	return JS_NewNumberValue (cx, X3DConstants::IntegerSequencer, vp);
 }
 
 JSBool
-jsX3DConstants::IntegerTrigger (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::IntegerTrigger (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::IntegerTrigger, vp);
+	return JS_NewNumberValue (cx, X3DConstants::IntegerTrigger, vp);
 }
 
 JSBool
-jsX3DConstants::KeySensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::KeySensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::KeySensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::KeySensor, vp);
 }
 
 JSBool
-jsX3DConstants::LOD (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::LOD (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::LOD, vp);
+	return JS_NewNumberValue (cx, X3DConstants::LOD, vp);
 }
 
 JSBool
-jsX3DConstants::Layer (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Layer (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Layer, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Layer, vp);
 }
 
 JSBool
-jsX3DConstants::LayerSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::LayerSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::LayerSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::LayerSet, vp);
 }
 
 JSBool
-jsX3DConstants::Layout (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Layout (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Layout, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Layout, vp);
 }
 
 JSBool
-jsX3DConstants::LayoutGroup (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::LayoutGroup (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::LayoutGroup, vp);
+	return JS_NewNumberValue (cx, X3DConstants::LayoutGroup, vp);
 }
 
 JSBool
-jsX3DConstants::LayoutLayer (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::LayoutLayer (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::LayoutLayer, vp);
+	return JS_NewNumberValue (cx, X3DConstants::LayoutLayer, vp);
 }
 
 JSBool
-jsX3DConstants::LinePickSensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::LinePickSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::LinePickSensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::LinePickSensor, vp);
 }
 
 JSBool
-jsX3DConstants::LineProperties (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::LineProperties (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::LineProperties, vp);
+	return JS_NewNumberValue (cx, X3DConstants::LineProperties, vp);
 }
 
 JSBool
-jsX3DConstants::LineSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::LineSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::LineSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::LineSet, vp);
 }
 
 JSBool
-jsX3DConstants::LoadSensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::LoadSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::LoadSensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::LoadSensor, vp);
 }
 
 JSBool
-jsX3DConstants::LocalFog (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::LocalFog (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::LocalFog, vp);
+	return JS_NewNumberValue (cx, X3DConstants::LocalFog, vp);
 }
 
 JSBool
-jsX3DConstants::Material (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Material (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Material, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Material, vp);
 }
 
 JSBool
-jsX3DConstants::Matrix3VertexAttribute (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Matrix3VertexAttribute (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Matrix3VertexAttribute, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Matrix3VertexAttribute, vp);
 }
 
 JSBool
-jsX3DConstants::Matrix4VertexAttribute (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Matrix4VertexAttribute (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Matrix4VertexAttribute, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Matrix4VertexAttribute, vp);
 }
 
 JSBool
-jsX3DConstants::MetadataBoolean (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MetadataBoolean (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MetadataBoolean, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MetadataBoolean, vp);
 }
 
 JSBool
-jsX3DConstants::MetadataDouble (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MetadataDouble (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MetadataDouble, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MetadataDouble, vp);
 }
 
 JSBool
-jsX3DConstants::MetadataFloat (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MetadataFloat (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MetadataFloat, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MetadataFloat, vp);
 }
 
 JSBool
-jsX3DConstants::MetadataInteger (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MetadataInteger (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MetadataInteger, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MetadataInteger, vp);
 }
 
 JSBool
-jsX3DConstants::MetadataSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MetadataSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MetadataSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MetadataSet, vp);
 }
 
 JSBool
-jsX3DConstants::MetadataString (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MetadataString (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MetadataString, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MetadataString, vp);
 }
 
 JSBool
-jsX3DConstants::MotorJoint (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MotorJoint (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MotorJoint, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MotorJoint, vp);
 }
 
 JSBool
-jsX3DConstants::MovieTexture (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MovieTexture (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MovieTexture, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MovieTexture, vp);
 }
 
 JSBool
-jsX3DConstants::MultiTexture (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MultiTexture (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MultiTexture, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MultiTexture, vp);
 }
 
 JSBool
-jsX3DConstants::MultiTextureCoordinate (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MultiTextureCoordinate (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MultiTextureCoordinate, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MultiTextureCoordinate, vp);
 }
 
 JSBool
-jsX3DConstants::MultiTextureTransform (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::MultiTextureTransform (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::MultiTextureTransform, vp);
+	return JS_NewNumberValue (cx, X3DConstants::MultiTextureTransform, vp);
 }
 
 JSBool
-jsX3DConstants::NavigationInfo (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::NavigationInfo (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::NavigationInfo, vp);
+	return JS_NewNumberValue (cx, X3DConstants::NavigationInfo, vp);
 }
 
 JSBool
-jsX3DConstants::Normal (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Normal (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Normal, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Normal, vp);
 }
 
 JSBool
-jsX3DConstants::NormalInterpolator (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::NormalInterpolator (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::NormalInterpolator, vp);
+	return JS_NewNumberValue (cx, X3DConstants::NormalInterpolator, vp);
 }
 
 JSBool
-jsX3DConstants::NurbsCurve (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::NurbsCurve (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::NurbsCurve, vp);
+	return JS_NewNumberValue (cx, X3DConstants::NurbsCurve, vp);
 }
 
 JSBool
-jsX3DConstants::NurbsCurve2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::NurbsCurve2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::NurbsCurve2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::NurbsCurve2D, vp);
 }
 
 JSBool
-jsX3DConstants::NurbsOrientationInterpolator (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::NurbsOrientationInterpolator (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::NurbsOrientationInterpolator, vp);
+	return JS_NewNumberValue (cx, X3DConstants::NurbsOrientationInterpolator, vp);
 }
 
 JSBool
-jsX3DConstants::NurbsPatchSurface (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::NurbsPatchSurface (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::NurbsPatchSurface, vp);
+	return JS_NewNumberValue (cx, X3DConstants::NurbsPatchSurface, vp);
 }
 
 JSBool
-jsX3DConstants::NurbsPositionInterpolator (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::NurbsPositionInterpolator (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::NurbsPositionInterpolator, vp);
+	return JS_NewNumberValue (cx, X3DConstants::NurbsPositionInterpolator, vp);
 }
 
 JSBool
-jsX3DConstants::NurbsSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::NurbsSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::NurbsSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::NurbsSet, vp);
 }
 
 JSBool
-jsX3DConstants::NurbsSurfaceInterpolator (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::NurbsSurfaceInterpolator (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::NurbsSurfaceInterpolator, vp);
+	return JS_NewNumberValue (cx, X3DConstants::NurbsSurfaceInterpolator, vp);
 }
 
 JSBool
-jsX3DConstants::NurbsSweptSurface (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::NurbsSweptSurface (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::NurbsSweptSurface, vp);
+	return JS_NewNumberValue (cx, X3DConstants::NurbsSweptSurface, vp);
 }
 
 JSBool
-jsX3DConstants::NurbsSwungSurface (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::NurbsSwungSurface (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::NurbsSwungSurface, vp);
+	return JS_NewNumberValue (cx, X3DConstants::NurbsSwungSurface, vp);
 }
 
 JSBool
-jsX3DConstants::NurbsTextureCoordinate (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::NurbsTextureCoordinate (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::NurbsTextureCoordinate, vp);
+	return JS_NewNumberValue (cx, X3DConstants::NurbsTextureCoordinate, vp);
 }
 
 JSBool
-jsX3DConstants::NurbsTrimmedSurface (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::NurbsTrimmedSurface (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::NurbsTrimmedSurface, vp);
+	return JS_NewNumberValue (cx, X3DConstants::NurbsTrimmedSurface, vp);
 }
 
 JSBool
-jsX3DConstants::OrientationChaser (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::OrientationChaser (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::OrientationChaser, vp);
+	return JS_NewNumberValue (cx, X3DConstants::OrientationChaser, vp);
 }
 
 JSBool
-jsX3DConstants::OrientationDamper (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::OrientationDamper (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::OrientationDamper, vp);
+	return JS_NewNumberValue (cx, X3DConstants::OrientationDamper, vp);
 }
 
 JSBool
-jsX3DConstants::OrientationInterpolator (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::OrientationInterpolator (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::OrientationInterpolator, vp);
+	return JS_NewNumberValue (cx, X3DConstants::OrientationInterpolator, vp);
 }
 
 JSBool
-jsX3DConstants::OrthoViewpoint (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::OrthoViewpoint (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::OrthoViewpoint, vp);
+	return JS_NewNumberValue (cx, X3DConstants::OrthoViewpoint, vp);
 }
 
 JSBool
-jsX3DConstants::PackagedShader (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PackagedShader (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PackagedShader, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PackagedShader, vp);
 }
 
 JSBool
-jsX3DConstants::ParticleSystem (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ParticleSystem (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ParticleSystem, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ParticleSystem, vp);
 }
 
 JSBool
-jsX3DConstants::PickableGroup (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PickableGroup (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PickableGroup, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PickableGroup, vp);
 }
 
 JSBool
-jsX3DConstants::PixelTexture (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PixelTexture (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PixelTexture, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PixelTexture, vp);
 }
 
 JSBool
-jsX3DConstants::PixelTexture3D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PixelTexture3D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PixelTexture3D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PixelTexture3D, vp);
 }
 
 JSBool
-jsX3DConstants::PlaneSensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PlaneSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PlaneSensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PlaneSensor, vp);
 }
 
 JSBool
-jsX3DConstants::PointEmitter (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PointEmitter (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PointEmitter, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PointEmitter, vp);
 }
 
 JSBool
-jsX3DConstants::PointLight (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PointLight (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PointLight, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PointLight, vp);
 }
 
 JSBool
-jsX3DConstants::PointPickSensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PointPickSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PointPickSensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PointPickSensor, vp);
 }
 
 JSBool
-jsX3DConstants::PointSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PointSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PointSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PointSet, vp);
 }
 
 JSBool
-jsX3DConstants::Polyline2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Polyline2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Polyline2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Polyline2D, vp);
 }
 
 JSBool
-jsX3DConstants::PolylineEmitter (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PolylineEmitter (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PolylineEmitter, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PolylineEmitter, vp);
 }
 
 JSBool
-jsX3DConstants::Polypoint2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Polypoint2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Polypoint2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Polypoint2D, vp);
 }
 
 JSBool
-jsX3DConstants::PositionChaser (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PositionChaser (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PositionChaser, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PositionChaser, vp);
 }
 
 JSBool
-jsX3DConstants::PositionChaser2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PositionChaser2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PositionChaser2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PositionChaser2D, vp);
 }
 
 JSBool
-jsX3DConstants::PositionDamper (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PositionDamper (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PositionDamper, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PositionDamper, vp);
 }
 
 JSBool
-jsX3DConstants::PositionDamper2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PositionDamper2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PositionDamper2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PositionDamper2D, vp);
 }
 
 JSBool
-jsX3DConstants::PositionInterpolator (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PositionInterpolator (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PositionInterpolator, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PositionInterpolator, vp);
 }
 
 JSBool
-jsX3DConstants::PositionInterpolator2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PositionInterpolator2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PositionInterpolator2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PositionInterpolator2D, vp);
 }
 
 JSBool
-jsX3DConstants::PrimitivePickSensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::PrimitivePickSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::PrimitivePickSensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::PrimitivePickSensor, vp);
 }
 
 JSBool
-jsX3DConstants::ProgramShader (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ProgramShader (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ProgramShader, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ProgramShader, vp);
 }
 
 JSBool
-jsX3DConstants::ProximitySensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ProximitySensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ProximitySensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ProximitySensor, vp);
 }
 
 JSBool
-jsX3DConstants::QuadSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::QuadSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::QuadSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::QuadSet, vp);
 }
 
 JSBool
-jsX3DConstants::ReceiverPdu (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ReceiverPdu (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ReceiverPdu, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ReceiverPdu, vp);
 }
 
 JSBool
-jsX3DConstants::Rectangle2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Rectangle2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Rectangle2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Rectangle2D, vp);
 }
 
 JSBool
-jsX3DConstants::RigidBody (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::RigidBody (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::RigidBody, vp);
+	return JS_NewNumberValue (cx, X3DConstants::RigidBody, vp);
 }
 
 JSBool
-jsX3DConstants::RigidBodyCollection (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::RigidBodyCollection (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::RigidBodyCollection, vp);
+	return JS_NewNumberValue (cx, X3DConstants::RigidBodyCollection, vp);
 }
 
 JSBool
-jsX3DConstants::ScalarChaser (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ScalarChaser (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ScalarChaser, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ScalarChaser, vp);
 }
 
 JSBool
-jsX3DConstants::ScalarDamper (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ScalarDamper (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ScalarDamper, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ScalarDamper, vp);
 }
 
 JSBool
-jsX3DConstants::ScalarInterpolator (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ScalarInterpolator (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ScalarInterpolator, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ScalarInterpolator, vp);
 }
 
 JSBool
-jsX3DConstants::ScreenFontStyle (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ScreenFontStyle (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ScreenFontStyle, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ScreenFontStyle, vp);
 }
 
 JSBool
-jsX3DConstants::ScreenGroup (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ScreenGroup (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ScreenGroup, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ScreenGroup, vp);
 }
 
 JSBool
-jsX3DConstants::Script (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Script (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Script, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Script, vp);
 }
 
 JSBool
-jsX3DConstants::ShaderPart (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ShaderPart (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ShaderPart, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ShaderPart, vp);
 }
 
 JSBool
-jsX3DConstants::ShaderProgram (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ShaderProgram (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ShaderProgram, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ShaderProgram, vp);
 }
 
 JSBool
-jsX3DConstants::Shape (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Shape (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Shape, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Shape, vp);
 }
 
 JSBool
-jsX3DConstants::SignalPdu (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SignalPdu (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SignalPdu, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SignalPdu, vp);
 }
 
 JSBool
-jsX3DConstants::SingleAxisHingeJoint (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SingleAxisHingeJoint (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SingleAxisHingeJoint, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SingleAxisHingeJoint, vp);
 }
 
 JSBool
-jsX3DConstants::SliderJoint (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SliderJoint (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SliderJoint, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SliderJoint, vp);
 }
 
 JSBool
-jsX3DConstants::Sound (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Sound (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Sound, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Sound, vp);
 }
 
 JSBool
-jsX3DConstants::Sphere (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Sphere (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Sphere, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Sphere, vp);
 }
 
 JSBool
-jsX3DConstants::SphereSensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SphereSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SphereSensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SphereSensor, vp);
 }
 
 JSBool
-jsX3DConstants::SplinePositionInterpolator (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SplinePositionInterpolator (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SplinePositionInterpolator, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SplinePositionInterpolator, vp);
 }
 
 JSBool
-jsX3DConstants::SplinePositionInterpolator2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SplinePositionInterpolator2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SplinePositionInterpolator2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SplinePositionInterpolator2D, vp);
 }
 
 JSBool
-jsX3DConstants::SplineScalarInterpolator (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SplineScalarInterpolator (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SplineScalarInterpolator, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SplineScalarInterpolator, vp);
 }
 
 JSBool
-jsX3DConstants::SpotLight (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SpotLight (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SpotLight, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SpotLight, vp);
 }
 
 JSBool
-jsX3DConstants::SquadOrientationInterpolator (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SquadOrientationInterpolator (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SquadOrientationInterpolator, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SquadOrientationInterpolator, vp);
 }
 
 JSBool
-jsX3DConstants::StaticGroup (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::StaticGroup (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::StaticGroup, vp);
+	return JS_NewNumberValue (cx, X3DConstants::StaticGroup, vp);
 }
 
 JSBool
-jsX3DConstants::StringSensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::StringSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::StringSensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::StringSensor, vp);
 }
 
 JSBool
-jsX3DConstants::SurfaceEmitter (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::SurfaceEmitter (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::SurfaceEmitter, vp);
+	return JS_NewNumberValue (cx, X3DConstants::SurfaceEmitter, vp);
 }
 
 JSBool
-jsX3DConstants::Switch (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Switch (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Switch, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Switch, vp);
 }
 
 JSBool
-jsX3DConstants::TexCoordChaser2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TexCoordChaser2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TexCoordChaser2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TexCoordChaser2D, vp);
 }
 
 JSBool
-jsX3DConstants::TexCoordDamper2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TexCoordDamper2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TexCoordDamper2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TexCoordDamper2D, vp);
 }
 
 JSBool
-jsX3DConstants::Text (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Text (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Text, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Text, vp);
 }
 
 JSBool
-jsX3DConstants::TextureBackground (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TextureBackground (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TextureBackground, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TextureBackground, vp);
 }
 
 JSBool
-jsX3DConstants::TextureCoordinate (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TextureCoordinate (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TextureCoordinate, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TextureCoordinate, vp);
 }
 
 JSBool
-jsX3DConstants::TextureCoordinate3D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TextureCoordinate3D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TextureCoordinate3D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TextureCoordinate3D, vp);
 }
 
 JSBool
-jsX3DConstants::TextureCoordinate4D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TextureCoordinate4D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TextureCoordinate4D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TextureCoordinate4D, vp);
 }
 
 JSBool
-jsX3DConstants::TextureCoordinateGenerator (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TextureCoordinateGenerator (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TextureCoordinateGenerator, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TextureCoordinateGenerator, vp);
 }
 
 JSBool
-jsX3DConstants::TextureProperties (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TextureProperties (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TextureProperties, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TextureProperties, vp);
 }
 
 JSBool
-jsX3DConstants::TextureTransform (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TextureTransform (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TextureTransform, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TextureTransform, vp);
 }
 
 JSBool
-jsX3DConstants::TextureTransform3D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TextureTransform3D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TextureTransform3D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TextureTransform3D, vp);
 }
 
 JSBool
-jsX3DConstants::TextureTransformMatrix3D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TextureTransformMatrix3D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TextureTransformMatrix3D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TextureTransformMatrix3D, vp);
 }
 
 JSBool
-jsX3DConstants::TimeSensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TimeSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TimeSensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TimeSensor, vp);
 }
 
 JSBool
-jsX3DConstants::TimeTrigger (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TimeTrigger (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TimeTrigger, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TimeTrigger, vp);
 }
 
 JSBool
-jsX3DConstants::TouchSensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TouchSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TouchSensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TouchSensor, vp);
 }
 
 JSBool
-jsX3DConstants::Transform (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Transform (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Transform, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Transform, vp);
 }
 
 JSBool
-jsX3DConstants::TransformSensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TransformSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TransformSensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TransformSensor, vp);
 }
 
 JSBool
-jsX3DConstants::TransmitterPdu (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TransmitterPdu (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TransmitterPdu, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TransmitterPdu, vp);
 }
 
 JSBool
-jsX3DConstants::TriangleFanSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TriangleFanSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TriangleFanSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TriangleFanSet, vp);
 }
 
 JSBool
-jsX3DConstants::TriangleSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TriangleSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TriangleSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TriangleSet, vp);
 }
 
 JSBool
-jsX3DConstants::TriangleSet2D (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TriangleSet2D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TriangleSet2D, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TriangleSet2D, vp);
 }
 
 JSBool
-jsX3DConstants::TriangleStripSet (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TriangleStripSet (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TriangleStripSet, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TriangleStripSet, vp);
 }
 
 JSBool
-jsX3DConstants::TwoSidedMaterial (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::TwoSidedMaterial (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::TwoSidedMaterial, vp);
+	return JS_NewNumberValue (cx, X3DConstants::TwoSidedMaterial, vp);
 }
 
 JSBool
-jsX3DConstants::UniversalJoint (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::UniversalJoint (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::UniversalJoint, vp);
+	return JS_NewNumberValue (cx, X3DConstants::UniversalJoint, vp);
 }
 
 JSBool
-jsX3DConstants::Viewpoint (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Viewpoint (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Viewpoint, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Viewpoint, vp);
 }
 
 JSBool
-jsX3DConstants::ViewpointGroup (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::ViewpointGroup (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::ViewpointGroup, vp);
+	return JS_NewNumberValue (cx, X3DConstants::ViewpointGroup, vp);
 }
 
 JSBool
-jsX3DConstants::Viewport (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::Viewport (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::Viewport, vp);
+	return JS_NewNumberValue (cx, X3DConstants::Viewport, vp);
 }
 
 JSBool
-jsX3DConstants::VisibilitySensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::VisibilitySensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::VisibilitySensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::VisibilitySensor, vp);
 }
 
 JSBool
-jsX3DConstants::VolumeEmitter (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::VolumeEmitter (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::VolumeEmitter, vp);
+	return JS_NewNumberValue (cx, X3DConstants::VolumeEmitter, vp);
 }
 
 JSBool
-jsX3DConstants::VolumePickSensor (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::VolumePickSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::VolumePickSensor, vp);
+	return JS_NewNumberValue (cx, X3DConstants::VolumePickSensor, vp);
 }
 
 JSBool
-jsX3DConstants::WindPhysicsModel (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::WindPhysicsModel (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::WindPhysicsModel, vp);
+	return JS_NewNumberValue (cx, X3DConstants::WindPhysicsModel, vp);
 }
 
 JSBool
-jsX3DConstants::WorldInfo (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::WorldInfo (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::WorldInfo, vp);
+	return JS_NewNumberValue (cx, X3DConstants::WorldInfo, vp);
 }
 
 // Abstract node types
 
 JSBool
-jsX3DConstants::X3DAppearanceChildNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DAppearanceChildNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DAppearanceChildNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DAppearanceChildNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DAppearanceNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DAppearanceNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DAppearanceNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DAppearanceNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DBackgroundNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DBackgroundNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DBackgroundNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DBackgroundNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DBindableNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DBindableNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DBindableNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DBindableNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DBoundedObject (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DBoundedObject (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DBoundedObject, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DBoundedObject, vp);
 }
 
 JSBool
-jsX3DConstants::X3DChaserNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DChaserNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DChaserNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DChaserNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DChildNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DChildNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DChildNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DChildNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DColorNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DColorNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DColorNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DColorNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DComposedGeometryNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DComposedGeometryNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DComposedGeometryNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DComposedGeometryNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DCoordinateNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DCoordinateNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DCoordinateNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DCoordinateNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DDamperNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DDamperNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DDamperNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DDamperNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DDragSensorNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DDragSensorNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DDragSensorNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DDragSensorNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DEnvironmentTextureNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DEnvironmentTextureNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DEnvironmentTextureNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DEnvironmentTextureNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DEnvironmentalSensorNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DEnvironmentalSensorNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DEnvironmentalSensorNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DEnvironmentalSensorNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DFogObject (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DFogObject (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DFogObject, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DFogObject, vp);
 }
 
 JSBool
-jsX3DConstants::X3DFollowerNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DFollowerNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DFollowerNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DFollowerNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DFontStyleNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DFontStyleNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DFontStyleNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DFontStyleNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DGeometricPropertyNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DGeometricPropertyNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DGeometricPropertyNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DGeometricPropertyNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DGeometryNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DGeometryNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DGeometryNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DGeometryNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DGeospatialObject (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DGeospatialObject (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DGeospatialObject, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DGeospatialObject, vp);
 }
 
 JSBool
-jsX3DConstants::X3DGroupingNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DGroupingNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DGroupingNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DGroupingNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DInfoNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DInfoNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DInfoNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DInfoNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DInterpolatorNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DInterpolatorNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DInterpolatorNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DInterpolatorNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DKeyDeviceSensorNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DKeyDeviceSensorNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DKeyDeviceSensorNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DKeyDeviceSensorNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DLayerNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DLayerNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DLayerNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DLayerNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DLayoutNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DLayoutNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DLayoutNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DLayoutNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DLightNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DLightNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DLightNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DLightNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DMaterialNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DMaterialNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DMaterialNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DMaterialNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DMetadataObject (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DMetadataObject (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DMetadataObject, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DMetadataObject, vp);
 }
 
 JSBool
-jsX3DConstants::X3DNBodyCollidableNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DNBodyCollidableNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DNBodyCollidableNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DNBodyCollidableNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DNBodyCollisionSpaceNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DNBodyCollisionSpaceNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DNBodyCollisionSpaceNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DNBodyCollisionSpaceNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DNetworkSensorNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DNetworkSensorNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DNetworkSensorNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DNetworkSensorNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DNormalNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DNormalNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DNormalNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DNormalNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DNurbsControlCurveNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DNurbsControlCurveNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DNurbsControlCurveNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DNurbsControlCurveNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DNurbsSurfaceGeometryNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DNurbsSurfaceGeometryNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DNurbsSurfaceGeometryNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DNurbsSurfaceGeometryNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DParametricGeometryNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DParametricGeometryNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DParametricGeometryNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DParametricGeometryNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DParticleEmitterNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DParticleEmitterNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DParticleEmitterNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DParticleEmitterNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DParticlePhysicsModelNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DParticlePhysicsModelNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DParticlePhysicsModelNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DParticlePhysicsModelNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DPickSensorNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DPickSensorNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DPickSensorNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DPickSensorNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DPickableObject (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DPickableObject (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DPickableObject, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DPickableObject, vp);
 }
 
 JSBool
-jsX3DConstants::X3DPointingDeviceSensorNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DPointingDeviceSensorNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DPointingDeviceSensorNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DPointingDeviceSensorNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DProductStructureChildNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DProductStructureChildNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DProductStructureChildNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DProductStructureChildNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DProgrammableShaderObject (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DProgrammableShaderObject (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DProgrammableShaderObject, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DProgrammableShaderObject, vp);
 }
 
 JSBool
-jsX3DConstants::X3DPrototypeInstance (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DPrototypeInstance (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DPrototypeInstance, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DPrototypeInstance, vp);
 }
 
 JSBool
-jsX3DConstants::X3DRigidJointNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DRigidJointNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DRigidJointNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DRigidJointNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DScriptNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DScriptNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DScriptNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DScriptNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DSensorNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DSensorNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DSensorNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DSensorNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DSequencerNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DSequencerNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DSequencerNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DSequencerNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DShaderNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DShaderNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DShaderNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DShaderNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DShapeNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DShapeNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DShapeNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DShapeNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DSoundNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DSoundNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DSoundNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DSoundNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DSoundSourceNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DSoundSourceNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DSoundSourceNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DSoundSourceNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DTexture2DNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DTexture2DNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DTexture2DNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DTexture2DNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DTexture3DNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DTexture3DNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DTexture3DNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DTexture3DNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DTextureCoordinateNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DTextureCoordinateNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DTextureCoordinateNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DTextureCoordinateNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DTextureNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DTextureNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DTextureNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DTextureNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DTextureTransformNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DTextureTransformNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DTextureTransformNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DTextureTransformNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DTimeDependentNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DTimeDependentNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DTimeDependentNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DTimeDependentNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DTouchSensorNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DTouchSensorNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DTouchSensorNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DTouchSensorNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DTransformMatrix4DNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DTransformMatrix4DNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DTransformMatrix4DNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DTransformMatrix4DNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DTransformNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DTransformNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DTransformNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DTransformNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DTriggerNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DTriggerNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DTriggerNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DTriggerNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DUrlObject (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DUrlObject (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DUrlObject, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DUrlObject, vp);
 }
 
 JSBool
-jsX3DConstants::X3DVertexAttributeNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DVertexAttributeNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DVertexAttributeNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DVertexAttributeNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DViewpointNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DViewpointNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DViewpointNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DViewpointNode, vp);
 }
 
 JSBool
-jsX3DConstants::X3DViewpointObject (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DViewpointObject (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DViewpointObject, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DViewpointObject, vp);
 }
 
 JSBool
-jsX3DConstants::X3DViewportNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DViewportNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DViewportNode, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DViewportNode, vp);
 }
 
 // Tools
 
 JSBool
-jsX3DConstants::AngleTool (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::AngleTool (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::AngleTool, vp);
+	return JS_NewNumberValue (cx, X3DConstants::AngleTool, vp);
 }
 
 JSBool
-jsX3DConstants::GridTool (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::GridTool (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::GridTool, vp);
+	return JS_NewNumberValue (cx, X3DConstants::GridTool, vp);
 }
 
 JSBool
-jsX3DConstants::X3DGridTool (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DGridTool (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (context, X3DConstants::X3DGridTool, vp);
+	return JS_NewNumberValue (cx, X3DConstants::X3DGridTool, vp);
 }
 
 } // MozillaSpiderMonkey

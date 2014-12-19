@@ -53,6 +53,9 @@
 
 #include "jsX3DFieldDefinition.h"
 
+#include "jsContext.h"
+#include "jsError.h"
+
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
@@ -62,18 +65,61 @@ class jsX3DField :
 {
 public:
 
+	///  @name Construction
+
+	template <class Type>
+	static
+	JSBool
+	create (JSContext* const, JSClass* const, Type* const, jsval* const);
+
 	///  @name Functions
 
 	static JSBool
-	getType (JSContext *, uintN, jsval*);
+	getType (JSContext*, uint32_t, jsval*);
 
 	static JSBool
-	isReadable (JSContext *, uintN, jsval*);
+	isReadable (JSContext*, uint32_t, jsval*);
 
 	static JSBool
-	isWritable (JSContext *, uintN, jsval*);
+	isWritable (JSContext*, uint32_t, jsval*);
+
+
+protected:
+
+	///  @name Destruction
+
+	static
+	void
+	finalize (JSContext*, JSObject*);
 
 };
+
+template <class Type>
+JSBool
+jsX3DField::create (JSContext* const cx, JSClass* const static_class, Type* const field, jsval* const vp)
+{
+	const auto context = getContext (cx);
+
+	try
+	{
+		*vp = OBJECT_TO_JSVAL (context -> getObject (field));
+	}
+	catch (const std::out_of_range &)
+	{
+		const auto result = JS_NewObject (cx, static_class, nullptr, nullptr);
+
+		if (result == nullptr)
+			return ThrowException (cx, "out of memory");
+
+		JS_SetPrivate (cx, result, field);
+
+		context -> addObject (field, result);
+
+		*vp = OBJECT_TO_JSVAL (result);
+	}
+
+	return true;
+}
 
 } // MozillaSpiderMonkey
 } // X3D

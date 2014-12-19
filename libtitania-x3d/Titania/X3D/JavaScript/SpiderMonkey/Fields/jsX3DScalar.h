@@ -66,13 +66,13 @@ class jsScalar
 {
 public:
 
-	typedef Type field_type;
+	using internal_type = Type;
 
 	static
 	JSBool
-	create (JSContext* const context, const field_type* const field, jsval* const vp)
+	create (JSContext* const cx, const internal_type* const field, jsval* const vp)
 	{
-		return JS_NewNumberValue (context, field -> getValue (), vp);
+		return JS_NewNumberValue (cx, field -> getValue (), vp);
 	}
 
 	static
@@ -85,18 +85,18 @@ public:
 template <>
 inline
 JSBool
-jsScalar <SFBool>::create (JSContext* const context, const field_type* const field, jsval* const vp)
+jsScalar <SFBool>::create (JSContext* const cx, const internal_type* const field, jsval* const vp)
 {
 	*vp = field -> getValue () ? JSVAL_TRUE : JSVAL_FALSE;
-	return JS_TRUE;
+	return true;
 }
 
 template <>
 inline
 JSBool
-jsScalar <SFString>::create (JSContext* const context, const field_type* const field, jsval* vp)
+jsScalar <SFString>::create (JSContext* const cx, const internal_type* const field, jsval* vp)
 {
-	return JS_NewStringValue (context, field -> getValue (), vp);
+	return JS_NewStringValue (cx, field -> getValue (), vp);
 }
 
 typedef jsScalar <SFBool>   jsSFBool;

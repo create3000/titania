@@ -75,7 +75,7 @@ public:
 	getClass ()
 	{ return &static_class; }
 
-	static JSBool addRoute (JSContext *, uintN, jsval*);
+	static JSBool addRoute (JSContext *, uint32_t, jsval*);
 
 
 protected:
@@ -93,34 +93,34 @@ protected:
 		ROUTES
 	};
 
-	static JSBool specificationVersion (JSContext* context, JSObject* obj, jsid id, jsval* vp);
-	static JSBool encoding             (JSContext* context, JSObject* obj, jsid id, jsval* vp);
-	static JSBool worldURL             (JSContext* context, JSObject* obj, jsid id, jsval* vp);
-	static JSBool profile              (JSContext* context, JSObject* obj, jsid id, jsval* vp);
-	static JSBool components           (JSContext* context, JSObject* obj, jsid id, jsval* vp);
+	static JSBool specificationVersion (JSContext* cx, JSObject* obj, jsid id, jsval* vp);
+	static JSBool encoding             (JSContext* cx, JSObject* obj, jsid id, jsval* vp);
+	static JSBool worldURL             (JSContext* cx, JSObject* obj, jsid id, jsval* vp);
+	static JSBool profile              (JSContext* cx, JSObject* obj, jsid id, jsval* vp);
+	static JSBool components           (JSContext* cx, JSObject* obj, jsid id, jsval* vp);
 
 	static JSBool externprotos (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool protos       (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool rootNodes    (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool routes       (JSContext *, JSObject *, jsid, jsval*);
 
-	static JSBool createNode  (JSContext *, uintN, jsval*);
-	static JSBool createProto (JSContext *, uintN, jsval*);
+	static JSBool createNode  (JSContext *, uint32_t, jsval*);
+	static JSBool createProto (JSContext *, uint32_t, jsval*);
 
-	static JSBool addNamedNode    (JSContext *, uintN, jsval*);
-	static JSBool removeNamedNode (JSContext *, uintN, jsval*);
-	static JSBool updateNamedNode (JSContext *, uintN, jsval*);
-	static JSBool getNamedNode    (JSContext *, uintN, jsval*);
+	static JSBool addNamedNode    (JSContext *, uint32_t, jsval*);
+	static JSBool removeNamedNode (JSContext *, uint32_t, jsval*);
+	static JSBool updateNamedNode (JSContext *, uint32_t, jsval*);
+	static JSBool getNamedNode    (JSContext *, uint32_t, jsval*);
 
-	static JSBool addImportedNode    (JSContext *, uintN, jsval*);
-	static JSBool removeImportedNode (JSContext *, uintN, jsval*);
-	static JSBool updateImportedNode (JSContext *, uintN, jsval*);
-	static JSBool getImportedNode    (JSContext *, uintN, jsval*);
+	static JSBool addImportedNode    (JSContext *, uint32_t, jsval*);
+	static JSBool removeImportedNode (JSContext *, uint32_t, jsval*);
+	static JSBool updateImportedNode (JSContext *, uint32_t, jsval*);
+	static JSBool getImportedNode    (JSContext *, uint32_t, jsval*);
 
-	static JSBool deleteRoute (JSContext *, uintN, jsval*);
+	static JSBool deleteRoute (JSContext *, uint32_t, jsval*);
 
-	static JSBool toVRMLString (JSContext *, uintN, jsval*);
-	static JSBool toXMLString  (JSContext *, uintN, jsval*);
+	static JSBool toVRMLString (JSContext *, uint32_t, jsval*);
+	static JSBool toXMLString  (JSContext *, uint32_t, jsval*);
 
 private:
 

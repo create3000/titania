@@ -55,7 +55,7 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 template <>
-JSClass jsSFVec4 <SFVec4d>::static_class = {
+JSClass jsSFVec4 <X3D::SFVec4d>::static_class = {
 	"SFVec4d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -64,7 +64,7 @@ JSClass jsSFVec4 <SFVec4d>::static_class = {
 };
 
 template <>
-JSClass jsSFVec4 <SFVec4f>::static_class = {
+JSClass jsSFVec4 <X3D::SFVec4f>::static_class = {
 	"SFVec4f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -72,8 +72,8 @@ JSClass jsSFVec4 <SFVec4f>::static_class = {
 
 };
 
-template class jsSFVec4 <SFVec4f>;
-template class jsSFVec4 <SFVec4d>;
+template class jsSFVec4 <X3D::SFVec4f>;
+template class jsSFVec4 <X3D::SFVec4d>;
 
 } // MozillaSpiderMonkey
 } // X3D

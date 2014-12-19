@@ -143,17 +143,17 @@ public:
 private:
 
 	void
-	setContext ();
+	addClasses ()
+	throw (std::runtime_error);
 
 	void
-	setFields ();
+	addUserDefinedFields ();
 
 	void
 	addUserDefinedField (X3DFieldDefinition* const);
 
-	static
 	void
-	defineProperty (JSContext* const, JSObject* const, X3DFieldDefinition* const, const std::string &, const uintN);
+	defineProperty (JSObject* const, X3DFieldDefinition* const, const std::string &, const uint32_t);
 
 	JSBool
 	evaluate (const std::string &, const std::string &);
@@ -161,9 +161,17 @@ private:
 	JSBool
 	evaluate (const std::string &, const std::string &, jsval &);
 
-	static JSBool getBuildInProperty (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool getProperty        (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool setProperty        (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static
+	JSBool
+	setProperty (JSContext*, JSObject*, jsid, JSBool, jsval*);
+
+	static
+	JSBool
+	getBuildInProperty (JSContext*, JSObject*, jsid, jsval*);
+
+	static
+	JSBool
+	getProperty (JSContext*, JSObject*, jsid, jsval*);
 
 	virtual
 	void
@@ -201,7 +209,7 @@ private:
 
 	static
 	void
-	error (JSContext* context, const char* message, JSErrorReport* report);
+	error (JSContext*, const char*, JSErrorReport*);
 
 	///  @name Static members
 
@@ -209,13 +217,12 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	static JSClass GlobalClass;
+	static JSClass globalClass;
 
 	///  @name Members
 
-	JSRuntime*               runtime;
-	JSContext*               context;
-	JSClass                  globalClass;
+	JSRuntime*               rt;
+	JSContext*               cx;
 	JSObject*                global;
 	std::vector <basic::uri> worldURL;
 
@@ -231,7 +238,16 @@ private:
 
 	std::unique_ptr <SceneLoader> future;
 
+	size_t frame;
+
 };
+
+inline
+jsContext*
+getContext (JSContext* const cx)
+{
+	return static_cast <jsContext*> (JS_GetContextPrivate (cx));
+}
 
 } // MozillaSpiderMonkey
 } // X3D

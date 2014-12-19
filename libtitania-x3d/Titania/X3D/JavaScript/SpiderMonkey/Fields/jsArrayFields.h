@@ -64,41 +64,40 @@
 #include "jsSFVec2.h"
 #include "jsSFVec3.h"
 #include "jsSFVec4.h"
-#include "jsX3DScalar.h"
 
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-extern template class jsX3DArrayField <jsSFColor, MFColor>;
-extern template class jsX3DArrayField <jsSFColorRGBA, MFColorRGBA>;
-extern template class jsX3DArrayField <jsSFImage, MFImage>;
-extern template class jsX3DArrayField <jsSFMatrix3d, MFMatrix3d>;
-extern template class jsX3DArrayField <jsSFMatrix3f, MFMatrix3f>;
-extern template class jsX3DArrayField <jsSFMatrix4d, MFMatrix4d>;
-extern template class jsX3DArrayField <jsSFMatrix4f, MFMatrix4f>;
-extern template class jsX3DArrayField <jsSFRotation, MFRotation>;
-extern template class jsX3DArrayField <jsSFVec2d, MFVec2d>;
-extern template class jsX3DArrayField <jsSFVec2f, MFVec2f>;
-extern template class jsX3DArrayField <jsSFVec3d, MFVec3d>;
-extern template class jsX3DArrayField <jsSFVec3f, MFVec3f>;
-extern template class jsX3DArrayField <jsSFVec4d, MFVec4d>;
-extern template class jsX3DArrayField <jsSFVec4f, MFVec4f>;
+extern template class jsX3DArrayField <jsSFColor, X3D::MFColor>;
+extern template class jsX3DArrayField <jsSFColorRGBA, X3D::MFColorRGBA>;
+extern template class jsX3DArrayField <jsSFImage, X3D::MFImage>;
+extern template class jsX3DArrayField <jsSFMatrix3d, X3D::MFMatrix3d>;
+extern template class jsX3DArrayField <jsSFMatrix3f, X3D::MFMatrix3f>;
+extern template class jsX3DArrayField <jsSFMatrix4d, X3D::MFMatrix4d>;
+extern template class jsX3DArrayField <jsSFMatrix4f, X3D::MFMatrix4f>;
+extern template class jsX3DArrayField <jsSFRotation, X3D::MFRotation>;
+extern template class jsX3DArrayField <jsSFVec2d, X3D::MFVec2d>;
+extern template class jsX3DArrayField <jsSFVec2f, X3D::MFVec2f>;
+extern template class jsX3DArrayField <jsSFVec3d, X3D::MFVec3d>;
+extern template class jsX3DArrayField <jsSFVec3f, X3D::MFVec3f>;
+extern template class jsX3DArrayField <jsSFVec4d, X3D::MFVec4d>;
+extern template class jsX3DArrayField <jsSFVec4f, X3D::MFVec4f>;
 
-typedef jsX3DArrayField <jsSFColor, MFColor>         jsMFColor;
-typedef jsX3DArrayField <jsSFColorRGBA, MFColorRGBA> jsMFColorRGBA;
-typedef jsX3DArrayField <jsSFImage, MFImage>         jsMFImage;
-typedef jsX3DArrayField <jsSFMatrix3d, MFMatrix3d>   jsMFMatrix3d;
-typedef jsX3DArrayField <jsSFMatrix3f, MFMatrix3f>   jsMFMatrix3f;
-typedef jsX3DArrayField <jsSFMatrix4d, MFMatrix4d>   jsMFMatrix4d;
-typedef jsX3DArrayField <jsSFMatrix4f, MFMatrix4f>   jsMFMatrix4f;
-typedef jsX3DArrayField <jsSFRotation, MFRotation>   jsMFRotation;
-typedef jsX3DArrayField <jsSFVec2d, MFVec2d>         jsMFVec2d;
-typedef jsX3DArrayField <jsSFVec2f, MFVec2f>         jsMFVec2f;
-typedef jsX3DArrayField <jsSFVec3d, MFVec3d>         jsMFVec3d;
-typedef jsX3DArrayField <jsSFVec3f, MFVec3f>         jsMFVec3f;
-typedef jsX3DArrayField <jsSFVec4d, MFVec4d>         jsMFVec4d;
-typedef jsX3DArrayField <jsSFVec4f, MFVec4f>         jsMFVec4f;
+using jsMFColor     = jsX3DArrayField <jsSFColor, X3D::MFColor>;
+using jsMFColorRGBA = jsX3DArrayField <jsSFColorRGBA, X3D::MFColorRGBA>;
+using jsMFImage     = jsX3DArrayField <jsSFImage, X3D::MFImage>;
+using jsMFMatrix3d  = jsX3DArrayField <jsSFMatrix3d, X3D::MFMatrix3d>;
+using jsMFMatrix3f  = jsX3DArrayField <jsSFMatrix3f, X3D::MFMatrix3f>;
+using jsMFMatrix4d  = jsX3DArrayField <jsSFMatrix4d, X3D::MFMatrix4d>;
+using jsMFMatrix4f  = jsX3DArrayField <jsSFMatrix4f, X3D::MFMatrix4f>;
+using jsMFRotation  = jsX3DArrayField <jsSFRotation, X3D::MFRotation>;
+using jsMFVec2d     = jsX3DArrayField <jsSFVec2d, X3D::MFVec2d>;
+using jsMFVec2f     = jsX3DArrayField <jsSFVec2f, X3D::MFVec2f>;
+using jsMFVec3d     = jsX3DArrayField <jsSFVec3d, X3D::MFVec3d>;
+using jsMFVec3f     = jsX3DArrayField <jsSFVec3f, X3D::MFVec3f>;
+using jsMFVec4d     = jsX3DArrayField <jsSFVec4d, X3D::MFVec4d>;
+using jsMFVec4f     = jsX3DArrayField <jsSFVec4f, X3D::MFVec4f>;
 
 } // MozillaSpiderMonkey
 } // X3D

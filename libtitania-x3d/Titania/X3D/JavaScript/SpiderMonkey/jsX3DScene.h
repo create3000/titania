@@ -83,13 +83,13 @@ private:
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
-	static JSBool setMetaData (JSContext *, uintN, jsval*);
-	static JSBool getMetaData (JSContext *, uintN, jsval*);
+	static JSBool setMetaData (JSContext *, uint32_t, jsval*);
+	static JSBool getMetaData (JSContext *, uint32_t, jsval*);
 
-	static JSBool addExportedNode    (JSContext *, uintN, jsval*);
-	static JSBool removeExportedNode (JSContext *, uintN, jsval*);
-	static JSBool updateExportedNode (JSContext *, uintN, jsval*);
-	static JSBool getExportedNode    (JSContext *, uintN, jsval*);
+	static JSBool addExportedNode    (JSContext *, uint32_t, jsval*);
+	static JSBool removeExportedNode (JSContext *, uint32_t, jsval*);
+	static JSBool updateExportedNode (JSContext *, uint32_t, jsval*);
+	static JSBool getExportedNode    (JSContext *, uint32_t, jsval*);
 
 	static void finalize (JSContext*, JSObject*);
 

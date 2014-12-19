@@ -494,7 +494,6 @@
     <None Include="Titania\X3D\JavaScript\X3DJavaScriptContext.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsString.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsProfileInfo.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsConstArray.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsComponentInfo.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DExternProtoDeclaration.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsExternProtoDeclarationArray.h" />
@@ -798,6 +797,8 @@
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\vsBase.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\vsChildObject.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsArguments.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstArray.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

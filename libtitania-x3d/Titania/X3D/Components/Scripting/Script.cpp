@@ -178,7 +178,7 @@ Script::requestImmediateLoad ()
 		{
 			try
 			{
-				X3DPtr <X3DJavaScriptContext> javaScript (getBrowser () -> getJavaScriptEngine (scheme) -> createContext (this, ecmascript, getWorldURL ()));
+				auto javaScript = getBrowser () -> getJavaScriptEngine (scheme) -> createContext (this, ecmascript, getWorldURL ());
 				
 				// Initialize.
 
@@ -193,7 +193,7 @@ Script::requestImmediateLoad ()
 			}
 			catch (const std::exception & error)
 			{
-				std::clog << error .what () << std::endl;
+				getBrowser () -> println ("Warning: ", error .what ());
 			}
 		}
 	}

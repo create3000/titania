@@ -1096,23 +1096,23 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 			{
 				switch (get_data_type (child))
 				{
-					case OutlineIterType::X3DBaseNode            :
-					case OutlineIterType::ExternProtoDeclaration :
-					case OutlineIterType::ProtoDeclaration       :
-					case OutlineIterType::ImportedNode           :
-					case OutlineIterType::ExportedNode           :
+					case OutlineIterType::X3DBaseNode:
+					case OutlineIterType::ExternProtoDeclaration:
+					case OutlineIterType::ProtoDeclaration:
+					case OutlineIterType::ImportedNode:
+					case OutlineIterType::ExportedNode:
+					{
+						if (is_expanded (child))
 						{
-							if (is_expanded (child))
-							{
-								const auto open_path = get_open_path (child);
-								const auto path      = Gtk::TreePath (child);
+							const auto open_path = get_open_path (child);
+							const auto path      = Gtk::TreePath (child);
 
-								if (open_path .empty ())
-									expand_row (path, false);
-							}
-
-							break;
+							if (open_path .empty ())
+								expand_row (path, false);
 						}
+
+						break;
+					}
 					default:
 						break;
 				}
@@ -1130,14 +1130,14 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 			{
 				switch (get_data_type (child))
 				{
-					case OutlineIterType::X3DExecutionContext :
-					case OutlineIterType::ProtoDeclaration    :
-						{
-							if (is_expanded (child))
-								expand_row (Gtk::TreePath (child), false);
+					case OutlineIterType::X3DExecutionContext:
+					case OutlineIterType::ProtoDeclaration:
+					{
+						if (is_expanded (child))
+							expand_row (Gtk::TreePath (child), false);
 
-							break;
-						}
+						break;
+					}
 					default:
 					{
 						const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (child));
@@ -1159,7 +1159,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 							{
 								const auto mfnode = static_cast <X3D::MFNode*> (field);
 
-								if (mfnode -> size () and (field -> isInitializable () or is_expanded (child)))
+								if ((field -> isInitializable () and not mfnode -> empty () and mfnode -> size () < 51) or is_expanded (child))
 								{
 									expand_row (Gtk::TreePath (child), false);
 								}

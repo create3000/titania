@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ class jsSFImage :
 {
 public:
 
-	typedef SFImage field_type;
+	using internal_type = X3D::SFImage;
 
 	static
 	void
@@ -75,26 +75,27 @@ public:
 
 	static
 	JSClass*
-	getClass () { return &static_class; }
+	getClass ()
+	{ return &static_class; }
 
 
 private:
 
 	enum Property {WIDTH, HEIGHT, COMP, ARRAY};
 
-	static JSBool construct (JSContext *, uintN, jsval*);
+	static JSBool construct (JSContext*, uint32_t, jsval*);
 
-	static JSBool width (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool width (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool width (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool width (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
-	static JSBool height (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool height (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool height (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool height (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
-	static JSBool comp (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool comp (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool comp (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool comp (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
-	static JSBool array (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool array (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool array (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool array (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

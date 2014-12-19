@@ -208,21 +208,23 @@ JSFunctionSpec jsFieldDefinitionArray::functions [ ] = {
 };
 
 void
-jsFieldDefinitionArray::init (JSContext* const context, JSObject* const global)
+jsFieldDefinitionArray::init (JSContext* const cx, JSObject* const global)
 {
-	JS_InitClass (context, global, NULL, &static_class, NULL,
-	              0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, functions, NULL, NULL);
+
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 }
 
 JSBool
-jsFieldDefinitionArray::create (JSContext* const context, const FieldDefinitionArray* const array, jsval* const vp)
+jsFieldDefinitionArray::create (JSContext* const cx, const FieldDefinitionArray* const array, jsval* const vp)
 {
-	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto context = getContext (cx);
 
-	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
+	JSObject* const result = JS_NewObject (cx, &static_class, NULL, NULL);
 
 	if (result == NULL)
-		return JS_FALSE;
+		return false;
 
 	jsFieldDefinitionArrayPrivate* privateArray = nullptr;
 
@@ -232,24 +234,24 @@ jsFieldDefinitionArray::create (JSContext* const context, const FieldDefinitionA
 	else
 		privateArray = new jsFieldDefinitionArrayPrivate ();
 
-	privateArray -> addParent (javaScript);
+	privateArray -> addParent (context);
 
-	JS_SetPrivate (context, result, privateArray);
+	JS_SetPrivate (cx, result, privateArray);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
-	return JS_TRUE;
+	return true;
 }
 
 JSBool
-jsFieldDefinitionArray::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+jsFieldDefinitionArray::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
-	const auto array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (context, obj));
+	const auto array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (cx, obj));
 
 	if (not array)
 	{
 		*statep = JSVAL_NULL;
-		return JS_TRUE;
+		return true;
 	}
 
 	size_t* index;
@@ -290,45 +292,45 @@ jsFieldDefinitionArray::enumerate (JSContext* context, JSObject* obj, JSIterateO
 		}
 	}
 
-	return JS_TRUE;
+	return true;
 }
 
 JSBool
-jsFieldDefinitionArray::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsFieldDefinitionArray::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	if (not JSID_IS_INT (id))
-		return JS_TRUE;
+		return true;
 
-	const int32 index = JSID_TO_INT (id);
-	const auto  array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (context, obj));
+	const int32_t index = JSID_TO_INT (id);
+	const auto    array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (cx, obj));
 
-	if (index < 0 and index >= (int32) array -> size ())
+	if (index < 0 and index >= (int32_t) array -> size ())
 	{
-		JS_ReportError (context, "index out of range");
-		return JS_FALSE;
+		JS_ReportError (cx, "%s: array index out of range.", getClass () -> name);
+		return false;
 	}
 
-	return jsX3DFieldDefinition::create (context, array -> at (index), vp);
+	return jsX3DFieldDefinition::create (cx, array -> at (index), vp);
 }
 
 JSBool
-jsFieldDefinitionArray::length (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsFieldDefinitionArray::length (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (context, obj));
+	const auto array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (cx, obj));
 
-	return JS_NewNumberValue (context, array -> size (), vp);
+	return JS_NewNumberValue (cx, array -> size (), vp);
 }
 
 void
-jsFieldDefinitionArray::finalize (JSContext* context, JSObject* obj)
+jsFieldDefinitionArray::finalize (JSContext* cx, JSObject* obj)
 {
-	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-	const auto array      = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (context, obj));
+	const auto context = getContext (cx);
+	const auto array      = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (cx, obj));
 
 	// Proto objects have no private
 
 	if (array)
-		array -> removeParent (javaScript);
+		array -> removeParent (context);
 }
 
 } // MozillaSpiderMonkey

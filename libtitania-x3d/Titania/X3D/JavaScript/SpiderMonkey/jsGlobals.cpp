@@ -63,88 +63,84 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 JSPropertySpec jsGlobals::properties [ ] = {
-	{ "NULL",  0,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, null_,  NULL },
-	{ "FALSE", false, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, false_, NULL },
-	{ "TRUE",  true,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, true_,  NULL },
+	{ "NULL",  0,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, null_,  nullptr },
+	{ "FALSE", false, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, false_, nullptr },
+	{ "TRUE",  true,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, true_,  nullptr },
 	{ 0 }
 
 };
 
 JSFunctionSpec jsGlobals::functions [ ] = {
 	{ "print",   jsGlobals::print,   0, 0 }, // VRML 2.0
-
-	{ "require", jsGlobals::require, 1, 0 }, // Non standard
 	{ "trace",   jsGlobals::print,   0, 0 }, // Non standard
+	{ "require", jsGlobals::require, 1, 0 }, // Non standard
 	{ 0 }
 
 };
 
 void
-jsGlobals::init (JSContext* const context, JSObject* const global)
+jsGlobals::init (JSContext* const cx, JSObject* const global)
 {
-	JS_DefineProperties (context, global, properties);
-	JS_DefineFunctions (context, global, functions);
+	JS_DefineProperties (cx, global, properties);
+	JS_DefineFunctions (cx, global, functions);
 }
 
 JSBool
-jsGlobals::null_ (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsGlobals::null_ (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	*vp = JSVAL_NULL;
-	return JS_TRUE;
+	return true;
 }
 
 JSBool
-jsGlobals::false_ (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsGlobals::false_ (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	*vp = JSVAL_FALSE;
-	return JS_TRUE;
+	return true;
 }
 
 JSBool
-jsGlobals::true_ (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsGlobals::true_ (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	*vp = JSVAL_TRUE;
-	return JS_TRUE;
+	return true;
 }
 
 JSBool
-jsGlobals::print (JSContext* context, uintN argc, jsval* vp)
+jsGlobals::print (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	X3DBrowser* const browser = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getBrowser ();
+	const auto browser = getContext (cx) -> getBrowser ();
+	const auto argv    = JS_ARGV (cx, vp);
 
-	jsval* const argv = JS_ARGV (context, vp);
-
-	for (uintN i = 0; i < argc; ++ i)
-		browser -> print (JS_GetString (context, argv [i]));
+	for (uint32_t i = 0; i < argc; ++ i)
+		browser -> print (to_string (cx, argv [i]));
 
 	browser -> print ('\n');
 
-	JS_SET_RVAL (context, vp, JSVAL_VOID);
-	return JS_TRUE;
+	JS_SET_RVAL (cx, vp, JSVAL_VOID);
+	return true;
 }
 
 // Non standard
 
 JSBool
-jsGlobals::require (JSContext* context, uintN argc, jsval* vp)
+jsGlobals::require (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto context = getContext (cx);
+	const auto argv    = JS_ARGV (cx, vp);
+	auto       success = false;
+	auto       rval    = JSVAL_VOID;
 
-	JSBool success = JS_FALSE;
-
-	jsval* const argv = JS_ARGV (context, vp);
-	jsval        rval = JSVAL_VOID;
-
-	for (uintN i = 0; i < argc; ++ i)
+	for (uint32_t i = 0; i < argc; ++ i)
 	{
-		if (javaScript -> require (JS_GetString (context, argv [i]), rval))
+		if (context -> require (to_string (cx, argv [i]), rval))
 		{
-			success = JS_TRUE;
+			success = true;
 			break;
 		}
 	}
 
-	JS_SET_RVAL (context, vp, rval);
+	JS_SET_RVAL (cx, vp, rval);
 	return success;
 }
 

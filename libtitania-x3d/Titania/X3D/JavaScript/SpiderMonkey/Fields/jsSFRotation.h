@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ class jsSFRotation :
 {
 public:
 
-	typedef SFRotation field_type;
+	using internal_type = X3D::SFRotation;
 
 	static
 	void
@@ -75,26 +75,27 @@ public:
 
 	static
 	JSClass*
-	getClass () { return &static_class; }
+	getClass ()
+	{ return &static_class; }
 
 
 private:
 
 	enum Property {X, Y, Z, ANGLE};
 
-	static JSBool construct (JSContext *, uintN, jsval*);
-	static JSBool enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
+	static JSBool construct (JSContext*, uint32_t, jsval*);
+	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
 
-	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
 
-	static JSBool getAxis (JSContext *, uintN, jsval*);
-	static JSBool setAxis (JSContext *, uintN, jsval*);
+	static JSBool setAxis (JSContext*, uint32_t, jsval*);
+	static JSBool getAxis (JSContext*, uint32_t, jsval*);
 
-	static JSBool inverse  (JSContext *, uintN, jsval*);
-	static JSBool multiply (JSContext *, uintN, jsval*);
-	static JSBool multVec  (JSContext *, uintN, jsval*);
-	static JSBool slerp    (JSContext *, uintN, jsval*);
+	static JSBool inverse  (JSContext*, uint32_t, jsval*);
+	static JSBool multiply (JSContext*, uint32_t, jsval*);
+	static JSBool multVec  (JSContext*, uint32_t, jsval*);
+	static JSBool slerp    (JSContext*, uint32_t, jsval*);
 
 	static const size_t   size;
 	static JSClass        static_class;

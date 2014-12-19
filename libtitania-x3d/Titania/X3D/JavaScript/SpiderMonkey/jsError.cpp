@@ -55,26 +55,26 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 JSBool
-JS_InstanceOfError (JSContext* const context, JSObject* const object, JSClass* const class_type)
+JS_InstanceOfError (JSContext* const cx, JSObject* const object, JSClass* const class_type)
 {
 	if (not object)
 	{
-		JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is NULL",
+		JS_ReportError (cx, "Type of argument 1 is invalid - should be %s, is NULL",
 		                class_type -> name);
 
-		return JS_TRUE;
+		return true;
 	}
 
-	if (not JS_InstanceOf (context, object, class_type, NULL))
+	if (not JS_InstanceOf (cx, object, class_type, NULL))
 	{
-		JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s",
+		JS_ReportError (cx, "Type of argument 1 is invalid - should be %s, is %s",
 		                class_type -> name,
-		                JS_GetClass (context, object) -> name);
+		                JS_GetClass (cx, object) -> name);
 
-		return JS_TRUE;
+		return true;
 	}
 
-	return JS_FALSE;
+	return false;
 }
 
 } // MozillaSpiderMonkey

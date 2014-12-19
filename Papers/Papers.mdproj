@@ -258,7 +258,6 @@
     <Folder Include="moz-plugin-diamondx-0.1\" />
     <Folder Include="fluid\" />
     <Folder Include="GPU Gems 2 Chapter 46 - GPU Sort\" />
-    <Folder Include="V8\" />
     <Folder Include="JavaScript\" />
   </ItemGroup>
   <ItemGroup>

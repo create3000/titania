@@ -118,608 +118,606 @@ JSFunctionSpec jsX3DExecutionContext::functions [ ] = {
 };
 
 JSObject*
-jsX3DExecutionContext::init (JSContext* const context, JSObject* const global)
+jsX3DExecutionContext::init (JSContext* const cx, JSObject* const global)
 {
-	return JS_InitClass (context, global, NULL, &static_class, NULL,
-	                     0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, functions, NULL, NULL);
+
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+	
+	return proto;
 }
 
 JSBool
-jsX3DExecutionContext::create (JSContext* const context, X3DExecutionContext* const executionContext, jsval* const vp)
+jsX3DExecutionContext::create (JSContext* const cx, X3DExecutionContext* const executionContext, jsval* const vp)
 {
-	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
+	JSObject* const result = JS_NewObject (cx, &static_class, NULL, NULL);
 
 	if (result == NULL)
-		return JS_FALSE;
+		return false;
 
-	JS_SetPrivate (context, result, executionContext);
+	JS_SetPrivate (cx, result, executionContext);
 
 	*vp = OBJECT_TO_JSVAL (result);
-
-	return JS_TRUE;
+	return true;
 }
 
 // Properties
 
 JSBool
-jsX3DExecutionContext::specificationVersion (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DExecutionContext::specificationVersion (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = getObject <X3DExecutionContext*> (cx, obj);
 
-	return JS_NewStringValue (context, XMLEncode (executionContext -> getSpecificationVersion ()), vp);
+	return JS_NewStringValue (cx, XMLEncode (executionContext -> getSpecificationVersion ()), vp);
 }
 
 JSBool
-jsX3DExecutionContext::encoding (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DExecutionContext::encoding (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = getObject <X3DExecutionContext*> (cx, obj);
 
-	return JS_NewStringValue (context, executionContext -> getEncoding (), vp);
+	return JS_NewStringValue (cx, executionContext -> getEncoding (), vp);
 }
 
 JSBool
-jsX3DExecutionContext::worldURL (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DExecutionContext::worldURL (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = getObject <X3DExecutionContext*> (cx, obj);
 
-	return JS_NewStringValue (context, executionContext -> getWorldURL (), vp);
+	return JS_NewStringValue (cx, executionContext -> getWorldURL (), vp);
 }
 
 JSBool
-jsX3DExecutionContext::profile (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DExecutionContext::profile (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
-
-	const auto profile = executionContext -> getProfile ();
+	const auto executionContext = getObject <X3DExecutionContext*> (cx, obj);
+	const auto profile          = executionContext -> getProfile ();
 
 	if (profile)
-		return jsProfileInfo::create (context, profile, vp);
+		return jsProfileInfo::create (cx, profile, vp);
 
-	JS_SET_RVAL (context, vp, JSVAL_VOID);
+	JS_SET_RVAL (cx, vp, JSVAL_VOID);
 
-	return JS_TRUE;
+	return true;
 }
 
 JSBool
-jsX3DExecutionContext::components (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DExecutionContext::components (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = getObject <X3DExecutionContext*> (cx, obj);
 
-	return jsComponentInfoArray::create (context, &executionContext -> getComponents (), vp);
+	return jsComponentInfoArray::create (cx, &executionContext -> getComponents (), vp);
 }
 
 JSBool
-jsX3DExecutionContext::externprotos (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DExecutionContext::externprotos (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = getObject <X3DExecutionContext*> (cx, obj);
 
-	return jsExternProtoDeclarationArray::create (context, &executionContext -> getExternProtoDeclarations (), vp);
+	return jsExternProtoDeclarationArray::create (cx, &executionContext -> getExternProtoDeclarations (), vp);
 }
 
 JSBool
-jsX3DExecutionContext::protos (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DExecutionContext::protos (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = getObject <X3DExecutionContext*> (cx, obj);
 
-	return jsProtoDeclarationArray::create (context, &executionContext -> getProtoDeclarations (), vp);
+	return jsProtoDeclarationArray::create (cx, &executionContext -> getProtoDeclarations (), vp);
 }
 
 JSBool
-jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DExecutionContext::rootNodes (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = getObject <X3DExecutionContext*> (cx, obj);
 	const auto rootNodes        = new MFNode (executionContext -> getRootNodes ());
 
-	// rootNodes -> setName ("rootNodes"); // This will increase the clone count of the root nodes.
+	rootNodes -> setName ("rootNodes");
 	rootNodes -> setAccessType (initializeOnly);
 
-	return jsMFNode::create (context, rootNodes, vp);
+	return jsMFNode::create (cx, rootNodes, vp);
 }
 
 JSBool
-jsX3DExecutionContext::routes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DExecutionContext::routes (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = getObject <X3DExecutionContext*> (cx, obj);
 
-	return jsRouteArray::create (context, &executionContext -> getRoutes (), vp);
+	return jsRouteArray::create (cx, &executionContext -> getRoutes (), vp);
 }
 
 // Functions
 
 JSBool
-jsX3DExecutionContext::createNode (JSContext* context, uintN argc, jsval* vp)
+jsX3DExecutionContext::createNode (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 1)
 	{
 		try
 		{
+			const auto argv = JS_ARGV (cx, vp);
+
 			JSString* name = nullptr;
 
-			jsval* const argv = JS_ARGV (context, vp);
+			if (not JS_ConvertArguments (cx, argc, argv, "S", &name))
+				return false;
 
-			if (not JS_ConvertArguments (context, argc, argv, "S", &name))
-				return JS_FALSE;
-
-			const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
-
-			SFNode node = executionContext -> createNode (JS_GetString (context, name));
+			const auto executionContext = getObject <X3DExecutionContext*> (cx, JS_THIS_OBJECT (cx, vp));
+			auto       node             = executionContext -> createNode (JS_GetString (cx, name));
 
 			node -> setup ();
 
-			return jsSFNode::create (context, new SFNode (node), &JS_RVAL (context, vp));
+			return jsSFNode::create (cx, new SFNode (std::move (node)), &JS_RVAL (cx, vp));
 		}
 		catch (const X3DError & exception)
 		{
-			JS_ReportError (context, exception .what ());
-			return JS_FALSE;
+			JS_ReportError (cx, exception .what ());
+			return false;
 		}
 	}
 
-	JS_ReportError (context, "X3DExecutionContext .createNode: wrong number of arguments");
+	JS_ReportError (cx, "X3DExecutionContext .createNode: wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DExecutionContext::createProto (JSContext* context, uintN argc, jsval* vp)
+jsX3DExecutionContext::createProto (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 1)
 	{
 		try
 		{
+			const auto argv = JS_ARGV (cx, vp);
+
 			JSString* name = nullptr;
 
-			jsval* const argv = JS_ARGV (context, vp);
+			if (not JS_ConvertArguments (cx, argc, argv, "S", &name))
+				return false;
 
-			if (not JS_ConvertArguments (context, argc, argv, "S", &name))
-				return JS_FALSE;
-
-			const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
-			const auto node             = executionContext -> createPrototypeInstance (JS_GetString (context, name));
+			const auto executionContext = getObject <X3DExecutionContext*> (cx, JS_THIS_OBJECT (cx, vp));
+			auto       node             = executionContext -> createPrototypeInstance (JS_GetString (cx, name));
 
 			node -> setup ();
 
-			return jsSFNode::create (context, new SFNode (node), &JS_RVAL (context, vp));
+			return jsSFNode::create (cx, new SFNode (std::move (node)), &JS_RVAL (cx, vp));
 		}
 		catch (const X3DError & exception)
 		{
-			JS_ReportError (context, exception .what ());
-			return JS_FALSE;
+			JS_ReportError (cx, exception .what ());
+			return false;
 		}
 	}
 
-	JS_ReportError (context, "X3DExecutionContext .createProto: wrong number of arguments");
+	JS_ReportError (cx, "X3DExecutionContext .createProto: wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DExecutionContext::addNamedNode (JSContext* context, uintN argc, jsval* vp)
+jsX3DExecutionContext::addNamedNode (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 2)
 	{
+		const auto argv = JS_ARGV (cx, vp);
+
 		JSString* name  = nullptr;
 		JSObject* oNode = nullptr;
 
-		jsval* const argv = JS_ARGV (context, vp);
+		if (not JS_ConvertArguments (cx, argc, argv, "So", &name, &oNode))
+			return false;
 
-		if (not JS_ConvertArguments (context, argc, argv, "So", &name, &oNode))
-			return JS_FALSE;
+		if (JS_InstanceOfError (cx, oNode, jsSFNode::getClass ()))
+			return false;
 
-		if (JS_InstanceOfError (context, oNode, jsSFNode::getClass ()))
-			return JS_FALSE;
-
-		const auto & node = *static_cast <SFNode*> (JS_GetPrivate (context, oNode));
+		const auto & node = *getObject <SFNode*> (cx, oNode);
 
 		try
 		{
-			const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			const auto executionContext = getObject <X3DExecutionContext*> (cx, JS_THIS_OBJECT (cx, vp));
 
-			executionContext -> addNamedNode (JS_GetString (context, name), node);
+			executionContext -> addNamedNode (JS_GetString (cx, name), node);
 
-			JS_SET_RVAL (context, vp, JSVAL_VOID);
+			JS_SET_RVAL (cx, vp, JSVAL_VOID);
 
-			return JS_TRUE;
+			return true;
 		}
 		catch (const X3DError & exception)
 		{
-			JS_ReportError (context, exception .what ());
-			return JS_FALSE;
+			JS_ReportError (cx, exception .what ());
+			return false;
 		}
 	}
 
-	JS_ReportError (context, "X3DExecutionContext .addNamedNode: wrong number of arguments");
+	JS_ReportError (cx, "X3DExecutionContext .addNamedNode: wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DExecutionContext::removeNamedNode (JSContext* context, uintN argc, jsval* vp)
+jsX3DExecutionContext::removeNamedNode (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 1)
 	{
+		const auto argv = JS_ARGV (cx, vp);
+
 		JSString* name = nullptr;
 
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
-			return JS_FALSE;
+		if (not JS_ConvertArguments (cx, argc, argv, "S", &name))
+			return false;
 
 		try
 		{
-			const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			const auto executionContext = getObject <X3DExecutionContext*> (cx, JS_THIS_OBJECT (cx, vp));
 
-			executionContext -> removeNamedNode (JS_GetString (context, name));
+			executionContext -> removeNamedNode (JS_GetString (cx, name));
 
-			JS_SET_RVAL (context, vp, JSVAL_VOID);
+			JS_SET_RVAL (cx, vp, JSVAL_VOID);
 
-			return JS_TRUE;
+			return true;
 		}
 		catch (const X3DError & exception)
 		{
-			JS_ReportError (context, exception .what ());
-			return JS_FALSE;
+			JS_ReportError (cx, exception .what ());
+			return false;
 		}
 	}
 
-	JS_ReportError (context, "X3DExecutionContext .removeNamedNode: wrong number of arguments");
+	JS_ReportError (cx, "X3DExecutionContext .removeNamedNode: wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DExecutionContext::updateNamedNode (JSContext* context, uintN argc, jsval* vp)
+jsX3DExecutionContext::updateNamedNode (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 2)
 	{
+		const auto argv = JS_ARGV (cx, vp);
+
 		JSString* name  = nullptr;
 		JSObject* oNode = nullptr;
 
-		jsval* const argv = JS_ARGV (context, vp);
+		if (not JS_ConvertArguments (cx, argc, argv, "So", &name, &oNode))
+			return false;
 
-		if (not JS_ConvertArguments (context, argc, argv, "So", &name, &oNode))
-			return JS_FALSE;
+		if (JS_InstanceOfError (cx, oNode, jsSFNode::getClass ()))
+			return false;
 
-		if (JS_InstanceOfError (context, oNode, jsSFNode::getClass ()))
-			return JS_FALSE;
-
-		const auto & node = *static_cast <SFNode*> (JS_GetPrivate (context, oNode));
+		const auto & node = *getObject <SFNode*> (cx, oNode);
 
 		try
 		{
-			const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			const auto executionContext = getObject <X3DExecutionContext*> (cx, JS_THIS_OBJECT (cx, vp));
 
-			executionContext -> updateNamedNode (JS_GetString (context, name), node);
+			executionContext -> updateNamedNode (JS_GetString (cx, name), node);
 
-			JS_SET_RVAL (context, vp, JSVAL_VOID);
+			JS_SET_RVAL (cx, vp, JSVAL_VOID);
 
-			return JS_TRUE;
+			return true;
 		}
 		catch (const X3DError & exception)
 		{
-			JS_ReportError (context, exception .what ());
-			return JS_FALSE;
+			JS_ReportError (cx, exception .what ());
+			return false;
 		}
 	}
 
-	JS_ReportError (context, "X3DExecutionContext .updateNamedNode: wrong number of arguments");
+	JS_ReportError (cx, "X3DExecutionContext .updateNamedNode: wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DExecutionContext::getNamedNode (JSContext* context, uintN argc, jsval* vp)
+jsX3DExecutionContext::getNamedNode (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 1)
 	{
+		const auto argv = JS_ARGV (cx, vp);
+
 		JSString* name = nullptr;
 
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
-			return JS_FALSE;
+		if (not JS_ConvertArguments (cx, argc, argv, "S", &name))
+			return false;
 
 		try
 		{
-			const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
-			const auto importedNode     = executionContext -> getNamedNode (JS_GetString (context, name));
+			const auto executionContext = getObject <X3DExecutionContext*> (cx, JS_THIS_OBJECT (cx, vp));
+			auto       namedNode        = executionContext -> getNamedNode (JS_GetString (cx, name));
 
-			return jsSFNode::create (context, new SFNode (importedNode), &JS_RVAL (context, vp));
+			return jsSFNode::create (cx, new SFNode (std::move (namedNode)), &JS_RVAL (cx, vp));
 		}
 		catch (const X3DError & exception)
 		{
-			JS_ReportError (context, exception .what ());
-			return JS_FALSE;
+			JS_ReportError (cx, exception .what ());
+			return false;
 		}
 	}
 
-	JS_ReportError (context, "X3DExecutionContext .getNamedNode: wrong number of arguments");
+	JS_ReportError (cx, "X3DExecutionContext .getNamedNode: wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DExecutionContext::addImportedNode (JSContext* context, uintN argc, jsval* vp)
+jsX3DExecutionContext::addImportedNode (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 2 or argc == 3)
 	{
+		const auto argv = JS_ARGV (cx, vp);
+
 		JSObject* oInline      = nullptr;
 		JSString* exportedName = nullptr;
 		JSString* importedName = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		if (not JS_ConvertArguments (cx, argc, argv, "oS/S", &oInline, &exportedName, &importedName))
+			return false;
 
-		if (not JS_ConvertArguments (context, argc, argv, "oS/S", &oInline, &exportedName, &importedName))
-			return JS_FALSE;
+		if (JS_InstanceOfError (cx, oInline, jsSFNode::getClass ()))
+			return false;
 
-		if (JS_InstanceOfError (context, oInline, jsSFNode::getClass ()))
-			return JS_FALSE;
-
-		const auto & node       = *static_cast <SFNode*> (JS_GetPrivate (context, oInline));
+		const auto & node       = *getObject <SFNode*> (cx, oInline);
 		const auto   inlineNode = x3d_cast <Inline*> (node);
 
 		try
 		{
-			const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			const auto executionContext = getObject <X3DExecutionContext*> (cx, JS_THIS_OBJECT (cx, vp));
 
 			if (argc == 3)
-				executionContext -> addImportedNode (inlineNode, JS_GetString (context, exportedName), JS_GetString (context, importedName));
+				executionContext -> addImportedNode (inlineNode, JS_GetString (cx, exportedName), JS_GetString (cx, importedName));
 
 			else
-				executionContext -> addImportedNode (inlineNode, JS_GetString (context, exportedName));
+				executionContext -> addImportedNode (inlineNode, JS_GetString (cx, exportedName));
 
-			JS_SET_RVAL (context, vp, JSVAL_VOID);
+			JS_SET_RVAL (cx, vp, JSVAL_VOID);
 
-			return JS_TRUE;
+			return true;
 		}
 		catch (const X3DError & exception)
 		{
-			JS_ReportError (context, exception .what ());
-			return JS_FALSE;
+			JS_ReportError (cx, exception .what ());
+			return false;
 		}
 	}
 
-	JS_ReportError (context, "X3DExecutionContext .addImportedNode: wrong number of arguments");
+	JS_ReportError (cx, "X3DExecutionContext .addImportedNode: wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DExecutionContext::removeImportedNode (JSContext* context, uintN argc, jsval* vp)
+jsX3DExecutionContext::removeImportedNode (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 1)
 	{
+		const auto argv = JS_ARGV (cx, vp);
+
 		JSString* importedName = nullptr;
 
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "S", &importedName))
-			return JS_FALSE;
+		if (not JS_ConvertArguments (cx, argc, argv, "S", &importedName))
+			return false;
 
 		try
 		{
-			const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			const auto executionContext = getObject <X3DExecutionContext*> (cx, JS_THIS_OBJECT (cx, vp));
 
-			executionContext -> removeImportedNode (JS_GetString (context, importedName));
+			executionContext -> removeImportedNode (JS_GetString (cx, importedName));
 
-			JS_SET_RVAL (context, vp, JSVAL_VOID);
+			JS_SET_RVAL (cx, vp, JSVAL_VOID);
 
-			return JS_TRUE;
+			return true;
 		}
 		catch (const X3DError & exception)
 		{
-			JS_ReportError (context, exception .what ());
-			return JS_FALSE;
+			JS_ReportError (cx, exception .what ());
+			return false;
 		}
 	}
 
-	JS_ReportError (context, "X3DExecutionContext .removeImportedNode: wrong number of arguments");
+	JS_ReportError (cx, "X3DExecutionContext .removeImportedNode: wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DExecutionContext::updateImportedNode (JSContext* context, uintN argc, jsval* vp)
+jsX3DExecutionContext::updateImportedNode (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 2 or argc == 3)
 	{
+		const auto argv = JS_ARGV (cx, vp);
+
 		JSObject* oInline      = nullptr;
 		JSString* exportedName = nullptr;
 		JSString* importedName = nullptr;
 
-		jsval* const argv = JS_ARGV (context, vp);
+		if (not JS_ConvertArguments (cx, argc, argv, "oS/S", &oInline, &exportedName, &importedName))
+			return false;
 
-		if (not JS_ConvertArguments (context, argc, argv, "oS/S", &oInline, &exportedName, &importedName))
-			return JS_FALSE;
+		if (JS_InstanceOfError (cx, oInline, jsSFNode::getClass ()))
+			return false;
 
-		if (JS_InstanceOfError (context, oInline, jsSFNode::getClass ()))
-			return JS_FALSE;
-
-		const auto & node       = *static_cast <SFNode*> (JS_GetPrivate (context, oInline));
+		const auto & node       = *getObject <SFNode*> (cx, oInline);
 		const auto   inlineNode = x3d_cast <Inline*> (node);
 
 		try
 		{
-			const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			const auto executionContext = getObject <X3DExecutionContext*> (cx, JS_THIS_OBJECT (cx, vp));
 
 			if (argc == 3)
-				executionContext -> updateImportedNode (inlineNode, JS_GetString (context, exportedName), JS_GetString (context, importedName));
+				executionContext -> updateImportedNode (inlineNode, JS_GetString (cx, exportedName), JS_GetString (cx, importedName));
 
 			else
-				executionContext -> updateImportedNode (inlineNode, JS_GetString (context, exportedName));
+				executionContext -> updateImportedNode (inlineNode, JS_GetString (cx, exportedName));
 
-			JS_SET_RVAL (context, vp, JSVAL_VOID);
+			JS_SET_RVAL (cx, vp, JSVAL_VOID);
 
-			return JS_TRUE;
+			return true;
 		}
 		catch (const X3DError & exception)
 		{
-			JS_ReportError (context, exception .what ());
-			return JS_FALSE;
+			JS_ReportError (cx, exception .what ());
+			return false;
 		}
 	}
 
-	JS_ReportError (context, "X3DExecutionContext .updateImportedNode: wrong number of arguments");
+	JS_ReportError (cx, "X3DExecutionContext .updateImportedNode: wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DExecutionContext::getImportedNode (JSContext* context, uintN argc, jsval* vp)
+jsX3DExecutionContext::getImportedNode (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 1)
 	{
+		const auto argv = JS_ARGV (cx, vp);
+
 		JSString* importedName = nullptr;
 
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "S", &importedName))
-			return JS_FALSE;
+		if (not JS_ConvertArguments (cx, argc, argv, "S", &importedName))
+			return false;
 
 		try
 		{
-			const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
-			const auto importedNode        = executionContext -> getImportedNode (JS_GetString (context, importedName));
+			const auto executionContext = getObject <X3DExecutionContext*> (cx, JS_THIS_OBJECT (cx, vp));
+			auto       importedNode     = executionContext -> getImportedNode (JS_GetString (cx, importedName));
 
-			return jsSFNode::create (context, new SFNode (importedNode), &JS_RVAL (context, vp));
+			return jsSFNode::create (cx, new SFNode (std::move (importedNode)), &JS_RVAL (cx, vp));
 		}
 		catch (const X3DError & error)
 		{
-			JS_ReportError (context, error .what ());
-			return JS_FALSE;
+			JS_ReportError (cx, error .what ());
+			return false;
 		}
 	}
 
-	JS_ReportError (context, "X3DExecutionContext .getImportedNode: wrong number of arguments");
+	JS_ReportError (cx, "X3DExecutionContext .getImportedNode: wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DExecutionContext::addRoute (JSContext* context, uintN argc, jsval* vp)
+jsX3DExecutionContext::addRoute (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 4)
 	{
-		const Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getScriptNode ();
+		const auto script = getContext (cx) -> getScriptNode ();
+		const auto argv   = JS_ARGV (cx, vp);
 
 		JSObject* ofromNode    = nullptr;
 		JSObject* otoNode      = nullptr;
 		JSString* fromEventOut = nullptr;
 		JSString* toEventIn    = nullptr;
 
-		jsval* const argv = JS_ARGV (context, vp);
+		if (not JS_ConvertArguments (cx, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
+			return false;
 
-		if (not JS_ConvertArguments (context, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
-			return JS_FALSE;
+		if (JS_InstanceOfError (cx, ofromNode, jsSFNode::getClass ()))
+			return false;
 
-		if (JS_InstanceOfError (context, ofromNode, jsSFNode::getClass ()))
-			return JS_FALSE;
+		if (JS_InstanceOfError (cx, otoNode, jsSFNode::getClass ()))
+			return false;
 
-		const auto & fromNode = *static_cast <SFNode*> (JS_GetPrivate (context, ofromNode));
-
-		if (JS_InstanceOfError (context, otoNode, jsSFNode::getClass ()))
-			return JS_FALSE;
-
-		const auto & toNode = *static_cast <SFNode*> (JS_GetPrivate (context, otoNode));
+		const auto & fromNode = *getObject <SFNode*> (cx, ofromNode);
+		const auto & toNode   = *getObject <SFNode*> (cx, otoNode);
 
 		try
 		{
-			const RoutePtr & route = script -> getExecutionContext () -> addRoute (fromNode, JS_GetString (context, fromEventOut),
-			                                                                       toNode,   JS_GetString (context, toEventIn));
+			const RoutePtr & route = script -> getExecutionContext () -> addRoute (fromNode, JS_GetString (cx, fromEventOut),
+			                                                                       toNode,   JS_GetString (cx, toEventIn));
 
-			return jsX3DRoute::create (context, route, &JS_RVAL (context, vp));
+			return jsX3DRoute::create (cx, route, &JS_RVAL (cx, vp));
 		}
 		catch (const X3DError & error)
 		{
-			JS_ReportError (context, error .what ());
-			return JS_FALSE;
+			JS_ReportError (cx, error .what ());
+			return false;
 		}
 	}
 
-	JS_ReportError (context, "X3DExecutionContext .addRoute: wrong number of arguments");
+	JS_ReportError (cx, "X3DExecutionContext .addRoute: wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DExecutionContext::deleteRoute (JSContext* context, uintN argc, jsval* vp)
+jsX3DExecutionContext::deleteRoute (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getScriptNode ();
+		const auto script = getContext (cx) -> getScriptNode ();
+		const auto argv   = JS_ARGV (cx, vp);
 
 		JSObject* oRoute = nullptr;
 
-		jsval* const argv = JS_ARGV (context, vp);
+		if (not JS_ConvertArguments (cx, argc, argv, "o", &oRoute))
+			return false;
 
-		if (not JS_ConvertArguments (context, argc, argv, "o", &oRoute))
-			return JS_FALSE;
+		if (JS_InstanceOfError (cx, oRoute, jsX3DRoute::getClass ()))
+			return false;
 
-		if (JS_InstanceOfError (context, oRoute, jsX3DRoute::getClass ()))
-			return JS_FALSE;
-
-		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (context, oRoute));
+		const auto & route = *getObject <RoutePtr*> (cx, oRoute);
 
 		try
 		{
 			script -> getExecutionContext () -> deleteRoute (route);
 
-			JS_SET_RVAL (context, vp, JSVAL_VOID);
+			JS_SET_RVAL (cx, vp, JSVAL_VOID);
 
-			return JS_TRUE;
+			return true;
 		}
 		catch (const X3DError & error)
 		{
-			JS_ReportError (context, error .what ());
-			return JS_FALSE;
+			JS_ReportError (cx, error .what ());
+			return false;
 		}
 	}
 
-	JS_ReportError (context, "X3DExecutionContext .deleteRoute: wrong number of arguments");
+	JS_ReportError (cx, "X3DExecutionContext .deleteRoute: wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DExecutionContext::toVRMLString (JSContext* context, uintN argc, jsval* vp)
+jsX3DExecutionContext::toVRMLString (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		Generator::NicestStyle ();
-
-		const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		const auto executionContext = getObject <X3DExecutionContext*> (cx, JS_THIS_OBJECT (cx, vp));
 
 		std::ostringstream ostream;
+
+		Generator::NicestStyle ();
 
 		executionContext -> X3DExecutionContext::toStream (ostream);
 
-		return JS_NewStringValue (context, ostream .str (), &JS_RVAL (context, vp));
+		return JS_NewStringValue (cx, ostream .str (), &JS_RVAL (cx, vp));
 	}
 
-	JS_ReportError (context, "X3DExecutionContext .toVRMLString: wrong number of arguments");
+	JS_ReportError (cx, "X3DExecutionContext .toVRMLString: wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 JSBool
-jsX3DExecutionContext::toXMLString (JSContext* context, uintN argc, jsval* vp)
+jsX3DExecutionContext::toXMLString (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		Generator::NicestStyle ();
-
-		const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		const auto executionContext = getObject <X3DExecutionContext*> (cx, JS_THIS_OBJECT (cx, vp));
 
 		std::ostringstream ostream;
 
+		Generator::NicestStyle ();
+
 		executionContext -> X3DExecutionContext::toXMLStream (ostream);
 
-		return JS_NewStringValue (context, ostream .str (), &JS_RVAL (context, vp));
+		return JS_NewStringValue (cx, ostream .str (), &JS_RVAL (cx, vp));
 	}
 
-	JS_ReportError (context, "X3DExecutionContext .toXMLString: wrong number of arguments");
+	JS_ReportError (cx, "X3DExecutionContext .toXMLString: wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 } // MozillaSpiderMonkey

@@ -101,34 +101,34 @@ private:
 	static JSBool currentScene        (JSContext *, JSObject *, jsid, jsval*);
 
 	// X3D functions
-	static JSBool replaceWorld         (JSContext *, uintN, jsval*);
-	static JSBool createX3DFromString  (JSContext *, uintN, jsval*);
-	static JSBool createX3DFromURL     (JSContext *, uintN, jsval*);
-	static JSBool loadURL              (JSContext *, uintN, jsval*);
-	static JSBool getRenderingProperty (JSContext *, uintN, jsval*);
-	static JSBool getBrowserProperty   (JSContext *, uintN, jsval*);
-	static JSBool getBrowserOption     (JSContext *, uintN, jsval*);
-	static JSBool setBrowserOption     (JSContext *, uintN, jsval*);
+	static JSBool replaceWorld         (JSContext *, uint32_t, jsval*);
+	static JSBool createX3DFromString  (JSContext *, uint32_t, jsval*);
+	static JSBool createX3DFromURL     (JSContext *, uint32_t, jsval*);
+	static JSBool loadURL              (JSContext *, uint32_t, jsval*);
+	static JSBool getRenderingProperty (JSContext *, uint32_t, jsval*);
+	static JSBool getBrowserProperty   (JSContext *, uint32_t, jsval*);
+	static JSBool getBrowserOption     (JSContext *, uint32_t, jsval*);
+	static JSBool setBrowserOption     (JSContext *, uint32_t, jsval*);
 	
-	static JSBool firstViewpoint       (JSContext *, uintN, jsval*);
-	static JSBool previousViewpoint    (JSContext *, uintN, jsval*);
-	static JSBool nextViewpoint        (JSContext *, uintN, jsval*);
-	static JSBool lastViewpoint        (JSContext *, uintN, jsval*);
+	static JSBool firstViewpoint       (JSContext *, uint32_t, jsval*);
+	static JSBool previousViewpoint    (JSContext *, uint32_t, jsval*);
+	static JSBool nextViewpoint        (JSContext *, uint32_t, jsval*);
+	static JSBool lastViewpoint        (JSContext *, uint32_t, jsval*);
 
-	static JSBool print                (JSContext *, uintN, jsval*);
-	static JSBool println              (JSContext *, uintN, jsval*);
+	static JSBool print                (JSContext *, uint32_t, jsval*);
+	static JSBool println              (JSContext *, uint32_t, jsval*);
 
 	// VRML97 functions
-	static JSBool getName              (JSContext *, uintN, jsval*);
-	static JSBool getVersion           (JSContext *, uintN, jsval*);
-	static JSBool getCurrentSpeed      (JSContext *, uintN, jsval*);
-	static JSBool getCurrentFrameRate  (JSContext *, uintN, jsval*);
-	static JSBool getWorldURL          (JSContext *, uintN, jsval*);
-	static JSBool setDescription       (JSContext *, uintN, jsval*);
-	static JSBool createVrmlFromString (JSContext *, uintN, jsval*);
-	static JSBool createVrmlFromURL    (JSContext *, uintN, jsval*);
-	static JSBool addRoute             (JSContext *, uintN, jsval*);
-	static JSBool deleteRoute          (JSContext *, uintN, jsval*);
+	static JSBool getName              (JSContext *, uint32_t, jsval*);
+	static JSBool getVersion           (JSContext *, uint32_t, jsval*);
+	static JSBool getCurrentSpeed      (JSContext *, uint32_t, jsval*);
+	static JSBool getCurrentFrameRate  (JSContext *, uint32_t, jsval*);
+	static JSBool getWorldURL          (JSContext *, uint32_t, jsval*);
+	static JSBool setDescription       (JSContext *, uint32_t, jsval*);
+	static JSBool createVrmlFromString (JSContext *, uint32_t, jsval*);
+	static JSBool createVrmlFromURL    (JSContext *, uint32_t, jsval*);
+	static JSBool addRoute             (JSContext *, uint32_t, jsval*);
+	static JSBool deleteRoute          (JSContext *, uint32_t, jsval*);
 
 	static
 	void

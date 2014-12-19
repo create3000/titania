@@ -59,10 +59,10 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 JSBool
-JS_ValueToField (JSContext* const, X3DFieldDefinition* const, jsval* const);
+setValue (JSContext* const, X3DFieldDefinition* const, jsval* const);
 
 JSBool
-JS_NewFieldValue (JSContext* const, X3DFieldDefinition* const, jsval*);
+getValue (JSContext* const, X3DFieldDefinition* const, jsval*);
 
 } // MozillaSpiderMonkey
 } // X3D

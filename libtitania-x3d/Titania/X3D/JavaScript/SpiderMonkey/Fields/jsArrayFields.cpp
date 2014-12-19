@@ -55,7 +55,7 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 template <>
-JSClass jsX3DArrayField <jsSFColor, MFColor>::static_class = {
+JSClass jsX3DArrayField <jsSFColor, X3D::MFColor>::static_class = {
 	"MFColor", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -64,7 +64,7 @@ JSClass jsX3DArrayField <jsSFColor, MFColor>::static_class = {
 };
 
 template <>
-JSClass jsX3DArrayField <jsSFColorRGBA, MFColorRGBA>::static_class = {
+JSClass jsX3DArrayField <jsSFColorRGBA, X3D::MFColorRGBA>::static_class = {
 	"MFColorRGBA", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -73,7 +73,7 @@ JSClass jsX3DArrayField <jsSFColorRGBA, MFColorRGBA>::static_class = {
 };
 
 template <>
-JSClass jsX3DArrayField <jsSFImage, MFImage>::static_class = {
+JSClass jsX3DArrayField <jsSFImage, X3D::MFImage>::static_class = {
 	"MFImage", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -82,7 +82,7 @@ JSClass jsX3DArrayField <jsSFImage, MFImage>::static_class = {
 };
 
 template <>
-JSClass jsX3DArrayField <jsSFMatrix3d, MFMatrix3d>::static_class = {
+JSClass jsX3DArrayField <jsSFMatrix3d, X3D::MFMatrix3d>::static_class = {
 	"MFMatrix3d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -91,7 +91,7 @@ JSClass jsX3DArrayField <jsSFMatrix3d, MFMatrix3d>::static_class = {
 };
 
 template <>
-JSClass jsX3DArrayField <jsSFMatrix3f, MFMatrix3f>::static_class = {
+JSClass jsX3DArrayField <jsSFMatrix3f, X3D::MFMatrix3f>::static_class = {
 	"MFMatrix3f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -100,7 +100,7 @@ JSClass jsX3DArrayField <jsSFMatrix3f, MFMatrix3f>::static_class = {
 };
 
 template <>
-JSClass jsX3DArrayField <jsSFMatrix4d, MFMatrix4d>::static_class = {
+JSClass jsX3DArrayField <jsSFMatrix4d, X3D::MFMatrix4d>::static_class = {
 	"MFMatrix4d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -109,7 +109,7 @@ JSClass jsX3DArrayField <jsSFMatrix4d, MFMatrix4d>::static_class = {
 };
 
 template <>
-JSClass jsX3DArrayField <jsSFMatrix4f, MFMatrix4f>::static_class = {
+JSClass jsX3DArrayField <jsSFMatrix4f, X3D::MFMatrix4f>::static_class = {
 	"MFMatrix4f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -118,7 +118,7 @@ JSClass jsX3DArrayField <jsSFMatrix4f, MFMatrix4f>::static_class = {
 };
 
 template <>
-JSClass jsX3DArrayField <jsSFRotation, MFRotation>::static_class = {
+JSClass jsX3DArrayField <jsSFRotation, X3D::MFRotation>::static_class = {
 	"MFRotation", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -127,7 +127,7 @@ JSClass jsX3DArrayField <jsSFRotation, MFRotation>::static_class = {
 };
 
 template <>
-JSClass jsX3DArrayField <jsSFVec2d, MFVec2d>::static_class = {
+JSClass jsX3DArrayField <jsSFVec2d, X3D::MFVec2d>::static_class = {
 	"MFVec2d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -136,7 +136,7 @@ JSClass jsX3DArrayField <jsSFVec2d, MFVec2d>::static_class = {
 };
 
 template <>
-JSClass jsX3DArrayField <jsSFVec2f, MFVec2f>::static_class = {
+JSClass jsX3DArrayField <jsSFVec2f, X3D::MFVec2f>::static_class = {
 	"MFVec2f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -145,7 +145,7 @@ JSClass jsX3DArrayField <jsSFVec2f, MFVec2f>::static_class = {
 };
 
 template <>
-JSClass jsX3DArrayField <jsSFVec3d, MFVec3d>::static_class = {
+JSClass jsX3DArrayField <jsSFVec3d, X3D::MFVec3d>::static_class = {
 	"MFVec3d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -154,7 +154,7 @@ JSClass jsX3DArrayField <jsSFVec3d, MFVec3d>::static_class = {
 };
 
 template <>
-JSClass jsX3DArrayField <jsSFVec3f, MFVec3f>::static_class = {
+JSClass jsX3DArrayField <jsSFVec3f, X3D::MFVec3f>::static_class = {
 	"MFVec3f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -163,7 +163,7 @@ JSClass jsX3DArrayField <jsSFVec3f, MFVec3f>::static_class = {
 };
 
 template <>
-JSClass jsX3DArrayField <jsSFVec4d, MFVec4d>::static_class = {
+JSClass jsX3DArrayField <jsSFVec4d, X3D::MFVec4d>::static_class = {
 	"MFVec4d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -172,7 +172,7 @@ JSClass jsX3DArrayField <jsSFVec4d, MFVec4d>::static_class = {
 };
 
 template <>
-JSClass jsX3DArrayField <jsSFVec4f, MFVec4f>::static_class = {
+JSClass jsX3DArrayField <jsSFVec4f, X3D::MFVec4f>::static_class = {
 	"MFVec4f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -180,20 +180,20 @@ JSClass jsX3DArrayField <jsSFVec4f, MFVec4f>::static_class = {
 
 };
 
-template class jsX3DArrayField <jsSFColor, MFColor>;
-template class jsX3DArrayField <jsSFColorRGBA, MFColorRGBA>;
-template class jsX3DArrayField <jsSFImage, MFImage>;
-template class jsX3DArrayField <jsSFMatrix3d, MFMatrix3d>;
-template class jsX3DArrayField <jsSFMatrix3f, MFMatrix3f>;
-template class jsX3DArrayField <jsSFMatrix4d, MFMatrix4d>;
-template class jsX3DArrayField <jsSFMatrix4f, MFMatrix4f>;
-template class jsX3DArrayField <jsSFRotation, MFRotation>;
-template class jsX3DArrayField <jsSFVec2d, MFVec2d>;
-template class jsX3DArrayField <jsSFVec2f, MFVec2f>;
-template class jsX3DArrayField <jsSFVec3d, MFVec3d>;
-template class jsX3DArrayField <jsSFVec3f, MFVec3f>;
-template class jsX3DArrayField <jsSFVec4d, MFVec4d>;
-template class jsX3DArrayField <jsSFVec4f, MFVec4f>;
+template class jsX3DArrayField <jsSFColor, X3D::MFColor>;
+template class jsX3DArrayField <jsSFColorRGBA, X3D::MFColorRGBA>;
+template class jsX3DArrayField <jsSFImage, X3D::MFImage>;
+template class jsX3DArrayField <jsSFMatrix3d, X3D::MFMatrix3d>;
+template class jsX3DArrayField <jsSFMatrix3f, X3D::MFMatrix3f>;
+template class jsX3DArrayField <jsSFMatrix4d, X3D::MFMatrix4d>;
+template class jsX3DArrayField <jsSFMatrix4f, X3D::MFMatrix4f>;
+template class jsX3DArrayField <jsSFRotation, X3D::MFRotation>;
+template class jsX3DArrayField <jsSFVec2d, X3D::MFVec2d>;
+template class jsX3DArrayField <jsSFVec2f, X3D::MFVec2f>;
+template class jsX3DArrayField <jsSFVec3d, X3D::MFVec3d>;
+template class jsX3DArrayField <jsSFVec3f, X3D::MFVec3f>;
+template class jsX3DArrayField <jsSFVec4d, X3D::MFVec4d>;
+template class jsX3DArrayField <jsSFVec4f, X3D::MFVec4f>;
 
 } // MozillaSpiderMonkey
 } // X3D

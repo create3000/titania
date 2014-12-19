@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,8 +54,8 @@
 #include "../../../Fields/SFMatrix4.h"
 #include "../../../Fields/VrmlMatrix.h"
 #include "../jsContext.h"
-#include "../jsX3DField.h"
 #include "../jsError.h"
+#include "../jsX3DField.h"
 #include "jsSFRotation.h"
 #include "jsSFVec3.h"
 
@@ -69,13 +69,9 @@ class jsSFMatrix4 :
 {
 public:
 
-	typedef Type field_type;
-
-	typedef jsSFVec3 <typename Type::vector3_type> vector3_type;
-	typedef jsSFRotation                           rotation_type;
-
-	typedef typename jsSFVec3 <typename Type::vector3_type>::field_type vector3_field_type;
-	typedef typename jsSFRotation::field_type                           rotation_field_type;
+	using internal_type = Type;
+	using vector3_type  = jsSFVec3 <typename Type::vector3_type>;
+	using rotation_type = jsSFRotation;
 
 	static
 	void
@@ -87,29 +83,30 @@ public:
 
 	static
 	JSClass*
-	getClass () { return &static_class; }
+	getClass ()
+	{ return &static_class; }
 
 
 private:
 
-	static JSBool construct (JSContext *, uintN, jsval*);
-	static JSBool enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
-	static JSBool resolve (JSContext * context, JSObject *, jsid);
+	static JSBool construct (JSContext*, uint32_t, jsval*);
+	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
+	static JSBool resolve (JSContext*, JSObject*, jsid);
 
-	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
 
-	static JSBool setTransform (JSContext *, uintN, jsval*);
-	static JSBool getTransform (JSContext *, uintN, jsval*);
+	static JSBool setTransform (JSContext*, uint32_t, jsval*);
+	static JSBool getTransform (JSContext*, uint32_t, jsval*);
 
-	static JSBool transpose     (JSContext *, uintN, jsval*);
-	static JSBool inverse       (JSContext *, uintN, jsval*);
-	static JSBool multLeft      (JSContext *, uintN, jsval*);
-	static JSBool multRight     (JSContext *, uintN, jsval*);
-	static JSBool multVecMatrix (JSContext *, uintN, jsval*);
-	static JSBool multMatrixVec (JSContext *, uintN, jsval*);
-	static JSBool multDirMatrix (JSContext *, uintN, jsval*);
-	static JSBool multMatrixDir (JSContext *, uintN, jsval*);
+	static JSBool transpose     (JSContext*, uint32_t, jsval*);
+	static JSBool inverse       (JSContext*, uint32_t, jsval*);
+	static JSBool multLeft      (JSContext*, uint32_t, jsval*);
+	static JSBool multRight     (JSContext*, uint32_t, jsval*);
+	static JSBool multVecMatrix (JSContext*, uint32_t, jsval*);
+	static JSBool multMatrixVec (JSContext*, uint32_t, jsval*);
+	static JSBool multDirMatrix (JSContext*, uint32_t, jsval*);
+	static JSBool multMatrixDir (JSContext*, uint32_t, jsval*);
 
 	static const size_t   size;
 	static JSClass        static_class;
@@ -157,73 +154,73 @@ JSFunctionSpec jsSFMatrix4 <Type>::functions [ ] = {
 
 template <class Type>
 void
-jsSFMatrix4 <Type>::init (JSContext* const context, JSObject* const global)
+jsSFMatrix4 <Type>::init (JSContext* const cx, JSObject* const global)
 {
-	JS_InitClass (context, global, NULL, &static_class, construct,
-	              0, NULL, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, properties, functions, nullptr, nullptr);
+
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 }
 
 template <class Type>
 JSBool
-jsSFMatrix4 <Type>::create (JSContext* const context, Type* const field, jsval* const vp)
+jsSFMatrix4 <Type>::create (JSContext* const cx, Type* const field, jsval* const vp)
 {
-	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	return jsX3DField::create (cx, &static_class, field, vp);
+}
 
+template <class Type>
+JSBool
+jsSFMatrix4 <Type>::construct (JSContext* cx, uint32_t argc, jsval* vp)
+{
 	try
 	{
-		*vp = OBJECT_TO_JSVAL (javaScript -> getObject (field));
+		switch (argc)
+		{
+			case 0:
+			{
+				return create (cx, new Type (), &JS_RVAL (cx, vp));
+			}
+			case 16:
+			{
+				const auto argv = JS_ARGV (cx, vp);
+				const auto m11  = getArgument <double> (cx, argv,  0);
+				const auto m12  = getArgument <double> (cx, argv,  1);
+				const auto m13  = getArgument <double> (cx, argv,  2);
+				const auto m14  = getArgument <double> (cx, argv,  3);
+				const auto m21  = getArgument <double> (cx, argv,  4);
+				const auto m22  = getArgument <double> (cx, argv,  5);
+				const auto m23  = getArgument <double> (cx, argv,  6);
+				const auto m24  = getArgument <double> (cx, argv,  7);
+				const auto m31  = getArgument <double> (cx, argv,  8);
+				const auto m32  = getArgument <double> (cx, argv,  9);
+				const auto m33  = getArgument <double> (cx, argv, 10);
+				const auto m34  = getArgument <double> (cx, argv, 11);
+				const auto m41  = getArgument <double> (cx, argv, 12);
+				const auto m42  = getArgument <double> (cx, argv, 13);
+				const auto m43  = getArgument <double> (cx, argv, 14);
+				const auto m44  = getArgument <double> (cx, argv, 15);
+
+				return create (cx, new Type (m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44), &JS_RVAL (cx, vp));
+			}
+			default:
+				return ThrowException (cx, "%s .new: wrong number of arguments.", getClass () -> name);
+		}
 	}
-	catch (const std::out_of_range &)
+	catch (const std::exception & error)
 	{
-		JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
-
-		if (result == NULL)
-			return JS_FALSE;
-
-		JS_SetPrivate (context, result, field);
-
-		javaScript -> addObject (field, result);
-
-		*vp = OBJECT_TO_JSVAL (result);
+		return ThrowException (cx, "%s .new: %s.", getClass () -> name, error .what ());
 	}
-
-	return JS_TRUE;
 }
 
 template <class Type>
 JSBool
-jsSFMatrix4 <Type>::construct (JSContext* context, uintN argc, jsval* vp)
+jsSFMatrix4 <Type>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
-	if (argc == 0)
-	{
-		return create (context, new Type (), &JS_RVAL (context, vp));
-	}
-	else if (argc == size)
-	{
-		jsdouble m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44;
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "dddddddddddddddd",
-		                             &m11, &m12, &m13, &m14, &m21, &m22, &m23, &m24, &m31, &m32, &m33, &m34, &m41, &m42, &m43, &m44))
-			return JS_FALSE;
-
-		return create (context, new Type (m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44), &JS_RVAL (context, vp));
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-template <class Type>
-JSBool
-jsSFMatrix4 <Type>::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
-{
-	if (not JS_GetPrivate (context, obj))
+	if (not JS_GetPrivate (cx, obj))
 	{
 		*statep = JSVAL_NULL;
-		return JS_TRUE;
+		return true;
 	}
 
 	size_t* index;
@@ -264,591 +261,373 @@ jsSFMatrix4 <Type>::enumerate (JSContext* context, JSObject* obj, JSIterateOp en
 		}
 	}
 
-	return JS_TRUE;
+	return true;
 }
 
 template <class Type>
 JSBool
-jsSFMatrix4 <Type>::resolve (JSContext* context, JSObject* obj, jsid id)
+jsSFMatrix4 <Type>::resolve (JSContext* cx, JSObject* obj, jsid id)
 {
 	if (not JSID_IS_INT (id))
-		return JS_TRUE;
+		return true;
 
-	const size_t index = JSID_TO_INT (id);
+	const auto index = JSID_TO_INT (id);
 
-	if (index >= 0 and index < size)
+	if (index >= 0 and index < int32_t (size))
 	{
-		// Define the indexed property
-		JS_DefineProperty (context, obj, (char*) index, JSVAL_VOID, get1Value, set1Value, JSPROP_PERMANENT | JSPROP_INDEX);
-
-		return JS_TRUE;
+		JS_DefineProperty (cx, obj, reinterpret_cast <char*> (index), JSVAL_VOID, get1Value, set1Value, JSPROP_PERMANENT | JSPROP_INDEX);
+		return true;
 	}
 
-	JS_ReportError (context, "index out of range");
-
-	return JS_FALSE;
+	return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
 }
 
 template <class Type>
 JSBool
-jsSFMatrix4 <Type>::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsSFMatrix4 <Type>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	Type* const self = (Type*) JS_GetPrivate (context, obj);
-
-	return JS_NewNumberValue (context, self -> get1Value (JSID_TO_INT (id)), vp);
-}
-
-template <class Type>
-JSBool
-jsSFMatrix4 <Type>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
-{
-	Type* const self = (Type*) JS_GetPrivate (context, obj);
-
-	jsdouble value;
-
-	if (not JS_ValueToNumber (context, *vp, &value))
-		return JS_FALSE;
-
-	self -> set1Value (JSID_TO_INT (id), value);
-
-	return JS_TRUE;
-}
-
-template <class Type>
-JSBool
-jsSFMatrix4 <Type>::setTransform (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc >= 0 or argc <= 5)
+	try
 	{
-		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		const auto lhs   = getThis <jsSFMatrix4> (cx, obj);
+		const auto index = JSID_TO_INT (id);
+		const auto value = getArgument <double> (cx, vp, 0);
 
-		JSObject* translationObj, * rotationObj, * scaleObj, * scaleOrientationObj, * centerObj;
+		lhs -> set1Value (index, value);
 
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "/ooooo", &translationObj, &rotationObj, &scaleObj, &scaleOrientationObj, &centerObj))
-			return JS_FALSE;
-
-		if (argc >= 1)
-		{
-			if (JS_InstanceOfError (context, translationObj, vector3_type::getClass ()))
-				return JS_FALSE;
-
-			vector3_field_type* const translation = (vector3_field_type*) JS_GetPrivate (context, translationObj);
-
-			if (argc >= 2)
-			{
-				if (JS_InstanceOfError (context, rotationObj, jsSFRotation::getClass ()))
-					return JS_FALSE;
-
-				rotation_field_type* const rotation = (rotation_field_type*) JS_GetPrivate (context, rotationObj);
-
-				if (argc >= 3)
-				{
-					if (JS_InstanceOfError (context, scaleObj, vector3_type::getClass ()))
-						return JS_FALSE;
-
-					vector3_field_type* const scale = (vector3_field_type*) JS_GetPrivate (context, scaleObj);
-
-					if (argc >= 4)
-					{
-						if (JS_InstanceOfError (context, scaleOrientationObj, jsSFRotation::getClass ()))
-							return JS_FALSE;
-
-						rotation_field_type* const scaleOrientation = (rotation_field_type*) JS_GetPrivate (context, scaleOrientationObj);
-
-						if (argc >= 5)
-						{
-							if (JS_InstanceOfError (context, centerObj, vector3_type::getClass ()))
-								return JS_FALSE;
-
-							vector3_field_type* const center = (vector3_field_type*) JS_GetPrivate (context, centerObj);
-
-							self -> setTransform (*translation, *rotation, *scale, *scaleOrientation, *center);
-						}
-						else
-						{
-							self -> setTransform (*translation, *rotation, *scale, *scaleOrientation);
-						}
-					}
-					else
-					{
-						self -> setTransform (*translation, *rotation, *scale);
-					}
-				}
-				else
-				{
-					self -> setTransform (*translation, *rotation);
-				}
-			}
-			else
-			{
-				self -> setTransform (*translation);
-			}
-		}
-		else
-		{
-			self -> setTransform ();
-		}
-
-		JS_SET_RVAL (context, vp, JSVAL_VOID);
-
-		return JS_TRUE;
+		return true;
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-template <class Type>
-JSBool
-jsSFMatrix4 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc < 6)
+	catch (const std::exception & error)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-
-		JSObject* translationObj      = nullptr;
-		JSObject* rotationObj         = nullptr;
-		JSObject* scaleObj            = nullptr;
-		JSObject* scaleOrientationObj = nullptr;
-		JSObject* centerObj           = nullptr;
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "/ooooo", &translationObj, &rotationObj, &scaleObj, &scaleOrientationObj, &centerObj))
-			return JS_FALSE;
-
-		vector3_field_type  translation;
-		rotation_field_type rotation;
-		vector3_field_type  scale;
-		rotation_field_type scaleOrientation;
-		vector3_field_type  center;
-	
-		if (centerObj)
-		{
-			if (JS_InstanceOfError (context, centerObj, vector3_type::getClass ()))
-				return JS_FALSE;
-
-			else
-				center = *(vector3_field_type*) JS_GetPrivate (context, centerObj);
-		}
-		
-		self -> getTransform (translation, rotation, scale, scaleOrientation, center);
-		
-		// Assign values:
-
-		if (translationObj)
-		{
-			if (JS_InstanceOfError (context, translationObj, vector3_type::getClass ()))
-				return JS_FALSE;
-
-			else
-				*(vector3_field_type*) JS_GetPrivate (context, translationObj) = translation;
-		}
-	
-		if (rotationObj)
-		{
-			if (JS_InstanceOfError (context, rotationObj, jsSFRotation::getClass ()))
-				return JS_FALSE;
-
-			else
-				*(rotation_field_type*) JS_GetPrivate (context, rotationObj) = rotation;
-		}
-
-		if (scaleObj)
-		{
-			if (JS_InstanceOfError (context, scaleObj, vector3_type::getClass ()))
-				return JS_FALSE;
-
-			else
-				*(vector3_field_type*) JS_GetPrivate (context, scaleObj) = scale;
-		}
-	
-		if (scaleOrientationObj)
-		{
-			if (JS_InstanceOfError (context, scaleOrientationObj, jsSFRotation::getClass ()))
-				return JS_FALSE;
-
-			else
-				*(rotation_field_type*) JS_GetPrivate (context, scaleOrientationObj) = scaleOrientation;
-		}
-
-/*
-		vector3_field_type*  translation      = nullptr;
-		rotation_field_type* rotation         = nullptr;
-		vector3_field_type*  scale            = nullptr;
-		rotation_field_type* scaleOrientation = nullptr;
-		vector3_field_type*  center           = nullptr;
-
-		bool noTranslation      = false;
-		bool noRotation         = false;
-		bool noScale            = false;
-		bool noScaleOrientation = false;
-
-		if (translationObj)
-		{
-			if (JS_InstanceOfError (context, translationObj, vector3_type::getClass ()))
-				return JS_FALSE;
-				
-			else
-				translation = (vector3_field_type*) JS_GetPrivate (context, translationObj);
-		}
-		else if (argc > 0)
-		{
-			translation   = new vector3_field_type ();
-			noTranslation = true;
-		}
-
-		if (rotationObj)
-		{
-			if (JS_InstanceOfError (context, rotationObj, jsSFRotation::getClass ()))
-			{
-				if (noTranslation)
-					delete translation;
-
-				return JS_FALSE;
-			}
-			else
-				rotation = (rotation_field_type*) JS_GetPrivate (context, rotationObj);
-		}
-		else if (argc > 1)
-		{
-			rotation   = new rotation_field_type ();
-			noRotation = true;
-		}
-
-		if (scaleObj)
-		{
-			if (JS_InstanceOfError (context, scaleObj, vector3_type::getClass ()))
-			{
-				if (noTranslation)
-					delete translation;
-
-				if (noRotation)
-					delete rotation;
-
-				return JS_FALSE;
-			}
-			else
-				scale = (vector3_field_type*) JS_GetPrivate (context, scaleObj);
-		}
-		else if (argc > 2)
-		{
-			scale   = new vector3_field_type ();
-			noScale = true;
-		}
-
-		if (scaleOrientationObj)
-		{
-			if (JS_InstanceOfError (context, scaleOrientationObj, jsSFRotation::getClass ()))
-			{
-				if (noTranslation)
-					delete translation;
-
-				if (noRotation)
-					delete rotation;
-
-				if (noScale)
-					delete scale;
-
-				return JS_FALSE;
-			}
-			else
-				scaleOrientation = (rotation_field_type*) JS_GetPrivate (context, scaleOrientationObj);
-		}
-		else if (argc > 3)
-		{
-			scaleOrientation   = new rotation_field_type ();
-			noScaleOrientation = true;
-		}
-
-		if (centerObj)
-		{
-			if (JS_InstanceOfError (context, centerObj, vector3_type::getClass ()))
-			{
-				if (noTranslation)
-					delete translation;
-
-				if (noRotation)
-					delete rotation;
-
-				if (noScale)
-					delete scale;
-
-				if (noScaleOrientation)
-					delete scaleOrientation;
-
-				return JS_FALSE;
-			}
-			else
-				center = (vector3_field_type*) JS_GetPrivate (context, centerObj);
-		}
-		else if (argc > 4)
-		{
-			-- argc;
-		}
-
-		switch (argc)
-		{
-			case 0:
-				break;
-			case 1:
-				self -> getTransform (*translation);
-				break;
-			case 2:
-				self -> getTransform (*translation, *rotation);
-				break;
-			case 3:
-				self -> getTransform (*translation, *rotation, *scale);
-				break;
-			case 4:
-				self -> getTransform (*translation, *rotation, *scale, *scaleOrientation);
-				break;
-			case 5:
-				self -> getTransform (*translation, *rotation, *scale, *scaleOrientation, *center);
-				break;
-		}
-
-		if (noTranslation)
-			delete translation;
-
-		if (noRotation)
-			delete rotation;
-
-		if (noScale)
-			delete scale;
-
-		if (noScaleOrientation)
-			delete scaleOrientation;
-*/
-
-		JS_SET_RVAL (context, vp, JSVAL_VOID);
-
-		return JS_TRUE;
+		return ThrowException (cx, "%s .set1Value: %s.", getClass () -> name, error .what ());
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
 }
 
 template <class Type>
 JSBool
-jsSFMatrix4 <Type>::transpose (JSContext* context, uintN argc, jsval* vp)
+jsSFMatrix4 <Type>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	if (argc == 0)
+	try
 	{
-		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		const auto lhs   = getThis <jsSFMatrix4> (cx, obj);
+		const auto index = JSID_TO_INT (id);
 
-		return create (context, self -> transpose (), &JS_RVAL (context, vp));
+		return JS_NewNumberValue (cx, lhs -> get1Value (index), vp);
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .get1Value: %s.", getClass () -> name, error .what ());
+	}
 }
 
 template <class Type>
 JSBool
-jsSFMatrix4 <Type>::inverse (JSContext* context, uintN argc, jsval* vp)
+jsSFMatrix4 <Type>::setTransform (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 0)
+	if (argc > 5)
+		return ThrowException (cx, "%s .setTransform: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFMatrix4> (cx, vp);
+
+		typename Type::vector3_type translation;
+		typename Type::rotation4f_type rotation;
+		typename Type::vector3_type scale (1, 1, 1);
+		typename Type::rotation4f_type scaleOrientation;
+		typename Type::vector3_type center;
+
 		try
 		{
-			Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-
-			return create (context, self -> inverse (), &JS_RVAL (context, vp));
+			if (argc > 0)
+				translation = *getArgument <vector3_type> (cx, argv, 0);
 		}
-		catch (const std::domain_error & error)
+		catch (const std::domain_error &)
+		{ }
+
+		try
 		{
-			JS_ReportError (context, "%s .inverse: %s", getClass () -> name, error .what ());
-			return JS_FALSE;
+			if (argc > 1)
+				rotation = *getArgument <rotation_type> (cx, argv, 1);
 		}
+		catch (const std::domain_error &)
+		{ }
+
+		try
+		{
+			if (argc > 2)
+				scale = *getArgument <vector3_type> (cx, argv, 2);
+		}
+		catch (const std::domain_error &)
+		{ }
+
+		try
+		{
+			if (argc > 3)
+				scaleOrientation = *getArgument <rotation_type> (cx, argv, 3);
+		}
+		catch (const std::domain_error &)
+		{ }
+
+		try
+		{
+			if (argc > 4)
+				center = *getArgument <vector3_type> (cx, argv, 4);
+		}
+		catch (const std::domain_error &)
+		{ }
+
+		lhs -> setTransform (translation, rotation, scale, scaleOrientation, center);
+
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
+		return true;
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .setTransform: %s.", getClass () -> name, error .what ());
+	}
 }
 
 template <class Type>
 JSBool
-jsSFMatrix4 <Type>::multLeft (JSContext* context, uintN argc, jsval* vp)
+jsSFMatrix4 <Type>::getTransform (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc > 5)
+		return ThrowException (cx, "%s .getTransform: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFMatrix4> (cx, vp);
 
-		JSObject* rhs = nullptr;
+		typename Type::vector3_type translation;
+		typename Type::rotation4f_type rotation;
+		typename Type::vector3_type scale (1, 1, 1);
+		typename Type::rotation4f_type scaleOrientation;
+		typename Type::vector3_type center;
 
-		jsval* const argv = JS_ARGV (context, vp);
+		try
+		{
+			if (argc > 4)
+				center = *getArgument <vector3_type> (cx, argv, 4);
+		}
+		catch (const std::domain_error &)
+		{ }
 
-		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
-			return JS_FALSE;
+		lhs -> getTransform (translation, rotation, scale, scaleOrientation, center);
 
-		if (JS_InstanceOfError (context, rhs, getClass ()))
-			return JS_FALSE;
+		try
+		{
+			if (argc > 0)
+				getArgument <vector3_type> (cx, argv, 0) -> setValue (translation);
+		}
+		catch (const std::domain_error &)
+		{ }
 
-		Type* const matrix = (Type*) JS_GetPrivate (context, rhs);
+		try
+		{
+			if (argc > 1)
+				getArgument <rotation_type> (cx, argv, 1) -> setValue (rotation);
+		}
+		catch (const std::domain_error &)
+		{ }
 
-		return create (context, self -> multLeft (*matrix), &JS_RVAL (context, vp));
+		try
+		{
+			if (argc > 2)
+				getArgument <vector3_type> (cx, argv, 2) -> setValue (scale);
+		}
+		catch (const std::domain_error &)
+		{ }
+
+		try
+		{
+			if (argc > 3)
+				getArgument <rotation_type> (cx, argv, 3) -> setValue (scaleOrientation);
+		}
+		catch (const std::domain_error &)
+		{ }
+
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
+		return true;
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .getTransform: %s.", getClass () -> name, error .what ());
+	}
 }
 
 template <class Type>
 JSBool
-jsSFMatrix4 <Type>::multRight (JSContext* context, uintN argc, jsval* vp)
+jsSFMatrix4 <Type>::transpose (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .transpose: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		const auto lhs = getThis <jsSFMatrix4> (cx, vp);
 
-		JSObject* rhs = nullptr;
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
-			return JS_FALSE;
-
-		if (JS_InstanceOfError (context, rhs, getClass ()))
-			return JS_FALSE;
-
-		Type* const matrix = (Type*) JS_GetPrivate (context, rhs);
-
-		return create (context, self -> multRight (*matrix), &JS_RVAL (context, vp));
+		return create (cx, lhs -> transpose (), &JS_RVAL (cx, vp));
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .transpose: %s.", getClass () -> name, error .what ());
+	}
 }
 
 template <class Type>
 JSBool
-jsSFMatrix4 <Type>::multVecMatrix (JSContext* context, uintN argc, jsval* vp)
+jsSFMatrix4 <Type>::inverse (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .inverse: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		const auto lhs = getThis <jsSFMatrix4> (cx, vp);
 
-		JSObject* rhs = nullptr;
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
-			return JS_FALSE;
-
-		if (JS_InstanceOfError (context, rhs, vector3_type::getClass ()))
-			return JS_FALSE;
-
-		vector3_field_type* const vector = (vector3_field_type*) JS_GetPrivate (context, rhs);
-
-		return vector3_type::create (context, self -> multVecMatrix (*vector), &JS_RVAL (context, vp));
+		return create (cx, lhs -> inverse (), &JS_RVAL (cx, vp));
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .inverse: %s.", getClass () -> name, error .what ());
+	}
 }
 
 template <class Type>
 JSBool
-jsSFMatrix4 <Type>::multMatrixVec (JSContext* context, uintN argc, jsval* vp)
+jsSFMatrix4 <Type>::multLeft (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .multLeft: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFMatrix4> (cx, vp);
+		const auto rhs  = getArgument <jsSFMatrix4> (cx, argv, 0);
 
-		JSObject* rhs = nullptr;
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
-			return JS_FALSE;
-
-		if (JS_InstanceOfError (context, rhs, vector3_type::getClass ()))
-			return JS_FALSE;
-
-		vector3_field_type* const vector = (vector3_field_type*) JS_GetPrivate (context, rhs);
-
-		return vector3_type::create (context, self -> multMatrixVec (*vector), &JS_RVAL (context, vp));
+		return create (cx, lhs -> multLeft (*rhs), &JS_RVAL (cx, vp));
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .multLeft: %s.", getClass () -> name, error .what ());
+	}
 }
 
 template <class Type>
 JSBool
-jsSFMatrix4 <Type>::multDirMatrix (JSContext* context, uintN argc, jsval* vp)
+jsSFMatrix4 <Type>::multRight (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .multRight: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFMatrix4> (cx, vp);
+		const auto rhs  = getArgument <jsSFMatrix4> (cx, argv, 0);
 
-		JSObject* rhs = nullptr;
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
-			return JS_FALSE;
-
-		if (JS_InstanceOfError (context, rhs, vector3_type::getClass ()))
-			return JS_FALSE;
-
-		vector3_field_type* const vector = (vector3_field_type*) JS_GetPrivate (context, rhs);
-
-		return vector3_type::create (context, self -> multDirMatrix (*vector), &JS_RVAL (context, vp));
+		return create (cx, lhs -> multLeft (*rhs), &JS_RVAL (cx, vp));
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .multRight: %s.", getClass () -> name, error .what ());
+	}
 }
 
 template <class Type>
 JSBool
-jsSFMatrix4 <Type>::multMatrixDir (JSContext* context, uintN argc, jsval* vp)
+jsSFMatrix4 <Type>::multVecMatrix (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .multVecMatrix: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFMatrix4> (cx, vp);
+		const auto rhs  = getArgument <vector3_type> (cx, argv, 0);
 
-		JSObject* rhs = nullptr;
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
-			return JS_FALSE;
-
-		if (JS_InstanceOfError (context, rhs, vector3_type::getClass ()))
-			return JS_FALSE;
-
-		vector3_field_type* const vector = (vector3_field_type*) JS_GetPrivate (context, rhs);
-
-		return vector3_type::create (context, self -> multMatrixDir (*vector), &JS_RVAL (context, vp));
+		return vector3_type::create (cx, lhs -> multVecMatrix (*rhs), &JS_RVAL (cx, vp));
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .multVecMatrix: %s.", getClass () -> name, error .what ());
+	}
 }
 
-extern template class jsSFMatrix4 <SFMatrix4d>;
-extern template class jsSFMatrix4 <SFMatrix4f>;
-extern template class jsSFMatrix4 <VrmlMatrix>;
+template <class Type>
+JSBool
+jsSFMatrix4 <Type>::multMatrixVec (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .multMatrixVec: wrong number of arguments.", getClass () -> name);
 
-typedef jsSFMatrix4 <SFMatrix4d> jsSFMatrix4d;
-typedef jsSFMatrix4 <SFMatrix4f> jsSFMatrix4f;
-typedef jsSFMatrix4 <VrmlMatrix> jsVrmlMatrix;
+	try
+	{
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFMatrix4> (cx, vp);
+		const auto rhs  = getArgument <vector3_type> (cx, argv, 0);
+
+		return vector3_type::create (cx, lhs -> multMatrixVec (*rhs), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .multMatrixVec: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class Type>
+JSBool
+jsSFMatrix4 <Type>::multDirMatrix (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .multDirMatrix: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFMatrix4> (cx, vp);
+		const auto rhs  = getArgument <vector3_type> (cx, argv, 0);
+
+		return vector3_type::create (cx, lhs -> multDirMatrix (*rhs), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .multDirMatrix: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class Type>
+JSBool
+jsSFMatrix4 <Type>::multMatrixDir (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .multMatrixDir: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFMatrix4> (cx, vp);
+		const auto rhs  = getArgument <vector3_type> (cx, argv, 0);
+
+		return vector3_type::create (cx, lhs -> multMatrixDir (*rhs), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .multMatrixDir: %s.", getClass () -> name, error .what ());
+	}
+}
+
+extern template class jsSFMatrix4 <X3D::SFMatrix4d>;
+extern template class jsSFMatrix4 <X3D::SFMatrix4f>;
+extern template class jsSFMatrix4 <X3D::VrmlMatrix>;
+
+using jsSFMatrix4d = jsSFMatrix4 <X3D::SFMatrix4d>;
+using jsSFMatrix4f = jsSFMatrix4 <X3D::SFMatrix4f>;
+using jsVrmlMatrix = jsSFMatrix4 <X3D::VrmlMatrix>;
 
 } // MozillaSpiderMonkey
 } // X3D

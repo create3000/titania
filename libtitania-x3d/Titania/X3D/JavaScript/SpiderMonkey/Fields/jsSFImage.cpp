@@ -91,161 +91,181 @@ JSFunctionSpec jsSFImage::functions [ ] = {
 };
 
 void
-jsSFImage::init (JSContext* const context, JSObject* const global)
+jsSFImage::init (JSContext* const cx, JSObject* const global)
 {
-	JS_InitClass (context, global, NULL, &static_class, construct,
-	              0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, properties, functions, nullptr, nullptr);
+
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 }
 
 JSBool
-jsSFImage::create (JSContext* const context, SFImage* const field, jsval* const vp)
+jsSFImage::create (JSContext* const cx, SFImage* const field, jsval* const vp)
 {
-	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	return jsX3DField::create (cx, &static_class, field, vp);
+}
 
+JSBool
+jsSFImage::construct (JSContext* cx, uint32_t argc, jsval* vp)
+{
 	try
 	{
-		*vp = OBJECT_TO_JSVAL (javaScript -> getObject (field));
+		switch (argc)
+		{
+			case 0:
+			{
+				return create (cx, new X3D::SFImage (), &JS_RVAL (cx, vp));
+			}
+			case 4:
+			{
+				const auto argv   = JS_ARGV (cx, vp);
+				const auto width  = getArgument <uint32_t> (cx, argv, WIDTH);
+				const auto height = getArgument <uint32_t> (cx, argv, HEIGHT);
+				const auto comp   = getArgument <uint32_t> (cx, argv, COMP);
+				const auto array  = getArgument <jsMFInt32> (cx, argv, ARRAY);
+
+				return create (cx, new X3D::SFImage (width, height, comp, *array), &JS_RVAL (cx, vp));
+			}
+			default:
+				return ThrowException (cx, "%s .new: wrong number of arguments.", getClass () -> name);
+		}
 	}
-	catch (const std::out_of_range &)
+	catch (const std::exception & error)
 	{
-		JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
-
-		if (result == NULL)
-			return JS_FALSE;
-
-		JS_SetPrivate (context, result, field);
-
-		javaScript -> addObject (field, result);
-
-		*vp = OBJECT_TO_JSVAL (result);
+		return ThrowException (cx, "%s .new: %s.", getClass () -> name, error .what ());
 	}
-
-	return JS_TRUE;
 }
 
 JSBool
-jsSFImage::construct (JSContext* context, uintN argc, jsval* vp)
+jsSFImage::width (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	if (argc == 0)
+	try
 	{
-		return create (context, new SFImage (), &JS_RVAL (context, vp));
+		const auto lhs = getThis <jsSFImage> (cx, obj);
+
+		return JS_NewNumberValue (cx, lhs -> getWidth (), vp);
 	}
-	else if (argc == 4)
+	catch (const std::exception & error)
 	{
-		uint32    width, height, comp;
-		JSObject* obj2 = nullptr;
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "uuuo", &width, &height, &comp, &obj2))
-			return JS_FALSE;
-
-		if (JS_InstanceOfError (context, obj2, jsMFInt32::getClass ()))
-			return JS_FALSE;
-
-		MFInt32* const array = (MFInt32*) JS_GetPrivate (context, obj2);
-
-		return create (context, new SFImage (width, height, comp, *array), &JS_RVAL (context, vp));
+		return ThrowException (cx, "%s .width: %s.", getClass () -> name, error .what ());
 	}
-
-	JS_ReportError (context, "new SFImage: wrong number of arguments");
-
-	return JS_FALSE;
 }
 
 JSBool
-jsSFImage::width (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsSFImage::width (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	try
+	{
+		const auto lhs   = getThis <jsSFImage> (cx, obj);
+		const auto value = getArgument <uint32_t> (cx, vp, 0);
 
-	return JS_NewNumberValue (context, sfimage -> getWidth (), vp);
+		lhs -> setWidth (value);
+
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .width: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
-jsSFImage::width (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsSFImage::height (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	try
+	{
+		const auto lhs = getThis <jsSFImage> (cx, obj);
 
-	uint32 value;
-
-	if (not JS_ValueToECMAUint32 (context, *vp, &value))
-		return JS_FALSE;
-
-	sfimage -> setWidth (value);
-
-	return JS_TRUE;
+		return JS_NewNumberValue (cx, lhs -> getHeight (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .height: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
-jsSFImage::height (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsSFImage::height (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	try
+	{
+		const auto lhs   = getThis <jsSFImage> (cx, obj);
+		const auto value = getArgument <uint32_t> (cx, vp, 0);
 
-	return JS_NewNumberValue (context, sfimage -> getHeight (), vp);
+		lhs -> setHeight (value);
+
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .height: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
-jsSFImage::height (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsSFImage::comp (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	try
+	{
+		const auto lhs = getThis <jsSFImage> (cx, obj);
 
-	uint32 value;
-
-	if (not JS_ValueToECMAUint32 (context, *vp, &value))
-		return JS_FALSE;
-
-	sfimage -> setHeight (value);
-
-	return JS_TRUE;
+		return JS_NewNumberValue (cx, lhs -> getComponents (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .comp: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
-jsSFImage::comp (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsSFImage::comp (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	try
+	{
+		const auto lhs   = getThis <jsSFImage> (cx, obj);
+		const auto value = getArgument <uint32_t> (cx, vp, 0);
 
-	return JS_NewNumberValue (context, sfimage -> getComponents (), vp);
+		lhs -> setComponents (value);
+
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .comp: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
-jsSFImage::comp (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsSFImage::array (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	try
+	{
+		const auto lhs = getThis <jsSFImage> (cx, obj);
 
-	uint32 value;
-
-	if (not JS_ValueToECMAUint32 (context, *vp, &value))
-		return JS_FALSE;
-
-	sfimage -> setComponents (value);
-
-	return JS_TRUE;
+		return jsMFInt32::create (cx, &lhs -> getArray (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .array: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
-jsSFImage::array (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsSFImage::array (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	try
+	{
+		const auto lhs   = getThis <jsSFImage> (cx, obj);
+		const auto value = getArgument <jsMFInt32> (cx, vp, 0);
 
-	return jsMFInt32::create (context, &sfimage -> getArray (), vp);
-}
+		lhs -> setArray (*value);
 
-JSBool
-jsSFImage::array (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
-{
-	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
-
-	JSObject* obj2 = nullptr;
-
-	if (not JS_ValueToObject (context, *vp, &obj2))
-		return JS_FALSE;
-		
-	if (JS_InstanceOfError (context, obj2, jsMFInt32::getClass ()))
-		return JS_FALSE;
-
-	sfimage -> setArray (*(MFInt32*) JS_GetPrivate (context, obj2));
-
-	return JS_TRUE;
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .array: %s.", getClass () -> name, error .what ());
+	}
 }
 
 } // MozillaSpiderMonkey

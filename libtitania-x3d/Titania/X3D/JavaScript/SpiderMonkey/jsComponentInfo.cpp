@@ -80,63 +80,65 @@ JSFunctionSpec jsComponentInfo::functions [ ] = {
 };
 
 void
-jsComponentInfo::init (JSContext* const context, JSObject* const global)
+jsComponentInfo::init (JSContext* const cx, JSObject* const global)
 {
-	JS_InitClass (context, global, NULL, &static_class, NULL,
-	              0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, functions, NULL, NULL);
+
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 }
 
 JSBool
-jsComponentInfo::create (JSContext* const context, const ComponentInfoPtr & componentInfo, jsval* const vp)
+jsComponentInfo::create (JSContext* const cx, const ComponentInfoPtr & componentInfo, jsval* const vp)
 {
-	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
+	JSObject* const result = JS_NewObject (cx, &static_class, NULL, NULL);
 
 	if (result == NULL)
-		return JS_FALSE;
+		return false;
 
-	JS_SetPrivate (context, result, new ComponentInfoPtr (componentInfo));
+	JS_SetPrivate (cx, result, new ComponentInfoPtr (componentInfo));
 
 	*vp = OBJECT_TO_JSVAL (result);
 
-	return JS_TRUE;
+	return true;
 }
 
 JSBool
-jsComponentInfo::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsComponentInfo::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (context, obj));
+	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (cx, obj));
 
-	return JS_NewStringValue (context, componentInfo -> getName (), vp);
+	return JS_NewStringValue (cx, componentInfo -> getName (), vp);
 }
 
 JSBool
-jsComponentInfo::level (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsComponentInfo::level (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (context, obj));
+	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (cx, obj));
 
-	return JS_NewNumberValue (context, componentInfo -> getLevel (), vp);
+	return JS_NewNumberValue (cx, componentInfo -> getLevel (), vp);
 }
 
 JSBool
-jsComponentInfo::title (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsComponentInfo::title (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (context, obj));
+	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (cx, obj));
 
-	return JS_NewStringValue (context, componentInfo -> getTitle (), vp);
+	return JS_NewStringValue (cx, componentInfo -> getTitle (), vp);
 }
 
 JSBool
-jsComponentInfo::providerUrl (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsComponentInfo::providerUrl (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (context, obj));
+	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (cx, obj));
 
-	return JS_NewStringValue (context, componentInfo -> getProviderUrl (), vp);
+	return JS_NewStringValue (cx, componentInfo -> getProviderUrl (), vp);
 }
 
 void
-jsComponentInfo::finalize (JSContext* context, JSObject* obj)
+jsComponentInfo::finalize (JSContext* cx, JSObject* obj)
 {
-	const auto componentInfo = static_cast <ComponentInfoPtr*> (JS_GetPrivate (context, obj));
+	const auto componentInfo = static_cast <ComponentInfoPtr*> (JS_GetPrivate (cx, obj));
 
 	if (componentInfo)
 		delete componentInfo;

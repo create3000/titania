@@ -61,23 +61,23 @@ namespace MozillaSpiderMonkey {
 
 template <>
 JSBool
-jsX3DArrayField <jsSFDouble, MFDouble>::construct (JSContext *, uintN, jsval*);
+jsX3DArrayField <jsSFDouble, X3D::MFDouble>::construct (JSContext *, uint32_t, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFDouble, MFDouble>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+jsX3DArrayField <jsSFDouble, X3D::MFDouble>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFDouble, MFDouble>::unshift (JSContext *, uintN, jsval*);
+jsX3DArrayField <jsSFDouble, X3D::MFDouble>::unshift (JSContext *, uint32_t, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFDouble, MFDouble>::push (JSContext *, uintN, jsval*);
+jsX3DArrayField <jsSFDouble, X3D::MFDouble>::push (JSContext *, uint32_t, jsval*);
 
-extern template class jsX3DArrayField <jsSFDouble, MFDouble>;
+extern template class jsX3DArrayField <jsSFDouble, X3D::MFDouble>;
 
-typedef jsX3DArrayField <jsSFDouble, MFDouble> jsMFDouble;
+using jsMFDouble = jsX3DArrayField <jsSFDouble, X3D::MFDouble>;
 
 } // MozillaSpiderMonkey
 } // X3D

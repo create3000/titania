@@ -87,6 +87,8 @@ TransformSensor::TransformSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "position_changed",    position_changed ());
 	addField (outputOnly,  "orientation_changed", orientation_changed ());
 	addField (inputOutput, "targetObject",        targetObject ());
+
+	addChildren (targetObjectNode);
 }
 
 X3DBaseNode*

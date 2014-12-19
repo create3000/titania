@@ -55,7 +55,7 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 template <>
-JSClass jsX3DArrayField <jsSFInt32, MFInt32>::static_class = {
+JSClass jsX3DArrayField <jsSFInt32, X3D::MFInt32>::static_class = {
 	"MFInt32", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -65,114 +65,111 @@ JSClass jsX3DArrayField <jsSFInt32, MFInt32>::static_class = {
 
 template <>
 JSBool
-jsX3DArrayField <jsSFInt32, MFInt32>::construct (JSContext* context, uintN argc, jsval* vp)
+jsX3DArrayField <jsSFInt32, X3D::MFInt32>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 0)
+	try
 	{
-		return create (context, new MFInt32 (), &JS_RVAL (context, vp));
-	}
-	else
-	{
-		MFInt32* const field = new MFInt32 ();
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		for (uintN i = 0; i < argc; ++ i)
+		if (argc == 0)
 		{
-			int32 number;
-
-			if (not JS_ValueToECMAInt32 (context, argv [i], &number))
-				return JS_FALSE;
-
-			field -> emplace_back (number);
+			return create (cx, new X3D::MFInt32 (), &JS_RVAL (cx, vp));
 		}
+		else
+		{
+			const auto array = new X3D::MFInt32 ();
+			const auto argv  = JS_ARGV (cx, vp);
 
-		return create (context, field, &JS_RVAL (context, vp));
+			for (uint32_t i = 0; i < argc; ++ i)
+			{
+				array -> emplace_back (getArgument <int32_t> (cx, argv, i));
+			}
+
+			return create (cx, array, &JS_RVAL (cx, vp));
+		}
 	}
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .new: %s.", getClass () -> name, error .what ());
+	}
 }
 
 template <>
 JSBool
-jsX3DArrayField <jsSFInt32, MFInt32>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsX3DArrayField <jsSFInt32, X3D::MFInt32>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	if (not JSID_IS_INT (id))
-		return JS_TRUE;
-
-	const int32 index = JSID_TO_INT (id);
-
-	if (index < 0)
+	try
 	{
-		JS_ReportError (context, "index out of range");
-		return JS_FALSE;
+		if (not JSID_IS_INT (id))
+			return true;
+
+		const auto array = getThis <jsX3DArrayField <jsSFInt32, X3D::MFInt32>> (cx, obj);
+		const auto index = JSID_TO_INT (id);
+		const auto value = getArgument <int32_t> (cx, vp, 0);
+
+		if (index < 0)
+			return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
+
+		array -> set1Value (index, value);
+
+		*vp = JSVAL_VOID;
+		return true;
 	}
-
-	int32 number;
-
-	if (not JS_ValueToECMAInt32 (context, *vp, &number))
-		return JS_FALSE;
-
-	MFInt32* const field = (MFInt32*) JS_GetPrivate (context, obj);
-
-	field -> set1Value (index, number);
-
-	*vp = JSVAL_VOID;
-
-	return JS_TRUE;
+	catch (const std::bad_alloc &)
+	{
+		return ThrowException (cx, "%s: out of memory.", getClass () -> name);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .set1Value: %s.", getClass () -> name, error .what ());
+	}
 }
 
 template <>
 JSBool
-jsX3DArrayField <jsSFInt32, MFInt32>::unshift (JSContext* context, uintN argc, jsval* vp)
+jsX3DArrayField <jsSFInt32, X3D::MFInt32>::unshift (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .unshift: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		int32 value;
+		const auto argv  = JS_ARGV (cx, vp);
+		const auto array = getThis <jsX3DArrayField <jsSFInt32, X3D::MFInt32>> (cx, vp);
+		const auto value = getArgument <int32_t> (cx, argv, 0);
 
-		jsval* const argv = JS_ARGV (context, vp);
+		array -> emplace_front (value);
 
-		if (not JS_ConvertArguments (context, argc, argv, "i", &value))
-			return JS_FALSE;
-
-		MFInt32* const field = (MFInt32*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-
-		field -> emplace_front (value);
-
-		return JS_NewNumberValue (context, field -> size (), vp);
+		return JS_NewNumberValue (cx, array -> size (), vp);
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .unshift: %s.", getClass () -> name, error .what ());
+	}
 }
 
 template <>
 JSBool
-jsX3DArrayField <jsSFInt32, MFInt32>::push (JSContext* context, uintN argc, jsval* vp)
+jsX3DArrayField <jsSFInt32, X3D::MFInt32>::push (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .push: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		int32 value;
+		const auto argv  = JS_ARGV (cx, vp);
+		const auto array = getThis <jsX3DArrayField <jsSFInt32, X3D::MFInt32>> (cx, vp);
+		const auto value = getArgument <int32_t> (cx, argv, 0);
 
-		jsval* const argv = JS_ARGV (context, vp);
+		array -> emplace_back (value);
 
-		if (not JS_ConvertArguments (context, argc, argv, "i", &value))
-			return JS_FALSE;
-
-		MFInt32* const field = (MFInt32*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-
-		field -> emplace_back (value);
-
-		return JS_NewNumberValue (context, field -> size (), vp);
+		return JS_NewNumberValue (cx, array -> size (), vp);
 	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .push: %s.", getClass () -> name, error .what ());
+	}
 }
 
-template class jsX3DArrayField <jsSFInt32, MFInt32>;
+template class jsX3DArrayField <jsSFInt32, X3D::MFInt32>;
 
 } // MozillaSpiderMonkey
 } // X3D

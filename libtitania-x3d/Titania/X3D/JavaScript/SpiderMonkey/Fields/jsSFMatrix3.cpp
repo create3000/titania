@@ -55,7 +55,7 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 template <>
-JSClass jsSFMatrix3 <SFMatrix3d>::static_class = {
+JSClass jsSFMatrix3 <X3D::SFMatrix3d>::static_class = {
 	"SFMatrix3d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
@@ -64,7 +64,7 @@ JSClass jsSFMatrix3 <SFMatrix3d>::static_class = {
 };
 
 template <>
-JSClass jsSFMatrix3 <SFMatrix3f>::static_class = {
+JSClass jsSFMatrix3 <X3D::SFMatrix3f>::static_class = {
 	"SFMatrix3f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
@@ -72,8 +72,8 @@ JSClass jsSFMatrix3 <SFMatrix3f>::static_class = {
 
 };
 
-template class jsSFMatrix3 <SFMatrix3d>;
-template class jsSFMatrix3 <SFMatrix3f>;
+template class jsSFMatrix3 <X3D::SFMatrix3d>;
+template class jsSFMatrix3 <X3D::SFMatrix3f>;
 
 } // MozillaSpiderMonkey
 } // X3D

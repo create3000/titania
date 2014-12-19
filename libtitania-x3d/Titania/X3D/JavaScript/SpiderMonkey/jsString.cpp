@@ -58,7 +58,7 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 JSBool
-JS_NewStringValue (JSContext* const context, const std::string & string, jsval* const vp)
+JS_NewStringValue (JSContext* const cx, const std::string & string, jsval* const vp)
 {
 	glong   items_read    = 0;
 	glong   items_written = 0;
@@ -69,10 +69,10 @@ JS_NewStringValue (JSContext* const context, const std::string & string, jsval* 
 	if (error)
 	{
 		__LOG__ << g_quark_to_string (error -> domain) << ": " << error -> code << ": " << error -> message << std::endl;
-		return JS_FALSE;
+		return false;
 	}
 
-	JSString* const result = JS_NewUCStringCopyN (context, utf16_string, items_written);
+	JSString* const result = JS_NewUCStringCopyN (cx, utf16_string, items_written);
 
 	g_free (utf16_string);
 
@@ -80,20 +80,20 @@ JS_NewStringValue (JSContext* const context, const std::string & string, jsval* 
 	{
 		*vp = STRING_TO_JSVAL (result);
 
-		return JS_TRUE;
+		return true;
 	}
 
-	return JS_FALSE;
+	return false;
 }
 
 std::string
-JS_GetString (JSContext* const context, JSString* const jsstring)
+to_string (JSContext* const cx, JSString* const jsstring)
 {
 	if (jsstring)
 	{
 		size_t utf16_length = 0;
 
-		const jschar* utf16_string = JS_GetStringCharsAndLength (context, jsstring, &utf16_length);
+		const jschar* utf16_string = JS_GetStringCharsAndLength (cx, jsstring, &utf16_length);
 
 		glong   items_read    = 0;
 		glong   items_written = 0;

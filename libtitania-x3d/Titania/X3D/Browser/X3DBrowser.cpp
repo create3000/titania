@@ -616,6 +616,15 @@ X3DBrowser::bindViewpoint (X3DViewpointNode* const viewpoint)
 	getNotification () -> string () = viewpoint -> description ();
 }
 
+void
+X3DBrowser::beginUpdate ()
+throw (Error <DISPOSED>)
+{
+	getClock () -> advance ();
+
+	X3DBaseNode::beginUpdate ();
+}
+
 // Destruction
 
 void

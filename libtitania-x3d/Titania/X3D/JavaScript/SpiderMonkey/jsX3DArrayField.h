@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,23 +52,27 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DARRAY_FIELD_H__
 
 #include "jsContext.h"
+#include "jsError.h"
 #include "jsString.h"
 #include "jsX3DField.h"
-#include "jsError.h"
 
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-template <class Type, class FieldType>
+template <class Type, class InternalType>
 class jsX3DArrayField :
 	public jsX3DField
 {
 public:
 
-	typedef Type                           value_type;
-	typedef FieldType                      field_type;
-	typedef typename FieldType::value_type field_value_type;
+	///  @name Member types
+
+	using value_type    = Type;
+	using internal_type = InternalType;
+	using single_type   = typename InternalType::value_type;
+
+	///  @name Construction
 
 	static
 	void
@@ -76,7 +80,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext* const, FieldType* const, jsval* const);
+	create (JSContext* const, InternalType* const, jsval* const);
 
 	static
 	JSClass*
@@ -86,24 +90,34 @@ public:
 
 private:
 
+	///  @name Member types
+
 	enum Property {LENGTH};
 
-	static JSBool construct (JSContext *, uintN, jsval*);
+	///  @name Construction
 
-	static
-	JSBool
-	enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
+	static JSBool construct (JSContext*, uint32_t, jsval*);
 
-	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	///  @name Member access
 
-	static JSBool unshift (JSContext *, uintN, jsval*);
-	static JSBool push    (JSContext *, uintN, jsval*);
-	static JSBool shift   (JSContext *, uintN, jsval*);
-	static JSBool pop     (JSContext *, uintN, jsval*);
+	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
 
-	static JSBool length (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool length (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
+
+	///  @name Functions
+
+	static JSBool unshift (JSContext*, uint32_t, jsval*);
+	static JSBool push    (JSContext*, uint32_t, jsval*);
+	static JSBool shift   (JSContext*, uint32_t, jsval*);
+	static JSBool pop     (JSContext*, uint32_t, jsval*);
+
+	///  @name Properties
+
+	static JSBool length (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool length (JSContext*, JSObject*, jsid, jsval*);
+
+	///  @name Static members
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
@@ -111,8 +125,8 @@ private:
 
 };
 
-template <class Type, class FieldType>
-JSClass jsX3DArrayField <Type, FieldType>::static_class = {
+template <class Type, class InternalType>
+JSClass jsX3DArrayField <Type, InternalType>::static_class = {
 	"X3DArrayField", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -120,346 +134,331 @@ JSClass jsX3DArrayField <Type, FieldType>::static_class = {
 
 };
 
-template <class Type, class FieldType>
-JSPropertySpec jsX3DArrayField <Type, FieldType>::properties [ ] = {
+template <class Type, class InternalType>
+JSPropertySpec jsX3DArrayField <Type, InternalType>::properties [ ] = {
 	{ "length", LENGTH, JSPROP_SHARED | JSPROP_PERMANENT, length, length },
 	{ 0 }
 
 };
 
-template <class Type, class FieldType>
-JSFunctionSpec jsX3DArrayField <Type, FieldType>::functions [ ] = {
-	{ "getName",     getName <FieldType>,     0, 0 },
-	{ "getTypeName", getTypeName <FieldType>, 0, 0 },
-	{ "getType",     getType,                 0, 0 },
-	{ "isReadable",  isReadable,              0, 0 },
-	{ "isWritable",  isWritable,              0, 0 },
+template <class Type, class InternalType>
+JSFunctionSpec jsX3DArrayField <Type, InternalType>::functions [ ] = {
+	{ "getName",     getName <InternalType>,     0, 0 },
+	{ "getTypeName", getTypeName <InternalType>, 0, 0 },
+	{ "getType",     getType,                    0, 0 },
+	{ "isReadable",  isReadable,                 0, 0 },
+	{ "isWritable",  isWritable,                 0, 0 },
 
 	{ "unshift",     unshift, 1, 0 },
 	{ "push",        push,    1, 0 },
 	{ "shift",       shift,   0, 0 },
 	{ "pop",         pop,     0, 0 },
 
-	{ "toString",    toString <FieldType>,    0, 0 },
+	{ "toString",    toString <InternalType>,    0, 0 },
 
 	{ 0 }
 
 };
 
-template <class Type, class FieldType>
+template <class Type, class InternalType>
 void
-jsX3DArrayField <Type, FieldType>::init (JSContext* const context, JSObject* const global)
+jsX3DArrayField <Type, InternalType>::init (JSContext* const cx, JSObject* const global)
 {
-	JS_InitClass (context, global, NULL, &static_class, construct,
-	              0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, properties, functions, nullptr, nullptr);
+
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 }
 
-template <class Type, class FieldType>
+template <class Type, class InternalType>
 JSBool
-jsX3DArrayField <Type, FieldType>::create (JSContext* const context, FieldType* const field, jsval* const vp)
+jsX3DArrayField <Type, InternalType>::create (JSContext* const cx, InternalType* const array, jsval* const vp)
 {
-	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	return jsX3DField::create (cx, &static_class, array, vp);
+}
 
+template <class Type, class InternalType>
+JSBool
+jsX3DArrayField <Type, InternalType>::construct (JSContext* cx, uint32_t argc, jsval* vp)
+{
 	try
 	{
-		*vp = OBJECT_TO_JSVAL (javaScript -> getObject (field));
-	}
-	catch (const std::out_of_range &)
-	{
-		JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
-
-		if (result == NULL)
-			return JS_FALSE;
-
-		JS_SetPrivate (context, result, field);
-
-		javaScript -> addObject (field, result);
-
-		*vp = OBJECT_TO_JSVAL (result);
-	}
-
-	return JS_TRUE;
-}
-
-template <class Type, class FieldType>
-JSBool
-jsX3DArrayField <Type, FieldType>::construct (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 0)
-	{
-		return create (context, new field_type (), &JS_RVAL (context, vp));
-	}
-	else
-	{
-		field_type* const field = new field_type ();
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		for (uintN i = 0; i < argc; ++ i)
+		if (argc == 0)
 		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (context, argv [i], &value))
-				return JS_FALSE;
-			
-			if (JS_InstanceOfError (context, value, value_type::getClass ()))
-				return JS_FALSE;
-
-			field -> emplace_back (*(field_value_type*) JS_GetPrivate (context, value));
+			return create (cx, new InternalType (), &JS_RVAL (cx, vp));
 		}
-
-		return create (context, field, &JS_RVAL (context, vp));
-	}
-
-	return JS_FALSE;
-}
-
-template <class Type, class FieldType>
-JSBool
-jsX3DArrayField <Type, FieldType>::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
-{
-	FieldType* const field = static_cast <FieldType*> (JS_GetPrivate (context, obj));
-
-	if (not field)
-	{
-		*statep = JSVAL_NULL;
-		return JS_TRUE;
-	}
-
-	size_t* index;
-
-	switch (enum_op)
-	{
-		case JSENUMERATE_INIT:
-		case JSENUMERATE_INIT_ALL:
+		else
 		{
-			index   = new size_t (0);
-			*statep = PRIVATE_TO_JSVAL (index);
+			const auto array = new InternalType ();
+			const auto argv  = JS_ARGV (cx, vp);
 
-			if (idp)
-				*idp = INT_TO_JSID (field -> size ());
-
-			break;
-		}
-		case JSENUMERATE_NEXT:
-		{
-			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
-
-			if (*index < field -> size ())
+			for (uint32_t i = 0; i < argc; ++ i)
 			{
-				if (idp)
-					*idp = INT_TO_JSID (*index);
-
-				*index = *index + 1;
-				break;
+				array -> emplace_back (*getArgument <value_type> (cx, argv, i));
 			}
 
-			//else done -- cleanup.
-		}
-		case JSENUMERATE_DESTROY:
-		{
-			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
-			delete index;
-			*statep = JSVAL_NULL;
+			return create (cx, array, &JS_RVAL (cx, vp));
 		}
 	}
-
-	return JS_TRUE;
-}
-
-template <class Type, class FieldType>
-JSBool
-jsX3DArrayField <Type, FieldType>::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	if (not JSID_IS_INT (id))
-		return JS_TRUE;
-
-	const int32 index = JSID_TO_INT (id);
-
-	if (index < 0)
+	catch (const std::exception & error)
 	{
-		JS_ReportError (context, "%s .get1Value: index out of range.", getClass () -> name);
-		return JS_FALSE;
+		return ThrowException (cx, "%s .new: %s.", getClass () -> name, error .what ());
 	}
-
-	FieldType* field = (FieldType*) JS_GetPrivate (context, obj);
-
-	return value_type::create (context, &field -> get1Value (index), vp);
 }
 
-template <class Type, class FieldType>
+template <class Type, class InternalType>
 JSBool
-jsX3DArrayField <Type, FieldType>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
-{
-	if (not JSID_IS_INT (id))
-		return JS_TRUE;
-
-	const int32 index = JSID_TO_INT (id);
-
-	if (index < 0)
-	{
-		JS_ReportError (context, "index out of range");
-		return JS_FALSE;
-	}
-
-	JSObject* value = nullptr;
-
-	if (not JS_ValueToObject (context, *vp, &value))
-		return JS_FALSE;
-		
-	if (JS_InstanceOfError (context, value, value_type::getClass ()))
-		return JS_FALSE;
-
-	FieldType* const field = (FieldType*) JS_GetPrivate (context, obj);
-
-	field -> set1Value (index, *(field_value_type*) JS_GetPrivate (context, value));
-
-	*vp = JSVAL_VOID;
-
-	return JS_TRUE;
-}
-
-template <class Type, class FieldType>
-JSBool
-jsX3DArrayField <Type, FieldType>::unshift (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 1)
-	{
-		JSObject* value = nullptr;
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "o", &value))
-			return JS_FALSE;
-			
-		if (JS_InstanceOfError (context, value, value_type::getClass ()))
-			return JS_FALSE;
-
-		FieldType* const field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-
-		field -> emplace_front (*(field_value_type*) JS_GetPrivate (context, value));
-
-		return JS_NewNumberValue (context, field -> size (), vp);
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-template <class Type, class FieldType>
-JSBool
-jsX3DArrayField <Type, FieldType>::push (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 1)
-	{
-		JSObject* value = nullptr;
-
-		jsval* const argv = JS_ARGV (context, vp);
-
-		if (not JS_ConvertArguments (context, argc, argv, "o", &value))
-			return JS_FALSE;
-
-		if (JS_InstanceOfError (context, value, value_type::getClass ()))
-			return JS_FALSE;
-
-		FieldType* const field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-
-		field -> emplace_back (*(field_value_type*) JS_GetPrivate (context, value));
-
-		return JS_NewNumberValue (context, field -> size (), vp);
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-template <class Type, class FieldType>
-JSBool
-jsX3DArrayField <Type, FieldType>::shift (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 0)
-	{
-		FieldType* const field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-
-		if (field -> empty ())
-		{
-			*vp = JSVAL_VOID;
-
-			return JS_TRUE;
-		}
-
-		const auto value = new field_value_type (field -> front ());
-
-		field -> pop_front ();
-
-		return value_type::create (context, value, vp);
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-template <class Type, class FieldType>
-JSBool
-jsX3DArrayField <Type, FieldType>::pop (JSContext* context, uintN argc, jsval* vp)
-{
-	if (argc == 0)
-	{
-		FieldType* const field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
-
-		if (field -> empty ())
-		{
-			*vp = JSVAL_VOID;
-
-			return JS_TRUE;
-		}
-
-		const auto value = new field_value_type (field -> back ());
-
-		field -> pop_back ();
-
-		return value_type::create (context, value, vp);
-	}
-
-	JS_ReportError (context, "wrong number of arguments");
-
-	return JS_FALSE;
-}
-
-template <class Type, class FieldType>
-JSBool
-jsX3DArrayField <Type, FieldType>::length (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	FieldType* const field = static_cast <FieldType*> (JS_GetPrivate (context, obj));
-
-	return JS_NewNumberValue (context, field -> size (), vp);
-}
-
-template <class Type, class FieldType>
-JSBool
-jsX3DArrayField <Type, FieldType>::length (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsX3DArrayField <Type, InternalType>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
 	try
 	{
-		FieldType* const field = static_cast <FieldType*> (JS_GetPrivate (context, obj));
+		const auto array = getThis <jsX3DArrayField> (cx, obj);
 
-		uint32 value;
+		size_t* index;
 
-		if (not JS_ValueToECMAUint32 (context, *vp, &value))
-			return JS_FALSE;
+		switch (enum_op)
+		{
+			case JSENUMERATE_INIT:
+			case JSENUMERATE_INIT_ALL:
+			{
+				index   = new size_t (0);
+				*statep = PRIVATE_TO_JSVAL (index);
 
-		field -> resize (value);
+				if (idp)
+					*idp = INT_TO_JSID (array -> size ());
 
-		return JS_TRUE;
+				break;
+			}
+			case JSENUMERATE_NEXT:
+			{
+				index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+
+				if (*index < array -> size ())
+				{
+					if (idp)
+						*idp = INT_TO_JSID (*index);
+
+					*index = *index + 1;
+					break;
+				}
+
+				//else done -- cleanup.
+			}
+			case JSENUMERATE_DESTROY:
+			{
+				index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+				delete index;
+				*statep = JSVAL_NULL;
+			}
+		}
+
+		return true;
+	}
+	catch (const std::exception &)
+	{
+		*statep = JSVAL_NULL;
+		return true;
+	}
+}
+
+template <class Type, class InternalType>
+JSBool
+jsX3DArrayField <Type, InternalType>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+{
+	try
+	{
+		if (not JSID_IS_INT (id))
+			return true;
+
+		const auto array = getThis <jsX3DArrayField> (cx, obj);
+		const auto index = JSID_TO_INT (id);
+		const auto value = getArgument <Type> (cx, vp, 0);
+
+		if (index < 0)
+			return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
+
+		array -> set1Value (index, *value);
+
+		*vp = JSVAL_VOID;
+		return true;
 	}
 	catch (const std::bad_alloc &)
 	{
-		JS_ReportError (context, "out of memory");
+		return ThrowException (cx, "%s: out of memory.", getClass () -> name);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .set1Value: %s.", getClass () -> name, error .what ());
+	}
+}
 
-		return JS_FALSE;
+template <class Type, class InternalType>
+JSBool
+jsX3DArrayField <Type, InternalType>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	try
+	{
+		if (not JSID_IS_INT (id))
+			return true;
+
+		const auto array = getThis <jsX3DArrayField> (cx, obj);
+		const auto index = JSID_TO_INT (id);
+
+		if (index < 0)
+			return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
+
+		return Type::create (cx, &array -> get1Value (index), vp);
+	}
+	catch (const std::bad_alloc &)
+	{
+		return ThrowException (cx, "%s: out of memory.", getClass () -> name);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .set1Value: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class Type, class InternalType>
+JSBool
+jsX3DArrayField <Type, InternalType>::unshift (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .unshift: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv  = JS_ARGV (cx, vp);
+		const auto array = getThis <jsX3DArrayField> (cx, vp);
+		const auto value = getArgument <Type> (cx, argv, 0);
+
+		array -> emplace_front (*value);
+
+		return JS_NewNumberValue (cx, array -> size (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .unshift: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class Type, class InternalType>
+JSBool
+jsX3DArrayField <Type, InternalType>::push (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .push: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv  = JS_ARGV (cx, vp);
+		const auto array = getThis <jsX3DArrayField> (cx, vp);
+		const auto value = getArgument <Type> (cx, argv, 0);
+
+		array -> emplace_back (*value);
+
+		return JS_NewNumberValue (cx, array -> size (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .push: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class Type, class InternalType>
+JSBool
+jsX3DArrayField <Type, InternalType>::shift (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .shift: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto array = getThis <jsX3DArrayField> (cx, vp);
+
+		if (array -> empty ())
+		{
+			*vp = JSVAL_VOID;
+			return true;
+		}
+
+		const auto value = new single_type (array -> front ());
+
+		array -> pop_front ();
+
+		return Type::create (cx, value, vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .shift: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class Type, class InternalType>
+JSBool
+jsX3DArrayField <Type, InternalType>::pop (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .pop: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto array = getThis <jsX3DArrayField> (cx, vp);
+
+		if (array -> empty ())
+		{
+			*vp = JSVAL_VOID;
+			return true;
+		}
+
+		const auto value = new single_type (array -> back ());
+
+		array -> pop_back ();
+
+		return Type::create (cx, value, vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .pop: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class Type, class InternalType>
+JSBool
+jsX3DArrayField <Type, InternalType>::length (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+{
+	try
+	{
+		const auto array = getThis <jsX3DArrayField> (cx, obj);
+		const auto size  = getArgument <uint32_t> (cx, vp, 0);
+
+		array -> resize (size);
+
+		return true;
+	}
+	catch (const std::bad_alloc &)
+	{
+		return ThrowException (cx, "%s: out of memory.", getClass () -> name);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .length: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class Type, class InternalType>
+JSBool
+jsX3DArrayField <Type, InternalType>::length (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	try
+	{
+		const auto array = getThis <jsX3DArrayField> (cx, obj);
+
+		return JS_NewNumberValue (cx, array -> size (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .length: %s.", getClass () -> name, error .what ());
 	}
 }
 

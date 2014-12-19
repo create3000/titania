@@ -52,16 +52,16 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_ROUTE_ARRAY_H__
 
 #include "../../Routing/RouteArray.h"
-#include "jsConstArray.h"
+#include "jsX3DConstArray.h"
 #include "jsX3DRoute.h"
 
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-typedef jsConstArray <RouteArray, jsX3DRoute> jsRouteArray;
+typedef jsX3DConstArray <RouteArray, jsX3DRoute> jsRouteArray;
 
-extern template class jsConstArray <RouteArray, jsX3DRoute>;
+extern template class jsX3DConstArray <RouteArray, jsX3DRoute>;
 
 } // MozillaSpiderMonkey
 } // X3D

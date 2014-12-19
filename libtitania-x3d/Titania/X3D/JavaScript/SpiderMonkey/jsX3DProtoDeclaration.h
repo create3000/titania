@@ -89,7 +89,7 @@ private:
 	static JSBool fields        (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool isExternProto (JSContext *, JSObject *, jsid, jsval*);
 
-	static JSBool newInstance (JSContext *, uintN, jsval*);
+	static JSBool newInstance (JSContext *, uint32_t, jsval*);
 
 	static
 	void

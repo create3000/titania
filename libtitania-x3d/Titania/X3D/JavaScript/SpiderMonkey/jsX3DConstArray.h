@@ -58,7 +58,7 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 template <class Type, class ValueType>
-class jsConstArray
+class jsX3DConstArray
 {
 public:
 
@@ -72,7 +72,8 @@ public:
 
 	static
 	JSClass*
-	getClass () { return &static_class; }
+	getClass ()
+	{ return &static_class; }
 
 
 private:
@@ -94,8 +95,8 @@ private:
 };
 
 template <class Type, class ValueType>
-JSClass jsConstArray <Type, ValueType>::static_class = {
-	"jsConstArray", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+JSClass jsX3DConstArray <Type, ValueType>::static_class = {
+	"jsX3DConstArray", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
 	JSCLASS_NO_OPTIONAL_MEMBERS
@@ -103,52 +104,54 @@ JSClass jsConstArray <Type, ValueType>::static_class = {
 };
 
 template <class Type, class ValueType>
-JSPropertySpec jsConstArray <Type, ValueType>::properties [ ] = {
+JSPropertySpec jsX3DConstArray <Type, ValueType>::properties [ ] = {
 	{ "length", LENGTH, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, length, NULL },
 	{ 0 }
 
 };
 
 template <class Type, class ValueType>
-JSFunctionSpec jsConstArray <Type, ValueType>::functions [ ] = {
+JSFunctionSpec jsX3DConstArray <Type, ValueType>::functions [ ] = {
 	{ 0, 0, 0, 0 }
 
 };
 
 template <class Type, class ValueType>
 void
-jsConstArray <Type, ValueType>::init (JSContext* const context, JSObject* const global)
+jsX3DConstArray <Type, ValueType>::init (JSContext* const cx, JSObject* const global)
 {
-	JS_InitClass (context, global, NULL, &static_class, NULL,
-	              0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, functions, NULL, NULL);
+
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 }
 
 template <class Type, class ValueType>
 JSBool
-jsConstArray <Type, ValueType>::create (JSContext* const context, const Type* const array, jsval* const vp)
+jsX3DConstArray <Type, ValueType>::create (JSContext* const cx, const Type* const array, jsval* const vp)
 {
-	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
+	JSObject* const result = JS_NewObject (cx, &static_class, NULL, NULL);
 
 	if (result == NULL)
-		return JS_FALSE;
+		return false;
 
-	JS_SetPrivate (context, result, const_cast <Type*> (array));
+	JS_SetPrivate (cx, result, const_cast <Type*> (array));
 
 	*vp = OBJECT_TO_JSVAL (result);
 
-	return JS_TRUE;
+	return true;
 }
 
 template <class Type, class ValueType>
 JSBool
-jsConstArray <Type, ValueType>::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+jsX3DConstArray <Type, ValueType>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
-	const auto array = static_cast <Type*> (JS_GetPrivate (context, obj));
+	const auto array = static_cast <Type*> (JS_GetPrivate (cx, obj));
 
 	if (not array)
 	{
 		*statep = JSVAL_NULL;
-		return JS_TRUE;
+		return true;
 	}
 
 	size_t* index;
@@ -189,35 +192,35 @@ jsConstArray <Type, ValueType>::enumerate (JSContext* context, JSObject* obj, JS
 		}
 	}
 
-	return JS_TRUE;
+	return true;
 }
 
 template <class Type, class ValueType>
 JSBool
-jsConstArray <Type, ValueType>::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstArray <Type, ValueType>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	if (not JSID_IS_INT (id))
-		return JS_TRUE;
+		return true;
 
-	const int32 index = JSID_TO_INT (id);
-	const auto  array = static_cast <Type*> (JS_GetPrivate (context, obj));
+	const int32_t index = JSID_TO_INT (id);
+	const auto    array = static_cast <Type*> (JS_GetPrivate (cx, obj));
 
-	if (index < 0 and index >= (int32) array -> size ())
+	if (index < 0 and index >= (int32_t) array -> size ())
 	{
-		JS_ReportError (context, "index out of range");
-		return JS_FALSE;
+		JS_ReportError (cx, "%s: array index out of range.", getClass () -> name);
+		return false;
 	}
 
-	return ValueType::create (context, array -> at (index), vp);
+	return ValueType::create (cx, array -> at (index), vp);
 }
 
 template <class Type, class ValueType>
 JSBool
-jsConstArray <Type, ValueType>::length (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstArray <Type, ValueType>::length (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto array = static_cast <Type*> (JS_GetPrivate (context, obj));
+	const auto array = static_cast <Type*> (JS_GetPrivate (cx, obj));
 
-	return JS_NewNumberValue (context, array -> size (), vp);
+	return JS_NewNumberValue (cx, array -> size (), vp);
 }
 
 } // MozillaSpiderMonkey

@@ -80,63 +80,65 @@ JSFunctionSpec jsProfileInfo::functions [ ] = {
 };
 
 void
-jsProfileInfo::init (JSContext* const context, JSObject* const global)
+jsProfileInfo::init (JSContext* const cx, JSObject* const global)
 {
-	JS_InitClass (context, global, NULL, &static_class, NULL,
-	              0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, functions, NULL, NULL);
+
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 }
 
 JSBool
-jsProfileInfo::create (JSContext* const context, const ProfileInfoPtr & profileInfo, jsval* const vp)
+jsProfileInfo::create (JSContext* const cx, const ProfileInfoPtr & profileInfo, jsval* const vp)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
+	JSObject* result = JS_NewObject (cx, &static_class, NULL, NULL);
 
 	if (result == NULL)
-		return JS_FALSE;
+		return false;
 
-	JS_SetPrivate (context, result, new ProfileInfoPtr (profileInfo));
+	JS_SetPrivate (cx, result, new ProfileInfoPtr (profileInfo));
 
 	*vp = OBJECT_TO_JSVAL (result);
 
-	return JS_TRUE;
+	return true;
 }
 
 JSBool
-jsProfileInfo::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsProfileInfo::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (context, obj));
+	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (cx, obj));
 
-	return JS_NewStringValue (context, profileInfo -> getName (), vp);
+	return JS_NewStringValue (cx, profileInfo -> getName (), vp);
 }
 
 JSBool
-jsProfileInfo::title (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsProfileInfo::title (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (context, obj));
+	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (cx, obj));
 
-	return JS_NewStringValue (context, profileInfo -> getTitle (), vp);
+	return JS_NewStringValue (cx, profileInfo -> getTitle (), vp);
 }
 
 JSBool
-jsProfileInfo::providerUrl (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsProfileInfo::providerUrl (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (context, obj));
+	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (cx, obj));
 
-	return JS_NewStringValue (context, profileInfo -> getProviderUrl (), vp);
+	return JS_NewStringValue (cx, profileInfo -> getProviderUrl (), vp);
 }
 
 JSBool
-jsProfileInfo::components (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsProfileInfo::components (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (context, obj));
+	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (cx, obj));
 
-	return jsComponentInfoArray::create (context, &profileInfo -> getComponents (), vp);
+	return jsComponentInfoArray::create (cx, &profileInfo -> getComponents (), vp);
 }
 
 void
-jsProfileInfo::finalize (JSContext* context, JSObject* obj)
+jsProfileInfo::finalize (JSContext* cx, JSObject* obj)
 {
-	const auto profileInfo = static_cast <ProfileInfoPtr*> (JS_GetPrivate (context, obj));
+	const auto profileInfo = static_cast <ProfileInfoPtr*> (JS_GetPrivate (cx, obj));
 
 	if (profileInfo)
 		delete profileInfo;

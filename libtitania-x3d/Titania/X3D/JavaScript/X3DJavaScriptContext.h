@@ -78,6 +78,9 @@ public:
 	getScriptNode () const
 	{ return script; }
 
+	void
+	setError (const std::string &, const std::string &, const int, const int, std::string) const;
+
 	///  @name Operations
 
 	virtual
@@ -95,9 +98,6 @@ protected:
 	const std::string &
 	getECMAScript () const
 	{ return ecmascript; }
-
-	void
-	error (const std::string &, const std::string &, const int, const int, std::string) const;
 
 
 private:

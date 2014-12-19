@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DOBJECT_H__
 
 #include "../../InputOutput/Generator.h"
+#include "jsArguments.h"
 #include "jsString.h"
 
 #include <jsapi.h>
@@ -64,65 +65,67 @@ class jsX3DObject
 {
 protected:
 
-	template <class Type>
-	static JSBool getName (JSContext *, uintN, jsval*);
+	///  @name Functions
 
 	template <class Type>
-	static JSBool getTypeName (JSContext *, uintN, jsval*);
+	static JSBool getName (JSContext*, uint32_t, jsval*);
 
 	template <class Type>
-	static JSBool toString (JSContext *, uintN, jsval*);
+	static JSBool getTypeName (JSContext*, uint32_t, jsval*);
+
+	template <class Type>
+	static JSBool toString (JSContext*, uint32_t, jsval*);
 
 };
 
 template <class Type>
 JSBool
-jsX3DObject::getName (JSContext* context, uintN argc, jsval* vp)
+jsX3DObject::getName (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		const Type* const value = static_cast <Type*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		const Type* const value = static_cast <Type*> (JS_GetPrivate (cx, JS_THIS_OBJECT (cx, vp)));
 
-		return JS_NewStringValue (context, value -> getName (), vp);
+		return JS_NewStringValue (cx, value -> getName (), vp);
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (cx, "wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 template <class Type>
 JSBool
-jsX3DObject::getTypeName (JSContext* context, uintN argc, jsval* vp)
+jsX3DObject::getTypeName (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		const Type* const value = static_cast <Type*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		const Type* const value = static_cast <Type*> (JS_GetPrivate (cx, JS_THIS_OBJECT (cx, vp)));
 
-		return JS_NewStringValue (context, value -> getTypeName (), vp);
+		return JS_NewStringValue (cx, value -> getTypeName (), vp);
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (cx, "wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 template <class Type>
 JSBool
-jsX3DObject::toString (JSContext* context, uintN argc, jsval* vp)
+jsX3DObject::toString (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 0)
 	{
 		Generator::NicestStyle ();
 
-		const Type* const value = static_cast <Type*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		const Type* const value = static_cast <Type*> (JS_GetPrivate (cx, JS_THIS_OBJECT (cx, vp)));
 
-		return JS_NewStringValue (context, value -> toString (), vp);
+		return JS_NewStringValue (cx, value -> toString (), vp);
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (cx, "wrong number of arguments");
 
-	return JS_FALSE;
+	return false;
 }
 
 } // MozillaSpiderMonkey

@@ -171,6 +171,8 @@ Browser::on_unmap ()
 {
 	if (isLive ())
 	{
+		getClock () -> advance ();
+
 		getExecutionContext () -> endUpdate ();
 
 		ContextLock lock (this);

@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 01 Jun 2014 03:00:06 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.6, http://titania.create3000.de"
-META "modified" "Mon, 15 Dec 2014 16:09:07 GMT"
+META "modified" "Thu, 18 Dec 2014 18:12:57 GMT"
 
 Transform {
   children [
@@ -41,11 +41,11 @@ Transform {
 }
 
 DEF Script1 Script {
-  inputOnly SFTime set_time
-  field SFBool  boolean TRUE
-  field SFVec3d vector 1 2 3
-  field SFNode viewpoint Viewpoint { }
-  field SFNode null_ NULL
+  inputOnly      SFTime  set_time
+  initializeOnly SFBool  boolean TRUE
+  initializeOnly SFVec3d vector 16 32 48
+  initializeOnly SFNode  viewpoint Viewpoint { }
+  initializeOnly SFNode  null_ NULL
 
   url "v8:
 
@@ -347,8 +347,23 @@ function set_time (value, time)
 {
 	print ('Script 2. value:   ', value);
 	print ('Script 2. time:    ', time);
-	print ('Script 2. SFVec4f: ', new SFVec4f ());
 	
+	var v = new SFVec4f (1, 2, 3, 4);
+	print ('Script 2. SFVec4f: ', v);
+	print ('Script 2. SFVec4f: ', v .add (v));
+
+	v [0] = 2;
+	v [1] = 3;
+	v [2] = 4;
+	v [3] = 5;
+	print ('Script 2. SFVec4f []: ', v);
+	
+	var m = SFMatrix4f ();
+	print ('SFMatrix4f: ', m);
+	m [0] = 2;
+	print ('SFMatrix4f: ', m);
+	print ('SFMatrix4f: ', m .getTypeName ());
+
 	var a = [ ];
 	for (var i = 0; i < 1000; ++ i)
 		a .push (new SFVec4f ());

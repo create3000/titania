@@ -61,23 +61,23 @@ namespace MozillaSpiderMonkey {
 
 template <>
 JSBool
-jsX3DArrayField <jsSFFloat, MFFloat>::construct (JSContext *, uintN, jsval*);
+jsX3DArrayField <jsSFFloat, X3D::MFFloat>::construct (JSContext *, uint32_t, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFFloat, MFFloat>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+jsX3DArrayField <jsSFFloat, X3D::MFFloat>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFFloat, MFFloat>::unshift (JSContext *, uintN, jsval*);
+jsX3DArrayField <jsSFFloat, X3D::MFFloat>::unshift (JSContext *, uint32_t, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFFloat, MFFloat>::push (JSContext *, uintN, jsval*);
+jsX3DArrayField <jsSFFloat, X3D::MFFloat>::push (JSContext *, uint32_t, jsval*);
 
-extern template class jsX3DArrayField <jsSFFloat, MFFloat>;
+extern template class jsX3DArrayField <jsSFFloat, X3D::MFFloat>;
 
-typedef jsX3DArrayField <jsSFFloat, MFFloat> jsMFFloat;
+using jsMFFloat = jsX3DArrayField <jsSFFloat, X3D::MFFloat>;
 
 } // MozillaSpiderMonkey
 } // X3D

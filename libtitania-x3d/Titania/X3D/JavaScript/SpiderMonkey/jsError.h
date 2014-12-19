@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_ERROR_H__
 
 #include <jsapi.h>
+#include <utility>
 
 namespace titania {
 namespace X3D {
@@ -59,6 +60,15 @@ namespace MozillaSpiderMonkey {
 
 JSBool
 JS_InstanceOfError (JSContext* const, JSObject* const, JSClass* const);
+
+template <class ... Args>
+inline
+bool
+ThrowException (JSContext* const cx, const char* format, Args && ... args)
+{
+	JS_ReportWarning (cx, format, std::forward <Args> (args) ...);
+	return false;
+}
 
 } // MozillaSpiderMonkey
 } // X3D

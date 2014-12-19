@@ -51,8 +51,9 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DFIELD_DEFINITION_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DFIELD_DEFINITION_H__
 
-#include "../../Basic/X3DFieldDefinition.h"
 #include "jsX3DObject.h"
+
+#include "../../Basic/X3DFieldDefinition.h"
 
 namespace titania {
 namespace X3D {
@@ -62,6 +63,8 @@ class jsX3DFieldDefinition :
 	public jsX3DObject
 {
 public:
+
+	///  @name Construction
 
 	static
 	void
@@ -76,31 +79,28 @@ public:
 	getClass ()
 	{ return &static_class; }
 
-	static JSBool name       (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool accessType (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool dataType   (JSContext *, JSObject *, jsid, jsval*);
+	///  @name Properties
 
-
-protected:
-
-	static
-	void
-	finalize (JSContext*, JSObject*);
+	static JSBool name       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool accessType (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool dataType   (JSContext*, JSObject*, jsid, jsval*);
 
 
 private:
 
-	static
-	void
-	privateFinalize (JSContext*, JSObject*);
+	///  @name Destruction
+
+	static void
+	finalize (JSContext*, JSObject*);
+
+	///  @name Member types
 
 	enum Property {NAME, ACCESSTYPE, DATATYPE};
 
-	static
-	JSClass static_class;
+	///  @name Static members
 
-	static
-	JSPropertySpec properties [ ];
+	static JSClass        static_class;
+	static JSPropertySpec properties [ ];
 
 };
 

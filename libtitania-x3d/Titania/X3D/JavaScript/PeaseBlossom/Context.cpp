@@ -297,11 +297,11 @@ Context::shutdown ()
 void
 Context::error (const std::string & trycatch) const
 {
-	X3D::X3DJavaScriptContext::error (trycatch,
-	                                  "filename",
-	                                  0, // "lineNumber"
-	                                  0, //"startColumn"
-	                                  "sourceLine");
+	setError (trycatch,
+	          "filename",
+	          0, // "lineNumber"
+	          0, //"startColumn"
+	          "sourceLine");
 }
 
 void

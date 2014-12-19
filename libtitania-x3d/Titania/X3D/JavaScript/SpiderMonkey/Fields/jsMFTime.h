@@ -61,23 +61,23 @@ namespace MozillaSpiderMonkey {
 
 template <>
 JSBool
-jsX3DArrayField <jsSFTime, MFTime>::construct (JSContext *, uintN, jsval*);
+jsX3DArrayField <jsSFTime, X3D::MFTime>::construct (JSContext *, uint32_t, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFTime, MFTime>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+jsX3DArrayField <jsSFTime, X3D::MFTime>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFTime, MFTime>::unshift (JSContext *, uintN, jsval*);
+jsX3DArrayField <jsSFTime, X3D::MFTime>::unshift (JSContext *, uint32_t, jsval*);
 
 template <>
 JSBool
-jsX3DArrayField <jsSFTime, MFTime>::push (JSContext *, uintN, jsval*);
+jsX3DArrayField <jsSFTime, X3D::MFTime>::push (JSContext *, uint32_t, jsval*);
 
-extern template class jsX3DArrayField <jsSFTime, MFTime>;
+extern template class jsX3DArrayField <jsSFTime, X3D::MFTime>;
 
-typedef jsX3DArrayField <jsSFTime, MFTime> jsMFTime;
+using jsMFTime = jsX3DArrayField <jsSFTime, X3D::MFTime>;
 
 } // MozillaSpiderMonkey
 } // X3D
