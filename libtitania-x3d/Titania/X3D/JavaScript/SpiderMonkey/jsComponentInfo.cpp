@@ -66,23 +66,18 @@ JSClass jsComponentInfo::static_class = {
 };
 
 JSPropertySpec jsComponentInfo::properties [ ] = {
-	{ "name",        NAME,         JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, name,        NULL },
-	{ "level",       LEVEL,        JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, level,       NULL },
-	{ "title",       TITLE,        JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, title,       NULL },
-	{ "providerUrl", PROVIDER_URL, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, providerUrl, NULL },
+	{ "name",        NAME,         JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, name,        nullptr },
+	{ "level",       LEVEL,        JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, level,       nullptr },
+	{ "title",       TITLE,        JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, title,       nullptr },
+	{ "providerUrl", PROVIDER_URL, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, providerUrl, nullptr },
 	{ 0 }
-
-};
-
-JSFunctionSpec jsComponentInfo::functions [ ] = {
-	{ 0, 0, 0, 0 }
 
 };
 
 void
 jsComponentInfo::init (JSContext* const cx, JSObject* const global)
 {
-	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, nullptr, 0, properties, nullptr, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
@@ -91,12 +86,12 @@ jsComponentInfo::init (JSContext* const cx, JSObject* const global)
 JSBool
 jsComponentInfo::create (JSContext* const cx, const ComponentInfoPtr & componentInfo, jsval* const vp)
 {
-	JSObject* const result = JS_NewObject (cx, &static_class, NULL, NULL);
+	const auto result = JS_NewObject (cx, &static_class, nullptr, nullptr);
 
-	if (result == NULL)
-		return false;
+	if (result == nullptr)
+		return ThrowException (cx, "out of memory");
 
-	JS_SetPrivate (cx, result, new ComponentInfoPtr (componentInfo));
+	JS_SetPrivate (cx, result, new X3D::ComponentInfoPtr (componentInfo));
 
 	*vp = OBJECT_TO_JSVAL (result);
 
@@ -106,39 +101,67 @@ jsComponentInfo::create (JSContext* const cx, const ComponentInfoPtr & component
 JSBool
 jsComponentInfo::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & componentInfo = *getThis <jsComponentInfo> (cx, obj);
 
-	return JS_NewStringValue (cx, componentInfo -> getName (), vp);
+		return JS_NewStringValue (cx, componentInfo -> getName (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .name: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsComponentInfo::level (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & componentInfo = *getThis <jsComponentInfo> (cx, obj);
 
-	return JS_NewNumberValue (cx, componentInfo -> getLevel (), vp);
+		return JS_NewNumberValue (cx, componentInfo -> getLevel (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .level: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsComponentInfo::title (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & componentInfo = *getThis <jsComponentInfo> (cx, obj);
 
-	return JS_NewStringValue (cx, componentInfo -> getTitle (), vp);
+		return JS_NewStringValue (cx, componentInfo -> getTitle (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .title: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsComponentInfo::providerUrl (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & componentInfo = *getThis <jsComponentInfo> (cx, obj);
 
-	return JS_NewStringValue (cx, componentInfo -> getProviderUrl (), vp);
+		return JS_NewStringValue (cx, componentInfo -> getProviderUrl (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .providerUrl: %s.", getClass () -> name, error .what ());
+	}
 }
 
 void
 jsComponentInfo::finalize (JSContext* cx, JSObject* obj)
 {
-	const auto componentInfo = static_cast <ComponentInfoPtr*> (JS_GetPrivate (cx, obj));
+	const auto componentInfo = getObject <X3D::ComponentInfoPtr*> (cx, obj);
 
 	if (componentInfo)
 		delete componentInfo;

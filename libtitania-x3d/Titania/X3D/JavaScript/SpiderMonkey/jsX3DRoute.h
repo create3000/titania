@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,6 +64,12 @@ class jsX3DRoute
 {
 public:
 
+	///  @name Member types
+
+	using internal_type = X3D::RoutePtr;
+
+	///  @name Construction
+
 	static
 	void
 	init (JSContext* const, JSObject* const);
@@ -80,6 +86,8 @@ public:
 
 private:
 
+	///  @name Member types
+
 	enum Property
 	{
 		SOURCE_NODE,
@@ -88,14 +96,20 @@ private:
 		DESTINATION_FIELD
 	};
 
-	static JSBool sourceNode       (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool sourceField      (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool destinationNode  (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool destinationField (JSContext *, JSObject *, jsid, jsval*);
+	///  @name Properties
+
+	static JSBool sourceNode       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool sourceField      (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool destinationNode  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool destinationField (JSContext*, JSObject*, jsid, jsval*);
+
+	///  @name Destruction
 
 	static
 	void
 	finalize (JSContext*, JSObject*);
+
+	///  @name Static members
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

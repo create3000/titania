@@ -70,9 +70,9 @@ JSClass jsX3DProtoDeclaration::static_class = {
 };
 
 JSPropertySpec jsX3DProtoDeclaration::properties [ ] = {
-	{ "name",          NAME,           JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, name,          NULL },
-	{ "fields",        FIELDS,         JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, fields,        NULL },
-	{ "isExternProto", IS_EXTERNPROTO, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, isExternProto, NULL },
+	{ "name",          NAME,           JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, name,          nullptr },
+	{ "fields",        FIELDS,         JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, fields,        nullptr },
+	{ "isExternProto", IS_EXTERNPROTO, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, isExternProto, nullptr },
 	{ 0 }
 
 };
@@ -86,7 +86,7 @@ JSFunctionSpec jsX3DProtoDeclaration::functions [ ] = {
 void
 jsX3DProtoDeclaration::init (JSContext* const cx, JSObject* const global)
 {
-	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, nullptr, 0, properties, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
@@ -95,12 +95,12 @@ jsX3DProtoDeclaration::init (JSContext* const cx, JSObject* const global)
 JSBool
 jsX3DProtoDeclaration::create (JSContext* const cx, const ProtoDeclarationPtr & proto, jsval* const vp)
 {
-	JSObject* const result = JS_NewObject (cx, &static_class, NULL, NULL);
+	JSObject* const result = JS_NewObject (cx, &static_class, nullptr, nullptr);
 
-	if (result == NULL)
-		return false;
+	if (result == nullptr)
+		return ThrowException (cx, "out of memory");
 
-	const auto field = new ProtoDeclarationPtr (proto);
+	const auto field = new X3D::ProtoDeclarationPtr (proto);
 
 	JS_SetPrivate (cx, result, field);
 
@@ -116,27 +116,47 @@ jsX3DProtoDeclaration::create (JSContext* const cx, const ProtoDeclarationPtr & 
 JSBool
 jsX3DProtoDeclaration::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & proto = *static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & proto = *getThis <jsX3DProtoDeclaration> (cx, obj);
 
-	return JS_NewStringValue (cx, proto -> getName (), vp);
+		return JS_NewStringValue (cx, proto -> getName (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .name: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DProtoDeclaration::fields (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & proto = *static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & proto = *getThis <jsX3DProtoDeclaration> (cx, obj);
 
-	return jsFieldDefinitionArray::create (cx, &proto -> getFieldDefinitions (), vp);
+		return jsFieldDefinitionArray::create (cx, &proto -> getFieldDefinitions (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .fields: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DProtoDeclaration::isExternProto (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & proto = *static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & proto = *getThis <jsX3DProtoDeclaration> (cx, obj);
 
-	*vp = proto -> isExternproto () ? JSVAL_TRUE : JSVAL_FALSE;
-
-	return true;
+		*vp = proto -> isExternproto () ? JSVAL_TRUE : JSVAL_FALSE;
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .isExternProto: %s.", getClass () -> name, error .what ());
+	}
 }
 
 // Functions
@@ -144,18 +164,30 @@ jsX3DProtoDeclaration::isExternProto (JSContext* cx, JSObject* obj, jsid id, jsv
 JSBool
 jsX3DProtoDeclaration::newInstance (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	const auto & proto    = *static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (cx, JS_THIS_OBJECT (cx, vp)));
-	auto         instance = proto -> createInstance ();
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .newInstance: wrong number of arguments.", getClass () -> name);
 
-	instance -> setup ();
+	try
+	{
+		const auto & proto    = *getThis <jsX3DProtoDeclaration> (cx, vp);
+		auto         instance = proto -> createInstance ();
 
-	return jsSFNode::create (cx, new SFNode (std::move (instance)), &JS_RVAL (cx, vp));
+		instance -> setup ();
+
+		return jsSFNode::create (cx, new SFNode (std::move (instance)), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .newInstance: %s.", getClass () -> name, error .what ());
+	}
 }
+
+// Destruction
 
 void
 jsX3DProtoDeclaration::finalize (JSContext* cx, JSObject* obj)
 {
-	const auto proto = static_cast <ProtoDeclarationPtr*> (JS_GetPrivate (cx, obj));
+	const auto proto = getObject <X3D::ProtoDeclarationPtr*> (cx, obj);
 
 	if (proto)
 		getContext (cx) -> removeObject (proto);

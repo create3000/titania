@@ -90,7 +90,7 @@ jsX3DFieldDefinition::create (JSContext* const cx, const X3D::X3DFieldDefinition
 	const auto result = JS_NewObject (cx, &static_class, nullptr, nullptr);
 
 	if (result == nullptr)
-		return false;
+		return ThrowException (cx, "out of memory");
 
 	const auto context  = getContext (cx);
 	const auto fieldPtr = new X3D::FieldPtr (const_cast <X3D::X3DFieldDefinition*> (field));
@@ -108,9 +108,9 @@ jsX3DFieldDefinition::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto lhs = getThis <jsX3DFieldDefinition> (cx, obj);
+		const auto & fieldPtr = *getThis <jsX3DFieldDefinition> (cx, obj);
 
-		return JS_NewStringValue (cx, lhs -> getValue () -> getName (), vp);
+		return JS_NewStringValue (cx, fieldPtr -> getName (), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -123,9 +123,9 @@ jsX3DFieldDefinition::accessType (JSContext* cx, JSObject* obj, jsid id, jsval* 
 {
 	try
 	{
-		const auto lhs = getThis <jsX3DFieldDefinition> (cx, obj);
+		const auto & fieldPtr = *getThis <jsX3DFieldDefinition> (cx, obj);
 
-		return JS_NewNumberValue (cx, lhs -> getValue () -> getAccessType (), vp);
+		return JS_NewNumberValue (cx, fieldPtr -> getAccessType (), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -138,9 +138,9 @@ jsX3DFieldDefinition::dataType (JSContext* cx, JSObject* obj, jsid id, jsval* vp
 {
 	try
 	{
-		const auto lhs = getThis <jsX3DFieldDefinition> (cx, obj);
+		const auto & fieldPtr = *getThis <jsX3DFieldDefinition> (cx, obj);
 
-		return JS_NewNumberValue (cx, lhs -> getValue () -> getType (), vp);
+		return JS_NewNumberValue (cx, fieldPtr -> getType (), vp);
 	}
 	catch (const std::exception & error)
 	{

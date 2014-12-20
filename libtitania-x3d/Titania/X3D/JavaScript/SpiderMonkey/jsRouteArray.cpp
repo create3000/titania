@@ -55,7 +55,7 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 template <>
-JSClass jsX3DConstArray <RouteArray, jsX3DRoute>::static_class = {
+JSClass jsX3DConstArray <jsX3DRoute, X3D::RouteArray>::static_class = {
 	"RouteArray", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
@@ -63,7 +63,7 @@ JSClass jsX3DConstArray <RouteArray, jsX3DRoute>::static_class = {
 
 };
 
-template class jsX3DConstArray <RouteArray, jsX3DRoute>;
+template class jsX3DConstArray <jsX3DRoute, X3D::RouteArray>;
 
 } // MozillaSpiderMonkey
 } // X3D

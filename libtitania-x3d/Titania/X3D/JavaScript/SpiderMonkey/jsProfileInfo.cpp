@@ -66,23 +66,18 @@ JSClass jsProfileInfo::static_class = {
 };
 
 JSPropertySpec jsProfileInfo::properties [ ] = {
-	{ "name",        NAME,         JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, name,        NULL },
-	{ "title",       TITLE,        JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, title,       NULL },
-	{ "providerUrl", PROVIDER_URL, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, providerUrl, NULL },
-	{ "components",  COMPONENTS,   JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, components,  NULL },
+	{ "name",        NAME,         JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, name,        nullptr },
+	{ "title",       TITLE,        JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, title,       nullptr },
+	{ "providerUrl", PROVIDER_URL, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, providerUrl, nullptr },
+	{ "components",  COMPONENTS,   JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, components,  nullptr },
 	{ 0 }
-
-};
-
-JSFunctionSpec jsProfileInfo::functions [ ] = {
-	{ 0, 0, 0, 0 }
 
 };
 
 void
 jsProfileInfo::init (JSContext* const cx, JSObject* const global)
 {
-	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, nullptr, 0, properties, nullptr, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
@@ -91,12 +86,12 @@ jsProfileInfo::init (JSContext* const cx, JSObject* const global)
 JSBool
 jsProfileInfo::create (JSContext* const cx, const ProfileInfoPtr & profileInfo, jsval* const vp)
 {
-	JSObject* result = JS_NewObject (cx, &static_class, NULL, NULL);
+	const auto result = JS_NewObject (cx, &static_class, nullptr, nullptr);
 
-	if (result == NULL)
-		return false;
+	if (result == nullptr)
+		return ThrowException (cx, "out of memory");
 
-	JS_SetPrivate (cx, result, new ProfileInfoPtr (profileInfo));
+	JS_SetPrivate (cx, result, new X3D::ProfileInfoPtr (profileInfo));
 
 	*vp = OBJECT_TO_JSVAL (result);
 
@@ -106,39 +101,67 @@ jsProfileInfo::create (JSContext* const cx, const ProfileInfoPtr & profileInfo, 
 JSBool
 jsProfileInfo::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & profileInfo = *getThis <jsProfileInfo> (cx, obj);
 
-	return JS_NewStringValue (cx, profileInfo -> getName (), vp);
+		return JS_NewStringValue (cx, profileInfo -> getName (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .name: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsProfileInfo::title (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & profileInfo = *getThis <jsProfileInfo> (cx, obj);
 
-	return JS_NewStringValue (cx, profileInfo -> getTitle (), vp);
+		return JS_NewStringValue (cx, profileInfo -> getTitle (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .title: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsProfileInfo::providerUrl (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & profileInfo = *getThis <jsProfileInfo> (cx, obj);
 
-	return JS_NewStringValue (cx, profileInfo -> getProviderUrl (), vp);
+		return JS_NewStringValue (cx, profileInfo -> getProviderUrl (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .providerUrl: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsProfileInfo::components (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & profileInfo = *getThis <jsProfileInfo> (cx, obj);
 
-	return jsComponentInfoArray::create (cx, &profileInfo -> getComponents (), vp);
+		return jsComponentInfoArray::create (cx, &profileInfo -> getComponents (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .components: %s.", getClass () -> name, error .what ());
+	}
 }
 
 void
 jsProfileInfo::finalize (JSContext* cx, JSObject* obj)
 {
-	const auto profileInfo = static_cast <ProfileInfoPtr*> (JS_GetPrivate (cx, obj));
+	const auto profileInfo = getObject <X3D::ProfileInfoPtr*> (cx, obj);
 
 	if (profileInfo)
 		delete profileInfo;

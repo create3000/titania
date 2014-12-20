@@ -64,6 +64,12 @@ class jsX3DScene :
 {
 public:
 
+	///  @name Member types
+	
+	using internal_type = X3D::X3DScene;
+	
+	///  @name Construction
+
 	static
 	void
 	init (JSContext* const, JSObject* const, JSObject* const);
@@ -80,8 +86,12 @@ public:
 
 private:
 
+	///  @name Properties
+
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, JSBool, jsval*);
+
+	///  @name Functions
 
 	static JSBool setMetaData (JSContext *, uint32_t, jsval*);
 	static JSBool getMetaData (JSContext *, uint32_t, jsval*);
@@ -91,7 +101,11 @@ private:
 	static JSBool updateExportedNode (JSContext *, uint32_t, jsval*);
 	static JSBool getExportedNode    (JSContext *, uint32_t, jsval*);
 
+	///  @name Destruction
+
 	static void finalize (JSContext*, JSObject*);
+
+	///  @name Static members
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

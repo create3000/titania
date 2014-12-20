@@ -1,3 +1,32 @@
+2014-12-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* jsBrowser.h:
+	* jsX3DScene.h:
+	* jsX3DRoute.h:
+	* jsBrowser.cpp:
+	* jsRouteArray.h:
+	* jsX3DRoute.cpp:
+	* jsProfileInfo.h:
+	* jsRouteArray.cpp:
+	* jsX3DConstArray.h:
+	* jsProfileInfo.cpp:
+	* jsComponentInfo.h:
+	* jsX3DConstants.cpp:
+	* jsComponentInfo.cpp:
+	* jsProfileInfoArray.h:
+	* jsProfileInfoArray.cpp:
+	* jsComponentInfoArray.h:
+	* jsX3DProtoDeclaration.h:
+	* jsX3DFieldDefinition.cpp:
+	* jsComponentInfoArray.cpp:
+	* jsX3DProtoDeclaration.cpp:
+	* jsProtoDeclarationArray.h:
+	* jsProtoDeclarationArray.cpp:
+	* jsX3DExternProtoDeclaration.h:
+	* jsExternProtoDeclarationArray.h:
+	* jsX3DExternProtoDeclaration.cpp:
+	* jsExternProtoDeclarationArray.cpp: 
+
 2014-12-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

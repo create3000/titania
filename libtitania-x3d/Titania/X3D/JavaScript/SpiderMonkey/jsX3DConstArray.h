@@ -48,8 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_CONST_ARRAY_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_CONST_ARRAY_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DCONST_ARRAY_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DCONST_ARRAY_H__
+
+#include "jsArguments.h"
+#include "jsError.h"
 
 #include <jsapi.h>
 
@@ -57,10 +60,17 @@ namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-template <class Type, class ValueType>
+template <class Type, class InternalType>
 class jsX3DConstArray
 {
 public:
+
+	///  @name Member types
+
+	using value_type    = Type;
+	using internal_type = InternalType;
+
+	///  @name Construction
 
 	static
 	void
@@ -68,7 +78,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext* const, const Type* const, jsval* const);
+	create (JSContext* const, const InternalType* const, jsval* const);
 
 	static
 	JSClass*
@@ -78,24 +88,29 @@ public:
 
 private:
 
+	///  @name Member types
+
 	enum Property {LENGTH};
 
-	static
-	JSBool
-	enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
+	///  @name Member access
 
-	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
 
-	static JSBool length (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
+
+	///  @name Properties
+
+	static JSBool length (JSContext*, JSObject*, jsid, jsval*);
+
+	///  @name Static members
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
-	static JSFunctionSpec functions [ ];
 
 };
 
-template <class Type, class ValueType>
-JSClass jsX3DConstArray <Type, ValueType>::static_class = {
+template <class Type, class InternalType>
+JSClass jsX3DConstArray <Type, InternalType>::static_class = {
 	"jsX3DConstArray", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
@@ -103,124 +118,131 @@ JSClass jsX3DConstArray <Type, ValueType>::static_class = {
 
 };
 
-template <class Type, class ValueType>
-JSPropertySpec jsX3DConstArray <Type, ValueType>::properties [ ] = {
-	{ "length", LENGTH, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, length, NULL },
+template <class Type, class InternalType>
+JSPropertySpec jsX3DConstArray <Type, InternalType>::properties [ ] = {
+	{ "length", LENGTH, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, length, nullptr },
 	{ 0 }
 
 };
 
-template <class Type, class ValueType>
-JSFunctionSpec jsX3DConstArray <Type, ValueType>::functions [ ] = {
-	{ 0, 0, 0, 0 }
-
-};
-
-template <class Type, class ValueType>
+template <class Type, class InternalType>
 void
-jsX3DConstArray <Type, ValueType>::init (JSContext* const cx, JSObject* const global)
+jsX3DConstArray <Type, InternalType>::init (JSContext* const cx, JSObject* const global)
 {
-	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, nullptr, 0, properties, nullptr, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 }
 
-template <class Type, class ValueType>
+template <class Type, class InternalType>
 JSBool
-jsX3DConstArray <Type, ValueType>::create (JSContext* const cx, const Type* const array, jsval* const vp)
+jsX3DConstArray <Type, InternalType>::create (JSContext* const cx, const InternalType* const array, jsval* const vp)
 {
-	JSObject* const result = JS_NewObject (cx, &static_class, NULL, NULL);
+	const auto result = JS_NewObject (cx, &static_class, nullptr, nullptr);
 
-	if (result == NULL)
-		return false;
+	if (result == nullptr)
+		return ThrowException (cx, "out of memory");
 
-	JS_SetPrivate (cx, result, const_cast <Type*> (array));
+	JS_SetPrivate (cx, result, const_cast <InternalType*> (array));
 
 	*vp = OBJECT_TO_JSVAL (result);
 
 	return true;
 }
 
-template <class Type, class ValueType>
+template <class Type, class InternalType>
 JSBool
-jsX3DConstArray <Type, ValueType>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+jsX3DConstArray <Type, InternalType>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
-	const auto array = static_cast <Type*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto array = getThis <jsX3DConstArray> (cx, obj);
 
-	if (not array)
+		size_t* index;
+
+		switch (enum_op)
+		{
+			case JSENUMERATE_INIT:
+			case JSENUMERATE_INIT_ALL:
+			{
+				index   = new size_t (0);
+				*statep = PRIVATE_TO_JSVAL (index);
+
+				if (idp)
+					*idp = INT_TO_JSID (array -> size ());
+
+				break;
+			}
+			case JSENUMERATE_NEXT:
+			{
+				index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+
+				if (*index < array -> size ())
+				{
+					if (idp)
+						*idp = INT_TO_JSID (*index);
+
+					*index = *index + 1;
+					break;
+				}
+
+				//else done -- cleanup.
+			}
+			case JSENUMERATE_DESTROY:
+			{
+				index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+				delete index;
+				*statep = JSVAL_NULL;
+			}
+		}
+
+		return true;
+	}
+	catch (const std::exception &)
 	{
 		*statep = JSVAL_NULL;
 		return true;
 	}
-
-	size_t* index;
-
-	switch (enum_op)
-	{
-		case JSENUMERATE_INIT:
-		case JSENUMERATE_INIT_ALL:
-		{
-			index   = new size_t (0);
-			*statep = PRIVATE_TO_JSVAL (index);
-
-			if (idp)
-				*idp = INT_TO_JSID (array -> size ());
-
-			break;
-		}
-		case JSENUMERATE_NEXT:
-		{
-			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
-
-			if (*index < array -> size ())
-			{
-				if (idp)
-					*idp = INT_TO_JSID (*index);
-
-				*index = *index + 1;
-				break;
-			}
-
-			//else done -- cleanup.
-		}
-		case JSENUMERATE_DESTROY:
-		{
-			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
-			delete index;
-			*statep = JSVAL_NULL;
-		}
-	}
-
-	return true;
 }
 
-template <class Type, class ValueType>
+template <class Type, class InternalType>
 JSBool
-jsX3DConstArray <Type, ValueType>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstArray <Type, InternalType>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	if (not JSID_IS_INT (id))
-		return true;
-
-	const int32_t index = JSID_TO_INT (id);
-	const auto    array = static_cast <Type*> (JS_GetPrivate (cx, obj));
-
-	if (index < 0 and index >= (int32_t) array -> size ())
+	try
 	{
-		JS_ReportError (cx, "%s: array index out of range.", getClass () -> name);
-		return false;
-	}
+		if (not JSID_IS_INT (id))
+			return true;
 
-	return ValueType::create (cx, array -> at (index), vp);
+		const auto array = getThis <jsX3DConstArray> (cx, obj);
+		const auto index = JSID_TO_INT (id);
+
+		if (index < 0 or index >= (int32_t) array -> size ())
+			return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
+
+		return Type::create (cx, array -> at (index), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .get1Value: %s.", getClass () -> name, error .what ());
+	}
 }
 
-template <class Type, class ValueType>
+template <class Type, class InternalType>
 JSBool
-jsX3DConstArray <Type, ValueType>::length (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstArray <Type, InternalType>::length (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto array = static_cast <Type*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto array = getThis <jsX3DConstArray> (cx, obj);
 
-	return JS_NewNumberValue (cx, array -> size (), vp);
+		return JS_NewNumberValue (cx, array -> size (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .length: %s.", getClass () -> name, error .what ());
+	}
 }
 
 } // MozillaSpiderMonkey

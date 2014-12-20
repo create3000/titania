@@ -84,14 +84,14 @@ JSClass jsBrowser::static_class = {
 
 // X3D properties
 JSPropertySpec jsBrowser::properties [ ] = {
-	{ "name",                NAME,                 JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, name,                NULL },
-	{ "version",             VERSION,              JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, version,             NULL },
-	{ "currentSpeed",        CURRENT_SPEED,        JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentSpeed,        NULL },
-	{ "currentFrameRate",    CURRENT_FRAMERATE,    JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentFrameRate,    NULL },
+	{ "name",                NAME,                 JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, name,                nullptr },
+	{ "version",             VERSION,              JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, version,             nullptr },
+	{ "currentSpeed",        CURRENT_SPEED,        JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentSpeed,        nullptr },
+	{ "currentFrameRate",    CURRENT_FRAMERATE,    JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentFrameRate,    nullptr },
 	{ "description",         DESCRIPTION,          JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT,                   description,         description },
-	{ "supportedComponents", SUPPORTED_COMPONENTS, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, supportedComponents, NULL },
-	{ "supportedProfiles",   SUPPORTED_PROFILES,   JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, supportedProfiles,   NULL },
-	{ "currentScene",        CURRENT_SCENE,        JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentScene,        NULL },
+	{ "supportedComponents", SUPPORTED_COMPONENTS, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, supportedComponents, nullptr },
+	{ "supportedProfiles",   SUPPORTED_PROFILES,   JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, supportedProfiles,   nullptr },
+	{ "currentScene",        CURRENT_SCENE,        JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, currentScene,        nullptr },
 	{ 0 }
 
 };
@@ -112,8 +112,8 @@ JSFunctionSpec jsBrowser::functions [ ] = {
 	{ "nextViewpoint",        nextViewpoint,        0, 0 },
 	{ "lastViewpoint",        lastViewpoint,        0, 0 },
 
-	{ "print",                print,                1, 0 },
-	{ "println",              println,              1, 0 },
+	{ "print",                print,                0, 0 },
+	{ "println",              println,              0, 0 },
 
 	// VRML functions
 	{ "getName",              getName,              0, 0 },
@@ -134,12 +134,12 @@ JSFunctionSpec jsBrowser::functions [ ] = {
 void
 jsBrowser::init (JSContext* const cx, JSObject* const global)
 {
-	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, nullptr, 0, properties, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 
-	JS_DefineObject (cx, global, "Browser", &static_class, NULL, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT);
+	JS_DefineObject (cx, global, "Browser", &static_class, nullptr, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT);
 }
 
 // X3D properties
@@ -189,7 +189,7 @@ jsBrowser::description (JSContext* cx, JSObject* obj, jsid id, JSBool strict, js
 {
 	const auto script = getContext (cx) -> getScriptNode ();
 
-	script -> getBrowser () -> setDescription (JS_GetString (cx, *vp));
+	script -> getBrowser () -> setDescription (to_string (cx, *vp));
 
 	return true;
 }
@@ -227,482 +227,370 @@ jsBrowser::currentScene (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsBrowser::replaceWorld (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .replaceWorld: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		try
+		const auto script = getContext (cx) -> getScriptNode ();
+		const auto argv   = JS_ARGV (cx, vp);
+
+		if (JSVAL_IS_NULL (argv [0]))
+			script -> getBrowser () -> replaceWorld (nullptr);
+
+		else
 		{
-			const auto script = getContext (cx) -> getScriptNode ();
-			const auto argv   = JS_ARGV (cx, vp);
+			const X3D::X3DScenePtr scene = getArgument <jsX3DScene> (cx, argv, 0);
 
-			if (JSVAL_IS_NULL (argv [0]))
-				script -> getBrowser () -> replaceWorld (nullptr);
-
-			else
-			{
-				JSObject* scene = nullptr;
-				
-				if (not JS_ConvertArguments (cx, argc, argv, "o", &scene))
-					return false;
-
-				if (JS_InstanceOfError (cx, scene, jsX3DScene::getClass ()))
-					return false;
-
-				script -> getBrowser () -> replaceWorld (X3DScenePtr (getObject <X3DScene*> (cx, scene)));
-			}
-
-			JS_SET_RVAL (cx, vp, JSVAL_VOID);
-			return true;
+			script -> getBrowser () -> replaceWorld (scene);
 		}
-		catch (const X3DError & error)
-		{
-			JS_ReportError (cx, error .what ());
-			return false;
-		}
+
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
+		return true;
 	}
-
-	JS_ReportError (cx, "Browser .replaceWorld: wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, error .what ());
+	}
 }
 
 JSBool
 jsBrowser::createX3DFromString (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .createX3DFromString: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		try
-		{
-			const auto script = getContext (cx) -> getScriptNode ();
-			const auto argv   = JS_ARGV (cx, vp);
+		const auto script    = getContext (cx) -> getScriptNode ();
+		const auto argv      = JS_ARGV (cx, vp);
+		const auto x3dSyntax = getArgument <std::string> (cx, argv, 0);
+		const auto scene     = X3D::Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (x3dSyntax);
 
-			JSString* x3dSyntax = nullptr;
-
-			if (not JS_ConvertArguments (cx, argc, argv, "S", &x3dSyntax))
-				return false;
-
-			const X3DScenePtr scene = Loader (script -> getExecutionContext (),
-			                                  script -> getWorldURL ()) .createX3DFromString (JS_GetString (cx, x3dSyntax));
-
-			return jsX3DScene::create (cx, scene, vp);
-		}
-		catch (const X3DError & error)
-		{
-			JS_ReportError (cx, error .what ());
-			return false;
-		}
+		return jsX3DScene::create (cx, scene, vp);
 	}
-
-	JS_ReportError (cx, "Browser .createX3DFromString: wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, error .what ());
+	}
 }
 
 JSBool
 jsBrowser::createX3DFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc > 0 and argc < 4)
+	if (argc > 3)
+		return ThrowException (cx, "%s .createX3DFromURL: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
 		const auto context = getContext (cx);
-		const auto script     = context -> getScriptNode ();
-
-		JSObject* ourl  = nullptr;
-		JSObject* onode = nullptr;
-		JSString* event = nullptr;
-
-		const auto argv = JS_ARGV (cx, vp);
-
-		if (not JS_ConvertArguments (cx, argc, argv, "o/So", &ourl, &event, &onode))
-			return false;
-
-		if (JS_InstanceOfError (cx, ourl, jsMFString::getClass ()))
-			return false;
-
-		const auto url = getObject <MFString*> (cx, ourl);
+		const auto script  = context -> getScriptNode ();
+		const auto argv    = JS_ARGV (cx, vp);
+		const auto url     = getArgument <jsMFString> (cx, argv, 0);
 
 		if (argc > 1)
 		{
-			if (argc == 3 and JS_GetClass (cx, onode) == jsSFNode::getClass ())
-			{
-				const auto sfnode = getObject <SFNode*> (cx, onode);
+			const auto event = getArgument <std::string> (cx, argv, 1);
 
-				if (*sfnode)
+			try
+			{
+				if (argc == 3)
 				{
+					const auto node = getArgument <jsSFNode> (cx, argv, 2);
+
+					if (not node -> getValue ())
+						return ThrowException (cx, "Browser .createX3DFromURL: node is NULL.");
+
 					try
 					{
-						const auto field = sfnode -> getValue () -> getField (JS_GetString (cx, event));
+						const auto field = node -> getValue () -> getField (event);
 
-						if (field -> isInput ())
+						if (not field -> isInput ())
+							return ThrowException (cx, "Browser .createX3DFromURL: field '%s' is not an eventIn.", event .c_str ());
+
+						if (field -> getType () not_eq X3D::X3DConstants::MFNode)
+							return ThrowException (cx, "Browser .createX3DFromURL: field '%s' is not a MFNode.", event .c_str ());
+
+						try
 						{
-							if (field -> getType () == X3DConstants::MFNode)
-							{
-								try
-								{
-									const auto scene = Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
+							const auto scene = X3D::Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
 
-									field -> set (scene -> getRootNodes ());
-									field -> addEvent ();
-								}
-								catch (const X3DError & error)
-								{
-									field -> set (MFNode ());
-									field -> addEvent ();
-
-									script -> getBrowser () -> print (error .what ());
-								}
-
-								JS_SET_RVAL (cx, vp, JSVAL_VOID);
-								return true;
-							}
-							else
-								JS_ReportError (cx, ("Browser .createX3DFromURL: field '" + JS_GetString (cx, event) + "' is not a MFNode") .c_str ());
+							field -> set (scene -> getRootNodes ());
+							field -> addEvent ();
 						}
-						else
-							JS_ReportError (cx, ("Browser .createX3DFromURL: field '" + JS_GetString (cx, event) + "' is not an eventIn") .c_str ());
+						catch (const X3D::X3DError & error)
+						{
+							field -> set (MFNode ());
+							field -> addEvent ();
+
+							script -> getBrowser () -> print (error .what ());
+						}
+
+						JS_SET_RVAL (cx, vp, JSVAL_VOID);
+						return true;
 					}
-					catch (const Error <INVALID_NAME> &)
+					catch (const X3D::Error <X3D::INVALID_NAME> &)
 					{
-						JS_ReportError (cx, ("Browser .createX3DFromURL: no such field '" + JS_GetString (cx, event) + "'") .c_str ());
+						return ThrowException (cx, "Browser .createX3DFromURL: no such field '%s' in node %s.", event .c_str (), node -> getValue () -> getTypeName () .c_str ());
 					}
 				}
-				else
-					JS_ReportError (cx, "Browser .createX3DFromURL: node is NULL");
-
-				return false;
 			}
-			else
+			catch (const std::exception &)
+			{ }
+
+			const auto scene   = Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
+			auto       nodeObj = argc == 2 ? context -> getGlobal () : JSVAL_TO_OBJECT (argv [1]);
+
+			if (not nodeObj)
+				nodeObj = context -> getGlobal ();
+
+			jsval argv [2];
+
+			jsX3DScene::create (cx, scene, &argv [0]);
+			JS_NewNumberValue (cx, script -> getCurrentTime (), &argv [1]);
+
+			jsval rval;
+
+			if (not JS_CallFunctionName (cx, nodeObj, event .c_str (), 2, argv, &rval))
 			{
-				try
-				{
-					const auto scene = Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
-
-					if (argc == 2)
-						onode = context -> getGlobal ();
-
-					jsval argv [2];
-
-					jsX3DScene::create (cx, scene, &argv [0]);
-					JS_NewNumberValue (cx, script -> getCurrentTime (), &argv [1]);
-
-					jsval rval;
-
-					if (not JS_CallFunctionName (cx, onode, JS_GetString (cx, event) .c_str (), 2, argv, &rval))
-					{
-						JS_ReportError (cx, "Browser .createX3DFromURL: Couldn't call function '%s'.", JS_GetString (cx, event) .c_str ());
-						return false;
-					}
-
-					JS_SET_RVAL (cx, vp, JSVAL_VOID);
-					return true;
-				}
-				catch (const X3DError & error)
-				{
-					JS_ReportError (cx, error .what ());
-					return false;
-				}
+				return ThrowException (cx, "Browser .createX3DFromURL: Couldn't call function '%s'.", event .c_str ());
 			}
+
+			JS_SET_RVAL (cx, vp, JSVAL_VOID);
+			return true;
 		}
 		else
 		{
-			try
-			{
-				const auto scene = Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
+			const auto scene = Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
 
-				return jsX3DScene::create (cx, scene, vp);
-			}
-			catch (const X3DError & error)
-			{
-				JS_ReportError (cx, error .what ());
-				return false;
-			}
+			return jsX3DScene::create (cx, scene, vp);
 		}
 	}
-
-	JS_ReportError (cx, "Browser .createX3DFromURL: wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, error .what ());
+	}
 }
 
 JSBool
 jsBrowser::loadURL (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 2)
+	if (argc not_eq 2)
+		return ThrowException (cx, "%s .loadURL: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		try
-		{
-			const auto script = getContext (cx) -> getScriptNode ();
-			const auto argv   = JS_ARGV (cx, vp);
+		const auto script    = getContext (cx) -> getScriptNode ();
+		const auto argv      = JS_ARGV (cx, vp);
+		const auto url       = getArgument <jsMFString> (cx, argv, 0);
+		const auto parameter = getArgument <jsMFString> (cx, argv, 1);
 
-			JSObject* ourl       = nullptr;
-			JSObject* oparameter = nullptr;
+		Loader (script -> getExecutionContext (), script -> getWorldURL ()) .loadURL (*url, *parameter);
 
-			if (not JS_ConvertArguments (cx, argc, argv, "oo", &ourl, &oparameter))
-				return false;
-
-			if (JS_InstanceOfError (cx, ourl, jsMFString::getClass ()))
-				return false;
-
-			if (JS_InstanceOfError (cx, oparameter, jsMFString::getClass ()))
-				return false;
-				
-			const auto url       = getObject <MFString*> (cx, ourl);
-			const auto parameter = getObject <MFString*> (cx, oparameter);
-
-			Loader (script -> getExecutionContext (), script -> getWorldURL ()) .loadURL (*url, *parameter);
-
-			JS_SET_RVAL (cx, vp, JSVAL_VOID);
-			return true;
-		}
-		catch (const X3DError & error)
-		{
-			JS_ReportError (cx, error .what ());
-			return false;
-		}
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
+		return true;
 	}
-
-	JS_ReportError (cx, "Browser .loadURL: wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, error .what ());
+	}
 }
 
 JSBool
 jsBrowser::getRenderingProperty (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .getRenderingProperty: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		const auto script = getContext (cx) -> getScriptNode ();
-		const auto argv   = JS_ARGV (cx, vp);
-
-		JSString* name = nullptr;
-
-		if (not JS_ConvertArguments (cx, argc, argv, "S", &name))
-			return false;
+		const auto browser = getContext (cx) -> getBrowser ();
+		const auto argv    = JS_ARGV (cx, vp);
+		const auto name    = getArgument <std::string> (cx, argv, 0);
 
 		try
 		{
-			const auto field = script -> getBrowser () -> getRenderingProperties () -> getField (JS_GetString (cx, name));
+			const auto field = browser -> getRenderingProperties () -> getField (name);
 
 			return getValue (cx, field, vp);
 		}
-		catch (const Error <INVALID_NAME> &)
+		catch (const X3D::Error <X3D::INVALID_NAME> &)
 		{
-			JS_ReportError (cx, "Browser .getRenderingProperty: unknown property '%s'.", JS_GetString (cx, name) .c_str ());
+			return ThrowException (cx, "Browser .getRenderingProperty: unknown property '%s'.", name .c_str ());
 		}
 	}
-	else
-		JS_ReportError (cx, "Browser .getRenderingProperty: wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, error .what ());
+	}
 }
 
 JSBool
 jsBrowser::getBrowserProperty (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .getBrowserProperty: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		const auto script = getContext (cx) -> getScriptNode ();
-		const auto argv   = JS_ARGV (cx, vp);
-
-		JSString* name = nullptr;
-
-		if (not JS_ConvertArguments (cx, argc, argv, "S", &name))
-			return false;
+		const auto browser = getContext (cx) -> getBrowser ();
+		const auto argv    = JS_ARGV (cx, vp);
+		const auto name    = getArgument <std::string> (cx, argv, 0);
 
 		try
 		{
-			const auto field = script -> getBrowser () -> getBrowserProperties () -> getField (JS_GetString (cx, name));
+			const auto field = browser -> getBrowserProperties () -> getField (name);
 
 			return getValue (cx, field, vp);
 		}
-		catch (const Error <INVALID_NAME> &)
+		catch (const X3D::Error <X3D::INVALID_NAME> &)
 		{
-			JS_ReportError (cx, "Browser .getBrowserProperty: unknown property '%s'.", JS_GetString (cx, name) .c_str ());
+			return ThrowException (cx, "Browser .getBrowserProperty: unknown property '%s'.", name .c_str ());
 		}
 	}
-	else
-		JS_ReportError (cx, "Browser .getBrowserProperty: wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, error .what ());
+	}
 }
 
 JSBool
 jsBrowser::getBrowserOption (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .getBrowserOption: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		const auto script = getContext (cx) -> getScriptNode ();
-		const auto argv   = JS_ARGV (cx, vp);
-
-		JSString* name = nullptr;
-
-		if (not JS_ConvertArguments (cx, argc, argv, "S", &name))
-			return false;
+		const auto browser = getContext (cx) -> getBrowser ();
+		const auto argv    = JS_ARGV (cx, vp);
+		const auto name    = getArgument <std::string> (cx, argv, 0);
 
 		try
 		{
-			const auto field = script -> getBrowser () -> getBrowserOptions () -> getField (JS_GetString (cx, name));
+			const auto field = browser -> getBrowserOptions () -> getField (name);
 
 			return getValue (cx, field, vp);
 		}
-		catch (const Error <INVALID_NAME> &)
+		catch (const X3D::Error <X3D::INVALID_NAME> &)
 		{
-			JS_ReportError (cx, "Browser .getBrowserOption: unknown option '%s'.", JS_GetString (cx, name) .c_str ());
+			return ThrowException (cx, "Browser .getBrowserOption: unknown property '%s'.", name .c_str ());
 		}
 	}
-	else
-		JS_ReportError (cx, "Browser .getBrowserOption: wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, error .what ());
+	}
 }
 
 JSBool
 jsBrowser::setBrowserOption (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 2)
+	if (argc not_eq 2)
+		return ThrowException (cx, "%s .setBrowserOption: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		const auto script = getContext (cx) -> getScriptNode ();
-		const auto argv   = JS_ARGV (cx, vp);
-
-		JSString* name = nullptr;
-
-		if (not JS_ConvertArguments (cx, argc, argv, "S", &name))
-			return false;
+		const auto browser = getContext (cx) -> getBrowser ();
+		const auto argv    = JS_ARGV (cx, vp);
+		const auto name    = getArgument <std::string> (cx, argv, 0);
 
 		try
 		{
-			const auto field = script -> getBrowser () -> getBrowserOptions () -> getField (JS_GetString (cx, name));
+			const auto field = browser -> getBrowserOptions () -> getField (name);
 
-			if (setValue (cx, field, &argv [1]))
-			{
-				JS_SET_RVAL (cx, vp, JSVAL_VOID);
+			if (not setValue (cx, field, &argv [1]))
+				return ThrowException (cx, "Browser .setBrowserOption: couldn't set value for option '%s'.", name .c_str ());
 
-				return true;
-			}
-			else
-				JS_ReportError (cx, "Browser .setBrowserOption: couldn't set value for option '%s'.", JS_GetString (cx, name) .c_str ());
+			JS_SET_RVAL (cx, vp, JSVAL_VOID);
+			return true;
 		}
-		catch (const Error <INVALID_NAME> &)
+		catch (const X3D::Error <X3D::INVALID_NAME> &)
 		{
-			JS_ReportError (cx, "Browser .setBrowserOption: unknown option '%s'.", JS_GetString (cx, name) .c_str ());
+			return ThrowException (cx, "Browser .setBrowserOption: unknown property '%s'.", name .c_str ());
 		}
 	}
-	else
-		JS_ReportError (cx, "Browser .setBrowserOption: wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, error .what ());
+	}
 }
 
 JSBool
 jsBrowser::firstViewpoint (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 0)
-	{
-		const auto script = getContext (cx) -> getScriptNode ();
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .firstViewpoint: wrong number of arguments.", getClass () -> name);
 
-		script -> getBrowser () -> firstViewpoint ();
+	const auto browser = getContext (cx) -> getBrowser ();
 
-		return true;
-	}
+	browser -> firstViewpoint ();
 
-	JS_ReportError (cx, "Browser .firstViewpoint: wrong number of arguments");
-
-	return false;
+	return true;
 }
 
 JSBool
 jsBrowser::previousViewpoint (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 0)
-	{
-		const auto script = getContext (cx) -> getScriptNode ();
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .previousViewpoint: wrong number of arguments.", getClass () -> name);
 
-		script -> getBrowser () -> previousViewpoint ();
+	const auto browser = getContext (cx) -> getBrowser ();
 
-		return true;
-	}
+	browser -> previousViewpoint ();
 
-	JS_ReportError (cx, "Browser .previousViewpoint: wrong number of arguments");
-
-	return false;
+	return true;
 }
 
 JSBool
 jsBrowser::nextViewpoint (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 0)
-	{
-		const auto script = getContext (cx) -> getScriptNode ();
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .nextViewpoint: wrong number of arguments.", getClass () -> name);
 
-		script -> getBrowser () -> nextViewpoint ();
+	const auto browser = getContext (cx) -> getBrowser ();
 
-		return true;
-	}
+	browser -> nextViewpoint ();
 
-	JS_ReportError (cx, "Browser .nextViewpoint: wrong number of arguments");
-
-	return false;
+	return true;
 }
 
 JSBool
 jsBrowser::lastViewpoint (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 0)
-	{
-		const auto script = getContext (cx) -> getScriptNode ();
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .lastViewpoint: wrong number of arguments.", getClass () -> name);
 
-		script -> getBrowser () -> lastViewpoint ();
+	const auto browser = getContext (cx) -> getBrowser ();
 
-		return true;
-	}
+	browser -> lastViewpoint ();
 
-	JS_ReportError (cx, "Browser .lastViewpoint: wrong number of arguments");
-
-	return false;
+	return true;
 }
 
 JSBool
 jsBrowser::print (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
-	{
-		const auto script = getContext (cx) -> getScriptNode ();
-		const auto argv   = JS_ARGV (cx, vp);
+	const auto browser = getContext (cx) -> getBrowser ();
+	const auto argv    = JS_ARGV (cx, vp);
 
-		JSString* object = nullptr;
+	for (uint32_t i = 0; i < argc; ++ i)
+		browser -> print (to_string (cx, argv [i]));
 
-		if (not JS_ConvertArguments (cx, argc, argv, "S", &object))
-			return false;
-
-		script -> getBrowser () -> print (JS_GetString (cx, object));
-
-		return true;
-	}
-
-	JS_ReportError (cx, "Browser .print: wrong number of arguments");
-
-	return false;
+	JS_SET_RVAL (cx, vp, JSVAL_VOID);
+	return true;
 }
 
 JSBool
 jsBrowser::println (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
-	{
-		const auto script = getContext (cx) -> getScriptNode ();
-		const auto argv   = JS_ARGV (cx, vp);
+	const auto browser = getContext (cx) -> getBrowser ();
 
-		JSString* object = nullptr;
+	print (cx, argc, vp);
 
-		if (not JS_ConvertArguments (cx, argc, argv, "S", &object))
-			return false;
+	browser -> print ('\n');
 
-		script -> getBrowser () -> println (JS_GetString (cx, object));
-
-		return true;
-	}
-
-	JS_ReportError (cx, "Browser .println: wrong number of arguments");
-
-	return false;
+	return true;
 }
 
 // VRML97 functions
@@ -710,185 +598,147 @@ jsBrowser::println (JSContext* cx, uint32_t argc, jsval* vp)
 JSBool
 jsBrowser::getName (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 0)
-	{
-		const auto script = getContext (cx) -> getScriptNode ();
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .getName: wrong number of arguments.", getClass () -> name);
 
-		return JS_NewStringValue (cx, script -> getBrowser () -> getName (), &JS_RVAL (cx, vp));
-	}
+	const auto browser = getContext (cx) -> getBrowser ();
 
-	JS_ReportError (cx, "Browser .getName: wrong number of arguments");
-
-	return false;
+	return JS_NewStringValue (cx, browser -> getName (), &JS_RVAL (cx, vp));
 }
 
 JSBool
 jsBrowser::getVersion (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 0)
-	{
-		const auto script = getContext (cx) -> getScriptNode ();
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .getVersion: wrong number of arguments.", getClass () -> name);
 
-		return JS_NewStringValue (cx, script -> getBrowser () -> getVersion (), &JS_RVAL (cx, vp));
-	}
+	const auto browser = getContext (cx) -> getBrowser ();
 
-	JS_ReportError (cx, "Browser .getVersion: wrong number of arguments");
-
-	return false;
+	return JS_NewStringValue (cx, browser -> getVersion (), &JS_RVAL (cx, vp));
 }
 
 JSBool
 jsBrowser::getCurrentSpeed (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 0)
-	{
-		const auto script = getContext (cx) -> getScriptNode ();
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .getCurrentSpeed: wrong number of arguments.", getClass () -> name);
 
-		return JS_NewNumberValue (cx, script -> getBrowser () -> getCurrentSpeed (), &JS_RVAL (cx, vp));
-	}
+	const auto browser = getContext (cx) -> getBrowser ();
 
-	JS_ReportError (cx, "Browser .getCurrentSpeed: wrong number of arguments");
-
-	return false;
+	return JS_NewNumberValue (cx, browser -> getCurrentSpeed (), &JS_RVAL (cx, vp));
 }
 
 JSBool
 jsBrowser::getCurrentFrameRate (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 0)
-	{
-		const auto script = getContext (cx) -> getScriptNode ();
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .getCurrentFrameRate: wrong number of arguments.", getClass () -> name);
 
-		return JS_NewNumberValue (cx, script -> getBrowser () -> getCurrentFrameRate (), &JS_RVAL (cx, vp));
-	}
+	const auto browser = getContext (cx) -> getBrowser ();
 
-	JS_ReportError (cx, "Browser .getCurrentFrameRate: wrong number of arguments");
-
-	return false;
+	return JS_NewNumberValue (cx, browser -> getCurrentFrameRate (), &JS_RVAL (cx, vp));
 }
 
 JSBool
 jsBrowser::getWorldURL (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 0)
-	{
-		const auto script = getContext (cx) -> getScriptNode ();
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .getWorldURL: wrong number of arguments.", getClass () -> name);
 
-		return JS_NewStringValue (cx, script -> getBrowser () -> getWorldURL (), &JS_RVAL (cx, vp));
-	}
+	const auto script = getContext (cx) -> getScriptNode ();
 
-	JS_ReportError (cx, "Browser .getWorldURL: wrong number of arguments");
-
-	return false;
+	return JS_NewStringValue (cx, script -> getExecutionContext () -> getWorldURL (), &JS_RVAL (cx, vp));
 }
 
 JSBool
 jsBrowser::createVrmlFromString (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .createVrmlFromString: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		const auto script = getContext (cx) -> getScriptNode ();
-		const auto argv   = JS_ARGV (cx, vp);
-
-		JSString* vrmlSyntax = nullptr;
-
-		if (not JS_ConvertArguments (cx, argc, argv, "S", &vrmlSyntax))
-			return false;
+		const auto script     = getContext (cx) -> getScriptNode ();
+		const auto argv       = JS_ARGV (cx, vp);
+		const auto vrmlSyntax = getArgument <std::string> (cx, argv, 0);
 
 		try
 		{
-			const auto scene = Loader (script -> getExecutionContext (),
-			                           script -> getWorldURL ()) .createX3DFromString (JS_GetString (cx, vrmlSyntax));
+			const auto scene = X3D::Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (vrmlSyntax);
 
-			return jsMFNode::create (cx, new MFNode (scene -> getRootNodes ()), &JS_RVAL (cx, vp));
+			return jsMFNode::create (cx, new X3D::MFNode (scene -> getRootNodes ()), &JS_RVAL (cx, vp));
 		}
 		catch (const X3DError & error)
 		{
 			script -> getBrowser () -> print (error .what ());
 
-			return jsMFNode::create (cx, new MFNode (), &JS_RVAL (cx, vp));
+			return jsMFNode::create (cx, new X3D::MFNode (), &JS_RVAL (cx, vp));
 		}
 	}
-
-	JS_ReportError (cx, "Browser .createVrmlFromString: wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, error .what ());
+	}
 }
 
 //createVrmlFromURL(MFString url, Node node, String event)
 JSBool
 jsBrowser::createVrmlFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 3)
+	if (argc not_eq 3)
+		return ThrowException (cx, "%s .createVrmlFromURL: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
 		const auto context = getContext (cx);
-		const auto script     = context -> getScriptNode ();
-		const auto argv       = JS_ARGV (cx, vp);
+		const auto script  = context -> getScriptNode ();
+		const auto argv    = JS_ARGV (cx, vp);
+		const auto url     = getArgument <jsMFString> (cx, argv, 0);
+		const auto node    = getArgument <jsSFNode> (cx, argv, 1);
+		const auto event   = getArgument <std::string> (cx, argv, 2);
 
-		JSObject* ourl  = nullptr;
-		JSObject* onode = nullptr;
-		JSString* event = nullptr;
+		if (not node -> getValue ())
+			return ThrowException (cx, "Browser .createVrmlFromURL: node is NULL.");
 
-		if (not JS_ConvertArguments (cx, argc, argv, "ooS", &ourl, &onode, &event))
-			return false;
-
-		if (JS_InstanceOfError (cx, ourl, jsMFString::getClass ()))
-			return false;
-
-		if (JS_InstanceOfError (cx, onode, jsSFNode::getClass ()))
-			return false;
-
-		const auto url    = getObject <MFString*> (cx, ourl);
-		const auto sfnode = getObject <SFNode*> (cx, onode);
-
-		if (*sfnode)
+		try
 		{
-			try
-			{
-				const auto field = sfnode -> getValue () -> getField (JS_GetString (cx, event));
+			const auto field = node -> getValue () -> getField (event);
 
-				if (field -> isInput ())
-				{
-					if (field -> getType () == X3DConstants::MFNode)
-					{
-						if (context -> getFuture ())
-							context -> getFuture () -> wait ();
+			if (not field -> isInput ())
+				return ThrowException (cx, "Browser .createVrmlFromURL: field '%s' is not an eventIn.", event .c_str ());
 
-						using namespace std::placeholders;
+			if (field -> getType () not_eq X3D::X3DConstants::MFNode)
+				return ThrowException (cx, "Browser .createVrmlFromURL: field '%s' is not a MFNode.", event .c_str ());
 
-						context -> getFuture () .reset (new SceneLoader (script -> getExecutionContext (),
-						                                                    *url,
-						                                                    std::bind (&jsBrowser::setSceneAsync,
-						                                                               SFNode (script),
-						                                                               *sfnode,
-						                                                               static_cast <MFNode*> (field),
-						                                                               _1)));
+			if (context -> getFuture ())
+				context -> getFuture () -> wait ();
 
-						JS_SET_RVAL (cx, vp, JSVAL_VOID);
-						return true;
-					}
-					else
-						JS_ReportError (cx, ("Browser .createVrmlFromURL: field '" + JS_GetString (cx, event) + "' is not a MFNode") .c_str ());
-				}
-				else
-					JS_ReportError (cx, ("Browser .createVrmlFromURL: field '" + JS_GetString (cx, event) + "' is not an eventIn") .c_str ());
-			}
-			catch (const Error <INVALID_NAME> &)
-			{
-				JS_ReportError (cx, ("Browser .createVrmlFromURL: no such field '" + JS_GetString (cx, event) + "'") .c_str ());
-			}
+			using namespace std::placeholders;
+
+			context -> getFuture () .reset (new X3D::SceneLoader (script -> getExecutionContext (),
+			                                                      *url,
+			                                                      std::bind (&jsBrowser::setSceneAsync,
+			                                                                 X3D::SFNode (script),
+			                                                                 *node,
+			                                                                 static_cast <X3D::MFNode*> (field),
+			                                                                 _1)));
+
+			JS_SET_RVAL (cx, vp, JSVAL_VOID);
+			return true;
 		}
-		else
-			JS_ReportError (cx, "Browser .createVrmlFromURL: node is NULL");
+		catch (const Error <INVALID_NAME> &)
+		{
+			return ThrowException (cx, "Browser .createVrmlFromURL: no such field '%s' in node %s.", event .c_str (), node -> getValue () -> getTypeName () .c_str ());
+		}
 	}
-	else
-		JS_ReportError (cx, "Browser .createVrmlFromURL: wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, error .what ());
+	}
 }
 
 void
-jsBrowser::setSceneAsync (const SFNode & script, const SFNode & node, MFNode* const field, X3DScenePtr && scene)
+jsBrowser::setSceneAsync (const X3D::SFNode & script, const X3D::SFNode & node, X3D::MFNode* const field, X3D::X3DScenePtr && scene)
 {
 	if (scene)
 	{
@@ -906,6 +756,9 @@ jsBrowser::setSceneAsync (const SFNode & script, const SFNode & node, MFNode* co
 JSBool
 jsBrowser::addRoute (JSContext* cx, uint32_t argc, jsval* vp)
 {
+	if (argc not_eq 4)
+		return ThrowException (cx, "%s .addRoute: wrong number of arguments.", getClass () -> name);
+
 	if (jsX3DExecutionContext::addRoute (cx, argc, vp))
 	{
 		JS_SET_RVAL (cx, vp, JSVAL_VOID);
@@ -918,70 +771,50 @@ jsBrowser::addRoute (JSContext* cx, uint32_t argc, jsval* vp)
 JSBool
 jsBrowser::deleteRoute (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 4)
+	if (argc not_eq 4)
+		return ThrowException (cx, "%s .deleteRoute: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		try
-		{
-			const auto script = getContext (cx) -> getScriptNode ();
-			const auto argv   = JS_ARGV (cx, vp);
+		const auto script       = getContext (cx) -> getScriptNode ();
+		const auto argv         = JS_ARGV (cx, vp);
+		const auto fromNode     = getArgument <jsSFNode> (cx, argv, 0);
+		const auto fromEventOut = getArgument <std::string> (cx, argv, 1);
+		const auto toNode       = getArgument <jsSFNode> (cx, argv, 2);
+		const auto toEventIn    = getArgument <std::string> (cx, argv, 3);
 
-			JSObject* ofromNode    = nullptr;
-			JSObject* otoNode      = nullptr;
-			JSString* fromEventOut = nullptr;
-			JSString* toEventIn    = nullptr;
+		script -> getExecutionContext () -> deleteRoute (*fromNode, fromEventOut, *toNode, toEventIn);
 
-			if (not JS_ConvertArguments (cx, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
-				return false;
-
-			if (JS_InstanceOfError (cx, ofromNode, jsSFNode::getClass ()))
-				return false;
-
-			if (JS_InstanceOfError (cx, otoNode, jsSFNode::getClass ()))
-				return false;
-
-			const auto & fromNode = *getObject <SFNode*> (cx, ofromNode);
-			const auto & toNode   = *getObject <SFNode*> (cx, otoNode);
-
-			script -> getExecutionContext () -> deleteRoute (fromNode, JS_GetString (cx, fromEventOut),
-			                                                 toNode,   JS_GetString (cx, toEventIn));
-
-			JS_SET_RVAL (cx, vp, JSVAL_VOID);
-			return true;
-		}
-		catch (const X3DError & error)
-		{
-			JS_ReportError (cx, error .what ());
-			return false;
-		}
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
+		return true;
 	}
-
-	JS_ReportError (cx, "Browser .deleteRoute: wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, error .what ());
+	}
 }
 
 JSBool
 jsBrowser::setDescription (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .setDescription: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		const auto script = getContext (cx) -> getScriptNode ();
-		const auto argv   = JS_ARGV (cx, vp);
+		const auto script      = getContext (cx) -> getScriptNode ();
+		const auto argv        = JS_ARGV (cx, vp);
+		const auto description = getArgument <std::string> (cx, argv, 0);
 
-		JSString* description;
-
-		if (not JS_ConvertArguments (cx, argc, argv, "S", &description))
-			return false;
-
-		script -> getBrowser () -> setDescription (JS_GetString (cx, description));
+		script -> getBrowser () -> setDescription (description);
 
 		JS_SET_RVAL (cx, vp, JSVAL_VOID);
 		return true;
 	}
-
-	JS_ReportError (cx, "Browser .setDescription: wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, error .what ());
+	}
 }
 
 } // MozillaSpiderMonkey

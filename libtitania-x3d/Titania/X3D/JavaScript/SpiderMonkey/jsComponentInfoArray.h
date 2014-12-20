@@ -59,9 +59,9 @@ namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-typedef jsX3DConstArray <ComponentInfoArray, jsComponentInfo> jsComponentInfoArray;
+using jsComponentInfoArray = jsX3DConstArray <jsComponentInfo, X3D::ComponentInfoArray>;
 
-extern template class jsX3DConstArray <ComponentInfoArray, jsComponentInfo>;
+extern template class jsX3DConstArray <jsComponentInfo, X3D::ComponentInfoArray>;
 
 } // MozillaSpiderMonkey
 } // X3D

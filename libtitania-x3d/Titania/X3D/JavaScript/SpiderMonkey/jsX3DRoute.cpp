@@ -68,10 +68,10 @@ JSClass jsX3DRoute::static_class = {
 };
 
 JSPropertySpec jsX3DRoute::properties [ ] = {
-	{ "sourceNode",       SOURCE_NODE,       JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, sourceNode,       NULL },
-	{ "sourceField",      SOURCE_FIELD,      JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, sourceField,      NULL },
-	{ "destinationNode",  DESTINATION_NODE,  JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, destinationNode,  NULL },
-	{ "destinationField", DESTINATION_FIELD, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, destinationField, NULL },
+	{ "sourceNode",       SOURCE_NODE,       JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, sourceNode,       nullptr },
+	{ "sourceField",      SOURCE_FIELD,      JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, sourceField,      nullptr },
+	{ "destinationNode",  DESTINATION_NODE,  JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, destinationNode,  nullptr },
+	{ "destinationField", DESTINATION_FIELD, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, destinationField, nullptr },
 	{ 0 }
 
 };
@@ -79,7 +79,7 @@ JSPropertySpec jsX3DRoute::properties [ ] = {
 void
 jsX3DRoute::init (JSContext* const cx, JSObject* const global)
 {
-	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, NULL, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, nullptr, 0, properties, nullptr, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
@@ -88,12 +88,12 @@ jsX3DRoute::init (JSContext* const cx, JSObject* const global)
 JSBool
 jsX3DRoute::create (JSContext* const cx, const RoutePtr & route, jsval* const vp)
 {
-	JSObject* const result = JS_NewObject (cx, &static_class, NULL, NULL);
+	const auto result = JS_NewObject (cx, &static_class, nullptr, nullptr);
 
-	if (result == NULL)
-		return false;
+	if (result == nullptr)
+		return ThrowException (cx, "out of memory");
 
-	const auto field = new RoutePtr (route);
+	const auto field = new X3D::RoutePtr (route);
 
 	JS_SetPrivate (cx, result, field);
 
@@ -111,14 +111,13 @@ jsX3DRoute::sourceNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (cx, obj));
+		const auto & route = *getThis <jsX3DRoute> (cx, obj);
 
 		return jsSFNode::create (cx, new SFNode (route -> getSourceNode ()), vp);
 	}
-	catch (const X3DError & error)
+	catch (const std::exception & error)
 	{
-		JS_ReportError (cx, error .what ());
-		return false;
+		return ThrowException (cx, "%s .sourceNode: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -127,14 +126,13 @@ jsX3DRoute::sourceField (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (cx, obj));
+		const auto & route = *getThis <jsX3DRoute> (cx, obj);
 
 		return JS_NewStringValue (cx, route -> getSourceField (), vp);
 	}
-	catch (const X3DError & error)
+	catch (const std::exception & error)
 	{
-		JS_ReportError (cx, error .what ());
-		return false;
+		return ThrowException (cx, "%s .sourceField: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -143,14 +141,13 @@ jsX3DRoute::destinationNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (cx, obj));
+		const auto & route = *getThis <jsX3DRoute> (cx, obj);
 
 		return jsSFNode::create (cx, new SFNode (route -> getDestinationNode ()), vp);
 	}
-	catch (const X3DError & error)
+	catch (const std::exception & error)
 	{
-		JS_ReportError (cx, error .what ());
-		return false;
+		return ThrowException (cx, "%s .destinationNode: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -159,21 +156,20 @@ jsX3DRoute::destinationField (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (cx, obj));
+		const auto & route = *getThis <jsX3DRoute> (cx, obj);
 
 		return JS_NewStringValue (cx, route -> getDestinationField (), vp);
 	}
-	catch (const X3DError & error)
+	catch (const std::exception & error)
 	{
-		JS_ReportError (cx, error .what ());
-		return false;
+		return ThrowException (cx, "%s .destinationField: %s.", getClass () -> name, error .what ());
 	}
 }
 
 void
 jsX3DRoute::finalize (JSContext* cx, JSObject* obj)
 {
-	const auto route = static_cast <RoutePtr*> (JS_GetPrivate (cx, obj));
+	const auto route = getObject <X3D::RoutePtr*> (cx, obj);
 
 	if (route)
 		getContext (cx) -> removeObject (route);

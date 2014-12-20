@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,6 +62,12 @@ class jsX3DExternProtoDeclaration
 {
 public:
 
+	///  @name Member types
+
+	using internal_type = X3D::ExternProtoDeclarationPtr;
+
+	///  @name Construction
+
 	static
 	void
 	init (JSContext* const, JSObject* const);
@@ -78,6 +84,8 @@ public:
 
 private:
 
+	///  @name Member types
+
 	enum Property
 	{
 		NAME,
@@ -87,18 +95,26 @@ private:
 		LOAD_STATE
 	};
 
-	static JSBool name          (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool fields        (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool urls          (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool isExternProto (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool loadState     (JSContext *, JSObject *, jsid, jsval*);
+	///  @name Properties
 
-	static JSBool newInstance (JSContext *, uint32_t, jsval*);
-	static JSBool loadNow     (JSContext *, uint32_t, jsval*);
+	static JSBool name          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool fields        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool urls          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool isExternProto (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool loadState     (JSContext*, JSObject*, jsid, jsval*);
+
+	///  @name Functions
+
+	static JSBool newInstance (JSContext*, uint32_t, jsval*);
+	static JSBool loadNow     (JSContext*, uint32_t, jsval*);
+
+	///  @name Destructions
 
 	static
 	void
 	finalize (JSContext*, JSObject*);
+
+	///  @name Static members
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

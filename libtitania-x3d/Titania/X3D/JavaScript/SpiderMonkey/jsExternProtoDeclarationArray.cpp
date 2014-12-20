@@ -55,7 +55,7 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 template <>
-JSClass jsX3DConstArray <ExternProtoArray, jsX3DExternProtoDeclaration>::static_class = {
+JSClass jsX3DConstArray <jsX3DExternProtoDeclaration, X3D::ExternProtoArray>::static_class = {
 	"ExternProtoDeclarationArray", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
@@ -63,7 +63,7 @@ JSClass jsX3DConstArray <ExternProtoArray, jsX3DExternProtoDeclaration>::static_
 
 };
 
-template class jsX3DConstArray <ExternProtoArray, jsX3DExternProtoDeclaration>;
+template class jsX3DConstArray <jsX3DExternProtoDeclaration, X3D::ExternProtoArray>;
 
 } // MozillaSpiderMonkey
 } // X3D

@@ -70,11 +70,11 @@ JSClass jsX3DExternProtoDeclaration::static_class = {
 };
 
 JSPropertySpec jsX3DExternProtoDeclaration::properties [ ] = {
-	{ "name",          NAME,           JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, name,          NULL },
-	{ "fields",        FIELDS,         JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, fields,        NULL },
-	{ "urls",          URLS,           JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, urls,          NULL },
-	{ "isExternProto", IS_EXTERNPROTO, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, isExternProto, NULL },
-	{ "loadState",     LOAD_STATE,     JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, loadState,     NULL },
+	{ "name",          NAME,           JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, name,          nullptr },
+	{ "fields",        FIELDS,         JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, fields,        nullptr },
+	{ "urls",          URLS,           JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, urls,          nullptr },
+	{ "isExternProto", IS_EXTERNPROTO, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, isExternProto, nullptr },
+	{ "loadState",     LOAD_STATE,     JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, loadState,     nullptr },
 	{ 0 }
 
 };
@@ -89,19 +89,21 @@ JSFunctionSpec jsX3DExternProtoDeclaration::functions [ ] = {
 void
 jsX3DExternProtoDeclaration::init (JSContext* const cx, JSObject* const global)
 {
-	JS_InitClass (cx, global, NULL, &static_class, NULL,
-	              0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, nullptr, 0, properties, functions, nullptr, nullptr);
+
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 }
 
 JSBool
 jsX3DExternProtoDeclaration::create (JSContext* const cx, const ExternProtoDeclarationPtr & externproto, jsval* const vp)
 {
-	JSObject* result = JS_NewObject (cx, &static_class, NULL, NULL);
+	const auto result = JS_NewObject (cx, &static_class, nullptr, nullptr);
 
-	if (result == NULL)
-		return false;
+	if (result == nullptr)
+		return ThrowException (cx, "out of memory");
 
-	const auto field = new ExternProtoDeclarationPtr (externproto);
+	const auto field = new X3D::ExternProtoDeclarationPtr (externproto);
 
 	JS_SetPrivate (cx, result, field);
 
@@ -117,43 +119,77 @@ jsX3DExternProtoDeclaration::create (JSContext* const cx, const ExternProtoDecla
 JSBool
 jsX3DExternProtoDeclaration::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & externproto = *static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & externproto = *getThis <jsX3DExternProtoDeclaration> (cx, obj);
 
-	return JS_NewStringValue (cx, externproto -> getName (), vp);
+		return JS_NewStringValue (cx, externproto -> getName (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .name: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DExternProtoDeclaration::fields (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	auto & externproto = *static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & externproto = *getThis <jsX3DExternProtoDeclaration> (cx, obj);
 
-	return jsFieldDefinitionArray::create (cx, &externproto -> getFieldDefinitions (), vp);
+		return jsFieldDefinitionArray::create (cx, &externproto -> getFieldDefinitions (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .fields: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DExternProtoDeclaration::urls (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & externproto = *static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & externproto = *getThis <jsX3DExternProtoDeclaration> (cx, obj);
 
-	return getValue (cx, &externproto -> url (), vp);
+		return getValue (cx, &externproto -> url (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .urls: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DExternProtoDeclaration::isExternProto (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & externproto = *static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & externproto = *getThis <jsX3DExternProtoDeclaration> (cx, obj);
 
-	*vp = externproto -> isExternproto () ? JSVAL_TRUE : JSVAL_FALSE;
-
-	return true;
+		*vp = externproto -> isExternproto () ? JSVAL_TRUE : JSVAL_FALSE;
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .isExternProto: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DExternProtoDeclaration::loadState (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & externproto = *static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (cx, obj));
+	try
+	{
+		const auto & externproto = *getThis <jsX3DExternProtoDeclaration> (cx, obj);
 
-	return JS_NewNumberValue (cx, externproto -> checkLoadState (), vp);
+		return JS_NewNumberValue (cx, externproto -> checkLoadState (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .loadState: %s.", getClass () -> name, error .what ());
+	}
 }
 
 // Functions
@@ -161,30 +197,49 @@ jsX3DExternProtoDeclaration::loadState (JSContext* cx, JSObject* obj, jsid id, j
 JSBool
 jsX3DExternProtoDeclaration::newInstance (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	const auto & externproto = *static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (cx, JS_THIS_OBJECT (cx, vp)));
-	auto         instance    = externproto -> createInstance ();
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .newInstance: wrong number of arguments.", getClass () -> name);
 
-	instance -> setup ();
+	try
+	{
+		const auto & externproto = *getThis <jsX3DExternProtoDeclaration> (cx, vp);
+		auto         instance    = externproto -> createInstance ();
 
-	return jsSFNode::create (cx, new SFNode (std::move (instance)), &JS_RVAL (cx, vp));
+		instance -> setup ();
+
+		return jsSFNode::create (cx, new SFNode (std::move (instance)), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .newInstance: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DExternProtoDeclaration::loadNow (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	const auto & externproto = *static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (cx, JS_THIS_OBJECT (cx, vp)));
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .loadNow: wrong number of arguments.", getClass () -> name);
 
-	externproto -> requestImmediateLoad ();
+	try
+	{
+		const auto & externproto = *getThis <jsX3DExternProtoDeclaration> (cx, vp);
 
-	JS_SET_RVAL (cx, vp, JSVAL_VOID);
+		externproto -> requestImmediateLoad ();
 
-	return true;
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .loadNow: %s.", getClass () -> name, error .what ());
+	}
 }
 
 void
 jsX3DExternProtoDeclaration::finalize (JSContext* cx, JSObject* obj)
 {
-	const auto externproto = static_cast <ExternProtoDeclarationPtr*> (JS_GetPrivate (cx, obj));
+	const auto externproto = getObject <ExternProtoDeclarationPtr*> (cx, obj);
 
 	if (externproto)
 		getContext (cx) -> removeObject (externproto);

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,6 +62,12 @@ class jsX3DProtoDeclaration
 {
 public:
 
+	///  @name Member types
+
+	using internal_type = X3D::ProtoDeclarationPtr;
+
+	///  @name Construction
+
 	static
 	void
 	init (JSContext* const, JSObject* const);
@@ -78,6 +84,8 @@ public:
 
 private:
 
+	///  @name Member types
+
 	enum Property
 	{
 		NAME,
@@ -85,15 +93,23 @@ private:
 		IS_EXTERNPROTO
 	};
 
-	static JSBool name          (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool fields        (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool isExternProto (JSContext *, JSObject *, jsid, jsval*);
+	///  @name Properties
 
-	static JSBool newInstance (JSContext *, uint32_t, jsval*);
+	static JSBool name          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool fields        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool isExternProto (JSContext*, JSObject*, jsid, jsval*);
+
+	///  @name Functions
+
+	static JSBool newInstance (JSContext*, uint32_t, jsval*);
+
+	///  @name Destruction
 
 	static
 	void
 	finalize (JSContext*, JSObject*);
+
+	///  @name Static members
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

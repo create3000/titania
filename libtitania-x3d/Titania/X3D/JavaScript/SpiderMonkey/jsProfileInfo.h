@@ -62,6 +62,12 @@ class jsProfileInfo
 {
 public:
 
+	///  @name Member types
+	
+	using internal_type = X3D::ProfileInfoPtr;
+
+	///  @name Construction
+
 	static
 	void
 	init (JSContext* const, JSObject* const);
@@ -78,6 +84,8 @@ public:
 
 private:
 
+	///  @name Member types
+
 	enum Property
 	{
 		NAME,
@@ -86,16 +94,21 @@ private:
 		COMPONENTS
 	};
 
+	///  @name Properties
+
 	static JSBool name        (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool title       (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool providerUrl (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool components  (JSContext *, JSObject *, jsid, jsval*);
 
+	///  @name Destruction
+
 	static void finalize (JSContext*, JSObject*);
+
+	///  @name Static members
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
-	static JSFunctionSpec functions [ ];
 
 };
 
