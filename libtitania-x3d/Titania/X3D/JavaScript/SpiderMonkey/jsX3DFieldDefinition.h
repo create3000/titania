@@ -53,6 +53,7 @@
 
 #include "../../Basic/X3DFieldDefinition.h"
 #include "../../Fields/FieldPtr.h"
+#include "jsObjectType.h"
 
 #include <jsapi.h>
 
@@ -71,8 +72,8 @@ public:
 	///  @name Construction
 
 	static
-	void
-	init (JSContext* const, JSObject* const);
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSBool
@@ -82,6 +83,11 @@ public:
 	JSClass*
 	getClass ()
 	{ return &static_class; }
+
+	static
+	constexpr ObjectType
+	getId ()
+	{ return ObjectType::X3DFieldDefinition; }
 
 	///  @name Properties
 

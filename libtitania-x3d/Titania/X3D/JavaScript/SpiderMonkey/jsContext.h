@@ -54,6 +54,7 @@
 #include "../../Components/Networking/X3DUrlObject.h"
 #include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"
+#include "jsObjectType.h"
 
 #include <jsapi.h>
 
@@ -115,6 +116,10 @@ public:
 	getGlobal () const
 	{ return global; }
 
+	JSObject*
+	getProto (const ObjectType type) const
+	{ return protos [size_t (type)]; }
+
 	void
 	addObject (X3DFieldDefinition* const, JSObject* const)
 	throw (Error <INVALID_FIELD>);
@@ -123,8 +128,9 @@ public:
 	removeObject (X3DFieldDefinition* const);
 
 	JSObject*
-	getObject (X3DFieldDefinition* const)
-	throw (std::out_of_range);
+	getObject (X3DFieldDefinition* const field) const
+	throw (std::out_of_range)
+	{ return objects .at (field); }
 
 	std::unique_ptr <SceneLoader> &
 	getFuture ()
@@ -145,6 +151,10 @@ private:
 	void
 	addClasses ()
 	throw (std::runtime_error);
+
+	void
+	addProto (const ObjectType type, JSObject* const proto)
+	{ protos [size_t (type)] = proto; }
 
 	void
 	addUserDefinedFields ();
@@ -231,6 +241,7 @@ private:
 	jsval eventsProcessedFn;
 	jsval shutdownFn;
 
+	std::vector <JSObject*>                   protos;
 	std::map <std::string, jsval>             fields;
 	std::map <X3DFieldDefinition*, jsval>     functions;
 	std::map <X3DFieldDefinition*, JSObject*> objects;

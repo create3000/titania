@@ -66,8 +66,8 @@ public:
 	using internal_type = SFNode;
 
 	static
-	void
-	init (JSContext* const, JSObject* const);
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSBool
@@ -77,6 +77,11 @@ public:
 	JSClass*
 	getClass ()
 	{ return &static_class; }
+
+	static
+	constexpr ObjectType
+	getId ()
+	{ return ObjectType::SFNode; }
 
 
 private:

@@ -75,8 +75,8 @@ public:
 	using vector3_type  = jsSFVec3 <typename X3D::SFVec3 <typename math::vector3 <typename Type::value_type>>>;
 
 	static
-	void
-	init (JSContext* const, JSObject* const);
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSBool
@@ -86,6 +86,11 @@ public:
 	JSClass*
 	getClass ()
 	{ return &static_class; }
+
+	static
+	constexpr ObjectType
+	getId ()
+	{ throw std::domain_error ("getId"); }
 
 
 private:
@@ -129,12 +134,6 @@ JSClass jsSFMatrix3 <Type>::static_class = {
 
 template <class Type>
 JSFunctionSpec jsSFMatrix3 <Type>::functions [ ] = {
-	{ "getName",       getName <jsSFMatrix3>,     0, 0 },
-	{ "getTypeName",   getTypeName <jsSFMatrix3>, 0, 0 },
-	{ "getType",       getType <jsSFMatrix3>,     0, 0 },
-	{ "isReadable",    isReadable <jsSFMatrix3>,  0, 0 },
-	{ "isWritable",    isWritable <jsSFMatrix3>,  0, 0 },
-
 	{ "setTransform",  setTransform,  5, 0 },
 	{ "getTransform",  getTransform,  3, 0 },
 
@@ -147,20 +146,20 @@ JSFunctionSpec jsSFMatrix3 <Type>::functions [ ] = {
 	{ "multDirMatrix", multDirMatrix, 1, 0 },
 	{ "multMatrixDir", multMatrixDir, 1, 0 },
 
-	{ "toString",      toString <jsSFMatrix3>, 0, 0 },
-
 	{ 0 }
 
 };
 
 template <class Type>
-void
-jsSFMatrix3 <Type>::init (JSContext* const cx, JSObject* const global)
+JSObject*
+jsSFMatrix3 <Type>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, nullptr, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, nullptr, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+	
+	return proto;
 }
 
 template <class Type>
@@ -623,11 +622,21 @@ jsSFMatrix3 <Type>::multMatrixDir (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-extern template class jsSFMatrix3 <X3D::SFMatrix3d>;
-extern template class jsSFMatrix3 <X3D::SFMatrix3f>;
+template <>
+constexpr ObjectType
+jsSFMatrix3 <X3D::SFMatrix3d>::getId ()
+{ return ObjectType::SFMatrix3d; }
+
+template <>
+constexpr ObjectType
+jsSFMatrix3 <X3D::SFMatrix3f>::getId ()
+{ return ObjectType::SFMatrix3f; }
 
 using jsSFMatrix3d = jsSFMatrix3 <X3D::SFMatrix3d>;
 using jsSFMatrix3f = jsSFMatrix3 <X3D::SFMatrix3f>;
+
+extern template class jsSFMatrix3 <X3D::SFMatrix3d>;
+extern template class jsSFMatrix3 <X3D::SFMatrix3f>;
 
 } // MozillaSpiderMonkey
 } // X3D

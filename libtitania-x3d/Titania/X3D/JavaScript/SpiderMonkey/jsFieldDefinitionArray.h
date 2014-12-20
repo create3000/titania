@@ -53,6 +53,7 @@
 
 #include "../../Basic/FieldDefinitionArray.h"
 #include "jsX3DFieldDefinition.h"
+#include "jsObjectType.h"
 
 namespace titania {
 namespace X3D {
@@ -63,8 +64,8 @@ class jsFieldDefinitionArray
 public:
 
 	static
-	void
-	init (JSContext* const, JSObject* const);
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSBool
@@ -74,6 +75,11 @@ public:
 	JSClass*
 	getClass ()
 	{ return &static_class; }
+
+	static
+	constexpr ObjectType
+	getId ()
+	{ return ObjectType::FieldDefinitionArray; }
 
 
 private:

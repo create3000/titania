@@ -60,6 +60,11 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFTime, X3D::MFTime>::getId ()
+{ return ObjectType::MFTime; }
+
+template <>
 JSBool
 jsX3DArrayField <jsSFTime, X3D::MFTime>::construct (JSContext *, uint32_t, jsval*);
 

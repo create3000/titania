@@ -85,22 +85,24 @@ JSFunctionSpec jsX3DScene::functions [ ] = {
 
 };
 
-void
-jsX3DScene::init (JSContext* const cx, JSObject* const global, JSObject* const executionContext)
+JSObject*
+jsX3DScene::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, executionContext, &static_class, NULL, 0, properties, functions, NULL, NULL);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, nullptr, 0, properties, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+	
+	return proto;
 }
 
 JSBool
 jsX3DScene::create (JSContext* const cx, X3DScene* const scene, jsval* const vp)
 {
-	JSObject* const result = JS_NewObject (cx, &static_class, NULL, NULL);
+	const auto result = JS_NewObject (cx, &static_class, nullptr, nullptr);
 
-	if (result == NULL)
-		return false;
+	if (result == nullptr)
+		return ThrowException (cx, "out of memory");
 
 	const auto context = getContext (cx);
 
@@ -115,239 +117,185 @@ jsX3DScene::create (JSContext* const cx, X3DScene* const scene, jsval* const vp)
 }
 
 JSBool
-jsX3DScene::rootNodes (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsX3DScene::rootNodes (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	// Differs from X3DExecutionContext rootNodes!!!
+	try
+	{
+		const auto scene = getThis <jsX3DScene> (cx, obj);
+		const auto value = getArgument <jsMFNode> (cx, vp, 0);
 
-	const auto scene = getObject <X3DScene*> (cx, obj);
+		scene -> getRootNodes () = *value;
 
-	return jsMFNode::create (cx, &scene -> getRootNodes (), vp);
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .rootNodes: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
-jsX3DScene::rootNodes (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsX3DScene::rootNodes (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto scene = getObject <X3DScene*> (cx, obj);
+	try
+	{
+		// Differs from X3DExecutionContext rootNodes!!!
 
-	JSObject* omfnode = nullptr;
+		const auto scene = getThis <jsX3DScene> (cx, obj);
 
-	if (not JS_ValueToObject (cx, *vp, &omfnode))
-		return false;
-
-	if (JS_InstanceOfError (cx, omfnode, jsMFNode::getClass ()))
-		return false;
-
-	scene -> getRootNodes () = *getObject <MFNode*> (cx, omfnode);
-
-	return true;
+		return jsMFNode::create (cx, &scene -> getRootNodes (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .rootNodes: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DScene::setMetaData (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 2)
+	if (argc not_eq 2)
+		return ThrowException (cx, "%s .setMetaData: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		JSString* key   = nullptr;
-		JSString* value = nullptr;
+		const auto argv  = JS_ARGV (cx, vp);
+		const auto scene = getThis <jsX3DScene> (cx, vp);
+		const auto key   = getArgument <std::string> (cx, argv, 0);
+		const auto value = getArgument <std::string> (cx, argv, 1);
 
-		jsval* argv = JS_ARGV (cx, vp);
-
-		if (not JS_ConvertArguments (cx, argc, argv, "SS", &key, &value))
-			return false;
-
-		const auto scene = getObject <X3DScene*> (cx, JS_THIS_OBJECT (cx, vp));
-
-		scene -> setMetaData (JS_GetString (cx, key), JS_GetString (cx, value));
+		scene -> setMetaData (key, value);
 
 		JS_SET_RVAL (cx, vp, JSVAL_VOID);
-
 		return true;
 	}
-
-	JS_ReportError (cx, "wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .setMetaData: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DScene::getMetaData (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .getMetaData: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		JSString* key = nullptr;
+		const auto argv  = JS_ARGV (cx, vp);
+		const auto scene = getThis <jsX3DScene> (cx, vp);
+		const auto key   = getArgument <std::string> (cx, argv, 0);
 
-		jsval* argv = JS_ARGV (cx, vp);
-
-		if (not JS_ConvertArguments (cx, argc, argv, "S", &key))
-			return false;
-
-		try
-		{
-			const auto scene = getObject <X3DScene*> (cx, JS_THIS_OBJECT (cx, vp));
-
-			return JS_NewStringValue (cx, scene -> getMetaData (JS_GetString (cx, key)), &JS_RVAL (cx, vp));
-		}
-		catch (const Error <INVALID_NAME> &)
-		{
-			return JS_NewStringValue (cx, "", &JS_RVAL (cx, vp));
-		}
+		return JS_NewStringValue (cx, scene -> getMetaData (key), &JS_RVAL (cx, vp));
 	}
-
-	JS_ReportError (cx, "wrong number of arguments");
-
-	return false;
+	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	{
+		return JS_NewStringValue (cx, "", &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .getMetaData: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DScene::addExportedNode (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 2)
+	if (argc not_eq 2)
+		return ThrowException (cx, "%s .addExportedNode: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		JSString* exportedName = nullptr;
-		JSObject* oNode        = nullptr;
+		const auto argv         = JS_ARGV (cx, vp);
+		const auto scene        = getThis <jsX3DScene> (cx, vp);
+		const auto exportedName = getArgument <std::string> (cx, argv, 0);
+		const auto node         = getArgument <jsSFNode> (cx, argv, 1);
 
-		const auto argv = JS_ARGV (cx, vp);
+		scene -> addExportedNode (exportedName, *node);
 
-		if (not JS_ConvertArguments (cx, argc, argv, "So", &exportedName, &oNode))
-			return false;
-
-		if (JS_InstanceOfError (cx, oNode, jsSFNode::getClass ()))
-			return false;
-
-		auto & node = *getObject <SFNode*> (cx, oNode);
-
-		try
-		{
-			const auto scene = getObject <X3DScene*> (cx, JS_THIS_OBJECT (cx, vp));
-
-			scene -> addExportedNode (JS_GetString (cx, exportedName), node);
-
-			JS_SET_RVAL (cx, vp, JSVAL_VOID);
-
-			return true;
-		}
-		catch (const X3DError & exception)
-		{
-			JS_ReportError (cx, exception .what ());
-			return false;
-		}
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
+		return true;
 	}
-
-	JS_ReportError (cx, "wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .addExportedNode: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DScene::removeExportedNode (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .removeExportedNode: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		JSString* exportedName = nullptr;
+		const auto argv         = JS_ARGV (cx, vp);
+		const auto scene        = getThis <jsX3DScene> (cx, vp);
+		const auto exportedName = getArgument <std::string> (cx, argv, 0);
 
-		jsval* argv = JS_ARGV (cx, vp);
+		scene -> removeImportedNode (exportedName);
 
-		if (not JS_ConvertArguments (cx, argc, argv, "S", &exportedName))
-			return false;
-
-		try
-		{
-			const auto scene = getObject <X3DScene*> (cx, JS_THIS_OBJECT (cx, vp));
-
-			scene -> removeImportedNode (JS_GetString (cx, exportedName));
-
-			JS_SET_RVAL (cx, vp, JSVAL_VOID);
-
-			return true;
-		}
-		catch (const X3DError & exception)
-		{
-			JS_ReportError (cx, exception .what ());
-			return false;
-		}
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
+		return true;
 	}
-
-	JS_ReportError (cx, "wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .removeExportedNode: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DScene::updateExportedNode (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 2)
+	if (argc not_eq 2)
+		return ThrowException (cx, "%s .updateExportedNode: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		JSString* exportedName = nullptr;
-		JSObject* oNode        = nullptr;
+		const auto argv         = JS_ARGV (cx, vp);
+		const auto scene        = getThis <jsX3DScene> (cx, vp);
+		const auto exportedName = getArgument <std::string> (cx, argv, 0);
+		const auto node         = getArgument <jsSFNode> (cx, argv, 1);
 
-		const auto argv = JS_ARGV (cx, vp);
+		scene -> updateExportedNode (exportedName, *node);
 
-		if (not JS_ConvertArguments (cx, argc, argv, "So", &exportedName, &oNode))
-			return false;
-
-		if (JS_InstanceOfError (cx, oNode, jsSFNode::getClass ()))
-			return false;
-
-		const auto & node = *getObject <SFNode*> (cx, oNode);
-
-		try
-		{
-			const auto scene = getObject <X3DScene*> (cx, JS_THIS_OBJECT (cx, vp));
-
-			scene -> updateExportedNode (JS_GetString (cx, exportedName), node);
-
-			JS_SET_RVAL (cx, vp, JSVAL_VOID);
-
-			return true;
-		}
-		catch (const X3DError & exception)
-		{
-			JS_ReportError (cx, exception .what ());
-			return false;
-		}
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
+		return true;
 	}
-
-	JS_ReportError (cx, "wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .updateExportedNode: %s.", getClass () -> name, error .what ());
+	}
 }
 
 JSBool
 jsX3DScene::getExportedNode (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc == 1)
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .getExportedNode: wrong number of arguments.", getClass () -> name);
+
+	try
 	{
-		JSString* exportedName = nullptr;
+		const auto argv         = JS_ARGV (cx, vp);
+		const auto scene        = getThis <jsX3DScene> (cx, vp);
+		const auto exportedName = getArgument <std::string> (cx, argv, 0);
+		auto       namedNode    = scene -> getExportedNode (exportedName);
 
-		const auto argv = JS_ARGV (cx, vp);
-
-		if (not JS_ConvertArguments (cx, argc, argv, "S", &exportedName))
-			return false;
-
-		try
-		{
-			const auto scene     = getObject <X3DScene*> (cx, JS_THIS_OBJECT (cx, vp));
-			const auto namedNode = scene -> getExportedNode (JS_GetString (cx, exportedName));
-
-			return jsSFNode::create (cx, new SFNode (std::move (namedNode)), &JS_RVAL (cx, vp));
-		}
-		catch (const X3DError & error)
-		{
-			JS_ReportError (cx, error .what ());
-			return false;
-		}
+		return jsSFNode::create (cx, new SFNode (std::move (namedNode)), &JS_RVAL (cx, vp));
 	}
-
-	JS_ReportError (cx, "wrong number of arguments");
-
-	return false;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .getExportedNode: %s.", getClass () -> name, error .what ());
+	}
 }
 
 void
 jsX3DScene::finalize (JSContext* cx, JSObject* obj)
 {
 	const auto context = getContext (cx);
-	const auto scene   = getObject <X3DScene*> (cx, obj);
+	const auto scene   = getObject <X3D::X3DScene*> (cx, obj);
 
 	if (scene)
 	{

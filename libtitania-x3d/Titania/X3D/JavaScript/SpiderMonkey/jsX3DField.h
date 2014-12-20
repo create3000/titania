@@ -55,6 +55,7 @@
 #include "jsArguments.h"
 #include "jsContext.h"
 #include "jsError.h"
+#include "jsObjectType.h"
 #include "jsString.h"
 
 #include <jsapi.h>
@@ -65,6 +66,29 @@ namespace MozillaSpiderMonkey {
 
 class jsX3DField
 {
+public:
+
+	///  @name Member types
+
+	using internal_type = X3D::X3DFieldDefinition;
+
+	///  @name Construction
+
+	static
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
+
+	static
+	JSClass*
+	getClass ()
+	{ return &static_class; }
+
+	static
+	constexpr ObjectType
+	getId ()
+	{ return ObjectType::X3DField; }
+
+
 protected:
 
 	///  @name Construction
@@ -74,43 +98,28 @@ protected:
 	JSBool
 	create (JSContext* const, JSClass* const, Type* const, jsval* const);
 
-	///  @name Functions
-
-	template <class Class>
-	static
-	JSBool
-	getName (JSContext*, uint32_t, jsval*);
-
-	template <class Class>
-	static
-	JSBool
-	getTypeName (JSContext*, uint32_t, jsval*);
-
-	template <class Class>
-	static
-	JSBool
-	getType (JSContext*, uint32_t, jsval*);
-
-	template <class Class>
-	static
-	JSBool
-	isReadable (JSContext*, uint32_t, jsval*);
-
-	template <class Class>
-	static
-	JSBool
-	isWritable (JSContext*, uint32_t, jsval*);
-
-	template <class Class>
-	static
-	JSBool
-	toString (JSContext*, uint32_t, jsval*);
-
 	///  @name Destruction
 
 	static
 	void
 	finalize (JSContext*, JSObject*);
+
+
+private:
+
+	///  @name Functions
+
+	static JSBool getName (JSContext*, uint32_t, jsval*);
+	static JSBool getTypeName (JSContext*, uint32_t, jsval*);
+	static JSBool getType (JSContext*, uint32_t, jsval*);
+	static JSBool isReadable (JSContext*, uint32_t, jsval*);
+	static JSBool isWritable (JSContext*, uint32_t, jsval*);
+	static JSBool toString (JSContext*, uint32_t, jsval*);
+
+	///  @name Static members
+
+	static JSClass        static_class;
+	static JSFunctionSpec functions [ ];
 
 };
 
@@ -139,124 +148,6 @@ jsX3DField::create (JSContext* const cx, JSClass* const static_class, InternalTy
 	}
 
 	return true;
-}
-
-template <class Class>
-JSBool
-jsX3DField::getName (JSContext* cx, uint32_t argc, jsval* vp)
-{
-	if (argc not_eq 0)
-		return ThrowException (cx, "%s .getName: wrong number of arguments.", Class::getClass () -> name);
-
-	try
-	{
-		const auto lhs = getThis <Class> (cx, vp);
-
-		return JS_NewStringValue (cx, lhs -> getName (), vp);
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .getName: %s.", Class::getClass () -> name, error .what ());
-	}
-}
-
-template <class Class>
-JSBool
-jsX3DField::getTypeName (JSContext* cx, uint32_t argc, jsval* vp)
-{
-	if (argc not_eq 0)
-		return ThrowException (cx, "%s .getTypeName: wrong number of arguments.", Class::getClass () -> name);
-
-	try
-	{
-		const auto lhs = getThis <Class> (cx, vp);
-
-		return JS_NewStringValue (cx, lhs -> getTypeName (), vp);
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .getTypeName: %s.", Class::getClass () -> name, error .what ());
-	}
-}
-
-template <class Class>
-JSBool
-jsX3DField::getType (JSContext* cx, uint32_t argc, jsval* vp)
-{
-	if (argc not_eq 0)
-		return ThrowException (cx, "%s .getType: wrong number of arguments.", Class::getClass () -> name);
-
-	try
-	{
-		const auto lhs = getThis <Class> (cx, vp);
-
-		return JS_NewNumberValue (cx, lhs -> getType (), vp);
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .getType: %s.", Class::getClass () -> name, error .what ());
-	}
-}
-
-template <class Class>
-JSBool
-jsX3DField::isReadable (JSContext* cx, uint32_t argc, jsval* vp)
-{
-	if (argc not_eq 0)
-		return ThrowException (cx, "%s .isReadable: wrong number of arguments.", Class::getClass () -> name);
-
-	try
-	{
-		const auto lhs = getThis <Class> (cx, vp);
-
-		JS_SET_RVAL (cx, vp, lhs -> getAccessType () not_eq inputOnly ? JSVAL_TRUE : JSVAL_FALSE);
-		return true;
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .isReadable: %s.", Class::getClass () -> name, error .what ());
-	}
-}
-
-template <class Class>
-JSBool
-jsX3DField::isWritable (JSContext* cx, uint32_t argc, jsval* vp)
-{
-	if (argc not_eq 0)
-		return ThrowException (cx, "%s .isWritable: wrong number of arguments.", Class::getClass () -> name);
-
-	try
-	{
-		const auto lhs = getThis <Class> (cx, vp);
-
-		JS_SET_RVAL (cx, vp, lhs -> getAccessType () not_eq initializeOnly ? JSVAL_TRUE : JSVAL_FALSE);
-		return true;
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .isWritable: %s.", Class::getClass () -> name, error .what ());
-	}
-}
-
-template <class Class>
-JSBool
-jsX3DField::toString (JSContext* cx, uint32_t argc, jsval* vp)
-{
-	if (argc not_eq 0)
-		return ThrowException (cx, "%s .toString: wrong number of arguments.", Class::getClass () -> name);
-
-	try
-	{
-		const auto lhs = getThis <Class> (cx, vp);
-
-		Generator::NicestStyle ();
-
-		return JS_NewStringValue (cx, lhs -> toString (), vp);
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .toString: %s.", Class::getClass () -> name, error .what ());
-	}
 }
 
 } // MozillaSpiderMonkey

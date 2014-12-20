@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,6 +52,8 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DEXECUTION_CONTEXT_H__
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "jsObjectType.h"
+
 #include <jsapi.h>
 
 namespace titania {
@@ -62,9 +64,15 @@ class jsX3DExecutionContext
 {
 public:
 
+	///  @name Member types
+
+	using internal_type = X3D::X3DExecutionContext;
+
+	///  @name Construction
+
 	static
 	JSObject*
-	init (JSContext* const, JSObject* const);
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSBool
@@ -75,10 +83,15 @@ public:
 	getClass ()
 	{ return &static_class; }
 
-	static JSBool addRoute (JSContext *, uint32_t, jsval*);
+	static
+	constexpr ObjectType
+	getId ()
+	{ return ObjectType::X3DExecutionContext; }
 
 
 protected:
+
+	///  @name Member types
 
 	enum Property
 	{
@@ -93,36 +106,44 @@ protected:
 		ROUTES
 	};
 
+	///  @name Properties
+
 	static JSBool specificationVersion (JSContext* cx, JSObject* obj, jsid id, jsval* vp);
 	static JSBool encoding             (JSContext* cx, JSObject* obj, jsid id, jsval* vp);
 	static JSBool worldURL             (JSContext* cx, JSObject* obj, jsid id, jsval* vp);
 	static JSBool profile              (JSContext* cx, JSObject* obj, jsid id, jsval* vp);
 	static JSBool components           (JSContext* cx, JSObject* obj, jsid id, jsval* vp);
 
-	static JSBool externprotos (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool protos       (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool rootNodes    (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool routes       (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool externprotos (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool protos       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool rootNodes    (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool routes       (JSContext*, JSObject*, jsid, jsval*);
 
-	static JSBool createNode  (JSContext *, uint32_t, jsval*);
-	static JSBool createProto (JSContext *, uint32_t, jsval*);
+	static JSBool createNode  (JSContext*, uint32_t, jsval*);
+	static JSBool createProto (JSContext*, uint32_t, jsval*);
 
-	static JSBool addNamedNode    (JSContext *, uint32_t, jsval*);
-	static JSBool removeNamedNode (JSContext *, uint32_t, jsval*);
-	static JSBool updateNamedNode (JSContext *, uint32_t, jsval*);
-	static JSBool getNamedNode    (JSContext *, uint32_t, jsval*);
+	///  @name Functions
 
-	static JSBool addImportedNode    (JSContext *, uint32_t, jsval*);
-	static JSBool removeImportedNode (JSContext *, uint32_t, jsval*);
-	static JSBool updateImportedNode (JSContext *, uint32_t, jsval*);
-	static JSBool getImportedNode    (JSContext *, uint32_t, jsval*);
+	static JSBool addNamedNode    (JSContext*, uint32_t, jsval*);
+	static JSBool removeNamedNode (JSContext*, uint32_t, jsval*);
+	static JSBool updateNamedNode (JSContext*, uint32_t, jsval*);
+	static JSBool getNamedNode    (JSContext*, uint32_t, jsval*);
 
-	static JSBool deleteRoute (JSContext *, uint32_t, jsval*);
+	static JSBool addImportedNode    (JSContext*, uint32_t, jsval*);
+	static JSBool removeImportedNode (JSContext*, uint32_t, jsval*);
+	static JSBool updateImportedNode (JSContext*, uint32_t, jsval*);
+	static JSBool getImportedNode    (JSContext*, uint32_t, jsval*);
 
-	static JSBool toVRMLString (JSContext *, uint32_t, jsval*);
-	static JSBool toXMLString  (JSContext *, uint32_t, jsval*);
+	static JSBool addRoute (JSContext*, uint32_t, jsval*);
+	static JSBool deleteRoute (JSContext*, uint32_t, jsval*);
+
+	static JSBool toVRMLString (JSContext*, uint32_t, jsval*);
+	static JSBool toXMLString  (JSContext*, uint32_t, jsval*);
+
 
 private:
+
+	///  @name Static members
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

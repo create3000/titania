@@ -74,8 +74,8 @@ public:
 	using rotation_type = jsSFRotation;
 
 	static
-	void
-	init (JSContext* const, JSObject* const);
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSBool
@@ -85,6 +85,11 @@ public:
 	JSClass*
 	getClass ()
 	{ return &static_class; }
+
+	static
+	constexpr ObjectType
+	getId ()
+	{ throw std::domain_error ("getId"); }
 
 
 private:
@@ -128,12 +133,6 @@ JSClass jsSFMatrix4 <Type>::static_class = {
 
 template <class Type>
 JSFunctionSpec jsSFMatrix4 <Type>::functions [ ] = {
-	{ "getName",       getName <jsSFMatrix4>,      0, 0 },
-	{ "getTypeName",   getTypeName <jsSFMatrix4>,  0, 0 },
-	{ "getType",       getType <jsSFMatrix4>,      0, 0 },
-	{ "isReadable",    isReadable <jsSFMatrix4>,   0, 0 },
-	{ "isWritable",    isWritable <jsSFMatrix4>,   0, 0 },
-
 	{ "setTransform",  setTransform,  5, 0 },
 	{ "getTransform",  getTransform,  3, 0 },
 
@@ -146,20 +145,20 @@ JSFunctionSpec jsSFMatrix4 <Type>::functions [ ] = {
 	{ "multDirMatrix", multDirMatrix, 1, 0 },
 	{ "multMatrixDir", multMatrixDir, 1, 0 },
 
-	{ "toString",      toString <jsSFMatrix4>, 0, 0 },
-
 	{ 0 }
 
 };
 
 template <class Type>
-void
-jsSFMatrix4 <Type>::init (JSContext* const cx, JSObject* const global)
+JSObject*
+jsSFMatrix4 <Type>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, nullptr, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, nullptr, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+	
+	return proto;
 }
 
 template <class Type>
@@ -621,13 +620,28 @@ jsSFMatrix4 <Type>::multMatrixDir (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-extern template class jsSFMatrix4 <X3D::SFMatrix4d>;
-extern template class jsSFMatrix4 <X3D::SFMatrix4f>;
-extern template class jsSFMatrix4 <X3D::VrmlMatrix>;
+template <>
+constexpr ObjectType
+jsSFMatrix4 <X3D::SFMatrix4d>::getId ()
+{ return ObjectType::SFMatrix4d; }
+
+template <>
+constexpr ObjectType
+jsSFMatrix4 <X3D::SFMatrix4f>::getId ()
+{ return ObjectType::SFMatrix4f; }
+
+template <>
+constexpr ObjectType
+jsSFMatrix4 <X3D::VrmlMatrix>::getId ()
+{ return ObjectType::VrmlMatrix; }
 
 using jsSFMatrix4d = jsSFMatrix4 <X3D::SFMatrix4d>;
 using jsSFMatrix4f = jsSFMatrix4 <X3D::SFMatrix4f>;
 using jsVrmlMatrix = jsSFMatrix4 <X3D::VrmlMatrix>;
+
+extern template class jsSFMatrix4 <X3D::SFMatrix4d>;
+extern template class jsSFMatrix4 <X3D::SFMatrix4f>;
+extern template class jsSFMatrix4 <X3D::VrmlMatrix>;
 
 } // MozillaSpiderMonkey
 } // X3D

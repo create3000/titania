@@ -73,12 +73,6 @@ JSClass jsSFNode::static_class = {
 };
 
 JSFunctionSpec jsSFNode::functions [ ] = {
-	{ "getName",             getName <jsSFNode>,     0, 0 },
-	{ "getTypeName",         getTypeName <jsSFNode>, 0, 0 },
-	{ "getType",             getType <jsSFNode>,     0, 0 },
-	{ "isReadable",          isReadable <jsSFNode>,  0, 0 },
-	{ "isWritable",          isWritable <jsSFNode>,  0, 0 },
-
 	{ "getNodeName",         getNodeName,         0, 0 },
 	{ "getNodeType",         getNodeType,         0, 0 },
 	{ "getFieldDefinitions", getFieldDefinitions, 0, 0 },
@@ -91,13 +85,15 @@ JSFunctionSpec jsSFNode::functions [ ] = {
 
 };
 
-void
-jsSFNode::init (JSContext* const cx, JSObject* const global)
+JSObject*
+jsSFNode::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, nullptr, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, nullptr, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+	
+	return proto;
 }
 
 JSBool
@@ -224,7 +220,7 @@ jsSFNode::getProperty (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 			return true;
 
 		const auto lhs  = getThis <jsSFNode> (cx, obj);
-		const auto name = JS_GetString (cx, id);
+		const auto name = to_string (cx, id);
 
 		if (not lhs -> getValue ())
 			return true;
@@ -248,7 +244,7 @@ jsSFNode::getProperty (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 	}
 	catch (const std::exception & error)
 	{
-		const auto name = JS_GetString (cx, id);
+		const auto name = to_string (cx, id);
 
 		return ThrowException (cx, "%s .%s: %s.", getClass () -> name, name .c_str (), error .what ());
 	}
@@ -263,7 +259,7 @@ jsSFNode::setProperty (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsv
 			return true;
 
 		const auto lhs  = getThis <jsSFNode> (cx, obj);
-		const auto name = JS_GetString (cx, id);
+		const auto name = to_string (cx, id);
 
 		if (not lhs -> getValue ())
 			return true;
@@ -288,7 +284,7 @@ jsSFNode::setProperty (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsv
 	}
 	catch (const std::exception & error)
 	{
-		const auto name = JS_GetString (cx, id);
+		const auto name = to_string (cx, id);
 
 		return ThrowException (cx, "%s .%s: %s.", getClass () -> name, name .c_str (), error .what ());
 	}

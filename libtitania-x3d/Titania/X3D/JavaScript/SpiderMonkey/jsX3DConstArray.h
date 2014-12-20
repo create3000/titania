@@ -53,6 +53,7 @@
 
 #include "jsArguments.h"
 #include "jsError.h"
+#include "jsObjectType.h"
 
 #include <jsapi.h>
 
@@ -73,8 +74,8 @@ public:
 	///  @name Construction
 
 	static
-	void
-	init (JSContext* const, JSObject* const);
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSBool
@@ -84,6 +85,11 @@ public:
 	JSClass*
 	getClass ()
 	{ return &static_class; }
+
+	static
+	constexpr ObjectType
+	getId ()
+	{ throw std::domain_error ("getId"); }
 
 
 private:
@@ -126,13 +132,15 @@ JSPropertySpec jsX3DConstArray <Type, InternalType>::properties [ ] = {
 };
 
 template <class Type, class InternalType>
-void
-jsX3DConstArray <Type, InternalType>::init (JSContext* const cx, JSObject* const global)
+JSObject*
+jsX3DConstArray <Type, InternalType>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, nullptr, 0, properties, nullptr, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, nullptr, 0, properties, nullptr, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+	
+	return proto;
 }
 
 template <class Type, class InternalType>

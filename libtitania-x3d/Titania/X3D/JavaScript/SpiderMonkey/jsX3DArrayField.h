@@ -75,8 +75,8 @@ public:
 	///  @name Construction
 
 	static
-	void
-	init (JSContext* const, JSObject* const);
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSBool
@@ -86,6 +86,11 @@ public:
 	JSClass*
 	getClass ()
 	{ return &static_class; }
+
+	static
+	constexpr ObjectType
+	getId ()
+	{ throw std::domain_error ("getId"); }
 
 
 private:
@@ -143,31 +148,25 @@ JSPropertySpec jsX3DArrayField <Type, InternalType>::properties [ ] = {
 
 template <class Type, class InternalType>
 JSFunctionSpec jsX3DArrayField <Type, InternalType>::functions [ ] = {
-	{ "getName",     getName <jsX3DArrayField>,     0, 0 },
-	{ "getTypeName", getTypeName <jsX3DArrayField>, 0, 0 },
-	{ "getType",     getType <jsX3DArrayField>,     0, 0 },
-	{ "isReadable",  isReadable <jsX3DArrayField>,  0, 0 },
-	{ "isWritable",  isWritable <jsX3DArrayField>,  0, 0 },
-
 	{ "unshift",     unshift, 1, 0 },
 	{ "push",        push,    1, 0 },
 	{ "shift",       shift,   0, 0 },
 	{ "pop",         pop,     0, 0 },
-
-	{ "toString",    toString <jsX3DArrayField>, 0, 0 },
 
 	{ 0 }
 
 };
 
 template <class Type, class InternalType>
-void
-jsX3DArrayField <Type, InternalType>::init (JSContext* const cx, JSObject* const global)
+JSObject*
+jsX3DArrayField <Type, InternalType>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, properties, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+	
+	return proto;
 }
 
 template <class Type, class InternalType>

@@ -207,13 +207,15 @@ JSFunctionSpec jsFieldDefinitionArray::functions [ ] = {
 
 };
 
-void
-jsFieldDefinitionArray::init (JSContext* const cx, JSObject* const global)
+JSObject*
+jsFieldDefinitionArray::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
 	const auto proto = JS_InitClass (cx, global, NULL, &static_class, NULL, 0, properties, functions, NULL, NULL);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+	
+	return proto;
 }
 
 JSBool

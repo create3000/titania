@@ -60,6 +60,11 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFDouble, X3D::MFDouble>::getId ()
+{ return ObjectType::MFDouble; }
+
+template <>
 JSBool
 jsX3DArrayField <jsSFDouble, X3D::MFDouble>::construct (JSContext *, uint32_t, jsval*);
 
@@ -75,9 +80,9 @@ template <>
 JSBool
 jsX3DArrayField <jsSFDouble, X3D::MFDouble>::push (JSContext *, uint32_t, jsval*);
 
-extern template class jsX3DArrayField <jsSFDouble, X3D::MFDouble>;
-
 using jsMFDouble = jsX3DArrayField <jsSFDouble, X3D::MFDouble>;
+
+extern template class jsX3DArrayField <jsSFDouble, X3D::MFDouble>;
 
 } // MozillaSpiderMonkey
 } // X3D

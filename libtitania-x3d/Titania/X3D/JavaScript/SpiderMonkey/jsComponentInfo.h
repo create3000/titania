@@ -52,6 +52,8 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_COMPONENT_INFO_H__
 
 #include "../../Configuration/ComponentInfo.h"
+#include "jsObjectType.h"
+
 #include <jsapi.h>
 
 namespace titania {
@@ -69,8 +71,8 @@ public:
 	///  @name Construction
 
 	static
-	void
-	init (JSContext* const, JSObject* const);
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSBool
@@ -80,6 +82,11 @@ public:
 	JSClass*
 	getClass ()
 	{ return &static_class; }
+	
+	static
+	constexpr ObjectType
+	getId ()
+	{ return ObjectType::ComponentInfo; }
 
 
 private:

@@ -86,13 +86,15 @@ JSFunctionSpec jsX3DExternProtoDeclaration::functions [ ] = {
 
 };
 
-void
-jsX3DExternProtoDeclaration::init (JSContext* const cx, JSObject* const global)
+JSObject*
+jsX3DExternProtoDeclaration::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, nullptr, 0, properties, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, nullptr, 0, properties, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+	
+	return proto;
 }
 
 JSBool

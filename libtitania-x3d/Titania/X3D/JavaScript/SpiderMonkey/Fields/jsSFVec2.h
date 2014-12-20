@@ -69,8 +69,8 @@ public:
 	using internal_type = Type;
 
 	static
-	void
-	init (JSContext* const, JSObject* const);
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSBool
@@ -80,6 +80,11 @@ public:
 	JSClass*
 	getClass ()
 	{ return &static_class; }
+
+	static
+	constexpr ObjectType
+	getId ()
+	{ throw std::domain_error ("getId"); }
 
 
 private:
@@ -132,12 +137,6 @@ JSPropertySpec jsSFVec2 <Type>::properties [ ] = {
 
 template <class Type>
 JSFunctionSpec jsSFVec2 <Type>::functions [ ] = {
-	{ "getName",     getName <jsSFVec2>,     0, 0 },
-	{ "getTypeName", getTypeName <jsSFVec2>, 0, 0 },
-	{ "getType",     getType <jsSFVec2>,     0, 0 },
-	{ "isReadable",  isReadable <jsSFVec2>,  0, 0 },
-	{ "isWritable",  isWritable <jsSFVec2>,  0, 0 },
-
 	{ "negate",      negate,      0, 0 },
 	{ "add",         add,         1, 0 },
 	{ "subtract",    subtract,    1, 0 },
@@ -149,23 +148,23 @@ JSFunctionSpec jsSFVec2 <Type>::functions [ ] = {
 	{ "dot",         dot,         1, 0 },
 	{ "length",      length,      0, 0 },
 
-	{ "toString",    toString <jsSFVec2>, 0, 0 },
-
 	{ 0 }
 
 };
 
 template <class Type>
-void
-jsSFVec2 <Type>::init (JSContext* cx, JSObject* global)
+JSObject*
+jsSFVec2 <Type>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, properties, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 
 	JS_DefineProperty (cx, proto, (char*) X, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 	JS_DefineProperty (cx, proto, (char*) Y, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	
+	return proto;
 }
 
 template <class Type>
@@ -495,11 +494,21 @@ jsSFVec2 <Type>::length (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-extern template class jsSFVec2 <X3D::SFVec2d>;
-extern template class jsSFVec2 <X3D::SFVec2f>;
+template <>
+constexpr ObjectType
+jsSFVec2 <X3D::SFVec2d>::getId ()
+{ return ObjectType::SFVec2d; }
+
+template <>
+constexpr ObjectType
+jsSFVec2 <X3D::SFVec2f>::getId ()
+{ return ObjectType::SFVec2f; }
 
 using jsSFVec2d = jsSFVec2 <X3D::SFVec2d>;
 using jsSFVec2f = jsSFVec2 <X3D::SFVec2f>;
+
+extern template class jsSFVec2 <X3D::SFVec2d>;
+extern template class jsSFVec2 <X3D::SFVec2f>;
 
 } // MozillaSpiderMonkey
 } // X3D

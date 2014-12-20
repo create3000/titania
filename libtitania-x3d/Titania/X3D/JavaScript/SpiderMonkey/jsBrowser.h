@@ -53,6 +53,7 @@
 
 #include "../../Fields.h"
 #include "../../Types/Pointer.h"
+#include "jsObjectType.h"
 
 #include <iostream>
 #include <jsapi.h>
@@ -63,19 +64,28 @@ namespace MozillaSpiderMonkey {
 
 class jsBrowser
 {
-public:
+public:	
+
+	///  @name Construction
 
 	static
-	void
-	init (JSContext* const, JSObject* const);
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSClass*
 	getClass ()
 	{ return &static_class; }
 
+	static
+	constexpr ObjectType
+	getId ()
+	{ return ObjectType::Browser; }
+
 
 private:
+
+	///  @name Member types
 
 	enum Property
 	{
@@ -89,7 +99,8 @@ private:
 		CURRENT_SCENE
 	};
 
-	// X3D properties
+	///  @name X3D properties
+
 	static JSBool name                (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool version             (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool currentSpeed        (JSContext *, JSObject *, jsid, jsval*);
@@ -100,7 +111,8 @@ private:
 	static JSBool supportedProfiles   (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool currentScene        (JSContext *, JSObject *, jsid, jsval*);
 
-	// X3D functions
+	///  @name X3D functions
+
 	static JSBool replaceWorld         (JSContext *, uint32_t, jsval*);
 	static JSBool createX3DFromString  (JSContext *, uint32_t, jsval*);
 	static JSBool createX3DFromURL     (JSContext *, uint32_t, jsval*);
@@ -118,7 +130,8 @@ private:
 	static JSBool print                (JSContext *, uint32_t, jsval*);
 	static JSBool println              (JSContext *, uint32_t, jsval*);
 
-	// VRML97 functions
+	///  @name VRML97 functions
+
 	static JSBool getName              (JSContext *, uint32_t, jsval*);
 	static JSBool getVersion           (JSContext *, uint32_t, jsval*);
 	static JSBool getCurrentSpeed      (JSContext *, uint32_t, jsval*);
@@ -130,9 +143,13 @@ private:
 	static JSBool addRoute             (JSContext *, uint32_t, jsval*);
 	static JSBool deleteRoute          (JSContext *, uint32_t, jsval*);
 
+	///  @name Event handler
+
 	static
 	void
 	setSceneAsync (const X3D::SFNode & script, const X3D::SFNode &, X3D::MFNode* const, X3D::X3DScenePtr &&);
+
+	///  @name Static members
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

@@ -798,6 +798,7 @@
     <None Include="Titania\X3D\PeaseBlossom\Base\vsChildObject.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsArguments.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstArray.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsObjectType.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

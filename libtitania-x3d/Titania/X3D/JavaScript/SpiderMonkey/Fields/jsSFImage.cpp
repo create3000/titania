@@ -77,26 +77,15 @@ JSPropertySpec jsSFImage::properties [ ] = {
 
 };
 
-JSFunctionSpec jsSFImage::functions [ ] = {
-	{ "getName",     getName <jsSFImage>,     0, 0 },
-	{ "getTypeName", getTypeName <jsSFImage>, 0, 0 },
-	{ "getType",     getType <jsSFImage>,     0, 0 },
-	{ "isReadable",  isReadable <jsSFImage>,  0, 0 },
-	{ "isWritable",  isWritable <jsSFImage>,  0, 0 },
-
-	{ "toString",    toString <jsSFImage>, 0, 0 },
-
-	{ 0 }
-
-};
-
-void
-jsSFImage::init (JSContext* const cx, JSObject* const global)
+JSObject*
+jsSFImage::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, properties, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, nullptr, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+	
+	return proto;
 }
 
 JSBool

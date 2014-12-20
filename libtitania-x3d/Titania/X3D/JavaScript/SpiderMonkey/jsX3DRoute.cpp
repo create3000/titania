@@ -76,13 +76,15 @@ JSPropertySpec jsX3DRoute::properties [ ] = {
 
 };
 
-void
-jsX3DRoute::init (JSContext* const cx, JSObject* const global)
+JSObject*
+jsX3DRoute::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, nullptr, 0, properties, nullptr, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, nullptr, 0, properties, nullptr, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+	
+	return proto;
 }
 
 JSBool

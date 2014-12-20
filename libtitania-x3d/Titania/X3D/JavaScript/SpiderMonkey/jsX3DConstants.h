@@ -51,6 +51,8 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DCONSTANTS_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DCONSTANTS_H__
 
+#include "jsObjectType.h"
+
 #include <iostream>
 #include <jsapi.h>
 
@@ -63,13 +65,18 @@ class jsX3DConstants
 public:
 
 	static
-	void
-	init (JSContext* const, JSObject* const);
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSClass*
 	getClass ()
 	{ return &static_class; }
+
+	static
+	constexpr ObjectType
+	getId ()
+	{ return ObjectType::X3DConstants; }
 
 
 private:

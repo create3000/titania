@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_ARGUMENTS_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_ARGUMENTS_H__
 
+#include "jsContext.h"
 #include "jsString.h"
 
 #include <jsapi.h>
@@ -67,7 +68,16 @@ inline
 bool
 instanceOf (JSContext* const cx, JSObject* const obj)
 {
-	return JS_InstanceOf (cx, obj, Type::getClass (), nullptr);
+	const auto context     = getContext (cx);
+	const auto proto       = context -> getProto (Type::getId ());
+	const auto constructor = JS_GetConstructor (cx, proto);
+	jsval      value       = OBJECT_TO_JSVAL (obj);
+	JSBool     boolean     = false;
+
+	if (JS_HasInstance (cx, constructor, value, &boolean))
+		return boolean;
+
+	return false;
 }
 
 template <class Type>
@@ -157,7 +167,7 @@ getArgument <bool> (JSContext* const cx, jsval* const argv, const size_t index)
 throw (std::invalid_argument,
        std::domain_error)
 {
-	int boolean = false;
+	JSBool boolean = false;
 
 	if (JS_ValueToBoolean (cx, argv [index], &boolean))
 		return boolean;

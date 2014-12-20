@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,74 +48,78 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_PROFILE_INFO_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_PROFILE_INFO_H__
-
-#include "../../Configuration/ProfileInfo.h"
-#include "jsObjectType.h"
-
-#include <jsapi.h>
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_OBJECT_TYPE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_OBJECT_TYPE_H__
 
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-class jsProfileInfo
+enum class ObjectType
 {
-public:
+	X3DConstants,
 
-	///  @name Member types
-	
-	using internal_type = X3D::ProfileInfoPtr;
+	Browser,
+	X3DExecutionContext,
+	X3DScene,
 
-	///  @name Construction
+	ComponentInfo,
+	ProfileInfo,
+	X3DFieldDefinition,
+	X3DExternProtoDeclaration,
+	X3DProtoDeclaration,
+	X3DRoute,
 
-	static
-	JSObject*
-	init (JSContext* const, JSObject* const, JSObject* const);
+	FieldDefinitionArray,
+	ComponentInfoArray,
+	ProfileInfoArray,
+	ExternProtoDeclarationArray,
+	ProtoDeclarationArray,
+	RouteArray,
 
-	static
-	JSBool
-	create (JSContext* const, const ProfileInfoPtr &, jsval* const);
+	X3DField,
+	X3DArrayField,
 
-	static
-	JSClass*
-	getClass ()
-	{ return &static_class; }
-	
-	static
-	constexpr ObjectType
-	getId ()
-	{ return ObjectType::ProfileInfo; }
+	SFColor,
+	SFColorRGBA,
+	SFImage,
+	SFMatrix3d,
+	SFMatrix3f,
+	SFMatrix4d,
+	SFMatrix4f,
+	SFNode,
+	SFRotation,
+	SFVec2d,
+	SFVec2f,
+	SFVec3d,
+	SFVec3f,
+	SFVec4d,
+	SFVec4f,
+	VrmlMatrix,
 
+	MFBool,
+	MFColor,
+	MFColorRGBA,
+	MFDouble,
+	MFFloat,
+	MFImage,
+	MFInt32,
+	MFMatrix3d,
+	MFMatrix3f,
+	MFMatrix4d,
+	MFMatrix4f,
+	MFNode,
+	MFRotation,
+	MFString,
+	MFTime,
+	MFVec2d,
+	MFVec2f,
+	MFVec3d,
+	MFVec3f,
+	MFVec4d,
+	MFVec4f,
 
-private:
-
-	///  @name Member types
-
-	enum Property
-	{
-		NAME,
-		TITLE,
-		PROVIDER_URL,
-		COMPONENTS
-	};
-
-	///  @name Properties
-
-	static JSBool name        (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool title       (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool providerUrl (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool components  (JSContext *, JSObject *, jsid, jsval*);
-
-	///  @name Destruction
-
-	static void finalize (JSContext*, JSObject*);
-
-	///  @name Static members
-
-	static JSClass        static_class;
-	static JSPropertySpec properties [ ];
+	SIZE
 
 };
 

@@ -66,8 +66,8 @@ public:
 	using internal_type = X3D::SFImage;
 
 	static
-	void
-	init (JSContext* const, JSObject* const);
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSBool
@@ -77,6 +77,11 @@ public:
 	JSClass*
 	getClass ()
 	{ return &static_class; }
+
+	static
+	constexpr ObjectType
+	getId ()
+	{ return ObjectType::SFImage; }
 
 
 private:
@@ -99,7 +104,6 @@ private:
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
-	static JSFunctionSpec functions [ ];
 
 };
 

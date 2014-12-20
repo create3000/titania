@@ -56,11 +56,154 @@ namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
+JSClass jsX3DField::static_class = {
+	"X3DField", JSCLASS_HAS_PRIVATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+JSFunctionSpec jsX3DField::functions [ ] = {
+	{ "getName",     getName,     0, 0 },
+	{ "getTypeName", getTypeName, 0, 0 },
+	{ "getType",     getType,     0, 0 },
+	{ "isReadable",  isReadable,  0, 0 },
+	{ "isWritable",  isWritable,  0, 0 },
+	{ "toString",    toString,    0, 0 },
+
+	{ 0 }
+
+};
+
+JSObject*
+jsX3DField::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
+{
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, nullptr, 0, nullptr, functions, nullptr, nullptr);
+
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+	
+	return proto;
+}
+
+JSBool
+jsX3DField::getName (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .getName: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto lhs = getThis <jsX3DField> (cx, vp);
+
+		return JS_NewStringValue (cx, lhs -> getName (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .getName: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+jsX3DField::getTypeName (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .getTypeName: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto lhs = getThis <jsX3DField> (cx, vp);
+
+		return JS_NewStringValue (cx, lhs -> getTypeName (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .getTypeName: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+jsX3DField::getType (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .getType: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto lhs = getThis <jsX3DField> (cx, vp);
+
+		return JS_NewNumberValue (cx, lhs -> getType (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .getType: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+jsX3DField::isReadable (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .isReadable: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto lhs = getThis <jsX3DField> (cx, vp);
+
+		JS_SET_RVAL (cx, vp, lhs -> getAccessType () not_eq inputOnly ? JSVAL_TRUE : JSVAL_FALSE);
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .isReadable: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+jsX3DField::isWritable (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .isWritable: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto lhs = getThis <jsX3DField> (cx, vp);
+
+		JS_SET_RVAL (cx, vp, lhs -> getAccessType () not_eq initializeOnly ? JSVAL_TRUE : JSVAL_FALSE);
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .isWritable: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+jsX3DField::toString (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .toString: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto lhs = getThis <jsX3DField> (cx, vp);
+
+		Generator::NicestStyle ();
+
+		return JS_NewStringValue (cx, lhs -> toString (), vp);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .toString: %s.", getClass () -> name, error .what ());
+	}
+}
+
 void
 jsX3DField::finalize (JSContext* cx, JSObject* obj)
 {
 	const auto context = getContext (cx);
-	const auto field   = getObject <X3DFieldDefinition*> (cx, obj);
+	const auto field   = getObject <X3D::X3DFieldDefinition*> (cx, obj);
 
 	// Proto objects have no private
 

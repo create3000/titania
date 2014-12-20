@@ -59,6 +59,11 @@ namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
+template <>
+constexpr ObjectType
+jsX3DConstArray <jsProfileInfo, X3D::ProfileInfoArray>::getId ()
+{ return ObjectType::ProfileInfoArray; }
+
 using jsProfileInfoArray = jsX3DConstArray <jsProfileInfo, X3D::ProfileInfoArray>;
 
 extern template class jsX3DConstArray <jsProfileInfo, X3D::ProfileInfoArray>;

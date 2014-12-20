@@ -239,7 +239,7 @@ setValue (JSContext* const cx, X3DFieldDefinition* const field, jsval* const vp)
 		}
 		case X3DConstants::SFString:
 		{
-			*static_cast <SFString*> (field) = JS_GetString (cx, *vp);
+			*static_cast <SFString*> (field) = to_string (cx, *vp);
 
 			break;
 		}

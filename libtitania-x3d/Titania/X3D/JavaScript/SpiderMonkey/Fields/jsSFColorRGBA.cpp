@@ -77,25 +77,17 @@ JSPropertySpec jsSFColorRGBA::properties [ ] = {
 };
 
 JSFunctionSpec jsSFColorRGBA::functions [ ] = {
-	{ "getName",     getName <jsSFColorRGBA>,     0, 0 },
-	{ "getTypeName", getTypeName <jsSFColorRGBA>, 0, 0 },
-	{ "getType",     getType <jsSFColorRGBA>,     0, 0 },
-	{ "isReadable",  isReadable <jsSFColorRGBA>,  0, 0 },
-	{ "isWritable",  isWritable <jsSFColorRGBA>,  0, 0 },
-
 	{ "getHSV",      getHSV, 0, 0 },
 	{ "setHSV",      setHSV, 3, 0 },
-
-	{ "toString",    toString <jsSFColorRGBA>, 0, 0 },
 
 	{ 0 }
 
 };
 
-void
-jsSFColorRGBA::init (JSContext* const cx, JSObject* const global)
+JSObject*
+jsSFColorRGBA::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, properties, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
@@ -104,6 +96,8 @@ jsSFColorRGBA::init (JSContext* const cx, JSObject* const global)
 	JS_DefineProperty (cx, proto, (char*) G, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 	JS_DefineProperty (cx, proto, (char*) B, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 	JS_DefineProperty (cx, proto, (char*) A, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	
+	return proto;
 }
 
 JSBool

@@ -459,15 +459,17 @@ JSFunctionSpec jsX3DConstants::functions [ ] = {
 
 };
 
-void
-jsX3DConstants::init (JSContext* const cx, JSObject* const global)
+JSObject*
+jsX3DConstants::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, nullptr, 0, properties, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, nullptr, 0, properties, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 
 	JS_DefineObject (cx, global, "X3DConstants", &static_class, nullptr, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT);
+	
+	return proto;
 }
 
 // Event types

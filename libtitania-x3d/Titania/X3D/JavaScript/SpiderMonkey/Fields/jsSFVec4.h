@@ -69,8 +69,8 @@ public:
 	using internal_type = Type;
 
 	static
-	void
-	init (JSContext* const, JSObject* const);
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSBool
@@ -80,6 +80,11 @@ public:
 	JSClass*
 	getClass ()
 	{ return &static_class; }
+
+	static
+	constexpr ObjectType
+	getId ()
+	{ throw std::domain_error ("getId"); }
 
 
 private:
@@ -134,12 +139,6 @@ JSPropertySpec jsSFVec4 <Type>::properties [ ] = {
 
 template <class Type>
 JSFunctionSpec jsSFVec4 <Type>::functions [ ] = {
-	{ "getName",     getName <jsSFVec4>,     0, 0 },
-	{ "getTypeName", getTypeName <jsSFVec4>, 0, 0 },
-	{ "getType",     getType <jsSFVec4>,     0, 0 },
-	{ "isReadable",  isReadable <jsSFVec4>,  0, 0 },
-	{ "isWritable",  isWritable <jsSFVec4>,  0, 0 },
-
 	{ "negate",      negate,      0, 0 },
 	{ "add",         add,         1, 0 },
 	{ "subtract",    subtract,    1, 0 },
@@ -151,17 +150,15 @@ JSFunctionSpec jsSFVec4 <Type>::functions [ ] = {
 	{ "dot",         dot,         1, 0 },
 	{ "length",      length,      0, 0 },
 
-	{ "toString",    toString <jsSFVec4>, 0, 0 },
-
 	{ 0 }
 
 };
 
 template <class Type>
-void
-jsSFVec4 <Type>::init (JSContext* const cx, JSObject* const global)
+JSObject*
+jsSFVec4 <Type>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, properties, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
@@ -170,6 +167,8 @@ jsSFVec4 <Type>::init (JSContext* const cx, JSObject* const global)
 	JS_DefineProperty (cx, proto, (char*) Y, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 	JS_DefineProperty (cx, proto, (char*) Z, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 	JS_DefineProperty (cx, proto, (char*) W, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	
+	return proto;
 }
 
 template <class Type>
@@ -501,11 +500,21 @@ jsSFVec4 <Type>::length (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-extern template class jsSFVec4 <X3D::SFVec4d>;
-extern template class jsSFVec4 <X3D::SFVec4f>;
+template <>
+constexpr ObjectType
+jsSFVec4 <X3D::SFVec4d>::getId ()
+{ return ObjectType::SFVec4d; }
+
+template <>
+constexpr ObjectType
+jsSFVec4 <X3D::SFVec4f>::getId ()
+{ return ObjectType::SFVec4f; }
 
 using jsSFVec4d = jsSFVec4 <X3D::SFVec4d>;
 using jsSFVec4f = jsSFVec4 <X3D::SFVec4f>;
+
+extern template class jsSFVec4 <X3D::SFVec4d>;
+extern template class jsSFVec4 <X3D::SFVec4f>;
 
 } // MozillaSpiderMonkey
 } // X3D

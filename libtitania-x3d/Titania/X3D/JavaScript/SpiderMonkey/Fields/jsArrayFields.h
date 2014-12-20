@@ -69,20 +69,75 @@ namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-extern template class jsX3DArrayField <jsSFColor, X3D::MFColor>;
-extern template class jsX3DArrayField <jsSFColorRGBA, X3D::MFColorRGBA>;
-extern template class jsX3DArrayField <jsSFImage, X3D::MFImage>;
-extern template class jsX3DArrayField <jsSFMatrix3d, X3D::MFMatrix3d>;
-extern template class jsX3DArrayField <jsSFMatrix3f, X3D::MFMatrix3f>;
-extern template class jsX3DArrayField <jsSFMatrix4d, X3D::MFMatrix4d>;
-extern template class jsX3DArrayField <jsSFMatrix4f, X3D::MFMatrix4f>;
-extern template class jsX3DArrayField <jsSFRotation, X3D::MFRotation>;
-extern template class jsX3DArrayField <jsSFVec2d, X3D::MFVec2d>;
-extern template class jsX3DArrayField <jsSFVec2f, X3D::MFVec2f>;
-extern template class jsX3DArrayField <jsSFVec3d, X3D::MFVec3d>;
-extern template class jsX3DArrayField <jsSFVec3f, X3D::MFVec3f>;
-extern template class jsX3DArrayField <jsSFVec4d, X3D::MFVec4d>;
-extern template class jsX3DArrayField <jsSFVec4f, X3D::MFVec4f>;
+template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFColor, X3D::MFColor>::getId ()
+{ return ObjectType::MFColor; }
+
+template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFColorRGBA, X3D::MFColorRGBA>::getId ()
+{ return ObjectType::MFColorRGBA; }
+
+template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFImage, X3D::MFImage>::getId ()
+{ return ObjectType::MFImage; }
+
+template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFMatrix3d, X3D::MFMatrix3d>::getId ()
+{ return ObjectType::MFMatrix3d; }
+
+template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFMatrix3f, X3D::MFMatrix3f>::getId ()
+{ return ObjectType::MFMatrix3f; }
+
+template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFMatrix4d, X3D::MFMatrix4d>::getId ()
+{ return ObjectType::MFMatrix4d; }
+
+template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFMatrix4f, X3D::MFMatrix4f>::getId ()
+{ return ObjectType::MFMatrix4f; }
+
+template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFRotation, X3D::MFRotation>::getId ()
+{ return ObjectType::MFRotation; }
+
+template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFVec2d, X3D::MFVec2d>::getId ()
+{ return ObjectType::MFVec2d; }
+
+template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFVec2f, X3D::MFVec2f>::getId ()
+{ return ObjectType::MFVec2f; }
+
+template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFVec3d, X3D::MFVec3d>::getId ()
+{ return ObjectType::MFVec3d; }
+
+template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFVec3f, X3D::MFVec3f>::getId ()
+{ return ObjectType::MFVec3f; }
+
+template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFVec4d, X3D::MFVec4d>::getId ()
+{ return ObjectType::MFVec4d; }
+
+template <>
+constexpr ObjectType
+jsX3DArrayField <jsSFVec4f, X3D::MFVec4f>::getId ()
+{ return ObjectType::MFVec4f; }
 
 using jsMFColor     = jsX3DArrayField <jsSFColor, X3D::MFColor>;
 using jsMFColorRGBA = jsX3DArrayField <jsSFColorRGBA, X3D::MFColorRGBA>;
@@ -98,6 +153,21 @@ using jsMFVec3d     = jsX3DArrayField <jsSFVec3d, X3D::MFVec3d>;
 using jsMFVec3f     = jsX3DArrayField <jsSFVec3f, X3D::MFVec3f>;
 using jsMFVec4d     = jsX3DArrayField <jsSFVec4d, X3D::MFVec4d>;
 using jsMFVec4f     = jsX3DArrayField <jsSFVec4f, X3D::MFVec4f>;
+
+extern template class jsX3DArrayField <jsSFColor, X3D::MFColor>;
+extern template class jsX3DArrayField <jsSFColorRGBA, X3D::MFColorRGBA>;
+extern template class jsX3DArrayField <jsSFImage, X3D::MFImage>;
+extern template class jsX3DArrayField <jsSFMatrix3d, X3D::MFMatrix3d>;
+extern template class jsX3DArrayField <jsSFMatrix3f, X3D::MFMatrix3f>;
+extern template class jsX3DArrayField <jsSFMatrix4d, X3D::MFMatrix4d>;
+extern template class jsX3DArrayField <jsSFMatrix4f, X3D::MFMatrix4f>;
+extern template class jsX3DArrayField <jsSFRotation, X3D::MFRotation>;
+extern template class jsX3DArrayField <jsSFVec2d, X3D::MFVec2d>;
+extern template class jsX3DArrayField <jsSFVec2f, X3D::MFVec2f>;
+extern template class jsX3DArrayField <jsSFVec3d, X3D::MFVec3d>;
+extern template class jsX3DArrayField <jsSFVec3f, X3D::MFVec3f>;
+extern template class jsX3DArrayField <jsSFVec4d, X3D::MFVec4d>;
+extern template class jsX3DArrayField <jsSFVec4f, X3D::MFVec4f>;
 
 } // MozillaSpiderMonkey
 } // X3D

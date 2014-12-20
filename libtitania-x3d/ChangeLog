@@ -1,5 +1,70 @@
 2014-12-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* jsString.h:
+	* jsfield.cpp:
+	* jsBrowser.h:
+	* jsGlobals.h:
+	* jsContext.h:
+	* jsX3DField.h:
+	* jsX3DRoute.h:
+	* jsX3DScene.h:
+	* jsBrowser.cpp:
+	* jsArguments.h:
+	* jsContext.cpp:
+	* jsX3DRoute.cpp:
+	* jsX3DScene.cpp:
+	* jsX3DField.cpp:
+	* jsRouteArray.h:
+	* jsObjectType.h:
+	* jsProfileInfo.h:
+	* jsX3DConstants.h:
+	* jsSFVec2.h:
+	* jsSFNode.h:
+	* jsSFVec3.h:
+	* jsSFVec4.h:
+	* jsMFTime.h:
+	* jsX3DConstArray.h:
+	* jsMFNode.h:
+	* jsProfileInfo.cpp:
+	* jsComponentInfo.h:
+	* jsX3DArrayField.h:
+	* jsMFBool.h:
+	* jsX3DConstants.cpp:
+	* jsSFImage.h:
+	* jsMFFloat.h:
+	* jsMFInt32.h:
+	* jsSFColor.h:
+	* jsMFDouble.h:
+	* jsMFString.h:
+	* jsComponentInfo.cpp:
+	* jsSFNode.cpp:
+	* jsSFColor.cpp:
+	* jsSFMatrix4.h:
+	* jsSFImage.cpp:
+	* jsSFMatrix3.h:
+	* jsProfileInfoArray.h:
+	* jsSFRotation.h:
+	* jsX3DFieldDefinition.h:
+	* jsComponentInfoArray.h:
+	* jsArrayFields.h:
+	* jsSFColorRGBA.h:
+	* jsX3DProtoDeclaration.h:
+	* jsSFRotation.cpp:
+	* jsX3DExecutionContext.h:
+	* jsSFColorRGBA.cpp:
+	* jsX3DFieldDefinition.cpp:
+	* jsFieldDefinitionArray.h:
+	* jsX3DProtoDeclaration.cpp:
+	* jsProtoDeclarationArray.h:
+	* jsX3DExecutionContext.cpp:
+	* jsFieldDefinitionArray.cpp:
+	* jsX3DExternProtoDeclaration.h:
+	* jsExternProtoDeclarationArray.h:
+	* jsX3DExternProtoDeclaration.cpp: 
+
+2014-12-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* jsBrowser.h:
 	* jsX3DScene.h:
 	* jsX3DRoute.h:

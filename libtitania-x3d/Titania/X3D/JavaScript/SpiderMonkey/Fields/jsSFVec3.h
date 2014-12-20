@@ -69,8 +69,8 @@ public:
 	using internal_type = Type;
 
 	static
-	void
-	init (JSContext* const, JSObject* const);
+	JSObject*
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSBool
@@ -80,6 +80,11 @@ public:
 	JSClass*
 	getClass ()
 	{ return &static_class; }
+
+	static
+	constexpr ObjectType
+	getId ()
+	{ throw std::domain_error ("getId"); }
 
 
 private:
@@ -134,12 +139,6 @@ JSPropertySpec jsSFVec3 <Type>::properties [ ] = {
 
 template <class Type>
 JSFunctionSpec jsSFVec3 <Type>::functions [ ] = {
-	{ "getName",     getName <jsSFVec3>,     0, 0 },
-	{ "getTypeName", getTypeName <jsSFVec3>, 0, 0 },
-	{ "getType",     getType <jsSFVec3>,     0, 0 },
-	{ "isReadable",  isReadable <jsSFVec3>,  0, 0 },
-	{ "isWritable",  isWritable <jsSFVec3>,  0, 0 },
-
 	{ "negate",      negate,      0, 0 },
 	{ "add",         add,         1, 0 },
 	{ "subtract",    subtract,    1, 0 },
@@ -152,20 +151,20 @@ JSFunctionSpec jsSFVec3 <Type>::functions [ ] = {
 	{ "dot",         dot,         1, 0 },
 	{ "length",      length,      0, 0 },
 
-	{ "toString",    toString <jsSFVec3>, 0, 0 },
-
 	{ 0 }
 
 };
 
 template <class Type>
-void
-jsSFVec3 <Type>::init (JSContext* const cx, JSObject* const global)
+JSObject*
+jsSFVec3 <Type>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, properties, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+	
+	return proto;
 }
 
 template <class Type>
@@ -517,11 +516,21 @@ jsSFVec3 <Type>::length (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-extern template class jsSFVec3 <X3D::SFVec3d>;
-extern template class jsSFVec3 <X3D::SFVec3f>;
+template <>
+constexpr ObjectType
+jsSFVec3 <X3D::SFVec3d>::getId ()
+{ return ObjectType::SFVec3d; }
+
+template <>
+constexpr ObjectType
+jsSFVec3 <X3D::SFVec3f>::getId ()
+{ return ObjectType::SFVec3f; }
 
 using jsSFVec3d = jsSFVec3 <X3D::SFVec3d>;
 using jsSFVec3f = jsSFVec3 <X3D::SFVec3f>;
+
+extern template class jsSFVec3 <X3D::SFVec3d>;
+extern template class jsSFVec3 <X3D::SFVec3f>;
 
 } // MozillaSpiderMonkey
 } // X3D

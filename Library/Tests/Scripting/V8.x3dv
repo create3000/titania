@@ -349,10 +349,10 @@ function set_time (value, time)
 	print ('Script 2. value:   ', value);
 	print ('Script 2. time:    ', time);
 
-	var fd = n .getFieldDefinitions ();
-	
-	print (fd [0] .name)
+	var c = new SFColor (0.1, 0.2, 0.3);
 
+	print ('getHSV', c .getHSV ());
+	print ('getHSV', SFColor .prototype .getHSV ());
 
 	var a = [ ];
 	for (var i = 0; i < 1000; ++ i)

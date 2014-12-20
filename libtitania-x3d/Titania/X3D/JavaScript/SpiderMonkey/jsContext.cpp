@@ -121,6 +121,7 @@ jsContext::jsContext (Script* const script, const std::string & ecmascript, cons
 	     prepareEventsFn (),
 	   eventsProcessedFn (),
 	          shutdownFn (),
+	          	  protos (size_t (ObjectType::SIZE)),
 	              fields (),
 	           functions (),
 	             objects (),
@@ -171,64 +172,67 @@ throw (std::runtime_error)
 	JS_SetContextPrivate (cx, this);
 
 	jsGlobals::init (cx, global);
-	jsBrowser::init (cx, global);
-	jsX3DConstants::init (cx, global);
 
-	const auto executionContext = jsX3DExecutionContext::init (cx, global);
-	jsX3DScene::init (cx, global, executionContext);
+	addProto (jsX3DConstants::getId (), jsX3DConstants::init (cx, global, nullptr));
+	addProto (jsBrowser::getId (),      jsBrowser::init      (cx, global, nullptr));
 
-	jsComponentInfo::init             (cx, global);
-	jsProfileInfo::init               (cx, global);
-	jsX3DFieldDefinition::init        (cx, global);
-	jsX3DExternProtoDeclaration::init (cx, global);
-	jsX3DProtoDeclaration::init       (cx, global);
-	jsX3DRoute::init                  (cx, global);
+	addProto (jsX3DExecutionContext::getId (), jsX3DExecutionContext::init (cx, global, nullptr));
+	addProto (jsX3DScene::getId (),            jsX3DScene::init            (cx, global, getProto (jsX3DExecutionContext::getId ())));
 
-	jsFieldDefinitionArray::init        (cx, global);
-	jsComponentInfoArray::init          (cx, global);
-	jsProfileInfoArray::init            (cx, global);
-	jsExternProtoDeclarationArray::init (cx, global);
-	jsProtoDeclarationArray::init       (cx, global);
-	jsRouteArray::init                  (cx, global);
+	addProto (jsComponentInfo::getId (),             jsComponentInfo::init             (cx, global, nullptr));
+	addProto (jsProfileInfo::getId (),               jsProfileInfo::init               (cx, global, nullptr));
+	addProto (jsX3DFieldDefinition::getId (),        jsX3DFieldDefinition::init        (cx, global, nullptr));
+	addProto (jsX3DExternProtoDeclaration::getId (), jsX3DExternProtoDeclaration::init (cx, global, nullptr));
+	addProto (jsX3DProtoDeclaration::getId (),       jsX3DProtoDeclaration::init       (cx, global, nullptr));
+	addProto (jsX3DRoute::getId (),                  jsX3DRoute::init                  (cx, global, nullptr));
 
-	jsSFColor::init     (cx, global);
-	jsSFColorRGBA::init (cx, global);
-	jsSFImage::init     (cx, global);
-	jsSFMatrix3d::init  (cx, global);
-	jsSFMatrix3f::init  (cx, global);
-	jsSFMatrix4d::init  (cx, global);
-	jsSFMatrix4f::init  (cx, global);
-	jsSFNode::init      (cx, global);
-	jsSFRotation::init  (cx, global);
-	jsSFVec2d::init     (cx, global);
-	jsSFVec2f::init     (cx, global);
-	jsSFVec3d::init     (cx, global);
-	jsSFVec3f::init     (cx, global);
-	jsSFVec4d::init     (cx, global);
-	jsSFVec4f::init     (cx, global);
-	jsVrmlMatrix::init  (cx, global);
+	addProto (jsFieldDefinitionArray::getId (),        jsFieldDefinitionArray::init        (cx, global, nullptr));
+	addProto (jsComponentInfoArray::getId (),          jsComponentInfoArray::init          (cx, global, nullptr));
+	addProto (jsProfileInfoArray::getId (),            jsProfileInfoArray::init            (cx, global, nullptr));
+	addProto (jsExternProtoDeclarationArray::getId (), jsExternProtoDeclarationArray::init (cx, global, nullptr));
+	addProto (jsProtoDeclarationArray::getId (),       jsProtoDeclarationArray::init       (cx, global, nullptr));
+	addProto (jsRouteArray::getId (),                  jsRouteArray::init                  (cx, global, nullptr));
 
-	jsMFBool::init      (cx, global);
-	jsMFColor::init     (cx, global);
-	jsMFColorRGBA::init (cx, global);
-	jsMFDouble::init    (cx, global);
-	jsMFFloat::init     (cx, global);
-	jsMFImage::init     (cx, global);
-	jsMFInt32::init     (cx, global);
-	jsMFMatrix3d::init  (cx, global);
-	jsMFMatrix3f::init  (cx, global);
-	jsMFMatrix4d::init  (cx, global);
-	jsMFMatrix4f::init  (cx, global);
-	jsMFNode::init      (cx, global);
-	jsMFRotation::init  (cx, global);
-	jsMFString::init    (cx, global);
-	jsMFTime::init      (cx, global);
-	jsMFVec2d::init     (cx, global);
-	jsMFVec2f::init     (cx, global);
-	jsMFVec3d::init     (cx, global);
-	jsMFVec3f::init     (cx, global);
-	jsMFVec4d::init     (cx, global);
-	jsMFVec4f::init     (cx, global);
+	addProto (jsX3DField::getId (),    jsX3DField::init    (cx, global, nullptr));
+
+	addProto (jsSFColor::getId (),     jsSFColor::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFColorRGBA::getId (), jsSFColorRGBA::init (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFImage::getId (),     jsSFImage::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFMatrix3d::getId (),  jsSFMatrix3d::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFMatrix3f::getId (),  jsSFMatrix3f::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFMatrix4d::getId (),  jsSFMatrix4d::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFMatrix4f::getId (),  jsSFMatrix4f::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFNode::getId (),      jsSFNode::init      (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFRotation::getId (),  jsSFRotation::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFVec2d::getId (),     jsSFVec2d::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFVec2f::getId (),     jsSFVec2f::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFVec3d::getId (),     jsSFVec3d::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFVec3f::getId (),     jsSFVec3f::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFVec4d::getId (),     jsSFVec4d::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFVec4f::getId (),     jsSFVec4f::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsVrmlMatrix::getId (),  jsVrmlMatrix::init  (cx, global, getProto (jsX3DField::getId ())));
+
+	addProto (jsMFBool::getId (),      jsMFBool::init      (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFColor::getId (),     jsMFColor::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFColorRGBA::getId (), jsMFColorRGBA::init (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFDouble::getId (),    jsMFDouble::init    (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFFloat::getId (),     jsMFFloat::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFImage::getId (),     jsMFImage::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFInt32::getId (),     jsMFInt32::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFMatrix3d::getId (),  jsMFMatrix3d::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFMatrix3f::getId (),  jsMFMatrix3f::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFMatrix4d::getId (),  jsMFMatrix4d::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFMatrix4f::getId (),  jsMFMatrix4f::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFNode::getId (),      jsMFNode::init      (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFRotation::getId (),  jsMFRotation::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFString::getId (),    jsMFString::init    (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFTime::getId (),      jsMFTime::init      (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFVec2d::getId (),     jsMFVec2d::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFVec2f::getId (),     jsMFVec2f::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFVec3d::getId (),     jsMFVec3d::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFVec3f::getId (),     jsMFVec3f::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFVec4d::getId (),     jsMFVec4d::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFVec4f::getId (),     jsMFVec4f::init     (cx, global, getProto (jsX3DField::getId ())));
 }
 
 void
@@ -387,13 +391,6 @@ jsContext::removeObject (X3DFieldDefinition* const field)
 		field -> removeParent (this);
 	else
 		__LOG__ << field -> getName () << " : " << field -> getTypeName () << std::endl;
-}
-
-JSObject*
-jsContext::getObject (X3DFieldDefinition* const field)
-throw (std::out_of_range)
-{
-	return objects .at (field);
 }
 
 JSBool

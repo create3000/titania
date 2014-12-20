@@ -62,7 +62,8 @@ class jsGlobals
 {
 public:
 
-	static void
+	static
+	void
 	init (JSContext* const, JSObject* const);
 
 

@@ -53,6 +53,7 @@
 
 #include "../../Execution/X3DScene.h"
 #include "jsX3DExecutionContext.h"
+
 #include <jsapi.h>
 
 namespace titania {
@@ -71,7 +72,7 @@ public:
 	///  @name Construction
 
 	static
-	void
+	JSObject*
 	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
@@ -82,14 +83,19 @@ public:
 	JSClass*
 	getClass ()
 	{ return &static_class; }
+	
+	static
+	ObjectType
+	constexpr getId ()
+	{ return ObjectType::X3DScene; }
 
 
 private:
 
 	///  @name Properties
 
-	static JSBool rootNodes (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, JSBool, jsval*);
+	static JSBool rootNodes (JSContext *, JSObject *, jsid, jsval*);
 
 	///  @name Functions
 

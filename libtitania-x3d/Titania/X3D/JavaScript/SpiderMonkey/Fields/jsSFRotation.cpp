@@ -78,12 +78,6 @@ JSPropertySpec jsSFRotation::properties [ ] = {
 };
 
 JSFunctionSpec jsSFRotation::functions [ ] = {
-	{ "getName",     getName <jsSFRotation>,     0, 0 },
-	{ "getTypeName", getTypeName <jsSFRotation>, 0, 0 },
-	{ "getType",     getType <jsSFRotation>,     0, 0 },
-	{ "isReadable",  isReadable <jsSFRotation>,  0, 0 },
-	{ "isWritable",  isWritable <jsSFRotation>,  0, 0 },
-
 	{ "getAxis",     getAxis,     0, 0 },
 	{ "setAxis",     setAxis,     0, 0 },
 
@@ -92,16 +86,14 @@ JSFunctionSpec jsSFRotation::functions [ ] = {
 	{ "multVec",     multVec,     1, 0 },
 	{ "slerp",       slerp,       2, 0 },
 
-	{ "toString",    toString <jsSFRotation>, 0, 0 },
-
 	{ 0 }
 
 };
 
-void
-jsSFRotation::init (JSContext* const cx, JSObject* const global)
+JSObject*
+jsSFRotation::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
-	const auto proto = JS_InitClass (cx, global, nullptr, &static_class, construct, 0, properties, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
@@ -110,6 +102,8 @@ jsSFRotation::init (JSContext* const cx, JSObject* const global)
 	JS_DefineProperty (cx, proto, (char*) Y,     JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 	JS_DefineProperty (cx, proto, (char*) Z,     JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 	JS_DefineProperty (cx, proto, (char*) ANGLE, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	
+	return proto;
 }
 
 JSBool

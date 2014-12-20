@@ -80,29 +80,6 @@ to_string (JSContext* const cx, jsid & value)
 	return to_string (cx, JSID_TO_STRING (value));
 }
 
-// depreciated
-
-inline
-std::string
-JS_GetString (JSContext* const cx, JSString* const value)
-{
-	return to_string (cx, value);
-}
-
-inline
-std::string
-JS_GetString (JSContext* const cx, jsval & value)
-{
-	return to_string (cx, value);
-}
-
-inline
-std::string
-JS_GetString (JSContext* const cx, jsid & value)
-{
-	return to_string (cx, value);
-}
-
 } // MozillaSpiderMonkey
 } // X3D
 } // titania
