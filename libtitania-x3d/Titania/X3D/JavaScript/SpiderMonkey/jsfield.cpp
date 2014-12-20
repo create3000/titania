@@ -48,9 +48,10 @@
  *
  ******************************************************************************/
 
+#include "jsfield.h"
+
 #include "jsFields.h"
 #include "jsString.h"
-#include "jsfield.h"
 #include "jsError.h"
 
 namespace titania {
@@ -60,583 +61,237 @@ namespace MozillaSpiderMonkey {
 JSBool
 setValue (JSContext* const cx, X3DFieldDefinition* const field, jsval* const vp)
 {
-	switch (field -> getType ())
+	try
 	{
-		case X3DConstants::SFBool:
+		switch (field -> getType ())
 		{
-			JSBool value;
-
-			if (not JS_ValueToBoolean (cx, *vp, &value))
-				return false;
-
-			*static_cast <SFBool*> (field) = value;
-
-			break;
-		}
-		case X3DConstants::SFColor:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsSFColor::getClass ()))
-				return false;
-
-			*static_cast <SFColor*> (field) = *(SFColor*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::SFColorRGBA:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsSFColorRGBA::getClass ()))
-				return false;
-
-			*static_cast <SFColorRGBA*> (field) = *(SFColorRGBA*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::SFDouble:
-		{
-			double value;
-
-			if (not JS_ValueToNumber (cx, *vp, &value))
-				return false;
-
-			*static_cast <SFDouble*> (field) = value;
-
-			break;
-		}
-		case X3DConstants::SFFloat:
-		{
-			double value;
-
-			if (not JS_ValueToNumber (cx, *vp, &value))
-				return false;
-
-			*static_cast <SFFloat*> (field) = value;
-
-			break;
-		}
-		case X3DConstants::SFInt32:
-		{
-			int32_t value;
-
-			if (not JS_ValueToECMAInt32 (cx, *vp, &value))
-				return false;
-
-			*static_cast <SFInt32*> (field) = value;
-
-			break;
-		}
-		case X3DConstants::SFImage:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsSFImage::getClass ()))
-				return false;
-
-			*static_cast <SFImage*> (field) = *(SFImage*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::SFMatrix3d:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsSFMatrix3d::getClass ()))
-				return false;
-
-			*static_cast <SFMatrix3d*> (field) = *(SFMatrix3d*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::SFMatrix3f:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsSFMatrix3f::getClass ()))
-				return false;
-
-			*static_cast <SFMatrix3f*> (field) = *(SFMatrix3f*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::SFMatrix4d:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsSFMatrix4d::getClass ()))
-				return false;
-
-			*static_cast <SFMatrix4d*> (field) = *(SFMatrix4d*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::SFMatrix4f:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsSFMatrix4f::getClass ()))
-				return false;
-
-			*static_cast <SFMatrix4f*> (field) = *(SFMatrix4f*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::SFNode:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-				
-			if (value)
+			case X3DConstants::SFBool:
 			{
-				if (JS_InstanceOfError (cx, value, jsSFNode::getClass ()))
-					return false;
-
-				*static_cast <SFNode*> (field) = *(SFNode*) JS_GetPrivate (cx, value);
+				*static_cast <X3D::SFBool*> (field) = getArgument <bool> (cx, vp, 0);
+				break;
 			}
-			else
-				*static_cast <SFNode*> (field) = nullptr;
+			case X3DConstants::SFColor:
+			{
+				*static_cast <X3D::SFColor*> (field) = *getArgument <jsSFColor> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFColorRGBA:
+			{
+				*static_cast <X3D::SFColorRGBA*> (field) = *getArgument <jsSFColorRGBA> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFDouble:
+			{
+				*static_cast <X3D::SFDouble*> (field) = getArgument <double> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFFloat:
+			{
+				*static_cast <X3D::SFFloat*> (field) = getArgument <double> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFInt32:
+			{
+				*static_cast <X3D::SFInt32*> (field) = getArgument <int32_t> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFImage:
+			{
+				*static_cast <X3D::SFImage*> (field) = *getArgument <jsSFImage> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFMatrix3d:
+			{
+				*static_cast <X3D::SFMatrix3d*> (field) = *getArgument <jsSFMatrix3d> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFMatrix3f:
+			{
+				*static_cast <X3D::SFMatrix3f*> (field) = *getArgument <jsSFMatrix3f> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFMatrix4d:
+			{
+				*static_cast <X3D::SFMatrix4d*> (field) = *getArgument <jsSFMatrix4d> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFMatrix4f:
+			{
+				*static_cast <X3D::SFMatrix4f*> (field) = *getArgument <jsSFMatrix4f> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFNode:
+			{
+				try
+				{
+					*static_cast <X3D::SFNode*> (field) = *getArgument <jsSFNode> (cx, vp, 0);
+				}
+				catch (const std::domain_error &)
+				{
+					*static_cast <X3D::SFNode*> (field) = nullptr;
+				}
 
-			break;
+				break;
+			}
+			case X3DConstants::SFRotation:
+			{
+				*static_cast <X3D::SFRotation*> (field) = *getArgument <jsSFRotation> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFString:
+			{
+				*static_cast <X3D::SFString*> (field) = to_string (cx, *vp);
+				break;
+			}
+			case X3DConstants::SFTime:
+			{
+				*static_cast <X3D::SFTime*> (field) = getArgument <double> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFVec2d:
+			{
+				*static_cast <X3D::SFVec2d*> (field) = *getArgument <jsSFVec2d> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFVec2f:
+			{
+				*static_cast <X3D::SFVec2f*> (field) = *getArgument <jsSFVec2f> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFVec3d:
+			{
+				*static_cast <X3D::SFVec3d*> (field) = *getArgument <jsSFVec3d> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFVec3f:
+			{
+				*static_cast <X3D::SFVec3f*> (field) = *getArgument <jsSFVec3f> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFVec4d:
+			{
+				*static_cast <X3D::SFVec4d*> (field) = *getArgument <jsSFVec4d> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::SFVec4f:
+			{
+				*static_cast <X3D::SFVec4f*> (field) = *getArgument <jsSFVec4f> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFBool:
+			{
+				*static_cast <X3D::MFBool*> (field) = *getArgument <jsMFBool> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFColor:
+			{
+				*static_cast <X3D::MFColor*> (field) = *getArgument <jsMFColor> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFColorRGBA:
+			{
+				*static_cast <X3D::MFColorRGBA*> (field) = *getArgument <jsMFColorRGBA> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFDouble:
+			{
+				*static_cast <X3D::MFDouble*> (field) = *getArgument <jsMFDouble> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFFloat:
+			{
+				*static_cast <X3D::MFFloat*> (field) = *getArgument <jsMFFloat> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFImage:
+			{
+				*static_cast <X3D::MFImage*> (field) = *getArgument <jsMFImage> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFInt32:
+			{
+				*static_cast <X3D::MFInt32*> (field) = *getArgument <jsMFInt32> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFMatrix3d:
+			{
+				*static_cast <X3D::MFMatrix3d*> (field) = *getArgument <jsMFMatrix3d> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFMatrix3f:
+			{
+				*static_cast <X3D::MFMatrix3f*> (field) = *getArgument <jsMFMatrix3f> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFMatrix4d:
+			{
+				*static_cast <X3D::MFMatrix4d*> (field) = *getArgument <jsMFMatrix4d> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFMatrix4f:
+			{
+				*static_cast <X3D::MFMatrix4f*> (field) = *getArgument <jsMFMatrix4f> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFNode:
+			{
+				*static_cast <X3D::MFNode*> (field) = *getArgument <jsMFNode> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFRotation:
+			{
+				*static_cast <X3D::MFRotation*> (field) = *getArgument <jsMFRotation> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFString:
+			{
+				*static_cast <X3D::MFString*> (field) = *getArgument <jsMFString> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFTime:
+			{
+				*static_cast <X3D::MFTime*> (field) = *getArgument <jsMFTime> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFVec2d:
+			{
+				*static_cast <X3D::MFVec2d*> (field) = *getArgument <jsMFVec2d> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFVec2f:
+			{
+				*static_cast <X3D::MFVec2f*> (field) = *getArgument <jsMFVec2f> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFVec3d:
+			{
+				*static_cast <X3D::MFVec3d*> (field) = *getArgument <jsMFVec3d> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFVec3f:
+			{
+				*static_cast <X3D::MFVec3f*> (field) = *getArgument <jsMFVec3f> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFVec4d:
+			{
+				*static_cast <X3D::MFVec4d*> (field) = *getArgument <jsMFVec4d> (cx, vp, 0);
+				break;
+			}
+			case X3DConstants::MFVec4f:
+			{
+				*static_cast <X3D::MFVec4f*> (field) = *getArgument <jsMFVec4f> (cx, vp, 0);
+				break;
+			}
 		}
-		case X3DConstants::SFRotation:
-		{
-			JSObject* value = nullptr;
 
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsSFRotation::getClass ()))
-				return false;
-
-			*static_cast <SFRotation*> (field) = *(SFRotation*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::SFString:
-		{
-			*static_cast <SFString*> (field) = to_string (cx, *vp);
-
-			break;
-		}
-		case X3DConstants::SFTime:
-		{
-			double value;
-
-			if (not JS_ValueToNumber (cx, *vp, &value))
-				return false;
-
-			*static_cast <SFTime*> (field) = value;
-
-			break;
-		}
-		case X3DConstants::SFVec2d:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsSFVec2d::getClass ()))
-				return false;
-
-			*static_cast <SFVec2d*> (field) = *(SFVec2d*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::SFVec2f:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsSFVec2f::getClass ()))
-				return false;
-
-			*static_cast <SFVec2f*> (field) = *(SFVec2f*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::SFVec3d:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsSFVec3d::getClass ()))
-				return false;
-
-			*static_cast <SFVec3d*> (field) = *(SFVec3d*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::SFVec3f:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsSFVec3f::getClass ()))
-				return false;
-
-			*static_cast <SFVec3f*> (field) = *(SFVec3f*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::SFVec4d:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsSFVec4d::getClass ()))
-				return false;
-
-			*static_cast <SFVec4d*> (field) = *(SFVec4d*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::SFVec4f:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsSFVec4f::getClass ()))
-				return false;
-
-			*static_cast <SFVec4f*> (field) = *(SFVec4f*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFBool:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFBool::getClass ()))
-				return false;
-
-			*static_cast <MFBool*> (field) = *(MFBool*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFColor:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFColor::getClass ()))
-				return false;
-
-			*static_cast <MFColor*> (field) = *(MFColor*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFColorRGBA:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFColorRGBA::getClass ()))
-				return false;
-
-			*static_cast <MFColorRGBA*> (field) = *(MFColorRGBA*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFDouble:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFDouble::getClass ()))
-				return false;
-
-			*static_cast <MFDouble*> (field) = *(MFDouble*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFFloat:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFFloat::getClass ()))
-				return false;
-
-			*static_cast <MFFloat*> (field) = *(MFFloat*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFImage:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFImage::getClass ()))
-				return false;
-
-			*static_cast <MFImage*> (field) = *(MFImage*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFInt32:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFInt32::getClass ()))
-				return false;
-
-			*static_cast <MFInt32*> (field) = *(MFInt32*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFMatrix3d:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFMatrix3d::getClass ()))
-				return false;
-
-			*static_cast <MFMatrix3d*> (field) = *(MFMatrix3d*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFMatrix3f:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFMatrix3f::getClass ()))
-				return false;
-
-			*static_cast <MFMatrix3f*> (field) = *(MFMatrix3f*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFMatrix4d:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFMatrix4d::getClass ()))
-				return false;
-
-			*static_cast <MFMatrix4d*> (field) = *(MFMatrix4d*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFMatrix4f:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-			
-			if (JS_InstanceOfError (cx, value, jsMFMatrix4f::getClass ()))
-				return false;
-
-			*static_cast <MFMatrix4f*> (field) = *(MFMatrix4f*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFNode:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFNode::getClass ()))
-				return false;
-
-			*static_cast <MFNode*> (field) = *(MFNode*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFRotation:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFRotation::getClass ()))
-				return false;
-
-			*static_cast <MFRotation*> (field) = *(MFRotation*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFString:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFString::getClass ()))
-				return false;
-
-			*static_cast <MFString*> (field) = *(MFString*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFTime:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFTime::getClass ()))
-				return false;
-
-			*static_cast <MFTime*> (field) = *(MFTime*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFVec2d:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFVec2d::getClass ()))
-				return false;
-
-			*static_cast <MFVec2d*> (field) = *(MFVec2d*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFVec2f:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFVec2f::getClass ()))
-				return false;
-
-			*static_cast <MFVec2f*> (field) = *(MFVec2f*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFVec3d:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFVec3d::getClass ()))
-				return false;
-
-			*static_cast <MFVec3d*> (field) = *(MFVec3d*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFVec3f:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFVec3f::getClass ()))
-				return false;
-
-			*static_cast <MFVec3f*> (field) = *(MFVec3f*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFVec4d:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFVec4d::getClass ()))
-				return false;
-
-			*static_cast <MFVec4d*> (field) = *(MFVec4d*) JS_GetPrivate (cx, value);
-
-			break;
-		}
-		case X3DConstants::MFVec4f:
-		{
-			JSObject* value = nullptr;
-
-			if (not JS_ValueToObject (cx, *vp, &value))
-				return false;
-
-			if (JS_InstanceOfError (cx, value, jsMFVec4f::getClass ()))
-				return false;
-
-			*static_cast <MFVec4f*> (field) = *(MFVec4f*) JS_GetPrivate (cx, value);
-
-			break;
-		}
+		*vp = JSVAL_VOID;
+		return true;
 	}
-
-	*vp = JSVAL_VOID;
-
-	return true;
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "RuntimeError: %s.", error .what ());
+	}
 }
 
 JSBool
@@ -645,130 +300,130 @@ getValue (JSContext* const cx, X3DFieldDefinition* const field, jsval* const vp)
 	switch (field -> getType ())
 	{
 		case X3DConstants::SFBool:
-			return jsSFBool::create (cx, static_cast <SFBool*> (field), vp);
+			return jsSFBool::create (cx, static_cast <X3D::SFBool*> (field), vp);
 
 		case X3DConstants::SFColor:
-			return jsSFColor::create (cx, static_cast <SFColor*> (field), vp);
+			return jsSFColor::create (cx, static_cast <X3D::SFColor*> (field), vp);
 
 		case X3DConstants::SFColorRGBA:
-			return jsSFColorRGBA::create (cx, static_cast <SFColorRGBA*> (field), vp);
+			return jsSFColorRGBA::create (cx, static_cast <X3D::SFColorRGBA*> (field), vp);
 
 		case X3DConstants::SFDouble:
-			return jsSFDouble::create (cx, static_cast <SFDouble*> (field), vp);
+			return jsSFDouble::create (cx, static_cast <X3D::SFDouble*> (field), vp);
 
 		case X3DConstants::SFFloat:
-			return jsSFFloat::create (cx, static_cast <SFFloat*> (field), vp);
+			return jsSFFloat::create (cx, static_cast <X3D::SFFloat*> (field), vp);
 
 		case X3DConstants::SFInt32:
-			return jsSFInt32::create (cx, static_cast <SFInt32*> (field), vp);
+			return jsSFInt32::create (cx, static_cast <X3D::SFInt32*> (field), vp);
 
 		case X3DConstants::SFImage:
-			return jsSFImage::create (cx, static_cast <SFImage*> (field), vp);
+			return jsSFImage::create (cx, static_cast <X3D::SFImage*> (field), vp);
 
 		case X3DConstants::SFMatrix3d:
-			return jsSFMatrix3d::create (cx, static_cast <SFMatrix3d*> (field), vp);
+			return jsSFMatrix3d::create (cx, static_cast <X3D::SFMatrix3d*> (field), vp);
 
 		case X3DConstants::SFMatrix3f:
-			return jsSFMatrix3f::create (cx, static_cast <SFMatrix3f*> (field), vp);
+			return jsSFMatrix3f::create (cx, static_cast <X3D::SFMatrix3f*> (field), vp);
 
 		case X3DConstants::SFMatrix4d:
-			return jsSFMatrix4d::create (cx, static_cast <SFMatrix4d*> (field), vp);
+			return jsSFMatrix4d::create (cx, static_cast <X3D::SFMatrix4d*> (field), vp);
 
 		case X3DConstants::SFMatrix4f:
-			return jsSFMatrix4f::create (cx, static_cast <SFMatrix4f*> (field), vp);
+			return jsSFMatrix4f::create (cx, static_cast <X3D::SFMatrix4f*> (field), vp);
 
 		case X3DConstants::SFNode:
-			return jsSFNode::create (cx, static_cast <SFNode*> (field), vp);
+			return jsSFNode::create (cx, static_cast <X3D::SFNode*> (field), vp);
 
 		case X3DConstants::SFRotation:
-			return jsSFRotation::create (cx, static_cast <SFRotation*> (field), vp);
+			return jsSFRotation::create (cx, static_cast <X3D::SFRotation*> (field), vp);
 
 		case X3DConstants::SFString:
-			return jsSFString::create (cx, static_cast <SFString*> (field), vp);
+			return jsSFString::create (cx, static_cast <X3D::SFString*> (field), vp);
 
 		case X3DConstants::SFTime:
-			return jsSFTime::create (cx, static_cast <SFTime*> (field), vp);
+			return jsSFTime::create (cx, static_cast <X3D::SFTime*> (field), vp);
 
 		case X3DConstants::SFVec2d:
-			return jsSFVec2d::create (cx, static_cast <SFVec2d*> (field), vp);
+			return jsSFVec2d::create (cx, static_cast <X3D::SFVec2d*> (field), vp);
 
 		case X3DConstants::SFVec2f:
-			return jsSFVec2f::create (cx, static_cast <SFVec2f*> (field), vp);
+			return jsSFVec2f::create (cx, static_cast <X3D::SFVec2f*> (field), vp);
 
 		case X3DConstants::SFVec3d:
-			return jsSFVec3d::create (cx, static_cast <SFVec3d*> (field), vp);
+			return jsSFVec3d::create (cx, static_cast <X3D::SFVec3d*> (field), vp);
 
 		case X3DConstants::SFVec3f:
-			return jsSFVec3f::create (cx, static_cast <SFVec3f*> (field), vp);
+			return jsSFVec3f::create (cx, static_cast <X3D::SFVec3f*> (field), vp);
 
 		case X3DConstants::SFVec4d:
-			return jsSFVec4d::create (cx, static_cast <SFVec4d*> (field), vp);
+			return jsSFVec4d::create (cx, static_cast <X3D::SFVec4d*> (field), vp);
 
 		case X3DConstants::SFVec4f:
-			return jsSFVec4f::create (cx, static_cast <SFVec4f*> (field), vp);
+			return jsSFVec4f::create (cx, static_cast <X3D::SFVec4f*> (field), vp);
 
 		case X3DConstants::MFBool:
-			return jsMFBool::create (cx, static_cast <MFBool*> (field), vp);
+			return jsMFBool::create (cx, static_cast <X3D::MFBool*> (field), vp);
 
 		case X3DConstants::MFColor:
-			return jsMFColor::create (cx, static_cast <MFColor*> (field), vp);
+			return jsMFColor::create (cx, static_cast <X3D::MFColor*> (field), vp);
 
 		case X3DConstants::MFColorRGBA:
-			return jsMFColorRGBA::create (cx, static_cast <MFColorRGBA*> (field), vp);
+			return jsMFColorRGBA::create (cx, static_cast <X3D::MFColorRGBA*> (field), vp);
 
 		case X3DConstants::MFDouble:
-			return jsMFDouble::create (cx, static_cast <MFDouble*> (field), vp);
+			return jsMFDouble::create (cx, static_cast <X3D::MFDouble*> (field), vp);
 
 		case X3DConstants::MFFloat:
-			return jsMFFloat::create (cx, static_cast <MFFloat*> (field), vp);
+			return jsMFFloat::create (cx, static_cast <X3D::MFFloat*> (field), vp);
 
 		case X3DConstants::MFImage:
-			return jsMFImage::create (cx, static_cast <MFImage*> (field), vp);
+			return jsMFImage::create (cx, static_cast <X3D::MFImage*> (field), vp);
 
 		case X3DConstants::MFInt32:
-			return jsMFInt32::create (cx, static_cast <MFInt32*> (field), vp);
+			return jsMFInt32::create (cx, static_cast <X3D::MFInt32*> (field), vp);
 
 		case X3DConstants::MFMatrix3d:
-			return jsMFMatrix3d::create (cx, static_cast <MFMatrix3d*> (field), vp);
+			return jsMFMatrix3d::create (cx, static_cast <X3D::MFMatrix3d*> (field), vp);
 
 		case X3DConstants::MFMatrix3f:
-			return jsMFMatrix3f::create (cx, static_cast <MFMatrix3f*> (field), vp);
+			return jsMFMatrix3f::create (cx, static_cast <X3D::MFMatrix3f*> (field), vp);
 
 		case X3DConstants::MFMatrix4d:
-			return jsMFMatrix4d::create (cx, static_cast <MFMatrix4d*> (field), vp);
+			return jsMFMatrix4d::create (cx, static_cast <X3D::MFMatrix4d*> (field), vp);
 
 		case X3DConstants::MFMatrix4f:
-			return jsMFMatrix4f::create (cx, static_cast <MFMatrix4f*> (field), vp);
+			return jsMFMatrix4f::create (cx, static_cast <X3D::MFMatrix4f*> (field), vp);
 
 		case X3DConstants::MFNode:
-			return jsMFNode::create (cx, static_cast <MFNode*> (field), vp);
+			return jsMFNode::create (cx, static_cast <X3D::MFNode*> (field), vp);
 
 		case X3DConstants::MFRotation:
-			return jsMFRotation::create (cx, static_cast <MFRotation*> (field), vp);
+			return jsMFRotation::create (cx, static_cast <X3D::MFRotation*> (field), vp);
 
 		case X3DConstants::MFString:
-			return jsMFString::create (cx, static_cast <MFString*> (field), vp);
+			return jsMFString::create (cx, static_cast <X3D::MFString*> (field), vp);
 
 		case X3DConstants::MFTime:
-			return jsMFTime::create (cx, static_cast <MFTime*> (field), vp);
+			return jsMFTime::create (cx, static_cast <X3D::MFTime*> (field), vp);
 
 		case X3DConstants::MFVec2d:
-			return jsMFVec2d::create (cx, static_cast <MFVec2d*> (field), vp);
+			return jsMFVec2d::create (cx, static_cast <X3D::MFVec2d*> (field), vp);
 
 		case X3DConstants::MFVec2f:
-			return jsMFVec2f::create (cx, static_cast <MFVec2f*> (field), vp);
+			return jsMFVec2f::create (cx, static_cast <X3D::MFVec2f*> (field), vp);
 
 		case X3DConstants::MFVec3d:
-			return jsMFVec3d::create (cx, static_cast <MFVec3d*> (field), vp);
+			return jsMFVec3d::create (cx, static_cast <X3D::MFVec3d*> (field), vp);
 
 		case X3DConstants::MFVec3f:
-			return jsMFVec3f::create (cx, static_cast <MFVec3f*> (field), vp);
+			return jsMFVec3f::create (cx, static_cast <X3D::MFVec3f*> (field), vp);
 
 		case X3DConstants::MFVec4d:
-			return jsMFVec4d::create (cx, static_cast <MFVec4d*> (field), vp);
+			return jsMFVec4d::create (cx, static_cast <X3D::MFVec4d*> (field), vp);
 
 		case X3DConstants::MFVec4f:
-			return jsMFVec4f::create (cx, static_cast <MFVec4f*> (field), vp);
+			return jsMFVec4f::create (cx, static_cast <X3D::MFVec4f*> (field), vp);
 	}
 
 	return true;

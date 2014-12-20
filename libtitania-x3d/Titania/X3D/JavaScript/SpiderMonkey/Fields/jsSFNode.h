@@ -63,7 +63,11 @@ class jsSFNode :
 {
 public:
 
+	///  @name Member types
+
 	using internal_type = SFNode;
+
+	///  @name Construction
 
 	static
 	JSObject*
@@ -86,11 +90,17 @@ public:
 
 private:
 
-	static JSBool construct (JSContext*, uint32_t, jsval*);
-	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
+	///  @name Construction
 
+	static JSBool construct (JSContext*, uint32_t, jsval*);
+
+	///  @name Member access
+
+	static JSBool enumerate   (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
 	static JSBool getProperty (JSContext*, JSObject*, jsid, jsval*);
 	static JSBool setProperty (JSContext*, JSObject*, jsid, JSBool, jsval*);
+
+	///  @name Functions
 
 	static JSBool getNodeName (JSContext*, uint32_t, jsval*);
 	static JSBool getNodeType (JSContext*, uint32_t, jsval*);
@@ -100,6 +110,8 @@ private:
 	static JSBool toVRMLString (JSContext*, uint32_t, jsval*);
 	static JSBool toXMLString  (JSContext*, uint32_t, jsval*);
 	static JSBool toString     (JSContext*, uint32_t, jsval*);
+
+	///  @name Static members
 
 	static JSClass        static_class;
 	static JSFunctionSpec functions [ ];

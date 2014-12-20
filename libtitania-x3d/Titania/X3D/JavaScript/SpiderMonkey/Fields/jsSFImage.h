@@ -63,7 +63,11 @@ class jsSFImage :
 {
 public:
 
+	///  @name Member types
+
 	using internal_type = X3D::SFImage;
+
+	///  @name Construction
 
 	static
 	JSObject*
@@ -86,9 +90,15 @@ public:
 
 private:
 
+	///  @name Member types
+
 	enum Property {WIDTH, HEIGHT, COMP, ARRAY};
 
+	///  @name Construction
+
 	static JSBool construct (JSContext*, uint32_t, jsval*);
+
+	///  @name Properties
 
 	static JSBool width (JSContext*, JSObject*, jsid, jsval*);
 	static JSBool width (JSContext*, JSObject*, jsid, JSBool, jsval*);
@@ -101,6 +111,8 @@ private:
 
 	static JSBool array (JSContext*, JSObject*, jsid, jsval*);
 	static JSBool array (JSContext*, JSObject*, jsid, JSBool, jsval*);
+
+	///  @name Static members
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

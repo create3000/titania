@@ -1,5 +1,26 @@
 2014-12-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* jsError.h:
+	* jsContext.h:
+	* jsfield.cpp:
+	* jsError.cpp:
+	* jsSFNode.h:
+	* jsSFVec2.h:
+	* jsSFVec3.h:
+	* jsSFVec4.h:
+	* jsX3DArrayField.h:
+	* jsSFImage.h:
+	* jsSFColor.h:
+	* jsSFMatrix3.h:
+	* jsSFMatrix4.h:
+	* jsX3DScalar.h:
+	* jsSFRotation.h:
+	* jsSFColorRGBA.h: 
+
+2014-12-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* jsString.h:
 	* jsfield.cpp:

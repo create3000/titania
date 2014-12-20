@@ -109,9 +109,6 @@ public:
 
 	///  @name Member access
 
-	JSBool
-	require (const basic::uri &, jsval &);
-
 	JSObject*
 	getGlobal () const
 	{ return global; }
@@ -135,6 +132,11 @@ public:
 	std::unique_ptr <SceneLoader> &
 	getFuture ()
 	{ return future; }
+
+	///  @name Functions
+
+	JSBool
+	require (const basic::uri &, jsval &);
 
 	///  @name Destruction
 

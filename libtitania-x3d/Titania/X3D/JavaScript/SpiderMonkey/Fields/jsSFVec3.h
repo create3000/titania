@@ -66,7 +66,11 @@ class jsSFVec3 :
 {
 public:
 
+	///  @name Member types
+
 	using internal_type = Type;
+
+	///  @name Construction
 
 	static
 	JSObject*
@@ -89,13 +93,21 @@ public:
 
 private:
 
+	///  @name Member types
+
 	enum Property {X, Y, Z};
 
-	static JSBool construct (JSContext*, uint32_t, jsval*);
-	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
+	///  @name Construction
 
+	static JSBool construct (JSContext*, uint32_t, jsval*);
+
+	///  @name Member access
+
+	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
 	static JSBool set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
 	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
+
+	///  @name Functions
 
 	static JSBool negate    (JSContext*, uint32_t, jsval*);
 	static JSBool add       (JSContext*, uint32_t, jsval*);
@@ -108,6 +120,8 @@ private:
 	static JSBool dot       (JSContext*, uint32_t, jsval*);
 	static JSBool normalize (JSContext*, uint32_t, jsval*);
 	static JSBool length    (JSContext*, uint32_t, jsval*);
+
+	///  @name Static members
 
 	static const size_t   size;
 	static JSClass        static_class;

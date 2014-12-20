@@ -58,9 +58,6 @@ namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-JSBool
-JS_InstanceOfError (JSContext* const, JSObject* const, JSClass* const);
-
 template <class ... Args>
 inline
 bool

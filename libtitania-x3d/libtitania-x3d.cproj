@@ -1194,7 +1194,6 @@
     <Compile Include="Titania\X3D\Browser\Geometry3D\QuadSphereOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionNode.cpp" />
     <Compile Include="Titania\X3D\Parser\Filter.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsError.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\Keys.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\Texture.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\FontConfig.cpp" />

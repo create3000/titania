@@ -106,7 +106,6 @@ private:
 	///  @name Member access
 
 	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
-
 	static JSBool set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
 	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
 

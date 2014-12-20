@@ -69,9 +69,13 @@ class jsSFMatrix4 :
 {
 public:
 
+	///  @name Member types
+
 	using internal_type = Type;
 	using vector3_type  = jsSFVec3 <typename Type::vector3_type>;
 	using rotation_type = jsSFRotation;
+
+	///  @name Construction
 
 	static
 	JSObject*
@@ -94,12 +98,18 @@ public:
 
 private:
 
+	///  @name Construction
+
 	static JSBool construct (JSContext*, uint32_t, jsval*);
-	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
 	static JSBool resolve (JSContext*, JSObject*, jsid);
 
+	///  @name Member access
+
+	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
 	static JSBool set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
 	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
+
+	///  @name Functions
 
 	static JSBool setTransform (JSContext*, uint32_t, jsval*);
 	static JSBool getTransform (JSContext*, uint32_t, jsval*);
@@ -112,6 +122,8 @@ private:
 	static JSBool multMatrixVec (JSContext*, uint32_t, jsval*);
 	static JSBool multDirMatrix (JSContext*, uint32_t, jsval*);
 	static JSBool multMatrixDir (JSContext*, uint32_t, jsval*);
+
+	///  @name Static members
 
 	static const size_t   size;
 	static JSClass        static_class;
@@ -214,6 +226,24 @@ jsSFMatrix4 <Type>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 
 template <class Type>
 JSBool
+jsSFMatrix4 <Type>::resolve (JSContext* cx, JSObject* obj, jsid id)
+{
+	if (not JSID_IS_INT (id))
+		return true;
+
+	const auto index = JSID_TO_INT (id);
+
+	if (index >= 0 and index < int32_t (size))
+	{
+		JS_DefineProperty (cx, obj, reinterpret_cast <char*> (index), JSVAL_VOID, get1Value, set1Value, JSPROP_PERMANENT | JSPROP_INDEX);
+		return true;
+	}
+
+	return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
+}
+
+template <class Type>
+JSBool
 jsSFMatrix4 <Type>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
 	if (not JS_GetPrivate (cx, obj))
@@ -261,24 +291,6 @@ jsSFMatrix4 <Type>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op
 	}
 
 	return true;
-}
-
-template <class Type>
-JSBool
-jsSFMatrix4 <Type>::resolve (JSContext* cx, JSObject* obj, jsid id)
-{
-	if (not JSID_IS_INT (id))
-		return true;
-
-	const auto index = JSID_TO_INT (id);
-
-	if (index >= 0 and index < int32_t (size))
-	{
-		JS_DefineProperty (cx, obj, reinterpret_cast <char*> (index), JSVAL_VOID, get1Value, set1Value, JSPROP_PERMANENT | JSPROP_INDEX);
-		return true;
-	}
-
-	return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
 }
 
 template <class Type>

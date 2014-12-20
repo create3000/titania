@@ -63,7 +63,11 @@ class jsSFRotation :
 {
 public:
 
+	///  @name Member types
+
 	using internal_type = X3D::SFRotation;
+
+	///  @name Construction
 
 	static
 	JSObject*
@@ -86,13 +90,21 @@ public:
 
 private:
 
+	///  @name Member types
+
 	enum Property {X, Y, Z, ANGLE};
 
-	static JSBool construct (JSContext*, uint32_t, jsval*);
-	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
+	///  @name Construction
 
+	static JSBool construct (JSContext*, uint32_t, jsval*);
+
+	///  @name Member access
+
+	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
 	static JSBool set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
 	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
+
+	///  @name Functions
 
 	static JSBool setAxis (JSContext*, uint32_t, jsval*);
 	static JSBool getAxis (JSContext*, uint32_t, jsval*);
@@ -101,6 +113,8 @@ private:
 	static JSBool multiply (JSContext*, uint32_t, jsval*);
 	static JSBool multVec  (JSContext*, uint32_t, jsval*);
 	static JSBool slerp    (JSContext*, uint32_t, jsval*);
+
+	///  @name Static members
 
 	static const size_t   size;
 	static JSClass        static_class;

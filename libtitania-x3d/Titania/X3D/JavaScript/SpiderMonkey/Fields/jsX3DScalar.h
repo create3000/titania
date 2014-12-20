@@ -66,7 +66,11 @@ class jsScalar
 {
 public:
 
+	///  @name Member types
+
 	using internal_type = Type;
+
+	///  @name Construction
 
 	static
 	JSBool
@@ -85,7 +89,7 @@ public:
 template <>
 inline
 JSBool
-jsScalar <SFBool>::create (JSContext* const cx, const internal_type* const field, jsval* const vp)
+jsScalar <X3D::SFBool>::create (JSContext* const cx, const internal_type* const field, jsval* const vp)
 {
 	*vp = field -> getValue () ? JSVAL_TRUE : JSVAL_FALSE;
 	return true;
@@ -94,17 +98,17 @@ jsScalar <SFBool>::create (JSContext* const cx, const internal_type* const field
 template <>
 inline
 JSBool
-jsScalar <SFString>::create (JSContext* const cx, const internal_type* const field, jsval* vp)
+jsScalar <X3D::SFString>::create (JSContext* const cx, const internal_type* const field, jsval* vp)
 {
 	return JS_NewStringValue (cx, field -> getValue (), vp);
 }
 
-typedef jsScalar <SFBool>   jsSFBool;
-typedef jsScalar <SFFloat>  jsSFFloat;
-typedef jsScalar <SFDouble> jsSFDouble;
-typedef jsScalar <SFInt32>  jsSFInt32;
-typedef jsScalar <SFString> jsSFString;
-typedef jsScalar <SFTime>   jsSFTime;
+using jsSFBool   = jsScalar <X3D::SFBool>;
+using jsSFDouble = jsScalar <X3D::SFDouble>;
+using jsSFFloat  = jsScalar <X3D::SFFloat>;
+using jsSFInt32  = jsScalar <X3D::SFInt32>;
+using jsSFString = jsScalar <X3D::SFString>;
+using jsSFTime   = jsScalar <X3D::SFTime>;
 
 } // MozillaSpiderMonkey
 } // X3D
