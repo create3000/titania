@@ -52,17 +52,21 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JSFIELD_H__
 
 #include "../../Basic/X3DFieldDefinition.h"
+
 #include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-JSBool
-setValue (JSContext* const, X3DFieldDefinition* const, jsval* const);
+void
+setValue (JSContext* const, X3DFieldDefinition* const, const JS::Value &)
+throw (std::invalid_argument,
+       std::domain_error);
 
-JSBool
-getValue (JSContext* const, X3DFieldDefinition* const, jsval*);
+JS::Value
+getValue (JSContext* const, X3DFieldDefinition* const)
+throw (std::runtime_error);
 
 } // MozillaSpiderMonkey
 } // X3D

@@ -50,7 +50,9 @@
 
 #include "jsProfileInfo.h"
 
-#include "jsComponentInfoArray.h"
+//#include "jsComponentInfoArray.h"
+#include "jsArguments.h"
+#include "jsError.h"
 #include "jsString.h"
 
 namespace titania {
@@ -58,19 +60,26 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 JSClass jsProfileInfo::static_class = {
-	"ProfileInfo", JSCLASS_HAS_PRIVATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, finalize,
+	"ProfileInfo",
+	JSCLASS_HAS_PRIVATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	JS_PropertyStub,
+	JS_StrictPropertyStub,
+	JS_EnumerateStub,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 JSPropertySpec jsProfileInfo::properties [ ] = {
-	{ "name",        NAME,         JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, name,        nullptr },
-	{ "title",       TITLE,        JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, title,       nullptr },
-	{ "providerUrl", PROVIDER_URL, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, providerUrl, nullptr },
-	{ "components",  COMPONENTS,   JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, components,  nullptr },
-	{ 0 }
+	JS_PSG ("name",        getName,        JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSG ("title",       getTitle,       JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSG ("providerUrl", getProviderUrl, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSG ("components",  getComponents,  JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PS_END
 
 };
 
@@ -85,29 +94,30 @@ jsProfileInfo::init (JSContext* const cx, JSObject* const global, JSObject* cons
 	return proto;
 }
 
-JSBool
-jsProfileInfo::create (JSContext* const cx, const ProfileInfoPtr & profileInfo, jsval* const vp)
+JS::Value
+jsProfileInfo::create (JSContext* const cx, const ProfileInfoPtr & profileInfo)
+throw (std::invalid_argument)
 {
 	const auto result = JS_NewObject (cx, &static_class, nullptr, nullptr);
 
 	if (result == nullptr)
-		return ThrowException (cx, "out of memory");
+		throw std::invalid_argument ("out of memory");
 
-	JS_SetPrivate (cx, result, new X3D::ProfileInfoPtr (profileInfo));
+	JS_SetPrivate (result, new X3D::ProfileInfoPtr (profileInfo));
 
-	*vp = OBJECT_TO_JSVAL (result);
-
-	return true;
+	return JS::ObjectValue (*result);
 }
 
 JSBool
-jsProfileInfo::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsProfileInfo::getName (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto & profileInfo = *getThis <jsProfileInfo> (cx, obj);
+		const auto   args        = JS::CallArgsFromVp (argc, vp);
+		const auto & profileInfo = *getThis <jsProfileInfo> (cx, args);
 
-		return JS_NewStringValue (cx, profileInfo -> getName (), vp);
+		args .rval () .set (StringValue (cx, profileInfo -> getName ()));
+		return true;
 	}
 	catch (const std::exception & error)
 	{
@@ -116,13 +126,15 @@ jsProfileInfo::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
-jsProfileInfo::title (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsProfileInfo::getTitle (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto & profileInfo = *getThis <jsProfileInfo> (cx, obj);
+		const auto   args        = JS::CallArgsFromVp (argc, vp);
+		const auto & profileInfo = *getThis <jsProfileInfo> (cx, args);
 
-		return JS_NewStringValue (cx, profileInfo -> getTitle (), vp);
+		args .rval () .set (StringValue (cx, profileInfo -> getTitle ()));
+		return true;
 	}
 	catch (const std::exception & error)
 	{
@@ -131,13 +143,15 @@ jsProfileInfo::title (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
-jsProfileInfo::providerUrl (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsProfileInfo::getProviderUrl (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto & profileInfo = *getThis <jsProfileInfo> (cx, obj);
+		const auto   args        = JS::CallArgsFromVp (argc, vp);
+		const auto & profileInfo = *getThis <jsProfileInfo> (cx, args);
 
-		return JS_NewStringValue (cx, profileInfo -> getProviderUrl (), vp);
+		args .rval () .set (StringValue (cx, profileInfo -> getProviderUrl ()));
+		return true;
 	}
 	catch (const std::exception & error)
 	{
@@ -146,13 +160,15 @@ jsProfileInfo::providerUrl (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
-jsProfileInfo::components (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsProfileInfo::getComponents (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto & profileInfo = *getThis <jsProfileInfo> (cx, obj);
+		const auto   args        = JS::CallArgsFromVp (argc, vp);
+		const auto & profileInfo = *getThis <jsProfileInfo> (cx, args);
 
-		return jsComponentInfoArray::create (cx, &profileInfo -> getComponents (), vp);
+		//args .rval () .set (jsComponentInfoArray::create (cx, &profileInfo -> getComponents ()));
+		return true;
 	}
 	catch (const std::exception & error)
 	{
@@ -161,9 +177,9 @@ jsProfileInfo::components (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 void
-jsProfileInfo::finalize (JSContext* cx, JSObject* obj)
+jsProfileInfo::finalize (JSFreeOp* fop, JSObject* obj)
 {
-	const auto profileInfo = getObject <X3D::ProfileInfoPtr*> (cx, obj);
+	const auto profileInfo = getObject <X3D::ProfileInfoPtr*> (obj);
 
 	if (profileInfo)
 		delete profileInfo;

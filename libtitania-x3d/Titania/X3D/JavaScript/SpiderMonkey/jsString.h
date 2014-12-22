@@ -53,13 +53,15 @@
 
 #include <jsapi.h>
 #include <string>
+#include <stdexcept>
 
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-JSBool
-JS_NewStringValue (JSContext* const, const std::string &, jsval*);
+JS::Value
+StringValue (JSContext* const cx, const std::string & string)
+throw (std::runtime_error);
 
 // to_string
 
@@ -68,14 +70,14 @@ to_string (JSContext* const, JSString* const);
 
 inline
 std::string
-to_string (JSContext* const cx, jsval & value)
+to_string (JSContext* const cx, const JS::Value & value)
 {
 	return to_string (cx, JS_ValueToString (cx, value));
 }
 
 inline
 std::string
-to_string (JSContext* const cx, jsid & value)
+to_string (JSContext* const cx, const JS::HandleId & value)
 {
 	return to_string (cx, JSID_TO_STRING (value));
 }

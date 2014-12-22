@@ -83,26 +83,29 @@ instanceOf (JSContext* const cx, JSObject* const obj)
 template <class Type>
 inline
 Type
-getObject (JSContext* const cx, JSObject* const obj)
+getObject (JSObject* const obj)
 {
-	return static_cast <Type> (JS_GetPrivate (cx, obj));
+	return static_cast <Type> (JS_GetPrivate (obj));
 }
 
 // Version for functions.
 template <class Type>
 inline
 typename Type::internal_type*
-getThis (JSContext* const cx, jsval* const vp)
+getThis (JSContext* const cx, const JS::CallArgs & args)
 throw (std::invalid_argument)
 {
-	const auto self = JS_THIS_OBJECT (cx, vp);
-
-	if (self and instanceOf <Type> (cx, self))
+	if (args .thisv () .isObjectOrNull ())
 	{
-		const auto object = getObject <typename Type::internal_type*> (cx, self);
+		const auto self = args .thisv () .toObjectOrNull ();
 
-		if (object)
-			return object;
+		if (self and instanceOf <Type> (cx, self))
+		{
+			const auto object = getObject <typename Type::internal_type*> (self);
+
+			if (object)
+				return object;
+		}
 	}
 
 	throw std::invalid_argument ("function must be called with object of type '" + std::string (Type::getClass () -> name) + "'");
@@ -115,7 +118,7 @@ typename Type::internal_type*
 getThis (JSContext* const cx, JSObject* const obj)
 throw (std::invalid_argument)
 {
-	const auto object = getObject <typename Type::internal_type*> (cx, obj);
+	const auto object = getObject <typename Type::internal_type*> (obj);
 
 	if (object)
 		return object;
@@ -123,24 +126,27 @@ throw (std::invalid_argument)
 	throw std::invalid_argument ("function must be called with object of type '" + std::string (Type::getClass () -> name) + "'");
 }
 
-template <class Type, class InternalTypePtr = typename Type::internal_type*>
+template <class Type>
 typename std::enable_if <
-   not std::is_same <Type, InternalTypePtr>::value,
-   InternalTypePtr
-   >::type
-getArgument (JSContext* const cx, jsval* const argv, const size_t index)
+   not (std::is_integral <Type>::value or
+        std::is_floating_point <Type>::value or
+        std::is_same <Type, std::string>::value or
+        std::is_same <Type, X3D::String>::value),
+   typename Type::internal_type*
+>::type
+getArgument (JSContext* const cx, const JS::Value & value, const size_t index)
 throw (std::invalid_argument,
        std::domain_error)
 {
-	JSObject* obj = nullptr;
-
-	if (JS_ValueToObject (cx, argv [index], &obj))
+	if (value .isObjectOrNull ())
 	{
+		const auto obj = value .toObjectOrNull ();
+
 		if (not obj)
 			throw std::domain_error ("type of argument " + std::to_string (index + 1) + " is invalid, must be '" + std::string (Type::getClass () -> name) + "' but is null");
-	
+
 		if (instanceOf <Type> (cx, obj))
-			return getObject <InternalTypePtr> (cx, obj);
+			return getObject <typename Type::internal_type*> (obj);
 	}
 
 	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be '" + std::string (Type::getClass () -> name) + "'");
@@ -148,12 +154,28 @@ throw (std::invalid_argument,
 
 template <class Type>
 typename std::enable_if <
+   not (std::is_integral <Type>::value or
+        std::is_floating_point <Type>::value or
+        std::is_same <Type, std::string>::value or
+        std::is_same <Type, X3D::String>::value),
+   typename Type::internal_type*
+>::type
+getArgument (JSContext* const cx, const JS::CallArgs & args, const size_t index)
+throw (std::invalid_argument,
+       std::domain_error)
+{
+	return getArgument <Type> (cx, args [index], index);
+}
+
+template <class Type>
+typename std::enable_if <
    std::is_integral <Type>::value or
    std::is_floating_point <Type>::value or
-   std::is_same <Type, std::string>::value,
+   std::is_same <Type, std::string>::value or
+   std::is_same <Type, X3D::String>::value,
    Type
-   >::type
-getArgument (JSContext* const, jsval* const, const size_t)
+>::type
+getArgument (JSContext* const cx, const JS::Value & value, const size_t index)
 throw (std::invalid_argument,
        std::domain_error)
 {
@@ -163,13 +185,13 @@ throw (std::invalid_argument,
 template <>
 inline
 bool
-getArgument <bool> (JSContext* const cx, jsval* const argv, const size_t index)
+getArgument <bool> (JSContext* const cx, const JS::Value & value, const size_t index)
 throw (std::invalid_argument,
        std::domain_error)
 {
 	JSBool boolean = false;
 
-	if (JS_ValueToBoolean (cx, argv [index], &boolean))
+	if (JS_ValueToBoolean (cx, value, &boolean))
 		return boolean;
 
 	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Boolean'");
@@ -178,13 +200,28 @@ throw (std::invalid_argument,
 template <>
 inline
 double
-getArgument <double> (JSContext* const cx, jsval* const argv, const size_t index)
+getArgument <double> (JSContext* const cx, const JS::Value & value, const size_t index)
 throw (std::invalid_argument,
        std::domain_error)
 {
 	double number = 0;
 
-	if (JS_ValueToNumber (cx, argv [index], &number))
+	if (JS::ToNumber (cx, value, &number))
+		return number;
+
+	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Number'");
+}
+
+template <>
+inline
+float
+getArgument <float> (JSContext* const cx, const JS::Value & value, const size_t index)
+throw (std::invalid_argument,
+       std::domain_error)
+{
+	double number = 0;
+
+	if (JS::ToNumber (cx, value, &number))
 		return number;
 
 	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Number'");
@@ -193,13 +230,13 @@ throw (std::invalid_argument,
 template <>
 inline
 int32_t
-getArgument <int32_t> (JSContext* const cx, jsval* const argv, const size_t index)
+getArgument <int32_t> (JSContext* const cx, const JS::Value & value, const size_t index)
 throw (std::invalid_argument,
        std::domain_error)
 {
 	int32_t number = 0;
 
-	if (JS_ValueToECMAInt32 (cx, argv [index], &number))
+	if (JS::ToInt32 (cx, value, &number))
 		return number;
 
 	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Integer'");
@@ -208,13 +245,13 @@ throw (std::invalid_argument,
 template <>
 inline
 uint32_t
-getArgument <uint32_t> (JSContext* const cx, jsval* const argv, const size_t index)
+getArgument <uint32_t> (JSContext* const cx, const JS::Value & value, const size_t index)
 throw (std::invalid_argument,
        std::domain_error)
 {
 	uint32_t number = 0;
 
-	if (JS_ValueToECMAUint32 (cx, argv [index], &number))
+	if (JS::ToUint32 (cx, value, &number))
 		return number;
 
 	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Integer'");
@@ -223,12 +260,38 @@ throw (std::invalid_argument,
 template <>
 inline
 std::string
-getArgument <std::string> (JSContext* const cx, jsval* const argv, const size_t index)
+getArgument <std::string> (JSContext* const cx, const JS::Value & value, const size_t index)
 throw (std::invalid_argument,
        std::domain_error)
 {
-	return to_string (cx, argv [index]);
+	return to_string (cx, value);
 }
+
+template <>
+inline
+X3D::String
+getArgument <X3D::String> (JSContext* const cx, const JS::Value & value, const size_t index)
+throw (std::invalid_argument,
+       std::domain_error)
+{
+	return to_string (cx, value);
+}
+
+template <class Type>
+typename std::enable_if <
+   std::is_integral <Type>::value or
+   std::is_floating_point <Type>::value or
+   std::is_same <Type, std::string>::value or
+   std::is_same <Type, X3D::String>::value,
+   Type
+>::type
+getArgument (JSContext* const cx, const JS::CallArgs & args, const size_t index)
+throw (std::invalid_argument,
+       std::domain_error)
+{
+	return getArgument <Type> (cx, args [index], index);
+}
+
 
 } // MozillaSpiderMonkey
 } // X3D

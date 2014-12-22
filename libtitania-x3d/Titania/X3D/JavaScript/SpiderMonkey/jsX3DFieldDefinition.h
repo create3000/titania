@@ -76,8 +76,9 @@ public:
 	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
-	JSBool
-	create (JSContext* const, const X3D::X3DFieldDefinition* const, jsval* const);
+	JS::Value
+	create (JSContext* const, const X3D::X3DFieldDefinition* const)
+	throw (std::invalid_argument);
 
 	static
 	JSClass*
@@ -91,9 +92,9 @@ public:
 
 	///  @name Properties
 
-	static JSBool name       (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool accessType (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool dataType   (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool getName       (JSContext*, unsigned, JS::Value*);
+	static JSBool getAccessType (JSContext*, unsigned, JS::Value*);
+	static JSBool getDataType   (JSContext*, unsigned, JS::Value*);
 
 
 private:
@@ -101,7 +102,7 @@ private:
 	///  @name Destruction
 
 	static void
-	finalize (JSContext*, JSObject*);
+	finalize (JSFreeOp*, JSObject*);
 
 	///  @name Member types
 

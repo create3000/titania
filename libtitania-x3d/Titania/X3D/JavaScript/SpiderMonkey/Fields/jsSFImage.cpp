@@ -52,28 +52,35 @@
 
 #include "../jsContext.h"
 #include "../jsError.h"
-#include "jsMFInt32.h"
+#include "jsArrayFields.h"
 
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
 JSClass jsSFImage::static_class = {
-	"SFImage", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, finalize,
+	"SFImage",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	JS_PropertyStub,
+	JS_StrictPropertyStub,
+	JS_EnumerateStub,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 JSPropertySpec jsSFImage::properties [ ] = {
-	{ "width",  WIDTH,  JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, width,  width },
-	{ "x",      WIDTH,                     JSPROP_SHARED | JSPROP_PERMANENT, width,  width },  // VRML
-	{ "height", HEIGHT, JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, height, height },
-	{ "y",      HEIGHT,                    JSPROP_SHARED | JSPROP_PERMANENT, height, height }, // VRML
-	{ "comp",   COMP,   JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, comp,   comp },
-	{ "array",  ARRAY,  JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, array,  array },
-	{ 0 }
+	JS_PSGS ("width",  getWidth,  setWidth,  JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
+	JS_PSGS ("x",      getWidth,  setWidth,  JSPROP_PERMANENT | JSPROP_SHARED), // VRML2
+	JS_PSGS ("height", getHeight, setHeight, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
+	JS_PSGS ("y",      getHeight, setHeight, JSPROP_PERMANENT | JSPROP_SHARED), // VRML2
+	JS_PSGS ("comp",   getComp,   setComp,   JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
+	JS_PSGS ("array",  getArray,  setArray,  JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
+	JS_PS_END
 
 };
 
@@ -88,14 +95,15 @@ jsSFImage::init (JSContext* const cx, JSObject* const global, JSObject* const pa
 	return proto;
 }
 
-JSBool
-jsSFImage::create (JSContext* const cx, SFImage* const field, jsval* const vp)
+JS::Value
+jsSFImage::create (JSContext* const cx, X3D::SFImage* const field)
+throw (std::invalid_argument)
 {
-	return jsX3DField::create (cx, &static_class, field, vp);
+	return jsX3DField::create (cx, &static_class, field);
 }
 
 JSBool
-jsSFImage::construct (JSContext* cx, uint32_t argc, jsval* vp)
+jsSFImage::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -103,17 +111,19 @@ jsSFImage::construct (JSContext* cx, uint32_t argc, jsval* vp)
 		{
 			case 0:
 			{
-				return create (cx, new X3D::SFImage (), &JS_RVAL (cx, vp));
+				JS::CallArgsFromVp (argc, vp) .rval () .set (create (cx, new X3D::SFImage ()));
+				return true;
 			}
 			case 4:
 			{
-				const auto argv   = JS_ARGV (cx, vp);
-				const auto width  = getArgument <uint32_t> (cx, argv, WIDTH);
-				const auto height = getArgument <uint32_t> (cx, argv, HEIGHT);
-				const auto comp   = getArgument <uint32_t> (cx, argv, COMP);
-				const auto array  = getArgument <jsMFInt32> (cx, argv, ARRAY);
+				const auto args   = JS::CallArgsFromVp (argc, vp);
+				const auto width  = getArgument <uint32_t> (cx, args, WIDTH);
+				const auto height = getArgument <uint32_t> (cx, args, HEIGHT);
+				const auto comp   = getArgument <uint32_t> (cx, args, COMP);
+				const auto array  = getArgument <jsMFInt32> (cx, args, ARRAY);
 
-				return create (cx, new X3D::SFImage (width, height, comp, *array), &JS_RVAL (cx, vp));
+				args .rval () .set (create (cx, new X3D::SFImage (width, height, comp, *array)));
+				return true;
 			}
 			default:
 				return ThrowException (cx, "%s .new: wrong number of arguments.", getClass () -> name);
@@ -126,27 +136,13 @@ jsSFImage::construct (JSContext* cx, uint32_t argc, jsval* vp)
 }
 
 JSBool
-jsSFImage::width (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsSFImage::setWidth (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto lhs = getThis <jsSFImage> (cx, obj);
-
-		return JS_NewNumberValue (cx, lhs -> getWidth (), vp);
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .width: %s.", getClass () -> name, error .what ());
-	}
-}
-
-JSBool
-jsSFImage::width (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
-{
-	try
-	{
-		const auto lhs   = getThis <jsSFImage> (cx, obj);
-		const auto value = getArgument <uint32_t> (cx, vp, 0);
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto lhs   = getThis <jsSFImage> (cx, args);
+		const auto value = getArgument <uint32_t> (cx, args, 0);
 
 		lhs -> setWidth (value);
 
@@ -159,27 +155,30 @@ jsSFImage::width (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* v
 }
 
 JSBool
-jsSFImage::height (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsSFImage::getWidth (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto lhs = getThis <jsSFImage> (cx, obj);
-
-		return JS_NewNumberValue (cx, lhs -> getHeight (), vp);
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto lhs  = getThis <jsSFImage> (cx, args);
+		
+		args .rval () .setNumber ((uint32_t) lhs -> getWidth ());
+		return true;
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .height: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .width: %s.", getClass () -> name, error .what ());
 	}
 }
 
 JSBool
-jsSFImage::height (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsSFImage::setHeight (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto lhs   = getThis <jsSFImage> (cx, obj);
-		const auto value = getArgument <uint32_t> (cx, vp, 0);
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto lhs   = getThis <jsSFImage> (cx, args);
+		const auto value = getArgument <uint32_t> (cx, args, 0);
 
 		lhs -> setHeight (value);
 
@@ -192,27 +191,30 @@ jsSFImage::height (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* 
 }
 
 JSBool
-jsSFImage::comp (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsSFImage::getHeight (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto lhs = getThis <jsSFImage> (cx, obj);
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto lhs  = getThis <jsSFImage> (cx, args);
 
-		return JS_NewNumberValue (cx, lhs -> getComponents (), vp);
+		args .rval () .setNumber ((uint32_t) lhs -> getHeight ());
+		return true;
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .comp: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .height: %s.", getClass () -> name, error .what ());
 	}
 }
 
 JSBool
-jsSFImage::comp (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsSFImage::setComp (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto lhs   = getThis <jsSFImage> (cx, obj);
-		const auto value = getArgument <uint32_t> (cx, vp, 0);
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto lhs   = getThis <jsSFImage> (cx, args);
+		const auto value = getArgument <uint32_t> (cx, args, 0);
 
 		lhs -> setComponents (value);
 
@@ -225,13 +227,34 @@ jsSFImage::comp (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp
 }
 
 JSBool
-jsSFImage::array (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsSFImage::getComp (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto lhs = getThis <jsSFImage> (cx, obj);
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto lhs  = getThis <jsSFImage> (cx, args);
 
-		return jsMFInt32::create (cx, &lhs -> getArray (), vp);
+		args .rval () .setNumber ((uint32_t) lhs -> getComponents ());
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .comp: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+jsSFImage::setArray (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto lhs   = getThis <jsSFImage> (cx, args);
+		const auto value = getArgument <jsMFInt32> (cx, args, 0);
+
+		lhs -> setArray (*value);
+
+		return true;
 	}
 	catch (const std::exception & error)
 	{
@@ -240,15 +263,14 @@ jsSFImage::array (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
-jsSFImage::array (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+jsSFImage::getArray (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto lhs   = getThis <jsSFImage> (cx, obj);
-		const auto value = getArgument <jsMFInt32> (cx, vp, 0);
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto lhs  = getThis <jsSFImage> (cx, args);
 
-		lhs -> setArray (*value);
-
+		args .rval () .set (jsMFInt32::create (cx, &lhs -> getArray ()));
 		return true;
 	}
 	catch (const std::exception & error)

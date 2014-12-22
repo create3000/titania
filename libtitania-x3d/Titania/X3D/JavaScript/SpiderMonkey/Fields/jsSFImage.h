@@ -74,8 +74,9 @@ public:
 	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
-	JSBool
-	create (JSContext* const, SFImage* const, jsval* const);
+	JS::Value
+	create (JSContext* const, X3D::SFImage* const)
+	throw (std::invalid_argument);
 
 	static
 	JSClass*
@@ -96,21 +97,21 @@ private:
 
 	///  @name Construction
 
-	static JSBool construct (JSContext*, uint32_t, jsval*);
+	static JSBool construct (JSContext*, unsigned, JS::Value*);
 
 	///  @name Properties
 
-	static JSBool width (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool width (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool setWidth (JSContext*, unsigned, JS::Value*);
+	static JSBool getWidth (JSContext*, unsigned, JS::Value*);
 
-	static JSBool height (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool height (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool setHeight (JSContext*, unsigned, JS::Value*);
+	static JSBool getHeight (JSContext*, unsigned, JS::Value*);
 
-	static JSBool comp (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool comp (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool setComp (JSContext*, unsigned, JS::Value*);
+	static JSBool getComp (JSContext*, unsigned, JS::Value*);
 
-	static JSBool array (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool array (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool setArray (JSContext*, unsigned, JS::Value*);
+	static JSBool getArray (JSContext*, unsigned, JS::Value*);
 
 	///  @name Static members
 

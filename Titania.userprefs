@@ -1,18 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsArguments.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp">
     <Files>
+      <File FileName="../../../../usr/include/mozjs-24/jsapi.h" Line="5145" Column="22" />
+      <File FileName="../../../../usr/include/mozjs-24/js/Value.h" Line="906" Column="19" />
+      <File FileName="../../../../usr/include/mozjs-24/js/RootingAPI.h" Line="671" Column="5" />
+      <File FileName="Library/Tests/Scripting/V8.x3dv" Line="361" Column="2" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.h" Line="156" Column="18" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="211" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsArguments.h" Line="64" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DField.h" Line="103" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DField.cpp" Line="92" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DObject.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/jsSFVec4.h" Line="210" Column="1" />
-      <File FileName="Library/Tests/Scripting/V8.x3dv" Line="351" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsX3DExecutionContext.cpp" Line="75" Column="67" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey.cpp" Line="89" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.h" Line="199" Column="55" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="536" Column="97" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsString.h" Line="75" Column="40" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsString.cpp" Line="89" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsfield.cpp" Line="346" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,7 +20,9 @@
           <Node name="miscellaneous" expanded="True">
             <Node name="uncrustify-all" expanded="True" />
           </Node>
-          <Node name="build" expanded="True" />
+          <Node name="build" expanded="True">
+            <Node name="debian" expanded="True" />
+          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
@@ -56,7 +58,7 @@
                   <Node name="PeaseBlossom" expanded="True" />
                   <Node name="SpiderMonkey" expanded="True">
                     <Node name="Fields" expanded="True" />
-                    <Node name="jsArguments.h" selected="True" />
+                    <Node name="jsContext.cpp" selected="True" />
                   </Node>
                 </Node>
                 <Node name="Miscellaneous" expanded="True" />

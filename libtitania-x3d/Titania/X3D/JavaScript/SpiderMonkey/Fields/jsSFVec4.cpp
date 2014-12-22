@@ -56,18 +56,32 @@ namespace MozillaSpiderMonkey {
 
 template <>
 JSClass jsSFVec4 <X3D::SFVec4d>::static_class = {
-	"SFVec4d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"SFVec4d",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	JS_PropertyStub,
+	JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate <size>,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsSFVec4 <X3D::SFVec4f>::static_class = {
-	"SFVec4f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"SFVec4f",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	JS_PropertyStub,
+	JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate <size>,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };

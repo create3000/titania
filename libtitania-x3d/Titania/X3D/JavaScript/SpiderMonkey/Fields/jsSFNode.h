@@ -65,7 +65,7 @@ public:
 
 	///  @name Member types
 
-	using internal_type = SFNode;
+	using internal_type = X3D::SFNode;
 
 	///  @name Construction
 
@@ -74,8 +74,9 @@ public:
 	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
-	JSBool
-	create (JSContext* const, SFNode* const, jsval* const);
+	JS::Value
+	create (JSContext* const, X3D::SFNode* const)
+	throw (std::invalid_argument);
 
 	static
 	JSClass*
@@ -92,24 +93,24 @@ private:
 
 	///  @name Construction
 
-	static JSBool construct (JSContext*, uint32_t, jsval*);
+	static JSBool construct (JSContext*, unsigned, JS::Value*);
 
 	///  @name Member access
 
-	static JSBool enumerate   (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
-	static JSBool getProperty (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool setProperty (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool enumerate   (JSContext*, JS::HandleObject, JSIterateOp, JS::MutableHandleValue, JS::MutableHandleId);
+	static JSBool setProperty (JSContext*, JS::HandleObject, JS::HandleId, JSBool, JS::MutableHandleValue);
+	static JSBool getProperty (JSContext*, JS::HandleObject, JS::HandleId, JS::MutableHandleValue);
 
 	///  @name Functions
 
-	static JSBool getNodeName (JSContext*, uint32_t, jsval*);
-	static JSBool getNodeType (JSContext*, uint32_t, jsval*);
+	static JSBool getNodeName (JSContext*, unsigned, JS::Value*);
+	static JSBool getNodeType (JSContext*, unsigned, JS::Value*);
 
-	static JSBool getFieldDefinitions (JSContext*, uint32_t, jsval*);
+	static JSBool getFieldDefinitions (JSContext*, unsigned, JS::Value*);
 
-	static JSBool toVRMLString (JSContext*, uint32_t, jsval*);
-	static JSBool toXMLString  (JSContext*, uint32_t, jsval*);
-	static JSBool toString     (JSContext*, uint32_t, jsval*);
+	static JSBool toVRMLString (JSContext*, unsigned, JS::Value*);
+	static JSBool toXMLString  (JSContext*, unsigned, JS::Value*);
+	static JSBool toString     (JSContext*, unsigned, JS::Value*);
 
 	///  @name Static members
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,18 +63,18 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 JSPropertySpec jsGlobals::properties [ ] = {
-	{ "NULL",  0,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, null_,  nullptr },
-	{ "FALSE", false, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, false_, nullptr },
-	{ "TRUE",  true,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, true_,  nullptr },
-	{ 0 }
+	JS_PSG ("NULL",  null_,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT),
+	JS_PSG ("FALSE", false_, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT),
+	JS_PSG ("TRUE",  true_,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT),
+	JS_PS_END
 
 };
 
 JSFunctionSpec jsGlobals::functions [ ] = {
-	{ "print",   jsGlobals::print,   0, 0 }, // VRML 2.0
-	{ "trace",   jsGlobals::print,   0, 0 }, // Non standard
-	{ "require", jsGlobals::require, 1, 0 }, // Non standard
-	{ 0 }
+	JS_FS ("print",   jsGlobals::print,   0, JSPROP_PERMANENT), // VRML 2.0
+	JS_FS ("trace",   jsGlobals::print,   0, JSPROP_PERMANENT), // Non standard
+	JS_FS ("require", jsGlobals::require, 1, JSPROP_PERMANENT), // Non standard
+	JS_FS_END
 
 };
 
@@ -86,61 +86,61 @@ jsGlobals::init (JSContext* const cx, JSObject* const global)
 }
 
 JSBool
-jsGlobals::null_ (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsGlobals::null_ (JSContext* cx, unsigned argc, JS::Value* vp)
 {
-	*vp = JSVAL_NULL;
+	vp -> setNull ();
 	return true;
 }
 
 JSBool
-jsGlobals::false_ (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsGlobals::false_ (JSContext* cx, unsigned argc, JS::Value* vp)
 {
-	*vp = JSVAL_FALSE;
+	vp -> setBoolean (false);
 	return true;
 }
 
 JSBool
-jsGlobals::true_ (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsGlobals::true_ (JSContext* cx, unsigned argc, JS::Value* vp)
 {
-	*vp = JSVAL_TRUE;
+	vp -> setBoolean (true);
 	return true;
 }
 
 JSBool
-jsGlobals::print (JSContext* cx, uint32_t argc, jsval* vp)
+jsGlobals::print (JSContext* cx, unsigned argc, JS::Value* vp)
 {
+	const auto args    = JS::CallArgsFromVp (argc, vp);
 	const auto browser = getContext (cx) -> getBrowser ();
-	const auto argv    = JS_ARGV (cx, vp);
 
-	for (uint32_t i = 0; i < argc; ++ i)
-		browser -> print (to_string (cx, argv [i]));
+	for (unsigned i = 0; i < argc; ++ i)
+		browser -> print (to_string (cx, args [i]));
 
 	browser -> print ('\n');
 
-	JS_SET_RVAL (cx, vp, JSVAL_VOID);
+	args .rval () .setUndefined ();
 	return true;
 }
 
 // Non standard
 
 JSBool
-jsGlobals::require (JSContext* cx, uint32_t argc, jsval* vp)
+jsGlobals::require (JSContext* cx, unsigned argc, JS::Value* vp)
 {
+	const auto args    = JS::CallArgsFromVp (argc, vp);
 	const auto context = getContext (cx);
-	const auto argv    = JS_ARGV (cx, vp);
 	auto       success = false;
-	auto       rval    = JSVAL_VOID;
+	auto       rval    = JS::UndefinedValue ();
 
-	for (uint32_t i = 0; i < argc; ++ i)
+	for (unsigned i = 0; i < argc; ++ i)
 	{
-		if (context -> require (to_string (cx, argv [i]), rval))
+		if (context -> require (to_string (cx, args [i]), rval))
 		{
 			success = true;
 			break;
 		}
 	}
 
-	JS_SET_RVAL (cx, vp, rval);
+	args .rval () .set (rval);
 	return success;
 }
 

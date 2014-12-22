@@ -48,41 +48,87 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_MFFLOAT_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_MFFLOAT_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_MEMORY_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_MEMORY_H__
 
-#include "../../../Fields/ArrayFields.h"
-#include "../jsX3DArrayField.h"
-#include "jsX3DScalar.h"
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-template <>
-constexpr ObjectType
-jsX3DArrayField <jsSFFloat, X3D::MFFloat>::getId ()
-{ return ObjectType::MFFloat; }
+struct RuntimeDeleter
+{
+	void
+	operator () (JSRuntime* runtime) const
+	{
+		JS_DestroyRuntime (runtime);
+	}
 
-template <>
-JSBool
-jsX3DArrayField <jsSFFloat, X3D::MFFloat>::construct (JSContext *, uint32_t, jsval*);
+};
 
-template <>
-JSBool
-jsX3DArrayField <jsSFFloat, X3D::MFFloat>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+struct ContextDeleter
+{
+	void
+	operator () (JSContext* context) const
+	{
+		JS_DestroyContext (context);
+	}
 
-template <>
-JSBool
-jsX3DArrayField <jsSFFloat, X3D::MFFloat>::unshift (JSContext *, uint32_t, jsval*);
+};
 
-template <>
-JSBool
-jsX3DArrayField <jsSFFloat, X3D::MFFloat>::push (JSContext *, uint32_t, jsval*);
+class RootedValue
+{
+public:
 
-using jsMFFloat = jsX3DArrayField <jsSFFloat, X3D::MFFloat>;
+	RootedValue () :
+		   cx (nullptr),
+		value ()
+	{ }
 
-extern template class jsX3DArrayField <jsSFFloat, X3D::MFFloat>;
+	RootedValue (const RootedValue & other) :
+		   cx (other .cx),
+		value (other .value)
+	{
+		JS_AddValueRoot (cx, &value);
+	}
+
+	RootedValue (JSContext* const cx, const JS::Value & value_) :
+		   cx (cx),
+		value (value_)
+	{
+		JS_AddValueRoot (cx, &value);
+	}
+
+	RootedValue &
+	operator = (const RootedValue & other)
+	{
+		if (cx)
+			JS_RemoveValueRoot (cx, &value);
+
+		cx    = other .cx;
+		value = other .value;
+
+		JS_AddValueRoot (cx, &value);
+
+		return *this;
+	}
+
+	operator const JS::Value & ()
+	{ return value; }
+
+	~RootedValue ()
+	{
+		if (cx)
+			JS_RemoveValueRoot (cx, &value);
+	}
+
+private:
+
+	JSContext* cx;
+	JS::Value  value;
+
+};
 
 } // MozillaSpiderMonkey
 } // X3D

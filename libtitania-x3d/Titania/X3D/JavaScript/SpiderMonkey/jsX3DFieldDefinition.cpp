@@ -60,18 +60,25 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 JSClass jsX3DFieldDefinition::static_class = {
-	"X3DFieldDefinition", JSCLASS_HAS_PRIVATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, finalize,
+	"X3DFieldDefinition",
+	JSCLASS_HAS_PRIVATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	JS_PropertyStub,
+	JS_StrictPropertyStub,
+	JS_EnumerateStub,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 JSPropertySpec jsX3DFieldDefinition::properties [ ] = {
-	{ "name",       NAME,        JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, name,       nullptr },
-	{ "accessType", ACCESS_TYPE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, accessType, nullptr },
-	{ "dataType",   DATA_TYPE,   JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, dataType,   nullptr },
-	{ 0 }
+	JS_PSG ("name",       getName,       JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT),
+	JS_PSG ("accessType", getAccessType, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT),
+	JS_PSG ("dataType",   getDataType,   JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT),
+	JS_PS_END
 
 };
 
@@ -86,33 +93,35 @@ jsX3DFieldDefinition::init (JSContext* const cx, JSObject* const global, JSObjec
 	return proto;
 }
 
-JSBool
-jsX3DFieldDefinition::create (JSContext* const cx, const X3D::X3DFieldDefinition* const field, jsval* const vp)
+JS::Value
+jsX3DFieldDefinition::create (JSContext* const cx, const X3D::X3DFieldDefinition* const field)
+throw (std::invalid_argument)
 {
 	const auto result = JS_NewObject (cx, &static_class, nullptr, nullptr);
 
 	if (result == nullptr)
-		return ThrowException (cx, "out of memory");
+		throw std::invalid_argument ("out of memory");
 
 	const auto context  = getContext (cx);
 	const auto fieldPtr = new X3D::FieldPtr (const_cast <X3D::X3DFieldDefinition*> (field));
 
 	fieldPtr -> addParent (context);
 
-	JS_SetPrivate (cx, result, fieldPtr);
+	JS_SetPrivate (result, fieldPtr);
 
-	*vp = OBJECT_TO_JSVAL (result);
-	return true;
+	return JS::ObjectValue (*result);
 }
 
 JSBool
-jsX3DFieldDefinition::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsX3DFieldDefinition::getName (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto & fieldPtr = *getThis <jsX3DFieldDefinition> (cx, obj);
+		const auto   args     = JS::CallArgsFromVp (argc, vp);
+		const auto & fieldPtr = *getThis <jsX3DFieldDefinition> (cx, args);
 
-		return JS_NewStringValue (cx, fieldPtr -> getName (), vp);
+		args .rval () .set (StringValue (cx, fieldPtr -> getName ()));
+		return true;
 	}
 	catch (const std::exception & error)
 	{
@@ -121,13 +130,15 @@ jsX3DFieldDefinition::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
-jsX3DFieldDefinition::accessType (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsX3DFieldDefinition::getAccessType (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto & fieldPtr = *getThis <jsX3DFieldDefinition> (cx, obj);
+		const auto   args     = JS::CallArgsFromVp (argc, vp);
+		const auto & fieldPtr = *getThis <jsX3DFieldDefinition> (cx, args);
 
-		return JS_NewNumberValue (cx, fieldPtr -> getAccessType (), vp);
+		args .rval () .setInt32 (fieldPtr -> getAccessType ());
+		return true;
 	}
 	catch (const std::exception & error)
 	{
@@ -136,13 +147,15 @@ jsX3DFieldDefinition::accessType (JSContext* cx, JSObject* obj, jsid id, jsval* 
 }
 
 JSBool
-jsX3DFieldDefinition::dataType (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsX3DFieldDefinition::getDataType (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto & fieldPtr = *getThis <jsX3DFieldDefinition> (cx, obj);
+		const auto   args     = JS::CallArgsFromVp (argc, vp);
+		const auto & fieldPtr = *getThis <jsX3DFieldDefinition> (cx, args);
 
-		return JS_NewNumberValue (cx, fieldPtr -> getType (), vp);
+		args .rval () .setInt32 (fieldPtr -> getType ());
+		return true;
 	}
 	catch (const std::exception & error)
 	{
@@ -151,10 +164,10 @@ jsX3DFieldDefinition::dataType (JSContext* cx, JSObject* obj, jsid id, jsval* vp
 }
 
 void
-jsX3DFieldDefinition::finalize (JSContext* cx, JSObject* obj)
+jsX3DFieldDefinition::finalize (JSFreeOp* fop, JSObject* obj)
 {
-	const auto context  = getContext (cx);
-	const auto fieldPtr = getObject <X3D::FieldPtr*> (cx, obj);
+	const auto context  = getContext (fop -> runtime ());
+	const auto fieldPtr = getObject <X3D::FieldPtr*> (obj);
 
 	// Proto objects have no private
 

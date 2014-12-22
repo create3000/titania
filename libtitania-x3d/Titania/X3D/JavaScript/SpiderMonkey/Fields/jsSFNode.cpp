@@ -55,8 +55,7 @@
 #include "../../../Execution/X3DScene.h"
 #include "../../../InputOutput/Loader.h"
 #include "../jsContext.h"
-#include "../jsFieldDefinitionArray.h"
-#include "../jsFields.h"
+//#include "../jsFieldDefinitionArray.h"
 #include "../jsString.h"
 #include "../jsfield.h"
 
@@ -65,9 +64,16 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 JSClass jsSFNode::static_class = {
-	"SFNode", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, getProperty, setProperty,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"SFNode",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	getProperty,
+	setProperty,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -96,14 +102,15 @@ jsSFNode::init (JSContext* const cx, JSObject* const global, JSObject* const par
 	return proto;
 }
 
-JSBool
-jsSFNode::create (JSContext* const cx, SFNode* const field, jsval* const vp)
+JS::Value
+jsSFNode::create (JSContext* const cx, X3D::SFNode* const field)
+throw (std::invalid_argument)
 {
-	return jsX3DField::create (cx, &static_class, field, vp);
+	return jsX3DField::create (cx, &static_class, field);
 }
 
 JSBool
-jsSFNode::construct (JSContext* cx, uint32_t argc, jsval* vp)
+jsSFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -111,28 +118,19 @@ jsSFNode::construct (JSContext* cx, uint32_t argc, jsval* vp)
 		{
 			case 0:
 			{
-				return create (cx, new SFNode (), &JS_RVAL (cx, vp));
+				JS::CallArgsFromVp (argc, vp) .rval () .set (create (cx, new X3D::SFNode ()));
+				return true;
 			}
 			case 1:
 			{
-				try
-				{
-					const auto argv       = JS_ARGV (cx, vp);
-					const auto vrmlSyntax = getArgument <std::string> (cx, argv, 0);
-					const auto script     = getContext (cx) -> getScriptNode ();
-					const auto scene      = Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (vrmlSyntax);
+				const auto args = JS::CallArgsFromVp (argc, vp);
+				const auto vrmlSyntax = getArgument <std::string> (cx, args, 0);
+				const auto script     = getContext (cx) -> getScriptNode ();
+				const auto scene      = Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (vrmlSyntax);
+				const auto result     = scene -> getRootNodes () .empty () ? new SFNode () : new SFNode (scene -> getRootNodes () [0]);
 
-					return create (cx,
-					               scene -> getRootNodes () .empty ()
-					               ? new SFNode ()
-										: new SFNode (scene -> getRootNodes () [0]),
-					               &JS_RVAL (cx, vp));
-				}
-				catch (const X3DError & error)
-				{
-					JS_ReportError (cx, error .what ());
-					return false;
-				}
+				args .rval () .set (create (cx, result));
+				return true;
 			}
 			default:
 				return ThrowException (cx, "%s .new: wrong number of arguments.", getClass () -> name);
@@ -145,7 +143,7 @@ jsSFNode::construct (JSContext* cx, uint32_t argc, jsval* vp)
 }
 
 JSBool
-jsSFNode::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+jsSFNode::enumerate (JSContext* cx, JS::HandleObject obj, JSIterateOp enum_op, JS::MutableHandleValue statep, JS::MutableHandleId idp)
 {
 	try
 	{
@@ -154,40 +152,35 @@ jsSFNode::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* s
 
 		if (not node or node -> getFieldDefinitions () .empty ())
 		{
-			*statep = JSVAL_NULL;
+			statep .setNull ();
 			return true;
 		}
 
-		size_t* index;
+		size_t* index = nullptr;
 
 		switch (enum_op)
 		{
 			case JSENUMERATE_INIT:
 			case JSENUMERATE_INIT_ALL:
 			{
-				index   = new size_t (0);
-				*statep = PRIVATE_TO_JSVAL (index);
-
-				if (idp)
-					*idp = INT_TO_JSID (node -> getFieldDefinitions () .size ());
-
+				index = new size_t (0);
+				statep .set (PRIVATE_TO_JSVAL (index));
+				idp .set (INT_TO_JSID (node -> getFieldDefinitions () .size ()));
 				break;
 			}
 			case JSENUMERATE_NEXT:
 			{
-				index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+				index = (size_t*) JSVAL_TO_PRIVATE (statep);
 
 				if (*index < node -> getFieldDefinitions () .size ())
 				{
-					const auto   field = node -> getFieldDefinitions () [*index];
-					const auto & name  = field -> getName ();
+					const auto field = node -> getFieldDefinitions () [*index];
+					const auto name  = StringValue (cx, field -> getName ());
+					
+					jsid id;
+					JS_ValueToId (cx, name, &id);
 
-					jsval id;
-					JS_NewStringValue (cx, name, &id);
-
-					if (idp)
-						JS_ValueToId (cx, id, idp);
-
+					idp .set (id);
 					*index = *index + 1;
 					break;
 				}
@@ -196,9 +189,9 @@ jsSFNode::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* s
 			}
 			case JSENUMERATE_DESTROY:
 			{
-				index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+				index = (size_t*) JSVAL_TO_PRIVATE (statep);
 				delete index;
-				*statep = JSVAL_NULL;
+				statep .setNull ();
 			}
 		}
 
@@ -206,60 +199,22 @@ jsSFNode::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* s
 	}
 	catch (const std::exception &)
 	{
-		*statep = JSVAL_NULL;
-		return true;	
+		statep .setNull ();
+		return true;
 	}
 }
 
 JSBool
-jsSFNode::getProperty (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+jsSFNode::setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JSBool strict, JS::MutableHandleValue vp)
 {
+	if (not JSID_IS_STRING (id))
+		return true;
+
+	const auto name = to_string (cx, id);
+
 	try
 	{
-		if (not JSID_IS_STRING (id))
-			return true;
-
-		const auto lhs  = getThis <jsSFNode> (cx, obj);
-		const auto name = to_string (cx, id);
-
-		if (not lhs -> getValue ())
-			return true;
-
-		try
-		{
-			const auto field = lhs -> getValue () -> getField (name);
-
-			if (field -> getAccessType () == initializeOnly or field -> getAccessType () == inputOnly)
-			{
-				*vp = JSVAL_VOID;
-				return true;
-			}
-
-			return getValue (cx, field, vp);
-		}
-		catch (const Error <INVALID_NAME> &)
-		{
-			return true;
-		}
-	}
-	catch (const std::exception & error)
-	{
-		const auto name = to_string (cx, id);
-
-		return ThrowException (cx, "%s .%s: %s.", getClass () -> name, name .c_str (), error .what ());
-	}
-}
-
-JSBool
-jsSFNode::setProperty (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
-{
-	try
-	{
-		if (not JSID_IS_STRING (id))
-			return true;
-
-		const auto lhs  = getThis <jsSFNode> (cx, obj);
-		const auto name = to_string (cx, id);
+		const auto lhs = getThis <jsSFNode> (cx, obj);
 
 		if (not lhs -> getValue ())
 			return true;
@@ -271,10 +226,7 @@ jsSFNode::setProperty (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsv
 			if (field -> getAccessType () == initializeOnly or field -> getAccessType () == outputOnly)
 				return true;
 
-			if (not setValue (cx, field, vp))
-				return ThrowException (cx, "out of memory");
-
-			*vp = JSVAL_VOID;
+			setValue (cx, field, vp);
 			return true;
 		}
 		catch (const X3D::Error <X3D::INVALID_NAME> &)
@@ -284,23 +236,59 @@ jsSFNode::setProperty (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsv
 	}
 	catch (const std::exception & error)
 	{
-		const auto name = to_string (cx, id);
-
 		return ThrowException (cx, "%s .%s: %s.", getClass () -> name, name .c_str (), error .what ());
 	}
 }
 
 JSBool
-jsSFNode::getNodeName (JSContext* cx, uint32_t argc, jsval* vp)
+jsSFNode::getProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+{
+	if (not JSID_IS_STRING (id))
+		return true;
+
+	const auto name = to_string (cx, id);
+
+	try
+	{
+		const auto lhs = getThis <jsSFNode> (cx, obj);
+
+		if (not lhs -> getValue ())
+			return true;
+
+		try
+		{
+			const auto field = lhs -> getValue () -> getField (name);
+
+			if (field -> getAccessType () == initializeOnly or field -> getAccessType () == inputOnly)
+				return true;
+
+			vp .set (getValue (cx, field));
+			return true;
+		}
+		catch (const Error <INVALID_NAME> &)
+		{
+			return true;
+		}
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .%s: %s.", getClass () -> name, name .c_str (), error .what ());
+	}
+}
+
+JSBool
+jsSFNode::getNodeName (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .getNodeName: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto lhs = getThis <jsSFNode> (cx, vp);
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto lhs  = getThis <jsSFNode> (cx, args);
 
-		return JS_NewStringValue (cx, *lhs ? lhs -> getValue () -> getName () : "", &JS_RVAL (cx, vp));
+		args .rval () .set (StringValue (cx, *lhs ? lhs -> getValue () -> getName () : ""));
+		return true;
 	}
 	catch (const std::exception & error)
 	{
@@ -309,27 +297,25 @@ jsSFNode::getNodeName (JSContext* cx, uint32_t argc, jsval* vp)
 }
 
 JSBool
-jsSFNode::getNodeType (JSContext* cx, uint32_t argc, jsval* vp)
+jsSFNode::getNodeType (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .getNodeType: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto lhs    = getThis <jsSFNode> (cx, vp);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto lhs    = getThis <jsSFNode> (cx, args);
 		JSObject*  result = nullptr;
 
 		if (lhs -> getValue ())
 		{
 			const auto node = lhs -> getValue ();
 
-			std::vector <jsval> array (node -> getType () .size ());
+			std::vector <JS::Value> array (node -> getType () .size ());
 
-			for (size_t i = 0, size = node -> getType () .size (); i < size; ++ i)
-			{
-				if (not JS_NewNumberValue (cx, size_t (node -> getType () [i]), &array [i]))
-					return false;
-			}
+			for (const auto & type : node -> getType ())
+				array .emplace_back (JS::Int32Value (type));
 
 			result = JS_NewArrayObject (cx, array .size (), array .data ());
 		}
@@ -339,7 +325,7 @@ jsSFNode::getNodeType (JSContext* cx, uint32_t argc, jsval* vp)
 		if (result == nullptr)
 			return ThrowException (cx, "out of memory");
 
-		JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (result));
+		args .rval () .setObjectOrNull (result);
 		return true;
 	}
 	catch (const std::exception & error)
@@ -349,19 +335,22 @@ jsSFNode::getNodeType (JSContext* cx, uint32_t argc, jsval* vp)
 }
 
 JSBool
-jsSFNode::getFieldDefinitions (JSContext* cx, uint32_t argc, jsval* vp)
+jsSFNode::getFieldDefinitions (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .getFieldDefinitions: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto lhs = getThis <jsSFNode> (cx, vp);
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto lhs  = getThis <jsSFNode> (cx, args);
 
-		if (lhs -> getValue ())
-			return jsFieldDefinitionArray::create (cx, &lhs -> getValue () -> getFieldDefinitions (), &JS_RVAL (cx, vp));
+//		if (lhs -> getValue ())
+//			args .rval () .set (jsFieldDefinitionArray::create (cx, &lhs -> getValue () -> getFieldDefinitions ()));
+//		else
+//			args .rval () .set (jsFieldDefinitionArray::create (cx, nullptr));
 
-		return jsFieldDefinitionArray::create (cx, nullptr, &JS_RVAL (cx, vp));
+		return true;
 	}
 	catch (const std::exception & error)
 	{
@@ -370,21 +359,23 @@ jsSFNode::getFieldDefinitions (JSContext* cx, uint32_t argc, jsval* vp)
 }
 
 JSBool
-jsSFNode::toVRMLString (JSContext* cx, uint32_t argc, jsval* vp)
+jsSFNode::toVRMLString (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .toVRMLString: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
+		const auto args    = JS::CallArgsFromVp (argc, vp);
+		const auto lhs     = getThis <jsSFNode> (cx, args);
 		const auto context = getContext (cx);
-		const auto lhs     = getThis <jsSFNode> (cx, vp);
 		const auto version = context -> getExecutionContext () -> getSpecificationVersion ();
 
 		Generator::SpecificationVersion (version);
 		Generator::NicestStyle ();
 
-		return JS_NewStringValue (cx, lhs -> toString (), &JS_RVAL (cx, vp));
+		args .rval () .set (StringValue (cx, lhs -> toString ()));
+		return true;
 	}
 	catch (const std::exception & error)
 	{
@@ -393,15 +384,16 @@ jsSFNode::toVRMLString (JSContext* cx, uint32_t argc, jsval* vp)
 }
 
 JSBool
-jsSFNode::toXMLString (JSContext* cx, uint32_t argc, jsval* vp)
+jsSFNode::toXMLString (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .toXMLString: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
+		const auto args    = JS::CallArgsFromVp (argc, vp);
+		const auto lhs     = getThis <jsSFNode> (cx, args);
 		const auto context = getContext (cx);
-		const auto lhs     = getThis <jsSFNode> (cx, vp);
 		auto       version = context -> getExecutionContext () -> getSpecificationVersion ();
 
 		if (version == VRML_V2_0)
@@ -410,7 +402,8 @@ jsSFNode::toXMLString (JSContext* cx, uint32_t argc, jsval* vp)
 		Generator::SpecificationVersion (version);
 		Generator::NicestStyle ();
 
-		return JS_NewStringValue (cx, lhs -> toXMLString (), &JS_RVAL (cx, vp));
+		args .rval () .set (StringValue (cx, lhs -> toXMLString ()));
+		return true;
 	}
 	catch (const std::exception & error)
 	{
@@ -419,19 +412,22 @@ jsSFNode::toXMLString (JSContext* cx, uint32_t argc, jsval* vp)
 }
 
 JSBool
-jsSFNode::toString (JSContext* cx, uint32_t argc, jsval* vp)
+jsSFNode::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .toString: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto lhs = getThis <jsSFNode> (cx, vp);
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto lhs  = getThis <jsSFNode> (cx, args);
 
 		if (lhs -> getValue ())
-			return JS_NewStringValue (cx, lhs -> getValue () -> getTypeName () + " { }", &JS_RVAL (cx, vp));
+			args .rval () .set (StringValue (cx, lhs -> getValue () -> getTypeName () + " { }"));
+		else
+			args .rval () .set (StringValue (cx, "NULL"));
 
-		return JS_NewStringValue (cx, "NULL", &JS_RVAL (cx, vp));
+		return true;
 	}
 	catch (const std::exception & error)
 	{

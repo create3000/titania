@@ -55,139 +55,490 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 template <>
+JSClass jsX3DArrayField <jsSFBool, X3D::MFBool>::static_class = {
+	"MFBool",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+template <>
 JSClass jsX3DArrayField <jsSFColor, X3D::MFColor>::static_class = {
-	"MFColor", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"MFColor",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsX3DArrayField <jsSFColorRGBA, X3D::MFColorRGBA>::static_class = {
-	"MFColorRGBA", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"MFColorRGBA",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+template <>
+JSClass jsX3DArrayField <jsSFDouble, X3D::MFDouble>::static_class = {
+	"MFDouble",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+template <>
+JSClass jsX3DArrayField <jsSFFloat, X3D::MFFloat>::static_class = {
+	"MFFloat",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+template <>
+JSClass jsX3DArrayField <jsSFInt32, X3D::MFInt32>::static_class = {
+	"MFInt32",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsX3DArrayField <jsSFImage, X3D::MFImage>::static_class = {
-	"MFImage", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"MFImage",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsX3DArrayField <jsSFMatrix3d, X3D::MFMatrix3d>::static_class = {
-	"MFMatrix3d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"MFMatrix3d",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsX3DArrayField <jsSFMatrix3f, X3D::MFMatrix3f>::static_class = {
-	"MFMatrix3f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"MFMatrix3f",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsX3DArrayField <jsSFMatrix4d, X3D::MFMatrix4d>::static_class = {
-	"MFMatrix4d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"MFMatrix4d",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsX3DArrayField <jsSFMatrix4f, X3D::MFMatrix4f>::static_class = {
-	"MFMatrix4f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"MFMatrix4f",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+template <>
+JSClass jsX3DArrayField <jsSFNode, X3D::MFNode>::static_class = {
+	"MFNode",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsX3DArrayField <jsSFRotation, X3D::MFRotation>::static_class = {
-	"MFRotation", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"MFRotation",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+template <>
+JSClass jsX3DArrayField <jsSFString, X3D::MFString>::static_class = {
+	"MFString",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+template <>
+JSClass jsX3DArrayField <jsSFTime, X3D::MFTime>::static_class = {
+	"MFTime",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsX3DArrayField <jsSFVec2d, X3D::MFVec2d>::static_class = {
-	"MFVec2d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"MFVec2d",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsX3DArrayField <jsSFVec2f, X3D::MFVec2f>::static_class = {
-	"MFVec2f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"MFVec2f",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsX3DArrayField <jsSFVec3d, X3D::MFVec3d>::static_class = {
-	"MFVec3d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"MFVec3d",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsX3DArrayField <jsSFVec3f, X3D::MFVec3f>::static_class = {
-	"MFVec3f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"MFVec3f",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsX3DArrayField <jsSFVec4d, X3D::MFVec4d>::static_class = {
-	"MFVec4d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"MFVec4d",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsX3DArrayField <jsSFVec4f, X3D::MFVec4f>::static_class = {
-	"MFVec4f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	"MFVec4f",
+	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub,
+	JS_DeletePropertyStub,
+	get1Value,
+	set1Value,
+	(JSEnumerateOp) enumerate,
+	JS_ResolveStub,
+	JS_ConvertStub,
+	finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
+template <>
+JSBool
+jsX3DArrayField <jsSFNode, X3D::MFNode>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc == 0)
+		{
+			JS::CallArgsFromVp (argc, vp) .rval () .set (create (cx, new X3D::MFNode ()));
+			return true;
+		}
+		else
+		{
+			const auto args  = JS::CallArgsFromVp (argc, vp);
+			const auto array = new X3D::MFNode ();
+
+			for (unsigned i = 0; i < argc; ++ i)
+			{
+				try
+				{
+					array -> emplace_back (get1Argument (cx, args, i));
+				}
+				catch (const std::domain_error &)
+				{
+					array -> emplace_back ();
+				}	
+			}
+
+			args .rval () .set (create (cx, array));
+			return true;
+		}
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .new: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <>
+JSBool
+jsX3DArrayField <jsSFNode, X3D::MFNode>::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JSBool strict, JS::MutableHandleValue vp)
+{
+	try
+	{
+		if (not JSID_IS_INT (id))
+			return true;
+
+		const auto array = getThis <jsX3DArrayField <jsSFNode, X3D::MFNode>> (cx, obj);
+		const auto index = JSID_TO_INT (id);
+
+		if (index < 0)
+			return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
+
+		try
+		{
+			array -> set1Value (index, get1Argument (cx, vp .get (), 0));
+		}
+		catch (const std::domain_error &)
+		{
+			array -> set1Value (index, nullptr);
+		}
+
+		return true;
+	}
+	catch (const std::bad_alloc &)
+	{
+		return ThrowException (cx, "%s: out of memory.", getClass () -> name);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .set1Value: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <>
+JSBool
+jsX3DArrayField <jsSFNode, X3D::MFNode>::unshift (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .unshift: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <jsX3DArrayField <jsSFNode, X3D::MFNode>> (cx, args);
+
+		try
+		{
+			array -> emplace_front (get1Argument (cx, args, 0));
+		}
+		catch (const std::domain_error &)
+		{
+			array -> emplace_front (nullptr);
+		}
+
+		args .rval () .setDouble (array -> size ());
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .unshift: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <>
+JSBool
+jsX3DArrayField <jsSFNode, X3D::MFNode>::push (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .push: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <jsX3DArrayField <jsSFNode, X3D::MFNode>> (cx, args);
+
+		try
+		{
+			array -> emplace_back (get1Argument (cx, args, 0));
+		}
+		catch (const std::domain_error &)
+		{
+			array -> emplace_back (nullptr);
+		}
+
+		args .rval () .setNumber ((uint32_t) array -> size ());
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .push: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template class jsX3DArrayField <jsSFBool, X3D::MFBool>;
 template class jsX3DArrayField <jsSFColor, X3D::MFColor>;
 template class jsX3DArrayField <jsSFColorRGBA, X3D::MFColorRGBA>;
+template class jsX3DArrayField <jsSFDouble, X3D::MFDouble>;
+template class jsX3DArrayField <jsSFFloat, X3D::MFFloat>;
+template class jsX3DArrayField <jsSFInt32, X3D::MFInt32>;
 template class jsX3DArrayField <jsSFImage, X3D::MFImage>;
 template class jsX3DArrayField <jsSFMatrix3d, X3D::MFMatrix3d>;
 template class jsX3DArrayField <jsSFMatrix3f, X3D::MFMatrix3f>;
 template class jsX3DArrayField <jsSFMatrix4d, X3D::MFMatrix4d>;
 template class jsX3DArrayField <jsSFMatrix4f, X3D::MFMatrix4f>;
+template class jsX3DArrayField <jsSFNode, X3D::MFNode>;
 template class jsX3DArrayField <jsSFRotation, X3D::MFRotation>;
+template class jsX3DArrayField <jsSFString, X3D::MFString>;
+template class jsX3DArrayField <jsSFTime, X3D::MFTime>;
 template class jsX3DArrayField <jsSFVec2d, X3D::MFVec2d>;
 template class jsX3DArrayField <jsSFVec2f, X3D::MFVec2f>;
 template class jsX3DArrayField <jsSFVec3d, X3D::MFVec3d>;

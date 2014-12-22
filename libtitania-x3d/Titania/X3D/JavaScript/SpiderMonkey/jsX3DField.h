@@ -95,26 +95,32 @@ protected:
 
 	template <class Type>
 	static
+	JS::Value
+	create (JSContext* const, JSClass* const, Type* const)
+	throw (std::invalid_argument);
+
+	template <size_t Size>
+	static
 	JSBool
-	create (JSContext* const, JSClass* const, Type* const, jsval* const);
+	enumerate (JSContext*, JS::HandleObject, JSIterateOp, JS::MutableHandleValue, JS::MutableHandleId);
 
 	///  @name Destruction
 
 	static
 	void
-	finalize (JSContext*, JSObject*);
+	finalize (JSFreeOp*, JSObject*);
 
 
 private:
 
 	///  @name Functions
 
-	static JSBool getName (JSContext*, uint32_t, jsval*);
-	static JSBool getTypeName (JSContext*, uint32_t, jsval*);
-	static JSBool getType (JSContext*, uint32_t, jsval*);
-	static JSBool isReadable (JSContext*, uint32_t, jsval*);
-	static JSBool isWritable (JSContext*, uint32_t, jsval*);
-	static JSBool toString (JSContext*, uint32_t, jsval*);
+	static JSBool getName     (JSContext*, unsigned, JS::Value*);
+	static JSBool getTypeName (JSContext*, unsigned, JS::Value*);
+	static JSBool getType     (JSContext*, unsigned, JS::Value*);
+	static JSBool isReadable  (JSContext*, unsigned, JS::Value*);
+	static JSBool isWritable  (JSContext*, unsigned, JS::Value*);
+	static JSBool toString    (JSContext*, unsigned, JS::Value*);
 
 	///  @name Static members
 
@@ -124,27 +130,72 @@ private:
 };
 
 template <class InternalType>
-JSBool
-jsX3DField::create (JSContext* const cx, JSClass* const static_class, InternalType* const field, jsval* const vp)
+JS::Value
+jsX3DField::create (JSContext* const cx, JSClass* const static_class, InternalType* const field)
+throw (std::invalid_argument)
 {
 	const auto context = getContext (cx);
 
 	try
 	{
-		*vp = OBJECT_TO_JSVAL (context -> getObject (field));
+		return JS::ObjectValue (*context -> getObject (field));
 	}
 	catch (const std::out_of_range &)
 	{
 		const auto result = JS_NewObject (cx, static_class, nullptr, nullptr);
 
 		if (result == nullptr)
-			return ThrowException (cx, "out of memory");
+			throw std::invalid_argument ("out of memory");
 
-		JS_SetPrivate (cx, result, field);
+		JS_SetPrivate (result, field);
 
 		context -> addObject (field, result);
 
-		*vp = OBJECT_TO_JSVAL (result);
+		return JS::ObjectValue (*result);
+	}
+}
+
+template <size_t Size>
+JSBool
+jsX3DField::enumerate (JSContext* cx, JS::HandleObject obj, JSIterateOp enum_op, JS::MutableHandleValue statep, JS::MutableHandleId idp)
+{
+	if (not JS_GetPrivate (obj))
+	{
+		statep .setNull ();
+		return true;
+	}
+
+	size_t* index = nullptr;
+
+	switch (enum_op)
+	{
+		case JSENUMERATE_INIT:
+		case JSENUMERATE_INIT_ALL:
+		{
+			index = new size_t (0);
+			statep .set (PRIVATE_TO_JSVAL (index));
+			idp .set (INT_TO_JSID (Size));
+			break;
+		}
+		case JSENUMERATE_NEXT:
+		{
+			index = (size_t*) JSVAL_TO_PRIVATE (statep);
+
+			if (*index < Size)
+			{
+				idp .set (INT_TO_JSID (*index));
+				*index = *index + 1;
+				break;
+			}
+
+			//else done -- cleanup.
+		}
+		case JSENUMERATE_DESTROY:
+		{
+			index = (size_t*) JSVAL_TO_PRIVATE (statep);
+			delete index;
+			statep .setNull ();
+		}
 	}
 
 	return true;
