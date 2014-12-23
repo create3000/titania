@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 01 Jun 2014 03:00:06 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.6, http://titania.create3000.de"
-META "modified" "Mon, 22 Dec 2014 05:29:22 GMT"
+META "modified" "Thu, 18 Dec 2014 18:12:57 GMT"
 
 Transform {
   children [
@@ -99,8 +99,8 @@ function fields ()
 	var v;
 	print ('SFVec4f:             ', SFVec4f);
 	print ('SFVec4f .name:       ', SFVec4f .name);
-	print ('SFVec4f .prototype:  ', SFVec4f .prototype .toString);
-	print ('SFVec4f .__proto__:  ', SFVec4f .__proto__ .toString);
+	print ('SFVec4f .prototype:  ', SFVec4f .prototype);
+	print ('SFVec4f .__proto__:  ', SFVec4f .__proto__);
 	print ('# SFVec4f .prototype:  ', SFVec4f .prototype === null);
 	print ('# SFVec4f .prototype:  ', SFVec4f .prototype instanceof SFVec4f);
 	print ('# SFVec4f .prototype:  ', typeof (SFVec4f .prototype));
@@ -110,7 +110,7 @@ function fields ()
 	print ('SFVec4f .new:        ', v = new SFVec4f (1, 2, 3, 4));
 	print ('SFVec4f .instanceof: ', v instanceof SFVec4f);
 	print ('SFVec4f .prototype:  ', v .prototype);
-	print ('SFVec4f .__proto__:  ', v .__proto__ .toString);
+	print ('SFVec4f .__proto__:  ', v .__proto__);
 	print ('# SFVec4f .__proto__:  ', v .__proto__ === SFVec4f .prototype);
 	delete v .w;
 	print ('SFVec4f .x:          ', v .x);
@@ -158,7 +158,7 @@ function fields ()
 
 	var r = new SFRotation (1, 2, 3, 4);
 	print ('SFRotation:           ', r);
-	print ('SFRotation:           ', new SFRotation (new SFVec3f (1, 2, 3), 4));
+	print ('SFRotation:           ', new SFRotation (new SFVec3f (1, 2, 3) ,4));
 	print ('SFRotation .x:        ', r .x);
 	print ('SFRotation .y:        ', r .y);
 	print ('SFRotation .z:        ', r .z);
@@ -309,180 +309,54 @@ function node ()
 
 function set_time (value, time)
 {
-	print ('Script 1. value: ', value);
-	print ('Script 1. time:  ', time);
-}
+	print ('Script 1. value:   ', value);
+	print ('Script 1. time:    ', time);
+	print ('Script 1. boolean: ', boolean);
+	print ('Script 1. vector:  ', vector);
+	
+	boolean = !boolean;
+	vector  = vector .multiply (2);
 
-//function shutdown () { }
+	print ('Script 1. boolean: ', boolean);
+	print ('Script 1. vector:  ', vector);
+}
 "
   directOutput TRUE
 }
 
 DEF Script2 Script {
-  inputOnly   SFVec3f  set_hitPoint
-  inputOnly   SFTime   set_time
-  inputOutput SFBool   b TRUE
-  inputOutput SFDouble d 1.23456789012346
-  inputOutput SFFloat  f 1.2345
-  inputOutput SFInt32  i 1234
-  inputOutput SFString s "äöü"
-  inputOutput SFTime   t 1.2345
-  inputOutput SFRotation r 1 2 3 4
-  inputOutput SFVec3d  v3d 1 2 3
-  inputOutput SFVec3f  v3f 1 2 3
-  inputOutput SFVec4d  v4d 1 2 3 4
-  inputOutput SFVec4f  v4f 1 2 3 4
-  inputOutput SFNode   n Viewpoint { }
+  inputOnly SFVec3f set_hitPoint
+  inputOnly SFTime  set_time
+  inputOutput SFNode n Viewpoint { }
 
-  url "javascript:
+  url "v8:
 
-print ('Script2: global');
-print ('UTF-8: ', 'äüö ', 'äüö' .length);
-print ('NULL:  ', NULL);
-print ('FALSE: ', FALSE);
-print ('TRUE:  ', TRUE);
-print ('print: ', print ());
+var v1 = new SFVec4f ();
+var v2 = new SFVec4f ();
 
 function initialize ()
 {
-	print ('Script2: initialize');
-
-	print ();
-	print ('bool:    ', b);
-	print ('double:  ', d);
-	print ('float:   ', f);
-	print ('int32_t: ', i);
-	print ('string:  ', s);
-	print ('SFVec4d: ', v4d);
-	print ('SFVec4f: ', v4f);
-
-	print ();
-	print ('SFVec4d: ', SFVec4d);
-	print ('SFVec4f: ', SFVec4f);
-	print ('SFVec4d: ', new SFVec4d ());
-	print ('SFVec4f: ', new SFVec4f ());
-	print ('SFVec4d: ', new SFVec4d (1,2,3,'4'));
-	print ('SFVec4f: ', new SFVec4f (1,2,3,'4'));
-
-	print ();
-	print ('SFVec4f .getName:     ', v4f .getName ());
-	print ('SFVec4f .getTypeName: ', new SFVec4f (1,2,3,'4') .getTypeName ());
-	print ('SFVec4f .getType:     ', new SFVec4f (1,2,3,'4') .getType ());
-	print ('SFVec4f .isReadable:  ', new SFVec4f (1,2,3,'4') .isReadable ());
-	print ('SFVec4f .isWritable:  ', new SFVec4f (1,2,3,'4') .isWritable ());
-
-	var v1 = new SFVec4f (1,2,3,4);
-	var v2 = new SFVec4f (2,3,4,5);
-
-	print ();
-	print ('SFVec4f .negate:    ', v1 .negate ());
-	print ('SFVec4f .add:       ', v1 .add (v2));
-	print ('SFVec4f .subtract:  ', v1 .subtract (v2));
-	print ('SFVec4f .multiply:  ', v1 .multiply (2));
-	print ('SFVec4f .multVec:   ', v1 .multVec (v2));
-	print ('SFVec4f .divide:    ', v1 .divide (2));
-	print ('SFVec4f .divVec:    ', v1 .divVec (v2));
-	print ('SFVec4f .normalize: ', v1 .normalize ());
-	print ('SFVec4f .dot:       ', v1 .dot (v2));
-	print ('SFVec4f .length:    ', v1 .length ());
-
-	print ();
-	print ('SFVec4f .x: ', v1 .x);
-	print ('SFVec4f .y: ', v1 .y);
-	print ('SFVec4f .z: ', v1 .z);
-	print ('SFVec4f .w: ', v1 .w);
-
-	print ();
-	print ('SFVec4f .x: ', v1 .x = 2);
-	print ('SFVec4f .y: ', v1 .y = 3);
-	print ('SFVec4f .z: ', v1 .z = 4);
-	print ('SFVec4f .w: ', v1 .w = 5);
-
-	print ();
-	print ('SFVec4f .x: ', v1 .x);
-	print ('SFVec4f .y: ', v1 .y);
-	print ('SFVec4f .z: ', v1 .z);
-	print ('SFVec4f .w: ', v1 .w);
-
-	print ();
-	print ('SFVec4f: ', v1);
-
-	print ();
-	print ('SFVec4f [0]: ', v1 [0]);
-	print ('SFVec4f [1]: ', v1 [1]);
-	print ('SFVec4f [2]: ', v1 [2]);
-	print ('SFVec4f [3]: ', v1 [3]);
-
-	print ();
-	print ('SFVec4f [0]: ', v1 [0] = 3);
-	print ('SFVec4f [1]: ', v1 [1] = 4);
-	print ('SFVec4f [2]: ', v1 [2] = 5);
-	print ('SFVec4f [3]: ', v1 [3] = 6);
-
-	print ();
-	print ('SFVec4f [0]: ', v1 [0]);
-	print ('SFVec4f [1]: ', v1 [1]);
-	print ('SFVec4f [2]: ', v1 [2]);
-	print ('SFVec4f [3]: ', v1 [3]);
-
-	print ();
-	print ('SFVec4f: ', v1);
-	
-	print ();
-	for (var k in v1)
-		print ('enumerate: ', k, ' = ', v1 [k]);
-
-	print ();
-	for each (var v in v1)
-		print ('for each : ', v);
-
-	var c4 = new SFColorRGBA (0.1,0.2,0.3,0.4);
-	var hsv = c4 .getHSV ();
-
-	print ();
-	print ('SFColorRGBA: ', c4);
-	print ('SFColorRGBA. getHSV: ', hsv);
-	
-	var m4 = new SFMatrix4d ();
-
-	print ();
-	for (var k in m4)
-		print ('enumerate: ', k, ' = ', m4 [k]);
-
-	set_hitPoint = undefined;
 }
 
 function set_hitPoint (value, time)
 {
-	print ('Script .set_hitPoint: value: ', value);
-	print ('Script .set_hitPoint: time:  ', time);
+	print ('Script .set_hitPoint. value: ', value);
+	print ('Script .set_hitPoint. time:  ', time);
 }
 
 function set_time (value, time)
 {
-	print ('Script 2. set_time: value: ', value);
-	print ('Script 2. set_time: time:  ', time);
-	
-	b = false;
-	d = 9876;
-	f = 9876;
-	i = 9876;
-	s = 'üöä';
-	r = new SFRotation (4,3,2,1);
-	v3d = new SFVec3d (9,8,7);
-	v3f = new SFVec3f (9,8,7);
-	v4d = new SFVec4d (9,8,7,6);
-	v4f = new SFVec4f (9,8,7,6);
-}
+	print ('Script 2. value:   ', value);
+	print ('Script 2. time:    ', time);
 
-var eventsProcessed = function ()
-{
-	print ('*********** Script2: eventsProcessed');
-}
+	var c = new SFColor (0.1, 0.2, 0.3);
 
-var shutdown = function ()
-{
-	print ('*********** Script2: shutdown');
+	print ('getHSV', c .getHSV ());
+	print ('getHSV', SFColor .prototype .getHSV ());
+
+	var a = [ ];
+	for (var i = 0; i < 1000; ++ i)
+		a .push (new SFVec4f ());
 }
 "
   directOutput TRUE

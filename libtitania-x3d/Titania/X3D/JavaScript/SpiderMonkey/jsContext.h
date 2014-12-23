@@ -54,7 +54,6 @@
 #include "../../Components/Networking/X3DUrlObject.h"
 #include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"
-#include "jsMemory.h"
 #include "jsObjectType.h"
 
 #include <jsapi.h>
@@ -110,9 +109,6 @@ public:
 
 	///  @name Member access
 
-	std::string
-	getWorldUrl () const;
-
 	JSObject*
 	getGlobal () const
 	{ return global; }
@@ -123,7 +119,7 @@ public:
 
 	void
 	addObject (X3DFieldDefinition* const, JSObject* const)
-	throw (std::invalid_argument);
+	throw (Error <INVALID_FIELD>);
 
 	void
 	removeObject (X3DFieldDefinition* const);
@@ -140,7 +136,7 @@ public:
 	///  @name Functions
 
 	JSBool
-	require (const basic::uri &, JS::Value &);
+	require (const basic::uri &, jsval &);
 
 	///  @name Destruction
 
@@ -166,41 +162,47 @@ private:
 	addUserDefinedFields ();
 
 	void
+	addUserDefinedField (X3DFieldDefinition* const);
+
+	void
 	defineProperty (JSObject* const, X3DFieldDefinition* const, const std::string &, const uint32_t);
 
-	bool
+	JSBool
 	evaluate (const std::string &, const std::string &);
 
-	bool
-	evaluate (const std::string &, const std::string &, JS::Value &);
+	JSBool
+	evaluate (const std::string &, const std::string &, jsval &);
 
 	static
 	JSBool
-	setProperty (JSContext*, JS::HandleObject, JS::HandleId, JSBool, JS::MutableHandleValue);
+	setProperty (JSContext*, JSObject*, jsid, JSBool, jsval*);
 
 	static
 	JSBool
-	getBuildInProperty (JSContext*, JS::HandleObject, JS::HandleId, JS::MutableHandleValue);
+	getBuildInProperty (JSContext*, JSObject*, jsid, jsval*);
 
 	static
 	JSBool
-	getProperty (JSContext*, JS::HandleObject, JS::HandleId, JS::MutableHandleValue);
+	getProperty (JSContext*, JSObject*, jsid, jsval*);
 
 	virtual
 	void
 	initialize () final override;
 
 	void
+	setEventHandler ();
+
+	void
 	set_live ();
 
 	void
-	prepareEvents (const JS::Value &);
+	prepareEvents ();
 
 	void
-	set_field (X3DFieldDefinition* const, const JS::Value &);
+	set_field (X3DFieldDefinition* const, const jsval &);
 
 	void
-	eventsProcessed (const JS::Value &);
+	eventsProcessed ();
 
 	void
 	set_shutdown ();
@@ -208,15 +210,14 @@ private:
 	void
 	finish ();
 
-	JS::Value
-	getFunction (const std::string &) const
-	throw (std::invalid_argument);
+	jsval
+	getFunction (const std::string &) const;
 
 	void
-	call (const std::string &);
+	callFunction (const std::string &) const;
 
 	void
-	call (const JS::Value &);
+	callFunction (jsval) const;
 
 	static
 	void
@@ -232,28 +233,27 @@ private:
 
 	///  @name Members
 
-	std::unique_ptr <JSRuntime, RuntimeDeleter> rt;
-	std::unique_ptr <JSContext, ContextDeleter> cx;
-	JSObject*                                   global;
-	std::vector <basic::uri>                    worldURL;
+	JSRuntime*               rt;
+	JSContext*               cx;
+	JSObject*                global;
+	std::vector <basic::uri> worldURL;
+
+	jsval initializeFn;
+	jsval prepareEventsFn;
+	jsval eventsProcessedFn;
+	jsval shutdownFn;
 
 	std::vector <JSObject*>                   protos;
-	std::map <std::string, RootedValue>       fields;
+	std::map <std::string, jsval>             fields;
+	std::map <X3DFieldDefinition*, jsval>     functions;
 	std::map <X3DFieldDefinition*, JSObject*> objects;
-	std::map <basic::uri, RootedValue>        files;
+	std::map <basic::uri, jsval>              files;
 
 	std::unique_ptr <SceneLoader> future;
 
 	size_t frame;
 
 };
-
-inline
-jsContext*
-getContext (JSRuntime* const rt)
-{
-	return static_cast <jsContext*> (JS_GetRuntimePrivate (rt));
-}
 
 inline
 jsContext*

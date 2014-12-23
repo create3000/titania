@@ -57,34 +57,30 @@ namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
+const size_t jsSFColorRGBA::size = 4;
+
 JSClass jsSFColorRGBA::static_class = {
-	"SFColorRGBA",
-	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub,
-	JS_DeletePropertyStub,
-	JS_PropertyStub,
-	JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate <size>,
-	JS_ResolveStub,
-	JS_ConvertStub,
-	finalize,
+	"SFColorRGBA", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 JSPropertySpec jsSFColorRGBA::properties [ ] = {
-	JS_PSGS ("r", getProperty <R>, setProperty <R>, JSPROP_PERMANENT),
-	JS_PSGS ("g", getProperty <G>, setProperty <G>, JSPROP_PERMANENT),
-	JS_PSGS ("b", getProperty <B>, setProperty <B>, JSPROP_PERMANENT),
-	JS_PSGS ("a", getProperty <A>, setProperty <A>, JSPROP_PERMANENT),
-	JS_PS_END
+	{ "r", R, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
+	{ "g", G, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
+	{ "b", B, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
+	{ "a", A, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
+	{ 0 }
 
 };
 
 JSFunctionSpec jsSFColorRGBA::functions [ ] = {
-	JS_FS ("setHSV", setHSV, 3, JSPROP_PERMANENT),
-	JS_FS ("getHSV", getHSV, 0, JSPROP_PERMANENT),
-	JS_FS_END
+	{ "getHSV",      getHSV, 0, 0 },
+	{ "setHSV",      setHSV, 3, 0 },
+
+	{ 0 }
 
 };
 
@@ -96,23 +92,22 @@ jsSFColorRGBA::init (JSContext* const cx, JSObject* const global, JSObject* cons
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 
-	JS_DefineProperty (cx, proto, (char*) R, JS::UndefinedValue (), get1Value, set1Value, JSPROP_INDEX | JSPROP_PERMANENT | JSPROP_SHARED);
-	JS_DefineProperty (cx, proto, (char*) G, JS::UndefinedValue (), get1Value, set1Value, JSPROP_INDEX | JSPROP_PERMANENT | JSPROP_SHARED);
-	JS_DefineProperty (cx, proto, (char*) B, JS::UndefinedValue (), get1Value, set1Value, JSPROP_INDEX | JSPROP_PERMANENT | JSPROP_SHARED);
-	JS_DefineProperty (cx, proto, (char*) A, JS::UndefinedValue (), get1Value, set1Value, JSPROP_INDEX | JSPROP_PERMANENT | JSPROP_SHARED);
+	JS_DefineProperty (cx, proto, (char*) R, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (cx, proto, (char*) G, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (cx, proto, (char*) B, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (cx, proto, (char*) A, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 	
 	return proto;
 }
 
-JS::Value
-jsSFColorRGBA::create (JSContext* const cx, X3D::SFColorRGBA* const field)
-throw (std::invalid_argument)
+JSBool
+jsSFColorRGBA::create (JSContext* const cx, SFColorRGBA* const field, jsval* const vp)
 {
-	return jsX3DField::create (cx, &static_class, field);
+	return jsX3DField::create (cx, &static_class, field, vp);
 }
 
 JSBool
-jsSFColorRGBA::construct (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFColorRGBA::construct (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	try
 	{
@@ -120,19 +115,17 @@ jsSFColorRGBA::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 		{
 			case 0:
 			{
-				JS::CallArgsFromVp (argc, vp) .rval () .set (create (cx, new X3D::SFColorRGBA ()));
-				return true;
+				return create (cx, new X3D::SFColorRGBA (), &JS_RVAL (cx, vp));
 			}
-			case size:
+			case 4:
 			{
-				const auto args = JS::CallArgsFromVp (argc, vp);
-				const auto r    = getArgument <double> (cx, args, R);
-				const auto g    = getArgument <double> (cx, args, G);
-				const auto b    = getArgument <double> (cx, args, B);
-				const auto a    = getArgument <double> (cx, args, A);
+				const auto argv = JS_ARGV (cx, vp);
+				const auto r    = getArgument <double> (cx, argv, R);
+				const auto g    = getArgument <double> (cx, argv, G);
+				const auto b    = getArgument <double> (cx, argv, B);
+				const auto a    = getArgument <double> (cx, argv, A);
 
-				args .rval () .set (create (cx, new X3D::SFColorRGBA (r, g, b, a)));
-				return true;
+				return create (cx, new X3D::SFColorRGBA (r, g, b, a), &JS_RVAL (cx, vp));
 			}
 			default:
 				return ThrowException (cx, "%s .new: wrong number of arguments.", getClass () -> name);
@@ -145,14 +138,65 @@ jsSFColorRGBA::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsSFColorRGBA::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JSBool strict, JS::MutableHandleValue vp)
+jsSFColorRGBA::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+{
+	if (not JS_GetPrivate (cx, obj))
+	{
+		*statep = JSVAL_NULL;
+		return true;
+	}
+
+	size_t* index;
+
+	switch (enum_op)
+	{
+		case JSENUMERATE_INIT:
+		case JSENUMERATE_INIT_ALL:
+		{
+			index   = new size_t (0);
+			*statep = PRIVATE_TO_JSVAL (index);
+
+			if (idp)
+				*idp = INT_TO_JSID (size);
+
+			break;
+		}
+		case JSENUMERATE_NEXT:
+		{
+			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+
+			if (*index < size)
+			{
+				if (idp)
+					*idp = INT_TO_JSID (*index);
+
+				*index = *index + 1;
+				break;
+			}
+
+			//else done -- cleanup.
+		}
+		case JSENUMERATE_DESTROY:
+		{
+			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+			delete index;
+			*statep = JSVAL_NULL;
+		}
+	}
+
+	return true;
+}
+
+JSBool
+jsSFColorRGBA::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	try
 	{
-		const auto lhs = getThis <jsSFColorRGBA> (cx, obj);
-		const auto rhs = getArgument <double> (cx, vp .get (), 0);
+		const auto lhs   = getThis <jsSFColorRGBA> (cx, obj);
+		const auto value = getArgument <double> (cx, vp, 0);
 
-		lhs -> set1Value (JSID_TO_INT (id), rhs);
+		lhs -> set1Value (JSID_TO_INT (id), value);
+
 		return true;
 	}
 	catch (const std::exception & error)
@@ -162,14 +206,13 @@ jsSFColorRGBA::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, 
 }
 
 JSBool
-jsSFColorRGBA::get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+jsSFColorRGBA::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
 		const auto lhs = getThis <jsSFColorRGBA> (cx, obj);
 
-		vp .setDouble (lhs -> get1Value (JSID_TO_INT (id)));
-		return true;
+		return JS_NewNumberValue (cx, lhs -> get1Value (JSID_TO_INT (id)), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -178,32 +221,36 @@ jsSFColorRGBA::get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, 
 }
 
 JSBool
-jsSFColorRGBA::getHSV (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFColorRGBA::getHSV (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .getHSV: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFColorRGBA> (cx, args);
+		const auto lhs = getThis <jsSFColorRGBA> (cx, vp);
 		
 		float h, s, v;
 
 		lhs -> getHSV (h, s, v);
 
-		JS::Value array [3] = {
-			JS::DoubleValue (h),
-			JS::DoubleValue (s),
-			JS::DoubleValue (v)
-		};
+		jsval array [3];
+
+		if (not JS_NewNumberValue (cx, h, &array [0]))
+			return false;
+
+		if (not JS_NewNumberValue (cx, s, &array [1]))
+			return false;
+
+		if (not JS_NewNumberValue (cx, v, &array [2]))
+			return false;
 
 		const auto result = JS_NewArrayObject (cx, 3, array);
 
 		if (result == nullptr)
 			return ThrowException (cx, "out of memory");
 
-		args .rval () .setObjectOrNull (result);
+		JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (result));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -213,22 +260,22 @@ jsSFColorRGBA::getHSV (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsSFColorRGBA::setHSV (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFColorRGBA::setHSV (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 3)
 		return ThrowException (cx, "%s .setHSV: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFColorRGBA> (cx, args);
-		const auto h    = getArgument <double> (cx, args, 0);
-		const auto s    = getArgument <double> (cx, args, 1);
-		const auto v    = getArgument <double> (cx, args, 2);
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFColorRGBA> (cx, vp);
+		const auto h    = getArgument <double> (cx, argv, 0);
+		const auto s    = getArgument <double> (cx, argv, 1);
+		const auto v    = getArgument <double> (cx, argv, 2);
 
 		lhs -> setHSV (h, s, v);
 
-		args .rval () .setUndefined ();
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
 		return true;
 	}
 	catch (const std::exception & error)

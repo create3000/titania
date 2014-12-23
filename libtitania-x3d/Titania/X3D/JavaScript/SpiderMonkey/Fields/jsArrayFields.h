@@ -64,16 +64,10 @@
 #include "jsSFVec2.h"
 #include "jsSFVec3.h"
 #include "jsSFVec4.h"
-#include "jsX3DScalar.h"
 
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
-
-template <>
-constexpr ObjectType
-jsX3DArrayField <jsSFBool, X3D::MFBool>::getId ()
-{ return ObjectType::MFBool; }
 
 template <>
 constexpr ObjectType
@@ -84,21 +78,6 @@ template <>
 constexpr ObjectType
 jsX3DArrayField <jsSFColorRGBA, X3D::MFColorRGBA>::getId ()
 { return ObjectType::MFColorRGBA; }
-
-template <>
-constexpr ObjectType
-jsX3DArrayField <jsSFDouble, X3D::MFDouble>::getId ()
-{ return ObjectType::MFDouble; }
-
-template <>
-constexpr ObjectType
-jsX3DArrayField <jsSFFloat, X3D::MFFloat>::getId ()
-{ return ObjectType::MFFloat; }
-
-template <>
-constexpr ObjectType
-jsX3DArrayField <jsSFInt32, X3D::MFInt32>::getId ()
-{ return ObjectType::MFInt32; }
 
 template <>
 constexpr ObjectType
@@ -127,23 +106,8 @@ jsX3DArrayField <jsSFMatrix4f, X3D::MFMatrix4f>::getId ()
 
 template <>
 constexpr ObjectType
-jsX3DArrayField <jsSFNode, X3D::MFNode>::getId ()
-{ return ObjectType::MFNode; }
-
-template <>
-constexpr ObjectType
 jsX3DArrayField <jsSFRotation, X3D::MFRotation>::getId ()
 { return ObjectType::MFRotation; }
-
-template <>
-constexpr ObjectType
-jsX3DArrayField <jsSFString, X3D::MFString>::getId ()
-{ return ObjectType::MFString; }
-
-template <>
-constexpr ObjectType
-jsX3DArrayField <jsSFTime, X3D::MFTime>::getId ()
-{ return ObjectType::MFTime; }
 
 template <>
 constexpr ObjectType
@@ -175,37 +139,14 @@ constexpr ObjectType
 jsX3DArrayField <jsSFVec4f, X3D::MFVec4f>::getId ()
 { return ObjectType::MFVec4f; }
 
-template <>
-JSBool
-jsX3DArrayField <jsSFNode, X3D::MFNode>::construct (JSContext*, unsigned, JS::Value*);
-
-template <>
-JSBool
-jsX3DArrayField <jsSFNode, X3D::MFNode>::set1Value (JSContext*, JS::HandleObject, JS::HandleId, JSBool, JS::MutableHandleValue);
-
-template <>
-JSBool
-jsX3DArrayField <jsSFNode, X3D::MFNode>::unshift (JSContext*, unsigned, JS::Value*);
-
-template <>
-JSBool
-jsX3DArrayField <jsSFNode, X3D::MFNode>::push (JSContext*, unsigned, JS::Value*);
-
-using jsMFBool      = jsX3DArrayField <jsSFBool, X3D::MFBool>;
 using jsMFColor     = jsX3DArrayField <jsSFColor, X3D::MFColor>;
 using jsMFColorRGBA = jsX3DArrayField <jsSFColorRGBA, X3D::MFColorRGBA>;
-using jsMFDouble    = jsX3DArrayField <jsSFDouble, X3D::MFDouble>;
-using jsMFFloat     = jsX3DArrayField <jsSFFloat, X3D::MFFloat>;
-using jsMFInt32     = jsX3DArrayField <jsSFInt32, X3D::MFInt32>;
 using jsMFImage     = jsX3DArrayField <jsSFImage, X3D::MFImage>;
 using jsMFMatrix3d  = jsX3DArrayField <jsSFMatrix3d, X3D::MFMatrix3d>;
 using jsMFMatrix3f  = jsX3DArrayField <jsSFMatrix3f, X3D::MFMatrix3f>;
 using jsMFMatrix4d  = jsX3DArrayField <jsSFMatrix4d, X3D::MFMatrix4d>;
 using jsMFMatrix4f  = jsX3DArrayField <jsSFMatrix4f, X3D::MFMatrix4f>;
-using jsMFNode      = jsX3DArrayField <jsSFNode, X3D::MFNode>;
 using jsMFRotation  = jsX3DArrayField <jsSFRotation, X3D::MFRotation>;
-using jsMFString    = jsX3DArrayField <jsSFString, X3D::MFString>;
-using jsMFTime      = jsX3DArrayField <jsSFTime, X3D::MFTime>;
 using jsMFVec2d     = jsX3DArrayField <jsSFVec2d, X3D::MFVec2d>;
 using jsMFVec2f     = jsX3DArrayField <jsSFVec2f, X3D::MFVec2f>;
 using jsMFVec3d     = jsX3DArrayField <jsSFVec3d, X3D::MFVec3d>;
@@ -213,21 +154,14 @@ using jsMFVec3f     = jsX3DArrayField <jsSFVec3f, X3D::MFVec3f>;
 using jsMFVec4d     = jsX3DArrayField <jsSFVec4d, X3D::MFVec4d>;
 using jsMFVec4f     = jsX3DArrayField <jsSFVec4f, X3D::MFVec4f>;
 
-extern template class jsX3DArrayField <jsSFBool, X3D::MFBool>;
 extern template class jsX3DArrayField <jsSFColor, X3D::MFColor>;
 extern template class jsX3DArrayField <jsSFColorRGBA, X3D::MFColorRGBA>;
-extern template class jsX3DArrayField <jsSFDouble, X3D::MFDouble>;
-extern template class jsX3DArrayField <jsSFFloat, X3D::MFFloat>;
-extern template class jsX3DArrayField <jsSFInt32, X3D::MFInt32>;
 extern template class jsX3DArrayField <jsSFImage, X3D::MFImage>;
 extern template class jsX3DArrayField <jsSFMatrix3d, X3D::MFMatrix3d>;
 extern template class jsX3DArrayField <jsSFMatrix3f, X3D::MFMatrix3f>;
 extern template class jsX3DArrayField <jsSFMatrix4d, X3D::MFMatrix4d>;
 extern template class jsX3DArrayField <jsSFMatrix4f, X3D::MFMatrix4f>;
-extern template class jsX3DArrayField <jsSFNode, X3D::MFNode>;
 extern template class jsX3DArrayField <jsSFRotation, X3D::MFRotation>;
-extern template class jsX3DArrayField <jsSFString, X3D::MFString>;
-extern template class jsX3DArrayField <jsSFTime, X3D::MFTime>;
 extern template class jsX3DArrayField <jsSFVec2d, X3D::MFVec2d>;
 extern template class jsX3DArrayField <jsSFVec2f, X3D::MFVec2f>;
 extern template class jsX3DArrayField <jsSFVec3d, X3D::MFVec3d>;

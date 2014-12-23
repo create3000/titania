@@ -74,9 +74,8 @@ public:
 	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
-	JS::Value
-	create (JSContext* const, X3D::SFRotation* const)
-	throw (std::invalid_argument);
+	JSBool
+	create (JSContext* const, SFRotation4f* const, jsval* const);
 
 	static
 	JSClass*
@@ -97,75 +96,32 @@ private:
 
 	///  @name Construction
 
-	static JSBool construct (JSContext*, unsigned, JS::Value*);
+	static JSBool construct (JSContext*, uint32_t, jsval*);
 
 	///  @name Member access
 
-	static JSBool set1Value (JSContext*, JS::HandleObject, JS::HandleId, JSBool, JS::MutableHandleValue);
-	static JSBool get1Value (JSContext*, JS::HandleObject, JS::HandleId, JS::MutableHandleValue);
-
-	template <size_t Index>
-	static JSBool setProperty (JSContext*, unsigned, JS::Value*);
-
-	template <size_t Index>
-	static JSBool getProperty (JSContext*, unsigned, JS::Value*);
+	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
+	static JSBool set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
 
 	///  @name Functions
 
-	static JSBool setAxis (JSContext*, unsigned, JS::Value*);
-	static JSBool getAxis (JSContext*, unsigned, JS::Value*);
+	static JSBool setAxis (JSContext*, uint32_t, jsval*);
+	static JSBool getAxis (JSContext*, uint32_t, jsval*);
 
-	static JSBool inverse  (JSContext*, unsigned, JS::Value*);
-	static JSBool multiply (JSContext*, unsigned, JS::Value*);
-	static JSBool multVec  (JSContext*, unsigned, JS::Value*);
-	static JSBool slerp    (JSContext*, unsigned, JS::Value*);
+	static JSBool inverse  (JSContext*, uint32_t, jsval*);
+	static JSBool multiply (JSContext*, uint32_t, jsval*);
+	static JSBool multVec  (JSContext*, uint32_t, jsval*);
+	static JSBool slerp    (JSContext*, uint32_t, jsval*);
 
 	///  @name Static members
 
-	static constexpr size_t size = 4;
-
+	static const size_t   size;
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
 
 };
-
-template <size_t Index>
-JSBool
-jsSFRotation::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	try
-	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFRotation> (cx, args);
-		const auto rhs  = getArgument <double> (cx, args, 0);
-
-		lhs -> set1Value (Index, rhs);
-		return true;
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .x: %s.", getClass () -> name, error .what ());
-	}
-}
-
-template <size_t Index>
-JSBool
-jsSFRotation::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	try
-	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFRotation> (cx, args);
-
-		args .rval () .setDouble (lhs -> get1Value (Index));
-		return true;
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .x: %s.", getClass () -> name, error .what ());
-	}
-}
 
 } // MozillaSpiderMonkey
 } // X3D

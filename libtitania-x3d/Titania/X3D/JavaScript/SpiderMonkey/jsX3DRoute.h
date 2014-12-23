@@ -76,9 +76,8 @@ public:
 	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
-	JS::Value
-	create (JSContext* const, const RoutePtr &)
-	throw (std::invalid_argument);
+	JSBool
+	create (JSContext* const, const RoutePtr &, jsval* const);
 
 	static
 	JSClass*
@@ -105,16 +104,16 @@ private:
 
 	///  @name Properties
 
-	static JSBool getSourceNode       (JSContext*, unsigned, JS::Value*);
-	static JSBool getSourceField      (JSContext*, unsigned, JS::Value*);
-	static JSBool getDestinationNode  (JSContext*, unsigned, JS::Value*);
-	static JSBool getDestinationField (JSContext*, unsigned, JS::Value*);
+	static JSBool sourceNode       (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool sourceField      (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool destinationNode  (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool destinationField (JSContext*, JSObject*, jsid, jsval*);
 
 	///  @name Destruction
 
 	static
 	void
-	finalize (JSFreeOp*, JSObject*);
+	finalize (JSContext*, JSObject*);
 
 	///  @name Static members
 

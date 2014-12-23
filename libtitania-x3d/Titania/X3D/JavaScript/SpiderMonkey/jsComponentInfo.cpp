@@ -50,8 +50,7 @@
 
 #include "jsComponentInfo.h"
 
-#include "jsArguments.h"
-#include "jsError.h"
+#include "jsComponentInfoArray.h"
 #include "jsString.h"
 
 namespace titania {
@@ -59,26 +58,19 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 JSClass jsComponentInfo::static_class = {
-	"ComponentInfo",
-	JSCLASS_HAS_PRIVATE,
-	JS_PropertyStub,
-	JS_DeletePropertyStub,
-	JS_PropertyStub,
-	JS_StrictPropertyStub,
-	JS_EnumerateStub,
-	JS_ResolveStub,
-	JS_ConvertStub,
-	finalize,
+	"ComponentInfo", JSCLASS_HAS_PRIVATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 JSPropertySpec jsComponentInfo::properties [ ] = {
-	JS_PSG ("name",        getName,        JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSG ("level",       getLevel,       JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSG ("title",       getTitle,       JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSG ("providerUrl", getProviderUrl, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PS_END
+	{ "name",        NAME,         JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, name,        nullptr },
+	{ "level",       LEVEL,        JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, level,       nullptr },
+	{ "title",       TITLE,        JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, title,       nullptr },
+	{ "providerUrl", PROVIDER_URL, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, providerUrl, nullptr },
+	{ 0 }
 
 };
 
@@ -93,30 +85,29 @@ jsComponentInfo::init (JSContext* const cx, JSObject* const global, JSObject* co
 	return proto;
 }
 
-JS::Value
-jsComponentInfo::create (JSContext* const cx, const X3D::ComponentInfoPtr & componentInfo)
-throw (std::invalid_argument)
+JSBool
+jsComponentInfo::create (JSContext* const cx, const ComponentInfoPtr & componentInfo, jsval* const vp)
 {
 	const auto result = JS_NewObject (cx, &static_class, nullptr, nullptr);
 
 	if (result == nullptr)
-		throw std::invalid_argument ("out of memory");
+		return ThrowException (cx, "out of memory");
 
-	JS_SetPrivate (result, new X3D::ComponentInfoPtr (componentInfo));
+	JS_SetPrivate (cx, result, new X3D::ComponentInfoPtr (componentInfo));
 
-	return JS::ObjectValue (*result);
+	*vp = OBJECT_TO_JSVAL (result);
+
+	return true;
 }
 
 JSBool
-jsComponentInfo::getName (JSContext* cx, unsigned argc, JS::Value* vp)
+jsComponentInfo::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto   args          = JS::CallArgsFromVp (argc, vp);
-		const auto & componentInfo = *getThis <jsComponentInfo> (cx, args);
+		const auto & componentInfo = *getThis <jsComponentInfo> (cx, obj);
 
-		args .rval () .set (StringValue (cx, componentInfo -> getName ()));
-		return true;
+		return JS_NewStringValue (cx, componentInfo -> getName (), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -125,15 +116,13 @@ jsComponentInfo::getName (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsComponentInfo::getLevel (JSContext* cx, unsigned argc, JS::Value* vp)
+jsComponentInfo::level (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto   args          = JS::CallArgsFromVp (argc, vp);
-		const auto & componentInfo = *getThis <jsComponentInfo> (cx, args);
+		const auto & componentInfo = *getThis <jsComponentInfo> (cx, obj);
 
-		args .rval () .setNumber ((uint32_t) componentInfo -> getLevel ());
-		return true;
+		return JS_NewNumberValue (cx, componentInfo -> getLevel (), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -142,15 +131,13 @@ jsComponentInfo::getLevel (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsComponentInfo::getTitle (JSContext* cx, unsigned argc, JS::Value* vp)
+jsComponentInfo::title (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto   args          = JS::CallArgsFromVp (argc, vp);
-		const auto & componentInfo = *getThis <jsComponentInfo> (cx, args);
+		const auto & componentInfo = *getThis <jsComponentInfo> (cx, obj);
 
-		args .rval () .set (StringValue (cx, componentInfo -> getTitle ()));
-		return true;
+		return JS_NewStringValue (cx, componentInfo -> getTitle (), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -159,15 +146,13 @@ jsComponentInfo::getTitle (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsComponentInfo::getProviderUrl (JSContext* cx, unsigned argc, JS::Value* vp)
+jsComponentInfo::providerUrl (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto   args          = JS::CallArgsFromVp (argc, vp);
-		const auto & componentInfo = *getThis <jsComponentInfo> (cx, args);
+		const auto & componentInfo = *getThis <jsComponentInfo> (cx, obj);
 
-		args .rval () .set (StringValue (cx, componentInfo -> getProviderUrl ()));
-		return true;
+		return JS_NewStringValue (cx, componentInfo -> getProviderUrl (), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -176,9 +161,9 @@ jsComponentInfo::getProviderUrl (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 void
-jsComponentInfo::finalize (JSFreeOp* fop, JSObject* obj)
+jsComponentInfo::finalize (JSContext* cx, JSObject* obj)
 {
-	const auto componentInfo = getObject <X3D::ComponentInfoPtr*> (obj);
+	const auto componentInfo = getObject <X3D::ComponentInfoPtr*> (cx, obj);
 
 	if (componentInfo)
 		delete componentInfo;

@@ -81,15 +81,15 @@ SpiderMonkey::initialize ()
 {
 	X3DJavaScriptEngine::initialize ();
 
-	const auto runtime = JS_NewRuntime (64 * 1024 * 1024, JS_NO_HELPER_THREADS); // 64 MB runtime memory
+	JSRuntime* const runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 
 	if (runtime)
 	{
-		const auto context = JS_NewContext (runtime, 1024);
+		JSContext* const context = JS_NewContext (runtime, 1024);
 
 		if (context)
 		{
-			//JS_SetVersion (context, JSVERSION_LATEST);
+			JS_SetVersion (context, JSVERSION_LATEST);
 
 			description = JS_GetImplementationVersion ();
 			version     = JS_VersionToString (JS_GetVersion (context));

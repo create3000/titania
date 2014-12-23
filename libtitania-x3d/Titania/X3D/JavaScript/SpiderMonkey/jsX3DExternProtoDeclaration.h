@@ -75,9 +75,8 @@ public:
 	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
-	JS::Value
-	create (JSContext* const, const ExternProtoDeclarationPtr &)
-	throw (std::invalid_argument);
+	JSBool
+	create (JSContext* const, const ExternProtoDeclarationPtr &, jsval* const);
 
 	static
 	JSClass*
@@ -105,22 +104,22 @@ private:
 
 	///  @name Properties
 
-	static JSBool getName          (JSContext*, unsigned, JS::Value*);
-	static JSBool getFields        (JSContext*, unsigned, JS::Value*);
-	static JSBool getUrls          (JSContext*, unsigned, JS::Value*);
-	static JSBool isExternProto (JSContext*, unsigned, JS::Value*);
-	static JSBool getLoadState     (JSContext*, unsigned, JS::Value*);
+	static JSBool name          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool fields        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool urls          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool isExternProto (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool loadState     (JSContext*, JSObject*, jsid, jsval*);
 
 	///  @name Functions
 
-	static JSBool newInstance (JSContext*, unsigned, JS::Value*);
-	static JSBool loadNow     (JSContext*, unsigned, JS::Value*);
+	static JSBool newInstance (JSContext*, uint32_t, jsval*);
+	static JSBool loadNow     (JSContext*, uint32_t, jsval*);
 
 	///  @name Destructions
 
 	static
 	void
-	finalize (JSFreeOp*, JSObject*);
+	finalize (JSContext*, JSObject*);
 
 	///  @name Static members
 

@@ -295,7 +295,7 @@ void
 jsX3DScene::finalize (JSContext* cx, JSObject* obj)
 {
 	const auto context = getContext (cx);
-	const auto scene   = getObject <X3D::X3DScene*> (obj);
+	const auto scene   = getObject <X3D::X3DScene*> (cx, obj);
 
 	if (scene)
 	{

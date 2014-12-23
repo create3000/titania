@@ -1,5 +1,6 @@
-2014-12-22  Holger Seelig  <holger.seelig@yahoo.de>
+2014-12-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ChangeLog:
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* SpiderMonkey.cpp:
@@ -7,67 +8,52 @@
 	* jsString.h:
 	* jsFields.h:
 	* jsMemory.h:
-	* X3DJavaScriptContext.cpp:
-	* jsBrowser.h:
-	* jsfield.cpp:
 	* jsContext.h:
+	* X3DJavaScriptContext.cpp:
+	* jsfield.cpp:
 	* jsGlobals.h:
+	* jsBrowser.h:
 	* jsX3DRoute.h:
-	* jsString.cpp:
 	* jsX3DField.h:
+	* jsString.cpp:
 	* jsArguments.h:
 	* jsBrowser.cpp:
-	* jsContext.cpp:
 	* jsGlobals.cpp:
-	* jsX3DField.cpp:
-	* jsX3DScene.cpp:
+	* jsContext.cpp:
 	* jsX3DRoute.cpp:
+	* jsX3DScene.cpp:
+	* jsX3DField.cpp:
 	* jsProfileInfo.h:
-	* jsSFNode.h:
 	* jsComponentInfo.h:
-	* jsProfileInfo.cpp:
-	* jsMFBool.h:
+	* jsSFNode.h:
 	* jsX3DArrayField.h:
-	* jsMFNode.h:
-	* jsSFVec4.h:
 	* jsSFVec2.h:
 	* jsSFVec3.h:
-	* jsMFTime.h:
-	* jsSFImage.h:
+	* jsProfileInfo.cpp:
+	* jsSFVec4.h:
 	* jsSFColor.h:
-	* jsMFInt32.h:
-	* jsMFFloat.h:
-	* jsX3DArrayField.cpp:
-	* jsMFTime.cpp:
-	* jsMFString.h:
-	* jsMFNode.cpp:
-	* jsMFBool.cpp:
-	* jsMFDouble.h:
-	* jsSFVec2.cpp:
-	* jsComponentInfo.cpp:
+	* jsSFImage.h:
 	* jsSFNode.cpp:
-	* jsSFVec4.cpp:
+	* jsSFVec2.cpp:
 	* jsSFVec3.cpp:
+	* jsSFVec4.cpp:
+	* jsComponentInfo.cpp:
 	* jsSFMatrix4.h:
+	* jsX3DScalar.h:
 	* jsSFColor.cpp:
 	* jsSFMatrix3.h:
-	* jsMFFloat.cpp:
-	* jsMFInt32.cpp:
 	* jsSFImage.cpp:
-	* jsX3DScalar.h:
-	* jsMFDouble.cpp:
-	* jsMFString.cpp:
 	* jsSFRotation.h:
-	* jsSFColorRGBA.h:
-	* jsSFMatrix4.cpp:
 	* jsX3DFieldDefinition.h:
 	* jsArrayFields.h:
 	* jsSFMatrix3.cpp:
-	* jsSFRotation.cpp:
+	* jsSFMatrix4.cpp:
+	* jsSFColorRGBA.h:
 	* jsX3DProtoDeclaration.h:
-	* jsX3DFieldDefinition.cpp:
+	* jsSFRotation.cpp:
 	* jsArrayFields.cpp:
 	* jsSFColorRGBA.cpp:
+	* jsX3DFieldDefinition.cpp:
 	* jsX3DProtoDeclaration.cpp:
 	* jsFieldDefinitionArray.cpp:
 	* jsX3DExternProtoDeclaration.h:

@@ -75,9 +75,8 @@ public:
 	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
-	JS::Value
-	create (JSContext* const, const X3D::ComponentInfoPtr &)
-	throw (std::invalid_argument);
+	JSBool
+	create (JSContext* const, const ComponentInfoPtr &, jsval* const);
 
 	static
 	JSClass*
@@ -104,14 +103,14 @@ private:
 
 	///  @name Properties
 
-	static JSBool getName        (JSContext*, unsigned, JS::Value*);
-	static JSBool getLevel       (JSContext*, unsigned, JS::Value*);
-	static JSBool getTitle       (JSContext*, unsigned, JS::Value*);
-	static JSBool getProviderUrl (JSContext*, unsigned, JS::Value*);
+	static JSBool name        (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool level       (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool title       (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool providerUrl (JSContext *, JSObject *, jsid, jsval*);
 
 	///  @name Destruction
 
-	static void finalize (JSFreeOp*, JSObject*);
+	static void finalize (JSContext*, JSObject*);
 
 	///  @name Static members
 

@@ -57,25 +57,20 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 JSClass jsX3DField::static_class = {
-	"X3DField",
-	JSCLASS_HAS_PRIVATE,
-	JS_PropertyStub,
-	JS_DeletePropertyStub,
-	JS_PropertyStub,
-	JS_StrictPropertyStub,
-	JS_EnumerateStub,
-	JS_ResolveStub,
-	JS_ConvertStub
+	"X3DField", JSCLASS_HAS_PRIVATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 JSFunctionSpec jsX3DField::functions [ ] = {
-	JS_FS ("getName",     getName,     0, 0),
-	JS_FS ("getTypeName", getTypeName, 0, 0),
-	JS_FS ("getType",     getType,     0, 0),
-	JS_FS ("isReadable",  isReadable,  0, 0),
-	JS_FS ("isWritable",  isWritable,  0, 0),
-	JS_FS ("toString",    toString,    0, 0),
+	{ "getName",     getName,     0, 0 },
+	{ "getTypeName", getTypeName, 0, 0 },
+	{ "getType",     getType,     0, 0 },
+	{ "isReadable",  isReadable,  0, 0 },
+	{ "isWritable",  isWritable,  0, 0 },
+	{ "toString",    toString,    0, 0 },
 
 	{ 0 }
 
@@ -93,18 +88,16 @@ jsX3DField::init (JSContext* const cx, JSObject* const global, JSObject* const p
 }
 
 JSBool
-jsX3DField::getName (JSContext* cx, unsigned argc, JS::Value* vp)
+jsX3DField::getName (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .getName: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto field = getThis <jsX3DField> (cx, args);
+		const auto lhs = getThis <jsX3DField> (cx, vp);
 
-		args .rval () .set (StringValue (cx, field -> getName ()));
-		return true;
+		return JS_NewStringValue (cx, lhs -> getName (), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -113,18 +106,16 @@ jsX3DField::getName (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsX3DField::getTypeName (JSContext* cx, unsigned argc, JS::Value* vp)
+jsX3DField::getTypeName (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .getTypeName: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto field = getThis <jsX3DField> (cx, args);
+		const auto lhs = getThis <jsX3DField> (cx, vp);
 
-		args .rval () .set (StringValue (cx, field -> getTypeName ()));
-		return true;
+		return JS_NewStringValue (cx, lhs -> getTypeName (), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -133,18 +124,16 @@ jsX3DField::getTypeName (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsX3DField::getType (JSContext* cx, unsigned argc, JS::Value* vp)
+jsX3DField::getType (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .getType: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto field = getThis <jsX3DField> (cx, args);
+		const auto lhs = getThis <jsX3DField> (cx, vp);
 
-		args .rval () .setInt32 (field -> getType ());
-		return true;
+		return JS_NewNumberValue (cx, lhs -> getType (), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -153,17 +142,16 @@ jsX3DField::getType (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsX3DField::isReadable (JSContext* cx, unsigned argc, JS::Value* vp)
+jsX3DField::isReadable (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .isReadable: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto field = getThis <jsX3DField> (cx, args);
+		const auto lhs = getThis <jsX3DField> (cx, vp);
 
-		args .rval () .setBoolean (field -> getAccessType () not_eq inputOnly);
+		JS_SET_RVAL (cx, vp, lhs -> getAccessType () not_eq inputOnly ? JSVAL_TRUE : JSVAL_FALSE);
 		return true;
 	}
 	catch (const std::exception & error)
@@ -173,17 +161,16 @@ jsX3DField::isReadable (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsX3DField::isWritable (JSContext* cx, unsigned argc, JS::Value* vp)
+jsX3DField::isWritable (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .isWritable: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto field = getThis <jsX3DField> (cx, args);
+		const auto lhs = getThis <jsX3DField> (cx, vp);
 
-		args .rval () .setBoolean (field -> getAccessType () not_eq initializeOnly);
+		JS_SET_RVAL (cx, vp, lhs -> getAccessType () not_eq initializeOnly ? JSVAL_TRUE : JSVAL_FALSE);
 		return true;
 	}
 	catch (const std::exception & error)
@@ -193,20 +180,18 @@ jsX3DField::isWritable (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsX3DField::toString (JSContext* cx, unsigned argc, JS::Value* vp)
+jsX3DField::toString (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .toString: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto field = getThis <jsX3DField> (cx, args);
+		const auto lhs = getThis <jsX3DField> (cx, vp);
 
 		Generator::NicestStyle ();
 
-		args .rval () .set (StringValue (cx, field -> toString ()));
-		return true;
+		return JS_NewStringValue (cx, lhs -> toString (), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -215,10 +200,10 @@ jsX3DField::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 void
-jsX3DField::finalize (JSFreeOp* fop, JSObject* obj)
+jsX3DField::finalize (JSContext* cx, JSObject* obj)
 {
-	const auto context = getContext (fop -> runtime ());
-	const auto field   = getObject <X3D::X3DFieldDefinition*> (obj);
+	const auto context = getContext (cx);
+	const auto field   = getObject <X3D::X3DFieldDefinition*> (cx, obj);
 
 	// Proto objects have no private
 

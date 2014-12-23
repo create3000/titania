@@ -74,9 +74,8 @@ public:
 	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
-	JS::Value
-	create (JSContext* const, X3D::SFColor* const)
-	throw (std::invalid_argument);
+	JSBool
+	create (JSContext* const, SFColor* const, jsval* const);
 
 	static
 	JSClass*
@@ -97,70 +96,27 @@ private:
 
 	///  @name Construction
 
-	static JSBool construct (JSContext*, unsigned, JS::Value*);
-	
+	static JSBool construct (JSContext*, uint32_t, jsval*);
+
 	///  @name Member access
 
-	static JSBool set1Value (JSContext*, JS::HandleObject, JS::HandleId, JSBool, JS::MutableHandleValue);
-	static JSBool get1Value (JSContext*, JS::HandleObject, JS::HandleId, JS::MutableHandleValue);
-
-	template <size_t Index>
-	static JSBool setProperty (JSContext*, unsigned, JS::Value*);
-
-	template <size_t Index>
-	static JSBool getProperty (JSContext*, unsigned, JS::Value*);
+	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
+	static JSBool set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
 
 	///  @name Functions
 
-	static JSBool getHSV (JSContext*, unsigned, JS::Value*);
-	static JSBool setHSV (JSContext*, unsigned, JS::Value*);
+	static JSBool getHSV (JSContext*, uint32_t, jsval*);
+	static JSBool setHSV (JSContext*, uint32_t, jsval*);
 
 	///  @name Static members
 
-	static constexpr size_t size = 3;
-
+	static const size_t   size;
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
 
 };
-
-template <size_t Index>
-JSBool
-jsSFColor::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	try
-	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFColor> (cx, args);
-		const auto rhs  = getArgument <double> (cx, args, 0);
-
-		lhs -> set1Value (Index, rhs);
-		return true;
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .x: %s.", getClass () -> name, error .what ());
-	}
-}
-
-template <size_t Index>
-JSBool
-jsSFColor::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	try
-	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFColor> (cx, args);
-
-		args .rval () .setDouble (lhs -> get1Value (Index));
-		return true;
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .x: %s.", getClass () -> name, error .what ());
-	}
-}
 
 } // MozillaSpiderMonkey
 } // X3D

@@ -75,9 +75,8 @@ public:
 	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
-	JS::Value
-	create (JSContext* const, const ProtoDeclarationPtr &)
-	throw (std::invalid_argument);
+	JSBool
+	create (JSContext* const, const ProtoDeclarationPtr &, jsval* const);
 
 	static
 	JSClass*
@@ -103,19 +102,19 @@ private:
 
 	///  @name Properties
 
-	static JSBool getName       (JSContext*, unsigned, JS::Value*);
-	static JSBool getFields     (JSContext*, unsigned, JS::Value*);
-	static JSBool isExternProto (JSContext*, unsigned, JS::Value*);
+	static JSBool name          (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool fields        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool isExternProto (JSContext*, JSObject*, jsid, jsval*);
 
 	///  @name Functions
 
-	static JSBool newInstance (JSContext*, unsigned, JS::Value*);
+	static JSBool newInstance (JSContext*, uint32_t, jsval*);
 
 	///  @name Destruction
 
 	static
 	void
-	finalize (JSFreeOp*, JSObject*);
+	finalize (JSContext*, JSObject*);
 
 	///  @name Static members
 

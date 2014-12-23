@@ -80,7 +80,7 @@ dnl ***************************************************************************
 dnl Compile options
 dnl ***************************************************************************
 
-CXXFLAGS="-Wall -std=c++11 -fopenmp -Wno-pmf-conversions -Wno-narrowing -Wno-invalid-offsetof"
+CXXFLAGS="-Wall -std=c++11 -fopenmp -Wno-pmf-conversions -Wno-narrowing"
 
 if test "x$enable_release" = "xyes" ; then
 	dnl ******* add "-flto" flag (link time optimization) to CXXFLAGS or LDFLAGS if it is working
@@ -116,7 +116,7 @@ gstreamermm-0.10
 fontconfig
 ftgl
 glu
-mozjs-24
+mozjs185
 libpcrecpp
 ImageMagick++
 libgtop-2.0)

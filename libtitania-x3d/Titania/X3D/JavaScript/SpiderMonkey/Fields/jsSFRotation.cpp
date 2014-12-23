@@ -58,39 +58,35 @@ namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
+const size_t jsSFRotation::size = 4;
+
 JSClass jsSFRotation::static_class = {
-	"SFRotation",
-	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub,
-	JS_DeletePropertyStub,
-	JS_PropertyStub,
-	JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate <size>,
-	JS_ResolveStub,
-	JS_ConvertStub,
-	finalize,
+	"SFRotation", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 JSPropertySpec jsSFRotation::properties [ ] = {
-	JS_PSGS ("x",     getProperty <X>,     setProperty <X>,     JSPROP_PERMANENT),
-	JS_PSGS ("y",     getProperty <Y>,     setProperty <Y>,     JSPROP_PERMANENT),
-	JS_PSGS ("z",     getProperty <Z>,     setProperty <Z>,     JSPROP_PERMANENT),
-	JS_PSGS ("angle", getProperty <ANGLE>, setProperty <ANGLE>, JSPROP_PERMANENT),
-	JS_PS_END
+	{ "x",     X,     JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
+	{ "y",     Y,     JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
+	{ "z",     Z,     JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
+	{ "angle", ANGLE, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
+	{ 0 }
 
 };
 
 JSFunctionSpec jsSFRotation::functions [ ] = {
-	JS_FS ("setAxis", setAxis,     0, JSPROP_PERMANENT),
-	JS_FS ("getAxis", getAxis,     0, JSPROP_PERMANENT),
+	{ "getAxis",     getAxis,     0, 0 },
+	{ "setAxis",     setAxis,     0, 0 },
 
-	JS_FS ("inverse", inverse,     0, JSPROP_PERMANENT),
-	JS_FS ("multiply",multiply,    1, JSPROP_PERMANENT),
-	JS_FS ("multVec", multVec,     1, JSPROP_PERMANENT),
-	JS_FS ("slerp",   slerp,       2, JSPROP_PERMANENT),
-	JS_FS_END
+	{ "inverse",     inverse,     0, 0 },
+	{ "multiply",    multiply,    1, 0 },
+	{ "multVec",     multVec,     1, 0 },
+	{ "slerp",       slerp,       2, 0 },
+
+	{ 0 }
 
 };
 
@@ -102,23 +98,22 @@ jsSFRotation::init (JSContext* const cx, JSObject* const global, JSObject* const
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 
-	JS_DefineProperty (cx, proto, (char*) X,     JS::UndefinedValue (), get1Value, set1Value, JSPROP_INDEX | JSPROP_PERMANENT | JSPROP_SHARED);
-	JS_DefineProperty (cx, proto, (char*) Y,     JS::UndefinedValue (), get1Value, set1Value, JSPROP_INDEX | JSPROP_PERMANENT | JSPROP_SHARED);
-	JS_DefineProperty (cx, proto, (char*) Z,     JS::UndefinedValue (), get1Value, set1Value, JSPROP_INDEX | JSPROP_PERMANENT | JSPROP_SHARED);
-	JS_DefineProperty (cx, proto, (char*) ANGLE, JS::UndefinedValue (), get1Value, set1Value, JSPROP_INDEX | JSPROP_PERMANENT | JSPROP_SHARED);
+	JS_DefineProperty (cx, proto, (char*) X,     JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (cx, proto, (char*) Y,     JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (cx, proto, (char*) Z,     JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (cx, proto, (char*) ANGLE, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 	
 	return proto;
 }
 
-JS::Value
-jsSFRotation::create (JSContext* const cx, X3D::SFRotation* const field)
-throw (std::invalid_argument)
+JSBool
+jsSFRotation::create (JSContext* const cx, SFRotation4f* const field, jsval* const vp)
 {
-	return jsX3DField::create (cx, &static_class, field);
+	return jsX3DField::create (cx, &static_class, field, vp);
 }
 
 JSBool
-jsSFRotation::construct (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFRotation::construct (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	try
 	{
@@ -126,39 +121,35 @@ jsSFRotation::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 		{
 			case 0:
 			{
-				JS::CallArgsFromVp (argc, vp) .rval () .set (create (cx, new X3D::SFRotation ()));
-				return true;
+				return create (cx, new X3D::SFRotation (), &JS_RVAL (cx, vp));
 			}
 			case 2:
 			{
-				const auto args = JS::CallArgsFromVp (argc, vp);
-				const auto arg1 = getArgument <jsSFVec3f> (cx, args, 0);
+				const auto argv = JS_ARGV (cx, vp);
+				const auto arg1 = getArgument <jsSFVec3f> (cx, argv, 0);
 
 				try
 				{
-					const auto arg2 = getArgument <jsSFVec3f> (cx, args, 1);
+					const auto arg2 = getArgument <jsSFVec3f> (cx, argv, 1);
 
-					args .rval () .set (create (cx, new SFRotation (*arg1, *arg2)));
-					return true;
+					return create (cx, new SFRotation (*arg1, *arg2), &JS_RVAL (cx, vp));
 				}
 				catch (const std::exception &)
 				{
-					const auto arg2 = getArgument <double> (cx, args, 1);
+					const auto arg2 = getArgument <double> (cx, argv, 1);
 
-					args .rval () .set (create (cx, new SFRotation (*arg1, arg2)));
-					return true;
+					return create (cx, new SFRotation (*arg1, arg2), &JS_RVAL (cx, vp));				
 				}
 			}
-			case size:
+			case 4:
 			{
-				const auto args = JS::CallArgsFromVp (argc, vp);
-				const auto x     = getArgument <double> (cx, args, X);
-				const auto y     = getArgument <double> (cx, args, Y);
-				const auto z     = getArgument <double> (cx, args, Z);
-				const auto angle = getArgument <double> (cx, args, ANGLE);
+				const auto argv  = JS_ARGV (cx, vp);
+				const auto x     = getArgument <double> (cx, argv, X);
+				const auto y     = getArgument <double> (cx, argv, Y);
+				const auto z     = getArgument <double> (cx, argv, Z);
+				const auto angle = getArgument <double> (cx, argv, ANGLE);
 
-				args .rval () .set (create (cx, new X3D::SFRotation (x, y, z, angle)));
-				return true;
+				return create (cx, new X3D::SFRotation (x, y, z, angle), &JS_RVAL (cx, vp));
 			}
 			default:
 				return ThrowException (cx, "%s .new: wrong number of arguments.", getClass () -> name);
@@ -171,14 +162,65 @@ jsSFRotation::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsSFRotation::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JSBool strict, JS::MutableHandleValue vp)
+jsSFRotation::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+{
+	if (not JS_GetPrivate (cx, obj))
+	{
+		*statep = JSVAL_NULL;
+		return true;
+	}
+
+	size_t* index;
+
+	switch (enum_op)
+	{
+		case JSENUMERATE_INIT:
+		case JSENUMERATE_INIT_ALL:
+		{
+			index   = new size_t (0);
+			*statep = PRIVATE_TO_JSVAL (index);
+
+			if (idp)
+				*idp = INT_TO_JSID (size);
+
+			break;
+		}
+		case JSENUMERATE_NEXT:
+		{
+			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+
+			if (*index < size)
+			{
+				if (idp)
+					*idp = INT_TO_JSID (*index);
+
+				*index = *index + 1;
+				break;
+			}
+
+			//else done -- cleanup.
+		}
+		case JSENUMERATE_DESTROY:
+		{
+			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+			delete index;
+			*statep = JSVAL_NULL;
+		}
+	}
+
+	return true;
+}
+
+JSBool
+jsSFRotation::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	try
 	{
-		const auto lhs = getThis <jsSFRotation> (cx, obj);
-		const auto rhs = getArgument <double> (cx, vp .get (), 0);
+		const auto lhs   = getThis <jsSFRotation> (cx, obj);
+		const auto value = getArgument <double> (cx, vp, 0);
 
-		lhs -> set1Value (JSID_TO_INT (id), rhs);
+		lhs -> set1Value (JSID_TO_INT (id), value);
+
 		return true;
 	}
 	catch (const std::exception & error)
@@ -188,14 +230,13 @@ jsSFRotation::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, J
 }
 
 JSBool
-jsSFRotation::get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+jsSFRotation::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
 		const auto lhs = getThis <jsSFRotation> (cx, obj);
 
-		vp .setDouble (lhs -> get1Value (JSID_TO_INT (id)));
-		return true;
+		return JS_NewNumberValue (cx, lhs -> get1Value (JSID_TO_INT (id)), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -204,20 +245,20 @@ jsSFRotation::get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, J
 }
 
 JSBool
-jsSFRotation::setAxis (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFRotation::setAxis (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .setAxis: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFRotation> (cx, args);
-		const auto rhs  = getArgument <jsSFVec3f> (cx, args, 0);
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFRotation> (cx, vp);
+		const auto rhs  = getArgument <jsSFVec3f> (cx, argv, 0);
 
 		lhs -> setAxis (*rhs);
 
-		args .rval () .setUndefined ();
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
 		return true;
 	}
 	catch (const std::exception & error)
@@ -227,18 +268,16 @@ jsSFRotation::setAxis (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsSFRotation::getAxis (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFRotation::getAxis (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .getAxis: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFRotation> (cx, args);
+		const auto lhs = getThis <jsSFRotation> (cx, vp);
 
-		args .rval () .set (jsSFVec3f::create (cx, lhs -> getAxis ()));
-		return true;
+		return jsSFVec3f::create (cx, lhs -> getAxis (), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -247,18 +286,16 @@ jsSFRotation::getAxis (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsSFRotation::inverse (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFRotation::inverse (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .inverse: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFRotation> (cx, args);
+		const auto lhs = getThis <jsSFRotation> (cx, vp);
 
-		args .rval () .set (create (cx, lhs -> inverse ()));
-		return true;
+		return create (cx, lhs -> inverse (), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -267,19 +304,18 @@ jsSFRotation::inverse (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsSFRotation::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFRotation::multiply (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .multiply: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFRotation> (cx, args);
-		const auto rhs  = getArgument <jsSFRotation> (cx, args, 0);
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFRotation> (cx, vp);
+		const auto rhs  = getArgument <jsSFRotation> (cx, argv, 0);
 
-		args .rval () .set (create (cx, lhs -> multiply (*rhs)));
-		return true;
+		return create (cx, lhs -> multiply (*rhs), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -288,29 +324,27 @@ jsSFRotation::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsSFRotation::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFRotation::multVec (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .multVec: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFRotation> (cx, args);
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFRotation> (cx, vp);
 		
 		try
 		{
-			const auto rhs = getArgument <jsSFVec3f> (cx, args, 0);
+			const auto rhs = getArgument <jsSFVec3f> (cx, argv, 0);
 
-			args .rval () .set (jsSFVec3f::create (cx, lhs -> multVec (*rhs)));
-			return true;
+			return jsSFVec3f::create (cx, lhs -> multVec (*rhs), &JS_RVAL (cx, vp));
 		}
 		catch (const std::exception &)
 		{
-			const auto rhs = getArgument <jsSFVec3d> (cx, args, 0);
+			const auto rhs = getArgument <jsSFVec3d> (cx, argv, 0);
 
-			args .rval () .set (jsSFVec3d::create (cx, SFRotation4d (lhs -> getValue ()) .multVec (*rhs)));
-			return true;
+			return jsSFVec3d::create (cx, SFRotation4d (lhs -> getValue ()) .multVec (*rhs), &JS_RVAL (cx, vp));
 		}
 	}
 	catch (const std::exception & error)
@@ -320,20 +354,19 @@ jsSFRotation::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsSFRotation::slerp (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFRotation::slerp (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 2)
 		return ThrowException (cx, "%s .slerp: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFRotation> (cx, args);
-		const auto rhs  = getArgument <jsSFRotation> (cx, args, 0);
-		const auto t    = getArgument <double> (cx, args, 1);
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFRotation> (cx, vp);
+		const auto rhs  = getArgument <jsSFRotation> (cx, argv, 0);
+		const auto t    = getArgument <double> (cx, argv, 1);
 
-		args .rval () .set (create (cx, lhs -> slerp (*rhs, t)));
-		return true;
+		return create (cx, lhs -> slerp (*rhs, t), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{

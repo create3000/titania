@@ -77,9 +77,8 @@ public:
 	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
-	JS::Value
-	create (JSContext* const, Type*)
-	throw (std::invalid_argument);
+	JSBool
+	create (JSContext* const, Type*, jsval* const);
 
 	static
 	JSClass*
@@ -100,36 +99,30 @@ private:
 
 	///  @name Construction
 
-	static JSBool construct (JSContext*, unsigned, JS::Value*);
+	static JSBool construct (JSContext*, uint32_t, jsval*);
 
 	///  @name Member access
 
-	static JSBool set1Value (JSContext*, JS::HandleObject, JS::HandleId, JSBool, JS::MutableHandleValue);
-	static JSBool get1Value (JSContext*, JS::HandleObject, JS::HandleId, JS::MutableHandleValue);
-
-	template <size_t Index>
-	static JSBool setProperty (JSContext*, unsigned, JS::Value*);
-
-	template <size_t Index>
-	static JSBool getProperty (JSContext*, unsigned, JS::Value*);
+	static JSBool enumerate (JSContext*, JSObject*, JSIterateOp, jsval*, jsid*);
+	static JSBool set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
 
 	///  @name Functions
 
-	static JSBool negate    (JSContext*, unsigned, JS::Value*);
-	static JSBool add       (JSContext*, unsigned, JS::Value*);
-	static JSBool subtract  (JSContext*, unsigned, JS::Value*);
-	static JSBool multiply  (JSContext*, unsigned, JS::Value*);
-	static JSBool multVec   (JSContext*, unsigned, JS::Value*);
-	static JSBool divide    (JSContext*, unsigned, JS::Value*);
-	static JSBool divVec    (JSContext*, unsigned, JS::Value*);
-	static JSBool dot       (JSContext*, unsigned, JS::Value*);
-	static JSBool normalize (JSContext*, unsigned, JS::Value*);
-	static JSBool length    (JSContext*, unsigned, JS::Value*);
+	static JSBool negate    (JSContext*, uint32_t, jsval*);
+	static JSBool add       (JSContext*, uint32_t, jsval*);
+	static JSBool subtract  (JSContext*, uint32_t, jsval*);
+	static JSBool multiply  (JSContext*, uint32_t, jsval*);
+	static JSBool multVec   (JSContext*, uint32_t, jsval*);
+	static JSBool divide    (JSContext*, uint32_t, jsval*);
+	static JSBool divVec    (JSContext*, uint32_t, jsval*);
+	static JSBool dot       (JSContext*, uint32_t, jsval*);
+	static JSBool normalize (JSContext*, uint32_t, jsval*);
+	static JSBool length    (JSContext*, uint32_t, jsval*);
 
 	///  @name Static members
 
-	static constexpr size_t size = 4;
-
+	static const size_t   size;
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
@@ -137,28 +130,42 @@ private:
 };
 
 template <class Type>
+const size_t jsSFVec4 <Type>::size = 4;
+
+template <class Type>
+JSClass jsSFVec4 <Type>::static_class = {
+	"SFVec4", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	JSCLASS_NO_OPTIONAL_MEMBERS
+
+};
+
+template <class Type>
 JSPropertySpec jsSFVec4 <Type>::properties [ ] = {
-	JS_PSGS ("x", getProperty <X>, setProperty <X>, JSPROP_PERMANENT),
-	JS_PSGS ("y", getProperty <Y>, setProperty <Y>, JSPROP_PERMANENT),
-	JS_PSGS ("z", getProperty <Z>, setProperty <Z>, JSPROP_PERMANENT),
-	JS_PSGS ("w", getProperty <W>, setProperty <W>, JSPROP_PERMANENT),
-	JS_PS_END
+	{ "x", X, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
+	{ "y", Y, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
+	{ "z", Z, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
+	{ "w", W, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
+	{ 0 }
 
 };
 
 template <class Type>
 JSFunctionSpec jsSFVec4 <Type>::functions [ ] = {
-	JS_FS ("negate",    negate,    0, JSPROP_PERMANENT),
-	JS_FS ("add",       add,       1, JSPROP_PERMANENT),
-	JS_FS ("subtract",  subtract,  1, JSPROP_PERMANENT),
-	JS_FS ("multiply",  multiply,  1, JSPROP_PERMANENT),
-	JS_FS ("multVec",   multVec,   1, JSPROP_PERMANENT),
-	JS_FS ("divide",    divide,    1, JSPROP_PERMANENT),
-	JS_FS ("divVec",    divVec,    1, JSPROP_PERMANENT),
-	JS_FS ("normalize", normalize, 0, JSPROP_PERMANENT),
-	JS_FS ("dot",       dot,       1, JSPROP_PERMANENT),
-	JS_FS ("length",    length,    0, JSPROP_PERMANENT),
-	JS_FS_END
+	{ "negate",      negate,      0, 0 },
+	{ "add",         add,         1, 0 },
+	{ "subtract",    subtract,    1, 0 },
+	{ "multiply",    multiply,    1, 0 },
+	{ "multVec",     multVec,     1, 0 },
+	{ "divide",      divide,      1, 0 },
+	{ "divVec",      divVec,      1, 0 },
+	{ "normalize",   normalize,   0, 0 },
+	{ "dot",         dot,         1, 0 },
+	{ "length",      length,      0, 0 },
+
+	{ 0 }
+
 };
 
 template <class Type>
@@ -170,25 +177,24 @@ jsSFVec4 <Type>::init (JSContext* const cx, JSObject* const global, JSObject* co
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
 
-	JS_DefineProperty (cx, proto, (char*) X, JS::UndefinedValue (), get1Value, set1Value, JSPROP_INDEX | JSPROP_PERMANENT | JSPROP_SHARED);
-	JS_DefineProperty (cx, proto, (char*) Y, JS::UndefinedValue (), get1Value, set1Value, JSPROP_INDEX | JSPROP_PERMANENT | JSPROP_SHARED);
-	JS_DefineProperty (cx, proto, (char*) Z, JS::UndefinedValue (), get1Value, set1Value, JSPROP_INDEX | JSPROP_PERMANENT | JSPROP_SHARED);
-	JS_DefineProperty (cx, proto, (char*) W, JS::UndefinedValue (), get1Value, set1Value, JSPROP_INDEX | JSPROP_PERMANENT | JSPROP_SHARED);
+	JS_DefineProperty (cx, proto, (char*) X, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (cx, proto, (char*) Y, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (cx, proto, (char*) Z, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (cx, proto, (char*) W, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 	
 	return proto;
 }
 
 template <class Type>
-JS::Value
-jsSFVec4 <Type>::create (JSContext* const cx, Type* const field)
-throw (std::invalid_argument)
+JSBool
+jsSFVec4 <Type>::create (JSContext* const cx, Type* const field, jsval* const vp)
 {
-	return jsX3DField::create (cx, &static_class, field);
+	return jsX3DField::create (cx, &static_class, field, vp);
 }
 
 template <class Type>
 JSBool
-jsSFVec4 <Type>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFVec4 <Type>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	try
 	{
@@ -196,19 +202,17 @@ jsSFVec4 <Type>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 		{
 			case 0:
 			{
-				JS::CallArgsFromVp (argc, vp) .rval () .set (create (cx, new Type ()));
-				return true;
+				return create (cx, new Type (), &JS_RVAL (cx, vp));
 			}
-			case size:
+			case 4:
 			{
-				const auto args = JS::CallArgsFromVp (argc, vp);
-				const auto x    = getArgument <double> (cx, args, X);
-				const auto y    = getArgument <double> (cx, args, Y);
-				const auto z    = getArgument <double> (cx, args, Z);
-				const auto w    = getArgument <double> (cx, args, W);
+				const auto argv = JS_ARGV (cx, vp);
+				const auto x    = getArgument <double> (cx, argv, X);
+				const auto y    = getArgument <double> (cx, argv, Y);
+				const auto z    = getArgument <double> (cx, argv, Z);
+				const auto w    = getArgument <double> (cx, argv, W);
 
-				args .rval () .set (create (cx, new Type (x, y, z, w)));
-				return true;
+				return create (cx, new Type (x, y, z, w), &JS_RVAL (cx, vp));
 			}
 			default:
 				return ThrowException (cx, "%s .new: wrong number of arguments.", getClass () -> name);
@@ -222,14 +226,66 @@ jsSFVec4 <Type>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 JSBool
-jsSFVec4 <Type>::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JSBool strict, JS::MutableHandleValue vp)
+jsSFVec4 <Type>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+{
+	if (not JS_GetPrivate (cx, obj))
+	{
+		*statep = JSVAL_NULL;
+		return true;
+	}
+
+	size_t* index;
+
+	switch (enum_op)
+	{
+		case JSENUMERATE_INIT:
+		case JSENUMERATE_INIT_ALL:
+		{
+			index   = new size_t (0);
+			*statep = PRIVATE_TO_JSVAL (index);
+
+			if (idp)
+				*idp = INT_TO_JSID (size);
+
+			break;
+		}
+		case JSENUMERATE_NEXT:
+		{
+			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+
+			if (*index < size)
+			{
+				if (idp)
+					*idp = INT_TO_JSID (*index);
+
+				*index = *index + 1;
+				break;
+			}
+
+			//else done -- cleanup.
+		}
+		case JSENUMERATE_DESTROY:
+		{
+			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+			delete index;
+			*statep = JSVAL_NULL;
+		}
+	}
+
+	return true;
+}
+
+template <class Type>
+JSBool
+jsSFVec4 <Type>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	try
 	{
-		const auto lhs = getThis <jsSFVec4> (cx, obj);
-		const auto rhs = getArgument <double> (cx, vp .get (), 0);
+		const auto lhs   = getThis <jsSFVec4> (cx, obj);
+		const auto value = getArgument <double> (cx, vp, 0);
 
-		lhs -> set1Value (JSID_TO_INT (id), rhs);
+		lhs -> set1Value (JSID_TO_INT (id), value);
+
 		return true;
 	}
 	catch (const std::exception & error)
@@ -240,14 +296,13 @@ jsSFVec4 <Type>::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id
 
 template <class Type>
 JSBool
-jsSFVec4 <Type>::get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+jsSFVec4 <Type>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
 		const auto lhs = getThis <jsSFVec4> (cx, obj);
 
-		vp .setDouble (lhs -> get1Value (JSID_TO_INT (id)));
-		return true;
+		return JS_NewNumberValue (cx, lhs -> get1Value (JSID_TO_INT (id)), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -256,58 +311,17 @@ jsSFVec4 <Type>::get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id
 }
 
 template <class Type>
-template <size_t Index>
 JSBool
-jsSFVec4 <Type>::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	try
-	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFVec4> (cx, args);
-		const auto rhs  = getArgument <double> (cx, args, 0);
-
-		lhs -> set1Value (Index, rhs);
-		return true;
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .x: %s.", getClass () -> name, error .what ());
-	}
-}
-
-template <class Type>
-template <size_t Index>
-JSBool
-jsSFVec4 <Type>::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	try
-	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFVec4> (cx, args);
-
-		args .rval () .setDouble (lhs -> get1Value (Index));
-		return true;
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .x: %s.", getClass () -> name, error .what ());
-	}
-}
-
-template <class Type>
-JSBool
-jsSFVec4 <Type>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFVec4 <Type>::negate (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .negate: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFVec4> (cx, args);
+		const auto lhs = getThis <jsSFVec4> (cx, vp);
 
-		args .rval () .set (create (cx, lhs -> negate ()));
-		return true;
+		return create (cx, lhs -> negate (), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -317,19 +331,18 @@ jsSFVec4 <Type>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 JSBool
-jsSFVec4 <Type>::add (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFVec4 <Type>::add (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .add: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFVec4> (cx, args);
-		const auto rhs  = getArgument <jsSFVec4> (cx, args, 0);
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFVec4> (cx, vp);
+		const auto rhs  = getArgument <jsSFVec4> (cx, argv, 0);
 
-		args .rval () .set (create (cx, lhs -> add (*rhs)));
-		return true;
+		return create (cx, lhs -> add (*rhs), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -339,19 +352,18 @@ jsSFVec4 <Type>::add (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 JSBool
-jsSFVec4 <Type>::subtract (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFVec4 <Type>::subtract (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .subtract: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFVec4> (cx, args);
-		const auto rhs  = getArgument <jsSFVec4> (cx, args, 0);
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFVec4> (cx, vp);
+		const auto rhs  = getArgument <jsSFVec4> (cx, argv, 0);
 
-		args .rval () .set (create (cx, lhs -> subtract (*rhs)));
-		return true;
+		return create (cx, lhs -> subtract (*rhs), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -361,19 +373,18 @@ jsSFVec4 <Type>::subtract (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 JSBool
-jsSFVec4 <Type>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFVec4 <Type>::multiply (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .multiply: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFVec4> (cx, args);
-		const auto rhs  = getArgument <double> (cx, args, 0);
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFVec4> (cx, vp);
+		const auto rhs  = getArgument <double> (cx, argv, 0);
 
-		args .rval () .set (create (cx, lhs -> multiply (rhs)));
-		return true;
+		return create (cx, lhs -> multiply (rhs), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -383,19 +394,18 @@ jsSFVec4 <Type>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 JSBool
-jsSFVec4 <Type>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFVec4 <Type>::multVec (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .multVec: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFVec4> (cx, args);
-		const auto rhs  = getArgument <jsSFVec4> (cx, args, 0);
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFVec4> (cx, vp);
+		const auto rhs  = getArgument <jsSFVec4> (cx, argv, 0);
 
-		args .rval () .set (create (cx, lhs -> multiply (*rhs)));
-		return true;
+		return create (cx, lhs -> multiply (*rhs), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -405,19 +415,18 @@ jsSFVec4 <Type>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 JSBool
-jsSFVec4 <Type>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFVec4 <Type>::divide (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .divide: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFVec4> (cx, args);
-		const auto rhs  = getArgument <double> (cx, args, 0);
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFVec4> (cx, vp);
+		const auto rhs  = getArgument <double> (cx, argv, 0);
 
-		args .rval () .set (create (cx, lhs -> divide (rhs)));
-		return true;
+		return create (cx, lhs -> divide (rhs), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -427,19 +436,18 @@ jsSFVec4 <Type>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 JSBool
-jsSFVec4 <Type>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFVec4 <Type>::divVec (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .divVec: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFVec4> (cx, args);
-		const auto rhs  = getArgument <jsSFVec4> (cx, args, 0);
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFVec4> (cx, vp);
+		const auto rhs  = getArgument <jsSFVec4> (cx, argv, 0);
 
-		args .rval () .set (create (cx, lhs -> divide (*rhs)));
-		return true;
+		return create (cx, lhs -> divide (*rhs), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -449,40 +457,18 @@ jsSFVec4 <Type>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 JSBool
-jsSFVec4 <Type>::normalize (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	if (argc not_eq 0)
-		return ThrowException (cx, "%s .normalize: wrong number of arguments.", getClass () -> name);
-
-	try
-	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFVec4> (cx, args);
-
-		args .rval () .set (create (cx, lhs -> normalize ()));
-		return true;
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .normalize: %s.", getClass () -> name, error .what ());
-	}
-}
-
-template <class Type>
-JSBool
-jsSFVec4 <Type>::dot (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFVec4 <Type>::dot (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .dot: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFVec4> (cx, args);
-		const auto rhs  = getArgument <jsSFVec4> (cx, args, 0);
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <jsSFVec4> (cx, vp);
+		const auto rhs  = getArgument <jsSFVec4> (cx, argv, 0);
 
-		args .rval () .setDouble (lhs -> dot (*rhs));
-		return true;
+		return JS_NewNumberValue (cx, lhs -> dot (*rhs), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -492,18 +478,35 @@ jsSFVec4 <Type>::dot (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 JSBool
-jsSFVec4 <Type>::length (JSContext* cx, unsigned argc, JS::Value* vp)
+jsSFVec4 <Type>::normalize (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .normalize: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto lhs = getThis <jsSFVec4> (cx, vp);
+
+		return create (cx, lhs -> normalize (), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .normalize: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class Type>
+JSBool
+jsSFVec4 <Type>::length (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .length: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <jsSFVec4> (cx, args);
+		const auto lhs = getThis <jsSFVec4> (cx, vp);
 
-		args .rval () .setDouble (lhs -> length ());
-		return true;
+		return JS_NewNumberValue (cx, lhs -> length (), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{

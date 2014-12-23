@@ -56,48 +56,27 @@ namespace MozillaSpiderMonkey {
 
 template <>
 JSClass jsSFMatrix4 <X3D::SFMatrix4d>::static_class = {
-	"SFMatrix4d",
-	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub,
-	JS_DeletePropertyStub,
-	JS_PropertyStub,
-	JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate <size>,
-	resolve,
-	JS_ConvertStub,
-	finalize,
+	"SFMatrix4d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsSFMatrix4 <X3D::SFMatrix4f>::static_class = {
-	"SFMatrix4f",
-	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub,
-	JS_DeletePropertyStub,
-	JS_PropertyStub,
-	JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate <size>,
-	resolve,
-	JS_ConvertStub,
-	finalize,
+	"SFMatrix4f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 template <>
 JSClass jsSFMatrix4 <X3D::VrmlMatrix>::static_class = {
-	"VrmlMatrix",
-	JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub,
-	JS_DeletePropertyStub,
-	JS_PropertyStub,
-	JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate <size>,
-	resolve,
-	JS_ConvertStub,
-	finalize,
+	"VrmlMatrix", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };

@@ -248,7 +248,7 @@ jsFieldDefinitionArray::create (JSContext* const cx, const FieldDefinitionArray*
 JSBool
 jsFieldDefinitionArray::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
-	const auto array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (obj));
+	const auto array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (cx, obj));
 
 	if (not array)
 	{
@@ -304,7 +304,7 @@ jsFieldDefinitionArray::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval*
 		return true;
 
 	const int32_t index = JSID_TO_INT (id);
-	const auto    array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (obj));
+	const auto    array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (cx, obj));
 
 	if (index < 0 and index >= (int32_t) array -> size ())
 	{
@@ -318,7 +318,7 @@ jsFieldDefinitionArray::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval*
 JSBool
 jsFieldDefinitionArray::length (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (obj));
+	const auto array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (cx, obj));
 
 	return JS_NewNumberValue (cx, array -> size (), vp);
 }
@@ -327,7 +327,7 @@ void
 jsFieldDefinitionArray::finalize (JSContext* cx, JSObject* obj)
 {
 	const auto context = getContext (cx);
-	const auto array      = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (obj));
+	const auto array      = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (cx, obj));
 
 	// Proto objects have no private
 

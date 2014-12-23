@@ -54,13 +54,12 @@
 #include "../../../Fields/SFString.h"
 #include "../../../Fields/SFTime.h"
 #include "../../../Fields/X3DScalar.h"
-#include "../jsString.h"
 
 namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-// Template class for JavaScript build-in field types.
+// Template class for javascript scalar field types.
 
 template <class Type>
 class jsScalar
@@ -74,67 +73,34 @@ public:
 	///  @name Construction
 
 	static
-	JS::Value
-	create (JSContext* const cx, const internal_type* const field)
-	throw (std::runtime_error)
+	JSBool
+	create (JSContext* const cx, const internal_type* const field, jsval* const vp)
 	{
-		throw std::runtime_error ("create");
+		return JS_NewNumberValue (cx, field -> getValue (), vp);
 	}
+
+	static
+	JSClass*
+	getClass ()
+	{ return nullptr; }
 
 };
 
 template <>
 inline
-JS::Value
-jsScalar <X3D::SFBool>::create (JSContext* const cx, const internal_type* const field)
-throw (std::runtime_error)
+JSBool
+jsScalar <X3D::SFBool>::create (JSContext* const cx, const internal_type* const field, jsval* const vp)
 {
-	return JS::BooleanValue (field -> getValue ());
+	*vp = field -> getValue () ? JSVAL_TRUE : JSVAL_FALSE;
+	return true;
 }
 
 template <>
 inline
-JS::Value
-jsScalar <X3D::SFDouble>::create (JSContext* const cx, const internal_type* const field)
-throw (std::runtime_error)
+JSBool
+jsScalar <X3D::SFString>::create (JSContext* const cx, const internal_type* const field, jsval* vp)
 {
-	return JS::DoubleValue (field -> getValue ());
-}
-
-template <>
-inline
-JS::Value
-jsScalar <X3D::SFFloat>::create (JSContext* const cx, const internal_type* const field)
-throw (std::runtime_error)
-{
-	return JS::DoubleValue (field -> getValue ());
-}
-
-template <>
-inline
-JS::Value
-jsScalar <X3D::SFInt32>::create (JSContext* const cx, const internal_type* const field)
-throw (std::runtime_error)
-{
-	return JS::Int32Value (field -> getValue ());
-}
-
-template <>
-inline
-JS::Value
-jsScalar <X3D::SFString>::create (JSContext* const cx, const internal_type* const field)
-throw (std::runtime_error)
-{
-	return StringValue (cx, field -> getValue ());
-}
-
-template <>
-inline
-JS::Value
-jsScalar <X3D::SFTime>::create (JSContext* const cx, const internal_type* const field)
-throw (std::runtime_error)
-{
-	return JS::DoubleValue (field -> getValue ());
+	return JS_NewStringValue (cx, field -> getValue (), vp);
 }
 
 using jsSFBool   = jsScalar <X3D::SFBool>;

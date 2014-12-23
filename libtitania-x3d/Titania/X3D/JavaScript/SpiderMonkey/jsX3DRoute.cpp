@@ -60,26 +60,19 @@ namespace X3D {
 namespace MozillaSpiderMonkey {
 
 JSClass jsX3DRoute::static_class = {
-	"X3DRoute",
-	JSCLASS_HAS_PRIVATE,
-	JS_PropertyStub,
-	JS_DeletePropertyStub,
-	JS_PropertyStub,
-	JS_StrictPropertyStub,
-	JS_EnumerateStub,
-	JS_ResolveStub,
-	JS_ConvertStub,
-	finalize,
+	"X3DRoute", JSCLASS_HAS_PRIVATE,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 JSPropertySpec jsX3DRoute::properties [ ] = {
-	JS_PSG ("sourceNode",       getSourceNode,       JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSG ("sourceField",      getSourceField,      JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSG ("destinationNode",  getDestinationNode,  JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSG ("destinationField", getDestinationField, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PS_END
+	{ "sourceNode",       SOURCE_NODE,       JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, sourceNode,       nullptr },
+	{ "sourceField",      SOURCE_FIELD,      JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, sourceField,      nullptr },
+	{ "destinationNode",  DESTINATION_NODE,  JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, destinationNode,  nullptr },
+	{ "destinationField", DESTINATION_FIELD, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE, destinationField, nullptr },
+	{ 0 }
 
 };
 
@@ -94,36 +87,35 @@ jsX3DRoute::init (JSContext* const cx, JSObject* const global, JSObject* const p
 	return proto;
 }
 
-JS::Value
-jsX3DRoute::create (JSContext* const cx, const RoutePtr & route)
-throw (std::invalid_argument)
+JSBool
+jsX3DRoute::create (JSContext* const cx, const RoutePtr & route, jsval* const vp)
 {
 	const auto result = JS_NewObject (cx, &static_class, nullptr, nullptr);
 
 	if (result == nullptr)
-		throw std::invalid_argument ("out of memory");
+		return ThrowException (cx, "out of memory");
 
 	const auto field = new X3D::RoutePtr (route);
 
-	JS_SetPrivate (result, field);
+	JS_SetPrivate (cx, result, field);
 
 	getContext (cx) -> addObject (field, result);
 
-	return JS::ObjectValue (*result);
+	*vp = OBJECT_TO_JSVAL (result);
+
+	return true;
 }
 
 // Properties
 
 JSBool
-jsX3DRoute::getSourceNode (JSContext* cx, unsigned argc, JS::Value* vp)
+jsX3DRoute::sourceNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto   args  = JS::CallArgsFromVp (argc, vp);
-		const auto & route = *getThis <jsX3DRoute> (cx, args);
+		const auto & route = *getThis <jsX3DRoute> (cx, obj);
 
-		args .rval () .set (jsSFNode::create (cx, new SFNode (route -> getSourceNode ())));
-		return true;
+		return jsSFNode::create (cx, new SFNode (route -> getSourceNode ()), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -132,15 +124,13 @@ jsX3DRoute::getSourceNode (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsX3DRoute::getSourceField (JSContext* cx, unsigned argc, JS::Value* vp)
+jsX3DRoute::sourceField (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto   args  = JS::CallArgsFromVp (argc, vp);
-		const auto & route = *getThis <jsX3DRoute> (cx, args);
+		const auto & route = *getThis <jsX3DRoute> (cx, obj);
 
-		args .rval () .set (StringValue (cx, route -> getSourceField ()));
-		return true;
+		return JS_NewStringValue (cx, route -> getSourceField (), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -149,15 +139,13 @@ jsX3DRoute::getSourceField (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsX3DRoute::getDestinationNode (JSContext* cx, unsigned argc, JS::Value* vp)
+jsX3DRoute::destinationNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto   args  = JS::CallArgsFromVp (argc, vp);
-		const auto & route = *getThis <jsX3DRoute> (cx, args);
+		const auto & route = *getThis <jsX3DRoute> (cx, obj);
 
-		args .rval () .set (jsSFNode::create (cx, new SFNode (route -> getDestinationNode ())));
-		return true;
+		return jsSFNode::create (cx, new SFNode (route -> getDestinationNode ()), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -166,15 +154,13 @@ jsX3DRoute::getDestinationNode (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JSBool
-jsX3DRoute::getDestinationField (JSContext* cx, unsigned argc, JS::Value* vp)
+jsX3DRoute::destinationField (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto   args  = JS::CallArgsFromVp (argc, vp);
-		const auto & route = *getThis <jsX3DRoute> (cx, args);
+		const auto & route = *getThis <jsX3DRoute> (cx, obj);
 
-		args .rval () .set (StringValue (cx, route -> getDestinationField ()));
-		return true;
+		return JS_NewStringValue (cx, route -> getDestinationField (), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -183,12 +169,12 @@ jsX3DRoute::getDestinationField (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 void
-jsX3DRoute::finalize (JSFreeOp* fop, JSObject* obj)
+jsX3DRoute::finalize (JSContext* cx, JSObject* obj)
 {
-	const auto route = getObject <X3D::RoutePtr*> (obj);
+	const auto route = getObject <X3D::RoutePtr*> (cx, obj);
 
 	if (route)
-		getContext (fop -> runtime ()) -> removeObject (route);
+		getContext (cx) -> removeObject (route);
 }
 
 } // MozillaSpiderMonkey

@@ -122,7 +122,7 @@ X3DJavaScriptContext::setError (const std::string & message, const std::string &
 	// Pretty print error.
 
 	getBrowser () -> print ('\n',
-	                        "#   JavaScript Error at line ", lineNumber, (startColumn >= 0 ? ':' + basic::to_string (startColumn) : ""), ":\n",
+	                        "#   JavaScript RuntimeError at line ", lineNumber, (startColumn >= 0 ? ':' + basic::to_string (startColumn) : ""), ":\n",
 	                        "#   in Script '", script -> getName (), "' url '", filename, "',\n",
 	                        "#   world url is '", script -> getExecutionContext () -> getWorldURL (), "'.\n",
 	                        "#   ", '\n',

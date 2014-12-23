@@ -56,11 +56,11 @@
 #include "../../Thread/SceneLoader.h"
 
 #include "jsGlobals.h"
-//#include "jsX3DConstants.h"
+#include "jsX3DConstants.h"
 
-//#include "jsBrowser.h"
-//#include "jsX3DExecutionContext.h"
-//#include "jsX3DScene.h"
+#include "jsBrowser.h"
+#include "jsX3DExecutionContext.h"
+#include "jsX3DScene.h"
 
 #include "jsComponentInfo.h"
 #include "jsProfileInfo.h"
@@ -69,17 +69,16 @@
 #include "jsX3DProtoDeclaration.h"
 #include "jsX3DRoute.h"
 
-//#include "jsComponentInfoArray.h"
-//#include "jsExternProtoDeclarationArray.h"
-//#include "jsFieldDefinitionArray.h"
-//#include "jsProfileInfoArray.h"
-//#include "jsProtoDeclarationArray.h"
-//#include "jsRouteArray.h"
+#include "jsComponentInfoArray.h"
+#include "jsExternProtoDeclarationArray.h"
+#include "jsFieldDefinitionArray.h"
+#include "jsProfileInfoArray.h"
+#include "jsProtoDeclarationArray.h"
+#include "jsRouteArray.h"
 
 #include "jsFields.h"
 
 #include "jsString.h"
-#include "jsError.h"
 #include "jsfield.h"
 
 #include <cassert>
@@ -90,23 +89,21 @@ namespace MozillaSpiderMonkey {
 
 // mutex test: http://www.web3d.org/x3d/content/examples/Basic/StudentProjects/DeadReckoningComparisons.x3d
 
-static size_t count = 0;
-
 const ComponentType jsContext::component      = ComponentType::TITANIA;
 const std::string   jsContext::typeName       = "jsContext";
-const std::string   jsContext::containerField = "context";
+const std::string   jsContext::containerField = "cx";
 
 JSClass jsContext::globalClass = {
 	"global",
 	JSCLASS_GLOBAL_FLAGS,
 	JS_PropertyStub,
-	JS_DeletePropertyStub,
+	JS_PropertyStub,
 	JS_PropertyStub,
 	JS_StrictPropertyStub,
 	JS_EnumerateStub,
 	JS_ResolveStub,
 	JS_ConvertStub,
-	nullptr,
+	JS_FinalizeStub,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -114,41 +111,41 @@ JSClass jsContext::globalClass = {
 jsContext::jsContext (Script* const script, const std::string & ecmascript, const basic::uri & uri) :
 	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
 	X3DJavaScriptContext (script, ecmascript),
-	                  rt (),
-	                  cx (),
+	                  rt (nullptr),
+	                  cx (nullptr),
 	              global (nullptr),
 	            worldURL ({ uri }),
+	        initializeFn (),
+	     prepareEventsFn (),
+	   eventsProcessedFn (),
+	          shutdownFn (),
 	          	  protos (size_t (ObjectType::SIZE)),
 	              fields (),
+	           functions (),
 	             objects (),
 	               files (),
 	              future (),
 	               frame (0)
 {
-	rt .reset (JS_NewRuntime (64 * 1024 * 1024, JS_USE_HELPER_THREADS)); // 64 MB runtime memory
+	rt = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 
-	if (not rt)
+	if (rt == nullptr)
 		throw std::runtime_error ("Couldn't create JavaScript runtime.");
 
-	cx .reset (JS_NewContext (rt .get (), 8192));
+	cx = JS_NewContext (rt, 8192);
 
-	if (not cx)
+	if (cx == nullptr)
 		throw std::runtime_error ("Couldn't create JavaScript context.");
 
-	const auto options = JS::CompartmentOptions () .setVersion (JSVERSION_LATEST);
+	global = JS_NewCompartmentAndGlobalObject (cx, &globalClass, nullptr);
 
-	global = JS_NewGlobalObject (cx .get (), &globalClass, nullptr, options);
-
-	if (not global)
+	if (global == nullptr)
 		throw std::runtime_error ("Couldn't create JavaScript global object.");
-	
-	__LOG__ << this << " : " << ++ count << std::endl;
 
-	JSAutoCompartment ac (cx .get (), global);
-
-	JS_SetRuntimeThread (rt .get ());
-	JS_SetOptions (cx .get (), JSOPTION_VAROBJFIX | JSOPTION_TYPE_INFERENCE | JSOPTION_COMPILE_N_GO);
-	JS_SetErrorReporter (cx .get (), error);
+	JS_SetCStringsAreUTF8 ();
+	JS_SetVersion (cx, JSVERSION_LATEST);
+	JS_SetOptions (cx, JSOPTION_ATLINE | JSOPTION_VAROBJFIX | JSOPTION_JIT | JSOPTION_METHODJIT);
+	JS_SetErrorReporter (cx, error);
 
 	addClasses ();
 	addUserDefinedFields ();
@@ -160,87 +157,78 @@ jsContext::create (X3DExecutionContext* const) const
 	return new jsContext (getScriptNode (), getECMAScript (), worldURL .front ());
 }
 
-std::string
-jsContext::getWorldUrl () const
-{
-	return worldURL .front () == getExecutionContext () -> getWorldURL () ? "<inline>" : worldURL .front ();
-}
-
 void
 jsContext::addClasses ()
 throw (std::runtime_error)
 {
-__LOG__ << this << std::endl;
-
 	// Populate the global object with the standard globals, like Object and Array.
-	if (not JS_InitStandardClasses (cx .get (), global))
+	if (not JS_InitStandardClasses (cx, global))
 		throw std::runtime_error ("Couldn't create JavaScript standard classes.");
 
-	JS_SetRuntimePrivate (rt .get (), this);
-	JS_SetContextPrivate (cx .get (), this);
+	JS_SetContextPrivate (cx, this);
 
-	jsGlobals::init (cx .get (), global);
+	jsGlobals::init (cx, global);
 
-//	addProto (jsX3DConstants::getId (), jsX3DConstants::init (cx .get (), global, nullptr));
-//	addProto (jsBrowser::getId (),      jsBrowser::init      (cx .get (), global, nullptr));
+	addProto (jsX3DConstants::getId (), jsX3DConstants::init (cx, global, nullptr));
+	addProto (jsBrowser::getId (),      jsBrowser::init      (cx, global, nullptr));
 
-//	addProto (jsX3DExecutionContext::getId (), jsX3DExecutionContext::init (cx .get (), global, nullptr));
-//	addProto (jsX3DScene::getId (),            jsX3DScene::init            (cx .get (), global, getProto (jsX3DExecutionContext::getId ())));
+	addProto (jsX3DExecutionContext::getId (), jsX3DExecutionContext::init (cx, global, nullptr));
+	addProto (jsX3DScene::getId (),            jsX3DScene::init            (cx, global, getProto (jsX3DExecutionContext::getId ())));
 
-	addProto (jsComponentInfo::getId (),             jsComponentInfo::init             (cx .get (), global, nullptr));
-	addProto (jsProfileInfo::getId (),               jsProfileInfo::init               (cx .get (), global, nullptr));
-	addProto (jsX3DFieldDefinition::getId (),        jsX3DFieldDefinition::init        (cx .get (), global, nullptr));
-	addProto (jsX3DExternProtoDeclaration::getId (), jsX3DExternProtoDeclaration::init (cx .get (), global, nullptr));
-	addProto (jsX3DProtoDeclaration::getId (),       jsX3DProtoDeclaration::init       (cx .get (), global, nullptr));
-	addProto (jsX3DRoute::getId (),                  jsX3DRoute::init                  (cx .get (), global, nullptr));
+	addProto (jsComponentInfo::getId (),             jsComponentInfo::init             (cx, global, nullptr));
+	addProto (jsProfileInfo::getId (),               jsProfileInfo::init               (cx, global, nullptr));
+	addProto (jsX3DFieldDefinition::getId (),        jsX3DFieldDefinition::init        (cx, global, nullptr));
+	addProto (jsX3DExternProtoDeclaration::getId (), jsX3DExternProtoDeclaration::init (cx, global, nullptr));
+	addProto (jsX3DProtoDeclaration::getId (),       jsX3DProtoDeclaration::init       (cx, global, nullptr));
+	addProto (jsX3DRoute::getId (),                  jsX3DRoute::init                  (cx, global, nullptr));
 
-//	addProto (jsFieldDefinitionArray::getId (),        jsFieldDefinitionArray::init        (cx .get (), global, nullptr));
-//	addProto (jsComponentInfoArray::getId (),          jsComponentInfoArray::init          (cx .get (), global, nullptr));
-//	addProto (jsProfileInfoArray::getId (),            jsProfileInfoArray::init            (cx .get (), global, nullptr));
-//	addProto (jsExternProtoDeclarationArray::getId (), jsExternProtoDeclarationArray::init (cx .get (), global, nullptr));
-//	addProto (jsProtoDeclarationArray::getId (),       jsProtoDeclarationArray::init       (cx .get (), global, nullptr));
-//	addProto (jsRouteArray::getId (),                  jsRouteArray::init                  (cx .get (), global, nullptr));
+	addProto (jsFieldDefinitionArray::getId (),        jsFieldDefinitionArray::init        (cx, global, nullptr));
+	addProto (jsComponentInfoArray::getId (),          jsComponentInfoArray::init          (cx, global, nullptr));
+	addProto (jsProfileInfoArray::getId (),            jsProfileInfoArray::init            (cx, global, nullptr));
+	addProto (jsExternProtoDeclarationArray::getId (), jsExternProtoDeclarationArray::init (cx, global, nullptr));
+	addProto (jsProtoDeclarationArray::getId (),       jsProtoDeclarationArray::init       (cx, global, nullptr));
+	addProto (jsRouteArray::getId (),                  jsRouteArray::init                  (cx, global, nullptr));
 
-	addProto (jsX3DField::getId (),    jsX3DField::init    (cx .get (), global, nullptr));
+	addProto (jsX3DField::getId (),    jsX3DField::init    (cx, global, nullptr));
 
-	addProto (jsSFColor::getId (),     jsSFColor::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsSFColorRGBA::getId (), jsSFColorRGBA::init (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsSFImage::getId (),     jsSFImage::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsSFMatrix3d::getId (),  jsSFMatrix3d::init  (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsSFMatrix3f::getId (),  jsSFMatrix3f::init  (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsSFMatrix4d::getId (),  jsSFMatrix4d::init  (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsSFMatrix4f::getId (),  jsSFMatrix4f::init  (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsSFNode::getId (),      jsSFNode::init      (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsSFRotation::getId (),  jsSFRotation::init  (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsSFVec2d::getId (),     jsSFVec2d::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsSFVec2f::getId (),     jsSFVec2f::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsSFVec3d::getId (),     jsSFVec3d::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsSFVec3f::getId (),     jsSFVec3f::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsSFVec4d::getId (),     jsSFVec4d::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsSFVec4f::getId (),     jsSFVec4f::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsVrmlMatrix::getId (),  jsVrmlMatrix::init  (cx .get (), global, getProto (jsX3DField::getId ())));
+	addProto (jsSFColor::getId (),     jsSFColor::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFColorRGBA::getId (), jsSFColorRGBA::init (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFImage::getId (),     jsSFImage::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFMatrix3d::getId (),  jsSFMatrix3d::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFMatrix3f::getId (),  jsSFMatrix3f::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFMatrix4d::getId (),  jsSFMatrix4d::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFMatrix4f::getId (),  jsSFMatrix4f::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFNode::getId (),      jsSFNode::init      (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFRotation::getId (),  jsSFRotation::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFVec2d::getId (),     jsSFVec2d::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFVec2f::getId (),     jsSFVec2f::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFVec3d::getId (),     jsSFVec3d::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFVec3f::getId (),     jsSFVec3f::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFVec4d::getId (),     jsSFVec4d::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsSFVec4f::getId (),     jsSFVec4f::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsVrmlMatrix::getId (),  jsVrmlMatrix::init  (cx, global, getProto (jsX3DField::getId ())));
 
-	addProto (jsMFBool::getId (),      jsMFBool::init      (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFColor::getId (),     jsMFColor::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFColorRGBA::getId (), jsMFColorRGBA::init (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFDouble::getId (),    jsMFDouble::init    (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFFloat::getId (),     jsMFFloat::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFImage::getId (),     jsMFImage::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFInt32::getId (),     jsMFInt32::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFMatrix3d::getId (),  jsMFMatrix3d::init  (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFMatrix3f::getId (),  jsMFMatrix3f::init  (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFMatrix4d::getId (),  jsMFMatrix4d::init  (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFMatrix4f::getId (),  jsMFMatrix4f::init  (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFNode::getId (),      jsMFNode::init      (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFRotation::getId (),  jsMFRotation::init  (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFString::getId (),    jsMFString::init    (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFTime::getId (),      jsMFTime::init      (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFVec2d::getId (),     jsMFVec2d::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFVec2f::getId (),     jsMFVec2f::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFVec3d::getId (),     jsMFVec3d::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFVec3f::getId (),     jsMFVec3f::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFVec4d::getId (),     jsMFVec4d::init     (cx .get (), global, getProto (jsX3DField::getId ())));
-	addProto (jsMFVec4f::getId (),     jsMFVec4f::init     (cx .get (), global, getProto (jsX3DField::getId ())));
+	addProto (jsMFBool::getId (),      jsMFBool::init      (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFColor::getId (),     jsMFColor::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFColorRGBA::getId (), jsMFColorRGBA::init (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFDouble::getId (),    jsMFDouble::init    (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFFloat::getId (),     jsMFFloat::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFImage::getId (),     jsMFImage::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFInt32::getId (),     jsMFInt32::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFMatrix3d::getId (),  jsMFMatrix3d::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFMatrix3f::getId (),  jsMFMatrix3f::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFMatrix4d::getId (),  jsMFMatrix4d::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFMatrix4f::getId (),  jsMFMatrix4f::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFNode::getId (),      jsMFNode::init      (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFRotation::getId (),  jsMFRotation::init  (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFString::getId (),    jsMFString::init    (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFTime::getId (),      jsMFTime::init      (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFVec2d::getId (),     jsMFVec2d::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFVec2f::getId (),     jsMFVec2f::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFVec3d::getId (),     jsMFVec3d::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFVec3f::getId (),     jsMFVec3f::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFVec4d::getId (),     jsMFVec4d::init     (cx, global, getProto (jsX3DField::getId ())));
+	addProto (jsMFVec4f::getId (),     jsMFVec4f::init     (cx, global, getProto (jsX3DField::getId ())));
 }
 
 void
@@ -248,21 +236,7 @@ jsContext::addUserDefinedFields ()
 {
 	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 	{
-		switch (field -> getType ())
-		{
-			case X3DConstants::SFBool:
-			case X3DConstants::SFDouble:
-			case X3DConstants::SFFloat:
-			case X3DConstants::SFInt32:
-			case X3DConstants::SFString:
-			case X3DConstants::SFTime:
-				break;
-			default:
-			{
-				fields .emplace (field -> getName (), RootedValue (cx .get (), getValue (cx .get (), field)));
-				break;
-			}
-		}
+		addUserDefinedField (field);
 
 		switch (field -> getAccessType ())
 		{
@@ -285,6 +259,34 @@ jsContext::addUserDefinedFields ()
 }
 
 void
+jsContext::addUserDefinedField (X3DFieldDefinition* const field)
+{
+	switch (field -> getType ())
+	{
+		case X3DConstants::SFBool:
+		case X3DConstants::SFDouble:
+		case X3DConstants::SFFloat:
+		case X3DConstants::SFInt32:
+		case X3DConstants::SFString:
+		case X3DConstants::SFTime:
+			break;
+		default:
+		{
+			jsval vp;
+
+			if (getValue (cx, field, &vp))
+			{
+				auto & value = fields .emplace (field -> getName (), vp) .first -> second;
+
+				JS_AddValueRoot (cx, &value);
+			}
+
+			break;
+		}
+	}
+}
+
+void
 jsContext::defineProperty (JSObject* const obj,
                            X3DFieldDefinition* const field,
                            const std::string & name,
@@ -299,10 +301,10 @@ jsContext::defineProperty (JSObject* const obj,
 		case X3DConstants::SFString:
 		case X3DConstants::SFTime:
 		{
-			JS_DefineProperty (cx .get (),
+			JS_DefineProperty (cx,
 			                   obj,
 			                   name .c_str (),
-			                   JS::UndefinedValue (),
+			                   JSVAL_VOID,
 			                   getBuildInProperty,
 			                   setProperty,
 			                   JSPROP_PERMANENT | JSPROP_SHARED | attrs);
@@ -310,10 +312,10 @@ jsContext::defineProperty (JSObject* const obj,
 		}
 		default:
 		{
-			JS_DefineProperty (cx .get (),
+			JS_DefineProperty (cx,
 			                   obj,
 			                   name .c_str (),
-			                   JS::UndefinedValue (),
+			                   JSVAL_VOID,
 			                   getProperty,
 			                   setProperty,
 			                   JSPROP_PERMANENT | JSPROP_SHARED | attrs);
@@ -323,65 +325,57 @@ jsContext::defineProperty (JSObject* const obj,
 }
 
 JSBool
-jsContext::setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JSBool strict, JS::MutableHandleValue vp)
+jsContext::setProperty (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	const auto name = to_string (cx, id);
-
 	try
 	{
 		const auto script = getContext (cx) -> getScriptNode ();
-		const auto field  = script -> getField (name);
+		const auto field  = script -> getField (to_string (cx, id));
 
-		setValue (cx, field, vp);
-		return true;
+		return setValue (cx, field, vp);
 	}
-	catch (const std::exception & error)
+	catch (std::exception &)
 	{
-		return ThrowException (cx, "Couldn't assing value to user-defined field '%s': %s.", name .c_str (), error .what ());
+		return ThrowException (cx, "user-defined field not found");
 	}
 }
 
 JSBool
-jsContext::getBuildInProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+jsContext::getBuildInProperty (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto name = to_string (cx, id);
-
 	try
 	{
 		const auto script = getContext (cx) -> getScriptNode ();
-		const auto field  = script -> getField (name);
+		const auto field  = script -> getField (to_string (cx, id));
 
-		vp .set (getValue (cx, field));
-		return true;
+		return getValue (cx, field, vp);
 	}
-	catch (const std::exception & error)
+	catch (std::exception &)
 	{
-		return ThrowException (cx, "Couldn't retrieve value of user-defined field '%s': %s.", name .c_str (), error .what ());
+		return ThrowException (cx, "user-defined field not found");
 	}
 }
 
 JSBool
-jsContext::getProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+jsContext::getProperty (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto name = to_string (cx, id);
-
 	try
 	{
-		vp .set (getContext (cx) -> fields .at (name));
+		*vp = getContext (cx) -> fields .at (to_string (cx, id));
 		return true;
 	}
-	catch (const std::exception & error)
+	catch (std::exception &)
 	{
-		return ThrowException (cx, "Couldn't retrieve value of user-defined field '%s': %s.", name .c_str (), error .what ());
+		return ThrowException (cx, "user-defined field not found");
 	}
 }
 
 void
 jsContext::addObject (X3DFieldDefinition* const field, JSObject* const object)
-throw (std::invalid_argument)
+throw (Error <INVALID_FIELD>)
 {
 	if (not objects .emplace (field, object) .second)
-		throw std::invalid_argument ("addObject");
+		throw Error <INVALID_FIELD> ("Object already exists in jsContext.");
 
 	field -> addParent (this);
 }
@@ -389,8 +383,6 @@ throw (std::invalid_argument)
 void
 jsContext::removeObject (X3DFieldDefinition* const field)
 {
-	__LOG__ << field -> getName () << " : " << field -> getTypeName () << std::endl;
-
 	if (objects .erase (field))
 		field -> removeParent (this);
 	else
@@ -398,7 +390,7 @@ jsContext::removeObject (X3DFieldDefinition* const field)
 }
 
 JSBool
-jsContext::require (const basic::uri & uri, JS::Value & rval)
+jsContext::require (const basic::uri & uri, jsval & rval)
 {
 	try
 	{
@@ -428,56 +420,71 @@ jsContext::require (const basic::uri & uri, JS::Value & rval)
 		// Cache result.
 
 		if (success)
-			files .emplace (resolvedURL, RootedValue (cx .get (), rval));
+		{
+			auto & value = files .emplace (resolvedURL, rval) .first -> second;
 
-		return success;
+			JS_AddValueRoot (cx, &value);
+
+			return true;
+		}
 	}
 	catch (const X3DError &)
-	{
-		return false;
-	}
+	{ }
+
+	return false;
 }
 
-bool
+JSBool
 jsContext::evaluate (const std::string & string, const std::string & filename)
 {
-	JS::Value rval;
+	jsval rval;
 
 	return evaluate (string, filename, rval);
 }
 
-bool
-jsContext::evaluate (const std::string & string, const std::string & filename, JS::Value & rval)
+JSBool
+jsContext::evaluate (const std::string & string, const std::string & filename, jsval & rval)
 {
-	const auto options = JS::CompileOptions (cx .get (), JSVERSION_LATEST) .setUTF8 (true);
-	const auto script  = JS::Compile (cx .get (), JS::RootedObject (rt .get (), global), options, string .c_str (), string .length ());
+	glong   items_read    = 0;
+	glong   items_written = 0;
+	GError* error         = nullptr;
+
+	gunichar2* utf16_string = g_utf8_to_utf16 (string .c_str (), string .length (), &items_read, &items_written, &error);
+
+	if (error)
+	{
+		JS_ReportError (cx, "jsContext::evaluate: %s: %d: %s.", g_quark_to_string (error -> domain), error -> code, error -> message);
+		return false;
+	}
+
+	const auto script = JS_CompileUCScript (cx, global, utf16_string, items_written, filename .empty () ? nullptr : filename .c_str (), 1);
+	bool       retval = false;
 
 	if (script)
-		return JS_ExecuteScript (cx .get (), global, script, &rval);
+		retval = JS_ExecuteScript (cx, global, script, &rval);
 
-	return false;
+	g_free (utf16_string);
+
+	return retval;
 }
 
 void
 jsContext::initialize ()
 {
 	X3DJavaScriptContext::initialize ();
-	
-	JSAutoCompartment ac (cx .get (), global);
 
-	if (not evaluate (getECMAScript (), getWorldUrl ()))
+	if (not evaluate (getECMAScript (), worldURL .front () == getExecutionContext () -> getWorldURL () ? "" : worldURL .front () .str ()))
 		throw std::invalid_argument ("Couldn't evaluate script.");
+
+	setEventHandler ();
 
 	getExecutionContext () -> isLive () .addInterest (this, &jsContext::set_live);
 	isLive () .addInterest (this, &jsContext::set_live);
 
 	set_live ();
 
-	call ("initialize");
-
-	shutdown () .addInterest (this, &jsContext::set_shutdown);
-
-	finish ();
+	if (not JSVAL_IS_VOID (initializeFn))
+		callFunction (initializeFn);
 }
 
 void
@@ -501,23 +508,48 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
+jsContext::setEventHandler ()
+{
+	initializeFn      = getFunction ("initialize");
+	prepareEventsFn   = getFunction ("prepareEvents");
+	eventsProcessedFn = getFunction ("eventsProcessed");
+	shutdownFn        = getFunction ("shutdown");
+
+	if (not JSVAL_IS_VOID (shutdownFn))
+		shutdown () .addInterest (this, &jsContext::set_shutdown);
+
+	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
+	{
+		switch (field -> getAccessType ())
+		{
+			case inputOnly   :
+			case inputOutput :
+				{
+					const auto function = field -> getAccessType () == inputOnly
+					                      ? getFunction (field -> getName ())
+												 : getFunction ("set_" + field -> getName ());
+
+					if (not JSVAL_IS_VOID (function))
+						functions .emplace (field, function);
+
+					break;
+				}
+			default :
+				break;
+		}
+	}
+}
+
+void
 jsContext::set_live ()
 {
 	if (getExecutionContext () -> isLive () and isLive ())
 	{
-		try
-		{
-			getBrowser () -> prepareEvents () .addInterest (this, &jsContext::prepareEvents, RootedValue (cx .get (), getFunction ("prepareEvents")));
-		}
-		catch (const std::invalid_argument &)
-		{ }
+		if (not JSVAL_IS_VOID (prepareEventsFn))
+			getBrowser () -> prepareEvents () .addInterest (this, &jsContext::prepareEvents);
 
-		try
-		{
-			getScriptNode () -> addInterest (this, &jsContext::eventsProcessed, RootedValue (cx .get (), getFunction ("eventsProcessed")));
-		}
-		catch (const std::invalid_argument &)
-		{ }
+		if (not JSVAL_IS_VOID (eventsProcessedFn))
+			getScriptNode () -> addInterest (this, &jsContext::eventsProcessed);
 
 		getScriptNode () -> addInterest (this, &jsContext::finish);
 
@@ -526,24 +558,10 @@ jsContext::set_live ()
 			switch (field -> getAccessType ())
 			{
 				case inputOnly:
-				{
-					try
-					{
-						field -> addInterest (this, &jsContext::set_field, field, RootedValue (cx .get (), getFunction (field -> getName ())));
-					}
-					catch (const std::invalid_argument &)
-					{ }
-
-					break;
-				}
 				case inputOutput:
 				{
-					try
-					{
-						field -> addInterest (this, &jsContext::set_field, field, RootedValue (cx .get (), getFunction ("set_" + field -> getName ())));
-					}
-					catch (const std::invalid_argument &)
-					{ }
+					if (functions .count (field))
+						field -> addInterest (this, &jsContext::set_field, field, std::ref (functions [field]));
 
 					break;
 				}
@@ -554,8 +572,12 @@ jsContext::set_live ()
 	}
 	else
 	{
-		getBrowser () -> prepareEvents () .removeInterest (this, &jsContext::prepareEvents);
-		getScriptNode () -> removeInterest (this, &jsContext::eventsProcessed);
+		if (not JSVAL_IS_VOID (prepareEventsFn))
+			getBrowser () -> prepareEvents () .removeInterest (this, &jsContext::prepareEvents);
+
+		if (not JSVAL_IS_VOID (eventsProcessedFn))
+			getScriptNode () -> removeInterest (this, &jsContext::eventsProcessed);
+
 		getScriptNode () -> removeInterest (this, &jsContext::finish);
 
 		for (const auto & field : getScriptNode () -> getUserDefinedFields ())
@@ -564,10 +586,12 @@ jsContext::set_live ()
 			{
 				case inputOnly   :
 				case inputOutput :
-				{
-					field -> removeInterest (this, &jsContext::set_field);
-					break;
-				}
+					{
+						if (functions .count (field))
+							field -> removeInterest (this, &jsContext::set_field);
+
+						break;
+					}
 				default:
 					break;
 			}
@@ -576,111 +600,90 @@ jsContext::set_live ()
 }
 
 void
-jsContext::prepareEvents (const JS::Value & value)
+jsContext::prepareEvents ()
 {
-	JSAutoCompartment ac (cx .get (), global);
-
-	call (value);
+	callFunction (prepareEventsFn);
 }
 
 void
-jsContext::set_field (X3DFieldDefinition* const field, const JS::Value & function)
+jsContext::set_field (X3DFieldDefinition* const field, const jsval & function)
 {
-__LOG__ << this << " : " << field -> getName () << std::endl;
+	field -> isTainted (cx);
 
-	field -> isTainted (true);
+	jsval argv [2];
 
-	JSAutoCompartment ac (cx .get (), global);
+	getValue (cx, field, &argv [0]);
+	JS_NewNumberValue (cx, getCurrentTime (), &argv [1]);
 
-	JS::Value argv [2] = {
-		getValue (cx .get (), field),
-		JS::DoubleValue (getCurrentTime ())
-	};
-
-	JS::Value rval;
-	JS_CallFunctionValue (cx .get (), global, function, 2, argv, &rval);
+	jsval rval;
+	JS_CallFunctionValue (cx, global, function, 2, argv, &rval);
 
 	field -> isTainted (false);
 }
 
 void
-jsContext::eventsProcessed (const JS::Value & value)
+jsContext::eventsProcessed ()
 {
-	JSAutoCompartment ac (cx .get (), global);
-
-	call (value);
+	callFunction (eventsProcessedFn);
 }
 
 void
 jsContext::set_shutdown ()
 {
-	JSAutoCompartment ac (cx .get (), global);
-
-	call ("shutdown");
+	callFunction (shutdownFn);
 }
 
 void
 jsContext::finish ()
 {
-__LOG__ << this << std::endl;
+	static constexpr double GC_INTERVAL       = 12;  // in seconds
+	static constexpr double TARGET_FRAME_RATE = 60;  // in frames per second
+	static constexpr size_t MAX_OBJECTS       = 512; // number of cached objects
 
-	JS_SetRuntimeThread (rt .get ());
-	JS_GC (rt .get ());
+	const auto variation   = TARGET_FRAME_RATE * random1 ();
+	const auto targetFrame = (GC_INTERVAL * 60 * TARGET_FRAME_RATE) / getBrowser () -> getCurrentFrameRate () + variation;
 
-//	static constexpr double GC_INTERVAL       = 12;  // in seconds
-//	static constexpr double TARGET_FRAME_RATE = 60;  // in frames per second
-//	static constexpr size_t MAX_OBJECTS       = 512; // number of cached objects
-//
-//	const auto variation   = TARGET_FRAME_RATE * random1 ();
-//	const auto targetFrame = (GC_INTERVAL * 60 * TARGET_FRAME_RATE) / getBrowser () -> getCurrentFrameRate () + variation;
-//
-//	if (++ frame < targetFrame and objects .size () < MAX_OBJECTS)
-//		return;
-//
-//	frame = 0;
-//
-//	__LOG__ << this << " : " << objects .size () << std::endl;
-//
-//	JS_GC (rt .get ());
+	if (++ frame < targetFrame and objects .size () < MAX_OBJECTS)
+		return;
+
+	frame = 0;
+
+	__LOG__ << this << " : " << objects .size () << std::endl;
+
+	JS_GC (cx);
 }
 
-JS::Value
+jsval
 jsContext::getFunction (const std::string & name) const
-throw (std::invalid_argument)
 {
-	JS::Value value;
+	jsval     function = JSVAL_VOID;
+	JSObject* obj      = nullptr;
 
-	if (JS_GetProperty (cx .get (), global, name .c_str (), &value))
-	{
-		if (value .isObjectOrNull ())
-		{
-			const auto obj = value .toObjectOrNull ();
+	const auto result = JS_GetMethod (cx, global, name .c_str (), &obj, &function);
 
-			if (obj and JS_ObjectIsFunction (cx .get (), obj))
-				return value;
-		}
-	}
+	if (result)
+		return function;
 
-	throw std::invalid_argument ("getFunction");
+	return JSVAL_VOID;
 }
 
 void
-jsContext::call (const std::string & value)
+jsContext::callFunction (const std::string & name) const
 {
-	try
-	{
-		call (getFunction (value));
-	}
-	catch (const std::invalid_argument &)
-	{ }
+	jsval function = getFunction (name);
+
+	if (JSVAL_IS_VOID (function))
+		return;
+
+	callFunction (function);
 }
 
 void
-jsContext::call (const JS::Value & value)
+jsContext::callFunction (jsval function) const
 {
-	JS::Value rval;
+	jsval rval;
 
-	JS_CallFunctionValue (cx .get (), global, value, 0, nullptr, &rval);
+	JS_CallFunctionValue (cx, global, function, 0, nullptr, &rval);
 }
 
 void
@@ -698,28 +701,25 @@ jsContext::error (JSContext* cx, const char* message, JSErrorReport* report)
 void
 jsContext::dispose ()
 {
-	__LOG__ << this << " : " << -- count << std::endl;
-
-	X3DJavaScriptContext::dispose ();
-	
-	// Cleanup after base dispose!!!
-
 	if (future)
 	{
 		future -> dispose ();
 		future .reset (); // XXX: See Inline
 	}
 
-	JS_SetRuntimeThread (rt .get ());
+	for (auto & field : fields)
+		JS_RemoveValueRoot (cx, &field .second);
 
-	fields .clear ();
-	files  .clear ();
+	for (auto & file : files)
+		JS_RemoveValueRoot (cx, &file .second);
 
-	cx .reset ();
-	rt .reset ();
+	// Cleanup.
+	JS_DestroyContext (cx);
+	JS_DestroyRuntime (rt);
 
 	assert (objects .empty ());
 
+	X3DJavaScriptContext::dispose ();
 }
 
 jsContext::~jsContext ()

@@ -57,9 +57,8 @@ namespace titania {
 namespace X3D {
 namespace MozillaSpiderMonkey {
 
-JS::Value
-StringValue (JSContext* const cx, const std::string & string)
-throw (std::runtime_error)
+JSBool
+JS_NewStringValue (JSContext* const cx, const std::string & string, jsval* const vp)
 {
 	glong   items_read    = 0;
 	glong   items_written = 0;
@@ -68,16 +67,23 @@ throw (std::runtime_error)
 	gunichar2* utf16_string = g_utf8_to_utf16 (string .c_str (), string .length (), &items_read, &items_written, &error);
 
 	if (error)
-		throw std::runtime_error (error -> message);
+	{
+		__LOG__ << g_quark_to_string (error -> domain) << ": " << error -> code << ": " << error -> message << std::endl;
+		return false;
+	}
 
-	const auto jsstring = JS_NewUCStringCopyN (cx, utf16_string, items_written);
+	JSString* const result = JS_NewUCStringCopyN (cx, utf16_string, items_written);
 
 	g_free (utf16_string);
 
-	if (jsstring)
-		return JS::StringValue (jsstring);
+	if (result)
+	{
+		*vp = STRING_TO_JSVAL (result);
 
-	throw std::runtime_error ("out of memory");
+		return true;
+	}
+
+	return false;
 }
 
 std::string
@@ -85,16 +91,27 @@ to_string (JSContext* const cx, JSString* const jsstring)
 {
 	if (jsstring)
 	{
-		char* const chars = JS_EncodeStringToUTF8 (cx, jsstring);
+		size_t utf16_length = 0;
 
-		if (chars)
+		const jschar* utf16_string = JS_GetStringCharsAndLength (cx, jsstring, &utf16_length);
+
+		glong   items_read    = 0;
+		glong   items_written = 0;
+		GError* error         = nullptr;
+
+		char* const utf8_string = g_utf16_to_utf8 (utf16_string, utf16_length, &items_read, &items_written, &error);
+
+		if (error)
 		{
-			const std::string string (chars);
-
-			JS_free (cx, chars);
-
-			return string;
+			__LOG__ << g_quark_to_string (error -> domain) << ": " << error -> code << ": " << error -> message << std::endl;
+			return "";
 		}
+
+		std::string string (utf8_string, items_written);
+
+		g_free (utf8_string);
+
+		return string;
 	}
 
 	return "";
