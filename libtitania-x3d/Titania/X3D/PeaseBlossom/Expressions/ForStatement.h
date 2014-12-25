@@ -98,9 +98,9 @@ public:
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toPrimitive () const final override
+	getValue () const final override
 	{
-		for ( ; booleanExpression .toBoolean (); iterationExpression .toPrimitive ())
+		for ( ; booleanExpression .toBoolean (); iterationExpression .getValue ())
 			block -> run ();
 
 		return var ();

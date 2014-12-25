@@ -58,7 +58,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript return statement.
+ *  Class to represent a ECMAScript function expression.
  */
 class FunctionExpression :
 	public pbExpression
@@ -74,26 +74,18 @@ public:
 		        function (std::move (function))
 	{ construct (); }
 
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (pbExecutionContext* const executionContext) const final override
-	{ return make_var <FunctionExpression> (executionContext, ptr <Function> (function)); }
-
-	///  @name Common members
-
-	///  FunctionExpressions the type of the value. For this expression this is »RETURN«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return FUNCTION_EXPRESSION; }
+//	///  Creates a copy of this object.
+//	virtual
+//	var
+//	copy (pbExecutionContext* const executionContext) const final override
+//	{ return make_var <FunctionExpression> (executionContext, ptr <Function> (function)); }
 
 	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toValue () const final override
+	getValue () const final override
 	{ return function -> copy (executionContext .get ()); }
 
 

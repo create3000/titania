@@ -71,15 +71,7 @@ public:
 	///  @name Construction
 
 	///  Constructs new Function.
-	Function (pbExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
-		         pbFunction (name),
-		 pbExecutionContext (executionContext, executionContext -> getGlobalObject ()),
-		   formalParameters (std::move (formalParameters)),
-		           closures (),
-		     recursionDepth (0),
-		  localObjectsStack (),
-		defaultObjectsStack ()
-	{ construct (); }
+	Function (pbExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { });
 
 	///  Creates a new default object.
 	virtual
@@ -134,10 +126,6 @@ private:
 
 	///  @name Construction
 
-	///  Performs neccessary operations after construction.
-	void
-	construct ();
-
 	///  Recursively add all default objects to the list of closures.
 	void
 	addClosure (const ptr <pbExecutionContext> & executionContext);
@@ -159,13 +147,10 @@ private:
 
 	///  @name Member access
 
-	using DefaultObjectsStack = array <array <ptr <pbObject>>>;
-
-	std::vector <std::string>                                   formalParameters;
+	std::vector <std::string>                             formalParameters;
 	std::map <const pbExecutionContext*, ptr <pbObject>>  closures;
-	size_t                                                      recursionDepth;
-	array <ptr <pbObject>>                          localObjectsStack;
-	DefaultObjectsStack                                         defaultObjectsStack;
+	size_t                                                recursionDepth;
+	array <ptr <pbObject>>                                localObjectsStack;
 
 };
 

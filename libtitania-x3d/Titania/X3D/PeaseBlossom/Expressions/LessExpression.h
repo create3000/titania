@@ -86,21 +86,23 @@ public:
 	///  Converts its argument to a value of type Boolean.
 	virtual
 	var
-	toPrimitive () const final override
-	{ return evaluate (lhs, rhs); }
+	getValue () const final override
+	{
+		const auto px = lhs .toPrimitive (NUMBER);
+		const auto py = rhs .toPrimitive (NUMBER);
+
+		return evaluate (px, py);
+	}
 
 	///  Evaluates the expression.
 	static
 	bool
 	evaluate (const var & lhs, const var & rhs)
 	{
-		const var x = lhs .toPrimitive ();
-		const var y = rhs .toPrimitive ();
+		if (lhs .getType () == STRING and rhs .getType () == STRING)
+			return lhs .getString () < rhs .getString ();
 
-		if (x .getType () == STRING and y .getType () == STRING)
-			return x .getString () < y .getString ();
-
-		return x .toNumber () < y .toNumber ();
+		return lhs .toNumber () < rhs .toNumber ();
 	}
 
 private:

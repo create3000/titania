@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_OBJECT_H__
 
 #include "../Bits/pbConstants.h"
 #include "../Objects/pbBaseObject.h"
@@ -73,8 +73,8 @@ class pbFunction;
 ///  Type to represent a property descriptor.
 struct PropertyDescriptor
 {
-	var                    value;
-	PropertyFlagsType      flags;
+	var value;
+	PropertyFlagsType flags;
 	ptr <pbFunction> get;
 	ptr <pbFunction> set;
 
@@ -83,7 +83,7 @@ struct PropertyDescriptor
 };
 
 ///  Type to represent a property descriptor pointer.
-using PropertyDescriptorPtr = std::unique_ptr <PropertyDescriptor>;
+using PropertyDescriptorPtr = std::shared_ptr <PropertyDescriptor>;
 
 /**
  *  Class to represent a basic object.
@@ -114,16 +114,6 @@ public:
 	const std::string &
 	getTypeName () const override
 	{ return typeName; }
-
-	virtual
-	bool
-	isPrimitive () const final override
-	{ return true; }
-
-	virtual
-	var
-	toPrimitive () const final override
-	{ return const_cast <pbObject*> (this); }
 
 	///  @name Functions
 
@@ -198,19 +188,22 @@ public:
 	const var &
 	getProperty (const size_t id) const
 	throw (std::out_of_range)
-	{ return propertyDescriptors .at (id) -> value; }
+	{ return getPropertyDescriptor (id) -> value; }
 
 	///  Removes the property @a id from this object.
 	void
 	removeProperty (const size_t id)
-	noexcept (true)
-	{ propertyDescriptors .erase (id); }
+	noexcept (true);
 
 	///  Returns the property descriptor for a property id on this object.
 	const PropertyDescriptorPtr &
 	getPropertyDescriptor (const size_t id) const
-	throw (std::out_of_range)
-	{ return propertyDescriptors .at (id); }
+	throw (std::out_of_range);
+
+	virtual
+	var
+	getDefaultValue (const ValueType preferedType) const
+	throw (TypeError) final override;
 
 	///  @name Input/Output
 
@@ -238,21 +231,35 @@ protected:
 	///  @name Construction
 
 	///  Constructs new pbObject.
-	pbObject () :
-	   pbBaseObject (),
-		propertyDescriptors ()
-	{ }
+	pbObject ();
 
 
 private:
 
+	///  @name Cache opeartions
+
+	void
+	addCachedPropertyDescriptor (const size_t, const PropertyDescriptorPtr &)
+	noexcept (true);
+
+	void
+	removeCachedPropertyDescriptors (const size_t)
+	noexcept (true);
+
+	const PropertyDescriptorPtr &
+	getCachedPropertyDescriptor (const size_t) const
+	throw (std::out_of_range);
+
 	///  @name Static members
+
+	static constexpr size_t CACHE_SIZE = 32;
 
 	static const std::string typeName;
 
 	///  @name Members
 
-	std::unordered_map <size_t, PropertyDescriptorPtr> propertyDescriptors;
+	std::unordered_map <size_t, PropertyDescriptorPtr>                 propertyDescriptors;
+	std::vector <std::pair <size_t, PropertyDescriptorPtr>> cachedPropertyDescriptors;
 
 };
 

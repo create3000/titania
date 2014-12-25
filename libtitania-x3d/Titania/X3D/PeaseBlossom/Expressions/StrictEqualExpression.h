@@ -84,17 +84,19 @@ public:
 	///  Converts its argument to a value of type Boolean.
 	virtual
 	var
-	toPrimitive () const final override
-	{ return evaluate (lhs, rhs); }
+	getValue () const final override
+	{
+		const auto x = lhs .getValue ();
+		const auto y = rhs .getValue ();
+
+		return evaluate (x, y);
+	}
 
 	///  Evaluates the expression.
 	static
 	bool
-	evaluate (const var & lhs, const var & rhs)
+	evaluate (const var & x, const var & y)
 	{
-		const var x = lhs .toPrimitive ();
-		const var y = rhs .toPrimitive ();
-
 		if (x .getType () not_eq y .getType ())
 			return false;
 
@@ -106,16 +108,14 @@ public:
 			case NULL_OBJECT:
 				return true;
 
-			case INT32: // XXX
-			case UINT32:// XXX
-			case DOUBLE:
-				return x .toNumber () == y .toNumber ();
+			case NUMBER:
+				return x .getNumber () == y .getNumber ();
 
 			case STRING:
 				return x .getString () == y .getString ();
 
 			case BOOLEAN:
-				return x .toBoolean () == y .toBoolean ();
+				return x .getBoolean () == y .getBoolean ();
 
 			case OBJECT:
 				return x .getObject () == y .getObject ();

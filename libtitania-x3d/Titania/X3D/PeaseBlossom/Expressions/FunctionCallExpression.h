@@ -76,38 +76,38 @@ public:
 		     expressions (std::move (expressions))
 	{ construct (); }
 
-//	///  Creates a copy of this object.
-//	virtual
-//	var
-//	copy (pbExecutionContext* const executionContext) const final override
-//	{
-//		std::vector <var> expressions;
-//
-//		for (const auto & expression : this -> expressions)
-//			expressions .emplace_back (expression -> copy (executionContext));
-//
-//		return make_var <FunctionCallExpression> (executionContext, expression -> copy (executionContext), std::move (expressions));
-//	}
+	//	///  Creates a copy of this object.
+	//	virtual
+	//	var
+	//	copy (pbExecutionContext* const executionContext) const final override
+	//	{
+	//		std::vector <var> expressions;
+	//
+	//		for (const auto & expression : this -> expressions)
+	//			expressions .emplace_back (expression -> copy (executionContext));
+	//
+	//		return make_var <FunctionCallExpression> (executionContext, expression -> copy (executionContext), std::move (expressions));
+	//	}
 
 	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toPrimitive () const final override
+	getValue () const final override
 	{
-		const auto primitive = expression .toPrimitive ();
+		const auto primitive = expression .getValue ();
 
 		if (primitive .isObject ())
 		{
-			const auto function  = dynamic_cast <pbFunction*> (primitive .getObject () .get ());
+			const auto function = dynamic_cast <pbFunction*> (primitive .getObject () .get ());
 
 			if (function)
 			{
 				std::vector <var> arguments;
 
 				for (const auto & value : expressions)
-					arguments .emplace_back (value .toPrimitive ());
+					arguments .emplace_back (value .getValue ());
 
 				return function -> call (executionContext -> getGlobalObject (), arguments);
 			}
@@ -133,8 +133,8 @@ private:
 	///  @name Members
 
 	const ptr <pbExecutionContext> executionContext;
-	const var                            expression;
-	const std::vector <var>              expressions;
+	const var                      expression;
+	const std::vector <var>        expressions;
 
 };
 

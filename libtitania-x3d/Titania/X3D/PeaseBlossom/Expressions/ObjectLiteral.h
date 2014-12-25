@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_OBJECT_LITERAL_H__
 
 #include "../Expressions/pbExpression.h"
+#include "../Objects/Object.h"
 
 namespace titania {
 namespace pb {
@@ -84,7 +85,7 @@ public:
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toPrimitive () const final override
+	getValue () const final override
 	{ return object -> copy (executionContext .get ()); }
 
 

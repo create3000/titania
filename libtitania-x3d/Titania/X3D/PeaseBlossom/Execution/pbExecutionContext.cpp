@@ -60,26 +60,18 @@
 namespace titania {
 namespace pb {
 
-pbExecutionContext::pbExecutionContext (pbExecutionContext* const executionContext, const ptr <pbObject> & globalObject) :
+pbExecutionContext::pbExecutionContext (pbExecutionContext* const executionContext_, const ptr <pbObject> & globalObject_) :
 	             pbBlock (),
 	 pbInputStreamObject (),
 	              strict (false),
-	    executionContext (executionContext),
-	        globalObject (globalObject),
+	    executionContext (executionContext_),
+	        globalObject (globalObject_),
 	         localObject (),
-	      defaultObjects (),
 	           functions ()
-{
-	construct ();
-}
-
-void
-pbExecutionContext::construct ()
 {
 	addChildren (executionContext,
 	             globalObject,
-	             localObject,
-	             defaultObjects);
+	             localObject);
 }
 
 void
@@ -174,8 +166,7 @@ throw (SyntaxError,
 void
 pbExecutionContext::dispose ()
 {
-	functions      .clear ();
-	defaultObjects .clear ();
+	functions .clear ();
 
 	pbBlock::dispose ();
 }

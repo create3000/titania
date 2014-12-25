@@ -76,20 +76,20 @@ public:
 		      expression (std::move (expression))
 	{ construct (); }
 
-//	///  Creates a copy of this object.
-//	virtual
-//	var
-//	copy (pbExecutionContext* const executionContext) const final override
-//	{ return make_var <VariableDeclaration> (executionContext, std::string (identifier), expression -> copy (executionContext)); }
+	//	///  Creates a copy of this object.
+	//	virtual
+	//	var
+	//	copy (pbExecutionContext* const executionContext) const final override
+	//	{ return make_var <VariableDeclaration> (executionContext, std::string (identifier), expression -> copy (executionContext)); }
 
 	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toPrimitive () const final override
+	getValue () const final override
 	{
-		executionContext -> getLocalObject () -> updateProperty (id, expression .toPrimitive (), WRITABLE | ENUMERABLE | CONFIGURABLE);
+		executionContext -> getLocalObject () -> updateProperty (id, expression .getValue (), WRITABLE | ENUMERABLE | CONFIGURABLE);
 
 		return var ();
 	}
@@ -106,9 +106,9 @@ private:
 	///  @name Members
 
 	const ptr <pbExecutionContext> executionContext;
-	const std::string                    identifier;
-	const size_t                         id;
-	const var                            expression;
+	const std::string              identifier;
+	const size_t                   id;
+	const var                      expression;
 
 };
 

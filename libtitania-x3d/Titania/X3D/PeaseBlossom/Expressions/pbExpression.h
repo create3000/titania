@@ -75,9 +75,10 @@ public:
 	///  @name Conversion operations
 
 	virtual
-	bool
-	isPrimitive () const final override
-	{ return false; }
+	var
+	getDefaultValue (const ValueType preferedType) const
+	throw (TypeError) final override
+	{ return getValue () .toPrimitive (preferedType); }
 
 	virtual
 	var
@@ -90,9 +91,7 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const override
-	{
-		ostream << "pbExpression";
-	}
+	{ ostream << "pbExpression"; }
 
 
 protected:

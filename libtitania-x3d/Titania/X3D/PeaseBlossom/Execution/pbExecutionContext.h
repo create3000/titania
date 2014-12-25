@@ -176,6 +176,16 @@ protected:
 	{ executionContext = value; }
 
 	///  Returns the local objects.
+	void
+	setLocalObject (const ptr <pbObject> & value)
+	{ localObject = value; }
+
+	///  Returns the local objects.
+	void
+	setLocalObject (ptr <pbObject> && value)
+	{ localObject = std::move (value); }
+
+	///  Returns the local objects.
 	ptr <pbObject> &
 	getLocalObject ()
 	{ return localObject; }
@@ -184,16 +194,6 @@ protected:
 	const ptr <pbObject> &
 	getLocalObject () const
 	{ return localObject; }
-
-	///  Returns the default objects stack.
-	array <ptr <pbObject>> &
-	getDefaultObjects ()
-	{ return defaultObjects; }
-
-	///  Returns the default objects stack.
-	const array <ptr <pbObject>> &
-	getDefaultObjects () const
-	{ return defaultObjects; }
 
 	/// @name Operations
 
@@ -209,18 +209,12 @@ protected:
 
 private:
 
-	///  @name Construction
-
-	void
-	construct ();
-
 	/// @name Members
 
 	bool                                      strict;
 	ptr <pbExecutionContext>                  executionContext;
 	ptr <pbObject>                            globalObject;
 	ptr <pbObject>                            localObject;
-	array <ptr <pbObject>>                    defaultObjects; // Use deque to keep iters when inserting values.
 	std::map <std::string, ptr <pbFunction>>  functions;
 
 };

@@ -58,6 +58,10 @@
 namespace titania {
 namespace pb {
 
+constexpr double M_2_16 = 65536.0;
+constexpr double M_2_31 = 2147483648.0;
+constexpr double M_2_32 = 4294967296.0;
+
 ///  The value of Number.MIN_VALUE is the smallest positive value of the Number type, which is approximately 5 × 10?324.
 static
 constexpr double

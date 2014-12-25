@@ -65,15 +65,14 @@ namespace pb {
 /**
  *  Enum type for ECMAScript primitives.
  */
-enum ValueType
+enum ValueType :
+	uint8_t
 {
 	// Standard object
 
 	UNDEFINED,
 	BOOLEAN,
-	INT32,
-	UINT32,
-	DOUBLE,
+	NUMBER,
 	STRING,
 	NULL_OBJECT,
 	OBJECT,
@@ -92,9 +91,7 @@ noexcept (true)
 	{
 		case UNDEFINED:   ostream << "UNDEFINED"; break;
 		case BOOLEAN:     ostream << "BOOLEAN";   break;
-		case INT32:       ostream << "INT32";     break;
-		case UINT32:      ostream << "UINT32";    break;
-		case DOUBLE:      ostream << "DOUBLE";    break;
+		case NUMBER:      ostream << "NUMBER";    break;
 		case STRING:      ostream << "STRING";    break;
 		case NULL_OBJECT: ostream << "NULL";      break;
 		case OBJECT:      ostream << "OBJECT";    break;

@@ -762,7 +762,7 @@ Parser::memberExpression (var & value)
 
 					if (Grammar::CloseBracket (istream))
 					{
-						//value .reset (new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions), std::move (list)));
+						//value = new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions), std::move (list));
 						continue;
 					}
 
@@ -778,7 +778,7 @@ Parser::memberExpression (var & value)
 
 				if (identifierName (identifierNameCharacters))
 				{
-					//value .reset (new ObjectPropertyExpression (std::move (value), std::move (identifierNameCharacters), std::move (list)));
+					//value = new PropertyExpression (std::move (value), std::move (identifierNameCharacters), std::move (list));
 					continue;
 				}
 
@@ -799,7 +799,7 @@ Parser::memberExpression (var & value)
 
 			if (arguments (argumentListExpressions))
 			{
-				//value .reset (new NewOperation (getExecutionContext (), std::move (value), std::move (argumentsListExpressions)));
+				//value = new NewExpression (getExecutionContext (), std::move (value), std::move (argumentsListExpressions));
 				return true;
 			}
 
@@ -824,7 +824,7 @@ Parser::newExpression (var & value)
 	{
 		if (newExpression (value))
 		{
-			//value .reset (new NewOperation (value));
+			//value = new NewExpression (value);
 			return true;
 		}
 	}
@@ -859,7 +859,7 @@ Parser::callExpression (var & value)
 
 					if (Grammar::CloseBracket (istream))
 					{
-						//value .reset (new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions), std::move (list)));
+						//value = new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions), std::move (list));
 						continue;
 					}
 
@@ -875,7 +875,7 @@ Parser::callExpression (var & value)
 
 				if (identifierName (identifierNameCharacters))
 				{
-					//value .reset (new ObjectPropertyExpression (std::move (value), std::move (identifierNameCharacters), std::move (list)));
+					//value = new PropertyExpression (std::move (value), std::move (identifierNameCharacters), std::move (list));
 					continue;
 				}
 
@@ -1001,7 +1001,7 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			//value .reset (new Delete (std::move (expression)));
+			//value = new DeleteExpression (std::move (expression));
 			return true;
 		}
 
@@ -1016,7 +1016,7 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			//value .reset (new Void (std::move (expression)));
+			//value = new VoidExpression (std::move (expression));
 			return true;
 		}
 
@@ -1031,7 +1031,7 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			//value .reset (new TypeOf (std::move (expression)));
+			//value = new TypeOfExpression (std::move (expression));
 			return true;
 		}
 
@@ -1046,7 +1046,7 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			//value .reset (new PostIncrement (std::move (expression)));
+			//value = new PostIncrementExpression (std::move (expression));
 			return true;
 		}
 
@@ -1061,7 +1061,7 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			//value .reset (new PostDecrement (std::move (expression)));
+			//value = new PostDecrementExpression (std::move (expression));
 			return true;
 		}
 
@@ -1076,7 +1076,7 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			//value .reset (new ToNumber (std::move (expression)));
+			//value = new ToNumberExpression (std::move (expression));
 			return true;
 		}
 
@@ -1091,7 +1091,7 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			//value .reset (new Negate (std::move (expression)));
+			//value = new NegateExpression (std::move (expression));
 			return true;
 		}
 
@@ -1106,7 +1106,7 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			//value .reset (new BitwiseNOT (std::move (expression)));
+			//value = new BitwiseNOTExpression (std::move (expression));
 			return true;
 		}
 
@@ -1121,7 +1121,7 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			//value .reset (new LogicalNOT (std::move (expression)));
+			//value = new LogicalNOTExpression (std::move (expression));
 			return true;
 		}
 
@@ -2352,19 +2352,19 @@ Parser::functionExpression (var & value)
 
 				if (Grammar::OpenBrace (istream))
 				{
-					//auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
+					auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
 
-					//pushExecutionContext (function .get ());
+					pushExecutionContext (function .get ());
 
 					functionBody ();
 
-					//popExecutionContext ();
+					popExecutionContext ();
 
 					comments ();
 
 					if (Grammar::CloseBrace (istream))
 					{
-						//value = make_ptr <FunctionExpression> (getExecutionContext (), std::move (function));
+						value = new FunctionExpression (getExecutionContext (), std::move (function));
 						return true;
 					}
 

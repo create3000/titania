@@ -64,11 +64,13 @@ class pbExecutionContext;
 class pbBaseObject;
 class pbObject;
 
+struct Undefined { };
+
 /**
  *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
  */
 class var :
-	virtual public pbOutputStreamObject,
+	public pbOutputStreamObject,
 	public pbGarbageCollector
 {
 public:
@@ -76,43 +78,96 @@ public:
 	///  @name Construction
 
 	///  Constructs new var.
-	var ();
+	constexpr
+	var () :
+		pbOutputStreamObject (),
+		  pbGarbageCollector (),
+		               value (),
+		                type (UNDEFINED)
+	{ }
 
 	///  Constructs new var.
-	var (const var &);
+	var (const var & other);
 
 	///  Constructs new var.
-	var (var &&);
-
-	var (const std::nullptr_t);
-
-	///  Constructs new var.
-	var (const bool);
-
-	///  Constructs new var.
-	var (const int32_t);
+	var (var && other) :
+		value (other .value),
+		 type (other .type)
+	{
+		other .type = UNDEFINED;
+	}
 
 	///  Constructs new var.
-	var (const uint32_t);
+	constexpr
+	var (const std::nullptr_t) :
+		pbOutputStreamObject (),
+		  pbGarbageCollector (),
+		               value (),
+		                type (NULL_OBJECT)
+	{ }
 
 	///  Constructs new var.
-	var (const double);
+	constexpr
+	var (const bool boolean) :
+		pbOutputStreamObject (),
+		  pbGarbageCollector (),
+		               value ({ bool_ : boolean }),
+		                type (BOOLEAN)
+	{ }
 
 	///  Constructs new var.
-	var (const Glib::ustring &);
+	constexpr
+	var (const int32_t integer) :
+		var (double (integer))
+	{ }
 
 	///  Constructs new var.
-	var (Glib::ustring &&);
+	constexpr
+	var (const uint32_t integer) :
+		var (double (integer))
+	{ }
 
 	///  Constructs new var.
-	var (const std::string &);
+	constexpr
+	var (const double number) :
+		pbOutputStreamObject (),
+		  pbGarbageCollector (),
+		               value ({ number_ : number }),
+		                type (NUMBER)
+	{ }
+
+	///  Constructs new var.
+	var (const Glib::ustring & string) :
+		pbOutputStreamObject (),
+		  pbGarbageCollector (),
+		               value ({ string_ : new Glib::ustring (string) }),
+		                type (STRING)
+	{ }
+
+	///  Constructs new var.
+	var (Glib::ustring && string) :
+		pbOutputStreamObject (),
+		  pbGarbageCollector (),
+		               value ({ string_ : new Glib::ustring () }),
+		                type (STRING)
+	{
+		value .string_ -> swap (string);
+	}
+
+	///  Constructs new var.
+	var (const std::string & string) :
+		pbOutputStreamObject (),
+		  pbGarbageCollector (),
+		               value ({ string_ : new Glib::ustring (string) }),
+		                type (STRING)
+	{ }
 
 	///  Constructs new var.
 	template <class Up>
 	var (const ptr <Up> & object) :
 		pbOutputStreamObject (),
 		  pbGarbageCollector (),
-		               value ({ object_: new ptr <pbBaseObject> (object) }),
+		               value ({ object_ : new ptr <pbBaseObject> (object) }),
 		                type (OBJECT)
 	{ }
 
@@ -121,48 +176,53 @@ public:
 	var (ptr <Up> && object) :
 		pbOutputStreamObject (),
 		  pbGarbageCollector (),
-		               value ({ object_: new ptr <pbBaseObject> (std::move (object)) }),
+		               value ({ object_ : new ptr <pbBaseObject> (std::move (object)) }),
 		                type (OBJECT)
 	{ }
 
 	///  Constructs new var.
-	var (pbBaseObject* const);
+	var (pbBaseObject* const object);
 
 	var
-	copy (pbExecutionContext* const) const;
+	copy (pbExecutionContext* const executionContext) const;
 
 	///  @name Assignment operators
 
 	var &
-	operator = (const var &);
+	operator = (const Undefined &);
 
 	var &
-	operator = (var &&);
+	operator = (const var & other);
+
+	var &
+	operator = (var && other);
+
+	var &
+	operator = (const bool boolean);
+
+	var &
+	operator = (const int32_t integer)
+	{ return operator = (double (integer)); }
+
+	var &
+	operator = (const uint32_t integer)
+	{ return operator = (double (integer)); }
+
+	var &
+	operator = (const double number);
+
+	var &
+	operator = (const Glib::ustring & string);
+
+	var &
+	operator = (Glib::ustring && string);
+
+	var &
+	operator = (const std::string & string);
 
 	var &
 	operator = (const std::nullptr_t);
 
-	var &
-	operator = (const bool);
-
-	var &
-	operator = (const int32_t);
-
-	var &
-	operator = (const uint32_t);
-
-	var &
-	operator = (const double);
-
-	var &
-	operator = (const Glib::ustring &);
-
-	var &
-	operator = (Glib::ustring &&);
-
-	var &
-	operator = (const std::string &);
-	
 	template <class Up>
 	var &
 	operator = (const ptr <Up> & other)
@@ -174,7 +234,7 @@ public:
 
 		return *this;
 	}
-	
+
 	template <class Up>
 	var &
 	operator = (ptr <Up> && other)
@@ -188,7 +248,7 @@ public:
 	}
 
 	var &
-	operator = (pbBaseObject* const);
+	operator = (pbBaseObject* const object);
 
 	///  @name Common members
 
@@ -199,12 +259,22 @@ public:
 
 	///  @name Test
 
+	// Return true if type of one of the types UNDEFINED, NULL, BOOLEAN, NUMBER, or STRING, otherwise false.
 	bool
-	isPrimitive () const;
+	isPrimitive () const
+	{ return type not_eq OBJECT; }
 
 	bool
 	isUndefined () const
 	{ return type == UNDEFINED; }
+
+	bool
+	isNumber () const
+	{ return type == NUMBER; }
+
+	bool
+	isString () const
+	{ return type == STRING; }
 
 	bool
 	isNull () const
@@ -218,7 +288,8 @@ public:
 
 	///  Converts its argument to a value of type Boolean.
 	var
-	toPrimitive () const;
+	toPrimitive (const ValueType preferedType = UNDEFINED) const
+	throw (TypeError);
 
 	///  Converts its argument to a value of type Boolean.
 	bool
@@ -247,6 +318,16 @@ public:
 
 	///  @name Member access
 
+	///  Returns a value of type bool.
+	bool
+	getBoolean () const
+	{ return value .bool_; }
+
+	///  Returns a value of type double.
+	double
+	getNumber () const
+	{ return value .number_; }
+
 	///  Returns a value of type String.
 	const Glib::ustring &
 	getString () const
@@ -262,6 +343,9 @@ public:
 	getObject () const
 	{ return *value .object_; }
 
+	var
+	getValue () const;
+
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
@@ -271,13 +355,14 @@ public:
 
 	///  @name Destruction
 
-	~var ();
+	~var ()
+	{ clear (); }
 
 
 private:
 
 	///  @name Operations
-	
+
 	void
 	clear ();
 
@@ -286,11 +371,9 @@ private:
 	union Value
 	{
 		bool bool_;
-		double double_;
-		int32_t int32_;
-		ptr <pbBaseObject>* object_;
+		double number_;
 		Glib::ustring* string_;
-		uint32_t uint32_;
+		ptr <pbBaseObject>* object_;
 	};
 
 	///  @name Members

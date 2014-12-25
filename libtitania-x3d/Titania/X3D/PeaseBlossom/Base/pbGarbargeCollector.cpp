@@ -94,10 +94,7 @@ void
 pbGarbageCollector::deleteObjects (const ObjectArray & objects)
 {
 	for (const auto & object : objects)
-	{
-		__LOG__ << object -> getTypeName () << std::endl;
 		delete object;
-	}
 }
 
 } // pb

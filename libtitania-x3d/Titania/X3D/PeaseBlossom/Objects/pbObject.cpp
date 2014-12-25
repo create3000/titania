@@ -60,6 +60,12 @@ PropertyDescriptor::~PropertyDescriptor ()
 
 const std::string pbObject::typeName = "Object";
 
+pbObject::pbObject () :
+                pbBaseObject (),
+	      propertyDescriptors (),
+	cachedPropertyDescriptors (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ()))
+{ }
+
 ptr <pbObject>
 pbObject::clone (pbExecutionContext* const executionContext) const
 {
@@ -138,7 +144,7 @@ throw (std::invalid_argument)
 {
 	try
 	{
-		const auto & propertyDescriptor = propertyDescriptors .at (id);
+		const auto & propertyDescriptor = getPropertyDescriptor (id);
 
 		if (propertyDescriptor -> flags & WRITABLE and not (flags & LEAVE_VALUE))
 		{
@@ -168,9 +174,85 @@ throw (std::invalid_argument)
 }
 
 void
+pbObject::removeProperty (const size_t id)
+noexcept (true)
+{
+	removeCachedPropertyDescriptors (id);
+
+	propertyDescriptors .erase (id);
+}
+
+const PropertyDescriptorPtr &
+pbObject::getPropertyDescriptor (const size_t id) const
+throw (std::out_of_range)
+{
+	try
+	{
+		return getCachedPropertyDescriptor (id);
+	}
+	catch (const std::out_of_range &)
+	{
+		const auto & propertyDescriptor = propertyDescriptors .at (id);
+		
+		const_cast <pbObject*> (this) -> addCachedPropertyDescriptor (id, propertyDescriptor);
+
+		return propertyDescriptor;
+	}
+}
+
+void
+pbObject::addCachedPropertyDescriptor (const size_t id, const PropertyDescriptorPtr & propertyDescriptor)
+noexcept (true)
+{
+	cachedPropertyDescriptors [id % CACHE_SIZE] = std::make_pair (id, propertyDescriptor);
+}
+
+void
+pbObject::removeCachedPropertyDescriptors (const size_t id)
+noexcept (true)
+{
+	auto & value = cachedPropertyDescriptors [id % CACHE_SIZE];
+	
+	if (value .first not_eq id)
+		return;
+
+	value .first = -1;
+	value .second .reset ();
+}
+
+const PropertyDescriptorPtr &
+pbObject::getCachedPropertyDescriptor (const size_t id) const
+throw (std::out_of_range)
+{
+	const auto & value = cachedPropertyDescriptors [id % CACHE_SIZE];
+
+	if (value .first == id)
+		return value .second;
+
+	throw std::out_of_range ("getCachedPropertyDescriptor");
+}
+
+var
+pbObject::getDefaultValue (const ValueType preferedType) const
+throw (TypeError)
+{
+	// All native ECMAScript objects except Date objects handle the absence of a hint as if the hint Number were given;
+	// Date objects handle the absence of a hint as if the hint String were given. Host objects may handle the absence of
+	// a hint in some other manner.
+
+	//	if (preferedType == STRING)
+	//		return toString () or valueOf () or throw TypeError ();
+	//
+	//	return valueOf () or toString () or throw TypeError ();
+
+	return toString ();
+}
+
+void
 pbObject::dispose ()
 {
-	propertyDescriptors .clear ();
+	propertyDescriptors       .clear ();
+	cachedPropertyDescriptors .clear ();
 
 	pbBaseObject::dispose ();
 }

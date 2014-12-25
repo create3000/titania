@@ -122,7 +122,7 @@ protected:
 	run ()
 	{
 		for (const auto & expression : expressions)
-			expression .toPrimitive ();
+			expression .getValue ();
 	}
 
 private:

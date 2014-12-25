@@ -88,59 +88,60 @@ public:
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toPrimitive () const final override
+	getValue () const final override
 	{
 		switch (type)
 		{
 			case AssignmentOperatorType::ASSIGNMENT:
-				return lhs -> setValue (rhs .toPrimitive ());
-
+			{
+				return lhs -> setValue (rhs .getValue ());
+			}
 			case AssignmentOperatorType::MULTIPLICATION_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> toPrimitive () .toNumber () * rhs .toNumber ());
+				return lhs -> setValue (lhs -> getValue () .toNumber () * rhs .toNumber ());
 			}
 			case AssignmentOperatorType::DIVISION_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> toPrimitive () .toNumber () / rhs .toNumber ());
+				return lhs -> setValue (lhs -> getValue () .toNumber () / rhs .toNumber ());
 			}
 			case AssignmentOperatorType::REMAINDER_ASSIGNMENT:
 			{
-				return lhs -> setValue (std::fmod (lhs -> toPrimitive () .toNumber (), rhs .toNumber ()));
+				return lhs -> setValue (std::fmod (lhs -> getValue () .toNumber (), rhs .toNumber ()));
 			}
 			case AssignmentOperatorType::ADDITION_ASSIGNMENT:
 			{
-				if (lhs -> toPrimitive () .getType () == STRING or rhs .getType () == STRING)
-					return lhs -> setValue (lhs -> toPrimitive () .toString () + rhs .toString ());
+				if (lhs -> getValue () .getType () == STRING or rhs .getType () == STRING)
+					return lhs -> setValue (lhs -> getValue () .toString () + rhs .toString ());
 
-				return lhs -> setValue (lhs -> toPrimitive () .toNumber () + rhs .toNumber ());
+				return lhs -> setValue (lhs -> getValue () .toNumber () + rhs .toNumber ());
 			}
 			case AssignmentOperatorType::SUBTRACTION_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> toPrimitive () .toNumber () - rhs .toNumber ());
+				return lhs -> setValue (lhs -> getValue () .toNumber () - rhs .toNumber ());
 			}
 			case AssignmentOperatorType::LEFT_SHIFT_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> toPrimitive () .toInt32 () << (rhs .toUInt32 () & 0x1f));
+				return lhs -> setValue (lhs -> getValue () .toInt32 () << (rhs .toUInt32 () & 0x1f));
 			}
 			case AssignmentOperatorType::RIGHT_SHIFT_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> toPrimitive () .toInt32 () >> (rhs .toUInt32 () & 0x1f));
+				return lhs -> setValue (lhs -> getValue () .toInt32 () >> (rhs .toUInt32 () & 0x1f));
 			}
 			case AssignmentOperatorType::UNSIGNED_RIGHT_SHIFT_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> toPrimitive () .toUInt32 () >> (rhs .toUInt32 () & 0x1f));
+				return lhs -> setValue (lhs -> getValue () .toUInt32 () >> (rhs .toUInt32 () & 0x1f));
 			}
 			case AssignmentOperatorType::BITWISE_AND_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> toPrimitive () .toInt32 () & rhs .toInt32 ());
+				return lhs -> setValue (lhs -> getValue () .toInt32 () & rhs .toInt32 ());
 			}
 			case AssignmentOperatorType::BITWISE_XOR_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> toPrimitive () .toInt32 () ^ rhs .toInt32 ());
+				return lhs -> setValue (lhs -> getValue () .toInt32 () ^ rhs .toInt32 ());
 			}
 			case AssignmentOperatorType::BITWISE_OR_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> toPrimitive () .toInt32 () | rhs .toInt32 ());
+				return lhs -> setValue (lhs -> getValue () .toInt32 () | rhs .toInt32 ());
 			}
 		}
 
@@ -166,8 +167,8 @@ private:
 
 	const ptr <pbExecutionContext> executionContext;
 	const ptr <pbExpression>       lhs;
-	const var                            rhs;
-	const AssignmentOperatorType         type;
+	const var                      rhs;
+	const AssignmentOperatorType   type;
 
 };
 

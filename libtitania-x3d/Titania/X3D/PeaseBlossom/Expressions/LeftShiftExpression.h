@@ -84,7 +84,7 @@ public:
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
 	var
-	toPrimitive () const final override
+	getValue () const final override
 	{ return evaluate (lhs, rhs); }
 
 	///  Evaluates the expression.

@@ -310,6 +310,11 @@ function fibonacci_iterative (value)
 	// 10.92 s
 	// 7.80 s
 	// 7.04 s
+	// 6.34 s
+	// 5.75 s
+	// 5.41 s
+	// 4.92 s
+	// 5.35 s
 
 	print ('fibonacci_iterative: ');
 	print ('fibonacci_iterative: value: ', value);
@@ -324,7 +329,7 @@ function fibonacci_iterative (value)
 	var h1 = 0;
 	var h2 = 1;
 
-	for (var i = 1; i < value; i = i + 1)
+	for (var i = 1; i < value; i += 1)
 	{
 		result = h1 + h2;
 		h1     = h2;
@@ -361,6 +366,7 @@ function set_time (value, time)
 	//print ('time: ',                now () - t0);
 
 	var t0 = now ();
+	print ('fibonacci_iterative: ', fibonacci_iterative (800));
 	print ('fibonacci_iterative: ', fibonacci_iterative (8000000));
 	print ('time: ',                now () - t0);
 
@@ -368,9 +374,6 @@ function set_time (value, time)
 	//print ('result: ', for_time (2000000));
 	//print ('time: ',   now () - t0);
 }
-
-print (Math .E);
-print (Math .LN10);
 "
   directOutput TRUE
 }
@@ -413,7 +416,7 @@ function fibonacci_iterative (o, value)
 	o .h1 = 0;
 	o .h2 = 1;
 
-	for (var i = 1; i < value; i = i + 1)
+	for (var i = 1; i < value; i += 1)
 	{
 		o .result = o .h1 + o .h2;
 		o .h1     = o .h2;
@@ -441,6 +444,7 @@ function set_time (value, time)
 	//print ('time: ',   (Date .now () - t0) / 1000);
 
 	var t0 = Date .now ();
+	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, 800));
 	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, 8000000));
 	print ('time: ',   (Date .now () - t0) / 1000);
 

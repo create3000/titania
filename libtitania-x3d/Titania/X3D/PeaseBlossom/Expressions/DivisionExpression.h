@@ -84,7 +84,7 @@ public:
 	///  Converts its arguments to a value of type Number.
 	virtual
 	var
-	toPrimitive () const final override
+	getValue () const final override
 	{ return evaluate (lhs, rhs); }
 
 	///  Evaluates the expression.

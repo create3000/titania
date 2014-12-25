@@ -86,17 +86,19 @@ public:
 	///  Converts its argument to a value of type Boolean.
 	virtual
 	var
-	toPrimitive () const final override
-	{ return evaluate (lhs, rhs); }
+	getValue () const final override
+	{
+		const auto x = lhs .getValue ();
+		const auto y = rhs .getValue ();
+
+		return evaluate (x, y);
+	}
 
 	///  Evaluates the expression.
 	static
 	bool
-	evaluate (const var & lhs, const var & rhs)
+	evaluate (const var & x, const var & y)
 	{
-		const var x = lhs .toPrimitive ();
-		const var y = rhs .toPrimitive ();
-
 		if (x .getType () == y .getType ())
 		{
 			switch (x .getType ())
@@ -104,28 +106,42 @@ public:
 				case UNDEFINED:
 					return true;
 
-				case NULL_OBJECT:
-					return true;
+				case BOOLEAN:
+					return x .getBoolean () == y .getBoolean ();
 
-				case INT32:  // XXX
-				case UINT32: // XXX
-				case DOUBLE:
-					return x .toNumber () == y .toNumber ();
+				case NUMBER:
+					return x .getNumber () == y .getNumber ();
 
 				case STRING:
 					return x .getString () == y .getString ();
 
-				case BOOLEAN:
-					return x .toBoolean () == y .toBoolean ();
+				case NULL_OBJECT:
+					return true;
 
 				case OBJECT:
 					return x .getObject () == y .getObject ();
 			}
 		}
-		
-		// XXX
 
-		return x .toNumber () == y .toNumber ();
+		if (x .isNull () and y .isUndefined ())
+			return true;
+
+		if (x .isUndefined () and y .isNull ())
+			return true;
+
+		if (x .isNumber ())
+			return x .getNumber () == y .isNumber ();
+
+		if (y .isNumber ())
+			return x .isNumber () == y .getNumber ();
+
+		if (x .isString ())
+			return x .getString () == y .toString ();
+
+		if (y .isString ())
+			return x .toString () == y .getString ();
+
+		return false;
 	}
 
 private:

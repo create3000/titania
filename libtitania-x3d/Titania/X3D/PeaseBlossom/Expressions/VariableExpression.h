@@ -76,11 +76,11 @@ public:
 		              id (getId (this -> identifier))
 	{ construct (); }
 
-//	///  Creates a copy of this object.
-//	virtual
-//	var
-//	copy (pbExecutionContext* const executionContext) const final override
-//	{ return make_ptr <VariableExpression> (executionContext, std::string (identifier)); }
+	//	///  Creates a copy of this object.
+	//	virtual
+	//	var
+	//	copy (pbExecutionContext* const executionContext) const final override
+	//	{ return make_ptr <VariableExpression> (executionContext, std::string (identifier)); }
 
 	///  @name Operations
 
@@ -108,9 +108,16 @@ public:
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toPrimitive () const final override
-	{ return getProperty (); }
+	getValue () const
+	throw (ReferenceError) final override
+	{
+		const auto propertyDescriptor = getPropertyDescriptor (executionContext);
 
+		if (propertyDescriptor .second -> get)
+			return propertyDescriptor .second -> get -> call (propertyDescriptor .first);
+
+		return propertyDescriptor .second -> value;
+	}
 
 private:
 
@@ -123,31 +130,18 @@ private:
 
 	///  @name Operations
 
-	var
-	getProperty () const
-	throw (ReferenceError)
-	{
-		const auto propertyDescriptor = getPropertyDescriptor (executionContext);
-
-		if (propertyDescriptor .second -> get)
-			return propertyDescriptor .second -> get -> call (propertyDescriptor .first);
-
-		return propertyDescriptor .second -> value;
-	}
-
 	std::pair <const ptr <pbObject> &, const PropertyDescriptorPtr &>
 	getPropertyDescriptor (const ptr <pbExecutionContext> & executionContext) const
 	throw (ReferenceError)
 	{
-		for (const auto & object : basic::make_reverse_range (executionContext -> getDefaultObjects ()))
+		const auto & localObject = executionContext -> getLocalObject ();
+
+		try
 		{
-			try
-			{
-				return std::make_pair (std::ref (object), std::ref (object -> getPropertyDescriptor (id)));
-			}
-			catch (const std::out_of_range &)
-			{ }
+			return std::make_pair (std::ref (localObject), std::ref (localObject -> getPropertyDescriptor (id)));
 		}
+		catch (const std::out_of_range &)
+		{ }
 
 		if (executionContext -> isRootContext ())
 			throw ReferenceError (identifier + " is not defined.");
@@ -158,8 +152,8 @@ private:
 	///  @name Members
 
 	const ptr <pbExecutionContext> executionContext;
-	const std::string                    identifier;
-	const size_t                         id;
+	const std::string              identifier;
+	const size_t                   id;
 
 };
 

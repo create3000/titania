@@ -84,22 +84,25 @@ public:
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toPrimitive () const final override
-	{ return evaluate (lhs, rhs); }
+	getValue () const final override
+	{
+		const auto px = lhs .toPrimitive ();
+		const auto py = rhs .toPrimitive ();
+
+		return evaluate (px, py);
+	}
 
 	///  Evaluates the expression.
 	static
 	var
 	evaluate (const var & lhs, const var & rhs)
 	{
-		const var x = lhs .toPrimitive ();
-		const var y = rhs .toPrimitive ();
+		if (lhs .getType () == STRING or rhs .getType () == STRING)
+			return lhs .toString () + rhs .toString ();
 
-		if (x .getType () == STRING or y .getType () == STRING)
-			return var (x .toString () + y .toString ());
-
-		return var (x .toNumber () + y .toNumber ());
+		return lhs .toNumber () + rhs .toNumber ();
 	}
+
 
 private:
 
@@ -108,9 +111,7 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{
-		addChildren (lhs, rhs);
-	}
+	{ addChildren (lhs, rhs); }
 
 	///  @name Members
 

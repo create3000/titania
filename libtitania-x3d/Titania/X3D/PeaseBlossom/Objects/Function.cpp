@@ -59,6 +59,17 @@ namespace pb {
 
 std::atomic <size_t> Function::recursionLimit (100000);
 
+Function::Function (pbExecutionContext* const executionContext, const std::string & name, std::vector <std::string> && formalParameters) :
+	         pbFunction (name),
+	 pbExecutionContext (executionContext, executionContext -> getGlobalObject ()),
+	   formalParameters (std::move (formalParameters)),
+	           closures (),
+	     recursionDepth (0),
+	  localObjectsStack ()
+{
+	addChildren (localObjectsStack);
+}
+
 ptr <pbObject>
 Function::create (pbExecutionContext* const executionContext) const
 {
@@ -71,41 +82,6 @@ Function::create (pbExecutionContext* const executionContext) const
 }
 
 void
-Function::construct ()
-{
-	addChildren (localObjectsStack,
-	             defaultObjectsStack);
-
-	addClosure (getExecutionContext ());
-}
-
-void
-Function::addClosure (const ptr <pbExecutionContext> & executionContext)
-{
-	const auto & defaultObjects = executionContext -> getDefaultObjects ();
-
-	if (defaultObjects .empty ())
-		return;
-
-	const auto pair = closures .emplace (executionContext .get (), executionContext -> getLocalObject ());
-
-	pair .first -> second .addParent (this);
-
-	for (const auto & object : std::make_pair (defaultObjects .rbegin (), defaultObjects .rend () - 1))
-	{
-		if (object == executionContext -> getLocalObject ())
-			break;
-
-		getDefaultObjects () .emplace_front (object);
-	}
-
-	if (executionContext -> isRootContext ())
-		return;
-
-	addClosure (executionContext -> getExecutionContext ());
-}
-
-void
 Function::resolve (const ptr <pbExecutionContext> & executionContext)
 {
 	if (getExecutionContext () -> isRootContext ())
@@ -115,10 +91,10 @@ Function::resolve (const ptr <pbExecutionContext> & executionContext)
 
 	if (iter not_eq closures .end ())
 	{
-		getDefaultObjects () .emplace_front (iter -> second -> clone (this));
+		setLocalObject (iter -> second -> clone (this));
+		setExecutionContext (getExecutionContext () -> getExecutionContext ());
 
 		closures .erase (iter);
-		setExecutionContext (getExecutionContext () -> getExecutionContext ());
 	}
 }
 
@@ -158,15 +134,11 @@ void
 Function::push (ptr <pbObject> && localObject)
 {
 	if (recursionDepth)
-	{
-		localObjectsStack   .emplace_back (std::move (getLocalObject ()));
-		defaultObjectsStack .emplace_back (std::move (getDefaultObjects ()));
-	}
+		localObjectsStack .emplace_back (std::move (getLocalObject ()));
 
 	++ recursionDepth;
 
-	getLocalObject () = localObject;
-	getDefaultObjects () .emplace_back (std::move (localObject));
+	setLocalObject (std::move (localObject));
 
 	// As LAST step check recursion depth.
 
@@ -177,17 +149,13 @@ Function::push (ptr <pbObject> && localObject)
 void
 Function::pop ()
 {
-	getDefaultObjects () .pop_back ();
-
 	-- recursionDepth;
 
 	if (recursionDepth)
 	{
-		getLocalObject ()    = std::move (localObjectsStack   .back ());
-		getDefaultObjects () = std::move (defaultObjectsStack .back ());
+		setLocalObject (std::move (localObjectsStack .back ()));
 
-		localObjectsStack   .pop_back ();
-		defaultObjectsStack .pop_back ();
+		localObjectsStack .pop_back ();
 	}
 }
 

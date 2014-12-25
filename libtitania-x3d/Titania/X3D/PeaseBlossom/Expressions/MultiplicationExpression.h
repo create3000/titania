@@ -84,7 +84,7 @@ public:
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toPrimitive () const final override
+	getValue () const final override
 	{ return evaluate (lhs, rhs); }
 
 	static

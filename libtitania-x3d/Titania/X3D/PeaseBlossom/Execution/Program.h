@@ -112,9 +112,7 @@ protected:
 	///  @name Construction
 
 	///  Constructs new Program.
-	Program (const ptr <pbObject> & globalObject) :
-		pbExecutionContext (this, globalObject)
-	{ construct (); }
+	Program (const ptr <pbObject> & globalObject);
 
 
 private:

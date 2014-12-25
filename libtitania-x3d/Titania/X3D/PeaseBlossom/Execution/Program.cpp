@@ -57,11 +57,11 @@ namespace pb {
 
 const std::string Program::typeName = "Program";
 
-void
-Program::construct ()
+///  Constructs new Program.
+Program::Program (const ptr <pbObject> & globalObject) :
+	pbExecutionContext (this, globalObject)
 {
-	getLocalObject () = getGlobalObject ();
-	getDefaultObjects () .emplace_back (getGlobalObject ());
+	setLocalObject (getGlobalObject ());
 }
 
 ptr <Program>

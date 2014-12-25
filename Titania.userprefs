@@ -1,23 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbBaseObject.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.cpp">
     <Files>
-      <File FileName="Titania/titania" Line="108" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="1" Column="1" />
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="289" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/ptr.h" Line="286" Column="4" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.h" Line="291" Column="26" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.cpp" Line="284" Column="30" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="58" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="1382" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/VariableExpression.h" Line="123" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/FunctionCallExpression.h" Line="93" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/VariableDeclaration.h" Line="92" Column="62" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/vsObject.h" Line="148" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/vsObject.cpp" Line="166" Column="18" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbBaseObject.h" Line="82" Column="34" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbBaseObject.cpp" Line="56" Column="41" />
+      <File FileName="Titania/titania" Line="1" Column="1" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="328" Column="13" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.h" Line="293" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.cpp" Line="408" Column="15" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbBaseObject.h" Line="93" Column="16" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h" Line="207" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.cpp" Line="117" Column="53" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/AdditionExpression.h" Line="71" Column="17" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/LessExpression.h" Line="73" Column="17" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/pbExpression.h" Line="102" Column="16" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/AssignmentExpression.h" Line="73" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/VariableExpression.h" Line="73" Column="21" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -31,7 +29,7 @@
               </Node>
             </Node>
           </Node>
-          <Node name="libtitania-x3d" expanded="True">
+          <Node name="libtitania-x3d" expanded="True" selected="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
@@ -40,14 +38,13 @@
                 </Node>
                 <Node name="JavaScript" expanded="True">
                   <Node name="PeaseBlossom" expanded="True" />
+                  <Node name="SpiderMonkey" expanded="True" />
                 </Node>
                 <Node name="PeaseBlossom" expanded="True">
                   <Node name="Base" expanded="True" />
                   <Node name="Bits" expanded="True" />
                   <Node name="Execution" expanded="True" />
-                  <Node name="Expressions" expanded="True">
-                    <Node name="VariableExpression.h" selected="True" />
-                  </Node>
+                  <Node name="Expressions" expanded="True" />
                   <Node name="Objects" expanded="True" />
                   <Node name="Parser" expanded="True" />
                   <Node name="Primitives" expanded="True" />

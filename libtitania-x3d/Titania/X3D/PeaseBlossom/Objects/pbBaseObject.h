@@ -72,19 +72,14 @@ public:
 	///  @name Conversion operations
 
 	virtual
-	bool
-	isPrimitive () const = 0;
+	var
+	getDefaultValue (const ValueType preferedType) const
+	throw (TypeError) = 0;
 
 	virtual
 	var
-	toPrimitive () const = 0;
-
-	///  @name Conversion operations
-
-	static
-	size_t
-	getId (const std::string & identifier)
-	{ return ids .emplace (identifier, ids .size ()) .first -> second; }
+	getValue () const
+	{ return const_cast <pbBaseObject*> (this); }
 
 
 protected:
@@ -99,6 +94,13 @@ protected:
 		       pbChildObject (),
 		pbOutputStreamObject ()
 	{ }
+
+	///  @name Named identifier handling
+
+	static
+	size_t
+	getId (const std::string & identifier)
+	{ return ids .emplace (identifier, ids .size ()) .first -> second; }
 
 	///  @name Children handling
 
@@ -128,6 +130,8 @@ protected:
 
 
 private:
+
+	///  @name Static members
 
 	using IdIndex = std::map <std::string, size_t>;
 

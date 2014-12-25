@@ -59,82 +59,23 @@
 namespace titania {
 namespace pb {
 
-var::var () :
-	pbOutputStreamObject (),
-	  pbGarbageCollector (),
-	               value (),
-	                type (UNDEFINED)
-{ }
-
 var::var (const var & other) :
-	 var ()
-{
-	*this = other;
-}
-
-var::var (var && other) :
-	 value (other .value),
+	 value (),
 	  type (other .type)
 {
-	other .type = UNDEFINED;
+	switch (type)
+	{
+		case STRING:
+			value .string_ = new Glib::ustring (*other .value .string_);
+			break;
+		case OBJECT:
+			value .object_ = new ptr <pbBaseObject> (*other .value .object_);
+			break;
+		default:
+			value = other .value;
+			break;
+	}
 }
-
-var::var (const std::nullptr_t) :
-	pbOutputStreamObject (),
-	  pbGarbageCollector (),
-	               value (),
-	               type (NULL_OBJECT)
-{ }
-
-var::var (const bool boolean) :
-	pbOutputStreamObject (),
-	  pbGarbageCollector (),
-	               value ({ bool_: boolean }),
-	                type (BOOLEAN)
-{ }
-
-var::var (const int32_t interger) :
-	pbOutputStreamObject (),
-	  pbGarbageCollector (),
-	               value ({ int32_: interger }),
-	                type (INT32)
-{ }
-
-var::var (const uint32_t interger) :
-	pbOutputStreamObject (),
-	  pbGarbageCollector (),
-	               value ({ uint32_: interger }),
-	                type (UINT32)
-{ }
-
-var::var (const double number) :
-	pbOutputStreamObject (),
-	               value ({ double_: number }),
-	                type (DOUBLE)
-{ }
-
-var::var (const Glib::ustring & string) :
-	pbOutputStreamObject (),
-	  pbGarbageCollector (),
-	               value ({ string_: new Glib::ustring (string) }),
-	                type (STRING)
-{ }
-
-var::var (Glib::ustring && string) :
-	pbOutputStreamObject (),
-	  pbGarbageCollector (),
-	               value ({ string_: new Glib::ustring () }),
-	                type (STRING)
-{
-	value .string_ -> swap (string);
-}
-
-var::var (const std::string & string) :
-	pbOutputStreamObject (),
-	  pbGarbageCollector (),
-	               value ({ string_: new Glib::ustring (string) }),
-	                type (STRING)
-{ }
 
 var::var (pbBaseObject* const object) :
 	pbOutputStreamObject (),
@@ -192,11 +133,9 @@ var::operator = (var && other)
 }
 
 var &
-var::operator = (const std::nullptr_t)
+var::operator = (const Undefined &)
 {
 	clear ();
-
-	type = NULL_OBJECT;
 
 	return *this;
 }
@@ -213,34 +152,12 @@ var::operator = (const bool boolean)
 }
 
 var &
-var::operator = (const int32_t integer)
-{
-	clear ();
-
-	value .int32_ = integer;
-	type          = INT32;
-
-	return *this;
-}
-
-var &
-var::operator = (const uint32_t integer)
-{
-	clear ();
-
-	value .uint32_ = integer;
-	type           = UINT32;
-
-	return *this;
-}
-
-var &
 var::operator = (const double number)
 {
 	clear ();
 
-	value .double_ = number;
-	type           = DOUBLE;
+	value .number_ = number;
+	type           = NUMBER;
 
 	return *this;
 }
@@ -281,6 +198,16 @@ var::operator = (const std::string & string)
 }
 
 var &
+var::operator = (const std::nullptr_t)
+{
+	clear ();
+
+	type = NULL_OBJECT;
+
+	return *this;
+}
+
+var &
 var::operator = (pbBaseObject* const object)
 {
 	clear ();
@@ -291,17 +218,9 @@ var::operator = (pbBaseObject* const object)
 	return *this;
 }
 
-bool
-var::isPrimitive () const
-{
-	if (type == OBJECT)
-		return value .object_ -> get () -> isPrimitive ();
-
-	return true;
-}
-
 var
-var::toPrimitive () const
+var::toPrimitive (const ValueType preferedType) const
+throw (TypeError)
 {
 	switch (type)
 	{
@@ -309,18 +228,14 @@ var::toPrimitive () const
 			return var ();
 		case BOOLEAN:
 			return value .bool_;
-		case INT32:
-			return value .int32_;
-		case UINT32:
-			return value .uint32_;
-		case DOUBLE:
-			return value .double_;
+		case NUMBER:
+			return value .number_;
 		case STRING:
 			return *value .string_;
 		case NULL_OBJECT:
 			return nullptr;
 		case OBJECT:
-			return value .object_ -> get () -> toPrimitive ();
+			return value .object_ -> get () -> getDefaultValue (preferedType);
 	}
 
 	return var ();
@@ -335,18 +250,21 @@ var::toBoolean () const
 			return false;
 		case BOOLEAN:
 			return value .bool_;
-		case INT32:
-			return value .int32_;
-		case UINT32:
-			return value .uint32_;
-		case DOUBLE:
-			return value .double_;
+		case NUMBER:
+			return value .number_;
 		case STRING:
 			return not value .string_ -> empty ();
 		case NULL_OBJECT:
 			return false;
 		case OBJECT:
-			return value .object_ -> get () -> toPrimitive () .toBoolean ();
+		{
+			const auto v = value .object_ -> get () -> getValue ();
+
+			if (v .isPrimitive ())
+				return v .toBoolean ();
+
+			return true;
+		}
 	}
 
 	return false;
@@ -361,18 +279,27 @@ var::toUInt16 () const
 			return 0;
 		case BOOLEAN:
 			return value .bool_;
-		case INT32:
-			return value .int32_;
-		case UINT32:
-			return value .uint32_;
-		case DOUBLE:
-			return value .double_;
-		case STRING:
-			return parseFloat (*value .string_);
 		case NULL_OBJECT:
 			return 0;
-		case OBJECT:
-			return value .object_ -> get () -> toPrimitive () .toUInt16 ();
+		case NUMBER:
+		default:
+		{
+			const double number = toNumber ();
+
+			if (isNaN (number))
+				return 0;
+
+			if (number == POSITIVE_INFINITY ())
+				return 0;
+
+			if (number == NEGATIVE_INFINITY ())
+				return 0;
+
+			const double posInt   = std::copysign (std::floor (std::abs (number)), number);
+			const double int16bit = std::fmod (posInt, M_2_16);
+
+			return int16bit;
+		}
 	}
 
 	return 0;
@@ -387,18 +314,29 @@ var::toInt32 () const
 			return 0;
 		case BOOLEAN:
 			return value .bool_;
-		case INT32:
-			return value .int32_;
-		case UINT32:
-			return value .uint32_;
-		case DOUBLE:
-			return value .double_;
-		case STRING:
-			return parseFloat (*value .string_);
 		case NULL_OBJECT:
 			return 0;
-		case OBJECT:
-			return value .object_ -> get () -> toPrimitive () .toInt32 ();
+		default:
+		{
+			const double number = toNumber ();
+
+			if (isNaN (number))
+				return 0;
+
+			if (number == POSITIVE_INFINITY ())
+				return 0;
+
+			if (number == NEGATIVE_INFINITY ())
+				return 0;
+
+			const double posInt   = std::copysign (std::floor (std::abs (number)), number);
+			const double int32bit = std::fmod (posInt, M_2_32);
+
+			if (int32bit >= M_2_31)
+				return int32bit - M_2_32;
+
+			return int32bit;
+		}
 	}
 
 	return 0;
@@ -413,12 +351,8 @@ var::toInteger () const
 			return NaN ();
 		case BOOLEAN:
 			return value .bool_;
-		case INT32:
-			return value .int32_;
-		case UINT32:
-			return value .uint32_;
-		case DOUBLE:
-			return std::copysign (std::floor (std::abs (value .double_)), value .double_);
+		case NUMBER:
+			return std::copysign (std::floor (std::abs (value .number_)), value .number_);
 		case STRING:
 		{
 			const double number = parseFloat (*value .string_);
@@ -428,7 +362,7 @@ var::toInteger () const
 		case NULL_OBJECT:
 			return 0;
 		case OBJECT:
-			return value .object_ -> get () -> toPrimitive () .toInteger ();
+			return value .object_ -> get () -> getDefaultValue (NUMBER) .toInteger ();
 	}
 
 	return 0;
@@ -443,21 +377,26 @@ var::toNumber () const
 			return NaN ();
 		case BOOLEAN:
 			return value .bool_;
-		case INT32:
-			return value .int32_;
-		case UINT32:
-			return value .uint32_;
-		case DOUBLE:
-			return value .double_;
+		case NUMBER:
+			return value .number_;
 		case STRING:
 			return parseFloat (*value .string_);
 		case NULL_OBJECT:
 			return 0;
 		case OBJECT:
-			return value .object_ -> get () -> toPrimitive () .toNumber ();
+			return value .object_ -> get () -> getDefaultValue (NUMBER) .toNumber ();
 	}
 
 	return 0;
+}
+
+var
+var::getValue () const
+{
+	if (type == OBJECT)
+		return value .object_ -> get () -> getValue ();
+
+	return *this;
 }
 
 void
@@ -471,25 +410,19 @@ var::toStream (std::ostream & ostream) const
 		case BOOLEAN:
 			ostream << (value .bool_ ? "true" : "false");
 			return;
-		case INT32:
-			ostream << value .int32_;
-			return;
-		case UINT32:
-			ostream << value .uint32_;
-			return;
-		case DOUBLE:
+		case NUMBER:
 		{
-			if (isNaN (value .double_))
+			if (isNaN (value .number_))
 				ostream << "NaN";
 
-			else if (value .double_ == NEGATIVE_INFINITY ())
+			else if (value .number_ == NEGATIVE_INFINITY ())
 				ostream << "-Infinity";
 
-			else if (value .double_ == POSITIVE_INFINITY ())
+			else if (value .number_ == POSITIVE_INFINITY ())
 				ostream << "Infinity";
 
 			else
-				ostream << std::setprecision (std::numeric_limits <double>::max_digits10) << value .double_;
+				ostream << std::setprecision (std::numeric_limits <double>::max_digits10) << value .number_;
 
 			return;
 		}
@@ -522,11 +455,6 @@ var::clear ()
 	}
 
 	type = UNDEFINED;
-}
-
-var::~var ()
-{
-	clear ();
 }
 
 } // pb
