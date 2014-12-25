@@ -64,16 +64,16 @@ Program::construct ()
 	getDefaultObjects () .emplace_back (getGlobalObject ());
 }
 
-basic_ptr <Program>
+ptr <Program>
 createProgram ()
 {
 	return createProgram (createGlobalObject ());
 }
 
-basic_ptr <Program>
-createProgram (const basic_ptr <vsObject> & globalObject)
+ptr <Program>
+createProgram (const ptr <pbObject> & globalObject)
 {
-	return basic_ptr <Program> (new Program (globalObject));
+	return ptr <Program> (new Program (globalObject));
 }
 
 } // pb

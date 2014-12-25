@@ -51,39 +51,39 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NATIVE_FUNCTION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NATIVE_FUNCTION_H__
 
-#include "../Execution/vsExecutionContext.h"
-#include "../Objects/vsFunction.h"
+#include "../Execution/pbExecutionContext.h"
+#include "../Objects/pbFunction.h"
 
 namespace titania {
 namespace pb {
 
-using Call = std::function <var (const basic_ptr <vsObject> & object, const std::vector <var> & arguments)>;
+using FunctionType = std::function <var (const ptr <pbObject> & object, const std::vector <var> & arguments)>;
 
 /**
  *  Class to represent a native ECMAScript function.
  */
 class NativeFunction :
-	public vsFunction
+	public pbFunction
 {
 public:
 
 	///  Constructs new Function.
-	NativeFunction (const std::string & name, const Call & function) :
-		vsFunction (name),
+	NativeFunction (const std::string & name, const FunctionType & function) :
+		pbFunction (name),
 		  function (function)
 	{ }
 
 	///  Creates a new default object.
 	virtual
-	var
-	create (vsExecutionContext* const) const final override
-	{ return make_var <NativeFunction> (getName (), function); }
+	ptr <pbObject>
+	create (pbExecutionContext* const) const final override
+	{ return make_ptr <NativeFunction> (getName (), function); }
 
 	///  @name Operations
 
 	virtual
 	var
-	call (const basic_ptr <vsObject> & thisObject, const std::vector <var> & arguments = { }) final override
+	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { }) final override
 	{ return function (thisObject, arguments); }
 
 
@@ -91,7 +91,7 @@ protected:
 
 	virtual
 	void
-	resolve (const basic_ptr <vsExecutionContext> & executionContext) final override
+	resolve (const ptr <pbExecutionContext> & executionContext) final override
 	{ }
 
 
@@ -99,7 +99,7 @@ private:
 
 	///  @name Member access
 
-	const Call function;
+	const FunctionType function;
 
 };
 

@@ -64,23 +64,23 @@ namespace global {
 struct print
 {
 	pb::var
-	operator () (X3DBrowser* const browser, const pb::basic_ptr <pb::vsObject> & object, const std::vector <pb::var> & arguments)
+	operator () (X3DBrowser* const browser, const pb::ptr <pb::pbBlock> & object, const std::vector <pb::var> & arguments)
 	{
 		for (const auto & value : arguments)
-			browser -> print (value);
+			browser -> print (value .toString ());
 
 		browser -> println ();
 
-		return pb::make_var <pb::Undefined> ();
+		return pb::var ();
 	}
 };
 
 struct now
 {
 	pb::var
-	operator () (const pb::basic_ptr <pb::vsObject> & object, const std::vector <pb::var> & arguments)
+	operator () (const pb::ptr <pb::pbBlock> & object, const std::vector <pb::var> & arguments)
 	{
-		return pb::make_var <pb::Number> (chrono::now ());
+		return pb::var (chrono::now ());
 	}
 };
 
@@ -103,20 +103,20 @@ throw (std::exception) :
 	{
 		using namespace std::placeholders;
 
-		program -> getGlobalObject () -> addProperty ("NULL",  pb::make_var <pb::Null> (),  pb::NONE);
-		program -> getGlobalObject () -> addProperty ("FALSE", pb::make_var <pb::False> (), pb::NONE);
-		program -> getGlobalObject () -> addProperty ("TRUE",  pb::make_var <pb::True> (),  pb::NONE);
+		program -> getGlobalObject () -> addProperty ("NULL",  nullptr, pb::NONE);
+		program -> getGlobalObject () -> addProperty ("FALSE", false,   pb::NONE);
+		program -> getGlobalObject () -> addProperty ("TRUE",  true,    pb::NONE);
 
-		program -> getGlobalObject () -> addProperty ("print", pb::make_var <pb::NativeFunction> ("print", std::bind (global::print { }, getBrowser (), _1, _2)), pb::NONE);
-		program -> getGlobalObject () -> addProperty ("now",   pb::make_var <pb::NativeFunction> ("now",   global::now { }),                                      pb::NONE);
+		program -> getGlobalObject () -> addProperty ("print", new pb::NativeFunction ("print", std::bind (global::print { }, getBrowser (), _1, _2)), pb::NONE);
+		program -> getGlobalObject () -> addProperty ("now",   new pb::NativeFunction ("now",   global::now { }),                                      pb::NONE);
 
 		program -> fromString (getECMAScript ());
 		program -> run ();
 	}
-	catch (const pb::vsException & error)
+	catch (const pb::pbException & error)
 	{
 		getBrowser () -> println (error);
-		
+
 		throw;
 	}
 }
@@ -149,7 +149,7 @@ Context::initialize ()
 	{
 		program -> getFunctionDeclaration ("initialize") -> call (program -> getGlobalObject ());
 	}
-	catch (const pb::vsException & error)
+	catch (const pb::pbException & error)
 	{
 		getBrowser () -> println (error);
 	}
@@ -240,7 +240,7 @@ Context::prepareEvents ()
 	{
 		program -> getFunctionDeclaration ("prepareEvents") -> call (program -> getGlobalObject ());
 	}
-	catch (const pb::vsException & error)
+	catch (const pb::pbException & error)
 	{
 		getBrowser () -> println (error);
 	}
@@ -255,13 +255,15 @@ Context::set_field (X3D::X3DFieldDefinition* const field)
 
 	try
 	{
-		program -> getFunctionDeclaration (field -> getName ()) -> call (program -> getGlobalObject (),
+		const auto & function = program -> getFunctionDeclaration (field -> getName ());
+
+		function -> call (program -> getGlobalObject (),
 		{
-			pb::make_var <pb::Undefined> (),
-			pb::make_var <pb::Number> (getCurrentTime ())
+			pb::var (),
+			pb::var (getCurrentTime ())
 		});
 	}
-	catch (const pb::vsException & error)
+	catch (const pb::pbException & error)
 	{
 		getBrowser () -> println (error);
 	}
@@ -278,7 +280,7 @@ Context::eventsProcessed ()
 	{
 		program -> getFunctionDeclaration ("eventsProcessed") -> call (program -> getGlobalObject ());
 	}
-	catch (const pb::vsException & error)
+	catch (const pb::pbException & error)
 	{
 		getBrowser () -> println (error);
 	}
@@ -288,7 +290,9 @@ Context::eventsProcessed ()
 
 void
 Context::finish ()
-{ pb::Program::deleteObjectsAsync (); }
+{
+	pb::Program::deleteObjectsAsync ();
+}
 
 void
 Context::shutdown ()
@@ -312,7 +316,8 @@ Context::dispose ()
 	program .dispose ();
 
 	pb::debug_roots (p);
-	assert (p -> getParents () .empty ());
+	__LOG__ << p -> getParents () .size ()  << std::endl;;
+	//assert (p -> getParents () .empty ());
 
 	pb::Program::deleteObjectsAsync ();
 

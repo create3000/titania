@@ -48,102 +48,57 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NUMBER_H__
+#include "pbGarbageCollector.h"
 
-#include "../Primitives/vsNumber.h"
+#include "../Base/pbChildObject.h"
 
-#include <iomanip>
+#include <malloc.h>
+#include <thread>
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a »number« value.
- */
-class Number :
-	public vsNumber
+// Important: std::deque is used here for objects because it is much more faster than std::vector!
+
+pbGarbageCollector::ObjectArray pbGarbageCollector::objects;
+std::mutex                      pbGarbageCollector::mutex;
+
+void
+pbGarbageCollector::trimFreeMemory ()
 {
-public:
+	malloc_trim (0);
+}
 
-	///  @name Construction
+void
+pbGarbageCollector::addDisposedObject (const pbChildObject* const object)
+{
+	std::lock_guard <std::mutex> lock (mutex);
 
-	///  Constructs new Number value.
-	Number () :
-		vsNumber (),
-		  number (0)
-	{ }
+	objects .emplace_back (object);
+}
 
-	///  Constructs new Number value.
-	explicit
-	Number (const double value) :
-		vsNumber (),
-		  number (value)
-	{ }
+void
+pbGarbageCollector::deleteObjectsAsync ()
+{
+	std::lock_guard <std::mutex> lock (mutex);
 
-	///  Constructs new Number value.
-	explicit
-	Number (const var & value) :
-		vsNumber (),
-		  number (value -> toNumber ())
-	{ }
+	__LOG__ << objects .size () << std::endl;
 
-	///  @name Common operations
+	if (objects .empty ())
+		return;
 
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const override
-	{ return number; }
+	std::thread (&pbGarbageCollector::deleteObjects, std::move (objects)) .detach ();
+}
 
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const override
-	{ return toInteger (); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const override
-	{ return toInteger (); }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const override
-	{ return number; }
-
-	///  Converts its argument to a value of type Object.
-	virtual
-	var
-	toObject () const
-	throw (TypeError) final override;
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override;
-
-
-private:
-
-	///  @name Members
-
-	const double number;
-
-};
-
-///  @relates Subtraction
-///  @name subtraction.
-
-///  Returns either a Int32, a UInt32 or a Number value.
-var
-createNumber (const double value);
+void
+pbGarbageCollector::deleteObjects (const ObjectArray & objects)
+{
+	for (const auto & object : objects)
+	{
+		__LOG__ << object -> getTypeName () << std::endl;
+		delete object;
+	}
+}
 
 } // pb
 } // titania
-
-#endif

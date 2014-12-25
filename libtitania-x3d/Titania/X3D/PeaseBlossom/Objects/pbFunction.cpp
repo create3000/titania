@@ -48,63 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VS_PRIMITIVE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VS_PRIMITIVE_H__
-
-#include "../Primitives/vsValue.h"
+#include "pbFunction.h"
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a primitive type.
- */
-class vsPrimitive :
-	public vsValue
-{
-public:
-
-	///  @name Construction
-
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const) const final override
-	{ return var (const_cast <vsPrimitive*> (this)); }
-
-	///  @name Common operations
-
-	///  Returns true if the input argument is a non-Object type otherwise false.
-	virtual
-	bool
-	isPrimitive () const final override
-	{ return true; }
-
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const final override
-	{ return var (const_cast <vsPrimitive*> (this)); }
-
-	///  Converts its input argument to either Primitive or Object type.
-	virtual
-	var
-	toValue () const
-	{ return var (const_cast <vsPrimitive*> (this)); }
-
-
-protected:
-
-	///  @name Construction
-
-	///  Constructs new vsBoolean value.
-	vsPrimitive () :
-		vsValue ()
-	{ }
-
-};
+const std::string pbFunction::typeName = "Function";
 
 } // pb
 } // titania
-
-#endif

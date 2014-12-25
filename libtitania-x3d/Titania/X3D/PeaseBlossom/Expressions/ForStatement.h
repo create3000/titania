@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FOR_STATEMENT_H__
 
 #include "../Execution/Block.h"
-#include "../Expressions/vsExpression.h"
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
@@ -61,7 +61,7 @@ namespace pb {
  *  Class to represent a ECMAScript object literal expression.
  */
 class ForStatement :
-	public vsExpression
+	public pbExpression
 {
 public:
 
@@ -69,35 +69,27 @@ public:
 
 	///  Constructs new ForStatement expression.
 	ForStatement (var && booleanExpression, var && iterationExpression) :
-		       vsExpression (),
-		  booleanExpression (std::move (booleanExpression ? booleanExpression : make_var <True> ())),
+		       pbExpression (),
+		  booleanExpression (std::move (booleanExpression .isUndefined () ? var (true) : booleanExpression)),
 		iterationExpression (std::move (iterationExpression)),
 		              block (new Block ())
 	{ construct (); }
 
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{
-		const auto copy = make_ptr <ForStatement> (booleanExpression -> copy (executionContext), iterationExpression -> copy (executionContext));
-
-		copy -> getBlock () -> import (block .get (), executionContext);
-
-		return copy;
-	}
-
-	///  @name Common members
-
-	///  Returns the type of the value. For this expression this is »ADDITION«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return FOR_STATEMENT; }
+//	///  Creates a copy of this object.
+//	virtual
+//	var
+//	copy (pbExecutionContext* const executionContext) const final override
+//	{
+//		const auto copy = make_ptr <ForStatement> (booleanExpression -> copy (executionContext), iterationExpression -> copy (executionContext));
+//
+//		copy -> getBlock () -> import (block .get (), executionContext);
+//
+//		return copy;
+//	}
 
 	///  @name Member access
 
-	const basic_ptr <Block> &
+	const ptr <Block> &
 	getBlock () const
 	{ return block; }
 
@@ -105,11 +97,13 @@ public:
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	void
-	evaluate () const final override
+	var
+	toPrimitive () const final override
 	{
-		for ( ; booleanExpression -> toBoolean (); iterationExpression -> toValue ())
+		for ( ; booleanExpression .toBoolean (); iterationExpression .toPrimitive ())
 			block -> run ();
+
+		return var ();
 	}
 
 private:
@@ -125,7 +119,7 @@ private:
 
 	const var               booleanExpression;
 	const var               iterationExpression;
-	const basic_ptr <Block> block;
+	const ptr <Block> block;
 
 };
 

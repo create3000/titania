@@ -51,9 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ADDITION_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ADDITION_EXPRESSION_H__
 
-#include "../Expressions/vsExpression.h"
-#include "../Primitives/Number.h"
-#include "../Primitives/String.h"
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
@@ -62,7 +60,7 @@ namespace pb {
  *  Class to represent a ECMAScript addition expression.
  */
 class AdditionExpression :
-	public vsExpression
+	public pbExpression
 {
 public:
 
@@ -70,31 +68,23 @@ public:
 
 	///  Constructs new AdditionExpression expression.
 	AdditionExpression (var && lhs, var && rhs) :
-		vsExpression (),
+		pbExpression (),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <AdditionExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
-
-	///  @name Common members
-
-	///  Returns the type of the value. For this expression this is »ADDITION«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return ADDITION_EXPRESSION; }
+//	///  Creates a copy of this object.
+//	virtual
+//	var
+//	copy (pbExecutionContext* const executionContext) const final override
+//	{ return make_ptr <AdditionExpression> (lhs .copy (executionContext), rhs .copy (executionContext)); }
 
 	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toValue () const final override
+	toPrimitive () const final override
 	{ return evaluate (lhs, rhs); }
 
 	///  Evaluates the expression.
@@ -102,13 +92,13 @@ public:
 	var
 	evaluate (const var & lhs, const var & rhs)
 	{
-		const var x = lhs -> toValue ();
-		const var y = rhs -> toValue ();
-	
-		if (x -> getType () == STRING or y -> getType () == STRING)
-			return make_var <String> (x -> toString () + y -> toString ());
+		const var x = lhs .toPrimitive ();
+		const var y = rhs .toPrimitive ();
 
-		return make_var <Number> (x -> toNumber () + y -> toNumber ());
+		if (x .getType () == STRING or y .getType () == STRING)
+			return var (x .toString () + y .toString ());
+
+		return var (x .toNumber () + y .toNumber ());
 	}
 
 private:
@@ -118,7 +108,9 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (lhs, rhs); }
+	{
+		addChildren (lhs, rhs);
+	}
 
 	///  @name Members
 
@@ -135,10 +127,10 @@ inline
 var
 createAdditionExpression (var && lhs, var && rhs)
 {
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+	if (lhs .isPrimitive () and rhs .isPrimitive ())
 		return AdditionExpression::evaluate (lhs, rhs);
 
-	return make_var <AdditionExpression> (std::move (lhs), std::move (rhs));
+	return new AdditionExpression (std::move (lhs), std::move (rhs));
 }
 
 } // pb

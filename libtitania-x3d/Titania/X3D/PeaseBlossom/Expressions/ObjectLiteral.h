@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_OBJECT_LITERAL_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_OBJECT_LITERAL_H__
 
-#include "../Expressions/vsExpression.h"
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
@@ -60,39 +60,31 @@ namespace pb {
  *  Class to represent a ECMAScript object literal expression.
  */
 class ObjectLiteral :
-	public vsExpression
+	public pbExpression
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new ObjectLiteral expression.
-	ObjectLiteral (vsExecutionContext* const executionContext, basic_ptr <Object> && object) :
-		    vsExpression (),
+	ObjectLiteral (pbExecutionContext* const executionContext, ptr <Object> && object) :
+		    pbExpression (),
 		executionContext (executionContext),
 		          object (object)
 	{ construct (); }
 
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <ObjectLiteral> (executionContext, basic_ptr <Object> (object)); }
-
-	///  @name Common members
-
-	///  Returns the type of the value. For this expression this is »ADDITION«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return OBJECT_LITERAL; }
+//	///  Creates a copy of this object.
+//	virtual
+//	var
+//	copy (pbExecutionContext* const executionContext) const final override
+//	{ return make_var <ObjectLiteral> (executionContext, ptr <Object> (object)); }
 
 	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toValue () const final override
+	toPrimitive () const final override
 	{ return object -> copy (executionContext .get ()); }
 
 
@@ -107,8 +99,8 @@ private:
 
 	///  @name Members
 
-	const basic_ptr <vsExecutionContext> executionContext;
-	const basic_ptr <Object>             object;
+	const ptr <pbExecutionContext> executionContext;
+	const ptr <Object>             object;
 
 };
 

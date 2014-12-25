@@ -51,12 +51,12 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_EXECUTION_CONTEXT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_EXECUTION_CONTEXT_H__
 
-#include "../Base/vsInputStreamObject.h"
-#include "../Base/vsOutputStreamObject.h"
+#include "../Base/pbInputStreamObject.h"
+#include "../Base/pbOutputStreamObject.h"
 #include "../Bits/Exception.h"
-#include "../Execution/vsBlock.h"
-#include "../Objects/vsFunction.h"
-#include "../Objects/vsObject.h"
+#include "../Execution/pbBlock.h"
+#include "../Objects/pbFunction.h"
+#include "../Objects/pbObject.h"
 #include "../Primitives/array.h"
 
 namespace titania {
@@ -64,9 +64,9 @@ namespace pb {
 
 class Function;
 
-class vsExecutionContext :
-	virtual public vsBlock,
-	virtual public vsInputStreamObject
+class pbExecutionContext :
+	virtual public pbBlock,
+	virtual public pbInputStreamObject
 {
 public:
 
@@ -88,12 +88,12 @@ public:
 	{ return getExecutionContext () .get () == this; }
 
 	///  Returns the execution context this objects belongs to.
-	const basic_ptr <vsExecutionContext> &
+	const ptr <pbExecutionContext> &
 	getExecutionContext () const
 	{ return executionContext; }
 
 	///  Returns the global objects.
-	const basic_ptr <vsObject> &
+	const ptr <pbObject> &
 	getGlobalObject () const
 	{ return globalObject; }
 
@@ -109,13 +109,13 @@ public:
 	///  or function .name is empty.
 	virtual
 	void
-	addFunctionDeclaration (const basic_ptr <vsFunction> & function)
+	addFunctionDeclaration (const ptr <pbFunction> & function)
 	throw (std::invalid_argument);
 
 	///  Updates a global function, throws std::invalid_argument if function .name is empty.
 	virtual
 	void
-	updateFunctionDeclaration (const basic_ptr <vsFunction> & function)
+	updateFunctionDeclaration (const ptr <pbFunction> & function)
 	throw (std::invalid_argument);
 
 	///  Removes the function identified by @a name from this execution context.
@@ -127,12 +127,12 @@ public:
 	///  Returns @a name local function, throws std::invalid_argument if function .name is empty or a function with
 	///  name not exists.
 	virtual
-	const basic_ptr <vsFunction> &
+	const ptr <pbFunction> &
 	getFunctionDeclaration (const std::string & name) const
 	throw (std::out_of_range)
 	{ return functions .at (name); }
 
-	const std::map <std::string, basic_ptr <vsFunction>> &
+	const std::map <std::string, ptr <pbFunction>> &
 	getFunctionDeclarations () const
 	{ return functions; }
 
@@ -158,40 +158,40 @@ public:
 protected:
 
 	///  @name Friends
-	
+
 	friend class Function;
 	friend class VariableDeclaration;
 	friend class VariableExpression;
 
 	///  @name Construction
 
-	///  Constructs new vsExecutionContext.
-	vsExecutionContext (vsExecutionContext* const executionContext, const basic_ptr <vsObject> & globalObject);
+	///  Constructs new pbExecutionContext.
+	pbExecutionContext (pbExecutionContext* const executionContext, const ptr <pbObject> & globalObject);
 
 	/// @name Member access
 
 	///  Replaces the current execution context by @a executionContext.
 	void
-	setExecutionContext (const basic_ptr <vsExecutionContext> & value)
+	setExecutionContext (const ptr <pbExecutionContext> & value)
 	{ executionContext = value; }
 
 	///  Returns the local objects.
-	basic_ptr <vsObject> &
+	ptr <pbObject> &
 	getLocalObject ()
 	{ return localObject; }
 
 	///  Returns the local objects.
-	const basic_ptr <vsObject> &
+	const ptr <pbObject> &
 	getLocalObject () const
 	{ return localObject; }
 
 	///  Returns the default objects stack.
-	basic_array <basic_ptr <vsObject>> &
+	array <ptr <pbObject>> &
 	getDefaultObjects ()
 	{ return defaultObjects; }
 
 	///  Returns the default objects stack.
-	const basic_array <basic_ptr <vsObject>> &
+	const array <ptr <pbObject>> &
 	getDefaultObjects () const
 	{ return defaultObjects; }
 
@@ -199,7 +199,7 @@ protected:
 
 	///  Imports all function declarations and expressions from @a executionContext into this execution context.
 	void
-	import (const vsExecutionContext* const executionContext);
+	import (const pbExecutionContext* const executionContext);
 
 	///  Executes the associated expessions of this context.
 	virtual
@@ -216,12 +216,12 @@ private:
 
 	/// @name Members
 
-	bool                                            strict;
-	basic_ptr <vsExecutionContext>                  executionContext;
-	basic_ptr <vsObject>                            globalObject;
-	basic_ptr <vsObject>                            localObject;
-	basic_array <basic_ptr <vsObject>>              defaultObjects; // Use deque to keep iters when inserting value.
-	std::map <std::string, basic_ptr <vsFunction>>  functions;
+	bool                                      strict;
+	ptr <pbExecutionContext>                  executionContext;
+	ptr <pbObject>                            globalObject;
+	ptr <pbObject>                            localObject;
+	array <ptr <pbObject>>                    defaultObjects; // Use deque to keep iters when inserting values.
+	std::map <std::string, ptr <pbFunction>>  functions;
 
 };
 

@@ -26,14 +26,14 @@
 //  *
 //  ************************************************************************/
 
-#include "vsChildObject.h"
+#include "pbChildObject.h"
 
 namespace titania {
 namespace pb {
 
-vsChildObject::vsChildObject () :
-	            vsBase (),
-	vsGarbageCollector (),
+pbChildObject::pbChildObject () :
+	            pbBase (),
+	pbGarbageCollector (),
 	    referenceCount (0),
 	           parents (),
 	              root (nullptr),
@@ -41,25 +41,25 @@ vsChildObject::vsChildObject () :
 { }
 
 void
-vsChildObject::addChild (const vsChildObject & child)
+pbChildObject::addChild (const pbChildObject & child)
 {
 	assert (&child not_eq this);
 
-	children .emplace (const_cast <vsChildObject*> (&child));
+	children .emplace (const_cast <pbChildObject*> (&child));
 
-	const_cast <vsChildObject &> (child) .addParent (this);
+	const_cast <pbChildObject &> (child) .addParent (this);
 }
 
 void
-vsChildObject::removeChild (const vsChildObject & child)
+pbChildObject::removeChild (const pbChildObject & child)
 {
-	children .erase (const_cast <vsChildObject*> (&child));
+	children .erase (const_cast <pbChildObject*> (&child));
 
-	const_cast <vsChildObject &> (child) .removeParent (this);
+	const_cast <pbChildObject &> (child) .removeParent (this);
 }
 
 void
-vsChildObject::addParent (vsChildObject* const parent)
+pbChildObject::addParent (pbChildObject* const parent)
 {
 	if (root)
 	{
@@ -76,7 +76,7 @@ vsChildObject::addParent (vsChildObject* const parent)
 }
 
 void
-vsChildObject::replaceParent (vsChildObject* const parentToRemove, vsChildObject* const parentToAdd)
+pbChildObject::replaceParent (pbChildObject* const parentToRemove, pbChildObject* const parentToAdd)
 {
 	if (root == parentToRemove)
 		root = parentToAdd;
@@ -91,7 +91,7 @@ vsChildObject::replaceParent (vsChildObject* const parentToRemove, vsChildObject
 }
 
 void
-vsChildObject::removeParent (vsChildObject* const parent)
+pbChildObject::removeParent (pbChildObject* const parent)
 {
 	if (parents .erase (parent))
 	{
@@ -130,19 +130,19 @@ vsChildObject::removeParent (vsChildObject* const parent)
 }
 
 void
-vsChildObject::addWeakParent (vsChildObject* const weakParent)
+pbChildObject::addWeakParent (pbChildObject* const weakParent)
 {
 	parents .emplace (weakParent);
 }
 
 void
-vsChildObject::removeWeakParent (vsChildObject* const weakParent)
+pbChildObject::removeWeakParent (pbChildObject* const weakParent)
 {
 	parents .erase (weakParent);
 }
 
 bool
-vsChildObject::hasRootedObjects (ChildObjectSet & seen)
+pbChildObject::hasRootedObjects (ChildObjectSet & seen)
 {
 	if (parents .empty ())
 		return true;
@@ -177,7 +177,7 @@ vsChildObject::hasRootedObjects (ChildObjectSet & seen)
 }
 
 bool
-vsChildObject::hasRootedObjectsDontCollectObject (ChildObjectSet & seen)
+pbChildObject::hasRootedObjectsDontCollectObject (ChildObjectSet & seen)
 {
 	if (getParents () .empty ())
 		return true;
@@ -194,8 +194,10 @@ vsChildObject::hasRootedObjectsDontCollectObject (ChildObjectSet & seen)
 // Object
 
 void
-vsChildObject::dispose ()
+pbChildObject::dispose ()
 {
+	__LOG__ << this << " : " << getTypeName () << std::endl;
+
 	parents .clear ();
 	root = nullptr;
 
@@ -205,7 +207,7 @@ vsChildObject::dispose ()
 	children .clear ();
 }
 
-vsChildObject::~vsChildObject ()
+pbChildObject::~pbChildObject ()
 { }
 
 } // pb

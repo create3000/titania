@@ -469,28 +469,19 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Parser/RegEx.cpp \
 	Titania/X3D/Parser/Wavefront/Parser.cpp \
 	Titania/X3D/Parser/X3DParser.cpp \
-	Titania/X3D/PeaseBlossom/Base/vsChildObject.cpp \
-	Titania/X3D/PeaseBlossom/Base/vsGarbargeCollector.cpp \
+	Titania/X3D/PeaseBlossom/Base/pbChildObject.cpp \
+	Titania/X3D/PeaseBlossom/Base/pbGarbargeCollector.cpp \
 	Titania/X3D/PeaseBlossom/Execution/Block.cpp \
 	Titania/X3D/PeaseBlossom/Execution/GlobalObject.cpp \
+	Titania/X3D/PeaseBlossom/Execution/pbExecutionContext.cpp \
 	Titania/X3D/PeaseBlossom/Execution/Program.cpp \
-	Titania/X3D/PeaseBlossom/Execution/vsExecutionContext.cpp \
-	Titania/X3D/PeaseBlossom/Expressions/vsExpression.cpp \
+	Titania/X3D/PeaseBlossom/Expressions/pbExpression.cpp \
 	Titania/X3D/PeaseBlossom/Objects/Function.cpp \
-	Titania/X3D/PeaseBlossom/Objects/vsFunction.cpp \
-	Titania/X3D/PeaseBlossom/Objects/vsObject.cpp \
+	Titania/X3D/PeaseBlossom/Objects/pbBaseObject.cpp \
+	Titania/X3D/PeaseBlossom/Objects/pbFunction.cpp \
+	Titania/X3D/PeaseBlossom/Objects/pbObject.cpp \
 	Titania/X3D/PeaseBlossom/Parser/Parser.cpp \
-	Titania/X3D/PeaseBlossom/Primitives/Boolean.cpp \
-	Titania/X3D/PeaseBlossom/Primitives/Int32.cpp \
-	Titania/X3D/PeaseBlossom/Primitives/Null.cpp \
-	Titania/X3D/PeaseBlossom/Primitives/Number.cpp \
-	Titania/X3D/PeaseBlossom/Primitives/String.cpp \
-	Titania/X3D/PeaseBlossom/Primitives/UInt32.cpp \
-	Titania/X3D/PeaseBlossom/Primitives/Undefined.cpp \
-	Titania/X3D/PeaseBlossom/Primitives/vsBoolean.cpp \
-	Titania/X3D/PeaseBlossom/Primitives/vsNumber.cpp \
-	Titania/X3D/PeaseBlossom/Primitives/vsString.cpp \
-	Titania/X3D/PeaseBlossom/Primitives/vsValue.cpp \
+	Titania/X3D/PeaseBlossom/Primitives/var.cpp \
 	Titania/X3D/Prototype/ExternProtoArray.cpp \
 	Titania/X3D/Prototype/ExternProtoDeclaration.cpp \
 	Titania/X3D/Prototype/ProtoArray.cpp \

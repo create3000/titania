@@ -51,22 +51,22 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_BLOCK_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_BLOCK_H__
 
-#include "../Execution/vsBlock.h"
+#include "../Execution/pbBlock.h"
 
 namespace titania {
 namespace pb {
 
 class Block :
-	public vsBlock
+	public pbBlock
 {
 public:
 
-	using vsBlock::import;
-	using vsBlock::run;
+	using pbBlock::import;
+	using pbBlock::run;
 
 	///  Constructs new Block.
 	Block () :
-		vsBlock ()
+		pbBlock ()
 	{ }
 
 	///  @name Common members
@@ -90,7 +90,7 @@ private:
 
 	///  @name Static members
 
-	static const std::string   typeName;
+	static const std::string typeName;
 
 };
 

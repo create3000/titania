@@ -156,8 +156,8 @@ private:
 
 	///  @name Members
 
-	std::vector <basic::uri>    worldURL;
-	pb::basic_ptr <pb::Program> program;
+	std::vector <basic::uri> worldURL;
+	pb::ptr <pb::Program>    program;
 
 };
 

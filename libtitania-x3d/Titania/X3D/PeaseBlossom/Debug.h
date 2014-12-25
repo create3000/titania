@@ -56,19 +56,22 @@ namespace pb {
 
 inline
 void
-debug_roots (vsChildObject* node, std::set <vsChildObject*> & seen)
+debug_roots (pbChildObject* node, std::set <pbChildObject*> & seen)
 {
 	if (not seen .emplace (node) .second)
 		return;
 
 	static int i = 0;
 
+	if (node -> getParents () .empty ())
+		__LOG__ << std::string (16, '*') << std::endl;;
+
 	__LOG__ << std::string (i, '\t') << node -> getParents () .size () << "  " << node -> getTypeName () << "    :    ";
 
-	const auto value = dynamic_cast <vsValue*> (node);
-
-	if (value)
-		std::clog << value -> getType () << "    :    ";
+//	const auto value = dynamic_cast <vsValue*> (node);
+//
+//	if (value)
+//		std::clog << value -> getType () << "    :    ";
 
 	std::clog << node << std::endl;
 
@@ -87,9 +90,9 @@ debug_roots (vsChildObject* node, std::set <vsChildObject*> & seen)
 
 inline
 void
-debug_roots (vsChildObject* node)
+debug_roots (pbChildObject* node)
 {
-	std::set <vsChildObject*> seen;
+	std::set <pbChildObject*> seen;
 	debug_roots (node, seen);
 }
 

@@ -48,10 +48,9 @@
  *
  ******************************************************************************/
 
-#include "vsObject.h"
+#include "pbObject.h"
 
-#include "../Objects/vsFunction.h"
-#include "../Primitives/Undefined.h"
+#include "../Objects/pbFunction.h"
 
 namespace titania {
 namespace pb {
@@ -59,12 +58,12 @@ namespace pb {
 PropertyDescriptor::~PropertyDescriptor ()
 { }
 
-const std::string vsObject::typeName = "Object";
+const std::string pbObject::typeName = "Object";
 
-var
-vsObject::clone (vsExecutionContext* const executionContext) const
+ptr <pbObject>
+pbObject::clone (pbExecutionContext* const executionContext) const
 {
-	const basic_ptr <vsObject> clone = create (executionContext);
+	const ptr <pbObject> clone = create (executionContext);
 
 	for (const auto & propertyDescriptor : propertyDescriptors)
 	{
@@ -83,17 +82,17 @@ vsObject::clone (vsExecutionContext* const executionContext) const
 	return clone;
 }
 
-var
-vsObject::copy (vsExecutionContext* const executionContext) const
+ptr <pbObject>
+pbObject::copy (pbExecutionContext* const executionContext) const
 {
-	const basic_ptr <vsObject> copy = create (executionContext);
+	const ptr <pbObject> copy = create (executionContext);
 
 	for (const auto & propertyDescriptor : propertyDescriptors)
 	{
 		try
 		{
 			copy -> addProperty (propertyDescriptor .first,
-			                     propertyDescriptor .second -> value -> copy (executionContext),
+			                     propertyDescriptor .second -> value .copy (executionContext),
 			                     propertyDescriptor .second -> flags,
 			                     propertyDescriptor .second -> get,
 			                     propertyDescriptor .second -> set);
@@ -106,53 +105,54 @@ vsObject::copy (vsExecutionContext* const executionContext) const
 }
 
 void
-vsObject::addProperty (const std::string & name,
+pbObject::addProperty (const size_t id,
                        const var & value,
                        const PropertyFlagsType flags,
-                       const var & get,
-                       const var & set)
+                       const ptr <pbFunction> & get,
+                       const ptr <pbFunction> & set)
 throw (std::invalid_argument)
 {
-	const auto pair = propertyDescriptors .emplace (name,
-	                                                PropertyDescriptorPtr (new PropertyDescriptor {
-	                                                                          value ? value : make_var <Undefined> (),
-	                                                                          flags,
-	                                                                          get,
-	                                                                          set
-																								  }));
+	const auto pair = propertyDescriptors .emplace (id, PropertyDescriptorPtr (new PropertyDescriptor { value, flags, get, set }));
 
 	if (pair .second)
 	{
-		pair .first -> second -> value .addParent (this);
-		pair .first -> second -> get   .addParent (this);
-		pair .first -> second -> set   .addParent (this);
+		const auto & propertyDescriptor = pair .first -> second; 
+
+		if (propertyDescriptor -> value .isObject ())
+			propertyDescriptor -> value .getObject () .addParent (this);
+
+		propertyDescriptor -> get .addParent (this);
+		propertyDescriptor -> set .addParent (this);
 	}
 	else
 		throw std::invalid_argument ("Property already exists.");
 }
 
 void
-vsObject::updateProperty (const std::string & name,
+pbObject::updateProperty (const size_t id,
                           const var & value,
                           const PropertyFlagsType flags,
-                          const var & get,
-                          const var & set)
+                          const ptr <pbFunction> & get,
+                          const ptr <pbFunction> & set)
 throw (std::invalid_argument)
 {
 	try
 	{
-		const auto & propertyDescriptor = propertyDescriptors .at (name);
+		const auto & propertyDescriptor = propertyDescriptors .at (id);
 
-		if (propertyDescriptor -> flags & WRITABLE)
+		if (propertyDescriptor -> flags & WRITABLE and not (flags & LEAVE_VALUE))
 		{
-			if (value)
-				propertyDescriptor -> value = value;
+			auto & value_ = propertyDescriptor -> value;
+
+			value_ = value;
+
+			if (value_ .isObject ())
+				value_ .getObject () .addParent (this);
 		}
 
 		if (propertyDescriptor -> flags & CONFIGURABLE)
 		{
-			if (not (propertyDescriptor -> flags & SKIP))
-				propertyDescriptor -> flags = flags;
+			propertyDescriptor -> flags = flags;
 
 			if (get)
 				propertyDescriptor -> get = get;
@@ -163,19 +163,19 @@ throw (std::invalid_argument)
 	}
 	catch (const std::out_of_range &)
 	{
-		addProperty (name, value, flags, get, set);
+		addProperty (id, value, flags, get, set);
 	}
 }
 
 void
-vsObject::dispose ()
+pbObject::dispose ()
 {
 	propertyDescriptors .clear ();
 
-	vsValue::dispose ();
+	pbBaseObject::dispose ();
 }
 
-vsObject::~vsObject ()
+pbObject::~pbObject ()
 { }
 
 } // pb

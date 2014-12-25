@@ -51,8 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_BOOLEAN_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_BOOLEAN_OBJECT_H__
 
-#include "../Objects/vsObject.h"
-#include "../Primitives/Boolean.h"
+#include "../Objects/pbObject.h"
 
 namespace titania {
 namespace pb {
@@ -61,7 +60,7 @@ namespace pb {
  *  Class to represent a »false« object.
  */
 class BooleanObject :
-	public vsObject
+	public pbObject
 {
 public:
 
@@ -69,80 +68,34 @@ public:
 
 	///  Constructs new BooleanObject.
 	BooleanObject () :
-		vsObject (),
-		 boolean (make_var <False> ())
+		pbObject (),
+		 boolean (false)
 	{ }
 
 	///  Constructs new BooleanObject.
 	BooleanObject (const bool value) :
-		vsObject (),
-		 boolean (value ? make_var <True> () : make_var <False> ())
+		pbObject (),
+		 boolean (value)
 	{ }
 
 	///  Constructs new BooleanObject.
-	BooleanObject (const var value) :
-		BooleanObject (value -> toBoolean ())
+	BooleanObject (const var & value) :
+		BooleanObject (value .toBoolean ())
 	{ }
 
 	///  Creates a new default object.
 	virtual
-	var
-	create (vsExecutionContext* const) const final override
-	{ return make_var <BooleanObject> (boolean); }
-
-	///  @name Common members
-
-	///  Returns the type of the value. For boolean objects this is »BOOLEAN_OBJECT«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return BOOLEAN_OBJECT; }
-
-	///  @name Common operations
-
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const final override
-	{ return boolean; }
-
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const final override
-	{ return boolean -> toBoolean (); }
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const final override
-	{ return boolean -> toUInt16 (); }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return boolean -> toInt32 (); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return boolean -> toUInt32 (); }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const final override
-	{ return boolean -> toNumber (); }
+	ptr <pbObject>
+	create (pbExecutionContext* const) const final override
+	{ return make_ptr <BooleanObject> (false); }
 
 	///  @name Input/Output
 
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ boolean -> toStream (ostream); }
+//	///  Inserts this object into the output stream @a ostream.
+//	virtual
+//	void
+//	toStream (std::ostream & ostream) const final override
+//	{ boolean -> toStream (ostream); }
 
 
 private:

@@ -51,13 +51,9 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ASSIGNMENT_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ASSIGNMENT_EXPRESSION_H__
 
-#include "../Execution/vsExecutionContext.h"
+#include "../Execution/pbExecutionContext.h"
 #include "../Expressions/AssignmentOperatorType.h"
-#include "../Expressions/vsExpression.h"
-#include "../Primitives/Int32.h"
-#include "../Primitives/String.h"
-#include "../Primitives/UInt32.h"
-#include "../Primitives/vsValue.h"
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
@@ -66,42 +62,90 @@ namespace pb {
  *  Class to represent a ECMAScript identifier expression.
  */
 class AssignmentExpression :
-	public vsExpression
+	public pbExpression
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new AssignmentExpression expression.
-	AssignmentExpression (vsExecutionContext* const executionContext, var && lhs, var && rhs, AssignmentOperatorType type) :
-		    vsExpression (),
+	AssignmentExpression (pbExecutionContext* const executionContext, var && lhs, var && rhs, AssignmentOperatorType type) :
+		    pbExpression (),
 		executionContext (executionContext),
-		             lhs (std::move (lhs)),
+		             lhs (lhs .isObject () ? lhs .getObject () : nullptr),
 		             rhs (std::move (rhs)),
 		            type (type)
 	{ construct (); }
 
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <AssignmentExpression> (executionContext, lhs -> copy (executionContext), rhs -> copy (executionContext), type); }
-
-	///  @name Common members
-
-	///  Returns the type of the value. For this expression this is »VARIABLE«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return ASSIGNMENT_EXPRESSION; }
+//	///  Creates a copy of this object.
+//	virtual
+//	var
+//	copy (pbExecutionContext* const executionContext) const final override
+//	{ return make_var <AssignmentExpression> (executionContext, lhs -> copy (executionContext), rhs -> copy (executionContext), type); }
 
 	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toValue () const final override
-	{ return setProperty (); }
+	toPrimitive () const final override
+	{
+		switch (type)
+		{
+			case AssignmentOperatorType::ASSIGNMENT:
+				return lhs -> setValue (rhs .toPrimitive ());
+
+			case AssignmentOperatorType::MULTIPLICATION_ASSIGNMENT:
+			{
+				return lhs -> setValue (lhs -> toPrimitive () .toNumber () * rhs .toNumber ());
+			}
+			case AssignmentOperatorType::DIVISION_ASSIGNMENT:
+			{
+				return lhs -> setValue (lhs -> toPrimitive () .toNumber () / rhs .toNumber ());
+			}
+			case AssignmentOperatorType::REMAINDER_ASSIGNMENT:
+			{
+				return lhs -> setValue (std::fmod (lhs -> toPrimitive () .toNumber (), rhs .toNumber ()));
+			}
+			case AssignmentOperatorType::ADDITION_ASSIGNMENT:
+			{
+				if (lhs -> toPrimitive () .getType () == STRING or rhs .getType () == STRING)
+					return lhs -> setValue (lhs -> toPrimitive () .toString () + rhs .toString ());
+
+				return lhs -> setValue (lhs -> toPrimitive () .toNumber () + rhs .toNumber ());
+			}
+			case AssignmentOperatorType::SUBTRACTION_ASSIGNMENT:
+			{
+				return lhs -> setValue (lhs -> toPrimitive () .toNumber () - rhs .toNumber ());
+			}
+			case AssignmentOperatorType::LEFT_SHIFT_ASSIGNMENT:
+			{
+				return lhs -> setValue (lhs -> toPrimitive () .toInt32 () << (rhs .toUInt32 () & 0x1f));
+			}
+			case AssignmentOperatorType::RIGHT_SHIFT_ASSIGNMENT:
+			{
+				return lhs -> setValue (lhs -> toPrimitive () .toInt32 () >> (rhs .toUInt32 () & 0x1f));
+			}
+			case AssignmentOperatorType::UNSIGNED_RIGHT_SHIFT_ASSIGNMENT:
+			{
+				return lhs -> setValue (lhs -> toPrimitive () .toUInt32 () >> (rhs .toUInt32 () & 0x1f));
+			}
+			case AssignmentOperatorType::BITWISE_AND_ASSIGNMENT:
+			{
+				return lhs -> setValue (lhs -> toPrimitive () .toInt32 () & rhs .toInt32 ());
+			}
+			case AssignmentOperatorType::BITWISE_XOR_ASSIGNMENT:
+			{
+				return lhs -> setValue (lhs -> toPrimitive () .toInt32 () ^ rhs .toInt32 ());
+			}
+			case AssignmentOperatorType::BITWISE_OR_ASSIGNMENT:
+			{
+				return lhs -> setValue (lhs -> toPrimitive () .toInt32 () | rhs .toInt32 ());
+			}
+		}
+
+		return var ();
+	}
 
 
 private:
@@ -118,87 +162,10 @@ private:
 		addChildren (executionContext, lhs, rhs);
 	}
 
-	///  @name Operations
-
-	var
-	setProperty () const
-	{
-		var value = rhs -> toValue ();
-
-		switch (type)
-		{
-			case AssignmentOperatorType::ASSIGNMENT:
-				break;
-
-			case AssignmentOperatorType::MULTIPLICATION_ASSIGNMENT:
-			{
-				value = make_var <Number> (lhs -> toNumber () * value -> toNumber ());
-				break;
-			}
-			case AssignmentOperatorType::DIVISION_ASSIGNMENT:
-			{
-				value = make_var <Number> (lhs -> toNumber () / value -> toNumber ());
-				break;
-			}
-			case AssignmentOperatorType::REMAINDER_ASSIGNMENT:
-			{
-				value = make_var <Number> (std::fmod (lhs -> toNumber (), value -> toNumber ()));
-				break;
-			}
-			case AssignmentOperatorType::ADDITION_ASSIGNMENT:
-			{
-				if (lhs -> getType () == STRING or value -> getType () == STRING)
-					value = make_var <String> (lhs -> toString () + value -> toString ());
-
-				else
-					value = make_var <Number> (lhs -> toNumber () + value -> toNumber ());
-
-				break;
-			}
-			case AssignmentOperatorType::SUBTRACTION_ASSIGNMENT:
-			{
-				value = make_var <Number> (lhs -> toNumber () - value -> toNumber ());
-				break;
-			}
-			case AssignmentOperatorType::LEFT_SHIFT_ASSIGNMENT:
-			{
-				value = make_var <Int32> (lhs -> toInt32 () << (value -> toUInt32 () & 0x1f));
-				break;
-			}
-			case AssignmentOperatorType::RIGHT_SHIFT_ASSIGNMENT:
-			{
-				value = make_var <Int32> (lhs -> toInt32 () >> (value -> toUInt32 () & 0x1f));
-				break;
-			}
-			case AssignmentOperatorType::UNSIGNED_RIGHT_SHIFT_ASSIGNMENT:
-			{
-				value = make_var <UInt32> (lhs -> toUInt32 () >> (value -> toUInt32 () & 0x1f));
-				break;
-			}
-			case AssignmentOperatorType::BITWISE_AND_ASSIGNMENT:
-			{
-				value = make_var <Int32> (lhs -> toInt32 () & value -> toInt32 ());
-				break;
-			}
-			case AssignmentOperatorType::BITWISE_XOR_ASSIGNMENT:
-			{
-				value = make_var <Int32> (lhs -> toInt32 () ^ value -> toInt32 ());
-				break;
-			}
-			case AssignmentOperatorType::BITWISE_OR_ASSIGNMENT:
-			{
-				value = make_var <Int32> (lhs -> toInt32 () | value -> toInt32 ());
-				break;
-			}
-		}
-
-		return lhs -> setValue (std::move (value));
-	}
-
 	///  @name Members
 
-	const basic_ptr <vsExecutionContext> executionContext;
-	const basic_ptr <vsExpression>       lhs;
+	const ptr <pbExecutionContext> executionContext;
+	const ptr <pbExpression>       lhs;
 	const var                            rhs;
 	const AssignmentOperatorType         type;
 

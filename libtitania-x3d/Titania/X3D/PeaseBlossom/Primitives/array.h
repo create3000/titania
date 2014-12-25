@@ -51,8 +51,9 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_ARRAY_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_ARRAY_H__
 
-#include "../Base/vsChildObject.h"
-#include "../Base/vsOutputStreamObject.h"
+#include "../Base/pbChildObject.h"
+#include "../Base/pbOutputStreamObject.h"
+#include "../Primitives/ptr.h"
 #include "../Primitives/var.h"
 
 #include <Titania/Basic/ReferenceIterator.h>
@@ -65,9 +66,9 @@ namespace titania {
 namespace pb {
 
 template <class Type>
-class basic_array :
-	public vsChildObject,
-	public vsOutputStreamObject
+class array :
+	public pbChildObject,
+	public pbOutputStreamObject
 {
 public:
 
@@ -92,43 +93,43 @@ public:
 	///  @name Construction
 
 	///  Default constructor.
-	basic_array () :
-		       vsChildObject (),
-		vsOutputStreamObject (),
+	array () :
+		       pbChildObject (),
+		pbOutputStreamObject (),
 		               value ()
 	{ }
 
 	///  Copy constructor.
-	basic_array (const basic_array & array) :
-		basic_array <Type> (array .begin (), array .end ())
+	array (const array & other) :
+		array <Type> (other .begin (), other .end ())
 	{ }
 
 	///  Move constructor.
-	basic_array (basic_array && array) :
-		       vsChildObject (),
-		vsOutputStreamObject (),
-		               value (std::move (array .value))
+	array (array && other) :
+		       pbChildObject (),
+		pbOutputStreamObject (),
+		               value (std::move (other .value))
 	{
 		for (const auto & element : value)
-			element -> replaceParent (&array, this);
+			element -> replaceParent (&other, this);
 	}
 
 	template <class InputIterator>
-	basic_array (const InputIterator &, const InputIterator &);
+	array (const InputIterator &, const InputIterator &);
 
 	///  @name Assignment operators
 
-	basic_array &
-	operator = (const basic_array & array)
+	array &
+	operator = (const array & other)
 	{
-		assign (array .begin (), array .end ());
+		assign (other .begin (), other .end ());
 		return *this;
 	}
 
-	basic_array &
-	operator = (basic_array &&);
+	array &
+	operator = (array &&);
 
-	basic_array &
+	array &
 	operator = (std::initializer_list <Type> list)
 	{
 		assign (list .begin (), list .end ());
@@ -321,11 +322,11 @@ public:
 	{
 		clear ();
 
-		vsChildObject::dispose ();
+		pbChildObject::dispose ();
 	}
 
 	virtual
-	~basic_array ()
+	~array ()
 	{ clear (); }
 
 
@@ -359,7 +360,7 @@ private:
 
 	///  @name Static members
 
-	static const std::string   typeName;
+	static const std::string typeName;
 
 	///  Members
 
@@ -368,13 +369,13 @@ private:
 };
 
 template <class Type>
-const std::string basic_array <Type>::typeName = "basic_array";
+const std::string array <Type>::typeName = "array";
 
 template <class Type>
 template <class InputIterator>
-basic_array <Type>::basic_array (const InputIterator & first, const InputIterator & last) :
-	       vsChildObject (),
-	vsOutputStreamObject (),
+array <Type>::array (const InputIterator & first, const InputIterator & last) :
+	       pbChildObject (),
+	pbOutputStreamObject (),
 	               value ()
 {
 	// Insert at end
@@ -390,18 +391,18 @@ basic_array <Type>::basic_array (const InputIterator & first, const InputIterato
 }
 
 template <class Type>
-basic_array <Type> &
-basic_array <Type>::operator = (basic_array && array)
+array <Type> &
+array <Type>::operator = (array && other)
 {
-	if (&array == this)
+	if (&other == this)
 		return *this;
 
 	clear ();
 
-	std::swap (value, array .value);
+	std::swap (value, other .value);
 
 	for (const auto & element : value)
-		element -> replaceParent (&array, this);
+		element -> replaceParent (&other, this);
 
 	return *this;
 }
@@ -409,7 +410,7 @@ basic_array <Type>::operator = (basic_array && array)
 template <class Type>
 template <class InputIterator>
 void
-basic_array <Type>::assign (const InputIterator & first, const InputIterator & last)
+array <Type>::assign (const InputIterator & first, const InputIterator & last)
 {
 	iterator current = begin ();
 
@@ -444,15 +445,15 @@ basic_array <Type>::assign (const InputIterator & first, const InputIterator & l
 template <class Type>
 inline
 void
-basic_array <Type>::clear ()
+array <Type>::clear ()
 {
 	remove (value .begin (), value .end ());
 	value .clear ();
 }
 
 template <class Type>
-typename basic_array <Type>::iterator
-basic_array <Type>::erase (const iterator & location)
+typename array <Type>::iterator
+array <Type>::erase (const iterator & location)
 {
 	remove (*location .base ());
 
@@ -462,8 +463,8 @@ basic_array <Type>::erase (const iterator & location)
 }
 
 template <class Type>
-typename basic_array <Type>::iterator
-basic_array <Type>::erase (const iterator & first, const iterator & last)
+typename array <Type>::iterator
+array <Type>::erase (const iterator & first, const iterator & last)
 {
 	remove (first .base (), last .base ());
 
@@ -473,8 +474,8 @@ basic_array <Type>::erase (const iterator & first, const iterator & last)
 }
 
 template <class Type>
-typename basic_array <Type>::iterator
-basic_array <Type>::insert (const iterator & location, const Type & element)
+typename array <Type>::iterator
+array <Type>::insert (const iterator & location, const Type & element)
 {
 	const auto iter = value .insert (location .base (), new Type (element));
 
@@ -484,8 +485,8 @@ basic_array <Type>::insert (const iterator & location, const Type & element)
 }
 
 template <class Type>
-typename basic_array <Type>::iterator
-basic_array <Type>::insert (const iterator & location, const size_type count, const Type & e)
+typename array <Type>::iterator
+array <Type>::insert (const iterator & location, const size_type count, const Type & e)
 {
 	const size_type pos = location - begin ();
 
@@ -505,8 +506,8 @@ basic_array <Type>::insert (const iterator & location, const size_type count, co
 
 template <class Type>
 template <class InputIterator>
-typename basic_array <Type>::iterator
-basic_array <Type>::insert (const iterator & location, InputIterator first, const InputIterator & last)
+typename array <Type>::iterator
+array <Type>::insert (const iterator & location, InputIterator first, const InputIterator & last)
 {
 	const size_type pos   = location - begin ();
 	const size_type count = last - first;
@@ -529,7 +530,7 @@ basic_array <Type>::insert (const iterator & location, InputIterator first, cons
 
 template <class Type>
 void
-basic_array <Type>::pop_front ()
+array <Type>::pop_front ()
 {
 	remove (value .front ());
 
@@ -539,7 +540,7 @@ basic_array <Type>::pop_front ()
 template <class Type>
 inline
 void
-basic_array <Type>::pop_back ()
+array <Type>::pop_back ()
 {
 	remove (value .back ());
 
@@ -549,7 +550,7 @@ basic_array <Type>::pop_back ()
 template <class Type>
 inline
 void
-basic_array <Type>::push_front (const Type & element)
+array <Type>::push_front (const Type & element)
 {
 	emplace_front (element);
 }
@@ -557,7 +558,7 @@ basic_array <Type>::push_front (const Type & element)
 template <class Type>
 inline
 void
-basic_array <Type>::push_back (const Type & element)
+array <Type>::push_back (const Type & element)
 {
 	emplace_back (element);
 }
@@ -565,7 +566,7 @@ basic_array <Type>::push_back (const Type & element)
 template <class Type>
 template <class ... Args>
 void
-basic_array <Type>::emplace_front (Args && ... args)
+array <Type>::emplace_front (Args && ... args)
 {
 	Type* const element = new Type (std::forward <Args> (args) ...);
 
@@ -577,7 +578,7 @@ basic_array <Type>::emplace_front (Args && ... args)
 template <class Type>
 template <class ... Args>
 void
-basic_array <Type>::emplace_back (Args && ... args)
+array <Type>::emplace_back (Args && ... args)
 {
 	Type* const element = new Type (std::forward <Args> (args) ...);
 
@@ -589,14 +590,14 @@ basic_array <Type>::emplace_back (Args && ... args)
 template <class Type>
 inline
 void
-basic_array <Type>::resize (const size_type count)
+array <Type>::resize (const size_type count)
 {
 	resize (count, Type ());
 }
 
 template <class Type>
 void
-basic_array <Type>::resize (const size_type count, const Type & e)
+array <Type>::resize (const size_type count, const Type & e)
 {
 	const size_type currentSize = size ();
 
@@ -620,7 +621,7 @@ basic_array <Type>::resize (const size_type count, const Type & e)
 
 template <class Type>
 void
-basic_array <Type>::toStream (std::ostream & ostream) const
+array <Type>::toStream (std::ostream & ostream) const
 {
 	switch (size ())
 	{
@@ -657,7 +658,7 @@ basic_array <Type>::toStream (std::ostream & ostream) const
 template <class Type>
 inline
 bool
-operator == (const basic_array <Type> & lhs, const basic_array <Type> & rhs)
+operator == (const array <Type> & lhs, const array <Type> & rhs)
 {
 	return lhs .size () == rhs .size () &&
 	       std::equal (lhs .begin (), lhs .end (),
@@ -667,7 +668,7 @@ operator == (const basic_array <Type> & lhs, const basic_array <Type> & rhs)
 template <class Type>
 inline
 bool
-operator not_eq (const basic_array <Type> & lhs, const basic_array <Type> & rhs)
+operator not_eq (const array <Type> & lhs, const array <Type> & rhs)
 {
 	return not (lhs == rhs);
 }
@@ -675,7 +676,7 @@ operator not_eq (const basic_array <Type> & lhs, const basic_array <Type> & rhs)
 template <class Type>
 inline
 bool
-operator < (const basic_array <Type> & lhs, const basic_array <Type> & rhs)
+operator < (const array <Type> & lhs, const array <Type> & rhs)
 {
 	return std::lexicographical_compare (lhs .begin (), lhs .end (),
 	                                     rhs .begin (), rhs .end ());
@@ -684,7 +685,7 @@ operator < (const basic_array <Type> & lhs, const basic_array <Type> & rhs)
 template <class Type>
 inline
 bool
-operator > (const basic_array <Type> & lhs, const basic_array <Type> & rhs)
+operator > (const array <Type> & lhs, const array <Type> & rhs)
 {
 	return rhs < lhs;
 }
@@ -692,7 +693,7 @@ operator > (const basic_array <Type> & lhs, const basic_array <Type> & rhs)
 template <class Type>
 inline
 bool
-operator <= (const basic_array <Type> & lhs, const basic_array <Type> & rhs)
+operator <= (const array <Type> & lhs, const array <Type> & rhs)
 {
 	return not (rhs < lhs);
 }
@@ -700,12 +701,10 @@ operator <= (const basic_array <Type> & lhs, const basic_array <Type> & rhs)
 template <class Type>
 inline
 bool
-operator >= (const basic_array <Type> & lhs, const basic_array <Type> & rhs)
+operator >= (const array <Type> & lhs, const array <Type> & rhs)
 {
 	return not (lhs < rhs);
 }
-
-using array = basic_array <var>;
 
 } // pb
 } // titania

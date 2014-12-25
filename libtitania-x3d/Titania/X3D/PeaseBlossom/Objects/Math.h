@@ -48,12 +48,47 @@
  *
  ******************************************************************************/
 
-#include "vsFunction.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_MATH_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_MATH_H__
+
+#include "../Objects/pbObject.h"
 
 namespace titania {
 namespace pb {
 
-const std::string vsFunction::typeName = "Function";
+/**
+ *  Class to represent an Math.
+ */
+class Math :
+	public pbObject
+{
+public:
+
+	///  @name Construction
+
+	///  Constructs new Math.
+	Math () :
+		pbObject ()
+	{
+		addProperty ("E",       M_E,       NONE);
+		addProperty ("LN10",    M_LN10,    NONE);
+		addProperty ("LN2",     M_LN2,     NONE);
+		addProperty ("LOG2E",   M_LOG2E,   NONE);
+		addProperty ("LOG10E",  M_LOG10E,  NONE);
+		addProperty ("PI",      M_PI,      NONE);
+		addProperty ("SQRT1_2", M_SQRT1_2, NONE);
+		addProperty ("SQRT2",   M_SQRT2,   NONE);
+	}
+
+	///  Constructs new Math.
+	virtual
+	ptr <pbObject>
+	create (pbExecutionContext* const) const final override
+	{ return make_ptr <Math> (); }
+
+};
 
 } // pb
 } // titania
+
+#endif

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
 
-#include "../Objects/vsObject.h"
+#include "../Objects/pbObject.h"
 
 namespace titania {
 namespace pb {
@@ -60,7 +60,7 @@ namespace pb {
  *  Class to represent an object.
  */
 class Object :
-	public vsObject
+	public pbObject
 {
 public:
 
@@ -68,14 +68,14 @@ public:
 
 	///  Constructs new Object.
 	Object () :
-		vsObject ()
+		pbObject ()
 	{ }
 
 	///  Creates a new default object.
 	virtual
-	var
-	create (vsExecutionContext* const) const final override
-	{ return make_var <Object> (); }
+	ptr <pbObject>
+	create (pbExecutionContext* const) const final override
+	{ return make_ptr <Object> (); }
 
 };
 

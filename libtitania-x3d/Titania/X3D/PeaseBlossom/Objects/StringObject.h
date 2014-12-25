@@ -51,8 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_STRING_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_STRING_OBJECT_H__
 
-#include "../Objects/vsObject.h"
-#include "../Primitives/String.h"
+#include "../Objects/pbObject.h"
 
 namespace titania {
 namespace pb {
@@ -61,7 +60,7 @@ namespace pb {
  *  Class to represent a »string« object.
  */
 class StringObject :
-	public vsObject
+	public pbObject
 {
 public:
 
@@ -69,97 +68,51 @@ public:
 
 	///  Constructs new StringObject.
 	StringObject () :
-		vsObject (),
-		  string (new String ())
+		pbObject (),
+		  string (Glib::ustring ())
 	{ }
 
 	///  Constructs new StringObject.
 	explicit
 	StringObject (const Glib::ustring & value) :
-		vsObject (),
-		  string (new String (value))
+		pbObject (),
+		  string (value)
 	{ }
 
 	///  Constructs new StringObject.
 	explicit
 	StringObject (Glib::ustring && value) :
-		vsObject (),
-		  string (new String (std::move (value)))
+		pbObject (),
+		  string (std::move (value))
 	{ }
 
 	///  Constructs new StringObject.
 	explicit
 	StringObject (const var & value) :
-		vsObject (),
-		  string (new String (value))
+		pbObject (),
+		  string (value .toString ())
 	{ }
 
 	///  Constructs new StringObject.
 	explicit
 	StringObject (const std::string::value_type* value) :
-		vsObject (),
-		  string (new String (value))
+		pbObject (),
+		  string (Glib::ustring (value))
 	{ }
 
 	///  Creates a new default object.
 	virtual
-	var
-	create (vsExecutionContext* const) const final override
-	{ return make_var <StringObject> (string); }
-
-	///  @name Common members
-
-	///  Returns the type of the value. For string objects this is »STRING_OBJECT«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return STRING_OBJECT; }
-
-	///  @name Common operations
-
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const final override
-	{ return string; }
-
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const final override
-	{ return string -> toBoolean (); }
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const final override
-	{ return string -> toUInt16 (); }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return string -> toInt32 (); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return string -> toUInt32 (); }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const final override
-	{ return string -> toNumber (); }
+	ptr <pbObject>
+	create (pbExecutionContext* const) const final override
+	{ return make_ptr <StringObject> (string); }
 
 	///  @name Input/Output
 
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ string -> toStream (ostream); }
+//	///  Inserts this object into the output stream @a ostream.
+//	virtual
+//	void
+//	toStream (std::ostream & ostream) const final override
+//	{ string -> toStream (ostream); }
 
 
 private:

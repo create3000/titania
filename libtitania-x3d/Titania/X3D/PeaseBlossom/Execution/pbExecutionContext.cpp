@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "vsExecutionContext.h"
+#include "pbExecutionContext.h"
 
 #include "../Expressions/ControlFlowException.h"
 #include "../Objects/Function.h"
@@ -60,9 +60,9 @@
 namespace titania {
 namespace pb {
 
-vsExecutionContext::vsExecutionContext (vsExecutionContext* const executionContext, const basic_ptr <vsObject> & globalObject) :
-	             vsBlock (),
-	 vsInputStreamObject (),
+pbExecutionContext::pbExecutionContext (pbExecutionContext* const executionContext, const ptr <pbObject> & globalObject) :
+	             pbBlock (),
+	 pbInputStreamObject (),
 	              strict (false),
 	    executionContext (executionContext),
 	        globalObject (globalObject),
@@ -74,7 +74,7 @@ vsExecutionContext::vsExecutionContext (vsExecutionContext* const executionConte
 }
 
 void
-vsExecutionContext::construct ()
+pbExecutionContext::construct ()
 {
 	addChildren (executionContext,
 	             globalObject,
@@ -83,7 +83,7 @@ vsExecutionContext::construct ()
 }
 
 void
-vsExecutionContext::addFunctionDeclaration (const basic_ptr <vsFunction> & function)
+pbExecutionContext::addFunctionDeclaration (const ptr <pbFunction> & function)
 throw (std::invalid_argument)
 {
 	const auto pair = functions .emplace (function -> getName (), function);
@@ -96,7 +96,7 @@ throw (std::invalid_argument)
 }
 
 void
-vsExecutionContext::updateFunctionDeclaration (const basic_ptr <vsFunction> & function)
+pbExecutionContext::updateFunctionDeclaration (const ptr <pbFunction> & function)
 throw (std::invalid_argument)
 {
 	try
@@ -110,32 +110,32 @@ throw (std::invalid_argument)
 }
 
 void
-vsExecutionContext::removeFunctionDeclaration (const std::string & name)
+pbExecutionContext::removeFunctionDeclaration (const std::string & name)
 noexcept (true)
 {
 	functions .erase (name);
 }
 
 void
-vsExecutionContext::import (const vsExecutionContext* const executionContext)
+pbExecutionContext::import (const pbExecutionContext* const executionContext)
 {
 	for (const auto & function : executionContext -> getFunctionDeclarations ())
 		addFunctionDeclaration (function .second);
 
-	vsBlock::import (executionContext, this);
+	pbBlock::import (executionContext, this);
 }
 
 var
-vsExecutionContext::run ()
+pbExecutionContext::run ()
 {
 	try
 	{
 		for (const auto & function : functions)
-			getLocalObject () -> updateProperty (function .second -> getName (), function .second -> copy (this));
+			getLocalObject () -> addProperty (function .second -> getName (), function .second /*function .second -> copy (this)*/);
 
-		vsBlock::run ();
+		pbBlock::run ();
 
-		return make_var <Undefined> ();
+		return var ();
 	}
 	catch (const ReturnException & exception)
 	{
@@ -164,7 +164,7 @@ vsExecutionContext::run ()
 }
 
 void
-vsExecutionContext::fromStream (std::istream & istream)
+pbExecutionContext::fromStream (std::istream & istream)
 throw (SyntaxError,
        ReferenceError)
 {
@@ -172,12 +172,12 @@ throw (SyntaxError,
 }
 
 void
-vsExecutionContext::dispose ()
+pbExecutionContext::dispose ()
 {
 	functions      .clear ();
 	defaultObjects .clear ();
 
-	vsBlock::dispose ();
+	pbBlock::dispose ();
 }
 
 } // pb

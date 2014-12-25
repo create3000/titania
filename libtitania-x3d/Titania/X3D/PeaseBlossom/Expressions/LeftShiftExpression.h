@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_EXPRESSION_H__
 
-#include "../Expressions/vsInt32Expression.h"
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
@@ -60,7 +60,7 @@ namespace pb {
  *  Class to represent a ECMAScript division expression.
  */
 class LeftShiftExpression :
-	public vsInt32Expression
+	public pbExpression
 {
 public:
 
@@ -68,38 +68,30 @@ public:
 
 	///  Constructs new LeftShiftExpression expression.
 	LeftShiftExpression (var && lhs, var && rhs) :
-		vsInt32Expression (),
-		              lhs (std::move (lhs)),
-		              rhs (std::move (rhs))
+		pbExpression (),
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
 	{ construct (); }
 
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <LeftShiftExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
-
-	///  @name Common members
-
-	///  Returns the type of the value. For this expression this is »LEFT_SHIFT«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return LEFT_SHIFT_EXPRESSION; }
+//	///  Creates a copy of this object.
+//	virtual
+//	var
+//	copy (pbExecutionContext* const executionContext) const final override
+//	{ return make_var <LeftShiftExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Operations
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
-	int32_t
-	toInt32 () const final override
+	var
+	toPrimitive () const final override
 	{ return evaluate (lhs, rhs); }
 
 	///  Evaluates the expression.
 	static
 	int32_t
 	evaluate (const var & lhs, const var & rhs)
-	{ return lhs -> toInt32 () << (rhs -> toUInt32 () & 0x1f); }
+	{ return lhs .toInt32 () << (rhs .toUInt32 () & 0x1f); }
 
 
 private:
@@ -126,10 +118,10 @@ inline
 var
 createLeftShiftExpression (var && lhs, var && rhs)
 {
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return make_var <Int32> (LeftShiftExpression::evaluate (lhs, rhs));
+	if (lhs .isPrimitive () and rhs .isPrimitive ())
+		return LeftShiftExpression::evaluate (lhs, rhs);
 
-	return make_var <LeftShiftExpression> (std::move (lhs), std::move (rhs));
+	return new LeftShiftExpression (std::move (lhs), std::move (rhs));
 }
 
 } // pb

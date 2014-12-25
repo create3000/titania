@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_EXPRESSION_H__
 
-#include "../Expressions/vsExpression.h"
+#include "../Expressions/pbExpression.h"
 #include "../Objects/Function.h"
 
 namespace titania {
@@ -61,15 +61,15 @@ namespace pb {
  *  Class to represent a ECMAScript return statement.
  */
 class FunctionExpression :
-	public vsExpression
+	public pbExpression
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new FunctionExpression statement.
-	FunctionExpression (vsExecutionContext* const executionContext, basic_ptr <Function> && function) :
-		    vsExpression (),
+	FunctionExpression (pbExecutionContext* const executionContext, ptr <Function> && function) :
+		    pbExpression (),
 		executionContext (executionContext),
 		        function (std::move (function))
 	{ construct (); }
@@ -77,8 +77,8 @@ public:
 	///  Creates a copy of this object.
 	virtual
 	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <FunctionExpression> (executionContext, basic_ptr <Function> (function)); }
+	copy (pbExecutionContext* const executionContext) const final override
+	{ return make_var <FunctionExpression> (executionContext, ptr <Function> (function)); }
 
 	///  @name Common members
 
@@ -108,8 +108,8 @@ private:
 
 	///  @name Members
 
-	const basic_ptr <vsExecutionContext> executionContext;
-	const basic_ptr <Function>           function;
+	const ptr <pbExecutionContext> executionContext;
+	const ptr <Function>           function;
 
 };
 

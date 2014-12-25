@@ -51,10 +51,9 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PROGRAM_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PROGRAM_H__
 
-#include "../Base/vsGarbageCollector.h"
-#include "../Execution/vsExecutionContext.h"
+#include "../Base/pbGarbageCollector.h"
+#include "../Execution/pbExecutionContext.h"
 #include "../Objects/Object.h"
-#include "../Primitives/vsValue.h"
 
 #include <memory>
 
@@ -62,13 +61,13 @@ namespace titania {
 namespace pb {
 
 class Program :
-	public vsExecutionContext
+	public pbExecutionContext
 {
 public:
 
-	using vsExecutionContext::run;
-	using vsGarbageCollector::deleteObjectsAsync;
-	using vsGarbageCollector::trimFreeMemory;
+	using pbExecutionContext::run;
+	using pbGarbageCollector::deleteObjectsAsync;
+	using pbGarbageCollector::trimFreeMemory;
 
 	///  @name Common members
 
@@ -95,7 +94,7 @@ public:
 	dispose () final override
 	{
 		__LOG__ << std::endl;
-		vsExecutionContext::dispose ();
+		pbExecutionContext::dispose ();
 	}
 
 protected:
@@ -103,18 +102,18 @@ protected:
 	///  @name Friends
 
 	friend
-	basic_ptr <Program>
+	ptr <Program>
 	createProgram ();
 
 	friend
-	basic_ptr <Program>
-	createProgram (const basic_ptr <vsObject> &);
+	ptr <Program>
+	createProgram (const ptr <pbObject> &);
 
 	///  @name Construction
 
 	///  Constructs new Program.
-	Program (const basic_ptr <vsObject> & globalObject) :
-		vsExecutionContext (this, globalObject)
+	Program (const ptr <pbObject> & globalObject) :
+		pbExecutionContext (this, globalObject)
 	{ construct (); }
 
 
@@ -127,7 +126,7 @@ private:
 
 	///  @name Static members
 
-	static const std::string   typeName;
+	static const std::string typeName;
 
 };
 
@@ -135,12 +134,12 @@ private:
 ///  @name Construction
 
 ///  Constructs new Program.
-basic_ptr <Program>
+ptr <Program>
 createProgram ();
 
 ///  Constructs new Program with custom global object.
-basic_ptr <Program>
-createProgram (const basic_ptr <vsObject> & globalObject);
+ptr <Program>
+createProgram (const ptr <pbObject> & globalObject);
 
 } // pb
 } // titania

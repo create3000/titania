@@ -51,12 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_H__
 
-#include "Primitives/Boolean.h"
-#include "Primitives/Int32.h"
-#include "Primitives/Null.h"
-#include "Primitives/Number.h"
-#include "Primitives/String.h"
-#include "Primitives/UInt32.h"
-#include "Primitives/Undefined.h"
+#include "Primitives/var.h"
+#include "Primitives/ptr.h"
+#include "Primitives/array.h"
 
 #endif

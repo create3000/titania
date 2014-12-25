@@ -48,123 +48,117 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_CHILD_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_CHILD_OBJECT_H__
 
-#include "../Objects/vsObject.h"
-#include "../Primitives/Undefined.h"
-#include "../Primitives/vsValue.h"
+#include "../Base/pbBase.h"
+#include "../Base/pbGarbageCollector.h"
+
+#include <Titania/Utility/Pass.h>
+#include <cassert>
+#include <cstddef>
+#include <set>
+#include <vector>
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
- */
-class vsExpression :
-	public vsValue
+class pbChildObject;
+
+using ChildObjectSet = std::set <pbChildObject*>;
+
+class pbChildObject :
+	virtual public pbBase,
+	public pbGarbageCollector
 {
 public:
 
-	///  @name Common members
+	///  @name Parent handling
 
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
+	///  Add a parent to this object.
+	void
+	addParent (pbChildObject* const parent);
 
-	///  @name Common operations
+	///  Fast replaces @a parentToRemove with @a parentToAdd.
+	void
+	replaceParent (pbChildObject* const parentToRemove, pbChildObject* const parentToAdd);
 
-	///  Returns true if the input argument is a non-Object type otherwise false.
+	///  Remove a parent from this object.
+	void
+	removeParent (pbChildObject* const parent);
+
+	///  Add a parent to this object.
+	void
+	addWeakParent (pbChildObject* const weakParent);
+
+	///  Remove a parent from this object.
+	void
+	removeWeakParent (pbChildObject* const weakParent);
+
+	///  Get all parents of this object.
+	const ChildObjectSet &
+	getParents () const
+	{ return parents; }
+
+	///  Returns true if this object has rooted objects and collects in @a seen all objects seen.
 	virtual
 	bool
-	isPrimitive () const final override
-	{ return false; }
+	hasRootedObjects (ChildObjectSet & circle);
 
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const final override
-	{ return toValue () -> toPrimitive (); }
+	///  Returns the number of instances that share ownership of this object, or »0« if this object has already been
+	///  disposed or is a root object.
+	size_t
+	getReferenceCount () const
+	{ return referenceCount; }
 
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const override
-	{ return toValue () -> toBoolean (); }
+	///  @name Destruction
 
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const override
-	{ return toValue () -> toUInt16 (); }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const override
-	{ return toValue () -> toInt32 (); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const override
-	{ return toValue () -> toUInt32 (); }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const override
-	{ return toValue () -> toNumber (); }
-
-	///  Converts its argument to a value of type Object.
-	virtual
-	var
-	toObject () const
-	throw (TypeError) final override
-	{ return toValue () -> toObject (); }
-
-	///  Converts its input argument to either Primitive or Object type.
-	virtual
-	var
-	toValue () const override
-	{ return make_var <Undefined> (); }
-
-	virtual
-	var
-	setValue (var &&) const
-	{ throw ReferenceError ("Invalid assignment left-hand side."); }
-
+	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
+	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
 	virtual
 	void
-	evaluate () const
-	{ toValue (); }
+	dispose ();
 
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
+	///  Destructs the pbChildObject.
 	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ toValue () -> toStream (ostream); }
+	~pbChildObject ();
 
 
 protected:
 
 	///  @name Construction
 
-	///  Constructs new vsExpression.
-	vsExpression () :
-		vsValue ()
-	{ }
+	///  Constructs new Construction.
+	pbChildObject ();
+
+	///  @name Children handling
+
+	template <typename ... Args>
+	void
+	addChildren (Args & ... args)
+	{ basic::pass ((addChild (args), 1) ...); }
+
+	void
+	addChild (const pbChildObject & child);
+
+	template <typename ... Args>
+	void
+	removeChildren (Args & ... args)
+	{ basic::pass ((removeChild (args), 1) ...); }
+
+	void
+	removeChild (const pbChildObject & child);
+
+	bool
+	hasRootedObjectsDontCollectObject (ChildObjectSet & seen);
 
 
 private:
 
-	///  @name Static members
-
-	static const std::string   typeName;
+	size_t         referenceCount;
+	ChildObjectSet parents;
+	pbChildObject* root;
+	ChildObjectSet children;
 
 };
 

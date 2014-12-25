@@ -51,8 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LESS_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LESS_EXPRESSION_H__
 
-#include "../Expressions/vsBooleanExpression.h"
-#include "../Primitives/vsString.h"
+#include "../Expressions/pbExpression.h"
 
 #include <cmath>
 
@@ -63,7 +62,7 @@ namespace pb {
  *  Class to represent a ECMAScript remainder expression.
  */
 class LessExpression :
-	public vsBooleanExpression
+	public pbExpression
 {
 public:
 
@@ -71,31 +70,23 @@ public:
 
 	///  Constructs new LessExpression expression.
 	LessExpression (var && lhs, var && rhs) :
-		vsBooleanExpression (),
-		                lhs (std::move (lhs)),
-		                rhs (std::move (rhs))
+		pbExpression (),
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
 	{ construct (); }
 
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <LessExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
-
-	///  @name Common members
-
-	///  Returns the type of the value. For this expression this is »REMAINDER«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return LESS_EXPRESSION; }
+//	///  Creates a copy of this object.
+//	virtual
+//	var
+//	copy (pbExecutionContext* const executionContext) const final override
+//	{ return make_var <LessExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Operations
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
-	bool
-	toBoolean () const final override
+	var
+	toPrimitive () const final override
 	{ return evaluate (lhs, rhs); }
 
 	///  Evaluates the expression.
@@ -103,13 +94,13 @@ public:
 	bool
 	evaluate (const var & lhs, const var & rhs)
 	{
-		const var x = lhs -> toValue ();
-		const var y = rhs -> toValue ();
+		const var x = lhs .toPrimitive ();
+		const var y = rhs .toPrimitive ();
 
-		if (x -> getType () == STRING and y -> getType () == STRING)
-			return static_cast <vsString*> (x .get ()) -> getString () < static_cast <vsString*> (y .get ()) -> getString ();
+		if (x .getType () == STRING and y .getType () == STRING)
+			return x .getString () < y .getString ();
 
-		return x -> toNumber () < y -> toNumber ();
+		return x .toNumber () < y .toNumber ();
 	}
 
 private:
@@ -136,10 +127,10 @@ inline
 var
 createLessExpression (var && lhs, var && rhs)
 {
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return LessExpression::evaluate (lhs, rhs) ? make_var <True> () : make_var <False> ();
+	if (lhs .isPrimitive () and rhs .isPrimitive ())
+		return LessExpression::evaluate (lhs, rhs);
 
-	return make_var <LessExpression> (std::move (lhs), std::move (rhs));
+	return new LessExpression (std::move (lhs), std::move (rhs));
 }
 
 } // pb

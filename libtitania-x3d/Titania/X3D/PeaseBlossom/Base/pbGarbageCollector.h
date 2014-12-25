@@ -48,90 +48,67 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UINT32_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_UINT32_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_GARBAGE_COLLECTOR_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_GARBAGE_COLLECTOR_H__
 
-#include "../Primitives/vsNumber.h"
+#include "../Base/pbBase.h"
+
+#include <cstddef>
+#include <deque>
+#include <mutex>
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a basic number value.
- */
-class UInt32 :
-	public vsNumber
+class pbChildObject;
+
+class pbGarbageCollector
 {
-public:
+protected:
 
 	///  @name Construction
 
-	///  Constructs new UInt32 value.
-	UInt32 () :
-		vsNumber (),
-		  number (0)
-	{ }
+	pbGarbageCollector () = default;
 
-	///  Constructs new UInt32 value.
-	explicit
-	UInt32 (const uint32_t value) :
-		vsNumber (),
-		  number (value)
-	{ }
+	///  @name Operations
 
-	///  Constructs new UInt32 value.
-	explicit
-	UInt32 (const var & value) :
-		vsNumber (),
-		  number (value -> toNumber ())
-	{ }
-
-	///  @name Common operations
-
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const final override
-	{ return number; }
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const final override
-	{ return number; }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return number; }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const final override
-	{ return number; }
-
-	///  Converts its argument to a value of type Object.
-	virtual
-	var
-	toObject () const
-	throw (TypeError) final override;
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
+	static
 	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << number; }
+	addDisposedObject (const pbChildObject* const);
+
+	template <class InputIt>
+	static
+	void
+	addDisposedObjects (const InputIt & first, const InputIt & last)
+	{
+		std::lock_guard <std::mutex> lock (mutex);
+
+		objects .insert (objects .end (), first, last);
+	}
+
+	static
+	void
+	deleteObjectsAsync ();
+
+	static
+	void
+	trimFreeMemory ();
 
 
 private:
 
-	///  @name Members
+	using ObjectArray = std::deque <const pbChildObject*>;
 
-	const uint32_t number;
+	///  @name Operations
+
+	static
+	void
+	deleteObjects (const ObjectArray &);
+
+	///  @name Static members
+
+	static ObjectArray objects;
+	static std::mutex  mutex;
 
 };
 

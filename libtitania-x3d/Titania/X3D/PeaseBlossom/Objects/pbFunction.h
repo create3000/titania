@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, ScheffelstraÃŸe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,98 +48,79 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NULL_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_NULL_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_FUNCTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_FUNCTION_H__
 
-#include "../Primitives/vsPrimitive.h"
+#include "../Objects/pbObject.h"
 
 namespace titania {
 namespace pb {
 
-#undef Null
-
-/**
- *  Class to represent a »null« value.
- */
-class Null :
-	public vsPrimitive
+class pbFunction :
+	public pbObject
 {
 public:
-
-	///  @name Construction
-
-	///  Constructs new Null value.
-	Null () :
-		vsPrimitive ()
-	{ }
 
 	///  @name Common members
 
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
-	getTypeName () const final override
+	getTypeName () const override
 	{ return typeName; }
 
-	///  Returns the type of the value. For »null« objects this is »NULL_OBJECT«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return NULL_OBJECT; }
+	///  @name Member access
 
-	///  @name Common operations
+	///  Returns the name of the function.
+	const std::string &
+	getName () const
+	{ return name; }
 
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const final override
-	{ return false; }
+	///  @name Operations
 
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const final override
-	{ return 0; }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return 0; }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return 0; }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const final override
-	{ return 0; }
-
-	///  Throws a TypeError exception.
+	///  Executes this function.
 	virtual
 	var
-	toObject () const
-	throw (TypeError) final override
-	{ throw TypeError ("Couldn' convert 'null' to object."); }
+	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { }) = 0;
 
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << "null"; }
+	toStream (std::ostream & ostream) const override
+	{ ostream << "[object Function]"; }
+
+
+protected:
+
+	friend class ReturnStatement;
+
+	///  @name Construction
+
+	///  Constructs new pbFunction.
+	pbFunction (const std::string & name) :
+		pbObject (),
+		    name (name)
+	{ addProperty ("name", var (name)); }
+
+	///  @name Operations
+
+	///  Resolves the closure of the @a executionContext.
+	virtual
+	void
+	resolve (const ptr <pbExecutionContext> & executionContext) = 0;
 
 
 private:
 
 	///  @name Static members
 
-	static const std::string   typeName;
+	static const std::string typeName;
+
+	///  @name Members
+
+	const std::string name;
 
 };
 

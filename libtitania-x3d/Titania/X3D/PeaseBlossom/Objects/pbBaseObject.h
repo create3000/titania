@@ -48,26 +48,94 @@
  *
  ******************************************************************************/
 
-#include "Boolean.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_BASE_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_BASE_OBJECT_H__
 
-#include "../Objects/BooleanObject.h"
+#include "../Base/pbChildObject.h"
+#include "../Base/pbOutputStreamObject.h"
+#include "../Primitives/var.h"
+
+#include <map>
 
 namespace titania {
 namespace pb {
 
-var
-False::toObject () const
-throw (TypeError)
+/**
+ *  Class to represent a BaseObject value. This is the base class for all ECMAScript objects.
+ */
+class pbBaseObject :
+	virtual public pbChildObject,
+	virtual public pbOutputStreamObject
 {
-	return make_var <BooleanObject> (false);
-}
+public:
 
-var
-True::toObject () const
-throw (TypeError)
-{
-	return make_var <BooleanObject> (true);
-}
+	///  @name Conversion operations
+
+	virtual
+	bool
+	isPrimitive () const = 0;
+
+	virtual
+	var
+	toPrimitive () const = 0;
+
+	///  @name Conversion operations
+
+	static
+	size_t
+	getId (const std::string & identifier)
+	{ return ids .emplace (identifier, ids .size ()) .first -> second; }
+
+
+protected:
+
+	using pbChildObject::addChild;
+	using pbChildObject::removeChild;
+
+	///  @name Construction
+
+	///  Constructs new pbBaseObject.
+	pbBaseObject () :
+		       pbChildObject (),
+		pbOutputStreamObject ()
+	{ }
+
+	///  @name Children handling
+
+	template <typename ... Args>
+	void
+	addChildren (Args & ... args)
+	{ basic::pass ((addChild (args), 1) ...); }
+
+	void
+	addChild (const var & child)
+	{
+		if (child .isObject ())
+			addChild (child .getObject ());
+	}
+
+	template <typename ... Args>
+	void
+	removeChildren (Args & ... args)
+	{ basic::pass ((removeChild (args), 1) ...); }
+
+	void
+	removeChild (const var & child)
+	{
+		if (child .isObject ())
+			removeChild (child .getObject ());
+	}
+
+
+private:
+
+	using IdIndex = std::map <std::string, size_t>;
+
+	static IdIndex ids;
+
+};
 
 } // pb
 } // titania
+
+#endif

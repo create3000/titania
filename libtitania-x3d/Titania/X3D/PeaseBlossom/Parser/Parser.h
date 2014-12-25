@@ -63,8 +63,8 @@
 namespace titania {
 namespace pb {
 
-class vsExecutionContext;
-class vsBlock;
+class pbExecutionContext;
+class pbBlock;
 
 class Parser
 {
@@ -72,12 +72,12 @@ protected:
 
 	///  @name Friends
 
-	friend class vsExecutionContext;
+	friend class pbExecutionContext;
 
 	///  @name Construction
 
 	///  Constructs new StringObject.
-	Parser (vsExecutionContext* const, std::istream & istream);
+	Parser (pbExecutionContext* const, std::istream & istream);
 
 	///  @name Operations
 
@@ -93,29 +93,29 @@ private:
 
 	// Operations
 
-	vsExecutionContext*
+	pbExecutionContext*
 	getRootContext () const
 	{ return rootContext; }
 
 	void
-	pushExecutionContext (vsExecutionContext* const executionContext);
+	pushExecutionContext (pbExecutionContext* const executionContext);
 
 	void
 	popExecutionContext ();
 
-	vsExecutionContext*
+	pbExecutionContext*
 	getExecutionContext () const
 	{ return executionContexts .top (); }
 
 	void
-	pushBlock (vsBlock* const block)
+	pushBlock (pbBlock* const block)
 	{ blocks .emplace (block); }
 
 	void
 	popBlock ()
 	{ blocks .pop (); }
 
-	vsBlock*
+	pbBlock*
 	getBlock () const
 	{ return blocks .top (); }
 
@@ -192,10 +192,10 @@ private:
 	objectLiteral (var &);
 
 	bool
-	propertyDefinitionList (basic_ptr <Object> &);
+	propertyDefinitionList (ptr <Object> &);
 
 	bool
-	propertyDefinition (basic_ptr <Object> &);
+	propertyDefinition (ptr <Object> &);
 
 	bool
 	propertyName (var & value);
@@ -332,9 +332,9 @@ private:
 
 	///  @name Members
 
-	vsExecutionContext* const        rootContext;
-	std::stack <vsExecutionContext*> executionContexts;
-	std::stack <vsBlock*>            blocks;
+	pbExecutionContext* const        rootContext;
+	std::stack <pbExecutionContext*> executionContexts;
+	std::stack <pbBlock*>            blocks;
 	std::istream &                   istream;
 	std::string                      whiteSpaces;
 	std::string                      commentCharacters;

@@ -50,11 +50,10 @@
 
 #include "GlobalObject.h"
 
+#include "../Bits/pbMath.h"
 #include "../Objects/NativeFunction.h"
 #include "../Objects/Object.h"
-#include "../Primitives/Boolean.h"
-#include "../Primitives/Number.h"
-#include "../Primitives/Undefined.h"
+#include "../Objects/Math.h"
 
 namespace titania {
 namespace pb {
@@ -63,31 +62,36 @@ namespace global {
 struct isNaN
 {
 	var
-	operator () (const basic_ptr <vsObject> & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbObject> & object, const std::vector <var> & arguments)
 	{
 		if (arguments .empty ())
-			return make_var <True> ();
+			return var (true);
 
-		return pb::isNaN (arguments .front () -> toNumber ()) ? make_var <True> () : make_var <False> ();
+		return var (pb::isNaN (arguments .front () .toNumber ()));
 	}
 
 };
 
 }     // global
 
-basic_ptr <vsObject>
+ptr <pbObject>
 createGlobalObject ()
 {
-	using namespace std::placeholders;
+	// Create Global Object
 
-	basic_ptr <vsObject> globalObject (new Object ());
+	ptr <pbObject> globalObject (new Object ());
 
-	globalObject -> addProperty ("this",      globalObject,                                     NONE);
-	globalObject -> addProperty ("NaN",       make_var <Number> (Number::NaN ()),               NONE);
-	globalObject -> addProperty ("Infinity",  make_var <Number> (Number::POSITIVE_INFINITY ()), NONE);
-	globalObject -> addProperty ("undefined", make_var <Undefined> (),                                  NONE);
+	// Properties
 
-	globalObject -> addProperty ("isNaN", make_var <NativeFunction> ("isNaN", global::isNaN { }));
+	globalObject -> addProperty ("this",      globalObject,         NONE);
+	globalObject -> addProperty ("NaN",       NaN (),               NONE);
+	globalObject -> addProperty ("Infinity",  POSITIVE_INFINITY (), NONE);
+	globalObject -> addProperty ("undefined", var (),               NONE);
+	globalObject -> addProperty ("Math",      new Math (),          NONE);
+
+	// Functions
+
+	globalObject -> addProperty ("isNaN", new NativeFunction ("isNaN", global::isNaN { }));
 
 	return globalObject;
 }

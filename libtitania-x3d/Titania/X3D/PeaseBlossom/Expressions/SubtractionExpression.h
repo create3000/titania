@@ -51,8 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_SUBTRACTION_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_SUBTRACTION_EXPRESSION_H__
 
-#include "../Expressions/vsNumberExpression.h"
-#include "../Primitives/Number.h"
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
@@ -61,7 +60,7 @@ namespace pb {
  *  Class to represent a ECMAScript subtraction expression.
  */
 class SubtractionExpression :
-	public vsNumberExpression
+	public pbExpression
 {
 public:
 
@@ -69,38 +68,28 @@ public:
 
 	///  Constructs new SubtractionExpression expression.
 	SubtractionExpression (var && lhs, var && rhs) :
-		vsNumberExpression (),
-		               lhs (std::move (lhs)),
-		               rhs (std::move (rhs))
+		pbExpression (),
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
 	{ construct (); }
 
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <SubtractionExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
-
-	///  @name Common members
-
-	///  Returns the type of the value. For this expression this is »SUBTRACTION«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return SUBTRACTION_EXPRESSION; }
-
-	///  @name Operations
+//	///  Creates a copy of this object.
+//	virtual
+//	var
+//	copy (pbExecutionContext* const executionContext) const final override
+//	{ return make_var <SubtractionExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  Converts its arguments to a value of type Number.
 	virtual
-	double
-	toNumber () const final override
+	var
+	toPrimitive () const final override
 	{ return evaluate (lhs, rhs); }
 
 	///  Evaluates the expression.
 	static
 	double
 	evaluate (const var & lhs, const var & rhs)
-	{ return lhs -> toNumber () - rhs -> toNumber (); }
+	{ return lhs .toNumber () - rhs .toNumber (); }
 
 
 private:
@@ -127,10 +116,10 @@ inline
 var
 createSubtractionExpression (var && lhs, var && rhs)
 {
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return make_var <Number> (SubtractionExpression::evaluate (lhs, rhs));
+	if (lhs .isPrimitive () and rhs .isPrimitive ())
+		return var (SubtractionExpression::evaluate (lhs, rhs));
 
-	return make_var <SubtractionExpression> (std::move (lhs), std::move (rhs));
+	return new SubtractionExpression (std::move (lhs), std::move (rhs));
 }
 
 } // pb

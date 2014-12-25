@@ -57,7 +57,7 @@
 #include "Expressions/EqualExpression.h"
 #include "Expressions/ForStatement.h"
 #include "Expressions/FunctionCallExpression.h"
-#include "Expressions/FunctionExpression.h"
+//#include "Expressions/FunctionExpression.h"
 #include "Expressions/IfStatement.h"
 #include "Expressions/LeftShiftExpression.h"
 #include "Expressions/LessExpression.h"

@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_DECLARATION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_DECLARATION_H__
 
-#include "../Execution/vsExecutionContext.h"
-#include "../Expressions/vsExpression.h"
+#include "../Execution/pbExecutionContext.h"
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
@@ -61,42 +61,37 @@ namespace pb {
  *  Class to represent a ECMAScript variable declaration expression.
  */
 class VariableDeclaration :
-	public vsExpression
+	public pbExpression
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new VariableDeclaration expression.
-	VariableDeclaration (vsExecutionContext* const executionContext, std::string && identifier, var && expression) :
-		    vsExpression (),
+	VariableDeclaration (pbExecutionContext* const executionContext, std::string && identifier, var && expression) :
+		    pbExpression (),
 		executionContext (executionContext),
 		      identifier (std::move (identifier)),
+		              id (getId (this -> identifier)),
 		      expression (std::move (expression))
 	{ construct (); }
 
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <VariableDeclaration> (executionContext, std::string (identifier), expression -> copy (executionContext)); }
-
-	///  @name Common members
-
-	///  Returns the type of the value. For this expression this is »VARIABLE_DECLARATION«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return VARIABLE_DECLARATION; }
+//	///  Creates a copy of this object.
+//	virtual
+//	var
+//	copy (pbExecutionContext* const executionContext) const final override
+//	{ return make_var <VariableDeclaration> (executionContext, std::string (identifier), expression -> copy (executionContext)); }
 
 	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	void
-	evaluate () const final override
+	var
+	toPrimitive () const final override
 	{
-		executionContext -> getLocalObject () -> updateProperty (identifier, expression -> toValue (), WRITABLE | ENUMERABLE | CONFIGURABLE);
+		executionContext -> getLocalObject () -> updateProperty (id, expression .toPrimitive (), WRITABLE | ENUMERABLE | CONFIGURABLE);
+
+		return var ();
 	}
 
 private:
@@ -110,8 +105,9 @@ private:
 
 	///  @name Members
 
-	const basic_ptr <vsExecutionContext> executionContext;
+	const ptr <pbExecutionContext> executionContext;
 	const std::string                    identifier;
+	const size_t                         id;
 	const var                            expression;
 
 };

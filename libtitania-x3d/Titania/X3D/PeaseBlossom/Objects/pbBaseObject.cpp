@@ -48,12 +48,12 @@
  *
  ******************************************************************************/
 
-#include "vsNumber.h"
+#include "pbBaseObject.h"
 
 namespace titania {
 namespace pb {
 
-const std::string vsNumber::typeName = "Number";
+pbBaseObject::IdIndex pbBaseObject::ids;
 
 } // pb
 } // titania

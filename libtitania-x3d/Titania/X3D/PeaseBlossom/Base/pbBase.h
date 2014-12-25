@@ -48,53 +48,37 @@
  *
  ******************************************************************************/
 
-#include "Number.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_BASE_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_BASE_H__
 
-#include "../Objects/NumberObject.h"
-#include "../Primitives/Int32.h"
-#include "../Primitives/UInt32.h"
+#include <string>
+
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace pb {
 
-var
-Number::toObject () const
-throw (TypeError)
+class pbBase
 {
-	return make_var <NumberObject> (toNumber ());
-}
+public:
 
-void
-Number::toStream (std::ostream & ostream) const
-{
-	if (std::isnan (number))
-		ostream << "NaN";
+	virtual
+	const std::string &
+	getTypeName () const = 0;
 
-	else if (number == NEGATIVE_INFINITY ())
-		ostream << "-Infinity";
+	///  Destructs the pbBase.
+	virtual
+	~pbBase ()
+	{ }
 
-	else if (number == POSITIVE_INFINITY ())
-		ostream << "Infinity";
 
-	else
-		ostream << std::setprecision (std::numeric_limits <double>::digits10) << number;
-}
+protected:
 
-var
-createNumber (const double value)
-{
-	const int32_t int32bits = value;
+	pbBase () = default;
 
-	if (int32bits == value)
-		return make_var <Int32> (int32bits);
-
-	const uint32_t uint32bits = value;
-
-	if (uint32bits == value)
-		return make_var <UInt32> (uint32bits);
-
-	return make_var <Number> (value);
-}
+};
 
 } // pb
 } // titania
+
+#endif

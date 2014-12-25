@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,17 +48,19 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_FUNCTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_FUNCTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
 
-#include "../Objects/vsObject.h"
-#include "../Primitives/String.h"
+#include "../Objects/pbBaseObject.h"
 
 namespace titania {
 namespace pb {
 
-class vsFunction :
-	public vsObject
+/**
+ *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
+ */
+class pbExpression :
+	public pbBaseObject
 {
 public:
 
@@ -70,56 +72,44 @@ public:
 	getTypeName () const override
 	{ return typeName; }
 
-	///  Returns the type of the value. For function objects this is »FUNCTION_OBJECT«.
+	///  @name Conversion operations
+
 	virtual
-	ValueType
-	getType () const override
-	{ return FUNCTION_OBJECT; }
+	bool
+	isPrimitive () const final override
+	{ return false; }
 
-	///  @name Member access
-
-	///  Returns the name of the function.
-	const std::string &
-	getName () const
-	{ return name; }
-
-	///  @name Operations
-
-	///  Executes this function.
 	virtual
 	var
-	call (const basic_ptr <vsObject> & thisObject, const std::vector <var> & arguments = { }) = 0;
+	setValue (var &&) const
+	{ throw ReferenceError ("Invalid assignment left-hand side."); }
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{
+		ostream << "pbExpression";
+	}
 
 
 protected:
 
-	friend class ReturnStatement;
-
 	///  @name Construction
 
-	///  Constructs new vsFunction.
-	vsFunction (const std::string & name) :
-		vsObject (),
-		    name (name)
-	{ addProperty ("name", make_var <String> (name)); }
-
-	///  @name Operations
-
-	///  Resolves the closure of the @a executionContext.
-	virtual
-	void
-	resolve (const basic_ptr <vsExecutionContext> & executionContext) = 0;
+	///  Constructs new pbExpression.
+	pbExpression () :
+		pbBaseObject ()
+	{ }
 
 
 private:
 
 	///  @name Static members
 
-	static const std::string   typeName;
-
-	///  @name Members
-
-	const std::string name;
+	static const std::string typeName;
 
 };
 

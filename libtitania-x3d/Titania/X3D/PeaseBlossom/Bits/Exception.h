@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_EXCEPTION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_BITS_EXCEPTION_H__
 
-#include "../Base/vsOutputStreamObject.h"
+#include "../Base/pbOutputStreamObject.h"
 
 #include <exception>
 #include <sstream>
@@ -112,9 +112,9 @@ noexcept (true)
 /**
  *  Base class to represent a ECMAScript exception.
  */
-class vsException :
+class pbException :
 	public std::exception,
-	public vsOutputStreamObject
+	public pbOutputStreamObject
 {
 public:
 
@@ -145,9 +145,9 @@ public:
 
 	///  @name Destruction
 
-	///  Destructs the vsException.
+	///  Destructs the pbException.
 	virtual
-	~vsException ()
+	~pbException ()
 	noexcept (true)
 	{ }
 
@@ -156,11 +156,11 @@ protected:
 
 	///  @name Construction
 
-	///  Constructs new vsException.
+	///  Constructs new pbException.
 	explicit
-	vsException (const std::string & message) :
+	pbException (const std::string & message) :
 		      std::exception (),
-		vsOutputStreamObject (),
+		pbOutputStreamObject (),
 		             message (message)
 	{ }
 
@@ -180,13 +180,13 @@ private:
  */
 template <ExceptionType type>
 class Exception :
-	public vsException
+	public pbException
 {
 public:
 
 	explicit
 	Exception (const std::string & message) :
-		vsException (message)
+		pbException (message)
 	{ }
 
 	virtual

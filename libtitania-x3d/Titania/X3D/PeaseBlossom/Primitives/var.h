@@ -51,430 +51,254 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VAR_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VAR_H__
 
-#include "../Base/vsChildObject.h"
-#include "../Base/vsOutputStreamObject.h"
+#include "../Base/pbOutputStreamObject.h"
+#include "../Bits/pbConstants.h"
+#include "../Primitives/ptr.h"
+
+#include <cmath>
 
 namespace titania {
 namespace pb {
 
-/**
- *  Base class for basic_ptr.
- */
-class ptr_base :
-	virtual public vsBase
-{
-public:
-
-	///  @name Operations
-
-	virtual
-	vsChildObject*
-	get_type () const = 0;
-
-
-protected:
-
-	ptr_base () :
-		vsBase ()
-	{ }
-
-};
+class pbExecutionContext;
+class pbBaseObject;
+class pbObject;
 
 /**
- *  Template to represent a pointer that can handle circular references and that does
- *  automatic garbage collection.
- *
- *  Extern instantiations for vsValue are part of the
- *  library.  Results with any other type are not guaranteed.
- *
- *  @param  Type  Type of pointer.
+ *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
  */
-template <class Type>
-class basic_ptr :
-	public ptr_base,
-	public vsChildObject,
-	public vsOutputStreamObject
+class var :
+	virtual public pbOutputStreamObject,
+	public pbGarbageCollector
 {
 public:
-
-	///  @name Member type
-
-	using element_type = Type;
 
 	///  @name Construction
 
-	///  Constructs new basic_ptr.
-	basic_ptr () :
-		            ptr_base (),
-		       vsChildObject (),
-		vsOutputStreamObject (),
-		               value (nullptr)
-	{ }
+	///  Constructs new var.
+	var ();
 
-	///  Constructs new basic_ptr.
-	basic_ptr (const basic_ptr & var) :
-		basic_ptr (var .value)
-	{ }
+	///  Constructs new var.
+	var (const var &);
 
-	///  Constructs new basic_ptr.
-	basic_ptr (const ptr_base & var) :
-		basic_ptr (dynamic_cast <Type*> (var .get_type ()))
-	{ }
+	///  Constructs new var.
+	var (var &&);
 
-	///  Constructs new basic_ptr.
-	basic_ptr (basic_ptr && var) :
-		basic_ptr ()
-	{ move (var); }
+	var (const std::nullptr_t);
 
-	///  Constructs new basic_ptr.
+	///  Constructs new var.
+	var (const bool);
+
+	///  Constructs new var.
+	var (const int32_t);
+
+	///  Constructs new var.
+	var (const uint32_t);
+
+	///  Constructs new var.
+	var (const double);
+
+	///  Constructs new var.
+	var (const Glib::ustring &);
+
+	///  Constructs new var.
+	var (Glib::ustring &&);
+
+	///  Constructs new var.
+	var (const std::string &);
+
+	///  Constructs new var.
 	template <class Up>
-	basic_ptr (basic_ptr <Up> && var) :
-		basic_ptr ()
-	{ move (var); }
-
-	///  Constructs new basic_ptr.
-	explicit
-	basic_ptr (Type* const value) :
-		            ptr_base (),
-		       vsChildObject (),
-		vsOutputStreamObject (),
-		               value (value)
-	{ add (value); }
-
-	///  Constructs new basic_ptr.
-	template <class Up>
-	explicit
-	basic_ptr (Up* const value) :
-		basic_ptr (dynamic_cast <Type*> (value))
+	var (const ptr <Up> & object) :
+		pbOutputStreamObject (),
+		  pbGarbageCollector (),
+		               value ({ object_: new ptr <pbBaseObject> (object) }),
+		                type (OBJECT)
 	{ }
+
+	///  Constructs new var.
+	template <class Up>
+	var (ptr <Up> && object) :
+		pbOutputStreamObject (),
+		  pbGarbageCollector (),
+		               value ({ object_: new ptr <pbBaseObject> (std::move (object)) }),
+		                type (OBJECT)
+	{ }
+
+	///  Constructs new var.
+	var (pbBaseObject* const);
+
+	var
+	copy (pbExecutionContext* const) const;
 
 	///  @name Assignment operators
 
-	///  Assigns the basic_ptr.
-	basic_ptr &
-	operator = (const basic_ptr & var)
-	{
-		reset (var .value);
-		return *this;
-	}
+	var &
+	operator = (const var &);
 
-	///  Assigns the basic_ptr.
-	basic_ptr &
-	operator = (const ptr_base & var)
-	{
-		reset (dynamic_cast <Type*> (var .get_type ()));
-		return *this;
-	}
+	var &
+	operator = (var &&);
 
-	///  Assigns the basic_ptr.
-	basic_ptr &
-	operator = (basic_ptr && var)
-	{
-		if (&var == this)
-			return *this;
+	var &
+	operator = (const std::nullptr_t);
 
-		remove (get ());
-		move (var);
+	var &
+	operator = (const bool);
 
-		return *this;
-	}
+	var &
+	operator = (const int32_t);
 
-	///  Assigns the basic_ptr.
+	var &
+	operator = (const uint32_t);
+
+	var &
+	operator = (const double);
+
+	var &
+	operator = (const Glib::ustring &);
+
+	var &
+	operator = (Glib::ustring &&);
+
+	var &
+	operator = (const std::string &);
+	
 	template <class Up>
-	basic_ptr &
-	operator = (basic_ptr <Up> && var)
+	var &
+	operator = (const ptr <Up> & other)
 	{
-		if (&var == this)
-			return *this;
+		clear ();
 
-		remove (get ());
-		move (var);
+		value .object_ = new ptr <pbBaseObject> (other);
+		type           = OBJECT;
+
+		return *this;
+	}
+	
+	template <class Up>
+	var &
+	operator = (ptr <Up> && other)
+	{
+		clear ();
+
+		value .object_ = new ptr <pbBaseObject> (std::move (other));
+		type           = OBJECT;
 
 		return *this;
 	}
 
-	///  @name Observers
-
-	///  Returns a pointer to the managed object.
-	constexpr
-	Type*
-	get () const
-	{ return value; }
-
-	///  Dereferences pointer to the managed object.
-	constexpr
-	Type*
-	operator -> () const
-	{ return value; }
-
-	///  Dereferences pointer to the managed object.
-	constexpr
-	Type &
-	operator * () const
-	{ return *value; }
-
-	///  Checks if there is associated managed object.
-	constexpr
-	operator bool () const
-	{ return value; }
-
-	///  @name Modifiers
-
-	///  Exchanges the contents of *this and @a var.
-	void
-	swap (basic_ptr & var)
-	{
-		if (value)
-			value -> replaceParent (this, &var);
-
-		if (var .value)
-			var .value -> replaceParent (&var, this);
-
-		std::swap (value, var .value);
-	}
-
-	///  Removes the managed object.
-	void
-	reset ()
-	{ reset (nullptr); }
-
-	///  Replaces the managed object.
-	void
-	reset (Type* const value)
-	{
-		if (get () not_eq value)
-		{
-			// First add object to avoid dispose.
-			add (value);
-			remove (get ());
-		}
-
-		set (value);
-	}
-
-	///  Replaces the managed object.
-	template <class Up>
-	void
-	reset (Up* const value)
-	{ reset (dynamic_cast <Type*> (value)); }
+	var &
+	operator = (pbBaseObject* const);
 
 	///  @name Common members
 
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return typeName; }
+	///  Returns the type of this value.
+	ValueType
+	getType () const
+	{ return type; }
 
-	///  @name Garbage collection
+	///  @name Test
 
-	virtual
 	bool
-	hasRootedObjects (ChildObjectSet & seen) final override
-	{ return hasRootedObjectsDontCollectObject (seen); }
+	isPrimitive () const;
+
+	bool
+	isUndefined () const
+	{ return type == UNDEFINED; }
+
+	bool
+	isNull () const
+	{ return type == NULL_OBJECT; }
+
+	bool
+	isObject () const
+	{ return type == OBJECT; }
+
+	///  @name Conversion operations
+
+	///  Converts its argument to a value of type Boolean.
+	var
+	toPrimitive () const;
+
+	///  Converts its argument to a value of type Boolean.
+	bool
+	toBoolean () const;
+
+	///  Converts its argument to an integral unsigned value of 16 bit.
+	uint16_t
+	toUInt16 () const;
+
+	///  Converts its argument to an integral signed value of 32 bit.
+	int32_t
+	toInt32 () const;
+
+	///  Converts its argument to an integral unsigned value of 32 bit.
+	uint32_t
+	toUInt32 () const
+	{ return toInt32 (); }
+
+	///  Converts its argument to an integral numeric value.
+	double
+	toInteger () const;
+
+	///  Converts its argument to a value of type Number.
+	double
+	toNumber () const;
+
+	///  @name Member access
+
+	///  Returns a value of type String.
+	const Glib::ustring &
+	getString () const
+	{ return *value .string_; }
+
+	///  Returns a value of type Object.
+	ptr <pbBaseObject> &
+	getObject ()
+	{ return *value .object_; }
+
+	///  Returns a value of type Object.
+	const ptr <pbBaseObject> &
+	getObject () const
+	{ return *value .object_; }
 
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const final override
-	{
-		if (value)
-			ostream << *value;
-
-		else
-			throw Error ("basic_ptr::toStream");
-	}
+	toStream (std::ostream & ostream) const final override;
 
 	///  @name Destruction
 
-	///  Destructs the owned object if no more ptrs link to it
-	virtual
-	void
-	dispose () final override
-	{
-		remove (get ());
-
-		vsChildObject::dispose ();
-	}
-
-	///  Destructs the owned object if no more ptrs link to it
-	virtual
-	~basic_ptr ()
-	{ remove (get ()); }
+	~var ();
 
 
 private:
 
-	///  @name Friends
-
-	template <class Up>
-	friend class basic_ptr;
-
 	///  @name Operations
-
+	
 	void
-	add (Type* const value)
+	clear ();
+
+	///  @name Member types
+
+	union Value
 	{
-		if (value)
-			value -> addParent (this);
-	}
+		bool bool_;
+		double double_;
+		int32_t int32_;
+		ptr <pbBaseObject>* object_;
+		Glib::ustring* string_;
+		uint32_t uint32_;
+	};
 
-	void
-	move (basic_ptr & var)
-	{
-		set (var .get ());
+	///  @name Members
 
-		if (get ())
-		{
-			var .get () -> replaceParent (&var, this);
-			var .set (nullptr);
-		}
-	}
-
-	template <class Up>
-	void
-	move (basic_ptr <Up> & var)
-	{
-		set (dynamic_cast <Type*> (var .get ()));
-
-		if (get ())
-		{
-			var .get () -> replaceParent (&var, this);
-			var .set (nullptr);
-		}
-		else
-			var .reset (nullptr);
-	}
-
-	void
-	remove (Type* const value)
-	{
-		if (value)
-		{
-			set (nullptr);
-
-			value -> removeParent (this);
-		}
-	}
-
-	void
-	set (Type* const _value)
-	{ value = _value; }
-
-	virtual
-	vsChildObject*
-	get_type () const final override
-	{ return get (); }
-
-	///  @name Static members
-
-	static const std::string   typeName;
-
-	///  @name Members;
-
-	Type* value;
+	Value     value;
+	ValueType type;
 
 };
-
-template <class Type>
-const std::string basic_ptr <Type>::typeName = "basic_ptr";
-
-///  @relates basic_ptr
-///  @name Utiliy functions
-
-///  Constructs an object of type Type and wraps it in a basic_ptr using
-///  args as the parameter list for the constructor of Type.
-template <class Type, class ... Args>
-basic_ptr <Type>
-make_ptr (Args && ... args)
-{
-	return basic_ptr <Type> (new Type (std::forward <Args> (args) ...));
-}
-
-///  @relates basic_ptr
-///  @name Comparision operations
-
-///  Compares two basic_ptr.
-///  Return true if @a lhs is equal to @a rhs.
-template <class Type>
-inline
-bool
-operator == (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
-{
-	return lhs .get () == rhs .get ();
-}
-
-///  Compares two basic_ptr.
-///  Return true if @a lhs is not equal to @a rhs.
-template <class Type>
-inline
-bool
-operator not_eq (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
-{
-	return lhs .get () not_eq rhs .get ();
-}
-
-///  Compares two basic_ptr.
-///  Returns true if @a lhs less than @a rhs.
-template <class Type>
-inline
-bool
-operator < (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
-{
-	return lhs .get () < rhs .get ();
-}
-
-///  Compares two basic_ptr.
-///  Returns true if @a lhs less than equal to @a rhs.
-template <class Type>
-inline
-bool
-operator <= (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
-{
-	return lhs .get () <= rhs .get ();
-}
-
-///  Compares two basic_ptr.
-///  Returns true if @a lhs greater than @a rhs.
-template <class Type>
-inline
-bool
-operator > (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
-{
-	return lhs .get () > rhs .get ();
-}
-
-///  Compares two basic_ptr.
-///  Returns true if @a lhs greater than equal to @a rhs.
-template <class Type>
-inline
-bool
-operator >= (const basic_ptr <Type> & lhs, const basic_ptr <Type> & rhs)
-{
-	return lhs .get () >= rhs .get ();
-}
-
-///  @relates basic_ptr
-///  @name Typedef
-
-class vsValue;
-
-///  Typedef for vsValue.
-using var = basic_ptr <vsValue>;
-
-///  @relates basic_ptr
-///  @name Utiliy functions
-
-///  Constructs an object of type Type and wraps it in a var using
-///  args as the parameter list for the constructor of Type.
-template <class Type, class ... Args>
-var
-make_var (Args && ... args)
-{
-	return var (new Type (std::forward <Args> (args) ...));
-}
 
 } // pb
 } // titania

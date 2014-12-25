@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_IF_STATEMENT_H__
 
 #include "../Execution/Block.h"
-#include "../Expressions/vsExpression.h"
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
@@ -61,7 +61,7 @@ namespace pb {
  *  Class to represent a ECMAScript object literal expression.
  */
 class IfStatement :
-	public vsExpression
+	public pbExpression
 {
 public:
 
@@ -69,40 +69,34 @@ public:
 
 	///  Constructs new IfStatement expression.
 	IfStatement (var && booleanExpression) :
-		     vsExpression (),
+		     pbExpression (),
 		booleanExpression (std::move (booleanExpression)),
 		        thenBlock (new Block ()),
 		        elseBlock (new Block ())
 	{ construct (); }
 
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{
-		const auto copy = make_ptr <IfStatement> (booleanExpression -> copy (executionContext));
-
-		copy -> getThenBlock () -> import (thenBlock .get (), executionContext);
-		copy -> getElseBlock () -> import (elseBlock .get (), executionContext);
-
-		return copy;
-	}
+//	///  Creates a copy of this object.
+//	virtual
+//	var
+//	copy (pbExecutionContext* const executionContext) const final override
+//	{
+//		const auto copy = make_ptr <IfStatement> (booleanExpression -> copy (executionContext));
+//
+//		copy -> getThenBlock () -> import (thenBlock .get (), executionContext);
+//		copy -> getElseBlock () -> import (elseBlock .get (), executionContext);
+//
+//		return copy;
+//	}
 
 	///  @name Common members
 
-	///  Returns the type of the value. For this expression this is »ADDITION«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return IF_STATEMENT; }
-
 	///  @name Member access
 
-	const basic_ptr <Block> &
+	const ptr <Block> &
 	getThenBlock () const
 	{ return thenBlock; }
 
-	const basic_ptr <Block> &
+	const ptr <Block> &
 	getElseBlock () const
 	{ return elseBlock; }
 
@@ -110,14 +104,16 @@ public:
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	void
-	evaluate () const final override
+	var
+	toPrimitive () const final override
 	{
-		if (booleanExpression -> toBoolean ())
+		if (booleanExpression .toBoolean ())
 			thenBlock -> run ();
-		
+
 		 else
 		   elseBlock -> run ();
+
+		 return var ();
 	}
 
 
@@ -133,8 +129,8 @@ private:
 	///  @name Members
 
 	const var               booleanExpression;
-	const basic_ptr <Block> thenBlock;
-	const basic_ptr <Block> elseBlock;
+	const ptr <Block> thenBlock;
+	const ptr <Block> elseBlock;
 
 };
 

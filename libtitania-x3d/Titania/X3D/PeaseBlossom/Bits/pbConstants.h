@@ -48,73 +48,81 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_INPUT_STREAM_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_INPUT_STREAM_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_VS_CONSTANTS_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_VS_CONSTANTS_H__
 
+#include <string>
 #include <iostream>
 #include <sstream>
+#include <cmath>
+#include <limits>
+
+#undef NONE
 
 namespace titania {
 namespace pb {
 
-class vsInputStreamObject
+/**
+ *  Enum type for ECMAScript primitives.
+ */
+enum ValueType
 {
-public:
+	// Standard object
 
-	///  @name Input/Output
-
-	virtual
-	void
-	fromString (const std::string & string);
-
-	virtual
-	void
-	fromLocaleString (const std::string & string, const std::locale & locale);
-
-	virtual
-	void
-	fromStream (std::istream & istream) = 0;
-
-
-protected:
-
-	///  @name Construction
-
-	vsInputStreamObject ()
-	{ }
+	UNDEFINED,
+	BOOLEAN,
+	INT32,
+	UINT32,
+	DOUBLE,
+	STRING,
+	NULL_OBJECT,
+	OBJECT,
 
 };
 
-inline
-void
-vsInputStreamObject::fromString (const std::string & string)
-{
-	fromLocaleString (string, std::locale::classic ());
-}
-
-inline
-void
-vsInputStreamObject::fromLocaleString (const std::string & string, const std::locale & locale)
-{
-	std::istringstream istringstream (string);
-
-	istringstream .imbue (locale);
-
-	fromStream (istringstream);
-}
-
-///  @relates vsInputStreamObject
+///  @relates ValueType
 ///  @name Input/Output operators.
 
-///  Extraction operator for vsInputStreamObject.
 template <class CharT, class Traits>
-inline
-std::basic_istream <CharT, Traits> &
-operator >> (std::basic_istream <CharT, Traits> & istream, vsInputStreamObject & object)
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const ValueType type)
+noexcept (true)
 {
-	object .fromStream (istream);
-	return istream;
+	switch (type)
+	{
+		case UNDEFINED:   ostream << "UNDEFINED"; break;
+		case BOOLEAN:     ostream << "BOOLEAN";   break;
+		case INT32:       ostream << "INT32";     break;
+		case UINT32:      ostream << "UINT32";    break;
+		case DOUBLE:      ostream << "DOUBLE";    break;
+		case STRING:      ostream << "STRING";    break;
+		case NULL_OBJECT: ostream << "NULL";      break;
+		case OBJECT:      ostream << "OBJECT";    break;
+	}
+
+	return ostream;
 }
+
+inline
+std::string
+to_string (const ValueType type)
+noexcept (true)
+{
+	std::ostringstream osstream;
+
+	osstream << type;
+
+	return osstream .str ();
+}
+
+using PropertyFlagsType = uint8_t;
+
+constexpr PropertyFlagsType NONE         = 0;
+constexpr PropertyFlagsType WRITABLE     = 1 << 0;
+constexpr PropertyFlagsType ENUMERABLE   = 1 << 1;
+constexpr PropertyFlagsType CONFIGURABLE = 1 << 2;
+constexpr PropertyFlagsType LEAVE_VALUE  = 1 << 3;
+constexpr PropertyFlagsType DEFAULT      = WRITABLE | CONFIGURABLE;
 
 } // pb
 } // titania

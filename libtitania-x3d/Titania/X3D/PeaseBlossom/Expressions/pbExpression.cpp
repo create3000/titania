@@ -48,84 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_OUTPUT_STREAM_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_OUTPUT_STREAM_OBJECT_H__
-
-#include <locale>
-#include <sstream>
-
-#include <glibmm/ustring.h>
+#include "pbExpression.h"
 
 namespace titania {
 namespace pb {
 
-class vsOutputStreamObject
-{
-public:
-
-	///  @name Operations
-
-	///  Converts its argument to a value of type String.
-	virtual
-	Glib::ustring
-	toString () const;
-
-	///  Converts its argument to a value of type String according to @a locale.
-	virtual
-	Glib::ustring
-	toLocaleString (const std::locale & locale) const;
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const = 0;
-
-
-protected:
-
-	///  @name Construction
-
-	vsOutputStreamObject ()
-	{ }
-
-};
-
-inline
-Glib::ustring
-vsOutputStreamObject::toString () const
-{
-	return toLocaleString (std::locale::classic ());
-}
-
-inline
-Glib::ustring
-vsOutputStreamObject::toLocaleString (const std::locale & locale) const
-{
-	std::ostringstream ostringstream;
-
-	ostringstream .imbue (locale);
-
-	toStream (ostringstream);
-
-	return ostringstream .str ();
-}
-
-///  @relates vsOutputStreamObject
-///  @name Input/Output operators.
-
-///  Insertion operator for vsOutputStreamObject.
-template <class CharT, class Traits>
-inline
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const vsOutputStreamObject & value)
-{
-	value .toStream (ostream);
-	return ostream;
-}
+const std::string pbExpression::typeName = "Expression";
 
 } // pb
 } // titania
-
-#endif

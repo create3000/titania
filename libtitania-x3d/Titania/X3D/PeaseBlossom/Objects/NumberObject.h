@@ -51,10 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
 
-#include "../Objects/vsObject.h"
-#include "../Primitives/Int32.h"
-#include "../Primitives/Number.h"
-#include "../Primitives/UInt32.h"
+#include "../Objects/pbObject.h"
 
 namespace titania {
 namespace pb {
@@ -63,7 +60,7 @@ namespace pb {
  *  Class to represent a number object.
  */
 class NumberObject :
-	public vsObject
+	public pbObject
 {
 public:
 
@@ -71,97 +68,51 @@ public:
 
 	///  Constructs new NumberObject.
 	NumberObject () :
-		vsObject (),
-		  number (new Int32 ())
+		pbObject (),
+		  number (0)
 	{ }
 
 	///  Constructs new NumberObject.
 	explicit
 	NumberObject (const int32_t value) :
-		vsObject (),
-		  number (new Int32 (value))
+		pbObject (),
+		  number (value)
 	{ }
 
 	///  Constructs new NumberObject.
 	explicit
 	NumberObject (const uint32_t value) :
-		vsObject (),
-		  number (new UInt32 (value))
+		pbObject (),
+		  number (value)
 	{ }
 
 	///  Constructs new NumberObject.
 	explicit
 	NumberObject (const double value) :
-		vsObject (),
-		  number (new Number (value))
+		pbObject (),
+		  number (value)
 	{ }
 
 	///  Constructs new NumberObject.
 	explicit
 	NumberObject (const var & value) :
-		vsObject (),
-		  number (new Number (value -> toNumber ()))
+		pbObject (),
+		  number (value .toNumber ())
 	{ }
 
 	///  Creates a new default object.
 	virtual
-	var
-	create (vsExecutionContext* const) const final override
-	{ return make_var <NumberObject> (number); }
-
-	///  @name Common members
-
-	///  Returns the type of the value. For number objects this is »NUMBER_OBJECT«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return NUMBER_OBJECT; }
-
-	///  @name Common operations
-
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const final override
-	{ return number; }
-
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const final override
-	{ return number -> toBoolean (); }
-
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const final override
-	{ return number -> toUInt16 (); }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const final override
-	{ return number -> toInt32 (); }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const final override
-	{ return number -> toUInt32 (); }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const final override
-	{ return number -> toNumber (); }
+	ptr <pbObject>
+	create (pbExecutionContext* const) const final override
+	{ return make_ptr <NumberObject> (number); }
 
 	///  @name Input/Output
 
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ number -> toStream (ostream); }
+	//	///  Inserts this object into the output stream @a ostream.
+	//	virtual
+	//	void
+	//	toStream (std::ostream & ostream) const final override
+	//	{ number .toStream (ostream); }
 
 
 private:

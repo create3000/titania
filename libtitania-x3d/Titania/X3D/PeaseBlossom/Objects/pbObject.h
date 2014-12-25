@@ -51,28 +51,32 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_OBJECT_H__
 
-#include "../Primitives/vsValue.h"
+#include "../Bits/pbConstants.h"
+#include "../Objects/pbBaseObject.h"
+#include "../Primitives/ptr.h"
 
 #include <functional>
 #include <map>
 #include <memory>
 
+#include <unordered_map>
+
 namespace titania {
 namespace pb {
 
-class vsObject;
-class vsFunction;
+class pbObject;
+class pbFunction;
 
-///  @relates vsObject
+///  @relates pbObject
 ///  @name Type definitions
 
 ///  Type to represent a property descriptor.
 struct PropertyDescriptor
 {
-	var value;
-	PropertyFlagsType flags;
-	basic_ptr <vsFunction> get;
-	basic_ptr <vsFunction> set;
+	var                    value;
+	PropertyFlagsType      flags;
+	ptr <pbFunction> get;
+	ptr <pbFunction> set;
 
 	~PropertyDescriptor ();
 
@@ -84,24 +88,24 @@ using PropertyDescriptorPtr = std::unique_ptr <PropertyDescriptor>;
 /**
  *  Class to represent a basic object.
  */
-class vsObject :
-	virtual public vsValue
+class pbObject :
+	public pbBaseObject
 {
 public:
 
 	///  Creates a new default object.
 	virtual
-	var
-	create (vsExecutionContext* const) const = 0;
+	ptr <pbObject>
+	create (pbExecutionContext* const) const = 0;
 
 	///  Creates a flat copy of this object.
-	var
-	clone (vsExecutionContext* const) const;
+	ptr <pbObject>
+	clone (pbExecutionContext* const) const;
 
 	///  Creates a deep copy of this object.
 	virtual
-	var
-	copy (vsExecutionContext* const) const final override;
+	ptr <pbObject>
+	copy (pbExecutionContext* const) const;
 
 	///  @name Common members
 
@@ -111,68 +115,15 @@ public:
 	getTypeName () const override
 	{ return typeName; }
 
-	///  Returns the type of the value. For basic objects this is »OBJECT«.
-	virtual
-	ValueType
-	getType () const override
-	{ return OBJECT; }
-
-	///  @name Common operations
-
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toPrimitive () const override
-	{ return var (const_cast <vsObject*> (this)); }
-
-	///  Returns true if the input argument is a non-Object type otherwise false.
 	virtual
 	bool
 	isPrimitive () const final override
-	{ return false; }
-
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const override
 	{ return true; }
 
-	///  Converts its argument to an integral unsigned value of 16 bit.
-	virtual
-	uint16_t
-	toUInt16 () const override
-	{ return 1; }
-
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	int32_t
-	toInt32 () const override
-	{ return 1; }
-
-	///  Converts its argument to an integral unsigned value of 32 bit.
-	virtual
-	uint32_t
-	toUInt32 () const override
-	{ return 1; }
-
-	///  Converts its argument to a value of type Number.
-	virtual
-	double
-	toNumber () const override
-	{ return 1; }
-
-	///  Converts its argument to a value of type Object.
 	virtual
 	var
-	toObject () const
-	throw (TypeError) override
-	{ return var (const_cast <vsObject*> (this)); }
-
-	///  Converts its input argument to either Primitive or Object type.
-	virtual
-	var
-	toValue () const
-	{ return var (const_cast <vsObject*> (this)); }
+	toPrimitive () const final override
+	{ return const_cast <pbObject*> (this); }
 
 	///  @name Functions
 
@@ -180,43 +131,86 @@ public:
 	bool
 	hasProperty (const std::string & name) const
 	noexcept (true)
-	{ return propertyDescriptors .count (name); }
+	{ return hasProperty (getId (name)); }
 
 	///  Adds the named property described by the given descriptor to this object.
 	void
 	addProperty (const std::string & name,
 	             const var & value,
 	             const PropertyFlagsType flags = DEFAULT,
-	             const var & get = var (),
-	             const var & set = var ())
-	throw (std::invalid_argument);
+	             const ptr <pbFunction> & get = nullptr,
+	             const ptr <pbFunction> & set = nullptr)
+	throw (std::invalid_argument)
+	{ addProperty (getId (name), value, flags, get, set); }
 
 	///  Updates the named property described by the given descriptor to this object.
 	void
 	updateProperty (const std::string & name,
 	                const var & value,
 	                const PropertyFlagsType flags = DEFAULT,
-	                const var & get = var (),
-	                const var & set = var ())
-	throw (std::invalid_argument);
+	                const ptr <pbFunction> & get = nullptr,
+	                const ptr <pbFunction> & set = nullptr)
+	throw (std::invalid_argument)
+	{ updateProperty (getId (name), value, flags, get, set); }
 
 	///  Removes the property @a name from this object.
 	const var &
 	getProperty (const std::string & name) const
 	throw (std::out_of_range)
-	{ return propertyDescriptors .at (name) -> value; }
+	{ return getProperty (getId (name)); }
 
 	///  Removes the property @a name from this object.
 	void
 	removeProperty (const std::string & name)
 	noexcept (true)
-	{ propertyDescriptors .erase (name); }
+	{ removeProperty (getId (name)); }
 
 	///  Returns the property descriptor for a named property on this object.
 	const PropertyDescriptorPtr &
 	getPropertyDescriptor (const std::string & name) const
 	throw (std::out_of_range)
-	{ return propertyDescriptors .at (name); }
+	{ return getPropertyDescriptor (getId (name)); }
+
+	///  Checks wehter this object has a propterty @a id.
+	bool
+	hasProperty (const size_t id) const
+	noexcept (true)
+	{ return propertyDescriptors .count (id); }
+
+	void
+	addProperty (const size_t id,
+	             const var & value,
+	             const PropertyFlagsType flags = DEFAULT,
+	             const ptr <pbFunction> & get = nullptr,
+	             const ptr <pbFunction> & set = nullptr)
+	throw (std::invalid_argument);
+
+	///  Updates the named property described by the given descriptor to this object.
+	void
+	updateProperty (const size_t id,
+	                const var & value,
+	                const PropertyFlagsType flags = DEFAULT,
+	                const ptr <pbFunction> & get = nullptr,
+	                const ptr <pbFunction> & set = nullptr)
+	throw (std::invalid_argument);
+
+	///  Removes the property @a id from this object.
+	const var &
+	getProperty (const size_t id) const
+	throw (std::out_of_range)
+	{ return propertyDescriptors .at (id) -> value; }
+
+	///  Removes the property @a id from this object.
+	void
+	removeProperty (const size_t id)
+	noexcept (true)
+	{ propertyDescriptors .erase (id); }
+
+	///  Returns the property descriptor for a property id on this object.
+	const PropertyDescriptorPtr &
+	getPropertyDescriptor (const size_t id) const
+	throw (std::out_of_range)
+	{ return propertyDescriptors .at (id); }
 
 	///  @name Input/Output
 
@@ -234,25 +228,19 @@ public:
 	void
 	dispose () override;
 
-	///  Destructs the vsObject.
+	///  Destructs the pbObject.
 	virtual
-	~vsObject ();
+	~pbObject ();
 
 
 protected:
 
 	///  @name Construction
 
-	///  Constructs new vsObject.
-	vsObject () :
-		            vsValue (),
+	///  Constructs new pbObject.
+	pbObject () :
+	   pbBaseObject (),
 		propertyDescriptors ()
-	{ }
-
-	///  Default initialize handler.
-	virtual
-	void
-	initialize ()
 	{ }
 
 
@@ -260,11 +248,11 @@ private:
 
 	///  @name Static members
 
-	static const std::string   typeName;
+	static const std::string typeName;
 
 	///  @name Members
 
-	std::map <std::string, PropertyDescriptorPtr> propertyDescriptors;
+	std::unordered_map <size_t, PropertyDescriptorPtr> propertyDescriptors;
 
 };
 

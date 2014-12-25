@@ -48,32 +48,81 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_BASE_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_BASE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_OUTPUT_STREAM_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_OUTPUT_STREAM_OBJECT_H__
 
-#include <string>
+#include <locale>
+#include <sstream>
 
-#include <Titania/LOG.h>
+#include <glibmm/ustring.h>
 
 namespace titania {
 namespace pb {
 
-class vsBase
+class pbOutputStreamObject
 {
 public:
 
-	vsBase () = default;
+	///  @name Operations
 
+	///  Converts its argument to a value of type String.
 	virtual
-	const std::string &
-	getTypeName () const = 0;
+	Glib::ustring
+	toString () const;
 
-	///  Destructs the vsBase.
+	///  Converts its argument to a value of type String according to @a locale.
 	virtual
-	~vsBase ()
-	{ }
+	Glib::ustring
+	toLocaleString (const std::locale & locale) const;
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const = 0;
+
+
+protected:
+
+	///  @name Construction
+
+	pbOutputStreamObject () = default;
 
 };
+
+inline
+Glib::ustring
+pbOutputStreamObject::toString () const
+{
+	return toLocaleString (std::locale::classic ());
+}
+
+inline
+Glib::ustring
+pbOutputStreamObject::toLocaleString (const std::locale & locale) const
+{
+	std::ostringstream ostringstream;
+
+	ostringstream .imbue (locale);
+
+	toStream (ostringstream);
+
+	return ostringstream .str ();
+}
+
+///  @relates pbOutputStreamObject
+///  @name Input/Output operators.
+
+///  Insertion operator for pbOutputStreamObject.
+template <class CharT, class Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const pbOutputStreamObject & value)
+{
+	value .toStream (ostream);
+	return ostream;
+}
 
 } // pb
 } // titania

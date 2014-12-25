@@ -51,7 +51,6 @@
 #include "Function.h"
 
 #include "../Objects/Object.h"
-#include "../Primitives/Undefined.h"
 
 #include <Titania/String/to_string.h>
 
@@ -60,8 +59,8 @@ namespace pb {
 
 std::atomic <size_t> Function::recursionLimit (100000);
 
-var
-Function::create (vsExecutionContext* const executionContext) const
+ptr <pbObject>
+Function::create (pbExecutionContext* const executionContext) const
 {
 	const auto function = make_ptr <Function> (executionContext, getName (), std::vector <std::string> (formalParameters));
 
@@ -81,7 +80,7 @@ Function::construct ()
 }
 
 void
-Function::addClosure (const basic_ptr <vsExecutionContext> & executionContext)
+Function::addClosure (const ptr <pbExecutionContext> & executionContext)
 {
 	const auto & defaultObjects = executionContext -> getDefaultObjects ();
 
@@ -107,7 +106,7 @@ Function::addClosure (const basic_ptr <vsExecutionContext> & executionContext)
 }
 
 void
-Function::resolve (const basic_ptr <vsExecutionContext> & executionContext)
+Function::resolve (const ptr <pbExecutionContext> & executionContext)
 {
 	if (getExecutionContext () -> isRootContext ())
 		return;
@@ -124,7 +123,7 @@ Function::resolve (const basic_ptr <vsExecutionContext> & executionContext)
 }
 
 var
-Function::call (const basic_ptr <vsObject> & thisObject, const std::vector <var> & arguments)
+Function::call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments)
 {
 	auto localObject = make_ptr <Object> ();
 
@@ -136,7 +135,7 @@ Function::call (const basic_ptr <vsObject> & thisObject, const std::vector <var>
 			localObject -> addProperty (formalParameters [i], arguments [i], WRITABLE | CONFIGURABLE);
 
 		else
-			localObject -> addProperty (formalParameters [i], make_var <Undefined> (), WRITABLE | CONFIGURABLE);
+			localObject -> addProperty (formalParameters [i], var (), WRITABLE | CONFIGURABLE);
 	}
 
 	try
@@ -156,7 +155,7 @@ Function::call (const basic_ptr <vsObject> & thisObject, const std::vector <var>
 }
 
 void
-Function::push (basic_ptr <vsObject> && localObject)
+Function::push (ptr <pbObject> && localObject)
 {
 	if (recursionDepth)
 	{
@@ -197,8 +196,8 @@ Function::dispose ()
 {
 	closures .clear ();
 
-	vsFunction::dispose ();
-	vsExecutionContext::dispose ();
+	pbFunction::dispose ();
+	pbExecutionContext::dispose ();
 }
 
 } // pb

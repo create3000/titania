@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
 
-#include "../Execution/vsExecutionContext.h"
-#include "../Objects/vsFunction.h"
+#include "../Execution/pbExecutionContext.h"
+#include "../Objects/pbFunction.h"
 
 #include <atomic>
 
@@ -63,17 +63,17 @@ namespace pb {
  *  Class to represent a scripted ECMAScript function.
  */
 class Function :
-	public vsFunction,
-	public vsExecutionContext
+	public pbFunction,
+	public pbExecutionContext
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new Function.
-	Function (vsExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
-		         vsFunction (name),
-		 vsExecutionContext (executionContext, executionContext -> getGlobalObject ()),
+	Function (pbExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { }) :
+		         pbFunction (name),
+		 pbExecutionContext (executionContext, executionContext -> getGlobalObject ()),
 		   formalParameters (std::move (formalParameters)),
 		           closures (),
 		     recursionDepth (0),
@@ -83,15 +83,15 @@ public:
 
 	///  Creates a new default object.
 	virtual
-	var
-	create (vsExecutionContext* const executionContext) const final override;
+	ptr <pbObject>
+	create (pbExecutionContext* const executionContext) const final override;
 
 	///  @name Operations
 
 	///  Executes this function.
 	virtual
 	var
-	call (const basic_ptr <vsObject> & thisObject, const std::vector <var> & arguments = { }) final override;
+	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { }) final override;
 
 	///  @name Input/Output
 
@@ -99,7 +99,7 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ vsFunction::toStream (ostream); }
+	{ pbFunction::toStream (ostream); }
 
 	///  @name Destruction
 
@@ -127,7 +127,7 @@ protected:
 	///  Resolves the next closure of the @a executionContext.
 	virtual
 	void
-	resolve (const basic_ptr <vsExecutionContext> & executionContext) final override;
+	resolve (const ptr <pbExecutionContext> & executionContext) final override;
 
 
 private:
@@ -140,14 +140,14 @@ private:
 
 	///  Recursively add all default objects to the list of closures.
 	void
-	addClosure (const basic_ptr <vsExecutionContext> & executionContext);
+	addClosure (const ptr <pbExecutionContext> & executionContext);
 
 	///  @name Operations
 
 	///  Set @a localObject as local object and pushes all default objects to the default object stack if an recursion is
 	///  detected.
 	void
-	push (basic_ptr <vsObject> && localObject);
+	push (ptr <pbObject> && localObject);
 
 	///  Reverses the effect of pop.
 	void
@@ -159,12 +159,12 @@ private:
 
 	///  @name Member access
 
-	using DefaultObjectsStack = basic_array <basic_array <basic_ptr <vsObject>>>;
+	using DefaultObjectsStack = array <array <ptr <pbObject>>>;
 
 	std::vector <std::string>                                   formalParameters;
-	std::map <const vsExecutionContext*, basic_ptr <vsObject>>  closures;
+	std::map <const pbExecutionContext*, ptr <pbObject>>  closures;
 	size_t                                                      recursionDepth;
-	basic_array <basic_ptr <vsObject>>                          localObjectsStack;
+	array <ptr <pbObject>>                          localObjectsStack;
 	DefaultObjectsStack                                         defaultObjectsStack;
 
 };

@@ -48,48 +48,75 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_NUMBER_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_NUMBER_EXPRESSION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_VS_MATH_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_VS_MATH_H__
 
-#include "../Expressions/vsExpression.h"
-#include "../Primitives/Number.h"
+#include <cmath>
+#include <limits>
+#include <sstream>
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a ECMAScript number expression.
- */
-class vsNumberExpression :
-	public vsExpression
+///  The value of Number.MIN_VALUE is the smallest positive value of the Number type, which is approximately 5 × 10?324.
+static
+constexpr double
+MIN_VALUE ()
 {
-public:
+	return std::numeric_limits <double>::min ();
+}
 
-	///  @name Operations
+///  The value of Number.MAX_VALUE is the largest positive finite value of the Number type, which is approximately 1.7976931348623157 × 10308.
+static
+constexpr double
+MAX_VALUE ()
+{
+	return std::numeric_limits <double>::max ();
+}
 
-	///  Converts its argument to a value of type Boolean.
-	virtual
-	bool
-	toBoolean () const final override
-	{ return toNumber (); }
+///  The value of Number.NaN is NaN.
+static
+constexpr double
+NaN ()
+{
+	return std::numeric_limits <double>::quiet_NaN ();
+}
 
-	///  Converts its input argument to a non-Object type.
-	virtual
-	var
-	toValue () const final override
-	{ return make_var <Number> (toNumber ()); }
+///  The value of Number.NEGATIVE_INFINITY is -Infintiy.
+static
+constexpr double
+NEGATIVE_INFINITY ()
+{
+	return -std::numeric_limits <double>::infinity ();
+}
 
+///  The value of Number.POSITIVE_INFINITY is Infinity.
+static
+constexpr double
+POSITIVE_INFINITY ()
+{
+	return std::numeric_limits <double>::infinity ();
+}
 
-protected:
+inline
+bool
+isNaN (const double value)
+{
+	return std::isnan (value);
+}
 
-	///  @name Construction
+inline
+double
+parseFloat (const std::string & string)
+{
+	double number = 0;
 
-	///  Constructs new vsNumberExpression expression.
-	vsNumberExpression () :
-		vsExpression ()
-	{ }
+	std::istringstream isstream (string);
 
-};
+	isstream >> number;
+
+	return number;
+}
 
 } // pb
 } // titania

@@ -286,8 +286,9 @@ function test1 ()
 }
 */
 
-var n = 0;
+var n = 1;
 
+/*
 function fibonacci_recursive (value)
 {
 	n = n + 1;
@@ -300,10 +301,18 @@ function fibonacci_recursive (value)
 
 	return fibonacci_recursive (value - 1) + fibonacci_recursive (value - 2);
 }
+*/
 
 function fibonacci_iterative (value)
 {
-	print ('fibonacci_iterative: ', value);
+	// 8.000.000
+	// 73.0 s
+	// 10.92 s
+	// 7.80 s
+	// 7.04 s
+
+	print ('fibonacci_iterative: ');
+	print ('fibonacci_iterative: value: ', value);
 
 	if (value === 0)
 		return 0;
@@ -325,6 +334,7 @@ function fibonacci_iterative (value)
 	return result;
 }
 
+/*
 function for_time (n)
 {
 	var result = 1;
@@ -334,26 +344,33 @@ function for_time (n)
 	
 	return result;
 }
+*/
 
 function set_time (value, time)
 {
 	print ('set_time:');
+	print ('set_time: value: ', value);
+	print ('set_time: time:  ', time);
+	print ('set_time: now:   ', now ());
 
-	n = 0;
-	
+	n = 1;
+
 	//var t0 = now ();
 	//print ('fibonacci_recursive: ', fibonacci_recursive (24));
 	//print ('fibonacci_recursive: ', n);
 	//print ('time: ',                now () - t0);
 
 	var t0 = now ();
-	print ('fibonacci_iterative: ', fibonacci_iterative (80));
+	print ('fibonacci_iterative: ', fibonacci_iterative (8000000));
 	print ('time: ',                now () - t0);
 
 	//var t0 = now ();
 	//print ('result: ', for_time (2000000));
 	//print ('time: ',   now () - t0);
 }
+
+print (Math .E);
+print (Math .LN10);
 "
   directOutput TRUE
 }
@@ -424,7 +441,7 @@ function set_time (value, time)
 	//print ('time: ',   (Date .now () - t0) / 1000);
 
 	var t0 = Date .now ();
-	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, 80));
+	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, 8000000));
 	print ('time: ',   (Date .now () - t0) / 1000);
 
 	//var t0 = Date .now ();

@@ -51,10 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_EXPRESSION_H__
 
-#include "../Expressions/vsBooleanExpression.h"
-#include "../Primitives/vsString.h"
-
-#include <cmath>
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
@@ -63,7 +60,7 @@ namespace pb {
  *  Class to represent a ECMAScript remainder expression.
  */
 class StrictEqualExpression :
-	public vsBooleanExpression
+	public pbExpression
 {
 public:
 
@@ -71,31 +68,23 @@ public:
 
 	///  Constructs new StrictEqualExpression expression.
 	StrictEqualExpression (var && lhs, var && rhs) :
-		vsBooleanExpression (),
-		                lhs (std::move (lhs)),
-		                rhs (std::move (rhs))
+		pbExpression (),
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
 	{ construct (); }
 
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <StrictEqualExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
-
-	///  @name Common members
-
-	///  Returns the type of the value. For this expression this is »REMAINDER«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return STRICT_EQUAL_EXPRESSION; }
+//	///  Creates a copy of this object.
+//	virtual
+//	var
+//	copy (pbExecutionContext* const executionContext) const final override
+//	{ return make_var <StrictEqualExpression> (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Operations
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
-	bool
-	toBoolean () const final override
+	var
+	toPrimitive () const final override
 	{ return evaluate (lhs, rhs); }
 
 	///  Evaluates the expression.
@@ -103,13 +92,13 @@ public:
 	bool
 	evaluate (const var & lhs, const var & rhs)
 	{
-		const var x = lhs -> toValue ();
-		const var y = rhs -> toValue ();
+		const var x = lhs .toPrimitive ();
+		const var y = rhs .toPrimitive ();
 
-		if (x -> getType () not_eq y -> getType ())
+		if (x .getType () not_eq y .getType ())
 			return false;
 
-		switch (x -> getType ())
+		switch (x .getType ())
 		{
 			case UNDEFINED:
 				return true;
@@ -117,17 +106,19 @@ public:
 			case NULL_OBJECT:
 				return true;
 
-			case NUMBER:
-				return x -> toNumber () == y -> toNumber ();
+			case INT32: // XXX
+			case UINT32:// XXX
+			case DOUBLE:
+				return x .toNumber () == y .toNumber ();
 
 			case STRING:
-				return static_cast <vsString*> (x .get ()) -> getString () == static_cast <vsString*> (y .get ()) -> getString ();
+				return x .getString () == y .getString ();
 
 			case BOOLEAN:
-				return x -> toBoolean () == y -> toBoolean ();
+				return x .toBoolean () == y .toBoolean ();
 
-			default:
-				return x == y;
+			case OBJECT:
+				return x .getObject () == y .getObject ();
 		}
 
 		return false;
@@ -157,10 +148,10 @@ inline
 var
 createStrictEqualExpression (var && lhs, var && rhs)
 {
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return StrictEqualExpression::evaluate (lhs, rhs) ? make_var <True> () : make_var <False> ();
+	if (lhs .isPrimitive () and rhs .isPrimitive ())
+		return StrictEqualExpression::evaluate (lhs, rhs);
 
-	return make_var <StrictEqualExpression> (std::move (lhs), std::move (rhs));
+	return new StrictEqualExpression (std::move (lhs), std::move (rhs));
 }
 
 } // pb

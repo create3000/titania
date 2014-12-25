@@ -48,84 +48,97 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VS_NUMBER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VS_NUMBER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_BLOCK_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_BLOCK_H__
 
-#include "../Primitives/vsPrimitive.h"
+#include "../Primitives/array.h"
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a basic number value.
- */
-class vsNumber :
-	public vsPrimitive
+class pbExecutionContext;
+
+class pbBlock :
+	virtual public pbChildObject,
+	virtual public pbOutputStreamObject
 {
 public:
 
-	///  @name Common members
+	/// @name Member access
 
-	///  Returns the type name of this object.
+	///  Add an expression to the list of expressions.
+	void
+	addExpression (var && value)
+	{
+		expressions .emplace_back (std::move (value));
+
+		auto & expression = expressions .back ();
+
+		if (expression .isObject ())
+			expression .getObject () .addParent (this);
+	}
+
+	///  Returns an array with all local root expressions.
+	const std::deque <var> &
+	getExpressions () const
+	{ return expressions; }
+
+	///  @name Destruction
+
+	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
+	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
 	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
+	void
+	dispose () override
+	{
+		expressions .clear ();
 
-	///  Returns the type of the value. For number values this is »NUMBER«.
-	virtual
-	ValueType
-	getType () const override
-	{ return NUMBER; }
-
-	///  @name Constants
-
-	///  The value of Number.MIN_VALUE is the smallest positive value of the Number type, which is approximately 5 × 10?324.
-	static
-	constexpr double
-	MIN_VALUE ()
-	{ return std::numeric_limits <double>::min (); }
-
-	///  The value of Number.MAX_VALUE is the largest positive finite value of the Number type, which is approximately 1.7976931348623157 × 10308.
-	static
-	constexpr double
-	MAX_VALUE ()
-	{ return std::numeric_limits <double>::max (); }
-
-	///  The value of Number.NaN is NaN.
-	static
-	constexpr double
-	NaN ()
-	{ return std::numeric_limits <double>::quiet_NaN (); }
-
-	///  The value of Number.NEGATIVE_INFINITY is -Infintiy.
-	static
-	constexpr double
-	NEGATIVE_INFINITY ()
-	{ return -std::numeric_limits <double>::infinity (); }
-
-	///  The value of Number.POSITIVE_INFINITY is Infinity.
-	static
-	constexpr double
-	POSITIVE_INFINITY ()
-	{ return std::numeric_limits <double>::infinity (); }
-
+		pbChildObject::dispose ();
+	}
 
 protected:
 
 	///  @name Construction
 
-	///  Constructs new vsNumber value.
-	vsNumber () :
-		vsPrimitive ()
-	{ }
+	///  Constructs new pbBlock.
+	pbBlock () :
+		       pbChildObject (),
+		pbOutputStreamObject (),
+		         expressions ()
+	{ construct (); }
 
+	/// @name Operations
+
+	///  Imports all expressions from @a block into @a executionContext.
+	void
+	import (const pbBlock* const block, pbExecutionContext* const executionContext)
+	{
+		for (const auto & expression : block -> getExpressions ())
+			addExpression (expression .copy (executionContext));
+	}
+
+	///  Executes the associated expessions of this context.
+	void
+	run ()
+	{
+		for (const auto & expression : expressions)
+			expression .toPrimitive ();
+	}
 
 private:
 
-	///  @name Static members
+	///  @name Construction
 
-	static const std::string   typeName;
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{
+		//addChildren (expressions);
+	}
+
+	/// @name Members
+
+	std::deque <var> expressions; // Use deque to keep iters when inserting value.
 
 };
 

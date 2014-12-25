@@ -50,7 +50,7 @@
 
 #include "Parser.h"
 
-#include "../Execution/vsExecutionContext.h"
+#include "../Execution/pbExecutionContext.h"
 #include "../Expressions.h"
 #include "../Objects.h"
 #include "../Parser/Grammar.h"
@@ -62,7 +62,7 @@
 namespace titania {
 namespace pb {
 
-Parser::Parser (vsExecutionContext* const executionContext, std::istream & istream) :
+Parser::Parser (pbExecutionContext* const executionContext, std::istream & istream) :
 	             rootContext (executionContext),
 	       executionContexts ({ executionContext }),
 	                  blocks ({ executionContext }),
@@ -85,7 +85,7 @@ throw (SyntaxError,
 
 		program ();
 	}
-	catch (const vsException & error)
+	catch (const pbException & error)
 	{
 		__LOG__ << ">>>" << istream .rdbuf () << "<<<" << std::endl;
 		throw;
@@ -93,7 +93,7 @@ throw (SyntaxError,
 }
 
 void
-Parser::pushExecutionContext (vsExecutionContext* const executionContext)
+Parser::pushExecutionContext (pbExecutionContext* const executionContext)
 {
 	pushBlock (executionContext);
 	executionContexts .emplace (executionContext);
@@ -289,7 +289,7 @@ Parser::nullLiteral (var & value)
 
 	if (Grammar::null (istream))
 	{
-		value .reset (new Null ());
+		value = nullptr;
 		return true;
 	}
 
@@ -305,13 +305,13 @@ Parser::booleanLiteral (var & value)
 
 	if (Grammar::true_ (istream))
 	{
-		value .reset (new True ());
+		value = true;
 		return true;
 	}
 
 	if (Grammar::false_ (istream))
 	{
-		value .reset (new False ());
+		value = false;
 		return true;
 	}
 
@@ -351,7 +351,7 @@ Parser::decimalLiteral (var & value)
 
 	if (istream >> std::dec >> number)
 	{
-		value = createNumber (number);
+		value = number;
 		return true;
 	}
 
@@ -373,7 +373,7 @@ Parser::binaryIntegerLiteral (var & value)
 
 		if (Grammar::BinaryDigits (istream, digits))
 		{
-			value .reset (new UInt32 (math::strtoul (digits .c_str (), 2)));
+			value = (uint32_t) math::strtoul (digits .c_str (), 2);
 			return true;
 		}
 
@@ -396,7 +396,7 @@ Parser::octalIntegerLiteral (var & value)
 
 		if (istream >> std::oct >> number)
 		{
-			value .reset (new UInt32 (number));
+			value = number;
 			return true;
 		}
 
@@ -419,7 +419,7 @@ Parser::hexIntegerLiteral (var & value)
 
 		if (istream >> std::hex >> number)
 		{
-			value .reset (new UInt32 (number));
+			value = number;
 			return true;
 		}
 
@@ -441,13 +441,13 @@ Parser::stringLiteral (var & value)
 
 	if (doubleQuotedString (istream, characters))
 	{
-		value .reset (new String (characters));
+		value = std::move (characters);
 		return true;
 	}
 
 	if (singleQuotedString (istream, characters))
 	{
-		value .reset (new String (characters));
+		value = std::move (characters);
 		return true;
 	}
 
@@ -467,7 +467,7 @@ Parser::primaryExpression (var & value)
 
 	if (Grammar::_this (istream))
 	{
-		value .reset (new VariableExpression (getExecutionContext (), std::string (Grammar::_this ())));
+		//value = make_ptr <VariableExpression> (getExecutionContext (), std::string (Grammar::_this ()));
 		return true;
 	}
 
@@ -475,7 +475,7 @@ Parser::primaryExpression (var & value)
 
 	if (identifier (identifierCharacters))
 	{
-		value .reset (new VariableExpression (getExecutionContext (), std::move (identifierCharacters)));
+		value = new VariableExpression (getExecutionContext (), std::move (identifierCharacters));
 		return true;
 	}
 
@@ -519,7 +519,7 @@ Parser::objectLiteral (var & value)
 
 		if (Grammar::CloseBrace (istream))
 		{
-			value .reset (new ObjectLiteral (getExecutionContext (), make_var <Object> ()));
+			value = new ObjectLiteral (getExecutionContext (), make_ptr <Object> ());
 			return true;
 		}
 
@@ -531,7 +531,7 @@ Parser::objectLiteral (var & value)
 
 			if (Grammar::CloseBrace (istream))
 			{
-				value .reset (new ObjectLiteral (getExecutionContext (), std::move (object)));
+				value = new ObjectLiteral (getExecutionContext (), std::move (object));
 				return true;
 			}
 
@@ -543,7 +543,7 @@ Parser::objectLiteral (var & value)
 }
 
 bool
-Parser::propertyDefinitionList (basic_ptr <Object> & object)
+Parser::propertyDefinitionList (ptr <Object> & object)
 {
 	//__LOG__ << std::endl;
 
@@ -567,7 +567,7 @@ Parser::propertyDefinitionList (basic_ptr <Object> & object)
 }
 
 bool
-Parser::propertyDefinition (basic_ptr <Object> & object)
+Parser::propertyDefinition (ptr <Object> & object)
 {
 	//__LOG__ << std::endl;
 
@@ -576,7 +576,7 @@ Parser::propertyDefinition (basic_ptr <Object> & object)
 
 	if (propertyName (propertyNameValue))
 	{
-		propertyNameCharacters = propertyNameValue -> toString ();
+		propertyNameCharacters = propertyNameValue .toString ();
 	
 		comments ();
 
@@ -615,7 +615,7 @@ Parser::propertyDefinition (basic_ptr <Object> & object)
 
 					if (Grammar::OpenBrace (istream))
 					{
-						const auto function = make_ptr <Function> (getExecutionContext ());
+						auto function = make_ptr <Function> (getExecutionContext ());
 
 						pushExecutionContext (function .get ());
 
@@ -627,7 +627,7 @@ Parser::propertyDefinition (basic_ptr <Object> & object)
 
 						if (Grammar::CloseBrace (istream))
 						{
-							object -> updateProperty (propertyNameValue -> toString (), var (), WRITABLE | ENUMERABLE | CONFIGURABLE, std::move (function));
+							object -> updateProperty (propertyNameValue .toString (), var (), WRITABLE | ENUMERABLE | CONFIGURABLE | LEAVE_VALUE, std::move (function));
 							return true;
 						}
 
@@ -666,7 +666,7 @@ Parser::propertyDefinition (basic_ptr <Object> & object)
 
 						if (Grammar::OpenBrace (istream))
 						{
-							const auto function = make_ptr <Function> (getExecutionContext (), "", std::move (formalParameters));
+							auto function = make_ptr <Function> (getExecutionContext (), "", std::move (formalParameters));
 
 							pushExecutionContext (function .get ());
 
@@ -678,7 +678,7 @@ Parser::propertyDefinition (basic_ptr <Object> & object)
 
 							if (Grammar::CloseBrace (istream))
 							{
-								object -> updateProperty (propertyNameValue -> toString (), var (), WRITABLE | ENUMERABLE | CONFIGURABLE, var (), std::move (function));
+								object -> updateProperty (propertyNameValue .toString (), var (), WRITABLE | ENUMERABLE | CONFIGURABLE | LEAVE_VALUE, nullptr, std::move (function));
 								return true;
 							}
 
@@ -712,7 +712,7 @@ Parser::propertyName (var & value)
 
 	if (identifierName (propertyNameCharacters))
 	{
-		value .reset (new String (propertyNameCharacters));
+		//value = std::move (propertyNameCharacters);
 		return true;
 	}
 
@@ -762,7 +762,6 @@ Parser::memberExpression (var & value)
 
 					if (Grammar::CloseBracket (istream))
 					{
-						value = make_var <Undefined> ();
 						//value .reset (new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions), std::move (list)));
 						continue;
 					}
@@ -779,7 +778,6 @@ Parser::memberExpression (var & value)
 
 				if (identifierName (identifierNameCharacters))
 				{
-					value = make_var <Undefined> ();
 					//value .reset (new ObjectPropertyExpression (std::move (value), std::move (identifierNameCharacters), std::move (list)));
 					continue;
 				}
@@ -801,7 +799,6 @@ Parser::memberExpression (var & value)
 
 			if (arguments (argumentListExpressions))
 			{
-				value = make_var <Undefined> ();
 				//value .reset (new NewOperation (getExecutionContext (), std::move (value), std::move (argumentsListExpressions)));
 				return true;
 			}
@@ -827,7 +824,6 @@ Parser::newExpression (var & value)
 	{
 		if (newExpression (value))
 		{
-			value = make_var <Undefined> ();
 			//value .reset (new NewOperation (value));
 			return true;
 		}
@@ -841,7 +837,7 @@ Parser::callExpression (var & value)
 {
 	//__LOG__ << std::endl;
 
-	if (value or memberExpression (value))
+	if (not value .isUndefined () or memberExpression (value))
 	{
 		for ( ; ;)
 		{
@@ -849,7 +845,7 @@ Parser::callExpression (var & value)
 
 			if (arguments (argumentListExpressions))
 			{
-				value .reset (new FunctionCallExpression (getExecutionContext (), std::move (value), std::move (argumentListExpressions)));
+				value = new FunctionCallExpression (getExecutionContext (), std::move (value), std::move (argumentListExpressions));
 				continue;
 			}
 
@@ -863,7 +859,6 @@ Parser::callExpression (var & value)
 
 					if (Grammar::CloseBracket (istream))
 					{
-						value = make_var <Undefined> ();
 						//value .reset (new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions), std::move (list)));
 						continue;
 					}
@@ -880,7 +875,6 @@ Parser::callExpression (var & value)
 
 				if (identifierName (identifierNameCharacters))
 				{
-					value = make_var <Undefined> ();
 					//value .reset (new ObjectPropertyExpression (std::move (value), std::move (identifierNameCharacters), std::move (list)));
 					continue;
 				}
@@ -1007,7 +1001,6 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			value = make_var <Undefined> ();
 			//value .reset (new Delete (std::move (expression)));
 			return true;
 		}
@@ -1023,7 +1016,6 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			value = make_var <Undefined> ();
 			//value .reset (new Void (std::move (expression)));
 			return true;
 		}
@@ -1039,7 +1031,6 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			value = make_var <Undefined> ();
 			//value .reset (new TypeOf (std::move (expression)));
 			return true;
 		}
@@ -1055,7 +1046,6 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			value = make_var <Undefined> ();
 			//value .reset (new PostIncrement (std::move (expression)));
 			return true;
 		}
@@ -1071,7 +1061,6 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			value = make_var <Undefined> ();
 			//value .reset (new PostDecrement (std::move (expression)));
 			return true;
 		}
@@ -1087,7 +1076,6 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			value = make_var <Undefined> ();
 			//value .reset (new ToNumber (std::move (expression)));
 			return true;
 		}
@@ -1103,7 +1091,6 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			value = make_var <Undefined> ();
 			//value .reset (new Negate (std::move (expression)));
 			return true;
 		}
@@ -1119,7 +1106,6 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			value = make_var <Undefined> ();
 			//value .reset (new BitwiseNOT (std::move (expression)));
 			return true;
 		}
@@ -1135,7 +1121,6 @@ Parser::unaryExpression (var & value)
 
 		if (unaryExpression (expression))
 		{
-			value = make_var <Undefined> ();
 			//value .reset (new LogicalNOT (std::move (expression)));
 			return true;
 		}
@@ -1206,7 +1191,7 @@ Parser::multiplicativeExpression (var & lhs)
 				return true;
 			}
 
-			throw SyntaxError ("Expected expression after '/'.");
+			throw SyntaxError ("Expected expression after '%'.");
 		}
 
 		return true;
@@ -1304,7 +1289,6 @@ Parser::shiftExpression (var & lhs)
 
 			if (shiftExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
 				//lhs = make_unsigned_right_shift (std::move (lhs), std::move (rhs));
 				return true;
 			}
@@ -1323,7 +1307,6 @@ Parser::shiftExpression (var & lhs)
 
 			if (shiftExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
 				//lhs = make_right_shift (std::move (lhs), std::move (rhs));
 				return true;
 			}
@@ -1357,7 +1340,6 @@ Parser::relationalExpression (var & lhs)
 
 			if (relationalExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
 				//lhs = make_less_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
@@ -1376,7 +1358,6 @@ Parser::relationalExpression (var & lhs)
 
 			if (relationalExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
 				//lhs = make_greater_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
@@ -1416,7 +1397,6 @@ Parser::relationalExpression (var & lhs)
 
 			if (relationalExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
 				//lhs = make_greater (std::move (lhs), std::move (rhs));
 				return true;
 			}
@@ -1435,7 +1415,6 @@ Parser::relationalExpression (var & lhs)
 
 			if (relationalExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
 				//lhs = make_instanceof (std::move (lhs), std::move (rhs));
 				return true;
 			}
@@ -1454,7 +1433,6 @@ Parser::relationalExpression (var & lhs)
 
 			if (relationalExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
 				//lhs = make_in (std::move (lhs), std::move (rhs));
 				return true;
 			}
@@ -1500,7 +1478,6 @@ Parser::equalityExpression (var & lhs)
 
 			if (equalityExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
 				//lhs = make_strict_not_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
@@ -1531,7 +1508,6 @@ Parser::equalityExpression (var & lhs)
 
 			if (equalityExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
 				//lhs = make_not_equal (std::move (lhs), std::move (rhs));
 				return true;
 			}
@@ -1568,7 +1544,6 @@ Parser::bitwiseANDExpression (var & lhs)
 
 			if (bitwiseANDExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
 				//lhs = make_bitwise_and (std::move (lhs), std::move (rhs));
 				return true;
 			}
@@ -1602,7 +1577,6 @@ Parser::bitwiseXORExpression (var & lhs)
 
 			if (bitwiseXORExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
 				//lhs = make_bitwise_xor (std::move (lhs), std::move (rhs));
 				return true;
 			}
@@ -1639,7 +1613,6 @@ Parser::bitwiseORExpression (var & lhs)
 
 			if (bitwiseORExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
 				//lhs = make_bitwise_or (std::move (lhs), std::move (rhs));
 				return true;
 			}
@@ -1670,7 +1643,6 @@ Parser::logicalANDExpression (var & lhs)
 
 			if (logicalANDExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
 				//lhs = make_logical_and (std::move (lhs), std::move (rhs));
 				return true;
 			}
@@ -1701,7 +1673,6 @@ Parser::logicalORExpression (var & lhs)
 
 			if (logicalORExpression (rhs))
 			{
-				lhs = make_var <Undefined> ();
 				//lhs = make_logical_or (std::move (lhs), std::move (rhs));
 				return true;
 			}
@@ -1740,7 +1711,6 @@ Parser::conditionalExpression (var & first)
 
 					if (assignmentExpression (third))
 					{
-						first = make_var <Undefined> ();
 						//first = make_conditional (std::move (first), std::move (second), std::move (third));
 						return true;
 					}
@@ -1781,7 +1751,7 @@ Parser::assignmentExpression (var & value)
 
 				if (assignmentExpression (expression))
 				{
-					value .reset (new AssignmentExpression (getExecutionContext (), std::move (value), std::move (expression), AssignmentOperatorType::ASSIGNMENT));
+					value = new AssignmentExpression (getExecutionContext (), std::move (value), std::move (expression), AssignmentOperatorType::ASSIGNMENT);
 					return true;
 				}
 
@@ -1796,7 +1766,7 @@ Parser::assignmentExpression (var & value)
 
 				if (assignmentExpression (expression))
 				{
-					value .reset (new AssignmentExpression (getExecutionContext (), std::move (value), std::move (expression), type));
+					value = new AssignmentExpression (getExecutionContext (), std::move (value), std::move (expression), type);
 					return true;
 				}
 
@@ -2062,11 +2032,11 @@ Parser::variableDeclaration ()
 
 	if (identifier (identifierCharacters))
 	{
-		var value = make_var <Undefined> ();
+		var value;
 
 		initialiser (value);
 
-		getBlock () -> getExpressions () .emplace_back (new VariableDeclaration (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
+		getBlock () -> addExpression (new VariableDeclaration (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
 
 		return true;
 	}
@@ -2122,7 +2092,7 @@ Parser::expressionStatement ()
 
 		if (Grammar::Semicolon (istream))
 		{
-			getBlock () -> getExpressions () .emplace_back (std::move (value));
+			getBlock () -> addExpression (std::move (value));
 			return true;
 		}
 
@@ -2153,7 +2123,7 @@ Parser::ifStatement ()
 				
 				if (Grammar::CloseParenthesis (istream))
 				{
-					auto value = make_ptr <IfStatement> (std::move (booleanExpression));
+					auto value = new IfStatement (std::move (booleanExpression));
 
 					pushBlock (value -> getThenBlock () .get ());
 
@@ -2170,7 +2140,7 @@ Parser::ifStatement ()
 						popBlock ();
 					}
 
-					getBlock () -> getExpressions () .emplace_back (std::move (value));
+					getBlock () -> addExpression (std::move (value));
 
 					return true;
 				}
@@ -2228,7 +2198,7 @@ Parser::iterationStatement ()
 						
 							if (Grammar::CloseParenthesis (istream))
 							{
-								auto value = make_ptr <ForStatement> (std::move (booleanExpression), std::move (iterationExpression));
+								auto value = new ForStatement (std::move (booleanExpression), std::move (iterationExpression));
 
 								pushBlock (value -> getBlock () .get ());
 
@@ -2236,7 +2206,7 @@ Parser::iterationStatement ()
 
 								popBlock ();
 
-								getBlock () -> getExpressions () .emplace_back (std::move (value));
+								getBlock () -> addExpression (std::move (value));
 							
 								return true;
 							}
@@ -2274,25 +2244,15 @@ Parser::returnStatement ()
 		var value;
 
 		if (expression (value))
-		{
 			comments ();
-
-			if (Grammar::Semicolon (istream))
-			{
-				getBlock () -> getExpressions () .emplace_back (new ReturnStatement (getExecutionContext (), std::move (value)));
-				return true;
-			}
-
-			throw SyntaxError ("Expected a ';' after expression.");
-		}
 
 		if (Grammar::Semicolon (istream))
 		{
-			getBlock () -> getExpressions () .emplace_back (new ReturnStatement (getExecutionContext (), std::move (value)));
+			getBlock () -> addExpression (new ReturnStatement (getExecutionContext (), std::move (value)));
 			return true;
 		}
 
-		throw SyntaxError ("Expected a ';' after return statement.");
+		throw SyntaxError ("Expected a ';' after expression.");
 	}
 
 	return false;
@@ -2329,7 +2289,7 @@ Parser::functionDeclaration ()
 
 					if (Grammar::OpenBrace (istream))
 					{
-						const auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
+						auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
 
 						pushExecutionContext (function .get ());
 
@@ -2341,7 +2301,7 @@ Parser::functionDeclaration ()
 
 						if (Grammar::CloseBrace (istream))
 						{
-							getExecutionContext () -> updateFunctionDeclaration (function);
+							getExecutionContext () -> updateFunctionDeclaration (std::move (function));
 							return true;
 						}
 
@@ -2392,19 +2352,19 @@ Parser::functionExpression (var & value)
 
 				if (Grammar::OpenBrace (istream))
 				{
-					auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
+					//auto function = make_ptr <Function> (getExecutionContext (), name, std::move (formalParameters));
 
-					pushExecutionContext (function .get ());
+					//pushExecutionContext (function .get ());
 
 					functionBody ();
 
-					popExecutionContext ();
+					//popExecutionContext ();
 
 					comments ();
 
 					if (Grammar::CloseBrace (istream))
 					{
-						value = make_var <FunctionExpression> (getExecutionContext (), std::move (function));
+						//value = make_ptr <FunctionExpression> (getExecutionContext (), std::move (function));
 						return true;
 					}
 

@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_STATEMENT_H__
 
 #include "../Expressions/ControlFlowException.h"
-#include "../Expressions/vsExpression.h"
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
@@ -61,44 +61,41 @@ namespace pb {
  *  Class to represent a ECMAScript return statement.
  */
 class ReturnStatement :
-	public vsExpression
+	public pbExpression
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new ReturnStatement statement.
-	ReturnStatement (vsExecutionContext* const executionContext, var && expression) :
-		    vsExpression (),
+	ReturnStatement (pbExecutionContext* const executionContext, var && expression) :
+		    pbExpression (),
 		executionContext (executionContext),
 		      expression (std::move (expression))
 	{ construct (); }
 
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <ReturnStatement> (executionContext, expression -> copy (executionContext)); }
-
-	///  @name Common members
-
-	///  ReturnStatements the type of the value. For this expression this is »RETURN«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return RETURN_STATEMENT; }
+//	///  Creates a copy of this object.
+//	virtual
+//	var
+//	copy (pbExecutionContext* const executionContext) const final override
+//	{ return make_var <ReturnStatement> (executionContext, expression -> copy (executionContext)); }
 
 	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	void
-	evaluate () const final override
+	var
+	toPrimitive () const final override
 	{
-		const var value = expression -> toValue ();
+		const var value = expression .toPrimitive ();
 
-		if (value -> getType () == FUNCTION_OBJECT)
-			basic_ptr <vsFunction> (value) -> resolve (executionContext);
+		if (value .getType () == OBJECT)
+		{
+			const auto function = dynamic_cast <pbFunction*> (value .getObject () .get ());
+
+			if (function)
+				function -> resolve (executionContext);
+		}
 
 		throw ReturnException (value);
 	}
@@ -114,7 +111,7 @@ private:
 
 	///  @name Members
 
-	const basic_ptr <vsExecutionContext> executionContext;
+	const ptr <pbExecutionContext> executionContext;
 	const var                            expression;
 
 };

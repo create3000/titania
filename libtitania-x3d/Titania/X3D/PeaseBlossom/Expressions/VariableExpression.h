@@ -51,10 +51,9 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_EXPRESSION_H__
 
-#include "../Execution/vsExecutionContext.h"
-#include "../Expressions/vsExpression.h"
-#include "../Objects/vsFunction.h"
-#include "../Primitives/vsValue.h"
+#include "../Execution/pbExecutionContext.h"
+#include "../Expressions/pbExpression.h"
+#include "../Objects/pbFunction.h"
 
 namespace titania {
 namespace pb {
@@ -63,32 +62,25 @@ namespace pb {
  *  Class to represent a ECMAScript identifier expression.
  */
 class VariableExpression :
-	public vsExpression
+	public pbExpression
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new VariableExpression expression.
-	VariableExpression (vsExecutionContext* const executionContext, std::string && identifier) :
-		    vsExpression (),
+	VariableExpression (pbExecutionContext* const executionContext, std::string && identifier) :
+		    pbExpression (),
 		executionContext (executionContext),
-		      identifier (std::move (identifier))
+		      identifier (std::move (identifier)),
+		              id (getId (this -> identifier))
 	{ construct (); }
 
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{ return make_var <VariableExpression> (executionContext, std::string (identifier)); }
-
-	///  @name Common members
-
-	///  Returns the type of the value. For this expression this is »VARIABLE«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return VARIABLE_EXPRESSION; }
+//	///  Creates a copy of this object.
+//	virtual
+//	var
+//	copy (pbExecutionContext* const executionContext) const final override
+//	{ return make_ptr <VariableExpression> (executionContext, std::string (identifier)); }
 
 	///  @name Operations
 
@@ -116,7 +108,7 @@ public:
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toValue () const final override
+	toPrimitive () const final override
 	{ return getProperty (); }
 
 
@@ -143,15 +135,15 @@ private:
 		return propertyDescriptor .second -> value;
 	}
 
-	std::pair <const basic_ptr <vsObject> &, const PropertyDescriptorPtr &>
-	getPropertyDescriptor (const basic_ptr <vsExecutionContext> & executionContext) const
+	std::pair <const ptr <pbObject> &, const PropertyDescriptorPtr &>
+	getPropertyDescriptor (const ptr <pbExecutionContext> & executionContext) const
 	throw (ReferenceError)
 	{
 		for (const auto & object : basic::make_reverse_range (executionContext -> getDefaultObjects ()))
 		{
 			try
 			{
-				return std::make_pair (std::ref (object), std::ref (object -> getPropertyDescriptor (identifier)));
+				return std::make_pair (std::ref (object), std::ref (object -> getPropertyDescriptor (id)));
 			}
 			catch (const std::out_of_range &)
 			{ }
@@ -165,8 +157,9 @@ private:
 
 	///  @name Members
 
-	const basic_ptr <vsExecutionContext> executionContext;
+	const ptr <pbExecutionContext> executionContext;
 	const std::string                    identifier;
+	const size_t                         id;
 
 };
 

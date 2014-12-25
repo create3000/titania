@@ -51,9 +51,9 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_EXPRESSION_H__
 
-#include "../Execution/vsExecutionContext.h"
-#include "../Expressions/vsExpression.h"
-#include "../Objects/vsFunction.h"
+#include "../Execution/pbExecutionContext.h"
+#include "../Expressions/pbExpression.h"
+#include "../Objects/pbFunction.h"
 
 namespace titania {
 namespace pb {
@@ -62,61 +62,58 @@ namespace pb {
  *  Class to represent a ECMAScript function call expression.
  */
 class FunctionCallExpression :
-	public vsExpression
+	public pbExpression
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new FunctionCallExpression expression.
-	FunctionCallExpression (vsExecutionContext* const executionContext, var && expression, std::vector <var> && expressions) :
-		    vsExpression (),
+	FunctionCallExpression (pbExecutionContext* const executionContext, var && expression, std::vector <var> && expressions) :
+		    pbExpression (),
 		executionContext (executionContext),
 		      expression (std::move (expression)),
 		     expressions (std::move (expressions))
 	{ construct (); }
 
-	///  Creates a copy of this object.
-	virtual
-	var
-	copy (vsExecutionContext* const executionContext) const final override
-	{
-		std::vector <var> expressions;
-
-		for (const auto & expression : this -> expressions)
-			expressions .emplace_back (expression -> copy (executionContext));
-
-		return make_var <FunctionCallExpression> (executionContext, expression -> copy (executionContext), std::move (expressions));
-	}
-
-	///  @name Common members
-
-	///  Returns the type of the value. For this expression this is »FUNCTION_CALL«.
-	virtual
-	ValueType
-	getType () const final override
-	{ return FUNCTION_CALL_EXPRESSION; }
+//	///  Creates a copy of this object.
+//	virtual
+//	var
+//	copy (pbExecutionContext* const executionContext) const final override
+//	{
+//		std::vector <var> expressions;
+//
+//		for (const auto & expression : this -> expressions)
+//			expressions .emplace_back (expression -> copy (executionContext));
+//
+//		return make_var <FunctionCallExpression> (executionContext, expression -> copy (executionContext), std::move (expressions));
+//	}
 
 	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	toValue () const final override
+	toPrimitive () const final override
 	{
-		const basic_ptr <vsFunction> function = expression -> toValue ();
+		const auto primitive = expression .toPrimitive ();
 
-		if (function)
+		if (primitive .isObject ())
 		{
-			std::vector <var> arguments;
+			const auto function  = dynamic_cast <pbFunction*> (primitive .getObject () .get ());
 
-			for (const auto & value : expressions)
-				arguments .emplace_back (value -> toValue ());
+			if (function)
+			{
+				std::vector <var> arguments;
 
-			return function -> call (executionContext -> getGlobalObject (), arguments);
+				for (const auto & value : expressions)
+					arguments .emplace_back (value .toPrimitive ());
+
+				return function -> call (executionContext -> getGlobalObject (), arguments);
+			}
 		}
 
-		throw TypeError ("'" + expression -> toString () + "' is not a function.");
+		throw TypeError ("'" + primitive .toString () + "' is not a function.");
 	}
 
 private:
@@ -135,7 +132,7 @@ private:
 
 	///  @name Members
 
-	const basic_ptr <vsExecutionContext> executionContext;
+	const ptr <pbExecutionContext> executionContext;
 	const var                            expression;
 	const std::vector <var>              expressions;
 

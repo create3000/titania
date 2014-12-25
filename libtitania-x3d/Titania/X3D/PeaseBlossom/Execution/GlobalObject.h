@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_GLOBAL_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_GLOBAL_OBJECT_H__
 
-#include "../Objects/vsObject.h"
+#include "../Objects/pbObject.h"
 
 #include <cmath>
 
@@ -59,15 +59,8 @@ namespace titania {
 namespace pb {
 
 ///  Constructs new default global object.
-basic_ptr <vsObject>
+ptr <pbObject>
 createGlobalObject ();
-
-inline
-bool
-isNaN (const double value)
-{
-	return std::isnan (value);
-}
 
 } // pb
 } // titania

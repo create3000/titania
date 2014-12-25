@@ -48,12 +48,75 @@
  *
  ******************************************************************************/
 
-#include "Undefined.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_INPUT_STREAM_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_INPUT_STREAM_OBJECT_H__
+
+#include <iostream>
+#include <sstream>
 
 namespace titania {
 namespace pb {
 
-const std::string Undefined::typeName = "Undefined";
+class pbInputStreamObject
+{
+public:
+
+	///  @name Input/Output
+
+	virtual
+	void
+	fromString (const std::string & string);
+
+	virtual
+	void
+	fromLocaleString (const std::string & string, const std::locale & locale);
+
+	virtual
+	void
+	fromStream (std::istream & istream) = 0;
+
+
+protected:
+
+	///  @name Construction
+
+	pbInputStreamObject ()
+	{ }
+
+};
+
+inline
+void
+pbInputStreamObject::fromString (const std::string & string)
+{
+	fromLocaleString (string, std::locale::classic ());
+}
+
+inline
+void
+pbInputStreamObject::fromLocaleString (const std::string & string, const std::locale & locale)
+{
+	std::istringstream istringstream (string);
+
+	istringstream .imbue (locale);
+
+	fromStream (istringstream);
+}
+
+///  @relates pbInputStreamObject
+///  @name Input/Output operators.
+
+///  Extraction operator for pbInputStreamObject.
+template <class CharT, class Traits>
+inline
+std::basic_istream <CharT, Traits> &
+operator >> (std::basic_istream <CharT, Traits> & istream, pbInputStreamObject & object)
+{
+	object .fromStream (istream);
+	return istream;
+}
 
 } // pb
 } // titania
+
+#endif
