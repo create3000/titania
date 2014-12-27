@@ -76,18 +76,18 @@ public:
 		     expressions (std::move (expressions))
 	{ construct (); }
 
-	//	///  Creates a copy of this object.
-	//	virtual
-	//	var
-	//	copy (pbExecutionContext* const executionContext) const final override
-	//	{
-	//		std::vector <var> expressions;
-	//
-	//		for (const auto & expression : this -> expressions)
-	//			expressions .emplace_back (expression -> copy (executionContext));
-	//
-	//		return make_var <FunctionCallExpression> (executionContext, expression -> copy (executionContext), std::move (expressions));
-	//	}
+		///  Creates a copy of this object.
+		virtual
+		ptr <pbBaseObject>
+		copy (pbExecutionContext* executionContext) const final override
+		{
+			std::vector <var> expressions;
+	
+			for (const auto & expression : this -> expressions)
+				expressions .emplace_back (expression .copy (executionContext));
+	
+			return new FunctionCallExpression (executionContext, expression .copy (executionContext), std::move (expressions));
+		}
 
 	///  @name Operations
 

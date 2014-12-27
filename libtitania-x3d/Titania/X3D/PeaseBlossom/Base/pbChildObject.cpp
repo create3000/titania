@@ -196,7 +196,7 @@ pbChildObject::hasRootedObjectsDontCollectObject (ChildObjectSet & seen)
 void
 pbChildObject::dispose ()
 {
-	__LOG__ << this << " : " << getTypeName () << std::endl;
+	//__LOG__ << this << " : " << getTypeName () << std::endl;
 
 	parents .clear ();
 	root = nullptr;

@@ -465,9 +465,9 @@ Parser::primaryExpression (var & value)
 
 	comments ();
 
-	if (Grammar::_this (istream))
+	if (Grammar::this_ (istream))
 	{
-		//value = make_ptr <VariableExpression> (getExecutionContext (), std::string (Grammar::_this ()));
+		value = new VariableExpression (getExecutionContext (), std::string (Grammar::this_ ()));
 		return true;
 	}
 
@@ -712,7 +712,7 @@ Parser::propertyName (var & value)
 
 	if (identifierName (propertyNameCharacters))
 	{
-		//value = std::move (propertyNameCharacters);
+		value = propertyNameCharacters;
 		return true;
 	}
 
@@ -791,7 +791,7 @@ Parser::memberExpression (var & value)
 		return true;
 	}
 
-	if (Grammar::_new (istream))
+	if (Grammar::new_ (istream))
 	{
 		if (memberExpression (value))
 		{
@@ -820,7 +820,7 @@ Parser::newExpression (var & value)
 	if (memberExpression (value))
 		return true;
 
-	if (Grammar::_new (istream))
+	if (Grammar::new_ (istream))
 	{
 		if (newExpression (value))
 		{
@@ -993,7 +993,7 @@ Parser::unaryExpression (var & value)
 	if (postfixExpression (value))
 		return true;
 
-	if (Grammar::_delete (istream))
+	if (Grammar::delete_ (istream))
 	{
 		isLeftHandSideExressions .back () = false;
 
@@ -1008,7 +1008,7 @@ Parser::unaryExpression (var & value)
 		throw SyntaxError ("Expected expression after delete.");
 	}
 
-	if (Grammar::_void (istream))
+	if (Grammar::void_ (istream))
 	{
 		isLeftHandSideExressions .back () = false;
 
@@ -1023,7 +1023,7 @@ Parser::unaryExpression (var & value)
 		throw SyntaxError ("Expected expression after void.");
 	}
 
-	if (Grammar::_typeof (istream))
+	if (Grammar::typeof_ (istream))
 	{
 		isLeftHandSideExressions .back () = false;
 
@@ -2109,7 +2109,7 @@ Parser::ifStatement ()
 
 	comments ();
 
-	if (Grammar::_if (istream))
+	if (Grammar::if_ (istream))
 	{
 		comments ();
 		
@@ -2131,7 +2131,9 @@ Parser::ifStatement ()
 
 					popBlock ();
 
-					if (Grammar::_else (istream))
+					comments ();
+
+					if (Grammar::else_ (istream))
 					{
 						pushBlock (value -> getElseBlock () .get ());
 
@@ -2166,7 +2168,7 @@ Parser::iterationStatement ()
 
 	// ...
 
-	if (Grammar::_for (istream))
+	if (Grammar::for_ (istream))
 	{
 		comments ();
 		
@@ -2237,7 +2239,7 @@ Parser::returnStatement ()
 
 	comments ();
 
-	if (Grammar::_return (istream))
+	if (Grammar::return_ (istream))
 	{
 		commentsNoLineTerminator ();
 

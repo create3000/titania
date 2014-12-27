@@ -75,8 +75,8 @@ public:
 
 	///  Creates a new default object.
 	virtual
-	ptr <pbObject>
-	create (pbExecutionContext* const executionContext) const final override;
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const final override;
 
 	///  @name Operations
 
@@ -116,19 +116,18 @@ public:
 
 protected:
 
-	///  Resolves the next closure of the @a executionContext.
+	///  @name Friends
+
+	friend class ReturnStatement;
+
+	///  @name Member access
+
 	virtual
 	void
-	resolve (const ptr <pbExecutionContext> & executionContext) final override;
+	setExecutionContext (const ptr <pbExecutionContext> &) final override;
 
 
 private:
-
-	///  @name Construction
-
-	///  Recursively add all default objects to the list of closures.
-	void
-	addClosure (const ptr <pbExecutionContext> & executionContext);
 
 	///  @name Operations
 
@@ -147,10 +146,10 @@ private:
 
 	///  @name Member access
 
-	std::vector <std::string>                             formalParameters;
-	std::map <const pbExecutionContext*, ptr <pbObject>>  closures;
-	size_t                                                recursionDepth;
-	array <ptr <pbObject>>                                localObjectsStack;
+	const std::vector <std::string> formalParameters;
+	size_t                          recursionDepth;
+	array <ptr <pbObject>>          localObjectsStack;
+	std::map <size_t, var>          resolvedProperties;
 
 };
 

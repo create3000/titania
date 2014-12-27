@@ -76,11 +76,11 @@ public:
 		              id (getId (this -> identifier))
 	{ construct (); }
 
-	//	///  Creates a copy of this object.
-	//	virtual
-	//	var
-	//	copy (pbExecutionContext* const executionContext) const final override
-	//	{ return make_ptr <VariableExpression> (executionContext, std::string (identifier)); }
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const final override
+	{ return new VariableExpression (executionContext, std::string (identifier)); }
 
 	///  @name Operations
 
@@ -91,11 +91,16 @@ public:
 		try
 		{
 			const auto propertyDescriptor = getPropertyDescriptor (executionContext);
+			
+			if (propertyDescriptor .second -> flags & WRITABLE)
+			{
+				if (propertyDescriptor .second -> set)
+					return propertyDescriptor .second -> set -> call (propertyDescriptor .first, { std::move (value) });
 
-			if (propertyDescriptor .second -> set)
-				return propertyDescriptor .second -> set -> call (propertyDescriptor .first, { std::move (value) });
+				return propertyDescriptor .second -> value = std::move (value);
+			}
 
-			return propertyDescriptor .second -> value = std::move (value);
+			return var ();
 		}
 		catch (const ReferenceError &)
 		{

@@ -315,6 +315,7 @@ function fibonacci_iterative (value)
 	// 5.41 s
 	// 4.92 s
 	// 5.35 s
+	// 5.01 s switch weg bei toPrimitive und getValue
 
 	print ('fibonacci_iterative: ');
 	print ('fibonacci_iterative: value: ', value);
@@ -374,6 +375,42 @@ function set_time (value, time)
 	//print ('result: ', for_time (2000000));
 	//print ('time: ',   now () - t0);
 }
+
+print ({ toString: function () { return 'toString'; } });
+
+var i = 0;
+var global1 = 'global1';
+
+function outer ()
+{
+	if (i == 0)
+	{
+		i += 1;
+
+		var outer1 = 'outer1';
+
+		return outer ();
+	}
+	else
+	{
+		var outer2 = 'outer2';	
+	}
+
+	return function inner () {
+		var inner1 = 'inner1';
+
+		print (global1);
+		//print (outer1);
+		print (inner1);
+
+		print (outer2);
+	};
+}
+
+print ();
+print ('pb:');
+outer () ();
+outer () ();
 "
   directOutput TRUE
 }
@@ -452,6 +489,39 @@ function set_time (value, time)
 	//print ('result: ', for_time (1000000));
 	//print ('time: ',   (Date .now () - t0) / 1000);
 }
+
+var i = 0;
+var global1 = 'global1';
+
+function outer ()
+{
+	if (i == 0)
+	{
+		i += 1;
+
+		var outer1 = 'outer1';
+
+		return outer ();
+	}
+	else
+	{
+		var outer2 = 'outer2';	
+	}
+
+	return function inner () {
+		var inner1 = 'inner1';
+
+		print (global1);
+		print (outer1);
+		print (inner1);
+
+		print (outer2);
+	};
+}
+
+print ()
+print ('sm:')
+outer () ();
 "
   directOutput TRUE
 }

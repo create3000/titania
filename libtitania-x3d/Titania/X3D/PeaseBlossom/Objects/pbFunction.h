@@ -83,33 +83,13 @@ public:
 	var
 	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { }) = 0;
 
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override
-	{ ostream << "[object Function]"; }
-
 
 protected:
-
-	friend class ReturnStatement;
 
 	///  @name Construction
 
 	///  Constructs new pbFunction.
-	pbFunction (const std::string & name) :
-		pbObject (),
-		    name (name)
-	{ addProperty ("name", var (name)); }
-
-	///  @name Operations
-
-	///  Resolves the closure of the @a executionContext.
-	virtual
-	void
-	resolve (const ptr <pbExecutionContext> & executionContext) = 0;
+	pbFunction (const std::string & name);
 
 
 private:

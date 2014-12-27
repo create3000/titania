@@ -93,19 +93,12 @@ class pbObject :
 {
 public:
 
-	///  Creates a new default object.
-	virtual
-	ptr <pbObject>
-	create (pbExecutionContext* const) const = 0;
-
-	///  Creates a flat copy of this object.
-	ptr <pbObject>
-	clone (pbExecutionContext* const) const;
+	///  @name Construction
 
 	///  Creates a deep copy of this object.
 	virtual
-	ptr <pbObject>
-	copy (pbExecutionContext* const) const;
+	ptr <pbBaseObject>
+	copy (pbExecutionContext*) const = 0;
 
 	///  @name Common members
 
@@ -115,7 +108,7 @@ public:
 	getTypeName () const override
 	{ return typeName; }
 
-	///  @name Functions
+	///  @name Member access
 
 	///  Checks wehter this object has a propterty @a name.
 	bool
@@ -144,16 +137,53 @@ public:
 	{ updateProperty (getId (name), value, flags, get, set); }
 
 	///  Removes the property @a name from this object.
+	void
+	removeProperty (const std::string & name)
+	noexcept (true)
+	{ removeProperty (getId (name)); }
+
+	///  Removes the property @a name from this object.
 	const var &
 	getProperty (const std::string & name) const
 	throw (std::out_of_range)
 	{ return getProperty (getId (name)); }
 
-	///  Removes the property @a name from this object.
+	///  @name Destruction
+
+	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
+	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
+	virtual
 	void
-	removeProperty (const std::string & name)
-	noexcept (true)
-	{ removeProperty (getId (name)); }
+	dispose () override;
+
+	///  Destructs the pbObject.
+	virtual
+	~pbObject ();
+
+
+protected:
+
+	///  @name Friends
+
+	friend class VariableDeclaration;
+	friend class VariableExpression;
+	friend class Function;
+
+	///  @name Member types
+
+	using PropertyDescriptorIndex = std::unordered_map <size_t, PropertyDescriptorPtr>;
+	using PropertyDescriptorArray = std::vector <std::pair <size_t, PropertyDescriptorPtr>>;
+
+	///  @name Construction
+
+	///  Constructs new pbObject.
+	pbObject ();
+
+	///  Creates a deep copy of this object.
+	ptr <pbObject>
+	copy (pbExecutionContext* executionContext, const ptr <pbObject> & object) const;
+
+	///  @name Member access
 
 	///  Returns the property descriptor for a named property on this object.
 	const PropertyDescriptorPtr &
@@ -199,39 +229,16 @@ public:
 	const PropertyDescriptorPtr &
 	getPropertyDescriptor (const size_t id) const
 	throw (std::out_of_range);
+	
+	const PropertyDescriptorIndex &
+	getPropertyDescriptors () const
+	noexcept (true)
+	{ return propertyDescriptors; }
 
 	virtual
 	var
 	getDefaultValue (const ValueType preferedType) const
-	throw (TypeError) final override;
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override
-	{ ostream << "[object " << getTypeName () << "]"; }
-
-	///  @name Destruction
-
-	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
-	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
-	virtual
-	void
-	dispose () override;
-
-	///  Destructs the pbObject.
-	virtual
-	~pbObject ();
-
-
-protected:
-
-	///  @name Construction
-
-	///  Constructs new pbObject.
-	pbObject ();
+	throw (std::exception) final override;
 
 
 private:
@@ -250,6 +257,10 @@ private:
 	getCachedPropertyDescriptor (const size_t) const
 	throw (std::out_of_range);
 
+	var
+	call (const size_t id, const std::vector <var> & arguments = { }) const
+	throw (std::exception);
+
 	///  @name Static members
 
 	static constexpr size_t CACHE_SIZE = 32;
@@ -257,9 +268,9 @@ private:
 	static const std::string typeName;
 
 	///  @name Members
-
-	std::unordered_map <size_t, PropertyDescriptorPtr>                 propertyDescriptors;
-	std::vector <std::pair <size_t, PropertyDescriptorPtr>> cachedPropertyDescriptors;
+	
+	PropertyDescriptorIndex propertyDescriptors;
+	PropertyDescriptorArray cachedPropertyDescriptors;
 
 };
 

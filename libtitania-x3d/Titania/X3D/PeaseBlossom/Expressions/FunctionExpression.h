@@ -74,11 +74,11 @@ public:
 		        function (std::move (function))
 	{ construct (); }
 
-//	///  Creates a copy of this object.
-//	virtual
-//	var
-//	copy (pbExecutionContext* const executionContext) const final override
-//	{ return make_var <FunctionExpression> (executionContext, ptr <Function> (function)); }
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const final override
+	{ return new FunctionExpression (executionContext, ptr <Function> (function)); }
 
 	///  @name Operations
 

@@ -85,9 +85,9 @@ public:
 
 	///  Creates a new default object.
 	virtual
-	ptr <pbObject>
-	create (pbExecutionContext* const) const final override
-	{ return make_ptr <BooleanObject> (false); }
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const final override
+	{ return pbObject::copy (executionContext, new BooleanObject (boolean)); }
 
 	///  @name Input/Output
 

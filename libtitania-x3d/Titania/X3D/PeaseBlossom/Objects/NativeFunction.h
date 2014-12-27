@@ -75,9 +75,9 @@ public:
 
 	///  Creates a new default object.
 	virtual
-	ptr <pbObject>
-	create (pbExecutionContext* const) const final override
-	{ return make_ptr <NativeFunction> (getName (), function); }
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const final override
+	{ return pbObject::copy (executionContext, new NativeFunction (getName (), function)); }
 
 	///  @name Operations
 
@@ -85,14 +85,6 @@ public:
 	var
 	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { }) final override
 	{ return function (thisObject, arguments); }
-
-
-protected:
-
-	virtual
-	void
-	resolve (const ptr <pbExecutionContext> & executionContext) final override
-	{ }
 
 
 private:

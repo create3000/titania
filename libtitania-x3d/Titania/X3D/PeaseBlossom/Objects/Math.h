@@ -82,9 +82,9 @@ public:
 
 	///  Constructs new Math.
 	virtual
-	ptr <pbObject>
-	create (pbExecutionContext* const) const final override
-	{ return make_ptr <Math> (); }
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const final override
+	{ return pbObject::copy (executionContext, new Math ()); }
 
 };
 

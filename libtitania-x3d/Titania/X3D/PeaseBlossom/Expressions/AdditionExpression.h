@@ -73,11 +73,11 @@ public:
 		         rhs (std::move (rhs))
 	{ construct (); }
 
-//	///  Creates a copy of this object.
-//	virtual
-//	var
-//	copy (pbExecutionContext* const executionContext) const final override
-//	{ return make_ptr <AdditionExpression> (lhs .copy (executionContext), rhs .copy (executionContext)); }
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const final override
+	{ return new AdditionExpression (lhs .copy (executionContext), rhs .copy (executionContext)); }
 
 	///  @name Operations
 

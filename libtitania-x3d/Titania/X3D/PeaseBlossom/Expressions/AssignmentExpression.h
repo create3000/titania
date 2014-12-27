@@ -77,11 +77,11 @@ public:
 		            type (type)
 	{ construct (); }
 
-//	///  Creates a copy of this object.
-//	virtual
-//	var
-//	copy (pbExecutionContext* const executionContext) const final override
-//	{ return make_var <AssignmentExpression> (executionContext, lhs -> copy (executionContext), rhs -> copy (executionContext), type); }
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const final override
+	{ return new AssignmentExpression (executionContext, lhs -> copy (executionContext), rhs .copy (executionContext), type); }
 
 	///  @name Operations
 

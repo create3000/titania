@@ -67,11 +67,11 @@ struct print
 	operator () (X3DBrowser* const browser, const pb::ptr <pb::pbBlock> & object, const std::vector <pb::var> & arguments)
 	{
 		for (const auto & value : arguments)
-			browser -> print (value .toString ());
+			browser -> print (value);
 
 		browser -> println ();
 
-		return pb::var ();
+		return pb::Undefined ();
 	}
 };
 
@@ -80,7 +80,7 @@ struct now
 	pb::var
 	operator () (const pb::ptr <pb::pbBlock> & object, const std::vector <pb::var> & arguments)
 	{
-		return pb::var (chrono::now ());
+		return chrono::now ();
 	}
 };
 

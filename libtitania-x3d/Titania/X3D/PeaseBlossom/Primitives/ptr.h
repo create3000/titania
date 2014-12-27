@@ -116,9 +116,10 @@ public:
 	ptr (const ptr & other) :
 		ptr (other .value)
 	{ }
-
+	
 	///  Constructs new ptr.
-	ptr (const ptr_base & other) :
+	template <class Up>
+	ptr (const ptr <Up> & other) :
 		ptr (dynamic_cast <Type*> (other .get_object ()))
 	{ }
 

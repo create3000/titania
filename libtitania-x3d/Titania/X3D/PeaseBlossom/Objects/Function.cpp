@@ -60,42 +60,47 @@ namespace pb {
 std::atomic <size_t> Function::recursionLimit (100000);
 
 Function::Function (pbExecutionContext* const executionContext, const std::string & name, std::vector <std::string> && formalParameters) :
-	         pbFunction (name),
-	 pbExecutionContext (executionContext, executionContext -> getGlobalObject ()),
-	   formalParameters (std::move (formalParameters)),
-	           closures (),
-	     recursionDepth (0),
-	  localObjectsStack ()
+	           pbFunction (name),
+	   pbExecutionContext (executionContext, executionContext -> getGlobalObject ()),
+	     formalParameters (std::move (formalParameters)),
+	       recursionDepth (0),
+	    localObjectsStack (),
+	   resolvedProperties ()
 {
 	addChildren (localObjectsStack);
 }
 
-ptr <pbObject>
-Function::create (pbExecutionContext* const executionContext) const
+ptr <pbBaseObject>
+Function::copy (pbExecutionContext* executionContext) const
 {
 	const auto function = make_ptr <Function> (executionContext, getName (), std::vector <std::string> (formalParameters));
 
-	function -> isStrict (this -> isStrict ());
+	function -> isStrict (isStrict ());
 	function -> import (this);
 
-	return function;
+	return pbObject::copy (executionContext, function);
 }
 
 void
-Function::resolve (const ptr <pbExecutionContext> & executionContext)
+Function::setExecutionContext (const ptr <pbExecutionContext> & executionContext)
 {
 	if (getExecutionContext () -> isRootContext ())
 		return;
 
-	const auto iter = closures .find (executionContext .get ());
+	if (executionContext not_eq getExecutionContext () -> getExecutionContext ())
+		return;
 
-	if (iter not_eq closures .end ())
+	const auto & propertyDescriptors = getExecutionContext () -> getLocalObject () -> getPropertyDescriptors ();
+
+	for (const auto & propertyDescriptor : propertyDescriptors)
 	{
-		setLocalObject (iter -> second -> clone (this));
-		setExecutionContext (getExecutionContext () -> getExecutionContext ());
+		const auto pair = resolvedProperties .emplace (propertyDescriptor .first, propertyDescriptor .second -> value);
 
-		closures .erase (iter);
+		if (pair .second)
+			addValue (pair .first -> second);
 	}
+
+	pbExecutionContext::setExecutionContext (executionContext);
 }
 
 var
@@ -112,6 +117,16 @@ Function::call (const ptr <pbObject> & thisObject, const std::vector <var> & arg
 
 		else
 			localObject -> addProperty (formalParameters [i], var (), WRITABLE | CONFIGURABLE);
+	}
+
+	for (const auto & property : resolvedProperties)
+	{
+		try
+		{
+			localObject -> addProperty (property .first, property .second);
+		}
+		catch (const std::invalid_argument &)
+		{ }
 	}
 
 	try
@@ -162,7 +177,7 @@ Function::pop ()
 void
 Function::dispose ()
 {
-	closures .clear ();
+	resolvedProperties .clear ();
 
 	pbFunction::dispose ();
 	pbExecutionContext::dispose ();

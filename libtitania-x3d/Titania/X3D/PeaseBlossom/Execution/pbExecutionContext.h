@@ -52,17 +52,13 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_EXECUTION_CONTEXT_H__
 
 #include "../Base/pbInputStreamObject.h"
-#include "../Base/pbOutputStreamObject.h"
 #include "../Bits/Exception.h"
 #include "../Execution/pbBlock.h"
 #include "../Objects/pbFunction.h"
 #include "../Objects/pbObject.h"
-#include "../Primitives/array.h"
 
 namespace titania {
 namespace pb {
-
-class Function;
 
 class pbExecutionContext :
 	virtual public pbBlock,
@@ -159,9 +155,9 @@ protected:
 
 	///  @name Friends
 
-	friend class Function;
 	friend class VariableDeclaration;
 	friend class VariableExpression;
+	friend class Function;
 
 	///  @name Construction
 
@@ -171,6 +167,7 @@ protected:
 	/// @name Member access
 
 	///  Replaces the current execution context by @a executionContext.
+	virtual
 	void
 	setExecutionContext (const ptr <pbExecutionContext> & value)
 	{ executionContext = value; }

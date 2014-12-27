@@ -75,18 +75,18 @@ public:
 		        elseBlock (new Block ())
 	{ construct (); }
 
-//	///  Creates a copy of this object.
-//	virtual
-//	var
-//	copy (pbExecutionContext* const executionContext) const final override
-//	{
-//		const auto copy = make_ptr <IfStatement> (booleanExpression -> copy (executionContext));
-//
-//		copy -> getThenBlock () -> import (thenBlock .get (), executionContext);
-//		copy -> getElseBlock () -> import (elseBlock .get (), executionContext);
-//
-//		return copy;
-//	}
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const final override
+	{
+		const auto copy = new IfStatement (booleanExpression .copy (executionContext));
+
+		copy -> getThenBlock () -> import (thenBlock .get (), executionContext);
+		copy -> getElseBlock () -> import (elseBlock .get (), executionContext);
+
+		return copy;
+	}
 
 	///  @name Common members
 

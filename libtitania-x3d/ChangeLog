@@ -1,3 +1,47 @@
+2014-12-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Math.h:
+	* Array.h:
+	* Object.h:
+	* Grammar.h:
+	* ptr.h:
+	* var.h:
+	* Parser.cpp:
+	* var.cpp:
+	* Function.h:
+	* pbObject.h:
+	* pbObject.cpp:
+	* Function.cpp:
+	* pbFunction.h:
+	* StringObject.h:
+	* pbChildObject.cpp:
+	* pbFunction.cpp:
+	* NumberObject.h:
+	* Context.cpp:
+	* pbBaseObject.h:
+	* BooleanObject.h:
+	* NativeFunction.h:
+	* IfStatement.h:
+	* pbExpression.h:
+	* ForStatement.h:
+	* ObjectLiteral.h:
+	* LessExpression.h:
+	* EqualExpression.h:
+	* ReturnStatement.h:
+	* pbExecutionContext.h:
+	* DivisionExpression.h:
+	* FunctionExpression.h:
+	* AdditionExpression.h:
+	* VariableExpression.h:
+	* RemainderExpression.h:
+	* VariableDeclaration.h:
+	* LeftShiftExpression.h:
+	* AssignmentExpression.h:
+	* StrictEqualExpression.h:
+	* SubtractionExpression.h:
+	* FunctionCallExpression.h:
+	* MultiplicationExpression.h: 
+
 2014-12-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
 
 #include "../Objects/pbObject.h"
+#include "../Objects/NativeFunction.h"
 
 namespace titania {
 namespace pb {
@@ -69,13 +70,15 @@ public:
 	///  Constructs new Object.
 	Object () :
 		pbObject ()
-	{ }
+	{
+		addProperty ("toString", new NativeFunction ("toString", std::bind (&Object::toString, this)));
+	}
 
 	///  Creates a new default object.
 	virtual
-	ptr <pbObject>
-	create (pbExecutionContext* const) const final override
-	{ return make_ptr <Object> (); }
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const final override
+	{ return pbObject::copy (executionContext, new Object ()); }
 
 };
 

@@ -67,44 +67,15 @@ pbObject::pbObject () :
 { }
 
 ptr <pbObject>
-pbObject::clone (pbExecutionContext* const executionContext) const
+pbObject::copy (pbExecutionContext* const executionContext, const ptr <pbObject> & copy) const
 {
-	const ptr <pbObject> clone = create (executionContext);
-
 	for (const auto & propertyDescriptor : propertyDescriptors)
 	{
-		try
-		{
-			clone -> addProperty (propertyDescriptor .first,
-			                      propertyDescriptor .second -> value,
-			                      propertyDescriptor .second -> flags,
-			                      propertyDescriptor .second -> get,
-			                      propertyDescriptor .second -> set);
-		}
-		catch (const std::exception &)
-		{ }
-	}
-
-	return clone;
-}
-
-ptr <pbObject>
-pbObject::copy (pbExecutionContext* const executionContext) const
-{
-	const ptr <pbObject> copy = create (executionContext);
-
-	for (const auto & propertyDescriptor : propertyDescriptors)
-	{
-		try
-		{
-			copy -> addProperty (propertyDescriptor .first,
-			                     propertyDescriptor .second -> value .copy (executionContext),
-			                     propertyDescriptor .second -> flags,
-			                     propertyDescriptor .second -> get,
-			                     propertyDescriptor .second -> set);
-		}
-		catch (const std::exception &)
-		{ }
+		copy -> updateProperty (propertyDescriptor .first,
+		                        propertyDescriptor .second -> value .copy (executionContext) .getValue (),
+		                        propertyDescriptor .second -> flags,
+		                        propertyDescriptor .second -> get,
+		                        propertyDescriptor .second -> set);
 	}
 
 	return copy;
@@ -124,8 +95,7 @@ throw (std::invalid_argument)
 	{
 		const auto & propertyDescriptor = pair .first -> second; 
 
-		if (propertyDescriptor -> value .isObject ())
-			propertyDescriptor -> value .getObject () .addParent (this);
+		addValue (propertyDescriptor -> value);
 
 		propertyDescriptor -> get .addParent (this);
 		propertyDescriptor -> set .addParent (this);
@@ -146,26 +116,22 @@ throw (std::invalid_argument)
 	{
 		const auto & propertyDescriptor = getPropertyDescriptor (id);
 
-		if (propertyDescriptor -> flags & WRITABLE and not (flags & LEAVE_VALUE))
+		if (not (flags & LEAVE_VALUE))
 		{
 			auto & value_ = propertyDescriptor -> value;
 
 			value_ = value;
 
-			if (value_ .isObject ())
-				value_ .getObject () .addParent (this);
+			addValue (value_);
 		}
 
-		if (propertyDescriptor -> flags & CONFIGURABLE)
-		{
-			propertyDescriptor -> flags = flags;
+		propertyDescriptor -> flags = flags;
 
-			if (get)
-				propertyDescriptor -> get = get;
+		if (get)
+			propertyDescriptor -> get = get;
 
-			if (set)
-				propertyDescriptor -> set = set;
-		}
+		if (set)
+			propertyDescriptor -> set = set;
 	}
 	catch (const std::out_of_range &)
 	{
@@ -234,7 +200,7 @@ throw (std::out_of_range)
 
 var
 pbObject::getDefaultValue (const ValueType preferedType) const
-throw (TypeError)
+throw (std::exception)
 {
 	// All native ECMAScript objects except Date objects handle the absence of a hint as if the hint Number were given;
 	// Date objects handle the absence of a hint as if the hint String were given. Host objects may handle the absence of
@@ -245,7 +211,66 @@ throw (TypeError)
 	//
 	//	return valueOf () or toString () or throw TypeError ();
 
-	return toString ();
+	static const auto toString = getId ("toString");
+	static const auto valueOf  = getId ("valueOf");
+	
+	if (preferedType == STRING)
+	{
+		try
+		{
+			return call (toString);
+		}
+		catch (const std::out_of_range &)
+		{
+			__LOG__ << std::endl;
+		}
+
+		try
+		{
+			return call (valueOf);
+		}
+		catch (const std::out_of_range &)
+		{
+			__LOG__ << std::endl;
+		}
+	}
+
+	try
+	{
+		return call (valueOf);
+	}
+	catch (const std::out_of_range &)
+	{
+		__LOG__ << std::endl;
+	}
+
+	try
+	{
+		return call (toString);
+	}
+	catch (const std::out_of_range &)
+	{
+		__LOG__ << std::endl;
+	}
+
+	return this -> toString ();
+}
+
+var
+pbObject::call (const size_t id, const std::vector <var> & arguments) const
+throw (std::exception)
+{
+	const auto & property = getProperty (id);
+
+	if (property .isObject ())
+	{
+		const auto function = dynamic_cast <pbFunction*> (property .getObject () .get ());
+
+		if (function)
+			return function -> call (const_cast <pbObject*> (this));
+	}
+
+	throw std::out_of_range ("call");
 }
 
 void

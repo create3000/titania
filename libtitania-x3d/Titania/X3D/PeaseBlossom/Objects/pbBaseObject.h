@@ -69,17 +69,29 @@ class pbBaseObject :
 {
 public:
 
+	virtual
+	ptr <pbBaseObject>
+	copy (pbExecutionContext*) const = 0;
+
 	///  @name Conversion operations
 
 	virtual
 	var
 	getDefaultValue (const ValueType preferedType) const
-	throw (TypeError) = 0;
+	throw (std::exception) = 0;
 
 	virtual
 	var
 	getValue () const
 	{ return const_cast <pbBaseObject*> (this); }
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ ostream << "[object " << getTypeName () << "]"; }
 
 
 protected:
@@ -126,6 +138,13 @@ protected:
 	{
 		if (child .isObject ())
 			removeChild (child .getObject ());
+	}
+
+	void
+	addValue (const var & child)
+	{
+		if (child .isObject ())
+			const_cast <var &> (child) .getObject () .addParent (this);
 	}
 
 

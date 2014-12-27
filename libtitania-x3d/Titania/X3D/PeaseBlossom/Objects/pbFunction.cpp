@@ -55,5 +55,12 @@ namespace pb {
 
 const std::string pbFunction::typeName = "Function";
 
+pbFunction::pbFunction (const std::string & name) :
+	pbObject (),
+	    name (name)
+{
+	addProperty ("name", name);
+}
+
 } // pb
 } // titania

@@ -82,7 +82,7 @@ public:
 
 	///  @name Keywords
 
-	static const io::string _this;
+	static const io::string this_;
 	static const io::string false_;
 	static const io::string true_;
 	static const io::string null;
@@ -96,13 +96,13 @@ public:
 
 	///  @name New Opearator
 
-	static const io::string _new;
+	static const io::string new_;
 
 	///  @name Unary Operator
 
-	static const io::string    _delete;
-	static const io::string    _void;
-	static const io::string    _typeof;
+	static const io::string    delete_;
+	static const io::string    void_;
+	static const io::string    typeof_;
 	static const io::string    Increment;
 	static const io::string    Decrement;
 	static const io::character PlusSign;
@@ -155,10 +155,10 @@ public:
 
 	///  @name Statements
 
-	static const io::string _if;
-	static const io::string _else;
-	static const io::string _for;
-	static const io::string _return;
+	static const io::string if_;
+	static const io::string else_;
+	static const io::string for_;
+	static const io::string return_;
 
 	///  @name Values
 
@@ -190,7 +190,7 @@ const io::character Grammar::OpenBrace ('{');
 const io::character Grammar::CloseBrace ('}');
 
 // Keywords
-const io::string Grammar::_this ("this");
+const io::string Grammar::this_ ("this");
 const io::string Grammar::false_ ("false");
 const io::string Grammar::true_ ("true");
 const io::string Grammar::null ("null");
@@ -242,13 +242,13 @@ const std::set <std::string> Grammar::FutureReservedWord = {
 
 // New Opearator
 
-const io::string Grammar::_new ("new");
+const io::string Grammar::new_ ("new");
 
 // Unary Operator
 
-const io::string    Grammar::_delete ("delete");
-const io::string    Grammar::_void ("void");
-const io::string    Grammar::_typeof ("typeof");
+const io::string    Grammar::delete_ ("delete");
+const io::string    Grammar::void_ ("void");
+const io::string    Grammar::typeof_ ("typeof");
 const io::string    Grammar::Increment ("++");
 const io::string    Grammar::Decrement ("--");
 const io::character Grammar::PlusSign ('+');
@@ -301,10 +301,10 @@ const io::string    Grammar::BitwiseORAssignment ("|=");
 
 // Statements
 
-const io::string Grammar::_if ("if");
-const io::string Grammar::_else ("else");
-const io::string Grammar::_for ("for");
-const io::string Grammar::_return ("return");
+const io::string Grammar::if_ ("if");
+const io::string Grammar::else_ ("else");
+const io::string Grammar::for_ ("for");
+const io::string Grammar::return_ ("return");
 
 // Values
 

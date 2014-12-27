@@ -53,6 +53,7 @@
 
 #include "../Expressions/ControlFlowException.h"
 #include "../Expressions/pbExpression.h"
+#include "../Objects/Function.h"
 
 namespace titania {
 namespace pb {
@@ -74,11 +75,11 @@ public:
 		      expression (std::move (expression))
 	{ construct (); }
 
-	//	///  Creates a copy of this object.
-	//	virtual
-	//	var
-	//	copy (pbExecutionContext* const executionContext) const final override
-	//	{ return make_var <ReturnStatement> (executionContext, expression -> copy (executionContext)); }
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const final override
+	{ return new ReturnStatement (executionContext, expression .copy (executionContext)); }
 
 	///  @name Operations
 
@@ -91,10 +92,10 @@ public:
 
 		if (value .getType () == OBJECT)
 		{
-			const auto function = dynamic_cast <pbFunction*> (value .getObject () .get ());
+			const auto function = dynamic_cast <Function*> (value .getObject () .get ());
 
 			if (function)
-				function -> resolve (executionContext);
+				function -> setExecutionContext (executionContext -> getExecutionContext ());
 		}
 
 		throw ReturnException (value);

@@ -77,21 +77,13 @@ public:
 	virtual
 	var
 	getDefaultValue (const ValueType preferedType) const
-	throw (TypeError) final override
+	throw (std::exception) final override
 	{ return getValue () .toPrimitive (preferedType); }
 
 	virtual
 	var
 	setValue (var &&) const
 	{ throw ReferenceError ("Invalid assignment left-hand side."); }
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override
-	{ ostream << "pbExpression"; }
 
 
 protected:

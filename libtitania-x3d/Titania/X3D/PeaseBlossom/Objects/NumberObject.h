@@ -102,9 +102,9 @@ public:
 
 	///  Creates a new default object.
 	virtual
-	ptr <pbObject>
-	create (pbExecutionContext* const) const final override
-	{ return make_ptr <NumberObject> (number); }
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const final override
+	{ return pbObject::copy (executionContext, new NumberObject (number)); }
 
 	///  @name Input/Output
 

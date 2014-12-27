@@ -75,17 +75,17 @@ public:
 		              block (new Block ())
 	{ construct (); }
 
-//	///  Creates a copy of this object.
-//	virtual
-//	var
-//	copy (pbExecutionContext* const executionContext) const final override
-//	{
-//		const auto copy = make_ptr <ForStatement> (booleanExpression -> copy (executionContext), iterationExpression -> copy (executionContext));
-//
-//		copy -> getBlock () -> import (block .get (), executionContext);
-//
-//		return copy;
-//	}
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const final override
+	{
+		const auto copy = new ForStatement (booleanExpression .copy (executionContext), iterationExpression .copy (executionContext));
+
+		copy -> getBlock () -> import (block .get (), executionContext);
+
+		return copy;
+	}
 
 	///  @name Member access
 

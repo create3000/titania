@@ -74,11 +74,11 @@ public:
 		          object (object)
 	{ construct (); }
 
-//	///  Creates a copy of this object.
-//	virtual
-//	var
-//	copy (pbExecutionContext* const executionContext) const final override
-//	{ return make_var <ObjectLiteral> (executionContext, ptr <Object> (object)); }
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const final override
+	{ return new ObjectLiteral (executionContext, ptr <Object> (object)); }
 
 	///  @name Operations
 

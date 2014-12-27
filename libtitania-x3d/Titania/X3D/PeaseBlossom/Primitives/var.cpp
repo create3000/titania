@@ -85,14 +85,14 @@ var::var (pbBaseObject* const object) :
 { }
 
 var
-var::copy (pbExecutionContext* const executionContext) const
+var::copy (pbExecutionContext* executionContext) const
 {
 	switch (type)
 	{
 		case STRING:
 			return *value .string_;
 		case OBJECT:
-			//return value .object_ -> copy (executionContext);
+			return value .object_ -> get () -> copy (executionContext);
 		default:
 			return *this;
 	}
@@ -220,25 +220,12 @@ var::operator = (pbBaseObject* const object)
 
 var
 var::toPrimitive (const ValueType preferedType) const
-throw (TypeError)
+throw (std::exception)
 {
-	switch (type)
-	{
-		case UNDEFINED:
-			return var ();
-		case BOOLEAN:
-			return value .bool_;
-		case NUMBER:
-			return value .number_;
-		case STRING:
-			return *value .string_;
-		case NULL_OBJECT:
-			return nullptr;
-		case OBJECT:
-			return value .object_ -> get () -> getDefaultValue (preferedType);
-	}
+	if (type == OBJECT)
+		return value .object_ -> get () -> getDefaultValue (preferedType);
 
-	return var ();
+	return *this;
 }
 
 bool
@@ -433,7 +420,7 @@ var::toStream (std::ostream & ostream) const
 			ostream << "null";
 			return;
 		case OBJECT:
-			ostream << *value .object_;
+			ostream << value .object_ -> get () -> getDefaultValue (STRING);
 			return;
 	}
 }

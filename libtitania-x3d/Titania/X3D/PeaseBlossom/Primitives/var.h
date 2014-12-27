@@ -62,7 +62,6 @@ namespace pb {
 
 class pbExecutionContext;
 class pbBaseObject;
-class pbObject;
 
 struct Undefined { };
 
@@ -99,11 +98,11 @@ public:
 
 	///  Constructs new var.
 	constexpr
-	var (const std::nullptr_t) :
+	var (const Undefined &) :
 		pbOutputStreamObject (),
 		  pbGarbageCollector (),
 		               value (),
-		                type (NULL_OBJECT)
+		                type (UNDEFINED)
 	{ }
 
 	///  Constructs new var.
@@ -163,6 +162,15 @@ public:
 	{ }
 
 	///  Constructs new var.
+	constexpr
+	var (const std::nullptr_t) :
+		pbOutputStreamObject (),
+		  pbGarbageCollector (),
+		               value (),
+		                type (NULL_OBJECT)
+	{ }
+
+	///  Constructs new var.
 	template <class Up>
 	var (const ptr <Up> & object) :
 		pbOutputStreamObject (),
@@ -184,7 +192,7 @@ public:
 	var (pbBaseObject* const object);
 
 	var
-	copy (pbExecutionContext* const executionContext) const;
+	copy (pbExecutionContext* executionContext) const;
 
 	///  @name Assignment operators
 
@@ -289,7 +297,7 @@ public:
 	///  Converts its argument to a value of type Boolean.
 	var
 	toPrimitive (const ValueType preferedType = UNDEFINED) const
-	throw (TypeError);
+	throw (std::exception);
 
 	///  Converts its argument to a value of type Boolean.
 	bool
