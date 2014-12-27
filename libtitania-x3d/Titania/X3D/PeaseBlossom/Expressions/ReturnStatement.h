@@ -78,7 +78,9 @@ public:
 	///  Creates a copy of this object.
 	virtual
 	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const final override
+	copy (pbExecutionContext* executionContext) const
+	throw (pbException,
+	       pbControlFlowException) final override
 	{ return new ReturnStatement (executionContext, expression .copy (executionContext)); }
 
 	///  @name Operations
@@ -86,7 +88,9 @@ public:
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	getValue () const final override
+	getValue () const
+	throw (pbException,
+	       pbControlFlowException) final override
 	{
 		const var value = expression .getValue ();
 

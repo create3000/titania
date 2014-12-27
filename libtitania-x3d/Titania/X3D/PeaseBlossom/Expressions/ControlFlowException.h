@@ -51,16 +51,20 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_CONTROL_FLOW_EXCEPTION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_CONTROL_FLOW_EXCEPTION_H__
 
+#include "../Expressions/pbControlFlowException.h"
+#include "../Primitives/var.h"
+
 namespace titania {
 namespace pb {
 
 enum class ControlFlowExceptionType
 {
-	BREAK,
 	CONTINUE,
-	GOTO,
+	LABELLED_CONTINUE,
+	BREAK,
+	LABELLED_BREAK,
+	YIELD,
 	RETURN,
-	YIELD
 
 };
 
@@ -68,14 +72,84 @@ enum class ControlFlowExceptionType
  *  Template to represent a control flow exception.
  */
 template <ControlFlowExceptionType type>
-class vsControlFlowException
+class ControlFlowException :
+	public pbControlFlowException
 {
 public:
 
+	ControlFlowException ()
+	noexcept (true) :
+		pbControlFlowException ()
+	{ }
+
 	virtual
-	~vsControlFlowException ()
+	~ControlFlowException ()
 	noexcept (true)
 	{ }
+
+};
+
+/**
+ *  Class to represent a LabelledContinueException exception.
+ */
+class LabelledContinueException :
+	public ControlFlowException <ControlFlowExceptionType::LABELLED_CONTINUE>
+{
+public:
+
+	///  @name Construction
+
+	LabelledContinueException (const size_t identifier)
+	noexcept (true) :
+		ControlFlowException <ControlFlowExceptionType::LABELLED_CONTINUE> (),
+		                                                       identifier (identifier)
+	{ }
+
+	///  @name Member access
+
+	size_t
+	getIdentifier () const
+	noexcept (true)
+	{ return identifier; }
+
+
+private:
+
+	///  @name Members
+
+	const size_t identifier;
+
+};
+
+/**
+ *  Class to represent a LabelledBreakException exception.
+ */
+class LabelledBreakException :
+	public ControlFlowException <ControlFlowExceptionType::LABELLED_BREAK>
+{
+public:
+
+	///  @name Construction
+
+	LabelledBreakException (const size_t identifier)
+	noexcept (true) :
+		ControlFlowException <ControlFlowExceptionType::LABELLED_BREAK> (),
+		                                                     identifier (identifier)
+	{ }
+
+	///  @name Member access
+
+	size_t
+	getIdentifier () const
+	noexcept (true)
+	{ return identifier; }
+
+
+private:
+
+	///  @name Members
+
+	const size_t identifier;
 
 };
 
@@ -83,7 +157,7 @@ public:
  *  Class to represent a ReturnException exception.
  */
 class ReturnException :
-	public vsControlFlowException <ControlFlowExceptionType::RETURN>
+	public ControlFlowException <ControlFlowExceptionType::RETURN>
 {
 public:
 
@@ -91,14 +165,14 @@ public:
 
 	ReturnException (const var & value)
 	noexcept (true) :
-		vsControlFlowException <ControlFlowExceptionType::RETURN> (),
-		                                                    value (value)
+		ControlFlowException <ControlFlowExceptionType::RETURN> (),
+		                                                  value (value)
 	{ }
 
 	///  @name Member access
 
 	const var &
-	toValue () const
+	getValue () const
 	noexcept (true)
 	{ return value; }
 
@@ -111,10 +185,9 @@ private:
 
 };
 
-using BreakException    = vsControlFlowException <ControlFlowExceptionType::BREAK>;
-using ContinueException = vsControlFlowException <ControlFlowExceptionType::CONTINUE>;
-using GotoException     = vsControlFlowException <ControlFlowExceptionType::GOTO>;
-using YieldException    = vsControlFlowException <ControlFlowExceptionType::YIELD>;
+using ContinueException = ControlFlowException <ControlFlowExceptionType::CONTINUE>;
+using BreakException    = ControlFlowException <ControlFlowExceptionType::BREAK>;
+using YieldException    = ControlFlowException <ControlFlowExceptionType::YIELD>;
 
 } // pb
 } // titania

@@ -76,25 +76,29 @@ public:
 		     expressions (std::move (expressions))
 	{ construct (); }
 
-		///  Creates a copy of this object.
-		virtual
-		ptr <pbBaseObject>
-		copy (pbExecutionContext* executionContext) const final override
-		{
-			std::vector <var> expressions;
-	
-			for (const auto & expression : this -> expressions)
-				expressions .emplace_back (expression .copy (executionContext));
-	
-			return new FunctionCallExpression (executionContext, expression .copy (executionContext), std::move (expressions));
-		}
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const
+	throw (pbException,
+	       pbControlFlowException) final override
+	{
+		std::vector <var> expressions;
+
+		for (const auto & expression : this -> expressions)
+			expressions .emplace_back (expression .copy (executionContext));
+
+		return new FunctionCallExpression (executionContext, expression .copy (executionContext), std::move (expressions));
+	}
 
 	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	getValue () const final override
+	getValue () const
+	throw (pbException,
+	       pbControlFlowException) final override
 	{
 		const auto primitive = expression .getValue ();
 

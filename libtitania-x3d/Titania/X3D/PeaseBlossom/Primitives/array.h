@@ -223,6 +223,22 @@ public:
 	iterator
 	insert (const iterator &, InputIterator, const InputIterator &);
 
+	///  Appends array @a to this array.
+	array &
+	prepend (const array & other);
+
+	///  Appends array @a to this array.
+	array &
+	prepend (array && other);
+
+	///  Appends array @a to this array.
+	array &
+	append (const array & other);
+
+	///  Appends array @a to this array.
+	array &
+	append (array && other);
+
 	void
 	pop_front ();
 
@@ -526,6 +542,48 @@ array <Type>::insert (const iterator & location, InputIterator first, const Inpu
 	}
 
 	return iterator (iter);
+}
+
+template <class Type>
+inline
+array <Type> &
+array <Type>::prepend (const array & other)
+{
+	insert (begin (), other .begin (), other .end ());
+	return *this;
+}
+
+template <class Type>
+inline
+array <Type> &
+array <Type>::prepend (array && other)
+{
+	for (auto & element : basic::make_reverse_range (other))
+		insert (begin (), std::move (element));
+
+	other .clear ();
+	return *this;
+}
+
+template <class Type>
+inline
+array <Type> &
+array <Type>::append (const array & other)
+{
+	insert (end (), other .begin (), other .end ());
+	return *this;
+}
+
+template <class Type>
+inline
+array <Type> &
+array <Type>::append (array && other)
+{
+	for (auto & element : other)
+		emplace_back (std::move (element));
+
+	other .clear ();
+	return *this;
 }
 
 template <class Type>

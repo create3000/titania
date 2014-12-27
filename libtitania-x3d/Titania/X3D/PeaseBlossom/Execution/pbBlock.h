@@ -51,7 +51,10 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_BLOCK_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_BLOCK_H__
 
-#include "../Primitives/array.h"
+#include "../Base/pbChildObject.h"
+#include "../Base/pbOutputStreamObject.h"
+#include "../Expressions/pbControlFlowException.h"
+#include "../Primitives/var.h"
 
 namespace titania {
 namespace pb {
@@ -105,13 +108,15 @@ protected:
 		       pbChildObject (),
 		pbOutputStreamObject (),
 		         expressions ()
-	{ construct (); }
+	{ }
 
 	/// @name Operations
 
 	///  Imports all expressions from @a block into @a executionContext.
 	void
 	import (const pbBlock* const block, pbExecutionContext* const executionContext)
+	throw (pbException,
+	       pbControlFlowException)
 	{
 		for (const auto & expression : block -> getExpressions ())
 			addExpression (expression .copy (executionContext));
@@ -120,21 +125,15 @@ protected:
 	///  Executes the associated expessions of this context.
 	void
 	run ()
+	throw (pbException,
+	       pbControlFlowException)
 	{
 		for (const auto & expression : expressions)
 			expression .getValue ();
 	}
 
+
 private:
-
-	///  @name Construction
-
-	///  Performs neccessary operations after construction.
-	void
-	construct ()
-	{
-		//addChildren (expressions);
-	}
 
 	/// @name Members
 

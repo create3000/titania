@@ -65,13 +65,15 @@ Function::Function (pbExecutionContext* const executionContext, const std::strin
 	     formalParameters (std::move (formalParameters)),
 	       recursionDepth (0),
 	    localObjectsStack (),
-	   resolvedProperties ()
+	         localObjects ()
 {
-	addChildren (localObjectsStack);
+	addChildren (localObjectsStack, localObjects);
 }
 
 ptr <pbBaseObject>
 Function::copy (pbExecutionContext* executionContext) const
+throw (pbException,
+       pbControlFlowException)
 {
 	const auto function = make_ptr <Function> (executionContext, getName (), std::vector <std::string> (formalParameters));
 
@@ -90,44 +92,21 @@ Function::setExecutionContext (const ptr <pbExecutionContext> & executionContext
 	if (executionContext not_eq getExecutionContext () -> getExecutionContext ())
 		return;
 
-	const auto & propertyDescriptors = getExecutionContext () -> getLocalObject () -> getPropertyDescriptors ();
-
-	for (const auto & propertyDescriptor : propertyDescriptors)
-	{
-		const auto pair = resolvedProperties .emplace (propertyDescriptor .first, propertyDescriptor .second -> value);
-
-		if (pair .second)
-			addValue (pair .first -> second);
-	}
+	localObjects .append (getExecutionContext () -> getLocalObjects ());
 
 	pbExecutionContext::setExecutionContext (executionContext);
 }
 
 var
 Function::call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments)
+throw (pbException)
 {
 	auto localObject = make_ptr <Object> ();
 
 	localObject -> addProperty ("this", thisObject);
 
 	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
-	{
-		if (i < argc)
-			localObject -> addProperty (formalParameters [i], arguments [i], WRITABLE | CONFIGURABLE);
-
-		else
-			localObject -> addProperty (formalParameters [i], var (), WRITABLE | CONFIGURABLE);
-	}
-
-	for (const auto & property : resolvedProperties)
-	{
-		try
-		{
-			localObject -> addProperty (property .first, property .second);
-		}
-		catch (const std::invalid_argument &)
-		{ }
-	}
+		localObject -> addProperty (formalParameters [i], i < argc ? arguments [i] : var (), WRITABLE | CONFIGURABLE);
 
 	try
 	{
@@ -138,7 +117,7 @@ Function::call (const ptr <pbObject> & thisObject, const std::vector <var> & arg
 		pop ();
 		return value;
 	}
-	catch (...)
+	catch (const pbException &)
 	{
 		pop ();
 		throw;
@@ -149,11 +128,12 @@ void
 Function::push (ptr <pbObject> && localObject)
 {
 	if (recursionDepth)
-		localObjectsStack .emplace_back (std::move (getLocalObject ()));
+		localObjectsStack .append (std::move (getLocalObjects ()));
 
 	++ recursionDepth;
 
-	setLocalObject (std::move (localObject));
+	getLocalObjects () .emplace_back (std::move (localObject));
+	getLocalObjects () .append (localObjects);
 
 	// As LAST step check recursion depth.
 
@@ -164,21 +144,24 @@ Function::push (ptr <pbObject> && localObject)
 void
 Function::pop ()
 {
+	getLocalObjects () .clear ();
+
 	-- recursionDepth;
 
 	if (recursionDepth)
 	{
-		setLocalObject (std::move (localObjectsStack .back ()));
+		const auto size = localObjects .size () + 1;
+	
+		for (auto localObject : std::make_pair (localObjectsStack .end () - size, localObjectsStack .end ()))
+			getLocalObjects () .emplace_back (std::move (localObject));
 
-		localObjectsStack .pop_back ();
+		localObjectsStack .resize (localObjectsStack .size () - size);
 	}
 }
 
 void
 Function::dispose ()
 {
-	resolvedProperties .clear ();
-
 	pbFunction::dispose ();
 	pbExecutionContext::dispose ();
 }

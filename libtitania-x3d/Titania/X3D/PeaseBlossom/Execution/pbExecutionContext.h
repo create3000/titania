@@ -56,6 +56,7 @@
 #include "../Execution/pbBlock.h"
 #include "../Objects/pbFunction.h"
 #include "../Objects/pbObject.h"
+#include "../Primitives/array.h"
 
 namespace titania {
 namespace pb {
@@ -173,35 +174,28 @@ protected:
 	{ executionContext = value; }
 
 	///  Returns the local objects.
-	void
-	setLocalObject (const ptr <pbObject> & value)
-	{ localObject = value; }
+	array <ptr <pbObject>>&
+	getLocalObjects ()
+	{ return localObjects; }
 
 	///  Returns the local objects.
-	void
-	setLocalObject (ptr <pbObject> && value)
-	{ localObject = std::move (value); }
-
-	///  Returns the local objects.
-	ptr <pbObject> &
-	getLocalObject ()
-	{ return localObject; }
-
-	///  Returns the local objects.
-	const ptr <pbObject> &
-	getLocalObject () const
-	{ return localObject; }
+	const array <ptr <pbObject>> &
+	getLocalObjects () const
+	{ return localObjects; }
 
 	/// @name Operations
 
 	///  Imports all function declarations and expressions from @a executionContext into this execution context.
 	void
-	import (const pbExecutionContext* const executionContext);
+	import (const pbExecutionContext* const executionContext)
+	throw (pbException,
+	       pbControlFlowException);
 
 	///  Executes the associated expessions of this context.
 	virtual
 	var
-	run ();
+	run ()
+	throw (pbException);
 
 
 private:
@@ -211,7 +205,7 @@ private:
 	bool                                      strict;
 	ptr <pbExecutionContext>                  executionContext;
 	ptr <pbObject>                            globalObject;
-	ptr <pbObject>                            localObject;
+	array <ptr <pbObject>>                    localObjects;
 	std::map <std::string, ptr <pbFunction>>  functions;
 
 };

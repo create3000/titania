@@ -76,7 +76,9 @@ public:
 	///  Creates a copy of this object.
 	virtual
 	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const final override
+	copy (pbExecutionContext* executionContext) const
+	throw (pbException,
+	       pbControlFlowException) final override
 	{ return new StrictEqualExpression (lhs .copy (executionContext), rhs .copy (executionContext)); }
 
 	///  @name Operations
@@ -84,7 +86,9 @@ public:
 	///  Converts its argument to a value of type Boolean.
 	virtual
 	var
-	getValue () const final override
+	getValue () const
+	throw (pbException,
+	       pbControlFlowException) final override
 	{
 		const auto x = lhs .getValue ();
 		const auto y = rhs .getValue ();

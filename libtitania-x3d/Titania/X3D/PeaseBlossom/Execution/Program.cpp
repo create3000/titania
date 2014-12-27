@@ -61,7 +61,7 @@ const std::string Program::typeName = "Program";
 Program::Program (const ptr <pbObject> & globalObject) :
 	pbExecutionContext (this, globalObject)
 {
-	setLocalObject (getGlobalObject ());
+	getLocalObjects () .emplace_back (getGlobalObject ());
 }
 
 ptr <Program>

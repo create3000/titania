@@ -66,12 +66,12 @@ pbExecutionContext::pbExecutionContext (pbExecutionContext* const executionConte
 	              strict (false),
 	    executionContext (executionContext_),
 	        globalObject (globalObject_),
-	         localObject (),
+	        localObjects (),
 	           functions ()
 {
 	addChildren (executionContext,
 	             globalObject,
-	             localObject);
+	             localObjects);
 }
 
 void
@@ -110,6 +110,8 @@ noexcept (true)
 
 void
 pbExecutionContext::import (const pbExecutionContext* const executionContext)
+throw (pbException,
+       pbControlFlowException)
 {
 	for (const auto & function : executionContext -> getFunctionDeclarations ())
 		addFunctionDeclaration (function .second);
@@ -119,37 +121,42 @@ pbExecutionContext::import (const pbExecutionContext* const executionContext)
 
 var
 pbExecutionContext::run ()
+throw (pbException)
 {
 	try
 	{
 		for (const auto & function : functions)
-			getLocalObject () -> addProperty (function .second -> getName (), function .second /*function .second -> copy (this)*/);
+			getLocalObjects () .back () -> addProperty (function .second -> getName (), function .second /*function .second -> copy (this)*/);
 
 		pbBlock::run ();
 
-		return var ();
-	}
-	catch (const ReturnException & exception)
-	{
-		return exception .toValue ();
-	}
-	catch (const BreakException &)
-	{
-		throw SyntaxError ("Unlabeled break must be inside loop or switch.");
+		return Undefined ();
 	}
 	catch (const ContinueException &)
 	{
-		throw SyntaxError ("continue must be inside loop.");
+		throw SyntaxError ("Unlabelled continue must be inside loop.");
 	}
-	catch (const GotoException &)
+	catch (const LabelledContinueException & error)
 	{
-		throw Error ("Uncatched goto exception.");
+		throw SyntaxError ("Label '' not found.");
+	}
+	catch (const BreakException &)
+	{
+		throw SyntaxError ("Unlabelled break must be inside loop or switch.");
+	}
+	catch (const LabelledBreakException & error)
+	{
+		throw SyntaxError ("Label '' not found.");
 	}
 	catch (const YieldException &)
 	{
 		throw Error ("Uncatched yield exception.");
 	}
-	catch (...)
+	catch (const ReturnException & exception)
+	{
+		return exception .getValue ();
+	}
+	catch (const pbException &)
 	{
 		throw;
 	}

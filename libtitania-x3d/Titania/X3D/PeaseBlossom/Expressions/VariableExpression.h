@@ -79,14 +79,17 @@ public:
 	///  Creates a copy of this object.
 	virtual
 	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const final override
+	copy (pbExecutionContext* executionContext) const
+	throw (pbException,
+	       pbControlFlowException) final override
 	{ return new VariableExpression (executionContext, std::string (identifier)); }
 
 	///  @name Operations
 
 	virtual
 	var
-	setValue (var && value) const final override
+	setValue (var && value) const
+	throw (pbException) final override
 	{
 		try
 		{
@@ -114,7 +117,8 @@ public:
 	virtual
 	var
 	getValue () const
-	throw (ReferenceError) final override
+	throw (pbException,
+	       pbControlFlowException) final override
 	{
 		const auto propertyDescriptor = getPropertyDescriptor (executionContext);
 
@@ -139,14 +143,17 @@ private:
 	getPropertyDescriptor (const ptr <pbExecutionContext> & executionContext) const
 	throw (ReferenceError)
 	{
-		const auto & localObject = executionContext -> getLocalObject ();
+		//for (const auto & localObject : basic::make_reverse_range (executionContext -> getLocalObjects ()))
+		//{
+			const auto & localObject = executionContext -> getLocalObjects () .back ();
 
-		try
-		{
-			return std::make_pair (std::ref (localObject), std::ref (localObject -> getPropertyDescriptor (id)));
-		}
-		catch (const std::out_of_range &)
-		{ }
+			try
+			{
+				return std::make_pair (std::ref (localObject), std::ref (localObject -> getPropertyDescriptor (id)));
+			}
+			catch (const std::out_of_range &)
+			{ }
+		//}
 
 		if (executionContext -> isRootContext ())
 			throw ReferenceError (identifier + " is not defined.");

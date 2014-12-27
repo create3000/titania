@@ -376,7 +376,9 @@ function set_time (value, time)
 	//print ('time: ',   now () - t0);
 }
 
-print ({ toString: function () { return 'toString'; } });
+var o = { toString: function () { return 'toString'; } };
+
+print (o);
 
 var i = 0;
 var global1 = 'global1';
@@ -424,6 +426,9 @@ DEF Script2 Script {
     inputOutput SFDouble h2 1
 
   }
+
+  inputOutput SFDouble N1 800
+  inputOutput SFDouble N2 8000000
 
   url "javascript:
  
@@ -481,8 +486,8 @@ function set_time (value, time)
 	//print ('time: ',   (Date .now () - t0) / 1000);
 
 	var t0 = Date .now ();
-	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, 800));
-	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, 8000000));
+	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, N1));
+	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, N2));
 	print ('time: ',   (Date .now () - t0) / 1000);
 
 	//var t0 = Date .now ();

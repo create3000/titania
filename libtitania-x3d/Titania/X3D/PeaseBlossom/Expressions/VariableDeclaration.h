@@ -79,7 +79,9 @@ public:
 	///  Creates a copy of this object.
 	virtual
 	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const final override
+	copy (pbExecutionContext* executionContext) const
+	throw (pbException,
+	       pbControlFlowException) final override
 	{ return new VariableDeclaration (executionContext, std::string (identifier), expression .copy (executionContext)); }
 
 	///  @name Operations
@@ -87,9 +89,11 @@ public:
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	getValue () const final override
+	getValue () const
+	throw (pbException,
+	       pbControlFlowException) final override
 	{
-		executionContext -> getLocalObject () -> updateProperty (id, expression .getValue (), WRITABLE | ENUMERABLE | CONFIGURABLE);
+		executionContext -> getLocalObjects () .back () -> updateProperty (id, expression .getValue (), WRITABLE | ENUMERABLE | CONFIGURABLE);
 
 		return var ();
 	}

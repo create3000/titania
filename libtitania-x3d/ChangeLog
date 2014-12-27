@@ -1,5 +1,52 @@
 2014-12-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Math.h:
+	* Array.h:
+	* Object.h:
+	* var.h:
+	* var.cpp:
+	* array.h:
+	* pbObject.h:
+	* Function.h:
+	* pbBlock.h:
+	* Function.cpp:
+	* pbObject.cpp:
+	* pbFunction.h:
+	* Program.cpp:
+	* pbBlock.cpp:
+	* StringObject.h:
+	* pbBaseObject.h:
+	* NumberObject.h:
+	* BooleanObject.h:
+	* NativeFunction.h:
+	* IfStatement.h:
+	* ForStatement.h:
+	* pbExpression.h:
+	* ObjectLiteral.h:
+	* LessExpression.h:
+	* EqualExpression.h:
+	* ReturnStatement.h:
+	* pbExecutionContext.h:
+	* pbExecutionContext.cpp:
+	* AdditionExpression.h:
+	* DivisionExpression.h:
+	* VariableExpression.h:
+	* FunctionExpression.h:
+	* VariableDeclaration.h:
+	* LeftShiftExpression.h:
+	* RemainderExpression.h:
+	* AssignmentExpression.h:
+	* ControlFlowException.h:
+	* StrictEqualExpression.h:
+	* SubtractionExpression.h:
+	* pbControlFlowException.h:
+	* FunctionCallExpression.h:
+	* MultiplicationExpression.h: 
+
+2014-12-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Math.h:
 	* Array.h:
 	* Object.h:

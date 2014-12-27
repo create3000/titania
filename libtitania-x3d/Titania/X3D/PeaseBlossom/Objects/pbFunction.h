@@ -81,7 +81,8 @@ public:
 	///  Executes this function.
 	virtual
 	var
-	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { }) = 0;
+	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { })
+	throw (pbException) = 0;
 
 
 protected:

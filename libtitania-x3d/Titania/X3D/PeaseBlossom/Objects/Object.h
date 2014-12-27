@@ -77,7 +77,9 @@ public:
 	///  Creates a new default object.
 	virtual
 	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const final override
+	copy (pbExecutionContext* executionContext) const
+	throw (pbException,
+	       pbControlFlowException) final override
 	{ return pbObject::copy (executionContext, new Object ()); }
 
 };

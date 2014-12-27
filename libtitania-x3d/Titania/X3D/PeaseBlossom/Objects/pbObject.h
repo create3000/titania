@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_OBJECT_H__
 
 #include "../Bits/pbConstants.h"
+#include "../Expressions/pbControlFlowException.h"
 #include "../Objects/pbBaseObject.h"
 #include "../Primitives/ptr.h"
 
@@ -92,13 +93,6 @@ class pbObject :
 	public pbBaseObject
 {
 public:
-
-	///  @name Construction
-
-	///  Creates a deep copy of this object.
-	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext*) const = 0;
 
 	///  @name Common members
 
@@ -148,6 +142,13 @@ public:
 	throw (std::out_of_range)
 	{ return getProperty (getId (name)); }
 
+	virtual
+	var
+	getValue () const
+	throw (pbException,
+	       pbControlFlowException) final override
+	{ return const_cast <pbObject*> (this); }
+
 	///  @name Destruction
 
 	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
@@ -181,7 +182,9 @@ protected:
 
 	///  Creates a deep copy of this object.
 	ptr <pbObject>
-	copy (pbExecutionContext* executionContext, const ptr <pbObject> & object) const;
+	copy (pbExecutionContext* executionContext, const ptr <pbObject> & object) const
+	throw (pbException,
+	       pbControlFlowException);
 
 	///  @name Member access
 
@@ -229,16 +232,11 @@ protected:
 	const PropertyDescriptorPtr &
 	getPropertyDescriptor (const size_t id) const
 	throw (std::out_of_range);
-	
-	const PropertyDescriptorIndex &
-	getPropertyDescriptors () const
-	noexcept (true)
-	{ return propertyDescriptors; }
 
 	virtual
 	var
 	getDefaultValue (const ValueType preferedType) const
-	throw (std::exception) final override;
+	throw (pbException) final override;
 
 
 private:

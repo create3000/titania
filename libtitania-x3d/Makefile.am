@@ -473,6 +473,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/PeaseBlossom/Base/pbGarbargeCollector.cpp \
 	Titania/X3D/PeaseBlossom/Execution/Block.cpp \
 	Titania/X3D/PeaseBlossom/Execution/GlobalObject.cpp \
+	Titania/X3D/PeaseBlossom/Execution/pbBlock.cpp \
 	Titania/X3D/PeaseBlossom/Execution/pbExecutionContext.cpp \
 	Titania/X3D/PeaseBlossom/Execution/Program.cpp \
 	Titania/X3D/PeaseBlossom/Expressions/pbExpression.cpp \

@@ -71,19 +71,22 @@ public:
 
 	virtual
 	ptr <pbBaseObject>
-	copy (pbExecutionContext*) const = 0;
+	copy (pbExecutionContext*) const
+	throw (pbException,
+	       pbControlFlowException) = 0;
 
 	///  @name Conversion operations
 
 	virtual
 	var
 	getDefaultValue (const ValueType preferedType) const
-	throw (std::exception) = 0;
+	throw (pbException) = 0;
 
 	virtual
 	var
 	getValue () const
-	{ return const_cast <pbBaseObject*> (this); }
+	throw (pbException,
+	       pbControlFlowException) = 0;
 
 	///  @name Input/Output
 

@@ -53,6 +53,7 @@
 
 #include "../Execution/Block.h"
 #include "../Expressions/pbExpression.h"
+#include "../Expressions/ControlFlowException.h"
 
 namespace titania {
 namespace pb {
@@ -78,7 +79,9 @@ public:
 	///  Creates a copy of this object.
 	virtual
 	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const final override
+	copy (pbExecutionContext* executionContext) const
+	throw (pbException,
+	       pbControlFlowException) final override
 	{
 		const auto copy = new ForStatement (booleanExpression .copy (executionContext), iterationExpression .copy (executionContext));
 
@@ -98,10 +101,43 @@ public:
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
-	getValue () const final override
+	getValue () const
+	throw (pbException,
+	       pbControlFlowException) final override
 	{
 		for ( ; booleanExpression .toBoolean (); iterationExpression .getValue ())
-			block -> run ();
+		{
+			try
+			{
+				block -> run ();
+			}
+			catch (const ContinueException &)
+			{
+				continue;
+			}
+			catch (const LabelledContinueException & error)
+			{
+				//if (error .getIdentifier () == id)
+				//	continue;
+
+				throw;
+			}
+			catch (const BreakException &)
+			{
+				break;
+			}
+			catch (const LabelledBreakException &)
+			{
+				//if (error .getIdentifier () == id)
+				//	break;
+
+				throw;
+			}
+			catch (...)
+			{
+				throw;
+			}
+		}
 
 		return var ();
 	}

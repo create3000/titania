@@ -692,7 +692,6 @@
     <None Include="Titania\X3D\PeaseBlossom\Objects\StringObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\VariableDeclaration.h" />
     <None Include="Titania\X3D\PeaseBlossom\Execution\GlobalObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\NativeFunction.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\ControlFlowException.h" />
@@ -789,6 +788,8 @@
     <None Include="Titania\X3D\PeaseBlossom\Base\pbOutputStreamObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\pbFunction.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\pbObject.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\pbControlFlowException.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\VariableDeclaration.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1299,6 +1300,7 @@
     <Compile Include="Titania\X3D\PeaseBlossom\Base\pbGarbargeCollector.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Objects\pbFunction.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Objects\pbObject.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Execution\pbBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

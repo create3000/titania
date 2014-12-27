@@ -76,14 +76,17 @@ public:
 	///  Creates a new default object.
 	virtual
 	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const final override;
+	copy (pbExecutionContext* executionContext) const
+	throw (pbException,
+	       pbControlFlowException) final override;
 
 	///  @name Operations
 
 	///  Executes this function.
 	virtual
 	var
-	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { }) final override;
+	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { })
+	throw (pbException) final override;
 
 	///  @name Input/Output
 
@@ -149,7 +152,7 @@ private:
 	const std::vector <std::string> formalParameters;
 	size_t                          recursionDepth;
 	array <ptr <pbObject>>          localObjectsStack;
-	std::map <size_t, var>          resolvedProperties;
+	array <ptr <pbObject>>          localObjects;
 
 };
 

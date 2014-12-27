@@ -68,6 +68,8 @@ pbObject::pbObject () :
 
 ptr <pbObject>
 pbObject::copy (pbExecutionContext* const executionContext, const ptr <pbObject> & copy) const
+throw (pbException,
+       pbControlFlowException)
 {
 	for (const auto & propertyDescriptor : propertyDescriptors)
 	{
@@ -200,7 +202,7 @@ throw (std::out_of_range)
 
 var
 pbObject::getDefaultValue (const ValueType preferedType) const
-throw (std::exception)
+throw (pbException)
 {
 	// All native ECMAScript objects except Date objects handle the absence of a hint as if the hint Number were given;
 	// Date objects handle the absence of a hint as if the hint String were given. Host objects may handle the absence of

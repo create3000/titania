@@ -53,6 +53,7 @@
 
 #include "../Base/pbOutputStreamObject.h"
 #include "../Bits/pbConstants.h"
+#include "../Expressions/pbControlFlowException.h"
 #include "../Primitives/ptr.h"
 
 #include <cmath>
@@ -192,7 +193,9 @@ public:
 	var (pbBaseObject* const object);
 
 	var
-	copy (pbExecutionContext* executionContext) const;
+	copy (pbExecutionContext* executionContext) const
+	throw (pbException,
+	       pbControlFlowException);
 
 	///  @name Assignment operators
 
@@ -297,7 +300,7 @@ public:
 	///  Converts its argument to a value of type Boolean.
 	var
 	toPrimitive (const ValueType preferedType = UNDEFINED) const
-	throw (std::exception);
+	throw (pbException);
 
 	///  Converts its argument to a value of type Boolean.
 	bool
@@ -352,7 +355,9 @@ public:
 	{ return *value .object_; }
 
 	var
-	getValue () const;
+	getValue () const
+	throw (pbException,
+	       pbControlFlowException);
 
 	///  @name Input/Output
 

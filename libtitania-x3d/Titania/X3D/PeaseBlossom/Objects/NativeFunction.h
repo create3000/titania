@@ -76,14 +76,17 @@ public:
 	///  Creates a new default object.
 	virtual
 	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const final override
+	copy (pbExecutionContext* executionContext) const
+	throw (pbException,
+	       pbControlFlowException) final override
 	{ return pbObject::copy (executionContext, new NativeFunction (getName (), function)); }
 
 	///  @name Operations
 
 	virtual
 	var
-	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { }) final override
+	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { })
+	throw (pbException) final override
 	{ return function (thisObject, arguments); }
 
 

@@ -48,60 +48,37 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PB_CONTROL_FLOW_EXCEPTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PB_CONTROL_FLOW_EXCEPTION_H__
 
-#include "../Objects/pbBaseObject.h"
+#include <exception>
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
+ *  Base class to represent a control flow exception.
  */
-class pbExpression :
-	public pbBaseObject
+class pbControlFlowException :
+	public std::exception
 {
 public:
 
-	///  @name Common members
-
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
-
-	///  @name Conversion operations
-
-	virtual
-	var
-	getDefaultValue (const ValueType preferedType) const
-	throw (pbException) final override
-	{ return getValue () .toPrimitive (preferedType); }
-
-	virtual
-	var
-	setValue (var &&) const
-	throw (pbException)
-	{ throw ReferenceError ("Invalid assignment left-hand side."); }
-
-
-protected:
-
-	///  @name Construction
-
-	///  Constructs new pbExpression.
-	pbExpression () :
-		pbBaseObject ()
+	pbControlFlowException ()
+	noexcept (true) :
+		std::exception ()
 	{ }
+	
+	virtual
+	const char*
+	what () const
+	noexcept (true) final override
+	{ return "pbControlFlowException"; }
 
-
-private:
-
-	///  @name Static members
-
-	static const std::string typeName;
+	virtual
+	~pbControlFlowException ()
+	noexcept (true)
+	{ }
 
 };
 

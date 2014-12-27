@@ -86,6 +86,8 @@ var::var (pbBaseObject* const object) :
 
 var
 var::copy (pbExecutionContext* executionContext) const
+throw (pbException,
+       pbControlFlowException)
 {
 	switch (type)
 	{
@@ -220,7 +222,7 @@ var::operator = (pbBaseObject* const object)
 
 var
 var::toPrimitive (const ValueType preferedType) const
-throw (std::exception)
+throw (pbException)
 {
 	if (type == OBJECT)
 		return value .object_ -> get () -> getDefaultValue (preferedType);
@@ -379,6 +381,8 @@ var::toNumber () const
 
 var
 var::getValue () const
+throw (pbException,
+       pbControlFlowException)
 {
 	if (type == OBJECT)
 		return value .object_ -> get () -> getValue ();

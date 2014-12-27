@@ -48,64 +48,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
-
-#include "../Objects/pbBaseObject.h"
+#include "pbBlock.h"
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
- */
-class pbExpression :
-	public pbBaseObject
-{
-public:
-
-	///  @name Common members
-
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const override
-	{ return typeName; }
-
-	///  @name Conversion operations
-
-	virtual
-	var
-	getDefaultValue (const ValueType preferedType) const
-	throw (pbException) final override
-	{ return getValue () .toPrimitive (preferedType); }
-
-	virtual
-	var
-	setValue (var &&) const
-	throw (pbException)
-	{ throw ReferenceError ("Invalid assignment left-hand side."); }
-
-
-protected:
-
-	///  @name Construction
-
-	///  Constructs new pbExpression.
-	pbExpression () :
-		pbBaseObject ()
-	{ }
-
-
-private:
-
-	///  @name Static members
-
-	static const std::string typeName;
-
-};
-
 } // pb
 } // titania
-
-#endif
