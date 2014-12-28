@@ -100,11 +100,11 @@ public:
 			{
 				try
 				{
-					return object -> updateProperty (id, value);
+					return object -> setProperty (id, std::move (value));
 				}
 				catch (const std::out_of_range &)
 				{
-					object -> addProperty (id, value);
+					object -> addPropertyDescriptor (id, value);
 
 					return value;
 				}

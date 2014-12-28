@@ -72,14 +72,78 @@ class pbFunction;
 ///  @name Type definitions
 
 ///  Type to represent a property descriptor.
-struct PropertyDescriptor
+class PropertyDescriptor
 {
-	var value;
-	PropertyFlagsType flags;
-	ptr <pbFunction> get;
-	ptr <pbFunction> set;
+public:
+
+	///  @name Construction
+
+	PropertyDescriptor (pbObject* const,
+	                    const var &,
+		                 const PropertyFlagsType &,
+		                 const ptr <pbFunction> &,
+		                 const ptr <pbFunction> &);
+
+	///  @name Member access
+
+	void
+	setValue (const var & value_)
+	{
+		value = value_;
+		
+		addValue ();
+	}
+
+	void
+	setValue (var && value_)
+	{
+		value = std::move (value_);
+
+		addValue ();
+	}
+
+	const var &
+	getValue () const
+	{ return value; }
+
+	void
+	setFlags (const PropertyFlagsType & value)
+	{ flags = value; }
+
+	const PropertyFlagsType &
+	getFlags () const
+	{ return flags; }
+
+	void
+	setGetter (const ptr <pbFunction> & value)
+	{ getter = value; }
+
+	const ptr <pbFunction> &
+	getGetter () const
+	{ return getter; }
+
+	void
+	setSetter (const ptr <pbFunction> & value)
+	{ setter = value; }
+
+	const ptr <pbFunction> &
+	getSetter () const
+	{ return setter; }
 
 	~PropertyDescriptor ();
+
+//private:
+
+	void
+	addValue ();
+
+	///  @name Members
+
+	pbObject* const   object;
+	var               value;
+	PropertyFlagsType flags;
+	ptr <pbFunction>  getter;
+	ptr <pbFunction>  setter;
 
 };
 
@@ -110,24 +174,12 @@ public:
 	noexcept (true)
 	{ return hasProperty (getId (name)); }
 
-	void
-	addProperty (const std::string & name, const var & value)
-	throw (std::invalid_argument)
-	{ addPropertyDescriptor (getId (name), value, WRITABLE | ENUMERABLE | CONFIGURABLE); }
-
 	var
-	updateProperty (const std::string & name, const var & value)
-	throw (pbException,
-	       std::out_of_range)
-	{ return updateProperty (getId (name), value); }
+	setProperty (const std::string & name, var && value)
+	throw (std::out_of_range,
+	       pbException)
+	{ return setProperty (getId (name), std::move (value)); }
 
-	///  Removes the property @a name from this object.
-	void
-	removeProperty (const std::string & name)
-	noexcept (true)
-	{ removeProperty (getId (name)); }
-
-	///  Removes the property @a name from this object.
 	var
 	getProperty (const std::string & name) const
 	throw (std::out_of_range,
@@ -139,20 +191,26 @@ public:
 	addPropertyDescriptor (const std::string & name,
 	                       const var & value,
 	                       const PropertyFlagsType flags = DEFAULT,
-	                       const ptr <pbFunction> & get = nullptr,
-	                       const ptr <pbFunction> & set = nullptr)
+	                       const ptr <pbFunction> & getter = nullptr,
+	                       const ptr <pbFunction> & setter = nullptr)
 	throw (std::invalid_argument)
-	{ addPropertyDescriptor (getId (name), value, flags, get, set); }
+	{ addPropertyDescriptor (getId (name), value, flags, getter, setter); }
 
 	///  Updates the named property described by the given descriptor to this object.
 	void
 	updatePropertyDescriptor (const std::string & name,
 	                          const var & value,
 	                          const PropertyFlagsType flags = DEFAULT,
-	                          const ptr <pbFunction> & get = nullptr,
-	                          const ptr <pbFunction> & set = nullptr)
+	                          const ptr <pbFunction> & getter = nullptr,
+	                          const ptr <pbFunction> & setter = nullptr)
 	throw (std::invalid_argument)
-	{ updatePropertyDescriptor (getId (name), value, flags, get, set); }
+	{ updatePropertyDescriptor (getId (name), value, flags, getter, setter); }
+
+	///  Removes the property @a name from this object.
+	void
+	removePropertyDescriptor (const std::string & name)
+	noexcept (true)
+	{ removePropertyDescriptor (getId (name)); }
 
 	virtual
 	var
@@ -205,25 +263,17 @@ protected:
 	bool
 	hasProperty (const size_t id) const
 	noexcept (true)
-	{ return propertyDescriptors .count (id); }
-
-	void
-	addProperty (const size_t id, const var & value)
-	throw (std::invalid_argument)
-	{ addPropertyDescriptor (id, value, WRITABLE | ENUMERABLE | CONFIGURABLE); }
-
-	var
-	updateProperty (const size_t id, const var & value)
-	throw (pbException,
-	       std::out_of_range);
+	{ return properties .count (id); }
 
 	///  Removes the property @a id from this object.
-	void
-	removeProperty (const size_t id)
-	noexcept (true);
 
 	var
-	getProperty (const size_t id) const
+	setProperty (const size_t, var && value)
+	throw (std::out_of_range,
+	       pbException);
+
+	var
+	getProperty (const size_t) const
 	throw (std::out_of_range,
 	       pbException);
 
@@ -231,8 +281,8 @@ protected:
 	addPropertyDescriptor (const size_t id,
 	                       const var & value,
 	                       const PropertyFlagsType flags = DEFAULT,
-	                       const ptr <pbFunction> & get = nullptr,
-	                       const ptr <pbFunction> & set = nullptr)
+	                       const ptr <pbFunction> & getter = nullptr,
+	                       const ptr <pbFunction> & setter = nullptr)
 	throw (std::invalid_argument);
 
 	///  Updates the named property described by the given descriptor to this object.
@@ -240,9 +290,18 @@ protected:
 	updatePropertyDescriptor (const size_t id,
 	                          const var & value,
 	                          const PropertyFlagsType flags = DEFAULT,
-	                          const ptr <pbFunction> & get = nullptr,
-	                          const ptr <pbFunction> & set = nullptr)
+	                          const ptr <pbFunction> & getter = nullptr,
+	                          const ptr <pbFunction> & setter = nullptr)
 	throw (std::invalid_argument);
+
+	void
+	removePropertyDescriptor (const size_t id)
+	noexcept (true);
+
+	///  Returns the property descriptor for a property id on this object.
+	const PropertyDescriptorPtr &
+	getPropertyDescriptor (const size_t id) const
+	throw (std::out_of_range);
 
 	virtual
 	var
@@ -251,17 +310,12 @@ protected:
 
 	var
 	call (const size_t id, const std::vector <var> & arguments = { }) const
-	throw (TypeError);
+	throw (pbException);
 
 
 private:
 
 	///  @name Cache opeartions
-
-	///  Returns the property descriptor for a property id on this object.
-	const PropertyDescriptorPtr &
-	getPropertyDescriptor (const size_t id) const
-	throw (std::out_of_range);
 
 	void
 	addCachedPropertyDescriptor (const size_t, const PropertyDescriptorPtr &)
@@ -283,8 +337,8 @@ private:
 
 	///  @name Members
 	
-	PropertyDescriptorIndex propertyDescriptors;
-	PropertyDescriptorArray cachedPropertyDescriptors;
+	PropertyDescriptorIndex properties;
+	PropertyDescriptorArray cachedProperties;
 
 };
 

@@ -222,111 +222,39 @@ using Spheroid3d  = math::spheroid3 <double>;
 
 
 
-class X3DBase
-{
-public:
-
-};
-
-class X3DInput :
-	virtual public X3DBase
-{
-public:
-
-};
-
-class X3DOutput :
-	virtual public X3DBase
-{
-public:
-
-};
-
-class X3DChildObject :
-	virtual public X3DBase
-{
-public:
-
-};
-
-class X3DObject :
-	virtual public X3DBase
-{
-public:
-
-};
-
-class X3DFieldDefinition :
-	public X3DObject,
-	public X3DChildObject,
-	public X3DInput,
-	public X3DOutput
-{
-public:
-
-};
-
-class X3DParentObject :
-	virtual public X3DChildObject,
-	public X3DInput,
-	public X3DOutput
-{
-public:
-
-};
-
-class X3DReferenceObject :
-	virtual public X3DChildObject
-{
-public:
-
-};
-
-class X3DBaseNode :
-	public X3DObject,
-	public X3DParentObject,
-	public X3DReferenceObject
-{
-public:
-
-};
-
-const std::string &
-t (const std::string & v = "test")
-{
-	return v;
-}
-
 
 class A
 {
 public:
+
+	A ()
+	{
+		__LOG__ << std::endl;
+	}
+
+	A (const A &)
+	{
+		__LOG__ << std::endl;
+	}
+
 };
 
-class B :
-	public A
+A
+f1 ()
 {
-public:
-};
+	return A ();
+}
 
-class C :
-	public A
+A
+f2 ()
 {
-public:
-};
+	return f1 ();
+}
 
-template <class Type>
-void
-test_almost_equal (Type f1, Type f2)
+A
+f3 ()
 {
-	__LOG__ << f1 << " : " << f2;
-
-	for (int i = 0; i < 2000000000; ++ i)
-		if (almost_equal (f1, f2, i))
-		{
-			__LOG__ << " : " << i << std::endl;
-			break;
-		}
+	return f2 ();
 }
 
 int
@@ -343,9 +271,9 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-	
-	test_almost_equal (1.000000f, 1.000004f);
 
+
+	f3 ();
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

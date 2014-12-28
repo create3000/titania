@@ -1,5 +1,25 @@
 2014-12-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Expressions.h:
+	* Object.h:
+	* ptr.h:
+	* Parser.cpp:
+	* pbObject.h:
+	* Function.h:
+	* pbConstants.h:
+	* pbObject.cpp:
+	* pbFunction.h:
+	* Function.cpp:
+	* pbFunction.cpp:
+	* NewExpression.h:
+	* PropertyExpression.h:
+	* pbExecutionContext.cpp:
+	* VariableExpression.h:
+	* VariableDeclaration.h: 
+
+2014-12-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Math.h:

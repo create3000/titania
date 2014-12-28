@@ -82,6 +82,12 @@ public:
 
 	///  @name Operations
 
+	///  Constructs new object of this class.
+	virtual
+	var
+	construct (const std::vector <var> & arguments = { })
+	throw (pbException) final override;
+
 	///  Executes this function.
 	virtual
 	var
@@ -137,7 +143,7 @@ private:
 	///  Set @a localObject as local object and pushes all default objects to the default object stack if an recursion is
 	///  detected.
 	void
-	push (ptr <pbObject> && localObject);
+	push (pbObject* const localObject);
 
 	///  Reverses the effect of pop.
 	void

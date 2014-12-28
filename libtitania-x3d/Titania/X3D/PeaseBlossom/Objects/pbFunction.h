@@ -83,6 +83,13 @@ public:
 
 	///  @name Operations
 
+	///  Constructs new object of this class.
+	virtual
+	var
+	construct (const std::vector <var> & arguments = { })
+	throw (pbException)
+	{ return Undefined (); }
+
 	///  Executes this function.
 	virtual
 	var

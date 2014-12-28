@@ -60,8 +60,8 @@ pbFunction::pbFunction (const std::string & name, const size_t length) :
 	    name (name),
 	  length (length)
 {
-	addProperty ("name",   name);
-	addProperty ("length", length);
+	addPropertyDescriptor ("name",   name,   NONE);
+	addPropertyDescriptor ("length", length, NONE);
 }
 
 } // pb

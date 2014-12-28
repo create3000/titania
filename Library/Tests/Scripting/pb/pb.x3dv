@@ -388,9 +388,14 @@ function set_time (value, time)
 	//print ('time: ',                now () - t0);
 
 	var t0 = now ();
-	print ('fibonacci_iterative: ', fibonacci_iterative1 ({}, 800));
-	print ('fibonacci_iterative: ', fibonacci_iterative1 ({}, 800000));
+	print ('fibonacci_iterative: ', fibonacci_iterative (800));
+	print ('fibonacci_iterative: ', fibonacci_iterative (8000000));
 	print ('time: ',                now () - t0);
+
+	//var t0 = now ();
+	//print ('fibonacci_iterative: ', fibonacci_iterative1 ({ }, 800));
+	//print ('fibonacci_iterative: ', fibonacci_iterative1 ({ }, 8000000));
+	//print ('time: ',                now () - t0);
 
 	//var t0 = now ();
 	//print ('result: ', for_time (2000000));
@@ -408,6 +413,8 @@ var o = {
 	}
 };
 
+function Class () { return this; }
+
 print (o .x);
 print (o .x = 234);
 print (o .x);
@@ -423,9 +430,9 @@ print ('sqrt (2): ', Math .sqrt (2));
 print ('Math .min .length: ', Math .min .length);
 print ('Math .max: ', Math .max (4,6,2,9,4));
 print ('Math .min: ', Math .min (4,6,2,9,4));
+print ('random: ', Math .random ());
+print ('new: ', new Class ());
 
-for (var i = 0; i < 10; i += 1)
-	print ('random: ', Math .random ());
 
 var i = 0;
 var global1 = 'global1';
@@ -573,10 +580,13 @@ function outer ()
 	};
 }
 
+function Class () { return { x: 123 }; }
+
 print ()
 print ('sm:')
 outer () ();
-print (i .def)
+print (i .def);
+print (new Class () .x);
 "
   directOutput TRUE
 }

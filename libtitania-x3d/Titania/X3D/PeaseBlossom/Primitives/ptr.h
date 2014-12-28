@@ -184,7 +184,7 @@ public:
 	ptr &
 	operator = (ptr <Up> && other)
 	{
-		if (&other == this)
+		if (static_cast <pbBase*> (&other) == this)
 			return *this;
 
 		remove (get ());

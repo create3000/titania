@@ -48,78 +48,100 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_VS_CONSTANTS_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_VS_CONSTANTS_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_NEW_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_NEW_EXPRESSION_H__
 
-#include <string>
-#include <iostream>
-#include <sstream>
-#include <cmath>
-#include <limits>
-
-#undef NONE
+#include "../Execution/pbExecutionContext.h"
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Enum type for ECMAScript primitives.
+ *  Class to represent a ECMAScript function call expression.
  */
-enum ValueType :
-	uint8_t
+class NewExpression :
+	public pbExpression
 {
-	// Standard object
+public:
 
-	UNDEFINED,
-	BOOLEAN,
-	NUMBER,
-	STRING,
-	NULL_OBJECT,
-	OBJECT,
+	///  @name Construction
 
-};
-
-///  @relates ValueType
-///  @name Input/Output operators.
-
-template <class CharT, class Traits>
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const ValueType type)
-noexcept (true)
-{
-	switch (type)
+	///  Constructs new NewExpression expression.
+	NewExpression (var && expression, std::vector <var> && expressions) :
+		pbExpression (),
+		  expression (std::move (expression)),
+		 expressions (std::move (expressions))
 	{
-		case UNDEFINED:   ostream << "UNDEFINED"; break;
-		case BOOLEAN:     ostream << "BOOLEAN";   break;
-		case NUMBER:      ostream << "NUMBER";    break;
-		case STRING:      ostream << "STRING";    break;
-		case NULL_OBJECT: ostream << "NULL";      break;
-		case OBJECT:      ostream << "OBJECT";    break;
+		construct ();
 	}
 
-	return ostream;
-}
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbBaseObject>
+	copy (pbExecutionContext* executionContext) const
+	throw (pbException,
+	       pbControlFlowException) final override
+	{
+		std::vector <var> expressions;
 
-inline
-std::string
-to_string (const ValueType type)
-noexcept (true)
-{
-	std::ostringstream osstream;
+		for (const auto & expression : this -> expressions)
+			expressions .emplace_back (expression .copy (executionContext));
 
-	osstream << type;
+		return new NewExpression (expression .copy (executionContext), std::move (expressions));
+	}
 
-	return osstream .str ();
-}
+	///  @name Operations
 
-using PropertyFlagsType = uint8_t;
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	var
+	getValue () const
+	throw (pbException,
+	       pbControlFlowException) final override
+	{
+		const auto value = expression .getValue ();
 
-constexpr PropertyFlagsType NONE         = 0;
-constexpr PropertyFlagsType WRITABLE     = 1 << 0;
-constexpr PropertyFlagsType ENUMERABLE   = 1 << 1;
-constexpr PropertyFlagsType CONFIGURABLE = 1 << 2;
-constexpr PropertyFlagsType LEAVE_VALUE  = 1 << 3;
-constexpr PropertyFlagsType DEFAULT      = WRITABLE | CONFIGURABLE | ENUMERABLE;
+		if (value .isObject ())
+		{
+			const auto function = dynamic_cast <pbFunction*> (value .getObject () .get ());
+
+			if (function)
+			{
+				std::vector <var> arguments;
+
+				arguments .reserve (expressions .size ());
+
+				for (const auto & value : expressions)
+					arguments .emplace_back (value .getValue ());
+
+				return function -> construct (arguments);
+			}
+		}
+
+		throw TypeError ("'" + value .toString () + "' is not a function.");
+	}
+
+private:
+
+	///  @name Construction
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{
+		addChildren (expression);
+
+		for (const auto & value : expressions)
+			addChild (value);
+	}
+
+	///  @name Members
+
+	const var               expression;
+	const std::vector <var> expressions;
+
+};
 
 } // pb
 } // titania

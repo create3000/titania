@@ -126,7 +126,7 @@ throw (pbException)
 	try
 	{
 		for (const auto & function : functions)
-			getLocalObjects () .back () -> addProperty (function .second -> getName (), function .second /*function .second -> copy (this)*/);
+			getLocalObjects () .back () -> addPropertyDescriptor (function .second -> getName (), function .second /*function .second -> copy (this)*/);
 
 		pbBlock::run ();
 

@@ -53,6 +53,7 @@
 
 #include "../Execution/pbExecutionContext.h"
 #include "../Expressions/pbExpression.h"
+#include "../Objects/pbFunction.h"
 
 namespace titania {
 namespace pb {
@@ -78,7 +79,7 @@ public:
 	///  Creates a copy of this object.
 	virtual
 	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
 	{ return new VariableExpression (executionContext, std::string (identifier)); }
@@ -90,7 +91,7 @@ public:
 	setValue (var && value) const
 	throw (pbException) final override
 	{
-		return updateProperty (executionContext, std::move (value));
+		return setProperty (executionContext, std::move (value));
 	}
 
 	///  Converts its input argument to either Primitive or Object type.
@@ -102,7 +103,6 @@ public:
 	{
 		return getProperty (executionContext);
 	}
-
 
 private:
 
@@ -116,14 +116,14 @@ private:
 	///  @name Operations
 
 	var
-	updateProperty (const ptr <pbExecutionContext> & executionContext, var && value) const
-	throw (ReferenceError)
+	setProperty (const ptr <pbExecutionContext> & executionContext, var && value) const
+	throw (pbException)
 	{
 		for (const auto & localObject : executionContext -> getLocalObjects ())
 		{
 			try
 			{
-				return localObject -> updateProperty (id, value);
+				return localObject -> setProperty (id, std::move (value));
 			}
 			catch (const std::out_of_range &)
 			{ }
@@ -131,17 +131,17 @@ private:
 
 		if (executionContext -> isRootContext ())
 		{
-			executionContext -> getGlobalObject () -> addProperty (id, value);
-			
+			executionContext -> getGlobalObject () -> addPropertyDescriptor (id, value);
+
 			return value;
 		}
 
-		return updateProperty (executionContext -> getExecutionContext (), std::move (value));
+		return setProperty (executionContext -> getExecutionContext (), std::move (value));
 	}
 
 	var
 	getProperty (const ptr <pbExecutionContext> & executionContext) const
-	throw (ReferenceError)
+	throw (pbException)
 	{
 		for (const auto & localObject : executionContext -> getLocalObjects ())
 		{

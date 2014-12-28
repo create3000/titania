@@ -97,11 +97,11 @@ public:
 
 		try
 		{
-			executionContext -> getLocalObjects () .front () -> updateProperty (id, value);
+			executionContext -> getLocalObjects () .front () -> updatePropertyDescriptor (id, value);
 		}
 		catch (const std::out_of_range &)
 		{
-			executionContext -> getLocalObjects () .front () -> addProperty (id, value);
+			executionContext -> getLocalObjects () .front () -> addPropertyDescriptor (id, value);
 		}
 
 		return Undefined ();

@@ -70,5 +70,6 @@
 #include "Expressions/SubtractionExpression.h"
 #include "Expressions/VariableDeclaration.h"
 #include "Expressions/VariableExpression.h"
+#include "Expressions/NewExpression.h"
 
 #endif

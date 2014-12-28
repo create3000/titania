@@ -55,15 +55,39 @@
 namespace titania {
 namespace pb {
 
+PropertyDescriptor::PropertyDescriptor (pbObject* const object,
+                                        const var & value_,
+                                        const PropertyFlagsType & flags,
+                                        const ptr <pbFunction> & getter_,
+                                        const ptr <pbFunction> & setter_) :
+	object (object),
+	 value (value_),
+	 flags (flags),
+	getter (getter_),
+	setter (setter_)
+{
+	addValue ();
+
+	getter .addParent (object);
+	setter .addParent (object);
+}
+
+void
+PropertyDescriptor::addValue ()
+{
+	if (value .isObject ())
+		value .getObject () .addParent (object);
+}
+
 PropertyDescriptor::~PropertyDescriptor ()
 { }
 
 const std::string pbObject::typeName = "Object";
 
 pbObject::pbObject () :
-                pbBaseObject (),
-	      propertyDescriptors (),
-	cachedPropertyDescriptors (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ()))
+	    pbBaseObject (),
+	       properties (),
+	cachedProperties (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ()))
 { }
 
 ptr <pbObject>
@@ -71,35 +95,33 @@ pbObject::copy (pbExecutionContext* const executionContext, const ptr <pbObject>
 throw (pbException,
        pbControlFlowException)
 {
-	for (const auto & propertyDescriptor : propertyDescriptors)
+	for (const auto & property : properties)
 	{
-		copy -> updatePropertyDescriptor (propertyDescriptor .first,
-		                                  propertyDescriptor .second -> value .copy (executionContext) .getValue (),
-		                                  propertyDescriptor .second -> flags,
-		                                  propertyDescriptor .second -> get,
-		                                  propertyDescriptor .second -> set);
+		copy -> updatePropertyDescriptor (property .first,
+		                        property .second -> value .copy (executionContext) .getValue (),
+		                        property .second -> flags,
+		                        property .second -> getter,
+		                        property .second -> setter);
 	}
 
 	return copy;
 }
 
 var
-pbObject::updateProperty (const size_t id, const var & value)
-throw (pbException,
-       std::out_of_range)
+pbObject::setProperty (const size_t id, var && value)
+throw (std::out_of_range,
+       pbException)
 {
-	const auto propertyDescriptor = getPropertyDescriptor (id);
-	
-	if (propertyDescriptor -> flags & WRITABLE)
+	const auto & property = getPropertyDescriptor (id);
+
+	if (property -> getFlags () & WRITABLE)
 	{
-		if (propertyDescriptor -> set)
-			return propertyDescriptor -> set -> call (this, { value });
+		if (property -> getSetter ())
+			return property -> getSetter () -> call (this, { std::move (value) });
 
-		propertyDescriptor -> value = value;
+		property -> setValue (std::move (value));
 
-		addValue (propertyDescriptor -> value);
-
-		return propertyDescriptor -> value;
+		return property -> getValue ();
 	}
 
 	return Undefined ();
@@ -110,79 +132,64 @@ pbObject::getProperty (const size_t id) const
 throw (std::out_of_range,
        pbException)
 {
-	const auto propertyDescriptor = getPropertyDescriptor (id);
+	const auto & property = getPropertyDescriptor (id);
 
-	if (propertyDescriptor -> get)
-		return propertyDescriptor -> get -> call (const_cast <pbObject*> (this));
+	if (property -> getGetter ())
+		return property -> getGetter () -> call (const_cast <pbObject*> (this));
 
-	return propertyDescriptor -> value;
+	return property -> getValue ();
 }
 
 void
 pbObject::addPropertyDescriptor (const size_t id,
                                  const var & value,
                                  const PropertyFlagsType flags,
-                                 const ptr <pbFunction> & get,
-                                 const ptr <pbFunction> & set)
+                                 const ptr <pbFunction> & getter,
+                                 const ptr <pbFunction> & setter)
 throw (std::invalid_argument)
 {
-	const auto pair = propertyDescriptors .emplace (id, PropertyDescriptorPtr (new PropertyDescriptor { value, flags, get, set }));
+	const auto pair = properties .emplace (id, std::make_shared <PropertyDescriptor> (this, value, flags, getter, setter));
 
-	if (pair .second)
-	{
-		const auto & propertyDescriptor = pair .first -> second; 
-
-		addValue (propertyDescriptor -> value);
-
-		propertyDescriptor -> get .addParent (this);
-		propertyDescriptor -> set .addParent (this);
-	}
-	else
+	if (not pair .second)
 		throw std::invalid_argument ("Property already exists.");
-}
-
-void
-pbObject::removeProperty (const size_t id)
-noexcept (true)
-{
-	removeCachedPropertyDescriptors (id);
-
-	propertyDescriptors .erase (id);
 }
 
 void
 pbObject::updatePropertyDescriptor (const size_t id,
                                     const var & value,
                                     const PropertyFlagsType flags,
-                                    const ptr <pbFunction> & get,
-                                    const ptr <pbFunction> & set)
+                                    const ptr <pbFunction> & getter,
+                                    const ptr <pbFunction> & setter)
 throw (std::invalid_argument)
 {
 	try
 	{
-		const auto & propertyDescriptor = getPropertyDescriptor (id);
+		const auto & property = getPropertyDescriptor (id);
 
 		if (not (flags & LEAVE_VALUE))
-		{
-			auto & value_ = propertyDescriptor -> value;
+			property -> setValue (value);
 
-			value_ = value;
+		property -> setFlags (flags);
 
-			addValue (value_);
-		}
+		if (getter)
+			property -> setGetter (getter);
 
-		propertyDescriptor -> flags = flags;
-
-		if (get)
-			propertyDescriptor -> get = get;
-
-		if (set)
-			propertyDescriptor -> set = set;
+		if (setter)
+			property -> setSetter (setter);
 	}
 	catch (const std::out_of_range &)
 	{
-		addPropertyDescriptor (id, value, flags, get, set);
+		addPropertyDescriptor (id, value, flags, getter, setter);
 	}
+}
+
+void
+pbObject::removePropertyDescriptor (const size_t id)
+noexcept (true)
+{
+	removeCachedPropertyDescriptors (id);
+
+	properties .erase (id);
 }
 
 const PropertyDescriptorPtr &
@@ -195,27 +202,27 @@ throw (std::out_of_range)
 	}
 	catch (const std::out_of_range &)
 	{
-		const auto & propertyDescriptor = propertyDescriptors .at (id);
-		
-		const_cast <pbObject*> (this) -> addCachedPropertyDescriptor (id, propertyDescriptor);
+		const auto & property = properties .at (id);
 
-		return propertyDescriptor;
+		const_cast <pbObject*> (this) -> addCachedPropertyDescriptor (id, property);
+
+		return property;
 	}
 }
 
 void
-pbObject::addCachedPropertyDescriptor (const size_t id, const PropertyDescriptorPtr & propertyDescriptor)
+pbObject::addCachedPropertyDescriptor (const size_t id, const PropertyDescriptorPtr & property)
 noexcept (true)
 {
-	cachedPropertyDescriptors [id % CACHE_SIZE] = std::make_pair (id, propertyDescriptor);
+	cachedProperties [id % CACHE_SIZE] = std::make_pair (id, property);
 }
 
 void
 pbObject::removeCachedPropertyDescriptors (const size_t id)
 noexcept (true)
 {
-	auto & value = cachedPropertyDescriptors [id % CACHE_SIZE];
-	
+	auto & value = cachedProperties [id % CACHE_SIZE];
+
 	if (value .first not_eq id)
 		return;
 
@@ -227,7 +234,7 @@ const PropertyDescriptorPtr &
 pbObject::getCachedPropertyDescriptor (const size_t id) const
 throw (std::out_of_range)
 {
-	const auto & value = cachedPropertyDescriptors [id % CACHE_SIZE];
+	const auto & value = cachedProperties [id % CACHE_SIZE];
 
 	if (value .first == id)
 		return value .second;
@@ -250,7 +257,7 @@ throw (pbException)
 
 	static const auto toString = getId ("toString");
 	static const auto valueOf  = getId ("valueOf");
-	
+
 	if (preferedType == STRING)
 	{
 		try
@@ -287,7 +294,7 @@ throw (pbException)
 
 var
 pbObject::call (const size_t id, const std::vector <var> & arguments) const
-throw (TypeError)
+throw (pbException)
 {
 	try
 	{
@@ -312,8 +319,8 @@ throw (TypeError)
 void
 pbObject::dispose ()
 {
-	propertyDescriptors       .clear ();
-	cachedPropertyDescriptors .clear ();
+	properties       .clear ();
+	cachedProperties .clear ();
 
 	pbBaseObject::dispose ();
 }

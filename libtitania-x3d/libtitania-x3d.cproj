@@ -791,6 +791,7 @@
     <None Include="Titania\X3D\PeaseBlossom\Expressions\VariableDeclaration.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\PropertyExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\GarbageCollector.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Expressions\NewExpression.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

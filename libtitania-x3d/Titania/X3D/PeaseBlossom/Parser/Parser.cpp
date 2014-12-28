@@ -586,7 +586,7 @@ Parser::propertyDefinition (ptr <Object> & object)
 
 			if (assignmentExpression (value))
 			{
-				object -> updatePropertyDescriptor (std::move (propertyNameCharacters), std::move (value), WRITABLE | ENUMERABLE | CONFIGURABLE);
+				object -> updatePropertyDescriptor (std::move (propertyNameCharacters), std::move (value));
 				return true;
 			}
 
@@ -627,7 +627,7 @@ Parser::propertyDefinition (ptr <Object> & object)
 
 						if (Grammar::CloseBrace (istream))
 						{
-							object -> updatePropertyDescriptor (propertyNameValue .toString (), var (), WRITABLE | ENUMERABLE | CONFIGURABLE | LEAVE_VALUE, std::move (function));
+							object -> updatePropertyDescriptor (propertyNameValue .toString (), Undefined (), DEFAULT | LEAVE_VALUE, std::move (function));
 							return true;
 						}
 
@@ -678,7 +678,7 @@ Parser::propertyDefinition (ptr <Object> & object)
 
 							if (Grammar::CloseBrace (istream))
 							{
-								object -> updatePropertyDescriptor (propertyNameValue .toString (), var (), WRITABLE | ENUMERABLE | CONFIGURABLE | LEAVE_VALUE, nullptr, std::move (function));
+								object -> updatePropertyDescriptor (propertyNameValue .toString (), Undefined (), DEFAULT | LEAVE_VALUE, nullptr, std::move (function));
 								return true;
 							}
 
@@ -799,11 +799,11 @@ Parser::memberExpression (var & value)
 
 			if (arguments (argumentListExpressions))
 			{
-				//value = new NewExpression (getExecutionContext (), std::move (value), std::move (argumentsListExpressions));
+				value = new NewExpression (std::move (value), std::move (argumentListExpressions));
 				return true;
 			}
 
-			throw SyntaxError ("Expected a '(' name after expression.");
+			throw SyntaxError ("Expected a '(' after expression.");
 		}
 
 		throw SyntaxError ("Expected a expression after new.");
@@ -824,7 +824,7 @@ Parser::newExpression (var & value)
 	{
 		if (newExpression (value))
 		{
-			//value = new NewExpression (value);
+			value = new NewExpression (std::move (value), std::vector <var> ());
 			return true;
 		}
 	}

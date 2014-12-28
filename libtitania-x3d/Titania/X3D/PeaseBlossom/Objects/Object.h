@@ -71,7 +71,7 @@ public:
 	Object () :
 		pbObject ()
 	{
-		addProperty ("toString", new NativeFunction ("toString", std::bind (&Object::toString, this), 0));
+		addPropertyDescriptor ("toString", new NativeFunction ("toString", std::bind (&Object::toString, this), 0), WRITABLE | CONFIGURABLE);
 	}
 
 	///  Creates a new default object.
