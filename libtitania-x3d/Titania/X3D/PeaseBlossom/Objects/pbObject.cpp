@@ -56,11 +56,13 @@ namespace titania {
 namespace pb {
 
 PropertyDescriptor::PropertyDescriptor (pbObject* const object,
+                                        const std::string & name,
                                         const var & value_,
                                         const PropertyFlagsType & flags,
                                         const ptr <pbFunction> & getter_,
                                         const ptr <pbFunction> & setter_) :
 	object (object),
+	  name (name),
 	 value (value_),
 	 flags (flags),
 	getter (getter_),
@@ -86,7 +88,7 @@ const std::string pbObject::typeName = "Object";
 
 pbObject::pbObject () :
 	    pbBaseObject (),
-	       properties (),
+	      properties (),
 	cachedProperties (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ()))
 { }
 
@@ -98,10 +100,11 @@ throw (pbException,
 	for (const auto & property : properties)
 	{
 		copy -> updatePropertyDescriptor (property .first,
-		                        property .second -> value .copy (executionContext) .getValue (),
-		                        property .second -> flags,
-		                        property .second -> getter,
-		                        property .second -> setter);
+		                                  property .second -> getName (),
+		                                  property .second -> getValue () .copy (executionContext) .getValue (),
+		                                  property .second -> getFlags (),
+		                                  property .second -> getGetter (),
+		                                  property .second -> getSetter ());
 	}
 
 	return copy;
@@ -142,13 +145,14 @@ throw (std::out_of_range,
 
 void
 pbObject::addPropertyDescriptor (const size_t id,
+                                 const std::string & name,
                                  const var & value,
                                  const PropertyFlagsType flags,
                                  const ptr <pbFunction> & getter,
                                  const ptr <pbFunction> & setter)
 throw (std::invalid_argument)
 {
-	const auto pair = properties .emplace (id, std::make_shared <PropertyDescriptor> (this, value, flags, getter, setter));
+	const auto pair = properties .emplace (id, std::make_shared <PropertyDescriptor> (this, name, value, flags, getter, setter));
 
 	if (not pair .second)
 		throw std::invalid_argument ("Property already exists.");
@@ -156,6 +160,7 @@ throw (std::invalid_argument)
 
 void
 pbObject::updatePropertyDescriptor (const size_t id,
+                                    const std::string & name,
                                     const var & value,
                                     const PropertyFlagsType flags,
                                     const ptr <pbFunction> & getter,
@@ -179,7 +184,7 @@ throw (std::invalid_argument)
 	}
 	catch (const std::out_of_range &)
 	{
-		addPropertyDescriptor (id, value, flags, getter, setter);
+		addPropertyDescriptor (id, name, value, flags, getter, setter);
 	}
 }
 

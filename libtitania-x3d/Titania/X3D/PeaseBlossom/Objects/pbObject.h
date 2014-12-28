@@ -79,12 +79,17 @@ public:
 	///  @name Construction
 
 	PropertyDescriptor (pbObject* const,
+	                    const std::string &,
 	                    const var &,
 		                 const PropertyFlagsType &,
 		                 const ptr <pbFunction> &,
 		                 const ptr <pbFunction> &);
 
 	///  @name Member access
+	
+	const std::string &
+	getName () const
+	{ return name; }
 
 	void
 	setValue (const var & value_)
@@ -132,7 +137,7 @@ public:
 
 	~PropertyDescriptor ();
 
-//private:
+private:
 
 	void
 	addValue ();
@@ -140,6 +145,7 @@ public:
 	///  @name Members
 
 	pbObject* const   object;
+	const std::string name;
 	var               value;
 	PropertyFlagsType flags;
 	ptr <pbFunction>  getter;
@@ -194,7 +200,7 @@ public:
 	                       const ptr <pbFunction> & getter = nullptr,
 	                       const ptr <pbFunction> & setter = nullptr)
 	throw (std::invalid_argument)
-	{ addPropertyDescriptor (getId (name), value, flags, getter, setter); }
+	{ addPropertyDescriptor (getId (name), name, value, flags, getter, setter); }
 
 	///  Updates the named property described by the given descriptor to this object.
 	void
@@ -204,7 +210,7 @@ public:
 	                          const ptr <pbFunction> & getter = nullptr,
 	                          const ptr <pbFunction> & setter = nullptr)
 	throw (std::invalid_argument)
-	{ updatePropertyDescriptor (getId (name), value, flags, getter, setter); }
+	{ updatePropertyDescriptor (getId (name), name, value, flags, getter, setter); }
 
 	///  Removes the property @a name from this object.
 	void
@@ -241,11 +247,6 @@ protected:
 	friend class VariableExpression;
 	friend class Function;
 
-	///  @name Member types
-
-	using PropertyDescriptorIndex = std::unordered_map <size_t, PropertyDescriptorPtr>;
-	using PropertyDescriptorArray = std::vector <std::pair <size_t, PropertyDescriptorPtr>>;
-
 	///  @name Construction
 
 	///  Constructs new pbObject.
@@ -279,6 +280,7 @@ protected:
 
 	void
 	addPropertyDescriptor (const size_t id,
+	                       const std::string & name,
 	                       const var & value,
 	                       const PropertyFlagsType flags = DEFAULT,
 	                       const ptr <pbFunction> & getter = nullptr,
@@ -288,6 +290,7 @@ protected:
 	///  Updates the named property described by the given descriptor to this object.
 	void
 	updatePropertyDescriptor (const size_t id,
+	                          const std::string & name,
 	                          const var & value,
 	                          const PropertyFlagsType flags = DEFAULT,
 	                          const ptr <pbFunction> & getter = nullptr,
@@ -297,11 +300,6 @@ protected:
 	void
 	removePropertyDescriptor (const size_t id)
 	noexcept (true);
-
-	///  Returns the property descriptor for a property id on this object.
-	const PropertyDescriptorPtr &
-	getPropertyDescriptor (const size_t id) const
-	throw (std::out_of_range);
 
 	virtual
 	var
@@ -315,7 +313,17 @@ protected:
 
 private:
 
+	///  @name Member types
+
+	using PropertyDescriptorIndex = std::unordered_map <size_t, PropertyDescriptorPtr>;
+	using PropertyDescriptorArray = std::vector <std::pair <size_t, PropertyDescriptorPtr>>;
+
 	///  @name Cache opeartions
+
+	///  Returns the property descriptor for a property id on this object.
+	const PropertyDescriptorPtr &
+	getPropertyDescriptor (const size_t id) const
+	throw (std::out_of_range);
 
 	void
 	addCachedPropertyDescriptor (const size_t, const PropertyDescriptorPtr &)
@@ -331,7 +339,7 @@ private:
 
 	///  @name Static members
 
-	static constexpr size_t CACHE_SIZE = 32;
+	static constexpr size_t CACHE_SIZE = 16;
 
 	static const std::string typeName;
 

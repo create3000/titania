@@ -131,7 +131,7 @@ private:
 
 		if (executionContext -> isRootContext ())
 		{
-			executionContext -> getGlobalObject () -> addPropertyDescriptor (id, value);
+			executionContext -> getGlobalObject () -> addPropertyDescriptor (id, identifier, value);
 
 			return value;
 		}

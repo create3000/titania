@@ -104,7 +104,7 @@ public:
 				}
 				catch (const std::out_of_range &)
 				{
-					object -> addPropertyDescriptor (id, value);
+					object -> addPropertyDescriptor (id, identifier, value);
 
 					return value;
 				}

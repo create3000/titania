@@ -392,10 +392,10 @@ function set_time (value, time)
 	print ('fibonacci_iterative: ', fibonacci_iterative (8000000));
 	print ('time: ',                now () - t0);
 
-	//var t0 = now ();
-	//print ('fibonacci_iterative: ', fibonacci_iterative1 ({ }, 800));
-	//print ('fibonacci_iterative: ', fibonacci_iterative1 ({ }, 8000000));
-	//print ('time: ',                now () - t0);
+	var t0 = now ();
+	print ('fibonacci_iterative: ', fibonacci_iterative1 ({ }, 800));
+	print ('fibonacci_iterative: ', fibonacci_iterative1 ({ }, 800000));
+	print ('time: ',                now () - t0);
 
 	//var t0 = now ();
 	//print ('result: ', for_time (2000000));
