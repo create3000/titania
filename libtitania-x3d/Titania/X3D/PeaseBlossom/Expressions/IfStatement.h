@@ -84,8 +84,8 @@ public:
 	{
 		const auto copy = new IfStatement (booleanExpression .copy (executionContext));
 
-		copy -> getThenBlock () -> import (thenBlock .get (), executionContext);
-		copy -> getElseBlock () -> import (elseBlock .get (), executionContext);
+		copy -> getThenBlock () -> import (executionContext, thenBlock .get ());
+		copy -> getElseBlock () -> import (executionContext, elseBlock .get ());
 
 		return copy;
 	}

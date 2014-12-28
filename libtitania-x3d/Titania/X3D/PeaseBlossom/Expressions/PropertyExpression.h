@@ -48,58 +48,132 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_MATH_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_MATH_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PROPERTY_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PROPERTY_EXPRESSION_H__
 
+#include "../Expressions/pbExpression.h"
 #include "../Objects/pbObject.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent an Math.
+ *  Class to represent a ECMAScript addition expression.
  */
-class Math :
-	public pbObject
+class PropertyExpression :
+	public pbExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new Math.
-	Math () :
-		pbObject ()
-	{
-		addPropertyDescriptor ("E",       M_E,       NONE);
-		addPropertyDescriptor ("LN10",    M_LN10,    NONE);
-		addPropertyDescriptor ("LN2",     M_LN2,     NONE);
-		addPropertyDescriptor ("LOG2E",   M_LOG2E,   NONE);
-		addPropertyDescriptor ("LOG10E",  M_LOG10E,  NONE);
-		addPropertyDescriptor ("PI",      M_PI,      NONE);
-		addPropertyDescriptor ("SQRT1_2", M_SQRT1_2, NONE);
-		addPropertyDescriptor ("SQRT2",   M_SQRT2,   NONE);
-	
-		addPropertyDescriptor ("abs",   new NativeFunction ("abs", abs), NONE);
-	}
+	///  Constructs new AdditionExpression expression.
+	PropertyExpression (var && expression, std::string && identifier) :
+		pbExpression (),
+		  expression (std::move (expression)),
+		  identifier (std::move (identifier)),
+		          id (getId (this -> identifier))
+	{ construct (); }
 
-	///  Constructs new Math.
+	///  Creates a copy of this object.
 	virtual
 	ptr <pbBaseObject>
-	copy (pbExecutionContext* const executionContext) const
+	copy (pbExecutionContext* executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return pbObject::copy (executionContext, new Math ()); }
+	{ return new PropertyExpression (expression .copy (executionContext), std::string (identifier)); }
 
+	///  @name Operations
 
-	static
+	virtual
 	var
-	abs (const ptr <pbObject> & object, const std::vector <var> & arguments)
+	setValue (var && value) const
+	throw (pbException) final override
 	{
-		if (arguments .size () not_eq 1)
-			throw Error ("wrong number of arguments");
+		const auto lhs = expression .getValue ();
 
-		return std::abs (arguments [0] .toNumber ());
+		if (lhs .isObject ())
+		{
+			pbObject* const object = dynamic_cast <pbObject*> (lhs .getObject () .get ());
+			
+			if (object)
+			{
+				try
+				{
+					return object -> updateProperty (id, value);
+				}
+				catch (const std::out_of_range &)
+				{
+					object -> addProperty (id, value);
+
+					return value;
+				}
+			}
+		}
+
+		return Undefined ();
 	}
+
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	var
+	getValue () const
+	throw (pbException,
+	       pbControlFlowException) final override
+	{
+		const auto lhs = expression .getValue ();
+
+		if (lhs .isObject ())
+		{
+			pbObject* const object = dynamic_cast <pbObject*> (lhs .getObject () .get ());
+			
+			if (object)
+			{
+				try
+				{
+					return object -> getProperty (id);
+				}
+				catch (const std::out_of_range &)
+				{ }
+			}
+		}
+
+		return Undefined ();
+	}
+
+	virtual
+	var
+	call (const ptr <pbExecutionContext> &, const std::vector <var> & arguments) const
+	throw (pbException) final override
+	{
+		const auto lhs = expression .getValue ();
+
+		if (lhs .isObject ())
+		{
+			pbObject* const object = dynamic_cast <pbObject*> (lhs .getObject () .get ());
+
+			if (object)
+				return object -> call (id, arguments);
+		}
+
+		throw TypeError ("'" + lhs .toString () + "' is not a function.");
+	}
+
+
+private:
+
+	///  @name Construction
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (expression); }
+
+	///  @name Members
+
+	const var         expression;
+	const std::string identifier;
+	const size_t      id;
 
 };
 

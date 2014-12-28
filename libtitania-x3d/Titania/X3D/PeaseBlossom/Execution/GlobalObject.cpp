@@ -83,15 +83,15 @@ createGlobalObject ()
 
 	// Properties
 
-	globalObject -> addProperty ("this",      globalObject,         NONE);
-	globalObject -> addProperty ("NaN",       NaN (),               NONE);
-	globalObject -> addProperty ("Infinity",  POSITIVE_INFINITY (), NONE);
-	globalObject -> addProperty ("undefined", var (),               NONE);
-	globalObject -> addProperty ("Math",      new Math (),          NONE);
+	globalObject -> addPropertyDescriptor ("this",      globalObject,         NONE);
+	globalObject -> addPropertyDescriptor ("NaN",       NaN (),               NONE);
+	globalObject -> addPropertyDescriptor ("Infinity",  POSITIVE_INFINITY (), NONE);
+	globalObject -> addPropertyDescriptor ("undefined", var (),               NONE);
+	globalObject -> addPropertyDescriptor ("Math",      new Math (),          NONE);
 
 	// Functions
 
-	globalObject -> addProperty ("isNaN", new NativeFunction ("isNaN", global::isNaN { }));
+	globalObject -> addPropertyDescriptor ("isNaN", new NativeFunction ("isNaN", global::isNaN { }));
 
 	return globalObject;
 }

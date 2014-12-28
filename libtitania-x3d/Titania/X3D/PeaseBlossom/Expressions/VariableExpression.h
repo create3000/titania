@@ -53,7 +53,6 @@
 
 #include "../Execution/pbExecutionContext.h"
 #include "../Expressions/pbExpression.h"
-#include "../Objects/pbFunction.h"
 
 namespace titania {
 namespace pb {
@@ -91,26 +90,7 @@ public:
 	setValue (var && value) const
 	throw (pbException) final override
 	{
-		try
-		{
-			const auto propertyDescriptor = getPropertyDescriptor (executionContext);
-			
-			if (propertyDescriptor .second -> flags & WRITABLE)
-			{
-				if (propertyDescriptor .second -> set)
-					return propertyDescriptor .second -> set -> call (propertyDescriptor .first, { std::move (value) });
-
-				return propertyDescriptor .second -> value = std::move (value);
-			}
-
-			return var ();
-		}
-		catch (const ReferenceError &)
-		{
-			executionContext -> getGlobalObject () -> addProperty (identifier, value, WRITABLE | ENUMERABLE | CONFIGURABLE);
-
-			return value;
-		}
+		return updateProperty (executionContext, std::move (value));
 	}
 
 	///  Converts its input argument to either Primitive or Object type.
@@ -120,13 +100,9 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto propertyDescriptor = getPropertyDescriptor (executionContext);
-
-		if (propertyDescriptor .second -> get)
-			return propertyDescriptor .second -> get -> call (propertyDescriptor .first);
-
-		return propertyDescriptor .second -> value;
+		return getProperty (executionContext);
 	}
+
 
 private:
 
@@ -139,26 +115,48 @@ private:
 
 	///  @name Operations
 
-	std::pair <const ptr <pbObject> &, const PropertyDescriptorPtr &>
-	getPropertyDescriptor (const ptr <pbExecutionContext> & executionContext) const
+	var
+	updateProperty (const ptr <pbExecutionContext> & executionContext, var && value) const
 	throw (ReferenceError)
 	{
-		//for (const auto & localObject : basic::make_reverse_range (executionContext -> getLocalObjects ()))
-		//{
-			const auto & localObject = executionContext -> getLocalObjects () .back ();
-
+		for (const auto & localObject : executionContext -> getLocalObjects ())
+		{
 			try
 			{
-				return std::make_pair (std::ref (localObject), std::ref (localObject -> getPropertyDescriptor (id)));
+				return localObject -> updateProperty (id, value);
 			}
 			catch (const std::out_of_range &)
 			{ }
-		//}
+		}
+
+		if (executionContext -> isRootContext ())
+		{
+			executionContext -> getGlobalObject () -> addProperty (id, value);
+			
+			return value;
+		}
+
+		return updateProperty (executionContext -> getExecutionContext (), std::move (value));
+	}
+
+	var
+	getProperty (const ptr <pbExecutionContext> & executionContext) const
+	throw (ReferenceError)
+	{
+		for (const auto & localObject : executionContext -> getLocalObjects ())
+		{
+			try
+			{
+				return localObject -> getProperty (id);
+			}
+			catch (const std::out_of_range &)
+			{ }
+		}
 
 		if (executionContext -> isRootContext ())
 			throw ReferenceError (identifier + " is not defined.");
 
-		return getPropertyDescriptor (executionContext -> getExecutionContext ());
+		return getProperty (executionContext -> getExecutionContext ());
 	}
 
 	///  @name Members

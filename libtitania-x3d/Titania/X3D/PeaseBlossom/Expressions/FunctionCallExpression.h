@@ -53,7 +53,6 @@
 
 #include "../Execution/pbExecutionContext.h"
 #include "../Expressions/pbExpression.h"
-#include "../Objects/pbFunction.h"
 
 namespace titania {
 namespace pb {
@@ -72,9 +71,14 @@ public:
 	FunctionCallExpression (pbExecutionContext* const executionContext, var && expression, std::vector <var> && expressions) :
 		    pbExpression (),
 		executionContext (executionContext),
-		      expression (std::move (expression)),
+		      expression (std::move (expression .isObject () ? expression .getObject () : nullptr)),
 		     expressions (std::move (expressions))
-	{ construct (); }
+	{
+		if (not this -> expression)
+			throw TypeError ("'" + expression .toString () + "' is not a function.");
+
+		construct ();
+	}
 
 	///  Creates a copy of this object.
 	virtual
@@ -88,7 +92,7 @@ public:
 		for (const auto & expression : this -> expressions)
 			expressions .emplace_back (expression .copy (executionContext));
 
-		return new FunctionCallExpression (executionContext, expression .copy (executionContext), std::move (expressions));
+		return new FunctionCallExpression (executionContext, expression -> copy (executionContext), std::move (expressions));
 	}
 
 	///  @name Operations
@@ -100,25 +104,16 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto primitive = expression .getValue ();
+		std::vector <var> arguments;
 
-		if (primitive .isObject ())
-		{
-			const auto function = dynamic_cast <pbFunction*> (primitive .getObject () .get ());
+		arguments .reserve (expressions .size ());
 
-			if (function)
-			{
-				std::vector <var> arguments;
+		for (const auto & value : expressions)
+			arguments .emplace_back (value .getValue ());
 
-				for (const auto & value : expressions)
-					arguments .emplace_back (value .getValue ());
-
-				return function -> call (executionContext -> getGlobalObject (), arguments);
-			}
-		}
-
-		throw TypeError ("'" + primitive .toString () + "' is not a function.");
+		return expression -> call (executionContext, arguments);
 	}
+
 
 private:
 
@@ -137,7 +132,7 @@ private:
 	///  @name Members
 
 	const ptr <pbExecutionContext> executionContext;
-	const var                      expression;
+	const ptr <pbExpression>       expression;
 	const std::vector <var>        expressions;
 
 };

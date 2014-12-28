@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_CHILD_OBJECT_H__
 
 #include "../Base/pbBase.h"
-#include "../Base/pbGarbageCollector.h"
 
 #include <Titania/Utility/Pass.h>
 #include <cassert>
@@ -68,8 +67,7 @@ class pbChildObject;
 using ChildObjectSet = std::set <pbChildObject*>;
 
 class pbChildObject :
-	virtual public pbBase,
-	public pbGarbageCollector
+	virtual public pbBase
 {
 public:
 

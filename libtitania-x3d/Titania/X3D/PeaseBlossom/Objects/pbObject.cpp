@@ -73,22 +73,57 @@ throw (pbException,
 {
 	for (const auto & propertyDescriptor : propertyDescriptors)
 	{
-		copy -> updateProperty (propertyDescriptor .first,
-		                        propertyDescriptor .second -> value .copy (executionContext) .getValue (),
-		                        propertyDescriptor .second -> flags,
-		                        propertyDescriptor .second -> get,
-		                        propertyDescriptor .second -> set);
+		copy -> updatePropertyDescriptor (propertyDescriptor .first,
+		                                  propertyDescriptor .second -> value .copy (executionContext) .getValue (),
+		                                  propertyDescriptor .second -> flags,
+		                                  propertyDescriptor .second -> get,
+		                                  propertyDescriptor .second -> set);
 	}
 
 	return copy;
 }
 
+var
+pbObject::updateProperty (const size_t id, const var & value)
+throw (pbException,
+       std::out_of_range)
+{
+	const auto propertyDescriptor = getPropertyDescriptor (id);
+	
+	if (propertyDescriptor -> flags & WRITABLE)
+	{
+		if (propertyDescriptor -> set)
+			return propertyDescriptor -> set -> call (this, { value });
+
+		propertyDescriptor -> value = value;
+
+		addValue (propertyDescriptor -> value);
+
+		return propertyDescriptor -> value;
+	}
+
+	return Undefined ();
+}
+
+var
+pbObject::getProperty (const size_t id) const
+throw (std::out_of_range,
+       pbException)
+{
+	const auto propertyDescriptor = getPropertyDescriptor (id);
+
+	if (propertyDescriptor -> get)
+		return propertyDescriptor -> get -> call (const_cast <pbObject*> (this));
+
+	return propertyDescriptor -> value;
+}
+
 void
-pbObject::addProperty (const size_t id,
-                       const var & value,
-                       const PropertyFlagsType flags,
-                       const ptr <pbFunction> & get,
-                       const ptr <pbFunction> & set)
+pbObject::addPropertyDescriptor (const size_t id,
+                                 const var & value,
+                                 const PropertyFlagsType flags,
+                                 const ptr <pbFunction> & get,
+                                 const ptr <pbFunction> & set)
 throw (std::invalid_argument)
 {
 	const auto pair = propertyDescriptors .emplace (id, PropertyDescriptorPtr (new PropertyDescriptor { value, flags, get, set }));
@@ -107,11 +142,20 @@ throw (std::invalid_argument)
 }
 
 void
-pbObject::updateProperty (const size_t id,
-                          const var & value,
-                          const PropertyFlagsType flags,
-                          const ptr <pbFunction> & get,
-                          const ptr <pbFunction> & set)
+pbObject::removeProperty (const size_t id)
+noexcept (true)
+{
+	removeCachedPropertyDescriptors (id);
+
+	propertyDescriptors .erase (id);
+}
+
+void
+pbObject::updatePropertyDescriptor (const size_t id,
+                                    const var & value,
+                                    const PropertyFlagsType flags,
+                                    const ptr <pbFunction> & get,
+                                    const ptr <pbFunction> & set)
 throw (std::invalid_argument)
 {
 	try
@@ -137,17 +181,8 @@ throw (std::invalid_argument)
 	}
 	catch (const std::out_of_range &)
 	{
-		addProperty (id, value, flags, get, set);
+		addPropertyDescriptor (id, value, flags, get, set);
 	}
-}
-
-void
-pbObject::removeProperty (const size_t id)
-noexcept (true)
-{
-	removeCachedPropertyDescriptors (id);
-
-	propertyDescriptors .erase (id);
 }
 
 const PropertyDescriptorPtr &
@@ -222,57 +257,56 @@ throw (pbException)
 		{
 			return call (toString);
 		}
-		catch (const std::out_of_range &)
-		{
-			__LOG__ << std::endl;
-		}
+		catch (const TypeError &)
+		{ }
 
 		try
 		{
 			return call (valueOf);
 		}
-		catch (const std::out_of_range &)
-		{
-			__LOG__ << std::endl;
-		}
+		catch (const TypeError &)
+		{ }
 	}
 
 	try
 	{
 		return call (valueOf);
 	}
-	catch (const std::out_of_range &)
-	{
-		__LOG__ << std::endl;
-	}
+	catch (const TypeError &)
+	{ }
 
 	try
 	{
 		return call (toString);
 	}
-	catch (const std::out_of_range &)
-	{
-		__LOG__ << std::endl;
-	}
+	catch (const TypeError &)
+	{ }
 
 	return this -> toString ();
 }
 
 var
 pbObject::call (const size_t id, const std::vector <var> & arguments) const
-throw (std::exception)
+throw (TypeError)
 {
-	const auto & property = getProperty (id);
-
-	if (property .isObject ())
+	try
 	{
-		const auto function = dynamic_cast <pbFunction*> (property .getObject () .get ());
+		const auto & property = getProperty (id);
 
-		if (function)
-			return function -> call (const_cast <pbObject*> (this));
+		if (property .isObject ())
+		{
+			const auto function = dynamic_cast <pbFunction*> (property .getObject () .get ());
+
+			if (function)
+				return function -> call (const_cast <pbObject*> (this), arguments);
+		}
+
+		throw TypeError ("'" + property .toString () + "' is not a function.");
 	}
-
-	throw std::out_of_range ("call");
+	catch (const std::out_of_range &)
+	{
+		throw TypeError ("'undefined' is not a function.");
+	}
 }
 
 void

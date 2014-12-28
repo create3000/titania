@@ -50,10 +50,30 @@
 
 #include "pbExpression.h"
 
+#include "../Execution/pbExecutionContext.h"
+#include "../Objects/pbFunction.h"
+
 namespace titania {
 namespace pb {
 
 const std::string pbExpression::typeName = "Expression";
+
+var
+pbExpression::call (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments) const
+throw (pbException)
+{
+	const auto value = getValue ();
+
+	if (value .isObject ())
+	{
+		const auto function = dynamic_cast <pbFunction*> (value .getObject () .get ());
+
+		if (function)
+			return function -> call (executionContext -> getGlobalObject (), arguments);
+	}
+
+	throw TypeError ("'" + value .toString () + "' is not a function.");
+}
 
 } // pb
 } // titania

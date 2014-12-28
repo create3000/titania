@@ -116,7 +116,7 @@ throw (pbException,
 	for (const auto & function : executionContext -> getFunctionDeclarations ())
 		addFunctionDeclaration (function .second);
 
-	pbBlock::import (executionContext, this);
+	pbBlock::import (this, executionContext);
 }
 
 var

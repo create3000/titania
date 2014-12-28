@@ -586,7 +586,7 @@ Parser::propertyDefinition (ptr <Object> & object)
 
 			if (assignmentExpression (value))
 			{
-				object -> updateProperty (std::move (propertyNameCharacters), std::move (value), WRITABLE | ENUMERABLE | CONFIGURABLE);
+				object -> updatePropertyDescriptor (std::move (propertyNameCharacters), std::move (value), WRITABLE | ENUMERABLE | CONFIGURABLE);
 				return true;
 			}
 
@@ -627,7 +627,7 @@ Parser::propertyDefinition (ptr <Object> & object)
 
 						if (Grammar::CloseBrace (istream))
 						{
-							object -> updateProperty (propertyNameValue .toString (), var (), WRITABLE | ENUMERABLE | CONFIGURABLE | LEAVE_VALUE, std::move (function));
+							object -> updatePropertyDescriptor (propertyNameValue .toString (), var (), WRITABLE | ENUMERABLE | CONFIGURABLE | LEAVE_VALUE, std::move (function));
 							return true;
 						}
 
@@ -678,7 +678,7 @@ Parser::propertyDefinition (ptr <Object> & object)
 
 							if (Grammar::CloseBrace (istream))
 							{
-								object -> updateProperty (propertyNameValue .toString (), var (), WRITABLE | ENUMERABLE | CONFIGURABLE | LEAVE_VALUE, nullptr, std::move (function));
+								object -> updatePropertyDescriptor (propertyNameValue .toString (), var (), WRITABLE | ENUMERABLE | CONFIGURABLE | LEAVE_VALUE, nullptr, std::move (function));
 								return true;
 							}
 
@@ -762,7 +762,7 @@ Parser::memberExpression (var & value)
 
 					if (Grammar::CloseBracket (istream))
 					{
-						//value = new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions), std::move (list));
+						//value = new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions));
 						continue;
 					}
 
@@ -778,7 +778,7 @@ Parser::memberExpression (var & value)
 
 				if (identifierName (identifierNameCharacters))
 				{
-					//value = new PropertyExpression (std::move (value), std::move (identifierNameCharacters), std::move (list));
+					value = new PropertyExpression (std::move (value), std::move (identifierNameCharacters));
 					continue;
 				}
 
@@ -859,7 +859,7 @@ Parser::callExpression (var & value)
 
 					if (Grammar::CloseBracket (istream))
 					{
-						//value = new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions), std::move (list));
+						//value = new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions));
 						continue;
 					}
 
@@ -875,7 +875,7 @@ Parser::callExpression (var & value)
 
 				if (identifierName (identifierNameCharacters))
 				{
-					//value = new PropertyExpression (std::move (value), std::move (identifierNameCharacters), std::move (list));
+					value = new PropertyExpression (std::move (value), std::move (identifierNameCharacters));
 					continue;
 				}
 

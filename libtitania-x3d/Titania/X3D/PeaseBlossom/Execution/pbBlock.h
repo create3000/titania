@@ -114,7 +114,7 @@ protected:
 
 	///  Imports all expressions from @a block into @a executionContext.
 	void
-	import (const pbBlock* const block, pbExecutionContext* const executionContext)
+	import (pbExecutionContext* const executionContext, const pbBlock* const block)
 	throw (pbException,
 	       pbControlFlowException)
 	{

@@ -63,6 +63,7 @@
 #include "Expressions/LessExpression.h"
 #include "Expressions/MultiplicationExpression.h"
 #include "Expressions/ObjectLiteral.h"
+#include "Expressions/PropertyExpression.h"
 #include "Expressions/RemainderExpression.h"
 #include "Expressions/ReturnStatement.h"
 #include "Expressions/StrictEqualExpression.h"

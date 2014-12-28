@@ -69,7 +69,8 @@ var::var (const var & other) :
 			value .string_ = new Glib::ustring (*other .value .string_);
 			break;
 		case OBJECT:
-			value .object_ = new ptr <pbBaseObject> (*other .value .object_);
+			value .object_  = GarbageCollector::getObject <ptr <pbBaseObject>> ();
+			*value .object_ = *other .value .object_;
 			break;
 		default:
 			value = other .value;
@@ -79,10 +80,11 @@ var::var (const var & other) :
 
 var::var (pbBaseObject* const object) :
 	pbOutputStreamObject (),
-	  pbGarbageCollector (),
-	               value ({ object_: new ptr <pbBaseObject> (object) }),
+	               value ({ object_: GarbageCollector::getObject <ptr <pbBaseObject>> () }),
 	                type (OBJECT)
-{ }
+{
+	value .object_ -> reset (object);
+}
 
 var
 var::copy (pbExecutionContext* executionContext) const
@@ -113,7 +115,8 @@ var::operator = (const var & other)
 			value .string_ = new Glib::ustring (*other .value .string_);
 			break;
 		case OBJECT:
-			value .object_ = new ptr <pbBaseObject> (*other .value .object_);
+			value .object_  = GarbageCollector::getObject <ptr <pbBaseObject>> ();
+			*value .object_ = *other .value .object_;
 			break;
 		default:
 			value = other .value;
@@ -213,9 +216,10 @@ var &
 var::operator = (pbBaseObject* const object)
 {
 	clear ();
-
-	value .object_ = new ptr <pbBaseObject> (object);
-	type           = OBJECT;
+	
+	value .object_ = GarbageCollector::getObject <ptr <pbBaseObject>> ();
+	value .object_ -> reset (object);
+	type = OBJECT;
 
 	return *this;
 }
@@ -439,7 +443,7 @@ var::clear ()
 			break;
 		case OBJECT:
 			value .object_ -> dispose ();
-			addDisposedObject (value .object_);
+			GarbageCollector::addObject (value .object_);
 			break;
 		default:
 			break;

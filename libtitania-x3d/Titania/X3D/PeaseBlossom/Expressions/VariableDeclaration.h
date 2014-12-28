@@ -93,9 +93,18 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		executionContext -> getLocalObjects () .back () -> updateProperty (id, expression .getValue (), WRITABLE | ENUMERABLE | CONFIGURABLE);
+		const auto value = expression .getValue ();
 
-		return var ();
+		try
+		{
+			executionContext -> getLocalObjects () .front () -> updateProperty (id, value);
+		}
+		catch (const std::out_of_range &)
+		{
+			executionContext -> getLocalObjects () .front () -> addProperty (id, value);
+		}
+
+		return Undefined ();
 	}
 
 private:

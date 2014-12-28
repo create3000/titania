@@ -90,8 +90,8 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto px = lhs .toPrimitive ();
-		const auto py = rhs .toPrimitive ();
+		const auto & px = lhs .toPrimitive ();
+		const auto & py = rhs .toPrimitive ();
 
 		return evaluate (px, py);
 	}

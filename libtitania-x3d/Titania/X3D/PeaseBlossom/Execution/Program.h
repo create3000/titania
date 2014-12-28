@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PROGRAM_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PROGRAM_H__
 
-#include "../Base/pbGarbageCollector.h"
 #include "../Execution/pbExecutionContext.h"
 #include "../Objects/Object.h"
 
@@ -66,8 +65,6 @@ class Program :
 public:
 
 	using pbExecutionContext::run;
-	using pbGarbageCollector::deleteObjectsAsync;
-	using pbGarbageCollector::trimFreeMemory;
 
 	///  @name Common members
 

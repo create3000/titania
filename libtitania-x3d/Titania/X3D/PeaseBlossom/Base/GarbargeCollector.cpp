@@ -48,9 +48,10 @@
  *
  ******************************************************************************/
 
-#include "pbGarbageCollector.h"
+#include "GarbageCollector.h"
 
 #include "../Base/pbChildObject.h"
+#include "../Objects/pbBaseObject.h"
 
 #include <malloc.h>
 #include <thread>
@@ -60,17 +61,18 @@ namespace pb {
 
 // Important: std::deque is used here for objects because it is much more faster than std::vector!
 
-pbGarbageCollector::ObjectArray pbGarbageCollector::objects;
-std::mutex                      pbGarbageCollector::mutex;
+std::vector <ptr <pbBaseObject>*> GarbageCollector::cache;
+GarbageCollector::ObjectArray     GarbageCollector::objects;
+std::mutex                        GarbageCollector::mutex;
 
 void
-pbGarbageCollector::trimFreeMemory ()
+GarbageCollector::trimFreeMemory ()
 {
 	malloc_trim (0);
 }
 
 void
-pbGarbageCollector::addDisposedObject (const pbChildObject* const object)
+GarbageCollector::addDisposedObject (const pbChildObject* const object)
 {
 	std::lock_guard <std::mutex> lock (mutex);
 
@@ -78,23 +80,48 @@ pbGarbageCollector::addDisposedObject (const pbChildObject* const object)
 }
 
 void
-pbGarbageCollector::deleteObjectsAsync ()
+GarbageCollector::deleteObjectsAsync ()
 {
 	std::lock_guard <std::mutex> lock (mutex);
+
+	objects .insert (objects .end (), cache .begin (), cache .end ());
+	
+	cache .clear ();
 
 	__LOG__ << objects .size () << std::endl;
 
 	if (objects .empty ())
 		return;
 
-	std::thread (&pbGarbageCollector::deleteObjects, std::move (objects)) .detach ();
+	std::thread (&GarbageCollector::deleteObjects, std::move (objects)) .detach ();
 }
 
 void
-pbGarbageCollector::deleteObjects (const ObjectArray & objects)
+GarbageCollector::deleteObjects (const ObjectArray & objects)
 {
 	for (const auto & object : objects)
 		delete object;
+}
+
+template <>
+void
+GarbageCollector::addObject <ptr <pbBaseObject>> (ptr <pbBaseObject>* const object)
+{
+	cache .emplace_back (object);
+}
+
+template <>
+ptr <pbBaseObject>*
+GarbageCollector::getObject <ptr <pbBaseObject>> ()
+{
+	if (cache .empty ())
+		return new ptr <pbBaseObject> ();
+	
+	const auto object = cache .back ();
+	
+	cache .pop_back ();
+	
+	return object;
 }
 
 } // pb

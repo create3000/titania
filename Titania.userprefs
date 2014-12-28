@@ -1,17 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/VariableDeclaration.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/ptr.h">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="319" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.h" Line="199" Column="1" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="542" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.cpp" Line="232" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="460" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="781" Column="94" />
       <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/Function.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/Function.cpp" Line="139" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/VariableExpression.h" Line="147" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/pbExpression.h" Line="82" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/VariableDeclaration.h" Line="83" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/VariableExpression.h" Line="105" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/pbExpression.h" Line="85" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/VariableDeclaration.h" Line="97" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/PropertyExpression.h" Line="134" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/ptr.h" Line="133" Column="27" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -40,12 +42,12 @@
                   <Node name="Base" expanded="True" />
                   <Node name="Bits" expanded="True" />
                   <Node name="Execution" expanded="True" />
-                  <Node name="Expressions" expanded="True">
-                    <Node name="VariableDeclaration.h" selected="True" />
-                  </Node>
+                  <Node name="Expressions" expanded="True" />
                   <Node name="Objects" expanded="True" />
                   <Node name="Parser" expanded="True" />
-                  <Node name="Primitives" expanded="True" />
+                  <Node name="Primitives" expanded="True">
+                    <Node name="ptr.h" selected="True" />
+                  </Node>
                 </Node>
               </Node>
             </Node>

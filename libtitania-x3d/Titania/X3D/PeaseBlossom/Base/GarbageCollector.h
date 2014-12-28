@@ -48,10 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_GARBAGE_COLLECTOR_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_GARBAGE_COLLECTOR_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_GARBAGE_COLLECTOR_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_GARBAGE_COLLECTOR_H__
 
 #include "../Base/pbBase.h"
+#include "../Base/pbChildObject.h"
+#include "../Primitives/ptr.h"
 
 #include <cstddef>
 #include <deque>
@@ -60,17 +62,25 @@
 namespace titania {
 namespace pb {
 
-class pbChildObject;
+class pbBaseObject;
 
-class pbGarbageCollector
+class GarbageCollector
 {
-protected:
-
-	///  @name Construction
-
-	pbGarbageCollector () = default;
+public:
 
 	///  @name Operations
+
+	template <class Type>
+	static
+	void
+	addObject (Type* const)
+	{ throw std::invalid_argument ("addObject"); }
+
+	template <class Type>
+	static
+	Type*
+	getObject ()
+	{ throw std::invalid_argument ("getObject"); }
 
 	static
 	void
@@ -99,6 +109,10 @@ private:
 
 	using ObjectArray = std::deque <const pbChildObject*>;
 
+	///  @name Construction
+
+	GarbageCollector () = delete;
+
 	///  @name Operations
 
 	static
@@ -107,10 +121,20 @@ private:
 
 	///  @name Static members
 
+	static std::vector <ptr <pbBaseObject>*> cache;
+
 	static ObjectArray objects;
 	static std::mutex  mutex;
 
 };
+
+template <>
+void
+GarbageCollector::addObject <ptr <pbBaseObject>> (ptr <pbBaseObject>* const);
+
+template <>
+ptr <pbBaseObject>*
+GarbageCollector::getObject <ptr <pbBaseObject>> ();
 
 } // pb
 } // titania

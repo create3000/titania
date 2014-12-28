@@ -64,7 +64,7 @@ namespace global {
 struct print
 {
 	pb::var
-	operator () (X3DBrowser* const browser, const pb::ptr <pb::pbBlock> & object, const std::vector <pb::var> & arguments)
+	operator () (X3DBrowser* const browser, const pb::ptr <pb::pbObject> & object, const std::vector <pb::var> & arguments)
 	{
 		for (const auto & value : arguments)
 			browser -> print (value);
@@ -103,12 +103,12 @@ throw (std::exception) :
 	{
 		using namespace std::placeholders;
 
-		program -> getGlobalObject () -> addProperty ("NULL",  nullptr, pb::NONE);
-		program -> getGlobalObject () -> addProperty ("FALSE", false,   pb::NONE);
-		program -> getGlobalObject () -> addProperty ("TRUE",  true,    pb::NONE);
+		program -> getGlobalObject () -> addPropertyDescriptor ("NULL",  nullptr, pb::NONE);
+		program -> getGlobalObject () -> addPropertyDescriptor ("FALSE", false,   pb::NONE);
+		program -> getGlobalObject () -> addPropertyDescriptor ("TRUE",  true,    pb::NONE);
 
-		program -> getGlobalObject () -> addProperty ("print", new pb::NativeFunction ("print", std::bind (global::print { }, getBrowser (), _1, _2)), pb::NONE);
-		program -> getGlobalObject () -> addProperty ("now",   new pb::NativeFunction ("now",   global::now { }),                                      pb::NONE);
+		program -> getGlobalObject () -> addPropertyDescriptor ("print", new pb::NativeFunction ("print", std::bind (global::print { }, getBrowser (), _1, _2)), pb::NONE);
+		program -> getGlobalObject () -> addPropertyDescriptor ("now",   new pb::NativeFunction ("now",   global::now { }),                                      pb::NONE);
 
 		program -> fromString (getECMAScript ());
 		program -> run ();
@@ -291,7 +291,7 @@ Context::eventsProcessed ()
 void
 Context::finish ()
 {
-	pb::Program::deleteObjectsAsync ();
+	pb::GarbageCollector::deleteObjectsAsync ();
 }
 
 void
@@ -319,7 +319,7 @@ Context::dispose ()
 	__LOG__ << p -> getParents () .size ()  << std::endl;;
 	//assert (p -> getParents () .empty ());
 
-	pb::Program::deleteObjectsAsync ();
+	pb::GarbageCollector::deleteObjectsAsync ();
 
 	X3D::X3DJavaScriptContext::dispose ();
 }

@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VAR_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VAR_H__
 
+#include "../Base/GarbageCollector.h"
 #include "../Base/pbOutputStreamObject.h"
 #include "../Bits/pbConstants.h"
 #include "../Expressions/pbControlFlowException.h"
@@ -70,8 +71,7 @@ struct Undefined { };
  *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
  */
 class var :
-	public pbOutputStreamObject,
-	public pbGarbageCollector
+	public pbOutputStreamObject
 {
 public:
 
@@ -81,7 +81,6 @@ public:
 	constexpr
 	var () :
 		pbOutputStreamObject (),
-		  pbGarbageCollector (),
 		               value (),
 		                type (UNDEFINED)
 	{ }
@@ -101,7 +100,6 @@ public:
 	constexpr
 	var (const Undefined &) :
 		pbOutputStreamObject (),
-		  pbGarbageCollector (),
 		               value (),
 		                type (UNDEFINED)
 	{ }
@@ -110,7 +108,6 @@ public:
 	constexpr
 	var (const bool boolean) :
 		pbOutputStreamObject (),
-		  pbGarbageCollector (),
 		               value ({ bool_ : boolean }),
 		                type (BOOLEAN)
 	{ }
@@ -131,7 +128,6 @@ public:
 	constexpr
 	var (const double number) :
 		pbOutputStreamObject (),
-		  pbGarbageCollector (),
 		               value ({ number_ : number }),
 		                type (NUMBER)
 	{ }
@@ -139,7 +135,6 @@ public:
 	///  Constructs new var.
 	var (const Glib::ustring & string) :
 		pbOutputStreamObject (),
-		  pbGarbageCollector (),
 		               value ({ string_ : new Glib::ustring (string) }),
 		                type (STRING)
 	{ }
@@ -147,7 +142,6 @@ public:
 	///  Constructs new var.
 	var (Glib::ustring && string) :
 		pbOutputStreamObject (),
-		  pbGarbageCollector (),
 		               value ({ string_ : new Glib::ustring () }),
 		                type (STRING)
 	{
@@ -157,7 +151,6 @@ public:
 	///  Constructs new var.
 	var (const std::string & string) :
 		pbOutputStreamObject (),
-		  pbGarbageCollector (),
 		               value ({ string_ : new Glib::ustring (string) }),
 		                type (STRING)
 	{ }
@@ -166,7 +159,6 @@ public:
 	constexpr
 	var (const std::nullptr_t) :
 		pbOutputStreamObject (),
-		  pbGarbageCollector (),
 		               value (),
 		                type (NULL_OBJECT)
 	{ }
@@ -175,19 +167,21 @@ public:
 	template <class Up>
 	var (const ptr <Up> & object) :
 		pbOutputStreamObject (),
-		  pbGarbageCollector (),
-		               value ({ object_ : new ptr <pbBaseObject> (object) }),
+		               value ({ object_ : GarbageCollector::getObject <ptr <pbBaseObject>> () }),
 		                type (OBJECT)
-	{ }
+	{
+		*value .object_ = object;
+	}
 
 	///  Constructs new var.
 	template <class Up>
 	var (ptr <Up> && object) :
 		pbOutputStreamObject (),
-		  pbGarbageCollector (),
-		               value ({ object_ : new ptr <pbBaseObject> (std::move (object)) }),
+		               value ({ object_ : GarbageCollector::getObject <ptr <pbBaseObject>> () }),
 		                type (OBJECT)
-	{ }
+	{
+		*value .object_ = std::move (object);
+	}
 
 	///  Constructs new var.
 	var (pbBaseObject* const object);
@@ -240,8 +234,9 @@ public:
 	{
 		clear ();
 
-		value .object_ = new ptr <pbBaseObject> (other);
-		type           = OBJECT;
+		value .object_  = GarbageCollector::getObject <ptr <pbBaseObject>> ();
+		*value .object_ = other;
+		type            = OBJECT;
 
 		return *this;
 	}
@@ -252,8 +247,9 @@ public:
 	{
 		clear ();
 
-		value .object_ = new ptr <pbBaseObject> (std::move (other));
-		type           = OBJECT;
+		value .object_  = GarbageCollector::getObject <ptr <pbBaseObject>> ();
+		*value .object_ = std::move (other);
+		type            = OBJECT;
 
 		return *this;
 	}

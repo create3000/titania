@@ -28,12 +28,13 @@
 
 #include "pbChildObject.h"
 
+#include "../Base/GarbageCollector.h"
+
 namespace titania {
 namespace pb {
 
 pbChildObject::pbChildObject () :
 	            pbBase (),
-	pbGarbageCollector (),
 	    referenceCount (0),
 	           parents (),
 	              root (nullptr),
@@ -106,7 +107,7 @@ pbChildObject::removeParent (pbChildObject* const parent)
 
 			dispose ();
 
-			addDisposedObject (this);
+			GarbageCollector::addDisposedObject (this);
 
 			return;
 		}
@@ -125,7 +126,7 @@ pbChildObject::removeParent (pbChildObject* const parent)
 		for (auto & child : circle)
 			child -> dispose ();
 
-		addDisposedObjects (circle .begin (), circle .end ());
+		GarbageCollector::addDisposedObjects (circle .begin (), circle .end ());
 	}
 }
 

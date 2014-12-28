@@ -86,6 +86,11 @@ public:
 	throw (pbException)
 	{ throw ReferenceError ("Invalid assignment left-hand side."); }
 
+	virtual
+	var
+	call (const ptr <pbExecutionContext> &, const std::vector <var> &) const
+	throw (pbException);
+
 
 protected:
 

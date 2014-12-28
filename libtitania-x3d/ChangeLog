@@ -1,3 +1,36 @@
+2014-12-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Expressions.h:
+	* Math.h:
+	* var.h:
+	* Parser.cpp:
+	* var.cpp:
+	* pbObject.h:
+	* pbBlock.h:
+	* Program.h:
+	* pbObject.cpp:
+	* pbChildObject.h:
+	* Function.cpp:
+	* Context.cpp:
+	* pbChildObject.cpp:
+	* GarbageCollector.h:
+	* pbGarbageCollector.h:
+	* IfStatement.h:
+	* GarbargeCollector.cpp:
+	* GlobalObject.cpp:
+	* pbExpression.h:
+	* ForStatement.h:
+	* pbGarbargeCollector.cpp:
+	* pbExpression.cpp:
+	* VariableExpression.h:
+	* AdditionExpression.h:
+	* pbExecutionContext.cpp:
+	* PropertyExpression.h:
+	* VariableDeclaration.h:
+	* FunctionCallExpression.h: 
+
 2014-12-27  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

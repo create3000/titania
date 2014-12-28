@@ -340,6 +340,27 @@ function fibonacci_iterative (value)
 	return result;
 }
 
+function fibonacci_iterative1 (o, value)
+{
+	if (value === 0)
+		return 0;
+
+	if (value === 1)
+		return 1;
+
+	o .h1 = 0;
+	o .h2 = 1;
+
+	for (var i = 1; i < value; i += 1)
+	{
+		o .result = o .h1 + o .h2;
+		o .h1     = o .h2;
+		o .h2     = o .result;
+	}
+
+	return o .result;
+}
+
 /*
 function for_time (n)
 {
@@ -367,8 +388,8 @@ function set_time (value, time)
 	//print ('time: ',                now () - t0);
 
 	var t0 = now ();
-	print ('fibonacci_iterative: ', fibonacci_iterative (800));
-	print ('fibonacci_iterative: ', fibonacci_iterative (8000000));
+	print ('fibonacci_iterative: ', fibonacci_iterative1 ({}, 800));
+	print ('fibonacci_iterative: ', fibonacci_iterative1 ({}, 800000));
 	print ('time: ',                now () - t0);
 
 	//var t0 = now ();
@@ -376,15 +397,35 @@ function set_time (value, time)
 	//print ('time: ',   now () - t0);
 }
 
-var o = { toString: function () { return 'toString'; } };
+var x = 'global';
+print ('this: ', this);
 
+var o = {
+	x: 123,
+	f: function ()
+	{
+		return 'f: this .x: ' + this .x;
+	}
+};
+
+print (o .x);
+print (o .x = 234);
+print (o .x);
+print (o .toString);
+print (o .toString ());
+print (o .f ());
 print (o);
+print (o .x);
+print (Math .PI);
+print ('abs (-123): ', Math .abs (-123));
 
 var i = 0;
 var global1 = 'global1';
 
 function outer ()
 {
+	print ('outer:');
+
 	if (i == 0)
 	{
 		i += 1;
@@ -408,10 +449,10 @@ function outer ()
 		print (outer2);
 	};
 }
-
+ 
 print ();
 print ('pb:');
-outer () ();
+print (outer);
 outer () ();
 "
   directOutput TRUE
@@ -527,6 +568,7 @@ function outer ()
 print ()
 print ('sm:')
 outer () ();
+print (i .def)
 "
   directOutput TRUE
 }

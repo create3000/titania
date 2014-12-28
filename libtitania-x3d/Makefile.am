@@ -469,8 +469,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Parser/RegEx.cpp \
 	Titania/X3D/Parser/Wavefront/Parser.cpp \
 	Titania/X3D/Parser/X3DParser.cpp \
+	Titania/X3D/PeaseBlossom/Base/GarbargeCollector.cpp \
 	Titania/X3D/PeaseBlossom/Base/pbChildObject.cpp \
-	Titania/X3D/PeaseBlossom/Base/pbGarbargeCollector.cpp \
 	Titania/X3D/PeaseBlossom/Execution/Block.cpp \
 	Titania/X3D/PeaseBlossom/Execution/GlobalObject.cpp \
 	Titania/X3D/PeaseBlossom/Execution/pbBlock.cpp \

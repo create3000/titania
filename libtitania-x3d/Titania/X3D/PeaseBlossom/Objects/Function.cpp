@@ -106,7 +106,7 @@ throw (pbException)
 	localObject -> addProperty ("this", thisObject);
 
 	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
-		localObject -> addProperty (formalParameters [i], i < argc ? arguments [i] : var (), WRITABLE | CONFIGURABLE);
+		localObject -> addPropertyDescriptor (formalParameters [i], i < argc ? arguments [i] : var (), WRITABLE | CONFIGURABLE);
 
 	try
 	{
