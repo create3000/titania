@@ -1298,10 +1298,13 @@
     <Compile Include="Titania\X3D\PeaseBlossom\Expressions\pbExpression.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\pbExecutionContext.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Base\pbChildObject.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Objects\pbFunction.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Objects\pbFunction.cpp">
+      <DependentUpon>Math.cpp</DependentUpon>
+    </Compile>
     <Compile Include="Titania\X3D\PeaseBlossom\Objects\pbObject.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\pbBlock.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Base\GarbargeCollector.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Objects\Math.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

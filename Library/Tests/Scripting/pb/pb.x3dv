@@ -416,8 +416,16 @@ print (o .toString ());
 print (o .f ());
 print (o);
 print (o .x);
+print (Math);
 print (Math .PI);
 print ('abs (-123): ', Math .abs (-123));
+print ('sqrt (2): ', Math .sqrt (2));
+print ('Math .min .length: ', Math .min .length);
+print ('Math .max: ', Math .max (4,6,2,9,4));
+print ('Math .min: ', Math .min (4,6,2,9,4));
+
+for (var i = 0; i < 10; i += 1)
+	print ('random: ', Math .random ());
 
 var i = 0;
 var global1 = 'global1';

@@ -68,8 +68,8 @@ class NativeFunction :
 public:
 
 	///  Constructs new Function.
-	NativeFunction (const std::string & name, const FunctionType & function) :
-		pbFunction (name),
+	NativeFunction (const std::string & name, const FunctionType & function, const size_t length) :
+		pbFunction (name, length),
 		  function (function)
 	{ }
 
@@ -79,7 +79,7 @@ public:
 	copy (pbExecutionContext* executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return pbObject::copy (executionContext, new NativeFunction (getName (), function)); }
+	{ return pbObject::copy (executionContext, new NativeFunction (getName (), function, getLength ())); }
 
 	///  @name Operations
 

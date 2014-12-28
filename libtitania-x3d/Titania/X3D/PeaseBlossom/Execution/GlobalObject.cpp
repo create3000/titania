@@ -91,7 +91,7 @@ createGlobalObject ()
 
 	// Functions
 
-	globalObject -> addPropertyDescriptor ("isNaN", new NativeFunction ("isNaN", global::isNaN { }));
+	globalObject -> addPropertyDescriptor ("isNaN", new NativeFunction ("isNaN", global::isNaN { }, 1));
 
 	return globalObject;
 }

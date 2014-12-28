@@ -107,8 +107,8 @@ throw (std::exception) :
 		program -> getGlobalObject () -> addPropertyDescriptor ("FALSE", false,   pb::NONE);
 		program -> getGlobalObject () -> addPropertyDescriptor ("TRUE",  true,    pb::NONE);
 
-		program -> getGlobalObject () -> addPropertyDescriptor ("print", new pb::NativeFunction ("print", std::bind (global::print { }, getBrowser (), _1, _2)), pb::NONE);
-		program -> getGlobalObject () -> addPropertyDescriptor ("now",   new pb::NativeFunction ("now",   global::now { }),                                      pb::NONE);
+		program -> getGlobalObject () -> addPropertyDescriptor ("print", new pb::NativeFunction ("print", std::bind (global::print { }, getBrowser (), _1, _2), 0), pb::NONE);
+		program -> getGlobalObject () -> addPropertyDescriptor ("now",   new pb::NativeFunction ("now",   global::now { },                                      0), pb::NONE);
 
 		program -> fromString (getECMAScript ());
 		program -> run ();

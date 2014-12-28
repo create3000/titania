@@ -1,19 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/ptr.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Scripting/pb/pb.x3dv">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="542" Column="14" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.cpp" Line="232" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="781" Column="94" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/Function.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/Function.cpp" Line="139" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/VariableExpression.h" Line="105" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/pbExpression.h" Line="85" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/VariableDeclaration.h" Line="97" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/PropertyExpression.h" Line="134" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/ptr.h" Line="133" Column="27" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="406" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.h" Line="126" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.cpp" Line="223" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="195" Column="31" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="468" Column="19" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/Function.cpp" Line="63" Column="56" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/FunctionCallExpression.h" Line="78" Column="74" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/PropertyExpression.h" Line="159" Column="67" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.cpp" Line="308" Column="51" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Expressions/pbExpression.cpp" Line="74" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/Math.h" Line="80" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/Math.cpp" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -23,7 +23,9 @@
             <Node name="Tests" expanded="True">
               <Node name="EnvironmentalSensors" expanded="True" />
               <Node name="Scripting" expanded="True">
-                <Node name="pb" expanded="True" />
+                <Node name="pb" expanded="True">
+                  <Node name="pb.x3dv" selected="True" />
+                </Node>
               </Node>
             </Node>
           </Node>
@@ -38,6 +40,7 @@
                 <Node name="JavaScript" expanded="True">
                   <Node name="PeaseBlossom" expanded="True" />
                 </Node>
+                <Node name="Miscellaneous" expanded="True" />
                 <Node name="PeaseBlossom" expanded="True">
                   <Node name="Base" expanded="True" />
                   <Node name="Bits" expanded="True" />
@@ -45,9 +48,7 @@
                   <Node name="Expressions" expanded="True" />
                   <Node name="Objects" expanded="True" />
                   <Node name="Parser" expanded="True" />
-                  <Node name="Primitives" expanded="True">
-                    <Node name="ptr.h" selected="True" />
-                  </Node>
+                  <Node name="Primitives" expanded="True" />
                 </Node>
               </Node>
             </Node>

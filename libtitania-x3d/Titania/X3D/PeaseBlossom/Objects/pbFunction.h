@@ -76,6 +76,11 @@ public:
 	getName () const
 	{ return name; }
 
+	///  Returns the name of the function.
+	size_t
+	getLength () const
+	{ return length; }
+
 	///  @name Operations
 
 	///  Executes this function.
@@ -90,7 +95,7 @@ protected:
 	///  @name Construction
 
 	///  Constructs new pbFunction.
-	pbFunction (const std::string & name);
+	pbFunction (const std::string & name, const size_t);
 
 
 private:
@@ -102,6 +107,7 @@ private:
 	///  @name Members
 
 	const std::string name;
+	const size_t      length;
 
 };
 

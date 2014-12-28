@@ -2,6 +2,21 @@
 
 	* Makefile.am:
 	* libtitania-x3d.cproj:
+	* Math.h:
+	* Object.h:
+	* var.h:
+	* Math.cpp:
+	* pbFunction.h:
+	* Function.cpp:
+	* Context.cpp:
+	* pbFunction.cpp:
+	* NativeFunction.h:
+	* GlobalObject.cpp: 
+
+2014-12-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
 	* Expressions.h:
 	* Math.h:
 	* var.h:

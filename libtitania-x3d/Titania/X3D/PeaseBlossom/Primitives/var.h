@@ -126,6 +126,18 @@ public:
 
 	///  Constructs new var.
 	constexpr
+	var (const int64_t integer) :
+		var (double (integer))
+	{ }
+
+	///  Constructs new var.
+	constexpr
+	var (const uint64_t integer) :
+		var (double (integer))
+	{ }
+
+	///  Constructs new var.
+	constexpr
 	var (const double number) :
 		pbOutputStreamObject (),
 		               value ({ number_ : number }),

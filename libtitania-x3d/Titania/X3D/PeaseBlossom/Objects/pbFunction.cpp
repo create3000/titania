@@ -55,11 +55,13 @@ namespace pb {
 
 const std::string pbFunction::typeName = "Function";
 
-pbFunction::pbFunction (const std::string & name) :
+pbFunction::pbFunction (const std::string & name, const size_t length) :
 	pbObject (),
-	    name (name)
+	    name (name),
+	  length (length)
 {
-	addProperty ("name", name);
+	addProperty ("name",   name);
+	addProperty ("length", length);
 }
 
 } // pb

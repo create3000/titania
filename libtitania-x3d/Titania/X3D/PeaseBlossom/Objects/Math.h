@@ -53,6 +53,8 @@
 
 #include "../Objects/pbObject.h"
 
+#include <random>
+
 namespace titania {
 namespace pb {
 
@@ -67,39 +69,100 @@ public:
 	///  @name Construction
 
 	///  Constructs new Math.
-	Math () :
-		pbObject ()
-	{
-		addPropertyDescriptor ("E",       M_E,       NONE);
-		addPropertyDescriptor ("LN10",    M_LN10,    NONE);
-		addPropertyDescriptor ("LN2",     M_LN2,     NONE);
-		addPropertyDescriptor ("LOG2E",   M_LOG2E,   NONE);
-		addPropertyDescriptor ("LOG10E",  M_LOG10E,  NONE);
-		addPropertyDescriptor ("PI",      M_PI,      NONE);
-		addPropertyDescriptor ("SQRT1_2", M_SQRT1_2, NONE);
-		addPropertyDescriptor ("SQRT2",   M_SQRT2,   NONE);
-	
-		addPropertyDescriptor ("abs",   new NativeFunction ("abs", abs), NONE);
-	}
+	Math () ;
 
 	///  Constructs new Math.
 	virtual
 	ptr <pbBaseObject>
 	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
-	       pbControlFlowException) final override
-	{ return pbObject::copy (executionContext, new Math ()); }
+	       pbControlFlowException) final override;
 
+	virtual
+	const std::string &
+	getTypeName () const final override
+	{ return typeName; }
+
+
+private:
+
+	///  @name Functions
 
 	static
 	var
-	abs (const ptr <pbObject> & object, const std::vector <var> & arguments)
-	{
-		if (arguments .size () not_eq 1)
-			throw Error ("wrong number of arguments");
+	abs (const ptr <pbObject> &, const std::vector <var> &);
 
-		return std::abs (arguments [0] .toNumber ());
-	}
+	static
+	var
+	acos (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	asin (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	atan (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	atan2 (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	ceil (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	cos (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	exp (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	floor (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	log (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	max (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	min (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	pow (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	random (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	round (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	sin (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	sqrt (const ptr <pbObject> &, const std::vector <var> &);
+
+	static
+	var
+	tan (const ptr <pbObject> &, const std::vector <var> &);
+
+	///  @name Static members
+	
+	static const std::string typeName;
 
 };
 

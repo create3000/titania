@@ -60,7 +60,7 @@ namespace pb {
 std::atomic <size_t> Function::recursionLimit (100000);
 
 Function::Function (pbExecutionContext* const executionContext, const std::string & name, std::vector <std::string> && formalParameters) :
-	           pbFunction (name),
+	           pbFunction (name, formalParameters .size ()),
 	   pbExecutionContext (executionContext, executionContext -> getGlobalObject ()),
 	     formalParameters (std::move (formalParameters)),
 	       recursionDepth (0),
