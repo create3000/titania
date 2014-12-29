@@ -470,6 +470,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Parser/Wavefront/Parser.cpp \
 	Titania/X3D/Parser/X3DParser.cpp \
 	Titania/X3D/PeaseBlossom/Base/GarbargeCollector.cpp \
+	Titania/X3D/PeaseBlossom/Base/pbBase.cpp \
 	Titania/X3D/PeaseBlossom/Base/pbChildObject.cpp \
 	Titania/X3D/PeaseBlossom/Execution/Block.cpp \
 	Titania/X3D/PeaseBlossom/Execution/GlobalObject.cpp \
@@ -479,7 +480,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/PeaseBlossom/Expressions/pbExpression.cpp \
 	Titania/X3D/PeaseBlossom/Objects/Function.cpp \
 	Titania/X3D/PeaseBlossom/Objects/Math.cpp \
-	Titania/X3D/PeaseBlossom/Objects/pbBaseObject.cpp \
 	Titania/X3D/PeaseBlossom/Objects/pbFunction.cpp \
 	Titania/X3D/PeaseBlossom/Objects/pbObject.cpp \
 	Titania/X3D/PeaseBlossom/Parser/Parser.cpp \

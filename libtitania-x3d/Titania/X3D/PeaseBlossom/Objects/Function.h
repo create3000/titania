@@ -75,7 +75,7 @@ public:
 
 	///  Creates a new default object.
 	virtual
-	ptr <pbBaseObject>
+	ptr <pbObject>
 	copy (pbExecutionContext* executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override;
@@ -137,6 +137,26 @@ protected:
 
 
 private:
+
+	///  @name Member types
+
+	class StackGuard
+	{
+	public:
+
+		StackGuard (Function* const function, pbObject* const localObject) :
+			function (function)
+		{ function -> push (localObject); }
+
+		~StackGuard ()
+		{ function -> pop (); }
+
+
+	private:
+
+		Function* const function;
+
+	};
 
 	///  @name Operations
 

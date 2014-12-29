@@ -69,7 +69,7 @@ var::var (const var & other) :
 			value .string_ = new Glib::ustring (*other .value .string_);
 			break;
 		case OBJECT:
-			value .object_  = GarbageCollector::getObject <ptr <pbBaseObject>> ();
+			value .object_  = GarbageCollector::getObject <ptr <pbObject>> ();
 			*value .object_ = *other .value .object_;
 			break;
 		default:
@@ -78,16 +78,18 @@ var::var (const var & other) :
 	}
 }
 
-var::var (pbBaseObject* const object) :
+var::var (pbObject* const object) :
 	pbOutputStreamObject (),
-	               value ({ object_: GarbageCollector::getObject <ptr <pbBaseObject>> () }),
+	               value ({ object_: GarbageCollector::getObject <ptr <pbObject>> () }),
 	                type (OBJECT)
 {
 	value .object_ -> reset (object);
+	
+	assert (*value .object_);
 }
 
 var
-var::copy (pbExecutionContext* executionContext) const
+var::copy (pbExecutionContext* const executionContext) const
 throw (pbException,
        pbControlFlowException)
 {
@@ -115,7 +117,7 @@ var::operator = (const var & other)
 			value .string_ = new Glib::ustring (*other .value .string_);
 			break;
 		case OBJECT:
-			value .object_  = GarbageCollector::getObject <ptr <pbBaseObject>> ();
+			value .object_  = GarbageCollector::getObject <ptr <pbObject>> ();
 			*value .object_ = *other .value .object_;
 			break;
 		default:
@@ -213,13 +215,15 @@ var::operator = (const std::nullptr_t)
 }
 
 var &
-var::operator = (pbBaseObject* const object)
+var::operator = (pbObject* const object)
 {
 	clear ();
 	
-	value .object_ = GarbageCollector::getObject <ptr <pbBaseObject>> ();
+	value .object_ = GarbageCollector::getObject <ptr <pbObject>> ();
 	value .object_ -> reset (object);
 	type = OBJECT;
+	
+	assert (*value .object_);
 
 	return *this;
 }
@@ -250,14 +254,7 @@ var::toBoolean () const
 		case NULL_OBJECT:
 			return false;
 		case OBJECT:
-		{
-			const auto v = value .object_ -> get () -> getValue ();
-
-			if (v .isPrimitive ())
-				return v .toBoolean ();
-
 			return true;
-		}
 	}
 
 	return false;
@@ -383,16 +380,30 @@ var::toNumber () const
 	return 0;
 }
 
-var
-var::getValue () const
-throw (pbException,
-       pbControlFlowException)
-{
-	if (type == OBJECT)
-		return value .object_ -> get () -> getValue ();
-
-	return *this;
-}
+//ptr <pbObject>
+//var::toObject () const
+//throw (std::invalid_argument,
+//       pbException,
+//	    pbControlFlowException)
+//{
+//	switch (type)
+//	{
+//		case UNDEFINED:
+//			throw std::invalid_argument ("toObject");
+//		case BOOLEAN:
+//			return new Boolean (value .bool_);
+//		case NUMBER:
+//			return new Number (value .number_);
+//		case STRING:
+//			return new String (*value .string_);
+//		case NULL_OBJECT:
+//			throw std::invalid_argument ("toObject");
+//		case OBJECT:
+//			return value .object_ -> get () -> toObject ();
+//	}
+//
+//	return 0;
+//}
 
 void
 var::toStream (std::ostream & ostream) const

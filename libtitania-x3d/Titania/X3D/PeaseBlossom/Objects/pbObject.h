@@ -53,8 +53,10 @@
 
 #include "../Bits/pbConstants.h"
 #include "../Expressions/pbControlFlowException.h"
-#include "../Objects/pbBaseObject.h"
+#include "../Base/pbChildObject.h"
+#include "../Base/pbOutputStreamObject.h"
 #include "../Primitives/ptr.h"
+#include "../Primitives/var.h"
 
 #include <functional>
 #include <map>
@@ -65,7 +67,6 @@
 namespace titania {
 namespace pb {
 
-class pbObject;
 class pbFunction;
 
 ///  @relates pbObject
@@ -78,7 +79,7 @@ public:
 
 	///  @name Construction
 
-	PropertyDescriptor (pbObject* const,
+	PropertyDescriptor (pbChildObject* const,
 	                    const std::string &,
 	                    const var &,
 		                 const PropertyFlagsType &,
@@ -144,12 +145,12 @@ private:
 
 	///  @name Members
 
-	pbObject* const   object;
-	const std::string name;
-	var               value;
-	PropertyFlagsType flags;
-	ptr <pbFunction>  getter;
-	ptr <pbFunction>  setter;
+	pbChildObject* const object;
+	const std::string    name;
+	var                  value;
+	PropertyFlagsType    flags;
+	ptr <pbFunction>     getter;
+	ptr <pbFunction>     setter;
 
 };
 
@@ -160,9 +161,18 @@ using PropertyDescriptorPtr = std::shared_ptr <PropertyDescriptor>;
  *  Class to represent a basic object.
  */
 class pbObject :
-	public pbBaseObject
+	virtual public pbChildObject,
+	virtual public pbOutputStreamObject
 {
 public:
+
+	///  @name Construction
+
+	virtual
+	ptr <pbObject>
+	copy (pbExecutionContext*) const
+	throw (pbException,
+	       pbControlFlowException) = 0;
 
 	///  @name Common members
 
@@ -218,12 +228,17 @@ public:
 	noexcept (true)
 	{ removePropertyDescriptor (getId (name)); }
 
-	virtual
 	var
-	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
-	{ return const_cast <pbObject*> (this); }
+	getDefaultValue (const ValueType preferedType) const
+	throw (pbException);
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ ostream << "[object " << getTypeName () << "]"; }
 
 	///  @name Destruction
 
@@ -301,14 +316,18 @@ protected:
 	removePropertyDescriptor (const size_t id)
 	noexcept (true);
 
-	virtual
-	var
-	getDefaultValue (const ValueType preferedType) const
-	throw (pbException) final override;
-
 	var
 	call (const size_t id, const std::vector <var> & arguments = { }) const
 	throw (pbException);
+
+	///  @name Children handling
+
+	void
+	addValue (var & child)
+	{
+		if (child .isObject ())
+			child .getObject () .addParent (this);
+	}
 
 
 private:
@@ -318,7 +337,7 @@ private:
 	using PropertyDescriptorIndex = std::unordered_map <size_t, PropertyDescriptorPtr>;
 	using PropertyDescriptorArray = std::vector <std::pair <size_t, PropertyDescriptorPtr>>;
 
-	///  @name Cache opeartions
+	///  @name Cache operations
 
 	///  Returns the property descriptor for a property id on this object.
 	const PropertyDescriptorPtr &

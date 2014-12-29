@@ -48,12 +48,12 @@
  *
  ******************************************************************************/
 
-#include "pbBaseObject.h"
+#include "pbBase.h"
 
 namespace titania {
 namespace pb {
 
-pbBaseObject::IdIndex pbBaseObject::ids;
+pbBase::IdIndex pbBase::ids;
 
 } // pb
 } // titania

@@ -69,15 +69,15 @@ public:
 
 	///  Constructs new FunctionExpression statement.
 	FunctionExpression (pbExecutionContext* const executionContext, ptr <Function> && function) :
-		    pbExpression (),
+		    pbExpression (ExpressionType::FUNCTION_EXPRESSION),
 		executionContext (executionContext),
 		        function (std::move (function))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
 	{ return new FunctionExpression (executionContext, ptr <Function> (function)); }

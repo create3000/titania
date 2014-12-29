@@ -53,8 +53,10 @@
 
 #include "../Base/pbChildObject.h"
 #include "../Base/pbOutputStreamObject.h"
+#include "../Expressions/pbExpression.h"
 #include "../Expressions/pbControlFlowException.h"
-#include "../Primitives/var.h"
+#include "../Primitives/array.h"
+#include "../Primitives/ptr.h"
 
 namespace titania {
 namespace pb {
@@ -71,33 +73,14 @@ public:
 
 	///  Add an expression to the list of expressions.
 	void
-	addExpression (var && value)
-	{
-		expressions .emplace_back (std::move (value));
-
-		auto & expression = expressions .back ();
-
-		if (expression .isObject ())
-			expression .getObject () .addParent (this);
-	}
+	addExpression (ptr <pbExpression> && value)
+	{ expressions .emplace_back (std::move (value)); }
 
 	///  Returns an array with all local root expressions.
-	const std::deque <var> &
+	const array <ptr <pbExpression>> &
 	getExpressions () const
 	{ return expressions; }
 
-	///  @name Destruction
-
-	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
-	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
-	virtual
-	void
-	dispose () override
-	{
-		expressions .clear ();
-
-		pbChildObject::dispose ();
-	}
 
 protected:
 
@@ -108,7 +91,7 @@ protected:
 		       pbChildObject (),
 		pbOutputStreamObject (),
 		         expressions ()
-	{ }
+	{ addChildren (expressions); }
 
 	/// @name Operations
 
@@ -119,7 +102,7 @@ protected:
 	       pbControlFlowException)
 	{
 		for (const auto & expression : block -> getExpressions ())
-			addExpression (expression .copy (executionContext));
+			addExpression (expression -> copy (executionContext));
 	}
 
 	///  Executes the associated expessions of this context.
@@ -129,7 +112,7 @@ protected:
 	       pbControlFlowException)
 	{
 		for (const auto & expression : expressions)
-			expression .getValue ();
+			expression -> getValue ();
 	}
 
 
@@ -137,7 +120,7 @@ private:
 
 	/// @name Members
 
-	std::deque <var> expressions; // Use deque to keep iters when inserting value.
+	array <ptr <pbExpression>> expressions;
 
 };
 

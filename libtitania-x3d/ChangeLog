@@ -1,5 +1,61 @@
 2014-12-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* pbBase.h:
+	* Expressions.h:
+	* Math.h:
+	* Array.h:
+	* Parser.h:
+	* pbBase.cpp:
+	* Math.cpp:
+	* Object.h:
+	* Grammar.h:
+	* var.h:
+	* Parser.cpp:
+	* Function.h:
+	* var.cpp:
+	* pbConstants.h:
+	* pbObject.h:
+	* pbBlock.h:
+	* Function.cpp:
+	* pbObject.cpp:
+	* pbFunction.h:
+	* StringObject.h:
+	* NumberObject.h:
+	* pbBaseObject.h:
+	* GarbageCollector.h:
+	* BooleanObject.h:
+	* NativeFunction.h:
+	* pbBaseObject.cpp:
+	* IfStatement.h:
+	* pbInputStreamObject.h:
+	* pbExpression.h:
+	* GarbargeCollector.cpp:
+	* ForStatement.h:
+	* pbOutputStreamObject.h:
+	* ObjectLiteral.h:
+	* NewExpression.h:
+	* LessExpression.h:
+	* EqualExpression.h:
+	* ReturnStatement.h:
+	* PropertyExpression.h:
+	* AdditionExpression.h:
+	* FunctionExpression.h:
+	* DivisionExpression.h:
+	* VariableExpression.h:
+	* PrimitiveExpression.h:
+	* LeftShiftExpression.h:
+	* VariableDeclaration.h:
+	* RemainderExpression.h:
+	* AssignmentExpression.h:
+	* SubtractionExpression.h:
+	* StrictEqualExpression.h:
+	* FunctionCallExpression.h:
+	* MultiplicationExpression.h: 
+
+2014-12-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* pbObject.h:
 	* pbObject.cpp:
 	* VariableExpression.h:

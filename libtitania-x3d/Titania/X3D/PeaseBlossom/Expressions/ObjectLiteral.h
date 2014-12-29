@@ -69,18 +69,18 @@ public:
 
 	///  Constructs new ObjectLiteral expression.
 	ObjectLiteral (pbExecutionContext* const executionContext, ptr <Object> && object) :
-		    pbExpression (),
+		    pbExpression (ExpressionType::OBJECT_LITERAL),
 		executionContext (executionContext),
 		          object (object)
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return new ObjectLiteral (executionContext, ptr <Object> (object)); }
+	{ return new ObjectLiteral (executionContext, ptr <Object>  (object)); }
 
 	///  @name Operations
 

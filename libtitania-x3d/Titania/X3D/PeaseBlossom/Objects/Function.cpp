@@ -70,7 +70,7 @@ Function::Function (pbExecutionContext* const executionContext, const std::strin
 	addChildren (localObjectsStack, localObjects);
 }
 
-ptr <pbBaseObject>
+ptr <pbObject>
 Function::copy (pbExecutionContext* executionContext) const
 throw (pbException,
        pbControlFlowException)
@@ -101,15 +101,20 @@ var
 Function::construct (const std::vector <var> & arguments)
 throw (pbException)
 {
-	const auto object = new Object ();
+	const ptr <pbObject> object = new Object ();
 
 	//object -> addPropertyDescriptor ("__proto__", getProperty ("prototype"), NONE);
 
-	return call (object, arguments);
+	const auto result = call (object, arguments);
+
+	if (result .isObject ())
+		return result;
+
+	return object;
 }
 
 var
-Function::call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments)
+Function::call (/*const var & */ const ptr <pbObject> & thisObject, const std::vector <var> & arguments)
 throw (pbException)
 {
 	const auto localObject = new Object ();
@@ -119,20 +124,9 @@ throw (pbException)
 	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
 		localObject -> addPropertyDescriptor (formalParameters [i], i < argc ? arguments [i] : var (), WRITABLE | CONFIGURABLE);
 
-	try
-	{
-		push (localObject);
+	StackGuard guard (this, localObject);
 
-		const auto value = run ();
-
-		pop ();
-		return value;
-	}
-	catch (const pbException &)
-	{
-		pop ();
-		throw;
-	}
+	return run ();
 }
 
 void

@@ -90,7 +90,7 @@ Math::Math () :
 	addPropertyDescriptor ("tan",    new NativeFunction ("tan",    tan,    1), NONE);
 }
 
-ptr <pbBaseObject>
+ptr <pbObject>
 Math::copy (pbExecutionContext* const executionContext) const
 throw (pbException,
        pbControlFlowException)

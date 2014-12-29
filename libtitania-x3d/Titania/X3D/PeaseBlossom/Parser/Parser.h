@@ -54,7 +54,7 @@
 #include "../Bits/Exception.h"
 #include "../Expressions/AssignmentOperatorType.h"
 #include "../Objects/Object.h"
-#include "../Primitives/var.h"
+#include "../Primitives/ptr.h"
 
 #include <iostream>
 #include <stack>
@@ -155,119 +155,119 @@ private:
 	reservedWord (const std::string &);
 
 	bool
-	literal (var &);
+	literal (ptr <pbExpression> &);
 
 	bool
-	nullLiteral (var &);
+	nullLiteral (ptr <pbExpression> &);
 
 	bool
-	booleanLiteral (var &);
+	booleanLiteral (ptr <pbExpression> &);
 
 	bool
-	numericLiteral (var &);
+	numericLiteral (ptr <pbExpression> &);
 
 	bool
-	decimalLiteral (var &);
+	decimalLiteral (ptr <pbExpression> &);
 
 	bool
-	binaryIntegerLiteral (var &);
+	binaryIntegerLiteral (ptr <pbExpression> &);
 
 	bool
-	octalIntegerLiteral (var &);
+	octalIntegerLiteral (ptr <pbExpression> &);
 
 	bool
-	hexIntegerLiteral (var &);
+	hexIntegerLiteral (ptr <pbExpression> &);
 
 	bool
-	stringLiteral (var &);
+	stringLiteral (ptr <pbExpression> &);
 
 	// A.2 Number Conversions
 
 	// A.3 Expressions
 
 	bool
-	primaryExpression (var &);
+	primaryExpression (ptr <pbExpression> &);
 
 	bool
-	objectLiteral (var &);
+	objectLiteral (ptr <pbExpression> &);
 
 	bool
-	propertyDefinitionList (ptr <Object> &);
+	propertyDefinitionList (const ptr <Object> &);
 
 	bool
-	propertyDefinition (ptr <Object> &);
+	propertyDefinition (const ptr <Object> &);
 
 	bool
-	propertyName (var & value);
+	propertyName (ptr <pbExpression> & value);
 
 	bool
 	propertySetParameterList (std::vector <std::string> &);
 
 	bool
-	memberExpression (var &);
+	memberExpression (ptr <pbExpression> &);
 
 	bool
-	newExpression (var &);
+	newExpression (ptr <pbExpression> &);
 
 	bool
-	callExpression (var &);
+	callExpression (ptr <pbExpression> &);
 
 	bool
-	arguments (std::vector <var> &);
+	arguments (array <ptr <pbExpression>> &);
 
 	bool
-	argumentList (std::vector <var> &);
+	argumentList (array <ptr <pbExpression>> &);
 
 	bool
-	leftHandSideExpression (var &);
+	leftHandSideExpression (ptr <pbExpression> &);
 
 	bool
-	postfixExpression (var &);
+	postfixExpression (ptr <pbExpression> &);
 
 	bool
-	unaryExpression (var &);
+	unaryExpression (ptr <pbExpression> &);
 
 	bool
-	multiplicativeExpression (var &);
+	multiplicativeExpression (ptr <pbExpression> &);
 
 	bool
-	additiveExpression (var &);
+	additiveExpression (ptr <pbExpression> &);
 
 	bool
-	shiftExpression (var &);
+	shiftExpression (ptr <pbExpression> &);
 
 	bool
-	relationalExpression (var &);
+	relationalExpression (ptr <pbExpression> &);
 
 	bool
-	equalityExpression (var &);
+	equalityExpression (ptr <pbExpression> &);
 
 	bool
-	bitwiseANDExpression (var &);
+	bitwiseANDExpression (ptr <pbExpression> &);
 
 	bool
-	bitwiseXORExpression (var &);
+	bitwiseXORExpression (ptr <pbExpression> &);
 
 	bool
-	bitwiseORExpression (var &);
+	bitwiseORExpression (ptr <pbExpression> &);
 
 	bool
-	logicalANDExpression (var &);
+	logicalANDExpression (ptr <pbExpression> &);
 
 	bool
-	logicalORExpression (var &);
+	logicalORExpression (ptr <pbExpression> &);
 
 	bool
-	conditionalExpression (var &);
+	conditionalExpression (ptr <pbExpression> &);
 
 	bool
-	assignmentExpression (var &);
+	assignmentExpression (ptr <pbExpression> &);
 
 	bool
 	assignmentOperator (AssignmentOperatorType &);
 
 	bool
-	expression (var &);
+	expression (ptr <pbExpression> &);
 
 	// A.4 Statements
 
@@ -290,7 +290,7 @@ private:
 	variableDeclaration ();
 
 	bool
-	initialiser (var &);
+	initialiser (ptr <pbExpression> &);
 
 	bool
 	emptyStatement ();
@@ -313,7 +313,7 @@ private:
 	functionDeclaration ();
 
 	bool
-	functionExpression (var &);
+	functionExpression (ptr <pbExpression> &);
 
 	bool
 	formalParameterList (std::vector <std::string> &);

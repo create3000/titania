@@ -53,6 +53,7 @@
 
 #include "../Execution/pbExecutionContext.h"
 #include "../Expressions/pbExpression.h"
+#include "../Primitives/array.h"
 
 namespace titania {
 namespace pb {
@@ -68,29 +69,24 @@ public:
 	///  @name Construction
 
 	///  Constructs new FunctionCallExpression expression.
-	FunctionCallExpression (pbExecutionContext* const executionContext, var && expression, std::vector <var> && expressions) :
-		    pbExpression (),
+	FunctionCallExpression (pbExecutionContext* const executionContext, ptr <pbExpression> && expression, array <ptr <pbExpression>> && expressions) :
+		    pbExpression (ExpressionType::FUNCTION_CALL_EXPRESSION),
 		executionContext (executionContext),
-		      expression (std::move (expression .isObject () ? expression .getObject () : nullptr)),
+		      expression (std::move (expression)),
 		     expressions (std::move (expressions))
-	{
-		if (not this -> expression)
-			throw TypeError ("'" + expression .toString () + "' is not a function.");
-
-		construct ();
-	}
+	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		std::vector <var> expressions;
+		array <ptr <pbExpression>> expressions;
 
 		for (const auto & expression : this -> expressions)
-			expressions .emplace_back (expression .copy (executionContext));
+			expressions .emplace_back (expression -> copy (executionContext));
 
 		return new FunctionCallExpression (executionContext, expression -> copy (executionContext), std::move (expressions));
 	}
@@ -109,7 +105,7 @@ public:
 		arguments .reserve (expressions .size ());
 
 		for (const auto & value : expressions)
-			arguments .emplace_back (value .getValue ());
+			arguments .emplace_back (value -> getValue ());
 
 		return expression -> call (executionContext, arguments);
 	}
@@ -123,17 +119,17 @@ private:
 	void
 	construct ()
 	{
-		addChildren (executionContext, expression);
+		if (expression -> isPrimitive ())
+			throw TypeError ("'" + expression -> toString () + "' is not a function.");
 
-		for (const auto & value : expressions)
-			addChild (value);
+		addChildren (executionContext, expression, expressions);
 	}
 
 	///  @name Members
 
-	const ptr <pbExecutionContext> executionContext;
-	const ptr <pbExpression>       expression;
-	const std::vector <var>        expressions;
+	const ptr <pbExecutionContext>   executionContext;
+	const ptr <pbExpression>         expression;
+	const array <ptr <pbExpression>> expressions;
 
 };
 

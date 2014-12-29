@@ -68,21 +68,21 @@ public:
 	///  @name Construction
 
 	///  Constructs new VariableDeclaration expression.
-	VariableDeclaration (pbExecutionContext* const executionContext, std::string && identifier, var && expression) :
-		    pbExpression (),
+	VariableDeclaration (pbExecutionContext* const executionContext, std::string && identifier, ptr <pbExpression> && expression) :
+		    pbExpression (ExpressionType::VARIABLE_DECLARATION),
 		executionContext (executionContext),
 		      identifier (std::move (identifier)),
 		              id (getId (this -> identifier)),
-		      expression (std::move (expression))
+		      expression (expression ? std::move (expression) : new PrimitiveExpression (Undefined ()))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return new VariableDeclaration (executionContext, std::string (identifier), expression .copy (executionContext)); }
+	{ return new VariableDeclaration (executionContext, std::string (identifier), expression -> copy (executionContext)); }
 
 	///  @name Operations
 
@@ -93,7 +93,7 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto value = expression .getValue ();
+		const auto value = expression -> getValue ();
 
 		try
 		{
@@ -121,7 +121,7 @@ private:
 	const ptr <pbExecutionContext> executionContext;
 	const std::string              identifier;
 	const size_t                   id;
-	const var                      expression;
+	const ptr <pbExpression>       expression;
 
 };
 

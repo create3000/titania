@@ -68,8 +68,8 @@ public:
 	///  @name Construction
 
 	///  Constructs new IfStatement expression.
-	IfStatement (var && booleanExpression) :
-		     pbExpression (),
+	IfStatement (ptr <pbExpression> && booleanExpression) :
+		     pbExpression (ExpressionType::IF_STATEMENT),
 		booleanExpression (std::move (booleanExpression)),
 		        thenBlock (new Block ()),
 		        elseBlock (new Block ())
@@ -77,12 +77,12 @@ public:
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto copy = new IfStatement (booleanExpression .copy (executionContext));
+		const auto copy = new IfStatement (booleanExpression -> copy (executionContext));
 
 		copy -> getThenBlock () -> import (executionContext, thenBlock .get ());
 		copy -> getElseBlock () -> import (executionContext, elseBlock .get ());
@@ -111,7 +111,7 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		if (booleanExpression .toBoolean ())
+		if (booleanExpression -> getValue () .toBoolean ())
 			thenBlock -> run ();
 
 		 else
@@ -132,9 +132,9 @@ private:
 
 	///  @name Members
 
-	const var               booleanExpression;
-	const ptr <Block> thenBlock;
-	const ptr <Block> elseBlock;
+	const ptr <pbExpression> booleanExpression;
+	const ptr <Block>        thenBlock;
+	const ptr <Block>        elseBlock;
 
 };
 

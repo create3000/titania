@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LESS_EXPRESSION_H__
 
 #include "../Expressions/pbExpression.h"
+#include "../Expressions/PrimitiveExpression.h"
 
 #include <cmath>
 
@@ -69,19 +70,19 @@ public:
 	///  @name Construction
 
 	///  Constructs new LessExpression expression.
-	LessExpression (var && lhs, var && rhs) :
-		pbExpression (),
+	LessExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
+		pbExpression (ExpressionType::LESS_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return new LessExpression (lhs .copy (executionContext), rhs .copy (executionContext)); }
+	{ return new LessExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Operations
 
@@ -92,21 +93,13 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto px = lhs .toPrimitive (NUMBER);
-		const auto py = rhs .toPrimitive (NUMBER);
+		const auto px = lhs -> getValue () .toPrimitive (NUMBER);
+		const auto py = rhs -> getValue () .toPrimitive (NUMBER);
 
-		return evaluate (px, py);
-	}
+		if (px .getType () == STRING and py .getType () == STRING)
+			return px .getString () < py .getString ();
 
-	///  Evaluates the expression.
-	static
-	bool
-	evaluate (const var & lhs, const var & rhs)
-	{
-		if (lhs .getType () == STRING and rhs .getType () == STRING)
-			return lhs .getString () < rhs .getString ();
-
-		return lhs .toNumber () < rhs .toNumber ();
+		return px .toNumber () < py .toNumber ();
 	}
 
 private:
@@ -120,8 +113,8 @@ private:
 
 	///  @name Members
 
-	const var lhs;
-	const var rhs;
+	const ptr <pbExpression> lhs;
+	const ptr <pbExpression> rhs;
 
 };
 
@@ -130,11 +123,11 @@ private:
 
 ///  Constructs new LessExpression expression.
 inline
-var
-createLessExpression (var && lhs, var && rhs)
+ptr <pbExpression>
+createLessExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
-	if (lhs .isPrimitive () and rhs .isPrimitive ())
-		return LessExpression::evaluate (lhs, rhs);
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new PrimitiveExpression (LessExpression (std::move (lhs), std::move (rhs)) .getValue ());
 
 	return new LessExpression (std::move (lhs), std::move (rhs));
 }

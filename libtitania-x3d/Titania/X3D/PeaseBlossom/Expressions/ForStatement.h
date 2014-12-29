@@ -53,6 +53,7 @@
 
 #include "../Execution/Block.h"
 #include "../Expressions/pbExpression.h"
+#include "../Expressions/PrimitiveExpression.h"
 #include "../Expressions/ControlFlowException.h"
 
 namespace titania {
@@ -69,21 +70,21 @@ public:
 	///  @name Construction
 
 	///  Constructs new ForStatement expression.
-	ForStatement (var && booleanExpression, var && iterationExpression) :
-		       pbExpression (),
-		  booleanExpression (std::move (booleanExpression .isUndefined () ? var (true) : booleanExpression)),
+	ForStatement (ptr <pbExpression> && booleanExpression, ptr <pbExpression> && iterationExpression) :
+		       pbExpression (ExpressionType::FOR_STATEMENT),
+		  booleanExpression (booleanExpression ? std::move (booleanExpression) : new PrimitiveExpression (true)),
 		iterationExpression (std::move (iterationExpression)),
 		              block (new Block ())
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto copy = new ForStatement (booleanExpression .copy (executionContext), iterationExpression .copy (executionContext));
+		const auto copy = new ForStatement (booleanExpression -> copy (executionContext), iterationExpression -> copy (executionContext));
 
 		copy -> getBlock () -> import (executionContext, block .get ());
 
@@ -105,7 +106,7 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		for ( ; booleanExpression .toBoolean (); iterationExpression .getValue ())
+		for ( ; booleanExpression -> getValue () .toBoolean (); iterationExpression -> getValue ())
 		{
 			try
 			{
@@ -153,9 +154,9 @@ private:
 
 	///  @name Members
 
-	const var               booleanExpression;
-	const var               iterationExpression;
-	const ptr <Block> block;
+	const ptr <pbExpression> booleanExpression;
+	const ptr <pbExpression> iterationExpression;
+	const ptr <Block>         block;
 
 };
 

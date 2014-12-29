@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_BASE_H__
 
 #include <string>
+#include <map>
 
 #include <Titania/LOG.h>
 
@@ -62,9 +63,13 @@ class pbBase
 {
 public:
 
+	///  @name Common members
+
 	virtual
 	const std::string &
 	getTypeName () const = 0;
+
+	///  @name Destruction
 
 	///  Destructs the pbBase.
 	virtual
@@ -74,7 +79,25 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	pbBase () = default;
+
+	///  @name Named identifier handling
+
+	static
+	size_t
+	getId (const std::string & identifier)
+	{ return ids .emplace (identifier, ids .size ()) .first -> second; }
+
+
+private:
+
+	///  @name Static members
+
+	using IdIndex = std::map <std::string, size_t>;
+
+	static IdIndex ids;
 
 };
 

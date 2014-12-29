@@ -75,7 +75,7 @@ public:
 
 	///  Creates a new default object.
 	virtual
-	ptr <pbBaseObject>
+	ptr <pbObject>
 	copy (pbExecutionContext* executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override

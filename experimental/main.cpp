@@ -220,42 +220,66 @@ using Matrix4d    = math::matrix4 <double>;
 using Matrix4f    = math::matrix4 <float>;
 using Spheroid3d  = math::spheroid3 <double>;
 
+using var = double;
 
+enum ExpressionType
+{
+	PRIMITIVE,
+	ADDITION
+};
 
-
-class A
+class Expression
 {
 public:
 
-	A ()
-	{
-		__LOG__ << std::endl;
-	}
-
-	A (const A &)
-	{
-		__LOG__ << std::endl;
-	}
-
+	ExpressionType type;
 };
 
-A
-f1 ()
-{
-	return A ();
-}
+var
+getValue (Expression* expression);
 
-A
-f2 ()
+class Primitive :
+	public Expression
 {
-	return f1 ();
-}
+public:
 
-A
-f3 ()
+	const var &
+	getValue ()
+	{
+		return value;
+	}
+
+	var value;
+};
+
+class Addition :
+	public Expression
 {
-	return f2 ();
-}
+public:
+
+	var
+	getValue ()
+	{
+		return ::getValue (lhs) + ::getValue (rhs);
+	}
+
+	Expression* lhs;
+	Expression* rhs;
+};
+
+var
+getValue (Expression* expression)
+{
+	switch (expression -> type)
+	{
+		case PRIMITIVE:
+			return static_cast <Primitive*> (expression) -> getValue ();
+		case ADDITION:
+			return static_cast <Addition*> (expression) -> getValue ();
+	}
+
+	throw std::invalid_argument ("getValue");
+};
 
 int
 main (int argc, char** argv)
@@ -271,9 +295,6 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-
-
-	f3 ();
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

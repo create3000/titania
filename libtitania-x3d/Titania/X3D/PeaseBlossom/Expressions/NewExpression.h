@@ -68,8 +68,8 @@ public:
 	///  @name Construction
 
 	///  Constructs new NewExpression expression.
-	NewExpression (var && expression, std::vector <var> && expressions) :
-		pbExpression (),
+	NewExpression (ptr <pbExpression> && expression, array <ptr <pbExpression>> && expressions) :
+		pbExpression (ExpressionType::NEW_EXPRESSION),
 		  expression (std::move (expression)),
 		 expressions (std::move (expressions))
 	{
@@ -78,17 +78,17 @@ public:
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		std::vector <var> expressions;
+		array <ptr <pbExpression>> expressions;
 
 		for (const auto & expression : this -> expressions)
-			expressions .emplace_back (expression .copy (executionContext));
+			expressions .emplace_back (expression -> copy (executionContext));
 
-		return new NewExpression (expression .copy (executionContext), std::move (expressions));
+		return new NewExpression (expression -> copy (executionContext), std::move (expressions));
 	}
 
 	///  @name Operations
@@ -100,7 +100,7 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto value = expression .getValue ();
+		const auto value = expression -> getValue ();
 
 		if (value .isObject ())
 		{
@@ -113,7 +113,7 @@ public:
 				arguments .reserve (expressions .size ());
 
 				for (const auto & value : expressions)
-					arguments .emplace_back (value .getValue ());
+					arguments .emplace_back (value -> getValue ());
 
 				return function -> construct (arguments);
 			}
@@ -129,17 +129,12 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{
-		addChildren (expression);
-
-		for (const auto & value : expressions)
-			addChild (value);
-	}
+	{ addChildren (expression, expressions); }
 
 	///  @name Members
 
-	const var               expression;
-	const std::vector <var> expressions;
+	const ptr <pbExpression>         expression;
+	const array <ptr <pbExpression>> expressions;
 
 };
 

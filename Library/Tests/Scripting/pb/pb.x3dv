@@ -62,10 +62,11 @@ Transform {
 DEF Script1 Script {
   inputOnly SFTime set_time
 
-  #   "peaseblossom:
-  #'';
-  #"
-  url "peaseblossom:
+  url ["peaseblossom:
+print (1.234);
+#  "
+#  "peaseblossom:"
+  "peaseblossom:
 /*
 function initialize ()
 {
@@ -469,7 +470,7 @@ print ();
 print ('pb:');
 print (outer);
 outer () ();
-"
+"]
   directOutput TRUE
 }
 
@@ -487,7 +488,6 @@ DEF Script2 Script {
   inputOutput SFDouble N2 8000000
 
   url "javascript:
- 
 var n = 0;
 
 function fibonacci_recursive (value)
@@ -550,43 +550,6 @@ function set_time (value, time)
 	//print ('result: ', for_time (1000000));
 	//print ('time: ',   (Date .now () - t0) / 1000);
 }
-
-var i = 0;
-var global1 = 'global1';
-
-function outer ()
-{
-	if (i == 0)
-	{
-		i += 1;
-
-		var outer1 = 'outer1';
-
-		return outer ();
-	}
-	else
-	{
-		var outer2 = 'outer2';	
-	}
-
-	return function inner () {
-		var inner1 = 'inner1';
-
-		print (global1);
-		print (outer1);
-		print (inner1);
-
-		print (outer2);
-	};
-}
-
-function Class () { return { x: 123 }; }
-
-print ()
-print ('sm:')
-outer () ();
-print (i .def);
-print (new Class () .x);
 "
   directOutput TRUE
 }

@@ -82,6 +82,12 @@ public:
 	void
 	toStream (std::ostream & ostream) const = 0;
 
+	///  @name Destruction
+
+	virtual
+	~pbOutputStreamObject ()
+	{ }
+
 
 protected:
 

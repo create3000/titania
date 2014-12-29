@@ -51,7 +51,8 @@
 #include "GarbageCollector.h"
 
 #include "../Base/pbChildObject.h"
-#include "../Objects/pbBaseObject.h"
+#include "../Objects/pbFunction.h"
+#include "../Objects/pbObject.h"
 
 #include <malloc.h>
 #include <thread>
@@ -61,9 +62,9 @@ namespace pb {
 
 // Important: std::deque is used here for objects because it is much more faster than std::vector!
 
-std::vector <ptr <pbBaseObject>*> GarbageCollector::cache;
-GarbageCollector::ObjectArray     GarbageCollector::objects;
-std::mutex                        GarbageCollector::mutex;
+std::vector <ptr <pbObject>*> GarbageCollector::cache;
+GarbageCollector::ObjectArray GarbageCollector::objects;
+std::mutex                    GarbageCollector::mutex;
 
 void
 GarbageCollector::trimFreeMemory ()
@@ -105,17 +106,17 @@ GarbageCollector::deleteObjects (const ObjectArray & objects)
 
 template <>
 void
-GarbageCollector::addObject <ptr <pbBaseObject>> (ptr <pbBaseObject>* const object)
+GarbageCollector::addObject <ptr <pbObject>> (ptr <pbObject>* const object)
 {
 	cache .emplace_back (object);
 }
 
 template <>
-ptr <pbBaseObject>*
-GarbageCollector::getObject <ptr <pbBaseObject>> ()
+ptr <pbObject>*
+GarbageCollector::getObject <ptr <pbObject>> ()
 {
 	if (cache .empty ())
-		return new ptr <pbBaseObject> ();
+		return new ptr <pbObject> ();
 	
 	const auto object = cache .back ();
 	

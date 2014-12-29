@@ -75,6 +75,12 @@ public:
 	void
 	fromStream (std::istream & istream) = 0;
 
+	///  @name Destruction
+
+	virtual
+	~pbInputStreamObject ()
+	{ }
+
 
 protected:
 

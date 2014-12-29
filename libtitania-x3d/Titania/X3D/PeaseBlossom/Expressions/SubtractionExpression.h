@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_SUBTRACTION_EXPRESSION_H__
 
 #include "../Expressions/pbExpression.h"
+#include "../Expressions/PrimitiveExpression.h"
 
 namespace titania {
 namespace pb {
@@ -67,19 +68,19 @@ public:
 	///  @name Construction
 
 	///  Constructs new SubtractionExpression expression.
-	SubtractionExpression (var && lhs, var && rhs) :
-		pbExpression (),
+	SubtractionExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
+		pbExpression (ExpressionType::SUBTRACTION_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return new SubtractionExpression (lhs .copy (executionContext), rhs .copy (executionContext)); }
+	{ return new SubtractionExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  Converts its arguments to a value of type Number.
 	virtual
@@ -87,13 +88,7 @@ public:
 	getValue () const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return evaluate (lhs, rhs); }
-
-	///  Evaluates the expression.
-	static
-	double
-	evaluate (const var & lhs, const var & rhs)
-	{ return lhs .toNumber () - rhs .toNumber (); }
+	{ return lhs -> getValue () .toNumber () - rhs -> getValue () .toNumber (); }
 
 
 private:
@@ -107,8 +102,8 @@ private:
 
 	///  @name Members
 
-	const var lhs;
-	const var rhs;
+	const ptr <pbExpression> lhs;
+	const ptr <pbExpression> rhs;
 
 };
 
@@ -117,11 +112,11 @@ private:
 
 ///  Constructs new SubtractionExpression expression.
 inline
-var
-createSubtractionExpression (var && lhs, var && rhs)
+ptr <pbExpression>
+createSubtractionExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
-	if (lhs .isPrimitive () and rhs .isPrimitive ())
-		return var (SubtractionExpression::evaluate (lhs, rhs));
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new PrimitiveExpression (SubtractionExpression (std::move (lhs), std::move (rhs)) .getValue ());
 
 	return new SubtractionExpression (std::move (lhs), std::move (rhs));
 }

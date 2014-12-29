@@ -70,7 +70,7 @@ public:
 
 	///  Constructs new VariableExpression expression.
 	VariableExpression (pbExecutionContext* const executionContext, std::string && identifier) :
-		    pbExpression (),
+		    pbExpression (ExpressionType::VARIABLE_EXPRESSION),
 		executionContext (executionContext),
 		      identifier (std::move (identifier)),
 		              id (getId (this -> identifier))
@@ -78,7 +78,7 @@ public:
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
+	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override

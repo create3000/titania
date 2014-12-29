@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ADDITION_EXPRESSION_H__
 
 #include "../Expressions/pbExpression.h"
+#include "../Expressions/PrimitiveExpression.h"
 
 namespace titania {
 namespace pb {
@@ -67,19 +68,19 @@ public:
 	///  @name Construction
 
 	///  Constructs new AdditionExpression expression.
-	AdditionExpression (var && lhs, var && rhs) :
-		pbExpression (),
+	AdditionExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
+		pbExpression (ExpressionType::ADDITION_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return new AdditionExpression (lhs .copy (executionContext), rhs .copy (executionContext)); }
+	{ return new AdditionExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Operations
 
@@ -90,21 +91,13 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto & px = lhs .toPrimitive ();
-		const auto & py = rhs .toPrimitive ();
+		const auto px = lhs -> getValue () .toPrimitive ();
+		const auto py = rhs -> getValue () .toPrimitive ();
 
-		return evaluate (px, py);
-	}
+		if (px .getType () == STRING or py .getType () == STRING)
+			return px .toString () + py .toString ();
 
-	///  Evaluates the expression.
-	static
-	var
-	evaluate (const var & lhs, const var & rhs)
-	{
-		if (lhs .getType () == STRING or rhs .getType () == STRING)
-			return lhs .toString () + rhs .toString ();
-
-		return lhs .toNumber () + rhs .toNumber ();
+		return px .toNumber () + py .toNumber ();
 	}
 
 
@@ -119,8 +112,8 @@ private:
 
 	///  @name Members
 
-	const var lhs;
-	const var rhs;
+	const ptr <pbExpression> lhs;
+	const ptr <pbExpression> rhs;
 
 };
 
@@ -129,11 +122,11 @@ private:
 
 ///  Constructs new AdditionExpression expression.
 inline
-var
-createAdditionExpression (var && lhs, var && rhs)
+ptr <pbExpression>
+createAdditionExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
-	if (lhs .isPrimitive () and rhs .isPrimitive ())
-		return AdditionExpression::evaluate (lhs, rhs);
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new PrimitiveExpression (AdditionExpression (std::move (lhs), std::move (rhs)) .getValue ());
 
 	return new AdditionExpression (std::move (lhs), std::move (rhs));
 }

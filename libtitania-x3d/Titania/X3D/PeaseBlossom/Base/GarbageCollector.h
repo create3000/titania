@@ -62,7 +62,7 @@
 namespace titania {
 namespace pb {
 
-class pbBaseObject;
+class pbObject;
 
 class GarbageCollector
 {
@@ -74,13 +74,13 @@ public:
 	static
 	void
 	addObject (Type* const)
-	{ throw std::invalid_argument ("addObject"); }
+	{ throw std::invalid_argument ("GarbageCollector::addObject"); }
 
 	template <class Type>
 	static
 	Type*
 	getObject ()
-	{ throw std::invalid_argument ("getObject"); }
+	{ throw std::invalid_argument ("GarbageCollector::getObject"); }
 
 	static
 	void
@@ -121,7 +121,7 @@ private:
 
 	///  @name Static members
 
-	static std::vector <ptr <pbBaseObject>*> cache;
+	static std::vector <ptr <pbObject>*> cache;
 
 	static ObjectArray objects;
 	static std::mutex  mutex;
@@ -130,11 +130,11 @@ private:
 
 template <>
 void
-GarbageCollector::addObject <ptr <pbBaseObject>> (ptr <pbBaseObject>* const);
+GarbageCollector::addObject <ptr <pbObject>> (ptr <pbObject>* const);
 
 template <>
-ptr <pbBaseObject>*
-GarbageCollector::getObject <ptr <pbBaseObject>> ();
+ptr <pbObject>*
+GarbageCollector::getObject <ptr <pbObject>> ();
 
 } // pb
 } // titania

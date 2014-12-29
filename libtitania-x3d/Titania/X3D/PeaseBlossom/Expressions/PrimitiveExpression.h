@@ -48,116 +48,61 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_BASE_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_BASE_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_H__
 
-#include "../Base/pbChildObject.h"
-#include "../Base/pbOutputStreamObject.h"
+#include "../Expressions/pbExpression.h"
 #include "../Primitives/var.h"
-
-#include <map>
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a BaseObject value. This is the base class for all ECMAScript objects.
+ *  Class to represent a ECMAScript primitive expression.
  */
-class pbBaseObject :
-	virtual public pbChildObject,
-	virtual public pbOutputStreamObject
+class PrimitiveExpression :
+	public pbExpression
 {
 public:
 
+	///  @name Construction
+
+	///  Constructs new PrimitiveExpression expression.
+	PrimitiveExpression (const var & value) :
+		pbExpression (ExpressionType::PRIMITIVE_EXPRESSION),
+		       value (value)
+	{ }
+
+	///  Constructs new PrimitiveExpression expression.
+	PrimitiveExpression (var && value) :
+		pbExpression (ExpressionType::PRIMITIVE_EXPRESSION),
+		       value (std::move (value))
+	{ }
+
+	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext*) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
-	       pbControlFlowException) = 0;
+	       pbControlFlowException) final override
+	{ return new PrimitiveExpression (value); }
 
-	///  @name Conversion operations
+	///  @name Operations
 
-	virtual
-	var
-	getDefaultValue (const ValueType preferedType) const
-	throw (pbException) = 0;
-
+	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
 	getValue () const
 	throw (pbException,
-	       pbControlFlowException) = 0;
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override
-	{ ostream << "[object " << getTypeName () << "]"; }
-
-
-protected:
-
-	using pbChildObject::addChild;
-	using pbChildObject::removeChild;
-
-	///  @name Construction
-
-	///  Constructs new pbBaseObject.
-	pbBaseObject () :
-		       pbChildObject (),
-		pbOutputStreamObject ()
-	{ }
-
-	///  @name Named identifier handling
-
-	static
-	size_t
-	getId (const std::string & identifier)
-	{ return ids .emplace (identifier, ids .size ()) .first -> second; }
-
-	///  @name Children handling
-
-	template <typename ... Args>
-	void
-	addChildren (Args & ... args)
-	{ basic::pass ((addChild (args), 1) ...); }
-
-	void
-	addChild (const var & child)
-	{
-		if (child .isObject ())
-			addChild (child .getObject ());
-	}
-
-	template <typename ... Args>
-	void
-	removeChildren (Args & ... args)
-	{ basic::pass ((removeChild (args), 1) ...); }
-
-	void
-	removeChild (const var & child)
-	{
-		if (child .isObject ())
-			removeChild (child .getObject ());
-	}
-
-	void
-	addValue (const var & child)
-	{
-		if (child .isObject ())
-			const_cast <var &> (child) .getObject () .addParent (this);
-	}
+	       pbControlFlowException) final override
+	{ return value; }
 
 
 private:
 
-	///  @name Static members
+	///  @name Members
 
-	using IdIndex = std::map <std::string, size_t>;
-
-	static IdIndex ids;
+	const var value;
 
 };
 

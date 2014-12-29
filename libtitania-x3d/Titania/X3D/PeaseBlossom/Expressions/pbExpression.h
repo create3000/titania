@@ -51,7 +51,9 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
 
-#include "../Objects/pbBaseObject.h"
+#include "../Primitives/var.h"
+#include "../Base/pbChildObject.h"
+#include "../Base/pbOutputStreamObject.h"
 
 namespace titania {
 namespace pb {
@@ -60,25 +62,38 @@ namespace pb {
  *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
  */
 class pbExpression :
-	public pbBaseObject
+	virtual public pbChildObject,
+	virtual public pbOutputStreamObject
 {
 public:
+
+	///  @name Construction
+
+	virtual
+	ptr <pbExpression>
+	copy (pbExecutionContext* const) const
+	throw (pbException,
+	       pbControlFlowException) = 0;
 
 	///  @name Common members
 
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
-	getTypeName () const override
+	getTypeName () const final override
 	{ return typeName; }
 
-	///  @name Conversion operations
+	///  Returns the type  of this object.
+	ExpressionType
+	getType () const
+	{ return type; }
 
-	virtual
-	var
-	getDefaultValue (const ValueType preferedType) const
-	throw (pbException) final override
-	{ return getValue () .toPrimitive (preferedType); }
+	///  Returns wheter this expression is a primitive expression.
+	bool
+	isPrimitive () const
+	{ return type == ExpressionType::PRIMITIVE_EXPRESSION; }
+
+	///  @name Conversion operations
 
 	virtual
 	var
@@ -88,8 +103,22 @@ public:
 
 	virtual
 	var
+	getValue () const
+	throw (pbException,
+	       pbControlFlowException) = 0;
+
+	virtual
+	var
 	call (const ptr <pbExecutionContext> &, const std::vector <var> &) const
 	throw (pbException);
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ ostream << "[pbExpression]"; }
 
 
 protected:
@@ -97,8 +126,10 @@ protected:
 	///  @name Construction
 
 	///  Constructs new pbExpression.
-	pbExpression () :
-		pbBaseObject ()
+	pbExpression (const ExpressionType type) :
+		       pbChildObject (),
+		pbOutputStreamObject (),
+		                type (type)
 	{ }
 
 
@@ -107,6 +138,10 @@ private:
 	///  @name Static members
 
 	static const std::string typeName;
+
+	///  @name Members
+
+	const ExpressionType type;
 
 };
 

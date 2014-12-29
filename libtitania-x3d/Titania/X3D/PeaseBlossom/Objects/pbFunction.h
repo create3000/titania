@@ -88,7 +88,7 @@ public:
 	var
 	construct (const std::vector <var> & arguments = { })
 	throw (pbException)
-	{ return Undefined (); }
+	{ throw TypeError ("Cannot call function as constructor."); }
 
 	///  Executes this function.
 	virtual

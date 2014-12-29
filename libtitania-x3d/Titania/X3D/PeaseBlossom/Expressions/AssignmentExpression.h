@@ -69,21 +69,21 @@ public:
 	///  @name Construction
 
 	///  Constructs new AssignmentExpression expression.
-	AssignmentExpression (pbExecutionContext* const executionContext, var && lhs, var && rhs, AssignmentOperatorType type) :
-		    pbExpression (),
+	AssignmentExpression (pbExecutionContext* const executionContext, ptr <pbExpression> && lhs, ptr <pbExpression> && rhs, AssignmentOperatorType type) :
+		    pbExpression (ExpressionType::ASSIGNMENT_EXPRESSION),
 		executionContext (executionContext),
-		             lhs (lhs .isObject () ? lhs .getObject () : nullptr),
+		             lhs (std::move (lhs)),
 		             rhs (std::move (rhs)),
 		            type (type)
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return new AssignmentExpression (executionContext, lhs -> copy (executionContext), rhs .copy (executionContext), type); }
+	{ return new AssignmentExpression (executionContext, lhs -> copy (executionContext), rhs -> copy (executionContext), type); }
 
 	///  @name Operations
 
@@ -98,54 +98,57 @@ public:
 		{
 			case AssignmentOperatorType::ASSIGNMENT:
 			{
-				return lhs -> setValue (rhs .getValue ());
+				return lhs -> setValue (rhs -> getValue ());
 			}
 			case AssignmentOperatorType::MULTIPLICATION_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toNumber () * rhs .toNumber ());
+				return lhs -> setValue (lhs -> getValue () .toNumber () * rhs -> getValue () .toNumber ());
 			}
 			case AssignmentOperatorType::DIVISION_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toNumber () / rhs .toNumber ());
+				return lhs -> setValue (lhs -> getValue () .toNumber () / rhs -> getValue () .toNumber ());
 			}
 			case AssignmentOperatorType::REMAINDER_ASSIGNMENT:
 			{
-				return lhs -> setValue (std::fmod (lhs -> getValue () .toNumber (), rhs .toNumber ()));
+				return lhs -> setValue (std::fmod (lhs -> getValue () .toNumber (), rhs -> getValue () .toNumber ()));
 			}
 			case AssignmentOperatorType::ADDITION_ASSIGNMENT:
 			{
-				if (lhs -> getValue () .getType () == STRING or rhs .getType () == STRING)
-					return lhs -> setValue (lhs -> getValue () .toString () + rhs .toString ());
+				const auto x = lhs -> getValue ();
+				const auto y = rhs -> getValue ();
 
-				return lhs -> setValue (lhs -> getValue () .toNumber () + rhs .toNumber ());
+				if (x .getType () == STRING or y .getType () == STRING)
+					return lhs -> setValue (x .toString () + y .toString ());
+
+				return lhs -> setValue (x .toNumber () + y .toNumber ());
 			}
 			case AssignmentOperatorType::SUBTRACTION_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toNumber () - rhs .toNumber ());
+				return lhs -> setValue (lhs -> getValue () .toNumber () - rhs -> getValue () .toNumber ());
 			}
 			case AssignmentOperatorType::LEFT_SHIFT_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toInt32 () << (rhs .toUInt32 () & 0x1f));
+				return lhs -> setValue (lhs -> getValue () .toInt32 () << (rhs -> getValue () .toUInt32 () & 0x1f));
 			}
 			case AssignmentOperatorType::RIGHT_SHIFT_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toInt32 () >> (rhs .toUInt32 () & 0x1f));
+				return lhs -> setValue (lhs -> getValue () .toInt32 () >> (rhs -> getValue () .toUInt32 () & 0x1f));
 			}
 			case AssignmentOperatorType::UNSIGNED_RIGHT_SHIFT_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toUInt32 () >> (rhs .toUInt32 () & 0x1f));
+				return lhs -> setValue (lhs -> getValue () .toUInt32 () >> (rhs -> getValue () .toUInt32 () & 0x1f));
 			}
 			case AssignmentOperatorType::BITWISE_AND_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toInt32 () & rhs .toInt32 ());
+				return lhs -> setValue (lhs -> getValue () .toInt32 () & rhs -> getValue () .toInt32 ());
 			}
 			case AssignmentOperatorType::BITWISE_XOR_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toInt32 () ^ rhs .toInt32 ());
+				return lhs -> setValue (lhs -> getValue () .toInt32 () ^ rhs -> getValue () .toInt32 ());
 			}
 			case AssignmentOperatorType::BITWISE_OR_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toInt32 () | rhs .toInt32 ());
+				return lhs -> setValue (lhs -> getValue () .toInt32 () | rhs -> getValue () .toInt32 ());
 			}
 		}
 
@@ -161,7 +164,7 @@ private:
 	void
 	construct ()
 	{
-		if (not lhs)
+		if (lhs -> isPrimitive ())
 			throw ReferenceError ("Invalid assignment left-hand side.");
 
 		addChildren (executionContext, lhs, rhs);
@@ -171,7 +174,7 @@ private:
 
 	const ptr <pbExecutionContext> executionContext;
 	const ptr <pbExpression>       lhs;
-	const var                      rhs;
+	const ptr <pbExpression>       rhs;
 	const AssignmentOperatorType   type;
 
 };

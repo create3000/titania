@@ -68,8 +68,8 @@ public:
 	///  @name Construction
 
 	///  Constructs new AdditionExpression expression.
-	PropertyExpression (var && expression, std::string && identifier) :
-		pbExpression (),
+	PropertyExpression (ptr <pbExpression> && expression, std::string && identifier) :
+		pbExpression (ExpressionType::PROPERTY_EXPRESSION),
 		  expression (std::move (expression)),
 		  identifier (std::move (identifier)),
 		          id (getId (this -> identifier))
@@ -77,11 +77,11 @@ public:
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return new PropertyExpression (expression .copy (executionContext), std::string (identifier)); }
+	{ return new PropertyExpression (expression -> copy (executionContext), std::string (identifier)); }
 
 	///  @name Operations
 
@@ -90,7 +90,7 @@ public:
 	setValue (var && value) const
 	throw (pbException) final override
 	{
-		const auto lhs = expression .getValue ();
+		const auto lhs = expression -> getValue ();
 
 		if (lhs .isObject ())
 		{
@@ -121,7 +121,7 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto lhs = expression .getValue ();
+		const auto lhs = expression -> getValue ();
 
 		if (lhs .isObject ())
 		{
@@ -146,17 +146,48 @@ public:
 	call (const ptr <pbExecutionContext> &, const std::vector <var> & arguments) const
 	throw (pbException) final override
 	{
-		const auto lhs = expression .getValue ();
+		const auto lhs = expression -> getValue ();
 
-		if (lhs .isObject ())
+		switch (lhs .getType ())
 		{
-			pbObject* const object = dynamic_cast <pbObject*> (lhs .getObject () .get ());
+			case UNDEFINED:
+			{
+				throw TypeError ("undefined has no properties");
+			}
+			case BOOLEAN:
+			{
+				// toString
+				// lhs .toObject () -> call (id, arguments)
+				break;		
+			}
+			case NUMBER:
+			{
+				// toPrecision
+				// toString
+				// ...
+				// lhs .toObject () -> call (id, arguments)
+				break;
+			}
+			case STRING:
+			{
+				// toString
+				// ...
+				// lhs .toObject () -> call (id, arguments)
+				break;
+			}
+			case NULL_OBJECT:
+			{
+				throw TypeError ("null has no properties");
+			}
+			case OBJECT:
+			{
+				pbObject* const object = static_cast <pbObject*> (lhs .getObject () .get ());
 
-			if (object)
 				return object -> call (id, arguments);
+			}
 		}
 
-		throw TypeError ("'" + lhs .toString () + "' is not a function.");
+		throw TypeError ("'" + lhs .toString () + "." + identifier + "' is not a function");
 	}
 
 
@@ -171,9 +202,9 @@ private:
 
 	///  @name Members
 
-	const var         expression;
-	const std::string identifier;
-	const size_t      id;
+	const ptr <pbExpression> expression;
+	const std::string        identifier;
+	const size_t             id;
 
 };
 

@@ -55,7 +55,7 @@
 namespace titania {
 namespace pb {
 
-PropertyDescriptor::PropertyDescriptor (pbObject* const object,
+PropertyDescriptor::PropertyDescriptor (pbChildObject* const object,
                                         const std::string & name,
                                         const var & value_,
                                         const PropertyFlagsType & flags,
@@ -87,9 +87,10 @@ PropertyDescriptor::~PropertyDescriptor ()
 const std::string pbObject::typeName = "Object";
 
 pbObject::pbObject () :
-	    pbBaseObject (),
-	      properties (),
-	cachedProperties (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ()))
+	       pbChildObject (),
+	pbOutputStreamObject (),
+	          properties (),
+	    cachedProperties (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ()))
 { }
 
 ptr <pbObject>
@@ -101,7 +102,7 @@ throw (pbException,
 	{
 		copy -> updatePropertyDescriptor (property .first,
 		                                  property .second -> getName (),
-		                                  property .second -> getValue () .copy (executionContext) .getValue (),
+		                                  property .second -> getValue () .copy (executionContext),
 		                                  property .second -> getFlags (),
 		                                  property .second -> getGetter (),
 		                                  property .second -> getSetter ());
@@ -327,7 +328,7 @@ pbObject::dispose ()
 	properties       .clear ();
 	cachedProperties .clear ();
 
-	pbBaseObject::dispose ();
+	pbChildObject::dispose ();
 }
 
 pbObject::~pbObject ()

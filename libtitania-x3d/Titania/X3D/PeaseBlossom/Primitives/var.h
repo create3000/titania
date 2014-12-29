@@ -63,7 +63,7 @@ namespace titania {
 namespace pb {
 
 class pbExecutionContext;
-class pbBaseObject;
+class pbObject;
 
 struct Undefined { };
 
@@ -179,27 +179,31 @@ public:
 	template <class Up>
 	var (const ptr <Up> & object) :
 		pbOutputStreamObject (),
-		               value ({ object_ : GarbageCollector::getObject <ptr <pbBaseObject>> () }),
+		               value ({ object_ : GarbageCollector::getObject <ptr <pbObject>> () }),
 		                type (OBJECT)
 	{
 		*value .object_ = object;
+	
+		assert (*value .object_);
 	}
 
 	///  Constructs new var.
 	template <class Up>
 	var (ptr <Up> && object) :
 		pbOutputStreamObject (),
-		               value ({ object_ : GarbageCollector::getObject <ptr <pbBaseObject>> () }),
+		               value ({ object_ : GarbageCollector::getObject <ptr <pbObject>> () }),
 		                type (OBJECT)
 	{
 		*value .object_ = std::move (object);
+	
+		assert (*value .object_);
 	}
 
 	///  Constructs new var.
-	var (pbBaseObject* const object);
+	var (pbObject* const object);
 
 	var
-	copy (pbExecutionContext* executionContext) const
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException);
 
@@ -246,9 +250,11 @@ public:
 	{
 		clear ();
 
-		value .object_  = GarbageCollector::getObject <ptr <pbBaseObject>> ();
+		value .object_  = GarbageCollector::getObject <ptr <pbObject>> ();
 		*value .object_ = other;
 		type            = OBJECT;
+	
+		assert (*value .object_);
 
 		return *this;
 	}
@@ -259,15 +265,17 @@ public:
 	{
 		clear ();
 
-		value .object_  = GarbageCollector::getObject <ptr <pbBaseObject>> ();
+		value .object_  = GarbageCollector::getObject <ptr <pbObject>> ();
 		*value .object_ = std::move (other);
 		type            = OBJECT;
+	
+		assert (*value .object_);
 
 		return *this;
 	}
 
 	var &
-	operator = (pbBaseObject* const object);
+	operator = (pbObject* const object);
 
 	///  @name Common members
 
@@ -335,6 +343,13 @@ public:
 	double
 	toNumber () const;
 
+//	///  Converts its argument to a value of type pbObject.
+//	ptr <pbObject>
+//	toObject () const
+//	throw (std::invalid_argument,
+//	       pbException,
+//		    pbControlFlowException);
+
 	///  @name Member access
 
 	///  Returns a value of type bool.
@@ -353,19 +368,14 @@ public:
 	{ return *value .string_; }
 
 	///  Returns a value of type Object.
-	ptr <pbBaseObject> &
+	ptr <pbObject> &
 	getObject ()
 	{ return *value .object_; }
 
 	///  Returns a value of type Object.
-	const ptr <pbBaseObject> &
+	const ptr <pbObject> &
 	getObject () const
 	{ return *value .object_; }
-
-	var
-	getValue () const
-	throw (pbException,
-	       pbControlFlowException);
 
 	///  @name Input/Output
 
@@ -394,7 +404,7 @@ private:
 		bool bool_;
 		double number_;
 		Glib::ustring* string_;
-		ptr <pbBaseObject>* object_;
+		ptr <pbObject>* object_;
 	};
 
 	///  @name Members

@@ -69,19 +69,19 @@ public:
 	///  @name Construction
 
 	///  Constructs new ReturnStatement statement.
-	ReturnStatement (pbExecutionContext* const executionContext, var && expression) :
-		    pbExpression (),
+	ReturnStatement (pbExecutionContext* const executionContext, ptr <pbExpression> && expression) :
+		    pbExpression (ExpressionType::RETURN_STATEMENT),
 		executionContext (executionContext),
 		      expression (std::move (expression))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return new ReturnStatement (executionContext, expression .copy (executionContext)); }
+	{ return new ReturnStatement (executionContext, expression -> copy (executionContext)); }
 
 	///  @name Operations
 
@@ -92,7 +92,7 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const var value = expression .getValue ();
+		const var value = expression -> getValue ();
 
 		if (value .getType () == OBJECT)
 		{
@@ -117,7 +117,7 @@ private:
 	///  @name Members
 
 	const ptr <pbExecutionContext> executionContext;
-	const var                      expression;
+	const ptr <pbExpression>       expression;
 
 };
 

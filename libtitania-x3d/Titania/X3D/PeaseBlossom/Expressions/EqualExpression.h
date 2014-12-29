@@ -69,19 +69,19 @@ public:
 	///  @name Construction
 
 	///  Constructs new EqualExpression expression.
-	EqualExpression (var && lhs, var && rhs) :
-		pbExpression (),
+	EqualExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
+		pbExpression (ExpressionType::EQUAL_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return new EqualExpression (lhs .copy (executionContext), rhs .copy (executionContext)); }
+	{ return new EqualExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Operations
 
@@ -92,17 +92,9 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto x = lhs .getValue ();
-		const auto y = rhs .getValue ();
+		const auto x = lhs -> getValue ();
+		const auto y = rhs -> getValue ();
 
-		return evaluate (x, y);
-	}
-
-	///  Evaluates the expression.
-	static
-	bool
-	evaluate (const var & x, const var & y)
-	{
 		if (x .getType () == y .getType ())
 		{
 			switch (x .getType ())
@@ -159,8 +151,8 @@ private:
 
 	///  @name Members
 
-	const var lhs;
-	const var rhs;
+	const ptr <pbExpression> lhs;
+	const ptr <pbExpression> rhs;
 
 };
 
@@ -169,11 +161,11 @@ private:
 
 ///  Constructs new EqualExpression expression.
 inline
-var
-createEqualExpression (var && lhs, var && rhs)
+ptr <pbExpression>
+createEqualExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
-	if (lhs .isPrimitive () and rhs .isPrimitive ())
-		return EqualExpression::evaluate (lhs, rhs);
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new PrimitiveExpression (EqualExpression (std::move (lhs), std::move (rhs)) .getValue ());
 
 	return new EqualExpression (std::move (lhs), std::move (rhs));
 }

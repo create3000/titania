@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_DIVISION_EXPRESSION_H__
 
 #include "../Expressions/pbExpression.h"
+#include "../Expressions/PrimitiveExpression.h"
 
 namespace titania {
 namespace pb {
@@ -67,19 +68,19 @@ public:
 	///  @name Construction
 
 	///  Constructs new DivisionExpression expression.
-	DivisionExpression (var && lhs, var && rhs) :
-		pbExpression (),
+	DivisionExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
+		pbExpression (ExpressionType::DIVISION_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return new DivisionExpression (lhs .copy (executionContext), rhs .copy (executionContext)); }
+	{ return new DivisionExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Operations
 
@@ -89,13 +90,7 @@ public:
 	getValue () const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return evaluate (lhs, rhs); }
-
-	///  Evaluates the expression.
-	static
-	double
-	evaluate (const var & lhs, const var & rhs)
-	{ return lhs .toNumber () / rhs .toNumber (); }
+	{ return lhs -> getValue () .toNumber () / rhs -> getValue () .toNumber (); }
 
 
 private:
@@ -109,8 +104,8 @@ private:
 
 	///  @name Members
 
-	const var lhs;
-	const var rhs;
+	const ptr <pbExpression> lhs;
+	const ptr <pbExpression> rhs;
 
 };
 
@@ -119,11 +114,11 @@ private:
 
 ///  Constructs new DivisionExpression expression.
 inline
-var
-createDivisionExpression (var && lhs, var && rhs)
+ptr <pbExpression>
+createDivisionExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
-	if (lhs .isPrimitive () and rhs .isPrimitive ())
-		return DivisionExpression::evaluate (lhs, rhs);
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new PrimitiveExpression (DivisionExpression (std::move (lhs), std::move (rhs)) .getValue ());
 
 	return new DivisionExpression (std::move (lhs), std::move (rhs));
 }

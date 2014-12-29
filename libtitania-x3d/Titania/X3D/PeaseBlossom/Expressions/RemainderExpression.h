@@ -52,6 +52,8 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_EXPRESSION_H__
 
 #include "../Expressions/pbExpression.h"
+#include "../Expressions/PrimitiveExpression.h"
+
 #include <cmath>
 
 namespace titania {
@@ -68,19 +70,19 @@ public:
 	///  @name Construction
 
 	///  Constructs new RemainderExpression expression.
-	RemainderExpression (var && lhs, var && rhs) :
-		pbExpression (),
+	RemainderExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
+		pbExpression (ExpressionType::REMAINDER_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return new RemainderExpression (lhs .copy (executionContext), rhs .copy (executionContext)); }
+	{ return new RemainderExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Operations
 
@@ -90,13 +92,7 @@ public:
 	getValue () const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return evaluate (lhs, rhs); }
-
-	///  Evaluates the expression.
-	static
-	double
-	evaluate (const var & lhs, const var & rhs)
-	{ return std::fmod (lhs .toNumber (), rhs .toNumber ()); }
+	{ return std::fmod (lhs -> getValue () .toNumber (), rhs -> getValue () .toNumber ()); }
 
 
 private:
@@ -110,8 +106,8 @@ private:
 
 	///  @name Members
 
-	const var lhs;
-	const var rhs;
+	const ptr <pbExpression> lhs;
+	const ptr <pbExpression> rhs;
 
 };
 
@@ -120,11 +116,11 @@ private:
 
 ///  Constructs new RemainderExpression expression.
 inline
-var
-createRemainderExpression (var && lhs, var && rhs)
+ptr <pbExpression>
+createRemainderExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
-	if (lhs .isPrimitive () and rhs .isPrimitive ())
-		return RemainderExpression::evaluate (lhs, rhs);
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new PrimitiveExpression (RemainderExpression (std::move (lhs), std::move (rhs)) .getValue ());
 
 	return new RemainderExpression (std::move (lhs), std::move (rhs));
 }

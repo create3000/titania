@@ -71,5 +71,6 @@
 #include "Expressions/VariableDeclaration.h"
 #include "Expressions/VariableExpression.h"
 #include "Expressions/NewExpression.h"
+#include "Expressions/PrimitiveExpression.h"
 
 #endif

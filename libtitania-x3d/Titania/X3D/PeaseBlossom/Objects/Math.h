@@ -73,7 +73,7 @@ public:
 
 	///  Constructs new Math.
 	virtual
-	ptr <pbBaseObject>
+	ptr <pbObject>
 	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override;

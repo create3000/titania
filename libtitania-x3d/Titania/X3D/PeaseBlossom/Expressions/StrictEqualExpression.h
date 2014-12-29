@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_EXPRESSION_H__
 
 #include "../Expressions/pbExpression.h"
+#include "../Expressions/PrimitiveExpression.h"
 
 namespace titania {
 namespace pb {
@@ -67,19 +68,19 @@ public:
 	///  @name Construction
 
 	///  Constructs new StrictEqualExpression expression.
-	StrictEqualExpression (var && lhs, var && rhs) :
-		pbExpression (),
+	StrictEqualExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
+		pbExpression (ExpressionType::STRICT_EQUAL_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return new StrictEqualExpression (lhs .copy (executionContext), rhs .copy (executionContext)); }
+	{ return new StrictEqualExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Operations
 
@@ -90,17 +91,9 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto x = lhs .getValue ();
-		const auto y = rhs .getValue ();
+		const auto x = lhs -> getValue ();
+		const auto y = rhs -> getValue ();
 
-		return evaluate (x, y);
-	}
-
-	///  Evaluates the expression.
-	static
-	bool
-	evaluate (const var & x, const var & y)
-	{
 		if (x .getType () not_eq y .getType ())
 			return false;
 
@@ -139,8 +132,8 @@ private:
 
 	///  @name Members
 
-	const var lhs;
-	const var rhs;
+	const ptr <pbExpression> lhs;
+	const ptr <pbExpression> rhs;
 
 };
 
@@ -149,11 +142,11 @@ private:
 
 ///  Constructs new StrictEqualExpression expression.
 inline
-var
-createStrictEqualExpression (var && lhs, var && rhs)
+ptr <pbExpression>
+createStrictEqualExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
-	if (lhs .isPrimitive () and rhs .isPrimitive ())
-		return StrictEqualExpression::evaluate (lhs, rhs);
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new PrimitiveExpression (StrictEqualExpression (std::move (lhs), std::move (rhs)) .getValue ());
 
 	return new StrictEqualExpression (std::move (lhs), std::move (rhs));
 }

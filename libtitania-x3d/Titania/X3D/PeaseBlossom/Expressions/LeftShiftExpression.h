@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_EXPRESSION_H__
 
 #include "../Expressions/pbExpression.h"
+#include "../Expressions/PrimitiveExpression.h"
 
 namespace titania {
 namespace pb {
@@ -67,19 +68,19 @@ public:
 	///  @name Construction
 
 	///  Constructs new LeftShiftExpression expression.
-	LeftShiftExpression (var && lhs, var && rhs) :
-		pbExpression (),
+	LeftShiftExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
+		pbExpression (ExpressionType::LEFT_SHIFT_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbBaseObject>
-	copy (pbExecutionContext* executionContext) const
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return new LeftShiftExpression (lhs .copy (executionContext), rhs .copy (executionContext)); }
+	{ return new LeftShiftExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Operations
 
@@ -89,13 +90,7 @@ public:
 	getValue () const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return evaluate (lhs, rhs); }
-
-	///  Evaluates the expression.
-	static
-	int32_t
-	evaluate (const var & lhs, const var & rhs)
-	{ return lhs .toInt32 () << (rhs .toUInt32 () & 0x1f); }
+	{ return lhs -> getValue () .toInt32 () << (rhs -> getValue () .toUInt32 () & 0x1f); }
 
 
 private:
@@ -109,8 +104,8 @@ private:
 
 	///  @name Members
 
-	const var lhs;
-	const var rhs;
+	const ptr <pbExpression> lhs;
+	const ptr <pbExpression> rhs;
 
 };
 
@@ -119,11 +114,11 @@ private:
 
 ///  Constructs new LeftShiftExpression expression.
 inline
-var
-createLeftShiftExpression (var && lhs, var && rhs)
+ptr <pbExpression>
+createLeftShiftExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
-	if (lhs .isPrimitive () and rhs .isPrimitive ())
-		return LeftShiftExpression::evaluate (lhs, rhs);
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new PrimitiveExpression (LeftShiftExpression (std::move (lhs), std::move (rhs)) .getValue ());
 
 	return new LeftShiftExpression (std::move (lhs), std::move (rhs));
 }
