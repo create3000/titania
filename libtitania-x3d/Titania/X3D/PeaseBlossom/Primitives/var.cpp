@@ -235,10 +235,23 @@ var
 var::toPrimitive (const ValueType preferedType) const
 throw (pbException)
 {
-	if (type == OBJECT)
-		return value .object_ -> get () -> getDefaultValue (preferedType);
-
-	return *this;
+	switch (type)
+	{
+		case UNDEFINED:
+			return Undefined ();
+		case BOOLEAN:
+			return value .bool_;
+		case NUMBER:
+			return value .number_;
+		case STRING:
+			return *value .string_;
+		case NULL_OBJECT:
+			return nullptr;
+		case OBJECT:
+			return value .object_ -> get () -> getDefaultValue (preferedType);
+	}
+	
+	throw std::invalid_argument ("toPrimitive");
 }
 
 bool

@@ -318,6 +318,8 @@ function fibonacci_iterative (value)
 	// 4.92 s
 	// 5.35 s
 	// 5.01 s switch weg bei toPrimitive und getValue
+	// 5.73 s 
+	// 5.14 s local objects handling
 
 	print ('fibonacci_iterative: ');
 	print ('fibonacci_iterative: value: ', value);

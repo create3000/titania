@@ -72,6 +72,32 @@ struct isNaN
 
 };
 
+struct parseInt
+{
+	var
+	operator () (const ptr <pbObject> & object, const std::vector <var> & arguments)
+	{
+		if (arguments .empty ())
+			return NaN ();
+
+		return pb::parseInt (arguments [0] .toString ());
+	}
+
+};
+
+struct parseFloat
+{
+	var
+	operator () (const ptr <pbObject> & object, const std::vector <var> & arguments)
+	{
+		if (arguments .empty ())
+			return NaN ();
+
+		return pb::parseFloat (arguments [0] .toString ());
+	}
+
+};
+
 void
 addStandardClasses (const ptr <pbObject> & object)
 {
@@ -85,7 +111,9 @@ addStandardClasses (const ptr <pbObject> & object)
 
 	// Functions
 
-	object -> addPropertyDescriptor ("isNaN", new NativeFunction ("isNaN", isNaN { }, 1));
+	object -> addPropertyDescriptor ("isNaN",      new NativeFunction ("isNaN",      isNaN { },      1));
+	object -> addPropertyDescriptor ("parseInt",   new NativeFunction ("parseInt",   parseInt { },   1));
+	object -> addPropertyDescriptor ("parseFloat", new NativeFunction ("parseFloat", parseFloat { }, 1));
 }
 
 } // GlobalObject

@@ -113,7 +113,7 @@ inline
 double
 parseInt (const std::string & string)
 {
-	double number = 0;
+	double number = NaN ();
 
 	std::istringstream isstream (string);
 
@@ -126,7 +126,7 @@ inline
 double
 parseFloat (const std::string & string)
 {
-	double number = 0;
+	double number = NaN ();
 
 	std::istringstream isstream (string);
 

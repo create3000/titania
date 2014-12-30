@@ -1,6 +1,12 @@
 2014-12-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* pbMath.h:
+	* var.cpp:
+	* GlobalObject.cpp: 
+
+2014-12-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* pbMath.h:
 	* Parser.cpp:
 	* Function.h:
 	* pbObject.h:
