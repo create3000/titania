@@ -281,6 +281,40 @@ getValue (Expression* expression)
 	throw std::invalid_argument ("getValue");
 };
 
+
+class A 
+{
+public:
+
+	double a;
+};
+
+class B
+{
+public:
+
+	static double b;
+};
+
+double B::b = 0;
+
+class C :
+	virtual public A
+{
+public:
+
+	double c;
+};
+
+class D :
+	virtual public A,
+	public B
+{
+public:
+
+	double c;
+};
+
 int
 main (int argc, char** argv)
 {
@@ -295,6 +329,9 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
+
+	__LOG__ << sizeof (C) << std::endl;
+	__LOG__ << sizeof (D) << std::endl;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

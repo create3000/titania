@@ -81,8 +81,7 @@ public:
 	virtual
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
-	throw (pbException,
-	       pbControlFlowException) final override
+	noexcept (true) final override
 	{ return new AssignmentExpression (executionContext, lhs -> copy (executionContext), rhs -> copy (executionContext), type); }
 
 	///  @name Operations

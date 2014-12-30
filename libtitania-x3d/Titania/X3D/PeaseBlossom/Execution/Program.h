@@ -71,7 +71,8 @@ public:
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
-	getTypeName () const override
+	getTypeName () const
+	noexcept (true) override
 	{ return typeName; }
 
 	///  @name Input/Output

@@ -100,9 +100,8 @@ public:
 	///  Creates a new default object.
 	virtual
 	ptr <pbObject>
-	copy (pbExecutionContext* executionContext) const
-	throw (pbException,
-	       pbControlFlowException) final override
+	copy (pbExecutionContext* const executionContext) const
+	noexcept (true) final override
 	{ return pbObject::copy (executionContext, new Array ()); }
 
 

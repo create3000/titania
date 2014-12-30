@@ -72,15 +72,15 @@ public:
 	virtual
 	ptr <pbExpression>
 	copy (pbExecutionContext* const) const
-	throw (pbException,
-	       pbControlFlowException) = 0;
+	noexcept (true) = 0;
 
 	///  @name Common members
 
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
-	getTypeName () const final override
+	getTypeName () const
+	noexcept (true) final override
 	{ return typeName; }
 
 	///  Returns the type  of this object.
@@ -117,7 +117,7 @@ public:
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const override
+	toStream (std::ostream & ostream) const final override
 	{ ostream << "[pbExpression]"; }
 
 

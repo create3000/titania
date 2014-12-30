@@ -79,8 +79,7 @@ public:
 	virtual
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
-	throw (pbException,
-	       pbControlFlowException) final override
+	noexcept (true) final override
 	{ return new PropertyExpression (expression -> copy (executionContext), std::string (identifier)); }
 
 	///  @name Operations

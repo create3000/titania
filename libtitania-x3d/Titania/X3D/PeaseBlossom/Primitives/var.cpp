@@ -53,6 +53,10 @@
 #include "../Bits/pbMath.h"
 #include "../Objects/pbFunction.h"
 #include "../Objects/pbObject.h"
+#include "../Objects/Array.h"
+#include "../Objects/BooleanObject.h"
+#include "../Objects/NumberObject.h"
+#include "../Objects/StringObject.h"
 
 #include <iomanip>
 
@@ -90,8 +94,7 @@ var::var (pbObject* const object) :
 
 var
 var::copy (pbExecutionContext* const executionContext) const
-throw (pbException,
-       pbControlFlowException)
+noexcept (true)
 {
 	switch (type)
 	{
@@ -271,7 +274,6 @@ var::toUInt16 () const
 			return value .bool_;
 		case NULL_OBJECT:
 			return 0;
-		case NUMBER:
 		default:
 		{
 			const double number = toNumber ();
@@ -380,30 +382,28 @@ var::toNumber () const
 	return 0;
 }
 
-//ptr <pbObject>
-//var::toObject () const
-//throw (std::invalid_argument,
-//       pbException,
-//	    pbControlFlowException)
-//{
-//	switch (type)
-//	{
-//		case UNDEFINED:
-//			throw std::invalid_argument ("toObject");
-//		case BOOLEAN:
-//			return new Boolean (value .bool_);
-//		case NUMBER:
-//			return new Number (value .number_);
-//		case STRING:
-//			return new String (*value .string_);
-//		case NULL_OBJECT:
-//			throw std::invalid_argument ("toObject");
-//		case OBJECT:
-//			return value .object_ -> get () -> toObject ();
-//	}
-//
-//	return 0;
-//}
+ptr <pbObject>
+var::toObject () const
+throw (TypeError)
+{
+	switch (type)
+	{
+		case UNDEFINED:
+			throw TypeError ("Cannot convert 'undefined' to object value.");
+		case BOOLEAN:
+			return new BooleanObject (value .bool_);
+		case NUMBER:
+			return new NumberObject (value .number_);
+		case STRING:
+			return new StringObject (*value .string_);
+		case NULL_OBJECT:
+			throw TypeError ("Cannot convert 'null' to object value.");
+		case OBJECT:
+			return *value .object_;
+	}
+
+	throw std::invalid_argument ("toObject");
+}
 
 void
 var::toStream (std::ostream & ostream) const

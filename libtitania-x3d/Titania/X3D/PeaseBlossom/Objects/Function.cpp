@@ -71,9 +71,8 @@ Function::Function (pbExecutionContext* const executionContext, const std::strin
 }
 
 ptr <pbObject>
-Function::copy (pbExecutionContext* executionContext) const
-throw (pbException,
-       pbControlFlowException)
+Function::copy (pbExecutionContext* const executionContext) const
+noexcept (true)
 {
 	const auto function = make_ptr <Function> (executionContext, getName (), std::vector <std::string> (formalParameters));
 

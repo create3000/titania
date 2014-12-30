@@ -73,39 +73,16 @@ public:
 	{ }
 
 	///  Constructs new NumberObject.
-	explicit
-	NumberObject (const int32_t value) :
-		pbObject (),
-		  number (value)
-	{ }
-
-	///  Constructs new NumberObject.
-	explicit
-	NumberObject (const uint32_t value) :
-		pbObject (),
-		  number (value)
-	{ }
-
-	///  Constructs new NumberObject.
-	explicit
 	NumberObject (const double value) :
 		pbObject (),
 		  number (value)
 	{ }
 
-	///  Constructs new NumberObject.
-	explicit
-	NumberObject (const var & value) :
-		pbObject (),
-		  number (value .toNumber ())
-	{ }
-
 	///  Creates a new default object.
 	virtual
 	ptr <pbObject>
-	copy (pbExecutionContext* executionContext) const
-	throw (pbException,
-	       pbControlFlowException) final override
+	copy (pbExecutionContext* const executionContext) const
+	noexcept (true) final override
 	{ return pbObject::copy (executionContext, new NumberObject (number)); }
 
 	///  @name Input/Output
@@ -119,7 +96,7 @@ public:
 
 private:
 
-	const var number;
+	const double number;
 
 };
 

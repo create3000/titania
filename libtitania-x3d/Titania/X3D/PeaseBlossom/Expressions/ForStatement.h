@@ -81,8 +81,7 @@ public:
 	virtual
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
-	throw (pbException,
-	       pbControlFlowException) final override
+	noexcept (true) final override
 	{
 		const auto copy = new ForStatement (booleanExpression -> copy (executionContext), iterationExpression -> copy (executionContext));
 

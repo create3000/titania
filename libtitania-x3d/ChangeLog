@@ -1,3 +1,50 @@
+2014-12-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* pbBase.h:
+	* Math.h:
+	* Array.h:
+	* Parser.h:
+	* ptr.h:
+	* var.h:
+	* Object.h:
+	* Math.cpp:
+	* Block.h:
+	* Parser.cpp:
+	* array.h:
+	* pbObject.h:
+	* var.cpp:
+	* Function.h:
+	* Program.h:
+	* pbFunction.h:
+	* Function.cpp:
+	* pbObject.cpp:
+	* NumberObject.h:
+	* StringObject.h:
+	* BooleanObject.h:
+	* NativeFunction.h:
+	* IfStatement.h:
+	* ForStatement.h:
+	* pbExpression.h:
+	* ObjectLiteral.h:
+	* NewExpression.h:
+	* LessExpression.h:
+	* EqualExpression.h:
+	* ReturnStatement.h:
+	* PropertyExpression.h:
+	* AdditionExpression.h:
+	* DivisionExpression.h:
+	* FunctionExpression.h:
+	* VariableExpression.h:
+	* PrimitiveExpression.h:
+	* VariableDeclaration.h:
+	* RemainderExpression.h:
+	* LeftShiftExpression.h:
+	* AssignmentExpression.h:
+	* SubtractionExpression.h:
+	* StrictEqualExpression.h:
+	* FunctionCallExpression.h:
+	* MultiplicationExpression.h: 
+
 2014-12-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

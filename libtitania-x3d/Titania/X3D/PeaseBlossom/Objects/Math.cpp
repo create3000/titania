@@ -92,8 +92,7 @@ Math::Math () :
 
 ptr <pbObject>
 Math::copy (pbExecutionContext* const executionContext) const
-throw (pbException,
-       pbControlFlowException)
+noexcept (true)
 { return pbObject::copy (executionContext, new Math ()); }
 
 var

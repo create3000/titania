@@ -407,23 +407,24 @@ var x = 'global';
 print ('this: ', this);
 
 var o = {
-	x: 123,
+	x: x,
 	f: function ()
 	{
 		return 'f: this .x: ' + this .x;
-	}
+	},
+	toString: function () { return 'toString'; }
 };
 
 function Class () { return this; }
 
-print (o .x);
-print (o .x = 234);
-print (o .x);
-print (o .toString);
-print (o .toString ());
-print (o .f ());
-print (o);
-print (o .x);
+print ('x:        ', o .x);
+print ('x:        ', o .x = 234);
+print ('x:        ', o .x);
+print ('toString: ', o .toString);
+print ('toString: ', o .toString ());
+print ('f:        ', o .f ());
+print ('toString: ', o);
+print ('x:        ', o .x);
 print (Math);
 print (Math .PI);
 print ('abs (-123): ', Math .abs (-123));

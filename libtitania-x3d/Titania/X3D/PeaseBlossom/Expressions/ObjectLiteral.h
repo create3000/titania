@@ -53,6 +53,7 @@
 
 #include "../Expressions/pbExpression.h"
 #include "../Objects/Object.h"
+#include "../Objects/pbFunction.h"
 
 namespace titania {
 namespace pb {
@@ -68,21 +69,57 @@ public:
 	///  @name Construction
 
 	///  Constructs new ObjectLiteral expression.
-	ObjectLiteral (pbExecutionContext* const executionContext, ptr <Object> && object) :
+	ObjectLiteral (pbExecutionContext* const executionContext) :
 		    pbExpression (ExpressionType::OBJECT_LITERAL),
 		executionContext (executionContext),
-		          object (object)
+		      properties ()
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
-	throw (pbException,
-	       pbControlFlowException) final override
-	{ return new ObjectLiteral (executionContext, ptr <Object>  (object)); }
+	noexcept (true) final override
+	{
+		const auto copy = new ObjectLiteral (executionContext);
+		
+		for (const auto & property : properties)
+		{
+			copy -> updatePropertyDescriptor (std::string (property .second .identifier),
+			                                  property .second .value  ? property .second .value  -> copy (executionContext) : nullptr,
+			                                  property .second .getter ? property .second .getter -> copy (executionContext) : nullptr,
+			                                  property .second .setter ? property .second .setter -> copy (executionContext) : nullptr);
+		}
+
+		return copy;
+	}
 
 	///  @name Operations
+
+	void
+	updatePropertyDescriptor (std::string && identifier,
+	                          ptr <pbExpression> && value,
+	                          ptr <pbFunction> && getter = nullptr,
+	                          ptr <pbFunction> && setter = nullptr)
+	{
+		auto & property = properties [getId (identifier)];
+
+		if (value)
+			property .identifier = std::move (identifier);
+
+		if (value)
+			property .value = std::move (value);
+
+		if (getter)
+			property .getter = std::move (getter);
+
+		if (setter)
+			property .setter = std::move (setter);
+
+		addChildren (property .value,
+		             property .getter,
+		             property .setter);
+	}
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
@@ -90,22 +127,52 @@ public:
 	getValue () const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return object -> copy (executionContext .get ()); }
+	{
+		const auto object = new Object ();
 
+		for (const auto & property : properties)
+		{
+			try
+			{
+				object -> updatePropertyDescriptor (property .first,
+				                                    property .second .identifier,
+				                                    property .second .value ? property .second .value -> getValue () : Undefined (),
+				                                    DEFAULT,
+				                                    property .second .getter,
+				                                    property .second .setter);
+			}
+			catch (const std::invalid_argument &)
+			{ }
+		}
+
+		return object;
+	}
 
 private:
+
+	///  @name Member types
+
+	struct PropertyDescriptor
+	{
+		std::string        identifier;
+		ptr <pbExpression> value;
+		ptr <pbFunction>   getter;
+		ptr <pbFunction>   setter;
+	};
+
+	using PropertyIndex = std::unordered_map <size_t, PropertyDescriptor>;
 
 	///  @name Construction
 
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (executionContext, object); }
+	{ addChildren (executionContext); }
 
 	///  @name Members
 
 	const ptr <pbExecutionContext> executionContext;
-	const ptr <Object>             object;
+	PropertyIndex                  properties;
 
 };
 

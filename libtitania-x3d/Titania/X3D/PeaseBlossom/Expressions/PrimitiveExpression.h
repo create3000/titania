@@ -83,8 +83,7 @@ public:
 	virtual
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
-	throw (pbException,
-	       pbControlFlowException) final override
+	noexcept (true) final override
 	{ return new PrimitiveExpression (value); }
 
 	///  @name Operations

@@ -67,7 +67,8 @@ public:
 
 	virtual
 	const std::string &
-	getTypeName () const = 0;
+	getTypeName () const
+	noexcept (true) = 0;
 
 	///  @name Destruction
 

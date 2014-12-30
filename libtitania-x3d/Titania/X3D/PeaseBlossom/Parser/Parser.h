@@ -65,6 +65,7 @@ namespace pb {
 
 class pbExecutionContext;
 class pbBlock;
+class ObjectLiteral;
 
 class Parser
 {
@@ -192,10 +193,10 @@ private:
 	objectLiteral (ptr <pbExpression> &);
 
 	bool
-	propertyDefinitionList (const ptr <Object> &);
+	propertyDefinitionList (const ptr <ObjectLiteral> &);
 
 	bool
-	propertyDefinition (const ptr <Object> &);
+	propertyDefinition (const ptr <ObjectLiteral> &);
 
 	bool
 	propertyName (ptr <pbExpression> & value);

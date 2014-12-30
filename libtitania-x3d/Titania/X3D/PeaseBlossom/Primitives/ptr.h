@@ -263,7 +263,8 @@ public:
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
-	getTypeName () const final override
+	getTypeName () const
+	noexcept (true) final override
 	{ return typeName; }
 
 	///  @name Garbage collection

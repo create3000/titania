@@ -89,8 +89,8 @@ public:
 	///  @name Member access
 	
 	const std::string &
-	getName () const
-	{ return name; }
+	getIdentifier () const
+	{ return identifier; }
 
 	void
 	setValue (const var & value_)
@@ -146,7 +146,7 @@ private:
 	///  @name Members
 
 	pbChildObject* const object;
-	const std::string    name;
+	const std::string    identifier;
 	var                  value;
 	PropertyFlagsType    flags;
 	ptr <pbFunction>     getter;
@@ -171,62 +171,62 @@ public:
 	virtual
 	ptr <pbObject>
 	copy (pbExecutionContext*) const
-	throw (pbException,
-	       pbControlFlowException) = 0;
+	noexcept (true) = 0;
 
 	///  @name Common members
 
 	///  Returns the type name of this object.
 	virtual
 	const std::string &
-	getTypeName () const override
+	getTypeName () const
+	noexcept (true) override
 	{ return typeName; }
 
 	///  @name Member access
 
-	///  Checks wehter this object has a propterty @a name.
+	///  Checks wehter this object has a propterty @a identifier.
 	bool
-	hasProperty (const std::string & name) const
+	hasProperty (const std::string & identifier) const
 	noexcept (true)
-	{ return hasProperty (getId (name)); }
+	{ return hasProperty (getId (identifier)); }
 
 	var
-	setProperty (const std::string & name, var && value)
+	setProperty (const std::string & identifier, var && value)
 	throw (std::out_of_range,
 	       pbException)
-	{ return setProperty (getId (name), std::move (value)); }
+	{ return setProperty (getId (identifier), std::move (value)); }
 
 	var
-	getProperty (const std::string & name) const
+	getProperty (const std::string & identifier) const
 	throw (std::out_of_range,
 	       pbException)
-	{ return getProperty (getId (name)); }
+	{ return getProperty (getId (identifier)); }
 
 	///  Adds the named property described by the given descriptor to this object.
 	void
-	addPropertyDescriptor (const std::string & name,
+	addPropertyDescriptor (const std::string & identifier,
 	                       const var & value,
 	                       const PropertyFlagsType flags = DEFAULT,
 	                       const ptr <pbFunction> & getter = nullptr,
 	                       const ptr <pbFunction> & setter = nullptr)
 	throw (std::invalid_argument)
-	{ addPropertyDescriptor (getId (name), name, value, flags, getter, setter); }
+	{ addPropertyDescriptor (getId (identifier), identifier, value, flags, getter, setter); }
 
 	///  Updates the named property described by the given descriptor to this object.
 	void
-	updatePropertyDescriptor (const std::string & name,
+	updatePropertyDescriptor (const std::string & identifier,
 	                          const var & value,
 	                          const PropertyFlagsType flags = DEFAULT,
 	                          const ptr <pbFunction> & getter = nullptr,
 	                          const ptr <pbFunction> & setter = nullptr)
 	throw (std::invalid_argument)
-	{ updatePropertyDescriptor (getId (name), name, value, flags, getter, setter); }
+	{ updatePropertyDescriptor (getId (identifier), identifier, value, flags, getter, setter); }
 
 	///  Removes the property @a name from this object.
 	void
-	removePropertyDescriptor (const std::string & name)
+	removePropertyDescriptor (const std::string & identifier)
 	noexcept (true)
-	{ removePropertyDescriptor (getId (name)); }
+	{ removePropertyDescriptor (getId (identifier)); }
 
 	var
 	getDefaultValue (const ValueType preferedType) const
@@ -237,7 +237,7 @@ public:
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const override
+	toStream (std::ostream & ostream) const final override
 	{ ostream << "[object " << getTypeName () << "]"; }
 
 	///  @name Destruction
@@ -257,6 +257,7 @@ protected:
 
 	///  @name Friends
 
+	friend class ObjectLiteral;
 	friend class PropertyExpression;
 	friend class VariableDeclaration;
 	friend class VariableExpression;
@@ -269,9 +270,8 @@ protected:
 
 	///  Creates a deep copy of this object.
 	ptr <pbObject>
-	copy (pbExecutionContext* executionContext, const ptr <pbObject> & object) const
-	throw (pbException,
-	       pbControlFlowException);
+	copy (pbExecutionContext* const executionContext, const ptr <pbObject> & object) const
+	noexcept (true);
 
 	///  @name Member access
 
@@ -295,7 +295,7 @@ protected:
 
 	void
 	addPropertyDescriptor (const size_t id,
-	                       const std::string & name,
+	                       const std::string & identifier,
 	                       const var & value,
 	                       const PropertyFlagsType flags = DEFAULT,
 	                       const ptr <pbFunction> & getter = nullptr,
@@ -305,7 +305,7 @@ protected:
 	///  Updates the named property described by the given descriptor to this object.
 	void
 	updatePropertyDescriptor (const size_t id,
-	                          const std::string & name,
+	                          const std::string & identifier,
 	                          const var & value,
 	                          const PropertyFlagsType flags = DEFAULT,
 	                          const ptr <pbFunction> & getter = nullptr,
@@ -326,7 +326,7 @@ protected:
 	addValue (var & child)
 	{
 		if (child .isObject ())
-			child .getObject () .addParent (this);
+			const_cast <ptr <pbObject> &> (child .getObject ()) .addParent (this);
 	}
 
 

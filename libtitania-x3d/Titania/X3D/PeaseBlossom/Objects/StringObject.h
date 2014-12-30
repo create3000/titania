@@ -73,39 +73,16 @@ public:
 	{ }
 
 	///  Constructs new StringObject.
-	explicit
 	StringObject (const Glib::ustring & value) :
 		pbObject (),
 		  string (value)
 	{ }
 
-	///  Constructs new StringObject.
-	explicit
-	StringObject (Glib::ustring && value) :
-		pbObject (),
-		  string (std::move (value))
-	{ }
-
-	///  Constructs new StringObject.
-	explicit
-	StringObject (const var & value) :
-		pbObject (),
-		  string (value .toString ())
-	{ }
-
-	///  Constructs new StringObject.
-	explicit
-	StringObject (const std::string::value_type* value) :
-		pbObject (),
-		  string (Glib::ustring (value))
-	{ }
-
 	///  Creates a new default object.
 	virtual
 	ptr <pbObject>
-	copy (pbExecutionContext* executionContext) const
-	throw (pbException,
-	       pbControlFlowException) final override
+	copy (pbExecutionContext* const executionContext) const
+	noexcept (true) final override
 	{ return pbObject::copy (executionContext, new StringObject (string)); }
 
 	///  @name Input/Output
@@ -119,7 +96,7 @@ public:
 
 private:
 
-	const var string;
+	const Glib::ustring string;
 
 };
 

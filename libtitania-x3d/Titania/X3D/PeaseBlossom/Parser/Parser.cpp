@@ -519,19 +519,19 @@ Parser::objectLiteral (ptr <pbExpression> & value)
 
 		if (Grammar::CloseBrace (istream))
 		{
-			value = new ObjectLiteral (getExecutionContext (), make_ptr <Object> ());
+			value = new ObjectLiteral (getExecutionContext ());
 			return true;
 		}
 
-		auto object = make_ptr <Object> ();
+		auto objectLiteral = make_ptr <ObjectLiteral> (getExecutionContext ());
 
-		if (propertyDefinitionList (object))
+		if (propertyDefinitionList (objectLiteral))
 		{
 			comments ();
 
 			if (Grammar::CloseBrace (istream))
 			{
-				value = new ObjectLiteral (getExecutionContext (), std::move (object));
+				value = std::move (objectLiteral);
 				return true;
 			}
 
@@ -543,11 +543,11 @@ Parser::objectLiteral (ptr <pbExpression> & value)
 }
 
 bool
-Parser::propertyDefinitionList (const ptr <Object> & object)
+Parser::propertyDefinitionList (const ptr <ObjectLiteral> & objectLiteral)
 {
 	//__LOG__ << std::endl;
 
-	if (propertyDefinition (object))
+	if (propertyDefinition (objectLiteral))
 	{
 		for ( ; ;)
 		{
@@ -555,7 +555,7 @@ Parser::propertyDefinitionList (const ptr <Object> & object)
 
 			if (Grammar::Comma (istream))
 			{
-				if (propertyDefinition (object))
+				if (propertyDefinition (objectLiteral))
 					continue;
 			}
 
@@ -567,7 +567,7 @@ Parser::propertyDefinitionList (const ptr <Object> & object)
 }
 
 bool
-Parser::propertyDefinition (const ptr <Object> & object)
+Parser::propertyDefinition (const ptr <ObjectLiteral> & objectLiteral)
 {
 	//__LOG__ << std::endl;
 
@@ -586,7 +586,7 @@ Parser::propertyDefinition (const ptr <Object> & object)
 
 			if (assignmentExpression (value))
 			{
-				object -> updatePropertyDescriptor (std::move (propertyNameCharacters), value -> getValue ());
+				objectLiteral -> updatePropertyDescriptor (std::move (propertyNameCharacters), std::move (value));
 				return true;
 			}
 
@@ -627,7 +627,7 @@ Parser::propertyDefinition (const ptr <Object> & object)
 
 						if (Grammar::CloseBrace (istream))
 						{
-							object -> updatePropertyDescriptor (propertyNameValue -> getValue () .toString (), Undefined (), DEFAULT | LEAVE_VALUE, std::move (function));
+							objectLiteral -> updatePropertyDescriptor (propertyNameValue -> getValue () .toString (), nullptr, std::move (function));
 							return true;
 						}
 
@@ -678,7 +678,7 @@ Parser::propertyDefinition (const ptr <Object> & object)
 
 							if (Grammar::CloseBrace (istream))
 							{
-								object -> updatePropertyDescriptor (propertyNameValue -> getValue () .toString (), Undefined (), DEFAULT | LEAVE_VALUE, nullptr, std::move (function));
+								objectLiteral -> updatePropertyDescriptor (propertyNameValue -> getValue () .toString (), nullptr, nullptr, std::move (function));
 								return true;
 							}
 

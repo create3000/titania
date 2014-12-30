@@ -76,9 +76,8 @@ public:
 	///  Creates a new default object.
 	virtual
 	ptr <pbObject>
-	copy (pbExecutionContext* executionContext) const
-	throw (pbException,
-	       pbControlFlowException) final override;
+	copy (pbExecutionContext* const executionContext) const
+	noexcept (true) final override;
 
 	///  @name Operations
 
@@ -93,14 +92,6 @@ public:
 	var
 	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { })
 	throw (pbException) final override;
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ pbFunction::toStream (ostream); }
 
 	///  @name Destruction
 

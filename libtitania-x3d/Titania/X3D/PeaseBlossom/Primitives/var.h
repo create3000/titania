@@ -204,8 +204,7 @@ public:
 
 	var
 	copy (pbExecutionContext* const executionContext) const
-	throw (pbException,
-	       pbControlFlowException);
+	noexcept (true);
 
 	///  @name Assignment operators
 
@@ -343,12 +342,10 @@ public:
 	double
 	toNumber () const;
 
-//	///  Converts its argument to a value of type pbObject.
-//	ptr <pbObject>
-//	toObject () const
-//	throw (std::invalid_argument,
-//	       pbException,
-//		    pbControlFlowException);
+	///  Converts its argument to a value of type pbObject.
+	ptr <pbObject>
+	toObject () const
+	throw (TypeError);
 
 	///  @name Member access
 
@@ -366,11 +363,6 @@ public:
 	const Glib::ustring &
 	getString () const
 	{ return *value .string_; }
-
-	///  Returns a value of type Object.
-	ptr <pbObject> &
-	getObject ()
-	{ return *value .object_; }
 
 	///  Returns a value of type Object.
 	const ptr <pbObject> &

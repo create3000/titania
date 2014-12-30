@@ -75,12 +75,12 @@ public:
 	virtual
 	ptr <pbObject>
 	copy (pbExecutionContext* const executionContext) const
-	throw (pbException,
-	       pbControlFlowException) final override;
+	noexcept (true) final override;
 
 	virtual
 	const std::string &
-	getTypeName () const final override
+	getTypeName () const
+	noexcept (true) final override
 	{ return typeName; }
 
 
