@@ -114,6 +114,18 @@ public:
 	{ return recursionLimit; }
 
 
+protected:
+
+	///  @name Friends
+
+	friend class Program;
+
+	///  @name Construction
+
+	///  Constructs new Function.
+	Function (pbExecutionContext* const executionContext, const std::nullptr_t);
+
+
 private:
 
 	///  @name Member types

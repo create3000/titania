@@ -69,7 +69,7 @@ public:
 	///  @name Construction
 
 	///  Constructs new Math.
-	Math () ;
+	Math (pbExecutionContext* const executionContext);
 
 	///  Constructs new Math.
 	virtual

@@ -58,9 +58,11 @@ namespace pb {
 
 const std::string Math::typeName = "Math";
 
-Math::Math () :
+Math::Math (pbExecutionContext* const ec) :
 	pbObject ()
 {
+	addPropertyDescriptor ("__proto__", ec -> getStandardObject (), NONE);
+
 	addPropertyDescriptor ("E",       M_E,       NONE);
 	addPropertyDescriptor ("LN10",    M_LN10,    NONE);
 	addPropertyDescriptor ("LN2",     M_LN2,     NONE);
@@ -70,30 +72,30 @@ Math::Math () :
 	addPropertyDescriptor ("SQRT1_2", M_SQRT1_2, NONE);
 	addPropertyDescriptor ("SQRT2",   M_SQRT2,   NONE);
 
-	addPropertyDescriptor ("abs",    new NativeFunction ("abs",    abs,    1), NONE);
-	addPropertyDescriptor ("acos",   new NativeFunction ("acos",   acos,   1), NONE);
-	addPropertyDescriptor ("asin",   new NativeFunction ("asin",   asin,   1), NONE);
-	addPropertyDescriptor ("atan",   new NativeFunction ("atan",   atan,   1), NONE);
-	addPropertyDescriptor ("atan2",  new NativeFunction ("atan2",  atan2,  2), NONE);
-	addPropertyDescriptor ("ceil",   new NativeFunction ("ceil",   ceil,   1), NONE);
-	addPropertyDescriptor ("cos",    new NativeFunction ("cos",    cos,    1), NONE);
-	addPropertyDescriptor ("exp",    new NativeFunction ("exp",    exp,    1), NONE);
-	addPropertyDescriptor ("floor",  new NativeFunction ("floor",  floor,  1), NONE);
-	addPropertyDescriptor ("log",    new NativeFunction ("log",    log,    1), NONE);
-	addPropertyDescriptor ("max",    new NativeFunction ("max",    max,    2), NONE);
-	addPropertyDescriptor ("min",    new NativeFunction ("min",    min,    2), NONE);
-	addPropertyDescriptor ("pow",    new NativeFunction ("pow",    pow,    2), NONE);
-	addPropertyDescriptor ("random", new NativeFunction ("random", random, 0), NONE);
-	addPropertyDescriptor ("round",  new NativeFunction ("round",  round,  1), NONE);
-	addPropertyDescriptor ("sin",    new NativeFunction ("sin",    sin,    1), NONE);
-	addPropertyDescriptor ("sqrt",   new NativeFunction ("sqrt",   sqrt,   1), NONE);
-	addPropertyDescriptor ("tan",    new NativeFunction ("tan",    tan,    1), NONE);
+	addPropertyDescriptor ("abs",    new NativeFunction (ec, "abs",    abs,    1), NONE);
+	addPropertyDescriptor ("acos",   new NativeFunction (ec, "acos",   acos,   1), NONE);
+	addPropertyDescriptor ("asin",   new NativeFunction (ec, "asin",   asin,   1), NONE);
+	addPropertyDescriptor ("atan",   new NativeFunction (ec, "atan",   atan,   1), NONE);
+	addPropertyDescriptor ("atan2",  new NativeFunction (ec, "atan2",  atan2,  2), NONE);
+	addPropertyDescriptor ("ceil",   new NativeFunction (ec, "ceil",   ceil,   1), NONE);
+	addPropertyDescriptor ("cos",    new NativeFunction (ec, "cos",    cos,    1), NONE);
+	addPropertyDescriptor ("exp",    new NativeFunction (ec, "exp",    exp,    1), NONE);
+	addPropertyDescriptor ("floor",  new NativeFunction (ec, "floor",  floor,  1), NONE);
+	addPropertyDescriptor ("log",    new NativeFunction (ec, "log",    log,    1), NONE);
+	addPropertyDescriptor ("max",    new NativeFunction (ec, "max",    max,    2), NONE);
+	addPropertyDescriptor ("min",    new NativeFunction (ec, "min",    min,    2), NONE);
+	addPropertyDescriptor ("pow",    new NativeFunction (ec, "pow",    pow,    2), NONE);
+	addPropertyDescriptor ("random", new NativeFunction (ec, "random", random, 0), NONE);
+	addPropertyDescriptor ("round",  new NativeFunction (ec, "round",  round,  1), NONE);
+	addPropertyDescriptor ("sin",    new NativeFunction (ec, "sin",    sin,    1), NONE);
+	addPropertyDescriptor ("sqrt",   new NativeFunction (ec, "sqrt",   sqrt,   1), NONE);
+	addPropertyDescriptor ("tan",    new NativeFunction (ec, "tan",    tan,    1), NONE);
 }
 
 ptr <pbObject>
 Math::copy (pbExecutionContext* const executionContext) const
 noexcept (true)
-{ return pbObject::copy (executionContext, new Math ()); }
+{ return pbObject::copy (executionContext, new Math (executionContext)); }
 
 var
 Math::abs (const ptr <pbObject> & object, const std::vector <var> & arguments)

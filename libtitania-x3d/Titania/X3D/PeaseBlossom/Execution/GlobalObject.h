@@ -59,7 +59,7 @@ namespace GlobalObject {
 
 ///  Constructs new default global object.
 void
-addStandardClasses (const ptr <pbObject> & object);
+addStandardClasses (pbExecutionContext* const executionContext, const ptr <pbObject> & object);
 
 } // GlobalObject
 } // pb

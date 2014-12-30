@@ -99,7 +99,7 @@ struct parseFloat
 };
 
 void
-addStandardClasses (const ptr <pbObject> & object)
+addStandardClasses (pbExecutionContext* const ec, const ptr <pbObject> & object)
 {
 	// Properties
 
@@ -107,13 +107,13 @@ addStandardClasses (const ptr <pbObject> & object)
 	object -> addPropertyDescriptor ("NaN",       NaN (),               NONE);
 	object -> addPropertyDescriptor ("Infinity",  POSITIVE_INFINITY (), NONE);
 	object -> addPropertyDescriptor ("undefined", Undefined (),         NONE);
-	object -> addPropertyDescriptor ("Math",      new Math (),          NONE);
+	object -> addPropertyDescriptor ("Math",      new Math (ec),        NONE);
 
 	// Functions
 
-	object -> addPropertyDescriptor ("isNaN",      new NativeFunction ("isNaN",      isNaN { },      1));
-	object -> addPropertyDescriptor ("parseInt",   new NativeFunction ("parseInt",   parseInt { },   1));
-	object -> addPropertyDescriptor ("parseFloat", new NativeFunction ("parseFloat", parseFloat { }, 1));
+	object -> addPropertyDescriptor ("isNaN",      new NativeFunction (ec, "isNaN",      isNaN { },      1));
+	object -> addPropertyDescriptor ("parseInt",   new NativeFunction (ec, "parseInt",   parseInt { },   1));
+	object -> addPropertyDescriptor ("parseFloat", new NativeFunction (ec, "parseFloat", parseFloat { }, 1));
 }
 
 } // GlobalObject

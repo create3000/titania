@@ -1306,6 +1306,7 @@
     <Compile Include="Titania\X3D\PeaseBlossom\Base\GarbargeCollector.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Objects\Math.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Base\pbBase.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Objects\Object.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

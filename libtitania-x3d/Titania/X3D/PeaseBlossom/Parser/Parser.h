@@ -54,6 +54,7 @@
 #include "../Bits/Exception.h"
 #include "../Expressions/AssignmentOperatorType.h"
 #include "../Objects/Object.h"
+#include "../Primitives/array.h"
 #include "../Primitives/ptr.h"
 
 #include <iostream>
@@ -63,9 +64,10 @@
 namespace titania {
 namespace pb {
 
-class pbExecutionContext;
-class pbBlock;
 class ObjectLiteral;
+class pbBlock;
+class pbExecutionContext;
+class pbExpression;
 
 class Parser
 {

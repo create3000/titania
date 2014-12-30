@@ -60,7 +60,7 @@ namespace pb {
 std::atomic <size_t> Function::recursionLimit (100000);
 
 Function::Function (pbExecutionContext* const executionContext, const std::string & name, std::vector <std::string> && formalParameters) :
-	           pbFunction (name, formalParameters .size ()),
+	           pbFunction (executionContext, name, formalParameters .size ()),
 	   pbExecutionContext (executionContext),
 	     formalParameters (std::move (formalParameters)),
 	         localObjects (),
@@ -70,6 +70,17 @@ Function::Function (pbExecutionContext* const executionContext, const std::strin
 	addChildren (localObjectsStack, localObjects);
 
 	addLocalObjects (getExecutionContext ());
+}
+
+Function::Function (pbExecutionContext* const executionContext, const std::nullptr_t) :
+	           pbFunction (executionContext, nullptr),
+	   pbExecutionContext (executionContext),
+	     formalParameters (),
+	         localObjects (),
+	    localObjectsStack (),
+	       recursionDepth (0)
+{
+	addChildren (localObjectsStack, localObjects);
 }
 
 ptr <pbObject>
@@ -99,7 +110,7 @@ var
 Function::construct (const std::vector <var> & arguments)
 throw (pbException)
 {
-	const ptr <pbObject> object = new Object ();
+	const ptr <pbObject> object = new Object (this);
 
 	//object -> addPropertyDescriptor ("__proto__", getProperty ("prototype"), NONE);
 
@@ -115,7 +126,7 @@ var
 Function::call (/*const var & */ const ptr <pbObject> & thisObject, const std::vector <var> & arguments)
 throw (pbException)
 {
-	const auto localObject = new Object ();
+	const auto localObject = new Object (this);
 
 	localObject -> addPropertyDescriptor ("this", thisObject, NONE);
 

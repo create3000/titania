@@ -203,6 +203,11 @@ public:
 
 	///  Dereferences pointer to the managed object.
 	constexpr
+	operator Type* () const
+	{ return value; }
+
+	///  Dereferences pointer to the managed object.
+	constexpr
 	Type*
 	operator -> () const
 	{ return value; }

@@ -128,7 +128,7 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto object = new Object ();
+		const auto object = new Object (executionContext .get ());
 
 		for (const auto & property : properties)
 		{

@@ -61,6 +61,9 @@
 namespace titania {
 namespace pb {
 
+class Function;
+class Object;
+
 class pbExecutionContext :
 	virtual public pbBlock,
 	virtual public pbInputStreamObject
@@ -84,6 +87,11 @@ public:
 	isRootContext () const
 	{ return getExecutionContext () .get () == this; }
 
+	virtual
+	const ptr <pbExecutionContext> &
+	getRootContext () const
+	{ return getExecutionContext () -> getRootContext (); }
+
 	///  Returns the execution context this objects belongs to.
 	const ptr <pbExecutionContext> &
 	getExecutionContext () const
@@ -93,6 +101,16 @@ public:
 	const ptr <pbObject> &
 	getGlobalObject () const
 	{ return localObjects .back (); }
+
+	virtual
+	const ptr <Object> &
+	getStandardObject () const
+	{ return getRootContext () -> getStandardObject (); }
+
+	virtual
+	const ptr <Function> &
+	getStandardFunction () const
+	{ return getRootContext () -> getStandardFunction (); }
 
 	/// @name Operations
 
@@ -165,7 +183,7 @@ protected:
 	///  Constructs new pbExecutionContext.
 	pbExecutionContext (pbExecutionContext* const executionContext);
 
-	/// @name Member access
+	///  @name Member access
 
 	///  Returns the default objects.  That is the object where variable declarations are added.
 	virtual

@@ -97,8 +97,13 @@ ptr <pbObject>
 pbObject::copy (pbExecutionContext* const executionContext, const ptr <pbObject> & copy) const
 noexcept (true)
 {
+	static const auto protoId = getId ("__proto__");
+
 	for (const auto & property : properties)
 	{
+		if (property .first == protoId)
+			continue;
+
 		copy -> updatePropertyDescriptor (property .first,
 		                                  property .second -> getIdentifier (),
 		                                  property .second -> getValue () .copy (executionContext),
@@ -207,11 +212,38 @@ throw (std::out_of_range)
 	}
 	catch (const std::out_of_range &)
 	{
-		const auto & property = properties .at (id);
+		try
+		{
+			const auto & property = properties .at (id);
 
-		const_cast <pbObject*> (this) -> addCachedPropertyDescriptor (id, property);
+			const_cast <pbObject*> (this) -> addCachedPropertyDescriptor (id, property);
 
-		return property;
+			return property;
+		}
+		catch (const std::out_of_range &)
+		{
+			static const auto protoId = getId ("__proto__");
+
+			const auto & property = properties .at (protoId);
+			const auto & value    = property -> getValue ();
+
+			if (value .isObject ())
+			{
+				const auto & proto         = value .getObject ();
+				const auto & protoProperty = proto -> getPropertyDescriptor (id);
+
+				const_cast <pbObject*> (this) -> addPropertyDescriptor (id,
+				                                                        protoProperty -> getIdentifier (),
+		                                                              protoProperty -> getValue (),
+		                                                              protoProperty -> getFlags (),
+		                                                              protoProperty -> getGetter (),
+		                                                              protoProperty -> getSetter ());
+
+				return getPropertyDescriptor (id);
+			}
+			
+			throw;
+		}
 	}
 }
 

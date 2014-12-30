@@ -52,9 +52,6 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PROGRAM_H__
 
 #include "../Execution/pbExecutionContext.h"
-#include "../Objects/Object.h"
-
-#include <memory>
 
 namespace titania {
 namespace pb {
@@ -74,13 +71,6 @@ public:
 	getTypeName () const
 	noexcept (true) override
 	{ return typeName; }
-	
-	///  @name Construction
-	
-	///  Adds the standard classes and properties to the global object.
-	void
-	addStandardClasses ()
-	noexcept (true);
 
 	///  @name Input/Output
 
@@ -102,6 +92,7 @@ public:
 		pbExecutionContext::dispose ();
 	}
 
+
 protected:
 
 	///  @name Friends
@@ -110,26 +101,54 @@ protected:
 	ptr <Program>
 	createProgram ();
 
-	friend
-	ptr <Program>
-	createProgram (const ptr <pbObject> &);
-
 	///  @name Construction
 
 	///  Constructs new Program.
-	Program (const ptr <pbObject> & globalObject);
+	Program ();
+	
+	///  Sets the global object to @a object.
+	void
+	setGlobalObject (const ptr <pbObject> & object)
+	noexcept (true);
+
+	///  Adds the standard classes and properties to the global object.
+	void
+	addStandardObjects ()
+	noexcept (true);
+
+	///  Adds the standard classes and properties to the global object.
+	void
+	addStandardClasses ()
+	noexcept (true);
+
+	///  @name Member access
+
+	virtual
+	const ptr <pbExecutionContext> &
+	getRootContext () const final override
+	{ return getExecutionContext (); }
+
+	virtual
+	const ptr <Object> &
+	getStandardObject () const final override
+	{ return standardObject; }
+
+	virtual
+	const ptr <Function> &
+	getStandardFunction () const final override
+	{ return standardFunction; }
 
 
 private:
 
-	///  @name Construction
-
-	void
-	construct ();
-
 	///  @name Static members
 
 	static const std::string typeName;
+
+	///  @name Members
+
+	ptr <Object>   standardObject;
+	ptr <Function> standardFunction;
 
 };
 
@@ -139,10 +158,6 @@ private:
 ///  Constructs new Program.
 ptr <Program>
 createProgram ();
-
-///  Constructs new Program with custom global object.
-ptr <Program>
-createProgram (const ptr <pbObject> & globalObject);
 
 } // pb
 } // titania

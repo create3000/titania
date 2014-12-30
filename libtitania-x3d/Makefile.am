@@ -480,6 +480,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/PeaseBlossom/Expressions/pbExpression.cpp \
 	Titania/X3D/PeaseBlossom/Objects/Function.cpp \
 	Titania/X3D/PeaseBlossom/Objects/Math.cpp \
+	Titania/X3D/PeaseBlossom/Objects/Object.cpp \
 	Titania/X3D/PeaseBlossom/Objects/pbFunction.cpp \
 	Titania/X3D/PeaseBlossom/Objects/pbObject.cpp \
 	Titania/X3D/PeaseBlossom/Parser/Parser.cpp \

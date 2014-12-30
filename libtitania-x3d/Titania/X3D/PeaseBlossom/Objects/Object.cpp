@@ -48,40 +48,49 @@
  *
  ******************************************************************************/
 
-#include "pbFunction.h"
+#include "Object.h"
 
-#include "../Execution/pbExecutionContext.h"
+#include "../Objects/NativeFunction.h"
 
 namespace titania {
 namespace pb {
 
-const std::string pbFunction::typeName = "Function";
-
-pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::string & name, const size_t length) :
-	pbObject (),
-	    name (name),
-	  length (length)
-{
-	addPropertyDescriptor ("__proto__", executionContext -> getStandardFunction (), NONE);
-	addProperties ();
-}
-
-pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::nullptr_t) :
-	pbObject (),
-	    name (),
-	  length (0)
+Object::Object (pbExecutionContext* const executionContext) :
+	pbObject ()
 {
 	addPropertyDescriptor ("__proto__", executionContext -> getStandardObject (), NONE);
-	addProperties ();
+}
+
+Object::Object (const std::nullptr_t) :
+	pbObject ()
+{
+	addPropertyDescriptor ("__proto__", nullptr, NONE);
+}
+
+ptr <pbObject>
+Object::copy (pbExecutionContext* const executionContext) const
+noexcept (true)
+{
+	return pbObject::copy (executionContext, new Object (executionContext));
 }
 
 void
-pbFunction::addProperties ()
+Object::addProperties (pbExecutionContext* const ec)
 {
-	addPropertyDescriptor ("name",   name,   NONE);
-	addPropertyDescriptor ("length", length, NONE);
+	addPropertyDescriptor ("toString", new NativeFunction (ec, "toString", toString, 0), WRITABLE | CONFIGURABLE);
 }
 
+var
+Object::toString (const ptr <pbObject> & object, const std::vector <var> & arguments)
+{
+	if (arguments .empty ())
+		return object -> toString () + " [Object::toString]";
+
+	if (arguments [0] .isPrimitive ())
+		return arguments [0] .toString ();
+
+	return arguments [0] .getObject () -> toString ();
+}
 
 } // pb
 } // titania

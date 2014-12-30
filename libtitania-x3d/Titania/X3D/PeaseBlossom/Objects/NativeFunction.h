@@ -68,17 +68,17 @@ class NativeFunction :
 public:
 
 	///  Constructs new Function.
-	NativeFunction (const std::string & name, const FunctionType & function, const size_t length) :
-		pbFunction (name, length),
+	NativeFunction (pbExecutionContext* const executionContext, const std::string & name, const FunctionType & function, const size_t length) :
+		pbFunction (executionContext, name, length),
 		  function (function)
 	{ }
 
 	///  Creates a new default object.
 	virtual
 	ptr <pbObject>
-	copy (pbExecutionContext* const executionContext) const
+	copy (pbExecutionContext* const ec) const
 	noexcept (true) final override
-	{ return pbObject::copy (executionContext, new NativeFunction (getName (), function, getLength ())); }
+	{ return pbObject::copy (ec, new NativeFunction (ec, getName (), function, getLength ())); }
 
 	///  @name Operations
 

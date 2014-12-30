@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
 
 #include "../Objects/pbObject.h"
-#include "../Objects/NativeFunction.h"
 
 namespace titania {
 namespace pb {
@@ -68,18 +67,35 @@ public:
 	///  @name Construction
 
 	///  Constructs new Object.
-	Object () :
-		pbObject ()
-	{
-		addPropertyDescriptor ("toString", new NativeFunction ("toString", std::bind (&Object::toString, this), 0), WRITABLE | CONFIGURABLE);
-	}
+	Object (pbExecutionContext* const executionContext);
 
 	///  Creates a new default object.
 	virtual
 	ptr <pbObject>
 	copy (pbExecutionContext* const executionContext) const
-	noexcept (true) final override
-	{ return pbObject::copy (executionContext, new Object ()); }
+	noexcept (true) final override;
+
+
+protected:
+
+	///  @name Friends
+
+	friend class Program;
+
+	///  @name Construction
+
+	///  Constructs new Object with proto null.
+	Object (const std::nullptr_t);
+
+	void
+	addProperties (pbExecutionContext* const ec);
+
+
+private:
+
+	static
+	var
+	toString (const ptr <pbObject> & object, const std::vector <var> & arguments);
 
 };
 

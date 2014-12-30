@@ -103,10 +103,18 @@ protected:
 	///  @name Construction
 
 	///  Constructs new pbFunction.
-	pbFunction (const std::string & name, const size_t);
+	pbFunction (pbExecutionContext* const executionContext, const std::string & name, const size_t);
+
+	///  Constructs new pbFunction.
+	pbFunction (pbExecutionContext* const executionContext, const std::nullptr_t);
 
 
 private:
+
+	///  @name Construction
+
+	void
+	addProperties ();
 
 	///  @name Static members
 

@@ -65,7 +65,7 @@ public:
 
 	static
 	void
-	initialize (const pb::ptr <pb::pbObject> & global, X3DBrowser* const browser)
+	initialize (const pb::ptr <pb::pbExecutionContext> & ec, const pb::ptr <pb::pbObject> & global, X3DBrowser* const browser)
 	{
 		using namespace std::placeholders;
 
@@ -73,8 +73,8 @@ public:
 		global -> addPropertyDescriptor ("FALSE", false,   pb::NONE);
 		global -> addPropertyDescriptor ("TRUE",  true,    pb::NONE);
 
-		global -> addPropertyDescriptor ("print", new pb::NativeFunction ("print", std::bind (print, _1, _2, browser), 0), pb::NONE);
-		global -> addPropertyDescriptor ("now",   new pb::NativeFunction ("now",   now,                                0), pb::NONE);
+		global -> addPropertyDescriptor ("print", new pb::NativeFunction (ec, "print", std::bind (print, _1, _2, browser), 0), pb::NONE);
+		global -> addPropertyDescriptor ("now",   new pb::NativeFunction (ec, "now",   now,                                0), pb::NONE);
 	}
 
 	static
@@ -130,9 +130,7 @@ throw (std::exception) :
 void
 Context::addClasses ()
 {
-	program -> addStandardClasses ();
-
-	Global::initialize (program -> getGlobalObject (), getBrowser ());
+	Global::initialize (program, program -> getGlobalObject (), getBrowser ());
 }
 
 void

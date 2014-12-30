@@ -64,6 +64,7 @@ DEF Script1 Script {
 
   url [
 #  "peaseblossom:
+#function x () { }
 #print (1.234);
 #  "
 #  "peaseblossom:"
@@ -377,12 +378,19 @@ function for_time (n)
 }
 */
 
+var toString = function () { return 'first toString'; };
+
 function set_time (value, time)
 {
 	print ('set_time:');
 	print ('set_time: value: ', value);
 	print ('set_time: time:  ', time);
 	print ('set_time: now:   ', now ());
+
+	print (toString ());
+	toString = { } .__proto__ .toString;
+	print (toString);
+	print (toString ());
 
 	n = 1;
 
@@ -418,7 +426,15 @@ var o = {
 	toString: function () { return 'toString'; }
 };
 
-function Class () { return this; }
+function Class ()
+{
+	var x = 0;
+
+	this .a = function () { return x += 1; };
+	this .b = function () { return x += 2; };
+
+	return this;
+}
 
 print ('x:        ', o .x);
 print ('x:        ', o .x = 234);
@@ -438,6 +454,12 @@ print ('Math .min: ', Math .min (4,6,2,9,4));
 print ('random: ', Math .random ());
 print ('new: ', new Class ());
 
+var c = new Class ();
+
+print ('Class .a: ', c .a ());
+print ('Class .b: ', c .b ());
+print ('Class .a: ', c .a ());
+print ('Class .b: ', c .b ());
 
 var i = 0;
 var global1 = 'global1';
@@ -474,6 +496,19 @@ print ();
 print ('pb:');
 print (outer);
 outer () ();
+
+print (this);
+print (this .__proto__);
+print (this .__proto__ .__proto__);
+
+
+var o = {};
+o .__proto__ .x = 123;
+
+o .x = 224;
+print (o .x);
+print ({ } .x);
+
 "]
   directOutput TRUE
 }
