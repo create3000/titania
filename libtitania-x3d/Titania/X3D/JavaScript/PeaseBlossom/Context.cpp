@@ -59,12 +59,27 @@ namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-namespace global {
-
-struct print
+class Global
 {
+public:
+
+	static
+	void
+	initialize (const pb::ptr <pb::pbObject> & global, X3DBrowser* const browser)
+	{
+		using namespace std::placeholders;
+
+		global -> addPropertyDescriptor ("NULL",  nullptr, pb::NONE);
+		global -> addPropertyDescriptor ("FALSE", false,   pb::NONE);
+		global -> addPropertyDescriptor ("TRUE",  true,    pb::NONE);
+
+		global -> addPropertyDescriptor ("print", new pb::NativeFunction ("print", std::bind (print, _1, _2, browser), 0), pb::NONE);
+		global -> addPropertyDescriptor ("now",   new pb::NativeFunction ("now",   now,                                0), pb::NONE);
+	}
+
+	static
 	pb::var
-	operator () (X3DBrowser* const browser, const pb::ptr <pb::pbObject> & object, const std::vector <pb::var> & arguments)
+	print (const pb::ptr <pb::pbObject> & object, const std::vector <pb::var> & arguments, X3D::X3DBrowser* const browser)
 	{
 		for (const auto & value : arguments)
 			browser -> print (value);
@@ -73,24 +88,21 @@ struct print
 
 		return pb::Undefined ();
 	}
-};
 
-struct now
-{
+	static
 	pb::var
-	operator () (const pb::ptr <pb::pbBlock> & object, const std::vector <pb::var> & arguments)
+	now (const pb::ptr <pb::pbObject> &, const std::vector <pb::var> &)
 	{
 		return chrono::now ();
 	}
-};
 
-} // global
+};
 
 const ComponentType Context::component      = ComponentType::TITANIA;
 const std::string   Context::typeName       = "Context";
 const std::string   Context::containerField = "context";
 
-Context::Context (Script* const script, const std::string & ecmascript, const basic::uri & uri)
+Context::Context (X3D::Script* const script, const std::string & ecmascript, const basic::uri & uri)
 throw (std::exception) :
 	         X3D::X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
 	X3D::X3DJavaScriptContext (script, ecmascript),
@@ -101,36 +113,34 @@ throw (std::exception) :
 	
 	try
 	{
-		using namespace std::placeholders;
-
-		program -> getGlobalObject () -> addPropertyDescriptor ("NULL",  nullptr, pb::NONE);
-		program -> getGlobalObject () -> addPropertyDescriptor ("FALSE", false,   pb::NONE);
-		program -> getGlobalObject () -> addPropertyDescriptor ("TRUE",  true,    pb::NONE);
-
-		program -> getGlobalObject () -> addPropertyDescriptor ("print", new pb::NativeFunction ("print", std::bind (global::print { }, getBrowser (), _1, _2), 0), pb::NONE);
-		program -> getGlobalObject () -> addPropertyDescriptor ("now",   new pb::NativeFunction ("now",   global::now { },                                      0), pb::NONE);
+		addClasses ();
+		addUserDefinedFields ();
 
 		program -> fromString (getECMAScript ());
 		program -> run ();
 	}
 	catch (const pb::pbException & error)
 	{
-		getBrowser () -> println (error);
+		setError (error);
 
 		throw;
 	}
 }
 
 void
-Context::setContext ()
-{ }
+Context::addClasses ()
+{
+	program -> addStandardClasses ();
+
+	Global::initialize (program -> getGlobalObject (), getBrowser ());
+}
 
 void
-Context::setFields ()
+Context::addUserDefinedFields ()
 { }
 
 X3DBaseNode*
-Context::create (X3DExecutionContext* const) const
+Context::create (X3D::X3DExecutionContext* const) const
 {
 	return new Context (getScriptNode (), getECMAScript (), worldURL .front ());
 }
@@ -151,14 +161,14 @@ Context::initialize ()
 	}
 	catch (const pb::pbException & error)
 	{
-		getBrowser () -> println (error);
+		setError (error);
 	}
 	catch (const std::exception & error)
 	{ }
 }
 
 void
-Context::setExecutionContext (X3DExecutionContext* const executionContext)
+Context::setExecutionContext (X3D::X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
@@ -242,7 +252,7 @@ Context::prepareEvents ()
 	}
 	catch (const pb::pbException & error)
 	{
-		getBrowser () -> println (error);
+		setError (error);
 	}
 	catch (const std::exception & error)
 	{ }
@@ -282,7 +292,7 @@ Context::eventsProcessed ()
 	}
 	catch (const pb::pbException & error)
 	{
-		getBrowser () -> println (error);
+		setError (error);
 	}
 	catch (const std::exception & error)
 	{ }
@@ -299,13 +309,13 @@ Context::shutdown ()
 { }
 
 void
-Context::error (const std::string & trycatch) const
+Context::setError (const pb::pbException & error) const
 {
-	setError (trycatch,
-	          "filename",
-	          0, // "lineNumber"
-	          0, //"startColumn"
-	          "sourceLine");
+	X3D::X3DJavaScriptContext::setError (error .toString (),
+	                                     "filename",
+	                                     0, // "lineNumber"
+	                                     0, //"startColumn"
+	                                     "sourceLine");
 }
 
 void

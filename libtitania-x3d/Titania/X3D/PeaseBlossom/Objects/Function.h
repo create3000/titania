@@ -114,19 +114,6 @@ public:
 	{ return recursionLimit; }
 
 
-protected:
-
-	///  @name Friends
-
-	friend class ReturnStatement;
-
-	///  @name Member access
-
-	virtual
-	void
-	setExecutionContext (const ptr <pbExecutionContext> &) final override;
-
-
 private:
 
 	///  @name Member types
@@ -150,6 +137,9 @@ private:
 	};
 
 	///  @name Operations
+	
+	void
+	addLocalObjects (const ptr <pbExecutionContext> &);
 
 	///  Set @a localObject as local object and pushes all default objects to the default object stack if an recursion is
 	///  detected.
@@ -167,9 +157,9 @@ private:
 	///  @name Member access
 
 	const std::vector <std::string> formalParameters;
-	size_t                          recursionDepth;
-	array <ptr <pbObject>>          localObjectsStack;
 	array <ptr <pbObject>>          localObjects;
+	array <ptr <pbObject>>          localObjectsStack;
+	size_t                          recursionDepth;
 
 };
 

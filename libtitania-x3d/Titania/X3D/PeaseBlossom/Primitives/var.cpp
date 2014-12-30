@@ -346,11 +346,7 @@ var::toInteger () const
 		case NUMBER:
 			return std::copysign (std::floor (std::abs (value .number_)), value .number_);
 		case STRING:
-		{
-			const double number = parseFloat (*value .string_);
-
-			return std::copysign (std::floor (std::abs (number)), number);
-		}
+			return parseInt (*value .string_);
 		case NULL_OBJECT:
 			return 0;
 		case OBJECT:

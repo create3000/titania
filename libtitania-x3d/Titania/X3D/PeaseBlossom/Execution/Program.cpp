@@ -51,6 +51,7 @@
 #include "Program.h"
 
 #include "../Execution/GlobalObject.h"
+#include "../Objects/Object.h"
 
 namespace titania {
 namespace pb {
@@ -59,15 +60,22 @@ const std::string Program::typeName = "Program";
 
 ///  Constructs new Program.
 Program::Program (const ptr <pbObject> & globalObject) :
-	pbExecutionContext (this, globalObject)
+	pbExecutionContext (this)
 {
-	getLocalObjects () .emplace_back (getGlobalObject ());
+	getLocalObjects () .emplace_back (globalObject);
+}
+
+void
+Program::addStandardClasses ()
+noexcept (true)
+{
+	GlobalObject::addStandardClasses (getGlobalObject ());
 }
 
 ptr <Program>
 createProgram ()
 {
-	return createProgram (createGlobalObject ());
+	return createProgram (make_ptr <Object> ());
 }
 
 ptr <Program>

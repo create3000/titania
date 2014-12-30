@@ -91,17 +91,7 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const var value = expression -> getValue ();
-
-		if (value .getType () == OBJECT)
-		{
-			const auto function = dynamic_cast <Function*> (value .getObject () .get ());
-
-			if (function)
-				function -> setExecutionContext (executionContext -> getExecutionContext ());
-		}
-
-		throw ReturnException (value);
+		throw ReturnException (expression -> getValue ());
 	}
 
 private:

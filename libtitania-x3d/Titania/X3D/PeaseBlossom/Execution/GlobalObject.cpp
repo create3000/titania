@@ -57,7 +57,7 @@
 
 namespace titania {
 namespace pb {
-namespace global {
+namespace GlobalObject {
 
 struct isNaN
 {
@@ -65,36 +65,29 @@ struct isNaN
 	operator () (const ptr <pbObject> & object, const std::vector <var> & arguments)
 	{
 		if (arguments .empty ())
-			return var (true);
+			return true;
 
-		return var (pb::isNaN (arguments .front () .toNumber ()));
+		return pb::isNaN (arguments [0] .toNumber ());
 	}
 
 };
 
-}     // global
-
-ptr <pbObject>
-createGlobalObject ()
+void
+addStandardClasses (const ptr <pbObject> & object)
 {
-	// Create Global Object
-
-	ptr <pbObject> globalObject (new Object ());
-
 	// Properties
 
-	globalObject -> addPropertyDescriptor ("this",      globalObject,         NONE);
-	globalObject -> addPropertyDescriptor ("NaN",       NaN (),               NONE);
-	globalObject -> addPropertyDescriptor ("Infinity",  POSITIVE_INFINITY (), NONE);
-	globalObject -> addPropertyDescriptor ("undefined", var (),               NONE);
-	globalObject -> addPropertyDescriptor ("Math",      new Math (),          NONE);
+	object -> addPropertyDescriptor ("this",      object,               NONE);
+	object -> addPropertyDescriptor ("NaN",       NaN (),               NONE);
+	object -> addPropertyDescriptor ("Infinity",  POSITIVE_INFINITY (), NONE);
+	object -> addPropertyDescriptor ("undefined", Undefined (),         NONE);
+	object -> addPropertyDescriptor ("Math",      new Math (),          NONE);
 
 	// Functions
 
-	globalObject -> addPropertyDescriptor ("isNaN", new NativeFunction ("isNaN", global::isNaN { }, 1));
-
-	return globalObject;
+	object -> addPropertyDescriptor ("isNaN", new NativeFunction ("isNaN", isNaN { }, 1));
 }
 
+} // GlobalObject
 } // pb
 } // titania

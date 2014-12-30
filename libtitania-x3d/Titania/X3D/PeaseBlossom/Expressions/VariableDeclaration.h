@@ -92,16 +92,7 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto value = expression -> getValue ();
-
-		try
-		{
-			executionContext -> getLocalObjects () .front () -> updatePropertyDescriptor (id, identifier, value);
-		}
-		catch (const std::out_of_range &)
-		{
-			executionContext -> getLocalObjects () .front () -> addPropertyDescriptor (id, identifier, value);
-		}
+		executionContext -> getDefaultObject () -> updatePropertyDescriptor (id, identifier, expression -> getValue ());
 
 		return Undefined ();
 	}

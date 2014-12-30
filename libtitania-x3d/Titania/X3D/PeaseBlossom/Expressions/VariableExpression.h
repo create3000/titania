@@ -90,34 +90,6 @@ public:
 	setValue (var && value) const
 	throw (pbException) final override
 	{
-		return setProperty (executionContext, std::move (value));
-	}
-
-	///  Converts its input argument to either Primitive or Object type.
-	virtual
-	var
-	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
-	{
-		return getProperty (executionContext);
-	}
-
-private:
-
-	///  @name Construction
-
-	///  Performs neccessary operations after construction.
-	void
-	construct ()
-	{ addChild (executionContext); }
-
-	///  @name Operations
-
-	var
-	setProperty (const ptr <pbExecutionContext> & executionContext, var && value) const
-	throw (pbException)
-	{
 		for (const auto & localObject : executionContext -> getLocalObjects ())
 		{
 			try
@@ -128,19 +100,17 @@ private:
 			{ }
 		}
 
-		if (executionContext -> isRootContext ())
-		{
-			executionContext -> getGlobalObject () -> addPropertyDescriptor (id, identifier, value);
+		executionContext -> getGlobalObject () -> addPropertyDescriptor (id, identifier, value);
 
-			return value;
-		}
-
-		return setProperty (executionContext -> getExecutionContext (), std::move (value));
+		return value;
 	}
 
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
 	var
-	getProperty (const ptr <pbExecutionContext> & executionContext) const
-	throw (pbException)
+	getValue () const
+	throw (pbException,
+	       pbControlFlowException) final override
 	{
 		for (const auto & localObject : executionContext -> getLocalObjects ())
 		{
@@ -152,11 +122,17 @@ private:
 			{ }
 		}
 
-		if (executionContext -> isRootContext ())
-			throw ReferenceError (identifier + " is not defined.");
-
-		return getProperty (executionContext -> getExecutionContext ());
+		throw ReferenceError (identifier + " is not defined.");
 	}
+
+private:
+
+	///  @name Construction
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChild (executionContext); }
 
 	///  @name Members
 

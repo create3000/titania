@@ -1,5 +1,25 @@
 2014-12-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* pbMath.h:
+	* Parser.cpp:
+	* Function.h:
+	* pbObject.h:
+	* var.cpp:
+	* Program.h:
+	* Function.cpp:
+	* Context.h:
+	* Program.cpp:
+	* Context.cpp:
+	* GlobalObject.h:
+	* GlobalObject.cpp:
+	* ReturnStatement.h:
+	* pbExecutionContext.h:
+	* VariableExpression.h:
+	* pbExecutionContext.cpp:
+	* VariableDeclaration.h: 
+
+2014-12-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* pbBase.h:
 	* Math.h:
 	* Array.h:

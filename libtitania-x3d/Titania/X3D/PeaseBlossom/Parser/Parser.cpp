@@ -468,6 +468,7 @@ Parser::primaryExpression (ptr <pbExpression> & value)
 	if (Grammar::this_ (istream))
 	{
 		value = new VariableExpression (getExecutionContext (), std::string (Grammar::this_ ()));
+		//value = new ThisExpression (getExecutionContext ());
 		return true;
 	}
 

@@ -74,6 +74,13 @@ public:
 	getTypeName () const
 	noexcept (true) override
 	{ return typeName; }
+	
+	///  @name Construction
+	
+	///  Adds the standard classes and properties to the global object.
+	void
+	addStandardClasses ()
+	noexcept (true);
 
 	///  @name Input/Output
 

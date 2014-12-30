@@ -111,6 +111,19 @@ isNaN (const double value)
 
 inline
 double
+parseInt (const std::string & string)
+{
+	double number = 0;
+
+	std::istringstream isstream (string);
+
+	isstream >> number;
+
+	return std::copysign (std::floor (std::abs (number)), number);
+}
+
+inline
+double
 parseFloat (const std::string & string)
 {
 	double number = 0;

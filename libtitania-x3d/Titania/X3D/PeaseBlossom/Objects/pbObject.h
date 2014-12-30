@@ -320,15 +320,6 @@ protected:
 	call (const size_t id, const std::vector <var> & arguments = { }) const
 	throw (pbException);
 
-	///  @name Children handling
-
-	void
-	addValue (var & child)
-	{
-		if (child .isObject ())
-			const_cast <ptr <pbObject> &> (child .getObject ()) .addParent (this);
-	}
-
 
 private:
 

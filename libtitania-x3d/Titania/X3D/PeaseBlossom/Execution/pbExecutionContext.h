@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_EXECUTION_CONTEXT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_EXECUTION_CONTEXT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PB_EXECUTION_CONTEXT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PB_EXECUTION_CONTEXT_H__
 
 #include "../Base/pbInputStreamObject.h"
 #include "../Bits/Exception.h"
@@ -92,7 +92,7 @@ public:
 	///  Returns the global objects.
 	const ptr <pbObject> &
 	getGlobalObject () const
-	{ return globalObject; }
+	{ return localObjects .back (); }
 
 	/// @name Operations
 
@@ -163,18 +163,18 @@ protected:
 	///  @name Construction
 
 	///  Constructs new pbExecutionContext.
-	pbExecutionContext (pbExecutionContext* const executionContext, const ptr <pbObject> & globalObject);
+	pbExecutionContext (pbExecutionContext* const executionContext);
 
 	/// @name Member access
 
-	///  Replaces the current execution context by @a executionContext.
+	///  Returns the default objects.  That is the object where variable declarations are added.
 	virtual
-	void
-	setExecutionContext (const ptr <pbExecutionContext> & value)
-	{ executionContext = value; }
+	const ptr <pbObject> &
+	getDefaultObject () const
+	{ return localObjects .front (); }
 
 	///  Returns the local objects.
-	array <ptr <pbObject>>&
+	array <ptr <pbObject>> &
 	getLocalObjects ()
 	{ return localObjects; }
 
@@ -202,11 +202,10 @@ private:
 
 	/// @name Members
 
-	bool                                      strict;
-	ptr <pbExecutionContext>                  executionContext;
-	ptr <pbObject>                            globalObject;
+	const ptr <pbExecutionContext>            executionContext;
 	array <ptr <pbObject>>                    localObjects;
 	std::map <std::string, ptr <pbFunction>>  functions;
+	bool                                      strict;
 
 };
 

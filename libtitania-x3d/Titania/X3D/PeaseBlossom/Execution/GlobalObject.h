@@ -53,15 +53,15 @@
 
 #include "../Objects/pbObject.h"
 
-#include <cmath>
-
 namespace titania {
 namespace pb {
+namespace GlobalObject {
 
 ///  Constructs new default global object.
-ptr <pbObject>
-createGlobalObject ();
+void
+addStandardClasses (const ptr <pbObject> & object);
 
+} // GlobalObject
 } // pb
 } // titania
 

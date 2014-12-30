@@ -61,13 +61,15 @@ std::atomic <size_t> Function::recursionLimit (100000);
 
 Function::Function (pbExecutionContext* const executionContext, const std::string & name, std::vector <std::string> && formalParameters) :
 	           pbFunction (name, formalParameters .size ()),
-	   pbExecutionContext (executionContext, executionContext -> getGlobalObject ()),
+	   pbExecutionContext (executionContext),
 	     formalParameters (std::move (formalParameters)),
-	       recursionDepth (0),
+	         localObjects (),
 	    localObjectsStack (),
-	         localObjects ()
+	       recursionDepth (0)
 {
 	addChildren (localObjectsStack, localObjects);
+
+	addLocalObjects (getExecutionContext ());
 }
 
 ptr <pbObject>
@@ -83,17 +85,14 @@ noexcept (true)
 }
 
 void
-Function::setExecutionContext (const ptr <pbExecutionContext> & executionContext)
+Function::addLocalObjects (const ptr <pbExecutionContext> & executionContext)
 {
-	if (getExecutionContext () -> isRootContext ())
+	localObjects .append (executionContext -> getLocalObjects ());
+
+	if (executionContext -> isRootContext ())
 		return;
 
-	if (executionContext not_eq getExecutionContext () -> getExecutionContext ())
-		return;
-
-	localObjects .append (getExecutionContext () -> getLocalObjects ());
-
-	pbExecutionContext::setExecutionContext (executionContext);
+	addLocalObjects (executionContext -> getExecutionContext ());
 }
 
 var

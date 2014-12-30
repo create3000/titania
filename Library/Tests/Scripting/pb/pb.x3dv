@@ -62,8 +62,9 @@ Transform {
 DEF Script1 Script {
   inputOnly SFTime set_time
 
-  url ["peaseblossom:
-print (1.234);
+  url [
+#  "peaseblossom:
+#print (1.234);
 #  "
 #  "peaseblossom:"
   "peaseblossom:
@@ -410,7 +411,7 @@ var o = {
 	x: x,
 	f: function ()
 	{
-		return 'f: this .x: ' + this .x;
+		return 'f: this .x: ' + this .x + ' ' + x;
 	},
 	toString: function () { return 'toString'; }
 };

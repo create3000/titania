@@ -60,17 +60,15 @@
 namespace titania {
 namespace pb {
 
-pbExecutionContext::pbExecutionContext (pbExecutionContext* const executionContext_, const ptr <pbObject> & globalObject_) :
+pbExecutionContext::pbExecutionContext (pbExecutionContext* const executionContext_) :
 	             pbBlock (),
 	 pbInputStreamObject (),
-	              strict (false),
 	    executionContext (executionContext_),
-	        globalObject (globalObject_),
 	        localObjects (),
-	           functions ()
+	           functions (),
+	              strict (executionContext_ -> isStrict ())
 {
 	addChildren (executionContext,
-	             globalObject,
 	             localObjects);
 }
 
@@ -126,7 +124,13 @@ throw (pbException)
 	try
 	{
 		for (const auto & function : functions)
-			getLocalObjects () .back () -> addPropertyDescriptor (function .second -> getName (), function .second /*function .second -> copy (this)*/);
+		{
+			getLocalObjects () .front () -> addPropertyDescriptor (function .second -> getName (),
+			                                                       isRootContext ()
+			                                                       ? function .second
+			                                                       : ptr <pbFunction> (function .second -> copy (this)),
+			                                                       WRITABLE | CONFIGURABLE);
+		}
 
 		pbBlock::run ();
 
