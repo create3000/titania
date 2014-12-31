@@ -70,28 +70,17 @@ Object::Object (pbExecutionContext* const executionContext) :
 	{ }
 }
 
-Object::Object (const std::nullptr_t) :
+Object::Object (pbObject* const constructor) :
+	pbObject ()
+{
+	addPropertyDescriptor ("__proto__",   constructor -> getProperty ("prototype"), NONE);
+	addPropertyDescriptor ("constructor", constructor,                              NONE);
+}
+
+Object::Object (pbExecutionContext* const executionContext, const std::nullptr_t) :
 	pbObject ()
 {
 	addPropertyDescriptor ("__proto__", nullptr, NONE);
-}
-
-//void
-//Object::resolve ()
-//{
-//	addPropertyDescriptor ("toString", new NativeFunction (ec, "toString", toString, 0), WRITABLE | CONFIGURABLE);
-//}
-
-var
-Object::toString (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
-{
-	if (arguments .empty ())
-		return object -> toString () + " [Object::toString]";
-
-	if (arguments [0] .isPrimitive ())
-		return arguments [0] .toString ();
-
-	return arguments [0] .getObject () -> toString ();
 }
 
 } // pb

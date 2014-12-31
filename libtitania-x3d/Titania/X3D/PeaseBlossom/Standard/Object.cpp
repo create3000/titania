@@ -48,76 +48,61 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NATIVE_FUNCTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NATIVE_FUNCTION_H__
+#include "Object.h"
 
-#include "../Execution/pbExecutionContext.h"
-#include "../Objects/pbFunction.h"
+#include "../Objects/Object.h"
+#include "../Objects/NativeFunction.h"
 
 namespace titania {
 namespace pb {
+namespace Standard {
+namespace Object {
 
-using FunctionType = std::function <var (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)>;
-
-/**
- *  Class to represent a native ECMAScript function.
- */
-class NativeFunction :
-	public pbFunction
+/// new Object ([ value ])
+struct Constructor
 {
-public:
-
-	///  @name Construction
-
-	///  Constructs new Function.
-	NativeFunction (pbExecutionContext* const executionContext,
-	                const std::string & name,
-	                const FunctionType & function,
-	                const size_t length) :
-		NativeFunction (executionContext, name, nullptr, function, length)
-	{ }
-
-	///  Constructs new Function.
-	NativeFunction (pbExecutionContext* const executionContext,
-	                const std::string & name,
-	                const FunctionType & constructor,
-	                const FunctionType & function,
-	                const size_t length) :
-		      pbFunction (executionContext, name, length),
-		executionContext (executionContext),
-		     constructor (constructor),
-		        function (function)
-	{ addChildren (this -> executionContext); }
-
-	///  @name Operations
-
-	virtual
 	var
-	apply (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { })
-	throw (pbException) final override;
+	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
+	{
+		if (arguments .empty ())
+			return new pb::Object (ec);
 
-
-protected:
-
-	///  @name operations
-
-	virtual
-	var
-	construct (const ptr <pbObject> & object, const std::vector <var> & arguments = { })
-	throw (pbException) final override;
-
-
-private:
-
-	///  @name Member access
-
-	const ptr <pbExecutionContext> executionContext;
-	const FunctionType             constructor;
-	const FunctionType             function;
+		return new pb::Object (ec);
+	}
 
 };
 
+struct toString
+{
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
+	{
+		if (arguments .empty ())
+			return object -> toString () + "*";
+
+		if (arguments [0] .isPrimitive ())
+			return arguments [0] .toString ();
+
+		return arguments [0] .getObject () -> toString ();
+	}
+	
+};
+
+void
+initialize (pbExecutionContext* const ec, const ptr <pbObject> & object)
+{
+	const auto standardObject = ec -> getStandardObject ();
+	const auto constructor    = make_ptr <NativeFunction> (ec, "Object", Constructor { }, Constructor { }, 1);
+	
+	constructor -> addPropertyDescriptor ("prototype", standardObject, NONE);
+
+	object -> addPropertyDescriptor ("Object", constructor, NONE);
+
+	standardObject -> addPropertyDescriptor ("constructor", constructor, NONE);
+	standardObject -> addPropertyDescriptor ("toString", new NativeFunction (ec, "toString", toString { }, 0), NONE);
+}
+
+} // Object
+} // Standard
 } // pb
 } // titania
-
-#endif

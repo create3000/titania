@@ -50,7 +50,7 @@
 
 #include "Program.h"
 
-#include "../Execution/GlobalObject.h"
+#include "../Standard/GlobalObject.h"
 #include "../Objects/Object.h"
 #include "../Objects/Function.h"
 
@@ -62,7 +62,7 @@ const std::string Program::typeName = "Program";
 ///  Constructs new Program.
 Program::Program () :
 	pbExecutionContext (this),
-		 standardObject (new Object (nullptr)),
+		 standardObject (new Object (this, nullptr)),
 	  standardFunction (new Function (this, nullptr))
 {
 	addChildren (standardObject, standardFunction);
@@ -79,7 +79,7 @@ void
 Program::addStandardClasses ()
 noexcept (true)
 {
-	GlobalObject::addStandardClasses (this, getGlobalObject ());
+	Standard::addStandardClasses (this, getGlobalObject ());
 }
 
 ptr <Program>

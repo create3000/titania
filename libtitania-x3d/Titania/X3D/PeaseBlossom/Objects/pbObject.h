@@ -303,11 +303,6 @@ protected:
 	removePropertyDescriptor (const Identifier & identifier)
 	noexcept (true);
 
-	virtual
-	void
-	resolve (const Identifier & identifier)
-	throw (std::out_of_range);
-
 	var
 	call (const Identifier & identifier, const std::vector <var> & arguments = { }) const
 	throw (pbException);
@@ -321,10 +316,6 @@ private:
 	using PropertyDescriptorArray = std::vector <std::pair <size_t, PropertyDescriptorPtr>>;
 
 	///  @name Cache operations
-
-	ptr <pbObject>
-	getProto () const
-	throw (std::out_of_range);
 
 	///  Returns the property descriptor for a property id on this object.
 	const PropertyDescriptorPtr &
@@ -346,6 +337,14 @@ private:
 
 	const PropertyDescriptorPtr &
 	getCachedPropertyDescriptor (const size_t) const
+	throw (std::out_of_range);
+
+	void
+	resolve (const Identifier & identifier)
+	throw (std::out_of_range);
+
+	const ptr <pbObject> &
+	getProto () const
 	throw (std::out_of_range);
 
 	///  @name Static members

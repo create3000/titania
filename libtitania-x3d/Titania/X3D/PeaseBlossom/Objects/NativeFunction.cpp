@@ -48,21 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_GLOBAL_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_GLOBAL_OBJECT_H__
-
-#include "../Objects/pbObject.h"
+#include "NativeFunction.h"
 
 namespace titania {
 namespace pb {
-namespace GlobalObject {
 
-///  Constructs new default global object.
-void
-addStandardClasses (pbExecutionContext* const executionContext, const ptr <pbObject> & object);
+var
+NativeFunction::construct (const ptr <pbObject> & object, const std::vector <var> & arguments)
+throw (pbException)
+{
+	if (constructor)
+		return constructor (executionContext, object, arguments);
 
-} // GlobalObject
+	throw TypeError ("Cannot call function '" + getName () + "' as constructor.");
+}
+
+var
+NativeFunction::apply (const ptr <pbObject> & object, const std::vector <var> & arguments)
+throw (pbException)
+{
+	if (function)
+		return function (executionContext, object, arguments);
+
+	throw TypeError ("Cannot call '" + getName () + "' as function.");
+}
+
 } // pb
 } // titania
-
-#endif

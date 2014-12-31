@@ -51,18 +51,19 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_MATH_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_MATH_H__
 
-#include "../Objects/pbObject.h"
+#include "../Objects/Object.h"
 
 #include <random>
 
 namespace titania {
 namespace pb {
+namespace Standard {
 
 /**
  *  Class to represent an Math.
  */
 class Math :
-	public pbObject
+	public Object
 {
 public:
 
@@ -160,6 +161,7 @@ private:
 
 };
 
+} // Standard
 } // pb
 } // titania
 

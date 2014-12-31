@@ -69,6 +69,9 @@ public:
 	///  Constructs new Object.
 	Object (pbExecutionContext* const executionContext);
 
+	///  Constructs new Object.
+	Object (pbObject* const constructor);
+
 
 protected:
 
@@ -79,15 +82,7 @@ protected:
 	///  @name Construction
 
 	///  Constructs new standard Object with proto null.
-	Object (const std::nullptr_t);
-
-
-private:
-
-	///  @name Functions
-
-	var
-	toString (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments);
+	Object (pbExecutionContext* const executionContext, const std::nullptr_t);
 
 };
 

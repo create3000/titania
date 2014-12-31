@@ -48,75 +48,21 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NATIVE_FUNCTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NATIVE_FUNCTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_GLOBAL_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_GLOBAL_OBJECT_H__
 
-#include "../Execution/pbExecutionContext.h"
-#include "../Objects/pbFunction.h"
+#include "../Objects/pbObject.h"
 
 namespace titania {
 namespace pb {
+namespace Standard {
+namespace Object {
 
-using FunctionType = std::function <var (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)>;
+void
+initialize (pbExecutionContext* const ec, const ptr <pbObject> & object);
 
-/**
- *  Class to represent a native ECMAScript function.
- */
-class NativeFunction :
-	public pbFunction
-{
-public:
-
-	///  @name Construction
-
-	///  Constructs new Function.
-	NativeFunction (pbExecutionContext* const executionContext,
-	                const std::string & name,
-	                const FunctionType & function,
-	                const size_t length) :
-		NativeFunction (executionContext, name, nullptr, function, length)
-	{ }
-
-	///  Constructs new Function.
-	NativeFunction (pbExecutionContext* const executionContext,
-	                const std::string & name,
-	                const FunctionType & constructor,
-	                const FunctionType & function,
-	                const size_t length) :
-		      pbFunction (executionContext, name, length),
-		executionContext (executionContext),
-		     constructor (constructor),
-		        function (function)
-	{ addChildren (this -> executionContext); }
-
-	///  @name Operations
-
-	virtual
-	var
-	apply (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { })
-	throw (pbException) final override;
-
-
-protected:
-
-	///  @name operations
-
-	virtual
-	var
-	construct (const ptr <pbObject> & object, const std::vector <var> & arguments = { })
-	throw (pbException) final override;
-
-
-private:
-
-	///  @name Member access
-
-	const ptr <pbExecutionContext> executionContext;
-	const FunctionType             constructor;
-	const FunctionType             function;
-
-};
-
+} // Object
+} // Standard
 } // pb
 } // titania
 

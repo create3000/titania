@@ -106,28 +106,19 @@ Function::addLocalObjects (const ptr <pbExecutionContext> & executionContext)
 }
 
 var
-Function::construct (const std::vector <var> & arguments)
+Function::construct (const ptr <pbObject> & object, const std::vector <var> & arguments)
 throw (pbException)
 {
-	const ptr <pbObject> object = new Object (this);
-
-	//object -> addPropertyDescriptor ("__proto__", getProperty ("prototype"), NONE);
-
-	const auto result = call (object, arguments);
-
-	if (result .isObject ())
-		return result;
-
-	return object;
+	return apply (object, arguments);
 }
 
 var
-Function::call (/*const var & */ const ptr <pbObject> & thisObject, const std::vector <var> & arguments)
+Function::apply (const ptr <pbObject> & object, const std::vector <var> & arguments)
 throw (pbException)
 {
-	const auto localObject = new Object (this);
+	const auto localObject = new Object (static_cast <pbExecutionContext*> (this));
 
-	localObject -> addPropertyDescriptor ("this", thisObject, NONE);
+	localObject -> addPropertyDescriptor ("this", object, NONE);
 
 	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
 		localObject -> addPropertyDescriptor (formalParameters [i], i < argc ? arguments [i] : var (), WRITABLE | CONFIGURABLE);

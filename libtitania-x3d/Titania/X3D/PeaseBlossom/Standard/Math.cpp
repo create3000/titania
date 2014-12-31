@@ -55,14 +55,13 @@
 
 namespace titania {
 namespace pb {
+namespace Standard {
 
 const std::string Math::typeName = "Math";
 
 Math::Math (pbExecutionContext* const ec) :
-	pbObject ()
+	Object (ec)
 {
-	addPropertyDescriptor ("__proto__", ec -> getStandardObject (), NONE);
-
 	addPropertyDescriptor ("E",       M_E,       NONE);
 	addPropertyDescriptor ("LN10",    M_LN10,    NONE);
 	addPropertyDescriptor ("LN2",     M_LN2,     NONE);
@@ -95,8 +94,8 @@ Math::Math (pbExecutionContext* const ec) :
 var
 Math::abs (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 1)
-		throw Error ("wrong number of arguments");
+	if (arguments .empty ())
+		return NaN ();
 
 	return std::abs (arguments [0] .toNumber ());
 }
@@ -104,8 +103,8 @@ Math::abs (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, c
 var
 Math::acos (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 1)
-		throw Error ("wrong number of arguments");
+	if (arguments .empty ())
+		return NaN ();
 
 	return std::acos (arguments [0] .toNumber ());
 }
@@ -113,8 +112,8 @@ Math::acos (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, 
 var
 Math::asin (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 1)
-		throw Error ("wrong number of arguments");
+	if (arguments .empty ())
+		return NaN ();
 
 	return std::asin (arguments [0] .toNumber ());
 }
@@ -122,8 +121,8 @@ Math::asin (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, 
 var
 Math::atan (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 1)
-		throw Error ("wrong number of arguments");
+	if (arguments .empty ())
+		return NaN ();
 
 	return std::atan (arguments [0] .toNumber ());
 }
@@ -131,8 +130,8 @@ Math::atan (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, 
 var
 Math::atan2 (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 2)
-		throw Error ("wrong number of arguments");
+	if (arguments .empty ())
+		return NaN ();
 
 	return std::atan2 (arguments [0] .toNumber (), arguments [1] .toNumber ());
 }
@@ -140,8 +139,8 @@ Math::atan2 (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object,
 var
 Math::ceil (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 1)
-		throw Error ("wrong number of arguments");
+	if (arguments .empty ())
+		return NaN ();
 
 	return std::ceil (arguments [0] .toNumber ());
 }
@@ -149,8 +148,8 @@ Math::ceil (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, 
 var
 Math::cos (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 1)
-		throw Error ("wrong number of arguments");
+	if (arguments .empty ())
+		return NaN ();
 
 	return std::cos (arguments [0] .toNumber ());
 }
@@ -158,8 +157,8 @@ Math::cos (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, c
 var
 Math::exp (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 1)
-		throw Error ("wrong number of arguments");
+	if (arguments .empty ())
+		return NaN ();
 
 	return std::exp (arguments [0] .toNumber ());
 }
@@ -167,8 +166,8 @@ Math::exp (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, c
 var
 Math::floor (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 1)
-		throw Error ("wrong number of arguments");
+	if (arguments .empty ())
+		return NaN ();
 
 	return std::floor (arguments [0] .toNumber ());
 }
@@ -176,8 +175,8 @@ Math::floor (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object,
 var
 Math::log (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 1)
-		throw Error ("wrong number of arguments");
+	if (arguments .empty ())
+		return NaN ();
 
 	return std::log (arguments [0] .toNumber ());
 }
@@ -223,8 +222,8 @@ Math::min (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, c
 var
 Math::pow (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 2)
-		throw Error ("wrong number of arguments");
+	if (arguments .size () < 2)
+		return NaN ();
 
 	return std::pow (arguments [0] .toNumber (), arguments [1] .toNumber ());
 }
@@ -235,17 +234,14 @@ Math::random (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object
 	static std::uniform_real_distribution <double> uniform_real_distribution (0, 1);
 	static std::default_random_engine random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
-	if (arguments .size () not_eq 0)
-		throw Error ("wrong number of arguments");
-
 	return uniform_real_distribution (random_engine);
 }
 
 var
 Math::round (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 1)
-		throw Error ("wrong number of arguments");
+	if (arguments .empty ())
+		return NaN ();
 
 	return std::round (arguments [0] .toNumber ());
 }
@@ -253,8 +249,8 @@ Math::round (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object,
 var
 Math::sin (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 1)
-		throw Error ("wrong number of arguments");
+	if (arguments .empty ())
+		return NaN ();
 
 	return std::sin (arguments [0] .toNumber ());
 }
@@ -262,8 +258,8 @@ Math::sin (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, c
 var
 Math::sqrt (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 1)
-		throw Error ("wrong number of arguments");
+	if (arguments .empty ())
+		return NaN ();
 
 	return std::sqrt (arguments [0] .toNumber ());
 }
@@ -271,11 +267,12 @@ Math::sqrt (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, 
 var
 Math::tan (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
-	if (arguments .size () not_eq 1)
-		throw Error ("wrong number of arguments");
+	if (arguments .empty ())
+		return NaN ();
 
 	return std::tan (arguments [0] .toNumber ());
 }
 
+} // Standard
 } // pb
 } // titania

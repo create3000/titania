@@ -81,16 +81,10 @@ public:
 
 	///  @name Operations
 
-	///  Constructs new object of this class.
-	virtual
-	var
-	construct (const std::vector <var> & arguments = { })
-	throw (pbException) final override;
-
 	///  Executes this function.
 	virtual
 	var
-	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { })
+	apply (const ptr <pbObject> & object, const std::vector <var> & arguments = { })
 	throw (pbException) final override;
 
 	///  @name Destruction
@@ -124,6 +118,14 @@ protected:
 
 	///  Constructs new standard Function.
 	Function (pbExecutionContext* const executionContext, const std::nullptr_t);
+
+	///  @name Operations
+
+	///  Constructs new object of this class.
+	virtual
+	var
+	construct (const ptr <pbObject> & object, const std::vector <var> & arguments = { })
+	throw (pbException) final override;
 
 
 private:

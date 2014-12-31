@@ -52,6 +52,7 @@
 
 #include "../Execution/pbExecutionContext.h"
 #include "../Objects/Function.h"
+#include "../Objects/Object.h"
 
 namespace titania {
 namespace pb {
@@ -91,6 +92,19 @@ pbFunction::addProperties ()
 	addPropertyDescriptor ("length", length, NONE);
 }
 
+var
+pbFunction::construct (const std::vector <var> & arguments)
+throw (pbException)
+{
+	const ptr <pbObject> object = new Object (this);
+
+	const auto result = construct (object, arguments);
+
+	if (result .isObject ())
+		return result;
+
+	return object;
+}
 
 } // pb
 } // titania

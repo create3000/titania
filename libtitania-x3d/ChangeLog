@@ -1,5 +1,39 @@
 2014-12-31  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Math.h:
+	* Math.h:
+	* Object.h:
+	* Object.h:
+	* Math.cpp:
+	* Object.cpp:
+	* Object.h:
+	* Math.cpp:
+	* .dirstamp:
+	* Object.cpp:
+	* pbObject.h:
+	* Function.h:
+	* Object.cpp:
+	* pbFunction.h:
+	* pbObject.cpp:
+	* Function.cpp:
+	* GlobalObject.h:
+	* Program.cpp:
+	* Context.cpp:
+	* pbFunction.cpp:
+	* GlobalObject.h:
+	* GlobalObject.cpp:
+	* .dirstamp:
+	* NativeFunction.h:
+	* GlobalObject.h:
+	* GlobalObject.cpp:
+	* GlobalObject.cpp:
+	* NativeFunction.cpp:
+	* pbExpression.cpp: 
+
+2014-12-31  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* pbBase.h:
 	* Math.h:

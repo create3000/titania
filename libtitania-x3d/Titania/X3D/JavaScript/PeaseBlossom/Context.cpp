@@ -155,7 +155,7 @@ Context::initialize ()
 
 	try
 	{
-		program -> getFunctionDeclaration ("initialize") -> call (program -> getGlobalObject ());
+		program -> getFunctionDeclaration ("initialize") -> apply (program -> getGlobalObject ());
 	}
 	catch (const pb::pbException & error)
 	{
@@ -246,7 +246,7 @@ Context::prepareEvents ()
 {
 	try
 	{
-		program -> getFunctionDeclaration ("prepareEvents") -> call (program -> getGlobalObject ());
+		program -> getFunctionDeclaration ("prepareEvents") -> apply (program -> getGlobalObject ());
 	}
 	catch (const pb::pbException & error)
 	{
@@ -265,7 +265,7 @@ Context::set_field (X3D::X3DFieldDefinition* const field)
 	{
 		const auto & function = program -> getFunctionDeclaration (field -> getName ());
 
-		function -> call (program -> getGlobalObject (),
+		function -> apply (program -> getGlobalObject (),
 		{
 			pb::var (),
 			pb::var (getCurrentTime ())
@@ -286,7 +286,7 @@ Context::eventsProcessed ()
 {
 	try
 	{
-		program -> getFunctionDeclaration ("eventsProcessed") -> call (program -> getGlobalObject ());
+		program -> getFunctionDeclaration ("eventsProcessed") -> apply (program -> getGlobalObject ());
 	}
 	catch (const pb::pbException & error)
 	{

@@ -103,7 +103,7 @@ throw (std::out_of_range,
 	if (property -> getFlags () & WRITABLE)
 	{
 		if (property -> getSetter ())
-			return property -> getSetter () -> call (this, { std::move (value) });
+			return property -> getSetter () -> apply (this, { std::move (value) });
 
 		property -> setValue (std::move (value));
 
@@ -118,10 +118,10 @@ pbObject::getProperty (const Identifier & identifier) const
 throw (std::out_of_range,
        pbException)
 {
-	const auto & property = getPropertyDescriptor (identifier .second);
+	const auto & property = getPropertyDescriptor (identifier);
 
 	if (property -> getGetter ())
-		return property -> getGetter () -> call (const_cast <pbObject*> (this));
+		return property -> getGetter () -> apply (const_cast <pbObject*> (this));
 
 	return property -> getValue ();
 }
@@ -213,42 +213,6 @@ throw (std::out_of_range)
 }
 
 void
-pbObject::resolve (const Identifier & identifier)
-throw (std::out_of_range)
-{
-	try
-	{
-		const auto & proto         = getProto ();
-		const auto & protoProperty = proto -> getPropertyDescriptor (identifier);
-
-		addPropertyDescriptor (protoProperty -> getIdentifier (),
-	                          protoProperty -> getValue (),
-	                          protoProperty -> getFlags (),
-	                          protoProperty -> getGetter (),
-	                          protoProperty -> getSetter ());
-	}
-	catch (const std::invalid_argument &)
-	{
-		throw std::out_of_range ("pbObject::resolve");
-	}
-}
-
-ptr <pbObject>
-pbObject::getProto () const
-throw (std::out_of_range)
-{
-	static const auto identifier = getIdentifier ("__proto__");
-
-	const auto & property = getPropertyDescriptor (identifier .second);
-	const auto & value    = property -> getValue ();
-
-	if (value .isObject ())
-		return value .getObject ();
-
-	throw std::out_of_range ("pbObject::getProto");
-}
-
-void
 pbObject::addCachedPropertyDescriptor (const size_t id, const PropertyDescriptorPtr & property)
 noexcept (true)
 {
@@ -278,6 +242,42 @@ throw (std::out_of_range)
 		return value .second;
 
 	throw std::out_of_range ("getCachedPropertyDescriptor");
+}
+
+void
+pbObject::resolve (const Identifier & identifier)
+throw (std::out_of_range)
+{
+	try
+	{
+		const auto & proto         = getProto ();
+		const auto & protoProperty = proto -> getPropertyDescriptor (identifier);
+
+		addPropertyDescriptor (protoProperty -> getIdentifier (),
+	                          protoProperty -> getValue (),
+	                          protoProperty -> getFlags (),
+	                          protoProperty -> getGetter (),
+	                          protoProperty -> getSetter ());
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw std::out_of_range ("pbObject::resolve");
+	}
+}
+
+const ptr <pbObject> &
+pbObject::getProto () const
+throw (std::out_of_range)
+{
+	static const auto identifier = getIdentifier ("__proto__");
+
+	const auto & property = getPropertyDescriptor (identifier .second);
+	const auto & value    = property -> getValue ();
+
+	if (value .isObject ())
+		return value .getObject ();
+
+	throw std::out_of_range ("pbObject::getProto");
 }
 
 var
@@ -343,7 +343,7 @@ throw (pbException)
 			const auto function = dynamic_cast <pbFunction*> (property .getObject () .get ());
 
 			if (function)
-				return function -> call (const_cast <pbObject*> (this), arguments);
+				return function -> apply (const_cast <pbObject*> (this), arguments);
 		}
 
 		throw TypeError ("'" + property .toString () + "' is not a function.");

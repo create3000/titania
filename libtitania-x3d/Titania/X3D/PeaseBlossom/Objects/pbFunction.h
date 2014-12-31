@@ -93,16 +93,14 @@ public:
 	///  @name Operations
 
 	///  Constructs new object of this class.
-	virtual
 	var
 	construct (const std::vector <var> & arguments = { })
-	throw (pbException)
-	{ throw TypeError ("Cannot call function as constructor."); }
+	throw (pbException);
 
 	///  Executes this function.
 	virtual
 	var
-	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { })
+	apply (const ptr <pbObject> & object, const std::vector <var> & arguments = { })
 	throw (pbException) = 0;
 
 
@@ -115,6 +113,13 @@ protected:
 
 	///  Constructs new pbFunction.
 	pbFunction (pbExecutionContext* const executionContext, const std::nullptr_t);
+
+	///  @name Operations
+
+	virtual
+	var
+	construct (const ptr <pbObject> & object, const std::vector <var> & arguments = { })
+	throw (pbException) = 0;
 
 
 private:

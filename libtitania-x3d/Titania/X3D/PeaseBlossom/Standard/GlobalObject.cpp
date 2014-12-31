@@ -54,11 +54,13 @@
 #include "../Objects/Function.h"
 #include "../Objects/NativeFunction.h"
 #include "../Objects/Object.h"
-#include "../Objects/Math.h"
+
+#include "../Standard/Math.h"
+#include "../Standard/Object.h"
 
 namespace titania {
 namespace pb {
-namespace GlobalObject {
+namespace Standard {
 
 /// new Function ([arg1[, arg2[, ...argN]],] functionBody)
 struct Function
@@ -70,20 +72,6 @@ struct Function
 			return new pb::Function (ec);
 
 		return new pb::Function (ec);
-	}
-
-};
-
-/// new Object ([ value ])
-struct Object
-{
-	var
-	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
-	{
-		if (arguments .empty ())
-			return new pb::Object (ec);
-
-		return new pb::Object (ec);
 	}
 
 };
@@ -143,23 +131,11 @@ addFunction (pbExecutionContext* const ec, const ptr <pbObject> & object)
 	// standardFunction prototype remains undefined.
 }
 
-static
-void
-addObject (pbExecutionContext* const ec, const ptr <pbObject> & object)
-{
-	const auto standardObject = ec -> getStandardObject ();
-	const auto constructor    = make_ptr <NativeFunction> (ec, "Object", Object { }, 1);
-
-	object -> addPropertyDescriptor ("Object", constructor, NONE);
-
-	standardObject -> addPropertyDescriptor ("constructor", constructor, NONE);
-}
-
 void
 addStandardClasses (pbExecutionContext* const ec, const ptr <pbObject> & object)
 {
 	addFunction (ec, object);
-	addObject (ec, object);
+	Object::initialize (ec, object);
 
 	// Properties
 
@@ -176,6 +152,6 @@ addStandardClasses (pbExecutionContext* const ec, const ptr <pbObject> & object)
 	object -> addPropertyDescriptor ("parseFloat", new NativeFunction (ec, "parseFloat", parseFloat { }, 1), NONE);
 }
 
-} // GlobalObject
+} // Standard
 } // pb
 } // titania

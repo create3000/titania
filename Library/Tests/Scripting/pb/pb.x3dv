@@ -406,10 +406,13 @@ function set_time (value, time)
 	//print ('time: ',   now () - t0);
 }
 
-print ({ });
-print ({ } .__proto__);
-print ({ } .__proto__ .__proto__);
-print ({ } .constructor);
+print ('this: ', this);
+print ('Math: ', Math);
+print ('{ }:  ', { });
+print ('{ } .__proto__:            ', { } .__proto__);
+print ('{ } .__proto__ .__proto__: ', { } .__proto__ .__proto__);
+print ('{ } .constructor:          ', { } .constructor);
+print (new Object (123));
 "
   directOutput TRUE
 }
@@ -489,6 +492,8 @@ function set_time (value, time)
 	//print ('result: ', for_time (1000000));
 	//print ('time: ',   (Date .now () - t0) / 1000);
 }
+
+print (SFVec3f ());
 "
   directOutput TRUE
 }
