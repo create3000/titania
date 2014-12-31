@@ -71,8 +71,7 @@ public:
 	VariableDeclaration (pbExecutionContext* const executionContext, std::string && identifier, ptr <pbExpression> && expression) :
 		    pbExpression (ExpressionType::VARIABLE_DECLARATION),
 		executionContext (executionContext),
-		      identifier (std::move (identifier)),
-		              id (getId (this -> identifier)),
+		      identifier (getIdentifier (std::move (identifier))),
 		      expression (expression ? std::move (expression) : new PrimitiveExpression (Undefined ()))
 	{ construct (); }
 
@@ -81,7 +80,7 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new VariableDeclaration (executionContext, std::string (identifier), expression -> copy (executionContext)); }
+	{ return new VariableDeclaration (executionContext, std::string (identifier .first), expression -> copy (executionContext)); }
 
 	///  @name Operations
 
@@ -92,7 +91,7 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		executionContext -> getDefaultObject () -> updatePropertyDescriptor (id, identifier, expression -> getValue ());
+		executionContext -> getDefaultObject () -> updatePropertyDescriptor (identifier, expression -> getValue ());
 
 		return Undefined ();
 	}
@@ -109,8 +108,7 @@ private:
 	///  @name Members
 
 	const ptr <pbExecutionContext> executionContext;
-	const std::string              identifier;
-	const size_t                   id;
+	const Identifier               identifier;
 	const ptr <pbExpression>       expression;
 
 };

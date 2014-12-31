@@ -35,7 +35,6 @@ namespace pb {
 
 pbChildObject::pbChildObject () :
 	            pbBase (),
-	    referenceCount (0),
 	           parents (),
 	              root (nullptr),
 	          children ()
@@ -62,31 +61,36 @@ pbChildObject::removeChild (const pbChildObject & child)
 void
 pbChildObject::addParent (pbChildObject* const parent)
 {
-	if (root)
+	// Determine the best guess for the shortest way to a rooted object.
+
+	if ((not root)
+	    or (parent -> getParents () .size () < root -> getParents () .size ()))
 	{
-		// Best guess for the shortest way to a rooted object.
-
-		if (parent -> getParents () .size () < root -> getParents () .size ())
-			root = parent;
-	}
-	else
 		root = parent;
+	}
 
-	if (parents .emplace (parent) .second)
-		++ referenceCount;
+	// Add parent
+
+	parents .emplace (parent);
 }
 
 void
 pbChildObject::replaceParent (pbChildObject* const parentToRemove, pbChildObject* const parentToAdd)
 {
-	if (root == parentToRemove)
+	// Determine the best guess for the shortest way to a rooted object.
+
+	if ((not root)
+	    or (root == parentToRemove)
+	    or (parentToAdd -> getParents () .size () < root -> getParents () .size ()))
+	{
 		root = parentToAdd;
+	}
+
+	// Replace parent
 
 	if (parents .erase (parentToRemove))
-	{
-		if (not parents .emplace (parentToAdd) .second)
-			-- referenceCount;
-	}
+		parents .emplace (parentToAdd);
+
 	else
 		addParent (parentToAdd);
 }
@@ -99,16 +103,13 @@ pbChildObject::removeParent (pbChildObject* const parent)
 		if (root == parent)
 			root = nullptr;
 
-		-- referenceCount;
-
-		if (referenceCount == 0)
+		if (getReferenceCount () == 0)
 		{
 			parents .clear ();
 
 			dispose ();
 
 			GarbageCollector::addDisposedObject (this);
-
 			return;
 		}
 
@@ -117,29 +118,16 @@ pbChildObject::removeParent (pbChildObject* const parent)
 		if (hasRootedObjects (circle))
 			return;
 
-		for (auto & child : circle)
-		{
-			child -> referenceCount = 0;
-			child -> parents .clear ();
-		}
+		// We have found circular references.
 
-		for (auto & child : circle)
+		for (const auto & child : circle)
+			child -> parents .clear ();
+
+		for (const auto & child : circle)
 			child -> dispose ();
 
 		GarbageCollector::addDisposedObjects (circle .begin (), circle .end ());
 	}
-}
-
-void
-pbChildObject::addWeakParent (pbChildObject* const weakParent)
-{
-	parents .emplace (weakParent);
-}
-
-void
-pbChildObject::removeWeakParent (pbChildObject* const weakParent)
-{
-	parents .erase (weakParent);
 }
 
 bool

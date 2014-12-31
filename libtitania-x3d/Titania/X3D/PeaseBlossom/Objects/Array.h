@@ -97,13 +97,6 @@ public:
 		   array (std::move (value))
 	{ }
 
-	///  Creates a new default object.
-	virtual
-	ptr <pbObject>
-	copy (pbExecutionContext* const executionContext) const
-	noexcept (true) final override
-	{ return pbObject::copy (executionContext, new Array ()); }
-
 
 private:
 

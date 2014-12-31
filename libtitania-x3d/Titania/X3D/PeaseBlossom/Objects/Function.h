@@ -75,7 +75,7 @@ public:
 
 	///  Creates a new default object.
 	virtual
-	ptr <pbObject>
+	ptr <pbFunction>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override;
 
@@ -122,7 +122,7 @@ protected:
 
 	///  @name Construction
 
-	///  Constructs new Function.
+	///  Constructs new standard Function.
 	Function (pbExecutionContext* const executionContext, const std::nullptr_t);
 
 

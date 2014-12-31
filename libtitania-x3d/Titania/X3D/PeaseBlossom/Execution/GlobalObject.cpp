@@ -51,6 +51,7 @@
 #include "GlobalObject.h"
 
 #include "../Bits/pbMath.h"
+#include "../Objects/Function.h"
 #include "../Objects/NativeFunction.h"
 #include "../Objects/Object.h"
 #include "../Objects/Math.h"
@@ -59,10 +60,38 @@ namespace titania {
 namespace pb {
 namespace GlobalObject {
 
+/// new Function ([arg1[, arg2[, ...argN]],] functionBody)
+struct Function
+{
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
+	{
+		if (arguments .empty ())
+			return new pb::Function (ec);
+
+		return new pb::Function (ec);
+	}
+
+};
+
+/// new Object ([ value ])
+struct Object
+{
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
+	{
+		if (arguments .empty ())
+			return new pb::Object (ec);
+
+		return new pb::Object (ec);
+	}
+
+};
+
 struct isNaN
 {
 	var
-	operator () (const ptr <pbObject> & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 	{
 		if (arguments .empty ())
 			return true;
@@ -75,7 +104,7 @@ struct isNaN
 struct parseInt
 {
 	var
-	operator () (const ptr <pbObject> & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 	{
 		if (arguments .empty ())
 			return NaN ();
@@ -88,7 +117,7 @@ struct parseInt
 struct parseFloat
 {
 	var
-	operator () (const ptr <pbObject> & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 	{
 		if (arguments .empty ())
 			return NaN ();
@@ -98,9 +127,40 @@ struct parseFloat
 
 };
 
+static
+void
+addFunction (pbExecutionContext* const ec, const ptr <pbObject> & object)
+{
+	const auto standardFunction = ec -> getStandardFunction ();
+	const auto constructor      = make_ptr <NativeFunction> (ec, "Function", Function { }, 1);
+
+	constructor -> addPropertyDescriptor ("constructor", constructor,      NONE);
+	constructor -> addPropertyDescriptor ("prototype",   standardFunction, NONE);
+
+	object -> addPropertyDescriptor ("Function", constructor, NONE);
+
+	standardFunction -> addPropertyDescriptor ("constructor", constructor, NONE);
+	// standardFunction prototype remains undefined.
+}
+
+static
+void
+addObject (pbExecutionContext* const ec, const ptr <pbObject> & object)
+{
+	const auto standardObject = ec -> getStandardObject ();
+	const auto constructor    = make_ptr <NativeFunction> (ec, "Object", Object { }, 1);
+
+	object -> addPropertyDescriptor ("Object", constructor, NONE);
+
+	standardObject -> addPropertyDescriptor ("constructor", constructor, NONE);
+}
+
 void
 addStandardClasses (pbExecutionContext* const ec, const ptr <pbObject> & object)
 {
+	addFunction (ec, object);
+	addObject (ec, object);
+
 	// Properties
 
 	object -> addPropertyDescriptor ("this",      object,               NONE);
@@ -111,9 +171,9 @@ addStandardClasses (pbExecutionContext* const ec, const ptr <pbObject> & object)
 
 	// Functions
 
-	object -> addPropertyDescriptor ("isNaN",      new NativeFunction (ec, "isNaN",      isNaN { },      1));
-	object -> addPropertyDescriptor ("parseInt",   new NativeFunction (ec, "parseInt",   parseInt { },   1));
-	object -> addPropertyDescriptor ("parseFloat", new NativeFunction (ec, "parseFloat", parseFloat { }, 1));
+	object -> addPropertyDescriptor ("isNaN",      new NativeFunction (ec, "isNaN",      isNaN { },      1), NONE);
+	object -> addPropertyDescriptor ("parseInt",   new NativeFunction (ec, "parseInt",   parseInt { },   1), NONE);
+	object -> addPropertyDescriptor ("parseFloat", new NativeFunction (ec, "parseFloat", parseFloat { }, 1), NONE);
 }
 
 } // GlobalObject

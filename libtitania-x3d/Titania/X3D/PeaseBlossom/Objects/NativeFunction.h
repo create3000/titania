@@ -57,7 +57,7 @@
 namespace titania {
 namespace pb {
 
-using FunctionType = std::function <var (const ptr <pbObject> & object, const std::vector <var> & arguments)>;
+using FunctionType = std::function <var (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)>;
 
 /**
  *  Class to represent a native ECMAScript function.
@@ -69,16 +69,10 @@ public:
 
 	///  Constructs new Function.
 	NativeFunction (pbExecutionContext* const executionContext, const std::string & name, const FunctionType & function, const size_t length) :
-		pbFunction (executionContext, name, length),
-		  function (function)
-	{ }
-
-	///  Creates a new default object.
-	virtual
-	ptr <pbObject>
-	copy (pbExecutionContext* const ec) const
-	noexcept (true) final override
-	{ return pbObject::copy (ec, new NativeFunction (ec, getName (), function, getLength ())); }
+		      pbFunction (executionContext, name, length),
+		executionContext (executionContext),
+		        function (function)
+	{ addChildren (this -> executionContext); }
 
 	///  @name Operations
 
@@ -86,14 +80,15 @@ public:
 	var
 	call (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { })
 	throw (pbException) final override
-	{ return function (thisObject, arguments); }
+	{ return function (executionContext, thisObject, arguments); }
 
 
 private:
 
 	///  @name Member access
 
-	const FunctionType function;
+	const ptr <pbExecutionContext> executionContext;
+	const FunctionType             function;
 
 };
 

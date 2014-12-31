@@ -69,12 +69,6 @@ public:
 	///  Constructs new Object.
 	Object (pbExecutionContext* const executionContext);
 
-	///  Creates a new default object.
-	virtual
-	ptr <pbObject>
-	copy (pbExecutionContext* const executionContext) const
-	noexcept (true) final override;
-
 
 protected:
 
@@ -84,18 +78,16 @@ protected:
 
 	///  @name Construction
 
-	///  Constructs new Object with proto null.
+	///  Constructs new standard Object with proto null.
 	Object (const std::nullptr_t);
-
-	void
-	addProperties (pbExecutionContext* const ec);
 
 
 private:
 
-	static
+	///  @name Functions
+
 	var
-	toString (const ptr <pbObject> & object, const std::vector <var> & arguments);
+	toString (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments);
 
 };
 

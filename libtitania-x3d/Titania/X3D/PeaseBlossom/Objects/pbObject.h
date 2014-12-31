@@ -48,13 +48,13 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_BASE_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_BASE_OBJECT_H__
 
-#include "../Bits/pbConstants.h"
-#include "../Expressions/pbControlFlowException.h"
 #include "../Base/pbChildObject.h"
 #include "../Base/pbOutputStreamObject.h"
+#include "../Bits/pbConstants.h"
+#include "../Expressions/pbControlFlowException.h"
 #include "../Primitives/ptr.h"
 #include "../Primitives/var.h"
 
@@ -80,15 +80,15 @@ public:
 	///  @name Construction
 
 	PropertyDescriptor (pbChildObject* const,
-	                    const std::string &,
+	                    const Identifier &,
 	                    const var &,
-		                 const PropertyFlagsType &,
-		                 const ptr <pbFunction> &,
-		                 const ptr <pbFunction> &);
+	                    const PropertyFlagsType &,
+	                    const ptr <pbFunction> &,
+	                    const ptr <pbFunction> &);
 
 	///  @name Member access
-	
-	const std::string &
+
+	const Identifier &
 	getIdentifier () const
 	{ return identifier; }
 
@@ -96,7 +96,7 @@ public:
 	setValue (const var & value_)
 	{
 		value = value_;
-		
+
 		addValue ();
 	}
 
@@ -138,6 +138,7 @@ public:
 
 	~PropertyDescriptor ();
 
+
 private:
 
 	void
@@ -146,7 +147,7 @@ private:
 	///  @name Members
 
 	pbChildObject* const object;
-	const std::string    identifier;
+	const Identifier     identifier;
 	var                  value;
 	PropertyFlagsType    flags;
 	ptr <pbFunction>     getter;
@@ -166,13 +167,6 @@ class pbObject :
 {
 public:
 
-	///  @name Construction
-
-	virtual
-	ptr <pbObject>
-	copy (pbExecutionContext*) const
-	noexcept (true) = 0;
-
 	///  @name Common members
 
 	///  Returns the type name of this object.
@@ -188,19 +182,19 @@ public:
 	bool
 	hasProperty (const std::string & identifier) const
 	noexcept (true)
-	{ return hasProperty (getId (identifier)); }
+	{ return hasProperty (getIdentifier (identifier)); }
 
 	var
 	setProperty (const std::string & identifier, var && value)
 	throw (std::out_of_range,
 	       pbException)
-	{ return setProperty (getId (identifier), std::move (value)); }
+	{ return setProperty (getIdentifier (identifier), std::move (value)); }
 
 	var
 	getProperty (const std::string & identifier) const
 	throw (std::out_of_range,
 	       pbException)
-	{ return getProperty (getId (identifier)); }
+	{ return getProperty (getIdentifier (identifier)); }
 
 	///  Adds the named property described by the given descriptor to this object.
 	void
@@ -210,7 +204,7 @@ public:
 	                       const ptr <pbFunction> & getter = nullptr,
 	                       const ptr <pbFunction> & setter = nullptr)
 	throw (std::invalid_argument)
-	{ addPropertyDescriptor (getId (identifier), identifier, value, flags, getter, setter); }
+	{ addPropertyDescriptor (getIdentifier (identifier), value, flags, getter, setter); }
 
 	///  Updates the named property described by the given descriptor to this object.
 	void
@@ -220,13 +214,13 @@ public:
 	                          const ptr <pbFunction> & getter = nullptr,
 	                          const ptr <pbFunction> & setter = nullptr)
 	throw (std::invalid_argument)
-	{ updatePropertyDescriptor (getId (identifier), identifier, value, flags, getter, setter); }
+	{ updatePropertyDescriptor (getIdentifier (identifier), value, flags, getter, setter); }
 
 	///  Removes the property @a name from this object.
 	void
 	removePropertyDescriptor (const std::string & identifier)
 	noexcept (true)
-	{ removePropertyDescriptor (getId (identifier)); }
+	{ removePropertyDescriptor (getIdentifier (identifier)); }
 
 	var
 	getDefaultValue (const ValueType preferedType) const
@@ -268,34 +262,28 @@ protected:
 	///  Constructs new pbObject.
 	pbObject ();
 
-	///  Creates a deep copy of this object.
-	ptr <pbObject>
-	copy (pbExecutionContext* const executionContext, const ptr <pbObject> & object) const
-	noexcept (true);
-
 	///  @name Member access
 
 	///  Checks wehter this object has a propterty @a id.
 	bool
-	hasProperty (const size_t id) const
+	hasProperty (const Identifier & identifier) const
 	noexcept (true)
-	{ return properties .count (id); }
+	{ return properties .count (identifier .second); }
 
 	///  Removes the property @a id from this object.
 
 	var
-	setProperty (const size_t, var && value)
+	setProperty (const Identifier &identifier, var && value)
 	throw (std::out_of_range,
 	       pbException);
 
 	var
-	getProperty (const size_t) const
+	getProperty (const Identifier & identifier) const
 	throw (std::out_of_range,
 	       pbException);
 
 	void
-	addPropertyDescriptor (const size_t id,
-	                       const std::string & identifier,
+	addPropertyDescriptor (const Identifier & identifier,
 	                       const var & value,
 	                       const PropertyFlagsType flags = DEFAULT,
 	                       const ptr <pbFunction> & getter = nullptr,
@@ -304,8 +292,7 @@ protected:
 
 	///  Updates the named property described by the given descriptor to this object.
 	void
-	updatePropertyDescriptor (const size_t id,
-	                          const std::string & identifier,
+	updatePropertyDescriptor (const Identifier & identifier,
 	                          const var & value,
 	                          const PropertyFlagsType flags = DEFAULT,
 	                          const ptr <pbFunction> & getter = nullptr,
@@ -313,11 +300,16 @@ protected:
 	throw (std::invalid_argument);
 
 	void
-	removePropertyDescriptor (const size_t id)
+	removePropertyDescriptor (const Identifier & identifier)
 	noexcept (true);
 
+	virtual
+	void
+	resolve (const Identifier & identifier)
+	throw (std::out_of_range);
+
 	var
-	call (const size_t id, const std::vector <var> & arguments = { }) const
+	call (const Identifier & identifier, const std::vector <var> & arguments = { }) const
 	throw (pbException);
 
 
@@ -329,6 +321,15 @@ private:
 	using PropertyDescriptorArray = std::vector <std::pair <size_t, PropertyDescriptorPtr>>;
 
 	///  @name Cache operations
+
+	ptr <pbObject>
+	getProto () const
+	throw (std::out_of_range);
+
+	///  Returns the property descriptor for a property id on this object.
+	const PropertyDescriptorPtr &
+	getPropertyDescriptor (const Identifier & identifier) const
+	throw (std::out_of_range);
 
 	///  Returns the property descriptor for a property id on this object.
 	const PropertyDescriptorPtr &
@@ -354,7 +355,7 @@ private:
 	static const std::string typeName;
 
 	///  @name Members
-	
+
 	PropertyDescriptorIndex properties;
 	PropertyDescriptorArray cachedProperties;
 

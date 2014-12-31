@@ -61,6 +61,14 @@ class pbFunction :
 {
 public:
 
+	///  @name Construction
+
+	virtual
+	ptr <pbFunction>
+	copy (pbExecutionContext* const executionContext) const
+	noexcept (true)
+	{ return const_cast <pbFunction*> (this); }
+
 	///  @name Common members
 
 	///  Returns the type name of this object.

@@ -51,6 +51,7 @@
 #include "pbFunction.h"
 
 #include "../Execution/pbExecutionContext.h"
+#include "../Objects/Function.h"
 
 namespace titania {
 namespace pb {
@@ -62,17 +63,25 @@ pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::s
 	    name (name),
 	  length (length)
 {
-	addPropertyDescriptor ("__proto__", executionContext -> getStandardFunction (), NONE);
-	addProperties ();
+	try
+	{
+		const auto & standardFunction = executionContext -> getStandardFunction ();
+
+		addProperties ();
+		addPropertyDescriptor ("__proto__",   standardFunction,                                NONE);
+		addPropertyDescriptor ("constructor", standardFunction -> getProperty ("constructor"), NONE);
+	}
+	catch (const std::out_of_range &)
+	{ }
 }
 
 pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::nullptr_t) :
 	pbObject (),
-	    name (),
+	    name ("Empty"),
 	  length (0)
 {
-	addPropertyDescriptor ("__proto__", executionContext -> getStandardObject (), NONE);
 	addProperties ();
+	addPropertyDescriptor ("__proto__", executionContext -> getStandardObject (), NONE);
 }
 
 void

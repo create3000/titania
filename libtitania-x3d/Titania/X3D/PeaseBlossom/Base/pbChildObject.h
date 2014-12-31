@@ -85,14 +85,6 @@ public:
 	void
 	removeParent (pbChildObject* const parent);
 
-	///  Add a parent to this object.
-	void
-	addWeakParent (pbChildObject* const weakParent);
-
-	///  Remove a parent from this object.
-	void
-	removeWeakParent (pbChildObject* const weakParent);
-
 	///  Get all parents of this object.
 	const ChildObjectSet &
 	getParents () const
@@ -107,7 +99,7 @@ public:
 	///  disposed or is a root object.
 	size_t
 	getReferenceCount () const
-	{ return referenceCount; }
+	{ return getParents () .size (); }
 
 	///  @name Destruction
 
@@ -153,7 +145,6 @@ protected:
 
 private:
 
-	size_t         referenceCount;
 	ChildObjectSet parents;
 	pbChildObject* root;
 	ChildObjectSet children;

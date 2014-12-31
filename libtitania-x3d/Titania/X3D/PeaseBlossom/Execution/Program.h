@@ -72,6 +72,23 @@ public:
 	noexcept (true) override
 	{ return typeName; }
 
+	///  @name Member access
+
+	virtual
+	const ptr <pbExecutionContext> &
+	getRootContext () const final override
+	{ return getExecutionContext (); }
+
+	virtual
+	const ptr <Object> &
+	getStandardObject () const final override
+	{ return standardObject; }
+
+	virtual
+	const ptr <Function> &
+	getStandardFunction () const final override
+	{ return standardFunction; }
+
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
@@ -120,23 +137,6 @@ protected:
 	void
 	addStandardClasses ()
 	noexcept (true);
-
-	///  @name Member access
-
-	virtual
-	const ptr <pbExecutionContext> &
-	getRootContext () const final override
-	{ return getExecutionContext (); }
-
-	virtual
-	const ptr <Object> &
-	getStandardObject () const final override
-	{ return standardObject; }
-
-	virtual
-	const ptr <Function> &
-	getStandardFunction () const final override
-	{ return standardFunction; }
 
 
 private:

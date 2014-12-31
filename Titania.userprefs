@@ -1,12 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbFunction.h">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="66" Column="13" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.h" Line="202" Column="33" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.cpp" Line="90" Column="38" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="58" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="845" Column="11" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Execution/GlobalObject.h" Line="58" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Bits/pbMath.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/Math.h" Line="66" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/Math.cpp" Line="65" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/Object.h" Line="90" Column="50" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/Object.cpp" Line="84" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbFunction.h" Line="54" Column="33" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,31 +27,15 @@
               </Node>
             </Node>
           </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="InputOutput" expanded="True" />
-            </Node>
-          </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Scripting" expanded="True" />
-                </Node>
-                <Node name="JavaScript" expanded="True">
-                  <Node name="PeaseBlossom" expanded="True" />
-                </Node>
                 <Node name="PeaseBlossom" expanded="True">
-                  <Node name="Base" expanded="True" />
-                  <Node name="Bits" expanded="True" />
                   <Node name="Execution" expanded="True" />
-                  <Node name="Expressions" expanded="True" />
-                  <Node name="Objects" expanded="True" />
-                  <Node name="Parser" expanded="True">
-                    <Node name="Parser.cpp" selected="True" />
+                  <Node name="Objects" expanded="True">
+                    <Node name="pbBaseObject.h" selected="True" />
                   </Node>
+                  <Node name="Parser" expanded="True" />
                   <Node name="Primitives" expanded="True" />
                 </Node>
               </Node>

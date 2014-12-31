@@ -92,13 +92,8 @@ Math::Math (pbExecutionContext* const ec) :
 	addPropertyDescriptor ("tan",    new NativeFunction (ec, "tan",    tan,    1), NONE);
 }
 
-ptr <pbObject>
-Math::copy (pbExecutionContext* const executionContext) const
-noexcept (true)
-{ return pbObject::copy (executionContext, new Math (executionContext)); }
-
 var
-Math::abs (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::abs (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 1)
 		throw Error ("wrong number of arguments");
@@ -107,7 +102,7 @@ Math::abs (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::acos (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::acos (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 1)
 		throw Error ("wrong number of arguments");
@@ -116,7 +111,7 @@ Math::acos (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::asin (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::asin (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 1)
 		throw Error ("wrong number of arguments");
@@ -125,7 +120,7 @@ Math::asin (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::atan (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::atan (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 1)
 		throw Error ("wrong number of arguments");
@@ -134,7 +129,7 @@ Math::atan (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::atan2 (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::atan2 (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 2)
 		throw Error ("wrong number of arguments");
@@ -143,7 +138,7 @@ Math::atan2 (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::ceil (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::ceil (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 1)
 		throw Error ("wrong number of arguments");
@@ -152,7 +147,7 @@ Math::ceil (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::cos (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::cos (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 1)
 		throw Error ("wrong number of arguments");
@@ -161,7 +156,7 @@ Math::cos (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::exp (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::exp (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 1)
 		throw Error ("wrong number of arguments");
@@ -170,7 +165,7 @@ Math::exp (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::floor (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::floor (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 1)
 		throw Error ("wrong number of arguments");
@@ -179,7 +174,7 @@ Math::floor (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::log (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::log (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 1)
 		throw Error ("wrong number of arguments");
@@ -188,7 +183,7 @@ Math::log (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::max (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::max (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	double result = NEGATIVE_INFINITY ();
 
@@ -207,7 +202,7 @@ Math::max (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::min (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::min (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	double result = POSITIVE_INFINITY ();
 
@@ -226,7 +221,7 @@ Math::min (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::pow (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::pow (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 2)
 		throw Error ("wrong number of arguments");
@@ -235,7 +230,7 @@ Math::pow (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::random (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::random (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	static std::uniform_real_distribution <double> uniform_real_distribution (0, 1);
 	static std::default_random_engine random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
@@ -247,7 +242,7 @@ Math::random (const ptr <pbObject> & object, const std::vector <var> & arguments
 }
 
 var
-Math::round (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::round (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 1)
 		throw Error ("wrong number of arguments");
@@ -256,7 +251,7 @@ Math::round (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::sin (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::sin (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 1)
 		throw Error ("wrong number of arguments");
@@ -265,7 +260,7 @@ Math::sin (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::sqrt (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::sqrt (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 1)
 		throw Error ("wrong number of arguments");
@@ -274,7 +269,7 @@ Math::sqrt (const ptr <pbObject> & object, const std::vector <var> & arguments)
 }
 
 var
-Math::tan (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Math::tan (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .size () not_eq 1)
 		throw Error ("wrong number of arguments");

@@ -62,20 +62,10 @@ const std::string Program::typeName = "Program";
 ///  Constructs new Program.
 Program::Program () :
 	pbExecutionContext (this),
-		 standardObject (),
-	  standardFunction ()
+		 standardObject (new Object (nullptr)),
+	  standardFunction (new Function (this, nullptr))
 {
 	addChildren (standardObject, standardFunction);
-}
-
-void
-Program::addStandardObjects ()
-noexcept (true)
-{
-	standardObject   = new Object (nullptr);
-	standardFunction = new Function (this, nullptr);
-
-	standardObject -> addProperties (this);
 }
 
 void
@@ -97,7 +87,6 @@ createProgram ()
 {
 	const auto program = ptr <Program> (new Program ());
 
-	program -> addStandardObjects ();
 	program -> setGlobalObject (make_ptr <Object> (program));
 	program -> addStandardClasses ();
 

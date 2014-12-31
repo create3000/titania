@@ -58,7 +58,16 @@ namespace pb {
 Object::Object (pbExecutionContext* const executionContext) :
 	pbObject ()
 {
-	addPropertyDescriptor ("__proto__", executionContext -> getStandardObject (), NONE);
+	try
+	{
+		const auto & standardObject = executionContext -> getStandardObject ();
+
+		addPropertyDescriptor ("__proto__",   standardObject,                                NONE);
+		addPropertyDescriptor ("constructor", standardObject -> getProperty ("constructor"), NONE);
+		// prototype remains undefined.
+	}
+	catch (const std::out_of_range &)
+	{ }
 }
 
 Object::Object (const std::nullptr_t) :
@@ -67,21 +76,14 @@ Object::Object (const std::nullptr_t) :
 	addPropertyDescriptor ("__proto__", nullptr, NONE);
 }
 
-ptr <pbObject>
-Object::copy (pbExecutionContext* const executionContext) const
-noexcept (true)
-{
-	return pbObject::copy (executionContext, new Object (executionContext));
-}
-
-void
-Object::addProperties (pbExecutionContext* const ec)
-{
-	addPropertyDescriptor ("toString", new NativeFunction (ec, "toString", toString, 0), WRITABLE | CONFIGURABLE);
-}
+//void
+//Object::resolve ()
+//{
+//	addPropertyDescriptor ("toString", new NativeFunction (ec, "toString", toString, 0), WRITABLE | CONFIGURABLE);
+//}
 
 var
-Object::toString (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Object::toString (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
 {
 	if (arguments .empty ())
 		return object -> toString () + " [Object::toString]";

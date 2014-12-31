@@ -685,9 +685,7 @@
     <None Include="Titania\X3D\PeaseBlossom\pb.h" />
     <None Include="Titania\X3D\PeaseBlossom\Debug.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\BooleanObject.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\Function.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\NumberObject.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\Object.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\StringObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Primitives.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects.h" />
@@ -784,7 +782,6 @@
     <None Include="Titania\X3D\PeaseBlossom\Base\pbInputStreamObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Base\pbOutputStreamObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Objects\pbFunction.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\pbObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\pbControlFlowException.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\VariableDeclaration.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\PropertyExpression.h" />
@@ -792,6 +789,9 @@
     <None Include="Titania\X3D\PeaseBlossom\Expressions\NewExpression.h" />
     <None Include="Titania\X3D\PeaseBlossom\Parser\Grammar.h" />
     <None Include="Titania\X3D\PeaseBlossom\Expressions\PrimitiveExpression.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Objects\Function.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Objects\Object.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Objects\pbObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1272,7 +1272,6 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsString.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\Program.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\GlobalObject.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Objects\Function.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\Block.cpp" />
     <Compile Include="Titania\X3D\Base\X3DReferenceObject.cpp" />
     <Compile Include="Titania\X3D\Base\X3DParentObject.cpp" />
@@ -1299,14 +1298,14 @@
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\pbExecutionContext.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Base\pbChildObject.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Objects\pbFunction.cpp">
-      <DependentUpon>Math.cpp</DependentUpon>
     </Compile>
-    <Compile Include="Titania\X3D\PeaseBlossom\Objects\pbObject.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\pbBlock.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Base\GarbargeCollector.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Objects\Math.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Base\pbBase.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Objects\Function.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Objects\Object.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Objects\pbObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

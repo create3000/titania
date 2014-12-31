@@ -173,7 +173,6 @@ public:
 		if (&other == this)
 			return *this;
 
-		remove (get ());
 		move (other);
 
 		return *this;
@@ -187,7 +186,6 @@ public:
 		if (static_cast <pbBase*> (&other) == this)
 			return *this;
 
-		remove (get ());
 		move (other);
 
 		return *this;
@@ -225,18 +223,18 @@ public:
 
 	///  @name Modifiers
 
-	///  Exchanges the contents of *this and @a ptr.
-	void
-	swap (ptr & other)
-	{
-		if (value)
-			value -> replaceParent (this, &other);
-
-		if (other .value)
-			other .value -> replaceParent (&other, this);
-
-		std::swap (value, other .value);
-	}
+//	///  Exchanges the contents of *this and @a ptr.
+//	void
+//	swap (ptr & other)
+//	{
+//		if (value)
+//			value -> replaceParent (this, &other);
+//
+//		if (other .value)
+//			other .value -> replaceParent (&other, this);
+//
+//		std::swap (value, other .value);
+//	}
 
 	///  Removes the managed object.
 	void
@@ -247,13 +245,8 @@ public:
 	void
 	reset (Type* const value)
 	{
-		if (get () not_eq value)
-		{
-			// First add object to avoid dispose.
-			add (value);
-			remove (get ());
-		}
-
+		add (value);
+		remove (get ());
 		set (value);
 	}
 
@@ -327,31 +320,53 @@ private:
 			value -> addParent (this);
 	}
 
-	void
+	bool
 	move (ptr & other)
 	{
-		set (other .get ());
-
-		if (get ())
+		const auto value = other .get ();
+		
+		if (value == get ())
 		{
-			other .get () -> replaceParent (&other, this);
+			// If both values are NULL or equal, only set other to NULL.
+			other = nullptr;
+			return false;
+		}
+
+		if (value)
+		{
+			value -> replaceParent (&other, this);
 			other .set (nullptr);
 		}
+
+		remove (get ());
+		set (value);
+		return true;
 	}
 
 	template <class Up>
-	void
+	bool
 	move (ptr <Up> & other)
 	{
-		set (dynamic_cast <Type*> (other .get ()));
+		const auto value = dynamic_cast <Type*> (other .get ());
 
-		if (get ())
+		if (value == get ())
 		{
-			other .get () -> replaceParent (&other, this);
+			// If both values are NULL or equal, only set other to NULL.
+			other = nullptr;
+			return false;
+		}
+
+		if (value)
+		{
+			value -> replaceParent (&other, this);
 			other .set (nullptr);
 		}
 		else
-			other .reset (nullptr);
+			other = nullptr;
+
+		remove (get ());
+		set (value);
+		return true;
 	}
 
 	void
@@ -360,7 +375,6 @@ private:
 		if (value)
 		{
 			set (nullptr);
-
 			value -> removeParent (this);
 		}
 	}

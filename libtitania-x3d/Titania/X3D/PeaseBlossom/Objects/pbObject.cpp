@@ -56,7 +56,7 @@ namespace titania {
 namespace pb {
 
 PropertyDescriptor::PropertyDescriptor (pbChildObject* const object,
-                                        const std::string & identifier,
+                                        const Identifier & identifier,
                                         const var & value_,
                                         const PropertyFlagsType & flags,
                                         const ptr <pbFunction> & getter_,
@@ -93,34 +93,12 @@ pbObject::pbObject () :
 	    cachedProperties (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ()))
 { }
 
-ptr <pbObject>
-pbObject::copy (pbExecutionContext* const executionContext, const ptr <pbObject> & copy) const
-noexcept (true)
-{
-	static const auto protoId = getId ("__proto__");
-
-	for (const auto & property : properties)
-	{
-		if (property .first == protoId)
-			continue;
-
-		copy -> updatePropertyDescriptor (property .first,
-		                                  property .second -> getIdentifier (),
-		                                  property .second -> getValue () .copy (executionContext),
-		                                  property .second -> getFlags (),
-		                                  property .second -> getGetter (),
-		                                  property .second -> getSetter ());
-	}
-
-	return copy;
-}
-
 var
-pbObject::setProperty (const size_t id, var && value)
+pbObject::setProperty (const Identifier & identifier, var && value)
 throw (std::out_of_range,
        pbException)
 {
-	const auto & property = getPropertyDescriptor (id);
+	const auto & property = getPropertyDescriptor (identifier);
 
 	if (property -> getFlags () & WRITABLE)
 	{
@@ -136,11 +114,11 @@ throw (std::out_of_range,
 }
 
 var
-pbObject::getProperty (const size_t id) const
+pbObject::getProperty (const Identifier & identifier) const
 throw (std::out_of_range,
        pbException)
 {
-	const auto & property = getPropertyDescriptor (id);
+	const auto & property = getPropertyDescriptor (identifier .second);
 
 	if (property -> getGetter ())
 		return property -> getGetter () -> call (const_cast <pbObject*> (this));
@@ -149,23 +127,21 @@ throw (std::out_of_range,
 }
 
 void
-pbObject::addPropertyDescriptor (const size_t id,
-                                 const std::string & identifier,
+pbObject::addPropertyDescriptor (const Identifier & identifier,
                                  const var & value,
                                  const PropertyFlagsType flags,
                                  const ptr <pbFunction> & getter,
                                  const ptr <pbFunction> & setter)
 throw (std::invalid_argument)
 {
-	const auto pair = properties .emplace (id, std::make_shared <PropertyDescriptor> (this, identifier, value, flags, getter, setter));
+	const auto pair = properties .emplace (identifier .second, std::make_shared <PropertyDescriptor> (this, identifier, value, flags, getter, setter));
 
 	if (not pair .second)
 		throw std::invalid_argument ("Property already exists.");
 }
 
 void
-pbObject::updatePropertyDescriptor (const size_t id,
-                                    const std::string & identifier,
+pbObject::updatePropertyDescriptor (const Identifier & identifier,
                                     const var & value,
                                     const PropertyFlagsType flags,
                                     const ptr <pbFunction> & getter,
@@ -174,7 +150,7 @@ throw (std::invalid_argument)
 {
 	try
 	{
-		const auto & property = getPropertyDescriptor (id);
+		const auto & property = getPropertyDescriptor (identifier);
 
 		if (not (flags & LEAVE_VALUE))
 			property -> setValue (value);
@@ -189,17 +165,33 @@ throw (std::invalid_argument)
 	}
 	catch (const std::out_of_range &)
 	{
-		addPropertyDescriptor (id, identifier, value, flags, getter, setter);
+		addPropertyDescriptor (identifier, value, flags, getter, setter);
 	}
 }
 
 void
-pbObject::removePropertyDescriptor (const size_t id)
+pbObject::removePropertyDescriptor (const Identifier & identifier)
 noexcept (true)
 {
-	removeCachedPropertyDescriptors (id);
+	removeCachedPropertyDescriptors (identifier .second);
 
-	properties .erase (id);
+	properties .erase (identifier .second);
+}
+
+const PropertyDescriptorPtr &
+pbObject::getPropertyDescriptor (const Identifier & identifier) const
+throw (std::out_of_range)
+{
+	try
+	{
+		return getPropertyDescriptor (identifier .second);
+	}
+	catch (const std::out_of_range &)
+	{
+		const_cast <pbObject*> (this) -> resolve (identifier);
+
+		return getPropertyDescriptor (identifier .second);
+	}
 }
 
 const PropertyDescriptorPtr &
@@ -212,39 +204,48 @@ throw (std::out_of_range)
 	}
 	catch (const std::out_of_range &)
 	{
-		try
-		{
-			const auto & property = properties .at (id);
+		const auto & property = properties .at (id);
 
-			const_cast <pbObject*> (this) -> addCachedPropertyDescriptor (id, property);
+		const_cast <pbObject*> (this) -> addCachedPropertyDescriptor (id, property);
 
-			return property;
-		}
-		catch (const std::out_of_range &)
-		{
-			static const auto protoId = getId ("__proto__");
-
-			const auto & property = properties .at (protoId);
-			const auto & value    = property -> getValue ();
-
-			if (value .isObject ())
-			{
-				const auto & proto         = value .getObject ();
-				const auto & protoProperty = proto -> getPropertyDescriptor (id);
-
-				const_cast <pbObject*> (this) -> addPropertyDescriptor (id,
-				                                                        protoProperty -> getIdentifier (),
-		                                                              protoProperty -> getValue (),
-		                                                              protoProperty -> getFlags (),
-		                                                              protoProperty -> getGetter (),
-		                                                              protoProperty -> getSetter ());
-
-				return getPropertyDescriptor (id);
-			}
-			
-			throw;
-		}
+		return property;
 	}
+}
+
+void
+pbObject::resolve (const Identifier & identifier)
+throw (std::out_of_range)
+{
+	try
+	{
+		const auto & proto         = getProto ();
+		const auto & protoProperty = proto -> getPropertyDescriptor (identifier);
+
+		addPropertyDescriptor (protoProperty -> getIdentifier (),
+	                          protoProperty -> getValue (),
+	                          protoProperty -> getFlags (),
+	                          protoProperty -> getGetter (),
+	                          protoProperty -> getSetter ());
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw std::out_of_range ("pbObject::resolve");
+	}
+}
+
+ptr <pbObject>
+pbObject::getProto () const
+throw (std::out_of_range)
+{
+	static const auto identifier = getIdentifier ("__proto__");
+
+	const auto & property = getPropertyDescriptor (identifier .second);
+	const auto & value    = property -> getValue ();
+
+	if (value .isObject ())
+		return value .getObject ();
+
+	throw std::out_of_range ("pbObject::getProto");
 }
 
 void
@@ -292,8 +293,8 @@ throw (pbException)
 	//
 	//	return valueOf () or toString () or throw TypeError ();
 
-	static const auto toString = getId ("toString");
-	static const auto valueOf  = getId ("valueOf");
+	static const auto toString = getIdentifier ("toString");
+	static const auto valueOf  = getIdentifier ("valueOf");
 
 	if (preferedType == STRING)
 	{
@@ -330,12 +331,12 @@ throw (pbException)
 }
 
 var
-pbObject::call (const size_t id, const std::vector <var> & arguments) const
+pbObject::call (const Identifier & identifier, const std::vector <var> & arguments) const
 throw (pbException)
 {
 	try
 	{
-		const auto & property = getProperty (id);
+		const auto & property = getProperty (identifier);
 
 		if (property .isObject ())
 		{

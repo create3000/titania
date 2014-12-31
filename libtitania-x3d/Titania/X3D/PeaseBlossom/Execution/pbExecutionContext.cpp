@@ -128,7 +128,7 @@ throw (pbException)
 			getLocalObjects () .front () -> addPropertyDescriptor (function .second -> getName (),
 			                                                       isRootContext ()
 			                                                       ? function .second
-			                                                       : ptr <pbFunction> (function .second -> copy (this)),
+			                                                       : function .second -> copy (this),
 			                                                       WRITABLE | CONFIGURABLE);
 		}
 

@@ -83,16 +83,15 @@ Function::Function (pbExecutionContext* const executionContext, const std::nullp
 	addChildren (localObjectsStack, localObjects);
 }
 
-ptr <pbObject>
+ptr <pbFunction>
 Function::copy (pbExecutionContext* const executionContext) const
 noexcept (true)
 {
 	const auto function = make_ptr <Function> (executionContext, getName (), std::vector <std::string> (formalParameters));
 
-	function -> isStrict (isStrict ());
 	function -> import (this);
 
-	return pbObject::copy (executionContext, function);
+	return function;
 }
 
 void

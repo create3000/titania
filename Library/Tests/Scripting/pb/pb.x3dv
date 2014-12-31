@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 01 Jun 2014 03:00:06 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.6, http://titania.create3000.de"
-META "modified" "Tue, 09 Dec 2014 02:34:07 GMT"
+META "modified" "Wed, 31 Dec 2014 07:42:19 GMT"
 
 DEF Sunset Background {
   skyAngle [
@@ -62,13 +62,12 @@ Transform {
 DEF Script1 Script {
   inputOnly SFTime set_time
 
-  url [
-#  "peaseblossom:
-#function x () { }
-#print (1.234);
-#  "
-#  "peaseblossom:"
-  "peaseblossom:
+  #  "peaseblossom:
+  #function x () { }
+  #print (1.234);
+  #  "
+  #  "peaseblossom:"
+  url "peaseblossom:
 /*
 function initialize ()
 {
@@ -378,19 +377,12 @@ function for_time (n)
 }
 */
 
-var toString = function () { return 'first toString'; };
-
 function set_time (value, time)
 {
 	print ('set_time:');
 	print ('set_time: value: ', value);
 	print ('set_time: time:  ', time);
 	print ('set_time: now:   ', now ());
-
-	print (toString ());
-	toString = { } .__proto__ .toString;
-	print (toString);
-	print (toString ());
 
 	n = 1;
 
@@ -414,117 +406,25 @@ function set_time (value, time)
 	//print ('time: ',   now () - t0);
 }
 
-var x = 'global';
-print ('this: ', this);
-
-var o = {
-	x: x,
-	f: function ()
-	{
-		return 'f: this .x: ' + this .x + ' ' + x;
-	},
-	toString: function () { return 'toString'; }
-};
-
-function Class ()
-{
-	var x = 0;
-
-	this .a = function () { return x += 1; };
-	this .b = function () { return x += 2; };
-
-	return this;
-}
-
-print ('x:        ', o .x);
-print ('x:        ', o .x = 234);
-print ('x:        ', o .x);
-print ('toString: ', o .toString);
-print ('toString: ', o .toString ());
-print ('f:        ', o .f ());
-print ('toString: ', o);
-print ('x:        ', o .x);
-print (Math);
-print (Math .PI);
-print ('abs (-123): ', Math .abs (-123));
-print ('sqrt (2): ', Math .sqrt (2));
-print ('Math .min .length: ', Math .min .length);
-print ('Math .max: ', Math .max (4,6,2,9,4));
-print ('Math .min: ', Math .min (4,6,2,9,4));
-print ('random: ', Math .random ());
-print ('new: ', new Class ());
-
-var c = new Class ();
-
-print ('Class .a: ', c .a ());
-print ('Class .b: ', c .b ());
-print ('Class .a: ', c .a ());
-print ('Class .b: ', c .b ());
-
-var i = 0;
-var global1 = 'global1';
-
-function outer ()
-{
-	print ('outer:');
-
-	if (i == 0)
-	{
-		i += 1;
-
-		var outer1 = 'outer1';
-
-		return outer ();
-	}
-	else
-	{
-		var outer2 = 'outer2';	
-	}
-
-	return function inner () {
-		var inner1 = 'inner1';
-
-		print (global1);
-		//print (outer1);
-		print (inner1);
-
-		print (outer2);
-	};
-}
- 
-print ();
-print ('pb:');
-print (outer);
-outer () ();
-
-print (this);
-print (this .__proto__);
-print (this .__proto__ .__proto__);
-
-
-var o = {};
-o .__proto__ .x = 123;
-
-o .x = 224;
-print (o .x);
-print ({ } .x);
-
-"]
+print ({ });
+print ({ } .__proto__);
+print ({ } .__proto__ .__proto__);
+print ({ } .constructor);
+"
   directOutput TRUE
 }
 
 DEF Script2 Script {
-  inputOnly      SFTime  set_time
-  initializeOnly SFFloat now 1
-  initializeOnly SFNode  node Script {
+  inputOnly      SFTime   set_time
+  initializeOnly SFFloat  now 1
+  initializeOnly SFNode   node Script {
     inputOutput SFDouble result 0
     inputOutput SFDouble h1 0
     inputOutput SFDouble h2 1
 
   }
-
-  inputOutput SFDouble N1 800
-  inputOutput SFDouble N2 8000000
+  inputOutput    SFDouble N1 800
+  inputOutput    SFDouble N2 8000000
 
   url "javascript:
 var n = 0;

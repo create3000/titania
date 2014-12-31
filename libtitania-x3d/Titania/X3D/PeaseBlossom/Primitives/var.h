@@ -202,10 +202,6 @@ public:
 	///  Constructs new var.
 	var (pbObject* const object);
 
-	var
-	copy (pbExecutionContext* const executionContext) const
-	noexcept (true);
-
 	///  @name Assignment operators
 
 	var &

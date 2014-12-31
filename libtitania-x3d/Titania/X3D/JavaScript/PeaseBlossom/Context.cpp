@@ -73,13 +73,13 @@ public:
 		global -> addPropertyDescriptor ("FALSE", false,   pb::NONE);
 		global -> addPropertyDescriptor ("TRUE",  true,    pb::NONE);
 
-		global -> addPropertyDescriptor ("print", new pb::NativeFunction (ec, "print", std::bind (print, _1, _2, browser), 0), pb::NONE);
-		global -> addPropertyDescriptor ("now",   new pb::NativeFunction (ec, "now",   now,                                0), pb::NONE);
+		global -> addPropertyDescriptor ("print", new pb::NativeFunction (ec, "print", std::bind (print, _1, _2, _3, browser), 0), pb::NONE);
+		global -> addPropertyDescriptor ("now",   new pb::NativeFunction (ec, "now",   now,                                    0), pb::NONE);
 	}
 
 	static
 	pb::var
-	print (const pb::ptr <pb::pbObject> & object, const std::vector <pb::var> & arguments, X3D::X3DBrowser* const browser)
+	print (const pb::ptr <pb::pbExecutionContext> & ec, const pb::ptr <pb::pbObject> & object, const std::vector <pb::var> & arguments, X3D::X3DBrowser* const browser)
 	{
 		for (const auto & value : arguments)
 			browser -> print (value);
@@ -91,7 +91,7 @@ public:
 
 	static
 	pb::var
-	now (const pb::ptr <pb::pbObject> &, const std::vector <pb::var> &)
+	now (const pb::ptr <pb::pbExecutionContext> & ec, const pb::ptr <pb::pbObject> &, const std::vector <pb::var> &)
 	{
 		return chrono::now ();
 	}

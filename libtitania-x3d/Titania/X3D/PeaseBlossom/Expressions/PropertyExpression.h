@@ -71,8 +71,7 @@ public:
 	PropertyExpression (ptr <pbExpression> && expression, std::string && identifier) :
 		pbExpression (ExpressionType::PROPERTY_EXPRESSION),
 		  expression (std::move (expression)),
-		  identifier (std::move (identifier)),
-		          id (getId (this -> identifier))
+		  identifier (getIdentifier (std::move (identifier)))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -80,7 +79,7 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new PropertyExpression (expression -> copy (executionContext), std::string (identifier)); }
+	{ return new PropertyExpression (expression -> copy (executionContext), std::string (identifier .first)); }
 
 	///  @name Operations
 
@@ -99,11 +98,11 @@ public:
 			{
 				try
 				{
-					return object -> setProperty (id, std::move (value));
+					return object -> setProperty (identifier, std::move (value));
 				}
 				catch (const std::out_of_range &)
 				{
-					object -> addPropertyDescriptor (id, identifier, value);
+					object -> addPropertyDescriptor (identifier, value);
 
 					return value;
 				}
@@ -130,7 +129,7 @@ public:
 			{
 				try
 				{
-					return object -> getProperty (id);
+					return object -> getProperty (identifier);
 				}
 				catch (const std::out_of_range &)
 				{ }
@@ -182,11 +181,11 @@ public:
 			{
 				pbObject* const object = static_cast <pbObject*> (lhs .getObject () .get ());
 
-				return object -> call (id, arguments);
+				return object -> call (identifier, arguments);
 			}
 		}
 
-		throw TypeError ("'" + lhs .toString () + "." + identifier + "' is not a function");
+		throw TypeError ("'" + lhs .toString () + "." + identifier .first + "' is not a function");
 	}
 
 
@@ -202,8 +201,7 @@ private:
 	///  @name Members
 
 	const ptr <pbExpression> expression;
-	const std::string        identifier;
-	const size_t             id;
+	const Identifier         identifier;
 
 };
 

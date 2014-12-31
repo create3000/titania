@@ -92,21 +92,6 @@ var::var (pbObject* const object) :
 	assert (*value .object_);
 }
 
-var
-var::copy (pbExecutionContext* const executionContext) const
-noexcept (true)
-{
-	switch (type)
-	{
-		case STRING:
-			return *value .string_;
-		case OBJECT:
-			return value .object_ -> get () -> copy (executionContext);
-		default:
-			return *this;
-	}
-}
-
 var &
 var::operator = (const var & other)
 {

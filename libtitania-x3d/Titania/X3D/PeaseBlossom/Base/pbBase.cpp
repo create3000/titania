@@ -53,7 +53,7 @@
 namespace titania {
 namespace pb {
 
-pbBase::IdIndex pbBase::ids;
+pbBase::IdentifierIndex pbBase::identifiers;
 
 } // pb
 } // titania

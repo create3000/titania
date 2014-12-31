@@ -59,6 +59,8 @@
 namespace titania {
 namespace pb {
 
+using Identifier = std::pair <std::string, size_t>;
+
 class pbBase
 {
 public:
@@ -87,18 +89,23 @@ protected:
 	///  @name Named identifier handling
 
 	static
-	size_t
-	getId (const std::string & identifier)
-	{ return ids .emplace (identifier, ids .size ()) .first -> second; }
+	Identifier
+	getIdentifier (const std::string & identifier)
+	{ return *identifiers .emplace (identifier, identifiers .size ()) .first; }
+
+	static
+	Identifier
+	getIdentifier (std::string && identifier)
+	{ return *identifiers .emplace (std::move (identifier), identifiers .size ()) .first; }
 
 
 private:
 
 	///  @name Static members
 
-	using IdIndex = std::map <std::string, size_t>;
+	using IdentifierIndex = std::map <std::string, size_t>;
 
-	static IdIndex ids;
+	static IdentifierIndex identifiers;
 
 };
 

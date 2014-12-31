@@ -72,8 +72,7 @@ public:
 	VariableExpression (pbExecutionContext* const executionContext, std::string && identifier) :
 		    pbExpression (ExpressionType::VARIABLE_EXPRESSION),
 		executionContext (executionContext),
-		      identifier (std::move (identifier)),
-		              id (getId (this -> identifier))
+		      identifier (getIdentifier (std::move (identifier)))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -81,7 +80,7 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new VariableExpression (executionContext, std::string (identifier)); }
+	{ return new VariableExpression (executionContext, std::string (identifier .first)); }
 
 	///  @name Operations
 
@@ -94,13 +93,13 @@ public:
 		{
 			try
 			{
-				return localObject -> setProperty (id, std::move (value));
+				return localObject -> setProperty (identifier, std::move (value));
 			}
 			catch (const std::out_of_range &)
 			{ }
 		}
 
-		executionContext -> getGlobalObject () -> addPropertyDescriptor (id, identifier, value);
+		executionContext -> getGlobalObject () -> addPropertyDescriptor (identifier, value);
 
 		return value;
 	}
@@ -116,13 +115,13 @@ public:
 		{
 			try
 			{
-				return localObject -> getProperty (id);
+				return localObject -> getProperty (identifier);
 			}
 			catch (const std::out_of_range &)
 			{ }
 		}
 
-		throw ReferenceError (identifier + " is not defined.");
+		throw ReferenceError (identifier .first + " is not defined.");
 	}
 
 private:
@@ -137,8 +136,7 @@ private:
 	///  @name Members
 
 	const ptr <pbExecutionContext> executionContext;
-	const std::string              identifier;
-	const size_t                   id;
+	const Identifier               identifier;
 
 };
 

@@ -85,7 +85,7 @@ public:
 		
 		for (const auto & property : properties)
 		{
-			copy -> updatePropertyDescriptor (std::string (property .second .identifier),
+			copy -> updatePropertyDescriptor (std::string (property .second .identifier .first),
 			                                  property .second .value  ? property .second .value  -> copy (executionContext) : nullptr,
 			                                  property .second .getter ? property .second .getter -> copy (executionContext) : nullptr,
 			                                  property .second .setter ? property .second .setter -> copy (executionContext) : nullptr);
@@ -97,12 +97,13 @@ public:
 	///  @name Operations
 
 	void
-	updatePropertyDescriptor (std::string && identifier,
+	updatePropertyDescriptor (std::string && name,
 	                          ptr <pbExpression> && value,
 	                          ptr <pbFunction> && getter = nullptr,
 	                          ptr <pbFunction> && setter = nullptr)
 	{
-		auto & property = properties [getId (identifier)];
+		auto   identifier = getIdentifier (std::move (name));
+		auto & property   = properties [identifier .second];
 
 		if (value)
 			property .identifier = std::move (identifier);
@@ -134,8 +135,7 @@ public:
 		{
 			try
 			{
-				object -> updatePropertyDescriptor (property .first,
-				                                    property .second .identifier,
+				object -> updatePropertyDescriptor (property .second .identifier,
 				                                    property .second .value ? property .second .value -> getValue () : Undefined (),
 				                                    DEFAULT,
 				                                    property .second .getter,
@@ -154,7 +154,7 @@ private:
 
 	struct PropertyDescriptor
 	{
-		std::string        identifier;
+		Identifier         identifier;
 		ptr <pbExpression> value;
 		ptr <pbFunction>   getter;
 		ptr <pbFunction>   setter;

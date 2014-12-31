@@ -78,13 +78,6 @@ public:
 		 boolean (value)
 	{ }
 
-	///  Creates a new default object.
-	virtual
-	ptr <pbObject>
-	copy (pbExecutionContext* const executionContext) const
-	noexcept (true) final override
-	{ return pbObject::copy (executionContext, new BooleanObject (boolean)); }
-
 	///  @name Input/Output
 
 //	///  Inserts this object into the output stream @a ostream.
