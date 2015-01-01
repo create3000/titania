@@ -62,22 +62,32 @@ Object::Object (pbExecutionContext* const executionContext) :
 	{
 		const auto & standardObject = executionContext -> getStandardObject ();
 
-		addPropertyDescriptor ("__proto__",   standardObject,                                NONE);
-		addPropertyDescriptor ("constructor", standardObject -> getProperty ("constructor"), NONE);
+		addPropertyDescriptor ("__proto__",   standardObject,                              NONE);
+		addPropertyDescriptor ("constructor", standardObject -> getObject ("constructor"), NONE);
 		// prototype remains undefined.
 	}
 	catch (const std::out_of_range &)
 	{ }
 }
 
-Object::Object (pbObject* const constructor) :
+Object::Object (pbExecutionContext* const executionContext, pbObject* const constructor) :
 	pbObject ()
 {
-	addPropertyDescriptor ("__proto__",   constructor -> getProperty ("prototype"), NONE);
-	addPropertyDescriptor ("constructor", constructor,                              NONE);
+	try
+	{
+		addPropertyDescriptor ("__proto__",   constructor -> getObject ("prototype"), NONE);
+		addPropertyDescriptor ("constructor", constructor,                            NONE);
+	}
+	catch (const std::exception &)
+	{
+		const auto constructor = executionContext -> getStandardObject () -> getObject ("constructor");
+
+		addPropertyDescriptor ("__proto__",   constructor -> getObject ("prototype"), NONE);
+		addPropertyDescriptor ("constructor", constructor,                            NONE);
+	}
 }
 
-Object::Object (pbExecutionContext* const executionContext, const std::nullptr_t) :
+Object::Object (const std::nullptr_t) :
 	pbObject ()
 {
 	addPropertyDescriptor ("__proto__", nullptr, NONE);

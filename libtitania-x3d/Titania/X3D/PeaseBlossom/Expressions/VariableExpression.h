@@ -72,7 +72,7 @@ public:
 	VariableExpression (pbExecutionContext* const executionContext, std::string && identifier) :
 		    pbExpression (ExpressionType::VARIABLE_EXPRESSION),
 		executionContext (executionContext),
-		      identifier (getIdentifier (std::move (identifier)))
+		      identifier (std::move (identifier))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -80,7 +80,7 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new VariableExpression (executionContext, std::string (identifier .first)); }
+	{ return new VariableExpression (executionContext, std::string (identifier .getName ())); }
 
 	///  @name Operations
 
@@ -121,7 +121,7 @@ public:
 			{ }
 		}
 
-		throw ReferenceError (identifier .first + " is not defined.");
+		throw ReferenceError (identifier .getName () + " is not defined.");
 	}
 
 private:

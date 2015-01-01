@@ -793,6 +793,7 @@
     <None Include="Titania\X3D\PeaseBlossom\Standard\Object.h" />
     <None Include="Titania\X3D\PeaseBlossom\Standard\GlobalObject.h" />
     <None Include="Titania\X3D\PeaseBlossom\Standard\Math.h" />
+    <None Include="Titania\X3D\PeaseBlossom\Bits\Identifier.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1301,7 +1302,6 @@
     </Compile>
     <Compile Include="Titania\X3D\PeaseBlossom\Execution\pbBlock.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Base\GarbargeCollector.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Base\pbBase.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Objects\Function.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Objects\Object.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Objects\pbObject.cpp" />
@@ -1309,6 +1309,7 @@
     <Compile Include="Titania\X3D\PeaseBlossom\Standard\GlobalObject.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Standard\Math.cpp" />
     <Compile Include="Titania\X3D\PeaseBlossom\Objects\NativeFunction.cpp" />
+    <Compile Include="Titania\X3D\PeaseBlossom\Bits\Identifier.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

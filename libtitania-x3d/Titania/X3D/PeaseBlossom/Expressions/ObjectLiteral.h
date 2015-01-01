@@ -85,7 +85,7 @@ public:
 		
 		for (const auto & property : properties)
 		{
-			copy -> updatePropertyDescriptor (std::string (property .second .identifier .first),
+			copy -> updatePropertyDescriptor (std::string (property .second .identifier .getName ()),
 			                                  property .second .value  ? property .second .value  -> copy (executionContext) : nullptr,
 			                                  property .second .getter ? property .second .getter -> copy (executionContext) : nullptr,
 			                                  property .second .setter ? property .second .setter -> copy (executionContext) : nullptr);
@@ -102,8 +102,8 @@ public:
 	                          ptr <pbFunction> && getter = nullptr,
 	                          ptr <pbFunction> && setter = nullptr)
 	{
-		auto   identifier = getIdentifier (std::move (name));
-		auto & property   = properties [identifier .second];
+		auto   identifier = Identifier (std::move (name));
+		auto & property   = properties [identifier .getId ()];
 
 		if (value)
 			property .identifier = std::move (identifier);

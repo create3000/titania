@@ -806,7 +806,7 @@ Parser::newExpression (ptr <pbExpression> & value)
 
 			arguments (argumentListExpressions);
 
-			value = new NewExpression (std::move (value), std::move (argumentListExpressions));
+			value = new NewExpression (getExecutionContext (), std::move (value), std::move (argumentListExpressions));
 			return true;
 		}
 

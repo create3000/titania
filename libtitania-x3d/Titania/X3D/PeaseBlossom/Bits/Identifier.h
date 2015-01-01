@@ -48,62 +48,107 @@
  *
  ******************************************************************************/
 
-#include "pbFunction.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_IDENTIFIER_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_IDENTIFIER_H__
 
-#include "../Execution/pbExecutionContext.h"
-#include "../Objects/Function.h"
-#include "../Objects/Object.h"
+#include <map>
+#include <string>
 
 namespace titania {
 namespace pb {
 
-pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::string & name, const size_t length) :
-	pbObject (),
-	    name (name),
-	  length (length)
+class Identifier
 {
-	try
-	{
-		const auto & standardFunction = executionContext -> getStandardFunction ();
+public:
 
-		addProperties ();
-		addPropertyDescriptor ("__proto__",   standardFunction,                                NONE);
-		addPropertyDescriptor ("constructor", standardFunction -> getProperty ("constructor"), NONE);
-		addPropertyDescriptor ("prototype",   new Object (executionContext),                   NONE);
-	}
-	catch (const std::out_of_range &)
+	Identifier () :
+		name (),
+		  id (-1)
 	{ }
-}
 
-pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::nullptr_t) :
-	pbObject (),
-	    name ("Empty"),
-	  length (0)
-{
-	addProperties ();
-	addPropertyDescriptor ("__proto__", executionContext -> getStandardObject (), NONE);
-}
+	Identifier (const Identifier & other) :
+		name (other .name),
+		  id (other .id)
+	{ }
 
-void
-pbFunction::addProperties ()
-{
-	addPropertyDescriptor ("name",   name,   NONE);
-	addPropertyDescriptor ("length", length, NONE);
-}
+	Identifier (Identifier && other) :
+		name (std::move (other .name)),
+		  id (other .id)
+	{ }
 
-var
-pbFunction::construct (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments)
-throw (pbException)
-{
-	ptr <pbObject> object = new Object (executionContext, this);
+	Identifier (const std::string & name) :
+		Identifier (getIdentifier (name))
+	{ }
 
-	const auto result = construct (executionContext, object, arguments);
+	Identifier (std::string && name) :
+		Identifier (getIdentifier (std::move (name)))
+	{ }
 
-	if (result .isObject ())
-		return result;
+	Identifier (const std::string::value_type* name) :
+		Identifier (getIdentifier (name))
+	{ }
 
-	return std::move (object);
-}
+	Identifier &
+	operator = (const Identifier & other)
+	{
+		name = other .name;
+		id   = other .id;
+		return *this;
+	}
 
+	Identifier &
+	operator = (Identifier && other)
+	{
+		name = std::move (other .name);
+		id   = other .id;
+		return *this;
+	}
+
+	const std::string &
+	getName () const
+	{ return name; }
+
+	size_t
+	getId () const
+	{ return id; }
+
+
+private:
+
+	///  @name Member types
+
+	using IdentifierIndex = std::map <std::string, size_t>;
+
+	///  @name Construction
+	
+	Identifier (const IdentifierIndex::value_type & pair) :
+		name (pair .first),
+		  id (pair .second)
+	{ }
+
+	///  @name Operations
+
+	static
+	const IdentifierIndex::value_type &
+	getIdentifier (const std::string & identifier)
+	{ return *identifiers .emplace (identifier, identifiers .size ()) .first; }
+
+	static
+	const IdentifierIndex::value_type &
+	getIdentifier (std::string && identifier)
+	{ return *identifiers .emplace (std::move (identifier), identifiers .size ()) .first; }
+
+	///  @name Static members
+
+	static IdentifierIndex identifiers;
+
+	///  @name Members
+
+	std::string name;
+	size_t      id;
+
+};
 } // pb
 } // titania
+
+#endif

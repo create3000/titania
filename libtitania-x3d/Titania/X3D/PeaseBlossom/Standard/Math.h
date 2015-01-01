@@ -74,9 +74,10 @@ public:
 
 	virtual
 	const std::string &
-	getTypeName () const
-	noexcept (true) final override
-	{ return typeName; }
+	getClassName () const
+	throw (std::out_of_range,
+	       TypeError) final override
+	{ return className; }
 
 
 private:
@@ -157,7 +158,7 @@ private:
 
 	///  @name Static members
 	
-	static const std::string typeName;
+	static const std::string className;
 
 };
 

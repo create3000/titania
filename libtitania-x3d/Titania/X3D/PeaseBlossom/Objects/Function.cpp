@@ -106,7 +106,7 @@ Function::addLocalObjects (const ptr <pbExecutionContext> & executionContext)
 }
 
 var
-Function::construct (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Function::construct (const ptr <pbExecutionContext> &, const ptr <pbObject> & object, const std::vector <var> & arguments)
 throw (pbException)
 {
 	return apply (object, arguments);
@@ -161,6 +161,22 @@ Function::pop ()
 
 		localObjectsStack .resize (localObjectsStack .size () - size);
 	}
+}
+
+void
+Function::toStream (std::ostream & ostream) const
+{
+	ostream << "function " << getName () << " (";
+	
+	if (not formalParameters .empty ())
+	{
+		for (const auto parameter : std::make_pair (formalParameters .begin (), formalParameters .end () - 1))
+			ostream << parameter << ", ";
+
+		ostream << formalParameters .back ();
+	}
+
+	ostream << ") { }";
 }
 
 void

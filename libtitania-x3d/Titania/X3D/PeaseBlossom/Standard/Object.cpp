@@ -67,7 +67,7 @@ struct Constructor
 		if (arguments .empty ())
 			return new pb::Object (ec);
 
-		return new pb::Object (ec);
+		return arguments [0] .toObject ();
 	}
 
 };
@@ -94,7 +94,7 @@ initialize (pbExecutionContext* const ec, const ptr <pbObject> & object)
 	const auto standardObject = ec -> getStandardObject ();
 	const auto constructor    = make_ptr <NativeFunction> (ec, "Object", Constructor { }, Constructor { }, 1);
 	
-	constructor -> addPropertyDescriptor ("prototype", standardObject, NONE);
+	constructor -> updatePropertyDescriptor ("prototype", standardObject, NONE);
 
 	object -> addPropertyDescriptor ("Object", constructor, NONE);
 

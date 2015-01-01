@@ -62,20 +62,6 @@ namespace titania {
 namespace pb {
 namespace Standard {
 
-/// new Function ([arg1[, arg2[, ...argN]],] functionBody)
-struct Function
-{
-	var
-	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
-	{
-		if (arguments .empty ())
-			return new pb::Function (ec);
-
-		return new pb::Function (ec);
-	}
-
-};
-
 struct isNaN
 {
 	var
@@ -115,12 +101,28 @@ struct parseFloat
 
 };
 
+namespace Function {
+
+/// new Function ([arg1[, arg2[, ...argN]],] functionBody)
+struct Constructor
+{
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
+	{
+		if (arguments .empty ())
+			return new pb::Function (ec);
+
+		return new pb::Function (ec);
+	}
+
+};
+
 static
 void
-addFunction (pbExecutionContext* const ec, const ptr <pbObject> & object)
+initialize (pbExecutionContext* const ec, const ptr <pbObject> & object)
 {
 	const auto standardFunction = ec -> getStandardFunction ();
-	const auto constructor      = make_ptr <NativeFunction> (ec, "Function", Function { }, 1);
+	const auto constructor      = make_ptr <NativeFunction> (ec, "Function", Constructor { }, 1);
 
 	constructor -> addPropertyDescriptor ("constructor", constructor,      NONE);
 	constructor -> addPropertyDescriptor ("prototype",   standardFunction, NONE);
@@ -131,10 +133,12 @@ addFunction (pbExecutionContext* const ec, const ptr <pbObject> & object)
 	// standardFunction prototype remains undefined.
 }
 
+} // Function
+
 void
 addStandardClasses (pbExecutionContext* const ec, const ptr <pbObject> & object)
 {
-	addFunction (ec, object);
+	Function::initialize (ec, object);
 	Object::initialize (ec, object);
 
 	// Properties

@@ -62,7 +62,7 @@ const std::string Program::typeName = "Program";
 ///  Constructs new Program.
 Program::Program () :
 	pbExecutionContext (this),
-		 standardObject (new Object (this, nullptr)),
+		 standardObject (new Object (nullptr)),
 	  standardFunction (new Function (this, nullptr))
 {
 	addChildren (standardObject, standardFunction);

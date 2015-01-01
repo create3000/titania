@@ -57,7 +57,7 @@ namespace titania {
 namespace pb {
 namespace Standard {
 
-const std::string Math::typeName = "Math";
+const std::string Math::className = "Math";
 
 Math::Math (pbExecutionContext* const ec) :
 	Object (ec)

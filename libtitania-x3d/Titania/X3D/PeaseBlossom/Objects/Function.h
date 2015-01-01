@@ -107,6 +107,13 @@ public:
 	getRecursionLimit ()
 	{ return recursionLimit; }
 
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override;
+
 
 protected:
 
@@ -124,7 +131,7 @@ protected:
 	///  Constructs new object of this class.
 	virtual
 	var
-	construct (const ptr <pbObject> & object, const std::vector <var> & arguments = { })
+	construct (const ptr <pbExecutionContext> & executionContext, const ptr <pbObject> & object, const std::vector <var> & arguments = { })
 	throw (pbException) final override;
 
 

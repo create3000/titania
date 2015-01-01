@@ -71,7 +71,7 @@ public:
 	VariableDeclaration (pbExecutionContext* const executionContext, std::string && identifier, ptr <pbExpression> && expression) :
 		    pbExpression (ExpressionType::VARIABLE_DECLARATION),
 		executionContext (executionContext),
-		      identifier (getIdentifier (std::move (identifier))),
+		      identifier (std::move (identifier)),
 		      expression (expression ? std::move (expression) : new PrimitiveExpression (Undefined ()))
 	{ construct (); }
 
@@ -80,7 +80,7 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new VariableDeclaration (executionContext, std::string (identifier .first), expression -> copy (executionContext)); }
+	{ return new VariableDeclaration (executionContext, std::string (identifier .getName ()), expression -> copy (executionContext)); }
 
 	///  @name Operations
 

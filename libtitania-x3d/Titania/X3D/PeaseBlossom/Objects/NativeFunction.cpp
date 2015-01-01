@@ -54,7 +54,7 @@ namespace titania {
 namespace pb {
 
 var
-NativeFunction::construct (const ptr <pbObject> & object, const std::vector <var> & arguments)
+NativeFunction::construct (const ptr <pbExecutionContext> & executionContext, const ptr <pbObject> & object, const std::vector <var> & arguments)
 throw (pbException)
 {
 	if (constructor)
@@ -71,6 +71,12 @@ throw (pbException)
 		return function (executionContext, object, arguments);
 
 	throw TypeError ("Cannot call '" + getName () + "' as function.");
+}
+
+void
+NativeFunction::toStream (std::ostream & ostream) const
+{
+	ostream << "function " << getName () << " () { [native code] }";
 }
 
 } // pb

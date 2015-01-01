@@ -412,7 +412,9 @@ print ('{ }:  ', { });
 print ('{ } .__proto__:            ', { } .__proto__);
 print ('{ } .__proto__ .__proto__: ', { } .__proto__ .__proto__);
 print ('{ } .constructor:          ', { } .constructor);
-print (new Object (123));
+
+function F (a, b) {}
+print (Function . __proto__);
 "
   directOutput TRUE
 }
@@ -492,8 +494,6 @@ function set_time (value, time)
 	//print ('result: ', for_time (1000000));
 	//print ('time: ',   (Date .now () - t0) / 1000);
 }
-
-print (SFVec3f ());
 "
   directOutput TRUE
 }

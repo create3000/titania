@@ -70,7 +70,7 @@ public:
 	Object (pbExecutionContext* const executionContext);
 
 	///  Constructs new Object.
-	Object (pbObject* const constructor);
+	Object (pbExecutionContext* const executionContext, pbObject* const constructor);
 
 
 protected:
@@ -82,7 +82,7 @@ protected:
 	///  @name Construction
 
 	///  Constructs new standard Object with proto null.
-	Object (pbExecutionContext* const executionContext, const std::nullptr_t);
+	Object (const std::nullptr_t);
 
 };
 

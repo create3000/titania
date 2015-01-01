@@ -53,6 +53,7 @@
 
 #include "../Base/pbChildObject.h"
 #include "../Base/pbOutputStreamObject.h"
+#include "../Bits/Identifier.h"
 #include "../Bits/pbConstants.h"
 #include "../Expressions/pbControlFlowException.h"
 #include "../Primitives/ptr.h"
@@ -176,51 +177,57 @@ public:
 	noexcept (true) override
 	{ return typeName; }
 
+	virtual
+	const std::string &
+	getClassName () const
+	throw (std::out_of_range,
+	       TypeError);
+
 	///  @name Member access
 
-	///  Checks wehter this object has a propterty @a identifier.
+	///  @name Member access
+
+	///  Checks wehter this object has a propterty @a id.
 	bool
-	hasProperty (const std::string & identifier) const
+	hasProperty (const Identifier & identifier) const
 	noexcept (true)
-	{ return hasProperty (getIdentifier (identifier)); }
+	{ return properties .count (identifier .getId ()); }
 
 	var
-	setProperty (const std::string & identifier, var && value)
+	setProperty (const Identifier &identifier, var && value)
 	throw (std::out_of_range,
-	       pbException)
-	{ return setProperty (getIdentifier (identifier), std::move (value)); }
+	       pbException);
 
 	var
-	getProperty (const std::string & identifier) const
+	getProperty (const Identifier & identifier) const
 	throw (std::out_of_range,
-	       pbException)
-	{ return getProperty (getIdentifier (identifier)); }
+	       pbException);
+	      
+	ptr <pbObject>
+	getObject (const Identifier & identifier) const
+	throw (std::out_of_range,
+	       TypeError);
 
-	///  Adds the named property described by the given descriptor to this object.
 	void
-	addPropertyDescriptor (const std::string & identifier,
+	addPropertyDescriptor (const Identifier & identifier,
 	                       const var & value,
 	                       const PropertyFlagsType flags = DEFAULT,
 	                       const ptr <pbFunction> & getter = nullptr,
 	                       const ptr <pbFunction> & setter = nullptr)
-	throw (std::invalid_argument)
-	{ addPropertyDescriptor (getIdentifier (identifier), value, flags, getter, setter); }
+	throw (std::invalid_argument);
 
 	///  Updates the named property described by the given descriptor to this object.
 	void
-	updatePropertyDescriptor (const std::string & identifier,
+	updatePropertyDescriptor (const Identifier & identifier,
 	                          const var & value,
 	                          const PropertyFlagsType flags = DEFAULT,
 	                          const ptr <pbFunction> & getter = nullptr,
 	                          const ptr <pbFunction> & setter = nullptr)
-	throw (std::invalid_argument)
-	{ updatePropertyDescriptor (getIdentifier (identifier), value, flags, getter, setter); }
+	throw (std::invalid_argument);
 
-	///  Removes the property @a name from this object.
 	void
-	removePropertyDescriptor (const std::string & identifier)
-	noexcept (true)
-	{ removePropertyDescriptor (getIdentifier (identifier)); }
+	removePropertyDescriptor (const Identifier & identifier)
+	noexcept (true);
 
 	var
 	getDefaultValue (const ValueType preferedType) const
@@ -231,8 +238,7 @@ public:
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << "[object " << getTypeName () << "]"; }
+	toStream (std::ostream & ostream) const override;
 
 	///  @name Destruction
 
@@ -261,47 +267,6 @@ protected:
 
 	///  Constructs new pbObject.
 	pbObject ();
-
-	///  @name Member access
-
-	///  Checks wehter this object has a propterty @a id.
-	bool
-	hasProperty (const Identifier & identifier) const
-	noexcept (true)
-	{ return properties .count (identifier .second); }
-
-	///  Removes the property @a id from this object.
-
-	var
-	setProperty (const Identifier &identifier, var && value)
-	throw (std::out_of_range,
-	       pbException);
-
-	var
-	getProperty (const Identifier & identifier) const
-	throw (std::out_of_range,
-	       pbException);
-
-	void
-	addPropertyDescriptor (const Identifier & identifier,
-	                       const var & value,
-	                       const PropertyFlagsType flags = DEFAULT,
-	                       const ptr <pbFunction> & getter = nullptr,
-	                       const ptr <pbFunction> & setter = nullptr)
-	throw (std::invalid_argument);
-
-	///  Updates the named property described by the given descriptor to this object.
-	void
-	updatePropertyDescriptor (const Identifier & identifier,
-	                          const var & value,
-	                          const PropertyFlagsType flags = DEFAULT,
-	                          const ptr <pbFunction> & getter = nullptr,
-	                          const ptr <pbFunction> & setter = nullptr)
-	throw (std::invalid_argument);
-
-	void
-	removePropertyDescriptor (const Identifier & identifier)
-	noexcept (true);
 
 	var
 	call (const Identifier & identifier, const std::vector <var> & arguments = { }) const

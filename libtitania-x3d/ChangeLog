@@ -1,3 +1,33 @@
+2015-01-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* pbBase.h:
+	* pbBase.cpp:
+	* Math.h:
+	* Object.h:
+	* Identifier.h:
+	* Math.cpp:
+	* Parser.cpp:
+	* pbObject.h:
+	* Object.cpp:
+	* Function.h:
+	* Object.cpp:
+	* Identifier.cpp:
+	* Function.cpp:
+	* pbFunction.h:
+	* pbObject.cpp:
+	* Program.cpp:
+	* pbFunction.cpp:
+	* NativeFunction.h:
+	* GlobalObject.cpp:
+	* NativeFunction.cpp:
+	* NewExpression.h:
+	* ObjectLiteral.h:
+	* PropertyExpression.h:
+	* VariableExpression.h:
+	* VariableDeclaration.h: 
+
 2014-12-31  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

@@ -52,14 +52,11 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_BASE_VS_BASE_H__
 
 #include <string>
-#include <map>
 
 #include <Titania/LOG.h>
 
 namespace titania {
 namespace pb {
-
-using Identifier = std::pair <std::string, size_t>;
 
 class pbBase
 {
@@ -85,27 +82,6 @@ protected:
 	///  @name Construction
 
 	pbBase () = default;
-
-	///  @name Named identifier handling
-
-	static
-	Identifier
-	getIdentifier (const std::string & identifier)
-	{ return *identifiers .emplace (identifier, identifiers .size ()) .first; }
-
-	static
-	Identifier
-	getIdentifier (std::string && identifier)
-	{ return *identifiers .emplace (std::move (identifier), identifiers .size ()) .first; }
-
-
-private:
-
-	///  @name Static members
-
-	using IdentifierIndex = std::map <std::string, size_t>;
-
-	static IdentifierIndex identifiers;
 
 };
 

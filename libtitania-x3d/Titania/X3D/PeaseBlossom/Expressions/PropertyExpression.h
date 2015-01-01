@@ -71,7 +71,7 @@ public:
 	PropertyExpression (ptr <pbExpression> && expression, std::string && identifier) :
 		pbExpression (ExpressionType::PROPERTY_EXPRESSION),
 		  expression (std::move (expression)),
-		  identifier (getIdentifier (std::move (identifier)))
+		  identifier (std::move (identifier))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -79,7 +79,7 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new PropertyExpression (expression -> copy (executionContext), std::string (identifier .first)); }
+	{ return new PropertyExpression (expression -> copy (executionContext), std::string (identifier .getName ())); }
 
 	///  @name Operations
 
@@ -185,7 +185,7 @@ public:
 			}
 		}
 
-		throw TypeError ("'" + lhs .toString () + "." + identifier .first + "' is not a function");
+		throw TypeError ("'" + lhs .toString () + "." + identifier .getName () + "' is not a function");
 	}
 
 

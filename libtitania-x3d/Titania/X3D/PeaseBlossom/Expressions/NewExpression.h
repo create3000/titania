@@ -68,10 +68,11 @@ public:
 	///  @name Construction
 
 	///  Constructs new NewExpression expression.
-	NewExpression (ptr <pbExpression> && expression, array <ptr <pbExpression>> && expressions) :
-		pbExpression (ExpressionType::NEW_EXPRESSION),
-		  expression (std::move (expression)),
-		 expressions (std::move (expressions))
+	NewExpression (const ptr <pbExecutionContext> & executionContext, ptr <pbExpression> && expression, array <ptr <pbExpression>> && expressions) :
+		    pbExpression (ExpressionType::NEW_EXPRESSION),
+		executionContext (executionContext),
+		      expression (std::move (expression)),
+		     expressions (std::move (expressions))
 	{
 		construct ();
 	}
@@ -87,7 +88,7 @@ public:
 		for (const auto & expression : this -> expressions)
 			expressions .emplace_back (expression -> copy (executionContext));
 
-		return new NewExpression (expression -> copy (executionContext), std::move (expressions));
+		return new NewExpression (executionContext, expression -> copy (executionContext), std::move (expressions));
 	}
 
 	///  @name Operations
@@ -114,7 +115,7 @@ public:
 				for (const auto & value : expressions)
 					arguments .emplace_back (value -> getValue ());
 
-				return function -> construct (arguments);
+				return function -> construct (executionContext, arguments);
 			}
 		}
 
@@ -128,10 +129,11 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (expression, expressions); }
+	{ addChildren (executionContext, expression, expressions); }
 
 	///  @name Members
 
+	const ptr <pbExecutionContext>   executionContext;
 	const ptr <pbExpression>         expression;
 	const array <ptr <pbExpression>> expressions;
 

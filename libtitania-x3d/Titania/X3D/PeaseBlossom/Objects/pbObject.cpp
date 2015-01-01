@@ -93,6 +93,16 @@ pbObject::pbObject () :
 	    cachedProperties (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ()))
 { }
 
+const std::string &
+pbObject::getClassName () const
+throw (std::out_of_range,
+       TypeError)
+{
+	static const Identifier constructor = "constructor";
+
+	return getObject (constructor) -> getTypeName ();
+}
+
 var
 pbObject::setProperty (const Identifier & identifier, var && value)
 throw (std::out_of_range,
@@ -126,6 +136,19 @@ throw (std::out_of_range,
 	return property -> getValue ();
 }
 
+ptr <pbObject>
+pbObject::getObject (const Identifier & identifier) const
+throw (std::out_of_range,
+       TypeError)
+{
+	const auto property = getProperty (identifier);
+
+	if (property .isObject ())
+		return property .getObject ();
+
+	throw TypeError ("Property '"+ identifier .getName () +"' is not an object.");
+}
+
 void
 pbObject::addPropertyDescriptor (const Identifier & identifier,
                                  const var & value,
@@ -134,10 +157,10 @@ pbObject::addPropertyDescriptor (const Identifier & identifier,
                                  const ptr <pbFunction> & setter)
 throw (std::invalid_argument)
 {
-	const auto pair = properties .emplace (identifier .second, std::make_shared <PropertyDescriptor> (this, identifier, value, flags, getter, setter));
+	const auto pair = properties .emplace (identifier .getId (), std::make_shared <PropertyDescriptor> (this, identifier, value, flags, getter, setter));
 
 	if (not pair .second)
-		throw std::invalid_argument ("Property already exists.");
+		throw std::invalid_argument ("Property '" + identifier .getName () +  "' already exists.");
 }
 
 void
@@ -173,9 +196,9 @@ void
 pbObject::removePropertyDescriptor (const Identifier & identifier)
 noexcept (true)
 {
-	removeCachedPropertyDescriptors (identifier .second);
+	removeCachedPropertyDescriptors (identifier .getId ());
 
-	properties .erase (identifier .second);
+	properties .erase (identifier .getId ());
 }
 
 const PropertyDescriptorPtr &
@@ -184,13 +207,13 @@ throw (std::out_of_range)
 {
 	try
 	{
-		return getPropertyDescriptor (identifier .second);
+		return getPropertyDescriptor (identifier .getId ());
 	}
 	catch (const std::out_of_range &)
 	{
 		const_cast <pbObject*> (this) -> resolve (identifier);
 
-		return getPropertyDescriptor (identifier .second);
+		return getPropertyDescriptor (identifier .getId ());
 	}
 }
 
@@ -269,9 +292,9 @@ const ptr <pbObject> &
 pbObject::getProto () const
 throw (std::out_of_range)
 {
-	static const auto identifier = getIdentifier ("__proto__");
+	static const Identifier identifier = "__proto__";
 
-	const auto & property = getPropertyDescriptor (identifier .second);
+	const auto & property = getPropertyDescriptor (identifier .getId ());
 	const auto & value    = property -> getValue ();
 
 	if (value .isObject ())
@@ -293,8 +316,8 @@ throw (pbException)
 	//
 	//	return valueOf () or toString () or throw TypeError ();
 
-	static const auto toString = getIdentifier ("toString");
-	static const auto valueOf  = getIdentifier ("valueOf");
+	static const Identifier toString = "toString";
+	static const Identifier valueOf  = "valueOf";
 
 	if (preferedType == STRING)
 	{
@@ -336,7 +359,7 @@ throw (pbException)
 {
 	try
 	{
-		const auto & property = getProperty (identifier);
+		const auto property = getProperty (identifier);
 
 		if (property .isObject ())
 		{
@@ -346,12 +369,20 @@ throw (pbException)
 				return function -> apply (const_cast <pbObject*> (this), arguments);
 		}
 
-		throw TypeError ("'" + property .toString () + "' is not a function.");
+		throw TypeError ("Property '" + property .toString () + "' is not a function.");
 	}
 	catch (const std::out_of_range &)
 	{
 		throw TypeError ("'undefined' is not a function.");
 	}
+}
+
+void
+pbObject::toStream (std::ostream & ostream) const
+//throw (std::out_of_range,
+//       pbException)
+{
+	ostream << "[object " << getClassName () << "]";
 }
 
 void

@@ -69,15 +69,6 @@ public:
 	noexcept (true)
 	{ return const_cast <pbFunction*> (this); }
 
-	///  @name Common members
-
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const
-	noexcept (true) override
-	{ return typeName; }
-
 	///  @name Member access
 
 	///  Returns the name of the function.
@@ -94,7 +85,7 @@ public:
 
 	///  Constructs new object of this class.
 	var
-	construct (const std::vector <var> & arguments = { })
+	construct (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments = { })
 	throw (pbException);
 
 	///  Executes this function.
@@ -118,7 +109,7 @@ protected:
 
 	virtual
 	var
-	construct (const ptr <pbObject> & object, const std::vector <var> & arguments = { })
+	construct (const ptr <pbExecutionContext> & executionContext, const ptr <pbObject> & object, const std::vector <var> & arguments = { })
 	throw (pbException) = 0;
 
 
@@ -128,10 +119,6 @@ private:
 
 	void
 	addProperties ();
-
-	///  @name Static members
-
-	static const std::string typeName;
 
 	///  @name Members
 
