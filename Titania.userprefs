@@ -2,25 +2,36 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="417" Column="28" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="809" Column="55" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Base/pbBase.h" Line="53" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h" Line="57" Column="33" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h" Line="298" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbFunction.h" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="build" expanded="True" />
           <Node name="experimental" expanded="True" />
-          <Node name="Library" expanded="True">
-            <Node name="Tests" expanded="True">
-              <Node name="EnvironmentalSensors" expanded="True" />
-              <Node name="Scripting" expanded="True">
-                <Node name="pb" expanded="True" />
+          <Node name="libtitania-peaseblossom" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="PeaseBlossom" expanded="True">
+                <Node name="Base" expanded="True" />
+                <Node name="Bits" expanded="True" />
+                <Node name="Execution" expanded="True" />
+                <Node name="Expressions" expanded="True" selected="True" />
+                <Node name="Objects" expanded="True" />
+                <Node name="Parser" expanded="True" />
+                <Node name="Primitives" expanded="True" />
+                <Node name="Standard" expanded="True" />
               </Node>
             </Node>
+          </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True" />
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
@@ -33,24 +44,12 @@
                   <Node name="Bits" expanded="True" />
                   <Node name="Execution" expanded="True" />
                   <Node name="Expressions" expanded="True" />
-                  <Node name="Objects" expanded="True">
-                    <Node name="pbObject.h" selected="True" />
-                  </Node>
+                  <Node name="Objects" expanded="True" />
                   <Node name="Parser" expanded="True" />
                   <Node name="Primitives" expanded="True" />
                   <Node name="Standard" expanded="True" />
                 </Node>
               </Node>
-            </Node>
-          </Node>
-          <Node name="Papers" expanded="True">
-            <Node name="CosmoWorlds" expanded="True" />
-            <Node name="JavaScript" expanded="True" />
-            <Node name="Quaternion" expanded="True" />
-          </Node>
-          <Node name="Titania" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Browser" expanded="True" />
             </Node>
           </Node>
           <Node name="x3dtidy" expanded="True" />
@@ -67,6 +66,7 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/home/holger/Projekte/Titania/miscellaneous/makefiles/generate.pl" line="64" column="1" />
+      <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h" line="313" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

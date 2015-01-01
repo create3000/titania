@@ -89,8 +89,11 @@ const std::string pbObject::typeName = "Object";
 pbObject::pbObject () :
 	       pbChildObject (),
 	pbOutputStreamObject (),
+	          extensible (true),
 	          properties (),
-	    cachedProperties (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ()))
+	    cachedProperties (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ())),
+	     resolveFunction (),
+	             userData (nullptr)
 { }
 
 const std::string &
@@ -273,6 +276,9 @@ throw (std::out_of_range)
 {
 	try
 	{
+		if (resolveFunction and resolveFunction (this, identifier))
+			return;
+
 		const auto & proto         = getProto ();
 		const auto & protoProperty = proto -> getPropertyDescriptor (identifier);
 

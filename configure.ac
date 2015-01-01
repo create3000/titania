@@ -154,6 +154,7 @@ libtitania-stream/Makefile
 libtitania-anyoptions/Makefile
 libtitania-gzstream/Makefile
 libtitania-opengl-surface/Makefile
+libtitania-peaseblossom/Makefile
 libtitania-x3d/Makefile
 libtitania-mozilla/Makefile
 Titania/Makefile

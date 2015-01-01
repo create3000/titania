@@ -48,35 +48,81 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_BOOLEAN_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_BOOLEAN_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_IDENTIFIER_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_IDENTIFIER_H__
 
-#include "../Objects/pbObject.h"
+#include "../Base/pbOutputStreamObject.h"
+
+#include <map>
+#include <string>
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a »false« object.
- */
-class BooleanObject :
-	public pbObject
+class Identifier :
+	public pbOutputStreamObject
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new BooleanObject.
-	BooleanObject (const ptr <pbExecutionContext> & ec) :
-		pbObject (),
-		 boolean (false)
+	Identifier () :
+		pbOutputStreamObject (),
+		                name (),
+		                  id (-1)
 	{ }
 
-	///  Constructs new BooleanObject.
-	BooleanObject (const ptr <pbExecutionContext> & ec, const bool value) :
-		pbObject (),
-		 boolean (value)
+	Identifier (const Identifier & other) :
+		pbOutputStreamObject (),
+		                name (other .name),
+		                  id (other .id)
 	{ }
+
+	Identifier (Identifier && other) :
+		pbOutputStreamObject (),
+		                name (std::move (other .name)),
+		                  id (other .id)
+	{ }
+
+	Identifier (const std::string & name) :
+		Identifier (getIdentifier (name))
+	{ }
+
+	Identifier (std::string && name) :
+		Identifier (getIdentifier (std::move (name)))
+	{ }
+
+	Identifier (const std::string::value_type* name) :
+		Identifier (getIdentifier (name))
+	{ }
+
+	///  @name Member functions
+
+	Identifier &
+	operator = (const Identifier & other)
+	{
+		name = other .name;
+		id   = other .id;
+		return *this;
+	}
+
+	Identifier &
+	operator = (Identifier && other)
+	{
+		name = std::move (other .name);
+		id   = other .id;
+		return *this;
+	}
+
+	///  @name Member access
+
+	const std::string &
+	getName () const
+	{ return name; }
+
+	const size_t &
+	getId () const
+	{ return id; }
 
 	///  @name Input/Output
 
@@ -84,14 +130,55 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ ostream << (boolean ? "true" : "false"); }
+	{ ostream << name; }
 
 
 private:
 
-	const bool boolean;
+	///  @name Member types
+
+	using IdentifierIndex = std::map <std::string, size_t>;
+
+	///  @name Construction
+
+	Identifier (const IdentifierIndex::value_type & pair) :
+		pbOutputStreamObject (),
+		                name (pair .first),
+		                  id (pair .second)
+	{ }
+
+	///  @name Operations
+
+	static
+	const IdentifierIndex::value_type &
+	getIdentifier (const std::string & identifier)
+	{ return *identifiers .emplace (identifier, identifiers .size ()) .first; }
+
+	static
+	const IdentifierIndex::value_type &
+	getIdentifier (std::string && identifier)
+	{ return *identifiers .emplace (std::move (identifier), identifiers .size ()) .first; }
+
+	///  @name Static members
+
+	static IdentifierIndex identifiers;
+
+	///  @name Members
+
+	std::string name;
+	size_t      id;
 
 };
+
+///  @relates Identifier
+///  @name Relational operators
+
+inline
+bool
+operator < (const Identifier & lhs, const Identifier & rhs)
+{
+	return lhs .getId () < rhs .getId ();
+}
 
 } // pb
 } // titania

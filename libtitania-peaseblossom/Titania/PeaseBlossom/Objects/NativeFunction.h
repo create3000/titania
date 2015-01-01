@@ -48,64 +48,53 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_FUNCTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NATIVE_FUNCTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NATIVE_FUNCTION_H__
 
 #include "../Execution/pbExecutionContext.h"
 #include "../Objects/pbFunction.h"
 
-#include <atomic>
-
 namespace titania {
 namespace pb {
 
+using FunctionType = std::function <var (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)>;
+
 /**
- *  Class to represent a scripted ECMAScript function.
+ *  Class to represent a native ECMAScript function.
  */
-class Function :
-	public pbFunction,
-	public pbExecutionContext
+class NativeFunction :
+	public pbFunction
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new Function.
-	Function (pbExecutionContext* const, const std::string & = "", std::vector <std::string> && = { });
+	NativeFunction (pbExecutionContext* const executionContext,
+	                const std::string & name,
+	                const FunctionType & function,
+	                const size_t length) :
+		NativeFunction (executionContext, name, nullptr, function, length)
+	{ }
 
-	///  Creates a new default object.
-	virtual
-	ptr <pbFunction>
-	copy (pbExecutionContext* const) const
-	noexcept (true) final override;
+	///  Constructs new Function.
+	NativeFunction (pbExecutionContext* const executionContext,
+	                const std::string & name,
+	                const FunctionType & constructor,
+	                const FunctionType & function,
+	                const size_t length) :
+		      pbFunction (executionContext, name, length),
+		executionContext (executionContext),
+		     constructor (constructor),
+		        function (function)
+	{ addChildren (this -> executionContext); }
 
 	///  @name Operations
 
-	///  Executes this function.
 	virtual
 	var
 	apply (const var &, const std::vector <var> & = { })
 	throw (pbException) final override;
-
-	///  @name Destruction
-
-	///  Reclaims any resources consumed by this object, now or at any time in the future.  If this object has already been
-	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
-	virtual
-	void
-	dispose () final override;
-
-	///  Sets the recusion limit to @a value.  The default value for the recursion limit is 100,000.
-	static
-	void
-	setRecursionLimit (const size_t value)
-	{ recursionLimit = value; }
-
-	///  Returns the recursion limit.
-	static
-	size_t
-	getRecursionLimit ()
-	{ return recursionLimit; }
 
 	///  @name Input/Output
 
@@ -117,70 +106,21 @@ public:
 
 protected:
 
-	///  @name Friends
+	///  @name operations
 
-	friend class Program;
-
-	///  @name Construction
-
-	///  Constructs new standard Function.
-	Function (pbExecutionContext* const, const std::nullptr_t);
-
-	///  @name Operations
-
-	///  Constructs new object of this class.
 	virtual
 	var
-	construct (const ptr <pbExecutionContext> &, const var &, const std::vector <var> & = { })
+	construct (const var &, const std::vector <var> & = { })
 	throw (pbException) final override;
 
 
 private:
 
-	///  @name Member types
-
-	class StackGuard
-	{
-	public:
-
-		StackGuard (Function* const function, pbObject* const localObject) :
-			function (function)
-		{ function -> push (localObject); }
-
-		~StackGuard ()
-		{ function -> pop (); }
-
-
-	private:
-
-		Function* const function;
-
-	};
-
-	///  @name Operations
-	
-	void
-	addLocalObjects (const ptr <pbExecutionContext> &);
-
-	///  Set @a localObject as local object and pushes all default objects to the default object stack if an recursion is
-	///  detected.
-	void
-	push (pbObject* const);
-
-	///  Reverses the effect of pop.
-	void
-	pop ();
-
-	///  @name Static members
-
-	static std::atomic <size_t> recursionLimit;
-
 	///  @name Member access
 
-	const std::vector <std::string> formalParameters;
-	array <ptr <pbObject>>          localObjects;
-	array <ptr <pbObject>>          localObjectsStack;
-	size_t                          recursionDepth;
+	const ptr <pbExecutionContext> executionContext;
+	const FunctionType             constructor;
+	const FunctionType             function;
 
 };
 

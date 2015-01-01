@@ -48,50 +48,47 @@
  *
  ******************************************************************************/
 
-#include "Object.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
 
-#include "../Objects/NativeFunction.h"
+#include "../Objects/pbObject.h"
 
 namespace titania {
 namespace pb {
 
-Object::Object (pbExecutionContext* const executionContext) :
-	pbObject ()
+/**
+ *  Class to represent an object.
+ */
+class Object :
+	public pbObject
 {
-	try
-	{
-		const auto & standardObject = executionContext -> getStandardObject ();
+public:
 
-		addPropertyDescriptor ("__proto__",   standardObject,                              NONE);
-		addPropertyDescriptor ("constructor", standardObject -> getObject ("constructor"), NONE);
-		// prototype remains undefined.
-	}
-	catch (const std::out_of_range &)
-	{ }
-}
+	///  @name Construction
 
-Object::Object (pbExecutionContext* const executionContext, pbObject* const constructor) :
-	pbObject ()
-{
-	try
-	{
-		addPropertyDescriptor ("__proto__",   constructor -> getObject ("prototype"), NONE);
-		addPropertyDescriptor ("constructor", constructor,                            NONE);
-	}
-	catch (const std::exception &)
-	{
-		const auto constructor = executionContext -> getStandardObject () -> getObject ("constructor");
+	///  Constructs new Object.
+	Object (pbExecutionContext* const)
+	throw (TypeError);
 
-		addPropertyDescriptor ("__proto__",   constructor -> getObject ("prototype"), NONE);
-		addPropertyDescriptor ("constructor", constructor,                            NONE);
-	}
-}
+	///  Constructs new Object.
+	Object (pbExecutionContext* const, pbObject* const)
+	throw (TypeError);
 
-Object::Object (const std::nullptr_t) :
-	pbObject ()
-{
-	addPropertyDescriptor ("__proto__", nullptr, NONE);
-}
+
+protected:
+
+	///  @name Friends
+
+	friend class Program;
+
+	///  @name Construction
+
+	///  Constructs new standard Object with proto null.
+	Object (const std::nullptr_t);
+
+};
 
 } // pb
 } // titania
+
+#endif

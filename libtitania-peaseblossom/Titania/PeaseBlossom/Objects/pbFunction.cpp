@@ -91,13 +91,20 @@ pbFunction::addProperties ()
 	addPropertyDescriptor ("length", length, NONE);
 }
 
+ptr <pbObject>
+pbFunction::createInstance (pbExecutionContext* const executionContext)
+throw (TypeError)
+{
+	return new Object (executionContext, this);
+}
+
 var
 pbFunction::construct (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments)
 throw (pbException)
 {
-	ptr <pbObject> object = new Object (executionContext, this);
+	var object = createInstance (executionContext);
 
-	const auto result = construct (executionContext, object, arguments);
+	const auto result = construct (object, arguments);
 
 	if (result .isObject ())
 		return result;

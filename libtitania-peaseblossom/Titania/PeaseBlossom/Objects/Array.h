@@ -48,127 +48,43 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_IDENTIFIER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_IDENTIFIER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_ARRAY_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_ARRAY_H__
 
-#include "../Base/pbOutputStreamObject.h"
-
-#include <map>
-#include <string>
+#include "../Objects/pbObject.h"
 
 namespace titania {
 namespace pb {
 
-class Identifier :
-	public pbOutputStreamObject
+/**
+ *  Class to represent a »false« object.
+ */
+class Array :
+	public pbObject
 {
 public:
 
 	///  @name Construction
 
-	Identifier () :
-		pbOutputStreamObject (),
-		                name (),
-		                  id (-1)
+	///  Constructs new Array.
+	Array (const ptr <pbExecutionContext> & executionContext) :
+		pbObject (),
+		   array ()
 	{ }
 
-	Identifier (const Identifier & other) :
-		pbOutputStreamObject (),
-		                name (other .name),
-		                  id (other .id)
+	///  Constructs new Array.
+	Array (const ptr <pbExecutionContext> & executionContext, std::vector <var> && value) :
+		pbObject (),
+		   array (std::move (value))
 	{ }
-
-	Identifier (Identifier && other) :
-		pbOutputStreamObject (),
-		                name (std::move (other .name)),
-		                  id (other .id)
-	{ }
-
-	Identifier (const std::string & name) :
-		Identifier (getIdentifier (name))
-	{ }
-
-	Identifier (std::string && name) :
-		Identifier (getIdentifier (std::move (name)))
-	{ }
-
-	Identifier (const std::string::value_type* name) :
-		Identifier (getIdentifier (name))
-	{ }
-
-	///  @name Member functions
-
-	Identifier &
-	operator = (const Identifier & other)
-	{
-		name = other .name;
-		id   = other .id;
-		return *this;
-	}
-
-	Identifier &
-	operator = (Identifier && other)
-	{
-		name = std::move (other .name);
-		id   = other .id;
-		return *this;
-	}
-
-	///  @name Member access
-
-	const std::string &
-	getName () const
-	{ return name; }
-
-	const size_t &
-	getId () const
-	{ return id; }
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << name; }
 
 
 private:
 
-	///  @name Member types
-
-	using IdentifierIndex = std::map <std::string, size_t>;
-
-	///  @name Construction
-
-	Identifier (const IdentifierIndex::value_type & pair) :
-		pbOutputStreamObject (),
-		                name (pair .first),
-		                  id (pair .second)
-	{ }
-
-	///  @name Operations
-
-	static
-	const IdentifierIndex::value_type &
-	getIdentifier (const std::string & identifier)
-	{ return *identifiers .emplace (identifier, identifiers .size ()) .first; }
-
-	static
-	const IdentifierIndex::value_type &
-	getIdentifier (std::string && identifier)
-	{ return *identifiers .emplace (std::move (identifier), identifiers .size ()) .first; }
-
-	///  @name Static members
-
-	static IdentifierIndex identifiers;
-
-	///  @name Members
-
-	std::string name;
-	size_t      id;
+	std::vector <var> array;
 
 };
+
 } // pb
 } // titania
 

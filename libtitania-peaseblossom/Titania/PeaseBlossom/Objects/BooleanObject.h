@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_BOOLEAN_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_BOOLEAN_OBJECT_H__
 
 #include "../Objects/pbObject.h"
 
@@ -57,25 +57,25 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a number object.
+ *  Class to represent a »false« object.
  */
-class NumberObject :
+class BooleanObject :
 	public pbObject
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new NumberObject.
-	NumberObject (const ptr <pbExecutionContext> & ec) :
+	///  Constructs new BooleanObject.
+	BooleanObject (const ptr <pbExecutionContext> & executionContext) :
 		pbObject (),
-		  number (0)
+		 boolean (false)
 	{ }
 
-	///  Constructs new NumberObject.
-	NumberObject (const ptr <pbExecutionContext> & ec, const double value) :
+	///  Constructs new BooleanObject.
+	BooleanObject (const ptr <pbExecutionContext> & executionContext, const bool value) :
 		pbObject (),
-		  number (value)
+		 boolean (value)
 	{ }
 
 	///  @name Input/Output
@@ -84,12 +84,12 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ ostream << number; }
+	{ ostream << (boolean ? "true" : "false"); }
 
 
 private:
 
-	const double number;
+	const bool boolean;
 
 };
 

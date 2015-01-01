@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
 
 #include "../Objects/pbObject.h"
 
@@ -57,32 +57,39 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent an object.
+ *  Class to represent a number object.
  */
-class Object :
+class NumberObject :
 	public pbObject
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new Object.
-	Object (pbExecutionContext* const executionContext);
+	///  Constructs new NumberObject.
+	NumberObject (const ptr <pbExecutionContext> & executionContext) :
+		pbObject (),
+		  number (0)
+	{ }
 
-	///  Constructs new Object.
-	Object (pbExecutionContext* const executionContext, pbObject* const constructor);
+	///  Constructs new NumberObject.
+	NumberObject (const ptr <pbExecutionContext> & executionContext, const double value) :
+		pbObject (),
+		  number (value)
+	{ }
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << number; }
 
 
-protected:
+private:
 
-	///  @name Friends
-
-	friend class Program;
-
-	///  @name Construction
-
-	///  Constructs new standard Object with proto null.
-	Object (const std::nullptr_t);
+	const double number;
 
 };
 

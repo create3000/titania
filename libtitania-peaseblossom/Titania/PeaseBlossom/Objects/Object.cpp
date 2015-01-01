@@ -48,52 +48,57 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_STRING_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_STRING_OBJECT_H__
+#include "Object.h"
 
-#include "../Objects/pbObject.h"
+#include "../Objects/NativeFunction.h"
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a »string« object.
- */
-class StringObject :
-	public pbObject
+Object::Object (pbExecutionContext* const executionContext)
+throw (TypeError) :
+	pbObject ()
 {
-public:
+	try
+	{
+		const auto & standardObject = executionContext -> getStandardObject ();
 
-	///  @name Construction
-
-	///  Constructs new StringObject.
-	StringObject (const ptr <pbExecutionContext> & ec) :
-		pbObject (),
-		  string (Glib::ustring ())
+		addPropertyDescriptor ("__proto__",   standardObject,                              NONE);
+		addPropertyDescriptor ("constructor", standardObject -> getObject ("constructor"), NONE);
+		// prototype remains undefined.
+	}
+	catch (const std::out_of_range &)
 	{ }
+}
 
-	///  Constructs new StringObject.
-	StringObject (const ptr <pbExecutionContext> & ec, const Glib::ustring & value) :
-		pbObject (),
-		  string (value)
-	{ }
+Object::Object (pbExecutionContext* const executionContext, pbObject* const constructor)
+throw (TypeError) :
+	pbObject ()
+{
+	try
+	{
+		addPropertyDescriptor ("__proto__",   constructor -> getObject ("prototype"), NONE);
+		addPropertyDescriptor ("constructor", constructor,                            NONE);
+	}
+	catch (const std::exception &)
+	{
+		try
+		{
+			const auto constructor = executionContext -> getStandardObject () -> getObject ("constructor");
 
-	///  @name Input/Output
+			addPropertyDescriptor ("__proto__",   constructor -> getObject ("prototype"), NONE);
+			addPropertyDescriptor ("constructor", constructor,                            NONE);
+		}
+		catch (const std::out_of_range &)
+		{ }
+	}
+}
 
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << string; }
-
-
-private:
-
-	const Glib::ustring string;
-
-};
+Object::Object (const std::nullptr_t) :
+	pbObject ()
+{
+	addPropertyDescriptor ("__proto__", nullptr, NONE);
+}
 
 } // pb
 } // titania
-
-#endif

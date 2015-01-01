@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, ScheffelstraÃŸe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,82 +48,48 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_FUNCTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_FUNCTION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_STRING_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_STRING_OBJECT_H__
 
 #include "../Objects/pbObject.h"
 
 namespace titania {
 namespace pb {
 
-class pbFunction :
+/**
+ *  Class to represent a »string« object.
+ */
+class StringObject :
 	public pbObject
 {
 public:
 
 	///  @name Construction
 
+	///  Constructs new StringObject.
+	StringObject (const ptr <pbExecutionContext> & executionContext) :
+		pbObject (),
+		  string (Glib::ustring ())
+	{ }
+
+	///  Constructs new StringObject.
+	StringObject (const ptr <pbExecutionContext> & executionContext, const Glib::ustring & value) :
+		pbObject (),
+		  string (value)
+	{ }
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
 	virtual
-	ptr <pbFunction>
-	copy (pbExecutionContext* const executionContext) const
-	noexcept (true)
-	{ return const_cast <pbFunction*> (this); }
-
-	///  @name Member access
-
-	///  Returns the name of the function.
-	const std::string &
-	getName () const
-	{ return name; }
-
-	///  Returns the name of the function.
-	size_t
-	getLength () const
-	{ return length; }
-
-	///  @name Operations
-
-	///  Constructs new object of this class.
-	var
-	construct (const ptr <pbExecutionContext> &, const std::vector <var> & = { })
-	throw (pbException);
-
-	///  Executes this function.
-	virtual
-	var
-	apply (const var &, const std::vector <var> & = { })
-	throw (pbException) = 0;
-
-
-protected:
-
-	///  @name Construction
-
-	///  Constructs new pbFunction.
-	pbFunction (pbExecutionContext* const, const std::string &, const size_t);
-
-	///  Constructs new pbFunction.
-	pbFunction (pbExecutionContext* const, const std::nullptr_t);
-
-	///  @name Operations
-
-	virtual
-	var
-	construct (const ptr <pbExecutionContext> &, const var &, const std::vector <var> & = { })
-	throw (pbException) = 0;
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << string; }
 
 
 private:
 
-	///  @name Construction
-
-	void
-	addProperties ();
-
-	///  @name Members
-
-	const std::string name;
-	const size_t      length;
+	const Glib::ustring string;
 
 };
 

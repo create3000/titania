@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_BASE_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_BASE_OBJECT_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_OBJECT_H__
 
 #include "../Base/pbChildObject.h"
 #include "../Base/pbOutputStreamObject.h"
@@ -69,6 +69,7 @@ namespace titania {
 namespace pb {
 
 class pbFunction;
+class pbObject;
 
 ///  @relates pbObject
 ///  @name Type definitions
@@ -159,6 +160,9 @@ private:
 ///  Type to represent a property descriptor pointer.
 using PropertyDescriptorPtr = std::shared_ptr <PropertyDescriptor>;
 
+///  Type to represent a resolve function.
+using ResolveFunctionType = std::function <bool (pbObject* const, const Identifier &)>;
+
 /**
  *  Class to represent a basic object.
  */
@@ -183,7 +187,13 @@ public:
 	throw (std::out_of_range,
 	       TypeError);
 
-	///  @name Member access
+	bool
+	isExtensible () const
+	{ return extensible; }
+
+	void
+	isExtensible (const bool value)
+	{ extensible = value; }
 
 	///  @name Member access
 
@@ -202,7 +212,7 @@ public:
 	getProperty (const Identifier &) const
 	throw (std::out_of_range,
 	       pbException);
-	      
+
 	ptr <pbObject>
 	getObject (const Identifier &) const
 	throw (std::out_of_range,
@@ -229,9 +239,23 @@ public:
 	removePropertyDescriptor (const Identifier &)
 	noexcept (true);
 
+	void
+	setResolve (const ResolveFunctionType & value)
+	{ resolveFunction = value; }
+
 	var
 	getDefaultValue (const ValueType) const
 	throw (pbException);
+	
+	void
+	setUserData (void* const value)
+	{ userData = value; }
+	
+	template <class Type>
+	Type*
+	getUserData () const
+	{ return static_cast <Type*> (userData); }
+	
 
 	///  @name Input/Output
 
@@ -320,8 +344,11 @@ private:
 
 	///  @name Members
 
+	bool                    extensible;
 	PropertyDescriptorIndex properties;
 	PropertyDescriptorArray cachedProperties;
+	ResolveFunctionType     resolveFunction;
+	void*                   userData;
 
 };
 

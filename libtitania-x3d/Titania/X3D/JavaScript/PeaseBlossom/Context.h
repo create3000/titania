@@ -53,7 +53,8 @@
 
 #include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"
-#include "../../PeaseBlossom/pb.h"
+
+#include <Titania/PeaseBlossom/pb.h>
 
 namespace titania {
 namespace X3D {
@@ -120,6 +121,9 @@ private:
 
 	void
 	addUserDefinedFields ();
+
+	bool
+	resolve (pb::pbObject* const, const pb::Identifier &);
 
 	/// Event handlers
 

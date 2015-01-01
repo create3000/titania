@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,36 +48,91 @@
  *
  ******************************************************************************/
 
-#include "NativeFunction.h"
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_FUNCTION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_VS_FUNCTION_H__
+
+#include "../Objects/pbObject.h"
 
 namespace titania {
 namespace pb {
 
-var
-NativeFunction::construct (const ptr <pbExecutionContext> & executionContext, const var & object, const std::vector <var> & arguments)
-throw (pbException)
+class pbFunction :
+	public pbObject
 {
-	if (constructor)
-		return constructor (executionContext, object, arguments);
+public:
 
-	throw TypeError ("Cannot call function '" + getName () + "' as constructor.");
-}
+	///  @name Construction
 
-var
-NativeFunction::apply (const var & object, const std::vector <var> & arguments)
-throw (pbException)
-{
-	if (function)
-		return function (executionContext, object, arguments);
+	virtual
+	ptr <pbFunction>
+	copy (pbExecutionContext* const executionContext) const
+	noexcept (true)
+	{ return const_cast <pbFunction*> (this); }
 
-	throw TypeError ("Cannot call '" + getName () + "' as function.");
-}
+	///  @name Member access
 
-void
-NativeFunction::toStream (std::ostream & ostream) const
-{
-	ostream << "function " << getName () << " () { [native code] }";
-}
+	///  Returns the name of the function.
+	const std::string &
+	getName () const
+	{ return name; }
+
+	///  Returns the name of the function.
+	size_t
+	getLength () const
+	{ return length; }
+
+	///  @name Operations
+
+	///  Constructs new object of this class without invoking the constructor.
+	ptr <pbObject>
+	createInstance (pbExecutionContext* const)
+	throw (TypeError);
+
+	///  Constructs new object of this class.
+	var
+	construct (const ptr <pbExecutionContext> &, const std::vector <var> & = { })
+	throw (pbException);
+
+	///  Executes this function.
+	virtual
+	var
+	apply (const var &, const std::vector <var> & = { })
+	throw (pbException) = 0;
+
+
+protected:
+
+	///  @name Construction
+
+	///  Constructs new pbFunction.
+	pbFunction (pbExecutionContext* const, const std::string &, const size_t);
+
+	///  Constructs new pbFunction.
+	pbFunction (pbExecutionContext* const, const std::nullptr_t);
+
+	///  @name Operations
+
+	virtual
+	var
+	construct (const var &, const std::vector <var> & = { })
+	throw (pbException) = 0;
+
+
+private:
+
+	///  @name Construction
+
+	void
+	addProperties ();
+
+	///  @name Members
+
+	const std::string name;
+	const size_t      length;
+
+};
 
 } // pb
 } // titania
+
+#endif

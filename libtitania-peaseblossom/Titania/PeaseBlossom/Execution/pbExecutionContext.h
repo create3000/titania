@@ -114,11 +114,15 @@ public:
 
 	/// @name Operations
 
+	ptr <pbObject>
+	createObject (const Identifier &)
+	throw (std::out_of_range);
+
 	///  Checks wehter the global object has a function @a name.
 	bool
-	hasFunctionDeclaration (const std::string & name) const
+	hasFunctionDeclaration (const Identifier & identifier) const
 	noexcept (true)
-	{ return functions .count (name); }
+	{ return functions .count (identifier); }
 
 	///  Adds a function to this context, throws std::invalid_argument if a function with function .name already exists
 	///  or function .name is empty.
@@ -136,18 +140,18 @@ public:
 	///  Removes the function identified by @a name from this execution context.
 	virtual
 	void
-	removeFunctionDeclaration (const std::string & name)
+	removeFunctionDeclaration (const Identifier & name)
 	noexcept (true);
 
 	///  Returns @a name local function, throws std::invalid_argument if function .name is empty or a function with
 	///  name not exists.
 	virtual
 	const ptr <pbFunction> &
-	getFunctionDeclaration (const std::string & name) const
+	getFunctionDeclaration (const Identifier & identifier) const
 	throw (std::out_of_range)
-	{ return functions .at (name); }
+	{ return functions .at (identifier); }
 
-	const std::map <std::string, ptr <pbFunction>> &
+	const std::map <Identifier, ptr <pbFunction>> &
 	getFunctionDeclarations () const
 	{ return functions; }
 
@@ -220,10 +224,10 @@ private:
 
 	/// @name Members
 
-	const ptr <pbExecutionContext>            executionContext;
-	array <ptr <pbObject>>                    localObjects;
-	std::map <std::string, ptr <pbFunction>>  functions;
-	bool                                      strict;
+	const ptr <pbExecutionContext>           executionContext;
+	array <ptr <pbObject>>                   localObjects;
+	std::map <Identifier, ptr <pbFunction>>  functions;
+	bool                                     strict;
 
 };
 

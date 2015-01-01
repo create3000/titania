@@ -28,6 +28,7 @@
         <Package file="/usr/lib/pkgconfig/ftgl.pc" name="FTGL" IsProject="False" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/fontconfig.pc" name="Fontconfig" IsProject="False" />
         <Package file="/usr/lib/pkgconfig/gstreamermm-0.10.pc" name="gstreamermm" IsProject="False" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-peaseblossom/libtitania-peaseblossom.md.pc" name="libtitania-peaseblossom" IsProject="True" />
       </Packages>
     </Packages>
     <ReleaseVersion>0.3</ReleaseVersion>
@@ -676,40 +677,8 @@
     <None Include="Titania\X3D\Prototype\ExternProtoDeclaration.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.h" />
     <None Include="share\titania\tools\library\BooleanSwitch.x3dv" />
-    <None Include="Titania\X3D\PeaseBlossom\Parser\Parser.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Context.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Execution\Program.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Bits\Exception.h" />
-    <None Include="Titania\X3D\PeaseBlossom\pb.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Debug.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\BooleanObject.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\NumberObject.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\StringObject.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Primitives.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\NativeFunction.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\ControlFlowException.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\AdditionExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\FunctionCallExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\LeftShiftExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\StrictEqualExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\SubtractionExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\VariableExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\ReturnStatement.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\FunctionExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\AssignmentExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\DivisionExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\RemainderExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Primitives\array.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\ObjectLiteral.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\Array.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\IfStatement.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Execution\Block.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\LessExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\EqualExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\ForStatement.h" />
     <None Include="Titania\X3D\Base\X3DReferenceObject.h" />
     <None Include="Titania\X3D\Base\X3DParentObject.h" />
     <None Include="Titania\X3D\Routing\ChildrenList.h" />
@@ -767,33 +736,6 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsArguments.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstArray.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsObjectType.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Primitives\ptr.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Primitives\var.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Bits\pbMath.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Bits\pbConstants.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\MultiplicationExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\pbExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Execution\pbExecutionContext.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Execution\pbBlock.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Base\pbBase.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Base\pbChildObject.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Base\pbInputStreamObject.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Base\pbOutputStreamObject.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\pbFunction.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\pbControlFlowException.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\VariableDeclaration.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\PropertyExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Base\GarbageCollector.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\NewExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Parser\Grammar.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Expressions\PrimitiveExpression.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\Function.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\Object.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Objects\pbObject.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Standard\Object.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Standard\GlobalObject.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Standard\Math.h" />
-    <None Include="Titania\X3D\PeaseBlossom\Bits\Identifier.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1268,12 +1210,9 @@
     <Compile Include="Titania\X3D\Prototype\ProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\Prototype\ExternProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Parser\Parser.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Context.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsString.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Execution\Program.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Execution\Block.cpp" />
     <Compile Include="Titania\X3D\Base\X3DReferenceObject.cpp" />
     <Compile Include="Titania\X3D\Base\X3DParentObject.cpp" />
     <Compile Include="Titania\X3D\Execution\BindableNodeList.cpp" />
@@ -1294,22 +1233,6 @@
     <Compile Include="Titania\X3D\Parser\Wavefront\Parser.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\LassoSelection.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Primitives\var.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Expressions\pbExpression.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Execution\pbExecutionContext.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Base\pbChildObject.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Objects\pbFunction.cpp">
-    </Compile>
-    <Compile Include="Titania\X3D\PeaseBlossom\Execution\pbBlock.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Base\GarbargeCollector.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Objects\Function.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Objects\Object.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Objects\pbObject.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Standard\Object.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Standard\GlobalObject.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Standard\Math.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Objects\NativeFunction.cpp" />
-    <Compile Include="Titania\X3D\PeaseBlossom\Bits\Identifier.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1367,13 +1290,6 @@
     <Folder Include="Titania\X3D\Browser\ParticleSystems\" />
     <Folder Include="scripts\" />
     <Folder Include="Titania\X3D\JavaScript\PeaseBlossom\" />
-    <Folder Include="Titania\X3D\PeaseBlossom\" />
-    <Folder Include="Titania\X3D\PeaseBlossom\Base\" />
-    <Folder Include="Titania\X3D\PeaseBlossom\Execution\" />
-    <Folder Include="Titania\X3D\PeaseBlossom\Primitives\" />
-    <Folder Include="Titania\X3D\PeaseBlossom\Expressions\" />
-    <Folder Include="Titania\X3D\PeaseBlossom\Bits\" />
-    <Folder Include="Titania\X3D\PeaseBlossom\Objects\" />
     <Folder Include="Titania\X3D\Tools\Lighting\" />
     <Folder Include="Titania\X3D\Tools\Geospatial\" />
     <Folder Include="Titania\Moth\" />
@@ -1383,7 +1299,6 @@
     <Folder Include="Titania\X3D\Tools\Picking\" />
     <Folder Include="Titania\X3D\Tools\PointingDeviceSensor\" />
     <Folder Include="Titania\X3D\Parser\Wavefront\" />
-    <Folder Include="Titania\X3D\PeaseBlossom\Standard\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

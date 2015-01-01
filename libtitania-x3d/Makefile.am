@@ -469,24 +469,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Parser/RegEx.cpp \
 	Titania/X3D/Parser/Wavefront/Parser.cpp \
 	Titania/X3D/Parser/X3DParser.cpp \
-	Titania/X3D/PeaseBlossom/Base/GarbargeCollector.cpp \
-	Titania/X3D/PeaseBlossom/Base/pbChildObject.cpp \
-	Titania/X3D/PeaseBlossom/Bits/Identifier.cpp \
-	Titania/X3D/PeaseBlossom/Execution/Block.cpp \
-	Titania/X3D/PeaseBlossom/Execution/pbBlock.cpp \
-	Titania/X3D/PeaseBlossom/Execution/pbExecutionContext.cpp \
-	Titania/X3D/PeaseBlossom/Execution/Program.cpp \
-	Titania/X3D/PeaseBlossom/Expressions/pbExpression.cpp \
-	Titania/X3D/PeaseBlossom/Objects/Function.cpp \
-	Titania/X3D/PeaseBlossom/Objects/NativeFunction.cpp \
-	Titania/X3D/PeaseBlossom/Objects/Object.cpp \
-	Titania/X3D/PeaseBlossom/Objects/pbFunction.cpp \
-	Titania/X3D/PeaseBlossom/Objects/pbObject.cpp \
-	Titania/X3D/PeaseBlossom/Parser/Parser.cpp \
-	Titania/X3D/PeaseBlossom/Primitives/var.cpp \
-	Titania/X3D/PeaseBlossom/Standard/GlobalObject.cpp \
-	Titania/X3D/PeaseBlossom/Standard/Math.cpp \
-	Titania/X3D/PeaseBlossom/Standard/Object.cpp \
 	Titania/X3D/Prototype/ExternProtoArray.cpp \
 	Titania/X3D/Prototype/ExternProtoDeclaration.cpp \
 	Titania/X3D/Prototype/ProtoArray.cpp \
@@ -526,7 +508,8 @@ libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(top_builddir)/libtitania-gzstream/libtitania-gzstream.la \
 	$(top_builddir)/libtitania-opengl-surface/libtitania-opengl-surface.la \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la \
-	$(top_builddir)/libtitania-stream/libtitania-stream.la
+	$(top_builddir)/libtitania-stream/libtitania-stream.la \
+	$(top_builddir)/libtitania-peaseblossom/libtitania-peaseblossom.la
 
 AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
 	$(TITANIA_OPENGL_SURFACE_CFLAGS) \
@@ -535,5 +518,6 @@ AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
 	-I$(top_builddir)/libtitania-gzstream \
 	-I$(top_builddir)/libtitania-opengl-surface \
 	-I$(top_builddir)/libtitania-standard \
-	-I$(top_builddir)/libtitania-stream
+	-I$(top_builddir)/libtitania-stream \
+	-I$(top_builddir)/libtitania-peaseblossom
 

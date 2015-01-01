@@ -52,7 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 
-#include "../../PeaseBlossom/Debug.h"
+#include <Titania/PeaseBlossom/Debug.h>
 #include <cassert>
 
 namespace titania {
@@ -98,6 +98,93 @@ public:
 
 };
 
+class Context;
+
+template <class Type>
+class SFVec4
+{
+public:
+
+	static
+	const std::string &
+	getTypeName ()
+	{ return getIdentifier () .getName (); }
+
+	static
+	const pb::Identifier &
+	getIdentifier ()
+	{ return identifier; }
+
+	static
+	pb::ptr <pb::NativeFunction>
+	initialize (Context* const context, const pb::ptr <pb::Program> & ec, const pb::ptr <pb::pbObject> & global)
+	{
+		using namespace std::placeholders;
+
+		const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), constructor, nullptr, 4);
+		const auto prototype = function -> getObject ("prototype");
+	
+		global -> addPropertyDescriptor (getTypeName (), function, pb::NONE);
+
+		prototype -> addPropertyDescriptor ("add",      pb::make_ptr <pb::NativeFunction> (ec, "add",      add,      1), pb::NONE);
+		prototype -> addPropertyDescriptor ("toString", pb::make_ptr <pb::NativeFunction> (ec, "toString", toString, 0), pb::NONE);
+
+		return function;
+	}
+
+
+private:
+
+	///  @name Construction
+
+	static
+	pb::var
+	constructor (const pb::ptr <pb::pbExecutionContext> &, const pb::var & object, const std::vector <pb::var> &)
+	{
+		__LOG__ << std::endl;
+		
+		object .getObject () -> setUserData (new Type ());
+		
+		return pb::Undefined ();
+	}
+
+	///  @name Functions
+
+	static
+	pb::var
+	add (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
+	{
+		__LOG__ << std::endl;
+
+		return ec -> createObject (getIdentifier ());
+	}
+
+
+	static
+	pb::var
+	toString (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
+	{
+		return object .getObject () -> getUserData <Type> () -> toString ();
+	}
+
+	///  @name Members
+
+	static const std::string    typeName;
+	static const pb::Identifier identifier;
+
+};
+
+using SFVec4d = SFVec4 <X3D::SFVec4d>;
+using SFVec4f = SFVec4 <X3D::SFVec4f>;
+
+template <>
+const pb::Identifier SFVec4d::identifier = "SFVec4d";
+
+template <>
+const pb::Identifier SFVec4f::identifier = "SFVec4f";
+
+////////////////
+
 const ComponentType Context::component      = ComponentType::TITANIA;
 const std::string   Context::typeName       = "Context";
 const std::string   Context::containerField = "context";
@@ -115,7 +202,7 @@ throw (std::exception) :
 	{
 		addClasses ();
 		addUserDefinedFields ();
-
+		
 		program -> fromString (getECMAScript ());
 		program -> run ();
 	}
@@ -130,12 +217,41 @@ throw (std::exception) :
 void
 Context::addClasses ()
 {
+	using namespace std::placeholders;
+
 	Global::initialize (program, program -> getGlobalObject (), getBrowser ());
+
+	program -> getGlobalObject () -> setResolve (std::bind (&Context::resolve, this, _1, _2));
 }
 
 void
 Context::addUserDefinedFields ()
 { }
+
+bool
+Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
+{
+	__LOG__ << identifier << std::endl;
+
+	using namespace std::placeholders;
+
+	static const std::map <pb::Identifier, std::function <pb::ptr <pb::NativeFunction> (Context* const, const pb::ptr <pb::Program> &, const pb::ptr <pb::pbObject> &)>> functions = {
+		std::make_pair (pb::Identifier ("SFVec4d"), SFVec4d::initialize),
+		std::make_pair (pb::Identifier ("SFVec4f"), SFVec4f::initialize)
+	};
+
+	try
+	{
+		auto function = functions .at (identifier) (this, program, program -> getGlobalObject ());
+
+		program -> addFunctionDeclaration (std::move (function));
+		return true;
+	}
+	catch (const std::out_of_range &)
+	{
+		return false;
+	}
+}
 
 X3DBaseNode*
 Context::create (X3D::X3DExecutionContext* const) const

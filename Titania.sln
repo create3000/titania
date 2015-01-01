@@ -52,6 +52,8 @@ Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-mozilla", "libti
 EndProject
 Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "x3d2vrml", "x3d2vrml\x3d2vrml.mdproj", "{9F720446-7CC1-4B8B-AD37-4029FB79949D}"
 EndProject
+Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-peaseblossom", "libtitania-peaseblossom\libtitania-peaseblossom.cproj", "{A40FEE98-4147-4F4C-A682-FB0027303173}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -144,6 +146,14 @@ Global
 		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Parallel|Any CPU.Build.0 = Default|Any CPU
 		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Release|Any CPU.ActiveCfg = Default|Any CPU
 		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Release|Any CPU.Build.0 = Default|Any CPU
+		{A40FEE98-4147-4F4C-A682-FB0027303173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A40FEE98-4147-4F4C-A682-FB0027303173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A40FEE98-4147-4F4C-A682-FB0027303173}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{A40FEE98-4147-4F4C-A682-FB0027303173}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{A40FEE98-4147-4F4C-A682-FB0027303173}.Parallel|Any CPU.ActiveCfg = Debug|Any CPU
+		{A40FEE98-4147-4F4C-A682-FB0027303173}.Parallel|Any CPU.Build.0 = Debug|Any CPU
+		{A40FEE98-4147-4F4C-A682-FB0027303173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A40FEE98-4147-4F4C-A682-FB0027303173}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Default|Any CPU.ActiveCfg = Debug|Any CPU
@@ -222,6 +232,14 @@ Global
 		{F985E33B-A6D8-44E1-8785-96C3847A4993}.Parallel|Any CPU.Build.0 = Default|Any CPU
 		{F985E33B-A6D8-44E1-8785-96C3847A4993}.Release|Any CPU.ActiveCfg = Default|Any CPU
 		{F985E33B-A6D8-44E1-8785-96C3847A4993}.Release|Any CPU.Build.0 = Default|Any CPU
+		{9AB058BD-D20B-49E4-BC93-91F835F194BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AB058BD-D20B-49E4-BC93-91F835F194BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AB058BD-D20B-49E4-BC93-91F835F194BA}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AB058BD-D20B-49E4-BC93-91F835F194BA}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{9AB058BD-D20B-49E4-BC93-91F835F194BA}.Parallel|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AB058BD-D20B-49E4-BC93-91F835F194BA}.Parallel|Any CPU.Build.0 = Debug|Any CPU
+		{9AB058BD-D20B-49E4-BC93-91F835F194BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AB058BD-D20B-49E4-BC93-91F835F194BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BD471A40-76AE-4035-B56B-E29658A0ACB3} = {0A83A471-2425-4FE8-B816-A75033B4D27C}

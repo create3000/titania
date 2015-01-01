@@ -48,44 +48,36 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_ARRAY_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_ARRAY_H__
-
-#include "../Objects/pbObject.h"
+#include "NativeFunction.h"
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a »false« object.
- */
-class Array :
-	public pbObject
+var
+NativeFunction::construct (const var & object, const std::vector <var> & arguments)
+throw (pbException)
 {
-public:
+	if (constructor)
+		return constructor (executionContext, object, arguments);
 
-	///  @name Construction
+	throw TypeError ("Cannot call function '" + getName () + "' as constructor.");
+}
 
-	///  Constructs new Array.
-	Array (const ptr <pbExecutionContext> & ec) :
-		pbObject (),
-		   array ()
-	{ }
+var
+NativeFunction::apply (const var & object, const std::vector <var> & arguments)
+throw (pbException)
+{
+	if (function)
+		return function (executionContext, object, arguments);
 
-	///  Constructs new Array.
-	Array (const ptr <pbExecutionContext> & ec, std::vector <var> && value) :
-		pbObject (),
-		   array (std::move (value))
-	{ }
+	throw TypeError ("Cannot call '" + getName () + "' as function.");
+}
 
-
-private:
-
-	std::vector <var> array;
-
-};
+void
+NativeFunction::toStream (std::ostream & ostream) const
+{
+	ostream << "function " << getName () << " () { [native code] }";
+}
 
 } // pb
 } // titania
-
-#endif

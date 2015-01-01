@@ -106,7 +106,7 @@ Function::addLocalObjects (const ptr <pbExecutionContext> & executionContext)
 }
 
 var
-Function::construct (const ptr <pbExecutionContext> &, const var & object, const std::vector <var> & arguments)
+Function::construct (const var & object, const std::vector <var> & arguments)
 throw (pbException)
 {
 	return apply (object, arguments);

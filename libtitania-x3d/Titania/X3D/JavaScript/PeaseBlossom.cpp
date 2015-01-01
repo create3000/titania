@@ -52,7 +52,8 @@
 
 #include "../Execution/X3DExecutionContext.h"
 #include "../JavaScript/PeaseBlossom/Context.h"
-#include "../PeaseBlossom/pb.h"
+
+#include <Titania/PeaseBlossom/pb.h>
 
 namespace titania {
 namespace X3D {

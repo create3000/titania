@@ -72,6 +72,23 @@ pbExecutionContext::pbExecutionContext (pbExecutionContext* const executionConte
 	             localObjects);
 }
 
+ptr <pbObject>
+pbExecutionContext::createObject (const Identifier & identifier)
+throw (std::out_of_range)
+{
+	try
+	{
+		return functions .at (identifier) -> createInstance (this);
+	}
+	catch (const std::out_of_range &)
+	{
+		if (isRootContext ())
+			throw;
+
+		return getExecutionContext () -> createObject (identifier);
+	}
+}
+
 void
 pbExecutionContext::addFunctionDeclaration (const ptr <pbFunction> & function)
 throw (std::invalid_argument)
@@ -100,10 +117,10 @@ throw (std::invalid_argument)
 }
 
 void
-pbExecutionContext::removeFunctionDeclaration (const std::string & name)
+pbExecutionContext::removeFunctionDeclaration (const Identifier & identifier)
 noexcept (true)
 {
-	functions .erase (name);
+	functions .erase (identifier);
 }
 
 void
