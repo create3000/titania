@@ -67,24 +67,24 @@ public:
 	///  @name Construction
 
 	///  Constructs new StringObject.
-	StringObject () :
+	StringObject (const ptr <pbExecutionContext> & ec) :
 		pbObject (),
 		  string (Glib::ustring ())
 	{ }
 
 	///  Constructs new StringObject.
-	StringObject (const Glib::ustring & value) :
+	StringObject (const ptr <pbExecutionContext> & ec, const Glib::ustring & value) :
 		pbObject (),
 		  string (value)
 	{ }
 
 	///  @name Input/Output
 
-//	///  Inserts this object into the output stream @a ostream.
-//	virtual
-//	void
-//	toStream (std::ostream & ostream) const final override
-//	{ string -> toStream (ostream); }
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << string; }
 
 
 private:

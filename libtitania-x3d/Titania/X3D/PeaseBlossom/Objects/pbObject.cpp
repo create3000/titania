@@ -323,14 +323,14 @@ throw (pbException)
 	{
 		try
 		{
-			return call (toString);
+			return apply (toString, this);
 		}
 		catch (const TypeError &)
 		{ }
 
 		try
 		{
-			return call (valueOf);
+			return apply (valueOf, this);
 		}
 		catch (const TypeError &)
 		{ }
@@ -338,14 +338,14 @@ throw (pbException)
 
 	try
 	{
-		return call (valueOf);
+		return apply (valueOf, this);
 	}
 	catch (const TypeError &)
 	{ }
 
 	try
 	{
-		return call (toString);
+		return apply (toString, this);
 	}
 	catch (const TypeError &)
 	{ }
@@ -354,7 +354,7 @@ throw (pbException)
 }
 
 var
-pbObject::call (const Identifier & identifier, const std::vector <var> & arguments) const
+pbObject::apply (const Identifier & identifier, const var & object, const std::vector <var> & arguments) const
 throw (pbException)
 {
 	try
@@ -366,7 +366,7 @@ throw (pbException)
 			const auto function = dynamic_cast <pbFunction*> (property .getObject () .get ());
 
 			if (function)
-				return function -> apply (const_cast <pbObject*> (this), arguments);
+				return function -> apply (object, arguments);
 		}
 
 		throw TypeError ("Property '" + property .toString () + "' is not a function.");

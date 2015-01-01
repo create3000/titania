@@ -71,12 +71,12 @@ public:
 	///  @name Construction
 
 	///  Constructs new Function.
-	Function (pbExecutionContext* const executionContext, const std::string & name = "", std::vector <std::string> && formalParameters = { });
+	Function (pbExecutionContext* const, const std::string & = "", std::vector <std::string> && = { });
 
 	///  Creates a new default object.
 	virtual
 	ptr <pbFunction>
-	copy (pbExecutionContext* const executionContext) const
+	copy (pbExecutionContext* const) const
 	noexcept (true) final override;
 
 	///  @name Operations
@@ -84,7 +84,7 @@ public:
 	///  Executes this function.
 	virtual
 	var
-	apply (const ptr <pbObject> & object, const std::vector <var> & arguments = { })
+	apply (const var &, const std::vector <var> & = { })
 	throw (pbException) final override;
 
 	///  @name Destruction
@@ -112,7 +112,7 @@ public:
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const final override;
+	toStream (std::ostream &) const final override;
 
 
 protected:
@@ -124,14 +124,14 @@ protected:
 	///  @name Construction
 
 	///  Constructs new standard Function.
-	Function (pbExecutionContext* const executionContext, const std::nullptr_t);
+	Function (pbExecutionContext* const, const std::nullptr_t);
 
 	///  @name Operations
 
 	///  Constructs new object of this class.
 	virtual
 	var
-	construct (const ptr <pbExecutionContext> & executionContext, const ptr <pbObject> & object, const std::vector <var> & arguments = { })
+	construct (const ptr <pbExecutionContext> &, const var &, const std::vector <var> & = { })
 	throw (pbException) final override;
 
 
@@ -165,7 +165,7 @@ private:
 	///  Set @a localObject as local object and pushes all default objects to the default object stack if an recursion is
 	///  detected.
 	void
-	push (pbObject* const localObject);
+	push (pbObject* const);
 
 	///  Reverses the effect of pop.
 	void

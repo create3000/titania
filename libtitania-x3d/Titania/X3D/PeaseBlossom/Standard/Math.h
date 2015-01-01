@@ -86,75 +86,75 @@ private:
 
 	static
 	var
-	abs (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	abs (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	acos (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	acos (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	asin (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	asin (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	atan (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	atan (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	atan2 (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	atan2 (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	ceil (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	ceil (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	cos (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	cos (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	exp (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	exp (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	floor (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	floor (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	log (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	log (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	max (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	max (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	min (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	min (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	pow (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	pow (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	random (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	random (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	round (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	round (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	sin (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	sin (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	sqrt (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	sqrt (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	static
 	var
-	tan (const ptr <pbExecutionContext> & ec, const ptr <pbObject> &, const std::vector <var> &);
+	tan (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	///  @name Static members
 	

@@ -62,12 +62,12 @@ namespace Object {
 struct Constructor
 {
 	var
-	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
 	{
 		if (arguments .empty ())
 			return new pb::Object (ec);
 
-		return arguments [0] .toObject ();
+		return arguments [0] .toObject (ec);
 	}
 
 };
@@ -75,17 +75,27 @@ struct Constructor
 struct toString
 {
 	var
-	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
 	{
-		if (arguments .empty ())
-			return object -> toString () + "*";
+		switch (object .getType ())
+		{
+			case UNDEFINED:
+				return "[object Undefined]";
+			case BOOLEAN:
+				return "[object Boolean]";
+			case NUMBER:
+				return "[object Number]";
+			case STRING:
+				return "[object String]";
+			case NULL_OBJECT:
+				return "[object Null]";
+			case OBJECT:
+				return object .getObject () -> toString () + "*";
+		}
 
-		if (arguments [0] .isPrimitive ())
-			return arguments [0] .toString ();
-
-		return arguments [0] .getObject () -> toString ();
+		throw TypeError ("Object.prototype.toString");
 	}
-	
+
 };
 
 void

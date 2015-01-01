@@ -57,7 +57,7 @@
 namespace titania {
 namespace pb {
 
-using FunctionType = std::function <var (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)>;
+using FunctionType = std::function <var (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)>;
 
 /**
  *  Class to represent a native ECMAScript function.
@@ -93,7 +93,7 @@ public:
 
 	virtual
 	var
-	apply (const ptr <pbObject> & thisObject, const std::vector <var> & arguments = { })
+	apply (const var &, const std::vector <var> & = { })
 	throw (pbException) final override;
 
 	///  @name Input/Output
@@ -101,7 +101,7 @@ public:
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const final override;
+	toStream (std::ostream &) const final override;
 
 
 protected:
@@ -110,7 +110,7 @@ protected:
 
 	virtual
 	var
-	construct (const ptr <pbExecutionContext> & executionContext, const ptr <pbObject> & object, const std::vector <var> & arguments = { })
+	construct (const ptr <pbExecutionContext> &, const var &, const std::vector <var> & = { })
 	throw (pbException) final override;
 
 

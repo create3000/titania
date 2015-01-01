@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_ARRAY_H__
 
 #include "../Objects/pbObject.h"
-#include "../Primitives/array.h"
 
 namespace titania {
 namespace pb {
@@ -68,31 +67,13 @@ public:
 	///  @name Construction
 
 	///  Constructs new Array.
-	Array () :
+	Array (const ptr <pbExecutionContext> & ec) :
 		pbObject (),
 		   array ()
 	{ }
 
 	///  Constructs new Array.
-	Array (const Array & value) :
-		pbObject (),
-		   array (value .array)
-	{ }
-
-	///  Constructs new Array.
-	Array (Array && value) :
-		pbObject (),
-		   array (std::move (value .array))
-	{ }
-
-	///  Constructs new Array.
-	Array (const std::vector <var> & value) :
-		pbObject (),
-		   array (value)
-	{ }
-
-	///  Constructs new Array.
-	Array (std::vector <var> && value) :
+	Array (const ptr <pbExecutionContext> & ec, std::vector <var> && value) :
 		pbObject (),
 		   array (std::move (value))
 	{ }

@@ -168,6 +168,13 @@ public:
 	{ }
 
 	///  Constructs new var.
+	var (const std::string::value_type* const string) :
+		pbOutputStreamObject (),
+		               value ({ string_ : new Glib::ustring (string) }),
+		                type (STRING)
+	{ }
+
+	///  Constructs new var.
 	constexpr
 	var (const std::nullptr_t) :
 		pbOutputStreamObject (),
@@ -200,7 +207,12 @@ public:
 	}
 
 	///  Constructs new var.
-	var (pbObject* const object);
+	var (pbObject* const);
+
+	///  Constructs new var.
+	var (const pbObject* const object) :
+		var (const_cast <pbObject*> (object))
+	{ }
 
 	///  @name Assignment operators
 
@@ -208,13 +220,13 @@ public:
 	operator = (const Undefined &);
 
 	var &
-	operator = (const var & other);
+	operator = (const var &);
 
 	var &
-	operator = (var && other);
+	operator = (var &&);
 
 	var &
-	operator = (const bool boolean);
+	operator = (const bool);
 
 	var &
 	operator = (const int32_t integer)
@@ -225,16 +237,19 @@ public:
 	{ return operator = (double (integer)); }
 
 	var &
-	operator = (const double number);
+	operator = (const double);
 
 	var &
-	operator = (const Glib::ustring & string);
+	operator = (const Glib::ustring &);
 
 	var &
-	operator = (Glib::ustring && string);
+	operator = (Glib::ustring &&);
 
 	var &
 	operator = (const std::string & string);
+	
+	var &
+	operator = (const std::string::value_type* const);
 
 	var &
 	operator = (const std::nullptr_t);
@@ -270,7 +285,11 @@ public:
 	}
 
 	var &
-	operator = (pbObject* const object);
+	operator = (pbObject* const);
+
+	var &
+	operator = (const pbObject* const object)
+	{ return operator = (const_cast <pbObject*> (object)); }
 
 	///  @name Common members
 
@@ -310,7 +329,7 @@ public:
 
 	///  Converts its argument to a value of type Boolean.
 	var
-	toPrimitive (const ValueType preferedType = UNDEFINED) const
+	toPrimitive (const ValueType = UNDEFINED) const
 	throw (pbException);
 
 	///  Converts its argument to a value of type Boolean.
@@ -340,7 +359,7 @@ public:
 
 	///  Converts its argument to a value of type pbObject.
 	ptr <pbObject>
-	toObject () const
+	toObject (const ptr <pbExecutionContext> &) const
 	throw (TypeError);
 
 	///  @name Member access
@@ -370,7 +389,7 @@ public:
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const final override;
+	toStream (std::ostream &) const final override;
 
 	///  @name Destruction
 

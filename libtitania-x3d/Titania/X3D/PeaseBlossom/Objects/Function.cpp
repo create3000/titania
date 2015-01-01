@@ -106,14 +106,14 @@ Function::addLocalObjects (const ptr <pbExecutionContext> & executionContext)
 }
 
 var
-Function::construct (const ptr <pbExecutionContext> &, const ptr <pbObject> & object, const std::vector <var> & arguments)
+Function::construct (const ptr <pbExecutionContext> &, const var & object, const std::vector <var> & arguments)
 throw (pbException)
 {
 	return apply (object, arguments);
 }
 
 var
-Function::apply (const ptr <pbObject> & object, const std::vector <var> & arguments)
+Function::apply (const var & object, const std::vector <var> & arguments)
 throw (pbException)
 {
 	const auto localObject = new Object (static_cast <pbExecutionContext*> (this));

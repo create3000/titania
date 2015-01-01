@@ -193,6 +193,17 @@ var::operator = (const std::string & string)
 }
 
 var &
+var::operator = (const std::string::value_type* const string)
+{
+	clear ();
+
+	value .string_ = new Glib::ustring (string);
+	type           = STRING;
+
+	return *this;
+}
+
+var &
 var::operator = (const std::nullptr_t)
 {
 	clear ();
@@ -377,7 +388,7 @@ var::toNumber () const
 }
 
 ptr <pbObject>
-var::toObject () const
+var::toObject (const ptr <pbExecutionContext> & ec) const
 throw (TypeError)
 {
 	switch (type)
@@ -385,11 +396,11 @@ throw (TypeError)
 		case UNDEFINED:
 			throw TypeError ("Cannot convert 'undefined' to object value.");
 		case BOOLEAN:
-			return new BooleanObject (value .bool_);
+			return new BooleanObject (ec, value .bool_);
 		case NUMBER:
-			return new NumberObject (value .number_);
+			return new NumberObject (ec, value .number_);
 		case STRING:
-			return new StringObject (*value .string_);
+			return new StringObject (ec, *value .string_);
 		case NULL_OBJECT:
 			throw TypeError ("Cannot convert 'null' to object value.");
 		case OBJECT:

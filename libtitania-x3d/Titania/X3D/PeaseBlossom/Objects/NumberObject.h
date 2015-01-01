@@ -67,24 +67,24 @@ public:
 	///  @name Construction
 
 	///  Constructs new NumberObject.
-	NumberObject () :
+	NumberObject (const ptr <pbExecutionContext> & ec) :
 		pbObject (),
 		  number (0)
 	{ }
 
 	///  Constructs new NumberObject.
-	NumberObject (const double value) :
+	NumberObject (const ptr <pbExecutionContext> & ec, const double value) :
 		pbObject (),
 		  number (value)
 	{ }
 
 	///  @name Input/Output
 
-	//	///  Inserts this object into the output stream @a ostream.
-	//	virtual
-	//	void
-	//	toStream (std::ostream & ostream) const final override
-	//	{ number .toStream (ostream); }
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << number; }
 
 
 private:

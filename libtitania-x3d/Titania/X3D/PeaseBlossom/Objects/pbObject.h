@@ -194,43 +194,43 @@ public:
 	{ return properties .count (identifier .getId ()); }
 
 	var
-	setProperty (const Identifier &identifier, var && value)
+	setProperty (const Identifier &, var &&)
 	throw (std::out_of_range,
 	       pbException);
 
 	var
-	getProperty (const Identifier & identifier) const
+	getProperty (const Identifier &) const
 	throw (std::out_of_range,
 	       pbException);
 	      
 	ptr <pbObject>
-	getObject (const Identifier & identifier) const
+	getObject (const Identifier &) const
 	throw (std::out_of_range,
 	       TypeError);
 
 	void
-	addPropertyDescriptor (const Identifier & identifier,
-	                       const var & value,
-	                       const PropertyFlagsType flags = DEFAULT,
-	                       const ptr <pbFunction> & getter = nullptr,
-	                       const ptr <pbFunction> & setter = nullptr)
+	addPropertyDescriptor (const Identifier &,
+	                       const var &,
+	                       const PropertyFlagsType = DEFAULT,
+	                       const ptr <pbFunction> & = nullptr,
+	                       const ptr <pbFunction> & = nullptr)
 	throw (std::invalid_argument);
 
 	///  Updates the named property described by the given descriptor to this object.
 	void
-	updatePropertyDescriptor (const Identifier & identifier,
-	                          const var & value,
-	                          const PropertyFlagsType flags = DEFAULT,
-	                          const ptr <pbFunction> & getter = nullptr,
-	                          const ptr <pbFunction> & setter = nullptr)
+	updatePropertyDescriptor (const Identifier &,
+	                          const var &,
+	                          const PropertyFlagsType = DEFAULT,
+	                          const ptr <pbFunction> & = nullptr,
+	                          const ptr <pbFunction> & = nullptr)
 	throw (std::invalid_argument);
 
 	void
-	removePropertyDescriptor (const Identifier & identifier)
+	removePropertyDescriptor (const Identifier &)
 	noexcept (true);
 
 	var
-	getDefaultValue (const ValueType preferedType) const
+	getDefaultValue (const ValueType) const
 	throw (pbException);
 
 	///  @name Input/Output
@@ -238,7 +238,7 @@ public:
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const override;
+	toStream (std::ostream &) const override;
 
 	///  @name Destruction
 
@@ -269,7 +269,7 @@ protected:
 	pbObject ();
 
 	var
-	call (const Identifier & identifier, const std::vector <var> & arguments = { }) const
+	apply (const Identifier &, const var &, const std::vector <var> & = { }) const
 	throw (pbException);
 
 
@@ -284,12 +284,12 @@ private:
 
 	///  Returns the property descriptor for a property id on this object.
 	const PropertyDescriptorPtr &
-	getPropertyDescriptor (const Identifier & identifier) const
+	getPropertyDescriptor (const Identifier &) const
 	throw (std::out_of_range);
 
 	///  Returns the property descriptor for a property id on this object.
 	const PropertyDescriptorPtr &
-	getPropertyDescriptor (const size_t id) const
+	getPropertyDescriptor (const size_t) const
 	throw (std::out_of_range);
 
 	void
@@ -305,7 +305,7 @@ private:
 	throw (std::out_of_range);
 
 	void
-	resolve (const Identifier & identifier)
+	resolve (const Identifier &)
 	throw (std::out_of_range);
 
 	const ptr <pbObject> &

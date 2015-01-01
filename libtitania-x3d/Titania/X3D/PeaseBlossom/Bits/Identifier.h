@@ -48,8 +48,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BASE_IDENTIFIER_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BASE_IDENTIFIER_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_IDENTIFIER_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_IDENTIFIER_H__
+
+#include "../Base/pbOutputStreamObject.h"
 
 #include <map>
 #include <string>
@@ -57,23 +59,29 @@
 namespace titania {
 namespace pb {
 
-class Identifier
+class Identifier :
+	public pbOutputStreamObject
 {
 public:
 
+	///  @name Construction
+
 	Identifier () :
-		name (),
-		  id (-1)
+		pbOutputStreamObject (),
+		                name (),
+		                  id (-1)
 	{ }
 
 	Identifier (const Identifier & other) :
-		name (other .name),
-		  id (other .id)
+		pbOutputStreamObject (),
+		                name (other .name),
+		                  id (other .id)
 	{ }
 
 	Identifier (Identifier && other) :
-		name (std::move (other .name)),
-		  id (other .id)
+		pbOutputStreamObject (),
+		                name (std::move (other .name)),
+		                  id (other .id)
 	{ }
 
 	Identifier (const std::string & name) :
@@ -87,6 +95,8 @@ public:
 	Identifier (const std::string::value_type* name) :
 		Identifier (getIdentifier (name))
 	{ }
+
+	///  @name Member functions
 
 	Identifier &
 	operator = (const Identifier & other)
@@ -104,13 +114,23 @@ public:
 		return *this;
 	}
 
+	///  @name Member access
+
 	const std::string &
 	getName () const
 	{ return name; }
 
-	size_t
+	const size_t &
 	getId () const
 	{ return id; }
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << name; }
 
 
 private:
@@ -120,10 +140,11 @@ private:
 	using IdentifierIndex = std::map <std::string, size_t>;
 
 	///  @name Construction
-	
+
 	Identifier (const IdentifierIndex::value_type & pair) :
-		name (pair .first),
-		  id (pair .second)
+		pbOutputStreamObject (),
+		                name (pair .first),
+		                  id (pair .second)
 	{ }
 
 	///  @name Operations

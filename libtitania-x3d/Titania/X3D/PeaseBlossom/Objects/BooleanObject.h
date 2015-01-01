@@ -67,24 +67,24 @@ public:
 	///  @name Construction
 
 	///  Constructs new BooleanObject.
-	BooleanObject () :
+	BooleanObject (const ptr <pbExecutionContext> & ec) :
 		pbObject (),
 		 boolean (false)
 	{ }
 
 	///  Constructs new BooleanObject.
-	BooleanObject (const bool value) :
+	BooleanObject (const ptr <pbExecutionContext> & ec, const bool value) :
 		pbObject (),
 		 boolean (value)
 	{ }
 
 	///  @name Input/Output
 
-//	///  Inserts this object into the output stream @a ostream.
-//	virtual
-//	void
-//	toStream (std::ostream & ostream) const final override
-//	{ boolean -> toStream (ostream); }
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << (boolean ? "true" : "false"); }
 
 
 private:

@@ -85,13 +85,13 @@ public:
 
 	///  Constructs new object of this class.
 	var
-	construct (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments = { })
+	construct (const ptr <pbExecutionContext> &, const std::vector <var> & = { })
 	throw (pbException);
 
 	///  Executes this function.
 	virtual
 	var
-	apply (const ptr <pbObject> & object, const std::vector <var> & arguments = { })
+	apply (const var &, const std::vector <var> & = { })
 	throw (pbException) = 0;
 
 
@@ -100,16 +100,16 @@ protected:
 	///  @name Construction
 
 	///  Constructs new pbFunction.
-	pbFunction (pbExecutionContext* const executionContext, const std::string & name, const size_t);
+	pbFunction (pbExecutionContext* const, const std::string &, const size_t);
 
 	///  Constructs new pbFunction.
-	pbFunction (pbExecutionContext* const executionContext, const std::nullptr_t);
+	pbFunction (pbExecutionContext* const, const std::nullptr_t);
 
 	///  @name Operations
 
 	virtual
 	var
-	construct (const ptr <pbExecutionContext> & executionContext, const ptr <pbObject> & object, const std::vector <var> & arguments = { })
+	construct (const ptr <pbExecutionContext> &, const var &, const std::vector <var> & = { })
 	throw (pbException) = 0;
 
 

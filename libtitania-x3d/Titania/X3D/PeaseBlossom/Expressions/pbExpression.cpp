@@ -69,7 +69,7 @@ throw (pbException)
 		const auto function = dynamic_cast <pbFunction*> (value .getObject () .get ());
 
 		if (function)
-			return function -> apply (executionContext -> getGlobalObject (), arguments);
+			return function -> apply (executionContext -> getGlobalObject () -> getProperty ("this"), arguments);
 	}
 
 	throw TypeError ("'" + value .toString () + "' is not a function.");

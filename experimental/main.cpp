@@ -333,6 +333,9 @@ main (int argc, char** argv)
 	__LOG__ << sizeof (C) << std::endl;
 	__LOG__ << sizeof (D) << std::endl;
 
+	bool b = new C ();
+	__LOG__ << b << std::endl;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	std::clog << "Function main done." << std::endl;

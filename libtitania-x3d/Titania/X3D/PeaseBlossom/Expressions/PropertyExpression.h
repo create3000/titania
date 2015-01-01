@@ -141,7 +141,7 @@ public:
 
 	virtual
 	var
-	call (const ptr <pbExecutionContext> &, const std::vector <var> & arguments) const
+	call (const ptr <pbExecutionContext> & ec, const std::vector <var> & arguments) const
 	throw (pbException) final override
 	{
 		const auto lhs = expression -> getValue ();
@@ -155,7 +155,7 @@ public:
 			case BOOLEAN:
 			{
 				// toString
-				// lhs .toObject () -> call (id, arguments)
+				// lhs .toObject (ec) -> call (id, arguments)
 				break;		
 			}
 			case NUMBER:
@@ -163,14 +163,14 @@ public:
 				// toPrecision
 				// toString
 				// ...
-				// lhs .toObject () -> call (id, arguments)
+				// lhs .toObject (ec) -> call (id, arguments)
 				break;
 			}
 			case STRING:
 			{
 				// toString
 				// ...
-				// lhs .toObject () -> call (id, arguments)
+				// lhs .toObject (ec) -> call (id, arguments)
 				break;
 			}
 			case NULL_OBJECT:
@@ -181,7 +181,7 @@ public:
 			{
 				pbObject* const object = static_cast <pbObject*> (lhs .getObject () .get ());
 
-				return object -> call (identifier, arguments);
+				return object -> apply (identifier, lhs, arguments);
 			}
 		}
 

@@ -65,7 +65,7 @@ namespace Standard {
 struct isNaN
 {
 	var
-	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
 	{
 		if (arguments .empty ())
 			return true;
@@ -78,7 +78,7 @@ struct isNaN
 struct parseInt
 {
 	var
-	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
 	{
 		if (arguments .empty ())
 			return NaN ();
@@ -91,7 +91,7 @@ struct parseInt
 struct parseFloat
 {
 	var
-	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
 	{
 		if (arguments .empty ())
 			return NaN ();
@@ -107,7 +107,7 @@ namespace Function {
 struct Constructor
 {
 	var
-	operator () (const ptr <pbExecutionContext> & ec, const ptr <pbObject> & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
 	{
 		if (arguments .empty ())
 			return new pb::Function (ec);
