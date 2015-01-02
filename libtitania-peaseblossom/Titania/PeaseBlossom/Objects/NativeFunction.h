@@ -89,6 +89,14 @@ public:
 		        function (function)
 	{ addChildren (this -> executionContext); }
 
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getTypeName () const
+	noexcept (true) final override
+	{ return getName (); }
+
 	///  @name Operations
 
 	virtual

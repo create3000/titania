@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_OBJECT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_OBJECT_H__
 
+#include "../Base/pbUserData.h"
 #include "../Base/pbChildObject.h"
 #include "../Base/pbOutputStreamObject.h"
 #include "../Bits/Identifier.h"
@@ -160,15 +161,19 @@ private:
 ///  Type to represent a property descriptor pointer.
 using PropertyDescriptorPtr = std::shared_ptr <PropertyDescriptor>;
 
-///  Type to represent a resolve function.
-using ResolveFunctionType = std::function <bool (pbObject* const, const Identifier &)>;
+///  Type to represent a resolve callback function.
+using ResolveType = std::function <bool (pbObject* const, const Identifier &)>;
+
+///  Type to represent a dispose callback function.
+using DisposeType = std::function <void (pbObject* const)>;
 
 /**
  *  Class to represent a basic object.
  */
 class pbObject :
 	virtual public pbChildObject,
-	virtual public pbOutputStreamObject
+	virtual public pbOutputStreamObject,
+	virtual public pbUserData
 {
 public:
 
@@ -184,8 +189,7 @@ public:
 	virtual
 	const std::string &
 	getClassName () const
-	throw (std::out_of_range,
-	       TypeError);
+	noexcept (true);
 
 	bool
 	isExtensible () const
@@ -240,22 +244,12 @@ public:
 	noexcept (true);
 
 	void
-	setResolve (const ResolveFunctionType & value)
+	setResolve (const ResolveType & value)
 	{ resolveFunction = value; }
 
 	var
 	getDefaultValue (const ValueType) const
 	throw (pbException);
-	
-	void
-	setUserData (void* const value)
-	{ userData = value; }
-	
-	template <class Type>
-	Type*
-	getUserData () const
-	{ return static_cast <Type*> (userData); }
-	
 
 	///  @name Input/Output
 
@@ -265,6 +259,10 @@ public:
 	toStream (std::ostream &) const override;
 
 	///  @name Destruction
+
+	void
+	setDispose (const DisposeType & value)
+	{ disposeFunction = value; }
 
 	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
 	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
@@ -347,8 +345,8 @@ private:
 	bool                    extensible;
 	PropertyDescriptorIndex properties;
 	PropertyDescriptorArray cachedProperties;
-	ResolveFunctionType     resolveFunction;
-	void*                   userData;
+	ResolveType             resolveFunction;
+	DisposeType             disposeFunction;
 
 };
 

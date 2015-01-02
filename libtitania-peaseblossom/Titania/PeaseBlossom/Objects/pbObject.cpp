@@ -89,21 +89,28 @@ const std::string pbObject::typeName = "Object";
 pbObject::pbObject () :
 	       pbChildObject (),
 	pbOutputStreamObject (),
+	          pbUserData (),
 	          extensible (true),
 	          properties (),
 	    cachedProperties (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ())),
 	     resolveFunction (),
-	             userData (nullptr)
+	     disposeFunction ()
 { }
 
 const std::string &
 pbObject::getClassName () const
-throw (std::out_of_range,
-       TypeError)
+noexcept (true)
 {
-	static const Identifier constructor = "constructor";
+	try
+	{
+		static const Identifier constructor = "constructor";
 
-	return getObject (constructor) -> getTypeName ();
+		return getObject (constructor) -> getTypeName ();
+	}
+	catch (const std::exception &)
+	{
+		return typeName;
+	}
 }
 
 var
@@ -385,8 +392,6 @@ throw (pbException)
 
 void
 pbObject::toStream (std::ostream & ostream) const
-//throw (std::out_of_range,
-//       pbException)
 {
 	ostream << "[object " << getClassName () << "]";
 }
@@ -394,6 +399,9 @@ pbObject::toStream (std::ostream & ostream) const
 void
 pbObject::dispose ()
 {
+	if (disposeFunction)
+		disposeFunction (this);
+
 	properties       .clear ();
 	cachedProperties .clear ();
 

@@ -59,6 +59,13 @@ namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
+enum class ObjectType
+{
+	SFVec4d,
+	SFVec4f
+
+};
+
 class Global
 {
 public:
@@ -79,9 +86,9 @@ public:
 
 	static
 	pb::var
-	print (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> & arguments, X3D::X3DBrowser* const browser)
+	print (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> & args, X3D::X3DBrowser* const browser)
 	{
-		for (const auto & value : arguments)
+		for (const auto & value : args)
 			browser -> print (value);
 
 		browser -> println ();
@@ -100,15 +107,22 @@ public:
 
 class Context;
 
+Context*
+getContext (const pb::ptr <pb::pbExecutionContext> & ec)
+{
+	return nullptr;
+}
+
 template <class Type>
 class SFVec4
 {
 public:
 
 	static
-	const std::string &
-	getTypeName ()
-	{ return getIdentifier () .getName (); }
+	constexpr
+	ObjectType
+	getType ()
+	{ throw std::invalid_argument ("SFVec4::getType"); }
 
 	static
 	const pb::Identifier &
@@ -121,10 +135,10 @@ public:
 	{
 		using namespace std::placeholders;
 
-		const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), constructor, nullptr, 4);
+		const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getIdentifier () .getName (), construct, nullptr, 4);
 		const auto prototype = function -> getObject ("prototype");
 	
-		global -> addPropertyDescriptor (getTypeName (), function, pb::NONE);
+		global -> addPropertyDescriptor (getIdentifier () .getName (), function, pb::NONE);
 
 		prototype -> addPropertyDescriptor ("add",      pb::make_ptr <pb::NativeFunction> (ec, "add",      add,      1), pb::NONE);
 		prototype -> addPropertyDescriptor ("toString", pb::make_ptr <pb::NativeFunction> (ec, "toString", toString, 0), pb::NONE);
@@ -133,17 +147,80 @@ public:
 	}
 
 
-private:
+protected:
 
 	///  @name Construction
+	
+	template <class T>
+	static
+	pb::var
+	create (const pb::ptr <pb::pbExecutionContext> & ec, Type* const field)
+	{
+		const auto object = ec -> createObject (T::getIdentifier ());
+
+		setUserData <T> (ec, object, field);
+
+		return object;
+	}
+
+	template <class T>
+	static
+	void
+	setUserData (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & value, X3D::X3DFieldDefinition* const field)
+	{
+		const auto   context  = getContext (ec);
+		const auto & object   = value .getObject ();
+		auto &       userData = object -> getUserData ();
+
+		userData .reserve (3);
+
+		userData .emplace_back ((void*) T::getType ());
+		userData .emplace_back (field);
+		userData .emplace_back (context);
+		object -> setDispose (dispose);
+
+		//context -> addObject (field);
+	}
+
+
+private:
+
+	static
+	void
+	dispose (pb::pbObject* const object)
+	{
+		__LOG__ << std::endl;
+	}
+
+
+private:
 
 	static
 	pb::var
-	constructor (const pb::ptr <pb::pbExecutionContext> &, const pb::var & object, const std::vector <pb::var> &)
+	construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 	{
 		__LOG__ << std::endl;
-		
-		object .getObject () -> setUserData (new Type ());
+
+		switch (args .size ())
+		{
+			case 0:
+			{
+				setUserData <SFVec4> (ec, object, new Type ());
+				break;
+			}
+			case 4:
+			{
+				setUserData <SFVec4> (ec, object, new Type (
+					args [0] .toNumber (),
+					args [1] .toNumber (),
+					args [2] .toNumber (),
+					args [3] .toNumber ()
+				));
+				break;
+			}
+			default:
+				throw pb::Error ("wrong number of arguments.");
+		}
 		
 		return pb::Undefined ();
 	}
@@ -152,19 +229,22 @@ private:
 
 	static
 	pb::var
-	add (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
+	add (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 	{
-		__LOG__ << std::endl;
+		if (args .empty ())
+			throw pb::Error ("wrong number of arguments.");
+	
+		const auto & lhs = *object .getObject () -> getUserData <Type*> (1);
+		const auto & rhs = *args [0] .getObject () -> getUserData <Type*> (1);
 
-		return ec -> createObject (getIdentifier ());
+		return create <SFVec4> (ec, lhs .add (rhs));
 	}
-
 
 	static
 	pb::var
 	toString (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
 	{
-		return object .getObject () -> getUserData <Type> () -> toString ();
+		return object .getObject () -> getUserData <Type*> (1) -> toString ();
 	}
 
 	///  @name Members
@@ -176,6 +256,18 @@ private:
 
 using SFVec4d = SFVec4 <X3D::SFVec4d>;
 using SFVec4f = SFVec4 <X3D::SFVec4f>;
+
+template <>
+constexpr
+ObjectType
+SFVec4d::getType ()
+{ return ObjectType::SFVec4d; }
+
+template <>
+constexpr
+ObjectType
+SFVec4f::getType ()
+{ return ObjectType::SFVec4f; }
 
 template <>
 const pb::Identifier SFVec4d::identifier = "SFVec4d";

@@ -63,6 +63,7 @@ namespace pb {
 pbExecutionContext::pbExecutionContext (pbExecutionContext* const executionContext_) :
 	             pbBlock (),
 	 pbInputStreamObject (),
+	          pbUserData (),
 	    executionContext (executionContext_),
 	        localObjects (),
 	           functions (),
@@ -72,7 +73,7 @@ pbExecutionContext::pbExecutionContext (pbExecutionContext* const executionConte
 	             localObjects);
 }
 
-ptr <pbObject>
+var
 pbExecutionContext::createObject (const Identifier & identifier)
 throw (std::out_of_range)
 {

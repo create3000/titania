@@ -1,53 +1,56 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-peaseblossom/Titania/PeaseBlossom/Base/pbUserData.h">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Primitives/var.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Parser/Parser.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h" Line="298" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbFunction.h" Line="1" Column="1" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="498" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.h" Line="57" Column="10" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="187" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom.h" Line="1" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Execution/Program.cpp" Line="77" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Execution/Program.h" Line="130" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/NativeFunction.h" Line="61" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.h" Line="79" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.cpp" Line="92" Column="22" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbFunction.cpp" Line="94" Column="4" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbFunction.h" Line="87" Column="5" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Execution/pbExecutionContext.cpp" Line="75" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Execution/pbExecutionContext.h" Line="71" Column="27" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Base/pbUserData.h" Line="73" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="build" expanded="True" />
           <Node name="experimental" expanded="True" />
+          <Node name="Library" expanded="True">
+            <Node name="Tests" expanded="True">
+              <Node name="Scripting" expanded="True">
+                <Node name="pb" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
           <Node name="libtitania-peaseblossom" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="PeaseBlossom" expanded="True">
                 <Node name="Base" expanded="True" />
-                <Node name="Bits" expanded="True" />
                 <Node name="Execution" expanded="True" />
-                <Node name="Expressions" expanded="True" selected="True" />
-                <Node name="Objects" expanded="True" />
-                <Node name="Parser" expanded="True" />
-                <Node name="Primitives" expanded="True" />
+                <Node name="Expressions" expanded="True" />
+                <Node name="Objects" expanded="True">
+                  <Node name="pbObject.h" selected="True" />
+                </Node>
                 <Node name="Standard" expanded="True" />
               </Node>
             </Node>
-          </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True" />
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="JavaScript" expanded="True">
                   <Node name="PeaseBlossom" expanded="True" />
-                </Node>
-                <Node name="PeaseBlossom" expanded="True">
-                  <Node name="Base" expanded="True" />
-                  <Node name="Bits" expanded="True" />
-                  <Node name="Execution" expanded="True" />
-                  <Node name="Expressions" expanded="True" />
-                  <Node name="Objects" expanded="True" />
-                  <Node name="Parser" expanded="True" />
-                  <Node name="Primitives" expanded="True" />
-                  <Node name="Standard" expanded="True" />
+                  <Node name="SpiderMonkey" expanded="True">
+                    <Node name="Fields" expanded="True" />
+                  </Node>
                 </Node>
               </Node>
             </Node>

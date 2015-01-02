@@ -75,8 +75,7 @@ public:
 	virtual
 	const std::string &
 	getClassName () const
-	throw (std::out_of_range,
-	       TypeError) final override
+	noexcept (true) final override
 	{ return className; }
 
 

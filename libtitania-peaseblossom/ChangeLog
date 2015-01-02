@@ -1,5 +1,22 @@
 2015-01-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-peaseblossom.cproj:
+	* Math.h:
+	* pbUserData.h:
+	* pbObject.h:
+	* Object.cpp:
+	* Program.h:
+	* pbObject.cpp:
+	* pbFunction.h:
+	* Program.cpp:
+	* pbFunction.cpp:
+	* NativeFunction.h:
+	* pbExecutionContext.h:
+	* pbExecutionContext.cpp:
+	* VariableDeclaration.h: 
+
+2015-01-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* pb.h:
 	* Debug.h:

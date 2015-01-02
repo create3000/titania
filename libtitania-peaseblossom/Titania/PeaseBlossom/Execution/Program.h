@@ -122,16 +122,6 @@ protected:
 
 	///  Constructs new Program.
 	Program ();
-	
-	///  Sets the global object to @a object.
-	void
-	setGlobalObject (const ptr <pbObject> & object)
-	noexcept (true);
-
-	///  Adds the standard classes and properties to the global object.
-	void
-	addStandardObjects ()
-	noexcept (true);
 
 	///  Adds the standard classes and properties to the global object.
 	void

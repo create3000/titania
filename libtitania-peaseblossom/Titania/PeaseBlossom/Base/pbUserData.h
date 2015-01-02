@@ -48,69 +48,56 @@
  *
  ******************************************************************************/
 
-#include "pbFunction.h"
+#ifndef __TITANIA_PEASE_BLOSSOM_BASE_PB_USER_DATA_H__
+#define __TITANIA_PEASE_BLOSSOM_BASE_PB_USER_DATA_H__
 
-#include "../Execution/pbExecutionContext.h"
-#include "../Objects/Function.h"
-#include "../Objects/Object.h"
+#include <vector>
 
 namespace titania {
 namespace pb {
 
-pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::string & name, const size_t length) :
-	pbObject (),
-	    name (name),
-	  length (length)
+///  Type to represent a user data.
+class pbUserData
 {
-	try
-	{
-		const auto & standardFunction = executionContext -> getStandardFunction ();
+public:
 
-		addProperties ();
-		addPropertyDescriptor ("__proto__",   standardFunction);
-		addPropertyDescriptor ("constructor", standardFunction -> getProperty ("constructor"));
-		addPropertyDescriptor ("prototype",   new Object (executionContext));
-	}
-	catch (const std::out_of_range &)
+	///  @name Member access
+
+	std::vector <void*> &
+	getUserData ()
+	{ return userData; }
+
+	const std::vector <void*> &
+	getUserData () const
+	{ return userData; }
+
+	template <class Type>
+	Type
+	getUserData (const size_t index) const
+	{ return reinterpret_cast <Type> (userData [index]); }
+
+	///  @name Destruction
+
+	///  Destructs the pbUserData.
+	virtual
+	~pbUserData ()
 	{ }
-}
 
-pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::nullptr_t) :
-	pbObject (),
-	    name ("Empty"),
-	  length (0)
-{
-	addProperties ();
-	addPropertyDescriptor ("__proto__", executionContext -> getStandardObject ());
-}
 
-void
-pbFunction::addProperties ()
-{
-	addPropertyDescriptor ("name",   name,   NONE);
-	addPropertyDescriptor ("length", length, NONE);
-}
+protected:
 
-var
-pbFunction::createInstance (pbExecutionContext* const executionContext)
-throw (TypeError)
-{
-	return new Object (executionContext, this);
-}
+	///  @name Construction
 
-var
-pbFunction::construct (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments)
-throw (pbException)
-{
-	var object = createInstance (executionContext);
+	///  Constructs new pbUserData.
+	pbUserData () = default;
 
-	const auto result = construct (object, arguments);
+	///  @name Members
 
-	if (result .isObject ())
-		return result;
+	std::vector <void*> userData;
 
-	return std::move (object);
-}
+};
 
 } // pb
 } // titania
+
+#endif

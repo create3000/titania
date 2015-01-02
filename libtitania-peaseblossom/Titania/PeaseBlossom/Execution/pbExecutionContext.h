@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PB_EXECUTION_CONTEXT_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PB_EXECUTION_CONTEXT_H__
 
+#include "../Base/pbUserData.h"
 #include "../Base/pbInputStreamObject.h"
 #include "../Bits/Exception.h"
 #include "../Execution/pbBlock.h"
@@ -66,7 +67,8 @@ class Object;
 
 class pbExecutionContext :
 	virtual public pbBlock,
-	virtual public pbInputStreamObject
+	virtual public pbInputStreamObject,
+	virtual public pbUserData
 {
 public:
 
@@ -114,7 +116,7 @@ public:
 
 	/// @name Operations
 
-	ptr <pbObject>
+	var
 	createObject (const Identifier &)
 	throw (std::out_of_range);
 

@@ -91,7 +91,9 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		executionContext -> getDefaultObject () -> updatePropertyDescriptor (identifier, expression -> getValue ());
+		// Variable declarations cannot be deleted.
+
+		executionContext -> getDefaultObject () -> updatePropertyDescriptor (identifier, expression -> getValue (), WRITABLE | ENUMERABLE);
 
 		return Undefined ();
 	}

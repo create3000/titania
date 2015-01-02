@@ -414,7 +414,8 @@ print ('{ } .__proto__ .__proto__: ', { } .__proto__ .__proto__);
 print ('{ } .constructor:          ', { } .constructor);
 
 function F (a, b) {}
-print (new SFVec4f (1,2,3));
+print (new SFVec4f (1,2,3,4));
+print (new SFVec4f (1,2,3,4) .add (new SFVec4f (2,3,4,5)));
 "
   directOutput TRUE
 }

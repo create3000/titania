@@ -137,5 +137,6 @@
     <None Include="libtitania-peaseblossom.cproj" />
     <None Include="libtitania-peaseblossom.md.pc" />
     <None Include="Makefile.am" />
+    <None Include="Titania\PeaseBlossom\Base\pbUserData.h" />
   </ItemGroup>
 </Project>

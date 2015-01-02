@@ -69,16 +69,13 @@ Program::Program () :
 }
 
 void
-Program::setGlobalObject (const ptr <pbObject> & object)
-noexcept (true)
-{
-	getLocalObjects () .emplace_back (object);
-}
-
-void
 Program::addStandardClasses ()
 noexcept (true)
 {
+	// Add global object.
+	getLocalObjects () .emplace_back (make_ptr <Object> (this));
+
+	// Add standard classes.
 	Standard::addStandardClasses (this, getGlobalObject ());
 }
 
@@ -87,7 +84,6 @@ createProgram ()
 {
 	const auto program = ptr <Program> (new Program ());
 
-	program -> setGlobalObject (make_ptr <Object> (program));
 	program -> addStandardClasses ();
 
 	return program;

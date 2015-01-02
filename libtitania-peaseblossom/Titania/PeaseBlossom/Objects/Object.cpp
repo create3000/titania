@@ -63,8 +63,8 @@ throw (TypeError) :
 	{
 		const auto & standardObject = executionContext -> getStandardObject ();
 
-		addPropertyDescriptor ("__proto__",   standardObject,                              NONE);
-		addPropertyDescriptor ("constructor", standardObject -> getObject ("constructor"), NONE);
+		addPropertyDescriptor ("__proto__",   standardObject);
+		addPropertyDescriptor ("constructor", standardObject -> getObject ("constructor"));
 		// prototype remains undefined.
 	}
 	catch (const std::out_of_range &)
@@ -77,8 +77,8 @@ throw (TypeError) :
 {
 	try
 	{
-		addPropertyDescriptor ("__proto__",   constructor -> getObject ("prototype"), NONE);
-		addPropertyDescriptor ("constructor", constructor,                            NONE);
+		addPropertyDescriptor ("__proto__",   constructor -> getObject ("prototype"));
+		addPropertyDescriptor ("constructor", constructor);
 	}
 	catch (const std::exception &)
 	{
@@ -86,8 +86,8 @@ throw (TypeError) :
 		{
 			const auto constructor = executionContext -> getStandardObject () -> getObject ("constructor");
 
-			addPropertyDescriptor ("__proto__",   constructor -> getObject ("prototype"), NONE);
-			addPropertyDescriptor ("constructor", constructor,                            NONE);
+			addPropertyDescriptor ("__proto__",   constructor -> getObject ("prototype"));
+			addPropertyDescriptor ("constructor", constructor);
 		}
 		catch (const std::out_of_range &)
 		{ }
