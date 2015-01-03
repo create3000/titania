@@ -166,17 +166,52 @@ Function::pop ()
 void
 Function::toStream (std::ostream & ostream) const
 {
-	ostream << "function " << getName () << " (";
+	ostream
+		<< Generator::Indent
+		<< "function"
+		<< Generator::Space
+		<< getName ()
+		<< Generator::TidySpace
+		<< '(';
 	
 	if (not formalParameters .empty ())
 	{
 		for (const auto parameter : std::make_pair (formalParameters .begin (), formalParameters .end () - 1))
-			ostream << parameter << ", ";
+		{
+			ostream
+				<< parameter
+				<< ','
+				<< Generator::TidySpace;
+		}
 
 		ostream << formalParameters .back ();
 	}
 
-	ostream << ") { }";
+	ostream << ')';
+
+	if (getExpressions () .empty ())
+	{
+		ostream
+			<< Generator::TidySpace
+			<< '{'
+			<< Generator::TidySpace
+			<< '}';
+	}
+	else
+	{
+		ostream
+			<< Generator::TidyBreak
+			<< Generator::Indent
+			<< Generator::IncIndent
+			<< '{';
+
+		pbExecutionContext::toStream (ostream);
+
+		ostream
+			<< Generator::DecIndent
+			<< Generator::Indent
+			<< '}';
+	}
 }
 
 void

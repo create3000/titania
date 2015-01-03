@@ -54,6 +54,7 @@
 #include "../Primitives/var.h"
 #include "../Base/pbChildObject.h"
 #include "../Base/pbOutputStreamObject.h"
+#include "../InputOutput/Generator.h"
 
 namespace titania {
 namespace pb {
@@ -111,14 +112,6 @@ public:
 	var
 	call (const ptr <pbExecutionContext> &, const std::vector <var> &) const
 	throw (pbException);
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << "[pbExpression]"; }
 
 
 protected:

@@ -99,14 +99,13 @@ public:
 	void
 	updatePropertyDescriptor (std::string && name,
 	                          ptr <pbExpression> && value,
-	                          ptr <pbFunction> && getter = nullptr,
-	                          ptr <pbFunction> && setter = nullptr)
+	                          ptr <Function> && getter = nullptr,
+	                          ptr <Function> && setter = nullptr)
 	{
 		auto   identifier = Identifier (std::move (name));
 		auto & property   = properties [identifier .getId ()];
 
-		if (value)
-			property .identifier = std::move (identifier);
+		property .identifier = std::move (identifier);
 
 		if (value)
 			property .value = std::move (value);
@@ -116,6 +115,9 @@ public:
 
 		if (setter)
 			property .setter = std::move (setter);
+
+		if (property .index == 0)
+			property .index = properties .size ();
 
 		addChildren (property .value,
 		             property .getter,
@@ -148,19 +150,69 @@ public:
 		return object;
 	}
 
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		if (properties .empty ())
+		{
+			ostream
+				<< '{'
+				<< Generator::TidySpace
+				<< '}';
+		}
+		else
+		{
+			std::map <size_t, const PropertyDescriptor*> sorted;
+			
+			for (const auto & property : properties)
+				sorted .emplace (property .second .index, &property .second);
+
+			ostream
+				<< '{'
+				<< Generator::IncIndent
+				<< Generator::TidyBreak;
+
+			for (const auto & property : std::make_pair (sorted .begin (), -- sorted .end ()))
+			{
+				toStream (ostream, *property .second);
+	
+				ostream
+					<< ','
+					<< Generator::Break;
+			}
+
+			toStream (ostream, *(-- sorted .end ()) -> second);
+
+			ostream
+				<< Generator::Break
+				<< Generator::DecIndent
+				<< Generator::Indent
+				<< '}';
+		}
+	}
+
 private:
 
 	///  @name Member types
 
 	struct PropertyDescriptor
 	{
+		PropertyDescriptor () :
+			index (0)
+		{ }
+	
 		Identifier         identifier;
 		ptr <pbExpression> value;
-		ptr <pbFunction>   getter;
-		ptr <pbFunction>   setter;
+		ptr <Function>     getter;
+		ptr <Function>     setter;
+		size_t             index;
 	};
 
-	using PropertyIndex = std::unordered_map <size_t, PropertyDescriptor>;
+	using PropertyIndex = std::map <size_t, PropertyDescriptor>;
 
 	///  @name Construction
 
@@ -168,6 +220,129 @@ private:
 	void
 	construct ()
 	{ addChildren (executionContext); }
+
+	///  @name Input/Output
+
+	void
+	toStream (std::ostream & ostream, const PropertyDescriptor & property) const
+	{
+		bool line = false;
+	
+		if (property .value)
+		{
+			ostream
+				<< Generator::Indent
+				<< property .identifier
+				<< ':'
+				<< Generator::TidySpace
+				<< property .value;
+
+			line = true;
+		}
+		
+		if (property .getter)
+		{
+			if (line)
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+			}
+
+			ostream
+				<< Generator::Indent
+				<< "get"
+				<< Generator::Space
+				<< property .identifier
+				<< Generator::TidySpace
+				<< "()";
+
+			if (property .getter -> getExpressions () .empty ())
+			{
+				ostream
+					<< Generator::TidySpace
+					<< '{'
+					<< Generator::TidySpace
+					<< '}';
+			}
+			else
+			{
+				ostream
+					<< Generator::TidyBreak
+					<< Generator::Indent
+					<< Generator::IncIndent
+					<< '{';
+
+				property .getter -> pbExecutionContext::toStream (ostream);
+
+				ostream
+					<< Generator::DecIndent
+					<< Generator::Indent
+					<< '}';
+			}
+
+			line = true;
+		}
+
+		if (property .setter)
+		{
+			if (line)
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+			}
+
+			ostream
+				<< Generator::Indent
+				<< "set"
+				<< Generator::Space
+				<< property .identifier
+				<< Generator::TidySpace
+				<< '(';
+
+			const auto & formalParameters = property .setter -> getFormalParameters ();
+
+			if (not formalParameters .empty ())
+			{
+				for (const auto parameter : std::make_pair (formalParameters .begin (), formalParameters .end () - 1))
+				{
+					ostream
+						<< parameter
+						<< ','
+						<< Generator::TidySpace;
+				}
+
+				ostream << formalParameters .back ();
+			}
+
+			ostream << ')';
+				
+			if (property .setter -> getExpressions () .empty ())
+			{
+				ostream
+					<< Generator::TidySpace
+					<< '{'
+					<< Generator::TidySpace
+					<< '}';
+			}
+			else
+			{
+				ostream
+					<< Generator::TidyBreak
+					<< Generator::Indent
+					<< Generator::IncIndent
+					<< '{';
+
+				property .setter -> pbExecutionContext::toStream (ostream);
+
+				ostream
+					<< Generator::DecIndent
+					<< Generator::Indent
+					<< '}';
+			}
+		}
+	}
 
 	///  @name Members
 

@@ -289,7 +289,7 @@ Parser::nullLiteral (ptr <pbExpression> & value)
 
 	if (Grammar::null (istream))
 	{
-		value = new PrimitiveExpression (nullptr);
+		value = new PrimitiveExpression (nullptr, PrimitiveExpression::NULL_OBJECT);
 		return true;
 	}
 
@@ -305,13 +305,13 @@ Parser::booleanLiteral (ptr <pbExpression> & value)
 
 	if (Grammar::true_ (istream))
 	{
-		value = new PrimitiveExpression (true);
+		value = new PrimitiveExpression (true, PrimitiveExpression::BOOLEAN);
 		return true;
 	}
 
 	if (Grammar::false_ (istream))
 	{
-		value = new PrimitiveExpression (false);
+		value = new PrimitiveExpression (false, PrimitiveExpression::BOOLEAN);
 		return true;
 	}
 
@@ -351,7 +351,7 @@ Parser::decimalLiteral (ptr <pbExpression> & value)
 
 	if (istream >> std::dec >> number)
 	{
-		value = new PrimitiveExpression (number);
+		value = new PrimitiveExpression (number, PrimitiveExpression::NUMBER);
 		return true;
 	}
 
@@ -373,7 +373,7 @@ Parser::binaryIntegerLiteral (ptr <pbExpression> & value)
 
 		if (Grammar::BinaryDigits (istream, digits))
 		{
-			value = new PrimitiveExpression ((double) math::strtoul (digits .c_str (), 2));
+			value = new PrimitiveExpression ((double) math::strtoul (digits .c_str (), 2), PrimitiveExpression::BINARY_NUMBER);
 			return true;
 		}
 
@@ -396,7 +396,7 @@ Parser::octalIntegerLiteral (ptr <pbExpression> & value)
 
 		if (istream >> std::oct >> number)
 		{
-			value = new PrimitiveExpression (number);
+			value = new PrimitiveExpression (number, PrimitiveExpression::OCTAL_NUMBER);
 			return true;
 		}
 
@@ -419,7 +419,7 @@ Parser::hexIntegerLiteral (ptr <pbExpression> & value)
 
 		if (istream >> std::hex >> number)
 		{
-			value = new PrimitiveExpression (number);
+			value = new PrimitiveExpression (number, PrimitiveExpression::HEXAL_NUMBER);
 			return true;
 		}
 
@@ -441,13 +441,13 @@ Parser::stringLiteral (ptr <pbExpression> & value)
 
 	if (doubleQuotedString (istream, characters))
 	{
-		value = new PrimitiveExpression (std::move (characters));
+		value = new PrimitiveExpression (std::move (characters), PrimitiveExpression::DOUBLE_QUOTED_STRING);
 		return true;
 	}
 
 	if (singleQuotedString (istream, characters))
 	{
-		value = new PrimitiveExpression (std::move (characters));
+		value = new PrimitiveExpression (std::move (characters), PrimitiveExpression::SINGLE_QUOTED_STRING);
 		return true;
 	}
 
@@ -713,7 +713,7 @@ Parser::propertyName (ptr <pbExpression> & value)
 
 	if (identifierName (propertyNameCharacters))
 	{
-		value = new PrimitiveExpression (std::move (propertyNameCharacters));
+		value = new PrimitiveExpression (std::move (propertyNameCharacters), PrimitiveExpression::STRING);
 		return true;
 	}
 

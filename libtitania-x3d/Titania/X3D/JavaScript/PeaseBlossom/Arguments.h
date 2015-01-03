@@ -48,90 +48,41 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_BLOCK_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_BLOCK_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_ARGUMENTS_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_ARGUMENTS_H__
 
-#include "../Base/pbChildObject.h"
-#include "../Base/pbOutputStreamObject.h"
-#include "../Expressions/pbExpression.h"
-#include "../Expressions/pbControlFlowException.h"
-#include "../Primitives/array.h"
-#include "../Primitives/ptr.h"
+#include "Context.h"
+
+#include <Titania/PeaseBlossom/pb.h>
 
 namespace titania {
-namespace pb {
+namespace X3D {
+namespace peaseblossom {
 
-class pbExecutionContext;
-
-class pbBlock :
-	virtual public pbChildObject,
-	virtual public pbOutputStreamObject
+inline
+Context*
+getContext (const pb::ptr <pb::pbExecutionContext> & ec)
 {
-public:
+	return ec -> getUserData <Context*> (0);
+}
 
-	/// @name Member access
+inline
+Context*
+getContext (pb::pbObject* const object)
+{
+	return object -> getUserData <Context*> (2);
+}
 
-	///  Add an expression to the list of expressions.
-	void
-	addExpression (ptr <pbExpression> && value)
-	{ expressions .emplace_back (std::move (value)); }
+template <class Type>
+inline
+Type*
+getObject (pb::pbObject* const object)
+{
+	return object -> getUserData <Type*> (1);
+}
 
-	///  Returns an array with all local root expressions.
-	const array <ptr <pbExpression>> &
-	getExpressions () const
-	{ return expressions; }
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override;
-
-
-protected:
-
-	///  @name Construction
-
-	///  Constructs new pbBlock.
-	pbBlock () :
-		       pbChildObject (),
-		pbOutputStreamObject (),
-		         expressions ()
-	{ addChildren (expressions); }
-
-	/// @name Operations
-
-	///  Imports all expressions from @a block into @a executionContext.
-	void
-	import (pbExecutionContext* const executionContext, const pbBlock* const block)
-	throw (pbException,
-	       pbControlFlowException)
-	{
-		for (const auto & expression : block -> getExpressions ())
-			addExpression (expression -> copy (executionContext));
-	}
-
-	///  Executes the associated expessions of this context.
-	void
-	run ()
-	throw (pbException,
-	       pbControlFlowException)
-	{
-		for (const auto & expression : expressions)
-			expression -> getValue ();
-	}
-
-
-private:
-
-	/// @name Members
-
-	array <ptr <pbExpression>> expressions;
-
-};
-
-} // pb
+} // peaseblossom
+} // X3D
 } // titania
 
 #endif

@@ -48,90 +48,61 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_BLOCK_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_BLOCK_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_GLOBAL_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_GLOBAL_H__
 
-#include "../Base/pbChildObject.h"
-#include "../Base/pbOutputStreamObject.h"
-#include "../Expressions/pbExpression.h"
-#include "../Expressions/pbControlFlowException.h"
-#include "../Primitives/array.h"
-#include "../Primitives/ptr.h"
+#include "../../Browser/X3DBrowser.h"
+#include "Context.h"
+
+#include <Titania/PeaseBlossom/pb.h>
 
 namespace titania {
-namespace pb {
+namespace X3D {
+namespace peaseblossom {
 
-class pbExecutionContext;
-
-class pbBlock :
-	virtual public pbChildObject,
-	virtual public pbOutputStreamObject
+class Global
 {
 public:
 
-	/// @name Member access
-
-	///  Add an expression to the list of expressions.
+	static
 	void
-	addExpression (ptr <pbExpression> && value)
-	{ expressions .emplace_back (std::move (value)); }
-
-	///  Returns an array with all local root expressions.
-	const array <ptr <pbExpression>> &
-	getExpressions () const
-	{ return expressions; }
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override;
-
-
-protected:
-
-	///  @name Construction
-
-	///  Constructs new pbBlock.
-	pbBlock () :
-		       pbChildObject (),
-		pbOutputStreamObject (),
-		         expressions ()
-	{ addChildren (expressions); }
-
-	/// @name Operations
-
-	///  Imports all expressions from @a block into @a executionContext.
-	void
-	import (pbExecutionContext* const executionContext, const pbBlock* const block)
-	throw (pbException,
-	       pbControlFlowException)
+	initialize (Context* const context, const pb::ptr <pb::Program> & ec, const pb::ptr <pb::pbObject> & global)
 	{
-		for (const auto & expression : block -> getExpressions ())
-			addExpression (expression -> copy (executionContext));
+		using namespace std::placeholders;
+
+		const auto browser = context -> getBrowser ();
+
+		global -> addPropertyDescriptor ("NULL",  nullptr, pb::NONE);
+		global -> addPropertyDescriptor ("FALSE", false,   pb::NONE);
+		global -> addPropertyDescriptor ("TRUE",  true,    pb::NONE);
+
+		global -> addPropertyDescriptor ("print", new pb::NativeFunction (ec, "print", std::bind (print, _1, _2, _3, browser), 0), pb::NONE);
+		global -> addPropertyDescriptor ("now",   new pb::NativeFunction (ec, "now",   now,                                    0), pb::NONE);
 	}
 
-	///  Executes the associated expessions of this context.
-	void
-	run ()
-	throw (pbException,
-	       pbControlFlowException)
+	static
+	pb::var
+	print (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> & args, X3D::X3DBrowser* const browser)
 	{
-		for (const auto & expression : expressions)
-			expression -> getValue ();
+		for (const auto & value : args)
+			browser -> print (value);
+
+		browser -> println ();
+
+		return pb::Undefined ();
 	}
 
-
-private:
-
-	/// @name Members
-
-	array <ptr <pbExpression>> expressions;
+	static
+	pb::var
+	now (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &)
+	{
+		return chrono::now ();
+	}
 
 };
 
-} // pb
+} // peaseblossom
+} // X3D
 } // titania
 
 #endif

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,94 +48,103 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_INPUT_OUTPUT_GENERATOR_H__
+#define __TITANIA_PEASE_BLOSSOM_INPUT_OUTPUT_GENERATOR_H__
 
-#include "../Expressions/pbExpression.h"
-#include "../Expressions/PrimitiveExpression.h"
+#include <iostream>
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript division expression.
+ *  Class to represent a Generator.
  */
-class LeftShiftExpression :
-	public pbExpression
+class Generator
 {
 public:
 
-	///  @name Construction
+	static
+	std::ostream &
+	Space (std::ostream & ostream)
+	{ return ostream << get (ostream) -> space; }
 
-	///  Constructs new LeftShiftExpression expression.
-	LeftShiftExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
-		pbExpression (ExpressionType::LEFT_SHIFT_EXPRESSION),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
-	{ construct (); }
+	static
+	std::ostream &
+	TidySpace (std::ostream & ostream)
+	{ return ostream << get (ostream) -> tidySpace; }
 
-	///  Creates a copy of this object.
-	virtual
-	ptr <pbExpression>
-	copy (pbExecutionContext* const executionContext) const
-	noexcept (true) final override
-	{ return new LeftShiftExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
+	static
+	std::ostream &
+	ForceBreak (std::ostream & ostream)
+	{ return ostream << get (ostream) -> forceBreak; }
 
-	///  @name Operations
+	static
+	std::ostream &
+	Break (std::ostream & ostream)
+	{ return ostream << get (ostream) -> endl; }
 
-	///  Converts its argument to an integral signed value of 32 bit.
-	virtual
-	var
-	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
-	{ return lhs -> getValue () .toInt32 () << (rhs -> getValue () .toUInt32 () & 0x1f); }
+	static
+	std::ostream &
+	TidyBreak (std::ostream & ostream)
+	{ return ostream << get (ostream) -> tidyBreak; }
 
-	///  @name Input/Output
+	static
+	std::ostream &
+	Indent (std::ostream & ostream)
+	{ return ostream << get (ostream) -> indent; }
 
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
+	static
+	std::ostream &
+	IncIndent (std::ostream & ostream)
 	{
-		ostream
-			<< lhs
-			<< Generator::TidySpace
-			<< "<<"
-			<< Generator::TidySpace
-			<< rhs;
+		const auto generator = get (ostream);
+		generator -> indent += generator -> indentChar;
+		return ostream;
 	}
 
+	static
+	std::ostream &
+	DecIndent (std::ostream & ostream)
+	{
+		const auto generator = get (ostream);
+		generator -> indent .resize (generator -> indent .size () - generator -> indentChar .size ());
+		return ostream;
+	}
 
 private:
 
 	///  @name Construction
 
-	///  Performs neccessary operations after construction.
+	///  Constructs new Generator.
+	Generator (std::ostream & ostream);
+
+	///  Returns the generator for @a ostream.
+	static
+	Generator*
+	get (std::ostream & ostream);
+
+	///  @name Destruction
+
+	static
 	void
-	construct ()
-	{ addChildren (lhs, rhs); }
+	dispose (std::ios_base::event event, std::ios_base & stream, int index);
+
+	///  @name Static members
+
+	static const int index;
 
 	///  @name Members
+	
+	std::string space;
+	std::string tidySpace;
+	std::string forceBreak;
+	std::string endl;
+	std::string tidyBreak;
 
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	std::string indent;
+	std::string indentChar;
 
 };
-
-///  @relates LeftShiftExpression
-///  @name Construction
-
-///  Constructs new LeftShiftExpression expression.
-inline
-ptr <pbExpression>
-createLeftShiftExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
-{
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (LeftShiftExpression (std::move (lhs), std::move (rhs)) .getValue (), PrimitiveExpression::NUMBER);
-
-	return new LeftShiftExpression (std::move (lhs), std::move (rhs));
-}
 
 } // pb
 } // titania

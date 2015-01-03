@@ -1,3 +1,41 @@
+2015-01-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-peaseblossom.cproj:
+	* Array.h:
+	* Parser.cpp:
+	* Block.h:
+	* Function.h:
+	* pbBlock.h:
+	* Block.cpp:
+	* pbObject.cpp:
+	* Function.cpp:
+	* pbBlock.cpp:
+	* Generator.h:
+	* Genrator.cpp:
+	* IfStatement.h:
+	* pbExpression.h:
+	* ForStatement.h:
+	* NewExpression.h:
+	* ObjectLiteral.h:
+	* LessExpression.h:
+	* EqualExpression.h:
+	* ReturnStatement.h:
+	* DivisionExpression.h:
+	* VariableExpression.h:
+	* FunctionExpression.h:
+	* PropertyExpression.h:
+	* AdditionExpression.h:
+	* PrimitiveExpression.h:
+	* LeftShiftExpression.h:
+	* RemainderExpression.h:
+	* VariableDeclaration.h:
+	* AssignmentExpression.h:
+	* StrictEqualExpression.h:
+	* SubtractionExpression.h:
+	* FunctionCallExpression.h:
+	* MultiplicationExpression.h: 
+
 2015-01-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-peaseblossom.cproj:

@@ -57,7 +57,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a »false« object.
+ *  Class to represent a Array object.
  */
 class Array :
 	public pbObject

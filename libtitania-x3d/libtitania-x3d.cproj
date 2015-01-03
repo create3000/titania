@@ -736,6 +736,11 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsArguments.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstArray.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsObjectType.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Arguments.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Global.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\ObjectType.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec4.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1233,6 +1238,7 @@
     <Compile Include="Titania\X3D\Parser\Wavefront\Parser.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\LassoSelection.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec4f.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1299,6 +1305,7 @@
     <Folder Include="Titania\X3D\Tools\Picking\" />
     <Folder Include="Titania\X3D\Tools\PointingDeviceSensor\" />
     <Folder Include="Titania\X3D\Parser\Wavefront\" />
+    <Folder Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

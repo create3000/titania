@@ -101,6 +101,21 @@ public:
 		return px .toNumber () < py .toNumber ();
 	}
 
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		ostream
+			<< lhs
+			<< Generator::TidySpace
+			<< '<'
+			<< Generator::TidySpace
+			<< rhs;
+	}
+
 private:
 
 	///  @name Construction
@@ -126,7 +141,7 @@ ptr <pbExpression>
 createLessExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (LessExpression (std::move (lhs), std::move (rhs)) .getValue ());
+		return new PrimitiveExpression (LessExpression (std::move (lhs), std::move (rhs)) .getValue (), PrimitiveExpression::BOOLEAN);
 
 	return new LessExpression (std::move (lhs), std::move (rhs));
 }

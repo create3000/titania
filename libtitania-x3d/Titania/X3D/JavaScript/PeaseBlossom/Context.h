@@ -102,6 +102,18 @@ public:
 
 	///  @name Member access
 
+	void
+	addObject (X3D::X3DFieldDefinition* const, pb::pbObject* const)
+	throw (std::invalid_argument);
+
+	void
+	removeObject (X3D::X3DFieldDefinition* const);
+
+	pb::pbObject*
+	getObject (X3DFieldDefinition* const field) const
+	throw (std::out_of_range)
+	{ return objects .at (field); }
+
 	///  @name Destruction
 
 	virtual
@@ -160,8 +172,9 @@ private:
 
 	///  @name Members
 
-	std::vector <basic::uri> worldURL;
-	pb::ptr <pb::Program>    program;
+	std::vector <basic::uri>                           worldURL;
+	pb::ptr <pb::Program>                              program;
+	std::map <X3D::X3DFieldDefinition*, pb::pbObject*> objects;
 
 };
 

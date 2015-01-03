@@ -72,7 +72,7 @@ public:
 	///  Constructs new ForStatement expression.
 	ForStatement (ptr <pbExpression> && booleanExpression, ptr <pbExpression> && iterationExpression) :
 		       pbExpression (ExpressionType::FOR_STATEMENT),
-		  booleanExpression (booleanExpression ? std::move (booleanExpression) : new PrimitiveExpression (true)),
+		  booleanExpression (booleanExpression ? std::move (booleanExpression) : new PrimitiveExpression (true, PrimitiveExpression::BOOLEAN)),
 		iterationExpression (std::move (iterationExpression)),
 		              block (new Block ())
 	{ construct (); }
@@ -142,6 +142,28 @@ public:
 		return var ();
 	}
 
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		ostream
+			<< "for"
+			<< Generator::TidySpace
+			<< '('
+			<< ';'
+			<< Generator::TidySpace
+			<< booleanExpression
+			<< ';'
+			<< Generator::TidySpace
+			<< iterationExpression
+			<< ')'
+			<< Generator::TidyBreak
+			<< block;
+	}
+
 private:
 
 	///  @name Construction
@@ -155,7 +177,7 @@ private:
 
 	const ptr <pbExpression> booleanExpression;
 	const ptr <pbExpression> iterationExpression;
-	const ptr <Block>         block;
+	const ptr <Block>        block;
 
 };
 

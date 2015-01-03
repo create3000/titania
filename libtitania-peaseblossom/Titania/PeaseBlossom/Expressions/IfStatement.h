@@ -119,6 +119,42 @@ public:
 		 return var ();
 	}
 
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ 
+		ostream
+			<< "if"
+			<< Generator::TidySpace
+			<< '('
+			<< booleanExpression
+			<< ')'
+			<< Generator::TidyBreak;
+		
+		if (thenBlock -> getExpressions () .empty ())
+		{
+			ostream
+				<< Generator::IncIndent
+				<< Generator::Indent
+				<< ';'
+				<< Generator::DecIndent
+				<< Generator::TidyBreak;
+		}
+		else
+			ostream << thenBlock;
+		
+		if (not elseBlock -> getExpressions () .empty ())
+		{
+			ostream
+				<< "else"
+				<< Generator::TidyBreak
+				<< elseBlock;
+		}
+	}
+
 
 private:
 

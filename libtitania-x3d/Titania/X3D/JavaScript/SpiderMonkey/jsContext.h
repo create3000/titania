@@ -118,14 +118,14 @@ public:
 	{ return protos [size_t (type)]; }
 
 	void
-	addObject (X3DFieldDefinition* const, JSObject* const)
+	addObject (X3D::X3DFieldDefinition* const, JSObject* const)
 	throw (Error <INVALID_FIELD>);
 
 	void
-	removeObject (X3DFieldDefinition* const);
+	removeObject (X3D::X3DFieldDefinition* const);
 
 	JSObject*
-	getObject (X3DFieldDefinition* const field) const
+	getObject (X3D::X3DFieldDefinition* const field) const
 	throw (std::out_of_range)
 	{ return objects .at (field); }
 

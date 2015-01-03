@@ -55,5 +55,21 @@ namespace pb {
 
 const std::string Block::typeName = "Block";
 
+void
+Block::toStream (std::ostream & ostream) const
+{
+	ostream
+		<< Generator::Indent
+		<< Generator::IncIndent
+		<< '{';
+
+	pbBlock::toStream (ostream);
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}';
+}
+
 } // pb
 } // titania

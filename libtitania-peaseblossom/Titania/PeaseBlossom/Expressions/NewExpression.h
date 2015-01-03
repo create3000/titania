@@ -122,6 +122,36 @@ public:
 		throw TypeError ("'" + value .toString () + "' is not a function.");
 	}
 
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		ostream
+			<< "new"
+			<< Generator::Space
+			<< expression
+			<< Generator::TidySpace
+			<< '(';
+
+		if (not expressions .empty ())
+		{
+			for (const auto expression : std::make_pair (expressions .begin (), expressions .end () - 1))
+			{
+				ostream
+					<< expression
+					<< ","
+					<< Generator::TidySpace;
+			}
+
+			ostream << expressions .back ();
+		}
+
+		ostream << ')';
+	}
+
 private:
 
 	///  @name Construction

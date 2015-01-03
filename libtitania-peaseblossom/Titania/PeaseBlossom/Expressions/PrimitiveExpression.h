@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_H__
 
 #include "../Expressions/pbExpression.h"
 #include "../Primitives/var.h"
@@ -65,18 +65,35 @@ class PrimitiveExpression :
 {
 public:
 
+	enum Type
+	{
+		UNDEFINED,
+		BOOLEAN,
+		NUMBER,
+		BINARY_NUMBER,
+		OCTAL_NUMBER,
+		HEXAL_NUMBER,
+		STRING,
+		SINGLE_QUOTED_STRING,
+		DOUBLE_QUOTED_STRING,
+		NULL_OBJECT
+
+	};
+
 	///  @name Construction
 
 	///  Constructs new PrimitiveExpression expression.
-	PrimitiveExpression (const var & value) :
+	PrimitiveExpression (const var & value, const Type type) :
 		pbExpression (ExpressionType::PRIMITIVE_EXPRESSION),
-		       value (value)
+		       value (value),
+		        type (type)
 	{ }
 
 	///  Constructs new PrimitiveExpression expression.
-	PrimitiveExpression (var && value) :
+	PrimitiveExpression (var && value, const Type type) :
 		pbExpression (ExpressionType::PRIMITIVE_EXPRESSION),
-		       value (std::move (value))
+		       value (std::move (value)),
+		        type (type)
 	{ }
 
 	///  Creates a copy of this object.
@@ -84,7 +101,7 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new PrimitiveExpression (value); }
+	{ return new PrimitiveExpression (value, type); }
 
 	///  @name Operations
 
@@ -96,12 +113,51 @@ public:
 	       pbControlFlowException) final override
 	{ return value; }
 
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		switch (type)
+		{
+			case NUMBER:
+				ostream << std::dec << value;
+				break;
+
+			case BINARY_NUMBER:
+				ostream << std::hex << value;
+				break;
+
+			case OCTAL_NUMBER:
+				ostream << std::oct << value;
+				break;
+
+			case HEXAL_NUMBER:
+				ostream << std::hex << value;
+				break;
+
+			case SINGLE_QUOTED_STRING:
+				ostream << '\'' << value << '\'';
+				break;
+
+			case DOUBLE_QUOTED_STRING:
+				ostream << '"' << value << '"';
+				break;
+
+			default:
+				ostream << value;
+				break;
+		}
+	}
 
 private:
 
 	///  @name Members
 
-	const var value;
+	const var  value;
+	const Type type;
 
 };
 

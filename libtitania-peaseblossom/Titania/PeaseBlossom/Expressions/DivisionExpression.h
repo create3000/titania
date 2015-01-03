@@ -91,6 +91,21 @@ public:
 	       pbControlFlowException) final override
 	{ return lhs -> getValue () .toNumber () / rhs -> getValue () .toNumber (); }
 
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		ostream
+			<< lhs
+			<< Generator::TidySpace
+			<< '/'
+			<< Generator::TidySpace
+			<< rhs;
+	}
+
 
 private:
 
@@ -117,7 +132,7 @@ ptr <pbExpression>
 createDivisionExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (DivisionExpression (std::move (lhs), std::move (rhs)) .getValue ());
+		return new PrimitiveExpression (DivisionExpression (std::move (lhs), std::move (rhs)) .getValue (), PrimitiveExpression::NUMBER);
 
 	return new DivisionExpression (std::move (lhs), std::move (rhs));
 }

@@ -53,5 +53,57 @@
 namespace titania {
 namespace pb {
 
+void
+pbBlock::toStream (std::ostream & ostream) const
+{
+	bool blankLine = true;
+
+	ostream << Generator::TidyBreak;
+
+	for (const auto & expression : expressions)
+	{
+		if (not blankLine)
+		{
+			switch (expression -> getType ())
+			{
+				case ExpressionType::IF_STATEMENT:
+				case ExpressionType::FOR_STATEMENT:
+					ostream << Generator::TidyBreak;
+					break;
+				default:
+					break;
+			}
+		}
+
+		ostream
+			<< Generator::Indent
+			<< expression;
+
+		switch (expression -> getType ())
+		{
+			case ExpressionType::IF_STATEMENT:
+			case ExpressionType::FOR_STATEMENT:
+				break;
+			default:
+				ostream << ';';
+				break;
+		}
+
+		ostream << Generator::TidyBreak;
+
+		switch (expression -> getType ())
+		{
+			case ExpressionType::IF_STATEMENT:
+			case ExpressionType::FOR_STATEMENT:
+				ostream << Generator::TidyBreak;
+				blankLine = true;
+				break;
+			default:
+				blankLine = false;
+				break;
+		}
+	}
+}
+
 } // pb
 } // titania

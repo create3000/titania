@@ -91,6 +91,14 @@ public:
 	       pbControlFlowException) final override
 	{ return function -> copy (executionContext .get ()); }
 
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << function; }
+
 
 private:
 

@@ -371,7 +371,7 @@ jsContext::getProperty (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 void
-jsContext::addObject (X3DFieldDefinition* const field, JSObject* const object)
+jsContext::addObject (X3D::X3DFieldDefinition* const field, JSObject* const object)
 throw (Error <INVALID_FIELD>)
 {
 	if (not objects .emplace (field, object) .second)
@@ -381,7 +381,7 @@ throw (Error <INVALID_FIELD>)
 }
 
 void
-jsContext::removeObject (X3DFieldDefinition* const field)
+jsContext::removeObject (X3D::X3DFieldDefinition* const field)
 {
 	if (objects .erase (field))
 		field -> removeParent (this);

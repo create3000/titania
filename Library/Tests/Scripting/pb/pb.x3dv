@@ -413,9 +413,10 @@ print ('{ } .__proto__:            ', { } .__proto__);
 print ('{ } .__proto__ .__proto__: ', { } .__proto__ .__proto__);
 print ('{ } .constructor:          ', { } .constructor);
 
-function F (a, b) {}
+function f (a, b) { var c = { a: 1, c: 2, set b (value) { return 1; } }; }
 print (new SFVec4f (1,2,3,4));
 print (new SFVec4f (1,2,3,4) .add (new SFVec4f (2,3,4,5)));
+print (f);
 "
   directOutput TRUE
 }

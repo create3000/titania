@@ -53,6 +53,7 @@
     <Compile Include="Titania\PeaseBlossom\Standard\GlobalObject.cpp" />
     <Compile Include="Titania\PeaseBlossom\Standard\Math.cpp" />
     <Compile Include="Titania\PeaseBlossom\Standard\Object.cpp" />
+    <Compile Include="Titania\PeaseBlossom\InputOutput\Genrator.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -65,13 +66,14 @@
           <GacRefVar />
           <AsmRefVar />
           <ProjectRefVar />
-          <MessageRegex Name="gcc" />
+          <MessageRegex Error="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*error\s*:\s(?&lt;message&gt;.*)" Warning="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(fatal error|error|warning|note)\s*:\s(?&lt;message&gt;.*)" Name="Custom" />
         </MonoDevelop.Autotools.MakefileInfo>
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
     <Folder Include="Titania\" />
+    <Folder Include="Titania\PeaseBlossom\InputOutput\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\PeaseBlossom\Debug.h" />
@@ -138,5 +140,6 @@
     <None Include="libtitania-peaseblossom.md.pc" />
     <None Include="Makefile.am" />
     <None Include="Titania\PeaseBlossom\Base\pbUserData.h" />
+    <None Include="Titania\PeaseBlossom\InputOutput\Generator.h" />
   </ItemGroup>
 </Project>

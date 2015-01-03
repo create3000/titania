@@ -79,21 +79,11 @@ public:
 	copy (pbExecutionContext* const) const
 	noexcept (true) final override;
 
-	///  @name Operations
-
-	///  Executes this function.
-	virtual
-	var
-	apply (const var &, const std::vector <var> & = { })
-	throw (pbException) final override;
-
 	///  @name Destruction
 
-	///  Reclaims any resources consumed by this object, now or at any time in the future.  If this object has already been
-	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
-	virtual
-	void
-	dispose () final override;
+	const std::vector <std::string> &
+	getFormalParameters () const
+	{ return formalParameters; }
 
 	///  Sets the recusion limit to @a value.  The default value for the recursion limit is 100,000.
 	static
@@ -107,12 +97,26 @@ public:
 	getRecursionLimit ()
 	{ return recursionLimit; }
 
+	///  @name Operations
+
+	///  Executes this function.
+	virtual
+	var
+	apply (const var &, const std::vector <var> & = { })
+	throw (pbException) final override;
+
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
 	toStream (std::ostream &) const final override;
+
+	///  Reclaims any resources consumed by this object, now or at any time in the future.  If this object has already been
+	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
+	virtual
+	void
+	dispose () final override;
 
 
 protected:

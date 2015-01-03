@@ -120,6 +120,21 @@ public:
 		return false;
 	}
 
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		ostream
+			<< lhs
+			<< Generator::TidySpace
+			<< "==="
+			<< Generator::TidySpace
+			<< rhs;
+	}
+
 private:
 
 	///  @name Construction
@@ -145,7 +160,7 @@ ptr <pbExpression>
 createStrictEqualExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (StrictEqualExpression (std::move (lhs), std::move (rhs)) .getValue ());
+		return new PrimitiveExpression (StrictEqualExpression (std::move (lhs), std::move (rhs)) .getValue (), PrimitiveExpression::BOOLEAN);
 
 	return new StrictEqualExpression (std::move (lhs), std::move (rhs));
 }

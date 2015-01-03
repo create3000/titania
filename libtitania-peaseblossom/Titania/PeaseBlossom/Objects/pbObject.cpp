@@ -283,17 +283,24 @@ throw (std::out_of_range)
 {
 	try
 	{
-		if (resolveFunction and resolveFunction (this, identifier))
-			return;
+		try
+		{
+			const auto & proto         = getProto ();
+			const auto & protoProperty = proto -> getPropertyDescriptor (identifier);
 
-		const auto & proto         = getProto ();
-		const auto & protoProperty = proto -> getPropertyDescriptor (identifier);
+			addPropertyDescriptor (protoProperty -> getIdentifier (),
+		                          protoProperty -> getValue (),
+		                          protoProperty -> getFlags (),
+		                          protoProperty -> getGetter (),
+		                          protoProperty -> getSetter ());
+		}
+		catch (const std::out_of_range &)
+		{
+			if (resolveFunction and resolveFunction (this, identifier))
+				return;
 
-		addPropertyDescriptor (protoProperty -> getIdentifier (),
-	                          protoProperty -> getValue (),
-	                          protoProperty -> getFlags (),
-	                          protoProperty -> getGetter (),
-	                          protoProperty -> getSetter ());
+			throw;
+		}
 	}
 	catch (const std::invalid_argument &)
 	{

@@ -72,7 +72,7 @@ public:
 		    pbExpression (ExpressionType::VARIABLE_DECLARATION),
 		executionContext (executionContext),
 		      identifier (std::move (identifier)),
-		      expression (expression ? std::move (expression) : new PrimitiveExpression (Undefined ()))
+		      expression (expression ? std::move (expression) : new PrimitiveExpression (Undefined (), PrimitiveExpression::UNDEFINED))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -97,6 +97,24 @@ public:
 
 		return Undefined ();
 	}
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		ostream
+			<< "var"
+			<< Generator::Space
+			<< identifier
+			<< Generator::TidySpace
+			<< "="
+			<< Generator::TidySpace
+			<< expression;
+	}
+
 
 private:
 
