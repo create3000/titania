@@ -51,6 +51,7 @@
 #ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_H__
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_H__
 
+#include "../Expressions/PrimitiveExpressionType.h"
 #include "../Expressions/pbExpression.h"
 #include "../Primitives/var.h"
 
@@ -65,32 +66,17 @@ class PrimitiveExpression :
 {
 public:
 
-	enum Type
-	{
-		UNDEFINED,
-		BOOLEAN,
-		NUMBER,
-		BINARY_NUMBER,
-		OCTAL_NUMBER,
-		HEXAL_NUMBER,
-		STRING,
-		SINGLE_QUOTED_STRING,
-		DOUBLE_QUOTED_STRING,
-		NULL_OBJECT
-
-	};
-
 	///  @name Construction
 
 	///  Constructs new PrimitiveExpression expression.
-	PrimitiveExpression (const var & value, const Type type) :
+	PrimitiveExpression (const var & value, const PrimitiveExpressionType type) :
 		pbExpression (ExpressionType::PRIMITIVE_EXPRESSION),
 		       value (value),
 		        type (type)
 	{ }
 
 	///  Constructs new PrimitiveExpression expression.
-	PrimitiveExpression (var && value, const Type type) :
+	PrimitiveExpression (var && value, const PrimitiveExpressionType type) :
 		pbExpression (ExpressionType::PRIMITIVE_EXPRESSION),
 		       value (std::move (value)),
 		        type (type)
@@ -104,6 +90,10 @@ public:
 	{ return new PrimitiveExpression (value, type); }
 
 	///  @name Operations
+	
+	PrimitiveExpressionType
+	getPrimitiveType () const
+	{ return type; }
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
@@ -122,27 +112,27 @@ public:
 	{
 		switch (type)
 		{
-			case NUMBER:
+			case PrimitiveExpressionType::NUMBER:
 				ostream << std::dec << value;
 				break;
 
-			case BINARY_NUMBER:
+			case PrimitiveExpressionType::BINARY_NUMBER:
 				ostream << std::hex << value;
 				break;
 
-			case OCTAL_NUMBER:
+			case PrimitiveExpressionType::OCTAL_NUMBER:
 				ostream << std::oct << value;
 				break;
 
-			case HEXAL_NUMBER:
+			case PrimitiveExpressionType::HEXAL_NUMBER:
 				ostream << std::hex << value;
 				break;
 
-			case SINGLE_QUOTED_STRING:
+			case PrimitiveExpressionType::SINGLE_QUOTED_STRING:
 				ostream << '\'' << value << '\'';
 				break;
 
-			case DOUBLE_QUOTED_STRING:
+			case PrimitiveExpressionType::DOUBLE_QUOTED_STRING:
 				ostream << '"' << value << '"';
 				break;
 
@@ -156,8 +146,8 @@ private:
 
 	///  @name Members
 
-	const var  value;
-	const Type type;
+	const var                     value;
+	const PrimitiveExpressionType type;
 
 };
 

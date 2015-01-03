@@ -48,10 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_STATEMENT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_RETURN_STATEMENT_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_RETURN_STATEMENT_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_RETURN_STATEMENT_H__
 
 #include "../Expressions/ControlFlowException.h"
+#include "../Expressions/PrimitiveExpression.h"
 #include "../Expressions/pbExpression.h"
 #include "../Objects/Function.h"
 
@@ -101,12 +102,20 @@ public:
 	void
 	toStream (std::ostream & ostream) const final override
 	{
-		ostream
-			<< "return"
-			<< Generator::Space
-			<< expression;
-	}
+		const auto primitive = dynamic_cast <PrimitiveExpression*> (expression .get ());
 
+		if (primitive and primitive -> getPrimitiveType () == PrimitiveExpressionType::UNDEFINED)
+		{
+			ostream << "return";
+		}
+		else
+		{
+			ostream
+				<< "return"
+				<< Generator::Space
+				<< expression;
+		}
+	}
 
 private:
 
@@ -115,12 +124,17 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (executionContext, expression); }
+	{
+		if (not expression)
+			expression = new PrimitiveExpression (Undefined (), PrimitiveExpressionType::UNDEFINED);
+
+		addChildren (executionContext, expression);
+	}
 
 	///  @name Members
 
 	const ptr <pbExecutionContext> executionContext;
-	const ptr <pbExpression>       expression;
+	ptr <pbExpression>             expression;
 
 };
 

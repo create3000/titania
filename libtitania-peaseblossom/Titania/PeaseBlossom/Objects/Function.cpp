@@ -118,7 +118,8 @@ throw (pbException)
 {
 	const auto localObject = new Object (static_cast <pbExecutionContext*> (this));
 
-	localObject -> addPropertyDescriptor ("this", object, NONE);
+	localObject -> addPropertyDescriptor ("this",      object,    NONE);
+	//localObject -> addPropertyDescriptor ("arguments", arguments, NONE);
 
 	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
 		localObject -> addPropertyDescriptor (formalParameters [i], i < argc ? arguments [i] : var (), WRITABLE | CONFIGURABLE);

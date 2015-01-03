@@ -48,96 +48,29 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_TYPE_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_TYPE_H__
 
-#include "../Expressions/pbExpression.h"
-#include "../Expressions/PrimitiveExpression.h"
-
-#include <cmath>
+#include <cstdint>
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a ECMAScript remainder expression.
- */
-class RemainderExpression :
-	public pbExpression
+enum class PrimitiveExpressionType :
+	uint8_t
 {
-public:
-
-	///  @name Construction
-
-	///  Constructs new RemainderExpression expression.
-	RemainderExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
-		pbExpression (ExpressionType::REMAINDER_EXPRESSION),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
-	{ construct (); }
-
-	///  Creates a copy of this object.
-	virtual
-	ptr <pbExpression>
-	copy (pbExecutionContext* const executionContext) const
-	noexcept (true) final override
-	{ return new RemainderExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
-
-	///  @name Operations
-
-	///  Converts its arguments to a value of type Number.
-	virtual
-	var
-	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
-	{ return std::fmod (lhs -> getValue () .toNumber (), rhs -> getValue () .toNumber ()); }
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{
-		ostream
-			<< lhs
-			<< Generator::TidySpace
-			<< '%'
-			<< Generator::TidySpace
-			<< rhs;
-	}
-
-
-private:
-
-	///  @name Construction
-
-	///  Performs neccessary operations after construction.
-	void
-	construct ()
-	{ addChildren (lhs, rhs); }
-
-	///  @name Members
-
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	UNDEFINED,
+	BOOLEAN,
+	NUMBER,
+	BINARY_NUMBER,
+	OCTAL_NUMBER,
+	HEXAL_NUMBER,
+	STRING,
+	SINGLE_QUOTED_STRING,
+	DOUBLE_QUOTED_STRING,
+	NULL_OBJECT
 
 };
-
-///  @relates RemainderExpression
-///  @name Construction
-
-///  Constructs new RemainderExpression expression.
-inline
-ptr <pbExpression>
-createRemainderExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
-{
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (RemainderExpression (std::move (lhs), std::move (rhs)) .getValue (), PrimitiveExpressionType::NUMBER);
-
-	return new RemainderExpression (std::move (lhs), std::move (rhs));
-}
 
 } // pb
 } // titania

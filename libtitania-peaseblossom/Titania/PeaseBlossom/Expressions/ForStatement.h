@@ -48,13 +48,13 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FOR_STATEMENT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FOR_STATEMENT_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FOR_STATEMENT_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FOR_STATEMENT_H__
 
 #include "../Execution/Block.h"
-#include "../Expressions/pbExpression.h"
-#include "../Expressions/PrimitiveExpression.h"
 #include "../Expressions/ControlFlowException.h"
+#include "../Expressions/PrimitiveExpression.h"
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
@@ -70,11 +70,11 @@ public:
 	///  @name Construction
 
 	///  Constructs new ForStatement expression.
-	ForStatement (ptr <pbExpression> && booleanExpression, ptr <pbExpression> && iterationExpression) :
-		       pbExpression (ExpressionType::FOR_STATEMENT),
-		  booleanExpression (booleanExpression ? std::move (booleanExpression) : new PrimitiveExpression (true, PrimitiveExpression::BOOLEAN)),
-		iterationExpression (std::move (iterationExpression)),
-		              block (new Block ())
+	ForStatement (ptr <pbExpression> && booleanExpression, ptr <pbExpression>&& iterationExpression) :
+		           pbExpression (ExpressionType::FOR_STATEMENT),
+		      booleanExpression (std::move (booleanExpression)),
+		    iterationExpression (std::move (iterationExpression)),
+		                  block (new Block ())
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -105,7 +105,7 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		for ( ; booleanExpression -> getValue () .toBoolean (); iterationExpression -> getValue ())
+		for (; booleanExpression -> getValue () .toBoolean (); iterationExpression -> getValue ())
 		{
 			try
 			{
@@ -149,16 +149,28 @@ public:
 	void
 	toStream (std::ostream & ostream) const final override
 	{
+		const auto primitiveIteration = dynamic_cast <PrimitiveExpression*> (iterationExpression .get ());
+
 		ostream
 			<< "for"
 			<< Generator::TidySpace
 			<< '('
-			<< ';'
+			<< ';';
+
+		ostream
 			<< Generator::TidySpace
-			<< booleanExpression
-			<< ';'
-			<< Generator::TidySpace
-			<< iterationExpression
+			<< booleanExpression;
+
+		ostream << ';';
+
+		if (not (primitiveIteration and primitiveIteration -> getPrimitiveType () not_eq PrimitiveExpressionType::UNDEFINED))
+		{
+			ostream
+				<< Generator::TidySpace
+				<< iterationExpression;
+		}
+
+		ostream
 			<< ')'
 			<< Generator::TidyBreak
 			<< block;
@@ -171,13 +183,21 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (booleanExpression, iterationExpression, block); }
+	{
+		if (not booleanExpression)
+			booleanExpression = new PrimitiveExpression (true, PrimitiveExpressionType::BOOLEAN);
+
+		if (not iterationExpression)
+			iterationExpression = new PrimitiveExpression (Undefined (), PrimitiveExpressionType::UNDEFINED);
+
+		addChildren (booleanExpression, iterationExpression, block);
+	}
 
 	///  @name Members
 
-	const ptr <pbExpression> booleanExpression;
-	const ptr <pbExpression> iterationExpression;
-	const ptr <Block>        block;
+	ptr <pbExpression> booleanExpression;
+	ptr <pbExpression> iterationExpression;
+	const ptr <Block>  block;
 
 };
 

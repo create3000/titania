@@ -1,5 +1,31 @@
 2015-01-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-peaseblossom.cproj:
+	* Parser.h:
+	* ptr.h:
+	* Grammar.h:
+	* Exception.h:
+	* Parser.cpp:
+	* Function.cpp:
+	* ForStatement.h:
+	* LessExpression.h:
+	* ReturnStatement.h:
+	* EqualExpression.h:
+	* DivisionExpression.h:
+	* AdditionExpression.h:
+	* LeftShiftExpression.h:
+	* PrimitiveExpression.h:
+	* VariableDeclaration.h:
+	* RemainderExpression.h:
+	* AssignmentExpression.h:
+	* SubtractionExpression.h:
+	* StrictEqualExpression.h:
+	* AssignmentOperatorType.h:
+	* PrimitiveExpressionType.h:
+	* MultiplicationExpression.h: 
+
+2015-01-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-peaseblossom.cproj:
 	* Array.h:

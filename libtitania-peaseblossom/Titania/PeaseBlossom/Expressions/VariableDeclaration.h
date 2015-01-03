@@ -72,7 +72,7 @@ public:
 		    pbExpression (ExpressionType::VARIABLE_DECLARATION),
 		executionContext (executionContext),
 		      identifier (std::move (identifier)),
-		      expression (expression ? std::move (expression) : new PrimitiveExpression (Undefined (), PrimitiveExpression::UNDEFINED))
+		      expression (std::move (expression))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -105,10 +105,17 @@ public:
 	void
 	toStream (std::ostream & ostream) const final override
 	{
+		const auto primitive = dynamic_cast <PrimitiveExpression*> (expression .get ());
+
 		ostream
 			<< "var"
 			<< Generator::Space
-			<< identifier
+			<< identifier;
+
+		if (primitive and primitive -> getPrimitiveType () == PrimitiveExpressionType::UNDEFINED)
+			return;
+
+		ostream
 			<< Generator::TidySpace
 			<< "="
 			<< Generator::TidySpace
@@ -123,13 +130,18 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (executionContext, expression); }
+	{
+		if (not expression)
+			expression = new PrimitiveExpression (Undefined (), PrimitiveExpressionType::UNDEFINED);
+
+		addChildren (executionContext, expression);
+	}
 
 	///  @name Members
 
 	const ptr <pbExecutionContext> executionContext;
 	const Identifier               identifier;
-	const ptr <pbExpression>       expression;
+	ptr <pbExpression>             expression;
 
 };
 

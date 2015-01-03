@@ -160,14 +160,6 @@ public:
 
 	///  Assigns the ptr.
 	ptr &
-	operator = (const ptr_base & other)
-	{
-		reset (dynamic_cast <Type*> (other .get_object ()));
-		return *this;
-	}
-
-	///  Assigns the ptr.
-	ptr &
 	operator = (ptr && other)
 	{
 		if (&other == this)
@@ -181,6 +173,15 @@ public:
 	///  Assigns the ptr.
 	template <class Up>
 	ptr &
+	operator = (const ptr <Up> & other)
+	{
+		reset (dynamic_cast <Type*> (other .get ()));
+		return *this;
+	}
+
+	///  Assigns the ptr.
+	template <class Up>
+	ptr &
 	operator = (ptr <Up> && other)
 	{
 		if (static_cast <pbBase*> (&other) == this)
@@ -188,6 +189,14 @@ public:
 
 		move (other);
 
+		return *this;
+	}
+
+	///  Assigns the ptr.
+	ptr &
+	operator = (Type* const other)
+	{
+		reset (other);
 		return *this;
 	}
 
@@ -245,6 +254,9 @@ public:
 	void
 	reset (Type* const value)
 	{
+		if (value == get ())
+			return;
+
 		add (value);
 		remove (get ());
 		set (value);
@@ -328,7 +340,7 @@ private:
 		if (value == get ())
 		{
 			// If both values are NULL or equal, only set other to NULL.
-			other = nullptr;
+			other .reset ();
 			return false;
 		}
 
@@ -352,7 +364,7 @@ private:
 		if (value == get ())
 		{
 			// If both values are NULL or equal, only set other to NULL.
-			other = nullptr;
+			other .reset ();
 			return false;
 		}
 
@@ -362,7 +374,7 @@ private:
 			other .set (nullptr);
 		}
 		else
-			other = nullptr;
+			other .reset ();
 
 		remove (get ());
 		set (value);

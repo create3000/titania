@@ -132,7 +132,7 @@ ptr <pbExpression>
 createMultiplicationExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (MultiplicationExpression (std::move (lhs), std::move (rhs)) .getValue (), PrimitiveExpression::NUMBER);
+		return new PrimitiveExpression (MultiplicationExpression (std::move (lhs), std::move (rhs)) .getValue (), PrimitiveExpressionType::NUMBER);
 
 	return new MultiplicationExpression (std::move (lhs), std::move (rhs));
 }

@@ -67,8 +67,11 @@ Parser::Parser (pbExecutionContext* const executionContext, std::istream & istre
 	       executionContexts ({ executionContext }),
 	                  blocks ({ executionContext }),
 	                 istream (istream),
+	              lineNumber (1),
 	             whiteSpaces (),
 	       commentCharacters (),
+	                 newLine (false),
+	             keepNewLine (false),
 	isLeftHandSideExressions ()
 { }
 
@@ -77,7 +80,7 @@ Parser::parseIntoContext ()
 throw (SyntaxError,
        ReferenceError)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	try
 	{
@@ -85,11 +88,100 @@ throw (SyntaxError,
 
 		program ();
 	}
-	catch (const pbException & error)
+	catch (pbException & error)
 	{
-		__LOG__ << ">>>" << istream .rdbuf () << "<<<" << std::endl;
+		setError (error);
 		throw;
 	}
+}
+
+void
+Parser::setError (pbException & error)
+{
+	__LOG__ << this << " " << std::endl;
+	__LOG__ << this << " " << istream .peek () << std::endl;
+
+	istream .clear ();
+
+	std::string rest   = getline ();
+	std::string line   = rgetline ();
+	size_t      column = line .size () - rest .size ();
+
+	//filter_control_characters (line);
+	//filter_bad_utf8_characters (line);
+
+	//	if (line .size () > 80)
+	//	{
+	//		line    = line .substr (linePos - 40, 80);
+	//		preLine = std::string ();
+	//		linePos = 40;
+	//	}
+
+	error .setFilename ("filename");
+	error .setLineNumber (lineNumber);
+	error .setColumn (column);
+	error .setSourceLine (line);
+}
+
+std::string
+Parser::getline ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	std::string string;
+
+	for (; ;)
+	{
+		char c = istream .get ();
+
+		if (istream)
+		{
+			if (c == '\n' or c == '\r')
+			{
+				istream .unget ();
+				break;
+			}
+
+			else
+				string .push_back (c);
+		}
+		else
+			break;
+	}
+
+	istream .clear ();
+
+	return string;
+}
+
+std::string
+Parser::rgetline ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	std::string string;
+
+	for (; ;)
+	{
+		istream .unget ();
+
+		char c = istream .peek ();
+
+		if (istream)
+		{
+			if (c == '\n' or c == '\r')
+				break;
+
+			else
+				string .push_back (c);
+		}
+		else
+			return "";
+	}
+
+	istream .clear ();
+
+	return std::string (string .rbegin (), string .rend ());
 }
 
 void
@@ -119,15 +211,43 @@ Parser::getState ()
 	return State (istream .rdstate (), istream .tellg ());
 }
 
+void
+Parser::lines (const std::string & string)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	lineNumber += std::count (string .begin (), string .end (), '\n');
+}
+
+bool
+Parser::haveAutomaticSemicolon () const
+{
+	if (newLine)
+		return true;
+
+	if (not istream or istream .peek () == -1)
+		return true;
+
+	if (istream .peek () == '}')
+		return true;
+
+	return false;
+}
+
 // A.1 Lexical Grammar
 
 void
 Parser::comments ()
 {
 	//__LOG__ << this << " " << std::endl;
+	
+	const auto currentLineNumber = lineNumber;
 
 	while (comment ())
 		;
+
+	newLine     = lineNumber not_eq currentLineNumber or keepNewLine;
+	keepNewLine = false;
 }
 
 bool
@@ -136,37 +256,23 @@ Parser::comment ()
 	//__LOG__ << this << " " << std::endl;
 
 	Grammar::WhiteSpaces (istream, whiteSpaces);
+	
+	lines (whiteSpaces);
+	
+	whiteSpaces .clear ();
 
 	if (Grammar::MultiLineComment (istream, commentCharacters))
+	{
+		lines (commentCharacters);
+		commentCharacters .clear ();
 		return true;
+	}
 
 	if (Grammar::SingleLineComment (istream, commentCharacters))
+	{
+		commentCharacters .clear ();
 		return true;
-
-	return false;
-}
-
-void
-Parser::commentsNoLineTerminator ()
-{
-	//__LOG__ << this << " " << std::endl;
-
-	while (commentNoLineTerminator ())
-		;
-}
-
-bool
-Parser::commentNoLineTerminator ()
-{
-	//__LOG__ << this << " " << std::endl;
-
-	Grammar::WhiteSpacesNoLineTerminator (istream, whiteSpaces);
-
-	if (Grammar::MultiLineComment (istream, commentCharacters))
-		return true;
-
-	if (Grammar::SingleLineComment (istream, commentCharacters))
-		return true;
+	}
 
 	return false;
 }
@@ -174,7 +280,7 @@ Parser::commentNoLineTerminator ()
 bool
 Parser::identifier (std::string & identifierCharacters)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	const auto state = getState ();
 
@@ -192,7 +298,7 @@ Parser::identifier (std::string & identifierCharacters)
 bool
 Parser::identifierName (std::string & identifierNameCharacters)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
@@ -210,7 +316,7 @@ Parser::identifierName (std::string & identifierNameCharacters)
 bool
 Parser::identifierStart (std::string & identifierStartCharacters)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	// ...
 
@@ -222,7 +328,7 @@ Parser::identifierStart (std::string & identifierStartCharacters)
 bool
 Parser::identifierPart (std::string & identifierPartCharacters)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	static const io::sequence UnicodeDigit ("1234567890");
 
@@ -239,7 +345,7 @@ Parser::identifierPart (std::string & identifierPartCharacters)
 bool
 Parser::reservedWord (const std::string & string)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (Grammar::Keyword .count (string))
 		return true;
@@ -283,13 +389,13 @@ Parser::literal (ptr <pbExpression> & value)
 bool
 Parser::nullLiteral (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
 	if (Grammar::null (istream))
 	{
-		value = new PrimitiveExpression (nullptr, PrimitiveExpression::NULL_OBJECT);
+		value = new PrimitiveExpression (nullptr, PrimitiveExpressionType::NULL_OBJECT);
 		return true;
 	}
 
@@ -299,19 +405,19 @@ Parser::nullLiteral (ptr <pbExpression> & value)
 bool
 Parser::booleanLiteral (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
 	if (Grammar::true_ (istream))
 	{
-		value = new PrimitiveExpression (true, PrimitiveExpression::BOOLEAN);
+		value = new PrimitiveExpression (true, PrimitiveExpressionType::BOOLEAN);
 		return true;
 	}
 
 	if (Grammar::false_ (istream))
 	{
-		value = new PrimitiveExpression (false, PrimitiveExpression::BOOLEAN);
+		value = new PrimitiveExpression (false, PrimitiveExpressionType::BOOLEAN);
 		return true;
 	}
 
@@ -321,7 +427,7 @@ Parser::booleanLiteral (ptr <pbExpression> & value)
 bool
 Parser::numericLiteral (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (binaryIntegerLiteral (value))
 		return true;
@@ -341,7 +447,7 @@ Parser::numericLiteral (ptr <pbExpression> & value)
 bool
 Parser::decimalLiteral (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	const auto state = getState ();
 
@@ -351,7 +457,7 @@ Parser::decimalLiteral (ptr <pbExpression> & value)
 
 	if (istream >> std::dec >> number)
 	{
-		value = new PrimitiveExpression (number, PrimitiveExpression::NUMBER);
+		value = new PrimitiveExpression (number, PrimitiveExpressionType::NUMBER);
 		return true;
 	}
 
@@ -363,7 +469,7 @@ Parser::decimalLiteral (ptr <pbExpression> & value)
 bool
 Parser::binaryIntegerLiteral (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
@@ -373,7 +479,7 @@ Parser::binaryIntegerLiteral (ptr <pbExpression> & value)
 
 		if (Grammar::BinaryDigits (istream, digits))
 		{
-			value = new PrimitiveExpression ((double) math::strtoul (digits .c_str (), 2), PrimitiveExpression::BINARY_NUMBER);
+			value = new PrimitiveExpression ((double) math::strtoul (digits .c_str (), 2), PrimitiveExpressionType::BINARY_NUMBER);
 			return true;
 		}
 
@@ -386,7 +492,7 @@ Parser::binaryIntegerLiteral (ptr <pbExpression> & value)
 bool
 Parser::octalIntegerLiteral (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
@@ -396,7 +502,7 @@ Parser::octalIntegerLiteral (ptr <pbExpression> & value)
 
 		if (istream >> std::oct >> number)
 		{
-			value = new PrimitiveExpression (number, PrimitiveExpression::OCTAL_NUMBER);
+			value = new PrimitiveExpression (number, PrimitiveExpressionType::OCTAL_NUMBER);
 			return true;
 		}
 
@@ -409,7 +515,7 @@ Parser::octalIntegerLiteral (ptr <pbExpression> & value)
 bool
 Parser::hexIntegerLiteral (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
@@ -419,7 +525,7 @@ Parser::hexIntegerLiteral (ptr <pbExpression> & value)
 
 		if (istream >> std::hex >> number)
 		{
-			value = new PrimitiveExpression (number, PrimitiveExpression::HEXAL_NUMBER);
+			value = new PrimitiveExpression (number, PrimitiveExpressionType::HEXAL_NUMBER);
 			return true;
 		}
 
@@ -441,13 +547,17 @@ Parser::stringLiteral (ptr <pbExpression> & value)
 
 	if (doubleQuotedString (istream, characters))
 	{
-		value = new PrimitiveExpression (std::move (characters), PrimitiveExpression::DOUBLE_QUOTED_STRING);
+		lines (characters);
+
+		value = new PrimitiveExpression (std::move (characters), PrimitiveExpressionType::DOUBLE_QUOTED_STRING);
 		return true;
 	}
 
 	if (singleQuotedString (istream, characters))
 	{
-		value = new PrimitiveExpression (std::move (characters), PrimitiveExpression::SINGLE_QUOTED_STRING);
+		lines (characters);
+
+		value = new PrimitiveExpression (std::move (characters), PrimitiveExpressionType::SINGLE_QUOTED_STRING);
 		return true;
 	}
 
@@ -461,7 +571,7 @@ Parser::stringLiteral (ptr <pbExpression> & value)
 bool
 Parser::primaryExpression (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
@@ -510,7 +620,7 @@ Parser::primaryExpression (ptr <pbExpression> & value)
 bool
 Parser::objectLiteral (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
@@ -546,7 +656,7 @@ Parser::objectLiteral (ptr <pbExpression> & value)
 bool
 Parser::propertyDefinitionList (const ptr <ObjectLiteral> & objectLiteral)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (propertyDefinition (objectLiteral))
 	{
@@ -570,7 +680,7 @@ Parser::propertyDefinitionList (const ptr <ObjectLiteral> & objectLiteral)
 bool
 Parser::propertyDefinition (const ptr <ObjectLiteral> & objectLiteral)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	ptr <pbExpression> propertyNameValue;
 	std::string        propertyNameCharacters;
@@ -707,13 +817,13 @@ Parser::propertyDefinition (const ptr <ObjectLiteral> & objectLiteral)
 bool
 Parser::propertyName (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	std::string propertyNameCharacters;
 
 	if (identifierName (propertyNameCharacters))
 	{
-		value = new PrimitiveExpression (std::move (propertyNameCharacters), PrimitiveExpression::STRING);
+		value = new PrimitiveExpression (std::move (propertyNameCharacters), PrimitiveExpressionType::STRING);
 		return true;
 	}
 
@@ -729,7 +839,7 @@ Parser::propertyName (ptr <pbExpression> & value)
 bool
 Parser::propertySetParameterList (std::vector <std::string> & formalParameters)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	std::string identifierCharacters;
 
@@ -745,7 +855,7 @@ Parser::propertySetParameterList (std::vector <std::string> & formalParameters)
 bool
 Parser::memberExpression (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (primaryExpression (value) or functionExpression (value) or newExpression (value))
 	{
@@ -819,7 +929,7 @@ Parser::newExpression (ptr <pbExpression> & value)
 //bool
 //Parser::newExpression (ptr <pbExpression> & value)
 //{
-//	//__LOG__ << std::endl;
+//	//__LOG__ << (char) istream .peek () << std::endl;
 //
 //	if (memberExpression (value))
 //		return true;
@@ -841,7 +951,7 @@ Parser::newExpression (ptr <pbExpression> & value)
 bool
 Parser::callExpression (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (value or memberExpression (value))
 	{
@@ -900,7 +1010,7 @@ Parser::callExpression (ptr <pbExpression> & value)
 bool
 Parser::arguments (array <ptr <pbExpression>> & argumentListExpressions)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
@@ -927,7 +1037,7 @@ Parser::arguments (array <ptr <pbExpression>> & argumentListExpressions)
 bool
 Parser::argumentList (array <ptr <pbExpression>> & argumentListExpressions)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	ptr <pbExpression> value;
 
@@ -960,7 +1070,7 @@ Parser::argumentList (array <ptr <pbExpression>> & argumentListExpressions)
 bool
 Parser::leftHandSideExpression (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (memberExpression (value))
 	{
@@ -985,7 +1095,7 @@ Parser::leftHandSideExpression (ptr <pbExpression> & value)
 bool
 Parser::postfixExpression (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (leftHandSideExpression (value))
 		return true;
@@ -999,7 +1109,7 @@ Parser::postfixExpression (ptr <pbExpression> & value)
 bool
 Parser::unaryExpression (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (postfixExpression (value))
 		return true;
@@ -1145,7 +1255,7 @@ Parser::unaryExpression (ptr <pbExpression> & value)
 bool
 Parser::multiplicativeExpression (ptr <pbExpression> & lhs)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (unaryExpression (lhs))
 	{
@@ -1214,7 +1324,7 @@ Parser::multiplicativeExpression (ptr <pbExpression> & lhs)
 bool
 Parser::additiveExpression (ptr <pbExpression> & lhs)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (multiplicativeExpression (lhs))
 	{
@@ -1265,7 +1375,7 @@ Parser::additiveExpression (ptr <pbExpression> & lhs)
 bool
 Parser::shiftExpression (ptr <pbExpression> & lhs)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (additiveExpression (lhs))
 	{
@@ -1334,7 +1444,7 @@ Parser::shiftExpression (ptr <pbExpression> & lhs)
 bool
 Parser::relationalExpression (ptr <pbExpression> & lhs)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (shiftExpression (lhs))
 	{
@@ -1422,11 +1532,13 @@ Parser::relationalExpression (ptr <pbExpression> & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
+			// if (white spaces or comments empty) throw;
+
 			ptr <pbExpression> rhs;
 
 			if (relationalExpression (rhs))
 			{
-				//lhs = make_instanceof (std::move (lhs), std::move (rhs));
+				//lhs = new InstanceofExpression (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1439,12 +1551,14 @@ Parser::relationalExpression (ptr <pbExpression> & lhs)
 				return Grammar::in .rewind (istream);
 
 			isLeftHandSideExressions .back () = false;
+			
+			// if (white spaces or comments empty) throw;
 
 			ptr <pbExpression> rhs;
 
 			if (relationalExpression (rhs))
 			{
-				//lhs = make_in (std::move (lhs), std::move (rhs));
+				//lhs = new InExpression (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1460,7 +1574,7 @@ Parser::relationalExpression (ptr <pbExpression> & lhs)
 bool
 Parser::equalityExpression (ptr <pbExpression> & lhs)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (relationalExpression (lhs))
 	{
@@ -1535,7 +1649,7 @@ Parser::equalityExpression (ptr <pbExpression> & lhs)
 bool
 Parser::bitwiseANDExpression (ptr <pbExpression> & lhs)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (equalityExpression (lhs))
 	{
@@ -1571,7 +1685,7 @@ Parser::bitwiseANDExpression (ptr <pbExpression> & lhs)
 bool
 Parser::bitwiseXORExpression (ptr <pbExpression> & lhs)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (bitwiseANDExpression (lhs))
 	{
@@ -1604,7 +1718,7 @@ Parser::bitwiseXORExpression (ptr <pbExpression> & lhs)
 bool
 Parser::bitwiseORExpression (ptr <pbExpression> & lhs)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (bitwiseXORExpression (lhs))
 	{
@@ -1640,7 +1754,7 @@ Parser::bitwiseORExpression (ptr <pbExpression> & lhs)
 bool
 Parser::logicalANDExpression (ptr <pbExpression> & lhs)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (bitwiseORExpression (lhs))
 	{
@@ -1670,7 +1784,7 @@ Parser::logicalANDExpression (ptr <pbExpression> & lhs)
 bool
 Parser::logicalORExpression (ptr <pbExpression> & lhs)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (logicalANDExpression (lhs))
 	{
@@ -1700,7 +1814,7 @@ Parser::logicalORExpression (ptr <pbExpression> & lhs)
 bool
 Parser::conditionalExpression (ptr <pbExpression> & first)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (logicalORExpression (first))
 	{
@@ -1742,7 +1856,7 @@ Parser::conditionalExpression (ptr <pbExpression> & first)
 bool
 Parser::assignmentExpression (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	isLeftHandSideExressions .push_back (false);
 
@@ -1781,8 +1895,10 @@ Parser::assignmentExpression (ptr <pbExpression> & value)
 					return true;
 				}
 
-				throw SyntaxError ("Expected expression after '" + to_ustring (type) + "'.");
+				throw SyntaxError ("Expected expression after '" + to_string (type) + "'.");
 			}
+
+			keepNewLine = true;
 		}
 
 		return true;
@@ -1870,7 +1986,7 @@ Parser::assignmentOperator (AssignmentOperatorType & type)
 bool
 Parser::expression (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (assignmentExpression (value))
 	{
@@ -1886,6 +2002,7 @@ Parser::expression (ptr <pbExpression> & value)
 				throw SyntaxError ("Expected expression after ','.");
 			}
 
+			keepNewLine = true;
 			return true;
 		}
 	}
@@ -1971,7 +2088,7 @@ Parser::block ()
 bool
 Parser::statementList ()
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (statement ())
 	{
@@ -1998,7 +2115,7 @@ Parser::variableStatement ()
 		{
 			comments ();
 
-			if (Grammar::Semicolon (istream))
+			if (Grammar::Semicolon (istream) or haveAutomaticSemicolon ())
 				return true;
 
 			throw SyntaxError ("Expected a ';' after variable declaration.");
@@ -2013,7 +2130,7 @@ Parser::variableStatement ()
 bool
 Parser::variableDeclarationList ()
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (variableDeclaration ())
 	{
@@ -2029,6 +2146,7 @@ Parser::variableDeclarationList ()
 				throw SyntaxError ("Expected variable name after ','.");
 			}
 
+			keepNewLine = true;
 			return true;
 		}
 	}
@@ -2066,13 +2184,14 @@ Parser::initialiser (ptr <pbExpression> & value)
 			return true;
 	}
 
+	keepNewLine = true;
 	return false;
 }
 
 bool
 Parser::emptyStatement ()
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
@@ -2085,7 +2204,7 @@ Parser::emptyStatement ()
 bool
 Parser::expressionStatement ()
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
@@ -2101,7 +2220,7 @@ Parser::expressionStatement ()
 	{
 		comments ();
 
-		if (Grammar::Semicolon (istream))
+		if (Grammar::Semicolon (istream) or haveAutomaticSemicolon ())
 		{
 			getBlock () -> addExpression (std::move (value));
 			return true;
@@ -2116,7 +2235,7 @@ Parser::expressionStatement ()
 bool
 Parser::ifStatement ()
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
@@ -2173,7 +2292,7 @@ Parser::ifStatement ()
 bool
 Parser::iterationStatement ()
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
@@ -2246,20 +2365,24 @@ Parser::iterationStatement ()
 bool
 Parser::returnStatement ()
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
 	if (Grammar::return_ (istream))
 	{
-		commentsNoLineTerminator ();
+		comments ();
 
 		ptr <pbExpression> value;
 
-		if (expression (value))
-			comments ();
+		if (not newLine)
+		{
+			expression (value);
 
-		if (Grammar::Semicolon (istream))
+			comments ();
+		}
+
+		if (Grammar::Semicolon (istream) or haveAutomaticSemicolon ())
 		{
 			getBlock () -> addExpression (new ReturnStatement (getExecutionContext (), std::move (value)));
 			return true;
@@ -2276,7 +2399,7 @@ Parser::returnStatement ()
 bool
 Parser::functionDeclaration ()
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
@@ -2339,7 +2462,7 @@ Parser::functionDeclaration ()
 bool
 Parser::functionExpression (ptr <pbExpression> & value)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
@@ -2399,7 +2522,7 @@ Parser::functionExpression (ptr <pbExpression> & value)
 bool
 Parser::formalParameterList (std::vector <std::string> & formalParameters)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	std::string identifierCharacters;
 
@@ -2434,7 +2557,7 @@ Parser::formalParameterList (std::vector <std::string> & formalParameters)
 void
 Parser::functionBody ()
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	sourceElements ();
 }
@@ -2442,7 +2565,7 @@ Parser::functionBody ()
 void
 Parser::program ()
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	sourceElements ();
 
@@ -2453,7 +2576,7 @@ Parser::program ()
 void
 Parser::sourceElements ()
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << (char) istream .peek () << std::endl;
 
 	while (sourceElement ())
 		;

@@ -163,25 +163,8 @@ public:
 	{
 		ostream
 			<< lhs
-			<< Generator::TidySpace;
-	
-		switch (type)
-		{
-			case AssignmentOperatorType::ASSIGNMENT:                      ostream << '=';    break;
-			case AssignmentOperatorType::MULTIPLICATION_ASSIGNMENT:       ostream << "*=";   break;
-			case AssignmentOperatorType::DIVISION_ASSIGNMENT:             ostream << "/=";   break;
-			case AssignmentOperatorType::REMAINDER_ASSIGNMENT:            ostream << "%=";   break;
-			case AssignmentOperatorType::ADDITION_ASSIGNMENT:             ostream << "+=";   break;
-			case AssignmentOperatorType::SUBTRACTION_ASSIGNMENT:          ostream << "-=";   break;
-			case AssignmentOperatorType::LEFT_SHIFT_ASSIGNMENT:           ostream << "<<=";  break;
-			case AssignmentOperatorType::RIGHT_SHIFT_ASSIGNMENT:          ostream << ">>=";  break;
-			case AssignmentOperatorType::UNSIGNED_RIGHT_SHIFT_ASSIGNMENT: ostream << ">>>="; break;
-			case AssignmentOperatorType::BITWISE_AND_ASSIGNMENT:          ostream << "&=";   break;
-			case AssignmentOperatorType::BITWISE_XOR_ASSIGNMENT:          ostream << "^=";   break;
-			case AssignmentOperatorType::BITWISE_OR_ASSIGNMENT:           ostream << "|=";   break;
-		}
-
-		ostream
+			<< Generator::TidySpace
+			<< type
 			<< Generator::TidySpace
 			<< rhs;
 	}

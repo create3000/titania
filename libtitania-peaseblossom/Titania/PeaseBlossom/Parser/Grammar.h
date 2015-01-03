@@ -222,7 +222,7 @@ const std::set <std::string> Grammar::Keyword = {
 	"throw",
 	"try",
 	"typeof",
-	"ptr <vsValue>",
+	"var",
 	"void",
 	"while",
 	"with"

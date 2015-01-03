@@ -62,12 +62,13 @@ Transform {
 DEF Script1 Script {
   inputOnly SFTime set_time
 
-  #  "peaseblossom:
-  #function x () { }
-  #print (1.234);
-  #  "
-  #  "peaseblossom:"
-  url "peaseblossom:
+    url [
+#     "peaseblossom:
+#print ('this: ', this);
+#    "
+#
+#
+ "peaseblossom:
 /*
 function initialize ()
 {
@@ -405,19 +406,21 @@ function set_time (value, time)
 	//print ('result: ', for_time (2000000));
 	//print ('time: ',   now () - t0);
 }
-
-print ('this: ', this);
+var i, k = k = 0
+print ('this: ', this)
 print ('Math: ', Math);
 print ('{ }:  ', { });
 print ('{ } .__proto__:            ', { } .__proto__);
 print ('{ } .__proto__ .__proto__: ', { } .__proto__ .__proto__);
 print ('{ } .constructor:          ', { } .constructor);
 
-function f (a, b) { var c = { a: 1, c: 2, set b (value) { return 1; } }; }
+function f (a, b) { return }
 print (new SFVec4f (1,2,3,4));
 print (new SFVec4f (1,2,3,4) .add (new SFVec4f (2,3,4,5)));
 print (f);
 "
+"peaseblossom:"
+]
   directOutput TRUE
 }
 

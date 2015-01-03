@@ -132,7 +132,7 @@ ptr <pbExpression>
 createLeftShiftExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (LeftShiftExpression (std::move (lhs), std::move (rhs)) .getValue (), PrimitiveExpression::NUMBER);
+		return new PrimitiveExpression (LeftShiftExpression (std::move (lhs), std::move (rhs)) .getValue (), PrimitiveExpressionType::NUMBER);
 
 	return new LeftShiftExpression (std::move (lhs), std::move (rhs));
 }

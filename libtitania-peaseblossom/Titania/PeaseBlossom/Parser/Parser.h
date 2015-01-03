@@ -96,6 +96,15 @@ private:
 
 	// Operations
 
+	void
+	setError (pbException & error);
+	
+	std::string
+	getline ();
+
+	std::string
+	rgetline ();
+
 	pbExecutionContext*
 	getRootContext () const
 	{ return rootContext; }
@@ -128,6 +137,12 @@ private:
 	State
 	getState ();
 
+	void
+	lines (const std::string & string);
+
+	bool
+	haveAutomaticSemicolon () const;
+
 	// A.1 Lexical Grammar
 
 	void
@@ -135,12 +150,6 @@ private:
 
 	bool
 	comment ();
-
-	void
-	commentsNoLineTerminator ();
-
-	bool
-	commentNoLineTerminator ();
 
 	bool
 	identifier (std::string &);
@@ -339,8 +348,11 @@ private:
 	std::stack <pbExecutionContext*> executionContexts;
 	std::stack <pbBlock*>            blocks;
 	std::istream &                   istream;
+	size_t                           lineNumber;
 	std::string                      whiteSpaces;
 	std::string                      commentCharacters;
+	bool                             newLine;
+	bool                             keepNewLine;
 	std::vector <bool>               isLeftHandSideExressions;
 
 };

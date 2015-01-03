@@ -325,10 +325,10 @@ void
 Context::setError (const pb::pbException & error) const
 {
 	X3D::X3DJavaScriptContext::setError (error .toString (),
-	                                     "filename",
-	                                     0, // "lineNumber"
-	                                     0, //"startColumn"
-	                                     "sourceLine");
+	                                     error .getFilename (),
+	                                     error .getLineNumber (),
+	                                     error .getColumn (),
+	                                     error .getSourceLine ());
 }
 
 void

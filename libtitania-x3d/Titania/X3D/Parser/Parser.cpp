@@ -152,9 +152,9 @@ Parser::getMessageFromError (const X3DError & error)
 
 		if (line .size () > 80)
 		{
-			line    = line .substr (line .size () - 80, 80);
+			line    = line .substr (linePos - 40, 80);
 			preLine = std::string ();
-			linePos = 80;
+			linePos = 40;
 		}
 
 		// Format error

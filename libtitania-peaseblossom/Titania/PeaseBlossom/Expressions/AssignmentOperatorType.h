@@ -51,15 +51,13 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ASSIGNMENT_OPERATOR_TYPE_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ASSIGNMENT_OPERATOR_TYPE_H__
 
-#include <map>
 #include <sstream>
-
-#include <glibmm/ustring.h>
 
 namespace titania {
 namespace pb {
 
-enum class AssignmentOperatorType
+enum class AssignmentOperatorType :
+	uint8_t
 {
 	ASSIGNMENT,
 	MULTIPLICATION_ASSIGNMENT,
@@ -87,7 +85,7 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const AssignmentOpera
 {
 	switch (type)
 	{
-		case AssignmentOperatorType::ASSIGNMENT:                      ostream << "=";    break;
+		case AssignmentOperatorType::ASSIGNMENT:                      ostream << '=';    break;
 		case AssignmentOperatorType::MULTIPLICATION_ASSIGNMENT:       ostream << "*=";   break;
 		case AssignmentOperatorType::DIVISION_ASSIGNMENT:             ostream << "/=";   break;
 		case AssignmentOperatorType::REMAINDER_ASSIGNMENT:            ostream << "%=";   break;
@@ -105,8 +103,8 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const AssignmentOpera
 }
 
 inline
-Glib::ustring
-to_ustring (const AssignmentOperatorType type)
+std::string
+to_string (const AssignmentOperatorType type)
 {
 	std::ostringstream osstream;
 

@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_EXCEPTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_EXCEPTION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_BITS_EXCEPTION_H__
+#define __TITANIA_PEASE_BLOSSOM_BITS_EXCEPTION_H__
 
 #include "../Base/pbOutputStreamObject.h"
 
@@ -136,6 +136,46 @@ public:
 	noexcept (true)
 	{ return message; }
 
+	void
+	setFilename (const std::string & value)
+	noexcept (true)
+	{ filename = value; }
+
+	const std::string &
+	getFilename () const
+	noexcept (true)
+	{ return filename; }
+
+	void
+	setLineNumber (const size_t value)
+	noexcept (true)
+	{ lineNumber = value; }
+
+	size_t
+	getLineNumber () const
+	noexcept (true)
+	{ return lineNumber; }
+
+	void
+	setColumn (const size_t value)
+	noexcept (true)
+	{ column = value; }
+
+	size_t
+	getColumn () const
+	noexcept (true)
+	{ return column; }
+
+	void
+	setSourceLine (const std::string & value)
+	noexcept (true)
+	{ sourceLine = value; }
+
+	const std::string &
+	getSourceLine () const
+	noexcept (true)
+	{ return sourceLine; }
+
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
@@ -161,7 +201,11 @@ protected:
 	pbException (const std::string & message) :
 		      std::exception (),
 		pbOutputStreamObject (),
-		             message (message)
+		             message (message),
+		            filename (),
+		          lineNumber (0),
+		              column (0),
+		          sourceLine ()
 	{ }
 
 
@@ -170,6 +214,10 @@ private:
 	///  @name Members
 
 	const std::string message;
+	std::string       filename;
+	size_t            lineNumber;
+	size_t            column;
+	std::string       sourceLine;
 
 };
 

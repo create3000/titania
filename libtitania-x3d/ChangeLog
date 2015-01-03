@@ -1,5 +1,11 @@
 2015-01-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.cpp:
+	* Context.cpp:
+	* X3DJavaScriptContext.cpp: 
+
+2015-01-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Fields.h:
