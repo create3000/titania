@@ -64,6 +64,7 @@
 namespace titania {
 namespace pb {
 
+class ArrayLiteral;
 class ObjectLiteral;
 class pbBlock;
 class pbExecutionContext;
@@ -199,6 +200,15 @@ private:
 
 	bool
 	primaryExpression (ptr <pbExpression> &);
+
+	bool
+	arrayLiteral (ptr <pbExpression> &);
+
+	bool
+	elementList (const ptr <ArrayLiteral> &);
+
+	bool
+	elision (const ptr <ArrayLiteral> & arrayLiteral);
 
 	bool
 	objectLiteral (ptr <pbExpression> &);

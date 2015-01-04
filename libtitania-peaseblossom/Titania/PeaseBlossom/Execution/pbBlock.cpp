@@ -62,12 +62,15 @@ pbBlock::toStream (std::ostream & ostream) const
 
 	for (const auto & expression : expressions)
 	{
+		// Add blank line before special statements.
+	
 		if (not blankLine)
 		{
 			switch (expression -> getType ())
 			{
-				case ExpressionType::IF_STATEMENT:
 				case ExpressionType::FOR_STATEMENT:
+				case ExpressionType::IF_STATEMENT:
+				case ExpressionType::RETURN_STATEMENT:
 					ostream << Generator::TidyBreak;
 					break;
 				default:
@@ -75,14 +78,18 @@ pbBlock::toStream (std::ostream & ostream) const
 			}
 		}
 
+		// Output expression.
+
 		ostream
 			<< Generator::Indent
 			<< expression;
 
+		// Add semicolon if needed.
+
 		switch (expression -> getType ())
 		{
-			case ExpressionType::IF_STATEMENT:
 			case ExpressionType::FOR_STATEMENT:
+			case ExpressionType::IF_STATEMENT:
 				break;
 			default:
 				ostream << ';';
@@ -91,10 +98,13 @@ pbBlock::toStream (std::ostream & ostream) const
 
 		ostream << Generator::TidyBreak;
 
+		// Add blank line after special statements.
+	
 		switch (expression -> getType ())
 		{
-			case ExpressionType::IF_STATEMENT:
 			case ExpressionType::FOR_STATEMENT:
+			case ExpressionType::IF_STATEMENT:
+			case ExpressionType::RETURN_STATEMENT:
 				ostream << Generator::TidyBreak;
 				blankLine = true;
 				break;

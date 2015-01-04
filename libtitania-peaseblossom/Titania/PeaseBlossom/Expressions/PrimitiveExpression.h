@@ -51,7 +51,6 @@
 #ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_H__
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_H__
 
-#include "../Expressions/PrimitiveExpressionType.h"
 #include "../Expressions/pbExpression.h"
 #include "../Primitives/var.h"
 
@@ -69,17 +68,15 @@ public:
 	///  @name Construction
 
 	///  Constructs new PrimitiveExpression expression.
-	PrimitiveExpression (const var & value, const PrimitiveExpressionType type) :
-		pbExpression (ExpressionType::PRIMITIVE_EXPRESSION),
-		       value (value),
-		        type (type)
+	PrimitiveExpression (const var & value, const ExpressionType type) :
+		pbExpression (type),
+		       value (value)
 	{ }
 
 	///  Constructs new PrimitiveExpression expression.
-	PrimitiveExpression (var && value, const PrimitiveExpressionType type) :
-		pbExpression (ExpressionType::PRIMITIVE_EXPRESSION),
-		       value (std::move (value)),
-		        type (type)
+	PrimitiveExpression (var && value, const ExpressionType type) :
+		pbExpression (type),
+		       value (std::move (value))
 	{ }
 
 	///  Creates a copy of this object.
@@ -87,13 +84,9 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new PrimitiveExpression (value, type); }
+	{ return new PrimitiveExpression (value, getType ()); }
 
 	///  @name Operations
-	
-	PrimitiveExpressionType
-	getPrimitiveType () const
-	{ return type; }
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
@@ -110,29 +103,29 @@ public:
 	void
 	toStream (std::ostream & ostream) const final override
 	{
-		switch (type)
+		switch (getType ())
 		{
-			case PrimitiveExpressionType::NUMBER:
+			case ExpressionType::NUMBER:
 				ostream << std::dec << value;
 				break;
 
-			case PrimitiveExpressionType::BINARY_NUMBER:
+			case ExpressionType::BINARY_NUMBER:
 				ostream << std::hex << value;
 				break;
 
-			case PrimitiveExpressionType::OCTAL_NUMBER:
+			case ExpressionType::OCTAL_NUMBER:
 				ostream << std::oct << value;
 				break;
 
-			case PrimitiveExpressionType::HEXAL_NUMBER:
+			case ExpressionType::HEXAL_NUMBER:
 				ostream << std::hex << value;
 				break;
 
-			case PrimitiveExpressionType::SINGLE_QUOTED_STRING:
+			case ExpressionType::SINGLE_QUOTED_STRING:
 				ostream << '\'' << value << '\'';
 				break;
 
-			case PrimitiveExpressionType::DOUBLE_QUOTED_STRING:
+			case ExpressionType::DOUBLE_QUOTED_STRING:
 				ostream << '"' << value << '"';
 				break;
 
@@ -146,8 +139,7 @@ private:
 
 	///  @name Members
 
-	const var                     value;
-	const PrimitiveExpressionType type;
+	const var value;
 
 };
 

@@ -102,9 +102,7 @@ public:
 	void
 	toStream (std::ostream & ostream) const final override
 	{
-		const auto primitive = dynamic_cast <PrimitiveExpression*> (expression .get ());
-
-		if (primitive and primitive -> getPrimitiveType () == PrimitiveExpressionType::UNDEFINED)
+		if (expression -> getType () == ExpressionType::UNDEFINED)
 		{
 			ostream << "return";
 		}
@@ -126,7 +124,7 @@ private:
 	construct ()
 	{
 		if (not expression)
-			expression = new PrimitiveExpression (Undefined (), PrimitiveExpressionType::UNDEFINED);
+			expression = new PrimitiveExpression (Undefined (), ExpressionType::UNDEFINED);
 
 		addChildren (executionContext, expression);
 	}

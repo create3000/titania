@@ -58,6 +58,29 @@ namespace pb {
 
 const std::string pbExpression::typeName = "Expression";
 
+bool
+pbExpression::isPrimitive () const
+{
+	switch (type)
+	{
+		case ExpressionType::UNDEFINED:
+		case ExpressionType::BOOLEAN:
+		case ExpressionType::NUMBER:
+		case ExpressionType::BINARY_NUMBER:
+		case ExpressionType::OCTAL_NUMBER:
+		case ExpressionType::HEXAL_NUMBER:
+		case ExpressionType::STRING:
+		case ExpressionType::SINGLE_QUOTED_STRING:
+		case ExpressionType::DOUBLE_QUOTED_STRING:
+		case ExpressionType::NULL_OBJECT:
+			return true;
+		default:
+			return false;
+	}
+
+	return false;
+}
+
 var
 pbExpression::call (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments) const
 throw (pbException)

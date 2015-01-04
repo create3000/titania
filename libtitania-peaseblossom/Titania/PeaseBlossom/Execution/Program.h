@@ -89,6 +89,11 @@ public:
 	getStandardFunction () const final override
 	{ return standardFunction; }
 
+	virtual
+	const ptr <NativeFunction> &
+	getStandardClass (const StandardType type) const
+	throw (std::out_of_range);
+
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
@@ -137,9 +142,9 @@ private:
 
 	///  @name Members
 
-	ptr <Object>   standardObject;
-	ptr <Function> standardFunction;
-
+	ptr <Object>                 standardObject;
+	ptr <Function>               standardFunction;
+	array <ptr <NativeFunction>> standardClasses;
 };
 
 ///  @relates Program

@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_ARRAY_H__
 
 #include "../Objects/pbObject.h"
+#include "../Objects/pbFunction.h"
 
 namespace titania {
 namespace pb {
@@ -67,21 +68,19 @@ public:
 	///  @name Construction
 
 	///  Constructs new Array.
-	Array (const ptr <pbExecutionContext> & executionContext) :
-		pbObject (),
-		   array ()
-	{ }
+	Array (pbExecutionContext* const executionContext);
 
-	///  Constructs new Array.
-	Array (const ptr <pbExecutionContext> & executionContext, std::vector <var> && value) :
-		pbObject (),
-		   array (std::move (value))
-	{ }
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override;
 
 
 private:
 
-	std::vector <var> array;
+	std::deque <var> value;
 
 };
 

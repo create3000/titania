@@ -179,7 +179,7 @@ pbObject::updatePropertyDescriptor (const Identifier & identifier,
                                     const PropertyFlagsType flags,
                                     const ptr <pbFunction> & getter,
                                     const ptr <pbFunction> & setter)
-throw (std::invalid_argument)
+noexcept (true)
 {
 	try
 	{

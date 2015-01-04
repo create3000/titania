@@ -48,30 +48,32 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_MULTIPLICATION_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_MULTIPLICATION_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_ARRAY_LITERAL_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_ARRAY_LITERAL_H__
 
 #include "../Expressions/pbExpression.h"
-#include "../Expressions/PrimitiveExpression.h"
+#include "../Objects/Array.h"
+
+#include <Titania/String/to_string.h>
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript multiplication expression.
+ *  Class to represent a ECMAScript array literal expression.
  */
-class MultiplicationExpression :
+class ArrayLiteral :
 	public pbExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new MultiplicationExpression expression.
-	MultiplicationExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
-		pbExpression (ExpressionType::MULTIPLICATION_EXPRESSION),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
+	///  Constructs new ArrayLiteral expression.
+	ArrayLiteral (pbExecutionContext* const executionContext) :
+		    pbExpression (ExpressionType::ARRAY_LITERAL),
+		executionContext (executionContext),
+		     expressions ()
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -79,9 +81,22 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new MultiplicationExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
+	{
+		const auto copy = new ArrayLiteral (executionContext);
+
+		for (const auto & expression : expressions)
+			copy -> addExpression (expression -> copy (executionContext));
+
+		return copy;
+	}
 
 	///  @name Operations
+
+	void
+	addExpression (ptr <pbExpression> && value)
+	{
+		expressions .emplace_back (std::move (value));
+	}
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
@@ -89,7 +104,20 @@ public:
 	getValue () const
 	throw (pbException,
 	       pbControlFlowException) final override
-	{ return lhs -> getValue () .toNumber () * rhs -> getValue () .toNumber (); }
+	{
+		const auto array = new Array (executionContext .get ());
+
+		size_t index = 0;
+
+		for (const auto & expression : expressions)
+		{
+			array -> addPropertyDescriptor (basic::to_string (index), expression -> getValue ());
+
+			++ index;
+		}
+
+		return array;
+	}
 
 	///  @name Input/Output
 
@@ -98,14 +126,54 @@ public:
 	void
 	toStream (std::ostream & ostream) const final override
 	{
-		ostream
-			<< lhs
-			<< Generator::TidySpace
-			<< '*'
-			<< Generator::TidySpace
-			<< rhs;
-	}
+		if (expressions .empty ())
+		{
+			ostream
+				<< '['
+				<< Generator::TidySpace
+				<< ']';
+		}
+		else
+		{
+			ostream
+				<< '['
+				<< Generator::IncIndent
+				<< Generator::TidyBreak;
 
+			for (const auto & expression : std::make_pair (expressions .begin (), expressions .end () - 1))
+			{
+				ostream << Generator::Indent;
+
+				if (expression -> getType () not_eq ExpressionType::UNDEFINED)
+				{
+					ostream << expression;
+				}
+
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+			}
+
+			if (expressions .back () -> getType () not_eq ExpressionType::UNDEFINED)
+			{
+				ostream
+					<< Generator::Indent
+					<< expressions .back ();
+			}
+			else
+			{
+				ostream
+					<< Generator::Indent
+					<< ',';
+			}
+
+			ostream
+				<< Generator::TidyBreak
+				<< Generator::DecIndent
+				<< Generator::Indent
+				<< ']';
+		}
+	}
 
 private:
 
@@ -114,28 +182,14 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (lhs, rhs); }
+	{ addChildren (executionContext, expressions); }
 
 	///  @name Members
 
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	const ptr <pbExecutionContext> executionContext;
+	array <ptr <pbExpression>>     expressions;
 
 };
-
-///  @relates MultiplicationExpression
-///  @name Construction
-
-///  Constructs new MultiplicationExpression expression.
-inline
-ptr <pbExpression>
-createMultiplicationExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
-{
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (MultiplicationExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::NUMBER);
-
-	return new MultiplicationExpression (std::move (lhs), std::move (rhs));
-}
 
 } // pb
 } // titania

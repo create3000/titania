@@ -63,9 +63,10 @@ const std::string Program::typeName = "Program";
 Program::Program () :
 	pbExecutionContext (this),
 		 standardObject (new Object (nullptr)),
-	  standardFunction (new Function (this, nullptr))
+	  standardFunction (new Function (this, nullptr)),
+	   standardClasses ()
 {
-	addChildren (standardObject, standardFunction);
+	addChildren (standardObject, standardFunction, standardClasses);
 }
 
 void
@@ -76,7 +77,19 @@ noexcept (true)
 	getLocalObjects () .emplace_back (make_ptr <Object> (this));
 
 	// Add standard classes.
-	Standard::addStandardClasses (this, getGlobalObject ());
+	standardClasses = Standard::addStandardClasses (this, getGlobalObject ());
+}
+
+const ptr <NativeFunction> &
+Program::getStandardClass (const StandardType type) const
+throw (std::out_of_range)
+{
+	const auto & standardClass = standardClasses .at (size_t (type));
+
+	if (standardClass)
+		return standardClass;
+
+	throw std::out_of_range ("Program::getStandardClass");
 }
 
 ptr <Program>

@@ -91,8 +91,7 @@ public:
 
 	///  Returns wheter this expression is a primitive expression.
 	bool
-	isPrimitive () const
-	{ return type == ExpressionType::PRIMITIVE_EXPRESSION; }
+	isPrimitive () const;
 
 	///  @name Conversion operations
 

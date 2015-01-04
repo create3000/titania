@@ -14,6 +14,7 @@ libtitania_peaseblossom_la_SOURCES =  \
 	Titania/PeaseBlossom/Execution/Program.cpp \
 	Titania/PeaseBlossom/Expressions/pbExpression.cpp \
 	Titania/PeaseBlossom/InputOutput/Genrator.cpp \
+	Titania/PeaseBlossom/Objects/Array.cpp \
 	Titania/PeaseBlossom/Objects/Function.cpp \
 	Titania/PeaseBlossom/Objects/NativeFunction.cpp \
 	Titania/PeaseBlossom/Objects/Object.cpp \

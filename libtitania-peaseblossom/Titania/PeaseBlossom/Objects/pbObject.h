@@ -237,7 +237,7 @@ public:
 	                          const PropertyFlagsType = DEFAULT,
 	                          const ptr <pbFunction> & = nullptr,
 	                          const ptr <pbFunction> & = nullptr)
-	throw (std::invalid_argument);
+	noexcept (true);
 
 	void
 	removePropertyDescriptor (const Identifier &)

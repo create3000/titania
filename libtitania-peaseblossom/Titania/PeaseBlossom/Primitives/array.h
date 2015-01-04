@@ -117,6 +117,11 @@ public:
 	template <class InputIterator>
 	array (const InputIterator &, const InputIterator &);
 
+	///  Constructs new array
+	array (const size_type size) :
+		array <Type> ()
+	{ resize (size); }
+
 	///  @name Assignment operators
 
 	array &

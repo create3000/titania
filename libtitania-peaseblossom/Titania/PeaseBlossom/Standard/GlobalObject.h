@@ -52,14 +52,15 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_GLOBAL_GLOBAL_OBJECT_H__
 
 #include "../Objects/pbObject.h"
+#include "../Execution/Program.h"
 
 namespace titania {
 namespace pb {
 namespace Standard {
 
 ///  Constructs new default global object.
-void
-addStandardClasses (pbExecutionContext* const executionContext, const ptr <pbObject> & object);
+array <ptr <NativeFunction>>
+addStandardClasses (Program* const executionContext, const ptr <pbObject> & object);
 
 } // Standard
 } // pb

@@ -149,21 +149,22 @@ public:
 	void
 	toStream (std::ostream & ostream) const final override
 	{
-		const auto primitiveIteration = dynamic_cast <PrimitiveExpression*> (iterationExpression .get ());
-
 		ostream
 			<< "for"
 			<< Generator::TidySpace
 			<< '('
 			<< ';';
 
-		ostream
-			<< Generator::TidySpace
-			<< booleanExpression;
+		if (not booleanExpression -> isPrimitive () or booleanExpression -> getValue () .toBoolean () == false)
+		{
+			ostream
+				<< Generator::TidySpace
+				<< booleanExpression;
+		}
 
 		ostream << ';';
 
-		if (not (primitiveIteration and primitiveIteration -> getPrimitiveType () not_eq PrimitiveExpressionType::UNDEFINED))
+		if (iterationExpression -> getType () not_eq ExpressionType::UNDEFINED)
 		{
 			ostream
 				<< Generator::TidySpace
@@ -185,10 +186,10 @@ private:
 	construct ()
 	{
 		if (not booleanExpression)
-			booleanExpression = new PrimitiveExpression (true, PrimitiveExpressionType::BOOLEAN);
+			booleanExpression = new PrimitiveExpression (true, ExpressionType::BOOLEAN);
 
 		if (not iterationExpression)
-			iterationExpression = new PrimitiveExpression (Undefined (), PrimitiveExpressionType::UNDEFINED);
+			iterationExpression = new PrimitiveExpression (Undefined (), ExpressionType::UNDEFINED);
 
 		addChildren (booleanExpression, iterationExpression, block);
 	}

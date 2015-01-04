@@ -173,8 +173,8 @@ public:
 };
 
 // General
-const io::sequence            Grammar::WhiteSpaces ("\r\n \t");
-const io::sequence            Grammar::WhiteSpacesNoLineTerminator (" \t");
+const io::sequence            Grammar::WhiteSpaces ("\r\n \t"); // XXX utf8
+const io::sequence            Grammar::WhiteSpacesNoLineTerminator (" \t"); // XXX utf8
 const io::single_line_comment Grammar::SingleLineComment ("//");
 const io::multi_line_comment  Grammar::MultiLineComment ("/*", "*/");
 

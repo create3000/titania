@@ -141,7 +141,7 @@ ptr <pbExpression>
 createLessExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (LessExpression (std::move (lhs), std::move (rhs)) .getValue (), PrimitiveExpressionType::BOOLEAN);
+		return new PrimitiveExpression (LessExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::BOOLEAN);
 
 	return new LessExpression (std::move (lhs), std::move (rhs));
 }

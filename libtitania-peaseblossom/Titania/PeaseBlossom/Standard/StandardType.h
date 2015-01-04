@@ -48,94 +48,23 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_MULTIPLICATION_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_MULTIPLICATION_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_STANDARD_STANDARD_TYPE_H__
+#define __TITANIA_PEASE_BLOSSOM_STANDARD_STANDARD_TYPE_H__
 
-#include "../Expressions/pbExpression.h"
-#include "../Expressions/PrimitiveExpression.h"
+#include <cstdint>
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a ECMAScript multiplication expression.
- */
-class MultiplicationExpression :
-	public pbExpression
+enum class StandardType :
+	size_t
 {
-public:
+	OBJECT,
+	FUNCTION,
 
-	///  @name Construction
-
-	///  Constructs new MultiplicationExpression expression.
-	MultiplicationExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
-		pbExpression (ExpressionType::MULTIPLICATION_EXPRESSION),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
-	{ construct (); }
-
-	///  Creates a copy of this object.
-	virtual
-	ptr <pbExpression>
-	copy (pbExecutionContext* const executionContext) const
-	noexcept (true) final override
-	{ return new MultiplicationExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
-
-	///  @name Operations
-
-	///  Converts its input argument to either Primitive or Object type.
-	virtual
-	var
-	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
-	{ return lhs -> getValue () .toNumber () * rhs -> getValue () .toNumber (); }
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{
-		ostream
-			<< lhs
-			<< Generator::TidySpace
-			<< '*'
-			<< Generator::TidySpace
-			<< rhs;
-	}
-
-
-private:
-
-	///  @name Construction
-
-	///  Performs neccessary operations after construction.
-	void
-	construct ()
-	{ addChildren (lhs, rhs); }
-
-	///  @name Members
-
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	SIZE
 
 };
-
-///  @relates MultiplicationExpression
-///  @name Construction
-
-///  Constructs new MultiplicationExpression expression.
-inline
-ptr <pbExpression>
-createMultiplicationExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
-{
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (MultiplicationExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::NUMBER);
-
-	return new MultiplicationExpression (std::move (lhs), std::move (rhs));
-}
 
 } // pb
 } // titania

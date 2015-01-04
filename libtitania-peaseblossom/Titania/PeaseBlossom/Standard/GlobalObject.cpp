@@ -118,42 +118,52 @@ struct Constructor
 };
 
 static
-void
+ptr <NativeFunction> 
 initialize (pbExecutionContext* const ec, const ptr <pbObject> & object)
 {
-	const auto standardFunction = ec -> getStandardFunction ();
-	const auto constructor      = make_ptr <NativeFunction> (ec, "Function", Constructor { }, 1);
+	const auto & standardFunction = ec -> getStandardFunction ();
+	const auto   constructor      = make_ptr <NativeFunction> (ec, "Function", Constructor { }, 1);
 
-	constructor -> addPropertyDescriptor ("constructor", constructor,      NONE);
-	constructor -> addPropertyDescriptor ("prototype",   standardFunction, NONE);
+	constructor -> addPropertyDescriptor ("__proto__",   standardFunction, WRITABLE | CONFIGURABLE);
+	constructor -> addPropertyDescriptor ("constructor", constructor,      WRITABLE | CONFIGURABLE);
+	constructor -> addPropertyDescriptor ("prototype",   standardFunction, WRITABLE | CONFIGURABLE);
 
-	object -> addPropertyDescriptor ("Function", constructor, NONE);
+	object -> addPropertyDescriptor ("Function", constructor, WRITABLE | CONFIGURABLE);
 
-	standardFunction -> addPropertyDescriptor ("constructor", constructor, NONE);
+	standardFunction -> addPropertyDescriptor ("constructor", constructor, WRITABLE | CONFIGURABLE);
 	// standardFunction prototype remains undefined.
+
+	return constructor;
 }
 
 } // Function
 
-void
-addStandardClasses (pbExecutionContext* const ec, const ptr <pbObject> & object)
+array <ptr <NativeFunction>>
+addStandardClasses (Program* const ec, const ptr <pbObject> & object)
 {
-	Function::initialize (ec, object);
-	Object::initialize (ec, object);
+	array <ptr <NativeFunction>> standardClasses ((size_t) StandardType::SIZE);
+	
+	const auto functionClass = Function::initialize (ec, object);
+	const auto objectClass   = Object::initialize (ec, object, functionClass);
+
+	standardClasses [(size_t) StandardType::FUNCTION] = functionClass;
+	standardClasses [(size_t) StandardType::OBJECT]   = objectClass;
 
 	// Properties
 
-	object -> addPropertyDescriptor ("this",      object,               NONE);
-	object -> addPropertyDescriptor ("NaN",       NaN (),               NONE);
-	object -> addPropertyDescriptor ("Infinity",  POSITIVE_INFINITY (), NONE);
-	object -> addPropertyDescriptor ("undefined", Undefined (),         NONE);
-	object -> addPropertyDescriptor ("Math",      new Math (ec),        NONE);
+	object -> addPropertyDescriptor ("this",      object,               WRITABLE | CONFIGURABLE);
+	object -> addPropertyDescriptor ("NaN",       NaN (),               WRITABLE | CONFIGURABLE);
+	object -> addPropertyDescriptor ("Infinity",  POSITIVE_INFINITY (), WRITABLE | CONFIGURABLE);
+	object -> addPropertyDescriptor ("undefined", Undefined (),         WRITABLE | CONFIGURABLE);
+	object -> addPropertyDescriptor ("Math",      new Math (ec),        WRITABLE | CONFIGURABLE);
 
 	// Functions
 
-	object -> addPropertyDescriptor ("isNaN",      new NativeFunction (ec, "isNaN",      isNaN { },      1), NONE);
-	object -> addPropertyDescriptor ("parseInt",   new NativeFunction (ec, "parseInt",   parseInt { },   1), NONE);
-	object -> addPropertyDescriptor ("parseFloat", new NativeFunction (ec, "parseFloat", parseFloat { }, 1), NONE);
+	object -> addPropertyDescriptor ("isNaN",      new NativeFunction (ec, "isNaN",      isNaN { },      1), WRITABLE | CONFIGURABLE);
+	object -> addPropertyDescriptor ("parseInt",   new NativeFunction (ec, "parseInt",   parseInt { },   1), WRITABLE | CONFIGURABLE);
+	object -> addPropertyDescriptor ("parseFloat", new NativeFunction (ec, "parseFloat", parseFloat { }, 1), WRITABLE | CONFIGURABLE);
+	
+	return standardClasses;
 }
 
 } // Standard

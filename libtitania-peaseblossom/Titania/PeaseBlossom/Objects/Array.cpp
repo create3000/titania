@@ -48,31 +48,21 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_TYPE_H__
-#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_TYPE_H__
-
-#include <cstdint>
+#include "Array.h"
 
 namespace titania {
 namespace pb {
 
-enum class PrimitiveExpressionType :
-	uint8_t
-{
-	UNDEFINED,
-	BOOLEAN,
-	NUMBER,
-	BINARY_NUMBER,
-	OCTAL_NUMBER,
-	HEXAL_NUMBER,
-	STRING,
-	SINGLE_QUOTED_STRING,
-	DOUBLE_QUOTED_STRING,
-	NULL_OBJECT
+Array::Array (pbExecutionContext* const executionContext) :
+	pbObject (),
+	   value ()
+{ }
 
-};
+void
+Array::toStream (std::ostream & ostream) const
+{
+	ostream << "[Array::toStream]";
+}
 
 } // pb
 } // titania
-
-#endif

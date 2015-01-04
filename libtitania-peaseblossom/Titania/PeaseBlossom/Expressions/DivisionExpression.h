@@ -132,7 +132,7 @@ ptr <pbExpression>
 createDivisionExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (DivisionExpression (std::move (lhs), std::move (rhs)) .getValue (), PrimitiveExpressionType::NUMBER);
+		return new PrimitiveExpression (DivisionExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::NUMBER);
 
 	return new DivisionExpression (std::move (lhs), std::move (rhs));
 }

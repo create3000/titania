@@ -134,7 +134,7 @@ ptr <pbExpression>
 createRemainderExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (RemainderExpression (std::move (lhs), std::move (rhs)) .getValue (), PrimitiveExpressionType::NUMBER);
+		return new PrimitiveExpression (RemainderExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::NUMBER);
 
 	return new RemainderExpression (std::move (lhs), std::move (rhs));
 }

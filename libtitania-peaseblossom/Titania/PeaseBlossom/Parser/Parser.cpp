@@ -395,7 +395,7 @@ Parser::nullLiteral (ptr <pbExpression> & value)
 
 	if (Grammar::null (istream))
 	{
-		value = new PrimitiveExpression (nullptr, PrimitiveExpressionType::NULL_OBJECT);
+		value = new PrimitiveExpression (nullptr, ExpressionType::NULL_OBJECT);
 		return true;
 	}
 
@@ -411,13 +411,13 @@ Parser::booleanLiteral (ptr <pbExpression> & value)
 
 	if (Grammar::true_ (istream))
 	{
-		value = new PrimitiveExpression (true, PrimitiveExpressionType::BOOLEAN);
+		value = new PrimitiveExpression (true, ExpressionType::BOOLEAN);
 		return true;
 	}
 
 	if (Grammar::false_ (istream))
 	{
-		value = new PrimitiveExpression (false, PrimitiveExpressionType::BOOLEAN);
+		value = new PrimitiveExpression (false, ExpressionType::BOOLEAN);
 		return true;
 	}
 
@@ -457,7 +457,7 @@ Parser::decimalLiteral (ptr <pbExpression> & value)
 
 	if (istream >> std::dec >> number)
 	{
-		value = new PrimitiveExpression (number, PrimitiveExpressionType::NUMBER);
+		value = new PrimitiveExpression (number, ExpressionType::NUMBER);
 		return true;
 	}
 
@@ -479,7 +479,7 @@ Parser::binaryIntegerLiteral (ptr <pbExpression> & value)
 
 		if (Grammar::BinaryDigits (istream, digits))
 		{
-			value = new PrimitiveExpression ((double) math::strtoul (digits .c_str (), 2), PrimitiveExpressionType::BINARY_NUMBER);
+			value = new PrimitiveExpression ((double) math::strtoul (digits .c_str (), 2), ExpressionType::BINARY_NUMBER);
 			return true;
 		}
 
@@ -502,7 +502,7 @@ Parser::octalIntegerLiteral (ptr <pbExpression> & value)
 
 		if (istream >> std::oct >> number)
 		{
-			value = new PrimitiveExpression (number, PrimitiveExpressionType::OCTAL_NUMBER);
+			value = new PrimitiveExpression (number, ExpressionType::OCTAL_NUMBER);
 			return true;
 		}
 
@@ -525,7 +525,7 @@ Parser::hexIntegerLiteral (ptr <pbExpression> & value)
 
 		if (istream >> std::hex >> number)
 		{
-			value = new PrimitiveExpression (number, PrimitiveExpressionType::HEXAL_NUMBER);
+			value = new PrimitiveExpression (number, ExpressionType::HEXAL_NUMBER);
 			return true;
 		}
 
@@ -549,7 +549,7 @@ Parser::stringLiteral (ptr <pbExpression> & value)
 	{
 		lines (characters);
 
-		value = new PrimitiveExpression (std::move (characters), PrimitiveExpressionType::DOUBLE_QUOTED_STRING);
+		value = new PrimitiveExpression (std::move (characters), ExpressionType::DOUBLE_QUOTED_STRING);
 		return true;
 	}
 
@@ -557,7 +557,7 @@ Parser::stringLiteral (ptr <pbExpression> & value)
 	{
 		lines (characters);
 
-		value = new PrimitiveExpression (std::move (characters), PrimitiveExpressionType::SINGLE_QUOTED_STRING);
+		value = new PrimitiveExpression (std::move (characters), ExpressionType::SINGLE_QUOTED_STRING);
 		return true;
 	}
 
@@ -593,8 +593,8 @@ Parser::primaryExpression (ptr <pbExpression> & value)
 	if (literal (value))
 		return true;
 
-	//if (arrayLiteral (value))
-	//	return true;
+	if (arrayLiteral (value))
+		return true;
 
 	if (objectLiteral (value))
 		return true;
@@ -612,6 +612,119 @@ Parser::primaryExpression (ptr <pbExpression> & value)
 		}
 
 		throw SyntaxError ("Expected expression after '('.");
+	}
+
+	return false;
+}
+
+bool
+Parser::arrayLiteral (ptr <pbExpression> & value)
+{
+	//__LOG__ << (char) istream .peek () << std::endl;
+
+	comments ();
+
+	if (Grammar::OpenBracket (istream))
+	{
+		auto arrayLiteral = make_ptr <ArrayLiteral> (getExecutionContext ());
+
+		if (elision (arrayLiteral))
+		{
+			comments ();
+
+			if (Grammar::CloseBracket (istream))
+			{
+				value = std::move (arrayLiteral);
+				return true;
+			}
+		}	
+
+		comments ();
+
+		if (Grammar::CloseBracket (istream))
+		{
+			value = std::move (arrayLiteral);
+			return true;
+		}
+
+		if (elementList (arrayLiteral))
+		{
+			comments ();
+
+			if (Grammar::Comma (istream))
+			{
+				elision (arrayLiteral);
+
+				comments ();
+			}
+
+			if (Grammar::CloseBracket (istream))
+			{
+				value = std::move (arrayLiteral);
+				return true;
+			}
+
+			throw SyntaxError ("Expected a ']' after array element list.");
+		}
+	}
+
+	return false;
+}
+
+bool
+Parser::elementList (const ptr <ArrayLiteral> & arrayLiteral)
+{
+	//__LOG__ << (char) istream .peek () << std::endl;
+	
+	elision (arrayLiteral);
+
+	ptr <pbExpression> value;
+
+	if (assignmentExpression (value))
+	{
+		arrayLiteral -> addExpression (std::move (value));
+
+		for ( ; ;)
+		{
+			comments ();
+
+			if (Grammar::Comma (istream))
+			{
+				elision (arrayLiteral);
+
+				if (assignmentExpression (value))
+				{
+					arrayLiteral -> addExpression (std::move (value));
+					continue;
+				}
+			}
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool
+Parser::elision (const ptr <ArrayLiteral> & arrayLiteral)
+{
+	comments ();
+
+	if (Grammar::Comma (istream))
+	{
+		arrayLiteral -> addExpression (new PrimitiveExpression (Undefined (), ExpressionType::UNDEFINED));
+
+		comments ();
+
+		while (Grammar::Comma (istream))
+		{
+			arrayLiteral -> addExpression (new PrimitiveExpression (Undefined (), ExpressionType::UNDEFINED));
+
+			comments ();
+		}
+
+		return true;
 	}
 
 	return false;
@@ -823,7 +936,7 @@ Parser::propertyName (ptr <pbExpression> & value)
 
 	if (identifierName (propertyNameCharacters))
 	{
-		value = new PrimitiveExpression (std::move (propertyNameCharacters), PrimitiveExpressionType::STRING);
+		value = new PrimitiveExpression (std::move (propertyNameCharacters), ExpressionType::STRING);
 		return true;
 	}
 

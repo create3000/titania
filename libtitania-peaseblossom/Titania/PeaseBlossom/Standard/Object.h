@@ -52,14 +52,15 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_GLOBAL_OBJECT_H__
 
 #include "../Objects/pbObject.h"
+#include "../Objects/NativeFunction.h"
 
 namespace titania {
 namespace pb {
 namespace Standard {
 namespace Object {
 
-void
-initialize (pbExecutionContext* const ec, const ptr <pbObject> & object);
+ptr <NativeFunction> 
+initialize (pbExecutionContext* const ec, const ptr <pbObject> & object, const ptr <NativeFunction> & functionClass);
 
 } // Object
 } // Standard

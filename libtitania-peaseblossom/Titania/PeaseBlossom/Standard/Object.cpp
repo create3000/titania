@@ -51,6 +51,7 @@
 #include "Object.h"
 
 #include "../Objects/Object.h"
+#include "../Objects/Function.h"
 #include "../Objects/NativeFunction.h"
 
 namespace titania {
@@ -98,18 +99,23 @@ struct toString
 
 };
 
-void
-initialize (pbExecutionContext* const ec, const ptr <pbObject> & object)
+ptr <NativeFunction> 
+initialize (pbExecutionContext* const ec, const ptr <pbObject> & object, const ptr <NativeFunction> & functionClass)
 {
-	const auto standardObject = ec -> getStandardObject ();
-	const auto constructor    = make_ptr <NativeFunction> (ec, "Object", Constructor { }, Constructor { }, 1);
-	
-	constructor -> updatePropertyDescriptor ("prototype", standardObject, NONE);
+	const auto & standardFunction = ec -> getStandardFunction ();
+	const auto & standardObject   = ec -> getStandardObject ();
+	const auto   constructor      = make_ptr <NativeFunction> (ec, "Object", Constructor { }, Constructor { }, 1);
 
-	object -> addPropertyDescriptor ("Object", constructor, NONE);
+	constructor -> updatePropertyDescriptor ("__proto__",   standardFunction, WRITABLE | CONFIGURABLE);
+	constructor -> updatePropertyDescriptor ("constructor", functionClass,    WRITABLE | CONFIGURABLE);
+	constructor -> updatePropertyDescriptor ("prototype",   standardObject,   WRITABLE | CONFIGURABLE);
 
-	standardObject -> addPropertyDescriptor ("constructor", constructor, NONE);
-	standardObject -> addPropertyDescriptor ("toString", new NativeFunction (ec, "toString", toString { }, 0), NONE);
+	object -> addPropertyDescriptor ("Object", constructor, WRITABLE | CONFIGURABLE);
+
+	standardObject -> addPropertyDescriptor ("constructor", constructor, WRITABLE | CONFIGURABLE);
+	standardObject -> addPropertyDescriptor ("toString", new NativeFunction (ec, "toString", toString { }, 0), WRITABLE | CONFIGURABLE);
+
+	return constructor;
 }
 
 } // Object

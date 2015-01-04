@@ -160,7 +160,7 @@ ptr <pbExpression>
 createStrictEqualExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (StrictEqualExpression (std::move (lhs), std::move (rhs)) .getValue (), PrimitiveExpressionType::BOOLEAN);
+		return new PrimitiveExpression (StrictEqualExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::BOOLEAN);
 
 	return new StrictEqualExpression (std::move (lhs), std::move (rhs));
 }

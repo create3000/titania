@@ -58,12 +58,14 @@
 #include "../Objects/pbFunction.h"
 #include "../Objects/pbObject.h"
 #include "../Primitives/array.h"
+#include "../Standard/StandardType.h"
 
 namespace titania {
 namespace pb {
 
 class Function;
 class Object;
+class NativeFunction;
 
 class pbExecutionContext :
 	virtual public pbBlock,
@@ -113,6 +115,12 @@ public:
 	const ptr <Function> &
 	getStandardFunction () const
 	{ return getRootContext () -> getStandardFunction (); }
+
+	virtual
+	const ptr <NativeFunction> &
+	getStandardClass (const StandardType type) const
+	throw (std::out_of_range)
+	{ return getRootContext () -> getStandardClass (type); }
 
 	/// @name Operations
 
