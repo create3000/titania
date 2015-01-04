@@ -62,7 +62,7 @@ throw (TypeError) :
 	try
 	{
 		const auto & standardObject = executionContext -> getStandardObject ();
-		const auto & constructor    = executionContext -> getStandardClass (StandardType::OBJECT);
+		const auto & constructor    = executionContext -> getStandardClass (StandardClassType::OBJECT);
 
 		addPropertyDescriptor ("__proto__",   standardObject, WRITABLE | CONFIGURABLE);
 		addPropertyDescriptor ("constructor", constructor,    WRITABLE | CONFIGURABLE);
@@ -86,7 +86,7 @@ throw (TypeError) :
 		try
 		{
 			const auto & standardObject = executionContext -> getStandardObject ();
-			const auto & constructor    = executionContext -> getStandardClass (StandardType::OBJECT);
+			const auto & constructor    = executionContext -> getStandardClass (StandardClassType::OBJECT);
 
 			addPropertyDescriptor ("__proto__",   standardObject, WRITABLE | CONFIGURABLE);
 			addPropertyDescriptor ("constructor", constructor,    WRITABLE | CONFIGURABLE);

@@ -72,20 +72,18 @@ public:
 	{ throw std::invalid_argument ("SFVec4::getType"); }
 
 	static
-	const pb::Identifier &
-	getIdentifier ()
-	{ return identifier; }
+	const std::string &
+	getTypeName ()
+	{ return typeName; }
 
 	static
 	pb::ptr <pb::NativeFunction>
-	initialize (Context* const context, const pb::ptr <pb::Program> & ec, const pb::ptr <pb::pbObject> & global)
+	initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 	{
 		using namespace std::placeholders;
 
-		const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getIdentifier () .getName (), construct, nullptr, 4);
+		const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), construct, nullptr, 4);
 		const auto prototype = function -> getObject ("prototype");
-
-		global -> addPropertyDescriptor (getIdentifier () .getName (), function, pb::NONE);
 
 		prototype -> addPropertyDescriptor ("add",      pb::make_ptr <pb::NativeFunction> (ec, "add",      add,      1), pb::NONE);
 		prototype -> addPropertyDescriptor ("toString", pb::make_ptr <pb::NativeFunction> (ec, "toString", toString, 0), pb::NONE);
@@ -103,7 +101,8 @@ protected:
 	pb::var
 	create (const pb::ptr <pb::pbExecutionContext> & ec, Type* const field)
 	{
-		const auto object = ec -> createObject (T::getIdentifier ());
+		const auto context = getContext (ec);
+		const auto object  = context -> getClass (T::getType ()) -> createInstance (ec);
 
 		setUserData <T> (ec, object, field);
 
@@ -195,8 +194,7 @@ private:
 
 	///  @name Members
 
-	static const std::string    typeName;
-	static const pb::Identifier identifier;
+	static const std::string typeName;
 
 };
 

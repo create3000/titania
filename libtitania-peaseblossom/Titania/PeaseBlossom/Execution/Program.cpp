@@ -50,9 +50,12 @@
 
 #include "Program.h"
 
-#include "../Standard/GlobalObject.h"
-#include "../Objects/Object.h"
 #include "../Objects/Function.h"
+#include "../Objects/Object.h"
+
+#include "../Standard/Function.h"
+#include "../Standard/Global.h"
+#include "../Standard/Object.h"
 
 namespace titania {
 namespace pb {
@@ -62,9 +65,9 @@ const std::string Program::typeName = "Program";
 ///  Constructs new Program.
 Program::Program () :
 	pbExecutionContext (this),
-		 standardObject (new Object (nullptr)),
+	    standardObject (new Object (nullptr)),
 	  standardFunction (new Function (this, nullptr)),
-	   standardClasses ()
+	   standardClasses ((size_t) StandardClassType::SIZE)
 {
 	addChildren (standardObject, standardFunction, standardClasses);
 }
@@ -73,15 +76,24 @@ void
 Program::addStandardClasses ()
 noexcept (true)
 {
+	auto functionClass = Standard::Function::initialize (this);
+	auto objectClass   = Standard::Object::initialize (this, functionClass);
+
+	standardClasses [(size_t) StandardClassType::FUNCTION] = functionClass;
+	standardClasses [(size_t) StandardClassType::OBJECT]   = objectClass;
+
 	// Add global object.
 	getLocalObjects () .emplace_back (make_ptr <Object> (this));
 
-	// Add standard classes.
-	standardClasses = Standard::addStandardClasses (this, getGlobalObject ());
+	getGlobalObject () -> addPropertyDescriptor ("Function", functionClass, WRITABLE | CONFIGURABLE);
+	getGlobalObject () -> addPropertyDescriptor ("Object",   objectClass,   WRITABLE | CONFIGURABLE);
+
+	// Add global properties and functions.
+	Standard::Global::initialize (this, getGlobalObject ());
 }
 
 const ptr <NativeFunction> &
-Program::getStandardClass (const StandardType type) const
+Program::getStandardClass (const StandardClassType type) const
 throw (std::out_of_range)
 {
 	const auto & standardClass = standardClasses .at (size_t (type));

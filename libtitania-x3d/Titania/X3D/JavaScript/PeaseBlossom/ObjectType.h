@@ -58,8 +58,9 @@ namespace peaseblossom {
 enum class ObjectType
 {
 	SFVec4d,
-	SFVec4f
+	SFVec4f,
 
+	SIZE
 };
 
 } // peaseblossom

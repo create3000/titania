@@ -55,10 +55,10 @@ namespace X3D {
 namespace peaseblossom {
 
 template <>
-const pb::Identifier SFVec4d::identifier = "SFVec4d";
+const std::string SFVec4d::typeName = "SFVec4d";
 
 template <>
-const pb::Identifier SFVec4f::identifier = "SFVec4f";
+const std::string SFVec4f::typeName = "SFVec4f";
 
 } // peaseblossom
 } // X3D

@@ -91,7 +91,7 @@ public:
 
 	virtual
 	const ptr <NativeFunction> &
-	getStandardClass (const StandardType type) const
+	getStandardClass (const StandardClassType type) const
 	throw (std::out_of_range);
 
 	///  @name Input/Output

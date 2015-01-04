@@ -66,7 +66,7 @@ pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::s
 	try
 	{
 		const auto & standardFunction = executionContext -> getStandardFunction ();
-		const auto & constructor      = executionContext -> getStandardClass (StandardType::FUNCTION);
+		const auto & constructor      = executionContext -> getStandardClass (StandardClassType::FUNCTION);
 
 		addProperties ();
 		addPropertyDescriptor ("__proto__",   standardFunction);

@@ -428,34 +428,9 @@ print (new SFVec4f (1,2,3,4));
 print (new SFVec4f (1,2,3,4) .add (new SFVec4f (2,3,4,5)));
 print (f);
 
-print (Function .__proto__);
-print (Function .constructor);
-print (Function .prototype);
-
-print ();
-print (Function .__proto__ .__proto__);
-print (Function .__proto__ .constructor);
-print (Function .__proto__ .prototype);
-
-print ();
-print (function () { } .__proto__);
-print (function () { } .constructor);
-print (function () { } .prototype);
-
-print ();
-print (Object .__proto__);
-print (Object .constructor);
-print (Object .prototype);
-
-print ();
-print ({} .__proto__ .__proto__);
-print ({} .__proto__ .constructor);
-print ({} .__proto__ .prototype);
-
-print ();
-print ({} .__proto__);
-print ({} .constructor);
-print ({} .prototype);
+function f () {}
+f .toString = {} .toString
+print (f);
 
 "
 "peaseblossom:"

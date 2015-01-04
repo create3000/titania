@@ -53,6 +53,7 @@
 
 #include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"
+#include "ObjectType.h"
 
 #include <Titania/PeaseBlossom/pb.h>
 
@@ -101,6 +102,9 @@ public:
 	{ return containerField; }
 
 	///  @name Member access
+	
+	const pb::ptr <pb::NativeFunction> &
+	getClass (const ObjectType type) const;
 
 	void
 	addObject (X3D::X3DFieldDefinition* const, pb::pbObject* const)
@@ -174,6 +178,7 @@ private:
 
 	std::vector <basic::uri>                           worldURL;
 	pb::ptr <pb::Program>                              program;
+	std::vector <pb::ptr <pb::NativeFunction>>         classes;
 	std::map <X3D::X3DFieldDefinition*, pb::pbObject*> objects;
 
 };

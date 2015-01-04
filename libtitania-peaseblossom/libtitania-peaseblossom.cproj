@@ -50,11 +50,11 @@
     <Compile Include="Titania\PeaseBlossom\Objects\pbObject.cpp" />
     <Compile Include="Titania\PeaseBlossom\Parser\Parser.cpp" />
     <Compile Include="Titania\PeaseBlossom\Primitives\var.cpp" />
-    <Compile Include="Titania\PeaseBlossom\Standard\GlobalObject.cpp" />
     <Compile Include="Titania\PeaseBlossom\Standard\Math.cpp" />
     <Compile Include="Titania\PeaseBlossom\Standard\Object.cpp" />
     <Compile Include="Titania\PeaseBlossom\InputOutput\Genrator.cpp" />
     <Compile Include="Titania\PeaseBlossom\Objects\Array.cpp" />
+    <Compile Include="Titania\PeaseBlossom\Standard\Global.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -133,7 +133,6 @@
     <None Include="Titania\PeaseBlossom\Primitives\array.h" />
     <None Include="Titania\PeaseBlossom\Primitives\ptr.h" />
     <None Include="Titania\PeaseBlossom\Primitives\var.h" />
-    <None Include="Titania\PeaseBlossom\Standard\GlobalObject.h" />
     <None Include="Titania\PeaseBlossom\Standard\Math.h" />
     <None Include="Titania\PeaseBlossom\Standard\Object.h" />
     <None Include="Titania\PeaseBlossom\Expressions\AssignmentOperatorType.h" />
@@ -143,6 +142,8 @@
     <None Include="Titania\PeaseBlossom\Base\pbUserData.h" />
     <None Include="Titania\PeaseBlossom\InputOutput\Generator.h" />
     <None Include="Titania\PeaseBlossom\Expressions\ArrayLiteral.h" />
-    <None Include="Titania\PeaseBlossom\Standard\StandardType.h" />
+    <None Include="Titania\PeaseBlossom\Standard\StandardClassType.h" />
+    <None Include="Titania\PeaseBlossom\Standard\Function.h" />
+    <None Include="Titania\PeaseBlossom\Standard\Global.h" />
   </ItemGroup>
 </Project>

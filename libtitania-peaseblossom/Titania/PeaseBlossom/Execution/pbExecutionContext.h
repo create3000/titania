@@ -58,7 +58,7 @@
 #include "../Objects/pbFunction.h"
 #include "../Objects/pbObject.h"
 #include "../Primitives/array.h"
-#include "../Standard/StandardType.h"
+#include "../Standard/StandardClassType.h"
 
 namespace titania {
 namespace pb {
@@ -118,19 +118,15 @@ public:
 
 	virtual
 	const ptr <NativeFunction> &
-	getStandardClass (const StandardType type) const
+	getStandardClass (const StandardClassType type) const
 	throw (std::out_of_range)
 	{ return getRootContext () -> getStandardClass (type); }
 
-	/// @name Operations
-
-	var
-	createObject (const Identifier &)
-	throw (std::out_of_range);
+	/// @name Function handling
 
 	///  Checks wehter the global object has a function @a name.
 	bool
-	hasFunctionDeclaration (const Identifier & identifier) const
+	hasFunctionDeclaration (const std::string & identifier) const
 	noexcept (true)
 	{ return functions .count (identifier); }
 
@@ -150,18 +146,18 @@ public:
 	///  Removes the function identified by @a name from this execution context.
 	virtual
 	void
-	removeFunctionDeclaration (const Identifier & name)
+	removeFunctionDeclaration (const std::string & name)
 	noexcept (true);
 
 	///  Returns @a name local function, throws std::invalid_argument if function .name is empty or a function with
 	///  name not exists.
 	virtual
 	const ptr <pbFunction> &
-	getFunctionDeclaration (const Identifier & identifier) const
+	getFunctionDeclaration (const std::string & identifier) const
 	throw (std::out_of_range)
 	{ return functions .at (identifier); }
 
-	const std::map <Identifier, ptr <pbFunction>> &
+	const std::map <std::string, ptr <pbFunction>> &
 	getFunctionDeclarations () const
 	{ return functions; }
 
@@ -191,6 +187,7 @@ protected:
 	friend class VariableDeclaration;
 	friend class VariableExpression;
 	friend class Function;
+	friend class Parser;
 
 	///  @name Construction
 
@@ -236,7 +233,7 @@ private:
 
 	const ptr <pbExecutionContext>           executionContext;
 	array <ptr <pbObject>>                   localObjects;
-	std::map <Identifier, ptr <pbFunction>>  functions;
+	std::map <std::string, ptr <pbFunction>> functions;
 	bool                                     strict;
 
 };

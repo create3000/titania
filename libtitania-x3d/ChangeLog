@@ -1,3 +1,11 @@
+2015-01-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Context.h:
+	* Context.cpp:
+	* ObjectType.h:
+	* SFVec4.h:
+	* SFVec4f.cpp: 
+
 2015-01-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.cpp:

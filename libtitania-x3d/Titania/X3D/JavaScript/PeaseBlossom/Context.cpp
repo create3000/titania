@@ -71,6 +71,7 @@ throw (std::exception) :
 	X3D::X3DJavaScriptContext (script, ecmascript),
 	                 worldURL ({ uri }),
 	                  program (pb::createProgram ()),
+	                  classes (size_t (ObjectType::SIZE)),
 	                  objects ()
 {
 	__LOG__ << std::endl;
@@ -117,26 +118,38 @@ Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
 {
 	__LOG__ << identifier << std::endl;
 
-	using namespace std::placeholders;
-
-	using Initialize = std::function <pb::ptr <pb::NativeFunction> (Context* const, const pb::ptr <pb::Program> &, const pb::ptr <pb::pbObject> &)>;
-
-	static const std::map <pb::Identifier, Initialize> functions = {
-		std::make_pair (pb::Identifier ("SFVec4d"), SFVec4d::initialize),
-		std::make_pair (pb::Identifier ("SFVec4f"), SFVec4f::initialize)
+	static const std::map <pb::Identifier, ObjectType> types = {
+		std::make_pair (pb::Identifier ("SFVec4d"), SFVec4d::getType ()),
+		std::make_pair (pb::Identifier ("SFVec4f"), SFVec4f::getType ())
 	};
 
 	try
 	{
-		auto function = functions .at (identifier) (this, program, program -> getGlobalObject ());
-
-		program -> addFunctionDeclaration (std::move (function));
+		object -> addPropertyDescriptor (identifier, getClass (types .at (identifier)), pb::WRITABLE | pb::CONFIGURABLE);
 		return true;
 	}
 	catch (const std::out_of_range &)
 	{
 		return false;
 	}
+}
+
+const pb::ptr <pb::NativeFunction> &
+Context::getClass (const ObjectType type) const
+{
+	using Initialize = std::function <pb::ptr <pb::NativeFunction> (Context* const, const pb::ptr <pb::Program> &)>;
+
+	static const std::map <ObjectType, Initialize> functions = {
+		std::make_pair (SFVec4d::getType (), SFVec4d::initialize),
+		std::make_pair (SFVec4f::getType (), SFVec4f::initialize)
+	};
+
+	auto & standardClass = const_cast <Context*> (this) -> classes [size_t (type)];
+
+	if (standardClass)
+		return standardClass;
+
+	return standardClass = functions .at (type) (const_cast <Context*> (this), program);
 }
 
 void
@@ -336,6 +349,7 @@ Context::dispose ()
 {
 	const auto p = program .get ();
 
+	classes .clear ();
 	program .dispose ();
 
 	pb::debug_roots (p);

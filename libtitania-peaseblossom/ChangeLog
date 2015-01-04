@@ -2,6 +2,27 @@
 
 	* Makefile.am:
 	* libtitania-peaseblossom.cproj:
+	* Object.h:
+	* Global.h:
+	* Math.cpp:
+	* Object.cpp:
+	* Global.cpp:
+	* Program.h:
+	* Function.h:
+	* Object.cpp:
+	* Program.cpp:
+	* pbFunction.cpp:
+	* GlobalObject.h:
+	* StandardType.h:
+	* GlobalObject.cpp:
+	* StandardClassType.h:
+	* pbExecutionContext.h:
+	* pbExecutionContext.cpp: 
+
+2015-01-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-peaseblossom.cproj:
 	* Expressions.h:
 	* Array.h:
 	* Parser.h:

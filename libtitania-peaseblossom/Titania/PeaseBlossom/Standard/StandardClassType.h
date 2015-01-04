@@ -56,7 +56,7 @@
 namespace titania {
 namespace pb {
 
-enum class StandardType :
+enum class StandardClassType :
 	size_t
 {
 	OBJECT,

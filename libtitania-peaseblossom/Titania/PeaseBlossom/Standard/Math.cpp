@@ -62,33 +62,33 @@ const std::string Math::className = "Math";
 Math::Math (pbExecutionContext* const ec) :
 	Object (ec)
 {
-	addPropertyDescriptor ("E",       M_E,       NONE);
-	addPropertyDescriptor ("LN10",    M_LN10,    NONE);
-	addPropertyDescriptor ("LN2",     M_LN2,     NONE);
-	addPropertyDescriptor ("LOG2E",   M_LOG2E,   NONE);
-	addPropertyDescriptor ("LOG10E",  M_LOG10E,  NONE);
-	addPropertyDescriptor ("PI",      M_PI,      NONE);
-	addPropertyDescriptor ("SQRT1_2", M_SQRT1_2, NONE);
-	addPropertyDescriptor ("SQRT2",   M_SQRT2,   NONE);
+	addPropertyDescriptor ("E",       M_E,       WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("LN10",    M_LN10,    WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("LN2",     M_LN2,     WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("LOG2E",   M_LOG2E,   WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("LOG10E",  M_LOG10E,  WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("PI",      M_PI,      WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("SQRT1_2", M_SQRT1_2, WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("SQRT2",   M_SQRT2,   WRITABLE | CONFIGURABLE);
 
-	addPropertyDescriptor ("abs",    new NativeFunction (ec, "abs",    abs,    1), NONE);
-	addPropertyDescriptor ("acos",   new NativeFunction (ec, "acos",   acos,   1), NONE);
-	addPropertyDescriptor ("asin",   new NativeFunction (ec, "asin",   asin,   1), NONE);
-	addPropertyDescriptor ("atan",   new NativeFunction (ec, "atan",   atan,   1), NONE);
-	addPropertyDescriptor ("atan2",  new NativeFunction (ec, "atan2",  atan2,  2), NONE);
-	addPropertyDescriptor ("ceil",   new NativeFunction (ec, "ceil",   ceil,   1), NONE);
-	addPropertyDescriptor ("cos",    new NativeFunction (ec, "cos",    cos,    1), NONE);
-	addPropertyDescriptor ("exp",    new NativeFunction (ec, "exp",    exp,    1), NONE);
-	addPropertyDescriptor ("floor",  new NativeFunction (ec, "floor",  floor,  1), NONE);
-	addPropertyDescriptor ("log",    new NativeFunction (ec, "log",    log,    1), NONE);
-	addPropertyDescriptor ("max",    new NativeFunction (ec, "max",    max,    2), NONE);
-	addPropertyDescriptor ("min",    new NativeFunction (ec, "min",    min,    2), NONE);
-	addPropertyDescriptor ("pow",    new NativeFunction (ec, "pow",    pow,    2), NONE);
-	addPropertyDescriptor ("random", new NativeFunction (ec, "random", random, 0), NONE);
-	addPropertyDescriptor ("round",  new NativeFunction (ec, "round",  round,  1), NONE);
-	addPropertyDescriptor ("sin",    new NativeFunction (ec, "sin",    sin,    1), NONE);
-	addPropertyDescriptor ("sqrt",   new NativeFunction (ec, "sqrt",   sqrt,   1), NONE);
-	addPropertyDescriptor ("tan",    new NativeFunction (ec, "tan",    tan,    1), NONE);
+	addPropertyDescriptor ("abs",    new NativeFunction (ec, "abs",    abs,    1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("acos",   new NativeFunction (ec, "acos",   acos,   1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("asin",   new NativeFunction (ec, "asin",   asin,   1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("atan",   new NativeFunction (ec, "atan",   atan,   1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("atan2",  new NativeFunction (ec, "atan2",  atan2,  2), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("ceil",   new NativeFunction (ec, "ceil",   ceil,   1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("cos",    new NativeFunction (ec, "cos",    cos,    1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("exp",    new NativeFunction (ec, "exp",    exp,    1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("floor",  new NativeFunction (ec, "floor",  floor,  1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("log",    new NativeFunction (ec, "log",    log,    1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("max",    new NativeFunction (ec, "max",    max,    2), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("min",    new NativeFunction (ec, "min",    min,    2), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("pow",    new NativeFunction (ec, "pow",    pow,    2), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("random", new NativeFunction (ec, "random", random, 0), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("round",  new NativeFunction (ec, "round",  round,  1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("sin",    new NativeFunction (ec, "sin",    sin,    1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("sqrt",   new NativeFunction (ec, "sqrt",   sqrt,   1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("tan",    new NativeFunction (ec, "tan",    tan,    1), WRITABLE | CONFIGURABLE);
 }
 
 var

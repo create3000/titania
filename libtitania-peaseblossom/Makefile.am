@@ -22,7 +22,7 @@ libtitania_peaseblossom_la_SOURCES =  \
 	Titania/PeaseBlossom/Objects/pbObject.cpp \
 	Titania/PeaseBlossom/Parser/Parser.cpp \
 	Titania/PeaseBlossom/Primitives/var.cpp \
-	Titania/PeaseBlossom/Standard/GlobalObject.cpp \
+	Titania/PeaseBlossom/Standard/Global.cpp \
 	Titania/PeaseBlossom/Standard/Math.cpp \
 	Titania/PeaseBlossom/Standard/Object.cpp 
 

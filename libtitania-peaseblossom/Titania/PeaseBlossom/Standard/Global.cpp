@@ -48,19 +48,16 @@
  *
  ******************************************************************************/
 
-#include "GlobalObject.h"
+#include "Global.h"
 
 #include "../Bits/pbMath.h"
-#include "../Objects/Function.h"
 #include "../Objects/NativeFunction.h"
-#include "../Objects/Object.h"
-
 #include "../Standard/Math.h"
-#include "../Standard/Object.h"
 
 namespace titania {
 namespace pb {
 namespace Standard {
+namespace Global {
 
 struct isNaN
 {
@@ -101,54 +98,9 @@ struct parseFloat
 
 };
 
-namespace Function {
-
-/// new Function ([arg1[, arg2[, ...argN]],] functionBody)
-struct Constructor
+void
+initialize (Program* const ec, const ptr <pbObject> & object)
 {
-	var
-	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
-	{
-		if (arguments .empty ())
-			return new pb::Function (ec);
-
-		return new pb::Function (ec);
-	}
-
-};
-
-static
-ptr <NativeFunction> 
-initialize (pbExecutionContext* const ec, const ptr <pbObject> & object)
-{
-	const auto & standardFunction = ec -> getStandardFunction ();
-	const auto   constructor      = make_ptr <NativeFunction> (ec, "Function", Constructor { }, 1);
-
-	constructor -> addPropertyDescriptor ("__proto__",   standardFunction, WRITABLE | CONFIGURABLE);
-	constructor -> addPropertyDescriptor ("constructor", constructor,      WRITABLE | CONFIGURABLE);
-	constructor -> addPropertyDescriptor ("prototype",   standardFunction, WRITABLE | CONFIGURABLE);
-
-	object -> addPropertyDescriptor ("Function", constructor, WRITABLE | CONFIGURABLE);
-
-	standardFunction -> addPropertyDescriptor ("constructor", constructor, WRITABLE | CONFIGURABLE);
-	// standardFunction prototype remains undefined.
-
-	return constructor;
-}
-
-} // Function
-
-array <ptr <NativeFunction>>
-addStandardClasses (Program* const ec, const ptr <pbObject> & object)
-{
-	array <ptr <NativeFunction>> standardClasses ((size_t) StandardType::SIZE);
-	
-	const auto functionClass = Function::initialize (ec, object);
-	const auto objectClass   = Object::initialize (ec, object, functionClass);
-
-	standardClasses [(size_t) StandardType::FUNCTION] = functionClass;
-	standardClasses [(size_t) StandardType::OBJECT]   = objectClass;
-
 	// Properties
 
 	object -> addPropertyDescriptor ("this",      object,               WRITABLE | CONFIGURABLE);
@@ -162,10 +114,9 @@ addStandardClasses (Program* const ec, const ptr <pbObject> & object)
 	object -> addPropertyDescriptor ("isNaN",      new NativeFunction (ec, "isNaN",      isNaN { },      1), WRITABLE | CONFIGURABLE);
 	object -> addPropertyDescriptor ("parseInt",   new NativeFunction (ec, "parseInt",   parseInt { },   1), WRITABLE | CONFIGURABLE);
 	object -> addPropertyDescriptor ("parseFloat", new NativeFunction (ec, "parseFloat", parseFloat { }, 1), WRITABLE | CONFIGURABLE);
-	
-	return standardClasses;
 }
 
+} // Global
 } // Standard
 } // pb
 } // titania

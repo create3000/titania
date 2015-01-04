@@ -48,83 +48,24 @@
  *
  ******************************************************************************/
 
-#include "Object.h"
+#ifndef __TITANIA_PEASE_BLOSSOM_STANDARD_GLOBAL_H__
+#define __TITANIA_PEASE_BLOSSOM_STANDARD_GLOBAL_H__
 
-#include "../Objects/Object.h"
-#include "../Objects/Function.h"
-#include "../Objects/NativeFunction.h"
+#include "../Execution/Program.h"
+#include "../Objects/pbObject.h"
 
 namespace titania {
 namespace pb {
 namespace Standard {
-namespace Object {
+namespace Global {
 
-/// new Object ([ value ])
-struct Constructor
-{
-	var
-	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
-	{
-		if (arguments .empty ())
-			return new pb::Object (ec);
+///  Constructs new default global object.
+void
+initialize (Program* const executionContext, const ptr <pbObject> & object);
 
-		return arguments [0] .toObject (ec);
-	}
-
-};
-
-struct toString
-{
-	var
-	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
-	{
-		switch (object .getType ())
-		{
-			case UNDEFINED:
-				return "[object Undefined]";
-			case BOOLEAN:
-				return "[object Boolean]";
-			case NUMBER:
-				return "[object Number]";
-			case STRING:
-				return "[object String]";
-			case NULL_OBJECT:
-				return "[object Null]";
-			case OBJECT:
-			{
-				std::ostringstream ostringstream;
-
-				ostringstream .imbue (std::locale::classic ());
-
-				object .getObject () -> pbObject::toStream (ostringstream);
-
-				return ostringstream .str ();
-			}
-		}
-
-		throw TypeError ("Object.prototype.toString");
-	}
-
-};
-
-ptr <NativeFunction> 
-initialize (pbExecutionContext* const ec, const ptr <NativeFunction> & functionClass)
-{
-	const auto & standardFunction = ec -> getStandardFunction ();
-	const auto & standardObject   = ec -> getStandardObject ();
-	const auto   constructor      = make_ptr <NativeFunction> (ec, "Object", Constructor { }, Constructor { }, 1);
-
-	constructor -> updatePropertyDescriptor ("__proto__",   standardFunction, WRITABLE | CONFIGURABLE);
-	constructor -> updatePropertyDescriptor ("constructor", functionClass,    WRITABLE | CONFIGURABLE);
-	constructor -> updatePropertyDescriptor ("prototype",   standardObject,   WRITABLE | CONFIGURABLE);
-
-	standardObject -> addPropertyDescriptor ("constructor", constructor,                                          WRITABLE | CONFIGURABLE);
-	standardObject -> addPropertyDescriptor ("toString",    new NativeFunction (ec, "toString", toString { }, 0), WRITABLE | CONFIGURABLE);
-
-	return constructor;
-}
-
-} // Object
+} // Global
 } // Standard
 } // pb
 } // titania
+
+#endif
