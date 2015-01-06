@@ -1,5 +1,14 @@
 2015-01-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* pbObject.h:
+	* Function.cpp:
+	* pbFunction.h:
+	* pbObject.cpp:
+	* pbFunction.cpp:
+	* PropertyExpression.h: 
+
+2015-01-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.h:
 	* var.h:
 	* Parser.cpp:

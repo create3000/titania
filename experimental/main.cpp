@@ -330,11 +330,15 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	__LOG__ << sizeof (C) << std::endl;
-	__LOG__ << sizeof (D) << std::endl;
+	auto v = std::vector <int> ();
 
-	bool b = new C ();
-	__LOG__ << b << std::endl;
+	__LOG__ << v .capacity () << std::endl;
+
+	v .reserve (123);
+
+	__LOG__ << v .capacity () << std::endl;
+
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

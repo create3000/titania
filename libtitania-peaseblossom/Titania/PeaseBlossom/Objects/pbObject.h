@@ -346,7 +346,8 @@ protected:
 
 	var
 	apply (const Identifier &, const var &, const std::vector <var> & = { }) const
-	throw (pbException);
+	throw (pbException,
+	       std::invalid_argument);
 
 
 private:

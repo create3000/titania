@@ -84,7 +84,7 @@ public:
 	///  @name Operations
 
 	///  Constructs new object of this class without invoking the constructor.
-	var
+	ptr <pbObject>
 	createInstance (pbExecutionContext* const)
 	throw (TypeError);
 

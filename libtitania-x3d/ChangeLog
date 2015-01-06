@@ -1,5 +1,17 @@
 2015-01-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Global.h:
+	* X3DField.h:
+	* Arguments.h:
+	* Context.cpp:
+	* ObjectType.h:
+	* X3DField.cpp:
+	* SFVec4.h: 
+
+2015-01-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Global.h:
 	* X3DJavaScriptContext.cpp:
 	* SFVec4.h: 

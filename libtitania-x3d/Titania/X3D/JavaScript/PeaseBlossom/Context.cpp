@@ -74,7 +74,7 @@ throw (std::exception) :
 	                  classes (size_t (ObjectType::SIZE)),
 	                  objects ()
 {
-	__LOG__ << std::endl;
+	__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
 
 	try
 	{
@@ -90,6 +90,8 @@ throw (std::exception) :
 
 		throw;
 	}
+
+	__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
 }
 
 X3DBaseNode*
@@ -119,8 +121,9 @@ Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
 	__LOG__ << identifier << std::endl;
 
 	static const std::map <pb::Identifier, ObjectType> types = {
-		std::make_pair (pb::Identifier ("SFVec4d"), SFVec4d::getType ()),
-		std::make_pair (pb::Identifier ("SFVec4f"), SFVec4f::getType ())
+		std::make_pair (pb::Identifier ("X3DField"), X3DField::getType ()),
+		std::make_pair (pb::Identifier ("SFVec4d"),  SFVec4d::getType ()),
+		std::make_pair (pb::Identifier ("SFVec4f"),  SFVec4f::getType ())
 	};
 
 	try
@@ -140,8 +143,9 @@ Context::getClass (const ObjectType type) const
 	using Initialize = std::function <pb::ptr <pb::NativeFunction> (Context* const, const pb::ptr <pb::Program> &)>;
 
 	static const std::map <ObjectType, Initialize> functions = {
-		std::make_pair (SFVec4d::getType (), SFVec4d::initialize),
-		std::make_pair (SFVec4f::getType (), SFVec4f::initialize)
+		std::make_pair (X3DField::getType (), X3DField::initialize),
+		std::make_pair (SFVec4d::getType (),  SFVec4d::initialize),
+		std::make_pair (SFVec4f::getType (),  SFVec4f::initialize)
 	};
 
 	auto & standardClass = const_cast <Context*> (this) -> classes [size_t (type)];
@@ -174,6 +178,8 @@ Context::removeObject (X3D::X3DFieldDefinition* const field)
 void
 Context::initialize ()
 {
+	__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
+
 	X3DJavaScriptContext::initialize ();
 
 	getExecutionContext () -> isLive () .addInterest (this, &Context::set_live);
@@ -191,6 +197,8 @@ Context::initialize ()
 	}
 	catch (const std::exception & error)
 	{ }
+
+	__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
 }
 
 void

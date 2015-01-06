@@ -412,6 +412,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/PeaseBlossom.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/Context.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4f.cpp \
+	Titania/X3D/JavaScript/PeaseBlossom/X3DField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsArrayFields.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsMFBool.cpp \

@@ -57,6 +57,8 @@ namespace peaseblossom {
 
 enum class ObjectType
 {
+	X3DField,
+
 	SFVec4d,
 	SFVec4f,
 

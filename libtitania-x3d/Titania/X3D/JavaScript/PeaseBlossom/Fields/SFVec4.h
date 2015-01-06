@@ -115,7 +115,7 @@ private:
 
 	enum {X, Y, Z, W};
 
-	///  @name Members
+	///  @name Static members
 
 	static const std::string typeName;
 
@@ -128,7 +128,9 @@ SFVec4 <Type>::initialize (Context* const context, const pb::ptr <pb::Program> &
 	using namespace std::placeholders;
 
 	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), construct, nullptr, 4);
-	const auto prototype = function -> getObject ("prototype");
+	const auto prototype = context -> getClass (ObjectType::X3DField) -> createInstance (ec);
+
+	prototype -> addPropertyDescriptor ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
 
 	prototype -> addPropertyDescriptor ("x",
 	                                    pb::Undefined,
@@ -154,9 +156,9 @@ SFVec4 <Type>::initialize (Context* const context, const pb::ptr <pb::Program> &
 	                                    new pb::NativeFunction (ec, "w", std::bind (get1Value, _1, _2, _3, W), 0),
 	                                    new pb::NativeFunction (ec, "w", std::bind (set1Value, _1, _2, _3, W), 1));
 
-	prototype -> addPropertyDescriptor ("add",      new pb::NativeFunction (ec, "add",      add,               1), pb::NONE);
-	prototype -> addPropertyDescriptor ("toString", new pb::NativeFunction (ec, "toString", toString <SFVec4>, 0), pb::NONE);
+	prototype -> addPropertyDescriptor ("add", new pb::NativeFunction (ec, "add", add, 1), pb::NONE);
 
+	function -> addPropertyDescriptor ("prototype", prototype, pb::NONE);
 	return function;
 }
 
@@ -173,12 +175,10 @@ SFVec4 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb:
 		}
 		case 4:
 		{
-			setUserData <SFVec4> (ec, object, new Type (
-			                         args [0] .toNumber (),
-			                         args [1] .toNumber (),
-			                         args [2] .toNumber (),
-			                         args [3] .toNumber ()
-			                         ));
+			setUserData <SFVec4> (ec, object, new Type (args [0] .toNumber (),
+			                                            args [1] .toNumber (),
+			                                            args [2] .toNumber (),
+			                                            args [3] .toNumber ()));
 			break;
 		}
 		default:

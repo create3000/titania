@@ -370,14 +370,14 @@ throw (pbException)
 		{
 			return apply (toString, this);
 		}
-		catch (const TypeError &)
+		catch (const std::invalid_argument &)
 		{ }
 
 		try
 		{
 			return apply (valueOf, this);
 		}
-		catch (const TypeError &)
+		catch (const std::invalid_argument &)
 		{ }
 	}
 
@@ -385,22 +385,23 @@ throw (pbException)
 	{
 		return apply (valueOf, this);
 	}
-	catch (const TypeError &)
+	catch (const std::invalid_argument &)
 	{ }
 
 	try
 	{
 		return apply (toString, this);
 	}
-	catch (const TypeError &)
+	catch (const std::invalid_argument &)
 	{ }
 
-	return this -> toString ();
+	throw TypeError ("can't convert object to string.");
 }
 
 var
 pbObject::apply (const Identifier & identifier, const var & object, const std::vector <var> & arguments) const
-throw (pbException)
+throw (pbException,
+       std::invalid_argument)
 {
 	try
 	{
@@ -414,11 +415,11 @@ throw (pbException)
 				return function -> apply (object, arguments);
 		}
 
-		throw TypeError ("Property '" + property .toString () + "' is not a function.");
+		throw std::invalid_argument ("pbObject::apply");
 	}
 	catch (const std::out_of_range &)
 	{
-		throw TypeError ("'undefined' is not a function.");
+		throw std::invalid_argument ("pbObject::apply");
 	}
 }
 

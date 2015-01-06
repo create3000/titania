@@ -67,6 +67,11 @@ Function::Function (pbExecutionContext* const executionContext, const std::strin
 	    localObjectsStack (),
 	       recursionDepth (0)
 {
+	const auto prototype = new Object (executionContext);
+
+	addPropertyDescriptor ("prototype", prototype, WRITABLE | CONFIGURABLE);
+	prototype -> addPropertyDescriptor ("constructor", this, WRITABLE | CONFIGURABLE);
+
 	addChildren (localObjectsStack, localObjects);
 
 	addLocalObjects (getExecutionContext ());

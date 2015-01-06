@@ -85,7 +85,7 @@ public:
 	print (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> & args, X3D::X3DBrowser* const browser)
 	{
 		for (const auto & value : args)
-			browser -> print (value);
+			browser -> print (value .toString ());
 
 		browser -> println ();
 

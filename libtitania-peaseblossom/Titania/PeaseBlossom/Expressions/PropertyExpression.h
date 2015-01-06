@@ -175,9 +175,14 @@ public:
 			}
 			case OBJECT:
 			{
-				pbObject* const object = static_cast <pbObject*> (lhs .getObject () .get ());
+				try
+				{
+					pbObject* const object = static_cast <pbObject*> (lhs .getObject () .get ());
 
-				return object -> apply (identifier, lhs, arguments);
+					return object -> apply (identifier, lhs, arguments);
+				}
+				catch (const std::invalid_argument &)
+				{ }
 			}
 		}
 

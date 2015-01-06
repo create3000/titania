@@ -67,14 +67,10 @@ pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::s
 	{
 		const auto & constructor      = executionContext -> getStandardClass (StandardClassType::FUNCTION);
 		const auto & standardFunction = executionContext -> getStandardFunction ();
-		const auto   prototype        = new Object (executionContext);
 
 		setConstructor (constructor);
 		setProto (standardFunction);
-		addPropertyDescriptor ("prototype", prototype, WRITABLE | CONFIGURABLE);
 		addProperties ();
-
-		prototype -> addPropertyDescriptor ("constructor", this, WRITABLE | CONFIGURABLE);
 	}
 	catch (const std::out_of_range &)
 	{ }
@@ -96,7 +92,7 @@ pbFunction::addProperties ()
 	addPropertyDescriptor ("length", length, NONE);
 }
 
-var
+ptr <pbObject>
 pbFunction::createInstance (pbExecutionContext* const executionContext)
 throw (TypeError)
 {
@@ -134,7 +130,7 @@ var
 pbFunction::construct (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments)
 throw (pbException)
 {
-	const auto object = createInstance (executionContext);
+	const var  object = createInstance (executionContext);
 	const auto result = construct (object, arguments);
 
 	if (result .isObject ())

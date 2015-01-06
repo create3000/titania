@@ -1240,6 +1240,7 @@
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\LassoSelection.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec4f.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\X3DField.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

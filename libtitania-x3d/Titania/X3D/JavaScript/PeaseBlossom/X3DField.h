@@ -64,89 +64,102 @@ namespace peaseblossom {
 
 class X3DField
 {
+public:
+
+	///  @name Member types
+
+	using internal_type = X3D::X3DFieldDefinition;
+
+	///  @name Common members
+
+	static
+	constexpr ObjectType
+	getType ()
+	{ return ObjectType::X3DField; }
+
+	static
+	const std::string &
+	getTypeName ()
+	{ return typeName; }
+
+	///  @name Construction
+
+	static
+	pb::ptr <pb::NativeFunction>
+	initialize (Context* const, const pb::ptr <pb::Program> &);
+
+
 protected:
 
 	///  @name Construction
 
-	template <class T>
+	template <class Class>
 	static
 	pb::var
-	create (const pb::ptr <pb::pbExecutionContext> &, typename T::internal_type* const);
+	create (const pb::ptr <pb::pbExecutionContext> &, typename Class::internal_type* const);
 
-	template <class T>
+	template <class Class>
 	static
 	void
-	setUserData (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, typename T::internal_type* const);
-
-	///  @name Functions
-
-	template <class T>
-	static
-	pb::var
-	toString (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	setUserData (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, typename Class::internal_type* const);
 
 
 private:
 
+	///  @name Functions
+
+	static
+	pb::var
+	toString (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
 	///  @name Destruction
 
-	template <class T>
+	template <class Class>
 	static
 	void
 	dispose (pb::pbObject* const);
 
+	///  @name Static members
+
+	static const std::string typeName;
+
 };
 
-template <class T>
+template <class Class>
 pb::var
-X3DField::create (const pb::ptr <pb::pbExecutionContext> & ec, typename T::internal_type* const field)
+X3DField::create (const pb::ptr <pb::pbExecutionContext> & ec, typename Class::internal_type* const field)
 {
 	const auto context = getContext (ec);
-	const auto object  = context -> getClass (T::getType ()) -> createInstance (ec);
+	const auto object  = context -> getClass (Class::getType ()) -> createInstance (ec);
 
-	setUserData <T> (ec, object, field);
+	setUserData <Class> (ec, object, field);
 
 	return object;
 }
 
-template <class T>
+template <class Class>
 void
-X3DField::setUserData (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & value, typename T::internal_type* const field)
+X3DField::setUserData (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & value, typename Class::internal_type* const field)
 {
 	const auto   context  = getContext (ec);
 	const auto & object   = value .getObject ();
 	auto &       userData = object -> getUserData ();
 
-	userData .reserve (3);
+	userData .reserve (2);
 
-	userData .emplace_back ((void*) T::getType ());
-	userData .emplace_back (field);
 	userData .emplace_back (context);
-	object -> setDisposeCallback (dispose <T>);
+	userData .emplace_back (field);
+	object -> setDisposeCallback (dispose <Class>);
 
 	field -> addParent (context);
 }
 
-template <class T>
-pb::var
-X3DField::toString (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
-{
-	try
-	{
-		return getThis <T> (object) -> toString ();
-	}
-	catch (const std::invalid_argument &)
-	{
-		throw pb::TypeError ("X3DField.prototype.toString is not generic.");
-	}
-}
-
-template <class T>
+template <class Class>
 void
 X3DField::dispose (pb::pbObject* const object)
 {
 	const auto context = getContext (object);
-	const auto field   = getObject <typename T::internal_type> (object);
+	const auto field   = getObject <typename Class::internal_type> (object);
 
 	field -> removeParent (context);
 }
