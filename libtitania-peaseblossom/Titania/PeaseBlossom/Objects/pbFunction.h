@@ -88,6 +88,11 @@ public:
 	createInstance (pbExecutionContext* const)
 	throw (TypeError);
 
+	virtual
+	bool
+	hasInstance (const var & value)
+	noexcept (true);
+
 	///  Constructs new object of this class.
 	var
 	construct (const ptr <pbExecutionContext> &, const std::vector <var> & = { })

@@ -60,6 +60,9 @@
 #include "../Primitives/ptr.h"
 #include "../Primitives/var.h"
 
+#include "../Standard/Function.h"
+#include "../Standard/Object.h"
+
 #include <functional>
 #include <map>
 #include <memory>
@@ -88,6 +91,13 @@ public:
 	                    const PropertyFlagsType &,
 	                    const ptr <pbFunction> &,
 	                    const ptr <pbFunction> &);
+
+	PropertyDescriptor (pbChildObject* const,
+	                    const Identifier &,
+	                    var &&,
+	                    const PropertyFlagsType &,
+	                    ptr <pbFunction> &&,
+	                    ptr <pbFunction> &&);
 
 	///  @name Member access
 
@@ -199,7 +209,15 @@ public:
 	isExtensible (const bool value)
 	{ extensible = value; }
 
-	///  @name Member access
+	const ptr <pbFunction> &
+	getConstructor () const
+	{ return constructor; }
+
+	const ptr <pbObject> &
+	getProto () const
+	throw (std::out_of_range);
+
+	///  @name Property access
 
 	///  Checks wehter this object has a propterty @a id.
 	bool
@@ -207,8 +225,8 @@ public:
 	noexcept (true)
 	{ return properties .count (identifier .getId ()); }
 
-	var
-	setProperty (const Identifier &, var &&)
+	void
+	setProperty (const Identifier &, const var &)
 	throw (std::out_of_range,
 	       pbException);
 
@@ -222,12 +240,22 @@ public:
 	throw (std::out_of_range,
 	       TypeError);
 
+	///  Adds the named property described by the given descriptor to this object.
 	void
 	addPropertyDescriptor (const Identifier &,
 	                       const var &,
 	                       const PropertyFlagsType = DEFAULT,
 	                       const ptr <pbFunction> & = nullptr,
 	                       const ptr <pbFunction> & = nullptr)
+	throw (std::invalid_argument);
+
+	///  Adds the named property described by the given descriptor to this object.
+	void
+	addPropertyDescriptor (const Identifier &,
+	                       var &&,
+	                       const PropertyFlagsType = DEFAULT,
+	                       ptr <pbFunction> && = nullptr,
+	                       ptr <pbFunction> && = nullptr)
 	throw (std::invalid_argument);
 
 	///  Updates the named property described by the given descriptor to this object.
@@ -244,8 +272,14 @@ public:
 	noexcept (true);
 
 	void
-	setResolve (const ResolveType & value)
+	setResolveCallback (const ResolveType & value)
 	{ resolveFunction = value; }
+	
+	virtual
+	bool
+	hasInstance (const var & value)
+	throw (TypeError)
+	{ throw TypeError ("pbObject::hasInstance"); }
 
 	var
 	getDefaultValue (const ValueType) const
@@ -261,7 +295,7 @@ public:
 	///  @name Destruction
 
 	void
-	setDispose (const DisposeType & value)
+	setDisposeCallback (const DisposeType & value)
 	{ disposeFunction = value; }
 
 	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
@@ -284,11 +318,27 @@ protected:
 	friend class VariableDeclaration;
 	friend class VariableExpression;
 	friend class Function;
+	
+	friend
+	ptr <NativeFunction>
+	Standard::Function::initialize (pbExecutionContext* const);
+	
+	friend
+	ptr <NativeFunction>
+	Standard::Object::initialize (pbExecutionContext* const, const ptr <NativeFunction> &);
 
 	///  @name Construction
 
 	///  Constructs new pbObject.
 	pbObject ();
+
+	///  @name Member access
+
+	void
+	setConstructor (const ptr <pbFunction> & value)
+	{ constructor = value; }
+
+	///  @name Operations
 
 	var
 	apply (const Identifier &, const var &, const std::vector <var> & = { }) const
@@ -330,10 +380,6 @@ private:
 	resolve (const Identifier &)
 	throw (std::out_of_range);
 
-	const ptr <pbObject> &
-	getProto () const
-	throw (std::out_of_range);
-
 	///  @name Static members
 
 	static constexpr size_t CACHE_SIZE = 16;
@@ -343,6 +389,7 @@ private:
 	///  @name Members
 
 	bool                    extensible;
+	ptr <pbFunction>        constructor;
 	PropertyDescriptorIndex properties;
 	PropertyDescriptorArray cachedProperties;
 	ResolveType             resolveFunction;

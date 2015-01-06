@@ -71,7 +71,6 @@ Parser::Parser (pbExecutionContext* const executionContext, std::istream & istre
 	             whiteSpaces (),
 	       commentCharacters (),
 	                 newLine (false),
-	             keepNewLine (false),
 	isLeftHandSideExressions ()
 { }
 
@@ -241,13 +240,14 @@ Parser::comments ()
 {
 	//__LOG__ << this << " " << std::endl;
 	
+	const auto position          = istream .tellg ();
 	const auto currentLineNumber = lineNumber;
 
 	while (comment ())
 		;
 
-	newLine     = lineNumber not_eq currentLineNumber or keepNewLine;
-	keepNewLine = false;
+	if (istream .tellg () not_eq position)
+		newLine = lineNumber not_eq currentLineNumber;
 }
 
 bool
@@ -1645,13 +1645,22 @@ Parser::relationalExpression (ptr <pbExpression> & lhs)
 
 			isLeftHandSideExressions .back () = false;
 
-			// if (white spaces or comments empty) throw;
+			// If white spaces or comments empty return false.
+	
+			const auto pos = istream .tellg ();
+			
+			comments ();
+			
+			if (istream .tellg () == pos)
+				return Grammar::instanceof .rewind (istream);
 
+			// lhs
+	
 			ptr <pbExpression> rhs;
 
 			if (relationalExpression (rhs))
 			{
-				//lhs = new InstanceofExpression (std::move (lhs), std::move (rhs));
+				lhs = new InstanceOfExpression (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1665,8 +1674,17 @@ Parser::relationalExpression (ptr <pbExpression> & lhs)
 
 			isLeftHandSideExressions .back () = false;
 			
-			// if (white spaces or comments empty) throw;
+			// If white spaces or comments empty return false.
+	
+			const auto pos = istream .tellg ();
+			
+			comments ();
+			
+			if (istream .tellg () == pos)
+				return Grammar::in .rewind (istream);
 
+			// lhs.
+	
 			ptr <pbExpression> rhs;
 
 			if (relationalExpression (rhs))
@@ -2010,8 +2028,6 @@ Parser::assignmentExpression (ptr <pbExpression> & value)
 
 				throw SyntaxError ("Expected expression after '" + to_string (type) + "'.");
 			}
-
-			keepNewLine = true;
 		}
 
 		return true;
@@ -2115,7 +2131,6 @@ Parser::expression (ptr <pbExpression> & value)
 				throw SyntaxError ("Expected expression after ','.");
 			}
 
-			keepNewLine = true;
 			return true;
 		}
 	}
@@ -2220,6 +2235,8 @@ Parser::statementList ()
 bool
 Parser::variableStatement ()
 {
+	//__LOG__ << (char) istream .peek () << std::endl;
+
 	comments ();
 
 	if (Grammar::var (istream))
@@ -2259,7 +2276,6 @@ Parser::variableDeclarationList ()
 				throw SyntaxError ("Expected variable name after ','.");
 			}
 
-			keepNewLine = true;
 			return true;
 		}
 	}
@@ -2270,6 +2286,8 @@ Parser::variableDeclarationList ()
 bool
 Parser::variableDeclaration ()
 {
+	//__LOG__ << (char) istream .peek () << std::endl;
+
 	std::string identifierCharacters;
 
 	if (identifier (identifierCharacters))
@@ -2289,6 +2307,8 @@ Parser::variableDeclaration ()
 bool
 Parser::initialiser (ptr <pbExpression> & value)
 {
+	//__LOG__ << (char) istream .peek () << std::endl;
+
 	comments ();
 
 	if (Grammar::Assignment (istream))
@@ -2297,7 +2317,6 @@ Parser::initialiser (ptr <pbExpression> & value)
 			return true;
 	}
 
-	keepNewLine = true;
 	return false;
 }
 

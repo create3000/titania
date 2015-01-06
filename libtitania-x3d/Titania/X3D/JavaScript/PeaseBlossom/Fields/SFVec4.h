@@ -52,19 +52,23 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_FIELDS_SFVEC4_H__
 
 #include "../../../Fields/SFVec4.h"
-
-#include "../Arguments.h"
-#include "../ObjectType.h"
-#include <Titania/PeaseBlossom/pb.h>
+#include "../X3DField.h"
 
 namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
 template <class Type>
-class SFVec4
+class SFVec4 :
+	public X3DField
 {
 public:
+
+	///  @name Member types
+
+	using internal_type = Type;
+
+	///  @name Common members
 
 	static
 	constexpr ObjectType
@@ -76,121 +80,40 @@ public:
 	getTypeName ()
 	{ return typeName; }
 
+	///  @name Construction
+
 	static
 	pb::ptr <pb::NativeFunction>
-	initialize (Context* const context, const pb::ptr <pb::Program> & ec)
-	{
-		using namespace std::placeholders;
-
-		const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), construct, nullptr, 4);
-		const auto prototype = function -> getObject ("prototype");
-
-		prototype -> addPropertyDescriptor ("add",      pb::make_ptr <pb::NativeFunction> (ec, "add",      add,      1), pb::NONE);
-		prototype -> addPropertyDescriptor ("toString", pb::make_ptr <pb::NativeFunction> (ec, "toString", toString, 0), pb::NONE);
-
-		return function;
-	}
+	initialize (Context* const, const pb::ptr <pb::Program> &);
 
 
-protected:
+private:
 
 	///  @name Construction
 
-	template <class T>
 	static
 	pb::var
-	create (const pb::ptr <pb::pbExecutionContext> & ec, Type* const field)
-	{
-		const auto context = getContext (ec);
-		const auto object  = context -> getClass (T::getType ()) -> createInstance (ec);
+	construct (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
-		setUserData <T> (ec, object, field);
-
-		return object;
-	}
-
-	template <class T>
-	static
-	void
-	setUserData (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & value, X3D::X3DFieldDefinition* const field)
-	{
-		const auto   context  = getContext (ec);
-		const auto & object   = value .getObject ();
-		auto &       userData = object -> getUserData ();
-
-		userData .reserve (3);
-
-		userData .emplace_back ((void*) T::getType ());
-		userData .emplace_back (field);
-		userData .emplace_back (context);
-		object -> setDispose (dispose);
-
-		field -> addParent (context);
-	}
-
-private:
-
-	static
-	void
-	dispose (pb::pbObject* const object)
-	{
-		const auto context = getContext (object);
-		const auto field   = getObject <X3D::X3DFieldDefinition> (object);
-
-		field -> removeParent (context);
-	}
-
-private:
+	///  @name Member access
 
 	static
 	pb::var
-	construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
-	{
-		switch (args .size ())
-		{
-			case 0:
-			{
-				setUserData <SFVec4> (ec, object, new Type ());
-				break;
-			}
-			case 4:
-			{
-				setUserData <SFVec4> (ec, object, new Type (
-				                         args [0] .toNumber (),
-				                         args [1] .toNumber (),
-				                         args [2] .toNumber (),
-				                         args [3] .toNumber ()
-				                         ));
-				break;
-			}
-			default:
-				throw pb::Error ("wrong number of arguments.");
-		}
+	get1Value (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
 
-		return pb::Undefined ();
-	}
+	static
+	pb::var
+	set1Value (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
 
 	///  @name Functions
 
 	static
 	pb::var
-	add (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
-	{
-		if (args .empty ())
-			throw pb::Error ("wrong number of arguments.");
+	add (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
-		const auto & lhs = *object .getObject () -> getUserData <Type*> (1);
-		const auto & rhs = *args [0] .getObject () -> getUserData <Type*> (1);
+	///  @name Member types
 
-		return create <SFVec4> (ec, lhs .add (rhs));
-	}
-
-	static
-	pb::var
-	toString (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
-	{
-		return object .getObject () -> getUserData <Type*> (1) -> toString ();
-	}
+	enum {X, Y, Z, W};
 
 	///  @name Members
 
@@ -198,18 +121,129 @@ private:
 
 };
 
+template <class Type>
+pb::ptr <pb::NativeFunction>
+SFVec4 <Type>::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
+{
+	using namespace std::placeholders;
+
+	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), construct, nullptr, 4);
+	const auto prototype = function -> getObject ("prototype");
+
+	prototype -> addPropertyDescriptor ("x",
+	                                    pb::Undefined (),
+	                                    pb::DEFAULT,
+	                                    new pb::NativeFunction (ec, "x", std::bind (get1Value, _1, _2, _3, X), 0),
+	                                    new pb::NativeFunction (ec, "x", std::bind (set1Value, _1, _2, _3, X), 1));
+
+	prototype -> addPropertyDescriptor ("y",
+	                                    pb::Undefined (),
+	                                    pb::DEFAULT,
+	                                    new pb::NativeFunction (ec, "y", std::bind (get1Value, _1, _2, _3, Y), 0),
+	                                    new pb::NativeFunction (ec, "y", std::bind (set1Value, _1, _2, _3, Y), 1));
+
+	prototype -> addPropertyDescriptor ("z",
+	                                    pb::Undefined (),
+	                                    pb::DEFAULT,
+	                                    new pb::NativeFunction (ec, "z", std::bind (get1Value, _1, _2, _3, Z), 0),
+	                                    new pb::NativeFunction (ec, "z", std::bind (set1Value, _1, _2, _3, Z), 1));
+
+	prototype -> addPropertyDescriptor ("w",
+	                                    pb::Undefined (),
+	                                    pb::DEFAULT,
+	                                    new pb::NativeFunction (ec, "w", std::bind (get1Value, _1, _2, _3, W), 0),
+	                                    new pb::NativeFunction (ec, "w", std::bind (set1Value, _1, _2, _3, W), 1));
+
+	prototype -> addPropertyDescriptor ("add",      new pb::NativeFunction (ec, "add",      add,               1), pb::NONE);
+	prototype -> addPropertyDescriptor ("toString", new pb::NativeFunction (ec, "toString", toString <SFVec4>, 0), pb::NONE);
+
+	return function;
+}
+
+template <class Type>
+pb::var
+SFVec4 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+{
+	switch (args .size ())
+	{
+		case 0:
+		{
+			setUserData <SFVec4> (ec, object, new Type ());
+			break;
+		}
+		case 4:
+		{
+			setUserData <SFVec4> (ec, object, new Type (
+			                         args [0] .toNumber (),
+			                         args [1] .toNumber (),
+			                         args [2] .toNumber (),
+			                         args [3] .toNumber ()
+			                         ));
+			break;
+		}
+		default:
+			throw pb::Error ("wrong number of arguments.");
+	}
+
+	return pb::Undefined ();
+}
+
+template <class Type>
+pb::var
+SFVec4 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+{
+	const auto lhs = getObject <Type> (object);
+
+	return lhs -> get1Value (index);
+}
+
+template <class Type>
+pb::var
+SFVec4 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+{
+	const auto lhs = getObject <Type> (object);
+
+	lhs -> set1Value (index, args [0] .toNumber ());
+
+	return pb::Undefined ();
+}
+
+template <class Type>
+pb::var
+SFVec4 <Type>::add (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+{
+	if (args .size () not_eq 1)
+		throw pb::Error ("wrong number of arguments.");
+
+	try
+	{
+		const auto lhs = getThis <SFVec4> (object);
+		const auto rhs = get1Argument <SFVec4> (args, 0);
+
+		return create <SFVec4> (ec, lhs -> add (*rhs));
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw pb::TypeError (getTypeName () + ".prototype.add is not generic.");
+	}
+}
+
 using SFVec4d = SFVec4 <X3D::SFVec4d>;
 using SFVec4f = SFVec4 <X3D::SFVec4f>;
 
 template <>
 constexpr ObjectType
 SFVec4d::getType ()
-{ return ObjectType::SFVec4d; }
+{
+	return ObjectType::SFVec4d;
+}
 
 template <>
 constexpr ObjectType
 SFVec4f::getType ()
-{ return ObjectType::SFVec4f; }
+{
+	return ObjectType::SFVec4f;
+}
 
 } // peaseblossom
 } // X3D

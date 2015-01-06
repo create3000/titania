@@ -55,6 +55,7 @@
     <Compile Include="Titania\PeaseBlossom\InputOutput\Genrator.cpp" />
     <Compile Include="Titania\PeaseBlossom\Objects\Array.cpp" />
     <Compile Include="Titania\PeaseBlossom\Standard\Global.cpp" />
+    <Compile Include="Titania\PeaseBlossom\Standard\Function.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -145,5 +146,6 @@
     <None Include="Titania\PeaseBlossom\Standard\StandardClassType.h" />
     <None Include="Titania\PeaseBlossom\Standard\Function.h" />
     <None Include="Titania\PeaseBlossom\Standard\Global.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\InstanceOfExpression.h" />
   </ItemGroup>
 </Project>

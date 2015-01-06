@@ -48,25 +48,93 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_STANDARD_OBJECT_H__
-#define __TITANIA_PEASE_BLOSSOM_STANDARD_OBJECT_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_INSTANCE_OF_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_INSTANCE_OF_EXPRESSION_H__
 
-#include "../Primitives/ptr.h"
+#include "../Expressions/PrimitiveExpression.h"
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
 
-class NativeFunction;
-class pbExecutionContext;
+/**
+ *  Class to represent a ECMAScript instanceof expression.
+ */
+class InstanceOfExpression :
+	public pbExpression
+{
+public:
 
-namespace Standard {
-namespace Object {
+	///  @name Construction
 
-ptr <NativeFunction>
-initialize (pbExecutionContext* const ec, const ptr <NativeFunction> & functionClass);
+	///  Constructs new InstanceOfExpression expression.
+	InstanceOfExpression (ptr <pbExpression> && lhs, ptr <pbExpression>&& rhs) :
+		pbExpression (ExpressionType::DIVISION_EXPRESSION),
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
+	{ construct (); }
 
-} // Object
-} // Standard
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
+	noexcept (true) final override
+	{ return new InstanceOfExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
+
+	///  @name Operations
+
+	///  Converts its arguments to a value of type Number.
+	virtual
+	var
+	getValue () const
+	throw (pbException,
+	       pbControlFlowException) final override
+	{
+		try
+		{
+			const auto lval = lhs -> getValue ();
+			const auto rval = rhs -> getValue ();
+
+			if (rval .isObject ())
+				return rval .getObject () -> hasInstance (lval);
+		}
+		catch (const TypeError &)
+		{ }
+	
+		throw TypeError ("Invalid instanceof operant '" + rhs .toString () + "'.");
+	}
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		ostream
+			<< lhs
+			<< Generator::TidySpace
+			<< "instanceof"
+			<< Generator::TidySpace
+			<< rhs;
+	}
+
+private:
+
+	///  @name Construction
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (lhs, rhs); }
+
+	///  @name Members
+
+	const ptr <pbExpression> lhs;
+	const ptr <pbExpression> rhs;
+
+};
+
 } // pb
 } // titania
 

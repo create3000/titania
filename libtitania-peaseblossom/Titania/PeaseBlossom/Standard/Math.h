@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_MATH_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_MATH_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_STANDARD_MATH_H__
+#define __TITANIA_PEASE_BLOSSOM_STANDARD_MATH_H__
 
 #include "../Objects/Object.h"
 
@@ -63,7 +63,7 @@ namespace Standard {
  *  Class to represent an Math.
  */
 class Math :
-	public Object
+	public pb::Object
 {
 public:
 
@@ -156,7 +156,7 @@ private:
 	tan (const ptr <pbExecutionContext> & ec, const var &, const std::vector <var> &);
 
 	///  @name Static members
-	
+
 	static const std::string className;
 
 };

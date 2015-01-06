@@ -71,7 +71,7 @@ public:
 	throw (TypeError);
 
 	///  Constructs new Object.
-	Object (pbExecutionContext* const, pbObject* const)
+	Object (pbExecutionContext* const, pbFunction* const)
 	throw (TypeError);
 
 

@@ -104,7 +104,7 @@ Context::addClasses ()
 	using namespace std::placeholders;
 
 	program -> getUserData () .emplace_back (this);
-	program -> getGlobalObject () -> setResolve (std::bind (&Context::resolve, this, _1, _2));
+	program -> getGlobalObject () -> setResolveCallback (std::bind (&Context::resolve, this, _1, _2));
 
 	Global::initialize (this, program, program -> getGlobalObject ());
 }

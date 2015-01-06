@@ -50,6 +50,7 @@
 
 #include "Program.h"
 
+#include "../Objects/NativeFunction.h"
 #include "../Objects/Function.h"
 #include "../Objects/Object.h"
 
@@ -73,11 +74,11 @@ Program::Program () :
 }
 
 void
-Program::addStandardClasses ()
+Program::initialize ()
 noexcept (true)
 {
-	auto functionClass = Standard::Function::initialize (this);
-	auto objectClass   = Standard::Object::initialize (this, functionClass);
+	const auto functionClass = Standard::Function::initialize (this);
+	const auto objectClass   = Standard::Object::initialize (this, functionClass);
 
 	standardClasses [(size_t) StandardClassType::FUNCTION] = functionClass;
 	standardClasses [(size_t) StandardClassType::OBJECT]   = objectClass;
@@ -109,7 +110,7 @@ createProgram ()
 {
 	const auto program = ptr <Program> (new Program ());
 
-	program -> addStandardClasses ();
+	program -> initialize ();
 
 	return program;
 }

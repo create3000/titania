@@ -97,19 +97,19 @@ public:
 		{
 			case AssignmentOperatorType::ASSIGNMENT:
 			{
-				return lhs -> setValue (rhs -> getValue ());
+				return put (rhs -> getValue ());
 			}
 			case AssignmentOperatorType::MULTIPLICATION_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toNumber () * rhs -> getValue () .toNumber ());
+				return put (lhs -> getValue () .toNumber () * rhs -> getValue () .toNumber ());
 			}
 			case AssignmentOperatorType::DIVISION_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toNumber () / rhs -> getValue () .toNumber ());
+				return put (lhs -> getValue () .toNumber () / rhs -> getValue () .toNumber ());
 			}
 			case AssignmentOperatorType::REMAINDER_ASSIGNMENT:
 			{
-				return lhs -> setValue (std::fmod (lhs -> getValue () .toNumber (), rhs -> getValue () .toNumber ()));
+				return put (std::fmod (lhs -> getValue () .toNumber (), rhs -> getValue () .toNumber ()));
 			}
 			case AssignmentOperatorType::ADDITION_ASSIGNMENT:
 			{
@@ -117,37 +117,37 @@ public:
 				const auto y = rhs -> getValue ();
 
 				if (x .getType () == STRING or y .getType () == STRING)
-					return lhs -> setValue (x .toString () + y .toString ());
+					return put (x .toString () + y .toString ());
 
-				return lhs -> setValue (x .toNumber () + y .toNumber ());
+				return put (x .toNumber () + y .toNumber ());
 			}
 			case AssignmentOperatorType::SUBTRACTION_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toNumber () - rhs -> getValue () .toNumber ());
+				return put (lhs -> getValue () .toNumber () - rhs -> getValue () .toNumber ());
 			}
 			case AssignmentOperatorType::LEFT_SHIFT_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toInt32 () << (rhs -> getValue () .toUInt32 () & 0x1f));
+				return put (lhs -> getValue () .toInt32 () << (rhs -> getValue () .toUInt32 () & 0x1f));
 			}
 			case AssignmentOperatorType::RIGHT_SHIFT_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toInt32 () >> (rhs -> getValue () .toUInt32 () & 0x1f));
+				return put (lhs -> getValue () .toInt32 () >> (rhs -> getValue () .toUInt32 () & 0x1f));
 			}
 			case AssignmentOperatorType::UNSIGNED_RIGHT_SHIFT_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toUInt32 () >> (rhs -> getValue () .toUInt32 () & 0x1f));
+				return put (lhs -> getValue () .toUInt32 () >> (rhs -> getValue () .toUInt32 () & 0x1f));
 			}
 			case AssignmentOperatorType::BITWISE_AND_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toInt32 () & rhs -> getValue () .toInt32 ());
+				return put (lhs -> getValue () .toInt32 () & rhs -> getValue () .toInt32 ());
 			}
 			case AssignmentOperatorType::BITWISE_XOR_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toInt32 () ^ rhs -> getValue () .toInt32 ());
+				return put (lhs -> getValue () .toInt32 () ^ rhs -> getValue () .toInt32 ());
 			}
 			case AssignmentOperatorType::BITWISE_OR_ASSIGNMENT:
 			{
-				return lhs -> setValue (lhs -> getValue () .toInt32 () | rhs -> getValue () .toInt32 ());
+				return put (lhs -> getValue () .toInt32 () | rhs -> getValue () .toInt32 ());
 			}
 		}
 
@@ -182,6 +182,14 @@ private:
 			throw ReferenceError ("Invalid assignment left-hand side.");
 
 		addChildren (executionContext, lhs, rhs);
+	}
+
+	var &&
+	put (var && value) const
+	{
+		lhs -> setValue (value);
+
+		return std::move (value);
 	}
 
 	///  @name Members

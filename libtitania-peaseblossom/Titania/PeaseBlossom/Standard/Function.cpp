@@ -48,26 +48,66 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_STANDARD_OBJECT_H__
-#define __TITANIA_PEASE_BLOSSOM_STANDARD_OBJECT_H__
+#include "Function.h"
 
-#include "../Primitives/ptr.h"
+#include "../Objects/Object.h"
+#include "../Objects/Function.h"
+#include "../Objects/NativeFunction.h"
 
 namespace titania {
 namespace pb {
-
-class NativeFunction;
-class pbExecutionContext;
-
 namespace Standard {
-namespace Object {
+namespace Function {
+
+/// new Function ([arg1[, arg2[, ...argN]],] functionBody)
+struct Constructor
+{
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+	{
+		if (arguments .empty ())
+			return new pb::Function (ec);
+
+		return new pb::Function (ec);
+	}
+
+};
+
+struct toString
+{
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+	{
+		if (object .getType () == OBJECT)
+		{
+			if (dynamic_cast <pbFunction*> (object .getObject () .get ()))
+				return object .getObject () -> toString ();
+		}
+
+		throw TypeError ("Function.prototype.toString is not generic.");
+	}
+
+};
 
 ptr <NativeFunction>
-initialize (pbExecutionContext* const ec, const ptr <NativeFunction> & functionClass);
+initialize (pbExecutionContext* const ec)
+{
+	const auto & standardFunction = ec -> getStandardFunction ();
+	const auto   constructor      = make_ptr <NativeFunction> (ec, "Function", Constructor { }, 1);
 
-} // Object
+	constructor -> addPropertyDescriptor ("__proto__", standardFunction, NONE);
+	constructor -> addPropertyDescriptor ("prototype", standardFunction, WRITABLE | CONFIGURABLE);
+	constructor -> setConstructor (constructor);
+
+	// standardFunction prototype remains undefined.
+	standardFunction -> setConstructor (constructor);
+	standardFunction -> addPropertyDescriptor ("constructor", constructor,                                          WRITABLE | CONFIGURABLE);
+	standardFunction -> addPropertyDescriptor ("toString",    new NativeFunction (ec, "toString", toString { }, 0), WRITABLE | CONFIGURABLE);
+
+	return constructor;
+}
+
+} // Function
 } // Standard
 } // pb
 } // titania
-
-#endif

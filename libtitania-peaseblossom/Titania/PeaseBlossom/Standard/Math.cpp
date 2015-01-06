@@ -60,7 +60,7 @@ namespace Standard {
 const std::string Math::className = "Math";
 
 Math::Math (pbExecutionContext* const ec) :
-	Object (ec)
+	pb::Object (ec)
 {
 	addPropertyDescriptor ("E",       M_E,       WRITABLE | CONFIGURABLE);
 	addPropertyDescriptor ("LN10",    M_LN10,    WRITABLE | CONFIGURABLE);

@@ -84,8 +84,8 @@ public:
 	///  @name Operations
 
 	virtual
-	var
-	setValue (var && value) const
+	void
+	setValue (const var & value) const
 	throw (pbException) final override
 	{
 		const auto lhs = expression -> getValue ();
@@ -98,18 +98,14 @@ public:
 			{
 				try
 				{
-					return object -> setProperty (identifier, std::move (value));
+					object -> setProperty (identifier, value);
 				}
 				catch (const std::out_of_range &)
 				{
 					object -> addPropertyDescriptor (identifier, value);
-
-					return value;
 				}
 			}
 		}
-
-		return Undefined ();
 	}
 
 	///  Converts its input argument to either Primitive or Object type.

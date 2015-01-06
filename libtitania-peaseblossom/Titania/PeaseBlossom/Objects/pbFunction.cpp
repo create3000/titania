@@ -65,13 +65,16 @@ pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::s
 {
 	try
 	{
-		const auto & standardFunction = executionContext -> getStandardFunction ();
 		const auto & constructor      = executionContext -> getStandardClass (StandardClassType::FUNCTION);
+		const auto & standardFunction = executionContext -> getStandardFunction ();
+		const auto   prototype        = new Object (executionContext);
 
+		setConstructor (constructor);
+		addPropertyDescriptor ("__proto__", standardFunction, NONE);
+		addPropertyDescriptor ("prototype", prototype,        WRITABLE | CONFIGURABLE);
 		addProperties ();
-		addPropertyDescriptor ("__proto__",   standardFunction);
-		addPropertyDescriptor ("constructor", constructor);
-		addPropertyDescriptor ("prototype",   new Object (executionContext));
+
+		prototype -> addPropertyDescriptor ("constructor", this, WRITABLE | CONFIGURABLE);
 	}
 	catch (const std::out_of_range &)
 	{ }
@@ -82,8 +85,8 @@ pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::n
 	    name ("Empty"),
 	  length (0)
 {
+	addPropertyDescriptor ("__proto__", executionContext -> getStandardObject (), NONE);
 	addProperties ();
-	addPropertyDescriptor ("__proto__", executionContext -> getStandardObject ());
 }
 
 void
@@ -98,6 +101,33 @@ pbFunction::createInstance (pbExecutionContext* const executionContext)
 throw (TypeError)
 {
 	return new Object (executionContext, this);
+}
+
+bool
+pbFunction::hasInstance (const var & value)
+noexcept (true)
+{
+	if (value .isObject ())
+	{
+		try
+		{
+			auto proto = value .getObject () .get ();
+	
+			for (;;)
+			{
+				if (proto -> getConstructor () .get () == this)
+					return true;
+
+				proto = proto -> getProto ();
+			}
+		}
+		catch (const std::exception &)
+		{
+			return false;
+		}
+	}
+
+	return false;
 }
 
 var

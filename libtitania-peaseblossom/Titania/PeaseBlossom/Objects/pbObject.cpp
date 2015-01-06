@@ -74,6 +74,25 @@ PropertyDescriptor::PropertyDescriptor (pbChildObject* const object,
 	setter .addParent (object);
 }
 
+PropertyDescriptor::PropertyDescriptor (pbChildObject* const object,
+                                        const Identifier & identifier,
+                                        var && value_,
+                                        const PropertyFlagsType & flags,
+                                        ptr <pbFunction> && getter_,
+                                        ptr <pbFunction> && setter_) :
+	    object (object),
+	identifier (identifier),
+	     value (std::move (value_)),
+	     flags (flags),
+	    getter (std::move (getter_)),
+	    setter (std::move (setter_))
+{
+	addValue ();
+
+	getter .addParent (object);
+	setter .addParent (object);
+}
+
 void
 PropertyDescriptor::addValue ()
 {
@@ -91,30 +110,24 @@ pbObject::pbObject () :
 	pbOutputStreamObject (),
 	          pbUserData (),
 	          extensible (true),
+	         constructor (),
 	          properties (),
 	    cachedProperties (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ())),
 	     resolveFunction (),
 	     disposeFunction ()
-{ }
+{
+	addChildren (constructor);
+}
 
 const std::string &
 pbObject::getClassName () const
 noexcept (true)
 {
-	try
-	{
-		static const Identifier constructor = "constructor";
-
-		return getObject (constructor) -> getTypeName ();
-	}
-	catch (const std::exception &)
-	{
-		return typeName;
-	}
+	return constructor -> getTypeName ();
 }
 
-var
-pbObject::setProperty (const Identifier & identifier, var && value)
+void
+pbObject::setProperty (const Identifier & identifier, const var & value)
 throw (std::out_of_range,
        pbException)
 {
@@ -123,14 +136,13 @@ throw (std::out_of_range,
 	if (property -> getFlags () & WRITABLE)
 	{
 		if (property -> getSetter ())
-			return property -> getSetter () -> apply (this, { std::move (value) });
+		{
+			property -> getSetter () -> apply (this, { value });
+			return;
+		}
 
-		property -> setValue (std::move (value));
-
-		return property -> getValue ();
+		property -> setValue (value);
 	}
-
-	return Undefined ();
 }
 
 var
@@ -170,7 +182,21 @@ throw (std::invalid_argument)
 	const auto pair = properties .emplace (identifier .getId (), std::make_shared <PropertyDescriptor> (this, identifier, value, flags, getter, setter));
 
 	if (not pair .second)
-		throw std::invalid_argument ("Property '" + identifier .getName () +  "' already exists.");
+		throw std::invalid_argument ("Property '" + identifier .getName () + "' already exists.");
+}
+
+void
+pbObject::addPropertyDescriptor (const Identifier & identifier,
+                                 var && value,
+                                 const PropertyFlagsType flags,
+                                 ptr <pbFunction> && getter,
+                                 ptr <pbFunction> && setter)
+throw (std::invalid_argument)
+{
+	const auto pair = properties .emplace (identifier .getId (), std::make_shared <PropertyDescriptor> (this, identifier, std::move (value), flags, std::move (getter), std::move (setter)));
+
+	if (not pair .second)
+		throw std::invalid_argument ("Property '" + identifier .getName () + "' already exists.");
 }
 
 void

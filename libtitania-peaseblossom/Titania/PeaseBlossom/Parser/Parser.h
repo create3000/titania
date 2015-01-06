@@ -362,7 +362,6 @@ private:
 	std::string                      whiteSpaces;
 	std::string                      commentCharacters;
 	bool                             newLine;
-	bool                             keepNewLine;
 	std::vector <bool>               isLeftHandSideExressions;
 
 };

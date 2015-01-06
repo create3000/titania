@@ -52,6 +52,7 @@
 #define __TITANIA_PEASE_BLOSSOM_BASE_PB_USER_DATA_H__
 
 #include <vector>
+#include <stdexcept>
 
 namespace titania {
 namespace pb {
@@ -74,7 +75,8 @@ public:
 	template <class Type>
 	Type
 	getUserData (const size_t index) const
-	{ return reinterpret_cast <Type> (userData [index]); }
+	throw (std::out_of_range)
+	{ return reinterpret_cast <Type> (userData .at (index)); }
 
 	///  @name Destruction
 

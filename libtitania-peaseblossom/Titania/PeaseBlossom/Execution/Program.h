@@ -130,7 +130,7 @@ protected:
 
 	///  Adds the standard classes and properties to the global object.
 	void
-	addStandardClasses ()
+	initialize ()
 	noexcept (true);
 
 

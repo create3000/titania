@@ -96,8 +96,8 @@ public:
 	///  @name Conversion operations
 
 	virtual
-	var
-	setValue (var &&) const
+	void
+	setValue (const var &) const
 	throw (pbException)
 	{ throw ReferenceError ("Invalid assignment left-hand side."); }
 

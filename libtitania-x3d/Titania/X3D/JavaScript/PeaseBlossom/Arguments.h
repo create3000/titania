@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_ARGUMENTS_H__
 
 #include "Context.h"
+#include "ObjectType.h"
 
 #include <Titania/PeaseBlossom/pb.h>
 
@@ -62,6 +63,7 @@ namespace peaseblossom {
 inline
 Context*
 getContext (const pb::ptr <pb::pbExecutionContext> & ec)
+throw (std::out_of_range)
 {
 	return ec -> getUserData <Context*> (0);
 }
@@ -69,16 +71,87 @@ getContext (const pb::ptr <pb::pbExecutionContext> & ec)
 inline
 Context*
 getContext (pb::pbObject* const object)
+throw (std::out_of_range)
 {
 	return object -> getUserData <Context*> (2);
+}
+
+inline
+ObjectType
+getType (pb::pbObject* const object)
+throw (std::out_of_range)
+{
+	return ObjectType (object -> getUserData <size_t> (0));
 }
 
 template <class Type>
 inline
 Type*
 getObject (pb::pbObject* const object)
+throw (std::out_of_range)
 {
 	return object -> getUserData <Type*> (1);
+}
+
+template <class Type>
+inline
+Type*
+getObject (const pb::ptr <pb::pbObject> & object)
+throw (std::out_of_range)
+{
+	return getObject <Type> (object .get ());
+}
+
+template <class Type>
+inline
+Type*
+getObject (const pb::var & value)
+throw (std::out_of_range)
+{
+	return getObject <Type> (value .getObject () .get ());
+}
+
+template <class T>
+typename T::internal_type*
+getThis (const pb::var & value)
+throw (std::invalid_argument)
+{
+	try
+	{
+		if (value .isObject ())
+		{
+			const auto & object = value .getObject ();
+
+			if (getType (object) == T::getType ())
+				return getObject <typename T::internal_type> (object);
+		}
+	}
+	catch (const std::out_of_range &)
+	{ }
+
+	throw std::invalid_argument (T::getTypeName ());
+}
+
+template <class T>
+typename T::internal_type*
+get1Argument (const std::vector <pb::var> & args, const size_t index)
+{
+	try
+	{
+		const auto & value = args [index];
+	
+		if (value .isObject ())
+		{
+			const auto & object = value .getObject ();
+
+			if (getType (object) == T::getType ())
+				return getObject <typename T::internal_type> (object);
+		}
+	}
+	catch (const std::out_of_range &)
+	{ }
+
+	throw pb::TypeError ("Type of argument " + std::to_string (index + 1) + " is invalid, must be " + T::getTypeName () + ".");
 }
 
 } // peaseblossom

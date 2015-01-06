@@ -85,23 +85,21 @@ public:
 	///  @name Operations
 
 	virtual
-	var
-	setValue (var && value) const
+	void
+	setValue (const var & value) const
 	throw (pbException) final override
 	{
 		for (const auto & localObject : executionContext -> getLocalObjects ())
 		{
 			try
 			{
-				return localObject -> setProperty (identifier, std::move (value));
+				return localObject -> setProperty (identifier, value);
 			}
 			catch (const std::out_of_range &)
 			{ }
 		}
 
 		executionContext -> getGlobalObject () -> addPropertyDescriptor (identifier, value);
-
-		return value;
 	}
 
 	///  Converts its input argument to either Primitive or Object type.

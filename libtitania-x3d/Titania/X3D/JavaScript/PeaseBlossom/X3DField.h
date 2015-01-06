@@ -48,59 +48,111 @@
  *
  ******************************************************************************/
 
-#include "Object.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_X3DFIELD_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_X3DFIELD_H__
 
-#include "../Execution/pbExecutionContext.h"
-#include "../Objects/NativeFunction.h"
+#include "../../Basic/X3DField.h"
+
+#include "Arguments.h"
+#include "ObjectType.h"
+
+#include <Titania/PeaseBlossom/pb.h>
 
 namespace titania {
-namespace pb {
+namespace X3D {
+namespace peaseblossom {
 
-Object::Object (pbExecutionContext* const executionContext)
-throw (TypeError) :
-	pbObject ()
+class X3DField
+{
+protected:
+
+	///  @name Construction
+
+	template <class T>
+	static
+	pb::var
+	create (const pb::ptr <pb::pbExecutionContext> &, typename T::internal_type* const);
+
+	template <class T>
+	static
+	void
+	setUserData (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, typename T::internal_type* const);
+
+	///  @name Functions
+
+	template <class T>
+	static
+	pb::var
+	toString (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+
+private:
+
+	///  @name Destruction
+
+	template <class T>
+	static
+	void
+	dispose (pb::pbObject* const);
+
+};
+
+template <class T>
+pb::var
+X3DField::create (const pb::ptr <pb::pbExecutionContext> & ec, typename T::internal_type* const field)
+{
+	const auto context = getContext (ec);
+	const auto object  = context -> getClass (T::getType ()) -> createInstance (ec);
+
+	setUserData <T> (ec, object, field);
+
+	return object;
+}
+
+template <class T>
+void
+X3DField::setUserData (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & value, typename T::internal_type* const field)
+{
+	const auto   context  = getContext (ec);
+	const auto & object   = value .getObject ();
+	auto &       userData = object -> getUserData ();
+
+	userData .reserve (3);
+
+	userData .emplace_back ((void*) T::getType ());
+	userData .emplace_back (field);
+	userData .emplace_back (context);
+	object -> setDisposeCallback (dispose <T>);
+
+	field -> addParent (context);
+}
+
+template <class T>
+pb::var
+X3DField::toString (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
 {
 	try
 	{
-		const auto & constructor    = executionContext -> getStandardClass (StandardClassType::OBJECT);
-		const auto & standardObject = executionContext -> getStandardObject ();
-
-		setConstructor (constructor);
-		addPropertyDescriptor ("__proto__", standardObject, NONE);
+		return getThis <T> (object) -> toString ();
 	}
-	catch (const std::out_of_range &)
-	{ }
-}
-
-Object::Object (pbExecutionContext* const executionContext, pbFunction* const constructor)
-throw (TypeError) :
-	pbObject ()
-{
-	try
+	catch (const std::invalid_argument &)
 	{
-		setConstructor (constructor);
-		addPropertyDescriptor ("__proto__", constructor -> getObject ("prototype"), NONE);
-	}
-	catch (const std::exception &)
-	{
-		try
-		{
-			const auto & constructor    = executionContext -> getStandardClass (StandardClassType::OBJECT);
-			const auto & standardObject = executionContext -> getStandardObject ();
-
-			setConstructor (constructor);
-			addPropertyDescriptor ("__proto__", standardObject, NONE);
-		}
-		catch (const std::out_of_range &)
-		{ }
+		throw pb::TypeError ("X3DField.prototype.toString is not generic.");
 	}
 }
 
-Object::Object (const std::nullptr_t) :
-	pbObject ()
+template <class T>
+void
+X3DField::dispose (pb::pbObject* const object)
 {
-	addPropertyDescriptor ("__proto__", nullptr, NONE);
+	const auto context = getContext (object);
+	const auto field   = getObject <typename T::internal_type> (object);
+
+	field -> removeParent (context);
 }
 
-} // pb
+} // peaseblossom
+} // X3D
 } // titania
+
+#endif
