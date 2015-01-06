@@ -313,11 +313,7 @@ protected:
 
 	///  @name Friends
 
-	friend class ObjectLiteral;
 	friend class PropertyExpression;
-	friend class VariableDeclaration;
-	friend class VariableExpression;
-	friend class Function;
 	
 	friend
 	ptr <NativeFunction>

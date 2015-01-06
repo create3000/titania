@@ -51,6 +51,9 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_FIELDS_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_FIELDS_H__
 
+#include "X3DField.h"
+#include "X3DArrayField.h"
+
 //#include "Fields/SFColor.h"
 //#include "Fields/SFColorRGBA.h"
 //#include "Fields/SFImage.h"
@@ -62,13 +65,6 @@
 //#include "Fields/SFVec3.h"
 #include "Fields/SFVec4.h"
 
-//#include "Fields/ArrayFields.h"
-//#include "Fields/MFBool.h"
-//#include "Fields/MFDouble.h"
-//#include "Fields/MFFloat.h"
-//#include "Fields/MFInt32.h"
-//#include "Fields/MFNode.h"
-//#include "Fields/MFString.h"
-//#include "Fields/MFTime.h"
+#include "Fields/ArrayFields.h"
 
 #endif

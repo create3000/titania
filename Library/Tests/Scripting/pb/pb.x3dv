@@ -424,16 +424,19 @@ print (f);
 
 var v = new SFVec4f (1,2,3,4);
 
-print ('SFVec4f .new: ', v instanceof X3DField);
-print ('SFVec4f .new: ', v instanceof SFVec4f);
-print ('SFVec4f .new: ', v);
-print ('SFVec4f .add: ', v .add (new SFVec4f (2,3,4,5)));
+print ('SFVec4f .new:         ', v instanceof X3DField);
+print ('SFVec4f .new:         ', v instanceof SFVec4f);
+print ('SFVec4f .getTypeName: ', v .getTypeName ());
+print ('SFVec4f .getType:     ', v .getType ());
+print ('SFVec4f .new:         ', v);
+print ('SFVec4f .add:         ', v .add (new SFVec4f (2,3,4,5)));
 
 print (SFVec4f)
 print (SFVec4f .constructor)
 //print (SFVec4f .prototype)
 print (SFVec4f .prototype .constructor)
 
+print (new MFVec4f ())
 "
 "peaseblossom:"
 ]

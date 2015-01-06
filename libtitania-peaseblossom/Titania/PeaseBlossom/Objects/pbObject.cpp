@@ -414,13 +414,11 @@ throw (pbException,
 			if (function)
 				return function -> apply (object, arguments);
 		}
-
-		throw std::invalid_argument ("pbObject::apply");
 	}
 	catch (const std::out_of_range &)
-	{
-		throw std::invalid_argument ("pbObject::apply");
-	}
+	{ }
+
+	throw std::invalid_argument ("pbObject::apply");
 }
 
 void

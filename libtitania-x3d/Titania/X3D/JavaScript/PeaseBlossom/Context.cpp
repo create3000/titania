@@ -121,9 +121,12 @@ Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
 	__LOG__ << identifier << std::endl;
 
 	static const std::map <pb::Identifier, ObjectType> types = {
-		std::make_pair (pb::Identifier ("X3DField"), X3DField::getType ()),
-		std::make_pair (pb::Identifier ("SFVec4d"),  SFVec4d::getType ()),
-		std::make_pair (pb::Identifier ("SFVec4f"),  SFVec4f::getType ())
+		std::make_pair (pb::Identifier ("X3DField"),      X3DField::getType ()),
+		std::make_pair (pb::Identifier ("X3DArrayField"), X3DArrayField::getType ()),
+		std::make_pair (pb::Identifier ("SFVec4d"),       SFVec4d::getType ()),
+		std::make_pair (pb::Identifier ("SFVec4f"),       SFVec4f::getType ()),
+		std::make_pair (pb::Identifier ("MFVec4d"),       MFVec4d::getType ()),
+		std::make_pair (pb::Identifier ("MFVec4f"),       MFVec4f::getType ())
 	};
 
 	try
@@ -143,9 +146,12 @@ Context::getClass (const ObjectType type) const
 	using Initialize = std::function <pb::ptr <pb::NativeFunction> (Context* const, const pb::ptr <pb::Program> &)>;
 
 	static const std::map <ObjectType, Initialize> functions = {
-		std::make_pair (X3DField::getType (), X3DField::initialize),
-		std::make_pair (SFVec4d::getType (),  SFVec4d::initialize),
-		std::make_pair (SFVec4f::getType (),  SFVec4f::initialize)
+		std::make_pair (X3DField::getType (),      X3DField::initialize),
+		std::make_pair (X3DArrayField::getType (), X3DArrayField::initialize),
+		std::make_pair (SFVec4d::getType (),       SFVec4d::initialize),
+		std::make_pair (SFVec4f::getType (),       SFVec4f::initialize),
+		std::make_pair (MFVec4d::getType (),       MFVec4d::initialize),
+		std::make_pair (MFVec4f::getType (),       MFVec4f::initialize)
 	};
 
 	auto & standardClass = const_cast <Context*> (this) -> classes [size_t (type)];

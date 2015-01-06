@@ -742,6 +742,9 @@
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec4.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\X3DField.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\X3DArrayField.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Array.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\ArrayFields.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1241,6 +1244,8 @@
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec4f.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\X3DField.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\X3DArrayField.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\ArrayFields.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

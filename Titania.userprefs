@@ -1,16 +1,22 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/X3DField.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/X3DArrayField.h">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="444" Column="9" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.h" Line="56" Column="17" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="107" Column="53" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.h" Line="1" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.cpp" Line="414" Column="65" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/X3DField.h" Line="119" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.h" Line="225" Column="39" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.h" Line="264" Column="20" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.cpp" Line="128" Column="10" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="63" Column="13" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.h" Line="37" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="129" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.h" Line="361" Column="44" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.cpp" Line="733" Column="69" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/X3DField.h" Line="114" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/X3DField.cpp" Line="75" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.h" Line="132" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Arguments.h" Line="125" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.h" Line="350" Column="9" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.cpp" Line="417" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Expressions/PropertyExpression.h" Line="185" Column="7" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/X3DArrayField.cpp" Line="66" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/X3DArrayField.h" Line="63" Column="8" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields.h" Line="56" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -27,11 +33,9 @@
           <Node name="libtitania-peaseblossom" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="PeaseBlossom" expanded="True">
-                <Node name="Base" expanded="True" />
                 <Node name="Bits" expanded="True" />
                 <Node name="Execution" expanded="True" />
                 <Node name="Expressions" expanded="True" />
-                <Node name="InputOutput" expanded="True" />
                 <Node name="Objects" expanded="True" />
                 <Node name="Parser" expanded="True" />
                 <Node name="Primitives" expanded="True" />
@@ -48,12 +52,12 @@
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Basic" expanded="True" />
+                <Node name="Browser" expanded="True" />
                 <Node name="Fields" expanded="True" />
                 <Node name="InputOutput" expanded="True" />
                 <Node name="JavaScript" expanded="True">
-                  <Node name="PeaseBlossom" expanded="True">
+                  <Node name="PeaseBlossom" expanded="True" selected="True">
                     <Node name="Fields" expanded="True" />
-                    <Node name="Context.cpp" selected="True" />
                   </Node>
                 </Node>
                 <Node name="Parser" expanded="True" />

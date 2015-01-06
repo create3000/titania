@@ -2,6 +2,22 @@
 
 	* Makefile.am:
 	* libtitania-x3d.cproj:
+	* Array.h:
+	* Fields.h:
+	* X3DField.h:
+	* Context.cpp:
+	* Arguments.h:
+	* X3DField.cpp:
+	* ObjectType.h:
+	* X3DArrayField.h:
+	* X3DArrayField.cpp:
+	* ArrayFields.h:
+	* ArrayFields.cpp: 
+
+2015-01-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
 	* Global.h:
 	* X3DField.h:
 	* Arguments.h:

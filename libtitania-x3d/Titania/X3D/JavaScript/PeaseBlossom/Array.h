@@ -48,112 +48,93 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_ARGUMENTS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_ARGUMENTS_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_ARRAY_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_ARRAY_H__
 
-#include "Context.h"
-#include "ObjectType.h"
-
-#include <Titania/PeaseBlossom/pb.h>
+#include "X3DArrayField.h"
 
 namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-inline
-Context*
-getContext (pb::pbObject* const object)
-throw (std::out_of_range)
+template <class Type, class InternalType>
+class Array :
+	public X3DArrayField
 {
-	return object -> getUserData <Context*> (0);
+public:
+
+	///  @name Member types
+
+	using internal_type = InternalType;
+	using value_type    = Type;
+	using single_type   = typename InternalType::value_type;
+
+	///  @name Common members
+
+	static
+	constexpr ObjectType
+	getType ()
+	{ throw std::invalid_argument ("Array::getType"); }
+
+	static
+	const std::string &
+	getTypeName ()
+	{ return typeName; }
+
+	///  @name Construction
+
+	static
+	pb::ptr <pb::NativeFunction>
+	initialize (Context* const, const pb::ptr <pb::Program> &);
+
+
+private:
+
+	///  @name Construction
+
+	static
+	pb::var
+	construct (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	///  @name Static members
+
+	static const std::string typeName;
+
+};
+
+template <class Type, class InternalType>
+pb::ptr <pb::NativeFunction>
+Array <Type, InternalType>::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
+{
+	using namespace std::placeholders;
+
+	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), construct, nullptr, 4);
+	const auto prototype = context -> getClass (ObjectType::X3DArrayField) -> createInstance (ec);
+
+	prototype -> addPropertyDescriptor ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
+
+	function -> addPropertyDescriptor ("prototype", prototype, pb::NONE);
+	return function;
 }
 
-inline
-Context*
-getContext (pb::ptr <pb::pbObject> const object)
-throw (std::out_of_range)
+template <class Type, class InternalType>
+pb::var
+Array <Type, InternalType>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
-	return getContext (object .get ());
-}
-
-inline
-Context*
-getContext (const pb::ptr <pb::pbExecutionContext> & ec)
-throw (std::out_of_range)
-{
-	return ec -> getUserData <Context*> (0);
-}
-
-template <class Type>
-inline
-Type*
-getObject (pb::pbObject* const object)
-throw (std::out_of_range)
-{
-	return object -> getUserData <Type*> (1);
-}
-
-template <class Type>
-inline
-Type*
-getObject (const pb::ptr <pb::pbObject> & object)
-throw (std::out_of_range)
-{
-	return getObject <Type> (object .get ());
-}
-
-template <class Type>
-inline
-Type*
-getObject (const pb::var & value)
-throw (std::out_of_range)
-{
-	return getObject <Type> (value .getObject () .get ());
-}
-
-template <class Class>
-typename Class::internal_type*
-getThis (const pb::var & value)
-throw (std::invalid_argument)
-{
-	try
+	switch (args .size ())
 	{
-		if (value .isObject ())
+		case 0:
 		{
-			const auto & object  = value .getObject ();
-			const auto   context = getContext (object);
-
-			if (context -> getClass (Class::getType ()) -> hasInstance (value))
-				return getObject <typename Class::internal_type> (object);
+			setUserData <Array> (ec, object, new InternalType ());
+			break;
+		}
+		default:
+		{
+			break;
 		}
 	}
-	catch (const std::out_of_range &)
-	{ }
 
-	throw std::invalid_argument (Class::getTypeName ());
-}
-
-template <class Class>
-typename Class::internal_type*
-get1Argument (const std::vector <pb::var> & args, const size_t index)
-{
-	try
-	{
-		const auto & value = args [index];
-	
-		if (value .isObject ())
-		{
-			const auto & object  = value .getObject ();
-			const auto   context = getContext (object);
-
-			if (context -> getClass (Class::getType ()) -> hasInstance (value))
-				return getObject <typename Class::internal_type> (object);
-		}
-	}
-	catch (const std::out_of_range &)
-	{ }
-
-	throw pb::TypeError ("Type of argument " + std::to_string (index + 1) + " is invalid, must be " + Class::getTypeName () + ".");
+	return pb::Undefined;
 }
 
 } // peaseblossom

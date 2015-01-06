@@ -48,116 +48,28 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_ARGUMENTS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_ARGUMENTS_H__
-
-#include "Context.h"
-#include "ObjectType.h"
-
-#include <Titania/PeaseBlossom/pb.h>
+#include "X3DArrayField.h"
 
 namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-inline
-Context*
-getContext (pb::pbObject* const object)
-throw (std::out_of_range)
+const std::string X3DArrayField::typeName = "X3DArrayField";
+
+pb::ptr <pb::NativeFunction>
+X3DArrayField::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 {
-	return object -> getUserData <Context*> (0);
-}
+	using namespace std::placeholders;
 
-inline
-Context*
-getContext (pb::ptr <pb::pbObject> const object)
-throw (std::out_of_range)
-{
-	return getContext (object .get ());
-}
+	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), nullptr, nullptr, 0);
+	const auto prototype = context -> getClass (ObjectType::X3DField) -> createInstance (ec);
 
-inline
-Context*
-getContext (const pb::ptr <pb::pbExecutionContext> & ec)
-throw (std::out_of_range)
-{
-	return ec -> getUserData <Context*> (0);
-}
+	prototype -> addPropertyDescriptor ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
 
-template <class Type>
-inline
-Type*
-getObject (pb::pbObject* const object)
-throw (std::out_of_range)
-{
-	return object -> getUserData <Type*> (1);
-}
-
-template <class Type>
-inline
-Type*
-getObject (const pb::ptr <pb::pbObject> & object)
-throw (std::out_of_range)
-{
-	return getObject <Type> (object .get ());
-}
-
-template <class Type>
-inline
-Type*
-getObject (const pb::var & value)
-throw (std::out_of_range)
-{
-	return getObject <Type> (value .getObject () .get ());
-}
-
-template <class Class>
-typename Class::internal_type*
-getThis (const pb::var & value)
-throw (std::invalid_argument)
-{
-	try
-	{
-		if (value .isObject ())
-		{
-			const auto & object  = value .getObject ();
-			const auto   context = getContext (object);
-
-			if (context -> getClass (Class::getType ()) -> hasInstance (value))
-				return getObject <typename Class::internal_type> (object);
-		}
-	}
-	catch (const std::out_of_range &)
-	{ }
-
-	throw std::invalid_argument (Class::getTypeName ());
-}
-
-template <class Class>
-typename Class::internal_type*
-get1Argument (const std::vector <pb::var> & args, const size_t index)
-{
-	try
-	{
-		const auto & value = args [index];
-	
-		if (value .isObject ())
-		{
-			const auto & object  = value .getObject ();
-			const auto   context = getContext (object);
-
-			if (context -> getClass (Class::getType ()) -> hasInstance (value))
-				return getObject <typename Class::internal_type> (object);
-		}
-	}
-	catch (const std::out_of_range &)
-	{ }
-
-	throw pb::TypeError ("Type of argument " + std::to_string (index + 1) + " is invalid, must be " + Class::getTypeName () + ".");
+	function -> addPropertyDescriptor ("prototype", prototype, pb::NONE);
+	return function;
 }
 
 } // peaseblossom
 } // X3D
 } // titania
-
-#endif

@@ -48,113 +48,47 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_ARGUMENTS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_ARGUMENTS_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_X3DARRAY_FIELD_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_X3DARRAY_FIELD_H__
 
-#include "Context.h"
-#include "ObjectType.h"
-
-#include <Titania/PeaseBlossom/pb.h>
+#include "X3DField.h"
 
 namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-inline
-Context*
-getContext (pb::pbObject* const object)
-throw (std::out_of_range)
+class X3DArrayField :
+	public X3DField
 {
-	return object -> getUserData <Context*> (0);
-}
+public:
 
-inline
-Context*
-getContext (pb::ptr <pb::pbObject> const object)
-throw (std::out_of_range)
-{
-	return getContext (object .get ());
-}
+	///  @name Member types
 
-inline
-Context*
-getContext (const pb::ptr <pb::pbExecutionContext> & ec)
-throw (std::out_of_range)
-{
-	return ec -> getUserData <Context*> (0);
-}
+	using internal_type = X3D::X3DFieldDefinition;
 
-template <class Type>
-inline
-Type*
-getObject (pb::pbObject* const object)
-throw (std::out_of_range)
-{
-	return object -> getUserData <Type*> (1);
-}
+	///  @name Common members
 
-template <class Type>
-inline
-Type*
-getObject (const pb::ptr <pb::pbObject> & object)
-throw (std::out_of_range)
-{
-	return getObject <Type> (object .get ());
-}
+	static
+	constexpr ObjectType
+	getType ()
+	{ return ObjectType::X3DArrayField; }
 
-template <class Type>
-inline
-Type*
-getObject (const pb::var & value)
-throw (std::out_of_range)
-{
-	return getObject <Type> (value .getObject () .get ());
-}
+	static
+	const std::string &
+	getTypeName ()
+	{ return typeName; }
 
-template <class Class>
-typename Class::internal_type*
-getThis (const pb::var & value)
-throw (std::invalid_argument)
-{
-	try
-	{
-		if (value .isObject ())
-		{
-			const auto & object  = value .getObject ();
-			const auto   context = getContext (object);
+	///  @name Construction
 
-			if (context -> getClass (Class::getType ()) -> hasInstance (value))
-				return getObject <typename Class::internal_type> (object);
-		}
-	}
-	catch (const std::out_of_range &)
-	{ }
+	static
+	pb::ptr <pb::NativeFunction>
+	initialize (Context* const, const pb::ptr <pb::Program> &);
 
-	throw std::invalid_argument (Class::getTypeName ());
-}
+	///  @name Static members
 
-template <class Class>
-typename Class::internal_type*
-get1Argument (const std::vector <pb::var> & args, const size_t index)
-{
-	try
-	{
-		const auto & value = args [index];
-	
-		if (value .isObject ())
-		{
-			const auto & object  = value .getObject ();
-			const auto   context = getContext (object);
+	static const std::string typeName;
 
-			if (context -> getClass (Class::getType ()) -> hasInstance (value))
-				return getObject <typename Class::internal_type> (object);
-		}
-	}
-	catch (const std::out_of_range &)
-	{ }
-
-	throw pb::TypeError ("Type of argument " + std::to_string (index + 1) + " is invalid, must be " + Class::getTypeName () + ".");
-}
+};
 
 } // peaseblossom
 } // X3D

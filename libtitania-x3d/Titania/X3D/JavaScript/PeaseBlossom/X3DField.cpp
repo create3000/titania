@@ -62,14 +62,56 @@ X3DField::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 	using namespace std::placeholders;
 
 	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), nullptr, nullptr, 0);
-	const auto prototype = new pb::Object (ec);
+	const auto prototype = pb::make_ptr <pb::Object> (ec);
 
 	prototype -> addPropertyDescriptor ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
 
-	prototype -> addPropertyDescriptor ("toString", new pb::NativeFunction (ec, "toString", toString, 0), pb::NONE);
+	prototype -> addPropertyDescriptor ("getName",     new pb::NativeFunction (ec, "getName",     getName,      0), pb::NONE);
+	prototype -> addPropertyDescriptor ("getTypeName", new pb::NativeFunction (ec, "getTypeName", getTypeName_, 0), pb::NONE);
+	prototype -> addPropertyDescriptor ("getType",     new pb::NativeFunction (ec, "getType",     getType_,     0), pb::NONE);
+	prototype -> addPropertyDescriptor ("toString",    new pb::NativeFunction (ec, "toString",    toString,     0), pb::NONE);
 
 	function -> addPropertyDescriptor ("prototype", prototype, pb::NONE);
 	return function;
+}
+
+pb::var
+X3DField::getName (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
+{
+	try
+	{
+		return getThis <X3DField> (object) -> getName ();
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw pb::TypeError ("X3DField.prototype.getName is not generic.");
+	}
+}
+
+pb::var
+X3DField::getTypeName_ (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
+{
+	try
+	{
+		return getThis <X3DField> (object) -> getTypeName ();
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw pb::TypeError ("X3DField.prototype.getTypeName is not generic.");
+	}
+}
+
+pb::var
+X3DField::getType_ (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
+{
+	try
+	{
+		return (uint32_t) getThis <X3DField> (object) -> getType ();
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw pb::TypeError ("X3DField.prototype.getType is not generic.");
+	}
 }
 
 pb::var
