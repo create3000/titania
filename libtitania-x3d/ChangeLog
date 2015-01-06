@@ -1,5 +1,11 @@
 2015-01-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Global.h:
+	* X3DJavaScriptContext.cpp:
+	* SFVec4.h: 
+
+2015-01-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* X3DField.h:
 	* Arguments.h:

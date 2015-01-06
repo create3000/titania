@@ -95,7 +95,7 @@ public:
 
 		executionContext -> getDefaultObject () -> updatePropertyDescriptor (identifier, expression -> getValue (), WRITABLE | ENUMERABLE);
 
-		return Undefined ();
+		return Undefined;
 	}
 
 	///  @name Input/Output
@@ -130,7 +130,7 @@ private:
 	construct ()
 	{
 		if (not expression)
-			expression = new PrimitiveExpression (Undefined (), ExpressionType::UNDEFINED);
+			expression = new PrimitiveExpression (Undefined, ExpressionType::UNDEFINED);
 
 		addChildren (executionContext, expression);
 	}

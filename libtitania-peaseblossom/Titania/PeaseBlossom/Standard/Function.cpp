@@ -95,9 +95,9 @@ initialize (pbExecutionContext* const ec)
 	const auto & standardFunction = ec -> getStandardFunction ();
 	const auto   constructor      = make_ptr <NativeFunction> (ec, "Function", Constructor { }, 1);
 
-	constructor -> addPropertyDescriptor ("__proto__", standardFunction, NONE);
-	constructor -> addPropertyDescriptor ("prototype", standardFunction, WRITABLE | CONFIGURABLE);
 	constructor -> setConstructor (constructor);
+	constructor -> setProto (standardFunction);
+	constructor -> addPropertyDescriptor ("prototype", standardFunction, WRITABLE | CONFIGURABLE);
 
 	// standardFunction prototype remains undefined.
 	standardFunction -> setConstructor (constructor);

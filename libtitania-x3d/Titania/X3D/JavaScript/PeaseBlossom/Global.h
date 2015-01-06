@@ -89,7 +89,7 @@ public:
 
 		browser -> println ();
 
-		return pb::Undefined ();
+		return pb::Undefined;
 	}
 
 	static

@@ -138,7 +138,7 @@ public:
 			try
 			{
 				object -> updatePropertyDescriptor (property .second .identifier,
-				                                    property .second .value ? property .second .value -> getValue () : Undefined (),
+				                                    property .second .value ? property .second .value -> getValue () : Undefined,
 				                                    DEFAULT,
 				                                    property .second .getter,
 				                                    property .second .setter);

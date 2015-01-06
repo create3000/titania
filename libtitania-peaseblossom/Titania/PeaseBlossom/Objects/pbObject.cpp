@@ -111,12 +111,13 @@ pbObject::pbObject () :
 	          pbUserData (),
 	          extensible (true),
 	         constructor (),
+	               proto (),
 	          properties (),
 	    cachedProperties (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ())),
 	     resolveFunction (),
 	     disposeFunction ()
 {
-	addChildren (constructor);
+	addChildren (constructor, proto);
 }
 
 const std::string &
@@ -127,11 +128,24 @@ noexcept (true)
 }
 
 void
+pbObject::setProto (const ptr <pbObject> & value)
+throw (std::invalid_argument)
+{
+	proto = value;
+
+	if (proto)
+		addPropertyDescriptor ("__proto__", proto, NONE);
+
+	else
+		addPropertyDescriptor ("__proto__", nullptr, NONE);
+}
+
+void
 pbObject::setProperty (const Identifier & identifier, const var & value)
 throw (std::out_of_range,
        pbException)
 {
-	const auto & property = getPropertyDescriptor (identifier);
+	const auto & property = getPropertyDescriptor (identifier, true);
 
 	if (property -> getFlags () & WRITABLE)
 	{
@@ -150,7 +164,7 @@ pbObject::getProperty (const Identifier & identifier) const
 throw (std::out_of_range,
        pbException)
 {
-	const auto & property = getPropertyDescriptor (identifier);
+	const auto & property = getPropertyDescriptor (identifier, false);
 
 	if (property -> getGetter ())
 		return property -> getGetter () -> apply (const_cast <pbObject*> (this));
@@ -209,7 +223,7 @@ noexcept (true)
 {
 	try
 	{
-		const auto & property = getPropertyDescriptor (identifier);
+		const auto & property = getPropertyDescriptor (identifier, true);
 
 		if (not (flags & LEAVE_VALUE))
 			property -> setValue (value);
@@ -238,7 +252,7 @@ noexcept (true)
 }
 
 const PropertyDescriptorPtr &
-pbObject::getPropertyDescriptor (const Identifier & identifier) const
+pbObject::getPropertyDescriptor (const Identifier & identifier, const bool write) const
 throw (std::out_of_range)
 {
 	try
@@ -247,9 +261,30 @@ throw (std::out_of_range)
 	}
 	catch (const std::out_of_range &)
 	{
-		const_cast <pbObject*> (this) -> resolve (identifier);
+		try
+		{
+			const auto & property = getProto () -> getPropertyDescriptor (identifier, false);
 
-		return getPropertyDescriptor (identifier .getId ());
+			if (write)
+			{
+				const_cast <pbObject*> (this) -> addPropertyDescriptor (property -> getIdentifier (),
+			                                                           property -> getValue (),
+			                                                           property -> getFlags (),
+			                                                           property -> getGetter (),
+			                                                           property -> getSetter ());
+
+			   return getPropertyDescriptor (identifier .getId ());
+			}
+
+			return property;
+		}
+		catch (const std::out_of_range &)
+		{
+			if (resolveFunction and resolveFunction (const_cast <pbObject*> (this), identifier))
+				return getPropertyDescriptor (identifier .getId ());
+
+			throw;
+		}
 	}
 }
 
@@ -303,48 +338,12 @@ throw (std::out_of_range)
 	throw std::out_of_range ("getCachedPropertyDescriptor");
 }
 
-void
-pbObject::resolve (const Identifier & identifier)
-throw (std::out_of_range)
-{
-	try
-	{
-		try
-		{
-			const auto & proto         = getProto ();
-			const auto & protoProperty = proto -> getPropertyDescriptor (identifier);
-
-			addPropertyDescriptor (protoProperty -> getIdentifier (),
-		                          protoProperty -> getValue (),
-		                          protoProperty -> getFlags (),
-		                          protoProperty -> getGetter (),
-		                          protoProperty -> getSetter ());
-		}
-		catch (const std::out_of_range &)
-		{
-			if (resolveFunction and resolveFunction (this, identifier))
-				return;
-
-			throw;
-		}
-	}
-	catch (const std::invalid_argument &)
-	{
-		throw std::out_of_range ("pbObject::resolve");
-	}
-}
-
 const ptr <pbObject> &
 pbObject::getProto () const
 throw (std::out_of_range)
 {
-	static const Identifier identifier = "__proto__";
-
-	const auto & property = getPropertyDescriptor (identifier .getId ());
-	const auto & value    = property -> getValue ();
-
-	if (value .isObject ())
-		return value .getObject ();
+	if (proto)
+		return proto;
 
 	throw std::out_of_range ("pbObject::getProto");
 }

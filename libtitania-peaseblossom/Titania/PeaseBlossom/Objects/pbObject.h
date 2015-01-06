@@ -338,6 +338,10 @@ protected:
 	setConstructor (const ptr <pbFunction> & value)
 	{ constructor = value; }
 
+	void
+	setProto (const ptr <pbObject> & value)
+	throw (std::invalid_argument);
+
 	///  @name Operations
 
 	var
@@ -356,7 +360,7 @@ private:
 
 	///  Returns the property descriptor for a property id on this object.
 	const PropertyDescriptorPtr &
-	getPropertyDescriptor (const Identifier &) const
+	getPropertyDescriptor (const Identifier &, const bool) const
 	throw (std::out_of_range);
 
 	///  Returns the property descriptor for a property id on this object.
@@ -376,10 +380,6 @@ private:
 	getCachedPropertyDescriptor (const size_t) const
 	throw (std::out_of_range);
 
-	void
-	resolve (const Identifier &)
-	throw (std::out_of_range);
-
 	///  @name Static members
 
 	static constexpr size_t CACHE_SIZE = 16;
@@ -390,6 +390,7 @@ private:
 
 	bool                    extensible;
 	ptr <pbFunction>        constructor;
+	ptr <pbObject>          proto;
 	PropertyDescriptorIndex properties;
 	PropertyDescriptorArray cachedProperties;
 	ResolveType             resolveFunction;

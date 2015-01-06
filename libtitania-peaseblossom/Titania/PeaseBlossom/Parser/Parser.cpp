@@ -67,6 +67,7 @@ Parser::Parser (pbExecutionContext* const executionContext, std::istream & istre
 	       executionContexts ({ executionContext }),
 	                  blocks ({ executionContext }),
 	                 istream (istream),
+	                position (-1),
 	              lineNumber (1),
 	             whiteSpaces (),
 	       commentCharacters (),
@@ -235,19 +236,29 @@ Parser::haveAutomaticSemicolon () const
 
 // A.1 Lexical Grammar
 
-void
+bool
 Parser::comments ()
 {
 	//__LOG__ << this << " " << std::endl;
 	
-	const auto position          = istream .tellg ();
+	const auto currentPosition = istream .tellg ();
+	
+	if (currentPosition == position)
+		return false;
+
 	const auto currentLineNumber = lineNumber;
 
 	while (comment ())
 		;
 
-	if (istream .tellg () not_eq position)
+	position = istream .tellg ();
+
+	const bool comments = position not_eq currentPosition;
+
+	if (comments)
 		newLine = lineNumber not_eq currentLineNumber;
+
+	return comments;
 }
 
 bool
@@ -713,13 +724,13 @@ Parser::elision (const ptr <ArrayLiteral> & arrayLiteral)
 
 	if (Grammar::Comma (istream))
 	{
-		arrayLiteral -> addExpression (new PrimitiveExpression (Undefined (), ExpressionType::UNDEFINED));
+		arrayLiteral -> addExpression (new PrimitiveExpression (Undefined, ExpressionType::UNDEFINED));
 
 		comments ();
 
 		while (Grammar::Comma (istream))
 		{
-			arrayLiteral -> addExpression (new PrimitiveExpression (Undefined (), ExpressionType::UNDEFINED));
+			arrayLiteral -> addExpression (new PrimitiveExpression (Undefined, ExpressionType::UNDEFINED));
 
 			comments ();
 		}
@@ -1647,11 +1658,7 @@ Parser::relationalExpression (ptr <pbExpression> & lhs)
 
 			// If white spaces or comments empty return false.
 	
-			const auto pos = istream .tellg ();
-			
-			comments ();
-			
-			if (istream .tellg () == pos)
+			if (not comments ())
 				return Grammar::instanceof .rewind (istream);
 
 			// lhs
@@ -1673,14 +1680,10 @@ Parser::relationalExpression (ptr <pbExpression> & lhs)
 				return Grammar::in .rewind (istream);
 
 			isLeftHandSideExressions .back () = false;
-			
+
 			// If white spaces or comments empty return false.
-	
-			const auto pos = istream .tellg ();
-			
-			comments ();
-			
-			if (istream .tellg () == pos)
+
+			if (not comments ())
 				return Grammar::in .rewind (istream);
 
 			// lhs.

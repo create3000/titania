@@ -132,7 +132,7 @@ public:
 			}
 		}
 
-		return Undefined ();
+		return Undefined;
 	}
 
 	virtual

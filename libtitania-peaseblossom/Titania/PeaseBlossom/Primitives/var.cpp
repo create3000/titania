@@ -128,7 +128,7 @@ var::operator = (var && other)
 }
 
 var &
-var::operator = (const Undefined &)
+var::operator = (const UndefinedType &)
 {
 	clear ();
 
@@ -234,7 +234,7 @@ throw (pbException)
 	switch (type)
 	{
 		case UNDEFINED:
-			return Undefined ();
+			return Undefined;
 		case BOOLEAN:
 			return value .bool_;
 		case NUMBER:

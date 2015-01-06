@@ -417,15 +417,15 @@ print ('{ } .constructor:          ', { } .constructor);
 
 function f (a, b)
 {
-	return print ()
+	return print ();
 }
 
 print (f);
 
-//var v = new SFVec4f (1,2,3,4);
+var v = new SFVec4f (1,2,3,4);
 
-//print (v);
-//print (v .add (new SFVec4f (2,3,4,5)));
+print (v);
+print (v .add (new SFVec4f (2,3,4,5)));
 
 function A () {}
 function B () {}
@@ -433,37 +433,14 @@ function C () {}
 function D () {}
 
 B .prototype = new A ();
-C .prototype = new B ();
-D .prototype = new C ();
 
-var a = new A ();
 var b = new B ();
-var c = new C ();
-var d = new D ();
 
-print ();
-print (a instanceof A);
-print (b instanceof A);
-print (c instanceof A);
-print (d instanceof A);
+A .prototype .toString = function () { return 1; }
+print (b);
 
-print ();
-print (a instanceof B);
-print (b instanceof B);
-print (c instanceof B);
-print (d instanceof B);
-
-print ();
-print (a instanceof C);
-print (b instanceof C);
-print (c instanceof C);
-print (d instanceof C);
-
-print ();
-print (a instanceof D);
-print (b instanceof D);
-print (c instanceof D);
-print (d instanceof D);
+A .prototype .toString = function () { return 2; }
+print (b)
 "
 "peaseblossom:"
 ]

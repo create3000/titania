@@ -70,8 +70,8 @@ pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::s
 		const auto   prototype        = new Object (executionContext);
 
 		setConstructor (constructor);
-		addPropertyDescriptor ("__proto__", standardFunction, NONE);
-		addPropertyDescriptor ("prototype", prototype,        WRITABLE | CONFIGURABLE);
+		setProto (standardFunction);
+		addPropertyDescriptor ("prototype", prototype, WRITABLE | CONFIGURABLE);
 		addProperties ();
 
 		prototype -> addPropertyDescriptor ("constructor", this, WRITABLE | CONFIGURABLE);
@@ -85,7 +85,7 @@ pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::n
 	    name ("Empty"),
 	  length (0)
 {
-	addPropertyDescriptor ("__proto__", executionContext -> getStandardObject (), NONE);
+	setProto (executionContext -> getStandardObject ());
 	addProperties ();
 }
 
@@ -134,14 +134,13 @@ var
 pbFunction::construct (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments)
 throw (pbException)
 {
-	var object = createInstance (executionContext);
-
+	const auto object = createInstance (executionContext);
 	const auto result = construct (object, arguments);
 
 	if (result .isObject ())
 		return result;
 
-	return std::move (object);
+	return object;
 }
 
 } // pb

@@ -65,7 +65,9 @@ namespace pb {
 class pbExecutionContext;
 class pbObject;
 
-struct Undefined { };
+struct UndefinedType { };
+
+constexpr auto Undefined = UndefinedType ();
 
 /**
  *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
@@ -98,7 +100,7 @@ public:
 
 	///  Constructs new var.
 	constexpr
-	var (const Undefined &) :
+	var (const UndefinedType &) :
 		pbOutputStreamObject (),
 		               value (),
 		                type (UNDEFINED)
@@ -217,7 +219,7 @@ public:
 	///  @name Assignment operators
 
 	var &
-	operator = (const Undefined &);
+	operator = (const UndefinedType &);
 
 	var &
 	operator = (const var &);

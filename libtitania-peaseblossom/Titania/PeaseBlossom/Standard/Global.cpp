@@ -106,7 +106,7 @@ initialize (Program* const ec, const ptr <pbObject> & object)
 	object -> addPropertyDescriptor ("this",      object,               WRITABLE | CONFIGURABLE);
 	object -> addPropertyDescriptor ("NaN",       NaN (),               WRITABLE | CONFIGURABLE);
 	object -> addPropertyDescriptor ("Infinity",  POSITIVE_INFINITY (), WRITABLE | CONFIGURABLE);
-	object -> addPropertyDescriptor ("undefined", Undefined (),         WRITABLE | CONFIGURABLE);
+	object -> addPropertyDescriptor ("undefined", Undefined,            WRITABLE | CONFIGURABLE);
 	object -> addPropertyDescriptor ("Math",      new Math (ec),        WRITABLE | CONFIGURABLE);
 
 	// Functions

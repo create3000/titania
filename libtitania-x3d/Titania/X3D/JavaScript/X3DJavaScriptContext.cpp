@@ -120,6 +120,9 @@ X3DJavaScriptContext::setError (const std::string & message, const std::string &
 	}
 
 	// Pretty print error.
+	
+	const auto trimmedLine = basic::trim (line);
+	const auto spaces      = line .find (trimmedLine);
 
 	getBrowser () -> print ('\n',
 	                        "#   JavaScript error at line ", lineNumber, (startColumn >= 0 ? ':' + basic::to_string (startColumn) : ""), ":\n",
@@ -127,10 +130,10 @@ X3DJavaScriptContext::setError (const std::string & message, const std::string &
 	                        "#   world url is '", script -> getExecutionContext () -> getWorldURL (), "'.\n",
 	                        "#   ", '\n',
 	                        "#   ", message, '\n',
-	                        "#      ", basic::trim (line), '\n');
+	                        "#      ", trimmedLine, '\n');
 
 	if (startColumn >= 0)
-		getBrowser () -> print ("#      ", std::string (startColumn, ' '), "^\n");
+		getBrowser () -> print ("#      ", std::string (startColumn - spaces, ' '), "^\n");
 
 	getBrowser () -> print ('\n');
 }

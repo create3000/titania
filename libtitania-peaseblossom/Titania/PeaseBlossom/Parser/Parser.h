@@ -146,7 +146,7 @@ private:
 
 	// A.1 Lexical Grammar
 
-	void
+	bool
 	comments ();
 
 	bool
@@ -358,6 +358,7 @@ private:
 	std::stack <pbExecutionContext*> executionContexts;
 	std::stack <pbBlock*>            blocks;
 	std::istream &                   istream;
+	std::istream::pos_type           position;
 	size_t                           lineNumber;
 	std::string                      whiteSpaces;
 	std::string                      commentCharacters;

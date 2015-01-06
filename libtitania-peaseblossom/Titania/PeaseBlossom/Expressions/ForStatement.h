@@ -189,7 +189,7 @@ private:
 			booleanExpression = new PrimitiveExpression (true, ExpressionType::BOOLEAN);
 
 		if (not iterationExpression)
-			iterationExpression = new PrimitiveExpression (Undefined (), ExpressionType::UNDEFINED);
+			iterationExpression = new PrimitiveExpression (Undefined, ExpressionType::UNDEFINED);
 
 		addChildren (booleanExpression, iterationExpression, block);
 	}

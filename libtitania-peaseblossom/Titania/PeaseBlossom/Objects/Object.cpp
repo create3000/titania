@@ -66,7 +66,7 @@ throw (TypeError) :
 		const auto & standardObject = executionContext -> getStandardObject ();
 
 		setConstructor (constructor);
-		addPropertyDescriptor ("__proto__", standardObject, NONE);
+		setProto (standardObject);
 	}
 	catch (const std::out_of_range &)
 	{ }
@@ -79,7 +79,7 @@ throw (TypeError) :
 	try
 	{
 		setConstructor (constructor);
-		addPropertyDescriptor ("__proto__", constructor -> getObject ("prototype"), NONE);
+		setProto (constructor -> getObject ("prototype"));
 	}
 	catch (const std::exception &)
 	{
@@ -89,7 +89,7 @@ throw (TypeError) :
 			const auto & standardObject = executionContext -> getStandardObject ();
 
 			setConstructor (constructor);
-			addPropertyDescriptor ("__proto__", standardObject, NONE);
+			setProto (standardObject);
 		}
 		catch (const std::out_of_range &)
 		{ }
@@ -99,7 +99,7 @@ throw (TypeError) :
 Object::Object (const std::nullptr_t) :
 	pbObject ()
 {
-	addPropertyDescriptor ("__proto__", nullptr, NONE);
+	setProto (nullptr);
 }
 
 } // pb

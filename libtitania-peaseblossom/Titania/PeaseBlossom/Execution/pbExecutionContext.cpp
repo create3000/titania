@@ -135,7 +135,7 @@ throw (pbException)
 
 		pbBlock::run ();
 
-		return Undefined ();
+		return Undefined;
 	}
 	catch (const ContinueException &)
 	{

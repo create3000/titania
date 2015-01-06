@@ -124,7 +124,7 @@ private:
 	construct ()
 	{
 		if (not expression)
-			expression = new PrimitiveExpression (Undefined (), ExpressionType::UNDEFINED);
+			expression = new PrimitiveExpression (Undefined, ExpressionType::UNDEFINED);
 
 		addChildren (executionContext, expression);
 	}

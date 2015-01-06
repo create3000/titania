@@ -131,25 +131,25 @@ SFVec4 <Type>::initialize (Context* const context, const pb::ptr <pb::Program> &
 	const auto prototype = function -> getObject ("prototype");
 
 	prototype -> addPropertyDescriptor ("x",
-	                                    pb::Undefined (),
+	                                    pb::Undefined,
 	                                    pb::DEFAULT,
 	                                    new pb::NativeFunction (ec, "x", std::bind (get1Value, _1, _2, _3, X), 0),
 	                                    new pb::NativeFunction (ec, "x", std::bind (set1Value, _1, _2, _3, X), 1));
 
 	prototype -> addPropertyDescriptor ("y",
-	                                    pb::Undefined (),
+	                                    pb::Undefined,
 	                                    pb::DEFAULT,
 	                                    new pb::NativeFunction (ec, "y", std::bind (get1Value, _1, _2, _3, Y), 0),
 	                                    new pb::NativeFunction (ec, "y", std::bind (set1Value, _1, _2, _3, Y), 1));
 
 	prototype -> addPropertyDescriptor ("z",
-	                                    pb::Undefined (),
+	                                    pb::Undefined,
 	                                    pb::DEFAULT,
 	                                    new pb::NativeFunction (ec, "z", std::bind (get1Value, _1, _2, _3, Z), 0),
 	                                    new pb::NativeFunction (ec, "z", std::bind (set1Value, _1, _2, _3, Z), 1));
 
 	prototype -> addPropertyDescriptor ("w",
-	                                    pb::Undefined (),
+	                                    pb::Undefined,
 	                                    pb::DEFAULT,
 	                                    new pb::NativeFunction (ec, "w", std::bind (get1Value, _1, _2, _3, W), 0),
 	                                    new pb::NativeFunction (ec, "w", std::bind (set1Value, _1, _2, _3, W), 1));
@@ -185,7 +185,7 @@ SFVec4 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb:
 			throw pb::Error ("wrong number of arguments.");
 	}
 
-	return pb::Undefined ();
+	return pb::Undefined;
 }
 
 template <class Type>
@@ -205,7 +205,7 @@ SFVec4 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb:
 
 	lhs -> set1Value (index, args [0] .toNumber ());
 
-	return pb::Undefined ();
+	return pb::Undefined;
 }
 
 template <class Type>
