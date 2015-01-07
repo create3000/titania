@@ -60,6 +60,26 @@ const std::string MFVec4d::typeName = "MFVec4d";
 template <>
 const std::string MFVec4f::typeName = "MFVec4f";
 
+template <>
+const pb::Callbacks MFVec4d::callbacks = {
+	pb::PropertyGetter (),
+	pb::PropertySetter (),
+	pb::IndexedGetter (),
+	pb::IndexedSetter (),
+	pb::ResolveCallback (),
+	dispose <MFVec4d>
+};
+
+template <>
+const pb::Callbacks MFVec4f::callbacks = {
+	pb::PropertyGetter (),
+	pb::PropertySetter (),
+	pb::IndexedGetter (),
+	pb::IndexedSetter (),
+	pb::ResolveCallback (),
+	dispose <MFVec4f>
+};
+
 } // peaseblossom
 } // X3D
 } // titania

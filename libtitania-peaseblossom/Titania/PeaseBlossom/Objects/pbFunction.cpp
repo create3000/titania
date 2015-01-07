@@ -65,7 +65,7 @@ pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::s
 {
 	try
 	{
-		const auto & constructor      = executionContext -> getStandardClass (StandardClassType::FUNCTION);
+		const auto & constructor      = executionContext -> getStandardClass (StandardClassType::Function);
 		const auto & standardFunction = executionContext -> getStandardFunction ();
 
 		setConstructor (constructor);

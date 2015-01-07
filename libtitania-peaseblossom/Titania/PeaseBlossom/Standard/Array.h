@@ -48,26 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_STANDARD_STANDARD_TYPE_H__
-#define __TITANIA_PEASE_BLOSSOM_STANDARD_STANDARD_TYPE_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_STANDARD_ARRAY_H__
+#define __TITANIA_PEASE_BLOSSOM_STANDARD_ARRAY_H__
 
-#include <cstdint>
+#include "../Primitives/ptr.h"
 
 namespace titania {
 namespace pb {
 
-enum class StandardClassType :
-	size_t
-{
-	Object,
-	Function,
+class NativeFunction;
+class pbExecutionContext;
 
-	Array,
+namespace Standard {
+namespace Array {
 
-	SIZE
+ptr <NativeFunction>
+initialize (pbExecutionContext* const ec);
 
-};
-
+} // Array
+} // Standard
 } // pb
 } // titania
 

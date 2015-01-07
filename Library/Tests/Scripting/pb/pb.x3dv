@@ -436,7 +436,15 @@ print (SFVec4f .constructor)
 //print (SFVec4f .prototype)
 print (SFVec4f .prototype .constructor)
 
-print (new MFVec4f ())
+var a = new MFVec4f ()
+
+print (a)
+print (a .length = 8)
+print (a .length)
+print (a)
+
+print (Array)
+print ([1,undefined,2,3])
 "
 "peaseblossom:"
 ]

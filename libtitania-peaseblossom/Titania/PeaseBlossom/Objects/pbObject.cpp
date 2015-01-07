@@ -104,6 +104,7 @@ PropertyDescriptor::~PropertyDescriptor ()
 { }
 
 const std::string pbObject::typeName = "Object";
+const Callbacks   pbObject::defaultCallbacks;
 
 pbObject::pbObject () :
 	       pbChildObject (),
@@ -114,8 +115,7 @@ pbObject::pbObject () :
 	               proto (),
 	          properties (),
 	    cachedProperties (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ())),
-	     resolveFunction (),
-	     disposeFunction ()
+	           callbacks (&defaultCallbacks)
 {
 	addChildren (constructor, proto);
 }
@@ -280,12 +280,18 @@ throw (std::out_of_range)
 		}
 		catch (const std::out_of_range &)
 		{
-			if (resolveFunction and resolveFunction (const_cast <pbObject*> (this), identifier))
+			if (const_cast <pbObject*> (this) -> resolve (identifier))
 				return getPropertyDescriptor (identifier .getId ());
 
 			throw;
 		}
 	}
+}
+
+bool
+pbObject::resolve (const Identifier & identifier)
+{
+	return callbacks -> resolve and callbacks -> resolve (this, identifier);
 }
 
 const PropertyDescriptorPtr &
@@ -310,7 +316,10 @@ void
 pbObject::addCachedPropertyDescriptor (const size_t id, const PropertyDescriptorPtr & property)
 noexcept (true)
 {
-	cachedProperties [id % CACHE_SIZE] = std::make_pair (id, property);
+	auto & cachedProperty = cachedProperties [id % CACHE_SIZE];
+
+	cachedProperty .first  = id;
+	cachedProperty .second = property;
 }
 
 void
@@ -336,6 +345,36 @@ throw (std::out_of_range)
 		return value .second;
 
 	throw std::out_of_range ("getCachedPropertyDescriptor");
+}
+
+void
+pbObject::setIndexedProperty (const uint32_t index, const var & value)
+throw (pbException)
+{
+	if (callbacks -> indexedSetter)
+		return callbacks -> indexedSetter (this, index, value);
+
+	const auto name = basic::to_string (index);
+
+	try
+	{
+		setProperty (name, value);
+	}
+	catch (const std::out_of_range &)
+	{
+		addPropertyDescriptor (name, value);
+	}
+}
+
+var
+pbObject::getIndexedProperty (const uint32_t index) const
+throw (std::out_of_range,
+       pbException)
+{
+	if (callbacks -> indexedGetter)
+		return callbacks -> indexedGetter (const_cast <pbObject*> (this), index);
+
+	return getProperty (basic::to_string (index));
 }
 
 const ptr <pbObject> &
@@ -430,8 +469,8 @@ pbObject::toStream (std::ostream & ostream) const
 void
 pbObject::dispose ()
 {
-	if (disposeFunction)
-		disposeFunction (this);
+	if (callbacks -> dispose)
+		callbacks -> dispose (this);
 
 	properties       .clear ();
 	cachedProperties .clear ();

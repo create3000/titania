@@ -107,14 +107,10 @@ public:
 	{
 		const auto array = new Array (executionContext .get ());
 
-		size_t index = 0;
+		uint32_t index = 0;
 
 		for (const auto & expression : expressions)
-		{
-			array -> addPropertyDescriptor (basic::to_string (index), expression -> getValue ());
-
-			++ index;
-		}
+			array -> setIndexedProperty (index ++, expression -> getValue ());
 
 		return array;
 	}

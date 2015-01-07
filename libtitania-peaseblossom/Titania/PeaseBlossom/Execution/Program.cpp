@@ -77,32 +77,55 @@ void
 Program::initialize ()
 noexcept (true)
 {
+	using namespace std::placeholders;
+
 	const auto functionClass = Standard::Function::initialize (this);
 	const auto objectClass   = Standard::Object::initialize (this, functionClass);
 
-	standardClasses [(size_t) StandardClassType::FUNCTION] = functionClass;
-	standardClasses [(size_t) StandardClassType::OBJECT]   = objectClass;
+	standardClasses [(size_t) StandardClassType::Function] = functionClass;
+	standardClasses [(size_t) StandardClassType::Object]   = objectClass;
 
 	// Add global object.
-	getLocalObjects () .emplace_back (make_ptr <Object> (this));
+	getLocalObjects () .emplace_back (make_ptr <Standard::GlobalObject> (this, std::bind (&Program::resolve, this, _1)));
 
 	getGlobalObject () -> addPropertyDescriptor ("Function", functionClass, WRITABLE | CONFIGURABLE);
 	getGlobalObject () -> addPropertyDescriptor ("Object",   objectClass,   WRITABLE | CONFIGURABLE);
+}
 
-	// Add global properties and functions.
-	Standard::Global::initialize (this, getGlobalObject ());
+bool
+Program::resolve (const Identifier & identifier)
+{
+	static const std::map <pb::Identifier, StandardClassType> types = {
+		std::make_pair (pb::Identifier ("Array"), StandardClassType::Array)
+	};
+
+	try
+	{
+		getGlobalObject () -> addPropertyDescriptor (identifier, getStandardClass (types .at (identifier)), WRITABLE | CONFIGURABLE);
+		return true;
+	}
+	catch (const std::out_of_range &)
+	{
+		return false;
+	}
 }
 
 const ptr <NativeFunction> &
 Program::getStandardClass (const StandardClassType type) const
 throw (std::out_of_range)
 {
-	const auto & standardClass = standardClasses .at (size_t (type));
+	using Initialize = std::function <ptr <NativeFunction> (pbExecutionContext* const)>;
+
+	static const std::map <StandardClassType, Initialize> functions = {
+		std::make_pair (StandardClassType::Array, Standard::Array::initialize),
+	};
+
+	auto & standardClass = standardClasses .at (size_t (type));
 
 	if (standardClass)
 		return standardClass;
 
-	throw std::out_of_range ("Program::getStandardClass");
+	return standardClass = functions .at (type) (const_cast <Program*> (this));
 }
 
 ptr <Program>

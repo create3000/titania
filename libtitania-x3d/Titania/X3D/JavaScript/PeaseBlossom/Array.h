@@ -81,6 +81,11 @@ public:
 	getTypeName ()
 	{ return typeName; }
 
+	static
+	const pb::Callbacks &
+	getCallbacks ()
+	{ return callbacks; }
+
 	///  @name Construction
 
 	static
@@ -96,9 +101,20 @@ private:
 	pb::var
 	construct (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
+	///  @name Properties
+
+	static
+	pb::var
+	getLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	setLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
 	///  @name Static members
 
-	static const std::string typeName;
+	static const std::string   typeName;
+	static const pb::Callbacks callbacks;
 
 };
 
@@ -112,6 +128,12 @@ Array <Type, InternalType>::initialize (Context* const context, const pb::ptr <p
 	const auto prototype = context -> getClass (ObjectType::X3DArrayField) -> createInstance (ec);
 
 	prototype -> addPropertyDescriptor ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
+
+	prototype -> addPropertyDescriptor ("length",
+	                                    pb::Undefined,
+	                                    pb::DEFAULT,
+	                                    new pb::NativeFunction (ec, "length", getLength, 0),
+	                                    new pb::NativeFunction (ec, "length", setLength, 1));
 
 	function -> addPropertyDescriptor ("prototype", prototype, pb::NONE);
 	return function;
@@ -135,6 +157,33 @@ Array <Type, InternalType>::construct (const pb::ptr <pb::pbExecutionContext> & 
 	}
 
 	return pb::Undefined;
+}
+
+template <class Type, class InternalType>
+pb::var
+Array <Type, InternalType>::setLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+{
+	try
+	{
+		const auto lhs = getObject <InternalType> (object);
+
+		lhs -> resize (args [0] .toUInt32 ());
+
+		return pb::Undefined;
+	}
+	catch (const std::bad_alloc &)
+	{
+		throw pb::RuntimeError (getTypeName () + ".prototype.length: out of memory.");
+	}
+}
+
+template <class Type, class InternalType>
+pb::var
+Array <Type, InternalType>::getLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+{
+	const auto lhs = getObject <InternalType> (object);
+
+	return lhs -> size ();
 }
 
 } // peaseblossom

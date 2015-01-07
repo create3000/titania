@@ -56,13 +56,12 @@
 namespace titania {
 namespace pb {
 
-Object::Object (pbExecutionContext* const executionContext)
-throw (TypeError) :
+Object::Object (pbExecutionContext* const executionContext) :
 	pbObject ()
 {
 	try
 	{
-		const auto & constructor    = executionContext -> getStandardClass (StandardClassType::OBJECT);
+		const auto & constructor    = executionContext -> getStandardClass (StandardClassType::Object);
 		const auto & standardObject = executionContext -> getStandardObject ();
 
 		setConstructor (constructor);
@@ -72,8 +71,7 @@ throw (TypeError) :
 	{ }
 }
 
-Object::Object (pbExecutionContext* const executionContext, pbFunction* const constructor)
-throw (TypeError) :
+Object::Object (pbExecutionContext* const executionContext, pbFunction* const constructor) :
 	pbObject ()
 {
 	try
@@ -85,7 +83,7 @@ throw (TypeError) :
 	{
 		try
 		{
-			const auto & constructor    = executionContext -> getStandardClass (StandardClassType::OBJECT);
+			const auto & constructor    = executionContext -> getStandardClass (StandardClassType::Object);
 			const auto & standardObject = executionContext -> getStandardObject ();
 
 			setConstructor (constructor);

@@ -48,27 +48,64 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_STANDARD_STANDARD_TYPE_H__
-#define __TITANIA_PEASE_BLOSSOM_STANDARD_STANDARD_TYPE_H__
+#include "Function.h"
 
-#include <cstdint>
+#include "../Objects/Object.h"
+#include "../Objects/Array.h"
+#include "../Objects/NativeFunction.h"
 
 namespace titania {
 namespace pb {
+namespace Standard {
+namespace Array {
 
-enum class StandardClassType :
-	size_t
+/// new Array ([arg1[, arg2[, ...argN]],])
+struct Constructor
 {
-	Object,
-	Function,
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+	{
+		if (arguments .empty ())
+			return new pb::Array (ec);
 
-	Array,
-
-	SIZE
+		return new pb::Array (ec);
+	}
 
 };
 
+struct toString
+{
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+	{
+		if (object .getType () == OBJECT)
+		{
+			if (dynamic_cast <pb::Array*> (object .getObject () .get ()))
+				return object .getObject () -> toString ();
+		}
+
+		throw TypeError ("Array.prototype.toString is not generic.");
+	}
+
+};
+
+ptr <NativeFunction>
+initialize (pbExecutionContext* const ec)
+{
+	const auto & standardObject = ec -> getStandardObject ();
+	const auto   constructor    = make_ptr <NativeFunction> (ec, "Array", Constructor { }, 1);
+	const auto   prototype      = new pb::Array (nullptr);
+
+	prototype -> setConstructor (constructor);
+	prototype -> setProto (standardObject);
+
+	prototype -> addPropertyDescriptor ("toString", new NativeFunction (ec, "toString", toString { }, 0), WRITABLE | CONFIGURABLE);
+
+	constructor -> addPropertyDescriptor ("prototype", prototype, NONE);
+	return constructor;
+}
+
+} // Array
+} // Standard
 } // pb
 } // titania
-
-#endif

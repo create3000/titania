@@ -173,11 +173,12 @@ private:
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
-
+	
 	///  @name Members
 
 	std::vector <basic::uri>                           worldURL;
 	pb::ptr <pb::Program>                              program;
+	pb::Callbacks                                      callbacks;
 	std::vector <pb::ptr <pb::NativeFunction>>         classes;
 	std::map <X3D::X3DFieldDefinition*, pb::pbObject*> objects;
 

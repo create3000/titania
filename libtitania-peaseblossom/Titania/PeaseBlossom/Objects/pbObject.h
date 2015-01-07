@@ -48,12 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_PB_OBJECT_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_OBJECTS_PB_OBJECT_H__
+#define __TITANIA_PEASE_BLOSSOM_OBJECTS_PB_OBJECT_H__
 
-#include "../Base/pbUserData.h"
 #include "../Base/pbChildObject.h"
 #include "../Base/pbOutputStreamObject.h"
+#include "../Base/pbUserData.h"
 #include "../Bits/Identifier.h"
 #include "../Bits/pbConstants.h"
 #include "../Expressions/pbControlFlowException.h"
@@ -62,11 +62,11 @@
 
 #include "../Standard/Function.h"
 #include "../Standard/Object.h"
+#include "../Standard/Array.h"
 
+#include <Titania/String/to_string.h>
 #include <functional>
-#include <map>
 #include <memory>
-
 #include <unordered_map>
 
 namespace titania {
@@ -172,10 +172,33 @@ private:
 using PropertyDescriptorPtr = std::shared_ptr <PropertyDescriptor>;
 
 ///  Type to represent a resolve callback function.
-using ResolveType = std::function <bool (pbObject* const, const Identifier &)>;
+using PropertyGetter = std::function <var (pbObject* const, const Identifier &)>;
+
+///  Type to represent a resolve callback function.
+using PropertySetter = std::function <void (pbObject* const, const Identifier &, const var &)>;
+
+///  Type to represent a resolve callback function.
+using IndexedGetter = std::function <var (pbObject* const, const uint32_t)>;
+
+///  Type to represent a resolve callback function.
+using IndexedSetter = std::function <void (pbObject* const, const uint32_t, const var &)>;
+
+///  Type to represent a resolve callback function.
+using ResolveCallback = std::function <bool (pbObject* const, const Identifier &)>;
 
 ///  Type to represent a dispose callback function.
-using DisposeType = std::function <void (pbObject* const)>;
+using DisposeCallback = std::function <void (pbObject* const)>;
+
+struct Callbacks
+{
+	PropertyGetter  getter;
+	PropertySetter  setter;
+	IndexedGetter   indexedGetter;
+	IndexedSetter   indexedSetter;
+	ResolveCallback resolve;
+	DisposeCallback dispose;
+
+};
 
 /**
  *  Class to represent a basic object.
@@ -203,19 +226,27 @@ public:
 
 	bool
 	isExtensible () const
+	noexcept (true)
 	{ return extensible; }
 
 	void
 	isExtensible (const bool value)
+	noexcept (true)
 	{ extensible = value; }
 
 	const ptr <pbFunction> &
 	getConstructor () const
+	noexcept (true)
 	{ return constructor; }
 
 	const ptr <pbObject> &
 	getProto () const
 	throw (std::out_of_range);
+	
+	void
+	setCallbacks (const Callbacks & value)
+	noexcept (true)
+	{ callbacks = &value; }
 
 	///  @name Property access
 
@@ -226,55 +257,74 @@ public:
 	{ return properties .count (identifier .getId ()); }
 
 	void
-	setProperty (const Identifier &, const var &)
+	setProperty (const Identifier & identifier, const var & value)
 	throw (std::out_of_range,
 	       pbException);
 
 	var
-	getProperty (const Identifier &) const
+	getProperty (const Identifier & identifier) const
 	throw (std::out_of_range,
 	       pbException);
 
 	ptr <pbObject>
-	getObject (const Identifier &) const
+	getObject (const Identifier & identifier) const
 	throw (std::out_of_range,
 	       TypeError);
 
+	///  @name Property descriptor access
+
 	///  Adds the named property described by the given descriptor to this object.
 	void
-	addPropertyDescriptor (const Identifier &,
-	                       const var &,
-	                       const PropertyFlagsType = DEFAULT,
-	                       const ptr <pbFunction> & = nullptr,
-	                       const ptr <pbFunction> & = nullptr)
+	addPropertyDescriptor (const Identifier & identifier,
+	                       const var & value,
+	                       const PropertyFlagsType flags = DEFAULT,
+	                       const ptr <pbFunction> & getter = nullptr,
+	                       const ptr <pbFunction> & setter = nullptr)
 	throw (std::invalid_argument);
 
 	///  Adds the named property described by the given descriptor to this object.
 	void
-	addPropertyDescriptor (const Identifier &,
-	                       var &&,
-	                       const PropertyFlagsType = DEFAULT,
-	                       ptr <pbFunction> && = nullptr,
-	                       ptr <pbFunction> && = nullptr)
+	addPropertyDescriptor (const Identifier &identifier,
+	                       var && value,
+	                       const PropertyFlagsType flags = DEFAULT,
+	                       ptr <pbFunction> && getter = nullptr,
+	                       ptr <pbFunction> && setter = nullptr)
 	throw (std::invalid_argument);
 
 	///  Updates the named property described by the given descriptor to this object.
 	void
-	updatePropertyDescriptor (const Identifier &,
-	                          const var &,
-	                          const PropertyFlagsType = DEFAULT,
-	                          const ptr <pbFunction> & = nullptr,
-	                          const ptr <pbFunction> & = nullptr)
+	updatePropertyDescriptor (const Identifier & identifier,
+	                          const var & value,
+	                          const PropertyFlagsType flags = DEFAULT,
+	                          const ptr <pbFunction> & getter = nullptr,
+	                          const ptr <pbFunction> & setter = nullptr)
 	noexcept (true);
 
 	void
-	removePropertyDescriptor (const Identifier &)
+	removePropertyDescriptor (const Identifier & identifier)
 	noexcept (true);
 
+	///  @name Indexed property access
+
+	virtual
+	bool
+	hasIndexedProperties ()
+	noexcept (true)
+	{ return callbacks -> indexedGetter and callbacks -> indexedSetter; }
+
+	virtual
 	void
-	setResolveCallback (const ResolveType & value)
-	{ resolveFunction = value; }
-	
+	setIndexedProperty (const uint32_t index, const var & value)
+	throw (pbException);
+
+	virtual
+	var
+	getIndexedProperty (const uint32_t index) const
+	throw (std::out_of_range,
+	       pbException);
+
+	///  @name Operations
+
 	virtual
 	bool
 	hasInstance (const var & value)
@@ -294,10 +344,6 @@ public:
 
 	///  @name Destruction
 
-	void
-	setDisposeCallback (const DisposeType & value)
-	{ disposeFunction = value; }
-
 	///  Reclaims any resources consumed by this object, now or at any time in the future. If this object has already been
 	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
 	virtual
@@ -313,15 +359,20 @@ protected:
 
 	///  @name Friends
 
+	friend class ArrayIndexExpression;
 	friend class PropertyExpression;
-	
+
 	friend
 	ptr <NativeFunction>
 	Standard::Function::initialize (pbExecutionContext* const);
-	
+
 	friend
 	ptr <NativeFunction>
 	Standard::Object::initialize (pbExecutionContext* const, const ptr <NativeFunction> &);
+
+	friend
+	ptr <NativeFunction>
+	Standard::Array::initialize (pbExecutionContext* const);
 
 	///  @name Construction
 
@@ -339,11 +390,22 @@ protected:
 	throw (std::invalid_argument);
 
 	///  @name Operations
+	
+	virtual
+	bool
+	resolve (const Identifier & identifier);
 
 	var
-	apply (const Identifier &, const var &, const std::vector <var> & = { }) const
+	apply (const Identifier & identifier, const var & object, const std::vector <var> & args = { }) const
 	throw (pbException,
 	       std::invalid_argument);
+
+	virtual
+	var
+	apply (const uint32_t index, const var & object, const std::vector <var> & args = { }) const
+	throw (pbException,
+	       std::invalid_argument)
+	{ return apply (basic::to_string (index), object, args); }
 
 
 private:
@@ -382,6 +444,7 @@ private:
 	static constexpr size_t CACHE_SIZE = 16;
 
 	static const std::string typeName;
+	static const Callbacks   defaultCallbacks;
 
 	///  @name Members
 
@@ -390,8 +453,7 @@ private:
 	ptr <pbObject>          proto;
 	PropertyDescriptorIndex properties;
 	PropertyDescriptorArray cachedProperties;
-	ResolveType             resolveFunction;
-	DisposeType             disposeFunction;
+	const Callbacks*        callbacks;
 
 };
 

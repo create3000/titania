@@ -136,15 +136,20 @@ protected:
 
 private:
 
+	///  @name Operations
+
+	bool
+	resolve (const Identifier & identifier);
+
 	///  @name Static members
 
 	static const std::string typeName;
 
 	///  @name Members
 
-	ptr <Object>                 standardObject;
-	ptr <Function>               standardFunction;
-	array <ptr <NativeFunction>> standardClasses;
+	ptr <Object>                         standardObject;
+	ptr <Function>                       standardFunction;
+	mutable array <ptr <NativeFunction>> standardClasses;
 };
 
 ///  @relates Program

@@ -48,9 +48,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PROPERTY_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PROPERTY_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_ARRAY_INDEX_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_ARRAY_INDEX_EXPRESSION_H__
 
+#include "../Bits/pbMath.h"
 #include "../Expressions/pbExpression.h"
 #include "../Objects/pbObject.h"
 
@@ -58,9 +59,9 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript property expression.
+ *  Class to represent a ECMAScript array index expression.
  */
-class PropertyExpression :
+class ArrayIndexExpression :
 	public pbExpression
 {
 public:
@@ -68,7 +69,7 @@ public:
 	///  @name Construction
 
 	///  Constructs new AdditionExpression expression.
-	PropertyExpression (ptr <pbExpression> && expression, std::string && identifier) :
+	ArrayIndexExpression (ptr <pbExpression> && expression, ptr <pbExpression>&& identifier) :
 		pbExpression (ExpressionType::PROPERTY_EXPRESSION),
 		  expression (std::move (expression)),
 		  identifier (std::move (identifier))
@@ -79,7 +80,7 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new PropertyExpression (expression -> copy (executionContext), std::string (identifier .getName ())); }
+	{ return new ArrayIndexExpression (expression -> copy (executionContext), identifier -> copy (executionContext)); }
 
 	///  @name Operations
 
@@ -100,7 +101,7 @@ public:
 			{
 				// toString
 				// base .toObject (ec) -> call (id, arguments)
-				break;		
+				break;
 			}
 			case NUMBER:
 			{
@@ -123,15 +124,25 @@ public:
 			}
 			case OBJECT:
 			{
+				const auto   value  = identifier -> getValue ();
+				const auto   name   = value .toString ();
 				const auto & object = base .getObject ();
-				
+			
+				if (object -> hasIndexedProperties ())
+				{
+					const auto index = value .toUInt32 ();
+
+					if (isIndex (name .raw (), index))
+						return object -> setIndexedProperty (index, value);
+				}
+
 				try
 				{
-					object -> setProperty (identifier, value);
+					object -> setProperty (name .raw (), value);
 				}
 				catch (const std::out_of_range &)
 				{
-					object -> addPropertyDescriptor (identifier, value);
+					object -> addPropertyDescriptor (name .raw (), value);
 				}
 			}
 		}
@@ -145,6 +156,8 @@ public:
 	       pbControlFlowException) final override
 	{
 		const auto base = expression -> getValue ();
+		const auto   value  = identifier -> getValue ();
+		const auto   name   = value .toString ();
 
 		switch (base .getType ())
 		{
@@ -156,7 +169,7 @@ public:
 			{
 				// toString
 				// base .toObject (ec) -> call (id, arguments)
-				break;		
+				break;
 			}
 			case NUMBER:
 			{
@@ -179,11 +192,19 @@ public:
 			}
 			case OBJECT:
 			{
-				const auto & object = base .getObject ();
-
 				try
 				{
-					return object -> getProperty (identifier);
+					const auto & object = base .getObject ();
+					
+					if (object -> hasIndexedProperties ())
+					{
+						const auto index = value .toUInt32 ();
+
+						if (isIndex (name .raw (), index))
+							return object -> getIndexedProperty (index);
+					}
+
+					return object -> getProperty (name .raw ());
 				}
 				catch (const std::out_of_range &)
 				{
@@ -200,7 +221,9 @@ public:
 	call (const ptr <pbExecutionContext> & ec, const std::vector <var> & arguments) const
 	throw (pbException) final override
 	{
-		const auto base = expression -> getValue ();
+		const auto base  = expression -> getValue ();
+		const auto value = identifier -> getValue ();
+		const auto name  = value .toString ();
 
 		switch (base .getType ())
 		{
@@ -212,7 +235,7 @@ public:
 			{
 				// toString
 				// base .toObject (ec) -> call (id, arguments)
-				break;		
+				break;
 			}
 			case NUMBER:
 			{
@@ -238,15 +261,23 @@ public:
 				try
 				{
 					const auto & object = base .getObject ();
+					
+					if (object -> hasIndexedProperties ())
+					{
+						const auto index = value .toUInt32 ();
 
-					return object -> apply (identifier, base, arguments);
+						if (isIndex (name .raw (), index))
+							return object -> apply (index, base, arguments);
+					}
+
+					return object -> apply (name .raw (), base, arguments);
 				}
 				catch (const std::invalid_argument &)
 				{ }
 			}
 		}
 
-		throw TypeError ("'" + base .toString () + "." + identifier .getName () + "' is not a function");
+		throw TypeError ("'" + base .toString () + "." + name .raw () + "' is not a function");
 	}
 
 	///  @name Input/Output
@@ -259,10 +290,10 @@ public:
 		ostream
 			<< expression
 			<< Generator::TidySpace
-			<< '.'
-			<< identifier;
+			<< '['
+			<< identifier
+			<< ']';
 	}
-
 
 private:
 
@@ -271,12 +302,21 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (expression); }
+	{ addChildren (expression, identifier); }
+
+	///  @name Operations
+
+	static
+	bool
+	isIndex (const std::string & name, const uint32_t index)
+	{
+		return basic::to_string (index) == name and index not_eq uint32_t (M_2_32 - 1);
+	}
 
 	///  @name Members
 
 	const ptr <pbExpression> expression;
-	const Identifier         identifier;
+	const ptr <pbExpression> identifier;
 
 };
 

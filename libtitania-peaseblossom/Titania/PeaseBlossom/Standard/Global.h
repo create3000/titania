@@ -52,18 +52,66 @@
 #define __TITANIA_PEASE_BLOSSOM_STANDARD_GLOBAL_H__
 
 #include "../Execution/Program.h"
-#include "../Objects/pbObject.h"
+#include "../Objects/Object.h"
 
 namespace titania {
 namespace pb {
 namespace Standard {
-namespace Global {
 
-///  Constructs new default global object.
-void
-initialize (Program* const executionContext, const ptr <pbObject> & object);
+/**
+ *  Class to represent an global object.
+ */
+class GlobalObject :
+	public pb::Object
+{
+public:
 
-} // Global
+	///  @name Construction
+
+	///  Constructs new Math.
+	GlobalObject (pbExecutionContext* const executionContext,
+	              const std::function <bool (const Identifier &)> & resolveCallback);
+
+	virtual
+	const std::string &
+	getClassName () const
+	noexcept (true) final override
+	{ return className; }
+
+
+protected:
+
+	virtual
+	bool
+	resolve (const Identifier & identifier) final override;
+
+
+private:
+
+	///  @name Functions
+
+	static
+	var
+	isNaN (const ptr <pbExecutionContext> &, const var &, const std::vector <var> &);
+
+	static
+	var
+	parseInt (const ptr <pbExecutionContext> &, const var &, const std::vector <var> &);
+
+	static
+	var
+	parseFloat (const ptr <pbExecutionContext> &, const var &, const std::vector <var> &);
+
+	///  @name Static members
+
+	static const std::string className;
+	
+	///  @name Members
+
+	const std::function <bool (const Identifier &)> resolveCallback;
+
+};
+
 } // Standard
 } // pb
 } // titania

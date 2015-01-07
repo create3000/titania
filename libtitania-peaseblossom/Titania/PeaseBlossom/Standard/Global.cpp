@@ -57,66 +57,64 @@
 namespace titania {
 namespace pb {
 namespace Standard {
-namespace Global {
 
-struct isNaN
-{
-	var
-	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
-	{
-		if (arguments .empty ())
-			return true;
+const std::string GlobalObject::className = "Global";
 
-		return pb::isNaN (arguments [0] .toNumber ());
-	}
-
-};
-
-struct parseInt
-{
-	var
-	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
-	{
-		if (arguments .empty ())
-			return NaN ();
-
-		return pb::parseInt (arguments [0] .toString ());
-	}
-
-};
-
-struct parseFloat
-{
-	var
-	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
-	{
-		if (arguments .empty ())
-			return NaN ();
-
-		return pb::parseFloat (arguments [0] .toString ());
-	}
-
-};
-
-void
-initialize (Program* const ec, const ptr <pbObject> & object)
+GlobalObject::GlobalObject (pbExecutionContext* const ec, const std::function <bool (const Identifier &)> & resolveCallback) :
+	     pb::Object (ec),
+	resolveCallback (resolveCallback)
 {
 	// Properties
 
-	object -> addPropertyDescriptor ("this",      object,               WRITABLE | CONFIGURABLE);
-	object -> addPropertyDescriptor ("NaN",       NaN (),               WRITABLE | CONFIGURABLE);
-	object -> addPropertyDescriptor ("Infinity",  POSITIVE_INFINITY (), WRITABLE | CONFIGURABLE);
-	object -> addPropertyDescriptor ("undefined", Undefined,            WRITABLE | CONFIGURABLE);
-	object -> addPropertyDescriptor ("Math",      new Math (ec),        WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("this",      this,                 WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("NaN",       NaN (),               WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("Infinity",  POSITIVE_INFINITY (), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("undefined", Undefined,            WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("Math",      new Math (ec),        WRITABLE | CONFIGURABLE);
 
 	// Functions
 
-	object -> addPropertyDescriptor ("isNaN",      new NativeFunction (ec, "isNaN",      isNaN { },      1), WRITABLE | CONFIGURABLE);
-	object -> addPropertyDescriptor ("parseInt",   new NativeFunction (ec, "parseInt",   parseInt { },   1), WRITABLE | CONFIGURABLE);
-	object -> addPropertyDescriptor ("parseFloat", new NativeFunction (ec, "parseFloat", parseFloat { }, 1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("isNaN",      new NativeFunction (ec, "isNaN",      isNaN,      1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("parseInt",   new NativeFunction (ec, "parseInt",   parseInt,   1), WRITABLE | CONFIGURABLE);
+	addPropertyDescriptor ("parseFloat", new NativeFunction (ec, "parseFloat", parseFloat, 1), WRITABLE | CONFIGURABLE);
 }
 
-} // Global
+bool
+GlobalObject::resolve (const Identifier & identifier)
+{
+	if (resolveCallback (identifier))
+		return true;
+
+	return pb::Object::resolve (identifier);
+}
+
+var
+GlobalObject::isNaN (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+{
+	if (arguments .empty ())
+		return true;
+
+	return pb::isNaN (arguments [0] .toNumber ());
+}
+
+var
+GlobalObject::parseInt (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+{
+	if (arguments .empty ())
+		return NaN ();
+
+	return pb::parseInt (arguments [0] .toString ());
+}
+
+var
+GlobalObject::parseFloat (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+{
+	if (arguments .empty ())
+		return NaN ();
+
+	return pb::parseFloat (arguments [0] .toString ());
+}
+
 } // Standard
 } // pb
 } // titania

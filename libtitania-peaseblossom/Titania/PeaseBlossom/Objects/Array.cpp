@@ -50,18 +50,101 @@
 
 #include "Array.h"
 
+#include "../Execution/pbExecutionContext.h"
+#include "../Objects/NativeFunction.h"
+#include "../Objects/Object.h"
+
+#include <Titania/Utility/Range.h>
+
 namespace titania {
 namespace pb {
 
 Array::Array (pbExecutionContext* const executionContext) :
+	Array (nullptr)
+{
+	const auto & constructor = executionContext -> getStandardClass (StandardClassType::Array);
+
+	setConstructor (constructor);
+	setProto (constructor -> getObject ("prototype"));
+}
+
+Array::Array (const std::nullptr_t) :
 	pbObject (),
-	   value ()
+	   array ()
 { }
+
+void
+Array::setIndexedProperty (const uint32_t index, const var & value)
+throw (pbException)
+{
+	try
+	{
+		if (index >= array .size ())
+			array .resize (index + 1);
+
+		addElement (array [index] = value);
+	}
+	catch (const std::bad_alloc &)
+	{
+		throw RuntimeError ("Array: out of memory.");
+	}
+}
+
+var
+Array::getIndexedProperty (const uint32_t index) const
+throw (std::out_of_range,
+       pbException)
+{
+	return array .at (index);
+}
+
+var
+Array::apply (const uint32_t index, const var & object, const std::vector <var> & arguments) const
+throw (pbException,
+       std::invalid_argument)
+{
+	try
+	{
+		const auto & property = array .at (index);
+
+		if (property .isObject ())
+		{
+			const auto function = dynamic_cast <pbFunction*> (property .getObject () .get ());
+
+			if (function)
+				return function -> apply (object, arguments);
+		}
+	}
+	catch (const std::out_of_range &)
+	{ }
+
+	throw std::invalid_argument ("pbObject::apply");
+}
 
 void
 Array::toStream (std::ostream & ostream) const
 {
-	ostream << "[Array::toStream]";
+	if (array .empty ())
+		return;
+
+	for (const auto & element : std::make_pair (array .begin (), array .end () - 1))
+	{
+		if (element .isUndefined ())
+			ostream << ',';
+		else
+			ostream << element << ',';
+	}
+
+	if (not array .back () .isUndefined ())
+		ostream << array .back ();
+}
+
+void
+Array::dispose ()
+{
+	array .clear ();
+
+	pbObject::dispose ();
 }
 
 } // pb

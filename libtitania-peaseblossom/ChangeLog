@@ -1,3 +1,29 @@
+2015-01-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-peaseblossom.cproj:
+	* Expressions.h:
+	* Array.h:
+	* Array.h:
+	* Object.h:
+	* Parser.cpp:
+	* Global.h:
+	* Array.cpp:
+	* Object.cpp:
+	* pbObject.h:
+	* Array.cpp:
+	* Object.cpp:
+	* Global.cpp:
+	* Program.h:
+	* pbObject.cpp:
+	* Function.cpp:
+	* Program.cpp:
+	* pbFunction.cpp:
+	* ArrayLiteral.h:
+	* StandardClassType.h:
+	* PropertyExpression.h:
+	* ArrayIndexExpression.h: 
+
 2015-01-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* pbObject.h:

@@ -54,6 +54,8 @@
 #include "../Objects/pbObject.h"
 #include "../Objects/pbFunction.h"
 
+#include "../Standard/Array.h"
+
 namespace titania {
 namespace pb {
 
@@ -70,6 +72,25 @@ public:
 	///  Constructs new Array.
 	Array (pbExecutionContext* const executionContext);
 
+	///  @name Indexed property access
+
+	virtual
+	bool
+	hasIndexedProperties ()
+	noexcept (true) final override
+	{ return true; }
+
+	virtual
+	void
+	setIndexedProperty (const uint32_t index, const var & value)
+	throw (pbException) final override;
+
+	virtual
+	var
+	getIndexedProperty (const uint32_t index) const
+	throw (std::out_of_range,
+	       pbException) final override;
+
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
@@ -77,10 +98,49 @@ public:
 	void
 	toStream (std::ostream & ostream) const final override;
 
+	///  @name Destruction
+	
+	virtual
+	void
+	dispose () final override;
+
+
+protected:
+
+	///  @name Friends
+
+	friend
+	ptr <NativeFunction>
+	Standard::Array::initialize (pbExecutionContext* const);
+
+	///  @name Construction
+
+	///  Constructs new Array.
+	Array (const std::nullptr_t);
+
+	///  @name Operations
+
+	virtual
+	var
+	apply (const uint32_t index, const var & object, const std::vector <var> & args = { }) const
+	throw (pbException,
+	       std::invalid_argument) final override;
+
 
 private:
 
-	std::deque <var> value;
+	///  @name Operations
+
+	void
+	addElement (const var & element)
+	{
+		if (element .isObject ())
+			const_cast <ptr <pbObject> &> (element .getObject ()) .addParent (this);
+	}
+
+	///  @name Members
+
+	std::deque <var> array;
 
 };
 

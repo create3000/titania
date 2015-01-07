@@ -67,12 +67,10 @@ public:
 	///  @name Construction
 
 	///  Constructs new Object.
-	Object (pbExecutionContext* const)
-	throw (TypeError);
+	Object (pbExecutionContext* const);
 
 	///  Constructs new Object.
-	Object (pbExecutionContext* const, pbFunction* const)
-	throw (TypeError);
+	Object (pbExecutionContext* const, pbFunction* const);
 
 
 protected:

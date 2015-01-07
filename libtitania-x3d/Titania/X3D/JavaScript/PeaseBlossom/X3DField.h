@@ -103,6 +103,11 @@ protected:
 	void
 	setUserData (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, typename Class::internal_type* const);
 
+	template <class Class>
+	static
+	void
+	dispose (pb::pbObject* const);
+
 
 private:
 
@@ -123,13 +128,6 @@ private:
 	static
 	pb::var
 	toString (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
-
-	///  @name Destruction
-
-	template <class Class>
-	static
-	void
-	dispose (pb::pbObject* const);
 
 	///  @name Static members
 
@@ -161,7 +159,7 @@ X3DField::setUserData (const pb::ptr <pb::pbExecutionContext> & ec, const pb::va
 
 	userData .emplace_back (context);
 	userData .emplace_back (field);
-	object -> setDisposeCallback (dispose <Class>);
+	object -> setCallbacks (Class::getCallbacks ());
 
 	field -> addParent (context);
 }

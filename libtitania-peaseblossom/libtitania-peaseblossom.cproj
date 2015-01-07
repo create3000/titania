@@ -56,6 +56,7 @@
     <Compile Include="Titania\PeaseBlossom\Objects\Array.cpp" />
     <Compile Include="Titania\PeaseBlossom\Standard\Global.cpp" />
     <Compile Include="Titania\PeaseBlossom\Standard\Function.cpp" />
+    <Compile Include="Titania\PeaseBlossom\Standard\Array.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -147,5 +148,7 @@
     <None Include="Titania\PeaseBlossom\Standard\Function.h" />
     <None Include="Titania\PeaseBlossom\Standard\Global.h" />
     <None Include="Titania\PeaseBlossom\Expressions\InstanceOfExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\ArrayIndexExpression.h" />
+    <None Include="Titania\PeaseBlossom\Standard\Array.h" />
   </ItemGroup>
 </Project>

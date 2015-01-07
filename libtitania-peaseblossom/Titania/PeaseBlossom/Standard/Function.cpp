@@ -97,7 +97,7 @@ initialize (pbExecutionContext* const ec)
 
 	constructor -> setConstructor (constructor);
 	constructor -> setProto (standardFunction);
-	constructor -> addPropertyDescriptor ("prototype", standardFunction, WRITABLE | CONFIGURABLE);
+	constructor -> addPropertyDescriptor ("prototype", standardFunction, NONE);
 
 	// standardFunction prototype remains undefined.
 	standardFunction -> setConstructor (constructor);

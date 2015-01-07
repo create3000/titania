@@ -989,15 +989,15 @@ Parser::memberExpression (ptr <pbExpression> & value)
 
 			if (Grammar::OpenBracket (istream))
 			{
-				ptr <pbExpression> arrayIndexExpressions;
+				ptr <pbExpression> identifier;
 
-				if (expression (arrayIndexExpressions))
+				if (expression (identifier))
 				{
 					comments ();
 
 					if (Grammar::CloseBracket (istream))
 					{
-						//value = new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions));
+						value = new ArrayIndexExpression (std::move (value), std::move (identifier));
 						continue;
 					}
 
