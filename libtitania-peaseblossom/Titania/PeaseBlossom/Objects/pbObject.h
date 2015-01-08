@@ -67,7 +67,7 @@
 #include <Titania/String/to_string.h>
 #include <functional>
 #include <memory>
-#include <unordered_map>
+#include <map>
 
 namespace titania {
 namespace pb {
@@ -253,8 +253,7 @@ public:
 	///  Checks wehter this object has a propterty @a id.
 	bool
 	hasProperty (const Identifier & identifier) const
-	noexcept (true)
-	{ return properties .count (identifier .getId ()); }
+	noexcept (true);
 
 	void
 	setProperty (const Identifier & identifier, const var & value)
@@ -311,6 +310,10 @@ public:
 	hasIndexedProperties ()
 	noexcept (true)
 	{ return callbacks -> indexedGetter and callbacks -> indexedSetter; }
+
+	bool
+	hasIndexedProperty (const uint32_t index)
+	noexcept (true);
 
 	virtual
 	void
@@ -412,8 +415,7 @@ private:
 
 	///  @name Member types
 
-	using PropertyDescriptorIndex = std::unordered_map <size_t, PropertyDescriptorPtr>;
-	using PropertyDescriptorArray = std::vector <std::pair <size_t, PropertyDescriptorPtr>>;
+	using PropertyDescriptorIndex = std::map <size_t, PropertyDescriptorPtr>;
 
 	///  @name Cache operations
 
@@ -424,24 +426,11 @@ private:
 
 	///  Returns the property descriptor for a property id on this object.
 	const PropertyDescriptorPtr &
-	getPropertyDescriptor (const size_t) const
-	throw (std::out_of_range);
-
-	void
-	addCachedPropertyDescriptor (const size_t, const PropertyDescriptorPtr &)
-	noexcept (true);
-
-	void
-	removeCachedPropertyDescriptors (const size_t)
-	noexcept (true);
-
-	const PropertyDescriptorPtr &
-	getCachedPropertyDescriptor (const size_t) const
-	throw (std::out_of_range);
+	getPropertyDescriptor (const size_t id) const
+	throw (std::out_of_range)
+	{ return properties .at (id); }
 
 	///  @name Static members
-
-	static constexpr size_t CACHE_SIZE = 16;
 
 	static const std::string typeName;
 	static const Callbacks   defaultCallbacks;
@@ -452,7 +441,6 @@ private:
 	ptr <pbFunction>        constructor;
 	ptr <pbObject>          proto;
 	PropertyDescriptorIndex properties;
-	PropertyDescriptorArray cachedProperties;
 	const Callbacks*        callbacks;
 
 };

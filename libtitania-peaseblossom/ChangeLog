@@ -1,3 +1,19 @@
+2015-01-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-peaseblossom.cproj:
+	* Expressions.h:
+	* Parser.cpp:
+	* Identifier.h:
+	* pbConstants.h:
+	* pbObject.h:
+	* Program.h:
+	* pbObject.cpp:
+	* pbExpression.h:
+	* InExpression.h:
+	* pbExecutionContext.h:
+	* InstanceOfExpression.h:
+	* ArrayIndexExpression.h: 
+
 2015-01-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

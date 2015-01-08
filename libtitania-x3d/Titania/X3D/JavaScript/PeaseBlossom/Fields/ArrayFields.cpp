@@ -64,8 +64,8 @@ template <>
 const pb::Callbacks MFVec4d::callbacks = {
 	pb::PropertyGetter (),
 	pb::PropertySetter (),
-	pb::IndexedGetter (),
-	pb::IndexedSetter (),
+	get1Value,
+	set1Value,
 	pb::ResolveCallback (),
 	dispose <MFVec4d>
 };
@@ -74,8 +74,8 @@ template <>
 const pb::Callbacks MFVec4f::callbacks = {
 	pb::PropertyGetter (),
 	pb::PropertySetter (),
-	pb::IndexedGetter (),
-	pb::IndexedSetter (),
+	get1Value,
+	set1Value,
 	pb::ResolveCallback (),
 	dispose <MFVec4f>
 };

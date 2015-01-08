@@ -417,7 +417,9 @@ print ('{ } .constructor:          ', { } .constructor);
 
 function f (a, b)
 {
-	return print ();
+	var ina = 0;
+	var x = 1
+	ina = a;
 }
 
 print (f);
@@ -429,6 +431,10 @@ print ('SFVec4f .new:         ', v instanceof SFVec4f);
 print ('SFVec4f .getTypeName: ', v .getTypeName ());
 print ('SFVec4f .getType:     ', v .getType ());
 print ('SFVec4f .new:         ', v);
+print ('SFVec4f [0]:          ', v [0]);
+print ('SFVec4f [1]:          ', v [1]);
+print ('SFVec4f [2]:          ', v [2]);
+print ('SFVec4f [3]:          ', v [3]);
 print ('SFVec4f .add:         ', v .add (new SFVec4f (2,3,4,5)));
 
 print (SFVec4f)
@@ -436,15 +442,20 @@ print (SFVec4f .constructor)
 //print (SFVec4f .prototype)
 print (SFVec4f .prototype .constructor)
 
-var a = new MFVec4f ()
+var a = new MFVec4f (v,v,v,v,v,v)
 
 print (a)
 print (a .length = 8)
 print (a .length)
+print (a [1] = v)
+print (a [1] === a [1])
 print (a)
 
 print (Array)
 print ([1,undefined,2,3])
+print (0 in [0])
+print (a [0])
+print (100 < a .length)
 "
 "peaseblossom:"
 ]

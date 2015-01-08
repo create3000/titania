@@ -114,7 +114,6 @@ pbObject::pbObject () :
 	         constructor (),
 	               proto (),
 	          properties (),
-	    cachedProperties (CACHE_SIZE, std::make_pair (-1, PropertyDescriptorPtr ())),
 	           callbacks (&defaultCallbacks)
 {
 	addChildren (constructor, proto);
@@ -138,6 +137,25 @@ throw (std::invalid_argument)
 
 	else
 		addPropertyDescriptor ("__proto__", nullptr, NONE);
+}
+
+bool
+pbObject::hasProperty (const Identifier & identifier) const
+noexcept (true)
+{
+	try
+	{
+		const auto & property = getPropertyDescriptor (identifier, false);
+
+		if (property -> getGetter ())
+			return true;
+
+		return not property -> getValue () .isUndefined ();
+	}
+	catch (const std::out_of_range &)
+	{
+		return false;
+	}
 }
 
 void
@@ -246,8 +264,6 @@ void
 pbObject::removePropertyDescriptor (const Identifier & identifier)
 noexcept (true)
 {
-	removeCachedPropertyDescriptors (identifier .getId ());
-
 	properties .erase (identifier .getId ());
 }
 
@@ -294,57 +310,18 @@ pbObject::resolve (const Identifier & identifier)
 	return callbacks -> resolve and callbacks -> resolve (this, identifier);
 }
 
-const PropertyDescriptorPtr &
-pbObject::getPropertyDescriptor (const size_t id) const
-throw (std::out_of_range)
+bool
+pbObject::hasIndexedProperty (const uint32_t index)
+noexcept (true)
 {
 	try
 	{
-		return getCachedPropertyDescriptor (id);
+		return not getIndexedProperty (index) .isUndefined ();
 	}
 	catch (const std::out_of_range &)
 	{
-		const auto & property = properties .at (id);
-
-		const_cast <pbObject*> (this) -> addCachedPropertyDescriptor (id, property);
-
-		return property;
+		return false;
 	}
-}
-
-void
-pbObject::addCachedPropertyDescriptor (const size_t id, const PropertyDescriptorPtr & property)
-noexcept (true)
-{
-	auto & cachedProperty = cachedProperties [id % CACHE_SIZE];
-
-	cachedProperty .first  = id;
-	cachedProperty .second = property;
-}
-
-void
-pbObject::removeCachedPropertyDescriptors (const size_t id)
-noexcept (true)
-{
-	auto & value = cachedProperties [id % CACHE_SIZE];
-
-	if (value .first not_eq id)
-		return;
-
-	value .first = -1;
-	value .second .reset ();
-}
-
-const PropertyDescriptorPtr &
-pbObject::getCachedPropertyDescriptor (const size_t id) const
-throw (std::out_of_range)
-{
-	const auto & value = cachedProperties [id % CACHE_SIZE];
-
-	if (value .first == id)
-		return value .second;
-
-	throw std::out_of_range ("getCachedPropertyDescriptor");
 }
 
 void
@@ -472,8 +449,7 @@ pbObject::dispose ()
 	if (callbacks -> dispose)
 		callbacks -> dispose (this);
 
-	properties       .clear ();
-	cachedProperties .clear ();
+	properties .clear ();
 
 	pbChildObject::dispose ();
 }

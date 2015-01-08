@@ -161,6 +161,12 @@ public:
 	getFunctionDeclarations () const
 	{ return functions; }
 
+	///  Executes the associated expessions of this context.
+	virtual
+	var
+	run ()
+	throw (pbException);
+
 	/// @name Input/Output
 
 	///  Parses @a istream and adds the expressions to this context. The stream must contain valid ECMAScript content
@@ -219,12 +225,6 @@ protected:
 	import (const pbExecutionContext* const executionContext)
 	throw (pbException,
 	       pbControlFlowException);
-
-	///  Executes the associated expessions of this context.
-	virtual
-	var
-	run ()
-	throw (pbException);
 
 
 private:

@@ -150,5 +150,6 @@
     <None Include="Titania\PeaseBlossom\Expressions\InstanceOfExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\ArrayIndexExpression.h" />
     <None Include="Titania\PeaseBlossom\Standard\Array.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\InExpression.h" />
   </ItemGroup>
 </Project>

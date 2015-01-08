@@ -48,119 +48,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_VS_CONSTANTS_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_VS_CONSTANTS_H__
-
-#include <string>
-#include <iostream>
-#include <sstream>
-#include <cmath>
-#include <limits>
-
-#undef NONE
+#include "jsX3DArrayField.h"
 
 namespace titania {
-namespace pb {
+namespace X3D {
+namespace MozillaSpiderMonkey {
 
-/**
- *  Enum type for ECMAScript primitives.
- */
-enum ValueType :
-	uint8_t
-{
-	// Standard object
+//
 
-	UNDEFINED,
-	BOOLEAN,
-	NUMBER,
-	STRING,
-	NULL_OBJECT,
-	OBJECT,
-
-};
-
-///  @relates ValueType
-///  @name Input/Output operators.
-
-template <class CharT, class Traits>
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const ValueType type)
-noexcept (true)
-{
-	switch (type)
-	{
-		case UNDEFINED:   ostream << "UNDEFINED"; break;
-		case BOOLEAN:     ostream << "BOOLEAN";   break;
-		case NUMBER:      ostream << "NUMBER";    break;
-		case STRING:      ostream << "STRING";    break;
-		case NULL_OBJECT: ostream << "NULL";      break;
-		case OBJECT:      ostream << "OBJECT";    break;
-	}
-
-	return ostream;
-}
-
-inline
-std::string
-to_string (const ValueType type)
-noexcept (true)
-{
-	std::ostringstream osstream;
-
-	osstream << type;
-
-	return osstream .str ();
-}
-
-using PropertyFlagsType = uint8_t;
-
-constexpr PropertyFlagsType NONE         = 0;
-constexpr PropertyFlagsType WRITABLE     = 1 << 0;
-constexpr PropertyFlagsType ENUMERABLE   = 1 << 1;
-constexpr PropertyFlagsType CONFIGURABLE = 1 << 2;
-constexpr PropertyFlagsType LEAVE_VALUE  = 1 << 3;
-constexpr PropertyFlagsType DEFAULT      = WRITABLE | CONFIGURABLE | ENUMERABLE;
-
-enum class ExpressionType
-{
-	UNDEFINED,
-	BOOLEAN,
-	NUMBER,
-	BINARY_NUMBER,
-	OCTAL_NUMBER,
-	HEXAL_NUMBER,
-	STRING,
-	SINGLE_QUOTED_STRING,
-	DOUBLE_QUOTED_STRING,
-	NULL_OBJECT,
-
-	ADDITION_EXPRESSION,
-	ARRAY_INDEX_EXPRESSION,
-	ARRAY_LITERAL,
-	ASSIGNMENT_EXPRESSION,
-	DIVISION_EXPRESSION,
-	EQUAL_EXPRESSION,
-	FOR_STATEMENT,
-	FUNCTION_CALL_EXPRESSION,
-	FUNCTION_EXPRESSION,
-	IF_STATEMENT,
-	IN_EXPRESSION,
-	INSTANCE_OF_EXPRESSION,
-	LEFT_SHIFT_EXPRESSION,
-	LESS_EXPRESSION,
-	MULTIPLICATION_EXPRESSION,
-	NEW_EXPRESSION,
-	OBJECT_LITERAL,
-	PROPERTY_EXPRESSION,
-	REMAINDER_EXPRESSION,
-	RETURN_STATEMENT,
-	STRICT_EQUAL_EXPRESSION,
-	SUBTRACTION_EXPRESSION,
-	VARIABLE_EXPRESSION,
-	VARIABLE_DECLARATION,
-};
-
-} // pb
+} // MozillaSpiderMonkey
+} // X3D
 } // titania
-
-#endif

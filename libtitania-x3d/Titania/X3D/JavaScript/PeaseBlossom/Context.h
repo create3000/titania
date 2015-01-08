@@ -103,6 +103,10 @@ public:
 
 	///  @name Member access
 	
+	const pb::ptr <pb::pbExecutionContext> &
+	getProgram () const
+	{ return program; }
+
 	const pb::ptr <pb::NativeFunction> &
 	getClass (const ObjectType type) const;
 
@@ -177,7 +181,7 @@ private:
 	///  @name Members
 
 	std::vector <basic::uri>                           worldURL;
-	pb::ptr <pb::Program>                              program;
+	pb::ptr <pb::pbExecutionContext>                   program;
 	pb::Callbacks                                      callbacks;
 	std::vector <pb::ptr <pb::NativeFunction>>         classes;
 	std::map <X3D::X3DFieldDefinition*, pb::pbObject*> objects;

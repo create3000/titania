@@ -1,3 +1,27 @@
+2015-01-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Array.h:
+	* Context.h:
+	* X3DField.h:
+	* Arguments.h:
+	* SFVec4.h:
+	* jsMFBool.h:
+	* jsMFTime.h:
+	* jsMFNode.h:
+	* jsMFInt32.h:
+	* jsMFFloat.h:
+	* jsX3DArrayField.cpp:
+	* jsMFTime.cpp:
+	* jsMFString.h:
+	* jsMFBool.cpp:
+	* jsMFNode.cpp:
+	* jsMFDouble.h:
+	* jsMFFloat.cpp:
+	* jsMFInt32.cpp:
+	* jsMFDouble.cpp:
+	* jsMFString.cpp:
+	* ArrayFields.cpp: 
+
 2015-01-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Array.h:

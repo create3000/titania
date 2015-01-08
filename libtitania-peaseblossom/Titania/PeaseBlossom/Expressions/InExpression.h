@@ -48,116 +48,99 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_BITS_VS_CONSTANTS_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_BITS_VS_CONSTANTS_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_IN_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_IN_EXPRESSION_H__
 
-#include <string>
-#include <iostream>
-#include <sstream>
-#include <cmath>
-#include <limits>
-
-#undef NONE
+#include "../Expressions/PrimitiveExpression.h"
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Enum type for ECMAScript primitives.
+ *  Class to represent a ECMAScript in expression.
  */
-enum ValueType :
-	uint8_t
+class InExpression :
+	public pbExpression
 {
-	// Standard object
+public:
 
-	UNDEFINED,
-	BOOLEAN,
-	NUMBER,
-	STRING,
-	NULL_OBJECT,
-	OBJECT,
+	///  @name Construction
 
-};
+	///  Constructs new InExpression expression.
+	InExpression (ptr <pbExpression> && lhs, ptr <pbExpression>&& rhs) :
+		pbExpression (ExpressionType::IN_EXPRESSION),
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
+	{ construct (); }
 
-///  @relates ValueType
-///  @name Input/Output operators.
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
+	noexcept (true) final override
+	{ return new InExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
-template <class CharT, class Traits>
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const ValueType type)
-noexcept (true)
-{
-	switch (type)
+	///  @name Operations
+
+	///  Converts its arguments to a value of type Number.
+	virtual
+	var
+	getValue () const
+	throw (pbException,
+	       pbControlFlowException) final override
 	{
-		case UNDEFINED:   ostream << "UNDEFINED"; break;
-		case BOOLEAN:     ostream << "BOOLEAN";   break;
-		case NUMBER:      ostream << "NUMBER";    break;
-		case STRING:      ostream << "STRING";    break;
-		case NULL_OBJECT: ostream << "NULL";      break;
-		case OBJECT:      ostream << "OBJECT";    break;
+		const auto base     = rhs -> getValue ();
+		const auto property = lhs -> getValue ();
+		const auto name     = property .toString ();
+
+		if (base .isObject ())
+		{
+			const auto & object = base .getObject ();
+
+			if (object -> hasIndexedProperties ())
+			{
+				const auto index = property .toUInt32 ();
+
+				if (isIndex (name, index))
+					return object -> hasIndexedProperty (index);
+			}
+
+			return object -> hasProperty (name);
+		}
+
+		throw TypeError ("Invalid right in operant '" + rhs .toString () + "'.");
 	}
 
-	return ostream;
-}
+	///  @name Input/Output
 
-inline
-std::string
-to_string (const ValueType type)
-noexcept (true)
-{
-	std::ostringstream osstream;
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		ostream
+			<< lhs
+			<< Generator::Space
+			<< "in"
+			<< Generator::Space
+			<< rhs;
+	}
 
-	osstream << type;
+private:
 
-	return osstream .str ();
-}
+	///  @name Construction
 
-using PropertyFlagsType = uint8_t;
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (lhs, rhs); }
 
-constexpr PropertyFlagsType NONE         = 0;
-constexpr PropertyFlagsType WRITABLE     = 1 << 0;
-constexpr PropertyFlagsType ENUMERABLE   = 1 << 1;
-constexpr PropertyFlagsType CONFIGURABLE = 1 << 2;
-constexpr PropertyFlagsType LEAVE_VALUE  = 1 << 3;
-constexpr PropertyFlagsType DEFAULT      = WRITABLE | CONFIGURABLE | ENUMERABLE;
+	///  @name Members
 
-enum class ExpressionType
-{
-	UNDEFINED,
-	BOOLEAN,
-	NUMBER,
-	BINARY_NUMBER,
-	OCTAL_NUMBER,
-	HEXAL_NUMBER,
-	STRING,
-	SINGLE_QUOTED_STRING,
-	DOUBLE_QUOTED_STRING,
-	NULL_OBJECT,
+	const ptr <pbExpression> lhs;
+	const ptr <pbExpression> rhs;
 
-	ADDITION_EXPRESSION,
-	ARRAY_INDEX_EXPRESSION,
-	ARRAY_LITERAL,
-	ASSIGNMENT_EXPRESSION,
-	DIVISION_EXPRESSION,
-	EQUAL_EXPRESSION,
-	FOR_STATEMENT,
-	FUNCTION_CALL_EXPRESSION,
-	FUNCTION_EXPRESSION,
-	IF_STATEMENT,
-	IN_EXPRESSION,
-	INSTANCE_OF_EXPRESSION,
-	LEFT_SHIFT_EXPRESSION,
-	LESS_EXPRESSION,
-	MULTIPLICATION_EXPRESSION,
-	NEW_EXPRESSION,
-	OBJECT_LITERAL,
-	PROPERTY_EXPRESSION,
-	REMAINDER_EXPRESSION,
-	RETURN_STATEMENT,
-	STRICT_EQUAL_EXPRESSION,
-	SUBTRACTION_EXPRESSION,
-	VARIABLE_EXPRESSION,
-	VARIABLE_DECLARATION,
 };
 
 } // pb

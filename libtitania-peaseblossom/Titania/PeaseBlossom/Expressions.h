@@ -61,6 +61,7 @@
 #include "Expressions/FunctionCallExpression.h"
 #include "Expressions/FunctionExpression.h"
 #include "Expressions/IfStatement.h"
+#include "Expressions/InExpression.h"
 #include "Expressions/InstanceOfExpression.h"
 #include "Expressions/LeftShiftExpression.h"
 #include "Expressions/LessExpression.h"

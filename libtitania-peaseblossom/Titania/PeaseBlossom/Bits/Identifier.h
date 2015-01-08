@@ -84,6 +84,10 @@ public:
 		                  id (other .id)
 	{ }
 
+	Identifier (const Glib::ustring & name) :
+		Identifier (getIdentifier (name .raw ()))
+	{ }
+
 	Identifier (const std::string & name) :
 		Identifier (getIdentifier (name))
 	{ }

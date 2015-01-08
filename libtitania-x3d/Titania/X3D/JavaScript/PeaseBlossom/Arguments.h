@@ -134,13 +134,18 @@ throw (std::invalid_argument)
 }
 
 template <class Class>
-typename Class::internal_type*
-get1Argument (const std::vector <pb::var> & args, const size_t index)
+typename std::enable_if <
+	not (std::is_integral <typename Class::internal_type::internal_type>::value or
+        std::is_floating_point <typename Class::internal_type::internal_type>::value or
+        std::is_same <typename Class::internal_type::internal_type, std::string>::value or
+        std::is_same <typename Class::internal_type::internal_type, X3D::String>::value),
+	typename Class::internal_type*
+>::type
+get1Argument (const pb::var & value)
+throw (pb::pbException)
 {
 	try
 	{
-		const auto & value = args [index];
-	
 		if (value .isObject ())
 		{
 			const auto & object  = value .getObject ();
@@ -153,7 +158,122 @@ get1Argument (const std::vector <pb::var> & args, const size_t index)
 	catch (const std::out_of_range &)
 	{ }
 
-	throw pb::TypeError ("Type of argument " + std::to_string (index + 1) + " is invalid, must be " + Class::getTypeName () + ".");
+	throw pb::TypeError ("Type of value is invalid, must be " + Class::getTypeName () + ".");
+}
+
+template <class Class>
+inline
+typename std::enable_if <
+	not (std::is_integral <typename Class::internal_type::internal_type>::value or
+        std::is_floating_point <typename Class::internal_type::internal_type>::value or
+        std::is_same <typename Class::internal_type::internal_type, std::string>::value or
+        std::is_same <typename Class::internal_type::internal_type, X3D::String>::value),
+	typename Class::internal_type*
+>::type
+get1Argument (const std::vector <pb::var> & args, const size_t index)
+throw (pb::pbException)
+{
+	try
+	{
+		return get1Argument <Class> (args [index]);
+	}
+	catch (const pb::TypeError &)
+	{
+		throw pb::TypeError ("Type of argument " + std::to_string (index + 1) + " is invalid, must be " + Class::getTypeName () + ".");
+	}
+}
+
+template <class Type>
+inline
+typename std::enable_if <
+	std::is_integral <Type>::value or
+   std::is_floating_point <Type>::value or
+   std::is_same <Type, std::string>::value or
+   std::is_same <Type, X3D::String>::value,
+	Type
+>::type
+get1Argument (const pb::var & value)
+throw (pb::pbException)
+{
+	throw pb::TypeError ("get1Argument");
+}
+
+template <>
+inline
+bool
+get1Argument <bool> (const pb::var & value)
+throw (pb::pbException)
+{
+	return value .toBoolean ();
+}
+
+template <>
+inline
+double
+get1Argument <double> (const pb::var & value)
+throw (pb::pbException)
+{
+	return value .toNumber ();
+}
+
+template <>
+inline
+float
+get1Argument <float> (const pb::var & value)
+throw (pb::pbException)
+{
+	return value .toNumber ();
+}
+
+template <>
+inline
+int32_t
+get1Argument <int32_t> (const pb::var & value)
+throw (pb::pbException)
+{
+	return value .toInt32 ();
+}
+
+template <>
+inline
+uint32_t
+get1Argument <uint32_t> (const pb::var & value)
+throw (pb::pbException)
+{
+	return value .toUInt32 ();
+}
+
+template <>
+inline
+std::string
+get1Argument <std::string> (const pb::var & value)
+throw (pb::pbException)
+{
+	return value .toString ();
+}
+
+template <>
+inline
+X3D::String
+get1Argument <X3D::String> (const pb::var & value)
+throw (pb::pbException)
+{
+	return value .toString ();
+}
+
+template <class Type>
+inline
+typename std::enable_if <
+	std::is_integral <Type>::value or
+   std::is_floating_point <Type>::value or
+   std::is_same <Type, std::string>::value or
+   std::is_same <Type, X3D::String>::value,
+	Type
+>::type
+get1Argument (const std::vector <pb::var> & args, const size_t index)
+throw (pb::pbException)
+{
+	return get1Argument <Type> (args [index]);
 }
 
 } // peaseblossom

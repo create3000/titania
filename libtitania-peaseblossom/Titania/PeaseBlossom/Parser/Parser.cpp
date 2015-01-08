@@ -1648,55 +1648,44 @@ Parser::relationalExpression (ptr <pbExpression> & lhs)
 
 			throw SyntaxError ("Expected expression after '>'.");
 		}
+		
+		const auto state = getState ();
+		
+		std::string identifierCharacters;
 
-		if (Grammar::instanceof (istream))
+		if (identifierName (identifierCharacters))
 		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::instanceof .rewind (istream);
-
-			isLeftHandSideExressions .back () = false;
-
-			// If white spaces or comments empty return false.
-	
-			if (not comments ())
-				return Grammar::instanceof .rewind (istream);
-
-			// lhs
-	
-			ptr <pbExpression> rhs;
-
-			if (relationalExpression (rhs))
+			if (identifierCharacters == Grammar::instanceof ())
 			{
-				lhs = new InstanceOfExpression (std::move (lhs), std::move (rhs));
-				return true;
+				isLeftHandSideExressions .back () = false;
+	
+				ptr <pbExpression> rhs;
+
+				if (relationalExpression (rhs))
+				{
+					lhs = new InstanceOfExpression (std::move (lhs), std::move (rhs));
+					return true;
+				}
+
+				throw SyntaxError ("Expected expression after 'instanceof'.");
 			}
 
-			throw SyntaxError ("Expected expression after 'instanceof'.");
-		}
-
-		if (Grammar::in (istream))
-		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::in .rewind (istream);
-
-			isLeftHandSideExressions .back () = false;
-
-			// If white spaces or comments empty return false.
-
-			if (not comments ())
-				return Grammar::in .rewind (istream);
-
-			// lhs.
-	
-			ptr <pbExpression> rhs;
-
-			if (relationalExpression (rhs))
+			if (identifierCharacters == Grammar::in ())
 			{
-				//lhs = new InExpression (std::move (lhs), std::move (rhs));
-				return true;
+				isLeftHandSideExressions .back () = false;
+		
+				ptr <pbExpression> rhs;
+
+				if (relationalExpression (rhs))
+				{
+					lhs = new InExpression (std::move (lhs), std::move (rhs));
+					return true;
+				}
+
+				throw SyntaxError ("Expected expression after 'in'.");
 			}
 
-			throw SyntaxError ("Expected expression after 'in'.");
+			setState (state);
 		}
 
 		return true;

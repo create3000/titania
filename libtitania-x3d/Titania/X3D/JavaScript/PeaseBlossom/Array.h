@@ -101,6 +101,16 @@ private:
 	pb::var
 	construct (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
+	///  @name Member access
+
+	static
+	void
+	set1Value (pb::pbObject* const, const uint32_t, const pb::var &);
+
+	static
+	pb::var
+	get1Value (pb::pbObject* const, const uint32_t);
+
 	///  @name Properties
 
 	static
@@ -110,6 +120,21 @@ private:
 	static
 	pb::var
 	setLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	template <class Class>
+	static
+	typename std::enable_if <
+		not (std::is_integral <typename Class::internal_type::internal_type>::value or
+	        std::is_floating_point <typename Class::internal_type::internal_type>::value or
+	        std::is_same <typename Class::internal_type::internal_type, std::string>::value or
+	        std::is_same <typename Class::internal_type::internal_type, X3D::String>::value),
+		typename Class::internal_type &
+	>::type
+	get1Argument (const pb::var & value)
+	throw (pb::pbException)
+	{
+		return *peaseblossom::get1Argument <Class> (value);
+	}
 
 	///  @name Static members
 
@@ -131,7 +156,7 @@ Array <Type, InternalType>::initialize (Context* const context, const pb::ptr <p
 
 	prototype -> addPropertyDescriptor ("length",
 	                                    pb::Undefined,
-	                                    pb::DEFAULT,
+	                                    pb::WRITABLE | pb::ENUMERABLE,
 	                                    new pb::NativeFunction (ec, "length", getLength, 0),
 	                                    new pb::NativeFunction (ec, "length", setLength, 1));
 
@@ -152,11 +177,50 @@ Array <Type, InternalType>::construct (const pb::ptr <pb::pbExecutionContext> & 
 		}
 		default:
 		{
+			const auto array = new InternalType ();
+
+			for (size_t i = 0, size = args .size (); i < size; ++ i)
+				array -> emplace_back (get1Argument <Type> (args [i]));
+
+			setUserData <Array> (ec, object, array);
 			break;
 		}
 	}
 
 	return pb::Undefined;
+}
+
+template <class Type, class InternalType>
+void
+Array <Type, InternalType>::set1Value (pb::pbObject* const object, const uint32_t index, const pb::var & value)
+{
+	try
+	{
+		const auto array = getObject <InternalType> (object);
+
+		array -> set1Value (index, get1Argument <Type> (value));
+	}
+	catch (const std::bad_alloc &)
+	{
+		throw pb::RuntimeError (getTypeName () + ": out of memory.");
+	}
+}
+
+template <class Type, class InternalType>
+pb::var
+Array <Type, InternalType>::get1Value (pb::pbObject* const object, const uint32_t index)
+{
+	try
+	{
+		const auto context = getContext (object);
+		const auto array   = getObject <InternalType> (object);
+
+		return get <Type> (context, &array -> get1Value (index));
+	}
+	catch (const std::bad_alloc &)
+	{
+		throw pb::RuntimeError (getTypeName () + ": out of memory.");
+	}
 }
 
 template <class Type, class InternalType>

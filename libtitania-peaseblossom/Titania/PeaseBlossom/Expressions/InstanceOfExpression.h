@@ -69,7 +69,7 @@ public:
 
 	///  Constructs new InstanceOfExpression expression.
 	InstanceOfExpression (ptr <pbExpression> && lhs, ptr <pbExpression>&& rhs) :
-		pbExpression (ExpressionType::DIVISION_EXPRESSION),
+		pbExpression (ExpressionType::INSTANCE_OF_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
@@ -101,7 +101,7 @@ public:
 		catch (const TypeError &)
 		{ }
 	
-		throw TypeError ("Invalid instanceof operant '" + rhs .toString () + "'.");
+		throw TypeError ("Invalid right instanceof operant '" + rhs .toString () + "'.");
 	}
 
 	///  @name Input/Output
@@ -113,9 +113,9 @@ public:
 	{
 		ostream
 			<< lhs
-			<< Generator::TidySpace
+			<< Generator::Space
 			<< "instanceof"
-			<< Generator::TidySpace
+			<< Generator::Space
 			<< rhs;
 	}
 

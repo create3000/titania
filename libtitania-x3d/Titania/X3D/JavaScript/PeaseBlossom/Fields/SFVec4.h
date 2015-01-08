@@ -137,30 +137,45 @@ SFVec4 <Type>::initialize (Context* const context, const pb::ptr <pb::Program> &
 	const auto prototype = context -> getClass (ObjectType::X3DField) -> createInstance (ec);
 
 	prototype -> addPropertyDescriptor ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
+	
+	// Properties
+	
+	pb::NativeFunction* getter = nullptr;
+	pb::NativeFunction* setter = nullptr;
 
 	prototype -> addPropertyDescriptor ("x",
 	                                    pb::Undefined,
-	                                    pb::DEFAULT,
-	                                    new pb::NativeFunction (ec, "x", std::bind (get1Value, _1, _2, _3, X), 0),
-	                                    new pb::NativeFunction (ec, "x", std::bind (set1Value, _1, _2, _3, X), 1));
+	                                    pb::WRITABLE | pb::ENUMERABLE,
+	                                    getter = new pb::NativeFunction (ec, "x", std::bind (get1Value, _1, _2, _3, X), 0),
+	                                    setter = new pb::NativeFunction (ec, "x", std::bind (set1Value, _1, _2, _3, X), 1));
+
+	prototype -> addPropertyDescriptor ("0", pb::Undefined, pb::WRITABLE, getter, setter);
 
 	prototype -> addPropertyDescriptor ("y",
 	                                    pb::Undefined,
-	                                    pb::DEFAULT,
-	                                    new pb::NativeFunction (ec, "y", std::bind (get1Value, _1, _2, _3, Y), 0),
-	                                    new pb::NativeFunction (ec, "y", std::bind (set1Value, _1, _2, _3, Y), 1));
+	                                    pb::WRITABLE | pb::ENUMERABLE,
+	                                    getter = new pb::NativeFunction (ec, "y", std::bind (get1Value, _1, _2, _3, Y), 0),
+	                                    setter = new pb::NativeFunction (ec, "y", std::bind (set1Value, _1, _2, _3, Y), 1));
+
+	prototype -> addPropertyDescriptor ("1", pb::Undefined, pb::WRITABLE, getter, setter);
 
 	prototype -> addPropertyDescriptor ("z",
 	                                    pb::Undefined,
-	                                    pb::DEFAULT,
-	                                    new pb::NativeFunction (ec, "z", std::bind (get1Value, _1, _2, _3, Z), 0),
-	                                    new pb::NativeFunction (ec, "z", std::bind (set1Value, _1, _2, _3, Z), 1));
+	                                    pb::WRITABLE | pb::ENUMERABLE,
+	                                    getter = new pb::NativeFunction (ec, "z", std::bind (get1Value, _1, _2, _3, Z), 0),
+	                                    setter = new pb::NativeFunction (ec, "z", std::bind (set1Value, _1, _2, _3, Z), 1));
+
+	prototype -> addPropertyDescriptor ("2", pb::Undefined, pb::WRITABLE, getter, setter);
 
 	prototype -> addPropertyDescriptor ("w",
-	                                    pb::Undefined,
+	                                    pb::WRITABLE | pb::ENUMERABLE,
 	                                    pb::DEFAULT,
-	                                    new pb::NativeFunction (ec, "w", std::bind (get1Value, _1, _2, _3, W), 0),
-	                                    new pb::NativeFunction (ec, "w", std::bind (set1Value, _1, _2, _3, W), 1));
+	                                    getter = new pb::NativeFunction (ec, "w", std::bind (get1Value, _1, _2, _3, W), 0),
+	                                    setter = new pb::NativeFunction (ec, "w", std::bind (set1Value, _1, _2, _3, W), 1));
+
+	prototype -> addPropertyDescriptor ("3", pb::Undefined, pb::WRITABLE, getter, setter);
+
+	// Functions
 
 	prototype -> addPropertyDescriptor ("add", new pb::NativeFunction (ec, "add", add, 1), pb::NONE);
 

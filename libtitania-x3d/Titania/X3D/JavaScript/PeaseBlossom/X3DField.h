@@ -96,12 +96,23 @@ protected:
 	template <class Class>
 	static
 	pb::var
+	get (Context* const, typename Class::internal_type* const);
+
+	template <class Class>
+	static
+	pb::var
 	create (const pb::ptr <pb::pbExecutionContext> &, typename Class::internal_type* const);
 
 	template <class Class>
 	static
 	void
-	setUserData (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, typename Class::internal_type* const);
+	setUserData (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & value, typename Class::internal_type* const field)
+	{ setUserData <Class> (ec, value .getObject (), field); }
+
+	template <class Class>
+	static
+	void
+	setUserData (const pb::ptr <pb::pbExecutionContext> &, const pb::ptr <pb::pbObject> &, typename Class::internal_type* const);
 
 	template <class Class>
 	static
@@ -137,6 +148,20 @@ private:
 
 template <class Class>
 pb::var
+X3DField::get (Context* const context, typename Class::internal_type* const field)
+{
+	try
+	{
+		return context -> getObject (field);
+	}
+	catch (const std::out_of_range &)
+	{
+		return create <Class> (context -> getProgram (), field);
+	}
+}
+
+template <class Class>
+pb::var
 X3DField::create (const pb::ptr <pb::pbExecutionContext> & ec, typename Class::internal_type* const field)
 {
 	const auto context = getContext (ec);
@@ -149,19 +174,22 @@ X3DField::create (const pb::ptr <pb::pbExecutionContext> & ec, typename Class::i
 
 template <class Class>
 void
-X3DField::setUserData (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & value, typename Class::internal_type* const field)
+X3DField::setUserData (const pb::ptr <pb::pbExecutionContext> & ec, const pb::ptr <pb::pbObject> & object, typename Class::internal_type* const field)
 {
-	const auto   context  = getContext (ec);
-	const auto & object   = value .getObject ();
-	auto &       userData = object -> getUserData ();
+	const auto context  = getContext (ec);
+	auto &     userData = object -> getUserData ();
+	const bool loose    = field -> getParents () .empty ();
 
-	userData .reserve (2);
-
+	userData .reserve (3);
 	userData .emplace_back (context);
 	userData .emplace_back (field);
+	userData .emplace_back ((void*) loose);
 	object -> setCallbacks (Class::getCallbacks ());
 
-	field -> addParent (context);
+	if (loose)
+		field -> addParent (context);
+	else
+		context -> addObject (field, object);
 }
 
 template <class Class>
@@ -171,7 +199,10 @@ X3DField::dispose (pb::pbObject* const object)
 	const auto context = getContext (object);
 	const auto field   = getObject <typename Class::internal_type> (object);
 
-	field -> removeParent (context);
+	if (object -> getUserData <size_t> (2))
+		field -> removeParent (context);
+	else
+		context -> removeObject (field);
 }
 
 } // peaseblossom

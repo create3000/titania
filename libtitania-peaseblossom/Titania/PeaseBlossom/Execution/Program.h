@@ -61,8 +61,6 @@ class Program :
 {
 public:
 
-	using pbExecutionContext::run;
-
 	///  @name Common members
 
 	///  Returns the type name of this object.
