@@ -219,13 +219,13 @@ public:
 	///  @name Assignment operators
 
 	var &
-	operator = (const UndefinedType &);
-
-	var &
 	operator = (const var &);
 
 	var &
 	operator = (var &&);
+
+	var &
+	operator = (const UndefinedType &);
 
 	var &
 	operator = (const bool);

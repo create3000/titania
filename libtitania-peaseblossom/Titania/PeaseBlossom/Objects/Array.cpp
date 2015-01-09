@@ -60,7 +60,7 @@ namespace titania {
 namespace pb {
 
 Array::Array (pbExecutionContext* const executionContext) :
-	Array (nullptr)
+	Array (executionContext, nullptr)
 {
 	const auto & constructor = executionContext -> getStandardClass (StandardClassType::Array);
 
@@ -68,10 +68,16 @@ Array::Array (pbExecutionContext* const executionContext) :
 	setProto (constructor -> getObject ("prototype"));
 }
 
-Array::Array (const std::nullptr_t) :
+Array::Array (pbExecutionContext* const executionContext, const std::nullptr_t) :
 	pbObject (),
 	   array ()
-{ }
+{
+	addOwnProperty ("length",
+	                Undefined,
+	                pb::NONE,
+	                new pb::NativeFunction (executionContext, "length", getLength, 0),
+	                new pb::NativeFunction (executionContext, "length", setLength, 1));
+}
 
 void
 Array::setIndexedProperty (const uint32_t index, const var & value)
@@ -98,8 +104,30 @@ throw (std::out_of_range,
 	return array .at (index);
 }
 
+pb::var
+Array::setLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+{
+	const auto array = dynamic_cast <Array*> (object .getObject () .get ());
+	const auto size  = args [0] .toUInt32 ();
+
+	if (size == M_2_32)
+		return Undefined; /// XXX
+
+	array -> array .resize (size);
+
+	return Undefined;
+}
+
+pb::var
+Array::getLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+{
+	const auto array = dynamic_cast <Array*> (object .getObject () .get ());
+
+	return array -> array .size ();
+}
+
 var
-Array::apply (const uint32_t index, const var & object, const std::vector <var> & arguments) const
+Array::call (const uint32_t index, const var & object, const std::vector <var> & arguments) const
 throw (pbException,
        std::invalid_argument)
 {
@@ -112,7 +140,7 @@ throw (pbException,
 			const auto function = dynamic_cast <pbFunction*> (property .getObject () .get ());
 
 			if (function)
-				return function -> apply (object, arguments);
+				return function -> call (object, arguments);
 		}
 	}
 	catch (const std::out_of_range &)

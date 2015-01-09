@@ -69,8 +69,8 @@ Function::Function (pbExecutionContext* const executionContext, const std::strin
 {
 	const auto prototype = new Object (executionContext);
 
-	addPropertyDescriptor ("prototype", prototype, WRITABLE | CONFIGURABLE);
-	prototype -> addPropertyDescriptor ("constructor", this, WRITABLE | CONFIGURABLE);
+	addOwnProperty ("prototype", prototype, WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("constructor", this, WRITABLE | CONFIGURABLE);
 
 	addChildren (localObjectsStack, localObjects);
 
@@ -114,20 +114,20 @@ var
 Function::construct (const var & object, const std::vector <var> & arguments)
 throw (pbException)
 {
-	return apply (object, arguments);
+	return call (object, arguments);
 }
 
 var
-Function::apply (const var & object, const std::vector <var> & arguments)
+Function::call (const var & object, const std::vector <var> & arguments)
 throw (pbException)
 {
 	const auto localObject = new Object (static_cast <pbExecutionContext*> (this));
 
-	localObject -> addPropertyDescriptor ("this",      object,    NONE);
-	//localObject -> addPropertyDescriptor ("arguments", arguments, NONE);
+	localObject -> addOwnProperty ("this",      object,    NONE);
+	//localObject -> addOwnProperty ("arguments", arguments, NONE);
 
 	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
-		localObject -> addPropertyDescriptor (formalParameters [i], i < argc ? arguments [i] : var (), WRITABLE | CONFIGURABLE);
+		localObject -> addOwnProperty (formalParameters [i], i < argc ? arguments [i] : Undefined, WRITABLE | CONFIGURABLE);
 
 	StackGuard guard (this, localObject);
 

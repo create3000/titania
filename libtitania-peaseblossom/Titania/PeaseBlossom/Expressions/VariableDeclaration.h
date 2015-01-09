@@ -92,8 +92,11 @@ public:
 	       pbControlFlowException) final override
 	{
 		// Variable declarations cannot be deleted.
+		
+		const auto & defaultObject = executionContext -> getDefaultObject ();
+		const auto   value         = expression -> getValue ();
 
-		executionContext -> getDefaultObject () -> updatePropertyDescriptor (identifier, expression -> getValue (), WRITABLE | ENUMERABLE);
+		defaultObject -> put (identifier, value, false);
 
 		return Undefined;
 	}

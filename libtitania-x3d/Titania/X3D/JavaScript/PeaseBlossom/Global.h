@@ -72,12 +72,12 @@ public:
 
 		const auto browser = context -> getBrowser ();
 
-		global -> addPropertyDescriptor ("NULL",  nullptr, pb::NONE);
-		global -> addPropertyDescriptor ("FALSE", false,   pb::NONE);
-		global -> addPropertyDescriptor ("TRUE",  true,    pb::NONE);
+		global -> addOwnProperty ("NULL",  nullptr, pb::NONE);
+		global -> addOwnProperty ("FALSE", false,   pb::NONE);
+		global -> addOwnProperty ("TRUE",  true,    pb::NONE);
 
-		global -> addPropertyDescriptor ("print", new pb::NativeFunction (ec, "print", std::bind (print, _1, _2, _3, browser), 0), pb::NONE);
-		global -> addPropertyDescriptor ("now",   new pb::NativeFunction (ec, "now",   now,                                    0), pb::NONE);
+		global -> addOwnProperty ("print", new pb::NativeFunction (ec, "print", std::bind (print, _1, _2, _3, browser), 0), pb::NONE);
+		global -> addOwnProperty ("now",   new pb::NativeFunction (ec, "now",   now,                                    0), pb::NONE);
 	}
 
 	static

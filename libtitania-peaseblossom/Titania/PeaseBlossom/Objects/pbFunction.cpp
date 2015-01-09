@@ -88,8 +88,8 @@ pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::n
 void
 pbFunction::addProperties ()
 {
-	addPropertyDescriptor ("name",   name,   NONE);
-	addPropertyDescriptor ("length", length, NONE);
+	addOwnProperty ("name",   name,   NONE);
+	addOwnProperty ("length", length, NONE);
 }
 
 ptr <pbObject>

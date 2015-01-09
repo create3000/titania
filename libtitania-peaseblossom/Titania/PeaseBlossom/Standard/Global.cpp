@@ -66,17 +66,17 @@ GlobalObject::GlobalObject (pbExecutionContext* const ec, const std::function <b
 {
 	// Properties
 
-	addPropertyDescriptor ("this",      this,                 WRITABLE | CONFIGURABLE);
-	addPropertyDescriptor ("NaN",       NaN (),               WRITABLE | CONFIGURABLE);
-	addPropertyDescriptor ("Infinity",  POSITIVE_INFINITY (), WRITABLE | CONFIGURABLE);
-	addPropertyDescriptor ("undefined", Undefined,            WRITABLE | CONFIGURABLE);
-	addPropertyDescriptor ("Math",      new Math (ec),        WRITABLE | CONFIGURABLE);
+	addOwnProperty ("this",      this,                 WRITABLE | CONFIGURABLE);
+	addOwnProperty ("NaN",       NaN (),               WRITABLE | CONFIGURABLE);
+	addOwnProperty ("Infinity",  POSITIVE_INFINITY (), WRITABLE | CONFIGURABLE);
+	addOwnProperty ("undefined", Undefined,            WRITABLE | CONFIGURABLE);
+	addOwnProperty ("Math",      new Math (ec),        WRITABLE | CONFIGURABLE);
 
 	// Functions
 
-	addPropertyDescriptor ("isNaN",      new NativeFunction (ec, "isNaN",      isNaN,      1), WRITABLE | CONFIGURABLE);
-	addPropertyDescriptor ("parseInt",   new NativeFunction (ec, "parseInt",   parseInt,   1), WRITABLE | CONFIGURABLE);
-	addPropertyDescriptor ("parseFloat", new NativeFunction (ec, "parseFloat", parseFloat, 1), WRITABLE | CONFIGURABLE);
+	addOwnProperty ("isNaN",      new NativeFunction (ec, "isNaN",      isNaN,      1), WRITABLE | CONFIGURABLE);
+	addOwnProperty ("parseInt",   new NativeFunction (ec, "parseInt",   parseInt,   1), WRITABLE | CONFIGURABLE);
+	addOwnProperty ("parseFloat", new NativeFunction (ec, "parseFloat", parseFloat, 1), WRITABLE | CONFIGURABLE);
 }
 
 bool

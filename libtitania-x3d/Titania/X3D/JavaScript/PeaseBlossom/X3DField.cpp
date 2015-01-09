@@ -64,14 +64,14 @@ X3DField::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), nullptr, nullptr, 0);
 	const auto prototype = pb::make_ptr <pb::Object> (ec);
 
-	prototype -> addPropertyDescriptor ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
+	prototype -> addOwnProperty ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
 
-	prototype -> addPropertyDescriptor ("getName",     new pb::NativeFunction (ec, "getName",     getName,      0), pb::NONE);
-	prototype -> addPropertyDescriptor ("getTypeName", new pb::NativeFunction (ec, "getTypeName", getTypeName_, 0), pb::NONE);
-	prototype -> addPropertyDescriptor ("getType",     new pb::NativeFunction (ec, "getType",     getType_,     0), pb::NONE);
-	prototype -> addPropertyDescriptor ("toString",    new pb::NativeFunction (ec, "toString",    toString,     0), pb::NONE);
+	prototype -> addOwnProperty ("getName",     new pb::NativeFunction (ec, "getName",     getName,      0), pb::NONE);
+	prototype -> addOwnProperty ("getTypeName", new pb::NativeFunction (ec, "getTypeName", getTypeName_, 0), pb::NONE);
+	prototype -> addOwnProperty ("getType",     new pb::NativeFunction (ec, "getType",     getType_,     0), pb::NONE);
+	prototype -> addOwnProperty ("toString",    new pb::NativeFunction (ec, "toString",    toString,     0), pb::NONE);
 
-	function -> addPropertyDescriptor ("prototype", prototype, pb::NONE);
+	function -> addOwnProperty ("prototype", prototype, pb::NONE);
 	return function;
 }
 

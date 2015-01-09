@@ -85,7 +85,7 @@ public:
 
 	virtual
 	void
-	setValue (const var & value) const
+	putValue (const var & value) const
 	throw (pbException) final override
 	{
 		const auto base = expression -> getValue ();
@@ -124,15 +124,8 @@ public:
 			case OBJECT:
 			{
 				const auto & object = base .getObject ();
-				
-				try
-				{
-					object -> setProperty (identifier, value);
-				}
-				catch (const std::out_of_range &)
-				{
-					object -> addPropertyDescriptor (identifier, value);
-				}
+
+				object -> put (identifier, value, false);
 			}
 		}
 	}
@@ -181,14 +174,7 @@ public:
 			{
 				const auto & object = base .getObject ();
 
-				try
-				{
-					return object -> getProperty (identifier);
-				}
-				catch (const std::out_of_range &)
-				{
-					return Undefined;
-				}
+				return object -> get (identifier);
 			}
 		}
 
@@ -239,7 +225,7 @@ public:
 				{
 					const auto & object = base .getObject ();
 
-					return object -> apply (identifier, base, arguments);
+					return object -> call (identifier, base, arguments);
 				}
 				catch (const std::invalid_argument &)
 				{ }

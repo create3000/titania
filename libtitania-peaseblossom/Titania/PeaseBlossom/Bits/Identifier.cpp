@@ -53,7 +53,7 @@
 namespace titania {
 namespace pb {
 
-Identifier::IdentifierIndex Identifier::identifiers;
+const std::hash <std::string> Identifier::hash;
 
 } // pb
 } // titania

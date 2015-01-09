@@ -101,7 +101,7 @@ public:
 	///  Executes this function.
 	virtual
 	var
-	apply (const var &, const std::vector <var> & = { })
+	call (const var &, const std::vector <var> & = { })
 	throw (pbException) = 0;
 
 

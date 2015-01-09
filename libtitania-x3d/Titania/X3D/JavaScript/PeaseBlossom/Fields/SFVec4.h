@@ -114,7 +114,35 @@ private:
 
 	static
 	pb::var
+	negate (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
 	add (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	subtract (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	multiply (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	divide (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	dot (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	normalize (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	length (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	///  @name Member types
 
@@ -136,50 +164,50 @@ SFVec4 <Type>::initialize (Context* const context, const pb::ptr <pb::Program> &
 	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), construct, nullptr, 4);
 	const auto prototype = context -> getClass (ObjectType::X3DField) -> createInstance (ec);
 
-	prototype -> addPropertyDescriptor ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
+	prototype -> addOwnProperty ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
 	
 	// Properties
 	
 	pb::NativeFunction* getter = nullptr;
 	pb::NativeFunction* setter = nullptr;
 
-	prototype -> addPropertyDescriptor ("x",
-	                                    pb::Undefined,
-	                                    pb::WRITABLE | pb::ENUMERABLE,
-	                                    getter = new pb::NativeFunction (ec, "x", std::bind (get1Value, _1, _2, _3, X), 0),
-	                                    setter = new pb::NativeFunction (ec, "x", std::bind (set1Value, _1, _2, _3, X), 1));
+	prototype -> addOwnProperty ("x",
+	                             pb::Undefined,
+	                             pb::NONE,
+	                             getter = new pb::NativeFunction (ec, "x", std::bind (get1Value, _1, _2, _3, X), 0),
+	                             setter = new pb::NativeFunction (ec, "x", std::bind (set1Value, _1, _2, _3, X), 1));
 
-	prototype -> addPropertyDescriptor ("0", pb::Undefined, pb::WRITABLE, getter, setter);
+	prototype -> addOwnProperty ("0", pb::Undefined, pb::ENUMERABLE, getter, setter);
 
-	prototype -> addPropertyDescriptor ("y",
-	                                    pb::Undefined,
-	                                    pb::WRITABLE | pb::ENUMERABLE,
-	                                    getter = new pb::NativeFunction (ec, "y", std::bind (get1Value, _1, _2, _3, Y), 0),
-	                                    setter = new pb::NativeFunction (ec, "y", std::bind (set1Value, _1, _2, _3, Y), 1));
+	prototype -> addOwnProperty ("y",
+	                             pb::Undefined,
+	                             pb::NONE,
+	                             getter = new pb::NativeFunction (ec, "y", std::bind (get1Value, _1, _2, _3, Y), 0),
+	                             setter = new pb::NativeFunction (ec, "y", std::bind (set1Value, _1, _2, _3, Y), 1));
 
-	prototype -> addPropertyDescriptor ("1", pb::Undefined, pb::WRITABLE, getter, setter);
+	prototype -> addOwnProperty ("1", pb::Undefined, pb::ENUMERABLE, getter, setter);
 
-	prototype -> addPropertyDescriptor ("z",
-	                                    pb::Undefined,
-	                                    pb::WRITABLE | pb::ENUMERABLE,
-	                                    getter = new pb::NativeFunction (ec, "z", std::bind (get1Value, _1, _2, _3, Z), 0),
-	                                    setter = new pb::NativeFunction (ec, "z", std::bind (set1Value, _1, _2, _3, Z), 1));
+	prototype -> addOwnProperty ("z",
+	                             pb::Undefined,
+	                             pb::NONE,
+	                             getter = new pb::NativeFunction (ec, "z", std::bind (get1Value, _1, _2, _3, Z), 0),
+	                             setter = new pb::NativeFunction (ec, "z", std::bind (set1Value, _1, _2, _3, Z), 1));
 
-	prototype -> addPropertyDescriptor ("2", pb::Undefined, pb::WRITABLE, getter, setter);
+	prototype -> addOwnProperty ("2", pb::Undefined, pb::ENUMERABLE, getter, setter);
 
-	prototype -> addPropertyDescriptor ("w",
-	                                    pb::WRITABLE | pb::ENUMERABLE,
-	                                    pb::DEFAULT,
-	                                    getter = new pb::NativeFunction (ec, "w", std::bind (get1Value, _1, _2, _3, W), 0),
-	                                    setter = new pb::NativeFunction (ec, "w", std::bind (set1Value, _1, _2, _3, W), 1));
+	prototype -> addOwnProperty ("w",
+	                             pb::Undefined,
+	                             pb::NONE,
+	                             getter = new pb::NativeFunction (ec, "w", std::bind (get1Value, _1, _2, _3, W), 0),
+	                             setter = new pb::NativeFunction (ec, "w", std::bind (set1Value, _1, _2, _3, W), 1));
 
-	prototype -> addPropertyDescriptor ("3", pb::Undefined, pb::WRITABLE, getter, setter);
+	prototype -> addOwnProperty ("3", pb::Undefined, pb::ENUMERABLE, getter, setter);
 
 	// Functions
 
-	prototype -> addPropertyDescriptor ("add", new pb::NativeFunction (ec, "add", add, 1), pb::NONE);
+	prototype -> addOwnProperty ("add", new pb::NativeFunction (ec, "add", add, 1), pb::NONE);
 
-	function -> addPropertyDescriptor ("prototype", prototype, pb::NONE);
+	function -> addOwnProperty ("prototype", prototype, pb::NONE);
 	return function;
 }
 
@@ -231,6 +259,25 @@ SFVec4 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb:
 
 template <class Type>
 pb::var
+SFVec4 <Type>::negate (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+{
+	if (args .size () not_eq 0)
+		throw pb::Error ("wrong number of arguments.");
+
+	try
+	{
+		const auto lhs = getThis <SFVec4> (object);
+
+		return create <SFVec4> (ec, lhs -> negate ());
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw pb::TypeError (getTypeName () + ".prototype.negate is not generic.");
+	}
+}
+
+template <class Type>
+pb::var
 SFVec4 <Type>::add (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
@@ -246,6 +293,124 @@ SFVec4 <Type>::add (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var &
 	catch (const std::invalid_argument &)
 	{
 		throw pb::TypeError (getTypeName () + ".prototype.add is not generic.");
+	}
+}
+
+template <class Type>
+pb::var
+SFVec4 <Type>::subtract (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+{
+	if (args .size () not_eq 1)
+		throw pb::Error ("wrong number of arguments.");
+
+	try
+	{
+		const auto lhs = getThis <SFVec4> (object);
+		const auto rhs = get1Argument <SFVec4> (args, 0);
+
+		return create <SFVec4> (ec, lhs -> subtract (*rhs));
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw pb::TypeError (getTypeName () + ".prototype.subtract is not generic.");
+	}
+}
+
+template <class Type>
+pb::var
+SFVec4 <Type>::multiply (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+{
+	if (args .size () not_eq 1)
+		throw pb::Error ("wrong number of arguments.");
+
+	try
+	{
+		const auto lhs = getThis <SFVec4> (object);
+		const auto rhs = args [0] .toNumber ();
+
+		return create <SFVec4> (ec, lhs -> multiply (rhs));
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw pb::TypeError (getTypeName () + ".prototype.multiply is not generic.");
+	}
+}
+
+template <class Type>
+pb::var
+SFVec4 <Type>::divide (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+{
+	if (args .size () not_eq 1)
+		throw pb::Error ("wrong number of arguments.");
+
+	try
+	{
+		const auto lhs = getThis <SFVec4> (object);
+		const auto rhs = args [0] .toNumber ();
+
+		return create <SFVec4> (ec, lhs -> divide (rhs));
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw pb::TypeError (getTypeName () + ".prototype.divide is not generic.");
+	}
+}
+
+template <class Type>
+pb::var
+SFVec4 <Type>::dot (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+{
+	if (args .size () not_eq 1)
+		throw pb::Error ("wrong number of arguments.");
+
+	try
+	{
+		const auto lhs = getThis <SFVec4> (object);
+		const auto rhs = get1Argument <SFVec4> (args, 0);
+
+		return create <SFVec4> (ec, lhs -> dot (*rhs));
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw pb::TypeError (getTypeName () + ".prototype.dot is not generic.");
+	}
+}
+
+template <class Type>
+pb::var
+SFVec4 <Type>::normalize (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+{
+	if (args .size () not_eq 0)
+		throw pb::Error ("wrong number of arguments.");
+
+	try
+	{
+		const auto lhs = getThis <SFVec4> (object);
+
+		return create <SFVec4> (ec, lhs -> normalize ());
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw pb::TypeError (getTypeName () + ".prototype.normalize is not generic.");
+	}
+}
+
+template <class Type>
+pb::var
+SFVec4 <Type>::length (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+{
+	if (args .size () not_eq 0)
+		throw pb::Error ("wrong number of arguments.");
+
+	try
+	{
+		const auto lhs = getThis <SFVec4> (object);
+
+		return lhs -> length ();
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw pb::TypeError (getTypeName () + ".prototype.length is not generic.");
 	}
 }
 

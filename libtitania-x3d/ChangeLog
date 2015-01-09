@@ -1,3 +1,12 @@
+2015-01-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Array.h:
+	* Global.h:
+	* Context.cpp:
+	* X3DField.cpp:
+	* SFVec4.h:
+	* X3DArrayField.cpp: 
+
 2015-01-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Array.h:

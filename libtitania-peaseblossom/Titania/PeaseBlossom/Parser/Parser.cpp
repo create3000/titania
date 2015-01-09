@@ -236,7 +236,7 @@ Parser::haveAutomaticSemicolon () const
 
 // A.1 Lexical Grammar
 
-bool
+void
 Parser::comments ()
 {
 	//__LOG__ << this << " " << std::endl;
@@ -244,7 +244,7 @@ Parser::comments ()
 	const auto currentPosition = istream .tellg ();
 	
 	if (currentPosition == position)
-		return false;
+		return;
 
 	const auto currentLineNumber = lineNumber;
 
@@ -257,8 +257,6 @@ Parser::comments ()
 
 	if (comments)
 		newLine = lineNumber not_eq currentLineNumber;
-
-	return comments;
 }
 
 bool
@@ -821,7 +819,7 @@ Parser::propertyDefinition (const ptr <ObjectLiteral> & objectLiteral)
 
 			if (assignmentExpression (value))
 			{
-				objectLiteral -> updatePropertyDescriptor (std::move (propertyNameCharacters), std::move (value));
+				objectLiteral -> defineOwnProperty (std::move (propertyNameCharacters), std::move (value), WRITABLE | CONFIGURABLE | ENUMERABLE);
 				return true;
 			}
 
@@ -862,7 +860,7 @@ Parser::propertyDefinition (const ptr <ObjectLiteral> & objectLiteral)
 
 						if (Grammar::CloseBrace (istream))
 						{
-							objectLiteral -> updatePropertyDescriptor (propertyNameValue -> getValue () .toString (), nullptr, std::move (function));
+							objectLiteral -> defineOwnProperty (propertyNameValue -> getValue () .toString (), nullptr, CONFIGURABLE | ENUMERABLE, std::move (function));
 							return true;
 						}
 
@@ -913,7 +911,7 @@ Parser::propertyDefinition (const ptr <ObjectLiteral> & objectLiteral)
 
 							if (Grammar::CloseBrace (istream))
 							{
-								objectLiteral -> updatePropertyDescriptor (propertyNameValue -> getValue () .toString (), nullptr, nullptr, std::move (function));
+								objectLiteral -> defineOwnProperty (propertyNameValue -> getValue () .toString (), nullptr, CONFIGURABLE | ENUMERABLE, nullptr, std::move (function));
 								return true;
 							}
 

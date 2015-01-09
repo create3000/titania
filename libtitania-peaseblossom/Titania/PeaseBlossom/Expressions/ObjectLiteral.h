@@ -85,10 +85,11 @@ public:
 		
 		for (const auto & property : properties)
 		{
-			copy -> updatePropertyDescriptor (std::string (property .second .identifier .getName ()),
-			                                  property .second .value  ? property .second .value  -> copy (executionContext) : nullptr,
-			                                  property .second .getter ? property .second .getter -> copy (executionContext) : nullptr,
-			                                  property .second .setter ? property .second .setter -> copy (executionContext) : nullptr);
+			copy -> defineOwnProperty (Identifier (property .second .identifier),
+			                           property .second .value  ? property .second .value  -> copy (executionContext) : nullptr,
+			                           property .second .flags,
+			                           property .second .getter ? property .second .getter -> copy (executionContext) : nullptr,
+			                           property .second .setter ? property .second .setter -> copy (executionContext) : nullptr);
 		}
 
 		return copy;
@@ -97,24 +98,37 @@ public:
 	///  @name Operations
 
 	void
-	updatePropertyDescriptor (std::string && name,
-	                          ptr <pbExpression> && value,
-	                          ptr <Function> && getter = nullptr,
-	                          ptr <Function> && setter = nullptr)
+	defineOwnProperty (Identifier && identifier,
+	                   ptr <pbExpression> && value,
+	                   const PropertyFlagsType flags,
+	                   ptr <Function> && getter = nullptr,
+	                   ptr <Function> && setter = nullptr)
+	throw (SyntaxError)
 	{
-		auto   identifier = Identifier (std::move (name));
-		auto & property   = properties [identifier .getId ()];
+		auto & property = properties [identifier .getId ()];
 
 		property .identifier = std::move (identifier);
-
+		
 		if (value)
+		{
+			if (property .getter)
+				throw SyntaxError ("Object literal may not have data and accessor property with the same name.");
+
 			property .value = std::move (value);
+		}
 
 		if (getter)
+		{
+			if (property .flags & WRITABLE)
+				throw SyntaxError ("Object literal may not have data and accessor property with the same name.");
+
 			property .getter = std::move (getter);
+		}
 
 		if (setter)
 			property .setter = std::move (setter);
+
+		property .flags = flags;
 
 		if (property .index == 0)
 			property .index = properties .size ();
@@ -137,11 +151,11 @@ public:
 		{
 			try
 			{
-				object -> updatePropertyDescriptor (property .second .identifier,
-				                                    property .second .value ? property .second .value -> getValue () : Undefined,
-				                                    DEFAULT,
-				                                    property .second .getter,
-				                                    property .second .setter);
+				object -> defineOwnProperty (property .second .identifier,
+				                             property .second .value ? property .second .value -> getValue () : Undefined,
+				                             property .second .flags,
+				                             property .second .getter,
+				                             property .second .setter);
 			}
 			catch (const std::invalid_argument &)
 			{ }
@@ -202,11 +216,13 @@ private:
 	struct PropertyDescriptor
 	{
 		PropertyDescriptor () :
+			flags (NONE),
 			index (0)
 		{ }
 	
 		Identifier         identifier;
 		ptr <pbExpression> value;
+		PropertyFlagsType  flags;
 		ptr <Function>     getter;
 		ptr <Function>     setter;
 		size_t             index;

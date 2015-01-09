@@ -94,14 +94,14 @@ initialize (pbExecutionContext* const ec)
 {
 	const auto & standardObject = ec -> getStandardObject ();
 	const auto   constructor    = make_ptr <NativeFunction> (ec, "Array", Constructor { }, 1);
-	const auto   prototype      = new pb::Array (nullptr);
+	const auto   prototype      = new pb::Array (ec, nullptr);
 
 	prototype -> setConstructor (constructor);
 	prototype -> setProto (standardObject);
 
-	prototype -> addPropertyDescriptor ("toString", new NativeFunction (ec, "toString", toString { }, 0), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("toString", new NativeFunction (ec, "toString", toString { }, 0), WRITABLE | CONFIGURABLE);
 
-	constructor -> addPropertyDescriptor ("prototype", prototype, NONE);
+	constructor -> addOwnProperty ("prototype", prototype, NONE);
 	return constructor;
 }
 

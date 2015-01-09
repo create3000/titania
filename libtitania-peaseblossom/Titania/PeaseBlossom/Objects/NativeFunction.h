@@ -101,7 +101,7 @@ public:
 
 	virtual
 	var
-	apply (const var &, const std::vector <var> & = { })
+	call (const var &, const std::vector <var> & = { })
 	throw (pbException) final override;
 
 	///  @name Input/Output

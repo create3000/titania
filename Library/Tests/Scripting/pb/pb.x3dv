@@ -289,8 +289,6 @@ function test1 ()
 }
 */
 
-var n = 1;
-
 /*
 function fibonacci_recursive (value)
 {
@@ -347,6 +345,9 @@ function fibonacci_iterative (value)
 
 function fibonacci_iterative1 (o, value)
 {
+	print ('fibonacci_iterative1: ');
+	print ('fibonacci_iterative1: value: ', value);
+
 	if (value === 0)
 		return 0;
 
@@ -366,18 +367,6 @@ function fibonacci_iterative1 (o, value)
 	return o .result;
 }
 
-/*
-function for_time (n)
-{
-	var result = 1;
-
-	for (var i = 0; i < n; i = i + 1)
-		result = result;
-	
-	return result;
-}
-*/
-
 function set_time (value, time)
 {
 	print ('set_time:');
@@ -385,7 +374,7 @@ function set_time (value, time)
 	print ('set_time: time:  ', time);
 	print ('set_time: now:   ', now ());
 
-	n = 1;
+	var n = 1;
 
 	//var t0 = now ();
 	//print ('fibonacci_recursive: ', fibonacci_recursive (24));
@@ -398,64 +387,15 @@ function set_time (value, time)
 	print ('time: ',                now () - t0);
 
 	var t0 = now ();
-	print ('fibonacci_iterative: ', fibonacci_iterative1 ({ }, 800));
-	print ('fibonacci_iterative: ', fibonacci_iterative1 ({ }, 800000));
+	print ('fibonacci_iterative1: ', fibonacci_iterative1 ({ }, 800));
+	print ('fibonacci_iterative1: ', fibonacci_iterative1 ({ }, 800000));
 	print ('time: ',                now () - t0);
-
-	//var t0 = now ();
-	//print ('result: ', for_time (2000000));
-	//print ('time: ',   now () - t0);
-}
-print ()
-var i, k = k = 0
-print ('this: ', this)
-print ('Math: ', Math);
-print ('{ }:  ', { });
-print ('{ } .__proto__:            ', { } .__proto__);
-print ('{ } .__proto__ .__proto__: ', { } .__proto__ .__proto__);
-print ('{ } .constructor:          ', { } .constructor);
-
-function f (a, b)
-{
-	var ina = 0;
-	var x = 1
-	ina = a;
 }
 
-print (f);
+print ('peaseblossom')
 
-var v = new SFVec4f (1,2,3,4);
 
-print ('SFVec4f .new:         ', v instanceof X3DField);
-print ('SFVec4f .new:         ', v instanceof SFVec4f);
-print ('SFVec4f .getTypeName: ', v .getTypeName ());
-print ('SFVec4f .getType:     ', v .getType ());
-print ('SFVec4f .new:         ', v);
-print ('SFVec4f [0]:          ', v [0]);
-print ('SFVec4f [1]:          ', v [1]);
-print ('SFVec4f [2]:          ', v [2]);
-print ('SFVec4f [3]:          ', v [3]);
-print ('SFVec4f .add:         ', v .add (new SFVec4f (2,3,4,5)));
 
-print (SFVec4f)
-print (SFVec4f .constructor)
-//print (SFVec4f .prototype)
-print (SFVec4f .prototype .constructor)
-
-var a = new MFVec4f (v,v,v,v,v,v)
-
-print (a)
-print (a .length = 8)
-print (a .length)
-print (a [1] = v)
-print (a [1] === a [1])
-print (a)
-
-print (Array)
-print ([1,undefined,2,3])
-print (0 in [0])
-print (a [0])
-print (100 < a .length)
 "
 "peaseblossom:"
 ]
@@ -511,16 +451,6 @@ function fibonacci_iterative (o, value)
 	return o .result;
 }
 
-function for_time (n)
-{
-	var result = 0;
-
-	for (var i = 0; i < n; i = i + 1)
-		result = result + now;
-	
-	return result;
-}
-
 function set_time (value, time)
 {
 	//var t0 = Date .now ();
@@ -532,10 +462,6 @@ function set_time (value, time)
 	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, N1));
 	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, N2));
 	print ('time: ',   (Date .now () - t0) / 1000);
-
-	//var t0 = Date .now ();
-	//print ('result: ', for_time (1000000));
-	//print ('time: ',   (Date .now () - t0) / 1000);
 }
 "
   directOutput TRUE

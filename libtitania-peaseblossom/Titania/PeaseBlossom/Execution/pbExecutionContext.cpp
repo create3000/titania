@@ -126,7 +126,7 @@ throw (pbException)
 	{
 		for (const auto & function : functions)
 		{
-			getLocalObjects () .front () -> addPropertyDescriptor (function .second -> getName (),
+			getLocalObjects () .front () -> addOwnProperty (function .second -> getName (),
 			                                                       isRootContext ()
 			                                                       ? function .second
 			                                                       : function .second -> copy (this),

@@ -187,7 +187,7 @@ private:
 	var &&
 	put (var && value) const
 	{
-		lhs -> setValue (value);
+		lhs -> putValue (value);
 
 		return std::move (value);
 	}

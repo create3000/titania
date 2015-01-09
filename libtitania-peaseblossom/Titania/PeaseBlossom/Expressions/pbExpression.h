@@ -100,7 +100,7 @@ public:
 
 	virtual
 	void
-	setValue (const var &) const
+	putValue (const var &) const
 	throw (pbException)
 	{ throw ReferenceError ("Invalid assignment left-hand side."); }
 

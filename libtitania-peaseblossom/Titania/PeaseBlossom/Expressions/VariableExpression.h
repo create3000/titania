@@ -86,20 +86,20 @@ public:
 
 	virtual
 	void
-	setValue (const var & value) const
+	putValue (const var & value) const
 	throw (pbException) final override
 	{
 		for (const auto & localObject : executionContext -> getLocalObjects ())
 		{
 			try
 			{
-				return localObject -> setProperty (identifier, value);
+				return localObject -> put (identifier, value, true);
 			}
-			catch (const std::out_of_range &)
+			catch (const std::invalid_argument &)
 			{ }
 		}
 
-		executionContext -> getGlobalObject () -> addPropertyDescriptor (identifier, value);
+		executionContext -> getGlobalObject () -> put (identifier, value, false);
 	}
 
 	///  Converts its input argument to either Primitive or Object type.
@@ -113,7 +113,7 @@ public:
 		{
 			try
 			{
-				return localObject -> getProperty (identifier);
+				return localObject -> get (identifier);
 			}
 			catch (const std::out_of_range &)
 			{ }

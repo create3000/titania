@@ -85,7 +85,7 @@ public:
 
 	virtual
 	void
-	setValue (const var & value) const
+	putValue (const var & value) const
 	throw (pbException) final override
 	{
 		const auto base     = expression -> getValue ();
@@ -137,12 +137,10 @@ public:
 
 				try
 				{
-					object -> setProperty (name, value);
+					object -> put (name, value, false);
 				}
-				catch (const std::out_of_range &)
-				{
-					object -> addPropertyDescriptor (name, value);
-				}
+				catch (const std::invalid_argument &)
+				{ }
 			}
 		}
 	}
@@ -203,7 +201,7 @@ public:
 							return object -> getIndexedProperty (index);
 					}
 
-					return object -> getProperty (name);
+					return object -> get (name);
 				}
 				catch (const std::out_of_range &)
 				{
@@ -266,10 +264,10 @@ public:
 						const auto index = property .toUInt32 ();
 
 						if (isIndex (name, index))
-							return object -> apply (index, base, arguments);
+							return object -> call (index, base, arguments);
 					}
 
-					return object -> apply (name, base, arguments);
+					return object -> call (name, base, arguments);
 				}
 				catch (const std::invalid_argument &)
 				{ }

@@ -1,3 +1,39 @@
+2015-01-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Parser.h:
+	* Array.h:
+	* var.h:
+	* Parser.cpp:
+	* Array.cpp:
+	* Math.cpp:
+	* Identifier.h:
+	* pbObject.h:
+	* Function.h:
+	* var.cpp:
+	* Array.cpp:
+	* pbConstants.h:
+	* Global.cpp:
+	* Object.cpp:
+	* Identifier.cpp:
+	* Function.cpp:
+	* pbObject.cpp:
+	* pbFunction.h:
+	* Program.cpp:
+	* Function.cpp:
+	* pbFunction.cpp:
+	* NativeFunction.h:
+	* InExpression.h:
+	* pbExpression.h:
+	* NativeFunction.cpp:
+	* ObjectLiteral.h:
+	* pbExpression.cpp:
+	* PropertyExpression.h:
+	* VariableExpression.h:
+	* pbExecutionContext.cpp:
+	* VariableDeclaration.h:
+	* AssignmentExpression.h:
+	* ArrayIndexExpression.h: 
+
 2015-01-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-peaseblossom.cproj:

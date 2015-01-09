@@ -53,6 +53,7 @@
 
 #include "../Base/pbOutputStreamObject.h"
 
+#include <Titania/LOG.h>
 #include <map>
 #include <string>
 
@@ -68,36 +69,44 @@ public:
 
 	Identifier () :
 		pbOutputStreamObject (),
-		                name (),
-		                  id (-1)
+		                  id (hash ("")),
+		                name ()
 	{ }
 
 	Identifier (const Identifier & other) :
 		pbOutputStreamObject (),
-		                name (other .name),
-		                  id (other .id)
+		                  id (other .id),
+		                name (other .name)
 	{ }
 
 	Identifier (Identifier && other) :
 		pbOutputStreamObject (),
-		                name (std::move (other .name)),
-		                  id (other .id)
+		                  id (other .id),
+		                name (std::move (other .name))
 	{ }
 
 	Identifier (const Glib::ustring & name) :
-		Identifier (getIdentifier (name .raw ()))
+		pbOutputStreamObject (),
+		                  id (hash (name .raw ())),
+		                name (name)
 	{ }
 
 	Identifier (const std::string & name) :
-		Identifier (getIdentifier (name))
+		pbOutputStreamObject (),
+		                  id (hash (name)),
+		                name (name)
 	{ }
 
 	Identifier (std::string && name) :
-		Identifier (getIdentifier (std::move (name)))
+		pbOutputStreamObject (),
+		                  id (hash (name)),
+		                name (std::move (name))
 	{ }
 
 	Identifier (const std::string::value_type* name) :
-		Identifier (getIdentifier (name))
+		pbOutputStreamObject (),
+		                  id (hash (name)),
+		                name (name)
 	{ }
 
 	///  @name Member functions
@@ -139,38 +148,14 @@ public:
 
 private:
 
-	///  @name Member types
-
-	using IdentifierIndex = std::map <std::string, size_t>;
-
-	///  @name Construction
-
-	Identifier (const IdentifierIndex::value_type & pair) :
-		pbOutputStreamObject (),
-		                name (pair .first),
-		                  id (pair .second)
-	{ }
-
-	///  @name Operations
-
-	static
-	const IdentifierIndex::value_type &
-	getIdentifier (const std::string & identifier)
-	{ return *identifiers .emplace (identifier, identifiers .size ()) .first; }
-
-	static
-	const IdentifierIndex::value_type &
-	getIdentifier (std::string && identifier)
-	{ return *identifiers .emplace (std::move (identifier), identifiers .size ()) .first; }
-
 	///  @name Static members
 
-	static IdentifierIndex identifiers;
+	static const std::hash <std::string> hash;
 
 	///  @name Members
 
-	std::string name;
 	size_t      id;
+	std::string name;
 
 };
 

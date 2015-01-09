@@ -64,9 +64,9 @@ X3DArrayField::initialize (Context* const context, const pb::ptr <pb::Program> &
 	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), nullptr, nullptr, 0);
 	const auto prototype = context -> getClass (ObjectType::X3DField) -> createInstance (ec);
 
-	prototype -> addPropertyDescriptor ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
+	prototype -> addOwnProperty ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
 
-	function -> addPropertyDescriptor ("prototype", prototype, pb::NONE);
+	function -> addOwnProperty ("prototype", prototype, pb::NONE);
 	return function;
 }
 

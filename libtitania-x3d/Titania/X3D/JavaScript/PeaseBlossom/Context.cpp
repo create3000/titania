@@ -141,7 +141,7 @@ Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
 
 	try
 	{
-		object -> addPropertyDescriptor (identifier, getClass (types .at (identifier)), pb::WRITABLE | pb::CONFIGURABLE);
+		object -> addOwnProperty (identifier, getClass (types .at (identifier)), pb::WRITABLE | pb::CONFIGURABLE);
 		return true;
 	}
 	catch (const std::out_of_range &)
@@ -205,7 +205,7 @@ Context::initialize ()
 
 	try
 	{
-		program -> getFunctionDeclaration ("initialize") -> apply (program -> getGlobalObject ());
+		program -> getFunctionDeclaration ("initialize") -> call (program -> getGlobalObject ());
 	}
 	catch (const pb::pbException & error)
 	{
@@ -298,7 +298,7 @@ Context::prepareEvents ()
 {
 	try
 	{
-		program -> getFunctionDeclaration ("prepareEvents") -> apply (program -> getGlobalObject ());
+		program -> getFunctionDeclaration ("prepareEvents") -> call (program -> getGlobalObject ());
 	}
 	catch (const pb::pbException & error)
 	{
@@ -317,11 +317,11 @@ Context::set_field (X3D::X3DFieldDefinition* const field)
 	{
 		const auto & function = program -> getFunctionDeclaration (field -> getName ());
 
-		function -> apply (program -> getGlobalObject (),
-		                   {
-		                      pb::var (),
-		                      pb::var (getCurrentTime ())
-								 });
+		function -> call (program -> getGlobalObject (),
+		                  {
+		                     pb::var (),
+		                     pb::var (getCurrentTime ())
+								});
 	}
 	catch (const pb::pbException & error)
 	{
@@ -338,7 +338,7 @@ Context::eventsProcessed ()
 {
 	try
 	{
-		program -> getFunctionDeclaration ("eventsProcessed") -> apply (program -> getGlobalObject ());
+		program -> getFunctionDeclaration ("eventsProcessed") -> call (program -> getGlobalObject ());
 	}
 	catch (const pb::pbException & error)
 	{

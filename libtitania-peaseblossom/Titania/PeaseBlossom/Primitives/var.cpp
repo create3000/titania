@@ -132,6 +132,8 @@ var::operator = (const UndefinedType &)
 {
 	clear ();
 
+	type = UNDEFINED;
+
 	return *this;
 }
 
@@ -464,8 +466,6 @@ var::clear ()
 		default:
 			break;
 	}
-
-	type = UNDEFINED;
 }
 
 } // pb

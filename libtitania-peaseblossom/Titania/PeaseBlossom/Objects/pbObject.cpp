@@ -55,6 +55,13 @@
 namespace titania {
 namespace pb {
 
+template <class Type, class ... Args>
+std::unique_ptr <Type>
+make_unique (Args && ... args)
+{
+	return std::unique_ptr <Type> (new Type (std::forward <Args> (args) ...));
+}
+
 PropertyDescriptor::PropertyDescriptor (pbChildObject* const object,
                                         const Identifier & identifier,
                                         const var & value_,
@@ -133,24 +140,29 @@ throw (std::invalid_argument)
 	proto = value;
 
 	if (proto)
-		addPropertyDescriptor ("__proto__", proto, NONE);
+		addOwnProperty ("__proto__", proto, NONE);
 
 	else
-		addPropertyDescriptor ("__proto__", nullptr, NONE);
+		addOwnProperty ("__proto__", nullptr, NONE);
+}
+
+const ptr <pbObject> &
+pbObject::getProto () const
+throw (std::out_of_range)
+{
+	if (proto)
+		return proto;
+
+	throw std::out_of_range ("pbObject::getProto");
 }
 
 bool
-pbObject::hasProperty (const Identifier & identifier) const
+pbObject::hasProperty (const Identifier & propertyName) const
 noexcept (true)
 {
 	try
 	{
-		const auto & property = getPropertyDescriptor (identifier, false);
-
-		if (property -> getGetter ())
-			return true;
-
-		return not property -> getValue () .isUndefined ();
+		return bool (getProperty (propertyName));
 	}
 	catch (const std::out_of_range &)
 	{
@@ -159,145 +171,86 @@ noexcept (true)
 }
 
 void
-pbObject::setProperty (const Identifier & identifier, const var & value)
-throw (std::out_of_range,
-       pbException)
-{
-	const auto & property = getPropertyDescriptor (identifier, true);
-
-	if (property -> getFlags () & WRITABLE)
-	{
-		if (property -> getSetter ())
-		{
-			property -> getSetter () -> apply (this, { value });
-			return;
-		}
-
-		property -> setValue (value);
-	}
-}
-
-var
-pbObject::getProperty (const Identifier & identifier) const
-throw (std::out_of_range,
-       pbException)
-{
-	const auto & property = getPropertyDescriptor (identifier, false);
-
-	if (property -> getGetter ())
-		return property -> getGetter () -> apply (const_cast <pbObject*> (this));
-
-	return property -> getValue ();
-}
-
-ptr <pbObject>
-pbObject::getObject (const Identifier & identifier) const
-throw (std::out_of_range,
-       TypeError)
-{
-	const auto property = getProperty (identifier);
-
-	if (property .isObject ())
-		return property .getObject ();
-
-	throw TypeError ("Property '"+ identifier .getName () +"' is not an object.");
-}
-
-void
-pbObject::addPropertyDescriptor (const Identifier & identifier,
-                                 const var & value,
-                                 const PropertyFlagsType flags,
-                                 const ptr <pbFunction> & getter,
-                                 const ptr <pbFunction> & setter)
-throw (std::invalid_argument)
-{
-	const auto pair = properties .emplace (identifier .getId (), std::make_shared <PropertyDescriptor> (this, identifier, value, flags, getter, setter));
-
-	if (not pair .second)
-		throw std::invalid_argument ("Property '" + identifier .getName () + "' already exists.");
-}
-
-void
-pbObject::addPropertyDescriptor (const Identifier & identifier,
-                                 var && value,
-                                 const PropertyFlagsType flags,
-                                 ptr <pbFunction> && getter,
-                                 ptr <pbFunction> && setter)
-throw (std::invalid_argument)
-{
-	const auto pair = properties .emplace (identifier .getId (), std::make_shared <PropertyDescriptor> (this, identifier, std::move (value), flags, std::move (getter), std::move (setter)));
-
-	if (not pair .second)
-		throw std::invalid_argument ("Property '" + identifier .getName () + "' already exists.");
-}
-
-void
-pbObject::updatePropertyDescriptor (const Identifier & identifier,
-                                    const var & value,
-                                    const PropertyFlagsType flags,
-                                    const ptr <pbFunction> & getter,
-                                    const ptr <pbFunction> & setter)
-noexcept (true)
+pbObject::put (const Identifier & propertyName, const var & value, const bool throw_)
+throw (pbException,
+       std::invalid_argument)
 {
 	try
 	{
-		const auto & property = getPropertyDescriptor (identifier, true);
+		const auto & ownDescriptor = getOwnProperty (propertyName);
 
-		if (not (flags & LEAVE_VALUE))
-			property -> setValue (value);
+		if (ownDescriptor -> isWritable ())
+			return ownDescriptor -> setValue (value);
 
-		property -> setFlags (flags);
-
-		if (getter)
-			property -> setGetter (getter);
-
-		if (setter)
-			property -> setSetter (setter);
-	}
-	catch (const std::out_of_range &)
-	{
-		addPropertyDescriptor (identifier, value, flags, getter, setter);
-	}
-}
-
-void
-pbObject::removePropertyDescriptor (const Identifier & identifier)
-noexcept (true)
-{
-	properties .erase (identifier .getId ());
-}
-
-const PropertyDescriptorPtr &
-pbObject::getPropertyDescriptor (const Identifier & identifier, const bool write) const
-throw (std::out_of_range)
-{
-	try
-	{
-		return getPropertyDescriptor (identifier .getId ());
+		if (ownDescriptor -> getSetter ()) // isAccessorDescriptor
+			ownDescriptor -> getSetter () -> call (this, { value });
 	}
 	catch (const std::out_of_range &)
 	{
 		try
 		{
-			const auto & property = getProto () -> getPropertyDescriptor (identifier, false);
+			const auto & descriptor = getProto () -> getProperty (propertyName);
 
-			if (write)
-			{
-				const_cast <pbObject*> (this) -> addPropertyDescriptor (property -> getIdentifier (),
-			                                                           property -> getValue (),
-			                                                           property -> getFlags (),
-			                                                           property -> getGetter (),
-			                                                           property -> getSetter ());
-
-			   return getPropertyDescriptor (identifier .getId ());
-			}
-
-			return property;
+			if (descriptor -> getSetter ()) // isAccessorDescriptor
+				descriptor -> getSetter () -> call (this, { value });
 		}
 		catch (const std::out_of_range &)
 		{
-			if (const_cast <pbObject*> (this) -> resolve (identifier))
-				return getPropertyDescriptor (identifier .getId ());
+			if (throw_)
+				throw std::invalid_argument ("pbObject::put");
+
+			addOwnProperty (propertyName, value, WRITABLE | CONFIGURABLE | ENUMERABLE, nullptr, nullptr, throw_);
+		}
+	}
+}
+
+var
+pbObject::get (const Identifier & propertyName) const
+throw (pbException,
+       std::out_of_range)
+{
+	const auto & descriptor = getProperty (propertyName);
+
+	if (descriptor -> isDataDescriptor ())
+		return descriptor -> getValue ();
+
+	if (descriptor -> getGetter ()) // isAccessorDescriptor
+		return descriptor -> getGetter () -> call (const_cast <pbObject*> (this));
+
+	return Undefined;
+}
+
+ptr <pbObject>
+pbObject::getObject (const Identifier & propertyName) const
+throw (pbException,
+       std::out_of_range)
+{
+	const auto value = get (propertyName);
+
+	if (value .isObject ())
+		return value .getObject ();
+
+	throw TypeError ("Property '"+ propertyName .getName () +"' is not an object.");
+}
+
+const PropertyDescriptorPtr &
+pbObject::getProperty (const Identifier & propertyName) const
+throw (std::out_of_range)
+{
+	try
+	{
+		return getOwnProperty (propertyName);
+	}
+	catch (const std::out_of_range &)
+	{
+		try
+		{
+			return getProto () -> getProperty (propertyName);
+		}
+		catch (const std::out_of_range &)
+		{
+			if (const_cast <pbObject*> (this) -> resolve (propertyName))
+				return getOwnProperty (propertyName);
 
 			throw;
 		}
@@ -305,9 +258,120 @@ throw (std::out_of_range)
 }
 
 bool
-pbObject::resolve (const Identifier & identifier)
+pbObject::resolve (const Identifier & propertyName)
 {
-	return callbacks -> resolve and callbacks -> resolve (this, identifier);
+	return callbacks -> resolve and callbacks -> resolve (this, propertyName);
+}
+
+void
+pbObject::addOwnProperty (const Identifier & propertyName,
+                          const var & value,
+                          const PropertyFlagsType flags,
+                          const ptr <pbFunction> & getter,
+                          const ptr <pbFunction> & setter,
+                          const bool throw_)
+throw (TypeError,
+       std::invalid_argument)
+{
+	if (not isExtensible ())
+	{
+		if (throw_)
+			throw TypeError ("Object is not extensible.");
+
+		return;
+	}
+
+	if ((not value .isUndefined () or flags & WRITABLE) and (getter or setter))
+	{
+		if (throw_)
+			throw TypeError ("A property cannot both have accessors and be writable or have a value.");
+
+		return;
+	}
+ 
+	if (properties .emplace (propertyName .getId (), make_unique <PropertyDescriptor> (this, propertyName, value, flags, getter, setter)) .second)
+		return;
+
+	throw std::invalid_argument ("Couldn't add property.");
+}
+
+void
+pbObject::addOwnProperty (const Identifier & propertyName,
+                          var && value,
+                          const PropertyFlagsType flags,
+                          ptr <pbFunction> && getter,
+                          ptr <pbFunction> && setter,
+                          const bool throw_)
+throw (TypeError,
+       std::invalid_argument)
+{
+	if (not isExtensible ())
+	{
+		if (throw_)
+			throw TypeError ("Object is not extensible.");
+
+		return;
+	}
+
+	if ((not value .isUndefined () or flags & WRITABLE) and (getter or setter))
+	{
+		if (throw_)
+			throw TypeError ("A property cannot both have accessors and be writable or have a value.");
+
+		return;
+	}
+ 
+	if (properties .emplace (propertyName .getId (), make_unique <PropertyDescriptor> (this, propertyName, std::move (value), flags, std::move (getter), std::move (setter))) .second)
+		return;
+
+	throw std::invalid_argument ("Couldn't add property.");
+}
+
+void
+pbObject::defineOwnProperty (const Identifier & propertyName,
+                             const var & value,
+                             const PropertyFlagsType flags,
+                             const ptr <pbFunction> & getter,
+                             const ptr <pbFunction> & setter,
+                             const bool throw_)
+throw (TypeError)
+{
+	try
+	{
+		const auto & descriptor = getOwnProperty (propertyName);
+
+		if (not descriptor -> isConfigurable ())
+		{
+			if (throw_)
+				throw TypeError ("Property named '" + propertyName .getName () + "' is not configurable.");
+			
+			return;
+		}
+
+		if ((not value .isUndefined () or flags & WRITABLE) and (getter or setter))
+		{
+			if (throw_)
+				throw TypeError ("A property cannot both have accessors and be writable or have a value.");
+ 			
+			return;
+		}
+
+		descriptor -> setValue (value);
+		descriptor -> setFlags (flags);
+		descriptor -> setGetter (getter);
+		descriptor -> setSetter (setter);
+	}
+	catch (const std::out_of_range &)
+	{
+		addOwnProperty (propertyName, value, flags, getter, setter, throw_);
+	}
+}
+
+void
+pbObject::deleteProperty (const Identifier & propertyName)
+noexcept (true)
+{
+	properties .erase (propertyName .getId ());
 }
 
 bool
@@ -335,12 +399,10 @@ throw (pbException)
 
 	try
 	{
-		setProperty (name, value);
+		put (name, value, false);
 	}
-	catch (const std::out_of_range &)
-	{
-		addPropertyDescriptor (name, value);
-	}
+	catch (const std::invalid_argument &)
+	{ }
 }
 
 var
@@ -351,17 +413,7 @@ throw (std::out_of_range,
 	if (callbacks -> indexedGetter)
 		return callbacks -> indexedGetter (const_cast <pbObject*> (this), index);
 
-	return getProperty (basic::to_string (index));
-}
-
-const ptr <pbObject> &
-pbObject::getProto () const
-throw (std::out_of_range)
-{
-	if (proto)
-		return proto;
-
-	throw std::out_of_range ("pbObject::getProto");
+	return get (basic::to_string (index));
 }
 
 var
@@ -384,14 +436,14 @@ throw (pbException)
 	{
 		try
 		{
-			return apply (toString, this);
+			return call (toString, this);
 		}
 		catch (const std::invalid_argument &)
 		{ }
 
 		try
 		{
-			return apply (valueOf, this);
+			return call (valueOf, this);
 		}
 		catch (const std::invalid_argument &)
 		{ }
@@ -399,14 +451,14 @@ throw (pbException)
 
 	try
 	{
-		return apply (valueOf, this);
+		return call (valueOf, this);
 	}
 	catch (const std::invalid_argument &)
 	{ }
 
 	try
 	{
-		return apply (toString, this);
+		return call (toString, this);
 	}
 	catch (const std::invalid_argument &)
 	{ }
@@ -415,20 +467,20 @@ throw (pbException)
 }
 
 var
-pbObject::apply (const Identifier & identifier, const var & object, const std::vector <var> & arguments) const
+pbObject::call (const Identifier & identifier, const var & object, const std::vector <var> & arguments) const
 throw (pbException,
        std::invalid_argument)
 {
 	try
 	{
-		const auto property = getProperty (identifier);
+		const auto property = get (identifier);
 
 		if (property .isObject ())
 		{
 			const auto function = dynamic_cast <pbFunction*> (property .getObject () .get ());
 
 			if (function)
-				return function -> apply (object, arguments);
+				return function -> call (object, arguments);
 		}
 	}
 	catch (const std::out_of_range &)

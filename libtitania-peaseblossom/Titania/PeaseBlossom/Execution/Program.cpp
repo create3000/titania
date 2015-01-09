@@ -88,8 +88,8 @@ noexcept (true)
 	// Add global object.
 	getLocalObjects () .emplace_back (make_ptr <Standard::GlobalObject> (this, std::bind (&Program::resolve, this, _1)));
 
-	getGlobalObject () -> addPropertyDescriptor ("Function", functionClass, WRITABLE | CONFIGURABLE);
-	getGlobalObject () -> addPropertyDescriptor ("Object",   objectClass,   WRITABLE | CONFIGURABLE);
+	getGlobalObject () -> addOwnProperty ("Function", functionClass, WRITABLE | CONFIGURABLE);
+	getGlobalObject () -> addOwnProperty ("Object",   objectClass,   WRITABLE | CONFIGURABLE);
 }
 
 bool
@@ -101,7 +101,7 @@ Program::resolve (const Identifier & identifier)
 
 	try
 	{
-		getGlobalObject () -> addPropertyDescriptor (identifier, getStandardClass (types .at (identifier)), WRITABLE | CONFIGURABLE);
+		getGlobalObject () -> addOwnProperty (identifier, getStandardClass (types .at (identifier)), WRITABLE | CONFIGURABLE);
 		return true;
 	}
 	catch (const std::out_of_range &)

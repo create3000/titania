@@ -152,15 +152,15 @@ Array <Type, InternalType>::initialize (Context* const context, const pb::ptr <p
 	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), construct, nullptr, 4);
 	const auto prototype = context -> getClass (ObjectType::X3DArrayField) -> createInstance (ec);
 
-	prototype -> addPropertyDescriptor ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
+	prototype -> addOwnProperty ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
 
-	prototype -> addPropertyDescriptor ("length",
-	                                    pb::Undefined,
-	                                    pb::WRITABLE | pb::ENUMERABLE,
-	                                    new pb::NativeFunction (ec, "length", getLength, 0),
-	                                    new pb::NativeFunction (ec, "length", setLength, 1));
+	prototype -> addOwnProperty ("length",
+	                             pb::Undefined,
+	                             pb::NONE,
+	                             new pb::NativeFunction (ec, "length", getLength, 0),
+	                             new pb::NativeFunction (ec, "length", setLength, 1));
 
-	function -> addPropertyDescriptor ("prototype", prototype, pb::NONE);
+	function -> addOwnProperty ("prototype", prototype, pb::NONE);
 	return function;
 }
 

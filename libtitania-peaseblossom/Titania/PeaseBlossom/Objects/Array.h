@@ -116,18 +116,28 @@ protected:
 	///  @name Construction
 
 	///  Constructs new Array.
-	Array (const std::nullptr_t);
+	Array (pbExecutionContext* const executionContext, const std::nullptr_t);
 
 	///  @name Operations
 
 	virtual
 	var
-	apply (const uint32_t index, const var & object, const std::vector <var> & args = { }) const
+	call (const uint32_t index, const var & object, const std::vector <var> & args = { }) const
 	throw (pbException,
 	       std::invalid_argument) final override;
 
 
 private:
+
+	///  @name Properties
+
+	static
+	pb::var
+	setLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	getLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	///  @name Operations
 

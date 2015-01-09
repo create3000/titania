@@ -146,7 +146,7 @@ private:
 
 	// A.1 Lexical Grammar
 
-	bool
+	void
 	comments ();
 
 	bool

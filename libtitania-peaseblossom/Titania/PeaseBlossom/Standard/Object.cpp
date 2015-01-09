@@ -116,11 +116,11 @@ initialize (pbExecutionContext* const ec, const ptr <NativeFunction> & functionC
 
 	constructor -> setConstructor (functionClass);
 	constructor -> setProto (standardFunction);
-	constructor -> updatePropertyDescriptor ("prototype", standardObject, NONE);
+	constructor -> defineOwnProperty ("prototype", standardObject, NONE);
 
 	standardObject -> setConstructor (constructor);
-	standardObject -> addPropertyDescriptor ("constructor", constructor,                                          WRITABLE | CONFIGURABLE);
-	standardObject -> addPropertyDescriptor ("toString",    new NativeFunction (ec, "toString", toString { }, 0), WRITABLE | CONFIGURABLE);
+	standardObject -> addOwnProperty ("constructor", constructor,                                          WRITABLE | CONFIGURABLE);
+	standardObject -> addOwnProperty ("toString",    new NativeFunction (ec, "toString", toString { }, 0), WRITABLE | CONFIGURABLE);
 
 	return constructor;
 }

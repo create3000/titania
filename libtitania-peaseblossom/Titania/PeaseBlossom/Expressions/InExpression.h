@@ -90,21 +90,13 @@ public:
 	throw (pbException,
 	       pbControlFlowException) final override
 	{
-		const auto base     = rhs -> getValue ();
-		const auto property = lhs -> getValue ();
-		const auto name     = property .toString ();
+		const auto base = rhs -> getValue ();
 
 		if (base .isObject ())
 		{
-			const auto & object = base .getObject ();
-
-			if (object -> hasIndexedProperties ())
-			{
-				const auto index = property .toUInt32 ();
-
-				if (isIndex (name, index))
-					return object -> hasIndexedProperty (index);
-			}
+			const auto & object   = base .getObject ();
+			const auto   property = lhs -> getValue ();
+			const auto   name     = property .toString ();
 
 			return object -> hasProperty (name);
 		}

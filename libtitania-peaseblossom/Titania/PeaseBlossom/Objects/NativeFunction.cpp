@@ -64,7 +64,7 @@ throw (pbException)
 }
 
 var
-NativeFunction::apply (const var & object, const std::vector <var> & arguments)
+NativeFunction::call (const var & object, const std::vector <var> & arguments)
 throw (pbException)
 {
 	if (function)
