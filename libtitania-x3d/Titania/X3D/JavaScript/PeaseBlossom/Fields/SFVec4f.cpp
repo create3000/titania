@@ -64,8 +64,6 @@ template <>
 const pb::Callbacks SFVec4d::callbacks = {
 	pb::PropertyGetter (),
 	pb::PropertySetter (),
-	pb::IndexedGetter (),
-	pb::IndexedSetter (),
 	pb::ResolveCallback (),
 	dispose <SFVec4d>
 };
@@ -74,8 +72,6 @@ template <>
 const pb::Callbacks SFVec4f::callbacks = {
 	pb::PropertyGetter (),
 	pb::PropertySetter (),
-	pb::IndexedGetter (),
-	pb::IndexedSetter (),
 	pb::ResolveCallback (),
 	dispose <SFVec4f>
 };

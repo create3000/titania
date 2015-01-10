@@ -73,6 +73,7 @@ public:
 	ArrayLiteral (pbExecutionContext* const executionContext) :
 		    pbExpression (ExpressionType::ARRAY_LITERAL),
 		executionContext (executionContext),
+		     identifiers (),
 		     expressions ()
 	{ construct (); }
 
@@ -95,6 +96,7 @@ public:
 	void
 	addExpression (ptr <pbExpression> && value)
 	{
+		identifiers .emplace_back (basic::to_string (identifiers .size ()));
 		expressions .emplace_back (std::move (value));
 	}
 
@@ -107,10 +109,8 @@ public:
 	{
 		const auto array = new Array (executionContext .get ());
 
-		uint32_t index = 0;
-
-		for (const auto & expression : expressions)
-			array -> setIndexedProperty (index ++, expression -> getValue ());
+		for (uint32_t index = 0, size = expressions .size (); index < size; ++ index)
+			array -> put (identifiers [index], expressions [index] -> getValue (), false);
 
 		return array;
 	}
@@ -183,6 +183,7 @@ private:
 	///  @name Members
 
 	const ptr <pbExecutionContext> executionContext;
+	std::vector <Identifier>       identifiers;
 	array <ptr <pbExpression>>     expressions;
 
 };

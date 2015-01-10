@@ -62,8 +62,6 @@ const std::string MFVec4f::typeName = "MFVec4f";
 
 template <>
 const pb::Callbacks MFVec4d::callbacks = {
-	pb::PropertyGetter (),
-	pb::PropertySetter (),
 	get1Value,
 	set1Value,
 	pb::ResolveCallback (),
@@ -72,8 +70,6 @@ const pb::Callbacks MFVec4d::callbacks = {
 
 template <>
 const pb::Callbacks MFVec4f::callbacks = {
-	pb::PropertyGetter (),
-	pb::PropertySetter (),
 	get1Value,
 	set1Value,
 	pb::ResolveCallback (),

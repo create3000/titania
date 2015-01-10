@@ -109,8 +109,6 @@ Context::addClasses ()
 	callbacks = pb::Callbacks {
 		pb::PropertyGetter (),
 		pb::PropertySetter (),
-		pb::IndexedGetter (),
-		pb::IndexedSetter (),
 		std::bind (&Context::resolve, this, _1, _2),
 		pb::DisposeCallback ()
 	};

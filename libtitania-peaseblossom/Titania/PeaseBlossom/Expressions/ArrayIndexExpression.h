@@ -126,21 +126,8 @@ public:
 			case OBJECT:
 			{
 				const auto & object = base .getObject ();
-			
-				if (object -> hasIndexedProperties ())
-				{
-					const auto index = property .toUInt32 ();
 
-					if (isIndex (name, index))
-						return object -> setIndexedProperty (index, value);
-				}
-
-				try
-				{
-					object -> put (name, value, false);
-				}
-				catch (const std::invalid_argument &)
-				{ }
+				object -> put (name, value, false);
 			}
 		}
 	}
@@ -192,14 +179,6 @@ public:
 				try
 				{
 					const auto & object = base .getObject ();
-					
-					if (object -> hasIndexedProperties ())
-					{
-						const auto index = property .toUInt32 ();
-
-						if (isIndex (name, index))
-							return object -> getIndexedProperty (index);
-					}
 
 					return object -> get (name);
 				}
@@ -258,14 +237,6 @@ public:
 				try
 				{
 					const auto & object = base .getObject ();
-					
-					if (object -> hasIndexedProperties ())
-					{
-						const auto index = property .toUInt32 ();
-
-						if (isIndex (name, index))
-							return object -> call (index, base, arguments);
-					}
 
 					return object -> call (name, base, arguments);
 				}

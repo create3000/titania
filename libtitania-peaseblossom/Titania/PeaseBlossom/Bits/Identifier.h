@@ -52,10 +52,13 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_BITS_IDENTIFIER_H__
 
 #include "../Base/pbOutputStreamObject.h"
+#include "../Bits/pbMath.h"
 
 #include <Titania/LOG.h>
 #include <map>
 #include <string>
+
+#include <Titania/String/to_string.h>
 
 namespace titania {
 namespace pb {
@@ -136,6 +139,16 @@ public:
 	const size_t &
 	getId () const
 	{ return id; }
+
+	///  @name Operations
+
+	uint32_t
+	toUInt32 () const
+	{ return pb::toUInt32 (name); }
+
+	bool
+	isIndex (const uint32_t index) const
+	{ return basic::to_string (index) == name and index not_eq uint32_t (M_2_32 - 1); }
 
 	///  @name Input/Output
 

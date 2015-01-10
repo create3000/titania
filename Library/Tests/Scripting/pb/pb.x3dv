@@ -394,7 +394,11 @@ function set_time (value, time)
 
 print ('peaseblossom')
 
+var v = new SFVec4f (1,2,3,4);
+var a = new MFVec4f (v,v,v,v);
 
+print (a);
+print (a [10])
 
 "
 "peaseblossom:"

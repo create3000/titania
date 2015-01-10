@@ -111,16 +111,30 @@ isNaN (const double value)
 
 inline
 double
+toInteger (const double value)
+{
+	return std::copysign (std::floor (std::abs (value)), value);
+}
+
+inline
+double
 parseInt (const std::string & string)
 {
 	double number = NaN ();
 
 	std::istringstream isstream (string);
 
+	isstream .imbue (std::locale::classic ());
+
 	isstream >> number;
 
-	return std::copysign (std::floor (std::abs (number)), number);
+	return toInteger (number);
 }
+
+inline
+double
+parseInt (const Glib::ustring & string)
+{ return parseInt (string .raw ()); }
 
 inline
 double
@@ -130,10 +144,103 @@ parseFloat (const std::string & string)
 
 	std::istringstream isstream (string);
 
+	isstream .imbue (std::locale::classic ());
+
 	isstream >> number;
 
 	return number;
 }
+
+inline
+double
+parseFloat (const Glib::ustring & string)
+{ return parseFloat (string .raw ()); }
+
+inline
+int16_t
+toInt16Bits (const double value)
+{
+	if (isNaN (value))
+		return 0;
+
+	if (value == POSITIVE_INFINITY ())
+		return 0;
+
+	if (value == NEGATIVE_INFINITY ())
+		return 0;
+
+	const double posInt   = std::copysign (std::floor (std::abs (value)), value);
+	const double int16bit = std::fmod (posInt, M_2_16);
+
+	return int16bit;
+}
+
+inline
+int32_t
+toInt32Bits (const double value)
+{
+	if (isNaN (value))
+		return 0;
+
+	if (value == POSITIVE_INFINITY ())
+		return 0;
+
+	if (value == NEGATIVE_INFINITY ())
+		return 0;
+
+	const double posInt   = std::copysign (std::floor (std::abs (value)), value);
+	const double int32bit = std::fmod (posInt, M_2_32);
+
+	if (int32bit >= M_2_31)
+		return int32bit - M_2_32;
+
+	return int32bit;
+}
+
+inline
+uint16_t
+toUInt16 (const double value)
+{ return toInt16Bits (value); }
+
+inline
+uint16_t
+toUInt16 (const Glib::ustring & value)
+{ return toInt16Bits (parseInt (value .raw ())); }
+
+inline
+uint32_t
+toUInt16 (const std::string & value)
+{ return toInt16Bits (parseInt (value)); }
+
+inline
+int32_t
+toInt32 (const double value)
+{ return toInt32Bits (value); }
+
+inline
+int32_t
+toInt32 (const Glib::ustring & value)
+{ return toInt32Bits (parseInt (value .raw ())); }
+
+inline
+int32_t
+toInt32 (const std::string & value)
+{ return toInt32Bits (parseInt (value)); }
+
+inline
+uint32_t
+toUInt32 (const double value)
+{ return toInt32Bits (value); }
+
+inline
+uint32_t
+toUInt32 (const Glib::ustring & value)
+{ return toInt32Bits (parseInt (value .raw ())); }
+
+inline
+uint32_t
+toUInt32 (const std::string & value)
+{ return toInt32Bits (parseInt (value)); }
 
 } // pb
 } // titania

@@ -283,26 +283,14 @@ var::toUInt16 () const
 			return 0;
 		case BOOLEAN:
 			return value .bool_;
+		case NUMBER:
+			return pb::toUInt16 (value .number_);
+		case STRING:
+			return pb::toUInt16 (*value .string_);
 		case NULL_OBJECT:
 			return 0;
 		default:
-		{
-			const double number = toNumber ();
-
-			if (isNaN (number))
-				return 0;
-
-			if (number == POSITIVE_INFINITY ())
-				return 0;
-
-			if (number == NEGATIVE_INFINITY ())
-				return 0;
-
-			const double posInt   = std::copysign (std::floor (std::abs (number)), number);
-			const double int16bit = std::fmod (posInt, M_2_16);
-
-			return int16bit;
-		}
+			return pb::toUInt16 (value .object_ -> get () -> getDefaultValue (NUMBER) .toNumber ());
 	}
 
 	return 0;
@@ -317,29 +305,14 @@ var::toInt32 () const
 			return 0;
 		case BOOLEAN:
 			return value .bool_;
+		case NUMBER:
+			return pb::toInt32 (value .number_);
+		case STRING:
+			return pb::toInt32 (*value .string_);
 		case NULL_OBJECT:
 			return 0;
 		default:
-		{
-			const double number = toNumber ();
-
-			if (isNaN (number))
-				return 0;
-
-			if (number == POSITIVE_INFINITY ())
-				return 0;
-
-			if (number == NEGATIVE_INFINITY ())
-				return 0;
-
-			const double posInt   = std::copysign (std::floor (std::abs (number)), number);
-			const double int32bit = std::fmod (posInt, M_2_32);
-
-			if (int32bit >= M_2_31)
-				return int32bit - M_2_32;
-
-			return int32bit;
-		}
+			return pb::toInt32 (value .object_ -> get () -> getDefaultValue (NUMBER) .toNumber ());
 	}
 
 	return 0;
@@ -355,7 +328,7 @@ var::toInteger () const
 		case BOOLEAN:
 			return value .bool_;
 		case NUMBER:
-			return std::copysign (std::floor (std::abs (value .number_)), value .number_);
+			return pb::toInteger (value .number_);
 		case STRING:
 			return parseInt (*value .string_);
 		case NULL_OBJECT:

@@ -72,24 +72,14 @@ public:
 	///  Constructs new Array.
 	Array (pbExecutionContext* const executionContext);
 
-	///  @name Indexed property access
+	///  @name Property access
 
-	virtual
-	bool
-	hasIndexedProperties ()
-	noexcept (true) final override
-	{ return true; }
-
+	///  Sets the value of the property for @a propertyName.
 	virtual
 	void
-	setIndexedProperty (const uint32_t index, const var & value)
-	throw (pbException) final override;
-
-	virtual
-	var
-	getIndexedProperty (const uint32_t index) const
-	throw (std::out_of_range,
-	       pbException) final override;
+	put (const Identifier & propertyName, const var & value, const bool throw_)
+	throw (pbException,
+	       std::invalid_argument) final override;
 
 	///  @name Input/Output
 
@@ -118,14 +108,6 @@ protected:
 	///  Constructs new Array.
 	Array (pbExecutionContext* const executionContext, const std::nullptr_t);
 
-	///  @name Operations
-
-	virtual
-	var
-	call (const uint32_t index, const var & object, const std::vector <var> & args = { }) const
-	throw (pbException,
-	       std::invalid_argument) final override;
-
 
 private:
 
@@ -139,18 +121,9 @@ private:
 	pb::var
 	getLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
-	///  @name Operations
-
-	void
-	addElement (const var & element)
-	{
-		if (element .isObject ())
-			const_cast <ptr <pbObject> &> (element .getObject ()) .addParent (this);
-	}
-
 	///  @name Members
-
-	std::deque <var> array;
+	
+	uint32_t length;
 
 };
 

@@ -172,9 +172,16 @@ public:
 			}
 			case OBJECT:
 			{
-				const auto & object = base .getObject ();
+				try
+				{
+					const auto & object = base .getObject ();
 
-				return object -> get (identifier);
+					return object -> get (identifier);
+				}
+				catch (const std::out_of_range &)
+				{
+					return Undefined;
+				}
 			}
 		}
 

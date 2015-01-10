@@ -1,3 +1,19 @@
+2015-01-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* pbMath.h:
+	* Array.h:
+	* Identifier.h:
+	* Global.h:
+	* Array.cpp:
+	* var.cpp:
+	* pbObject.h:
+	* Global.cpp:
+	* pbObject.cpp:
+	* pbExpression.h:
+	* ArrayLiteral.h:
+	* PropertyExpression.h:
+	* ArrayIndexExpression.h: 
+
 2015-01-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.h:

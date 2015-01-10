@@ -55,9 +55,6 @@
 #include "../Base/pbChildObject.h"
 #include "../Base/pbOutputStreamObject.h"
 #include "../InputOutput/Generator.h"
-#include "../Bits/pbMath.h"
-
-#include <Titania/String/to_string.h>
 
 namespace titania {
 namespace pb {
@@ -126,15 +123,6 @@ protected:
 		pbOutputStreamObject (),
 		                type (type)
 	{ }
-
-	///  @name Operations
-
-	static
-	bool
-	isIndex (const Glib::ustring & name, const uint32_t index)
-	{
-		return basic::to_string (index) == name .raw () and index not_eq uint32_t (M_2_32 - 1);
-	}
 
 
 private:

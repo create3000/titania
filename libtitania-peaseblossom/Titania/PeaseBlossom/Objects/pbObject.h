@@ -233,12 +233,6 @@ using PropertyGetter = std::function <var (pbObject* const, const Identifier &)>
 using PropertySetter = std::function <void (pbObject* const, const Identifier &, const var &)>;
 
 ///  Type to represent a resolve callback function.
-using IndexedGetter = std::function <var (pbObject* const, const uint32_t)>;
-
-///  Type to represent a resolve callback function.
-using IndexedSetter = std::function <void (pbObject* const, const uint32_t, const var &)>;
-
-///  Type to represent a resolve callback function.
 using ResolveCallback = std::function <bool (pbObject* const, const Identifier &)>;
 
 ///  Type to represent a dispose callback function.
@@ -248,8 +242,6 @@ struct Callbacks
 {
 	PropertyGetter  getter;
 	PropertySetter  setter;
-	IndexedGetter   indexedGetter;
-	IndexedSetter   indexedSetter;
 	ResolveCallback resolve;
 	DisposeCallback dispose;
 
@@ -318,7 +310,6 @@ public:
 	       std::invalid_argument);
 
 	///  Returns the value of the property for @a propertyName.
-	virtual
 	var
 	get (const Identifier & propertyName) const
 	throw (pbException,
@@ -375,29 +366,6 @@ public:
 	void
 	deleteProperty (const Identifier & propertyName)
 	noexcept (true);
-
-	///  @name Indexed property access
-
-	virtual
-	bool
-	hasIndexedProperties ()
-	noexcept (true)
-	{ return callbacks -> indexedGetter and callbacks -> indexedSetter; }
-
-	bool
-	hasIndexedProperty (const uint32_t index)
-	noexcept (true);
-
-	virtual
-	void
-	setIndexedProperty (const uint32_t index, const var & value)
-	throw (pbException);
-
-	virtual
-	var
-	getIndexedProperty (const uint32_t index) const
-	throw (std::out_of_range,
-	       pbException);
 
 	///  @name Operations
 
@@ -469,19 +437,13 @@ protected:
 	
 	virtual
 	bool
-	resolve (const Identifier & identifier);
+	resolve (const Identifier & identifier)
+	throw (pbException);
 
 	var
 	call (const Identifier & identifier, const var & object, const std::vector <var> & args = { }) const
 	throw (pbException,
 	       std::invalid_argument);
-
-	virtual
-	var
-	call (const uint32_t index, const var & object, const std::vector <var> & args = { }) const
-	throw (pbException,
-	       std::invalid_argument)
-	{ return call (basic::to_string (index), object, args); }
 
 
 private:

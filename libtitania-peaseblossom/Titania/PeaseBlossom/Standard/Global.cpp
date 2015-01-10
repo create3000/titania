@@ -81,6 +81,7 @@ GlobalObject::GlobalObject (pbExecutionContext* const ec, const std::function <b
 
 bool
 GlobalObject::resolve (const Identifier & identifier)
+throw (pbException)
 {
 	if (resolveCallback (identifier))
 		return true;

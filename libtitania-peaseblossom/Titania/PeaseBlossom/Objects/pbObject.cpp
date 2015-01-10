@@ -177,6 +177,14 @@ throw (pbException,
 {
 	try
 	{
+		if (callbacks -> setter)
+			return callbacks -> setter (this, propertyName, value);
+	}
+	catch (const std::out_of_range &)
+	{ }
+
+	try
+	{
 		const auto & ownDescriptor = getOwnProperty (propertyName);
 
 		if (ownDescriptor -> isWritable ())
@@ -209,6 +217,14 @@ pbObject::get (const Identifier & propertyName) const
 throw (pbException,
        std::out_of_range)
 {
+	try
+	{
+		if (callbacks -> getter)
+			return callbacks -> getter (const_cast <pbObject*> (this), propertyName);
+	}
+	catch (const std::out_of_range &)
+	{ }
+
 	const auto & descriptor = getProperty (propertyName);
 
 	if (descriptor -> isDataDescriptor ())
@@ -259,6 +275,7 @@ throw (std::out_of_range)
 
 bool
 pbObject::resolve (const Identifier & propertyName)
+throw (pbException)
 {
 	return callbacks -> resolve and callbacks -> resolve (this, propertyName);
 }
@@ -372,48 +389,6 @@ pbObject::deleteProperty (const Identifier & propertyName)
 noexcept (true)
 {
 	properties .erase (propertyName .getId ());
-}
-
-bool
-pbObject::hasIndexedProperty (const uint32_t index)
-noexcept (true)
-{
-	try
-	{
-		return not getIndexedProperty (index) .isUndefined ();
-	}
-	catch (const std::out_of_range &)
-	{
-		return false;
-	}
-}
-
-void
-pbObject::setIndexedProperty (const uint32_t index, const var & value)
-throw (pbException)
-{
-	if (callbacks -> indexedSetter)
-		return callbacks -> indexedSetter (this, index, value);
-
-	const auto name = basic::to_string (index);
-
-	try
-	{
-		put (name, value, false);
-	}
-	catch (const std::invalid_argument &)
-	{ }
-}
-
-var
-pbObject::getIndexedProperty (const uint32_t index) const
-throw (std::out_of_range,
-       pbException)
-{
-	if (callbacks -> indexedGetter)
-		return callbacks -> indexedGetter (const_cast <pbObject*> (this), index);
-
-	return get (basic::to_string (index));
 }
 
 var

@@ -70,7 +70,7 @@ Array::Array (pbExecutionContext* const executionContext) :
 
 Array::Array (pbExecutionContext* const executionContext, const std::nullptr_t) :
 	pbObject (),
-	   array ()
+	  length (0)
 {
 	addOwnProperty ("length",
 	                Undefined,
@@ -80,28 +80,21 @@ Array::Array (pbExecutionContext* const executionContext, const std::nullptr_t) 
 }
 
 void
-Array::setIndexedProperty (const uint32_t index, const var & value)
-throw (pbException)
+Array::put (const Identifier & propertyName, const var & value, const bool throw_)
+throw (pbException,
+       std::invalid_argument)
 {
-	try
-	{
-		if (index >= array .size ())
-			array .resize (index + 1);
+	pbObject::put (propertyName, value, throw_);
 
-		addElement (array [index] = value);
-	}
-	catch (const std::bad_alloc &)
+	const auto index = propertyName .toUInt32 ();
+	
+	if (propertyName .isIndex (index))
 	{
-		throw RuntimeError ("Array: out of memory.");
-	}
-}
+		if (index < length)
+			return;
 
-var
-Array::getIndexedProperty (const uint32_t index) const
-throw (std::out_of_range,
-       pbException)
-{
-	return array .at (index);
+		length = index + 1;
+	}
 }
 
 pb::var
@@ -110,10 +103,13 @@ Array::setLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & o
 	const auto array = dynamic_cast <Array*> (object .getObject () .get ());
 	const auto size  = args [0] .toUInt32 ();
 
-	if (size == M_2_32)
-		return Undefined; /// XXX
+	if (basic::to_string (size) not_eq args [0] .toString ())
+		throw RangeError ("Invalid array length.");
 
-	array -> array .resize (size);
+	for (uint32_t index = size; index < array -> length; ++ index)
+		array -> deleteProperty (basic::to_string (index));
+
+	array -> length = size;
 
 	return Undefined;
 }
@@ -123,55 +119,34 @@ Array::getLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & o
 {
 	const auto array = dynamic_cast <Array*> (object .getObject () .get ());
 
-	return array -> array .size ();
-}
-
-var
-Array::call (const uint32_t index, const var & object, const std::vector <var> & arguments) const
-throw (pbException,
-       std::invalid_argument)
-{
-	try
-	{
-		const auto & property = array .at (index);
-
-		if (property .isObject ())
-		{
-			const auto function = dynamic_cast <pbFunction*> (property .getObject () .get ());
-
-			if (function)
-				return function -> call (object, arguments);
-		}
-	}
-	catch (const std::out_of_range &)
-	{ }
-
-	throw std::invalid_argument ("pbObject::apply");
+	return array -> length;
 }
 
 void
 Array::toStream (std::ostream & ostream) const
 {
-	if (array .empty ())
+	if (length == 0)
 		return;
 
-	for (const auto & element : std::make_pair (array .begin (), array .end () - 1))
+	for (uint32_t index = 0, size = length - 1; index < size; ++ index)
 	{
-		if (element .isUndefined ())
+		const var value = get (basic::to_string (index));
+	
+		if (value .isUndefined ())
 			ostream << ',';
 		else
-			ostream << element << ',';
+			ostream << value << ',';
 	}
 
-	if (not array .back () .isUndefined ())
-		ostream << array .back ();
+	const var value = get (basic::to_string (length - 1));
+
+	if (not value .isUndefined ())
+		ostream << value;
 }
 
 void
 Array::dispose ()
 {
-	array .clear ();
-
 	pbObject::dispose ();
 }
 

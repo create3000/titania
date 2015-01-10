@@ -105,11 +105,11 @@ private:
 
 	static
 	void
-	set1Value (pb::pbObject* const, const uint32_t, const pb::var &);
+	set1Value (pb::pbObject* const, const pb::Identifier &, const pb::var &);
 
 	static
 	pb::var
-	get1Value (pb::pbObject* const, const uint32_t);
+	get1Value (pb::pbObject* const, const pb::Identifier &);
 
 	///  @name Properties
 
@@ -192,13 +192,22 @@ Array <Type, InternalType>::construct (const pb::ptr <pb::pbExecutionContext> & 
 
 template <class Type, class InternalType>
 void
-Array <Type, InternalType>::set1Value (pb::pbObject* const object, const uint32_t index, const pb::var & value)
+Array <Type, InternalType>::set1Value (pb::pbObject* const object, const pb::Identifier & propertyName, const pb::var & value)
 {
 	try
 	{
-		const auto array = getObject <InternalType> (object);
+		const auto index = propertyName .toUInt32 ();
 
-		array -> set1Value (index, get1Argument <Type> (value));
+		if (propertyName .isIndex (index))
+		{
+			const auto array = getObject <InternalType> (object);
+
+			array -> set1Value (index, get1Argument <Type> (value));
+
+			return;
+		}
+
+		throw std::out_of_range ("Array::set1Value");
 	}
 	catch (const std::bad_alloc &)
 	{
@@ -208,14 +217,21 @@ Array <Type, InternalType>::set1Value (pb::pbObject* const object, const uint32_
 
 template <class Type, class InternalType>
 pb::var
-Array <Type, InternalType>::get1Value (pb::pbObject* const object, const uint32_t index)
+Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Identifier & propertyName)
 {
 	try
 	{
-		const auto context = getContext (object);
-		const auto array   = getObject <InternalType> (object);
+		const auto index = propertyName .toUInt32 ();
 
-		return get <Type> (context, &array -> get1Value (index));
+		if (propertyName .isIndex (index))
+		{
+			const auto context = getContext (object);
+			const auto array   = getObject <InternalType> (object);
+
+			return get <Type> (context, &array -> get1Value (index));
+		}
+
+		throw std::out_of_range ("Array::get1Value");
 	}
 	catch (const std::bad_alloc &)
 	{
@@ -229,11 +245,17 @@ Array <Type, InternalType>::setLength (const pb::ptr <pb::pbExecutionContext> & 
 {
 	try
 	{
-		const auto lhs = getObject <InternalType> (object);
+		const auto lhs  = getObject <InternalType> (object);
+		const auto size = args [0] .toUInt32 ();
 
-		lhs -> resize (args [0] .toUInt32 ());
+		if (basic::to_string (size) == args [0] .toString ())
+		{
+			lhs -> resize (size);
 
-		return pb::Undefined;
+			return pb::Undefined;
+		}
+
+		throw pb::RangeError ("Invalid array length.");
 	}
 	catch (const std::bad_alloc &)
 	{
