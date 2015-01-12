@@ -83,7 +83,7 @@ pbExpression::isPrimitive () const
 
 var
 pbExpression::call (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments) const
-throw (pbException)
+throw (pbError)
 {
 	const auto value = getValue ();
 

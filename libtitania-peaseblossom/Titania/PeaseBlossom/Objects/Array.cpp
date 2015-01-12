@@ -73,28 +73,28 @@ Array::Array (pbExecutionContext* const executionContext, const std::nullptr_t) 
 	  length (0)
 {
 	addOwnProperty ("length",
-	                Undefined,
+	                undefined,
 	                pb::NONE,
 	                new pb::NativeFunction (executionContext, "length", getLength, 0),
 	                new pb::NativeFunction (executionContext, "length", setLength, 1));
 }
 
 void
-Array::put (const Identifier & propertyName, const var & value, const bool throw_)
-throw (pbException,
+Array::put (const Identifier & identifier, const var & value, const bool throw_)
+throw (pbError,
        std::invalid_argument)
 {
-	pbObject::put (propertyName, value, throw_);
-
-	const auto index = propertyName .toUInt32 ();
+	const auto index = identifier .toUInt32 ();
 	
-	if (propertyName .isIndex (index))
-	{
-		if (index < length)
-			return;
+	if (index == PROPERTY)
+		return pbObject::put (identifier, value, PROPERTY, throw_);
 
-		length = index + 1;
-	}
+	pbObject::put (identifier, value, index, throw_);
+
+	if (index < length)
+		return;
+
+	length = index + 1;
 }
 
 pb::var
@@ -111,7 +111,7 @@ Array::setLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & o
 
 	array -> length = size;
 
-	return Undefined;
+	return undefined;
 }
 
 pb::var
@@ -132,7 +132,7 @@ Array::toStream (std::ostream & ostream) const
 	{
 		const var value = get (basic::to_string (index));
 	
-		if (value .isUndefined ())
+		if (value .isundefined ())
 			ostream << ',';
 		else
 			ostream << value << ',';
@@ -140,7 +140,7 @@ Array::toStream (std::ostream & ostream) const
 
 	const var value = get (basic::to_string (length - 1));
 
-	if (not value .isUndefined ())
+	if (not value .isundefined ())
 		ostream << value;
 }
 

@@ -88,8 +88,8 @@ public:
 	virtual
 	var
 	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
+	throw (pbError,
+          pbControlFlowException) final override
 	{
 		const auto x = lhs -> getValue ();
 		const auto y = rhs -> getValue ();
@@ -118,10 +118,10 @@ public:
 			}
 		}
 
-		if (x .isNull () and y .isUndefined ())
+		if (x .isNull () and y .isundefined ())
 			return true;
 
-		if (x .isUndefined () and y .isNull ())
+		if (x .isundefined () and y .isNull ())
 			return true;
 
 		if (x .isNumber ())

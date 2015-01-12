@@ -48,30 +48,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_EXPRESSION_H__
 
-#include "../Expressions/pbExpression.h"
 #include "../Expressions/PrimitiveExpression.h"
+#include "../Expressions/pbExpression.h"
+
+#include <cmath>
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript remainder expression.
+ *  Class to represent a ECMAScript expression.
  */
-class StrictEqualExpression :
+class Expression :
 	public pbExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new StrictEqualExpression expression.
-	StrictEqualExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
-		pbExpression (ExpressionType::STRICT_EQUAL_EXPRESSION),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
+	///  Constructs new Expression expression.
+	Expression (array <ptr <pbExpression>> && expressions) :
+		pbExpression (ExpressionType::EXPRESSION),
+		 expressions (std::move (expressions))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -79,7 +80,14 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new StrictEqualExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
+	{
+		array <ptr <pbExpression>>  expressions;
+
+		for (const auto & expression : this -> expressions)
+			expressions .emplace_back (expression -> copy (executionContext));
+
+		return new Expression (std::move (expressions));
+	}
 
 	///  @name Operations
 
@@ -90,34 +98,10 @@ public:
 	throw (pbError,
           pbControlFlowException) final override
 	{
-		const auto x = lhs -> getValue ();
-		const auto y = rhs -> getValue ();
+		for (const auto & expression : std::make_pair (expressions .begin (), expressions .end () - 1))
+			expression -> getValue ();
 
-		if (x .getType () not_eq y .getType ())
-			return false;
-
-		switch (x .getType ())
-		{
-			case UNDEFINED:
-				return true;
-
-			case NULL_OBJECT:
-				return true;
-
-			case NUMBER:
-				return x .getNumber () == y .getNumber ();
-
-			case STRING:
-				return x .getString () == y .getString ();
-
-			case BOOLEAN:
-				return x .getBoolean () == y .getBoolean ();
-
-			case OBJECT:
-				return x .getObject () == y .getObject ();
-		}
-
-		return false;
+		return expressions .back () -> getValue ();
 	}
 
 	///  @name Input/Output
@@ -127,12 +111,18 @@ public:
 	void
 	toStream (std::ostream & ostream) const final override
 	{
-		ostream
-			<< lhs
-			<< Generator::TidySpace
-			<< "==="
-			<< Generator::TidySpace
-			<< rhs;
+		if (expressions .empty ())
+			return;
+
+		for (const auto expression : std::make_pair (expressions .begin (), expressions .end () - 1))
+		{
+			ostream
+				<< expression
+				<< ','
+				<< Generator::TidySpace;
+		}
+
+		ostream << expressions .back ();
 	}
 
 private:
@@ -142,27 +132,26 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (lhs, rhs); }
+	{ addChildren (expressions); }
 
 	///  @name Members
 
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	const array <ptr <pbExpression>>  expressions;
 
 };
 
-///  @relates StrictEqualExpression
+///  @relates AdditionExpression
 ///  @name Construction
 
-///  Constructs new StrictEqualExpression expression.
+///  Constructs new AdditionExpression expression.
 inline
 ptr <pbExpression>
-createStrictEqualExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
+createExpression (array <ptr <pbExpression>> && expressions)
 {
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (StrictEqualExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::BOOLEAN);
+	if (expressions .size () == 1)
+		return std::move (expressions .back ());
 
-	return new StrictEqualExpression (std::move (lhs), std::move (rhs));
+	return new Expression (std::move (expressions));
 }
 
 } // pb

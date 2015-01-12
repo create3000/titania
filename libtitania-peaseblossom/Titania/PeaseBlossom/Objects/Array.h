@@ -74,12 +74,50 @@ public:
 
 	///  @name Property access
 
-	///  Sets the value of the property for @a propertyName.
+	///  Sets the value of the property for @a identifier.
 	virtual
 	void
-	put (const Identifier & propertyName, const var & value, const bool throw_)
-	throw (pbException,
+	put (const Identifier & identifier, const var & value, const bool throw_)
+	throw (pbError,
 	       std::invalid_argument) final override;
+
+	///  Adds the named property described by the given descriptor for this object.
+	virtual
+	void
+	addOwnProperty (const Identifier & identifier,
+	                const var & value,
+	                const PropertyFlagsType flags = DEFAULT,
+	                const ptr <pbFunction> & getter = nullptr,
+	                const ptr <pbFunction> & setter = nullptr,
+	                const bool throw_ = true)
+	throw (TypeError,
+	       std::invalid_argument) final override
+	{ pbObject::addOwnProperty (identifier, value, identifier .toUInt32 () | flags, getter, setter, throw_); }
+
+	///  Adds the named property described by the given descriptor for this object.
+	virtual
+	void
+	addOwnProperty (const Identifier & identifier,
+	                var && value,
+	                const PropertyFlagsType flags = DEFAULT,
+	                ptr <pbFunction> && getter = nullptr,
+	                ptr <pbFunction> && setter = nullptr,
+	                const bool throw_ = true)
+	throw (TypeError,
+	       std::invalid_argument) final override
+	{ pbObject::addOwnProperty (identifier, std::move (value), identifier .toUInt32 () | flags, std::move (getter), std::move (setter), throw_); }
+
+	///  Updates the named property described by the given descriptor for this object.
+	virtual
+	void
+	defineOwnProperty (const Identifier & identifier,
+	                   const var & value,
+	                   const PropertyFlagsType flags = DEFAULT,
+	                   const ptr <pbFunction> & getter = nullptr,
+	                   const ptr <pbFunction> & setter = nullptr,
+	                   const bool throw_ = true)
+	throw (TypeError) final override
+	{ pbObject::defineOwnProperty (identifier, value, identifier .toUInt32 () | flags, getter, setter, throw_); }
 
 	///  @name Input/Output
 

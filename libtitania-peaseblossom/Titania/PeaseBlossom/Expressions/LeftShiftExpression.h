@@ -87,8 +87,8 @@ public:
 	virtual
 	var
 	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
+	throw (pbError,
+          pbControlFlowException) final override
 	{ return lhs -> getValue () .toInt32 () << (rhs -> getValue () .toUInt32 () & 0x1f); }
 
 	///  @name Input/Output

@@ -56,7 +56,6 @@
 #include "../Base/pbUserData.h"
 #include "../Bits/Identifier.h"
 #include "../Bits/pbConstants.h"
-#include "../Expressions/pbControlFlowException.h"
 #include "../Primitives/ptr.h"
 #include "../Primitives/var.h"
 
@@ -68,6 +67,7 @@
 #include <functional>
 #include <memory>
 #include <map>
+#include <chrono>
 
 namespace titania {
 namespace pb {
@@ -82,6 +82,10 @@ class pbObject;
 class PropertyDescriptor
 {
 public:
+
+	///  @name Member type
+	
+	using clock = std::chrono::high_resolution_clock;
 
 	///  @name Construction
 
@@ -105,6 +109,10 @@ public:
 	getIdentifier () const
 	{ return identifier; }
 
+	uint32_t
+	getIndex () const
+	{ return flags & PROPERTY; }
+
 	bool
 	isDefined () const
 	{ return isDataDescriptor () or isAccessorDescriptor (); }
@@ -115,7 +123,7 @@ public:
 	
 	bool
 	isDataDescriptor () const
-	{ return not value .isUndefined () or isWritable (); }
+	{ return not value .isundefined () or isWritable (); }
 
 	bool
 	isGenericDescriptor () const
@@ -204,6 +212,10 @@ public:
 	getSetter () const
 	{ return setter; }
 
+	const clock::duration &
+	getCreationTime () const
+	{ return creationTime; }
+
 	~PropertyDescriptor ();
 
 
@@ -220,16 +232,23 @@ private:
 	PropertyFlagsType    flags;
 	ptr <pbFunction>     getter;
 	ptr <pbFunction>     setter;
+	clock::duration      creationTime;
 
 };
 
 ///  Type to represent a property descriptor pointer.
-using PropertyDescriptorPtr = std::unique_ptr <PropertyDescriptor>;
+using PropertyDescriptorPtr = std::shared_ptr <PropertyDescriptor>;
 
-///  Type to represent a resolve callback function.
+///  Type to represent a enumerate callback function.
+using EnumerateCallback = std::function <bool (pbObject* const, const EnumerateType, std::string &, void* &)>;
+
+///  Type to represent a hasProperty callback function.
+using HasPropertyCallback = std::function <bool (pbObject* const, const Identifier &)>;
+
+///  Type to represent a property getter callback function.
 using PropertyGetter = std::function <var (pbObject* const, const Identifier &)>;
 
-///  Type to represent a resolve callback function.
+///  Type to represent a property setter callback function.
 using PropertySetter = std::function <void (pbObject* const, const Identifier &, const var &)>;
 
 ///  Type to represent a resolve callback function.
@@ -240,10 +259,12 @@ using DisposeCallback = std::function <void (pbObject* const)>;
 
 struct Callbacks
 {
-	PropertyGetter  getter;
-	PropertySetter  setter;
-	ResolveCallback resolve;
-	DisposeCallback dispose;
+	EnumerateCallback   enumerate;
+	HasPropertyCallback hasProperty;
+	PropertyGetter      getter;
+	PropertySetter      setter;
+	ResolveCallback     resolve;
+	DisposeCallback     dispose;
 
 };
 
@@ -297,74 +318,78 @@ public:
 
 	///  @name Property access
 
-	///  Checks whether this object has a property @a propertyName.
+	///  Checks whether this object has a property @a identifier.
 	bool
-	hasProperty (const Identifier & propertyName) const
+	hasProperty (const Identifier & identifier) const
 	noexcept (true);
 
-	///  Sets the value of the property for @a propertyName.
+	///  Sets the value of the property for @a identifier.
 	virtual
 	void
-	put (const Identifier & propertyName, const var & value, const bool throw_)
-	throw (pbException,
-	       std::invalid_argument);
+	put (const Identifier & identifier, const var & value, const bool throw_)
+	throw (pbError,
+	       std::invalid_argument)
+	{ put (identifier, value, NONE, throw_); }
 
-	///  Returns the value of the property for @a propertyName.
+	///  Returns the value of the property for @a identifier.
 	var
-	get (const Identifier & propertyName) const
-	throw (pbException,
+	get (const Identifier & identifier) const
+	throw (pbError,
 	       std::out_of_range);
 
 	ptr <pbObject>
-	getObject (const Identifier & propertyName) const
-	throw (pbException,
+	getObject (const Identifier & identifier) const
+	throw (pbError,
 	       std::out_of_range);
 
-	///  Returns the property descriptor for @a propertyName.
+	///  Returns the property descriptor for @a identifier.
 	const PropertyDescriptorPtr &
-	getProperty (const Identifier & propertyName) const
+	getProperty (const Identifier & identifier) const
 	throw (std::out_of_range);
 
-	///  Returns the own property descriptor for @a propertyName.
+	///  Returns the own property descriptor for @a identifier.
 	const PropertyDescriptorPtr &
-	getOwnProperty (const Identifier & propertyName) const
+	getOwnProperty (const Identifier & identifier) const
 	throw (std::out_of_range)
-	{ return properties .at (propertyName .getId ()); }
+	{ return properties .at (identifier .getId ()); }
 
 	///  Adds the named property described by the given descriptor for this object.
+	virtual
 	void
-	addOwnProperty (const Identifier & propertyName,
+	addOwnProperty (const Identifier & identifier,
 	                const var & value,
 	                const PropertyFlagsType flags = DEFAULT,
 	                const ptr <pbFunction> & getter = nullptr,
 	                const ptr <pbFunction> & setter = nullptr,
-	                const bool = true)
+	                const bool throw_ = true)
 	throw (TypeError,
 	       std::invalid_argument);
 
 	///  Adds the named property described by the given descriptor for this object.
+	virtual
 	void
-	addOwnProperty (const Identifier & propertyName,
+	addOwnProperty (const Identifier & identifier,
 	                var && value,
 	                const PropertyFlagsType flags = DEFAULT,
 	                ptr <pbFunction> && getter = nullptr,
 	                ptr <pbFunction> && setter = nullptr,
-	                const bool = true)
+	                const bool throw_ = true)
 	throw (TypeError,
 	       std::invalid_argument);
 
 	///  Updates the named property described by the given descriptor for this object.
+	virtual
 	void
-	defineOwnProperty (const Identifier & propertyName,
+	defineOwnProperty (const Identifier & identifier,
 	                   const var & value,
 	                   const PropertyFlagsType flags = DEFAULT,
 	                   const ptr <pbFunction> & getter = nullptr,
 	                   const ptr <pbFunction> & setter = nullptr,
-	                   const bool = true)
+	                   const bool throw_ = true)
 	throw (TypeError);
 
 	void
-	deleteProperty (const Identifier & propertyName)
+	deleteProperty (const Identifier & identifier)
 	noexcept (true);
 
 	///  @name Operations
@@ -377,7 +402,7 @@ public:
 
 	var
 	getDefaultValue (const ValueType) const
-	throw (pbException);
+	throw (pbError);
 
 	///  @name Input/Output
 
@@ -404,6 +429,7 @@ protected:
 	///  @name Friends
 
 	friend class ArrayIndexExpression;
+	friend class ForInStatement;
 	friend class PropertyExpression;
 
 	friend
@@ -434,19 +460,34 @@ protected:
 	throw (std::invalid_argument);
 
 	///  @name Operations
-	
+
+	bool
+	enumerate (const EnumerateType type, std::string & identifier, std::vector <void*> & userData)
+	noexcept (true);
+
+	///  Sets the value of the property for @a identifier.
+	void
+	put (const Identifier & identifier, const var & value, const PropertyFlagsType flags, const bool throw_)
+	throw (pbError,
+	       std::invalid_argument);
+
 	virtual
 	bool
 	resolve (const Identifier & identifier)
-	throw (pbException);
+	throw (pbError);
 
 	var
 	call (const Identifier & identifier, const var & object, const std::vector <var> & args = { }) const
-	throw (pbException,
+	throw (pbError,
 	       std::invalid_argument);
 
 
 private:
+
+	///  @name Member access
+
+	std::vector <PropertyDescriptorPtr>
+	getOwnEnumerableProperties () const;
 
 	///  @name Member types
 

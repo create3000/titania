@@ -87,8 +87,8 @@ public:
 	virtual
 	var
 	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
+	throw (pbError,
+          pbControlFlowException) final override
 	{
 		const auto px = lhs -> getValue () .toPrimitive ();
 		const auto py = rhs -> getValue () .toPrimitive ();

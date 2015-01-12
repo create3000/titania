@@ -87,7 +87,7 @@ public:
 	virtual
 	void
 	putValue (const var & value) const
-	throw (pbException) final override
+	throw (pbError) final override
 	{
 		for (const auto & localObject : executionContext -> getLocalObjects ())
 		{
@@ -106,8 +106,8 @@ public:
 	virtual
 	var
 	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
+	throw (pbError,
+          pbControlFlowException) final override
 	{
 		for (const auto & localObject : executionContext -> getLocalObjects ())
 		{

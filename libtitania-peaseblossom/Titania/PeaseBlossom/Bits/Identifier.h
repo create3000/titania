@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_BITS_IDENTIFIER_H__
 
 #include "../Base/pbOutputStreamObject.h"
+#include "../Bits/pbConstants.h"
 #include "../Bits/pbMath.h"
 
 #include <Titania/LOG.h>
@@ -144,11 +145,15 @@ public:
 
 	uint32_t
 	toUInt32 () const
-	{ return pb::toUInt32 (name); }
+	{
+		const auto index = pb::toUInt32 (name);
+		
+		return isIndex (index) ? index : PROPERTY;
+	}
 
-	bool
-	isIndex (const uint32_t index) const
-	{ return basic::to_string (index) == name and index not_eq uint32_t (M_2_32 - 1); }
+	///  @name Static members
+
+	static const std::hash <std::string> hash;
 
 	///  @name Input/Output
 
@@ -161,9 +166,11 @@ public:
 
 private:
 
-	///  @name Static members
+	///  @name Operations
 
-	static const std::hash <std::string> hash;
+	bool
+	isIndex (const uint32_t index) const
+	{ return basic::to_string (index) == name and index not_eq PROPERTY; }
 
 	///  @name Members
 

@@ -81,7 +81,7 @@ struct toString
 		switch (object .getType ())
 		{
 			case UNDEFINED:
-				return "[object Undefined]";
+				return "[object undefined]";
 			case BOOLEAN:
 				return "[object Boolean]";
 			case NUMBER:

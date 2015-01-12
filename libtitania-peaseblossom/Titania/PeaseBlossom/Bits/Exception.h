@@ -60,7 +60,27 @@
 namespace titania {
 namespace pb {
 
-enum ExceptionType
+/**
+ *  Base class to represent a control flow exception.
+ */
+class pbException :
+	public std::exception
+{
+public:
+
+	pbException ()
+	noexcept (true) :
+		std::exception ()
+	{ }
+
+	virtual
+	~pbException ()
+	noexcept (true)
+	{ }
+
+};
+
+enum ErrorType
 {
 	ERROR,
 	EVAL_ERROR,
@@ -79,7 +99,7 @@ enum ExceptionType
 template <class CharT, class Traits>
 inline
 std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const ExceptionType type)
+operator << (std::basic_ostream <CharT, Traits> & ostream, const ErrorType type)
 noexcept (true)
 {
 	switch (type)
@@ -99,7 +119,7 @@ noexcept (true)
 
 inline
 std::string
-to_string (const ExceptionType type)
+to_string (const ErrorType type)
 noexcept (true)
 {
 	std::ostringstream osstream;
@@ -112,8 +132,8 @@ noexcept (true)
 /**
  *  Base class to represent a ECMAScript exception.
  */
-class pbException :
-	public std::exception,
+class pbError :
+	public pbException,
 	public pbOutputStreamObject
 {
 public:
@@ -127,7 +147,7 @@ public:
 	{ return message .c_str (); }
 
 	virtual
-	ExceptionType
+	ErrorType
 	getType () const
 	noexcept (true) = 0;
 
@@ -185,9 +205,9 @@ public:
 
 	///  @name Destruction
 
-	///  Destructs the pbException.
+	///  Destructs the pbError.
 	virtual
-	~pbException ()
+	~pbError ()
 	noexcept (true)
 	{ }
 
@@ -196,10 +216,10 @@ protected:
 
 	///  @name Construction
 
-	///  Constructs new pbException.
+	///  Constructs new pbError.
 	explicit
-	pbException (const std::string & message) :
-		      std::exception (),
+	pbError (const std::string & message) :
+		         pbException (),
 		pbOutputStreamObject (),
 		             message (message),
 		            filename (),
@@ -224,21 +244,21 @@ private:
 /**
  *  Template to represent a ECMAScript exception.
  *
- *  @param  ExceptionType  Type of exeception.
+ *  @param  ErrorType  Type of exeception.
  */
-template <ExceptionType type>
+template <ErrorType type>
 class Exception :
-	public pbException
+	public pbError
 {
 public:
 
 	explicit
 	Exception (const std::string & message) :
-		pbException (message)
+		pbError (message)
 	{ }
 
 	virtual
-	ExceptionType
+	ErrorType
 	getType () const
 	noexcept (true) final override
 	{ return type; }

@@ -96,13 +96,13 @@ public:
 	///  Constructs new object of this class.
 	var
 	construct (const ptr <pbExecutionContext> &, const std::vector <var> & = { })
-	throw (pbException);
+	throw (pbError);
 
 	///  Executes this function.
 	virtual
 	var
 	call (const var &, const std::vector <var> & = { })
-	throw (pbException) = 0;
+	throw (pbError) = 0;
 
 
 protected:
@@ -120,7 +120,7 @@ protected:
 	virtual
 	var
 	construct (const var &, const std::vector <var> & = { })
-	throw (pbException) = 0;
+	throw (pbError) = 0;
 
 
 private:

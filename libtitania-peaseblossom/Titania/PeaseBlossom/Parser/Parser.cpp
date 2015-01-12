@@ -72,7 +72,8 @@ Parser::Parser (pbExecutionContext* const executionContext, std::istream & istre
 	             whiteSpaces (),
 	       commentCharacters (),
 	                 newLine (false),
-	isLeftHandSideExressions ()
+	isLeftHandSideExressions (),
+	                    noIn (false)
 { }
 
 void
@@ -88,7 +89,7 @@ throw (SyntaxError,
 
 		program ();
 	}
-	catch (pbException & error)
+	catch (pbError & error)
 	{
 		setError (error);
 		throw;
@@ -96,7 +97,7 @@ throw (SyntaxError,
 }
 
 void
-Parser::setError (pbException & error)
+Parser::setError (pbError & error)
 {
 	__LOG__ << this << " " << std::endl;
 	__LOG__ << this << " " << istream .peek () << std::endl;
@@ -236,7 +237,7 @@ Parser::haveAutomaticSemicolon () const
 
 // A.1 Lexical Grammar
 
-void
+bool
 Parser::comments ()
 {
 	//__LOG__ << this << " " << std::endl;
@@ -244,7 +245,7 @@ Parser::comments ()
 	const auto currentPosition = istream .tellg ();
 	
 	if (currentPosition == position)
-		return;
+		return false;
 
 	const auto currentLineNumber = lineNumber;
 
@@ -257,6 +258,8 @@ Parser::comments ()
 
 	if (comments)
 		newLine = lineNumber not_eq currentLineNumber;
+
+	return comments;
 }
 
 bool
@@ -722,13 +725,13 @@ Parser::elision (const ptr <ArrayLiteral> & arrayLiteral)
 
 	if (Grammar::Comma (istream))
 	{
-		arrayLiteral -> addExpression (new PrimitiveExpression (Undefined, ExpressionType::UNDEFINED));
+		arrayLiteral -> addExpression (new PrimitiveExpression (undefined, ExpressionType::UNDEFINED));
 
 		comments ();
 
 		while (Grammar::Comma (istream))
 		{
-			arrayLiteral -> addExpression (new PrimitiveExpression (Undefined, ExpressionType::UNDEFINED));
+			arrayLiteral -> addExpression (new PrimitiveExpression (undefined, ExpressionType::UNDEFINED));
 
 			comments ();
 		}
@@ -1668,19 +1671,22 @@ Parser::relationalExpression (ptr <pbExpression> & lhs)
 				throw SyntaxError ("Expected expression after 'instanceof'.");
 			}
 
-			if (identifierCharacters == Grammar::in ())
+			if (not noIn)
 			{
-				isLeftHandSideExressions .back () = false;
-		
-				ptr <pbExpression> rhs;
-
-				if (relationalExpression (rhs))
+				if (identifierCharacters == Grammar::in ())
 				{
-					lhs = new InExpression (std::move (lhs), std::move (rhs));
-					return true;
-				}
+					isLeftHandSideExressions .back () = false;
+			
+					ptr <pbExpression> rhs;
 
-				throw SyntaxError ("Expected expression after 'in'.");
+					if (relationalExpression (rhs))
+					{
+						lhs = new InExpression (std::move (lhs), std::move (rhs));
+						return true;
+					}
+
+					throw SyntaxError ("Expected expression after 'in'.");
+				}
 			}
 
 			setState (state);
@@ -2106,21 +2112,30 @@ bool
 Parser::expression (ptr <pbExpression> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
+	
+	array <ptr <pbExpression>> expressions;
+	ptr <pbExpression>         expression;
 
-	if (assignmentExpression (value))
+	if (assignmentExpression (expression))
 	{
+		expressions .emplace_back (std::move (expression));
+
 		for ( ; ;)
 		{
 			comments ();
 
 			if (Grammar::Comma (istream))
 			{
-				if (assignmentExpression (value))
+				if (assignmentExpression (expression))
+				{
+					expressions .emplace_back (std::move (expression));
 					continue;
+				}
 
 				throw SyntaxError ("Expected expression after ','.");
 			}
 
+			value = createExpression (std::move (expressions));
 			return true;
 		}
 	}
@@ -2228,40 +2243,59 @@ Parser::variableStatement ()
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
+	
+	const auto state = getState ();
 
 	if (Grammar::var (istream))
 	{
-		if (variableDeclarationList ())
+		if (comments ())
 		{
-			comments ();
+			array <ptr <VariableDeclaration>> variableDeclarations;
+		
+			if (variableDeclarationList (variableDeclarations))
+			{
+				comments ();
 
-			if (Grammar::Semicolon (istream) or haveAutomaticSemicolon ())
-				return true;
+				if (Grammar::Semicolon (istream) or haveAutomaticSemicolon ())
+				{
+					getBlock () -> addExpression (new VariableStatement (std::move (variableDeclarations)));
+					return true;
+				}
 
-			throw SyntaxError ("Expected a ';' after variable declaration.");
+				throw SyntaxError ("Expected a ';' after variable declaration.");
+			}
+
+			throw SyntaxError ("Expected variable name after 'var'.");
 		}
-
-		throw SyntaxError ("Expected variable name after 'var'.");
+		
+		setState (state);
 	}
 
 	return false;
 }
 
 bool
-Parser::variableDeclarationList ()
+Parser::variableDeclarationList (array <ptr <VariableDeclaration>> & variableDeclarations)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
+	
+	ptr <VariableDeclaration> value;
 
-	if (variableDeclaration ())
+	if (variableDeclaration (value))
 	{
+		variableDeclarations .emplace_back (std::move (value));
+	
 		for ( ; ;)
 		{
 			comments ();
 
 			if (Grammar::Comma (istream))
 			{
-				if (variableDeclaration ())
+				if (variableDeclaration (value))
+				{
+					variableDeclarations .emplace_back (std::move (value));
 					continue;
+				}
 
 				throw SyntaxError ("Expected variable name after ','.");
 			}
@@ -2274,7 +2308,7 @@ Parser::variableDeclarationList ()
 }
 
 bool
-Parser::variableDeclaration ()
+Parser::variableDeclaration (ptr <VariableDeclaration> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -2282,12 +2316,11 @@ Parser::variableDeclaration ()
 
 	if (identifier (identifierCharacters))
 	{
-		ptr <pbExpression> value;
+		ptr <pbExpression> initialiserExpression;
 
-		initialiser (value);
-
-		getBlock () -> addExpression (new VariableDeclaration (getExecutionContext (), std::move (identifierCharacters), std::move (value)));
-
+		initialiser (initialiserExpression);
+		
+		value = new VariableDeclaration (getExecutionContext (), std::move (identifierCharacters), std::move (initialiserExpression));
 		return true;
 	}
 
@@ -2428,52 +2461,115 @@ Parser::iterationStatement ()
 		{
 			comments ();
 
+			// for (var VariableDeclarationNoIn in Expression) Statement
+			// for (var VariableDeclarationListNoIn ; Expression Opt ; Expression Opt) Statement
+
+			const auto state = getState ();
+
 			if (Grammar::var (istream))
 			{
-				if (variableDeclarationList ())
+				if (comments ())
 				{
-					comments ();
-
-					if (Grammar::Semicolon (istream))
+					noIn = true;
+					
+					array <ptr <VariableDeclaration>> variableDeclarations;
+				
+					if (variableDeclarationList (variableDeclarations))
 					{
-						ptr <pbExpression> booleanExpression;
+						noIn = false;
+						
+						if (variableDeclarations .size () == 1)
+						{
+							// for (LeftHandSideExpresssion in Expression) Statement
+							
+							comments ();
 
-						expression (booleanExpression);
+							if (Grammar::in (istream))
+							{
+								if (comments ())
+								{
+									ptr <pbExpression> objectExpression;
+
+									if (expression (objectExpression))
+									{								
+										comments ();
+
+										if (Grammar::CloseParenthesis (istream))
+										{
+											auto forInStatement = make_ptr <ForInStatement> (std::move (variableDeclarations .back ()), std::move (objectExpression));
+
+											pushBlock (forInStatement -> getBlock () .get ());
+
+											statement ();
+
+											popBlock ();
+
+											getBlock () -> addExpression (std::move (forInStatement));
+											return true;
+										}
+
+										throw SyntaxError ("Expected a ')'.");
+									}
+
+									throw SyntaxError ("Expected expression after in.");
+								}
+
+								Grammar::in .rewind (istream);
+
+								throw SyntaxError ("Unexpected identifier.");
+							}
+						}
 
 						comments ();
 
 						if (Grammar::Semicolon (istream))
 						{
-							ptr <pbExpression> iterationExpression;
+							ptr <pbExpression> booleanExpression;
 
-							expression (iterationExpression);
+							expression (booleanExpression);
 
 							comments ();
 
-							if (Grammar::CloseParenthesis (istream))
+							if (Grammar::Semicolon (istream))
 							{
-								auto value = new ForStatement (std::move (booleanExpression), std::move (iterationExpression));
+								ptr <pbExpression> iterationExpression;
 
-								pushBlock (value -> getBlock () .get ());
+								expression (iterationExpression);
 
-								statement ();
+								comments ();
 
-								popBlock ();
+								if (Grammar::CloseParenthesis (istream))
+								{
+									auto forStatement = make_ptr <ForStatement> (std::move (variableDeclarations), std::move (booleanExpression), std::move (iterationExpression));
 
-								getBlock () -> addExpression (std::move (value));
+									pushBlock (forStatement -> getBlock () .get ());
 
-								return true;
+									statement ();
+
+									popBlock ();
+
+									getBlock () -> addExpression (std::move (forStatement));
+									return true;
+								}
+
+								throw SyntaxError ("Expected a ')'.");
 							}
 
-							throw SyntaxError ("Expected a ')'.");
+							throw SyntaxError ("Expected a ';'.");
 						}
 
 						throw SyntaxError ("Expected a ';'.");
 					}
 
-					throw SyntaxError ("Expected a ';'.");
+					noIn = false;
+
+					throw SyntaxError ("Expected variable declaration after var.");
 				}
+	
+				setState (state);
 			}
+
+			throw SyntaxError ("Expected expression after 'for'.");
 		}
 
 		throw SyntaxError ("Expected a '(' after 'for'.");

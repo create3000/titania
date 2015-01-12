@@ -112,51 +112,24 @@ noexcept (true)
 	return osstream .str ();
 }
 
-using PropertyFlagsType = uint8_t;
+using PropertyFlagsType = uint64_t;
 
 constexpr PropertyFlagsType NONE         = 0;
-constexpr PropertyFlagsType WRITABLE     = 1 << 0;
-constexpr PropertyFlagsType ENUMERABLE   = 1 << 1;
-constexpr PropertyFlagsType CONFIGURABLE = 1 << 2;
+constexpr PropertyFlagsType WRITABLE     = 1L << 32;
+constexpr PropertyFlagsType ENUMERABLE   = 1L << 33;
+constexpr PropertyFlagsType CONFIGURABLE = 1L << 34;
+constexpr PropertyFlagsType PROPERTY     = 0xffffffff;
 constexpr PropertyFlagsType DEFAULT      = WRITABLE | CONFIGURABLE | ENUMERABLE;
 
-enum class ExpressionType
+enum EnumerateType :
+	uint8_t
 {
-	UNDEFINED,
-	BOOLEAN,
-	NUMBER,
-	BINARY_NUMBER,
-	OCTAL_NUMBER,
-	HEXAL_NUMBER,
-	STRING,
-	SINGLE_QUOTED_STRING,
-	DOUBLE_QUOTED_STRING,
-	NULL_OBJECT,
+	// Enumerate cases:
 
-	ADDITION_EXPRESSION,
-	ARRAY_INDEX_EXPRESSION,
-	ARRAY_LITERAL,
-	ASSIGNMENT_EXPRESSION,
-	DIVISION_EXPRESSION,
-	EQUAL_EXPRESSION,
-	FOR_STATEMENT,
-	FUNCTION_CALL_EXPRESSION,
-	FUNCTION_EXPRESSION,
-	IF_STATEMENT,
-	IN_EXPRESSION,
-	INSTANCE_OF_EXPRESSION,
-	LEFT_SHIFT_EXPRESSION,
-	LESS_EXPRESSION,
-	MULTIPLICATION_EXPRESSION,
-	NEW_EXPRESSION,
-	OBJECT_LITERAL,
-	PROPERTY_EXPRESSION,
-	REMAINDER_EXPRESSION,
-	RETURN_STATEMENT,
-	STRICT_EQUAL_EXPRESSION,
-	SUBTRACTION_EXPRESSION,
-	VARIABLE_EXPRESSION,
-	VARIABLE_DECLARATION,
+	ENUMERATE_BEGIN,
+	ENUMERATE,
+	ENUMERATE_END
+
 };
 
 } // pb

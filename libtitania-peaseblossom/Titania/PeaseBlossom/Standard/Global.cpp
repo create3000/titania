@@ -69,7 +69,7 @@ GlobalObject::GlobalObject (pbExecutionContext* const ec, const std::function <b
 	addOwnProperty ("this",      this,                 WRITABLE | CONFIGURABLE);
 	addOwnProperty ("NaN",       NaN (),               WRITABLE | CONFIGURABLE);
 	addOwnProperty ("Infinity",  POSITIVE_INFINITY (), WRITABLE | CONFIGURABLE);
-	addOwnProperty ("undefined", Undefined,            WRITABLE | CONFIGURABLE);
+	addOwnProperty ("undefined", undefined,            WRITABLE | CONFIGURABLE);
 	addOwnProperty ("Math",      new Math (ec),        WRITABLE | CONFIGURABLE);
 
 	// Functions
@@ -81,7 +81,7 @@ GlobalObject::GlobalObject (pbExecutionContext* const ec, const std::function <b
 
 bool
 GlobalObject::resolve (const Identifier & identifier)
-throw (pbException)
+throw (pbError)
 {
 	if (resolveCallback (identifier))
 		return true;

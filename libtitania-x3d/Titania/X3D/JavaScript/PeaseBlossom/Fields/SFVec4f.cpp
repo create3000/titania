@@ -62,6 +62,8 @@ const std::string SFVec4f::typeName = "SFVec4f";
 
 template <>
 const pb::Callbacks SFVec4d::callbacks = {
+	pb::EnumerateCallback (),
+	pb::HasPropertyCallback (),
 	pb::PropertyGetter (),
 	pb::PropertySetter (),
 	pb::ResolveCallback (),
@@ -70,6 +72,8 @@ const pb::Callbacks SFVec4d::callbacks = {
 
 template <>
 const pb::Callbacks SFVec4f::callbacks = {
+	pb::EnumerateCallback (),
+	pb::HasPropertyCallback (),
 	pb::PropertyGetter (),
 	pb::PropertySetter (),
 	pb::ResolveCallback (),

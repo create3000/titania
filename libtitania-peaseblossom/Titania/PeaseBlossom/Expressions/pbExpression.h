@@ -48,13 +48,15 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VS_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PB_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PB_EXPRESSION_H__
 
-#include "../Primitives/var.h"
 #include "../Base/pbChildObject.h"
 #include "../Base/pbOutputStreamObject.h"
+#include "../Expressions/ControlFlowException.h"
+#include "../Expressions/ExpressionType.h"
 #include "../InputOutput/Generator.h"
+#include "../Primitives/var.h"
 
 namespace titania {
 namespace pb {
@@ -98,19 +100,19 @@ public:
 	virtual
 	void
 	putValue (const var &) const
-	throw (pbException)
+	throw (pbError)
 	{ throw ReferenceError ("Invalid assignment left-hand side."); }
 
 	virtual
 	var
 	getValue () const
-	throw (pbException,
+	throw (pbError,
 	       pbControlFlowException) = 0;
 
 	virtual
 	var
 	call (const ptr <pbExecutionContext> &, const std::vector <var> &) const
-	throw (pbException);
+	throw (pbError);
 
 
 protected:

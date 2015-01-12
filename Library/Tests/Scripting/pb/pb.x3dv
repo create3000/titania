@@ -289,11 +289,8 @@ function test1 ()
 }
 */
 
-/*
 function fibonacci_recursive (value)
 {
-	n = n + 1;
-
 	if (value === 0)
 		return 0;
 
@@ -302,7 +299,6 @@ function fibonacci_recursive (value)
 
 	return fibonacci_recursive (value - 1) + fibonacci_recursive (value - 2);
 }
-*/
 
 function fibonacci_iterative (value)
 {
@@ -329,9 +325,10 @@ function fibonacci_iterative (value)
 	if (value === 1)
 		return 1;
 
-	var result;
-	var h1 = 0;
-	var h2 = 1;
+	var
+		result,
+		h1 = 0,
+		h2 = 1;
 
 	for (var i = 1; i < value; i += 1)
 	{
@@ -374,31 +371,51 @@ function set_time (value, time)
 	print ('set_time: time:  ', time);
 	print ('set_time: now:   ', now ());
 
-	var n = 1;
-
-	//var t0 = now ();
-	//print ('fibonacci_recursive: ', fibonacci_recursive (24));
-	//print ('fibonacci_recursive: ', n);
-	//print ('time: ',                now () - t0);
+	var f = 1;
 
 	var t0 = now ();
-	print ('fibonacci_iterative: ', fibonacci_iterative (800));
-	print ('fibonacci_iterative: ', fibonacci_iterative (8000000));
+	print ('fibonacci_iterative: ', fibonacci_iterative (800 * f));
+	print ('fibonacci_iterative: ', fibonacci_iterative (8000000 * f));
 	print ('time: ',                now () - t0);
 
 	var t0 = now ();
-	print ('fibonacci_iterative1: ', fibonacci_iterative1 ({ }, 800));
-	print ('fibonacci_iterative1: ', fibonacci_iterative1 ({ }, 800000));
+	print ('fibonacci_iterative1: ', fibonacci_iterative1 ({ }, 800 * f));
+	print ('fibonacci_iterative1: ', fibonacci_iterative1 ({ }, 800000 * f));
+	print ('time: ',                 now () - t0);
+
+	var t0 = now ();
+	print ('fibonacci_recursive: ', fibonacci_recursive (22));
+	print ('calls: ',               fibonacci_iterative (22 + 2) + 1);
 	print ('time: ',                now () - t0);
 }
 
 print ('peaseblossom')
 
-var v = new SFVec4f (1,2,3,4);
-var a = new MFVec4f (v,v,v,v);
+function enumerate (o)
+{
+	print (o .constructor .name)
 
-print (a);
-print (a [10])
+	for (var k in o)
+	{
+		print (k, ' = ', o [k], ' : ', k in o)
+	}
+
+	print ('a' in o)
+	print (1000 in o)
+}
+
+
+var v = new SFVec4d (1, 2, 3, 4);
+var a = new MFVec4d (v, v, v);
+
+v .a = 1;
+a .a = 1;
+
+v .__proto__ [4] = 1;
+a .__proto__ [0] = 1;
+
+enumerate (v)
+enumerate (a)
 
 "
 "peaseblossom:"

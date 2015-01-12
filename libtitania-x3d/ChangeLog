@@ -1,3 +1,15 @@
+2015-01-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DRenderer.cpp:
+	* Array.h:
+	* Global.h:
+	* Context.h:
+	* Arguments.h:
+	* Context.cpp:
+	* SFVec4.h:
+	* SFVec4f.cpp:
+	* ArrayFields.cpp: 
+
 2015-01-10  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Array.h:

@@ -54,13 +54,14 @@
 #include "../Execution/Block.h"
 #include "../Expressions/ControlFlowException.h"
 #include "../Expressions/PrimitiveExpression.h"
+#include "../Expressions/VariableDeclaration.h"
 #include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript object literal expression.
+ *  Class to represent a ECMAScript for statement.
  */
 class ForStatement :
 	public pbExpression
@@ -70,8 +71,9 @@ public:
 	///  @name Construction
 
 	///  Constructs new ForStatement expression.
-	ForStatement (ptr <pbExpression> && booleanExpression, ptr <pbExpression>&& iterationExpression) :
+	ForStatement (array <ptr <VariableDeclaration>> && variableDeclarations, ptr <pbExpression> && booleanExpression, ptr <pbExpression>&& iterationExpression) :
 		           pbExpression (ExpressionType::FOR_STATEMENT),
+		   variableDeclarations (std::move (variableDeclarations)),
 		      booleanExpression (std::move (booleanExpression)),
 		    iterationExpression (std::move (iterationExpression)),
 		                  block (new Block ())
@@ -83,7 +85,14 @@ public:
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{
-		const auto copy = new ForStatement (booleanExpression -> copy (executionContext), iterationExpression -> copy (executionContext));
+		array <ptr <VariableDeclaration>> variableDeclarations;
+
+		for (const auto & variableDeclaration : this -> variableDeclarations)
+			variableDeclarations .emplace_back (variableDeclaration -> copy (executionContext));
+
+		const auto copy = new ForStatement (std::move (variableDeclarations),
+		                                    booleanExpression -> copy (executionContext),
+		                                    iterationExpression -> copy (executionContext));
 
 		copy -> getBlock () -> import (executionContext, block .get ());
 
@@ -102,9 +111,12 @@ public:
 	virtual
 	var
 	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
+	throw (pbError,
+          pbControlFlowException) final override
 	{
+		for (const auto variableDeclaration : variableDeclarations)
+			variableDeclaration -> getValue ();
+
 		for (; booleanExpression -> getValue () .toBoolean (); iterationExpression -> getValue ())
 		{
 			try
@@ -139,7 +151,7 @@ public:
 			}
 		}
 
-		return var ();
+		return undefined;
 	}
 
 	///  @name Input/Output
@@ -152,8 +164,26 @@ public:
 		ostream
 			<< "for"
 			<< Generator::TidySpace
-			<< '('
-			<< ';';
+			<< '(';
+
+		if (not variableDeclarations .empty ())
+		{
+			ostream
+				<< "var"
+				<< Generator::Space;
+		
+			for (const auto variableDeclaration : std::make_pair (variableDeclarations .begin (), variableDeclarations .end () - 1))
+			{
+				ostream
+					<< variableDeclaration
+					<< ','
+					<< Generator::TidySpace;
+			}
+
+			ostream << variableDeclarations .back ();
+		}
+
+		ostream << ';';
 
 		if (not booleanExpression -> isPrimitive () or booleanExpression -> getValue () .toBoolean () == false)
 		{
@@ -189,16 +219,17 @@ private:
 			booleanExpression = new PrimitiveExpression (true, ExpressionType::BOOLEAN);
 
 		if (not iterationExpression)
-			iterationExpression = new PrimitiveExpression (Undefined, ExpressionType::UNDEFINED);
+			iterationExpression = new PrimitiveExpression (undefined, ExpressionType::UNDEFINED);
 
-		addChildren (booleanExpression, iterationExpression, block);
+		addChildren (variableDeclarations, booleanExpression, iterationExpression, block);
 	}
 
 	///  @name Members
 
-	ptr <pbExpression> booleanExpression;
-	ptr <pbExpression> iterationExpression;
-	const ptr <Block>  block;
+	const array <ptr <VariableDeclaration>> variableDeclarations;
+	ptr <pbExpression>                      booleanExpression;
+	ptr <pbExpression>                      iterationExpression;
+	const ptr <Block>                       block;
 
 };
 

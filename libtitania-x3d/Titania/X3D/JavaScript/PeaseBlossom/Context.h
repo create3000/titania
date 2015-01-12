@@ -170,7 +170,7 @@ private:
 	shutdown ();
 
 	void
-	setError (const pb::pbException &) const;
+	setError (const pb::pbError &) const;
 
 	///  @name Static members
 

@@ -107,8 +107,8 @@ public:
 	virtual
 	var
 	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
+	throw (pbError,
+          pbControlFlowException) final override
 	{
 		if (booleanExpression -> getValue () .toBoolean ())
 			thenBlock -> run ();

@@ -103,7 +103,7 @@ public:
 	virtual
 	var
 	call (const var &, const std::vector <var> & = { })
-	throw (pbException) final override;
+	throw (pbError) final override;
 
 	///  @name Input/Output
 
@@ -136,7 +136,7 @@ protected:
 	virtual
 	var
 	construct (const var &, const std::vector <var> & = { })
-	throw (pbException) final override;
+	throw (pbError) final override;
 
 
 private:

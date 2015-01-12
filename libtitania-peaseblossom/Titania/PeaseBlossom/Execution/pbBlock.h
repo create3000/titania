@@ -54,7 +54,6 @@
 #include "../Base/pbChildObject.h"
 #include "../Base/pbOutputStreamObject.h"
 #include "../Expressions/pbExpression.h"
-#include "../Expressions/pbControlFlowException.h"
 #include "../Primitives/array.h"
 #include "../Primitives/ptr.h"
 
@@ -105,8 +104,8 @@ protected:
 	///  Imports all expressions from @a block into @a executionContext.
 	void
 	import (pbExecutionContext* const executionContext, const pbBlock* const block)
-	throw (pbException,
-	       pbControlFlowException)
+	throw (pbError,
+          pbControlFlowException)
 	{
 		for (const auto & expression : block -> getExpressions ())
 			addExpression (expression -> copy (executionContext));
@@ -115,8 +114,8 @@ protected:
 	///  Executes the associated expessions of this context.
 	void
 	run ()
-	throw (pbException,
-	       pbControlFlowException)
+	throw (pbError,
+          pbControlFlowException)
 	{
 		for (const auto & expression : expressions)
 			expression -> getValue ();

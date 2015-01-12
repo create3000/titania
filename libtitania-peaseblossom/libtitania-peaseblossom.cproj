@@ -119,7 +119,6 @@
     <None Include="Titania\PeaseBlossom\Expressions\SubtractionExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\VariableDeclaration.h" />
     <None Include="Titania\PeaseBlossom\Expressions\VariableExpression.h" />
-    <None Include="Titania\PeaseBlossom\Expressions\pbControlFlowException.h" />
     <None Include="Titania\PeaseBlossom\Expressions\pbExpression.h" />
     <None Include="Titania\PeaseBlossom\Objects\Array.h" />
     <None Include="Titania\PeaseBlossom\Objects\BooleanObject.h" />
@@ -151,5 +150,9 @@
     <None Include="Titania\PeaseBlossom\Expressions\ArrayIndexExpression.h" />
     <None Include="Titania\PeaseBlossom\Standard\Array.h" />
     <None Include="Titania\PeaseBlossom\Expressions\InExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\VariableStatement.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\ExpressionType.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\Expression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\ForInStatement.h" />
   </ItemGroup>
 </Project>

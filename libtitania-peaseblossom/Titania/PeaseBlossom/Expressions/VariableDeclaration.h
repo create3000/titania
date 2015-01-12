@@ -84,12 +84,20 @@ public:
 
 	///  @name Operations
 
+	virtual
+	void
+	putValue (const var & value) const
+	throw (pbError) final override
+	{
+		executionContext -> getDefaultObject () -> put (identifier, value, false);
+	}
+
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
 	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
+	throw (pbError,
+          pbControlFlowException) final override
 	{
 		// Variable declarations cannot be deleted.
 		
@@ -98,7 +106,7 @@ public:
 
 		defaultObject -> put (identifier, value, false);
 
-		return Undefined;
+		return undefined;
 	}
 
 	///  @name Input/Output
@@ -108,10 +116,7 @@ public:
 	void
 	toStream (std::ostream & ostream) const final override
 	{
-		ostream
-			<< "var"
-			<< Generator::Space
-			<< identifier;
+		ostream << identifier;
 
 		if (expression -> getType () == ExpressionType::UNDEFINED)
 			return;
@@ -133,7 +138,7 @@ private:
 	construct ()
 	{
 		if (not expression)
-			expression = new PrimitiveExpression (Undefined, ExpressionType::UNDEFINED);
+			expression = new PrimitiveExpression (undefined, ExpressionType::UNDEFINED);
 
 		addChildren (executionContext, expression);
 	}

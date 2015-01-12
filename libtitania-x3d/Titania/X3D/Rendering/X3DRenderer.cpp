@@ -203,6 +203,8 @@ X3DRenderer::render (const TraverseType type)
 void
 X3DRenderer::draw ()
 {
+	static constexpr auto comp = ShapeContainerComp { };
+
 	// Enable global lights
 
 	for (const auto & object : getGlobalObjects ())
@@ -226,7 +228,7 @@ X3DRenderer::draw ()
 		glDepthMask (GL_FALSE);
 		glEnable (GL_BLEND);
 
-		std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, ShapeContainerComp { });
+		std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
 
 		for (const auto & shape : basic::make_range (transparentShapes .cbegin (), numTransparentShapes))
 			shape -> draw ();
@@ -244,7 +246,7 @@ X3DRenderer::draw ()
 
 		// Render transparent objects
 
-		std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, ShapeContainerComp { });
+		std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
 
 		glEnable (GL_BLEND);
 

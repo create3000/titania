@@ -55,7 +55,7 @@ namespace pb {
 
 var
 NativeFunction::construct (const var & object, const std::vector <var> & arguments)
-throw (pbException)
+throw (pbError)
 {
 	if (constructor)
 		return constructor (executionContext, object, arguments);
@@ -65,7 +65,7 @@ throw (pbException)
 
 var
 NativeFunction::call (const var & object, const std::vector <var> & arguments)
-throw (pbException)
+throw (pbError)
 {
 	if (function)
 		return function (executionContext, object, arguments);

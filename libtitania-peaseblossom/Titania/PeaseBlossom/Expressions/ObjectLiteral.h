@@ -83,13 +83,15 @@ public:
 	{
 		const auto copy = new ObjectLiteral (executionContext);
 		
-		for (const auto & property : properties)
+		for (const auto & pair : properties)
 		{
-			copy -> defineOwnProperty (Identifier (property .second .identifier),
-			                           property .second .value  ? property .second .value  -> copy (executionContext) : nullptr,
-			                           property .second .flags,
-			                           property .second .getter ? property .second .getter -> copy (executionContext) : nullptr,
-			                           property .second .setter ? property .second .setter -> copy (executionContext) : nullptr);
+			const auto & property = pair .second;
+
+			copy -> defineOwnProperty (Identifier (property -> identifier),
+			                           property -> value ? property -> value -> copy (executionContext) : nullptr,
+			                           property -> flags,
+			                           property -> getter ? property -> getter -> copy (executionContext) : nullptr,
+			                           property -> setter ? property -> setter -> copy (executionContext) : nullptr);
 		}
 
 		return copy;
@@ -107,58 +109,57 @@ public:
 	{
 		auto & property = properties [identifier .getId ()];
 
-		property .identifier = std::move (identifier);
+		if (not property)
+			property .reset (new PropertyDescriptor (properties .size ()));
+
+		property -> identifier = std::move (identifier);
 		
 		if (value)
 		{
-			if (property .getter)
+			if (property -> getter)
 				throw SyntaxError ("Object literal may not have data and accessor property with the same name.");
 
-			property .value = std::move (value);
+			property -> value = std::move (value);
 		}
 
 		if (getter)
 		{
-			if (property .flags & WRITABLE)
+			if (property -> flags & WRITABLE)
 				throw SyntaxError ("Object literal may not have data and accessor property with the same name.");
 
-			property .getter = std::move (getter);
+			property -> getter = std::move (getter);
 		}
 
 		if (setter)
-			property .setter = std::move (setter);
+			property -> setter = std::move (setter);
 
-		property .flags = flags;
+		property -> flags = flags;
 
-		if (property .index == 0)
-			property .index = properties .size ();
+		sorted .emplace (property -> index, property);
 
-		addChildren (property .value,
-		             property .getter,
-		             property .setter);
+		addChildren (property -> value,
+		             property -> getter,
+		             property -> setter);
 	}
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
 	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
+	throw (pbError,
+          pbControlFlowException) final override
 	{
 		const auto object = new Object (executionContext .get ());
 
-		for (const auto & property : properties)
+		for (const auto & property : sorted)
 		{
-			try
-			{
-				object -> defineOwnProperty (property .second .identifier,
-				                             property .second .value ? property .second .value -> getValue () : Undefined,
-				                             property .second .flags,
-				                             property .second .getter,
-				                             property .second .setter);
-			}
-			catch (const std::invalid_argument &)
-			{ }
+			object -> addOwnProperty (property .second -> identifier,
+			                          property .second -> value
+			                          ? property .second -> value -> getValue ()
+			                          : undefined,
+			                          property .second -> flags,
+			                          property .second -> getter,
+			                          property .second -> setter);
 		}
 
 		return object;
@@ -180,11 +181,6 @@ public:
 		}
 		else
 		{
-			std::map <size_t, const PropertyDescriptor*> sorted;
-			
-			for (const auto & property : properties)
-				sorted .emplace (property .second .index, &property .second);
-
 			ostream
 				<< '{'
 				<< Generator::IncIndent
@@ -192,14 +188,14 @@ public:
 
 			for (const auto & property : std::make_pair (sorted .begin (), -- sorted .end ()))
 			{
-				toStream (ostream, *property .second);
+				toStream (ostream, property .second);
 	
 				ostream
 					<< ','
 					<< Generator::Break;
 			}
 
-			toStream (ostream, *(-- sorted .end ()) -> second);
+			toStream (ostream, (-- sorted .end ()) -> second);
 
 			ostream
 				<< Generator::Break
@@ -215,9 +211,9 @@ private:
 
 	struct PropertyDescriptor
 	{
-		PropertyDescriptor () :
+		PropertyDescriptor (const size_t index) :
 			flags (NONE),
-			index (0)
+			index (index)
 		{ }
 	
 		Identifier         identifier;
@@ -228,7 +224,8 @@ private:
 		size_t             index;
 	};
 
-	using PropertyIndex = std::map <size_t, PropertyDescriptor>;
+	using PropertyDescriptorPtr = std::shared_ptr <PropertyDescriptor>;
+	using PropertyIndex         = std::map <size_t, PropertyDescriptorPtr>;
 
 	///  @name Construction
 
@@ -240,23 +237,23 @@ private:
 	///  @name Input/Output
 
 	void
-	toStream (std::ostream & ostream, const PropertyDescriptor & property) const
+	toStream (std::ostream & ostream, const PropertyDescriptorPtr & property) const
 	{
 		bool line = false;
 	
-		if (property .value)
+		if (property -> value)
 		{
 			ostream
 				<< Generator::Indent
-				<< property .identifier
+				<< property -> identifier
 				<< ':'
 				<< Generator::TidySpace
-				<< property .value;
+				<< property -> value;
 
 			line = true;
 		}
 		
-		if (property .getter)
+		if (property -> getter)
 		{
 			if (line)
 			{
@@ -269,11 +266,11 @@ private:
 				<< Generator::Indent
 				<< "get"
 				<< Generator::Space
-				<< property .identifier
+				<< property -> identifier
 				<< Generator::TidySpace
 				<< "()";
 
-			if (property .getter -> getExpressions () .empty ())
+			if (property -> getter -> getExpressions () .empty ())
 			{
 				ostream
 					<< Generator::TidySpace
@@ -289,7 +286,7 @@ private:
 					<< Generator::IncIndent
 					<< '{';
 
-				property .getter -> pbExecutionContext::toStream (ostream);
+				property -> getter -> pbExecutionContext::toStream (ostream);
 
 				ostream
 					<< Generator::DecIndent
@@ -300,7 +297,7 @@ private:
 			line = true;
 		}
 
-		if (property .setter)
+		if (property -> setter)
 		{
 			if (line)
 			{
@@ -313,11 +310,11 @@ private:
 				<< Generator::Indent
 				<< "set"
 				<< Generator::Space
-				<< property .identifier
+				<< property -> identifier
 				<< Generator::TidySpace
 				<< '(';
 
-			const auto & formalParameters = property .setter -> getFormalParameters ();
+			const auto & formalParameters = property -> setter -> getFormalParameters ();
 
 			if (not formalParameters .empty ())
 			{
@@ -334,7 +331,7 @@ private:
 
 			ostream << ')';
 				
-			if (property .setter -> getExpressions () .empty ())
+			if (property -> setter -> getExpressions () .empty ())
 			{
 				ostream
 					<< Generator::TidySpace
@@ -350,7 +347,7 @@ private:
 					<< Generator::IncIndent
 					<< '{';
 
-				property .setter -> pbExecutionContext::toStream (ostream);
+				property -> setter -> pbExecutionContext::toStream (ostream);
 
 				ostream
 					<< Generator::DecIndent
@@ -364,6 +361,7 @@ private:
 
 	const ptr <pbExecutionContext> executionContext;
 	PropertyIndex                  properties;
+	PropertyIndex                  sorted;
 
 };
 

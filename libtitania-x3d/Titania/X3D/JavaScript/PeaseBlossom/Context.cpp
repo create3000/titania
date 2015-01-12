@@ -85,7 +85,7 @@ throw (std::exception) :
 		program -> fromString (getECMAScript ());
 		program -> run ();
 	}
-	catch (const pb::pbException & error)
+	catch (const pb::pbError & error)
 	{
 		setError (error);
 
@@ -107,6 +107,8 @@ Context::addClasses ()
 	using namespace std::placeholders;
 	
 	callbacks = pb::Callbacks {
+		pb::EnumerateCallback (),
+		pb::HasPropertyCallback (),
 		pb::PropertyGetter (),
 		pb::PropertySetter (),
 		std::bind (&Context::resolve, this, _1, _2),
@@ -205,7 +207,7 @@ Context::initialize ()
 	{
 		program -> getFunctionDeclaration ("initialize") -> call (program -> getGlobalObject ());
 	}
-	catch (const pb::pbException & error)
+	catch (const pb::pbError & error)
 	{
 		setError (error);
 	}
@@ -298,7 +300,7 @@ Context::prepareEvents ()
 	{
 		program -> getFunctionDeclaration ("prepareEvents") -> call (program -> getGlobalObject ());
 	}
-	catch (const pb::pbException & error)
+	catch (const pb::pbError & error)
 	{
 		setError (error);
 	}
@@ -317,11 +319,11 @@ Context::set_field (X3D::X3DFieldDefinition* const field)
 
 		function -> call (program -> getGlobalObject (),
 		                  {
-		                     pb::var (),
-		                     pb::var (getCurrentTime ())
+		                     pb::undefined,
+		                     getCurrentTime ()
 								});
 	}
-	catch (const pb::pbException & error)
+	catch (const pb::pbError & error)
 	{
 		getBrowser () -> println (error);
 	}
@@ -338,7 +340,7 @@ Context::eventsProcessed ()
 	{
 		program -> getFunctionDeclaration ("eventsProcessed") -> call (program -> getGlobalObject ());
 	}
-	catch (const pb::pbException & error)
+	catch (const pb::pbError & error)
 	{
 		setError (error);
 	}
@@ -357,7 +359,7 @@ Context::shutdown ()
 { }
 
 void
-Context::setError (const pb::pbException & error) const
+Context::setError (const pb::pbError & error) const
 {
 	X3D::X3DJavaScriptContext::setError (error .toString (),
 	                                     error .getFilename (),

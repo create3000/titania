@@ -112,14 +112,14 @@ Function::addLocalObjects (const ptr <pbExecutionContext> & executionContext)
 
 var
 Function::construct (const var & object, const std::vector <var> & arguments)
-throw (pbException)
+throw (pbError)
 {
 	return call (object, arguments);
 }
 
 var
 Function::call (const var & object, const std::vector <var> & arguments)
-throw (pbException)
+throw (pbError)
 {
 	const auto localObject = new Object (static_cast <pbExecutionContext*> (this));
 
@@ -127,7 +127,7 @@ throw (pbException)
 	//localObject -> addOwnProperty ("arguments", arguments, NONE);
 
 	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
-		localObject -> addOwnProperty (formalParameters [i], i < argc ? arguments [i] : Undefined, WRITABLE | CONFIGURABLE);
+		localObject -> addOwnProperty (formalParameters [i], i < argc ? arguments [i] : undefined, WRITABLE | CONFIGURABLE);
 
 	StackGuard guard (this, localObject);
 

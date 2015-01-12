@@ -60,7 +60,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript remainder expression.
+ *  Class to represent a ECMAScript less expression.
  */
 class LessExpression :
 	public pbExpression
@@ -89,8 +89,8 @@ public:
 	virtual
 	var
 	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
+	throw (pbError,
+          pbControlFlowException) final override
 	{
 		const auto px = lhs -> getValue () .toPrimitive (NUMBER);
 		const auto py = rhs -> getValue () .toPrimitive (NUMBER);

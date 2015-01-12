@@ -128,7 +128,7 @@ noexcept (true)
 
 var
 pbFunction::construct (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments)
-throw (pbException)
+throw (pbError)
 {
 	const var  object = createInstance (executionContext);
 	const auto result = construct (object, arguments);

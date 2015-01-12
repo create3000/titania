@@ -54,7 +54,6 @@
 #include "../Base/GarbageCollector.h"
 #include "../Base/pbOutputStreamObject.h"
 #include "../Bits/pbConstants.h"
-#include "../Expressions/pbControlFlowException.h"
 #include "../Primitives/ptr.h"
 
 #include <cmath>
@@ -67,7 +66,7 @@ class pbObject;
 
 struct UndefinedType { };
 
-constexpr auto Undefined = UndefinedType ();
+constexpr auto undefined = UndefinedType ();
 
 /**
  *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
@@ -308,7 +307,7 @@ public:
 	{ return type not_eq OBJECT; }
 
 	bool
-	isUndefined () const
+	isundefined () const
 	{ return type == UNDEFINED; }
 
 	bool
@@ -332,7 +331,7 @@ public:
 	///  Converts its argument to a value of type Boolean.
 	var
 	toPrimitive (const ValueType = UNDEFINED) const
-	throw (pbException);
+	throw (pbError);
 
 	///  Converts its argument to a value of type Boolean.
 	bool

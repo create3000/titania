@@ -109,7 +109,7 @@ noexcept (true)
 
 void
 pbExecutionContext::import (const pbExecutionContext* const executionContext)
-throw (pbException,
+throw (pbError,
        pbControlFlowException)
 {
 	for (const auto & function : executionContext -> getFunctionDeclarations ())
@@ -120,7 +120,7 @@ throw (pbException,
 
 var
 pbExecutionContext::run ()
-throw (pbException)
+throw (pbError)
 {
 	try
 	{
@@ -135,7 +135,7 @@ throw (pbException)
 
 		pbBlock::run ();
 
-		return Undefined;
+		return undefined;
 	}
 	catch (const ContinueException &)
 	{
@@ -161,7 +161,7 @@ throw (pbException)
 	{
 		return exception .getValue ();
 	}
-	catch (const pbException &)
+	catch (const pbError &)
 	{
 		throw;
 	}

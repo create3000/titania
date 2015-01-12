@@ -66,6 +66,7 @@ namespace pb {
 
 class ArrayLiteral;
 class ObjectLiteral;
+class VariableDeclaration;
 class pbBlock;
 class pbExecutionContext;
 class pbExpression;
@@ -98,7 +99,7 @@ private:
 	// Operations
 
 	void
-	setError (pbException & error);
+	setError (pbError & error);
 	
 	std::string
 	getline ();
@@ -146,7 +147,7 @@ private:
 
 	// A.1 Lexical Grammar
 
-	void
+	bool
 	comments ();
 
 	bool
@@ -306,10 +307,10 @@ private:
 	variableStatement ();
 
 	bool
-	variableDeclarationList ();
+	variableDeclarationList (array <ptr <VariableDeclaration>> &);
 
 	bool
-	variableDeclaration ();
+	variableDeclaration (ptr <VariableDeclaration> &);
 
 	bool
 	initialiser (ptr <pbExpression> &);
@@ -364,6 +365,7 @@ private:
 	std::string                      commentCharacters;
 	bool                             newLine;
 	std::vector <bool>               isLeftHandSideExressions;
+	bool                             noIn;
 
 };
 

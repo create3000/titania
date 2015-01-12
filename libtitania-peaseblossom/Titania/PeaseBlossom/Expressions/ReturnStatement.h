@@ -89,8 +89,8 @@ public:
 	virtual
 	var
 	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
+	throw (pbError,
+          pbControlFlowException) final override
 	{
 		throw ReturnException (expression -> getValue ());
 	}
@@ -124,7 +124,7 @@ private:
 	construct ()
 	{
 		if (not expression)
-			expression = new PrimitiveExpression (Undefined, ExpressionType::UNDEFINED);
+			expression = new PrimitiveExpression (undefined, ExpressionType::UNDEFINED);
 
 		addChildren (executionContext, expression);
 	}

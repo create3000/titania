@@ -48,37 +48,52 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PB_CONTROL_FLOW_EXCEPTION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PB_CONTROL_FLOW_EXCEPTION_H__
-
-#include <exception>
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_EXPRESSION_TYPE_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_EXPRESSION_TYPE_H__
 
 namespace titania {
 namespace pb {
 
-/**
- *  Base class to represent a control flow exception.
- */
-class pbControlFlowException :
-	public std::exception
+enum class ExpressionType
 {
-public:
+	UNDEFINED,
+	BOOLEAN,
+	NUMBER,
+	BINARY_NUMBER,
+	OCTAL_NUMBER,
+	HEXAL_NUMBER,
+	STRING,
+	SINGLE_QUOTED_STRING,
+	DOUBLE_QUOTED_STRING,
+	NULL_OBJECT,
 
-	pbControlFlowException ()
-	noexcept (true) :
-		std::exception ()
-	{ }
-	
-	virtual
-	const char*
-	what () const
-	noexcept (true) final override
-	{ return "pbControlFlowException"; }
-
-	virtual
-	~pbControlFlowException ()
-	noexcept (true)
-	{ }
+	ADDITION_EXPRESSION,
+	ARRAY_INDEX_EXPRESSION,
+	ARRAY_LITERAL,
+	ASSIGNMENT_EXPRESSION,
+	DIVISION_EXPRESSION,
+	EQUAL_EXPRESSION,
+	EXPRESSION,
+	FOR_IN_STATEMENT,
+	FOR_STATEMENT,
+	FUNCTION_CALL_EXPRESSION,
+	FUNCTION_EXPRESSION,
+	IF_STATEMENT,
+	IN_EXPRESSION,
+	INSTANCE_OF_EXPRESSION,
+	LEFT_SHIFT_EXPRESSION,
+	LESS_EXPRESSION,
+	MULTIPLICATION_EXPRESSION,
+	NEW_EXPRESSION,
+	OBJECT_LITERAL,
+	PROPERTY_EXPRESSION,
+	REMAINDER_EXPRESSION,
+	RETURN_STATEMENT,
+	STRICT_EQUAL_EXPRESSION,
+	SUBTRACTION_EXPRESSION,
+	VARIABLE_EXPRESSION,
+	VARIABLE_DECLARATION,
+	VARIABLE_STATEMENT,
 
 };
 

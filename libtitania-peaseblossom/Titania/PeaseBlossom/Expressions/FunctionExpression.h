@@ -87,8 +87,8 @@ public:
 	virtual
 	var
 	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
+	throw (pbError,
+          pbControlFlowException) final override
 	{ return function -> copy (executionContext .get ()); }
 
 	///  @name Input/Output

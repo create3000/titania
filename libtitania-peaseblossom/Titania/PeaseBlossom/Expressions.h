@@ -57,6 +57,8 @@
 #include "Expressions/AssignmentExpression.h"
 #include "Expressions/DivisionExpression.h"
 #include "Expressions/EqualExpression.h"
+#include "Expressions/Expression.h"
+#include "Expressions/ForInStatement.h"
 #include "Expressions/ForStatement.h"
 #include "Expressions/FunctionCallExpression.h"
 #include "Expressions/FunctionExpression.h"
@@ -76,5 +78,6 @@
 #include "Expressions/SubtractionExpression.h"
 #include "Expressions/VariableDeclaration.h"
 #include "Expressions/VariableExpression.h"
+#include "Expressions/VariableStatement.h"
 
 #endif

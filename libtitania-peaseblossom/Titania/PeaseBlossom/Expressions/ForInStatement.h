@@ -48,30 +48,34 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FOR_IN_STATEMENT_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FOR_IN_STATEMENT_H__
 
-#include "../Expressions/pbExpression.h"
+#include "../Execution/Block.h"
+#include "../Expressions/ControlFlowException.h"
 #include "../Expressions/PrimitiveExpression.h"
+#include "../Expressions/VariableDeclaration.h"
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript remainder expression.
+ *  Class to represent a ECMAScript for in statement.
  */
-class StrictEqualExpression :
+class ForInStatement :
 	public pbExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new StrictEqualExpression expression.
-	StrictEqualExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
-		pbExpression (ExpressionType::STRICT_EQUAL_EXPRESSION),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
+	///  Constructs new ForInStatement expression.
+	ForInStatement (ptr <VariableDeclaration> && variableDeclaration, ptr <pbExpression>&& expression) :
+		       pbExpression (ExpressionType::FOR_IN_STATEMENT),
+		variableDeclaration (std::move (variableDeclaration)),
+		         expression (std::move (expression)),
+		              block (new Block ())
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -79,45 +83,85 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new StrictEqualExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
+	{
+		const auto copy = new ForInStatement (variableDeclaration -> copy (executionContext), expression -> copy (executionContext));
+
+		copy -> getBlock () -> import (executionContext, block .get ());
+
+		return copy;
+	}
+
+	///  @name Member access
+
+	const ptr <Block> &
+	getBlock () const
+	{ return block; }
 
 	///  @name Operations
 
-	///  Converts its argument to a value of type Boolean.
+	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	var
 	getValue () const
 	throw (pbError,
-          pbControlFlowException) final override
+	       pbControlFlowException) final override
 	{
-		const auto x = lhs -> getValue ();
-		const auto y = rhs -> getValue ();
+		const auto value = expression -> getValue ();
 
-		if (x .getType () not_eq y .getType ())
-			return false;
+		if (value .getType () not_eq OBJECT)
+			return undefined;
 
-		switch (x .getType ())
+		const auto &        object = value .getObject ();
+		std::string         propertyName;
+		std::vector <void*> userData;
+
+		if (object -> enumerate (ENUMERATE_BEGIN, propertyName, userData))
 		{
-			case UNDEFINED:
-				return true;
+			do
+			{
+				while (object -> enumerate (ENUMERATE, propertyName, userData))
+				{
+					variableDeclaration -> putValue (propertyName);
 
-			case NULL_OBJECT:
-				return true;
+					try
+					{
+						block -> run ();
+					}
+					catch (const ContinueException &)
+					{
+						continue;
+					}
+					catch (const LabelledContinueException & error)
+					{
+						//if (error .getIdentifier () == id)
+						//	continue;
 
-			case NUMBER:
-				return x .getNumber () == y .getNumber ();
+						object -> enumerate (ENUMERATE_END, propertyName, userData);
+						throw;
+					}
+					catch (const BreakException &)
+					{
+						break;
+					}
+					catch (const LabelledBreakException &)
+					{
+						//if (error .getIdentifier () == id)
+						//	break;
 
-			case STRING:
-				return x .getString () == y .getString ();
-
-			case BOOLEAN:
-				return x .getBoolean () == y .getBoolean ();
-
-			case OBJECT:
-				return x .getObject () == y .getObject ();
+						object -> enumerate (ENUMERATE_END, propertyName, userData);
+						throw;
+					}
+					catch (...)
+					{
+						object -> enumerate (ENUMERATE_END, propertyName, userData);
+						throw;
+					}
+				}
+			}
+			while (object -> enumerate (ENUMERATE_END, propertyName, userData));
 		}
 
-		return false;
+		return undefined;
 	}
 
 	///  @name Input/Output
@@ -128,11 +172,19 @@ public:
 	toStream (std::ostream & ostream) const final override
 	{
 		ostream
-			<< lhs
+			<< "for"
 			<< Generator::TidySpace
-			<< "==="
-			<< Generator::TidySpace
-			<< rhs;
+			<< '('
+			<< "var"
+			<< Generator::Space
+			<< variableDeclaration
+			<< Generator::Space
+			<< "in"
+			<< Generator::Space
+			<< expression
+			<< ')'
+			<< Generator::TidyBreak
+			<< block;
 	}
 
 private:
@@ -142,28 +194,15 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (lhs, rhs); }
+	{ addChildren (variableDeclaration, expression, block); }
 
 	///  @name Members
 
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	const ptr <VariableDeclaration> variableDeclaration;
+	const ptr <pbExpression>        expression;
+	const ptr <Block>               block;
 
 };
-
-///  @relates StrictEqualExpression
-///  @name Construction
-
-///  Constructs new StrictEqualExpression expression.
-inline
-ptr <pbExpression>
-createStrictEqualExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
-{
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (StrictEqualExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::BOOLEAN);
-
-	return new StrictEqualExpression (std::move (lhs), std::move (rhs));
-}
 
 } // pb
 } // titania

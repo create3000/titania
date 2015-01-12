@@ -231,12 +231,12 @@ var::operator = (pbObject* const object)
 
 var
 var::toPrimitive (const ValueType preferedType) const
-throw (pbException)
+throw (pbError)
 {
 	switch (type)
 	{
 		case UNDEFINED:
-			return Undefined;
+			return undefined;
 		case BOOLEAN:
 			return value .bool_;
 		case NUMBER:
@@ -413,7 +413,7 @@ var::toStream (std::ostream & ostream) const
 			return;
 		}
 		case STRING:
-			ostream << *value .string_;
+			ostream << value .string_ -> raw ();
 			return;
 		case NULL_OBJECT:
 			ostream << "null";

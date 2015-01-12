@@ -51,11 +51,37 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_CONTROL_FLOW_EXCEPTION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_CONTROL_FLOW_EXCEPTION_H__
 
-#include "../Expressions/pbControlFlowException.h"
+#include "../Bits/Exception.h"
 #include "../Primitives/var.h"
 
 namespace titania {
 namespace pb {
+
+/**
+ *  Base class to represent a control flow exception.
+ */
+class pbControlFlowException :
+	public pbException
+{
+public:
+
+	pbControlFlowException ()
+	noexcept (true) :
+		pbException ()
+	{ }
+	
+	virtual
+	const char*
+	what () const
+	noexcept (true) final override
+	{ return "pbControlFlowException"; }
+
+	virtual
+	~pbControlFlowException ()
+	noexcept (true)
+	{ }
+
+};
 
 enum class ControlFlowExceptionType
 {
@@ -163,10 +189,10 @@ public:
 
 	///  @name Construction
 
-	ReturnException (const var & value)
+	ReturnException (var && value)
 	noexcept (true) :
 		ControlFlowException <ControlFlowExceptionType::RETURN> (),
-		                                                  value (value)
+		                                                  value (std::move (value))
 	{ }
 
 	///  @name Member access

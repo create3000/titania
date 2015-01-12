@@ -142,7 +142,7 @@ typename std::enable_if <
 	typename Class::internal_type*
 >::type
 get1Argument (const pb::var & value)
-throw (pb::pbException)
+throw (pb::pbError)
 {
 	try
 	{
@@ -171,7 +171,7 @@ typename std::enable_if <
 	typename Class::internal_type*
 >::type
 get1Argument (const std::vector <pb::var> & args, const size_t index)
-throw (pb::pbException)
+throw (pb::pbError)
 {
 	try
 	{
@@ -193,7 +193,7 @@ typename std::enable_if <
 	Type
 >::type
 get1Argument (const pb::var & value)
-throw (pb::pbException)
+throw (pb::pbError)
 {
 	throw pb::TypeError ("get1Argument");
 }
@@ -202,7 +202,7 @@ template <>
 inline
 bool
 get1Argument <bool> (const pb::var & value)
-throw (pb::pbException)
+throw (pb::pbError)
 {
 	return value .toBoolean ();
 }
@@ -211,7 +211,7 @@ template <>
 inline
 double
 get1Argument <double> (const pb::var & value)
-throw (pb::pbException)
+throw (pb::pbError)
 {
 	return value .toNumber ();
 }
@@ -220,7 +220,7 @@ template <>
 inline
 float
 get1Argument <float> (const pb::var & value)
-throw (pb::pbException)
+throw (pb::pbError)
 {
 	return value .toNumber ();
 }
@@ -229,7 +229,7 @@ template <>
 inline
 int32_t
 get1Argument <int32_t> (const pb::var & value)
-throw (pb::pbException)
+throw (pb::pbError)
 {
 	return value .toInt32 ();
 }
@@ -238,7 +238,7 @@ template <>
 inline
 uint32_t
 get1Argument <uint32_t> (const pb::var & value)
-throw (pb::pbException)
+throw (pb::pbError)
 {
 	return value .toUInt32 ();
 }
@@ -247,7 +247,7 @@ template <>
 inline
 std::string
 get1Argument <std::string> (const pb::var & value)
-throw (pb::pbException)
+throw (pb::pbError)
 {
 	return value .toString ();
 }
@@ -256,7 +256,7 @@ template <>
 inline
 X3D::String
 get1Argument <X3D::String> (const pb::var & value)
-throw (pb::pbException)
+throw (pb::pbError)
 {
 	return value .toString ();
 }
@@ -271,7 +271,7 @@ typename std::enable_if <
 	Type
 >::type
 get1Argument (const std::vector <pb::var> & args, const size_t index)
-throw (pb::pbException)
+throw (pb::pbError)
 {
 	return get1Argument <Type> (args [index]);
 }

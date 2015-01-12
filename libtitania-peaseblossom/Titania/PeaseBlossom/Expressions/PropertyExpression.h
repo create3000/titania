@@ -86,7 +86,7 @@ public:
 	virtual
 	void
 	putValue (const var & value) const
-	throw (pbException) final override
+	throw (pbError) final override
 	{
 		const auto base = expression -> getValue ();
 
@@ -134,8 +134,8 @@ public:
 	virtual
 	var
 	getValue () const
-	throw (pbException,
-	       pbControlFlowException) final override
+	throw (pbError,
+          pbControlFlowException) final override
 	{
 		const auto base = expression -> getValue ();
 
@@ -180,18 +180,18 @@ public:
 				}
 				catch (const std::out_of_range &)
 				{
-					return Undefined;
+					return undefined;
 				}
 			}
 		}
 
-		return Undefined;
+		return undefined;
 	}
 
 	virtual
 	var
 	call (const ptr <pbExecutionContext> & ec, const std::vector <var> & arguments) const
-	throw (pbException) final override
+	throw (pbError) final override
 	{
 		const auto base = expression -> getValue ();
 

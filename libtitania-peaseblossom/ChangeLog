@@ -1,3 +1,64 @@
+2015-01-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-peaseblossom.cproj:
+	* Expressions.h:
+	* Array.h:
+	* Parser.h:
+	* var.h:
+	* Exception.h:
+	* Parser.cpp:
+	* Global.h:
+	* Array.cpp:
+	* Identifier.h:
+	* var.cpp:
+	* pbConstants.h:
+	* pbObject.h:
+	* Function.h:
+	* Object.cpp:
+	* Global.cpp:
+	* pbBlock.h:
+	* pbObject.cpp:
+	* Function.cpp:
+	* pbFunction.h:
+	* pbFunction.cpp:
+	* NativeFunction.h:
+	* Expression.h:
+	* IfStatement.h:
+	* InExpression.h:
+	* ForStatement.h:
+	* NativeFunction.cpp:
+	* pbExpression.h:
+	* ArrayLiteral.h:
+	* ObjectLiteral.h:
+	* NewExpression.h:
+	* ExpressionType.h:
+	* pbExpression.cpp:
+	* ForInStatement.h:
+	* LessExpression.h:
+	* EqualExpression.h:
+	* ReturnStatement.h:
+	* pbExecutionContext.h:
+	* VariableStatement.h:
+	* VariableExpression.h:
+	* AdditionExpression.h:
+	* pbExecutionContext.cpp:
+	* DivisionExpression.h:
+	* FunctionExpression.h:
+	* PropertyExpression.h:
+	* LeftShiftExpression.h:
+	* PrimitiveExpression.h:
+	* VariableDeclaration.h:
+	* RemainderExpression.h:
+	* ControlFlowException.h:
+	* ArrayIndexExpression.h:
+	* InstanceOfExpression.h:
+	* AssignmentExpression.h:
+	* SubtractionExpression.h:
+	* StrictEqualExpression.h:
+	* FunctionCallExpression.h:
+	* pbControlFlowException.h:
+	* MultiplicationExpression.h: 
+
 2015-01-10  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* pbMath.h:
