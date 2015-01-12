@@ -158,7 +158,7 @@ private:
 	prepareEvents ();
 
 	void
-	set_field (X3D::X3DFieldDefinition*);
+	set_field (X3D::X3DFieldDefinition* const, const std::string &);
 
 	void
 	eventsProcessed ();

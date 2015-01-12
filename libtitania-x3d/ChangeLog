@@ -1,5 +1,15 @@
 2015-01-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* value.h:
+	* value.cpp:
+	* Context.h:
+	* X3DField.h:
+	* Context.cpp: 
+
+2015-01-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DRenderer.cpp:
 	* Array.h:
 	* Global.h:

@@ -53,6 +53,7 @@
 #include "Arguments.h"
 #include "Global.h"
 #include "Fields.h"
+#include "value.h"
 
 #include <Titania/PeaseBlossom/Debug.h>
 #include <cassert>
@@ -251,14 +252,20 @@ Context::set_live ()
 		{
 			switch (field -> getAccessType ())
 			{
-				case inputOnly   :
-				case inputOutput :
-					{
-						if (program -> hasFunctionDeclaration (field -> getName ()))
-							field -> addInterest (this, &Context::set_field, field);
+				case inputOnly:
+				{
+					if (program -> hasFunctionDeclaration (field -> getName ()))
+						field -> addInterest (this, &Context::set_field, field, field -> getName ());
 
-						break;
-					}
+					break;
+				}
+				case inputOutput:
+				{
+					if (program -> hasFunctionDeclaration ("set_" + field -> getName ()))
+						field -> addInterest (this, &Context::set_field, field, "set_" + field -> getName ());
+
+					break;
+				}
 				default:
 					break;
 			}
@@ -278,14 +285,12 @@ Context::set_live ()
 		{
 			switch (field -> getAccessType ())
 			{
-				case inputOnly   :
-				case inputOutput :
-					{
-						if (program -> hasFunctionDeclaration (field -> getName ()))
-							field -> removeInterest (this, &Context::set_field);
-
-						break;
-					}
+				case inputOnly:
+				case inputOutput:
+				{
+					field -> removeInterest (this, &Context::set_field);
+					break;
+				}
 				default:
 					break;
 			}
@@ -309,17 +314,17 @@ Context::prepareEvents ()
 }
 
 void
-Context::set_field (X3D::X3DFieldDefinition* const field)
+Context::set_field (X3D::X3DFieldDefinition* const field, const std::string & functionName)
 {
 	field -> isTainted (true);
 
 	try
 	{
-		const auto & function = program -> getFunctionDeclaration (field -> getName ());
+		const auto & function = program -> getFunctionDeclaration (functionName);
 
 		function -> call (program -> getGlobalObject (),
 		                  {
-		                     pb::undefined,
+		                     getValue (this, field),
 		                     getCurrentTime ()
 								});
 	}

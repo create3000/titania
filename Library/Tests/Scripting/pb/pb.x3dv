@@ -60,6 +60,7 @@ Transform {
 }
 
 DEF Script1 Script {
+  inputOutput SFVec4f value 0 0 0 0
   inputOnly SFTime set_time
 
     url [
@@ -69,6 +70,13 @@ DEF Script1 Script {
 #
 #
  "peaseblossom:
+
+function set_value (value, time)
+{
+	print ('set_value: ', value);
+	print ('set_value: ', time);
+}
+
 /*
 function initialize ()
 {

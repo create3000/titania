@@ -88,15 +88,15 @@ public:
 	pb::ptr <pb::NativeFunction>
 	initialize (Context* const, const pb::ptr <pb::Program> &);
 
-
-protected:
-
-	///  @name Construction
-
 	template <class Class>
 	static
 	pb::var
 	get (Context* const, typename Class::internal_type* const);
+
+
+protected:
+
+	///  @name Construction
 
 	template <class Class>
 	static
