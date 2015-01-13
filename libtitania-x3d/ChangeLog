@@ -4,6 +4,29 @@
 	* libtitania-x3d.cproj:
 	* Array.h:
 	* Fields.h:
+	* value.cpp:
+	* Context.cpp:
+	* ObjectType.h:
+	* SFVec2.h:
+	* SFVec3.h:
+	* SFVec4.h:
+	* SFColor.h:
+	* SFImage.h:
+	* SFColor.cpp:
+	* SFImage.cpp:
+	* SFRotation.h:
+	* SFColorRGBA.h:
+	* ArrayFields.h:
+	* SFRotation.cpp:
+	* ArrayFields.cpp:
+	* SFColorRGBA.cpp: 
+
+2015-01-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Array.h:
+	* Fields.h:
 	* Context.h:
 	* value.cpp:
 	* Context.cpp:

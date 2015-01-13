@@ -2373,6 +2373,7 @@
     <None Include="Tests\EnvironmentalSensors\TransformSensor.x3dv" />
     <None Include="Tests\EnvironmentalSensors\FallingBoxes.x3dv" />
     <None Include="Tests\Scripting\pb\pb-Inline.x3dv" />
+    <None Include="Tests\Scripting\pb\pb1.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

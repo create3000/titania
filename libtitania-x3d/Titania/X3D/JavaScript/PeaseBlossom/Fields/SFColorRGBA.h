@@ -48,47 +48,86 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_OBJECT_TYPE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_OBJECT_TYPE_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_FIELDS_SFCOLOR_RGBA_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_FIELDS_SFCOLOR_RGBA_H__
+
+#include "../../../Fields/SFColorRGBA.h"
+#include "../X3DField.h"
 
 namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-enum class ObjectType
+class SFColorRGBA :
+	public X3DField
 {
-	X3DField,
-	X3DArrayField,
+public:
 
-	SFColor,
-	SFColorRGBA,
-	SFImage,
-	SFRotation,
-	SFVec2d,
-	SFVec2f,
-	SFVec3d,
-	SFVec3f,
-	SFVec4d,
-	SFVec4f,
+	///  @name Member types
 
-	MFBool,
-	MFColor,
-	MFColorRGBA,
-	MFDouble,
-	MFFloat,
-	MFImage,
-	MFInt32,
-	MFString,
-	MFTime,
-	MFRotation,
-	MFVec2d,
-	MFVec2f,
-	MFVec3d,
-	MFVec3f,
-	MFVec4d,
-	MFVec4f,
+	using internal_type = X3D::SFColorRGBA;
 
-	SIZE
+	///  @name Common members
+
+	static
+	constexpr ObjectType
+	getType ()
+	{ return ObjectType::SFColorRGBA; }
+
+	static
+	const std::string &
+	getTypeName ()
+	{ return typeName; }
+
+	static
+	const pb::Callbacks &
+	getCallbacks ()
+	{ return callbacks; }
+
+	///  @name Construction
+
+	static
+	pb::ptr <pb::NativeFunction>
+	initialize (Context* const, const pb::ptr <pb::Program> &);
+
+
+private:
+
+	///  @name Construction
+
+	static
+	pb::var
+	construct (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	///  @name Member access
+
+	static
+	pb::var
+	set1Value (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
+
+	static
+	pb::var
+	get1Value (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
+
+	///  @name Functions
+
+	static
+	pb::var
+	setHSV (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	getHSV (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	///  @name Member types
+
+	enum {R, G, B, A};
+
+	///  @name Static members
+
+	static const std::string   typeName;
+	static const pb::Callbacks callbacks;
+
 };
 
 } // peaseblossom

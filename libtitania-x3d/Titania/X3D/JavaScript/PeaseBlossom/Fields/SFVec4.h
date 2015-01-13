@@ -104,11 +104,11 @@ private:
 
 	static
 	pb::var
-	get1Value (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
+	set1Value (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
 
 	static
 	pb::var
-	set1Value (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
+	get1Value (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
 
 	///  @name Functions
 
@@ -246,22 +246,6 @@ SFVec4 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb:
 
 template <class Type>
 pb::var
-SFVec4 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
-{
-	try
-	{
-		const auto lhs = getThis <SFVec4> (object);
-
-		return lhs -> get1Value (index);
-	}
-	catch (const std::invalid_argument &)
-	{
-		throw pb::TypeError (getTypeName () + ".prototype[" + basic::to_string (index) + "] is not generic.");
-	}
-}
-
-template <class Type>
-pb::var
 SFVec4 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
@@ -271,6 +255,22 @@ SFVec4 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb:
 		lhs -> set1Value (index, get1Argument <double> (args, 0));
 
 		return pb::undefined;
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw pb::TypeError (getTypeName () + ".prototype[" + basic::to_string (index) + "] is not generic.");
+	}
+}
+
+template <class Type>
+pb::var
+SFVec4 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+{
+	try
+	{
+		const auto lhs = getThis <SFVec4> (object);
+
+		return lhs -> get1Value (index);
 	}
 	catch (const std::invalid_argument &)
 	{

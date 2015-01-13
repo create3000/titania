@@ -48,47 +48,96 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_OBJECT_TYPE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_OBJECT_TYPE_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_FIELDS_SFIMAGE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_FIELDS_SFIMAGE_H__
+
+#include "../../../Fields/SFImage.h"
+#include "../X3DField.h"
 
 namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-enum class ObjectType
+class SFImage :
+	public X3DField
 {
-	X3DField,
-	X3DArrayField,
+public:
 
-	SFColor,
-	SFColorRGBA,
-	SFImage,
-	SFRotation,
-	SFVec2d,
-	SFVec2f,
-	SFVec3d,
-	SFVec3f,
-	SFVec4d,
-	SFVec4f,
+	///  @name Member types
 
-	MFBool,
-	MFColor,
-	MFColorRGBA,
-	MFDouble,
-	MFFloat,
-	MFImage,
-	MFInt32,
-	MFString,
-	MFTime,
-	MFRotation,
-	MFVec2d,
-	MFVec2f,
-	MFVec3d,
-	MFVec3f,
-	MFVec4d,
-	MFVec4f,
+	using internal_type = X3D::SFImage;
 
-	SIZE
+	///  @name Common members
+
+	static
+	constexpr ObjectType
+	getType ()
+	{ return ObjectType::SFImage; }
+
+	static
+	const std::string &
+	getTypeName ()
+	{ return typeName; }
+
+	static
+	const pb::Callbacks &
+	getCallbacks ()
+	{ return callbacks; }
+
+	///  @name Construction
+
+	static
+	pb::ptr <pb::NativeFunction>
+	initialize (Context* const, const pb::ptr <pb::Program> &);
+
+
+private:
+
+	///  @name Construction
+
+	static
+	pb::var
+	construct (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	///  @name Properties
+
+	static
+	pb::var
+	setWidth (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	getWidth (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	setHeight (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	getHeight (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	setComp (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	getComp (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	setArray (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	getArray (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	///  @name Static members
+
+	static const std::string   typeName;
+	static const pb::Callbacks callbacks;
+
 };
 
 } // peaseblossom

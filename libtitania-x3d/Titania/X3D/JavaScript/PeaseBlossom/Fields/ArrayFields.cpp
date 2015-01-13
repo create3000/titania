@@ -58,10 +58,19 @@ template <>
 const std::string MFBool::typeName = "MFBool";
 
 template <>
+const std::string MFColor::typeName = "MFColor";
+
+template <>
+const std::string MFColorRGBA::typeName = "MFColorRGBA";
+
+template <>
 const std::string MFDouble::typeName = "MFDouble";
 
 template <>
 const std::string MFFloat::typeName = "MFFloat";
+
+template <>
+const std::string MFImage::typeName = "MFImage";
 
 template <>
 const std::string MFInt32::typeName = "MFInt32";
@@ -71,6 +80,9 @@ const std::string MFString::typeName = "MFString";
 
 template <>
 const std::string MFTime::typeName = "MFTime";
+
+template <>
+const std::string MFRotation::typeName = "MFRotation";
 
 template <>
 const std::string MFVec2d::typeName = "MFVec2d";
@@ -90,6 +102,7 @@ const std::string MFVec4d::typeName = "MFVec4d";
 template <>
 const std::string MFVec4f::typeName = "MFVec4f";
 
+
 template <>
 const pb::Callbacks MFBool::callbacks = {
 	enumerate,
@@ -98,6 +111,26 @@ const pb::Callbacks MFBool::callbacks = {
 	set1Value,
 	pb::ResolveCallback (),
 	dispose <MFBool>
+};
+
+template <>
+const pb::Callbacks MFColor::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFColor>
+};
+
+template <>
+const pb::Callbacks MFColorRGBA::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFColorRGBA>
 };
 
 template <>
@@ -118,6 +151,16 @@ const pb::Callbacks MFFloat::callbacks = {
 	set1Value,
 	pb::ResolveCallback (),
 	dispose <MFFloat>
+};
+
+template <>
+const pb::Callbacks MFImage::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFImage>
 };
 
 template <>
@@ -148,6 +191,16 @@ const pb::Callbacks MFTime::callbacks = {
 	set1Value,
 	pb::ResolveCallback (),
 	dispose <MFTime>
+};
+
+template <>
+const pb::Callbacks MFRotation::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFRotation>
 };
 
 template <>

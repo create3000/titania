@@ -1,23 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/value.cpp">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="88" Column="31" />
+      <File FileName="Library/Tests/Scripting/pb/pb1.x3dv" Line="90" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="233" Column="3" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.h" Line="1" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Array.h" Line="285" Column="51" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/ArrayFields.cpp" Line="83" Column="12" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.h" Line="402" Column="43" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="281" Column="10" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Array.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/ArrayFields.h" Line="56" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/ArrayFields.cpp" Line="122" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.h" Line="1" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/value.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec3.h" Line="383" Column="27" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec3.cpp" Line="56" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields.h" Line="65" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/value.cpp" Line="82" Column="10" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFColor.cpp" Line="116" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -54,10 +48,11 @@
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Basic" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="PeaseBlossom" expanded="True">
                     <Node name="Fields" expanded="True" />
-                    <Node name="Context.cpp" selected="True" />
+                    <Node name="value.cpp" selected="True" />
                   </Node>
                   <Node name="SpiderMonkey" expanded="True">
                     <Node name="Fields" expanded="True" />

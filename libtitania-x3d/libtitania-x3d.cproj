@@ -749,6 +749,10 @@
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec3.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec2.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\X3DScalar.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFRotation.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFColorRGBA.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFColor.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFImage.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1253,6 +1257,10 @@
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec3.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec4.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec2.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFRotation.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFColorRGBA.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFColor.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFImage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1335,7 +1343,7 @@
           <GacRefVar />
           <AsmRefVar />
           <ProjectRefVar />
-          <MessageRegex Error="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(fatal error|error|warning)\s*:\s*(?&lt;message&gt;.*)" Warning="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(fatal error|error|warning)\s*:\s*(?&lt;message&gt;.*)" Name="Custom" />
+          <MessageRegex Error="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(fatal error|error)\s*:\s*(?&lt;message&gt;.*)" Warning="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(fatal error|error|warning|note)\s*:\s*(?&lt;message&gt;.*)" Name="Custom" />
         </MonoDevelop.Autotools.MakefileInfo>
       </Properties>
     </MonoDevelop>

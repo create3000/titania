@@ -60,9 +60,6 @@ Transform {
 }
 
 DEF Script1 Script {
-  inputOutput SFVec4f value 0 0 0 0
-  inputOutput SFVec4f v1 1 2 3 4
-  inputOutput SFTime t1 123
   inputOnly SFTime set_time
 
     url [
@@ -72,26 +69,6 @@ DEF Script1 Script {
 #
 #
  "peaseblossom:
-
-function set_value (value, time)
-{
-	print ('set_value: ', value);
-	print ('set_value: ', time);
-	fields ();
-}
-
-function fields ()
-{
-	print ('# value: ', v1);
-	v1 = new SFVec4f (2,3,4,5);
-	print ('# value: ', v1);
-	print ('# value: ', v1 === v1);
-
-	print ('# time:  ', t1);
-	t1 = 234;
-	print ('# time:  ', t1);
-}
-
 /*
 function initialize ()
 {
@@ -411,35 +388,6 @@ function set_time (value, time)
 	print ('calls: ',               fibonacci_iterative (22 + 2) + 1);
 	print ('time: ',                now () - t0);
 }
-
-print ('peaseblossom')
-
-function enumerate (o)
-{
-	print (o .constructor .name)
-
-	for (var k in o)
-	{
-		print (k, ' = ', o [k], ' : ', k in o)
-	}
-
-	print ('a' in o)
-	print (1000 in o)
-}
-
-
-var v = new SFVec4d (1, 2, 3, 4);
-var a = new MFVec4d (v, v, v);
-
-v .a = 1;
-a .a = 1;
-
-v .__proto__ [4] = 1;
-a .__proto__ [0] = 1;
-
-enumerate (v)
-enumerate (a)
-
 "
 "peaseblossom:"
 ]

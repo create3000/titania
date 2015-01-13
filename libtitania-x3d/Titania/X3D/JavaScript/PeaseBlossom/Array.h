@@ -123,11 +123,11 @@ private:
 
 	static
 	pb::var
-	getLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	setLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	setLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	getLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	template <class Class>
 	static

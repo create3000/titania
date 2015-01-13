@@ -326,7 +326,7 @@ public:
 	///  Sets the value of the property for @a identifier.
 	virtual
 	void
-	put (const Identifier & identifier, const var & value, const bool throw_)
+	put (const Identifier & identifier, const var & value, const bool throw_ = false)
 	throw (pbError,
 	       std::invalid_argument)
 	{ put (identifier, value, NONE, throw_); }

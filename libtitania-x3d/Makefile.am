@@ -412,6 +412,10 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/PeaseBlossom.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/Context.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/Fields/ArrayFields.cpp \
+	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFColor.cpp \
+	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFColorRGBA.cpp \
+	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFImage.cpp \
+	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFRotation.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec2.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec3.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.cpp \

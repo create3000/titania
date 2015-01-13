@@ -54,6 +54,10 @@
 #include "../Array.h"
 #include "../../../Fields/ArrayFields.h"
 
+#include "SFColor.h"
+#include "SFColorRGBA.h"
+#include "SFImage.h"
+#include "SFRotation.h"
 #include "SFVec2.h"
 #include "SFVec3.h"
 #include "SFVec4.h"
@@ -63,24 +67,38 @@ namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-using MFBool   = Array <SFBool, X3D::MFBool>;
-using MFDouble = Array <SFDouble, X3D::MFDouble>;
-using MFFloat  = Array <SFFloat, X3D::MFFloat>;
-using MFInt32  = Array <SFInt32, X3D::MFInt32>;
-using MFString = Array <SFString, X3D::MFString>;
-using MFTime   = Array <SFTime, X3D::MFTime>;
-using MFVec2d  = Array <SFVec2d, X3D::MFVec2d>;
-using MFVec2f  = Array <SFVec2f, X3D::MFVec2f>;
-using MFVec3d  = Array <SFVec3d, X3D::MFVec3d>;
-using MFVec3f  = Array <SFVec3f, X3D::MFVec3f>;
-using MFVec4d  = Array <SFVec4d, X3D::MFVec4d>;
-using MFVec4f  = Array <SFVec4f, X3D::MFVec4f>;
+using MFBool      = Array <SFBool, X3D::MFBool>;
+using MFColor     = Array <SFColor, X3D::MFColor>;
+using MFColorRGBA = Array <SFColorRGBA, X3D::MFColorRGBA>;
+using MFDouble    = Array <SFDouble, X3D::MFDouble>;
+using MFFloat     = Array <SFFloat, X3D::MFFloat>;
+using MFImage     = Array <SFImage, X3D::MFImage>;
+using MFInt32     = Array <SFInt32, X3D::MFInt32>;
+using MFString    = Array <SFString, X3D::MFString>;
+using MFTime      = Array <SFTime, X3D::MFTime>;
+using MFRotation  = Array <SFRotation, X3D::MFRotation>;
+using MFVec2d     = Array <SFVec2d, X3D::MFVec2d>;
+using MFVec2f     = Array <SFVec2f, X3D::MFVec2f>;
+using MFVec3d     = Array <SFVec3d, X3D::MFVec3d>;
+using MFVec3f     = Array <SFVec3f, X3D::MFVec3f>;
+using MFVec4d     = Array <SFVec4d, X3D::MFVec4d>;
+using MFVec4f     = Array <SFVec4f, X3D::MFVec4f>;
 
 
 template <>
 constexpr ObjectType
 MFBool::getType ()
 { return ObjectType::MFBool; }
+
+template <>
+constexpr ObjectType
+MFColor::getType ()
+{ return ObjectType::MFColor; }
+
+template <>
+constexpr ObjectType
+MFColorRGBA::getType ()
+{ return ObjectType::MFColorRGBA; }
 
 template <>
 constexpr ObjectType
@@ -91,6 +109,11 @@ template <>
 constexpr ObjectType
 MFFloat::getType ()
 { return ObjectType::MFFloat; }
+
+template <>
+constexpr ObjectType
+MFImage::getType ()
+{ return ObjectType::MFImage; }
 
 template <>
 constexpr ObjectType
@@ -106,6 +129,11 @@ template <>
 constexpr ObjectType
 MFTime::getType ()
 { return ObjectType::MFTime; }
+
+template <>
+constexpr ObjectType
+MFRotation::getType ()
+{ return ObjectType::MFRotation; }
 
 template <>
 constexpr ObjectType
