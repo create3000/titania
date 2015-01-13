@@ -88,13 +88,19 @@ function enumerate (o)
 	}
 }
 
-var c = new SFImage (2, 3, 4, new MFInt32 ());
-var m = new MFImage (c);
+var c = new SFMatrix3d (1,2,3,4,5,6,7,8,9);
+var m = new MFMatrix3d (c);
 print (m);
+print (c [0]);
+print (c [8]);
+
+enumerate (c)
 
 print (v);
 v = new MFVec4f (new SFVec4f (1,2,3,4));
 print (v);
+
+enumerate (new SFVec4f (1,2,3,4))
 "
 ]
   directOutput TRUE

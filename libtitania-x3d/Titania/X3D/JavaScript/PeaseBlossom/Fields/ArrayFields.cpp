@@ -76,6 +76,18 @@ template <>
 const std::string MFInt32::typeName = "MFInt32";
 
 template <>
+const std::string MFMatrix3d::typeName = "MFMatrix3d";
+
+template <>
+const std::string MFMatrix3f::typeName = "MFMatrix3f";
+
+template <>
+const std::string MFMatrix4d::typeName = "MFMatrix4d";
+
+template <>
+const std::string MFMatrix4f::typeName = "MFMatrix4f";
+
+template <>
 const std::string MFString::typeName = "MFString";
 
 template <>
@@ -174,6 +186,46 @@ const pb::Callbacks MFInt32::callbacks = {
 };
 
 template <>
+const pb::Callbacks MFMatrix3d::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFMatrix3d>
+};
+
+template <>
+const pb::Callbacks MFMatrix3f::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFMatrix3f>
+};
+
+template <>
+const pb::Callbacks MFMatrix4d::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFMatrix4d>
+};
+
+template <>
+const pb::Callbacks MFMatrix4f::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFMatrix4f>
+};
+
+template <>
 const pb::Callbacks MFString::callbacks = {
 	enumerate,
 	hasProperty,
@@ -262,6 +314,28 @@ const pb::Callbacks MFVec4f::callbacks = {
 	pb::ResolveCallback (),
 	dispose <MFVec4f>
 };
+
+
+template class Array <SFBool, X3D::MFBool>;
+template class Array <SFColor, X3D::MFColor>;
+template class Array <SFColorRGBA, X3D::MFColorRGBA>;
+template class Array <SFDouble, X3D::MFDouble>;
+template class Array <SFFloat, X3D::MFFloat>;
+template class Array <SFImage, X3D::MFImage>;
+template class Array <SFInt32, X3D::MFInt32>;
+template class Array <SFMatrix3d, X3D::MFMatrix3d>;
+template class Array <SFMatrix3f, X3D::MFMatrix3f>;
+template class Array <SFMatrix4d, X3D::MFMatrix4d>;
+template class Array <SFMatrix4f, X3D::MFMatrix4f>;
+template class Array <SFString, X3D::MFString>;
+template class Array <SFTime, X3D::MFTime>;
+template class Array <SFRotation, X3D::MFRotation>;
+template class Array <SFVec2d, X3D::MFVec2d>;
+template class Array <SFVec2f, X3D::MFVec2f>;
+template class Array <SFVec3d, X3D::MFVec3d>;
+template class Array <SFVec3f, X3D::MFVec3f>;
+template class Array <SFVec4d, X3D::MFVec4d>;
+template class Array <SFVec4f, X3D::MFVec4f>;
 
 } // peaseblossom
 } // X3D

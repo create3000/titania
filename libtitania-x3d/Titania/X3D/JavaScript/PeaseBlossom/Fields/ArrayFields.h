@@ -57,6 +57,8 @@
 #include "SFColor.h"
 #include "SFColorRGBA.h"
 #include "SFImage.h"
+#include "SFMatrix3.h"
+#include "SFMatrix4.h"
 #include "SFRotation.h"
 #include "SFVec2.h"
 #include "SFVec3.h"
@@ -74,6 +76,10 @@ using MFDouble    = Array <SFDouble, X3D::MFDouble>;
 using MFFloat     = Array <SFFloat, X3D::MFFloat>;
 using MFImage     = Array <SFImage, X3D::MFImage>;
 using MFInt32     = Array <SFInt32, X3D::MFInt32>;
+using MFMatrix3d  = Array <SFMatrix3d, X3D::MFMatrix3d>;
+using MFMatrix3f  = Array <SFMatrix3f, X3D::MFMatrix3f>;
+using MFMatrix4d  = Array <SFMatrix4d, X3D::MFMatrix4d>;
+using MFMatrix4f  = Array <SFMatrix4f, X3D::MFMatrix4f>;
 using MFString    = Array <SFString, X3D::MFString>;
 using MFTime      = Array <SFTime, X3D::MFTime>;
 using MFRotation  = Array <SFRotation, X3D::MFRotation>;
@@ -122,6 +128,26 @@ MFInt32::getType ()
 
 template <>
 constexpr ObjectType
+MFMatrix3d::getType ()
+{ return ObjectType::MFMatrix3d; }
+
+template <>
+constexpr ObjectType
+MFMatrix3f::getType ()
+{ return ObjectType::MFMatrix3f; }
+
+template <>
+constexpr ObjectType
+MFMatrix4d::getType ()
+{ return ObjectType::MFMatrix4d; }
+
+template <>
+constexpr ObjectType
+MFMatrix4f::getType ()
+{ return ObjectType::MFMatrix4f; }
+
+template <>
+constexpr ObjectType
 MFString::getType ()
 { return ObjectType::MFString; }
 
@@ -164,6 +190,27 @@ template <>
 constexpr ObjectType
 MFVec4f::getType ()
 { return ObjectType::MFVec4f; }
+
+extern template class Array <SFBool, X3D::MFBool>;
+extern template class Array <SFColor, X3D::MFColor>;
+extern template class Array <SFColorRGBA, X3D::MFColorRGBA>;
+extern template class Array <SFDouble, X3D::MFDouble>;
+extern template class Array <SFFloat, X3D::MFFloat>;
+extern template class Array <SFImage, X3D::MFImage>;
+extern template class Array <SFInt32, X3D::MFInt32>;
+extern template class Array <SFMatrix3d, X3D::MFMatrix3d>;
+extern template class Array <SFMatrix3f, X3D::MFMatrix3f>;
+extern template class Array <SFMatrix4d, X3D::MFMatrix4d>;
+extern template class Array <SFMatrix4f, X3D::MFMatrix4f>;
+extern template class Array <SFString, X3D::MFString>;
+extern template class Array <SFTime, X3D::MFTime>;
+extern template class Array <SFRotation, X3D::MFRotation>;
+extern template class Array <SFVec2d, X3D::MFVec2d>;
+extern template class Array <SFVec2f, X3D::MFVec2f>;
+extern template class Array <SFVec3d, X3D::MFVec3d>;
+extern template class Array <SFVec3f, X3D::MFVec3f>;
+extern template class Array <SFVec4d, X3D::MFVec4d>;
+extern template class Array <SFVec4f, X3D::MFVec4f>;
 
 } // peaseblossom
 } // X3D

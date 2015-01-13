@@ -1,17 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/value.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFMatrix4.h">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb1.x3dv" Line="90" Column="1" />
+      <File FileName="Library/Tests/Scripting/pb/pb1.x3dv" Line="103" Column="33" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="281" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Array.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/ArrayFields.h" Line="56" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/ArrayFields.cpp" Line="122" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="292" Column="16" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Array.h" Line="290" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/ArrayFields.h" Line="78" Column="45" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/ArrayFields.cpp" Line="80" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.h" Line="426" Column="5" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/value.cpp" Line="82" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFColor.cpp" Line="116" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/value.cpp" Line="227" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFMatrix4.h" Line="509" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -51,8 +51,9 @@
                 <Node name="Basic" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="PeaseBlossom" expanded="True">
-                    <Node name="Fields" expanded="True" />
-                    <Node name="value.cpp" selected="True" />
+                    <Node name="Fields" expanded="True">
+                      <Node name="SFVec4.h" selected="True" />
+                    </Node>
                   </Node>
                   <Node name="SpiderMonkey" expanded="True">
                     <Node name="Fields" expanded="True" />

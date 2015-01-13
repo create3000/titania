@@ -136,7 +136,7 @@ SFImage::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var &
 			break;
 		}
 		default:
-			throw pb::Error ("wrong number of arguments.");
+			throw pb::Error (getTypeName () + ".constructor: wrong number of arguments.");
 	}
 
 	return pb::undefined;

@@ -48,59 +48,41 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_OBJECT_TYPE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_OBJECT_TYPE_H__
+#include "SFMatrix3.h"
 
 namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-enum class ObjectType
-{
-	X3DField,
-	X3DArrayField,
+template <>
+const std::string SFMatrix3d::typeName = "SFMatrix3d";
 
-	SFColor,
-	SFColorRGBA,
-	SFImage,
-	SFMatrix3d,
-	SFMatrix3f,
-	SFMatrix4d,
-	SFMatrix4f,
-	SFRotation,
-	SFVec2d,
-	SFVec2f,
-	SFVec3d,
-	SFVec3f,
-	SFVec4d,
-	SFVec4f,
+template <>
+const std::string SFMatrix3f::typeName = "SFMatrix3f";
 
-	MFBool,
-	MFColor,
-	MFColorRGBA,
-	MFDouble,
-	MFFloat,
-	MFImage,
-	MFInt32,
-	MFMatrix3d,
-	MFMatrix3f,
-	MFMatrix4d,
-	MFMatrix4f,
-	MFString,
-	MFTime,
-	MFRotation,
-	MFVec2d,
-	MFVec2f,
-	MFVec3d,
-	MFVec3f,
-	MFVec4d,
-	MFVec4f,
-
-	SIZE
+template <>
+const pb::Callbacks SFMatrix3d::callbacks = {
+	pb::EnumerateCallback (),
+	pb::HasPropertyCallback (),
+	pb::PropertyGetter (),
+	pb::PropertySetter (),
+	pb::ResolveCallback (),
+	dispose <SFMatrix3d>
 };
+
+template <>
+const pb::Callbacks SFMatrix3f::callbacks = {
+	pb::EnumerateCallback (),
+	pb::HasPropertyCallback (),
+	pb::PropertyGetter (),
+	pb::PropertySetter (),
+	pb::ResolveCallback (),
+	dispose <SFMatrix3f>
+};
+
+template class SFMatrix3 <X3D::SFMatrix3d>;
+template class SFMatrix3 <X3D::SFMatrix3f>;
 
 } // peaseblossom
 } // X3D
 } // titania
-
-#endif

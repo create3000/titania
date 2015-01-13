@@ -132,7 +132,7 @@ SFColor::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var &
 			break;
 		}
 		default:
-			throw pb::Error ("wrong number of arguments.");
+			throw pb::Error (getTypeName () + ".constructor: wrong number of arguments.");
 	}
 
 	return pb::undefined;
@@ -174,7 +174,7 @@ pb::var
 SFColor::setHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 3)
-		throw pb::Error ("wrong number of arguments.");
+		throw pb::Error (getTypeName () + ".prototype.setHSV: wrong number of arguments.");
 
 	try
 	{
@@ -197,7 +197,7 @@ pb::var
 SFColor::getHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
-		throw pb::Error ("wrong number of arguments.");
+		throw pb::Error (getTypeName () + ".prototype.getHSV: wrong number of arguments.");
 
 	try
 	{

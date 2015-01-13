@@ -234,7 +234,7 @@ SFVec3 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb:
 			break;
 		}
 		default:
-			throw pb::Error ("wrong number of arguments.");
+			throw pb::Error (getTypeName () + ".constructor: wrong number of arguments.");
 	}
 
 	return pb::undefined;
@@ -279,7 +279,7 @@ pb::var
 SFVec3 <Type>::negate (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
-		throw pb::Error ("wrong number of arguments.");
+		throw pb::Error (getTypeName () + ".prototype.negate: wrong number of arguments.");
 
 	try
 	{
@@ -298,7 +298,7 @@ pb::var
 SFVec3 <Type>::add (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
-		throw pb::Error ("wrong number of arguments.");
+		throw pb::Error (getTypeName () + ".prototype.add: wrong number of arguments.");
 
 	try
 	{
@@ -318,7 +318,7 @@ pb::var
 SFVec3 <Type>::subtract (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
-		throw pb::Error ("wrong number of arguments.");
+		throw pb::Error (getTypeName () + ".prototype.subtract: wrong number of arguments.");
 
 	try
 	{
@@ -338,7 +338,7 @@ pb::var
 SFVec3 <Type>::multiply (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
-		throw pb::Error ("wrong number of arguments.");
+		throw pb::Error (getTypeName () + ".prototype.multiply: wrong number of arguments.");
 
 	try
 	{
@@ -358,7 +358,7 @@ pb::var
 SFVec3 <Type>::divide (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
-		throw pb::Error ("wrong number of arguments.");
+		throw pb::Error (getTypeName () + ".prototype.divide: wrong number of arguments.");
 
 	try
 	{
@@ -378,7 +378,7 @@ pb::var
 SFVec3 <Type>::dot (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
-		throw pb::Error ("wrong number of arguments.");
+		throw pb::Error (getTypeName () + ".prototype.dot: wrong number of arguments.");
 
 	try
 	{
@@ -398,7 +398,7 @@ pb::var
 SFVec3 <Type>::cross (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
-		throw pb::Error ("wrong number of arguments.");
+		throw pb::Error (getTypeName () + ".prototype.cross: wrong number of arguments.");
 
 	try
 	{
@@ -418,7 +418,7 @@ pb::var
 SFVec3 <Type>::normalize (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
-		throw pb::Error ("wrong number of arguments.");
+		throw pb::Error (getTypeName () + ".prototype.normalize: wrong number of arguments.");
 
 	try
 	{
@@ -437,7 +437,7 @@ pb::var
 SFVec3 <Type>::length (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
-		throw pb::Error ("wrong number of arguments.");
+		throw pb::Error (getTypeName () + ".prototype.length: wrong number of arguments.");
 
 	try
 	{
@@ -467,6 +467,9 @@ SFVec3f::getType ()
 {
 	return ObjectType::SFVec3f;
 }
+
+extern template class SFVec3 <X3D::SFVec3d>;
+extern template class SFVec3 <X3D::SFVec3f>;
 
 } // peaseblossom
 } // X3D

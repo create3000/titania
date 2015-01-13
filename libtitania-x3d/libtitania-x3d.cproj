@@ -753,6 +753,8 @@
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFColorRGBA.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFColor.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFImage.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFMatrix4.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFMatrix3.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1261,6 +1263,8 @@
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFColorRGBA.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFColor.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFImage.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFMatrix4.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFMatrix3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
