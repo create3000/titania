@@ -61,6 +61,8 @@ Transform {
 
 DEF Script1 Script {
   inputOutput SFVec4f value 0 0 0 0
+  inputOutput SFVec4f v1 1 2 3 4
+  inputOutput SFTime t1 123
   inputOnly SFTime set_time
 
     url [
@@ -75,6 +77,19 @@ function set_value (value, time)
 {
 	print ('set_value: ', value);
 	print ('set_value: ', time);
+	fields ();
+}
+
+function fields ()
+{
+	print ('# value: ', v1);
+	v1 = new SFVec4f (2,3,4,5);
+	print ('# value: ', v1);
+	print ('# value: ', v1 === v1);
+
+	print ('# time:  ', t1);
+	t1 = 234;
+	print ('# time:  ', t1);
 }
 
 /*

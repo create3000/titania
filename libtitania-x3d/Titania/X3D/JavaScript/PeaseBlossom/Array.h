@@ -144,6 +144,21 @@ private:
 		return *peaseblossom::get1Argument <Class> (value);
 	}
 
+	template <class Class>
+	static
+	typename std::enable_if <
+		std::is_integral <typename Class::internal_type::internal_type>::value or
+	   std::is_floating_point <typename Class::internal_type::internal_type>::value or
+	   std::is_same <typename Class::internal_type::internal_type, std::string>::value or
+	   std::is_same <typename Class::internal_type::internal_type, X3D::String>::value,
+		typename Class::internal_type::internal_type
+	>::type
+	get1Argument (const pb::var & value)
+	throw (pb::pbError)
+	{
+		return peaseblossom::get1Argument <typename Class::internal_type::internal_type> (value);
+	}
+
 	///  @name Static members
 
 	static const std::string   typeName;
@@ -264,7 +279,7 @@ Array <Type, InternalType>::set1Value (pb::pbObject* const object, const pb::Ide
 	}
 	catch (const std::bad_alloc &)
 	{
-		throw pb::RuntimeError (getTypeName () + ": out of memory.");
+		throw pb::RuntimeError (getTypeName () + ".prototype[" + identifier .getName () + "]: out of memory.");
 	}
 }
 
@@ -286,7 +301,7 @@ Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Ide
 	}
 	catch (const std::bad_alloc &)
 	{
-		throw pb::RuntimeError (getTypeName () + ": out of memory.");
+		throw pb::RuntimeError (getTypeName () + ".prototype[" + identifier .getName () + "]: out of memory.");
 	}
 }
 

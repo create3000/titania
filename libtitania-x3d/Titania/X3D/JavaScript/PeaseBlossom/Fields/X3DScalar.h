@@ -48,40 +48,113 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_OBJECT_TYPE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_OBJECT_TYPE_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_FIELDS_X3DSCALAR_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_FIELDS_X3DSCALAR_H__
+
+#include "../../../Fields/SFString.h"
+#include "../../../Fields/SFTime.h"
+#include "../../../Fields/X3DScalar.h"
+#include "../X3DField.h"
 
 namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-enum class ObjectType
+class SFBool
 {
-	X3DField,
-	X3DArrayField,
+public:
 
-	SFVec2d,
-	SFVec2f,
-	SFVec3d,
-	SFVec3f,
-	SFVec4d,
-	SFVec4f,
+	using internal_type = X3D::SFBool;
 
-	MFBool,
-	MFDouble,
-	MFFloat,
-	MFInt32,
-	MFString,
-	MFTime,
-	MFVec2d,
-	MFVec2f,
-	MFVec3d,
-	MFVec3f,
-	MFVec4d,
-	MFVec4f,
-
-	SIZE
 };
+
+class SFDouble
+{
+public:
+
+	using internal_type = X3D::SFDouble;
+
+};
+
+class SFFloat
+{
+public:
+
+	using internal_type = X3D::SFFloat;
+
+};
+
+class SFInt32
+{
+public:
+
+	using internal_type = X3D::SFInt32;
+
+};
+
+class SFString
+{
+public:
+
+	using internal_type = X3D::SFString;
+
+};
+
+class SFTime
+{
+public:
+
+	using internal_type = X3D::SFTime;
+
+};
+
+template <>
+inline
+pb::var
+X3DField::get <SFBool> (Context* const, SFBool::internal_type* const field)
+{
+	return field -> getValue ();
+}
+
+template <>
+inline
+pb::var
+X3DField::get <SFDouble> (Context* const, SFDouble::internal_type* const field)
+{
+	return field -> getValue ();
+}
+
+template <>
+inline
+pb::var
+X3DField::get <SFFloat> (Context* const, SFFloat::internal_type* const field)
+{
+	return field -> getValue ();
+}
+
+template <>
+inline
+pb::var
+X3DField::get <SFInt32> (Context* const, SFInt32::internal_type* const field)
+{
+	return field -> getValue ();
+}
+
+template <>
+inline
+pb::var
+X3DField::get <SFString> (Context* const, SFString::internal_type* const field)
+{
+	return field -> getValue ();
+}
+
+template <>
+inline
+pb::var
+X3DField::get <SFTime> (Context* const, SFTime::internal_type* const field)
+{
+	return field -> getValue ();
+}
 
 } // peaseblossom
 } // X3D

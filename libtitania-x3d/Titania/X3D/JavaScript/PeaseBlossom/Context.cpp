@@ -74,7 +74,9 @@ throw (std::exception) :
 	                  program (pb::createProgram ()),
 	                callbacks (),
 	                  classes (size_t (ObjectType::SIZE)),
-	                  objects ()
+	                  objects (),
+	        userDefinedFields (script -> getUserDefinedFields ()),
+	                   values ()
 {
 	__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
 
@@ -124,7 +126,90 @@ Context::addClasses ()
 
 void
 Context::addUserDefinedFields ()
-{ }
+{
+	size_t index = 0;
+
+	for (const auto & field : userDefinedFields)
+	{
+		values .emplace_back (getValue (this, field));
+
+		switch (field -> getAccessType ())
+		{
+			case initializeOnly:
+			case outputOnly:
+			{
+				defineProperty (program -> getGlobalObject (), field, field -> getName (), index);
+				break;
+			}
+			case inputOnly:
+				break;
+			case inputOutput:
+			{
+				defineProperty (program -> getGlobalObject (), field, field -> getName (),              index);
+				defineProperty (program -> getGlobalObject (), field, field -> getName () + "_changed", index);
+				break;
+			}
+		}
+		
+		++ index;
+	}
+}
+
+void
+Context::defineProperty (pb::ptr <pb::pbObject> const object,
+                         X3DFieldDefinition* const field,
+                         const std::string & name,
+                         const size_t index)
+{
+	using namespace std::placeholders;
+
+	switch (field -> getType ())
+	{
+		case X3DConstants::SFBool:
+		case X3DConstants::SFDouble:
+		case X3DConstants::SFFloat:
+		case X3DConstants::SFInt32:
+		case X3DConstants::SFString:
+		case X3DConstants::SFTime:
+		{
+			object -> defineOwnProperty (name,
+			                             pb::undefined,
+			                             pb::NONE,
+			                             new pb::NativeFunction (program, field -> getName (), std::bind (&Context::getBuildInProperty, this, _1, _2, _3, index), 0),
+			                             new pb::NativeFunction (program, field -> getName (), std::bind (&Context::setProperty,        this, _1, _2, _3, index), 1));
+			return;
+		}
+		default:
+		{
+			object -> defineOwnProperty (name,
+			                             pb::undefined,
+			                             pb::NONE,
+			                             new pb::NativeFunction (program, field -> getName (), std::bind (&Context::getProperty, this, _1, _2, _3, index), 0),
+			                             new pb::NativeFunction (program, field -> getName (), std::bind (&Context::setProperty, this, _1, _2, _3, index), 1));
+			return;
+		}
+	}
+}
+
+pb::var
+Context::setProperty (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+{
+	setValue (userDefinedFields [index], args [0]);
+
+	return pb::undefined;
+}
+
+pb::var
+Context::getBuildInProperty (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+{
+	return getValue (this, userDefinedFields [index]);
+}
+
+pb::var
+Context::getProperty (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+{
+	return values [index];
+}
 
 bool
 Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
@@ -134,8 +219,24 @@ Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
 	static const std::map <pb::Identifier, ObjectType> types = {
 		std::make_pair (pb::Identifier ("X3DField"),      X3DField::getType ()),
 		std::make_pair (pb::Identifier ("X3DArrayField"), X3DArrayField::getType ()),
+		// Fields
+		std::make_pair (pb::Identifier ("SFVec2d"),       SFVec2d::getType ()),
+		std::make_pair (pb::Identifier ("SFVec2f"),       SFVec2f::getType ()),
+		std::make_pair (pb::Identifier ("SFVec3d"),       SFVec3d::getType ()),
+		std::make_pair (pb::Identifier ("SFVec3f"),       SFVec3f::getType ()),
 		std::make_pair (pb::Identifier ("SFVec4d"),       SFVec4d::getType ()),
 		std::make_pair (pb::Identifier ("SFVec4f"),       SFVec4f::getType ()),
+		// Array Fields
+		std::make_pair (pb::Identifier ("MFBool"),        MFBool::getType ()),
+		std::make_pair (pb::Identifier ("MFDouble"),      MFDouble::getType ()),
+		std::make_pair (pb::Identifier ("MFFloat"),       MFFloat::getType ()),
+		std::make_pair (pb::Identifier ("MFInt32"),       MFInt32::getType ()),
+		std::make_pair (pb::Identifier ("MFString"),      MFString::getType ()),
+		std::make_pair (pb::Identifier ("MFTime"),        MFTime::getType ()),
+		std::make_pair (pb::Identifier ("MFVec2d"),       MFVec2d::getType ()),
+		std::make_pair (pb::Identifier ("MFVec2f"),       MFVec2f::getType ()),
+		std::make_pair (pb::Identifier ("MFVec3d"),       MFVec3d::getType ()),
+		std::make_pair (pb::Identifier ("MFVec3f"),       MFVec3f::getType ()),
 		std::make_pair (pb::Identifier ("MFVec4d"),       MFVec4d::getType ()),
 		std::make_pair (pb::Identifier ("MFVec4f"),       MFVec4f::getType ())
 	};
@@ -156,13 +257,29 @@ Context::getClass (const ObjectType type) const
 {
 	using Initialize = std::function <pb::ptr <pb::NativeFunction> (Context* const, const pb::ptr <pb::Program> &)>;
 
-	static const std::map <ObjectType, Initialize> functions = {
-		std::make_pair (X3DField::getType (),      X3DField::initialize),
-		std::make_pair (X3DArrayField::getType (), X3DArrayField::initialize),
-		std::make_pair (SFVec4d::getType (),       SFVec4d::initialize),
-		std::make_pair (SFVec4f::getType (),       SFVec4f::initialize),
-		std::make_pair (MFVec4d::getType (),       MFVec4d::initialize),
-		std::make_pair (MFVec4f::getType (),       MFVec4f::initialize)
+	static const std::vector <Initialize> functions = {
+		X3DField::initialize,
+		X3DArrayField::initialize,
+		// Fields
+		SFVec2d::initialize,
+		SFVec2f::initialize,
+		SFVec3d::initialize,
+		SFVec3f::initialize,
+		SFVec4d::initialize,
+		SFVec4f::initialize,
+		// Array Fields
+		MFBool::initialize,
+		MFDouble::initialize,
+		MFFloat::initialize,
+		MFInt32::initialize,
+		MFString::initialize,
+		MFTime::initialize,
+		MFVec2d::initialize,
+		MFVec2f::initialize,
+		MFVec3d::initialize,
+		MFVec3f::initialize,
+		MFVec4d::initialize,
+		MFVec4f::initialize
 	};
 
 	auto & standardClass = const_cast <Context*> (this) -> classes [size_t (type)];
@@ -170,7 +287,7 @@ Context::getClass (const ObjectType type) const
 	if (standardClass)
 		return standardClass;
 
-	return standardClass = functions .at (type) (const_cast <Context*> (this), program);
+	return standardClass = functions .at (size_t (type)) (const_cast <Context*> (this), program);
 }
 
 void
@@ -379,6 +496,7 @@ Context::dispose ()
 	const auto p = program .get ();
 
 	classes .clear ();
+	values .clear ();
 	program .dispose ();
 
 	pb::debug_roots (p);

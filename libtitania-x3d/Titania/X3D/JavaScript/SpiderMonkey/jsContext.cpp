@@ -329,8 +329,8 @@ jsContext::setProperty (JSContext* cx, JSObject* obj, jsid id, JSBool strict, js
 {
 	try
 	{
-		const auto script = getContext (cx) -> getScriptNode ();
-		const auto field  = script -> getField (to_string (cx, id));
+		const auto & script = getContext (cx) -> getScriptNode ();
+		const auto   field  = script -> getField (to_string (cx, id));
 
 		return setValue (cx, field, vp);
 	}
@@ -345,8 +345,8 @@ jsContext::getBuildInProperty (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto script = getContext (cx) -> getScriptNode ();
-		const auto field  = script -> getField (to_string (cx, id));
+		const auto & script = getContext (cx) -> getScriptNode ();
+		const auto   field  = script -> getField (to_string (cx, id));
 
 		return getValue (cx, field, vp);
 	}

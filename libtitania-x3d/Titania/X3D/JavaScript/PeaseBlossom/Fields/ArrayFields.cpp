@@ -55,10 +55,140 @@ namespace X3D {
 namespace peaseblossom {
 
 template <>
+const std::string MFBool::typeName = "MFBool";
+
+template <>
+const std::string MFDouble::typeName = "MFDouble";
+
+template <>
+const std::string MFFloat::typeName = "MFFloat";
+
+template <>
+const std::string MFInt32::typeName = "MFInt32";
+
+template <>
+const std::string MFString::typeName = "MFString";
+
+template <>
+const std::string MFTime::typeName = "MFTime";
+
+template <>
+const std::string MFVec2d::typeName = "MFVec2d";
+
+template <>
+const std::string MFVec2f::typeName = "MFVec2f";
+
+template <>
+const std::string MFVec3d::typeName = "MFVec3d";
+
+template <>
+const std::string MFVec3f::typeName = "MFVec3f";
+
+template <>
 const std::string MFVec4d::typeName = "MFVec4d";
 
 template <>
 const std::string MFVec4f::typeName = "MFVec4f";
+
+template <>
+const pb::Callbacks MFBool::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFBool>
+};
+
+template <>
+const pb::Callbacks MFDouble::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFDouble>
+};
+
+template <>
+const pb::Callbacks MFFloat::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFFloat>
+};
+
+template <>
+const pb::Callbacks MFInt32::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFInt32>
+};
+
+template <>
+const pb::Callbacks MFString::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFString>
+};
+
+template <>
+const pb::Callbacks MFTime::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFTime>
+};
+
+template <>
+const pb::Callbacks MFVec2d::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFVec2d>
+};
+
+template <>
+const pb::Callbacks MFVec2f::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFVec2f>
+};
+
+template <>
+const pb::Callbacks MFVec3d::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFVec3d>
+};
+
+template <>
+const pb::Callbacks MFVec3f::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFVec3f>
+};
 
 template <>
 const pb::Callbacks MFVec4d::callbacks = {

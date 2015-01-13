@@ -142,6 +142,18 @@ private:
 	void
 	addUserDefinedFields ();
 
+	void
+	defineProperty (pb::ptr <pb::pbObject> const, X3DFieldDefinition* const, const std::string &, const size_t);
+
+	pb::var
+	setProperty (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> & , const size_t);
+
+	pb::var
+	getBuildInProperty (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
+
+	pb::var
+	getProperty (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
+
 	bool
 	resolve (pb::pbObject* const, const pb::Identifier &);
 
@@ -185,6 +197,8 @@ private:
 	pb::Callbacks                                      callbacks;
 	std::vector <pb::ptr <pb::NativeFunction>>         classes;
 	std::map <X3D::X3DFieldDefinition*, pb::pbObject*> objects;
+	std::vector <X3D::X3DFieldDefinition*>             userDefinedFields;
+	std::vector <pb::var>                              values;
 
 };
 

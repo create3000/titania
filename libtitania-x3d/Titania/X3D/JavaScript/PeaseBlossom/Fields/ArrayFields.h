@@ -54,28 +54,88 @@
 #include "../Array.h"
 #include "../../../Fields/ArrayFields.h"
 
+#include "SFVec2.h"
+#include "SFVec3.h"
 #include "SFVec4.h"
+#include "X3DScalar.h"
 
 namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-using MFVec4d = Array <SFVec4d, X3D::MFVec4d>;
-using MFVec4f = Array <SFVec4f, X3D::MFVec4f>;
+using MFBool   = Array <SFBool, X3D::MFBool>;
+using MFDouble = Array <SFDouble, X3D::MFDouble>;
+using MFFloat  = Array <SFFloat, X3D::MFFloat>;
+using MFInt32  = Array <SFInt32, X3D::MFInt32>;
+using MFString = Array <SFString, X3D::MFString>;
+using MFTime   = Array <SFTime, X3D::MFTime>;
+using MFVec2d  = Array <SFVec2d, X3D::MFVec2d>;
+using MFVec2f  = Array <SFVec2f, X3D::MFVec2f>;
+using MFVec3d  = Array <SFVec3d, X3D::MFVec3d>;
+using MFVec3f  = Array <SFVec3f, X3D::MFVec3f>;
+using MFVec4d  = Array <SFVec4d, X3D::MFVec4d>;
+using MFVec4f  = Array <SFVec4f, X3D::MFVec4f>;
+
+
+template <>
+constexpr ObjectType
+MFBool::getType ()
+{ return ObjectType::MFBool; }
+
+template <>
+constexpr ObjectType
+MFDouble::getType ()
+{ return ObjectType::MFDouble; }
+
+template <>
+constexpr ObjectType
+MFFloat::getType ()
+{ return ObjectType::MFFloat; }
+
+template <>
+constexpr ObjectType
+MFInt32::getType ()
+{ return ObjectType::MFInt32; }
+
+template <>
+constexpr ObjectType
+MFString::getType ()
+{ return ObjectType::MFString; }
+
+template <>
+constexpr ObjectType
+MFTime::getType ()
+{ return ObjectType::MFTime; }
+
+template <>
+constexpr ObjectType
+MFVec2d::getType ()
+{ return ObjectType::MFVec2d; }
+
+template <>
+constexpr ObjectType
+MFVec2f::getType ()
+{ return ObjectType::MFVec2f; }
+
+template <>
+constexpr ObjectType
+MFVec3d::getType ()
+{ return ObjectType::MFVec3d; }
+
+template <>
+constexpr ObjectType
+MFVec3f::getType ()
+{ return ObjectType::MFVec3f; }
 
 template <>
 constexpr ObjectType
 MFVec4d::getType ()
-{
-	return ObjectType::MFVec4d;
-}
+{ return ObjectType::MFVec4d; }
 
 template <>
 constexpr ObjectType
 MFVec4f::getType ()
-{
-	return ObjectType::MFVec4f;
-}
+{ return ObjectType::MFVec4f; }
 
 } // peaseblossom
 } // X3D

@@ -1,3 +1,25 @@
+2015-01-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Array.h:
+	* Fields.h:
+	* Context.h:
+	* value.cpp:
+	* Context.cpp:
+	* ObjectType.h:
+	* jsContext.cpp:
+	* SFVec3.h:
+	* SFVec2.h:
+	* SFVec4.h:
+	* SFVec2.cpp:
+	* SFVec4.cpp:
+	* SFVec3.cpp:
+	* X3DScalar.h:
+	* SFVec4f.cpp:
+	* ArrayFields.h:
+	* ArrayFields.cpp: 
+
 2015-01-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

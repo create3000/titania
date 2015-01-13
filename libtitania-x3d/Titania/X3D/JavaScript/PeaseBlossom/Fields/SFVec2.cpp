@@ -48,43 +48,38 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_OBJECT_TYPE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_OBJECT_TYPE_H__
+#include "SFVec2.h"
 
 namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-enum class ObjectType
-{
-	X3DField,
-	X3DArrayField,
+template <>
+const std::string SFVec2d::typeName = "SFVec2d";
 
-	SFVec2d,
-	SFVec2f,
-	SFVec3d,
-	SFVec3f,
-	SFVec4d,
-	SFVec4f,
+template <>
+const std::string SFVec2f::typeName = "SFVec2f";
 
-	MFBool,
-	MFDouble,
-	MFFloat,
-	MFInt32,
-	MFString,
-	MFTime,
-	MFVec2d,
-	MFVec2f,
-	MFVec3d,
-	MFVec3f,
-	MFVec4d,
-	MFVec4f,
+template <>
+const pb::Callbacks SFVec2d::callbacks = {
+	pb::EnumerateCallback (),
+	pb::HasPropertyCallback (),
+	pb::PropertyGetter (),
+	pb::PropertySetter (),
+	pb::ResolveCallback (),
+	dispose <SFVec2d>
+};
 
-	SIZE
+template <>
+const pb::Callbacks SFVec2f::callbacks = {
+	pb::EnumerateCallback (),
+	pb::HasPropertyCallback (),
+	pb::PropertyGetter (),
+	pb::PropertySetter (),
+	pb::ResolveCallback (),
+	dispose <SFVec2f>
 };
 
 } // peaseblossom
 } // X3D
 } // titania
-
-#endif
