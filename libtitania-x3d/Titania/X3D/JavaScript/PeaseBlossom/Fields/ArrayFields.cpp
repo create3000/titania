@@ -88,6 +88,9 @@ template <>
 const std::string MFMatrix4f::typeName = "MFMatrix4f";
 
 template <>
+const std::string MFNode::typeName = "MFNode";
+
+template <>
 const std::string MFString::typeName = "MFString";
 
 template <>
@@ -226,6 +229,16 @@ const pb::Callbacks MFMatrix4f::callbacks = {
 };
 
 template <>
+const pb::Callbacks MFNode::callbacks = {
+	enumerate,
+	hasProperty,
+	get1Value,
+	set1Value,
+	pb::ResolveCallback (),
+	dispose <MFNode>
+};
+
+template <>
 const pb::Callbacks MFString::callbacks = {
 	enumerate,
 	hasProperty,
@@ -327,6 +340,7 @@ template class Array <SFMatrix3d, X3D::MFMatrix3d>;
 template class Array <SFMatrix3f, X3D::MFMatrix3f>;
 template class Array <SFMatrix4d, X3D::MFMatrix4d>;
 template class Array <SFMatrix4f, X3D::MFMatrix4f>;
+template class Array <SFNode, X3D::MFNode>;
 template class Array <SFString, X3D::MFString>;
 template class Array <SFTime, X3D::MFTime>;
 template class Array <SFRotation, X3D::MFRotation>;

@@ -58,7 +58,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript remainder expression.
+ *  Class to represent a ECMAScript strict equal expression.
  */
 class StrictEqualExpression :
 	public pbExpression
@@ -85,13 +85,12 @@ public:
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
-		const auto x = lhs -> getValue ();
-		const auto y = rhs -> getValue ();
+		const auto x = lhs ->getValue ();
+		const auto y = rhs ->getValue ();
 
 		if (x .getType () not_eq y .getType ())
 			return false;

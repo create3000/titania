@@ -48,31 +48,32 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_GREATER_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_GREATER_EXPRESSION_H__
 
-#include "../Execution/pbExecutionContext.h"
+#include "../Expressions/PrimitiveExpression.h"
 #include "../Expressions/pbExpression.h"
-#include "../Objects/pbFunction.h"
+
+#include <cmath>
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript identifier expression.
+ *  Class to represent a ECMAScript greater expression.
  */
-class VariableExpression :
+class GreaterExpression :
 	public pbExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new VariableExpression expression.
-	VariableExpression (pbExecutionContext* const executionContext, std::string && identifier) :
-		    pbExpression (ExpressionType::VARIABLE_EXPRESSION),
-		executionContext (executionContext),
-		      identifier (std::move (identifier))
+	///  Constructs new GreaterExpression expression.
+	GreaterExpression (ptr <pbExpression> && lhs, ptr <pbExpression>&& rhs) :
+		pbExpression (ExpressionType::GREATER_EXPRESSION),
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -80,39 +81,29 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new VariableExpression (executionContext, std::string (identifier .getName ())); }
+	{ return new GreaterExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Operations
 
-	virtual
-	void
-	putValue (const var & value) const
-	throw (pbError) final override
-	{
-		for (const auto & localObject : executionContext -> getLocalObjects ())
-		{
-			if (localObject -> put (identifier, value, true))
-				return;
-		}
-
-		executionContext -> getGlobalObject () -> put (identifier, value, false);
-	}
-
-	///  Converts its input argument to either Primitive or Object type.
+	///  Converts its argument to a value of type Boolean.
 	virtual
 	CompletionType
 	getValue () const
 	throw (pbError) final override
 	{
-		var value;
+		const auto lval = lhs -> getValue ();
+		const auto rval = rhs -> getValue ();
 
-		for (const auto & localObject : executionContext -> getLocalObjects ())
-		{
-			if (localObject -> get (identifier, value))
-				return value;
-		}
+		if (lval .getType () == NUMBER and rval .getType () == NUMBER)
+			return lval .getNumber () > rval .getNumber ();
 
-		throw ReferenceError (identifier .getName () + " is not defined.");
+		const auto px = lval .toPrimitive (NUMBER);
+		const auto py = rval .toPrimitive (NUMBER);
+
+		if (px .getType () == STRING and py .getType () == STRING)
+			return px .getString () > py .getString ();
+
+		return px .toNumber () > py .toNumber ();
 	}
 
 	///  @name Input/Output
@@ -121,8 +112,14 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ ostream << identifier; }
-
+	{
+		ostream
+			<< lhs
+			<< Generator::TidySpace
+			<< '>'
+			<< Generator::TidySpace
+			<< rhs;
+	}
 
 private:
 
@@ -131,14 +128,28 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChild (executionContext); }
+	{ addChildren (lhs, rhs); }
 
 	///  @name Members
 
-	const ptr <pbExecutionContext> executionContext;
-	const Identifier               identifier;
+	const ptr <pbExpression> lhs;
+	const ptr <pbExpression> rhs;
 
 };
+
+///  @relates GreaterExpression
+///  @name Construction
+
+///  Constructs new GreaterExpression expression.
+inline
+ptr <pbExpression>
+createGreaterExpression (ptr <pbExpression> && lhs, ptr <pbExpression>&& rhs)
+{
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new PrimitiveExpression (GreaterExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::BOOLEAN);
+
+	return new GreaterExpression (std::move (lhs), std::move (rhs));
+}
 
 } // pb
 } // titania

@@ -86,7 +86,7 @@ throw (std::exception) :
 		addUserDefinedFields ();
 
 		program -> fromString (getECMAScript ());
-		program -> run ();
+		getBrowser () -> print ("*** run: ", program -> run (), "\n");
 	}
 	catch (const pb::pbError & error)
 	{
@@ -191,26 +191,6 @@ Context::defineProperty (pb::ptr <pb::pbObject> const object,
 	}
 }
 
-pb::var
-Context::setProperty (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
-{
-	setValue (userDefinedFields [index], args [0]);
-
-	return pb::undefined;
-}
-
-pb::var
-Context::getBuildInProperty (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
-{
-	return getValue (this, userDefinedFields [index]);
-}
-
-pb::var
-Context::getProperty (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
-{
-	return values [index];
-}
-
 bool
 Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
 {
@@ -228,6 +208,7 @@ Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
 		std::make_pair ("SFMatrix3f",    SFMatrix3f::getType ()),
 		std::make_pair ("SFMatrix4d",    SFMatrix4d::getType ()),
 		std::make_pair ("SFMatrix4f",    SFMatrix4f::getType ()),
+		std::make_pair ("SFNode",        SFNode::getType ()),
 		std::make_pair ("SFRotation",    SFRotation::getType ()),
 		std::make_pair ("SFVec2d",       SFVec2d::getType ()),
 		std::make_pair ("SFVec2f",       SFVec2f::getType ()),
@@ -248,6 +229,7 @@ Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
 		std::make_pair ("MFMatrix3f",    MFMatrix3f::getType ()),
 		std::make_pair ("MFMatrix4d",    MFMatrix4d::getType ()),
 		std::make_pair ("MFMatrix4f",    MFMatrix4f::getType ()),
+		std::make_pair ("MFNode",        MFNode::getType ()),
 		std::make_pair ("MFString",      MFString::getType ()),
 		std::make_pair ("MFTime",        MFTime::getType ()),
 		std::make_pair ("MFRotation",    MFRotation::getType ()),
@@ -259,19 +241,19 @@ Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
 		std::make_pair ("MFVec4f",       MFVec4f::getType ())
 	};
 
-	try
-	{
-		object -> addOwnProperty (identifier, getClass (types .at (identifier)), pb::WRITABLE | pb::CONFIGURABLE);
-		return true;
-	}
-	catch (const std::out_of_range &)
-	{
+
+	const auto iter = types .find (identifier);
+	
+	if (iter == types .end ())
 		return false;
-	}
+
+	object -> addOwnProperty (identifier, getClass (iter -> second), pb::WRITABLE | pb::CONFIGURABLE);
+	return true;
 }
 
 const pb::ptr <pb::NativeFunction> &
 Context::getClass (const ObjectType type) const
+throw (std::out_of_range)
 {
 	using Initialize = std::function <pb::ptr <pb::NativeFunction> (Context* const, const pb::ptr <pb::Program> &)>;
 
@@ -286,6 +268,7 @@ Context::getClass (const ObjectType type) const
 		SFMatrix3f::initialize,
 		SFMatrix4d::initialize,
 		SFMatrix4f::initialize,
+		SFNode::initialize,
 		SFRotation::initialize,
 		SFVec2d::initialize,
 		SFVec2f::initialize,
@@ -305,6 +288,7 @@ Context::getClass (const ObjectType type) const
 		MFMatrix3f::initialize,
 		MFMatrix4d::initialize,
 		MFMatrix4f::initialize,
+		MFNode::initialize,
 		MFString::initialize,
 		MFTime::initialize,
 		MFRotation::initialize,
@@ -316,7 +300,7 @@ Context::getClass (const ObjectType type) const
 		MFVec4f::initialize
 	};
 
-	auto & standardClass = const_cast <Context*> (this) -> classes [size_t (type)];
+	auto & standardClass = classes [size_t (type)];
 
 	if (standardClass)
 		return standardClass;
@@ -336,11 +320,45 @@ throw (std::invalid_argument)
 
 void
 Context::removeObject (X3D::X3DFieldDefinition* const field)
+noexcept (true)
 {
 	if (objects .erase (field))
 		field -> removeParent (this);
+	
 	else
 		__LOG__ << field -> getName () << " : " << field -> getTypeName () << std::endl;
+}
+
+pb::pbObject*
+Context::getObject (X3DFieldDefinition* const field) const
+noexcept (true)
+{
+	const auto iter = objects .find (field);
+
+	if (iter not_eq objects .end ())
+		return iter -> second;
+
+	return nullptr;
+}
+
+pb::var
+Context::setProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
+{
+	setValue (userDefinedFields [index], args [0]);
+
+	return pb::undefined;
+}
+
+pb::var
+Context::getBuildInProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
+{
+	return getValue (this, userDefinedFields [index]);
+}
+
+pb::var
+Context::getProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
+{
+	return values [index];
 }
 
 void

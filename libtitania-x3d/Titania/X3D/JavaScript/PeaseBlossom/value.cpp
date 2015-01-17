@@ -121,19 +121,15 @@ throw (pb::pbError)
 			*static_cast <X3D::SFMatrix4f*> (field) = *get1Argument <SFMatrix4f> (value);
 			break;
 		}
-//		case X3DConstants::SFNode:
-//		{
-//			try
-//			{
-//				*static_cast <X3D::SFNode*> (field) = *get1Argument <SFNode> (value);
-//			}
-//			catch (const std::domain_error &)
-//			{
-//				*static_cast <X3D::SFNode*> (field) = nullptr;
-//			}
-//
-//			break;
-//		}
+		case X3DConstants::SFNode:
+		{
+			if (value .isNull ())
+				*static_cast <X3D::SFNode*> (field) = nullptr;
+			else
+				*static_cast <X3D::SFNode*> (field) = *get1Argument <SFNode> (value);
+
+			break;
+		}
 		case X3DConstants::SFRotation:
 		{
 			*static_cast <X3D::SFRotation*> (field) = *get1Argument <SFRotation> (value);
@@ -234,11 +230,11 @@ throw (pb::pbError)
 			*static_cast <X3D::MFMatrix4f*> (field) = *get1Argument <MFMatrix4f> (value);
 			break;
 		}
-//		case X3DConstants::MFNode:
-//		{
-//			*static_cast <X3D::MFNode*> (field) = *get1Argument <MFNode> (value);
-//			break;
-//		}
+		case X3DConstants::MFNode:
+		{
+			*static_cast <X3D::MFNode*> (field) = *get1Argument <MFNode> (value);
+			break;
+		}
 		case X3DConstants::MFRotation:
 		{
 			*static_cast <X3D::MFRotation*> (field) = *get1Argument <MFRotation> (value);
@@ -328,8 +324,8 @@ getValue (Context* const context, X3DFieldDefinition* const field)
 		case X3DConstants::SFMatrix4f:
 			return X3DField::get <SFMatrix4f> (context, static_cast <X3D::SFMatrix4f*> (field));
 
-//		case X3DConstants::SFNode:
-//			return X3DField::get <SFNode> (context, static_cast <X3D::SFNode*> (field));
+		case X3DConstants::SFNode:
+			return X3DField::get <SFNode> (context, static_cast <X3D::SFNode*> (field));
 
 		case X3DConstants::SFRotation:
 			return X3DField::get <SFRotation> (context, static_cast <X3D::SFRotation*> (field));
@@ -391,8 +387,8 @@ getValue (Context* const context, X3DFieldDefinition* const field)
 		case X3DConstants::MFMatrix4f:
 			return X3DField::get <MFMatrix4f> (context, static_cast <X3D::MFMatrix4f*> (field));
 
-//		case X3DConstants::MFNode:
-//			return X3DField::get <MFNode> (context, static_cast <X3D::MFNode*> (field));
+		case X3DConstants::MFNode:
+			return X3DField::get <MFNode> (context, static_cast <X3D::MFNode*> (field));
 
 		case X3DConstants::MFRotation:
 			return X3DField::get <MFRotation> (context, static_cast <X3D::MFRotation*> (field));

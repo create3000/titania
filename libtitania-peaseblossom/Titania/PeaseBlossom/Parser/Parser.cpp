@@ -1223,10 +1223,27 @@ Parser::postfixExpression (ptr <pbExpression> & value)
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (leftHandSideExpression (value))
-		return true;
+	{
+		comments ();
 
-	// ...
-	//		isLeftHandSideExressions .back () = false;
+		if (Grammar::Increment (istream))
+		{
+			isLeftHandSideExressions .back () = false;
+
+			value = new PostIncrementExpression (std::move (value));
+			return true;
+		}
+
+		if (Grammar::Decrement (istream))
+		{
+			isLeftHandSideExressions .back () = false;
+
+			value = new PostDecrementExpression (std::move (value));
+			return true;
+		}
+
+		return true;
+	}
 
 	return false;
 }
@@ -1243,11 +1260,9 @@ Parser::unaryExpression (ptr <pbExpression> & value)
 	{
 		isLeftHandSideExressions .back () = false;
 
-		ptr <pbExpression> expression;
-
-		if (unaryExpression (expression))
+		if (unaryExpression (value))
 		{
-			//value = new DeleteExpression (std::move (expression));
+			//value = new DeleteExpression (std::move (value));
 			return true;
 		}
 
@@ -1258,11 +1273,9 @@ Parser::unaryExpression (ptr <pbExpression> & value)
 	{
 		isLeftHandSideExressions .back () = false;
 
-		ptr <pbExpression> expression;
-
-		if (unaryExpression (expression))
+		if (unaryExpression (value))
 		{
-			//value = new VoidExpression (std::move (expression));
+			//value = new VoidExpression (std::move (value));
 			return true;
 		}
 
@@ -1273,11 +1286,9 @@ Parser::unaryExpression (ptr <pbExpression> & value)
 	{
 		isLeftHandSideExressions .back () = false;
 
-		ptr <pbExpression> expression;
-
-		if (unaryExpression (expression))
+		if (unaryExpression (value))
 		{
-			//value = new TypeOfExpression (std::move (expression));
+			//value = new TypeOfExpression (std::move (value));
 			return true;
 		}
 
@@ -1288,11 +1299,9 @@ Parser::unaryExpression (ptr <pbExpression> & value)
 	{
 		isLeftHandSideExressions .back () = false;
 
-		ptr <pbExpression> expression;
-
-		if (unaryExpression (expression))
+		if (unaryExpression (value))
 		{
-			//value = new PostIncrementExpression (std::move (expression));
+			value = new PreIncrementExpression (std::move (value));
 			return true;
 		}
 
@@ -1303,11 +1312,9 @@ Parser::unaryExpression (ptr <pbExpression> & value)
 	{
 		isLeftHandSideExressions .back () = false;
 
-		ptr <pbExpression> expression;
-
-		if (unaryExpression (expression))
+		if (unaryExpression (value))
 		{
-			//value = new PostDecrementExpression (std::move (expression));
+			value = new PreDecrementExpression (std::move (value));
 			return true;
 		}
 
@@ -1318,11 +1325,9 @@ Parser::unaryExpression (ptr <pbExpression> & value)
 	{
 		isLeftHandSideExressions .back () = false;
 
-		ptr <pbExpression> expression;
-
-		if (unaryExpression (expression))
+		if (unaryExpression (value))
 		{
-			//value = new ToNumberExpression (std::move (expression));
+			//value = new ToNumberExpression (std::move (value));
 			return true;
 		}
 
@@ -1333,11 +1338,9 @@ Parser::unaryExpression (ptr <pbExpression> & value)
 	{
 		isLeftHandSideExressions .back () = false;
 
-		ptr <pbExpression> expression;
-
-		if (unaryExpression (expression))
+		if (unaryExpression (value))
 		{
-			//value = new NegateExpression (std::move (expression));
+			//value = new NegateExpression (std::move (value));
 			return true;
 		}
 
@@ -1348,11 +1351,9 @@ Parser::unaryExpression (ptr <pbExpression> & value)
 	{
 		isLeftHandSideExressions .back () = false;
 
-		ptr <pbExpression> expression;
-
-		if (unaryExpression (expression))
+		if (unaryExpression (value))
 		{
-			//value = new BitwiseNOTExpression (std::move (expression));
+			//value = new BitwiseNOTExpression (std::move (value));
 			return true;
 		}
 
@@ -1363,11 +1364,9 @@ Parser::unaryExpression (ptr <pbExpression> & value)
 	{
 		isLeftHandSideExressions .back () = false;
 
-		ptr <pbExpression> expression;
-
-		if (unaryExpression (expression))
+		if (unaryExpression (value))
 		{
-			//value = new LogicalNOTExpression (std::move (expression));
+			//value = new LogicalNOTExpression (std::move (value));
 			return true;
 		}
 
@@ -1643,7 +1642,7 @@ Parser::relationalExpression (ptr <pbExpression> & lhs)
 
 			if (relationalExpression (rhs))
 			{
-				//lhs = make_greater (std::move (lhs), std::move (rhs));
+				lhs = createGreaterExpression (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -1925,7 +1924,7 @@ Parser::logicalORExpression (ptr <pbExpression> & lhs)
 
 			if (logicalORExpression (rhs))
 			{
-				//lhs = make_logical_or (std::move (lhs), std::move (rhs));
+				lhs = createLogicalOrExpression (std::move (lhs), std::move (rhs));
 				return true;
 			}
 
@@ -2496,7 +2495,7 @@ Parser::iterationStatement ()
 
 										if (Grammar::CloseParenthesis (istream))
 										{
-											auto forInStatement = make_ptr <ForInStatement> (std::move (variableDeclarations .back ()), std::move (objectExpression));
+											auto forInStatement = make_ptr <ForVarInStatement> (std::move (variableDeclarations .back ()), std::move (objectExpression));
 
 											pushBlock (forInStatement -> getBlock () .get ());
 
@@ -2540,7 +2539,7 @@ Parser::iterationStatement ()
 
 								if (Grammar::CloseParenthesis (istream))
 								{
-									auto forStatement = make_ptr <ForStatement> (std::move (variableDeclarations), std::move (booleanExpression), std::move (iterationExpression));
+									auto forStatement = make_ptr <ForVarStatement> (std::move (variableDeclarations), std::move (booleanExpression), std::move (iterationExpression));
 
 									pushBlock (forStatement -> getBlock () .get ());
 
@@ -2569,7 +2568,56 @@ Parser::iterationStatement ()
 				setState (state);
 			}
 
-			throw SyntaxError ("Expected expression after 'for'.");
+			// first parse for (LeftHandSideExpression in Expression) Statement
+			// if not parse in, use LeftHandSideExpression as expression for the next step.
+
+			ptr <pbExpression> variableExpression;
+
+			noIn = true;
+
+			expression (variableExpression);
+			
+			noIn = false;
+
+			comments ();
+
+			if (Grammar::Semicolon (istream))
+			{
+				ptr <pbExpression> booleanExpression;
+
+				expression (booleanExpression);
+
+				comments ();
+
+				if (Grammar::Semicolon (istream))
+				{
+					ptr <pbExpression> iterationExpression;
+
+					expression (iterationExpression);
+
+					comments ();
+
+					if (Grammar::CloseParenthesis (istream))
+					{
+						auto forStatement = make_ptr <ForStatement> (std::move (variableExpression), std::move (booleanExpression), std::move (iterationExpression));
+
+						pushBlock (forStatement -> getBlock () .get ());
+
+						statement ();
+
+						popBlock ();
+
+						getBlock () -> addExpression (std::move (forStatement));
+						return true;
+					}
+
+					throw SyntaxError ("Expected a ')'.");
+				}
+
+				throw SyntaxError ("Expected a ';'.");
+			}
+
+			throw SyntaxError ("Expected a ';'.");
 		}
 
 		throw SyntaxError ("Expected a '(' after 'for'.");

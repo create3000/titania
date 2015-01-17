@@ -92,14 +92,14 @@ public:
 	PropertyDescriptor (pbChildObject* const,
 	                    const Identifier &,
 	                    const var &,
-	                    const PropertyFlagsType &,
+	                    const AttributeType &,
 	                    const ptr <pbFunction> &,
 	                    const ptr <pbFunction> &);
 
 	PropertyDescriptor (pbChildObject* const,
 	                    const Identifier &,
 	                    var &&,
-	                    const PropertyFlagsType &,
+	                    const AttributeType &,
 	                    ptr <pbFunction> &&,
 	                    ptr <pbFunction> &&);
 
@@ -111,7 +111,7 @@ public:
 
 	uint32_t
 	getIndex () const
-	{ return flags & PROPERTY; }
+	{ return attributes & PROPERTY; }
 
 	bool
 	isDefined () const
@@ -123,7 +123,7 @@ public:
 	
 	bool
 	isDataDescriptor () const
-	{ return not value .isundefined () or isWritable (); }
+	{ return not value .isUndefined () or isWritable (); }
 
 	bool
 	isGenericDescriptor () const
@@ -133,40 +133,40 @@ public:
 	isWritable (const bool value)
 	{
 		if (value)
-			flags |= WRITABLE;
+			attributes |= WRITABLE;
 		else
-			flags &= ~WRITABLE;
+			attributes &= ~WRITABLE;
 	}
 
 	bool
 	isWritable () const
-	{ return flags & WRITABLE; }
+	{ return attributes & WRITABLE; }
 
 	void
 	isConfigurable (const bool value)
 	{
 		if (value)
-			flags |= CONFIGURABLE;
+			attributes |= CONFIGURABLE;
 		else
-			flags &= ~CONFIGURABLE;
+			attributes &= ~CONFIGURABLE;
 	}
 
 	bool
 	isConfigurable () const
-	{ return flags & CONFIGURABLE; }
+	{ return attributes & CONFIGURABLE; }
 
 	void
 	isEnumerable (const bool value)
 	{
 		if (value)
-			flags |= ENUMERABLE;
+			attributes |= ENUMERABLE;
 		else
-			flags &= ~ENUMERABLE;
+			attributes &= ~ENUMERABLE;
 	}
 
 	bool
 	isEnumerable () const
-	{ return flags & ENUMERABLE; }
+	{ return attributes & ENUMERABLE; }
 
 	void
 	setValue (const var & value_)
@@ -189,12 +189,12 @@ public:
 	{ return value; }
 
 	void
-	setFlags (const PropertyFlagsType & value)
-	{ flags = value; }
+	setFlags (const AttributeType & value)
+	{ attributes = value; }
 
-	const PropertyFlagsType &
+	const AttributeType &
 	getFlags () const
-	{ return flags; }
+	{ return attributes; }
 
 	void
 	setGetter (const ptr <pbFunction> & value)
@@ -229,7 +229,7 @@ private:
 	pbChildObject* const object;
 	const Identifier     identifier;
 	var                  value;
-	PropertyFlagsType    flags;
+	AttributeType        attributes;
 	ptr <pbFunction>     getter;
 	ptr <pbFunction>     setter;
 	clock::duration      creationTime;
@@ -246,10 +246,10 @@ using EnumerateCallback = std::function <bool (pbObject* const, const EnumerateT
 using HasPropertyCallback = std::function <bool (pbObject* const, const Identifier &)>;
 
 ///  Type to represent a property getter callback function.
-using PropertyGetter = std::function <var (pbObject* const, const Identifier &)>;
+using PropertyGetter = std::function <bool (pbObject* const, const Identifier &, var &)>;
 
 ///  Type to represent a property setter callback function.
-using PropertySetter = std::function <void (pbObject* const, const Identifier &, const var &)>;
+using PropertySetter = std::function <bool (pbObject* const, const Identifier &, const var &)>;
 
 ///  Type to represent a resolve callback function.
 using ResolveCallback = std::function <bool (pbObject* const, const Identifier &)>;
@@ -309,8 +309,9 @@ public:
 
 	const ptr <pbObject> &
 	getProto () const
-	throw (std::out_of_range);
-	
+	noexcept (true)
+	{ return proto; }
+
 	void
 	setCallbacks (const Callbacks & value)
 	noexcept (true)
@@ -325,40 +326,44 @@ public:
 
 	///  Sets the value of the property for @a identifier.
 	virtual
-	void
+	bool
 	put (const Identifier & identifier, const var & value, const bool throw_ = false)
 	throw (pbError,
 	       std::invalid_argument)
-	{ put (identifier, value, NONE, throw_); }
+	{ return put (identifier, value, NONE, throw_); }
 
 	///  Returns the value of the property for @a identifier.
 	var
 	get (const Identifier & identifier) const
-	throw (pbError,
-	       std::out_of_range);
+	throw (pbError)
+	{
+		var value;
+		
+		get (identifier, value);
+
+		return value;
+	}
 
 	ptr <pbObject>
 	getObject (const Identifier & identifier) const
-	throw (pbError,
-	       std::out_of_range);
+	throw (pbError);
 
 	///  Returns the property descriptor for @a identifier.
 	const PropertyDescriptorPtr &
 	getProperty (const Identifier & identifier) const
-	throw (std::out_of_range);
+	noexcept (true);
 
 	///  Returns the own property descriptor for @a identifier.
 	const PropertyDescriptorPtr &
 	getOwnProperty (const Identifier & identifier) const
-	throw (std::out_of_range)
-	{ return properties .at (identifier .getId ()); }
+	noexcept (true);
 
 	///  Adds the named property described by the given descriptor for this object.
 	virtual
 	void
 	addOwnProperty (const Identifier & identifier,
 	                const var & value,
-	                const PropertyFlagsType flags = DEFAULT,
+	                const AttributeType attributes = DEFAULT,
 	                const ptr <pbFunction> & getter = nullptr,
 	                const ptr <pbFunction> & setter = nullptr,
 	                const bool throw_ = true)
@@ -370,7 +375,7 @@ public:
 	void
 	addOwnProperty (const Identifier & identifier,
 	                var && value,
-	                const PropertyFlagsType flags = DEFAULT,
+	                const AttributeType attributes = DEFAULT,
 	                ptr <pbFunction> && getter = nullptr,
 	                ptr <pbFunction> && setter = nullptr,
 	                const bool throw_ = true)
@@ -382,7 +387,7 @@ public:
 	void
 	defineOwnProperty (const Identifier & identifier,
 	                   const var & value,
-	                   const PropertyFlagsType flags = DEFAULT,
+	                   const AttributeType attributes = DEFAULT,
 	                   const ptr <pbFunction> & getter = nullptr,
 	                   const ptr <pbFunction> & setter = nullptr,
 	                   const bool throw_ = true)
@@ -396,7 +401,7 @@ public:
 
 	virtual
 	bool
-	hasInstance (const var & value)
+	hasInstance (pbObject* const object)
 	throw (TypeError)
 	{ throw TypeError ("pbObject::hasInstance"); }
 
@@ -430,7 +435,9 @@ protected:
 
 	friend class ArrayIndexExpression;
 	friend class ForInStatement;
+	friend class ForVarInStatement;
 	friend class PropertyExpression;
+	friend class VariableExpression;
 
 	friend
 	ptr <NativeFunction>
@@ -466,10 +473,13 @@ protected:
 	noexcept (true);
 
 	///  Sets the value of the property for @a identifier.
-	void
-	put (const Identifier & identifier, const var & value, const PropertyFlagsType flags, const bool throw_)
-	throw (pbError,
-	       std::invalid_argument);
+	bool
+	put (const Identifier & identifier, const var & value, const AttributeType attributes, const bool throw_)
+	throw (pbError);
+
+	bool
+	get (const Identifier & identifier, var & value) const
+	throw (pbError);
 
 	virtual
 	bool
@@ -477,7 +487,7 @@ protected:
 	throw (pbError);
 
 	var
-	call (const Identifier & identifier, const var & object, const std::vector <var> & args = { }) const
+	call (const Identifier & identifier, const std::vector <var> & args = { }) const
 	throw (pbError,
 	       std::invalid_argument);
 
@@ -487,7 +497,8 @@ private:
 	///  @name Member access
 
 	std::vector <PropertyDescriptorPtr>
-	getOwnEnumerableProperties () const;
+	getOwnEnumerableProperties () const
+	noexcept (true);
 
 	///  @name Member types
 

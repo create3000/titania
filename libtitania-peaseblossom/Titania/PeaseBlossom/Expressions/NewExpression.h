@@ -95,12 +95,11 @@ public:
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
-		const auto value = expression -> getValue ();
+		const auto value = expression ->getValue ();
 
 		if (value .isObject ())
 		{

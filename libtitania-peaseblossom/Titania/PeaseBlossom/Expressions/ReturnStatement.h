@@ -51,7 +51,6 @@
 #ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_RETURN_STATEMENT_H__
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_RETURN_STATEMENT_H__
 
-#include "../Expressions/ControlFlowException.h"
 #include "../Expressions/PrimitiveExpression.h"
 #include "../Expressions/pbExpression.h"
 #include "../Objects/Function.h"
@@ -87,12 +86,11 @@ public:
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
-		throw ReturnException (expression -> getValue ());
+		return CompletionType (this, expression -> getValue ());
 	}
 
 	///  @name Input/Output

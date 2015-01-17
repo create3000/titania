@@ -85,10 +85,9 @@ public:
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{ return function -> copy (executionContext .get ()); }
 
 	///  @name Input/Output

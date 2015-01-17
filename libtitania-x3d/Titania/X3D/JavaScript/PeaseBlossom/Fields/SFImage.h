@@ -97,41 +97,41 @@ private:
 
 	static
 	pb::var
-	construct (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	construct (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	///  @name Properties
 
 	static
 	pb::var
-	setWidth (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	setWidth (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	getWidth (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	getWidth (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	setHeight (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	setHeight (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	getHeight (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	getHeight (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	setComp (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	setComp (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	getComp (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	getComp (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	setArray (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	setArray (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	getArray (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	getArray (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	///  @name Static members
 

@@ -1,3 +1,71 @@
+2015-01-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-peaseblossom.md.pc:
+	* libtitania-peaseblossom.cproj:
+	* Expressions.h:
+	* Array.h:
+	* var.h:
+	* Block.h:
+	* Parser.cpp:
+	* Array.cpp:
+	* Function.h:
+	* pbConstants.h:
+	* pbObject.h:
+	* var.cpp:
+	* pbBlock.h:
+	* Object.cpp:
+	* pbFunction.h:
+	* pbObject.cpp:
+	* Function.cpp:
+	* Program.cpp:
+	* pbFunction.cpp:
+	* NativeFunction.h:
+	* Expression.h:
+	* IfStatement.h:
+	* InExpression.h:
+	* pbExpression.h:
+	* ForStatement.h:
+	* GarbargeCollector.cpp:
+	* CompletionType.h:
+	* NativeFunction.cpp:
+	* ArrayLiteral.h:
+	* NewExpression.h:
+	* ObjectLiteral.h:
+	* pbExpression.cpp:
+	* LessExpression.h:
+	* ForInStatement.h:
+	* ExpressionType.h:
+	* EqualExpression.h:
+	* ForVarStatement.h:
+	* ReturnStatement.h:
+	* pbExecutionContext.h:
+	* VariableStatement.h:
+	* GreaterExpression.h:
+	* ForVarInStatement.h:
+	* DivisionExpression.h:
+	* AdditionExpression.h:
+	* pbExecutionContext.cpp:
+	* FunctionExpression.h:
+	* PropertyExpression.h:
+	* VariableExpression.h:
+	* PrimitiveExpression.h:
+	* LeftShiftExpression.h:
+	* RemainderExpression.h:
+	* VariableDeclaration.h:
+	* LogicalOrExpression.h:
+	* ControlFlowException.h:
+	* InstanceOfExpression.h:
+	* AssignmentExpression.h:
+	* ArrayIndexExpression.h:
+	* SubtractionExpression.h:
+	* StrictEqualExpression.h:
+	* PreDecrementExpression.h:
+	* PreIncrementExpression.h:
+	* FunctionCallExpression.h:
+	* PostDecrementExpression.h:
+	* PostIncrementExpression.h:
+	* MultiplicationExpression.h: 
+
 2015-01-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Array.h:

@@ -99,7 +99,7 @@ private:
 
 	static
 	pb::var
-	construct (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	construct (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	///  @name Member access
 
@@ -112,32 +112,32 @@ private:
 	hasProperty (pb::pbObject* const, const pb::Identifier &);
 
 	static
-	void
+	bool
 	set1Value (pb::pbObject* const, const pb::Identifier &, const pb::var &);
 
 	static
-	pb::var
-	get1Value (pb::pbObject* const, const pb::Identifier &);
+	bool
+	get1Value (pb::pbObject* const, const pb::Identifier &, pb::var &);
 
 	///  @name Properties
 
 	static
 	pb::var
-	setLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	setLength (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	getLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	getLength (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	template <class Class>
 	static
 	typename std::enable_if <
-		not (std::is_integral <typename Class::internal_type::internal_type>::value or
+	   not (std::is_integral <typename Class::internal_type::internal_type>::value or
 	        std::is_floating_point <typename Class::internal_type::internal_type>::value or
 	        std::is_same <typename Class::internal_type::internal_type, std::string>::value or
 	        std::is_same <typename Class::internal_type::internal_type, X3D::String>::value),
-		typename Class::internal_type &
-	>::type
+	   typename Class::internal_type &
+	   >::type
 	get1Argument (const pb::var & value)
 	throw (pb::pbError)
 	{
@@ -147,12 +147,12 @@ private:
 	template <class Class>
 	static
 	typename std::enable_if <
-		std::is_integral <typename Class::internal_type::internal_type>::value or
+	   std::is_integral <typename Class::internal_type::internal_type>::value or
 	   std::is_floating_point <typename Class::internal_type::internal_type>::value or
 	   std::is_same <typename Class::internal_type::internal_type, std::string>::value or
 	   std::is_same <typename Class::internal_type::internal_type, X3D::String>::value,
-		typename Class::internal_type::internal_type
-	>::type
+	   typename Class::internal_type::internal_type
+	   >::type
 	get1Argument (const pb::var & value)
 	throw (pb::pbError)
 	{
@@ -172,7 +172,7 @@ Array <Type, InternalType>::initialize (Context* const context, const pb::ptr <p
 {
 	using namespace std::placeholders;
 
-	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), construct, nullptr, 4);
+	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), construct, nullptr, 0);
 	const auto prototype = context -> getClass (ObjectType::X3DArrayField) -> createInstance (ec);
 
 	prototype -> addOwnProperty ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
@@ -189,7 +189,7 @@ Array <Type, InternalType>::initialize (Context* const context, const pb::ptr <p
 
 template <class Type, class InternalType>
 pb::var
-Array <Type, InternalType>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+Array <Type, InternalType>::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
@@ -231,12 +231,16 @@ Array <Type, InternalType>::enumerate (pb::pbObject* const object, const pb::Enu
 		}
 		case pb::ENUMERATE:
 		{
-			const auto data  = static_cast <size_t*> (userData);
-			auto &     index = *data;
+			auto & index = *static_cast <size_t*> (userData);
 
-			propertyName = basic::to_string (index);
+			if (index < array -> size ())
+			{
+				propertyName = basic::to_string (index);
+				index       += 1;
+				return true;
+			}
 
-			return index ++ < array -> size ();
+			return false;
 		}
 		case pb::ENUMERATE_END:
 		{
@@ -263,7 +267,7 @@ Array <Type, InternalType>::hasProperty (pb::pbObject* const object, const pb::I
 }
 
 template <class Type, class InternalType>
-void
+bool
 Array <Type, InternalType>::set1Value (pb::pbObject* const object, const pb::Identifier & identifier, const pb::var & value)
 {
 	try
@@ -271,11 +275,13 @@ Array <Type, InternalType>::set1Value (pb::pbObject* const object, const pb::Ide
 		const auto index = identifier .toUInt32 ();
 
 		if (index == pb::PROPERTY)
-			throw std::out_of_range ("Array::set1Value");
+			return false;
 
 		const auto array = getObject <InternalType> (object);
 
 		array -> set1Value (index, get1Argument <Type> (value));
+
+		return true;
 	}
 	catch (const std::bad_alloc &)
 	{
@@ -284,20 +290,25 @@ Array <Type, InternalType>::set1Value (pb::pbObject* const object, const pb::Ide
 }
 
 template <class Type, class InternalType>
-pb::var
-Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Identifier & identifier)
+bool
+Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Identifier & identifier, pb::var & value)
 {
 	try
 	{
 		const auto index = identifier .toUInt32 ();
 
 		if (index == pb::PROPERTY)
-			throw std::out_of_range ("Array::get1Value");
+			return false;
 
 		const auto context = getContext (object);
 		const auto array   = getObject <InternalType> (object);
 
-		return get <Type> (context, &array -> at (index));
+		if (index >= array -> size ())
+			return false;
+
+		value = get <Type> (context, &(*array) [index]);
+
+		return true;
 	}
 	catch (const std::bad_alloc &)
 	{
@@ -307,11 +318,11 @@ Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Ide
 
 template <class Type, class InternalType>
 pb::var
-Array <Type, InternalType>::setLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+Array <Type, InternalType>::setLength (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	try
 	{
-		const auto lhs  = getThis <Array <Type, InternalType>> (object);
+		const auto lhs  = getThis <Array <Type, InternalType>>  (object);
 		const auto size = args [0] .toUInt32 ();
 
 		if (basic::to_string (size) == args [0] .toString ())
@@ -335,11 +346,11 @@ Array <Type, InternalType>::setLength (const pb::ptr <pb::pbExecutionContext> & 
 
 template <class Type, class InternalType>
 pb::var
-Array <Type, InternalType>::getLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+Array <Type, InternalType>::getLength (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	try
 	{
-		const auto lhs = getThis <Array <Type, InternalType>> (object);
+		const auto lhs = getThis <Array <Type, InternalType>>  (object);
 
 		return lhs -> size ();
 	}

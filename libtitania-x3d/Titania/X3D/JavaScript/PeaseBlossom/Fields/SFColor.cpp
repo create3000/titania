@@ -71,7 +71,7 @@ SFColor::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 {
 	using namespace std::placeholders;
 
-	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), construct, nullptr, 4);
+	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), construct, nullptr, 3);
 	const auto prototype = context -> getClass (ObjectType::X3DField) -> createInstance (ec);
 
 	prototype -> addOwnProperty ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
@@ -115,7 +115,7 @@ SFColor::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 }
 
 pb::var
-SFColor::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFColor::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
@@ -139,7 +139,7 @@ SFColor::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var &
 }
 
 pb::var
-SFColor::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+SFColor::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
@@ -156,7 +156,7 @@ SFColor::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var &
 }
 
 pb::var
-SFColor::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+SFColor::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
@@ -171,7 +171,7 @@ SFColor::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var &
 }
 
 pb::var
-SFColor::setHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFColor::setHSV (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 3)
 		throw pb::Error (getTypeName () + ".prototype.setHSV: wrong number of arguments.");
@@ -194,7 +194,7 @@ SFColor::setHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & ob
 }
 
 pb::var
-SFColor::getHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFColor::getHSV (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.getHSV: wrong number of arguments.");

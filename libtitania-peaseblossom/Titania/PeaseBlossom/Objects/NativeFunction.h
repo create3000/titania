@@ -57,7 +57,7 @@
 namespace titania {
 namespace pb {
 
-using FunctionType = std::function <var (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)>;
+using FunctionType = std::function <var (const ptr <pbExecutionContext> & ec, pbObject* const object, const std::vector <var> & arguments)>;
 
 /**
  *  Class to represent a native ECMAScript function.
@@ -101,7 +101,7 @@ public:
 
 	virtual
 	var
-	call (const var &, const std::vector <var> & = { })
+	call (pbObject* const object, const std::vector <var> & arguments = { })
 	throw (pbError) final override;
 
 	///  @name Input/Output
@@ -118,7 +118,7 @@ protected:
 
 	virtual
 	var
-	construct (const var &, const std::vector <var> & = { })
+	construct (pbObject* const object, const std::vector <var> & arguments = { })
 	throw (pbError) final override;
 
 

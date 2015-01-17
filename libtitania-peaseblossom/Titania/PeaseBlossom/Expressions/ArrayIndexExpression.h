@@ -125,19 +125,16 @@ public:
 			}
 			case OBJECT:
 			{
-				const auto & object = base .getObject ();
-
-				object -> put (name, value, false);
+				base .getObject () -> put (name, value, false);
 			}
 		}
 	}
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
 		const auto base     = expression -> getValue ();
 		const auto property = identifier -> getValue ();
@@ -176,16 +173,7 @@ public:
 			}
 			case OBJECT:
 			{
-				try
-				{
-					const auto & object = base .getObject ();
-
-					return object -> get (name);
-				}
-				catch (const std::out_of_range &)
-				{
-					return undefined;
-				}
+				return base .getObject () -> get (name);
 			}
 		}
 
@@ -236,9 +224,7 @@ public:
 			{
 				try
 				{
-					const auto & object = base .getObject ();
-
-					return object -> call (name, base, arguments);
+					return base .getObject () -> call (name, arguments);
 				}
 				catch (const std::invalid_argument &)
 				{ }

@@ -88,7 +88,7 @@ public:
 	putValue (const var & value) const
 	throw (pbError) final override
 	{
-		const auto base = expression -> getValue ();
+		const auto base = expression ->getValue ();
 
 		switch (base .getType ())
 		{
@@ -123,21 +123,18 @@ public:
 			}
 			case OBJECT:
 			{
-				const auto & object = base .getObject ();
-
-				object -> put (identifier, value, false);
+				base .getObject () -> put (identifier, value, false);
 			}
 		}
 	}
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
-		const auto base = expression -> getValue ();
+		const auto base = expression ->getValue ();
 
 		switch (base .getType ())
 		{
@@ -172,16 +169,7 @@ public:
 			}
 			case OBJECT:
 			{
-				try
-				{
-					const auto & object = base .getObject ();
-
-					return object -> get (identifier);
-				}
-				catch (const std::out_of_range &)
-				{
-					return undefined;
-				}
+				return base .getObject () -> get (identifier);
 			}
 		}
 
@@ -193,7 +181,7 @@ public:
 	call (const ptr <pbExecutionContext> & ec, const std::vector <var> & arguments) const
 	throw (pbError) final override
 	{
-		const auto base = expression -> getValue ();
+		const auto base = expression ->getValue ();
 
 		switch (base .getType ())
 		{
@@ -230,9 +218,7 @@ public:
 			{
 				try
 				{
-					const auto & object = base .getObject ();
-
-					return object -> call (identifier, base, arguments);
+					return base .getObject () -> call (identifier, arguments);
 				}
 				catch (const std::invalid_argument &)
 				{ }

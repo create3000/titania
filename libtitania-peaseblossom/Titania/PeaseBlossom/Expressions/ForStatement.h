@@ -52,7 +52,6 @@
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FOR_STATEMENT_H__
 
 #include "../Execution/Block.h"
-#include "../Expressions/ControlFlowException.h"
 #include "../Expressions/PrimitiveExpression.h"
 #include "../Expressions/VariableDeclaration.h"
 #include "../Expressions/pbExpression.h"
@@ -71,12 +70,12 @@ public:
 	///  @name Construction
 
 	///  Constructs new ForStatement expression.
-	ForStatement (array <ptr <VariableDeclaration>> && variableDeclarations, ptr <pbExpression> && booleanExpression, ptr <pbExpression>&& iterationExpression) :
-		           pbExpression (ExpressionType::FOR_STATEMENT),
-		   variableDeclarations (std::move (variableDeclarations)),
-		      booleanExpression (std::move (booleanExpression)),
-		    iterationExpression (std::move (iterationExpression)),
-		                  block (new Block ())
+	ForStatement (ptr <pbExpression> && variableExpression, ptr <pbExpression> && booleanExpression, ptr <pbExpression> && iterationExpression) :
+		       pbExpression (ExpressionType::FOR_STATEMENT),
+		 variableExpression (std::move (variableExpression)),
+		  booleanExpression (std::move (booleanExpression)),
+		iterationExpression (std::move (iterationExpression)),
+		              block (new Block ())
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -85,14 +84,9 @@ public:
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{
-		array <ptr <VariableDeclaration>> variableDeclarations;
-
-		for (const auto & variableDeclaration : this -> variableDeclarations)
-			variableDeclarations .emplace_back (variableDeclaration -> copy (executionContext));
-
-		const auto copy = new ForStatement (std::move (variableDeclarations),
-		                                    booleanExpression -> copy (executionContext),
-		                                    iterationExpression -> copy (executionContext));
+		const auto copy = new ForStatement (variableExpression -> copy (executionContext),
+		                                       booleanExpression -> copy (executionContext),
+		                                       iterationExpression -> copy (executionContext));
 
 		copy -> getBlock () -> import (executionContext, block .get ());
 
@@ -109,49 +103,25 @@ public:
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
-		for (const auto variableDeclaration : variableDeclarations)
-			variableDeclaration -> getValue ();
+		CompletionType result;
+
+		variableExpression -> getValue ();
 
 		for (; booleanExpression -> getValue () .toBoolean (); iterationExpression -> getValue ())
 		{
-			try
-			{
-				block -> run ();
-			}
-			catch (const ContinueException &)
-			{
-				continue;
-			}
-			catch (const LabelledContinueException & error)
-			{
-				//if (error .getIdentifier () == id)
-				//	continue;
-
-				throw;
-			}
-			catch (const BreakException &)
-			{
-				break;
-			}
-			catch (const LabelledBreakException &)
-			{
-				//if (error .getIdentifier () == id)
-				//	break;
-
-				throw;
-			}
-			catch (...)
-			{
-				throw;
-			}
+			const auto value = block -> getValue ();
+			
+			if (value .getStatement ())
+				return value;
+			
+			result = std::move (value);
 		}
 
-		return undefined;
+		return result;
 	}
 
 	///  @name Input/Output
@@ -166,22 +136,8 @@ public:
 			<< Generator::TidySpace
 			<< '(';
 
-		if (not variableDeclarations .empty ())
-		{
-			ostream
-				<< "var"
-				<< Generator::Space;
-		
-			for (const auto variableDeclaration : std::make_pair (variableDeclarations .begin (), variableDeclarations .end () - 1))
-			{
-				ostream
-					<< variableDeclaration
-					<< ','
-					<< Generator::TidySpace;
-			}
-
-			ostream << variableDeclarations .back ();
-		}
+		if (not variableExpression -> isPrimitive ())
+			ostream << variableExpression;
 
 		ostream << ';';
 
@@ -215,21 +171,24 @@ private:
 	void
 	construct ()
 	{
+		if (not variableExpression)
+			variableExpression = new PrimitiveExpression (undefined, ExpressionType::UNDEFINED);
+
 		if (not booleanExpression)
 			booleanExpression = new PrimitiveExpression (true, ExpressionType::BOOLEAN);
 
 		if (not iterationExpression)
 			iterationExpression = new PrimitiveExpression (undefined, ExpressionType::UNDEFINED);
 
-		addChildren (variableDeclarations, booleanExpression, iterationExpression, block);
+		addChildren (variableExpression, booleanExpression, iterationExpression, block);
 	}
 
 	///  @name Members
 
-	const array <ptr <VariableDeclaration>> variableDeclarations;
-	ptr <pbExpression>                      booleanExpression;
-	ptr <pbExpression>                      iterationExpression;
-	const ptr <Block>                       block;
+	ptr <pbExpression> variableExpression;
+	ptr <pbExpression> booleanExpression;
+	ptr <pbExpression> iterationExpression;
+	const ptr <Block>  block;
 
 };
 

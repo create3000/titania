@@ -84,13 +84,13 @@ public:
 	///  @name Operations
 
 	///  Constructs new object of this class without invoking the constructor.
-	ptr <pbObject>
+	pbObject*
 	createInstance (pbExecutionContext* const)
 	throw (TypeError);
 
 	virtual
 	bool
-	hasInstance (const var & value)
+	hasInstance (pbObject* const object)
 	noexcept (true);
 
 	///  Constructs new object of this class.
@@ -101,7 +101,7 @@ public:
 	///  Executes this function.
 	virtual
 	var
-	call (const var &, const std::vector <var> & = { })
+	call (pbObject* const object, const std::vector <var> & arguments = { })
 	throw (pbError) = 0;
 
 
@@ -119,7 +119,7 @@ protected:
 
 	virtual
 	var
-	construct (const var &, const std::vector <var> & = { })
+	construct (pbObject* const object, const std::vector <var> & arguments = { })
 	throw (pbError) = 0;
 
 

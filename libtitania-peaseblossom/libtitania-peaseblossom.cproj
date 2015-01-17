@@ -99,10 +99,8 @@
     <None Include="Titania\PeaseBlossom\Execution\pbExecutionContext.h" />
     <None Include="Titania\PeaseBlossom\Expressions\AdditionExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\AssignmentExpression.h" />
-    <None Include="Titania\PeaseBlossom\Expressions\ControlFlowException.h" />
     <None Include="Titania\PeaseBlossom\Expressions\DivisionExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\EqualExpression.h" />
-    <None Include="Titania\PeaseBlossom\Expressions\ForStatement.h" />
     <None Include="Titania\PeaseBlossom\Expressions\FunctionCallExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\FunctionExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\IfStatement.h" />
@@ -153,6 +151,15 @@
     <None Include="Titania\PeaseBlossom\Expressions\VariableStatement.h" />
     <None Include="Titania\PeaseBlossom\Expressions\ExpressionType.h" />
     <None Include="Titania\PeaseBlossom\Expressions\Expression.h" />
-    <None Include="Titania\PeaseBlossom\Expressions\ForInStatement.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\PreIncrementExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\PreDecrementExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\PostIncrementExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\PostDecrementExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\GreaterExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\LogicalOrExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\ForVarStatement.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\ForVarInStatement.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\ForStatement.h" />
+    <None Include="Titania\PeaseBlossom\Execution\CompletionType.h" />
   </ItemGroup>
 </Project>

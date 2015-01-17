@@ -372,21 +372,34 @@ jsContext::getProperty (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 
 void
 jsContext::addObject (X3D::X3DFieldDefinition* const field, JSObject* const object)
-throw (Error <INVALID_FIELD>)
+noexcept (true)
 {
-	if (not objects .emplace (field, object) .second)
-		throw Error <INVALID_FIELD> ("Object already exists in jsContext.");
+	assert (objects .emplace (field, object) .second);
 
 	field -> addParent (this);
 }
 
 void
 jsContext::removeObject (X3D::X3DFieldDefinition* const field)
+noexcept (true)
 {
 	if (objects .erase (field))
 		field -> removeParent (this);
+	
 	else
 		__LOG__ << field -> getName () << " : " << field -> getTypeName () << std::endl;
+}
+
+JSObject*
+jsContext::getObject (X3D::X3DFieldDefinition* const field) const
+noexcept (true)
+{
+	const auto iter = objects .find (field);
+
+	if (iter not_eq objects .end ())
+		return iter -> second;
+
+	return nullptr;
 }
 
 JSBool

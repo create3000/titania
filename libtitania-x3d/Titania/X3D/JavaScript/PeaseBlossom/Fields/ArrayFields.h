@@ -59,6 +59,7 @@
 #include "SFImage.h"
 #include "SFMatrix3.h"
 #include "SFMatrix4.h"
+#include "SFNode.h"
 #include "SFRotation.h"
 #include "SFVec2.h"
 #include "SFVec3.h"
@@ -80,6 +81,7 @@ using MFMatrix3d  = Array <SFMatrix3d, X3D::MFMatrix3d>;
 using MFMatrix3f  = Array <SFMatrix3f, X3D::MFMatrix3f>;
 using MFMatrix4d  = Array <SFMatrix4d, X3D::MFMatrix4d>;
 using MFMatrix4f  = Array <SFMatrix4f, X3D::MFMatrix4f>;
+using MFNode      = Array <SFNode, X3D::MFNode>;
 using MFString    = Array <SFString, X3D::MFString>;
 using MFTime      = Array <SFTime, X3D::MFTime>;
 using MFRotation  = Array <SFRotation, X3D::MFRotation>;
@@ -148,6 +150,11 @@ MFMatrix4f::getType ()
 
 template <>
 constexpr ObjectType
+MFNode::getType ()
+{ return ObjectType::MFNode; }
+
+template <>
+constexpr ObjectType
 MFString::getType ()
 { return ObjectType::MFString; }
 
@@ -202,6 +209,7 @@ extern template class Array <SFMatrix3d, X3D::MFMatrix3d>;
 extern template class Array <SFMatrix3f, X3D::MFMatrix3f>;
 extern template class Array <SFMatrix4d, X3D::MFMatrix4d>;
 extern template class Array <SFMatrix4f, X3D::MFMatrix4f>;
+extern template class Array <SFNode, X3D::MFNode>;
 extern template class Array <SFString, X3D::MFString>;
 extern template class Array <SFTime, X3D::MFTime>;
 extern template class Array <SFRotation, X3D::MFRotation>;

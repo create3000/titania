@@ -48,61 +48,79 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_GLOBAL_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_GLOBAL_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXECUTION_COMPLETION_TYPE_H__
+#define __TITANIA_PEASE_BLOSSOM_EXECUTION_COMPLETION_TYPE_H__
 
-#include "../../Browser/X3DBrowser.h"
-#include "Context.h"
-
-#include <Titania/PeaseBlossom/pb.h>
+#include "../Primitives/var.h"
 
 namespace titania {
-namespace X3D {
-namespace peaseblossom {
+namespace pb {
 
-class Global
+class pbExpression;
+
+class CompletionType :
+	public var
 {
 public:
 
-	static
-	void
-	initialize (Context* const context, const pb::ptr <pb::Program> & ec, const pb::ptr <pb::pbObject> & global)
+	constexpr
+	CompletionType () :
+		      var (),
+		statement (nullptr)
+	{ }
+
+	CompletionType (const CompletionType & other) :
+		      var (other),
+		statement (other .statement)
+	{ }
+
+	CompletionType (CompletionType && other) :
+		      var (std::move (other)),
+		statement (other .statement)
+	{ }
+
+	template <class Type>
+	CompletionType (Type && value) :
+		      var (std::forward <Type> (value)),
+		statement (nullptr)
+	{ }
+
+	template <class Type>
+	CompletionType (const pbExpression* const statement, Type && value) :
+		var (std::forward <Type> (value)),
+		               statement (statement)
+	{ }
+
+	CompletionType &
+	operator = (const CompletionType & other)
 	{
-		using namespace std::placeholders;
-
-		const auto browser = context -> getBrowser ();
-
-		global -> addOwnProperty ("NULL",  nullptr, pb::NONE);
-		global -> addOwnProperty ("FALSE", false,   pb::NONE);
-		global -> addOwnProperty ("TRUE",  true,    pb::NONE);
-
-		global -> addOwnProperty ("print", new pb::NativeFunction (ec, "print", std::bind (print, _1, _2, _3, browser), 0), pb::NONE);
-		global -> addOwnProperty ("now",   new pb::NativeFunction (ec, "now",   now,                                    0), pb::NONE);
+		var::operator = (other);
+		statement = other .statement;
+		return *this;
 	}
 
-	static
-	pb::var
-	print (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> & args, X3D::X3DBrowser* const browser)
+	CompletionType &
+	operator = (CompletionType && other)
 	{
-		for (const auto & value : args)
-			browser -> print (value .toString ());
-
-		browser -> println ();
-
-		return pb::undefined;
+		var::operator = (std::move (other));
+		statement = other .statement;
+		return *this;
 	}
 
-	static
-	pb::var
-	now (const pb::ptr <pb::pbExecutionContext> &,pb::pbObject* const, const std::vector <pb::var> &)
-	{
-		return chrono::now ();
-	}
+	const pbExpression*
+	getStatement () const
+	{ return statement; }
+
+
+private:
+
+	///  @name Members
+
+	const pbExpression* statement;
 
 };
 
-} // peaseblossom
-} // X3D
+} // pb
 } // titania
 
 #endif

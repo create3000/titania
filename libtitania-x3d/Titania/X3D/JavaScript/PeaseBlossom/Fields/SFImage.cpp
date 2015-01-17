@@ -116,7 +116,7 @@ SFImage::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 }
 
 pb::var
-SFImage::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFImage::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
@@ -143,7 +143,7 @@ SFImage::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var &
 }
 
 pb::var
-SFImage::setWidth (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFImage::setWidth (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	try
 	{
@@ -160,7 +160,7 @@ SFImage::setWidth (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & 
 }
 
 pb::var
-SFImage::getWidth (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFImage::getWidth (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	try
 	{
@@ -175,7 +175,7 @@ SFImage::getWidth (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & 
 }
 
 pb::var
-SFImage::setHeight (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFImage::setHeight (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	try
 	{
@@ -192,7 +192,7 @@ SFImage::setHeight (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var &
 }
 
 pb::var
-SFImage::getHeight (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFImage::getHeight (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	try
 	{
@@ -207,7 +207,7 @@ SFImage::getHeight (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var &
 }
 
 pb::var
-SFImage::setComp (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFImage::setComp (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	try
 	{
@@ -224,7 +224,7 @@ SFImage::setComp (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & o
 }
 
 pb::var
-SFImage::getComp (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFImage::getComp (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	try
 	{
@@ -239,7 +239,7 @@ SFImage::getComp (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & o
 }
 
 pb::var
-SFImage::setArray (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFImage::setArray (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	try
 	{
@@ -257,7 +257,7 @@ SFImage::setArray (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & 
 }
 
 pb::var
-SFImage::getArray (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFImage::getArray (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	try
 	{

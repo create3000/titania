@@ -128,7 +128,7 @@ SFRotation::initialize (Context* const context, const pb::ptr <pb::Program> & ec
 }
 
 pb::var
-SFRotation::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFRotation::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
@@ -172,7 +172,7 @@ SFRotation::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::va
 }
 
 pb::var
-SFRotation::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+SFRotation::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
@@ -189,7 +189,7 @@ SFRotation::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::va
 }
 
 pb::var
-SFRotation::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+SFRotation::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
@@ -204,7 +204,7 @@ SFRotation::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::va
 }
 
 pb::var
-SFRotation::setAxis (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFRotation::setAxis (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.setAxis: wrong number of arguments.");
@@ -225,7 +225,7 @@ SFRotation::setAxis (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 }
 
 pb::var
-SFRotation::getAxis (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFRotation::getAxis (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.getAxis: wrong number of arguments.");
@@ -243,7 +243,7 @@ SFRotation::getAxis (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 }
 
 pb::var
-SFRotation::inverse (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFRotation::inverse (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.inverse: wrong number of arguments.");
@@ -261,7 +261,7 @@ SFRotation::inverse (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 }
 
 pb::var
-SFRotation::multiply (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFRotation::multiply (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multiply: wrong number of arguments.");
@@ -280,7 +280,7 @@ SFRotation::multiply (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var
 }
 
 pb::var
-SFRotation::multVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFRotation::multVec (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multVec: wrong number of arguments.");
@@ -299,7 +299,7 @@ SFRotation::multVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 }
 
 pb::var
-SFRotation::slerp (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFRotation::slerp (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 2)
 		throw pb::Error (getTypeName () + ".prototype.slerp: wrong number of arguments.");

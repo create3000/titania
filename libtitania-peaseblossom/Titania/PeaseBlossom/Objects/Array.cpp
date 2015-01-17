@@ -79,22 +79,25 @@ Array::Array (pbExecutionContext* const executionContext, const std::nullptr_t) 
 	                new pb::NativeFunction (executionContext, "length", setLength, 1));
 }
 
-void
+bool
 Array::put (const Identifier & identifier, const var & value, const bool throw_)
-throw (pbError,
-       std::invalid_argument)
+throw (pbError)
 {
 	const auto index = identifier .toUInt32 ();
 	
 	if (index == PROPERTY)
 		return pbObject::put (identifier, value, PROPERTY, throw_);
 
-	pbObject::put (identifier, value, index, throw_);
+	if (pbObject::put (identifier, value, index, throw_))
+	{
+		if (index < length)
+			return true;
 
-	if (index < length)
-		return;
+		length = index + 1;
+		return true;
+	}
 
-	length = index + 1;
+	return false;
 }
 
 pb::var
@@ -132,7 +135,7 @@ Array::toStream (std::ostream & ostream) const
 	{
 		const var value = get (basic::to_string (index));
 	
-		if (value .isundefined ())
+		if (value .isUndefined ())
 			ostream << ',';
 		else
 			ostream << value << ',';
@@ -140,7 +143,7 @@ Array::toStream (std::ostream & ostream) const
 
 	const var value = get (basic::to_string (length - 1));
 
-	if (not value .isundefined ())
+	if (not value .isUndefined ())
 		ostream << value;
 }
 

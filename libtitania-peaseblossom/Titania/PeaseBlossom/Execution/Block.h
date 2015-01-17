@@ -62,7 +62,7 @@ class Block :
 public:
 
 	using pbBlock::import;
-	using pbBlock::run;
+	using pbBlock::getValue;
 
 	///  Constructs new Block.
 	Block () :

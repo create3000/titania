@@ -53,7 +53,7 @@
 
 #include "../Base/pbChildObject.h"
 #include "../Base/pbOutputStreamObject.h"
-#include "../Expressions/ControlFlowException.h"
+#include "../Execution/CompletionType.h"
 #include "../Expressions/ExpressionType.h"
 #include "../InputOutput/Generator.h"
 #include "../Primitives/var.h"
@@ -69,6 +69,13 @@ class pbExpression :
 	virtual public pbOutputStreamObject
 {
 public:
+
+	enum CompileType :
+		uint8_t
+	{
+		PUT,
+		GET
+	};
 
 	///  @name Construction
 
@@ -104,10 +111,9 @@ public:
 	{ throw ReferenceError ("Invalid assignment left-hand side."); }
 
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-	       pbControlFlowException) = 0;
+	throw (pbError) = 0;
 
 	virtual
 	var

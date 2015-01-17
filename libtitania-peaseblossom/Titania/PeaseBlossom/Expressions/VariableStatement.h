@@ -52,7 +52,6 @@
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_STATEMENT_H__
 
 #include "../Execution/Block.h"
-#include "../Expressions/ControlFlowException.h"
 #include "../Expressions/PrimitiveExpression.h"
 #include "../Expressions/VariableDeclaration.h"
 #include "../Expressions/pbExpression.h"
@@ -94,10 +93,9 @@ public:
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
 		for (const auto variableDeclaration : variableDeclarations)
 			variableDeclaration -> getValue ();

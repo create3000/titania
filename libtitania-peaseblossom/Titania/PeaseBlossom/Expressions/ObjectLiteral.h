@@ -89,7 +89,7 @@ public:
 
 			copy -> defineOwnProperty (Identifier (property -> identifier),
 			                           property -> value ? property -> value -> copy (executionContext) : nullptr,
-			                           property -> flags,
+			                           property -> attributes,
 			                           property -> getter ? property -> getter -> copy (executionContext) : nullptr,
 			                           property -> setter ? property -> setter -> copy (executionContext) : nullptr);
 		}
@@ -102,7 +102,7 @@ public:
 	void
 	defineOwnProperty (Identifier && identifier,
 	                   ptr <pbExpression> && value,
-	                   const PropertyFlagsType flags,
+	                   const AttributeType attributes,
 	                   ptr <Function> && getter = nullptr,
 	                   ptr <Function> && setter = nullptr)
 	throw (SyntaxError)
@@ -124,7 +124,7 @@ public:
 
 		if (getter)
 		{
-			if (property -> flags & WRITABLE)
+			if (property -> attributes & WRITABLE)
 				throw SyntaxError ("Object literal may not have data and accessor property with the same name.");
 
 			property -> getter = std::move (getter);
@@ -133,7 +133,7 @@ public:
 		if (setter)
 			property -> setter = std::move (setter);
 
-		property -> flags = flags;
+		property -> attributes = attributes;
 
 		sorted .emplace (property -> index, property);
 
@@ -144,10 +144,9 @@ public:
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
 		const auto object = new Object (executionContext .get ());
 
@@ -157,7 +156,7 @@ public:
 			                          property .second -> value
 			                          ? property .second -> value -> getValue ()
 			                          : undefined,
-			                          property .second -> flags,
+			                          property .second -> attributes,
 			                          property .second -> getter,
 			                          property .second -> setter);
 		}
@@ -212,13 +211,13 @@ private:
 	struct PropertyDescriptor
 	{
 		PropertyDescriptor (const size_t index) :
-			flags (NONE),
+			attributes (NONE),
 			index (index)
 		{ }
 	
 		Identifier         identifier;
 		ptr <pbExpression> value;
-		PropertyFlagsType  flags;
+		AttributeType  attributes;
 		ptr <Function>     getter;
 		ptr <Function>     setter;
 		size_t             index;

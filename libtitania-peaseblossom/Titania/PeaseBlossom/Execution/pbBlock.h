@@ -104,21 +104,30 @@ protected:
 	///  Imports all expressions from @a block into @a executionContext.
 	void
 	import (pbExecutionContext* const executionContext, const pbBlock* const block)
-	throw (pbError,
-          pbControlFlowException)
+	throw (pbError)
 	{
 		for (const auto & expression : block -> getExpressions ())
 			addExpression (expression -> copy (executionContext));
 	}
 
 	///  Executes the associated expessions of this context.
-	void
-	run ()
-	throw (pbError,
-          pbControlFlowException)
+	CompletionType
+	getValue ()
+	throw (pbError)
 	{
+		CompletionType result;
+
 		for (const auto & expression : expressions)
-			expression -> getValue ();
+		{
+			auto value = expression -> getValue ();
+
+			if (value .getStatement ())
+				return value;
+
+			result = std::move (value);
+		}
+
+		return result;
 	}
 
 

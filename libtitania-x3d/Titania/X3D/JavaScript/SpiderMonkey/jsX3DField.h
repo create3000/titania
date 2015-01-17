@@ -128,12 +128,13 @@ JSBool
 jsX3DField::create (JSContext* const cx, JSClass* const static_class, InternalType* const field, jsval* const vp)
 {
 	const auto context = getContext (cx);
+	const auto object  = context -> getObject (field);
 
-	try
+	if (object)
 	{
-		*vp = OBJECT_TO_JSVAL (context -> getObject (field));
+		*vp = OBJECT_TO_JSVAL (object);
 	}
-	catch (const std::out_of_range &)
+	else
 	{
 		const auto result = JS_NewObject (cx, static_class, nullptr, nullptr);
 

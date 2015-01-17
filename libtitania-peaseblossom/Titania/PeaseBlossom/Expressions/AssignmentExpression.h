@@ -88,10 +88,9 @@ public:
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
 		switch (type)
 		{
@@ -151,7 +150,7 @@ public:
 			}
 		}
 
-		return var ();
+		return undefined;
 	}
 
 	///  @name Input/Output
@@ -184,12 +183,12 @@ private:
 		addChildren (executionContext, lhs, rhs);
 	}
 
-	var &&
-	put (var && value) const
+	CompletionType
+	put (const CompletionType & value) const
 	{
 		lhs -> putValue (value);
 
-		return std::move (value);
+		return value;
 	}
 
 	///  @name Members

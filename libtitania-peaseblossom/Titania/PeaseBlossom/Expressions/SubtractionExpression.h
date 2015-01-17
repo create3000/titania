@@ -83,10 +83,9 @@ public:
 
 	///  Converts its arguments to a value of type Number.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{ return lhs -> getValue () .toNumber () - rhs -> getValue () .toNumber (); }
 
 	///  @name Input/Output

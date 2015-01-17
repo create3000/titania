@@ -94,15 +94,14 @@ public:
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
 		// Variable declarations cannot be deleted.
 		
 		const auto & defaultObject = executionContext -> getDefaultObject ();
-		const auto   value         = expression -> getValue ();
+		const auto   value         = expression ->getValue ();
 
 		defaultObject -> put (identifier, value, false);
 

@@ -48,61 +48,81 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_GLOBAL_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_GLOBAL_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRE_DECREMENT_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRE_DECREMENT_EXPRESSION_H__
 
-#include "../../Browser/X3DBrowser.h"
-#include "Context.h"
-
-#include <Titania/PeaseBlossom/pb.h>
+#include "../Expressions/pbExpression.h"
 
 namespace titania {
-namespace X3D {
-namespace peaseblossom {
+namespace pb {
 
-class Global
+/**
+ *  Class to represent a ECMAScript pre-decrement expression.
+ */
+class PreDecrementExpression :
+	public pbExpression
 {
 public:
 
-	static
+	///  @name Construction
+
+	///  Constructs new PreDecrementExpression expression.
+	PreDecrementExpression (ptr <pbExpression> && expression) :
+		pbExpression (ExpressionType::PRE_DECREMENT_EXPRESSION),
+		  expression (std::move (expression))
+	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbExpression>
+	copy (pbExecutionContext* const executionContext) const
+	noexcept (true) final override
+	{ return new PreDecrementExpression (expression -> copy (executionContext)); }
+
+	///  @name Operations
+
+	///  Converts its arguments to a value of type Number.
+	virtual
+	CompletionType
+	getValue () const
+	throw (pbError) final override
+	{
+		const auto value = expression -> getValue () .toNumber () - 1;
+
+		expression -> putValue (value);
+
+		return value;
+	}
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
 	void
-	initialize (Context* const context, const pb::ptr <pb::Program> & ec, const pb::ptr <pb::pbObject> & global)
+	toStream (std::ostream & ostream) const final override
 	{
-		using namespace std::placeholders;
-
-		const auto browser = context -> getBrowser ();
-
-		global -> addOwnProperty ("NULL",  nullptr, pb::NONE);
-		global -> addOwnProperty ("FALSE", false,   pb::NONE);
-		global -> addOwnProperty ("TRUE",  true,    pb::NONE);
-
-		global -> addOwnProperty ("print", new pb::NativeFunction (ec, "print", std::bind (print, _1, _2, _3, browser), 0), pb::NONE);
-		global -> addOwnProperty ("now",   new pb::NativeFunction (ec, "now",   now,                                    0), pb::NONE);
+		ostream
+			<< "--"
+			<< Generator::TidySpace
+			<< expression;
 	}
 
-	static
-	pb::var
-	print (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> & args, X3D::X3DBrowser* const browser)
-	{
-		for (const auto & value : args)
-			browser -> print (value .toString ());
+private:
 
-		browser -> println ();
+	///  @name Construction
 
-		return pb::undefined;
-	}
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (expression); }
 
-	static
-	pb::var
-	now (const pb::ptr <pb::pbExecutionContext> &,pb::pbObject* const, const std::vector <pb::var> &)
-	{
-		return chrono::now ();
-	}
+	///  @name Members
+
+	const ptr <pbExpression> expression;
 
 };
 
-} // peaseblossom
-} // X3D
+} // pb
 } // titania
 
 #endif

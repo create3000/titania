@@ -48,34 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FOR_IN_STATEMENT_H__
-#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FOR_IN_STATEMENT_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_LOGICAL_OR_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_LOGICAL_OR_EXPRESSION_H__
 
-#include "../Execution/Block.h"
-#include "../Expressions/ControlFlowException.h"
 #include "../Expressions/PrimitiveExpression.h"
-#include "../Expressions/VariableDeclaration.h"
 #include "../Expressions/pbExpression.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript for in statement.
+ *  Class to represent a ECMAScript logical or expression.
  */
-class ForInStatement :
+class LogicalOrExpression :
 	public pbExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new ForInStatement expression.
-	ForInStatement (ptr <VariableDeclaration> && variableDeclaration, ptr <pbExpression>&& expression) :
-		       pbExpression (ExpressionType::FOR_IN_STATEMENT),
-		variableDeclaration (std::move (variableDeclaration)),
-		         expression (std::move (expression)),
-		              block (new Block ())
+	///  Constructs new LogicalOrExpression expression.
+	LogicalOrExpression (ptr <pbExpression> && lhs, ptr <pbExpression>&& rhs) :
+		pbExpression (ExpressionType::LOGICAL_OR_EXPRESSION),
+		         lhs (std::move (lhs)),
+		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -83,85 +79,22 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{
-		const auto copy = new ForInStatement (variableDeclaration -> copy (executionContext), expression -> copy (executionContext));
-
-		copy -> getBlock () -> import (executionContext, block .get ());
-
-		return copy;
-	}
-
-	///  @name Member access
-
-	const ptr <Block> &
-	getBlock () const
-	{ return block; }
+	{ return new LogicalOrExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Operations
 
-	///  Converts its input argument to either Primitive or Object type.
+	///  Converts its argument to a value of type Boolean.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-	       pbControlFlowException) final override
+	throw (pbError) final override
 	{
-		const auto value = expression -> getValue ();
+		const auto lval = lhs -> getValue ();
 
-		if (value .getType () not_eq OBJECT)
-			return undefined;
+		if (lval .toBoolean ())
+			return lval;
 
-		const auto &        object = value .getObject ();
-		std::string         propertyName;
-		std::vector <void*> userData;
-
-		if (object -> enumerate (ENUMERATE_BEGIN, propertyName, userData))
-		{
-			do
-			{
-				while (object -> enumerate (ENUMERATE, propertyName, userData))
-				{
-					variableDeclaration -> putValue (propertyName);
-
-					try
-					{
-						block -> run ();
-					}
-					catch (const ContinueException &)
-					{
-						continue;
-					}
-					catch (const LabelledContinueException & error)
-					{
-						//if (error .getIdentifier () == id)
-						//	continue;
-
-						object -> enumerate (ENUMERATE_END, propertyName, userData);
-						throw;
-					}
-					catch (const BreakException &)
-					{
-						break;
-					}
-					catch (const LabelledBreakException &)
-					{
-						//if (error .getIdentifier () == id)
-						//	break;
-
-						object -> enumerate (ENUMERATE_END, propertyName, userData);
-						throw;
-					}
-					catch (...)
-					{
-						object -> enumerate (ENUMERATE_END, propertyName, userData);
-						throw;
-					}
-				}
-			}
-			while (object -> enumerate (ENUMERATE_END, propertyName, userData));
-		}
-
-		return undefined;
+		return rhs -> getValue ();
 	}
 
 	///  @name Input/Output
@@ -172,19 +105,11 @@ public:
 	toStream (std::ostream & ostream) const final override
 	{
 		ostream
-			<< "for"
+			<< lhs
 			<< Generator::TidySpace
-			<< '('
-			<< "var"
-			<< Generator::Space
-			<< variableDeclaration
-			<< Generator::Space
-			<< "in"
-			<< Generator::Space
-			<< expression
-			<< ')'
-			<< Generator::TidyBreak
-			<< block;
+			<< "||"
+			<< Generator::TidySpace
+			<< rhs;
 	}
 
 private:
@@ -194,15 +119,28 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (variableDeclaration, expression, block); }
+	{ addChildren (lhs, rhs); }
 
 	///  @name Members
 
-	const ptr <VariableDeclaration> variableDeclaration;
-	const ptr <pbExpression>        expression;
-	const ptr <Block>               block;
+	const ptr <pbExpression> lhs;
+	const ptr <pbExpression> rhs;
 
 };
+
+///  @relates LogicalOrExpression
+///  @name Construction
+
+///  Constructs new LogicalOrExpression expression.
+inline
+ptr <pbExpression>
+createLogicalOrExpression (ptr <pbExpression> && lhs, ptr <pbExpression>&& rhs)
+{
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new PrimitiveExpression (LogicalOrExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::BOOLEAN);
+
+	return new LogicalOrExpression (std::move (lhs), std::move (rhs));
+}
 
 } // pb
 } // titania

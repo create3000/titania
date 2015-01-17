@@ -112,14 +112,14 @@ noexcept (true)
 	return osstream .str ();
 }
 
-using PropertyFlagsType = uint64_t;
+using AttributeType = uint64_t;
 
-constexpr PropertyFlagsType NONE         = 0;
-constexpr PropertyFlagsType WRITABLE     = 1L << 32;
-constexpr PropertyFlagsType ENUMERABLE   = 1L << 33;
-constexpr PropertyFlagsType CONFIGURABLE = 1L << 34;
-constexpr PropertyFlagsType PROPERTY     = 0xffffffff;
-constexpr PropertyFlagsType DEFAULT      = WRITABLE | CONFIGURABLE | ENUMERABLE;
+constexpr AttributeType NONE         = 0;
+constexpr AttributeType WRITABLE     = 1L << 32;
+constexpr AttributeType ENUMERABLE   = 1L << 33;
+constexpr AttributeType CONFIGURABLE = 1L << 34;
+constexpr AttributeType PROPERTY     = 0xffffffff;
+constexpr AttributeType DEFAULT      = WRITABLE | CONFIGURABLE | ENUMERABLE;
 
 enum EnumerateType :
 	uint8_t

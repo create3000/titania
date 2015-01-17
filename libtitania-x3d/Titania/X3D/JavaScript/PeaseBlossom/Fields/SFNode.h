@@ -48,58 +48,127 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_GLOBAL_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_GLOBAL_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_FIELDS_SFNODE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_FIELDS_SFNODE_H__
 
-#include "../../Browser/X3DBrowser.h"
-#include "Context.h"
-
-#include <Titania/PeaseBlossom/pb.h>
+#include "../../../Fields/SFNode.h"
+#include "../X3DField.h"
 
 namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-class Global
+class SFNode :
+	public X3DField
 {
 public:
 
+	///  @name Member types
+
+	using internal_type = X3D::SFNode;
+
+	///  @name Common members
+
 	static
-	void
-	initialize (Context* const context, const pb::ptr <pb::Program> & ec, const pb::ptr <pb::pbObject> & global)
-	{
-		using namespace std::placeholders;
+	constexpr ObjectType
+	getType ()
+	{ return ObjectType::SFNode; }
 
-		const auto browser = context -> getBrowser ();
+	static
+	const std::string &
+	getTypeName ()
+	{ return typeName; }
 
-		global -> addOwnProperty ("NULL",  nullptr, pb::NONE);
-		global -> addOwnProperty ("FALSE", false,   pb::NONE);
-		global -> addOwnProperty ("TRUE",  true,    pb::NONE);
+	static
+	const pb::Callbacks &
+	getCallbacks ()
+	{ return callbacks; }
 
-		global -> addOwnProperty ("print", new pb::NativeFunction (ec, "print", std::bind (print, _1, _2, _3, browser), 0), pb::NONE);
-		global -> addOwnProperty ("now",   new pb::NativeFunction (ec, "now",   now,                                    0), pb::NONE);
-	}
+	///  @name Construction
+
+	static
+	pb::ptr <pb::NativeFunction>
+	initialize (Context* const, const pb::ptr <pb::Program> &);
+
+
+private:
+
+	///  @name Construction
 
 	static
 	pb::var
-	print (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> & args, X3D::X3DBrowser* const browser)
-	{
-		for (const auto & value : args)
-			browser -> print (value .toString ());
+	construct (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
-		browser -> println ();
+	///  @name Member access
 
-		return pb::undefined;
-	}
+	static
+	bool
+	enumerate (pb::pbObject* const, const pb::EnumerateType, std::string &, void* &);
+
+	static
+	bool
+	hasProperty (pb::pbObject* const, const pb::Identifier &);
+
+	static
+	bool
+	setProperty (pb::pbObject* const, const pb::Identifier &, const pb::var &);
+
+	static
+	bool
+	getProperty (pb::pbObject* const, const pb::Identifier &, pb::var &);
+
+	///  @name Functions
 
 	static
 	pb::var
-	now (const pb::ptr <pb::pbExecutionContext> &,pb::pbObject* const, const std::vector <pb::var> &)
-	{
-		return chrono::now ();
-	}
+	getNodeName (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	getNodeType (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	getFieldDefinitions (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	toVRMLString (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	toXMLString (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	toString (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	///  @name Static members
+
+	static const std::string   typeName;
+	static const pb::Callbacks callbacks;
 
 };
+
+template <>
+inline
+pb::var
+X3DField::get <SFNode> (Context* const context, SFNode::internal_type* const field)
+{
+	if (field -> getValue ())
+	{
+		try
+		{
+			return context -> getObject (field);
+		}
+		catch (const std::out_of_range &)
+		{
+			return create <SFNode> (context -> getProgram (), field);
+		}
+	}
+
+	return nullptr;
+}
 
 } // peaseblossom
 } // X3D

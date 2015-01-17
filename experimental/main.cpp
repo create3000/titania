@@ -281,42 +281,6 @@ getValue (Expression* expression)
 	throw std::invalid_argument ("getValue");
 };
 
-
-class A 
-{
-public:
-
-	double a;
-};
-
-class B
-{
-public:
-
-	static double b;
-};
-
-double B::b = 0;
-
-class C :
-	virtual public A
-{
-public:
-
-	double c;
-};
-
-class D :
-	virtual public A,
-	public B
-{
-public:
-
-	double c;
-};
-
-
-
 std::vector <std::string> words = {
 "Lorem",
 "ipsum",
@@ -548,6 +512,21 @@ std::vector <std::string> words = {
 };
 
 
+class A {
+public:
+
+	A (const A &)
+	{
+		__LOG__ << std::endl;
+	}
+
+	A (A &&)
+	{
+		__LOG__ << std::endl;
+	}
+
+};
+
 
 int
 main (int argc, char** argv)
@@ -563,27 +542,7 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-
-	std::map <std::string, size_t> index;
-
-	double t0 = chrono::now ();
-
-	for (size_t i = 0; i < 8000000; ++ i)
-		index .emplace (words [i % words .size ()], index .size ());
-
-	__LOG__ << chrono::now () - t0 << std::endl;
 	
-	std::hash <std::string> hash;
-	size_t x = 0;
-	
-	t0 = chrono::now ();
-
-	for (size_t i = 0; i < 8000000; ++ i)
-		x += hash (words [i % words .size ()]);
-
-	__LOG__ << x << std::endl;
-	__LOG__ << chrono::now () - t0 << std::endl;
-
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	std::clog << "Function main done." << std::endl;

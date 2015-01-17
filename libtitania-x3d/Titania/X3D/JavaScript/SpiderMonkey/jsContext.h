@@ -119,15 +119,15 @@ public:
 
 	void
 	addObject (X3D::X3DFieldDefinition* const, JSObject* const)
-	throw (Error <INVALID_FIELD>);
+	noexcept (true);
 
 	void
-	removeObject (X3D::X3DFieldDefinition* const);
+	removeObject (X3D::X3DFieldDefinition* const)
+	noexcept (true);
 
 	JSObject*
 	getObject (X3D::X3DFieldDefinition* const field) const
-	throw (std::out_of_range)
-	{ return objects .at (field); }
+	noexcept (true);
 
 	std::unique_ptr <SceneLoader> &
 	getFuture ()

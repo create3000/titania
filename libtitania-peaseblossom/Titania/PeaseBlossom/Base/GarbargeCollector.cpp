@@ -57,6 +57,8 @@
 #include <malloc.h>
 #include <thread>
 
+#include <Titania/Backtrace.h>
+
 namespace titania {
 namespace pb {
 
@@ -121,7 +123,7 @@ GarbageCollector::getObject <ptr <pbObject>> ()
 	const auto object = cache .back ();
 	
 	cache .pop_back ();
-	
+
 	return object;
 }
 

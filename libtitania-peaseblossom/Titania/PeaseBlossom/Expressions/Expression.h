@@ -93,10 +93,9 @@ public:
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
 		for (const auto & expression : std::make_pair (expressions .begin (), expressions .end () - 1))
 			expression -> getValue ();

@@ -108,19 +108,20 @@ public:
 	{ return program; }
 
 	const pb::ptr <pb::NativeFunction> &
-	getClass (const ObjectType type) const;
+	getClass (const ObjectType type) const
+	throw (std::out_of_range);
 
 	void
 	addObject (X3D::X3DFieldDefinition* const, pb::pbObject* const)
 	throw (std::invalid_argument);
 
 	void
-	removeObject (X3D::X3DFieldDefinition* const);
+	removeObject (X3D::X3DFieldDefinition* const)
+	noexcept (true);
 
 	pb::pbObject*
 	getObject (X3DFieldDefinition* const field) const
-	throw (std::out_of_range)
-	{ return objects .at (field); }
+	noexcept (true);
 
 	///  @name Destruction
 
@@ -145,17 +146,17 @@ private:
 	void
 	defineProperty (pb::ptr <pb::pbObject> const, X3DFieldDefinition* const, const std::string &, const size_t);
 
-	pb::var
-	setProperty (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> & , const size_t);
-
-	pb::var
-	getBuildInProperty (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
-
-	pb::var
-	getProperty (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
-
 	bool
 	resolve (pb::pbObject* const, const pb::Identifier &);
+
+	pb::var
+	setProperty (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, const size_t);
+
+	pb::var
+	getBuildInProperty (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, const size_t);
+
+	pb::var
+	getProperty (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, const size_t);
 
 	/// Event handlers
 
@@ -195,7 +196,7 @@ private:
 	std::vector <basic::uri>                           worldURL;
 	pb::ptr <pb::pbExecutionContext>                   program;
 	pb::Callbacks                                      callbacks;
-	std::vector <pb::ptr <pb::NativeFunction>>         classes;
+	mutable std::vector <pb::ptr <pb::NativeFunction>> classes;
 	std::map <X3D::X3DFieldDefinition*, pb::pbObject*> objects;
 	std::vector <X3D::X3DFieldDefinition*>             userDefinedFields;
 	std::vector <pb::var>                              values;

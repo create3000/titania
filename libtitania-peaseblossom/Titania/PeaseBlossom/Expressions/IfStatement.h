@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_IF_STATEMENT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_IF_STATEMENT_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_IF_STATEMENT_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_IF_STATEMENT_H__
 
 #include "../Execution/Block.h"
 #include "../Expressions/pbExpression.h"
@@ -105,18 +105,13 @@ public:
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
-		if (booleanExpression -> getValue () .toBoolean ())
-			thenBlock -> run ();
-
-		 else
-		   elseBlock -> run ();
-
-		 return var ();
+		return booleanExpression -> getValue () .toBoolean ()
+		       ? thenBlock -> getValue ()
+				 : elseBlock -> getValue ();
 	}
 
 	///  @name Input/Output
@@ -125,7 +120,7 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ 
+	{
 		ostream
 			<< "if"
 			<< Generator::TidySpace
@@ -133,7 +128,7 @@ public:
 			<< booleanExpression
 			<< ')'
 			<< Generator::TidyBreak;
-		
+
 		if (thenBlock -> getExpressions () .empty ())
 		{
 			ostream
@@ -145,7 +140,7 @@ public:
 		}
 		else
 			ostream << thenBlock;
-		
+
 		if (not elseBlock -> getExpressions () .empty ())
 		{
 			ostream
@@ -154,7 +149,6 @@ public:
 				<< elseBlock;
 		}
 	}
-
 
 private:
 

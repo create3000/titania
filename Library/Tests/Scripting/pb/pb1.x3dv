@@ -60,9 +60,9 @@ Transform {
 }
 
 DEF Script1 Script {
-  inputOutput MFBool b []
-  inputOutput MFVec4f v []
   inputOnly SFTime set_time
+  field    SFInt32 size 8000000
+  field    MFInt32 array [ ]
 
     url [
  "peaseblossom:
@@ -76,6 +76,27 @@ function set_time (value, time)
 	print ('set_time: value: ', value);
 	print ('set_time: time:  ', time);
 	print ('set_time: now:   ', now ());
+
+	var t0 = now ();
+
+	test (size);
+
+	print ('set_time: duration: ', now () - t0);
+}
+
+var global = 1;
+
+function test (value)
+{
+	print ('test: ');
+	print ('test: value: ', value);
+
+	var global = 2;
+
+	for (var i = 1; i < value; ++ i)
+		size;
+
+	print (global);
 }
 
 function enumerate (o)
@@ -86,37 +107,22 @@ function enumerate (o)
 	{
 		print (k, ' = ', o [k], ' : ', k in o)
 	}
+
+	o;
 }
 
-var c = new SFMatrix3d (1,2,3,4,5,6,7,8,9);
-var m = new MFMatrix3d (c);
-print (m);
-print (c [0]);
-print (c [8]);
+var o = { a: 1, b: 2 };
 
-enumerate (c)
-
-print (v);
-v = new MFVec4f (new SFVec4f (1,2,3,4));
-print (v);
-
-enumerate (new SFVec4f (1,2,3,4))
+enumerate (o);
 "
 ]
   directOutput TRUE
 }
 
 DEF Script2 Script {
-  inputOnly      SFTime   set_time
-  initializeOnly SFFloat  now 1
-  initializeOnly SFNode   node Script {
-    inputOutput SFDouble result 0
-    inputOutput SFDouble h1 0
-    inputOutput SFDouble h2 1
-
-  }
-  inputOutput    SFDouble N1 800
-  inputOutput    SFDouble N2 8000000
+  inputOnly SFTime   set_time
+  field    SFInt32 size 10000
+  field    MFInt32 array [ ]
 
   url "javascript:
 function set_time (value, time)
@@ -125,6 +131,13 @@ function set_time (value, time)
 	print ('set_time: value: ', value);
 	print ('set_time: time:  ', time);
 	print ('set_time: now:   ', Date .now ());
+
+	var t0 = Date .now ();
+
+	for (var i = 0; i < size; ++ i)
+		array [i] = i;
+
+	print ('set_time: duration: ', (Date .now () - t0) / 1000);
 }
 "
   directOutput TRUE

@@ -104,59 +104,59 @@ private:
 
 	static
 	pb::var
-	construct (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	construct (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	///  @name Member access
 
 	static
 	pb::var
-	set1Value (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
+	set1Value (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, const size_t);
 
 	static
 	pb::var
-	get1Value (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
+	get1Value (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, const size_t);
 
 	///  @name Functions
 
 	static
 	pb::var
-	setTransform (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	setTransform (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	getTransform (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	getTransform (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	transpose (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	transpose (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	inverse (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	inverse (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	multLeft (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	multLeft (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	multRight (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	multRight (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	multVecMatrix (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	multVecMatrix (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	multMatrixVec (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	multMatrixVec (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	multDirMatrix (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	multDirMatrix (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	multMatrixDir (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	multMatrixDir (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	///  @name Static members
 
@@ -171,7 +171,7 @@ SFMatrix3 <Type>::initialize (Context* const context, const pb::ptr <pb::Program
 {
 	using namespace std::placeholders;
 
-	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), construct, nullptr, 4);
+	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), construct, nullptr, 9);
 	const auto prototype = context -> getClass (ObjectType::X3DField) -> createInstance (ec);
 
 	prototype -> addOwnProperty ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
@@ -208,7 +208,7 @@ SFMatrix3 <Type>::initialize (Context* const context, const pb::ptr <pb::Program
 
 template <class Type>
 pb::var
-SFMatrix3 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
@@ -239,7 +239,7 @@ SFMatrix3 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const 
 
 template <class Type>
 pb::var
-SFMatrix3 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+SFMatrix3 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
@@ -257,7 +257,7 @@ SFMatrix3 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const 
 
 template <class Type>
 pb::var
-SFMatrix3 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+SFMatrix3 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
@@ -273,7 +273,7 @@ SFMatrix3 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const 
 
 template <class Type>
 pb::var
-SFMatrix3 <Type>::setTransform (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <Type>::setTransform (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () > 5)
 		throw pb::Error (getTypeName () + ".prototype.setTransform: wrong number of arguments.");
@@ -316,7 +316,7 @@ SFMatrix3 <Type>::setTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 
 template <class Type>
 pb::var
-SFMatrix3 <Type>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <Type>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () > 5)
 		throw pb::Error (getTypeName () + ".prototype.getTransform: wrong number of arguments.");
@@ -367,7 +367,7 @@ SFMatrix3 <Type>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 
 template <class Type>
 pb::var
-SFMatrix3 <Type>::transpose (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <Type>::transpose (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.transpose: wrong number of arguments.");
@@ -386,7 +386,7 @@ SFMatrix3 <Type>::transpose (const pb::ptr <pb::pbExecutionContext> & ec, const 
 
 template <class Type>
 pb::var
-SFMatrix3 <Type>::inverse (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <Type>::inverse (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.inverse: wrong number of arguments.");
@@ -405,7 +405,7 @@ SFMatrix3 <Type>::inverse (const pb::ptr <pb::pbExecutionContext> & ec, const pb
 
 template <class Type>
 pb::var
-SFMatrix3 <Type>::multLeft (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <Type>::multLeft (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multLeft: wrong number of arguments.");
@@ -425,7 +425,7 @@ SFMatrix3 <Type>::multLeft (const pb::ptr <pb::pbExecutionContext> & ec, const p
 
 template <class Type>
 pb::var
-SFMatrix3 <Type>::multRight (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <Type>::multRight (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multRight: wrong number of arguments.");
@@ -445,7 +445,7 @@ SFMatrix3 <Type>::multRight (const pb::ptr <pb::pbExecutionContext> & ec, const 
 
 template <class Type>
 pb::var
-SFMatrix3 <Type>::multVecMatrix (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <Type>::multVecMatrix (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multVecMatrix: wrong number of arguments.");
@@ -465,7 +465,7 @@ SFMatrix3 <Type>::multVecMatrix (const pb::ptr <pb::pbExecutionContext> & ec, co
 
 template <class Type>
 pb::var
-SFMatrix3 <Type>::multMatrixVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <Type>::multMatrixVec (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multMatrixVec: wrong number of arguments.");
@@ -485,7 +485,7 @@ SFMatrix3 <Type>::multMatrixVec (const pb::ptr <pb::pbExecutionContext> & ec, co
 
 template <class Type>
 pb::var
-SFMatrix3 <Type>::multDirMatrix (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <Type>::multDirMatrix (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multDirMatrix: wrong number of arguments.");
@@ -505,7 +505,7 @@ SFMatrix3 <Type>::multDirMatrix (const pb::ptr <pb::pbExecutionContext> & ec, co
 
 template <class Type>
 pb::var
-SFMatrix3 <Type>::multMatrixDir (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <Type>::multMatrixDir (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multMatrixDir: wrong number of arguments.");

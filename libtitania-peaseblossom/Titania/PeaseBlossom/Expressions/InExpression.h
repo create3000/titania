@@ -85,17 +85,16 @@ public:
 
 	///  Converts its arguments to a value of type Number.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
-		const auto base = rhs -> getValue ();
+		const auto base = rhs ->getValue ();
 
 		if (base .isObject ())
 		{
 			const auto & object   = base .getObject ();
-			const auto   property = lhs -> getValue ();
+			const auto   property = lhs ->getValue ();
 			const auto   name     = property .toString ();
 
 			return object -> hasProperty (name);

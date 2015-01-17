@@ -87,21 +87,18 @@ public:
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
-		const auto px = lhs -> getValue () .toPrimitive (NUMBER);
-		const auto py = rhs -> getValue () .toPrimitive (NUMBER);
+		const auto px = lhs ->getValue () .toPrimitive (NUMBER);
+		const auto py = rhs ->getValue () .toPrimitive (NUMBER);
 
 		if (px .getType () == STRING and py .getType () == STRING)
 			return px .getString () < py .getString ();
 
 		return px .toNumber () < py .toNumber ();
 	}
-
-	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
 	virtual

@@ -102,7 +102,7 @@ public:
 	///  Executes this function.
 	virtual
 	var
-	call (const var &, const std::vector <var> & = { })
+	call (pbObject* const object, const std::vector <var> & arguments = { })
 	throw (pbError) final override;
 
 	///  @name Input/Output
@@ -135,7 +135,7 @@ protected:
 	///  Constructs new object of this class.
 	virtual
 	var
-	construct (const var &, const std::vector <var> & = { })
+	construct (pbObject* const object, const std::vector <var> & arguments = { })
 	throw (pbError) final override;
 
 

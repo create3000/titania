@@ -161,6 +161,8 @@ public:
 	getFunctionDeclarations () const
 	{ return functions; }
 
+	/// @name Execution
+
 	///  Executes the associated expessions of this context.
 	virtual
 	var
@@ -223,8 +225,7 @@ protected:
 	///  Imports all function declarations and expressions from @a executionContext into this execution context.
 	void
 	import (const pbExecutionContext* const executionContext)
-	throw (pbError,
-          pbControlFlowException);
+	throw (pbError);
 
 
 private:

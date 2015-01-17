@@ -1,17 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFMatrix4.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb1.x3dv" Line="103" Column="33" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="292" Column="16" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Array.h" Line="290" Column="5" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/ArrayFields.h" Line="78" Column="45" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/ArrayFields.cpp" Line="80" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.h" Line="426" Column="5" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/value.cpp" Line="227" Column="32" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Fields/SFMatrix4.h" Line="509" Column="1" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="1" Column="1" />
+      <File FileName="Library/Tests/Scripting/pb/pb1.x3dv" Line="1" Column="1" />
+      <File FileName="Library/Tests/Scripting/Felulet.wrl" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Makefile.am" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp" Line="58" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -19,45 +14,27 @@
           <Node name="build" expanded="True" />
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
+            <Node name="Examples" expanded="True">
+              <Node name="Vattenfall" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
+            </Node>
             <Node name="Tests" expanded="True">
               <Node name="Scripting" expanded="True">
                 <Node name="pb" expanded="True" />
               </Node>
             </Node>
           </Node>
-          <Node name="libtitania-peaseblossom" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="PeaseBlossom" expanded="True">
-                <Node name="Base" expanded="True" />
-                <Node name="Bits" expanded="True" />
-                <Node name="Execution" expanded="True" />
-                <Node name="Expressions" expanded="True" />
-                <Node name="Objects" expanded="True" />
-                <Node name="Parser" expanded="True" />
-                <Node name="Primitives" expanded="True" />
-                <Node name="Standard" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Chrono" expanded="True" />
-              <Node name="InputOutput" expanded="True" />
-            </Node>
-          </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Basic" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Scripting" expanded="True">
+                    <Node name="X3DScriptingContext.cpp" selected="True" />
+                  </Node>
+                </Node>
                 <Node name="JavaScript" expanded="True">
-                  <Node name="PeaseBlossom" expanded="True">
-                    <Node name="Fields" expanded="True">
-                      <Node name="SFVec4.h" selected="True" />
-                    </Node>
-                  </Node>
-                  <Node name="SpiderMonkey" expanded="True">
-                    <Node name="Fields" expanded="True" />
-                  </Node>
+                  <Node name="PeaseBlossom" expanded="True" />
                 </Node>
               </Node>
             </Node>

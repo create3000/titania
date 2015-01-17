@@ -119,6 +119,8 @@ var::operator = (const var & other)
 var &
 var::operator = (var && other)
 {
+	clear ();
+
 	value = other .value;
 	type  = other .type;
 
@@ -248,8 +250,8 @@ throw (pbError)
 		case OBJECT:
 			return value .object_ -> get () -> getDefaultValue (preferedType);
 	}
-	
-	throw std::invalid_argument ("toPrimitive");
+
+	return undefined;
 }
 
 bool

@@ -330,7 +330,7 @@ function fibonacci_iterative (value)
 		h1 = 0,
 		h2 = 1;
 
-	for (var i = 1; i < value; i += 1)
+	for (var i = 1; i < value; ++ i)
 	{
 		result = h1 + h2;
 		h1     = h2;
@@ -433,7 +433,7 @@ function fibonacci_iterative (o, value)
 	o .h1 = 0;
 	o .h2 = 1;
 
-	for (var i = 1; i < value; i += 1)
+	for (var i = 1; i < value; ++ i)
 	{
 		o .result = o .h1 + o .h2;
 		o .h1     = o .h2;
@@ -445,14 +445,14 @@ function fibonacci_iterative (o, value)
 
 function set_time (value, time)
 {
-	//var t0 = Date .now ();
-	//print ('fibonacci_recursive: ', fibonacci_recursive (24));
-	//print ('fibonacci_recursive: ', n);
-	//print ('time: ',   (Date .now () - t0) / 1000);
-
 	var t0 = Date .now ();
 	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, N1));
 	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, N2));
+	print ('time: ',   (Date .now () - t0) / 1000);
+
+	var t0 = Date .now ();
+	print ('fibonacci_recursive: ', fibonacci_recursive (24));
+	print ('fibonacci_recursive: ', fibonacci_iterative ({ }, 24 + 2) + 1);
 	print ('time: ',   (Date .now () - t0) / 1000);
 }
 "

@@ -86,10 +86,9 @@ public:
 
 	///  Converts its argument to a value of type Boolean.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
 		const auto x = lhs -> getValue ();
 		const auto y = rhs -> getValue ();
@@ -118,10 +117,10 @@ public:
 			}
 		}
 
-		if (x .isNull () and y .isundefined ())
+		if (x .isNull () and y .isUndefined ())
 			return true;
 
-		if (x .isundefined () and y .isNull ())
+		if (x .isUndefined () and y .isNull ())
 			return true;
 
 		if (x .isNumber ())

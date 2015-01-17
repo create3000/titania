@@ -77,14 +77,12 @@ X3DScriptingContext::initialize ()
 const X3DJavaScriptEnginePtr &
 X3DScriptingContext::getJavaScriptEngine (const std::string & scheme) const
 {
-	try
-	{
-		return javaScriptEngines .at (scheme);
-	}
-	catch (const std::out_of_range &)
-	{
-		return javaScriptEngines .at ("javascript");
-	}
+	const auto iter = javaScriptEngines .find (scheme);
+
+	if (iter not_eq javaScriptEngines .end ())
+		return iter -> second;
+
+	return javaScriptEngines .at ("javascript");
 }
 
 X3DScriptingContext::~X3DScriptingContext ()

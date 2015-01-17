@@ -123,7 +123,7 @@ SFColorRGBA::initialize (Context* const context, const pb::ptr <pb::Program> & e
 }
 
 pb::var
-SFColorRGBA::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFColorRGBA::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
@@ -148,7 +148,7 @@ SFColorRGBA::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::v
 }
 
 pb::var
-SFColorRGBA::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+SFColorRGBA::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
@@ -165,7 +165,7 @@ SFColorRGBA::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::v
 }
 
 pb::var
-SFColorRGBA::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+SFColorRGBA::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
@@ -180,7 +180,7 @@ SFColorRGBA::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::v
 }
 
 pb::var
-SFColorRGBA::setHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFColorRGBA::setHSV (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 3)
 		throw pb::Error (getTypeName () + ".prototype.setHSV: wrong number of arguments.");
@@ -203,7 +203,7 @@ SFColorRGBA::setHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 }
 
 pb::var
-SFColorRGBA::getHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFColorRGBA::getHSV (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.getHSV: wrong number of arguments.");

@@ -85,11 +85,10 @@ public:
 
 	///  Converts its argument to an integral signed value of 32 bit.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
-	{ return lhs -> getValue () .toInt32 () << (rhs -> getValue () .toUInt32 () & 0x1f); }
+	throw (pbError) final override
+	{ return lhs ->getValue () .toInt32 () << (rhs ->getValue () .toUInt32 () & 0x1f); }
 
 	///  @name Input/Output
 

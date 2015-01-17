@@ -307,7 +307,7 @@ public:
 	{ return type not_eq OBJECT; }
 
 	bool
-	isundefined () const
+	isUndefined () const
 	{ return type == UNDEFINED; }
 
 	bool
@@ -394,6 +394,7 @@ public:
 
 	///  @name Destruction
 
+	virtual
 	~var ()
 	{ clear (); }
 

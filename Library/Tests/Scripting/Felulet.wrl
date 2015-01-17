@@ -43,11 +43,11 @@ Transform {
 DEF Felulet Script {
   eventIn  SFTime set_time
   eventOut SFImage image_changed
-  field    SFInt32 size 32
+  field    SFInt32 size 16
   field    MFInt32 sample1 [ 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 ]
   field    MFInt32 sample2 [ 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 ]
 
-  url "javascript:
+  url "peaseblossom:
 
 function initialize()
 {
@@ -75,7 +75,7 @@ function initialize()
 	image_changed.x = size;
 	image_changed.y = size;
 	image_changed.comp = 1;
-	
+
 	print ('*** Done initializing Felület ...');
 }
 
@@ -110,10 +110,8 @@ function set_time (value, time)
 	
 			// counting new cells
 		
-
 			if (get_sample1 (x, y) == 100) 
 			{
-		  
 				if (piece == 3)
 					set_sample2 (x, y); 
 				else

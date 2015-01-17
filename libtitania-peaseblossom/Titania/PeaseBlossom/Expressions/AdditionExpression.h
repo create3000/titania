@@ -85,21 +85,24 @@ public:
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
-	var
+	CompletionType
 	getValue () const
-	throw (pbError,
-          pbControlFlowException) final override
+	throw (pbError) final override
 	{
-		const auto px = lhs -> getValue () .toPrimitive ();
-		const auto py = rhs -> getValue () .toPrimitive ();
+		const auto lval = lhs -> getValue ();
+		const auto rval = rhs -> getValue ();
+
+		if (lval .getType () == NUMBER and rval .getType () == NUMBER)
+			return lval .getNumber () + rval .getNumber ();
+
+		const auto px = lval .toPrimitive ();
+		const auto py = rval .toPrimitive ();
 
 		if (px .getType () == STRING or py .getType () == STRING)
-			return px .toString () + py .toString ();
+			return px .getString () + py .getString ();
 
 		return px .toNumber () + py .toNumber ();
 	}
-
-	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
 	virtual

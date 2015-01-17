@@ -92,7 +92,7 @@ pbFunction::addProperties ()
 	addOwnProperty ("length", length, NONE);
 }
 
-ptr <pbObject>
+pbObject*
 pbFunction::createInstance (pbExecutionContext* const executionContext)
 throw (TypeError)
 {
@@ -100,28 +100,19 @@ throw (TypeError)
 }
 
 bool
-pbFunction::hasInstance (const var & value)
+pbFunction::hasInstance (pbObject* const object)
 noexcept (true)
 {
-	if (value .isObject ())
-	{
-		try
-		{
-			auto proto = value .getObject () .get ();
-	
-			for (;;)
-			{
-				if (proto -> getConstructor () .get () == this)
-					return true;
+	auto proto = object;
 
-				proto = proto -> getProto ();
-			}
-		}
-		catch (const std::exception &)
-		{
-			return false;
-		}
+	do
+	{
+		if (proto -> getConstructor () .get () == this)
+			return true;
+
+		proto = proto -> getProto ();
 	}
+	while (proto);
 
 	return false;
 }
@@ -130,7 +121,7 @@ var
 pbFunction::construct (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments)
 throw (pbError)
 {
-	const var  object = createInstance (executionContext);
+	const auto object = createInstance (executionContext);
 	const auto result = construct (object, arguments);
 
 	if (result .isObject ())

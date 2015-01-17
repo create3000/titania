@@ -80,13 +80,13 @@ noexcept (true)
 	using namespace std::placeholders;
 
 	const auto functionClass = Standard::Function::initialize (this);
-	const auto objectClass   = Standard::Object::initialize (this, functionClass);
-
 	standardClasses [(size_t) StandardClassType::Function] = functionClass;
-	standardClasses [(size_t) StandardClassType::Object]   = objectClass;
+
+	const auto objectClass = Standard::Object::initialize (this, functionClass);
+	standardClasses [(size_t) StandardClassType::Object] = objectClass;
 
 	// Add global object.
-	getLocalObjects () .emplace_back (make_ptr <Standard::GlobalObject> (this, std::bind (&Program::resolve, this, _1)));
+	getLocalObjects () .emplace_back (new Standard::GlobalObject (this, std::bind (&Program::resolve, this, _1)));
 
 	getGlobalObject () -> addOwnProperty ("Function", functionClass, WRITABLE | CONFIGURABLE);
 	getGlobalObject () -> addOwnProperty ("Object",   objectClass,   WRITABLE | CONFIGURABLE);
@@ -99,15 +99,13 @@ Program::resolve (const Identifier & identifier)
 		std::make_pair (pb::Identifier ("Array"), StandardClassType::Array)
 	};
 
-	try
-	{
-		getGlobalObject () -> addOwnProperty (identifier, getStandardClass (types .at (identifier)), WRITABLE | CONFIGURABLE);
-		return true;
-	}
-	catch (const std::out_of_range &)
-	{
+	const auto iter = types .find (identifier);
+
+	if (iter == types .end ())
 		return false;
-	}
+
+	getGlobalObject () -> addOwnProperty (identifier, getStandardClass (iter -> second), WRITABLE | CONFIGURABLE);
+	return true;
 }
 
 const ptr <NativeFunction> &

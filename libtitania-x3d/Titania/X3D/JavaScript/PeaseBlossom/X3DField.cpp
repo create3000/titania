@@ -76,7 +76,7 @@ X3DField::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 }
 
 pb::var
-X3DField::getName (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
+X3DField::getName (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> &)
 {
 	try
 	{
@@ -89,7 +89,7 @@ X3DField::getName (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & 
 }
 
 pb::var
-X3DField::getTypeName_ (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
+X3DField::getTypeName_ (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> &)
 {
 	try
 	{
@@ -102,7 +102,7 @@ X3DField::getTypeName_ (const pb::ptr <pb::pbExecutionContext> & ec, const pb::v
 }
 
 pb::var
-X3DField::getType_ (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
+X3DField::getType_ (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> &)
 {
 	try
 	{
@@ -115,7 +115,7 @@ X3DField::getType_ (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var &
 }
 
 pb::var
-X3DField::toString (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
+X3DField::toString (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> &)
 {
 	try
 	{

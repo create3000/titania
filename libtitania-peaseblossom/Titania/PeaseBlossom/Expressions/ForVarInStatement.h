@@ -48,31 +48,33 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FOR_VAR_IN_STATEMENT_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FOR_VAR_IN_STATEMENT_H__
 
-#include "../Execution/pbExecutionContext.h"
+#include "../Execution/Block.h"
+#include "../Expressions/PrimitiveExpression.h"
+#include "../Expressions/VariableDeclaration.h"
 #include "../Expressions/pbExpression.h"
-#include "../Objects/pbFunction.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript identifier expression.
+ *  Class to represent a ECMAScript for in statement.
  */
-class VariableExpression :
+class ForVarInStatement :
 	public pbExpression
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new VariableExpression expression.
-	VariableExpression (pbExecutionContext* const executionContext, std::string && identifier) :
-		    pbExpression (ExpressionType::VARIABLE_EXPRESSION),
-		executionContext (executionContext),
-		      identifier (std::move (identifier))
+	///  Constructs new ForVarInStatement expression.
+	ForVarInStatement (ptr <VariableDeclaration> && variableDeclaration, ptr <pbExpression>&& expression) :
+		       pbExpression (ExpressionType::FOR_VAR_IN_STATEMENT),
+		variableDeclaration (std::move (variableDeclaration)),
+		         expression (std::move (expression)),
+		              block (new Block ())
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -80,23 +82,21 @@ public:
 	ptr <pbExpression>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new VariableExpression (executionContext, std::string (identifier .getName ())); }
+	{
+		const auto copy = new ForVarInStatement (variableDeclaration -> copy (executionContext), expression -> copy (executionContext));
+
+		copy -> getBlock () -> import (executionContext, block .get ());
+
+		return copy;
+	}
+
+	///  @name Member access
+
+	const ptr <Block> &
+	getBlock () const
+	{ return block; }
 
 	///  @name Operations
-
-	virtual
-	void
-	putValue (const var & value) const
-	throw (pbError) final override
-	{
-		for (const auto & localObject : executionContext -> getLocalObjects ())
-		{
-			if (localObject -> put (identifier, value, true))
-				return;
-		}
-
-		executionContext -> getGlobalObject () -> put (identifier, value, false);
-	}
 
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
@@ -104,15 +104,37 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
-		var value;
+		CompletionType result;
 
-		for (const auto & localObject : executionContext -> getLocalObjects ())
+		const auto value = expression -> getValue ();
+
+		if (value .getType () not_eq OBJECT)
+			return undefined;
+
+		const auto &        object = value .getObject ();
+		std::string         propertyName;
+		std::vector <void*> userData;
+
+		if (object -> enumerate (ENUMERATE_BEGIN, propertyName, userData))
 		{
-			if (localObject -> get (identifier, value))
-				return value;
+			do
+			{
+				while (object -> enumerate (ENUMERATE, propertyName, userData))
+				{
+					variableDeclaration -> putValue (propertyName);
+
+					const auto value = block -> getValue ();
+					
+					if (value .getStatement ())
+						return value;
+					
+					result = std::move (value);
+				}
+			}
+			while (object -> enumerate (ENUMERATE_END, propertyName, userData));
 		}
 
-		throw ReferenceError (identifier .getName () + " is not defined.");
+		return result;
 	}
 
 	///  @name Input/Output
@@ -121,8 +143,22 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ ostream << identifier; }
-
+	{
+		ostream
+			<< "for"
+			<< Generator::TidySpace
+			<< '('
+			<< "var"
+			<< Generator::Space
+			<< variableDeclaration
+			<< Generator::Space
+			<< "in"
+			<< Generator::Space
+			<< expression
+			<< ')'
+			<< Generator::TidyBreak
+			<< block;
+	}
 
 private:
 
@@ -131,12 +167,13 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChild (executionContext); }
+	{ addChildren (variableDeclaration, expression, block); }
 
 	///  @name Members
 
-	const ptr <pbExecutionContext> executionContext;
-	const Identifier               identifier;
+	const ptr <VariableDeclaration> variableDeclaration;
+	const ptr <pbExpression>        expression;
+	const ptr <Block>               block;
 
 };
 

@@ -110,12 +110,9 @@ struct toString
 ptr <NativeFunction> 
 initialize (pbExecutionContext* const ec, const ptr <NativeFunction> & functionClass)
 {
-	const auto & standardFunction = ec -> getStandardFunction ();
-	const auto & standardObject   = ec -> getStandardObject ();
-	const auto   constructor      = make_ptr <NativeFunction> (ec, "Object", Constructor { }, Constructor { }, 1);
+	const auto & standardObject = ec -> getStandardObject ();
+	const auto   constructor    = make_ptr <NativeFunction> (ec, "Object", Constructor { }, Constructor { }, 1);
 
-	constructor -> setConstructor (functionClass);
-	constructor -> setProto (standardFunction);
 	constructor -> defineOwnProperty ("prototype", standardObject, NONE);
 
 	standardObject -> setConstructor (constructor);

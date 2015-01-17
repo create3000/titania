@@ -54,7 +54,7 @@ namespace titania {
 namespace pb {
 
 var
-NativeFunction::construct (const var & object, const std::vector <var> & arguments)
+NativeFunction::construct (pbObject* const object, const std::vector <var> & arguments)
 throw (pbError)
 {
 	if (constructor)
@@ -64,7 +64,7 @@ throw (pbError)
 }
 
 var
-NativeFunction::call (const var & object, const std::vector <var> & arguments)
+NativeFunction::call (pbObject* const object, const std::vector <var> & arguments)
 throw (pbError)
 {
 	if (function)

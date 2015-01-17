@@ -755,6 +755,7 @@
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFImage.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFMatrix4.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFMatrix3.h" />
+    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1265,6 +1266,7 @@
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFImage.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFMatrix4.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFMatrix3.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

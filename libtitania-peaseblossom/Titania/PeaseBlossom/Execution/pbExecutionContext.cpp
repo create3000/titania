@@ -50,7 +50,6 @@
 
 #include "pbExecutionContext.h"
 
-#include "../Expressions/ControlFlowException.h"
 #include "../Objects/Function.h"
 #include "../Parser/Parser.h"
 #include "../Primitives.h"
@@ -61,13 +60,13 @@ namespace titania {
 namespace pb {
 
 pbExecutionContext::pbExecutionContext (pbExecutionContext* const executionContext_) :
-	             pbBlock (),
-	 pbInputStreamObject (),
-	          pbUserData (),
-	    executionContext (executionContext_),
-	        localObjects (),
-	           functions (),
-	              strict (executionContext_ -> isStrict ())
+	            pbBlock (),
+	pbInputStreamObject (),
+	         pbUserData (),
+	   executionContext (executionContext_),
+	       localObjects (),
+	          functions (),
+	             strict (executionContext_ -> isStrict ())
 {
 	addChildren (executionContext,
 	             localObjects);
@@ -109,8 +108,7 @@ noexcept (true)
 
 void
 pbExecutionContext::import (const pbExecutionContext* const executionContext)
-throw (pbError,
-       pbControlFlowException)
+throw (pbError)
 {
 	for (const auto & function : executionContext -> getFunctionDeclarations ())
 		addFunctionDeclaration (function .second);
@@ -122,49 +120,37 @@ var
 pbExecutionContext::run ()
 throw (pbError)
 {
-	try
+	for (const auto & function : functions)
 	{
-		for (const auto & function : functions)
+		getLocalObjects () .front () -> addOwnProperty (function .second -> getName (),
+		                                                isRootContext ()
+		                                                ? function .second
+																		: function .second -> copy (this),
+		                                                WRITABLE | CONFIGURABLE);
+	}
+
+	const auto result = pbBlock::getValue ();
+
+	if (result .getStatement ())
+	{
+		switch (result .getStatement () -> getType ())
 		{
-			getLocalObjects () .front () -> addOwnProperty (function .second -> getName (),
-			                                                       isRootContext ()
-			                                                       ? function .second
-			                                                       : function .second -> copy (this),
-			                                                       WRITABLE | CONFIGURABLE);
+			case ExpressionType::RETURN_STATEMENT:
+				return result;
+
+			//	throw SyntaxError ("Unlabelled continue must be inside loop.");
+			//	throw SyntaxError ("Label '' not found.");
+			//	throw SyntaxError ("Unlabelled break must be inside loop or switch.");
+			//	throw SyntaxError ("Label '' not found.");
+			//	throw Error ("Uncatched yield exception.");
+
+			default:
+				break;
 		}
+	}
 
-		pbBlock::run ();
+	return undefined;
 
-		return undefined;
-	}
-	catch (const ContinueException &)
-	{
-		throw SyntaxError ("Unlabelled continue must be inside loop.");
-	}
-	catch (const LabelledContinueException & error)
-	{
-		throw SyntaxError ("Label '' not found.");
-	}
-	catch (const BreakException &)
-	{
-		throw SyntaxError ("Unlabelled break must be inside loop or switch.");
-	}
-	catch (const LabelledBreakException & error)
-	{
-		throw SyntaxError ("Label '' not found.");
-	}
-	catch (const YieldException &)
-	{
-		throw Error ("Uncatched yield exception.");
-	}
-	catch (const ReturnException & exception)
-	{
-		return exception .getValue ();
-	}
-	catch (const pbError &)
-	{
-		throw;
-	}
 }
 
 void

@@ -112,7 +112,7 @@ protected:
 	template <class Class>
 	static
 	void
-	setUserData (const pb::ptr <pb::pbExecutionContext> &, const pb::ptr <pb::pbObject> &, typename Class::internal_type* const);
+	setUserData (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, typename Class::internal_type* const);
 
 	template <class Class>
 	static
@@ -126,19 +126,19 @@ private:
 
 	static
 	pb::var
-	getName (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	getName (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	getTypeName_ (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	getTypeName_ (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	getType_ (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	getType_ (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	toString (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	toString (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	///  @name Static members
 
@@ -150,14 +150,12 @@ template <class Class>
 pb::var
 X3DField::get (Context* const context, typename Class::internal_type* const field)
 {
-	try
-	{
-		return context -> getObject (field);
-	}
-	catch (const std::out_of_range &)
-	{
-		return create <Class> (context -> getProgram (), field);
-	}
+	const auto object = context -> getObject (field);
+
+	if (object)
+		return object;
+
+	return create <Class> (context -> getProgram (), field);
 }
 
 template <class Class>
@@ -174,7 +172,7 @@ X3DField::create (const pb::ptr <pb::pbExecutionContext> & ec, typename Class::i
 
 template <class Class>
 void
-X3DField::setUserData (const pb::ptr <pb::pbExecutionContext> & ec, const pb::ptr <pb::pbObject> & object, typename Class::internal_type* const field)
+X3DField::setUserData (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, typename Class::internal_type* const field)
 {
 	const auto context  = getContext (ec);
 	auto &     userData = object -> getUserData ();
