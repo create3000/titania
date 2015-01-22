@@ -440,6 +440,9 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 
 	scene = executionContext;
 
+	if (executionContext -> isProtoDeclaration ())
+		executionContext -> realize ();
+
 	set_model (OutlineTreeModel::create (executionContext));
 	get_model () -> set_show_all_routes (get_expand_prototype_instances ());
 
@@ -774,10 +777,6 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 		{
 			const auto & sfnode           = *static_cast <X3D::SFNode*> (get_object (iter));
 			const auto   executionContext = dynamic_cast <X3D::X3DExecutionContext*> (sfnode .getValue ());
-
-			// Realize prototypes when expanded.
-
-			executionContext -> realize ();
 
 			// ExternProtos
 

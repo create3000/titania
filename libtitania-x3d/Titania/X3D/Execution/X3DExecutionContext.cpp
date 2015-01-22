@@ -1004,10 +1004,10 @@ throw (Error <INVALID_NODE>,
 
 		const auto & route = addRoute (new Route (this, sourceNode, routeKey .first, destinationNode, routeKey .second));
 
-		// ??? Routes must and can be setuped immediately, if X3DChildObject is thread save and no one accesses browser,
-		// to ensure that toStream correctly operates with prototypes.
-
-		route -> setup ();
+		if (isInitialized ())
+			route -> setup ();
+		else
+			addUninitializedNode (route);
 
 		return route;
 	}

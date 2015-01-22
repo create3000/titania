@@ -1,4 +1,4 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V0.7.6
 
 PROTO Particle [
   exposedField SFBool     enabled TRUE
@@ -126,5 +126,4 @@ function rel_add (v, u)
   ROUTE Fields.friends_changed TO Particle.set_friends
   ROUTE Timer.time TO Particle.set_time
 }
-
 
