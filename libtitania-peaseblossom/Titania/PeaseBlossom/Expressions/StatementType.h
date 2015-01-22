@@ -48,70 +48,72 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_EXPRESSION_TYPE_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_EXPRESSION_TYPE_H__
 
-#include "../Expressions/pbStatement.h"
-#include "../Objects/Function.h"
+#include <cstdint>
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a ECMAScript function expression.
- */
-class FunctionExpression :
-	public pbStatement
+enum class StatementType :
+	uint8_t
 {
-public:
+	UNDEFINED,
+	BOOLEAN,
+	NUMBER,
+	BINARY_NUMBER,
+	OCTAL_NUMBER,
+	HEXAL_NUMBER,
+	STRING,
+	SINGLE_QUOTED_STRING,
+	DOUBLE_QUOTED_STRING,
+	NULL_OBJECT,
 
-	///  @name Construction
-
-	///  Constructs new FunctionExpression statement.
-	FunctionExpression (pbExecutionContext* const executionContext, ptr <Function> && function) :
-		    pbStatement (StatementType::FUNCTION_EXPRESSION),
-		executionContext (executionContext),
-		        function (std::move (function))
-	{ construct (); }
-
-	///  Creates a copy of this object.
-	virtual
-	ptr <pbStatement>
-	copy (pbExecutionContext* const executionContext) const
-	noexcept (true) final override
-	{ return new FunctionExpression (executionContext, ptr <Function> (function)); }
-
-	///  @name Operations
-
-	///  Converts its input argument to either Primitive or Object type.
-	virtual
-	CompletionType
-	getValue () const
-	throw (pbError) final override
-	{ return function -> copy (executionContext .get ()); }
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << function; }
-
-
-private:
-
-	///  @name Construction
-
-	///  Performs neccessary operations after construction.
-	void
-	construct ()
-	{ addChildren (executionContext, function); }
-
-	///  @name Members
-
-	const ptr <pbExecutionContext> executionContext;
-	const ptr <Function>           function;
+	ADDITION_EXPRESSION,
+	ARRAY_INDEX_EXPRESSION,
+	ARRAY_LITERAL,
+	ASSIGNMENT_EXPRESSION,
+	BITWISE_AND_EXPRESSION,
+	BLOCK_STATEMENT,
+	BREAK_STATEMENT,
+	CONDITIONAL_EXPRESSION,
+	DIVISION_EXPRESSION,
+	EMPTY_STATEMENT,
+	EQUAL_EXPRESSION,
+	EXPRESSION,
+	FOR_IN_STATEMENT,
+	FOR_STATEMENT,
+	FOR_VAR_IN_STATEMENT,
+	FOR_VAR_STATEMENT,
+	FUNCTION_CALL_EXPRESSION,
+	FUNCTION_EXPRESSION,
+	GREATER_EXPRESSION,
+	IF_STATEMENT,
+	IN_EXPRESSION,
+	INSTANCE_OF_EXPRESSION,
+	LEFT_SHIFT_EXPRESSION,
+	LESS_EXPRESSION,
+	LOGICAL_AND_EXPRESSION,
+	LOGICAL_NOT_EXPRESSION,
+	LOGICAL_OR_EXPRESSION,
+	MULTIPLICATION_EXPRESSION,
+	NEGATE_EXPRESSION,
+	NEW_EXPRESSION,
+	OBJECT_LITERAL,
+	POST_DECREMENT_EXPRESSION,
+	POST_INCREMENT_EXPRESSION,
+	PRE_DECREMENT_EXPRESSION,
+	PRE_INCREMENT_EXPRESSION,
+	PROPERTY_EXPRESSION,
+	REMAINDER_EXPRESSION,
+	RETURN_STATEMENT,
+	STRICT_EQUAL_EXPRESSION,
+	SUBTRACTION_EXPRESSION,
+	SWTICH_STATEMENT,
+	VARIABLE_EXPRESSION,
+	VARIABLE_DECLARATION,
+	VARIABLE_STATEMENT,
 
 };
 

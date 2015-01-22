@@ -51,7 +51,7 @@
 #ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_ARRAY_LITERAL_H__
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_ARRAY_LITERAL_H__
 
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 #include "../Objects/Array.h"
 
 #include <Titania/String/to_string.h>
@@ -63,7 +63,7 @@ namespace pb {
  *  Class to represent a ECMAScript array literal expression.
  */
 class ArrayLiteral :
-	public pbExpression
+	public pbStatement
 {
 public:
 
@@ -71,7 +71,7 @@ public:
 
 	///  Constructs new ArrayLiteral expression.
 	ArrayLiteral (pbExecutionContext* const executionContext) :
-		    pbExpression (ExpressionType::ARRAY_LITERAL),
+		    pbStatement (StatementType::ARRAY_LITERAL),
 		executionContext (executionContext),
 		     identifiers (),
 		     expressions ()
@@ -79,7 +79,7 @@ public:
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{
@@ -94,7 +94,7 @@ public:
 	///  @name Operations
 
 	void
-	addExpression (ptr <pbExpression> && value)
+	addExpression (ptr <pbStatement> && value)
 	{
 		identifiers .emplace_back (basic::to_string (identifiers .size ()));
 		expressions .emplace_back (std::move (value));
@@ -139,7 +139,7 @@ public:
 			{
 				ostream << Generator::Indent;
 
-				if (expression -> getType () not_eq ExpressionType::UNDEFINED)
+				if (expression -> getType () not_eq StatementType::UNDEFINED)
 				{
 					ostream << expression;
 				}
@@ -149,7 +149,7 @@ public:
 					<< Generator::TidyBreak;
 			}
 
-			if (expressions .back () -> getType () not_eq ExpressionType::UNDEFINED)
+			if (expressions .back () -> getType () not_eq StatementType::UNDEFINED)
 			{
 				ostream
 					<< Generator::Indent
@@ -183,7 +183,7 @@ private:
 
 	const ptr <pbExecutionContext> executionContext;
 	std::vector <Identifier>       identifiers;
-	array <ptr <pbExpression>>     expressions;
+	array <ptr <pbStatement>>     expressions;
 
 };
 

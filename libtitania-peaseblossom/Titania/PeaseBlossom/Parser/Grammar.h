@@ -158,7 +158,11 @@ public:
 	static const io::string if_;
 	static const io::string else_;
 	static const io::string for_;
+	static const io::string break_;
 	static const io::string return_;
+	static const io::string switch_;
+	static const io::string case_;
+	static const io::string default_;
 
 	///  @name Values
 
@@ -304,7 +308,11 @@ const io::string    Grammar::BitwiseORAssignment ("|=");
 const io::string Grammar::if_ ("if");
 const io::string Grammar::else_ ("else");
 const io::string Grammar::for_ ("for");
+const io::string Grammar::break_ ("break");
 const io::string Grammar::return_ ("return");
+const io::string Grammar::switch_ ("switch");
+const io::string Grammar::case_ ("case");
+const io::string Grammar::default_ ("default");
 
 // Values
 

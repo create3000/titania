@@ -121,7 +121,7 @@ var
 Function::call (pbObject* const object, const std::vector <var> & arguments)
 throw (pbError)
 {
-	const auto localObject = new Object (static_cast <pbExecutionContext*> (this));
+	const auto localObject = new Object (nullptr);
 
 	localObject -> addOwnProperty ("this",      object,    NONE);
 	//localObject -> addOwnProperty ("arguments", arguments, NONE);
@@ -134,8 +134,34 @@ throw (pbError)
 	return run ();
 }
 
+var
+Function::run ()
+throw (pbError)
+{
+	for (const auto & function : getFunctionDeclarations ())
+		getVariableObject () -> addOwnProperty (function .second -> getName (), function .second -> copy (this), WRITABLE | CONFIGURABLE);
+
+	for (const auto & statement : getStatements ())
+	{
+		const auto value = statement -> getValue ();
+
+		if (value .getStatement ())
+		{
+			switch (value .getStatement () -> getType ())
+			{
+				case StatementType::RETURN_STATEMENT:
+					return value;
+				default:
+					continue;
+			}
+		}
+	}
+
+	return undefined;
+}
+
 void
-Function::push (pbObject* const localObject)
+Function::enter (pbObject* const localObject)
 {
 	if (recursionDepth)
 		localObjectsStack .append (std::move (getLocalObjects ()));
@@ -152,7 +178,7 @@ Function::push (pbObject* const localObject)
 }
 
 void
-Function::pop ()
+Function::leave ()
 {
 	getLocalObjects () .clear ();
 
@@ -195,7 +221,7 @@ Function::toStream (std::ostream & ostream) const
 
 	ostream << ')';
 
-	if (getExpressions () .empty ())
+	if (getStatements () .empty ())
 	{
 		ostream
 			<< Generator::TidySpace

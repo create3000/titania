@@ -151,7 +151,7 @@ public:
 
 	template <class InputIterator>
 	void
-	assign (const InputIterator &, const InputIterator &);
+	assign (InputIterator, const InputIterator &);
 
 	Type &
 	at (const size_type index)
@@ -432,7 +432,7 @@ array <Type>::operator = (array && other)
 template <class Type>
 template <class InputIterator>
 void
-array <Type>::assign (const InputIterator & first, const InputIterator & last)
+array <Type>::assign (InputIterator first, const InputIterator & last)
 {
 	iterator current = begin ();
 

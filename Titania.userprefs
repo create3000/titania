@@ -1,12 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/share/titania/tools/library/BooleanSwitch.x3dv">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="1" Column="1" />
-      <File FileName="Library/Tests/Scripting/pb/pb1.x3dv" Line="1" Column="1" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="395" Column="1" />
+      <File FileName="Library/Tests/Scripting/pb/pb1.x3dv" Line="127" Column="16" />
       <File FileName="Library/Tests/Scripting/Felulet.wrl" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Makefile.am" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp" Line="58" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.h" Line="59" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="51" Column="20" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.h" Line="1" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.cpp" Line="198" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.h" Line="336" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.cpp" Line="2010" Column="4" />
+      <File FileName="libtitania-x3d/share/titania/tools/TransformTool.x3dv" Line="1322" Column="22" />
+      <File FileName="libtitania-x3d/share/titania/tools/library/BooleanSwitch.x3dv" Line="28" Column="23" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Browser.h" Line="88" Column="10" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Browser.cpp" Line="100" Column="19" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsBrowser.cpp" Line="783" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,27 +23,46 @@
           <Node name="build" expanded="True" />
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True">
-              <Node name="Vattenfall" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
-            </Node>
+            <Node name="Examples" expanded="True" />
             <Node name="Tests" expanded="True">
               <Node name="Scripting" expanded="True">
                 <Node name="pb" expanded="True" />
               </Node>
             </Node>
           </Node>
+          <Node name="libtitania-peaseblossom" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="PeaseBlossom" expanded="True">
+                <Node name="Base" expanded="True" />
+                <Node name="Bits" expanded="True" />
+                <Node name="Execution" expanded="True" />
+                <Node name="Expressions" expanded="True" selected="True" />
+                <Node name="Objects" expanded="True" />
+                <Node name="Parser" expanded="True" />
+                <Node name="Primitives" expanded="True" />
+                <Node name="Standard" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
           <Node name="libtitania-x3d" expanded="True">
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="tools" expanded="True">
+                  <Node name="library" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
                 <Node name="Browser" expanded="True">
-                  <Node name="Scripting" expanded="True">
-                    <Node name="X3DScriptingContext.cpp" selected="True" />
-                  </Node>
+                  <Node name="Scripting" expanded="True" />
                 </Node>
                 <Node name="JavaScript" expanded="True">
-                  <Node name="PeaseBlossom" expanded="True" />
+                  <Node name="PeaseBlossom" expanded="True">
+                    <Node name="Fields" expanded="True" />
+                  </Node>
+                  <Node name="SpiderMonkey" expanded="True" />
                 </Node>
               </Node>
             </Node>

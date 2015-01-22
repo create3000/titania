@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,10 +51,10 @@
 #include "Parser.h"
 
 #include "../Execution/pbExecutionContext.h"
-#include "../Expressions.h"
 #include "../Objects.h"
 #include "../Parser/Grammar.h"
 #include "../Primitives.h"
+#include "../Statements.h"
 
 #include <Titania/Backtrace.h>
 #include <Titania/Math/Utility/strtol.h>
@@ -65,7 +65,6 @@ namespace pb {
 Parser::Parser (pbExecutionContext* const executionContext, std::istream & istream) :
 	             rootContext (executionContext),
 	       executionContexts ({ executionContext }),
-	                  blocks ({ executionContext }),
 	                 istream (istream),
 	                position (-1),
 	              lineNumber (1),
@@ -78,8 +77,7 @@ Parser::Parser (pbExecutionContext* const executionContext, std::istream & istre
 
 void
 Parser::parseIntoContext ()
-throw (SyntaxError,
-       ReferenceError)
+throw (pbError)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -131,7 +129,7 @@ Parser::getline ()
 
 	std::string string;
 
-	for (; ;)
+	for (;;)
 	{
 		char c = istream .get ();
 
@@ -162,7 +160,7 @@ Parser::rgetline ()
 
 	std::string string;
 
-	for (; ;)
+	for (;;)
 	{
 		istream .unget ();
 
@@ -183,20 +181,6 @@ Parser::rgetline ()
 	istream .clear ();
 
 	return std::string (string .rbegin (), string .rend ());
-}
-
-void
-Parser::pushExecutionContext (pbExecutionContext* const executionContext)
-{
-	pushBlock (executionContext);
-	executionContexts .emplace (executionContext);
-}
-
-void
-Parser::popExecutionContext ()
-{
-	popBlock ();
-	executionContexts .pop ();
 }
 
 void
@@ -241,9 +225,9 @@ bool
 Parser::comments ()
 {
 	//__LOG__ << this << " " << std::endl;
-	
+
 	const auto currentPosition = istream .tellg ();
-	
+
 	if (currentPosition == position)
 		return false;
 
@@ -268,9 +252,9 @@ Parser::comment ()
 	//__LOG__ << this << " " << std::endl;
 
 	Grammar::WhiteSpaces (istream, whiteSpaces);
-	
+
 	lines (whiteSpaces);
-	
+
 	whiteSpaces .clear ();
 
 	if (Grammar::MultiLineComment (istream, commentCharacters))
@@ -317,7 +301,7 @@ Parser::identifierName (std::string & identifierNameCharacters)
 	if (identifierStart (identifierNameCharacters))
 	{
 		while (identifierStart (identifierNameCharacters) or identifierPart (identifierNameCharacters))
-			;
+		;
 
 		return true;
 	}
@@ -378,7 +362,7 @@ Parser::reservedWord (const std::string & string)
 }
 
 bool
-Parser::literal (ptr <pbExpression> & value)
+Parser::literal (ptr <pbStatement> & value)
 {
 	if (nullLiteral (value))
 		return true;
@@ -399,7 +383,7 @@ Parser::literal (ptr <pbExpression> & value)
 }
 
 bool
-Parser::nullLiteral (ptr <pbExpression> & value)
+Parser::nullLiteral (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -407,7 +391,7 @@ Parser::nullLiteral (ptr <pbExpression> & value)
 
 	if (Grammar::null (istream))
 	{
-		value = new PrimitiveExpression (nullptr, ExpressionType::NULL_OBJECT);
+		value = new PrimitiveExpression (nullptr, StatementType::NULL_OBJECT);
 		return true;
 	}
 
@@ -415,7 +399,7 @@ Parser::nullLiteral (ptr <pbExpression> & value)
 }
 
 bool
-Parser::booleanLiteral (ptr <pbExpression> & value)
+Parser::booleanLiteral (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -423,13 +407,13 @@ Parser::booleanLiteral (ptr <pbExpression> & value)
 
 	if (Grammar::true_ (istream))
 	{
-		value = new PrimitiveExpression (true, ExpressionType::BOOLEAN);
+		value = new PrimitiveExpression (true, StatementType::BOOLEAN);
 		return true;
 	}
 
 	if (Grammar::false_ (istream))
 	{
-		value = new PrimitiveExpression (false, ExpressionType::BOOLEAN);
+		value = new PrimitiveExpression (false, StatementType::BOOLEAN);
 		return true;
 	}
 
@@ -437,7 +421,7 @@ Parser::booleanLiteral (ptr <pbExpression> & value)
 }
 
 bool
-Parser::numericLiteral (ptr <pbExpression> & value)
+Parser::numericLiteral (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -457,7 +441,7 @@ Parser::numericLiteral (ptr <pbExpression> & value)
 }
 
 bool
-Parser::decimalLiteral (ptr <pbExpression> & value)
+Parser::decimalLiteral (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -469,7 +453,7 @@ Parser::decimalLiteral (ptr <pbExpression> & value)
 
 	if (istream >> std::dec >> number)
 	{
-		value = new PrimitiveExpression (number, ExpressionType::NUMBER);
+		value = new PrimitiveExpression (number, StatementType::NUMBER);
 		return true;
 	}
 
@@ -479,7 +463,7 @@ Parser::decimalLiteral (ptr <pbExpression> & value)
 }
 
 bool
-Parser::binaryIntegerLiteral (ptr <pbExpression> & value)
+Parser::binaryIntegerLiteral (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -491,7 +475,7 @@ Parser::binaryIntegerLiteral (ptr <pbExpression> & value)
 
 		if (Grammar::BinaryDigits (istream, digits))
 		{
-			value = new PrimitiveExpression ((double) math::strtoul (digits .c_str (), 2), ExpressionType::BINARY_NUMBER);
+			value = new PrimitiveExpression ((double) math::strtoul (digits .c_str (), 2), StatementType::BINARY_NUMBER);
 			return true;
 		}
 
@@ -502,7 +486,7 @@ Parser::binaryIntegerLiteral (ptr <pbExpression> & value)
 }
 
 bool
-Parser::octalIntegerLiteral (ptr <pbExpression> & value)
+Parser::octalIntegerLiteral (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -514,7 +498,7 @@ Parser::octalIntegerLiteral (ptr <pbExpression> & value)
 
 		if (istream >> std::oct >> number)
 		{
-			value = new PrimitiveExpression (number, ExpressionType::OCTAL_NUMBER);
+			value = new PrimitiveExpression (number, StatementType::OCTAL_NUMBER);
 			return true;
 		}
 
@@ -525,7 +509,7 @@ Parser::octalIntegerLiteral (ptr <pbExpression> & value)
 }
 
 bool
-Parser::hexIntegerLiteral (ptr <pbExpression> & value)
+Parser::hexIntegerLiteral (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -537,7 +521,7 @@ Parser::hexIntegerLiteral (ptr <pbExpression> & value)
 
 		if (istream >> std::hex >> number)
 		{
-			value = new PrimitiveExpression (number, ExpressionType::HEXAL_NUMBER);
+			value = new PrimitiveExpression (number, StatementType::HEXAL_NUMBER);
 			return true;
 		}
 
@@ -548,7 +532,7 @@ Parser::hexIntegerLiteral (ptr <pbExpression> & value)
 }
 
 bool
-Parser::stringLiteral (ptr <pbExpression> & value)
+Parser::stringLiteral (ptr <pbStatement> & value)
 {
 	static const io::quoted_string doubleQuotedString ('"');
 	static const io::quoted_string singleQuotedString ('\'');
@@ -561,7 +545,7 @@ Parser::stringLiteral (ptr <pbExpression> & value)
 	{
 		lines (characters);
 
-		value = new PrimitiveExpression (std::move (characters), ExpressionType::DOUBLE_QUOTED_STRING);
+		value = new PrimitiveExpression (std::move (characters), StatementType::DOUBLE_QUOTED_STRING);
 		return true;
 	}
 
@@ -569,7 +553,7 @@ Parser::stringLiteral (ptr <pbExpression> & value)
 	{
 		lines (characters);
 
-		value = new PrimitiveExpression (std::move (characters), ExpressionType::SINGLE_QUOTED_STRING);
+		value = new PrimitiveExpression (std::move (characters), StatementType::SINGLE_QUOTED_STRING);
 		return true;
 	}
 
@@ -581,7 +565,7 @@ Parser::stringLiteral (ptr <pbExpression> & value)
 // A.3 Expressions
 
 bool
-Parser::primaryExpression (ptr <pbExpression> & value)
+Parser::primaryExpression (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -630,7 +614,7 @@ Parser::primaryExpression (ptr <pbExpression> & value)
 }
 
 bool
-Parser::arrayLiteral (ptr <pbExpression> & value)
+Parser::arrayLiteral (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -649,7 +633,7 @@ Parser::arrayLiteral (ptr <pbExpression> & value)
 				value = std::move (arrayLiteral);
 				return true;
 			}
-		}	
+		}
 
 		comments ();
 
@@ -687,16 +671,16 @@ bool
 Parser::elementList (const ptr <ArrayLiteral> & arrayLiteral)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
-	
+
 	elision (arrayLiteral);
 
-	ptr <pbExpression> value;
+	ptr <pbStatement> value;
 
 	if (assignmentExpression (value))
 	{
 		arrayLiteral -> addExpression (std::move (value));
 
-		for ( ; ;)
+		for (;;)
 		{
 			comments ();
 
@@ -725,13 +709,13 @@ Parser::elision (const ptr <ArrayLiteral> & arrayLiteral)
 
 	if (Grammar::Comma (istream))
 	{
-		arrayLiteral -> addExpression (new PrimitiveExpression (undefined, ExpressionType::UNDEFINED));
+		arrayLiteral -> addExpression (new PrimitiveExpression (undefined, StatementType::UNDEFINED));
 
 		comments ();
 
 		while (Grammar::Comma (istream))
 		{
-			arrayLiteral -> addExpression (new PrimitiveExpression (undefined, ExpressionType::UNDEFINED));
+			arrayLiteral -> addExpression (new PrimitiveExpression (undefined, StatementType::UNDEFINED));
 
 			comments ();
 		}
@@ -743,7 +727,7 @@ Parser::elision (const ptr <ArrayLiteral> & arrayLiteral)
 }
 
 bool
-Parser::objectLiteral (ptr <pbExpression> & value)
+Parser::objectLiteral (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -785,7 +769,7 @@ Parser::propertyDefinitionList (const ptr <ObjectLiteral> & objectLiteral)
 
 	if (propertyDefinition (objectLiteral))
 	{
-		for ( ; ;)
+		for (;;)
 		{
 			comments ();
 
@@ -807,8 +791,8 @@ Parser::propertyDefinition (const ptr <ObjectLiteral> & objectLiteral)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
-	ptr <pbExpression> propertyNameValue;
-	std::string        propertyNameCharacters;
+	ptr <pbStatement> propertyNameValue;
+	std::string       propertyNameCharacters;
 
 	if (propertyName (propertyNameValue))
 	{
@@ -818,7 +802,7 @@ Parser::propertyDefinition (const ptr <ObjectLiteral> & objectLiteral)
 
 		if (Grammar::Colon (istream))
 		{
-			ptr <pbExpression> value;
+			ptr <pbStatement> value;
 
 			if (assignmentExpression (value))
 			{
@@ -940,7 +924,7 @@ Parser::propertyDefinition (const ptr <ObjectLiteral> & objectLiteral)
 }
 
 bool
-Parser::propertyName (ptr <pbExpression> & value)
+Parser::propertyName (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -948,7 +932,7 @@ Parser::propertyName (ptr <pbExpression> & value)
 
 	if (identifierName (propertyNameCharacters))
 	{
-		value = new PrimitiveExpression (std::move (propertyNameCharacters), ExpressionType::STRING);
+		value = new PrimitiveExpression (std::move (propertyNameCharacters), StatementType::STRING);
 		return true;
 	}
 
@@ -978,19 +962,19 @@ Parser::propertySetParameterList (std::vector <std::string> & formalParameters)
 }
 
 bool
-Parser::memberExpression (ptr <pbExpression> & value)
+Parser::memberExpression (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (primaryExpression (value) or functionExpression (value) or newExpression (value))
 	{
-		for ( ; ;)
+		for (;;)
 		{
 			comments ();
 
 			if (Grammar::OpenBracket (istream))
 			{
-				ptr <pbExpression> identifier;
+				ptr <pbStatement> identifier;
 
 				if (expression (identifier))
 				{
@@ -1031,13 +1015,13 @@ Parser::memberExpression (ptr <pbExpression> & value)
 }
 
 bool
-Parser::newExpression (ptr <pbExpression> & value)
+Parser::newExpression (ptr <pbStatement> & value)
 {
 	if (Grammar::new_ (istream))
 	{
 		if (memberExpression (value))
 		{
-			array <ptr <pbExpression>> argumentListExpressions;
+			array <ptr <pbStatement>>  argumentListExpressions;
 
 			arguments (argumentListExpressions);
 
@@ -1052,7 +1036,7 @@ Parser::newExpression (ptr <pbExpression> & value)
 }
 
 //bool
-//Parser::newExpression (ptr <pbExpression> & value)
+//Parser::newExpression (ptr <pbStatement> & value)
 //{
 //	//__LOG__ << (char) istream .peek () << std::endl;
 //
@@ -1065,7 +1049,7 @@ Parser::newExpression (ptr <pbExpression> & value)
 //	{
 //		if (newExpression (value))
 //		{
-//			value = new NewExpression (std::move (value), std::vector <ptr <pbExpression>> ());
+//			value = new NewExpression (std::move (value), std::vector <ptr <pbStatement>> ());
 //			return true;
 //		}
 //	}
@@ -1074,15 +1058,15 @@ Parser::newExpression (ptr <pbExpression> & value)
 //}
 
 bool
-Parser::callExpression (ptr <pbExpression> & value)
+Parser::callExpression (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (value or memberExpression (value))
 	{
-		for ( ; ;)
+		for (;;)
 		{
-			array <ptr <pbExpression>> argumentListExpressions;
+			array <ptr <pbStatement>>  argumentListExpressions;
 
 			if (arguments (argumentListExpressions))
 			{
@@ -1092,7 +1076,7 @@ Parser::callExpression (ptr <pbExpression> & value)
 
 			if (Grammar::OpenBracket (istream))
 			{
-				ptr <pbExpression> arrayIndexExpressions;
+				ptr <pbStatement> arrayIndexExpressions;
 
 				if (expression (arrayIndexExpressions))
 				{
@@ -1133,7 +1117,7 @@ Parser::callExpression (ptr <pbExpression> & value)
 }
 
 bool
-Parser::arguments (array <ptr <pbExpression>> & argumentListExpressions)
+Parser::arguments (array <ptr <pbStatement>> & argumentListExpressions)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -1160,17 +1144,17 @@ Parser::arguments (array <ptr <pbExpression>> & argumentListExpressions)
 }
 
 bool
-Parser::argumentList (array <ptr <pbExpression>> & argumentListExpressions)
+Parser::argumentList (array <ptr <pbStatement>> & argumentListExpressions)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
-	ptr <pbExpression> value;
+	ptr <pbStatement> value;
 
 	if (assignmentExpression (value))
 	{
 		argumentListExpressions .emplace_back (std::move (value));
 
-		for ( ; ;)
+		for (;;)
 		{
 			comments ();
 
@@ -1193,7 +1177,7 @@ Parser::argumentList (array <ptr <pbExpression>> & argumentListExpressions)
 }
 
 bool
-Parser::leftHandSideExpression (ptr <pbExpression> & value)
+Parser::leftHandSideExpression (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -1218,7 +1202,7 @@ Parser::leftHandSideExpression (ptr <pbExpression> & value)
 }
 
 bool
-Parser::postfixExpression (ptr <pbExpression> & value)
+Parser::postfixExpression (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -1249,7 +1233,7 @@ Parser::postfixExpression (ptr <pbExpression> & value)
 }
 
 bool
-Parser::unaryExpression (ptr <pbExpression> & value)
+Parser::unaryExpression (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -1340,7 +1324,7 @@ Parser::unaryExpression (ptr <pbExpression> & value)
 
 		if (unaryExpression (value))
 		{
-			//value = new NegateExpression (std::move (value));
+			value = new NegateExpression (std::move (value));
 			return true;
 		}
 
@@ -1353,7 +1337,7 @@ Parser::unaryExpression (ptr <pbExpression> & value)
 
 		if (unaryExpression (value))
 		{
-			//value = new BitwiseNOTExpression (std::move (value));
+			//value = new BitwiseNotExpression (std::move (value));
 			return true;
 		}
 
@@ -1366,7 +1350,7 @@ Parser::unaryExpression (ptr <pbExpression> & value)
 
 		if (unaryExpression (value))
 		{
-			//value = new LogicalNOTExpression (std::move (value));
+			value = new LogicalNotExpression (std::move (value));
 			return true;
 		}
 
@@ -1377,572 +1361,602 @@ Parser::unaryExpression (ptr <pbExpression> & value)
 }
 
 bool
-Parser::multiplicativeExpression (ptr <pbExpression> & lhs)
+Parser::multiplicativeExpression (ptr <pbStatement> & lhs)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (unaryExpression (lhs))
 	{
-		comments ();
-
-		if (Grammar::Multiplication (istream))
+		for (;;)
 		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::Multiplication .rewind (istream);
+			comments ();
 
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (multiplicativeExpression (rhs))
+			if (Grammar::Multiplication (istream))
 			{
-				lhs = createMultiplicationExpression (std::move (lhs), std::move (rhs));
-				return true;
+				if (Grammar::Assignment .lookahead (istream))
+					return Grammar::Multiplication .rewind (istream);
+
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (unaryExpression (rhs))
+				{
+					lhs = createMultiplicationExpression (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '*'.");
 			}
 
-			throw SyntaxError ("Expected expression after '*'.");
-		}
-
-		if (Grammar::Division (istream))
-		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::Division .rewind (istream);
-
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (multiplicativeExpression (rhs))
+			if (Grammar::Division (istream))
 			{
-				lhs = createDivisionExpression (std::move (lhs), std::move (rhs));
-				return true;
+				if (Grammar::Assignment .lookahead (istream))
+					return Grammar::Division .rewind (istream);
+
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (unaryExpression (rhs))
+				{
+					lhs = createDivisionExpression (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '/'.");
 			}
 
-			throw SyntaxError ("Expected expression after '/'.");
-		}
-
-		if (Grammar::Remainder (istream))
-		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::Remainder .rewind (istream);
-
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (multiplicativeExpression (rhs))
+			if (Grammar::Remainder (istream))
 			{
-				lhs = createRemainderExpression (std::move (lhs), std::move (rhs));
-				return true;
+				if (Grammar::Assignment .lookahead (istream))
+					return Grammar::Remainder .rewind (istream);
+
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (unaryExpression (rhs))
+				{
+					lhs = createRemainderExpression (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '%'.");
 			}
 
-			throw SyntaxError ("Expected expression after '%'.");
+			return true;
 		}
-
-		return true;
 	}
 
 	return false;
 }
 
 bool
-Parser::additiveExpression (ptr <pbExpression> & lhs)
+Parser::additiveExpression (ptr <pbStatement> & lhs)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (multiplicativeExpression (lhs))
 	{
-		comments ();
-
-		if (Grammar::Addition (istream))
+		for (;;)
 		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::Addition .rewind (istream);
+			comments ();
 
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (additiveExpression (rhs))
+			if (Grammar::Addition (istream))
 			{
-				lhs = createAdditionExpression (std::move (lhs), std::move (rhs));
-				return true;
+				if (Grammar::Assignment .lookahead (istream))
+					return Grammar::Addition .rewind (istream);
+
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (multiplicativeExpression (rhs))
+				{
+					lhs = createAdditionExpression (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '+'.");
 			}
 
-			throw SyntaxError ("Expected expression after '+'.");
-		}
-
-		if (Grammar::Subtraction (istream))
-		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::Subtraction .rewind (istream);
-
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (additiveExpression (rhs))
+			if (Grammar::Subtraction (istream))
 			{
-				lhs = createSubtractionExpression (std::move (lhs), std::move (rhs));
-				return true;
+				if (Grammar::Assignment .lookahead (istream))
+					return Grammar::Subtraction .rewind (istream);
+
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (multiplicativeExpression (rhs))
+				{
+					lhs = createSubtractionExpression (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '-'.");
 			}
 
-			throw SyntaxError ("Expected expression after '-'.");
+			return true;
 		}
-
-		return true;
 	}
 
 	return false;
 }
 
 bool
-Parser::shiftExpression (ptr <pbExpression> & lhs)
+Parser::shiftExpression (ptr <pbStatement> & lhs)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (additiveExpression (lhs))
 	{
-		comments ();
-
-		if (Grammar::LeftShift (istream))
+		for (;;)
 		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::LeftShift .rewind (istream);
+			comments ();
 
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (shiftExpression (rhs))
+			if (Grammar::LeftShift (istream))
 			{
-				lhs = createLeftShiftExpression (std::move (lhs), std::move (rhs));
-				return true;
+				if (Grammar::Assignment .lookahead (istream))
+					return Grammar::LeftShift .rewind (istream);
+
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (additiveExpression (rhs))
+				{
+					lhs = createLeftShiftExpression (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '<<'.");
 			}
 
-			throw SyntaxError ("Expected expression after '<<'.");
-		}
-
-		if (Grammar::UnsignedRightShift (istream))
-		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::UnsignedRightShift .rewind (istream);
-
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (shiftExpression (rhs))
+			if (Grammar::UnsignedRightShift (istream))
 			{
-				//lhs = make_unsigned_right_shift (std::move (lhs), std::move (rhs));
-				return true;
+				if (Grammar::Assignment .lookahead (istream))
+					return Grammar::UnsignedRightShift .rewind (istream);
+
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (additiveExpression (rhs))
+				{
+					//lhs = make_unsigned_right_shift (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '>>>'.");
 			}
 
-			throw SyntaxError ("Expected expression after '>>>'.");
-		}
-
-		if (Grammar::RightShift (istream))
-		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::RightShift .rewind (istream);
-
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (shiftExpression (rhs))
+			if (Grammar::RightShift (istream))
 			{
-				//lhs = make_right_shift (std::move (lhs), std::move (rhs));
-				return true;
+				if (Grammar::Assignment .lookahead (istream))
+					return Grammar::RightShift .rewind (istream);
+
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (additiveExpression (rhs))
+				{
+					//lhs = make_right_shift (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '>>'.");
 			}
 
-			throw SyntaxError ("Expected expression after '>>'.");
+			return true;
 		}
-
-		return true;
 	}
 
 	return false;
 }
 
 bool
-Parser::relationalExpression (ptr <pbExpression> & lhs)
+Parser::relationalExpression (ptr <pbStatement> & lhs)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (shiftExpression (lhs))
 	{
-		comments ();
-
-		if (Grammar::LessEqual (istream))
+		for (;;)
 		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::LessEqual .rewind (istream);
+			comments ();
 
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (relationalExpression (rhs))
+			if (Grammar::LessEqual (istream))
 			{
-				//lhs = make_less_equal (std::move (lhs), std::move (rhs));
-				return true;
-			}
+				if (Grammar::Assignment .lookahead (istream))
+					return Grammar::LessEqual .rewind (istream);
 
-			throw SyntaxError ("Expected expression after '<='.");
-		}
-
-		if (Grammar::GreaterEqual (istream))
-		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::GreaterEqual .rewind (istream);
-
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (relationalExpression (rhs))
-			{
-				//lhs = make_greater_equal (std::move (lhs), std::move (rhs));
-				return true;
-			}
-
-			throw SyntaxError ("Expected expression after '>='.");
-		}
-
-		if (Grammar::Less (istream))
-		{
-			if (Grammar::LessEqual .lookahead (istream))
-				return Grammar::Less .rewind (istream);
-
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (relationalExpression (rhs))
-			{
-				lhs = createLessExpression (std::move (lhs), std::move (rhs));
-				return true;
-			}
-
-			throw SyntaxError ("Expected expression after '<'.");
-		}
-
-		if (Grammar::Greater (istream))
-		{
-			if (Grammar::RightShift .lookahead (istream))
-				return Grammar::Greater .rewind (istream);
-
-			if (Grammar::GreaterEqual .lookahead (istream))
-				return Grammar::Greater .rewind (istream);
-
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (relationalExpression (rhs))
-			{
-				lhs = createGreaterExpression (std::move (lhs), std::move (rhs));
-				return true;
-			}
-
-			throw SyntaxError ("Expected expression after '>'.");
-		}
-		
-		const auto state = getState ();
-		
-		std::string identifierCharacters;
-
-		if (identifierName (identifierCharacters))
-		{
-			if (identifierCharacters == Grammar::instanceof ())
-			{
 				isLeftHandSideExressions .back () = false;
-	
-				ptr <pbExpression> rhs;
 
-				if (relationalExpression (rhs))
+				ptr <pbStatement> rhs;
+
+				if (shiftExpression (rhs))
 				{
-					lhs = new InstanceOfExpression (std::move (lhs), std::move (rhs));
-					return true;
+					//lhs = make_less_equal (std::move (lhs), std::move (rhs));
+					continue;
 				}
 
-				throw SyntaxError ("Expected expression after 'instanceof'.");
+				throw SyntaxError ("Expected expression after '<='.");
 			}
 
-			if (not noIn)
+			if (Grammar::GreaterEqual (istream))
 			{
-				if (identifierCharacters == Grammar::in ())
+				if (Grammar::Assignment .lookahead (istream))
+					return Grammar::GreaterEqual .rewind (istream);
+
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (shiftExpression (rhs))
+				{
+					//lhs = make_greater_equal (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '>='.");
+			}
+
+			if (Grammar::Less (istream))
+			{
+				if (Grammar::LessEqual .lookahead (istream))
+					return Grammar::Less .rewind (istream);
+
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (shiftExpression (rhs))
+				{
+					lhs = createLessExpression (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '<'.");
+			}
+
+			if (Grammar::Greater (istream))
+			{
+				if (Grammar::RightShift .lookahead (istream))
+					return Grammar::Greater .rewind (istream);
+
+				if (Grammar::GreaterEqual .lookahead (istream))
+					return Grammar::Greater .rewind (istream);
+
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (shiftExpression (rhs))
+				{
+					lhs = createGreaterExpression (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '>'.");
+			}
+
+			const auto state = getState ();
+
+			std::string identifierCharacters;
+
+			if (identifierName (identifierCharacters))
+			{
+				if (identifierCharacters == Grammar::instanceof ())
 				{
 					isLeftHandSideExressions .back () = false;
-			
-					ptr <pbExpression> rhs;
 
-					if (relationalExpression (rhs))
+					ptr <pbStatement> rhs;
+
+					if (shiftExpression (rhs))
 					{
-						lhs = new InExpression (std::move (lhs), std::move (rhs));
-						return true;
+						lhs = new InstanceOfExpression (std::move (lhs), std::move (rhs));
+						continue;
 					}
 
-					throw SyntaxError ("Expected expression after 'in'.");
+					throw SyntaxError ("Expected expression after 'instanceof'.");
 				}
+
+				if (not noIn)
+				{
+					if (identifierCharacters == Grammar::in ())
+					{
+						isLeftHandSideExressions .back () = false;
+
+						ptr <pbStatement> rhs;
+
+						if (shiftExpression (rhs))
+						{
+							lhs = new InExpression (std::move (lhs), std::move (rhs));
+							continue;
+						}
+
+						throw SyntaxError ("Expected expression after 'in'.");
+					}
+				}
+
+				setState (state);
 			}
 
-			setState (state);
+			return true;
 		}
-
-		return true;
 	}
 
 	return false;
 }
 
 bool
-Parser::equalityExpression (ptr <pbExpression> & lhs)
+Parser::equalityExpression (ptr <pbStatement> & lhs)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (relationalExpression (lhs))
 	{
-		comments ();
-
-		if (Grammar::StrictEqual (istream))
+		for (;;)
 		{
-			isLeftHandSideExressions .back () = false;
+			comments ();
 
-			ptr <pbExpression> rhs;
-
-			if (equalityExpression (rhs))
+			if (Grammar::StrictEqual (istream))
 			{
-				lhs = createStrictEqualExpression (std::move (lhs), std::move (rhs));
-				return true;
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (relationalExpression (rhs))
+				{
+					lhs = createStrictEqualExpression (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '==='.");
 			}
 
-			throw SyntaxError ("Expected expression after '==='.");
-		}
-
-		if (Grammar::StrictNotEqual (istream))
-		{
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (equalityExpression (rhs))
+			if (Grammar::StrictNotEqual (istream))
 			{
-				//lhs = make_strict_not_equal (std::move (lhs), std::move (rhs));
-				return true;
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (relationalExpression (rhs))
+				{
+					//lhs = make_strict_not_equal (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '!=='.");
 			}
 
-			throw SyntaxError ("Expected expression after '!=='.");
-		}
-
-		if (Grammar::Equal (istream))
-		{
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (equalityExpression (rhs))
+			if (Grammar::Equal (istream))
 			{
-				lhs = createEqualExpression (std::move (lhs), std::move (rhs));
-				return true;
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (relationalExpression (rhs))
+				{
+					lhs = createEqualExpression (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '=='.");
 			}
 
-			throw SyntaxError ("Expected expression after '=='.");
-		}
-
-		if (Grammar::NotEqual (istream))
-		{
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (equalityExpression (rhs))
+			if (Grammar::NotEqual (istream))
 			{
-				//lhs = make_not_equal (std::move (lhs), std::move (rhs));
-				return true;
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (relationalExpression (rhs))
+				{
+					//lhs = make_not_equal (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '!='.");
 			}
 
-			throw SyntaxError ("Expected expression after '!='.");
+			return true;
 		}
-
-		return true;
 	}
 
 	return false;
 }
 
 bool
-Parser::bitwiseANDExpression (ptr <pbExpression> & lhs)
+Parser::bitwiseANDExpression (ptr <pbStatement> & lhs)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (equalityExpression (lhs))
 	{
-		comments ();
-
-		if (Grammar::LogicalAND .lookahead (istream))
-			return true;
-
-		if (Grammar::BitwiseAND (istream))
+		for (;;)
 		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::BitwiseAND .rewind (istream);
+			comments ();
 
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (bitwiseANDExpression (rhs))
-			{
-				//lhs = make_bitwise_and (std::move (lhs), std::move (rhs));
+			if (Grammar::LogicalAND .lookahead (istream))
 				return true;
+
+			if (Grammar::BitwiseAND (istream))
+			{
+				if (Grammar::Assignment .lookahead (istream))
+					return Grammar::BitwiseAND .rewind (istream);
+
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (equalityExpression (rhs))
+				{
+					lhs = createBitwiseAndExpression (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '&'.");
 			}
 
-			throw SyntaxError ("Expected expression after '&'.");
+			return true;
 		}
-
-		return true;
 	}
 
 	return false;
 }
 
 bool
-Parser::bitwiseXORExpression (ptr <pbExpression> & lhs)
+Parser::bitwiseXORExpression (ptr <pbStatement> & lhs)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (bitwiseANDExpression (lhs))
 	{
-		comments ();
-
-		if (Grammar::BitwiseXOR (istream))
+		for (;;)
 		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::BitwiseXOR .rewind (istream);
+			comments ();
 
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (bitwiseXORExpression (rhs))
+			if (Grammar::BitwiseXOR (istream))
 			{
-				//lhs = make_bitwise_xor (std::move (lhs), std::move (rhs));
-				return true;
+				if (Grammar::Assignment .lookahead (istream))
+					return Grammar::BitwiseXOR .rewind (istream);
+
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (bitwiseANDExpression (rhs))
+				{
+					//lhs = make_bitwise_xor (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '^'.");
 			}
 
-			throw SyntaxError ("Expected expression after '^'.");
+			return true;
 		}
-
-		return true;
 	}
 
 	return false;
 }
 
 bool
-Parser::bitwiseORExpression (ptr <pbExpression> & lhs)
+Parser::bitwiseORExpression (ptr <pbStatement> & lhs)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (bitwiseXORExpression (lhs))
 	{
-		comments ();
-
-		if (Grammar::LogicalOR .lookahead (istream))
-			return true;
-
-		if (Grammar::BitwiseOR (istream))
+		for (;;)
 		{
-			if (Grammar::Assignment .lookahead (istream))
-				return Grammar::BitwiseOR .rewind (istream);
+			comments ();
 
-			isLeftHandSideExressions .back () = false;
-
-			ptr <pbExpression> rhs;
-
-			if (bitwiseORExpression (rhs))
-			{
-				//lhs = make_bitwise_or (std::move (lhs), std::move (rhs));
+			if (Grammar::LogicalOR .lookahead (istream))
 				return true;
+
+			if (Grammar::BitwiseOR (istream))
+			{
+				if (Grammar::Assignment .lookahead (istream))
+					return Grammar::BitwiseOR .rewind (istream);
+
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (bitwiseXORExpression (rhs))
+				{
+					//lhs = make_bitwise_or (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '|'.");
 			}
 
-			throw SyntaxError ("Expected expression after '|'.");
+			return true;
 		}
-
-		return true;
 	}
 
 	return false;
 }
 
 bool
-Parser::logicalANDExpression (ptr <pbExpression> & lhs)
+Parser::logicalANDExpression (ptr <pbStatement> & lhs)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (bitwiseORExpression (lhs))
 	{
-		comments ();
-
-		if (Grammar::LogicalAND (istream))
+		for (;;)
 		{
-			isLeftHandSideExressions .back () = false;
+			comments ();
 
-			ptr <pbExpression> rhs;
-
-			if (logicalANDExpression (rhs))
+			if (Grammar::LogicalAND (istream))
 			{
-				//lhs = make_logical_and (std::move (lhs), std::move (rhs));
-				return true;
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (bitwiseORExpression (rhs))
+				{
+					lhs = createLogicalAndExpression (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '&&'.");
 			}
 
-			throw SyntaxError ("Expected expression after '&&'.");
+			return true;
 		}
-
-		return true;
 	}
 
 	return false;
 }
 
 bool
-Parser::logicalORExpression (ptr <pbExpression> & lhs)
+Parser::logicalORExpression (ptr <pbStatement> & lhs)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	if (logicalANDExpression (lhs))
 	{
-		comments ();
-
-		if (Grammar::LogicalOR (istream))
+		for (;;)
 		{
-			isLeftHandSideExressions .back () = false;
+			comments ();
 
-			ptr <pbExpression> rhs;
-
-			if (logicalORExpression (rhs))
+			if (Grammar::LogicalOR (istream))
 			{
-				lhs = createLogicalOrExpression (std::move (lhs), std::move (rhs));
-				return true;
+				isLeftHandSideExressions .back () = false;
+
+				ptr <pbStatement> rhs;
+
+				if (logicalANDExpression (rhs))
+				{
+					lhs = createLogicalOrExpression (std::move (lhs), std::move (rhs));
+					continue;
+				}
+
+				throw SyntaxError ("Expected expression after '||'.");
 			}
 
-			throw SyntaxError ("Expected expression after '||'.");
+			return true;
 		}
-
-		return true;
 	}
 
 	return false;
 }
 
 bool
-Parser::conditionalExpression (ptr <pbExpression> & first)
+Parser::conditionalExpression (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
-	if (logicalORExpression (first))
+	if (logicalORExpression (value))
 	{
 		comments ();
 
@@ -1950,19 +1964,19 @@ Parser::conditionalExpression (ptr <pbExpression> & first)
 		{
 			isLeftHandSideExressions .back () = false;
 
-			ptr <pbExpression> second;
+			ptr <pbStatement> thenExpression;
 
-			if (assignmentExpression (second))
+			if (assignmentExpression (thenExpression))
 			{
 				comments ();
 
 				if (Grammar::Colon (istream))
 				{
-					ptr <pbExpression> third;
+					ptr <pbStatement> elseExpression;
 
-					if (assignmentExpression (third))
+					if (assignmentExpression (elseExpression))
 					{
-						//first = make_conditional (std::move (first), std::move (second), std::move (third));
+						value = new ConditionalExpression (std::move (value), std::move (thenExpression), std::move (elseExpression));
 						return true;
 					}
 				}
@@ -1980,7 +1994,7 @@ Parser::conditionalExpression (ptr <pbExpression> & first)
 }
 
 bool
-Parser::assignmentExpression (ptr <pbExpression> & value)
+Parser::assignmentExpression (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -1998,7 +2012,7 @@ Parser::assignmentExpression (ptr <pbExpression> & value)
 
 			if (Grammar::Assignment (istream))
 			{
-				ptr <pbExpression> expression;
+				ptr <pbStatement> expression;
 
 				if (assignmentExpression (expression))
 				{
@@ -2013,7 +2027,7 @@ Parser::assignmentExpression (ptr <pbExpression> & value)
 
 			if (assignmentOperator (type))
 			{
-				ptr <pbExpression> expression;
+				ptr <pbStatement> expression;
 
 				if (assignmentExpression (expression))
 				{
@@ -2108,26 +2122,25 @@ Parser::assignmentOperator (AssignmentOperatorType & type)
 }
 
 bool
-Parser::expression (ptr <pbExpression> & value)
+Parser::expression (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
-	
-	array <ptr <pbExpression>> expressions;
-	ptr <pbExpression>         expression;
 
-	if (assignmentExpression (expression))
+	array <ptr <pbStatement>>  expressions;
+
+	if (assignmentExpression (value))
 	{
-		expressions .emplace_back (std::move (expression));
+		expressions .emplace_back (std::move (value));
 
-		for ( ; ;)
+		for (;;)
 		{
 			comments ();
 
 			if (Grammar::Comma (istream))
 			{
-				if (assignmentExpression (expression))
+				if (assignmentExpression (value))
 				{
-					expressions .emplace_back (std::move (expression));
+					expressions .emplace_back (std::move (value));
 					continue;
 				}
 
@@ -2145,71 +2158,76 @@ Parser::expression (ptr <pbExpression> & value)
 // A.4 Statements
 
 bool
-Parser::statement ()
+Parser::statement (ptr <pbStatement> & value)
 {
 	//__LOG__ << istream .tellg () << std::endl;
 
-	if (block ())
+	if (block (value))
 		return true;
 
-	if (variableStatement ())
+	if (variableStatement (value))
 		return true;
 
-	if (emptyStatement ())
+	if (emptyStatement (value))
 		return true;
 
-	if (expressionStatement ())
+	if (expressionStatement (value))
 		return true;
 
-	if (ifStatement ())
+	if (ifStatement (value))
 		return true;
 
-	if (iterationStatement ())
+	if (iterationStatement (value))
 		return true;
 
-	//if (continueStatement ())
+	//if (continueStatement (value))
 	//	return true;
 
-	//if (breakStatement ())
-	//	return true;
-
-	if (returnStatement ())
+	if (breakStatement (value))
 		return true;
 
-	//if (withStatement ())
+	if (returnStatement (value))
+		return true;
+
+	//if (withStatement (value))
 	//	return true;
 
 	//if (labelledStatement ())
 	//	return true;
 
-	//if (switchStatement ())
+	if (switchStatement (value))
+		return true;
+
+	//if (throwStatement (value))
 	//	return true;
 
-	//if (throwStatement ())
+	//if (tryStatement (value))
 	//	return true;
 
-	//if (tryStatement ())
-	//	return true;
-
-	//if (sDebuggerStatement ())
+	//if (debuggerStatement (value))
 	//	return true;
 
 	return false;
 }
 
 bool
-Parser::block ()
+Parser::block (ptr <pbStatement> & value)
 {
 	comments ();
 
 	if (Grammar::OpenBrace (istream))
 	{
-		statementList ();
+		array <ptr <pbStatement>>  statements;
+
+		statementList (statements);
 
 		comments ();
 
 		if (Grammar::CloseBrace (istream))
+		{
+			value = new BlockStatement (std::move (statements));
 			return true;
+		}
 
 		throw SyntaxError ("Expected a '}' at end of block statement.");
 	}
@@ -2218,16 +2236,23 @@ Parser::block ()
 }
 
 bool
-Parser::statementList ()
+Parser::statementList (array <ptr <pbStatement>> & statements)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
-	if (statement ())
+	ptr <pbStatement> value;
+
+	if (statement (value))
 	{
-		for ( ; ;)
+		statements .emplace_back (std::move (value));
+
+		for (;;)
 		{
-			if (statement ())
+			if (statement (value))
+			{
+				statements .emplace_back (std::move (value));
 				continue;
+			}
 
 			return true;
 		}
@@ -2237,27 +2262,27 @@ Parser::statementList ()
 }
 
 bool
-Parser::variableStatement ()
+Parser::variableStatement (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
-	
+
 	const auto state = getState ();
 
 	if (Grammar::var (istream))
 	{
 		if (comments ())
 		{
-			array <ptr <VariableDeclaration>> variableDeclarations;
-		
+			array <ptr <VariableDeclaration>>  variableDeclarations;
+
 			if (variableDeclarationList (variableDeclarations))
 			{
 				comments ();
 
 				if (Grammar::Semicolon (istream) or haveAutomaticSemicolon ())
 				{
-					getBlock () -> addExpression (new VariableStatement (std::move (variableDeclarations)));
+					value = new VariableStatement (std::move (variableDeclarations));
 					return true;
 				}
 
@@ -2266,7 +2291,7 @@ Parser::variableStatement ()
 
 			throw SyntaxError ("Expected variable name after 'var'.");
 		}
-		
+
 		setState (state);
 	}
 
@@ -2277,14 +2302,14 @@ bool
 Parser::variableDeclarationList (array <ptr <VariableDeclaration>> & variableDeclarations)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
-	
+
 	ptr <VariableDeclaration> value;
 
 	if (variableDeclaration (value))
 	{
 		variableDeclarations .emplace_back (std::move (value));
-	
-		for ( ; ;)
+
+		for (;;)
 		{
 			comments ();
 
@@ -2315,10 +2340,10 @@ Parser::variableDeclaration (ptr <VariableDeclaration> & value)
 
 	if (identifier (identifierCharacters))
 	{
-		ptr <pbExpression> initialiserExpression;
+		ptr <pbStatement> initialiserExpression;
 
 		initialiser (initialiserExpression);
-		
+
 		value = new VariableDeclaration (getExecutionContext (), std::move (identifierCharacters), std::move (initialiserExpression));
 		return true;
 	}
@@ -2327,7 +2352,7 @@ Parser::variableDeclaration (ptr <VariableDeclaration> & value)
 }
 
 bool
-Parser::initialiser (ptr <pbExpression> & value)
+Parser::initialiser (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -2343,20 +2368,23 @@ Parser::initialiser (ptr <pbExpression> & value)
 }
 
 bool
-Parser::emptyStatement ()
+Parser::emptyStatement (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
 	comments ();
 
 	if (Grammar::Semicolon (istream))
+	{
+		value = new EmptyStatement ();
 		return true;
+	}
 
 	return false;
 }
 
 bool
-Parser::expressionStatement ()
+Parser::expressionStatement (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -2368,17 +2396,12 @@ Parser::expressionStatement ()
 	if (Grammar::function .lookahead (istream))
 		return false;
 
-	ptr <pbExpression> value;
-
 	if (expression (value))
 	{
 		comments ();
 
 		if (Grammar::Semicolon (istream) or haveAutomaticSemicolon ())
-		{
-			getBlock () -> addExpression (std::move (value));
 			return true;
-		}
 
 		throw SyntaxError ("Expected ';' after expression.");
 	}
@@ -2387,7 +2410,7 @@ Parser::expressionStatement ()
 }
 
 bool
-Parser::ifStatement ()
+Parser::ifStatement (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -2399,7 +2422,7 @@ Parser::ifStatement ()
 
 		if (Grammar::OpenParenthesis (istream))
 		{
-			ptr <pbExpression> booleanExpression;
+			ptr <pbStatement> booleanExpression;
 
 			if (expression (booleanExpression))
 			{
@@ -2407,28 +2430,21 @@ Parser::ifStatement ()
 
 				if (Grammar::CloseParenthesis (istream))
 				{
-					auto value = new IfStatement (std::move (booleanExpression));
+					ptr <pbStatement> thenStatement;
+					ptr <pbStatement> elseStatement;
 
-					pushBlock (value -> getThenBlock () .get ());
-
-					statement ();
-
-					popBlock ();
-
-					comments ();
-
-					if (Grammar::else_ (istream))
+					if (statement (thenStatement))
 					{
-						pushBlock (value -> getElseBlock () .get ());
+						comments ();
 
-						statement ();
+						if (Grammar::else_ (istream))
+							statement (elseStatement);
 
-						popBlock ();
+						value = new IfStatement (std::move (booleanExpression), std::move (thenStatement), std::move (elseStatement));
+						return true;
 					}
 
-					getBlock () -> addExpression (std::move (value));
-
-					return true;
+					throw SyntaxError ("Expected a statement after 'if'.");
 				}
 
 				throw SyntaxError ("Expected a ')'.");
@@ -2444,7 +2460,7 @@ Parser::ifStatement ()
 }
 
 bool
-Parser::iterationStatement ()
+Parser::iterationStatement (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -2461,7 +2477,7 @@ Parser::iterationStatement ()
 			comments ();
 
 			// for (var VariableDeclarationNoIn in Expression) Statement
-			// for (var VariableDeclarationListNoIn ; Expression Opt ; Expression Opt) Statement
+			// for (var VariableDeclarationListNoIn; Expression Opt; Expression Opt) Statement
 
 			const auto state = getState ();
 
@@ -2470,41 +2486,40 @@ Parser::iterationStatement ()
 				if (comments ())
 				{
 					noIn = true;
-					
-					array <ptr <VariableDeclaration>> variableDeclarations;
-				
+
+					array <ptr <VariableDeclaration>>  variableDeclarations;
+
 					if (variableDeclarationList (variableDeclarations))
 					{
 						noIn = false;
-						
+
 						if (variableDeclarations .size () == 1)
 						{
 							// for (LeftHandSideExpresssion in Expression) Statement
-							
+
 							comments ();
 
 							if (Grammar::in (istream))
 							{
 								if (comments ())
 								{
-									ptr <pbExpression> objectExpression;
+									ptr <pbStatement> objectExpression;
 
 									if (expression (objectExpression))
-									{								
+									{
 										comments ();
 
 										if (Grammar::CloseParenthesis (istream))
 										{
-											auto forInStatement = make_ptr <ForVarInStatement> (std::move (variableDeclarations .back ()), std::move (objectExpression));
+											ptr <pbStatement> body;
 
-											pushBlock (forInStatement -> getBlock () .get ());
+											if (statement (body))
+											{
+												value = new ForVarInStatement (std::move (variableDeclarations .back ()), std::move (objectExpression), std::move (body));
+												return true;
+											}
 
-											statement ();
-
-											popBlock ();
-
-											getBlock () -> addExpression (std::move (forInStatement));
-											return true;
+											throw SyntaxError ("Expected a statement after 'for'.");
 										}
 
 										throw SyntaxError ("Expected a ')'.");
@@ -2523,7 +2538,7 @@ Parser::iterationStatement ()
 
 						if (Grammar::Semicolon (istream))
 						{
-							ptr <pbExpression> booleanExpression;
+							ptr <pbStatement> booleanExpression;
 
 							expression (booleanExpression);
 
@@ -2531,7 +2546,7 @@ Parser::iterationStatement ()
 
 							if (Grammar::Semicolon (istream))
 							{
-								ptr <pbExpression> iterationExpression;
+								ptr <pbStatement> iterationExpression;
 
 								expression (iterationExpression);
 
@@ -2539,16 +2554,15 @@ Parser::iterationStatement ()
 
 								if (Grammar::CloseParenthesis (istream))
 								{
-									auto forStatement = make_ptr <ForVarStatement> (std::move (variableDeclarations), std::move (booleanExpression), std::move (iterationExpression));
+									ptr <pbStatement> body;
 
-									pushBlock (forStatement -> getBlock () .get ());
+									if (statement (body))
+									{
+										value = new ForVarStatement (std::move (variableDeclarations), std::move (booleanExpression), std::move (iterationExpression), std::move (body));
+										return true;
+									}
 
-									statement ();
-
-									popBlock ();
-
-									getBlock () -> addExpression (std::move (forStatement));
-									return true;
+									throw SyntaxError ("Expected a statement after 'for'.");
 								}
 
 								throw SyntaxError ("Expected a ')'.");
@@ -2564,26 +2578,26 @@ Parser::iterationStatement ()
 
 					throw SyntaxError ("Expected variable declaration after var.");
 				}
-	
+
 				setState (state);
 			}
 
 			// first parse for (LeftHandSideExpression in Expression) Statement
 			// if not parse in, use LeftHandSideExpression as expression for the next step.
 
-			ptr <pbExpression> variableExpression;
+			ptr <pbStatement> variableExpression;
 
 			noIn = true;
 
 			expression (variableExpression);
-			
+
 			noIn = false;
 
 			comments ();
 
 			if (Grammar::Semicolon (istream))
 			{
-				ptr <pbExpression> booleanExpression;
+				ptr <pbStatement> booleanExpression;
 
 				expression (booleanExpression);
 
@@ -2591,7 +2605,7 @@ Parser::iterationStatement ()
 
 				if (Grammar::Semicolon (istream))
 				{
-					ptr <pbExpression> iterationExpression;
+					ptr <pbStatement> iterationExpression;
 
 					expression (iterationExpression);
 
@@ -2599,16 +2613,15 @@ Parser::iterationStatement ()
 
 					if (Grammar::CloseParenthesis (istream))
 					{
-						auto forStatement = make_ptr <ForStatement> (std::move (variableExpression), std::move (booleanExpression), std::move (iterationExpression));
+						ptr <pbStatement> body;
 
-						pushBlock (forStatement -> getBlock () .get ());
+						if (statement (body))
+						{
+							value = new ForStatement (std::move (variableExpression), std::move (booleanExpression), std::move (iterationExpression), std::move (body));
+							return true;
+						}
 
-						statement ();
-
-						popBlock ();
-
-						getBlock () -> addExpression (std::move (forStatement));
-						return true;
+						throw SyntaxError ("Expected a statement after 'for'.");
 					}
 
 					throw SyntaxError ("Expected a ')'.");
@@ -2629,7 +2642,39 @@ Parser::iterationStatement ()
 }
 
 bool
-Parser::returnStatement ()
+Parser::breakStatement (ptr <pbStatement> & value)
+{
+	//__LOG__ << (char) istream .peek () << std::endl;
+
+	comments ();
+
+	if (Grammar::break_ (istream))
+	{
+		std::string identifierCharacters;
+
+		comments ();
+
+		if (not newLine)
+		{
+			identifier (identifierCharacters);
+
+			comments ();
+		}
+
+		if (Grammar::Semicolon (istream) or haveAutomaticSemicolon ())
+		{
+			value = new BreakStatement (std::move (identifierCharacters));
+			return true;
+		}
+
+		throw SyntaxError ("Expected a ';' after expression.");
+	}
+
+	return false;
+}
+
+bool
+Parser::returnStatement (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -2638,8 +2683,6 @@ Parser::returnStatement ()
 	if (Grammar::return_ (istream))
 	{
 		comments ();
-
-		ptr <pbExpression> value;
 
 		if (not newLine)
 		{
@@ -2650,11 +2693,162 @@ Parser::returnStatement ()
 
 		if (Grammar::Semicolon (istream) or haveAutomaticSemicolon ())
 		{
-			getBlock () -> addExpression (new ReturnStatement (getExecutionContext (), std::move (value)));
+			value = new ReturnStatement (std::move (value));
 			return true;
 		}
 
 		throw SyntaxError ("Expected a ';' after expression.");
+	}
+
+	return false;
+}
+
+bool
+Parser::switchStatement (ptr <pbStatement> & value)
+{
+	//__LOG__ << (char) istream .peek () << std::endl;
+
+	comments ();
+
+	if (Grammar::switch_ (istream))
+	{
+		comments ();
+
+		if (Grammar::OpenParenthesis (istream))
+		{
+			ptr <pbStatement> switchExpression;
+
+			if (expression (switchExpression))
+			{
+				comments ();
+
+				if (Grammar::CloseParenthesis (istream))
+				{
+					array <ptr <pbStatement>>           clauseSelectors;
+					array <array <ptr <pbStatement>>>   clauseStatements;
+					array <ptr <pbStatement>>           defaultStatements;
+
+					if (caseBlock (clauseSelectors, clauseStatements, defaultStatements))
+					{
+						value = new SwitchStatement (std::move (switchExpression),
+						                             std::move (clauseSelectors),
+						                             std::move (clauseStatements),
+						                             std::move (defaultStatements));
+						return true;
+					}
+
+					throw SyntaxError ("Expected a case block after 'switch'.");
+				}
+
+				throw SyntaxError ("Expected a ')' after expression.");
+			}
+
+			throw SyntaxError ("Expected an expression after '('.");
+		}
+
+		throw SyntaxError ("Expected a '(' after 'switch'.");
+	}
+
+	return false;
+}
+
+bool
+Parser::caseBlock (array <ptr <pbStatement>> & clauseSelectors,
+                   array <array <ptr <pbStatement>>> & clauseStatements,
+                   array <ptr <pbStatement>> & defaultStatements)
+{
+	comments ();
+
+	if (Grammar::OpenBrace (istream))
+	{
+		comments ();
+
+		caseClauses (clauseSelectors, clauseStatements);
+
+		defaultClause (defaultStatements, clauseSelectors, clauseStatements);
+
+		caseClauses (clauseSelectors, clauseStatements);
+
+		if (Grammar::CloseBrace (istream))
+		{
+			return true;
+		}
+
+		throw SyntaxError ("Expected a '}' at end of case block.");
+	}
+
+	return false;
+}
+
+void
+Parser::caseClauses (array <ptr <pbStatement>> & clauseSelectors,
+                     array <array <ptr <pbStatement>>> & clauseStatements)
+{
+	while (caseClause (clauseSelectors, clauseStatements))
+		;
+}
+
+bool
+Parser::caseClause (array <ptr <pbStatement>> & clauseSelectors,
+                    array <array <ptr <pbStatement>>> & clauseStatements)
+{
+	comments ();
+
+	if (Grammar::case_ (istream))
+	{
+		if (comments ())
+		{
+			ptr <pbStatement> clauseSelector;
+
+			if (expression (clauseSelector))
+			{
+				comments ();
+
+				if (Grammar::Colon (istream))
+				{
+					array <ptr <pbStatement>>  statements;
+
+					statementList (statements);
+
+					clauseSelectors .emplace_back (std::move (clauseSelector));
+					clauseStatements .emplace_back (std::move (statements));
+					return true;
+				}
+
+				throw SyntaxError ("Expected a ':' after case expression.");
+			}
+
+			throw SyntaxError ("Expected a expression after 'case'.");
+		}
+
+		throw SyntaxError ("Unexpected identifier.");
+	}
+
+	return false;
+}
+
+bool
+Parser::defaultClause (array <ptr <pbStatement>> & defaultStatements,
+                       array <ptr <pbStatement>> & clauseSelectors,
+                       array <array <ptr <pbStatement>>> & clauseStatements)
+{
+	comments ();
+
+	if (Grammar::default_ (istream))
+	{
+		comments ();
+
+		if (Grammar::Colon (istream))
+		{
+			statementList (defaultStatements);
+
+			clauseSelectors .emplace_back ();
+			clauseStatements .emplace_back (defaultStatements);
+
+			return true;
+		}
+
+		throw SyntaxError ("Expected a ':' after 'default'.");
 	}
 
 	return false;
@@ -2726,7 +2920,7 @@ Parser::functionDeclaration ()
 }
 
 bool
-Parser::functionExpression (ptr <pbExpression> & value)
+Parser::functionExpression (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -2796,7 +2990,7 @@ Parser::formalParameterList (std::vector <std::string> & formalParameters)
 	{
 		formalParameters .emplace_back (std::move (identifierCharacters));
 
-		for ( ; ;)
+		for (;;)
 		{
 			comments ();
 
@@ -2844,16 +3038,39 @@ Parser::sourceElements ()
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
-	while (sourceElement ())
-		;
+	ptr <pbStatement> value;
+
+	while (sourceElement (value))
+	{
+		if (value)
+		{
+			switch (value -> getType ())
+			{
+				case StatementType::BREAK_STATEMENT:
+					throw SyntaxError ("Illegal break statement");
+
+				default:
+				{
+					getExecutionContext () -> addStatement (std::move (value));
+					break;
+				}
+			}
+
+			//	throw SyntaxError ("Unlabelled continue must be inside loop.");
+			//	throw SyntaxError ("Label '' not found.");
+			//	throw SyntaxError ("Unlabelled break must be inside loop or switch.");
+			//	throw SyntaxError ("Label '' not found.");
+			//	throw Error ("Uncatched yield exception.");
+		}
+	}
 }
 
 bool
-Parser::sourceElement ()
+Parser::sourceElement (ptr <pbStatement> & value)
 {
 	//__LOG__ << istream .tellg () << std::endl;
 
-	if (statement ())
+	if (statement (value))
 		return true;
 
 	if (functionDeclaration ())

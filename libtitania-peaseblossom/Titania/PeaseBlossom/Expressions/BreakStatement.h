@@ -48,72 +48,79 @@
  *
  ******************************************************************************/
 
-#include "pbBlock.h"
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_BREAK_STATEMENT_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_BREAK_STATEMENT_H__
+
+#include "../Expressions/PrimitiveExpression.h"
+#include "../Expressions/pbStatement.h"
+#include "../Objects/Function.h"
 
 namespace titania {
 namespace pb {
 
-void
-pbBlock::toStream (std::ostream & ostream) const
+/**
+ *  Class to represent a ECMAScript break statement.
+ */
+class BreakStatement :
+	public pbStatement
 {
-	bool blankLine = true;
+public:
 
-	ostream << Generator::TidyBreak;
+	///  @name Construction
 
-	for (const auto & expression : expressions)
+	///  Constructs new BreakStatement statement.
+	BreakStatement (std::string && identifier) :
+		pbStatement (StatementType::BREAK_STATEMENT),
+		 identifier (std::move (identifier))
+	{ }
+
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbStatement>
+	copy (pbExecutionContext* const executionContext) const
+	noexcept (true) final override
+	{ return new BreakStatement (std::move (std::string (identifier .getName ()))); }
+
+	///  @name Operations
+
+	///  Converts its input argument to either Primitive or Object type.
+	virtual
+	CompletionType
+	getValue () const
+	throw (pbError) final override
 	{
-		// Add blank line before special statements.
-	
-		if (not blankLine)
+		return CompletionType (this, undefined);
+	}
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		if (identifier .isEmpty ())
 		{
-			switch (expression -> getType ())
-			{
-				case ExpressionType::FOR_STATEMENT:
-				case ExpressionType::IF_STATEMENT:
-				case ExpressionType::RETURN_STATEMENT:
-					ostream << Generator::TidyBreak;
-					break;
-				default:
-					break;
-			}
+			ostream << "break";
 		}
-
-		// Output expression.
-
-		ostream
-			<< Generator::Indent
-			<< expression;
-
-		// Add semicolon if needed.
-
-		switch (expression -> getType ())
+		else
 		{
-			case ExpressionType::FOR_STATEMENT:
-			case ExpressionType::IF_STATEMENT:
-				break;
-			default:
-				ostream << ';';
-				break;
-		}
-
-		ostream << Generator::TidyBreak;
-
-		// Add blank line after special statements.
-	
-		switch (expression -> getType ())
-		{
-			case ExpressionType::FOR_STATEMENT:
-			case ExpressionType::IF_STATEMENT:
-			case ExpressionType::RETURN_STATEMENT:
-				ostream << Generator::TidyBreak;
-				blankLine = true;
-				break;
-			default:
-				blankLine = false;
-				break;
+			ostream
+				<< "break"
+				<< Generator::Space
+				<< identifier;
 		}
 	}
-}
+
+private:
+
+	///  @name Members
+
+	const Identifier identifier;
+
+};
 
 } // pb
 } // titania
+
+#endif

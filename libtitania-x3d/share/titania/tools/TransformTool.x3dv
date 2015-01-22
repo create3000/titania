@@ -37,7 +37,7 @@ PROTO DoubleClick [
     inputOutput SFTime doubleClickInterval IS doubleClickInterval
     outputOnly  SFTime doubleClickTime IS doubleClickTime
 
-    url "vrmlscript:
+    url "peaseblossom:
 
 var firstTime = 0;
 
@@ -755,7 +755,7 @@ PROTO TransformTool [
     outputOnly SFBool  scale
     outputOnly SFInt32 whichChoice_changed
 
-    url "vrmlscript:
+    url "peaseblossom:
 function initialize ()
 {
 	set_whichChoice (0);
@@ -820,7 +820,7 @@ function set_whichChoice (value)
     initializeOnly SFNode  yHandle USE YHandle
     initializeOnly SFNode  zHandle USE ZHandle
 
-    url "vrmlscript:
+    url "peaseblossom:
 function eventsProcessed ()
 {
 	var bboxSize1_2 = bboxSize .divide (2);
@@ -896,7 +896,7 @@ function eventsProcessed ()
     initializeOnly SFVec3f size 0 0 0
     initializeOnly SFInt32 events 0
 
-    url "vrmlscript:
+    url "peaseblossom:
 function set_active (value)
 {
 	if (value)
@@ -1022,7 +1022,7 @@ function translate (value)
     initializeOnly SFNode  coord USE CenterLineCoord
     initializeOnly SFNode  self USE CenterScript
 
-    url "vrmlscript:
+    url "peaseblossom:
 function set_doubleClickTime ()
 {
   keepCenter_changed = ! keepCenter_changed;
@@ -1115,7 +1115,7 @@ function eventsProcessed ()
     initializeOnly SFNode  ySensor USE YRotationSensor
     initializeOnly SFNode  zSensor USE ZRotationSensor
 
-    url "vrmlscript:
+    url "peaseblossom:
 function initialize ()
 {
 	x_changed = 1;
@@ -1159,7 +1159,7 @@ function isActive (sensorA, sensorB, sensorC)
     initializeOnly SFRotation scaleOrientation 0 0 1 0
     initializeOnly SFInt32    events 0
 
-    url "vrmlscript:
+    url "peaseblossom:
 function set_active (value)
 {
 	if (value)
@@ -1242,7 +1242,7 @@ function rotate (value)
     initializeOnly SFNode  sensor7 USE ScaleSensor7
     initializeOnly SFNode  sensor8 USE ScaleSensor8
 
-    url "vrmlscript:
+    url "peaseblossom:
 function eventsProcessed ()
 {
 	var bboxSize1_2 = bboxSize .divide (2);
@@ -1319,7 +1319,7 @@ function eventsProcessed ()
     initializeOnly SFNode     self USE ScaleScript
     initializeOnly SFInt32    events 0
 
-    url "vrmlscript:
+    url "peaseblossom:
 
 function set_transform ()
 {
@@ -1351,7 +1351,7 @@ function set_active (value)
 {
 	if (value)
 	{
-		for (i in sensors)
+		for (var i in sensors)
 		{
 			if (sensors [i] .isActive)
 				activeTool_changed = 3 + parseInt (i);
@@ -1493,7 +1493,7 @@ function scale (value, centerOffset)
 		return;
 	}
 
-	var scale = SFMatrix4f ();
+	var scale = new SFMatrix4f ();
 	scale .setTransform (new SFVec3f (), new SFRotation (), value);
 
 	var scaledMatrix = matrix .multLeft (scale);

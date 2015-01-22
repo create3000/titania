@@ -51,7 +51,7 @@
 #ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_ARRAY_INDEX_EXPRESSION_H__
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_ARRAY_INDEX_EXPRESSION_H__
 
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 #include "../Objects/pbObject.h"
 
 namespace titania {
@@ -61,22 +61,22 @@ namespace pb {
  *  Class to represent a ECMAScript array index expression.
  */
 class ArrayIndexExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new AdditionExpression expression.
-	ArrayIndexExpression (ptr <pbExpression> && expression, ptr <pbExpression>&& identifier) :
-		pbExpression (ExpressionType::ARRAY_INDEX_EXPRESSION),
+	ArrayIndexExpression (ptr <pbStatement> && expression, ptr <pbStatement>&& identifier) :
+		pbStatement (StatementType::ARRAY_INDEX_EXPRESSION),
 		  expression (std::move (expression)),
 		  identifier (std::move (identifier))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new ArrayIndexExpression (expression -> copy (executionContext), identifier -> copy (executionContext)); }
@@ -260,8 +260,8 @@ private:
 
 	///  @name Members
 
-	const ptr <pbExpression> expression;
-	const ptr <pbExpression> identifier;
+	const ptr <pbStatement> expression;
+	const ptr <pbStatement> identifier;
 
 };
 

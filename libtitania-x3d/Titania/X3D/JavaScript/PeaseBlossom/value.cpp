@@ -63,9 +63,6 @@ throw (pb::pbError)
 {
 	switch (field -> getType ())
 	{
-		default:
-			break;
-
 		case X3DConstants::SFBool:
 		{
 			*static_cast <X3D::SFBool*> (field) = get1Argument <bool> (value);
@@ -288,9 +285,6 @@ getValue (Context* const context, X3DFieldDefinition* const field)
 {
 	switch (field -> getType ())
 	{
-		default:
-			break;
-
 		case X3DConstants::SFBool:
 			return X3DField::get <SFBool> (context, static_cast <X3D::SFBool*> (field));
 

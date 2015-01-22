@@ -19,7 +19,7 @@ PROTO RoundedRectangle2D [
     initializeOnly SFFloat cornerDimension 10
     initializeOnly SFNode  geometry USE Geometry
 
-    url "vrmlscript:
+    url "peaseblossom:
 
 function initialize ()
 {
@@ -40,7 +40,7 @@ function eventsProcessed ()
 	for (var i = 0; i < cornerDimension * 4; ++ i)
 		coordIndex [coordIndex .length] = i;
 
-	for (var i = 0; i < cornerDimension; ++i)
+	for (var i = 0; i < cornerDimension; ++ i)
 		corner [i] = startRotation .slerp (endRotation, i / (cornerDimension - 1)) .multVec (point);
 	
 	var translation = new SFVec3f (size .x / 2 - radius, size .y / 2 - radius, 0);

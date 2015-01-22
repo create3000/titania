@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PROGRAM_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_PROGRAM_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXECUTION_PROGRAM_H__
+#define __TITANIA_PEASE_BLOSSOM_EXECUTION_PROGRAM_H__
 
 #include "../Execution/pbExecutionContext.h"
 
@@ -60,6 +60,8 @@ class Program :
 	public pbExecutionContext
 {
 public:
+
+	using pbExecutionContext::run;
 
 	///  @name Common members
 
@@ -74,23 +76,33 @@ public:
 
 	virtual
 	const ptr <pbExecutionContext> &
-	getRootContext () const final override
+	getRootContext () const
+	noexcept (true) final override
 	{ return getExecutionContext (); }
 
 	virtual
 	const ptr <Object> &
-	getStandardObject () const final override
+	getStandardObject () const
+	noexcept (true) final override
 	{ return standardObject; }
 
 	virtual
 	const ptr <Function> &
-	getStandardFunction () const final override
+	getStandardFunction () const
+	noexcept (true) final override
 	{ return standardFunction; }
 
 	virtual
 	const ptr <NativeFunction> &
 	getStandardClass (const StandardClassType type) const
 	throw (std::out_of_range);
+
+	/// @name Execution
+
+	virtual
+	var
+	run ()
+	throw (pbError) final override;
 
 	///  @name Input/Output
 
@@ -111,7 +123,6 @@ public:
 		__LOG__ << std::endl;
 		pbExecutionContext::dispose ();
 	}
-
 
 protected:
 
@@ -145,9 +156,10 @@ private:
 
 	///  @name Members
 
-	ptr <Object>                         standardObject;
-	ptr <Function>                       standardFunction;
-	mutable array <ptr <NativeFunction>> standardClasses;
+	ptr <Object>                          standardObject;
+	ptr <Function>                        standardFunction;
+	mutable array <ptr <NativeFunction>>  standardClasses;
+
 };
 
 ///  @relates Program

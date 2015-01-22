@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LEFT_SHIFT_EXPRESSION_H__
 
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 #include "../Expressions/PrimitiveExpression.h"
 
 namespace titania {
@@ -61,22 +61,22 @@ namespace pb {
  *  Class to represent a ECMAScript division expression.
  */
 class LeftShiftExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new LeftShiftExpression expression.
-	LeftShiftExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
-		pbExpression (ExpressionType::LEFT_SHIFT_EXPRESSION),
+	LeftShiftExpression (ptr <pbStatement> && lhs, ptr <pbStatement> && rhs) :
+		pbStatement (StatementType::LEFT_SHIFT_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new LeftShiftExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
@@ -88,7 +88,12 @@ public:
 	CompletionType
 	getValue () const
 	throw (pbError) final override
-	{ return lhs ->getValue () .toInt32 () << (rhs ->getValue () .toUInt32 () & 0x1f); }
+	{
+		const auto x = lhs -> getValue () .toInt32 ();
+		const auto y = rhs -> getValue () .toUInt32 () & 0x1f;
+
+		return x << y;
+	}
 
 	///  @name Input/Output
 
@@ -117,8 +122,8 @@ private:
 
 	///  @name Members
 
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	const ptr <pbStatement> lhs;
+	const ptr <pbStatement> rhs;
 
 };
 
@@ -127,11 +132,11 @@ private:
 
 ///  Constructs new LeftShiftExpression expression.
 inline
-ptr <pbExpression>
-createLeftShiftExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
+ptr <pbStatement>
+createLeftShiftExpression (ptr <pbStatement> && lhs, ptr <pbStatement> && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (LeftShiftExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::NUMBER);
+		return new PrimitiveExpression (LeftShiftExpression (std::move (lhs), std::move (rhs)) .getValue (), StatementType::NUMBER);
 
 	return new LeftShiftExpression (std::move (lhs), std::move (rhs));
 }

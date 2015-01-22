@@ -54,11 +54,14 @@
 #include "../Base/pbUserData.h"
 #include "../Base/pbInputStreamObject.h"
 #include "../Bits/Exception.h"
-#include "../Execution/pbBlock.h"
 #include "../Objects/pbFunction.h"
 #include "../Objects/pbObject.h"
 #include "../Primitives/array.h"
 #include "../Standard/StandardClassType.h"
+#include "../Base/pbChildObject.h"
+#include "../Base/pbOutputStreamObject.h"
+#include "../Expressions/pbStatement.h"
+#include "../Primitives/ptr.h"
 
 namespace titania {
 namespace pb {
@@ -68,9 +71,10 @@ class Object;
 class NativeFunction;
 
 class pbExecutionContext :
-	virtual public pbBlock,
+	virtual public pbChildObject,
+	virtual public pbUserData,
 	virtual public pbInputStreamObject,
-	virtual public pbUserData
+	virtual public pbOutputStreamObject
 {
 public:
 
@@ -79,41 +83,49 @@ public:
 	///  Set strict mode.
 	void
 	isStrict (const bool value)
+	noexcept (true)
 	{ strict = value; }
 
 	///  Get strict mode.
 	bool
 	isStrict () const
+	noexcept (true)
 	{ return true; }
 
 	///  Returns true if this execution context belongs to no other context otherwise false;
 	bool
 	isRootContext () const
+	noexcept (true)
 	{ return getExecutionContext () .get () == this; }
 
 	virtual
 	const ptr <pbExecutionContext> &
 	getRootContext () const
+	noexcept (true)
 	{ return getExecutionContext () -> getRootContext (); }
 
 	///  Returns the execution context this objects belongs to.
 	const ptr <pbExecutionContext> &
 	getExecutionContext () const
+	noexcept (true)
 	{ return executionContext; }
 
 	///  Returns the global objects.
 	const ptr <pbObject> &
 	getGlobalObject () const
+	noexcept (true)
 	{ return localObjects .back (); }
 
 	virtual
 	const ptr <Object> &
 	getStandardObject () const
+	noexcept (true)
 	{ return getRootContext () -> getStandardObject (); }
 
 	virtual
 	const ptr <Function> &
 	getStandardFunction () const
+	noexcept (true)
 	{ return getRootContext () -> getStandardFunction (); }
 
 	virtual
@@ -159,7 +171,20 @@ public:
 
 	const std::map <std::string, ptr <pbFunction>> &
 	getFunctionDeclarations () const
+	noexcept (true)
 	{ return functions; }
+
+	/// @name Statement handling
+
+	///  Add an statement to the list of statements.
+	void
+	addStatement (ptr <pbStatement> && value)
+	{ statements .emplace_back (std::move (value)); }
+
+	///  Returns an array with all local root statements.
+	const array <ptr <pbStatement>> &
+	getStatements () const
+	{ return statements; }
 
 	/// @name Execution
 
@@ -167,7 +192,7 @@ public:
 	virtual
 	var
 	run ()
-	throw (pbError);
+	throw (pbError) = 0;
 
 	/// @name Input/Output
 
@@ -176,8 +201,12 @@ public:
 	virtual
 	void
 	fromStream (std::istream & istream)
-	throw (SyntaxError,
-	       ReferenceError) final override;
+	throw (pbError) final override;
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override;
 
 	///  @name Destruction
 
@@ -204,20 +233,30 @@ protected:
 
 	///  @name Member access
 
-	///  Returns the default objects.  That is the object where variable declarations are added.
+	///  Returns the variable objects.  That is the object where variable declarations are added.
 	virtual
 	const ptr <pbObject> &
-	getDefaultObject () const
+	getVariableObject () const
+	noexcept (true)
+	{ return localObjects .front (); }
+
+	///  Returns the variable objects.  That is the object where const and let declarations are added.
+	virtual
+	const ptr <pbObject> &
+	getLexicalObject () const
+	noexcept (true)
 	{ return localObjects .front (); }
 
 	///  Returns the local objects.
 	array <ptr <pbObject>> &
 	getLocalObjects ()
+	noexcept (true)
 	{ return localObjects; }
 
 	///  Returns the local objects.
 	const array <ptr <pbObject>> &
 	getLocalObjects () const
+	noexcept (true)
 	{ return localObjects; }
 
 	/// @name Operations
@@ -235,6 +274,7 @@ private:
 	const ptr <pbExecutionContext>           executionContext;
 	array <ptr <pbObject>>                   localObjects;
 	std::map <std::string, ptr <pbFunction>> functions;
+	array <ptr <pbStatement>>                statements;
 	bool                                     strict;
 
 };

@@ -1,3 +1,24 @@
+2015-01-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Notification.x3dv:
+	* TransformTool.x3dv:
+	* Array.h:
+	* RenderingProperties.x3dv:
+	* X3DExecutionContext.cpp:
+	* value.cpp:
+	* Browser.h:
+	* BooleanSwitch.x3dv:
+	* Browser.cpp:
+	* Context.cpp:
+	* RoundedRectangle2D.x3dv:
+	* SFVec4.h:
+	* SFVec3.h:
+	* SFVec2.h:
+	* SFNode.h:
+	* X3DPrototypeInstance.cpp: 
+
 2015-01-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

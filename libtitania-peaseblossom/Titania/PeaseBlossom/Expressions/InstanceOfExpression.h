@@ -52,7 +52,7 @@
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_INSTANCE_OF_EXPRESSION_H__
 
 #include "../Expressions/PrimitiveExpression.h"
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
@@ -61,22 +61,22 @@ namespace pb {
  *  Class to represent a ECMAScript instanceof expression.
  */
 class InstanceOfExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new InstanceOfExpression expression.
-	InstanceOfExpression (ptr <pbExpression> && lhs, ptr <pbExpression>&& rhs) :
-		pbExpression (ExpressionType::INSTANCE_OF_EXPRESSION),
+	InstanceOfExpression (ptr <pbStatement> && lhs, ptr <pbStatement>&& rhs) :
+		pbStatement (StatementType::INSTANCE_OF_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new InstanceOfExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
@@ -134,8 +134,8 @@ private:
 
 	///  @name Members
 
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	const ptr <pbStatement> lhs;
+	const ptr <pbStatement> rhs;
 
 };
 

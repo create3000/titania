@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_STRICT_EQUAL_EXPRESSION_H__
 
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 #include "../Expressions/PrimitiveExpression.h"
 
 namespace titania {
@@ -61,22 +61,22 @@ namespace pb {
  *  Class to represent a ECMAScript strict equal expression.
  */
 class StrictEqualExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new StrictEqualExpression expression.
-	StrictEqualExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
-		pbExpression (ExpressionType::STRICT_EQUAL_EXPRESSION),
+	StrictEqualExpression (ptr <pbStatement> && lhs, ptr <pbStatement> && rhs) :
+		pbStatement (StatementType::STRICT_EQUAL_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new StrictEqualExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
@@ -89,9 +89,17 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
-		const auto x = lhs ->getValue ();
-		const auto y = rhs ->getValue ();
+		const auto x = lhs -> getValue ();
+		const auto y = rhs -> getValue ();
 
+		return evaluate (x, y);
+	}
+
+	/// Performs strict equal comparision to its arguments
+	static
+	bool
+	evaluate (const var & x, const var & y)
+	{
 		if (x .getType () not_eq y .getType ())
 			return false;
 
@@ -145,8 +153,8 @@ private:
 
 	///  @name Members
 
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	const ptr <pbStatement> lhs;
+	const ptr <pbStatement> rhs;
 
 };
 
@@ -155,11 +163,11 @@ private:
 
 ///  Constructs new StrictEqualExpression expression.
 inline
-ptr <pbExpression>
-createStrictEqualExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
+ptr <pbStatement>
+createStrictEqualExpression (ptr <pbStatement> && lhs, ptr <pbStatement> && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (StrictEqualExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::BOOLEAN);
+		return new PrimitiveExpression (StrictEqualExpression (std::move (lhs), std::move (rhs)) .getValue (), StatementType::BOOLEAN);
 
 	return new StrictEqualExpression (std::move (lhs), std::move (rhs));
 }

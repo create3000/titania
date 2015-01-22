@@ -110,7 +110,7 @@ DEF RenderingPropertiesScript Script {
   initializeOnly SFNode  geometry USE BackgroundGeometry
   initializeOnly SFNode  text USE Text
 
-  url "vrmlscript:
+  url "peaseblossom:
 
 function set_textBounds (value, time)
 {

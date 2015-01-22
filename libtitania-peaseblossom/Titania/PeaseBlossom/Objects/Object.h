@@ -77,6 +77,7 @@ protected:
 
 	///  @name Friends
 
+	friend class Function;
 	friend class Program;
 
 	///  @name Construction

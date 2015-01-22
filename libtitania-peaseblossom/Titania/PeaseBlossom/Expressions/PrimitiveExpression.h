@@ -51,7 +51,7 @@
 #ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_H__
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRIMITIVE_EXPRESSION_H__
 
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 #include "../Primitives/var.h"
 
 namespace titania {
@@ -61,27 +61,27 @@ namespace pb {
  *  Class to represent a ECMAScript primitive expression.
  */
 class PrimitiveExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new PrimitiveExpression expression.
-	PrimitiveExpression (const var & value, const ExpressionType type) :
-		pbExpression (type),
+	PrimitiveExpression (const var & value, const StatementType type) :
+		pbStatement (type),
 		       value (value)
 	{ }
 
 	///  Constructs new PrimitiveExpression expression.
-	PrimitiveExpression (var && value, const ExpressionType type) :
-		pbExpression (type),
+	PrimitiveExpression (var && value, const StatementType type) :
+		pbStatement (type),
 		       value (std::move (value))
 	{ }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new PrimitiveExpression (value, getType ()); }
@@ -104,27 +104,27 @@ public:
 	{
 		switch (getType ())
 		{
-			case ExpressionType::NUMBER:
+			case StatementType::NUMBER:
 				ostream << std::dec << value;
 				break;
 
-			case ExpressionType::BINARY_NUMBER:
+			case StatementType::BINARY_NUMBER:
 				ostream << std::hex << value;
 				break;
 
-			case ExpressionType::OCTAL_NUMBER:
+			case StatementType::OCTAL_NUMBER:
 				ostream << std::oct << value;
 				break;
 
-			case ExpressionType::HEXAL_NUMBER:
+			case StatementType::HEXAL_NUMBER:
 				ostream << std::hex << value;
 				break;
 
-			case ExpressionType::SINGLE_QUOTED_STRING:
+			case StatementType::SINGLE_QUOTED_STRING:
 				ostream << '\'' << value << '\'';
 				break;
 
-			case ExpressionType::DOUBLE_QUOTED_STRING:
+			case StatementType::DOUBLE_QUOTED_STRING:
 				ostream << '"' << value << '"';
 				break;
 

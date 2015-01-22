@@ -48,67 +48,76 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_EXPRESSION_TYPE_H__
-#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_EXPRESSION_TYPE_H__
+#include "Browser.h"
 
-#include <cstdint>
+#include "../../Browser/X3DBrowser.h"
+#include "Fields/SFNode.h"
+#include "Arguments.h"
 
 namespace titania {
-namespace pb {
+namespace X3D {
+namespace peaseblossom {
 
-enum class ExpressionType :
-	uint8_t
+const std::string Browser::typeName = "X3DBrowser";
+
+pb::ptr <pb::NativeFunction>
+Browser::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 {
-	UNDEFINED,
-	BOOLEAN,
-	NUMBER,
-	BINARY_NUMBER,
-	OCTAL_NUMBER,
-	HEXAL_NUMBER,
-	STRING,
-	SINGLE_QUOTED_STRING,
-	DOUBLE_QUOTED_STRING,
-	NULL_OBJECT,
+	using namespace std::placeholders;
 
-	ADDITION_EXPRESSION,
-	ARRAY_INDEX_EXPRESSION,
-	ARRAY_LITERAL,
-	ASSIGNMENT_EXPRESSION,
-	DIVISION_EXPRESSION,
-	EQUAL_EXPRESSION,
-	EXPRESSION,
-	FOR_IN_STATEMENT,
-	FOR_STATEMENT,
-	FOR_VAR_IN_STATEMENT,
-	FOR_VAR_STATEMENT,
-	FUNCTION_CALL_EXPRESSION,
-	FUNCTION_EXPRESSION,
-	GREATER_EXPRESSION,
-	IF_STATEMENT,
-	IN_EXPRESSION,
-	INSTANCE_OF_EXPRESSION,
-	LEFT_SHIFT_EXPRESSION,
-	LESS_EXPRESSION,
-	LOGICAL_OR_EXPRESSION,
-	MULTIPLICATION_EXPRESSION,
-	NEW_EXPRESSION,
-	OBJECT_LITERAL,
-	POST_DECREMENT_EXPRESSION,
-	POST_INCREMENT_EXPRESSION,
-	PRE_DECREMENT_EXPRESSION,
-	PRE_INCREMENT_EXPRESSION,
-	PROPERTY_EXPRESSION,
-	REMAINDER_EXPRESSION,
-	RETURN_STATEMENT,
-	STRICT_EQUAL_EXPRESSION,
-	SUBTRACTION_EXPRESSION,
-	VARIABLE_EXPRESSION,
-	VARIABLE_DECLARATION,
-	VARIABLE_STATEMENT,
+	const auto function  = pb::make_ptr <pb::NativeFunction> (ec, getTypeName (), nullptr, nullptr, 4);
+	const auto prototype = new pb::Object (ec);
 
-};
+	prototype -> addOwnProperty ("constructor", function, pb::WRITABLE | pb::CONFIGURABLE);
 
-} // pb
+	// Properties
+
+	// Functions
+
+	prototype -> addOwnProperty ("getName",  new pb::NativeFunction (ec, "getName",  getName,  0), pb::NONE);
+	prototype -> addOwnProperty ("addRoute", new pb::NativeFunction (ec, "addRoute", addRoute, 4), pb::NONE);
+
+	function -> addOwnProperty ("prototype", prototype, pb::NONE);
+	
+	// Instance
+
+	ec -> getGlobalObject () -> addOwnProperty ("Browser", function -> createInstance (ec), pb::NONE);
+
+	return function;
+}
+
+pb::var
+Browser::getName (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+{
+	const auto browser = getContext (ec) -> getBrowser ();
+
+	return browser -> getName ();
+}
+
+pb::var
+Browser::addRoute (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+{
+	if (args .size () not_eq 4)
+		throw pb::Error (getTypeName () + ".prototype.addRoute: wrong number of arguments.");
+
+	try
+	{
+		const auto executionContext = getContext (ec) -> getExecutionContext ();
+		const auto fromNode         = get1Argument <SFNode> (args, 0);
+		const auto fromEventOut     = get1Argument <std::string> (args, 1);
+		const auto toNode           = get1Argument <SFNode> (args, 2);
+		const auto toEventIn        = get1Argument <std::string> (args, 3);
+
+		executionContext -> addRoute (*fromNode, fromEventOut, *toNode, toEventIn);
+
+		return pb::undefined;
+	}
+	catch (const X3D::X3DError & error)
+	{
+		throw pb::Error (getTypeName () + ".prototype.addRoute: %s:" + error .what ());
+	}
+}
+
+} // peaseblossom
+} // X3D
 } // titania
-
-#endif

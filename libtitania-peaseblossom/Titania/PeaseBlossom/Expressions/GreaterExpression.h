@@ -52,7 +52,7 @@
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_GREATER_EXPRESSION_H__
 
 #include "../Expressions/PrimitiveExpression.h"
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 
 #include <cmath>
 
@@ -63,22 +63,22 @@ namespace pb {
  *  Class to represent a ECMAScript greater expression.
  */
 class GreaterExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new GreaterExpression expression.
-	GreaterExpression (ptr <pbExpression> && lhs, ptr <pbExpression>&& rhs) :
-		pbExpression (ExpressionType::GREATER_EXPRESSION),
+	GreaterExpression (ptr <pbStatement> && lhs, ptr <pbStatement>&& rhs) :
+		pbStatement (StatementType::GREATER_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new GreaterExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
@@ -132,8 +132,8 @@ private:
 
 	///  @name Members
 
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	const ptr <pbStatement> lhs;
+	const ptr <pbStatement> rhs;
 
 };
 
@@ -142,11 +142,11 @@ private:
 
 ///  Constructs new GreaterExpression expression.
 inline
-ptr <pbExpression>
-createGreaterExpression (ptr <pbExpression> && lhs, ptr <pbExpression>&& rhs)
+ptr <pbStatement>
+createGreaterExpression (ptr <pbStatement> && lhs, ptr <pbStatement>&& rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (GreaterExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::BOOLEAN);
+		return new PrimitiveExpression (GreaterExpression (std::move (lhs), std::move (rhs)) .getValue (), StatementType::BOOLEAN);
 
 	return new GreaterExpression (std::move (lhs), std::move (rhs));
 }

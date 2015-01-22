@@ -48,49 +48,52 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_BLOCK_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_BLOCK_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_EMPTY_STATEMENT_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_EMPTY_STATEMENT_H__
 
-#include "../Execution/pbBlock.h"
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
 
-class Block :
-	public pbBlock
+/**
+ *  Class to represent a ECMAScript empty statement.
+ */
+class EmptyStatement :
+	public pbStatement
 {
 public:
 
-	using pbBlock::import;
-	using pbBlock::getValue;
+	///  @name Construction
 
-	///  Constructs new Block.
-	Block () :
-		pbBlock ()
+	///  Constructs new EmptyStatement expression.
+	EmptyStatement () :
+		pbStatement (StatementType::EMPTY_STATEMENT)
 	{ }
 
-	///  @name Common members
-
-	///  Returns the type name of this object.
+	///  Creates a copy of this object.
 	virtual
-	const std::string &
-	getTypeName () const
+	ptr <pbStatement>
+	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return typeName; }
+	{ return new EmptyStatement (); }
+
+	///  @name Operations
+
+	///  Converts its arguments to a value of type Number.
+	virtual
+	CompletionType
+	getValue () const
+	throw (pbError) final override
+	{ return CompletionType (this, undefined); }
 
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
-	toStream (std::ostream & ostream) const final override;
-
-
-private:
-
-	///  @name Static members
-
-	static const std::string typeName;
+	toStream (std::ostream & ostream) const final override
+	{ }
 
 };
 

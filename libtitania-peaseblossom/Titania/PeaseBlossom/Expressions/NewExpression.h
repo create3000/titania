@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_NEW_EXPRESSION_H__
 
 #include "../Execution/pbExecutionContext.h"
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
@@ -61,15 +61,15 @@ namespace pb {
  *  Class to represent a ECMAScript function call expression.
  */
 class NewExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new NewExpression expression.
-	NewExpression (const ptr <pbExecutionContext> & executionContext, ptr <pbExpression> && expression, array <ptr <pbExpression>> && expressions) :
-		    pbExpression (ExpressionType::NEW_EXPRESSION),
+	NewExpression (const ptr <pbExecutionContext> & executionContext, ptr <pbStatement> && expression, array <ptr <pbStatement>> && expressions) :
+		    pbStatement (StatementType::NEW_EXPRESSION),
 		executionContext (executionContext),
 		      expression (std::move (expression)),
 		     expressions (std::move (expressions))
@@ -79,11 +79,11 @@ public:
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{
-		array <ptr <pbExpression>> expressions;
+		array <ptr <pbStatement>> expressions;
 
 		for (const auto & expression : this -> expressions)
 			expressions .emplace_back (expression -> copy (executionContext));
@@ -99,7 +99,7 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
-		const auto value = expression ->getValue ();
+		const auto value = expression -> getValue ();
 
 		if (value .isObject ())
 		{
@@ -163,8 +163,8 @@ private:
 	///  @name Members
 
 	const ptr <pbExecutionContext>   executionContext;
-	const ptr <pbExpression>         expression;
-	const array <ptr <pbExpression>> expressions;
+	const ptr <pbStatement>         expression;
+	const array <ptr <pbStatement>> expressions;
 
 };
 

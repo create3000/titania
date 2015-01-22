@@ -52,7 +52,7 @@
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_EXPRESSION_H__
 
 #include "../Expressions/PrimitiveExpression.h"
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 
 #include <cmath>
 
@@ -63,25 +63,25 @@ namespace pb {
  *  Class to represent a ECMAScript expression.
  */
 class Expression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new Expression expression.
-	Expression (array <ptr <pbExpression>> && expressions) :
-		pbExpression (ExpressionType::EXPRESSION),
+	Expression (array <ptr <pbStatement>> && expressions) :
+		pbStatement (StatementType::EXPRESSION),
 		 expressions (std::move (expressions))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{
-		array <ptr <pbExpression>>  expressions;
+		array <ptr <pbStatement>>  expressions;
 
 		for (const auto & expression : this -> expressions)
 			expressions .emplace_back (expression -> copy (executionContext));
@@ -135,7 +135,7 @@ private:
 
 	///  @name Members
 
-	const array <ptr <pbExpression>>  expressions;
+	const array <ptr <pbStatement>>  expressions;
 
 };
 
@@ -144,8 +144,8 @@ private:
 
 ///  Constructs new AdditionExpression expression.
 inline
-ptr <pbExpression>
-createExpression (array <ptr <pbExpression>> && expressions)
+ptr <pbStatement>
+createExpression (array <ptr <pbStatement>> && expressions)
 {
 	if (expressions .size () == 1)
 		return std::move (expressions .back ());

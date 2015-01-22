@@ -48,98 +48,53 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_BLOCK_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXECUTION_VS_BLOCK_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_BROWSER_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_BROWSER_H__
 
-#include "../Base/pbChildObject.h"
-#include "../Base/pbOutputStreamObject.h"
-#include "../Expressions/pbExpression.h"
-#include "../Primitives/array.h"
-#include "../Primitives/ptr.h"
+#include "Context.h"
 
 namespace titania {
-namespace pb {
+namespace X3D {
+namespace peaseblossom {
 
-class pbExecutionContext;
-
-class pbBlock :
-	virtual public pbChildObject,
-	virtual public pbOutputStreamObject
+class Browser
 {
 public:
 
-	/// @name Member access
+	///  @name Common members
 
-	///  Add an expression to the list of expressions.
-	void
-	addExpression (ptr <pbExpression> && value)
-	{ expressions .emplace_back (std::move (value)); }
-
-	///  Returns an array with all local root expressions.
-	const array <ptr <pbExpression>> &
-	getExpressions () const
-	{ return expressions; }
-
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const override;
-
-
-protected:
+	static
+	const std::string &
+	getTypeName ()
+	{ return typeName; }
 
 	///  @name Construction
 
-	///  Constructs new pbBlock.
-	pbBlock () :
-		       pbChildObject (),
-		pbOutputStreamObject (),
-		         expressions ()
-	{ addChildren (expressions); }
-
-	/// @name Operations
-
-	///  Imports all expressions from @a block into @a executionContext.
-	void
-	import (pbExecutionContext* const executionContext, const pbBlock* const block)
-	throw (pbError)
-	{
-		for (const auto & expression : block -> getExpressions ())
-			addExpression (expression -> copy (executionContext));
-	}
-
-	///  Executes the associated expessions of this context.
-	CompletionType
-	getValue ()
-	throw (pbError)
-	{
-		CompletionType result;
-
-		for (const auto & expression : expressions)
-		{
-			auto value = expression -> getValue ();
-
-			if (value .getStatement ())
-				return value;
-
-			result = std::move (value);
-		}
-
-		return result;
-	}
+	static
+	pb::ptr <pb::NativeFunction>
+	initialize (Context* const, const pb::ptr <pb::Program> &);
 
 
 private:
 
-	/// @name Members
+	///  @name Functions
 
-	array <ptr <pbExpression>> expressions;
+	static
+	pb::var
+	getName (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	addRoute (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	///  @name Static members
+
+	static const std::string typeName;
 
 };
 
-} // pb
+} // peaseblossom
+} // X3D
 } // titania
 
 #endif

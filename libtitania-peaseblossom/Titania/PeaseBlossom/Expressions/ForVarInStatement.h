@@ -51,10 +51,9 @@
 #ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FOR_VAR_IN_STATEMENT_H__
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FOR_VAR_IN_STATEMENT_H__
 
-#include "../Execution/Block.h"
 #include "../Expressions/PrimitiveExpression.h"
 #include "../Expressions/VariableDeclaration.h"
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
@@ -63,38 +62,30 @@ namespace pb {
  *  Class to represent a ECMAScript for in statement.
  */
 class ForVarInStatement :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new ForVarInStatement expression.
-	ForVarInStatement (ptr <VariableDeclaration> && variableDeclaration, ptr <pbExpression>&& expression) :
-		       pbExpression (ExpressionType::FOR_VAR_IN_STATEMENT),
+	ForVarInStatement (ptr <VariableDeclaration> && variableDeclaration, ptr <pbStatement> && expression, ptr <pbStatement> && statement) :
+		       pbStatement (StatementType::FOR_VAR_IN_STATEMENT),
 		variableDeclaration (std::move (variableDeclaration)),
 		         expression (std::move (expression)),
-		              block (new Block ())
+		          statement (std::move (statement))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{
-		const auto copy = new ForVarInStatement (variableDeclaration -> copy (executionContext), expression -> copy (executionContext));
-
-		copy -> getBlock () -> import (executionContext, block .get ());
-
-		return copy;
+		return new ForVarInStatement (variableDeclaration -> copy (executionContext),
+		                              expression -> copy (executionContext),
+		                              statement -> copy (executionContext));
 	}
-
-	///  @name Member access
-
-	const ptr <Block> &
-	getBlock () const
-	{ return block; }
 
 	///  @name Operations
 
@@ -123,11 +114,21 @@ public:
 				{
 					variableDeclaration -> putValue (propertyName);
 
-					const auto value = block -> getValue ();
-					
+					const auto value = statement -> getValue ();
+
 					if (value .getStatement ())
-						return value;
-					
+					{
+						switch (value .getStatement () -> getType ())
+						{
+							case StatementType::BREAK_STATEMENT:
+								return result;
+							case StatementType::RETURN_STATEMENT:
+								return value;
+							default:
+								continue;
+						}
+					}
+
 					result = std::move (value);
 				}
 			}
@@ -157,7 +158,7 @@ public:
 			<< expression
 			<< ')'
 			<< Generator::TidyBreak
-			<< block;
+			<< pb::toStream (statement, true);
 	}
 
 private:
@@ -167,13 +168,13 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (variableDeclaration, expression, block); }
+	{ addChildren (variableDeclaration, expression, statement); }
 
 	///  @name Members
 
 	const ptr <VariableDeclaration> variableDeclaration;
-	const ptr <pbExpression>        expression;
-	const ptr <Block>               block;
+	const ptr <pbStatement>        expression;
+	const ptr <pbStatement>        statement;
 
 };
 

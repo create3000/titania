@@ -51,55 +51,39 @@
 #ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_IF_STATEMENT_H__
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_IF_STATEMENT_H__
 
-#include "../Execution/Block.h"
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript object literal expression.
+ *  Class to represent a ECMAScript if statement.
  */
 class IfStatement :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new IfStatement expression.
-	IfStatement (ptr <pbExpression> && booleanExpression) :
-		     pbExpression (ExpressionType::IF_STATEMENT),
+	IfStatement (ptr <pbStatement> && booleanExpression, ptr <pbStatement> && thenStatement, ptr <pbStatement> && elseStatement) :
+		     pbStatement (StatementType::IF_STATEMENT),
 		booleanExpression (std::move (booleanExpression)),
-		        thenBlock (new Block ()),
-		        elseBlock (new Block ())
+		    thenStatement (std::move (thenStatement)),
+		    elseStatement (std::move (elseStatement))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{
-		const auto copy = new IfStatement (booleanExpression -> copy (executionContext));
-
-		copy -> getThenBlock () -> import (executionContext, thenBlock .get ());
-		copy -> getElseBlock () -> import (executionContext, elseBlock .get ());
-
-		return copy;
+		return new IfStatement (booleanExpression -> copy (executionContext),
+		                        thenStatement -> copy (executionContext),
+		                        elseStatement -> copy (executionContext));
 	}
-
-	///  @name Common members
-
-	///  @name Member access
-
-	const ptr <Block> &
-	getThenBlock () const
-	{ return thenBlock; }
-
-	const ptr <Block> &
-	getElseBlock () const
-	{ return elseBlock; }
 
 	///  @name Operations
 
@@ -109,9 +93,13 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
-		return booleanExpression -> getValue () .toBoolean ()
-		       ? thenBlock -> getValue ()
-				 : elseBlock -> getValue ();
+		if (booleanExpression -> getValue () .toBoolean ())
+			return thenStatement -> getValue ();
+
+		if (elseStatement)
+			return elseStatement -> getValue ();
+
+		return CompletionType (this, undefined);
 	}
 
 	///  @name Input/Output
@@ -127,26 +115,18 @@ public:
 			<< '('
 			<< booleanExpression
 			<< ')'
-			<< Generator::TidyBreak;
+			<< Generator::TidyBreak
+			<< pb::toStream (thenStatement, true);
 
-		if (thenBlock -> getExpressions () .empty ())
+		// else
+
+		if (elseStatement)
 		{
 			ostream
-				<< Generator::IncIndent
-				<< Generator::Indent
-				<< ';'
-				<< Generator::DecIndent
-				<< Generator::TidyBreak;
-		}
-		else
-			ostream << thenBlock;
-
-		if (not elseBlock -> getExpressions () .empty ())
-		{
-			ostream
-				<< "else"
 				<< Generator::TidyBreak
-				<< elseBlock;
+				<< "else"
+				<< Generator::Break
+				<< pb::toStream (elseStatement, true);
 		}
 	}
 
@@ -157,13 +137,13 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (booleanExpression, thenBlock, elseBlock); }
+	{ addChildren (booleanExpression, thenStatement, elseStatement); }
 
 	///  @name Members
 
-	const ptr <pbExpression> booleanExpression;
-	const ptr <Block>        thenBlock;
-	const ptr <Block>        elseBlock;
+	const ptr <pbStatement> booleanExpression;
+	const ptr <pbStatement> thenStatement;
+	const ptr <pbStatement> elseStatement;
 
 };
 

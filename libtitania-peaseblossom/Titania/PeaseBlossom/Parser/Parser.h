@@ -67,9 +67,9 @@ namespace pb {
 class ArrayLiteral;
 class ObjectLiteral;
 class VariableDeclaration;
-class pbBlock;
+class pbSource;
 class pbExecutionContext;
-class pbExpression;
+class pbStatement;
 
 class Parser
 {
@@ -88,8 +88,7 @@ protected:
 
 	void
 	parseIntoContext ()
-	throw (SyntaxError,
-	       ReferenceError);
+	throw (pbError);
 
 
 private:
@@ -112,26 +111,16 @@ private:
 	{ return rootContext; }
 
 	void
-	pushExecutionContext (pbExecutionContext* const executionContext);
+	pushExecutionContext (pbExecutionContext* const executionContext)
+	{ executionContexts .emplace (executionContext); }
 
 	void
-	popExecutionContext ();
+	popExecutionContext ()
+	{ executionContexts .pop (); }
 
 	pbExecutionContext*
 	getExecutionContext () const
 	{ return executionContexts .top (); }
-
-	void
-	pushBlock (pbBlock* const block)
-	{ blocks .emplace (block); }
-
-	void
-	popBlock ()
-	{ blocks .pop (); }
-
-	pbBlock*
-	getBlock () const
-	{ return blocks .top (); }
 
 	void
 	setState (const State & value);
@@ -169,41 +158,41 @@ private:
 	reservedWord (const std::string &);
 
 	bool
-	literal (ptr <pbExpression> &);
+	literal (ptr <pbStatement> &);
 
 	bool
-	nullLiteral (ptr <pbExpression> &);
+	nullLiteral (ptr <pbStatement> &);
 
 	bool
-	booleanLiteral (ptr <pbExpression> &);
+	booleanLiteral (ptr <pbStatement> &);
 
 	bool
-	numericLiteral (ptr <pbExpression> &);
+	numericLiteral (ptr <pbStatement> &);
 
 	bool
-	decimalLiteral (ptr <pbExpression> &);
+	decimalLiteral (ptr <pbStatement> &);
 
 	bool
-	binaryIntegerLiteral (ptr <pbExpression> &);
+	binaryIntegerLiteral (ptr <pbStatement> &);
 
 	bool
-	octalIntegerLiteral (ptr <pbExpression> &);
+	octalIntegerLiteral (ptr <pbStatement> &);
 
 	bool
-	hexIntegerLiteral (ptr <pbExpression> &);
+	hexIntegerLiteral (ptr <pbStatement> &);
 
 	bool
-	stringLiteral (ptr <pbExpression> &);
+	stringLiteral (ptr <pbStatement> &);
 
 	// A.2 Number Conversions
 
 	// A.3 Expressions
 
 	bool
-	primaryExpression (ptr <pbExpression> &);
+	primaryExpression (ptr <pbStatement> &);
 
 	bool
-	arrayLiteral (ptr <pbExpression> &);
+	arrayLiteral (ptr <pbStatement> &);
 
 	bool
 	elementList (const ptr <ArrayLiteral> &);
@@ -212,7 +201,7 @@ private:
 	elision (const ptr <ArrayLiteral> & arrayLiteral);
 
 	bool
-	objectLiteral (ptr <pbExpression> &);
+	objectLiteral (ptr <pbStatement> &);
 
 	bool
 	propertyDefinitionList (const ptr <ObjectLiteral> &);
@@ -221,90 +210,90 @@ private:
 	propertyDefinition (const ptr <ObjectLiteral> &);
 
 	bool
-	propertyName (ptr <pbExpression> & value);
+	propertyName (ptr <pbStatement> & value);
 
 	bool
 	propertySetParameterList (std::vector <std::string> &);
 
 	bool
-	memberExpression (ptr <pbExpression> &);
+	memberExpression (ptr <pbStatement> &);
 
 	bool
-	newExpression (ptr <pbExpression> &);
+	newExpression (ptr <pbStatement> &);
 
 	bool
-	callExpression (ptr <pbExpression> &);
+	callExpression (ptr <pbStatement> &);
 
 	bool
-	arguments (array <ptr <pbExpression>> &);
+	arguments (array <ptr <pbStatement>> &);
 
 	bool
-	argumentList (array <ptr <pbExpression>> &);
+	argumentList (array <ptr <pbStatement>> &);
 
 	bool
-	leftHandSideExpression (ptr <pbExpression> &);
+	leftHandSideExpression (ptr <pbStatement> &);
 
 	bool
-	postfixExpression (ptr <pbExpression> &);
+	postfixExpression (ptr <pbStatement> &);
 
 	bool
-	unaryExpression (ptr <pbExpression> &);
+	unaryExpression (ptr <pbStatement> &);
 
 	bool
-	multiplicativeExpression (ptr <pbExpression> &);
+	multiplicativeExpression (ptr <pbStatement> &);
 
 	bool
-	additiveExpression (ptr <pbExpression> &);
+	additiveExpression (ptr <pbStatement> &);
 
 	bool
-	shiftExpression (ptr <pbExpression> &);
+	shiftExpression (ptr <pbStatement> &);
 
 	bool
-	relationalExpression (ptr <pbExpression> &);
+	relationalExpression (ptr <pbStatement> &);
 
 	bool
-	equalityExpression (ptr <pbExpression> &);
+	equalityExpression (ptr <pbStatement> &);
 
 	bool
-	bitwiseANDExpression (ptr <pbExpression> &);
+	bitwiseANDExpression (ptr <pbStatement> &);
 
 	bool
-	bitwiseXORExpression (ptr <pbExpression> &);
+	bitwiseXORExpression (ptr <pbStatement> &);
 
 	bool
-	bitwiseORExpression (ptr <pbExpression> &);
+	bitwiseORExpression (ptr <pbStatement> &);
 
 	bool
-	logicalANDExpression (ptr <pbExpression> &);
+	logicalANDExpression (ptr <pbStatement> &);
 
 	bool
-	logicalORExpression (ptr <pbExpression> &);
+	logicalORExpression (ptr <pbStatement> &);
 
 	bool
-	conditionalExpression (ptr <pbExpression> &);
+	conditionalExpression (ptr <pbStatement> &);
 
 	bool
-	assignmentExpression (ptr <pbExpression> &);
+	assignmentExpression (ptr <pbStatement> &);
 
 	bool
 	assignmentOperator (AssignmentOperatorType &);
 
 	bool
-	expression (ptr <pbExpression> &);
+	expression (ptr <pbStatement> &);
 
 	// A.4 Statements
 
 	bool
-	statement ();
+	statement (ptr <pbStatement> &);
 	
 	bool
-	block ();
+	block (ptr <pbStatement> &);
 	
 	bool
-	statementList ();
+	statementList (array <ptr <pbStatement>> &);
 
 	bool
-	variableStatement ();
+	variableStatement (ptr <pbStatement> &);
 
 	bool
 	variableDeclarationList (array <ptr <VariableDeclaration>> &);
@@ -313,22 +302,40 @@ private:
 	variableDeclaration (ptr <VariableDeclaration> &);
 
 	bool
-	initialiser (ptr <pbExpression> &);
+	initialiser (ptr <pbStatement> &);
 
 	bool
-	emptyStatement ();
+	emptyStatement (ptr <pbStatement> &);
 
 	bool
-	expressionStatement ();
+	expressionStatement (ptr <pbStatement> &);
 
 	bool
-	ifStatement ();
+	ifStatement (ptr <pbStatement> &);
 
 	bool
-	iterationStatement ();
+	iterationStatement (ptr <pbStatement> &);
 
 	bool
-	returnStatement ();
+	breakStatement (ptr <pbStatement> &);
+
+	bool
+	returnStatement (ptr <pbStatement> &);
+	
+	bool
+	switchStatement (ptr <pbStatement> &);
+	
+	bool
+	caseBlock (array <ptr <pbStatement>> &, array <array <ptr <pbStatement>>> &, array <ptr <pbStatement>> &);
+
+	void
+	caseClauses (array <ptr <pbStatement>> &, array <array <ptr <pbStatement>>> &);
+
+	bool
+	caseClause (array <ptr <pbStatement>> &, array <array <ptr <pbStatement>>> &);
+
+	bool
+	defaultClause (array <ptr <pbStatement>> &, array <ptr <pbStatement>> &, array <array <ptr <pbStatement>>> &);
 
 	// A.5 Functions and Programs
 
@@ -336,7 +343,7 @@ private:
 	functionDeclaration ();
 
 	bool
-	functionExpression (ptr <pbExpression> &);
+	functionExpression (ptr <pbStatement> &);
 
 	bool
 	formalParameterList (std::vector <std::string> &);
@@ -351,13 +358,12 @@ private:
 	sourceElements ();
 
 	bool
-	sourceElement ();
+	sourceElement (ptr <pbStatement> &);
 
 	///  @name Members
 
 	pbExecutionContext* const        rootContext;
 	std::stack <pbExecutionContext*> executionContexts;
-	std::stack <pbBlock*>            blocks;
 	std::istream &                   istream;
 	std::istream::pos_type           position;
 	size_t                           lineNumber;

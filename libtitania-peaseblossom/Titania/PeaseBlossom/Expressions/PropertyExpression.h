@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PROPERTY_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PROPERTY_EXPRESSION_H__
 
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 #include "../Objects/pbObject.h"
 
 namespace titania {
@@ -61,22 +61,22 @@ namespace pb {
  *  Class to represent a ECMAScript property expression.
  */
 class PropertyExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new AdditionExpression expression.
-	PropertyExpression (ptr <pbExpression> && expression, std::string && identifier) :
-		pbExpression (ExpressionType::PROPERTY_EXPRESSION),
+	PropertyExpression (ptr <pbStatement> && expression, std::string && identifier) :
+		pbStatement (StatementType::PROPERTY_EXPRESSION),
 		  expression (std::move (expression)),
 		  identifier (std::move (identifier))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new PropertyExpression (expression -> copy (executionContext), std::string (identifier .getName ())); }
@@ -88,7 +88,7 @@ public:
 	putValue (const var & value) const
 	throw (pbError) final override
 	{
-		const auto base = expression ->getValue ();
+		const auto base = expression -> getValue ();
 
 		switch (base .getType ())
 		{
@@ -134,7 +134,7 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
-		const auto base = expression ->getValue ();
+		const auto base = expression -> getValue ();
 
 		switch (base .getType ())
 		{
@@ -181,7 +181,7 @@ public:
 	call (const ptr <pbExecutionContext> & ec, const std::vector <var> & arguments) const
 	throw (pbError) final override
 	{
-		const auto base = expression ->getValue ();
+		const auto base = expression -> getValue ();
 
 		switch (base .getType ())
 		{
@@ -254,7 +254,7 @@ private:
 
 	///  @name Members
 
-	const ptr <pbExpression> expression;
+	const ptr <pbStatement> expression;
 	const Identifier         identifier;
 
 };

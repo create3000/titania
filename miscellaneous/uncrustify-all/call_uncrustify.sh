@@ -57,7 +57,8 @@ perl -p -e '
    replace (sub { $_ [0] =~ s/\>\s*&/> &/so });                                                          # add space before reference operator
    replace (sub { $_ [0] =~ s/\>&(\w)/> & $1/so });                                                      # add space before reference operator
    replace (sub { $_ [0] =~ s/(not_eq\s+[-+*&])\s+/$1/so });                                             # refine not_eq
-   replace (sub { $_ [0] =~ s/\s+\*\s*,/*,/sgo });                                                        # obj*,
+   replace (sub { $_ [0] =~ s/\s+\*\s*,/*,/sgo });                                                       # obj*,
+   replace (sub { $_ [0] =~ s/;\s*;/;;/sgo });                                                           # ; ; to ;;
    $_  =~ s/^;\n/\t\t;\n/so;                                                                             # indent ; at start of line
 ' | \
 perl -e '

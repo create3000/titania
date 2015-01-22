@@ -56,7 +56,7 @@
 namespace titania {
 namespace pb {
 
-class pbExpression;
+class pbStatement;
 
 class CompletionType :
 	public var
@@ -86,7 +86,7 @@ public:
 	{ }
 
 	template <class Type>
-	CompletionType (const pbExpression* const statement, Type && value) :
+	CompletionType (const pbStatement* const statement, Type && value) :
 		var (std::forward <Type> (value)),
 		               statement (statement)
 	{ }
@@ -107,7 +107,7 @@ public:
 		return *this;
 	}
 
-	const pbExpression*
+	const pbStatement*
 	getStatement () const
 	{ return statement; }
 
@@ -116,7 +116,7 @@ private:
 
 	///  @name Members
 
-	const pbExpression* statement;
+	const pbStatement* statement;
 
 };
 

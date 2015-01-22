@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_OBJECT_LITERAL_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_OBJECT_LITERAL_H__
 
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 #include "../Objects/Object.h"
 #include "../Objects/pbFunction.h"
 
@@ -62,7 +62,7 @@ namespace pb {
  *  Class to represent a ECMAScript object literal expression.
  */
 class ObjectLiteral :
-	public pbExpression
+	public pbStatement
 {
 public:
 
@@ -70,14 +70,14 @@ public:
 
 	///  Constructs new ObjectLiteral expression.
 	ObjectLiteral (pbExecutionContext* const executionContext) :
-		    pbExpression (ExpressionType::OBJECT_LITERAL),
+		    pbStatement (StatementType::OBJECT_LITERAL),
 		executionContext (executionContext),
 		      properties ()
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{
@@ -101,7 +101,7 @@ public:
 
 	void
 	defineOwnProperty (Identifier && identifier,
-	                   ptr <pbExpression> && value,
+	                   ptr <pbStatement> && value,
 	                   const AttributeType attributes,
 	                   ptr <Function> && getter = nullptr,
 	                   ptr <Function> && setter = nullptr)
@@ -216,7 +216,7 @@ private:
 		{ }
 	
 		Identifier         identifier;
-		ptr <pbExpression> value;
+		ptr <pbStatement> value;
 		AttributeType  attributes;
 		ptr <Function>     getter;
 		ptr <Function>     setter;
@@ -269,7 +269,7 @@ private:
 				<< Generator::TidySpace
 				<< "()";
 
-			if (property -> getter -> getExpressions () .empty ())
+			if (property -> getter -> getStatements () .empty ())
 			{
 				ostream
 					<< Generator::TidySpace
@@ -330,7 +330,7 @@ private:
 
 			ostream << ')';
 				
-			if (property -> setter -> getExpressions () .empty ())
+			if (property -> setter -> getStatements () .empty ())
 			{
 				ostream
 					<< Generator::TidySpace

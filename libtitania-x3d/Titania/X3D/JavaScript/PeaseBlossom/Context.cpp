@@ -51,6 +51,7 @@
 #include "Context.h"
 
 #include "Arguments.h"
+#include "Browser.h"
 #include "Global.h"
 #include "Fields.h"
 #include "value.h"
@@ -85,7 +86,7 @@ throw (std::exception) :
 		addClasses ();
 		addUserDefinedFields ();
 
-		program -> fromString (getECMAScript ());
+		program -> fromString (getECMAScript ());		
 		getBrowser () -> print ("*** run: ", program -> run (), "\n");
 	}
 	catch (const pb::pbError & error)
@@ -122,6 +123,7 @@ Context::addClasses ()
 	program -> getUserData () .emplace_back (this);
 
 	Global::initialize (this, program, program -> getGlobalObject ());
+	Browser::initialize (this, program);
 }
 
 void
@@ -169,6 +171,7 @@ Context::defineProperty (pb::ptr <pb::pbObject> const object,
 		case X3DConstants::SFDouble:
 		case X3DConstants::SFFloat:
 		case X3DConstants::SFInt32:
+		case X3DConstants::SFNode:
 		case X3DConstants::SFString:
 		case X3DConstants::SFTime:
 		{
@@ -197,6 +200,7 @@ Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
 	__LOG__ << identifier << std::endl;
 
 	static const std::map <pb::Identifier, ObjectType> types = {
+		// Fields
 		std::make_pair ("X3DField",      X3DField::getType ()),
 		std::make_pair ("X3DArrayField", X3DArrayField::getType ()),
 
@@ -258,6 +262,7 @@ throw (std::out_of_range)
 	using Initialize = std::function <pb::ptr <pb::NativeFunction> (Context* const, const pb::ptr <pb::Program> &)>;
 
 	static const std::vector <Initialize> functions = {
+		// Fields
 		X3DField::initialize,
 		X3DArrayField::initialize,
 		// Fields

@@ -48,28 +48,76 @@
  *
  ******************************************************************************/
 
-#include "Block.h"
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_NEGATE_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_NEGATE_EXPRESSION_H__
+
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
 
-const std::string Block::typeName = "Block";
-
-void
-Block::toStream (std::ostream & ostream) const
+/**
+ *  Class to represent a ECMAScript negate expression expression.
+ */
+class NegateExpression :
+	public pbStatement
 {
-	ostream
-		<< Generator::Indent
-		<< Generator::IncIndent
-		<< '{';
+public:
 
-	pbBlock::toStream (ostream);
+	///  @name Construction
 
-	ostream
-		<< Generator::DecIndent
-		<< Generator::Indent
-		<< '}';
-}
+	///  Constructs new NegateExpression expression.
+	NegateExpression (ptr <pbStatement> && expression) :
+		pbStatement (StatementType::NEGATE_EXPRESSION),
+		 expression (std::move (expression))
+	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbStatement>
+	copy (pbExecutionContext* const executionContext) const
+	noexcept (true) final override
+	{ return new NegateExpression (expression -> copy (executionContext)); }
+
+	///  @name Operations
+
+	///  Converts its arguments to a value of type Number.
+	virtual
+	CompletionType
+	getValue () const
+	throw (pbError) final override
+	{
+		return -expression -> getValue () .toNumber ();
+	}
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		ostream
+			<< '-'
+			<< expression;
+	}
+
+private:
+
+	///  @name Construction
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (expression); }
+
+	///  @name Members
+
+	const ptr <pbStatement> expression;
+
+};
 
 } // pb
 } // titania
+
+#endif

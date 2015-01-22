@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_MULTIPLICATION_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_MULTIPLICATION_EXPRESSION_H__
 
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 #include "../Expressions/PrimitiveExpression.h"
 
 namespace titania {
@@ -61,22 +61,22 @@ namespace pb {
  *  Class to represent a ECMAScript multiplication expression.
  */
 class MultiplicationExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new MultiplicationExpression expression.
-	MultiplicationExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
-		pbExpression (ExpressionType::MULTIPLICATION_EXPRESSION),
+	MultiplicationExpression (ptr <pbStatement> && lhs, ptr <pbStatement> && rhs) :
+		pbStatement (StatementType::MULTIPLICATION_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new MultiplicationExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
@@ -88,7 +88,12 @@ public:
 	CompletionType
 	getValue () const
 	throw (pbError) final override
-	{ return lhs -> getValue () .toNumber () * rhs -> getValue () .toNumber (); }
+	{
+		const auto x = lhs -> getValue () .toNumber ();
+		const auto y = rhs -> getValue () .toNumber ();
+
+		return x * y;
+	}
 
 	///  @name Input/Output
 
@@ -117,8 +122,8 @@ private:
 
 	///  @name Members
 
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	const ptr <pbStatement> lhs;
+	const ptr <pbStatement> rhs;
 
 };
 
@@ -127,11 +132,11 @@ private:
 
 ///  Constructs new MultiplicationExpression expression.
 inline
-ptr <pbExpression>
-createMultiplicationExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
+ptr <pbStatement>
+createMultiplicationExpression (ptr <pbStatement> && lhs, ptr <pbStatement> && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (MultiplicationExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::NUMBER);
+		return new PrimitiveExpression (MultiplicationExpression (std::move (lhs), std::move (rhs)) .getValue (), StatementType::NUMBER);
 
 	return new MultiplicationExpression (std::move (lhs), std::move (rhs));
 }

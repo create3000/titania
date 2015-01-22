@@ -48,58 +48,53 @@
  *
  ******************************************************************************/
 
-#include "pbExpression.h"
+#ifndef __TITANIA_PEASE_BLOSSOM_STATEMENTS_H__
+#define __TITANIA_PEASE_BLOSSOM_STATEMENTS_H__
 
-#include "../Execution/pbExecutionContext.h"
-#include "../Objects/pbFunction.h"
+#include "Expressions/AdditionExpression.h"
+#include "Expressions/ArrayIndexExpression.h"
+#include "Expressions/ArrayLiteral.h"
+#include "Expressions/AssignmentExpression.h"
+#include "Expressions/BitwiseAndExpression.h"
+#include "Expressions/BlockStatement.h"
+#include "Expressions/BreakStatement.h"
+#include "Expressions/ConditionalExpression.h"
+#include "Expressions/DivisionExpression.h"
+#include "Expressions/EmptyStatement.h"
+#include "Expressions/EqualExpression.h"
+#include "Expressions/Expression.h"
+//#include "Expressions/ForInStatement.h"
+#include "Expressions/ForStatement.h"
+#include "Expressions/ForVarInStatement.h"
+#include "Expressions/ForVarStatement.h"
+#include "Expressions/FunctionCallExpression.h"
+#include "Expressions/FunctionExpression.h"
+#include "Expressions/GreaterExpression.h"
+#include "Expressions/IfStatement.h"
+#include "Expressions/InExpression.h"
+#include "Expressions/InstanceOfExpression.h"
+#include "Expressions/LeftShiftExpression.h"
+#include "Expressions/LessExpression.h"
+#include "Expressions/LogicalAndExpression.h"
+#include "Expressions/LogicalNotExpression.h"
+#include "Expressions/LogicalOrExpression.h"
+#include "Expressions/MultiplicationExpression.h"
+#include "Expressions/NegateExpression.h"
+#include "Expressions/NewExpression.h"
+#include "Expressions/ObjectLiteral.h"
+#include "Expressions/PostDecrementExpression.h"
+#include "Expressions/PostIncrementExpression.h"
+#include "Expressions/PreDecrementExpression.h"
+#include "Expressions/PreIncrementExpression.h"
+#include "Expressions/PrimitiveExpression.h"
+#include "Expressions/PropertyExpression.h"
+#include "Expressions/RemainderExpression.h"
+#include "Expressions/ReturnStatement.h"
+#include "Expressions/StrictEqualExpression.h"
+#include "Expressions/SubtractionExpression.h"
+#include "Expressions/SwitchStatement.h"
+#include "Expressions/VariableDeclaration.h"
+#include "Expressions/VariableExpression.h"
+#include "Expressions/VariableStatement.h"
 
-namespace titania {
-namespace pb {
-
-const std::string pbExpression::typeName = "Expression";
-
-bool
-pbExpression::isPrimitive () const
-{
-	switch (type)
-	{
-		case ExpressionType::UNDEFINED:
-		case ExpressionType::BOOLEAN:
-		case ExpressionType::NUMBER:
-		case ExpressionType::BINARY_NUMBER:
-		case ExpressionType::OCTAL_NUMBER:
-		case ExpressionType::HEXAL_NUMBER:
-		case ExpressionType::STRING:
-		case ExpressionType::SINGLE_QUOTED_STRING:
-		case ExpressionType::DOUBLE_QUOTED_STRING:
-		case ExpressionType::NULL_OBJECT:
-			return true;
-		default:
-			return false;
-	}
-
-	return false;
-}
-
-var
-pbExpression::call (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments) const
-throw (pbError)
-{
-	static const Identifier this_ ("this");
-
-	const auto value = getValue ();
-
-	if (value .isObject ())
-	{
-		const auto function = dynamic_cast <pbFunction*> (value .getObject () .get ());
-		const auto value    = executionContext -> getGlobalObject () -> get (this_);
-
-		if (function)
-			return function -> call (value .getObject () .get (), arguments);
-	}
-
-	throw TypeError ("'" + value .toString () + "' is not a function.");
-}
-
-} // pb
-} // titania
+#endif

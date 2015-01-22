@@ -259,7 +259,7 @@ Array <Type, InternalType>::hasProperty (pb::pbObject* const object, const pb::I
 	const auto index = identifier .toUInt32 ();
 
 	if (index == pb::PROPERTY)
-		throw std::out_of_range ("Array::get1Value");
+		return false;
 
 	const auto array = getObject <InternalType> (object);
 

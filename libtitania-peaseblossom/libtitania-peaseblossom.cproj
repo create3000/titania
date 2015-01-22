@@ -38,11 +38,8 @@
     <Compile Include="Titania\PeaseBlossom\Base\GarbargeCollector.cpp" />
     <Compile Include="Titania\PeaseBlossom\Base\pbChildObject.cpp" />
     <Compile Include="Titania\PeaseBlossom\Bits\Identifier.cpp" />
-    <Compile Include="Titania\PeaseBlossom\Execution\Block.cpp" />
-    <Compile Include="Titania\PeaseBlossom\Execution\pbBlock.cpp" />
     <Compile Include="Titania\PeaseBlossom\Execution\pbExecutionContext.cpp" />
     <Compile Include="Titania\PeaseBlossom\Execution\Program.cpp" />
-    <Compile Include="Titania\PeaseBlossom\Expressions\pbExpression.cpp" />
     <Compile Include="Titania\PeaseBlossom\Objects\Function.cpp" />
     <Compile Include="Titania\PeaseBlossom\Objects\NativeFunction.cpp" />
     <Compile Include="Titania\PeaseBlossom\Objects\Object.cpp" />
@@ -57,6 +54,7 @@
     <Compile Include="Titania\PeaseBlossom\Standard\Global.cpp" />
     <Compile Include="Titania\PeaseBlossom\Standard\Function.cpp" />
     <Compile Include="Titania\PeaseBlossom\Standard\Array.cpp" />
+    <Compile Include="Titania\PeaseBlossom\Expressions\pbStatement.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -80,7 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\PeaseBlossom\Debug.h" />
-    <None Include="Titania\PeaseBlossom\Expressions.h" />
     <None Include="Titania\PeaseBlossom\Objects.h" />
     <None Include="Titania\PeaseBlossom\Primitives.h" />
     <None Include="Titania\PeaseBlossom\pb.h" />
@@ -93,9 +90,7 @@
     <None Include="Titania\PeaseBlossom\Bits\Identifier.h" />
     <None Include="Titania\PeaseBlossom\Bits\pbConstants.h" />
     <None Include="Titania\PeaseBlossom\Bits\pbMath.h" />
-    <None Include="Titania\PeaseBlossom\Execution\Block.h" />
     <None Include="Titania\PeaseBlossom\Execution\Program.h" />
-    <None Include="Titania\PeaseBlossom\Execution\pbBlock.h" />
     <None Include="Titania\PeaseBlossom\Execution\pbExecutionContext.h" />
     <None Include="Titania\PeaseBlossom\Expressions\AdditionExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\AssignmentExpression.h" />
@@ -117,7 +112,6 @@
     <None Include="Titania\PeaseBlossom\Expressions\SubtractionExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\VariableDeclaration.h" />
     <None Include="Titania\PeaseBlossom\Expressions\VariableExpression.h" />
-    <None Include="Titania\PeaseBlossom\Expressions\pbExpression.h" />
     <None Include="Titania\PeaseBlossom\Objects\Array.h" />
     <None Include="Titania\PeaseBlossom\Objects\BooleanObject.h" />
     <None Include="Titania\PeaseBlossom\Objects\Function.h" />
@@ -149,7 +143,6 @@
     <None Include="Titania\PeaseBlossom\Standard\Array.h" />
     <None Include="Titania\PeaseBlossom\Expressions\InExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\VariableStatement.h" />
-    <None Include="Titania\PeaseBlossom\Expressions\ExpressionType.h" />
     <None Include="Titania\PeaseBlossom\Expressions\Expression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\PreIncrementExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\PreDecrementExpression.h" />
@@ -161,5 +154,17 @@
     <None Include="Titania\PeaseBlossom\Expressions\ForVarInStatement.h" />
     <None Include="Titania\PeaseBlossom\Expressions\ForStatement.h" />
     <None Include="Titania\PeaseBlossom\Execution\CompletionType.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\LogicalNotExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\BlockStatement.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\EmptyStatement.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\StatementType.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\pbStatement.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\SwitchStatement.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\BreakStatement.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\NegateExpression.h" />
+    <None Include="Titania\PeaseBlossom\Statements.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\LogicalAndExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\ConditionalExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\BitwiseAndExpression.h" />
   </ItemGroup>
 </Project>

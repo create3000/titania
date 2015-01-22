@@ -51,10 +51,9 @@
 #ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_STATEMENT_H__
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_STATEMENT_H__
 
-#include "../Execution/Block.h"
 #include "../Expressions/PrimitiveExpression.h"
 #include "../Expressions/VariableDeclaration.h"
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
@@ -63,7 +62,7 @@ namespace pb {
  *  Class to represent a ECMAScript variable statement.
  */
 class VariableStatement :
-	public pbExpression
+	public pbStatement
 {
 public:
 
@@ -71,13 +70,13 @@ public:
 
 	///  Constructs new VariableStatement expression.
 	VariableStatement (array <ptr <VariableDeclaration>> && variableDeclarations) :
-		        pbExpression (ExpressionType::VARIABLE_STATEMENT),
+		        pbStatement (StatementType::VARIABLE_STATEMENT),
 		variableDeclarations (std::move (variableDeclarations))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{
@@ -100,7 +99,7 @@ public:
 		for (const auto variableDeclaration : variableDeclarations)
 			variableDeclaration -> getValue ();
 
-		return undefined;
+		return CompletionType (this, undefined);
 	}
 
 	///  @name Input/Output
@@ -110,26 +109,43 @@ public:
 	void
 	toStream (std::ostream & ostream) const final override
 	{
-		if (not variableDeclarations .empty ())
+		switch (variableDeclarations .size ())
 		{
-			ostream
-				<< "var"
-				<< Generator::Break
-				<< Generator::IncIndent;
-
-			for (const auto variableDeclaration : std::make_pair (variableDeclarations .begin (), variableDeclarations .end () - 1))
+			case 0:
+				break;
+	
+			case 1:
 			{
 				ostream
-					<< Generator::Indent
-					<< variableDeclaration
-					<< ','
-					<< Generator::Break;
-			}
+					<< "var"
+					<< Generator::Space
+					<< variableDeclarations .back ();
 
-			ostream
-				<< Generator::Indent
-				<< variableDeclarations .back ()
-				<< Generator::DecIndent;
+				break;
+			}
+			default:
+			{
+				ostream
+					<< "var"
+					<< Generator::Break
+					<< Generator::IncIndent;
+
+				for (const auto variableDeclaration : std::make_pair (variableDeclarations .begin (), variableDeclarations .end () - 1))
+				{
+					ostream
+						<< Generator::Indent
+						<< variableDeclaration
+						<< ','
+						<< Generator::Break;
+				}
+
+				ostream
+					<< Generator::Indent
+					<< variableDeclarations .back ()
+					<< Generator::DecIndent;
+
+				break;
+			}
 		}
 	}
 

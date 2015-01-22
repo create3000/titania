@@ -97,12 +97,18 @@ public:
 	getRecursionLimit ()
 	{ return recursionLimit; }
 
-	///  @name Operations
+	/// @name Execution
 
 	///  Executes this function.
 	virtual
 	var
 	call (pbObject* const object, const std::vector <var> & arguments = { })
+	throw (pbError) final override;
+
+	///  Executes the associated expessions of this context.
+	virtual
+	var
+	run ()
 	throw (pbError) final override;
 
 	///  @name Input/Output
@@ -149,10 +155,10 @@ private:
 
 		StackGuard (Function* const function, pbObject* const localObject) :
 			function (function)
-		{ function -> push (localObject); }
+		{ function -> enter (localObject); }
 
 		~StackGuard ()
-		{ function -> pop (); }
+		{ function -> leave (); }
 
 
 	private:
@@ -169,11 +175,11 @@ private:
 	///  Set @a localObject as local object and pushes all default objects to the default object stack if an recursion is
 	///  detected.
 	void
-	push (pbObject* const);
+	enter (pbObject* const);
 
 	///  Reverses the effect of pop.
 	void
-	pop ();
+	leave ();
 
 	///  @name Static members
 

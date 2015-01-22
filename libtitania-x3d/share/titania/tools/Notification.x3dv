@@ -133,7 +133,7 @@ DEF NotificationScript Script {
     stopTime 1396316049.08285
   }
 
-  url "vrmlscript:
+  url "peaseblossom:
 
 function set_string (value, time)
 {

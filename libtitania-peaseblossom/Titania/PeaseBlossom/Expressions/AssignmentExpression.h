@@ -53,7 +53,7 @@
 
 #include "../Execution/pbExecutionContext.h"
 #include "../Expressions/AssignmentOperatorType.h"
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
@@ -62,15 +62,15 @@ namespace pb {
  *  Class to represent a ECMAScript identifier expression.
  */
 class AssignmentExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new AssignmentExpression expression.
-	AssignmentExpression (pbExecutionContext* const executionContext, ptr <pbExpression> && lhs, ptr <pbExpression> && rhs, AssignmentOperatorType type) :
-		    pbExpression (ExpressionType::ASSIGNMENT_EXPRESSION),
+	AssignmentExpression (pbExecutionContext* const executionContext, ptr <pbStatement> && lhs, ptr <pbStatement> && rhs, AssignmentOperatorType type) :
+		    pbStatement (StatementType::ASSIGNMENT_EXPRESSION),
 		executionContext (executionContext),
 		             lhs (std::move (lhs)),
 		             rhs (std::move (rhs)),
@@ -79,7 +79,7 @@ public:
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new AssignmentExpression (executionContext, lhs -> copy (executionContext), rhs -> copy (executionContext), type); }
@@ -100,15 +100,24 @@ public:
 			}
 			case AssignmentOperatorType::MULTIPLICATION_ASSIGNMENT:
 			{
-				return put (lhs -> getValue () .toNumber () * rhs -> getValue () .toNumber ());
+				const auto x = lhs -> getValue () .toNumber ();
+				const auto y = rhs -> getValue () .toNumber ();
+
+				return put (x * y);
 			}
 			case AssignmentOperatorType::DIVISION_ASSIGNMENT:
 			{
-				return put (lhs -> getValue () .toNumber () / rhs -> getValue () .toNumber ());
+				const auto x = lhs -> getValue () .toNumber ();
+				const auto y = rhs -> getValue () .toNumber ();
+
+				return put (x / y);
 			}
 			case AssignmentOperatorType::REMAINDER_ASSIGNMENT:
 			{
-				return put (std::fmod (lhs -> getValue () .toNumber (), rhs -> getValue () .toNumber ()));
+				const auto x = lhs -> getValue () .toNumber ();
+				const auto y = rhs -> getValue () .toNumber ();
+
+				return put (std::fmod (x, y));
 			}
 			case AssignmentOperatorType::ADDITION_ASSIGNMENT:
 			{
@@ -122,31 +131,52 @@ public:
 			}
 			case AssignmentOperatorType::SUBTRACTION_ASSIGNMENT:
 			{
-				return put (lhs -> getValue () .toNumber () - rhs -> getValue () .toNumber ());
+				const auto x = lhs -> getValue () .toNumber ();
+				const auto y = rhs -> getValue () .toNumber ();
+
+				return put (x - y);
 			}
 			case AssignmentOperatorType::LEFT_SHIFT_ASSIGNMENT:
 			{
-				return put (lhs -> getValue () .toInt32 () << (rhs -> getValue () .toUInt32 () & 0x1f));
+				const auto x = lhs -> getValue () .toInt32 ();
+				const auto y = rhs -> getValue () .toUInt32 () & 0x1f;
+
+				return put (x << y);
 			}
 			case AssignmentOperatorType::RIGHT_SHIFT_ASSIGNMENT:
 			{
-				return put (lhs -> getValue () .toInt32 () >> (rhs -> getValue () .toUInt32 () & 0x1f));
+				const auto x = lhs -> getValue () .toInt32 ();
+				const auto y = rhs -> getValue () .toUInt32 () & 0x1f;
+
+				return put (x >> y);
 			}
 			case AssignmentOperatorType::UNSIGNED_RIGHT_SHIFT_ASSIGNMENT:
 			{
-				return put (lhs -> getValue () .toUInt32 () >> (rhs -> getValue () .toUInt32 () & 0x1f));
+				const auto x = lhs -> getValue () .toInt32 ();
+				const auto y = rhs -> getValue () .toUInt32 () & 0x1f;
+
+				return put (x >> y);
 			}
 			case AssignmentOperatorType::BITWISE_AND_ASSIGNMENT:
 			{
-				return put (lhs -> getValue () .toInt32 () & rhs -> getValue () .toInt32 ());
+				const auto x = lhs -> getValue () .toInt32 ();
+				const auto y = rhs -> getValue () .toInt32 ();
+
+				return put (x & y);
 			}
 			case AssignmentOperatorType::BITWISE_XOR_ASSIGNMENT:
 			{
-				return put (lhs -> getValue () .toInt32 () ^ rhs -> getValue () .toInt32 ());
+				const auto x = lhs -> getValue () .toInt32 ();
+				const auto y = rhs -> getValue () .toInt32 ();
+
+				return put (x ^ y);
 			}
 			case AssignmentOperatorType::BITWISE_OR_ASSIGNMENT:
 			{
-				return put (lhs -> getValue () .toInt32 () | rhs -> getValue () .toInt32 ());
+				const auto x = lhs -> getValue () .toInt32 ();
+				const auto y = rhs -> getValue () .toInt32 ();
+
+				return put (x | y);
 			}
 		}
 
@@ -194,8 +224,8 @@ private:
 	///  @name Members
 
 	const ptr <pbExecutionContext> executionContext;
-	const ptr <pbExpression>       lhs;
-	const ptr <pbExpression>       rhs;
+	const ptr <pbStatement>       lhs;
+	const ptr <pbStatement>       rhs;
 	const AssignmentOperatorType   type;
 
 };

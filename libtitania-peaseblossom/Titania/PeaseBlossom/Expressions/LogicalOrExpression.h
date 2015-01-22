@@ -52,7 +52,7 @@
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_LOGICAL_OR_EXPRESSION_H__
 
 #include "../Expressions/PrimitiveExpression.h"
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
@@ -61,22 +61,22 @@ namespace pb {
  *  Class to represent a ECMAScript logical or expression.
  */
 class LogicalOrExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new LogicalOrExpression expression.
-	LogicalOrExpression (ptr <pbExpression> && lhs, ptr <pbExpression>&& rhs) :
-		pbExpression (ExpressionType::LOGICAL_OR_EXPRESSION),
+	LogicalOrExpression (ptr <pbStatement> && lhs, ptr <pbStatement>&& rhs) :
+		pbStatement (StatementType::LOGICAL_OR_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new LogicalOrExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
@@ -123,8 +123,8 @@ private:
 
 	///  @name Members
 
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	const ptr <pbStatement> lhs;
+	const ptr <pbStatement> rhs;
 
 };
 
@@ -133,11 +133,11 @@ private:
 
 ///  Constructs new LogicalOrExpression expression.
 inline
-ptr <pbExpression>
-createLogicalOrExpression (ptr <pbExpression> && lhs, ptr <pbExpression>&& rhs)
+ptr <pbStatement>
+createLogicalOrExpression (ptr <pbStatement> && lhs, ptr <pbStatement>&& rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (LogicalOrExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::BOOLEAN);
+		return new PrimitiveExpression (LogicalOrExpression (std::move (lhs), std::move (rhs)) .getValue (), StatementType::BOOLEAN);
 
 	return new LogicalOrExpression (std::move (lhs), std::move (rhs));
 }

@@ -157,14 +157,12 @@ X3DField::get <SFNode> (Context* const context, SFNode::internal_type* const fie
 {
 	if (field -> getValue ())
 	{
-		try
-		{
-			return context -> getObject (field);
-		}
-		catch (const std::out_of_range &)
-		{
-			return create <SFNode> (context -> getProgram (), field);
-		}
+		const auto object = context -> getObject (field);
+
+		if (object)
+			return object;
+
+		return create <SFNode> (context -> getProgram (), field);
 	}
 
 	return nullptr;

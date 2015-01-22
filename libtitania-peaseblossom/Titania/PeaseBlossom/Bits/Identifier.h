@@ -133,6 +133,10 @@ public:
 
 	///  @name Member access
 
+	bool
+	isEmpty () const
+	{ return name .empty (); }
+
 	const std::string &
 	getName () const
 	{ return name; }

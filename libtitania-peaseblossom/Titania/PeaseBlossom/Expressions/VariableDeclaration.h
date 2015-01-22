@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_DECLARATION_H__
 
 #include "../Execution/pbExecutionContext.h"
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
@@ -61,15 +61,15 @@ namespace pb {
  *  Class to represent a ECMAScript variable declaration expression.
  */
 class VariableDeclaration :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new VariableDeclaration expression.
-	VariableDeclaration (pbExecutionContext* const executionContext, std::string && identifier, ptr <pbExpression> && expression) :
-		    pbExpression (ExpressionType::VARIABLE_DECLARATION),
+	VariableDeclaration (pbExecutionContext* const executionContext, std::string && identifier, ptr <pbStatement> && expression) :
+		    pbStatement (StatementType::VARIABLE_DECLARATION),
 		executionContext (executionContext),
 		      identifier (std::move (identifier)),
 		      expression (std::move (expression))
@@ -77,7 +77,7 @@ public:
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new VariableDeclaration (executionContext, std::string (identifier .getName ()), expression -> copy (executionContext)); }
@@ -89,7 +89,7 @@ public:
 	putValue (const var & value) const
 	throw (pbError) final override
 	{
-		executionContext -> getDefaultObject () -> put (identifier, value, false);
+		executionContext -> getVariableObject () -> put (identifier, value, false);
 	}
 
 	///  Converts its input argument to either Primitive or Object type.
@@ -100,8 +100,8 @@ public:
 	{
 		// Variable declarations cannot be deleted.
 		
-		const auto & defaultObject = executionContext -> getDefaultObject ();
-		const auto   value         = expression ->getValue ();
+		const auto & defaultObject = executionContext -> getVariableObject ();
+		const auto   value         = expression -> getValue ();
 
 		defaultObject -> put (identifier, value, false);
 
@@ -117,7 +117,7 @@ public:
 	{
 		ostream << identifier;
 
-		if (expression -> getType () == ExpressionType::UNDEFINED)
+		if (expression -> getType () == StatementType::UNDEFINED)
 			return;
 
 		ostream
@@ -137,7 +137,7 @@ private:
 	construct ()
 	{
 		if (not expression)
-			expression = new PrimitiveExpression (undefined, ExpressionType::UNDEFINED);
+			expression = new PrimitiveExpression (undefined, StatementType::UNDEFINED);
 
 		addChildren (executionContext, expression);
 	}
@@ -146,7 +146,7 @@ private:
 
 	const ptr <pbExecutionContext> executionContext;
 	const Identifier               identifier;
-	ptr <pbExpression>             expression;
+	ptr <pbStatement>             expression;
 
 };
 

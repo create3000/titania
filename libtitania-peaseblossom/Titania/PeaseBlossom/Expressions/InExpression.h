@@ -52,7 +52,7 @@
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_IN_EXPRESSION_H__
 
 #include "../Expressions/PrimitiveExpression.h"
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
@@ -61,22 +61,22 @@ namespace pb {
  *  Class to represent a ECMAScript in expression.
  */
 class InExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new InExpression expression.
-	InExpression (ptr <pbExpression> && lhs, ptr <pbExpression>&& rhs) :
-		pbExpression (ExpressionType::IN_EXPRESSION),
+	InExpression (ptr <pbStatement> && lhs, ptr <pbStatement>&& rhs) :
+		pbStatement (StatementType::IN_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new InExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
@@ -89,12 +89,12 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
-		const auto base = rhs ->getValue ();
+		const auto base = rhs -> getValue ();
 
 		if (base .isObject ())
 		{
 			const auto & object   = base .getObject ();
-			const auto   property = lhs ->getValue ();
+			const auto   property = lhs -> getValue ();
 			const auto   name     = property .toString ();
 
 			return object -> hasProperty (name);
@@ -129,8 +129,8 @@ private:
 
 	///  @name Members
 
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	const ptr <pbStatement> lhs;
+	const ptr <pbStatement> rhs;
 
 };
 

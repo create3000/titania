@@ -126,6 +126,36 @@ throw (std::out_of_range)
 	return standardClass = functions .at (type) (const_cast <Program*> (this));
 }
 
+var
+Program::run ()
+throw (pbError)
+{
+	for (const auto & function : getFunctionDeclarations ())
+		getGlobalObject () -> addOwnProperty (function .second -> getName (), function .second, WRITABLE | CONFIGURABLE);
+
+	var result;
+
+	for (const auto & statement : getStatements ())
+	{
+		auto value = statement -> getValue ();
+
+		if (value .getStatement ())
+		{
+			switch (value .getStatement () -> getType ())
+			{
+				case StatementType::RETURN_STATEMENT:
+					return value;
+				default:
+					continue;
+			}
+		}
+
+		result = std::move (value);
+	}
+
+	return result;
+}
+
 ptr <Program>
 createProgram ()
 {

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LESS_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LESS_EXPRESSION_H__
 
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 #include "../Expressions/PrimitiveExpression.h"
 
 #include <cmath>
@@ -63,22 +63,22 @@ namespace pb {
  *  Class to represent a ECMAScript less expression.
  */
 class LessExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new LessExpression expression.
-	LessExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
-		pbExpression (ExpressionType::LESS_EXPRESSION),
+	LessExpression (ptr <pbStatement> && lhs, ptr <pbStatement> && rhs) :
+		pbStatement (StatementType::LESS_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new LessExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
@@ -91,8 +91,8 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
-		const auto px = lhs ->getValue () .toPrimitive (NUMBER);
-		const auto py = rhs ->getValue () .toPrimitive (NUMBER);
+		const auto px = lhs -> getValue () .toPrimitive (NUMBER);
+		const auto py = rhs -> getValue () .toPrimitive (NUMBER);
 
 		if (px .getType () == STRING and py .getType () == STRING)
 			return px .getString () < py .getString ();
@@ -124,8 +124,8 @@ private:
 
 	///  @name Members
 
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	const ptr <pbStatement> lhs;
+	const ptr <pbStatement> rhs;
 
 };
 
@@ -134,11 +134,11 @@ private:
 
 ///  Constructs new LessExpression expression.
 inline
-ptr <pbExpression>
-createLessExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
+ptr <pbStatement>
+createLessExpression (ptr <pbStatement> && lhs, ptr <pbStatement> && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (LessExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::BOOLEAN);
+		return new PrimitiveExpression (LessExpression (std::move (lhs), std::move (rhs)) .getValue (), StatementType::BOOLEAN);
 
 	return new LessExpression (std::move (lhs), std::move (rhs));
 }

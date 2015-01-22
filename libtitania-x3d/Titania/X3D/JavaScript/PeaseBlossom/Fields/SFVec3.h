@@ -130,7 +130,15 @@ private:
 
 	static
 	pb::var
+	multVec (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
 	divide (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	divVec (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	static
 	pb::var
@@ -205,7 +213,9 @@ SFVec3 <Type>::initialize (Context* const context, const pb::ptr <pb::Program> &
 	prototype -> addOwnProperty ("add",       new pb::NativeFunction (ec, "add",       add,       1), pb::NONE);
 	prototype -> addOwnProperty ("subtract",  new pb::NativeFunction (ec, "subtract",  subtract,  1), pb::NONE);
 	prototype -> addOwnProperty ("multiply",  new pb::NativeFunction (ec, "multiply",  multiply,  1), pb::NONE);
+	prototype -> addOwnProperty ("multVec",   new pb::NativeFunction (ec, "multVec",   multVec,   1), pb::NONE);
 	prototype -> addOwnProperty ("divide",    new pb::NativeFunction (ec, "divide",    divide,    1), pb::NONE);
+	prototype -> addOwnProperty ("divVec",    new pb::NativeFunction (ec, "divVec",    divVec,    1), pb::NONE);
 	prototype -> addOwnProperty ("dot",       new pb::NativeFunction (ec, "dot",       dot,       1), pb::NONE);
 	prototype -> addOwnProperty ("cross",     new pb::NativeFunction (ec, "cross",     cross,     1), pb::NONE);
 	prototype -> addOwnProperty ("normalize", new pb::NativeFunction (ec, "normalize", normalize, 0), pb::NONE);
@@ -355,6 +365,26 @@ SFVec3 <Type>::multiply (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObje
 
 template <class Type>
 pb::var
+SFVec3 <Type>::multVec (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+{
+	if (args .size () not_eq 1)
+		throw pb::Error (getTypeName () + ".prototype.multVec: wrong number of arguments.");
+
+	try
+	{
+		const auto lhs = getThis <SFVec3> (object);
+		const auto rhs = get1Argument <SFVec3> (args, 0);
+
+		return create <SFVec3> (ec, lhs -> multiply (*rhs));
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw pb::TypeError (getTypeName () + ".prototype.multVec is not generic.");
+	}
+}
+
+template <class Type>
+pb::var
 SFVec3 <Type>::divide (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
@@ -370,6 +400,26 @@ SFVec3 <Type>::divide (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject
 	catch (const std::invalid_argument &)
 	{
 		throw pb::TypeError (getTypeName () + ".prototype.divide is not generic.");
+	}
+}
+
+template <class Type>
+pb::var
+SFVec3 <Type>::divVec (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+{
+	if (args .size () not_eq 1)
+		throw pb::Error (getTypeName () + ".prototype.divVec: wrong number of arguments.");
+
+	try
+	{
+		const auto lhs = getThis <SFVec3> (object);
+		const auto rhs = get1Argument <SFVec3> (args, 0);
+
+		return create <SFVec3> (ec, lhs -> divide (*rhs));
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw pb::TypeError (getTypeName () + ".prototype.divVec is not generic.");
 	}
 }
 

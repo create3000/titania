@@ -48,30 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_CONDITIONAL_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_CONDITIONAL_EXPRESSION_H__
 
 #include "../Expressions/pbStatement.h"
-#include "../Objects/Function.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript function expression.
+ *  Class to represent a ECMAScript conditional statement.
  */
-class FunctionExpression :
+class ConditionalExpression :
 	public pbStatement
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new FunctionExpression statement.
-	FunctionExpression (pbExecutionContext* const executionContext, ptr <Function> && function) :
-		    pbStatement (StatementType::FUNCTION_EXPRESSION),
-		executionContext (executionContext),
-		        function (std::move (function))
+	///  Constructs new ConditionalExpression expression.
+	ConditionalExpression (ptr <pbStatement> && booleanExpression, ptr <pbStatement> && thenStatement, ptr <pbStatement> && elseStatement) :
+		      pbStatement (StatementType::CONDITIONAL_EXPRESSION),
+		booleanExpression (std::move (booleanExpression)),
+		    thenStatement (std::move (thenStatement)),
+		    elseStatement (std::move (elseStatement))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -79,7 +79,11 @@ public:
 	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new FunctionExpression (executionContext, ptr <Function> (function)); }
+	{
+		return new ConditionalExpression (booleanExpression -> copy (executionContext),
+		                                  thenStatement -> copy (executionContext),
+		                                  elseStatement -> copy (executionContext));
+	}
 
 	///  @name Operations
 
@@ -88,7 +92,12 @@ public:
 	CompletionType
 	getValue () const
 	throw (pbError) final override
-	{ return function -> copy (executionContext .get ()); }
+	{
+		if (booleanExpression -> getValue () .toBoolean ())
+			return thenStatement -> getValue ();
+
+		return elseStatement -> getValue ();
+	}
 
 	///  @name Input/Output
 
@@ -96,8 +105,16 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ ostream << function; }
-
+	{
+		ostream
+			<< booleanExpression
+			<< Generator::TidySpace
+			<< '?'
+			<< thenStatement
+			<< Generator::TidySpace
+			<< ':'
+			<< elseStatement;
+	}
 
 private:
 
@@ -106,12 +123,13 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (executionContext, function); }
+	{ addChildren (booleanExpression, thenStatement, elseStatement); }
 
 	///  @name Members
 
-	const ptr <pbExecutionContext> executionContext;
-	const ptr <Function>           function;
+	const ptr <pbStatement> booleanExpression;
+	const ptr <pbStatement> thenStatement;
+	const ptr <pbStatement> elseStatement;
 
 };
 

@@ -63,6 +63,8 @@ DEF Script1 Script {
   inputOnly SFTime set_time
   field    SFInt32 size 8000000
   field    MFInt32 array [ ]
+  field    SFNode  node DEF T Transform {}
+  field    MFNode  nodes [USE T USE T USE T]
 
     url [
  "peaseblossom:
@@ -108,12 +110,21 @@ function enumerate (o)
 		print (k, ' = ', o [k], ' : ', k in o)
 	}
 
-	o;
+	return o;
 }
 
-var o = { a: 1, b: 2 };
+function s (value)
+{
+	print ('1: ', 10 / 5 * 3)
+	
+	var a = 10;
+	var b = 5;
+	var c = 3;
+	
+	print ('2: ', a / b * c)
+}
 
-enumerate (o);
+enumerate (node)
 "
 ]
   directOutput TRUE

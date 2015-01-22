@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_EXPRESSION_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_REMAINDER_EXPRESSION_H__
 
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 #include "../Expressions/PrimitiveExpression.h"
 
 #include <cmath>
@@ -63,22 +63,22 @@ namespace pb {
  *  Class to represent a ECMAScript remainder expression.
  */
 class RemainderExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new RemainderExpression expression.
-	RemainderExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs) :
-		pbExpression (ExpressionType::REMAINDER_EXPRESSION),
+	RemainderExpression (ptr <pbStatement> && lhs, ptr <pbStatement> && rhs) :
+		pbStatement (StatementType::REMAINDER_EXPRESSION),
 		         lhs (std::move (lhs)),
 		         rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new RemainderExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
@@ -119,8 +119,8 @@ private:
 
 	///  @name Members
 
-	const ptr <pbExpression> lhs;
-	const ptr <pbExpression> rhs;
+	const ptr <pbStatement> lhs;
+	const ptr <pbStatement> rhs;
 
 };
 
@@ -129,11 +129,11 @@ private:
 
 ///  Constructs new RemainderExpression expression.
 inline
-ptr <pbExpression>
-createRemainderExpression (ptr <pbExpression> && lhs, ptr <pbExpression> && rhs)
+ptr <pbStatement>
+createRemainderExpression (ptr <pbStatement> && lhs, ptr <pbStatement> && rhs)
 {
 	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (RemainderExpression (std::move (lhs), std::move (rhs)) .getValue (), ExpressionType::NUMBER);
+		return new PrimitiveExpression (RemainderExpression (std::move (lhs), std::move (rhs)) .getValue (), StatementType::NUMBER);
 
 	return new RemainderExpression (std::move (lhs), std::move (rhs));
 }

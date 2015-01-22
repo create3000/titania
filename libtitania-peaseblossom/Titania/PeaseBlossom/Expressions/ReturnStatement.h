@@ -52,7 +52,7 @@
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_RETURN_STATEMENT_H__
 
 #include "../Expressions/PrimitiveExpression.h"
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 #include "../Objects/Function.h"
 
 namespace titania {
@@ -62,25 +62,24 @@ namespace pb {
  *  Class to represent a ECMAScript return statement.
  */
 class ReturnStatement :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new ReturnStatement statement.
-	ReturnStatement (pbExecutionContext* const executionContext, ptr <pbExpression> && expression) :
-		    pbExpression (ExpressionType::RETURN_STATEMENT),
-		executionContext (executionContext),
-		      expression (std::move (expression))
+	ReturnStatement (ptr <pbStatement> && expression) :
+		    pbStatement (StatementType::RETURN_STATEMENT),
+		     expression (std::move (expression))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new ReturnStatement (executionContext, expression -> copy (executionContext)); }
+	{ return new ReturnStatement (expression -> copy (executionContext)); }
 
 	///  @name Operations
 
@@ -100,7 +99,7 @@ public:
 	void
 	toStream (std::ostream & ostream) const final override
 	{
-		if (expression -> getType () == ExpressionType::UNDEFINED)
+		if (expression -> getType () == StatementType::UNDEFINED)
 		{
 			ostream << "return";
 		}
@@ -122,15 +121,14 @@ private:
 	construct ()
 	{
 		if (not expression)
-			expression = new PrimitiveExpression (undefined, ExpressionType::UNDEFINED);
+			expression = new PrimitiveExpression (undefined, StatementType::UNDEFINED);
 
-		addChildren (executionContext, expression);
+		addChildren (expression);
 	}
 
 	///  @name Members
 
-	const ptr <pbExecutionContext> executionContext;
-	ptr <pbExpression>             expression;
+	ptr <pbStatement> expression;
 
 };
 

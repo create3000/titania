@@ -178,7 +178,7 @@ throw (Error <DISPOSED>)
 	if (protoNode)
 		return protoNode -> getName ();
 
-	backtrace_fn ();
+	//backtrace_fn ();
 
 	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getTypeName: node is already disposed.");
 }

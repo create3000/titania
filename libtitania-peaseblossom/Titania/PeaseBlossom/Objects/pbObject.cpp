@@ -141,13 +141,15 @@ void
 pbObject::setProto (const ptr <pbObject> & value)
 throw (std::invalid_argument)
 {
+	static const Identifier __proto__ ("__proto__");
+
 	proto = value;
 
 	if (proto)
-		addOwnProperty ("__proto__", proto, NONE);
+		addOwnProperty (__proto__, proto, NONE);
 
 	else
-		addOwnProperty ("__proto__", nullptr, NONE);
+		addOwnProperty (__proto__, nullptr, NONE);
 }
 
 bool
@@ -156,8 +158,8 @@ noexcept (true)
 {
 	struct Data
 	{
+		pbObject* object;
 		bool user;
-		ptr <pbObject> object;
 		size_t index;
 		std::vector <PropertyDescriptorPtr> properties;
 		std::set <size_t> enumerated;
@@ -171,8 +173,8 @@ noexcept (true)
 		
 			const auto data = new Data ();
 
-			data -> user       = callbacks -> enumerate and callbacks -> enumerate (this, type, propertyName, userData [0]);
 			data -> object     = this;
+			data -> user       = callbacks -> enumerate and callbacks -> enumerate (this, type, propertyName, userData [0]);
 			data -> index      = 0;
 			data -> properties = getOwnEnumerableProperties ();
 
@@ -185,10 +187,17 @@ noexcept (true)
 
 			if (data -> user)
 			{
-				if (callbacks -> enumerate (this, type, propertyName, userData [0]))
+				if (data -> object -> callbacks -> enumerate (this, type, propertyName, userData [0]))
 				{
 					data -> enumerated .emplace (Identifier::hash (propertyName));
 					return true;
+				}
+				else
+				{
+					data -> user = false;
+
+					if (not callbacks -> enumerate (this, ENUMERATE_END, propertyName, userData [0]));
+						return false;
 				}
 			}
 
@@ -211,29 +220,18 @@ noexcept (true)
 					data -> index += 1;
 				}
 
-				data -> object = data -> object -> getProto ();
+				data -> object = data -> object -> proto;
 				
 				if (not data -> object)
-					break;
+					return false;
 
 				data -> index      = 0;
 				data -> properties = data -> object -> getOwnEnumerableProperties ();
 			}
-
-			return false;
 		}
 		case ENUMERATE_END:
 		{
-			const auto & data = static_cast <Data*> (userData [1]);
-
-			if (data -> user)
-			{
-				data -> user = false;
-				callbacks -> enumerate (this, type, propertyName, userData [0]);
-				return true;
-			}
-	
-			delete data;
+			delete static_cast <Data*> (userData [1]);
 			return false;
 		}
 	}
@@ -273,22 +271,24 @@ bool
 pbObject::hasProperty (const Identifier & identifier) const
 noexcept (true)
 {
-	try
+	auto object = const_cast <pbObject*> (this);
+	
+	do
 	{
-		if (callbacks -> hasProperty)
+		const auto & callback = object -> callbacks -> hasProperty;
+	
+		if (callback)
 		{
-			if (callbacks -> hasProperty (const_cast <pbObject*> (this), identifier))
+			if (callback (object, identifier))
 				return true;
 		}
+
+		if (object -> properties .count (identifier .getId ()))
+			return true;
+		
+		object = object -> proto;
 	}
-	catch (const std::out_of_range &)
-	{ }
-
-	if (properties .count (identifier .getId ()))
-		return true;
-
-	if (proto)
-		return proto -> hasProperty (identifier);
+	while (object);
 
 	return false;
 }
@@ -386,21 +386,21 @@ const PropertyDescriptorPtr &
 pbObject::getProperty (const Identifier & identifier) const
 noexcept (true)
 {
-	const auto & ownDescriptor = getOwnProperty (identifier);
-
-	if (ownDescriptor)
-		return ownDescriptor;
-
-	if (proto)
+	auto object = const_cast <pbObject*> (this);
+	
+	do
 	{
-		const auto & descriptor = proto -> getProperty (identifier);
+		const auto & ownDescriptor = object -> getOwnProperty (identifier);
 
-		if (descriptor)
-			return descriptor;
+		if (ownDescriptor)
+			return ownDescriptor;
+
+		if (object -> resolve (identifier))
+			return object -> getOwnProperty (identifier);
+
+		object = object -> proto;
 	}
-
-	if (const_cast <pbObject*> (this) -> resolve (identifier))
-		return getOwnProperty (identifier);
+	while (object);
 
 	static const PropertyDescriptorPtr empty;
 

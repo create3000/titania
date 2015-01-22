@@ -515,6 +515,11 @@ std::vector <std::string> words = {
 class A {
 public:
 
+	A ()
+	{
+		__LOG__ << std::endl;
+	}
+
 	A (const A &)
 	{
 		__LOG__ << std::endl;
@@ -525,8 +530,18 @@ public:
 		__LOG__ << std::endl;
 	}
 
-};
+	void
+	f ()
+	{
+		__LOG__ << std::endl;
+		
+	    std::chrono::milliseconds dura (3000);
+	    std::this_thread::sleep_for (dura);
+	 
+		__LOG__ << std::endl;
+	}
 
+};
 
 int
 main (int argc, char** argv)
@@ -542,6 +557,18 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
+	
+	{
+		__LOG__ << std::endl;
+
+		A a;
+
+		std::async a (std::launch::async, &A::f, a);
+
+		__LOG__ << std::endl;
+	}
+
+	//std::thread (f, std::move (a)) .join ();
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 

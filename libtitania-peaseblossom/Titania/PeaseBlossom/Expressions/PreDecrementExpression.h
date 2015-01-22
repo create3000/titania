@@ -51,7 +51,7 @@
 #ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRE_DECREMENT_EXPRESSION_H__
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PRE_DECREMENT_EXPRESSION_H__
 
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
@@ -60,21 +60,21 @@ namespace pb {
  *  Class to represent a ECMAScript pre-decrement expression.
  */
 class PreDecrementExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new PreDecrementExpression expression.
-	PreDecrementExpression (ptr <pbExpression> && expression) :
-		pbExpression (ExpressionType::PRE_DECREMENT_EXPRESSION),
+	PreDecrementExpression (ptr <pbStatement> && expression) :
+		pbStatement (StatementType::PRE_DECREMENT_EXPRESSION),
 		  expression (std::move (expression))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new PreDecrementExpression (expression -> copy (executionContext)); }
@@ -118,7 +118,7 @@ private:
 
 	///  @name Members
 
-	const ptr <pbExpression> expression;
+	const ptr <pbStatement> expression;
 
 };
 

@@ -51,10 +51,9 @@
 #ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FOR_STATEMENT_H__
 #define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FOR_STATEMENT_H__
 
-#include "../Execution/Block.h"
 #include "../Expressions/PrimitiveExpression.h"
 #include "../Expressions/VariableDeclaration.h"
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
@@ -63,41 +62,32 @@ namespace pb {
  *  Class to represent a ECMAScript for statement.
  */
 class ForStatement :
-	public pbExpression
+	public pbStatement
 {
 public:
 
 	///  @name Construction
 
 	///  Constructs new ForStatement expression.
-	ForStatement (ptr <pbExpression> && variableExpression, ptr <pbExpression> && booleanExpression, ptr <pbExpression> && iterationExpression) :
-		       pbExpression (ExpressionType::FOR_STATEMENT),
+	ForStatement (ptr <pbStatement> && variableExpression, ptr <pbStatement> && booleanExpression, ptr <pbStatement> && iterationExpression, ptr <pbStatement> && statement) :
+		       pbStatement (StatementType::FOR_STATEMENT),
 		 variableExpression (std::move (variableExpression)),
 		  booleanExpression (std::move (booleanExpression)),
 		iterationExpression (std::move (iterationExpression)),
-		              block (new Block ())
+		          statement (std::move (statement))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{
-		const auto copy = new ForStatement (variableExpression -> copy (executionContext),
-		                                       booleanExpression -> copy (executionContext),
-		                                       iterationExpression -> copy (executionContext));
-
-		copy -> getBlock () -> import (executionContext, block .get ());
-
-		return copy;
+		return new ForStatement (variableExpression -> copy (executionContext),
+		                         booleanExpression -> copy (executionContext),
+		                         iterationExpression -> copy (executionContext),
+		                         statement -> copy (executionContext));
 	}
-
-	///  @name Member access
-
-	const ptr <Block> &
-	getBlock () const
-	{ return block; }
 
 	///  @name Operations
 
@@ -113,11 +103,21 @@ public:
 
 		for (; booleanExpression -> getValue () .toBoolean (); iterationExpression -> getValue ())
 		{
-			const auto value = block -> getValue ();
-			
+			const auto value = statement -> getValue ();
+
 			if (value .getStatement ())
-				return value;
-			
+			{
+				switch (value .getStatement () -> getType ())
+				{
+					case StatementType::BREAK_STATEMENT:
+						return result;
+					case StatementType::RETURN_STATEMENT:
+						return value;
+					default:
+						continue;
+				}
+			}
+	
 			result = std::move (value);
 		}
 
@@ -150,7 +150,7 @@ public:
 
 		ostream << ';';
 
-		if (iterationExpression -> getType () not_eq ExpressionType::UNDEFINED)
+		if (iterationExpression -> getType () not_eq StatementType::UNDEFINED)
 		{
 			ostream
 				<< Generator::TidySpace
@@ -160,7 +160,7 @@ public:
 		ostream
 			<< ')'
 			<< Generator::TidyBreak
-			<< block;
+			<< pb::toStream (statement, true);
 	}
 
 private:
@@ -172,23 +172,23 @@ private:
 	construct ()
 	{
 		if (not variableExpression)
-			variableExpression = new PrimitiveExpression (undefined, ExpressionType::UNDEFINED);
+			variableExpression = new PrimitiveExpression (undefined, StatementType::UNDEFINED);
 
 		if (not booleanExpression)
-			booleanExpression = new PrimitiveExpression (true, ExpressionType::BOOLEAN);
+			booleanExpression = new PrimitiveExpression (true, StatementType::BOOLEAN);
 
 		if (not iterationExpression)
-			iterationExpression = new PrimitiveExpression (undefined, ExpressionType::UNDEFINED);
+			iterationExpression = new PrimitiveExpression (undefined, StatementType::UNDEFINED);
 
-		addChildren (variableExpression, booleanExpression, iterationExpression, block);
+		addChildren (variableExpression, booleanExpression, iterationExpression, statement);
 	}
 
 	///  @name Members
 
-	ptr <pbExpression> variableExpression;
-	ptr <pbExpression> booleanExpression;
-	ptr <pbExpression> iterationExpression;
-	const ptr <Block>  block;
+	ptr <pbStatement>       variableExpression;
+	ptr <pbStatement>       booleanExpression;
+	ptr <pbStatement>       iterationExpression;
+	const ptr <pbStatement> statement;
 
 };
 

@@ -48,44 +48,76 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_H__
-#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_LOGICAL_NOT_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_LOGICAL_NOT_EXPRESSION_H__
 
-#include "Expressions/AdditionExpression.h"
-#include "Expressions/ArrayIndexExpression.h"
-#include "Expressions/ArrayLiteral.h"
-#include "Expressions/AssignmentExpression.h"
-#include "Expressions/DivisionExpression.h"
-#include "Expressions/EqualExpression.h"
-#include "Expressions/Expression.h"
-//#include "Expressions/ForInStatement.h"
-#include "Expressions/ForStatement.h"
-#include "Expressions/ForVarInStatement.h"
-#include "Expressions/ForVarStatement.h"
-#include "Expressions/FunctionCallExpression.h"
-#include "Expressions/FunctionExpression.h"
-#include "Expressions/GreaterExpression.h"
-#include "Expressions/IfStatement.h"
-#include "Expressions/InExpression.h"
-#include "Expressions/InstanceOfExpression.h"
-#include "Expressions/LeftShiftExpression.h"
-#include "Expressions/LessExpression.h"
-#include "Expressions/LogicalOrExpression.h"
-#include "Expressions/MultiplicationExpression.h"
-#include "Expressions/NewExpression.h"
-#include "Expressions/ObjectLiteral.h"
-#include "Expressions/PostDecrementExpression.h"
-#include "Expressions/PostIncrementExpression.h"
-#include "Expressions/PreDecrementExpression.h"
-#include "Expressions/PreIncrementExpression.h"
-#include "Expressions/PrimitiveExpression.h"
-#include "Expressions/PropertyExpression.h"
-#include "Expressions/RemainderExpression.h"
-#include "Expressions/ReturnStatement.h"
-#include "Expressions/StrictEqualExpression.h"
-#include "Expressions/SubtractionExpression.h"
-#include "Expressions/VariableDeclaration.h"
-#include "Expressions/VariableExpression.h"
-#include "Expressions/VariableStatement.h"
+#include "../Expressions/pbStatement.h"
+
+namespace titania {
+namespace pb {
+
+/**
+ *  Class to represent a ECMAScript logical not expression expression.
+ */
+class LogicalNotExpression :
+	public pbStatement
+{
+public:
+
+	///  @name Construction
+
+	///  Constructs new LogicalNotExpression expression.
+	LogicalNotExpression (ptr <pbStatement> && expression) :
+		pbStatement (StatementType::LOGICAL_NOT_EXPRESSION),
+		  expression (std::move (expression))
+	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbStatement>
+	copy (pbExecutionContext* const executionContext) const
+	noexcept (true) final override
+	{ return new LogicalNotExpression (expression -> copy (executionContext)); }
+
+	///  @name Operations
+
+	///  Converts its arguments to a value of type Number.
+	virtual
+	CompletionType
+	getValue () const
+	throw (pbError) final override
+	{
+		return not expression -> getValue () .toBoolean ();
+	}
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		ostream
+			<< '!'
+			<< expression;
+	}
+
+private:
+
+	///  @name Construction
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (expression); }
+
+	///  @name Members
+
+	const ptr <pbStatement> expression;
+
+};
+
+} // pb
+} // titania
 
 #endif

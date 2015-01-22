@@ -50,6 +50,7 @@
 
 #include "pbExecutionContext.h"
 
+#include "../Expressions/pbStatement.h"
 #include "../Objects/Function.h"
 #include "../Parser/Parser.h"
 #include "../Primitives.h"
@@ -60,16 +61,19 @@ namespace titania {
 namespace pb {
 
 pbExecutionContext::pbExecutionContext (pbExecutionContext* const executionContext_) :
-	            pbBlock (),
-	pbInputStreamObject (),
-	         pbUserData (),
-	   executionContext (executionContext_),
-	       localObjects (),
-	          functions (),
-	             strict (executionContext_ -> isStrict ())
+	       pbChildObject (),
+	          pbUserData (),
+	 pbInputStreamObject (),
+	pbOutputStreamObject (),
+	    executionContext (executionContext_),
+	        localObjects (),
+	           functions (),
+	          statements (),
+	              strict (executionContext_ -> isStrict ())
 {
 	addChildren (executionContext,
-	             localObjects);
+	             localObjects,
+	             statements);
 }
 
 void
@@ -111,54 +115,23 @@ pbExecutionContext::import (const pbExecutionContext* const executionContext)
 throw (pbError)
 {
 	for (const auto & function : executionContext -> getFunctionDeclarations ())
-		addFunctionDeclaration (function .second);
+		addFunctionDeclaration (function .second -> copy (this));
 
-	pbBlock::import (this, executionContext);
-}
-
-var
-pbExecutionContext::run ()
-throw (pbError)
-{
-	for (const auto & function : functions)
-	{
-		getLocalObjects () .front () -> addOwnProperty (function .second -> getName (),
-		                                                isRootContext ()
-		                                                ? function .second
-																		: function .second -> copy (this),
-		                                                WRITABLE | CONFIGURABLE);
-	}
-
-	const auto result = pbBlock::getValue ();
-
-	if (result .getStatement ())
-	{
-		switch (result .getStatement () -> getType ())
-		{
-			case ExpressionType::RETURN_STATEMENT:
-				return result;
-
-			//	throw SyntaxError ("Unlabelled continue must be inside loop.");
-			//	throw SyntaxError ("Label '' not found.");
-			//	throw SyntaxError ("Unlabelled break must be inside loop or switch.");
-			//	throw SyntaxError ("Label '' not found.");
-			//	throw Error ("Uncatched yield exception.");
-
-			default:
-				break;
-		}
-	}
-
-	return undefined;
-
+	for (const auto & statement : executionContext -> getStatements ())
+		addStatement (statement -> copy (this));
 }
 
 void
 pbExecutionContext::fromStream (std::istream & istream)
-throw (SyntaxError,
-       ReferenceError)
+throw (pbError)
 {
 	Parser (this, istream) .parseIntoContext ();
+}
+
+void
+pbExecutionContext::toStream (std::ostream & ostream) const
+{
+	ostream << pb::toStream (statements);
 }
 
 void
@@ -166,7 +139,7 @@ pbExecutionContext::dispose ()
 {
 	functions .clear ();
 
-	pbBlock::dispose ();
+	pbChildObject::dispose ();
 }
 
 } // pb

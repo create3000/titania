@@ -48,30 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_BITWISE_AND_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_BITWISE_AND_EXPRESSION_H__
 
+#include "../Expressions/PrimitiveExpression.h"
 #include "../Expressions/pbStatement.h"
-#include "../Objects/Function.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript function expression.
+ *  Class to represent a ECMAScript bitwise and expression.
  */
-class FunctionExpression :
+class BitwiseAndExpression :
 	public pbStatement
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new FunctionExpression statement.
-	FunctionExpression (pbExecutionContext* const executionContext, ptr <Function> && function) :
-		    pbStatement (StatementType::FUNCTION_EXPRESSION),
-		executionContext (executionContext),
-		        function (std::move (function))
+	///  Constructs new BitwiseAndExpression expression.
+	BitwiseAndExpression (ptr <pbStatement> && lhs, ptr <pbStatement>&& rhs) :
+		pbStatement (StatementType::BITWISE_AND_EXPRESSION),
+		        lhs (std::move (lhs)),
+		        rhs (std::move (rhs))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -79,16 +79,23 @@ public:
 	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new FunctionExpression (executionContext, ptr <Function> (function)); }
+	{ return new BitwiseAndExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
 
 	///  @name Operations
 
-	///  Converts its input argument to either Primitive or Object type.
+	///  Converts its argument to a value of type Boolean.
 	virtual
 	CompletionType
 	getValue () const
 	throw (pbError) final override
-	{ return function -> copy (executionContext .get ()); }
+	{
+		const auto lval = lhs -> getValue ();
+		const auto rval = rhs -> getValue ();
+		const auto lnum = lval .toInt32 ();
+		const auto rnum = rval .toInt32 ();
+
+		return lnum & rnum;
+	}
 
 	///  @name Input/Output
 
@@ -96,8 +103,14 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ ostream << function; }
-
+	{
+		ostream
+			<< lhs
+			<< Generator::TidySpace
+			<< '&'
+			<< Generator::TidySpace
+			<< rhs;
+	}
 
 private:
 
@@ -106,14 +119,28 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (executionContext, function); }
+	{ addChildren (lhs, rhs); }
 
 	///  @name Members
 
-	const ptr <pbExecutionContext> executionContext;
-	const ptr <Function>           function;
+	const ptr <pbStatement> lhs;
+	const ptr <pbStatement> rhs;
 
 };
+
+///  @relates BitwiseAndExpression
+///  @name Construction
+
+///  Constructs new BitwiseAndExpression expression.
+inline
+ptr <pbStatement>
+createBitwiseAndExpression (ptr <pbStatement> && lhs, ptr <pbStatement>&& rhs)
+{
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new PrimitiveExpression (BitwiseAndExpression (std::move (lhs), std::move (rhs)) .getValue (), StatementType::BOOLEAN);
+
+	return new BitwiseAndExpression (std::move (lhs), std::move (rhs));
+}
 
 } // pb
 } // titania

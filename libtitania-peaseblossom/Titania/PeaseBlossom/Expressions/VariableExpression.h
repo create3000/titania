@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_EXPRESSION_H__
 
 #include "../Execution/pbExecutionContext.h"
-#include "../Expressions/pbExpression.h"
+#include "../Expressions/pbStatement.h"
 #include "../Objects/pbFunction.h"
 
 namespace titania {
@@ -62,7 +62,7 @@ namespace pb {
  *  Class to represent a ECMAScript identifier expression.
  */
 class VariableExpression :
-	public pbExpression
+	public pbStatement
 {
 public:
 
@@ -70,14 +70,14 @@ public:
 
 	///  Constructs new VariableExpression expression.
 	VariableExpression (pbExecutionContext* const executionContext, std::string && identifier) :
-		    pbExpression (ExpressionType::VARIABLE_EXPRESSION),
+		    pbStatement (StatementType::VARIABLE_EXPRESSION),
 		executionContext (executionContext),
 		      identifier (std::move (identifier))
 	{ construct (); }
 
 	///  Creates a copy of this object.
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{ return new VariableExpression (executionContext, std::string (identifier .getName ())); }

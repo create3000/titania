@@ -48,14 +48,15 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PB_EXPRESSION_H__
-#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PB_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PB_STATEMENT_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_PB_STATEMENT_H__
 
 #include "../Base/pbChildObject.h"
 #include "../Base/pbOutputStreamObject.h"
 #include "../Execution/CompletionType.h"
-#include "../Expressions/ExpressionType.h"
+#include "../Expressions/StatementType.h"
 #include "../InputOutput/Generator.h"
+#include "../Primitives/array.h"
 #include "../Primitives/var.h"
 
 namespace titania {
@@ -64,14 +65,14 @@ namespace pb {
 /**
  *  Class to represent a ECMAScript value. This is the base class for all ECMAScript values.
  */
-class pbExpression :
+class pbStatement :
 	virtual public pbChildObject,
 	virtual public pbOutputStreamObject
 {
 public:
 
 	enum CompileType :
-		uint8_t
+	uint8_t
 	{
 		PUT,
 		GET
@@ -80,7 +81,7 @@ public:
 	///  @name Construction
 
 	virtual
-	ptr <pbExpression>
+	ptr <pbStatement>
 	copy (pbExecutionContext* const) const
 	noexcept (true) = 0;
 
@@ -94,7 +95,7 @@ public:
 	{ return typeName; }
 
 	///  Returns the type  of this object.
-	ExpressionType
+	StatementType
 	getType () const
 	{ return type; }
 
@@ -125,8 +126,8 @@ protected:
 
 	///  @name Construction
 
-	///  Constructs new pbExpression.
-	pbExpression (const ExpressionType type) :
+	///  Constructs new pbStatement.
+	pbStatement (const StatementType type) :
 		       pbChildObject (),
 		pbOutputStreamObject (),
 		                type (type)
@@ -141,9 +142,42 @@ private:
 
 	///  @name Members
 
-	const ExpressionType type;
+	const StatementType type;
 
 };
+
+///  @relates pbStatement
+///  @name Construction
+
+struct StatementsOutputType { const array <ptr <pbStatement>> & statements; };
+
+///  Function to insert a array <ptr <pbStatement>> into an output stream.
+inline
+StatementsOutputType
+toStream (const array <ptr <pbStatement>> & statements)
+{
+	return StatementsOutputType { statements };
+}
+
+///  Insertion operator for StatementType.
+std::ostream &
+operator << (std::ostream & ostream, const StatementsOutputType & value);
+
+//
+
+struct StatementOutputType { const ptr <pbStatement> & statement; const bool indent; };
+
+///  Function to insert a array <ptr <pbStatement>> into an output stream.
+inline
+StatementOutputType
+toStream (const ptr <pbStatement> & statement, const bool indent = false)
+{
+	return StatementOutputType { statement, indent };
+}
+
+///  Insertion operator for StatementType.
+std::ostream &
+operator << (std::ostream & ostream, const StatementOutputType & value);
 
 } // pb
 } // titania
