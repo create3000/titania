@@ -48,100 +48,81 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LESS_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_LESS_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_CONTINUE_STATEMENT_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_CONTINUE_STATEMENT_H__
 
-#include "../Expressions/pbStatement.h"
 #include "../Expressions/PrimitiveExpression.h"
-
-#include <cmath>
+#include "../Expressions/pbStatement.h"
+#include "../Objects/Function.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript less expression.
+ *  Class to represent a ECMAScript continue statement.
  */
-class LessExpression :
+class ContinueStatement :
 	public pbStatement
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new LessExpression expression.
-	LessExpression (ptr <pbStatement> && lhs, ptr <pbStatement> && rhs) :
-		pbStatement (StatementType::LESS_EXPRESSION),
-		         lhs (std::move (lhs)),
-		         rhs (std::move (rhs))
-	{ construct (); }
+	///  Constructs new ContinueStatement statement.
+	ContinueStatement (std::string && identifier) :
+		pbStatement (StatementType::CONTINUE_STATEMENT),
+		 identifier (std::move (identifier))
+	{ }
 
 	///  Creates a copy of this object.
 	virtual
 	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new LessExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
+	{ return new ContinueStatement (std::move (std::string (identifier .getName ()))); }
 
 	///  @name Operations
 
-	///  Converts its argument to a value of type Boolean.
+	const Identifier &
+	getIdentifier () const
+	{ return identifier; }
+
+	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	CompletionType
 	getValue () const
 	throw (pbError) final override
 	{
-		const auto px = lhs -> getValue () .toPrimitive (NUMBER);
-		const auto py = rhs -> getValue () .toPrimitive (NUMBER);
-
-		if (px .getType () == STRING and py .getType () == STRING)
-			return px .getString () < py .getString ();
-
-		return px .toNumber () < py .toNumber ();
+		return CompletionType (this, undefined);
 	}
+
+	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
 	{
-		ostream
-			<< pb::toStream (this, lhs)
-			<< Generator::TidySpace
-			<< '<'
-			<< Generator::TidySpace
-			<< pb::toStream (this, rhs);
+		if (identifier .isEmpty ())
+		{
+			ostream << "continue";
+		}
+		else
+		{
+			ostream
+				<< "continue"
+				<< Generator::Space
+				<< identifier;
+		}
 	}
 
 private:
 
-	///  @name Construction
-
-	///  Performs neccessary operations after construction.
-	void
-	construct ()
-	{ addChildren (lhs, rhs); }
-
 	///  @name Members
 
-	const ptr <pbStatement> lhs;
-	const ptr <pbStatement> rhs;
+	const Identifier identifier;
 
 };
-
-///  @relates LessExpression
-///  @name Construction
-
-///  Constructs new LessExpression expression.
-inline
-ptr <pbStatement>
-createLessExpression (ptr <pbStatement> && lhs, ptr <pbStatement> && rhs)
-{
-	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
-		return new PrimitiveExpression (LessExpression (std::move (lhs), std::move (rhs)) .getValue (), StatementType::BOOLEAN);
-
-	return new LessExpression (std::move (lhs), std::move (rhs));
-}
 
 } // pb
 } // titania

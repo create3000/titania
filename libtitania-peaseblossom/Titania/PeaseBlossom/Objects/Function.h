@@ -105,12 +105,6 @@ public:
 	call (pbObject* const object, const std::vector <var> & arguments = { })
 	throw (pbError) final override;
 
-	///  Executes the associated expessions of this context.
-	virtual
-	var
-	run ()
-	throw (pbError) final override;
-
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.
@@ -153,9 +147,9 @@ private:
 	{
 	public:
 
-		StackGuard (Function* const function, pbObject* const localObject) :
+		StackGuard (Function* const function) :
 			function (function)
-		{ function -> enter (localObject); }
+		{ function -> enter (); }
 
 		~StackGuard ()
 		{ function -> leave (); }
@@ -170,12 +164,15 @@ private:
 	///  @name Operations
 	
 	void
-	addLocalObjects (const ptr <pbExecutionContext> &);
+	addLocalObjects (const ptr <pbExecutionContext> & executionContext);
+
+	const ptr <pbObject> &
+	getLocalObject ();
 
 	///  Set @a localObject as local object and pushes all default objects to the default object stack if an recursion is
 	///  detected.
 	void
-	enter (pbObject* const);
+	enter ();
 
 	///  Reverses the effect of pop.
 	void
@@ -188,7 +185,6 @@ private:
 	///  @name Member access
 
 	const std::vector <std::string> formalParameters;
-	array <ptr <pbObject>>          localObjects;
 	array <ptr <pbObject>>          localObjectsStack;
 	size_t                          recursionDepth;
 

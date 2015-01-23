@@ -107,7 +107,7 @@ public:
 	toStream (std::ostream & ostream) const final override
 	{
 		ostream
-			<< booleanExpression
+			<< pb::toStream (this, booleanExpression)
 			<< Generator::TidySpace
 			<< '?'
 			<< thenStatement

@@ -111,11 +111,11 @@ public:
 	toStream (std::ostream & ostream) const final override
 	{
 		ostream
-			<< lhs
+			<< pb::toStream (this, lhs)
 			<< Generator::Space
 			<< "in"
 			<< Generator::Space
-			<< rhs;
+			<< pb::toStream (this, rhs);
 	}
 
 private:

@@ -433,10 +433,10 @@ protected:
 
 	///  @name Friends
 
-	friend class ArrayIndexExpression;
+	friend class ComputedMemberAccessExpression;
 	friend class ForInStatement;
 	friend class ForVarInStatement;
-	friend class PropertyExpression;
+	friend class MemberAccessExpression;
 	friend class VariableExpression;
 
 	friend

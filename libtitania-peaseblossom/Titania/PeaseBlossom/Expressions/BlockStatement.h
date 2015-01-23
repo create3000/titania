@@ -106,6 +106,7 @@ public:
 			{
 				switch (value .getStatement () -> getType ())
 				{
+					case StatementType::CONTINUE_STATEMENT:
 					case StatementType::RETURN_STATEMENT:
 						return value;
 					default:

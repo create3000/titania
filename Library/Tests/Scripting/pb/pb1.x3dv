@@ -113,18 +113,15 @@ function enumerate (o)
 	return o;
 }
 
-function s (value)
+function f (value)
 {
-	print ('1: ', 10 / 5 * 3)
-	
-	var a = 10;
-	var b = 5;
-	var c = 3;
-	
-	print ('2: ', a / b * c)
+	var value;
+
+	print ('value: ', value)
 }
 
-enumerate (node)
+print ()
+f (123);
 "
 ]
   directOutput TRUE

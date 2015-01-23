@@ -69,6 +69,7 @@ namespace pb {
 class Function;
 class Object;
 class NativeFunction;
+class VariableDeclaration;
 
 class pbExecutionContext :
 	virtual public pbChildObject,
@@ -140,39 +141,19 @@ public:
 	bool
 	hasFunctionDeclaration (const std::string & identifier) const
 	noexcept (true)
-	{ return functions .count (identifier); }
-
-	///  Adds a function to this context, throws std::invalid_argument if a function with function .name already exists
-	///  or function .name is empty.
-	virtual
-	void
-	addFunctionDeclaration (const ptr <pbFunction> & function)
-	throw (std::invalid_argument);
-
-	///  Updates a global function, throws std::invalid_argument if function .name is empty.
-	virtual
-	void
-	updateFunctionDeclaration (const ptr <pbFunction> & function)
-	throw (std::invalid_argument);
-
-	///  Removes the function identified by @a name from this execution context.
-	virtual
-	void
-	removeFunctionDeclaration (const std::string & name)
-	noexcept (true);
+	{ return functionDeclarations .count (identifier); }
 
 	///  Returns @a name local function, throws std::invalid_argument if function .name is empty or a function with
 	///  name not exists.
-	virtual
 	const ptr <pbFunction> &
 	getFunctionDeclaration (const std::string & identifier) const
 	throw (std::out_of_range)
-	{ return functions .at (identifier); }
+	{ return functionDeclarations .at (identifier); }
 
 	const std::map <std::string, ptr <pbFunction>> &
 	getFunctionDeclarations () const
 	noexcept (true)
-	{ return functions; }
+	{ return functionDeclarations; }
 
 	/// @name Statement handling
 
@@ -192,7 +173,8 @@ public:
 	virtual
 	var
 	run ()
-	throw (pbError) = 0;
+	throw (pbError)
+	{ return undefined; }
 
 	/// @name Input/Output
 
@@ -230,6 +212,34 @@ protected:
 
 	///  Constructs new pbExecutionContext.
 	pbExecutionContext (pbExecutionContext* const executionContext);
+
+	///  @name Function handling
+
+	///  Adds a function to this context, throws std::invalid_argument if a function with function .name already exists
+	///  or function .name is empty.
+	void
+	addFunctionDeclaration (ptr <pbFunction> && function)
+	throw (std::invalid_argument);
+
+	///  Updates a global function, throws std::invalid_argument if function .name is empty.
+	void
+	updateFunctionDeclaration (ptr <pbFunction> && function)
+	throw (std::invalid_argument);
+	///  Removes the function identified by @a name from this execution context.
+	void
+	removeFunctionDeclaration (const std::string & name)
+	noexcept (true);
+
+	///  @name Variable handling
+
+	void
+	addVariableDeclaration (ptr <VariableDeclaration> && variable)
+	noexcept (true);
+
+	const array <ptr <VariableDeclaration>> &
+	getVariableDeclarations () const
+	noexcept (true)
+	{ return variableDeclarations; }
 
 	///  @name Member access
 
@@ -273,7 +283,8 @@ private:
 
 	const ptr <pbExecutionContext>           executionContext;
 	array <ptr <pbObject>>                   localObjects;
-	std::map <std::string, ptr <pbFunction>> functions;
+	std::map <std::string, ptr <pbFunction>> functionDeclarations;
+	array <ptr <VariableDeclaration>>        variableDeclarations;
 	array <ptr <pbStatement>>                statements;
 	bool                                     strict;
 

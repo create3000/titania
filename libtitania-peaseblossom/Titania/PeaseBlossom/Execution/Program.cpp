@@ -50,6 +50,8 @@
 
 #include "Program.h"
 
+#include "../Expressions/VariableDeclaration.h"
+
 #include "../Objects/NativeFunction.h"
 #include "../Objects/Function.h"
 #include "../Objects/Object.h"
@@ -132,6 +134,9 @@ throw (pbError)
 {
 	for (const auto & function : getFunctionDeclarations ())
 		getGlobalObject () -> addOwnProperty (function .second -> getName (), function .second, WRITABLE | CONFIGURABLE);
+
+	for (const auto & variable : getVariableDeclarations ())
+		variable -> setup ();
 
 	var result;
 

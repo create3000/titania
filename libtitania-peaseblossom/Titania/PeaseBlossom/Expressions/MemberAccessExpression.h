@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PROPERTY_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_PROPERTY_EXPRESSION_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_MEMBER_ACCESS_EXPRESSION_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_MEMBER_ACCESS_EXPRESSION_H__
 
 #include "../Expressions/pbStatement.h"
 #include "../Objects/pbObject.h"
@@ -60,7 +60,7 @@ namespace pb {
 /**
  *  Class to represent a ECMAScript property expression.
  */
-class PropertyExpression :
+class MemberAccessExpression :
 	public pbStatement
 {
 public:
@@ -68,8 +68,8 @@ public:
 	///  @name Construction
 
 	///  Constructs new AdditionExpression expression.
-	PropertyExpression (ptr <pbStatement> && expression, std::string && identifier) :
-		pbStatement (StatementType::PROPERTY_EXPRESSION),
+	MemberAccessExpression (ptr <pbStatement> && expression, std::string && identifier) :
+		pbStatement (StatementType::MEMBER_ACCESS_EXPRESSION),
 		  expression (std::move (expression)),
 		  identifier (std::move (identifier))
 	{ construct (); }
@@ -79,7 +79,7 @@ public:
 	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new PropertyExpression (expression -> copy (executionContext), std::string (identifier .getName ())); }
+	{ return new MemberAccessExpression (expression -> copy (executionContext), std::string (identifier .getName ())); }
 
 	///  @name Operations
 
@@ -236,7 +236,7 @@ public:
 	toStream (std::ostream & ostream) const final override
 	{
 		ostream
-			<< expression
+			<< pb::toStream (this, expression)
 			<< Generator::TidySpace
 			<< '.'
 			<< identifier;

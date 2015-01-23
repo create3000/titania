@@ -48,10 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_DECLARATION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_DECLARATION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_DECLARATION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_VARIABLE_DECLARATION_H__
 
 #include "../Execution/pbExecutionContext.h"
+#include "../Expressions/PrimitiveExpression.h"
 #include "../Expressions/pbStatement.h"
 
 namespace titania {
@@ -69,7 +70,7 @@ public:
 
 	///  Constructs new VariableDeclaration expression.
 	VariableDeclaration (pbExecutionContext* const executionContext, std::string && identifier, ptr <pbStatement> && expression) :
-		    pbStatement (StatementType::VARIABLE_DECLARATION),
+		     pbStatement (StatementType::VARIABLE_DECLARATION),
 		executionContext (executionContext),
 		      identifier (std::move (identifier)),
 		      expression (std::move (expression))
@@ -80,7 +81,18 @@ public:
 	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new VariableDeclaration (executionContext, std::string (identifier .getName ()), expression -> copy (executionContext)); }
+	{
+		if (expression)
+			return new VariableDeclaration (executionContext, std::string (identifier .getName ()), expression -> copy (executionContext));
+	
+		return new VariableDeclaration (executionContext, std::string (identifier .getName ()), nullptr);
+	}
+
+	void
+	setup ()
+	{
+		executionContext -> getVariableObject () -> put (identifier, undefined, false);
+	}
 
 	///  @name Operations
 
@@ -98,12 +110,13 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
-		// Variable declarations cannot be deleted.
-		
-		const auto & defaultObject = executionContext -> getVariableObject ();
-		const auto   value         = expression -> getValue ();
+		if (expression)
+		{
+			const auto & defaultObject = executionContext -> getVariableObject ();
+			const auto   value         = expression -> getValue ();
 
-		defaultObject -> put (identifier, value, false);
+			defaultObject -> put (identifier, value, false);
+		}
 
 		return undefined;
 	}
@@ -117,16 +130,15 @@ public:
 	{
 		ostream << identifier;
 
-		if (expression -> getType () == StatementType::UNDEFINED)
-			return;
-
-		ostream
-			<< Generator::TidySpace
-			<< "="
-			<< Generator::TidySpace
-			<< expression;
+		if (expression)
+		{
+			ostream
+				<< Generator::TidySpace
+				<< "="
+				<< Generator::TidySpace
+				<< expression;
+		}
 	}
-
 
 private:
 
@@ -136,8 +148,7 @@ private:
 	void
 	construct ()
 	{
-		if (not expression)
-			expression = new PrimitiveExpression (undefined, StatementType::UNDEFINED);
+		executionContext -> addVariableDeclaration (this);
 
 		addChildren (executionContext, expression);
 	}
@@ -146,7 +157,7 @@ private:
 
 	const ptr <pbExecutionContext> executionContext;
 	const Identifier               identifier;
-	ptr <pbStatement>             expression;
+	const ptr <pbStatement>        expression;
 
 };
 

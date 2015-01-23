@@ -51,6 +51,7 @@
 #include "pbExecutionContext.h"
 
 #include "../Expressions/pbStatement.h"
+#include "../Expressions/VariableDeclaration.h"
 #include "../Objects/Function.h"
 #include "../Parser/Parser.h"
 #include "../Primitives.h"
@@ -67,20 +68,29 @@ pbExecutionContext::pbExecutionContext (pbExecutionContext* const executionConte
 	pbOutputStreamObject (),
 	    executionContext (executionContext_),
 	        localObjects (),
-	           functions (),
+	functionDeclarations (),
+	variableDeclarations (),
 	          statements (),
 	              strict (executionContext_ -> isStrict ())
 {
 	addChildren (executionContext,
 	             localObjects,
+	             variableDeclarations,
 	             statements);
 }
 
 void
-pbExecutionContext::addFunctionDeclaration (const ptr <pbFunction> & function)
+pbExecutionContext::addVariableDeclaration (ptr <VariableDeclaration> && variable)
+noexcept (true)
+{
+	variableDeclarations .emplace_back (std::move (variable));
+}
+
+void
+pbExecutionContext::addFunctionDeclaration (ptr <pbFunction> && function)
 throw (std::invalid_argument)
 {
-	const auto pair = functions .emplace (function -> getName (), function);
+	const auto pair = functionDeclarations .emplace (function -> getName (), std::move (function));
 
 	if (pair .second)
 		pair .first -> second .addParent (this);
@@ -90,16 +100,16 @@ throw (std::invalid_argument)
 }
 
 void
-pbExecutionContext::updateFunctionDeclaration (const ptr <pbFunction> & function)
+pbExecutionContext::updateFunctionDeclaration (ptr <pbFunction> && function)
 throw (std::invalid_argument)
 {
 	try
 	{
-		functions .at (function -> getName ()) = function;
+		functionDeclarations .at (function -> getName ()) = std::move (function);
 	}
 	catch (const std::out_of_range &)
 	{
-		addFunctionDeclaration (function);
+		addFunctionDeclaration (std::move (function));
 	}
 }
 
@@ -107,7 +117,7 @@ void
 pbExecutionContext::removeFunctionDeclaration (const std::string & identifier)
 noexcept (true)
 {
-	functions .erase (identifier);
+	functionDeclarations .erase (identifier);
 }
 
 void
@@ -137,7 +147,7 @@ pbExecutionContext::toStream (std::ostream & ostream) const
 void
 pbExecutionContext::dispose ()
 {
-	functions .clear ();
+	functionDeclarations .clear ();
 
 	pbChildObject::dispose ();
 }

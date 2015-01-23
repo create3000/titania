@@ -99,7 +99,7 @@ public:
 	{
 		ostream
 			<< '-'
-			<< expression;
+			<< pb::toStream (this, expression);
 	}
 
 private:

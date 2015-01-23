@@ -264,7 +264,7 @@ PROTO Grid [
     initializeOnly SFNode  majorPoints USE MajorPoints
     initializeOnly SFNode  minorPoints USE MinorPoints
 
-    url "vrmlscript:
+    url "peaseblossom:
 
 function initialize ()
 {
@@ -481,7 +481,7 @@ DEF DimensionScript Script {
   inputOnly   SFVec3f set_translation
   outputOnly  SFVec3f translation_changed
 
-  url "javascript:
+  url "peaseblossom:
 function initialize ()
 {
 	eventsProcessed ();
@@ -519,7 +519,7 @@ DEF MoveScript Script {
   outputOnly  SFVec3f    translation_changed
   outputOnly  SFRotation axisOfRotation_changed
 
-  url "javascript:
+  url "peaseblossom:
 
 function set_translation (value)
 {
@@ -553,7 +553,7 @@ DEF ScaleScript Script {
   ]
   outputOnly  SFVec3f translation_changed
 
-  url "javascript:
+  url "peaseblossom:
 
 function initialize ()
 {

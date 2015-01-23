@@ -105,7 +105,6 @@
     <None Include="Titania\PeaseBlossom\Expressions\NewExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\ObjectLiteral.h" />
     <None Include="Titania\PeaseBlossom\Expressions\PrimitiveExpression.h" />
-    <None Include="Titania\PeaseBlossom\Expressions\PropertyExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\RemainderExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\ReturnStatement.h" />
     <None Include="Titania\PeaseBlossom\Expressions\StrictEqualExpression.h" />
@@ -139,7 +138,6 @@
     <None Include="Titania\PeaseBlossom\Standard\Function.h" />
     <None Include="Titania\PeaseBlossom\Standard\Global.h" />
     <None Include="Titania\PeaseBlossom\Expressions\InstanceOfExpression.h" />
-    <None Include="Titania\PeaseBlossom\Expressions\ArrayIndexExpression.h" />
     <None Include="Titania\PeaseBlossom\Standard\Array.h" />
     <None Include="Titania\PeaseBlossom\Expressions\InExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\VariableStatement.h" />
@@ -166,5 +164,8 @@
     <None Include="Titania\PeaseBlossom\Expressions\LogicalAndExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\ConditionalExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\BitwiseAndExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\MemberAccessExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\ComputedMemberAccessExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\ContinueStatement.h" />
   </ItemGroup>
 </Project>

@@ -83,6 +83,10 @@ public:
 
 	///  @name Operations
 
+	const Identifier &
+	getIdentifier () const
+	{ return identifier; }
+
 	///  Converts its input argument to either Primitive or Object type.
 	virtual
 	CompletionType

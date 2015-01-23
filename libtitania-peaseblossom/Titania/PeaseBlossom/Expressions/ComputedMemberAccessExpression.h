@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_ARRAY_INDEX_EXPRESSION_H__
-#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_ARRAY_INDEX_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_COMPUTED_MEMBER_ACCESS_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_COMPUTED_MEMBER_ACCESS_EXPRESSION_H__
 
 #include "../Expressions/pbStatement.h"
 #include "../Objects/pbObject.h"
@@ -60,7 +60,7 @@ namespace pb {
 /**
  *  Class to represent a ECMAScript array index expression.
  */
-class ArrayIndexExpression :
+class ComputedMemberAccessExpression :
 	public pbStatement
 {
 public:
@@ -68,8 +68,8 @@ public:
 	///  @name Construction
 
 	///  Constructs new AdditionExpression expression.
-	ArrayIndexExpression (ptr <pbStatement> && expression, ptr <pbStatement>&& identifier) :
-		pbStatement (StatementType::ARRAY_INDEX_EXPRESSION),
+	ComputedMemberAccessExpression (ptr <pbStatement> && expression, ptr <pbStatement> && identifier) :
+		pbStatement (StatementType::COMPUTED_MEMBER_ACCESS_EXPRESSION),
 		  expression (std::move (expression)),
 		  identifier (std::move (identifier))
 	{ construct (); }
@@ -79,7 +79,7 @@ public:
 	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new ArrayIndexExpression (expression -> copy (executionContext), identifier -> copy (executionContext)); }
+	{ return new ComputedMemberAccessExpression (expression -> copy (executionContext), identifier -> copy (executionContext)); }
 
 	///  @name Operations
 

@@ -50,6 +50,7 @@
 
 #include "Function.h"
 
+#include "../Expressions/VariableDeclaration.h"
 #include "../Objects/Object.h"
 
 #include <Titania/String/to_string.h>
@@ -63,7 +64,6 @@ Function::Function (pbExecutionContext* const executionContext, const std::strin
 	           pbFunction (executionContext, name, formalParameters .size ()),
 	   pbExecutionContext (executionContext),
 	     formalParameters (std::move (formalParameters)),
-	         localObjects (),
 	    localObjectsStack (),
 	       recursionDepth (0)
 {
@@ -72,7 +72,9 @@ Function::Function (pbExecutionContext* const executionContext, const std::strin
 	addOwnProperty ("prototype", prototype, WRITABLE | CONFIGURABLE);
 	prototype -> addOwnProperty ("constructor", this, WRITABLE | CONFIGURABLE);
 
-	addChildren (localObjectsStack, localObjects);
+	addChildren (localObjectsStack);
+
+	getLocalObjects () .resize (1);
 
 	addLocalObjects (getExecutionContext ());
 }
@@ -81,7 +83,6 @@ Function::Function (pbExecutionContext* const executionContext, const std::nullp
 	           pbFunction (executionContext, nullptr),
 	   pbExecutionContext (executionContext),
 	     formalParameters (),
-	         localObjects (),
 	    localObjectsStack (),
 	       recursionDepth (0)
 {
@@ -102,7 +103,7 @@ noexcept (true)
 void
 Function::addLocalObjects (const ptr <pbExecutionContext> & executionContext)
 {
-	localObjects .append (executionContext -> getLocalObjects ());
+	getLocalObjects () .push_back (executionContext -> getLocalObjects () [0]);
 
 	if (executionContext -> isRootContext ())
 		return;
@@ -121,25 +122,25 @@ var
 Function::call (pbObject* const object, const std::vector <var> & arguments)
 throw (pbError)
 {
-	const auto localObject = new Object (nullptr);
+	const auto & localObject = getLocalObject ();
 
-	localObject -> addOwnProperty ("this",      object,    NONE);
-	//localObject -> addOwnProperty ("arguments", arguments, NONE);
+	getLocalObjects () [0] = localObject;
+
+	localObject -> defineOwnProperty ("this", object, CONFIGURABLE);
+	//localObject -> defineOwnProperty ("arguments", arguments, NONE);
+
+	for (const auto & function : getFunctionDeclarations ())
+		getVariableObject () -> defineOwnProperty (function .second -> getName (), function .second -> copy (this), WRITABLE | CONFIGURABLE);
+
+	for (const auto & variable : getVariableDeclarations ())
+		variable -> setup ();
 
 	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
-		localObject -> addOwnProperty (formalParameters [i], i < argc ? arguments [i] : undefined, WRITABLE | CONFIGURABLE);
+		localObject -> defineOwnProperty (formalParameters [i], i < argc ? arguments [i] : undefined, WRITABLE | CONFIGURABLE);
 
-	StackGuard guard (this, localObject);
+	// Evaluate statements
 
-	return run ();
-}
-
-var
-Function::run ()
-throw (pbError)
-{
-	for (const auto & function : getFunctionDeclarations ())
-		getVariableObject () -> addOwnProperty (function .second -> getName (), function .second -> copy (this), WRITABLE | CONFIGURABLE);
+	StackGuard guard (this);
 
 	for (const auto & statement : getStatements ())
 	{
@@ -160,18 +161,26 @@ throw (pbError)
 	return undefined;
 }
 
-void
-Function::enter (pbObject* const localObject)
+const ptr <pbObject> &
+Function::getLocalObject ()
 {
-	if (recursionDepth)
-		localObjectsStack .append (std::move (getLocalObjects ()));
+	if (localObjectsStack .size () <= recursionDepth)
+		localObjectsStack .emplace_back ();
+
+	auto & localObject = localObjectsStack [recursionDepth];
+
+	if (not localObject or localObject -> getReferenceCount () > 1)
+		localObject = new Object (nullptr);
+
+	return localObject;
+}
+
+void
+Function::enter ()
+{
+	// As LAST step check recursion depth.
 
 	++ recursionDepth;
-
-	getLocalObjects () .emplace_back (localObject);
-	getLocalObjects () .append (localObjects);
-
-	// As LAST step check recursion depth.
 
 	if (recursionDepth > recursionLimit)
 		throw RuntimeError ("Maximum recursion depth of " + basic::to_string (recursionLimit) + " exceeded while calling function '" + getName () + "'.");
@@ -180,19 +189,12 @@ Function::enter (pbObject* const localObject)
 void
 Function::leave ()
 {
-	getLocalObjects () .clear ();
-
 	-- recursionDepth;
 
 	if (recursionDepth)
-	{
-		const auto size = localObjects .size () + 1;
-	
-		for (auto localObject : std::make_pair (localObjectsStack .end () - size, localObjectsStack .end ()))
-			getLocalObjects () .emplace_back (std::move (localObject));
-
-		localObjectsStack .resize (localObjectsStack .size () - size);
-	}
+		getLocalObjects () [0] = localObjectsStack [recursionDepth - 1];
+	else
+		getLocalObjects () [0] = nullptr;
 }
 
 void

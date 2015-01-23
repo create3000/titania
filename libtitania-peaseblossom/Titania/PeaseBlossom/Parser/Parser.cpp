@@ -72,7 +72,9 @@ Parser::Parser (pbExecutionContext* const executionContext, std::istream & istre
 	       commentCharacters (),
 	                 newLine (false),
 	isLeftHandSideExressions (),
-	                    noIn (false)
+	                    noIn (false),
+	                forLevel (0),
+	             switchLevel (0)
 { }
 
 void
@@ -982,7 +984,7 @@ Parser::memberExpression (ptr <pbStatement> & value)
 
 					if (Grammar::CloseBracket (istream))
 					{
-						value = new ArrayIndexExpression (std::move (value), std::move (identifier));
+						value = new ComputedMemberAccessExpression (std::move (value), std::move (identifier));
 						continue;
 					}
 
@@ -998,7 +1000,7 @@ Parser::memberExpression (ptr <pbStatement> & value)
 
 				if (identifierName (identifierNameCharacters))
 				{
-					value = new PropertyExpression (std::move (value), std::move (identifierNameCharacters));
+					value = new MemberAccessExpression (std::move (value), std::move (identifierNameCharacters));
 					continue;
 				}
 
@@ -1076,15 +1078,15 @@ Parser::callExpression (ptr <pbStatement> & value)
 
 			if (Grammar::OpenBracket (istream))
 			{
-				ptr <pbStatement> arrayIndexExpressions;
+				ptr <pbStatement> identifier;
 
-				if (expression (arrayIndexExpressions))
+				if (expression (identifier))
 				{
 					comments ();
 
 					if (Grammar::CloseBracket (istream))
 					{
-						//value = new ArrayIndexExpression (std::move (value), std::move (arrayIndexExpressions));
+						value = new ComputedMemberAccessExpression (std::move (value), std::move (identifier));
 						continue;
 					}
 
@@ -1100,7 +1102,7 @@ Parser::callExpression (ptr <pbStatement> & value)
 
 				if (identifierName (identifierNameCharacters))
 				{
-					value = new PropertyExpression (std::move (value), std::move (identifierNameCharacters));
+					value = new MemberAccessExpression (std::move (value), std::move (identifierNameCharacters));
 					continue;
 				}
 
@@ -2180,8 +2182,8 @@ Parser::statement (ptr <pbStatement> & value)
 	if (iterationStatement (value))
 		return true;
 
-	//if (continueStatement (value))
-	//	return true;
+	if (continueStatement (value))
+		return true;
 
 	if (breakStatement (value))
 		return true;
@@ -2511,10 +2513,14 @@ Parser::iterationStatement (ptr <pbStatement> & value)
 
 										if (Grammar::CloseParenthesis (istream))
 										{
+											++ forLevel;
+										
 											ptr <pbStatement> body;
 
 											if (statement (body))
 											{
+												-- forLevel;
+											
 												value = new ForVarInStatement (std::move (variableDeclarations .back ()), std::move (objectExpression), std::move (body));
 												return true;
 											}
@@ -2554,10 +2560,14 @@ Parser::iterationStatement (ptr <pbStatement> & value)
 
 								if (Grammar::CloseParenthesis (istream))
 								{
+									++ forLevel;
+										
 									ptr <pbStatement> body;
 
 									if (statement (body))
 									{
+										-- forLevel;
+
 										value = new ForVarStatement (std::move (variableDeclarations), std::move (booleanExpression), std::move (iterationExpression), std::move (body));
 										return true;
 									}
@@ -2613,10 +2623,14 @@ Parser::iterationStatement (ptr <pbStatement> & value)
 
 					if (Grammar::CloseParenthesis (istream))
 					{
+						++ forLevel;
+										
 						ptr <pbStatement> body;
 
 						if (statement (body))
 						{
+							-- forLevel;
+
 							value = new ForStatement (std::move (variableExpression), std::move (booleanExpression), std::move (iterationExpression), std::move (body));
 							return true;
 						}
@@ -2642,6 +2656,43 @@ Parser::iterationStatement (ptr <pbStatement> & value)
 }
 
 bool
+Parser::continueStatement (ptr <pbStatement> & value)
+{
+	//__LOG__ << (char) istream .peek () << std::endl;
+
+	comments ();
+
+	if (Grammar::continue_ (istream))
+	{
+		if (forLevel)
+		{
+			std::string identifierCharacters;
+
+			comments ();
+
+			if (not newLine)
+			{
+				identifier (identifierCharacters);
+
+				comments ();
+			}
+
+			if (Grammar::Semicolon (istream) or haveAutomaticSemicolon ())
+			{
+				value = new ContinueStatement (std::move (identifierCharacters));
+				return true;
+			}
+
+			throw SyntaxError ("Expected a ';' after expression.");
+		}
+
+		throw SyntaxError ("Illegal continue statement");
+	}
+
+	return false;
+}
+
+bool
 Parser::breakStatement (ptr <pbStatement> & value)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
@@ -2650,24 +2701,29 @@ Parser::breakStatement (ptr <pbStatement> & value)
 
 	if (Grammar::break_ (istream))
 	{
-		std::string identifierCharacters;
-
-		comments ();
-
-		if (not newLine)
+		if (forLevel or switchLevel)
 		{
-			identifier (identifierCharacters);
+			std::string identifierCharacters;
 
 			comments ();
+
+			if (not newLine)
+			{
+				identifier (identifierCharacters);
+
+				comments ();
+			}
+
+			if (Grammar::Semicolon (istream) or haveAutomaticSemicolon ())
+			{
+				value = new BreakStatement (std::move (identifierCharacters));
+				return true;
+			}
+
+			throw SyntaxError ("Expected a ';' after expression.");
 		}
 
-		if (Grammar::Semicolon (istream) or haveAutomaticSemicolon ())
-		{
-			value = new BreakStatement (std::move (identifierCharacters));
-			return true;
-		}
-
-		throw SyntaxError ("Expected a ';' after expression.");
+		throw SyntaxError ("Illegal break statement");
 	}
 
 	return false;
@@ -2724,12 +2780,16 @@ Parser::switchStatement (ptr <pbStatement> & value)
 
 				if (Grammar::CloseParenthesis (istream))
 				{
+					++ switchLevel;
+										
 					array <ptr <pbStatement>>           clauseSelectors;
 					array <array <ptr <pbStatement>>>   clauseStatements;
 					array <ptr <pbStatement>>           defaultStatements;
 
 					if (caseBlock (clauseSelectors, clauseStatements, defaultStatements))
 					{
+						-- switchLevel;
+
 						value = new SwitchStatement (std::move (switchExpression),
 						                             std::move (clauseSelectors),
 						                             std::move (clauseStatements),
@@ -3043,25 +3103,7 @@ Parser::sourceElements ()
 	while (sourceElement (value))
 	{
 		if (value)
-		{
-			switch (value -> getType ())
-			{
-				case StatementType::BREAK_STATEMENT:
-					throw SyntaxError ("Illegal break statement");
-
-				default:
-				{
-					getExecutionContext () -> addStatement (std::move (value));
-					break;
-				}
-			}
-
-			//	throw SyntaxError ("Unlabelled continue must be inside loop.");
-			//	throw SyntaxError ("Label '' not found.");
-			//	throw SyntaxError ("Unlabelled break must be inside loop or switch.");
-			//	throw SyntaxError ("Label '' not found.");
-			//	throw Error ("Uncatched yield exception.");
-		}
+			getExecutionContext () -> addStatement (std::move (value));
 	}
 }
 
@@ -3078,6 +3120,12 @@ Parser::sourceElement (ptr <pbStatement> & value)
 
 	return false;
 }
+
+//	throw SyntaxError ("Unlabelled continue must be inside loop.");
+//	throw SyntaxError ("Label '' not found.");
+//	throw SyntaxError ("Unlabelled break must be inside loop or switch.");
+//	throw SyntaxError ("Label '' not found.");
+//	throw Error ("Uncatched yield exception.");
 
 } // pb
 } // titania

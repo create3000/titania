@@ -131,7 +131,7 @@ public:
 		ostream
 			<< "new"
 			<< Generator::Space
-			<< expression
+			<< pb::toStream (this, expression)
 			<< Generator::TidySpace
 			<< '(';
 

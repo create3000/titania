@@ -112,18 +112,18 @@ operator << (std::ostream & ostream, const StatementsOutputType & value)
 	for (const auto & statement : value .statements)
 	{
 		// Add blank line before special statements.
-	
+
 		if (not blankLine)
 		{
 			switch (statement -> getType ())
 			{
-				case StatementType::VARIABLE_STATEMENT:
-				{
-					if (lastType == StatementType::VARIABLE_STATEMENT)
-						break;
-					
-					// Proceed with next case:
-				}
+				case StatementType::VARIABLE_STATEMENT :
+					{
+						if (lastType == StatementType::VARIABLE_STATEMENT)
+							break;
+
+						// Proceed with next case:
+					}
 				case StatementType::BLOCK_STATEMENT:
 				case StatementType::IF_STATEMENT:
 				case StatementType::FOR_IN_STATEMENT:
@@ -170,13 +170,12 @@ operator << (std::ostream & ostream, const StatementsOutputType & value)
 	return ostream;
 }
 
-
 std::ostream &
 operator << (std::ostream & ostream, const StatementOutputType & value)
 {
 	if (value .indent and value .statement -> getType () not_eq StatementType::BLOCK_STATEMENT)
 		ostream << Generator::IncIndent;
-	
+
 	// Output statement.
 
 	ostream
@@ -203,6 +202,17 @@ operator << (std::ostream & ostream, const StatementOutputType & value)
 		ostream << Generator::DecIndent;
 
 	return ostream;
+}
+
+std::ostream &
+operator << (std::ostream & ostream, const ExpressionOutputType & value)
+{
+	// If statement has a higher precedence than parent, output parenthesises
+
+	static const std::map <StatementType, size_t> precedences = { };
+
+	return ostream
+	       << value .statement;
 }
 
 } // pb

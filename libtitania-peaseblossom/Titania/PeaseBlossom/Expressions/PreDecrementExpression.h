@@ -104,7 +104,7 @@ public:
 		ostream
 			<< "--"
 			<< Generator::TidySpace
-			<< expression;
+			<< pb::toStream (this, expression);
 	}
 
 private:

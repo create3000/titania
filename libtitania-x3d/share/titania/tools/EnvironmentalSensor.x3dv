@@ -198,7 +198,7 @@ PROTO EnvironmentalSensor [
     initializeOnly SFNode     bottom USE Bottom
     inputOutput    SFNode     node IS node
 
-    url "vrmlscript:
+    url "peaseblossom:
 function eventsProcessed ()
 {
 	var bboxSize1_2 = bboxSize .divide (2);

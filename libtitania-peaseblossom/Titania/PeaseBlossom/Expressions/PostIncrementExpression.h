@@ -102,7 +102,7 @@ public:
 	toStream (std::ostream & ostream) const final override
 	{
 		ostream
-			<< expression
+			<< pb::toStream (this, expression)
 			<< Generator::TidySpace
 			<< "++";
 	}

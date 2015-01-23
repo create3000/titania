@@ -150,6 +150,7 @@ public:
 						{
 							case StatementType::BREAK_STATEMENT:
 								return result;
+							case StatementType::CONTINUE_STATEMENT:
 							case StatementType::RETURN_STATEMENT:
 								return value;
 							default:
@@ -174,6 +175,7 @@ public:
 					{
 						case StatementType::BREAK_STATEMENT:
 							return result;
+						case StatementType::CONTINUE_STATEMENT:
 						case StatementType::RETURN_STATEMENT:
 							return value;
 						default:

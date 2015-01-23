@@ -179,6 +179,22 @@ toStream (const ptr <pbStatement> & statement, const bool indent = false)
 std::ostream &
 operator << (std::ostream & ostream, const StatementOutputType & value);
 
+//
+
+struct ExpressionOutputType { const pbStatement* const parent; const ptr <pbStatement> & statement; };
+
+///  Function to insert a array <ptr <pbStatement>> into an output stream.
+inline
+ExpressionOutputType
+toStream (const pbStatement* const parent, const ptr <pbStatement> & statement)
+{
+	return ExpressionOutputType { parent, statement };
+}
+
+///  Insertion operator for StatementType.
+std::ostream &
+operator << (std::ostream & ostream, const ExpressionOutputType & value);
+
 } // pb
 } // titania
 

@@ -438,26 +438,7 @@ pbObject::addOwnProperty (const Identifier & identifier,
 throw (TypeError,
        std::invalid_argument)
 {
-	if (not isExtensible ())
-	{
-		if (throw_)
-			throw TypeError ("Object is not extensible.");
-
-		return;
-	}
-
-	if ((not value .isUndefined () or attributes & WRITABLE) and (getter or setter))
-	{
-		if (throw_)
-			throw TypeError ("A property cannot both have accessors and be writable or have a value.");
-
-		return;
-	}
-
-	if (properties .emplace (identifier .getId (), make_unique <PropertyDescriptor> (this, identifier, value, attributes, getter, setter)) .second)
-		return;
-
-	throw std::invalid_argument ("Couldn't add property.");
+	addOwnProperty (identifier, var (value), attributes, ptr <pbFunction> (getter), ptr <pbFunction> (setter), throw_);
 }
 
 void
@@ -486,7 +467,7 @@ throw (TypeError,
 		return;
 	}
 
-	if (properties .emplace (identifier .getId (), make_unique <PropertyDescriptor> (this, identifier, std::move (value), attributes, std::move (getter), std::move (setter))) .second)
+	if (properties .emplace (identifier .getId (), std::make_shared <PropertyDescriptor> (this, identifier, std::move (value), attributes, std::move (getter), std::move (setter))) .second)
 		return;
 
 	throw std::invalid_argument ("Couldn't add property.");

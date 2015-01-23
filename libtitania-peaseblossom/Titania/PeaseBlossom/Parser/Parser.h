@@ -317,6 +317,9 @@ private:
 	iterationStatement (ptr <pbStatement> &);
 
 	bool
+	continueStatement (ptr <pbStatement> &);
+
+	bool
 	breakStatement (ptr <pbStatement> &);
 
 	bool
@@ -372,6 +375,8 @@ private:
 	bool                             newLine;
 	std::vector <bool>               isLeftHandSideExressions;
 	bool                             noIn;
+	size_t                           forLevel;
+	size_t                           switchLevel;
 
 };
 

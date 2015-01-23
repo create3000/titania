@@ -285,7 +285,7 @@ DEF BBoxScript Script {
   initializeOnly SFNode  bbox USE BBox
   initializeOnly SFNode  axes USE AxesCoord
 
-  url "vrmlscript:
+  url "peaseblossom:
 function eventsProcessed ()
 {
 	var bboxSize1_2 = bboxSize .divide (2);
@@ -332,7 +332,7 @@ DEF ArrowsScript Script {
   initializeOnly SFNode  y USE YHandle
   initializeOnly SFNode  z USE ZHandle
 
-  url "vrmlscript:
+  url "peaseblossom:
 function eventsProcessed ()
 {
 	// Position arrows
@@ -355,7 +355,7 @@ DEF CenterScript Script {
   outputOnly     SFInt32 whichChoice_changed
   initializeOnly SFNode  coord USE CenterLineCoord
 
-  url "vrmlscript:
+  url "peaseblossom:
 function set_displayCenter (value)
 {
 	whichChoice_changed = value;
@@ -376,7 +376,7 @@ DEF AxisOfRotationScript Script {
   initializeOnly SFNode  transform USE _2
   initializeOnly SFNode  inline USE Vector
 
-  url "vrmlscript:
+  url "peaseblossom:
 function eventsProcessed ()
 {
 	if (vector .x == 0 && vector .y == 0 && vector .z == 0)

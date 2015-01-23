@@ -226,5 +226,6 @@
     <Folder Include="Titania\Math\Utility\" />
     <Folder Include="Titania\InputOutput\" />
     <Folder Include="Titania\Geospatial\" />
+    <Folder Include="Titania\Google\" />
   </ItemGroup>
 </Project>

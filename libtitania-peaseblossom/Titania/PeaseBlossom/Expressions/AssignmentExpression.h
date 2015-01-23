@@ -191,11 +191,11 @@ public:
 	toStream (std::ostream & ostream) const final override
 	{
 		ostream
-			<< lhs
+			<< pb::toStream (this, lhs)
 			<< Generator::TidySpace
 			<< type
 			<< Generator::TidySpace
-			<< rhs;
+			<< pb::toStream (this, rhs);
 	}
 
 

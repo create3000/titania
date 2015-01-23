@@ -1,3 +1,55 @@
+2015-01-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-peaseblossom.cproj:
+	* Statements.h:
+	* Parser.h:
+	* Grammar.h:
+	* Parser.cpp:
+	* pbObject.h:
+	* Function.h:
+	* pbObject.cpp:
+	* Function.cpp:
+	* Program.cpp:
+	* pbStatement.h:
+	* InExpression.h:
+	* pbStatement.cpp:
+	* NewExpression.h:
+	* StatementType.h:
+	* BreakStatement.h:
+	* LessExpression.h:
+	* BlockStatement.h:
+	* EqualExpression.h:
+	* SwitchStatement.h:
+	* pbExecutionContext.h:
+	* NegateExpression.h:
+	* ContinueStatement.h:
+	* GreaterExpression.h:
+	* AdditionExpression.h:
+	* pbExecutionContext.cpp:
+	* PropertyExpression.h:
+	* DivisionExpression.h:
+	* LogicalOrExpression.h:
+	* VariableDeclaration.h:
+	* LeftShiftExpression.h:
+	* RemainderExpression.h:
+	* ArrayIndexExpression.h:
+	* InstanceOfExpression.h:
+	* AssignmentExpression.h:
+	* BitwiseAndExpression.h:
+	* LogicalAndExpression.h:
+	* LogicalNotExpression.h:
+	* StrictEqualExpression.h:
+	* SubtractionExpression.h:
+	* ConditionalExpression.h:
+	* MemberAccessExpression.h:
+	* FunctionCallExpression.h:
+	* PreIncrementExpression.h:
+	* PreDecrementExpression.h:
+	* PostDecrementExpression.h:
+	* PostIncrementExpression.h:
+	* MultiplicationExpression.h:
+	* ComputedMemberAccessExpression.h: 
+
 2015-01-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:
