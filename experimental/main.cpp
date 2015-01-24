@@ -99,6 +99,7 @@
 #include <set>
 #include <thread>
 #include <unordered_set>
+#include <unordered_map>
 #include <vector>
 
 #include <giomm.h>
@@ -558,14 +559,50 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 	
+	std::hash <std::string> hash;
+	
+	constexpr size_t N = 1000000;
+	
+	std::vector <std::pair <size_t, int>> v = {
+		std::make_pair (hash ("h1"),     0),
+		std::make_pair (hash ("h2"),     0),
+		std::make_pair (hash ("result"), 0),
+		std::make_pair (hash ("value"),  0),
+		std::make_pair (hash ("o"),      0),
+		std::make_pair (hash ("i"),      0),
+	};
+	
+	for (const auto & word : words)
+		v .emplace_back (hash (word), 0);
+
+	v .resize (15);
+
 	{
-		__LOG__ << std::endl;
+		std::unordered_map <size_t, int> m (v .begin (), v .end ());
+	
+		const auto t0 = chrono::now ();
 
-		A a;
+		for (size_t i = 0; i < N; ++ i)
+		{
+			for (const auto & p : v)
+				m .find (p .first);
+		}
 
-		std::async a (std::launch::async, &A::f, a);
+		__LOG__ << chrono::now () - t0 << std::endl;
+	}
+	
+	{
+		std::map <size_t, int>  m (v .begin (), v .end ());
+	
+		const auto t0 = chrono::now ();
 
-		__LOG__ << std::endl;
+		for (size_t i = 0; i < N; ++ i)
+		{
+			for (const auto & p : v)
+				m .find (p .first);
+		}
+
+		__LOG__ << chrono::now () - t0 << std::endl;
 	}
 
 	//std::thread (f, std::move (a)) .join ();

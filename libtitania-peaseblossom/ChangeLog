@@ -1,5 +1,10 @@
 2015-01-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Function.cpp:
+	* MemberAccessExpression.h: 
+
+2015-01-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Array.cpp:
 	* Function.h:
 	* pbObject.h:

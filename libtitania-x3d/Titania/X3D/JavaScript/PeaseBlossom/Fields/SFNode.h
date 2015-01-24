@@ -162,7 +162,7 @@ X3DField::get <SFNode> (Context* const context, SFNode::internal_type* const fie
 		if (object)
 			return object;
 
-		return create <SFNode> (context -> getProgram (), field);
+		return create <SFNode> (context -> getProgram (), new X3D::SFNode (*field));
 	}
 
 	return nullptr;

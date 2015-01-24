@@ -141,7 +141,7 @@ throw (pbError)
 	getVariableObjects () .front () = variableObject;
 
 	variableObject -> defineOwnProperty ("this", object, CONFIGURABLE);
-	//variableObject -> defineOwnProperty ("arguments", arguments, NONE);
+	//variableObject -> defineOwnProperty ("arguments", arguments, CONFIGURABLE);
 
 	for (const auto & function : getFunctionDeclarations ())
 		variableObject -> defineOwnProperty (function .second -> getName (), function .second -> copy (this), WRITABLE | CONFIGURABLE);

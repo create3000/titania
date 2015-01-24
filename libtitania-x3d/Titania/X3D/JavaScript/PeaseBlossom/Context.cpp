@@ -137,15 +137,15 @@ Context::addUserDefinedFields ()
 
 		switch (field -> getAccessType ())
 		{
-			case initializeOnly:
-			case outputOnly:
+			case X3D::initializeOnly:
+			case X3D::outputOnly:
 			{
 				defineProperty (program -> getGlobalObject (), field, field -> getName (), index);
 				break;
 			}
-			case inputOnly:
+			case X3D::inputOnly:
 				break;
-			case inputOutput:
+			case X3D::inputOutput:
 			{
 				defineProperty (program -> getGlobalObject (), field, field -> getName (),              index);
 				defineProperty (program -> getGlobalObject (), field, field -> getName () + "_changed", index);
@@ -167,13 +167,13 @@ Context::defineProperty (pb::ptr <pb::pbObject> const object,
 
 	switch (field -> getType ())
 	{
-		case X3DConstants::SFBool:
-		case X3DConstants::SFDouble:
-		case X3DConstants::SFFloat:
-		case X3DConstants::SFInt32:
-		case X3DConstants::SFNode:
-		case X3DConstants::SFString:
-		case X3DConstants::SFTime:
+		case X3D::X3DConstants::SFBool:
+		case X3D::X3DConstants::SFDouble:
+		case X3D::X3DConstants::SFFloat:
+		case X3D::X3DConstants::SFInt32:
+		case X3D::X3DConstants::SFNode:
+		case X3D::X3DConstants::SFString:
+		case X3D::X3DConstants::SFTime:
 		{
 			object -> defineOwnProperty (name,
 			                             pb::undefined,

@@ -94,32 +94,17 @@ public:
 		{
 			case UNDEFINED:
 			{
-				throw TypeError ("undefined has no properties.");
+				throw TypeError ("Cannot set property '" + identifier .getName () + "' of undefined.");
 			}
 			case BOOLEAN:
-			{
-				// toString
-				// base .toObject (ec) -> call (id, arguments)
-				break;		
-			}
 			case NUMBER:
-			{
-				// toPrecision
-				// toString
-				// ...
-				// base .toObject (ec) -> call (id, arguments)
-				break;
-			}
 			case STRING:
 			{
-				// toString
-				// ...
-				// base .toObject (ec) -> call (id, arguments)
 				break;
 			}
 			case NULL_OBJECT:
 			{
-				throw TypeError ("null has no properties.");
+				throw TypeError ("Cannot set property '" + identifier .getName () + "' of null.");
 			}
 			case OBJECT:
 			{
@@ -144,23 +129,17 @@ public:
 			}
 			case BOOLEAN:
 			{
-				// toString
-				// base .toObject (ec) -> call (id, arguments)
-				break;		
+				//return std::move (Boolean (executionContext, base .getBoolean ()) -> get (identifier) .first);
+				break;
 			}
 			case NUMBER:
 			{
-				// toPrecision
-				// toString
-				// ...
-				// base .toObject (ec) -> call (id, arguments)
+				//return std::move (Number (executionContext, base .getNumber ()) -> get (identifier) .first);
 				break;
 			}
 			case STRING:
 			{
-				// toString
-				// ...
-				// base .toObject (ec) -> call (id, arguments)
+				//return std::move (String (executionContext, base .getString ()) -> get (identifier) .first);
 				break;
 			}
 			case NULL_OBJECT:
@@ -192,7 +171,7 @@ public:
 			case BOOLEAN:
 			{
 				// toString
-				// base .toObject (ec) -> call (id, arguments)
+				///return Boolean (executionContext, base .getBoolean ()) -> call (identifier, arguments);
 				break;		
 			}
 			case NUMBER:
@@ -200,14 +179,14 @@ public:
 				// toPrecision
 				// toString
 				// ...
-				// base .toObject (ec) -> call (id, arguments)
+				///return Number (executionContext, base .getNumber ()) -> call (identifier, arguments);
 				break;
 			}
 			case STRING:
 			{
 				// toString
 				// ...
-				// base .toObject (ec) -> call (id, arguments)
+				//return String (executionContext, base .getString ()) -> call (identifier, arguments);
 				break;
 			}
 			case NULL_OBJECT:
@@ -255,7 +234,7 @@ private:
 	///  @name Members
 
 	const ptr <pbStatement> expression;
-	const Identifier         identifier;
+	const Identifier        identifier;
 
 };
 
