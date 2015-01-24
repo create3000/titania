@@ -70,9 +70,11 @@ public:
 
 	///  Constructs new VariableExpression expression.
 	VariableExpression (pbExecutionContext* const executionContext, std::string && identifier) :
-		    pbStatement (StatementType::VARIABLE_EXPRESSION),
+		     pbStatement (StatementType::VARIABLE_EXPRESSION),
 		executionContext (executionContext),
-		      identifier (std::move (identifier))
+		      identifier (std::move (identifier)),
+		  variableObject (nullptr),
+		           index (0)
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -89,11 +91,33 @@ public:
 	putValue (const var & value) const
 	throw (pbError) final override
 	{
-		for (const auto & localObject : executionContext -> getLocalObjects ())
+		if (variableObject)
 		{
-			if (localObject -> put (identifier, value, true))
+			if (variableObject == executionContext -> getVariableObject () .get () or index not_eq 0)
+			{
+				variableObject -> put (identifier, value, false);
 				return;
+			}
+
+			// Recursion
+			executionContext -> getVariableObject () -> put (identifier, value, false);
+			return;
 		}
+
+		index = 0;
+
+		for (const auto & variableObject : executionContext -> getVariableObjects ())
+		{
+			if (variableObject -> put (identifier, value, true))
+			{
+				this -> variableObject = variableObject .get ();
+				return;
+			}
+
+			++ index;
+		}
+
+		variableObject = executionContext -> getGlobalObject () .get ();
 
 		executionContext -> getGlobalObject () -> put (identifier, value, false);
 	}
@@ -104,13 +128,32 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
-		var value;
-
-		for (const auto & localObject : executionContext -> getLocalObjects ())
+		if (variableObject)
 		{
-			if (localObject -> get (identifier, value))
-				return value;
+			if (variableObject == executionContext -> getVariableObject () .get () or index not_eq 0)
+				return variableObject -> get (identifier) .first;
+
+			// Recursion
+			return executionContext -> getVariableObject () -> get (identifier) .first;
 		}
+
+		index = 0;
+
+		for (const auto & variableObject : executionContext -> getVariableObjects ())
+		{
+			auto pair = variableObject -> get (identifier);
+		
+			if (pair .second)
+			{
+				this -> variableObject = variableObject .get ();
+
+				return std::move (pair .first);
+			}
+			
+			++ index;
+		}
+
+		variableObject = nullptr;
 
 		throw ReferenceError (identifier .getName () + " is not defined.");
 	}
@@ -131,12 +174,14 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChild (executionContext); }
+	{ addChildren (executionContext); }
 
 	///  @name Members
 
 	const ptr <pbExecutionContext> executionContext;
 	const Identifier               identifier;
+	mutable pbObject*              variableObject;
+	mutable size_t                 index;
 
 };
 

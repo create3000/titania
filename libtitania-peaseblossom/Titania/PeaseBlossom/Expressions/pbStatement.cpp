@@ -92,7 +92,7 @@ throw (pbError)
 	if (value .isObject ())
 	{
 		const auto function = dynamic_cast <pbFunction*> (value .getObject () .get ());
-		const auto value    = executionContext -> getGlobalObject () -> get (this_);
+		const auto value    = executionContext -> getGlobalObject () -> get (this_) .first;
 
 		if (function)
 			return function -> call (value .getObject () .get (), arguments);

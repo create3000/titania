@@ -205,13 +205,13 @@ SFNode::setProperty (pb::pbObject* const object, const pb::Identifier & identifi
 	}
 }
 
-bool
-SFNode::getProperty (pb::pbObject* const object, const pb::Identifier & identifier, pb::var & value)
+std::pair <pb::var, bool>
+SFNode::getProperty (pb::pbObject* const object, const pb::Identifier & identifier)
 {
 	const auto lhs = getObject <X3D::SFNode> (object);
 
 	if (not lhs -> getValue ())
-		return false;
+		return std::make_pair (pb::undefined, false);
 
 	try
 	{
@@ -219,15 +219,13 @@ SFNode::getProperty (pb::pbObject* const object, const pb::Identifier & identifi
 		const auto field   = lhs -> getValue () -> getField (identifier .getName ());
 
 		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::inputOnly)
-			return true;
+			return std::make_pair (pb::undefined, true);
 
-		value = getValue (context, field);
-		
-		return true;
+		return std::make_pair (getValue (context, field), true);
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{
-		return false;
+		return std::make_pair (pb::undefined, false);
 	}
 }
 

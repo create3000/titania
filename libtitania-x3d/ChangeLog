@@ -1,3 +1,9 @@
+2015-01-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Array.h:
+	* SFNode.h:
+	* SFNode.cpp: 
+
 2015-01-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GridTool.x3dv:

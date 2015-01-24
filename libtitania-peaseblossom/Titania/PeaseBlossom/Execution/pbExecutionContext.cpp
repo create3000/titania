@@ -67,15 +67,15 @@ pbExecutionContext::pbExecutionContext (pbExecutionContext* const executionConte
 	 pbInputStreamObject (),
 	pbOutputStreamObject (),
 	    executionContext (executionContext_),
-	        localObjects (),
 	functionDeclarations (),
 	variableDeclarations (),
+	     variableObjects (),
 	          statements (),
 	              strict (executionContext_ -> isStrict ())
 {
 	addChildren (executionContext,
-	             localObjects,
 	             variableDeclarations,
+	             variableObjects,
 	             statements);
 }
 

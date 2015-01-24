@@ -112,10 +112,10 @@ public:
 	{
 		if (expression)
 		{
-			const auto & defaultObject = executionContext -> getVariableObject ();
-			const auto   value         = expression -> getValue ();
+			const auto & variableObject = executionContext -> getVariableObject ();
+			const auto   value          = expression -> getValue ();
 
-			defaultObject -> put (identifier, value, false);
+			variableObject -> put (identifier, value, false);
 		}
 
 		return undefined;

@@ -115,7 +115,7 @@ public:
 	const ptr <pbObject> &
 	getGlobalObject () const
 	noexcept (true)
-	{ return localObjects .back (); }
+	{ return variableObjects .back (); }
 
 	virtual
 	const ptr <Object> &
@@ -243,31 +243,31 @@ protected:
 
 	///  @name Member access
 
-	///  Returns the variable objects.  That is the object where variable declarations are added.
+	///  Returns the variable object.  That is the object where variable declarations are added.
 	virtual
 	const ptr <pbObject> &
 	getVariableObject () const
 	noexcept (true)
-	{ return localObjects .front (); }
-
-	///  Returns the variable objects.  That is the object where const and let declarations are added.
-	virtual
-	const ptr <pbObject> &
-	getLexicalObject () const
-	noexcept (true)
-	{ return localObjects .front (); }
+	{ return variableObjects .front (); }
 
 	///  Returns the local objects.
 	array <ptr <pbObject>> &
-	getLocalObjects ()
+	getVariableObjects ()
 	noexcept (true)
-	{ return localObjects; }
+	{ return variableObjects; }
 
 	///  Returns the local objects.
 	const array <ptr <pbObject>> &
-	getLocalObjects () const
+	getVariableObjects () const
 	noexcept (true)
-	{ return localObjects; }
+	{ return variableObjects; }
+
+	//	///  Returns the lexical object.  That is the object where const and let declarations are added.
+	//	virtual
+	//	const ptr <pbObject> &
+	//	getLexicalObject () const
+	//	noexcept (true)
+	//	{ return lexicalObjects .front (); }
 
 	/// @name Operations
 
@@ -282,9 +282,9 @@ private:
 	/// @name Members
 
 	const ptr <pbExecutionContext>           executionContext;
-	array <ptr <pbObject>>                   localObjects;
 	std::map <std::string, ptr <pbFunction>> functionDeclarations;
 	array <ptr <VariableDeclaration>>        variableDeclarations;
+	array <ptr <pbObject>>                   variableObjects;
 	array <ptr <pbStatement>>                statements;
 	bool                                     strict;
 

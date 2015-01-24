@@ -1,3 +1,19 @@
+2015-01-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Array.cpp:
+	* Function.h:
+	* pbObject.h:
+	* Function.cpp:
+	* pbObject.cpp:
+	* Program.cpp:
+	* pbStatement.cpp:
+	* pbExecutionContext.h:
+	* VariableExpression.h:
+	* pbExecutionContext.cpp:
+	* VariableDeclaration.h:
+	* MemberAccessExpression.h:
+	* ComputedMemberAccessExpression.h: 
+
 2015-01-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-peaseblossom.cproj:

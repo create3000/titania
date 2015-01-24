@@ -114,8 +114,8 @@ private:
 	setProperty (pb::pbObject* const, const pb::Identifier &, const pb::var &);
 
 	static
-	bool
-	getProperty (pb::pbObject* const, const pb::Identifier &, pb::var &);
+	std::pair <pb::var, bool>
+	getProperty (pb::pbObject* const, const pb::Identifier &);
 
 	///  @name Functions
 

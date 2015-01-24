@@ -61,32 +61,32 @@ namespace pb {
 std::atomic <size_t> Function::recursionLimit (100000);
 
 Function::Function (pbExecutionContext* const executionContext, const std::string & name, std::vector <std::string> && formalParameters) :
-	           pbFunction (executionContext, name, formalParameters .size ()),
-	   pbExecutionContext (executionContext),
-	     formalParameters (std::move (formalParameters)),
-	    localObjectsStack (),
-	       recursionDepth (0)
+	          pbFunction (executionContext, name, formalParameters .size ()),
+	  pbExecutionContext (executionContext),
+	    formalParameters (std::move (formalParameters)),
+	variableObjectsStack (),
+	      recursionDepth (0)
 {
 	const auto prototype = new Object (executionContext);
 
 	addOwnProperty ("prototype", prototype, WRITABLE | CONFIGURABLE);
 	prototype -> addOwnProperty ("constructor", this, WRITABLE | CONFIGURABLE);
 
-	addChildren (localObjectsStack);
+	addChildren (variableObjectsStack);
 
-	getLocalObjects () .resize (1);
+	getVariableObjects () .resize (1);
 
 	addLocalObjects (getExecutionContext ());
 }
 
 Function::Function (pbExecutionContext* const executionContext, const std::nullptr_t) :
-	           pbFunction (executionContext, nullptr),
-	   pbExecutionContext (executionContext),
-	     formalParameters (),
-	    localObjectsStack (),
-	       recursionDepth (0)
+	          pbFunction (executionContext, nullptr),
+	  pbExecutionContext (executionContext),
+	    formalParameters (),
+	variableObjectsStack (),
+	      recursionDepth (0)
 {
-	addChildren (localObjectsStack, localObjects);
+	addChildren (variableObjectsStack, variableObjects);
 }
 
 ptr <pbFunction>
@@ -103,12 +103,26 @@ noexcept (true)
 void
 Function::addLocalObjects (const ptr <pbExecutionContext> & executionContext)
 {
-	getLocalObjects () .push_back (executionContext -> getLocalObjects () [0]);
+	getVariableObjects () .emplace_back (executionContext -> getVariableObject ());
 
 	if (executionContext -> isRootContext ())
 		return;
 
 	addLocalObjects (executionContext -> getExecutionContext ());
+}
+
+const ptr <pbObject> &
+Function::getLocalObjects () const
+{
+	if (variableObjectsStack .size () <= recursionDepth)
+		variableObjectsStack .emplace_back ();
+
+	auto & variableObject = variableObjectsStack [recursionDepth];
+
+	if (not variableObject or variableObject -> getReferenceCount () > 1)
+		variableObject = new Object (nullptr);
+
+	return variableObject;
 }
 
 var
@@ -122,21 +136,21 @@ var
 Function::call (pbObject* const object, const std::vector <var> & arguments)
 throw (pbError)
 {
-	const auto & localObject = getLocalObject ();
+	const auto & variableObject = getLocalObjects ();
 
-	getLocalObjects () [0] = localObject;
+	getVariableObjects () .front () = variableObject;
 
-	localObject -> defineOwnProperty ("this", object, CONFIGURABLE);
-	//localObject -> defineOwnProperty ("arguments", arguments, NONE);
+	variableObject -> defineOwnProperty ("this", object, CONFIGURABLE);
+	//variableObject -> defineOwnProperty ("arguments", arguments, NONE);
 
 	for (const auto & function : getFunctionDeclarations ())
-		getVariableObject () -> defineOwnProperty (function .second -> getName (), function .second -> copy (this), WRITABLE | CONFIGURABLE);
+		variableObject -> defineOwnProperty (function .second -> getName (), function .second -> copy (this), WRITABLE | CONFIGURABLE);
 
 	for (const auto & variable : getVariableDeclarations ())
 		variable -> setup ();
 
 	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
-		localObject -> defineOwnProperty (formalParameters [i], i < argc ? arguments [i] : undefined, WRITABLE | CONFIGURABLE);
+		variableObject -> defineOwnProperty (formalParameters [i], i < argc ? arguments [i] : undefined, WRITABLE | CONFIGURABLE);
 
 	// Evaluate statements
 
@@ -161,20 +175,6 @@ throw (pbError)
 	return undefined;
 }
 
-const ptr <pbObject> &
-Function::getLocalObject ()
-{
-	if (localObjectsStack .size () <= recursionDepth)
-		localObjectsStack .emplace_back ();
-
-	auto & localObject = localObjectsStack [recursionDepth];
-
-	if (not localObject or localObject -> getReferenceCount () > 1)
-		localObject = new Object (nullptr);
-
-	return localObject;
-}
-
 void
 Function::enter ()
 {
@@ -192,9 +192,9 @@ Function::leave ()
 	-- recursionDepth;
 
 	if (recursionDepth)
-		getLocalObjects () [0] = localObjectsStack [recursionDepth - 1];
+		getVariableObjects () [0] = variableObjectsStack [recursionDepth - 1];
 	else
-		getLocalObjects () [0] = nullptr;
+		getVariableObjects () [0] = nullptr;
 }
 
 void
@@ -207,7 +207,7 @@ Function::toStream (std::ostream & ostream) const
 		<< getName ()
 		<< Generator::TidySpace
 		<< '(';
-	
+
 	if (not formalParameters .empty ())
 	{
 		for (const auto parameter : std::make_pair (formalParameters .begin (), formalParameters .end () - 1))

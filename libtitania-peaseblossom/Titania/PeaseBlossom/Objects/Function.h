@@ -167,14 +167,11 @@ private:
 	addLocalObjects (const ptr <pbExecutionContext> & executionContext);
 
 	const ptr <pbObject> &
-	getLocalObject ();
+	getLocalObjects () const;
 
-	///  Set @a localObject as local object and pushes all default objects to the default object stack if an recursion is
-	///  detected.
 	void
 	enter ();
 
-	///  Reverses the effect of pop.
 	void
 	leave ();
 
@@ -185,7 +182,7 @@ private:
 	///  @name Member access
 
 	const std::vector <std::string> formalParameters;
-	array <ptr <pbObject>>          localObjectsStack;
+	mutable array <ptr <pbObject>>  variableObjectsStack;
 	size_t                          recursionDepth;
 
 };

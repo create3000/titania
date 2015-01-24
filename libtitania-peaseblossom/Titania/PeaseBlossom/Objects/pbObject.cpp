@@ -340,14 +340,16 @@ throw (pbError)
 	return true;
 }
 
-bool
-pbObject::get (const Identifier & identifier, var & value) const
+std::pair <var, bool>
+pbObject::get (const Identifier & identifier) const
 throw (pbError)
 {
 	if (callbacks -> getter)
 	{
-		if (callbacks -> getter (const_cast <pbObject*> (this), identifier, value))
-			return true;
+		const auto pair = callbacks -> getter (const_cast <pbObject*> (this), identifier);
+
+		if (pair .second)
+			return pair;
 	}
 
 	const auto & descriptor = getProperty (identifier);
@@ -355,26 +357,22 @@ throw (pbError)
 	if (descriptor)
 	{
 		if (descriptor -> isDataDescriptor ())
-		{
-			value = descriptor -> getValue ();
-		}
-		else
-		{
-			if (descriptor -> getGetter ()) // isAccessorDescriptor
-				value = descriptor -> getGetter () -> call (const_cast <pbObject*> (this));
-		}
+			return std::make_pair (descriptor -> getValue (), true);
 
-		return true;
+		if (descriptor -> getGetter ()) // isAccessorDescriptor
+			return std::make_pair (descriptor -> getGetter () -> call (const_cast <pbObject*> (this)), true);
+
+		return std::make_pair (undefined, true);
 	}
 
-	return false;
+	return std::make_pair (undefined, false);
 }
 
 ptr <pbObject>
 pbObject::getObject (const Identifier & identifier) const
 throw (pbError)
 {
-	const auto value = get (identifier);
+	const auto value = get (identifier) .first;
 
 	if (value .isObject ())
 		return value .getObject ();
@@ -575,7 +573,7 @@ pbObject::call (const Identifier & identifier, const std::vector <var> & argumen
 throw (pbError,
        std::invalid_argument)
 {
-	const auto property = get (identifier);
+	const auto property = get (identifier) .first;
 
 	if (property .isObject ())
 	{

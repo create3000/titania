@@ -43,7 +43,7 @@ Transform {
 DEF Felulet Script {
   eventIn  SFTime set_time
   eventOut SFImage image_changed
-  field    SFInt32 size 16
+  field    SFInt32 size 32
   field    MFInt32 sample1 [ 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 ]
   field    MFInt32 sample2 [ 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 ]
 

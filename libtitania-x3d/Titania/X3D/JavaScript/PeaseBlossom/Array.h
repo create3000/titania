@@ -116,8 +116,8 @@ private:
 	set1Value (pb::pbObject* const, const pb::Identifier &, const pb::var &);
 
 	static
-	bool
-	get1Value (pb::pbObject* const, const pb::Identifier &, pb::var &);
+	std::pair <pb::var, bool>
+	get1Value (pb::pbObject* const, const pb::Identifier &);
 
 	///  @name Properties
 
@@ -290,25 +290,23 @@ Array <Type, InternalType>::set1Value (pb::pbObject* const object, const pb::Ide
 }
 
 template <class Type, class InternalType>
-bool
-Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Identifier & identifier, pb::var & value)
+std::pair <pb::var, bool>
+Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Identifier & identifier)
 {
 	try
 	{
 		const auto index = identifier .toUInt32 ();
 
 		if (index == pb::PROPERTY)
-			return false;
+			return std::make_pair (pb::undefined, false);
 
 		const auto context = getContext (object);
 		const auto array   = getObject <InternalType> (object);
 
 		if (index >= array -> size ())
-			return false;
+			return std::make_pair (pb::undefined, false);
 
-		value = get <Type> (context, &(*array) [index]);
-
-		return true;
+		return std::make_pair (get <Type> (context, &(*array) [index]), true);
 	}
 	catch (const std::bad_alloc &)
 	{

@@ -133,7 +133,7 @@ Array::toStream (std::ostream & ostream) const
 
 	for (uint32_t index = 0, size = length - 1; index < size; ++ index)
 	{
-		const var value = get (basic::to_string (index));
+		const var value = get (basic::to_string (index)) .first;
 	
 		if (value .isUndefined ())
 			ostream << ',';
@@ -141,7 +141,7 @@ Array::toStream (std::ostream & ostream) const
 			ostream << value << ',';
 	}
 
-	const var value = get (basic::to_string (length - 1));
+	const var value = get (basic::to_string (length - 1)) .first;
 
 	if (not value .isUndefined ())
 		ostream << value;

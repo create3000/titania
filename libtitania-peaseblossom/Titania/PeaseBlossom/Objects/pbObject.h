@@ -246,7 +246,7 @@ using EnumerateCallback = std::function <bool (pbObject* const, const EnumerateT
 using HasPropertyCallback = std::function <bool (pbObject* const, const Identifier &)>;
 
 ///  Type to represent a property getter callback function.
-using PropertyGetter = std::function <bool (pbObject* const, const Identifier &, var &)>;
+using PropertyGetter = std::function <std::pair <var, bool> (pbObject* const, const Identifier &)>;
 
 ///  Type to represent a property setter callback function.
 using PropertySetter = std::function <bool (pbObject* const, const Identifier &, const var &)>;
@@ -317,6 +317,11 @@ public:
 	noexcept (true)
 	{ callbacks = &value; }
 
+	const Callbacks &
+	getCallbacks () const
+	noexcept (true)
+	{ return *callbacks; }
+
 	///  @name Property access
 
 	///  Checks whether this object has a property @a identifier.
@@ -333,16 +338,9 @@ public:
 	{ return put (identifier, value, NONE, throw_); }
 
 	///  Returns the value of the property for @a identifier.
-	var
+	std::pair <var, bool>
 	get (const Identifier & identifier) const
-	throw (pbError)
-	{
-		var value;
-		
-		get (identifier, value);
-
-		return value;
-	}
+	throw (pbError);
 
 	ptr <pbObject>
 	getObject (const Identifier & identifier) const

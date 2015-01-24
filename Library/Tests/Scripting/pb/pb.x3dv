@@ -372,7 +372,7 @@ function set_time (value, time)
 	print ('set_time: time:  ', time);
 	print ('set_time: now:   ', now ());
 
-	var f = 1;
+	var f = 10;
 
 	var t0 = now ();
 	print ();

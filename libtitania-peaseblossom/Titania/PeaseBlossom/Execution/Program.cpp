@@ -88,7 +88,7 @@ noexcept (true)
 	standardClasses [(size_t) StandardClassType::Object] = objectClass;
 
 	// Add global object.
-	getLocalObjects () .emplace_back (new Standard::GlobalObject (this, std::bind (&Program::resolve, this, _1)));
+	getVariableObjects () .emplace_back (new Standard::GlobalObject (this, std::bind (&Program::resolve, this, _1)));
 
 	getGlobalObject () -> addOwnProperty ("Function", functionClass, WRITABLE | CONFIGURABLE);
 	getGlobalObject () -> addOwnProperty ("Object",   objectClass,   WRITABLE | CONFIGURABLE);

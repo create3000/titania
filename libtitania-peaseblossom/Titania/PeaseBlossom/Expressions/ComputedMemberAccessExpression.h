@@ -173,7 +173,7 @@ public:
 			}
 			case OBJECT:
 			{
-				return base .getObject () -> get (name);
+				return std::move (base .getObject () -> get (name) .first);
 			}
 		}
 
