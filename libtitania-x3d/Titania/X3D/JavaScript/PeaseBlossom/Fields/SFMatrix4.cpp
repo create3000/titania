@@ -61,6 +61,9 @@ template <>
 const std::string SFMatrix4f::typeName = "SFMatrix4f";
 
 template <>
+const std::string VrmlMatrix::typeName = "VrmlMatrix";
+
+template <>
 const pb::Callbacks SFMatrix4d::callbacks = {
 	pb::EnumerateCallback (),
 	pb::HasPropertyCallback (),
@@ -80,8 +83,19 @@ const pb::Callbacks SFMatrix4f::callbacks = {
 	dispose <SFMatrix4f>
 };
 
+template <>
+const pb::Callbacks VrmlMatrix::callbacks = {
+	pb::EnumerateCallback (),
+	pb::HasPropertyCallback (),
+	pb::PropertyGetter (),
+	pb::PropertySetter (),
+	pb::ResolveCallback (),
+	dispose <VrmlMatrix>
+};
+
 template class SFMatrix4 <X3D::SFMatrix4d>;
 template class SFMatrix4 <X3D::SFMatrix4f>;
+template class SFMatrix4 <X3D::VrmlMatrix>;
 
 } // peaseblossom
 } // X3D

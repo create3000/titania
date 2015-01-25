@@ -152,12 +152,18 @@ private:
 
 template <>
 inline
+X3D::X3DChildObject*
+X3DField::getKey <SFNode> (X3D::SFNode* const field)
+{ return field -> getValue (); }
+
+template <>
+inline
 pb::var
-X3DField::get <SFNode> (Context* const context, SFNode::internal_type* const field)
+X3DField::get <SFNode> (Context* const context, X3D::SFNode* const field)
 {
 	if (field -> getValue ())
 	{
-		const auto object = context -> getObject (field);
+		const auto object = context -> getObject (getKey <SFNode> (field));
 
 		if (object)
 			return object;

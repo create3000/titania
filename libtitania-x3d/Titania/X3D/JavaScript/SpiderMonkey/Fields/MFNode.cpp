@@ -58,7 +58,7 @@ template <>
 JSClass MFNode::static_class = {
 	"MFNode", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFNode>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -108,7 +108,7 @@ MFNode::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* 
 		if (not JSID_IS_INT (id))
 			return true;
 
-		const auto array = getThis <X3DArrayField <SFNode, X3D::MFNode>> (cx, obj);
+		const auto array = getThis <MFNode> (cx, obj);
 		const auto index = JSID_TO_INT (id);
 
 		if (index < 0)
@@ -146,7 +146,7 @@ MFNode::unshift (JSContext* cx, uint32_t argc, jsval* vp)
 	try
 	{
 		const auto argv  = JS_ARGV (cx, vp);
-		const auto array = getThis <X3DArrayField <SFNode, X3D::MFNode>> (cx, vp);
+		const auto array = getThis <MFNode> (cx, vp);
 		
 		try
 		{
@@ -175,7 +175,7 @@ MFNode::push (JSContext* cx, uint32_t argc, jsval* vp)
 	try
 	{
 		const auto argv  = JS_ARGV (cx, vp);
-		const auto array = getThis <X3DArrayField <SFNode, X3D::MFNode>> (cx, vp);
+		const auto array = getThis <MFNode> (cx, vp);
 		
 		try
 		{

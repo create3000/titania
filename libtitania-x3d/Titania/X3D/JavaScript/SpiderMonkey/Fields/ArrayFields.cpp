@@ -58,7 +58,7 @@ template <>
 JSClass MFBool::static_class = {
 	"MFBool", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFBool>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -67,7 +67,7 @@ template <>
 JSClass MFColor::static_class = {
 	"MFColor", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFColor>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -76,7 +76,7 @@ template <>
 JSClass MFColorRGBA::static_class = {
 	"MFColorRGBA", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFColorRGBA>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -85,7 +85,7 @@ template <>
 JSClass MFDouble::static_class = {
 	"MFDouble", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFDouble>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -94,7 +94,7 @@ template <>
 JSClass MFFloat::static_class = {
 	"MFFloat", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFFloat>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -103,7 +103,7 @@ template <>
 JSClass MFImage::static_class = {
 	"MFImage", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFImage>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -112,7 +112,7 @@ template <>
 JSClass MFInt32::static_class = {
 	"MFInt32", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFInt32>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -121,7 +121,7 @@ template <>
 JSClass MFMatrix3d::static_class = {
 	"MFMatrix3d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFMatrix3d>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -130,7 +130,7 @@ template <>
 JSClass MFMatrix3f::static_class = {
 	"MFMatrix3f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFMatrix3f>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -139,7 +139,7 @@ template <>
 JSClass MFMatrix4d::static_class = {
 	"MFMatrix4d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFMatrix4d>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -148,7 +148,7 @@ template <>
 JSClass MFMatrix4f::static_class = {
 	"MFMatrix4f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFMatrix4f>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -157,7 +157,7 @@ template <>
 JSClass MFRotation::static_class = {
 	"MFRotation", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFRotation>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -166,7 +166,7 @@ template <>
 JSClass MFString::static_class = {
 	"MFString", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFString>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -175,7 +175,7 @@ template <>
 JSClass MFTime::static_class = {
 	"MFTime", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFTime>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -184,7 +184,7 @@ template <>
 JSClass MFVec2d::static_class = {
 	"MFVec2d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFVec2d>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -193,7 +193,7 @@ template <>
 JSClass MFVec2f::static_class = {
 	"MFVec2f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFVec2f>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -202,7 +202,7 @@ template <>
 JSClass MFVec3d::static_class = {
 	"MFVec3d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFVec3d>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -211,7 +211,7 @@ template <>
 JSClass MFVec3f::static_class = {
 	"MFVec3f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFVec3f>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -220,7 +220,7 @@ template <>
 JSClass MFVec4d::static_class = {
 	"MFVec4d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFVec4d>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -229,7 +229,7 @@ template <>
 JSClass MFVec4f::static_class = {
 	"MFVec4f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <MFVec4f>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };

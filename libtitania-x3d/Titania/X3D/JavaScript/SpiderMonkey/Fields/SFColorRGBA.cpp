@@ -62,7 +62,7 @@ const size_t SFColorRGBA::size = 4;
 JSClass SFColorRGBA::static_class = {
 	"SFColorRGBA", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <SFColorRGBA>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };

@@ -140,6 +140,12 @@ private:
 	pb::var
 	toString (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
+	template <class Class>
+	static
+	X3D::X3DChildObject*
+	getKey (typename Class::internal_type* const field)
+	{ return field; }
+
 	///  @name Static members
 
 	static const std::string typeName;
@@ -150,7 +156,7 @@ template <class Class>
 pb::var
 X3DField::get (Context* const context, typename Class::internal_type* const field)
 {
-	const auto object = context -> getObject (field);
+	const auto object = context -> getObject (getKey <Class> (field));
 
 	if (object)
 		return object;
@@ -176,7 +182,7 @@ X3DField::setUserData (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject
 {
 	const auto context  = getContext (ec);
 	auto &     userData = object -> getUserData ();
-	const bool loose    = field -> getParents () .empty ();
+	const bool loose    = field -> getParents () .empty () and getKey <Class> (field) == field;
 
 	userData .reserve (3);
 	userData .emplace_back (context);
@@ -187,7 +193,7 @@ X3DField::setUserData (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject
 	if (loose)
 		field -> addParent (context);
 	else
-		context -> addObject (field, object);
+		context -> addObject (getKey <Class> (field), object);
 }
 
 template <class Class>
@@ -200,7 +206,7 @@ X3DField::dispose (pb::pbObject* const object)
 	if (object -> getUserData <size_t> (2))
 		field -> removeParent (context);
 	else
-		context -> removeObject (field);
+		context -> removeObject (getKey <Class> (field));
 }
 
 } // peaseblossom

@@ -199,18 +199,6 @@ X3DField::toString (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-void
-X3DField::finalize (JSContext* cx, JSObject* obj)
-{
-	const auto context = getContext (cx);
-	const auto field   = getObject <X3D::X3DFieldDefinition*> (cx, obj);
-
-	// Proto objects have no private
-
-	if (field)
-		context -> removeObject (field);
-}
-
 } // spidermonkey
 } // X3D
 } // Titania

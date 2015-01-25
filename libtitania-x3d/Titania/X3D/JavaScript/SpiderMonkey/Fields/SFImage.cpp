@@ -61,7 +61,7 @@ namespace spidermonkey {
 JSClass SFImage::static_class = {
 	"SFImage", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, finalize,
+	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, finalize <SFImage>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -67,7 +67,7 @@ namespace spidermonkey {
 JSClass SFNode::static_class = {
 	"SFNode", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, getProperty, setProperty,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <SFNode>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -92,7 +92,7 @@ SFNode::init (JSContext* const cx, JSObject* const global, JSObject* const paren
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
-	
+
 	return proto;
 }
 
@@ -112,16 +112,16 @@ SFNode::construct (JSContext* cx, uint32_t argc, jsval* vp)
 					const auto script     = getContext (cx) -> getScriptNode ();
 					const auto scene      = Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (vrmlSyntax);
 
+					if (scene -> getRootNodes () .empty ())
+						return ThrowException (cx, "%s .new: Invalid argument.", getClass () -> name);
+
 					return create <SFNode> (cx,
-					                          scene -> getRootNodes () .empty ()
-					                          ? new X3D::SFNode ()
-										           : new X3D::SFNode (scene -> getRootNodes () [0]),
-					                          &JS_RVAL (cx, vp));
+					                        new X3D::SFNode (scene -> getRootNodes () [0]),
+					                        &JS_RVAL (cx, vp));
 				}
 				catch (const X3DError & error)
 				{
-					JS_ReportError (cx, error .what ());
-					return false;
+					return ThrowException (cx, error .what ());
 				}
 			}
 			default:
@@ -197,7 +197,7 @@ SFNode::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* sta
 	catch (const std::exception &)
 	{
 		*statep = JSVAL_NULL;
-		return true;	
+		return true;
 	}
 }
 

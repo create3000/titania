@@ -118,15 +118,15 @@ public:
 	{ return protos [size_t (type)]; }
 
 	void
-	addObject (X3D::X3DFieldDefinition* const, JSObject* const)
+	addObject (X3D::X3DChildObject* const, JSObject* const)
 	noexcept (true);
 
 	void
-	removeObject (X3D::X3DFieldDefinition* const)
+	removeObject (X3D::X3DChildObject* const)
 	noexcept (true);
 
 	JSObject*
-	getObject (X3D::X3DFieldDefinition* const field) const
+	getObject (X3D::X3DChildObject* const) const
 	noexcept (true);
 
 	std::unique_ptr <SceneLoader> &
@@ -243,11 +243,11 @@ private:
 	jsval eventsProcessedFn;
 	jsval shutdownFn;
 
-	std::vector <JSObject*>                   protos;
-	std::map <std::string, jsval>             fields;
-	std::map <X3DFieldDefinition*, jsval>     functions;
-	std::map <X3DFieldDefinition*, JSObject*> objects;
-	std::map <basic::uri, jsval>              files;
+	std::vector <JSObject*>                    protos;
+	std::map <std::string, jsval>              fields;
+	std::map <X3D::X3DFieldDefinition*, jsval> functions;
+	std::map <X3D::X3DChildObject*, JSObject*> objects;
+	std::map <basic::uri, jsval>               files;
 
 	std::unique_ptr <SceneLoader> future;
 

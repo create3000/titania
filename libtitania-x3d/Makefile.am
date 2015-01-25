@@ -452,7 +452,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/RouteArray.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/String.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/value.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/X3DArrayField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DConstants.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DExecutionContext.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DExternProtoDeclaration.cpp \

@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_FIELDS_SFMATRIX4_H__
 
 #include "../../../Fields/SFMatrix4.h"
+#include "../../../Fields/VrmlMatrix.h"
 #include "../X3DField.h"
 #include "SFRotation.h"
 #include "SFVec3.h"
@@ -522,6 +523,7 @@ SFMatrix4 <Type>::multMatrixDir (const pb::ptr <pb::pbExecutionContext> & ec, pb
 
 using SFMatrix4d = SFMatrix4 <X3D::SFMatrix4d>;
 using SFMatrix4f = SFMatrix4 <X3D::SFMatrix4f>;
+using VrmlMatrix = SFMatrix4 <X3D::VrmlMatrix>;
 
 template <>
 constexpr ObjectType
@@ -537,8 +539,16 @@ SFMatrix4f::getType ()
 	return ObjectType::SFMatrix4f;
 }
 
+template <>
+constexpr ObjectType
+VrmlMatrix::getType ()
+{
+	return ObjectType::VrmlMatrix;
+}
+
 extern template class SFMatrix4 <X3D::SFMatrix4d>;
 extern template class SFMatrix4 <X3D::SFMatrix4f>;
+extern template class SFMatrix4 <X3D::VrmlMatrix>;
 
 } // peaseblossom
 } // X3D

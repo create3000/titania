@@ -1248,7 +1248,6 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\ProtoDeclarationArray.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\RouteArray.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\String.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DArrayField.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DConstants.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DExecutionContext.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DExternProtoDeclaration.cpp" />

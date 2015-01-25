@@ -97,6 +97,8 @@ enum class ObjectType
 	MFVec3f,
 	MFVec4d,
 	MFVec4f,
+	
+	VrmlMatrix,
 
 	SIZE
 };

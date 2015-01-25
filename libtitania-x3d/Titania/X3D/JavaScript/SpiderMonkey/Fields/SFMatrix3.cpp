@@ -58,7 +58,7 @@ template <>
 JSClass SFMatrix3d::static_class = {
 	"SFMatrix3d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize <SFMatrix3d>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -67,7 +67,7 @@ template <>
 JSClass SFMatrix3f::static_class = {
 	"SFMatrix3f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize <SFMatrix3f>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };

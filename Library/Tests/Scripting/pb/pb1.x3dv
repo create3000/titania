@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 01 Jun 2014 03:00:06 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.6, http://titania.create3000.de"
-META "modified" "Wed, 31 Dec 2014 07:42:19 GMT"
+META "modified" "Sun, 25 Jan 2015 06:43:38 GMT"
 
 DEF Sunset Background {
   skyAngle [
@@ -59,15 +59,12 @@ Transform {
   ]
 }
 
-DEF Script1 Script {
-  inputOnly SFTime set_time
-  field    SFInt32 size 8000000
-  field    MFInt32 array [ ]
-  field    SFNode  node DEF T Transform {}
-  field    MFNode  nodes [USE T USE T USE T]
+DEF PeaseBlossom Script {
+  inputOnly      SFTime  set_time
+  initializeOnly SFInt32 size 8000000
+  initializeOnly MFInt32 array [ ]
 
-    url [
- "peaseblossom:
+  url "peaseblossom:
 function initialize ()
 {
 }
@@ -112,25 +109,14 @@ function enumerate (o)
 
 	return o;
 }
-
-function f (value)
-{
-	var value;
-
-	print ('value: ', value)
-}
-
-print ()
-f (123);
 "
-]
   directOutput TRUE
 }
 
-DEF Script2 Script {
-  inputOnly SFTime   set_time
-  field    SFInt32 size 10000
-  field    MFInt32 array [ ]
+DEF SpiderMonkey Script {
+  inputOnly      SFTime  set_time
+  initializeOnly SFInt32 size 10000
+  initializeOnly MFInt32 array [ ]
 
   url "javascript:
 function set_time (value, time)
@@ -151,5 +137,5 @@ function set_time (value, time)
   directOutput TRUE
 }
 
-ROUTE _2.touchTime TO Script2.set_time
-ROUTE _1.touchTime TO Script1.set_time
+ROUTE _2.touchTime TO SpiderMonkey.set_time
+ROUTE _1.touchTime TO PeaseBlossom.set_time

@@ -267,6 +267,7 @@ Context::addUserDefinedField (X3D::X3DFieldDefinition* const field)
 		case X3D::X3DConstants::SFDouble:
 		case X3D::X3DConstants::SFFloat:
 		case X3D::X3DConstants::SFInt32:
+		case X3D::X3DConstants::SFNode:
 		case X3D::X3DConstants::SFString:
 		case X3D::X3DConstants::SFTime:
 			break;
@@ -298,6 +299,7 @@ Context::defineProperty (JSObject* const obj,
 		case X3D::X3DConstants::SFDouble:
 		case X3D::X3DConstants::SFFloat:
 		case X3D::X3DConstants::SFInt32:
+		case X3D::X3DConstants::SFNode:
 		case X3D::X3DConstants::SFString:
 		case X3D::X3DConstants::SFTime:
 		{
@@ -371,30 +373,30 @@ Context::getProperty (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 void
-Context::addObject (X3D::X3DFieldDefinition* const field, JSObject* const object)
+Context::addObject (X3D::X3DChildObject* const child, JSObject* const object)
 noexcept (true)
 {
-	assert (objects .emplace (field, object) .second);
+	assert (objects .emplace (child, object) .second);
 
-	field -> addParent (this);
+	child -> addParent (this);
 }
 
 void
-Context::removeObject (X3D::X3DFieldDefinition* const field)
+Context::removeObject (X3D::X3DChildObject* const child)
 noexcept (true)
 {
-	if (objects .erase (field))
-		field -> removeParent (this);
+	if (objects .erase (child))
+		child -> removeParent (this);
 
 	else
-		__LOG__ << field -> getName () << " : " << field -> getTypeName () << std::endl;
+		__LOG__ << child -> getName () << " : " << child -> getTypeName () << std::endl;
 }
 
 JSObject*
-Context::getObject (X3D::X3DFieldDefinition* const field) const
+Context::getObject (X3D::X3DChildObject* const child) const
 noexcept (true)
 {
-	const auto iter = objects .find (field);
+	const auto iter = objects .find (child);
 
 	if (iter not_eq objects .end ())
 		return iter -> second;

@@ -58,7 +58,7 @@ template <>
 JSClass SFVec4d::static_class = {
 	"SFVec4d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <SFVec4d>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -67,7 +67,7 @@ template <>
 JSClass SFVec4f::static_class = {
 	"SFVec4f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <SFVec4f>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };

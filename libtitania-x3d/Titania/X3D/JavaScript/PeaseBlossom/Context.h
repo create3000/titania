@@ -112,15 +112,15 @@ public:
 	throw (std::out_of_range);
 
 	void
-	addObject (X3D::X3DFieldDefinition* const, pb::pbObject* const)
+	addObject (X3D::X3DChildObject* const, pb::pbObject* const)
 	throw (std::invalid_argument);
 
 	void
-	removeObject (X3D::X3DFieldDefinition* const)
+	removeObject (X3D::X3DChildObject* const)
 	noexcept (true);
 
 	pb::pbObject*
-	getObject (X3DFieldDefinition* const field) const
+	getObject (X3DChildObject* const field) const
 	noexcept (true);
 
 	///  @name Destruction
@@ -197,7 +197,7 @@ private:
 	pb::ptr <pb::pbExecutionContext>                   program;
 	pb::Callbacks                                      callbacks;
 	mutable std::vector <pb::ptr <pb::NativeFunction>> classes;
-	std::map <X3D::X3DFieldDefinition*, pb::pbObject*> objects;
+	std::map <X3D::X3DChildObject*, pb::pbObject*>     objects;
 	std::vector <X3D::X3DFieldDefinition*>             userDefinedFields;
 	std::vector <pb::var>                              values;
 

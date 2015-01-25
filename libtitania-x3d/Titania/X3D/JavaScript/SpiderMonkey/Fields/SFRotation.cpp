@@ -63,7 +63,7 @@ const size_t SFRotation::size = 4;
 JSClass SFRotation::static_class = {
 	"SFRotation", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <SFRotation>,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };

@@ -103,8 +103,17 @@ public:
 
 protected:
 
+	///  @name Operations
+
+	template <class Class>
+	static
+	X3D::X3DChildObject*
+	getKey (typename Class::internal_type* const field)
+	{ return field; }
+
 	///  @name Destruction
 
+	template <class Type>
 	static
 	void
 	finalize (JSContext*, JSObject*);
@@ -128,12 +137,12 @@ private:
 
 };
 
-template <class Type>
+template <class Class>
 JSBool
-X3DField::get (JSContext* const cx, typename Type::internal_type* const field, jsval* const vp)
+X3DField::get (JSContext* const cx, typename Class::internal_type* const field, jsval* const vp)
 {
 	const auto context = getContext (cx);
-	const auto object  = context -> getObject (field);
+	const auto object  = context -> getObject (getKey <Class> (field));
 
 	if (object)
 	{
@@ -141,25 +150,38 @@ X3DField::get (JSContext* const cx, typename Type::internal_type* const field, j
 		return true;
 	}
 
-	return create <Type> (cx, field, vp);
+	return create <Class> (cx, field, vp);
 }
 
-template <class Type>
+template <class Class>
 JSBool
-X3DField::create (JSContext* const cx, typename Type::internal_type* const field, jsval* const vp)
+X3DField::create (JSContext* const cx, typename Class::internal_type* const field, jsval* const vp)
 {
 	const auto context = getContext (cx);
-	const auto result  = JS_NewObject (cx, Type::getClass (), nullptr, nullptr);
+	const auto result  = JS_NewObject (cx, Class::getClass (), nullptr, nullptr);
 
 	if (result == nullptr)
 		return ThrowException (cx, "out of memory");
 
 	JS_SetPrivate (cx, result, field);
 
-	context -> addObject (field, result);
+	context -> addObject (getKey <Class> (field), result);
 
 	*vp = OBJECT_TO_JSVAL (result);
 	return true;
+}
+
+template <class Class>
+void
+X3DField::finalize (JSContext* cx, JSObject* obj)
+{
+	const auto context = getContext (cx);
+	const auto field   = getObject <typename Class::internal_type*> (cx, obj);
+
+	// Proto objects have no private
+
+	if (field)
+		context -> removeObject (getKey <Class> (field));
 }
 
 } // spidermonkey

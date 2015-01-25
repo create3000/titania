@@ -114,6 +114,35 @@ private:
 
 };
 
+template <>
+inline
+X3D::X3DChildObject*
+X3DField::getKey <SFNode> (X3D::SFNode* const field)
+{ return field -> getValue (); }
+
+template <>
+inline
+JSBool
+X3DField::get <SFNode> (JSContext* const cx, X3D::SFNode* const field, jsval* const vp)
+{
+	if (field -> getValue ())
+	{
+		const auto context = getContext (cx);
+		const auto object  = context -> getObject (getKey <SFNode> (field));
+
+		if (object)
+		{
+			*vp = OBJECT_TO_JSVAL (object);
+			return true;
+		}
+
+		return create <SFNode> (cx, new X3D::SFNode (*field), vp);
+	}
+
+	*vp = JSVAL_NULL;
+	return true;
+}
+
 } // spidermonkey
 } // X3D
 } // titania

@@ -242,7 +242,10 @@ Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
 		std::make_pair ("MFVec3d",       MFVec3d::getType ()),
 		std::make_pair ("MFVec3f",       MFVec3f::getType ()),
 		std::make_pair ("MFVec4d",       MFVec4d::getType ()),
-		std::make_pair ("MFVec4f",       MFVec4f::getType ())
+		std::make_pair ("MFVec4f",       MFVec4f::getType ()),
+		
+		// VrmlMatrix
+		std::make_pair ("VrmlMatrix",    VrmlMatrix::getType ())
 	};
 
 
@@ -265,6 +268,7 @@ throw (std::out_of_range)
 		// Fields
 		X3DField::initialize,
 		X3DArrayField::initialize,
+
 		// Fields
 		SFColor::initialize,
 		SFColorRGBA::initialize,
@@ -281,6 +285,7 @@ throw (std::out_of_range)
 		SFVec3f::initialize,
 		SFVec4d::initialize,
 		SFVec4f::initialize,
+
 		// Array Fields
 		MFBool::initialize,
 		MFColor::initialize,
@@ -302,7 +307,10 @@ throw (std::out_of_range)
 		MFVec3d::initialize,
 		MFVec3f::initialize,
 		MFVec4d::initialize,
-		MFVec4f::initialize
+		MFVec4f::initialize,
+
+		// VrmlMatrix
+		VrmlMatrix::initialize
 	};
 
 	auto & standardClass = classes [size_t (type)];
@@ -314,31 +322,31 @@ throw (std::out_of_range)
 }
 
 void
-Context::addObject (X3DFieldDefinition* const field, pb::pbObject* const object)
+Context::addObject (X3DChildObject* const child, pb::pbObject* const object)
 throw (std::invalid_argument)
 {
-	if (not objects .emplace (field, object) .second)
+	if (not objects .emplace (child, object) .second)
 		throw std::invalid_argument ("Context::addObject");
 
-	field -> addParent (this);
+	child -> addParent (this);
 }
 
 void
-Context::removeObject (X3D::X3DFieldDefinition* const field)
+Context::removeObject (X3D::X3DChildObject* const child)
 noexcept (true)
 {
-	if (objects .erase (field))
-		field -> removeParent (this);
+	if (objects .erase (child))
+		child -> removeParent (this);
 	
 	else
-		__LOG__ << field -> getName () << " : " << field -> getTypeName () << std::endl;
+		__LOG__ << child -> getName () << " : " << child -> getTypeName () << std::endl;
 }
 
 pb::pbObject*
-Context::getObject (X3DFieldDefinition* const field) const
+Context::getObject (X3DChildObject* const child) const
 noexcept (true)
 {
-	const auto iter = objects .find (field);
+	const auto iter = objects .find (child);
 
 	if (iter not_eq objects .end ())
 		return iter -> second;
