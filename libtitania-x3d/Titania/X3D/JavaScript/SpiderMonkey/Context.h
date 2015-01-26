@@ -118,11 +118,11 @@ public:
 	{ return protos [size_t (type)]; }
 
 	void
-	addObject (X3D::X3DChildObject* const, JSObject* const)
+	addObject (X3D::X3DChildObject* const, X3D::X3DFieldDefinition* const, JSObject* const)
 	noexcept (true);
 
 	void
-	removeObject (X3D::X3DChildObject* const)
+	removeObject (X3D::X3DChildObject* const, X3D::X3DFieldDefinition* const)
 	noexcept (true);
 
 	JSObject*
@@ -241,7 +241,6 @@ private:
 	jsval initializeFn;
 	jsval prepareEventsFn;
 	jsval eventsProcessedFn;
-	jsval shutdownFn;
 
 	std::vector <JSObject*>                    protos;
 	std::map <std::string, jsval>              fields;

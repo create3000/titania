@@ -143,7 +143,7 @@ X3DScene::rootNodes (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 
 		const auto scene = getThis <X3DScene> (cx, obj);
 
-		return X3DField::create <MFNode> (cx, &scene -> getRootNodes (), vp);
+		return X3DField::get <MFNode> (cx, &scene -> getRootNodes (), vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -281,9 +281,9 @@ X3DScene::getExportedNode (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto argv         = JS_ARGV (cx, vp);
 		const auto scene        = getThis <X3DScene> (cx, vp);
 		const auto exportedName = getArgument <std::string> (cx, argv, 0);
-		auto       namedNode    = scene -> getExportedNode (exportedName);
+		auto       exportedNode = scene -> getExportedNode (exportedName);
 
-		return X3DField::create <SFNode> (cx, new X3D::SFNode (std::move (namedNode)), &JS_RVAL (cx, vp));
+		return X3DField::get <SFNode> (cx, &exportedNode, &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{

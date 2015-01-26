@@ -99,7 +99,7 @@ X3DRoute::create (JSContext* const cx, const X3D::RoutePtr & route, jsval* const
 
 	JS_SetPrivate (cx, result, field);
 
-	getContext (cx) -> addObject (field, result);
+	getContext (cx) -> addObject (field, field, result);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
@@ -113,9 +113,10 @@ X3DRoute::sourceNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto & route = *getThis <X3DRoute> (cx, obj);
+		const auto & route      = *getThis <X3DRoute> (cx, obj);
+		auto         sourceNode = route -> getSourceNode ();
 
-		return X3DField::create <SFNode> (cx, new X3D::SFNode (route -> getSourceNode ()), vp);
+		return X3DField::get <SFNode> (cx, &sourceNode, vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -143,9 +144,10 @@ X3DRoute::destinationNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto & route = *getThis <X3DRoute> (cx, obj);
+		const auto & route           = *getThis <X3DRoute> (cx, obj);
+		auto         destinationNode = route -> getDestinationNode ();
 
-		return X3DField::create <SFNode> (cx, new X3D::SFNode (route -> getDestinationNode ()), vp);
+		return X3DField::get <SFNode> (cx, &destinationNode, vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -174,7 +176,7 @@ X3DRoute::finalize (JSContext* cx, JSObject* obj)
 	const auto route = getObject <X3D::RoutePtr*> (cx, obj);
 
 	if (route)
-		getContext (cx) -> removeObject (route);
+		getContext (cx) -> removeObject (route, route);
 }
 
 } // spidermonkey

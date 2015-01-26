@@ -193,7 +193,7 @@ X3DField::setUserData (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject
 	if (loose)
 		field -> addParent (context);
 	else
-		context -> addObject (getKey <Class> (field), object);
+		context -> addObject (getKey <Class> (field), field, object);
 }
 
 template <class Class>
@@ -206,7 +206,7 @@ X3DField::dispose (pb::pbObject* const object)
 	if (object -> getUserData <size_t> (2))
 		field -> removeParent (context);
 	else
-		context -> removeObject (getKey <Class> (field));
+		context -> removeObject (getKey <Class> (field), field);
 }
 
 } // peaseblossom

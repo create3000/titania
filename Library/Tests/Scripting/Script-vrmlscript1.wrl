@@ -98,7 +98,7 @@ function initialize()
 	
 	
 	print ('#######################################');
-	nodes = new MFNode (new SFNode(), node, node);
+	nodes = new MFNode (new SFNode('Transform {}'), node, node);
 	print (nodes);
 	print (nodes);
 	
@@ -115,7 +115,7 @@ function initialize()
 	nodes [0] = nodes [1];
 	print (nodes);
 
-	nodes [0] = new SFNode ();
+	nodes [0] = new SFNode ('Transform {}');
 	print (nodes);
 	
 	node.headlight = false;
@@ -167,7 +167,7 @@ function initialize()
 	print ('-- 3 ');
 
 	print ('');
-	node = new SFNode();
+	node = new SFNode('Transform {}');
 	print (node.getFieldDefinitions().length);
 	for (key in node.getFieldDefinitions()) { print (key + ': ' + node.getFieldDefinitions()[key].name + ' ' + node.getFieldDefinitions()[key].accessType + ' ' + node.getFieldDefinitions()[key].dataType); };
 	colors = new MFColor(new SFColor(), new SFColor(0.1,0.2,0.3));
@@ -175,7 +175,7 @@ function initialize()
 	color = colors[0];
 	color.g = 0.5;
 	colors.length = 0;
-	colors[0].r = 0.5;
+	colors[0] = new SFColor (0.5, 0.5, 0.5);
 	colors[1] = colors[0];
 	
 	print (colors);
@@ -192,7 +192,7 @@ function initialize()
 	print (node.getNodeType());
 	print (node.getNodeName());
 	print (scene);
-	print (new SFNode() == 'NULL' ? true : false);
+	print (new SFNode('Transform {}') == 'NULL' ? true : false);
 
 	mf = new MFInt32(1,2,3);
 	mf.i = 123;

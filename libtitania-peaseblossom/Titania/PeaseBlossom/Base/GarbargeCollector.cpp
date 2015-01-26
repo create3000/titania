@@ -91,7 +91,7 @@ GarbageCollector::deleteObjectsAsync ()
 	
 	cache .clear ();
 
-	__LOG__ << objects .size () << std::endl;
+	//__LOG__ << objects .size () << std::endl;
 
 	if (objects .empty ())
 		return;

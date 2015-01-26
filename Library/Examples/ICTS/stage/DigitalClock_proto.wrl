@@ -34,12 +34,13 @@ function  set_time(value, time)
                 fraction[i].whichChoice = whichChoice;
         f -= whichChoice;
     }
+    if (l > 0) {
         if (t != sec && l) {
                 sec = t;
                 s = sec % 60; t =  sec / 60;
                 e = s % 10;
                 children[0].whichChoice = e;
-                if (l > 0) {
+                if (l > 1) {
                         z = s / 10;
                         children[1].whichChoice = z;
                         if (t != min && l > 2) {
@@ -50,12 +51,12 @@ function  set_time(value, time)
                                 if (l > 2) {
                                         z = m / 10;
                                         children[3].whichChoice = z;
-                                        if (t != hour && l > 3) {
+                                        if (t != hour && l > 4) {
                                                 hour = t;
                                                 h = hour % 24; t = hour / 24;
                                                 e = h  % 10;
                                                 children[4].whichChoice = e;
-                                                if (l > 4) {
+                                                if (l > 5) {
                                                         z = h  / 10;
                                                         children[5].whichChoice = z;
                                                 }
@@ -64,6 +65,7 @@ function  set_time(value, time)
                         }
                 }
         }
+    }
 }
 function  initialize()
 {

@@ -79,7 +79,7 @@ throw (std::exception) :
 	        userDefinedFields (script -> getUserDefinedFields ()),
 	                   values ()
 {
-	__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
+	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
 
 	try
 	{
@@ -87,7 +87,7 @@ throw (std::exception) :
 		addUserDefinedFields ();
 
 		program -> fromString (getECMAScript ());		
-		getBrowser () -> print ("*** run: ", program -> run (), "\n");
+		program -> run ();
 	}
 	catch (const pb::pbError & error)
 	{
@@ -96,7 +96,7 @@ throw (std::exception) :
 		throw;
 	}
 
-	__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
+	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
 }
 
 X3DBaseNode*
@@ -197,7 +197,7 @@ Context::defineProperty (pb::ptr <pb::pbObject> const object,
 bool
 Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
 {
-	__LOG__ << identifier << std::endl;
+	//__LOG__ << identifier << std::endl;
 
 	static const std::map <pb::Identifier, ObjectType> types = {
 		// Fields
@@ -322,31 +322,30 @@ throw (std::out_of_range)
 }
 
 void
-Context::addObject (X3DChildObject* const child, pb::pbObject* const object)
+Context::addObject (X3DChildObject* const key, X3D::X3DFieldDefinition* const field, pb::pbObject* const object)
 throw (std::invalid_argument)
 {
-	if (not objects .emplace (child, object) .second)
-		throw std::invalid_argument ("Context::addObject");
+	assert (objects .emplace (key, object) .second);
 
-	child -> addParent (this);
+	field -> addParent (this);
 }
 
 void
-Context::removeObject (X3D::X3DChildObject* const child)
+Context::removeObject (X3DChildObject* const key, X3D::X3DFieldDefinition* const field)
 noexcept (true)
 {
-	if (objects .erase (child))
-		child -> removeParent (this);
+	if (objects .erase (key))
+		field -> removeParent (this);
 	
 	else
-		__LOG__ << child -> getName () << " : " << child -> getTypeName () << std::endl;
+		__LOG__ << field -> getTypeName () << " : " << field -> getName () << std::endl;
 }
 
 pb::pbObject*
-Context::getObject (X3DChildObject* const child) const
+Context::getObject (X3DChildObject* const key) const
 noexcept (true)
 {
-	const auto iter = objects .find (child);
+	const auto iter = objects .find (key);
 
 	if (iter not_eq objects .end ())
 		return iter -> second;
@@ -377,7 +376,7 @@ Context::getProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject*
 void
 Context::initialize ()
 {
-	__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
+	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
 
 	X3DJavaScriptContext::initialize ();
 
@@ -397,7 +396,9 @@ Context::initialize ()
 	catch (const std::exception & error)
 	{ }
 
-	__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
+	shutdown () .addInterest (this, &Context::set_shutdown);
+
+	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
 }
 
 void
@@ -542,8 +543,22 @@ Context::finish ()
 }
 
 void
-Context::shutdown ()
-{ }
+Context::set_shutdown ()
+{
+	const auto p = program .get ();
+
+	classes .clear ();
+	values .clear ();
+	program .dispose ();
+
+	//pb::debug_roots (p);
+	//__LOG__ << p -> getParents () .size () << std::endl;
+	//__LOG__ << objects .size () << std::endl;
+	assert (p -> getParents () .empty ());
+	assert (objects .empty ());
+
+	pb::GarbageCollector::deleteObjectsAsync ();
+}
 
 void
 Context::setError (const pb::pbError & error) const
@@ -558,20 +573,6 @@ Context::setError (const pb::pbError & error) const
 void
 Context::dispose ()
 {
-	const auto p = program .get ();
-
-	classes .clear ();
-	values .clear ();
-	program .dispose ();
-
-	pb::debug_roots (p);
-	__LOG__ << p -> getParents () .size () << std::endl;
-	__LOG__ << objects .size () << std::endl;
-	//assert (p -> getParents () .empty ());
-	//assert (objects .empty ());
-
-	pb::GarbageCollector::deleteObjectsAsync ();
-
 	X3D::X3DJavaScriptContext::dispose ();
 }
 

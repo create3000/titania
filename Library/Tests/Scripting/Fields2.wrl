@@ -35,7 +35,7 @@ function initialize ()
 	print (new SFMatrix3f  ());
 	print (new SFMatrix4d  ());
 	print (new SFMatrix4f  ());
-	print (new SFNode      ());
+	print (new SFNode      ('Transform {}'));
 	print (new SFRotation  ());
 	print (new SFVec2d     ());
 	print (new SFVec2f     ());

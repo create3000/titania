@@ -112,11 +112,11 @@ public:
 	throw (std::out_of_range);
 
 	void
-	addObject (X3D::X3DChildObject* const, pb::pbObject* const)
+	addObject (X3D::X3DChildObject* const, X3D::X3DFieldDefinition* const, pb::pbObject* const)
 	throw (std::invalid_argument);
 
 	void
-	removeObject (X3D::X3DChildObject* const)
+	removeObject (X3D::X3DChildObject* const, X3D::X3DFieldDefinition* const)
 	noexcept (true);
 
 	pb::pbObject*
@@ -180,7 +180,7 @@ private:
 	finish ();
 
 	void
-	shutdown ();
+	set_shutdown ();
 
 	void
 	setError (const pb::pbError &) const;

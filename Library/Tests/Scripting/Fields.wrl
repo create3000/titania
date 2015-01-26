@@ -30,7 +30,7 @@ function set_time (value)
 	var f05 = new SFMatrix3f  ();
 	var f06 = new SFMatrix4d  ();
 	var f07 = new SFMatrix4f  ();
-	var f08 = new SFNode      ();
+	var f08 = new SFNode      ('Transform {}');
 	var f09 = new SFRotation  ();
 	var f10 = new SFVec2d     ();
 	var f11 = new SFVec2f     ();

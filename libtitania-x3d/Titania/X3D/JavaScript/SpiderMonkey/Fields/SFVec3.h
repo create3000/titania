@@ -173,6 +173,10 @@ SFVec3 <Type>::init (JSContext* const cx, JSObject* const global, JSObject* cons
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+
+	JS_DefineProperty (cx, proto, (char*) X, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (cx, proto, (char*) Y, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+	JS_DefineProperty (cx, proto, (char*) Z, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 	
 	return proto;
 }

@@ -1,3 +1,20 @@
+2015-01-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* RenderingProperties.x3dv:
+	* Context.h:
+	* Context.h:
+	* X3DField.h:
+	* X3DField.h:
+	* Context.cpp:
+	* Context.cpp:
+	* X3DScene.cpp:
+	* X3DRoute.cpp:
+	* X3DArrayField.h:
+	* SFVec3.h:
+	* X3DExecutionContext.cpp:
+	* X3DProtoDeclaration.cpp:
+	* X3DExternProtoDeclaration.cpp: 
+
 2015-01-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

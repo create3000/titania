@@ -108,7 +108,6 @@ DEF RenderingPropertiesScript Script {
   initializeOnly SFNode  statistics USE Statistics
   initializeOnly SFNode  background USE Background
   initializeOnly SFNode  geometry USE BackgroundGeometry
-  initializeOnly SFNode  text USE Text
 
   url "peaseblossom:
 

@@ -323,9 +323,12 @@ X3DArrayField <Type, InternalType>::get1Value (JSContext* cx, JSObject* obj, jsi
 		const auto index = JSID_TO_INT (id);
 
 		if (index < 0)
-			return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
+			return true;
 
-		return get <Type> (cx, &array -> get1Value (index), vp);
+		if ((size_t) index >= array -> size ())
+			return true;
+
+		return get <Type> (cx, &(*array) [index], vp);
 	}
 	catch (const std::bad_alloc &)
 	{

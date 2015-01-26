@@ -165,7 +165,7 @@ X3DField::create (JSContext* const cx, typename Class::internal_type* const fiel
 
 	JS_SetPrivate (cx, result, field);
 
-	context -> addObject (getKey <Class> (field), result);
+	context -> addObject (getKey <Class> (field), field, result);
 
 	*vp = OBJECT_TO_JSVAL (result);
 	return true;
@@ -181,7 +181,7 @@ X3DField::finalize (JSContext* cx, JSObject* obj)
 	// Proto objects have no private
 
 	if (field)
-		context -> removeObject (getKey <Class> (field));
+		context -> removeObject (getKey <Class> (field), field);
 }
 
 } // spidermonkey

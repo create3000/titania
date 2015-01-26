@@ -109,7 +109,7 @@ X3DExternProtoDeclaration::create (JSContext* const cx, const X3D::ExternProtoDe
 
 	JS_SetPrivate (cx, result, field);
 
-	getContext (cx) -> addObject (field, result);
+	getContext (cx) -> addObject (field, field, result);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
@@ -205,11 +205,11 @@ X3DExternProtoDeclaration::newInstance (JSContext* cx, uint32_t argc, jsval* vp)
 	try
 	{
 		const auto & externproto = *getThis <X3DExternProtoDeclaration> (cx, vp);
-		auto         instance    = externproto -> createInstance ();
+		X3D::SFNode  instance    = externproto -> createInstance ();
 
 		instance -> setup ();
 
-		return X3DField::create <SFNode> (cx, new X3D::SFNode (std::move (instance)), &JS_RVAL (cx, vp));
+		return X3DField::get <SFNode> (cx, &instance, &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -244,7 +244,7 @@ X3DExternProtoDeclaration::finalize (JSContext* cx, JSObject* obj)
 	const auto externproto = getObject <ExternProtoDeclarationPtr*> (cx, obj);
 
 	if (externproto)
-		getContext (cx) -> removeObject (externproto);
+		getContext (cx) -> removeObject (externproto, externproto);
 }
 
 } // spidermonkey

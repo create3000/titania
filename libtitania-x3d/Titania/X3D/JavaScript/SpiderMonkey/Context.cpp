@@ -118,7 +118,6 @@ Context::Context (X3D::Script* const script, const std::string & ecmascript, con
 	        initializeFn (),
 	     prepareEventsFn (),
 	   eventsProcessedFn (),
-	          shutdownFn (),
 	              protos (size_t (ObjectType::SIZE)),
 	              fields (),
 	           functions (),
@@ -373,30 +372,32 @@ Context::getProperty (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 void
-Context::addObject (X3D::X3DChildObject* const child, JSObject* const object)
+Context::addObject (X3D::X3DChildObject* const key, X3D::X3DFieldDefinition* const field, JSObject* const object)
 noexcept (true)
 {
-	assert (objects .emplace (child, object) .second);
+	assert (objects .emplace (key, object) .second);
 
-	child -> addParent (this);
+	field -> addParent (this);
+
+	//__LOG__ << field -> getTypeName () << " : " << field -> getName ()  << " : " << key << " : " << field << std::endl;
 }
 
 void
-Context::removeObject (X3D::X3DChildObject* const child)
+Context::removeObject (X3D::X3DChildObject* const key, X3D::X3DFieldDefinition* const field)
 noexcept (true)
 {
-	if (objects .erase (child))
-		child -> removeParent (this);
+	if (objects .erase (key))
+		field -> removeParent (this);
 
 	else
-		__LOG__ << child -> getName () << " : " << child -> getTypeName () << std::endl;
+		__LOG__ << field -> getTypeName () << " : " << field -> getName ()  << " : " << key << " : " << field << std::endl;
 }
 
 JSObject*
-Context::getObject (X3D::X3DChildObject* const child) const
+Context::getObject (X3D::X3DChildObject* const key) const
 noexcept (true)
 {
-	const auto iter = objects .find (child);
+	const auto iter = objects .find (key);
 
 	if (iter not_eq objects .end ())
 		return iter -> second;
@@ -528,10 +529,8 @@ Context::setEventHandler ()
 	initializeFn      = getFunction ("initialize");
 	prepareEventsFn   = getFunction ("prepareEvents");
 	eventsProcessedFn = getFunction ("eventsProcessed");
-	shutdownFn        = getFunction ("shutdown");
 
-	if (not JSVAL_IS_VOID (shutdownFn))
-		shutdown () .addInterest (this, &Context::set_shutdown);
+	shutdown () .addInterest (this, &Context::set_shutdown);
 
 	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 	{
@@ -645,7 +644,22 @@ Context::eventsProcessed ()
 void
 Context::set_shutdown ()
 {
-	callFunction (shutdownFn);
+	const auto shutdownFn = getFunction ("shutdown");
+
+	if (not JSVAL_IS_VOID (shutdownFn))
+		callFunction (shutdownFn);
+
+	for (auto & field : fields)
+		JS_RemoveValueRoot (cx, &field .second);
+
+	for (auto & file : files)
+		JS_RemoveValueRoot (cx, &file .second);
+
+	// Cleanup.
+	JS_DestroyContext (cx);
+	JS_DestroyRuntime (rt);
+
+	assert (objects .empty ());
 }
 
 void
@@ -663,7 +677,7 @@ Context::finish ()
 
 	frame = 0;
 
-	__LOG__ << this << " : " << objects .size () << std::endl;
+	//__LOG__ << this << " : " << objects .size () << std::endl;
 
 	JS_GC (cx);
 }
@@ -721,18 +735,6 @@ Context::dispose ()
 		future -> dispose ();
 		future .reset (); // XXX: See Inline
 	}
-
-	for (auto & field : fields)
-		JS_RemoveValueRoot (cx, &field .second);
-
-	for (auto & file : files)
-		JS_RemoveValueRoot (cx, &file .second);
-
-	// Cleanup.
-	JS_DestroyContext (cx);
-	JS_DestroyRuntime (rt);
-
-	assert (objects .empty ());
 
 	X3DJavaScriptContext::dispose ();
 }

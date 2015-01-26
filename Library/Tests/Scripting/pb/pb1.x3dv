@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 01 Jun 2014 03:00:06 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.6, http://titania.create3000.de"
-META "modified" "Sun, 25 Jan 2015 06:43:38 GMT"
+META "modified" "Mon, 26 Jan 2015 06:31:47 GMT"
 
 DEF Sunset Background {
   skyAngle [
@@ -25,7 +25,7 @@ DEF Sunset Background {
   groundColor 0 0 0
 }
 
-Transform {
+DEF PeaseBlossom_1 Transform {
   children [
     DEF _1 TouchSensor {
       description "Peaseblossom"
@@ -42,7 +42,7 @@ Transform {
   ]
 }
 
-Transform {
+DEF SpiderMonkey_1 Transform {
   children [
     DEF _2 TouchSensor {
       description "Spidermonkey"
@@ -115,8 +115,8 @@ function enumerate (o)
 
 DEF SpiderMonkey Script {
   inputOnly      SFTime  set_time
-  initializeOnly SFInt32 size 10000
-  initializeOnly MFInt32 array [ ]
+ 
+  field MFNode nodes [USE SpiderMonkey USE SpiderMonkey ]
 
   url "javascript:
 function set_time (value, time)
@@ -125,14 +125,9 @@ function set_time (value, time)
 	print ('set_time: value: ', value);
 	print ('set_time: time:  ', time);
 	print ('set_time: now:   ', Date .now ());
-
-	var t0 = Date .now ();
-
-	for (var i = 0; i < size; ++ i)
-		array [i] = i;
-
-	print ('set_time: duration: ', (Date .now () - t0) / 1000);
 }
+
+print ('l: ', nodes .length);
 "
   directOutput TRUE
 }
