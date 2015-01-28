@@ -133,10 +133,10 @@ Program::run ()
 throw (pbError)
 {
 	for (const auto & function : getFunctionDeclarations ())
-		getGlobalObject () -> addOwnProperty (function .second -> getName (), function .second, WRITABLE | CONFIGURABLE);
+		getGlobalObject () -> defineOwnProperty (function .second -> getName (), function .second, WRITABLE | CONFIGURABLE);
 
 	for (const auto & variable : getVariableDeclarations ())
-		variable -> setup ();
+		getGlobalObject () -> defineOwnProperty (variable -> getIdentifier (), undefined, WRITABLE | CONFIGURABLE | ENUMERABLE);
 
 	var result;
 

@@ -139,18 +139,18 @@ public:
 
 	///  Checks wehter the global object has a function @a name.
 	bool
-	hasFunctionDeclaration (const std::string & identifier) const
+	hasFunctionDeclaration (const Identifier & identifier) const
 	noexcept (true)
-	{ return functionDeclarations .count (identifier); }
+	{ return functionDeclarations .count (identifier .getId ()); }
 
 	///  Returns @a name local function, throws std::invalid_argument if function .name is empty or a function with
 	///  name not exists.
 	const ptr <pbFunction> &
-	getFunctionDeclaration (const std::string & identifier) const
+	getFunctionDeclaration (const Identifier & identifier) const
 	throw (std::out_of_range)
-	{ return functionDeclarations .at (identifier); }
+	{ return functionDeclarations .at (identifier .getId ()); }
 
-	const std::map <std::string, ptr <pbFunction>> &
+	const std::map <size_t, ptr <pbFunction>> &
 	getFunctionDeclarations () const
 	noexcept (true)
 	{ return functionDeclarations; }
@@ -227,7 +227,7 @@ protected:
 	throw (std::invalid_argument);
 	///  Removes the function identified by @a name from this execution context.
 	void
-	removeFunctionDeclaration (const std::string & name)
+	removeFunctionDeclaration (const Identifier & identifier)
 	noexcept (true);
 
 	///  @name Variable handling
@@ -281,12 +281,12 @@ private:
 
 	/// @name Members
 
-	const ptr <pbExecutionContext>           executionContext;
-	std::map <std::string, ptr <pbFunction>> functionDeclarations;
-	array <ptr <VariableDeclaration>>        variableDeclarations;
-	array <ptr <pbObject>>                   variableObjects;
-	array <ptr <pbStatement>>                statements;
-	bool                                     strict;
+	const ptr <pbExecutionContext>       executionContext;
+	std::map <size_t, ptr <pbFunction>>  functionDeclarations;
+	array <ptr <VariableDeclaration>>    variableDeclarations;
+	array <ptr <pbObject>>               variableObjects;
+	array <ptr <pbStatement>>            statements;
+	bool                                 strict;
 
 };
 

@@ -55,6 +55,7 @@
 #include "../Base/pbOutputStreamObject.h"
 #include "../Primitives/ptr.h"
 #include "../Primitives/var.h"
+#include "../Primitives/iterator.h"
 
 #include <Titania/Basic/ReferenceIterator.h>
 #include <Titania/Utility/Range.h>
@@ -77,15 +78,16 @@ public:
 
 private:
 
-	using array_type = std::vector <value_type*>;
+	using pair_type  = std::pair <value_type*, std::list <pbChildObject*>::iterator>;
+	using array_type = std::vector <pair_type>;
 
 
 public:
 
-	using iterator               = basic::reference_iterator <typename array_type::iterator, Type>;
-	using reverse_iterator       = basic::reference_iterator <typename array_type::reverse_iterator, Type>;
-	using const_iterator         = basic::reference_iterator <typename array_type::const_iterator, const Type>;
-	using const_reverse_iterator = basic::reference_iterator <typename array_type::const_reverse_iterator, const Type>;
+	using iterator               = pb::iterator <typename array_type::iterator, Type>;
+	using reverse_iterator       = pb::iterator <typename array_type::reverse_iterator, Type>;
+	using const_iterator         = pb::iterator <typename array_type::const_iterator, const Type>;
+	using const_reverse_iterator = pb::iterator <typename array_type::const_reverse_iterator, const Type>;
 
 	using difference_type = typename array_type::difference_type;
 	using size_type       = typename array_type::size_type;
@@ -110,8 +112,8 @@ public:
 		pbOutputStreamObject (),
 		               value (std::move (other .value))
 	{
-		for (const auto & element : value)
-			element -> replaceParent (&other, this);
+		for (const auto & pair : value)
+			pair .first -> replaceParent (pair .second, this);
 	}
 
 	template <class InputIterator>
@@ -143,11 +145,11 @@ public:
 
 	Type &
 	operator [ ] (const size_type index)
-	{ return *value [index]; }
+	{ return *value [index] .first; }
 
 	const Type &
 	operator [ ] (const size_type index) const
-	{ return *value [index]; }
+	{ return *value [index] .first; }
 
 	template <class InputIterator>
 	void
@@ -155,19 +157,19 @@ public:
 
 	Type &
 	at (const size_type index)
-	{ return *value .at (index); }
+	{ return *value .at (index) .first; }
 
 	const Type &
 	at (const size_type index) const
-	{ return *value .at (index); }
+	{ return *value .at (index) .first; }
 
 	Type &
 	back ()
-	{ return *value .back (); }
+	{ return *value .back () .first; }
 
 	const Type &
 	back () const
-	{ return *value .back (); }
+	{ return *value .back () .first; }
 
 	iterator
 	begin ()
@@ -212,11 +214,11 @@ public:
 
 	Type &
 	front ()
-	{ return *value .front (); }
+	{ return *value .front () .first; }
 
 	const Type &
 	front () const
-	{ return *value .front (); }
+	{ return *value .front () .first; }
 
 	iterator
 	insert (const iterator &, const Type &);
@@ -327,7 +329,7 @@ public:
 
 	virtual
 	bool
-	hasRootedObjects (ChildObjectSet & seen) final override
+	hasRootedObjects (std::set <pbChildObject*> & seen) final override
 	{ return hasRootedObjectsDontCollectObject (seen); }
 
 	///  @name Input/Output
@@ -360,25 +362,25 @@ private:
 	add (const typename iterator::iterator_type & first,
 	     const typename iterator::iterator_type & last)
 	{
-		for (auto & element : std::make_pair (first, last))
-			add (element);
+		for (auto & pair : std::make_pair (first, last))
+			add (pair);
 	}
 
 	void
-	add (Type* const element)
-	{ element -> addParent (this); }
+	add (pair_type & pair)
+	{ pair .second = pair .first -> addParent (this); }
 
 	void
 	remove (const typename iterator::iterator_type & first,
 	        const typename iterator::iterator_type & last)
 	{
-		for (auto & element : std::make_pair (first, last))
-			remove (element);
+		for (auto & pair : std::make_pair (first, last))
+			remove (pair);
 	}
 
 	void
-	remove (Type* const element)
-	{ element -> removeParent (this); }
+	remove (pair_type & pair)
+	{ pair .first -> removeParent (pair .second); }
 
 	///  @name Static members
 
@@ -406,9 +408,9 @@ array <Type>::array (const InputIterator & first, const InputIterator & last) :
 	{
 		Type* const element = new Type (e);
 
-		value .emplace_back (element);
+		value .emplace_back (element, std::list <pbChildObject*>::iterator ());
 
-		add (element);
+		add (value .back ());
 	}
 }
 
@@ -424,7 +426,7 @@ array <Type>::operator = (array && other)
 	std::swap (value, other .value);
 
 	for (const auto & element : value)
-		element -> replaceParent (&other, this);
+		element -> replaceParent (element .second, this);
 
 	return *this;
 }
@@ -457,9 +459,9 @@ array <Type>::assign (InputIterator first, const InputIterator & last)
 		{
 			Type* const element = new Type (*first);
 
-			value .emplace_back (element);
+			value .emplace_back (element, std::list <pbChildObject*>::iterator ());
 
-			add (element);
+			add (value .back ());
 		}
 	}
 }
@@ -499,7 +501,7 @@ template <class Type>
 typename array <Type>::iterator
 array <Type>::insert (const iterator & location, const Type & element)
 {
-	const auto iter = value .insert (location .base (), new Type (element));
+	const auto iter = value .insert (location .base (), std::make_pair (new Type (element), std::list <pbChildObject*>::iterator ()));
 
 	add (*iter);
 
@@ -512,13 +514,13 @@ array <Type>::insert (const iterator & location, const size_type count, const Ty
 {
 	const size_type pos = location - begin ();
 
-	value .insert (location .base (), count, nullptr);
+	value .insert (location .base (), count, std::make_pair (nullptr, std::list <pbChildObject*>::iterator ()));
 
 	const auto iter = value .begin () + pos;
 
 	for (auto & element : basic::make_range (iter, count))
 	{
-		element = new Type (e);
+		element .first = new Type (e);
 
 		add (element);
 	}
@@ -534,13 +536,13 @@ array <Type>::insert (const iterator & location, InputIterator first, const Inpu
 	const size_type pos   = location - begin ();
 	const size_type count = last - first;
 
-	value .insert (location .base (), count, nullptr);
+	value .insert (location .base (), count, std::make_pair (nullptr, std::list <pbChildObject*>::iterator ()));
 
 	const auto iter = value .begin () + pos;
 
 	for (auto & element : basic::make_range (iter, count))
 	{
-		element = new Type (*first);
+		element .first = new Type (*first);
 
 		add (element);
 
@@ -632,11 +634,11 @@ template <class ... Args>
 void
 array <Type>::emplace_front (Args && ... args)
 {
-	Type* const element = new Type (std::forward <Args> (args) ...);
+	auto iter = value .insert (value .begin (),
+	                           std::make_pair (new Type (std::forward <Args> (args) ...),
+	                                           std::list <pbChildObject*>::iterator ()));
 
-	value .insert (value .begin (), element);
-
-	add (element);
+	add (*iter);
 }
 
 template <class Type>
@@ -646,9 +648,9 @@ array <Type>::emplace_back (Args && ... args)
 {
 	Type* const element = new Type (std::forward <Args> (args) ...);
 
-	value .emplace_back (element);
+	value .emplace_back (element, std::list <pbChildObject*>::iterator ());
 
-	add (element);
+	add (value .back ());
 }
 
 template <class Type>
@@ -667,11 +669,11 @@ array <Type>::resize (const size_type count, const Type & e)
 
 	if (count > currentSize)
 	{
-		value .resize (count, nullptr);
+		value .resize (count, std::make_pair (nullptr, std::list <pbChildObject*>::iterator ()));
 
 		for (auto & element : std::make_pair (value .begin () + currentSize, value .end ()))
 		{
-			element = new Type (e);
+			element .first = new Type (e);
 			add (element);
 		}
 	}

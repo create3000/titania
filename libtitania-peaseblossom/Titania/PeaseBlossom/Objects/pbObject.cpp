@@ -73,7 +73,7 @@ PropertyDescriptor::PropertyDescriptor (pbChildObject* const object,
 	      object (object),
 	  identifier (identifier),
 	       value (value_),
-	       attributes (attributes),
+	  attributes (attributes),
 	      getter (getter_),
 	      setter (setter_),
 	creationTime (clock::now () .time_since_epoch () .count ())
@@ -93,7 +93,7 @@ PropertyDescriptor::PropertyDescriptor (pbChildObject* const object,
 	      object (object),
 	  identifier (identifier),
 	       value (std::move (value_)),
-	       attributes (attributes),
+	  attributes (attributes),
 	      getter (std::move (getter_)),
 	      setter (std::move (setter_)),
 	creationTime (clock::now () .time_since_epoch () .count ())
@@ -170,7 +170,7 @@ noexcept (true)
 		case ENUMERATE_BEGIN:
 		{
 			userData .resize (2);
-		
+
 			const auto data = new Data ();
 
 			data -> object     = this;
@@ -196,8 +196,10 @@ noexcept (true)
 				{
 					data -> user = false;
 
-					if (not callbacks -> enumerate (this, ENUMERATE_END, propertyName, userData [0]));
-						return false;
+					if (not callbacks -> enumerate (this, ENUMERATE_END, propertyName, userData [0]))
+		;
+
+					return false;
 				}
 			}
 
@@ -221,7 +223,7 @@ noexcept (true)
 				}
 
 				data -> object = data -> object -> proto;
-				
+
 				if (not data -> object)
 					return false;
 
@@ -250,6 +252,7 @@ noexcept (true)
 		{
 			return std::make_pair (lhs -> getIndex (), lhs -> getCreationTime ()) < std::make_pair (rhs -> getIndex (), rhs -> getCreationTime ());
 		}
+
 	};
 
 	static constexpr auto comp = Comp { };
@@ -272,11 +275,11 @@ pbObject::hasProperty (const Identifier & identifier) const
 noexcept (true)
 {
 	auto object = const_cast <pbObject*> (this);
-	
+
 	do
 	{
 		const auto & callback = object -> callbacks -> hasProperty;
-	
+
 		if (callback)
 		{
 			if (callback (object, identifier))
@@ -285,7 +288,7 @@ noexcept (true)
 
 		if (object -> properties .count (identifier .getId ()))
 			return true;
-		
+
 		object = object -> proto;
 	}
 	while (object);
@@ -326,7 +329,7 @@ throw (pbError)
 
 		if (descriptor)
 		{
-			if (descriptor -> getSetter ()) // isAccessorDescriptor
+			if (descriptor -> getSetter ())    // isAccessorDescriptor
 				descriptor -> getSetter () -> call (this, { value });
 
 			return true;
@@ -385,7 +388,7 @@ pbObject::getProperty (const Identifier & identifier) const
 noexcept (true)
 {
 	auto object = const_cast <pbObject*> (this);
-	
+
 	do
 	{
 		const auto & ownDescriptor = object -> getOwnProperty (identifier);

@@ -1,26 +1,27 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-peaseblossom/Titania/PeaseBlossom/Cache/PtrCache.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="374" Column="1" />
+      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="297" Column="15" />
       <File FileName="Library/Tests/Scripting/pb/pb1.x3dv" Line="130" Column="28" />
       <File FileName="Library/Tests/Scripting/Felulet.wrl" Line="50" Column="20" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.h" Line="160" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="552" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.h" Line="202" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.h" Line="1" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.cpp" Line="2960" Column="40" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Base/GarbageCollector.h" Line="119" Column="28" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Base/GarbargeCollector.cpp" Line="88" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Cache/PtrCache.h" Line="92" Column="8" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Cache/PtrCache.cpp" Line="74" Column="5" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom.h" Line="140" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom.cpp" Line="56" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.h" Line="127" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.cpp" Line="478" Column="52" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.h" Line="216" Column="51" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.cpp" Line="951" Column="58" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/Function.cpp" Line="147" Column="20" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Expressions/FunctionCallExpression.h" Line="76" Column="45" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Expressions/pbStatement.cpp" Line="92" Column="30" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Execution/pbExecutionContext.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Execution/pbExecutionContext.h" Line="210" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/Function.h" Line="183" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Primitives/ptr.h" Line="425" Column="62" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
+        <State expanded="True" selected="True">
           <Node name="build" expanded="True" />
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
@@ -45,7 +46,6 @@
                 <Node name="Objects" expanded="True" />
                 <Node name="Parser" expanded="True" />
                 <Node name="Primitives" expanded="True" />
-                <Node name="Standard" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -75,7 +75,6 @@
                 <Node name="JavaScript" expanded="True">
                   <Node name="PeaseBlossom" expanded="True">
                     <Node name="Fields" expanded="True" />
-                    <Node name="Context.h" selected="True" />
                   </Node>
                   <Node name="SpiderMonkey" expanded="True">
                     <Node name="Fields" expanded="True" />

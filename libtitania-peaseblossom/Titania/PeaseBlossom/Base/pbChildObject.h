@@ -56,15 +56,12 @@
 #include <Titania/Utility/Pass.h>
 #include <cassert>
 #include <cstddef>
+#include <list>
 #include <set>
 #include <vector>
 
 namespace titania {
 namespace pb {
-
-class pbChildObject;
-
-using ChildObjectSet = std::set <pbChildObject*>;
 
 class pbChildObject :
 	virtual public pbBase
@@ -74,26 +71,26 @@ public:
 	///  @name Parent handling
 
 	///  Add a parent to this object.
-	void
+	std::list <pbChildObject*>::iterator
 	addParent (pbChildObject* const parent);
 
 	///  Fast replaces @a parentToRemove with @a parentToAdd.
-	void
-	replaceParent (pbChildObject* const parentToRemove, pbChildObject* const parentToAdd);
+	const std::list <pbChildObject*>::iterator &
+	replaceParent (const std::list <pbChildObject*>::iterator & parentToRemove, pbChildObject* const parentToAdd);
 
 	///  Remove a parent from this object.
 	void
-	removeParent (pbChildObject* const parent);
+	removeParent (const std::list <pbChildObject*>::iterator & parent);
 
 	///  Get all parents of this object.
-	const ChildObjectSet &
+	const std::list <pbChildObject*> &
 	getParents () const
 	{ return parents; }
 
 	///  Returns true if this object has rooted objects and collects in @a seen all objects seen.
 	virtual
 	bool
-	hasRootedObjects (ChildObjectSet & circle);
+	hasRootedObjects (std::set <pbChildObject*> & circle);
 
 	///  Returns the number of instances that share ownership of this object, or »0« if this object has already been
 	///  disposed or is a root object.
@@ -131,23 +128,23 @@ protected:
 	void
 	addChild (const pbChildObject & child);
 
-	template <typename ... Args>
-	void
-	removeChildren (Args & ... args)
-	{ basic::pass ((removeChild (args), 1) ...); }
-
-	void
-	removeChild (const pbChildObject & child);
+	//	template <typename ... Args>
+	//	void
+	//	removeChildren (Args & ... args)
+	//	{ basic::pass ((removeChild (args), 1) ...); }
+	//
+	//	void
+	//	removeChild (const std::set <pbChildObject*> & child);
 
 	bool
-	hasRootedObjectsDontCollectObject (ChildObjectSet & seen);
+	hasRootedObjectsDontCollectObject (std::set <pbChildObject*> & seen);
 
 
 private:
 
-	ChildObjectSet parents;
-	pbChildObject* root;
-	ChildObjectSet children;
+	std::list <pbChildObject*>   parents;
+	pbChildObject*               root;
+	std::vector <pbChildObject*> children;
 
 };
 

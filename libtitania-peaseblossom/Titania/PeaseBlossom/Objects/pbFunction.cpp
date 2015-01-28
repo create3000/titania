@@ -58,7 +58,7 @@
 namespace titania {
 namespace pb {
 
-pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::string & name, const size_t length) :
+pbFunction::pbFunction (pbExecutionContext* const executionContext, const Identifier & name, const size_t length) :
 	pbObject (),
 	    name (name),
 	  length (length)
@@ -88,8 +88,8 @@ pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::n
 void
 pbFunction::addProperties ()
 {
-	addOwnProperty ("name",   name,   NONE);
-	addOwnProperty ("length", length, NONE);
+	addOwnProperty ("name",   name .getName (), NONE);
+	addOwnProperty ("length", length,           NONE);
 }
 
 pbObject*

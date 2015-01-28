@@ -60,7 +60,7 @@ namespace pb {
 
 std::atomic <size_t> Function::recursionLimit (100000);
 
-Function::Function (pbExecutionContext* const executionContext, const std::string & name, std::vector <Identifier> && formalParameters) :
+Function::Function (pbExecutionContext* const executionContext, const Identifier & name, std::vector <Identifier> && formalParameters) :
 	          pbFunction (executionContext, name, formalParameters .size ()),
 	  pbExecutionContext (executionContext),
 	    formalParameters (std::move (formalParameters)),
@@ -136,11 +136,13 @@ var
 Function::call (pbObject* const object, const std::vector <var> & arguments)
 throw (pbError)
 {
-	static const Identifier this_ ("this");
-
 	const auto & variableObject = getLocalObjects ();
 
-	getVariableObjects () .front () = variableObject;
+	getVariableObjects () [0] = variableObject;
+
+	// This Object
+
+	static const Identifier this_ ("this");
 
 	const auto & thisDescriptor = variableObject -> getOwnProperty (this_);
 
@@ -149,13 +151,37 @@ throw (pbError)
 	else
 		variableObject -> addOwnProperty (this_, object, CONFIGURABLE);
 
+	// Arguments Object
+
 	//variableObject -> defineOwnProperty ("arguments", arguments, CONFIGURABLE);
 
+	// Function Declarations
+
 	for (const auto & function : getFunctionDeclarations ())
-		variableObject -> defineOwnProperty (function .second -> getName (), function .second -> copy (this), WRITABLE | CONFIGURABLE);
+	{
+		const auto & descriptor = variableObject -> getOwnProperty (function .second -> getName ());
+
+		if (descriptor)
+			descriptor -> setValue (function .second -> copy (this));
+
+		else
+			variableObject -> addOwnProperty (function .second -> getName (), function .second -> copy (this), WRITABLE | CONFIGURABLE);
+	}
+
+	// Variable Declarations
 
 	for (const auto & variable : getVariableDeclarations ())
-		variable -> setup ();
+	{
+		const auto & descriptor = variableObject -> getOwnProperty (variable -> getIdentifier ());
+
+		if (descriptor)
+			descriptor -> setValue (undefined);
+
+		else
+			variableObject -> addOwnProperty (variable -> getIdentifier (), undefined, WRITABLE | CONFIGURABLE | ENUMERABLE);
+	}
+
+	// Parameters
 
 	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
 	{
@@ -199,7 +225,7 @@ Function::enter ()
 	++ recursionDepth;
 
 	if (recursionDepth > recursionLimit)
-		throw RuntimeError ("Maximum recursion depth of " + basic::to_string (recursionLimit) + " exceeded while calling function '" + getName () + "'.");
+		throw RuntimeError ("Maximum recursion depth of " + basic::to_string (recursionLimit) + " exceeded while calling function '" + getName () .getName () + "'.");
 }
 
 void

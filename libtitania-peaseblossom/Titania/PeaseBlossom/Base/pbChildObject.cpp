@@ -45,20 +45,20 @@ pbChildObject::addChild (const pbChildObject & child)
 {
 	assert (&child not_eq this);
 
-	children .emplace (const_cast <pbChildObject*> (&child));
+	children .emplace_back (const_cast <pbChildObject*> (&child));
 
 	const_cast <pbChildObject &> (child) .addParent (this);
 }
 
-void
-pbChildObject::removeChild (const pbChildObject & child)
-{
-	children .erase (const_cast <pbChildObject*> (&child));
+//void
+//pbChildObject::removeChild (const pbChildObject & child)
+//{
+//	children .erase (const_cast <pbChildObject*> (&child));
+//
+//	const_cast <pbChildObject &> (child) .removeParent (this);
+//}
 
-	const_cast <pbChildObject &> (child) .removeParent (this);
-}
-
-void
+std::list <pbChildObject*>::iterator
 pbChildObject::addParent (pbChildObject* const parent)
 {
 	// Determine the best guess for the shortest way to a rooted object.
@@ -71,67 +71,71 @@ pbChildObject::addParent (pbChildObject* const parent)
 
 	// Add parent
 
-	parents .emplace (parent);
+	parents .emplace_back (parent);
+	
+	return -- parents .end ();
 }
 
-void
-pbChildObject::replaceParent (pbChildObject* const parentToRemove, pbChildObject* const parentToAdd)
+const std::list <pbChildObject*>::iterator &
+pbChildObject::replaceParent (const std::list <pbChildObject*>::iterator & parentToRemove, pbChildObject* const parentToAdd)
 {
 	// Determine the best guess for the shortest way to a rooted object.
 
 	if ((not root)
-	    or (root == parentToRemove)
+	    or (root == *parentToRemove)
 	    or (parentToAdd -> getParents () .size () < root -> getParents () .size ()))
 	{
 		root = parentToAdd;
 	}
 
 	// Replace parent
-
-	if (parents .erase (parentToRemove))
-		parents .emplace (parentToAdd);
-
-	else
-		addParent (parentToAdd);
+	
+	*parentToRemove = parentToAdd;
+	
+	return parentToRemove;
 }
 
 void
-pbChildObject::removeParent (pbChildObject* const parent)
+pbChildObject::removeParent (const std::list <pbChildObject*>::iterator & iter)
 {
-	if (parents .erase (parent))
+	if (parents .empty ())
+		return;
+
+	const auto parent = *iter;
+
+	parents .erase (iter);
+
+	if (root == parent)
+		root = nullptr;
+
+	if (getReferenceCount () == 0)
 	{
-		if (root == parent)
-			root = nullptr;
+		parents .clear ();
 
-		if (getReferenceCount () == 0)
-		{
-			parents .clear ();
+		dispose ();
 
-			dispose ();
-
-			GarbageCollector::addDisposedObject (this);
-			return;
-		}
-
-		ChildObjectSet circle;
-
-		if (hasRootedObjects (circle))
-			return;
-
-		// We have found circular references.
-
-		for (const auto & child : circle)
-			child -> parents .clear ();
-
-		for (const auto & child : circle)
-			child -> dispose ();
-
-		GarbageCollector::addDisposedObjects (circle .begin (), circle .end ());
+		GarbageCollector::addDisposedObject (this);
+		return;
 	}
+
+	std::set <pbChildObject*> circle;
+
+	if (hasRootedObjects (circle))
+		return;
+
+	// We have found circular references.
+
+	for (const auto & child : circle)
+		child -> parents .clear ();
+
+	for (const auto & child : circle)
+		child -> dispose ();
+
+	GarbageCollector::addDisposedObjects (circle .begin (), circle .end ());
 }
 
 bool
-pbChildObject::hasRootedObjects (ChildObjectSet & seen)
+pbChildObject::hasRootedObjects (std::set <pbChildObject*> & seen)
 {
 	if (parents .empty ())
 		return true;
@@ -166,7 +170,7 @@ pbChildObject::hasRootedObjects (ChildObjectSet & seen)
 }
 
 bool
-pbChildObject::hasRootedObjectsDontCollectObject (ChildObjectSet & seen)
+pbChildObject::hasRootedObjectsDontCollectObject (std::set <pbChildObject*> & seen)
 {
 	if (getParents () .empty ())
 		return true;

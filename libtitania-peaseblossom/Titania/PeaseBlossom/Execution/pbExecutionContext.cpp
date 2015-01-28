@@ -90,7 +90,7 @@ void
 pbExecutionContext::addFunctionDeclaration (ptr <pbFunction> && function)
 throw (std::invalid_argument)
 {
-	const auto pair = functionDeclarations .emplace (function -> getName (), std::move (function));
+	const auto pair = functionDeclarations .emplace (function -> getName () .getId (), std::move (function));
 
 	if (pair .second)
 		pair .first -> second .addParent (this);
@@ -105,7 +105,7 @@ throw (std::invalid_argument)
 {
 	try
 	{
-		functionDeclarations .at (function -> getName ()) = std::move (function);
+		functionDeclarations .at (function -> getName () .getId ()) = std::move (function);
 	}
 	catch (const std::out_of_range &)
 	{
@@ -114,10 +114,10 @@ throw (std::invalid_argument)
 }
 
 void
-pbExecutionContext::removeFunctionDeclaration (const std::string & identifier)
+pbExecutionContext::removeFunctionDeclaration (const Identifier & identifier)
 noexcept (true)
 {
-	functionDeclarations .erase (identifier);
+	functionDeclarations .erase (identifier .getId ());
 }
 
 void

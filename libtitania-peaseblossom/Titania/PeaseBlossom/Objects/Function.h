@@ -71,7 +71,7 @@ public:
 	///  @name Construction
 
 	///  Constructs new Function.
-	Function (pbExecutionContext* const, const std::string & = "", std::vector <Identifier> && = { });
+	Function (pbExecutionContext* const, const Identifier & = "", std::vector <Identifier> && = { });
 
 	///  Creates a new default object.
 	virtual

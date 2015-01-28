@@ -1,5 +1,27 @@
 2015-01-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-peaseblossom.cproj:
+	* ptr.h:
+	* array.h:
+	* Function.h:
+	* Function.cpp:
+	* pbFunction.h:
+	* pbObject.cpp:
+	* pbChildObject.h:
+	* iterator.h:
+	* Program.cpp:
+	* pbChildObject.cpp:
+	* pbFunction.cpp:
+	* NativeFunction.h:
+	* NativeFunction.cpp:
+	* pbExecutionContext.h:
+	* pbExecutionContext.cpp:
+	* VariableExpression.h:
+	* VariableDeclaration.h:
+	* AssignmentExpression.h: 
+
+2015-01-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-peaseblossom.cproj:
 	* Cache.h:

@@ -61,8 +61,8 @@ DEF SpiderMonkey_1 Transform {
 
 DEF PeaseBlossom Script {
   inputOnly      SFTime  set_time
-  initializeOnly SFInt32 size 8000000
-  initializeOnly MFInt32 array [ ]
+  initializeOnly SFInt32 size 800000
+  initializeOnly SFNode node Viewpoint {}
 
   url "peaseblossom:
 function initialize ()
@@ -80,22 +80,17 @@ function set_time (value, time)
 
 	test (size);
 
-	print ('set_time: duration: ', now () - t0);
+	print ('test: duration: ', now () - t0);
 }
 
 var global = 1;
 
 function test (value)
 {
-	print ('test: ');
-	print ('test: value: ', value);
-
-	var global = 2;
+	var v = new SFVec3f (1,2,3)
 
 	for (var i = 1; i < value; ++ i)
-		size;
-
-	print (global);
+		 v .add (v);
 }
 
 function enumerate (o)
@@ -115,8 +110,8 @@ function enumerate (o)
 
 DEF SpiderMonkey Script {
   inputOnly      SFTime  set_time
- 
-  field MFNode nodes [USE SpiderMonkey USE SpiderMonkey ]
+  initializeOnly SFInt32 size 800000
+  initializeOnly SFNode node Viewpoint {}
 
   url "javascript:
 function set_time (value, time)
@@ -125,9 +120,21 @@ function set_time (value, time)
 	print ('set_time: value: ', value);
 	print ('set_time: time:  ', time);
 	print ('set_time: now:   ', Date .now ());
+
+	var t0 = Date .now ();
+
+	test (size);
+
+	print ('test: duration: ', (Date .now () - t0) / 1000);
 }
 
-print ('l: ', nodes .length);
+function test (value)
+{
+	var v = new SFVec3f (1,2,3)
+
+	for (var i = 1; i < value; ++ i)
+		 v .add (v);
+}
 "
   directOutput TRUE
 }

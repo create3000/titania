@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ASSIGNMENT_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_ASSIGNMENT_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_ASSIGNMENT_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_ASSIGNMENT_EXPRESSION_H__
 
 #include "../Execution/pbExecutionContext.h"
 #include "../Expressions/AssignmentOperatorType.h"
@@ -69,8 +69,8 @@ public:
 	///  @name Construction
 
 	///  Constructs new AssignmentExpression expression.
-	AssignmentExpression (pbExecutionContext* const executionContext, ptr <pbStatement> && lhs, ptr <pbStatement> && rhs, AssignmentOperatorType type) :
-		    pbStatement (StatementType::ASSIGNMENT_EXPRESSION),
+	AssignmentExpression (pbExecutionContext* const executionContext, ptr <pbStatement> && lhs, ptr <pbStatement>&& rhs, AssignmentOperatorType type) :
+		     pbStatement (StatementType::ASSIGNMENT_EXPRESSION),
 		executionContext (executionContext),
 		             lhs (std::move (lhs)),
 		             rhs (std::move (rhs)),
@@ -198,7 +198,6 @@ public:
 			<< pb::toStream (this, rhs);
 	}
 
-
 private:
 
 	///  @name Construction
@@ -213,19 +212,19 @@ private:
 		addChildren (executionContext, lhs, rhs);
 	}
 
-	CompletionType
-	put (const CompletionType & value) const
+	CompletionType &&
+	put (CompletionType && value) const
 	{
 		lhs -> putValue (value);
 
-		return value;
+		return std::move (value);
 	}
 
 	///  @name Members
 
 	const ptr <pbExecutionContext> executionContext;
-	const ptr <pbStatement>       lhs;
-	const ptr <pbStatement>       rhs;
+	const ptr <pbStatement>        lhs;
+	const ptr <pbStatement>        rhs;
 	const AssignmentOperatorType   type;
 
 };

@@ -109,7 +109,8 @@ public:
 		            ptr_base (),
 		       pbChildObject (),
 		pbOutputStreamObject (),
-		               value (nullptr)
+		               value (nullptr),
+		                iter ()
 	{ }
 
 	///  Constructs new ptr.
@@ -139,7 +140,8 @@ public:
 		            ptr_base (),
 		       pbChildObject (),
 		pbOutputStreamObject (),
-		               value (value)
+		               value (value),
+		                iter ()
 	{ add (value); }
 
 	///  Constructs new ptr.
@@ -257,8 +259,10 @@ public:
 		if (value == get ())
 			return;
 
+		const auto temp = this -> iter;
+
 		add (value);
-		remove (get ());
+		remove (get (), temp);
 		set (value);
 	}
 
@@ -281,7 +285,7 @@ public:
 
 	virtual
 	bool
-	hasRootedObjects (ChildObjectSet & seen) final override
+	hasRootedObjects (std::set <pbChildObject*> & seen) final override
 	{ return hasRootedObjectsDontCollectObject (seen); }
 
 	///  @name Input/Output
@@ -305,7 +309,7 @@ public:
 	void
 	dispose () final override
 	{
-		remove (get ());
+		remove (get (), iter);
 
 		pbChildObject::dispose ();
 	}
@@ -313,7 +317,7 @@ public:
 	///  Destructs the owned object if no more ptrs link to it
 	virtual
 	~ptr ()
-	{ remove (get ()); }
+	{ remove (get (), iter); }
 
 
 private:
@@ -329,7 +333,7 @@ private:
 	add (Type* const value)
 	{
 		if (value)
-			value -> addParent (this);
+			iter = value -> addParent (this);
 	}
 
 	bool
@@ -344,13 +348,15 @@ private:
 			return false;
 		}
 
+		const auto temp = iter;
+
 		if (value)
 		{
-			value -> replaceParent (&other, this);
+			iter = value -> replaceParent (other .iter, this);
 			other .set (nullptr);
 		}
 
-		remove (get ());
+		remove (get (), temp);
 		set (value);
 		return true;
 	}
@@ -368,26 +374,28 @@ private:
 			return false;
 		}
 
+		const auto temp = iter;
+
 		if (value)
 		{
-			value -> replaceParent (&other, this);
+			iter = value -> replaceParent (other .iter, this);
 			other .set (nullptr);
 		}
 		else
 			other .reset ();
 
-		remove (get ());
+		remove (get (), temp);
 		set (value);
 		return true;
 	}
 
 	void
-	remove (Type* const value)
+	remove (Type* const value, const std::list <pbChildObject*>::iterator & iter)
 	{
 		if (value)
 		{
 			set (nullptr);
-			value -> removeParent (this);
+			value -> removeParent (iter);
 		}
 	}
 
@@ -406,7 +414,8 @@ private:
 
 	///  @name Members;
 
-	Type* value;
+	Type*                                value;
+	std::list <pbChildObject*>::iterator iter;
 
 };
 

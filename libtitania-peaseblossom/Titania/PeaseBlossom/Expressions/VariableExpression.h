@@ -74,6 +74,7 @@ public:
 		executionContext (executionContext),
 		      identifier (std::move (identifier)),
 		  variableObject (nullptr),
+		      descriptor (nullptr),
 		           index (0)
 	{ construct (); }
 
@@ -91,14 +92,18 @@ public:
 	putValue (const var & value) const
 	throw (pbError) final override
 	{
+		if (variableObject == executionContext -> getVariableObject () .get () or index)
+		{
+			if (descriptor)
+				return descriptor -> setValue (value);
+
+			// Global object
+			variableObject -> put (identifier, value, false);
+			return;
+		}
+
 		if (variableObject)
 		{
-			if (variableObject == executionContext -> getVariableObject () .get () or index not_eq 0)
-			{
-				variableObject -> put (identifier, value, false);
-				return;
-			}
-
 			// Recursion
 			executionContext -> getVariableObject () -> put (identifier, value, false);
 			return;
@@ -111,6 +116,12 @@ public:
 			if (variableObject -> put (identifier, value, true))
 			{
 				this -> variableObject = variableObject .get ();
+
+				if (variableObject == executionContext -> getGlobalObject () .get ())
+					this -> descriptor = nullptr;
+				else
+					this -> descriptor = variableObject -> getOwnProperty (identifier) .get ();
+
 				return;
 			}
 
@@ -118,8 +129,10 @@ public:
 		}
 
 		variableObject = executionContext -> getGlobalObject () .get ();
+		descriptor     = nullptr;
+		index         -= 1;
 
-		executionContext -> getGlobalObject () -> put (identifier, value, false);
+		variableObject -> put (identifier, value, false);
 	}
 
 	///  Converts its input argument to either Primitive or Object type.
@@ -128,11 +141,17 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
+		if (variableObject == executionContext -> getVariableObject () .get () or index)
+		{
+			if (descriptor)
+				return descriptor -> getValue ();
+
+			// Global object
+			return variableObject -> get (identifier) .first;
+		}
+
 		if (variableObject)
 		{
-			if (variableObject == executionContext -> getVariableObject () .get () or index not_eq 0)
-				return variableObject -> get (identifier) .first;
-
 			// Recursion
 			return executionContext -> getVariableObject () -> get (identifier) .first;
 		}
@@ -147,6 +166,11 @@ public:
 			{
 				this -> variableObject = variableObject .get ();
 
+				if (variableObject == executionContext -> getGlobalObject () .get ())
+					this -> descriptor = nullptr;
+				else
+					this -> descriptor = variableObject -> getOwnProperty (identifier) .get ();
+
 				return std::move (pair .first);
 			}
 			
@@ -154,6 +178,8 @@ public:
 		}
 
 		variableObject = nullptr;
+		descriptor     = nullptr;
+		index          = 0;
 
 		throw ReferenceError (identifier .getName () + " is not defined.");
 	}
@@ -181,6 +207,7 @@ private:
 	const ptr <pbExecutionContext> executionContext;
 	const Identifier               identifier;
 	mutable pbObject*              variableObject;
+	mutable PropertyDescriptor*    descriptor;
 	mutable size_t                 index;
 
 };

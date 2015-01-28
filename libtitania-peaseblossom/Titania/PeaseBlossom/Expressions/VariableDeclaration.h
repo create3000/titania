@@ -88,13 +88,11 @@ public:
 		return new VariableDeclaration (executionContext, std::string (identifier .getName ()), nullptr);
 	}
 
-	void
-	setup ()
-	{
-		executionContext -> getVariableObject () -> put (identifier, undefined, false);
-	}
-
 	///  @name Operations
+
+	const Identifier &
+	getIdentifier () const
+	{ return identifier; }
 
 	virtual
 	void

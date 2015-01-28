@@ -72,7 +72,7 @@ public:
 	///  @name Member access
 
 	///  Returns the name of the function.
-	const std::string &
+	const Identifier &
 	getName () const
 	{ return name; }
 
@@ -110,7 +110,7 @@ protected:
 	///  @name Construction
 
 	///  Constructs new pbFunction.
-	pbFunction (pbExecutionContext* const, const std::string &, const size_t);
+	pbFunction (pbExecutionContext* const, const Identifier &, const size_t);
 
 	///  Constructs new pbFunction.
 	pbFunction (pbExecutionContext* const, const std::nullptr_t);
@@ -132,8 +132,8 @@ private:
 
 	///  @name Members
 
-	const std::string name;
-	const size_t      length;
+	const Identifier name;
+	const size_t     length;
 
 };
 

@@ -71,7 +71,7 @@ public:
 
 	///  Constructs new Function.
 	NativeFunction (pbExecutionContext* const executionContext,
-	                const std::string & name,
+	                const Identifier & name,
 	                const FunctionType & function,
 	                const size_t length) :
 		NativeFunction (executionContext, name, nullptr, function, length)
@@ -79,7 +79,7 @@ public:
 
 	///  Constructs new Function.
 	NativeFunction (pbExecutionContext* const executionContext,
-	                const std::string & name,
+	                const Identifier & name,
 	                const FunctionType & constructor,
 	                const FunctionType & function,
 	                const size_t length) :
@@ -95,7 +95,7 @@ public:
 	const std::string &
 	getTypeName () const
 	noexcept (true) final override
-	{ return getName (); }
+	{ return getName () .getName (); }
 
 	///  @name Operations
 

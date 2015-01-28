@@ -171,5 +171,6 @@
     <None Include="Titania\PeaseBlossom\Expressions\ContinueStatement.h" />
     <None Include="Titania\PeaseBlossom\Cache\PtrCache.h" />
     <None Include="Titania\PeaseBlossom\Cache\Cache.h" />
+    <None Include="Titania\PeaseBlossom\Primitives\iterator.h" />
   </ItemGroup>
 </Project>
