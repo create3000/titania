@@ -71,7 +71,7 @@ public:
 	///  @name Construction
 
 	///  Constructs new Function.
-	Function (pbExecutionContext* const, const std::string & = "", std::vector <std::string> && = { });
+	Function (pbExecutionContext* const, const std::string & = "", std::vector <Identifier> && = { });
 
 	///  Creates a new default object.
 	virtual
@@ -81,7 +81,7 @@ public:
 
 	///  @name Destruction
 
-	const std::vector <std::string> &
+	const std::vector <Identifier> &
 	getFormalParameters () const
 	{ return formalParameters; }
 
@@ -181,7 +181,7 @@ private:
 
 	///  @name Member access
 
-	const std::vector <std::string> formalParameters;
+	const std::vector <Identifier>  formalParameters;
 	mutable array <ptr <pbObject>>  variableObjectsStack;
 	size_t                          recursionDepth;
 

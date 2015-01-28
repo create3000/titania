@@ -665,17 +665,17 @@ Context::set_shutdown ()
 void
 Context::finish ()
 {
-	static constexpr double GC_INTERVAL       = 12;  // in seconds
-	static constexpr double TARGET_FRAME_RATE = 60;  // in frames per second
-	static constexpr size_t MAX_OBJECTS       = 512; // number of cached objects
-
-	const auto variation   = TARGET_FRAME_RATE * random1 ();
-	const auto targetFrame = (GC_INTERVAL * 60 * TARGET_FRAME_RATE) / getBrowser () -> getCurrentFrameRate () + variation;
-
-	if (++ frame < targetFrame and objects .size () < MAX_OBJECTS)
-		return;
-
-	frame = 0;
+//	static constexpr double GC_INTERVAL       = 12;  // in seconds
+//	static constexpr double TARGET_FRAME_RATE = 60;  // in frames per second
+//	static constexpr size_t MAX_OBJECTS       = 512; // number of cached objects
+//
+//	const auto variation   = TARGET_FRAME_RATE * random1 ();
+//	const auto targetFrame = (GC_INTERVAL * 60 * TARGET_FRAME_RATE) / getBrowser () -> getCurrentFrameRate () + variation;
+//
+//	if (++ frame < targetFrame and objects .size () < MAX_OBJECTS)
+//		return;
+//
+//	frame = 0;
 
 	//__LOG__ << this << " : " << objects .size () << std::endl;
 

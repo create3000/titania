@@ -213,7 +213,7 @@ private:
 	propertyName (ptr <pbStatement> & value);
 
 	bool
-	propertySetParameterList (std::vector <std::string> &);
+	propertySetParameterList (std::vector <Identifier> &);
 
 	bool
 	memberExpression (ptr <pbStatement> &);
@@ -349,7 +349,7 @@ private:
 	functionExpression (ptr <pbStatement> &);
 
 	bool
-	formalParameterList (std::vector <std::string> &);
+	formalParameterList (std::vector <Identifier> &);
 
 	void
 	functionBody ();

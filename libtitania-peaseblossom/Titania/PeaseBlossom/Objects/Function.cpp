@@ -60,7 +60,7 @@ namespace pb {
 
 std::atomic <size_t> Function::recursionLimit (100000);
 
-Function::Function (pbExecutionContext* const executionContext, const std::string & name, std::vector <std::string> && formalParameters) :
+Function::Function (pbExecutionContext* const executionContext, const std::string & name, std::vector <Identifier> && formalParameters) :
 	          pbFunction (executionContext, name, formalParameters .size ()),
 	  pbExecutionContext (executionContext),
 	    formalParameters (std::move (formalParameters)),
@@ -93,7 +93,7 @@ ptr <pbFunction>
 Function::copy (pbExecutionContext* const executionContext) const
 noexcept (true)
 {
-	const auto function = make_ptr <Function> (executionContext, getName (), std::vector <std::string> (formalParameters));
+	const auto function = make_ptr <Function> (executionContext, getName (), std::vector <Identifier> (formalParameters));
 
 	function -> import (this);
 
@@ -136,11 +136,19 @@ var
 Function::call (pbObject* const object, const std::vector <var> & arguments)
 throw (pbError)
 {
+	static const Identifier this_ ("this");
+
 	const auto & variableObject = getLocalObjects ();
 
 	getVariableObjects () .front () = variableObject;
 
-	variableObject -> defineOwnProperty ("this", object, CONFIGURABLE);
+	const auto & thisDescriptor = variableObject -> getOwnProperty (this_);
+
+	if (thisDescriptor)
+		const_cast <ptr <pbObject> &> (thisDescriptor -> getValue () .getObject ()) .reset (object);
+	else
+		variableObject -> addOwnProperty (this_, object, CONFIGURABLE);
+
 	//variableObject -> defineOwnProperty ("arguments", arguments, CONFIGURABLE);
 
 	for (const auto & function : getFunctionDeclarations ())
@@ -150,7 +158,15 @@ throw (pbError)
 		variable -> setup ();
 
 	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
-		variableObject -> defineOwnProperty (formalParameters [i], i < argc ? arguments [i] : undefined, WRITABLE | CONFIGURABLE);
+	{
+		const auto & descriptor = variableObject -> getOwnProperty (formalParameters [i]);
+
+		if (descriptor)
+			descriptor -> setValue (i < argc ? arguments [i] : undefined);
+
+		else
+			variableObject -> addOwnProperty (formalParameters [i], i < argc ? arguments [i] : undefined, WRITABLE | CONFIGURABLE);
+	}
 
 	// Evaluate statements
 

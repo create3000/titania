@@ -50,10 +50,9 @@
 
 #include "../JavaScript/PeaseBlossom.h"
 
+#include "../Browser/X3DBrowser.h"
 #include "../Execution/X3DExecutionContext.h"
 #include "../JavaScript/PeaseBlossom/Context.h"
-
-#include <Titania/PeaseBlossom/pb.h>
 
 namespace titania {
 namespace X3D {
@@ -82,12 +81,20 @@ void
 PeaseBlossom::initialize ()
 {
 	X3DJavaScriptEngine::initialize ();
+	
+	getBrowser () -> finished () .addInterest (this, &PeaseBlossom::finished);
 }
 
 X3DPtr <X3DJavaScriptContext>
 PeaseBlossom::createContext (Script* script, const std::string & ecmascript, const basic::uri & uri)
 {
 	return new peaseblossom::Context (script, ecmascript, uri);
+}
+
+void
+PeaseBlossom::finished ()
+{
+	pb::GarbageCollector::deleteObjectsAsync ();
 }
 
 void

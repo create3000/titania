@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VAR_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VAR_H__
 
-#include "../Base/GarbageCollector.h"
+#include "../Cache/PtrCache.h"
 #include "../Base/pbOutputStreamObject.h"
 #include "../Bits/pbConstants.h"
 #include "../Primitives/ptr.h"
@@ -187,11 +187,9 @@ public:
 	template <class Up>
 	var (const ptr <Up> & object) :
 		pbOutputStreamObject (),
-		               value ({ object_ : GarbageCollector::getObject <ptr <pbObject>> () }),
+		               value ({ object_ : Cache <ptr <pbObject>>::get (object) }),
 		                type (OBJECT)
 	{
-		*value .object_ = object;
-	
 		assert (*value .object_);
 	}
 
@@ -199,11 +197,9 @@ public:
 	template <class Up>
 	var (ptr <Up> && object) :
 		pbOutputStreamObject (),
-		               value ({ object_ : GarbageCollector::getObject <ptr <pbObject>> () }),
+		               value ({ object_ : Cache <ptr <pbObject>>::get (std::move (object)) }),
 		                type (OBJECT)
 	{
-		*value .object_ = std::move (object);
-	
 		assert (*value .object_);
 	}
 
@@ -261,9 +257,8 @@ public:
 	{
 		clear ();
 
-		value .object_  = GarbageCollector::getObject <ptr <pbObject>> ();
-		*value .object_ = other;
-		type            = OBJECT;
+		value .object_ = Cache <ptr <pbObject>>::get (other);
+		type           = OBJECT;
 	
 		assert (*value .object_);
 
@@ -276,9 +271,8 @@ public:
 	{
 		clear ();
 
-		value .object_  = GarbageCollector::getObject <ptr <pbObject>> ();
-		*value .object_ = std::move (other);
-		type            = OBJECT;
+		value .object_ = Cache <ptr <pbObject>>::get (std::move (other));
+		type           = OBJECT;
 	
 		assert (*value .object_);
 

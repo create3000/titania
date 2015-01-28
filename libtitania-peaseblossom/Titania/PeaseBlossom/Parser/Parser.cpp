@@ -876,7 +876,7 @@ Parser::propertyDefinition (const ptr <ObjectLiteral> & objectLiteral)
 
 			if (Grammar::OpenParenthesis (istream))
 			{
-				std::vector <std::string> formalParameters;
+				std::vector <Identifier> formalParameters;
 
 				if (propertySetParameterList (formalParameters))
 				{
@@ -948,7 +948,7 @@ Parser::propertyName (ptr <pbStatement> & value)
 }
 
 bool
-Parser::propertySetParameterList (std::vector <std::string> & formalParameters)
+Parser::propertySetParameterList (std::vector <Identifier> & formalParameters)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
@@ -2933,7 +2933,7 @@ Parser::functionDeclaration ()
 
 			if (Grammar::OpenParenthesis (istream))
 			{
-				std::vector <std::string> formalParameters;
+				std::vector <Identifier> formalParameters;
 
 				formalParameterList (formalParameters);
 
@@ -2996,7 +2996,7 @@ Parser::functionExpression (ptr <pbStatement> & value)
 
 		if (Grammar::OpenParenthesis (istream))
 		{
-			std::vector <std::string> formalParameters;
+			std::vector <Identifier> formalParameters;
 
 			formalParameterList (formalParameters);
 
@@ -3040,7 +3040,7 @@ Parser::functionExpression (ptr <pbStatement> & value)
 }
 
 bool
-Parser::formalParameterList (std::vector <std::string> & formalParameters)
+Parser::formalParameterList (std::vector <Identifier> & formalParameters)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 

@@ -411,12 +411,8 @@ DEF Script2 Script {
   inputOutput    SFDouble N2 8000000
 
   url "javascript:
-var n = 0;
-
 function fibonacci_recursive (value)
 {
-	n = n + 1;
-
 	if (value === 0)
 		return 0;
 

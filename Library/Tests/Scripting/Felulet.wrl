@@ -49,31 +49,31 @@ DEF Felulet Script {
 
   url "peaseblossom:
 
-function initialize()
+function initialize ()
 {
 	print ('*** Initializing Felület ...');
 
 	sample1 .length = size;
 	sample2 .length = size;
 	
-	for (i = 0; i < size*size; i++)
+	for (i = 0; i < size * size; ++ i)
 	{
-		sample1[i] = 100;
-		sample2[i] = 100;
+		sample1 [i] = 100;
+		sample2 [i] = 100;
 	}
 
-//	for (x = 1; x < size-2; x++)
+//	for (x = 1; x < size-2; ++ x)
 //	{
-//		for (y = 1; y < size-2; y++)
+//		for (y = 1; y < size-2; ++ y)
 //		{
-//			k = Math.random();   
+//			k = Math .random ();   
 //			if (k > 0.5)
-//	         set_sample1(x,y);
+//	         set_sample1 (x, y);
 //		}
 //	}
 
-	image_changed.x = size;
-	image_changed.y = size;
+	image_changed.x    = size;
+	image_changed.y    = size;
 	image_changed.comp = 1;
 
 	print ('*** Done initializing Felület ...');
@@ -83,7 +83,7 @@ function set_time (value, time)
 {
 	// Randomly set n new points
 	
-	for (i = 0; i < size/2; i++)
+	for (i = 0; i < size/2; ++ i)
 		set_sample1 (Math .floor (1 + Math .random () * (size - 3)), 1 + Math .floor (Math .random () * (size - 3)));   
 
 	for (x = 1; x < size - 1; ++ x)

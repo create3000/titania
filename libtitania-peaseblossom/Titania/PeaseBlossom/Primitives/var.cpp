@@ -73,8 +73,7 @@ var::var (const var & other) :
 			value .string_ = new Glib::ustring (*other .value .string_);
 			break;
 		case OBJECT:
-			value .object_  = GarbageCollector::getObject <ptr <pbObject>> ();
-			*value .object_ = *other .value .object_;
+			value .object_ = Cache <ptr <pbObject>>::get (*other .value .object_);
 			break;
 		default:
 			value = other .value;
@@ -84,11 +83,9 @@ var::var (const var & other) :
 
 var::var (pbObject* const object) :
 	pbOutputStreamObject (),
-	               value ({ object_: GarbageCollector::getObject <ptr <pbObject>> () }),
+	               value ({ object_: Cache <ptr <pbObject>>::get (object) }),
 	                type (OBJECT)
 {
-	value .object_ -> reset (object);
-	
 	assert (*value .object_);
 }
 
@@ -105,8 +102,7 @@ var::operator = (const var & other)
 			value .string_ = new Glib::ustring (*other .value .string_);
 			break;
 		case OBJECT:
-			value .object_  = GarbageCollector::getObject <ptr <pbObject>> ();
-			*value .object_ = *other .value .object_;
+			value .object_ = Cache <ptr <pbObject>>::get (*other .value .object_);
 			break;
 		default:
 			value = other .value;
@@ -222,10 +218,9 @@ var::operator = (pbObject* const object)
 {
 	clear ();
 	
-	value .object_ = GarbageCollector::getObject <ptr <pbObject>> ();
-	value .object_ -> reset (object);
-	type = OBJECT;
-	
+	value .object_ = Cache <ptr <pbObject>>::get (object);
+	type           = OBJECT;
+
 	assert (*value .object_);
 
 	return *this;
@@ -435,8 +430,7 @@ var::clear ()
 			delete value .string_;
 			break;
 		case OBJECT:
-			value .object_ -> dispose ();
-			GarbageCollector::addObject (value .object_);
+			Cache <ptr <pbObject>>::add (value .object_);
 			break;
 		default:
 			break;

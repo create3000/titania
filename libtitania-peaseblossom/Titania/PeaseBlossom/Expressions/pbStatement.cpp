@@ -85,17 +85,15 @@ var
 pbStatement::call (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments) const
 throw (pbError)
 {
-	static const Identifier this_ ("this");
-
 	const auto value = getValue ();
 
 	if (value .isObject ())
 	{
-		const auto function = dynamic_cast <pbFunction*> (value .getObject () .get ());
-		const auto value    = executionContext -> getGlobalObject () -> get (this_) .first;
+		const auto   function = dynamic_cast <pbFunction*> (value .getObject () .get ());
+		const auto & global   = executionContext -> getGlobalObject ();
 
 		if (function)
-			return function -> call (value .getObject () .get (), arguments);
+			return function -> call (global .get (), arguments);
 	}
 
 	throw TypeError ("'" + value .toString () + "' is not a function.");

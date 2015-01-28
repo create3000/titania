@@ -48,111 +48,51 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_H__
+#include "PtrCache.h"
 
-#include "../JavaScript/X3DJavaScriptEngine.h"
+#include "../Objects/pbFunction.h"
+#include "../Objects/pbObject.h"
 
 namespace titania {
-namespace X3D {
+namespace pb {
 
-class PeaseBlossom :
-	public X3DJavaScriptEngine
+std::vector <ptr <pbObject>*> Cache <ptr <pbObject>>::cache;
+size_t                        Cache <ptr <pbObject>>::min (0);
+std::mutex                    Cache <ptr <pbObject>>::mutex;
+
+void
+Cache <ptr <pbObject>>::add (ptr <pbObject>* const object)
 {
-public:
+	object -> dispose ();
 
-	///  @name Construction
+	std::lock_guard <std::mutex> lock (mutex);
 
-	PeaseBlossom (X3DExecutionContext* const);
+	cache .emplace_back (object);
+}
 
-	///  @name Common members
+void
+Cache <ptr <pbObject>>::clear (GarbageCollector::ObjectArray & objects)
+{
+	std::lock_guard <std::mutex> lock (mutex);
 
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
+	const auto size = cache .size () - std::min (min, cache .size ());
 
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
+	__LOG__ << cache .size () << " : " << size << " : " << cache .size () - size << std::endl;
 
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
+	objects .insert (objects .end (), cache .begin () + size, cache .end ());
 
-	///  @name Member access
+	cache .resize (size);
 
-	virtual
-	const std::string &
-	getVendor () const final override
-	{ return vendor; }
+	min = size;
+}
 
-	virtual
-	const std::string &
-	getDescription () const final override
-	{ return description; }
+bool
+Cache <ptr <pbObject>>::empty ()
+{
+	std::lock_guard <std::mutex> lock (mutex);
 
-	virtual
-	const std::string &
-	getVersion () const final override
-	{ return version; }
+	return cache .empty ();
+}
 
-	///  @name Operations
-
-	virtual
-	X3DPtr <X3DJavaScriptContext>
-	createContext (Script*, const std::string &, const basic::uri &) final override;
-
-	///  @name Input/Output
-
-	virtual
-	void
-	toStream (std::ostream &) const final override;
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	PeaseBlossom*
-	create (X3DExecutionContext* const)  const;
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Event handlers
-	
-	void
-	finished ();
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	std::string vendor;
-	std::string description;
-	std::string version;
-
-};
-
-} // X3D
+} // pb
 } // titania
-
-#endif

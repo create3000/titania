@@ -1,3 +1,20 @@
+2015-01-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-peaseblossom.cproj:
+	* Cache.h:
+	* Parser.h:
+	* PtrCache.h:
+	* var.h:
+	* Parser.cpp:
+	* PtrCache.cpp:
+	* Function.h:
+	* var.cpp:
+	* Function.cpp:
+	* GarbageCollector.h:
+	* GarbargeCollector.cpp:
+	* pbStatement.cpp: 
+
 2015-01-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GarbargeCollector.cpp: 

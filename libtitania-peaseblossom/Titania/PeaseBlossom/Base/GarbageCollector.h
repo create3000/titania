@@ -53,7 +53,6 @@
 
 #include "../Base/pbBase.h"
 #include "../Base/pbChildObject.h"
-#include "../Primitives/ptr.h"
 
 #include <cstddef>
 #include <deque>
@@ -62,11 +61,13 @@
 namespace titania {
 namespace pb {
 
-class pbObject;
-
 class GarbageCollector
 {
 public:
+
+	///  @name Member types
+
+	using ObjectArray = std::deque <const pbChildObject*>;
 
 	///  @name Operations
 
@@ -107,8 +108,6 @@ public:
 
 private:
 
-	using ObjectArray = std::deque <const pbChildObject*>;
-
 	///  @name Construction
 
 	GarbageCollector () = delete;
@@ -121,20 +120,10 @@ private:
 
 	///  @name Static members
 
-	static std::vector <ptr <pbObject>*> cache;
-
 	static ObjectArray objects;
 	static std::mutex  mutex;
 
 };
-
-template <>
-void
-GarbageCollector::addObject <ptr <pbObject>> (ptr <pbObject>* const);
-
-template <>
-ptr <pbObject>*
-GarbageCollector::getObject <ptr <pbObject>> ();
 
 } // pb
 } // titania

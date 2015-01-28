@@ -51,8 +51,7 @@
 #include "GarbageCollector.h"
 
 #include "../Base/pbChildObject.h"
-#include "../Objects/pbFunction.h"
-#include "../Objects/pbObject.h"
+#include "../Cache/PtrCache.h"
 
 #include <malloc.h>
 #include <thread>
@@ -64,7 +63,6 @@ namespace pb {
 
 // Important: std::deque is used here for objects because it is much more faster than std::vector!
 
-std::vector <ptr <pbObject>*> GarbageCollector::cache;
 GarbageCollector::ObjectArray GarbageCollector::objects;
 std::mutex                    GarbageCollector::mutex;
 
@@ -85,15 +83,7 @@ GarbageCollector::addDisposedObject (const pbChildObject* const object)
 void
 GarbageCollector::deleteObjectsAsync ()
 {
-	std::lock_guard <std::mutex> lock (mutex);
-
-	objects .insert (objects .end (), cache .begin (), cache .end ());
-	
-	cache .clear ();
-
-	//__LOG__ << objects .size () << std::endl;
-
-	if (objects .empty ())
+	if (objects .empty () and Cache <ptr <pbObject>>::empty ())
 		return;
 
 	std::thread (&GarbageCollector::deleteObjects, std::move (objects)) .detach ();
@@ -102,29 +92,17 @@ GarbageCollector::deleteObjectsAsync ()
 void
 GarbageCollector::deleteObjects (const ObjectArray & objects)
 {
+	__LOG__ << objects .size () << std::endl;
+
 	for (const auto & object : objects)
 		delete object;
-}
 
-template <>
-void
-GarbageCollector::addObject <ptr <pbObject>> (ptr <pbObject>* const object)
-{
-	cache .emplace_back (object);
-}
+	ObjectArray cache;
 
-template <>
-ptr <pbObject>*
-GarbageCollector::getObject <ptr <pbObject>> ()
-{
-	if (cache .empty ())
-		return new ptr <pbObject> ();
-	
-	const auto object = cache .back ();
-	
-	cache .pop_back ();
+	Cache <ptr <pbObject>>::clear (cache);
 
-	return object;
+	for (const auto & object : cache)
+		delete object;
 }
 
 } // pb

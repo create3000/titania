@@ -539,7 +539,6 @@ Context::eventsProcessed ()
 void
 Context::finish ()
 {
-	pb::GarbageCollector::deleteObjectsAsync ();
 }
 
 void
@@ -556,8 +555,6 @@ Context::set_shutdown ()
 	//__LOG__ << objects .size () << std::endl;
 	assert (p -> getParents () .empty ());
 	assert (objects .empty ());
-
-	pb::GarbageCollector::deleteObjectsAsync ();
 }
 
 void

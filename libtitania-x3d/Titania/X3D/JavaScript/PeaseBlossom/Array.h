@@ -303,10 +303,7 @@ Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Ide
 		const auto context = getContext (object);
 		const auto array   = getObject <InternalType> (object);
 
-		if (index >= array -> size ())
-			return std::make_pair (pb::undefined, false);
-
-		return std::make_pair (get <Type> (context, &(*array) [index]), true);
+		return std::make_pair (get <Type> (context, &array -> get1Value (index)), true);
 	}
 	catch (const std::bad_alloc &)
 	{
