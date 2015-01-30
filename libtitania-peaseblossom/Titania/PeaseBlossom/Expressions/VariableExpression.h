@@ -83,7 +83,7 @@ public:
 	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new VariableExpression (executionContext, std::string (identifier .getName ())); }
+	{ return new VariableExpression (executionContext, std::string (identifier .getString ())); }
 
 	///  @name Operations
 
@@ -98,23 +98,23 @@ public:
 				return descriptor -> setValue (value);
 
 			// Global object
-			variableObject -> put (identifier, value, false);
-			return;
+			return variableObject -> put (identifier, value, false);
 		}
 
 		if (variableObject)
 		{
 			// Recursion
-			executionContext -> getVariableObject () -> put (identifier, value, false);
-			return;
+			return executionContext -> getVariableObject () -> put (identifier, value, false);
 		}
 
 		index = 0;
 
 		for (const auto & variableObject : executionContext -> getVariableObjects ())
 		{
-			if (variableObject -> put (identifier, value, true))
+			try
 			{
+				variableObject -> put (identifier, value, true);
+
 				this -> variableObject = variableObject .get ();
 
 				if (variableObject == executionContext -> getGlobalObject () .get ())
@@ -124,8 +124,10 @@ public:
 
 				return;
 			}
-
-			++ index;
+			catch (const std::out_of_range &)
+			{
+				++ index;
+			}
 		}
 
 		variableObject = executionContext -> getGlobalObject () .get ();
@@ -146,24 +148,39 @@ public:
 			if (descriptor)
 				return descriptor -> getValue ();
 
-			// Global object
-			return variableObject -> get (identifier) .first;
+			try
+			{
+				// Global object
+				return variableObject -> get (identifier);
+			}
+			catch (const std::out_of_range &)
+			{
+				throw ReferenceError (identifier .getString () + " is not defined.");
+			}
 		}
 
 		if (variableObject)
 		{
-			// Recursion
-			return executionContext -> getVariableObject () -> get (identifier) .first;
+			try
+			{
+				// Recursion
+				return executionContext -> getVariableObject () -> get (identifier);
+			}
+			catch (const std::out_of_range &)
+			{
+				// Should never happen.
+				return pb::undefined;
+			}
 		}
 
 		index = 0;
 
 		for (const auto & variableObject : executionContext -> getVariableObjects ())
 		{
-			auto pair = variableObject -> get (identifier);
-		
-			if (pair .second)
+			try
 			{
+				const auto value = variableObject -> get (identifier);
+			
 				this -> variableObject = variableObject .get ();
 
 				if (variableObject == executionContext -> getGlobalObject () .get ())
@@ -171,17 +188,19 @@ public:
 				else
 					this -> descriptor = variableObject -> getOwnProperty (identifier) .get ();
 
-				return std::move (pair .first);
+				return value;
 			}
-			
-			++ index;
+			catch (const std::out_of_range &)
+			{
+				++ index;
+			}
 		}
 
 		variableObject = nullptr;
 		descriptor     = nullptr;
 		index          = 0;
 
-		throw ReferenceError (identifier .getName () + " is not defined.");
+		throw ReferenceError (identifier .getString () + " is not defined.");
 	}
 
 	///  @name Input/Output

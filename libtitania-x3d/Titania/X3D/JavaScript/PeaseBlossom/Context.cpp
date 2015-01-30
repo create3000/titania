@@ -56,6 +56,8 @@
 #include "Fields.h"
 #include "value.h"
 
+#include "../../Thread/SceneLoader.h"
+
 #include <Titania/PeaseBlossom/Debug.h>
 #include <cassert>
 
@@ -77,7 +79,8 @@ throw (std::exception) :
 	                  classes (size_t (ObjectType::SIZE)),
 	                  objects (),
 	        userDefinedFields (script -> getUserDefinedFields ()),
-	                   values ()
+	                   values (),
+	                   future ()
 {
 	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
 
@@ -408,6 +411,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	getExecutionContext () -> isLive () .removeInterest (this, &Context::set_live);
 
+	if (future)
+		future -> setExecutionContext (executionContext);
+
 	X3DJavaScriptContext::setExecutionContext (executionContext);
 
 	if (isInitialized ())
@@ -437,15 +443,19 @@ Context::set_live ()
 			{
 				case inputOnly:
 				{
-					if (program -> hasFunctionDeclaration (field -> getName ()))
-						field -> addInterest (this, &Context::set_field, field, field -> getName ());
+					const pb::Identifier identifier (field -> getName ());
+
+					if (program -> hasFunctionDeclaration (identifier))
+						field -> addInterest (this, &Context::set_field, field, identifier);
 
 					break;
 				}
 				case inputOutput:
 				{
-					if (program -> hasFunctionDeclaration ("set_" + field -> getName ()))
-						field -> addInterest (this, &Context::set_field, field, "set_" + field -> getName ());
+					const pb::Identifier identifier ("set_" + field -> getName ());
+
+					if (program -> hasFunctionDeclaration (identifier))
+						field -> addInterest (this, &Context::set_field, field, identifier);
 
 					break;
 				}
@@ -497,13 +507,13 @@ Context::prepareEvents ()
 }
 
 void
-Context::set_field (X3D::X3DFieldDefinition* const field, const std::string & functionName)
+Context::set_field (X3D::X3DFieldDefinition* const field, const pb::Identifier & identifier)
 {
 	field -> isTainted (true);
 
 	try
 	{
-		const auto & function = program -> getFunctionDeclaration (functionName);
+		const auto & function = program -> getFunctionDeclaration (identifier);
 
 		function -> call (program -> getGlobalObject (),
 		                  {
@@ -513,7 +523,7 @@ Context::set_field (X3D::X3DFieldDefinition* const field, const std::string & fu
 	}
 	catch (const pb::pbError & error)
 	{
-		getBrowser () -> println (error);
+		setError (error);
 	}
 	catch (const std::exception & error)
 	{ }
@@ -550,9 +560,9 @@ Context::set_shutdown ()
 	values .clear ();
 	program .dispose ();
 
-	//pb::debug_roots (p);
-	//__LOG__ << p -> getParents () .size () << std::endl;
-	//__LOG__ << objects .size () << std::endl;
+	pb::debug_roots (p);
+	__LOG__ << p -> getParents () .size () << std::endl;
+	__LOG__ << objects .size () << std::endl;
 	assert (p -> getParents () .empty ());
 	assert (objects .empty ());
 }
@@ -570,6 +580,12 @@ Context::setError (const pb::pbError & error) const
 void
 Context::dispose ()
 {
+	if (future)
+	{
+		future -> dispose ();
+		future .reset (); // XXX: See Inline
+	}
+
 	X3D::X3DJavaScriptContext::dispose ();
 }
 

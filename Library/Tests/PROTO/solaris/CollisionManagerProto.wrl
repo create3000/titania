@@ -1,0 +1,241 @@
+#VRML V2.0 utf8
+
+PROTO CollisionManager [
+  exposedField SFVec3f flow 0 0 0
+  exposedField SFBool  collide TRUE
+  exposedField SFBool  gravity TRUE
+  eventOut     SFTime  collideTime
+  exposedField MFNode  obstacles [ ]
+  exposedField MFNode  children [ ]
+]
+{
+  PROTO Data [
+    exposedField SFVec3f flow 0 0 0
+    exposedField SFBool  collide TRUE
+    exposedField SFBool  gravity TRUE
+    exposedField MFNode  obstacles [ ]
+    exposedField MFNode  children [ ]
+  ]
+  {
+    Switch {
+      choice [
+        Group {
+          children IS obstacles
+        }
+        Group {
+          children IS children
+        }
+      ]
+    }
+  }
+
+  DEF Data Data {
+    flow IS flow
+    collide IS collide
+    gravity IS gravity
+    obstacles IS obstacles
+    children IS children
+  }
+
+  DEF _CollisionManager Script {
+    eventOut SFTime  collideTime IS collideTime
+    eventIn  SFVec3f set_translation
+    eventIn  SFBool  set_collide
+    eventIn  MFNode  set_children
+    field    SFNode  self USE _CollisionManager
+    field    SFNode  data USE Data
+    field    MFNode  children [ ]
+    field    MFVec3f nbox [ 1 0 0, -1 0 0, 0 1 0, 0 -1 0, 0 0 1, 0 0 -1 ]
+    url "peaseblossom:
+function randomVec3f (value) {
+	rv = new SFVec3f(Math.random()-0.5, Math.random()-0.5, Math.random()-0.5);
+	return rv.normalize().multiply(value);
+}
+function rel_mass (particle) {
+	return particle.mass / Math.sqrt(1 - (Math.pow(particle.velocity.length(), 2) / particle.constants.c2));
+}
+function rel_add (child, u) {
+	return child.velocity.add(u).divide(1 + (Math.abs(child.velocity.dot(u)) / child.constants.c2));
+}
+function es (particle, child) {
+	m1 = rel_mass(particle);
+	m2 = rel_mass(child);
+	return particle.velocity.multiply(m1 - m2).add(child.velocity.multiply(2*m2)).divide(m1 + m2);
+}
+function gravity (particle, child, distance) {
+	m1 = rel_mass(particle);
+	m2 = rel_mass(child);
+
+	g = (particle.constants.gamma * m1 * m2) / Math.pow(distance.length(), 2);
+
+	return distance.normalize().multiply(g);
+}
+function particle_collision (particle, child, time) {
+	distance = particle.position.subtract(child.position);
+	if (data.gravity) child.force = child.force.add(gravity(particle, child, distance));
+
+	distance = distance.length();
+
+	if (particle.isActive && distance < child.radius + particle.radius) {
+		if (!particle.isActive) particle.startTime = time;
+
+		u1 = es(particle, child);
+		u2 = es(child, particle);
+		particle.velocity = u1;
+		child.velocity    = u2;
+
+		collideTime = time;
+		
+		print('particle_collision');
+	}
+
+}
+function sphere_collision (sphere, child, time) {
+	distance = sphere.position.subtract(child.position).length();
+
+	if (distance < child.radius + sphere.radius.x) {
+		normal = child.position.subtract(sphere.position).normalize();
+		momentum = normal.multiply(2*Math.abs(child.velocity.dot(normal)));
+
+		if (sphere.deflection) {
+			random     = randomVec3f(sphere.deflection);
+			deflection = child.position.subtract(random.subtract(normal.multiply(normal.dot(random.subtract(child.position)))));
+			momentum   = momentum.add(deflection);
+		}
+
+		velocity = rel_add(child, momentum.divide(rel_mass(child)));
+		child.velocity = velocity.multiply(sphere.springiness);
+
+		collideTime = time;
+	}
+}
+function plane_collision (plane, child, time) {
+	distance = plane.normal.dot(child.position.subtract(plane.point));
+
+	if (distance < child.radius) {
+		direction = plane.normal.dot(child.velocity);
+	
+		if (direction < plane.delta) {
+			momentum = plane.normal.multiply(2*Math.abs(child.velocity.dot(plane.normal)));
+
+			if (plane.deflection) {
+				random     = randomVec3f(plane.deflection);
+				deflection = plane.point.subtract(random.subtract(plane.normal.multiply(plane.normal.dot(random.subtract(plane.point)))));
+				momentum   = momentum.add(deflection);
+			}
+	
+			velocity = rel_add(child, momentum.divide(rel_mass(child)));
+			child.velocity = velocity.multiply(plane.springiness);
+
+			collideTime = time;
+		} else if (direction < 0) {
+			child.stopTime = time;
+		}
+	}
+}
+function p_collision (point, normal, child, time) {
+	distance = normal.dot(child.position.subtract(point));
+	return distance < child.radius;
+}
+function box_collision (box, child, time) {
+	c =
+	p_collision(box.position.add(nbox[0].multiply(box.size.x/2)), nbox[0], child, time) &&
+	p_collision(box.position.add(nbox[1].multiply(box.size.x/2)), nbox[1], child, time) &&
+	p_collision(box.position.add(nbox[2].multiply(box.size.y/2)), nbox[2], child, time) &&
+	p_collision(box.position.add(nbox[3].multiply(box.size.y/2)), nbox[3], child, time) &&
+	p_collision(box.position.add(nbox[4].multiply(box.size.z/2)), nbox[4], child, time) &&
+	p_collision(box.position.add(nbox[5].multiply(box.size.z/2)), nbox[5], child, time);
+
+	if (c) {
+		v = child.position.subtract(box.position);
+		v.x /= box.size.x;
+		v.y /= box.size.y;
+		v.z /= box.size.z;
+
+		if (Math.abs(v.x) > Math.abs(v.y)) {
+			if (Math.abs(v.x) > Math.abs(v.z)) {
+				if (v.x > 0) {
+					normal = nbox[0];
+					point  = nbox[0].multiply(box.size.x/2);
+				} else {
+					normal = nbox[1];
+					point  = nbox[1].multiply(box.size.x/2);
+				}
+			} else {
+				if (v.z > 0) {
+					normal = nbox[4];
+					point  = nbox[4].multiply(box.size.z/2);
+				} else {
+					normal = nbox[5];
+					point  = nbox[5].multiply(box.size.z/2);
+				}
+			}
+		} else {
+			if (Math.abs(v.y) > Math.abs(v.z)) {
+				if (v.y > 0) {
+					normal = nbox[2];
+					point  = nbox[2].multiply(box.size.y/2);
+				} else {
+					normal = nbox[3];
+					point  = nbox[3].multiply(box.size.y/2);
+				}
+			} else {
+				if (v.z > 0) {
+					normal = nbox[4];
+					point  = nbox[4].multiply(box.size.z/2);
+				} else {
+					normal = nbox[5];
+					point  = nbox[5].multiply(box.size.z/2);
+				}
+			}
+		}
+		
+		momentum = normal.multiply(2*Math.abs(child.velocity.dot(normal)));
+
+		if (box.deflection) {
+			random     = randomVec3f(box.deflection);
+			deflection = point.subtract(random.subtract(normal.multiply(normal.dot(random.subtract(point)))));
+			momentum   = momentum.add(deflection);
+		}
+
+		velocity = rel_add(child, momentum.divide(rel_mass(child)));
+		child.velocity = velocity.multiply(box.springiness);
+
+		collideTime = time;
+	}
+}
+function set_translation (value, time) {
+	children[0].force = children[0].force = data.flow;
+
+	for (i=0; i<data.obstacles.length; ++i) {
+		obstacle = data.obstacles[i];
+		if (obstacle.enabled)
+			if (obstacle == 'Particle { }')
+				particle_collision(obstacle, children[0], time);
+			else if (obstacle == 'CollisionPlane { }')
+				plane_collision(obstacle, children[0], time);
+			else if (obstacle == 'CollisionSphere { }')
+				sphere_collision(obstacle, children[0], time);
+			else if (obstacle == 'CollisionBox { }')
+				box_collision(obstacle, children[0], time);
+	}
+}
+function set_children (value, time) {
+	if (children.length) Browser.deleteRoute(children[0], 'position_changed', self, 'set_translation');
+	children = value;
+	if (children.length && data.collide) Browser.addRoute(children[0], 'position_changed', self, 'set_translation');
+}
+function set_collide (value, time) {
+	set_children (data.children, time);
+}
+function initialize () {
+	set_collide(data.collide, 0);
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Data.collide TO _CollisionManager.set_collide
+  ROUTE Data.children TO _CollisionManager.set_children
+}
+

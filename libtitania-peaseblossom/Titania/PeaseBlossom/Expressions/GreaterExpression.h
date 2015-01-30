@@ -94,16 +94,19 @@ public:
 		const auto lval = lhs -> getValue ();
 		const auto rval = rhs -> getValue ();
 
-		if (lval .getType () == NUMBER and rval .getType () == NUMBER)
-			return lval .getNumber () > rval .getNumber ();
+		if (lval .getType () == rval .getType ())
+		{
+			if (lval .getType () == NUMBER)
+				return lval .getNumber () > rval .getNumber ();
 
-		const auto px = lval .toPrimitive (NUMBER);
-		const auto py = rval .toPrimitive (NUMBER);
+			if (lval .getType () == STRING)
+				return lval .getString () > rval .getString ();
+		}
 
-		if (px .getType () == STRING and py .getType () == STRING)
-			return px .getString () > py .getString ();
+		const auto px = lval .toNumber ();
+		const auto py = rval .toNumber ();
 
-		return px .toNumber () > py .toNumber ();
+		return px > py;
 	}
 
 	///  @name Input/Output

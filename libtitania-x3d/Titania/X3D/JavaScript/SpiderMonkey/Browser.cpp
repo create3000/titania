@@ -112,8 +112,8 @@ JSFunctionSpec Browser::functions [ ] = {
 	{ "nextViewpoint",        nextViewpoint,        0, 0 },
 	{ "lastViewpoint",        lastViewpoint,        0, 0 },
 
-	{ "print",                print,                0, 0 },
-	{ "println",              println,              0, 0 },
+	{ "print",                print,                1, 0 },
+	{ "println",              println,              1, 0 },
 
 	// VRML functions
 	{ "getName",              getName,              0, 0 },
@@ -149,7 +149,7 @@ Browser::init (JSContext* const cx, JSObject* const global, JSObject* const pare
 JSBool
 Browser::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto script = getContext (cx) -> getScriptNode ();
+	const auto & script = getContext (cx) -> getScriptNode ();
 
 	return JS_NewStringValue (cx, script -> getBrowser () -> getName (), vp);
 }
@@ -157,7 +157,7 @@ Browser::name (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 JSBool
 Browser::version (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto script = getContext (cx) -> getScriptNode ();
+	const auto & script = getContext (cx) -> getScriptNode ();
 
 	return JS_NewStringValue (cx, script -> getBrowser () -> getVersion (), vp);
 }
@@ -165,7 +165,7 @@ Browser::version (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 JSBool
 Browser::currentSpeed (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto script = getContext (cx) -> getScriptNode ();
+	const auto & script = getContext (cx) -> getScriptNode ();
 
 	return JS_NewNumberValue (cx, script -> getBrowser () -> getCurrentSpeed (), vp);
 }
@@ -173,7 +173,7 @@ Browser::currentSpeed (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 JSBool
 Browser::currentFrameRate (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto script = getContext (cx) -> getScriptNode ();
+	const auto & script = getContext (cx) -> getScriptNode ();
 
 	return JS_NewNumberValue (cx, script -> getBrowser () -> getCurrentFrameRate (), vp);
 }
@@ -181,7 +181,7 @@ Browser::currentFrameRate (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 JSBool
 Browser::description (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto script = getContext (cx) -> getScriptNode ();
+	const auto & script = getContext (cx) -> getScriptNode ();
 
 	return JS_NewStringValue (cx, script -> getBrowser () -> getDescription (), vp);
 }
@@ -189,7 +189,7 @@ Browser::description (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 JSBool
 Browser::description (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	const auto script = getContext (cx) -> getScriptNode ();
+	const auto & script = getContext (cx) -> getScriptNode ();
 
 	script -> getBrowser () -> setDescription (to_string (cx, *vp));
 
@@ -199,7 +199,7 @@ Browser::description (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsva
 JSBool
 Browser::supportedComponents (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto script = getContext (cx) -> getScriptNode ();
+	const auto & script = getContext (cx) -> getScriptNode ();
 
 	return ComponentInfoArray::create (cx, &script -> getBrowser () -> getSupportedComponents (), vp);
 }
@@ -207,7 +207,7 @@ Browser::supportedComponents (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 JSBool
 Browser::supportedProfiles (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto script = getContext (cx) -> getScriptNode ();
+	const auto & script = getContext (cx) -> getScriptNode ();
 
 	return ProfileInfoArray::create (cx, &script -> getBrowser () -> getSupportedProfiles (), vp);
 }
@@ -215,8 +215,8 @@ Browser::supportedProfiles (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 JSBool
 Browser::currentScene (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto script = getContext (cx) -> getScriptNode ();
-	const auto scene  = dynamic_cast <X3D::X3DScene*> (script -> getExecutionContext ());
+	const auto & script = getContext (cx) -> getScriptNode ();
+	const auto   scene  = dynamic_cast <X3D::X3DScene*> (script -> getExecutionContext ());
 
 	if (scene)
 		return X3DScene::create (cx, scene, vp);
@@ -234,8 +234,8 @@ Browser::replaceWorld (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto argv   = JS_ARGV (cx, vp);
-		const auto script = getContext (cx) -> getScriptNode ();
+		const auto   argv   = JS_ARGV (cx, vp);
+		const auto & script = getContext (cx) -> getScriptNode ();
 
 		if (JSVAL_IS_NULL (argv [0]))
 			script -> getBrowser () -> replaceWorld (nullptr);
@@ -264,10 +264,10 @@ Browser::createX3DFromString (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto argv      = JS_ARGV (cx, vp);
-		const auto script    = getContext (cx) -> getScriptNode ();
-		const auto x3dSyntax = getArgument <std::string> (cx, argv, 0);
-		const auto scene     = X3D::Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (x3dSyntax);
+		const auto   argv      = JS_ARGV (cx, vp);
+		const auto & script    = getContext (cx) -> getScriptNode ();
+		const auto   x3dSyntax = getArgument <std::string> (cx, argv, 0);
+		const auto   scene     = X3D::Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (x3dSyntax);
 
 		return X3DScene::create (cx, scene, vp);
 	}
@@ -285,10 +285,10 @@ Browser::createX3DFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto argv    = JS_ARGV (cx, vp);
-		const auto context = getContext (cx);
-		const auto script  = context -> getScriptNode ();
-		const auto url     = getArgument <MFString> (cx, argv, 0);
+		const auto   argv    = JS_ARGV (cx, vp);
+		const auto   context = getContext (cx);
+		const auto & script  = context -> getScriptNode ();
+		const auto   url     = getArgument <MFString> (cx, argv, 0);
 
 		if (argc > 1)
 		{
@@ -382,10 +382,10 @@ Browser::loadURL (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto argv      = JS_ARGV (cx, vp);
-		const auto script    = getContext (cx) -> getScriptNode ();
-		const auto url       = getArgument <MFString> (cx, argv, 0);
-		const auto parameter = getArgument <MFString> (cx, argv, 1);
+		const auto   argv      = JS_ARGV (cx, vp);
+		const auto & script    = getContext (cx) -> getScriptNode ();
+		const auto   url       = getArgument <MFString> (cx, argv, 0);
+		const auto   parameter = getArgument <MFString> (cx, argv, 1);
 
 		Loader (script -> getExecutionContext (), script -> getWorldURL ()) .loadURL (*url, *parameter);
 
@@ -590,7 +590,7 @@ Browser::println (JSContext* cx, uint32_t argc, jsval* vp)
 
 	print (cx, argc, vp);
 
-	browser -> print ('\n');
+	browser -> println ();
 
 	return true;
 }
@@ -647,7 +647,7 @@ Browser::getWorldURL (JSContext* cx, uint32_t argc, jsval* vp)
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .getWorldURL: wrong number of arguments.", getClass () -> name);
 
-	const auto script = getContext (cx) -> getScriptNode ();
+	const auto & script = getContext (cx) -> getScriptNode ();
 
 	return JS_NewStringValue (cx, script -> getExecutionContext () -> getWorldURL (), &JS_RVAL (cx, vp));
 }
@@ -660,9 +660,9 @@ Browser::createVrmlFromString (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto argv       = JS_ARGV (cx, vp);
-		const auto script     = getContext (cx) -> getScriptNode ();
-		const auto vrmlSyntax = getArgument <std::string> (cx, argv, 0);
+		const auto   argv       = JS_ARGV (cx, vp);
+		const auto & script     = getContext (cx) -> getScriptNode ();
+		const auto   vrmlSyntax = getArgument <std::string> (cx, argv, 0);
 
 		try
 		{
@@ -692,12 +692,12 @@ Browser::createVrmlFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto argv    = JS_ARGV (cx, vp);
-		const auto context = getContext (cx);
-		const auto script  = context -> getScriptNode ();
-		const auto url     = getArgument <MFString> (cx, argv, 0);
-		const auto node    = getArgument <SFNode> (cx, argv, 1);
-		const auto event   = getArgument <std::string> (cx, argv, 2);
+		const auto   argv    = JS_ARGV (cx, vp);
+		const auto   context = getContext (cx);
+		const auto & script  = context -> getScriptNode ();
+		const auto   url     = getArgument <MFString> (cx, argv, 0);
+		const auto   node    = getArgument <SFNode> (cx, argv, 1);
+		const auto   event   = getArgument <std::string> (cx, argv, 2);
 
 		if (not node -> getValue ())
 			return ThrowException (cx, "Browser .createVrmlFromURL: node is NULL.");
@@ -739,6 +739,7 @@ Browser::createVrmlFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
+//  XXX: use FieldPtr here for "X3D::MFNode* const field"
 void
 Browser::setSceneAsync (const X3D::SFNode & script, const X3D::SFNode & node, X3D::MFNode* const field, X3D::X3DScenePtr && scene)
 {
@@ -763,12 +764,12 @@ Browser::addRoute (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto argv         = JS_ARGV (cx, vp);
-		const auto script       = getContext (cx) -> getScriptNode ();
-		const auto fromNode     = getArgument <SFNode> (cx, argv, 0);
-		const auto fromEventOut = getArgument <std::string> (cx, argv, 1);
-		const auto toNode       = getArgument <SFNode> (cx, argv, 2);
-		const auto toEventIn    = getArgument <std::string> (cx, argv, 3);
+		const auto   argv         = JS_ARGV (cx, vp);
+		const auto & script       = getContext (cx) -> getScriptNode ();
+		const auto   fromNode     = getArgument <SFNode> (cx, argv, 0);
+		const auto   fromEventOut = getArgument <std::string> (cx, argv, 1);
+		const auto   toNode       = getArgument <SFNode> (cx, argv, 2);
+		const auto   toEventIn    = getArgument <std::string> (cx, argv, 3);
 
 		script -> getExecutionContext ()  -> addRoute (*fromNode, fromEventOut, *toNode, toEventIn);
 
@@ -789,12 +790,12 @@ Browser::deleteRoute (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto argv         = JS_ARGV (cx, vp);
-		const auto script       = getContext (cx) -> getScriptNode ();
-		const auto fromNode     = getArgument <SFNode> (cx, argv, 0);
-		const auto fromEventOut = getArgument <std::string> (cx, argv, 1);
-		const auto toNode       = getArgument <SFNode> (cx, argv, 2);
-		const auto toEventIn    = getArgument <std::string> (cx, argv, 3);
+		const auto   argv         = JS_ARGV (cx, vp);
+		const auto & script       = getContext (cx) -> getScriptNode ();
+		const auto   fromNode     = getArgument <SFNode> (cx, argv, 0);
+		const auto   fromEventOut = getArgument <std::string> (cx, argv, 1);
+		const auto   toNode       = getArgument <SFNode> (cx, argv, 2);
+		const auto   toEventIn    = getArgument <std::string> (cx, argv, 3);
 
 		script -> getExecutionContext () -> deleteRoute (*fromNode, fromEventOut, *toNode, toEventIn);
 
@@ -815,9 +816,9 @@ Browser::setDescription (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto argv        = JS_ARGV (cx, vp);
-		const auto script      = getContext (cx) -> getScriptNode ();
-		const auto description = getArgument <std::string> (cx, argv, 0);
+		const auto   argv        = JS_ARGV (cx, vp);
+		const auto & script      = getContext (cx) -> getScriptNode ();
+		const auto   description = getArgument <std::string> (cx, argv, 0);
 
 		script -> getBrowser () -> setDescription (description);
 

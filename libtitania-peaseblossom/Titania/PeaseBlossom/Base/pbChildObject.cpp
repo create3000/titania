@@ -114,7 +114,8 @@ pbChildObject::removeParent (const std::list <pbChildObject*>::iterator & iter)
 
 		dispose ();
 
-		GarbageCollector::addDisposedObject (this);
+		//GarbageCollector::addDisposedObject (this);
+		recycle ();
 		return;
 	}
 
@@ -131,7 +132,9 @@ pbChildObject::removeParent (const std::list <pbChildObject*>::iterator & iter)
 	for (const auto & child : circle)
 		child -> dispose ();
 
-	GarbageCollector::addDisposedObjects (circle .begin (), circle .end ());
+	//GarbageCollector::addDisposedObjects (circle .begin (), circle .end ());
+	for (const auto & child : circle)
+		child -> recycle ();
 }
 
 bool
@@ -198,6 +201,12 @@ pbChildObject::dispose ()
 		child -> dispose ();
 
 	children .clear ();
+}
+
+void
+pbChildObject::recycle ()
+{
+	GarbageCollector::addDisposedObject (this);
 }
 
 pbChildObject::~pbChildObject ()

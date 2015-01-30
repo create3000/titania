@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_FUNCTION_CALL_EXPRESSION_H__
 
 #include "../Execution/pbExecutionContext.h"
 #include "../Expressions/pbStatement.h"
@@ -70,7 +70,7 @@ public:
 
 	///  Constructs new FunctionCallExpression expression.
 	FunctionCallExpression (pbExecutionContext* const executionContext, ptr <pbStatement> && expression, array <ptr <pbStatement>> && expressions) :
-		    pbStatement (StatementType::FUNCTION_CALL_EXPRESSION),
+		     pbStatement (StatementType::FUNCTION_CALL_EXPRESSION),
 		executionContext (executionContext),
 		      expression (std::move (expression)),
 		     expressions (std::move (expressions))
@@ -82,7 +82,7 @@ public:
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{
-		array <ptr <pbStatement>> expressions;
+		array <ptr <pbStatement>>  expressions;
 
 		for (const auto & expression : this -> expressions)
 			expressions .emplace_back (expression -> copy (executionContext));
@@ -136,7 +136,6 @@ public:
 		ostream << ')';
 	}
 
-
 private:
 
 	///  @name Construction
@@ -154,8 +153,8 @@ private:
 	///  @name Members
 
 	const ptr <pbExecutionContext>   executionContext;
-	const ptr <pbStatement>         expression;
-	const array <ptr <pbStatement>> expressions;
+	const ptr <pbStatement>          expression;
+	const array <ptr <pbStatement>>  expressions;
 
 };
 

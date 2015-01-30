@@ -1,0 +1,134 @@
+#VRML V2.0 utf8
+
+PROTO Particle [
+  exposedField SFBool     enabled TRUE
+  exposedField SFFloat    radius 1
+  exposedField SFFloat    mass 1
+  exposedField SFVec3f    position 0 0 0
+  exposedField SFRotation orientation 0 0 1 0
+  exposedField SFVec3f    velocity 0 0 0
+  exposedField MFFloat    angularVelocity [ 0, 0, 1, 0 ]
+  exposedField SFVec3f    acceleration 0 0 0
+  exposedField MFFloat    angularAcceleration [ 0, 0, 1, 0 ]
+  exposedField SFVec3f    momentum 0 0 0
+  exposedField SFVec3f    force 0 0 0
+  exposedField SFTime     startTime 0
+  exposedField SFTime     stopTime 1
+  eventOut     SFBool     isActive
+  eventOut     SFFloat    speed_changed
+  exposedField SFNode     constants NULL
+  exposedField MFNode     children [ ]
+]
+{
+  PROTO Data [
+    exposedField SFFloat    radius 1
+    exposedField SFFloat    mass 1
+    exposedField SFVec3f    position 0 0 0
+    exposedField SFRotation orientation 0 0 1 0
+    exposedField SFVec3f    velocity 0 0 0
+    exposedField MFFloat    angularVelocity [ 0, 0, 1, 0 ]
+    exposedField SFVec3f    acceleration 0 0 0
+    exposedField MFFloat    angularAcceleration [ 0, 0, 1, 0 ]
+    exposedField SFVec3f    momentum 0 0 0
+    exposedField SFVec3f    force 0 0 0
+    exposedField SFNode     constants NULL
+    exposedField MFNode     children [ ]
+  ]
+  {
+    Transform {
+      translation IS position
+      rotation IS orientation
+      children IS children
+    }
+  }
+
+  DEF Data Data {
+    radius IS radius
+    mass IS mass
+    position IS position
+    orientation IS orientation
+    velocity IS velocity
+    angularVelocity IS angularVelocity
+    acceleration IS acceleration
+    angularAcceleration IS angularAcceleration
+    momentum IS momentum
+    force IS force
+    constants IS constants
+    children IS children
+  }
+
+  DEF _Particle Script {
+    eventOut SFFloat speed IS speed_changed
+    eventIn  SFVec3f set_acceleration
+    eventIn  SFVec3f set_momentum
+    eventIn  SFVec3f set_force
+    eventIn  SFTime  set_cycleTime
+    eventIn  SFBool  set_isActive
+    eventIn  SFFloat set_fraction
+    eventIn  MFNode  set_children
+    field    SFVec3f acceleration 0 0 0
+    field    SFNode  timeSensor DEF Time TimeSensor {
+      enabled IS enabled
+      loop TRUE
+      startTime IS startTime
+      stopTime IS stopTime
+      isActive IS isActive
+    }
+    field    SFNode  data USE Data
+    url "peaseblossom:
+function rel_mass () {
+	return data.mass / Math.sqrt(1 - (Math.pow(data.velocity.length(), 2) / data.constants.c2));
+}
+function rel_add (v, u) {
+	return v.add(u).divide(1 + (Math.abs(v.dot(u)) / data.constants.c2));
+}
+function set_momentum (value, time) {
+	data.velocity = rel_add(data.velocity, value.divide(rel_mass()));
+	if (!timeSensor.isActive) timeSensor.startTime = time;
+}
+function set_acceleration (value, time) {
+	acceleration = value.add(data.force.divide(rel_mass()));
+}
+function set_force (value, time) {
+	acceleration = data.acceleration.add(value.divide(rel_mass()));
+}
+function set_isActive (value, time) {
+}
+function get_position (dt) {
+	data.velocity = rel_add(data.velocity, acceleration.multiply(dt));
+	return data.position.add(data.velocity.multiply(dt));
+}
+function get_orientation (dt) {
+	data.angularVelocity = new MFFloat(
+		data.angularVelocity[0] + data.angularAcceleration[0] * dt,
+		data.angularVelocity[1] + data.angularAcceleration[1] * dt,
+		data.angularVelocity[2] + data.angularAcceleration[2] * dt,
+		data.angularVelocity[3] + data.angularAcceleration[3] * dt
+	);
+	return data.orientation.multiply(new SFRotation(
+		data.angularVelocity[0],
+		data.angularVelocity[1],
+		data.angularVelocity[2],
+		data.angularVelocity[3] * dt
+	));
+}
+function set_fraction (value, time) {
+	dt = 1 / Browser .currentFrameRate;
+
+	data.position    = get_position(dt);
+//	data.orientation = get_orientation(dt);
+}
+function initialize () {
+	data.acceleration = data.acceleration;
+	data.force = data.force;
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Data.acceleration_changed TO _Particle.set_acceleration
+  ROUTE Data.momentum_changed TO _Particle.set_momentum
+  ROUTE Data.force_changed TO _Particle.set_force
+  ROUTE Time.fraction_changed TO _Particle.set_fraction
+  ROUTE Time.isActive TO _Particle.set_isActive
+}

@@ -79,25 +79,22 @@ Array::Array (pbExecutionContext* const executionContext, const std::nullptr_t) 
 	                new pb::NativeFunction (executionContext, "length", setLength, 1));
 }
 
-bool
+void
 Array::put (const Identifier & identifier, const var & value, const bool throw_)
-throw (pbError)
+throw (pbError,
+       std::out_of_range)
 {
 	const auto index = identifier .toUInt32 ();
 	
 	if (index == PROPERTY)
 		return pbObject::put (identifier, value, PROPERTY, throw_);
 
-	if (pbObject::put (identifier, value, index, throw_))
-	{
-		if (index < length)
-			return true;
+	pbObject::put (identifier, value, index, throw_);
 
-		length = index + 1;
-		return true;
-	}
+	if (index < length)
+		return;
 
-	return false;
+	length = index + 1;
 }
 
 pb::var
@@ -133,18 +130,30 @@ Array::toStream (std::ostream & ostream) const
 
 	for (uint32_t index = 0, size = length - 1; index < size; ++ index)
 	{
-		const var value = get (basic::to_string (index)) .first;
-	
-		if (value .isUndefined ())
+		try
+		{
+			const var value = get (basic::to_string (index));
+		
+			if (value .isUndefined ())
+				ostream << ',';
+			else
+				ostream << value << ',';
+		}
+		catch (const std::out_of_range &)
+		{
 			ostream << ',';
-		else
-			ostream << value << ',';
+		}
 	}
 
-	const var value = get (basic::to_string (length - 1)) .first;
+	try
+	{
+		const var value = get (basic::to_string (length - 1));
 
-	if (not value .isUndefined ())
-		ostream << value;
+		if (not value .isUndefined ())
+			ostream << value;
+	}
+	catch (const std::out_of_range &)
+	{ }
 }
 
 void

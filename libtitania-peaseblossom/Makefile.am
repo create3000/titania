@@ -8,7 +8,7 @@ libtitania_peaseblossom_la_SOURCES =  \
 	Titania/PeaseBlossom/Base/GarbargeCollector.cpp \
 	Titania/PeaseBlossom/Base/pbChildObject.cpp \
 	Titania/PeaseBlossom/Bits/Identifier.cpp \
-	Titania/PeaseBlossom/Cache/PtrCache.cpp \
+	Titania/PeaseBlossom/Cache/Cache.cpp \
 	Titania/PeaseBlossom/Execution/pbExecutionContext.cpp \
 	Titania/PeaseBlossom/Execution/Program.cpp \
 	Titania/PeaseBlossom/Expressions/pbStatement.cpp \
@@ -20,6 +20,7 @@ libtitania_peaseblossom_la_SOURCES =  \
 	Titania/PeaseBlossom/Objects/pbFunction.cpp \
 	Titania/PeaseBlossom/Objects/pbObject.cpp \
 	Titania/PeaseBlossom/Parser/Parser.cpp \
+	Titania/PeaseBlossom/Primitives/ptr.cpp \
 	Titania/PeaseBlossom/Primitives/var.cpp \
 	Titania/PeaseBlossom/Standard/Array.cpp \
 	Titania/PeaseBlossom/Standard/Function.cpp \

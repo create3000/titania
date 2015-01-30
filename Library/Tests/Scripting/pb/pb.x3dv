@@ -69,225 +69,6 @@ DEF Script1 Script {
 #
 #
  "peaseblossom:
-/*
-function initialize ()
-{
-	//print ('test1: ', test1 ());
-}
-
-function test1 ()
-{
-	// single line comment
-
-	;
-	print (true);
-	print (false);
-	print (null);
-
-	print ();
-	print (1234.56789);
-	print (0xabcdef);
-	print (0o1234567);
-	print (0b1010101);
-
-	print ();
-	print ('// Global object');
-
-	print ();
-	print (this);
-	print (NaN);
-	print (Infinity);
-	print (undefined);
-
-	var a, b, c, d;
-
-	print ();
-	print (a - (b * (c + d)));
-	print (0 - 1 + 2 * 3 % 4);
-	print (0 - 1 + 2 * 3 % 4 || (true && false) | 4 & 5 ^ 5 < 6 > 7 <= 8 >= 9 === 1 !== 2 == 3 != 5
-	? true
-	: false);
-
-	print ();
-	print (0 instanceof 0);
-	print (0 in 0);
-	print (a = a + b, ' : ', a += b);
-	print (0 / 0);
-	print (1 / 0);
-	print (-1 / 0);
-
-	print ();
-	'// String';
-
-	print ();
-	print ('\\'single quoted string\\'');
-	print (\"\\\"double quoted string\\\"\");
-
-	print ();
-	print ('// ObjectLiteral');
-
-	print ({ p: 123, get p () { }, set p (value) { }, 1: 123, '': 'abc', });
-
-	print ();
-	print ('// CallExpression');
-
-	print ();
-	print (isNaN (undefined));
-
-	function f (value, time)
-	{ 'in function f'; }
-
-	print (f ());
-
-	//f () [1 + 2] .name .name () .name () [f () .index];
-	object .name .name [1] .name [2] .name;
-
-	print ();
-	var a = 1, b = 31;
-
-	print ();
-	print ('// UnaryExpression');
-	print ();
-	print (delete a);
-	print (void b);
-	print (typeof b);
-	print (++ b);
-	print (-- b);
-	print (+ b);
-	print (- b);
-	print (~ b);
-	print (! b);
-
-	print ();
-	print ('// BinaryExpression');
-
-	print ();
-	print ('// MultiplicativeExpression');
-
-	print ();
-	print (a * b);
-	print (a / b);
-	print (a % b);
-	print ('5' * 2);
-
-	print ();
-	print ('// AdditiveExpression');
-
-	print ();
-
-	print ('a' + 'b');
-	print (a + b);
-	print (a - b);
-
-	print ();
-	print ('// ShiftExpression');
-
-	print ();
-	print (a << b);
-	print (a >> b);
-	print (a >>> b);
-
-	print ();
-	print ('// RelationalExpression');
-
-	print ();
-	print (undefined < undefined);
-	print (undefined < null);
-	print (undefined < true);
-	print (undefined < false);
-	print (undefined < 0);
-	print (undefined < 1);
-	print (undefined < '');
-	print (undefined < 'a');
-	print (undefined < { });
-
-	print (a < b);
-	print (a > b);
-	print (a <= b);
-	print (a >= b);
-	print (a instanceof b);
-	print (a in b);
-
-	print ();
-	print ('// EqualityExpression');
-
-	print ();
-	print (a == b);
-	print (a != b);
-
-	print ();
-	print ('// StrictEqual');
-	
-	print (undefined === undefined);
-	print (false     === false);
-	print (true      === true);
-	print (null      === null);
-	print (1         === 1);
-	print (''        === '');
-	print (this      === this);
-
-	print (a !== b);
-	print ();
-
-	print ('// BitwiseExpression');
-
-	print ();
-	print (a & b);
-	print (a ^ b);
-	print (a | b);
-
-	print ();
-	print ('// LogicalExpression');
-
-	print ();
-	print (a && b);
-	print (a || b);
-	print (a ? b : c);
-
-	print ();
-	var Browser;
-
-	print ();
-	a = function () { 1 + 2; };
-
-	print ();
-	set_time;
-
-
-	function set_time (value, time)
-	{
-		1 + 2 * 3 / 4;
-		5 + 6 * 7 / 8;
-	}
-
-
-	var a;
-	var a = set_time;
-	var
-		a = set_time,
-		a = 1;
-	print ();
-	set_time;
-	print ();
-	var
-		PI   = 3.14159,
-		PI_2 = 2 * PI;
-		
-
-	'// VRMLScript';
-
-	print (NULL);
-	print (FALSE);
-	print (TRUE);
-	print (print);
-
-	print ('Hellö Wöld!');
-
-	print ((12345678901234567) << 0, ' : ', 1 / 7 + a * 1 / 3 + b * 1 / 2);
-
-	return PI_2;
-}
-*/
 
 function fibonacci_recursive (value)
 {
@@ -302,19 +83,7 @@ function fibonacci_recursive (value)
 
 function fibonacci_iterative (value)
 {
-	// 8.000.000
-	// 73.0 s
-	// 10.92 s
-	// 7.80 s
-	// 7.04 s
-	// 6.34 s
-	// 5.75 s
-	// 5.41 s
-	// 4.92 s
-	// 5.35 s
-	// 5.01 s switch weg bei toPrimitive und getValue
-	// 5.73 s 
-	// 5.14 s local objects handling
+	// 5.14 s
 
 	print ('fibonacci_iterative: ');
 	print ('fibonacci_iterative: value: ', value);
@@ -399,16 +168,7 @@ function set_time (value, time)
 }
 
 DEF Script2 Script {
-  inputOnly      SFTime   set_time
-  initializeOnly SFFloat  now 1
-  initializeOnly SFNode   node Script {
-    inputOutput SFDouble result 0
-    inputOutput SFDouble h1 0
-    inputOutput SFDouble h2 1
-
-  }
-  inputOutput    SFDouble N1 800
-  inputOutput    SFDouble N2 8000000
+  inputOnly SFTime   set_time
 
   url "javascript:
 function fibonacci_recursive (value)
@@ -447,8 +207,8 @@ function set_time (value, time)
 {
 	var t0 = Date .now ();
 	print ();
-	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, N1));
-	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, N2));
+	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, 800));
+	print ('fibonacci_iterative: ', fibonacci_iterative ({ }, 8000000));
 	print ('time: ', (Date .now () - t0) / 1000);
 
 	var t0 = Date .now ();

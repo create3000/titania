@@ -91,13 +91,22 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
-		const auto px = lhs -> getValue () .toPrimitive (NUMBER);
-		const auto py = rhs -> getValue () .toPrimitive (NUMBER);
+		const auto lval = lhs -> getValue ();
+		const auto rval = rhs -> getValue ();
 
-		if (px .getType () == STRING and py .getType () == STRING)
-			return px .getString () < py .getString ();
+		if (lval .getType () == rval .getType ())
+		{
+			if (lval .getType () == NUMBER)
+				return lval .getNumber () < rval .getNumber ();
 
-		return px .toNumber () < py .toNumber ();
+			if (lval .getType () == STRING)
+				return lval .getString () < rval .getString ();
+		}
+
+		const auto px = lval .toNumber ();
+		const auto py = rval .toNumber ();
+
+		return px < py;
 	}
 
 	///  Inserts this object into the output stream @a ostream.

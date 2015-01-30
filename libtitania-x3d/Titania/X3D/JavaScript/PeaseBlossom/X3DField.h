@@ -93,15 +93,15 @@ public:
 	pb::var
 	get (Context* const, typename Class::internal_type* const);
 
-
-protected:
-
-	///  @name Construction
-
 	template <class Class>
 	static
 	pb::var
 	create (const pb::ptr <pb::pbExecutionContext> &, typename Class::internal_type* const);
+
+
+protected:
+
+	///  @name Construction
 
 	template <class Class>
 	static
@@ -190,9 +190,7 @@ X3DField::setUserData (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject
 	userData .emplace_back ((void*) loose);
 	object -> setCallbacks (Class::getCallbacks ());
 
-	if (loose)
-		field -> addParent (context);
-	else
+	if (not loose)
 		context -> addObject (getKey <Class> (field), field, object);
 }
 
@@ -204,7 +202,10 @@ X3DField::dispose (pb::pbObject* const object)
 	const auto field   = getObject <typename Class::internal_type> (object);
 
 	if (object -> getUserData <size_t> (2))
-		field -> removeParent (context);
+	{
+		field -> dispose ();
+		X3DGarbageCollector::addDisposedObject (field);
+	}
 	else
 		context -> removeObject (getKey <Class> (field), field);
 }

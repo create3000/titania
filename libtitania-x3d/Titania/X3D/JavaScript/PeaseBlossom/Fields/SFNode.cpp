@@ -175,57 +175,55 @@ SFNode::hasProperty (pb::pbObject* const object, const pb::Identifier & identifi
 	const auto lhs = getObject <X3D::SFNode> (object);
 
 	if (lhs -> getValue ())
-		return lhs -> getValue () -> hasField (identifier .getName ());
+		return lhs -> getValue () -> hasField (identifier .getString ());
 
 	return false;
 }
 
-bool
+void
 SFNode::setProperty (pb::pbObject* const object, const pb::Identifier & identifier, const pb::var & value)
 {
 	const auto lhs = getObject <X3D::SFNode> (object);
 
 	if (not lhs -> getValue ())
-		return false;
+		throw std::out_of_range ("SFNode::setProperty");
 
 	try
 	{
-		const auto field = lhs -> getValue () -> getField (identifier .getName ());
+		const auto field = lhs -> getValue () -> getField (identifier .getString ());
 
 		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::outputOnly)
-			return true;
+			return;
 
 		setValue (field, value);
-		
-		return true;
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{
-		return false;
+		throw std::out_of_range ("SFNode::setProperty");
 	}
 }
 
-std::pair <pb::var, bool>
+pb::var
 SFNode::getProperty (pb::pbObject* const object, const pb::Identifier & identifier)
 {
 	const auto lhs = getObject <X3D::SFNode> (object);
 
 	if (not lhs -> getValue ())
-		return std::make_pair (pb::undefined, false);
+		throw std::out_of_range ("SFNode::getProperty");
 
 	try
 	{
 		const auto context = getContext (object);
-		const auto field   = lhs -> getValue () -> getField (identifier .getName ());
+		const auto field   = lhs -> getValue () -> getField (identifier .getString ());
 
 		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::inputOnly)
-			return std::make_pair (pb::undefined, true);
+			return pb::undefined;
 
-		return std::make_pair (getValue (context, field), true);
+		return getValue (context, field);
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{
-		return std::make_pair (pb::undefined, false);
+		throw std::out_of_range ("SFNode::getProperty");
 	}
 }
 

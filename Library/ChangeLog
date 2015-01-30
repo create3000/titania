@@ -1,3 +1,24 @@
+2015-01-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
+	* pb.x3dv:
+	* pb1.x3dv:
+	* sphere.wrl:
+	* button.wrl:
+	* solaris.htm:
+	* emitter.wrl:
+	* emitter2.wrl:
+	* WorldProto.wrl:
+	* util-mark6.png:
+	* sphere-blue.wrl:
+	* XSliderProto.wrl:
+	* ParticleProto.wrl:
+	* ConstantsProto.wrl:
+	* ComposeVec3fProto.wrl:
+	* ParticleEmitterProto.wrl:
+	* CollisionManagerProto.wrl:
+	* TrackingViewpointProto.wrl: 
+
 2015-01-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* pb1.x3dv: 

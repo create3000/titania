@@ -1,3 +1,58 @@
+2015-01-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-peaseblossom.cproj:
+	* Statements.h:
+	* Cache.h:
+	* pbMath.h:
+	* Object.h:
+	* Array.h:
+	* Cache.cpp:
+	* PtrCache.h:
+	* Object.h:
+	* ptr.h:
+	* var.h:
+	* pbUserData.h:
+	* Parser.cpp:
+	* Array.cpp:
+	* Identifier.h:
+	* ptr.cpp:
+	* pbObject.h:
+	* var.cpp:
+	* PtrCache.cpp:
+	* Object.cpp:
+	* pbObject.cpp:
+	* pbChildObject.h:
+	* Function.cpp:
+	* NumberObject.h:
+	* pbFunction.cpp:
+	* pbChildObject.cpp:
+	* StringObject.h:
+	* BooleanObject.h:
+	* NativeFunction.h:
+	* NativeFunction.cpp:
+	* GarbargeCollector.cpp:
+	* StatementType.h:
+	* NewExpression.h:
+	* BreakStatement.h:
+	* LessExpression.h:
+	* EqualExpression.h:
+	* ContinueStatement.h:
+	* GreaterExpression.h:
+	* NotEqualExpression.h:
+	* pbExecutionContext.cpp:
+	* VariableExpression.h:
+	* AdditionExpression.h:
+	* VariableDeclaration.h:
+	* LessEqualExpression.h:
+	* AssignmentExpression.h:
+	* StrictEqualExpression.h:
+	* GreaterEqualExpression.h:
+	* MemberAccessExpression.h:
+	* FunctionCallExpression.h:
+	* StrictNotEqualExpression.h:
+	* ComputedMemberAccessExpression.h: 
+
 2015-01-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-peaseblossom.cproj:

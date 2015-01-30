@@ -72,6 +72,9 @@ public:
 	///  Constructs new Object.
 	Object (pbExecutionContext* const, pbFunction* const);
 
+	void
+	prepare (pbExecutionContext* const, pbFunction* const);
+
 
 protected:
 
@@ -84,6 +87,15 @@ protected:
 
 	///  Constructs new standard Object with proto null.
 	Object (const std::nullptr_t);
+
+	void
+	construct (pbExecutionContext* const, pbFunction* const);
+
+	///  @name Destruction
+
+	virtual
+	void
+	recycle () final override;
 
 };
 

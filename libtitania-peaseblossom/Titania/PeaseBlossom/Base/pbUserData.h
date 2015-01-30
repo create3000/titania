@@ -79,6 +79,11 @@ public:
 	{ return reinterpret_cast <Type> (userData .at (index)); }
 
 	///  @name Destruction
+	
+	virtual
+	void
+	dispose ()
+	{ userData .clear (); }
 
 	///  Destructs the pbUserData.
 	virtual

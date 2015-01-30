@@ -124,10 +124,16 @@ public:
 				const auto x = lhs -> getValue ();
 				const auto y = rhs -> getValue ();
 
+				if (x .getType () == NUMBER and y .getType () == NUMBER)
+					return put (x .getNumber () + y .getNumber ());
+
 				if (x .getType () == STRING or y .getType () == STRING)
 					return put (x .toString () + y .toString ());
 
-				return put (x .toNumber () + y .toNumber ());
+				const auto px = x .toNumber ();
+				const auto py = y .toNumber ();
+
+				return put (px + py);
 			}
 			case AssignmentOperatorType::SUBTRACTION_ASSIGNMENT:
 			{

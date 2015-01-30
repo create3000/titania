@@ -1,0 +1,38 @@
+#VRML V2.0 utf8
+
+PROTO Constants [
+  exposedField SFFloat c 2.99792e+08
+  exposedField SFFloat c2 0
+  exposedField SFFloat gamma 6.67259e-11
+  exposedField SFFloat pi2 0
+]
+{
+  PROTO Data [
+    exposedField SFFloat c 2.99792e+08
+    exposedField SFFloat c2 0
+    exposedField SFFloat gamma 6.67259e-11
+    exposedField SFFloat pi2 0
+  ]
+  {
+    Group { }
+  }
+
+  DEF Data Data {
+    c IS c
+    c2 IS c2
+    gamma IS gamma
+    pi2 IS pi2
+  }
+
+  DEF _Constants Script {
+    field SFNode data USE Data
+    url "peaseblossom:
+function initialize () {
+	data.c2 = Math.pow(data.c, 2);
+	data.pi2 = 2 * Math.PI;
+}
+"
+    directOutput TRUE
+  }
+}
+

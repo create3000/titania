@@ -74,6 +74,26 @@ Object::Object (pbExecutionContext* const executionContext) :
 Object::Object (pbExecutionContext* const executionContext, pbFunction* const constructor) :
 	pbObject ()
 {
+	construct (executionContext, constructor);
+}
+
+Object::Object (const std::nullptr_t) :
+	pbObject ()
+{
+	setProto (nullptr);
+}
+
+void
+Object::prepare (pbExecutionContext* const executionContext, pbFunction* const constructor)
+{
+	pbObject::prepare ();
+
+	construct (executionContext, constructor);
+}
+
+void
+Object::construct (pbExecutionContext* const executionContext, pbFunction* const constructor)
+{
 	try
 	{
 		setConstructor (constructor);
@@ -94,10 +114,10 @@ Object::Object (pbExecutionContext* const executionContext, pbFunction* const co
 	}
 }
 
-Object::Object (const std::nullptr_t) :
-	pbObject ()
+void
+Object::recycle ()
 {
-	setProto (nullptr);
+	Cache <Object>::add (this);
 }
 
 } // pb

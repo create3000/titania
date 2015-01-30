@@ -48,70 +48,95 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_CACHE_PTR_CACHE_H__
-#define __TITANIA_PEASE_BLOSSOM_CACHE_PTR_CACHE_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_STRICT_NOT_EQUAL_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_STRICT_NOT_EQUAL_EXPRESSION_H__
 
-#include "../Cache/Cache.h"
-#include "../Primitives/ptr.h"
-#include "../Base/GarbageCollector.h"
-
-#include <vector>
-#include <mutex>
+#include "../Expressions/PrimitiveExpression.h"
+#include "../Expressions/StrictEqualExpression.h"
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
 
-class pbObject;
-
-template <>
-class Cache <ptr <pbObject>> 
+/**
+ *  Class to represent a ECMAScript strict not equal expression.
+ */
+class StrictNotEqualExpression :
+	public pbStatement
 {
 public:
 
-	static
-	void
-	add (ptr <pbObject>* const);
+	///  @name Construction
 
-	template <class ... Args>
-	static
-	ptr <pbObject>*
-	get (Args && ... args)
+	///  Constructs new StrictNotEqualExpression expression.
+	StrictNotEqualExpression (ptr <pbStatement> && lhs, ptr <pbStatement>&& rhs) :
+		pbStatement (StatementType::STRICT_NOT_EQUAL_EXPRESSION),
+		        lhs (std::move (lhs)),
+		        rhs (std::move (rhs))
+	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbStatement>
+	copy (pbExecutionContext* const executionContext) const
+	noexcept (true) final override
+	{ return new StrictNotEqualExpression (lhs -> copy (executionContext), rhs -> copy (executionContext)); }
+
+	///  @name Operations
+
+	///  Converts its argument to a value of type Boolean.
+	virtual
+	CompletionType
+	getValue () const
+	throw (pbError) final override
 	{
-		std::lock_guard <std::mutex> lock (mutex);
-
-		if (cache .empty ())
-		{
-			++ min;
-			return new ptr <pbObject> (std::forward <Args> (args) ...);
-		}
-
-		const auto object = cache .back ();
-
-		cache .pop_back ();
-
-		min = std::min (min, cache .size ());
-
-		object -> operator = (std::forward <Args> (args) ...);
-
-		return object;
+		return not StrictEqualExpression::evaluate (lhs, rhs);
 	}
 
-	static
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
 	void
-	clear (GarbageCollector::ObjectArray &);
-
-	static
-	bool
-	empty ();
-
+	toStream (std::ostream & ostream) const final override
+	{
+		ostream
+			<< pb::toStream (this, lhs)
+			<< Generator::TidySpace
+			<< "!=="
+			<< Generator::TidySpace
+			<< pb::toStream (this, rhs);
+	}
 
 private:
 
-	static std::vector <ptr <pbObject>*> cache;
-	static size_t                        min;
-	static std::mutex                    mutex;
+	///  @name Construction
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (lhs, rhs); }
+
+	///  @name Members
+
+	const ptr <pbStatement> lhs;
+	const ptr <pbStatement> rhs;
 
 };
+
+///  @relates StrictNotEqualExpression
+///  @name Construction
+
+///  Constructs new StrictNotEqualExpression expression.
+inline
+ptr <pbStatement>
+createStrictNotEqualExpression (ptr <pbStatement> && lhs, ptr <pbStatement>&& rhs)
+{
+	if (lhs -> isPrimitive () and rhs -> isPrimitive ())
+		return new PrimitiveExpression (StrictNotEqualExpression (std::move (lhs), std::move (rhs)) .getValue (), StatementType::BOOLEAN);
+
+	return new StrictNotEqualExpression (std::move (lhs), std::move (rhs));
+}
 
 } // pb
 } // titania

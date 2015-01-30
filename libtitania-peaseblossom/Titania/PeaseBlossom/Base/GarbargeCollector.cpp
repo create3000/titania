@@ -51,7 +51,9 @@
 #include "GarbageCollector.h"
 
 #include "../Base/pbChildObject.h"
-#include "../Cache/PtrCache.h"
+#include "../Cache/Cache.h"
+#include "../Objects/Object.h"
+#include "../Objects/pbFunction.h"
 
 #include <malloc.h>
 #include <thread>
@@ -83,7 +85,7 @@ GarbageCollector::addDisposedObject (const pbChildObject* const object)
 void
 GarbageCollector::deleteObjectsAsync ()
 {
-	if (objects .empty () and Cache <ptr <pbObject>>::empty ())
+	if (objects .empty () and pbCache::empty ())
 		return;
 
 	std::thread (&GarbageCollector::deleteObjects, std::move (objects)) .detach ();
@@ -92,14 +94,19 @@ GarbageCollector::deleteObjectsAsync ()
 void
 GarbageCollector::deleteObjects (const ObjectArray & objects)
 {
-	__LOG__ << objects .size () << std::endl;
+	// Residual waste
+	
+	__LOG__ << objects .size () << " : " << pbCache::size () << std::endl;
 
 	for (const auto & object : objects)
 		delete object;
 
+	// Recycled waste
+
 	ObjectArray cache;
 
 	Cache <ptr <pbObject>>::clear (cache);
+	Cache <Object>::clear (cache);
 
 	for (const auto & object : cache)
 		delete object;

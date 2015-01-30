@@ -83,9 +83,9 @@ public:
 	noexcept (true) final override
 	{
 		if (expression)
-			return new VariableDeclaration (executionContext, std::string (identifier .getName ()), expression -> copy (executionContext));
+			return new VariableDeclaration (executionContext, std::string (identifier .getString ()), expression -> copy (executionContext));
 	
-		return new VariableDeclaration (executionContext, std::string (identifier .getName ()), nullptr);
+		return new VariableDeclaration (executionContext, std::string (identifier .getString ()), nullptr);
 	}
 
 	///  @name Operations

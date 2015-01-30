@@ -79,7 +79,7 @@ public:
 	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new MemberAccessExpression (expression -> copy (executionContext), std::string (identifier .getName ())); }
+	{ return new MemberAccessExpression (expression -> copy (executionContext), std::string (identifier .getString ())); }
 
 	///  @name Operations
 
@@ -94,7 +94,7 @@ public:
 		{
 			case UNDEFINED:
 			{
-				throw TypeError ("Cannot set property '" + identifier .getName () + "' of undefined.");
+				throw TypeError ("Cannot set property '" + identifier .getString () + "' of undefined.");
 			}
 			case BOOLEAN:
 			case NUMBER:
@@ -104,7 +104,7 @@ public:
 			}
 			case NULL_OBJECT:
 			{
-				throw TypeError ("Cannot set property '" + identifier .getName () + "' of null.");
+				throw TypeError ("Cannot set property '" + identifier .getString () + "' of null.");
 			}
 			case OBJECT:
 			{
@@ -148,7 +148,14 @@ public:
 			}
 			case OBJECT:
 			{
-				return std::move (base .getObject () -> get (identifier) .first);
+				try
+				{
+					return base .getObject () -> get (identifier);
+				}
+				catch (const std::out_of_range &)
+				{
+					return undefined;
+				}
 			}
 		}
 
@@ -199,12 +206,14 @@ public:
 				{
 					return base .getObject () -> call (identifier, arguments);
 				}
+				catch (const std::out_of_range &)
+				{ }
 				catch (const std::invalid_argument &)
 				{ }
 			}
 		}
 
-		throw TypeError ("'" + base .toString () + "." + identifier .getName () + "' is not a function");
+		throw TypeError ("'" + base .toString () + "." + identifier .getString () + "' is not a function");
 	}
 
 	///  @name Input/Output

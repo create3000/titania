@@ -63,34 +63,70 @@ DEF PeaseBlossom Script {
   inputOnly      SFTime  set_time
   initializeOnly SFInt32 size 800000
   initializeOnly SFNode node Viewpoint {}
+  initializeOnly MFInt32 array []
 
   url "peaseblossom:
 function initialize ()
 {
+	array .length = 100;
 }
 
 function set_time (value, time)
 {
 	print ('peaseblossom:');
-	print ('set_time: value: ', value);
-	print ('set_time: time:  ', time);
-	print ('set_time: now:   ', now ());
 
 	var t0 = now ();
+	global (8000000);
+	print ('global:    ', now () - t0);
 
-	test (size);
+	var t0 = now ();
+	field (8000000);
+	print ('field:     ', now () - t0);
 
-	print ('test: duration: ', now () - t0);
+	var t0 = now ();
+	construct (800000);
+	print ('construct: ', now () - t0);
+
+	var t0 = now ();
+	add (800000);
+	print ('add:       ', now () - t0);
+
+	var t0 = now ();
+	array_test (8000);
+	print ('array:     ', now () - t0);
 }
 
-var global = 1;
+function global (value)
+{
+	for (var i = 1; i < value; ++ i)
+		 size;
+}
 
-function test (value)
+function field (value)
+{
+	for (var i = 1; i < value; ++ i)
+		 node .isBound;
+}
+
+function construct (value)
+{
+	for (var i = 1; i < value; ++ i)
+		 new SFVec3f (1,2,3);
+}
+
+function add (value)
 {
 	var v = new SFVec3f (1,2,3)
 
 	for (var i = 1; i < value; ++ i)
 		 v .add (v);
+}
+
+function array_test (value)
+{
+	for (var i = 0; i < value; ++ i)
+		for (var index = 0, size = array .length; index < size; ++ index)
+		   array [index];
 }
 
 function enumerate (o)
@@ -112,28 +148,72 @@ DEF SpiderMonkey Script {
   inputOnly      SFTime  set_time
   initializeOnly SFInt32 size 800000
   initializeOnly SFNode node Viewpoint {}
+  initializeOnly MFInt32 array []
 
   url "javascript:
-function set_time (value, time)
+function initialize ()
 {
-	print ('javascript:');
-	print ('set_time: value: ', value);
-	print ('set_time: time:  ', time);
-	print ('set_time: now:   ', Date .now ());
-
-	var t0 = Date .now ();
-
-	test (size);
-
-	print ('test: duration: ', (Date .now () - t0) / 1000);
+	array .length = 100;
+	
+	print (100000000);
 }
 
-function test (value)
+function set_time (value, time)
+{
+	print ('spidermonkey:');
+
+	var t0 = Date .now ();
+	global (8000000);
+	print ('global:    ', (Date .now () - t0) / 1000);
+
+	var t0 = Date .now ();
+	field (8000000);
+	print ('field:     ', (Date .now () - t0) / 1000);
+
+	var t0 = Date .now ();
+	construct (800000);
+	print ('construct: ', (Date .now () - t0) / 1000);
+
+	var t0 = Date .now ();
+	add (800000);
+	print ('add:       ', (Date .now () - t0) / 1000);
+
+	var t0 = Date .now ();
+	array_test (8000);
+	print ('array:     ', (Date .now () - t0) / 1000);
+}
+
+function global (value)
+{
+	for (var i = 0; i < value; ++ i)
+		 size;
+}
+
+function field (value)
+{
+	for (var i = 0; i < value; ++ i)
+		 node .isBound;
+}
+
+function construct (value)
+{
+	for (var i = 0; i < value; ++ i)
+		 new SFVec3f (1,2,3);
+}
+
+function add (value)
 {
 	var v = new SFVec3f (1,2,3)
 
-	for (var i = 1; i < value; ++ i)
+	for (var i = 0; i < value; ++ i)
 		 v .add (v);
+}
+
+function array_test (value)
+{
+	for (var i = 0; i < value; ++ i)
+		for (var index = 0, size = array .length; index < size; ++ index)
+		   array [index];
 }
 "
   directOutput TRUE

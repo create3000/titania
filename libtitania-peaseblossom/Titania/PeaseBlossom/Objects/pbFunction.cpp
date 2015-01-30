@@ -50,6 +50,7 @@
 
 #include "pbFunction.h"
 
+#include "../Cache/Object.h"
 #include "../Execution/pbExecutionContext.h"
 #include "../Objects/Function.h"
 #include "../Objects/NativeFunction.h"
@@ -88,15 +89,16 @@ pbFunction::pbFunction (pbExecutionContext* const executionContext, const std::n
 void
 pbFunction::addProperties ()
 {
-	addOwnProperty ("name",   name .getName (), NONE);
-	addOwnProperty ("length", length,           NONE);
+	addOwnProperty ("name",   name .getString (), NONE);
+	addOwnProperty ("length", length,             NONE);
 }
 
 pbObject*
 pbFunction::createInstance (pbExecutionContext* const executionContext)
 throw (TypeError)
 {
-	return new Object (executionContext, this);
+	//return new Object (executionContext, this);
+	return Cache <Object>::get (executionContext, this);
 }
 
 bool

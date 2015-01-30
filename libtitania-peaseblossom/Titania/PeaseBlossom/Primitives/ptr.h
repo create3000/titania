@@ -250,7 +250,7 @@ public:
 	///  Removes the managed object.
 	void
 	reset ()
-	{ reset (nullptr); }
+	{ remove (get (), iter); }
 
 	///  Replaces the managed object.
 	void
@@ -309,7 +309,7 @@ public:
 	void
 	dispose () final override
 	{
-		remove (get (), iter);
+		reset ();
 
 		pbChildObject::dispose ();
 	}
@@ -317,7 +317,15 @@ public:
 	///  Destructs the owned object if no more ptrs link to it
 	virtual
 	~ptr ()
-	{ remove (get (), iter); }
+	{ reset (); }
+
+
+protected:
+
+	virtual
+	void
+	recycle () final override
+	{ pbChildObject::recycle (); }
 
 
 private:
@@ -496,6 +504,15 @@ operator >= (const ptr <Type> & lhs, const ptr <Type> & rhs)
 {
 	return lhs .get () >= rhs .get ();
 }
+
+
+// Spezializations for ptr <pbObject>
+
+class pbObject;
+
+template <>
+void
+ptr <pbObject>::recycle ();
 
 } // pb
 } // titania

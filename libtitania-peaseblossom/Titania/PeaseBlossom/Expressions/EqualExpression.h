@@ -59,7 +59,7 @@ namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a ECMAScript remainder expression.
+ *  Class to represent a ECMAScript equal expression.
  */
 class EqualExpression :
 	public pbStatement
@@ -89,6 +89,14 @@ public:
 	CompletionType
 	getValue () const
 	throw (pbError) final override
+	{
+		return evaluate (lhs, rhs);
+	}
+
+	static
+	bool
+	evaluate (const ptr <pbStatement> & lhs, const ptr <pbStatement> & rhs)
+	throw (pbError)
 	{
 		const auto x = lhs -> getValue ();
 		const auto y = rhs -> getValue ();

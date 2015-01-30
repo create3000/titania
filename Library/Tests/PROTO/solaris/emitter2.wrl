@@ -1,0 +1,844 @@
+#VRML V2.0 utf8
+
+EXTERNPROTO TrackingViewpoint [
+  exposedField SFVec3f pointOfInterest
+  exposedField MFNode  children
+]
+"TrackingViewpointProto.wrl"
+
+EXTERNPROTO XSlider [
+  exposedField SFBool  enabled
+  exposedField SFFloat minPosition
+  exposedField SFFloat maxPosition
+  exposedField SFVec3f size
+  exposedField SFFloat minValue
+  exposedField SFFloat maxValue
+  exposedField SFFloat resolution
+  exposedField SFFloat offset
+  eventOut     SFBool  isOver
+  eventOut     SFBool  isActive
+  eventOut     SFTime  touchTime
+  eventOut     SFFloat position_changed
+  eventOut     SFFloat value_changed
+  exposedField MFNode  children
+]
+"XSliderProto.wrl"
+
+EXTERNPROTO World [
+  exposedField SFBool   visible
+  exposedField SFBool   enabled
+  exposedField MFString url
+  exposedField SFTime   startTime
+  exposedField MFString parameter
+  eventOut     SFTime   enterTime
+  exposedField MFNode   interface
+  exposedField MFNode   children
+]
+"WorldProto.wrl"
+
+EXTERNPROTO ComposeVec3f [
+  exposedField SFFloat x
+  exposedField SFFloat y
+  exposedField SFFloat z
+  exposedField SFTime  startTime
+  eventOut     SFVec3f value_changed
+]
+"ComposeVec3fProto.wrl"
+
+EXTERNPROTO Particle [
+  exposedField SFBool     enabled
+  exposedField SFFloat    radius
+  exposedField SFFloat    mass
+  exposedField SFVec3f    position
+  exposedField SFRotation orientation
+  exposedField SFVec3f    velocity
+  exposedField MFFloat    angularVelocity
+  exposedField SFVec3f    acceleration
+  exposedField MFFloat    angularAcceleration
+  exposedField SFVec3f    momentum
+  exposedField SFVec3f    force
+  exposedField SFTime     startTime
+  exposedField SFTime     stopTime
+  eventOut     SFBool     isActive
+  exposedField SFNode     constants
+  exposedField MFNode     children
+]
+"ParticleProto.wrl"
+
+EXTERNPROTO Constants [
+  exposedField SFFloat c
+  exposedField SFFloat c2
+  exposedField SFFloat gamma
+  exposedField SFFloat pi2
+]
+"ConstantsProto.wrl"
+
+EXTERNPROTO ParticleEmitter [
+  exposedField SFFloat rate
+  exposedField SFBool  enabled
+  exposedField SFVec3f position
+  exposedField SFVec3f velocity
+  exposedField SFVec3f acceleration
+  exposedField SFVec3f deviationOfPosition
+  exposedField SFVec3f deviationOfVelocity
+  exposedField SFVec3f deviationOfAcceleration
+  exposedField SFBool  loop
+  exposedField SFTime  startTime
+  exposedField SFTime  stopTime
+  exposedField MFNode  children
+]
+"ParticleEmitterProto.wrl"
+
+EXTERNPROTO CollisionManager [
+  exposedField SFVec3f flow
+  exposedField SFBool  collide
+  exposedField SFBool  gravity
+  eventOut     SFTime  collideTime
+  exposedField MFNode  obstacles
+  exposedField MFNode  children
+]
+"CollisionManagerProto.wrl"
+
+WorldInfo {
+  info [ "Created in CosmoWorlds", "Packaged by CosmoPackage" ]
+}
+DEF _NoNameNavInfo1 NavigationInfo {
+  type [ "ANY", "EXAMINE" ]
+}
+DEF VP1 Viewpoint {
+  position 2.54344 4.44384 9.3867
+  orientation -0.814746 0.574034 0.0816893 0.549686
+  description "viewpoint1"
+}
+DEF Plane Transform {
+  translation 0 1.49416e-07 0
+  scale 40.0543 10.0136 40.0543
+  children Shape {
+    appearance Appearance {
+      material Material {
+        transparency 0.659574
+      }
+      texture ImageTexture {
+        url "util-mark6.png"
+      }
+    }
+    geometry IndexedFaceSet {
+      coord Coordinate {
+        point [ -0.1 -2.98023e-08 -0.1, -0.1 -2.98023e-08 0.1, 0.1 -2.98023e-08 0.1, 0.1 -2.98023e-08 -0.1 ]
+      }
+      texCoord TextureCoordinate {
+        point [ 0 1, 0 0, 1 0, 1 1 ]
+      }
+      coordIndex [ 0, 1, 2, 3, -1 ]
+      texCoordIndex [ 0, 1, 2, 3, -1 ]
+      creaseAngle 0.5
+    }
+  }
+}
+DEF TrackingViewpoint Transform {
+  children DEF _1 TrackingViewpoint {
+    children DEF _2 Viewpoint {
+      position 2.54344 4.44384 9.3867
+      orientation -0.847706 0.518332 0.112813 0.502642
+      description "TrackingViewpoint"
+    }
+  }
+}
+DEF Slider Transform {
+  children [
+    DEF VelocitySlider Transform {
+      translation 3.65468 0.0348776 2.6975
+      rotation -0.57735 0.57735 0.577351 2.09439
+      scale 26.825 26.8249 26.825
+      scaleOrientation 0.0459123 -0.998773 0.01854 0.72878
+      children DEF _3 XSlider {
+        minValue 0.6
+        maxValue 2
+        children DEF _4 World {
+          url "button.wrl"
+          startTime 1
+        }
+      }
+    }
+    DEF PositionSlider Transform {
+      translation 3.3863 0.034878 2.6975
+      rotation -0.57735 0.57735 0.577351 2.09439
+      scale 26.825 26.8249 26.825
+      scaleOrientation 0.484808 -0.720531 0.495778 0.316425
+      children DEF _5 XSlider {
+        minValue 0.006
+        maxValue 2
+        offset 1
+        children USE _4
+      }
+    }
+    DEF ComposeVec3f_1 Transform {
+      translation -1.62476 -0.00962685 -0.00672168
+      scale 1.44827 1.44827 1.44827
+      children DEF _6 ComposeVec3f {
+        x 0.006
+        y 0.006
+        z 0.006
+      }
+    }
+    DEF ComposeVec3f_2 Transform {
+      translation -1.62476 -0.00962685 -0.00672168
+      scale 1.44827 1.44827 1.44827
+      children DEF _7 ComposeVec3f {
+        x 1
+        y 1
+        z 1
+      }
+    }
+    DEF DeviationOfPosition Transform {
+      children Transform {
+        scale 2 2 2
+        children Shape {
+          geometry IndexedLineSet {
+            coord Coordinate {
+              point [ -0.5 0.5 0.5, -0.5 -0.5 0.5, 0.5 0.5 0.5, 0.5 -0.5 0.5, 0.5 0.5 -0.5, 0.5 -0.5 -0.5, -0.5 0.5 -0.5, -0.5 -0.5 -0.5 ]
+            }
+            coordIndex [ 0, 1, 3, 2, -1, 4, 5, 7, 6, 4, -1, 6, 7, 1, 0, -1, 2, 3, 5, 4, -1, 6, 0, 2, 4, -1, 1, 7, 5, 3, -1 ]
+          }
+        }
+      }
+    }
+    DEF AccelerationSlider Transform {
+      translation -1.76551 0.0307418 1.8768
+      rotation -0.57735 0.57735 0.577351 2.09439
+      scale 18.5221 18.522 18.5221
+      scaleOrientation 0.017471 0.999233 0.0350403 0.771729
+      children DEF _9 XSlider {
+        maxValue 2
+        children USE _4
+      }
+    }
+    DEF ComposeVec3f_3 Transform {
+      children DEF _10 ComposeVec3f { }
+    }
+  ]
+}
+DEF ParticleSystem Transform {
+  children [
+    DEF Sun_1 Transform {
+      children [
+        DEF Sun_2 Transform {
+          children [
+            DEF _11 PlaneSensor {
+              offset 2 0 0
+            }
+            DEF Sun_3 Transform {
+              children DEF sun_12 Particle {
+                mass 6e+10
+                position 2 0 0
+                constants DEF _0 Constants {
+                  c 200
+                }
+                children DEF _8 Inline {
+                  url "sphere.wrl"
+                  bboxSize 0.2 0.2 0.2
+                }
+              }
+            }
+          ]
+        }
+        DEF Sun_4 Transform {
+          children [
+            DEF _13 PlaneSensor {
+              offset -2 0 0
+            }
+            DEF Sun_5 Transform {
+              children DEF sun_14 Particle {
+                mass 6e+10
+                position -2 0 0
+                constants DEF _15 Constants {
+                  c 200
+                }
+                children DEF _16 Inline {
+                  url "sphere.wrl"
+                  bboxSize 0.2 0.2 0.2
+                }
+              }
+            }
+          ]
+        }
+        DEF SunMassSlider Transform {
+          translation -2.7401 0.0307379 3.69267
+          rotation -1 4.60135e-07 -2.03096e-06 1.57079
+          scale 18.5221 18.522 18.5221
+          children DEF _17 XSlider {
+            minValue 0.006
+            maxValue 1e+11
+            resolution 10
+            offset 4e+9
+            children USE _4
+          }
+        }
+      ]
+    }
+    DEF Emitter Transform {
+      children [
+        DEF _18 TouchSensor { }
+        DEF ParticleEmitter Transform {
+          children DEF _19 ParticleEmitter {
+            rate 6
+            acceleration 0 0 0
+            deviationOfPosition 1 1 1
+            deviationOfVelocity 0.006 0.006 0.006
+            children [
+              DEF _20 Particle {
+                constants USE _15
+                children DEF _21 Inline {
+                  url "sphere-blue.wrl"
+                  bboxSize 0.2 0.2 0.2
+                }
+              }
+              DEF _22 Particle {
+                constants USE _15
+                children USE _21
+              }
+              DEF _23 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _24 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _25 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _26 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _27 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _28 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _29 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _30 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _31 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _32 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _33 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _34 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _35 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _36 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _37 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _38 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _39 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _40 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _41 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _42 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _43 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _44 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _45 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _46 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _47 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _48 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _49 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _50 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _51 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _52 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _53 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _54 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _55 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _56 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _57 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _58 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _59 Particle {
+                constants USE _15
+                children USE _16
+              }
+              DEF _60 Particle {
+                constants USE _15
+                children USE _16
+              }
+            ]
+          }
+        }
+      ]
+    }
+    DEF CollisionManagers Transform {
+      children [
+        DEF CollisionManager1 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _20
+          }
+        }
+        DEF CollisionManager2 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _22
+          }
+        }
+        DEF CollisionManager3 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _23
+          }
+        }
+        DEF CollisionManager4 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _24
+          }
+        }
+        DEF CollisionManager5 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _25
+          }
+        }
+        DEF CollisionManager6 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _26
+          }
+        }
+        DEF CollisionManager7 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _27
+          }
+        }
+        DEF CollisionManager8 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _28
+          }
+        }
+        DEF CollisionManager9 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _29
+          }
+        }
+        DEF CollisionManager10 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _30
+          }
+        }
+        DEF CollisionManager11 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _31
+          }
+        }
+        DEF CollisionManager12 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _32
+          }
+        }
+        DEF CollisionManager13 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _33
+          }
+        }
+        DEF CollisionManager14 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _34
+          }
+        }
+        DEF CollisionManager15 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _35
+          }
+        }
+        DEF CollisionManager16 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _36
+          }
+        }
+        DEF CollisionManager17 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _37
+          }
+        }
+        DEF CollisionManager18 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _38
+          }
+        }
+        DEF CollisionManager19 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _39
+          }
+        }
+        DEF CollisionManager20 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _40
+          }
+        }
+        DEF CollisionManager21 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _41
+          }
+        }
+        DEF CollisionManager22 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _42
+          }
+        }
+        DEF CollisionManager23 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _43
+          }
+        }
+        DEF CollisionManager24 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _44
+          }
+        }
+        DEF CollisionManager25 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _45
+          }
+        }
+        DEF CollisionManager26 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _46
+          }
+        }
+        DEF CollisionManager27 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _47
+          }
+        }
+        DEF CollisionManager28 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _48
+          }
+        }
+        DEF CollisionManager29 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _49
+          }
+        }
+        DEF CollisionManager30 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _50
+          }
+        }
+        DEF CollisionManager31 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _51
+          }
+        }
+        DEF CollisionManager32 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _52
+          }
+        }
+        DEF CollisionManager33 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _53
+          }
+        }
+        DEF CollisionManager34 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _54
+          }
+        }
+        DEF CollisionManager35 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _55
+          }
+        }
+        DEF CollisionManager36 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _56
+          }
+        }
+        DEF CollisionManager37 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _57
+          }
+        }
+        DEF CollisionManager38 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _58
+          }
+        }
+        DEF CollisionManager39 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _59
+          }
+        }
+        DEF CollisionManager40 Transform {
+          children CollisionManager {
+            obstacles [
+              USE sun_12
+              USE sun_14
+            ]
+            children USE _60
+          }
+        }
+      ]
+    }
+  ]
+}
+
+ROUTE VP1.position_changed TO _2.set_position
+ROUTE VP1.orientation_changed TO _2.set_orientation
+ROUTE _20.position_changed TO _1.set_pointOfInterest
+ROUTE _3.value_changed TO _6.set_x
+ROUTE _3.value_changed TO _6.set_y
+ROUTE _3.value_changed TO _6.set_z
+ROUTE _5.value_changed TO _7.set_x
+ROUTE _5.value_changed TO _7.set_y
+ROUTE _5.value_changed TO _7.set_z
+ROUTE _7.value_changed TO DeviationOfPosition.set_scale
+ROUTE _9.value_changed TO _10.set_x
+ROUTE _9.value_changed TO _10.set_y
+ROUTE _9.value_changed TO _10.set_z
+ROUTE _17.value_changed TO sun_12.set_mass
+ROUTE _11.translation_changed TO sun_12.set_position
+ROUTE _17.value_changed TO sun_14.set_mass
+ROUTE _13.translation_changed TO sun_14.set_position
+ROUTE _7.value_changed TO _19.set_deviationOfPosition
+ROUTE _6.value_changed TO _19.set_deviationOfVelocity
+ROUTE _10.value_changed TO _19.set_deviationOfAcceleration
+ROUTE _18.touchTime TO _19.set_startTime

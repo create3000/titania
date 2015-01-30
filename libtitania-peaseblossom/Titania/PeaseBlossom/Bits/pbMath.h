@@ -118,35 +118,22 @@ toInteger (const double value)
 
 inline
 double
-parseInt (const std::string & string)
-{
-	double number = NaN ();
-
-	std::istringstream isstream (string);
-
-	isstream .imbue (std::locale::classic ());
-
-	isstream >> number;
-
-	return toInteger (number);
-}
-
-inline
-double
-parseInt (const Glib::ustring & string)
-{ return parseInt (string .raw ()); }
-
-inline
-double
 parseFloat (const std::string & string)
 {
-	double number = NaN ();
+	// Not yet implemented fully.
 
-	std::istringstream isstream (string);
+	const char* str = string .c_str ();
+	
+	while (std::isspace (*str))
+		++ str;
 
-	isstream .imbue (std::locale::classic ());
+	char*  end    = nullptr;
+	double number = strtod (string .c_str (), &end);
 
-	isstream >> number;
+	if (end == string .c_str ())
+		return NaN ();
+
+	// Test for Infinity or so.
 
 	return number;
 }
@@ -155,6 +142,18 @@ inline
 double
 parseFloat (const Glib::ustring & string)
 { return parseFloat (string .raw ()); }
+
+inline
+double
+parseInt (const std::string & string)
+{
+	return toInteger (parseFloat (string));
+}
+
+inline
+double
+parseInt (const Glib::ustring & string)
+{ return parseInt (string .raw ()); }
 
 inline
 int16_t

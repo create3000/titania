@@ -2374,6 +2374,21 @@
     <None Include="Tests\EnvironmentalSensors\FallingBoxes.x3dv" />
     <None Include="Tests\Scripting\pb\pb-Inline.x3dv" />
     <None Include="Tests\Scripting\pb\pb1.x3dv" />
+    <None Include="Tests\PROTO\solaris\CollisionManagerProto.wrl" />
+    <None Include="Tests\PROTO\solaris\ComposeVec3fProto.wrl" />
+    <None Include="Tests\PROTO\solaris\ConstantsProto.wrl" />
+    <None Include="Tests\PROTO\solaris\ParticleEmitterProto.wrl" />
+    <None Include="Tests\PROTO\solaris\ParticleProto.wrl" />
+    <None Include="Tests\PROTO\solaris\TrackingViewpointProto.wrl" />
+    <None Include="Tests\PROTO\solaris\WorldProto.wrl" />
+    <None Include="Tests\PROTO\solaris\XSliderProto.wrl" />
+    <None Include="Tests\PROTO\solaris\button.wrl" />
+    <None Include="Tests\PROTO\solaris\emitter.wrl" />
+    <None Include="Tests\PROTO\solaris\emitter2.wrl" />
+    <None Include="Tests\PROTO\solaris\solaris.htm" />
+    <None Include="Tests\PROTO\solaris\sphere-blue.wrl" />
+    <None Include="Tests\PROTO\solaris\sphere.wrl" />
+    <None Include="Tests\PROTO\solaris\util-mark6.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2507,6 +2522,7 @@
     <Folder Include="Prototypes\Button\CheckButtonGroup\" />
     <Folder Include="Prototypes\Button\ScrolledWindow\" />
     <Folder Include="Examples\LustForLife\" />
+    <Folder Include="Tests\PROTO\solaris\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

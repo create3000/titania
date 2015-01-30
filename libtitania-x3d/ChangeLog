@@ -1,3 +1,18 @@
+2015-01-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Array.h:
+	* Global.h:
+	* Context.h:
+	* Context.h:
+	* Browser.h:
+	* X3DField.h:
+	* Context.cpp:
+	* Browser.cpp:
+	* Browser.cpp:
+	* SFNode.h:
+	* SFNode.cpp:
+	* SFNode.cpp: 
+
 2015-01-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* PeaseBlossom.h:

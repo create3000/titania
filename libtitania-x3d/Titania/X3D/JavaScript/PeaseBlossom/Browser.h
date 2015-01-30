@@ -77,7 +77,7 @@ public:
 
 private:
 
-	///  @name Functions
+	///  @name Properties
 
 	static
 	pb::var
@@ -85,7 +85,91 @@ private:
 
 	static
 	pb::var
+	getVersion (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	getCurrentSpeed (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	getCurrentFrameRate (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	getWorldURL (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	setDescription (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	getDescription (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	///  @name X3D functions
+
+	static
+	pb::var
+	getRenderingProperty (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	getBrowserProperty (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	getBrowserOption (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	setBrowserOption (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	firstViewpoint (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	previousViewpoint (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	nextViewpoint (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	lastViewpoint (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	print (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	println (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	///  @name VRML functions
+
+	static
+	pb::var
+	createVrmlFromURL (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	void
+	setSceneAsync (const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode* const, X3D::X3DScenePtr &&);
+
+	static
+	pb::var
+	createVrmlFromString (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
 	addRoute (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+
+	static
+	pb::var
+	deleteRoute (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
 
 	///  @name Static members
 

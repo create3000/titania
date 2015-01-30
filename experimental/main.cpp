@@ -77,6 +77,7 @@
 #include <Titania/Stream/InputFileStream.h>
 #include <Titania/Stream/InputUrlStream.h>
 #include <Titania/Utility/Pass.h>
+#include <Titania/String.h>
 //#include <Titania/Stream/InputHTTPStream.h>
 
 #include <Titania/Algorithm.h>
@@ -513,7 +514,9 @@ std::vector <std::string> words = {
 };
 
 
-class A {
+template <class T>
+class A
+{
 public:
 
 	A ()
@@ -521,28 +524,63 @@ public:
 		__LOG__ << std::endl;
 	}
 
-	A (const A &)
+};
+
+template <class T>
+class B :
+	public A <T>
+{
+public:
+
+	B ()
 	{
 		__LOG__ << std::endl;
 	}
 
-	A (A &&)
-	{
-		__LOG__ << std::endl;
-	}
-
+	template <class ... Args>
 	void
 	f ()
 	{
 		__LOG__ << std::endl;
-		
-	    std::chrono::milliseconds dura (3000);
-	    std::this_thread::sleep_for (dura);
-	 
-		__LOG__ << std::endl;
 	}
 
 };
+
+template <>
+template <class ... Args>
+void
+B <int>::f ()
+{
+	__LOG__ << std::endl;
+}
+
+
+uint32_t
+toUInt32 (const std::string & name)
+{
+	char*      end   = nullptr;
+	const auto value = std::strtoul (name .c_str (), &end, 10);
+	
+	if (errno == ERANGE)
+		return -1;
+	
+	if (end not_eq name .data () + name .size ())
+		return -1;
+	
+	if (value >= uint32_t (-1))
+		return -1;
+	
+	return value;
+}
+
+double
+parseFloat (const std::string & string)
+{
+	char*  end    = nullptr;
+	double number = strtod (string .c_str (), &end);
+
+	return number;
+}
 
 int
 main (int argc, char** argv)
@@ -558,56 +596,19 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-	
-	std::hash <std::string> hash;
-	
-	constexpr size_t N = 1000000;
-	
-	std::vector <std::pair <size_t, int>> v = {
-		std::make_pair (hash ("h1"),     0),
-		std::make_pair (hash ("h2"),     0),
-		std::make_pair (hash ("result"), 0),
-		std::make_pair (hash ("value"),  0),
-		std::make_pair (hash ("o"),      0),
-		std::make_pair (hash ("i"),      0),
-	};
-	
-	for (const auto & word : words)
-		v .emplace_back (hash (word), 0);
 
-	v .resize (15);
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	{
-		std::unordered_map <size_t, int> m (v .begin (), v .end ());
-	
-		const auto t0 = chrono::now ();
+	const auto locale = std::locale::global (std::locale::classic ());
 
-		for (size_t i = 0; i < N; ++ i)
-		{
-			for (const auto & p : v)
-				m .find (p .first);
-		}
+	std::cout << basic::sprintf ("%.17g", 10/7.0) << std::endl;
+	std::cout << basic::sprintf ("%.17g", 123456.0) << std::endl;
 
-		__LOG__ << chrono::now () - t0 << std::endl;
-	}
-	
-	{
-		std::map <size_t, int>  m (v .begin (), v .end ());
-	
-		const auto t0 = chrono::now ();
-
-		for (size_t i = 0; i < N; ++ i)
-		{
-			for (const auto & p : v)
-				m .find (p .first);
-		}
-
-		__LOG__ << chrono::now () - t0 << std::endl;
-	}
+	std::locale::global (locale);
 
 	//std::thread (f, std::move (a)) .join ();
 	
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	std::clog << "Function main done." << std::endl;
 	return 0;

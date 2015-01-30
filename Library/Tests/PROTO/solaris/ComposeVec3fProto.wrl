@@ -1,0 +1,49 @@
+#VRML V2.0 utf8
+
+PROTO ComposeVec3f [
+  exposedField SFFloat x 0
+  exposedField SFFloat y 0
+  exposedField SFFloat z 0
+  exposedField SFTime  startTime 0
+  eventOut     SFVec3f value_changed
+]
+{
+  PROTO Data [
+    exposedField SFFloat x 0
+    exposedField SFFloat y 0
+    exposedField SFFloat z 0
+    exposedField SFTime  startTime 0
+  ]
+  {
+    Group { }
+  }
+
+  DEF _ComposeVec3f Script {
+    eventIn  SFFloat set_x
+    eventIn  SFFloat set_y
+    eventIn  SFFloat set_z
+    eventIn  SFTime  set_startTime
+    eventOut SFVec3f value_changed IS value_changed
+    field    SFNode  data DEF Data Data {
+      x IS x
+      y IS y
+      z IS z
+      startTime IS startTime
+    }
+    url "peaseblossom:
+function set_x(value, time) { }
+function set_y(value, time) { }
+function set_z(value, time) { }
+function set_startTime(value, time) {}
+function eventsProcessed() { value_changed = new SFVec3f(data.x, data.y, data.z); }
+function initialize() { eventsProcessed(); }
+"
+    directOutput TRUE
+  }
+
+  ROUTE Data.x_changed TO _ComposeVec3f.set_x
+  ROUTE Data.y_changed TO _ComposeVec3f.set_y
+  ROUTE Data.z_changed TO _ComposeVec3f.set_z
+  ROUTE Data.startTime_changed TO _ComposeVec3f.set_startTime
+}
+

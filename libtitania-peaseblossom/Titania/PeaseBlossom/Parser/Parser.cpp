@@ -1582,7 +1582,7 @@ Parser::relationalExpression (ptr <pbStatement> & lhs)
 
 				if (shiftExpression (rhs))
 				{
-					//lhs = make_less_equal (std::move (lhs), std::move (rhs));
+					lhs = createLessEqualExpression (std::move (lhs), std::move (rhs));
 					continue;
 				}
 
@@ -1600,7 +1600,7 @@ Parser::relationalExpression (ptr <pbStatement> & lhs)
 
 				if (shiftExpression (rhs))
 				{
-					//lhs = make_greater_equal (std::move (lhs), std::move (rhs));
+					lhs = createGreaterEqualExpression (std::move (lhs), std::move (rhs));
 					continue;
 				}
 
@@ -1729,7 +1729,7 @@ Parser::equalityExpression (ptr <pbStatement> & lhs)
 
 				if (relationalExpression (rhs))
 				{
-					//lhs = make_strict_not_equal (std::move (lhs), std::move (rhs));
+					lhs = createStrictNotEqualExpression (std::move (lhs), std::move (rhs));
 					continue;
 				}
 
@@ -1759,7 +1759,7 @@ Parser::equalityExpression (ptr <pbStatement> & lhs)
 
 				if (relationalExpression (rhs))
 				{
-					//lhs = make_not_equal (std::move (lhs), std::move (rhs));
+					lhs = createNotEqualExpression (std::move (lhs), std::move (rhs));
 					continue;
 				}
 

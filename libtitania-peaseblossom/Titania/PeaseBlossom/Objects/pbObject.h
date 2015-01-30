@@ -246,10 +246,10 @@ using EnumerateCallback = std::function <bool (pbObject* const, const EnumerateT
 using HasPropertyCallback = std::function <bool (pbObject* const, const Identifier &)>;
 
 ///  Type to represent a property getter callback function.
-using PropertyGetter = std::function <std::pair <var, bool> (pbObject* const, const Identifier &)>;
+using PropertyGetter = std::function <var (pbObject* const, const Identifier &)>;
 
 ///  Type to represent a property setter callback function.
-using PropertySetter = std::function <bool (pbObject* const, const Identifier &, const var &)>;
+using PropertySetter = std::function <void (pbObject* const, const Identifier &, const var &)>;
 
 ///  Type to represent a resolve callback function.
 using ResolveCallback = std::function <bool (pbObject* const, const Identifier &)>;
@@ -273,8 +273,8 @@ struct Callbacks
  */
 class pbObject :
 	virtual public pbChildObject,
-	virtual public pbOutputStreamObject,
-	virtual public pbUserData
+	virtual public pbUserData,
+	virtual public pbOutputStreamObject
 {
 public:
 
@@ -329,18 +329,25 @@ public:
 	hasProperty (const Identifier & identifier) const
 	noexcept (true);
 
+	var
+	call (const Identifier & identifier, const std::vector <var> & args = { }) const
+	throw (pbError,
+	       std::out_of_range,
+	       std::invalid_argument);
+
 	///  Sets the value of the property for @a identifier.
 	virtual
-	bool
+	void
 	put (const Identifier & identifier, const var & value, const bool throw_ = false)
 	throw (pbError,
-	       std::invalid_argument)
+	       std::out_of_range)
 	{ return put (identifier, value, NONE, throw_); }
 
 	///  Returns the value of the property for @a identifier.
-	std::pair <var, bool>
+	var
 	get (const Identifier & identifier) const
-	throw (pbError);
+	throw (pbError,
+	       std::out_of_range);
 
 	ptr <pbObject>
 	getObject (const Identifier & identifier) const
@@ -349,15 +356,15 @@ public:
 	///  Returns the property descriptor for @a identifier.
 	const PropertyDescriptorPtr &
 	getProperty (const Identifier & identifier) const
-	noexcept (true);
+	throw (std::out_of_range);
 
 	///  Returns the own property descriptor for @a identifier.
 	const PropertyDescriptorPtr &
 	getOwnProperty (const Identifier & identifier) const
-	noexcept (true);
+	throw (std::out_of_range)
+	{ return properties .at (identifier .getId ()); }
 
 	///  Adds the named property described by the given descriptor for this object.
-	virtual
 	void
 	addOwnProperty (const Identifier & identifier,
 	                const var & value,
@@ -431,11 +438,8 @@ protected:
 
 	///  @name Friends
 
-	friend class ComputedMemberAccessExpression;
 	friend class ForInStatement;
 	friend class ForVarInStatement;
-	friend class MemberAccessExpression;
-	friend class VariableExpression;
 
 	friend
 	ptr <NativeFunction>
@@ -453,6 +457,9 @@ protected:
 
 	///  Constructs new pbObject.
 	pbObject ();
+	
+	void
+	prepare ();
 
 	///  @name Member access
 
@@ -471,23 +478,15 @@ protected:
 	noexcept (true);
 
 	///  Sets the value of the property for @a identifier.
-	bool
+	void
 	put (const Identifier & identifier, const var & value, const AttributeType attributes, const bool throw_)
-	throw (pbError);
-
-	bool
-	get (const Identifier & identifier, var & value) const
-	throw (pbError);
+	throw (pbError,
+	       std::out_of_range);
 
 	virtual
 	bool
 	resolve (const Identifier & identifier)
 	throw (pbError);
-
-	var
-	call (const Identifier & identifier, const std::vector <var> & args = { }) const
-	throw (pbError,
-	       std::invalid_argument);
 
 
 private:

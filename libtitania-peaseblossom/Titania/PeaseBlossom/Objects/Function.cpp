@@ -144,12 +144,16 @@ throw (pbError)
 
 	static const Identifier this_ ("this");
 
-	const auto & thisDescriptor = variableObject -> getOwnProperty (this_);
+	try
+	{
+		const auto & thisDescriptor = variableObject -> getOwnProperty (this_);
 
-	if (thisDescriptor)
 		const_cast <ptr <pbObject> &> (thisDescriptor -> getValue () .getObject ()) .reset (object);
-	else
+	}
+	catch (const std::out_of_range &)
+	{
 		variableObject -> addOwnProperty (this_, object, CONFIGURABLE);
+	}
 
 	// Arguments Object
 
@@ -159,39 +163,48 @@ throw (pbError)
 
 	for (const auto & function : getFunctionDeclarations ())
 	{
-		const auto & descriptor = variableObject -> getOwnProperty (function .second -> getName ());
+		try
+		{
+			const auto & descriptor = variableObject -> getOwnProperty (function .second -> getName ());
 
-		if (descriptor)
 			descriptor -> setValue (function .second -> copy (this));
-
-		else
+		}
+		catch (const std::out_of_range &)
+		{
 			variableObject -> addOwnProperty (function .second -> getName (), function .second -> copy (this), WRITABLE | CONFIGURABLE);
+		}
 	}
 
 	// Variable Declarations
 
 	for (const auto & variable : getVariableDeclarations ())
 	{
-		const auto & descriptor = variableObject -> getOwnProperty (variable -> getIdentifier ());
+		try
+		{
+			const auto & descriptor = variableObject -> getOwnProperty (variable -> getIdentifier ());
 
-		if (descriptor)
 			descriptor -> setValue (undefined);
-
-		else
+		}
+		catch (const std::out_of_range &)
+		{
 			variableObject -> addOwnProperty (variable -> getIdentifier (), undefined, WRITABLE | CONFIGURABLE | ENUMERABLE);
+		}
 	}
 
 	// Parameters
 
 	for (size_t i = 0, size = formalParameters .size (), argc = arguments .size (); i < size; ++ i)
 	{
-		const auto & descriptor = variableObject -> getOwnProperty (formalParameters [i]);
+		try
+		{
+			const auto & descriptor = variableObject -> getOwnProperty (formalParameters [i]);
 
-		if (descriptor)
 			descriptor -> setValue (i < argc ? arguments [i] : undefined);
-
-		else
+		}
+		catch (const std::out_of_range &)
+		{
 			variableObject -> addOwnProperty (formalParameters [i], i < argc ? arguments [i] : undefined, WRITABLE | CONFIGURABLE);
+		}
 	}
 
 	// Evaluate statements
@@ -225,7 +238,7 @@ Function::enter ()
 	++ recursionDepth;
 
 	if (recursionDepth > recursionLimit)
-		throw RuntimeError ("Maximum recursion depth of " + basic::to_string (recursionLimit) + " exceeded while calling function '" + getName () .getName () + "'.");
+		throw RuntimeError ("Maximum recursion depth of " + basic::to_string (recursionLimit) + " exceeded while calling function '" + getName () .getString () + "'.");
 }
 
 void

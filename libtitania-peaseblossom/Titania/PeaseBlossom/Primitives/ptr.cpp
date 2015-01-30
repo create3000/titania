@@ -48,50 +48,18 @@
  *
  ******************************************************************************/
 
-#include "PtrCache.h"
+#include "ptr.h"
 
-#include "../Objects/pbFunction.h"
-#include "../Objects/pbObject.h"
+#include "../Cache/Cache.h"
 
 namespace titania {
 namespace pb {
 
-std::vector <ptr <pbObject>*> Cache <ptr <pbObject>>::cache;
-size_t                        Cache <ptr <pbObject>>::min (0);
-std::mutex                    Cache <ptr <pbObject>>::mutex;
-
+template <>
 void
-Cache <ptr <pbObject>>::add (ptr <pbObject>* const object)
+ptr <pbObject>::recycle ()
 {
-	object -> dispose ();
-
-	std::lock_guard <std::mutex> lock (mutex);
-
-	cache .emplace_back (object);
-}
-
-void
-Cache <ptr <pbObject>>::clear (GarbageCollector::ObjectArray & objects)
-{
-	std::lock_guard <std::mutex> lock (mutex);
-
-	const auto size = cache .size () - std::min (min, cache .size ());
-
-	__LOG__ << cache .size () << " : " << size << " : " << cache .size () - size << std::endl;
-
-	objects .insert (objects .end (), cache .begin () + size, cache .end ());
-
-	cache .resize (size);
-
-	min = size;
-}
-
-bool
-Cache <ptr <pbObject>>::empty ()
-{
-	std::lock_guard <std::mutex> lock (mutex);
-
-	return cache .empty ();
+	Cache <ptr <pbObject>>::add (this);
 }
 
 } // pb

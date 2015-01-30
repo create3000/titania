@@ -67,13 +67,7 @@ public:
 	///  @name Construction
 
 	///  Constructs new StringObject.
-	StringObject (const ptr <pbExecutionContext> & executionContext) :
-		pbObject (),
-		  string (Glib::ustring ())
-	{ }
-
-	///  Constructs new StringObject.
-	StringObject (const ptr <pbExecutionContext> & executionContext, const Glib::ustring & value) :
+	StringObject (const ptr <pbExecutionContext> & executionContext, const Glib::ustring & value = "") :
 		pbObject (),
 		  string (value)
 	{ }

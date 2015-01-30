@@ -95,7 +95,7 @@ public:
 	const std::string &
 	getTypeName () const
 	noexcept (true) final override
-	{ return getName () .getName (); }
+	{ return getName () .getString (); }
 
 	///  @name Operations
 

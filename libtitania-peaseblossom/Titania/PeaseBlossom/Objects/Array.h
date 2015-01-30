@@ -76,22 +76,10 @@ public:
 
 	///  Sets the value of the property for @a identifier.
 	virtual
-	bool
-	put (const Identifier & identifier, const var & value, const bool throw_ = false)
-	throw (pbError) final override;
-
-	///  Adds the named property described by the given descriptor for this object.
-	virtual
 	void
-	addOwnProperty (const Identifier & identifier,
-	                const var & value,
-	                const AttributeType attributes = DEFAULT,
-	                const ptr <pbFunction> & getter = nullptr,
-	                const ptr <pbFunction> & setter = nullptr,
-	                const bool throw_ = true)
-	throw (TypeError,
-	       std::invalid_argument) final override
-	{ pbObject::addOwnProperty (identifier, value, identifier .toUInt32 () | attributes, getter, setter, throw_); }
+	put (const Identifier & identifier, const var & value, const bool throw_ = false)
+	throw (pbError,
+	       std::out_of_range) final override;
 
 	///  Adds the named property described by the given descriptor for this object.
 	virtual

@@ -60,7 +60,7 @@ throw (pbError)
 	if (constructor)
 		return constructor (executionContext, object, arguments);
 
-	throw TypeError ("Cannot call function '" + getName () .getName () + "' as constructor.");
+	throw TypeError ("Cannot call function '" + getName () .getString () + "' as constructor.");
 }
 
 var
@@ -70,7 +70,7 @@ throw (pbError)
 	if (function)
 		return function (executionContext, object, arguments);
 
-	throw TypeError ("Cannot call '" + getName () .getName () + "' as function.");
+	throw TypeError ("Cannot call '" + getName () .getString () + "' as function.");
 }
 
 void

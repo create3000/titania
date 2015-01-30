@@ -1,0 +1,253 @@
+#VRML V2.0 utf8
+
+PROTO XSlider [
+  exposedField SFBool  enabled TRUE
+  exposedField SFFloat minPosition 0
+  exposedField SFFloat maxPosition 0.2
+  exposedField SFVec3f size 0.01 0.01 0.003
+  exposedField SFFloat minValue 0
+  exposedField SFFloat maxValue 1
+  exposedField SFFloat resolution 0.01
+  exposedField SFFloat offset 0
+  eventOut     SFBool  isOver
+  eventOut     SFBool  isActive
+  eventOut     SFTime  touchTime
+  eventOut     SFFloat position_changed
+  eventOut     SFFloat value_changed
+  exposedField MFNode  children [ ]
+]
+{
+  PROTO Data [
+    exposedField SFFloat minPosition 0
+    exposedField SFFloat maxPosition 0.2
+    exposedField SFVec3f size 0.01 0.01 0.003
+    exposedField SFFloat minValue 0
+    exposedField SFFloat maxValue 1
+    exposedField SFFloat resolution 0.01
+    exposedField SFFloat offset 0
+  ]
+  {
+    Group { }
+  }
+
+  Group {
+    children [
+      DEF TouchSensor TouchSensor {
+        enabled FALSE
+        isOver IS isOver
+        touchTime IS touchTime
+      }
+      DEF PlaneSensor PlaneSensor {
+        enabled IS enabled
+        isActive IS isActive
+      }
+      DEF VisibilitySensor VisibilitySensor {
+        size 0.0001 0.0001 0.0001
+      }
+      DEF Transform Transform {
+        children IS children
+      }
+    ]
+  }
+
+  DEF _XSlider Script {
+    eventOut SFFloat position_changed IS position_changed
+    eventOut SFFloat value_changed IS value_changed
+    eventIn  SFVec3f set_translation
+    eventIn  SFBool  set_enabled
+    eventIn  SFFloat set_minPosition
+    eventIn  SFFloat set_maxPosition
+    eventIn  SFFloat set_minValue
+    eventIn  SFFloat set_maxValue
+    eventIn  SFFloat set_resolution
+    eventIn  SFFloat set_offset
+    eventIn  SFTime  set_enterTime
+    eventIn  SFBool  set_isOver
+    eventIn  SFBool  set_isActive
+    eventIn  MFNode  set_children
+    field    SFNode  planeSensor USE PlaneSensor
+    field    SFNode  visibilitySensor USE VisibilitySensor
+    field    SFNode  transform USE Transform
+    field    SFNode  data DEF Data Data {
+      minPosition IS minPosition
+      maxPosition IS maxPosition
+      size IS size
+      minValue IS minValue
+      maxValue IS maxValue
+      resolution IS resolution
+      offset IS offset
+    }
+    field    SFBool  isOver FALSE
+    field    SFBool  isActive FALSE
+    field    SFNode  self USE _XSlider
+    field    SFNode  group USE Transform
+    field    SFNode  button NULL
+    field    SFInt32 outChildren 0
+    field    SFInt32 isActiveChildren 1
+    field    SFInt32 isOverChildren 2
+    field    SFVec3f offset 0 0 0
+    field    SFFloat r1 1
+    field    SFFloat r2 1
+    field    SFTime  precision 0
+    field    SFNode  nu NULL
+    url "peaseblossom:
+function round(value) {
+	return Math.round(value * precision) / precision;
+}
+
+function choose() {
+	if (isActive) { button.whichChoice = isActiveChildren; }
+	else if (isOver) { button.whichChoice = isOverChildren; }
+	else { button.whichChoice = outChildren; }
+}
+
+function set_offset (value, time) {
+	if (value >= data.minValue && value <= data.maxValue) {
+		v1 = value - data.minValue;
+		x = data.minPosition + r1 * (r2 ? (v1 / r2) : 1);
+		offset = new SFVec3f(x, 0, 0);
+		planeSensor.offset = offset;
+		transform.translation = offset;
+	}
+}
+
+function set_translation(value, time) {
+	x1 = value.x - data.minPosition;
+	v = round(data.minValue + r2 * (r1 ? x1 / r1 : 0));
+	if (v != value_changed) {
+		set_offset(v, time);
+		position_changed = offset.x;
+		value_changed = v;
+	}
+}
+
+function set_enabled(value, time) { if (value) button.whichChoice = outChildren; }
+
+function set_minPosition (value, time) {
+	r1 = data.maxPosition - value;
+	if (r1 && r2) {
+		if (!planeSensor.enabled) planeSensor.enabled = TRUE;
+		planeSensor.minPosition = new SFVec2f(value, 0);
+		visibilitySensor.size   = new SFVec3f(r1 + data.size.x, data.size.y, data.size.z);
+		visibilitySensor.center = new SFVec3f(r1/2, 0, 0);
+		set_offset(data.offset, time);
+	} else {
+		planeSensor.enabled = FALSE;
+	}
+}
+
+function set_maxPosition (value, time) {
+	r1 = value - data.minPosition;
+	if (r1 && r2) {
+		if (!planeSensor.enabled) planeSensor.enabled = TRUE;
+		planeSensor.maxPosition = new SFVec2f(value, 0);
+		visibilitySensor.size   = new SFVec3f(r1 + data.size.x, data.size.y, data.size.z);
+		visibilitySensor.center = new SFVec3f(r1/2, 0, 0);
+		set_offset(data.offset, time);
+	} else {
+		planeSensor.enabled = FALSE;
+	}
+}
+
+function set_minValue (value, time) {
+	r2 = data.maxValue - value;
+	if (r1 && r2) {
+		if (!planeSensor.enabled) planeSensor.enabled = TRUE;
+		if (data.offset < value) {
+			data.offset = value;
+			value_changed = value;
+		} else set_offset(data.offset, time);
+	} else {
+		planeSensor.enabled = FALSE;
+	}
+}
+
+function set_maxValue (value, time) {
+	r2 = value - data.minValue;
+	if (r1 && r2) {
+		if (!planeSensor.enabled) planeSensor.enabled = TRUE;
+		r2 = data.maxValue - data.minValue;
+		if (data.offset > value) {
+			data.offset = value;
+			value_changed = value;
+		} else set_offset(data.offset, time);
+	} else {
+		planeSensor.enabled = FALSE;
+	}
+}
+
+function set_resolution(value, time) {
+	precision = 14;
+	precision = value ? round(1 / value) : 1;
+	set_translation(transform.translation, time);
+}
+
+function set_enterTime (value, time) {	set_translation(transform.translation, time); }
+
+function set_isOver(value, time) {
+	isOver = value;
+	choose();
+}
+
+function set_isActive(value, time) {
+	isActive = value;
+	if (!isActive) data.offset = value_changed;
+	choose();
+}
+
+function findNode (name, nodes) {
+	// search first 2 level for node;
+	for (i=0; i<nodes.length; ++i) {
+		print(nodes[i]);
+		if (nodes[i] == name + ' { }') return nodes[i];
+		if (nodes[i] == 'Transform { }' || nodes[i] == 'Group { }' || nodes[i] == 'World { }') {
+			for (c=0; c<nodes[i].children.length; ++c)
+				if (nodes[i].children[c] == name + ' { }') return nodes[i].children[c];
+		}
+	}
+	return nu;
+}
+
+function set_children(value, time) {
+	button = findNode('Switch', value);
+	if (button != 'Switch { }') {
+		world = findNode('World', value);
+		if (world.children) Browser.addRoute(world, 'children_changed', self, 'set_children');
+		return;
+	}
+	outChildren = button.children.length > 0 ? 0 : -1;
+	isOverChildren = button.children.length > 1 ? 1 : (button.children.length > 0 ? 0 : -1);
+	isActiveChildren = button.children.length > 2 ? 2 : (button.children.length > 1 ? 1 : (button.children.length > 0 ? 0 : -1));
+	choose();
+}
+
+function initialize() {
+	set_minPosition(data.minPosition, 0);
+	set_maxPosition(data.maxPosition, 0);
+	set_minValue(data.minValue, 0);
+	set_maxValue(data.maxValue, 0);
+	set_offset(data.offset, 0);
+	if (Browser.getName() != 'Cosmo Player' && Browser.getVersion() != 1.1)
+		set_children(group.children, 0);
+	set_resolution(data.resolution, 0);
+	value_changed = data.offset;
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE VisibilitySensor.enterTime TO _XSlider.set_enterTime
+  ROUTE PlaneSensor.translation_changed TO _XSlider.set_translation
+  ROUTE PlaneSensor.enabled_changed TO VisibilitySensor.set_enabled
+  ROUTE PlaneSensor.enabled_changed TO TouchSensor.set_enabled
+  ROUTE PlaneSensor.enabled_changed TO _XSlider.set_enabled
+  ROUTE TouchSensor.isOver TO _XSlider.set_isOver
+  ROUTE PlaneSensor.isActive TO _XSlider.set_isActive
+  ROUTE Transform.children_changed TO _XSlider.set_children
+  ROUTE Data.minPosition_changed TO _XSlider.set_minPosition
+  ROUTE Data.maxPosition_changed TO _XSlider.set_maxPosition
+  ROUTE Data.minValue_changed TO _XSlider.set_minValue
+  ROUTE Data.maxValue_changed TO _XSlider.set_maxValue
+  ROUTE Data.resolution_changed TO _XSlider.set_resolution
+  ROUTE Data.offset_changed TO _XSlider.set_offset
+}

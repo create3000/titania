@@ -139,6 +139,10 @@ protected:
 	bool
 	hasRootedObjectsDontCollectObject (std::set <pbChildObject*> & seen);
 
+	virtual
+	void
+	recycle ();
+
 
 private:
 

@@ -79,7 +79,7 @@ public:
 	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new BreakStatement (std::move (std::string (identifier .getName ()))); }
+	{ return new BreakStatement (std::move (std::string (identifier .getString ()))); }
 
 	///  @name Operations
 

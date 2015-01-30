@@ -112,11 +112,11 @@ private:
 	hasProperty (pb::pbObject* const, const pb::Identifier &);
 
 	static
-	bool
+	void
 	set1Value (pb::pbObject* const, const pb::Identifier &, const pb::var &);
 
 	static
-	std::pair <pb::var, bool>
+	pb::var
 	get1Value (pb::pbObject* const, const pb::Identifier &);
 
 	///  @name Properties
@@ -267,7 +267,7 @@ Array <Type, InternalType>::hasProperty (pb::pbObject* const object, const pb::I
 }
 
 template <class Type, class InternalType>
-bool
+void
 Array <Type, InternalType>::set1Value (pb::pbObject* const object, const pb::Identifier & identifier, const pb::var & value)
 {
 	try
@@ -275,22 +275,20 @@ Array <Type, InternalType>::set1Value (pb::pbObject* const object, const pb::Ide
 		const auto index = identifier .toUInt32 ();
 
 		if (index == pb::PROPERTY)
-			return false;
+			throw std::out_of_range ("Array::set1Value");
 
 		const auto array = getObject <InternalType> (object);
 
 		array -> set1Value (index, get1Argument <Type> (value));
-
-		return true;
 	}
 	catch (const std::bad_alloc &)
 	{
-		throw pb::RuntimeError (getTypeName () + ".prototype[" + identifier .getName () + "]: out of memory.");
+		throw pb::RuntimeError (getTypeName () + ".prototype[" + identifier .getString () + "]: out of memory.");
 	}
 }
 
 template <class Type, class InternalType>
-std::pair <pb::var, bool>
+pb::var
 Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Identifier & identifier)
 {
 	try
@@ -298,16 +296,16 @@ Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Ide
 		const auto index = identifier .toUInt32 ();
 
 		if (index == pb::PROPERTY)
-			return std::make_pair (pb::undefined, false);
+			throw std::out_of_range ("Array::get1Value");
 
 		const auto context = getContext (object);
 		const auto array   = getObject <InternalType> (object);
 
-		return std::make_pair (get <Type> (context, &array -> get1Value (index)), true);
+		return get <Type> (context, &array -> get1Value (index));
 	}
 	catch (const std::bad_alloc &)
 	{
-		throw pb::RuntimeError (getTypeName () + ".prototype[" + identifier .getName () + "]: out of memory.");
+		throw pb::RuntimeError (getTypeName () + ".prototype[" + identifier .getString () + "]: out of memory.");
 	}
 }
 

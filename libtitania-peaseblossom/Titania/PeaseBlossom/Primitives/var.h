@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VAR_H__
 #define __TITANIA_X3D_PEASE_BLOSSOM_PRIMITIVES_VAR_H__
 
-#include "../Cache/PtrCache.h"
+#include "../Cache/Cache.h"
 #include "../Base/pbOutputStreamObject.h"
 #include "../Bits/pbConstants.h"
 #include "../Primitives/ptr.h"
@@ -380,6 +380,11 @@ public:
 	{ return *value .object_; }
 
 	///  @name Input/Output
+
+	///  Converts its argument to a value of type String.
+	virtual
+	Glib::ustring
+	toLocaleString (const std::locale & locale) const final override;
 
 	///  Inserts this object into the output stream @a ostream.
 	virtual

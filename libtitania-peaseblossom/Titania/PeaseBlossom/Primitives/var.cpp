@@ -382,6 +382,45 @@ throw (TypeError)
 	throw std::invalid_argument ("toObject");
 }
 
+Glib::ustring
+var::toLocaleString (const std::locale & locale) const
+{
+	switch (type)
+	{
+		case UNDEFINED:
+			return "undefined";
+		case BOOLEAN:
+			return value .bool_ ? "true" : "false";
+		case NUMBER:
+		{
+			if (isNaN (value .number_))
+				return "NaN";
+
+			else if (value .number_ == NEGATIVE_INFINITY ())
+				return "-Infinity";
+
+			else if (value .number_ == POSITIVE_INFINITY ())
+				return "Infinity";
+
+			std::ostringstream ostringstream;
+
+			ostringstream .imbue (locale);
+
+			ostringstream << std::setprecision (std::numeric_limits <double>::max_digits10) << value .number_;
+
+			return ostringstream .str ();
+		}
+		case STRING:
+			return *value .string_;
+		case NULL_OBJECT:
+			return "null";
+		case OBJECT:
+			return value .object_ -> get () -> getDefaultValue (STRING) .toString ();
+	}
+
+	return "";
+}
+
 void
 var::toStream (std::ostream & ostream) const
 {
@@ -430,6 +469,7 @@ var::clear ()
 			delete value .string_;
 			break;
 		case OBJECT:
+			value .object_ -> dispose ();
 			Cache <ptr <pbObject>>::add (value .object_);
 			break;
 		default:

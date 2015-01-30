@@ -110,11 +110,11 @@ private:
 	hasProperty (pb::pbObject* const, const pb::Identifier &);
 
 	static
-	bool
+	void
 	setProperty (pb::pbObject* const, const pb::Identifier &, const pb::var &);
 
 	static
-	std::pair <pb::var, bool>
+	pb::var
 	getProperty (pb::pbObject* const, const pb::Identifier &);
 
 	///  @name Functions

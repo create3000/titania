@@ -95,13 +95,13 @@ public:
 		if (lval .getType () == NUMBER and rval .getType () == NUMBER)
 			return lval .getNumber () + rval .getNumber ();
 
-		const auto px = lval .toPrimitive ();
-		const auto py = rval .toPrimitive ();
+		if (lval .getType () == STRING or rval .getType () == STRING)
+			return lval .toString () + rval .toString ();
 
-		if (px .getType () == STRING or py .getType () == STRING)
-			return px .getString () + py .getString ();
+		const auto px = lval .toNumber ();
+		const auto py = rval .toNumber ();
 
-		return px .toNumber () + py .toNumber ();
+		return px + py;
 	}
 
 	///  Inserts this object into the output stream @a ostream.

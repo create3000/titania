@@ -74,43 +74,43 @@ public:
 	Identifier () :
 		pbOutputStreamObject (),
 		                  id (hash ("")),
-		                name ()
+		              string ()
 	{ }
 
 	Identifier (const Identifier & other) :
 		pbOutputStreamObject (),
 		                  id (other .id),
-		                name (other .name)
+		              string (other .string)
 	{ }
 
 	Identifier (Identifier && other) :
 		pbOutputStreamObject (),
 		                  id (other .id),
-		                name (std::move (other .name))
+		              string (std::move (other .string))
 	{ }
 
-	Identifier (const Glib::ustring & name) :
+	Identifier (const Glib::ustring & string) :
 		pbOutputStreamObject (),
-		                  id (hash (name .raw ())),
-		                name (name)
+		                  id (hash (string .raw ())),
+		              string (string)
 	{ }
 
-	Identifier (const std::string & name) :
+	Identifier (const std::string & string) :
 		pbOutputStreamObject (),
-		                  id (hash (name)),
-		                name (name)
+		                  id (hash (string)),
+		              string (string)
 	{ }
 
-	Identifier (std::string && name) :
+	Identifier (std::string && string) :
 		pbOutputStreamObject (),
-		                  id (hash (name)),
-		                name (std::move (name))
+		                  id (hash (string)),
+		              string (std::move (string))
 	{ }
 
-	Identifier (const std::string::value_type* name) :
+	Identifier (const std::string::value_type* string) :
 		pbOutputStreamObject (),
-		                  id (hash (name)),
-		                name (name)
+		                  id (hash (string)),
+		              string (string)
 	{ }
 
 	///  @name Member functions
@@ -118,16 +118,16 @@ public:
 	Identifier &
 	operator = (const Identifier & other)
 	{
-		name = other .name;
-		id   = other .id;
+		string = other .string;
+		id     = other .id;
 		return *this;
 	}
 
 	Identifier &
 	operator = (Identifier && other)
 	{
-		name = std::move (other .name);
-		id   = other .id;
+		string = std::move (other .string);
+		id     = other .id;
 		return *this;
 	}
 
@@ -135,11 +135,11 @@ public:
 
 	bool
 	isEmpty () const
-	{ return name .empty (); }
+	{ return string .empty (); }
 
 	const std::string &
-	getName () const
-	{ return name; }
+	getString () const
+	{ return string; }
 
 	const size_t &
 	getId () const
@@ -150,9 +150,19 @@ public:
 	uint32_t
 	toUInt32 () const
 	{
-		const auto index = pb::toUInt32 (name);
-		
-		return isIndex (index) ? index : PROPERTY;
+		char*      end   = nullptr;
+		const auto value = std::strtoul (string .c_str (), &end, 10);
+
+		if (errno == ERANGE)
+			return PROPERTY;
+
+		if (end not_eq string .c_str () + string .size ())
+			return PROPERTY;
+
+		if (value >= PROPERTY)
+			return PROPERTY;
+
+		return value;
 	}
 
 	///  @name Static members
@@ -165,21 +175,15 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ ostream << name; }
+	{ ostream << string; }
 
 
 private:
 
-	///  @name Operations
-
-	bool
-	isIndex (const uint32_t index) const
-	{ return basic::to_string (index) == name and index not_eq PROPERTY; }
-
 	///  @name Members
 
 	size_t      id;
-	std::string name;
+	std::string string;
 
 };
 

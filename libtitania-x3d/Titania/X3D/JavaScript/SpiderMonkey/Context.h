@@ -129,7 +129,7 @@ public:
 	getObject (X3D::X3DChildObject* const) const
 	noexcept (true);
 
-	std::unique_ptr <SceneLoader> &
+	std::unique_ptr <X3D::SceneLoader> &
 	getFuture ()
 	{ return future; }
 
@@ -248,7 +248,7 @@ private:
 	std::map <X3D::X3DChildObject*, JSObject*> objects;
 	std::map <basic::uri, jsval>               files;
 
-	std::unique_ptr <SceneLoader> future;
+	std::unique_ptr <X3D::SceneLoader> future;
 
 	size_t frame;
 

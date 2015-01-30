@@ -51,12 +51,158 @@
 #ifndef __TITANIA_PEASE_BLOSSOM_CACHE_CACHE_H__
 #define __TITANIA_PEASE_BLOSSOM_CACHE_CACHE_H__
 
+#include "../Base/GarbageCollector.h"
+
+#include <atomic>
+#include <mutex>
+#include <vector>
+
 namespace titania {
 namespace pb {
 
+class pbCache
+{
+public:
+
+	///  @name Capacity
+
+	static
+	bool
+	empty ()
+	{ return size_ == 0; }
+
+	static
+	size_t
+	size ()
+	{ return size_; }
+
+
+protected:
+
+	static
+	void
+	increment ()
+	{ ++ size_; }
+
+	static
+	void
+	decrement ()
+	{ -- size_; }
+
+	static
+	void
+	decrement (const size_t value)
+	{ size_ -= value; }
+
+
+private:
+
+	///  @name Static members
+
+	static std::atomic <size_t> size_;
+
+};
+
 template <class Type>
-class Cache
-{ };
+class Cache :
+	public pbCache
+{
+public:
+
+	using array_type = std::vector <Type*>;
+
+	static
+	void
+	add (Type* const object);
+
+	template <class ... Args>
+	static
+	Type*
+	get (Args && ... args);
+
+	static
+	void
+	clear (GarbageCollector::ObjectArray & objects);
+
+
+private:
+
+	template <class ... Args>
+	static
+	void
+	prepare (Type* const object, Args && ... args)
+	{
+		object -> operator = (std::forward <Args> (args) ...);
+	}
+
+	static array_type cache;
+	static size_t     unused;
+	static std::mutex mutex;
+
+};
+
+template <class Type>
+std::vector <Type*> Cache <Type>::cache;
+
+template <class Type>
+size_t Cache <Type>::unused (0);
+
+template <class Type>
+std::mutex Cache <Type>::mutex;
+
+template <class Type>
+inline
+void
+Cache <Type>::add (Type* const object)
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	increment ();
+
+	cache .emplace_back (object);
+}
+
+template <class Type>
+template <class ... Args>
+Type*
+Cache <Type>::get (Args && ... args)
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	if (cache .empty ())
+		return new Type (std::forward <Args> (args) ...);
+
+	decrement ();
+
+	const auto object = cache .back ();
+
+	cache .pop_back ();
+
+	unused = std::min (unused, cache .size ());
+
+	prepare (object, std::forward <Args> (args) ...);
+
+	return object;
+}
+
+template <class Type>
+void
+Cache <Type>::clear (GarbageCollector::ObjectArray & objects)
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	decrement (unused);
+
+	const auto size = cache .size () - unused;
+
+	__LOG__ << cache .size () << " : " << size << " : " << unused << std::endl;
+
+	objects .insert (objects .end (), cache .begin () + size, cache .end ());
+
+	cache .resize (size);
+
+	unused = size;
+}
 
 } // pb
 } // titania

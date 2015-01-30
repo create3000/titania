@@ -149,6 +149,7 @@ pbExecutionContext::dispose ()
 {
 	functionDeclarations .clear ();
 
+	pbUserData::dispose ();
 	pbChildObject::dispose ();
 }
 

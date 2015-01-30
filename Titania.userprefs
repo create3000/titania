@@ -1,27 +1,27 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-peaseblossom/Titania/PeaseBlossom/Primitives/ptr.cpp">
     <Files>
       <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="297" Column="15" />
-      <File FileName="Library/Tests/Scripting/pb/pb1.x3dv" Line="130" Column="28" />
+      <File FileName="Library/Tests/Scripting/pb/pb1.x3dv" Line="113" Column="37" />
       <File FileName="Library/Tests/Scripting/Felulet.wrl" Line="50" Column="20" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.h" Line="160" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="552" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.h" Line="127" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.cpp" Line="478" Column="52" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.h" Line="216" Column="51" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.h" Line="82" Column="25" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.cpp" Line="363" Column="60" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.h" Line="1" Column="1" />
       <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.cpp" Line="951" Column="58" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/Function.cpp" Line="147" Column="20" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Expressions/FunctionCallExpression.h" Line="76" Column="45" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Expressions/pbStatement.cpp" Line="92" Column="30" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Execution/pbExecutionContext.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Execution/pbExecutionContext.h" Line="210" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/Function.h" Line="183" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Primitives/ptr.h" Line="425" Column="62" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Expressions/VariableDeclaration.h" Line="96" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Base/pbChildObject.h" Line="141" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Base/pbChildObject.cpp" Line="134" Column="1" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Base/GarbargeCollector.cpp" Line="54" Column="18" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Base/Cache.h" Line="76" Column="25" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Primitives/var.h" Line="54" Column="18" />
+      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Primitives/ptr.cpp" Line="53" Column="18" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
+        <State expanded="True">
           <Node name="build" expanded="True" />
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
@@ -40,17 +40,20 @@
               <Node name="PeaseBlossom" expanded="True">
                 <Node name="Base" expanded="True" />
                 <Node name="Bits" expanded="True" />
-                <Node name="Cache" expanded="True" />
                 <Node name="Execution" expanded="True" />
-                <Node name="Expressions" expanded="True" />
                 <Node name="Objects" expanded="True" />
                 <Node name="Parser" expanded="True" />
-                <Node name="Primitives" expanded="True" />
+                <Node name="Primitives" expanded="True">
+                  <Node name="var.h" selected="True" />
+                </Node>
+                <Node name="Standard" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True" />
+            <Node name="Titania" expanded="True">
+              <Node name="Basic" expanded="True" />
+            </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">

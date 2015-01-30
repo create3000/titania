@@ -1,0 +1,335 @@
+#VRML V2.0 utf8
+
+PROTO VrmlLoader [
+  exposedField SFBool   enabled TRUE
+  exposedField MFString url ""
+  exposedField MFString parameter ""
+  exposedField SFTime   startTime 0
+  eventOut     SFTime   exitTime
+  eventOut     SFBool   isActive
+  exposedField MFNode   children [ ]
+]
+{
+  PROTO Data1 [
+    exposedField SFBool   enabled TRUE
+    exposedField MFString url [ ]
+    exposedField MFString parameter ""
+    exposedField SFTime   startTime 0
+    exposedField MFNode   children [ ]
+  ]
+  {
+    Group { }
+  }
+
+  DEF _VrmlLoader Script {
+    eventOut SFBool   isActive IS isActive
+    eventOut SFTime   exitTime IS exitTime
+    eventIn  MFString set_url
+    eventIn  SFTime   set_startTime
+    eventIn  MFNode   set_children
+    field    SFNode   self USE _VrmlLoader
+    field    SFNode   data DEF Data Data1 {
+      enabled IS enabled
+      url IS url
+      parameter IS parameter
+      startTime IS startTime
+      children IS children
+    }
+    url "vrmlscript:
+function query() {
+	q = '';
+	for (i = 0; i < data.parameter.length; i++) {
+		if (data.parameter[i].length)
+			q += '&' + data.parameter[i];
+	}
+	if (q.length > 1) return q.substring(1, q.length);
+	return '';
+}
+function url() {
+	u = new MFString();
+
+	s = u.length;
+	for (i = s; i < data.url.length + s; i++) u[i] = data.url[i - s];
+
+	q = query();
+	if (q == '') return u;
+
+	for (i = 0; i < u.length; i++)
+		u[i] += (data.url[i].indexOf('?') > -1 ? (data.url[i].indexOf('?') == data.url[i].length-1  ? '' : (q.length ? (data.url[i].indexOf('&') == data.url[i].length-1  ? '' : '&') : '') ) : '?') + q;
+
+	return u;
+}
+function set_url(value, time) {
+	print('_VrmlLoader set_url ', value);
+	if(data.enabled && value.length && !isActive) {
+		isActive = TRUE;
+		print('_VrmlLoader isActive ', isActive);
+		print('_VrmlLoader url ', url());
+		Browser.createVrmlFromURL(url(), self, 'set_children');
+	}
+}
+function set_startTime(value, time) { set_url(data.url, time); }
+function set_children(value, time) {
+	print('_VrmlLoader set_children ', value);
+	if(isActive){
+		print('_VrmlLoader data.children is set');
+		data.children = value;
+		isActive = FALSE;
+		exitTime = time;
+	}
+}
+function initialize() {
+	if (data.startTime) set_url(data.url, 0);
+}
+    "
+    directOutput TRUE
+    mustEvaluate TRUE
+  }
+
+  ROUTE Data.startTime_changed TO _VrmlLoader.set_startTime
+  ROUTE Data.url_changed TO _VrmlLoader.set_url
+}
+
+PROTO World [
+  exposedField SFBool   visible TRUE
+  exposedField SFBool   enabled TRUE
+  exposedField MFString url ""
+  exposedField MFString parameter ""
+  exposedField SFTime   startTime 0
+  eventOut     SFTime   enterTime
+  exposedField MFNode   interface [ ]
+  exposedField MFNode   children [ ]
+]
+{
+  PROTO Data [
+    exposedField SFBool   enabled TRUE
+    exposedField SFBool   visible TRUE
+    exposedField MFString url ""
+    exposedField SFInt32  whichChoice 1
+    exposedField SFTime   startTime 0
+    exposedField MFString parameter [ ]
+    exposedField MFNode   gateway [ ]
+    exposedField MFNode   children [ ]
+    exposedField MFNode   inline [ ]
+  ]
+  {
+    Switch {
+      whichChoice IS whichChoice
+      choice [
+        Group {
+          children IS inline
+        }
+        Group {
+          children [
+            Group {
+              children IS gateway
+            }
+            Group {
+              children IS children
+            }
+          ]
+        }
+      ]
+    }
+  }
+
+  DEF Data Data {
+    enabled IS enabled
+    visible IS visible
+    url IS url
+    startTime IS startTime
+    parameter IS parameter
+    gateway IS interface
+    children IS children
+  }
+
+  DEF _World Script {
+    eventOut SFTime   enterTime IS enterTime
+    eventOut MFNode   children_changed
+    eventIn  SFBool   set_visible
+    eventIn  SFTime   set_startTime
+    eventIn  MFNode   set_children
+    eventIn  MFString set_url
+    eventIn  SFBool   set_t
+    field    SFBool   isActive FALSE
+    field    SFNode   self USE _World
+    field    SFNode   data USE Data
+    field    SFNode   gateway NULL
+    url "vrmlscript:
+function findNode (name, nodes) {
+	// search first 2 level for node;
+	for (i=0; i<nodes.length; ++i) {
+		if (nodes[i] == name + ' { }') return nodes[i];
+		if (nodes[i] == 'Transform { }' || nodes[i] == 'Group { }')
+			for (c=0; c<nodes[i].children.length; ++c)
+				if (nodes[i].children[c] == name + ' { }') return nodes[i].children[c];
+	}
+	return FALSE;
+}
+
+function connect(nodes) {
+	node = findNode('Gateway', nodes);
+	if (node && data.gateway) {
+		gateway = node;
+		//Browser.addRoute(gateway, 'enabled_changed', data.gateway[0], 'set_enabled');
+		//Browser.addRoute(data.gateway[0], 'enabled_changed', gateway, 'set_enabled');
+		if (data.gateway.length)
+			for (i = 0; i < data.gateway[0].children.length; i++) {
+				cL = data.gateway[0].children[i];
+				cR = gateway.children[i];
+				//Browser.addRoute(cR, 'keyValue_changed', cL, 'set_keyValue');
+				//Browser.addRoute(cL, 'keyValue_changed', cR, 'set_keyValue');
+				if (cR.startTime) cL.keyValue = cR.keyValue;
+				else cR.keyValue = cL.keyValue;
+			}
+	}
+}
+
+function url() {
+	u = new MFString();
+
+	// append filename without path
+	if (data.url.length) {
+		find = data.url[0];
+		sl = find.lastIndexOf('/');
+		if (sl>-1) u[u.length] = find.substring(sl+1, find.length);
+	}
+
+	// append data.url
+	s = u.length;
+	for (i = s; i < data.url.length + s; i++) u[i] = data.url[i - s];
+
+	// reverse order if intranet
+	// print(Browser.getWorldURL());
+	// r = new MFString();
+	// for (i = 0; i < u.length; ++i) r[i] = u[u.length-1 - i];
+	// u = r;
+
+	return u;
+}
+
+function query() {
+	q = '';
+	for (i = 0; i < data.parameter.length; i++) {
+		if (data.parameter[i].length)
+			q += '&' + data.parameter[i];
+	}
+	if (q.length > 1) return q.substring(1, q.length);
+	return '';
+}
+
+function _url() {
+	u = new MFString();
+
+	s = u.length;
+	for (i = s; i < data.url.length + s; i++) u[i] = data.url[i - s];
+
+	q = query();
+	if (q == '') return u;
+
+	for (i = 0; i < u.length; i++)
+		u[i] += (data.url[i].indexOf('?') > -1 ? (data.url[i].indexOf('?') == data.url[i].length-1  ? '' : (q.length ? (data.url[i].indexOf('&') == data.url[i].length-1  ? '' : '&') : '') ) : '?') + q;
+
+	return u;
+}
+
+function _set_url(value) {
+	print('_VrmlLoader set_url ', value);
+	if(data.enabled && value.length && !isActive) {
+		isActive = TRUE;
+		print('_VrmlLoader isActive ', isActive);
+		print('_VrmlLoader url ', _url());
+		Browser.createVrmlFromURL(_url(), self, 'set_children');
+	}
+}
+
+function set_visible(value, time) { data.whichChoice = value; }
+
+function set_url(value, time) {
+	print('_World set_url . . .');
+
+ 	if (!data.enabled) return;
+	print('data.enabled ', data.enabled);
+
+// 	if (Browser.getName() != 'Cosmo Player' && Browser.getVersion() != 1.1) {
+
+		print('Browser.getName() ', Browser.getName());
+		print(value);
+		print(value.length);
+ 		if (value.length) {
+ 			print('url ', url());
+ 			_set_url(url());
+ 			print('data.url', data.url);
+ 		}
+
+// 	}
+//	else {
+// 		url = '';
+// 		for (i=0; i<value.length; ++i) {
+// 			if (value[i].length) {
+// 				subs = value[i].length > 4 ? value[i].substring(0, 4) : '';
+// 				if (value[i].indexOf(':') < 5 && (
+// 					subs == 'http' ||
+// 					subs == 'file' ||
+// 					subs == 'ftp:')
+// 				) url += '\"' + value[i] +'\"';
+// 				else if (value[i].indexOf('/') == 0)
+// 					url += '\"' + value[i] +'\"';
+// 				url += '\"' + value[i] +'\"';
+// 			}
+// 		}
+// 		if (url.length) {
+// 			data.inline = new MFNode(new SFNode('Inline{url ['+url+']}'));
+// 			data.whichChoice = !data.visible;
+// 			//print('Inline{url ['+url+']}');
+// 		}
+// 	}
+}
+
+function set_children(value, time) {
+	if(isActive){
+		print('_VrmlLoader data.children is set');
+		isActive = FALSE;
+		if (value == \"Group { }\")
+			data.children = value[0].children;
+		else data.children = value;
+		connect(data.children);
+		enterTime = time;
+	}
+}
+
+function set_startTime(value, time) {
+	print('_World set_startTime . . .');
+	set_url(data.url, time);
+}
+
+function initialize() {
+	print('_World initialize . . .');
+	set_visible(data.visible ? 1 : 0, 0);
+	if (data.startTime == 1) set_startTime(1, 0);
+	print('_Worldb initialized . . .');
+}
+    "
+    directOutput TRUE
+    mustEvaluate TRUE
+  }
+
+  ROUTE Data.visible_changed TO _World.set_visible
+  ROUTE Data.startTime_changed TO _World.set_startTime
+  ROUTE Data.url_changed TO _World.set_url
+}
+
+DEF _0 TouchSensor { }
+DEF _1 World {
+  url "button.wrl"
+  startTime 1
+}
+DEF _2 Transform {
+  scale 10 10 1
+  children Shape {
+    geometry Box { }
+  }
+}
+
+ROUTE _0.touchTime TO _1.set_startTime
+ROUTE _1.children_changed TO _2.set_children

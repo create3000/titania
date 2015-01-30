@@ -59,6 +59,14 @@
 
 namespace titania {
 namespace X3D {
+
+class SceneLoader;
+
+} // X3D
+} // titania
+
+namespace titania {
+namespace X3D {
 namespace peaseblossom {
 
 class Context :
@@ -123,6 +131,10 @@ public:
 	getObject (X3DChildObject* const field) const
 	noexcept (true);
 
+	std::unique_ptr <X3D::SceneLoader> &
+	getFuture ()
+	{ return future; }
+
 	///  @name Destruction
 
 	virtual
@@ -171,7 +183,7 @@ private:
 	prepareEvents ();
 
 	void
-	set_field (X3D::X3DFieldDefinition* const, const std::string &);
+	set_field (X3D::X3DFieldDefinition* const, const pb::Identifier &);
 
 	void
 	eventsProcessed ();
@@ -200,6 +212,7 @@ private:
 	std::map <X3D::X3DChildObject*, pb::pbObject*>     objects;
 	std::vector <X3D::X3DFieldDefinition*>             userDefinedFields;
 	std::vector <pb::var>                              values;
+	std::unique_ptr <X3D::SceneLoader>                  future;
 
 };
 

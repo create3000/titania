@@ -1,0 +1,68 @@
+#VRML V2.0 utf8
+
+PROTO TrackingViewpoint [
+  exposedField SFVec3f pointOfInterest 0 0 0
+  exposedField MFNode  children [ ]
+]
+{
+  PROTO Data [
+    exposedField SFVec3f pointOfInterest 0 0 0
+  ]
+  {
+    Group { }
+  }
+
+  DEF Viewpoints Transform {
+    children IS children
+  }
+
+  DEF _trackingViewpoint Script {
+    eventIn SFVec3f set_translation
+    eventIn MFNode  set_children
+    eventIn SFVec3f set_position
+    field   SFVec3f defaultPosition 0 0 -10
+    field   SFVec3f yAxis 0 1 0
+    field   SFNode  self USE _trackingViewpoint
+    field   SFNode  viewpoints USE Viewpoints
+    field   SFNode  data DEF Data Data {
+      pointOfInterest IS pointOfInterest
+    }
+    url "peaseblossom:
+function get_rotation(fromVec, toVec) {
+	distance = toVec.subtract(fromVec);
+	rA = new SFRotation(defaultPosition, distance);
+	cameraUp = rA.multVec(yAxis);
+	N2 = distance.cross(yAxis);
+	N1 = distance.cross(cameraUp);
+	rB = new SFRotation(N1, N2);
+	orientation = rA.multiply(rB);
+	return orientation;
+}
+function set_translation(value, time) {
+	for (i = 0; i < viewpoints.children.length; ++i) {
+		if (viewpoints.children[i].isBound || !time) {
+			position = viewpoints.children[i].position;
+			orientation = get_rotation(position, value);
+			viewpoints.children[i].orientation = orientation;
+		}
+	}
+}
+function set_children(value, time) {
+	for (i = 0; i < value.length; ++i) {
+		Browser.addRoute(value[i], 'position_changed', self, 'set_position');
+	}
+	set_translation(data.pointOfInterest, time);
+}
+function set_position(value, time) {
+	self.set_translation = data.pointOfInterest;
+}
+function initialize() {
+	if (Browser.getName() != 'Cosmo Player') set_children(viewpoints.children, 0);
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Data.pointOfInterest_changed TO _trackingViewpoint.set_translation
+}
+

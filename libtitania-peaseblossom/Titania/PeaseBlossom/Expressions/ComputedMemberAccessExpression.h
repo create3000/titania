@@ -173,7 +173,14 @@ public:
 			}
 			case OBJECT:
 			{
-				return std::move (base .getObject () -> get (name) .first);
+				try
+				{
+					return base .getObject () -> get (name);
+				}
+				catch (const std::out_of_range &)
+				{
+					return undefined;
+				}
 			}
 		}
 
@@ -226,6 +233,8 @@ public:
 				{
 					return base .getObject () -> call (name, arguments);
 				}
+				catch (const std::out_of_range &)
+				{ }
 				catch (const std::invalid_argument &)
 				{ }
 			}

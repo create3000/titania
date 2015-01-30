@@ -89,6 +89,15 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
+		return evaluate (lhs, rhs);
+	}
+
+	/// Performs strict equal comparision to its arguments
+	static
+	bool
+	evaluate (const ptr <pbStatement> & lhs, const ptr <pbStatement> & rhs)
+	throw (pbError)
+	{
 		const auto x = lhs -> getValue ();
 		const auto y = rhs -> getValue ();
 

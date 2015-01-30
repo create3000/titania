@@ -1,0 +1,132 @@
+#VRML V2.0 utf8
+
+PROTO ParticleEmitter [
+  exposedField SFFloat rate 10
+  exposedField SFTime  cycleInterval 2
+  exposedField SFBool  enabled TRUE
+  exposedField SFVec3f position 0 0 0
+  exposedField SFVec3f velocity 0 0 0
+  exposedField SFVec3f acceleration 0 -1 0
+  exposedField SFVec3f deviationOfPosition 0 0 0
+  exposedField SFVec3f deviationOfVelocity 0 0 0
+  exposedField SFVec3f deviationOfAcceleration 0 0 0
+  exposedField SFBool  loop FALSE
+  exposedField SFTime  startTime 0
+  exposedField SFTime  stopTime 0
+  exposedField MFNode  children [ ]
+]
+{
+  PROTO Data [
+    exposedField SFFloat rate 10
+    exposedField SFVec3f position 0 0 0
+    exposedField SFVec3f velocity 0 0 0
+    exposedField SFVec3f acceleration 0 -1 0
+    exposedField SFVec3f deviationOfPosition 0 0 0
+    exposedField SFVec3f deviationOfVelocity 0 0 0
+    exposedField SFVec3f deviationOfAcceleration 0 0 0
+    exposedField SFBool  loop FALSE
+    exposedField SFTime  startTime 0
+    exposedField SFTime  stopTime 0
+    exposedField MFNode  children [ ]
+  ]
+  {
+    Group {
+      children IS children
+    }
+  }
+
+  DEF Data Data {
+    rate IS rate
+    position IS position
+    velocity IS velocity
+    acceleration IS acceleration
+    deviationOfPosition IS deviationOfPosition
+    deviationOfVelocity IS deviationOfVelocity
+    deviationOfAcceleration IS deviationOfAcceleration
+    loop IS loop
+    startTime IS startTime
+    stopTime IS stopTime
+    children IS children
+  }
+
+  DEF _ParticelEmitter Script {
+    eventIn SFTime  set_startTime
+    eventIn SFTime  set_stopTime
+    eventIn MFNode  set_children
+    eventIn SFTime  set_time
+    field   SFInt32 p 0
+    field   SFTime  lastTime 0
+    field   SFNode  timeSensor DEF Time TimeSensor {
+      enabled IS enabled
+      loop TRUE
+      stopTime 1
+    }
+    field   SFNode  data USE Data
+    url "peaseblossom:
+function randomVec3f (value) {
+	rv = new SFVec3f(Math.random()-0.5, Math.random()-0.5, Math.random()-0.5);
+	rv = rv.normalize();
+	rv.x *= value.x;
+	rv.y *= value.y;
+	rv.z *= value.z;
+	return rv;
+}
+function set_startTime(value, time) {
+	p = 0;
+	timeSensor.startTime = time;
+}
+function set_stopTime (value, time) {
+	timeSensor.stopTime = time;
+}
+function set_time (value, time) {
+	if (time - lastTime > 1 / data.rate) {
+		particle = data.children[p];
+		pn       = p+1 >= data.children.length ? 0 : p+1;
+		next     = data.children[pn];
+
+		particle.position     = data.position.add(randomVec3f(data.deviationOfPosition));
+		particle.velocity     = data.velocity.add(randomVec3f(data.deviationOfVelocity));
+
+		particle.acceleration = data.acceleration.add(randomVec3f(data.deviationOfAcceleration));
+
+		if (next.isActive) {
+			if (pn || data.loop) {
+				next.velocity = new SFVec3f(0, 0, 0);
+				next.force    = new SFVec3f(0, 0, 0);
+				next.stopTime = time;
+			}
+		}
+		particle.startTime = time;
+
+		if(++p >= data.children.length) {
+			p = 0;
+			if (!data.loop) timeSensor.stopTime = time;
+		}
+		lastTime = time;
+	}
+}
+function set_children (value, time) {
+}
+function initialize() {
+	for (i=0; i<data.children.length; ++i) {
+		particle = data.children[i];
+		particle.enabled      = TRUE;
+//		particle.radius       = data.radius;
+//		particle.mass	       = data.mass;
+		particle.position	    = data.position;
+		particle.velocity	    = data.velocity;
+		particle.acceleration = data.acceleration;
+		particle.startTime    = 0;
+		particle.stopTime	    = 1;
+		particle.constants    = data.children[0].constants;
+	}
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Data.startTime TO _ParticelEmitter.set_startTime
+  ROUTE Data.stopTime TO _ParticelEmitter.set_stopTime
+  ROUTE Time.time TO _ParticelEmitter.set_time
+}
+

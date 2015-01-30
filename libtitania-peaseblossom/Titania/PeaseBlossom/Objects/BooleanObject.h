@@ -67,13 +67,7 @@ public:
 	///  @name Construction
 
 	///  Constructs new BooleanObject.
-	BooleanObject (const ptr <pbExecutionContext> & executionContext) :
-		pbObject (),
-		 boolean (false)
-	{ }
-
-	///  Constructs new BooleanObject.
-	BooleanObject (const ptr <pbExecutionContext> & executionContext, const bool value) :
+	BooleanObject (const ptr <pbExecutionContext> & executionContext, const bool value = false) :
 		pbObject (),
 		 boolean (value)
 	{ }

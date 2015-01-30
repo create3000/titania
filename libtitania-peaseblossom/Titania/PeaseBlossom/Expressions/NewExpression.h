@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_NEW_EXPRESSION_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_EXPRESSIONS_NEW_EXPRESSION_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_NEW_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_NEW_EXPRESSION_H__
 
 #include "../Execution/pbExecutionContext.h"
 #include "../Expressions/pbStatement.h"
@@ -69,10 +69,11 @@ public:
 
 	///  Constructs new NewExpression expression.
 	NewExpression (const ptr <pbExecutionContext> & executionContext, ptr <pbStatement> && expression, array <ptr <pbStatement>> && expressions) :
-		    pbStatement (StatementType::NEW_EXPRESSION),
+		     pbStatement (StatementType::NEW_EXPRESSION),
 		executionContext (executionContext),
 		      expression (std::move (expression)),
-		     expressions (std::move (expressions))
+		     expressions (std::move (expressions)),
+		       arguments ()
 	{
 		construct ();
 	}
@@ -83,7 +84,7 @@ public:
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
 	{
-		array <ptr <pbStatement>> expressions;
+		array <ptr <pbStatement>>  expressions;
 
 		for (const auto & expression : this -> expressions)
 			expressions .emplace_back (expression -> copy (executionContext));
@@ -163,8 +164,9 @@ private:
 	///  @name Members
 
 	const ptr <pbExecutionContext>   executionContext;
-	const ptr <pbStatement>         expression;
-	const array <ptr <pbStatement>> expressions;
+	const ptr <pbStatement>          expression;
+	const array <ptr <pbStatement>>  expressions;
+	std::vector <var>                arguments;
 
 };
 
