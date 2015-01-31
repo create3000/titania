@@ -81,6 +81,11 @@ public:
 	getLength () const
 	{ return length; }
 
+	const ptr <pbObject> &
+	getPrototype () const
+	throw (std::out_of_range,
+	       std::invalid_argument);
+
 	///  @name Operations
 
 	///  Constructs new object of this class without invoking the constructor.

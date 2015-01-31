@@ -57,6 +57,7 @@
     <Compile Include="Titania\PeaseBlossom\Expressions\pbStatement.cpp" />
     <Compile Include="Titania\PeaseBlossom\Primitives\ptr.cpp" />
     <Compile Include="Titania\PeaseBlossom\Cache\Cache.cpp" />
+    <Compile Include="Titania\PeaseBlossom\Standard\Date.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -177,5 +178,11 @@
     <None Include="Titania\PeaseBlossom\Expressions\LessEqualExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\NotEqualExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\StrictNotEqualExpression.h" />
+    <None Include="Titania\PeaseBlossom\Standard\Date.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\BitwiseNotExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\VoidExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\ToNumberExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\DeleteExpression.h" />
+    <None Include="Titania\PeaseBlossom\Expressions\TypeOfExpression.h" />
   </ItemGroup>
 </Project>

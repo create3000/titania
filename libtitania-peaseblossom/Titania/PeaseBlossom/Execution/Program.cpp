@@ -59,6 +59,8 @@
 #include "../Standard/Function.h"
 #include "../Standard/Global.h"
 #include "../Standard/Object.h"
+#include "../Standard/Array.h"
+#include "../Standard/Date.h"
 
 namespace titania {
 namespace pb {
@@ -98,7 +100,8 @@ bool
 Program::resolve (const Identifier & identifier)
 {
 	static const std::map <pb::Identifier, StandardClassType> types = {
-		std::make_pair (pb::Identifier ("Array"), StandardClassType::Array)
+		std::make_pair (pb::Identifier ("Array"), StandardClassType::Array),
+		std::make_pair (pb::Identifier ("Date"),  StandardClassType::Date),
 	};
 
 	const auto iter = types .find (identifier);
@@ -118,6 +121,7 @@ throw (std::out_of_range)
 
 	static const std::map <StandardClassType, Initialize> functions = {
 		std::make_pair (StandardClassType::Array, Standard::Array::initialize),
+		std::make_pair (StandardClassType::Date,  Standard::Date::initialize),
 	};
 
 	auto & standardClass = standardClasses .at (size_t (type));

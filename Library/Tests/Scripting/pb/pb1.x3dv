@@ -75,25 +75,25 @@ function set_time (value, time)
 {
 	print ('peaseblossom:');
 
-	var t0 = now ();
+	var t0 = Date .now ();
 	global (8000000);
-	print ('global:    ', now () - t0);
+	print ('global:    ', (Date .now () - t0) / 1000);
 
-	var t0 = now ();
+	var t0 = Date .now ();
 	field (8000000);
-	print ('field:     ', now () - t0);
+	print ('field:     ', (Date .now () - t0) / 1000);
 
-	var t0 = now ();
+	var t0 = Date .now ();
 	construct (800000);
-	print ('construct: ', now () - t0);
+	print ('construct: ', (Date .now () - t0) / 1000);
 
-	var t0 = now ();
+	var t0 = Date .now ();
 	add (800000);
-	print ('add:       ', now () - t0);
+	print ('add:       ', (Date .now () - t0) / 1000);
 
-	var t0 = now ();
+	var t0 = Date .now ();
 	array_test (8000);
-	print ('array:     ', now () - t0);
+	print ('array:     ', (Date .now () - t0) / 1000);
 }
 
 function global (value)

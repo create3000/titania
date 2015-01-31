@@ -93,6 +93,22 @@ pbFunction::addProperties ()
 	addOwnProperty ("length", length,             NONE);
 }
 
+const ptr <pbObject> &
+pbFunction::getPrototype () const
+throw (std::out_of_range,
+       std::invalid_argument)
+{
+	static const Identifier prototype ("prototype");
+
+	const auto & descriptor = getOwnProperty (prototype);
+	const auto & value      = descriptor -> getValue ();
+
+	if (value .isObject ())
+		return value .getObject ();
+
+	throw std::invalid_argument ("Object::construct");
+}
+
 pbObject*
 pbFunction::createInstance (pbExecutionContext* const executionContext)
 throw (TypeError)

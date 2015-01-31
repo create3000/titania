@@ -1,3 +1,30 @@
+2015-01-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-peaseblossom.cproj:
+	* Statements.h:
+	* Object.h:
+	* Parser.cpp:
+	* Array.cpp:
+	* Date.cpp:
+	* Object.cpp:
+	* pbObject.h:
+	* var.cpp:
+	* Array.cpp:
+	* pbObject.cpp:
+	* Function.cpp:
+	* pbFunction.h:
+	* Program.cpp:
+	* pbFunction.cpp:
+	* Array (Kopie).h:
+	* StatementType.h:
+	* VoidExpression.h:
+	* StandardClassType.h:
+	* DeleteExpression.h:
+	* TypeOfExpression.h:
+	* ToNumberExpression.h:
+	* BitwiseNotExpression.h: 
+
 2015-01-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

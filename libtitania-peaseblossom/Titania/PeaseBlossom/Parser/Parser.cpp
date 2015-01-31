@@ -1244,11 +1244,14 @@ Parser::unaryExpression (ptr <pbStatement> & value)
 
 	if (Grammar::delete_ (istream))
 	{
+		if (not comments ())
+			return false;
+
 		isLeftHandSideExressions .back () = false;
 
 		if (unaryExpression (value))
 		{
-			//value = new DeleteExpression (std::move (value));
+			value = new DeleteExpression (std::move (value));
 			return true;
 		}
 
@@ -1257,11 +1260,14 @@ Parser::unaryExpression (ptr <pbStatement> & value)
 
 	if (Grammar::void_ (istream))
 	{
+		if (not comments ())
+			return false;
+
 		isLeftHandSideExressions .back () = false;
 
 		if (unaryExpression (value))
 		{
-			//value = new VoidExpression (std::move (value));
+			value = new VoidExpression (std::move (value));
 			return true;
 		}
 
@@ -1270,11 +1276,14 @@ Parser::unaryExpression (ptr <pbStatement> & value)
 
 	if (Grammar::typeof_ (istream))
 	{
+		if (not comments ())
+			return false;
+
 		isLeftHandSideExressions .back () = false;
 
 		if (unaryExpression (value))
 		{
-			//value = new TypeOfExpression (std::move (value));
+			value = new TypeOfExpression (std::move (value));
 			return true;
 		}
 
@@ -1313,7 +1322,7 @@ Parser::unaryExpression (ptr <pbStatement> & value)
 
 		if (unaryExpression (value))
 		{
-			//value = new ToNumberExpression (std::move (value));
+			value = new ToNumberExpression (std::move (value));
 			return true;
 		}
 
@@ -1339,7 +1348,7 @@ Parser::unaryExpression (ptr <pbStatement> & value)
 
 		if (unaryExpression (value))
 		{
-			//value = new BitwiseNotExpression (std::move (value));
+			value = new BitwiseNotExpression (std::move (value));
 			return true;
 		}
 

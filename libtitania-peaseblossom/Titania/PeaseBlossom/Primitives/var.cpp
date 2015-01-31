@@ -406,7 +406,7 @@ var::toLocaleString (const std::locale & locale) const
 
 			ostringstream .imbue (locale);
 
-			ostringstream << std::setprecision (std::numeric_limits <double>::max_digits10) << value .number_;
+			ostringstream << std::setprecision (std::numeric_limits <double>::max_digits10 - 1) << value .number_;
 
 			return ostringstream .str ();
 		}
@@ -444,7 +444,7 @@ var::toStream (std::ostream & ostream) const
 				ostream << "Infinity";
 
 			else
-				ostream << std::setprecision (std::numeric_limits <double>::max_digits10) << value .number_;
+				ostream << std::setprecision (std::numeric_limits <double>::max_digits10 - 1) << value .number_;
 
 			return;
 		}

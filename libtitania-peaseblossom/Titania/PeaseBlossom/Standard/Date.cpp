@@ -48,29 +48,60 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_CACHE_OBJECT_H__
-#define __TITANIA_PEASE_BLOSSOM_CACHE_OBJECT_H__
+#include "Date.h"
 
-#include "../Cache/Cache.h"
 #include "../Objects/Object.h"
+#include "../Objects/NativeFunction.h"
+
+#include <chrono>
 
 namespace titania {
 namespace pb {
+namespace Standard {
+namespace Date {
 
-// Spezialization for Object.
-
-class Object;
-
-template <>
-template <class ... Args>
-inline
-void
-Cache <Object>::prepare (Object* const object, Args && ... args)
+/// new Array ([arg1[, arg2[, ...argN]],])
+struct Constructor
 {
-	object -> prepare (std::forward <Args> (args) ...);
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+	{
+		return undefined;
+	}
+
+};
+
+struct now
+{
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+	{
+		using namespace std::chrono;
+
+		return duration_cast <milliseconds> (system_clock::now () .time_since_epoch ()) .count ();
+	}
+
+};
+
+ptr <NativeFunction>
+initialize (pbExecutionContext* const ec)
+{
+	//const auto & standardObject = ec -> getStandardObject ();
+	const auto   constructor    = make_ptr <NativeFunction> (ec, "Date", Constructor { }, 7);
+	//const auto   prototype      = new pb::Date (ec, nullptr);
+
+	constructor -> addOwnProperty ("now", new NativeFunction (ec, "now", now { }, 0), WRITABLE | CONFIGURABLE);
+
+	//prototype -> setConstructor (constructor);
+	//prototype -> setProto (standardObject);
+
+	//prototype -> addOwnProperty ("toString", new NativeFunction (ec, "toString", toString { }, 0), WRITABLE | CONFIGURABLE);
+
+	//constructor -> addOwnProperty ("prototype", prototype, NONE);
+	return constructor;
 }
 
+} // Date
+} // Standard
 } // pb
 } // titania
-
-#endif

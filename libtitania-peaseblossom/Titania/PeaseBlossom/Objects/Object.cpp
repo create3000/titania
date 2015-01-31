@@ -97,7 +97,7 @@ Object::construct (pbExecutionContext* const executionContext, pbFunction* const
 	try
 	{
 		setConstructor (constructor);
-		setProto (constructor -> getObject ("prototype"));
+		setProto (constructor -> getPrototype ());
 	}
 	catch (const std::exception &)
 	{

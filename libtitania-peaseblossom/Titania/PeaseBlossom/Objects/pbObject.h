@@ -268,6 +268,9 @@ struct Callbacks
 
 };
 
+extern const ptr <pbFunction> DefaultGetter;
+extern const ptr <pbFunction> DefaultSetter;
+
 /**
  *  Class to represent a basic object.
  */
@@ -349,10 +352,6 @@ public:
 	throw (pbError,
 	       std::out_of_range);
 
-	ptr <pbObject>
-	getObject (const Identifier & identifier) const
-	throw (pbError);
-
 	///  Returns the property descriptor for @a identifier.
 	const PropertyDescriptorPtr &
 	getProperty (const Identifier & identifier) const
@@ -369,8 +368,8 @@ public:
 	addOwnProperty (const Identifier & identifier,
 	                const var & value,
 	                const AttributeType attributes = DEFAULT,
-	                const ptr <pbFunction> & getter = nullptr,
-	                const ptr <pbFunction> & setter = nullptr,
+	                const ptr <pbFunction> & getter = DefaultGetter,
+	                const ptr <pbFunction> & setter = DefaultSetter,
 	                const bool throw_ = true)
 	throw (TypeError,
 	       std::invalid_argument);
@@ -393,8 +392,8 @@ public:
 	defineOwnProperty (const Identifier & identifier,
 	                   const var & value,
 	                   const AttributeType attributes = DEFAULT,
-	                   const ptr <pbFunction> & getter = nullptr,
-	                   const ptr <pbFunction> & setter = nullptr,
+	                   const ptr <pbFunction> & getter = DefaultGetter,
+	                   const ptr <pbFunction> & setter = DefaultSetter,
 	                   const bool throw_ = true)
 	throw (TypeError);
 

@@ -23,6 +23,7 @@ libtitania_peaseblossom_la_SOURCES =  \
 	Titania/PeaseBlossom/Primitives/ptr.cpp \
 	Titania/PeaseBlossom/Primitives/var.cpp \
 	Titania/PeaseBlossom/Standard/Array.cpp \
+	Titania/PeaseBlossom/Standard/Date.cpp \
 	Titania/PeaseBlossom/Standard/Function.cpp \
 	Titania/PeaseBlossom/Standard/Global.cpp \
 	Titania/PeaseBlossom/Standard/Math.cpp \

@@ -139,27 +139,27 @@ function set_time (value, time)
 	print ('set_time:');
 	print ('set_time: value: ', value);
 	print ('set_time: time:  ', time);
-	print ('set_time: now:   ', now ());
+	print ('set_time: now:   ', Date .now () / 1000);
 
 	var f = 1;
 
-	var t0 = now ();
+	var t0 = Date .now ();
 	print ();
 	print ('fibonacci_iterative: ', fibonacci_iterative (800 * f));
 	print ('fibonacci_iterative: ', fibonacci_iterative (8000000 * f));
-	print ('time: ',                now () - t0);
+	print ('time: ',                (Date .now () - t0) / 1000);
 
-	var t0 = now ();
+	var t0 = Date .now ();
 	print ();
 	print ('fibonacci_iterative1: ', fibonacci_iterative1 ({ }, 800 * f));
 	print ('fibonacci_iterative1: ', fibonacci_iterative1 ({ }, 800000 * f));
-	print ('time: ',                 now () - t0);
+	print ('time: ',                 (Date .now () - t0) / 1000);
 
-	var t0 = now ();
+	var t0 = Date .now ();
 	print ();
 	print ('fibonacci_recursive: ', fibonacci_recursive (24));
 	print ('calls: ',               fibonacci_iterative (24 + 2) + 1);
-	print ('time: ',                now () - t0);
+	print ('time: ',                (Date .now () - t0) / 1000);
 }
 "
 "peaseblossom:"

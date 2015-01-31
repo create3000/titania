@@ -162,13 +162,13 @@ private:
 	resolve (pb::pbObject* const, const pb::Identifier &);
 
 	pb::var
-	setProperty (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, const size_t);
+	setProperty (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, X3D::X3DFieldDefinition* const);
 
 	pb::var
-	getBuildInProperty (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, const size_t);
+	getBuildInProperty (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, X3D::X3DFieldDefinition* const);
 
 	pb::var
-	getProperty (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, const size_t);
+	getProperty (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, const pb::var &);
 
 	/// Event handlers
 
@@ -210,9 +210,8 @@ private:
 	pb::Callbacks                                      callbacks;
 	mutable std::vector <pb::ptr <pb::NativeFunction>> classes;
 	std::map <X3D::X3DChildObject*, pb::pbObject*>     objects;
-	std::vector <X3D::X3DFieldDefinition*>             userDefinedFields;
 	std::vector <pb::var>                              values;
-	std::unique_ptr <X3D::SceneLoader>                  future;
+	std::unique_ptr <X3D::SceneLoader>                 future;
 
 };
 

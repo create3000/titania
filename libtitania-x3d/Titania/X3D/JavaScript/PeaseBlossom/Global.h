@@ -76,8 +76,10 @@ public:
 		global -> addOwnProperty ("FALSE", false,   pb::NONE);
 		global -> addOwnProperty ("TRUE",  true,    pb::NONE);
 
-		global -> addOwnProperty ("print", new pb::NativeFunction (ec, "print", std::bind (print, _1, _2, _3, browser), 0), pb::NONE);
-		global -> addOwnProperty ("now",   new pb::NativeFunction (ec, "now",   now,                                    0), pb::NONE);
+		const auto print = new pb::NativeFunction (ec, "print", std::bind (Global::print, _1, _2, _3, browser), 1);
+
+		global -> addOwnProperty ("print", print, pb::NONE);
+		global -> addOwnProperty ("trace", print, pb::NONE);
 	}
 
 	static
@@ -90,13 +92,6 @@ public:
 		browser -> println ();
 
 		return pb::undefined;
-	}
-
-	static
-	pb::var
-	now (const pb::ptr <pb::pbExecutionContext> &,pb::pbObject* const, const std::vector <pb::var> &)
-	{
-		return chrono::now ();
 	}
 
 };

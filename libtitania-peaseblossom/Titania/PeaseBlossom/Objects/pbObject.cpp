@@ -57,12 +57,21 @@
 namespace titania {
 namespace pb {
 
+/*
+ * Utility
+ */
+
 template <class Type, class ... Args>
+inline
 std::unique_ptr <Type>
 make_unique (Args && ... args)
 {
 	return std::unique_ptr <Type> (new Type (std::forward <Args> (args) ...));
 }
+
+/*
+ * PropertyDescriptor
+ */
 
 PropertyDescriptor::PropertyDescriptor (pbChildObject* const object,
                                         const Identifier & identifier,
@@ -113,6 +122,17 @@ PropertyDescriptor::addValue ()
 
 PropertyDescriptor::~PropertyDescriptor ()
 { }
+
+/*
+ * Defaults
+ */
+
+const ptr <pbFunction> DefaultGetter;
+const ptr <pbFunction> DefaultSetter;
+
+/*
+ * pbObject
+ */
 
 const std::string pbObject::typeName = "Object";
 const Callbacks   pbObject::defaultCallbacks;
@@ -206,9 +226,7 @@ noexcept (true)
 					data -> user = false;
 
 					if (not callbacks -> enumerate (this, ENUMERATE_END, propertyName, userData [0]))
-		;
-
-					return false;
+						return false;
 				}
 			}
 
@@ -401,23 +419,6 @@ throw (pbError,
 		return descriptor -> getGetter () -> call (const_cast <pbObject*> (this));
 
 	return undefined;
-}
-
-ptr <pbObject>
-pbObject::getObject (const Identifier & identifier) const
-throw (pbError)
-{
-	try
-	{
-		const auto value = get (identifier);
-
-		if (value .isObject ())
-			return value .getObject ();
-	}
-	catch (const std::out_of_range &)
-	{ }
-
-	throw TypeError ("Property '" + identifier .getString () + "' is not an object.");
 }
 
 const PropertyDescriptorPtr &

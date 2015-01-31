@@ -48,27 +48,74 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_CACHE_OBJECT_H__
-#define __TITANIA_PEASE_BLOSSOM_CACHE_OBJECT_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_BITWISE_NOT_EXPRESSION_H__
+#define __TITANIA_PEASE_BLOSSOM_EXPRESSIONS_BITWISE_NOT_EXPRESSION_H__
 
-#include "../Cache/Cache.h"
-#include "../Objects/Object.h"
+#include "../Expressions/pbStatement.h"
 
 namespace titania {
 namespace pb {
 
-// Spezialization for Object.
-
-class Object;
-
-template <>
-template <class ... Args>
-inline
-void
-Cache <Object>::prepare (Object* const object, Args && ... args)
+/**
+ *  Class to represent a ECMAScript bitwise not expression expression.
+ */
+class BitwiseNotExpression :
+	public pbStatement
 {
-	object -> prepare (std::forward <Args> (args) ...);
-}
+public:
+
+	///  @name Construction
+
+	///  Constructs new BitwiseNotExpression expression.
+	BitwiseNotExpression (ptr <pbStatement> && expression) :
+		pbStatement (StatementType::BITWISE_NOT_EXPRESSION),
+		 expression (std::move (expression))
+	{ construct (); }
+
+	///  Creates a copy of this object.
+	virtual
+	ptr <pbStatement>
+	copy (pbExecutionContext* const executionContext) const
+	noexcept (true) final override
+	{ return new BitwiseNotExpression (expression -> copy (executionContext)); }
+
+	///  @name Operations
+
+	///  Converts its arguments to a value of type Number.
+	virtual
+	CompletionType
+	getValue () const
+	throw (pbError) final override
+	{
+		return ~expression -> getValue () .toInt32 ();
+	}
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{
+		ostream
+			<< '~'
+			<< pb::toStream (this, expression);
+	}
+
+private:
+
+	///  @name Construction
+
+	///  Performs neccessary operations after construction.
+	void
+	construct ()
+	{ addChildren (expression); }
+
+	///  @name Members
+
+	const ptr <pbStatement> expression;
+
+};
 
 } // pb
 } // titania

@@ -69,8 +69,8 @@ Function::Function (pbExecutionContext* const executionContext, const Identifier
 {
 	const auto prototype = new Object (executionContext);
 
-	addOwnProperty ("prototype", prototype, WRITABLE | CONFIGURABLE);
-	prototype -> addOwnProperty ("constructor", this, WRITABLE | CONFIGURABLE);
+	addOwnProperty ("prototype", prototype, WRITABLE);
+	prototype -> addOwnProperty ("constructor", this, NONE);
 
 	addChildren (variableObjectsStack);
 

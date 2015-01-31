@@ -63,6 +63,7 @@ enum class StandardClassType :
 	Function,
 
 	Array,
+	Date,
 
 	SIZE
 

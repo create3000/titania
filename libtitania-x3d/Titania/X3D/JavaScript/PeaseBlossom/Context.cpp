@@ -78,7 +78,6 @@ throw (std::exception) :
 	                callbacks (),
 	                  classes (size_t (ObjectType::SIZE)),
 	                  objects (),
-	        userDefinedFields (script -> getUserDefinedFields ()),
 	                   values (),
 	                   future ()
 {
@@ -134,7 +133,9 @@ Context::addUserDefinedFields ()
 {
 	size_t index = 0;
 
-	for (const auto & field : userDefinedFields)
+	values .reserve (getScriptNode () -> getFieldDefinitions () .size ());
+
+	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 	{
 		values .emplace_back (getValue (this, field));
 
@@ -181,8 +182,8 @@ Context::defineProperty (pb::ptr <pb::pbObject> const object,
 			object -> defineOwnProperty (name,
 			                             pb::undefined,
 			                             pb::NONE,
-			                             new pb::NativeFunction (program, field -> getName (), std::bind (&Context::getBuildInProperty, this, _1, _2, _3, index), 0),
-			                             new pb::NativeFunction (program, field -> getName (), std::bind (&Context::setProperty,        this, _1, _2, _3, index), 1));
+			                             new pb::NativeFunction (program, field -> getName (), std::bind (&Context::getBuildInProperty, this, _1, _2, _3, field), 0),
+			                             new pb::NativeFunction (program, field -> getName (), std::bind (&Context::setProperty,        this, _1, _2, _3, field), 1));
 			return;
 		}
 		default:
@@ -190,8 +191,8 @@ Context::defineProperty (pb::ptr <pb::pbObject> const object,
 			object -> defineOwnProperty (name,
 			                             pb::undefined,
 			                             pb::NONE,
-			                             new pb::NativeFunction (program, field -> getName (), std::bind (&Context::getProperty, this, _1, _2, _3, index), 0),
-			                             new pb::NativeFunction (program, field -> getName (), std::bind (&Context::setProperty, this, _1, _2, _3, index), 1));
+			                             new pb::NativeFunction (program, field -> getName (), std::bind (&Context::getProperty, this, _1, _2, _3, std::ref (values [index])), 0),
+			                             new pb::NativeFunction (program, field -> getName (), std::bind (&Context::setProperty, this, _1, _2, _3, field), 1));
 			return;
 		}
 	}
@@ -357,23 +358,23 @@ noexcept (true)
 }
 
 pb::var
-Context::setProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
+Context::setProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, X3D::X3DFieldDefinition* const field)
 {
-	setValue (userDefinedFields [index], args [0]);
+	setValue (field, args [0]);
 
 	return pb::undefined;
 }
 
 pb::var
-Context::getBuildInProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
+Context::getBuildInProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, X3D::X3DFieldDefinition* const field)
 {
-	return getValue (this, userDefinedFields [index]);
+	return getValue (this, field);
 }
 
 pb::var
-Context::getProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
+Context::getProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const pb::var & value)
 {
-	return values [index];
+	return value;
 }
 
 void

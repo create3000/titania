@@ -65,7 +65,7 @@ Array::Array (pbExecutionContext* const executionContext) :
 	const auto & constructor = executionContext -> getStandardClass (StandardClassType::Array);
 
 	setConstructor (constructor);
-	setProto (constructor -> getObject ("prototype"));
+	setProto (constructor -> getPrototype ());
 }
 
 Array::Array (pbExecutionContext* const executionContext, const std::nullptr_t) :
