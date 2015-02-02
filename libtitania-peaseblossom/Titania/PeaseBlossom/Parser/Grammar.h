@@ -92,7 +92,6 @@ public:
 	static const io::string set;
 
 	static const std::set <std::string> Keyword;
-	static const std::set <std::string> FutureReservedWord;
 
 	///  @name New Opearator
 
@@ -232,16 +231,21 @@ const std::set <std::string> Grammar::Keyword = {
 	"while",
 	"with"
 
-};
+	// Future reserved word
 
-const std::set <std::string> Grammar::FutureReservedWord = {
 	"class",
 	"const",
 	"enum",
 	"export",
 	"extends",
 	"import",
-	"super"
+	"super",
+
+	// Primitives
+
+	"null",
+	"true",
+	"false",
 
 };
 

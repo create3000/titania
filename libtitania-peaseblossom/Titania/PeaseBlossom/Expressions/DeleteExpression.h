@@ -87,8 +87,7 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
-		//return expression -> deleteProperty ();
-		return false;
+		return expression -> deleteProperty ();
 	}
 
 	///  @name Input/Output

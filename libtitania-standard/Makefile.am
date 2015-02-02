@@ -58,6 +58,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/OS/popen2.cpp \
 	Titania/OS/realpath.cpp \
 	Titania/OS/system.cpp \
+	Titania/String/dtoa.cpp \
 	Titania/String/naturally_compare.cpp \
 	Titania/String/split.cpp \
 	Titania/String/sprintf.cpp \

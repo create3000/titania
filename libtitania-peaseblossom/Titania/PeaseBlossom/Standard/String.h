@@ -48,45 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_BOOLEAN_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_BOOLEAN_OBJECT_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_STANDARD_STRING_H__
+#define __TITANIA_PEASE_BLOSSOM_STANDARD_STRING_H__
 
-#include "../Objects/pbObject.h"
+#include "../Primitives/ptr.h"
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a »false« object.
- */
-class BooleanObject :
-	public pbObject
-{
-public:
+class NativeFunction;
+class pbExecutionContext;
 
-	///  @name Construction
+namespace Standard {
+namespace String {
 
-	///  Constructs new BooleanObject.
-	BooleanObject (const ptr <pbExecutionContext> & executionContext, const bool value = false) :
-		pbObject (),
-		 boolean (value)
-	{ }
+ptr <NativeFunction>
+initialize (pbExecutionContext* const ec);
 
-	///  @name Input/Output
-
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << (boolean ? "true" : "false"); }
-
-
-private:
-
-	const bool boolean;
-
-};
-
+} // String
+} // Standard
 } // pb
 } // titania
 

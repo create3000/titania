@@ -19,6 +19,7 @@ libtitania_peaseblossom_la_SOURCES =  \
 	Titania/PeaseBlossom/Objects/Object.cpp \
 	Titania/PeaseBlossom/Objects/pbFunction.cpp \
 	Titania/PeaseBlossom/Objects/pbObject.cpp \
+	Titania/PeaseBlossom/Objects/String.cpp \
 	Titania/PeaseBlossom/Parser/Parser.cpp \
 	Titania/PeaseBlossom/Primitives/ptr.cpp \
 	Titania/PeaseBlossom/Primitives/var.cpp \
@@ -27,7 +28,8 @@ libtitania_peaseblossom_la_SOURCES =  \
 	Titania/PeaseBlossom/Standard/Function.cpp \
 	Titania/PeaseBlossom/Standard/Global.cpp \
 	Titania/PeaseBlossom/Standard/Math.cpp \
-	Titania/PeaseBlossom/Standard/Object.cpp 
+	Titania/PeaseBlossom/Standard/Object.cpp \
+	Titania/PeaseBlossom/Standard/String.cpp 
 
 libtitania_peaseblossom_la_LIBADD = $(TITANIA_STANDARD_LIBS) \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la

@@ -52,7 +52,6 @@
 
 #include "../Execution/pbExecutionContext.h"
 #include "../Objects/NativeFunction.h"
-#include "../Objects/Object.h"
 
 #include <Titania/Utility/Range.h>
 
@@ -107,7 +106,7 @@ Array::setLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & o
 		throw RangeError ("Invalid array length.");
 
 	for (uint32_t index = size; index < array -> length; ++ index)
-		array -> deleteProperty (basic::to_string (index));
+		array -> deleteOwnProperty (basic::to_string (index));
 
 	array -> length = size;
 

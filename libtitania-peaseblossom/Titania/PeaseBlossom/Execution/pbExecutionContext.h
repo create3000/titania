@@ -118,19 +118,19 @@ public:
 	{ return variableObjects .back (); }
 
 	virtual
-	const ptr <Object> &
+	const ptr <pbObject> &
 	getStandardObject () const
 	noexcept (true)
 	{ return getRootContext () -> getStandardObject (); }
 
 	virtual
-	const ptr <Function> &
+	const ptr <pbFunction> &
 	getStandardFunction () const
 	noexcept (true)
 	{ return getRootContext () -> getStandardFunction (); }
 
 	virtual
-	const ptr <NativeFunction> &
+	const ptr <pbFunction> &
 	getStandardClass (const StandardClassType type) const
 	throw (std::out_of_range)
 	{ return getRootContext () -> getStandardClass (type); }

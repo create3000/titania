@@ -81,19 +81,19 @@ public:
 	{ return getExecutionContext (); }
 
 	virtual
-	const ptr <Object> &
+	const ptr <pbObject> &
 	getStandardObject () const
 	noexcept (true) final override
 	{ return standardObject; }
 
 	virtual
-	const ptr <Function> &
+	const ptr <pbFunction> &
 	getStandardFunction () const
 	noexcept (true) final override
 	{ return standardFunction; }
 
 	virtual
-	const ptr <NativeFunction> &
+	const ptr <pbFunction> &
 	getStandardClass (const StandardClassType type) const
 	throw (std::out_of_range);
 
@@ -156,9 +156,9 @@ private:
 
 	///  @name Members
 
-	ptr <Object>                          standardObject;
-	ptr <Function>                        standardFunction;
-	mutable array <ptr <NativeFunction>>  standardClasses;
+	ptr <pbObject>                    standardObject;
+	ptr <pbFunction>                  standardFunction;
+	mutable array <ptr <pbFunction>>  standardClasses;
 
 };
 

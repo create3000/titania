@@ -68,10 +68,11 @@ public:
 	///  @name Construction
 
 	///  Constructs new AdditionExpression expression.
-	ComputedMemberAccessExpression (ptr <pbStatement> && expression, ptr <pbStatement> && identifier) :
-		pbStatement (StatementType::COMPUTED_MEMBER_ACCESS_EXPRESSION),
-		  expression (std::move (expression)),
-		  identifier (std::move (identifier))
+	ComputedMemberAccessExpression (pbExecutionContext* const executionContext, ptr <pbStatement> && expression, ptr <pbStatement> && identifierExpression) :
+		         pbStatement (StatementType::COMPUTED_MEMBER_ACCESS_EXPRESSION),
+		    executionContext (executionContext),
+		          expression (std::move (expression)),
+		identifierExpression (std::move (identifierExpression))
 	{ construct (); }
 
 	///  Creates a copy of this object.
@@ -79,7 +80,11 @@ public:
 	ptr <pbStatement>
 	copy (pbExecutionContext* const executionContext) const
 	noexcept (true) final override
-	{ return new ComputedMemberAccessExpression (expression -> copy (executionContext), identifier -> copy (executionContext)); }
+	{
+		return new ComputedMemberAccessExpression (executionContext,
+		                                           expression -> copy (executionContext),
+		                                           identifierExpression -> copy (executionContext));
+	}
 
 	///  @name Operations
 
@@ -88,9 +93,8 @@ public:
 	putValue (const var & value) const
 	throw (pbError) final override
 	{
-		const auto base     = expression -> getValue ();
-		const auto property = identifier -> getValue ();
-		const auto name     = property .toString ();
+		const auto base       = expression -> getValue ();
+		const auto identifier = Identifier (identifierExpression -> getValue () .toString ());
 
 		switch (base .getType ())
 		{
@@ -114,10 +118,10 @@ public:
 			}
 			case STRING:
 			{
-				// toString
-				// ...
-				// base .toObject (ec) -> call (id, arguments)
-				break;
+				const auto index = identifier .toUInt32 ();
+				
+				if (index == PROPERTY)
+					make_ptr <String> (executionContext, base .getString ()) -> put (identifier, value, false);
 			}
 			case NULL_OBJECT:
 			{
@@ -125,7 +129,7 @@ public:
 			}
 			case OBJECT:
 			{
-				base .getObject () -> put (name, value, false);
+				base .getObject () -> put (identifier, value, false);
 			}
 		}
 	}
@@ -136,53 +140,55 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
-		const auto base     = expression -> getValue ();
-		const auto property = identifier -> getValue ();
-		const auto name     = property .toString ();
+		const auto base       = expression -> getValue ();
+		const auto identifier = Identifier (identifierExpression -> getValue () .toString ());
 
-		switch (base .getType ())
+		try
 		{
-			case UNDEFINED:
+			switch (base .getType ())
 			{
-				throw TypeError ("undefined has no properties.");
-			}
-			case BOOLEAN:
-			{
-				// toString
-				// base .toObject (ec) -> call (id, arguments)
-				break;
-			}
-			case NUMBER:
-			{
-				// toPrecision
-				// toString
-				// ...
-				// base .toObject (ec) -> call (id, arguments)
-				break;
-			}
-			case STRING:
-			{
-				// toString
-				// ...
-				// base .toObject (ec) -> call (id, arguments)
-				break;
-			}
-			case NULL_OBJECT:
-			{
-				throw TypeError ("null has no properties.");
-			}
-			case OBJECT:
-			{
-				try
+				case UNDEFINED:
 				{
-					return base .getObject () -> get (name);
+					throw TypeError ("undefined has no properties.");
 				}
-				catch (const std::out_of_range &)
+				case BOOLEAN:
 				{
-					return undefined;
+					// toString
+					// base .toObject (ec) -> call (id, arguments)
+					break;
+				}
+				case NUMBER:
+				{
+					// toPrecision
+					// toString
+					// ...
+					// base .toObject (ec) -> call (id, arguments)
+					break;
+				}
+				case STRING:
+				{
+					const auto index = identifier .toUInt32 ();
+					
+					if (index == PROPERTY)
+						return make_ptr <String> (executionContext, base .getString ()) -> get (identifier);
+					
+					if (index >= base .getString () .length ())
+						break;
+
+					return Glib::ustring (1, base .getString () [index]);
+				}
+				case NULL_OBJECT:
+				{
+					throw TypeError ("null has no properties.");
+				}
+				case OBJECT:
+				{
+					return base .getObject () -> get (identifier);
 				}
 			}
 		}
+		catch (const std::out_of_range &)
+		{ }
 
 		return undefined;
 	}
@@ -192,55 +198,89 @@ public:
 	call (const ptr <pbExecutionContext> & ec, const std::vector <var> & arguments) const
 	throw (pbError) final override
 	{
+		const auto base       = expression -> getValue ();
+		const auto identifier = Identifier (identifierExpression -> getValue () .toString ());
+
+		try
+		{
+			switch (base .getType ())
+			{
+				case UNDEFINED:
+				{
+					throw TypeError ("undefined has no properties");
+				}
+				case BOOLEAN:
+				{
+					// toString
+					// base .toObject (ec) -> call (id, arguments)
+					break;
+				}
+				case NUMBER:
+				{
+					// toPrecision
+					// toString
+					// ...
+					// base .toObject (ec) -> call (id, arguments)
+					break;
+				}
+				case STRING:
+				{
+					const auto index = identifier .toUInt32 ();
+					
+					if (index == PROPERTY)
+						return make_ptr <String> (executionContext, base .getString ()) -> call (identifier, arguments);
+				}
+				case NULL_OBJECT:
+				{
+					throw TypeError ("null has no properties");
+				}
+				case OBJECT:
+				{
+					return base .getObject () -> call (identifier, arguments);
+				}
+			}
+		}
+		catch (const std::exception &)
+		{ }
+
+		throw TypeError ("'" + base .toString () + "['" + identifier .getString () + "'] is not a function");
+	}
+
+	virtual
+	bool
+	deleteProperty () const
+	throw (pbError) final override
+	{
 		const auto base     = expression -> getValue ();
-		const auto property = identifier -> getValue ();
+		const auto property = identifierExpression -> getValue ();
 		const auto name     = property .toString ();
 
 		switch (base .getType ())
 		{
 			case UNDEFINED:
-			{
 				throw TypeError ("undefined has no properties");
-			}
 			case BOOLEAN:
-			{
-				// toString
-				// base .toObject (ec) -> call (id, arguments)
-				break;
-			}
+				return true;
 			case NUMBER:
-			{
-				// toPrecision
-				// toString
-				// ...
-				// base .toObject (ec) -> call (id, arguments)
-				break;
-			}
+				return true;
 			case STRING:
-			{
-				// toString
-				// ...
-				// base .toObject (ec) -> call (id, arguments)
-				break;
-			}
+				return true;
 			case NULL_OBJECT:
-			{
 				throw TypeError ("null has no properties");
-			}
 			case OBJECT:
 			{
 				try
 				{
-					return base .getObject () -> call (name, arguments);
+					base .getObject () -> deleteOwnProperty (name, false);
 				}
 				catch (const std::out_of_range &)
 				{ }
-				catch (const std::invalid_argument &)
-				{ }
+
+				return true;
 			}
 		}
 
-		throw TypeError ("'" + base .toString () + "." + name .raw () + "' is not a function");
+		return false;
 	}
 
 	///  @name Input/Output
@@ -254,7 +294,7 @@ public:
 			<< expression
 			<< Generator::TidySpace
 			<< '['
-			<< identifier
+			<< identifierExpression
 			<< ']';
 	}
 
@@ -265,12 +305,13 @@ private:
 	///  Performs neccessary operations after construction.
 	void
 	construct ()
-	{ addChildren (expression, identifier); }
+	{ addChildren (executionContext, expression, identifierExpression); }
 
 	///  @name Members
 
-	const ptr <pbStatement> expression;
-	const ptr <pbStatement> identifier;
+	const ptr <pbExecutionContext> executionContext;
+	const ptr <pbStatement>        expression;
+	const ptr <pbStatement>        identifierExpression;
 
 };
 

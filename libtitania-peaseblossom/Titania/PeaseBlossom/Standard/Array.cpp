@@ -50,7 +50,7 @@
 
 #include "Array.h"
 
-#include "../Objects/Object.h"
+#include "../Objects/pbObject.h"
 #include "../Objects/Array.h"
 #include "../Objects/NativeFunction.h"
 
@@ -63,10 +63,12 @@ namespace Array {
 struct Constructor
 {
 	var
-	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 	{
-		if (arguments .empty ())
-			return new pb::Array (ec);
+		const auto array = new pb::Array (ec);
+
+		for (uint32_t i = 0, size = args .size (); i < size; ++ i)
+			array -> put (basic::to_string (i), args [i]);
 
 		return new pb::Array (ec);
 	}
@@ -76,7 +78,7 @@ struct Constructor
 struct toString
 {
 	var
-	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 	{
 		if (object .getType () == OBJECT)
 		{
@@ -93,7 +95,7 @@ ptr <NativeFunction>
 initialize (pbExecutionContext* const ec)
 {
 	const auto & standardObject = ec -> getStandardObject ();
-	const auto   constructor    = make_ptr <NativeFunction> (ec, "Array", Constructor { }, 1);
+	const auto   constructor    = make_ptr <NativeFunction> (ec, "Array", Constructor { }, Constructor { }, 1);
 	const auto   prototype      = new pb::Array (ec, nullptr);
 
 	prototype -> setConstructor (constructor);

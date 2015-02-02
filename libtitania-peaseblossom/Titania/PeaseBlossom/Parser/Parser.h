@@ -81,7 +81,7 @@ protected:
 
 	///  @name Construction
 
-	///  Constructs new StringObject.
+	///  Constructs new Parser.
 	Parser (pbExecutionContext* const, std::istream & istream);
 
 	///  @name Operations

@@ -226,13 +226,13 @@ private:
 
 	///  @name Members
 
-	pbChildObject* const object;
-	const Identifier     identifier;
-	var                  value;
-	AttributeType        attributes;
-	ptr <pbFunction>     getter;
-	ptr <pbFunction>     setter;
-	clock::duration      creationTime;
+	pbChildObject* const  object;
+	const Identifier      identifier;
+	var                   value;
+	AttributeType         attributes;
+	ptr <pbFunction>      getter;
+	ptr <pbFunction>      setter;
+	const clock::duration creationTime;
 
 };
 
@@ -347,6 +347,7 @@ public:
 	{ return put (identifier, value, NONE, throw_); }
 
 	///  Returns the value of the property for @a identifier.
+	virtual
 	var
 	get (const Identifier & identifier) const
 	throw (pbError,
@@ -370,7 +371,7 @@ public:
 	                const AttributeType attributes = DEFAULT,
 	                const ptr <pbFunction> & getter = DefaultGetter,
 	                const ptr <pbFunction> & setter = DefaultSetter,
-	                const bool throw_ = true)
+	                const bool throw_ = false)
 	throw (TypeError,
 	       std::invalid_argument);
 
@@ -382,7 +383,7 @@ public:
 	                const AttributeType attributes = DEFAULT,
 	                ptr <pbFunction> && getter = nullptr,
 	                ptr <pbFunction> && setter = nullptr,
-	                const bool throw_ = true)
+	                const bool throw_ = false)
 	throw (TypeError,
 	       std::invalid_argument);
 
@@ -394,12 +395,13 @@ public:
 	                   const AttributeType attributes = DEFAULT,
 	                   const ptr <pbFunction> & getter = DefaultGetter,
 	                   const ptr <pbFunction> & setter = DefaultSetter,
-	                   const bool throw_ = true)
+	                   const bool throw_ = false)
 	throw (TypeError);
 
-	void
-	deleteProperty (const Identifier & identifier)
-	noexcept (true);
+	bool
+	deleteOwnProperty (const Identifier & identifier, const bool throw_ = false)
+	throw (TypeError,
+          std::out_of_range);
 
 	///  @name Operations
 
@@ -463,11 +465,11 @@ protected:
 	///  @name Member access
 
 	void
-	setConstructor (const ptr <pbFunction> & value)
+	setConstructor (pbFunction* const value)
 	{ constructor = value; }
 
 	void
-	setProto (const ptr <pbObject> & value)
+	setProto (pbObject* const value)
 	throw (std::invalid_argument);
 
 	///  @name Operations

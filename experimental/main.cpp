@@ -107,6 +107,8 @@
 
 #include <cstdarg>
 
+#include <Titania/String/dtoa.h>
+
 using namespace titania;
 using namespace titania::basic;
 
@@ -599,12 +601,7 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	const auto locale = std::locale::global (std::locale::classic ());
-
-	std::cout << basic::sprintf ("%.17g", 10/7.0) << std::endl;
-	std::cout << basic::sprintf ("%.17g", 123456.0) << std::endl;
-
-	std::locale::global (locale);
+	std::clog << sizeof (long long) << std::endl;
 
 	//std::thread (f, std::move (a)) .join ();
 	

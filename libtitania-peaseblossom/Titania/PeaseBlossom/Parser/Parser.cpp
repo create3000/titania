@@ -345,22 +345,7 @@ Parser::reservedWord (const std::string & string)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 
-	if (Grammar::Keyword .count (string))
-		return true;
-
-	if (Grammar::FutureReservedWord .count (string))
-		return true;
-
-	static const std::set <std::string> primitives = {
-		Grammar::null (),
-		Grammar::true_ (),
-		Grammar::false_ ()
-	};
-
-	if (primitives .count (string))
-		return true;
-
-	return false;
+	return Grammar::Keyword .count (string);
 }
 
 bool
@@ -984,7 +969,7 @@ Parser::memberExpression (ptr <pbStatement> & value)
 
 					if (Grammar::CloseBracket (istream))
 					{
-						value = new ComputedMemberAccessExpression (std::move (value), std::move (identifier));
+						value = new ComputedMemberAccessExpression (getExecutionContext (), std::move (value), std::move (identifier));
 						continue;
 					}
 
@@ -1000,7 +985,7 @@ Parser::memberExpression (ptr <pbStatement> & value)
 
 				if (identifierName (identifierNameCharacters))
 				{
-					value = new MemberAccessExpression (std::move (value), std::move (identifierNameCharacters));
+					value = new MemberAccessExpression (getExecutionContext (), std::move (value), std::move (identifierNameCharacters));
 					continue;
 				}
 
@@ -1086,7 +1071,7 @@ Parser::callExpression (ptr <pbStatement> & value)
 
 					if (Grammar::CloseBracket (istream))
 					{
-						value = new ComputedMemberAccessExpression (std::move (value), std::move (identifier));
+						value = new ComputedMemberAccessExpression (getExecutionContext (), std::move (value), std::move (identifier));
 						continue;
 					}
 
@@ -1102,7 +1087,7 @@ Parser::callExpression (ptr <pbStatement> & value)
 
 				if (identifierName (identifierNameCharacters))
 				{
-					value = new MemberAccessExpression (std::move (value), std::move (identifierNameCharacters));
+					value = new MemberAccessExpression (getExecutionContext (), std::move (value), std::move (identifierNameCharacters));
 					continue;
 				}
 
@@ -1244,9 +1229,6 @@ Parser::unaryExpression (ptr <pbStatement> & value)
 
 	if (Grammar::delete_ (istream))
 	{
-		if (not comments ())
-			return false;
-
 		isLeftHandSideExressions .back () = false;
 
 		if (unaryExpression (value))
@@ -1260,9 +1242,6 @@ Parser::unaryExpression (ptr <pbStatement> & value)
 
 	if (Grammar::void_ (istream))
 	{
-		if (not comments ())
-			return false;
-
 		isLeftHandSideExressions .back () = false;
 
 		if (unaryExpression (value))
@@ -1276,9 +1255,6 @@ Parser::unaryExpression (ptr <pbStatement> & value)
 
 	if (Grammar::typeof_ (istream))
 	{
-		if (not comments ())
-			return false;
-
 		isLeftHandSideExressions .back () = false;
 
 		if (unaryExpression (value))

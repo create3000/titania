@@ -48,29 +48,17 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_STANDARD_STANDARD_TYPE_H__
-#define __TITANIA_PEASE_BLOSSOM_STANDARD_STANDARD_TYPE_H__
+#ifndef __TITANIA_STRING_DTOA_H__
+#define __TITANIA_STRING_DTOA_H__
 
-#include <cstdint>
+void
+dtoa_milo (double value, char* buffer);
 
-namespace titania {
-namespace pb {
-
-enum class StandardClassType :
-	size_t
+inline
+void
+dtoa (double value, char* buffer)
 {
-	Object,
-	Function,
-
-	Array,
-	Date,
-	String,
-
-	SIZE
-
-};
-
-} // pb
-} // titania
+	dtoa_milo (value, buffer);
+}
 
 #endif

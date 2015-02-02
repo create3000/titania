@@ -48,46 +48,79 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_STRING_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_STRING_OBJECT_H__
+#include "String.h"
 
-#include "../Objects/pbObject.h"
+#include "../Execution/pbExecutionContext.h"
+#include "../Objects/NativeFunction.h"
 
 namespace titania {
 namespace pb {
 
-/**
- *  Class to represent a »string« object.
- */
-class StringObject :
-	public pbObject
+String::String (pbExecutionContext* const executionContext, const Glib::ustring & value) :
+	pbObject (),
+	   value (value)
 {
-public:
+	const auto & constructor = executionContext -> getStandardClass (StandardClassType::String);
 
-	///  @name Construction
+	setConstructor (constructor);
+	setProto (constructor -> getPrototype ());
+	addProperties (executionContext);
+}
 
-	///  Constructs new StringObject.
-	StringObject (const ptr <pbExecutionContext> & executionContext, const Glib::ustring & value = "") :
-		pbObject (),
-		  string (value)
-	{ }
+String::String (pbExecutionContext* const executionContext, const std::nullptr_t) :
+	pbObject (),
+	   value ()
+{
+	addProperties (executionContext);
+}
 
-	///  @name Input/Output
+void
+String::addProperties (pbExecutionContext* const ec)
+{
+	addOwnProperty ("length",
+	                undefined,
+	                pb::NONE,
+	                new pb::NativeFunction (ec, "length", getLength, 0),
+	                DefaultSetter);
+}
 
-	///  Inserts this object into the output stream @a ostream.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ ostream << string; }
+void
+String::put (const Identifier & identifier, const var & value, const bool throw_)
+throw (pbError,
+       std::out_of_range)
+{
+	const auto index = identifier .toUInt32 ();
 
+	if (index == PROPERTY)
+		return pbObject::put (identifier, value, throw_);
 
-private:
+	if (index >= this -> value .length ())
+		return pbObject::put (identifier, value, throw_);
+}
 
-	const Glib::ustring string;
+var
+String::get (const Identifier & identifier) const
+throw (pbError,
+       std::out_of_range)
+{
+	const auto index = identifier .toUInt32 ();
 
-};
+	if (index == PROPERTY)
+		return pbObject::get (identifier);
+
+	if (index >= value .length ())
+		return pbObject::get (identifier);
+
+	return Glib::ustring (1, value [index]);
+}
+
+pb::var
+String::getLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+{
+	const auto string = dynamic_cast <String*> (object .getObject () .get ());
+
+	return string -> value .length ();
+}
 
 } // pb
 } // titania
-
-#endif

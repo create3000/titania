@@ -153,10 +153,10 @@ public:
 		char*      end   = nullptr;
 		const auto value = std::strtoul (string .c_str (), &end, 10);
 
-		if (errno == ERANGE)
+		if (end not_eq string .c_str () + string .size ())
 			return PROPERTY;
 
-		if (end not_eq string .c_str () + string .size ())
+		if (errno == ERANGE)
 			return PROPERTY;
 
 		if (value >= PROPERTY)

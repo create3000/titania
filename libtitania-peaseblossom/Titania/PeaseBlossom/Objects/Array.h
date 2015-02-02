@@ -53,7 +53,6 @@
 
 #include "../Objects/pbObject.h"
 #include "../Objects/pbFunction.h"
-
 #include "../Standard/Array.h"
 
 namespace titania {
@@ -89,7 +88,7 @@ public:
 	                const AttributeType attributes = DEFAULT,
 	                ptr <pbFunction> && getter = nullptr,
 	                ptr <pbFunction> && setter = nullptr,
-	                const bool throw_ = true)
+	                const bool throw_ = false)
 	throw (TypeError,
 	       std::invalid_argument) final override
 	{ pbObject::addOwnProperty (identifier, std::move (value), identifier .toUInt32 () | attributes, std::move (getter), std::move (setter), throw_); }
@@ -102,7 +101,7 @@ public:
 	                   const AttributeType attributes = DEFAULT,
 	                   const ptr <pbFunction> & getter = nullptr,
 	                   const ptr <pbFunction> & setter = nullptr,
-	                   const bool throw_ = true)
+	                   const bool throw_ = false)
 	throw (TypeError) final override
 	{ pbObject::defineOwnProperty (identifier, value, identifier .toUInt32 () | attributes, getter, setter, throw_); }
 

@@ -203,6 +203,24 @@ public:
 		throw ReferenceError (identifier .getString () + " is not defined.");
 	}
 
+	virtual
+	bool
+	deleteProperty () const
+	throw (pbError) final override
+	{
+		for (const auto & variableObject : executionContext -> getVariableObjects ())
+		{
+			try
+			{
+				return variableObject -> deleteOwnProperty (identifier, false);
+			}
+			catch (const std::out_of_range &)
+			{ }
+		}
+
+		return true;
+	}
+
 	///  @name Input/Output
 
 	///  Inserts this object into the output stream @a ostream.

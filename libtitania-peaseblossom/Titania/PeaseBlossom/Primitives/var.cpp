@@ -54,11 +54,13 @@
 #include "../Objects/pbFunction.h"
 #include "../Objects/pbObject.h"
 #include "../Objects/Array.h"
-#include "../Objects/BooleanObject.h"
-#include "../Objects/NumberObject.h"
-#include "../Objects/StringObject.h"
+#include "../Objects/Boolean.h"
+#include "../Objects/Number.h"
+#include "../Objects/String.h"
 
 #include <iomanip>
+
+#include <Titania/String/dtoa.h>
 
 namespace titania {
 namespace pb {
@@ -368,11 +370,11 @@ throw (TypeError)
 		case UNDEFINED:
 			throw TypeError ("Cannot convert 'undefined' to object value.");
 		case BOOLEAN:
-			return new BooleanObject (ec, value .bool_);
+			return new Boolean (ec, value .bool_);
 		case NUMBER:
-			return new NumberObject (ec, value .number_);
+			return new Number (ec, value .number_);
 		case STRING:
-			return new StringObject (ec, *value .string_);
+			return new String (ec, *value .string_);
 		case NULL_OBJECT:
 			throw TypeError ("Cannot convert 'null' to object value.");
 		case OBJECT:
@@ -402,13 +404,11 @@ var::toLocaleString (const std::locale & locale) const
 			else if (value .number_ == POSITIVE_INFINITY ())
 				return "Infinity";
 
-			std::ostringstream ostringstream;
+			char buffer [32];
 
-			ostringstream .imbue (locale);
+			dtoa (value .number_, buffer);
 
-			ostringstream << std::setprecision (std::numeric_limits <double>::max_digits10 - 1) << value .number_;
-
-			return ostringstream .str ();
+			return buffer;
 		}
 		case STRING:
 			return *value .string_;

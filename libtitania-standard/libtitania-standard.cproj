@@ -143,6 +143,7 @@
     <None Include="Titania\InputOutput\InverseSequence.h" />
     <None Include="Titania\Math\Algorithms\SAT.h" />
     <None Include="Titania\Math\Utility\almost_equal.h" />
+    <None Include="Titania\String\dtoa.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -203,6 +204,7 @@
     <Compile Include="Titania\InputOutput\SingleLineComment.cpp" />
     <Compile Include="Titania\InputOutput\MultiLineComment.cpp" />
     <Compile Include="Titania\InputOutput\InverseSequence.cpp" />
+    <Compile Include="Titania\String\dtoa.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

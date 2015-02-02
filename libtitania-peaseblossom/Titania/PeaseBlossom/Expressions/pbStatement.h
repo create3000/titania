@@ -121,6 +121,11 @@ public:
 	call (const ptr <pbExecutionContext> &, const std::vector <var> &) const
 	throw (pbError);
 
+	virtual
+	bool
+	deleteProperty () const
+	throw (pbError);
+
 
 protected:
 

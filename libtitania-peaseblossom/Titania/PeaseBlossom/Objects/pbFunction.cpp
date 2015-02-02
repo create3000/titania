@@ -111,7 +111,7 @@ throw (std::out_of_range,
 
 pbObject*
 pbFunction::createInstance (pbExecutionContext* const executionContext)
-throw (TypeError)
+noexcept (true)
 {
 	//return new Object (executionContext, this);
 	return Cache <Object>::get (executionContext, this);
@@ -140,12 +140,13 @@ pbFunction::construct (const ptr <pbExecutionContext> & executionContext, const 
 throw (pbError)
 {
 	const auto object = createInstance (executionContext);
+	const var  value  = object;
 	const auto result = construct (object, arguments);
 
 	if (result .isObject ())
 		return result;
 
-	return object;
+	return value;
 }
 
 } // pb

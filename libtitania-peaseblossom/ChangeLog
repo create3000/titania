@@ -1,3 +1,43 @@
+2015-02-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-peaseblossom.cproj:
+	* Objects.h:
+	* Parser.h:
+	* Array.h:
+	* String.h:
+	* Number.h:
+	* Grammar.h:
+	* Boolean.h:
+	* Array.cpp:
+	* Parser.cpp:
+	* String.h:
+	* Identifier.h:
+	* pbObject.h:
+	* var.cpp:
+	* Array.cpp:
+	* String.cpp:
+	* String.cpp:
+	* Program.h:
+	* pbObject.cpp:
+	* Function.cpp:
+	* pbFunction.h:
+	* Program.cpp:
+	* NumberObject.h:
+	* pbFunction.cpp:
+	* StringObject.h:
+	* BooleanObject.h:
+	* NativeFunction.h:
+	* pbStatement.h:
+	* NativeFunction.cpp:
+	* pbStatement.cpp:
+	* StandardClassType.h:
+	* pbExecutionContext.h:
+	* DeleteExpression.h:
+	* VariableExpression.h:
+	* MemberAccessExpression.h:
+	* ComputedMemberAccessExpression.h: 
+
 2015-01-31  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

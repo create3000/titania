@@ -48,29 +48,50 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
-#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
+#ifndef __TITANIA_PEASE_BLOSSOM_OBJECTS_STRING_H__
+#define __TITANIA_PEASE_BLOSSOM_OBJECTS_STRING_H__
 
 #include "../Objects/pbObject.h"
+#include "../Standard/String.h"
 
 namespace titania {
 namespace pb {
 
 /**
- *  Class to represent a number object.
+ *  Class to represent a »string« object.
  */
-class NumberObject :
+class String :
 	public pbObject
 {
 public:
 
 	///  @name Construction
 
-	///  Constructs new NumberObject.
-	NumberObject (const ptr <pbExecutionContext> & executionContext, const double value = 0) :
-		pbObject (),
-		  number (value)
-	{ }
+	///  Constructs new String.
+	String (pbExecutionContext* const executionContext, const Glib::ustring & value = "");
+
+	///  @name Array access
+
+	///  Sets the value of the property for @a identifier.
+	virtual
+	void
+	put (const Identifier & identifier, const var & value, const bool throw_ = false)
+	throw (pbError,
+	       std::out_of_range) final override;
+
+	///  Returns the value of the property for @a identifier.
+	virtual
+	var
+	get (const Identifier & identifier) const
+	throw (pbError,
+	       std::out_of_range) final override;
+
+	///  @name Member access
+
+	/// Returns the value associated.
+	const Glib::ustring &
+	getValue () const
+	{ return value; }
 
 	///  @name Input/Output
 
@@ -78,12 +99,39 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ ostream << number; }
+	{ ostream << value; }
+
+
+protected:
+
+	///  @name Friends
+
+	friend
+	ptr <NativeFunction>
+	Standard::String::initialize (pbExecutionContext* const);
+
+	///  @name Construction
+
+	///  Constructs new String.
+	String (pbExecutionContext* const executionContext, const nullptr_t);
 
 
 private:
 
-	const double number;
+	///  @name Construction
+
+	void
+	addProperties (pbExecutionContext* const executionContext);
+
+	///  @name Properties
+
+	static
+	pb::var
+	getLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+
+	///  @name Members
+
+	const Glib::ustring value;
 
 };
 

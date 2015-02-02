@@ -58,6 +58,8 @@
     <Compile Include="Titania\PeaseBlossom\Primitives\ptr.cpp" />
     <Compile Include="Titania\PeaseBlossom\Cache\Cache.cpp" />
     <Compile Include="Titania\PeaseBlossom\Standard\Date.cpp" />
+    <Compile Include="Titania\PeaseBlossom\Objects\String.cpp" />
+    <Compile Include="Titania\PeaseBlossom\Standard\String.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -116,12 +118,9 @@
     <None Include="Titania\PeaseBlossom\Expressions\VariableDeclaration.h" />
     <None Include="Titania\PeaseBlossom\Expressions\VariableExpression.h" />
     <None Include="Titania\PeaseBlossom\Objects\Array.h" />
-    <None Include="Titania\PeaseBlossom\Objects\BooleanObject.h" />
     <None Include="Titania\PeaseBlossom\Objects\Function.h" />
     <None Include="Titania\PeaseBlossom\Objects\NativeFunction.h" />
-    <None Include="Titania\PeaseBlossom\Objects\NumberObject.h" />
     <None Include="Titania\PeaseBlossom\Objects\Object.h" />
-    <None Include="Titania\PeaseBlossom\Objects\StringObject.h" />
     <None Include="Titania\PeaseBlossom\Objects\pbFunction.h" />
     <None Include="Titania\PeaseBlossom\Objects\pbObject.h" />
     <None Include="Titania\PeaseBlossom\Parser\Grammar.h" />
@@ -184,5 +183,9 @@
     <None Include="Titania\PeaseBlossom\Expressions\ToNumberExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\DeleteExpression.h" />
     <None Include="Titania\PeaseBlossom\Expressions\TypeOfExpression.h" />
+    <None Include="Titania\PeaseBlossom\Objects\String.h" />
+    <None Include="Titania\PeaseBlossom\Objects\Number.h" />
+    <None Include="Titania\PeaseBlossom\Objects\Boolean.h" />
+    <None Include="Titania\PeaseBlossom\Standard\String.h" />
   </ItemGroup>
 </Project>

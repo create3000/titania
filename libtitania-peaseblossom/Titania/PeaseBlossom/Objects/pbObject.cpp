@@ -167,7 +167,7 @@ noexcept (true)
 }
 
 void
-pbObject::setProto (const ptr <pbObject> & value)
+pbObject::setProto (pbObject* const value)
 throw (std::invalid_argument)
 {
 	static const Identifier __proto__ ("__proto__");
@@ -175,7 +175,7 @@ throw (std::invalid_argument)
 	proto = value;
 
 	if (proto)
-		addOwnProperty (__proto__, proto, NONE);
+		addOwnProperty (__proto__, value, NONE);
 
 	else
 		addOwnProperty (__proto__, nullptr, NONE);
@@ -543,11 +543,30 @@ throw (TypeError)
 	}
 }
 
-void
-pbObject::deleteProperty (const Identifier & identifier)
-noexcept (true)
+bool
+pbObject::deleteOwnProperty (const Identifier & identifier, const bool throw_)
+throw (TypeError,
+       std::out_of_range)
 {
-	properties .erase (identifier .getId ());
+	const auto iter = properties .find (identifier .getId ());
+
+	if (iter not_eq properties .end ())
+	{
+		const auto & descriptor = iter -> second;
+
+		if (descriptor -> isConfigurable ())
+		{
+			properties .erase (iter);
+			return true;
+		}
+
+		if (throw_)
+			throw TypeError ("Couldn't delete property '" + identifier .getString () + "'.");
+
+		return false;
+	}
+
+	throw std::out_of_range ("pbObject::deleteOwnProperty");
 }
 
 var

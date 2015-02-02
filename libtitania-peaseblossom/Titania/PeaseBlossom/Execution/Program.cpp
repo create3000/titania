@@ -61,6 +61,7 @@
 #include "../Standard/Object.h"
 #include "../Standard/Array.h"
 #include "../Standard/Date.h"
+#include "../Standard/String.h"
 
 namespace titania {
 namespace pb {
@@ -100,8 +101,9 @@ bool
 Program::resolve (const Identifier & identifier)
 {
 	static const std::map <pb::Identifier, StandardClassType> types = {
-		std::make_pair (pb::Identifier ("Array"), StandardClassType::Array),
-		std::make_pair (pb::Identifier ("Date"),  StandardClassType::Date),
+		std::make_pair ("Array",  StandardClassType::Array),
+		std::make_pair ("Date",   StandardClassType::Date),
+		std::make_pair ("String", StandardClassType::String),
 	};
 
 	const auto iter = types .find (identifier);
@@ -113,15 +115,16 @@ Program::resolve (const Identifier & identifier)
 	return true;
 }
 
-const ptr <NativeFunction> &
+const ptr <pbFunction> &
 Program::getStandardClass (const StandardClassType type) const
 throw (std::out_of_range)
 {
 	using Initialize = std::function <ptr <NativeFunction> (pbExecutionContext* const)>;
 
 	static const std::map <StandardClassType, Initialize> functions = {
-		std::make_pair (StandardClassType::Array, Standard::Array::initialize),
-		std::make_pair (StandardClassType::Date,  Standard::Date::initialize),
+		std::make_pair (StandardClassType::Array,  Standard::Array::initialize),
+		std::make_pair (StandardClassType::Date,   Standard::Date::initialize),
+		std::make_pair (StandardClassType::String, Standard::String::initialize),
 	};
 
 	auto & standardClass = standardClasses .at (size_t (type));
@@ -140,7 +143,7 @@ throw (pbError)
 		getGlobalObject () -> defineOwnProperty (function .second -> getName (), function .second, WRITABLE | CONFIGURABLE);
 
 	for (const auto & variable : getVariableDeclarations ())
-		getGlobalObject () -> defineOwnProperty (variable -> getIdentifier (), undefined, WRITABLE | CONFIGURABLE | ENUMERABLE);
+		getGlobalObject () -> defineOwnProperty (variable -> getIdentifier (), undefined, WRITABLE | ENUMERABLE);
 
 	var result;
 

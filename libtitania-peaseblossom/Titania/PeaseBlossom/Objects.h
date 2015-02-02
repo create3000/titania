@@ -52,11 +52,11 @@
 #define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_H__
 
 #include "Objects/Array.h"
-#include "Objects/BooleanObject.h"
+#include "Objects/Boolean.h"
 #include "Objects/Function.h"
 #include "Objects/NativeFunction.h"
-#include "Objects/NumberObject.h"
+#include "Objects/Number.h"
 #include "Objects/Object.h"
-#include "Objects/StringObject.h"
+#include "Objects/String.h"
 
 #endif

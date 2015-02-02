@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Sun, 01 Jun 2014 03:00:06 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V0.7.6, http://titania.create3000.de"
-META "modified" "Mon, 26 Jan 2015 06:31:47 GMT"
+META "modified" "Mon, 02 Feb 2015 01:12:06 GMT"
 
 DEF Sunset Background {
   skyAngle [
@@ -62,13 +62,24 @@ DEF SpiderMonkey_1 Transform {
 DEF PeaseBlossom Script {
   inputOnly      SFTime  set_time
   initializeOnly SFInt32 size 800000
-  initializeOnly SFNode node Viewpoint {}
-  initializeOnly MFInt32 array []
+  initializeOnly SFNode  node Viewpoint { }
+  initializeOnly MFBool  array [
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE
+  ]
 
   url "peaseblossom:
 function initialize ()
 {
-	array .length = 100;
+	array .length = 10;
 }
 
 function set_time (value, time)
@@ -92,7 +103,7 @@ function set_time (value, time)
 	print ('add:       ', (Date .now () - t0) / 1000);
 
 	var t0 = Date .now ();
-	array_test (8000);
+	array_test (8000000);
 	print ('array:     ', (Date .now () - t0) / 1000);
 }
 
@@ -125,8 +136,7 @@ function add (value)
 function array_test (value)
 {
 	for (var i = 0; i < value; ++ i)
-		for (var index = 0, size = array .length; index < size; ++ index)
-		   array [index];
+		array [0];
 }
 
 function enumerate (o)
@@ -140,6 +150,13 @@ function enumerate (o)
 
 	return o;
 }
+
+var s = 'äöü';
+
+print (typeof s)
+print (s)
+print (s .charCodeAt ())
+
 "
   directOutput TRUE
 }
@@ -147,15 +164,24 @@ function enumerate (o)
 DEF SpiderMonkey Script {
   inputOnly      SFTime  set_time
   initializeOnly SFInt32 size 800000
-  initializeOnly SFNode node Viewpoint {}
-  initializeOnly MFInt32 array []
+  initializeOnly SFNode  node Viewpoint { }
+  initializeOnly MFBool  array [
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE
+  ]
 
   url "javascript:
 function initialize ()
 {
-	array .length = 100;
-	
-	print (100000000);
+	array .length = 10;
 }
 
 function set_time (value, time)
@@ -179,7 +205,7 @@ function set_time (value, time)
 	print ('add:       ', (Date .now () - t0) / 1000);
 
 	var t0 = Date .now ();
-	array_test (8000);
+	array_test (800000);
 	print ('array:     ', (Date .now () - t0) / 1000);
 }
 
@@ -212,8 +238,7 @@ function add (value)
 function array_test (value)
 {
 	for (var i = 0; i < value; ++ i)
-		for (var index = 0, size = array .length; index < size; ++ index)
-		   array [index];
+		array [0];
 }
 "
   directOutput TRUE

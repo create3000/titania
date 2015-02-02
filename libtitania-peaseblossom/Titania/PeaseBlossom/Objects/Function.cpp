@@ -152,7 +152,7 @@ throw (pbError)
 	}
 	catch (const std::out_of_range &)
 	{
-		variableObject -> addOwnProperty (this_, object, CONFIGURABLE);
+		variableObject -> addOwnProperty (this_, object, NONE);
 	}
 
 	// Arguments Object
@@ -171,7 +171,7 @@ throw (pbError)
 		}
 		catch (const std::out_of_range &)
 		{
-			variableObject -> addOwnProperty (function .second -> getName (), function .second -> copy (this), WRITABLE | CONFIGURABLE);
+			variableObject -> addOwnProperty (function .second -> getName (), function .second -> copy (this), WRITABLE);
 		}
 	}
 
@@ -187,7 +187,7 @@ throw (pbError)
 		}
 		catch (const std::out_of_range &)
 		{
-			variableObject -> addOwnProperty (variable -> getIdentifier (), undefined, WRITABLE | CONFIGURABLE | ENUMERABLE);
+			variableObject -> addOwnProperty (variable -> getIdentifier (), undefined, WRITABLE | ENUMERABLE);
 		}
 	}
 
@@ -203,7 +203,7 @@ throw (pbError)
 		}
 		catch (const std::out_of_range &)
 		{
-			variableObject -> addOwnProperty (formalParameters [i], i < argc ? arguments [i] : undefined, WRITABLE | CONFIGURABLE);
+			variableObject -> addOwnProperty (formalParameters [i], i < argc ? arguments [i] : undefined, WRITABLE);
 		}
 	}
 

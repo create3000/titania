@@ -99,6 +99,14 @@ throw (pbError)
 	throw TypeError ("'" + value .toString () + "' is not a function.");
 }
 
+bool
+pbStatement::deleteProperty () const
+throw (pbError)
+{
+	getValue ();
+	return true;
+}
+
 std::ostream &
 operator << (std::ostream & ostream, const StatementsOutputType & value)
 {

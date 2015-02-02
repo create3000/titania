@@ -73,21 +73,14 @@ public:
 	NativeFunction (pbExecutionContext* const executionContext,
 	                const Identifier & name,
 	                const FunctionType & function,
-	                const size_t length) :
-		NativeFunction (executionContext, name, nullptr, function, length)
-	{ }
+	                const size_t length);
 
 	///  Constructs new Function.
 	NativeFunction (pbExecutionContext* const executionContext,
 	                const Identifier & name,
 	                const FunctionType & constructor,
 	                const FunctionType & function,
-	                const size_t length) :
-		      pbFunction (executionContext, name, length),
-		executionContext (executionContext),
-		     constructor (constructor),
-		        function (function)
-	{ addChildren (this -> executionContext); }
+	                const size_t length);
 
 	///  @name Common members
 
@@ -123,6 +116,14 @@ protected:
 
 
 private:
+
+	///  @name Operations
+	
+	FunctionType
+	getDefaultConstructor (const Identifier & name) const;
+
+	FunctionType
+	getDefaultFunction (const Identifier & name) const;
 
 	///  @name Member access
 

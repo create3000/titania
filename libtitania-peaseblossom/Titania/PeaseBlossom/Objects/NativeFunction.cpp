@@ -53,30 +53,69 @@
 namespace titania {
 namespace pb {
 
+NativeFunction::NativeFunction (pbExecutionContext* const executionContext,
+                const Identifier & name,
+                const FunctionType & function,
+                const size_t length) :
+	NativeFunction (executionContext, name, nullptr, function, length)
+{ }
+
+NativeFunction::NativeFunction (pbExecutionContext* const executionContext,
+                const Identifier & name,
+                const FunctionType & constructor,
+                const FunctionType & function,
+                const size_t length) :
+	      pbFunction (executionContext, name, length),
+	executionContext (executionContext),
+	     constructor (constructor ? constructor : getDefaultConstructor (name)),
+	        function (function ? function : getDefaultFunction (name))
+{
+	addChildren (this -> executionContext);
+}
+
+FunctionType
+NativeFunction::getDefaultConstructor (const Identifier & name) const
+{
+	return [name] (const ptr <pbExecutionContext> &, pbObject* const, const std::vector <var> &) -> var
+	{
+		throw TypeError ("Cannot call function '" + name .getString () + "' as constructor.");
+	};
+}
+
+FunctionType
+NativeFunction::getDefaultFunction (const Identifier & name) const
+{
+	return [name] (const ptr <pbExecutionContext> &, pbObject* const, const std::vector <var> &) -> var
+	{
+		throw TypeError ("Cannot call '" + name .getString () + "' as function.");
+	};
+}
+
 var
 NativeFunction::construct (pbObject* const object, const std::vector <var> & arguments)
 throw (pbError)
 {
-	if (constructor)
-		return constructor (executionContext, object, arguments);
-
-	throw TypeError ("Cannot call function '" + getName () .getString () + "' as constructor.");
+	return constructor (executionContext, object, arguments);
 }
 
 var
 NativeFunction::call (pbObject* const object, const std::vector <var> & arguments)
 throw (pbError)
 {
-	if (function)
-		return function (executionContext, object, arguments);
-
-	throw TypeError ("Cannot call '" + getName () .getString () + "' as function.");
+	return function (executionContext, object, arguments);
 }
 
 void
 NativeFunction::toStream (std::ostream & ostream) const
 {
-	ostream << "function " << getName () << " () { [native code] }";
+	ostream
+		<< "function"
+		<< Generator::Space
+		<< getName ()
+		<< Generator::TidySpace
+		<< "()"
+		<< Generator::TidySpace
+		<< "{ [native code] }";
 }
 
 } // pb

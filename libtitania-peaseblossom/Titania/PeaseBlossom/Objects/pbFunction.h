@@ -91,7 +91,7 @@ public:
 	///  Constructs new object of this class without invoking the constructor.
 	pbObject*
 	createInstance (pbExecutionContext* const)
-	throw (TypeError);
+	noexcept (true);
 
 	virtual
 	bool

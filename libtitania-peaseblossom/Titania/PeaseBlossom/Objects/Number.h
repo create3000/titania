@@ -48,25 +48,42 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_PEASE_BLOSSOM_STANDARD_STANDARD_TYPE_H__
-#define __TITANIA_PEASE_BLOSSOM_STANDARD_STANDARD_TYPE_H__
+#ifndef __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
+#define __TITANIA_X3D_PEASE_BLOSSOM_OBJECTS_NUMBER_OBJECT_H__
 
-#include <cstdint>
+#include "../Objects/pbObject.h"
 
 namespace titania {
 namespace pb {
 
-enum class StandardClassType :
-	size_t
+/**
+ *  Class to represent a number object.
+ */
+class Number :
+	public pbObject
 {
-	Object,
-	Function,
+public:
 
-	Array,
-	Date,
-	String,
+	///  @name Construction
 
-	SIZE
+	///  Constructs new Number.
+	Number (const ptr <pbExecutionContext> & executionContext, const double value = 0) :
+		pbObject (),
+		  number (value)
+	{ }
+
+	///  @name Input/Output
+
+	///  Inserts this object into the output stream @a ostream.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ ostream << number; }
+
+
+private:
+
+	const double number;
 
 };
 
