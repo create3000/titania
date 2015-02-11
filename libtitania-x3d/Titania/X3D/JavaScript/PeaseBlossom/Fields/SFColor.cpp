@@ -115,7 +115,7 @@ SFColor::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 }
 
 pb::var
-SFColor::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFColor::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
@@ -139,11 +139,11 @@ SFColor::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* c
 }
 
 pb::var
-SFColor::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
+SFColor::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
-		const auto lhs = getThis <SFColor> (object);
+		const auto lhs = getThis <SFColor> (ec, object);
 
 		lhs -> set1Value (index, get1Argument <double> (args, 0));
 
@@ -156,11 +156,11 @@ SFColor::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* c
 }
 
 pb::var
-SFColor::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
+SFColor::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
-		const auto lhs = getThis <SFColor> (object);
+		const auto lhs = getThis <SFColor> (ec, object);
 
 		return lhs -> get1Value (index);
 	}
@@ -171,14 +171,14 @@ SFColor::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* c
 }
 
 pb::var
-SFColor::setHSV (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFColor::setHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 3)
 		throw pb::Error (getTypeName () + ".prototype.setHSV: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFColor> (object);
+		const auto lhs = getThis <SFColor> (ec, object);
 		const auto h   = get1Argument <double> (args, 0);
 		const auto s   = get1Argument <double> (args, 1);
 		const auto v   = get1Argument <double> (args, 2);
@@ -194,14 +194,14 @@ SFColor::setHSV (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* cons
 }
 
 pb::var
-SFColor::getHSV (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFColor::getHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.getHSV: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs   = getThis <SFColor> (object);
+		const auto lhs   = getThis <SFColor> (ec, object);
 		const auto array = new pb::Array (ec);
 
 		float h, s, v;

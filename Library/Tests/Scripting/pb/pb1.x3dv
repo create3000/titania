@@ -151,12 +151,11 @@ function enumerate (o)
 	return o;
 }
 
-var s = 'äöü';
+var s = ' äöü ';
 
 print (typeof s)
 print (s)
-print (s .charCodeAt ())
-
+print ({ } .toString .call (null))
 "
   directOutput TRUE
 }

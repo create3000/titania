@@ -120,24 +120,25 @@ X3DTexture2DNode::setTexture (const TexturePtr & texture)
 	if (texture)
 	{
 		setImage (getInternalFormat (texture -> getComponents ()),
+		          texture -> getTransparency (),
 		          texture -> getComponents (),
 		          texture -> getWidth (), texture -> getHeight (),
 		          texture -> getFormat (),
 		          texture -> getData ());
 	}
 	else
-		setImage (getInternalFormat (3), 3, 0, 0, GL_RGB, nullptr);
+		setImage (getInternalFormat (3), false, 3, 0, 0, GL_RGB, nullptr);
 }
 
 void
-X3DTexture2DNode::setImage (const GLenum internalFormat, const size_t comp, const GLint w, const GLint h, const GLenum format, const void* const data)
+X3DTexture2DNode::setImage (const GLenum internalFormat, const bool t, const size_t comp, const GLint w, const GLint h, const GLenum format, const void* const data)
 {
 	// transfer image
 
 	width       = w;
 	height      = h;
 	components  = comp;
-	transparent = math::is_even (comp);
+	transparent = t;
 
 	updateTextureProperties ();
 

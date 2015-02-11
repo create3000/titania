@@ -86,6 +86,7 @@ noexcept (true)
 
 	const auto functionClass = Standard::Function::initialize (this);
 	standardClasses [(size_t) StandardClassType::Function] = functionClass;
+	Standard::Function::realize (this);
 
 	const auto objectClass = Standard::Object::initialize (this, functionClass);
 	standardClasses [(size_t) StandardClassType::Object] = objectClass;

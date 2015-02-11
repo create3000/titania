@@ -99,7 +99,7 @@ private:
 
 	static
 	pb::var
-	construct (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	construct (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	///  @name Member access
 
@@ -123,11 +123,11 @@ private:
 
 	static
 	pb::var
-	setLength (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	setLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	getLength (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	getLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	template <class Class>
 	static
@@ -189,7 +189,7 @@ Array <Type, InternalType>::initialize (Context* const context, const pb::ptr <p
 
 template <class Type, class InternalType>
 pb::var
-Array <Type, InternalType>::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Array <Type, InternalType>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
@@ -311,11 +311,11 @@ Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Ide
 
 template <class Type, class InternalType>
 pb::var
-Array <Type, InternalType>::setLength (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Array <Type, InternalType>::setLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	try
 	{
-		const auto lhs  = getThis <Array <Type, InternalType>>  (object);
+		const auto lhs  = getThis <Array <Type, InternalType>>  (ec, object);
 		const auto size = args [0] .toUInt32 ();
 
 		if (basic::to_string (size) == args [0] .toString ())
@@ -339,11 +339,11 @@ Array <Type, InternalType>::setLength (const pb::ptr <pb::pbExecutionContext> & 
 
 template <class Type, class InternalType>
 pb::var
-Array <Type, InternalType>::getLength (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Array <Type, InternalType>::getLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	try
 	{
-		const auto lhs = getThis <Array <Type, InternalType>>  (object);
+		const auto lhs = getThis <Array <Type, InternalType>>  (ec, object);
 
 		return lhs -> size ();
 	}

@@ -407,12 +407,12 @@ public:
 
 	virtual
 	bool
-	hasInstance (pbObject* const object)
+	hasInstance (const var & value)
 	throw (TypeError)
 	{ throw TypeError ("pbObject::hasInstance"); }
 
 	var
-	getDefaultValue (const ValueType) const
+	getDefaultValue (const ValueType preferedType) const
 	throw (pbError);
 
 	///  @name Input/Output

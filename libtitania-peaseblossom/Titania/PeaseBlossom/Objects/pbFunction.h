@@ -95,8 +95,8 @@ public:
 
 	virtual
 	bool
-	hasInstance (pbObject* const object)
-	noexcept (true);
+	hasInstance (const var & value)
+	noexcept (true) final override;
 
 	///  Constructs new object of this class.
 	var
@@ -106,7 +106,7 @@ public:
 	///  Executes this function.
 	virtual
 	var
-	call (pbObject* const object, const std::vector <var> & arguments = { })
+	call (const var & object, const std::vector <var> & arguments = { })
 	throw (pbError) = 0;
 
 
@@ -124,7 +124,7 @@ protected:
 
 	virtual
 	var
-	construct (pbObject* const object, const std::vector <var> & arguments = { })
+	construct (const var & object, const std::vector <var> & arguments = { })
 	throw (pbError) = 0;
 
 

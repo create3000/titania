@@ -58,10 +58,19 @@
     <None Include="logo\logo192.png" />
     <None Include="logo\logo64.png" />
     <None Include="website\x3d-export.html" />
+    <None Include="website\welcome\Cathedral.png" />
+    <None Include="website\welcome\Helicopter.png" />
+    <None Include="website\welcome\Horten.png" />
+    <None Include="website\welcome\Mushrooms.png" />
+    <None Include="website\welcome\TikiWoman.png" />
+    <None Include="website\welcome\index.html" />
+    <None Include="website\welcome\welcome.html" />
+    <None Include="website\welcome\welcome.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="website\" />
     <Folder Include="icon\" />
     <Folder Include="logo\" />
+    <Folder Include="website\welcome\" />
   </ItemGroup>
 </Project>

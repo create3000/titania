@@ -210,78 +210,29 @@ X3DRenderer::draw ()
 	for (const auto & object : getGlobalObjects ())
 		object -> enable ();
 
-	if (1)
-	{
-		// Sorted blend
+	// Sorted blend
 
-		// Render opaque objects first
+	// Render opaque objects first
 
-		glEnable (GL_DEPTH_TEST);
-		glDepthMask (GL_TRUE);
-		glDisable (GL_BLEND);
+	glEnable (GL_DEPTH_TEST);
+	glDepthMask (GL_TRUE);
+	glDisable (GL_BLEND);
 
-		for (const auto & shape : basic::make_range (shapes .cbegin (), numOpaqueShapes))
-			shape -> draw ();
+	for (const auto & shape : basic::make_range (shapes .cbegin (), numOpaqueShapes))
+		shape -> draw ();
 
-		// Render transparent objects
+	// Render transparent objects
 
-		glDepthMask (GL_FALSE);
-		glEnable (GL_BLEND);
+	glDepthMask (GL_FALSE);
+	glEnable (GL_BLEND);
 
-		std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
+	std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
 
-		for (const auto & shape : basic::make_range (transparentShapes .cbegin (), numTransparentShapes))
-			shape -> draw ();
+	for (const auto & shape : basic::make_range (transparentShapes .cbegin (), numTransparentShapes))
+		shape -> draw ();
 
-		glDepthMask (GL_TRUE);
-		glDisable (GL_BLEND);
-	}
-	else
-	{
-		//	http://wiki.delphigl.com/index.php/Blenden
-
-		// Double blend
-
-		glEnable (GL_DEPTH_TEST);
-
-		// Render transparent objects
-
-		std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
-
-		glEnable (GL_BLEND);
-
-		for (const auto & shape : basic::make_range (transparentShapes .cbegin (), numTransparentShapes))
-		{
-			glDepthFunc (GL_GREATER);
-			glDepthMask (GL_FALSE);
-			glBlendFunc (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA);
-
-			shape -> draw ();
-
-			glDepthFunc (GL_LEQUAL);
-			glDepthMask (GL_TRUE);
-			glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-			shape -> draw ();
-		}
-
-		// Render opaque objects
-
-		glDepthFunc (GL_GREATER);
-		glDepthMask (GL_FALSE);
-		glBlendFunc (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA);
-		glBlendFuncSeparate (GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-
-		for (const auto & shape : basic::make_range (shapes .cbegin (), numOpaqueShapes))
-			shape -> draw ();
-
-		glDisable (GL_BLEND);
-		glDepthFunc (GL_LEQUAL);
-		glDepthMask (GL_TRUE);
-
-		for (const auto & shape : basic::make_range (shapes .cbegin (), numOpaqueShapes))
-			shape -> draw ();
-	}
+	glDepthMask (GL_TRUE);
+	glDisable (GL_BLEND);
 
 	// Disable global lights
 

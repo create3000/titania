@@ -112,16 +112,17 @@ throw (std::out_of_range)
 }
 
 template <class Class>
+inline
 typename Class::internal_type*
-getThis (pb::pbObject* const object)
+getThis (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & value)
 throw (std::invalid_argument)
 {
 	try
 	{
-		const auto context = getContext (object);
+		const auto context = getContext (ec);
 
-		if (context -> getClass (Class::getType ()) -> hasInstance (object))
-			return getObject <typename Class::internal_type> (object);
+		if (context -> getClass (Class::getType ()) -> hasInstance (value))
+			return getObject <typename Class::internal_type> (value);
 	}
 	catch (const std::out_of_range &)
 	{ }

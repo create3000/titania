@@ -88,6 +88,11 @@ public:
 
 	///  @name Member access
 
+	/// Sets the value of this String object.
+	void
+	setValue (const Glib::ustring & string)
+	{ value = string; }
+
 	/// Returns the value associated.
 	const Glib::ustring &
 	getValue () const
@@ -131,7 +136,7 @@ private:
 
 	///  @name Members
 
-	const Glib::ustring value;
+	Glib::ustring value;
 
 };
 

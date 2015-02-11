@@ -88,6 +88,10 @@ public:
 	getDepth () const
 	{ return depth; }
 
+	bool
+	getTransparency () const
+	{ return transparency; }
+
 	void
 	setComponents (size_type value)
 	{ components = value; }
@@ -149,6 +153,9 @@ private:
 	void
 	writeImages ();
 
+	void
+	setTransparency ();
+
 	///  @name Members
 
 	MagickImageArrayPtr images;
@@ -157,6 +164,7 @@ private:
 	size_type    width;
 	size_type    height;
 	size_type    depth;
+	bool         transparency;
 	size_type    components;
 	size_type    imageWidth;
 	size_type    imageHeight;

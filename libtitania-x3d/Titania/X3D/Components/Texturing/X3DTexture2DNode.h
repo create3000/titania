@@ -147,7 +147,7 @@ protected:
 	setTexture (const TexturePtr &);
 
 	void
-	setImage (const GLenum, size_t, const GLint, const GLint, const GLenum, const void* const);
+	setImage (const GLenum, const bool, size_t, const GLint, const GLint, const GLenum, const void* const);
 
 	void
 	updateImage (const GLint, const GLint, const GLenum, const void* const);

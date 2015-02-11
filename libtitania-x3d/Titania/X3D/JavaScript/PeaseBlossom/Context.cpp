@@ -358,7 +358,7 @@ noexcept (true)
 }
 
 pb::var
-Context::setProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, X3D::X3DFieldDefinition* const field)
+Context::setProperty (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, X3D::X3DFieldDefinition* const field)
 {
 	setValue (field, args [0]);
 
@@ -366,13 +366,13 @@ Context::setProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject*
 }
 
 pb::var
-Context::getBuildInProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, X3D::X3DFieldDefinition* const field)
+Context::getBuildInProperty (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, X3D::X3DFieldDefinition* const field)
 {
 	return getValue (this, field);
 }
 
 pb::var
-Context::getProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const pb::var & value)
+Context::getProperty (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const pb::var & value)
 {
 	return value;
 }
@@ -561,9 +561,9 @@ Context::set_shutdown ()
 	values .clear ();
 	program .dispose ();
 
-	pb::debug_roots (p);
-	__LOG__ << p -> getParents () .size () << std::endl;
-	__LOG__ << objects .size () << std::endl;
+	//pb::debug_roots (p);
+	//__LOG__ << p -> getParents () .size () << std::endl;
+	//__LOG__ << objects .size () << std::endl;
 	assert (p -> getParents () .empty ());
 	assert (objects .empty ());
 }

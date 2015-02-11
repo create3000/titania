@@ -135,7 +135,7 @@ Browser::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 }
 
 pb::var
-Browser::getName (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::getName (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	const auto browser = getContext (ec) -> getBrowser ();
 
@@ -143,7 +143,7 @@ Browser::getName (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* con
 }
 
 pb::var
-Browser::getVersion (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::getVersion (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	const auto browser = getContext (ec) -> getBrowser ();
 
@@ -151,7 +151,7 @@ Browser::getVersion (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* 
 }
 
 pb::var
-Browser::getCurrentSpeed (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::getCurrentSpeed (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	const auto browser = getContext (ec) -> getBrowser ();
 
@@ -159,7 +159,7 @@ Browser::getCurrentSpeed (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObj
 }
 
 pb::var
-Browser::getCurrentFrameRate (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::getCurrentFrameRate (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	const auto browser = getContext (ec) -> getBrowser ();
 
@@ -167,7 +167,7 @@ Browser::getCurrentFrameRate (const pb::ptr <pb::pbExecutionContext> & ec, pb::p
 }
 
 pb::var
-Browser::getWorldURL (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::getWorldURL (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	const auto browser = getContext (ec) -> getBrowser ();
 
@@ -175,7 +175,7 @@ Browser::getWorldURL (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject*
 }
 
 pb::var
-Browser::setDescription (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::setDescription (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	const auto browser = getContext (ec) -> getBrowser ();
 
@@ -185,7 +185,7 @@ Browser::setDescription (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObje
 }
 
 pb::var
-Browser::getDescription (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::getDescription (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	const auto browser = getContext (ec) -> getBrowser ();
 
@@ -197,7 +197,7 @@ Browser::getDescription (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObje
  */
 
 pb::var
-Browser::getRenderingProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::getRenderingProperty (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.getRenderingProperty: wrong number of arguments.");
@@ -219,7 +219,7 @@ Browser::getRenderingProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::
 }
 
 pb::var
-Browser::getBrowserProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::getBrowserProperty (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.getBrowserProperty: wrong number of arguments.");
@@ -241,7 +241,7 @@ Browser::getBrowserProperty (const pb::ptr <pb::pbExecutionContext> & ec, pb::pb
 }
 
 pb::var
-Browser::getBrowserOption (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::getBrowserOption (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.getBrowserOption: wrong number of arguments.");
@@ -263,7 +263,7 @@ Browser::getBrowserOption (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbOb
 }
 
 pb::var
-Browser::setBrowserOption (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::setBrowserOption (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 2)
 		throw pb::Error (getTypeName () + ".prototype.setBrowserOption: wrong number of arguments.");
@@ -286,7 +286,7 @@ Browser::setBrowserOption (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbOb
 }
 
 pb::var
-Browser::firstViewpoint (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::firstViewpoint (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	const auto browser = getContext (ec) -> getBrowser ();
 
@@ -296,7 +296,7 @@ Browser::firstViewpoint (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObje
 }
 
 pb::var
-Browser::previousViewpoint (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::previousViewpoint (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	const auto browser = getContext (ec) -> getBrowser ();
 
@@ -306,7 +306,7 @@ Browser::previousViewpoint (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbO
 }
 
 pb::var
-Browser::nextViewpoint (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::nextViewpoint (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	const auto browser = getContext (ec) -> getBrowser ();
 
@@ -316,7 +316,7 @@ Browser::nextViewpoint (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObjec
 }
 
 pb::var
-Browser::lastViewpoint (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::lastViewpoint (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	const auto browser = getContext (ec) -> getBrowser ();
 
@@ -326,7 +326,7 @@ Browser::lastViewpoint (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObjec
 }
 
 pb::var
-Browser::print (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::print (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	const auto browser = getContext (ec) -> getBrowser ();
 
@@ -337,7 +337,7 @@ Browser::print (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const
 }
 
 pb::var
-Browser::println (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::println (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	const auto browser = getContext (ec) -> getBrowser ();
 
@@ -353,7 +353,7 @@ Browser::println (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* con
  */
 
 pb::var
-Browser::createVrmlFromURL (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::createVrmlFromURL (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 3)
 		throw pb::Error (getTypeName () + ".prototype.createVrmlFromURL: wrong number of arguments.");
@@ -416,7 +416,7 @@ Browser::setSceneAsync (const X3D::SFNode & script, const X3D::SFNode & node, X3
 }
 
 pb::var
-Browser::createVrmlFromString (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::createVrmlFromString (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.createVrmlFromString: wrong number of arguments.");
@@ -438,7 +438,7 @@ Browser::createVrmlFromString (const pb::ptr <pb::pbExecutionContext> & ec, pb::
 }
 
 pb::var
-Browser::addRoute (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::addRoute (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 4)
 		throw pb::Error (getTypeName () + ".prototype.addRoute: wrong number of arguments.");
@@ -462,7 +462,7 @@ Browser::addRoute (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* co
 }
 
 pb::var
-Browser::deleteRoute (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+Browser::deleteRoute (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 4)
 		throw pb::Error (getTypeName () + ".prototype.deleteRoute: wrong number of arguments.");

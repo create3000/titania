@@ -240,7 +240,9 @@ public:
 				}
 			}
 		}
-		catch (const std::exception &)
+		catch (const std::out_of_range &)
+		{ }
+		catch (const std::invalid_argument &)
 		{ }
 
 		throw TypeError ("'" + base .toString () + "['" + identifier .getString () + "'] is not a function");

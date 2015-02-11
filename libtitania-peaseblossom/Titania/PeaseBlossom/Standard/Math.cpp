@@ -92,101 +92,101 @@ Math::Math (pbExecutionContext* const ec) :
 }
 
 var
-Math::abs (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::abs (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return std::abs (arguments [0] .toNumber ());
+	return std::abs (args [0] .toNumber ());
 }
 
 var
-Math::acos (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::acos (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return std::acos (arguments [0] .toNumber ());
+	return std::acos (args [0] .toNumber ());
 }
 
 var
-Math::asin (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::asin (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return std::asin (arguments [0] .toNumber ());
+	return std::asin (args [0] .toNumber ());
 }
 
 var
-Math::atan (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::atan (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return std::atan (arguments [0] .toNumber ());
+	return std::atan (args [0] .toNumber ());
 }
 
 var
-Math::atan2 (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::atan2 (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return std::atan2 (arguments [0] .toNumber (), arguments [1] .toNumber ());
+	return std::atan2 (args [0] .toNumber (), args [1] .toNumber ());
 }
 
 var
-Math::ceil (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::ceil (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return std::ceil (arguments [0] .toNumber ());
+	return std::ceil (args [0] .toNumber ());
 }
 
 var
-Math::cos (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::cos (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return std::cos (arguments [0] .toNumber ());
+	return std::cos (args [0] .toNumber ());
 }
 
 var
-Math::exp (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::exp (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return std::exp (arguments [0] .toNumber ());
+	return std::exp (args [0] .toNumber ());
 }
 
 var
-Math::floor (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::floor (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return std::floor (arguments [0] .toNumber ());
+	return std::floor (args [0] .toNumber ());
 }
 
 var
-Math::log (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::log (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return std::log (arguments [0] .toNumber ());
+	return std::log (args [0] .toNumber ());
 }
 
 var
-Math::max (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::max (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
 	double result = NEGATIVE_INFINITY ();
 
-	for (const auto & value : arguments)
+	for (const auto & value : args)
 	{
 		const auto number = value .toNumber ();
 
@@ -201,11 +201,11 @@ Math::max (const ptr <pbExecutionContext> & ec, const var & object, const std::v
 }
 
 var
-Math::min (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::min (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
 	double result = POSITIVE_INFINITY ();
 
-	for (const auto & value : arguments)
+	for (const auto & value : args)
 	{
 		const auto number = value .toNumber ();
 
@@ -220,16 +220,16 @@ Math::min (const ptr <pbExecutionContext> & ec, const var & object, const std::v
 }
 
 var
-Math::pow (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::pow (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .size () < 2)
+	if (args .size () < 2)
 		return NaN ();
 
-	return std::pow (arguments [0] .toNumber (), arguments [1] .toNumber ());
+	return std::pow (args [0] .toNumber (), args [1] .toNumber ());
 }
 
 var
-Math::random (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::random (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
 	static std::uniform_real_distribution <double> uniform_real_distribution (0, 1);
 	static std::default_random_engine random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
@@ -238,39 +238,39 @@ Math::random (const ptr <pbExecutionContext> & ec, const var & object, const std
 }
 
 var
-Math::round (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::round (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return std::round (arguments [0] .toNumber ());
+	return std::round (args [0] .toNumber ());
 }
 
 var
-Math::sin (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::sin (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return std::sin (arguments [0] .toNumber ());
+	return std::sin (args [0] .toNumber ());
 }
 
 var
-Math::sqrt (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::sqrt (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return std::sqrt (arguments [0] .toNumber ());
+	return std::sqrt (args [0] .toNumber ());
 }
 
 var
-Math::tan (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+Math::tan (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return std::tan (arguments [0] .toNumber ());
+	return std::tan (args [0] .toNumber ());
 }
 
 } // Standard

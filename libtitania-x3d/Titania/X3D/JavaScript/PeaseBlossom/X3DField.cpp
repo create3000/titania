@@ -76,11 +76,11 @@ X3DField::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 }
 
 pb::var
-X3DField::getName (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> &)
+X3DField::getName (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
 {
 	try
 	{
-		return getThis <X3DField> (object) -> getName ();
+		return getThis <X3DField> (ec, object) -> getName ();
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -89,11 +89,11 @@ X3DField::getName (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* co
 }
 
 pb::var
-X3DField::getTypeName_ (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> &)
+X3DField::getTypeName_ (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
 {
 	try
 	{
-		return getThis <X3DField> (object) -> getTypeName ();
+		return getThis <X3DField> (ec, object) -> getTypeName ();
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -102,11 +102,11 @@ X3DField::getTypeName_ (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObjec
 }
 
 pb::var
-X3DField::getType_ (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> &)
+X3DField::getType_ (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
 {
 	try
 	{
-		return (uint32_t) getThis <X3DField> (object) -> getType ();
+		return (uint32_t) getThis <X3DField> (ec, object) -> getType ();
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -115,11 +115,11 @@ X3DField::getType_ (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* c
 }
 
 pb::var
-X3DField::toString (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> &)
+X3DField::toString (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> &)
 {
 	try
 	{
-		return getThis <X3DField> (object) -> toString ();
+		return getThis <X3DField> (ec, object) -> toString ();
 	}
 	catch (const std::invalid_argument &)
 	{

@@ -76,7 +76,7 @@ NativeFunction::NativeFunction (pbExecutionContext* const executionContext,
 FunctionType
 NativeFunction::getDefaultConstructor (const Identifier & name) const
 {
-	return [name] (const ptr <pbExecutionContext> &, pbObject* const, const std::vector <var> &) -> var
+	return [name] (const ptr <pbExecutionContext> &, const var &, const std::vector <var> &) -> var
 	{
 		throw TypeError ("Cannot call function '" + name .getString () + "' as constructor.");
 	};
@@ -85,21 +85,21 @@ NativeFunction::getDefaultConstructor (const Identifier & name) const
 FunctionType
 NativeFunction::getDefaultFunction (const Identifier & name) const
 {
-	return [name] (const ptr <pbExecutionContext> &, pbObject* const, const std::vector <var> &) -> var
+	return [name] (const ptr <pbExecutionContext> &, const var &, const std::vector <var> &) -> var
 	{
 		throw TypeError ("Cannot call '" + name .getString () + "' as function.");
 	};
 }
 
 var
-NativeFunction::construct (pbObject* const object, const std::vector <var> & arguments)
+NativeFunction::construct (const var & object, const std::vector <var> & arguments)
 throw (pbError)
 {
 	return constructor (executionContext, object, arguments);
 }
 
 var
-NativeFunction::call (pbObject* const object, const std::vector <var> & arguments)
+NativeFunction::call (const var & object, const std::vector <var> & arguments)
 throw (pbError)
 {
 	return function (executionContext, object, arguments);

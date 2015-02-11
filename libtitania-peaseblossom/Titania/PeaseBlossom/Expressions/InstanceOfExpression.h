@@ -95,12 +95,7 @@ public:
 			const auto rval = rhs -> getValue ();
 
 			if (rval .isObject ())
-			{
-				if (lval .isObject ())
-					return rval .getObject () -> hasInstance (lval .getObject ());
-				
-				return false;
-			}
+				return rval .getObject () -> hasInstance (lval);
 		}
 		catch (const TypeError &)
 		{ }

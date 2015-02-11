@@ -24,6 +24,7 @@ my $FieldIndex   = "$Info/field-index.txt";
 
 my $RecommendedPublicId = "ISO//Web3D//DTD X3D 3.3//EN";
 my $RecomemndedSystemId = "$DTDDirectory/x3d-3.3.dtd";
+my $RecomemndedVersion  = "3.3";
 
 XML::LibXML -> load_catalog ($X3DCatalog);
 
@@ -81,6 +82,9 @@ sub x3d {
 	$self -> {specificationVersion} = $xml -> getAttribute ("version");
 	$self -> {profile}              = $xml -> getAttribute ("profile");
 
+	$self -> {specificationVersion} = $RecomemndedVersion
+		unless $self -> {specificationVersion};
+
 	$self -> validate ($xml);
 
 	foreach my $child ($xml -> getChildnodes ())
@@ -124,7 +128,7 @@ sub validate {
 
 sub head {
 	my ($self, $xml) = @_;
-	
+
 	foreach my $child ($xml -> getChildnodes ())
 	{
 		if ($child -> nodeName () eq "component")
@@ -149,7 +153,7 @@ sub head {
 
 sub component {
 	my ($self, $xml) = @_;
-	
+
 	push @{$self -> {components}}, {
 		name  => $xml -> getAttribute ("name"),
 		level => $xml -> getAttribute ("level")
@@ -158,7 +162,7 @@ sub component {
 
 sub unit {
 	my ($self, $xml) = @_;
-	
+
 	push @{$self -> {units}}, {
 		category         => $xml -> getAttribute ("category"),
 		name             => $xml -> getAttribute ("name"),
@@ -168,7 +172,7 @@ sub unit {
 
 sub meta {
 	my ($self, $xml) = @_;
-	
+
 	push @{$self -> {metaData}}, {
 		name  => $xml -> getAttribute ("name"),
 		value => $xml -> getAttribute ("content")
@@ -183,7 +187,7 @@ sub scene {
 
 sub statements {
 	my $self = shift;
-	
+
 	foreach (@_)
 	{
 		$self -> statement ($_);
@@ -333,7 +337,7 @@ sub protoDeclare {
 
 sub protoInterface {
 	my ($self, $xml, $proto, $interface) = @_;
-	
+
 	foreach my $child ($xml -> getChildnodes ())
 	{
 		if ($child -> nodeName () eq "field")
@@ -346,7 +350,7 @@ sub protoInterface {
 
 sub field {
 	my ($self, $xml, $node, $interface) = @_;
-	
+
 	my $field = {
 		userDefined   => 1,
 		appinfo       => $xml -> getAttribute ("appinfo"),
@@ -355,6 +359,9 @@ sub field {
 		type          => $xml -> getAttribute ("type"),
 		name          => $xml -> getAttribute ("name")
 	};
+
+	$field -> {accessType} = "initializeOnly"
+		unless $field -> {accessType};
 
 	$field -> {value} = $xml -> getAttribute ("value")
 		if $xml -> getAttribute ("value");
@@ -369,7 +376,7 @@ sub field {
 
 sub protoBody {
 	my ($self, $xml) = @_;
-	
+
 	$self -> statements ($xml -> getChildnodes ());
 }
 
@@ -394,7 +401,7 @@ sub protoInstance {
 		$node -> {name} = $xml -> getAttribute ("DEF");
 
 		unshift @{$self -> {parents}}, $node;
-	
+
 		foreach my $child ($xml -> getChildnodes ())
 		{
 			if ($child -> nodeName () eq "fieldValue")
@@ -418,7 +425,7 @@ sub protoInstance {
 
 sub fieldValue {
 	my ($self, $xml, $node) = @_;
-	
+
 	my $name = $xml -> getAttribute ("name");
 
 	my $field = {
@@ -439,10 +446,10 @@ sub fieldValue {
 
 sub is {
 	my ($self, $xml) = @_;
-	
+
 	my $node       = $self -> {parents} -> [0];
 	my $fieldIndex = $node -> {fieldIndex};
-	
+
 	foreach ($xml -> getChildnodes ())
 	{
 		$self -> connect ($_, $node)
@@ -465,7 +472,7 @@ sub connect {
 	}
 
 	my $field = $fieldIndex -> {$nodeField};
-	
+
 	unless (exists $field -> {references})
 	{
 		$field -> {references} = [];
@@ -477,7 +484,7 @@ sub connect {
 
 sub node {
 	my ($self, $xml) = @_;
-	
+
 	my $node = {
 		context           => $self -> {contexts} -> [0],
 		typeName          => $xml -> getName (),
@@ -497,7 +504,7 @@ sub node {
 		unshift @{$self -> {parents}}, $node;
 
 		$self -> attributes ($xml, $node);
-	
+
 		foreach my $child ($xml -> getChildnodes ())
 		{
 			if ($child -> getName () eq "field")
@@ -505,8 +512,17 @@ sub node {
 				$self -> field ($child, $node, $node -> {userDefinedFields});
 				next;
 			}
-			
+
 			if ($child -> getName () eq "#cdata-section")
+			{
+				if ($self -> {nodes} -> has_key ($node -> {typeName}, "url"))
+				{
+					$self -> cdata ($child, $node);
+					next;
+				}
+			}
+
+			if ($child -> getName () eq "#text")
 			{
 				if ($self -> {nodes} -> has_key ($node -> {typeName}, "url"))
 				{
@@ -561,18 +577,24 @@ sub cdata {
 
 sub addNode {
 	my ($self, $xml, $node) = @_;
-	
+
 	if (@{$self -> {parents}})
 	{
 		my $parent = $self -> {parents} -> [0];
 		my $field  = $parent;
-	
+
 		if (exists $parent -> {fieldIndex})
 		{
 			# Parent is a node
-		
+
 			my $fieldIndex     = $parent -> {fieldIndex};
 			my $containerField = $xml -> getAttribute ("containerField");
+
+			## If containerField is '' use default value for containerField.
+			unless ($containerField)
+			{
+				$containerField = $self -> {nodes} -> get_string ($node -> {typeName}, "containerField");
+			}
 
 			unless (exists $fieldIndex -> {$containerField})
 			{
@@ -584,7 +606,7 @@ sub addNode {
 				push @{$parent -> {fields}}, $field;
 				$fieldIndex -> {$containerField} = $field;
 			}
-		
+
 			$field = $fieldIndex -> {$containerField};
 		}
 		# else parent is a custom field
@@ -602,7 +624,7 @@ sub addNode {
 
 sub attributes {
 	my ($self, $xml, $node) = @_;
-	
+
 	foreach my $attribute ($xml -> getAttributes ())
 	{
 		my $name = $attribute -> getName ();
@@ -614,7 +636,7 @@ sub attributes {
 			value => $attribute -> getValue ()
 		};
 
-		push @{$node -> {fields}}, $field; 
+		push @{$node -> {fields}}, $field;
 		$node -> {fieldIndex} -> {$name} = $field;
 	}
 }
@@ -665,7 +687,7 @@ sub new {
 		nodes      => $document -> {nodes},
 		fields     => new Glib::KeyFile (),
 		indent     => 0,
-		indentChar => ""
+		indentChar => "  "
 	};
 
 	$self -> {fields} -> load_from_file ($FieldIndex, "none");
@@ -681,7 +703,7 @@ sub indent {
 
 sub escape {
 	my ($value) = @_;
-	
+
 	my $result;
 
 	while ($value =~ /\G(.)/sgo)
@@ -743,7 +765,7 @@ sub output {
 
 sub scene {
 	my ($self) = @_;
-	
+
 	print "#X3D V", $self -> {document} -> {specificationVersion}, " utf8\n\n";
 
 	$self -> profile    ($self -> {document} -> {profile});
@@ -768,7 +790,7 @@ sub profile {
 
 sub components {
 	my ($self, $components) = @_;
-	
+
 	foreach (@$components)
 	{
 		print "COMPONENT ", $_ -> {name}, " : ", $_ -> {level}, "\n";
@@ -779,7 +801,7 @@ sub components {
 
 sub units {
 	my ($self, $units) = @_;
-	
+
 	foreach (@$units)
 	{
 		print "UNIT ", $_ -> {category}, " ", $_ -> {name}, " ", $_ -> {conversionFactor}, "\n";
@@ -790,18 +812,18 @@ sub units {
 
 sub metaData {
 	my ($self, $metaData) = @_;
-	
+
 	foreach (@$metaData)
 	{
 		print "META \"", escape ($_ -> {name}), "\" \"", escape ($_ -> {value}), "\"\n";
 	}
-	
+
 	print "\n" if @$metaData;
 }
 
 sub externProtos {
 	my $self = shift;
-	
+
 	for (@_)
 	{
 		print $self -> indent ();
@@ -816,14 +838,14 @@ sub externProto {
 	my ($self, $externProto) = @_;
 
 	print "EXTERNPROTO ", $externProto -> {name}, " [";
-	
+
 	if (@{$externProto -> {interface}})
 	{
 		print "\n";
 		++ $self -> {indent};
-	
+
 		$self -> restrictedInterfaceDeclarations (@{$externProto -> {interface}});
-	
+
 		-- $self -> {indent};
 		print $self -> indent ();
 		print "]\n";
@@ -863,10 +885,10 @@ sub restrictedInterfaceDeclaration {
 
 sub documentation {
 	my ($self, $object) = @_;
-	
+
 	print $self -> indent (), "# " , $object -> {appinfo}, "\n"
 		if $object -> {appinfo};
-		
+
 	if ($object -> {documentation})
 	{
 		print $self -> indent (), "# \n"
@@ -901,9 +923,9 @@ sub proto {
 	{
 		print "\n";
 		++ $self -> {indent};
-	
+
 		$self -> interfaceDeclarations (@{$proto -> {interface}});
-	
+
 		-- $self -> {indent};
 		print $self -> indent ();
 		print "]\n";
@@ -912,7 +934,7 @@ sub proto {
 	{
 		print " ]\n";
 	}
-	
+
 	print $self -> indent ();
 	print "{\n";
 	++ $self -> {indent};
@@ -949,7 +971,7 @@ sub interfaceDeclaration {
 		$field -> {type},
 		" ",
 		$field -> {name};
-	
+
 	if ($field -> {accessType} =~ /initializeOnly|inputOutput/sgo)
 	{
 		print " ";
@@ -961,7 +983,7 @@ sub interfaceDeclaration {
 
 sub nodes {
 	my $self = shift;
-	
+
 	for (@_)
 	{
 		print $self -> indent ();
@@ -974,7 +996,7 @@ sub nodes {
 
 sub node {
 	my ($self, $node) = @_;
-	
+
 	if ($node -> {reference})
 	{
 		print "USE ", $node -> {reference};
@@ -990,13 +1012,13 @@ sub node {
 		{
 			print "\n";
 			++ $self -> {indent};
-		
+
 			$self -> userDefinedFields ($node);
 			$self -> fields ($node);
 
 			-- $self -> {indent};
 			print $self -> indent ();
-			print "}";		
+			print "}";
 		}
 		else
 		{
@@ -1011,7 +1033,7 @@ sub fields {
 	foreach my $field (@{$node -> {fields}})
 	{
 		next if $field -> {userDefined};
-	
+
 		foreach my $reference (@{$field -> {references}})
 		{
 			print $self -> indent ();
@@ -1028,7 +1050,7 @@ sub fields {
 
 			my $proto           = $self -> getPrototype ($node -> {context}, $node -> {typeName});
 			my $fieldDefinition = $proto -> {fieldIndex} -> {$field -> {name}};
-			
+
 			$self -> field ([$fieldDefinition -> {name}, $fieldDefinition -> {accessType}, $fieldDefinition -> {type}], $field);
 		}
 		elsif (defined $field -> {value})
@@ -1045,7 +1067,7 @@ sub fields {
 				$self -> field ([ ], $field);
 			}
 		}
-			
+
 		print "\n";
 	}
 }
@@ -1063,7 +1085,7 @@ sub userDefinedFields {
 			print $field -> {name};
 
 			print " IS ", $reference;
-			
+
 			print "\n";
 		}
 
@@ -1077,7 +1099,7 @@ sub userDefinedFields {
 			if ($field -> {accessType} =~ /initializeOnly|inputOutput/sgo)
 			{
 				print " ";
-				$self -> field ([$field -> {name}, $field -> {accessType}, $field -> {type}], $field);	
+				$self -> field ([$field -> {name}, $field -> {accessType}, $field -> {type}], $field);
 			}
 
 			print "\n";
@@ -1132,7 +1154,7 @@ sub field {
 			{
 				print "[\n";
 				++ $self -> {indent};
-		
+
 				foreach (@{$field -> {value}})
 				{
 					print $self -> indent ();
@@ -1214,10 +1236,10 @@ sub imports {
 
 sub import {
 	my ($self, $import) = @_;
-	
+
 	print "IMPORT ";
 	print $import -> {inline}, ".", $import -> {exportedName};
-	
+
 	if ($import -> {localName})
 	{
 		print " AS ";
@@ -1240,7 +1262,7 @@ sub routes {
 
 sub route {
 	my ($self, $route) = @_;
-	
+
 	print "ROUTE ";
 	print $route -> {fromNode}, ".", $route -> {fromField};
 	print " TO ";

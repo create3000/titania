@@ -90,30 +90,30 @@ throw (pbError)
 }
 
 var
-GlobalObject::isNaN (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+GlobalObject::isNaN (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return true;
 
-	return pb::isNaN (arguments [0] .toNumber ());
+	return pb::isNaN (args [0] .toNumber ());
 }
 
 var
-GlobalObject::parseInt (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+GlobalObject::parseInt (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return pb::parseInt (arguments [0] .toString ());
+	return pb::parseInt (args [0] .toString ());
 }
 
 var
-GlobalObject::parseFloat (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+GlobalObject::parseFloat (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 {
-	if (arguments .empty ())
+	if (args .empty ())
 		return NaN ();
 
-	return pb::parseFloat (arguments [0] .toString ());
+	return pb::parseFloat (args [0] .toString ());
 }
 
 } // Standard

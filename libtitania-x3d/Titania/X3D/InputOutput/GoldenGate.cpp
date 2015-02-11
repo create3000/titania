@@ -86,11 +86,14 @@ std::string
 golden_pipe (const std::string & program, const std::string & input)
 //throw (Error <URL_UNAVAILABLE>)
 {
+	constexpr size_t BUFFER_SIZE = 1024;
+
 	int    stdin     = 0;
 	int    stdout    = 0;
 	int    stderr    = 0;
 	size_t bytesRead = 0;
-	char   buffer [1024];
+
+	std::vector <char> buffer (BUFFER_SIZE);
 
 	// Open pipe.
 
@@ -108,15 +111,15 @@ golden_pipe (const std::string & program, const std::string & input)
 
 	std::string output;
 
-	while ((bytesRead = read (stdout, buffer, sizeof (buffer))) > 0)
-		output .append (buffer, bytesRead);
+	while ((bytesRead = read (stdout, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
+		output .append (buffer .data (), bytesRead);
 
 	close (stdout);
 
 	// Read error from pipe.
 
-	while ((bytesRead = read (stderr, buffer, sizeof (buffer))) > 0)
-		std::clog .write (buffer, bytesRead);
+	while ((bytesRead = read (stderr, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
+		std::clog .write (buffer .data (), bytesRead);
 
 	close (stderr);
 
@@ -268,6 +271,7 @@ golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 		std::make_pair ("model/x3d+vrml",  &golden_x3dv),
 		std::make_pair ("model/x3d+xml",   &golden_x3d),
 		std::make_pair ("application/xml", &golden_x3d),
+		std::make_pair ("application/vnd.hzn-3d-crossword", &golden_x3d),
 		std::make_pair ("application/ogg", &golden_video)
 	};
 

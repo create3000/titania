@@ -336,7 +336,7 @@ throw (pbError,
 		const auto function = dynamic_cast <pbFunction*> (property .getObject () .get ());
 
 		if (function)
-			return function -> call (const_cast <pbObject*> (this), arguments);
+			return function -> call (this, arguments); // XXX: new var is created.
 	}
 
 	throw std::invalid_argument ("pbObject::apply");
@@ -368,7 +368,7 @@ throw (pbError,
 		else
 		{
 			if (ownDescriptor -> getSetter ()) // isAccessorDescriptor
-				ownDescriptor -> getSetter () -> call (this, { value });
+				ownDescriptor -> getSetter () -> call (this, { value }); // XXX: new var is created.
 		}
 
 		return;
@@ -381,7 +381,7 @@ throw (pbError,
 			const auto & descriptor = proto -> getProperty (identifier);
 
 			if (descriptor -> getSetter ())    // isAccessorDescriptor
-				descriptor -> getSetter () -> call (this, { value });
+				descriptor -> getSetter () -> call (this, { value }); // XXX: new var is created.
 
 			return;
 		}
@@ -416,7 +416,7 @@ throw (pbError,
 		return descriptor -> getValue ();
 
 	if (descriptor -> getGetter ()) // isAccessorDescriptor
-		return descriptor -> getGetter () -> call (const_cast <pbObject*> (this));
+		return descriptor -> getGetter () -> call (this); // XXX: new var is created.
 
 	return undefined;
 }
@@ -591,6 +591,8 @@ throw (pbError)
 		{
 			return call (toString);
 		}
+		catch (const std::out_of_range &)
+		{ }
 		catch (const std::invalid_argument &)
 		{ }
 
@@ -598,6 +600,8 @@ throw (pbError)
 		{
 			return call (valueOf);
 		}
+		catch (const std::out_of_range &)
+		{ }
 		catch (const std::invalid_argument &)
 		{ }
 	}
@@ -606,6 +610,8 @@ throw (pbError)
 	{
 		return call (valueOf);
 	}
+	catch (const std::out_of_range &)
+	{ }
 	catch (const std::invalid_argument &)
 	{ }
 
@@ -613,10 +619,12 @@ throw (pbError)
 	{
 		return call (toString);
 	}
+	catch (const std::out_of_range &)
+	{ }
 	catch (const std::invalid_argument &)
 	{ }
 
-	throw TypeError ("can't convert object to string.");
+	throw TypeError ("Can't convert object to string.");
 }
 
 void

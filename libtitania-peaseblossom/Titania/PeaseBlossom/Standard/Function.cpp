@@ -63,12 +63,35 @@ namespace Function {
 struct Constructor
 {
 	var
-	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 	{
-		if (arguments .empty ())
-			return new pb::Function (ec);
+		if (args .empty ())
+			return object;
 
 		return new pb::Function (ec);
+	}
+
+};
+
+struct call
+{
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
+	{
+		if (object .isObject ())
+		{
+			const auto function = dynamic_cast <pbFunction*> (object .getObject () .get ());
+
+			if (function)
+			{
+				if (args .empty ())
+					return function -> call (undefined);
+
+				return function -> call (args [0], std::vector <var> (args .begin () + 1, args .end ()));
+			}
+		}
+
+		throw TypeError ("Function.prototype.call is not generic.");
 	}
 
 };
@@ -76,12 +99,14 @@ struct Constructor
 struct toString
 {
 	var
-	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 	{
-		if (object .getType () == OBJECT)
+		if (object .isObject ())
 		{
-			if (dynamic_cast <pbFunction*> (object .getObject () .get ()))
-				return object .getObject () -> toString ();
+			const auto function = dynamic_cast <pbFunction*> (object .getObject () .get ());
+
+			if (function)
+				return function -> toString ();
 		}
 
 		throw TypeError ("Function.prototype.toString is not generic.");
@@ -101,10 +126,18 @@ initialize (pbExecutionContext* const ec)
 
 	// standardFunction prototype remains undefined.
 	standardFunction -> setConstructor (constructor);
-	standardFunction -> addOwnProperty ("constructor", constructor,                                          WRITABLE | CONFIGURABLE);
-	standardFunction -> addOwnProperty ("toString",    new NativeFunction (ec, "toString", toString { }, 0), WRITABLE | CONFIGURABLE);
+	standardFunction -> addOwnProperty ("constructor", constructor, WRITABLE | CONFIGURABLE);
 
 	return constructor;
+}
+
+void
+realize (pbExecutionContext* const ec)
+{
+	const auto & standardFunction = ec -> getStandardFunction ();
+
+	standardFunction -> addOwnProperty ("call",     new NativeFunction (ec, "call",     call { },     1), WRITABLE | CONFIGURABLE);
+	standardFunction -> addOwnProperty ("toString", new NativeFunction (ec, "toString", toString { }, 0), WRITABLE | CONFIGURABLE);
 }
 
 } // Function

@@ -1,3 +1,37 @@
+2015-02-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Cache.h:
+	* Date.h:
+	* Math.h:
+	* String.h:
+	* Number.h:
+	* Math.cpp:
+	* Date.cpp:
+	* Boolean.h:
+	* Function.h:
+	* var.cpp:
+	* Array.cpp:
+	* pbObject.h:
+	* Object.cpp:
+	* Global.cpp:
+	* String.cpp:
+	* Function.h:
+	* Function.cpp:
+	* pbFunction.h:
+	* pbObject.cpp:
+	* pbChildObject.h:
+	* Function.cpp:
+	* Program.cpp:
+	* pbFunction.cpp:
+	* pbChildObject.cpp:
+	* NativeFunction.h:
+	* NativeFunction.cpp:
+	* GarbargeCollector.cpp:
+	* pbStatement.cpp:
+	* InstanceOfExpression.h:
+	* MemberAccessExpression.h:
+	* ComputedMemberAccessExpression.h: 
+
 2015-02-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

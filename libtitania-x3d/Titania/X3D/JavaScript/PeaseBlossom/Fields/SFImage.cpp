@@ -116,7 +116,7 @@ SFImage::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 }
 
 pb::var
-SFImage::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFImage::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
@@ -143,11 +143,11 @@ SFImage::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* c
 }
 
 pb::var
-SFImage::setWidth (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFImage::setWidth (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	try
 	{
-		const auto lhs = getThis <SFImage> (object);
+		const auto lhs = getThis <SFImage> (ec, object);
 
 		lhs -> setWidth (get1Argument <uint32_t> (args, 0));
 
@@ -160,11 +160,11 @@ SFImage::setWidth (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* co
 }
 
 pb::var
-SFImage::getWidth (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFImage::getWidth (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	try
 	{
-		const auto lhs = getThis <SFImage> (object);
+		const auto lhs = getThis <SFImage> (ec, object);
 
 		return lhs -> getWidth ();
 	}
@@ -175,11 +175,11 @@ SFImage::getWidth (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* co
 }
 
 pb::var
-SFImage::setHeight (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFImage::setHeight (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	try
 	{
-		const auto lhs = getThis <SFImage> (object);
+		const auto lhs = getThis <SFImage> (ec, object);
 
 		lhs -> setHeight (get1Argument <uint32_t> (args, 0));
 
@@ -192,11 +192,11 @@ SFImage::setHeight (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* c
 }
 
 pb::var
-SFImage::getHeight (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFImage::getHeight (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	try
 	{
-		const auto lhs = getThis <SFImage> (object);
+		const auto lhs = getThis <SFImage> (ec, object);
 
 		return lhs -> getHeight ();
 	}
@@ -207,11 +207,11 @@ SFImage::getHeight (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* c
 }
 
 pb::var
-SFImage::setComp (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFImage::setComp (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	try
 	{
-		const auto lhs = getThis <SFImage> (object);
+		const auto lhs = getThis <SFImage> (ec, object);
 
 		lhs -> setComponents (get1Argument <uint32_t> (args, 0));
 
@@ -224,11 +224,11 @@ SFImage::setComp (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* con
 }
 
 pb::var
-SFImage::getComp (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFImage::getComp (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	try
 	{
-		const auto lhs = getThis <SFImage> (object);
+		const auto lhs = getThis <SFImage> (ec, object);
 
 		return lhs -> getComponents ();
 	}
@@ -239,11 +239,11 @@ SFImage::getComp (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* con
 }
 
 pb::var
-SFImage::setArray (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFImage::setArray (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	try
 	{
-		const auto lhs = getThis <SFImage> (object);
+		const auto lhs = getThis <SFImage> (ec, object);
 		const auto rhs = get1Argument <MFInt32> (args, 0);
 
 		lhs -> setArray (*rhs);
@@ -257,12 +257,12 @@ SFImage::setArray (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* co
 }
 
 pb::var
-SFImage::getArray (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFImage::getArray (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	try
 	{
 		const auto context = getContext (ec);
-		const auto lhs     = getThis <SFImage> (object);
+		const auto lhs     = getThis <SFImage> (ec, object);
 
 		return get <MFInt32> (context, &lhs -> getArray ());
 	}

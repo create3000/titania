@@ -601,7 +601,8 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	std::clog << sizeof (long long) << std::endl;
+	std::list <int*>::iterator i;
+	std::clog << (i == std::list <int*>::iterator ()) << std::endl;
 
 	//std::thread (f, std::move (a)) .join ();
 	

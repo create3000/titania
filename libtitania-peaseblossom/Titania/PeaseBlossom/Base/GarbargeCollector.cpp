@@ -96,7 +96,7 @@ GarbageCollector::deleteObjects (const ObjectArray & objects)
 {
 	// Residual waste
 	
-	__LOG__ << objects .size () << " : " << pbCache::size () << std::endl;
+	//__LOG__ << objects .size () << " : " << pbCache::size () << std::endl;
 
 	for (const auto & object : objects)
 		delete object;

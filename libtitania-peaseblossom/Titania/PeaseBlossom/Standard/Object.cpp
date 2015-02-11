@@ -63,12 +63,12 @@ namespace Object {
 struct Constructor
 {
 	var
-	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 	{
-		if (arguments .empty ())
-			return new pb::Object (ec);
+		if (args .empty ())
+			return object;
 
-		return arguments [0] .toObject (ec);
+		return args [0] .toObject (ec);
 	}
 
 };

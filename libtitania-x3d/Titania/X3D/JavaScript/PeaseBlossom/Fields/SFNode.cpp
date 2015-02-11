@@ -96,7 +96,7 @@ SFNode::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 }
 
 pb::var
-SFNode::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFNode::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
@@ -228,14 +228,14 @@ SFNode::getProperty (pb::pbObject* const object, const pb::Identifier & identifi
 }
 
 pb::var
-SFNode::getNodeName (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFNode::getNodeName (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.getNodeName: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFNode> (object);
+		const auto lhs = getThis <SFNode> (ec, object);
 
 		if (lhs -> getValue ())
 			return lhs -> getValue () -> getName ();
@@ -249,14 +249,14 @@ SFNode::getNodeName (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* 
 }
 
 pb::var
-SFNode::getNodeType (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFNode::getNodeType (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.getNodeType: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs   = getThis <SFNode> (object);
+		const auto lhs   = getThis <SFNode> (ec, object);
 		const auto array = new pb::Array (ec);
 
 		if (lhs -> getValue ())
@@ -276,14 +276,14 @@ SFNode::getNodeType (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* 
 }
 
 pb::var
-SFNode::getFieldDefinitions (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFNode::getFieldDefinitions (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.getFieldDefinitions: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFNode> (object);
+		const auto lhs = getThis <SFNode> (ec, object);
 
 		//		if (lhs -> getValue ())
 		//			return FieldDefinitionArray::create (ec, &lhs -> getValue () -> getFieldDefinitions ());
@@ -298,7 +298,7 @@ SFNode::getFieldDefinitions (const pb::ptr <pb::pbExecutionContext> & ec, pb::pb
 }
 
 pb::var
-SFNode::toVRMLString (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFNode::toVRMLString (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.toVRMLString: wrong number of arguments.");
@@ -306,7 +306,7 @@ SFNode::toVRMLString (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject*
 	try
 	{
 		const auto context = getContext (ec);
-		const auto lhs     = getThis <SFNode> (object);
+		const auto lhs     = getThis <SFNode> (ec, object);
 		auto       version = context -> getExecutionContext () -> getSpecificationVersion ();
 
 		Generator::SpecificationVersion (version);
@@ -321,7 +321,7 @@ SFNode::toVRMLString (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject*
 }
 
 pb::var
-SFNode::toXMLString (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFNode::toXMLString (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.toXMLString: wrong number of arguments.");
@@ -329,7 +329,7 @@ SFNode::toXMLString (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* 
 	try
 	{
 		const auto context = getContext (ec);
-		const auto lhs     = getThis <SFNode> (object);
+		const auto lhs     = getThis <SFNode> (ec, object);
 		auto       version = context -> getExecutionContext () -> getSpecificationVersion ();
 
 		if (version == VRML_V2_0)
@@ -347,14 +347,14 @@ SFNode::toXMLString (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* 
 }
 
 pb::var
-SFNode::toString (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFNode::toString (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.toString: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFNode> (object);
+		const auto lhs = getThis <SFNode> (ec, object);
 
 		if (lhs -> getValue ())
 			return lhs -> getValue () -> getTypeName () + " { }";

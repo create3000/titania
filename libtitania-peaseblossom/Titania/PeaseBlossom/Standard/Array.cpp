@@ -80,7 +80,7 @@ struct toString
 	var
 	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 	{
-		if (object .getType () == OBJECT)
+		if (object .isObject ())
 		{
 			if (dynamic_cast <pb::Array*> (object .getObject () .get ()))
 				return object .getObject () -> toString ();

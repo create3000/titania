@@ -65,6 +65,9 @@ namespace Function {
 ptr <NativeFunction>
 initialize (pbExecutionContext* const ec);
 
+void
+realize (pbExecutionContext* const ec);
+
 } // Function
 } // Standard
 } // pb

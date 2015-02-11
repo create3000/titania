@@ -89,11 +89,10 @@ throw (pbError)
 
 	if (value .isObject ())
 	{
-		const auto   function = dynamic_cast <pbFunction*> (value .getObject () .get ());
-		const auto & global   = executionContext -> getGlobalObject ();
+		const auto function = dynamic_cast <pbFunction*> (value .getObject () .get ());
 
 		if (function)
-			return function -> call (global .get (), arguments);
+			return function -> call (undefined, arguments);
 	}
 
 	throw TypeError ("'" + value .toString () + "' is not a function.");

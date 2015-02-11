@@ -64,7 +64,7 @@ namespace Date {
 struct Constructor
 {
 	var
-	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 	{
 		return undefined;
 	}
@@ -74,7 +74,7 @@ struct Constructor
 struct now
 {
 	var
-	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & arguments)
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 	{
 		using namespace std::chrono;
 

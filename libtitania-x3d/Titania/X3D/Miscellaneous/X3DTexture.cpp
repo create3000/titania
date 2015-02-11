@@ -57,15 +57,16 @@ namespace titania {
 namespace X3D {
 
 X3DTexture::X3DTexture (MagickImageArrayPtr && images) :
-	     images (std::move (images)),
-	     format (GL_RGB),
-	      width (this -> images -> front () .size () .width ()),
-	     height (this -> images -> front () .size () .height ()),
-	      depth (this -> images -> size ()),
-	 components (0),
-	 imageWidth (width),
-	imageHeight (height),
-	       blob ()
+	      images (std::move (images)),
+	      format (GL_RGB),
+	       width (this -> images -> front () .size () .width ()),
+	      height (this -> images -> front () .size () .height ()),
+	       depth (this -> images -> size ()),
+	transparency (false),
+	  components (0),
+	  imageWidth (width),
+	 imageHeight (height),
+	        blob ()
 { }
 
 MagickImageArrayPtr
@@ -173,6 +174,8 @@ X3DTexture::process (const size_type minTextureSize, const size_type maxTextureS
 	tryScaleImages (minTextureSize, maxTextureSize);
 
 	writeImages ();
+	
+	setTransparency ();
 
 	images .reset ();
 }
@@ -223,6 +226,25 @@ X3DTexture::writeImages ()
 	}
 
 	Magick::writeImages (images -> begin (), images -> end (), &blob);
+}
+
+void
+X3DTexture::setTransparency ()
+{
+	if (format == GL_RGBA)
+	{
+		auto       first = static_cast <const uint8_t*> (getData ()) + 3;
+		const auto last  = first + getWidth () * getHeight () * getDepth () * 4;
+
+		for (; first < last; first += 4)
+		{
+			if (*first == 255)
+				continue;
+
+			transparency = true;
+			break;
+		}
+	}
 }
 
 } // X3D

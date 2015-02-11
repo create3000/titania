@@ -36,7 +36,7 @@ namespace pb {
 pbChildObject::pbChildObject () :
 	            pbBase (),
 	           parents (),
-	              root (nullptr),
+	              bestParent (nullptr),
 	          children ()
 { }
 
@@ -63,10 +63,10 @@ pbChildObject::addParent (pbChildObject* const parent)
 {
 	// Determine the best guess for the shortest way to a rooted object.
 
-	if ((not root)
-	    or (parent -> getParents () .size () < root -> getParents () .size ()))
+	if ((not bestParent)
+	    or (parent -> getParents () .size () < bestParent -> getParents () .size ()))
 	{
-		root = parent;
+		bestParent = parent;
 	}
 
 	// Add parent
@@ -81,11 +81,11 @@ pbChildObject::replaceParent (const std::list <pbChildObject*>::iterator & paren
 {
 	// Determine the best guess for the shortest way to a rooted object.
 
-	if ((not root)
-	    or (root == *parentToRemove)
-	    or (parentToAdd -> getParents () .size () < root -> getParents () .size ()))
+	if ((not bestParent)
+	    or (bestParent == *parentToRemove)
+	    or (parentToAdd -> getParents () .size () < bestParent -> getParents () .size ()))
 	{
-		root = parentToAdd;
+		bestParent = parentToAdd;
 	}
 
 	// Replace parent
@@ -105,8 +105,8 @@ pbChildObject::removeParent (const std::list <pbChildObject*>::iterator & iter)
 
 	parents .erase (iter);
 
-	if (root == parent)
-		root = nullptr;
+	if (bestParent == parent)
+		bestParent = nullptr;
 
 	if (getReferenceCount () == 0)
 	{
@@ -147,9 +147,9 @@ pbChildObject::hasRootedObjects (std::set <pbChildObject*> & seen)
 	{
 		// First test the proved way.
 
-		if (root)
+		if (bestParent)
 		{
-			if (root -> hasRootedObjects (seen))
+			if (bestParent -> hasRootedObjects (seen))
 				return true;
 		}
 
@@ -159,14 +159,14 @@ pbChildObject::hasRootedObjects (std::set <pbChildObject*> & seen)
 		{
 			if (parent -> hasRootedObjects (seen))
 			{
-				root = parent;
+				bestParent = parent;
 				return true;
 			}
 		}
 
 		// We have no root and must test the next time again as parents can change.
 
-		root = nullptr;
+		bestParent = nullptr;
 	}
 
 	return false;
@@ -195,7 +195,7 @@ pbChildObject::dispose ()
 	//__LOG__ << this << " : " << getTypeName () << std::endl;
 
 	parents .clear ();
-	root = nullptr;
+	bestParent = nullptr;
 
 	for (const auto & child : children)
 		child -> dispose ();

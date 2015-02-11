@@ -128,7 +128,7 @@ SFRotation::initialize (Context* const context, const pb::ptr <pb::Program> & ec
 }
 
 pb::var
-SFRotation::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFRotation::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
@@ -172,11 +172,11 @@ SFRotation::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject
 }
 
 pb::var
-SFRotation::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
+SFRotation::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
-		const auto lhs = getThis <SFRotation> (object);
+		const auto lhs = getThis <SFRotation> (ec, object);
 
 		lhs -> set1Value (index, get1Argument <double> (args, 0));
 
@@ -189,11 +189,11 @@ SFRotation::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject
 }
 
 pb::var
-SFRotation::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
+SFRotation::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
-		const auto lhs = getThis <SFRotation> (object);
+		const auto lhs = getThis <SFRotation> (ec, object);
 
 		return lhs -> get1Value (index);
 	}
@@ -204,14 +204,14 @@ SFRotation::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject
 }
 
 pb::var
-SFRotation::setAxis (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFRotation::setAxis (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.setAxis: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFRotation> (object);
+		const auto lhs = getThis <SFRotation> (ec, object);
 		const auto rhs = get1Argument <SFVec3f> (args, 0);
 
 		lhs -> setAxis (*rhs);
@@ -225,14 +225,14 @@ SFRotation::setAxis (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* 
 }
 
 pb::var
-SFRotation::getAxis (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFRotation::getAxis (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.getAxis: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFRotation> (object);
+		const auto lhs = getThis <SFRotation> (ec, object);
 
 		return create <SFVec3f> (ec, lhs -> getAxis ());
 	}
@@ -243,14 +243,14 @@ SFRotation::getAxis (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* 
 }
 
 pb::var
-SFRotation::inverse (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFRotation::inverse (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.inverse: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFRotation> (object);
+		const auto lhs = getThis <SFRotation> (ec, object);
 
 		return create <SFRotation> (ec, lhs -> inverse ());
 	}
@@ -261,14 +261,14 @@ SFRotation::inverse (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* 
 }
 
 pb::var
-SFRotation::multiply (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFRotation::multiply (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multiply: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFRotation> (object);
+		const auto lhs = getThis <SFRotation> (ec, object);
 		const auto rhs = get1Argument <SFRotation> (args, 0);
 
 		return create <SFRotation> (ec, lhs -> multiply (*rhs));
@@ -280,14 +280,14 @@ SFRotation::multiply (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject*
 }
 
 pb::var
-SFRotation::multVec (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFRotation::multVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multVec: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFRotation> (object);
+		const auto lhs = getThis <SFRotation> (ec, object);
 		const auto rhs = get1Argument <SFVec3f> (args, 0);
 
 		return create <SFVec3f> (ec, lhs -> multVec (*rhs));
@@ -299,14 +299,14 @@ SFRotation::multVec (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* 
 }
 
 pb::var
-SFRotation::slerp (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFRotation::slerp (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 2)
 		throw pb::Error (getTypeName () + ".prototype.slerp: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFRotation> (object);
+		const auto lhs = getThis <SFRotation> (ec, object);
 		const auto rhs = get1Argument <SFRotation> (args, 0);
 		const auto t   = get1Argument <double> (args, 1);
 

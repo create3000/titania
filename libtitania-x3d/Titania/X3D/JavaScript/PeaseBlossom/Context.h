@@ -162,13 +162,13 @@ private:
 	resolve (pb::pbObject* const, const pb::Identifier &);
 
 	pb::var
-	setProperty (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, X3D::X3DFieldDefinition* const);
+	setProperty (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, X3D::X3DFieldDefinition* const);
 
 	pb::var
-	getBuildInProperty (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, X3D::X3DFieldDefinition* const);
+	getBuildInProperty (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, X3D::X3DFieldDefinition* const);
 
 	pb::var
-	getProperty (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, const pb::var &);
+	getProperty (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const pb::var &);
 
 	/// Event handlers
 

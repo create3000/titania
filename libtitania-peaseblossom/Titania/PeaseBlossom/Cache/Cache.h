@@ -195,7 +195,7 @@ Cache <Type>::clear (GarbageCollector::ObjectArray & objects)
 
 	const auto size = cache .size () - unused;
 
-	__LOG__ << cache .size () << " : " << size << " : " << unused << std::endl;
+	//__LOG__ << cache .size () << " : " << size << " : " << unused << std::endl;
 
 	objects .insert (objects .end (), cache .begin () + size, cache .end ());
 

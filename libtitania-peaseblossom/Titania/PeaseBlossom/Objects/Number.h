@@ -67,7 +67,7 @@ public:
 	///  @name Construction
 
 	///  Constructs new Number.
-	Number (const ptr <pbExecutionContext> & executionContext, const double value = 0) :
+	Number (pbExecutionContext* const executionContext, const double value = 0) :
 		pbObject (),
 		  number (value)
 	{ }

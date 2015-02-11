@@ -98,63 +98,63 @@ private:
 
 	static
 	pb::var
-	construct (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	construct (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	///  @name Member access
 
 	static
 	pb::var
-	set1Value (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, const size_t);
+	set1Value (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
 
 	static
 	pb::var
-	get1Value (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &, const size_t);
+	get1Value (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &, const size_t);
 
 	///  @name Functions
 
 	static
 	pb::var
-	negate (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	negate (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	add (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	add (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	subtract (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	subtract (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	multiply (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	multiply (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	multVec (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	multVec (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	divide (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	divide (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	divVec (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	divVec (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	dot (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	dot (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	cross (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	cross (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	normalize (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	normalize (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	length (const pb::ptr <pb::pbExecutionContext> &, pb::pbObject* const, const std::vector <pb::var> &);
+	length (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	///  @name Member types
 
@@ -227,7 +227,7 @@ SFVec3 <Type>::initialize (Context* const context, const pb::ptr <pb::Program> &
 
 template <class Type>
 pb::var
-SFVec3 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFVec3 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
@@ -252,11 +252,11 @@ SFVec3 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObj
 
 template <class Type>
 pb::var
-SFVec3 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
+SFVec3 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
-		const auto lhs = getThis <SFVec3> (object);
+		const auto lhs = getThis <SFVec3> (ec, object);
 
 		lhs -> set1Value (index, get1Argument <double> (args, 0));
 
@@ -270,11 +270,11 @@ SFVec3 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObj
 
 template <class Type>
 pb::var
-SFVec3 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args, const size_t index)
+SFVec3 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
-		const auto lhs = getThis <SFVec3> (object);
+		const auto lhs = getThis <SFVec3> (ec, object);
 
 		return lhs -> get1Value (index);
 	}
@@ -286,14 +286,14 @@ SFVec3 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObj
 
 template <class Type>
 pb::var
-SFVec3 <Type>::negate (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFVec3 <Type>::negate (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.negate: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFVec3> (object);
+		const auto lhs = getThis <SFVec3> (ec, object);
 
 		return create <SFVec3> (ec, lhs -> negate ());
 	}
@@ -305,14 +305,14 @@ SFVec3 <Type>::negate (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject
 
 template <class Type>
 pb::var
-SFVec3 <Type>::add (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFVec3 <Type>::add (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.add: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFVec3> (object);
+		const auto lhs = getThis <SFVec3> (ec, object);
 		const auto rhs = get1Argument <SFVec3> (args, 0);
 
 		return create <SFVec3> (ec, lhs -> add (*rhs));
@@ -325,14 +325,14 @@ SFVec3 <Type>::add (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* c
 
 template <class Type>
 pb::var
-SFVec3 <Type>::subtract (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFVec3 <Type>::subtract (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.subtract: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFVec3> (object);
+		const auto lhs = getThis <SFVec3> (ec, object);
 		const auto rhs = get1Argument <SFVec3> (args, 0);
 
 		return create <SFVec3> (ec, lhs -> subtract (*rhs));
@@ -345,14 +345,14 @@ SFVec3 <Type>::subtract (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObje
 
 template <class Type>
 pb::var
-SFVec3 <Type>::multiply (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFVec3 <Type>::multiply (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multiply: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFVec3> (object);
+		const auto lhs = getThis <SFVec3> (ec, object);
 		const auto rhs = get1Argument <double> (args, 0);
 
 		return create <SFVec3> (ec, lhs -> multiply (rhs));
@@ -365,14 +365,14 @@ SFVec3 <Type>::multiply (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObje
 
 template <class Type>
 pb::var
-SFVec3 <Type>::multVec (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFVec3 <Type>::multVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multVec: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFVec3> (object);
+		const auto lhs = getThis <SFVec3> (ec, object);
 		const auto rhs = get1Argument <SFVec3> (args, 0);
 
 		return create <SFVec3> (ec, lhs -> multiply (*rhs));
@@ -385,14 +385,14 @@ SFVec3 <Type>::multVec (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObjec
 
 template <class Type>
 pb::var
-SFVec3 <Type>::divide (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFVec3 <Type>::divide (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.divide: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFVec3> (object);
+		const auto lhs = getThis <SFVec3> (ec, object);
 		const auto rhs = get1Argument <double> (args, 0);
 
 		return create <SFVec3> (ec, lhs -> divide (rhs));
@@ -405,14 +405,14 @@ SFVec3 <Type>::divide (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject
 
 template <class Type>
 pb::var
-SFVec3 <Type>::divVec (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFVec3 <Type>::divVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.divVec: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFVec3> (object);
+		const auto lhs = getThis <SFVec3> (ec, object);
 		const auto rhs = get1Argument <SFVec3> (args, 0);
 
 		return create <SFVec3> (ec, lhs -> divide (*rhs));
@@ -425,14 +425,14 @@ SFVec3 <Type>::divVec (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject
 
 template <class Type>
 pb::var
-SFVec3 <Type>::dot (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFVec3 <Type>::dot (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.dot: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFVec3> (object);
+		const auto lhs = getThis <SFVec3> (ec, object);
 		const auto rhs = get1Argument <SFVec3> (args, 0);
 
 		return lhs -> dot (*rhs);
@@ -445,14 +445,14 @@ SFVec3 <Type>::dot (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* c
 
 template <class Type>
 pb::var
-SFVec3 <Type>::cross (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFVec3 <Type>::cross (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.cross: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFVec3> (object);
+		const auto lhs = getThis <SFVec3> (ec, object);
 		const auto rhs = get1Argument <SFVec3> (args, 0);
 
 		return create <SFVec3> (ec, lhs -> cross (*rhs));
@@ -465,14 +465,14 @@ SFVec3 <Type>::cross (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject*
 
 template <class Type>
 pb::var
-SFVec3 <Type>::normalize (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFVec3 <Type>::normalize (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.normalize: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFVec3> (object);
+		const auto lhs = getThis <SFVec3> (ec, object);
 
 		return create <SFVec3> (ec, lhs -> normalize ());
 	}
@@ -484,14 +484,14 @@ SFVec3 <Type>::normalize (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObj
 
 template <class Type>
 pb::var
-SFVec3 <Type>::length (const pb::ptr <pb::pbExecutionContext> & ec, pb::pbObject* const object, const std::vector <pb::var> & args)
+SFVec3 <Type>::length (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.length: wrong number of arguments.");
 
 	try
 	{
-		const auto lhs = getThis <SFVec3> (object);
+		const auto lhs = getThis <SFVec3> (ec, object);
 
 		return lhs -> length ();
 	}

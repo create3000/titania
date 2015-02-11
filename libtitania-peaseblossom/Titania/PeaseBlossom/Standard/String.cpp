@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,6 +63,21 @@ namespace pb {
 namespace Standard {
 namespace String {
 
+///  Checks whether this object can be converted into an object.
+void
+CheckObjectCoercible (const var & value)
+throw (TypeError)
+{
+	switch (value .getType ())
+	{
+		case UNDEFINED:
+		case NULL_OBJECT:
+			throw TypeError ("Argument list has wrong type.");
+		default:
+			return;
+	}
+}
+
 /// String ([arg1])
 struct Function
 {
@@ -83,10 +98,10 @@ struct Constructor
 	var
 	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 	{
-		if (args .empty ())
-			return new pb::String (ec);
+		if (not args .empty ())
+			static_cast <pb::String*> (object .getObject () .get ()) -> setValue (args [0] .toString ());
 
-		return new pb::String (ec, args [0] .toString ());
+		return object;
 	}
 
 };
@@ -99,7 +114,7 @@ struct charAt
 	{
 		const auto string = object .toString ();
 		const auto length = string .length ();
-		
+
 		Glib::ustring::size_type position = 0;
 
 		if (args .size () > 0)
@@ -107,7 +122,7 @@ struct charAt
 
 		if (position < 0)
 			return "";
-		
+
 		if (position >= length)
 			return "";
 
@@ -124,7 +139,7 @@ struct charCodeAt
 	{
 		const auto string = object .toString ();
 		const auto length = string .length ();
-		
+
 		Glib::ustring::size_type position = 0;
 
 		if (args .size () > 0)
@@ -132,7 +147,7 @@ struct charCodeAt
 
 		if (position < 0)
 			return NaN ();
-		
+
 		if (position >= length)
 			return NaN ();
 
@@ -141,9 +156,51 @@ struct charCodeAt
 		//std::string source = string .substr (position, 1);
 		//
 		//std::wstring_convert <std::codecvt_utf8_utf16 <char16_t>, char16_t> convert;
-		//std::u16string character = convert .from_bytes (source);    
+		//std::u16string character = convert .from_bytes (source);
 		//
 		//return character [0];
+	}
+
+};
+
+/// concat ([string1 [, string2 [, ...]]])
+struct concat
+{
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
+	{
+		auto string = object .toString ();
+
+		for (const auto & arg : args)
+			string += arg .toString ();
+
+		return string;
+	}
+
+};
+
+/// localeCompare (that)
+struct localeCompare
+{
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
+	{
+		if (args .empty ())
+			return -1;	
+
+		const auto string = object .toString ();
+		const auto that   = args [0] .toString ();
+
+		const auto lhs = string .collate_key ();
+		const auto rhs = that .collate_key ();
+
+		if (lhs == rhs)
+			return 0;
+
+		if (lhs < rhs)
+			return -1;
+
+		return 1;
 	}
 
 };
@@ -221,16 +278,70 @@ struct substring
 
 };
 
+/// toLowerCase ()
+struct toLowerCase
+{
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
+	{
+		return object .toString () .lowercase ();
+	}
+
+};
+
+/// toLowerCase ()
+struct toUpperCase
+{
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
+	{
+		return object .toString () .uppercase ();
+	}
+
+};
+
+/// trim ()
+struct trim
+{
+	var
+	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
+	{
+		const auto string = object .toString ();
+		
+		if (string .empty ())
+			return string;
+
+		Glib::ustring::size_type length = string .length ();
+		Glib::ustring::size_type start  = 0;
+		Glib::ustring::size_type end    = length - 1;
+
+		for (; start < length; ++ start)
+		{
+			if (not g_unichar_isspace (string [start]))
+				break;
+		}
+
+		for (; end > start; -- end)
+		{
+			if (not g_unichar_isspace (string [end]))
+				break;
+		}
+
+		return string .substr (start, end - start + 1);
+	}
+
+};
+
 /// toString ()
 struct toString
 {
 	var
 	operator () (const ptr <pbExecutionContext> & ec, const var & object, const std::vector <var> & args)
 	{
-		if (object .getType () == STRING)
+		if (object .isString ())
 			return object;
-
-		if (object .getType () == OBJECT)
+			
+		if (object .isObject ())
 		{
 			const auto string = dynamic_cast <pb::String*> (object .getObject () .get ());
 
@@ -238,8 +349,10 @@ struct toString
 				return string -> getValue ();
 		}
 
-		throw TypeError ("String.prototype.indexOf is not generic.");
+		throw TypeError ("String.prototype." + name + " is not generic.");
 	}
+
+	const std::string name;
 
 };
 
@@ -253,12 +366,20 @@ initialize (pbExecutionContext* const ec)
 	prototype -> setConstructor (constructor);
 	prototype -> setProto (standardObject);
 
-	prototype -> addOwnProperty ("charAt",      new NativeFunction (ec, "charAt",      charAt { },      1), WRITABLE | CONFIGURABLE);
-	prototype -> addOwnProperty ("charCodeAt",  new NativeFunction (ec, "charCodeAt",  charCodeAt { },  1), WRITABLE | CONFIGURABLE);
-	prototype -> addOwnProperty ("indexOf",     new NativeFunction (ec, "indexOf",     indexOf { },     1), WRITABLE | CONFIGURABLE);
-	prototype -> addOwnProperty ("lastIndexOf", new NativeFunction (ec, "lastIndexOf", lastIndexOf { }, 1), WRITABLE | CONFIGURABLE);
-	prototype -> addOwnProperty ("substring",   new NativeFunction (ec, "substring",   substring { },   1), WRITABLE | CONFIGURABLE);
-	prototype -> addOwnProperty ("toString",    new NativeFunction (ec, "toString",    toString { },    0), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("charAt",            new NativeFunction (ec, "charAt",            charAt { },              1), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("charCodeAt",        new NativeFunction (ec, "charCodeAt",        charCodeAt { },          1), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("concat",            new NativeFunction (ec, "concat",            concat { },              1), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("localeCompare",     new NativeFunction (ec, "localeCompare",     localeCompare { },       1), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("indexOf",           new NativeFunction (ec, "indexOf",           indexOf { },             1), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("lastIndexOf",       new NativeFunction (ec, "lastIndexOf",       lastIndexOf { },         1), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("substring",         new NativeFunction (ec, "substring",         substring { },           1), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("toLowerCase",       new NativeFunction (ec, "toLowerCase",       toLowerCase { },         0), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("toLocaleLowerCase", new NativeFunction (ec, "toLocaleLowerCase", toLowerCase { },         0), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("toUpperCase",       new NativeFunction (ec, "toUpperCase",       toUpperCase { },         0), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("toLocaleUpperCase", new NativeFunction (ec, "toLocaleUpperCase", toUpperCase { },         0), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("trim",              new NativeFunction (ec, "trim",              trim { },                0), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("valueOf",           new NativeFunction (ec, "valueOf",           toString { "valueOf" },  0), WRITABLE | CONFIGURABLE);
+	prototype -> addOwnProperty ("toString",          new NativeFunction (ec, "toString",          toString { "toString" }, 0), WRITABLE | CONFIGURABLE);
 
 	constructor -> addOwnProperty ("prototype", prototype, NONE);
 	return constructor;

@@ -51,7 +51,10 @@
 #include "Function.h"
 
 #include "../Expressions/VariableDeclaration.h"
+#include "../Objects/Boolean.h"
+#include "../Objects/Number.h"
 #include "../Objects/Object.h"
+#include "../Objects/String.h"
 
 #include <Titania/String/to_string.h>
 
@@ -126,14 +129,14 @@ Function::getLocalObjects () const
 }
 
 var
-Function::construct (pbObject* const object, const std::vector <var> & arguments)
+Function::construct (const var & object, const std::vector <var> & arguments)
 throw (pbError)
 {
 	return call (object, arguments);
 }
 
 var
-Function::call (pbObject* const object, const std::vector <var> & arguments)
+Function::call (const var & object, const std::vector <var> & arguments)
 throw (pbError)
 {
 	const auto & variableObject = getLocalObjects ();
@@ -143,16 +146,38 @@ throw (pbError)
 	// This Object
 
 	static const Identifier this_ ("this");
+	
+	pbObject* thisObject = nullptr;
+
+	switch (object .getType ())
+	{
+		case UNDEFINED:
+		case NULL_OBJECT:
+			thisObject = getGlobalObject ();
+			break;
+		case BOOLEAN:
+			thisObject = new Boolean (this, object .getBoolean ());
+			break;			
+		case NUMBER:
+			thisObject = new Number (this, object .getNumber ());
+			break;			
+		case STRING:
+			thisObject = new String (this, object .getString ());
+			break;			
+		case OBJECT:
+			thisObject = object .getObject ();
+			break;
+	}
 
 	try
 	{
 		const auto & thisDescriptor = variableObject -> getOwnProperty (this_);
 
-		const_cast <ptr <pbObject> &> (thisDescriptor -> getValue () .getObject ()) .reset (object);
+		const_cast <ptr <pbObject> &> (thisDescriptor -> getValue () .getObject ()) .reset (thisObject);
 	}
 	catch (const std::out_of_range &)
 	{
-		variableObject -> addOwnProperty (this_, object, NONE);
+		variableObject -> addOwnProperty (this_, thisObject, NONE);
 	}
 
 	// Arguments Object

@@ -147,7 +147,7 @@ protected:
 private:
 
 	std::list <pbChildObject*>   parents;
-	pbChildObject*               root;
+	pbChildObject*               bestParent;
 	std::vector <pbChildObject*> children;
 
 };

@@ -118,19 +118,22 @@ noexcept (true)
 }
 
 bool
-pbFunction::hasInstance (pbObject* const object)
+pbFunction::hasInstance (const var & value)
 noexcept (true)
 {
-	auto proto = object;
-
-	do
+	if (value .isObject ())
 	{
-		if (proto -> getConstructor () .get () == this)
-			return true;
+		auto proto = value .getObject () .get ();
 
-		proto = proto -> getProto ();
+		do
+		{
+			if (proto -> getConstructor () .get () == this)
+				return true;
+
+			proto = proto -> getProto ();
+		}
+		while (proto);
 	}
-	while (proto);
 
 	return false;
 }
@@ -139,14 +142,13 @@ var
 pbFunction::construct (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments)
 throw (pbError)
 {
-	const auto object = createInstance (executionContext);
-	const var  value  = object;
+	const var  object = createInstance (executionContext);
 	const auto result = construct (object, arguments);
 
 	if (result .isObject ())
 		return result;
 
-	return value;
+	return object;
 }
 
 } // pb

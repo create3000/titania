@@ -263,7 +263,7 @@ throw (Error <INVALID_NAME>,
 {
 	const X3DBaseNode* const declaration = getBrowser () -> getSupportedNode (name);
 
-	if (hasComponent (declaration -> getComponent ()))
+	//if (hasComponent (declaration -> getComponent ()))
 		return declaration -> create (this);
 
 	throw Error <INVALID_NAME> ("Node type '" + name + "' not supported by profile or component specification.");

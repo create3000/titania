@@ -368,7 +368,7 @@ throw (TypeError)
 	switch (type)
 	{
 		case UNDEFINED:
-			throw TypeError ("Cannot convert 'undefined' to object value.");
+			throw TypeError ("Cannot coerce 'undefined' into object.");
 		case BOOLEAN:
 			return new Boolean (ec, value .bool_);
 		case NUMBER:
@@ -376,7 +376,7 @@ throw (TypeError)
 		case STRING:
 			return new String (ec, *value .string_);
 		case NULL_OBJECT:
-			throw TypeError ("Cannot convert 'null' to object value.");
+			throw TypeError ("Cannot coerce 'null' into object.");
 		case OBJECT:
 			return *value .object_;
 	}
