@@ -277,40 +277,37 @@ GeoLOD::traverse (const TraverseType type)
 {
 	const size_t level = getLevel (type);
 
-	if (type == TraverseType::CAMERA)
+	if ((int32_t) level not_eq level_changed ())
 	{
-		if ((int32_t) level not_eq level_changed ())
+		level_changed () = level;
+
+		switch (level)
 		{
-			level_changed () = level;
-
-			switch (level)
+			case 0:
 			{
-				case 0:
+				if (rootNode () .empty ())
 				{
-					if (rootNode () .empty ())
-					{
-						if (rootInline -> checkLoadState () == COMPLETE_STATE)
-							children () = rootInline -> getRootNodes ();
-					}
-					else
-						children () = rootNode ();
-
-					child1Inline -> load () = false;
-					child2Inline -> load () = false;
-					child3Inline -> load () = false;
-					child4Inline -> load () = false;
-
-					break;
+					if (rootInline -> checkLoadState () == COMPLETE_STATE)
+						children () = rootInline -> getRootNodes ();
 				}
-				case 1:
-				{
-					child1Inline -> load () = true;
-					child2Inline -> load () = true;
-					child3Inline -> load () = true;
-					child4Inline -> load () = true;
+				else
+					children () = rootNode ();
 
-					break;
-				}
+				child1Inline -> load () = false;
+				child2Inline -> load () = false;
+				child3Inline -> load () = false;
+				child4Inline -> load () = false;
+
+				break;
+			}
+			case 1:
+			{
+				child1Inline -> load () = true;
+				child2Inline -> load () = true;
+				child3Inline -> load () = true;
+				child4Inline -> load () = true;
+
+				break;
 			}
 		}
 	}
