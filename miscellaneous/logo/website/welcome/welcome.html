@@ -12,10 +12,25 @@ html, body, x3d {
 	width: 100%;
 	height: 100%;
 }
+x3d {
+	position: relative;
+}
+.x3dom-nox3d {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: url(TikiWoman.png);
+	width: 1024px;
+	height: 606px;
+	opacity: 1;
+}
+.x3dom-nox3d * {
+	display: none;
+}
 		</style>
 	</head>
 	<body>
-		<x3d xmlns="http://www.x3dom.org/x3dom" showStat="false" showLog="false">
+		<x3d xmlns="http://www.x3dom.org/x3dom" showStat="false" showLog="false" altImg="TikiWoman.png">
 			<scene>
 				<inline url="welcome.x3d"></inline>
 			</scene>

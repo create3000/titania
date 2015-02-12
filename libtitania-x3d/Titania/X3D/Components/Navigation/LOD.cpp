@@ -170,12 +170,15 @@ LOD::traverse (const TraverseType type)
 
 		if (level not_eq level_changed ())
 		{
-			if (type == TraverseType::DISPLAY and forceTransitions ())
+			if (forceTransitions ())
 			{
-				if (level > level_changed ())
-					level_changed () += 1;
-				else
-					level_changed () -= 1;
+				if (type == TraverseType::DISPLAY)
+				{
+					if (level > level_changed ())
+						level_changed () += 1;
+					else
+						level_changed () -= 1;
+				}
 			}
 			else
 				level_changed () = level;
