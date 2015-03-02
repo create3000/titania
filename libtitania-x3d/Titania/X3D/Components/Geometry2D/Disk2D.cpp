@@ -247,12 +247,12 @@ Disk2D::build ()
 }
 
 void
-Disk2D::draw ()
+Disk2D::draw (const ShapeContainer* const context)
 {
 	if (innerRadius () == outerRadius ())
 		glDisable (GL_LIGHTING);
 
-	X3DGeometryNode::draw ();
+	X3DGeometryNode::draw (context);
 }
 
 SFNode

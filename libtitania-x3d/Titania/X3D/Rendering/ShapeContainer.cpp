@@ -60,12 +60,14 @@ ShapeContainer::ShapeContainer (X3DShapeNode* const shape,
                                 const CollectableObjectArray & localObjects,
                                 const Vector4i & scissor,
                                 const Matrix4f & matrix,
+                                const bool transparent,
                                 const float distance) :
 	       shape (shape),
 	         fog (fog),
 	localObjects (localObjects),
 	     scissor (scissor),
 	      matrix (matrix),
+	 transparent (transparent),
 	    distance (distance)
 { }
 
@@ -75,6 +77,7 @@ ShapeContainer::assign (X3DShapeNode* const shape,
                         const CollectableObjectArray & localObjects,
                         const Vector4i & scissor,
                         const Matrix4f & matrix,
+                        const bool transparent,
                         const float distance)
 {
 	this -> shape        = shape;
@@ -82,6 +85,7 @@ ShapeContainer::assign (X3DShapeNode* const shape,
 	this -> localObjects = localObjects;
 	this -> scissor      = scissor;
 	this -> matrix       = matrix;
+	this -> transparent  = transparent;
 	this -> distance     = distance;
 }
 
@@ -100,7 +104,7 @@ ShapeContainer::draw ()
 
 	fog -> enable ();
 
-	shape -> draw ();
+	shape -> draw (this);
 
 	for (const auto & object : basic::make_reverse_range (localObjects))
 		object -> disable ();

@@ -91,8 +91,8 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "colorPerVertex",    colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex",   normalPerVertex ());
 
-	addField (inputOutput,    "texCoordIndex",     texCoordIndex ());
 	addField (inputOutput,    "colorIndex",        colorIndex ());
+	addField (inputOutput,    "texCoordIndex",     texCoordIndex ());
 	addField (inputOutput,    "normalIndex",       normalIndex ());
 	addField (inputOutput,    "coordIndex",        coordIndex ());
 
@@ -226,9 +226,6 @@ IndexedFaceSet::build ()
 				for (size_t a = 0, size = getAttrib () .size (); a < size; ++ a)
 					getAttrib () [a] -> addValue (attribArrays [a], index);
 
-				if (getTexCoord ())
-					getTexCoord () -> addTexCoord (getTexCoords (), getTexCoordIndex (i));
-
 				if (getColor ())
 				{
 					if (colorPerVertex ())
@@ -237,6 +234,9 @@ IndexedFaceSet::build ()
 					else
 						getColor () -> addColor (getColors (), getColorIndex (face));
 				}
+
+				if (getTexCoord ())
+					getTexCoord () -> addTexCoord (getTexCoords (), getTexCoordIndex (i));
 
 				if (getNormal ())
 				{
@@ -266,7 +266,7 @@ IndexedFaceSet::build ()
 	setAttribs (getAttrib (), attribArrays);
 	setTextureCoordinate (getTexCoord ());
 }
-	
+
 void
 IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t & numVertices)
 {
@@ -276,10 +276,10 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 	if (not coordIndex () .empty ())
 	{
 		std::unique_ptr <Tessellator> tessellator;
-	
+
 		if (not convex)
 			tessellator .reset (new Tessellator ());
-	
+
 		// Add -1 (polygon end marker) to coordIndex if not present.
 		if (coordIndex () .back () > -1)
 			coordIndex () .emplace_back (-1);
@@ -292,7 +292,7 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 		for (const auto & index : coordIndex ())
 		{
 			Vertices & vertices = polygons .back () .vertices;
-		
+
 			if (index > -1)
 			{
 				// Add vertex index.
@@ -322,7 +322,7 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 							numVertices += 3;
 
 							// Add polygon with one triangle.
-		
+
 							polygons .back () .elements .emplace_back (std::move (vertices));
 							polygons .emplace_back ();
 							break;
@@ -446,7 +446,7 @@ void
 IndexedFaceSet::addTexCoords ()
 {
 	const auto texCoordNode = getExecutionContext () -> createNode <TextureCoordinate> ();
-	
+
 	texCoordIndex () .clear ();
 	texCoord () = texCoordNode;
 
@@ -457,7 +457,7 @@ IndexedFaceSet::addTexCoords ()
 	getTexCoordParams (min, Ssize, Sindex, Tindex);
 
 	std::map <int32_t, size_t> indices; // coord index, texCoord index
-	
+
 	for (const auto & index : coordIndex ())
 	{
 		if (index < 0)
@@ -497,7 +497,7 @@ IndexedFaceSet::addNormals ()
 
 	normalIndex () .clear ();
 	normal () = normalNode;
-	
+
 	size_t i      = 0;
 	auto   normal = normals .begin ();
 
@@ -563,7 +563,7 @@ IndexedFaceSet::createNormals (const PolygonArray & polygons) const
 						                                    coordIndex () [element [(i + 2) % size]]);
 					}
 				}
-				
+
 				normal .normalize ();
 			}
 		}
@@ -580,7 +580,7 @@ IndexedFaceSet::createNormals (const PolygonArray & polygons) const
 
 	return normals;
 }
-	
+
 SFNode
 IndexedFaceSet::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,

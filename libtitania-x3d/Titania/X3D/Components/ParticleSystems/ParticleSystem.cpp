@@ -1406,7 +1406,7 @@ ParticleSystem::drawCollision ()
 { }
 
 void
-ParticleSystem::drawGeometry ()
+ParticleSystem::drawGeometry (const ShapeContainer* const context)
 {
 	try
 	{
@@ -1525,7 +1525,7 @@ ParticleSystem::drawGeometry ()
 						              position .y (),
 						              position .z ());
 
-						geometryNode -> draw ();
+						geometryNode -> draw (context);
 
 						glPopMatrix ();
 					}

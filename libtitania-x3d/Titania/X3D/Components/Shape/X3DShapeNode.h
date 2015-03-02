@@ -60,6 +60,7 @@ namespace X3D {
 
 class X3DAppearanceNode;
 class X3DGeometryNode;
+class ShapeContainer;
 
 class X3DShapeNode :
 	virtual public X3DChildNode, public X3DBoundedObject
@@ -131,7 +132,7 @@ public:
 
 	virtual
 	void
-	draw ();
+	draw (const ShapeContainer* const);
 
 	virtual
 	void
@@ -156,7 +157,7 @@ protected:
 
 	virtual
 	void
-	drawGeometry () = 0;
+	drawGeometry (const ShapeContainer* const) = 0;
 
 
 private:

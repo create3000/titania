@@ -73,12 +73,12 @@ X3DRenderingContext::initialize ()
 	if (glXGetCurrentContext ())
 	{
 		glEnable (GL_SCISSOR_TEST);
-		glClearDepth (1);
 
 		glCullFace (GL_BACK);
 		glEnable (GL_NORMALIZE);
 
 		glDepthFunc (GL_LEQUAL);
+		glClearDepth (1);
 
 		glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 		glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);

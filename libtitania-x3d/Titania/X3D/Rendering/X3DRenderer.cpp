@@ -119,20 +119,20 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 			if (shape -> isTransparent ())
 			{
 				if (numTransparentShapes < transparentShapes .size ())
-					transparentShapes [numTransparentShapes] -> assign (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), center);
+					transparentShapes [numTransparentShapes] -> assign (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), true, center);
 
 				else
-					transparentShapes .emplace_back (new ShapeContainer (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), center));
+					transparentShapes .emplace_back (new ShapeContainer (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), true, center));
 
 				++ numTransparentShapes;
 			}
 			else
 			{
 				if (numOpaqueShapes < shapes .size ())
-					shapes [numOpaqueShapes] -> assign (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), center);
+					shapes [numOpaqueShapes] -> assign (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), false, center);
 
 				else
-					shapes .emplace_back (new ShapeContainer (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), center));
+					shapes .emplace_back (new ShapeContainer (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), false, center));
 
 				++ numOpaqueShapes;
 			}

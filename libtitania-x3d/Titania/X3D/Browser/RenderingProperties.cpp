@@ -319,7 +319,7 @@ RenderingProperties::toStream (std::ostream & stream) const
 		<< "\t\tName: " << vendor () .getValue () << ' ' << renderer () .getValue () << std::endl
 		<< "\tOpenGL extension version: " << version () .getValue () << std::endl
 
-		<< "\tRendering properties" << std::endl
+		<< "\tRendering Properties" << std::endl
 		<< "\t\tTexture units: " << textureUnits () << " / " << getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits () << std::endl
 		<< "\t\tMax texture size: " << maxTextureSize () << " × " << maxTextureSize () << " pixel" << std::endl
 		<< "\t\tMax lights: " << maxLights () << std::endl

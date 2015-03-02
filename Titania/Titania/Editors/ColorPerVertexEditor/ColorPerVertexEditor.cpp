@@ -817,6 +817,8 @@ ColorPerVertexEditor::set_colorIndex ()
 	colorButton .setNodes ({ previewColor });
 
 	preview -> getExecutionContext () -> realize ();
+	
+	__LOG__ << previewColor -> isTransparent () << std::endl;
 }
 
 void

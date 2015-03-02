@@ -1,32 +1,31 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/String.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp">
     <Files>
-      <File FileName="Library/Tests/Scripting/pb/pb.x3dv" Line="1" Column="1" />
-      <File FileName="Library/Tests/Scripting/pb/pb1.x3dv" Line="147" Column="1" />
-      <File FileName="Library/Tests/Scripting/Felulet.wrl" Line="40" Column="4" />
-      <File FileName="Library/Tests/PROTO/solaris/WorldProto.wrl" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/PeaseBlossom/Context.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.h" Line="1" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbObject.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.h" Line="84" Column="28" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Parser/Parser.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbFunction.h" Line="1" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/pbFunction.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Standard/String.cpp" Line="81" Column="36" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/Array.h" Line="148" Column="1" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/String.h" Line="108" Column="59" />
-      <File FileName="libtitania-peaseblossom/Titania/PeaseBlossom/Objects/String.cpp" Line="54" Column="28" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/LOD.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/ColorRGBA.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/ShapeContainer.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/ShapeContainer.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="741" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="build" expanded="True" />
+          <Node name="miscellaneous" expanded="True">
+            <Node name="logo" expanded="True">
+              <Node name="website" expanded="True">
+                <Node name="welcome" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True" />
             <Node name="Tests" expanded="True">
+              <Node name="Basic" expanded="True" />
               <Node name="PROTO" expanded="True">
                 <Node name="Particle" expanded="True" />
                 <Node name="solaris" expanded="True" />
@@ -36,64 +35,54 @@
               </Node>
             </Node>
           </Node>
+          <Node name="libtitania-opengl-surface" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="OpenGL" expanded="True">
+                <Node name="Context" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
           <Node name="libtitania-peaseblossom" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="PeaseBlossom" expanded="True">
                 <Node name="Base" expanded="True" />
-                <Node name="Bits" expanded="True" />
-                <Node name="Cache" expanded="True" />
-                <Node name="Execution" expanded="True" />
-                <Node name="Objects" expanded="True">
-                  <Node name="String.h" selected="True" />
-                </Node>
-                <Node name="Parser" expanded="True" />
-                <Node name="Primitives" expanded="True" />
-                <Node name="Standard" expanded="True" />
               </Node>
-            </Node>
-          </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Basic" expanded="True" />
-              <Node name="String" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="tools" expanded="True">
-                  <Node name="library" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Networking" expanded="True" />
+                  <Node name="Rendering" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
-                  <Node name="Scripting" expanded="True" />
-                </Node>
-                <Node name="Execution" expanded="True" />
-                <Node name="JavaScript" expanded="True">
-                  <Node name="PeaseBlossom" expanded="True">
-                    <Node name="Fields" expanded="True" />
+                  <Node name="Geometry2D" expanded="True" />
+                  <Node name="ParticleSystems" expanded="True" />
+                  <Node name="Rendering" expanded="True">
+                    <Node name="X3DGeometryNode.cpp" selected="True" />
                   </Node>
-                  <Node name="SpiderMonkey" expanded="True">
-                    <Node name="Fields" expanded="True" />
-                  </Node>
+                  <Node name="Shape" expanded="True" />
+                  <Node name="Text" expanded="True" />
                 </Node>
-                <Node name="Prototype" expanded="True" />
-                <Node name="Routing" expanded="True" />
+                <Node name="Rendering" expanded="True" />
+                <Node name="Tools" expanded="True">
+                  <Node name="Shape" expanded="True" />
+                </Node>
               </Node>
             </Node>
+          </Node>
+          <Node name="Papers" expanded="True">
+            <Node name="JavaScript" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Browser" expanded="True" />
+              <Node name="Editors" expanded="True">
+                <Node name="ColorPerVertexEditor" expanded="True" />
+              </Node>
               <Node name="Widgets" expanded="True">
                 <Node name="HistoryView" expanded="True" />
                 <Node name="OutlineEditor" expanded="True" />

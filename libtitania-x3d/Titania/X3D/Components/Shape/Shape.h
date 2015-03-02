@@ -131,7 +131,7 @@ private:
 
 	virtual
 	void
-	drawGeometry () final override;
+	drawGeometry (const ShapeContainer* const) final override;
 
 	///  @name Static members
 

@@ -140,6 +140,11 @@ public:
 
 private:
 
+	///  @name Construction
+	
+	void
+	initialize ();
+
 	///  @name Event handlers
 
 	void

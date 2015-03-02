@@ -688,22 +688,14 @@ X3DGeometryNode::transfer ()
 }
 
 void
-X3DGeometryNode::draw ()
+X3DGeometryNode::draw (const ShapeContainer* const context)
 {
-	draw (solid, getBrowser () -> getTexture (), glIsEnabled (GL_LIGHTING));
+	draw (context -> isTransparent (), solid, getBrowser () -> getTexture (), glIsEnabled (GL_LIGHTING));
 }
 
 void
-X3DGeometryNode::draw (const bool solid, const bool texture, const bool lighting)
+X3DGeometryNode::draw (const bool transparent, const bool solid, const bool texture, const bool lighting)
 {
-	if (solid)
-		glEnable (GL_CULL_FACE);
-
-	else
-		glDisable (GL_CULL_FACE);
-
-	glFrontFace (determinant3 (ModelViewMatrix4f ()) > 0 ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
-
 	if (not attribNodes .empty ())
 	{
 		GLint program = 0;
@@ -747,12 +739,56 @@ X3DGeometryNode::draw (const bool solid, const bool texture, const bool lighting
 	glEnableClientState (GL_VERTEX_ARRAY);
 	glVertexPointer (3, GL_FLOAT, 0, 0);
 
-	size_t first = 0;
+	const auto positiveScale = determinant3 (ModelViewMatrix4f ()) > 0;
 
-	for (const auto & element : elements)
+	if (transparent && !solid)
 	{
-		glDrawArrays (element .vertexMode, first, element .count);
-		first += element .count;
+		glEnable (GL_CULL_FACE);
+		glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
+
+		glCullFace (GL_FRONT);
+
+		// Draw
+
+		size_t first = 0;
+
+		for (const auto & element : elements)
+		{
+			glDrawArrays (element .vertexMode, first, element .count);
+			first += element .count;
+		}
+
+		glCullFace (GL_BACK);
+
+		// Draw
+
+		first = 0;
+
+		for (const auto & element : elements)
+		{
+			glDrawArrays (element .vertexMode, first, element .count);
+			first += element .count;
+		}
+	}
+	else
+	{	
+		// Solid & ccw.
+
+		if (solid)
+			glEnable (GL_CULL_FACE);
+
+		else
+			glDisable (GL_CULL_FACE);
+
+		glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
+
+		size_t first = 0;
+
+		for (const auto & element : elements)
+		{
+			glDrawArrays (element .vertexMode, first, element .count);
+			first += element .count;
+		}
 	}
 
 	// VertexAttribs

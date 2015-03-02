@@ -297,7 +297,7 @@ throw (Error <NODE_IN_USE>,
        Error <DISPOSED>)
 {
 	if (namedNodes .count (name))
-		throw Error <NODE_IN_USE> ("Couldn't add named node: Node name '" + name + "' is already in use.");
+		throw Error <NODE_IN_USE> ("Couldn't add named node: node name '" + name + "' is already in use.");
 
 	updateNamedNode (name, node);
 }

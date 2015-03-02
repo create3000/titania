@@ -139,7 +139,7 @@ X3DShapeNode::set_geometry ()
 }
 
 void
-X3DShapeNode::draw ()
+X3DShapeNode::draw (const ShapeContainer* const context)
 {
 	appearanceNode -> draw ();
 
@@ -147,7 +147,7 @@ X3DShapeNode::draw ()
 	{
 		appearanceNode -> getLineProperties () -> enable ();
 		glDisable (GL_LIGHTING);
-		drawGeometry ();
+		drawGeometry (context);
 		disableTextures ();
 		appearanceNode -> getLineProperties () -> disable ();
 	}
@@ -155,7 +155,7 @@ X3DShapeNode::draw ()
 	{
 		if (appearanceNode -> getFillProperties () -> filled ())
 		{
-			drawGeometry ();
+			drawGeometry (context);
 			disableTextures ();
 		}
 
@@ -169,7 +169,7 @@ X3DShapeNode::draw ()
 			if (appearanceNode -> getFillProperties () -> hatched ())
 			{
 				appearanceNode -> getFillProperties () -> enable ();
-				drawGeometry ();
+				drawGeometry (context);
 				appearanceNode -> getFillProperties () -> disable ();
 			}
 		}
@@ -182,7 +182,7 @@ X3DShapeNode::draw ()
 				glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
 
 			appearanceNode -> getLineProperties () -> enable ();
-			drawGeometry ();
+			drawGeometry (context);
 			appearanceNode -> getLineProperties () -> disable ();
 
 			glPolygonMode (GL_FRONT, polygonMode [0]);

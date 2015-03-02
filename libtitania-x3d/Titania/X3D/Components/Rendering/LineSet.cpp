@@ -216,10 +216,10 @@ LineSet::build ()
 }
 
 void
-LineSet::draw ()
+LineSet::draw (const ShapeContainer* const context)
 {
 	glDisable (GL_LIGHTING);
-	X3DGeometryNode::draw ();
+	X3DGeometryNode::draw (context);
 }
 
 SFNode

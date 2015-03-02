@@ -192,7 +192,7 @@ Text::build ()
 }
 
 void
-Text::draw ()
+Text::draw (const ShapeContainer* const)
 {
 	textGeometry -> display ();
 }

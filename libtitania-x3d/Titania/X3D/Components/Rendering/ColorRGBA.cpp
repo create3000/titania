@@ -83,6 +83,15 @@ ColorRGBA::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+ColorRGBA::initialize ()
+{
+	X3DColorNode::initialize ();
+	
+	if (dynamicTransparency)
+		set_color ();
+}
+
+void
 ColorRGBA::setDynamicTransparency (const bool value)
 {
 	dynamicTransparency = value;
@@ -142,6 +151,9 @@ ColorRGBA::set_color ()
 	transparent = std::any_of (color () .begin (),
 	                           color () .end (),
 	                           [ ] (const Color4f & value) { return value .a () < 1; });
+
+	if (isInitialized ())
+		addEvent ();
 }
 
 } // X3D

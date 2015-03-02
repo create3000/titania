@@ -121,8 +121,8 @@ public:
 
 	virtual
 	void
-	draw () final override
-	{ return getNode () -> draw (); }
+	draw (const ShapeContainer* const context) final override
+	{ return getNode () -> draw (context); }
 
 	virtual
 	void

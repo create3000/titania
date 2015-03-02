@@ -219,13 +219,13 @@ Shape::pointer ()
 void
 Shape::drawCollision ()
 {
-	getGeometry () -> draw (false, false, false);
+	getGeometry () -> draw (false, false, false, false);
 }
 
 void
-Shape::drawGeometry ()
+Shape::drawGeometry (const ShapeContainer* const context)
 {
-	getGeometry () -> draw ();
+	getGeometry () -> draw (context);
 }
 
 void

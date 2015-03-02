@@ -72,6 +72,7 @@ public:
 	                const CollectableObjectArray &,
 	                const Vector4i &,
 	                const Matrix4f &,
+	                const bool,
 	                const float);
 
 	void
@@ -80,11 +81,16 @@ public:
 	        const CollectableObjectArray &,
 	        const Vector4i &,
 	        const Matrix4f &,
+	        const bool,
 	        const float);
 
 	X3DShapeNode*
 	getShape () const
 	{ return shape; }
+
+	bool
+	isTransparent () const
+	{ return transparent; }
 
 	float
 	getDistance () const
@@ -101,6 +107,7 @@ private:
 	CollectableObjectArray localObjects;
 	Vector4i               scissor;
 	Matrix4f               matrix;
+	bool                   transparent;
 	float                  distance;
 
 };

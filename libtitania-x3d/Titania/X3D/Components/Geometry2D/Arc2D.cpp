@@ -160,10 +160,10 @@ Arc2D::build ()
 }
 
 void
-Arc2D::draw ()
+Arc2D::draw (const ShapeContainer* const context)
 {
 	glDisable (GL_LIGHTING);
-	X3DGeometryNode::draw ();
+	X3DGeometryNode::draw (context);
 }
 
 SFNode

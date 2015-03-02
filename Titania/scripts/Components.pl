@@ -24,11 +24,11 @@ foreach my $node ($nodes -> get_groups ())
 	say $node;
 
 	my $componentName = $nodes -> get_string ($node, "componentName");
-	
+
 	system "mkdir", "-p", "$components/$componentName";
-	
+
 	open FILE, ">", "$components/$componentName/$node.x3dv";
-	
+
 	print FILE "#X3D V3.3 utf8 Titania
 
 $node { }

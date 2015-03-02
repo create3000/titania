@@ -13,7 +13,7 @@ $keyFile -> load_from_data (join ("", `titania-info -f 2>/dev/null`), "none");
 
 foreach my $name ($keyFile -> get_groups ())
 {
-	say $name;	
+	say $name;
 
 	next if $name eq "Fields.pl";
 
@@ -57,8 +57,8 @@ function set_triggerTime (value, time)
 	my $extern_prototypes = "/home/holger/Projekte/Titania/Titania/share/titania/Library/Prototypes/Fields";
 
 	system "mkdir", "-p", $extern_prototypes;
-	
-	
+
+
 	my $externproto = "$extern_prototypes/$name.x3dv";
 
 	open FILE, ">", $externproto;
@@ -83,4 +83,3 @@ $name { }
 
 	system "x3dtidy", $externproto, $externproto;
 }
-

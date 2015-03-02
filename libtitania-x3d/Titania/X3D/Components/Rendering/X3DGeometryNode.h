@@ -64,6 +64,8 @@
 namespace titania {
 namespace X3D {
 
+class ShapeContainer;
+
 class X3DGeometryNode :
 	virtual public X3DNode
 {
@@ -136,11 +138,11 @@ public:
 
 	virtual
 	void
-	draw ();
+	draw (const ShapeContainer* const);
 
 	// Used in CollisionShape
 	void
-	draw (const bool, const bool, const bool);
+	draw (const bool, const bool, const bool, const bool);
 
 	virtual
 	SFNode
