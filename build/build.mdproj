@@ -40,9 +40,6 @@
     <None Include="..\NEWS">
       <Link>NEWS</Link>
     </None>
-    <None Include="..\README">
-      <Link>README</Link>
-    </None>
     <None Include="..\debian\changelog">
       <Link>debian\changelog</Link>
     </None>
@@ -76,6 +73,7 @@
     <None Include="..\debian\postrm">
       <Link>debian\postrm</Link>
     </None>
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />

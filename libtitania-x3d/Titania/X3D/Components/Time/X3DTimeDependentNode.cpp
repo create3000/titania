@@ -84,7 +84,7 @@ X3DTimeDependentNode::X3DTimeDependentNode () :
 	   pauseTimeout (),
 	  resumeTimeout (),
 	    stopTimeout (),
-	       evenLive (),
+	       evenLive (false),
 	       disabled (false)
 {
 	addType (X3DConstants::X3DTimeDependentNode);

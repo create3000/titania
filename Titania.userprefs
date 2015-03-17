@@ -1,19 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/LOD.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/ColorRGBA.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="821" Column="58" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/ColorRGBA.cpp" Line="154" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/ShapeContainer.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/ShapeContainer.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="741" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="765" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
+        <State expanded="True" selected="True">
           <Node name="miscellaneous" expanded="True">
             <Node name="logo" expanded="True">
               <Node name="website" expanded="True">
@@ -61,9 +61,7 @@
                   <Node name="Core" expanded="True" />
                   <Node name="Geometry2D" expanded="True" />
                   <Node name="ParticleSystems" expanded="True" />
-                  <Node name="Rendering" expanded="True">
-                    <Node name="X3DGeometryNode.cpp" selected="True" />
-                  </Node>
+                  <Node name="Rendering" expanded="True" />
                   <Node name="Shape" expanded="True" />
                   <Node name="Text" expanded="True" />
                 </Node>
