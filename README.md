@@ -11,3 +11,12 @@ It can be used as a simple 3D viewer for .wrl files, as high quality 3D animatio
 Furthermore this package includes x3dtidy, an easy to use X3D/VRML beautifier.
 
 For more information please visit [http://titania.create3000.de](http://titania.create3000.de).
+
+Installation
+--------------------------------------
+
+cd Titania
+./autogen.sh --enable-release --prefix=`/usr/local/
+./configure
+make -j4
+make install

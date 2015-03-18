@@ -1,25 +1,29 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="README.md">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/LOD.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="821" Column="58" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/ColorRGBA.cpp" Line="154" Column="1" />
+      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/ColorRGBA.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/ShapeContainer.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/ShapeContainer.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="765" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="1" Column="1" />
+      <File FileName="README.md" Line="14" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
+        <State expanded="True">
           <Node name="miscellaneous" expanded="True">
             <Node name="logo" expanded="True">
               <Node name="website" expanded="True">
                 <Node name="welcome" expanded="True" />
               </Node>
             </Node>
+          </Node>
+          <Node name="build" expanded="True">
+            <Node name="README.md" selected="True" />
           </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
