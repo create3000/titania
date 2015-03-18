@@ -15,8 +15,10 @@ For more information please visit [http://titania.create3000.de](http://titania.
 Installation
 --------------------------------------
 
+```bash
 cd Titania
 ./autogen.sh --enable-release --prefix=`/usr/local/
 ./configure
 make -j4
 make install
+```
