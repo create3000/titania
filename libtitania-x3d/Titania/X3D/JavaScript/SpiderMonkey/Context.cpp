@@ -622,7 +622,7 @@ Context::prepareEvents ()
 void
 Context::set_field (X3D::X3DFieldDefinition* const field, const jsval & function)
 {
-	field -> isTainted (cx);
+	field -> isTainted (true);
 
 	jsval argv [2];
 

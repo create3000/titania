@@ -9,10 +9,10 @@
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/ShapeContainer.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/ShapeContainer.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="753" Column="17" />
-      <File FileName="README.md" Line="9" Column="64" />
-      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp" Line="124" Column="17" />
-      <File FileName="debian/rules" Line="26" Column="69" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="1" Column="1" />
+      <File FileName="README.md" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp" Line="1" Column="1" />
+      <File FileName="debian/rules" Line="10" Column="7" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -38,7 +38,9 @@
               <Node name="titania" expanded="True" />
             </Node>
           </Node>
-          <Node name="x3d2vrml" expanded="True" />
+          <Node name="x3d2vrml" expanded="True">
+            <Node name="bin" expanded="True" />
+          </Node>
           <Node name="x3dtidy" expanded="True" />
         </State>
       </Pad>

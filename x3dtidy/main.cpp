@@ -138,7 +138,9 @@ main (int argc, char** argv)
 
 			if (options .getArgc () > 1)
 			{
-				std::string tmpFilename = "/tmp/x3dtidy." + basic::to_string (getpid ()) + uri .suffix ();
+				basic::uri out = options .getArgv (1);
+
+				std::string tmpFilename = "/tmp/x3dtidy." + basic::to_string (getpid ()) + out .suffix ();
 
 				try
 				{
@@ -146,7 +148,7 @@ main (int argc, char** argv)
 
 					// Create temp file
 
-					if (uri .suffix () == ".x3d")
+					if (out .suffix () == ".x3d")
 						file << X3D::XMLEncode (browser -> createX3DFromURL ({ uri .str () }));
 
 					else
