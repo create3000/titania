@@ -543,6 +543,8 @@ sub node {
 sub cdata {
 	my ($self, $xml, $node) = @_;
 
+	return if $xml -> getValue () =~ /^\s*$/sgo; # BUG: sometimes there are phantom cdata.
+
 	my $fieldIndex = $node -> {fieldIndex};
 
 	if ($fieldIndex -> {url})

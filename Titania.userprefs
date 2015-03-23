@@ -1,6 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="README.md">
+  <MonoDevelop.Ide.Workbench ActiveDocument="debian/rules">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/LOD.cpp" Line="1" Column="1" />
@@ -9,88 +9,36 @@
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/ShapeContainer.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/ShapeContainer.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="1" Column="1" />
-      <File FileName="README.md" Line="14" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="753" Column="17" />
+      <File FileName="README.md" Line="9" Column="64" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp" Line="124" Column="17" />
+      <File FileName="debian/rules" Line="26" Column="69" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="miscellaneous" expanded="True">
-            <Node name="logo" expanded="True">
-              <Node name="website" expanded="True">
-                <Node name="welcome" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
           <Node name="build" expanded="True">
-            <Node name="README.md" selected="True" />
-          </Node>
-          <Node name="experimental" expanded="True" />
-          <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True" />
-            <Node name="Tests" expanded="True">
-              <Node name="Basic" expanded="True" />
-              <Node name="PROTO" expanded="True">
-                <Node name="Particle" expanded="True" />
-                <Node name="solaris" expanded="True" />
-              </Node>
-              <Node name="Scripting" expanded="True">
-                <Node name="pb" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-          <Node name="libtitania-opengl-surface" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="OpenGL" expanded="True">
-                <Node name="Context" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-          <Node name="libtitania-peaseblossom" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="PeaseBlossom" expanded="True">
-                <Node name="Base" expanded="True" />
-              </Node>
+            <Node name="debian" expanded="True">
+              <Node name="rules" selected="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="X3D" expanded="True">
-                <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Networking" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
-                </Node>
-                <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Geometry2D" expanded="True" />
-                  <Node name="ParticleSystems" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
-                  <Node name="Shape" expanded="True" />
-                  <Node name="Text" expanded="True" />
-                </Node>
-                <Node name="Rendering" expanded="True" />
-                <Node name="Tools" expanded="True">
-                  <Node name="Shape" expanded="True" />
-                </Node>
+            <Node name="share" expanded="True">
+              <Node name="icons" expanded="True">
+                <Node name="hicolor" expanded="True" />
               </Node>
+              <Node name="titania" expanded="True" />
             </Node>
           </Node>
           <Node name="Papers" expanded="True">
             <Node name="JavaScript" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Browser" expanded="True" />
-              <Node name="Editors" expanded="True">
-                <Node name="ColorPerVertexEditor" expanded="True" />
-              </Node>
-              <Node name="Widgets" expanded="True">
-                <Node name="HistoryView" expanded="True" />
-                <Node name="OutlineEditor" expanded="True" />
-              </Node>
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True" />
             </Node>
           </Node>
+          <Node name="x3d2vrml" expanded="True" />
           <Node name="x3dtidy" expanded="True" />
         </State>
       </Pad>
