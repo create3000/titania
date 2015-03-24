@@ -1,3 +1,11 @@
+2015-03-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* ChangeLog:
+	* plugin.cpp:
+	* Makefile.am:
+	* Makefile.in:
+	* libtitania-mozilla.cproj: 
+
 2015-03-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Titania.userprefs: 

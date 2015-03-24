@@ -1,6 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="debian/rules">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/LOD.cpp" Line="1" Column="1" />
@@ -13,14 +13,13 @@
       <File FileName="README.md" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp" Line="1" Column="1" />
       <File FileName="debian/rules" Line="10" Column="7" />
+      <File FileName="x3dtidy/main.cpp" Line="14" Column="66" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
+        <State expanded="True" selected="True">
           <Node name="build" expanded="True">
-            <Node name="debian" expanded="True">
-              <Node name="rules" selected="True" />
-            </Node>
+            <Node name="debian" expanded="True" />
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">

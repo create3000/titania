@@ -10,7 +10,6 @@ SUBDIRS =  \
 	libtitania-opengl-surface \
 	libtitania-peaseblossom \
 	libtitania-x3d \
-	libtitania-mozilla \
 	Titania \
 	titania-info \
 	x3dtidy

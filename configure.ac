@@ -143,9 +143,6 @@ PKG_CHECK_MODULES(TITANIA_STANDARD,
 giomm-2.4
 glibmm-2.4)
 
-PKG_CHECK_MODULES(TITANIA_MOZILLA, 
-mozilla-plugin)
-
 
 AC_OUTPUT([
 libtitania-standard/Makefile
@@ -156,7 +153,6 @@ libtitania-gzstream/Makefile
 libtitania-opengl-surface/Makefile
 libtitania-peaseblossom/Makefile
 libtitania-x3d/Makefile
-libtitania-mozilla/Makefile
 Titania/Makefile
 titania-info/Makefile
 x3dtidy/Makefile
