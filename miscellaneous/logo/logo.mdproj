@@ -66,6 +66,8 @@
     <None Include="website\welcome\index.html" />
     <None Include="website\welcome\welcome.html" />
     <None Include="website\welcome\welcome.x3d" />
+    <None Include="logo.mdproj" />
+    <None Include="logo.pidb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="website\" />

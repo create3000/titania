@@ -52,5 +52,7 @@
     <None Include="g++" />
     <None Include="process-server" />
     <None Include="com.ProcessServer.service" />
+    <None Include="g++parallel.mdproj" />
+    <None Include="g++parallel.pidb" />
   </ItemGroup>
 </Project>

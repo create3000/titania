@@ -144,6 +144,8 @@
     <None Include="Titania\Math\Algorithms\SAT.h" />
     <None Include="Titania\Math\Utility\almost_equal.h" />
     <None Include="Titania\String\dtoa.h" />
+    <None Include="Makefile.in" />
+    <None Include="libtitania-standard.cproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

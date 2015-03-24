@@ -16,5 +16,7 @@
     <None Include="glade2c++.pl" />
     <None Include="Glade2Cpp.pm" />
     <None Include="generate.sh" />
+    <None Include="glade2c++.mdproj" />
+    <None Include="glade2c++.pidb" />
   </ItemGroup>
 </Project>

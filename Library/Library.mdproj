@@ -2389,6 +2389,8 @@
     <None Include="Tests\PROTO\solaris\sphere-blue.wrl" />
     <None Include="Tests\PROTO\solaris\sphere.wrl" />
     <None Include="Tests\PROTO\solaris\util-mark6.png" />
+    <None Include="Library.mdproj" />
+    <None Include="Library.pidb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

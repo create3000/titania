@@ -187,5 +187,6 @@
     <None Include="Titania\PeaseBlossom\Objects\Number.h" />
     <None Include="Titania\PeaseBlossom\Objects\Boolean.h" />
     <None Include="Titania\PeaseBlossom\Standard\String.h" />
+    <None Include="Makefile.in" />
   </ItemGroup>
 </Project>

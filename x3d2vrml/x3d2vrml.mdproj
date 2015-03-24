@@ -28,5 +28,6 @@
     <None Include="bin\x3d2vrml" />
     <None Include="share\titania\info\field-index.txt" />
     <None Include="share\titania\info\node-index.txt" />
+    <None Include="x3d2vrml.mdproj" />
   </ItemGroup>
 </Project>

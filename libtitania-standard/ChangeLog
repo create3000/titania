@@ -1,3 +1,8 @@
+2015-03-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.in:
+	* libtitania-standard.cproj: 
+
 2015-02-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

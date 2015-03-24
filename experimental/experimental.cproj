@@ -59,6 +59,9 @@
     <None Include="OddEvenMergeSort.h" />
     <None Include="URI.h" />
     <None Include="EmptyCHeaderFile.h" />
+    <None Include="Makefile.in" />
+    <None Include="experimental.cproj" />
+    <None Include="experimental.pidb" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

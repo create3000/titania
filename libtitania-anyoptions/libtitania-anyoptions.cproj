@@ -48,6 +48,9 @@
     <None Include="anyoption.h" />
     <None Include="libtitania-anyoptions.md.pc" />
     <None Include="Makefile.am" />
+    <None Include="Makefile.in" />
+    <None Include="libtitania-anyoptions.cproj" />
+    <None Include="libtitania-anyoptions.pidb" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

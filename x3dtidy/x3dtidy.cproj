@@ -89,5 +89,8 @@
   <ItemGroup>
     <None Include="Makefile.am" />
     <None Include="run.pl" />
+    <None Include="Makefile.in" />
+    <None Include="x3dtidy.cproj" />
+    <None Include="x3dtidy.pidb" />
   </ItemGroup>
 </Project>

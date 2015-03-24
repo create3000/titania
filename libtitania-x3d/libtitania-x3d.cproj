@@ -751,6 +751,9 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DProtoDeclaration.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DRoute.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DScene.h" />
+    <None Include="Makefile.in" />
+    <None Include="libtitania-x3d.cproj" />
+    <None Include="libtitania-x3d.pidb" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

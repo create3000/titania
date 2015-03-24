@@ -247,6 +247,8 @@
     <None Include="Wavefront.txt" />
     <None Include="Separating Axis Theorem for Oriented Bounding Boxes.pdf" />
     <None Include="JavaScript\V8.h" />
+    <None Include="Papers.mdproj" />
+    <None Include="Papers.pidb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

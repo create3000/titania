@@ -54,5 +54,7 @@
     <None Include="uncrustify.cfg" />
     <None Include="uncrustify_all.pl" />
     <None Include="rename-header-guards.pl" />
+    <None Include="uncrustify-all.mdproj" />
+    <None Include="uncrustify-all.pidb" />
   </ItemGroup>
 </Project>

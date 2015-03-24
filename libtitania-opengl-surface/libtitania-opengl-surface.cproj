@@ -5,28 +5,30 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{277BAB61-D2B7-44BF-AEF2-06E328D7830F}</ProjectGuid>
+    <ProjectGuid>{4D150C3C-1AA0-4470-B933-6EDA64083897}</ProjectGuid>
     <Target>SharedLibrary</Target>
     <Language>CPP</Language>
     <Compiler>
       <Compiler ctype="GppCompiler" />
     </Compiler>
-    <ReleaseVersion>0.3</ReleaseVersion>
     <Packages>
       <Packages>
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/sqlite3.pc" name="SQLite" IsProject="False" />
+        <Package file="/usr/lib/pkgconfig/gtkmm-3.0.pc" name="gtkmm" IsProject="False" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/gl.pc" name="gl" IsProject="False" />
+        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/glew.pc" name="glew" IsProject="False" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="True" />
       </Packages>
     </Packages>
+    <ReleaseVersion>0.3</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug</OutputPath>
     <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
     <SourceDirectory>.</SourceDirectory>
-    <OutputName>libtitania-sqlite</OutputName>
+    <OutputName>libtitania-opengl-surface</OutputName>
     <CompileTarget>SharedLibrary</CompileTarget>
     <WarningLevel>All</WarningLevel>
-    <WarningsAsErrors>true</WarningsAsErrors>
     <OptimizationLevel>3</OptimizationLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -34,42 +36,52 @@
     <DefineSymbols>MONODEVELOP</DefineSymbols>
     <SourceDirectory>.</SourceDirectory>
     <OptimizationLevel>3</OptimizationLevel>
-    <OutputName>libtitania-sqlite</OutputName>
+    <OutputName>libtitania-opengl-surface</OutputName>
     <CompileTarget>SharedLibrary</CompileTarget>
+    <WarningLevel>All</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Parallel|AnyCPU' ">
-    <OutputPath>.</OutputPath>
+    <SourceDirectory>.</SourceDirectory>
+    <OutputPath>bin\Parallel</OutputPath>
+    <WarningLevel>All</WarningLevel>
+    <OutputName>libtitania-opengl-surface</OutputName>
+    <OptimizationLevel>3</OptimizationLevel>
+    <DefineSymbols>MONODEVELOP _GLIBCXX_PARALLEL</DefineSymbols>
     <CompileTarget>SharedLibrary</CompileTarget>
-    <OutputName />
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
-    <Folder Include="Titania\SQL\" />
+    <Folder Include="Titania\OpenGL\" />
+    <Folder Include="Titania\OpenGL\Context\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Titania\OpenGL\Context\WindowContext.cpp" />
+    <Compile Include="Titania\OpenGL\Surface.cpp" />
+    <Compile Include="Titania\OpenGL\Context\Context.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="info.h" />
-    <None Include="Titania\SQL\SQLite3.h" />
-    <None Include="libtitania-sqlite.md.pc" />
+    <None Include="Titania\OpenGL\Context\WindowContext.h" />
+    <None Include="libtitania-opengl-surface.md.pc" />
+    <None Include="Titania\OpenGL\Surface.h" />
+    <None Include="Titania\OpenGL\Context\Context.h" />
     <None Include="Makefile.am" />
     <None Include="Makefile.in" />
-    <None Include="libtitania-sqlite.cproj" />
-    <None Include="libtitania-sqlite.pidb" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Titania\SQL\SQLite3.cpp" />
+    <None Include="libtitania-opengl-canvas.pidb" />
+    <None Include="libtitania-opengl-surface.cproj" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
         <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" ParallelProcesses="4" IsAutotoolsProject="True" RelativeConfigureInPath="..">
-          <BuildFilesVar Sync="True" Name="libtitania_sqlite_la_SOURCES" />
+          <BuildFilesVar Sync="True" Name="libtitania_opengl_surface_la_SOURCES" />
           <DeployFilesVar />
-          <ResourcesVar />
+          <ResourcesVar Name="libtitania_opengl_surface_la_LIBADD" />
           <OthersVar />
           <GacRefVar />
           <AsmRefVar />
           <ProjectRefVar />
-          <MessageRegex Name="gcc" />
+          <MessageRegex Error="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*error\s*:\s(?&lt;message&gt;.*)" Warning="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(warning|note)\s*:\s(?&lt;message&gt;.*)" Name="Custom" />
         </MonoDevelop.Autotools.MakefileInfo>
       </Properties>
     </MonoDevelop>

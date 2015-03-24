@@ -76,6 +76,15 @@
     <None Include="..\README.md">
       <Link>README.md</Link>
     </None>
+    <None Include="..\Makefile.in">
+      <Link>Makefile.in</Link>
+    </None>
+    <None Include="..\Titania.userprefs">
+      <Link>Titania.userprefs</Link>
+    </None>
+    <None Include="..\Titania.usertasks">
+      <Link>Titania.usertasks</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />

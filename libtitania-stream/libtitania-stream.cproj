@@ -49,6 +49,9 @@
     <None Include="Titania\Stream\GZFilterBuf.h" />
     <None Include="Titania\Stream\Base64.h" />
     <None Include="Grammar.h" />
+    <None Include="Makefile.in" />
+    <None Include="libtitania-stream.cproj" />
+    <None Include="libtitania-stream.pidb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

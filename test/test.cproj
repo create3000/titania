@@ -96,6 +96,9 @@
     <None Include="Tests\Clock.h" />
     <None Include="Tests\Interest.h" />
     <None Include="Makefile.am" />
+    <None Include="Makefile.in" />
+    <None Include="test.cproj" />
+    <None Include="test.pidb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="obsolete\" />

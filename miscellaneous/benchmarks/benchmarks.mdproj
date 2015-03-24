@@ -38,4 +38,8 @@
   <ItemGroup>
     <Compile Include="save.pl" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="benchmarks.mdproj" />
+    <None Include="benchmarks.pidb" />
+  </ItemGroup>
 </Project>

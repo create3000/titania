@@ -40,6 +40,8 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="Makefile.am" />
+    <None Include="Makefile.in" />
+    <None Include="libtitania-mozilla.cproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="plugin.cpp" />

@@ -74,5 +74,8 @@
   </ProjectExtensions>
   <ItemGroup>
     <None Include="Makefile.am" />
+    <None Include="Makefile.in" />
+    <None Include="titania-info.cproj" />
+    <None Include="titania-info.pidb" />
   </ItemGroup>
 </Project>
