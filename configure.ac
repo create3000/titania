@@ -84,6 +84,7 @@ CXXFLAGS="-Wall -std=c++11 -O3 -fopenmp -Wno-pmf-conversions -Wno-narrowing"
 
 if test "x$enable_release" = "xyes" ; then
 	dnl ******* add "-flto" flag (link time optimization) to CXXFLAGS or LDFLAGS if it is working
+	CXXFLAGS=$CXXFLAGS" "
 fi
 
 if test "x$enable_parallel" = "xyes" ; then
