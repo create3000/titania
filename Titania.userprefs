@@ -2,45 +2,23 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/LOD.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/ColorRGBA.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/ShapeContainer.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/ShapeContainer.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="1" Column="1" />
-      <File FileName="README.md" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp" Line="1" Column="1" />
-      <File FileName="debian/rules" Line="10" Column="7" />
-      <File FileName="x3dtidy/main.cpp" Line="14" Column="66" />
+      <File FileName="debian/rules" Line="25" Column="28" />
+      <File FileName="configure.ac" Line="160" Column="14" />
+      <File FileName="Makefile.am" Line="17" Column="1" />
+      <File FileName="x3d2vrml/Makefile.am" Line="7" Column="1" />
+      <File FileName="Titania/Makefile.am" Line="170" Column="1" />
+      <File FileName="libtitania-x3d/Makefile.am" Line="507" Column="30" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
-          <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
-          </Node>
-          <Node name="libtitania-x3d" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="icons" expanded="True">
-                <Node name="hicolor" expanded="True" />
+        <State expanded="True">
+          <Node name="Library" expanded="True">
+            <Node name="Examples" expanded="True">
+              <Node name="Vattenfall" expanded="True">
+                <Node name="stage" expanded="True" />
               </Node>
-              <Node name="titania" expanded="True" />
             </Node>
           </Node>
-          <Node name="Papers" expanded="True">
-            <Node name="JavaScript" expanded="True" />
-          </Node>
-          <Node name="Titania" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="x3d2vrml" expanded="True">
-            <Node name="bin" expanded="True" />
-          </Node>
-          <Node name="x3dtidy" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
