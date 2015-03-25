@@ -29,5 +29,7 @@
     <None Include="share\titania\info\field-index.txt" />
     <None Include="share\titania\info\node-index.txt" />
     <None Include="x3d2vrml.mdproj" />
+    <None Include="Makefile.am" />
+    <None Include="Makefile.in" />
   </ItemGroup>
 </Project>

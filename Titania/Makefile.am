@@ -163,5 +163,10 @@ AM_CPPFLAGS = $(TITANIA_CFLAGS) \
 	-I$(top_builddir)/libtitania-standard \
 	-I$(top_builddir)/libtitania-stream
 
+install-exec-hook:
+	cp -r share/ $(prefix)/
+	find $(prefix)/share/ -type d -exec chmod 755 {} \;
+	find $(prefix)/share/ -type f -exec chmod 644 {} \;
+
 run:
 	$(builddir)/run.pl 2>&1 | $(builddir)/../miscellaneous/benchmarks/save.pl
