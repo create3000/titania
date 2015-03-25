@@ -47,7 +47,7 @@ fi
 
 AC_ARG_ENABLE(parallel,
 	AC_HELP_STRING([--enable-parallel],
-		[Use 'PARALLE' Configuration [default=NO]]),
+		[Use 'PARALLEL' Configuration [default=NO]]),
 		enable_parallel=yes, enable_parallel=no)
 
 AM_CONDITIONAL(ENABLE_PARALLEL, test x$enable_parallel = xyes)
