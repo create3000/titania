@@ -1,3 +1,48 @@
+2015-03-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Papers.mdproj:
+	* NEWS:
+	* README:
+	* missing:
+	* depcomp:
+	* COPYING:
+	* INSTALL:
+	* AUTHORS:
+	* npunix.c:
+	* ltmain.sh:
+	* configure:
+	* npshell.c:
+	* ChangeLog:
+	* install-sh:
+	* aclocal.m4:
+	* config.sub:
+	* diamondx.c:
+	* diamondx.h:
+	* Makefile.am:
+	* Makefile.in:
+	* config.h.in:
+	* config.guess:
+	* configure.ac:
+	* jni.h:
+	* jri.h:
+	* index.htm:
+	* index.html:
+	* npapi.h:
+	* Makefile.am:
+	* Makefile.in:
+	* a.diamondx:
+	* npupp.h:
+	* Makefile.am:
+	* diamondx.png:
+	* jni_md.h:
+	* Makefile.in:
+	* jri_md.h:
+	* nptypes.h:
+	* jritypes.h:
+	* npruntime.h:
+	* diamondx-in-browser.png:
+	* diamondx-plugin-info.png: 
+
 2015-03-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Papers.mdproj: 

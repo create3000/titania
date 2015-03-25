@@ -85,6 +85,9 @@
     <None Include="..\Titania.usertasks">
       <Link>Titania.usertasks</Link>
     </None>
+    <None Include="..\README">
+      <Link>README</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />

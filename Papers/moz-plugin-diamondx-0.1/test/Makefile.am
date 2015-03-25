@@ -1,1 +1,0 @@
-EXTRA_DIST = index.htm a.diamondx
