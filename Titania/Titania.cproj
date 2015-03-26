@@ -1781,6 +1781,7 @@
     <None Include="Makefile.in" />
     <None Include="Titania.cproj" />
     <None Include="Titania.pidb" />
+    <None Include="Titania\ComposedWidgets\SFRotationAdjustment.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

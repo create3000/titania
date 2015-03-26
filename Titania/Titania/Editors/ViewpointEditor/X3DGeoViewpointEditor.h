@@ -92,7 +92,7 @@ private:
 
 	std::unique_ptr <MFStringGeoSystem>   geoSystem;
 	X3DFieldAdjustment3 <X3D::SFVec3d>    position;
-	X3DFieldAdjustment4 <X3D::SFRotation> orientation;
+	SFRotationAdjustment                  orientation;
 	std::unique_ptr <RotationTool>        orientationTool;	
 	X3DFieldAdjustment3 <X3D::SFVec3d>    centerOfRotation;
 	X3DFieldAdjustment <X3D::SFFloat>     fieldOfView;

@@ -1,5 +1,16 @@
 2015-03-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Titania.cproj:
+	* ComposedWidgets.h:
+	* SFRotationAdjustment.h:
+	* X3DViewpointEditor.h:
+	* X3DGeoViewpointEditor.h:
+	* X3DOrthoViewpointEditor.h:
+	* X3DTransformEditor.h:
+	* X3DGeoTransformEditor.h: 
+
+2015-03-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* PrecisionPlacementPanel.cpp: 
 
 2015-03-26  Holger Seelig  <holger.seelig@yahoo.de>

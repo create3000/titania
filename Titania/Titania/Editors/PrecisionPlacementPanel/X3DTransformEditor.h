@@ -54,6 +54,7 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
+
 namespace titania {
 namespace puck {
 
@@ -99,10 +100,10 @@ private:
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f>    translation;
-	X3DFieldAdjustment4 <X3D::SFRotation> rotation;
+	SFRotationAdjustment                  rotation;
 	std::unique_ptr <RotationTool>        rotationTool;	
 	X3DFieldAdjustment3 <X3D::SFVec3f>    scale;
-	X3DFieldAdjustment4 <X3D::SFRotation> scaleOrientation;
+	SFRotationAdjustment                  scaleOrientation;
 	std::unique_ptr <RotationTool>        scaleOrientationTool;	
 	X3DFieldAdjustment3 <X3D::SFVec3f>    center;
 

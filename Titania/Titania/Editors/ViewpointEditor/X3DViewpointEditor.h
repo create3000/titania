@@ -90,7 +90,7 @@ private:
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f>    position;
-	X3DFieldAdjustment4 <X3D::SFRotation> orientation;
+	SFRotationAdjustment                  orientation;
 	std::unique_ptr <RotationTool>        orientationTool;	
 	X3DFieldAdjustment3 <X3D::SFVec3f>    centerOfRotation;
 	X3DFieldAdjustment <X3D::SFFloat>     fieldOfView;

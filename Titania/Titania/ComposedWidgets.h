@@ -55,6 +55,7 @@
 #include "ComposedWidgets/NameEntry.h"
 #include "ComposedWidgets/SFColorButton.h"
 #include "ComposedWidgets/SFColorRGBAButton.h"
+#include "ComposedWidgets/SFRotationAdjustment.h"
 #include "ComposedWidgets/SFStringComboBoxText.h"
 #include "ComposedWidgets/SFStringTextView.h"
 #include "ComposedWidgets/X3DFieldAdjustment.h"
