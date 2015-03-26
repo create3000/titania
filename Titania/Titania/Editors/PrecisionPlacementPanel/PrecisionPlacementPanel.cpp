@@ -94,7 +94,7 @@ PrecisionPlacementPanel::initialize ()
 	X3DViewportEditor::initialize ();
 	X3DGeoTransformEditor::initialize ();
 	X3DGeoLocationEditor::initialize ();
-	
+
 	getBBoxUniformSizeButton () .set_active (getConfig () .getBoolean ("bboxUniformSize"));
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &PrecisionPlacementPanel::set_selection);
