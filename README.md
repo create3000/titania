@@ -35,6 +35,7 @@ Titania wouldn't be possible without parts of program code or inspiration from o
 * [X3D-Edit](https://savage.nps.edu/X3D-Edit/)
 * [Coin 3D](https://bitbucket.org/Coin3D/coin/wiki/Home)
 * [SGI Open Inventor](http://oss.sgi.com/projects/inventor/)
+* [SGI Standard Template Library](https://www.sgi.com/tech/stl/)
 * [GraphicsGems](http://tog.acm.org/resources/GraphicsGems/)
 * [Perl Quaternion](http://search.cpan.org/~jchin/Math-Quaternion-0.02/lib/Math/Quaternion.pm)
 * [Natural Sort](https://github.com/jjk-jacky/natsort)
