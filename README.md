@@ -37,11 +37,16 @@ Titania wouldn't be possible without parts of program code or inspiration from o
 * [SGI Open Inventor](http://oss.sgi.com/projects/inventor/)
 * [GraphicsGems](http://tog.acm.org/resources/GraphicsGems/)
 * [Perl Quaternion](http://search.cpan.org/~jchin/Math-Quaternion-0.02/lib/Math/Quaternion.pm)
+* Etienne Lachance <etienne.lachance@polymtl.ca> for quaternion.cpp
 * [Natural Sort](https://github.com/jjk-jacky/natsort)
 * [Chromium Browser](https://www.chromium.org/)
 * [NVidia](http://www.nvidia.de/page/home.html)
 * [Mozilla Foundation](https://www.mozilla.org/de/)
+* [Deepak Bandyopadhyay, Lutz Kettner](http://www.cs.unc.edu/Research/compgeom/gzstream/) for gzstream
+* [kishan at hackorama dot com](www.hackorama.com) for AnyOptions
 * Max Wagner <mwagner@digipen.edu> for his paper »Generating Vertex Normals«
-* [Silvio Borchard](http://www.union3d.net/), who build most examples that comes with Titania
+* Johnny Huynh for his paper »Separating Axis Theorem for Oriented Bounding Boxes«
+* Erik B. Dam <erikdam@diku.dk>, Martin Koch <myth@diku.dk> und Martin Lillholm <grumse@diku.dk> for their paper »Quaternions, Interpolation and Animation«
+* [Silvio Borchard](http://www.union3d.net/), who build most examples world that comes with Titania
 
 And all others not listed here.
