@@ -42,6 +42,6 @@ Titania wouldn't be possible without parts of program code or inspiration from o
 * [NVidia](http://www.nvidia.de/page/home.html)
 * [Mozilla Foundation](https://www.mozilla.org/de/)
 * Max Wagner <mwagner@digipen.edu> for his paper »Generating Vertex Normals«
-* Silvio Borchard
+* [Silvio Borchard](http://www.union3d.net/), who build most examples that comes with Titania
 
 And all others not listed here.
