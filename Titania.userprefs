@@ -1,25 +1,37 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Layout/LayoutGroupTool.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Base/X3DBaseInterface.cpp" Line="1" Column="1" />
-      <File FileName="experimental/main.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.h" Line="106" Column="39" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp" Line="70" Column="74" />
-      <File FileName="Titania/Titania/ComposedWidgets/SFRotationAdjustment.h" Line="224" Column="36" />
-      <File FileName="libtitania-x3d/share/titania/tools/TransformTool.x3dv" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Layout/LayoutGroupTool.h" Line="143" Column="5" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/ComposedWidgets/SFRotationAdjustment.h" Line="239" Column="1" />
+      <File FileName="README.md" Line="36" Column="29" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
+        <State expanded="True" selected="True">
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True" />
+            <Node name="Examples" expanded="True">
+              <Node name="Appartment" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="libtitania-anyoptions" expanded="True" />
+          <Node name="libtitania-gzstream" expanded="True">
+            <Node name="Titania" expanded="True" />
+          </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Algorithm" expanded="True" />
+              <Node name="Math" expanded="True">
+                <Node name="Algorithms" expanded="True" />
+                <Node name="Geometry" expanded="True" />
+              </Node>
+            </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
@@ -31,9 +43,7 @@
               <Node name="X3D" expanded="True">
                 <Node name="Tools" expanded="True">
                   <Node name="Grouping" expanded="True" />
-                  <Node name="Layout" expanded="True">
-                    <Node name="LayoutGroupTool.h" selected="True" />
-                  </Node>
+                  <Node name="Layout" expanded="True" />
                 </Node>
                 <Node name="Types" expanded="True" />
               </Node>
@@ -41,14 +51,13 @@
           </Node>
           <Node name="Papers" expanded="True">
             <Node name="CosmoWorlds" expanded="True" />
+            <Node name="Intersection" expanded="True" />
+            <Node name="natsort-0.1.0" expanded="True" />
+            <Node name="Quaternion" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="ui" expanded="True">
-                  <Node name="Editors" expanded="True" />
-                </Node>
-              </Node>
+              <Node name="titania" expanded="True" />
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />

@@ -43,11 +43,11 @@ Titania wouldn't be possible without parts of program code or inspiration from o
 * [NVidia](http://www.nvidia.de/page/home.html)
 * [Mozilla Foundation](https://www.mozilla.org/de/)
 * [Deepak Bandyopadhyay, Lutz Kettner](http://www.cs.unc.edu/Research/compgeom/gzstream/) for gzstream
-* [kishan at hackorama dot com](www.hackorama.com) for AnyOptions
+* [kishan at hackorama dot com](http://www.hackorama.com) for AnyOptions
 * Etienne Lachance <etienne.lachance@polymtl.ca> for quaternion.cpp
 * Max Wagner <mwagner@digipen.edu> for his paper »Generating Vertex Normals«
 * Johnny Huynh for his paper »Separating Axis Theorem for Oriented Bounding Boxes«
 * Erik B. Dam <erikdam@diku.dk>, Martin Koch <myth@diku.dk> and Martin Lillholm <grumse@diku.dk> for their paper »Quaternions, Interpolation and Animation«
-* [Silvio Borchard](http://www.union3d.net/), who built most examples worlds that comes with Titania
+* And very special thanks to [Silvio Borchard](http://www.union3d.net/), who built most examples worlds that comes with Titania, and [Norbert Meissner](http://www.norbertmeissner.info/) for his support in the past.
 
 And all others not listed here.
