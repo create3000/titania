@@ -47,7 +47,7 @@ Titania wouldn't be possible without parts of program code or inspiration from o
 * Etienne Lachance <etienne.lachance@polymtl.ca> for quaternion.cpp
 * Max Wagner <mwagner@digipen.edu> for his paper »Generating Vertex Normals«
 * Johnny Huynh for his paper »Separating Axis Theorem for Oriented Bounding Boxes«
-* Erik B. Dam <erikdam@diku.dk>, Martin Koch <myth@diku.dk> und Martin Lillholm <grumse@diku.dk> for their paper »Quaternions, Interpolation and Animation«
+* Erik B. Dam <erikdam@diku.dk>, Martin Koch <myth@diku.dk> and Martin Lillholm <grumse@diku.dk> for their paper »Quaternions, Interpolation and Animation«
 * [Silvio Borchard](http://www.union3d.net/), who built most examples worlds that comes with Titania
 
 And all others not listed here.
