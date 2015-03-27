@@ -4,19 +4,19 @@
 Introduction
 --------------------------------------
 
-Titania is a X3D/VRML editor and browser for Ubuntu. The goal is a full standard compliant X3D browser for future releases of Ubuntu. For now, Titania fully supports the Moving Worlds specification for VRML 2.0 and already many parts of the X3D specification.
+Titania is a free, open source, specification conform X3D Graphics authoring tool and browser for Ubuntu. The goal is a full standard compliant X3D browser for future releases of Ubuntu. For now, Titania fully supports the Moving Worlds specification for VRML 2.0 and already most parts of the X3D specification.
 
-It can be used as a simple 3D viewer for .wrl files, as high quality 3D animation rendering engine, for advanced science simulations, live data visualization, or as easy to use gaming engine.
+It can be used as a simple 3D viewer for .x3dv/.x3d files, as high quality 3D animation rendering engine, for advanced science simulations, live data visualization, or as easy to use gaming engine.
 
-Furthermore this package includes x3dtidy, an easy to use X3D/VRML beautifier.
+Furthermore this package includes x3dtidy, an easy to use X3D/VRML beautifier and converter.
 
-For more information please visit [http://titania.create3000.de](http://titania.create3000.de).
+For more information and documentation please visit our website at [http://titania.create3000.de](http://titania.create3000.de).
 
 Installation
 --------------------------------------
 
 ```bash
-cd Titania
+cd titania
 ./autogen.sh --enable-release --prefix=`/usr/local/
 ./configure
 make -j4
@@ -39,7 +39,7 @@ Titania wouldn't be possible without parts of program code or inspiration from o
 * [GraphicsGems](http://tog.acm.org/resources/GraphicsGems/)
 * [Perl Quaternion](http://search.cpan.org/~jchin/Math-Quaternion-0.02/lib/Math/Quaternion.pm)
 * [Natural Sort](https://github.com/jjk-jacky/natsort)
-* [Chromium Browser](https://www.chromium.org/)
+* [Chromium Browser Project](https://www.chromium.org/)
 * [NVidia](http://www.nvidia.de/page/home.html)
 * [Mozilla Foundation](https://www.mozilla.org/de/)
 * [Deepak Bandyopadhyay, Lutz Kettner](http://www.cs.unc.edu/Research/compgeom/gzstream/) for gzstream
