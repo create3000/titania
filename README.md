@@ -22,3 +22,25 @@ cd Titania
 make -j4
 make install
 ```
+
+Acknowledgments
+--------------------------------------
+
+Titania wouldn't be possible without parts of program code or inspiration from other software packages. We would like to say thank to everyone for their great work and help.
+
+* [H3D](http://www.h3dapi.org/)
+* [FreeWRL](http://freewrl.sourceforge.net/)
+* [GeoVRML](http://www.ai.sri.com/geovrml/)
+* [X3Dom](http://www.x3dom.org/)
+* [X3D-Edit](https://savage.nps.edu/X3D-Edit/)
+* [Coin 3D](https://bitbucket.org/Coin3D/coin/wiki/Home)
+* [SGI Open Inventor](http://oss.sgi.com/projects/inventor/)
+* [GraphicsGems](http://tog.acm.org/resources/GraphicsGems/)
+* [Perl Quaternion](http://search.cpan.org/~jchin/Math-Quaternion-0.02/lib/Math/Quaternion.pm)
+* [Natural Sort](https://github.com/jjk-jacky/natsort)
+* [Chromium Browser](https://www.chromium.org/)
+* [NVidia](http://www.nvidia.de/page/home.html)
+* [Mozilla Foundation](https://www.mozilla.org/de/)
+* Max Wagner <mwagner@digipen.edu> for his paper »Generating Vertex Normals«
+
+And all others not listed here.

@@ -1782,6 +1782,7 @@
     <None Include="Titania.cproj" />
     <None Include="Titania.pidb" />
     <None Include="Titania\ComposedWidgets\SFRotationAdjustment.h" />
+    <None Include="share\titania\ui\icons\Units.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

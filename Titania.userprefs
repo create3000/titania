@@ -1,14 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Layout/LayoutGroupTool.h">
     <Files>
-      <File FileName="debian/rules" Line="24" Column="1" />
-      <File FileName="configure.ac" Line="1" Column="1" />
       <File FileName="Titania/Titania/Base/X3DBaseInterface.cpp" Line="1" Column="1" />
       <File FileName="experimental/main.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.h" Line="84" Column="9" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp" Line="17" Column="43" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.h" Line="106" Column="39" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp" Line="70" Column="74" />
+      <File FileName="Titania/Titania/ComposedWidgets/SFRotationAdjustment.h" Line="224" Column="36" />
+      <File FileName="libtitania-x3d/share/titania/tools/TransformTool.x3dv" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Layout/LayoutGroupTool.h" Line="143" Column="5" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,16 +21,20 @@
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True" />
           </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Math" expanded="True">
-                <Node name="Numbers" expanded="True" />
+          <Node name="libtitania-x3d" expanded="True">
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="tools" expanded="True" />
               </Node>
             </Node>
-          </Node>
-          <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Tools" expanded="True">
+                  <Node name="Grouping" expanded="True" />
+                  <Node name="Layout" expanded="True">
+                    <Node name="LayoutGroupTool.h" selected="True" />
+                  </Node>
+                </Node>
                 <Node name="Types" expanded="True" />
               </Node>
             </Node>
@@ -50,6 +55,7 @@
               <Node name="ComposedWidgets" expanded="True" />
               <Node name="Editors" expanded="True">
                 <Node name="PrecisionPlacementPanel" expanded="True" />
+                <Node name="ViewpointEditor" expanded="True" />
               </Node>
             </Node>
           </Node>
