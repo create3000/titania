@@ -1,3 +1,8 @@
+2015-03-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DTextureNode.h:
+	* X3DTextureNode.cpp: 
+
 2015-03-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

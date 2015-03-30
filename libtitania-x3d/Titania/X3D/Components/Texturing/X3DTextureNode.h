@@ -64,6 +64,12 @@ public:
 
 	using X3DAppearanceChildNode::draw;
 
+	///  @name Construction
+	
+	virtual
+	void
+	setup () final override;
+
 	///  @name Member access
 
 	virtual

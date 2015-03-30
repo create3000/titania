@@ -6,13 +6,14 @@
       <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.h" Line="106" Column="39" />
       <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/ComposedWidgets/SFRotationAdjustment.h" Line="239" Column="1" />
-      <File FileName="README.md" Line="36" Column="29" />
+      <File FileName="README.md" Line="14" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
+        <State expanded="True">
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
+            <Node name="README.md" selected="True" />
           </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">

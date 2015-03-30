@@ -67,6 +67,13 @@ X3DTextureNode::X3DTextureNode () :
 }
 
 void
+X3DTextureNode::setup ()
+{
+	if (glXGetCurrentContext ())
+		X3DAppearanceChildNode::setup ();
+}
+
+void
 X3DTextureNode::initialize ()
 {
 	X3DAppearanceChildNode::initialize ();
