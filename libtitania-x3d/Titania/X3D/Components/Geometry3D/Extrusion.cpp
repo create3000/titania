@@ -190,7 +190,6 @@ Extrusion::createRotations ()
 
 	const bool closedSpine = spine () .front () == spine () .back ();
 
-	Vector3f SCPyAxisPrevious;
 	Vector3f SCPzAxisPrevious;
 
 	Vector3f SCPxAxis;
@@ -223,6 +222,7 @@ Extrusion::createRotations ()
 	if (SCPzAxis == Vector3f ())
 		SCPzAxis = Vector3f (0, 0, 1) * Rotation4f (Vector3f (0, 1, 0), SCPyAxis);
 
+	// We do not have to normalize SCPxAxis, as SCPyAxis and SCPzAxis are orthogonal.
 	SCPxAxis = cross (SCPyAxis, SCPzAxis);
 
 	rotations .emplace_back (SCPxAxis .x (), SCPxAxis .y (), SCPxAxis .z (), 0,
@@ -250,6 +250,7 @@ Extrusion::createRotations ()
 		else
 			SCPzAxisPrevious = SCPzAxis;
 
+		// We do not have to normalize SCPxAxis, as SCPyAxis and SCPzAxis are orthogonal.
 		SCPxAxis = cross (SCPyAxis, SCPzAxis);
 
 		rotations .emplace_back (SCPxAxis .x (), SCPxAxis .y (), SCPxAxis .z (), 0,
@@ -280,6 +281,7 @@ Extrusion::createRotations ()
 		if (SCPzAxis == Vector3f ())
 			SCPzAxis = SCPzAxisPrevious;
 
+		// We do not have to normalize SCPxAxis, as SCPyAxis and SCPzAxis are orthogonal.
 		SCPxAxis = cross (SCPyAxis, SCPzAxis);
 
 		rotations .emplace_back (SCPxAxis .x (), SCPxAxis .y (), SCPxAxis .z (), 0,
@@ -357,8 +359,6 @@ Extrusion::build ()
 			const auto p3 = INDEX (n1, k1);
 			const auto p4 = INDEX (n1, k);
 
-			// Use quad normal calculation as it makes nicer normals.
-
 			const auto normal1 = math::normal (points [p1], points [p2], points [p3]);
 			const auto normal2 = math::normal (points [p1], points [p3], points [p4]);
 
@@ -411,7 +411,7 @@ Extrusion::build ()
 
 	// Build caps
 
-	if (capMax)
+	if (capMax and crossSection () .size () > 2)
 	{
 		if (beginCap ())
 		{
@@ -745,7 +745,7 @@ throw (Error <NOT_SUPPORTED>,
 		{
 			const auto tf = texCoord -> point () .size ();
 			const auto cf = coord -> point () .size ();
-		
+
 			for (size_t k = 0; k < numCapPoints; ++ k)
 			{
 				const Vector2f t = (crossSection () [k] - min) / capMax;

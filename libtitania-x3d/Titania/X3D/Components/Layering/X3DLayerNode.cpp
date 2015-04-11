@@ -90,6 +90,7 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* defaultViewpoint_, X3DGroupingNode
 	                 fogs (new FogList (getExecutionContext ())),
 	           viewpoints (new ViewpointList (getExecutionContext ())),
 	            localFogs (),
+	               hitRay (),
 	                group (layerGroup_),
 	              friends ()
 {

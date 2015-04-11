@@ -197,6 +197,16 @@ public:
 	getLocalFogs ()
 	{ return localFogs; }
 
+	///  @name User picking handling
+
+	void
+	setHitRay (const Line3d & value)
+	{ hitRay = value; }
+
+	const Line3d &
+	getHitRay () const
+	{ return hitRay; }
+
 	///  @name Friends handling
 
 	MFNode &
@@ -319,6 +329,8 @@ private:
 	ViewpointListPtr      viewpoints;
 
 	LocalFogStack  localFogs;
+	
+	Line3d hitRay;
 
 	X3DPtr <X3DGroupingNode> group;
 	MFNode                   friends;

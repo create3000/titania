@@ -132,6 +132,14 @@ X3DPointingDeviceSensorContext::isPointerInRectangle (const Vector4i & rectangle
 	       pointer .y () < rectangle .y () + rectangle .w ();
 }
 
+void
+X3DPointingDeviceSensorContext::setHitRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
+{
+	hitRay = getHitRay (modelViewMatrix, projectionMatrix, viewport);
+
+	getBrowser () -> getLayers () .top () -> setHitRay (hitRay);
+}
+
 Line3d
 X3DPointingDeviceSensorContext::getHitRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport) const
 {
@@ -166,6 +174,12 @@ X3DPointingDeviceSensorContext::motionNotifyEvent (const double x, const double 
 void
 X3DPointingDeviceSensorContext::motion ()
 {
+	const auto hitRay = selectedLayer ? selectedLayer -> getHitRay () : Line3d (Vector3d (), Vector3d ());
+
+	const auto nearestHit = getHits () .empty ()
+	                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, selectedLayer, 0)
+	                        : getNearestHit ();
+
 	// Set isOver to FALSE for appropriate nodes
 
 	std::vector <X3DPointingDeviceSensorNode*> difference;
@@ -178,12 +192,12 @@ X3DPointingDeviceSensorContext::motion ()
 		// overSensors and sensors are always sorted.
 
 		std::set_difference (overSensors .begin (), overSensors .end (),
-		                     getNearestHit () -> sensors .begin (), getNearestHit () -> sensors .end (),
+		                     nearestHit -> sensors .begin (), nearestHit -> sensors .end (),
 		                     std::back_inserter (difference));
 	}
 
 	for (const auto & pointingDeviceSensorNode : difference)
-		pointingDeviceSensorNode -> set_over (getNearestHit (), false);
+		pointingDeviceSensorNode -> set_over (nearestHit, false);
 
 	// Set isOver to TRUE for appropriate nodes
 
@@ -192,11 +206,11 @@ X3DPointingDeviceSensorContext::motion ()
 
 	else
 	{
-		overSensors .assign (getNearestHit () -> sensors .begin (),
-		                     getNearestHit () -> sensors .end ());
+		overSensors .assign (nearestHit -> sensors .begin (),
+		                     nearestHit -> sensors .end ());
 
 		for (const auto & pointingDeviceSensorNode : overSensors)
-			pointingDeviceSensorNode -> set_over (getNearestHit (), true);
+			pointingDeviceSensorNode -> set_over (nearestHit, true);
 	}
 
 	// Forward motion event to active drag sensor nodes
@@ -206,11 +220,7 @@ X3DPointingDeviceSensorContext::motion ()
 		const auto dragSensorNode = dynamic_cast <X3DDragSensorNode*> (pointingDeviceSensorNode .getValue ());
 
 		if (dragSensorNode)
-		{
-			dragSensorNode -> set_motion (getHits () .empty ()
-			                              ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, nullptr, 0)
-													: getNearestHit ());
-		}
+			dragSensorNode -> set_motion (nearestHit);
 	}
 }
 
@@ -248,11 +258,16 @@ X3DPointingDeviceSensorContext::buttonReleaseEvent ()
 			return true;
 	}
 
+	const auto hitRay = selectedLayer ? selectedLayer -> getHitRay () : Line3d (Vector3d (), Vector3d ());
+
+	const auto nearestHit = getHits () .empty ()
+	                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, selectedLayer, 0)
+	                        : getNearestHit ();
+
 	selectedLayer = nullptr;
 
 	for (const auto & pointingDeviceSensorNode : activeSensors)
-		pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, nullptr, 0),
-			                                     false);
+		pointingDeviceSensorNode -> set_active (nearestHit, false);
 
 	activeSensors .clear ();
 

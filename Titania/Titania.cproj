@@ -1783,6 +1783,7 @@
     <None Include="Titania.pidb" />
     <None Include="Titania\ComposedWidgets\SFRotationAdjustment.h" />
     <None Include="share\titania\ui\icons\Units.svg" />
+    <None Include="share\titania\ui\icons\Axis-Angle-Rotation.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

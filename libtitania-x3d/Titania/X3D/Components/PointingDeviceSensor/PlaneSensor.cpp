@@ -127,7 +127,7 @@ PlaneSensor::set_active (const HitPtr & hit, const bool active)
 		if (isActive ())
 		{
 			const auto & matrices = getMatrices () .at (hit -> layer);
-	
+
 			modelViewMatrix        = matrices .modelViewMatrix;
 			projectionMatrix       = matrices .projectionMatrix;
 			viewport               = matrices .viewport;
@@ -179,7 +179,7 @@ PlaneSensor::set_active (const HitPtr & hit, const bool active)
 
 					try
 					{
-						getLineTrackPoint (hit, Line3d (Vector3d (), line .direction ()), trackPoint);
+						getLineTrackPoint (hit, Line3d (line .direction (), line .direction ()), trackPoint);
 					}
 					catch (const std::domain_error &)
 					{
@@ -242,7 +242,7 @@ PlaneSensor::set_motion (const HitPtr & hit)
 				{
 					trackPoint = endPoint;
 				}
-			
+
 				track (endPoint, trackPoint);
 			}
 			else

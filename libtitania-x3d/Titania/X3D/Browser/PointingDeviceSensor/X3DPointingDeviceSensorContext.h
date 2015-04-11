@@ -111,8 +111,7 @@ public:
 	{ return enabledSensors; }
 
 	void
-	setHitRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
-	{ hitRay = getHitRay (modelViewMatrix, projectionMatrix, viewport); }
+	setHitRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport);
 
 	Line3d
 	getHitRay (const Matrix4d &, const Matrix4d &, const Vector4i &) const;

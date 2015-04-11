@@ -80,7 +80,7 @@ X3DGeometryNode::X3DGeometryNode () :
 
 {
 	addType (X3DConstants::X3DGeometryNode);
-	
+
 	addChildren (texCoordNode);
 }
 
@@ -144,13 +144,16 @@ X3DGeometryNode::intersects (Line3f line, std::vector <IntersectionPtr> & inters
 {
 	try
 	{
-		if (not getBBox () .intersects (line))
+		if (isLineGeometry ())
 			return false;
 
 		const Matrix4f matrix          = getMatrix ();                           // Get the current matrix from screen nodes.
 		const Matrix4f modelViewMatrix = matrix * getModelViewMatrix () .get (); // This matrix is for clipping only.
 
 		line *= ~matrix;
+
+		if (not getBBox () .intersects (line))
+			return false;
 
 		bool   intersected = false;
 		size_t first       = 0;
@@ -771,7 +774,7 @@ X3DGeometryNode::draw (const bool transparent, const bool solid, const bool text
 		}
 	}
 	else
-	{	
+	{
 		// Solid & ccw.
 
 		if (solid)

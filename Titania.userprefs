@@ -3,17 +3,23 @@
   <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.h" Line="106" Column="39" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/ComposedWidgets/SFRotationAdjustment.h" Line="239" Column="1" />
-      <File FileName="README.md" Line="14" Column="1" />
+      <File FileName="Titania/Titania/ComposedWidgets/SFRotationAdjustment.h" Line="1" Column="1" />
+      <File FileName="README.md" Line="1" Column="1" />
+      <File FileName="x3dtidy/main.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/ImageTexture.cpp" Line="30" Column="47" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTextureNode.cpp" Line="63" Column="28" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTexture2DNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="103" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTextureNode.h" Line="59" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
-            <Node name="README.md" selected="True" />
           </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
@@ -42,6 +48,13 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Components" expanded="True">
+                  <Node name="ParticleSystems" expanded="True" />
+                  <Node name="Rendering" expanded="True" />
+                  <Node name="Scripting" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
+                  <Node name="Texturing3D" expanded="True" />
+                </Node>
                 <Node name="Tools" expanded="True">
                   <Node name="Grouping" expanded="True" />
                   <Node name="Layout" expanded="True" />
@@ -50,15 +63,13 @@
               </Node>
             </Node>
           </Node>
-          <Node name="Papers" expanded="True">
-            <Node name="CosmoWorlds" expanded="True" />
-            <Node name="Intersection" expanded="True" />
-            <Node name="natsort-0.1.0" expanded="True" />
-            <Node name="Quaternion" expanded="True" />
-          </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
-              <Node name="titania" expanded="True" />
+              <Node name="titania" expanded="True">
+                <Node name="ui" expanded="True">
+                  <Node name="icons" expanded="True" selected="True" />
+                </Node>
+              </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
@@ -69,6 +80,7 @@
               </Node>
             </Node>
           </Node>
+          <Node name="x3dtidy" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
