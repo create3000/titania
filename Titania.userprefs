@@ -2,18 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/ComposedWidgets/SFRotationAdjustment.h" Line="1" Column="1" />
-      <File FileName="README.md" Line="1" Column="1" />
-      <File FileName="x3dtidy/main.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/ImageTexture.cpp" Line="30" Column="47" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTextureNode.cpp" Line="63" Column="28" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTexture2DNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="103" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTextureNode.h" Line="59" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h" Line="115" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp" Line="268" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.h" Line="201" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="403" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -48,7 +40,14 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Browser" expanded="True">
+                  <Node name="PointingDeviceSensor" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="Core" expanded="True" />
+                  <Node name="Layering" expanded="True">
+                    <Node name="X3DLayerNode.cpp" selected="True" />
+                  </Node>
                   <Node name="ParticleSystems" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                   <Node name="Scripting" expanded="True" />
@@ -67,7 +66,7 @@
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
                 <Node name="ui" expanded="True">
-                  <Node name="icons" expanded="True" selected="True" />
+                  <Node name="icons" expanded="True" />
                 </Node>
               </Node>
             </Node>

@@ -96,7 +96,7 @@ X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const b
 	{
 		const basic::uri URL = value .str ();
 
-		if (URL .is_relative ())
+		if (URL .is_relative () and not URL .filename (true) .empty ())
 		{
 			const auto transformed = oldWorldURL .transform (URL);
 

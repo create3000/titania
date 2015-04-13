@@ -198,30 +198,35 @@ ProximitySensor::update ()
 void
 ProximitySensor::traverse (const TraverseType type)
 {
-	switch (type)
+	try
 	{
-		case TraverseType::CAMERA:
+		switch (type)
 		{
-			viewpoint       = getCurrentViewpoint ();
-			modelViewMatrix = getModelViewMatrix () .get ();
-			break;
-		}
-		case TraverseType::DISPLAY:
-		{
-			if (inside)
+			case TraverseType::CAMERA:
+			{
+				viewpoint       = getCurrentViewpoint ();
+				modelViewMatrix = getModelViewMatrix () .get ();
 				break;
+			}
+			case TraverseType::DISPLAY:
+			{
+				if (inside)
+					break;
 
-			if (size () == Vector3f (-1, -1, -1))
-				inside = true;
+				if (size () == Vector3f (-1, -1, -1))
+					inside = true;
 
-			else
-				inside = Box3f (size (), center ()) .intersects (inverse (getModelViewMatrix () .get ()) .origin ());
+				else
+					inside = Box3f (size (), center ()) .intersects (inverse (getModelViewMatrix () .get ()) .origin ());
 
-			break;
+				break;
+			}
+			default:
+				break;
 		}
-		default:
-			break;
 	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void

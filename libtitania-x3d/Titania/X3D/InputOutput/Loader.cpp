@@ -148,7 +148,7 @@ throw (Error <INVALID_URL>,
 		{
 			const basic::uri uri = URL .str ();
 
-			if (uri .filename () .empty ())
+			if (uri .filename (true) .empty ())
 				executionContext -> changeViewpoint (uri .fragment ());
 
 			else

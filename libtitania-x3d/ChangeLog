@@ -1,3 +1,9 @@
+2015-04-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Loader.cpp:
+	* X3DUrlObject.cpp:
+	* ProximitySensor.cpp: 
+
 2015-04-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DLayerNode.h:
