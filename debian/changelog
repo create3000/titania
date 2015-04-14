@@ -1,9 +1,23 @@
+titania (0.7.8) trusty; urgency=medium
+
+  * Precision Placement Panel has now an own documentation page on our website.
+  * x3dtidy can now convert between .x3d and .x3dv files back and forth.
+  * Fixed bug with undo of bbox fields in Precision Placement Panel.
+  * Fix bug with wronly set rotation values if using input widget in Precision Placement Panel.
+  * Fix fatal crash with x3dtidy in rare cases when a node has a texture applied. As side effect, this makes x3dtidy slightly faster.
+  * Fixed bug with TouchSensor when Text with ScreenFontStyle is selected.
+  * Fixed bug with pointing device sensor nodes and multiple layers.
+  * Fixed bug when exporting x3d file with Viewpoint anchor url.
+  * Fixed bug with XML export of CDATA Script urls.
+
+ -- Holger Seelig <holger@qualle>  Tue, 14 Apr 2015 15:24:57 +0200
+
 titania (0.7.7) trusty; urgency=medium
 
   * Enhanced transparency
   * Fixes some bugs
 
- -- Holger Seelig <holger.seelig@yahoo.de>  We, 18 Mar 2015 13:49:00 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  We, 18 March 2015 13:49:00 +0200
 
 titania (0.7.6) trusty; urgency=medium
 

@@ -153,11 +153,7 @@ PointingDevice::set_verify_motion (const double x, const double y)
 
 	getBrowser () -> finished () .removeInterest (this, &PointingDevice::set_verify_motion);
 
-	if (getBrowser () -> motionNotifyEvent (x, getBrowser () -> get_height () - y))
-		getBrowser () -> setCursor (Gdk::HAND2);
-
-	else
-		getBrowser () -> setCursor (Gdk::ARROW);
+	set_motion (x, y);
 }
 
 bool
