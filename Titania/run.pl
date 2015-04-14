@@ -7,7 +7,7 @@ use v5.10.0;
 
 use File::Basename qw (dirname);
 
-chdir dirname $0;
+#chdir dirname $0;
 
 my $min = `date +'%M'`; chomp $min;
 
@@ -28,7 +28,7 @@ $ENV {UBUNTU_MENUPROXY} = 1;
 $ENV {XDG_DATA_DIRS}    = "/home/holger/Projekte/Titania/Titania/share:/home/holger/Projekte/Titania/libtitania-x3d/share:$ENV{XDG_DATA_DIRS}";
 #$ENV {LANG} = "C";
 
-system "./titania", @ARGV;
+system "/home/holger/Projekte/Titania/Titania/titania", @ARGV;
 
 if (-d "/home/holger/.config/Titania.O")
 {

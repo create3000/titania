@@ -8,13 +8,15 @@
       <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="97" Column="40" />
-      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Loader.cpp" Line="146" Column="3" />
-      <File FileName="../Cobweb/cobweb.js/tests/Examples/Cathedral/stage/index.x3d" Line="573" Column="43" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Loader.cpp" Line="1" Column="1" />
+      <File FileName="../Cobweb/cobweb.js/tests/Examples/Cathedral/stage/index.x3d" Line="1" Column="1" />
+      <File FileName="debian/changelog" Line="12" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="70" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
+        <State expanded="True" selected="True">
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
@@ -52,9 +54,7 @@
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="Layering" expanded="True" />
-                  <Node name="Networking" expanded="True">
-                    <Node name="X3DUrlObject.cpp" selected="True" />
-                  </Node>
+                  <Node name="Networking" expanded="True" />
                   <Node name="ParticleSystems" expanded="True" />
                   <Node name="Rendering" expanded="True" />
                   <Node name="Scripting" expanded="True" />

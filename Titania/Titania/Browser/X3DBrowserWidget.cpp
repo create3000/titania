@@ -57,6 +57,7 @@
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
 
+#include <Titania/OS/cwd.h>
 #include <Titania/String.h>
 #include <Titania/gzstream.h>
 #include <fstream>
@@ -335,8 +336,13 @@ X3DBrowserWidget::openRecent ()
 }
 
 void
-X3DBrowserWidget::open (const basic::uri & URL, const bool splashScreen)
+X3DBrowserWidget::open (const basic::uri & URL_, const bool splashScreen)
 {
+	basic::uri URL = URL_;
+
+	if (URL .is_relative ())
+		URL = basic::uri (os::cwd ()) .transform (URL);
+
 	const auto iter = getBrowser (URL);
 
 	if (iter not_eq browsers .cend ())
