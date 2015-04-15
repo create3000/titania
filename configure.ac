@@ -105,7 +105,43 @@ AM_GLIB_GNU_GETTEXT
 
 
 
+
+
+
+
 LT_INIT
+
+
+
+dnl ***************************************************************************
+dnl Check for C++11 compiler support
+dnl ***************************************************************************
+
+if test x$ax_cxx_compile_cxx11_required = xtrue; then
+	if test x$ac_success = xno; then
+		AC_MSG_ERROR([*** A compiler with support for C++11 language features is required.])
+	fi
+fi
+
+
+dnl ***************************************************************************
+dnl Check for GLX
+dnl ***************************************************************************
+
+USE_GLX="no"
+PKG_CHECK_MODULES([GLX], [gl x11], [USE_GLX="yes"], [:])
+AC_CHECK_HEADERS([GL/gl.h GL/glx.h], [:], [USE_GLX="no"])
+AC_CHECK_LIB([GL], [glXCreateContext], [:] [USE_GLX="no"])
+AM_CONDITIONAL(USE_GLX, test "$USE_GLX" = "yes")
+
+if test "$USE_GLX" = "no"; then
+	AC_MSG_ERROR([*** Please install X11 backend.])
+fi
+
+
+dnl ***************************************************************************
+dnl Check required libraries
+dnl ***************************************************************************
 
 PKG_CHECK_MODULES(TITANIA,
 gtksourceviewmm-3.0
