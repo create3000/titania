@@ -130,7 +130,7 @@ static
 void
 golden_x3d (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
 {
-	static const std::string x3d2vrml = "x3d2vrml";
+	static const std::string x3d2vrml = "titania-x3d2vrml";
 
 	// Parse into stream.
 

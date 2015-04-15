@@ -25,11 +25,11 @@
     <None Include="share\titania\dtd\x3d-3.2.dtd" />
     <None Include="share\titania\dtd\x3d-3.3.dtd" />
     <None Include="share\titania\dtd\x3d-catalog.xml" />
-    <None Include="bin\x3d2vrml" />
     <None Include="share\titania\info\field-index.txt" />
     <None Include="share\titania\info\node-index.txt" />
     <None Include="x3d2vrml.mdproj" />
     <None Include="Makefile.am" />
     <None Include="Makefile.in" />
+    <None Include="bin\titania-x3d2vrml" />
   </ItemGroup>
 </Project>
