@@ -2173,12 +2173,12 @@ BrowserWindow::getChildren (const X3D::SFNode & parent, const bool sharedNodes) 
 				for (const auto & child : groupingNode -> children ())
 				{
 					if (not child)
-						return children;
+						continue;
 
 					if (not sharedNodes)
 					{
 						if (child -> getExecutionContext () not_eq parent -> getExecutionContext ())
-							return children;
+							continue;
 					}
 
 					children .emplace_back (child);

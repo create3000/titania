@@ -1,5 +1,9 @@
 2015-04-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.cpp: 
+
+2015-04-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Titania.cproj:
 	* FadeOut.wrl:
 	* FadeOut.x3dv:

@@ -183,8 +183,13 @@ X3DGroupingNode::set_removeChildren ()
 
 	for (const auto & node : removeChildren ())
 	{
-		if (node)
-			innerNodes .emplace_back (node -> getInnerNode ());
+		try
+		{
+			if (node)
+				innerNodes .emplace_back (node -> getInnerNode ());
+		}
+		catch (const X3DError &)
+		{ }
 	}
 
 	if (not localFogs .empty ())

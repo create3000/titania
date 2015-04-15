@@ -886,12 +886,6 @@ Parser::protoBody ()
 	if (rootNodeStatement (_rootNodeStatement))
 		addRootNode (std::move (_rootNodeStatement));
 
-	else
-	{
-		if (getBrowser () -> isStrict ())
-			throw Error <INVALID_X3D> ("Expected root node statement inside PROTO body.");
-	}
-
 	statements ();
 }
 
