@@ -87,10 +87,16 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
+    <Folder Include="share\" />
+    <Folder Include="share\man\" />
+    <Folder Include="share\man\man1\" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Makefile.am" />
     <None Include="run.pl" />
     <None Include="Makefile.in" />
     <None Include="x3dtidy.cproj" />
     <None Include="x3dtidy.pidb" />
+    <None Include="share\man\man1\x3dtidy.1" />
   </ItemGroup>
 </Project>

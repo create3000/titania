@@ -66,13 +66,13 @@ main (int argc, char** argv)
 	AnyOption options;
 
 	options .addUsage ("NAME");
-	options .addUsage ("       x3dtidy - X3D/VRML beautifier");
+	options .addUsage ("       x3dtidy - X3D/VRML beautifier and converter");
 	options .addUsage ("");
 	options .addUsage ("SYNOPSIS");
 	options .addUsage ("       x3dtidy [OPTIONS] FILE [OUTFILE]");
 	options .addUsage ("");
 	options .addUsage ("DESCRIPTION");
-	options .addUsage ("       Format FILE to standard output or to OUTFILE.");
+	options .addUsage ("       Format and convert FILE to standard output or to OUTFILE.");
 	options .addUsage ("");
 	options .addUsage ("VRML2 field names and access types are printed when the encoding is VRML,");
 	options .addUsage ("otherwise X3D field names and access types are printed.");

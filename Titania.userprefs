@@ -1,17 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="x3d2vrml/bin/x3d2vrml">
+  <MonoDevelop.Ide.Workbench ActiveDocument="x3dtidy/x3dtidy.cproj">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h" Line="115" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="209" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="216" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/main.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="92" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="326" Column="1" />
-      <File FileName="x3d2vrml/bin/x3d2vrml" Line="21" Column="34" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
+      <File FileName="x3dtidy/x3dtidy.cproj" Line="68" Column="28" />
+      <File FileName="x3d2vrml/x3d2vrml.mdproj" Line="22" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -82,14 +83,12 @@
           </Node>
           <Node name="titania-info" expanded="True" />
           <Node name="x3d2vrml" expanded="True">
-            <Node name="bin" expanded="True">
-              <Node name="x3d2vrml" selected="True" />
-            </Node>
+            <Node name="bin" expanded="True" />
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True" />
             </Node>
           </Node>
-          <Node name="x3dtidy" expanded="True" />
+          <Node name="x3dtidy" expanded="True" selected="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
@@ -107,17 +106,4 @@
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.x3dtidy>
-    <MonoDevelop.Ide.CustomExecutionModes>
-      <Data Name="GNU Debugger (GDB) (Benutzerdefiniert)" Id="727a9f31-537f-4476-abe4-672e4dc38e45" ModeId="GNU Debugger (GDB)">
-        <CommandData>
-          <Item Key="MonoDevelop.Ide.Execution.CustomArgsCustomizer">
-            <Value Arguments="/home/holger/Projekte/Titania/Library/Examples/treasure-island/stage/Bonus_proto__2.wrl" ctype="CustomArgsExecutionModeData">
-              <EnvironmentVariables />
-            </Value>
-          </Item>
-        </CommandData>
-      </Data>
-    </MonoDevelop.Ide.CustomExecutionModes>
-  </MonoDevelop.Ide.ItemProperties.x3dtidy>
 </Properties>

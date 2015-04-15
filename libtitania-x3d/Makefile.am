@@ -531,6 +531,6 @@ AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
 
 install-exec-hook:
 	cp -r share/ $(prefix)/
-	find $(prefix)/share/ -type d -exec chmod 755 {} \;
-	find $(prefix)/share/ -type f -exec chmod 644 {} \;
+	find $(prefix)/share/titania/ -type d -exec chmod 755 {} \;
+	find $(prefix)/share/titania/ -type f -exec chmod 644 {} \;
 

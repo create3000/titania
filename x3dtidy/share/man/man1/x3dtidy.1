@@ -1,0 +1,43 @@
+." Manpage for x3dtidy.
+." Contact holger.seelig@yahoo.de to correct errors or typos.
+.TH man 1 "15 April 2015" "Version 1.0" "x3dtidy man page"
+.SH NAME
+       x3dtidy - X3D/VRML beautifier and converter
+
+.SH SYNOPSIS
+       x3dtidy [OPTIONS] FILE [OUTFILE]
+
+.SH DESCRIPTION
+       Format or convert FILE to standard output or to OUTFILE.
+
+       VRML2 field names and access types are printed when the encoding is VRML,
+       otherwise X3D field names and access types are printed.
+       When VRML2 field names are printed then this changes:
+       Collision .enabled to Collision .collide, LOD .children to LOD .level and
+       Switch .children to Switch .level
+
+
+       -c, --compact
+              output in compact style
+
+       -h, --help
+              prints usage
+
+       -s=mode, --style=mode
+              mode can be 'smallest', 'small ', 'compact', or 'nicest'
+              nicest is the default mode
+
+.SH EXAMPLES
+       x3dtidy -s=compact file.wrl
+              Formats file.wrl's contents in compact style mode to standard
+              output.
+
+       x3dtidy file.wrl beautified.wrl
+              Formats file.wrl's contents and saves the output in
+              beautified.wrl.
+
+.SH COPYRIGHT
+       Copyright © 2010 Holger Seelig.  License GPLv3+:
+       GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+       This is free software: you are free to change and redistribute it.
+       There is NO WARRANTY, to the extent permitted by law.

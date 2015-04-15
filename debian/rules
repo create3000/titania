@@ -29,12 +29,12 @@ binary-arch: build
 	make install
 
 # Copy share directorys to /usr/share
-	find . -maxdepth 2 -mindepth 2 -name share -print0 | \
-		xargs -0 -r -i cp -a {} debian/$(PACKAGE)/usr/
+#	find . -maxdepth 2 -mindepth 2 -name share -print0 | \
+#		xargs -0 -r -i cp -a {} debian/$(PACKAGE)/usr/
 
 # Copy bin directorys to /usr/bin
-	find . -maxdepth 2 -mindepth 2 -name bin -print0 | \
-		xargs -0 -r -i cp -a {} debian/$(PACKAGE)/usr/
+#	find . -maxdepth 2 -mindepth 2 -name bin -print0 | \
+#		xargs -0 -r -i cp -a {} debian/$(PACKAGE)/usr/
 
 	dh_compress
 	dh_makeshlibs
