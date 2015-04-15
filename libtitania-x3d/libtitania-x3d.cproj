@@ -681,7 +681,6 @@
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\HitArray.h" />
     <None Include="Titania\X3D\Components\PointingDeviceSensor\TouchGroup.h" />
     <None Include="Titania\X3D\Tools\PointingDeviceSensor\TouchGroupTool.h" />
-    <None Include="share\titania\goldengate\obj2wrl.pl" />
     <None Include="Titania\X3D\Browser\Geometry3D\CylinderOptions.h" />
     <None Include="Titania\X3D\Browser\Geometry3D\ConeOptions.h" />
     <None Include="Titania\X3D\InputOutput\GoldenGate.h" />
@@ -1347,18 +1346,18 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <Content Include="share\titania\goldengate\image.wrl">
-      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
-      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
-    </Content>
-    <Content Include="share\titania\goldengate\audio.wrl">
-      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
-      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
-    </Content>
-    <Content Include="share\titania\goldengate\video.wrl">
-      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
-      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
-    </Content>
     <Content Include="share\titania\pages\about\splash.x3dv" />
+    <Content Include="share\titania\goldengate\audio.x3dv">
+      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+    </Content>
+    <Content Include="share\titania\goldengate\image.x3dv">
+      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+    </Content>
+    <Content Include="share\titania\goldengate\video.x3dv">
+      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+    </Content>
   </ItemGroup>
 </Project>

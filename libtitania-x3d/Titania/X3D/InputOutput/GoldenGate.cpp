@@ -144,14 +144,6 @@ void
 golden_obj (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
 {
 	Wavefront::Parser (scene, uri, istream) .parseIntoScene ();
-
-//	const std::string obj2wrl = "perl '" + os::find_data_file ("titania/goldengate/obj2wrl.pl") + "'";
-//
-//	// Parse into stream.
-//
-//	basic::ifilestream goldenstream (golden_pipe (obj2wrl, basic::to_string (istream)));
-//
-//	scene -> fromStream (uri, goldenstream);
 }
 
 static
@@ -195,7 +187,7 @@ golden_image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 	const float width  = float (image .size () .width  ()) / float (image .density () .width  ()) * M_INCH;
 	const float height = float (image .size () .height ()) / float (image .density () .height ()) * M_INCH;
 
-	std::string file = os::load_file (os::find_data_file ("titania/goldengate/image.wrl"));
+	std::string file = os::load_file (os::find_data_file ("titania/goldengate/image.x3dv"));
 
 	Name   .GlobalReplace (get_name_from_uri (uri), &file);
 	Width  .GlobalReplace (basic::to_string (width), &file);
@@ -213,7 +205,7 @@ static
 void
 golden_audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
 {
-	std::string file = os::load_file (os::find_data_file ("titania/goldengate/audio.wrl"));
+	std::string file = os::load_file (os::find_data_file ("titania/goldengate/audio.x3dv"));
 
 	Name        .GlobalReplace (get_name_from_uri (uri), &file);
 	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);
@@ -236,7 +228,7 @@ golden_video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 	mediaStream .setUri (uri);
 	mediaStream .sync ();
 
-	std::string file = os::load_file (os::find_data_file ("titania/goldengate/video.wrl"));
+	std::string file = os::load_file (os::find_data_file ("titania/goldengate/video.x3dv"));
 
 	float width  = 1;
 	float height = 1;

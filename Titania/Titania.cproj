@@ -1213,8 +1213,6 @@
     <None Include="Titania\Editors\ViewpointEditor\X3DViewpointEditor.h" />
     <None Include="Titania\ComposedWidgets\X3DFieldAdjustment4.h" />
     <None Include="Titania\Editors\ViewpointEditor\X3DOrthoViewpointEditor.h" />
-    <None Include="share\titania\Library\Primitives\Interpolation\EaseInEaseOut.wrl" />
-    <None Include="share\titania\Library\Primitives\Interpolation\FadeOut.wrl" />
     <None Include="Titania\Editors\ViewpointEditor\X3DGeoViewpointEditor.h" />
     <None Include="Titania\ComposedWidgets\MFStringComboBoxText.h" />
     <None Include="Titania\UserInterfaces\X3DInlineEditorInterface.h" />
@@ -1784,6 +1782,8 @@
     <None Include="Titania\ComposedWidgets\SFRotationAdjustment.h" />
     <None Include="share\titania\ui\icons\Units.svg" />
     <None Include="share\titania\ui\icons\Axis-Angle-Rotation.svg" />
+    <None Include="share\titania\Library\Primitives\Interpolation\EaseInEaseOut.x3dv" />
+    <None Include="share\titania\Library\Primitives\Interpolation\FadeOut.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
