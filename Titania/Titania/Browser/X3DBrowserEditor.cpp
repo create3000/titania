@@ -325,7 +325,7 @@ X3DBrowserEditor::blank ()
 }
 
 void
-X3DBrowserEditor::open (const basic::uri & URL, const bool splashScreen)
+X3DBrowserEditor::open (basic::uri URL, const bool splashScreen)
 {
 	if (isEditor ())
 		X3DBrowserWidget::open (URL, splashScreen);

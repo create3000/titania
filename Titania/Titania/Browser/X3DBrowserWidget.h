@@ -125,7 +125,7 @@ public:
 
 	virtual
 	void
-	open (const basic::uri &, const bool = true);
+	open (basic::uri, const bool = true);
 
 	void
 	openRecent ();

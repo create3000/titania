@@ -214,6 +214,9 @@ X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
 	isLive (isLive ());
 }
 
+/***
+ *  Return an iterator to a browser widget determined by @a URL.
+ */
 X3D::X3DPtrArray <X3D::Browser>::const_iterator
 X3DBrowserWidget::getBrowser (const basic::uri & URL) const
 {
@@ -336,10 +339,8 @@ X3DBrowserWidget::openRecent ()
 }
 
 void
-X3DBrowserWidget::open (const basic::uri & URL_, const bool splashScreen)
+X3DBrowserWidget::open (basic::uri URL, const bool splashScreen)
 {
-	basic::uri URL = URL_;
-
 	if (URL .is_relative ())
 		URL = basic::uri (os::cwd ()) .transform (URL);
 

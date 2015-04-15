@@ -15,15 +15,30 @@ use Glib;
 use Switch;
 #libswitch-perl
 
-my $Share        = "/usr/share/titania";
-my $DTDDirectory = "$Share/dtd";
-my $X3DCatalog   = "$DTDDirectory/x3d-catalog.xml";
-my $Info         = "$Share/info";
-my $NodeIndex    = "$Info/node-index.txt";
-my $FieldIndex   = "$Info/field-index.txt";
+sub find_data_file {
+	my $name = shift;
+	my @dirs = Glib::get_system_data_dirs ();
 
+	unshift @dirs, Glib::get_user_data_dir ();
+	
+	foreach my $dir (@dirs)
+	{
+		my $filename = "$dir/$name";
+		
+		return $filename if -f $filename;
+	}
+
+	die "Couldn't find '$name' in any of these directories:\n" . (join "\n", @dirs) . "\n";
+}
+
+my $DTDDirectory = "/titania/dtd";
+my $Info         = "/titania/info";
+my $X3DCatalog   = find_data_file ("$DTDDirectory/x3d-catalog.xml");
+my $NodeIndex    = find_data_file ("$Info/node-index.txt");
+my $FieldIndex   = find_data_file ("$Info/field-index.txt");
+
+my $RecomemndedSystemId = find_data_file ("$DTDDirectory/x3d-3.3.dtd");
 my $RecommendedPublicId = "ISO//Web3D//DTD X3D 3.3//EN";
-my $RecomemndedSystemId = "$DTDDirectory/x3d-3.3.dtd";
 my $RecomemndedVersion  = "3.3";
 
 XML::LibXML -> load_catalog ($X3DCatalog);

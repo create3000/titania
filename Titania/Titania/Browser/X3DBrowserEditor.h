@@ -88,7 +88,7 @@ public:
 
 	virtual
 	void
-	open (const basic::uri &, const bool = true) final override;
+	open (basic::uri, const bool = true) final override;
 
 	virtual
 	void

@@ -1,22 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="x3d2vrml/bin/x3d2vrml">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h" Line="115" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Loader.cpp" Line="1" Column="1" />
-      <File FileName="../Cobweb/cobweb.js/tests/Examples/Cathedral/stage/index.x3d" Line="1" Column="1" />
-      <File FileName="debian/changelog" Line="12" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="70" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="209" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="216" Column="1" />
+      <File FileName="Titania/Titania/main.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="92" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="326" Column="1" />
+      <File FileName="x3d2vrml/bin/x3d2vrml" Line="21" Column="34" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
+        <State expanded="True">
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
@@ -38,6 +37,7 @@
                 <Node name="Algorithms" expanded="True" />
                 <Node name="Geometry" expanded="True" />
               </Node>
+              <Node name="OS" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -78,6 +78,15 @@
                 <Node name="PrecisionPlacementPanel" expanded="True" />
                 <Node name="ViewpointEditor" expanded="True" />
               </Node>
+            </Node>
+          </Node>
+          <Node name="titania-info" expanded="True" />
+          <Node name="x3d2vrml" expanded="True">
+            <Node name="bin" expanded="True">
+              <Node name="x3d2vrml" selected="True" />
+            </Node>
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True" />
             </Node>
           </Node>
           <Node name="x3dtidy" expanded="True" />
