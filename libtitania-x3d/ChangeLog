@@ -1,5 +1,9 @@
 2015-04-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* PointingDevice.cpp: 
+
+2015-04-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* vrml.xml:
 	* x3d+xml.xml:
