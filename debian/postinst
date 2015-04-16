@@ -25,18 +25,31 @@ set -e
 case "$1" in
     configure)
       
-      /usr/bin/xdg-icon-resource install --novendor --size 48 /usr/share/pixmaps/titania.png
-		/usr/bin/xdg-desktop-icon  install --novendor /usr/share/applications/titania.desktop
- 
-      /usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/vrml.png        model-vrml
-      /usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/x3d+vrml.png    model-x3d+vrml
-      /usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/x3d+xml.png     model-x3d+xml
-      /usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/x3d+binary.png  model-x3d+binary
+      #/usr/bin/xdg-icon-resource install --novendor --size 48 /usr/share/pixmaps/titania.png
+		#/usr/bin/xdg-desktop-icon  install --novendor /usr/share/applications/titania.desktop
+
+      #/usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/vrml.png        model-vrml
+      #/usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/x3d+vrml.png    model-x3d+vrml
+      #/usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/x3d+xml.png     model-x3d+xml
+      #/usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/x3d+binary.png  model-x3d+binary
       
-      /usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/vrml.xml 
-      /usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/x3d+vrml.xml 
-      /usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/x3d+xml.xml 
-      /usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/x3d+binary.xml 
+      #/usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/vrml.xml 
+      #/usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/x3d+vrml.xml 
+      #/usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/x3d+xml.xml 
+      #/usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/x3d+binary.xml 
+
+		####
+
+		#/usr/share/icons/hicolor/48x48/apps/titania.png
+		#/usr/share/pixmaps/titania.png
+		#/usr/share/applications/titania.desktop
+  
+      #/usr/share/icons/hicolor/128x128/mimetypes/model-x3d+vrml.png
+      #/usr/share/icons/hicolor/128x128/mimetypes/model-x3d+vrml.png
+      #/usr/share/icons/hicolor/128x128/mimetypes/model-x3d+vrml.png
+      #/usr/share/icons/hicolor/128x128/mimetypes/model-x3d+vrml.png
+
+		#/usr/share/mime/model/x3d+binary.xml
 
     ;;
 

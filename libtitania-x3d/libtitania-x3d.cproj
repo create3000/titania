@@ -685,7 +685,6 @@
     <None Include="Titania\X3D\Browser\Geometry3D\ConeOptions.h" />
     <None Include="Titania\X3D\InputOutput\GoldenGate.h" />
     <None Include="Titania\X3D\Parser\Wavefront\Parser.h" />
-    <None Include="EmptyCHeaderFile.h" />
     <None Include="Titania\X3D\Tools\EnvironmentalSensor\TransformSensorTool.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\LassoSelection.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.h" />
@@ -753,6 +752,14 @@
     <None Include="Makefile.in" />
     <None Include="libtitania-x3d.cproj" />
     <None Include="libtitania-x3d.pidb" />
+    <None Include="share\mime\model\vrml.xml" />
+    <None Include="share\mime\model\x3d+binary.xml" />
+    <None Include="share\mime\model\x3d+vrml.xml" />
+    <None Include="share\mime\model\x3d+xml.xml" />
+    <None Include="share\icons\hicolor\128x128\mimetypes\model-vrml.png" />
+    <None Include="share\icons\hicolor\128x128\mimetypes\model-x3d+binary.png" />
+    <None Include="share\icons\hicolor\128x128\mimetypes\model-x3d+vrml.png" />
+    <None Include="share\icons\hicolor\128x128\mimetypes\model-x3d+xml.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1325,6 +1332,10 @@
     <Folder Include="Titania\X3D\Tools\PointingDeviceSensor\" />
     <Folder Include="Titania\X3D\Parser\Wavefront\" />
     <Folder Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\" />
+    <Folder Include="share\mime\" />
+    <Folder Include="share\mime\model\" />
+    <Folder Include="share\icons\hicolor\128x128\" />
+    <Folder Include="share\icons\hicolor\128x128\mimetypes\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

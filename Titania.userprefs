@@ -1,6 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="x3dtidy/x3dtidy.cproj">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Makefile.am">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h" Line="115" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp" Line="1" Column="1" />
@@ -11,8 +11,12 @@
       <File FileName="Titania/Titania/main.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
-      <File FileName="x3dtidy/x3dtidy.cproj" Line="68" Column="28" />
-      <File FileName="x3d2vrml/x3d2vrml.mdproj" Line="22" Column="1" />
+      <File FileName="debian/control" Line="1" Column="1" />
+      <File FileName="x3d2vrml/Makefile.am" Line="7" Column="1" />
+      <File FileName="x3dtidy/Makefile.am" Line="42" Column="1" />
+      <File FileName="Titania/Makefile.am" Line="141" Column="26" />
+      <File FileName="libtitania-x3d/Makefile.am" Line="508" Column="51" />
+      <File FileName="titania-info/Makefile.am" Line="38" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -80,6 +84,7 @@
                 <Node name="ViewpointEditor" expanded="True" />
               </Node>
             </Node>
+            <Node name="Makefile.am" selected="True" />
           </Node>
           <Node name="titania-info" expanded="True" />
           <Node name="x3d2vrml" expanded="True">
@@ -88,7 +93,13 @@
               <Node name="titania" expanded="True" />
             </Node>
           </Node>
-          <Node name="x3dtidy" expanded="True" selected="True" />
+          <Node name="x3dtidy" expanded="True">
+            <Node name="share" expanded="True">
+              <Node name="man" expanded="True">
+                <Node name="man1" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
         </State>
       </Pad>
       <Pad Id="ClassPad">
