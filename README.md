@@ -15,7 +15,7 @@ For more information and documentation please visit our website at [http://titan
 Installation
 --------------------------------------
 
-Titania is available for Ubuntu on Launchpad via ppa. You can install Titania by pasting the following lines into a terminal: 
+Titania is available for **Ubuntu** on Launchpad via ppa. You can install Titania by pasting the following lines into a terminal: 
 
 ```bash
 sudo add-apt-repository ppa:holger-seelig/titania
@@ -26,7 +26,7 @@ sudo apt-get install titania
 Acknowledgments
 --------------------------------------
 
-Titania wouldn't be possible without parts of program code or inspiration from other software packages. We would like to say thank to everyone for their great work and help.
+Titania wouldn't be possible without parts of source code or inspiration from other software packages. We would like to say thank to everyone for their great work and help.
 
 * [H3D](http://www.h3dapi.org/)
 * [FreeWRL](http://freewrl.sourceforge.net/)
