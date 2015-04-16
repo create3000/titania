@@ -15,12 +15,12 @@ For more information and documentation please visit our website at [http://titan
 Installation
 --------------------------------------
 
+Titania is available for Ubuntu on Launchpad via ppa. You can install Titania by pasting the following lines into a terminal: 
+
 ```bash
-cd titania
-./autogen.sh --enable-release --prefix=`/usr/local/
-./configure
-make -j4
-make install
+sudo add-apt-repository ppa:holger-seelig/titania
+sudo apt-get update
+sudo apt-get install titania
 ```
 
 Acknowledgments
