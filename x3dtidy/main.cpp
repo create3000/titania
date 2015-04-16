@@ -51,6 +51,7 @@
 #include <iostream>
 
 #include <Titania/X3D.h>
+#include <Titania/OS/cwd.h>
 #include <Titania/String/to_string.h>
 #include <unistd.h>
 
@@ -96,9 +97,9 @@ main (int argc, char** argv)
 	options .addUsage ("              Formats file.wrl's contents in compact style mode to standard");
 	options .addUsage ("              output.");
 	options .addUsage ("");
-	options .addUsage ("       x3dtidy file.wrl beautified.wrl");
-	options .addUsage ("              Formats file.wrl's contents and saves the output in");
-	options .addUsage ("              beautified.wrl.");
+	options .addUsage ("       x3dtidy file.x3dv beautified.x3dv");
+	options .addUsage ("              Formats file.x3dv's contents and saves the output in");
+	options .addUsage ("              beautified.x3dv.");
 	options .addUsage ("");
 	options .addUsage ("COPYRIGHT");
 	options .addUsage ("       Copyright \xc2\xa9 2010 Holger Seelig.  License GPLv3+:");
@@ -135,10 +136,16 @@ main (int argc, char** argv)
 		if (options .getArgc ())
 		{
 			basic::uri uri = options .getArgv (0);
+			
+			if (uri .is_relative ())
+				uri = basic::uri (os::cwd ()) .transform (uri);
 
 			if (options .getArgc () > 1)
 			{
 				basic::uri out = options .getArgv (1);
+			
+				if (out .is_relative ())
+					out = basic::uri (os::cwd ()) .transform (out);
 
 				std::string tmpFilename = "/tmp/x3dtidy." + basic::to_string (getpid ()) + out .suffix ();
 
@@ -156,7 +163,7 @@ main (int argc, char** argv)
 
 					// Replace original
 
-					rename (tmpFilename .c_str (), options .getArgv (1));
+					rename (tmpFilename .c_str (), out .path () .c_str ());
 				}
 				catch (...)
 				{
