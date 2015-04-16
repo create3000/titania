@@ -1,8 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Makefile.am">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h" Line="115" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h" Line="106" Column="6" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="1" Column="1" />
@@ -12,43 +12,20 @@
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
       <File FileName="debian/control" Line="1" Column="1" />
-      <File FileName="x3d2vrml/Makefile.am" Line="7" Column="1" />
-      <File FileName="x3dtidy/Makefile.am" Line="42" Column="1" />
-      <File FileName="Titania/Makefile.am" Line="141" Column="26" />
-      <File FileName="libtitania-x3d/Makefile.am" Line="508" Column="51" />
-      <File FileName="titania-info/Makefile.am" Line="38" Column="1" />
+      <File FileName="debian/postinst" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Makefile.am" Line="1" Column="1" />
+      <File FileName="debian/postrm" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
+        <State expanded="True" selected="True">
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
-          <Node name="experimental" expanded="True" />
-          <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True">
-              <Node name="Appartment" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-anyoptions" expanded="True" />
-          <Node name="libtitania-gzstream" expanded="True">
-            <Node name="Titania" expanded="True" />
-          </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Algorithm" expanded="True" />
-              <Node name="Basic" expanded="True" />
-              <Node name="Math" expanded="True">
-                <Node name="Algorithms" expanded="True" />
-                <Node name="Geometry" expanded="True" />
-              </Node>
-              <Node name="OS" expanded="True" />
-            </Node>
-          </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="tools" expanded="True" />
+              <Node name="mime" expanded="True">
+                <Node name="model" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
@@ -56,47 +33,17 @@
                 <Node name="Browser" expanded="True">
                   <Node name="PointingDeviceSensor" expanded="True" />
                 </Node>
-                <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Layering" expanded="True" />
-                  <Node name="Networking" expanded="True" />
-                  <Node name="ParticleSystems" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
-                  <Node name="Scripting" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
-                  <Node name="Texturing3D" expanded="True" />
-                </Node>
-                <Node name="InputOutput" expanded="True" />
-                <Node name="Tools" expanded="True">
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="Layout" expanded="True" />
-                </Node>
-                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
-            <Node name="share" expanded="True" />
-            <Node name="Titania" expanded="True">
-              <Node name="Browser" expanded="True" />
-              <Node name="Editors" expanded="True">
-                <Node name="PrecisionPlacementPanel" expanded="True" />
-                <Node name="ViewpointEditor" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="Makefile.am" selected="True" />
-          </Node>
-          <Node name="titania-info" expanded="True" />
-          <Node name="x3d2vrml" expanded="True">
-            <Node name="bin" expanded="True" />
             <Node name="share" expanded="True">
-              <Node name="titania" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="x3dtidy" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="man" expanded="True">
-                <Node name="man1" expanded="True" />
+              <Node name="icons" expanded="True">
+                <Node name="hicolor" expanded="True">
+                  <Node name="scalable" expanded="True">
+                    <Node name="apps" expanded="True" />
+                  </Node>
+                </Node>
               </Node>
             </Node>
           </Node>
