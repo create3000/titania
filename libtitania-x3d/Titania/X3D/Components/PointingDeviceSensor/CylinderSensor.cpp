@@ -179,7 +179,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 			zPlane = Plane3d (hitPoint, cameraBack);        // Screen aligned z-plane
 
 			// Compute normal as in Billboard with yAxis as axis of rotation.
-			const Vector3d billboardToViewer = normalize (inverseModelViewMatrix .origin ());
+			const Vector3d billboardToViewer = inverseModelViewMatrix .origin ();
 			const Vector3d sxNormal          = normalize (cross (yAxis, billboardToViewer));
 
 			sxPlane  = Plane3d (Vector3d (), sxNormal);     // Billboarded special x-plane made parallel to sensors axis.
@@ -234,7 +234,7 @@ CylinderSensor::set_motion (const HitPtr & hit)
 			// This phenomenon is very clear on the viewport corners.
 
 			const auto trackPoint_ = trackPoint * ~inverseModelViewMatrix;
-		
+
 			if (trackPoint_ .z () > 0)
 				rotation *= Rotation4d (yPlane .normal (), M_PI);
 		}

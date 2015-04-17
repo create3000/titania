@@ -1,8 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h" Line="89" Column="15" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h" Line="77" Column="14" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/ExamineViewer.cpp" Line="1" Column="1" />
@@ -12,7 +12,7 @@
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
+        <State expanded="True" selected="True">
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
@@ -26,9 +26,7 @@
               <Node name="X3D" expanded="True">
                 <Node name="Browser" expanded="True">
                   <Node name="Navigation" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True">
-                    <Node name="X3DPointingDeviceSensorContext.h" selected="True" />
-                  </Node>
+                  <Node name="PointingDeviceSensor" expanded="True" />
                 </Node>
               </Node>
             </Node>
