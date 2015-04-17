@@ -1,23 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h" Line="102" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h" Line="89" Column="15" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/main.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
-      <File FileName="README.md" Line="1" Column="1" />
-      <File FileName="x3dtidy/main.cpp" Line="149" Column="1" />
-      <File FileName="libtitania-standard/Titania/Basic/URI.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/ExamineViewer.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DFlyViewer.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/LookAtViewer.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/PlaneViewer.cpp" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
+        <State expanded="True">
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
@@ -30,7 +25,10 @@
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Browser" expanded="True">
-                  <Node name="PointingDeviceSensor" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
+                  <Node name="PointingDeviceSensor" expanded="True">
+                    <Node name="X3DPointingDeviceSensorContext.h" selected="True" />
+                  </Node>
                 </Node>
               </Node>
             </Node>

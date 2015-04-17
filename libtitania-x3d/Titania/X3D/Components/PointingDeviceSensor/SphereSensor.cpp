@@ -175,7 +175,7 @@ SphereSensor::set_motion (const HitPtr & hit)
 
 			const auto triNormal     = math::normal (sphere .center (), trackPoint, startPoint);
 			const auto dirFromCenter = normalize (trackPoint - sphere .center ());
-			const auto normal        = cross (triNormal, dirFromCenter);
+			const auto normal        = normalize (cross (triNormal, dirFromCenter));
 
 			hitRay = Line3d (trackPoint - normal * abs (tangentPoint - trackPoint), sphere .center (), point_type ());
 
