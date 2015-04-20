@@ -87,7 +87,7 @@ FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
 }
 
 void
-FileSaveDialog::saveScene ()
+FileSaveDialog::saveScene (const bool copy)
 {
 	getWindow () .add_filter (getFileFilterX3D ());
 	getWindow () .set_filter (getFileFilterX3D ());
@@ -98,7 +98,7 @@ FileSaveDialog::saveScene ()
 	const auto responseId = getWindow () .run ();
 
 	if (responseId == Gtk::RESPONSE_OK)
-		getBrowserWindow () -> save (Glib::uri_unescape_string (getWindow () .get_uri ()), getCompressFileButton () .get_active ());
+		getBrowserWindow () -> save (Glib::uri_unescape_string (getWindow () .get_uri ()), getCompressFileButton () .get_active (), copy);
 
 	quit ();
 }

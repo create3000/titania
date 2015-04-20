@@ -1,10 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h" Line="77" Column="14" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp" Line="151" Column="79" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/ExamineViewer.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DFlyViewer.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/LookAtViewer.cpp" Line="1" Column="1" />
@@ -12,7 +12,7 @@
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
+        <State expanded="True">
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
@@ -26,7 +26,24 @@
               <Node name="X3D" expanded="True">
                 <Node name="Browser" expanded="True">
                   <Node name="Navigation" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
+                  <Node name="Networking" expanded="True" />
+                  <Node name="ParticleSystems" expanded="True" />
+                  <Node name="PointingDeviceSensor" expanded="True">
+                    <Node name="PointingDevice.cpp" selected="True" />
+                  </Node>
+                  <Node name="Scripting" expanded="True" />
+                  <Node name="Shape" expanded="True" />
+                  <Node name="Text" expanded="True" />
+                </Node>
+                <Node name="Components" expanded="True">
+                  <Node name="CADGeometry" expanded="True" />
+                  <Node name="Core" expanded="True" />
+                  <Node name="CubeMapTexturing" expanded="True" />
+                  <Node name="DIS" expanded="True" />
+                  <Node name="EnvironmentalEffects" expanded="True" />
+                  <Node name="EnvironmentalSensor" expanded="True" />
+                  <Node name="EventUtilities" expanded="True" />
+                  <Node name="Geometry3D" expanded="True" />
                 </Node>
               </Node>
             </Node>

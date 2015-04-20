@@ -181,6 +181,10 @@ private:
 
 	virtual
 	void
+	on_save_a_copy () final override;
+
+	virtual
+	void
 	on_export () final override;
 
 	virtual

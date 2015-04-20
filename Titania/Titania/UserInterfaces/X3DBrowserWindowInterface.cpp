@@ -95,6 +95,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ImportAsInlineMenuItem", m_ImportAsInlineMenuItem);
 	m_builder -> get_widget ("SaveMenuItem", m_SaveMenuItem);
 	m_builder -> get_widget ("SaveAsMenuItem", m_SaveAsMenuItem);
+	m_builder -> get_widget ("SaveACopyMenuItem", m_SaveACopyMenuItem);
 	m_builder -> get_widget ("ExportMenuItem", m_ExportMenuItem);
 	m_builder -> get_widget ("RevertMenuItem", m_RevertMenuItem);
 	m_builder -> get_widget ("RemoveUnusedPrototypesMenuItem", m_RemoveUnusedPrototypesMenuItem);
@@ -279,6 +280,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'SaveMenuItem'.
 	m_SaveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save));
 	m_SaveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_as));
+
+	// Connect object Gtk::MenuItem with id 'SaveACopyMenuItem'.
+	m_SaveACopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_a_copy));
+
+	// Connect object Gtk::ImageMenuItem with id 'ExportMenuItem'.
 	m_ExportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_export));
 	m_RevertMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved));
 	m_RemoveUnusedPrototypesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_remove_unused_prototypes));

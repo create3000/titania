@@ -145,7 +145,7 @@ public:
 
 	virtual
 	bool
-	save (const basic::uri &, const bool);
+	save (const basic::uri &, const bool, const bool);
 
 	static
 	bool

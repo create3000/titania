@@ -226,6 +226,10 @@ public:
 	getSaveAsMenuItem () const
 	{ return *m_SaveAsMenuItem; }
 
+	Gtk::MenuItem &
+	getSaveACopyMenuItem () const
+	{ return *m_SaveACopyMenuItem; }
+
 	Gtk::ImageMenuItem &
 	getExportMenuItem () const
 	{ return *m_ExportMenuItem; }
@@ -916,6 +920,10 @@ public:
 
 	virtual
 	void
+	on_save_a_copy () = 0;
+
+	virtual
+	void
 	on_export () = 0;
 
 	virtual
@@ -1391,6 +1399,7 @@ private:
 	Gtk::CheckMenuItem*              m_ImportAsInlineMenuItem;
 	Gtk::ImageMenuItem*              m_SaveMenuItem;
 	Gtk::ImageMenuItem*              m_SaveAsMenuItem;
+	Gtk::MenuItem*                   m_SaveACopyMenuItem;
 	Gtk::ImageMenuItem*              m_ExportMenuItem;
 	Gtk::ImageMenuItem*              m_RevertMenuItem;
 	Gtk::ImageMenuItem*              m_RemoveUnusedPrototypesMenuItem;

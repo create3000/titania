@@ -67,7 +67,7 @@ public:
 	FileSaveDialog (X3DBrowserWindow* const);
 
 	void
-	saveScene ();
+	saveScene (const bool copy);
 
 	void
 	exportImage ();

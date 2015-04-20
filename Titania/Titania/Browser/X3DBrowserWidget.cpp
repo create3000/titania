@@ -451,10 +451,11 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 }
 
 bool
-X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress)
+X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress, const bool copy)
 {
-	const auto suffix = worldURL .suffix ();
-	const auto scene  = X3D::X3DScenePtr (getRootContext ());
+	const auto suffix   = worldURL .suffix ();
+	const auto scene    = X3D::X3DScenePtr (getRootContext ());
+	const auto undoStep = std::make_shared <UndoStep> ("");
 
 	scene -> isCompressed (compress);
 
@@ -474,11 +475,14 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress)
 
 			if (file)
 			{
-				setWorldURL (scene, worldURL, std::make_shared <UndoStep> (""));
+				setWorldURL (scene, worldURL, undoStep);
 
 				file
 					<< X3D::SmallestStyle
 					<< X3D::XMLEncode (scene);
+				
+				if (copy)
+					undoStep -> undoChanges ();
 				
 				if (file)
 					return true;
@@ -490,11 +494,14 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress)
 
 			if (file)
 			{
-				setWorldURL (scene, worldURL, std::make_shared <UndoStep> (""));
+				setWorldURL (scene, worldURL, undoStep);
 
 				file
 					<< X3D::CompactStyle
 					<< X3D::XMLEncode (scene);
+				
+				if (copy)
+					undoStep -> undoChanges ();
 
 				if (file)
 					return true;
@@ -526,11 +533,14 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress)
 
 			if (file)
 			{
-				setWorldURL (scene, worldURL, std::make_shared <UndoStep> (""));
+				setWorldURL (scene, worldURL, undoStep);
 
 				file
 					<< X3D::SmallestStyle
 					<< scene;
+				
+				if (copy)
+					undoStep -> undoChanges ();
 
 				if (file)
 					return true;
@@ -542,11 +552,14 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress)
 
 			if (file)
 			{
-				setWorldURL (scene, worldURL, std::make_shared <UndoStep> (""));
+				setWorldURL (scene, worldURL, undoStep);
 
 				file
 					<< X3D::NicestStyle
 					<< scene;
+				
+				if (copy)
+					undoStep -> undoChanges ();
 
 				if (file)
 					return true;
@@ -578,6 +591,10 @@ X3DBrowserWidget::setWorldURL (const X3D::X3DScenePtr & scene, const basic::uri 
 	               X3D::TRAVERSE_PROTO_DECLARATIONS |
 	               X3D::TRAVERSE_ROOT_NODES);
 
+	undoStep -> addUndoFunction (&X3D::Output::processInterests, std::ref (worldURL_changed ()));
+	undoStep -> addUndoFunction (&X3D::X3DScene::setWorldURL, scene, scene -> getWorldURL ());
+	undoStep -> addRedoFunction (&X3D::X3DScene::setWorldURL, scene, worldURL);
+	undoStep -> addRedoFunction (&X3D::Output::processInterests, std::ref (worldURL_changed ()));
 	scene -> setWorldURL (worldURL);
 
 	worldURL_changed () .processInterests ();

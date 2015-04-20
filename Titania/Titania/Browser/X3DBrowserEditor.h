@@ -105,7 +105,7 @@ public:
 
 	virtual
 	bool
-	save (const basic::uri &, const bool) final override;
+	save (const basic::uri &, const bool, const bool) final override;
 
 	std::string
 	exportNodes (X3D::MFNode &) const;

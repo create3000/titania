@@ -835,8 +835,6 @@ Parser::proto ()
 					{
 						const ProtoDeclarationPtr _proto = getExecutionContext () -> createProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
 
-						getExecutionContext () -> updateProtoDeclaration (_nodeTypeId, _proto);
-
 						pushExecutionContext (_proto);
 
 						protoBody ();
@@ -848,6 +846,8 @@ Parser::proto ()
 						if (Grammar::CloseBrace (istream))
 						{
 							//__LOG__ << this << " " << (void*) _proto .getValue () << " " << _nodeTypeId << std::endl;
+
+							getExecutionContext () -> updateProtoDeclaration (_nodeTypeId, _proto);
 
 							_proto -> addInterfaceComments (_interfaceComments);
 							_proto -> addComments (_comments);

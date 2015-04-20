@@ -494,11 +494,12 @@ X3DBrowserEditor::getImportedRoutes (const X3D::X3DExecutionContextPtr & executi
 }
 
 bool
-X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed)
+X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, const bool copy)
 {
-	if (X3DBrowserWidget::save (worldURL, compressed))
+	if (X3DBrowserWidget::save (worldURL, compressed, copy))
 	{
-		isModified (getBrowser (), false);
+		if (not copy)
+			isModified (getBrowser (), false);
 		return true;
 	}
 

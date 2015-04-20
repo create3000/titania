@@ -1,3 +1,18 @@
+2015-04-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* titania:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* BrowserWindow.xml:
+	* X3DBrowserWidget.h:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWidget.cpp:
+	* FileSaveDialog.h:
+	* FileSaveDialog.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
 2015-04-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.in: 

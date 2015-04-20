@@ -610,13 +610,19 @@ BrowserWindow::on_save ()
 		on_save_as ();
 
 	else
-		save (worldURL, getRootContext () -> isCompressed ());
+		save (worldURL, getRootContext () -> isCompressed (), false);
 }
 
 void
 BrowserWindow::on_save_as ()
 {
-	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false)) -> saveScene ();
+	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false)) -> saveScene (false);
+}
+
+void
+BrowserWindow::on_save_a_copy ()
+{
+	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false)) -> saveScene (true);
 }
 
 void
