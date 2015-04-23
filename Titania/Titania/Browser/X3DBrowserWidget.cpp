@@ -65,17 +65,17 @@
 namespace titania {
 namespace puck {
 
-X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser) :
+X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	X3DBrowserWindowInterface (),
-	            masterBrowser (masterBrowser),
-	                  browser (masterBrowser),
+	            masterBrowser (masterBrowser_),
+	                  browser (masterBrowser_),
 	                 browsers (),
 	                    scene (browser -> getExecutionContext ()),
-	         executionContext (scene),
+	         executionContext (browser -> getExecutionContext ()),
 	           worldURLOutput (),
 	                 aboutTab (new AboutTab (getBrowserWindow ()))
 {
-	addChildren (browsers, browser, scene, executionContext);
+	addChildren (masterBrowser, browsers, browser, scene, executionContext);
 }
 
 void

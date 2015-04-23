@@ -66,7 +66,7 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	        children (),
 	         browser (getBrowser ())
 {
-	X3DBaseInterface::addChildren (over, active, touchTime, children);
+	X3DBaseInterface::addChildren (over, active, touchTime, children, browser);
 
 	getBrowser () .addInterest (this, &BrowserSelection::set_browser);
 

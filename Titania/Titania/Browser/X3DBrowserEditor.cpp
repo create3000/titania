@@ -79,7 +79,7 @@ X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
 	                 undoTime (0),
 	                     tool (NONE_TOOL)
 {
-	addChildren (enabled);
+	addChildren (enabled, currentScene);
 }
 
 void
