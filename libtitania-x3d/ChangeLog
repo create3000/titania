@@ -1,3 +1,9 @@
+2015-04-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Route.cpp:
+	* X3DBaseNode.cpp:
+	* ProtoDeclaration.cpp: 
+
 2015-04-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.cpp: 

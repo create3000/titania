@@ -155,6 +155,15 @@ ProtoDeclaration::initialize ()
 	X3DExecutionContext::initialize ();
 
 	// Prototypes shouldn't be live as they are not realized.
+
+	// Prototypes must be setuped partially to ensure that routes are printed always, especially route from and to nodes
+	// without names or hidden names, this is ok as setup can be called multiple times.
+
+	for (const auto & proto : getProtoDeclarations ())
+		proto -> setup ();
+
+	for (const auto & route : getRoutes ())
+		route -> setup ();
 }
 
 void

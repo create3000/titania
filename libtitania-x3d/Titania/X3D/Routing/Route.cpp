@@ -174,6 +174,9 @@ throw (Error <DISPOSED>)
 void
 Route::connect ()
 {
+	if (connected)
+		return;
+
 	if (sourceNode and destinationNode)
 	{
 		connected = true;
