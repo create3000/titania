@@ -2,74 +2,48 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp" Line="141" Column="19" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/ExamineViewer.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DFlyViewer.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/LookAtViewer.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/PlaneViewer.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="108" Column="45" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="100" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="181" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="598" Column="4" />
-      <File FileName="Titania/Titania/Dialogs/FileSaveDialog/FileSaveDialog.h" Line="70" Column="28" />
-      <File FileName="Titania/Titania/Dialogs/FileSaveDialog/FileSaveDialog.cpp" Line="102" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="505" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="594" Column="28" />
+      <File FileName="Library/Examples/ICTS/stage/Console_proto.wrl" Line="21" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserSelection.h" Line="158" Column="26" />
+      <File FileName="Titania/Titania/Browser/BrowserSelection.cpp" Line="96" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="427" Column="49" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="81" Column="2" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="232" Column="23" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="74" Column="62" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
-          <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
-          </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Basic" expanded="True" />
+        <State expanded="True">
+          <Node name="Library" expanded="True">
+            <Node name="Examples" expanded="True">
+              <Node name="ICTS" expanded="True">
+                <Node name="stage" expanded="True">
+                  <Node name="Console_proto.wrl" selected="True" />
+                </Node>
+              </Node>
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Browser" expanded="True">
-                  <Node name="Navigation" expanded="True" />
-                  <Node name="Networking" expanded="True" />
-                  <Node name="ParticleSystems" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
-                  <Node name="Scripting" expanded="True" />
-                  <Node name="Shape" expanded="True" />
-                  <Node name="Text" expanded="True" />
-                </Node>
-                <Node name="Components" expanded="True">
-                  <Node name="CADGeometry" expanded="True" />
-                  <Node name="Core" expanded="True" />
-                  <Node name="CubeMapTexturing" expanded="True" />
-                  <Node name="DIS" expanded="True" />
-                  <Node name="EnvironmentalEffects" expanded="True" />
-                  <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="EventUtilities" expanded="True" />
-                  <Node name="Geometry3D" expanded="True" />
-                </Node>
+                <Node name="Base" expanded="True" />
+                <Node name="Basic" expanded="True" />
+                <Node name="Execution" expanded="True" />
+                <Node name="Prototype" expanded="True" />
+                <Node name="Routing" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="icons" expanded="True">
-                <Node name="hicolor" expanded="True">
-                  <Node name="scalable" expanded="True">
-                    <Node name="apps" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
-            </Node>
             <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
-              <Node name="Dialogs" expanded="True">
-                <Node name="FileSaveDialog" expanded="True" />
+              <Node name="Editors" expanded="True">
+                <Node name="GridEditor" expanded="True" />
+                <Node name="ViewpointEditor" expanded="True" />
               </Node>
-              <Node name="Undo" expanded="True" />
+              <Node name="Widgets" expanded="True">
+                <Node name="Console" expanded="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="x3dtidy" expanded="True">

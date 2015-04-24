@@ -20,11 +20,11 @@ sub find_data_file {
 	my @dirs = Glib::get_system_data_dirs ();
 
 	unshift @dirs, Glib::get_user_data_dir ();
-	
+
 	foreach my $dir (@dirs)
 	{
 		my $filename = "$dir/$name";
-		
+
 		return $filename if -f $filename;
 	}
 
@@ -1141,7 +1141,7 @@ sub field {
 
 	if ($typeName eq "SFBool")
 	{
-		$field -> {value}
+		exists $field -> {value}
 		? print uc $field -> {value}
 		: print "FALSE";
 	}
@@ -1153,19 +1153,19 @@ sub field {
 	}
 	elsif ($typeName eq "SFString")
 	{
-		$field -> {value}
+		exists $field -> {value}
 		? print "\"", escape ($field -> {value}), "\""
 		: print "\"\"";
 	}
 	elsif ($typeName eq "MFBool")
 	{
-		$field -> {value}
+		exists $field -> {value}
 		? print "[ ", uc ($field -> {value}) , "]"
 		: print "[ ]";
 	}
 	elsif ($typeName eq "MFNode")
 	{
-		if ($field -> {value})
+		if (exists $field -> {value})
 		{
 			if (ref ($field -> {value}) eq ref ([ ]))
 			{
@@ -1200,7 +1200,7 @@ sub field {
 	}
 	elsif ($typeName =~ /^SF/sgo)
 	{
-		if ($field -> {value})
+		if (exists $field -> {value})
 		{
 			print $field -> {value};
 		}
@@ -1212,7 +1212,7 @@ sub field {
 	}
 	else # /^MF/
 	{
-		$field -> {value}
+		exists $field -> {value}
 		? print "[ ", $field -> {value} , " ]"
 		: print "[ ]";
 	}
