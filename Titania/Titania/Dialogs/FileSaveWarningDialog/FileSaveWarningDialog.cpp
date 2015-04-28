@@ -66,7 +66,7 @@ FileSaveWarningDialog::FileSaveWarningDialog (X3DBrowserWindow* const browserWin
 }
 
 int
-FileSaveWarningDialog::run (const X3D::BrowserPtr & browser)
+FileSaveWarningDialog::run ()
 {
 	const auto worlURL = getRootContext () -> getWorldURL ();
 

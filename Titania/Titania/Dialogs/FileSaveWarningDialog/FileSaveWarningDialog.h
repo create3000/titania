@@ -66,7 +66,7 @@ public:
 	FileSaveWarningDialog (X3DBrowserWindow* const);
 
 	int
-	run (const X3D::BrowserPtr &);
+	run ();
 
 	///  @name Destruction
 
