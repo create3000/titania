@@ -236,17 +236,18 @@ X3DBrowserWidget::setExecutionContext (const X3D::X3DExecutionContextPtr & value
 {
 	try
 	{
-		executionContext = value;
-
 		const X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (getBrowser ());
 
 		browserOptions -> assign (getBrowser () -> getBrowserOptions ());
 
-		getBrowser () -> replaceWorld (executionContext);
+		getBrowser () -> replaceWorld (value);
 		getBrowser () -> getBrowserOptions () -> assign (browserOptions, true);
 
 		getBrowser () -> isLive () .addInterest (getScene () -> isLive ());
 		getScene () -> isLive () = getBrowser () -> isLive ();
+
+		// Assign as last step, after replaceWorld.
+		executionContext = value;
 	}
 	catch (const X3D::X3DError &)
 	{ }

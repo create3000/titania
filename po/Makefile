@@ -33,8 +33,7 @@ exec_prefix = ${prefix}
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
 libdir = ${exec_prefix}/lib
-DATADIRNAME = share
-itlocaledir = $(prefix)/$(DATADIRNAME)/locale
+localedir = ${datarootdir}/locale
 subdir = po
 install_sh = ${SHELL} /home/holger/Projekte/Titania/install-sh
 # Automake >= 1.8 provides $(MKDIR_P).
@@ -79,7 +78,7 @@ INTLTOOL__v_MSGFMT_0 = @echo "  MSGFMT" $@;
 
 .po.pox:
 	$(MAKE) $(GETTEXT_PACKAGE).pot
-	$(MSGMERGE) $< $(GETTEXT_PACKAGE).pot -o $*.pox
+	$(MSGMERGE) $* $(GETTEXT_PACKAGE).pot -o $*.pox
 
 .po.mo:
 	$(INTLTOOL_V_MSGFMT)$(MSGFMT) -o $@ $<
@@ -107,7 +106,7 @@ install-data-no: all
 install-data-yes: all
 	linguas="$(USE_LINGUAS)"; \
 	for lang in $$linguas; do \
-	  dir=$(DESTDIR)$(itlocaledir)/$$lang/LC_MESSAGES; \
+	  dir=$(DESTDIR)$(localedir)/$$lang/LC_MESSAGES; \
 	  $(mkdir_p) $$dir; \
 	  if test -r $$lang.gmo; then \
 	    $(INSTALL_DATA) $$lang.gmo $$dir/$(GETTEXT_PACKAGE).mo; \
@@ -141,8 +140,8 @@ install-exec installcheck:
 uninstall:
 	linguas="$(USE_LINGUAS)"; \
 	for lang in $$linguas; do \
-	  rm -f $(DESTDIR)$(itlocaledir)/$$lang/LC_MESSAGES/$(GETTEXT_PACKAGE).mo; \
-	  rm -f $(DESTDIR)$(itlocaledir)/$$lang/LC_MESSAGES/$(GETTEXT_PACKAGE).mo.m; \
+	  rm -f $(DESTDIR)$(localedir)/$$lang/LC_MESSAGES/$(GETTEXT_PACKAGE).mo; \
+	  rm -f $(DESTDIR)$(localedir)/$$lang/LC_MESSAGES/$(GETTEXT_PACKAGE).mo.m; \
 	done
 
 check: all $(GETTEXT_PACKAGE).pot

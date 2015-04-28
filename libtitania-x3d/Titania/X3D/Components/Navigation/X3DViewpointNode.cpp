@@ -238,7 +238,7 @@ X3DViewpointNode::isLockedToCamera (const bool value)
 
 	if (lockToCamera)
 		addInterest (this, &X3DViewpointNode::applyUserOffsets);
-		
+
 	else
 		removeInterest (this, &X3DViewpointNode::applyUserOffsets);
 }
@@ -341,9 +341,9 @@ X3DViewpointNode::lookAt (Vector3f point, const float factor, const bool straigh
 	try
 	{
 		point = point * ~getParentMatrix ();
-	
+
 		const float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
-	
+
 		lookAt (point, minDistance, factor, straighten);
 	}
 	catch (const std::domain_error &)
@@ -364,7 +364,7 @@ X3DViewpointNode::lookAt (Box3f bbox, const float factor, const bool straighten)
 		bbox *= ~getParentMatrix ();
 
 		const float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
-		
+
 		lookAt (bbox .center (), std::max (minDistance, getLookAtDistance (bbox)), factor, straighten);
 	}
 	catch (const std::domain_error &)
@@ -375,7 +375,7 @@ void
 X3DViewpointNode::lookAt (const Vector3f & point, const float distance, const float factor, const bool straighten)
 {
    const auto offset = point + Vector3f (0, 0, distance) * getUserOrientation () - getPosition ();
- 
+
 	for (const auto & layer : getLayers ())
 		layer -> getNavigationInfo () -> transitionStart () = true;
 
@@ -403,7 +403,7 @@ X3DViewpointNode::lookAt (const Vector3f & point, const float distance, const fl
 }
 
 ///  Starts a transition from @a fromViewpoint to this viewpoints position and orientation.  The transitionType from the
-///  currently bound NavigationInfo is used.  The user offsets are reseted if retainUserOffsets is false.  You can use: 
+///  currently bound NavigationInfo is used.  The user offsets are reseted if retainUserOffsets is false.  You can use:
 ///
 ///      viewpoint -> transitionStart (viewpoint);
 ///
@@ -510,7 +510,7 @@ X3DViewpointNode::transitionStop ()
 void
 X3DViewpointNode::set_isActive (const bool value)
 {
-	if (not value)
+	if (not value && timeSensor -> fraction_changed () == 1.0f)
 	{
 		for (const auto & layer : getLayers ())
 			layer -> getNavigationInfo () -> transitionComplete () = true;

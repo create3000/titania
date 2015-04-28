@@ -126,7 +126,10 @@ private:
 	on_grab_focus () final override;
 
 	bool
-	on_textview_button_press_event (GdkEventButton*);
+	on_textview_button_press_event_before (GdkEventButton*);
+
+	bool
+	on_textview_button_press_event_after (GdkEventButton*);
 
 	bool
 	on_textview_focus_out_event (GdkEventFocus*);

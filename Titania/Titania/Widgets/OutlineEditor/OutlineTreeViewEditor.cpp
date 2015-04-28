@@ -74,6 +74,7 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 	             sourceField (),
 	         destinationNode (),
 	        destinationField (),
+                    editing (0),
 	motion_notify_connection ()
 {
 	set_name ("OutlineTreeViewEditor");
@@ -196,6 +197,8 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 
 				if (field -> getAccessType () not_eq X3D::outputOnly)
 				{
+					++ editing;
+
 					getBrowserWindow () -> hasAccelerators (false);
 					get_tree_observer () -> unwatch_tree (iter);
 					watch_motion (false);
@@ -254,6 +257,9 @@ OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib:
 	const Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
 
 	get_tree_observer () -> watch_child (iter, path);
+
+	if (-- editing)
+		return;
 
 	getBrowserWindow () -> hasAccelerators (true);
 	watch_motion (true);

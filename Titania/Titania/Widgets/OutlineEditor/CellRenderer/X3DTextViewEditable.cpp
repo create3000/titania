@@ -73,7 +73,8 @@ X3DTextViewEditable::X3DTextViewEditable (const bool multiline) :
 	textview .set_visible (true);
 	add (textview);
 
-	textview .signal_button_press_event () .connect (sigc::mem_fun (this, &X3DTextViewEditable::on_textview_button_press_event), false);
+	textview .signal_button_press_event () .connect (sigc::mem_fun (this, &X3DTextViewEditable::on_textview_button_press_event_before), false);
+	textview .signal_button_press_event () .connect (sigc::mem_fun (this, &X3DTextViewEditable::on_textview_button_press_event_after));
 	textview .signal_focus_out_event ()    .connect (sigc::mem_fun (this, &X3DTextViewEditable::on_textview_focus_out_event));
 	textview .signal_key_press_event ()    .connect (sigc::mem_fun (this, &X3DTextViewEditable::on_textview_key_press_event), false);
 }
@@ -96,12 +97,18 @@ X3DTextViewEditable::on_grab_focus ()
 }
 
 bool
-X3DTextViewEditable::on_textview_button_press_event (GdkEventButton* event)
+X3DTextViewEditable::on_textview_button_press_event_before (GdkEventButton* event)
 {
 	if (event -> button == 3)
 		handleFocusOut = false;
 
 	return false;
+}
+
+bool
+X3DTextViewEditable::on_textview_button_press_event_after (GdkEventButton* event)
+{
+	return true;
 }
 
 bool

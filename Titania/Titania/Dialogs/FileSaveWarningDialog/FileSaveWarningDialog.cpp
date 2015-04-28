@@ -68,7 +68,7 @@ FileSaveWarningDialog::FileSaveWarningDialog (X3DBrowserWindow* const browserWin
 int
 FileSaveWarningDialog::run (const X3D::BrowserPtr & browser)
 {
-	const auto worlURL = browser -> getExecutionContext () -> getMasterContext () -> getWorldURL ();
+	const auto worlURL = getRootContext () -> getWorldURL ();
 
 	getMessage () .set_text (basic::sprintf (_ ("Do you want to save changes to document »%s« before closing?"),
 	                                         worlURL .empty ()

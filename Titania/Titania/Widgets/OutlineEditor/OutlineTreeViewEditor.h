@@ -130,14 +130,15 @@ private:
 	using FieldType = X3D::X3DConstants::FieldType;
 
 	std::unique_ptr <OutlineDragDrop>  dragDrop;
-	UserDataPtr                 overUserData;
-	UserDataPtr                 selectedUserData;
+	UserDataPtr                        overUserData;
+	UserDataPtr                        selectedUserData;
 	FieldType                          matchingFieldType;
 	int                                matchingAccessType;
 	X3D::SFNode                        sourceNode;
 	std::string                        sourceField;
 	X3D::SFNode                        destinationNode;
 	std::string                        destinationField;
+	int                                editing;
 
 	sigc::connection motion_notify_connection;
 };

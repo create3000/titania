@@ -1,67 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Examples/ICTS/stage/Console_proto.wrl">
     <Files>
-      <File FileName="Library/Examples/ICTS/stage/Console_proto.wrl" Line="21" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserSelection.h" Line="158" Column="26" />
-      <File FileName="Titania/Titania/Browser/BrowserSelection.cpp" Line="96" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="427" Column="49" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="81" Column="2" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="232" Column="23" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="74" Column="62" />
+      <File FileName="Library/Examples/ICTS/stage/Console_proto.wrl" Line="4" Column="4" />
+      <File FileName="Titania/Titania/Browser/BrowserSelection.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserSelection.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True">
-              <Node name="ICTS" expanded="True">
-                <Node name="stage" expanded="True">
-                  <Node name="Console_proto.wrl" selected="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-          <Node name="libtitania-x3d" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True" />
-                <Node name="Execution" expanded="True" />
-                <Node name="Prototype" expanded="True" />
-                <Node name="Routing" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-          <Node name="Titania" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True" />
-              <Node name="Editors" expanded="True">
-                <Node name="GridEditor" expanded="True" />
-                <Node name="ViewpointEditor" expanded="True" />
-              </Node>
-              <Node name="Widgets" expanded="True">
-                <Node name="Console" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-          <Node name="x3dtidy" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="man" expanded="True">
-                <Node name="man1" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="ClassPad">
-        <State expanded="True" selected="True" />
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
