@@ -1,14 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Examples/ICTS/stage/Console_proto.wrl">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Library/Examples/ICTS/stage/Console_proto.wrl" Line="4" Column="4" />
-      <File FileName="Titania/Titania/Browser/BrowserSelection.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserSelection.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/UserInterfaces/X3DAnimationEditorInterface.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -21,4 +21,5 @@
   <Task file="" description="FieldDefintions" />
   <Task file="" description="addChild not virtual and rename addChildren in X3DBaseNode to addFields" />
   <Task file="" />
+  <Task file="" description="Gtk critical in X3DAnimationEditorInterface on destruction when deleting window or Gtk::Builder." />
 </ListOfTask>

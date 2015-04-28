@@ -138,7 +138,6 @@ private:
 	std::string                        sourceField;
 	X3D::SFNode                        destinationNode;
 	std::string                        destinationField;
-	int                                editing;
 
 	sigc::connection motion_notify_connection;
 };

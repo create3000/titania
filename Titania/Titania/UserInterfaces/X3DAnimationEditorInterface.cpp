@@ -178,7 +178,7 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 
 X3DAnimationEditorInterface::~X3DAnimationEditorInterface ()
 {
-	delete m_Window;
+	//delete m_Window;
 	delete m_PropertiesDialog;
 }
 
