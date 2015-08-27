@@ -1,4 +1,10 @@
-titania (0.7.8) trusty; urgency=medium
+titania (1.0.0) trusty; urgency=medium
+
+  * Changed version number.
+
+ -- Holger Seelig <holger@qualle>  Tue, 14 Aug 2015 09:24:43 +0200
+
+ titania (0.7.8) trusty; urgency=medium
 
   * Precision Placement Panel has now an own documentation page on our website.
   * x3dtidy can now convert between .x3d and .x3dv files back and forth.
