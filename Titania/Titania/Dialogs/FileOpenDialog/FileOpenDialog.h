@@ -61,6 +61,11 @@ class FileOpenDialog :
 {
 public:
 
+	enum class Mode {
+	   X3D,
+	   FONTS
+	};
+
 	///  @name Construction
 
 	FileOpenDialog (X3DBrowserWindow* const);
@@ -73,14 +78,27 @@ public:
 
 	void
 	loadURL ();
-	
+
 	bool
 	run ();
+
+	bool
+	font ();
 
 	///  @name Destruction
 
 	virtual
 	~FileOpenDialog ();
+
+private:
+
+	///  @name Operations
+
+	void
+	setMode (Mode mode);
+
+	void
+	setFilter (const std::string &);
 
 };
 

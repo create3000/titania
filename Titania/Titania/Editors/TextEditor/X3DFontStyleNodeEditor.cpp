@@ -72,6 +72,7 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	                        getFontStyleFamilyAddButton (),
 	                        getFontStyleFamilyRemoveButton (),
 	                        getFontStyleFamilyChooserColumn (),
+	                        getFontStyleFileChooserColumn (),
 	                        "family")),
 	                  size (this,
 	                        getFontStyleSizeAdjustment (),

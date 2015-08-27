@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.1 -->
+<!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkFileFilter" id="FileFilterAll">
@@ -10,6 +10,16 @@
   <object class="GtkFileFilter" id="FileFilterAudio">
     <mime-types>
       <mime-type>audio/*</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterFonts">
+    <mime-types>
+      <mime-type>application/x-font-truetype</mime-type>
+      <mime-type>application/x-font-ttf</mime-type>
+      <mime-type>application/x-font-opentype</mime-type>
+      <mime-type>application/x-font-otf</mime-type>
+      <mime-type>application/font-sfnt</mime-type>
+      <mime-type>application/x-font-type1</mime-type>
     </mime-types>
   </object>
   <object class="GtkFileFilter" id="FileFilterImage">
@@ -51,7 +61,6 @@
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
-    <property name="has_resize_grip">False</property>
     <property name="action">save</property>
     <property name="local_only">False</property>
     <child internal-child="vbox">

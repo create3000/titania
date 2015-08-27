@@ -107,6 +107,10 @@ public:
 	{ return m_FileFilterAudio; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterFonts () const
+	{ return m_FileFilterFonts; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterImage () const
 	{ return m_FileFilterImage; }
 
@@ -149,6 +153,7 @@ private:
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAll;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAudio;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterFonts;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImage;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideo;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3D;

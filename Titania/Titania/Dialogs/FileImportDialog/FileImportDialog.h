@@ -73,6 +73,13 @@ public:
 	virtual
 	~FileImportDialog ();
 
+private:
+
+	///  @name Operations
+
+	void
+	setFilter (const std::string &);
+
 };
 
 } // puck

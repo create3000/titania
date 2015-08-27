@@ -87,17 +87,35 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 }
 
 void
+FileImportDialog::setFilter (const std::string & name)
+{
+	if (name == _("Images"))
+		getWindow () .set_filter (getFileFilterImage ());
+	else if (name == _("Audio"))
+		getWindow () .set_filter (getFileFilterAudio ());
+	else if (name == _("Videos"))
+		getWindow () .set_filter (getFileFilterVideo ());
+	else
+		getWindow () .set_filter (getFileFilterX3D ());
+}
+
+void
 FileImportDialog::run ()
 {
 	if (getConfig () .hasItem ("currentFolder"))
 		getWindow () .set_current_folder_uri (getConfig () .getString ("currentFolder"));
 	
+	setFilter (getConfig () .getString ("filter"));
+	
 	const auto responseId = getWindow () .run ();
+
+	getConfig () .setItem ("currentFolder", getWindow () .get_current_folder_uri ());
+
+	if (getWindow () .get_filter ())
+		getConfig () .setItem ("filter", getWindow () .get_filter () -> get_name ());
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
-		getConfig () .setItem ("currentFolder", getWindow () .get_current_folder_uri ());
-
 		const auto undoStep = getBrowserWindow () -> getImportAsInlineMenuItem () .get_active ()
 		                      ? std::make_shared <UndoStep> (_ ("Import As Inline"))
 		                      : std::make_shared <UndoStep> (_ ("Import"));

@@ -121,11 +121,11 @@ FileSaveDialog::exportImage ()
 
 	const auto responseId = getWindow () .run ();
 
+	getConfig () .setItem ("exportFolder", getWindow () .get_current_folder_uri ());
 	quit ();
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
-		getConfig () .setItem ("exportFolder", getWindow () .get_current_folder_uri ());
 
 		// Run image options dialog.
 

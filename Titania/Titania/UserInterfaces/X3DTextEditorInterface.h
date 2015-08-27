@@ -138,6 +138,10 @@ public:
 	getFontStyleFamilyChooserColumn () const
 	{ return m_FontStyleFamilyChooserColumn; }
 
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getFontStyleFileChooserColumn () const
+	{ return m_FontStyleFileChooserColumn; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -305,6 +309,7 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn>   m_FontStyleFamilyColumn;
 	Glib::RefPtr <Gtk::CellRendererText> m_FontStyleFamilyCellrendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn>   m_FontStyleFamilyChooserColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn>   m_FontStyleFileChooserColumn;
 	Gtk::Window*                         m_Window;
 	Gtk::Box*                            m_Widget;
 	Gtk::Expander*                       m_TextExpander;

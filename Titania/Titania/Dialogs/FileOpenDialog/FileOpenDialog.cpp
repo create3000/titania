@@ -66,13 +66,8 @@ FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 	getFileFilterImage () -> set_name (_ ("Images"));
 	getFileFilterAudio () -> set_name (_ ("Audio"));
 	getFileFilterVideo () -> set_name (_ ("Videos"));
+	getFileFilterFonts () -> set_name (_ ("Fonts"));
 	getFileFilterAll   () -> set_name (_ ("All Files"));
-
-	getWindow () .add_filter (getFileFilterX3D ());
-	getWindow () .add_filter (getFileFilterImage ());
-	getWindow () .add_filter (getFileFilterAudio ());
-	getWindow () .add_filter (getFileFilterVideo ());
-	getWindow () .set_filter (getFileFilterX3D ());
 
 	const auto worldURL = getRootContext () -> getWorldURL ();
 
@@ -85,6 +80,39 @@ FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 	getRelativePathSwitch () .set_active (getConfig () .getBoolean ("relativePath"));
 
 	setup ();
+}
+
+void
+FileOpenDialog::setMode (Mode mode)
+{
+	switch (mode)
+	{
+	   case Mode::X3D:
+			getWindow () .add_filter (getFileFilterX3D ());
+			getWindow () .add_filter (getFileFilterImage ());
+			getWindow () .add_filter (getFileFilterAudio ());
+			getWindow () .add_filter (getFileFilterVideo ());
+			setFilter (getConfig () .getString ("filter"));
+	      break;
+	   case Mode::FONTS:
+			getWindow () .add_filter (getFileFilterFonts ());
+			getWindow () .set_filter (getFileFilterFonts ());
+			break;
+	}
+
+}
+
+void
+FileOpenDialog::setFilter (const std::string & name)
+{
+	if (name == _("Images"))
+		getWindow () .set_filter (getFileFilterImage ());
+	else if (name == _("Audio"))
+		getWindow () .set_filter (getFileFilterAudio ());
+	else if (name == _("Videos"))
+		getWindow () .set_filter (getFileFilterVideo ());
+	else
+		getWindow () .set_filter (getFileFilterX3D ());
 }
 
 void
@@ -113,16 +141,41 @@ FileOpenDialog::run ()
 	if (getConfig () .hasItem ("currentFolder"))
 		getWindow () .set_current_folder_uri (getConfig () .getString ("currentFolder"));
 	
+	setMode (Mode::X3D);
+
 	const auto responseId = getWindow () .run ();
 
+	getConfig () .setItem ("currentFolder", getWindow () .get_current_folder_uri ());
+	getConfig () .setItem ("relativePath", getRelativePathSwitch () .get_active ());
+
+	if (getWindow () .get_filter ())
+		getConfig () .setItem ("filter", getWindow () .get_filter () -> get_name ());
+	
+	quit ();
+
+	if (responseId == Gtk::RESPONSE_OK)
+		return true;
+
+	return false;
+}
+
+bool
+FileOpenDialog::font ()
+{
+	if (getConfig () .hasItem ("currentFolder"))
+		getWindow () .set_current_folder_uri (getConfig () .getString ("currentFolder"));
+	
+	setMode (Mode::FONTS);
+
+	const auto responseId = getWindow () .run ();
+
+	getConfig () .setItem ("currentFolder", getWindow () .get_current_folder_uri ());
 	getConfig () .setItem ("relativePath", getRelativePathSwitch () .get_active ());
 	quit ();
 
 	if (responseId == Gtk::RESPONSE_OK)
-	{
-		getConfig () .setItem ("currentFolder", getWindow () .get_current_folder_uri ());
 		return true;
-	}
+
 
 	return false;
 }

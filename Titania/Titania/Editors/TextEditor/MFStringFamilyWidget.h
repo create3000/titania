@@ -52,6 +52,7 @@
 #define __TITANIA_EDITORS_TEXT_EDITOR_MFSTRING_FAMILY_WIDGET_H__
 
 #include "../../Base/X3DUserInterface.h"
+#include "../../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../../ComposedWidgets/MFStringWidget.h"
 
 namespace titania {
@@ -70,6 +71,7 @@ public:
 	                      Gtk::Button &,
 	                      Gtk::Button &,
 	                      const Glib::RefPtr <Gtk::TreeViewColumn> &,
+	                      const Glib::RefPtr <Gtk::TreeViewColumn> &,
 	                      const std::string &);
 
 
@@ -85,7 +87,10 @@ private:
 	on_button_release_event (GdkEventButton*);
 
 	bool
-	openDialog (const std::string &, std::string &);
+	openFontDialog (const std::string &, std::string &);
+
+	bool
+	openFileDialog (std::string &);
 
 	virtual
 	void
@@ -94,8 +99,10 @@ private:
 	///  @name Members
 
 	X3DUserInterface* const                  userInterface;
-	const Glib::RefPtr <Gtk::TreeViewColumn> familyChooserColumn;
+	const Glib::RefPtr <Gtk::TreeViewColumn> fontChooserColumn;
+	const Glib::RefPtr <Gtk::TreeViewColumn> fileChooserColumn;
 	std::unique_ptr <Gtk::FontChooserDialog> fontChooserDialog;
+	std::unique_ptr <FileOpenDialog>         fileOpenDialog;
 
 };
 
@@ -105,13 +112,16 @@ MFStringFamilyWidget::MFStringFamilyWidget (X3DUserInterface* const userInterfac
                                             const Glib::RefPtr <Gtk::CellRendererText> & cellRenderer,
                                             Gtk::Button & addButton,
                                             Gtk::Button & removeButton,
-                                            const Glib::RefPtr <Gtk::TreeViewColumn> & familyChooserColumn,
+                                            const Glib::RefPtr <Gtk::TreeViewColumn> & fontChooserColumn,
+                                            const Glib::RefPtr <Gtk::TreeViewColumn> & fileChooserColumn,
                                             const std::string & name) :
 	   X3DBaseInterface (userInterface -> getBrowserWindow (), userInterface -> getBrowser ()),
 	  X3DMFStringWidget (userInterface, treeView, cellRenderer, addButton, removeButton, name, "SERIF"),
 	      userInterface (userInterface),
-	familyChooserColumn (familyChooserColumn),
-	  fontChooserDialog ()
+	  fontChooserColumn (fontChooserColumn),
+	  fileChooserColumn (fileChooserColumn),
+	  fontChooserDialog (),
+	   fileOpenDialog ()
 {
 	treeView .signal_button_release_event () .connect (sigc::mem_fun (*this, &MFStringFamilyWidget::on_button_release_event));
 }
@@ -120,10 +130,7 @@ inline
 void
 MFStringFamilyWidget::on_add_clicked ()
 {
-	std::string family;
-
-	if (openDialog ("SERIF", family))
-		append (family);
+	append ("SERIF");
 }
 
 inline
@@ -140,20 +147,32 @@ MFStringFamilyWidget::on_button_release_event (GdkEventButton* event)
 	if (not path .size ())
 		return false;
 
-	if (column not_eq familyChooserColumn .operator -> ())
-		return false;
+	if (column == fontChooserColumn .operator -> ())
+	{
+		std::string family;
 
-	std::string family;
+		if (openFontDialog (get1Value (path .front ()) .raw (), family))
+			set1Value (path .front (), family);
 
-	if (openDialog (get1Value (path .front ()) .raw (), family))
-		set1Value (path .front (), family);
+		return true;
+	}
 
-	return true;
+	if (column == fileChooserColumn .operator -> ())
+	{
+		std::string url;
+
+		if (openFileDialog (url))
+			set1Value (path .front (), url);
+
+		return true;
+	}
+
+	return false;
 }
 
 inline
 bool
-MFStringFamilyWidget::openDialog (const std::string & defaultValue, std::string & family)
+MFStringFamilyWidget::openFontDialog (const std::string & defaultValue, std::string & family)
 {
 	// Choose new URL
 
@@ -183,6 +202,34 @@ MFStringFamilyWidget::openDialog (const std::string & defaultValue, std::string 
 	fontChooserDialog -> hide ();
 	fontChooserDialog .reset ();
 	return response_id == Gtk::RESPONSE_OK;
+}
+
+inline
+bool
+MFStringFamilyWidget::openFileDialog (std::string & url)
+{
+	fileOpenDialog .reset (new FileOpenDialog (getBrowserWindow ()));
+
+	fileOpenDialog -> getWindow () .set_transient_for (userInterface -> getWindow ());
+	fileOpenDialog -> getWindow () .set_modal (true);
+	fileOpenDialog -> getRelativePathBox () .set_visible (true);
+
+	const bool success = fileOpenDialog -> font ();
+
+	if (success)
+	{
+		auto URL = fileOpenDialog -> getURL ();
+
+		if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
+			URL = getExecutionContext () -> getWorldURL () .relative_path (URL);
+
+		url = URL .str ();
+	}
+
+	fileOpenDialog -> quit ();
+	fileOpenDialog .reset ();
+
+	return success;
 }
 
 inline

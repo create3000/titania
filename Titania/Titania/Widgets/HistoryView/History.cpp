@@ -82,7 +82,7 @@ History::History () :
 	                 "PRIMARY KEY (id ASC))");
 
 	database .try_query ("ALTER TABLE History ADD preview BLOB DEFAULT NULL");
-	database .query ("DELETE FROM History WHERE lastAccess < date ('now','-6 month')");
+	database .query ("DELETE FROM History WHERE lastAccess < date ('now','-12 month')");
 
 	if (not have_history)
 	{
