@@ -154,6 +154,11 @@ public:
 	throw (Error <NOT_SUPPORTED>) final override
 	{ return parentMatrix; }
 
+	virtual
+	Selection::ToolType
+	getActiveTool () const final override
+	{ return Selection::ToolType (getToolNode () -> template getField <SFInt32> ("activeTool_changed") .getValue ()); }
+
 	///  @name Operatations
 
 	virtual
@@ -236,7 +241,6 @@ X3DTransformNodeTool <Type>::realize ()
 		getBrowser () -> hasShiftKey () .addInterest (getToolNode () -> getField ("shiftKey"));
 		getBrowser () -> hasAltKey () .addInterest (getToolNode () -> getField ("altKey"));
 		getToolNode () -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
-		getToolNode () -> getField ("activeTool_changed") -> addInterest (getBrowser () -> getSelection () -> activeTool_changed ());
 
 		getToolNode () -> template setField <SFBool> ("controlKey", getBrowser () -> hasControlKey ());
 		getToolNode () -> template setField <SFBool> ("shiftKey",   getBrowser () -> hasShiftKey ());

@@ -225,7 +225,7 @@ X3DGridTool::set_children (const MFNode & value)
 void
 X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 {
-	if (getBrowser () -> getSelection () -> activeTool_changed () not_eq Selection::MOVE_TOOL)
+	if (master -> getActiveTool () not_eq Selection::MOVE_TOOL)
 		return;
 
 	// The position is transformed to an absolute position and then transformed into the coordinate systwm of the grid
@@ -281,8 +281,18 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 			if (transform)
 			{
 				transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
-				transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
-				transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
+
+				if (transform -> translation () .isTainted ())
+				{
+					transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
+					transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
+				}
+
+				if (transform -> scale () .isTainted ())
+				{
+					transform -> scale () .removeInterest (this, &X3DGridTool::set_scale);
+					transform -> scale () .addInterest (this, &X3DGridTool::connectScale, transform);
+				}
 			}
 		}
 		catch (const std::exception &)
@@ -295,7 +305,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 {
 	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
 
-	const int32_t tool = getBrowser () -> getSelection () -> activeTool_changed () - Selection::SCALE_TOOL;
+	const int32_t tool = master -> getActiveTool () - Selection::SCALE_TOOL;
 
 	if (tool < 0)
 		return;
@@ -327,8 +337,18 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 			if (transform)
 			{
 				transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
-				transform -> scale () .removeInterest (this, &X3DGridTool::set_scale);
-				transform -> scale () .addInterest (this, &X3DGridTool::connectScale, transform);
+
+				if (transform -> translation () .isTainted ())
+				{
+					transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
+					transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
+				}
+
+				if (transform -> scale () .isTainted ())
+				{
+					transform -> scale () .removeInterest (this, &X3DGridTool::set_scale);
+					transform -> scale () .addInterest (this, &X3DGridTool::connectScale, transform);
+				}
 			}
 		}
 		catch (const std::exception &)

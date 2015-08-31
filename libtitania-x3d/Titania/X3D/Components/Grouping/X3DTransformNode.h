@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_NODE_H__
 
 #include "../Grouping/X3DTransformMatrix4DNode.h"
+#include "../../Browser/Selection.h"
 
 namespace titania {
 namespace X3D {
@@ -153,6 +154,11 @@ public:
 	getTransformationMatrix () const
 	throw (Error <NOT_SUPPORTED>)
 	{ throw Error <NOT_SUPPORTED> ("X3DTransformNode::getTransformationMatrix"); }
+
+	virtual
+	Selection::ToolType
+	getActiveTool () const
+	{ return Selection::ToolType::NO_TOOL; }
 
 
 protected:

@@ -74,7 +74,6 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	selectLowest (false),
 	        over (),
 	      active (),
-	  activeTool (NO_TOOL),
 	   touchTime (),
 	    children ()
 {
@@ -85,7 +84,6 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	                              selectLowest,
 	                              over,
 	                              active,
-	                              activeTool,
 	                              touchTime,
 	                              children);
 }
