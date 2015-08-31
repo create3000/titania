@@ -2544,24 +2544,13 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	catch (const X3D::X3DError &)
 	{ }
 
-	// Find last MFNode
+	// Find last MFNode or SFNode and not metadata
 
-	for (auto & field : basic::make_reverse_range (parent -> getFieldDefinitions ()))
+	for (auto & field : parent -> getFieldDefinitions ())
 	{
 		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::inputOutput)
 		{
-			if (field -> getType () == X3D::X3DConstants::MFNode)
-				return field;
-		}
-	}
-
-	// Find last SFNode not metadata
-
-	for (auto & field : basic::make_reverse_range (parent -> getFieldDefinitions ()))
-	{
-		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::inputOutput)
-		{
-			if (field -> getType () == X3D::X3DConstants::SFNode and field -> getName () not_eq "metadata")
+			if (field -> getType () == X3D::X3DConstants::MFNode || (field -> getType () == X3D::X3DConstants::SFNode and field -> getName () not_eq "metadata"))
 				return field;
 		}
 	}
