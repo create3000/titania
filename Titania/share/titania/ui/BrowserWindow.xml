@@ -229,6 +229,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">TransformToZero</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image4">
     <property name="visible">True</property>
@@ -1362,8 +1363,10 @@
                                 <property name="label" translatable="yes">Transform To _Zero</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="use_underline">True</property>
                                 <property name="image">image17</property>
                                 <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_transform_to_zero_activate" swapped="no"/>
                               </object>
                             </child>
