@@ -319,6 +319,10 @@ public:
 	{ return *m_CreateParentGroupMenuItem; }
 
 	Gtk::MenuItem &
+	getCreateParentStaticGroupMenuItem () const
+	{ return *m_CreateParentStaticGroupMenuItem; }
+
+	Gtk::MenuItem &
 	getCreateParentSwitchMenuItem () const
 	{ return *m_CreateParentSwitchMenuItem; }
 
@@ -337,6 +341,10 @@ public:
 	Gtk::MenuItem &
 	getCreateParentAnchorMenuItem () const
 	{ return *m_CreateParentAnchorMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentLayoutLayerMenuItem () const
+	{ return *m_CreateParentLayoutLayerMenuItem; }
 
 	Gtk::MenuItem &
 	getCreateParentScreenGroupMenuItem () const
@@ -365,6 +373,14 @@ public:
 	Gtk::MenuItem &
 	getCreateParentCADLayerMenuItem () const
 	{ return *m_CreateParentCADLayerMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentLayerMenuItem () const
+	{ return *m_CreateParentLayerMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentViewportMenuItem () const
+	{ return *m_CreateParentViewportMenuItem; }
 
 	Gtk::MenuItem &
 	getViewMenuItem () const
@@ -1004,6 +1020,10 @@ public:
 
 	virtual
 	void
+	on_create_parent_static_group_activate () = 0;
+
+	virtual
+	void
 	on_create_parent_switch_activate () = 0;
 
 	virtual
@@ -1021,6 +1041,10 @@ public:
 	virtual
 	void
 	on_create_parent_anchor_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_layout_layer_activate () = 0;
 
 	virtual
 	void
@@ -1049,6 +1073,14 @@ public:
 	virtual
 	void
 	on_create_parent_cad_layer_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_layer_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_viewport_activate () = 0;
 
 	virtual
 	void
@@ -1430,11 +1462,13 @@ private:
 	Gtk::MenuItem*                   m_CreateParentMenuItem;
 	Gtk::MenuItem*                   m_CreateParentTransformMenuItem;
 	Gtk::MenuItem*                   m_CreateParentGroupMenuItem;
+	Gtk::MenuItem*                   m_CreateParentStaticGroupMenuItem;
 	Gtk::MenuItem*                   m_CreateParentSwitchMenuItem;
 	Gtk::MenuItem*                   m_CreateParentBillboardMenuItem;
 	Gtk::MenuItem*                   m_CreateParentCollisionMenuItem;
 	Gtk::MenuItem*                   m_CreateParentLODMenuItem;
 	Gtk::MenuItem*                   m_CreateParentAnchorMenuItem;
+	Gtk::MenuItem*                   m_CreateParentLayoutLayerMenuItem;
 	Gtk::MenuItem*                   m_CreateParentScreenGroupMenuItem;
 	Gtk::MenuItem*                   m_CreateParentLayoutGroupMenuItem;
 	Gtk::MenuItem*                   m_CreateParentGeoTransformMenuItem;
@@ -1442,6 +1476,8 @@ private:
 	Gtk::MenuItem*                   m_CreateParentCADPartMenuItem;
 	Gtk::MenuItem*                   m_CreateParentCADAssemblyMenuItem;
 	Gtk::MenuItem*                   m_CreateParentCADLayerMenuItem;
+	Gtk::MenuItem*                   m_CreateParentLayerMenuItem;
+	Gtk::MenuItem*                   m_CreateParentViewportMenuItem;
 	Gtk::MenuItem*                   m_ViewMenuItem;
 	Gtk::CheckMenuItem*              m_ToolBarMenuItem;
 	Gtk::CheckMenuItem*              m_SideBarMenuItem;

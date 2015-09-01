@@ -535,6 +535,218 @@ OutlineEditor::on_unlink_clone_activate ()
 }
 
 void
+OutlineEditor::on_create_parent_transform_activate ()
+{
+	on_create_parent ("Transform");
+}
+
+void
+OutlineEditor::on_create_parent_group_activate ()
+{
+	on_create_parent ("Group");
+}
+
+void
+OutlineEditor::on_create_parent_static_group_activate ()
+{
+	on_create_parent ("StaticGroup");
+}
+
+void
+OutlineEditor::on_create_parent_switch_activate ()
+{
+	on_create_parent ("Switch");
+}
+
+void
+OutlineEditor::on_create_parent_billboard_activate ()
+{
+	on_create_parent ("Billboard");
+}
+
+void
+OutlineEditor::on_create_parent_collision_activate ()
+{
+	on_create_parent ("Collision");
+}
+
+void
+OutlineEditor::on_create_parent_lod_activate ()
+{
+	on_create_parent ("LOD");
+}
+
+void
+OutlineEditor::on_create_parent_anchor_activate ()
+{
+	on_create_parent ("Anchor");
+}
+
+void
+OutlineEditor::on_create_parent_layout_layer_activate ()
+{
+	on_create_parent ("LayoutLayer");
+}
+
+void
+OutlineEditor::on_create_parent_screen_group_activate ()
+{
+	on_create_parent ("ScreenGroup");
+}
+
+void
+OutlineEditor::on_create_parent_layout_group_activate ()
+{
+	on_create_parent ("LayoutGroup");
+}
+
+void
+OutlineEditor::on_create_parent_geo_transform_activate ()
+{
+	on_create_parent ("GeoTransform");
+}
+
+void
+OutlineEditor::on_create_parent_geo_location_activate ()
+{
+	on_create_parent ("GeoLocation");
+}
+
+void
+OutlineEditor::on_create_parent_cad_part_activate ()
+{
+	on_create_parent ("CADPart");
+}
+
+void
+OutlineEditor::on_create_parent_cad_assembly_activate ()
+{
+	on_create_parent ("CADAssembly");
+}
+
+void
+OutlineEditor::on_create_parent_cad_layer_activate ()
+{
+	on_create_parent ("CADLayer");
+}
+
+void
+OutlineEditor::on_create_parent_layer_activate ()
+{
+	on_create_parent ("Layer");
+}
+
+void
+OutlineEditor::on_create_parent_viewport_activate ()
+{
+	on_create_parent ("Viewport");
+}
+
+void
+OutlineEditor::on_create_parent (const std::string & typeName)
+{
+	if (nodePath .empty ())
+		return;
+
+	const auto iter = treeView -> get_model () -> get_iter (nodePath);
+
+	if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DBaseNode)
+		return;
+
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Unlink Clone"));
+
+	if (nodePath .size () == 1)
+	{
+		// Root node
+
+		const auto &      executionContext = treeView -> get_model () -> get_execution_context ();
+		const X3D::SFNode parent (executionContext);
+		auto &            rootNodes = executionContext -> getRootNodes ();
+		const auto        index     = treeView -> get_index (iter);
+		const auto        child     = rootNodes [index];
+		const auto        group     = executionContext -> createNode (typeName);
+		auto &            children  = group -> getField <X3D::MFNode> ("children");
+
+		getBrowserWindow () -> emplaceBack (children, child, undoStep);
+		getBrowserWindow () -> replaceNode (parent, rootNodes, index, group, undoStep);
+		getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
+
+		executionContext -> addUninitializedNode (group);
+		executionContext -> realize ();
+	}
+	else
+	{
+		// Child node
+
+		auto path = nodePath;
+
+		if (not path .up ())
+			return;
+
+		const auto fieldIter = treeView -> get_model () -> get_iter (path);
+
+		if (treeView -> get_data_type (fieldIter) not_eq OutlineIterType::X3DField)
+			return;
+
+		const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
+
+		if (not path .up ())
+			return;
+
+		const auto parentIter = treeView -> get_model () -> get_iter (path);
+
+		if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
+			return;
+
+		const auto   parent           = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+		const auto & executionContext = treeView -> get_model () -> get_execution_context ();
+
+		switch (field -> getType ())
+		{
+			case X3D::X3DConstants::SFNode:
+			{
+				auto &     child    = *static_cast <X3D::SFNode*> (field);
+			   const auto group    = executionContext -> createNode (typeName);
+				auto &     children = group -> getField <X3D::MFNode> ("children");
+
+				getBrowserWindow () -> emplaceBack (children, child, undoStep);
+				getBrowserWindow () -> replaceNode (parent, child, group, undoStep);
+				getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
+
+				executionContext -> addUninitializedNode (group);
+				executionContext -> realize ();
+				break;
+			}
+			case X3D::X3DConstants::MFNode:
+			{
+				auto &       mfnode   = *static_cast <X3D::MFNode*> (field);
+				const auto   index    = treeView -> get_index (iter);
+				const auto & child    = mfnode [index];
+				const auto   group    = executionContext -> createNode (typeName);
+				auto &       children = group -> getField <X3D::MFNode> ("children");
+
+				getBrowserWindow () -> emplaceBack (children, child, undoStep);
+				getBrowserWindow () -> replaceNode (parent, mfnode, index, group, undoStep);
+				getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
+
+				executionContext -> addUninitializedNode (group);
+				executionContext -> realize ();
+				break;
+			}
+			default:
+				break;
+		}
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+OutlineEditor::on_remove_parent_activate ()
+{
+}
+
+void
 OutlineEditor::on_remove_activate ()
 {
 	if (nodePath .empty ())
@@ -728,6 +940,8 @@ OutlineEditor::selectNode (const double x, const double y)
 	getSetAsCurrentSceneMenuItem () .set_visible (isExternProto or isPrototype or isPrototypeInstance or isInlineNode or not isLocalNode);
 	getCreateInstanceMenuItem ()    .set_visible (not inPrototypeInstance () and isLocalNode and (isPrototype or isExternProto));
 	getUnlinkCloneMenuItem ()       .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode and isCloned);
+	getCreateParentGroupMenuItem () .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode);
+	getRemoveParentMenuItem ()      .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode);
 	getRemoveMenuItem ()            .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode);
 }
 

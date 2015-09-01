@@ -869,6 +869,12 @@ BrowserWindow::on_create_parent_group_activate ()
 }
 
 void
+BrowserWindow::on_create_parent_static_group_activate ()
+{
+	on_create_parent ("StaticGroup");
+}
+
+void
 BrowserWindow::on_create_parent_switch_activate ()
 {
 	on_create_parent ("Switch");
@@ -905,6 +911,12 @@ BrowserWindow::on_create_parent_screen_group_activate ()
 }
 
 void
+BrowserWindow::on_create_parent_layout_layer_activate ()
+{
+	on_create_parent ("LayoutLayer");
+}
+
+void
 BrowserWindow::on_create_parent_layout_group_activate ()
 {
 	on_create_parent ("LayoutGroup");
@@ -938,6 +950,18 @@ void
 BrowserWindow::on_create_parent_cad_layer_activate ()
 {
 	on_create_parent ("CADLayer");
+}
+
+void
+BrowserWindow::on_create_parent_layer_activate ()
+{
+	on_create_parent ("Layer");
+}
+
+void
+BrowserWindow::on_create_parent_viewport_activate ()
+{
+	on_create_parent ("Viewport");
 }
 
 void

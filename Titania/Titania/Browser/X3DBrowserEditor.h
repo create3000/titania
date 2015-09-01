@@ -396,7 +396,7 @@ private:
 	unlinkClone (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;
 
 	void
-	createParentGroup (const X3D::X3DPtr <X3D::X3DGroupingNode> &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
+	createParentGroup (const X3D::X3DPtr <X3D::X3DNode> &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
 	transformToZero (const X3D::MFNode &, X3D::Matrix4fStack &, const UndoStepPtr &);

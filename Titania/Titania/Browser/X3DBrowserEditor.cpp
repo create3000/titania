@@ -2082,7 +2082,7 @@ X3DBrowserEditor::createParentGroup (const std::string & typeName,
 {
 	// Add node to group
 
-	const X3D::X3DPtr <X3D::X3DGroupingNode> group (getExecutionContext () -> createNode (typeName));
+	const X3D::X3DPtr <X3D::X3DNode> group (getExecutionContext () -> createNode (typeName));
 
 	getExecutionContext () -> addUninitializedNode (group);
 	undoStep -> addObjects (group);
@@ -2092,7 +2092,7 @@ X3DBrowserEditor::createParentGroup (const std::string & typeName,
 		if (not child)
 			continue;
 
-		emplaceBack (group -> children (), child, undoStep);
+		emplaceBack (group -> getField <X3D::MFNode> ("children"), child, undoStep);
 
 		X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & parent)
 		               {
@@ -2142,7 +2142,7 @@ X3DBrowserEditor::createParentGroup (const std::string & typeName,
 }
 
 void
-X3DBrowserEditor::createParentGroup (const X3D::X3DPtr <X3D::X3DGroupingNode> & group,
+X3DBrowserEditor::createParentGroup (const X3D::X3DPtr <X3D::X3DNode> & group,
                                      X3D::MFNode & mfnode,
                                      const X3D::SFNode & child,
                                      const X3D::SFNode & parent,

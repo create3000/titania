@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.1 -->
+<!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkIconFactory" id="IconFactory">
@@ -85,6 +85,227 @@
         <property name="label" translatable="yes">Unlink Clone</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="on_unlink_clone_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="CreateParentGroupMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Create Parent Group</property>
+        <property name="use_underline">True</property>
+        <child type="submenu">
+          <object class="GtkMenu" id="menu13">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentTransformMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Transform</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_transform_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentGroupMenuItem1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Group</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_group_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentStaticGroupMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">StaticGroup</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_static_group_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentSwitchMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Switch</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_switch_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="separatormenuitem13">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentBillboardMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Billboard</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_billboard_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentCollisionMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Collision</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_collision_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentLODMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">LOD</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_lod_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="separatormenuitem15">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentAnchorMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Anchor</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_anchor_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="separatormenuitem14">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentLayoutLayerMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">LayoutLayer</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_layout_layer_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentScreenGroupMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">ScreenGroup</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_screen_group_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentLayoutGroupMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">LayoutGroup</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_layout_group_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="separatormenuitem16">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentGeoTransformMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">GeoTransform</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_geo_transform_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentGeoLocationMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">GeoLocation</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_geo_location_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="separatormenuitem17">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentCADPartMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">CADPart</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_cad_part_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentCADAssemblyMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">CADAssembly</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_cad_assembly_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentCADLayerMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">CADLayer</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_cad_layer_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="separatormenuitem19">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentLayerMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Layer</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_layer_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentViewportMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Viewport</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_viewport_activate" swapped="no"/>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="RemoveParentMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Remove Parent</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="on_remove_parent_activate" swapped="no"/>
       </object>
     </child>
     <child>
@@ -225,7 +446,6 @@
     <property name="type_hint">utility</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
-    <property name="has_resize_grip">False</property>
     <child>
       <object class="GtkBox" id="Widget">
         <property name="visible">True</property>

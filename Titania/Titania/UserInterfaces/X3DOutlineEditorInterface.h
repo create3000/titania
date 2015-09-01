@@ -138,6 +138,86 @@ public:
 	getUnlinkCloneMenuItem () const
 	{ return *m_UnlinkCloneMenuItem; }
 
+	Gtk::MenuItem &
+	getCreateParentGroupMenuItem () const
+	{ return *m_CreateParentGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentTransformMenuItem () const
+	{ return *m_CreateParentTransformMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentGroupMenuItem1 () const
+	{ return *m_CreateParentGroupMenuItem1; }
+
+	Gtk::MenuItem &
+	getCreateParentStaticGroupMenuItem () const
+	{ return *m_CreateParentStaticGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentSwitchMenuItem () const
+	{ return *m_CreateParentSwitchMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentBillboardMenuItem () const
+	{ return *m_CreateParentBillboardMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentCollisionMenuItem () const
+	{ return *m_CreateParentCollisionMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentLODMenuItem () const
+	{ return *m_CreateParentLODMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentAnchorMenuItem () const
+	{ return *m_CreateParentAnchorMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentLayoutLayerMenuItem () const
+	{ return *m_CreateParentLayoutLayerMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentScreenGroupMenuItem () const
+	{ return *m_CreateParentScreenGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentLayoutGroupMenuItem () const
+	{ return *m_CreateParentLayoutGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentGeoTransformMenuItem () const
+	{ return *m_CreateParentGeoTransformMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentGeoLocationMenuItem () const
+	{ return *m_CreateParentGeoLocationMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentCADPartMenuItem () const
+	{ return *m_CreateParentCADPartMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentCADAssemblyMenuItem () const
+	{ return *m_CreateParentCADAssemblyMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentCADLayerMenuItem () const
+	{ return *m_CreateParentCADLayerMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentLayerMenuItem () const
+	{ return *m_CreateParentLayerMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentViewportMenuItem () const
+	{ return *m_CreateParentViewportMenuItem; }
+
+	Gtk::MenuItem &
+	getRemoveParentMenuItem () const
+	{ return *m_RemoveParentMenuItem; }
+
 	Gtk::ImageMenuItem &
 	getRemoveMenuItem () const
 	{ return *m_RemoveMenuItem; }
@@ -228,6 +308,82 @@ public:
 
 	virtual
 	void
+	on_create_parent_transform_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_group_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_static_group_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_switch_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_billboard_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_collision_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_lod_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_anchor_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_layout_layer_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_screen_group_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_layout_group_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_geo_transform_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_geo_location_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_cad_part_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_cad_assembly_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_cad_layer_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_layer_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_viewport_activate () = 0;
+
+	virtual
+	void
+	on_remove_parent_activate () = 0;
+
+	virtual
+	void
 	on_remove_activate () = 0;
 
 	virtual
@@ -297,6 +453,26 @@ private:
 	Gtk::MenuItem*                  m_RemoveReferenceMenuItem;
 	Gtk::Menu*                      m_RemoveReferenceMenu;
 	Gtk::MenuItem*                  m_UnlinkCloneMenuItem;
+	Gtk::MenuItem*                  m_CreateParentGroupMenuItem;
+	Gtk::MenuItem*                  m_CreateParentTransformMenuItem;
+	Gtk::MenuItem*                  m_CreateParentGroupMenuItem1;
+	Gtk::MenuItem*                  m_CreateParentStaticGroupMenuItem;
+	Gtk::MenuItem*                  m_CreateParentSwitchMenuItem;
+	Gtk::MenuItem*                  m_CreateParentBillboardMenuItem;
+	Gtk::MenuItem*                  m_CreateParentCollisionMenuItem;
+	Gtk::MenuItem*                  m_CreateParentLODMenuItem;
+	Gtk::MenuItem*                  m_CreateParentAnchorMenuItem;
+	Gtk::MenuItem*                  m_CreateParentLayoutLayerMenuItem;
+	Gtk::MenuItem*                  m_CreateParentScreenGroupMenuItem;
+	Gtk::MenuItem*                  m_CreateParentLayoutGroupMenuItem;
+	Gtk::MenuItem*                  m_CreateParentGeoTransformMenuItem;
+	Gtk::MenuItem*                  m_CreateParentGeoLocationMenuItem;
+	Gtk::MenuItem*                  m_CreateParentCADPartMenuItem;
+	Gtk::MenuItem*                  m_CreateParentCADAssemblyMenuItem;
+	Gtk::MenuItem*                  m_CreateParentCADLayerMenuItem;
+	Gtk::MenuItem*                  m_CreateParentLayerMenuItem;
+	Gtk::MenuItem*                  m_CreateParentViewportMenuItem;
+	Gtk::MenuItem*                  m_RemoveParentMenuItem;
 	Gtk::ImageMenuItem*             m_RemoveMenuItem;
 	Gtk::MenuItem*                  m_ViewMenuItem;
 	Gtk::CheckMenuItem*             m_ShowExternProtosMenuItem;
