@@ -491,6 +491,10 @@ private:
 
 	virtual
 	void
+	on_transform_to_zero_activate () final override;
+
+	virtual
+	void
 	on_edit_texture_coordinates_activate () final override;
 
 	virtual

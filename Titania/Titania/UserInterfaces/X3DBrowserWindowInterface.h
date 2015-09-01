@@ -543,6 +543,10 @@ public:
 	{ return *m_CombineMenuItem; }
 
 	Gtk::ImageMenuItem &
+	getTransformToZeroMenuItem () const
+	{ return *m_TransformToZeroMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getTextureCoordinateEditorMenuItem () const
 	{ return *m_TextureCoordinateEditorMenuItem; }
 
@@ -1188,6 +1192,10 @@ public:
 
 	virtual
 	void
+	on_transform_to_zero_activate () = 0;
+
+	virtual
+	void
 	on_edit_texture_coordinates_activate () = 0;
 
 	virtual
@@ -1478,6 +1486,7 @@ private:
 	Gtk::CheckMenuItem*              m_FollowPrimarySelectionMenuItem;
 	Gtk::MenuItem*                   m_ObjectMenuItem;
 	Gtk::ImageMenuItem*              m_CombineMenuItem;
+	Gtk::ImageMenuItem*              m_TransformToZeroMenuItem;
 	Gtk::ImageMenuItem*              m_TextureCoordinateEditorMenuItem;
 	Gtk::ImageMenuItem*              m_PaintPolygonsMenuItem;
 	Gtk::MenuItem*                   m_LayoutMenuItem;

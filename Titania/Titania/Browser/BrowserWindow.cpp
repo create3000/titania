@@ -66,6 +66,7 @@
 #include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/TransformSensorTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.h>
+#include <Titania/X3D/Types/MatrixStack.h>
 
 #include <Titania/OS.h>
 #include <Titania/String.h>
@@ -1629,6 +1630,18 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 }
 
 // Layout
+
+void
+BrowserWindow::on_transform_to_zero_activate ()
+{
+	__LOG__ << "on_transform_to_zero_activate" << std::endl;
+
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Transform To Zero"));
+
+	transformToZero (getSelection () -> getChildren (), undoStep);
+
+	addUndoStep (undoStep);
+}
 
 void
 BrowserWindow::on_edit_texture_coordinates_activate ()

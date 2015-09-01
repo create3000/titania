@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B8162BFF-FE10-4AE2-83EF-35F6DA9300B1}</ProjectGuid>
     <Target>Bin</Target>
@@ -1784,6 +1784,7 @@
     <None Include="share\titania\ui\icons\Axis-Angle-Rotation.svg" />
     <None Include="share\titania\Library\Primitives\Interpolation\EaseInEaseOut.x3dv" />
     <None Include="share\titania\Library\Primitives\Interpolation\FadeOut.x3dv" />
+    <None Include="share\titania\ui\icons\TransformToZero.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

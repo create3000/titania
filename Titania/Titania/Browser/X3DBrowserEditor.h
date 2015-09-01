@@ -242,6 +242,9 @@ public:
 	X3D::SFNode
 	createParentGroup (const std::string &, const X3D::MFNode &, const UndoStepPtr &) const;
 
+	void
+	transformToZero (const X3D::MFNode &, const UndoStepPtr &);
+
 	X3D::Matrix4d
 	findModelViewMatrix (X3D::X3DBaseNode* const) const;
 
@@ -394,6 +397,18 @@ private:
 
 	void
 	createParentGroup (const X3D::X3DPtr <X3D::X3DGroupingNode> &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
+
+	void
+	transformToZero (const X3D::MFNode &, X3D::Matrix4fStack &, const UndoStepPtr &);
+
+	void
+	transformToZero (const X3D::SFNode &, X3D::Matrix4fStack &, const UndoStepPtr &);
+
+	void
+	transformToZero (const X3D::X3DPtr <X3D::X3DGeometryNode> &, const X3D::Matrix4f &, const UndoStepPtr &);
+
+	void
+	transformToZero (const X3D::X3DPtr <X3D::X3DCoordinateNode> &, const X3D::Matrix4f &, const UndoStepPtr &);
 
 	///  @name Undo functions
 

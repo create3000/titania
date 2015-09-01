@@ -1,16 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/TextEditor/TextEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/FileOpenDialog.h" Line="6" Column="6" />
-      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/TextEditor/MFStringFamilyWidget.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/TextEditor/X3DFontStyleNodeEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/ComposedWidgets/MFStringURLWidget.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/FileSaveDialog/FileSaveDialog.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/FileImportDialog/FileImportDialog.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/FileImportDialog/FileImportDialog.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/TextEditor/TextEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/TextEditor/TextEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Base/X3DEditorObject.h" Line="26" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

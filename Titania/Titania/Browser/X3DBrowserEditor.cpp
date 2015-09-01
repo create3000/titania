@@ -2168,6 +2168,152 @@ X3DBrowserEditor::createParentGroup (const X3D::X3DPtr <X3D::X3DGroupingNode> & 
 	}
 }
 
+void
+X3DBrowserEditor::transformToZero (const X3D::MFNode & children, const UndoStepPtr & undoStep)
+{
+	X3D::Matrix4fStack modelViewMatrix;
+
+	transformToZero (getSelection () -> getChildren (), modelViewMatrix, undoStep);
+}
+
+void
+X3DBrowserEditor::transformToZero (const X3D::MFNode & children, X3D::Matrix4fStack & modelViewMatrix, const UndoStepPtr & undoStep)
+{
+	for (const auto & child : children)
+	{
+	   if (child)
+	      transformToZero (child, modelViewMatrix, undoStep);
+	}
+}
+
+void
+X3DBrowserEditor::transformToZero (const X3D::SFNode & child, X3D::Matrix4fStack & modelViewMatrix, const UndoStepPtr & undoStep)
+{
+   for (const auto & type : basic::make_reverse_range (child -> getType ()))
+   {
+      switch (type)
+      {
+			case X3D::X3DConstants::ScreenGroup:
+			case X3D::X3DConstants::Viewport:
+			{
+			   // Skip these nodes and their children.
+				return;
+			}
+         case X3D::X3DConstants::X3DTransformNode:
+         {
+            using SFVec3f_setValue    = void (X3D::SFVec3f::*) (const X3D::SFVec3f::internal_type &);
+            using SFRotation_setValue = void (X3D::SFRotation::*) (const X3D::SFRotation::internal_type &);
+
+            X3D::X3DPtr <X3D::X3DTransformNode> transform (child);
+
+            const auto matrix = transform -> getCurrentMatrix ();
+
+				undoStep -> addObjects (transform);
+				undoStep -> addUndoFunction ((SFVec3f_setValue)    &X3D::SFVec3f::setValue,    std::ref (transform -> translation ()),      transform -> translation ());
+				undoStep -> addUndoFunction ((SFRotation_setValue) &X3D::SFRotation::setValue, std::ref (transform -> rotation ()),         transform -> rotation ());
+				undoStep -> addUndoFunction ((SFVec3f_setValue)    &X3D::SFVec3f::setValue,    std::ref (transform -> scale ()),            transform -> scale ());
+				undoStep -> addUndoFunction ((SFRotation_setValue) &X3D::SFRotation::setValue, std::ref (transform -> scaleOrientation ()), transform -> scaleOrientation ());
+				undoStep -> addUndoFunction ((SFVec3f_setValue)    &X3D::SFVec3f::setValue,    std::ref (transform -> center ()),           transform -> center ());
+
+				undoStep -> addRedoFunction ((SFVec3f_setValue)    &X3D::SFVec3f::setValue,    std::ref (transform -> translation ()),      X3D::Vector3f ());
+				undoStep -> addRedoFunction ((SFRotation_setValue) &X3D::SFRotation::setValue, std::ref (transform -> rotation ()),         X3D::Rotation4f ());
+				undoStep -> addRedoFunction ((SFVec3f_setValue)    &X3D::SFVec3f::setValue,    std::ref (transform -> scale ()),            X3D::Vector3f (1, 1, 1));
+				undoStep -> addRedoFunction ((SFRotation_setValue) &X3D::SFRotation::setValue, std::ref (transform -> scaleOrientation ()), X3D::Rotation4f ());
+				undoStep -> addRedoFunction ((SFVec3f_setValue)    &X3D::SFVec3f::setValue,    std::ref (transform -> center ()),           X3D::Vector3f ());
+
+            undoStep -> redoChanges ();
+
+				modelViewMatrix .push ();
+				modelViewMatrix .mult_left (matrix);
+
+	         transformToZero (transform -> children (), modelViewMatrix, undoStep);
+
+				modelViewMatrix .pop ();
+            return;
+         }
+         case X3D::X3DConstants::X3DGroupingNode:
+	      {
+	         transformToZero (child -> getField <X3D::MFNode> ("children"), modelViewMatrix, undoStep);
+	         return;
+	      }
+         case X3D::X3DConstants::X3DShapeNode:
+         {
+            X3D::X3DPtr <X3D::X3DShapeNode> shape (child);
+	         X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry ());
+
+	         if (geometry)
+	            transformToZero (geometry, modelViewMatrix .get (), undoStep);
+
+            return;
+         }
+			default:
+				continue;
+		}
+   }
+}
+
+void
+X3DBrowserEditor::transformToZero (const X3D::X3DPtr <X3D::X3DGeometryNode> & geometry, const X3D::Matrix4f & matrix, const UndoStepPtr & undoStep)
+{
+   for (const auto & type : basic::make_reverse_range (geometry -> getType ()))
+   {
+      switch (type)
+      {
+			case X3D::X3DConstants::IndexedFaceSet:
+			{
+            X3D::X3DPtr <X3D::IndexedFaceSet> indexedFaceSet (geometry);
+            X3D::X3DPtr <X3D::X3DCoordinateNode> coord (indexedFaceSet -> coord ());
+
+            if (coord)
+               transformToZero (coord, matrix, undoStep);
+
+            return;
+         }
+			default:
+				continue;
+		}
+   }
+}
+
+void
+X3DBrowserEditor::transformToZero (const X3D::X3DPtr <X3D::X3DCoordinateNode> & coord, const X3D::Matrix4f & matrix, const UndoStepPtr & undoStep)
+{
+	switch (coord -> getType () .back ())
+	{
+		case X3D::X3DConstants::Coordinate:
+		{
+			X3D::X3DPtr <X3D::Coordinate> coordinate (coord);
+
+			undoStep -> addObjects (coordinate);
+			undoStep -> addUndoFunction (&X3D::MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+
+			for (auto & point : coordinate -> point ())
+			   point = matrix .mult_vec_matrix (point);
+
+			undoStep -> addRedoFunction (&X3D::MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+			return;
+		}
+		case X3D::X3DConstants::CoordinateDouble:
+		{
+			X3D::X3DPtr <X3D::CoordinateDouble> coordinate (coord);
+			const X3D::Matrix4d matrixd (matrix);
+
+			undoStep -> addObjects (coordinate);
+			undoStep -> addUndoFunction (&X3D::MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+
+			for (auto & point : coordinate -> point ())
+			   point = matrixd .mult_vec_matrix (point);
+			
+			undoStep -> addRedoFunction (&X3D::MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+			return;
+		}
+		case X3D::X3DConstants::GeoCoordinate:
+		   // Not handled here.
+		default:
+			return;
+	}
+}
+
 X3D::Matrix4d
 X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node) const
 {

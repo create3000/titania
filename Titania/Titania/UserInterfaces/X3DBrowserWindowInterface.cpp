@@ -174,6 +174,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FollowPrimarySelectionMenuItem", m_FollowPrimarySelectionMenuItem);
 	m_builder -> get_widget ("ObjectMenuItem", m_ObjectMenuItem);
 	m_builder -> get_widget ("CombineMenuItem", m_CombineMenuItem);
+	m_builder -> get_widget ("TransformToZeroMenuItem", m_TransformToZeroMenuItem);
 	m_builder -> get_widget ("TextureCoordinateEditorMenuItem", m_TextureCoordinateEditorMenuItem);
 	m_builder -> get_widget ("PaintPolygonsMenuItem", m_PaintPolygonsMenuItem);
 	m_builder -> get_widget ("LayoutMenuItem", m_LayoutMenuItem);
@@ -379,6 +380,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ImageMenuItem with id 'CombineMenuItem'.
 	m_CombineMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_combine_activate));
+	m_TransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_to_zero_activate));
 	m_TextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_edit_texture_coordinates_activate));
 	m_PaintPolygonsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paint_polygons_activate));
 
