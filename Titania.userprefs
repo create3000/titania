@@ -1,14 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="38" Column="38" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="2" Column="2" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="28" Column="28" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.h" Line="6" Column="6" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp" Line="19" Column="19" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp" Line="5" Column="5" />
       <File FileName="Titania/Titania/UserInterfaces/X3DOutlineEditorInterface.h" Line="2" Column="2" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="26" Column="26" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="57" Column="57" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="142" Column="142" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" Line="43" Column="43" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.h" Line="2" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -245,7 +245,7 @@ private:
 	std::vector <JSObject*>                    protos;
 	std::map <std::string, jsval>              fields;
 	std::map <X3D::X3DFieldDefinition*, jsval> functions;
-	std::map <X3D::X3DChildObject*, JSObject*> objects;
+	std::map <size_t, JSObject*>               objects;
 	std::map <basic::uri, jsval>               files;
 
 	std::unique_ptr <X3D::SceneLoader> future;

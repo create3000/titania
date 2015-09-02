@@ -375,7 +375,7 @@ void
 Context::addObject (X3D::X3DChildObject* const key, X3D::X3DFieldDefinition* const field, JSObject* const object)
 noexcept (true)
 {
-	assert (objects .emplace (key, object) .second);
+	assert (objects .emplace (key -> getId (), object) .second);
 
 	field -> addParent (this);
 
@@ -386,7 +386,7 @@ void
 Context::removeObject (X3D::X3DChildObject* const key, X3D::X3DFieldDefinition* const field)
 noexcept (true)
 {
-	if (objects .erase (key))
+	if (objects .erase (key -> getId ()))
 		field -> removeParent (this);
 
 	else
@@ -397,7 +397,7 @@ JSObject*
 Context::getObject (X3D::X3DChildObject* const key) const
 noexcept (true)
 {
-	const auto iter = objects .find (key);
+	const auto iter = objects .find (key -> getId ());
 
 	if (iter not_eq objects .end ())
 		return iter -> second;
@@ -665,8 +665,7 @@ Context::set_shutdown ()
 	JS_DestroyContext (cx);
 	JS_DestroyRuntime (rt);
 
-	if (not objects .empty ())
-		__LOG__ << "!!! Critical: condition (objects .empty ()) not satisfied." << std::endl;
+	assert (objects .empty ());
 }
 
 void
