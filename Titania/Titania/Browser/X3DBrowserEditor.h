@@ -365,9 +365,6 @@ private:
 
 	// Edit
 
-	void
-	eraseNode (X3D::MFNode &, const size_t, const X3D::SFNode &) const;
-
 	static
 	void
 	removeNodesFromExecutionContext (const X3D::X3DExecutionContextPtr &, const std::set <X3D::SFNode> &, const UndoStepPtr &, const bool);
@@ -409,16 +406,6 @@ private:
 
 	void
 	transformToZero (const X3D::X3DPtr <X3D::X3DCoordinateNode> &, const X3D::Matrix4f &, const UndoStepPtr &);
-
-	///  @name Undo functions
-
-	static
-	void
-	undoInsertNode (X3D::MFNode &, size_t, const X3D::SFNode &);
-
-	static
-	void
-	undoEraseNode (X3D::MFNode &, const X3D::SFNode &, const std::vector <size_t> &);
 
 	///  @name Misc
 

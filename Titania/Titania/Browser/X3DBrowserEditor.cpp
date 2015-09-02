@@ -1131,27 +1131,19 @@ X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::SFNode & node, co
 void
 X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const size_t index, const UndoStepPtr & undoStep) const
 {
-	const X3D::SFNode oldValue = mfnode [index];
+	if (index < mfnode .size ())
+	{
+		const X3D::SFNode oldValue = mfnode [index];
 
-	undoStep -> addObjects (parent);
+		undoStep -> addObjects (parent);
+		undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
 
-	undoStep -> addUndoFunction (&X3DBrowserEditor::undoEraseNode,
-	                             std::ref (mfnode),
-	                             mfnode [index],
-	                             std::vector <size_t> ({ index }));
-
-	undoStep -> addRedoFunction (&X3DBrowserEditor::eraseNode, this, std::ref (mfnode), index, oldValue);
-
-	eraseNode (mfnode, index, oldValue);
-
-	removeNodesFromSceneIfNotExists (getExecutionContext (), { oldValue }, undoStep);
-}
-
-void
-X3DBrowserEditor::eraseNode (X3D::MFNode & mfnode, const size_t index, const X3D::SFNode & value) const
-{
-	if (index < mfnode .size () and mfnode [index] == value)
 		mfnode .erase (mfnode .begin () + index);
+
+		undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
+
+		removeNodesFromSceneIfNotExists (getExecutionContext (), { oldValue }, undoStep);
+	}
 }
 
 /***
@@ -1325,23 +1317,12 @@ X3DBrowserEditor::removeNodesFromSceneGraph (const X3D::MFNode & array, const st
 void
 X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const X3D::SFNode & node, const UndoStepPtr & undoStep)
 {
-	const auto indices = mfnode .indices_of (node);
-
-	if (indices .empty ())
-		return;
-
 	undoStep -> addObjects (parent);
-
-	undoStep -> addUndoFunction (&X3DBrowserEditor::undoEraseNode,
-	                             std::ref (mfnode),
-	                             node,
-	                             indices);
-
-	using removeNode = void (X3D::MFNode::*) (const X3D::SFNode &);
-
-	undoStep -> addRedoFunction ((removeNode) & X3D::MFNode::remove, std::ref (mfnode), node);
+	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
 
 	mfnode .remove (node);
+
+	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
 }
 
 void
@@ -2615,45 +2596,11 @@ X3DBrowserEditor::emplaceBack (X3D::MFNode & array, const X3D::SFNode & node, co
 {
 	// Add to group
 
-	undoStep -> addUndoFunction (&X3DBrowserEditor::undoInsertNode,
-	                             std::ref (array),
-	                             array .size (),
-	                             node);
-
-	undoStep -> addRedoFunction (&X3D::MFNode::push_back, std::ref (array), node);
+	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (array), array);
 
 	array .emplace_back (node);
-}
 
-void
-X3DBrowserEditor::undoInsertNode (X3D::MFNode & field, size_t index, const X3D::SFNode & node)
-{
-	if (index < field .size () and field [index] == node)
-	{
-		field .erase (field .begin () + index);
-	}
-	else
-	{
-		// There has something changed, clear history.
-		__LOG__ << std::endl;
-	}
-}
-
-void
-X3DBrowserEditor::undoEraseNode (X3D::MFNode & field, const X3D::SFNode & value, const std::vector <size_t> & indices)
-{
-	for (const auto & index : indices)
-	{
-		if (index <= field .size ())
-		{
-			field .insert (field .begin () + index, value);
-		}
-		else
-		{
-			// There is has something changed, clear history
-			__LOG__ << "WARNING" << std::endl;
-		}
-	}
+	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (array), array);
 }
 
 // Misc

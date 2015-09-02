@@ -744,6 +744,9 @@ OutlineEditor::on_create_parent (const std::string & typeName)
 void
 OutlineEditor::on_remove_parent_activate ()
 {
+	if (nodePath .size () < 2)
+	   return;
+
 }
 
 void
@@ -941,7 +944,7 @@ OutlineEditor::selectNode (const double x, const double y)
 	getCreateInstanceMenuItem ()    .set_visible (not inPrototypeInstance () and isLocalNode and (isPrototype or isExternProto));
 	getUnlinkCloneMenuItem ()       .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode and isCloned);
 	getCreateParentGroupMenuItem () .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode);
-	getRemoveParentMenuItem ()      .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode);
+	getRemoveParentMenuItem ()      .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode and nodePath .size () > 1);
 	getRemoveMenuItem ()            .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode);
 }
 
