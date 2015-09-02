@@ -278,6 +278,15 @@
               </object>
             </child>
             <child>
+              <object class="GtkMenuItem" id="CreateParentLayerSetMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">LayerSet</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_layer_set_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
               <object class="GtkMenuItem" id="CreateParentLayerMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>

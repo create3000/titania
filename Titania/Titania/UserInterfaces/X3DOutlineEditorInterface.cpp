@@ -90,6 +90,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("CreateParentCADPartMenuItem", m_CreateParentCADPartMenuItem);
 	m_builder -> get_widget ("CreateParentCADAssemblyMenuItem", m_CreateParentCADAssemblyMenuItem);
 	m_builder -> get_widget ("CreateParentCADLayerMenuItem", m_CreateParentCADLayerMenuItem);
+	m_builder -> get_widget ("CreateParentLayerSetMenuItem", m_CreateParentLayerSetMenuItem);
 	m_builder -> get_widget ("CreateParentLayerMenuItem", m_CreateParentLayerMenuItem);
 	m_builder -> get_widget ("CreateParentViewportMenuItem", m_CreateParentViewportMenuItem);
 	m_builder -> get_widget ("RemoveParentMenuItem", m_RemoveParentMenuItem);
@@ -133,6 +134,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_CreateParentCADPartMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_cad_part_activate));
 	m_CreateParentCADAssemblyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_cad_assembly_activate));
 	m_CreateParentCADLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_cad_layer_activate));
+	m_CreateParentLayerSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_layer_set_activate));
 	m_CreateParentLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_layer_activate));
 	m_CreateParentViewportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_viewport_activate));
 	m_RemoveParentMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_remove_parent_activate));

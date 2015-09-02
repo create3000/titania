@@ -856,6 +856,15 @@
                                       </object>
                                     </child>
                                     <child>
+                                      <object class="GtkMenuItem" id="CreateParentLayerSetMenuItem">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">LayerSet</property>
+                                        <property name="use_underline">True</property>
+                                        <signal name="activate" handler="on_create_parent_layer_set_activate" swapped="no"/>
+                                      </object>
+                                    </child>
+                                    <child>
                                       <object class="GtkMenuItem" id="CreateParentLayerMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
@@ -1382,7 +1391,7 @@
                     <child>
                       <object class="GtkMenuItem" id="ObjectMenuItem">
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Object</property>
+                        <property name="label" translatable="yes">_Object</property>
                         <property name="use_underline">True</property>
                         <child type="submenu">
                           <object class="GtkMenu" id="menu4">
@@ -1485,6 +1494,27 @@
                                 <property name="image">image10</property>
                                 <property name="use_stock">False</property>
                                 <signal name="activate" handler="on_grid_properties_activate" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="ComponentsMenuItem">
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Components</property>
+                        <property name="use_underline">True</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="ComponentsMenu">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkMenuItem" id="CoreMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Core</property>
+                                <property name="use_underline">True</property>
                               </object>
                             </child>
                           </object>

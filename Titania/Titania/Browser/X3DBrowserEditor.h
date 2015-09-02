@@ -240,7 +240,7 @@ public:
 	detachFromGroup (X3D::MFNode, const bool, const UndoStepPtr &) const;
 
 	X3D::SFNode
-	createParentGroup (const std::string &, const X3D::MFNode &, const UndoStepPtr &) const;
+	createParentGroup (const std::string &, const std::string &, const X3D::MFNode &, const UndoStepPtr &) const;
 
 	void
 	transformToZero (const X3D::MFNode &, const UndoStepPtr &);

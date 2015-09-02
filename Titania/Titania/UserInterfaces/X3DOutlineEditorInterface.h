@@ -207,6 +207,10 @@ public:
 	{ return *m_CreateParentCADLayerMenuItem; }
 
 	Gtk::MenuItem &
+	getCreateParentLayerSetMenuItem () const
+	{ return *m_CreateParentLayerSetMenuItem; }
+
+	Gtk::MenuItem &
 	getCreateParentLayerMenuItem () const
 	{ return *m_CreateParentLayerMenuItem; }
 
@@ -372,6 +376,10 @@ public:
 
 	virtual
 	void
+	on_create_parent_layer_set_activate () = 0;
+
+	virtual
+	void
 	on_create_parent_layer_activate () = 0;
 
 	virtual
@@ -470,6 +478,7 @@ private:
 	Gtk::MenuItem*                  m_CreateParentCADPartMenuItem;
 	Gtk::MenuItem*                  m_CreateParentCADAssemblyMenuItem;
 	Gtk::MenuItem*                  m_CreateParentCADLayerMenuItem;
+	Gtk::MenuItem*                  m_CreateParentLayerSetMenuItem;
 	Gtk::MenuItem*                  m_CreateParentLayerMenuItem;
 	Gtk::MenuItem*                  m_CreateParentViewportMenuItem;
 	Gtk::MenuItem*                  m_RemoveParentMenuItem;

@@ -326,6 +326,10 @@ private:
 
 	virtual
 	void
+	on_create_parent_layer_set_activate () final override;
+
+	virtual
+	void
 	on_create_parent_layer_activate () final override;
 
 	virtual
@@ -333,7 +337,7 @@ private:
 	on_create_parent_viewport_activate () final override;
 
 	void
-	on_create_parent (const std::string &);
+	on_create_parent (const std::string &, const std::string & = "children");
 
 	/// @name Bar view handling
 

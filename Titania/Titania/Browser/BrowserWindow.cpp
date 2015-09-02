@@ -953,6 +953,12 @@ BrowserWindow::on_create_parent_cad_layer_activate ()
 }
 
 void
+BrowserWindow::on_create_parent_layer_set_activate ()
+{
+	on_create_parent ("LayerSet", "layers");
+}
+
+void
 BrowserWindow::on_create_parent_layer_activate ()
 {
 	on_create_parent ("Layer");
@@ -965,7 +971,7 @@ BrowserWindow::on_create_parent_viewport_activate ()
 }
 
 void
-BrowserWindow::on_create_parent (const std::string & typeName)
+BrowserWindow::on_create_parent (const std::string & typeName, const std::string & fieldName)
 {
 	auto selection = getSelection () -> getChildren ();
 
@@ -979,13 +985,10 @@ BrowserWindow::on_create_parent (const std::string & typeName)
 	const auto leader = selection .back ();
 	selection .pop_back ();
 
-	const auto group = createParentGroup (typeName, { leader }, undoStep);
+	const auto group = createParentGroup (typeName, fieldName, { leader }, undoStep);
 
 	if (not selection .empty ())
-	{
 		addToGroup (group, selection, undoStep);
-		addToGroup (group, { leader }, undoStep);
-	}
 
 	getSelection () -> setChildren ({ group }, undoStep);
 

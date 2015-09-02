@@ -1096,9 +1096,7 @@ X3DBrowserEditor::replaceNodes (const X3D::SFNode & parent, X3D::MFNode & mfnode
 void
 X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const size_t index, const X3D::SFNode & newValue, const UndoStepPtr & undoStep) const
 {
-	using set1Value = void (X3D::MFNode::*) (const X3D::MFNode::size_type, const X3D::SFNode &);
-
-	const X3D::SFNode oldValue = mfnode [index];
+ 	const X3D::SFNode oldValue = mfnode [index];
 
 	undoStep -> addObjects (parent);
 
@@ -1114,10 +1112,11 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode,
 
 	//
 
-	undoStep -> addUndoFunction ((set1Value) & X3D::MFNode::set1Value, std::ref (mfnode), index, mfnode [index]);
-	undoStep -> addRedoFunction ((set1Value) & X3D::MFNode::set1Value, std::ref (mfnode), index, newValue);
+	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
 
 	mfnode [index] = newValue;
+
+	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
 
 	removeNodesFromSceneIfNotExists (getExecutionContext (), { oldValue }, undoStep);
 }
@@ -1317,6 +1316,9 @@ X3DBrowserEditor::removeNodesFromSceneGraph (const X3D::MFNode & array, const st
 void
 X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const X3D::SFNode & node, const UndoStepPtr & undoStep)
 {
+	if (std::find (mfnode .begin (), mfnode .end (), node) == mfnode .end ())
+		return;
+
 	undoStep -> addObjects (parent);
 	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
 
@@ -2058,6 +2060,7 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children,
 
 X3D::SFNode
 X3DBrowserEditor::createParentGroup (const std::string & typeName,
+	                                  const std::string & fieldName,
                                      const X3D::MFNode & children,
                                      const UndoStepPtr & undoStep) const
 {
@@ -2073,7 +2076,7 @@ X3DBrowserEditor::createParentGroup (const std::string & typeName,
 		if (not child)
 			continue;
 
-		emplaceBack (group -> getField <X3D::MFNode> ("children"), child, undoStep);
+		emplaceBack (group -> getField <X3D::MFNode> (fieldName), child, undoStep);
 
 		X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & parent)
 		               {

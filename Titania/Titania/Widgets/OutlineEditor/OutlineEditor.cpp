@@ -631,6 +631,12 @@ OutlineEditor::on_create_parent_cad_layer_activate ()
 }
 
 void
+OutlineEditor::on_create_parent_layer_set_activate ()
+{
+	on_create_parent ("LayerSet", "layers");
+}
+
+void
 OutlineEditor::on_create_parent_layer_activate ()
 {
 	on_create_parent ("Layer");
@@ -643,7 +649,7 @@ OutlineEditor::on_create_parent_viewport_activate ()
 }
 
 void
-OutlineEditor::on_create_parent (const std::string & typeName)
+OutlineEditor::on_create_parent (const std::string & typeName, const std::string & fieldName)
 {
 	if (nodePath .empty ())
 		return;
@@ -665,7 +671,7 @@ OutlineEditor::on_create_parent (const std::string & typeName)
 		const auto        index     = treeView -> get_index (iter);
 		const auto        child     = rootNodes [index];
 		const auto        group     = executionContext -> createNode (typeName);
-		auto &            children  = group -> getField <X3D::MFNode> ("children");
+		auto &            children  = group -> getField <X3D::MFNode> (fieldName);
 
 		getBrowserWindow () -> emplaceBack (children, child, undoStep);
 		getBrowserWindow () -> replaceNode (parent, rootNodes, index, group, undoStep);
@@ -698,7 +704,7 @@ OutlineEditor::on_create_parent (const std::string & typeName)
 		if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
 			return;
 
-		const auto   parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+		const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
 
 		//
 
@@ -710,7 +716,7 @@ OutlineEditor::on_create_parent (const std::string & typeName)
 			{
 				auto &     child    = *static_cast <X3D::SFNode*> (field);
 			   const auto group    = executionContext -> createNode (typeName);
-				auto &     children = group -> getField <X3D::MFNode> ("children");
+				auto &     children = group -> getField <X3D::MFNode> (fieldName);
 
 				getBrowserWindow () -> emplaceBack (children, child, undoStep);
 				getBrowserWindow () -> replaceNode (parent, child, group, undoStep);
@@ -726,7 +732,7 @@ OutlineEditor::on_create_parent (const std::string & typeName)
 				const auto   index    = treeView -> get_index (iter);
 				const auto & child    = mfnode [index];
 				const auto   group    = executionContext -> createNode (typeName);
-				auto &       children = group -> getField <X3D::MFNode> ("children");
+				auto &       children = group -> getField <X3D::MFNode> (fieldName);
 
 				getBrowserWindow () -> emplaceBack (children, child, undoStep);
 				getBrowserWindow () -> replaceNode (parent, mfnode, index, group, undoStep);
@@ -1113,7 +1119,7 @@ OutlineEditor::selectNode (const double x, const double y)
 	getSetAsCurrentSceneMenuItem () .set_visible (isExternProto or isPrototype or isPrototypeInstance or isInlineNode or not isLocalNode);
 	getCreateInstanceMenuItem ()    .set_visible (not inPrototypeInstance () and isLocalNode and (isPrototype or isExternProto));
 	getUnlinkCloneMenuItem ()       .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode and isCloned);
-	getCreateParentGroupMenuItem () .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode);
+	getCreateParentGroupMenuItem () .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode); // XXX: and is X3DChildNode
 	getRemoveParentMenuItem ()      .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode and nodePath .size () > 1);
 	getRemoveMenuItem ()            .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode);
 }
