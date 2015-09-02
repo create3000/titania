@@ -653,7 +653,7 @@ OutlineEditor::on_create_parent (const std::string & typeName)
 	if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DBaseNode)
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Unlink Clone"));
+	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Create Parent %s"), typeName .c_str ()));
 
 	if (nodePath .size () == 1)
 	{
@@ -698,7 +698,10 @@ OutlineEditor::on_create_parent (const std::string & typeName)
 		if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
 			return;
 
-		const auto   parent           = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+		const auto   parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+
+		//
+
 		const auto & executionContext = treeView -> get_model () -> get_execution_context ();
 
 		switch (field -> getType ())
@@ -744,9 +747,176 @@ OutlineEditor::on_create_parent (const std::string & typeName)
 void
 OutlineEditor::on_remove_parent_activate ()
 {
-	if (nodePath .size () < 2)
+	if (nodePath .size () < 3)
 	   return;
 
+	// Child node
+	   
+	const auto iter = treeView -> get_model () -> get_iter (nodePath);
+
+	if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DBaseNode)
+		return;
+
+	auto path = nodePath;
+
+	if (not path .up ())
+		return;
+
+	const auto fieldIter = treeView -> get_model () -> get_iter (path);
+
+	if (treeView -> get_data_type (fieldIter) not_eq OutlineIterType::X3DField)
+		return;
+
+	const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
+
+	if (not path .up ())
+		return;
+
+	const auto parentIter = treeView -> get_model () -> get_iter (path);
+
+	if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
+		return;
+
+	const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Parent"));
+
+	if (path .size () == 1)
+	{
+	   // Root node
+		
+		const X3D::SFNode root (treeView -> get_model () -> get_execution_context ());
+		auto &            rootNodes = treeView -> get_model () -> get_execution_context () -> getRootNodes ();
+		const auto        index     = treeView -> get_index (parentIter);
+
+		switch (field -> getType ())
+		{
+			case X3D::X3DConstants::SFNode:
+			{
+				auto & sfnode = *static_cast <X3D::SFNode*> (field);
+	
+				undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (rootNodes), rootNodes);
+				rootNodes .insert (rootNodes .begin () + index, sfnode);
+				undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (rootNodes), rootNodes);
+
+				getBrowserWindow () -> removeNode (root, rootNodes, index + 1, undoStep);
+
+				undoStep -> addUndoFunction (&X3D::SFNode::setValue, std::ref (sfnode), sfnode);
+				sfnode = nullptr;
+				undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (sfnode), sfnode);
+				break;
+			}
+			case X3D::X3DConstants::MFNode:
+			{
+				auto & mfnode = *static_cast <X3D::MFNode*> (field);
+	
+				undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (rootNodes), rootNodes);
+				rootNodes .insert (rootNodes .begin () + index, mfnode .begin (), mfnode .end ());
+				undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (rootNodes), rootNodes);
+
+				getBrowserWindow () -> removeNode (root, rootNodes, index + mfnode .size (), undoStep);
+				getBrowserWindow () -> replaceNodes (parent, mfnode, X3D::MFNode (), undoStep);
+				break;
+			}
+			default:
+			   break;
+		}
+	}
+	else
+	{
+		if (not path .up ())
+			return;
+		
+		const auto secondFieldIter = treeView -> get_model () -> get_iter (path);
+
+		if (treeView -> get_data_type (secondFieldIter) not_eq OutlineIterType::X3DField)
+			return;
+
+		const auto secondField = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (secondFieldIter));
+
+		if (not path .up ())
+			return;
+
+		const auto secondParentIter = treeView -> get_model () -> get_iter (path);
+
+		if (treeView -> get_data_type (secondParentIter) not_eq OutlineIterType::X3DBaseNode)
+			return;
+
+		const auto secondParent = *static_cast <X3D::SFNode*> (treeView -> get_object (secondParentIter));
+
+		//
+
+		switch (field -> getType ())
+		{
+			case X3D::X3DConstants::SFNode:
+			{
+				auto & sfnode = *static_cast <X3D::SFNode*> (field);
+
+				switch (secondField -> getType ())
+				{
+					case X3D::X3DConstants::SFNode:
+					{
+						getBrowserWindow () -> replaceNode (parent, *static_cast <X3D::SFNode*> (secondField), sfnode, undoStep);
+						break;
+					}
+					case X3D::X3DConstants::MFNode:
+					{
+					   auto &     mfnode = *static_cast <X3D::MFNode*> (secondField);
+						const auto index  = treeView -> get_index (parentIter);
+
+						undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
+						mfnode .insert (mfnode .begin () + index, sfnode);
+						undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
+
+						getBrowserWindow () -> removeNode (parent, mfnode, index + 1, undoStep);
+						break;
+					}
+					default:
+						break;
+				}
+
+				undoStep -> addUndoFunction (&X3D::SFNode::setValue, std::ref (sfnode), sfnode);
+				sfnode = nullptr;
+				undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (sfnode), sfnode);
+				break;
+			}
+			case X3D::X3DConstants::MFNode:
+			{
+				auto &     mfnode = *static_cast <X3D::MFNode*> (field);
+				const auto index  = treeView -> get_index (iter);
+
+				switch (secondField -> getType ())
+				{
+					case X3D::X3DConstants::SFNode:
+					{
+						getBrowserWindow () -> replaceNode (parent, *static_cast <X3D::SFNode*> (secondField), mfnode [index], undoStep);
+						break;
+					}
+					case X3D::X3DConstants::MFNode:
+					{
+					   auto &     secondmfnode = *static_cast <X3D::MFNode*> (secondField);
+						const auto secondIndex  = treeView -> get_index (parentIter);
+
+						undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (secondmfnode), secondmfnode);
+						secondmfnode .insert (secondmfnode .begin () + secondIndex, mfnode .begin (), mfnode .end ());
+						undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (secondmfnode), secondmfnode);
+
+						getBrowserWindow () -> removeNode (secondParent, secondmfnode, secondIndex + mfnode .size (), undoStep);
+						break;
+					}
+					default:
+						break;
+				}
+						
+				getBrowserWindow () -> replaceNodes (parent, mfnode, X3D::MFNode (), undoStep);
+				break;
+			}
+			default:
+				break;
+		}
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
