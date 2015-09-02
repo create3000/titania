@@ -649,6 +649,12 @@ Context::set_shutdown ()
 	if (not JSVAL_IS_VOID (shutdownFn))
 		callFunction (shutdownFn);
 
+	if (future)
+	{
+		future -> dispose ();
+		future .reset (); // XXX: See Inline
+	}
+
 	for (auto & field : fields)
 		JS_RemoveValueRoot (cx, &field .second);
 
@@ -659,7 +665,8 @@ Context::set_shutdown ()
 	JS_DestroyContext (cx);
 	JS_DestroyRuntime (rt);
 
-	assert (objects .empty ());
+	if (not objects .empty ())
+		__LOG__ << "!!! Critical: condition (objects .empty ()) not satisfied." << std::endl;
 }
 
 void
@@ -730,12 +737,6 @@ Context::error (JSContext* cx, const char* message, JSErrorReport* report)
 void
 Context::dispose ()
 {
-	if (future)
-	{
-		future -> dispose ();
-		future .reset (); // XXX: See Inline
-	}
-
 	X3DJavaScriptContext::dispose ();
 }
 
