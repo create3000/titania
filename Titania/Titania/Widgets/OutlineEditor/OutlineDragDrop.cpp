@@ -452,7 +452,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 	X3D::SFNode sceneNode;
 
-	if (context -> get_suggested_action () == Gdk::ACTION_COPY)
+	if (context -> get_selected_action () == Gdk::ACTION_COPY)
 	{
 	   // Copy source node into scene.
 
@@ -475,9 +475,39 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 		sourceField  = &scene -> getRootNodes ();
 	}
 
-	// Insert source node in destination field.
+	//
 
 	const auto undoStep = std::make_shared <UndoStep> (_ (get_node_action_string ()));
+
+	// Get group modelview matrix
+
+	X3D::Matrix4d                          groupModelViewMatrix = treeView -> getBrowserWindow () -> findModelViewMatrix (destNode);
+	const X3D::X3DTransformMatrix4DNodePtr transform (destNode);
+
+	if (transform)
+		groupModelViewMatrix .mult_left (transform -> getMatrix ());
+	
+	{
+		// Adjust child transformation
+
+		X3D::Matrix4d                  childModelViewMatrix = treeView -> getBrowserWindow () -> findModelViewMatrix (sourceNode);
+		const X3D::X3DTransformNodePtr transform (sourceNode);
+
+		if (transform)
+		{
+			try
+			{
+				childModelViewMatrix .mult_left (transform -> getMatrix ());
+				childModelViewMatrix .mult_right (~groupModelViewMatrix);
+
+				treeView -> getBrowserWindow () -> setMatrix (transform, childModelViewMatrix, undoStep);
+			}
+			catch (const std::domain_error & error)
+			{ }
+		}
+	}
+
+	// Insert source node in destination field.
 
 	// Add
 
@@ -506,7 +536,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	}
 
 	// Remove
-	switch (context -> get_suggested_action ())
+	switch (context -> get_selected_action ())
 	{
 		case Gdk::ACTION_MOVE:
 		case Gdk::ACTION_COPY:
@@ -599,7 +629,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	X3D::SFNode sceneNode;
 
-	if (context -> get_suggested_action () == Gdk::ACTION_COPY)
+	if (context -> get_selected_action () == Gdk::ACTION_COPY)
 	{
 	   // Copy source node into scene.
 
@@ -622,7 +652,39 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 		sourceField  = &scene -> getRootNodes ();
 	}
 
+	// Handle X3DTransformNode nodes.
+
 	const auto undoStep = std::make_shared <UndoStep> (_ (get_node_action_string ()));
+
+	// Get group modelview matrix
+
+	X3D::Matrix4d                          groupModelViewMatrix = treeView -> getBrowserWindow () -> findModelViewMatrix (*destParent);
+	const X3D::X3DTransformMatrix4DNodePtr transform (destParent);
+
+	if (transform)
+		groupModelViewMatrix .mult_left (transform -> getMatrix ());
+	
+	{
+		// Adjust child transformation
+
+		X3D::Matrix4d                  childModelViewMatrix = treeView -> getBrowserWindow () -> findModelViewMatrix (sourceNode);
+		const X3D::X3DTransformNodePtr transform (sourceNode);
+
+		if (transform)
+		{
+			try
+			{
+				childModelViewMatrix .mult_left (transform -> getMatrix ());
+				childModelViewMatrix .mult_right (~groupModelViewMatrix);
+
+				treeView -> getBrowserWindow () -> setMatrix (transform, childModelViewMatrix, undoStep);
+			}
+			catch (const std::domain_error & error)
+			{ }
+		}
+	}
+
+	// Insert
 
 	if (destField == sourceField)
 	{
@@ -682,7 +744,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	// Remove
 
-	switch (context -> get_suggested_action ())
+	switch (context -> get_selected_action ())
 	{
 		case Gdk::ACTION_MOVE:
 		case Gdk::ACTION_COPY:
