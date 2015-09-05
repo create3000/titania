@@ -172,6 +172,8 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 
 	if (treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
 	{
+		// Drag on field
+
 		switch (position)
 		{
 			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
@@ -192,6 +194,11 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DField)
 					break;
 
+				const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
+
+				if (field -> getType () not_eq X3D::X3DConstants::SFNode and field -> getType () not_eq X3D::X3DConstants::MFNode)
+					break;
+
 				if (not destinationPath .up ())
 				   break;
 
@@ -201,14 +208,11 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				if (sfnode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
 					break;
 
-				const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
-
-				if (field -> getType () not_eq X3D::X3DConstants::SFNode and field -> getType () not_eq X3D::X3DConstants::MFNode)
-					break;
-
 				return false;
 			}
 		}
+
+		// Drag on X3DBaseNode
 
 		switch (position)
 		{
@@ -407,10 +411,13 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 	const auto destField = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (destFieldIter));
 
+	if (destField -> getType () not_eq X3D::X3DConstants::SFNode and destField -> getType () not_eq X3D::X3DConstants::MFNode)
+		return;
+
 	// Get destination node.
 
 	if (not destinationPath .up ())
-		return;;
+		return;
 	
 	const auto destNodeIter = treeView -> get_model () -> get_iter (destinationPath);
 	const auto destNode     = *static_cast <X3D::SFNode*> (treeView -> get_object (destNodeIter));
@@ -651,6 +658,9 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 		sourceIndex  = scene -> getRootNodes () .size () - 1;
 		sourceField  = &scene -> getRootNodes ();
 	}
+
+	if (treeView -> is_expanded (destNodeIter) and position == Gtk::TREE_VIEW_DROP_AFTER)
+	   return;
 
 	// Handle X3DTransformNode nodes.
 
