@@ -723,6 +723,7 @@ OutlineTreeModel::row_draggable_vfunc (const Path & path) const
 	switch (get_data_type (iter))
 	{
 		case OutlineIterType::ExternProtoDeclaration:
+		case OutlineIterType::X3DBaseNode:
 		{
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
 			return sfnode -> getExecutionContext () == get_execution_context ();

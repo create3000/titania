@@ -136,17 +136,15 @@ Collision::traverse (const TraverseType type)
 		{
 			if (enabled ())
 			{
+				getCurrentLayer () -> getCollisions () .emplace_back (this);
+
 				if (proxyNode)
 					proxyNode -> traverse (type);
 
 				else
-				{
-					getCurrentLayer () -> getCollisions () .emplace_back (this);
-
 					X3DGroupingNode::traverse (type);
 
-					getCurrentLayer () -> getCollisions () .pop_back ();
-				}
+				getCurrentLayer () -> getCollisions () .pop_back ();
 			}
 
 			break;
