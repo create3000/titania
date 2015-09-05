@@ -54,6 +54,8 @@
 #include "OutlineTreeModel.h"
 #include "OutlineTreeViewEditor.h"
 
+#include <Titania/X3D/Parser/Parser.h>
+
 namespace titania {
 namespace puck {
 
@@ -416,11 +418,11 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	// Get source node.
 
 	const auto sourceNodeIter = treeView -> get_model () -> get_iter (sourcePath);
-	const auto sourceNode     = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceNodeIter));
+	auto sourceNode           = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceNodeIter));
 
 	// Get source field.
 
-	const auto               sourceIndex = treeView -> get_index (sourceNodeIter);
+	auto                     sourceIndex = treeView -> get_index (sourceNodeIter);
 	X3D::X3DFieldDefinition* sourceField = &sourceNode -> getExecutionContext () -> getRootNodes ();
 
 	if (sourcePath .size () > 1)
@@ -446,7 +448,34 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 		sourceParent                = static_cast <X3D::SFNode*> (treeView -> get_object (sourceParentIter));
 	}
 
-	// Insert source extern proto in destination extern protos.
+	// Handle copy
+
+	X3D::SFNode sceneNode;
+
+	if (context -> get_suggested_action () == Gdk::ACTION_COPY)
+	{
+	   // Copy source node into scene.
+
+		const auto & scene = treeView -> getBrowserWindow () -> getScene ();
+
+	   std::stringstream sstream;
+		X3D::MFNode toExport ({ sourceNode });
+
+	   treeView -> getBrowserWindow () -> exportNodes (sstream, toExport);
+	   X3D::Parser (sstream, scene) .parseIntoScene ();
+	   scene -> realize ();
+
+	   // Change source values.
+
+	   sceneNode = scene;
+
+		sourceParent = &sceneNode;
+		sourceNode   = scene -> getRootNodes () .back ();
+		sourceIndex  = scene -> getRootNodes () .size () - 1;
+		sourceField  = &scene -> getRootNodes ();
+	}
+
+	// Insert source node in destination field.
 
 	const auto undoStep = std::make_shared <UndoStep> (_ (get_node_action_string ()));
 
@@ -515,7 +544,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	// Get source node.
 
 	const auto sourceNodeIter = treeView -> get_model () -> get_iter (sourcePath);
-	const auto sourceNode     = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceNodeIter));
+	auto       sourceNode     = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceNodeIter));
 
 	// Get source field.
 
@@ -564,6 +593,33 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 		const auto destParentIter = treeView -> get_model () -> get_iter (destinationPath);
 		destParent                = static_cast <X3D::SFNode*> (treeView -> get_object (destParentIter));
+	}
+
+	// Handle copy
+
+	X3D::SFNode sceneNode;
+
+	if (context -> get_suggested_action () == Gdk::ACTION_COPY)
+	{
+	   // Copy source node into scene.
+
+		const auto & scene = treeView -> getBrowserWindow () -> getScene ();
+
+	   std::stringstream sstream;
+		X3D::MFNode toExport ({ sourceNode });
+
+	   treeView -> getBrowserWindow () -> exportNodes (sstream, toExport);
+	   X3D::Parser (sstream, scene) .parseIntoScene ();
+	   scene -> realize ();
+
+	   // Change source values.
+
+	   sceneNode = scene;
+
+		sourceParent = &sceneNode;
+		sourceNode   = scene -> getRootNodes () .back ();
+		sourceIndex  = scene -> getRootNodes () .size () - 1;
+		sourceField  = &scene -> getRootNodes ();
 	}
 
 	const auto undoStep = std::make_shared <UndoStep> (_ (get_node_action_string ()));
@@ -672,12 +728,12 @@ OutlineDragDrop::get_node_action_string () const
    if (treeView -> getBrowserWindow () -> getKeys () .control ())
    {
       if (treeView -> getBrowserWindow () -> getKeys () .shift ())
-         return "Clone node";
+         return "Clone Node";
       
-		return "Move node";
+		return "Copy Node";
    }
 
-   return "Move node";
+   return "Move Node";
 }
 
 //bool
