@@ -94,7 +94,16 @@ private:
 	on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
 
 	void
-	on_drag_data_base_node_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
+	on_drag_data_base_node_on_field_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
+
+	void
+	on_drag_data_base_node_insert_into_array_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
+
+	void
+	remove_source_node (X3D::SFNode* const, X3D::X3DFieldDefinition* const, size_t, const UndoStepPtr &);
+
+	const char*
+	get_node_action_string () const;
 
 	///  @name Members
 

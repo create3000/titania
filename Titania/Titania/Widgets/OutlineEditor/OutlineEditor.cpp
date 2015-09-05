@@ -720,6 +720,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 
 				getBrowserWindow () -> emplaceBack (children, child, undoStep);
 				getBrowserWindow () -> replaceNode (parent, child, group, undoStep);
+				getBrowserWindow () -> getSelection () -> setChildren (X3D::MFNode ({ group }), undoStep);
 				getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
 
 				executionContext -> addUninitializedNode (group);
@@ -736,6 +737,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 
 				getBrowserWindow () -> emplaceBack (children, child, undoStep);
 				getBrowserWindow () -> replaceNode (parent, mfnode, index, group, undoStep);
+				getBrowserWindow () -> getSelection () -> setChildren (X3D::MFNode ({ group }), undoStep);
 				getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
 
 				executionContext -> addUninitializedNode (group);
