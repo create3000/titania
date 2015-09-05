@@ -477,8 +477,15 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	}
 
 	// Remove
-	if (not treeView -> getBrowserWindow () -> getKeys () .control () and not treeView -> getBrowserWindow () -> getKeys () .shift ())
-		remove_source_node (sourceParent, sourceField, sourceIndex, undoStep);
+	switch (context -> get_suggested_action ())
+	{
+		case Gdk::ACTION_MOVE:
+		case Gdk::ACTION_COPY:
+			remove_source_node (sourceParent, sourceField, sourceIndex, undoStep);
+			break;
+		default:
+			break;
+	}
 
 	treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -618,8 +625,16 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	}
 
 	// Remove
-	if (not treeView -> getBrowserWindow () -> getKeys () .control () and not treeView -> getBrowserWindow () -> getKeys () .shift ())
-		remove_source_node (sourceParent, sourceField, sourceIndex, undoStep);
+
+	switch (context -> get_suggested_action ())
+	{
+		case Gdk::ACTION_MOVE:
+		case Gdk::ACTION_COPY:
+			remove_source_node (sourceParent, sourceField, sourceIndex, undoStep);
+			break;
+		default:
+			break;
+	}
 
 	treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 }
