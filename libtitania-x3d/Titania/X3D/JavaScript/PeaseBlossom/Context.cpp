@@ -66,7 +66,7 @@ namespace X3D {
 namespace peaseblossom {
 
 const ComponentType Context::component      = ComponentType::TITANIA;
-const std::string   Context::typeName       = "Context";
+const std::string   Context::typeName       = "PeaseBlossomContext";
 const std::string   Context::containerField = "context";
 
 Context::Context (X3D::Script* const script, const std::string & ecmascript, const basic::uri & uri)

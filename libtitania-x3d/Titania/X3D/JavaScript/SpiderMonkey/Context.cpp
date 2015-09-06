@@ -90,8 +90,8 @@ namespace spidermonkey {
 // mutex test: http://www.web3d.org/x3d/content/examples/Basic/StudentProjects/DeadReckoningComparisons.x3d
 
 const ComponentType Context::component      = ComponentType::TITANIA;
-const std::string   Context::typeName       = "Context";
-const std::string   Context::containerField = "cx";
+const std::string   Context::typeName       = "SpiderMonkeyContext";
+const std::string   Context::containerField = "context";
 
 JSClass Context::globalClass = {
 	"global",
@@ -530,8 +530,6 @@ Context::setEventHandler ()
 	prepareEventsFn   = getFunction ("prepareEvents");
 	eventsProcessedFn = getFunction ("eventsProcessed");
 
-	shutdown () .addInterest (this, &Context::set_shutdown);
-
 	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 	{
 		switch (field -> getAccessType ())
@@ -648,24 +646,6 @@ Context::set_shutdown ()
 
 	if (not JSVAL_IS_VOID (shutdownFn))
 		callFunction (shutdownFn);
-
-	if (future)
-	{
-		future -> dispose ();
-		future .reset (); // XXX: See Inline
-	}
-
-	for (auto & field : fields)
-		JS_RemoveValueRoot (cx, &field .second);
-
-	for (auto & file : files)
-		JS_RemoveValueRoot (cx, &file .second);
-
-	// Cleanup.
-	JS_DestroyContext (cx);
-	JS_DestroyRuntime (rt);
-
-	assert (objects .empty ());
 }
 
 void
@@ -737,6 +717,24 @@ void
 Context::dispose ()
 {
 	X3DJavaScriptContext::dispose ();
+
+	if (future)
+	{
+		future -> dispose ();
+		future .reset (); // XXX: See Inline
+	}
+
+	for (auto & field : fields)
+		JS_RemoveValueRoot (cx, &field .second);
+
+	for (auto & file : files)
+		JS_RemoveValueRoot (cx, &file .second);
+
+	// Cleanup.
+	JS_DestroyContext (cx);
+	JS_DestroyRuntime (rt);
+
+	assert (objects .empty ());
 }
 
 Context::~Context ()

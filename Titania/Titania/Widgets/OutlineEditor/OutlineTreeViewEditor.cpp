@@ -189,10 +189,10 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 			parentPath .up ();
 
 			const auto parent = get_model () -> get_iter (parentPath);
+			const auto field  = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
 
-			if (is_real_local_node (parent))
+			if (is_real_local_node (parent) or get_user_data (field) -> selected & OUTLINE_SPECIAL)
 			{
-				const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
 
 				if (field -> getAccessType () not_eq X3D::outputOnly)
 				{

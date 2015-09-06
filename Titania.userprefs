@@ -1,17 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/OutlineEditor/OutlineTreeViewEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="9" Column="9" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="66" Column="66" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="3" Column="3" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp" Line="35" Column="35" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.h" Line="6" Column="6" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="43" Column="43" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/X3DOutlineTreeView.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="99" Column="99" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/X3DOutlineTreeView.cpp" Line="7" Column="7" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineTreeViewEditor.cpp" Line="41" Column="41" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp" Line="46" Column="46" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -397,6 +397,16 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 	if (not treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
 	   return;
+	
+	switch (position)
+	{
+		case Gtk::TREE_VIEW_DROP_AFTER:
+		case Gtk::TREE_VIEW_DROP_BEFORE:
+		   return;
+		case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
+		case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
+			break;
+	}
 
 	//__LOG__ << destinationPath .to_string () << std::endl;
 

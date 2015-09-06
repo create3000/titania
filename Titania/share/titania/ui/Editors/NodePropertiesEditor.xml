@@ -34,108 +34,6 @@
       </object>
     </child>
   </object>
-  <object class="GtkDialog" id="ExportedNodeDialog">
-    <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Add Exported Node</property>
-    <property name="resizable">False</property>
-    <property name="modal">True</property>
-    <property name="destroy_with_parent">True</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
-    <property name="has_resize_grip">False</property>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="dialog-vbox4">
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="dialog-action_area4">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="ExportedNodeCancelButton">
-                <property name="label">gtk-cancel</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <property name="always_show_image">True</property>
-                <signal name="clicked" handler="on_exported_node_cancel_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="ExportedNodeOkButton">
-                <property name="label">gtk-ok</property>
-                <property name="visible">True</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <property name="always_show_image">True</property>
-                <signal name="clicked" handler="on_exported_node_ok_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="box7">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="border_width">6</property>
-            <property name="spacing">16</property>
-            <child>
-              <object class="GtkLabel" id="label11">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Exported Name:</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="ExportedNameEntry">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <signal name="changed" handler="on_exported_name_changed" swapped="no"/>
-                <signal name="delete-text" handler="on_exported_name_delete_text" after="yes" swapped="no"/>
-                <signal name="insert-text" handler="on_exported_name_insert_text" after="yes" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
   <object class="GtkListStore" id="ExportedNodesListStore">
     <columns>
       <!-- column-name exportedName -->
@@ -443,138 +341,6 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="label">MFVec4f</property>
-      </object>
-    </child>
-  </object>
-  <object class="GtkDialog" id="UserDefinedFieldDialog">
-    <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Add User Defined Field</property>
-    <property name="resizable">False</property>
-    <property name="modal">True</property>
-    <property name="window_position">center</property>
-    <property name="destroy_with_parent">True</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
-    <property name="has_resize_grip">False</property>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="dialog-vbox2">
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="dialog-action_area2">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="UserDefinedFieldCancelButton">
-                <property name="label">gtk-cancel</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <property name="always_show_image">True</property>
-                <signal name="clicked" handler="on_add_field_cancel_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="AddUserDefinedFieldOkButton">
-                <property name="label">gtk-ok</property>
-                <property name="visible">True</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <property name="always_show_image">True</property>
-                <signal name="clicked" handler="on_add_field_ok_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="box4">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="border_width">6</property>
-            <child>
-              <object class="GtkMenuButton" id="AccessTypeMenuButton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="popup">AccessTypeMenu</property>
-                <child>
-                  <object class="GtkLabel" id="AccessTypeLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">initializeOnly</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkMenuButton" id="FieldTypeMenuButton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="popup">FieldTypeMenu</property>
-                <child>
-                  <object class="GtkLabel" id="FieldTypeLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">SFBool</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="FieldNameEntry">
-                <property name="width_request">200</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="placeholder_text" translatable="yes">fieldName</property>
-                <signal name="changed" handler="on_field_name_changed" swapped="no"/>
-                <signal name="delete-text" handler="on_field_name_delete_text" after="yes" swapped="no"/>
-                <signal name="insert-text" handler="on_field_name_insert_text" after="yes" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
       </object>
     </child>
   </object>
@@ -1321,6 +1087,240 @@
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkDialog" id="ExportedNodeDialog">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Add Exported Node</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox4">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area4">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="ExportedNodeCancelButton">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_exported_node_cancel_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="ExportedNodeOkButton">
+                <property name="label">gtk-ok</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_exported_node_ok_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box7">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="border_width">6</property>
+            <property name="spacing">16</property>
+            <child>
+              <object class="GtkLabel" id="label11">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Exported Name:</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="ExportedNameEntry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <signal name="changed" handler="on_exported_name_changed" swapped="no"/>
+                <signal name="delete-text" handler="on_exported_name_delete_text" after="yes" swapped="no"/>
+                <signal name="insert-text" handler="on_exported_name_insert_text" after="yes" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkDialog" id="UserDefinedFieldDialog">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Add User Defined Field</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="window_position">center</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox2">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area2">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="UserDefinedFieldCancelButton">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_add_field_cancel_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="AddUserDefinedFieldOkButton">
+                <property name="label">gtk-ok</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_add_field_ok_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="border_width">6</property>
+            <child>
+              <object class="GtkMenuButton" id="AccessTypeMenuButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="popup">AccessTypeMenu</property>
+                <child>
+                  <object class="GtkLabel" id="AccessTypeLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">initializeOnly</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkMenuButton" id="FieldTypeMenuButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="popup">FieldTypeMenu</property>
+                <child>
+                  <object class="GtkLabel" id="FieldTypeLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">SFBool</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="FieldNameEntry">
+                <property name="width_request">200</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="placeholder_text" translatable="yes">fieldName</property>
+                <signal name="changed" handler="on_field_name_changed" swapped="no"/>
+                <signal name="delete-text" handler="on_field_name_delete_text" after="yes" swapped="no"/>
+                <signal name="insert-text" handler="on_field_name_insert_text" after="yes" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>

@@ -892,6 +892,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			model_expand_node (sfnode, iter);
 
 			get_model () -> append (iter, OutlineIterType::X3DField, url);
+			get_user_data (url) -> selected |= OUTLINE_SPECIAL;
 
 			try
 			{
@@ -906,7 +907,6 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			catch (const X3D::X3DError &)
 			{ }
 
-			get_user_data (url) -> selected |= OUTLINE_SPECIAL;
 			break;
 		}
 		case OutlineIterType::ProtoDeclaration:
