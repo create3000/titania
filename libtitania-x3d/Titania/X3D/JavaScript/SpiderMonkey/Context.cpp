@@ -530,6 +530,8 @@ Context::setEventHandler ()
 	prepareEventsFn   = getFunction ("prepareEvents");
 	eventsProcessedFn = getFunction ("eventsProcessed");
 
+	shutdown () .addInterest (this, &Context::set_shutdown);
+
 	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 	{
 		switch (field -> getAccessType ())
