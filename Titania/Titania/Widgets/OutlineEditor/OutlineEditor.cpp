@@ -673,12 +673,12 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 		const auto        group     = executionContext -> createNode (typeName);
 		auto &            children  = group -> getField <X3D::MFNode> (fieldName);
 
+		executionContext -> addUninitializedNode (group);
+		executionContext -> realize ();
+
 		getBrowserWindow () -> emplaceBack (children, child, undoStep);
 		getBrowserWindow () -> replaceNode (parent, rootNodes, index, group, undoStep);
 		getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
-
-		executionContext -> addUninitializedNode (group);
-		executionContext -> realize ();
 	}
 	else
 	{
@@ -718,13 +718,13 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 			   const auto group    = executionContext -> createNode (typeName);
 				auto &     children = group -> getField <X3D::MFNode> (fieldName);
 
+				executionContext -> addUninitializedNode (group);
+				executionContext -> realize ();
+
 				getBrowserWindow () -> emplaceBack (children, child, undoStep);
 				getBrowserWindow () -> replaceNode (parent, child, group, undoStep);
 				getBrowserWindow () -> getSelection () -> setChildren (X3D::MFNode ({ group }), undoStep);
 				getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
-
-				executionContext -> addUninitializedNode (group);
-				executionContext -> realize ();
 				break;
 			}
 			case X3D::X3DConstants::MFNode:
@@ -735,13 +735,13 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 				const auto   group    = executionContext -> createNode (typeName);
 				auto &       children = group -> getField <X3D::MFNode> (fieldName);
 
+				executionContext -> addUninitializedNode (group);
+				executionContext -> realize ();
+
 				getBrowserWindow () -> emplaceBack (children, child, undoStep);
 				getBrowserWindow () -> replaceNode (parent, mfnode, index, group, undoStep);
 				getBrowserWindow () -> getSelection () -> setChildren (X3D::MFNode ({ group }), undoStep);
 				getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
-
-				executionContext -> addUninitializedNode (group);
-				executionContext -> realize ();
 				break;
 			}
 			default:

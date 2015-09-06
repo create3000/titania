@@ -146,6 +146,8 @@ Context::Context (X3D::Script* const script, const std::string & ecmascript, con
 	JS_SetOptions (cx, JSOPTION_ATLINE | JSOPTION_VAROBJFIX | JSOPTION_JIT | JSOPTION_METHODJIT);
 	JS_SetErrorReporter (cx, error);
 
+	shutdown () .addInterest (this, &Context::set_shutdown);
+
 	addClasses ();
 	addUserDefinedFields ();
 }
@@ -530,8 +532,6 @@ Context::setEventHandler ()
 	prepareEventsFn   = getFunction ("prepareEvents");
 	eventsProcessedFn = getFunction ("eventsProcessed");
 
-	shutdown () .addInterest (this, &Context::set_shutdown);
-
 	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 	{
 		switch (field -> getAccessType ())
@@ -648,6 +648,24 @@ Context::set_shutdown ()
 
 	if (not JSVAL_IS_VOID (shutdownFn))
 		callFunction (shutdownFn);
+
+	if (future)
+	{
+		future -> dispose ();
+		future .reset (); // XXX: See Inline
+	}
+
+	for (auto & field : fields)
+		JS_RemoveValueRoot (cx, &field .second);
+
+	for (auto & file : files)
+		JS_RemoveValueRoot (cx, &file .second);
+
+	// Cleanup.
+	JS_DestroyContext (cx);
+	JS_DestroyRuntime (rt);
+
+	assert (objects .empty ());
 }
 
 void
@@ -719,24 +737,6 @@ void
 Context::dispose ()
 {
 	X3DJavaScriptContext::dispose ();
-
-	if (future)
-	{
-		future -> dispose ();
-		future .reset (); // XXX: See Inline
-	}
-
-	for (auto & field : fields)
-		JS_RemoveValueRoot (cx, &field .second);
-
-	for (auto & file : files)
-		JS_RemoveValueRoot (cx, &file .second);
-
-	// Cleanup.
-	JS_DestroyContext (cx);
-	JS_DestroyRuntime (rt);
-
-	assert (objects .empty ());
 }
 
 Context::~Context ()
