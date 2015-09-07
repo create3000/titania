@@ -185,11 +185,13 @@ LOD::traverse (const TraverseType type)
 		}
 	}
 
-	if ((size_t) level_changed () < children () .size ())
-	{
-		if (children () [level_changed ()])
-			children () [level_changed ()] -> traverse (type);
-	}
+	if (children () .empty ())
+		return;
+
+	const auto level = std::min <int32_t> (level_changed (), children () .size () - 1);
+
+	if (children () [level])
+		children () [level] -> traverse (type);
 }
 
 void

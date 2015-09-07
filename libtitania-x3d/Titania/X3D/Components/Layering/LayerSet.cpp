@@ -152,7 +152,7 @@ LayerSet::set_layers ()
 	{
 		if (index == 0)
 			layerNodes .emplace_back (layerNode0);
-			
+
 		else
 		{
 			-- index;

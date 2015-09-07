@@ -216,7 +216,7 @@ AboutTab::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 & 
 void
 AboutTab::set_url (const X3D::SFString & URL)
 {
-	getBrowserWindow () -> open (URL .str ());
+	getBrowserWindow () -> load (getBrowserWindow () -> getBrowser (), URL .str ());
 }
 
 AboutTab::~AboutTab ()

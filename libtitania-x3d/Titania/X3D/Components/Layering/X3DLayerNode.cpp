@@ -430,7 +430,7 @@ X3DLayerNode::pointer ()
 		currentViewport -> push (TraverseType::POINTER);
 
 		collect (TraverseType::POINTER);
-		
+
 		currentViewport -> pop (TraverseType::POINTER);
 
 		getGlobalObjects () .clear ();
