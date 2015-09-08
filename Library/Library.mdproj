@@ -4,7 +4,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ItemType>GenericProject</ItemType>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4E14CF17-2479-463F-BF86-128B9B5C5FAD}</ProjectGuid>
     <ReleaseVersion>0.3</ReleaseVersion>
@@ -2391,6 +2391,7 @@
     <None Include="Tests\PROTO\solaris\util-mark6.png" />
     <None Include="Library.mdproj" />
     <None Include="Library.pidb" />
+    <None Include="Tests\Layering\Collision.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

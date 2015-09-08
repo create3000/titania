@@ -679,7 +679,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	// Get group modelview matrix
 
 	X3D::Matrix4d                          groupModelViewMatrix = treeView -> getBrowserWindow () -> findModelViewMatrix (*destParent);
-	const X3D::X3DTransformMatrix4DNodePtr transform (destParent);
+	const X3D::X3DTransformMatrix4DNodePtr transform (*destParent);
 
 	if (transform)
 		groupModelViewMatrix .mult_left (transform -> getMatrix ());
