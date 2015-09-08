@@ -90,6 +90,9 @@ private:
 	on_toggle_value ();
 	
 	void
+	on_current_time ();
+	
+	void
 	on_reset_activate ();
 	
 	virtual
