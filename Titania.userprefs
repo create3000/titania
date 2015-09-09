@@ -1,13 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserEditor.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="28" Column="28" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/AboutTab.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/TextViewEditable.cpp" Line="2" Column="2" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/TextViewEditable.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/TextViewEditable.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="30" Column="30" />
     </Files>

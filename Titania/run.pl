@@ -12,7 +12,7 @@ my $PROJECT_DIR = "/home/holger/Projekte/Titania";
 
 my $min = `date +'%M'`; chomp $min;
 
-if ($min > 16 and $min < 20)
+if (($min > 16 and $min < 20) or 1)
 {
 	unless (-e "$HOME/.config/Titania.O")
 	{

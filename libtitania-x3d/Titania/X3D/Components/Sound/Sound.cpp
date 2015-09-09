@@ -116,6 +116,9 @@ Sound::initialize ()
 void
 Sound::set_source ()
 {
+	if (sourceNode)
+		sourceNode -> setVolume (0);
+
 	sourceNode .set (x3d_cast <X3DSoundSourceNode*> (source ()));
 }
 

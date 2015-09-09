@@ -155,12 +155,16 @@ X3DBrowserWidget::restoreSession ()
 	getToolBarMenuItem () .set_active (getConfig () .getBoolean ("toolBar"));
 
 	// SideBar
-	if (getConfig () .hasItem ("sideBar"))
-		getSideBarMenuItem () .set_active (getConfig () .getBoolean ("sideBar"));
+	if (not getConfig () .hasItem ("sideBar"))
+		getConfig () .setItem ("sideBar", true);
+
+	getSideBarMenuItem () .set_active (getConfig () .getBoolean ("sideBar"));
 
 	// Footer
-	if (getConfig () .hasItem ("footer"))
-		getFooterMenuItem () .set_active (getConfig () .getBoolean ("footer"));
+	if (not getConfig () .hasItem ("footer"))
+		getConfig () .setItem ("footer", true);
+
+	getFooterMenuItem () .set_active (getConfig () .getBoolean ("footer"));
 
 	// RenderingProperties
 	if (getConfig () .hasItem ("renderingProperties"))

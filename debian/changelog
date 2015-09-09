@@ -1,3 +1,9 @@
+titania (1.1.0) trusty; urgency=medium
+
+  * Changed version number.
+
+ -- Holger Seelig <holger@qualle>  Tue, 9 Sept 2015 06:59:52 +0200
+
 titania (1.0.0) trusty; urgency=medium
 
   * Changed version number.

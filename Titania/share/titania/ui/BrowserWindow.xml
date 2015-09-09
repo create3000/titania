@@ -262,14 +262,14 @@
     <property name="icon_size">1</property>
   </object>
   <object class="GtkApplicationWindow" id="Window">
-    <property name="width_request">768</property>
-    <property name="height_request">480</property>
+    <property name="width_request">1024</property>
+    <property name="height_request">640</property>
     <property name="can_focus">False</property>
     <property name="events">GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK | GDK_FOCUS_CHANGE_MASK | GDK_STRUCTURE_MASK</property>
     <property name="title" translatable="yes">Titania</property>
     <property name="window_position">center</property>
-    <property name="default_width">768</property>
-    <property name="default_height">480</property>
+    <property name="default_width">1024</property>
+    <property name="default_height">640</property>
     <property name="icon_name">titania</property>
     <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
     <signal name="key-press-event" handler="on_key_press_event" after="yes" swapped="no"/>
@@ -2085,14 +2085,14 @@
               <object class="GtkPaned" id="VPaned">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="position">660</property>
+                <property name="position">720</property>
                 <property name="position_set">True</property>
                 <child>
                   <object class="GtkPaned" id="HPaned">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="orientation">vertical</property>
-                    <property name="position">350</property>
+                    <property name="position">340</property>
                     <property name="position_set">True</property>
                     <child>
                       <object class="GtkBox" id="box1">
