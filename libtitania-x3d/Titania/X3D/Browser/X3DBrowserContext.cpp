@@ -264,7 +264,9 @@ X3DBrowserContext::update ()
 			glClearColor (color .r (), color .g (), color .b (), color .a ());
 			glClear (GL_COLOR_BUFFER_BIT);
 
+			changedTime = getCurrentTime (); // prevent queue_draw
 			getWorld () -> traverse (TraverseType::DISPLAY);
+			changedTime = 0;
 
 			displayed () .processInterests ();
 			swapBuffers ();

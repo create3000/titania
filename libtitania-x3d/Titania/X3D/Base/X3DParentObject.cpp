@@ -57,6 +57,8 @@
 namespace titania {
 namespace X3D {
 
+// XXX: Rename this class to EventObject!
+
 X3DParentObject::X3DParentObject (X3DBrowser* const browser) :
 	   X3DReferenceObject (),
 	              browser (browser),
@@ -164,7 +166,12 @@ X3DParentObject::addEvent (X3DChildObject* const object)
 void
 X3DParentObject::addEvent (X3DChildObject* const object, const EventPtr & event)
 {
-//	__LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
+//try
+//{
+// 	__LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
+//}
+//catch (...)
+//{ }
 
 	browser -> addEvent ();
 
