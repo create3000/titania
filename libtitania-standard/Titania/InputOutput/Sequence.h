@@ -162,10 +162,10 @@ private:
 };
 
 typedef basic_sequence <char>    sequence;
-typedef basic_sequence <wchar_t> wsequence;
+//typedef basic_sequence <wchar_t> wsequence;
 
 extern template class basic_sequence <char>;
-extern template class basic_sequence <wchar_t>;
+//extern template class basic_sequence <wchar_t>;
 
 } // io
 } // titania

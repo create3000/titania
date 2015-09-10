@@ -169,10 +169,10 @@ basic_string <CharT, Traits>::rewind (std::basic_istream <CharT, Traits> & istre
 }
 
 typedef basic_string <char>    string;
-typedef basic_string <wchar_t> wstring;
+//typedef basic_string <wchar_t> wstring;
 
 extern template class basic_string <char>;
-extern template class basic_string <wchar_t>;
+//extern template class basic_string <wchar_t>;
 
 } // io
 } // titania

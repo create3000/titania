@@ -3,13 +3,13 @@
   <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="64" Column="64" />
       <File FileName="Titania/Titania/Browser/AboutTab.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="3" Column="3" />
       <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/TextViewEditable.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/TextViewEditable.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="30" Column="30" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="5" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

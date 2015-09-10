@@ -117,10 +117,10 @@ basic_inverse_sequence <CharT, Traits>::operator () (std::basic_istream <CharT, 
 }
 
 typedef basic_inverse_sequence <char>    inverse_sequence;
-typedef basic_inverse_sequence <wchar_t> winverse_sequence;
+//typedef basic_inverse_sequence <wchar_t> winverse_sequence;
 
 extern template class basic_inverse_sequence <char>;
-extern template class basic_inverse_sequence <wchar_t>;
+//extern template class basic_inverse_sequence <wchar_t>;
 
 } // io
 } // titania

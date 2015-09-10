@@ -54,7 +54,7 @@ namespace titania {
 namespace io {
 
 template class basic_inverse_sequence <char>;
-template class basic_inverse_sequence <wchar_t>;
+//template class basic_inverse_sequence <wchar_t>;
 
 } // io
 } // titania

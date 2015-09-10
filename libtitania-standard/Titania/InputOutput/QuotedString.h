@@ -129,10 +129,10 @@ basic_quoted_string <CharT, Traits>::operator () (std::basic_istream <CharT, Tra
 }
 
 typedef basic_quoted_string <char>    quoted_string;
-typedef basic_quoted_string <wchar_t> wquoted_string;
+//typedef basic_quoted_string <wchar_t> wquoted_string;
 
 extern template class basic_quoted_string <char>;
-extern template class basic_quoted_string <wchar_t>;
+//extern template class basic_quoted_string <wchar_t>;
 
 } // io
 } // titania
