@@ -133,6 +133,7 @@ titania_SOURCES =  \
 	Titania/Widgets/OutlineEditor/OutlineTreeViewEditor.cpp \
 	Titania/Widgets/OutlineEditor/X3DOutlineTreeView.cpp \
 	Titania/Widgets/ScriptEditor/ScriptEditor.cpp \
+	Titania/Widgets/ScriptEditor/X3DScriptEditor.cpp \
 	Titania/Widgets/ViewpointList/ViewpointList.cpp
 
 titania_LDADD = $(TITANIA_LIBS) \

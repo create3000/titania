@@ -200,6 +200,7 @@
     <Compile Include="Titania\Editors\FaceSelection.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DAnimationEditorInterface.cpp" />
     <Compile Include="Titania\Widgets\AnimationEditor\AnimationEditor.cpp" />
+    <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1785,6 +1786,9 @@
     <None Include="share\titania\Library\Primitives\Interpolation\EaseInEaseOut.x3dv" />
     <None Include="share\titania\Library\Primitives\Interpolation\FadeOut.x3dv" />
     <None Include="share\titania\ui\icons\TransformToZero.svg" />
+    <None Include="share\titania\ui\icons\DirectOutput.svg" />
+    <None Include="share\titania\ui\icons\MustEvaluate.svg" />
+    <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

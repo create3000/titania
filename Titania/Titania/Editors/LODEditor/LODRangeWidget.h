@@ -218,14 +218,14 @@ LODRangeWidget::on_max_toggled (const int id)
 
 			if (maxButton .get_active ())
 			{
-				range .resize (level + 1, range .get1Value (level ? level - 1 : 0));
-				adjustment2 -> set_value (range .get1Value (level ? level - 1 : 0));
-				spinButton2 .set_visible (true);
+				range .resize (level);
+				spinButton2 .set_visible (false);
 			}
 			else
 			{
-				range .resize (level);
-				spinButton2 .set_visible (false);
+				range .resize (level + 1, range .get1Value (level ? level - 1 : 0));
+				adjustment2 -> set_value (range .get1Value (level ? level - 1 : 0));
+				spinButton2 .set_visible (true);
 			}
 		}
 		catch (const X3D::X3DError &)
@@ -337,7 +337,7 @@ LODRangeWidget::set_buffer ()
 			}
 
 			maxButton .set_sensitive (level < size + 1);
-			maxButton .set_active (level < (int32_t) range .size ());
+			maxButton .set_active (level >= (int32_t) range .size ());
 
 			hasField = true;
 			break;

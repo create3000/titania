@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,152 +48,45 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NAVIGATION_LOD_H__
-#define __TITANIA_X3D_COMPONENTS_NAVIGATION_LOD_H__
+#ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_H__
+#define __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_H__
 
-#include "../Grouping/X3DGroupingNode.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DScriptEditorInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class LOD :
-	public X3DGroupingNode
+class X3DScriptEditor :
+	virtual public X3DScriptEditorInterface
 {
 public:
 
+	~X3DScriptEditor () = default;
+
+
+protected:
+
 	///  @name Construction
 
-	LOD (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	virtual
-	SFBool &
-	forceTransitions ()
-	{ return *fields .forceTransitions; }
-
-	virtual
-	const SFBool &
-	forceTransitions () const
-	{ return *fields .forceTransitions; }
-
-	virtual
-	SFVec3f &
-	center ()
-	{ return *fields .center; }
-
-	virtual
-	const SFVec3f &
-	center () const
-	{ return *fields .center; }
-
-	virtual
-	MFFloat &
-	range ()
-	{ return *fields .range; }
-
-	virtual
-	const MFFloat &
-	range () const
-	{ return *fields .range; }
-
-	virtual
-	SFInt32 &
-	level_changed ()
-	{ return *fields .level_changed; }
-
-	virtual
-	const SFInt32 &
-	level_changed () const
-	{ return *fields .level_changed; }
-
-	///  @name Member access
-
-	virtual
-	Box3f
-	getBBox () const override;
-	
-	virtual
-	void
-	setKeepCurrentLevel (const bool);
-	
-	virtual
-	bool
-	getKeepCurrentLevel () const
-	{ return keepCurrentLevel; }
-
-	///  @name Operations
+	X3DScriptEditor ();
 
 	virtual
 	void
-	traverse (const TraverseType) override;
+	initialize () override;
 
-	virtual
 	void
-	addTool () override;
-
-
-private:
-
-	///  @name Member access
-
-	size_t
-	getLevel (const TraverseType) const;
-
-	float
-	getDistance (const TraverseType) const;
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
+	set_node (const X3D::SFNode &);
 
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const forceTransitions;
-		SFVec3f* const center;
-		MFFloat* const range;
-		SFInt32* const level_changed;
-	};
-
-	Fields fields;
-
-	mutable float frameRate;
-	bool          changeLevel;
-	bool          keepCurrentLevel;
+	X3DFieldToggleButton <X3D::SFBool, Gtk::ToggleToolButton> directOutput;
+	X3DFieldToggleButton <X3D::SFBool, Gtk::ToggleToolButton> mustEvaluate;
+	X3D::X3DPtr <X3D::Script>                                 scriptNode;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

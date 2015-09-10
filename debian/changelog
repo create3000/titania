@@ -1,8 +1,9 @@
 titania (1.1.0) trusty; urgency=medium
 
-  * Changed version number.
+  * Implemented drag n drop in Outline Editor.
+  * Many bug fixes.
 
- -- Holger Seelig <holger@qualle>  Tue, 9 Sept 2015 06:59:52 +0200
+ -- Holger Seelig <holger@qualle>  We, 9 Sep 2015 06:59:52 +0200
 
 titania (1.0.0) trusty; urgency=medium
 

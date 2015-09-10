@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -47,55 +47,37 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DScriptEditorInterface.h"
+
+#include "X3DScriptEditor.h"
 
 namespace titania {
 namespace puck {
 
-const std::string X3DScriptEditorInterface::m_widgetName = "ScriptEditor";
-
-void
-X3DScriptEditorInterface::create (const std::string & filename)
+X3DScriptEditor::X3DScriptEditor () :
+	     X3DScriptEditorInterface (),
+	                 directOutput (this, getDirectOutputToggleButton (), "directOutput"),
+	                 mustEvaluate (this, getMustEvaluateToggleButton (), "mustEvaluate"),
+	                   scriptNode ()
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
-
-	// Get objects.
-	m_AccelGroup = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("AccelGroup"));
-
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("Paned", m_Paned);
-	m_builder -> get_widget ("NodeIndexBox", m_NodeIndexBox);
-	m_builder -> get_widget ("NameBox", m_NameBox);
-	m_builder -> get_widget ("NameEntry", m_NameEntry);
-	m_builder -> get_widget ("RenameButton", m_RenameButton);
-	m_builder -> get_widget ("ScriptEditor", m_ScriptEditor);
-	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
-	m_builder -> get_widget ("SaveButton", m_SaveButton);
-	m_builder -> get_widget ("UndoButton", m_UndoButton);
-	m_builder -> get_widget ("RedoButton", m_RedoButton);
-	m_builder -> get_widget ("LoadStateButton", m_LoadStateButton);
-	m_builder -> get_widget ("DirectOutputToggleButton", m_DirectOutputToggleButton);
-	m_builder -> get_widget ("MustEvaluateToggleButton", m_MustEvaluateToggleButton);
-
-	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map));
-
-	// Connect object Gtk::ToolButton with id 'SaveButton'.
-	m_SaveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_save_clicked));
-	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_undo_clicked));
-	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_redo_clicked));
-	m_LoadStateButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_loadState_clicked));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
-X3DScriptEditorInterface::~X3DScriptEditorInterface ()
+void
+X3DScriptEditor::initialize ()
 {
-	delete m_Window;
+}
+
+void
+X3DScriptEditor::set_node (const X3D::SFNode & value)
+{
+	scriptNode = value;
+
+	getDirectOutputToggleButton () .set_visible (scriptNode);
+	getMustEvaluateToggleButton () .set_visible (scriptNode);
+
+	const X3D::MFNode nodes = scriptNode ? X3D::MFNode ({ scriptNode }) : X3D::MFNode ();
+
+	directOutput .setNodes (nodes);
+	mustEvaluate .setNodes (nodes);
 }
 
 } // puck

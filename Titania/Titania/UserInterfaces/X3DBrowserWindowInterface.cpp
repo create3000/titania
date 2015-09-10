@@ -186,6 +186,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GridLayoutToolMenuItem", m_GridLayoutToolMenuItem);
 	m_builder -> get_widget ("AngleLayoutToolMenuItem", m_AngleLayoutToolMenuItem);
 	m_builder -> get_widget ("GridProperiesMenuItem", m_GridProperiesMenuItem);
+	m_builder -> get_widget ("ComponentsMenuItem", m_ComponentsMenuItem);
+	m_builder -> get_widget ("ComponentsMenu", m_ComponentsMenu);
+	m_builder -> get_widget ("CoreMenuItem", m_CoreMenuItem);
 	m_builder -> get_widget ("HelpMenuItem", m_HelpMenuItem);
 	m_builder -> get_widget ("StandardSizeMenuItem", m_StandardSizeMenuItem);
 	m_builder -> get_widget ("InfoMenuItem", m_InfoMenuItem);

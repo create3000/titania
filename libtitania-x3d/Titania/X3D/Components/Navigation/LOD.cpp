@@ -79,6 +79,7 @@ LOD::LOD (X3DExecutionContext* const executionContext) :
 	 X3DGroupingNode (),
 	          fields (),
 	       frameRate (60),
+        changeLevel (true),
 	keepCurrentLevel (false)
 {
 	addType (X3DConstants::LOD);
@@ -124,6 +125,14 @@ LOD::getBBox () const
 	return Box3f (bboxSize (), bboxCenter ());
 }
 
+void
+LOD::setKeepCurrentLevel (const bool value)
+{
+	keepCurrentLevel = value;
+
+	getBrowser () -> addEvent ();
+}
+
 size_t
 LOD::getLevel (const TraverseType type) const
 {
@@ -164,31 +173,36 @@ LOD::getDistance (const TraverseType type) const
 void
 LOD::traverse (const TraverseType type)
 {
-	if (not keepCurrentLevel)
-	{
-		const int32_t level = getLevel (type);
+	int32_t level = keepCurrentLevel ? level_changed () : getLevel (type);
 
-		if (level not_eq level_changed ())
+	if (forceTransitions ())
+	{
+		if (level > level_changed ())
+			level = level_changed () + 1;
+		
+		else if (level < level_changed ())
+			level = level_changed () - 1;
+	}
+
+	// Clone save level change. This version prevents undesired event generation.
+	// Only the first clone found during traverse does assign to level_changed.
+	if (type == TraverseType::DISPLAY)
+	{
+		if (changeLevel)
 		{
-			if (forceTransitions ())
-			{
-				if (type == TraverseType::DISPLAY)
-				{
-					if (level > level_changed ())
-						level_changed () += 1;
-					else
-						level_changed () -= 1;
-				}
-			}
-			else
-				level_changed () = level;
+			changeLevel = false;
+
+			if (level not_eq level_changed ())
+			   level_changed () = level;
 		}
 	}
+	else
+	   changeLevel = true;
 
 	if (children () .empty ())
 		return;
 
-	const auto level = std::min <int32_t> (level_changed (), children () .size () - 1);
+	level = std::min <int32_t> (level, children () .size () - 1);
 
 	if (children () [level])
 		children () [level] -> traverse (type);

@@ -89,6 +89,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	                finishedOutput (),
 	                 changedOutput (),
 	                   changedTime (0),
+	                   freezedTime (0),
 	                         world (),
 	                     selection (new Selection (this)),
 	                  notification (new Notification (this)),
@@ -213,6 +214,19 @@ X3DBrowserContext::addEvent ()
 }
 
 void
+X3DBrowserContext::beginUpdateForFrame ()
+{
+	changedTime = freezedTime;
+}
+
+void
+X3DBrowserContext::endUpdateForFrame ()
+{
+	freezedTime = changedTime;
+	changedTime = getCurrentTime ();
+}
+
+void
 X3DBrowserContext::reshape ()
 {
 	ContextLock lock (this);
@@ -264,9 +278,7 @@ X3DBrowserContext::update ()
 			glClearColor (color .r (), color .g (), color .b (), color .a ());
 			glClear (GL_COLOR_BUFFER_BIT);
 
-			changedTime = getCurrentTime (); // prevent queue_draw
 			getWorld () -> traverse (TraverseType::DISPLAY);
-			changedTime = 0;
 
 			displayed () .processInterests ();
 			swapBuffers ();

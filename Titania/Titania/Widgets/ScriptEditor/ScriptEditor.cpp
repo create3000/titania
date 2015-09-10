@@ -65,6 +65,7 @@ namespace puck {
 ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DScriptEditorInterface (get_ui ("ScriptEditor.xml"), gconf_dir ()),
+				X3DScriptEditor (),
 	              textBuffer (Gsv::Buffer::create ()),
 	                textView (textBuffer),
 	               nodeIndex (new NodeIndex (browserWindow)),
@@ -80,6 +81,7 @@ void
 ScriptEditor::initialize ()
 {
 	X3DScriptEditorInterface::initialize ();
+	X3DScriptEditor::initialize ();
 
 	if (getConfig () .hasItem ("paned"))
 		getPaned () .set_position (getConfig () .getInteger ("paned"));
@@ -145,6 +147,8 @@ ScriptEditor::set_label ()
 void
 ScriptEditor::set_node (const X3D::SFNode & value)
 {
+	X3DScriptEditor::set_node (value);
+
 	if (node)
 	{
 		const auto cdata = node -> getCDATA ();

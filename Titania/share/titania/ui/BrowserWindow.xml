@@ -5,6 +5,7 @@
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
       <source stock-id="Recent" filename="icons/Recent.svg"/>
+      <source stock-id="MustEvaluate" filename="icons/MustEvaluate.svg"/>
       <source stock-id="Flip" filename="icons/Flip.svg"/>
       <source stock-id="Hammer" filename="icons/Hammer.svg"/>
       <source stock-id="SplitPoint" filename="icons/SplitPoint.svg"/>
@@ -12,6 +13,7 @@
       <source stock-id="Appearance" filename="icons/Appearance.svg"/>
       <source stock-id="Checkerboard" filename="icons/Checkerboard.svg"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
+      <source stock-id="DirectOutput" filename="icons/DirectOutput.svg"/>
       <source stock-id="Rotate" filename="icons/Rotate.svg"/>
       <source stock-id="Blue" filename="icons/Blue.svg"/>
       <source stock-id="Inline" filename="icons/Inline.svg"/>
@@ -58,8 +60,8 @@
       <source stock-id="Time" filename="icons/Time.svg"/>
       <source stock-id="Placement" filename="icons/Placement.svg"/>
       <source stock-id="Texture" filename="icons/Texture.svg"/>
-      <source stock-id="PaintBrush" filename="icons/PaintBrush.svg"/>
       <source stock-id="Hand" filename="icons/Hand.svg"/>
+      <source stock-id="PaintBrush" filename="icons/PaintBrush.svg"/>
       <source stock-id="Arrow" filename="icons/Arrow.svg"/>
       <source stock-id="PlaneViewer" filename="icons/PlaneViewer.svg"/>
       <source stock-id="ColorSingleFace" filename="icons/ColorSingleFace.svg"/>

@@ -214,12 +214,15 @@ X3DBoundedObjectTool <Type>::reshape ()
 
 	try
 	{
+	   getBrowser () -> endUpdateForFrame ();
+		
 		const SFNode & tool = getToolNode ();
 
 		tool -> setField <SFVec3f> ("bboxSize",   bbox .size (),   true);
 		tool -> setField <SFVec3f> ("bboxCenter", bbox .center (), true);
 
 		getBrowser () -> processEvents ();
+	   getBrowser () -> beginUpdateForFrame ();
 	}
 	catch (const X3DError &)
 	{ }

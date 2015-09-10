@@ -174,22 +174,6 @@ public:
 	getInputOutputMenuItem () const
 	{ return *m_InputOutputMenuItem; }
 
-	Gtk::Dialog &
-	getExportedNodeDialog () const
-	{ return *m_ExportedNodeDialog; }
-
-	Gtk::Button &
-	getExportedNodeCancelButton () const
-	{ return *m_ExportedNodeCancelButton; }
-
-	Gtk::Button &
-	getExportedNodeOkButton () const
-	{ return *m_ExportedNodeOkButton; }
-
-	Gtk::Entry &
-	getExportedNameEntry () const
-	{ return *m_ExportedNameEntry; }
-
 	Gtk::Menu &
 	getFieldTypeMenu () const
 	{ return *m_FieldTypeMenu; }
@@ -362,38 +346,6 @@ public:
 	getMFVec4fMenuItem () const
 	{ return *m_MFVec4fMenuItem; }
 
-	Gtk::Dialog &
-	getUserDefinedFieldDialog () const
-	{ return *m_UserDefinedFieldDialog; }
-
-	Gtk::Button &
-	getUserDefinedFieldCancelButton () const
-	{ return *m_UserDefinedFieldCancelButton; }
-
-	Gtk::Button &
-	getAddUserDefinedFieldOkButton () const
-	{ return *m_AddUserDefinedFieldOkButton; }
-
-	Gtk::MenuButton &
-	getAccessTypeMenuButton () const
-	{ return *m_AccessTypeMenuButton; }
-
-	Gtk::Label &
-	getAccessTypeLabel () const
-	{ return *m_AccessTypeLabel; }
-
-	Gtk::MenuButton &
-	getFieldTypeMenuButton () const
-	{ return *m_FieldTypeMenuButton; }
-
-	Gtk::Label &
-	getFieldTypeLabel () const
-	{ return *m_FieldTypeLabel; }
-
-	Gtk::Entry &
-	getFieldNameEntry () const
-	{ return *m_FieldNameEntry; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -498,45 +450,53 @@ public:
 	getRemoveExportedNodeButton () const
 	{ return *m_RemoveExportedNodeButton; }
 
-	virtual
-	void
-	on_exported_node_cancel_clicked () = 0;
+	Gtk::Dialog &
+	getExportedNodeDialog () const
+	{ return *m_ExportedNodeDialog; }
 
-	virtual
-	void
-	on_exported_node_ok_clicked () = 0;
+	Gtk::Button &
+	getExportedNodeCancelButton () const
+	{ return *m_ExportedNodeCancelButton; }
 
-	virtual
-	void
-	on_exported_name_changed () = 0;
+	Gtk::Button &
+	getExportedNodeOkButton () const
+	{ return *m_ExportedNodeOkButton; }
 
-	virtual
-	void
-	on_exported_name_delete_text (int start_pos, int end_pos) = 0;
+	Gtk::Entry &
+	getExportedNameEntry () const
+	{ return *m_ExportedNameEntry; }
 
-	virtual
-	void
-	on_exported_name_insert_text (const Glib::ustring & text, int* position) = 0;
+	Gtk::Dialog &
+	getUserDefinedFieldDialog () const
+	{ return *m_UserDefinedFieldDialog; }
 
-	virtual
-	void
-	on_add_field_cancel_clicked () = 0;
+	Gtk::Button &
+	getUserDefinedFieldCancelButton () const
+	{ return *m_UserDefinedFieldCancelButton; }
 
-	virtual
-	void
-	on_add_field_ok_clicked () = 0;
+	Gtk::Button &
+	getAddUserDefinedFieldOkButton () const
+	{ return *m_AddUserDefinedFieldOkButton; }
 
-	virtual
-	void
-	on_field_name_changed () = 0;
+	Gtk::MenuButton &
+	getAccessTypeMenuButton () const
+	{ return *m_AccessTypeMenuButton; }
 
-	virtual
-	void
-	on_field_name_delete_text (int start_pos, int end_pos) = 0;
+	Gtk::Label &
+	getAccessTypeLabel () const
+	{ return *m_AccessTypeLabel; }
 
-	virtual
-	void
-	on_field_name_insert_text (const Glib::ustring & text, int* position) = 0;
+	Gtk::MenuButton &
+	getFieldTypeMenuButton () const
+	{ return *m_FieldTypeMenuButton; }
+
+	Gtk::Label &
+	getFieldTypeLabel () const
+	{ return *m_FieldTypeLabel; }
+
+	Gtk::Entry &
+	getFieldNameEntry () const
+	{ return *m_FieldNameEntry; }
 
 	virtual
 	void
@@ -587,6 +547,46 @@ public:
 	on_remove_exported_node () = 0;
 
 	virtual
+	void
+	on_exported_node_cancel_clicked () = 0;
+
+	virtual
+	void
+	on_exported_node_ok_clicked () = 0;
+
+	virtual
+	void
+	on_exported_name_changed () = 0;
+
+	virtual
+	void
+	on_exported_name_delete_text (int start_pos, int end_pos) = 0;
+
+	virtual
+	void
+	on_exported_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	void
+	on_add_field_cancel_clicked () = 0;
+
+	virtual
+	void
+	on_add_field_ok_clicked () = 0;
+
+	virtual
+	void
+	on_field_name_changed () = 0;
+
+	virtual
+	void
+	on_field_name_delete_text (int start_pos, int end_pos) = 0;
+
+	virtual
+	void
+	on_field_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
 	~X3DNodePropertiesEditorInterface ();
 
 
@@ -618,10 +618,6 @@ private:
 	Gtk::MenuItem*                         m_InputOnlyMenuItem;
 	Gtk::MenuItem*                         m_OutputOnlyMenuItem;
 	Gtk::MenuItem*                         m_InputOutputMenuItem;
-	Gtk::Dialog*                           m_ExportedNodeDialog;
-	Gtk::Button*                           m_ExportedNodeCancelButton;
-	Gtk::Button*                           m_ExportedNodeOkButton;
-	Gtk::Entry*                            m_ExportedNameEntry;
 	Gtk::Menu*                             m_FieldTypeMenu;
 	Gtk::MenuItem*                         m_SFBoolMenuItem;
 	Gtk::MenuItem*                         m_SFColorMenuItem;
@@ -665,14 +661,6 @@ private:
 	Gtk::MenuItem*                         m_MFVec3fMenuItem;
 	Gtk::MenuItem*                         m_MFVec4dMenuItem;
 	Gtk::MenuItem*                         m_MFVec4fMenuItem;
-	Gtk::Dialog*                           m_UserDefinedFieldDialog;
-	Gtk::Button*                           m_UserDefinedFieldCancelButton;
-	Gtk::Button*                           m_AddUserDefinedFieldOkButton;
-	Gtk::MenuButton*                       m_AccessTypeMenuButton;
-	Gtk::Label*                            m_AccessTypeLabel;
-	Gtk::MenuButton*                       m_FieldTypeMenuButton;
-	Gtk::Label*                            m_FieldTypeLabel;
-	Gtk::Entry*                            m_FieldNameEntry;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
 	Gtk::Label*                            m_HeaderLabel;
@@ -699,6 +687,18 @@ private:
 	Gtk::TreeView*                         m_ExportedNodesTreeView;
 	Gtk::Button*                           m_AddExportedNodeButton;
 	Gtk::Button*                           m_RemoveExportedNodeButton;
+	Gtk::Dialog*                           m_ExportedNodeDialog;
+	Gtk::Button*                           m_ExportedNodeCancelButton;
+	Gtk::Button*                           m_ExportedNodeOkButton;
+	Gtk::Entry*                            m_ExportedNameEntry;
+	Gtk::Dialog*                           m_UserDefinedFieldDialog;
+	Gtk::Button*                           m_UserDefinedFieldCancelButton;
+	Gtk::Button*                           m_AddUserDefinedFieldOkButton;
+	Gtk::MenuButton*                       m_AccessTypeMenuButton;
+	Gtk::Label*                            m_AccessTypeLabel;
+	Gtk::MenuButton*                       m_FieldTypeMenuButton;
+	Gtk::Label*                            m_FieldTypeLabel;
+	Gtk::Entry*                            m_FieldNameEntry;
 
 };
 

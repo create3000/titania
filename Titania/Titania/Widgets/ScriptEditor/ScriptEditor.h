@@ -53,6 +53,7 @@
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DScriptEditorInterface.h"
+#include "X3DScriptEditor.h"
 
 #include <gtksourceviewmm/buffer.h>
 #include <gtksourceviewmm/view.h>
@@ -64,7 +65,8 @@ class BrowserWindow;
 class NodeIndex;
 
 class ScriptEditor :
-	public X3DScriptEditorInterface
+	virtual public X3DScriptEditorInterface,
+	public X3DScriptEditor
 {
 public:
 

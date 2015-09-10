@@ -160,12 +160,15 @@ private:
 	{
 		try
 		{
+	      getBrowser () -> endUpdateForFrame ();
+			
 			const SFNode & tool = getToolNode ();
 
 			tool -> setField <SFVec3f>    ("translation", getNode () -> getPosition (),    true);
 			tool -> setField <SFRotation> ("rotation",    getNode () -> getOrientation (), true);
 
 			getBrowser () -> processEvents ();
+	      getBrowser () -> beginUpdateForFrame ();
 		}
 		catch (const X3DError & error)
 		{ }

@@ -170,6 +170,12 @@ public:
 	void
 	addEvent () final override;
 
+	void
+	beginUpdateForFrame ();
+
+	void
+	endUpdateForFrame ();
+
 	///  @name Rendering
 
 	virtual
@@ -233,6 +239,7 @@ private:
 	Output changedOutput;
 
 	time_type changedTime;
+	time_type freezedTime;
 
 	WorldPtr        world;
 	SelectionPtr    selection;

@@ -152,6 +152,8 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeoViewpointGeoSystemUTMBox", m_GeoViewpointGeoSystemUTMBox);
 	m_builder -> get_widget ("GeoViewpointHemisphereComboBoxText", m_GeoViewpointHemisphereComboBoxText);
 	m_builder -> get_widget ("GeoViewpointUTMOrderComboBoxText", m_GeoViewpointUTMOrderComboBoxText);
+
+	// Connect object Gtk::Button with id 'UpdateViewpointButton'.
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_update_viewpoint_clicked));
 
 	// Connect object Gtk::ToggleButton with id 'LockToCameraButton'.

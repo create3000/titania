@@ -154,6 +154,14 @@ public:
 	getLoadStateButton () const
 	{ return *m_LoadStateButton; }
 
+	Gtk::ToggleToolButton &
+	getDirectOutputToggleButton () const
+	{ return *m_DirectOutputToggleButton; }
+
+	Gtk::ToggleToolButton &
+	getMustEvaluateToggleButton () const
+	{ return *m_MustEvaluateToggleButton; }
+
 	virtual
 	void
 	on_map () = 0;
@@ -201,6 +209,8 @@ private:
 	Gtk::ToolButton*               m_UndoButton;
 	Gtk::ToolButton*               m_RedoButton;
 	Gtk::ToolButton*               m_LoadStateButton;
+	Gtk::ToggleToolButton*         m_DirectOutputToggleButton;
+	Gtk::ToggleToolButton*         m_MustEvaluateToggleButton;
 
 };
 

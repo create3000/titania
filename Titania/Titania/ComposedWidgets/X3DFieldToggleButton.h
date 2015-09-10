@@ -56,7 +56,7 @@
 namespace titania {
 namespace puck {
 
-template <class Type>
+template <class Type, class ToggleButtonType = Gtk::ToggleButton>
 class X3DFieldToggleButton :
 	public X3DComposedWidget
 {
@@ -65,7 +65,7 @@ public:
 	///  @name Construction
 
 	X3DFieldToggleButton (X3DBaseInterface* const,
-	                      Gtk::ToggleButton &,
+	                      ToggleButtonType &,
 	                      const std::string &);
 
 	///  @name Member access
@@ -104,20 +104,23 @@ private:
 	void
 	connect (const Type &);
 
+	void
+	set_inconsistent (const bool);
+
 	///  @name Members
 
-	Gtk::ToggleButton & toggleButton;
-	X3D::MFNode         nodes;
-	const std::string   name;
-	UndoStepPtr         undoStep;
-	bool                changing;
-	X3D::SFTime         buffer;
+	ToggleButtonType & toggleButton;
+	X3D::MFNode        nodes;
+	const std::string  name;
+	UndoStepPtr        undoStep;
+	bool               changing;
+	X3D::SFTime        buffer;
 
 };
 
-template <class Type>
-X3DFieldToggleButton <Type>::X3DFieldToggleButton (X3DBaseInterface* const editor,
-                                                   Gtk::ToggleButton & toggleButton,
+template <class Type, class ToggleButtonType>
+X3DFieldToggleButton <Type, ToggleButtonType>::X3DFieldToggleButton (X3DBaseInterface* const editor,
+                                                   ToggleButtonType & toggleButton,
                                                    const std::string & name) :
 	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
 	X3DComposedWidget (editor),
@@ -136,9 +139,9 @@ X3DFieldToggleButton <Type>::X3DFieldToggleButton (X3DBaseInterface* const edito
 	setup ();
 }
 
-template <class Type>
+template <class Type, class ToggleButtonType>
 void
-X3DFieldToggleButton <Type>::setNodes (const X3D::MFNode & value)
+X3DFieldToggleButton <Type, ToggleButtonType>::setNodes (const X3D::MFNode & value)
 {
 	for (const auto & node : nodes)
 	{
@@ -165,14 +168,14 @@ X3DFieldToggleButton <Type>::setNodes (const X3D::MFNode & value)
 	set_field ();
 }
 
-template <class Type>
+template <class Type, class ToggleButtonType>
 void
-X3DFieldToggleButton <Type>::on_toggled ()
+X3DFieldToggleButton <Type, ToggleButtonType>::on_toggled ()
 {
 	if (changing)
 		return;
 
-	toggleButton .set_inconsistent (false);
+	set_inconsistent (false);
 
 	addUndoFunction <Type> (nodes, name, undoStep);
 
@@ -194,16 +197,16 @@ X3DFieldToggleButton <Type>::on_toggled ()
 	addRedoFunction <Type> (nodes, name, undoStep);
 }
 
-template <class Type>
+template <class Type, class ToggleButtonType>
 void
-X3DFieldToggleButton <Type>::set_field ()
+X3DFieldToggleButton <Type, ToggleButtonType>::set_field ()
 {
 	buffer .addEvent ();
 }
 
-template <class Type>
+template <class Type, class ToggleButtonType>
 void
-X3DFieldToggleButton <Type>::set_buffer ()
+X3DFieldToggleButton <Type, ToggleButtonType>::set_buffer ()
 {
 	undoStep .reset ();
 
@@ -214,17 +217,31 @@ X3DFieldToggleButton <Type>::set_buffer ()
 
 	toggleButton .set_sensitive (hasField);
 	toggleButton .set_active (active > 0);
-	toggleButton .set_inconsistent (active < 0);
+	set_inconsistent (active < 0);
 
 	changing = false;
 }
 
-template <class Type>
+template <class Type, class ToggleButtonType>
 void
-X3DFieldToggleButton <Type>::connect (const Type & field)
+X3DFieldToggleButton <Type, ToggleButtonType>::connect (const Type & field)
 {
 	field .removeInterest (this, &X3DFieldToggleButton::connect);
 	field .addInterest (this, &X3DFieldToggleButton::set_field);
+}
+
+template <class Type, class ToggleButtonType>
+void
+X3DFieldToggleButton <Type, ToggleButtonType>::set_inconsistent (const bool value)
+{
+	toggleButton .set_inconsistent (value);
+}
+
+template <>
+inline
+void
+X3DFieldToggleButton <X3D::SFBool, Gtk::ToggleToolButton>::set_inconsistent (const bool)
+{
 }
 
 } // puck

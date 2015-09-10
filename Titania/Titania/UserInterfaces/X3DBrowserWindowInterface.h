@@ -591,6 +591,18 @@ public:
 	{ return *m_GridProperiesMenuItem; }
 
 	Gtk::MenuItem &
+	getComponentsMenuItem () const
+	{ return *m_ComponentsMenuItem; }
+
+	Gtk::Menu &
+	getComponentsMenu () const
+	{ return *m_ComponentsMenu; }
+
+	Gtk::MenuItem &
+	getCoreMenuItem () const
+	{ return *m_CoreMenuItem; }
+
+	Gtk::MenuItem &
 	getHelpMenuItem () const
 	{ return *m_HelpMenuItem; }
 
@@ -1538,6 +1550,9 @@ private:
 	Gtk::CheckMenuItem*              m_GridLayoutToolMenuItem;
 	Gtk::CheckMenuItem*              m_AngleLayoutToolMenuItem;
 	Gtk::ImageMenuItem*              m_GridProperiesMenuItem;
+	Gtk::MenuItem*                   m_ComponentsMenuItem;
+	Gtk::Menu*                       m_ComponentsMenu;
+	Gtk::MenuItem*                   m_CoreMenuItem;
 	Gtk::MenuItem*                   m_HelpMenuItem;
 	Gtk::ImageMenuItem*              m_StandardSizeMenuItem;
 	Gtk::ImageMenuItem*              m_InfoMenuItem;
