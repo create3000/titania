@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,81 +48,37 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_INPUT_OUTPUT_COMMENT_H__
-#define __TITANIA_INPUT_OUTPUT_COMMENT_H__
-
-#include "String.h"
+#include "X3DShaderPartEditor.h"
 
 namespace titania {
-namespace io {
+namespace puck {
 
-template <class CharT, class Traits = std::char_traits <CharT>>
-class basic_single_line_comment
+//X3DShaderProgramEditor
+
+X3DShaderPartEditor::X3DShaderPartEditor () :
+	     X3DScriptEditorInterface (),
+	               shaderPartNode ()
 {
-public:
-
-	constexpr
-	basic_single_line_comment (const std::basic_string <CharT> &);
-
-	const std::basic_string <CharT> &
-	operator () () const
-	{ return start (); }
-
-	bool
-	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &) const;
-
-
-private:
-
-	using int_type = typename std::basic_istream <CharT, Traits>::int_type;
-
-	const io::basic_string <CharT, Traits> start;
-
-};
-
-template <class CharT, class Traits>
-inline
-constexpr
-basic_single_line_comment <CharT, Traits>::basic_single_line_comment (const std::basic_string <CharT> & start) :
-	start (start)
-{ }
-
-template <class CharT, class Traits>
-bool
-basic_single_line_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string) const
-{
-	if (start (istream))
-	{
-		while (istream)
-		{
-			const int_type c = istream .peek ();
-
-			switch (c)
-			{
-				case -1:
-				case '\r':
-				case '\n':
-					return true;
-
-				default:
-				{
-					string .push_back (istream .get ());
-					break;
-				}
-			}
-		}
-	}
-
-	return false;
+	getShaderTypeMenuButton () .set_menu (getShaderTypeMenu ());
 }
 
-typedef basic_single_line_comment <char>    single_line_comment;
-typedef basic_single_line_comment <wchar_t> wsingle_line_comment;
+void
+X3DShaderPartEditor::initialize ()
+{
+}
 
-extern template class basic_single_line_comment <char>;
-extern template class basic_single_line_comment <wchar_t>;
+void
+X3DShaderPartEditor::set_node (const X3D::SFNode & value)
+{
+	shaderPartNode = value;
 
-} // io
+	//getShaderTypeMenuButton () .set_visible (shaderPartNode);
+
+	if (shaderPartNode)
+	{
+	   getShaderTypeMenuButton () .set_stock_id (Gtk::StockID ("VertexShader")); // default
+	}
+}
+
+} // puck
 } // titania
-
-#endif

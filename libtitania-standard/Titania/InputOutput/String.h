@@ -165,14 +165,14 @@ inline
 bool
 basic_string <CharT, Traits>::rewind (std::basic_istream <CharT, Traits> & istream) const
 {
-	return istream .seekg (-size, std::ios_base::cur);
+	return static_cast <bool> (istream .seekg (-size, std::ios_base::cur));
 }
 
 typedef basic_string <char>    string;
-//typedef basic_string <wchar_t> wstring;
+typedef basic_string <wchar_t> wstring;
 
 extern template class basic_string <char>;
-//extern template class basic_string <wchar_t>;
+extern template class basic_string <wchar_t>;
 
 } // io
 } // titania

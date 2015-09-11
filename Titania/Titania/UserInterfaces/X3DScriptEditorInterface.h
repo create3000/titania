@@ -102,6 +102,26 @@ public:
 	getAccelGroup () const
 	{ return m_AccelGroup; }
 
+	Gtk::Image &
+	getFragmentShaderImage () const
+	{ return *m_FragmentShaderImage; }
+
+	Gtk::Image &
+	getVertexShaderImage () const
+	{ return *m_VertexShaderImage; }
+
+	Gtk::Menu &
+	getShaderTypeMenu () const
+	{ return *m_ShaderTypeMenu; }
+
+	Gtk::ImageMenuItem &
+	getVertexMenuItem () const
+	{ return *m_VertexMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getFragmentMenuItem () const
+	{ return *m_FragmentMenuItem; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -162,6 +182,10 @@ public:
 	getMustEvaluateToggleButton () const
 	{ return *m_MustEvaluateToggleButton; }
 
+	Gtk::MenuToolButton &
+	getShaderTypeMenuButton () const
+	{ return *m_ShaderTypeMenuButton; }
+
 	virtual
 	void
 	on_map () = 0;
@@ -196,6 +220,11 @@ private:
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
+	Gtk::Image*                    m_FragmentShaderImage;
+	Gtk::Image*                    m_VertexShaderImage;
+	Gtk::Menu*                     m_ShaderTypeMenu;
+	Gtk::ImageMenuItem*            m_VertexMenuItem;
+	Gtk::ImageMenuItem*            m_FragmentMenuItem;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Paned*                    m_Paned;
@@ -211,6 +240,7 @@ private:
 	Gtk::ToolButton*               m_LoadStateButton;
 	Gtk::ToggleToolButton*         m_DirectOutputToggleButton;
 	Gtk::ToggleToolButton*         m_MustEvaluateToggleButton;
+	Gtk::MenuToolButton*           m_ShaderTypeMenuButton;
 
 };
 

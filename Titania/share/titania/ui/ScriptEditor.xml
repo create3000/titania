@@ -3,6 +3,38 @@
 <interface>
   <requires lib="gtk+" version="3.0"/>
   <object class="GtkAccelGroup" id="AccelGroup"/>
+  <object class="GtkImage" id="FragmentShaderImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">FragmentShader</property>
+  </object>
+  <object class="GtkImage" id="VertexShaderImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">VertexShader</property>
+  </object>
+  <object class="GtkMenu" id="ShaderTypeMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImageMenuItem" id="VertexMenuItem">
+        <property name="label" translatable="yes">VERTEX</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">VertexShaderImage</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="FragmentMenuItem">
+        <property name="label" translatable="yes">FRAGMENT</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">FragmentShaderImage</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+  </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
     <property name="destroy_with_parent">True</property>
@@ -225,6 +257,18 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkMenuToolButton" id="ShaderTypeMenuButton">
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Shader Type</property>
+                        <property name="use_underline">True</property>
+                        <property name="stock_id">ShaderType</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">False</property>
                       </packing>
                     </child>
                   </object>

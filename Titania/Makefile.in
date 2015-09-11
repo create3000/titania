@@ -221,6 +221,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Widgets/OutlineEditor/X3DOutlineTreeView.$(OBJEXT) \
 	Titania/Widgets/ScriptEditor/ScriptEditor.$(OBJEXT) \
 	Titania/Widgets/ScriptEditor/X3DScriptEditor.$(OBJEXT) \
+	Titania/Widgets/ScriptEditor/X3DShaderPartEditor.$(OBJEXT) \
 	Titania/Widgets/ViewpointList/ViewpointList.$(OBJEXT)
 titania_OBJECTS = $(am_titania_OBJECTS)
 am__DEPENDENCIES_1 =
@@ -598,6 +599,7 @@ titania_SOURCES = \
 	Titania/Widgets/OutlineEditor/X3DOutlineTreeView.cpp \
 	Titania/Widgets/ScriptEditor/ScriptEditor.cpp \
 	Titania/Widgets/ScriptEditor/X3DScriptEditor.cpp \
+	Titania/Widgets/ScriptEditor/X3DShaderPartEditor.cpp \
 	Titania/Widgets/ViewpointList/ViewpointList.cpp
 
 titania_LDADD = $(TITANIA_LIBS) \
@@ -1312,6 +1314,9 @@ Titania/Widgets/ScriptEditor/ScriptEditor.$(OBJEXT):  \
 Titania/Widgets/ScriptEditor/X3DScriptEditor.$(OBJEXT):  \
 	Titania/Widgets/ScriptEditor/$(am__dirstamp) \
 	Titania/Widgets/ScriptEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Widgets/ScriptEditor/X3DShaderPartEditor.$(OBJEXT):  \
+	Titania/Widgets/ScriptEditor/$(am__dirstamp) \
+	Titania/Widgets/ScriptEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Widgets/ViewpointList/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Widgets/ViewpointList
 	@: > Titania/Widgets/ViewpointList/$(am__dirstamp)
@@ -1499,6 +1504,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/CellRenderer/$(DEPDIR)/X3DTextViewEditable.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/ScriptEditor/$(DEPDIR)/ScriptEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/ScriptEditor/$(DEPDIR)/X3DScriptEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/ScriptEditor/$(DEPDIR)/X3DShaderPartEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/ViewpointList/$(DEPDIR)/ViewpointList.Po@am__quote@
 
 .cpp.o:

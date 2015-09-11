@@ -48,81 +48,43 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_INPUT_OUTPUT_COMMENT_H__
-#define __TITANIA_INPUT_OUTPUT_COMMENT_H__
+#ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSHADER_PART_EDITOR_H__
+#define __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSHADER_PART_EDITOR_H__
 
-#include "String.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DScriptEditorInterface.h"
 
 namespace titania {
-namespace io {
+namespace puck {
 
-template <class CharT, class Traits = std::char_traits <CharT>>
-class basic_single_line_comment
+class X3DShaderPartEditor :
+	virtual public X3DScriptEditorInterface
 {
 public:
 
-	constexpr
-	basic_single_line_comment (const std::basic_string <CharT> &);
-
-	const std::basic_string <CharT> &
-	operator () () const
-	{ return start (); }
-
-	bool
-	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &) const;
+	~X3DShaderPartEditor () = default;
 
 
-private:
+protected:
 
-	using int_type = typename std::basic_istream <CharT, Traits>::int_type;
+	///  @name Construction
 
-	const io::basic_string <CharT, Traits> start;
+	X3DShaderPartEditor ();
+
+	virtual
+	void
+	initialize () override;
+
+	void
+	set_node (const X3D::SFNode &);
+
+	///  @name Members
+
+	X3D::X3DPtr <X3D::ShaderPart> shaderPartNode;
 
 };
 
-template <class CharT, class Traits>
-inline
-constexpr
-basic_single_line_comment <CharT, Traits>::basic_single_line_comment (const std::basic_string <CharT> & start) :
-	start (start)
-{ }
-
-template <class CharT, class Traits>
-bool
-basic_single_line_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string) const
-{
-	if (start (istream))
-	{
-		while (istream)
-		{
-			const int_type c = istream .peek ();
-
-			switch (c)
-			{
-				case -1:
-				case '\r':
-				case '\n':
-					return true;
-
-				default:
-				{
-					string .push_back (istream .get ());
-					break;
-				}
-			}
-		}
-	}
-
-	return false;
-}
-
-typedef basic_single_line_comment <char>    single_line_comment;
-typedef basic_single_line_comment <wchar_t> wsingle_line_comment;
-
-extern template class basic_single_line_comment <char>;
-extern template class basic_single_line_comment <wchar_t>;
-
-} // io
+} // puck
 } // titania
 
 #endif

@@ -54,7 +54,7 @@ namespace titania {
 namespace io {
 
 template class basic_character <char>;
-//template class basic_character <wchar_t>;
+template class basic_character <wchar_t>;
 
 } // io
 } // titania

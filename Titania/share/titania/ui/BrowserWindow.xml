@@ -14,6 +14,7 @@
       <source stock-id="Checkerboard" filename="icons/Checkerboard.svg"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="DirectOutput" filename="icons/DirectOutput.svg"/>
+      <source stock-id="FragmentShader" filename="icons/FragmentShader.svg"/>
       <source stock-id="Rotate" filename="icons/Rotate.svg"/>
       <source stock-id="Blue" filename="icons/Blue.svg"/>
       <source stock-id="Inline" filename="icons/Inline.svg"/>
@@ -46,14 +47,15 @@
       <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
       <source stock-id="Light" filename="icons/Light.svg"/>
       <source stock-id="Library" filename="icons/Library.svg"/>
-      <source stock-id="Droplet" filename="icons/Droplet.svg"/>
       <source stock-id="Flop" filename="icons/Flop.svg"/>
+      <source stock-id="Droplet" filename="icons/Droplet.svg"/>
       <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
       <source stock-id="Navigation" filename="icons/Navigation.svg"/>
       <source stock-id="SnapCenter" filename="icons/SnapCenter.svg"/>
       <source stock-id="Red" filename="icons/Red.svg"/>
       <source stock-id="Prototype" filename="icons/Node/Prototype.96.svg"/>
       <source stock-id="Connected" filename="icons/Connected.svg"/>
+      <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
       <source stock-id="Clockwise" filename="icons/Clockwise.svg"/>
       <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.96.svg"/>
       <source stock-id="TransformToZero" filename="icons/TransformToZero.svg"/>

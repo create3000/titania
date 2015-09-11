@@ -122,10 +122,10 @@ basic_inverse_string <CharT, Traits>::operator () (std::basic_istream <CharT, Tr
 }
 
 typedef basic_inverse_string <char>    inverse_string;
-//typedef basic_inverse_string <wchar_t> winverse_string;
+typedef basic_inverse_string <wchar_t> winverse_string;
 
 extern template class basic_inverse_string <char>;
-//extern template class basic_inverse_string <wchar_t>;
+extern template class basic_inverse_string <wchar_t>;
 
 } // io
 } // titania

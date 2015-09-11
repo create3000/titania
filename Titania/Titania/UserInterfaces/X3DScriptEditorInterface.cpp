@@ -64,6 +64,11 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_AccelGroup = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("AccelGroup"));
 
 	// Get widgets.
+	m_builder -> get_widget ("FragmentShaderImage", m_FragmentShaderImage);
+	m_builder -> get_widget ("VertexShaderImage", m_VertexShaderImage);
+	m_builder -> get_widget ("ShaderTypeMenu", m_ShaderTypeMenu);
+	m_builder -> get_widget ("VertexMenuItem", m_VertexMenuItem);
+	m_builder -> get_widget ("FragmentMenuItem", m_FragmentMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Paned", m_Paned);
@@ -79,6 +84,7 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LoadStateButton", m_LoadStateButton);
 	m_builder -> get_widget ("DirectOutputToggleButton", m_DirectOutputToggleButton);
 	m_builder -> get_widget ("MustEvaluateToggleButton", m_MustEvaluateToggleButton);
+	m_builder -> get_widget ("ShaderTypeMenuButton", m_ShaderTypeMenuButton);
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map));

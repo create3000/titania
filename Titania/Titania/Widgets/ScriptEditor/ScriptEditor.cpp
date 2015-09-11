@@ -66,6 +66,7 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DScriptEditorInterface (get_ui ("ScriptEditor.xml"), gconf_dir ()),
 				X3DScriptEditor (),
+	     X3DShaderPartEditor (),
 	              textBuffer (Gsv::Buffer::create ()),
 	                textView (textBuffer),
 	               nodeIndex (new NodeIndex (browserWindow)),
@@ -82,6 +83,7 @@ ScriptEditor::initialize ()
 {
 	X3DScriptEditorInterface::initialize ();
 	X3DScriptEditor::initialize ();
+	X3DShaderPartEditor::initialize ();
 
 	if (getConfig () .hasItem ("paned"))
 		getPaned () .set_position (getConfig () .getInteger ("paned"));
@@ -148,6 +150,7 @@ void
 ScriptEditor::set_node (const X3D::SFNode & value)
 {
 	X3DScriptEditor::set_node (value);
+	X3DShaderPartEditor::set_node (value);
 
 	if (node)
 	{
