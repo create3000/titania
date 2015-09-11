@@ -197,7 +197,7 @@ Parser::getline ()
 	{
 		char c = istream .get ();
 
-		if (istream)
+		if (static_cast <bool> (istream))
 		{
 			if (c == '\n' or c == '\r')
 			{
@@ -231,7 +231,7 @@ throw (std::out_of_range)
 
 		char c = istream .peek ();
 
-		if (istream)
+		if (static_cast <bool> (istream))
 		{
 			if (c == '\n' or c == '\r')
 				break;
@@ -1690,7 +1690,7 @@ Parser::Id (std::string & _Id)
 
 	comments ();
 
-	if (istream)
+	if (static_cast <bool> (istream))
 	{
 		std::istream::int_type c = istream .peek ();
 
@@ -1727,9 +1727,9 @@ Parser::Id (std::string & _Id)
 	else
 		return false;
 
-	for (; istream;)
+	for (; static_cast <bool> (istream);)
 	{
-		if (istream)
+		if (static_cast <bool> (istream)) // XXX: Tested already in the for loop, delete this line!!!
 		{
 			std::istream::int_type c = istream .peek ();
 

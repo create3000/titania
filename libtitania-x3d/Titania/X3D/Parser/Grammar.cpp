@@ -202,7 +202,7 @@ Grammar::Int32 (std::istream & istream, int32_t & value)
 	if (Hex (istream, (uint32_t &) value))
 		return true;
 
-	return istream >> std::dec >> value;
+	return static_cast <bool> (istream >> std::dec >> value);
 }
 
 bool
