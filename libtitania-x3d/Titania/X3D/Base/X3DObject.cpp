@@ -95,7 +95,7 @@ throw (Error <INVALID_X3D>,
 
 	fromStream (istringstream);
 
-	return istringstream;
+	return static_cast <bool> (istringstream);
 }
 
 std::string
