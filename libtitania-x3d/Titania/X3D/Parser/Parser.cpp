@@ -470,7 +470,7 @@ Parser::componentSupportLevel (int32_t & _value)
 
 	comments ();
 
-	return istream >> _value;
+	return static_cast <bool> (istream >> _value);
 }
 
 void

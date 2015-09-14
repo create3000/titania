@@ -38,7 +38,7 @@
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="g7245"
      inkscape:snap-bbox="true"
      inkscape:bbox-paths="true"
      showguides="true"
@@ -192,7 +192,8 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Shadow"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <g
        style="display:inline;fill:#ffffff;fill-opacity:1;filter:url(#filter8810)"
        id="g7245-8">
@@ -298,8 +299,7 @@
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="Ebene 1"
-     style="display:inline"
-     sodipodi:insensitive="true">
+     style="display:inline">
     <g
        id="g7245">
       <path
@@ -336,13 +336,13 @@
          sodipodi:nodetypes="cccc"
          inkscape:connector-curvature="0"
          id="path7083-5-1"
-         d="M 24,42 42,24 42,42 Z"
+         d="M 30,48 48,30 48,48 Z"
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
       <path
          sodipodi:nodetypes="cccc"
          inkscape:connector-curvature="0"
          id="path7083-2-9"
-         d="M 54,42 72,24 72,42 Z"
+         d="M 48,48 66,30 66,48 Z"
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
       <path
          sodipodi:nodetypes="cccc"
@@ -360,13 +360,13 @@
          sodipodi:nodetypes="cccc"
          inkscape:connector-curvature="0"
          id="path7083-5-8"
-         d="M 24,72 42,54 42,72 Z"
+         d="M 30,66 48,48 48,66 Z"
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
       <path
          sodipodi:nodetypes="cccc"
          inkscape:connector-curvature="0"
          id="path7083-2-3"
-         d="M 54,72 72,54 72,72 Z"
+         d="M 48,66 66,48 66,66 Z"
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
       <path
          sodipodi:nodetypes="cccc"

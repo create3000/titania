@@ -33,7 +33,7 @@
      id="namedview3312"
      showgrid="true"
      inkscape:zoom="4"
-     inkscape:cx="58.058686"
+     inkscape:cx="17.183686"
      inkscape:cy="45.638284"
      inkscape:window-x="65"
      inkscape:window-y="24"
@@ -170,7 +170,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -203,7 +203,7 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Ebene"
+     inkscape:label="Polygon"
      style="display:inline">
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:12;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -211,6 +211,18 @@
        id="path7075"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccc" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer6"
+     inkscape:label="Vertices"
+     style="display:inline">
+    <path
+       style="display:inline;fill:none;fill-rule:evenodd;stroke:#fe0000;stroke-width:12;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 33.890244,18.487805 42,12 50.39684,18.459108 M 71.962825,35.048327 81,42 75.627,49.761 M 59.526,73.018 54,81 44.706461,78.855337 M 23.015449,73.849719 15,72 14.110345,61.324138 M 12.887931,46.655172 12,36 18.859756,30.512195"
+       id="path7075-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccccc" />
   </g>
   <g
      style="font-size:92.19857788px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
