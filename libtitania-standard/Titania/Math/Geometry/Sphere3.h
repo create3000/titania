@@ -176,9 +176,9 @@ sphere3 <Type>::intersects (vector3 <Type> A, vector3 <Type> B, vector3 <Type> C
 	const auto P = center ();
 	const auto r = radius ();
 
-	A = A - P;
-	B = B - P;
-	C = C - P;
+	A -= P;
+	B -= P;
+	C -= P;
 
 	// Testing if sphere lies outside the triangle plane.
 	const auto rr   = r * r;
@@ -205,7 +205,7 @@ sphere3 <Type>::intersects (vector3 <Type> A, vector3 <Type> B, vector3 <Type> C
 		return false;
 
 	// Testing if sphere lies outside a triangle edge.
-	auto AB   = B - A;
+	const auto AB   = B - A;
 	const auto BC   = C - B;
 	const auto CA   = A - C;
 	const auto d1   = ab - aa;

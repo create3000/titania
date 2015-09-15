@@ -216,6 +216,11 @@ AboutTab::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 & 
 void
 AboutTab::set_url (const X3D::SFString & URL)
 {
+	if (not getBrowserWindow () -> isLive ())
+		getBrowserWindow () -> getBrowser () -> endUpdate ();
+
+	getBrowserWindow () -> getBrowser () -> getSelection () -> isEnabled (getBrowserWindow () -> getSelection () -> isEnabled ());
+
 	getBrowserWindow () -> load (getBrowserWindow () -> getBrowser (), URL .str ());
 }
 

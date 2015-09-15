@@ -113,7 +113,7 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 	if (min < 0)
 	{
 		const auto & viewVolume = viewVolumeStack .back ();
-	
+
 		if (viewVolume .intersects (bbox))
 		{
 			if (shape -> isTransparent ())
@@ -151,7 +151,7 @@ X3DRenderer::addCollision (X3DShapeNode* const shape)
 	if (min < 0)
 	{
 		const auto & viewVolume = viewVolumeStack .back ();
-	
+
 		if (viewVolume .intersects (bbox))
 		{
 			if (numCollisionShapes < collisionShapes .size ())
@@ -280,6 +280,9 @@ X3DRenderer::collide ()
 
 	for (const auto & shape : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
 	{
+		if (shape -> getCollisions () .empty ())
+			continue;
+
 		if (shape -> intersects (collisionSphere))
 		{
 			for (auto & collision : shape -> getCollisions ())
