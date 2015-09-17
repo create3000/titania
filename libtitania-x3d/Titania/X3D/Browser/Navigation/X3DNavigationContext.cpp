@@ -168,6 +168,7 @@ X3DNavigationContext::set_navigationInfo_type ()
 			std::make_pair ("EXAMINE",             ViewerType::EXAMINE),
 			std::make_pair ("WALK",                ViewerType::WALK),
 			std::make_pair ("FLY",                 ViewerType::FLY),
+			std::make_pair ("PLANE",               ViewerType::PLANE),
 			std::make_pair ("PLANE_create3000.de", ViewerType::PLANE),
 			std::make_pair ("NONE",                ViewerType::NONE),
 			std::make_pair ("LOOKAT",              ViewerType::LOOKAT)

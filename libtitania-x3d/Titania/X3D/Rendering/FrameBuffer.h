@@ -76,7 +76,7 @@ public:
 	///  @name Operations
 
 	double
-	getDistance (const double, const double);
+	getDistance (const double, const double, const double);
 
 	void
 	bind ();

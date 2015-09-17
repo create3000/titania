@@ -251,11 +251,11 @@ X3DRenderer::navigation ()
 
 	// Get NavigationInfo values
 
-	const auto navigationInfo = getCurrentNavigationInfo ();
-	const auto viewpoint      = getCurrentViewpoint ();
-
-	const double zNear = navigationInfo -> getNearPlane ();
-	const double zFar  = navigationInfo -> getFarPlane (viewpoint);
+	const auto navigationInfo  = getCurrentNavigationInfo ();
+	const auto viewpoint       = getCurrentViewpoint ();
+	const auto collisionRadius = navigationInfo -> getCollisionRadius ();
+	const auto zNear           = navigationInfo -> getNearPlane ();
+	const auto zFar            = navigationInfo -> getFarPlane (viewpoint);
 
 	// Render all objects
 
@@ -264,7 +264,7 @@ X3DRenderer::navigation ()
 	for (const auto & shape : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
 		shape -> draw ();
 
-	distance = depthBuffer -> getDistance (zNear, zFar);
+	distance = depthBuffer -> getDistance (collisionRadius, zNear, zFar);
 
 	depthBuffer -> unbind ();
 }
@@ -333,13 +333,13 @@ X3DRenderer::gravite ()
 
 	// Get NavigationInfo values
 
-	const auto navigationInfo = getCurrentNavigationInfo ();
-	const auto viewpoint      = getCurrentViewpoint ();
-
-	const float zNear      = navigationInfo -> getNearPlane ();
-	const float zFar       = navigationInfo -> getFarPlane (viewpoint);
-	const float height     = navigationInfo -> getAvatarHeight ();
-	const float stepHeight = navigationInfo -> getStepHeight ();
+	const auto navigationInfo  = getCurrentNavigationInfo ();
+	const auto viewpoint       = getCurrentViewpoint ();
+	const auto collisionRadius = navigationInfo -> getCollisionRadius ();
+	const auto zNear           = navigationInfo -> getNearPlane ();
+	const auto zFar            = navigationInfo -> getFarPlane (viewpoint);
+	const auto height          = navigationInfo -> getAvatarHeight ();
+	const auto stepHeight      = navigationInfo -> getStepHeight ();
 
 	// Bind buffer
 
@@ -352,7 +352,7 @@ X3DRenderer::gravite ()
 
 	// Get distance and unbind buffer
 
-	float distance = depthBuffer -> getDistance (zNear, zFar);
+	float distance = depthBuffer -> getDistance (collisionRadius, zNear, zFar);
 
 	depthBuffer -> unbind ();
 
