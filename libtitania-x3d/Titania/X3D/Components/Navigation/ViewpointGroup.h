@@ -133,14 +133,6 @@ public:
 	children () const
 	{ return *fields .children; }
 
-	SFBool &
-	isActive ()
-	{ return fields .isActive; }
-
-	const SFBool &
-	isActive () const
-	{ return fields .isActive; }
-
 	///  @name Member accesss
 
 	const std::vector <X3DViewpointObject*>
@@ -170,16 +162,10 @@ private:
 	///  @name Event handlers
 
 	void
-	set_displayed ();
-
-	void
-	set_size ();
+	set_enabled ();
 
 	void
 	set_children ();
-
-	void
-	set_isActive ();
 
 	///  @name Static members
 
@@ -197,7 +183,6 @@ private:
 		SFVec3f* const size;
 		SFVec3f* const center;
 		MFNode* const children;
-		SFBool isActive;
 	};
 
 	Fields fields;

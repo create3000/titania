@@ -148,13 +148,17 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 		{
 			case 1:
 			{
-				fontStyle -> size () = screenFontStyle -> pointSize ();
+				if (last == screenFontStyle)
+					fontStyle -> size () = screenFontStyle -> pointSize ();
+				
 				fontStyleNode = fontStyle;
 				break;
 			}
 			case 2:
 			{
-				screenFontStyle -> pointSize () = fontStyle -> size ();
+				if (last == fontStyle)
+					screenFontStyle -> pointSize () = fontStyle -> size ();
+				
 				fontStyleNode = screenFontStyle;
 				break;
 			}

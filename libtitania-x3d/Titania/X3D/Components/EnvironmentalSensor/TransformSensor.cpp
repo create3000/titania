@@ -137,7 +137,15 @@ TransformSensor::set_enabled ()
 		getBrowser () -> sensors () .addInterest (this, &TransformSensor::update);
 
 	else
+	{
 		getBrowser () -> sensors () .removeInterest (this, &TransformSensor::update);
+			
+		if (isActive ())
+		{
+			isActive () = false;
+			exitTime () = getCurrentTime ();
+		}
+	}
 }
 
 void
@@ -163,7 +171,15 @@ TransformSensor::update ()
 
 			targetBBox .matrix () .get (translation, rotation);
 
-			if (not isActive ())
+			if (isActive ())
+			{
+				if (translation not_eq position_changed ())
+					position_changed () = translation;
+
+				if (rotation not_eq orientation_changed ())
+					orientation_changed () = rotation;
+			}
+			else
 			{
 				isActive ()  = true;
 				enterTime () = getCurrentTime ();
@@ -171,12 +187,6 @@ TransformSensor::update ()
 				position_changed ()    = translation;
 				orientation_changed () = rotation;
 			}
-
-			if (translation not_eq position_changed ())
-				position_changed () = translation;
-
-			if (rotation not_eq orientation_changed ())
-				orientation_changed () = rotation;
 		}
 		else
 		{

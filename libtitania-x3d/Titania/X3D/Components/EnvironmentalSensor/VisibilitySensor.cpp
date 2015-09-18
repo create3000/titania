@@ -124,7 +124,15 @@ VisibilitySensor::set_enabled ()
 		getBrowser () -> sensors () .addInterest (this, &VisibilitySensor::update);
 
 	else
+	{
 		getBrowser () -> sensors () .removeInterest (this, &VisibilitySensor::update);
+			
+		if (isActive ())
+		{
+			isActive () = false;
+			exitTime () = getCurrentTime ();
+		}
+	}
 }
 
 void

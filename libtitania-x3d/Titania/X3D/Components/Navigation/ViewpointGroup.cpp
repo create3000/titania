@@ -64,8 +64,7 @@ ViewpointGroup::Fields::Fields () :
 	displayed (new SFBool (true)),
 	     size (new SFVec3f ()),
 	   center (new SFVec3f ()),
-	 children (new MFNode ()),
-	 isActive ()
+	 children (new MFNode ())
 { }
 
 ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
@@ -86,8 +85,7 @@ ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "center",            center ());
 	addField (inputOutput, "children",          children ());
 
-	addChildren (isActive (),
-	             proximitySensor);
+	addChildren (proximitySensor);
 }
 
 X3DBaseNode*
@@ -103,7 +101,6 @@ ViewpointGroup::initialize ()
 	X3DViewpointObject::initialize ();
 
 	proximitySensor -> setup ();
-	proximitySensor -> isActive () .addInterest (isActive ());
 
 	size ()   .addInterest (proximitySensor -> size ());
 	center () .addInterest (proximitySensor -> center ());
@@ -111,12 +108,11 @@ ViewpointGroup::initialize ()
 	proximitySensor -> size ()   = size ();
 	proximitySensor -> center () = center ();
 
-	displayed () .addInterest (this, &ViewpointGroup::set_displayed);
-	size ()      .addInterest (this, &ViewpointGroup::set_size);
+	displayed () .addInterest (this, &ViewpointGroup::set_enabled);
+	size ()      .addInterest (this, &ViewpointGroup::set_enabled);
 	children ()  .addInterest (this, &ViewpointGroup::set_children);
-	isActive ()  .addInterest (this, &ViewpointGroup::set_isActive);
 
-	set_size ();
+	set_enabled ();
 	set_children ();
 }
 
@@ -137,23 +133,9 @@ ViewpointGroup::getViewpointObjects () const
 }
 
 void
-ViewpointGroup::set_displayed ()
+ViewpointGroup::set_enabled ()
 {
-	//X3DChildObject::addEvent ();
-}
-
-void
-ViewpointGroup::set_size ()
-{
-	if (size () == Vector3f ())
-	{
-		if (not proximitySensor -> isActive ())
-			isActive () = true;
-
-		proximitySensor -> enabled () = false;
-	}
-	else
-		proximitySensor -> enabled () = true;
+	proximitySensor -> enabled () = displayed () and size () not_eq Vector3f ();
 }
 
 void
@@ -169,25 +151,20 @@ ViewpointGroup::set_children ()
 		if (viewpointObject)
 			viewpointObjects .emplace_back (viewpointObject);
 	}
-
-	//X3DChildObject::addEvent ();
-}
-
-void
-ViewpointGroup::set_isActive ()
-{
-	//X3DChildObject::addEvent ();
 }
 
 void
 ViewpointGroup::traverse (const TraverseType type)
 {
-	proximitySensor -> traverse (type);
-
-	if (proximitySensor -> isActive () or size () == Vector3f ())
+	if (proximitySensor -> enabled ())
 	{
-		for (const auto & viewpointObject : viewpointObjects)
-			viewpointObject -> traverse (type);
+		proximitySensor -> traverse (type);
+
+		if (proximitySensor -> isActive () or size () == Vector3f ())
+		{
+			for (const auto & viewpointObject : viewpointObjects)
+				viewpointObject -> traverse (type);
+		}
 	}
 }
 

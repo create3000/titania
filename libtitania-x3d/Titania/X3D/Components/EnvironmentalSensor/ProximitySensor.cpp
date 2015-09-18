@@ -135,7 +135,15 @@ ProximitySensor::set_enabled ()
 		getBrowser () -> sensors () .addInterest (this, &ProximitySensor::update);
 
 	else
+	{
 		getBrowser () -> sensors () .removeInterest (this, &ProximitySensor::update);
+			
+		if (isActive ())
+		{
+			isActive () = false;
+			exitTime () = getCurrentTime ();
+		}
+	}
 }
 
 void
@@ -159,16 +167,7 @@ ProximitySensor::update ()
 			const Rotation4f orientation      = ~rotation;
 			const Vector3f   centerOfRotation = centerOfRotationMatrix .origin ();
 
-			if (not isActive ())
-			{
-				isActive ()  = true;
-				enterTime () = getCurrentTime ();
-
-				position_changed ()         = position;
-				orientation_changed ()      = orientation;
-				centerOfRotation_changed () = centerOfRotation;
-			}
-			else
+			if (isActive ())
 			{
 				if (position_changed () not_eq position)
 					position_changed () = position;
@@ -178,6 +177,15 @@ ProximitySensor::update ()
 
 				if (centerOfRotation_changed () not_eq centerOfRotation)
 					centerOfRotation_changed () = centerOfRotation;
+			}
+			else
+			{
+				isActive ()  = true;
+				enterTime () = getCurrentTime ();
+
+				position_changed ()         = position;
+				orientation_changed ()      = orientation;
+				centerOfRotation_changed () = centerOfRotation;
 			}
 
 			inside = false;
