@@ -69,9 +69,10 @@ public:
 
 private:
 
-	///  @name Static members
+	/// @name Member access
 
-	static const std::string dragDataType;
+	X3DBrowserWindow*
+	getBrowserWindow () const;
 
 	///  @name Event handlers
 
@@ -100,10 +101,14 @@ private:
 	on_drag_data_base_node_insert_into_array_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
 
 	void
-	remove_source_node (X3D::SFNode* const, X3D::X3DFieldDefinition* const, size_t, const UndoStepPtr &);
+	remove_source_node (X3D::SFNode* const, X3D::X3DFieldDefinition* const, size_t, const bool, const UndoStepPtr &);
 
 	const char*
 	get_node_action_string () const;
+
+	///  @name Static members
+
+	static const std::string dragDataType;
 
 	///  @name Members
 

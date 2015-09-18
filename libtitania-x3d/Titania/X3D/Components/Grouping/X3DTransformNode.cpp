@@ -99,11 +99,11 @@ X3DTransformNode::getCurrentMatrix () const
 {
 	Matrix4d matrix;
 
-	matrix .set (translation () .getValue (),
-	             rotation () .getValue (),
-	             scale () .getValue (),
+	matrix .set (translation ()      .getValue (),
+	             rotation ()         .getValue (),
+	             scale ()            .getValue (),
 	             scaleOrientation () .getValue (),
-	             center () .getValue ());
+	             center ()           .getValue ());
 
 	return matrix;
 }
@@ -136,6 +136,8 @@ X3DTransformNode::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f &
 
 	if (not almost_equal (c, center () .getValue (), 17))
 		center () = c;
+
+	X3DTransformMatrix4DNode::setMatrix (matrix);
 }
 
 void

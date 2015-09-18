@@ -79,6 +79,12 @@ OutlineDragDrop::OutlineDragDrop (OutlineTreeViewEditor* const treeView) :
 	treeView -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &OutlineDragDrop::on_drag_data_received));
 }
 
+X3DBrowserWindow*
+OutlineDragDrop::getBrowserWindow () const
+{
+	return treeView -> getBrowserWindow ();
+}
+
 bool
 OutlineDragDrop::on_button_press_event (GdkEventButton* event)
 {
@@ -378,7 +384,7 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 					executionContext -> updateExternProtoDeclaration (externProto -> getName (), externProto);
 				}
 
-				treeView -> getBrowserWindow () -> addUndoStep (undoStep);
+				getBrowserWindow () -> addUndoStep (undoStep);
 				break;
 			}
 		}
@@ -417,7 +423,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	if (treeView -> get_data_type (destFieldIter) not_eq OutlineIterType::X3DField)
 	   return;
 
-	__LOG__ << "on_drag_data_base_node_on_field_received" << std::endl;
+	__LOG__ << std::endl;
 
 	const auto destField = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (destFieldIter));
 
@@ -473,12 +479,12 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	{
 	   // Copy source node into scene.
 
-		const auto & scene = treeView -> getBrowserWindow () -> getScene ();
+		const auto & scene = getBrowserWindow () -> getScene ();
 
 	   std::stringstream sstream;
 		X3D::MFNode toExport ({ sourceNode });
 
-	   treeView -> getBrowserWindow () -> exportNodes (sstream, toExport);
+	   getBrowserWindow () -> exportNodes (sstream, toExport);
 	   X3D::Parser (sstream, scene) .parseIntoScene ();
 	   scene -> realize ();
 
@@ -490,38 +496,54 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 		sourceNode   = scene -> getRootNodes () .back ();
 		sourceIndex  = scene -> getRootNodes () .size () - 1;
 		sourceField  = &scene -> getRootNodes ();
-	}
 
-	//
+		// Adjust transformation like detach from group of copy
 
-	const auto undoStep = std::make_shared <UndoStep> (_ (get_node_action_string ()));
-
-	// Get group modelview matrix
-
-	X3D::Matrix4d                          groupModelViewMatrix = treeView -> getBrowserWindow () -> findModelViewMatrix (destNode);
-	const X3D::X3DTransformMatrix4DNodePtr transform (destNode);
-
-	if (transform)
-		groupModelViewMatrix .mult_left (transform -> getMatrix ());
-	
-	{
-		// Adjust child transformation
-
-		X3D::Matrix4d                  childModelViewMatrix = treeView -> getBrowserWindow () -> findModelViewMatrix (sourceNode);
-		const X3D::X3DTransformNodePtr transform (sourceNode);
+		const X3D::X3DTransformNodePtr transform (toExport [0]);
 
 		if (transform)
 		{
-			try
+			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (toExport [0]);
+
+			modelViewMatrix .mult_left (transform -> getMatrix ());
+
+			X3D::X3DTransformNodePtr (sourceNode) -> setMatrix (modelViewMatrix);
+		}
+	}
+
+	const auto undoStep = std::make_shared <UndoStep> (_ (get_node_action_string ()));
+
+	if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
+	{
+		try
+		{
+			// Handle X3DTransformNode nodes.
+
+			const X3D::X3DTransformNodePtr childTransform (sourceNode);
+
+			if (childTransform)
 			{
-				childModelViewMatrix .mult_left (transform -> getMatrix ());
+				// Get group modelview matrix
+
+				X3D::Matrix4d groupModelViewMatrix (getBrowserWindow () -> findModelViewMatrix (destNode));
+
+				const X3D::X3DTransformMatrix4DNodePtr groupTransform (destNode);
+
+				if (groupTransform)
+					groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
+				
+				// Adjust child transformation
+
+				X3D::Matrix4d childModelViewMatrix = getBrowserWindow () -> findModelViewMatrix (sourceNode);
+
+				childModelViewMatrix .mult_left (childTransform -> getMatrix ());
 				childModelViewMatrix .mult_right (~groupModelViewMatrix);
 
-				treeView -> getBrowserWindow () -> setMatrix (transform, childModelViewMatrix, undoStep);
+				getBrowserWindow () -> setMatrix (childTransform, childModelViewMatrix, undoStep);
 			}
-			catch (const std::domain_error & error)
-			{ }
 		}
+		catch (const std::domain_error & error)
+		{ }
 	}
 
 	// Insert source node in destination field.
@@ -534,7 +556,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	   {
 			auto & sfnode = *static_cast <X3D::SFNode*> (destField);
 
-			treeView -> getBrowserWindow () -> replaceNode (destNode, sfnode, sourceNode, undoStep);
+			getBrowserWindow () -> replaceNode (destNode, sfnode, sourceNode, undoStep);
 	      break;
 	   }
 	   case X3D::X3DConstants::MFNode:
@@ -556,14 +578,16 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	switch (context -> get_selected_action ())
 	{
 		case Gdk::ACTION_MOVE:
+			remove_source_node (sourceParent, sourceField, sourceIndex, true, undoStep);
+			break;
 		case Gdk::ACTION_COPY:
-			remove_source_node (sourceParent, sourceField, sourceIndex, undoStep);
+			remove_source_node (sourceParent, sourceField, sourceIndex, false, undoStep);
 			break;
 		default:
 			break;
 	}
 
-	treeView -> getBrowserWindow () -> addUndoStep (undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
@@ -586,7 +610,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	if (treeView -> get_data_type (destNodeIter) not_eq OutlineIterType::X3DBaseNode)
 	   return;
 
-	__LOG__ << "on_drag_data_base_node_insert_into_array_received" << std::endl;
+	__LOG__ << std::endl;
 
 	// Get source node.
 
@@ -650,12 +674,12 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	{
 	   // Copy source node into scene.
 
-		const auto & scene = treeView -> getBrowserWindow () -> getScene ();
+		const auto & scene = getBrowserWindow () -> getScene ();
 
 	   std::stringstream sstream;
 		X3D::MFNode toExport ({ sourceNode });
 
-	   treeView -> getBrowserWindow () -> exportNodes (sstream, toExport);
+	   getBrowserWindow () -> exportNodes (sstream, toExport);
 	   X3D::Parser (sstream, scene) .parseIntoScene ();
 	   scene -> realize ();
 
@@ -667,41 +691,57 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 		sourceNode   = scene -> getRootNodes () .back ();
 		sourceIndex  = scene -> getRootNodes () .size () - 1;
 		sourceField  = &scene -> getRootNodes ();
+
+		// Adjust transformation like detach from group of copy
+
+		const X3D::X3DTransformNodePtr transform (toExport [0]);
+
+		if (transform)
+		{
+			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (toExport [0]);
+
+			modelViewMatrix .mult_left (transform -> getMatrix ());
+
+			X3D::X3DTransformNodePtr (sourceNode) -> setMatrix (modelViewMatrix);
+		}
 	}
 
 	if (treeView -> is_expanded (destNodeIter) and position == Gtk::TREE_VIEW_DROP_AFTER)
 	   return;
 
-	// Handle X3DTransformNode nodes.
-
 	const auto undoStep = std::make_shared <UndoStep> (_ (get_node_action_string ()));
 
-	// Get group modelview matrix
+	// Handle X3DTransformNode nodes.
 
-	X3D::Matrix4d                          groupModelViewMatrix = treeView -> getBrowserWindow () -> findModelViewMatrix (*destParent);
-	const X3D::X3DTransformMatrix4DNodePtr transform (*destParent);
-
-	if (transform)
-		groupModelViewMatrix .mult_left (transform -> getMatrix ());
-	
+	if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
 	{
-		// Adjust child transformation
-
-		X3D::Matrix4d                  childModelViewMatrix = treeView -> getBrowserWindow () -> findModelViewMatrix (sourceNode);
-		const X3D::X3DTransformNodePtr transform (sourceNode);
-
-		if (transform)
+		try
 		{
-			try
+			const X3D::X3DTransformNodePtr childTransform (sourceNode);
+
+			if (childTransform)
 			{
-				childModelViewMatrix .mult_left (transform -> getMatrix ());
+				// Get group modelview matrix
+
+				X3D::Matrix4d groupModelViewMatrix (getBrowserWindow () -> findModelViewMatrix (*destParent));
+
+				const X3D::X3DTransformMatrix4DNodePtr groupTransform (*destParent);
+
+				if (groupTransform)
+					groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
+				
+				// Adjust child transformation
+
+				X3D::Matrix4d childModelViewMatrix = getBrowserWindow () -> findModelViewMatrix (sourceNode);
+
+				childModelViewMatrix .mult_left (childTransform -> getMatrix ());
 				childModelViewMatrix .mult_right (~groupModelViewMatrix);
 
-				treeView -> getBrowserWindow () -> setMatrix (transform, childModelViewMatrix, undoStep);
+				getBrowserWindow () -> setMatrix (childTransform, childModelViewMatrix, undoStep);
 			}
-			catch (const std::domain_error & error)
-			{ }
 		}
+		catch (const std::domain_error & error)
+		{ }
 	}
 
 	// Insert
@@ -767,18 +807,20 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	switch (context -> get_selected_action ())
 	{
 		case Gdk::ACTION_MOVE:
+			remove_source_node (sourceParent, sourceField, sourceIndex, true, undoStep);
+			break;
 		case Gdk::ACTION_COPY:
-			remove_source_node (sourceParent, sourceField, sourceIndex, undoStep);
+			remove_source_node (sourceParent, sourceField, sourceIndex, false, undoStep);
 			break;
 		default:
 			break;
 	}
 
-	treeView -> getBrowserWindow () -> addUndoStep (undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
-OutlineDragDrop::remove_source_node (X3D::SFNode* const sourceParent, X3D::X3DFieldDefinition* const sourceField, size_t sourceIndex, const UndoStepPtr & undoStep)
+OutlineDragDrop::remove_source_node (X3D::SFNode* const sourceParent, X3D::X3DFieldDefinition* const sourceField, size_t sourceIndex, const bool undo, const UndoStepPtr & undoStep)
 {
 	switch (sourceField -> getType ())
 	{
@@ -786,17 +828,27 @@ OutlineDragDrop::remove_source_node (X3D::SFNode* const sourceParent, X3D::X3DFi
 	   {
 			auto & sfnode = *static_cast <X3D::SFNode*> (sourceField);
 
-			treeView -> getBrowserWindow () -> replaceNode (*sourceParent, sfnode, nullptr, undoStep);
+			if (undo)
+				getBrowserWindow () -> replaceNode (*sourceParent, sfnode, nullptr, undoStep);
+			else
+				sfnode = nullptr;
+
 	      break;
 	   }
 	   case X3D::X3DConstants::MFNode:
 	   {
 			auto & mfnode = *static_cast <X3D::MFNode*> (sourceField);
 
-			undoStep -> addObjects (*sourceParent);
-			undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
-			mfnode .erase (mfnode .begin () + sourceIndex);
-			undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
+			if (undo)
+			{
+				undoStep -> addObjects (*sourceParent);
+				undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
+				mfnode .erase (mfnode .begin () + sourceIndex);
+				undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
+			}
+			else
+			   mfnode .erase (mfnode .begin () + sourceIndex);
+			
 			break;
 	   }
 	   default:
@@ -807,9 +859,9 @@ OutlineDragDrop::remove_source_node (X3D::SFNode* const sourceParent, X3D::X3DFi
 const char*
 OutlineDragDrop::get_node_action_string () const
 {
-   if (treeView -> getBrowserWindow () -> getKeys () .control ())
+   if (getBrowserWindow () -> getKeys () .control ())
    {
-      if (treeView -> getBrowserWindow () -> getKeys () .shift ())
+      if (getBrowserWindow () -> getKeys () .shift ())
          return "Clone Node";
       
 		return "Copy Node";

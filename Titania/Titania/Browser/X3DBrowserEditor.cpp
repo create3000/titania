@@ -1944,33 +1944,35 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group,
 
 			const auto containerField = getContainerField (group, child);
 
-			// Get group modelview matrix
-
-			X3D::Matrix4d                          groupModelViewMatrix = findModelViewMatrix (group);
-			const X3D::X3DTransformMatrix4DNodePtr transform (group);
-
-			if (transform)
-				groupModelViewMatrix .mult_left (transform -> getMatrix ());
-
-			// Adjust child transformation
-
+			try
 			{
-				X3D::Matrix4d                  childModelViewMatrix = findModelViewMatrix (child);
-				const X3D::X3DTransformNodePtr transform (child);
+				// Handle X3DTransformNode nodes.
 
-				if (transform)
+				const X3D::X3DTransformNodePtr childTransform (child);
+
+				if (childTransform)
 				{
-					try
-					{
-						childModelViewMatrix .mult_left (transform -> getMatrix ());
-						childModelViewMatrix .mult_right (~groupModelViewMatrix);
+					// Get group modelview matrix
 
-						setMatrix (transform, childModelViewMatrix, undoStep);
-					}
-					catch (const std::domain_error & error)
-					{ }
+					X3D::Matrix4d groupModelViewMatrix (findModelViewMatrix (group));
+
+					const X3D::X3DTransformMatrix4DNodePtr groupTransform (group);
+
+					if (groupTransform)
+						groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
+
+					// Adjust child transformation
+
+					X3D::Matrix4d childModelViewMatrix = findModelViewMatrix (child);
+
+					childModelViewMatrix .mult_left (childTransform -> getMatrix ());
+					childModelViewMatrix .mult_right (~groupModelViewMatrix);
+
+					setMatrix (childTransform, childModelViewMatrix, undoStep);
 				}
 			}
+			catch (const std::domain_error & error)
+			{ }
 
 			// Remove child from scene graph
 
