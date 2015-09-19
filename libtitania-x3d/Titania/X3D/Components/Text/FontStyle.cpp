@@ -94,7 +94,7 @@ PolygonText::draw ()
 {
 	if (not fontStyle -> getPolygonFont ())
 		return;
-	
+
 	if (fontStyle -> horizontal ())
 	{
 		glTranslatef (getMinorAlignment () .x (), getMinorAlignment () .y (), 0);
@@ -225,13 +225,13 @@ FontStyle::set_font ()
 		polygonFont -> UseDisplayList (false);
 
 		// Set the font size to large text.
-		polygonFont -> FaceSize (100);
+		polygonFont -> FaceSize (1);
 
 		// Calculate lineHeight.
-		lineHeight = polygonFont -> LineHeight () * spacing ();
+		lineHeight = spacing ();
 
 		// Calculate scale.
-		scale = size () / polygonFont -> LineHeight ();
+		scale = size ();
 	}
 	else
 		polygonFont .reset ();

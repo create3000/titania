@@ -1,11 +1,11 @@
-#X3D V3.3 utf8 Titania V0.7.4
+#X3D V3.3 utf8 Titania V1.1.0
 
 META "comment" "World of Titania"
 META "created" "Fri, 05 Sep 2014 01:58:48 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "generator" "Titania V1.1.0, http://titania.create3000.de"
 META "icon" "../../ui/icons/icon-bw.svg"
-META "modified" "Fri, 05 Sep 2014 02:00:16 GMT"
+META "modified" "Sat, 19 Sep 2015 15:21:06 GMT"
 META "title" "about:info"
 
 EXTERNPROTO Rotor [
@@ -148,7 +148,6 @@ DEF about:info_1 LayerSet {
                       loop TRUE
                     }
                     DEF Logo Transform {
-                      rotation 0 0 -1 6.13799
                       center 5.6 -5.9 0
                       children Inline {
                         url "library/logo.x3dv"
@@ -172,7 +171,7 @@ DEF about:info_1 LayerSet {
                           "sans"
                         ]
                         style "BOLD"
-                        size 0.16
+                        size 0.12
                       }
                     }
                   }
@@ -193,7 +192,7 @@ DEF about:info_1 LayerSet {
                           "sans"
                         ]
                         style "BOLD"
-                        size 0.1
+                        size 0.08
                       }
                     }
                   }
@@ -214,7 +213,7 @@ DEF about:info_1 LayerSet {
                           "sans"
                         ]
                         style "BOLD"
-                        size 0.04
+                        size 0.03
                       }
                     }
                   }
@@ -240,7 +239,8 @@ DEF about:info_1 LayerSet {
                             "sans"
                           ]
                           style "NORMAL"
-                          size 0.06
+                          size 0.04
+                          spacing 1.2
                         }
                       }
                     }
@@ -277,7 +277,7 @@ DEF about:info_1 LayerSet {
                     }
                     geometry Text {
                       string "© 2010 - 2014"
-                      length 0.11
+                      length 0.15
                       fontStyle FontStyle {
                         family [
                           "../../fonts/pt-sans/PTN77F.ttf",
@@ -299,7 +299,7 @@ DEF about:info_1 LayerSet {
                         }
                       }
                       geometry DEF VersionNumberText Text {
-                        string "0.7.4"
+                        string "1.1.0"
                         maxExtent 0.65
                         fontStyle FontStyle {
                           family [
@@ -307,7 +307,7 @@ DEF about:info_1 LayerSet {
                             "sans"
                           ]
                           style "BOLD"
-                          size 0.41
+                          size 0.34
                         }
                       }
                     }
