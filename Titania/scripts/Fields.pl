@@ -59,9 +59,10 @@ function set_triggerTime (value, time)
 	system "mkdir", "-p", $extern_prototypes;
 
 
-	my $externproto = "$extern_prototypes/$name.x3dv";
+	my $x3dv = "$extern_prototypes/$name.x3dv";
+	my $x3d  = "$extern_prototypes/$name.x3d";
 
-	open FILE, ">", $externproto;
+	open FILE, ">", $x3dv;
 
 	say FILE "#X3D V3.3 utf8 Titania
 
@@ -71,9 +72,14 @@ EXTERNPROTO $name [
   eventOut     $name  value_changed
 ]
 [
-	\"../../../Prototypes/0.1/Fields/$name.x3dv\"
 	\"file:///usr/share/titania/Prototypes/0.1/Fields/$name.x3dv\"
+	\"file:///usr/share/titania/Prototypes/0.1/Fields/$name.x3d\"
    \"http://titania.create3000.de/Library/Prototypes/0.1/Fields/$name.x3dv\"
+   \"http://titania.create3000.de/Library/Prototypes/0.1/Fields/$name.x3d\"
+   \"https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/$name.x3dv\",
+   \"https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/$name.x3d\",
+   \"https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/$name.x3dv\",
+   \"https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/$name.x3d\",
 ]
 
 $name { }
@@ -81,5 +87,6 @@ $name { }
 
 	close FILE;
 
-	system "x3dtidy", $externproto, $externproto;
+	system "x3dtidy", $x3dv, $x3dv;
+	system "x3dtidy", $x3dv, $x3d;
 }

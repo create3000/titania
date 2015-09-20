@@ -20,9 +20,14 @@ EXTERNPROTO Button [
   inputOutput    MFNode   children
 ]
 [
-  "../../../Prototypes/0.1/Widgets/Button.x3dv",
   "file:///usr/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/Button.x3dv"
+  "file:///usr/share/titania/Prototypes/0.1/Widgets/Button.x3d",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/Button.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/Button.x3d",
+  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
+  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/Button.x3d",
+  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
+  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/Button.x3d"
 ]
 
 EXTERNPROTO CheckButton [
@@ -37,9 +42,14 @@ EXTERNPROTO CheckButton [
   inputOutput    MFNode  children
 ]
 [
-  "../../../Prototypes/0.1/Widgets/CheckButton.x3dv",
   "file:///usr/share/titania/Prototypes/0.1/Widgets/CheckButton.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/CheckButton.x3dv"
+  "file:///usr/share/titania/Prototypes/0.1/Widgets/CheckButton.x3d",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/CheckButton.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/CheckButton.x3d",
+  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/CheckButton.x3dv",
+  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/CheckButton.x3d",
+  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/CheckButton.x3dv",
+  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/CheckButton.x3d"
 ]
 
 EXTERNPROTO CheckButtonGroup [
@@ -51,9 +61,14 @@ EXTERNPROTO CheckButtonGroup [
   inputOutput    MFNode  children
 ]
 [
-  "../../../Prototypes/0.1/Widgets/CheckButtonGroup.x3dv",
   "file:///usr/share/titania/Prototypes/0.1/Widgets/CheckButtonGroup.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/CheckButtonGroup.x3dv"
+  "file:///usr/share/titania/Prototypes/0.1/Widgets/CheckButtonGroup.x3d",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/CheckButtonGroup.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/CheckButtonGroup.x3d",
+  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/CheckButtonGroup.x3dv",
+  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/CheckButtonGroup.x3d",
+  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/CheckButtonGroup.x3dv",
+  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/CheckButtonGroup.x3d"
 ]
 
 DEF _1 CheckButtonGroup {

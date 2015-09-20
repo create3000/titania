@@ -1,6 +1,10 @@
-#X3D V3.3 utf8 Titania V0.6.7
+#X3D V3.3 utf8 Titania V1.1.0
 
-META "generator" "Titania V0.6.7, http://titania.create3000.de"
+META "comment" "World of Titania"
+META "created" "Sun, 20 Sep 2015 06:29:42 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.1.0, http://titania.create3000.de"
+META "modified" "Sun, 20 Sep 2015 06:29:42 GMT"
 
 EXTERNPROTO MFFloat [
   inputOnly   SFTime  set_triggerTime
@@ -8,9 +12,14 @@ EXTERNPROTO MFFloat [
   outputOnly  MFFloat value_changed
 ]
 [
-  "../../../Prototypes/0.1/Fields/MFFloat.x3dv",
   "file:///usr/share/titania/Prototypes/0.1/Fields/MFFloat.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFFloat.x3dv"
+  "file:///usr/share/titania/Prototypes/0.1/Fields/MFFloat.x3d",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFFloat.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFFloat.x3d",
+  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/MFFloat.x3dv",
+  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/MFFloat.x3d",
+  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/MFFloat.x3dv",
+  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/MFFloat.x3d"
 ]
 
 MFFloat { }
