@@ -372,8 +372,24 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	{
 		timeSensor -> isLive ()           .removeInterest (this, &AnimationEditor::set_animation_live);
 		timeSensor -> isPaused ()         .removeInterest (this, &AnimationEditor::set_active);
+		timeSensor -> isActive ()         .removeInterest (this, &AnimationEditor::set_active);
 		timeSensor -> fraction_changed () .removeInterest (this, &AnimationEditor::set_fraction);
+
 		timeSensor -> isEvenLive (false);
+		timeSensor -> range () = { 0, 0, 1 };
+
+		if (timeSensor -> loop () and timeSensor -> isActive ())
+		{
+			timeSensor -> stopTime ()  = 0;
+			timeSensor -> startTime () = 0;
+		}
+		else
+		{
+			timeSensor -> startTime () = 0;
+			timeSensor -> stopTime ()  = 1;
+		}
+
+		timeSensor -> fraction_changed () = 0;
 	}
 
 	for (const auto & pair : nodes)
@@ -430,8 +446,8 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 		timeSensor -> isActive ()         .addInterest (this, &AnimationEditor::set_active);
 		timeSensor -> fraction_changed () .addInterest (this, &AnimationEditor::set_fraction);
 
-		timeSensor -> isEvenLive (true);
 		timeSensor -> cycleInterval () = getDuration () / (double) getFramesPerSecond ();
+		timeSensor -> isEvenLive (true);
 
 		set_active (); // Call this before set_interpolators.
 		set_interpolators ();
@@ -857,6 +873,12 @@ AnimationEditor::set_user_defined_fields (const size_t id, const Gtk::TreePath &
 	}
 	catch (const std::out_of_range &)
 	{ }
+}
+
+void
+AnimationEditor::on_close ()
+{
+	set_animation (nullptr);
 }
 
 void

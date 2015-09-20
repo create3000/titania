@@ -80,6 +80,7 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("OpenButton", m_OpenButton);
 	m_builder -> get_widget ("AddMemberButton", m_AddMemberButton);
 	m_builder -> get_widget ("RemoveMemberButton", m_RemoveMemberButton);
+	m_builder -> get_widget ("CloseButton", m_CloseButton);
 	m_builder -> get_widget ("CutButton", m_CutButton);
 	m_builder -> get_widget ("CopyButton", m_CopyButton);
 	m_builder -> get_widget ("PasteButton", m_PasteButton);
@@ -102,14 +103,14 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ZoomFitButton", m_ZoomFitButton);
 	m_builder -> get_widget ("Zoom100Button", m_Zoom100Button);
 	m_builder -> get_widget ("PropertiesDialog", m_PropertiesDialog);
+	m_builder -> get_widget ("NewCancelButton", m_NewCancelButton);
+	m_builder -> get_widget ("NewOkButton", m_NewOkButton);
 	m_builder -> get_widget ("NewNameEntry", m_NewNameEntry);
 	m_builder -> get_widget ("DurationSspinButton", m_DurationSspinButton);
 	m_builder -> get_widget ("FPSSpinButton", m_FPSSpinButton);
 	m_builder -> get_widget ("ScaleKeyframesButton", m_ScaleKeyframesButton);
 	m_builder -> get_widget ("LoopSwitch", m_LoopSwitch);
 	m_builder -> get_widget ("CycleIntervalLabel", m_CycleIntervalLabel);
-	m_builder -> get_widget ("NewCancelButton", m_NewCancelButton);
-	m_builder -> get_widget ("NewOkButton", m_NewOkButton);
 
 	// Connect object Gtk::Adjustment with id 'FrameAdjustment'.
 	m_FrameAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_current_frame_changed));
@@ -124,6 +125,7 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_OpenButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_open));
 	m_AddMemberButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_add_member));
 	m_RemoveMemberButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_remove_member));
+	m_CloseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_close));
 	m_CutButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_cut));
 	m_CopyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_copy));
 	m_PasteButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_paste));

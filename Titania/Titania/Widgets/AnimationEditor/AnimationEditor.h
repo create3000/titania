@@ -226,6 +226,10 @@ private:
 	void
 	set_user_defined_fields (const size_t id, const Gtk::TreePath &);
 
+	virtual
+	void
+	on_close () final override;
+
 	/***
 	 *  Cut, Copy and Paste
 	 **/

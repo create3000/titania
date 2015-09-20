@@ -167,6 +167,10 @@ public:
 	{ return *m_RemoveMemberButton; }
 
 	Gtk::ToolButton &
+	getCloseButton () const
+	{ return *m_CloseButton; }
+
+	Gtk::ToolButton &
 	getCutButton () const
 	{ return *m_CutButton; }
 
@@ -254,6 +258,14 @@ public:
 	getPropertiesDialog () const
 	{ return *m_PropertiesDialog; }
 
+	Gtk::Button &
+	getNewCancelButton () const
+	{ return *m_NewCancelButton; }
+
+	Gtk::Button &
+	getNewOkButton () const
+	{ return *m_NewOkButton; }
+
 	Gtk::Entry &
 	getNewNameEntry () const
 	{ return *m_NewNameEntry; }
@@ -277,14 +289,6 @@ public:
 	Gtk::Label &
 	getCycleIntervalLabel () const
 	{ return *m_CycleIntervalLabel; }
-
-	Gtk::Button &
-	getNewCancelButton () const
-	{ return *m_NewCancelButton; }
-
-	Gtk::Button &
-	getNewOkButton () const
-	{ return *m_NewOkButton; }
 
 	virtual
 	void
@@ -317,6 +321,10 @@ public:
 	virtual
 	void
 	on_remove_member () = 0;
+
+	virtual
+	void
+	on_close () = 0;
 
 	virtual
 	void
@@ -468,6 +476,7 @@ private:
 	Gtk::ToolButton*                       m_OpenButton;
 	Gtk::ToolButton*                       m_AddMemberButton;
 	Gtk::ToolButton*                       m_RemoveMemberButton;
+	Gtk::ToolButton*                       m_CloseButton;
 	Gtk::ToolButton*                       m_CutButton;
 	Gtk::ToolButton*                       m_CopyButton;
 	Gtk::ToolButton*                       m_PasteButton;
@@ -490,14 +499,14 @@ private:
 	Gtk::ToolButton*                       m_ZoomFitButton;
 	Gtk::ToolButton*                       m_Zoom100Button;
 	Gtk::Dialog*                           m_PropertiesDialog;
+	Gtk::Button*                           m_NewCancelButton;
+	Gtk::Button*                           m_NewOkButton;
 	Gtk::Entry*                            m_NewNameEntry;
 	Gtk::SpinButton*                       m_DurationSspinButton;
 	Gtk::SpinButton*                       m_FPSSpinButton;
 	Gtk::CheckButton*                      m_ScaleKeyframesButton;
 	Gtk::Switch*                           m_LoopSwitch;
 	Gtk::Label*                            m_CycleIntervalLabel;
-	Gtk::Button*                           m_NewCancelButton;
-	Gtk::Button*                           m_NewOkButton;
 
 };
 
