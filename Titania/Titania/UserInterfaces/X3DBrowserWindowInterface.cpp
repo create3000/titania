@@ -151,9 +151,13 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("WireFrameMenuItem", m_WireFrameMenuItem);
 	m_builder -> get_widget ("PointSetMenuItem", m_PointSetMenuItem);
 	m_builder -> get_widget ("PrimitiveQualityMenuItem", m_PrimitiveQualityMenuItem);
-	m_builder -> get_widget ("HighQualityMenuItem", m_HighQualityMenuItem);
-	m_builder -> get_widget ("MediumQualityMenuItem", m_MediumQualityMenuItem);
-	m_builder -> get_widget ("LowQualityMenuItem", m_LowQualityMenuItem);
+	m_builder -> get_widget ("PrimitiveHighQualityMenuItem", m_PrimitiveHighQualityMenuItem);
+	m_builder -> get_widget ("PrimitiveMediumQualityMenuItem", m_PrimitiveMediumQualityMenuItem);
+	m_builder -> get_widget ("PrimitiveLowQualityMenuItem", m_PrimitiveLowQualityMenuItem);
+	m_builder -> get_widget ("TextureQualityMenuItem", m_TextureQualityMenuItem);
+	m_builder -> get_widget ("TextureHighQualityMenuItem", m_TextureHighQualityMenuItem);
+	m_builder -> get_widget ("TextureMediumQualityMenuItem", m_TextureMediumQualityMenuItem);
+	m_builder -> get_widget ("TextureLowQualityMenuItem", m_TextureLowQualityMenuItem);
 	m_builder -> get_widget ("ShowHideEnvironmentalEffectsMenuItem", m_ShowHideEnvironmentalEffectsMenuItem);
 	m_builder -> get_widget ("BackgroundsMenuItem", m_BackgroundsMenuItem);
 	m_builder -> get_widget ("FogsMenuItem", m_FogsMenuItem);
@@ -355,9 +359,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_FlatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_flat_activate));
 	m_WireFrameMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_wireframe_activate));
 	m_PointSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_pointset_activate));
-	m_HighQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_high_quality_activate));
-	m_MediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_medium_quality_activate));
-	m_LowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_low_quality_activate));
+	m_PrimitiveHighQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_high_quality_activate));
+	m_PrimitiveMediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_medium_quality_activate));
+	m_PrimitiveLowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_low_quality_activate));
+	m_TextureHighQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_high_quality_activate));
+	m_TextureMediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_medium_quality_activate));
+	m_TextureLowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_low_quality_activate));
 
 	// Connect object Gtk::CheckMenuItem with id 'BackgroundsMenuItem'.
 	m_BackgroundsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_backgrounds_toggled));

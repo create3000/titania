@@ -446,21 +446,37 @@ public:
 	getPointSetMenuItem () const
 	{ return *m_PointSetMenuItem; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getPrimitiveQualityMenuItem () const
 	{ return *m_PrimitiveQualityMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getHighQualityMenuItem () const
-	{ return *m_HighQualityMenuItem; }
+	getPrimitiveHighQualityMenuItem () const
+	{ return *m_PrimitiveHighQualityMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getMediumQualityMenuItem () const
-	{ return *m_MediumQualityMenuItem; }
+	getPrimitiveMediumQualityMenuItem () const
+	{ return *m_PrimitiveMediumQualityMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getLowQualityMenuItem () const
-	{ return *m_LowQualityMenuItem; }
+	getPrimitiveLowQualityMenuItem () const
+	{ return *m_PrimitiveLowQualityMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getTextureQualityMenuItem () const
+	{ return *m_TextureQualityMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getTextureHighQualityMenuItem () const
+	{ return *m_TextureHighQualityMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getTextureMediumQualityMenuItem () const
+	{ return *m_TextureMediumQualityMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getTextureLowQualityMenuItem () const
+	{ return *m_TextureLowQualityMenuItem; }
 
 	Gtk::MenuItem &
 	getShowHideEnvironmentalEffectsMenuItem () const
@@ -1148,15 +1164,27 @@ public:
 
 	virtual
 	void
-	on_high_quality_activate () = 0;
+	on_primitive_high_quality_activate () = 0;
 
 	virtual
 	void
-	on_medium_quality_activate () = 0;
+	on_primitive_medium_quality_activate () = 0;
 
 	virtual
 	void
-	on_low_quality_activate () = 0;
+	on_primitive_low_quality_activate () = 0;
+
+	virtual
+	void
+	on_texture_high_quality_activate () = 0;
+
+	virtual
+	void
+	on_texture_medium_quality_activate () = 0;
+
+	virtual
+	void
+	on_texture_low_quality_activate () = 0;
 
 	virtual
 	void
@@ -1514,10 +1542,14 @@ private:
 	Gtk::RadioMenuItem*              m_FlatMenuItem;
 	Gtk::RadioMenuItem*              m_WireFrameMenuItem;
 	Gtk::RadioMenuItem*              m_PointSetMenuItem;
-	Gtk::MenuItem*                   m_PrimitiveQualityMenuItem;
-	Gtk::RadioMenuItem*              m_HighQualityMenuItem;
-	Gtk::RadioMenuItem*              m_MediumQualityMenuItem;
-	Gtk::RadioMenuItem*              m_LowQualityMenuItem;
+	Gtk::ImageMenuItem*              m_PrimitiveQualityMenuItem;
+	Gtk::RadioMenuItem*              m_PrimitiveHighQualityMenuItem;
+	Gtk::RadioMenuItem*              m_PrimitiveMediumQualityMenuItem;
+	Gtk::RadioMenuItem*              m_PrimitiveLowQualityMenuItem;
+	Gtk::ImageMenuItem*              m_TextureQualityMenuItem;
+	Gtk::RadioMenuItem*              m_TextureHighQualityMenuItem;
+	Gtk::RadioMenuItem*              m_TextureMediumQualityMenuItem;
+	Gtk::RadioMenuItem*              m_TextureLowQualityMenuItem;
 	Gtk::MenuItem*                   m_ShowHideEnvironmentalEffectsMenuItem;
 	Gtk::CheckMenuItem*              m_BackgroundsMenuItem;
 	Gtk::CheckMenuItem*              m_FogsMenuItem;

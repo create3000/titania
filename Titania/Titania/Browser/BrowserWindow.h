@@ -396,19 +396,19 @@ private:
 	void
 	connectShading (const X3D::SFString &);
 
-	///  @name Rendering quality
+	///  @name Primitive Quality
 
 	virtual
 	void
-	on_high_quality_activate () final override;
+	on_primitive_high_quality_activate () final override;
 
 	virtual
 	void
-	on_medium_quality_activate () final override;
+	on_primitive_medium_quality_activate () final override;
 
 	virtual
 	void
-	on_low_quality_activate () final override;
+	on_primitive_low_quality_activate () final override;
 
 	void
 	on_primitiveQuality_activate (const std::string &);
@@ -418,6 +418,29 @@ private:
 
 	void
 	connectPrimitiveQuality (const X3D::SFString &);
+
+	///  @name Primitive Quality
+
+	virtual
+	void
+	on_texture_high_quality_activate () final override;
+
+	virtual
+	void
+	on_texture_medium_quality_activate () final override;
+
+	virtual
+	void
+	on_texture_low_quality_activate () final override;
+
+	void
+	on_textureQuality_activate (const std::string &);
+
+	void
+	set_textureQuality (const X3D::SFString &);
+
+	void
+	connectTextureQuality (const X3D::SFString &);
 
 	///  @name Object Icons
 

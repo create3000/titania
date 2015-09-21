@@ -193,6 +193,7 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
 	set_shading (getBrowser () -> getBrowserOptions () -> shading ());
 	set_primitiveQuality (getBrowser () -> getBrowserOptions () -> primitiveQuality ());
+	set_textureQuality (getBrowser () -> getBrowserOptions () -> textureQuality ());
 
 	set_browserHistory ();
 
@@ -1060,7 +1061,6 @@ BrowserWindow::isEditor (const bool enabled)
 	getBrowserOptionsSeparator ()              .set_visible (enabled);
 	getMotionBlurMenuItem ()                   .set_visible (enabled);
 	getShadingMenuItem ()                      .set_visible (enabled);
-	getPrimitiveQualityMenuItem ()             .set_visible (enabled);
 	getShowHideEnvironmentalEffectsMenuItem () .set_visible (enabled);
 	getObjectIconsMenuItem ()                  .set_visible (enabled);
 	getSelectionMenuItem ()                    .set_visible (enabled);
@@ -1183,23 +1183,23 @@ BrowserWindow::connectShading (const X3D::SFString & field)
 // Primitive Quality
 
 void
-BrowserWindow::on_high_quality_activate ()
+BrowserWindow::on_primitive_high_quality_activate ()
 {
-	if (getHighQualityMenuItem () .get_active ())
+	if (getPrimitiveHighQualityMenuItem () .get_active ())
 		on_primitiveQuality_activate ("HIGH");
 }
 
 void
-BrowserWindow::on_medium_quality_activate ()
+BrowserWindow::on_primitive_medium_quality_activate ()
 {
-	if (getMediumQualityMenuItem () .get_active ())
+	if (getPrimitiveMediumQualityMenuItem () .get_active ())
 		on_primitiveQuality_activate ("MEDIUM");
 }
 
 void
-BrowserWindow::on_low_quality_activate ()
+BrowserWindow::on_primitive_low_quality_activate ()
 {
-	if (getLowQualityMenuItem () .get_active ())
+	if (getPrimitiveLowQualityMenuItem () .get_active ())
 		on_primitiveQuality_activate ("LOW");
 }
 
@@ -1221,19 +1221,78 @@ BrowserWindow::set_primitiveQuality (const X3D::SFString & value)
 	changing = true;
 
 	if (value == "HIGH")
-		getHighQualityMenuItem () .set_active (true);
+		getPrimitiveHighQualityMenuItem () .set_active (true);
 
 	else if (value == "LOW")
-		getLowQualityMenuItem () .set_active (true);
+		getPrimitiveLowQualityMenuItem () .set_active (true);
 
 	else
-		getMediumQualityMenuItem () .set_active (true);
+		getPrimitiveMediumQualityMenuItem () .set_active (true);
 
 	changing = false;
 }
 
 void
 BrowserWindow::connectPrimitiveQuality (const X3D::SFString & field)
+{
+	field .removeInterest (this, &BrowserWindow::connectPrimitiveQuality);
+	field .addInterest (this, &BrowserWindow::set_primitiveQuality);
+}
+
+// Texture Quality
+
+void
+BrowserWindow::on_texture_high_quality_activate ()
+{
+	if (getTextureHighQualityMenuItem () .get_active ())
+		on_textureQuality_activate ("HIGH");
+}
+
+void
+BrowserWindow::on_texture_medium_quality_activate ()
+{
+	if (getTextureMediumQualityMenuItem () .get_active ())
+		on_textureQuality_activate ("MEDIUM");
+}
+
+void
+BrowserWindow::on_texture_low_quality_activate ()
+{
+	if (getTextureLowQualityMenuItem () .get_active ())
+		on_textureQuality_activate ("LOW");
+}
+
+void
+BrowserWindow::on_textureQuality_activate (const std::string & value)
+{
+	if (changing)
+		return;
+
+	getBrowser () -> getBrowserOptions () -> textureQuality () .removeInterest (this, &BrowserWindow::set_textureQuality);
+	getBrowser () -> getBrowserOptions () -> textureQuality () .addInterest (this, &BrowserWindow::connectTextureQuality);
+
+	getBrowser () -> getBrowserOptions () -> textureQuality () = value;
+}
+
+void
+BrowserWindow::set_textureQuality (const X3D::SFString & value)
+{
+	changing = true;
+
+	if (value == "HIGH")
+		getTextureHighQualityMenuItem () .set_active (true);
+
+	else if (value == "LOW")
+		getTextureLowQualityMenuItem () .set_active (true);
+
+	else
+		getTextureMediumQualityMenuItem () .set_active (true);
+
+	changing = false;
+}
+
+void
+BrowserWindow::connectTextureQuality (const X3D::SFString & field)
 {
 	field .removeInterest (this, &BrowserWindow::connectPrimitiveQuality);
 	field .addInterest (this, &BrowserWindow::set_primitiveQuality);

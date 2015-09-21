@@ -220,10 +220,10 @@ BrowserOptions::set_textureQuality ()
 
 	if (textureQuality () == "LOW")
 	{
-		textureProperties -> magnificationFilter () = "FASTEST";
-		textureProperties -> minificationFilter ()  = "FASTEST";
+		textureProperties -> magnificationFilter () = "NICEST";
+		textureProperties -> minificationFilter ()  = "AVG_PIXEL_NEAREST_MIPMAP";
 		textureProperties -> textureCompression ()  = "FASTEST";
-		textureProperties -> generateMipMaps ()     = false;
+		textureProperties -> generateMipMaps ()     = true;
 
 		glHint (GL_GENERATE_MIPMAP_HINT,        GL_FASTEST);
 		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);

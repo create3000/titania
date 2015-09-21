@@ -20,8 +20,10 @@
       <source stock-id="Inline" filename="icons/Inline.svg"/>
       <source stock-id="LOD" filename="icons/LOD.svg"/>
       <source stock-id="Icon" filename="icons/icon.svg"/>
-      <source stock-id="Geometry" filename="icons/Geometry.svg"/>
+      <source stock-id="TextureQuality" filename="icons/TextureQuality.svg"/>
+      <source stock-id="TextureQuality" filename="icons/TextureQuality.svg"/>
       <source stock-id="Counterclockwise" filename="icons/Counterclockwise.svg"/>
+      <source stock-id="Geometry" filename="icons/Geometry.svg"/>
       <source stock-id="DotClear" filename="icons/dot-clear.png"/>
       <source stock-id="Environment" filename="icons/Environment.svg"/>
       <source stock-id="Grid" filename="icons/Grid.svg"/>
@@ -34,6 +36,7 @@
       <source stock-id="ExternProto" filename="icons/Node/ExternProto.96.svg"/>
       <source stock-id="ColorAdjacentVertices" filename="icons/ColorAdjacentVertices.svg"/>
       <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
+      <source stock-id="PrimitiveQuality" filename="icons/PrimitiveQuality.svg"/>
       <source stock-id="GroupNodes" filename="icons/Group.svg"/>
       <source stock-id="Text" filename="icons/Text.svg"/>
       <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
@@ -233,6 +236,18 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">TransformToZero</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image18">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">PrimitiveQuality</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image19">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">TextureQuality</property>
     <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image4">
@@ -665,8 +680,8 @@
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activate" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -1068,47 +1083,99 @@
                               </object>
                             </child>
                             <child>
-                              <object class="GtkMenuItem" id="PrimitiveQualityMenuItem">
-                                <property name="can_focus">False</property>
+                              <object class="GtkImageMenuItem" id="PrimitiveQualityMenuItem">
                                 <property name="label" translatable="yes">Primitive Quality</property>
-                                <property name="use_underline">True</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="image">image18</property>
+                                <property name="use_stock">False</property>
                                 <child type="submenu">
                                   <object class="GtkMenu" id="menu8">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="HighQualityMenuItem">
+                                      <object class="GtkRadioMenuItem" id="PrimitiveHighQualityMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">_High</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
-                                        <property name="group">LowQualityMenuItem</property>
-                                        <signal name="activate" handler="on_high_quality_activate" swapped="no"/>
+                                        <property name="group">PrimitiveLowQualityMenuItem</property>
+                                        <signal name="activate" handler="on_primitive_high_quality_activate" swapped="no"/>
                                         <accelerator key="F3" signal="activate"/>
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="MediumQualityMenuItem">
+                                      <object class="GtkRadioMenuItem" id="PrimitiveMediumQualityMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">_Medium</property>
                                         <property name="use_underline">True</property>
                                         <property name="active">True</property>
                                         <property name="draw_as_radio">True</property>
-                                        <property name="group">LowQualityMenuItem</property>
-                                        <signal name="activate" handler="on_medium_quality_activate" swapped="no"/>
+                                        <property name="group">PrimitiveLowQualityMenuItem</property>
+                                        <signal name="activate" handler="on_primitive_medium_quality_activate" swapped="no"/>
                                         <accelerator key="F2" signal="activate"/>
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="LowQualityMenuItem">
+                                      <object class="GtkRadioMenuItem" id="PrimitiveLowQualityMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">_Low</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
-                                        <signal name="activate" handler="on_low_quality_activate" swapped="no"/>
+                                        <signal name="activate" handler="on_primitive_low_quality_activate" swapped="no"/>
+                                        <accelerator key="F1" signal="activate"/>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="TextureQualityMenuItem">
+                                <property name="label" translatable="yes">Texture Quality</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="image">image19</property>
+                                <property name="use_stock">False</property>
+                                <child type="submenu">
+                                  <object class="GtkMenu" id="menu14">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <child>
+                                      <object class="GtkRadioMenuItem" id="TextureHighQualityMenuItem">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">_High</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="draw_as_radio">True</property>
+                                        <property name="group">TextureLowQualityMenuItem</property>
+                                        <signal name="activate" handler="on_texture_high_quality_activate" swapped="no"/>
+                                        <accelerator key="F3" signal="activate"/>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkRadioMenuItem" id="TextureMediumQualityMenuItem">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">_Medium</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="draw_as_radio">True</property>
+                                        <property name="group">TextureLowQualityMenuItem</property>
+                                        <signal name="activate" handler="on_texture_medium_quality_activate" swapped="no"/>
+                                        <accelerator key="F2" signal="activate"/>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkRadioMenuItem" id="TextureLowQualityMenuItem">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">_Low</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="draw_as_radio">True</property>
+                                        <signal name="activate" handler="on_texture_low_quality_activate" swapped="no"/>
                                         <accelerator key="F1" signal="activate"/>
                                       </object>
                                     </child>

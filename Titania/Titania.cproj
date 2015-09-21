@@ -1851,6 +1851,11 @@
     <None Include="share\titania\Prototypes\0.1\Widgets\CheckButtonGroup.x3d" />
     <None Include="share\titania\Prototypes\0.1\Widgets\DiskSensor.x3d" />
     <None Include="share\titania\Prototypes\0.1\Widgets\RadioButton.x3d" />
+    <None Include="share\titania\ui\icons\Droplet.svg" />
+    <None Include="share\titania\ui\icons\Hand.svg" />
+    <None Include="share\titania\ui\icons\PaintBrush.svg" />
+    <None Include="share\titania\ui\icons\PrimitiveQuality.svg" />
+    <None Include="share\titania\ui\icons\TextureQuality.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
