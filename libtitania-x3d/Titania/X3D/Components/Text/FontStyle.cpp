@@ -217,21 +217,20 @@ FontStyle::set_font ()
 {
 	// Create a polygon font from a TrueType file.
 
-	polygonFont = std::move (getPolygonFont (family ()));
+	polygonFont = getPolygonFont (family ());
 
-	if (polygonFont -> Error () == 0)
+	if (not polygonFont -> Error ())
 	{
-		polygonFont -> CharMap (ft_encoding_unicode);
 		polygonFont -> UseDisplayList (false);
 
-		// Set the font size to large text.
-		polygonFont -> FaceSize (1);
+		// Set the font size to large text, otherwise it can crash in some cases and this prevents triangulation errors.
+		polygonFont -> FaceSize (100);
 
 		// Calculate lineHeight.
 		lineHeight = spacing ();
 
 		// Calculate scale.
-		scale = size ();
+		scale = size () / 100;
 	}
 	else
 		polygonFont .reset ();
@@ -250,7 +249,7 @@ FontStyle::getPolygonFont (const MFString & family) const
 		{
 			PolygonFontPtr polygonFont (new FTPolygonFont (font .getFilename () .c_str ()));
 
-			if (polygonFont -> Error () == 0)
+			if (not polygonFont -> Error ())
 				return polygonFont;
 		}
 	}
