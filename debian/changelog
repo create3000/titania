@@ -1,5 +1,11 @@
 titania (1.1.0) trusty; urgency=medium
 
+  * Fixed fatal crash in font rendering.
+
+ -- Holger Seelig <holger@qualle>  Tue, 22 Sep 2015 11:21:00 +0200
+
+titania (1.1.0) trusty; urgency=medium
+
   * Implemented drag n drop in Outline Editor.
   * Many bug fixes.
 
