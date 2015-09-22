@@ -15,7 +15,7 @@
    id="svg2408"
    inkscape:version="0.91 r13725"
    sodipodi:docname="PrimitiveQuality.svg"
-   inkscape:export-filename="/home/holger/Projekte/Cobweb/cobweb.js/images/TextureQuality.png"
+   inkscape:export-filename="/home/holger/Projekte/Cobweb/cobweb.js/images/PrimitiveQuality.png"
    inkscape:export-xdpi="15"
    inkscape:export-ydpi="15">
   <sodipodi:namedview
@@ -37,7 +37,7 @@
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer11"
+     inkscape:current-layer="g10527"
      inkscape:snap-bbox="true"
      inkscape:bbox-paths="true"
      showguides="true"
@@ -194,7 +194,8 @@
      inkscape:groupmode="layer"
      id="layer11"
      inkscape:label="Shadow white"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <g
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:76.04562378px;line-height:129.99999523%;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter8810)"
        id="text7563-8-7" />
@@ -341,7 +342,7 @@
        inkscape:connector-curvature="0"
        id="path10505"
        d="M 30,6 66,6 90,48 66,90 30,90 6,48 Z"
-       style="display:inline;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:12;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+       style="display:inline;fill:#1e1e1e;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:12;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter4926-8-3-1)" />
     <path
        transform="matrix(0.21532697,-0.00308118,0.00308118,0.21532697,85.161011,53.333121)"
        inkscape:transform-center-y="-2.9817319"

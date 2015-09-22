@@ -118,20 +118,20 @@ FrameBuffer::getDistance (const double radius, const double zNear, const double 
 	glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
 
 	double       distance = std::numeric_limits <double>::infinity ();
-	const double w1       = width  - 1;
-	const double h1       = height - 1;
+	const double w1       = 2.0 / (width  - 1);
+	const double h1       = 2.0 / (height - 1);
 	const double zWidth   = zFar - zNear;
 
 	for (size_t py = 0, i = 0; py < height; ++ py)
 	{
-		const double y = (2 * py / h1 - 1) * radius;
+		const double y2 = math::sqr ((py * h1 - 1) * radius);
 
 	   for (size_t px = 0; px < width; ++ px, ++ i)
 	   {
-		   const double x = (2 * px / w1 - 1) * radius;
+		   const double x = (px * w1 - 1) * radius;
 			const double z = zNear + zWidth * depth [i];
-	      
-			distance = std::min (distance, std::sqrt (x * x + y * y + z * z));
+
+			distance = std::min (distance, std::sqrt (x * x + y2 + z * z));
 	   }
 	}
 
