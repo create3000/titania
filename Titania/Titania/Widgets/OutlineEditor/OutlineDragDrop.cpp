@@ -250,7 +250,7 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 
 				const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (parent));
 
-				if (field -> getType () not_eq X3D::X3DConstants::MFNode)
+				if (not (field -> getType () == X3D::X3DConstants::SFNode or field -> getType () == X3D::X3DConstants::MFNode))
 					break;
 				
 				return false;
@@ -492,43 +492,43 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 		}
 	}
 
+	const auto undoStep = std::make_shared <UndoStep> (_ (get_node_action_string ()));
+
+	if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
+	{
+		try
+		{
+			// Handle X3DTransformNode nodes.
+
+			const X3D::X3DTransformNodePtr childTransform (sourceNode);
+
+			if (childTransform)
+			{
+				// Get group modelview matrix
+
+				X3D::Matrix4d groupModelViewMatrix (getBrowserWindow () -> findModelViewMatrix (destNode));
+
+				const X3D::X3DTransformMatrix4DNodePtr groupTransform (destNode);
+
+				if (groupTransform)
+					groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
+				
+				// Adjust child transformation
+
+				X3D::Matrix4d childModelViewMatrix = getBrowserWindow () -> findModelViewMatrix (sourceNode);
+
+				childModelViewMatrix .mult_left (childTransform -> getMatrix ());
+				childModelViewMatrix .mult_right (~groupModelViewMatrix);
+
+				getBrowserWindow () -> setMatrix (childTransform, childModelViewMatrix, undoStep);
+			}
+		}
+		catch (const std::domain_error & error)
+		{ }
+	}
+			
 	try
 	{
-		const auto undoStep = std::make_shared <UndoStep> (_ (get_node_action_string ()));
-
-		if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
-		{
-			try
-			{
-				// Handle X3DTransformNode nodes.
-
-				const X3D::X3DTransformNodePtr childTransform (sourceNode);
-
-				if (childTransform)
-				{
-					// Get group modelview matrix
-
-					X3D::Matrix4d groupModelViewMatrix (getBrowserWindow () -> findModelViewMatrix (destNode));
-
-					const X3D::X3DTransformMatrix4DNodePtr groupTransform (destNode);
-
-					if (groupTransform)
-						groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
-					
-					// Adjust child transformation
-
-					X3D::Matrix4d childModelViewMatrix = getBrowserWindow () -> findModelViewMatrix (sourceNode);
-
-					childModelViewMatrix .mult_left (childTransform -> getMatrix ());
-					childModelViewMatrix .mult_right (~groupModelViewMatrix);
-
-					getBrowserWindow () -> setMatrix (childTransform, childModelViewMatrix, undoStep);
-				}
-			}
-			catch (const std::domain_error & error)
-			{ }
-		}
-			
 		// Insert source node in destination node.
 
 		// Clone save Add to Group
@@ -576,7 +576,18 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 	}
 	catch (const X3D::X3DError &)
 	{
-	   __LOG__ << "No container field found." << std::endl;
+		__LOG__ << "No container field found." << std::endl;
+		
+		switch (context -> get_selected_action ())
+		{
+			case Gdk::ACTION_COPY:
+				remove_source_node (sourceParent, sourceField, sourceIndex, false, undoStep);
+				break;
+			default:
+				break;
+		}
+
+		undoStep -> undoChanges ();
 	}
 }
 

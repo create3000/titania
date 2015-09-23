@@ -4,7 +4,10 @@
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="2" Column="2" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="26" Column="26" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.cpp" Line="5" Column="5" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="4" Column="4" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.h" Line="40" Column="40" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="29" Column="29" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="65" Column="65" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
