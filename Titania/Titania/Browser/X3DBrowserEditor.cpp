@@ -1984,10 +1984,7 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group,
 
 			if (sfnode)
 			{
-				undoStep -> addUndoFunction (&X3D::SFNode::setValue, sfnode, *sfnode);
-				undoStep -> addRedoFunction (&X3D::SFNode::setValue, sfnode, child);
-
-				sfnode -> setValue (child);
+				replaceNode (group, *sfnode, child, undoStep);
 
 				added = true;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                // XXX Remove previous child completely from scene if not in scene anymore
 			}

@@ -95,6 +95,9 @@ private:
 	on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
 
 	void
+	on_drag_data_base_node_insert_into_node_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
+
+	void
 	on_drag_data_base_node_on_field_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
 
 	void

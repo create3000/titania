@@ -264,6 +264,10 @@ public:
 	void
 	emplaceBack (X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &);
 
+	X3D::X3DFieldDefinition*
+	getContainerField (const X3D::SFNode &, const X3D::SFNode &) const
+	throw (X3D::Error <X3D::INVALID_NODE>);
+
 	/// @name CDATA field operations
 
 	void
@@ -411,10 +415,6 @@ private:
 
 	bool
 	findModelViewMatrix (X3D::X3DBaseNode* const, X3D::Matrix4d &, std::set <X3D::X3DBaseNode*> &) const;
-
-	X3D::X3DFieldDefinition*
-	getContainerField (const X3D::SFNode &, const X3D::SFNode &) const
-	throw (X3D::Error <X3D::INVALID_NODE>);
 
 	///  @name CDATA field
 

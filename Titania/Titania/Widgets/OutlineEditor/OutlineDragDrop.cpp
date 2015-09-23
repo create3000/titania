@@ -224,11 +224,6 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 		{
 			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
 			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
-			{
-				if (time)
-					break;
-				// If it is a call from on_drag_data_received procced with next step.
-			}
 			case Gtk::TREE_VIEW_DROP_AFTER:
 			case Gtk::TREE_VIEW_DROP_BEFORE:
 			{
@@ -286,6 +281,7 @@ OutlineDragDrop::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & 
 			on_drag_data_extern_proto_received (context, x, y, selection_data, info, time);
 			return;
 		case OutlineIterType::X3DBaseNode:
+			on_drag_data_base_node_insert_into_node_received (context, x, y, selection_data, info, time);
 			on_drag_data_base_node_on_field_received (context, x, y, selection_data, info, time);
 			on_drag_data_base_node_insert_into_array_received (context, x, y, selection_data, info, time);
 			return;
@@ -388,6 +384,199 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 				break;
 			}
 		}
+	}
+}
+
+void
+OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::RefPtr <Gdk::DragContext> & context,
+                                                                   int x, int y,
+                                                                   const Gtk::SelectionData & selection_data,
+                                                                   guint info,
+                                                                   guint time)
+{
+	TreeModel::Path      destinationPath;
+	TreeViewDropPosition position;
+
+	if (not treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
+	   return;
+
+	switch (position)
+	{
+		case Gtk::TREE_VIEW_DROP_AFTER:
+		case Gtk::TREE_VIEW_DROP_BEFORE:
+		   return;
+		case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
+		case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
+			break;
+	}
+
+	// Get destination node.
+
+	const auto destNodeIter = treeView -> get_model () -> get_iter (destinationPath);
+				
+	if (treeView -> get_data_type (destNodeIter) not_eq OutlineIterType::X3DBaseNode)
+		return;
+	
+	const auto destNode = *static_cast <X3D::SFNode*> (treeView -> get_object (destNodeIter));
+
+	// Get source node.
+
+	const auto sourceNodeIter = treeView -> get_model () -> get_iter (sourcePath);
+	auto       sourceNode     = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceNodeIter));
+
+	// Get source field.
+
+	auto                     sourceIndex = treeView -> get_index (sourceNodeIter);
+	X3D::X3DFieldDefinition* sourceField = &sourceNode -> getExecutionContext () -> getRootNodes ();
+
+	if (sourcePath .size () > 1)
+	{
+		if (not sourcePath .up ())
+			return;;
+
+		const auto sourceFieldIter = treeView -> get_model () -> get_iter (sourcePath);
+		sourceField                = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (sourceFieldIter));
+	}
+
+	// Get source parent node.
+
+	X3D::SFNode executionContext (sourceNode -> getExecutionContext ());
+	X3D::SFNode* sourceParent = &executionContext;
+
+	if (sourcePath .size () > 1)
+	{
+		if (not sourcePath .up ())
+			return;
+
+		const auto sourceParentIter = treeView -> get_model () -> get_iter (sourcePath);
+		sourceParent                = static_cast <X3D::SFNode*> (treeView -> get_object (sourceParentIter));
+	}
+
+	// Handle copy
+
+	X3D::SFNode sceneNode;
+
+	if (context -> get_selected_action () == Gdk::ACTION_COPY)
+	{
+	   // Copy source node into scene.
+
+		const auto & scene = getBrowserWindow () -> getScene ();
+
+	   std::stringstream sstream;
+		X3D::MFNode toExport ({ sourceNode });
+
+	   getBrowserWindow () -> exportNodes (sstream, toExport);
+	   X3D::Parser (sstream, scene) .parseIntoScene ();
+	   scene -> realize ();
+
+	   // Change source values.
+
+	   sceneNode = scene;
+
+		sourceParent = &sceneNode;
+		sourceNode   = scene -> getRootNodes () .back ();
+		sourceIndex  = scene -> getRootNodes () .size () - 1;
+		sourceField  = &scene -> getRootNodes ();
+
+		// Adjust transformation like detach from group of copy
+
+		const X3D::X3DTransformNodePtr transform (toExport [0]);
+
+		if (transform)
+		{
+			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (toExport [0]);
+
+			modelViewMatrix .mult_left (transform -> getMatrix ());
+
+			X3D::X3DTransformNodePtr (sourceNode) -> setMatrix (modelViewMatrix);
+		}
+	}
+
+	try
+	{
+		const auto undoStep = std::make_shared <UndoStep> (_ (get_node_action_string ()));
+
+		if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
+		{
+			try
+			{
+				// Handle X3DTransformNode nodes.
+
+				const X3D::X3DTransformNodePtr childTransform (sourceNode);
+
+				if (childTransform)
+				{
+					// Get group modelview matrix
+
+					X3D::Matrix4d groupModelViewMatrix (getBrowserWindow () -> findModelViewMatrix (destNode));
+
+					const X3D::X3DTransformMatrix4DNodePtr groupTransform (destNode);
+
+					if (groupTransform)
+						groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
+					
+					// Adjust child transformation
+
+					X3D::Matrix4d childModelViewMatrix = getBrowserWindow () -> findModelViewMatrix (sourceNode);
+
+					childModelViewMatrix .mult_left (childTransform -> getMatrix ());
+					childModelViewMatrix .mult_right (~groupModelViewMatrix);
+
+					getBrowserWindow () -> setMatrix (childTransform, childModelViewMatrix, undoStep);
+				}
+			}
+			catch (const std::domain_error & error)
+			{ }
+		}
+			
+		// Insert source node in destination node.
+
+		// Clone save Add to Group
+
+		undoStep -> addObjects (destNode);
+
+		const auto containerField = getBrowserWindow () -> getContainerField (destNode, sourceNode); // throw
+
+		// Add child to group
+
+		const auto sfnode = dynamic_cast <X3D::SFNode*> (containerField);
+
+		if (sfnode)
+		{
+			getBrowserWindow () -> replaceNode (destNode, *sfnode, sourceNode, undoStep);
+		}
+		else
+		{
+			const auto mfnode = dynamic_cast <X3D::MFNode*> (containerField);
+
+			if (mfnode)
+			{
+				undoStep -> addUndoFunction (&X3D::MFNode::setValue, mfnode, *mfnode);
+				mfnode -> emplace_back (sourceNode);
+				undoStep -> addRedoFunction (&X3D::MFNode::setValue, mfnode, *mfnode);
+			}
+
+			// else shouldn't happen.
+		}
+
+		// Remove
+		switch (context -> get_selected_action ())
+		{
+			case Gdk::ACTION_MOVE:
+				remove_source_node (sourceParent, sourceField, sourceIndex, true, undoStep);
+				break;
+			case Gdk::ACTION_COPY:
+				remove_source_node (sourceParent, sourceField, sourceIndex, false, undoStep);
+				break;
+			default:
+				break;
+		}
+
+		getBrowserWindow () -> addUndoStep (undoStep);
+	}
+	catch (const X3D::X3DError &)
+	{
+	   __LOG__ << "No container field found." << std::endl;
 	}
 }
 
@@ -603,6 +792,15 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	if (not treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
 	   return;
 
+	switch (position)
+	{
+		case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
+		case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
+			return;
+		default:
+			break;
+	}
+
 	// Get destination field.
 
 	const auto destNodeIter = treeView -> get_model () -> get_iter (destinationPath);
@@ -639,7 +837,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	if (sourcePath .size () > 1)
 	{
 		if (not sourcePath .up ())
-			return;;
+			return;
 
 		const auto sourceParentIter = treeView -> get_model () -> get_iter (sourcePath);
 		sourceParent                = static_cast <X3D::SFNode*> (treeView -> get_object (sourceParentIter));
