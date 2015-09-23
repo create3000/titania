@@ -103,6 +103,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ExpandExternProtosMenuItem", m_ExpandExternProtosMenuItem);
 	m_builder -> get_widget ("ExpandPrototypeInstancesMenuItem", m_ExpandPrototypeInstancesMenuItem);
 	m_builder -> get_widget ("ExpandInlineNodesMenuItem", m_ExpandInlineNodesMenuItem);
+	m_builder -> get_widget ("UseLocaleMenuItem", m_UseLocaleMenuItem);
 	m_builder -> get_widget ("SceneMenu", m_SceneMenu);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
@@ -150,6 +151,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_ExpandExternProtosMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_expand_extern_protos_toggled));
 	m_ExpandPrototypeInstancesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_expand_prototype_instances_toggled));
 	m_ExpandInlineNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_expand_inline_nodes_toggled));
+	m_UseLocaleMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_use_locale_menu_item_toggled));
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_map));

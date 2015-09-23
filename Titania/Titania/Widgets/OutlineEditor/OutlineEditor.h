@@ -263,6 +263,10 @@ private:
 	void
 	on_expand_inline_nodes_toggled () final override;
 
+	virtual
+	void
+	on_use_locale_menu_item_toggled () final override;
+
 	///  @name Operations
 
 	void

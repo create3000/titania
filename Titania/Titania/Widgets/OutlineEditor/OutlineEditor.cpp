@@ -99,6 +99,9 @@ OutlineEditor::initialize ()
 	getExpandPrototypeInstancesMenuItem () .set_active (getConfig () .getBoolean ("expandPrototypeInstances"));
 	getExpandInlineNodesMenuItem ()        .set_active (getConfig () .getBoolean ("expandInlineNodes"));
 
+	if (getConfig () .hasItem ("useLocale"))
+	 getUseLocaleMenuItem () .set_active (getConfig () .getBoolean ("useLocale"));
+
 	realized = true;
 
 	getScene ()            .addInterest (this, &OutlineEditor::set_scene);
@@ -1054,6 +1057,13 @@ OutlineEditor::on_expand_inline_nodes_toggled ()
 	getConfig () .setItem ("expandInlineNodes", getExpandInlineNodesMenuItem () .get_active ());
 	treeView -> set_expand_inline_nodes (getExpandInlineNodesMenuItem () .get_active ());
 	set_executionContext ();
+}
+
+void
+OutlineEditor::on_use_locale_menu_item_toggled ()
+{
+	getConfig () .setItem ("useLocale", getUseLocaleMenuItem () .get_active ());
+	treeView -> set_use_locale (getUseLocaleMenuItem () .get_active ());
 }
 
 void

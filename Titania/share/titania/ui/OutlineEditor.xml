@@ -413,6 +413,22 @@
                 <signal name="toggled" handler="on_expand_inline_nodes_toggled" swapped="no"/>
               </object>
             </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkCheckMenuItem" id="UseLocaleMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Use Locale</property>
+                <property name="use_underline">True</property>
+                <property name="active">True</property>
+                <signal name="toggled" handler="on_use_locale_menu_item_toggled" swapped="no"/>
+              </object>
+            </child>
           </object>
         </child>
       </object>

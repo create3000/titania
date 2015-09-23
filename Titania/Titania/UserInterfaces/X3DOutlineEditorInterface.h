@@ -258,6 +258,10 @@ public:
 	getExpandInlineNodesMenuItem () const
 	{ return *m_ExpandInlineNodesMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getUseLocaleMenuItem () const
+	{ return *m_UseLocaleMenuItem; }
+
 	Gtk::Menu &
 	getSceneMenu () const
 	{ return *m_SceneMenu; }
@@ -424,6 +428,10 @@ public:
 
 	virtual
 	void
+	on_use_locale_menu_item_toggled () = 0;
+
+	virtual
+	void
 	on_map () = 0;
 
 	virtual
@@ -491,6 +499,7 @@ private:
 	Gtk::CheckMenuItem*             m_ExpandExternProtosMenuItem;
 	Gtk::CheckMenuItem*             m_ExpandPrototypeInstancesMenuItem;
 	Gtk::CheckMenuItem*             m_ExpandInlineNodesMenuItem;
+	Gtk::CheckMenuItem*             m_UseLocaleMenuItem;
 	Gtk::Menu*                      m_SceneMenu;
 	Gtk::Window*                    m_Window;
 	Gtk::Box*                       m_Widget;

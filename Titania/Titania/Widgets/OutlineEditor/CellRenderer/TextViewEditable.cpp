@@ -58,12 +58,13 @@
 namespace titania {
 namespace puck {
 
-TextViewEditable::TextViewEditable (const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const Glib::ustring & path, bool multiline) :
+TextViewEditable::TextViewEditable (const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const Glib::ustring & path, const bool multiline, const bool useLocale) :
 	   Glib::ObjectBase (typeid (TextViewEditable)),
 	X3DTextViewEditable (multiline),
 	               node (node),
 	              field (field),
-	               path (path)
+	               path (path),
+	          useLocale (useLocale)
 {
 	get_textview () .signal_populate_popup () .connect (sigc::mem_fun (this, &TextViewEditable::on_textview_populate_popup));
 }
@@ -128,12 +129,18 @@ TextViewEditable::on_reset_activate ()
 	{
 		const auto defaultField = node -> getDeclaration () -> getField (field -> getName ());
 
-		set_text (get_field_value (defaultField, false));
-		
-		editing_done ();
+		set_text (get_field_value (defaultField, false, useLocale));
 	}
 	catch (...)
-	{ }
+	{
+	   // Custom fields support.
+
+		const auto defaultField = node -> getBrowser () -> getSupportedField (field -> getTypeName ());
+
+		set_text (get_field_value (defaultField, false, useLocale));
+	}
+		
+	editing_done ();
 }
 
 void

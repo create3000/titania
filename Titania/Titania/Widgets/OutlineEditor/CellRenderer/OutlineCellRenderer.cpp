@@ -204,7 +204,7 @@ OutlineCellRenderer::on_data ()
 			property_editable () = true;
 			set_alignment (0, 0);
 
-			property_text () = get_field_value (static_cast <X3D::X3DFieldDefinition*> (get_object ()), true);
+			property_text () = get_field_value (static_cast <X3D::X3DFieldDefinition*> (get_object ()), true, treeView -> get_use_locale ());
 			break;
 		}
 		case OutlineIterType::X3DField:
@@ -739,8 +739,8 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 			const auto field  = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 			const int  x_pad  = ICON_X_PAD + icon_width + NAME_X_PAD + property_xpad ();
 
-			textview .reset (new TextViewEditable (*node, field, path, field -> isArray () or dynamic_cast <X3D::SFString*> (field)));
-			textview -> set_text (get_field_value (field, false));
+			textview .reset (new TextViewEditable (*node, field, path, field -> isArray () or dynamic_cast <X3D::SFString*> (field), treeView -> get_use_locale ()));
+			textview -> set_text (get_field_value (field, false, treeView -> get_use_locale ()));
 			textview -> set_margin_left (x_pad);
 			textview -> set_margin_top (property_ypad ());
 			textview -> set_margin_bottom (property_ypad ());
@@ -816,7 +816,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 	}
 
 	const auto value  = field -> create ();
-	const auto locale = std::locale ();
+	const auto locale = treeView -> get_use_locale () ? std::locale () : std::locale::classic ();
 
 	if (value -> fromLocaleString (string, locale))
 	{

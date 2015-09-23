@@ -63,7 +63,7 @@ class TextViewEditable :
 {
 public:
 
-	TextViewEditable (const X3D::SFNode &, X3D::X3DFieldDefinition* const, const Glib::ustring &, bool = true);
+	TextViewEditable (const X3D::SFNode &, X3D::X3DFieldDefinition* const, const Glib::ustring &, const bool, const bool);
 
 	const X3D::SFNode &
 	get_node () const
@@ -102,6 +102,7 @@ private:
 	X3D::SFNode              node;
 	X3D::X3DFieldDefinition* field;
 	const Glib::ustring      path;
+	const bool               useLocale;
 
 };
 

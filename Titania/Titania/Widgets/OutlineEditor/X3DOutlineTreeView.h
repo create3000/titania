@@ -139,6 +139,13 @@ public:
 	get_expand_inline_nodes () const
 	{ return expandInlineNodes; }
 
+	void
+	set_use_locale (const bool);
+
+	bool
+	get_use_locale () const
+	{ return useLocale; }
+
 	///  @name Iter access
 
 	std::vector <Gtk::TreeModel::iterator>
@@ -319,6 +326,7 @@ private:
 	bool expandExternProtos;
 	bool expandPrototypeInstances;
 	bool expandInlineNodes;
+	bool useLocale;
 
 	std::unique_ptr <AdjustmentObject> hadjustment;
 	std::unique_ptr <AdjustmentObject> vadjustment;

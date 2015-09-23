@@ -63,7 +63,7 @@ static constexpr X3D::Image::size_type HEIGHT_MAX = 16;
 
 static
 std::string
-get_field_value (const X3D::SFImage & field, const bool ellipsize)
+get_field_value (const X3D::SFImage & field, const bool ellipsize, const bool)
 {
 	if (ellipsize)
 	{
@@ -92,7 +92,7 @@ get_field_value (const X3D::SFImage & field, const bool ellipsize)
 template <class Type>
 static
 std::string
-array_to_string (const Type & array, const bool ellipsize)
+array_to_string (const Type & array, const bool ellipsize, const bool)
 {
 	std::ostringstream ostream;
 
@@ -122,7 +122,7 @@ array_to_string (const Type & array, const bool ellipsize)
 
 static
 std::string
-array_to_string (const X3D::MFImage & array, const bool ellipsize)
+array_to_string (const X3D::MFImage & array, const bool ellipsize, const bool useLocale)
 {
 	if (ellipsize)
 	{
@@ -136,11 +136,11 @@ array_to_string (const X3D::MFImage & array, const bool ellipsize)
 		for (const auto & value : basic::make_range (array .begin (), lines - 1))
 		{
 			ostream
-				<< get_field_value (value, true)
+				<< get_field_value (value, true, useLocale)
 				<< X3D::Generator::ForceBreak;
 		}
 
-		ostream << array [lines - 1];
+		ostream << get_field_value (array [lines - 1], true, useLocale);
 
 		if (lines < array .size ())
 		{
@@ -152,12 +152,12 @@ array_to_string (const X3D::MFImage & array, const bool ellipsize)
 		return ostream .str ();
 	}
 
-	return array_to_string <X3D::MFImage> (array, false);
+	return array_to_string <X3D::MFImage> (array, false, useLocale);
 }
 
 static
 std::string
-get_field_value (X3D::X3DFieldDefinition* const field, const bool ellipsize)
+get_field_value (const X3D::X3DFieldDefinition* const field, const bool ellipsize, const bool useLocale)
 {
 	X3D::Generator::NicestStyle ();
 
@@ -167,76 +167,76 @@ get_field_value (X3D::X3DFieldDefinition* const field, const bool ellipsize)
 			return "";
 
 		case X3D::X3DConstants::SFImage:
-			return get_field_value (*static_cast <X3D::SFImage*> (field), ellipsize);
+			return get_field_value (*static_cast <const X3D::SFImage*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::SFString:
-			return static_cast <X3D::SFString*> (field) -> getValue ();
+			return static_cast <const X3D::SFString*> (field) -> getValue ();
 
 		case X3D::X3DConstants::MFBool:
-			return array_to_string (*static_cast <X3D::MFBool*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFBool*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFColor:
-			return array_to_string (*static_cast <X3D::MFColor*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFColor*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFColorRGBA:
-			return array_to_string (*static_cast <X3D::MFColorRGBA*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFColorRGBA*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFDouble:
-			return array_to_string (*static_cast <X3D::MFDouble*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFDouble*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFFloat:
-			return array_to_string (*static_cast <X3D::MFFloat*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFFloat*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFImage:
-			return array_to_string (*static_cast <X3D::MFImage*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFImage*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFInt32:
-			return array_to_string (*static_cast <X3D::MFInt32*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFInt32*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFMatrix3d:
-			return array_to_string (*static_cast <X3D::MFMatrix3d*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFMatrix3d*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFMatrix3f:
-			return array_to_string (*static_cast <X3D::MFMatrix3f*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFMatrix3f*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFMatrix4d:
-			return array_to_string (*static_cast <X3D::MFMatrix4d*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFMatrix4d*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFMatrix4f:
-			return array_to_string (*static_cast <X3D::MFMatrix4f*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFMatrix4f*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFNode:
 			return "";
 
 		case X3D::X3DConstants::MFRotation:
-			return array_to_string (*static_cast <X3D::MFRotation*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFRotation*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFString:
-			return array_to_string (*static_cast <X3D::MFString*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFString*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFTime:
-			return array_to_string (*static_cast <X3D::MFTime*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFTime*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFVec2d:
-			return array_to_string (*static_cast <X3D::MFVec2d*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFVec2d*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFVec2f:
-			return array_to_string (*static_cast <X3D::MFVec2f*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFVec2f*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFVec3d:
-			return array_to_string (*static_cast <X3D::MFVec3d*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFVec3d*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFVec3f:
-			return array_to_string (*static_cast <X3D::MFVec3f*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFVec3f*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFVec4d:
-			return array_to_string (*static_cast <X3D::MFVec4d*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFVec4d*> (field), ellipsize, useLocale);
 
 		case X3D::X3DConstants::MFVec4f:
-			return array_to_string (*static_cast <X3D::MFVec4f*> (field), ellipsize);
+			return array_to_string (*static_cast <const X3D::MFVec4f*> (field), ellipsize, useLocale);
 
 		default:
-			return field -> toLocaleString ();
+			return useLocale ? field -> toLocaleString () : field -> toString ();
 	}
 }
 

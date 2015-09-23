@@ -79,6 +79,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	      expandExternProtos (false),
 	expandPrototypeInstances (false),
 	       expandInlineNodes (false),
+	               useLocale (true),
 	             hadjustment (new AdjustmentObject ()),
 	             vadjustment (new AdjustmentObject ())
 {
@@ -126,6 +127,13 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	//
 
 	set_execution_context (executionContext);
+}
+
+void
+X3DOutlineTreeView::set_use_locale (const bool value)
+{
+	useLocale = value;
+	queue_draw ();
 }
 
 Gtk::TreeModel::Path
