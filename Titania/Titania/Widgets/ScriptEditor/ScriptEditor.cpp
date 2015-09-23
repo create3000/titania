@@ -252,6 +252,8 @@ ScriptEditor::on_save_clicked ()
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
+
+	getBrowserWindow () -> on_save ();
 	return;
 }
 

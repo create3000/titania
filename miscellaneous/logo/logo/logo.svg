@@ -14,11 +14,11 @@
    height="1024"
    id="svg4045"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="logo.svg"
-   inkscape:export-filename="/home/holger/Projekte/Titania/Library/Tests/images/image.png"
-   inkscape:export-xdpi="45"
-   inkscape:export-ydpi="45">
+   inkscape:export-filename="/home/holger/Projekte/Titania/Titania/share/titania/ui/images/logo.256.png"
+   inkscape:export-xdpi="22.5"
+   inkscape:export-ydpi="22.5">
   <defs
      id="defs4047">
     <filter
@@ -398,8 +398,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.20629883"
-     inkscape:cx="114.78684"
-     inkscape:cy="1422.8329"
+     inkscape:cx="328.06968"
+     inkscape:cy="1461.6116"
      inkscape:document-units="px"
      inkscape:current-layer="layer5"
      showgrid="true"
@@ -478,7 +478,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -487,13 +487,6 @@
      id="layer5"
      inkscape:label="Hintergrund"
      style="display:inline">
-    <rect
-       style="fill:#3c3f4e;fill-opacity:1;stroke:none;display:inline"
-       id="rect3249"
-       width="2048"
-       height="1024"
-       x="-512"
-       y="0" />
     <rect
        style="fill:#000000;fill-opacity:1;stroke:none"
        id="rect3312"
