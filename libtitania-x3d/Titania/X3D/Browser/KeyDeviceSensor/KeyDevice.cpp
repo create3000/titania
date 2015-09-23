@@ -51,6 +51,7 @@
 #include "KeyDevice.h"
 
 #include "../Browser.h"
+#include "../Selection.h"
 
 #include "../../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
 
@@ -168,7 +169,7 @@ KeyDevice::on_key_press_event (GdkEventKey* event)
 	}
 
 	getBrowser () -> getKeyDeviceSensorNode () -> setActionKeyPressEvent (event -> keyval);
-	return false;
+	return not getBrowser () -> getSelection () -> isEnabled ();
 }
 
 bool
@@ -188,7 +189,7 @@ KeyDevice::on_key_release_event (GdkEventKey* event)
 	}
 
 	getBrowser () -> getKeyDeviceSensorNode () -> setActionKeyReleaseEvent (event -> keyval);
-	return false;
+	return not getBrowser () -> getSelection () -> isEnabled ();
 }
 
 void

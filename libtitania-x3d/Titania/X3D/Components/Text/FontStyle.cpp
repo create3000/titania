@@ -215,6 +215,9 @@ FontStyle::getTextGeometry (Text* const text) const
 void
 FontStyle::set_font ()
 {
+	// Set the font size to large text, otherwise it can crash in some cases and this prevents triangulation errors.
+	constexpr double FONT_SIZE = 100;
+
 	// Create a polygon font from a TrueType file.
 
 	polygonFont = getPolygonFont (family ());
@@ -223,14 +226,13 @@ FontStyle::set_font ()
 	{
 		polygonFont -> UseDisplayList (false);
 
-		// Set the font size to large text, otherwise it can crash in some cases and this prevents triangulation errors.
-		polygonFont -> FaceSize (100);
+		polygonFont -> FaceSize (FONT_SIZE);
 
 		// Calculate lineHeight.
-		lineHeight = spacing ();
+		lineHeight = FONT_SIZE * spacing ();
 
 		// Calculate scale.
-		scale = size () / 100;
+		scale = size () / FONT_SIZE;
 	}
 	else
 		polygonFont .reset ();
