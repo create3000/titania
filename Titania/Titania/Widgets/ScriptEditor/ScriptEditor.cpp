@@ -233,11 +233,9 @@ ScriptEditor::on_save_clicked ()
 	if (not node)
 		return;
 
-	const auto cdata = node -> getCDATA ();
-	const auto text  = getTextBuffer () -> get_text ();
-
-	if (text == cdata -> get1Value (index))
-		return;
+	const auto cdata   = node -> getCDATA ();
+	const auto text    = getTextBuffer () -> get_text ();
+	const auto current = cdata -> get1Value (index);
 
 	cdata -> removeInterest (this, &ScriptEditor::set_cdata);
 	cdata -> addInterest (this, &ScriptEditor::connectCDATA);
@@ -250,7 +248,9 @@ ScriptEditor::on_save_clicked ()
 	cdata -> set1Value (index, text);
 	undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, *cdata);
 
-	getBrowserWindow () -> addUndoStep (undoStep);
+	if (text not_eq current)
+		getBrowserWindow () -> addUndoStep (undoStep);
+
 	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
 
 	getBrowserWindow () -> on_save ();
