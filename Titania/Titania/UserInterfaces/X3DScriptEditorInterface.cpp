@@ -72,10 +72,12 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Paned", m_Paned);
+	m_builder -> get_widget ("SidePaned", m_SidePaned);
 	m_builder -> get_widget ("NodeIndexBox", m_NodeIndexBox);
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
+	m_builder -> get_widget ("ConsoleBox", m_ConsoleBox);
 	m_builder -> get_widget ("ScriptEditor", m_ScriptEditor);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("SaveButton", m_SaveButton);

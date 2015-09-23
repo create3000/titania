@@ -64,6 +64,7 @@ namespace puck {
 
 class BrowserWindow;
 class NodeIndex;
+class Console;
 
 class ScriptEditor :
 	virtual public X3DScriptEditorInterface,
@@ -158,6 +159,7 @@ private:
 	NameEntry                   nodeName;
 	X3D::SFNode                 node;
 	size_t                      index;
+	std::unique_ptr <Console>   console;
 
 };
 

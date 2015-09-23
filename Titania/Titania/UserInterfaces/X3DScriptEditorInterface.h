@@ -134,6 +134,10 @@ public:
 	getPaned () const
 	{ return *m_Paned; }
 
+	Gtk::Paned &
+	getSidePaned () const
+	{ return *m_SidePaned; }
+
 	Gtk::Box &
 	getNodeIndexBox () const
 	{ return *m_NodeIndexBox; }
@@ -149,6 +153,10 @@ public:
 	Gtk::Button &
 	getRenameButton () const
 	{ return *m_RenameButton; }
+
+	Gtk::Box &
+	getConsoleBox () const
+	{ return *m_ConsoleBox; }
 
 	Gtk::Box &
 	getScriptEditor () const
@@ -228,10 +236,12 @@ private:
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Paned*                    m_Paned;
+	Gtk::Paned*                    m_SidePaned;
 	Gtk::Box*                      m_NodeIndexBox;
 	Gtk::Box*                      m_NameBox;
 	Gtk::Entry*                    m_NameEntry;
 	Gtk::Button*                   m_RenameButton;
+	Gtk::Box*                      m_ConsoleBox;
 	Gtk::Box*                      m_ScriptEditor;
 	Gtk::ScrolledWindow*           m_ScrolledWindow;
 	Gtk::ToolButton*               m_SaveButton;

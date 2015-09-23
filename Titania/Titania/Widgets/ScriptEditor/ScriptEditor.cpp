@@ -53,6 +53,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
+#include "../Console/Console.h"
 
 #include <Titania/String.h>
 #include <gtksourceviewmm/init.h>
@@ -72,7 +73,8 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	               nodeIndex (new NodeIndex (browserWindow)),
 	                nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                    node (),
-	                   index (0)
+	                   index (0),
+	                 console (new Console (browserWindow))
 {
 	Gsv::init ();
 	setup ();
@@ -87,6 +89,9 @@ ScriptEditor::initialize ()
 
 	if (getConfig () .hasItem ("paned"))
 		getPaned () .set_position (getConfig () .getInteger ("paned"));
+
+	if (getConfig () .hasItem ("sidePaned"))
+		getSidePaned () .set_position (getConfig () .getInteger ("sidePaned"));
 
 	getTextBuffer () -> get_undo_manager () -> signal_can_undo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_undo_changed));
 	getTextBuffer () -> get_undo_manager () -> signal_can_redo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_redo_changed));
@@ -125,6 +130,8 @@ ScriptEditor::initialize ()
 								  });
 
 	getSaveButton () .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_S, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+
+	console -> reparent (getConsoleBox (), getWindow ());
 }
 
 void
@@ -357,7 +364,9 @@ ScriptEditor::set_loadState (const X3D::LoadState loadState)
 
 ScriptEditor::~ScriptEditor ()
 {
-	getConfig () .setItem ("paned", getPaned () .get_position ());
+	getConfig () .setItem ("paned",     getPaned ()     .get_position ());
+	getConfig () .setItem ("sidePaned", getSidePaned () .get_position ());
+
 	dispose ();
 }
 
