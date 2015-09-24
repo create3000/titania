@@ -135,6 +135,25 @@ ScriptEditor::initialize ()
 	console -> reparent (getConsoleBox (), getWindow ());
 }
 
+bool
+ScriptEditor::isModified () const
+{
+	if (not node)
+	   return false;
+	
+	if (modified)
+		return true;
+
+	const auto   cdata   = node -> getCDATA ();
+	const auto   text    = getTextBuffer () -> get_text ();
+	const auto & current = cdata -> get1Value (index);
+
+	if (text not_eq current)
+	   return true;
+	
+	return false;
+}
+
 void
 ScriptEditor::on_map ()
 {
@@ -159,8 +178,6 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 {
 	if (not check_apply ())
 		return;
-
-	isModified (false);
 
 	X3DScriptEditor::set_node (value);
 	X3DShaderPartEditor::set_node (value);
@@ -215,6 +232,8 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 		
 		set_loadState (X3D::NOT_STARTED_STATE);
 	}
+
+	isModified (false);
 }
 
 bool
@@ -282,9 +301,9 @@ ScriptEditor::on_apply_clicked ()
 	if (not node)
 		return;
 
-	const auto cdata   = node -> getCDATA ();
-	const auto text    = getTextBuffer () -> get_text ();
-	const auto current = cdata -> get1Value (index);
+	const auto   cdata   = node -> getCDATA ();
+	const auto   text    = getTextBuffer () -> get_text ();
+	const auto & current = cdata -> get1Value (index);
 
 	cdata -> removeInterest (this, &ScriptEditor::set_cdata);
 	cdata -> addInterest (this, &ScriptEditor::connectCDATA);

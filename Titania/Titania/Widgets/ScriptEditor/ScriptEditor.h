@@ -80,8 +80,7 @@ public:
 	/// @name Member access
 
 	bool
-	isModified () const
-	{ return modified; }
+	isModified () const;
 
 	const Glib::RefPtr <Gsv::Buffer> &
 	getTextBuffer () const
