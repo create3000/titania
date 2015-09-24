@@ -322,7 +322,10 @@ ScriptEditor::on_apply_clicked ()
 		isModified (false);
 	}
 	else
+	{
 		cdata -> set1Value (index, text);
+		getBrowserWindow () -> isModified (getBrowser (), true);
+	}
 
 	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
 	return;
