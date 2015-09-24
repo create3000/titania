@@ -503,6 +503,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 	{
 		if (not copy)
 			isModified (getBrowser (), false);
+		
 		return true;
 	}
 

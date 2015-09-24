@@ -124,6 +124,10 @@ public:
 
 	/// @name Operations
 
+	virtual
+	bool
+	save (const basic::uri &, const bool, const bool) final override;
+
 	void
 	expandNodes (const X3D::MFNode &);
 
