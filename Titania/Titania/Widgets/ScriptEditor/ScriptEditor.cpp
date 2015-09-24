@@ -304,28 +304,21 @@ ScriptEditor::on_apply_clicked ()
 	const auto cdata = node -> getCDATA ();
 	const auto text  = getTextBuffer () -> get_text ();
 
+	cdata -> removeInterest (this, &ScriptEditor::set_cdata);
+	cdata -> addInterest (this, &ScriptEditor::connectCDATA);
+
+	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), cdata -> getName () .c_str ()));
+
+	undoStep -> addObjects (node);
+
+	undoStep -> addUndoFunction (&X3D::MFString::setValue, cdata, *cdata);
+	cdata -> set1Value (index, text);
+	undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, *cdata);
+
 	if (isModified ())
-	{
-		cdata -> removeInterest (this, &ScriptEditor::set_cdata);
-		cdata -> addInterest (this, &ScriptEditor::connectCDATA);
-
-		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), cdata -> getName () .c_str ()));
-
-		undoStep -> addObjects (node);
-
-		undoStep -> addUndoFunction (&X3D::MFString::setValue, cdata, *cdata);
-		cdata -> set1Value (index, text);
-		undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, *cdata);
-
 		getBrowserWindow () -> addUndoStep (undoStep);
 
-		isModified (false);
-	}
-	else
-	{
-		cdata -> set1Value (index, text);
-		getBrowserWindow () -> isModified (getBrowser (), true);
-	}
+	isModified (false);
 
 	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
 	return;
