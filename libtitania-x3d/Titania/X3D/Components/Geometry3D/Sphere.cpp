@@ -100,7 +100,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	getBrowser () -> getSphereOptions () .removeInterest (this, &Sphere::update);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
-	
+
 	if (isInitialized ())
 		getBrowser () -> getSphereOptions () .addInterest (this, &Sphere::update);
 }

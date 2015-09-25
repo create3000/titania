@@ -1,9 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.cpp">
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="3" Column="3" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.cpp" Line="2" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

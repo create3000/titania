@@ -79,9 +79,6 @@ public:
 
 	/// @name Member access
 
-	bool
-	isModified () const;
-
 	const Glib::RefPtr <Gsv::Buffer> &
 	getTextBuffer () const
 	{ return textBuffer; }
@@ -93,12 +90,6 @@ public:
 	const Gsv::View &
 	getTextView () const
 	{ return textView; }
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_apply_clicked () final override;
 
 	///  @name Destruction
 
@@ -114,10 +105,6 @@ private:
 	void
 	initialize () final override;
 
-	void
-	isModified (const bool value)
-	{ modified = value; }
-
 	///  @name Event handlers
 
 	virtual
@@ -131,13 +118,14 @@ private:
 	set_node (const X3D::SFNode &);
 
 	bool
-	check_apply ();
-
-	bool
 	on_focus_in_event (GdkEventFocus*);
 
 	bool
 	on_focus_out_event (GdkEventFocus*);
+
+	virtual
+	void
+	on_apply_clicked () final override;
 
 	virtual
 	void
@@ -167,7 +155,6 @@ private:
 
 	///  @name Members
 
-	bool                        modified;
 	Glib::RefPtr <Gsv::Buffer>  textBuffer;
 	Gsv::View                   textView;
 	std::unique_ptr <NodeIndex> nodeIndex;

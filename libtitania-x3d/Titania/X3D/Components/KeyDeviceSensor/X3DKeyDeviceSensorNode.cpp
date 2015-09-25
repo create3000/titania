@@ -68,7 +68,7 @@ X3DKeyDeviceSensorNode::initialize ()
 
 	getExecutionContext () -> isLive () .addInterest (this, &X3DKeyDeviceSensorNode::set_live);
 	isLive () .addInterest (this, &X3DKeyDeviceSensorNode::set_live);
-	
+
 	set_live ();
 }
 

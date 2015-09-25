@@ -426,7 +426,7 @@ throw (Error <INVALID_X3D>,
 	std::string whiteSpaces;
 
 	value_type x, y, z, angle;
-	
+
 	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
 	if (Grammar::Number <value_type> (istream, x))

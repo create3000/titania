@@ -68,7 +68,6 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	X3DScriptEditorInterface (get_ui ("ScriptEditor.xml"), gconf_dir ()),
 				X3DScriptEditor (),
 	     X3DShaderPartEditor (),
-	                modified (false),
 	              textBuffer (Gsv::Buffer::create ()),
 	                textView (textBuffer),
 	               nodeIndex (new NodeIndex (browserWindow)),
@@ -135,25 +134,6 @@ ScriptEditor::initialize ()
 	console -> reparent (getConsoleBox (), getWindow ());
 }
 
-bool
-ScriptEditor::isModified () const
-{
-	if (not node)
-	   return false;
-	
-	if (modified)
-		return true;
-
-	const auto   cdata   = node -> getCDATA ();
-	const auto   text    = getTextBuffer () -> get_text ();
-	const auto & current = cdata -> get1Value (index);
-
-	if (text not_eq current)
-	   return true;
-	
-	return false;
-}
-
 void
 ScriptEditor::on_map ()
 {
@@ -176,9 +156,6 @@ ScriptEditor::set_label ()
 void
 ScriptEditor::set_node (const X3D::SFNode & value)
 {
-	if (not check_apply ())
-		return;
-
 	X3DScriptEditor::set_node (value);
 	X3DShaderPartEditor::set_node (value);
 
@@ -232,51 +209,6 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 		
 		set_loadState (X3D::NOT_STARTED_STATE);
 	}
-
-	isModified (false);
-}
-
-bool
-ScriptEditor::check_apply ()
-{
-	if (not isModified ())
-		return true;
-
-	if (not node)
-		return true;
-
-	getApplyWarningMessage () .set_text (basic::sprintf (_ ("Do you want to apply changes to %s »%s« before closing?"),
-	                                                     node -> getTypeName () .c_str (),
-	                                                     node -> getName () .empty ()
-	                                                     ? _ ("Unnamed")
-	                                                     : node -> getName () .c_str ()));
-
-	const auto responseId = getApplyScriptWarningDialog () .run ();
-
-	getApplyScriptWarningDialog () .hide ();
-
-	switch (responseId)
-	{
-		case Gtk::RESPONSE_OK:
-		{
-		   // Apply.
-			on_apply_clicked ();
-			return true;
-		}
-		case Gtk::RESPONSE_CANCEL:
-		case Gtk::RESPONSE_DELETE_EVENT:
-		{
-		   // Cancel.
-			return false;
-		}
-		default:
-		{
-		   // Close without apply.
-			return true;
-		}
-	}
-
-	return true;
 }
 
 bool
@@ -315,10 +247,7 @@ ScriptEditor::on_apply_clicked ()
 	cdata -> set1Value (index, text);
 	undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, *cdata);
 
-	if (isModified ())
-		getBrowserWindow () -> addUndoStep (undoStep);
-
-	isModified (false);
+	getBrowserWindow () -> addUndoStep (undoStep);
 
 	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
 	return;
@@ -341,8 +270,8 @@ ScriptEditor::on_can_undo_changed ()
 {
 	getUndoButton () .set_sensitive (getTextBuffer () -> can_undo ());
 
-	isModified (getTextBuffer () -> can_undo ());
-	getBrowserWindow () -> isModified (getBrowser (), true);
+	if (node)
+		getBrowserWindow () -> isModified (X3D::BrowserPtr (node -> getBrowser ()), true);
 }
 
 void
