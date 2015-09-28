@@ -157,7 +157,7 @@ TwoSidedMaterial::eventsProcessed ()
 	glShininess = math::clamp <float> (shininess (), 0, 1) * 128;
 
 	// Back
-	
+
 	if (separateBackColor ())
 	{
 		const float backAlpha = 1 - math::clamp <float> (backTransparency (), 0, 1);
@@ -186,27 +186,27 @@ TwoSidedMaterial::eventsProcessed ()
 	}
 	else
 	{
-		glBackAmbientColor [0] = ambientIntensity () * diffuseColor () .getRed ();
-		glBackAmbientColor [1] = ambientIntensity () * diffuseColor () .getGreen ();
-		glBackAmbientColor [2] = ambientIntensity () * diffuseColor () .getBlue ();
-		glBackAmbientColor [3] = alpha;
+		glBackAmbientColor [0] = glAmbientColor [0];
+		glBackAmbientColor [1] = glAmbientColor [1];
+		glBackAmbientColor [2] = glAmbientColor [2];
+		glBackAmbientColor [3] = glAmbientColor [3];
 
-		glBackDiffuseColor [0] = diffuseColor () .getRed ();
-		glBackDiffuseColor [1] = diffuseColor () .getGreen ();
-		glBackDiffuseColor [2] = diffuseColor () .getBlue ();
-		glBackDiffuseColor [3] = alpha;
+		glBackDiffuseColor [0] = glDiffuseColor [0];
+		glBackDiffuseColor [1] = glDiffuseColor [1];
+		glBackDiffuseColor [2] = glDiffuseColor [2];
+		glBackDiffuseColor [3] = glDiffuseColor [3];
 
-		glBackSpecularColor [0] = specularColor () .getRed ();
-		glBackSpecularColor [1] = specularColor () .getGreen ();
-		glBackSpecularColor [2] = specularColor () .getBlue ();
-		glBackSpecularColor [3] = alpha;
+		glBackSpecularColor [0] = glSpecularColor [0];
+		glBackSpecularColor [1] = glSpecularColor [1];
+		glBackSpecularColor [2] = glSpecularColor [2];
+		glBackSpecularColor [3] = glSpecularColor [3];
 
-		glBackEmissiveColor [0] = emissiveColor () .getRed ();
-		glBackEmissiveColor [1] = emissiveColor () .getGreen ();
-		glBackEmissiveColor [2] = emissiveColor () .getBlue ();
-		glBackEmissiveColor [3] = alpha;
+		glBackEmissiveColor [0] = glEmissiveColor [0];
+		glBackEmissiveColor [1] = glEmissiveColor [1];
+		glBackEmissiveColor [2] = glEmissiveColor [2];
+		glBackEmissiveColor [3] = glEmissiveColor [3];
 
-		glBackShininess = math::clamp <float> (shininess (), 0, 1) * 128;
+		glBackShininess = glShininess;
 	}
 }
 

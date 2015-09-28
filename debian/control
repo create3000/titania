@@ -25,7 +25,7 @@ Build-Depends: debhelper (>= 5),
                firefox-dev,
                libgtop2-dev
 
-Homepage: https://titania.create3000.de/
+Homepage: http://titania.create3000.de/
 Package: titania
 Architecture: any
 Depends: ${shlibs:Depends},
@@ -41,7 +41,7 @@ Depends: ${shlibs:Depends},
          libfontconfig1, 
          libftgl2, 
          libpcrecpp0, 
-         libmagick++5, 
+         libmagick++-6.q16-5, 
          libcurl3, 
          libsqlite3-0, 
          libgstreamermm-0.10-2,
