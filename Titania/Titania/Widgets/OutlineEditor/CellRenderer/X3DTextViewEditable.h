@@ -79,6 +79,9 @@ public:
 	///  @name Member access
 
 	void
+	set_padding (const int, const int, const int, const int);
+
+	void
 	set_validated (bool value)
 	{ validated = value; }
 

@@ -737,14 +737,14 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 			const auto parent = treeView -> get_model () -> get_iter (parentPath);
 			const auto node   = static_cast <X3D::SFNode*> (treeView -> get_object (parent));
 			const auto field  = static_cast <X3D::X3DFieldDefinition*> (get_object ());
-			const int  x_pad  = ICON_X_PAD + icon_width + NAME_X_PAD + property_xpad ();
+			const int  margin = ICON_X_PAD + icon_width + NAME_X_PAD;
 
 			textview .reset (new TextViewEditable (*node, field, path, field -> isArray () or dynamic_cast <X3D::SFString*> (field), treeView -> get_use_locale ()));
+
 			textview -> set_text (get_field_value (field, false, treeView -> get_use_locale ()));
-			textview -> set_margin_left (x_pad);
-			textview -> set_margin_top (property_ypad ());
-			textview -> set_margin_bottom (property_ypad ());
-			textview -> set_size_request (cell_area .get_width () - x_pad, cell_area .get_height ());
+			textview -> set_margin_left (margin);
+			textview -> set_padding (property_ypad (), property_xpad (), property_ypad (), property_xpad ());
+			textview -> set_size_request (cell_area .get_width () - margin, cell_area .get_height ());
 
 			textview -> signal_editing_done () .connect (sigc::mem_fun (this, &OutlineCellRenderer::on_editing_done));
 			textview -> signal_remove_widget () .connect (sigc::mem_fun (this, &OutlineCellRenderer::on_remove_widget));

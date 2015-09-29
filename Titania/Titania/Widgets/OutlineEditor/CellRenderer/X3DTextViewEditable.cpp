@@ -67,11 +67,11 @@ X3DTextViewEditable::X3DTextViewEditable (const bool multiline) :
 	get_style_context () -> add_class ("titania-textview-editable");
 	get_style_context () -> add_class ("entry");
 	set_policy (Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-	set_visible (true);
 
 	textview .set_editable (true);
-	textview .set_visible (true);
 	add (textview);
+
+	show_all ();
 
 	textview .signal_button_press_event () .connect (sigc::mem_fun (this, &X3DTextViewEditable::on_textview_button_press_event_before), false);
 	textview .signal_button_press_event () .connect (sigc::mem_fun (this, &X3DTextViewEditable::on_textview_button_press_event_after));
@@ -84,6 +84,15 @@ X3DTextViewEditable::start_editing_vfunc (GdkEvent* event)
 {
 	property_editing_canceled () = false;
 	validated                    = false;
+}
+
+void
+X3DTextViewEditable::set_padding (const int top, const int right, const int bottom, const int left)
+{
+	textview .set_margin_top (top);
+	textview .set_margin_right (right);
+	textview .set_margin_bottom (bottom);
+	textview .set_margin_left (left);
 }
 
 void

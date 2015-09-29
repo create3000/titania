@@ -120,6 +120,7 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	                  animation (),
 	                 timeSensor (),
 	          interpolatorIndex (),
+	              interpolators (),
 	                      nodes (),
 	                  fromPoint (),
 	                translation (0),
@@ -506,6 +507,7 @@ AnimationEditor::set_interpolators ()
 
 					foundNodes .emplace (node -> getId (), node);
 					interpolatorIndex .emplace (field, interpolator);
+					interpolators .emplace (interpolator);
 					interpolator -> getField ("value_changed") -> addInterest (this, &AnimationEditor::set_value);
 				}
 				catch (const X3D::X3DError &)
@@ -551,10 +553,11 @@ AnimationEditor::set_interpolators ()
 void
 AnimationEditor::removeInterpolators ()
 {
-	for (const auto & pair : interpolatorIndex)
-		pair .second -> getField ("value_changed") -> removeInterest (this, &AnimationEditor::set_value);
+	for (const auto & interpolator : interpolators)
+		interpolator -> getField ("value_changed") -> removeInterest (this, &AnimationEditor::set_value);
 
 	interpolatorIndex .clear ();
+	interpolators     .clear ();
 }
 
 void
@@ -577,6 +580,8 @@ AnimationEditor::on_remove_member ()
 	{
 		case 1:
 		{
+		   // Remove Animation
+
 			const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Animation"));
 
 			getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { animation }, undoStep);
@@ -585,29 +590,55 @@ AnimationEditor::on_remove_member ()
 		}
 		case 2:
 		{
+		   // Remove Node
+
 			try
 			{
+				const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Animation Member"));
+
+				undoStep -> addUndoFunction (&AnimationEditor::set_interpolators, this);
+
+				// Find all interpolators connected to this node:
+
 				const auto & node = nodes .at ((*selected) [columns .id]);
 				
-				X3D::MFNode interpolators;
+				Interpolators interpolatorsToRemove;
 
 				for (const auto & field : node -> getFieldDefinitions ())
 				{
-					try
-					{
-						interpolators .emplace_back (interpolatorIndex .at (field));
-					}
-					catch (const std::out_of_range &)
-					{ }
+					const auto iter = interpolatorIndex .find (field);
+
+					if (iter == interpolatorIndex .end ())
+						continue;
+
+					const auto & interpolator = iter -> second;
+
+					interpolatorsToRemove .emplace (interpolator);
+
+					getBrowserWindow () -> deleteRoute (getExecutionContext (), X3D::SFNode (interpolator), "value_changed", node, field -> getName (), undoStep);
+
+					interpolatorIndex .erase (iter);
 				}
 
+			   // If a interpolator is connected to other members, remove this interpolator from the list of interpolators to remove.
+				
+				for (const auto & pair : interpolatorIndex)
+				{
+					const auto iter = interpolatorsToRemove .find (pair .second);
+
+					if (iter not_eq interpolatorsToRemove .end ())
+						interpolatorsToRemove .erase (iter);
+				}
+
+			   // Remove all Interpolators now found.
+				
 				if (not interpolators .empty ())
 				{
-					const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Animation Member"));
-
-					getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), interpolators, undoStep);
-					getBrowserWindow () -> addUndoStep (undoStep);
+					getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), X3D::MFNode (interpolatorsToRemove .begin (), interpolatorsToRemove .end ()), undoStep);
 				}
+
+				undoStep -> addRedoFunction (&AnimationEditor::set_interpolators, this);
+				getBrowserWindow () -> addUndoStep (undoStep);
 
 				// Must be explicitly removed if no interpolator is connected to member.
 				removeNode (node);
@@ -621,17 +652,44 @@ AnimationEditor::on_remove_member ()
 		}
 		case 3:
 		{
+		   // Remove field
+
 			try
 			{
 				const auto   parent       = selected -> parent ();
 				const auto & node         = nodes .at ((*parent) [columns .id]);
 				const auto   field        = node -> getFieldDefinitions () .at ((*selected) [columns .id]);
 				const auto & interpolator = interpolatorIndex .at (field);
+					
+				// We have found the interpolators connected to this node and field.
 				
 				const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Interpolator"));
 
-				getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { interpolator }, undoStep);
-				getBrowserWindow () -> addUndoStep (undoStep);			
+				undoStep -> addUndoFunction (&AnimationEditor::set_interpolators, this);
+				getBrowserWindow () -> deleteRoute (getExecutionContext (), X3D::SFNode (interpolator), "value_changed", node, field -> getName (), undoStep);
+
+				interpolatorIndex .erase (field);
+
+			   // If the interpolator is connected to other members, don't remove the interpolator.
+
+			   bool isConnectedToOtherMembers = false;
+				
+				for (const auto & pair : interpolatorIndex)
+				{
+					if (pair .second == interpolator)
+					{
+					   isConnectedToOtherMembers = true;
+						break;
+					}
+				}
+						
+				if (not isConnectedToOtherMembers)
+					getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { interpolator }, undoStep);
+
+				undoStep -> addRedoFunction (&AnimationEditor::set_interpolators, this);
+				getBrowserWindow () -> addUndoStep (undoStep);
+
+				set_interpolators ();
 			}
 			catch (const std::out_of_range &)
 			{ }
@@ -1075,11 +1133,11 @@ AnimationEditor::on_update_fraction ()
 
 	const double fraction = getFrameAdjustment () -> get_value () / getDuration ();
 
-	for (const auto & pair : interpolatorIndex)
+	for (const auto & interpolator : interpolators)
 	{
 		try
 		{
-			pair .second -> getField <X3D::SFFloat> ("set_fraction") = fraction;
+			interpolator -> getField <X3D::SFFloat> ("set_fraction") = fraction;
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -1105,6 +1163,8 @@ AnimationEditor::on_time ()
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Keyframe Animation Properties"));
 	const auto name     = getNewNameEntry () .get_text ();
+
+	undoStep -> addUndoFunction (&Gtk::DrawingArea::queue_draw, std::ref (getDrawingArea ()));
 
 	if (getScaleKeyframesButton () .get_active ())
 		scaleKeyframes (getDuration (), getDurationAdjustment () -> get_value (), undoStep);
@@ -1138,6 +1198,8 @@ AnimationEditor::on_time ()
 
 	// Build interpolators.
 	setInterpolators (undoStep);
+
+	undoStep -> addRedoFunction (&Gtk::DrawingArea::queue_draw, std::ref (getDrawingArea ()));
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -1739,10 +1801,10 @@ AnimationEditor::removeKeyframes ()
 
 	X3D::MFNode interpolatorsToRemove;
 
-	for (const auto & interpolator : interpolatorIndex)
+	for (const auto & interpolator : interpolators)
 	{
-		if (interpolator .second -> getMetaData <X3D::MFInt32> ("/Interpolator/key", true) .empty ())
-			interpolatorsToRemove .emplace_back (interpolator .second);
+		if (interpolator  -> getMetaData <X3D::MFInt32> ("/Interpolator/key", true) .empty ())
+			interpolatorsToRemove .emplace_back (interpolator);
 	}
 
 	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), interpolatorsToRemove, undoStep);
@@ -1796,8 +1858,8 @@ AnimationEditor::scaleKeyframes (const int32_t fromDuration, const int32_t toDur
 	if (fromDuration == toDuration)
 		return;
 
-	for (const auto & interpolator : interpolatorIndex)
-		scaleKeyframes (interpolator .second, fromDuration, toDuration, undoStep);
+	for (const auto & interpolator : interpolators)
+		scaleKeyframes (interpolator, fromDuration, toDuration, undoStep);
 }
 
 void
@@ -1818,8 +1880,10 @@ AnimationEditor::scaleKeyframes (const X3D::X3DPtr <X3D::X3DNode> & interpolator
 void
 AnimationEditor::setInterpolators (const UndoStepPtr & undoStep)
 {
-	for (const auto & pair : interpolatorIndex)
-		setInterpolator (pair .second, undoStep);
+	// Build interpolators.
+
+	for (const auto & interpolator : interpolators)
+		setInterpolator (interpolator, undoStep);
 }
 
 void
@@ -2197,6 +2261,7 @@ AnimationEditor::getInterpolator (const std::string & typeName,
 
 		const X3D::X3DPtr <X3D::X3DNode> interpolatorNode (interpolator);
 		interpolatorIndex .emplace (field, interpolatorNode);
+		interpolators .emplace (interpolatorNode);
 
 		undoStep -> addObjects (animation);
 		getBrowserWindow () -> emplaceBack (animation -> children (), interpolator, undoStep);

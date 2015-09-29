@@ -529,6 +529,7 @@ private:
 	};
 
 	using InterpolatorIndex = std::map <const X3D::X3DFieldDefinition*, X3D::X3DPtr <X3D::X3DNode>>;
+	using Interpolators     = std::set <X3D::X3DPtr <X3D::X3DNode>>;
 	using FrameKey          = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath>;
 	using CopiedFrame       = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath, std::vector <double>, std::string>;
 	using FrameArray        = std::vector <std::pair <FrameKey, X3D::Box2d>>;
@@ -558,6 +559,7 @@ private:
 	X3D::X3DPtr <X3D::Group>            animation;
 	X3D::X3DPtr <X3D::TimeSensor>       timeSensor;
 	InterpolatorIndex                   interpolatorIndex;
+	Interpolators                       interpolators;
 	std::map <size_t, X3D::SFNode>      nodes;
 	X3D::Vector2d                       fromPoint;
 	double                              translation;
