@@ -97,7 +97,8 @@ Script::initialize ()
 {
 	X3DScriptNode::initialize ();
 
-	url () .addInterest (this, &Script::set_url);
+	metadata () .addInterest (this, &Script::catchEventsProcessed);
+	url ()      .addInterest (this, &Script::set_url);
 
 	requestImmediateLoad ();
 }
@@ -182,9 +183,6 @@ Script::requestImmediateLoad ()
 				
 				// Initialize.
 
-				isLive () .addInterest (javaScript -> isLive ());
-
-				javaScript -> isLive () = isLive ();
 				javaScript -> setup ();
 
 				this -> javaScript = std::move (javaScript);
@@ -219,6 +217,14 @@ Script::set_url ()
 	setLoadState (NOT_STARTED_STATE);
 
 	requestImmediateLoad ();
+
+	catchEventsProcessed ();
+}
+
+void
+Script::catchEventsProcessed ()
+{
+	javaScript -> catchEventsProcessed ();
 }
 
 } // X3D

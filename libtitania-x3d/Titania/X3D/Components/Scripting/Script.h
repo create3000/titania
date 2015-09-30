@@ -163,6 +163,9 @@ private:
 	void
 	set_url ();
 
+	void
+	catchEventsProcessed ();
+
 	///  @name Static members
 
 	static const ComponentType component;

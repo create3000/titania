@@ -282,6 +282,8 @@ ScriptEditor::apply (const UndoStepPtr & undoStep)
 	undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, *cdata);
 
 	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
+
+	isModified (false);
 }
 
 void

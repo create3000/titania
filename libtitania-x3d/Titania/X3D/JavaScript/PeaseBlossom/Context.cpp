@@ -385,7 +385,7 @@ Context::initialize ()
 	X3DJavaScriptContext::initialize ();
 
 	getExecutionContext () -> isLive () .addInterest (this, &Context::set_live);
-	isLive () .addInterest (this, &Context::set_live);
+	getScriptNode () -> isLive () .addInterest (this, &Context::set_live);
 
 	set_live ();
 
@@ -428,7 +428,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 Context::set_live ()
 {
-	if (getExecutionContext () -> isLive () and isLive ())
+	if (getExecutionContext () -> isLive () and getScriptNode () -> isLive ())
 	{
 		if (program -> hasFunctionDeclaration ("prepareEvents"))
 			getBrowser () -> prepareEvents () .addInterest (this, &Context::prepareEvents);
@@ -566,6 +566,26 @@ Context::set_shutdown ()
 	//__LOG__ << objects .size () << std::endl;
 	assert (p -> getParents () .empty ());
 	assert (objects .empty ());
+}
+
+void
+Context::catchEventsProcessed ()
+{
+	if (getExecutionContext () -> isLive () and getScriptNode () -> isLive ())
+	{
+		if (program -> hasFunctionDeclaration ("eventsProcessed"))
+		{
+			getScriptNode () -> removeInterest (this, &Context::eventsProcessed);
+			getScriptNode () -> addInterest (this, &Context::connectEventsProcessed);
+		}
+	}
+}
+
+void
+Context::connectEventsProcessed ()
+{
+	getScriptNode () -> removeInterest (this, &Context::connectEventsProcessed);
+	getScriptNode () -> addInterest (this, &Context::eventsProcessed);
 }
 
 void

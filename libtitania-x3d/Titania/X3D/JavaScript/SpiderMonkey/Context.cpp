@@ -497,7 +497,7 @@ Context::initialize ()
 	setEventHandler ();
 
 	getExecutionContext () -> isLive () .addInterest (this, &Context::set_live);
-	isLive () .addInterest (this, &Context::set_live);
+	getScriptNode () -> isLive () .addInterest (this, &Context::set_live);
 
 	set_live ();
 
@@ -557,7 +557,7 @@ Context::setEventHandler ()
 void
 Context::set_live ()
 {
-	if (getExecutionContext () -> isLive () and isLive ())
+	if (getExecutionContext () -> isLive () and getScriptNode () -> isLive ())
 	{
 		if (not JSVAL_IS_VOID (prepareEventsFn))
 			getBrowser () -> prepareEvents () .addInterest (this, &Context::prepareEvents);
@@ -719,6 +719,26 @@ Context::callFunction (jsval function) const
 	jsval rval;
 
 	JS_CallFunctionValue (cx, global, function, 0, nullptr, &rval);
+}
+
+void
+Context::catchEventsProcessed ()
+{
+	if (getExecutionContext () -> isLive () and getScriptNode () -> isLive ())
+	{
+		if (not JSVAL_IS_VOID (eventsProcessedFn))
+		{
+			getScriptNode () -> removeInterest (this, &Context::eventsProcessed);
+			getScriptNode () -> addInterest (this, &Context::connectEventsProcessed);
+		}
+	}
+}
+
+void
+Context::connectEventsProcessed ()
+{
+	getScriptNode () -> removeInterest (this, &Context::connectEventsProcessed);
+	getScriptNode () -> addInterest (this, &Context::eventsProcessed);
 }
 
 void

@@ -138,6 +138,10 @@ public:
 	JSBool
 	require (const basic::uri &, jsval &);
 
+	virtual
+	void
+	catchEventsProcessed () final override;
+
 	///  @name Destruction
 
 	virtual
@@ -218,6 +222,9 @@ private:
 
 	void
 	callFunction (jsval) const;
+
+	void
+	connectEventsProcessed ();
 
 	static
 	void

@@ -135,6 +135,10 @@ public:
 	getFuture ()
 	{ return future; }
 
+	virtual
+	void
+	catchEventsProcessed () final override;
+
 	///  @name Destruction
 
 	virtual
@@ -193,6 +197,9 @@ private:
 
 	void
 	set_shutdown ();
+
+	void
+	connectEventsProcessed ();
 
 	void
 	setError (const pb::pbError &) const;
