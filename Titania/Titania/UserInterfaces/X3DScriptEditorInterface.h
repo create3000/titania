@@ -194,18 +194,6 @@ public:
 	getShaderTypeMenuButton () const
 	{ return *m_ShaderTypeMenuButton; }
 
-	Gtk::Dialog &
-	getApplyScriptWarningDialog () const
-	{ return *m_ApplyScriptWarningDialog; }
-
-	Gtk::Box &
-	getWidget1 () const
-	{ return *m_Widget1; }
-
-	Gtk::Label &
-	getApplyWarningMessage () const
-	{ return *m_ApplyWarningMessage; }
-
 	virtual
 	void
 	on_map () = 0;
@@ -263,9 +251,6 @@ private:
 	Gtk::ToggleToolButton*         m_DirectOutputToggleButton;
 	Gtk::ToggleToolButton*         m_MustEvaluateToggleButton;
 	Gtk::MenuToolButton*           m_ShaderTypeMenuButton;
-	Gtk::Dialog*                   m_ApplyScriptWarningDialog;
-	Gtk::Box*                      m_Widget1;
-	Gtk::Label*                    m_ApplyWarningMessage;
 
 };
 

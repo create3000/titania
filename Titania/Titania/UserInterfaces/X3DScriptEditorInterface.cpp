@@ -87,9 +87,6 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("DirectOutputToggleButton", m_DirectOutputToggleButton);
 	m_builder -> get_widget ("MustEvaluateToggleButton", m_MustEvaluateToggleButton);
 	m_builder -> get_widget ("ShaderTypeMenuButton", m_ShaderTypeMenuButton);
-	m_builder -> get_widget ("ApplyScriptWarningDialog", m_ApplyScriptWarningDialog);
-	m_builder -> get_widget ("Widget1", m_Widget1);
-	m_builder -> get_widget ("ApplyWarningMessage", m_ApplyWarningMessage);
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map));
@@ -107,7 +104,6 @@ X3DScriptEditorInterface::create (const std::string & filename)
 X3DScriptEditorInterface::~X3DScriptEditorInterface ()
 {
 	delete m_Window;
-	delete m_ApplyScriptWarningDialog;
 }
 
 } // puck

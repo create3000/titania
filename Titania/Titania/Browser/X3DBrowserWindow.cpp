@@ -192,8 +192,8 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 bool
 X3DBrowserWindow::save (const basic::uri & worldURL, const bool compressed, const bool copy)
 {
-	//if (scriptEditor -> isModified ())
-	//	scriptEditor -> on_apply_clicked ();
+	if (scriptEditor -> isModified ())
+		scriptEditor -> apply (std::make_shared <UndoStep> (""));
 
 	return X3DBrowserEditor::save (worldURL, compressed, copy);
 }

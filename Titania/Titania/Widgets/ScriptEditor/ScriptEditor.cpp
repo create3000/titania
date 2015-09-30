@@ -68,6 +68,7 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	X3DScriptEditorInterface (get_ui ("ScriptEditor.xml"), gconf_dir ()),
 				X3DScriptEditor (),
 	     X3DShaderPartEditor (),
+	                modified (false),
 	              textBuffer (Gsv::Buffer::create ()),
 	                textView (textBuffer),
 	               nodeIndex (new NodeIndex (browserWindow)),
@@ -134,6 +135,25 @@ ScriptEditor::initialize ()
 	console -> reparent (getConsoleBox (), getWindow ());
 }
 
+bool
+ScriptEditor::isModified () const
+{
+	if (not node)
+	   return false;
+	
+	if (modified)
+		return true;
+
+	const auto   cdata   = node -> getCDATA ();
+	const auto   text    = getTextBuffer () -> get_text ();
+	const auto & current = cdata -> get1Value (index);
+
+	if (text not_eq current)
+	   return true;
+	
+	return false;
+}
+
 void
 ScriptEditor::on_map ()
 {
@@ -161,9 +181,13 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 
 	if (node)
 	{
+		if (isModified ())
+			apply (std::make_shared <UndoStep> (""));
+
 		const auto cdata = node -> getCDATA ();
 
 		cdata -> removeInterest (this, &ScriptEditor::set_cdata);
+		cdata -> removeInterest (this, &ScriptEditor::connectCDATA);
 		
 		// Load state
 
@@ -209,6 +233,8 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 		
 		set_loadState (X3D::NOT_STARTED_STATE);
 	}
+
+	isModified (false);
 }
 
 bool
@@ -233,13 +259,21 @@ ScriptEditor::on_apply_clicked ()
 	if (not node)
 		return;
 
+	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Apply script to %s »%s«"), node -> getTypeName () .c_str (), node -> getCDATA () -> getName () .c_str ()));
+
+	apply (undoStep);
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+ScriptEditor::apply (const UndoStepPtr & undoStep)
+{
 	const auto cdata = node -> getCDATA ();
 	const auto text  = getTextBuffer () -> get_text ();
 
 	cdata -> removeInterest (this, &ScriptEditor::set_cdata);
 	cdata -> addInterest (this, &ScriptEditor::connectCDATA);
-
-	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), cdata -> getName () .c_str ()));
 
 	undoStep -> addObjects (node);
 
@@ -247,10 +281,7 @@ ScriptEditor::on_apply_clicked ()
 	cdata -> set1Value (index, text);
 	undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, *cdata);
 
-	getBrowserWindow () -> addUndoStep (undoStep);
-
 	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
-	return;
 }
 
 void
@@ -269,6 +300,14 @@ void
 ScriptEditor::on_can_undo_changed ()
 {
 	getUndoButton () .set_sensitive (getTextBuffer () -> can_undo ());
+
+	if (getTextBuffer () -> can_undo ())
+	{
+		isModified (true);
+
+		if (node)
+			getBrowserWindow () -> isModified (X3D::BrowserPtr (node -> getBrowser ()), true);
+	}
 }
 
 void

@@ -79,6 +79,9 @@ public:
 
 	/// @name Member access
 
+	bool
+	isModified () const;
+
 	const Glib::RefPtr <Gsv::Buffer> &
 	getTextBuffer () const
 	{ return textBuffer; }
@@ -90,6 +93,11 @@ public:
 	const Gsv::View &
 	getTextView () const
 	{ return textView; }
+
+	///  @name Event handlers
+
+	void
+	apply (const UndoStepPtr &);
 
 	///  @name Destruction
 
@@ -104,6 +112,12 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Member access
+
+	void
+	isModified (const bool value)
+	{ modified = value; }
 
 	///  @name Event handlers
 
@@ -155,6 +169,7 @@ private:
 
 	///  @name Members
 
+	bool                        modified;
 	Glib::RefPtr <Gsv::Buffer>  textBuffer;
 	Gsv::View                   textView;
 	std::unique_ptr <NodeIndex> nodeIndex;
