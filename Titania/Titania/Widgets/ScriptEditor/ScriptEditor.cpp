@@ -182,7 +182,7 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 	if (node)
 	{
 		if (isModified ())
-			apply (std::make_shared <UndoStep> (""));
+			on_apply_clicked ();
 
 		const auto cdata = node -> getCDATA ();
 
@@ -259,11 +259,11 @@ ScriptEditor::on_apply_clicked ()
 	if (not node)
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Apply script to %s »%s«"), node -> getTypeName () .c_str (), node -> getCDATA () -> getName () .c_str ()));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Apply Script"));
 
 	apply (undoStep);
 
-	getBrowserWindow () -> addUndoStep (undoStep);
+	getBrowserWindow () -> addUndoStep (X3D::BrowserPtr (node -> getBrowser ()), undoStep);
 }
 
 void

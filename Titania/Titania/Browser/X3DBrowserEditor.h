@@ -140,6 +140,9 @@ public:
 	void
 	addUndoStep (const UndoStepPtr &) final override;
 
+	void
+	addUndoStep (const X3D::BrowserPtr &, const UndoStepPtr &);
+
 	virtual
 	void
 	removeUndoStep () final override

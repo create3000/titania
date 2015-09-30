@@ -811,6 +811,12 @@ X3DBrowserEditor::addUndoStep (const UndoStepPtr & undoStep)
 }
 
 void
+X3DBrowserEditor::addUndoStep (const X3D::BrowserPtr & browser, const UndoStepPtr & undoStep)
+{
+	getUndoHistory (browser) .addUndoStep (undoStep);
+}
+
+void
 X3DBrowserEditor::undo ()
 {
 	getBrowser () -> grab_focus ();
