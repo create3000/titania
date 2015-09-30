@@ -228,7 +228,7 @@ X3DMaterialEditor::set_preview ()
 
 			twoSidedMaterial -> backDiffuseColor ()  .addInterest (backMaterial -> diffuseColor ());
 			twoSidedMaterial -> backSpecularColor () .addInterest (backMaterial -> specularColor ());
-			twoSidedMaterial -> backEmissiveColor () .addInterest (backMaterial -> specularColor ());
+			twoSidedMaterial -> backEmissiveColor () .addInterest (backMaterial -> emissiveColor ());
 
 			twoSidedMaterial -> backAmbientIntensity () .addInterest (backMaterial -> ambientIntensity ());
 			twoSidedMaterial -> backShininess ()        .addInterest (backMaterial -> shininess ());

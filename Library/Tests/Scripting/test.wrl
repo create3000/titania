@@ -34,7 +34,6 @@ TimeSensor { }
 Script {
   url "javascript:
 
-
 function initialize ()
 {
 	print (\"initialize\");
@@ -46,4 +45,5 @@ function eventsProcessed ()
 {
 	print (\"eventsProcessed\");
 }"
+  directOutput TRUE
 }
