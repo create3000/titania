@@ -114,6 +114,9 @@ private:
 	void
 	set_url (const X3D::SFString &);
 
+	void
+	close (const X3D::BrowserPtr &);
+
 	///  @name Members
 
 	History       history;

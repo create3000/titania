@@ -269,9 +269,6 @@ void
 ScriptEditor::on_can_undo_changed ()
 {
 	getUndoButton () .set_sensitive (getTextBuffer () -> can_undo ());
-
-	if (node)
-		getBrowserWindow () -> isModified (X3D::BrowserPtr (node -> getBrowser ()), true);
 }
 
 void

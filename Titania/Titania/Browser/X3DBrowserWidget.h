@@ -75,14 +75,17 @@ public:
 	getBrowsers () const
 	{ return browsers; }
 
+	const X3D::BrowserPtr &
+	getMasterBrowser () const
+	{ return masterBrowser; }
+
+	X3D::X3DPtrArray <X3D::Browser>::const_iterator
+	getBrowser (const basic::uri &) const;
+
 	virtual
 	const X3D::BrowserPtr &
 	getBrowser () const final override
 	{ return browser; }
-
-	const X3D::BrowserPtr &
-	getMasterBrowser () const
-	{ return masterBrowser; }
 
 	virtual
 	const X3D::X3DScenePtr &
@@ -203,9 +206,6 @@ protected:
 
 
 private:
-
-	X3D::X3DPtrArray <X3D::Browser>::const_iterator
-	getBrowser (const basic::uri &) const;
 
 	///  @name Event handlers
 

@@ -53,6 +53,7 @@
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
 
+#include <Titania/OS/cwd.h>
 #include <Titania/OS/home.h>
 #include <Titania/Stream/Base64.h>
 #include <Titania/String.h>
@@ -214,14 +215,42 @@ RecentView::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 
 }
 
 void
-RecentView::set_url (const X3D::SFString & URL)
+RecentView::set_url (const X3D::SFString & url)
 {
-	if (not getBrowserWindow () -> isLive ())
-		getBrowserWindow () -> getBrowser () -> endUpdate ();
+	basic::uri URL = url .str ();
 
-	getBrowserWindow () -> getBrowser () -> getSelection () -> isEnabled (getBrowserWindow () -> getSelection () -> isEnabled ());
+	if (URL .is_relative ())
+		URL = basic::uri (os::cwd ()) .transform (URL);
 
-	getBrowserWindow () -> load (getBrowserWindow () -> getBrowser (), URL .str ());
+	const auto & browsers = getBrowserWindow () -> getBrowsers ();
+	const auto   iter     = getBrowserWindow () -> getBrowser (URL);
+
+	if (iter not_eq browsers .cend ())
+	{
+		const X3D::BrowserPtr recentBrowser = getBrowser ();
+
+		getBrowserWindow () -> getBrowserNotebook () .set_current_page (iter - browsers .cbegin ());
+
+		// Closing this browser must be deferred, as this browser is currently processing events.
+		getBrowser () -> finished () .addInterest (this, &RecentView::close, recentBrowser);
+		getBrowser () -> addEvent ();
+	}
+	else
+	{
+		if (not getBrowserWindow () -> isLive ())
+			getBrowserWindow () -> getBrowser () -> endUpdate ();
+
+		getBrowserWindow () -> getBrowser () -> getSelection () -> isEnabled (getBrowserWindow () -> getSelection () -> isEnabled ());
+
+		getBrowserWindow () -> load (getBrowserWindow () -> getBrowser (), URL);
+	}
+}
+
+void
+RecentView::close (const X3D::BrowserPtr & browser)
+{
+	getBrowser () -> finished () .removeInterest (this, &RecentView::close);
+	getBrowserWindow () -> close (browser);
 }
 
 RecentView::~RecentView ()
