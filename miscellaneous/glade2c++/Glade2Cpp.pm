@@ -726,3 +726,5 @@ configure_event
   virtual bool on_configure_event(GdkEventConfigure* event);
 match_selected
   virtual bool on_match_selected(const TreeModel::iterator& iter);
+size_allocate
+  virtual void on_size_allocate(Allocation& allocation);
