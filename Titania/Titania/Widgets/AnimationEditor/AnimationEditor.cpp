@@ -1173,6 +1173,8 @@ AnimationEditor::on_time ()
 
 	getBrowserWindow () -> updateNamedNode (getExecutionContext (), name, X3D::SFNode (animation), undoStep);
 
+	// Adjust metadata
+
 	undoStep -> addUndoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/duration", getDuration ());
 	undoStep -> addRedoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/duration", getDurationAdjustment () -> get_value ());
 	animation -> setMetaData <int32_t> ("/Animation/duration", getDurationAdjustment () -> get_value ());
@@ -1182,6 +1184,8 @@ AnimationEditor::on_time ()
 	undoStep -> addRedoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/framesPerSecond", getFPSAdjustment () -> get_value ());
 	animation -> setMetaData <int32_t> ("/Animation/framesPerSecond", getFPSAdjustment () -> get_value ());
 	animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond") .addInterest (this, &AnimationEditor::set_frames_per_second);
+
+	// Adjust TimeSensor
 
 	const auto cycleInterval = getDuration () / (double) getFramesPerSecond ();
 	undoStep -> addUndoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> cycleInterval ()), timeSensor -> cycleInterval ());

@@ -60,14 +60,14 @@
 namespace titania {
 namespace puck {
 
-class AboutTab :
+class RecentView :
 	virtual public X3DBaseInterface
 {
 public:
 
 	///  @name Construction
 
-	AboutTab (X3DBrowserWindow* const);
+	RecentView (X3DBrowserWindow* const);
 
 	void
 	initialize ();
@@ -93,7 +93,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~AboutTab ();
+	~RecentView ();
 
 
 private:

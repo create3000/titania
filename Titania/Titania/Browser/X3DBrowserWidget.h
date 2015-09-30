@@ -60,7 +60,7 @@
 namespace titania {
 namespace puck {
 
-class AboutTab;
+class RecentView;
 class BrowserUserData;
 class UserData;
 
@@ -248,7 +248,7 @@ private:
 	X3D::X3DScenePtr                scene;
 	X3D::X3DExecutionContextPtr     executionContext;
 	X3D::Output                     worldURLOutput;
-	std::unique_ptr <AboutTab>      aboutTab;
+	std::unique_ptr <RecentView>    recentView;
 	double                          loadTime;
 	sigc::connection                timeout;
 

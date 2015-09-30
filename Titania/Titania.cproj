@@ -175,7 +175,6 @@
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DTransformEditor.cpp" />
     <Compile Include="Titania\Browser\X3DBrowserWindow.cpp" />
     <Compile Include="Titania\Browser\BrowserHistory.cpp" />
-    <Compile Include="Titania\Browser\AboutTab.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DNavigationInfoEditorInterface.cpp" />
     <Compile Include="Titania\Editors\NavigationInfoEditor\NavigationInfoEditor.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DLayoutEditor.cpp" />
@@ -202,6 +201,7 @@
     <Compile Include="Titania\Widgets\AnimationEditor\AnimationEditor.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditor.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DShaderPartEditor.cpp" />
+    <Compile Include="Titania\Browser\RecentView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1273,7 +1273,6 @@
     <None Include="share\titania\ui\icons\favicon.png" />
     <None Include="share\titania\ui\Accelerators.rc" />
     <None Include="share\titania\pages\about\tab.x3dv" />
-    <None Include="Titania\Browser\AboutTab.h" />
     <None Include="Titania\UserInterfaces\X3DNavigationInfoEditorInterface.h" />
     <None Include="Titania\Editors\NavigationInfoEditor\NavigationInfoEditor.h" />
     <None Include="Titania\ComposedWidgets\MFStringWidget.h" />
@@ -1856,6 +1855,7 @@
     <None Include="share\titania\ui\icons\PaintBrush.svg" />
     <None Include="share\titania\ui\icons\PrimitiveQuality.svg" />
     <None Include="share\titania\ui\icons\TextureQuality.svg" />
+    <None Include="Titania\Browser\RecentView.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

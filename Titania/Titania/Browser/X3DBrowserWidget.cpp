@@ -50,7 +50,7 @@
 
 #include "X3DBrowserWidget.h"
 
-#include "../Browser/AboutTab.h"
+#include "../Browser/RecentView.h"
 #include "../Browser/BrowserUserData.h"
 #include "../Browser/Image.h"
 #include "../Browser/UserData.h"
@@ -73,7 +73,7 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	                    scene (browser -> getExecutionContext ()),
 	         executionContext (browser -> getExecutionContext ()),
 	           worldURLOutput (),
-	                 aboutTab (new AboutTab (getBrowserWindow ()))
+	               recentView (new RecentView (getBrowserWindow ()))
 {
 	addChildren (masterBrowser, browsers, browser, scene, executionContext);
 }
@@ -83,7 +83,7 @@ X3DBrowserWidget::initialize ()
 {
 	X3DBrowserWindowInterface::initialize ();
 	
-	aboutTab -> initialize ();
+	recentView -> initialize ();
 
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
 	getBrowser () -> getBrowserOptions () -> splashScreen ()    = true;
@@ -339,8 +339,8 @@ X3DBrowserWidget::setTitle () const
 void
 X3DBrowserWidget::openRecent ()
 {
-	aboutTab -> loadPreview (getBrowser ());
-	aboutTab -> open ();
+	recentView -> loadPreview (getBrowser ());
+	recentView -> open ();
 }
 
 void
@@ -415,7 +415,7 @@ void
 X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
 	if (browser == getBrowser ())
-		aboutTab -> loadPreview (getBrowser ());
+		recentView -> loadPreview (getBrowser ());
 
 	loadTime = chrono::now ();
 
@@ -604,7 +604,7 @@ X3DBrowserWidget::setWorldURL (const X3D::X3DScenePtr & scene, const basic::uri 
 
 	worldURL_changed () .processInterests ();
 
-	aboutTab -> loadPreview (scene -> getBrowser ());
+	recentView -> loadPreview (scene -> getBrowser ());
 }
 
 bool
@@ -674,7 +674,7 @@ void
 X3DBrowserWidget::close (const X3D::BrowserPtr & browser)
 {
 	if (browser == getBrowser ())
-		aboutTab -> loadPreview (browser);
+		recentView -> loadPreview (browser);
 
 	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
 
@@ -692,7 +692,7 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser)
 bool
 X3DBrowserWidget::quit ()
 {
-	aboutTab -> loadPreview (getBrowser ());
+	recentView -> loadPreview (getBrowser ());
 
 	std::deque <std::string> worldURLs;
 	std::deque <std::string> browserHistories;
@@ -730,7 +730,7 @@ X3DBrowserWidget::quit ()
 void
 X3DBrowserWidget::on_switch_browser (Gtk::Widget*, guint pageNumber)
 {
-	aboutTab -> loadPreview (getBrowser ());
+	recentView -> loadPreview (getBrowser ());
 
 	setBrowser (browsers [pageNumber]);
 }

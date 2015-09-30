@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "AboutTab.h"
+#include "RecentView.h"
 
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
@@ -65,29 +65,29 @@ static constexpr size_t  PREVIEW_SIZE    = 192;
 static constexpr size_t  PREVIEW_QUALITY = 90;
 static const std::string PREVIEW_TYPE    = "JPG";
 
-AboutTab::AboutTab (X3DBrowserWindow* const browserWindow) :
+RecentView::RecentView (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	         history (),
-	           gconf (gconf_dir (), "AboutTab")
+	           gconf (gconf_dir (), "RecentView")
 {
 	// Don't use browserWindow here.
 	setup ();
 }
 
 void
-AboutTab::initialize ()
+RecentView::initialize ()
 {
-	getScene () .addInterest (this, &AboutTab::set_scene);
+	getScene () .addInterest (this, &RecentView::set_scene);
 }
 
 basic::uri
-AboutTab::getURL () const
+RecentView::getURL () const
 {
 	return get_page ("about/tab.x3dv");
 }
 
 void
-AboutTab::open ()
+RecentView::open ()
 {
 	if (getBrowserWindow () -> isEditor ())
 		getBrowserWindow () -> X3DBrowserWidget::open (getURL (), false);
@@ -99,7 +99,7 @@ AboutTab::open ()
 }
 
 void
-AboutTab::loadPreview (X3D::X3DBrowser* const browser)
+RecentView::loadPreview (X3D::X3DBrowser* const browser)
 {
 	try
 	{
@@ -118,7 +118,7 @@ AboutTab::loadPreview (X3D::X3DBrowser* const browser)
 }
 
 void
-AboutTab::set_scene ()
+RecentView::set_scene ()
 {
 	const auto & scene = getScene ();
 
@@ -138,9 +138,9 @@ AboutTab::set_scene ()
 		const auto & previousPage_changed = previousPage -> getField <X3D::SFInt32> ("value_changed");
 		const auto & nextPage_changed     = nextPage -> getField <X3D::SFInt32> ("value_changed");
 
-		beginTime            .addInterest (this, &AboutTab::set_page, scene .getValue (), X3D::SFInt32 (0));
-		previousPage_changed .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (previousPage_changed));
-		nextPage_changed     .addInterest (this, &AboutTab::set_page, scene .getValue (), std::cref (nextPage_changed));
+		beginTime            .addInterest (this, &RecentView::set_page, scene .getValue (), X3D::SFInt32 (0));
+		previousPage_changed .addInterest (this, &RecentView::set_page, scene .getValue (), std::cref (previousPage_changed));
+		nextPage_changed     .addInterest (this, &RecentView::set_page, scene .getValue (), std::cref (nextPage_changed));
 
 		set_page (scene, X3D::SFInt32 (getConfig () .getInteger ("currentPage")));
 	}
@@ -149,7 +149,7 @@ AboutTab::set_scene ()
 }
 
 void
-AboutTab::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 & page)
+RecentView::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 & page)
 {
 	if (page < 0)
 		return;
@@ -189,7 +189,7 @@ AboutTab::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 & 
 			text -> string ()                            = { item .at ("title") };
 			touchSensor -> description ()                = item .at ("worldURL");
 			URL -> getField <X3D::SFString> ("keyValue") = item .at ("worldURL");
-			URL -> getField <X3D::SFString> ("value_changed") .addInterest (this, &AboutTab::set_url);
+			URL -> getField <X3D::SFString> ("value_changed") .addInterest (this, &RecentView::set_url);
 
 			++ i;
 		}
@@ -214,7 +214,7 @@ AboutTab::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 & 
 }
 
 void
-AboutTab::set_url (const X3D::SFString & URL)
+RecentView::set_url (const X3D::SFString & URL)
 {
 	if (not getBrowserWindow () -> isLive ())
 		getBrowserWindow () -> getBrowser () -> endUpdate ();
@@ -224,7 +224,7 @@ AboutTab::set_url (const X3D::SFString & URL)
 	getBrowserWindow () -> load (getBrowserWindow () -> getBrowser (), URL .str ());
 }
 
-AboutTab::~AboutTab ()
+RecentView::~RecentView ()
 {
 	dispose ();
 }

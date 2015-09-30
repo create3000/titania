@@ -192,6 +192,9 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 bool
 X3DBrowserWindow::save (const basic::uri & worldURL, const bool compressed, const bool copy)
 {
+	//if (scriptEditor -> isModified ())
+	//	scriptEditor -> on_apply_clicked ();
+
 	return X3DBrowserEditor::save (worldURL, compressed, copy);
 }
 
