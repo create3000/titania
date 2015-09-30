@@ -381,8 +381,6 @@ NodeIndex::on_search_entry_key_press_event (GdkEventKey* event)
 		case GDK_KEY_Return:
 		case GDK_KEY_KP_Enter:
 		{
-			__LOG__ << getSearchEntry () .get_text () << std::endl;
-
 			try
 			{
 				setTypes ({ nodeTypes .at (getSearchEntry () .get_text ()) });

@@ -103,6 +103,7 @@ private:
 	void
 	set_string (const X3D::MFString & value);
 
+
 };
 
 } // puck

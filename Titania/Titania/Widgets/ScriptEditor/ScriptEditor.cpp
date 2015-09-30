@@ -203,13 +203,14 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 
 	set_label ();
 
+	getScriptEditor () .set_sensitive (node);
+	
 	if (node)
 	{
 		const auto cdata = node -> getCDATA ();
 
 		cdata -> addInterest (this, &ScriptEditor::set_cdata);
 
-		getScriptEditor () .set_sensitive (true);
 		set_cdata ();
 	
 		// Load state
@@ -225,7 +226,6 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 	else
 	{
 		on_map ();
-		getScriptEditor () .set_sensitive (false);
 
 		getTextBuffer () -> begin_not_undoable_action ();
 		getTextBuffer () -> set_text ("");
