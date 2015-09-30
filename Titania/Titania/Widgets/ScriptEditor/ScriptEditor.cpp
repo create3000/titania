@@ -303,10 +303,11 @@ ScriptEditor::on_can_undo_changed ()
 
 	if (getTextBuffer () -> can_undo ())
 	{
-		isModified (true);
-
 		if (node)
+		{
+			isModified (true);
 			getBrowserWindow () -> isModified (X3D::BrowserPtr (node -> getBrowser ()), true);
+		}
 	}
 }
 
