@@ -1,11 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="36" Column="36" />
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="45" Column="45" />
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.h" Line="2" Column="2" />
+      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.h" Line="61" Column="61" />
+      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="21" Column="21" />
+      <File FileName="Titania/Titania/Widgets/ViewpointList/ViewpointList.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/ViewpointList/ViewpointList.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/X3DOutlineTreeView.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/UserInterfaces/X3DNodeIndexInterface.h" Line="22" Column="22" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.1 -->
+<!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkListStore" id="ListStore">
@@ -13,6 +13,18 @@
       <!-- column-name ExportedNodes -->
       <column type="gchararray"/>
     </columns>
+  </object>
+  <object class="GtkListStore" id="SearchListStore">
+    <columns>
+      <!-- column-name TypeName -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkEntryCompletion" id="SearchEntryCompletion">
+    <property name="model">SearchListStore</property>
+    <property name="text_column">0</property>
+    <property name="inline_completion">True</property>
+    <signal name="match-selected" handler="on_search_entry_match_selected" after="yes" swapped="no"/>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">400</property>
@@ -63,6 +75,24 @@
                 <property name="position">1</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkSearchEntry" id="SearchEntry">
+                <property name="width_request">200</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="primary_icon_name">edit-find-symbolic</property>
+                <property name="primary_icon_activatable">False</property>
+                <property name="primary_icon_sensitive">False</property>
+                <property name="placeholder_text" translatable="yes">Find Node Type</property>
+                <property name="completion">SearchEntryCompletion</property>
+                <signal name="key-press-event" handler="on_search_entry_key_press_event" after="yes" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -74,12 +104,13 @@
           <object class="GtkScrolledWindow" id="ScrolledWindow">
             <property name="height_request">240</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can_focus">False</property>
             <property name="shadow_type">in</property>
             <child>
               <object class="GtkTreeView" id="TreeView">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
                 <property name="model">ListStore</property>
                 <property name="headers_clickable">False</property>
                 <property name="rules_hint">True</property>

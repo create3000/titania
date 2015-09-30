@@ -60,6 +60,12 @@
 namespace titania {
 namespace puck {
 
+namespace Search {
+
+static constexpr int TYPE_NAME = 0;
+
+};
+
 namespace Columns {
 
 static constexpr int TYPE_NAME      = 0;
@@ -77,6 +83,7 @@ NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	                types (),
 	                nodes (),
 	                 node (),
+	            nodeTypes (),
 	          hadjustment (new AdjustmentObject ()),
 	          vadjustment (new AdjustmentObject ())
 {
@@ -92,6 +99,20 @@ NodeIndex::initialize ()
 	getExecutionContext () .addInterest (this, &NodeIndex::set_executionContext);
 
 	set_executionContext ();
+
+	// Initialize SearchEntryCompletion:
+
+	for (const auto & node : getBrowser () -> getSupportedNodes ())
+	{
+		const auto row = getSearchListStore () -> append ();
+		row -> set_value (Search::TYPE_NAME, node -> getTypeName ());
+
+		nodeTypes .emplace (node -> getTypeName (), node -> getType () .back ());
+	}
+  
+	const auto cellrenderer = Gtk::manage (new Gtk::CellRendererText ());
+	getSearchEntryCompletion () -> pack_start (*cellrenderer, false);
+	getSearchEntryCompletion () -> add_attribute (*cellrenderer, "text", Search::TYPE_NAME);
 }
 
 void
@@ -350,6 +371,59 @@ NodeIndex::set_executionContext ()
 		scene -> exportedNodes_changed () .addInterest (this, &NodeIndex::refresh);
 
 	refresh ();
+}
+
+bool
+NodeIndex::on_search_entry_key_press_event (GdkEventKey* event)
+{
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Return:
+		case GDK_KEY_KP_Enter:
+		{
+			__LOG__ << getSearchEntry () .get_text () << std::endl;
+
+			try
+			{
+				setTypes ({ nodeTypes .at (getSearchEntry () .get_text ()) });
+			}
+			catch (const std::out_of_range &)
+			{
+			   setTypes ({ });
+			}
+
+			return true;
+		}
+		case GDK_KEY_Escape:
+		{
+			getSearchEntry () .set_text ("");
+			getTreeView () .grab_focus ();
+			return true;
+		}
+		default:
+			break;
+	}
+
+	return false;
+}
+
+bool
+NodeIndex::on_search_entry_match_selected (const TreeModel::iterator & iter)
+{
+	try
+	{
+	   Glib::ustring typeName;
+
+	   iter -> get_value (Search::TYPE_NAME, typeName);
+
+		setTypes ({ nodeTypes .at (typeName) });
+	}
+	catch (const std::out_of_range &)
+	{
+	   setTypes ({ });
+	}
+
+	return false;
 }
 
 void

@@ -102,6 +102,14 @@ public:
 	getListStore () const
 	{ return m_ListStore; }
 
+	const Glib::RefPtr <Gtk::ListStore> &
+	getSearchListStore () const
+	{ return m_SearchListStore; }
+
+	const Glib::RefPtr <Gtk::EntryCompletion> &
+	getSearchEntryCompletion () const
+	{ return m_SearchEntryCompletion; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -114,6 +122,10 @@ public:
 	getHeaderBox () const
 	{ return *m_HeaderBox; }
 
+	Gtk::SearchEntry &
+	getSearchEntry () const
+	{ return *m_SearchEntry; }
+
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
@@ -125,6 +137,14 @@ public:
 	Gtk::Box &
 	getFooterBox () const
 	{ return *m_FooterBox; }
+
+	virtual
+	bool
+	on_search_entry_match_selected (const TreeModel::iterator & iter) = 0;
+
+	virtual
+	bool
+	on_search_entry_key_press_event (GdkEventKey* event) = 0;
 
 	virtual
 	void
@@ -141,15 +161,18 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                   filename;
-	Glib::RefPtr <Gtk::Builder>   m_builder;
-	Glib::RefPtr <Gtk::ListStore> m_ListStore;
-	Gtk::Window*                  m_Window;
-	Gtk::Box*                     m_Widget;
-	Gtk::Box*                     m_HeaderBox;
-	Gtk::ScrolledWindow*          m_ScrolledWindow;
-	Gtk::TreeView*                m_TreeView;
-	Gtk::Box*                     m_FooterBox;
+	std::string                         filename;
+	Glib::RefPtr <Gtk::Builder>         m_builder;
+	Glib::RefPtr <Gtk::ListStore>       m_ListStore;
+	Glib::RefPtr <Gtk::ListStore>       m_SearchListStore;
+	Glib::RefPtr <Gtk::EntryCompletion> m_SearchEntryCompletion;
+	Gtk::Window*                        m_Window;
+	Gtk::Box*                           m_Widget;
+	Gtk::Box*                           m_HeaderBox;
+	Gtk::SearchEntry*                   m_SearchEntry;
+	Gtk::ScrolledWindow*                m_ScrolledWindow;
+	Gtk::TreeView*                      m_TreeView;
+	Gtk::Box*                           m_FooterBox;
 
 };
 

@@ -133,6 +133,14 @@ private:
 	set_executionContext ();
 
 	virtual
+	bool
+	on_search_entry_key_press_event (GdkEventKey*) final override;
+
+	virtual
+	bool
+	on_search_entry_match_selected (const TreeModel::iterator &) final override;
+
+	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
@@ -142,11 +150,12 @@ private:
 
 	///  @name Members
 
-	X3D::X3DExecutionContextPtr            executionContext;
-	IndexType                              index;
-	std::set <X3D::X3DConstants::NodeType> types;
-	X3D::MFNode                            nodes;
-	X3D::SFNode                            node;
+	X3D::X3DExecutionContextPtr                         executionContext;
+	IndexType                                           index;
+	std::set <X3D::X3DConstants::NodeType>              types;
+	X3D::MFNode                                         nodes;
+	X3D::SFNode                                         node;
+	std::map <std::string, X3D::X3DConstants::NodeType> nodeTypes;
 
 	std::unique_ptr <AdjustmentObject> hadjustment;
 	std::unique_ptr <AdjustmentObject> vadjustment;

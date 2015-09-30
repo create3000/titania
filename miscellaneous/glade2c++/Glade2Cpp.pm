@@ -55,6 +55,7 @@ $objects {$_} = true foreach qw(
 	Gtk::CellRendererToggle
 	Gtk::CellRendererPixbuf
 	Gtk::TextBuffer
+	Gtk::EntryCompletion
 );
 
 sub new
@@ -723,3 +724,5 @@ motion_notify_event
   virtual bool on_motion_notify_event(GdkEventMotion* event);
 configure_event
   virtual bool on_configure_event(GdkEventConfigure* event);
+match_selected
+  virtual bool on_match_selected(const TreeModel::iterator& iter);

@@ -61,15 +61,24 @@ X3DNodeIndexInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_ListStore = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
+	m_ListStore             = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
+	m_SearchListStore       = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("SearchListStore"));
+	m_SearchEntryCompletion = Glib::RefPtr <Gtk::EntryCompletion>::cast_dynamic (m_builder -> get_object ("SearchEntryCompletion"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBox", m_HeaderBox);
+	m_builder -> get_widget ("SearchEntry", m_SearchEntry);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("TreeView", m_TreeView);
 	m_builder -> get_widget ("FooterBox", m_FooterBox);
+
+	// Connect object Gtk::EntryCompletion with id 'SearchEntryCompletion'.
+	m_SearchEntryCompletion -> signal_match_selected () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_search_entry_match_selected), false);
+
+	// Connect object Gtk::SearchEntry with id 'SearchEntry'.
+	m_SearchEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_search_entry_key_press_event), false);
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_row_activated));
