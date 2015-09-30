@@ -77,10 +77,8 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("NewButton", m_NewButton);
-	m_builder -> get_widget ("OpenButton", m_OpenButton);
 	m_builder -> get_widget ("AddMemberButton", m_AddMemberButton);
 	m_builder -> get_widget ("RemoveMemberButton", m_RemoveMemberButton);
-	m_builder -> get_widget ("CloseButton", m_CloseButton);
 	m_builder -> get_widget ("CutButton", m_CutButton);
 	m_builder -> get_widget ("CopyButton", m_CopyButton);
 	m_builder -> get_widget ("PasteButton", m_PasteButton);
@@ -91,11 +89,15 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TimeButton", m_TimeButton);
 	m_builder -> get_widget ("KeyTypeButton", m_KeyTypeButton);
 	m_builder -> get_widget ("TimeLabel", m_TimeLabel);
+	m_builder -> get_widget ("CloseAnimationButton", m_CloseAnimationButton);
 	m_builder -> get_widget ("AnimationBox", m_AnimationBox);
+	m_builder -> get_widget ("Notebook", m_Notebook);
+	m_builder -> get_widget ("NodeIndexBox", m_NodeIndexBox);
 	m_builder -> get_widget ("TreeView", m_TreeView);
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
+	m_builder -> get_widget ("DrawingAreaBox", m_DrawingAreaBox);
 	m_builder -> get_widget ("DrawingArea", m_DrawingArea);
 	m_builder -> get_widget ("TranslationSlider", m_TranslationSlider);
 	m_builder -> get_widget ("ZoomOutButton", m_ZoomOutButton);
@@ -122,10 +124,8 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToolButton with id 'NewButton'.
 	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new));
-	m_OpenButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_open));
 	m_AddMemberButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_add_member));
 	m_RemoveMemberButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_remove_member));
-	m_CloseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_close));
 	m_CutButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_cut));
 	m_CopyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_copy));
 	m_PasteButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_paste));
@@ -136,6 +136,9 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ComboBoxText with id 'KeyTypeButton'.
 	m_KeyTypeButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_key_type_changed));
+
+	// Connect object Gtk::ToolButton with id 'CloseAnimationButton'.
+	m_CloseAnimationButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_close));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_draw () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_tree_view_draw));

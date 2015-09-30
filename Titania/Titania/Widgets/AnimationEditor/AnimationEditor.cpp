@@ -166,7 +166,13 @@ AnimationEditor::initialize ()
 
 	getBrowser ()           .addInterest (this, &AnimationEditor::set_animation, nullptr);
 	getExecutionContext ()  .addInterest (this, &AnimationEditor::set_animation, nullptr);
+
 	nodeIndex -> getNode () .addInterest (this, &AnimationEditor::set_animation);
+	nodeIndex -> getHeaderBox () .set_visible (false);
+	nodeIndex -> getFooterBox () .set_visible (false);
+	nodeIndex -> getScrolledWindow () .set_size_request (0, 0);
+	nodeIndex -> reparent (getNodeIndexBox (), getWindow ());
+	nodeIndex -> setAnimations ();
 }
 
 void
@@ -200,8 +206,8 @@ AnimationEditor::set_selection ()
 	const bool haveSelection = not getBrowserWindow () -> getSelection () -> getChildren () .empty ();
 	const auto groups        = getSelection <X3D::X3DGroupingNode> ({ X3D::X3DConstants::X3DGroupingNode });
 
-	getAddMemberButton () .set_sensitive (animation and haveSelection);
-	getNewButton ()       .set_sensitive (not groups .empty ());
+	getNewButton ()            .set_sensitive (not groups .empty ());
+	getAddMemberButton ()      .set_sensitive (animation and haveSelection);
 }
 
 int32_t
@@ -352,13 +358,6 @@ AnimationEditor::on_new_cycle_interval_changed ()
 }
 
 void
-AnimationEditor::on_open ()
-{
-	nodeIndex -> getWindow () .show ();
-	nodeIndex -> setAnimations ();
-}
-
-void
 AnimationEditor::set_animation (const X3D::SFNode & value)
 {
 	// Remove animation.
@@ -413,16 +412,18 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	(*master) [columns .tainted] = false;
 	(*master) [columns .visible] = true;
 
-	getCutButton ()        .set_sensitive (animation);
-	getCopyButton ()       .set_sensitive (animation);
-	getPasteButton ()      .set_sensitive (animation);
-	getFirstFrameButton () .set_sensitive (animation);
-	getPlayPauseButton ()  .set_sensitive (animation);
-	getLastFrameButton ()  .set_sensitive (animation);
-	getFrameSpinButton ()  .set_sensitive (animation);
-	getTimeButton ()       .set_sensitive (animation);
-	getKeyTypeButton ()    .set_sensitive (animation);
-	getAnimationBox ()     .set_sensitive (animation);
+	getCutButton ()            .set_sensitive (animation);
+	getCopyButton ()           .set_sensitive (animation);
+	getPasteButton ()          .set_sensitive (animation);
+	getFirstFrameButton ()     .set_sensitive (animation);
+	getPlayPauseButton ()      .set_sensitive (animation);
+	getLastFrameButton ()      .set_sensitive (animation);
+	getFrameSpinButton ()      .set_sensitive (animation);
+	getTimeButton ()           .set_sensitive (animation);
+	getKeyTypeButton ()        .set_sensitive (animation);
+	getCloseAnimationButton () .set_sensitive (animation);
+	getDrawingAreaBox ()       .set_sensitive (animation);
+	getNotebook ()             .set_current_page (animation ? 1 : 0);
 
 	if (animation)
 	{
@@ -1161,11 +1162,15 @@ AnimationEditor::on_time ()
 
 	using setMetaData = void (X3D::X3DNode::*) (const std::string &, const int32_t &);
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Keyframe Animation Properties"));
-	const auto name     = getNewNameEntry () .get_text ();
+	const auto undoStep        = std::make_shared <UndoStep> (_ ("Edit Keyframe Animation Properties"));
+	const auto name            = getNewNameEntry () .get_text ();
+	const bool durationChanged = getDuration () not_eq getDurationAdjustment () -> get_value ();
 
 	undoStep -> addUndoFunction (&Gtk::DrawingArea::queue_draw, std::ref (getDrawingArea ()));
 
+	if (durationChanged)
+		undoStep -> addUndoFunction (&AnimationEditor::on_zoom_fit, this);
+	
 	if (getScaleKeyframesButton () .get_active ())
 		scaleKeyframes (getDuration (), getDurationAdjustment () -> get_value (), undoStep);
 
@@ -1203,9 +1208,16 @@ AnimationEditor::on_time ()
 	// Build interpolators.
 	setInterpolators (undoStep);
 
+	if (durationChanged)
+	{
+		undoStep -> addRedoFunction (&AnimationEditor::on_zoom_fit, this);
+		on_zoom_fit ();
+	}
+
 	undoStep -> addRedoFunction (&Gtk::DrawingArea::queue_draw, std::ref (getDrawingArea ()));
 
 	getBrowserWindow () -> addUndoStep (undoStep);
+
 }
 
 void
@@ -1422,10 +1434,13 @@ AnimationEditor::on_zoom (const double position, const GdkScrollDirection direct
 void
 AnimationEditor::on_zoom_fit ()
 {
-	const double width = getDrawingArea () .get_width () - 2 * DEFAULT_TRANSLATION;
+	if (animation)
+	{
+		const double width = getDrawingArea () .get_width () - 2 * DEFAULT_TRANSLATION;
 
-	setScale (width / getDuration ());
-	setTranslation (DEFAULT_TRANSLATION);
+		setScale (width / getDuration ());
+		setTranslation (DEFAULT_TRANSLATION);
+	}
 }
 
 void

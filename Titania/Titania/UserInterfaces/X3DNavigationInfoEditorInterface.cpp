@@ -91,8 +91,6 @@ X3DNavigationInfoEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
-
-	// Connect object Gtk::Button with id 'IndexButton'.
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_index_clicked));
 
 	// Call construct handler of base class.

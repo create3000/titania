@@ -168,10 +168,6 @@ private:
 	void
 	on_new_cycle_interval_changed () final override;
 
-	virtual
-	void
-	on_open () final override;
-
 	void
 	set_animation (const X3D::SFNode &);
 

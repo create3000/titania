@@ -155,20 +155,12 @@ public:
 	{ return *m_NewButton; }
 
 	Gtk::ToolButton &
-	getOpenButton () const
-	{ return *m_OpenButton; }
-
-	Gtk::ToolButton &
 	getAddMemberButton () const
 	{ return *m_AddMemberButton; }
 
 	Gtk::ToolButton &
 	getRemoveMemberButton () const
 	{ return *m_RemoveMemberButton; }
-
-	Gtk::ToolButton &
-	getCloseButton () const
-	{ return *m_CloseButton; }
 
 	Gtk::ToolButton &
 	getCutButton () const
@@ -210,9 +202,21 @@ public:
 	getTimeLabel () const
 	{ return *m_TimeLabel; }
 
+	Gtk::ToolButton &
+	getCloseAnimationButton () const
+	{ return *m_CloseAnimationButton; }
+
 	Gtk::Paned &
 	getAnimationBox () const
 	{ return *m_AnimationBox; }
+
+	Gtk::Notebook &
+	getNotebook () const
+	{ return *m_Notebook; }
+
+	Gtk::Box &
+	getNodeIndexBox () const
+	{ return *m_NodeIndexBox; }
 
 	Gtk::TreeView &
 	getTreeView () const
@@ -229,6 +233,10 @@ public:
 	Gtk::Button &
 	getRenameButton () const
 	{ return *m_RenameButton; }
+
+	Gtk::Box &
+	getDrawingAreaBox () const
+	{ return *m_DrawingAreaBox; }
 
 	Gtk::DrawingArea &
 	getDrawingArea () const
@@ -312,19 +320,11 @@ public:
 
 	virtual
 	void
-	on_open () = 0;
-
-	virtual
-	void
 	on_add_member () = 0;
 
 	virtual
 	void
 	on_remove_member () = 0;
-
-	virtual
-	void
-	on_close () = 0;
 
 	virtual
 	void
@@ -357,6 +357,10 @@ public:
 	virtual
 	void
 	on_key_type_changed () = 0;
+
+	virtual
+	void
+	on_close () = 0;
 
 	virtual
 	bool
@@ -473,10 +477,8 @@ private:
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
 	Gtk::ToolButton*                       m_NewButton;
-	Gtk::ToolButton*                       m_OpenButton;
 	Gtk::ToolButton*                       m_AddMemberButton;
 	Gtk::ToolButton*                       m_RemoveMemberButton;
-	Gtk::ToolButton*                       m_CloseButton;
 	Gtk::ToolButton*                       m_CutButton;
 	Gtk::ToolButton*                       m_CopyButton;
 	Gtk::ToolButton*                       m_PasteButton;
@@ -487,11 +489,15 @@ private:
 	Gtk::ToolButton*                       m_TimeButton;
 	Gtk::ComboBoxText*                     m_KeyTypeButton;
 	Gtk::Label*                            m_TimeLabel;
+	Gtk::ToolButton*                       m_CloseAnimationButton;
 	Gtk::Paned*                            m_AnimationBox;
+	Gtk::Notebook*                         m_Notebook;
+	Gtk::Box*                              m_NodeIndexBox;
 	Gtk::TreeView*                         m_TreeView;
 	Gtk::Box*                              m_NameBox;
 	Gtk::Entry*                            m_NameEntry;
 	Gtk::Button*                           m_RenameButton;
+	Gtk::Box*                              m_DrawingAreaBox;
 	Gtk::DrawingArea*                      m_DrawingArea;
 	Gtk::Scrollbar*                        m_TranslationSlider;
 	Gtk::ToolButton*                       m_ZoomOutButton;

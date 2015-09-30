@@ -97,6 +97,8 @@ X3DInlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("URLTreeView", m_URLTreeView);
 	m_builder -> get_widget ("URLAddButton", m_URLAddButton);
 	m_builder -> get_widget ("URLRemoveButton", m_URLRemoveButton);
+
+	// Connect object Gtk::Button with id 'IndexButton'.
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_index_clicked));
 	m_ConvertMasterSelectionButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_convert_master_selection_clicked));
 	m_FoldBackIntoSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_fold_back_into_scene_clicked));
