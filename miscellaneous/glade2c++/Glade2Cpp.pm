@@ -728,3 +728,5 @@ match_selected
   virtual bool on_match_selected(const TreeModel::iterator& iter);
 size_allocate
   virtual void on_size_allocate(Allocation& allocation);
+search_changed
+  virtual void on_search_changed();

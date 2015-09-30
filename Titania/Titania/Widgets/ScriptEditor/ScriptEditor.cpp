@@ -60,6 +60,9 @@
 #include <gtksourceviewmm/languagemanager.h>
 #include <gtksourceviewmm/styleschememanager.h>
 
+#include <gtksourceview/gtksourcesearchsettings.h>
+#include <gtksourceview/gtksourcesearchcontext.h>
+
 namespace titania {
 namespace puck {
 
@@ -71,11 +74,14 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	                modified (false),
 	              textBuffer (Gsv::Buffer::create ()),
 	                textView (textBuffer),
+	          searchSettings (gtk_source_search_settings_new ()),
+	           searchContext (gtk_source_search_context_new (textBuffer -> gobj (), searchSettings)),
 	               nodeIndex (new NodeIndex (browserWindow)),
 	                nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                    node (),
 	                   index (0),
-	                 console (new Console (browserWindow))
+	                 console (new Console (browserWindow)),
+	                    keys ()
 {
 	Gsv::init ();
 	setup ();
@@ -101,8 +107,10 @@ ScriptEditor::initialize ()
 	getTextBuffer () -> set_highlight_matching_brackets (true);
 	getTextBuffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme ("tango"));
 
-	getTextView () .signal_focus_in_event ()  .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_in_event));
-	getTextView () .signal_focus_out_event () .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_out_event));
+	getTextView () .signal_focus_in_event ()    .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_in_event));
+	getTextView () .signal_focus_out_event ()   .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_out_event));
+	getTextView () .signal_key_press_event ()   .connect (sigc::mem_fun (*this, &ScriptEditor::on_key_press_event),   false);
+	getTextView () .signal_key_release_event () .connect (sigc::mem_fun (*this, &ScriptEditor::on_key_release_event), false);
 
 	getTextView () .set_show_right_margin (true);
 	getTextView () .set_right_margin_position (100);
@@ -133,6 +141,11 @@ ScriptEditor::initialize ()
 	getSaveButton () .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_S, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 
 	console -> reparent (getConsoleBox (), getWindow ());
+
+	// Search
+
+	getSearchBox () .unparent ();
+	getSearchOverlay () .add_overlay (getSearchBox ());
 }
 
 bool
@@ -402,10 +415,141 @@ ScriptEditor::set_loadState (const X3D::LoadState loadState)
 	}
 }
 
+/*
+ * Search and Replace
+ */
+
+bool
+ScriptEditor::on_search_focus_in_event (GdkEventFocus*)
+{
+	getBrowserWindow () -> hasAccelerators (false);
+	return false;
+}
+
+bool
+ScriptEditor::on_search_focus_out_event (GdkEventFocus*)
+{
+	getBrowserWindow () -> hasAccelerators (true);
+	return false;
+}
+
+bool
+ScriptEditor::on_key_press_event (GdkEventKey* event)
+{
+	keys .press (event);
+
+	switch (event -> keyval)
+	{
+		case GDK_KEY_f:
+		{
+			if (keys .control ())
+			{
+				getReplaceEntry ()      .set_visible (false);
+				getReplaceButtonsBox () .set_visible (false);
+			}
+		
+			break;
+		}
+		default:
+			break;
+	}
+
+	switch (event -> keyval)
+	{
+		case GDK_KEY_h:
+		{
+			if (keys .control ())
+			{
+				getReplaceEntry ()      .set_visible (true);
+				getReplaceButtonsBox () .set_visible (true);
+			}
+		   // Proceed with next case.
+		}
+		case GDK_KEY_f:
+		{
+			if (keys .control ())
+			{
+				if (not getSearchEntry () .has_focus ())
+					getSearchEntry () .set_text ("");
+			   
+				getSearchBox ()   .set_visible (true);
+				getSearchEntry () .grab_focus ();
+
+				Gsv::Buffer::iterator selectionBegin;
+				Gsv::Buffer::iterator selectionEnd;
+
+				textBuffer -> get_selection_bounds (selectionBegin, selectionEnd);
+
+				const auto selection = textBuffer -> get_text (selectionBegin, selectionEnd);
+
+				if (selection .length ())
+				{
+					getSearchEntry () .set_text (selection);
+					getSearchEntry () .select_region (0, selection .length ());
+					gtk_source_search_settings_set_search_text (searchSettings, selection .c_str ());
+				}
+
+				gtk_source_search_context_set_highlight (searchContext, true);
+				return true;
+			}
+
+			break;
+		}
+		default:
+			break;
+	}
+
+	return false;
+}
+
+bool
+ScriptEditor::on_key_release_event (GdkEventKey* event)
+{
+	keys .release (event);
+
+	return false;
+}
+
+void
+ScriptEditor::on_search_entry_changed ()
+{
+	gtk_source_search_settings_set_search_text (searchSettings, getSearchEntry () .get_text () .c_str ());
+}
+
+void
+ScriptEditor::on_search_previous_clicked ()
+{
+	__LOG__ << std::endl;
+}
+
+void
+ScriptEditor::on_search_next_clicked ()
+{
+	__LOG__ << std::endl;
+}
+
+void
+ScriptEditor::on_hide_search_clicked ()
+{
+	gtk_source_search_context_set_highlight (searchContext, false);
+
+	getSearchBox ()         .set_visible (false);
+	getReplaceEntry ()      .set_visible (false);
+	getReplaceButtonsBox () .set_visible (false);
+	getTextView ()          .grab_focus ();
+}
+
+/*
+ * Destructiond
+ */
+
 ScriptEditor::~ScriptEditor ()
 {
 	getConfig () .setItem ("paned",     getPaned ()     .get_position ());
 	getConfig () .setItem ("sidePaned", getSidePaned () .get_position ());
+
+	//how to delete searchContext;
+	//how to delete searchSettings;
 
 	dispose ();
 }

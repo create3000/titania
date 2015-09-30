@@ -167,16 +167,51 @@ private:
 	void
 	set_loadState (const X3D::LoadState);
 
+	///  @name Search and Replace
+
+	virtual
+	bool
+	on_search_focus_in_event (GdkEventFocus*) final override;
+
+	virtual
+	bool
+	on_search_focus_out_event (GdkEventFocus*) final override;
+
+	bool
+	on_key_press_event (GdkEventKey*);
+
+	bool
+	on_key_release_event (GdkEventKey*);
+
+	virtual
+	void
+	on_search_entry_changed () final override;
+
+	virtual
+	void
+	on_search_previous_clicked () final override;
+
+	virtual
+	void
+	on_search_next_clicked () final override;
+
+	virtual
+	void
+	on_hide_search_clicked () final override;
+
 	///  @name Members
 
 	bool                        modified;
 	Glib::RefPtr <Gsv::Buffer>  textBuffer;
 	Gsv::View                   textView;
+	GtkSourceSearchSettings*    searchSettings;
+	GtkSourceSearchContext*     searchContext;
 	std::unique_ptr <NodeIndex> nodeIndex;
 	NameEntry                   nodeName;
 	X3D::SFNode                 node;
 	size_t                      index;
 	std::unique_ptr <Console>   console;
+	X3D::Keys                   keys;
 
 };
 

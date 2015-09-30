@@ -162,6 +162,10 @@ public:
 	getScriptEditor () const
 	{ return *m_ScriptEditor; }
 
+	Gtk::Overlay &
+	getSearchOverlay () const
+	{ return *m_SearchOverlay; }
+
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
@@ -194,6 +198,42 @@ public:
 	getShaderTypeMenuButton () const
 	{ return *m_ShaderTypeMenuButton; }
 
+	Gtk::Notebook &
+	getSearchBox () const
+	{ return *m_SearchBox; }
+
+	Gtk::SearchEntry &
+	getSearchEntry () const
+	{ return *m_SearchEntry; }
+
+	Gtk::Button &
+	getSearchPreviousButton () const
+	{ return *m_SearchPreviousButton; }
+
+	Gtk::Button &
+	getSearchNextButton () const
+	{ return *m_SearchNextButton; }
+
+	Gtk::Button &
+	getHideSearchButton () const
+	{ return *m_HideSearchButton; }
+
+	Gtk::Entry &
+	getReplaceEntry () const
+	{ return *m_ReplaceEntry; }
+
+	Gtk::Box &
+	getReplaceButtonsBox () const
+	{ return *m_ReplaceButtonsBox; }
+
+	Gtk::Button &
+	getReplaceButton () const
+	{ return *m_ReplaceButton; }
+
+	Gtk::Button &
+	getReplaceAllButton () const
+	{ return *m_ReplaceAllButton; }
+
 	virtual
 	void
 	on_map () = 0;
@@ -213,6 +253,38 @@ public:
 	virtual
 	void
 	on_loadState_clicked () = 0;
+
+	virtual
+	void
+	on_search_entry_changed () = 0;
+
+	virtual
+	bool
+	on_search_focus_in_event (GdkEventFocus* event) = 0;
+
+	virtual
+	bool
+	on_search_focus_out_event (GdkEventFocus* event) = 0;
+
+	virtual
+	bool
+	on_key_press_event (GdkEventKey* event) = 0;
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey* event) = 0;
+
+	virtual
+	void
+	on_search_previous_clicked () = 0;
+
+	virtual
+	void
+	on_search_next_clicked () = 0;
+
+	virtual
+	void
+	on_hide_search_clicked () = 0;
 
 	virtual
 	~X3DScriptEditorInterface ();
@@ -243,6 +315,7 @@ private:
 	Gtk::Button*                   m_RenameButton;
 	Gtk::Box*                      m_ConsoleBox;
 	Gtk::Box*                      m_ScriptEditor;
+	Gtk::Overlay*                  m_SearchOverlay;
 	Gtk::ScrolledWindow*           m_ScrolledWindow;
 	Gtk::ToolButton*               m_SaveButton;
 	Gtk::ToolButton*               m_UndoButton;
@@ -251,6 +324,15 @@ private:
 	Gtk::ToggleToolButton*         m_DirectOutputToggleButton;
 	Gtk::ToggleToolButton*         m_MustEvaluateToggleButton;
 	Gtk::MenuToolButton*           m_ShaderTypeMenuButton;
+	Gtk::Notebook*                 m_SearchBox;
+	Gtk::SearchEntry*              m_SearchEntry;
+	Gtk::Button*                   m_SearchPreviousButton;
+	Gtk::Button*                   m_SearchNextButton;
+	Gtk::Button*                   m_HideSearchButton;
+	Gtk::Entry*                    m_ReplaceEntry;
+	Gtk::Box*                      m_ReplaceButtonsBox;
+	Gtk::Button*                   m_ReplaceButton;
+	Gtk::Button*                   m_ReplaceAllButton;
 
 };
 
