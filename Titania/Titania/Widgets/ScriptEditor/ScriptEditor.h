@@ -188,6 +188,9 @@ private:
 	on_key_release_event (GdkEventKey*) final override;
 
 	void
+	on_size_allocate (const Gtk::Allocation &);
+
+	void
 	on_enable_search ();
 
 	virtual
@@ -197,6 +200,15 @@ private:
 	virtual
 	void
 	on_search_menu_icon_released (Gtk::EntryIconPosition, const GdkEventButton*) final override;
+
+	void
+	on_build_search_menu ();
+
+	void
+	on_search_activate (const Glib::ustring &);
+
+	void
+	on_add_search (const Glib::ustring &);
 
 	virtual
 	void
@@ -270,6 +282,7 @@ private:
 	X3D::Keys                        keys;
 	Glib::RefPtr <Gsv::Buffer::Mark> searchMark;
 	sigc::connection                 searchConnection;
+	std::deque <Glib::ustring>       recentSearches;
 
 };
 

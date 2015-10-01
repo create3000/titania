@@ -231,6 +231,10 @@ public:
 	{ return *m_ShaderTypeMenuButton; }
 
 	Gtk::Revealer &
+	getSearchRevealer () const
+	{ return *m_SearchRevealer; }
+
+	Gtk::Box &
 	getSearchBox () const
 	{ return *m_SearchBox; }
 
@@ -392,7 +396,8 @@ private:
 	Gtk::ToggleToolButton*         m_DirectOutputToggleButton;
 	Gtk::ToggleToolButton*         m_MustEvaluateToggleButton;
 	Gtk::MenuToolButton*           m_ShaderTypeMenuButton;
-	Gtk::Revealer*                 m_SearchBox;
+	Gtk::Revealer*                 m_SearchRevealer;
+	Gtk::Box*                      m_SearchBox;
 	Gtk::Box*                      m_ReplaceButtonsBox;
 	Gtk::Button*                   m_ReplaceButton;
 	Gtk::Button*                   m_ReplaceAllButton;
