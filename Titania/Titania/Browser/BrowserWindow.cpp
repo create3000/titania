@@ -1907,7 +1907,7 @@ BrowserWindow::on_location_key_press_event (GdkEventKey* event)
 }
 
 void
-BrowserWindow::on_location_icon_release (Gtk::EntryIconPosition icon_position, const GdkEventButton* event)
+BrowserWindow::on_location_icon_released (Gtk::EntryIconPosition icon_position, const GdkEventButton* event)
 {
 	switch (icon_position)
 	{

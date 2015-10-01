@@ -428,7 +428,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_NextButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_next_page));
 
 	// Connect object Gtk::Entry with id 'LocationEntry'.
-	m_LocationEntry -> signal_icon_release () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_location_icon_release));
+	m_LocationEntry -> signal_icon_release () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_location_icon_released));
 	m_LocationEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_location_key_press_event), false);
 
 	// Connect object Gtk::ToolButton with id 'ReloadButton'.

@@ -190,16 +190,40 @@ private:
 	void
 	on_enable_search ();
 
+	virtual
+	void
+	on_replace_toggled () final override;
+
+	virtual
+	void
+	on_search_menu_icon_released (Gtk::EntryIconPosition, const GdkEventButton*) final override;
+
+	virtual
+	void
+	on_search_case_sensitve_toggled () final override;
+
+	virtual
+	void
+	on_search_at_word_boundaries_toggled () final override;
+
+	virtual
+	void
+	on_search_regex_toggled () final override;
+
+	virtual
+	void
+	on_search_within_selection_toggled () final override;
+
+	virtual
+	void
+	on_search_wrap_around_toggled () final override;
+
 	void
 	on_search_entry_changed ();
 
 	static
 	void
 	on_occurences_changed (GObject*, GParamSpec*, gpointer);
-
-	virtual
-	void
-	on_replace_toggled () final override;
 
 	virtual
 	void

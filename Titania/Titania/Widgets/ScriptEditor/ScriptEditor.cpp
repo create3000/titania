@@ -144,15 +144,26 @@ ScriptEditor::initialize ()
 
 	console -> reparent (getConsoleBox (), getWindow ());
 
-	// Search
-
-	gtk_source_search_settings_set_wrap_around (searchSettings, true);
-	gtk_source_search_context_set_highlight (searchContext, true);
+	// Search & Replace
 
 	getSearchBox () .unparent ();
 	getSearchOverlay () .add_overlay (getSearchBox ());
 
 	g_signal_connect (searchContext, "notify::occurrences-count", G_CALLBACK (&ScriptEditor::on_occurences_changed), this);
+
+	gtk_source_search_context_set_highlight (searchContext, true);
+
+	getToggleReplaceButton () .set_active (getConfig () .getBoolean ("replaceEnabled"));
+	on_enable_search ();
+
+	getCaseSensitiveMenuItem ()      .set_active (getConfig () .getBoolean ("searchCaseSensitive"));
+	getAtWordBoundariesMenuItem ()   .set_active (getConfig () .getBoolean ("searchAtWordBoundaries"));
+	getRegularExpressionMenuItem ()  .set_active (getConfig () .getBoolean ("searchRegularExpression"));
+	getWithinSelectionMenuItem ()    .set_active (getConfig () .getBoolean ("searchWithinSelection"));
+	getWrapAroundMenuItemMenuItem () .set_active (getConfig () .getBoolean ("searchWrapAround"));
+
+	getSearchEntry () .set_icon_activatable (true, Gtk::ENTRY_ICON_PRIMARY);
+	getSearchEntry () .set_icon_sensitive   (Gtk::ENTRY_ICON_PRIMARY, true);
 }
 
 bool
@@ -456,19 +467,11 @@ ScriptEditor::on_key_press_event (GdkEventKey* event)
 
 	switch (event -> keyval)
 	{
-		case GDK_KEY_f:
+		case GDK_KEY_Escape:
 		{
-			if (keys .control ())
-				getToggleReplaceButton () .set_active (false);
-		
-			break;
+			on_hide_search_clicked ();
+			return true;
 		}
-		default:
-			break;
-	}
-
-	switch (event -> keyval)
-	{
 		case GDK_KEY_h:
 		{
 			if (keys .control ())
@@ -484,6 +487,7 @@ ScriptEditor::on_key_press_event (GdkEventKey* event)
 		{
 			if (keys .control ())
 			{
+				getToggleReplaceButton () .set_active (false);
 				on_enable_search ();
 				return true;
 			}
@@ -558,6 +562,50 @@ ScriptEditor::on_replace_toggled ()
 	getReplaceEntry ()       .set_visible (active);
 	getReplaceButtonsBox ()  .set_visible (active);
 	getToggleReplaceImage () .set (Gtk::StockID (active ? "gtk-yes" : "gtk-no"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+}
+
+void
+ScriptEditor::on_search_menu_icon_released (Gtk::EntryIconPosition icon_position, const GdkEventButton* event)
+{
+	__LOG__ << int (icon_position) << std::endl;
+
+	switch (icon_position)
+	{
+		case Gtk::ENTRY_ICON_PRIMARY:
+		   getSearchMenu () .popup (event -> button, event -> time);
+			break;
+		case Gtk::ENTRY_ICON_SECONDARY:
+			break;
+	}
+}
+
+void
+ScriptEditor::on_search_case_sensitve_toggled ()
+{
+	gtk_source_search_settings_set_case_sensitive (searchSettings, getCaseSensitiveMenuItem () .get_active ());
+}
+
+void
+ScriptEditor::on_search_at_word_boundaries_toggled ()
+{
+	gtk_source_search_settings_set_at_word_boundaries (searchSettings, getAtWordBoundariesMenuItem () .get_active ());
+}
+
+void
+ScriptEditor::on_search_regex_toggled ()
+{
+	gtk_source_search_settings_set_regex_enabled (searchSettings, getRegularExpressionMenuItem () .get_active ());
+}
+
+void
+ScriptEditor::on_search_within_selection_toggled ()
+{
+}
+
+void
+ScriptEditor::on_search_wrap_around_toggled ()
+{
+	gtk_source_search_settings_set_wrap_around (searchSettings, getWrapAroundMenuItemMenuItem () .get_active ());
 }
 
 void
@@ -674,6 +722,17 @@ ScriptEditor::~ScriptEditor ()
 {
 	getConfig () .setItem ("paned",     getPaned ()     .get_position ());
 	getConfig () .setItem ("sidePaned", getSidePaned () .get_position ());
+
+	// Search & Replace
+
+	getConfig () .setItem ("searchEnabled",  getSearchBox ()           .get_child_revealed ());
+	getConfig () .setItem ("replaceEnabled", getToggleReplaceButton () .get_active ());
+
+	getConfig () .setItem ("searchCaseSensitive",     getCaseSensitiveMenuItem ()      .get_active ());
+	getConfig () .setItem ("searchAtWordBoundaries",  getAtWordBoundariesMenuItem ()   .get_active ());
+	getConfig () .setItem ("searchRegularExpression", getRegularExpressionMenuItem ()  .get_active ());
+	getConfig () .setItem ("searchWithinSelection",   getWithinSelectionMenuItem ()    .get_active ());
+	getConfig () .setItem ("searchWrapAround",        getWrapAroundMenuItemMenuItem () .get_active ());
 
 	//how to delete searchContext;
 	//how to delete searchSettings;

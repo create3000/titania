@@ -8,6 +8,60 @@
     <property name="can_focus">False</property>
     <property name="stock">FragmentShader</property>
   </object>
+  <object class="GtkMenu" id="SearchMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkCheckMenuItem" id="CaseSensitiveMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Case Sensitive</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_search_case_sensitve_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkCheckMenuItem" id="AtWordBoundariesMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">At Word Boundaries</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_search_at_word_boundaries_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkCheckMenuItem" id="RegularExpressionMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Regular Expression</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_search_regex_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkCheckMenuItem" id="WithinSelectionMenuItem">
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Within Selection</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_search_within_selection_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkCheckMenuItem" id="WrapAroundMenuItemMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Wrap Around</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_search_wrap_around_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="SearchSeparatorMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+  </object>
   <object class="GtkImage" id="ToggleReplaceImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -389,7 +443,6 @@
                 <child>
                   <object class="GtkBox" id="ReplaceButtonsBox">
                     <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
                     <property name="spacing">2</property>
                     <child>
                       <object class="GtkButton" id="ReplaceButton">
@@ -435,6 +488,7 @@
                   <object class="GtkEntry" id="ReplaceEntry">
                     <property name="width_request">250</property>
                     <property name="can_focus">True</property>
+                    <property name="hexpand">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -445,7 +499,6 @@
                   <object class="GtkBox" id="box3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="hexpand">False</property>
                     <property name="spacing">2</property>
                     <child>
                       <object class="GtkButton" id="SearchBackwardButton">
@@ -511,11 +564,11 @@
                     <property name="width_request">250</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="hexpand">True</property>
                     <property name="primary_icon_name">edit-find-symbolic</property>
-                    <property name="primary_icon_activatable">False</property>
-                    <property name="primary_icon_sensitive">False</property>
                     <signal name="focus-in-event" handler="on_search_entry_focus_in_event" swapped="no"/>
                     <signal name="focus-out-event" handler="on_search_entry_focus_out_event" swapped="no"/>
+                    <signal name="icon-release" handler="on_search_menu_icon_released" after="yes" swapped="no"/>
                     <signal name="key-press-event" handler="on_key_press_event" after="yes" swapped="no"/>
                     <signal name="key-release-event" handler="on_key_release_event" after="yes" swapped="no"/>
                   </object>

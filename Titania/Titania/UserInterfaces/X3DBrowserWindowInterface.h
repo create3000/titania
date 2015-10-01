@@ -1328,7 +1328,7 @@ public:
 
 	virtual
 	void
-	on_location_icon_release (EntryIconPosition icon_position, const GdkEventButton* event) = 0;
+	on_location_icon_released (EntryIconPosition icon_position, const GdkEventButton* event) = 0;
 
 	virtual
 	bool

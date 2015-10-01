@@ -65,6 +65,13 @@ X3DScriptEditorInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("FragmentShaderImage", m_FragmentShaderImage);
+	m_builder -> get_widget ("SearchMenu", m_SearchMenu);
+	m_builder -> get_widget ("CaseSensitiveMenuItem", m_CaseSensitiveMenuItem);
+	m_builder -> get_widget ("AtWordBoundariesMenuItem", m_AtWordBoundariesMenuItem);
+	m_builder -> get_widget ("RegularExpressionMenuItem", m_RegularExpressionMenuItem);
+	m_builder -> get_widget ("WithinSelectionMenuItem", m_WithinSelectionMenuItem);
+	m_builder -> get_widget ("WrapAroundMenuItemMenuItem", m_WrapAroundMenuItemMenuItem);
+	m_builder -> get_widget ("SearchSeparatorMenuItem", m_SearchSeparatorMenuItem);
 	m_builder -> get_widget ("ToggleReplaceImage", m_ToggleReplaceImage);
 	m_builder -> get_widget ("VertexShaderImage", m_VertexShaderImage);
 	m_builder -> get_widget ("ShaderTypeMenu", m_ShaderTypeMenu);
@@ -100,6 +107,13 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SearchEntry", m_SearchEntry);
 	m_builder -> get_widget ("ToggleReplaceButton", m_ToggleReplaceButton);
 
+	// Connect object Gtk::CheckMenuItem with id 'CaseSensitiveMenuItem'.
+	m_CaseSensitiveMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_case_sensitve_toggled));
+	m_AtWordBoundariesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_at_word_boundaries_toggled));
+	m_RegularExpressionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_regex_toggled));
+	m_WithinSelectionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_within_selection_toggled));
+	m_WrapAroundMenuItemMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_wrap_around_toggled));
+
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map));
 
@@ -117,6 +131,7 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::SearchEntry with id 'SearchEntry'.
 	m_SearchEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_entry_focus_in_event));
 	m_SearchEntry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_entry_focus_out_event));
+	m_SearchEntry -> signal_icon_release () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_menu_icon_released), false);
 	m_SearchEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_press_event), false);
 	m_SearchEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_release_event), false);
 

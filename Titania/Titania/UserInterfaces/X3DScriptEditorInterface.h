@@ -106,6 +106,34 @@ public:
 	getFragmentShaderImage () const
 	{ return *m_FragmentShaderImage; }
 
+	Gtk::Menu &
+	getSearchMenu () const
+	{ return *m_SearchMenu; }
+
+	Gtk::CheckMenuItem &
+	getCaseSensitiveMenuItem () const
+	{ return *m_CaseSensitiveMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getAtWordBoundariesMenuItem () const
+	{ return *m_AtWordBoundariesMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getRegularExpressionMenuItem () const
+	{ return *m_RegularExpressionMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getWithinSelectionMenuItem () const
+	{ return *m_WithinSelectionMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getWrapAroundMenuItemMenuItem () const
+	{ return *m_WrapAroundMenuItemMenuItem; }
+
+	Gtk::SeparatorMenuItem &
+	getSearchSeparatorMenuItem () const
+	{ return *m_SearchSeparatorMenuItem; }
+
 	Gtk::Image &
 	getToggleReplaceImage () const
 	{ return *m_ToggleReplaceImage; }
@@ -244,6 +272,26 @@ public:
 
 	virtual
 	void
+	on_search_case_sensitve_toggled () = 0;
+
+	virtual
+	void
+	on_search_at_word_boundaries_toggled () = 0;
+
+	virtual
+	void
+	on_search_regex_toggled () = 0;
+
+	virtual
+	void
+	on_search_within_selection_toggled () = 0;
+
+	virtual
+	void
+	on_search_wrap_around_toggled () = 0;
+
+	virtual
+	void
 	on_map () = 0;
 
 	virtual
@@ -283,6 +331,10 @@ public:
 	on_search_entry_focus_out_event (GdkEventFocus* event) = 0;
 
 	virtual
+	void
+	on_search_menu_icon_released (EntryIconPosition icon_position, const GdkEventButton* event) = 0;
+
+	virtual
 	bool
 	on_key_press_event (GdkEventKey* event) = 0;
 
@@ -309,6 +361,13 @@ private:
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
 	Gtk::Image*                    m_FragmentShaderImage;
+	Gtk::Menu*                     m_SearchMenu;
+	Gtk::CheckMenuItem*            m_CaseSensitiveMenuItem;
+	Gtk::CheckMenuItem*            m_AtWordBoundariesMenuItem;
+	Gtk::CheckMenuItem*            m_RegularExpressionMenuItem;
+	Gtk::CheckMenuItem*            m_WithinSelectionMenuItem;
+	Gtk::CheckMenuItem*            m_WrapAroundMenuItemMenuItem;
+	Gtk::SeparatorMenuItem*        m_SearchSeparatorMenuItem;
 	Gtk::Image*                    m_ToggleReplaceImage;
 	Gtk::Image*                    m_VertexShaderImage;
 	Gtk::Menu*                     m_ShaderTypeMenu;

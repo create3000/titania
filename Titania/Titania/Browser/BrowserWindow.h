@@ -596,7 +596,7 @@ private:
 
 	virtual
 	void
-	on_location_icon_release (Gtk::EntryIconPosition, const GdkEventButton*) final override;
+	on_location_icon_released (Gtk::EntryIconPosition, const GdkEventButton*) final override;
 
 	virtual
 	void
