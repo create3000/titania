@@ -146,6 +146,8 @@ ScriptEditor::initialize ()
 
 	getSearchBox () .unparent ();
 	getSearchOverlay () .add_overlay (getSearchBox ());
+
+	g_signal_connect (searchContext, "notify::occurrences-count", G_CALLBACK (&ScriptEditor::on_occurences_changed), this);
 }
 
 bool
@@ -294,7 +296,7 @@ ScriptEditor::apply (const UndoStepPtr & undoStep)
 	cdata -> set1Value (index, text);
 	undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, *cdata);
 
-	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
+	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("%s »%s« is build."), node -> getTypeName () .c_str (), node -> getName () .c_str ()));
 
 	isModified (false);
 }
@@ -443,10 +445,7 @@ ScriptEditor::on_key_press_event (GdkEventKey* event)
 		case GDK_KEY_f:
 		{
 			if (keys .control ())
-			{
-				getReplaceEntry ()      .set_visible (false);
-				getReplaceButtonsBox () .set_visible (false);
-			}
+				getToggleReplaceButton () .set_active (false);
 		
 			break;
 		}
@@ -459,10 +458,8 @@ ScriptEditor::on_key_press_event (GdkEventKey* event)
 		case GDK_KEY_h:
 		{
 			if (keys .control ())
-			{
-				getReplaceEntry ()      .set_visible (true);
-				getReplaceButtonsBox () .set_visible (true);
-			}
+				getToggleReplaceButton () .set_active (true);
+
 		   // Proceed with next case.
 		}
 		case GDK_KEY_f:
@@ -472,7 +469,7 @@ ScriptEditor::on_key_press_event (GdkEventKey* event)
 				if (not getSearchEntry () .has_focus ())
 					getSearchEntry () .set_text ("");
 			   
-				getSearchBox ()   .set_visible (true);
+				getSearchBox ()   .set_reveal_child (true);
 				getSearchEntry () .grab_focus ();
 
 				Gsv::Buffer::iterator selectionBegin;
@@ -495,6 +492,20 @@ ScriptEditor::on_key_press_event (GdkEventKey* event)
 
 			break;
 		}
+		case GDK_KEY_g:
+		{
+			if (keys .control ())
+			{
+				if (keys .shift ())
+					on_search_backward_clicked ();
+				else
+					on_search_forward_clicked ();
+				
+				return true;
+			}
+
+		   break;
+		}
 		default:
 			break;
 	}
@@ -511,21 +522,115 @@ ScriptEditor::on_key_release_event (GdkEventKey* event)
 }
 
 void
+ScriptEditor::on_replace_toggled ()
+{
+	const bool active = getToggleReplaceButton () .get_active ();
+
+	getReplaceEntry ()       .set_visible (active);
+	getReplaceButtonsBox ()  .set_visible (active);
+	getToggleReplaceImage () .set (Gtk::StockID (active ? "gtk-yes" : "gtk-no"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+}
+
+void
 ScriptEditor::on_search_entry_changed ()
 {
 	gtk_source_search_settings_set_search_text (searchSettings, getSearchEntry () .get_text () .c_str ());
 }
 
 void
-ScriptEditor::on_search_previous_clicked ()
+ScriptEditor::on_occurences_changed (GObject* gobject, GParamSpec* pspec, gpointer user_data)
 {
-	__LOG__ << std::endl;
+	const auto self           = static_cast <ScriptEditor*> (user_data);
+	const bool hasOccurrences = gtk_source_search_context_get_occurrences_count (self -> searchContext) > 0;
+
+	self -> getSearchBackwardButton () .set_sensitive (hasOccurrences);
+	self -> getSearchForwardButton ()  .set_sensitive (hasOccurrences);
+	self -> getReplaceButton ()        .set_sensitive (hasOccurrences);
+	self -> getReplaceAllButton ()     .set_sensitive (hasOccurrences);
 }
 
 void
-ScriptEditor::on_search_next_clicked ()
+ScriptEditor::on_search_backward_clicked ()
 {
-	__LOG__ << std::endl;
+	const auto insertIter = textBuffer -> get_iter_at_mark (textBuffer -> get_insert ());
+
+	gtk_source_search_context_backward_async (searchContext, insertIter .gobj (), nullptr, &ScriptEditor::on_search_backward_callback, this);
+}
+
+void
+ScriptEditor::on_search_backward_callback (GObject* const source_object, GAsyncResult* const result, const gpointer self)
+{
+	static_cast <ScriptEditor*> (self) -> on_search_backward (result);
+}
+
+void
+ScriptEditor::on_search_backward (GAsyncResult* const result)
+{
+	Gsv::Buffer::iterator matchBegin;
+	Gsv::Buffer::iterator matchEnd;
+
+	GError* error = nullptr;
+
+	if (gtk_source_search_context_backward_finish (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &error))
+	{
+		const auto match = textBuffer -> get_text (matchBegin, matchEnd);
+
+		textBuffer -> select_range (matchBegin, matchEnd);
+		textBuffer -> place_cursor (matchBegin);
+
+		textView .scroll_to (matchBegin, 0, 0, 2 - math::M_PHI);
+	}
+	else
+	{
+	   if (gtk_source_search_context_get_occurrences_count (searchContext) > 0)
+	   {
+			textBuffer -> place_cursor (textBuffer -> end ());
+	   
+		   on_search_backward_clicked ();
+		}
+	}
+}
+
+void
+ScriptEditor::on_search_forward_clicked ()
+{
+	const auto insertIter = textBuffer -> get_iter_at_mark (textBuffer -> get_insert ());
+
+	gtk_source_search_context_forward_async (searchContext, insertIter .gobj (), nullptr, &ScriptEditor::on_search_forward_callback, this);
+}
+
+void
+ScriptEditor::on_search_forward_callback (GObject* const source_object, GAsyncResult* const result, const gpointer self)
+{
+	static_cast <ScriptEditor*> (self) -> on_search_forward (result);
+}
+
+void
+ScriptEditor::on_search_forward (GAsyncResult* const result)
+{
+	Gsv::Buffer::iterator matchBegin;
+	Gsv::Buffer::iterator matchEnd;
+
+	GError* error = nullptr;
+
+	if (gtk_source_search_context_forward_finish (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &error))
+	{
+		const auto match = textBuffer -> get_text (matchBegin, matchEnd);
+
+		textBuffer -> select_range (matchBegin, matchEnd);
+		textBuffer -> place_cursor (matchEnd);
+
+		textView .scroll_to (matchEnd, 0, 0, 2 - math::M_PHI);
+	}
+	else
+	{
+	   if (gtk_source_search_context_get_occurrences_count (searchContext) > 0)
+	   {
+			textBuffer -> place_cursor (textBuffer -> begin ());
+	   
+		   on_search_forward_clicked ();
+		}
+	}
 }
 
 void
@@ -533,10 +638,9 @@ ScriptEditor::on_hide_search_clicked ()
 {
 	gtk_source_search_context_set_highlight (searchContext, false);
 
-	getSearchBox ()         .set_visible (false);
-	getReplaceEntry ()      .set_visible (false);
-	getReplaceButtonsBox () .set_visible (false);
-	getTextView ()          .grab_focus ();
+	getSearchBox ()           .set_reveal_child (false);
+	getToggleReplaceButton () .set_active (false);
+	getTextView ()            .grab_focus ();
 }
 
 /*

@@ -107,6 +107,10 @@ public:
 	{ return *m_FragmentShaderImage; }
 
 	Gtk::Image &
+	getToggleReplaceImage () const
+	{ return *m_ToggleReplaceImage; }
+
+	Gtk::Image &
 	getVertexShaderImage () const
 	{ return *m_VertexShaderImage; }
 
@@ -198,29 +202,9 @@ public:
 	getShaderTypeMenuButton () const
 	{ return *m_ShaderTypeMenuButton; }
 
-	Gtk::Notebook &
+	Gtk::Revealer &
 	getSearchBox () const
 	{ return *m_SearchBox; }
-
-	Gtk::SearchEntry &
-	getSearchEntry () const
-	{ return *m_SearchEntry; }
-
-	Gtk::Button &
-	getSearchPreviousButton () const
-	{ return *m_SearchPreviousButton; }
-
-	Gtk::Button &
-	getSearchNextButton () const
-	{ return *m_SearchNextButton; }
-
-	Gtk::Button &
-	getHideSearchButton () const
-	{ return *m_HideSearchButton; }
-
-	Gtk::Entry &
-	getReplaceEntry () const
-	{ return *m_ReplaceEntry; }
 
 	Gtk::Box &
 	getReplaceButtonsBox () const
@@ -233,6 +217,30 @@ public:
 	Gtk::Button &
 	getReplaceAllButton () const
 	{ return *m_ReplaceAllButton; }
+
+	Gtk::Entry &
+	getReplaceEntry () const
+	{ return *m_ReplaceEntry; }
+
+	Gtk::Button &
+	getSearchBackwardButton () const
+	{ return *m_SearchBackwardButton; }
+
+	Gtk::Button &
+	getSearchForwardButton () const
+	{ return *m_SearchForwardButton; }
+
+	Gtk::Button &
+	getHideSearchButton () const
+	{ return *m_HideSearchButton; }
+
+	Gtk::SearchEntry &
+	getSearchEntry () const
+	{ return *m_SearchEntry; }
+
+	Gtk::ToggleButton &
+	getToggleReplaceButton () const
+	{ return *m_ToggleReplaceButton; }
 
 	virtual
 	void
@@ -256,6 +264,18 @@ public:
 
 	virtual
 	void
+	on_search_backward_clicked () = 0;
+
+	virtual
+	void
+	on_search_forward_clicked () = 0;
+
+	virtual
+	void
+	on_hide_search_clicked () = 0;
+
+	virtual
+	void
 	on_search_entry_changed () = 0;
 
 	virtual
@@ -276,15 +296,7 @@ public:
 
 	virtual
 	void
-	on_search_previous_clicked () = 0;
-
-	virtual
-	void
-	on_search_next_clicked () = 0;
-
-	virtual
-	void
-	on_hide_search_clicked () = 0;
+	on_replace_toggled () = 0;
 
 	virtual
 	~X3DScriptEditorInterface ();
@@ -301,6 +313,7 @@ private:
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
 	Gtk::Image*                    m_FragmentShaderImage;
+	Gtk::Image*                    m_ToggleReplaceImage;
 	Gtk::Image*                    m_VertexShaderImage;
 	Gtk::Menu*                     m_ShaderTypeMenu;
 	Gtk::ImageMenuItem*            m_VertexMenuItem;
@@ -324,15 +337,16 @@ private:
 	Gtk::ToggleToolButton*         m_DirectOutputToggleButton;
 	Gtk::ToggleToolButton*         m_MustEvaluateToggleButton;
 	Gtk::MenuToolButton*           m_ShaderTypeMenuButton;
-	Gtk::Notebook*                 m_SearchBox;
-	Gtk::SearchEntry*              m_SearchEntry;
-	Gtk::Button*                   m_SearchPreviousButton;
-	Gtk::Button*                   m_SearchNextButton;
-	Gtk::Button*                   m_HideSearchButton;
-	Gtk::Entry*                    m_ReplaceEntry;
+	Gtk::Revealer*                 m_SearchBox;
 	Gtk::Box*                      m_ReplaceButtonsBox;
 	Gtk::Button*                   m_ReplaceButton;
 	Gtk::Button*                   m_ReplaceAllButton;
+	Gtk::Entry*                    m_ReplaceEntry;
+	Gtk::Button*                   m_SearchBackwardButton;
+	Gtk::Button*                   m_SearchForwardButton;
+	Gtk::Button*                   m_HideSearchButton;
+	Gtk::SearchEntry*              m_SearchEntry;
+	Gtk::ToggleButton*             m_ToggleReplaceButton;
 
 };
 

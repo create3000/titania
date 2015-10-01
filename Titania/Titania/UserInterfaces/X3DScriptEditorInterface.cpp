@@ -65,6 +65,7 @@ X3DScriptEditorInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("FragmentShaderImage", m_FragmentShaderImage);
+	m_builder -> get_widget ("ToggleReplaceImage", m_ToggleReplaceImage);
 	m_builder -> get_widget ("VertexShaderImage", m_VertexShaderImage);
 	m_builder -> get_widget ("ShaderTypeMenu", m_ShaderTypeMenu);
 	m_builder -> get_widget ("VertexMenuItem", m_VertexMenuItem);
@@ -89,14 +90,15 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("MustEvaluateToggleButton", m_MustEvaluateToggleButton);
 	m_builder -> get_widget ("ShaderTypeMenuButton", m_ShaderTypeMenuButton);
 	m_builder -> get_widget ("SearchBox", m_SearchBox);
-	m_builder -> get_widget ("SearchEntry", m_SearchEntry);
-	m_builder -> get_widget ("SearchPreviousButton", m_SearchPreviousButton);
-	m_builder -> get_widget ("SearchNextButton", m_SearchNextButton);
-	m_builder -> get_widget ("HideSearchButton", m_HideSearchButton);
-	m_builder -> get_widget ("ReplaceEntry", m_ReplaceEntry);
 	m_builder -> get_widget ("ReplaceButtonsBox", m_ReplaceButtonsBox);
 	m_builder -> get_widget ("ReplaceButton", m_ReplaceButton);
 	m_builder -> get_widget ("ReplaceAllButton", m_ReplaceAllButton);
+	m_builder -> get_widget ("ReplaceEntry", m_ReplaceEntry);
+	m_builder -> get_widget ("SearchBackwardButton", m_SearchBackwardButton);
+	m_builder -> get_widget ("SearchForwardButton", m_SearchForwardButton);
+	m_builder -> get_widget ("HideSearchButton", m_HideSearchButton);
+	m_builder -> get_widget ("SearchEntry", m_SearchEntry);
+	m_builder -> get_widget ("ToggleReplaceButton", m_ToggleReplaceButton);
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map));
@@ -107,6 +109,11 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_redo_clicked));
 	m_LoadStateButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_loadState_clicked));
 
+	// Connect object Gtk::Button with id 'SearchBackwardButton'.
+	m_SearchBackwardButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_backward_clicked));
+	m_SearchForwardButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_forward_clicked));
+	m_HideSearchButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_hide_search_clicked));
+
 	// Connect object Gtk::SearchEntry with id 'SearchEntry'.
 	m_SearchEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_entry_changed));
 	m_SearchEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_focus_in_event));
@@ -114,10 +121,8 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_SearchEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_press_event));
 	m_SearchEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_release_event));
 
-	// Connect object Gtk::Button with id 'SearchPreviousButton'.
-	m_SearchPreviousButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_previous_clicked));
-	m_SearchNextButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_next_clicked));
-	m_HideSearchButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_hide_search_clicked));
+	// Connect object Gtk::ToggleButton with id 'ToggleReplaceButton'.
+	m_ToggleReplaceButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_toggled));
 
 	// Call construct handler of base class.
 	construct ();

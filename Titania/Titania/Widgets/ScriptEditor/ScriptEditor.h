@@ -187,13 +187,35 @@ private:
 	void
 	on_search_entry_changed () final override;
 
-	virtual
+	static
 	void
-	on_search_previous_clicked () final override;
+	on_occurences_changed (GObject*, GParamSpec*, gpointer);
 
 	virtual
 	void
-	on_search_next_clicked () final override;
+	on_replace_toggled () final override;
+
+	virtual
+	void
+	on_search_backward_clicked () final override;
+
+	static
+	void
+	on_search_backward_callback (GObject* const, GAsyncResult* const, const gpointer);
+
+	void
+	on_search_backward (GAsyncResult* const);
+
+	virtual
+	void
+	on_search_forward_clicked () final override;
+
+	static
+	void
+	on_search_forward_callback (GObject* const, GAsyncResult* const, const gpointer);
+
+	void
+	on_search_forward (GAsyncResult* const);
 
 	virtual
 	void
