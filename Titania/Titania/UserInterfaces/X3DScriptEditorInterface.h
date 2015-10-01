@@ -130,9 +130,9 @@ public:
 	getWrapAroundMenuItemMenuItem () const
 	{ return *m_WrapAroundMenuItemMenuItem; }
 
-	Gtk::SeparatorMenuItem &
-	getSearchSeparatorMenuItem () const
-	{ return *m_SearchSeparatorMenuItem; }
+	Gtk::MenuItem &
+	getRecentSearchesMenuItem () const
+	{ return *m_RecentSearchesMenuItem; }
 
 	Gtk::Image &
 	getToggleReplaceImage () const
@@ -367,7 +367,7 @@ private:
 	Gtk::CheckMenuItem*            m_RegularExpressionMenuItem;
 	Gtk::CheckMenuItem*            m_WithinSelectionMenuItem;
 	Gtk::CheckMenuItem*            m_WrapAroundMenuItemMenuItem;
-	Gtk::SeparatorMenuItem*        m_SearchSeparatorMenuItem;
+	Gtk::MenuItem*                 m_RecentSearchesMenuItem;
 	Gtk::Image*                    m_ToggleReplaceImage;
 	Gtk::Image*                    m_VertexShaderImage;
 	Gtk::Menu*                     m_ShaderTypeMenu;

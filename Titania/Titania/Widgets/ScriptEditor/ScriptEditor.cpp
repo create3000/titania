@@ -548,6 +548,7 @@ ScriptEditor::on_enable_search ()
 	searchConnection = getSearchEntry () .signal_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_search_entry_changed));
 
 	getSearchEntry () .grab_focus ();
+	getSearchBox ()   .set_size_request (getTextView () .get_allocation () .get_width () * (2 - math::M_PHI), -1);
 	getSearchBox ()   .set_reveal_child (true);
 
 	if (selection .size ())

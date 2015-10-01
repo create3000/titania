@@ -56,9 +56,18 @@
       </object>
     </child>
     <child>
-      <object class="GtkSeparatorMenuItem" id="SearchSeparatorMenuItem">
+      <object class="GtkSeparatorMenuItem" id="menuitem1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="RecentSearchesMenuItem">
+        <property name="visible">True</property>
+        <property name="sensitive">False</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Recent Searches</property>
+        <property name="use_underline">True</property>
       </object>
     </child>
   </object>
@@ -486,7 +495,6 @@
                 </child>
                 <child>
                   <object class="GtkEntry" id="ReplaceEntry">
-                    <property name="width_request">250</property>
                     <property name="can_focus">True</property>
                     <property name="hexpand">True</property>
                   </object>
@@ -561,7 +569,6 @@
                 </child>
                 <child>
                   <object class="GtkSearchEntry" id="SearchEntry">
-                    <property name="width_request">250</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="hexpand">True</property>

@@ -71,7 +71,7 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("RegularExpressionMenuItem", m_RegularExpressionMenuItem);
 	m_builder -> get_widget ("WithinSelectionMenuItem", m_WithinSelectionMenuItem);
 	m_builder -> get_widget ("WrapAroundMenuItemMenuItem", m_WrapAroundMenuItemMenuItem);
-	m_builder -> get_widget ("SearchSeparatorMenuItem", m_SearchSeparatorMenuItem);
+	m_builder -> get_widget ("RecentSearchesMenuItem", m_RecentSearchesMenuItem);
 	m_builder -> get_widget ("ToggleReplaceImage", m_ToggleReplaceImage);
 	m_builder -> get_widget ("VertexShaderImage", m_VertexShaderImage);
 	m_builder -> get_widget ("ShaderTypeMenu", m_ShaderTypeMenu);
