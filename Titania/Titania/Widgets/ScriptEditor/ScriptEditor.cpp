@@ -81,7 +81,9 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	                    node (),
 	                   index (0),
 	                 console (new Console (browserWindow)),
-	                    keys ()
+	                    keys (),
+	              searchMark (textBuffer -> get_insert ()),
+	        searchConnection ()
 {
 	Gsv::init ();
 	setup ();
@@ -143,6 +145,9 @@ ScriptEditor::initialize ()
 	console -> reparent (getConsoleBox (), getWindow ());
 
 	// Search
+
+	gtk_source_search_settings_set_wrap_around (searchSettings, true);
+	gtk_source_search_context_set_highlight (searchContext, true);
 
 	getSearchBox () .unparent ();
 	getSearchOverlay () .add_overlay (getSearchBox ());
@@ -422,16 +427,25 @@ ScriptEditor::set_loadState (const X3D::LoadState loadState)
  */
 
 bool
-ScriptEditor::on_search_focus_in_event (GdkEventFocus*)
+ScriptEditor::on_search_entry_focus_in_event (GdkEventFocus*)
 {
 	getBrowserWindow () -> hasAccelerators (false);
+
+	searchMark = getTextBuffer () -> create_mark (getTextBuffer () -> get_iter_at_mark (getTextBuffer () -> get_insert ()));
+
 	return false;
 }
 
 bool
-ScriptEditor::on_search_focus_out_event (GdkEventFocus*)
+ScriptEditor::on_search_entry_focus_out_event (GdkEventFocus*)
 {
 	getBrowserWindow () -> hasAccelerators (true);
+
+	getTextBuffer () -> delete_mark (searchMark);
+
+	// Don't leave the mark alone.
+	searchMark = getTextBuffer () -> get_insert ();
+
 	return false;
 }
 
@@ -458,35 +472,19 @@ ScriptEditor::on_key_press_event (GdkEventKey* event)
 		case GDK_KEY_h:
 		{
 			if (keys .control ())
+			{
 				getToggleReplaceButton () .set_active (true);
+				on_enable_search ();
+				return true;
+			}
 
-		   // Proceed with next case.
+			break;
 		}
 		case GDK_KEY_f:
 		{
 			if (keys .control ())
 			{
-				if (not getSearchEntry () .has_focus ())
-					getSearchEntry () .set_text ("");
-			   
-				getSearchBox ()   .set_reveal_child (true);
-				getSearchEntry () .grab_focus ();
-
-				Gsv::Buffer::iterator selectionBegin;
-				Gsv::Buffer::iterator selectionEnd;
-
-				textBuffer -> get_selection_bounds (selectionBegin, selectionEnd);
-
-				const auto selection = textBuffer -> get_text (selectionBegin, selectionEnd);
-
-				if (selection .length ())
-				{
-					getSearchEntry () .set_text (selection);
-					getSearchEntry () .select_region (0, selection .length ());
-					gtk_source_search_settings_set_search_text (searchSettings, selection .c_str ());
-				}
-
-				gtk_source_search_context_set_highlight (searchContext, true);
+				on_enable_search ();
 				return true;
 			}
 
@@ -496,11 +494,17 @@ ScriptEditor::on_key_press_event (GdkEventKey* event)
 		{
 			if (keys .control ())
 			{
-				if (keys .shift ())
-					on_search_backward_clicked ();
-				else
-					on_search_forward_clicked ();
-				
+				on_search_forward_clicked ();
+				return true;
+			}
+
+			break;
+		}
+		case GDK_KEY_G:
+		{
+			if (keys .control ())
+			{
+				on_search_backward_clicked ();
 				return true;
 			}
 
@@ -522,6 +526,31 @@ ScriptEditor::on_key_release_event (GdkEventKey* event)
 }
 
 void
+ScriptEditor::on_enable_search ()
+{
+	Gsv::Buffer::iterator selectionBegin;
+	Gsv::Buffer::iterator selectionEnd;
+
+	getTextBuffer () -> get_selection_bounds (selectionBegin, selectionEnd);
+
+	const auto selection = getTextBuffer () -> get_text (selectionBegin, selectionEnd);
+
+	if (selection .size ())
+	{
+		getSearchEntry () .set_text (selection);
+		gtk_source_search_settings_set_search_text (searchSettings, selection .c_str ());
+	}
+
+	searchConnection = getSearchEntry () .signal_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_search_entry_changed));
+
+	getSearchEntry () .grab_focus ();
+	getSearchBox ()   .set_reveal_child (true);
+
+	if (selection .size ())
+		getTextBuffer () -> select_range (selectionBegin, selectionEnd);
+}
+
+void
 ScriptEditor::on_replace_toggled ()
 {
 	const bool active = getToggleReplaceButton () .get_active ();
@@ -535,6 +564,8 @@ void
 ScriptEditor::on_search_entry_changed ()
 {
 	gtk_source_search_settings_set_search_text (searchSettings, getSearchEntry () .get_text () .c_str ());
+
+	on_search_forward_clicked (searchMark);
 }
 
 void
@@ -552,7 +583,7 @@ ScriptEditor::on_occurences_changed (GObject* gobject, GParamSpec* pspec, gpoint
 void
 ScriptEditor::on_search_backward_clicked ()
 {
-	const auto insertIter = textBuffer -> get_iter_at_mark (textBuffer -> get_insert ());
+	const auto insertIter = getTextBuffer () -> get_iter_at_mark (getTextBuffer () -> get_insert ());
 
 	gtk_source_search_context_backward_async (searchContext, insertIter .gobj (), nullptr, &ScriptEditor::on_search_backward_callback, this);
 }
@@ -571,30 +602,31 @@ ScriptEditor::on_search_backward (GAsyncResult* const result)
 
 	GError* error = nullptr;
 
-	if (gtk_source_search_context_backward_finish (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &error))
-	{
-		const auto match = textBuffer -> get_text (matchBegin, matchEnd);
+	if (not gtk_source_search_context_backward_finish (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &error))
+	   return;
 
-		textBuffer -> select_range (matchBegin, matchEnd);
-		textBuffer -> place_cursor (matchBegin);
+	const auto match = getTextBuffer () -> get_text (matchBegin, matchEnd);
 
-		textView .scroll_to (matchBegin, 0, 0, 2 - math::M_PHI);
-	}
-	else
-	{
-	   if (gtk_source_search_context_get_occurrences_count (searchContext) > 0)
-	   {
-			textBuffer -> place_cursor (textBuffer -> end ());
-	   
-		   on_search_backward_clicked ();
-		}
-	}
+	getTextView () .scroll_to (matchBegin, 0, 0.5, 2 - math::M_PHI);
+	getTextBuffer () -> select_range (matchBegin, matchEnd);
 }
 
 void
 ScriptEditor::on_search_forward_clicked ()
 {
-	const auto insertIter = textBuffer -> get_iter_at_mark (textBuffer -> get_insert ());
+	Gsv::Buffer::iterator selectionBegin;
+	Gsv::Buffer::iterator selectionEnd;
+
+	if (getTextBuffer () -> get_selection_bounds (selectionBegin, selectionEnd))
+		getTextBuffer () -> place_cursor (selectionEnd);
+
+	on_search_forward_clicked (getTextBuffer () -> get_insert ());
+}
+
+void
+ScriptEditor::on_search_forward_clicked (const Glib::RefPtr <Gsv::Buffer::Mark> & mark)
+{
+	const auto insertIter = getTextBuffer () -> get_iter_at_mark (mark);
 
 	gtk_source_search_context_forward_async (searchContext, insertIter .gobj (), nullptr, &ScriptEditor::on_search_forward_callback, this);
 }
@@ -613,34 +645,25 @@ ScriptEditor::on_search_forward (GAsyncResult* const result)
 
 	GError* error = nullptr;
 
-	if (gtk_source_search_context_forward_finish (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &error))
-	{
-		const auto match = textBuffer -> get_text (matchBegin, matchEnd);
+	if (not gtk_source_search_context_forward_finish (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &error))
+	   return;
+	
+	const auto match = getTextBuffer () -> get_text (matchBegin, matchEnd);
 
-		textBuffer -> select_range (matchBegin, matchEnd);
-		textBuffer -> place_cursor (matchEnd);
-
-		textView .scroll_to (matchEnd, 0, 0, 2 - math::M_PHI);
-	}
-	else
-	{
-	   if (gtk_source_search_context_get_occurrences_count (searchContext) > 0)
-	   {
-			textBuffer -> place_cursor (textBuffer -> begin ());
-	   
-		   on_search_forward_clicked ();
-		}
-	}
+	getTextView () .scroll_to (matchBegin, 0, 0.5, 2 - math::M_PHI);
+	getTextBuffer () -> select_range (matchBegin, matchEnd);
 }
 
 void
 ScriptEditor::on_hide_search_clicked ()
 {
-	gtk_source_search_context_set_highlight (searchContext, false);
+	searchConnection .disconnect ();
 
 	getSearchBox ()           .set_reveal_child (false);
 	getToggleReplaceButton () .set_active (false);
 	getTextView ()            .grab_focus ();
+
+	gtk_source_search_settings_set_search_text (searchSettings, nullptr);
 }
 
 /*

@@ -82,6 +82,18 @@ public:
 	bool
 	isModified () const;
 
+	///  @name Event handlers
+
+	void
+	apply (const UndoStepPtr &);
+
+	///  @name Destruction
+
+	virtual
+	~ScriptEditor ();
+
+protected:
+
 	const Glib::RefPtr <Gsv::Buffer> &
 	getTextBuffer () const
 	{ return textBuffer; }
@@ -93,16 +105,6 @@ public:
 	const Gsv::View &
 	getTextView () const
 	{ return textView; }
-
-	///  @name Event handlers
-
-	void
-	apply (const UndoStepPtr &);
-
-	///  @name Destruction
-
-	virtual
-	~ScriptEditor ();
 
 
 private:
@@ -171,21 +173,25 @@ private:
 
 	virtual
 	bool
-	on_search_focus_in_event (GdkEventFocus*) final override;
+	on_search_entry_focus_in_event (GdkEventFocus*) final override;
 
 	virtual
 	bool
-	on_search_focus_out_event (GdkEventFocus*) final override;
-
-	bool
-	on_key_press_event (GdkEventKey*);
-
-	bool
-	on_key_release_event (GdkEventKey*);
+	on_search_entry_focus_out_event (GdkEventFocus*) final override;
 
 	virtual
+	bool
+	on_key_press_event (GdkEventKey*) final override;
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey*) final override;
+
 	void
-	on_search_entry_changed () final override;
+	on_enable_search ();
+
+	void
+	on_search_entry_changed ();
 
 	static
 	void
@@ -210,6 +216,9 @@ private:
 	void
 	on_search_forward_clicked () final override;
 
+	void
+	on_search_forward_clicked (const Glib::RefPtr <Gsv::Buffer::Mark> &);
+
 	static
 	void
 	on_search_forward_callback (GObject* const, GAsyncResult* const, const gpointer);
@@ -233,7 +242,10 @@ private:
 	X3D::SFNode                 node;
 	size_t                      index;
 	std::unique_ptr <Console>   console;
-	X3D::Keys                   keys;
+
+	X3D::Keys                        keys;
+	Glib::RefPtr <Gsv::Buffer::Mark> searchMark;
+	sigc::connection                 searchConnection;
 
 };
 

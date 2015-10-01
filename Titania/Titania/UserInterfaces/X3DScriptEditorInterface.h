@@ -275,16 +275,12 @@ public:
 	on_hide_search_clicked () = 0;
 
 	virtual
-	void
-	on_search_entry_changed () = 0;
+	bool
+	on_search_entry_focus_in_event (GdkEventFocus* event) = 0;
 
 	virtual
 	bool
-	on_search_focus_in_event (GdkEventFocus* event) = 0;
-
-	virtual
-	bool
-	on_search_focus_out_event (GdkEventFocus* event) = 0;
+	on_search_entry_focus_out_event (GdkEventFocus* event) = 0;
 
 	virtual
 	bool

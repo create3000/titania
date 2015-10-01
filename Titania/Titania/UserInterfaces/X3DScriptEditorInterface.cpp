@@ -115,11 +115,10 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_HideSearchButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_hide_search_clicked));
 
 	// Connect object Gtk::SearchEntry with id 'SearchEntry'.
-	m_SearchEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_entry_changed));
-	m_SearchEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_focus_in_event));
-	m_SearchEntry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_focus_out_event));
-	m_SearchEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_press_event));
-	m_SearchEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_release_event));
+	m_SearchEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_entry_focus_in_event));
+	m_SearchEntry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_entry_focus_out_event));
+	m_SearchEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_press_event), false);
+	m_SearchEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_release_event), false);
 
 	// Connect object Gtk::ToggleButton with id 'ToggleReplaceButton'.
 	m_ToggleReplaceButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_toggled));
