@@ -62,6 +62,7 @@ X3DScriptEditorInterface::create (const std::string & filename)
 
 	// Get objects.
 	m_AccelGroup            = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("AccelGroup"));
+	m_ColorThemeListStore   = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ColorThemeListStore"));
 	m_RightMarginAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("RightMarginAdjustment"));
 	m_TabWidthAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TabWidthAdjustment"));
 
@@ -110,6 +111,8 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("EditorExpander", m_EditorExpander);
 	m_builder -> get_widget ("TabWidthSpinButton", m_TabWidthSpinButton);
 	m_builder -> get_widget ("InsertSpacesInsteadOfTabsCheckButton", m_InsertSpacesInsteadOfTabsCheckButton);
+	m_builder -> get_widget ("ColorThemeExpander", m_ColorThemeExpander);
+	m_builder -> get_widget ("ColorThemeTreeView", m_ColorThemeTreeView);
 	m_builder -> get_widget ("SearchRevealer", m_SearchRevealer);
 	m_builder -> get_widget ("SearchBox", m_SearchBox);
 	m_builder -> get_widget ("ReplaceButtonsBox", m_ReplaceButtonsBox);
@@ -161,6 +164,9 @@ X3DScriptEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::CheckButton with id 'InsertSpacesInsteadOfTabsCheckButton'.
 	m_InsertSpacesInsteadOfTabsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_insert_spaces_instead_of_tabs_toggled));
+
+	// Connect object Gtk::TreeView with id 'ColorThemeTreeView'.
+	m_ColorThemeTreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_color_theme_activated));
 
 	// Connect object Gtk::Button with id 'SearchBackwardButton'.
 	m_SearchBackwardButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_backward_clicked));

@@ -55,8 +55,23 @@
 namespace titania {
 namespace puck {
 
+namespace ColorTheme {
+   static constexpr size_t ID          = 0;
+   static constexpr size_t NAME        = 1;
+   static constexpr size_t DESCRIPTION = 2;
+   static constexpr size_t WEIGHT      = 3;
+}
+
+namespace Weight {
+
+static constexpr int NORMAL = 400;
+static constexpr int BOLD   = 700;
+
+};
+
 X3DScriptEditorPreferences::X3DScriptEditorPreferences () :
-	     X3DScriptEditorInterface ()
+	     X3DScriptEditorInterface (),
+	                  themeIndex (0)
 {
 }
 
@@ -107,13 +122,44 @@ X3DScriptEditorPreferences::initialize ()
 	else
 		getInsertSpacesInsteadOfTabsCheckButton () .set_active (false);
 
-	//
+	// Color Themes
+
+	std::string themeId = "tango";
+	
+	if (getConfig () .hasItem ("colorTheme"))
+		themeId = getConfig () .getString ("colorTheme");
+
+	getTextBuffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme (themeId));
+
+	// Build color themes list view
+
+	size_t i = 0;
+	
+	for (const auto & id : Gsv::StyleSchemeManager::get_default () -> get_scheme_ids ())
+	{
+		const auto scheme = Gsv::StyleSchemeManager::get_default () -> get_scheme (id);
+		const auto iter   = getColorThemeListStore () -> append ();
+
+		iter -> set_value (ColorTheme::ID,          id);
+		iter -> set_value (ColorTheme::NAME,        scheme -> get_name ());
+		iter -> set_value (ColorTheme::DESCRIPTION, scheme -> get_description ());
+
+		if (id == themeId)
+		{
+		   themeIndex = i;
+			iter -> set_value (ColorTheme::WEIGHT, Weight::BOLD);
+		}
+		else
+			iter -> set_value (ColorTheme::WEIGHT, Weight::NORMAL);
+		
+		++ i;
+	}
+
+	// Defaults
 
 	getTextBuffer () -> set_highlight_syntax (true);
-	getTextBuffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme ("tango"));
 
 	getTextView () .set_show_line_marks (true);
-
 	getTextView () .set_auto_indent (true);
 	getTextView () .set_indent_on_tab (true);
 }
@@ -210,6 +256,31 @@ X3DScriptEditorPreferences::on_insert_spaces_instead_of_tabs_toggled ()
 	getConfig () .setItem ("insertSpacesInsteadOfTabs", getInsertSpacesInsteadOfTabsCheckButton () .get_active ());
 
 	getTextView () .set_insert_spaces_instead_of_tabs (getInsertSpacesInsteadOfTabsCheckButton () .get_active ());
+}
+
+void
+X3DScriptEditorPreferences::on_color_theme_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
+{
+	// Unset old theme
+
+	const auto rows        = getColorThemeListStore () -> children ();
+	const auto previousRow = rows [themeIndex];
+
+	previousRow -> set_value (ColorTheme::WEIGHT, Weight::NORMAL);
+
+	// Set new theme
+
+	themeIndex = path .front ();
+
+	const auto  newRow = rows [themeIndex];
+	std::string themeId;
+
+	newRow -> set_value (ColorTheme::WEIGHT, Weight::BOLD);
+	newRow -> get_value (ColorTheme::ID, themeId);
+
+	getTextBuffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme (themeId));
+
+	getConfig () .setItem ("colorTheme", themeId);
 }
 
 X3DScriptEditorPreferences::~X3DScriptEditorPreferences ()

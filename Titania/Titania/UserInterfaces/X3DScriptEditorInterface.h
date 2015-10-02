@@ -102,6 +102,10 @@ public:
 	getAccelGroup () const
 	{ return m_AccelGroup; }
 
+	const Glib::RefPtr <Gtk::ListStore> &
+	getColorThemeListStore () const
+	{ return m_ColorThemeListStore; }
+
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getRightMarginAdjustment () const
 	{ return m_RightMarginAdjustment; }
@@ -286,6 +290,14 @@ public:
 	getInsertSpacesInsteadOfTabsCheckButton () const
 	{ return *m_InsertSpacesInsteadOfTabsCheckButton; }
 
+	Gtk::Expander &
+	getColorThemeExpander () const
+	{ return *m_ColorThemeExpander; }
+
+	Gtk::TreeView &
+	getColorThemeTreeView () const
+	{ return *m_ColorThemeTreeView; }
+
 	Gtk::Revealer &
 	getSearchRevealer () const
 	{ return *m_SearchRevealer; }
@@ -412,6 +424,10 @@ public:
 
 	virtual
 	void
+	on_color_theme_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
+
+	virtual
+	void
 	on_search_backward_clicked () = 0;
 
 	virtual
@@ -460,6 +476,7 @@ private:
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
+	Glib::RefPtr <Gtk::ListStore>  m_ColorThemeListStore;
 	Glib::RefPtr <Gtk::Adjustment> m_RightMarginAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TabWidthAdjustment;
 	Gtk::Image*                    m_FragmentShaderImage;
@@ -506,6 +523,8 @@ private:
 	Gtk::Expander*                 m_EditorExpander;
 	Gtk::SpinButton*               m_TabWidthSpinButton;
 	Gtk::CheckButton*              m_InsertSpacesInsteadOfTabsCheckButton;
+	Gtk::Expander*                 m_ColorThemeExpander;
+	Gtk::TreeView*                 m_ColorThemeTreeView;
 	Gtk::Revealer*                 m_SearchRevealer;
 	Gtk::Box*                      m_SearchBox;
 	Gtk::Box*                      m_ReplaceButtonsBox;

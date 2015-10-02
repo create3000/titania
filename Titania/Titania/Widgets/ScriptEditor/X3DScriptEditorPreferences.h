@@ -92,6 +92,9 @@ protected:
 	const Gsv::View &
 	getTextView () const = 0;
 
+
+private:
+
 	// @name Event handlers
 
 	virtual
@@ -133,6 +136,14 @@ protected:
 	virtual
 	void
 	on_insert_spaces_instead_of_tabs_toggled () final override;
+
+	virtual
+	void
+	on_color_theme_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+
+	// @name Members
+
+	size_t themeIndex;
 
 };
 
