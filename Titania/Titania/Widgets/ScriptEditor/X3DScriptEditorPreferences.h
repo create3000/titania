@@ -51,7 +51,6 @@
 #ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_PREFERENCES_H__
 #define __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_PREFERENCES_H__
 
-#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DScriptEditorInterface.h"
 
 #include <gtksourceviewmm/buffer.h>
@@ -78,7 +77,7 @@ protected:
 	void
 	initialize () override;
 
-	// @name Member access
+	///  @name Member access
 
 	virtual
 	const Glib::RefPtr <Gsv::Buffer> &
@@ -95,7 +94,7 @@ protected:
 
 private:
 
-	// @name Event handlers
+	///  @name Event handlers
 
 	virtual
 	void
@@ -141,7 +140,7 @@ private:
 	void
 	on_color_theme_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
-	// @name Members
+	///  @name Members
 
 	size_t themeIndex;
 

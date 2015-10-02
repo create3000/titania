@@ -55,41 +55,28 @@
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../Console/Console.h"
 
-#include <Titania/Stream/Base64.h>
-#include <Titania/String.h>
-
 #include <gtksourceviewmm/init.h>
 #include <gtksourceviewmm/languagemanager.h>
 #include <gtksourceviewmm/styleschememanager.h>
 
-#include <gtksourceview/gtksourcesearchcontext.h>
-#include <gtksourceview/gtksourcesearchsettings.h>
-
 namespace titania {
 namespace puck {
-
-constexpr size_t RECENT_SEARCHES_MAX = 12;
 
 ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	  X3DScriptEditorInterface (get_ui ("ScriptEditor.xml"), gconf_dir ()),
 	           X3DScriptEditor (),
 	       X3DShaderPartEditor (),
+	     X3DScriptEditorSearch (),
 	X3DScriptEditorPreferences (),
 	                  modified (false),
 	                textBuffer (Gsv::Buffer::create ()),
 	                  textView (textBuffer),
-	            searchSettings (gtk_source_search_settings_new ()),
-	             searchContext (gtk_source_search_context_new (textBuffer -> gobj (), searchSettings)),
 	                 nodeIndex (new NodeIndex (browserWindow)),
 	                  nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                      node (),
 	                     index (0),
-	                   console (new Console (browserWindow)),
-	                      keys (),
-	                searchMark (textBuffer -> get_insert ()),
-	          searchConnection (),
-	            recentSearches ()
+	                   console (new Console (browserWindow))
 {
 	Gsv::init ();
 	setup ();
@@ -112,11 +99,8 @@ ScriptEditor::initialize ()
 	getTextBuffer () -> get_undo_manager () -> signal_can_undo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_undo_changed));
 	getTextBuffer () -> get_undo_manager () -> signal_can_redo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_redo_changed));
 
-	getTextView () .signal_focus_in_event ()    .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_in_event));
-	getTextView () .signal_focus_out_event ()   .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_out_event));
-	getTextView () .signal_key_press_event ()   .connect (sigc::mem_fun (*this, &ScriptEditor::on_key_press_event),   false);
-	getTextView () .signal_key_release_event () .connect (sigc::mem_fun (*this, &ScriptEditor::on_key_release_event), false);
-	getTextView () .signal_size_allocate ()     .connect (sigc::mem_fun (*this, &ScriptEditor::on_size_allocate));
+	getTextView () .signal_focus_in_event ()  .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_in_event));
+	getTextView () .signal_focus_out_event () .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_out_event));
 
 	getTextView () .show ();
 
@@ -136,39 +120,9 @@ ScriptEditor::initialize ()
 
 	console -> reparent (getConsoleBox (), getWindow ());
 
-	// Search & Replace
+	// Initialize after all.
 
-	getSearchRevealer () .unparent ();
-	getSearchOverlay () .add_overlay (getSearchRevealer ());
-
-	g_signal_connect (searchContext, "notify::occurrences-count", G_CALLBACK (&ScriptEditor::on_occurences_changed), this);
-
-	gtk_source_search_context_set_highlight (searchContext, true);
-
-	// Search Widget
-
-	getToggleReplaceButton () .set_active (getConfig () .getBoolean ("replaceEnabled"));
-
-	if (getConfig () .getBoolean ("searchEnabled"))
-		on_enable_search ();
-
-	// Search Menu
-
-	getCaseSensitiveMenuItem ()      .set_active (getConfig () .getBoolean ("searchCaseSensitive"));
-	getAtWordBoundariesMenuItem ()   .set_active (getConfig () .getBoolean ("searchAtWordBoundaries"));
-	getRegularExpressionMenuItem ()  .set_active (getConfig () .getBoolean ("searchRegularExpression"));
-	getWithinSelectionMenuItem ()    .set_active (getConfig () .getBoolean ("searchWithinSelection"));
-	getWrapAroundMenuItemMenuItem () .set_active (getConfig () .getBoolean ("searchWrapAround"));
-
-	recentSearches = basic::basic_split <Glib::ustring, std::deque> (getConfig () .getString ("recentSearches"), ";");
-
-	for (auto search : recentSearches)
-		search = basic::base64_decode (search);
-
-	// Search Menu Icon (workaround issue, as settings are not applied from builder)
-
-	getSearchEntry () .set_icon_activatable (true, Gtk::ENTRY_ICON_PRIMARY);
-	getSearchEntry () .set_icon_sensitive   (Gtk::ENTRY_ICON_PRIMARY, true);
+	X3DScriptEditorSearch::initialize ();
 }
 
 bool
@@ -441,382 +395,13 @@ ScriptEditor::set_loadState (const X3D::LoadState loadState)
 }
 
 /*
- * Search and Replace
- */
-
-bool
-ScriptEditor::on_search_entry_focus_in_event (GdkEventFocus*)
-{
-	getBrowserWindow () -> hasAccelerators (false);
-
-	searchMark = getTextBuffer () -> create_mark (getTextBuffer () -> get_iter_at_mark (getTextBuffer () -> get_insert ()));
-
-	return false;
-}
-
-bool
-ScriptEditor::on_search_entry_focus_out_event (GdkEventFocus*)
-{
-	getBrowserWindow () -> hasAccelerators (true);
-
-	getTextBuffer () -> delete_mark (searchMark);
-
-	// Don't leave the mark alone.
-	searchMark = getTextBuffer () -> get_insert ();
-
-	return false;
-}
-
-bool
-ScriptEditor::on_key_press_event (GdkEventKey* event)
-{
-	keys .press (event);
-
-	switch (event -> keyval)
-	{
-		case GDK_KEY_Escape:
-		{
-			on_hide_search_clicked ();
-			return true;
-		}
-		case GDK_KEY_h:
-		{
-			if (keys .control ())
-			{
-				getToggleReplaceButton () .set_active (true);
-				on_enable_search ();
-				return true;
-			}
-
-			break;
-		}
-		case GDK_KEY_f:
-		{
-			if (keys .control ())
-			{
-				getToggleReplaceButton () .set_active (false);
-				on_enable_search ();
-				return true;
-			}
-
-			break;
-		}
-		case GDK_KEY_g:
-		{
-			if (keys .control ())
-			{
-				on_search_forward_clicked ();
-				return true;
-			}
-
-			break;
-		}
-		case GDK_KEY_G:
-		{
-			if (keys .control ())
-			{
-				on_search_backward_clicked ();
-				return true;
-			}
-
-			break;
-		}
-		default:
-			break;
-	}
-
-	return false;
-}
-
-bool
-ScriptEditor::on_key_release_event (GdkEventKey* event)
-{
-	keys .release (event);
-
-	return false;
-}
-
-void
-ScriptEditor::on_size_allocate (const Gtk::Allocation & allocation)
-{
-	const auto width = allocation .get_width () * (2 - math::M_PHI);
-	const auto box   = getSearchBox ()   .get_allocation () .get_width ();
-	const auto entry = getSearchEntry () .get_allocation () .get_width ();
-
-	getSearchEntry ()  .set_size_request (width * entry / box, -1);
-	getReplaceEntry () .set_size_request (width * entry / box, -1);
-}
-
-void
-ScriptEditor::on_enable_search ()
-{
-	searchConnection .disconnect ();
-
-	Gsv::Buffer::iterator selectionBegin;
-	Gsv::Buffer::iterator selectionEnd;
-
-	getTextBuffer () -> get_selection_bounds (selectionBegin, selectionEnd);
-
-	std::string selection = getTextBuffer () -> get_text (selectionBegin, selectionEnd);
-
-	if (selection .size ())
-	{
-		if (getRegularExpressionMenuItem () .get_active ())
-			selection = pcrecpp::RE::QuoteMeta (selection);
-
-		on_add_search (selection);
-		getSearchEntry () .set_text (selection);
-		gtk_source_search_settings_set_search_text (searchSettings, selection .c_str ());
-	}
-
-	searchConnection = getSearchEntry () .signal_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_search_entry_changed));
-
-	on_size_allocate (getTextView () .get_allocation ());
-	getSearchEntry ()    .grab_focus ();
-	getSearchRevealer () .set_reveal_child (true);
-
-	if (selection .size ())
-		getTextBuffer () -> select_range (selectionBegin, selectionEnd);
-}
-
-void
-ScriptEditor::on_replace_toggled ()
-{
-	const bool active = getToggleReplaceButton () .get_active ();
-
-	getReplaceEntry ()       .set_visible (active);
-	getReplaceButtonsBox ()  .set_visible (active);
-	getToggleReplaceImage () .set (Gtk::StockID (active ? "gtk-yes" : "gtk-no"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
-}
-
-void
-ScriptEditor::on_search_menu_icon_released (Gtk::EntryIconPosition icon_position, const GdkEventButton* event)
-{
-	switch (icon_position)
-	{
-		case Gtk::ENTRY_ICON_PRIMARY:
-			on_build_search_menu ();
-			getSearchMenu () .popup (event -> button, event -> time);
-			break;
-		case Gtk::ENTRY_ICON_SECONDARY:
-			break;
-	}
-}
-
-void
-ScriptEditor::on_build_search_menu ()
-{
-	// Remove menu items
-
-	const auto menuItems = getSearchMenu () .get_children ();
-	const auto size      = menuItems .size ();
-	size_t     i         = 0;
-
-	for (auto size = menuItems .size (); i < size; ++ i)
-	{
-		const auto separator = dynamic_cast <Gtk::SeparatorMenuItem*> (menuItems [i]);
-
-		if (separator)
-			break;
-	}
-
-	i += 2;
-
-	for (; i < size; ++ i)
-		getSearchMenu () .remove (*menuItems [i]);
-
-	// Add menu items
-
-	for (const auto search : recentSearches)
-	{
-		const auto menuItem = Gtk::manage (new Gtk::MenuItem (search));
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &ScriptEditor::on_search_activate), search));
-		menuItem -> show ();
-
-		getSearchMenu () .append (*menuItem);
-	}
-}
-
-void
-ScriptEditor::on_search_activate (const Glib::ustring & search)
-{
-	getSearchEntry () .set_text (search);
-}
-
-void
-ScriptEditor::on_add_search (const Glib::ustring & search)
-{
-	// Add search to recentSearches
-
-	recentSearches .emplace_front (search);
-
-	// Constrain recentSearches
-
-	if (recentSearches .size () > RECENT_SEARCHES_MAX)
-		recentSearches .pop_back ();
-}
-
-void
-ScriptEditor::on_search_case_sensitve_toggled ()
-{
-	gtk_source_search_settings_set_case_sensitive (searchSettings, getCaseSensitiveMenuItem () .get_active ());
-}
-
-void
-ScriptEditor::on_search_at_word_boundaries_toggled ()
-{
-	gtk_source_search_settings_set_at_word_boundaries (searchSettings, getAtWordBoundariesMenuItem () .get_active ());
-}
-
-void
-ScriptEditor::on_search_regex_toggled ()
-{
-	gtk_source_search_settings_set_regex_enabled (searchSettings, getRegularExpressionMenuItem () .get_active ());
-}
-
-void
-ScriptEditor::on_search_within_selection_toggled ()
-{ }
-
-void
-ScriptEditor::on_search_wrap_around_toggled ()
-{
-	gtk_source_search_settings_set_wrap_around (searchSettings, getWrapAroundMenuItemMenuItem () .get_active ());
-}
-
-void
-ScriptEditor::on_search_entry_changed ()
-{
-	on_add_search (getSearchEntry () .get_text ());
-
-	gtk_source_search_settings_set_search_text (searchSettings, getSearchEntry () .get_text () .c_str ());
-
-	on_search_forward_clicked (searchMark);
-}
-
-void
-ScriptEditor::on_occurences_changed (GObject* gobject, GParamSpec* pspec, gpointer user_data)
-{
-	const auto self           = static_cast <ScriptEditor*> (user_data);
-	const bool hasOccurrences = gtk_source_search_context_get_occurrences_count (self -> searchContext) > 0;
-
-	self -> getSearchBackwardButton () .set_sensitive (hasOccurrences);
-	self -> getSearchForwardButton ()  .set_sensitive (hasOccurrences);
-	self -> getReplaceButton ()        .set_sensitive (hasOccurrences);
-	self -> getReplaceAllButton ()     .set_sensitive (hasOccurrences);
-}
-
-void
-ScriptEditor::on_search_backward_clicked ()
-{
-	const auto insertIter = getTextBuffer () -> get_iter_at_mark (getTextBuffer () -> get_insert ());
-
-	gtk_source_search_context_backward_async (searchContext, insertIter .gobj (), nullptr, &ScriptEditor::on_search_backward_callback, this);
-}
-
-void
-ScriptEditor::on_search_backward_callback (GObject* const source_object, GAsyncResult* const result, const gpointer self)
-{
-	static_cast <ScriptEditor*> (self) -> on_search_backward (result);
-}
-
-void
-ScriptEditor::on_search_backward (GAsyncResult* const result)
-{
-	Gsv::Buffer::iterator matchBegin;
-	Gsv::Buffer::iterator matchEnd;
-
-	GError* error = nullptr;
-
-	if (not gtk_source_search_context_backward_finish (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &error))
-		return;
-
-	const auto match = getTextBuffer () -> get_text (matchBegin, matchEnd);
-
-	getTextView () .scroll_to (matchBegin, 0, 0.5, 2 - math::M_PHI);
-	getTextBuffer () -> select_range (matchBegin, matchEnd);
-}
-
-void
-ScriptEditor::on_search_forward_clicked ()
-{
-	Gsv::Buffer::iterator selectionBegin;
-	Gsv::Buffer::iterator selectionEnd;
-
-	if (getTextBuffer () -> get_selection_bounds (selectionBegin, selectionEnd))
-		getTextBuffer () -> place_cursor (selectionEnd);
-
-	on_search_forward_clicked (getTextBuffer () -> get_insert ());
-}
-
-void
-ScriptEditor::on_search_forward_clicked (const Glib::RefPtr <Gsv::Buffer::Mark> & mark)
-{
-	const auto insertIter = getTextBuffer () -> get_iter_at_mark (mark);
-
-	gtk_source_search_context_forward_async (searchContext, insertIter .gobj (), nullptr, &ScriptEditor::on_search_forward_callback, this);
-}
-
-void
-ScriptEditor::on_search_forward_callback (GObject* const source_object, GAsyncResult* const result, const gpointer self)
-{
-	static_cast <ScriptEditor*> (self) -> on_search_forward (result);
-}
-
-void
-ScriptEditor::on_search_forward (GAsyncResult* const result)
-{
-	Gsv::Buffer::iterator matchBegin;
-	Gsv::Buffer::iterator matchEnd;
-
-	GError* error = nullptr;
-
-	if (not gtk_source_search_context_forward_finish (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &error))
-		return;
-
-	const auto match = getTextBuffer () -> get_text (matchBegin, matchEnd);
-
-	getTextView () .scroll_to (matchBegin, 0, 0.5, 2 - math::M_PHI);
-	getTextBuffer () -> select_range (matchBegin, matchEnd);
-}
-
-void
-ScriptEditor::on_hide_search_clicked ()
-{
-	getSearchRevealer ()      .set_reveal_child (false);
-	getToggleReplaceButton () .set_active (false);
-	getTextView ()            .grab_focus ();
-
-	gtk_source_search_settings_set_search_text (searchSettings, nullptr);
-}
-
-/*
- * Destructiond
+ * Destruction
  */
 
 ScriptEditor::~ScriptEditor ()
 {
 	getConfig () .setItem ("paned",     getPaned ()     .get_position ());
 	getConfig () .setItem ("sidePaned", getSidePaned () .get_position ());
-
-	// Search & Replace
-
-	getConfig () .setItem ("searchEnabled",  getSearchRevealer ()      .get_child_revealed ());
-	getConfig () .setItem ("replaceEnabled", getToggleReplaceButton () .get_active ());
-
-	getConfig () .setItem ("searchCaseSensitive",     getCaseSensitiveMenuItem ()      .get_active ());
-	getConfig () .setItem ("searchAtWordBoundaries",  getAtWordBoundariesMenuItem ()   .get_active ());
-	getConfig () .setItem ("searchRegularExpression", getRegularExpressionMenuItem ()  .get_active ());
-	getConfig () .setItem ("searchWithinSelection",   getWithinSelectionMenuItem ()    .get_active ());
-	getConfig () .setItem ("searchWrapAround",        getWrapAroundMenuItemMenuItem () .get_active ());
-
-	for (auto search : recentSearches)
-		search = basic::base64_encode (search);
-
-	getConfig () .setItem ("recentSearches", basic::join (recentSearches, ";"));
-
-	//how to delete searchContext;
-	//how to delete searchSettings;
 
 	dispose ();
 }

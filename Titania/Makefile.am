@@ -135,6 +135,7 @@ titania_SOURCES =  \
 	Titania/Widgets/ScriptEditor/ScriptEditor.cpp \
 	Titania/Widgets/ScriptEditor/X3DScriptEditor.cpp \
 	Titania/Widgets/ScriptEditor/X3DScriptEditorPreferences.cpp \
+	Titania/Widgets/ScriptEditor/X3DScriptEditorSearch.cpp \
 	Titania/Widgets/ScriptEditor/X3DShaderPartEditor.cpp \
 	Titania/Widgets/ViewpointList/ViewpointList.cpp
 

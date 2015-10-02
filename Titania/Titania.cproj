@@ -203,6 +203,7 @@
     <Compile Include="Titania\Widgets\ScriptEditor\X3DShaderPartEditor.cpp" />
     <Compile Include="Titania\Browser\RecentView.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditorPreferences.cpp" />
+    <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditorSearch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1858,6 +1859,7 @@
     <None Include="share\titania\ui\icons\TextureQuality.svg" />
     <None Include="Titania\Browser\RecentView.h" />
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditorPreferences.h" />
+    <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditorSearch.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

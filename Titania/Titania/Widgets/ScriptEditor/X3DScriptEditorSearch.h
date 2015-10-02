@@ -48,15 +48,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_SCRIPT_EDITOR_H__
-#define __TITANIA_WIDGETS_SCRIPT_EDITOR_SCRIPT_EDITOR_H__
+#ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_SEARCH_H__
+#define __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_SEARCH_H__
 
-#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DScriptEditorInterface.h"
-#include "X3DScriptEditor.h"
-#include "X3DShaderPartEditor.h"
-#include "X3DScriptEditorSearch.h"
-#include "X3DScriptEditorPreferences.h"
 
 #include <gtksourceviewmm/buffer.h>
 #include <gtksourceviewmm/view.h>
@@ -64,128 +59,147 @@
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-class NodeIndex;
-class Console;
-
-class ScriptEditor :
-	virtual public X3DScriptEditorInterface,
-	public X3DScriptEditor,
-	public X3DShaderPartEditor,
-	public X3DScriptEditorSearch,
-	public X3DScriptEditorPreferences
+class X3DScriptEditorSearch :
+	virtual public X3DScriptEditorInterface
 {
 public:
 
-	///  @name Construction
+	~X3DScriptEditorSearch ();
 
-	ScriptEditor (X3DBrowserWindow* const);
-
-	/// @name Member access
-
-	bool
-	isModified () const;
-
-	///  @name Event handlers
-
-	void
-	apply (const UndoStepPtr &);
-
-	///  @name Destruction
-
-	virtual
-	~ScriptEditor ();
 
 protected:
 
+	///  @name Construction
+
+	X3DScriptEditorSearch ();
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Member access
+
 	virtual
 	const Glib::RefPtr <Gsv::Buffer> &
-	getTextBuffer () const final override
-	{ return textBuffer; }
+	getTextBuffer () const = 0;
 
 	virtual
 	Gsv::View &
-	getTextView () final override
-	{ return textView; }
+	getTextView () = 0;
 
 	virtual
 	const Gsv::View &
-	getTextView () const final override
-	{ return textView; }
+	getTextView () const = 0;
 
 
 private:
 
-	///  @name Construction
+	///  @name Event handler
 
 	virtual
-	void
-	initialize () final override;
-
-	///  @name Member access
-
-	void
-	isModified (const bool value)
-	{ modified = value; }
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_map () final override;
-
-	void
-	set_label ();
-
-	void
-	set_node (const X3D::SFNode &);
-
 	bool
-	on_focus_in_event (GdkEventFocus*);
+	on_search_entry_focus_in_event (GdkEventFocus*) final override;
 
+	virtual
 	bool
-	on_focus_out_event (GdkEventFocus*);
+	on_search_entry_focus_out_event (GdkEventFocus*) final override;
+
+	virtual
+	bool
+	on_key_press_event (GdkEventKey*) final override;
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey*) final override;
+
+	void
+	on_size_allocate (const Gtk::Allocation &);
+
+	void
+	on_enable_search ();
 
 	virtual
 	void
-	on_apply_clicked () final override;
+	on_replace_toggled () final override;
 
 	virtual
 	void
-	on_undo_clicked () final override;
+	on_search_menu_icon_released (Gtk::EntryIconPosition, const GdkEventButton*) final override;
 
 	void
-	on_can_undo_changed ();
+	on_build_search_menu ();
 
 	void
-	on_can_redo_changed ();
+	on_search_activate (const Glib::ustring &);
+
+	void
+	on_add_search (const Glib::ustring &);
 
 	virtual
 	void
-	on_redo_clicked () final override;
+	on_search_case_sensitve_toggled () final override;
+
+	virtual
+	void
+	on_search_at_word_boundaries_toggled () final override;
+
+	virtual
+	void
+	on_search_regex_toggled () final override;
+
+	virtual
+	void
+	on_search_within_selection_toggled () final override;
+
+	virtual
+	void
+	on_search_wrap_around_toggled () final override;
 
 	void
-	set_cdata ();
+	on_search_entry_changed ();
+
+	static
+	void
+	on_occurences_changed (GObject*, GParamSpec*, gpointer);
+
+	virtual
+	void
+	on_search_backward_clicked () final override;
+
+	static
+	void
+	on_search_backward_callback (GObject* const, GAsyncResult* const, const gpointer);
 
 	void
-	connectCDATA (const X3D::MFString &);
+	on_search_backward (GAsyncResult* const);
+
+	virtual
+	void
+	on_search_forward_clicked () final override;
 
 	void
-	on_loadState_clicked ();
+	on_search_forward_clicked (const Glib::RefPtr <Gsv::Buffer::Mark> &);
+
+	static
+	void
+	on_search_forward_callback (GObject* const, GAsyncResult* const, const gpointer);
 
 	void
-	set_loadState (const X3D::LoadState);
+	on_search_forward (GAsyncResult* const);
+
+	virtual
+	void
+	on_hide_search_clicked () final override;
 
 	///  @name Members
 
-	bool                        modified;
-	Glib::RefPtr <Gsv::Buffer>  textBuffer;
-	Gsv::View                   textView;
-	std::unique_ptr <NodeIndex> nodeIndex;
-	NameEntry                   nodeName;
-	X3D::SFNode                 node;
-	size_t                      index;
-	std::unique_ptr <Console>   console;
+	GtkSourceSearchSettings* searchSettings;
+	GtkSourceSearchContext*  searchContext;
+
+	X3D::Keys                        keys;
+	Glib::RefPtr <Gsv::Buffer::Mark> searchMark;
+	sigc::connection                 searchConnection;
+	std::deque <Glib::ustring>       recentSearches;
 
 };
 
