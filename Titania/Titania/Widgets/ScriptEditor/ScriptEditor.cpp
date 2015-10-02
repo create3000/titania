@@ -568,10 +568,13 @@ ScriptEditor::on_enable_search ()
 
 	getTextBuffer () -> get_selection_bounds (selectionBegin, selectionEnd);
 
-	const auto selection = getTextBuffer () -> get_text (selectionBegin, selectionEnd);
+	std::string selection = getTextBuffer () -> get_text (selectionBegin, selectionEnd);
 
 	if (selection .size ())
 	{
+	   if (getRegularExpressionMenuItem () .get_active ())
+	      selection = pcrecpp::RE::QuoteMeta (selection); 
+
 	   on_add_search (selection);
 		getSearchEntry () .set_text (selection);
 		gtk_source_search_settings_set_search_text (searchSettings, selection .c_str ());
