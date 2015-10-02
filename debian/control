@@ -50,7 +50,8 @@ Depends: ${shlibs:Depends},
          perl,
          libxml-libxml-perl,
          libglib-perl,
-         libswitch-perl
+         libswitch-perl,
+         gconf2
 Conflicts:
 Replaces:
 Provides: titania
