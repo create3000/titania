@@ -263,20 +263,27 @@ X3DScriptEditorPreferences::on_color_theme_activated (const Gtk::TreeModel::Path
 {
 	// Unset old theme
 
-	const auto rows        = getColorThemeListStore () -> children ();
-	const auto previousRow = rows [themeIndex];
+	Gtk::TreePath previousPath;
 
-	previousRow -> set_value (ColorTheme::WEIGHT, Weight::NORMAL);
+	previousPath .push_back (themeIndex);
+
+	const auto previousIter = getColorThemeListStore () -> get_iter (previousPath);
+
+	previousIter -> set_value (ColorTheme::WEIGHT, Weight::NORMAL);
 
 	// Set new theme
 
 	themeIndex = path .front ();
 
-	const auto  newRow = rows [themeIndex];
+	Gtk::TreePath newPath;
+
+	newPath .push_back (themeIndex);
+
+	const auto  newIter = getColorThemeListStore () -> get_iter (newPath);
 	std::string themeId;
 
-	newRow -> set_value (ColorTheme::WEIGHT, Weight::BOLD);
-	newRow -> get_value (ColorTheme::ID, themeId);
+	newIter -> set_value (ColorTheme::WEIGHT, Weight::BOLD);
+	newIter -> get_value (ColorTheme::ID,     themeId);
 
 	getTextBuffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme (themeId));
 
