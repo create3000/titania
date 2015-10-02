@@ -61,7 +61,8 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_AccelGroup = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("AccelGroup"));
+	m_AccelGroup            = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("AccelGroup"));
+	m_RightMarginAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("RightMarginAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("FragmentShaderImage", m_FragmentShaderImage);
@@ -96,6 +97,15 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("DirectOutputToggleButton", m_DirectOutputToggleButton);
 	m_builder -> get_widget ("MustEvaluateToggleButton", m_MustEvaluateToggleButton);
 	m_builder -> get_widget ("ShaderTypeMenuButton", m_ShaderTypeMenuButton);
+	m_builder -> get_widget ("PreferencesButton", m_PreferencesButton);
+	m_builder -> get_widget ("PreferencesDialog", m_PreferencesDialog);
+	m_builder -> get_widget ("WordWrapExpander", m_WordWrapExpander);
+	m_builder -> get_widget ("ShowLineNumbersCheckButton", m_ShowLineNumbersCheckButton);
+	m_builder -> get_widget ("ShowRightMarginCheckButton", m_ShowRightMarginCheckButton);
+	m_builder -> get_widget ("RightMarginSpinButton", m_RightMarginSpinButton);
+	m_builder -> get_widget ("WrapModeComboBoxText", m_WrapModeComboBoxText);
+	m_builder -> get_widget ("HighlightCurrentLineCheckButton", m_HighlightCurrentLineCheckButton);
+	m_builder -> get_widget ("HighlightMatchingBracketsCheckButton", m_HighlightMatchingBracketsCheckButton);
 	m_builder -> get_widget ("SearchRevealer", m_SearchRevealer);
 	m_builder -> get_widget ("SearchBox", m_SearchBox);
 	m_builder -> get_widget ("ReplaceButtonsBox", m_ReplaceButtonsBox);
@@ -123,6 +133,24 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_undo_clicked));
 	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_redo_clicked));
 	m_LoadStateButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_loadState_clicked));
+	m_PreferencesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_preferences_clicked));
+
+	// Connect object Gtk::Dialog with id 'PreferencesDialog'.
+	m_PreferencesDialog -> signal_delete_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_preferences_delete_event));
+
+	// Connect object Gtk::CheckButton with id 'ShowLineNumbersCheckButton'.
+	m_ShowLineNumbersCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_show_line_numbers_toggled));
+	m_ShowRightMarginCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_show_right_margin_toggled));
+
+	// Connect object Gtk::SpinButton with id 'RightMarginSpinButton'.
+	m_RightMarginSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_right_margin_changed));
+
+	// Connect object Gtk::ComboBoxText with id 'WrapModeComboBoxText'.
+	m_WrapModeComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_wrap_mode_changed));
+
+	// Connect object Gtk::CheckButton with id 'HighlightCurrentLineCheckButton'.
+	m_HighlightCurrentLineCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_highlight_current_line_togged));
+	m_HighlightMatchingBracketsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_highlight_matching_brackets_toggled));
 
 	// Connect object Gtk::Button with id 'SearchBackwardButton'.
 	m_SearchBackwardButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_backward_clicked));
@@ -146,6 +174,7 @@ X3DScriptEditorInterface::create (const std::string & filename)
 X3DScriptEditorInterface::~X3DScriptEditorInterface ()
 {
 	delete m_Window;
+	delete m_PreferencesDialog;
 }
 
 } // puck

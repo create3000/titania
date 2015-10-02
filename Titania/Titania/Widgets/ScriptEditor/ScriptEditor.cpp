@@ -55,16 +55,15 @@
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../Console/Console.h"
 
-#include <Titania/String.h>
 #include <Titania/Stream/Base64.h>
-
+#include <Titania/String.h>
 
 #include <gtksourceviewmm/init.h>
 #include <gtksourceviewmm/languagemanager.h>
 #include <gtksourceviewmm/styleschememanager.h>
 
-#include <gtksourceview/gtksourcesearchsettings.h>
 #include <gtksourceview/gtksourcesearchcontext.h>
+#include <gtksourceview/gtksourcesearchsettings.h>
 
 namespace titania {
 namespace puck {
@@ -72,24 +71,25 @@ namespace puck {
 constexpr size_t RECENT_SEARCHES_MAX = 12;
 
 ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
-	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DScriptEditorInterface (get_ui ("ScriptEditor.xml"), gconf_dir ()),
-				X3DScriptEditor (),
-	     X3DShaderPartEditor (),
-	                modified (false),
-	              textBuffer (Gsv::Buffer::create ()),
-	                textView (textBuffer),
-	          searchSettings (gtk_source_search_settings_new ()),
-	           searchContext (gtk_source_search_context_new (textBuffer -> gobj (), searchSettings)),
-	               nodeIndex (new NodeIndex (browserWindow)),
-	                nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
-	                    node (),
-	                   index (0),
-	                 console (new Console (browserWindow)),
-	                    keys (),
-	              searchMark (textBuffer -> get_insert ()),
-	        searchConnection (),
-	          recentSearches ()
+	          X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	  X3DScriptEditorInterface (get_ui ("ScriptEditor.xml"), gconf_dir ()),
+	           X3DScriptEditor (),
+	       X3DShaderPartEditor (),
+	X3DScriptEditorPreferences (),
+	                  modified (false),
+	                textBuffer (Gsv::Buffer::create ()),
+	                  textView (textBuffer),
+	            searchSettings (gtk_source_search_settings_new ()),
+	             searchContext (gtk_source_search_context_new (textBuffer -> gobj (), searchSettings)),
+	                 nodeIndex (new NodeIndex (browserWindow)),
+	                  nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
+	                      node (),
+	                     index (0),
+	                   console (new Console (browserWindow)),
+	                      keys (),
+	                searchMark (textBuffer -> get_insert ()),
+	          searchConnection (),
+	            recentSearches ()
 {
 	Gsv::init ();
 	setup ();
@@ -101,6 +101,7 @@ ScriptEditor::initialize ()
 	X3DScriptEditorInterface::initialize ();
 	X3DScriptEditor::initialize ();
 	X3DShaderPartEditor::initialize ();
+	X3DScriptEditorPreferences::initialize ();
 
 	if (getConfig () .hasItem ("paned"))
 		getPaned () .set_position (getConfig () .getInteger ("paned"));
@@ -111,26 +112,12 @@ ScriptEditor::initialize ()
 	getTextBuffer () -> get_undo_manager () -> signal_can_undo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_undo_changed));
 	getTextBuffer () -> get_undo_manager () -> signal_can_redo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_redo_changed));
 
-	getTextBuffer () -> set_highlight_syntax (true);
-	getTextBuffer () -> set_highlight_matching_brackets (true);
-	getTextBuffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme ("tango"));
-
 	getTextView () .signal_focus_in_event ()    .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_in_event));
 	getTextView () .signal_focus_out_event ()   .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_out_event));
 	getTextView () .signal_key_press_event ()   .connect (sigc::mem_fun (*this, &ScriptEditor::on_key_press_event),   false);
 	getTextView () .signal_key_release_event () .connect (sigc::mem_fun (*this, &ScriptEditor::on_key_release_event), false);
 	getTextView () .signal_size_allocate ()     .connect (sigc::mem_fun (*this, &ScriptEditor::on_size_allocate));
 
-	getTextView () .set_show_right_margin (true);
-	getTextView () .set_right_margin_position (100);
-	//getTextView () .set_highlight_current_line (true);
-	getTextView () .set_show_line_numbers (true);
-	getTextView () .set_show_line_marks (true);
-	getTextView () .property_tab_width () = 3;
-	getTextView () .set_indent_width (3);
-	getTextView () .set_insert_spaces_instead_of_tabs (false);
-	getTextView () .set_auto_indent (true);
-	getTextView () .set_indent_on_tab (true);
 	getTextView () .show ();
 
 	getScrolledWindow () .add (getTextView ());
@@ -188,8 +175,8 @@ bool
 ScriptEditor::isModified () const
 {
 	if (not node)
-	   return false;
-	
+		return false;
+
 	if (modified)
 		return true;
 
@@ -198,8 +185,8 @@ ScriptEditor::isModified () const
 	const auto & current = cdata -> get1Value (index);
 
 	if (text not_eq current)
-	   return true;
-	
+		return true;
+
 	return false;
 }
 
@@ -237,11 +224,11 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 
 		cdata -> removeInterest (this, &ScriptEditor::set_cdata);
 		cdata -> removeInterest (this, &ScriptEditor::connectCDATA);
-		
+
 		// Load state
 
 		X3D::X3DPtr <X3D::X3DUrlObject> urlObject (node);
-		
+
 		if (urlObject)
 			urlObject -> checkLoadState () .removeInterest (this, &ScriptEditor::set_loadState);
 	}
@@ -253,7 +240,7 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 	set_label ();
 
 	getScriptEditor () .set_sensitive (node);
-	
+
 	if (node)
 	{
 		const auto cdata = node -> getCDATA ();
@@ -261,11 +248,11 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 		cdata -> addInterest (this, &ScriptEditor::set_cdata);
 
 		set_cdata ();
-	
+
 		// Load state
 
 		X3D::X3DPtr <X3D::X3DUrlObject> urlObject (node);
-		
+
 		if (urlObject)
 		{
 			urlObject -> checkLoadState () .addInterest (this, &ScriptEditor::set_loadState);
@@ -279,7 +266,7 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 		getTextBuffer () -> begin_not_undoable_action ();
 		getTextBuffer () -> set_text ("");
 		getTextBuffer () -> end_not_undoable_action ();
-		
+
 		set_loadState (X3D::NOT_STARTED_STATE);
 	}
 
@@ -379,16 +366,17 @@ ScriptEditor::set_cdata ()
 	{
 		switch (type)
 		{
-			case X3D::X3DConstants::Script:
-			{
-				getTextBuffer () -> set_language (Gsv::LanguageManager::get_default () -> guess_language ("", "application/javascript"));
+			case X3D::X3DConstants::Script :
+				{
+					getTextBuffer () -> set_language (Gsv::LanguageManager::get_default () -> guess_language ("", "application/javascript"));
 
-				if (index >= cdata -> size () or cdata -> get1Value (index) .empty ())
-					getTextBuffer () -> set_text ("javascript:\n");
-				else
-					getTextBuffer () -> set_text (cdata -> get1Value (index));
-				break;
-			}
+					if (index >= cdata -> size () or cdata -> get1Value (index) .empty ())
+						getTextBuffer () -> set_text ("javascript:\n");
+					else
+						getTextBuffer () -> set_text (cdata -> get1Value (index));
+
+					break;
+				}
 			case X3D::X3DConstants::ShaderPart:
 			case X3D::X3DConstants::ShaderProgram:
 			{
@@ -398,6 +386,7 @@ ScriptEditor::set_cdata ()
 					getTextBuffer () -> set_text ("data:text/plain,\n");
 				else
 					getTextBuffer () -> set_text (cdata -> get1Value (index));
+
 				break;
 			}
 			default:
@@ -530,7 +519,7 @@ ScriptEditor::on_key_press_event (GdkEventKey* event)
 				return true;
 			}
 
-		   break;
+			break;
 		}
 		default:
 			break;
@@ -551,7 +540,7 @@ void
 ScriptEditor::on_size_allocate (const Gtk::Allocation & allocation)
 {
 	const auto width = allocation .get_width () * (2 - math::M_PHI);
-	const auto box   = getSearchBox ()   .get_allocation () .get_width (); 
+	const auto box   = getSearchBox ()   .get_allocation () .get_width ();
 	const auto entry = getSearchEntry () .get_allocation () .get_width ();
 
 	getSearchEntry ()  .set_size_request (width * entry / box, -1);
@@ -572,10 +561,10 @@ ScriptEditor::on_enable_search ()
 
 	if (selection .size ())
 	{
-	   if (getRegularExpressionMenuItem () .get_active ())
-	      selection = pcrecpp::RE::QuoteMeta (selection); 
+		if (getRegularExpressionMenuItem () .get_active ())
+			selection = pcrecpp::RE::QuoteMeta (selection);
 
-	   on_add_search (selection);
+		on_add_search (selection);
 		getSearchEntry () .set_text (selection);
 		gtk_source_search_settings_set_search_text (searchSettings, selection .c_str ());
 	}
@@ -606,8 +595,8 @@ ScriptEditor::on_search_menu_icon_released (Gtk::EntryIconPosition icon_position
 	switch (icon_position)
 	{
 		case Gtk::ENTRY_ICON_PRIMARY:
-		   on_build_search_menu ();
-		   getSearchMenu () .popup (event -> button, event -> time);
+			on_build_search_menu ();
+			getSearchMenu () .popup (event -> button, event -> time);
 			break;
 		case Gtk::ENTRY_ICON_SECONDARY:
 			break;
@@ -628,12 +617,12 @@ ScriptEditor::on_build_search_menu ()
 		const auto separator = dynamic_cast <Gtk::SeparatorMenuItem*> (menuItems [i]);
 
 		if (separator)
-		   break;
+			break;
 	}
 
 	i += 2;
 
-	for ( ; i < size; ++ i)
+	for (; i < size; ++ i)
 		getSearchMenu () .remove (*menuItems [i]);
 
 	// Add menu items
@@ -660,7 +649,7 @@ ScriptEditor::on_add_search (const Glib::ustring & search)
 	// Add search to recentSearches
 
 	recentSearches .emplace_front (search);
-	
+
 	// Constrain recentSearches
 
 	if (recentSearches .size () > RECENT_SEARCHES_MAX)
@@ -687,8 +676,7 @@ ScriptEditor::on_search_regex_toggled ()
 
 void
 ScriptEditor::on_search_within_selection_toggled ()
-{
-}
+{ }
 
 void
 ScriptEditor::on_search_wrap_around_toggled ()
@@ -741,7 +729,7 @@ ScriptEditor::on_search_backward (GAsyncResult* const result)
 	GError* error = nullptr;
 
 	if (not gtk_source_search_context_backward_finish (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &error))
-	   return;
+		return;
 
 	const auto match = getTextBuffer () -> get_text (matchBegin, matchEnd);
 
@@ -784,8 +772,8 @@ ScriptEditor::on_search_forward (GAsyncResult* const result)
 	GError* error = nullptr;
 
 	if (not gtk_source_search_context_forward_finish (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &error))
-	   return;
-	
+		return;
+
 	const auto match = getTextBuffer () -> get_text (matchBegin, matchEnd);
 
 	getTextView () .scroll_to (matchBegin, 0, 0.5, 2 - math::M_PHI);

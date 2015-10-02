@@ -55,6 +55,7 @@
 #include "../../UserInterfaces/X3DScriptEditorInterface.h"
 #include "X3DScriptEditor.h"
 #include "X3DShaderPartEditor.h"
+#include "X3DScriptEditorPreferences.h"
 
 #include <gtksourceviewmm/buffer.h>
 #include <gtksourceviewmm/view.h>
@@ -69,7 +70,8 @@ class Console;
 class ScriptEditor :
 	virtual public X3DScriptEditorInterface,
 	public X3DScriptEditor,
-	public X3DShaderPartEditor
+	public X3DShaderPartEditor,
+	public X3DScriptEditorPreferences
 {
 public:
 
@@ -94,16 +96,19 @@ public:
 
 protected:
 
+	virtual
 	const Glib::RefPtr <Gsv::Buffer> &
-	getTextBuffer () const
+	getTextBuffer () const final override
 	{ return textBuffer; }
 
+	virtual
 	Gsv::View &
-	getTextView ()
+	getTextView () final override
 	{ return textView; }
 
+	virtual
 	const Gsv::View &
-	getTextView () const
+	getTextView () const final override
 	{ return textView; }
 
 

@@ -48,146 +48,85 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_CONFIGURATION_CONFIGURATION_H__
-#define __TITANIA_CONFIGURATION_CONFIGURATION_H__
+#ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_PREFERENCES_H__
+#define __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_PREFERENCES_H__
 
-#include <gconfmm.h>
-#include <string>
-#include <sstream>
-#include <Titania/LOG.h>
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DScriptEditorInterface.h"
+
+#include <gtksourceviewmm/buffer.h>
+#include <gtksourceviewmm/view.h>
 
 namespace titania {
 namespace puck {
 
-class Configuration
+class X3DScriptEditorPreferences :
+	virtual public X3DScriptEditorInterface
 {
 public:
 
-	typedef std::vector <Configuration> Array;
+	~X3DScriptEditorPreferences ();
 
-	Configuration (const std::string &, const std::string & = "");
 
+protected:
+
+	///  @name Construction
+
+	X3DScriptEditorPreferences ();
+
+	virtual
 	void
-	setPath (const std::string &);
+	initialize () override;
 
-	const std::string &
-	getKey () const;
+	// @name Member access
 
-	std::string
-	getKey (const std::string &) const;
-	
-	const std::string &
-	getName () const
-	{ return name; }
+	virtual
+	const Glib::RefPtr <Gsv::Buffer> &
+	getTextBuffer () const = 0;
 
-	/// @name Key lockup
+	virtual
+	Gsv::View &
+	getTextView () = 0;
 
+	virtual
+	const Gsv::View &
+	getTextView () const = 0;
+
+	// @name Event handlers
+
+	virtual
+	void
+	on_preferences_clicked () final override;
+
+	virtual
 	bool
-	hasItem (const std::string &) const;
+	on_preferences_delete_event (GdkEventAny*) final override;
 
-	/// @name Set configuration value
-
+	virtual
 	void
-	setItem (const std::string &, const bool);
+	on_show_line_numbers_toggled () final override;
 
+	virtual
 	void
-	setItem (const std::string &, const int);
+	on_show_right_margin_toggled () final override;
 
+	virtual
 	void
-	setItem (const std::string &, const double);
+	on_right_margin_changed () final override;
 
+	virtual
 	void
-	setItem (const std::string &, const char*);
+	on_wrap_mode_changed () final override;
 
+	virtual
 	void
-	setItem (const std::string &, const std::string &);
+	on_highlight_current_line_togged () final override;
 
-	template <class Type>
+	virtual
 	void
-	set (const std::string &, const Type &);
-
-	/// @name Get configuration value
-
-	bool
-	getBoolean (const std::string &) const;
-
-	int
-	getInteger (const std::string &) const;
-
-	Glib::ustring
-	getString (const std::string &) const;
-
-	template <class Type>
-	Type
-	get (const std::string &) const;
-
-	/// @name Directory handling
-
-	Configuration
-	getDirectory (const std::string &) const;
-
-	Array
-	getDirectories () const;
-
-	bool
-	exists () const;
-
-	void
-	remove ();
-
-
-private:
-
-	Glib::RefPtr <Gnome::Conf::Client> client;
-	std::string                        path;
-	std::string                        name;
-	std::string                        key;
+	on_highlight_matching_brackets_toggled () final override;
 
 };
-
-template <class Type>
-void
-Configuration::set (const std::string & name, const Type & value)
-{
-	try
-	{
-		std::ostringstream osstream;
-		
-		osstream .imbue (std::locale::classic ());
-
-		osstream << value;	
-
-		client -> set (getKey (name), osstream .str ());
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-template <class Type>
-Type
-Configuration::get (const std::string & name) const
-{
-	try
-	{
-		std::istringstream isstream (client -> get_string (getKey (name)));
-
-		isstream .imbue (std::locale::classic ());
-
-		Type value = Type ();
-
-		isstream >> value;
-
-		return value;
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-
-		return Type ();
-	}
-}
 
 } // puck
 } // titania

@@ -102,6 +102,10 @@ public:
 	getAccelGroup () const
 	{ return m_AccelGroup; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getRightMarginAdjustment () const
+	{ return m_RightMarginAdjustment; }
+
 	Gtk::Image &
 	getFragmentShaderImage () const
 	{ return *m_FragmentShaderImage; }
@@ -230,6 +234,42 @@ public:
 	getShaderTypeMenuButton () const
 	{ return *m_ShaderTypeMenuButton; }
 
+	Gtk::ToolButton &
+	getPreferencesButton () const
+	{ return *m_PreferencesButton; }
+
+	Gtk::Dialog &
+	getPreferencesDialog () const
+	{ return *m_PreferencesDialog; }
+
+	Gtk::Expander &
+	getWordWrapExpander () const
+	{ return *m_WordWrapExpander; }
+
+	Gtk::CheckButton &
+	getShowLineNumbersCheckButton () const
+	{ return *m_ShowLineNumbersCheckButton; }
+
+	Gtk::CheckButton &
+	getShowRightMarginCheckButton () const
+	{ return *m_ShowRightMarginCheckButton; }
+
+	Gtk::SpinButton &
+	getRightMarginSpinButton () const
+	{ return *m_RightMarginSpinButton; }
+
+	Gtk::ComboBoxText &
+	getWrapModeComboBoxText () const
+	{ return *m_WrapModeComboBoxText; }
+
+	Gtk::CheckButton &
+	getHighlightCurrentLineCheckButton () const
+	{ return *m_HighlightCurrentLineCheckButton; }
+
+	Gtk::CheckButton &
+	getHighlightMatchingBracketsCheckButton () const
+	{ return *m_HighlightMatchingBracketsCheckButton; }
+
 	Gtk::Revealer &
 	getSearchRevealer () const
 	{ return *m_SearchRevealer; }
@@ -316,6 +356,38 @@ public:
 
 	virtual
 	void
+	on_preferences_clicked () = 0;
+
+	virtual
+	bool
+	on_preferences_delete_event (GdkEventAny* event) = 0;
+
+	virtual
+	void
+	on_show_line_numbers_toggled () = 0;
+
+	virtual
+	void
+	on_show_right_margin_toggled () = 0;
+
+	virtual
+	void
+	on_right_margin_changed () = 0;
+
+	virtual
+	void
+	on_wrap_mode_changed () = 0;
+
+	virtual
+	void
+	on_highlight_current_line_togged () = 0;
+
+	virtual
+	void
+	on_highlight_matching_brackets_toggled () = 0;
+
+	virtual
+	void
 	on_search_backward_clicked () = 0;
 
 	virtual
@@ -364,6 +436,7 @@ private:
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
+	Glib::RefPtr <Gtk::Adjustment> m_RightMarginAdjustment;
 	Gtk::Image*                    m_FragmentShaderImage;
 	Gtk::Menu*                     m_SearchMenu;
 	Gtk::CheckMenuItem*            m_CaseSensitiveMenuItem;
@@ -396,6 +469,15 @@ private:
 	Gtk::ToggleToolButton*         m_DirectOutputToggleButton;
 	Gtk::ToggleToolButton*         m_MustEvaluateToggleButton;
 	Gtk::MenuToolButton*           m_ShaderTypeMenuButton;
+	Gtk::ToolButton*               m_PreferencesButton;
+	Gtk::Dialog*                   m_PreferencesDialog;
+	Gtk::Expander*                 m_WordWrapExpander;
+	Gtk::CheckButton*              m_ShowLineNumbersCheckButton;
+	Gtk::CheckButton*              m_ShowRightMarginCheckButton;
+	Gtk::SpinButton*               m_RightMarginSpinButton;
+	Gtk::ComboBoxText*             m_WrapModeComboBoxText;
+	Gtk::CheckButton*              m_HighlightCurrentLineCheckButton;
+	Gtk::CheckButton*              m_HighlightMatchingBracketsCheckButton;
 	Gtk::Revealer*                 m_SearchRevealer;
 	Gtk::Box*                      m_SearchBox;
 	Gtk::Box*                      m_ReplaceButtonsBox;

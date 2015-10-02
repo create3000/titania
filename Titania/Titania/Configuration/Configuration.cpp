@@ -127,6 +127,19 @@ Configuration::setItem (const std::string & name, const int value)
 }
 
 void
+Configuration::setItem (const std::string & name, const double value)
+{
+	try
+	{
+		client -> set (getKey (name), value);
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
 Configuration::setItem (const std::string & name, const char* value)
 {
 	try
