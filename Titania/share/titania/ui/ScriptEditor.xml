@@ -77,6 +77,12 @@
       </object>
     </child>
   </object>
+  <object class="GtkAdjustment" id="TabWidthAdjustment">
+    <property name="upper">24</property>
+    <property name="value">8</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkImage" id="ToggleReplaceImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -460,228 +466,357 @@
           </packing>
         </child>
         <child>
-          <object class="GtkNotebook" id="notebook1">
+          <object class="GtkBox" id="box4">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">8</property>
             <child>
-              <object class="GtkExpander" id="WordWrapExpander">
+              <object class="GtkBox" id="box8">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="expanded">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">8</property>
-                <property name="label_fill">True</property>
-                <property name="resize_toplevel">True</property>
                 <child>
-                  <object class="GtkGrid" id="grid2">
+                  <object class="GtkImage" id="image6">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="row_spacing">4</property>
-                    <property name="column_spacing">16</property>
+                    <property name="stock">gtk-preferences</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label10">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Script Editor Preferences</property>
+                    <style>
+                      <class name="titania-header"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkNotebook" id="notebook1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="tab_pos">bottom</property>
+                <child>
+                  <object class="GtkExpander" id="WordWrapExpander">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="border_width">4</property>
+                    <property name="expanded">True</property>
+                    <property name="spacing">8</property>
+                    <property name="label_fill">True</property>
+                    <property name="resize_toplevel">True</property>
                     <child>
-                      <object class="GtkCheckButton" id="ShowLineNumbersCheckButton">
-                        <property name="label" translatable="yes">Show line numbers</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="xalign">0</property>
-                        <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_show_line_numbers_toggled" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkBox" id="box7">
+                      <object class="GtkGrid" id="grid2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="spacing">8</property>
+                        <property name="row_spacing">4</property>
+                        <property name="column_spacing">16</property>
                         <child>
-                          <object class="GtkCheckButton" id="ShowRightMarginCheckButton">
-                            <property name="label" translatable="yes">Show right margin at column:</property>
+                          <object class="GtkCheckButton" id="ShowLineNumbersCheckButton">
+                            <property name="label" translatable="yes">Show line numbers</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="xalign">0</property>
                             <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="on_show_right_margin_toggled" swapped="no"/>
+                            <signal name="toggled" handler="on_show_line_numbers_toggled" swapped="no"/>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="RightMarginSpinButton">
+                          <object class="GtkBox" id="box7">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="adjustment">RightMarginAdjustment</property>
-                            <property name="climb_rate">0.0099999997764825821</property>
-                            <property name="numeric">True</property>
-                            <property name="value">80</property>
-                            <signal name="value-changed" handler="on_right_margin_changed" swapped="no"/>
+                            <property name="can_focus">False</property>
+                            <property name="spacing">8</property>
+                            <child>
+                              <object class="GtkCheckButton" id="ShowRightMarginCheckButton">
+                                <property name="label" translatable="yes">Show right margin at column:</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="xalign">0</property>
+                                <property name="draw_indicator">True</property>
+                                <signal name="toggled" handler="on_show_right_margin_toggled" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSpinButton" id="RightMarginSpinButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="adjustment">RightMarginAdjustment</property>
+                                <property name="climb_rate">0.0099999997764825821</property>
+                                <property name="numeric">True</property>
+                                <property name="value">80</property>
+                                <signal name="value-changed" handler="on_right_margin_changed" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label5">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Word Wrap</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label6">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label7">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkComboBoxText" id="WrapModeComboBoxText">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <items>
+                              <item translatable="yes">None</item>
+                              <item translatable="yes">Wrap Char</item>
+                              <item translatable="yes">Wrap Word</item>
+                              <item translatable="yes">Wrap Word Char</item>
+                            </items>
+                            <signal name="changed" handler="on_wrap_mode_changed" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkCheckButton" id="HighlightCurrentLineCheckButton">
+                            <property name="label" translatable="yes">Highlight current line</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="xalign">0</property>
+                            <property name="draw_indicator">True</property>
+                            <signal name="toggled" handler="on_highlight_current_line_togged" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkCheckButton" id="HighlightMatchingBracketsCheckButton">
+                            <property name="label" translatable="yes">Highlight matching brackets</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="xalign">0</property>
+                            <property name="draw_indicator">True</property>
+                            <signal name="toggled" handler="on_highlight_matching_brackets_toggled" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label8">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label9">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">4</property>
                           </packing>
                         </child>
                       </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">1</property>
-                      </packing>
                     </child>
-                    <child>
-                      <object class="GtkLabel" id="label5">
+                    <child type="label">
+                      <object class="GtkLabel" id="label4">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Word Wrap</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label6">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label7">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="WrapModeComboBoxText">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <items>
-                          <item translatable="yes">None</item>
-                          <item translatable="yes">Wrap Char</item>
-                          <item translatable="yes">Wrap Word</item>
-                          <item translatable="yes">Wrap Word Char</item>
-                        </items>
-                        <signal name="changed" handler="on_wrap_mode_changed" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="HighlightCurrentLineCheckButton">
-                        <property name="label" translatable="yes">Highlight current line</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
                         <property name="xalign">0</property>
-                        <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_highlight_current_line_togged" swapped="no"/>
+                        <property name="label" translatable="yes">View</property>
                       </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="HighlightMatchingBracketsCheckButton">
-                        <property name="label" translatable="yes">Highlight matching brackets</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="xalign">0</property>
-                        <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_highlight_matching_brackets_toggled" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label8">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label9">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">4</property>
-                      </packing>
                     </child>
                   </object>
                 </child>
-                <child type="label">
-                  <object class="GtkLabel" id="label4">
+                <child type="tab">
+                  <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">View</property>
                   </object>
+                  <packing>
+                    <property name="tab_fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkExpander" id="EditorExpander">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="border_width">4</property>
+                    <property name="expanded">True</property>
+                    <property name="spacing">8</property>
+                    <child>
+                      <object class="GtkGrid" id="grid3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="row_spacing">4</property>
+                        <property name="column_spacing">16</property>
+                        <child>
+                          <object class="GtkLabel" id="label12">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="label" translatable="yes">Tabulator Width</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="TabWidthSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="halign">start</property>
+                            <property name="adjustment">TabWidthAdjustment</property>
+                            <property name="value">8</property>
+                            <signal name="value-changed" handler="on_tab_width_changed" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkCheckButton" id="InsertSpacesInsteadOfTabsCheckButton">
+                            <property name="label" translatable="yes">Insert spaces instead of tabs</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="xalign">0</property>
+                            <property name="draw_indicator">True</property>
+                            <signal name="toggled" handler="on_insert_spaces_instead_of_tabs_toggled" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label13">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="label">
+                      <object class="GtkLabel" id="label11">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Editor</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child type="tab">
+                  <object class="GtkLabel" id="label2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Editor</property>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                    <property name="tab_fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child type="tab">
+                  <object class="GtkLabel" id="label3">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Colors</property>
+                  </object>
+                  <packing>
+                    <property name="position">2</property>
+                    <property name="tab_fill">False</property>
+                  </packing>
                 </child>
               </object>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel" id="label1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">View</property>
-              </object>
               <packing>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel" id="label2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Editor</property>
-              </object>
-              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">1</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel" id="label3">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Colors</property>
-              </object>
-              <packing>
-                <property name="position">2</property>
-                <property name="tab_fill">False</property>
               </packing>
             </child>
           </object>

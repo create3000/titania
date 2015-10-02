@@ -126,6 +126,14 @@ protected:
 	void
 	on_highlight_matching_brackets_toggled () final override;
 
+	virtual
+	void
+	on_tab_width_changed () final override;
+
+	virtual
+	void
+	on_insert_spaces_instead_of_tabs_toggled () final override;
+
 };
 
 } // puck

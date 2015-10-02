@@ -63,6 +63,7 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	// Get objects.
 	m_AccelGroup            = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("AccelGroup"));
 	m_RightMarginAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("RightMarginAdjustment"));
+	m_TabWidthAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TabWidthAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("FragmentShaderImage", m_FragmentShaderImage);
@@ -106,6 +107,9 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("WrapModeComboBoxText", m_WrapModeComboBoxText);
 	m_builder -> get_widget ("HighlightCurrentLineCheckButton", m_HighlightCurrentLineCheckButton);
 	m_builder -> get_widget ("HighlightMatchingBracketsCheckButton", m_HighlightMatchingBracketsCheckButton);
+	m_builder -> get_widget ("EditorExpander", m_EditorExpander);
+	m_builder -> get_widget ("TabWidthSpinButton", m_TabWidthSpinButton);
+	m_builder -> get_widget ("InsertSpacesInsteadOfTabsCheckButton", m_InsertSpacesInsteadOfTabsCheckButton);
 	m_builder -> get_widget ("SearchRevealer", m_SearchRevealer);
 	m_builder -> get_widget ("SearchBox", m_SearchBox);
 	m_builder -> get_widget ("ReplaceButtonsBox", m_ReplaceButtonsBox);
@@ -151,6 +155,12 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::CheckButton with id 'HighlightCurrentLineCheckButton'.
 	m_HighlightCurrentLineCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_highlight_current_line_togged));
 	m_HighlightMatchingBracketsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_highlight_matching_brackets_toggled));
+
+	// Connect object Gtk::SpinButton with id 'TabWidthSpinButton'.
+	m_TabWidthSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_tab_width_changed));
+
+	// Connect object Gtk::CheckButton with id 'InsertSpacesInsteadOfTabsCheckButton'.
+	m_InsertSpacesInsteadOfTabsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_insert_spaces_instead_of_tabs_toggled));
 
 	// Connect object Gtk::Button with id 'SearchBackwardButton'.
 	m_SearchBackwardButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_backward_clicked));

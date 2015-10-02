@@ -63,6 +63,8 @@ X3DScriptEditorPreferences::X3DScriptEditorPreferences () :
 void
 X3DScriptEditorPreferences::initialize ()
 {
+	// View
+
 	if (getConfig () .hasItem ("showLineNumbers"))
 		 getShowLineNumbersCheckButton () .set_active (getConfig () .getBoolean ("showLineNumbers"));
 	else
@@ -93,15 +95,25 @@ X3DScriptEditorPreferences::initialize ()
 	else
 		getHighlightMatchingBracketsCheckButton () .set_active (true);
 
+	// Editor
+
+	if (getConfig () .hasItem ("tabWidth"))
+		getTabWidthSpinButton () .set_value (getConfig () .getInteger ("tabWidth"));
+	else
+		getTabWidthSpinButton () .set_value (3);
+	
+	if (getConfig () .hasItem ("insertSpacesInsteadOfTabs"))
+		getInsertSpacesInsteadOfTabsCheckButton () .set_active (getConfig () .getBoolean ("insertSpacesInsteadOfTabs"));
+	else
+		getInsertSpacesInsteadOfTabsCheckButton () .set_active (false);
+
 	//
 
 	getTextBuffer () -> set_highlight_syntax (true);
 	getTextBuffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme ("tango"));
 
 	getTextView () .set_show_line_marks (true);
-	getTextView () .property_tab_width () = 3;
-	getTextView () .set_indent_width (3);
-	getTextView () .set_insert_spaces_instead_of_tabs (false);
+
 	getTextView () .set_auto_indent (true);
 	getTextView () .set_indent_on_tab (true);
 }
@@ -181,6 +193,23 @@ X3DScriptEditorPreferences::on_highlight_matching_brackets_toggled ()
 	getConfig () .setItem ("highlightMatchingBrackets", getHighlightMatchingBracketsCheckButton () .get_active ());
 
 	getTextBuffer () -> set_highlight_matching_brackets (getHighlightMatchingBracketsCheckButton () .get_active ());
+}
+
+void
+X3DScriptEditorPreferences::on_tab_width_changed ()
+{
+	getConfig () .setItem ("tabWidth", (int) getTabWidthSpinButton () .get_value ());
+
+	getTextView () .property_tab_width () = getTabWidthSpinButton () .get_value ();
+	getTextView () .set_indent_width (getTabWidthSpinButton () .get_value ());
+}
+
+void
+X3DScriptEditorPreferences::on_insert_spaces_instead_of_tabs_toggled ()
+{
+	getConfig () .setItem ("insertSpacesInsteadOfTabs", getInsertSpacesInsteadOfTabsCheckButton () .get_active ());
+
+	getTextView () .set_insert_spaces_instead_of_tabs (getInsertSpacesInsteadOfTabsCheckButton () .get_active ());
 }
 
 X3DScriptEditorPreferences::~X3DScriptEditorPreferences ()

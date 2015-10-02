@@ -106,6 +106,10 @@ public:
 	getRightMarginAdjustment () const
 	{ return m_RightMarginAdjustment; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTabWidthAdjustment () const
+	{ return m_TabWidthAdjustment; }
+
 	Gtk::Image &
 	getFragmentShaderImage () const
 	{ return *m_FragmentShaderImage; }
@@ -270,6 +274,18 @@ public:
 	getHighlightMatchingBracketsCheckButton () const
 	{ return *m_HighlightMatchingBracketsCheckButton; }
 
+	Gtk::Expander &
+	getEditorExpander () const
+	{ return *m_EditorExpander; }
+
+	Gtk::SpinButton &
+	getTabWidthSpinButton () const
+	{ return *m_TabWidthSpinButton; }
+
+	Gtk::CheckButton &
+	getInsertSpacesInsteadOfTabsCheckButton () const
+	{ return *m_InsertSpacesInsteadOfTabsCheckButton; }
+
 	Gtk::Revealer &
 	getSearchRevealer () const
 	{ return *m_SearchRevealer; }
@@ -388,6 +404,14 @@ public:
 
 	virtual
 	void
+	on_tab_width_changed () = 0;
+
+	virtual
+	void
+	on_insert_spaces_instead_of_tabs_toggled () = 0;
+
+	virtual
+	void
 	on_search_backward_clicked () = 0;
 
 	virtual
@@ -437,6 +461,7 @@ private:
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
 	Glib::RefPtr <Gtk::Adjustment> m_RightMarginAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TabWidthAdjustment;
 	Gtk::Image*                    m_FragmentShaderImage;
 	Gtk::Menu*                     m_SearchMenu;
 	Gtk::CheckMenuItem*            m_CaseSensitiveMenuItem;
@@ -478,6 +503,9 @@ private:
 	Gtk::ComboBoxText*             m_WrapModeComboBoxText;
 	Gtk::CheckButton*              m_HighlightCurrentLineCheckButton;
 	Gtk::CheckButton*              m_HighlightMatchingBracketsCheckButton;
+	Gtk::Expander*                 m_EditorExpander;
+	Gtk::SpinButton*               m_TabWidthSpinButton;
+	Gtk::CheckButton*              m_InsertSpacesInsteadOfTabsCheckButton;
 	Gtk::Revealer*                 m_SearchRevealer;
 	Gtk::Box*                      m_SearchBox;
 	Gtk::Box*                      m_ReplaceButtonsBox;

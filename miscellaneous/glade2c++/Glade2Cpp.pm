@@ -730,3 +730,5 @@ size_allocate
   virtual void on_size_allocate(Allocation& allocation);
 search_changed
   virtual void on_search_changed();
+change_value
+  virtual bool on_change_value(ScrollType scroll, double new_value);
