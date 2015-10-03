@@ -161,6 +161,11 @@
     <property name="label" translatable="yes">_Lights</property>
     <signal name="toggled" handler="on_lights_toggled" swapped="no"/>
   </object>
+  <object class="GtkToggleAction" id="MenubarAction">
+    <property name="label" translatable="yes">Menubar</property>
+    <property name="active">True</property>
+    <signal name="toggled" handler="on_menubar_toggled" swapped="no"/>
+  </object>
   <object class="GtkImage" id="NoneViewerImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -247,9 +252,13 @@
     <property name="label" translatable="yes">Select Lowest</property>
     <signal name="toggled" handler="on_select_lowest_toggled" swapped="no"/>
   </object>
-  <object class="GtkToggleAction" id="SideBarAction">
+  <object class="GtkToggleAction" id="SidebarAction">
     <property name="label" translatable="yes">Sidebar</property>
-    <signal name="toggled" handler="on_side_bar_toggled" swapped="no"/>
+    <signal name="toggled" handler="on_sidebar_toggled" swapped="no"/>
+  </object>
+  <object class="GtkToggleAction" id="TabsAction">
+    <property name="label" translatable="yes">Tabs</property>
+    <signal name="toggled" handler="on_tabs_toggled" swapped="no"/>
   </object>
   <object class="GtkRadioAction" id="TextureQualityHighAction">
     <property name="label" translatable="yes">_High</property>
@@ -268,9 +277,9 @@
     <property name="value">1</property>
     <property name="group">TextureQualityHighAction</property>
   </object>
-  <object class="GtkToggleAction" id="ToolBarAction">
+  <object class="GtkToggleAction" id="ToolbarAction">
     <property name="label" translatable="yes">Toolbar</property>
-    <signal name="toggled" handler="on_tool_bar_toggled" swapped="no"/>
+    <signal name="toggled" handler="on_toolbar_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="TransformSensorsAction">
     <property name="label" translatable="yes">_TransformSensors</property>
@@ -1092,8 +1101,18 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkCheckMenuItem" id="BrowserToolBarMenuItem">
-                <property name="related_action">ToolBarAction</property>
+              <object class="GtkCheckMenuItem" id="BrowserMenubarMenuItem">
+                <property name="related_action">MenubarAction</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Menubar</property>
+                <property name="use_underline">True</property>
+                <property name="active">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkCheckMenuItem" id="BrowserToolbarMenuItem">
+                <property name="related_action">ToolbarAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Toolbar</property>
@@ -1101,8 +1120,8 @@
               </object>
             </child>
             <child>
-              <object class="GtkCheckMenuItem" id="BrowserSideBarMenuItem">
-                <property name="related_action">SideBarAction</property>
+              <object class="GtkCheckMenuItem" id="BrowserSidebarMenuItem">
+                <property name="related_action">SidebarAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Sidebar</property>
@@ -1115,6 +1134,15 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Footer</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkCheckMenuItem" id="BrowserTabsMenuItem">
+                <property name="related_action">TabsAction</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Tabs</property>
                 <property name="use_underline">True</property>
               </object>
             </child>
@@ -1816,7 +1844,7 @@
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkMenuBar" id="MenuBar">
+                  <object class="GtkMenuBar" id="Menubar">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <signal name="button-press-event" handler="on_menubar_button_press_event" after="yes" swapped="no"/>
@@ -2427,8 +2455,18 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
-                              <object class="GtkCheckMenuItem" id="ToolBarMenuItem">
-                                <property name="related_action">ToolBarAction</property>
+                              <object class="GtkCheckMenuItem" id="MenubarMenuItem">
+                                <property name="related_action">MenubarAction</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Menubar</property>
+                                <property name="use_underline">True</property>
+                                <property name="active">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckMenuItem" id="ToolbarMenuItem">
+                                <property name="related_action">ToolbarAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Toolbar</property>
@@ -2436,8 +2474,8 @@
                               </object>
                             </child>
                             <child>
-                              <object class="GtkCheckMenuItem" id="SideBarMenuItem">
-                                <property name="related_action">SideBarAction</property>
+                              <object class="GtkCheckMenuItem" id="SidebarMenuItem">
+                                <property name="related_action">SidebarAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Sidebar</property>
@@ -2449,6 +2487,15 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Footer</property>
+                                <property name="use_underline">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckMenuItem" id="TabsMenuItem">
+                                <property name="related_action">TabsAction</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Tabs</property>
                                 <property name="use_underline">True</property>
                               </object>
                             </child>
@@ -3107,7 +3154,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="ToolBar">
+                  <object class="GtkBox" id="Toolbar">
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <signal name="drag-data-received" handler="on_toolbar_drag_data_received" swapped="no"/>
@@ -4116,7 +4163,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="SideBar">
+                  <object class="GtkBox" id="Sidebar">
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>

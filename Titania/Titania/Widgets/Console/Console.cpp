@@ -93,6 +93,9 @@ Console::on_clear_button_clicked ()
 void
 Console::set_browser (const X3D::BrowserPtr & browser)
 {
+	if (browser == getBrowserWindow () -> getMasterBrowser ())
+	   return;
+
 	browser -> getUrlError () .addInterest (this, &Console::set_string);
 	browser -> getConsole () -> getString () .addInterest (this, &Console::set_string);	
 }

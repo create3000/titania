@@ -116,7 +116,7 @@ X3DBrowserWindow::hasAccelerators (const bool value)
 {
 	accelerators = value;
 
-	for (const auto & child : getMenuBar () .get_children ())
+	for (const auto & child : getMenubar () .get_children ())
 	{
 		const auto menuItem = dynamic_cast <Gtk::MenuItem*> (child);
 

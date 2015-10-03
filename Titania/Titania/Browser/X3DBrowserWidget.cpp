@@ -67,7 +67,6 @@ namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	X3DBrowserWindowInterface (),
-	           X3DBrowserMenu (),
 	            masterBrowser (masterBrowser_),
 	                  browser (masterBrowser_),
 	                 browsers (),
@@ -83,7 +82,6 @@ void
 X3DBrowserWidget::initialize ()
 {
 	X3DBrowserWindowInterface::initialize ();
-	X3DBrowserMenu::initialize ();
 	
 	recentView -> initialize ();
 
@@ -151,46 +149,107 @@ X3DBrowserWidget::restoreSession ()
 	// Restore Menu Configuration from Config
 
 	// ToolBar
-	if (not getConfig () .hasItem ("toolBar"))
-		getConfig () .setItem ("toolBar", true);
 
-	getToolBarAction () -> set_active (getConfig () .getBoolean ("toolBar"));
+	if (not getConfig () .hasItem ("menubar"))
+		getConfig () .setItem ("menubar", true);
 
+	if (not getConfig () .hasItem ("menubarFullscreen"))
+		getConfig () .setItem ("menubarFullscreen", false);
+	
+
+	// ToolBar
+
+	if (not getConfig () .hasItem ("toolbar"))
+		getConfig () .setItem ("toolbar", true);
+
+	if (not getConfig () .hasItem ("toolbarFullscreen"))
+		getConfig () .setItem ("toolbarFullscreen", false);
+
+	
 	// SideBar
-	if (not getConfig () .hasItem ("sideBar"))
-		getConfig () .setItem ("sideBar", true);
 
-	getSideBarAction () -> set_active (getConfig () .getBoolean ("sideBar"));
+	if (not getConfig () .hasItem ("sidebar"))
+		getConfig () .setItem ("sidebarFullscreen", true);
+
+	if (not getConfig () .hasItem ("sidebarFullscreen"))
+		getConfig () .setItem ("sidebarFullscreen", false);
+
 
 	// Footer
+
 	if (not getConfig () .hasItem ("footer"))
 		getConfig () .setItem ("footer", true);
 
-	getFooterAction () -> set_active (getConfig () .getBoolean ("footer"));
+	if (not getConfig () .hasItem ("footerFullscreen"))
+		getConfig () .setItem ("footerFullscreen", false);
 
+
+	// TAbs
+
+	if (not getConfig () .hasItem ("tabs"))
+		getConfig () .setItem ("tabs", true);
+
+	if (not getConfig () .hasItem ("tabsFullscreen"))
+		getConfig () .setItem ("tabsFullscreen", false);
+
+	
 	// RenderingProperties
+
 	if (getConfig () .hasItem ("renderingProperties"))
 		getRenderingPropertiesAction () -> set_active (getConfig () .getBoolean ("renderingProperties"));
 
+	
 	// Rubberband
+
 	if (getConfig () .hasItem ("rubberBand"))
 		getRubberbandAction () -> set_active (getConfig () .getBoolean ("rubberBand"));
 
 	if (not getConfig () .hasItem ("isLive"))
 		getConfig () .setItem ("isLive", true);
 
+	
+	// isLive
+
 	isLive (isLive ());
 
+
 	// VPaned
+
 	if (getConfig () .hasItem ("vPaned"))
 		getVPaned () .set_position (getConfig () .getInteger ("vPaned"));
 
+	
 	// HPaned
+
 	if (getConfig () .hasItem ("hPaned"))
 		getHPaned () .set_position (getConfig () .getInteger ("hPaned"));
 
+	
+	// Notebooks
+
 	getSideBarNotebook () .set_current_page (getConfig () .getInteger ("sideBarCurrentPage")); // XXX Produces a width/height -1 warning
 	getFooterNotebook ()  .set_current_page (getConfig () .getInteger ("footerCurrentPage"));
+}
+
+void
+X3DBrowserWidget::set_fullscreen (const bool value)
+{
+	if (value)
+	{
+		getMenubarAction () -> set_active (getConfig () .getBoolean ("menubarFullscreen"));
+		getToolbarAction () -> set_active (getConfig () .getBoolean ("toolbarFullscreen"));
+		getSidebarAction () -> set_active (getConfig () .getBoolean ("sidebarFullscreen"));
+		getFooterAction ()  -> set_active (getConfig () .getBoolean ("footerFullscreen"));
+		getTabsAction ()    -> set_active (getConfig () .getBoolean ("tabsFullscreen"));
+	}
+	else
+	{
+		getMenubarAction () -> set_active (getConfig () .getBoolean ("menubar"));
+		getToolbarAction () -> set_active (getConfig () .getBoolean ("toolbar"));
+		getSidebarAction () -> set_active (getConfig () .getBoolean ("sidebar"));
+		getFooterAction ()  -> set_active (getConfig () .getBoolean ("footer"));
+		getTabsAction ()    -> set_active (getConfig () .getBoolean ("tabs"));
+	}
 }
 
 void
@@ -396,13 +455,21 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 	getBrowserNotebook () .append_page (*browser, *box);
 	getBrowserNotebook () .set_tab_reorderable (*browser, true);
 	getBrowserNotebook () .set_menu_label_text (*browser, text);
-	getBrowserNotebook () .set_show_tabs (browsers .size () > 1);
+	getBrowserNotebook () .set_show_tabs (getShowTabs ());
 
 	const auto userData = getUserData (browser);
 
 	userData -> URL   = URL;
 	userData -> icon  = icon;
 	userData -> label = label;
+}
+
+bool
+X3DBrowserWidget::getShowTabs () const
+{
+	const bool showTabs = isFullscreen () ? getConfig () .getBoolean ("tabsFullscreen") : getConfig () .getBoolean ("tabs");
+
+	return browsers .size () > 1 && showTabs;
 }
 
 void
@@ -688,7 +755,7 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser)
 		openRecent ();
 
 	getBrowserNotebook () .remove_page (*browser);
-	getBrowserNotebook () .set_show_tabs (browsers .size () > 1);
+	getBrowserNotebook () .set_show_tabs (getShowTabs ());
 }
 
 bool

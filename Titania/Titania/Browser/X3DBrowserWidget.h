@@ -53,7 +53,6 @@
 
 #include "../UserInterfaces/X3DBrowserWindowInterface.h"
 #include "../Undo/UndoStep.h"
-#include "X3DBrowserMenu.h"
 
 #include <gtkmm.h>
 #include <memory>
@@ -66,8 +65,7 @@ class BrowserUserData;
 class UserData;
 
 class X3DBrowserWidget :
-	virtual public X3DBrowserWindowInterface,
-	public X3DBrowserMenu
+	virtual public X3DBrowserWindowInterface
 {
 public:
 
@@ -188,6 +186,10 @@ protected:
 	void
 	restoreSession () override;
 
+	virtual
+	void
+	set_fullscreen (const bool) override;
+
 	///  @name Destruction
 
 	virtual
@@ -202,6 +204,9 @@ protected:
 
 	void
 	setTitle () const;
+
+	bool
+	getShowTabs () const;
 
 	void
 	setTransparent (const bool);

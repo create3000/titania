@@ -105,7 +105,7 @@ BrowserWindow::initialize ()
 		Gtk::TargetEntry ("text/uri-list")
 	};
 
-	getToolBar ()         .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
+	getToolbar ()         .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 	getBrowserNotebook () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
 	// Clipboard
@@ -501,6 +501,18 @@ bool
 BrowserWindow::on_menubar_button_press_event (GdkEventButton* event)
 {
 	getWidget () .grab_focus ();
+	return false;
+}
+
+bool
+BrowserWindow::on_notebook_button_press_event (GdkEventButton* event)
+{
+	if (event -> button == 3)
+	{
+		getBrowserMenu () .popup (event -> button, event -> time);
+		return true;
+	}
+
 	return false;
 }
 
@@ -1013,24 +1025,58 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 // View menu
 
 void
-BrowserWindow::on_tool_bar_toggled ()
+BrowserWindow::on_menubar_toggled ()
 {
-	getConfig () .setItem ("toolBar", getToolBarAction () -> get_active ());
-	getToolBar () .set_visible (getToolBarAction () -> get_active ());
+	if (isFullscreen ())
+		getConfig () .setItem ("menubarFullscreen", getMenubarAction () -> get_active ());
+	else
+		getConfig () .setItem ("menubar", getMenubarAction () -> get_active ());
+	
+	getMenubar () .set_visible (getMenubarAction () -> get_active ());
 }
 
 void
-BrowserWindow::on_side_bar_toggled ()
+BrowserWindow::on_toolbar_toggled ()
 {
-	getConfig () .setItem ("sideBar", getSideBarAction () -> get_active ());
-	getSideBar () .set_visible (getSideBarAction () -> get_active ());
+	if (isFullscreen ())
+		getConfig () .setItem ("toolbarFullscreen", getToolbarAction () -> get_active ());
+	else
+		getConfig () .setItem ("toolbar", getToolbarAction () -> get_active ());
+
+	getToolbar () .set_visible (getToolbarAction () -> get_active ());
+}
+
+void
+BrowserWindow::on_sidebar_toggled ()
+{
+	if (isFullscreen ())
+		getConfig () .setItem ("sidebarFullscreen", getSidebarAction () -> get_active ());
+	else
+		getConfig () .setItem ("sidebar", getSidebarAction () -> get_active ());
+	
+	getSidebar () .set_visible (getSidebarAction () -> get_active ());
 }
 
 void
 BrowserWindow::on_footer_toggled ()
 {
-	getConfig () .setItem ("footer", getFooterAction () -> get_active ());
+	if (isFullscreen ())
+		getConfig () .setItem ("footerFullscreen", getFooterAction () -> get_active ());
+	else
+		getConfig () .setItem ("footer", getFooterAction () -> get_active ());
+
 	getFooter () .set_visible (getFooterAction () -> get_active ());
+}
+
+void
+BrowserWindow::on_tabs_toggled ()
+{
+	if (isFullscreen ())
+		getConfig () .setItem ("tabsFullscreen", getTabsAction () -> get_active ());
+	else
+		getConfig () .setItem ("tabs", getTabsAction () -> get_active ());
+
+	getBrowserNotebook () .set_show_tabs (getShowTabs ());
 }
 
 void
@@ -1600,19 +1646,34 @@ BrowserWindow::on_rendering_properties_toggled ()
 void
 BrowserWindow::on_fullscreen_activated ()
 {
-	getFullScreenMenuItem ()          .set_visible (false);
-	getUnFullScreenMenuItem ()        .set_visible (true);
-	getBrowserFullScreenMenuItem ()   .set_visible (false);
-	getBrowserUnFullScreenMenuItem () .set_visible (true);
 	getWindow () .fullscreen ();
 }
 
 void
 BrowserWindow::on_unfullscreen_activated ()
 {
-	getFullScreenMenuItem ()   .set_visible (true);
-	getUnFullScreenMenuItem () .set_visible (false);
 	getWindow () .unfullscreen ();
+}
+
+void
+BrowserWindow::set_fullscreen (const bool value)
+{
+	X3DBrowserWindow::set_fullscreen (value);
+
+	if (value)
+	{
+		getFullScreenMenuItem ()          .set_visible (false);
+		getUnFullScreenMenuItem ()        .set_visible (true);
+		getBrowserFullScreenMenuItem ()   .set_visible (false);
+		getBrowserUnFullScreenMenuItem () .set_visible (true);
+	}
+	else
+	{
+		getFullScreenMenuItem ()          .set_visible (true);
+		getUnFullScreenMenuItem ()        .set_visible (false);
+		getBrowserFullScreenMenuItem ()   .set_visible (true);
+		getBrowserUnFullScreenMenuItem () .set_visible (false);
+	}
 }
 
 // Selection menu

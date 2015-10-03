@@ -103,7 +103,6 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Browser/MagicImport.$(OBJEXT) \
 	Titania/Browser/RecentView.$(OBJEXT) \
 	Titania/Browser/X3DBrowserEditor.$(OBJEXT) \
-	Titania/Browser/X3DBrowserMenu.$(OBJEXT) \
 	Titania/Browser/X3DBrowserWidget.$(OBJEXT) \
 	Titania/Browser/X3DBrowserWindow.$(OBJEXT) \
 	Titania/Browser/X3DObjectOperations.$(OBJEXT) \
@@ -483,7 +482,6 @@ titania_SOURCES = \
 	Titania/Browser/MagicImport.cpp \
 	Titania/Browser/RecentView.cpp \
 	Titania/Browser/X3DBrowserEditor.cpp \
-	Titania/Browser/X3DBrowserMenu.cpp \
 	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
 	Titania/Browser/X3DObjectOperations.cpp \
@@ -755,9 +753,6 @@ Titania/Browser/MagicImport.$(OBJEXT):  \
 Titania/Browser/RecentView.$(OBJEXT): Titania/Browser/$(am__dirstamp) \
 	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/Browser/X3DBrowserEditor.$(OBJEXT):  \
-	Titania/Browser/$(am__dirstamp) \
-	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
-Titania/Browser/X3DBrowserMenu.$(OBJEXT):  \
 	Titania/Browser/$(am__dirstamp) \
 	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/Browser/X3DBrowserWidget.$(OBJEXT):  \
@@ -1401,7 +1396,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/MagicImport.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/RecentView.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DBrowserEditor.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DBrowserMenu.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DBrowserWidget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DBrowserWindow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DObjectOperations.Po@am__quote@

@@ -134,6 +134,10 @@ private:
 	bool
 	on_menubar_button_press_event (GdkEventButton*) final override;
 
+	virtual
+	bool
+	on_notebook_button_press_event (GdkEventButton*) final override;
+
 	/// @name File menu
 
 	virtual
@@ -343,15 +347,23 @@ private:
 
 	virtual
 	void
-	on_tool_bar_toggled () final override;
+	on_menubar_toggled () final override;
 
 	virtual
 	void
-	on_side_bar_toggled () final override;
+	on_toolbar_toggled () final override;
+
+	virtual
+	void
+	on_sidebar_toggled () final override;
 
 	virtual
 	void
 	on_footer_toggled () final override;
+
+	virtual
+	void
+	on_tabs_toggled () final override;
 
 	virtual
 	void
@@ -459,6 +471,10 @@ private:
 	virtual
 	void
 	on_unfullscreen_activated () final override;
+
+	virtual
+	void
+	set_fullscreen (const bool) final override;
 
 	///  @name Selection
 

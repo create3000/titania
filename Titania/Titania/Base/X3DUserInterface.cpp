@@ -129,6 +129,11 @@ X3DUserInterface::on_constructed ()
 	initialize ();
 
 	restoreSession ();
+
+	if (isFullscreen ())
+	   getWindow () .fullscreen ();
+
+	 set_fullscreen (isFullscreen ());
 }
 
 void
@@ -140,8 +145,16 @@ X3DUserInterface::on_map ()
 bool
 X3DUserInterface::on_window_state_event (GdkEventWindowState* event)
 {
-	getConfig () .setItem ("maximized",  bool (event -> new_window_state & GDK_WINDOW_STATE_MAXIMIZED));
-	getConfig () .setItem ("fullscreen", bool (event -> new_window_state & GDK_WINDOW_STATE_FULLSCREEN));
+	const bool maximized  = event -> new_window_state & GDK_WINDOW_STATE_MAXIMIZED;
+	const bool fullscreen = event -> new_window_state & GDK_WINDOW_STATE_FULLSCREEN;
+
+	getConfig () .setItem ("maximized",  maximized);
+
+	if (fullscreen not_eq getConfig () .getBoolean ("fullscreen"))
+	{
+		getConfig () .setItem ("fullscreen", fullscreen);
+		set_fullscreen (fullscreen);
+	}
 
 	return false;
 }

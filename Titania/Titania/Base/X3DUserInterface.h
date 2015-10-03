@@ -159,6 +159,11 @@ protected:
 	isFullscreen () const
 	{ return getConfig () .getBoolean ("fullscreen"); }
 
+	virtual
+	void
+	set_fullscreen (const bool)
+	{ }
+
 
 private:
 
