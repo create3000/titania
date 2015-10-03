@@ -507,25 +507,25 @@ BrowserWindow::on_menubar_button_press_event (GdkEventButton* event)
 // File menu
 
 void
-BrowserWindow::on_new ()
+BrowserWindow::on_new_activated ()
 {
 	blank ();
 }
 
 void
-BrowserWindow::on_open ()
+BrowserWindow::on_open_activated ()
 {
 	std::dynamic_pointer_cast <FileOpenDialog> (addDialog ("FileOpenDialog", false)) -> loadURL ();
 }
 
 void
-BrowserWindow::on_open_recent ()
+BrowserWindow::on_open_recent_activated ()
 {
 	openRecent ();
 }
 
 void
-BrowserWindow::on_open_location ()
+BrowserWindow::on_open_location_activated ()
 {
 	std::dynamic_pointer_cast <OpenLocationDialog> (addDialog ("OpenLocationDialog", false)) -> run ();
 }
@@ -541,7 +541,7 @@ BrowserWindow::on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragConte
 }
 
 void
-BrowserWindow::on_import ()
+BrowserWindow::on_import_activated ()
 {
 	std::dynamic_pointer_cast <FileImportDialog> (addDialog ("FileImportDialog", false)) -> run ();
 }
@@ -616,37 +616,37 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 }
 
 void
-BrowserWindow::on_save ()
+BrowserWindow::on_save_activated ()
 {
 	const basic::uri worldURL = getRootContext () -> getWorldURL ();
 
 	if (worldURL .empty () or worldURL .is_network ())
-		on_save_as ();
+		on_save_as_activated ();
 
 	else
 		save (worldURL, getRootContext () -> isCompressed (), false);
 }
 
 void
-BrowserWindow::on_save_as ()
+BrowserWindow::on_save_as_activated ()
 {
 	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false)) -> saveScene (false);
 }
 
 void
-BrowserWindow::on_save_a_copy ()
+BrowserWindow::on_save_a_copy_activated ()
 {
 	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false)) -> saveScene (true);
 }
 
 void
-BrowserWindow::on_export ()
+BrowserWindow::on_export_activated ()
 {
 	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false)) -> exportImage ();
 }
 
 void
-BrowserWindow::on_remove_unused_prototypes ()
+BrowserWindow::on_remove_unused_prototypes_activated ()
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Unused Prototypes"));
 
@@ -656,19 +656,19 @@ BrowserWindow::on_remove_unused_prototypes ()
 }
 
 void
-BrowserWindow::on_close ()
+BrowserWindow::on_close_activated ()
 {
 	close (X3D::BrowserPtr (getBrowser ()));
 }
 
 void
-BrowserWindow::on_quit ()
+BrowserWindow::on_quit_activated ()
 {
 	quit ();
 }
 
 void
-BrowserWindow::on_revert_to_saved ()
+BrowserWindow::on_revert_to_saved_activated ()
 {
 	reload ();
 }
@@ -676,13 +676,13 @@ BrowserWindow::on_revert_to_saved ()
 // Undo/Redo
 
 void
-BrowserWindow::on_undo ()
+BrowserWindow::on_undo_activated ()
 {
 	undo ();
 }
 
 void
-BrowserWindow::on_redo ()
+BrowserWindow::on_redo_activated ()
 {
 	redo ();
 }
@@ -696,7 +696,7 @@ BrowserWindow::on_clipboard_owner_change (GdkEventOwnerChange*)
 }
 
 void
-BrowserWindow::on_cut_nodes_activate ()
+BrowserWindow::on_cut_activated ()
 {
 	const auto selection = getSelection () -> getChildren ();
 
@@ -715,7 +715,7 @@ BrowserWindow::on_cut_nodes_activate ()
 }
 
 void
-BrowserWindow::on_copy_nodes_activate ()
+BrowserWindow::on_copy_activated ()
 {
 	const auto selection = getSelection () -> getChildren ();
 
@@ -726,7 +726,7 @@ BrowserWindow::on_copy_nodes_activate ()
 }
 
 void
-BrowserWindow::on_paste_nodes_activate ()
+BrowserWindow::on_paste_activated ()
 {
 	auto selection = getSelection () -> getChildren ();
 
@@ -740,7 +740,7 @@ BrowserWindow::on_paste_nodes_activate ()
 // Edit menu
 
 void
-BrowserWindow::on_delete_nodes_activate ()
+BrowserWindow::on_delete_activated ()
 {
 	const auto selection = getSelection () -> getChildren ();
 
@@ -757,7 +757,7 @@ BrowserWindow::on_delete_nodes_activate ()
 }
 
 void
-BrowserWindow::on_create_clone_activate ()
+BrowserWindow::on_create_clone_activated ()
 {
 	auto selection = getSelection () -> getChildren ();
 
@@ -777,7 +777,7 @@ BrowserWindow::on_create_clone_activate ()
 }
 
 void
-BrowserWindow::on_unlink_clone_activate ()
+BrowserWindow::on_unlink_clone_activated ()
 {
 	const auto selection = getSelection () -> getChildren ();
 
@@ -794,7 +794,7 @@ BrowserWindow::on_unlink_clone_activate ()
 }
 
 void
-BrowserWindow::on_group_selected_nodes_activate ()
+BrowserWindow::on_group_selected_nodes_activated ()
 {
 	const auto selection = getSelection () -> getChildren ();
 
@@ -813,7 +813,7 @@ BrowserWindow::on_group_selected_nodes_activate ()
 }
 
 void
-BrowserWindow::on_ungroup_node_activate ()
+BrowserWindow::on_ungroup_activated ()
 {
 	const auto selection = getSelection () -> getChildren ();
 
@@ -829,7 +829,7 @@ BrowserWindow::on_ungroup_node_activate ()
 }
 
 void
-BrowserWindow::on_add_to_group_activate ()
+BrowserWindow::on_add_to_group_activated ()
 {
 	auto selection = getSelection () -> getChildren ();
 
@@ -852,7 +852,7 @@ BrowserWindow::on_add_to_group_activate ()
 }
 
 void
-BrowserWindow::on_detach_from_group_activate ()
+BrowserWindow::on_detach_from_group_activated ()
 {
 	const auto selection = getSelection () -> getChildren ();
 
@@ -870,115 +870,115 @@ BrowserWindow::on_detach_from_group_activate ()
 }
 
 void
-BrowserWindow::on_create_parent_transform_activate ()
+BrowserWindow::on_create_parent_transform_activated ()
 {
 	on_create_parent ("Transform");
 }
 
 void
-BrowserWindow::on_create_parent_group_activate ()
+BrowserWindow::on_create_parent_group_activated ()
 {
 	on_create_parent ("Group");
 }
 
 void
-BrowserWindow::on_create_parent_static_group_activate ()
+BrowserWindow::on_create_parent_static_group_activated ()
 {
 	on_create_parent ("StaticGroup");
 }
 
 void
-BrowserWindow::on_create_parent_switch_activate ()
+BrowserWindow::on_create_parent_switch_activated ()
 {
 	on_create_parent ("Switch");
 }
 
 void
-BrowserWindow::on_create_parent_billboard_activate ()
+BrowserWindow::on_create_parent_billboard_activated ()
 {
 	on_create_parent ("Billboard");
 }
 
 void
-BrowserWindow::on_create_parent_collision_activate ()
+BrowserWindow::on_create_parent_collision_activated ()
 {
 	on_create_parent ("Collision");
 }
 
 void
-BrowserWindow::on_create_parent_lod_activate ()
+BrowserWindow::on_create_parent_lod_activated ()
 {
 	on_create_parent ("LOD");
 }
 
 void
-BrowserWindow::on_create_parent_anchor_activate ()
+BrowserWindow::on_create_parent_anchor_activated ()
 {
 	on_create_parent ("Anchor");
 }
 
 void
-BrowserWindow::on_create_parent_screen_group_activate ()
+BrowserWindow::on_create_parent_screen_group_activated ()
 {
 	on_create_parent ("ScreenGroup");
 }
 
 void
-BrowserWindow::on_create_parent_layout_layer_activate ()
+BrowserWindow::on_create_parent_layout_layer_activated ()
 {
 	on_create_parent ("LayoutLayer");
 }
 
 void
-BrowserWindow::on_create_parent_layout_group_activate ()
+BrowserWindow::on_create_parent_layout_group_activated ()
 {
 	on_create_parent ("LayoutGroup");
 }
 
 void
-BrowserWindow::on_create_parent_geo_transform_activate ()
+BrowserWindow::on_create_parent_geo_transform_activated ()
 {
 	on_create_parent ("GeoTransform");
 }
 
 void
-BrowserWindow::on_create_parent_geo_location_activate ()
+BrowserWindow::on_create_parent_geo_location_activated ()
 {
 	on_create_parent ("GeoLocation");
 }
 
 void
-BrowserWindow::on_create_parent_cad_part_activate ()
+BrowserWindow::on_create_parent_cad_part_activated ()
 {
 	on_create_parent ("CADPart");
 }
 
 void
-BrowserWindow::on_create_parent_cad_assembly_activate ()
+BrowserWindow::on_create_parent_cad_assembly_activated ()
 {
 	on_create_parent ("CADAssembly");
 }
 
 void
-BrowserWindow::on_create_parent_cad_layer_activate ()
+BrowserWindow::on_create_parent_cad_layer_activated ()
 {
 	on_create_parent ("CADLayer");
 }
 
 void
-BrowserWindow::on_create_parent_layer_set_activate ()
+BrowserWindow::on_create_parent_layer_set_activated ()
 {
 	on_create_parent ("LayerSet", "layers");
 }
 
 void
-BrowserWindow::on_create_parent_layer_activate ()
+BrowserWindow::on_create_parent_layer_activated ()
 {
 	on_create_parent ("Layer");
 }
 
 void
-BrowserWindow::on_create_parent_viewport_activate ()
+BrowserWindow::on_create_parent_viewport_activated ()
 {
 	on_create_parent ("Viewport");
 }
@@ -1047,8 +1047,8 @@ BrowserWindow::on_browser_toggled ()
 		if (not getFogsMenuItem () .get_active ())
 			getFogsMenuItem () .set_active (true);
 
-		on_hide_all_object_icons_activate ();
-		on_show_all_objects_activate ();
+		on_hide_all_object_icons_activated ();
+		on_show_all_objects_activated ();
 	}
 }
 
@@ -1108,7 +1108,7 @@ BrowserWindow::isEditor (const bool enabled)
 }
 
 void
-BrowserWindow::on_motion_blur_activate ()
+BrowserWindow::on_motion_blur_activated ()
 {
 	addDialog ("MotionBlurEditor");
 }
@@ -1116,42 +1116,42 @@ BrowserWindow::on_motion_blur_activate ()
 // Shading menu
 
 void
-BrowserWindow::on_phong_activate ()
+BrowserWindow::on_phong_activated ()
 {
 	if (getPhongMenuItem () .get_active ())
-		on_shading_activate ("PHONG");
+		on_shading_activated ("PHONG");
 }
 
 void
-BrowserWindow::on_gouraud_activate ()
+BrowserWindow::on_gouraud_activated ()
 {
 	if (getGouraudMenuItem () .get_active ())
-		on_shading_activate ("GOURAUD");
+		on_shading_activated ("GOURAUD");
 }
 
 void
-BrowserWindow::on_flat_activate ()
+BrowserWindow::on_flat_activated ()
 {
 	if (getFlatMenuItem () .get_active ())
-		on_shading_activate ("FLAT");
+		on_shading_activated ("FLAT");
 }
 
 void
-BrowserWindow::on_wireframe_activate ()
+BrowserWindow::on_wireframe_activated ()
 {
 	if (getWireFrameMenuItem () .get_active ())
-		on_shading_activate ("WIREFRAME");
+		on_shading_activated ("WIREFRAME");
 }
 
 void
-BrowserWindow::on_pointset_activate ()
+BrowserWindow::on_pointset_activated ()
 {
 	if (getPointSetMenuItem () .get_active ())
-		on_shading_activate ("POINTSET");
+		on_shading_activated ("POINTSET");
 }
 
 void
-BrowserWindow::on_shading_activate (const std::string & value)
+BrowserWindow::on_shading_activated (const std::string & value)
 {
 	if (changing)
 		return;
@@ -1195,28 +1195,28 @@ BrowserWindow::connectShading (const X3D::SFString & field)
 // Primitive Quality
 
 void
-BrowserWindow::on_primitive_high_quality_activate ()
+BrowserWindow::on_primitive_high_quality_activated ()
 {
 	if (getPrimitiveHighQualityMenuItem () .get_active ())
-		on_primitiveQuality_activate ("HIGH");
+		on_primitiveQuality_activated ("HIGH");
 }
 
 void
-BrowserWindow::on_primitive_medium_quality_activate ()
+BrowserWindow::on_primitive_medium_quality_activated ()
 {
 	if (getPrimitiveMediumQualityMenuItem () .get_active ())
-		on_primitiveQuality_activate ("MEDIUM");
+		on_primitiveQuality_activated ("MEDIUM");
 }
 
 void
-BrowserWindow::on_primitive_low_quality_activate ()
+BrowserWindow::on_primitive_low_quality_activated ()
 {
 	if (getPrimitiveLowQualityMenuItem () .get_active ())
-		on_primitiveQuality_activate ("LOW");
+		on_primitiveQuality_activated ("LOW");
 }
 
 void
-BrowserWindow::on_primitiveQuality_activate (const std::string & value)
+BrowserWindow::on_primitiveQuality_activated (const std::string & value)
 {
 	if (changing)
 		return;
@@ -1254,28 +1254,28 @@ BrowserWindow::connectPrimitiveQuality (const X3D::SFString & field)
 // Texture Quality
 
 void
-BrowserWindow::on_texture_high_quality_activate ()
+BrowserWindow::on_texture_high_quality_activated ()
 {
 	if (getTextureHighQualityMenuItem () .get_active ())
-		on_textureQuality_activate ("HIGH");
+		on_textureQuality_activated ("HIGH");
 }
 
 void
-BrowserWindow::on_texture_medium_quality_activate ()
+BrowserWindow::on_texture_medium_quality_activated ()
 {
 	if (getTextureMediumQualityMenuItem () .get_active ())
-		on_textureQuality_activate ("MEDIUM");
+		on_textureQuality_activated ("MEDIUM");
 }
 
 void
-BrowserWindow::on_texture_low_quality_activate ()
+BrowserWindow::on_texture_low_quality_activated ()
 {
 	if (getTextureLowQualityMenuItem () .get_active ())
-		on_textureQuality_activate ("LOW");
+		on_textureQuality_activated ("LOW");
 }
 
 void
-BrowserWindow::on_textureQuality_activate (const std::string & value)
+BrowserWindow::on_textureQuality_activated (const std::string & value)
 {
 	if (changing)
 		return;
@@ -1555,7 +1555,7 @@ BrowserWindow::on_viewpoints_toggled ()
 }
 
 void
-BrowserWindow::on_hide_all_object_icons_activate ()
+BrowserWindow::on_hide_all_object_icons_activated ()
 {
 	if (getLightsMenuItem () .get_active ())
 		getLightsMenuItem () .set_active (false);
@@ -1592,7 +1592,7 @@ BrowserWindow::on_rendering_properties_toggled ()
 // Fullscreen
 
 void
-BrowserWindow::on_fullscreen ()
+BrowserWindow::on_fullscreen_activated ()
 {
 	getFullScreenMenuItem ()   .set_visible (false);
 	getUnFullScreenMenuItem () .set_visible (true);
@@ -1600,7 +1600,7 @@ BrowserWindow::on_fullscreen ()
 }
 
 void
-BrowserWindow::on_unfullscreen ()
+BrowserWindow::on_unfullscreen_activated ()
 {
 	getFullScreenMenuItem ()   .set_visible (true);
 	getUnFullScreenMenuItem () .set_visible (false);
@@ -1610,7 +1610,7 @@ BrowserWindow::on_unfullscreen ()
 // Selection menu
 
 void
-BrowserWindow::on_select_all_activate ()
+BrowserWindow::on_select_all_activated ()
 {
 	const auto undoStep = std::make_shared <UndoStep> ();
 
@@ -1618,7 +1618,7 @@ BrowserWindow::on_select_all_activate ()
 }
 
 void
-BrowserWindow::on_deselect_all_activate ()
+BrowserWindow::on_deselect_all_activated ()
 {
 	const auto undoStep = std::make_shared <UndoStep> ();
 
@@ -1626,7 +1626,7 @@ BrowserWindow::on_deselect_all_activate ()
 }
 
 void
-BrowserWindow::on_hide_selected_objects_activate ()
+BrowserWindow::on_hide_selected_objects_activated ()
 {
 	auto selection = getSelection () -> getChildren ();
 
@@ -1643,7 +1643,7 @@ BrowserWindow::on_hide_selected_objects_activate ()
 }
 
 void
-BrowserWindow::on_hide_unselected_objects_activate ()
+BrowserWindow::on_hide_unselected_objects_activated ()
 {
 	std::set <X3D::X3DShapeNode*> visibles;
 
@@ -1676,7 +1676,7 @@ BrowserWindow::on_hide_unselected_objects_activate ()
 }
 
 void
-BrowserWindow::on_show_selected_objects_activate ()
+BrowserWindow::on_show_selected_objects_activated ()
 {
 	auto selection = getSelection () -> getChildren ();
 
@@ -1693,7 +1693,7 @@ BrowserWindow::on_show_selected_objects_activate ()
 }
 
 void
-BrowserWindow::on_show_all_objects_activate ()
+BrowserWindow::on_show_all_objects_activated ()
 {
 	X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 	               {
@@ -1730,7 +1730,7 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 // Layout
 
 void
-BrowserWindow::on_transform_to_zero_activate ()
+BrowserWindow::on_transform_to_zero_activated ()
 {
 	__LOG__ << "on_transform_to_zero_activate" << std::endl;
 
@@ -1742,13 +1742,13 @@ BrowserWindow::on_transform_to_zero_activate ()
 }
 
 void
-BrowserWindow::on_edit_texture_coordinates_activate ()
+BrowserWindow::on_texture_coordinate_editor_activated ()
 {
 	addDialog ("TextureCoordinateEditor");
 }
 
 void
-BrowserWindow::on_paint_polygons_activate ()
+BrowserWindow::on_paint_polygons_activated ()
 {
 	addDialog ("ColorPerVertexEditor");
 }
@@ -1792,7 +1792,7 @@ BrowserWindow::on_angle_layout_tool_toggled ()
 }
 
 void
-BrowserWindow::on_grid_properties_activate ()
+BrowserWindow::on_grid_properties_activated ()
 {
 	addDialog ("GridEditor");
 }
@@ -1800,15 +1800,9 @@ BrowserWindow::on_grid_properties_activate ()
 // Help menu
 
 void
-BrowserWindow::on_info ()
+BrowserWindow::on_info_activated ()
 {
 	X3DBrowserWidget::open (get_page ("about/info.x3dv"), false);
-}
-
-void
-BrowserWindow::on_standard_size ()
-{
-	getWindow () .resize (1024, 1024.0 * 9.0 / 16.0);
 }
 
 /// Toolbar
@@ -1914,7 +1908,7 @@ BrowserWindow::on_location_icon_released (Gtk::EntryIconPosition icon_position, 
 		case Gtk::ENTRY_ICON_PRIMARY:
 			break;
 		case Gtk::ENTRY_ICON_SECONDARY:
-			on_open ();
+			on_open_activated ();
 			break;
 	}
 }
@@ -2557,31 +2551,31 @@ BrowserWindow::on_viewer_clicked ()
 }
 
 void
-BrowserWindow::on_examine_viewer_activate ()
+BrowserWindow::on_examine_viewer_activated ()
 {
 	getBrowser () -> setViewer (X3D::ViewerType::EXAMINE);
 }
 
 void
-BrowserWindow::on_walk_viewer_activate ()
+BrowserWindow::on_walk_viewer_activated ()
 {
 	getBrowser () -> setViewer (X3D::ViewerType::WALK);
 }
 
 void
-BrowserWindow::on_fly_viewer_activate ()
+BrowserWindow::on_fly_viewer_activated ()
 {
 	getBrowser () -> setViewer (X3D::ViewerType::FLY);
 }
 
 void
-BrowserWindow::on_plane_viewer_activate ()
+BrowserWindow::on_plane_viewer_activated ()
 {
 	getBrowser () -> setViewer (X3D::ViewerType::PLANE);
 }
 
 void
-BrowserWindow::on_none_viewer_activate ()
+BrowserWindow::on_none_viewer_activated ()
 {
 	getBrowser () -> setViewer (X3D::ViewerType::NONE);
 }

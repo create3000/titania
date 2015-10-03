@@ -15,6 +15,7 @@ titania_SOURCES =  \
 	Titania/Browser/MagicImport.cpp \
 	Titania/Browser/RecentView.cpp \
 	Titania/Browser/X3DBrowserEditor.cpp \
+	Titania/Browser/X3DBrowserMenu.cpp \
 	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
 	Titania/Browser/X3DObjectOperations.cpp \

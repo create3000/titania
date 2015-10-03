@@ -80,20 +80,13 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
-	void
-	updateWidget (const Glib::ustring & name) const
-	{ getBuilder () -> add_from_file (filename, name); }
-
-	void
-	updateWidgets (const std::vector <Glib::ustring> & names) const
-	{ getBuilder () -> add_from_file (filename, names); }
-
 	template <class Type>
 	Type*
-	getWidget (const std::string & name) const
+	createWidget (const std::string & name) const
 	{
-		Type* widget = nullptr;
+		getBuilder () -> add_from_file (filename, name);
 
+		Type* widget = nullptr;
 		m_builder -> get_widget (name, widget);
 		return widget;
 	}

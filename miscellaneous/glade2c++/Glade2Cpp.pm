@@ -437,20 +437,17 @@ sub generate
 	# Name
 	say OUT "  const std::string & getWidgetName () const { return m_widgetName; }";
 	say OUT "";
-	
-	# updateWidget
-	say OUT "  void updateWidget (const Glib::ustring & name) const";
-	say OUT "  { getBuilder () -> add_from_file (filename, name); }";
-	say OUT "";
 
-	say OUT "  void updateWidgets (const std::vector <Glib::ustring> & names) const";
-	say OUT "  { getBuilder () -> add_from_file (filename, names); }";
-	say OUT "";
+	#say OUT "  void updateWidgets (const std::vector <Glib::ustring> & names) const";
+	#say OUT "  { getBuilder () -> add_from_file (filename, names); }";
+	#say OUT "";
 
 	# getWidget
 	say OUT "  template <class Type>";
-	say OUT "  Type* getWidget (const std::string & name) const";
+	say OUT "  Type* createWidget (const std::string & name) const";
 	say OUT "  {";
+	say OUT "      getBuilder () -> add_from_file (filename, name);";
+	say OUT "";
 	say OUT "      Type* widget = nullptr;";
 	say OUT "      m_builder -> get_widget (name, widget);";
 	say OUT "      return widget;";

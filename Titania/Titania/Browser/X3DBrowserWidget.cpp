@@ -67,6 +67,7 @@ namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	X3DBrowserWindowInterface (),
+	           X3DBrowserMenu (),
 	            masterBrowser (masterBrowser_),
 	                  browser (masterBrowser_),
 	                 browsers (),
@@ -82,6 +83,7 @@ void
 X3DBrowserWidget::initialize ()
 {
 	X3DBrowserWindowInterface::initialize ();
+	X3DBrowserMenu::initialize ();
 	
 	recentView -> initialize ();
 

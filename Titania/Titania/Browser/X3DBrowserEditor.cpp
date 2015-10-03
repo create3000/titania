@@ -273,7 +273,7 @@ X3DBrowserEditor::isSaved (const X3D::BrowserPtr & browser)
 		{
 			case Gtk::RESPONSE_OK:
 			{
-				on_save ();
+				on_save_activated ();
 				userData -> saveConfirmed = not isModified (browser);
 				return userData -> saveConfirmed;
 			}

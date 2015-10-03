@@ -66,12 +66,121 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_GridToolAction  = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GridToolAction"));
 
 	// Get widgets.
+	m_builder -> get_widget ("BrowserMenu", m_BrowserMenu);
+	m_builder -> get_widget ("BrowserFileMenuItem", m_BrowserFileMenuItem);
+	m_builder -> get_widget ("BrowserNewMenuItem", m_BrowserNewMenuItem);
+	m_builder -> get_widget ("BrowserOpenMenuItem", m_BrowserOpenMenuItem);
+	m_builder -> get_widget ("BrowserOpenRecentMenuItem", m_BrowserOpenRecentMenuItem);
+	m_builder -> get_widget ("BrowserOpenLocationMenuItem", m_BrowserOpenLocationMenuItem);
+	m_builder -> get_widget ("BrowserImportMenuItem", m_BrowserImportMenuItem);
+	m_builder -> get_widget ("BrowserImportAsInlineMenuItem", m_BrowserImportAsInlineMenuItem);
+	m_builder -> get_widget ("BrowserSaveMenuItem", m_BrowserSaveMenuItem);
+	m_builder -> get_widget ("BrowserSaveAsMenuItem", m_BrowserSaveAsMenuItem);
+	m_builder -> get_widget ("BrowserSaveACopyMenuItem", m_BrowserSaveACopyMenuItem);
+	m_builder -> get_widget ("BrowserExportMenuItem", m_BrowserExportMenuItem);
+	m_builder -> get_widget ("BrowserRevertMenuItem", m_BrowserRevertMenuItem);
+	m_builder -> get_widget ("BrowserRemoveUnusedPrototypesMenuItem", m_BrowserRemoveUnusedPrototypesMenuItem);
+	m_builder -> get_widget ("BrowserCloseMenuItem", m_BrowserCloseMenuItem);
+	m_builder -> get_widget ("BrowserQuitMenuItem", m_BrowserQuitMenuItem);
+	m_builder -> get_widget ("BrowserEditMenuItem", m_BrowserEditMenuItem);
+	m_builder -> get_widget ("BrowserUndoMenuItem", m_BrowserUndoMenuItem);
+	m_builder -> get_widget ("BrowserRedoMenuItem", m_BrowserRedoMenuItem);
+	m_builder -> get_widget ("BrowserCutMenuItem", m_BrowserCutMenuItem);
+	m_builder -> get_widget ("BrowserCopyMenuItem", m_BrowserCopyMenuItem);
+	m_builder -> get_widget ("BrowserPasteMenuItem", m_BrowserPasteMenuItem);
+	m_builder -> get_widget ("BrowserDeleteMenuItem", m_BrowserDeleteMenuItem);
+	m_builder -> get_widget ("BrowserCloneMenuItem", m_BrowserCloneMenuItem);
+	m_builder -> get_widget ("BrowserCreateCloneMenuItem", m_BrowserCreateCloneMenuItem);
+	m_builder -> get_widget ("BrowserUnlinkCloneMenuItem", m_BrowserUnlinkCloneMenuItem);
+	m_builder -> get_widget ("BrowserGroupSelectedNodesMenuItem", m_BrowserGroupSelectedNodesMenuItem);
+	m_builder -> get_widget ("BrowserUngroupMenuItem", m_BrowserUngroupMenuItem);
+	m_builder -> get_widget ("BrowserAddToGroupMenuItem", m_BrowserAddToGroupMenuItem);
+	m_builder -> get_widget ("BrowserDetachFromGroupMenuItem", m_BrowserDetachFromGroupMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentMenuItem", m_BrowserCreateParentMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentTransformMenuItem", m_BrowserCreateParentTransformMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentGroupMenuItem", m_BrowserCreateParentGroupMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentStaticGroupMenuItem", m_BrowserCreateParentStaticGroupMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentSwitchMenuItem", m_BrowserCreateParentSwitchMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentBillboardMenuItem", m_BrowserCreateParentBillboardMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentCollisionMenuItem", m_BrowserCreateParentCollisionMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentLODMenuItem", m_BrowserCreateParentLODMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentAnchorMenuItem", m_BrowserCreateParentAnchorMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentLayoutLayerMenuItem", m_BrowserCreateParentLayoutLayerMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentScreenGroupMenuItem", m_BrowserCreateParentScreenGroupMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentLayoutGroupMenuItem", m_BrowserCreateParentLayoutGroupMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentGeoTransformMenuItem", m_BrowserCreateParentGeoTransformMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentGeoLocationMenuItem", m_BrowserCreateParentGeoLocationMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentCADPartMenuItem", m_BrowserCreateParentCADPartMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentCADAssemblyMenuItem", m_BrowserCreateParentCADAssemblyMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentCADLayerMenuItem", m_BrowserCreateParentCADLayerMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentLayerSetMenuItem", m_BrowserCreateParentLayerSetMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentLayerMenuItem", m_BrowserCreateParentLayerMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentViewportMenuItem", m_BrowserCreateParentViewportMenuItem);
+	m_builder -> get_widget ("BrowserViewMenuItem", m_BrowserViewMenuItem);
+	m_builder -> get_widget ("BrowserToolBarMenuItem", m_BrowserToolBarMenuItem);
+	m_builder -> get_widget ("BrowserSideBarMenuItem", m_BrowserSideBarMenuItem);
+	m_builder -> get_widget ("BrowserFooterMenuItem", m_BrowserFooterMenuItem);
+	m_builder -> get_widget ("BrowserEnvironmentMenuItem", m_BrowserEnvironmentMenuItem);
+	m_builder -> get_widget ("BrowserBrowserMenuItem", m_BrowserBrowserMenuItem);
+	m_builder -> get_widget ("BrowserEditorMenuItem", m_BrowserEditorMenuItem);
+	m_builder -> get_widget ("BrowserOptionsSeparator1", m_BrowserOptionsSeparator1);
+	m_builder -> get_widget ("BrowserMotionBlurMenuItem", m_BrowserMotionBlurMenuItem);
+	m_builder -> get_widget ("BrowserShadingMenuItem", m_BrowserShadingMenuItem);
+	m_builder -> get_widget ("BrowserPhongMenuItem", m_BrowserPhongMenuItem);
+	m_builder -> get_widget ("BrowserGouraudMenuItem", m_BrowserGouraudMenuItem);
+	m_builder -> get_widget ("BrowserFlatMenuItem", m_BrowserFlatMenuItem);
+	m_builder -> get_widget ("BrowserWireFrameMenuItem", m_BrowserWireFrameMenuItem);
+	m_builder -> get_widget ("BrowserPointSetMenuItem", m_BrowserPointSetMenuItem);
+	m_builder -> get_widget ("BrowserPrimitiveQualityMenuItem", m_BrowserPrimitiveQualityMenuItem);
+	m_builder -> get_widget ("BrowserPrimitiveHighQualityMenuItem", m_BrowserPrimitiveHighQualityMenuItem);
+	m_builder -> get_widget ("BrowserPrimitiveMediumQualityMenuItem", m_BrowserPrimitiveMediumQualityMenuItem);
+	m_builder -> get_widget ("BrowserPrimitiveLowQualityMenuItem", m_BrowserPrimitiveLowQualityMenuItem);
+	m_builder -> get_widget ("BrowserTextureQualityMenuItem", m_BrowserTextureQualityMenuItem);
+	m_builder -> get_widget ("BrowserTextureHighQualityMenuItem", m_BrowserTextureHighQualityMenuItem);
+	m_builder -> get_widget ("BrowserTextureMediumQualityMenuItem", m_BrowserTextureMediumQualityMenuItem);
+	m_builder -> get_widget ("BrowserTextureLowQualityMenuItem", m_BrowserTextureLowQualityMenuItem);
+	m_builder -> get_widget ("BrowserShowHideEnvironmentalEffectsMenuItem", m_BrowserShowHideEnvironmentalEffectsMenuItem);
+	m_builder -> get_widget ("BrowserBackgroundsMenuItem", m_BrowserBackgroundsMenuItem);
+	m_builder -> get_widget ("BrowserFogsMenuItem", m_BrowserFogsMenuItem);
+	m_builder -> get_widget ("BrowserObjectIconsMenuItem", m_BrowserObjectIconsMenuItem);
+	m_builder -> get_widget ("BrowserLightsMenuItem", m_BrowserLightsMenuItem);
+	m_builder -> get_widget ("BrowserProximitySensorsMenuItem", m_BrowserProximitySensorsMenuItem);
+	m_builder -> get_widget ("BrowserTransformSensorsMenuItem", m_BrowserTransformSensorsMenuItem);
+	m_builder -> get_widget ("BrowserVisibilitySensorsMenuItem", m_BrowserVisibilitySensorsMenuItem);
+	m_builder -> get_widget ("BrowserViewpointsMenuItem", m_BrowserViewpointsMenuItem);
+	m_builder -> get_widget ("BrowserHideAllObjectIconsMenuItem", m_BrowserHideAllObjectIconsMenuItem);
+	m_builder -> get_widget ("BrowserRubberbandMenuItem", m_BrowserRubberbandMenuItem);
+	m_builder -> get_widget ("BrowserRenderingPropertiesMenuItem", m_BrowserRenderingPropertiesMenuItem);
+	m_builder -> get_widget ("BrowserFullScreenMenuItem", m_BrowserFullScreenMenuItem);
+	m_builder -> get_widget ("BrowserUnFullScreenMenuItem", m_BrowserUnFullScreenMenuItem);
+	m_builder -> get_widget ("BrowserSelectionMenuItem", m_BrowserSelectionMenuItem);
+	m_builder -> get_widget ("BrowserSelectAllMenuItem", m_BrowserSelectAllMenuItem);
+	m_builder -> get_widget ("BrowserDeselectAllMenuItem", m_BrowserDeselectAllMenuItem);
+	m_builder -> get_widget ("BrowserHideSelectedObjectsMenuItem", m_BrowserHideSelectedObjectsMenuItem);
+	m_builder -> get_widget ("BrowserHideUnselectedObjectsMenuItem", m_BrowserHideUnselectedObjectsMenuItem);
+	m_builder -> get_widget ("BrowserShowSelectedObjectsMenuItem", m_BrowserShowSelectedObjectsMenuItem);
+	m_builder -> get_widget ("BrowserShowAllObjectsMenuItem", m_BrowserShowAllObjectsMenuItem);
+	m_builder -> get_widget ("BrowserSelectLowestMenuItem", m_BrowserSelectLowestMenuItem);
+	m_builder -> get_widget ("BrowserFollowPrimarySelectionMenuItem", m_BrowserFollowPrimarySelectionMenuItem);
+	m_builder -> get_widget ("BrowserObjectMenuItem", m_BrowserObjectMenuItem);
+	m_builder -> get_widget ("BrowserCombineMenuItem", m_BrowserCombineMenuItem);
+	m_builder -> get_widget ("BrowserTransformToZeroMenuItem", m_BrowserTransformToZeroMenuItem);
+	m_builder -> get_widget ("BrowserTextureCoordinateEditorMenuItem", m_BrowserTextureCoordinateEditorMenuItem);
+	m_builder -> get_widget ("BrowserPaintPolygonsMenuItem", m_BrowserPaintPolygonsMenuItem);
+	m_builder -> get_widget ("BrowserLayoutMenuItem", m_BrowserLayoutMenuItem);
+	m_builder -> get_widget ("BrowserGridLayoutToolMenuItem", m_BrowserGridLayoutToolMenuItem);
+	m_builder -> get_widget ("BrowserAngleLayoutToolMenuItem", m_BrowserAngleLayoutToolMenuItem);
+	m_builder -> get_widget ("BrowserGridPropertiesMenuItem", m_BrowserGridPropertiesMenuItem);
+	m_builder -> get_widget ("BrowserHelpMenuItem", m_BrowserHelpMenuItem);
+	m_builder -> get_widget ("BrowserInfoMenuItem", m_BrowserInfoMenuItem);
 	m_builder -> get_widget ("ExamineViewerImage", m_ExamineViewerImage);
 	m_builder -> get_widget ("FileImportImage", m_FileImportImage);
+	m_builder -> get_widget ("FileImportImage1", m_FileImportImage1);
 	m_builder -> get_widget ("FlyViewerImage", m_FlyViewerImage);
 	m_builder -> get_widget ("HistoryMenu", m_HistoryMenu);
 	m_builder -> get_widget ("NoneViewerImage", m_NoneViewerImage);
 	m_builder -> get_widget ("OpenLocationImage", m_OpenLocationImage);
+	m_builder -> get_widget ("OpenLocationImage1", m_OpenLocationImage1);
 	m_builder -> get_widget ("PlaneViewerImage", m_PlaneViewerImage);
 	m_builder -> get_widget ("WalkViewerImage", m_WalkViewerImage);
 	m_builder -> get_widget ("ViewerTypeMenu", m_ViewerTypeMenu);
@@ -81,6 +190,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PlaneViewerMenuItem", m_PlaneViewerMenuItem);
 	m_builder -> get_widget ("NoneViewerMenuItem", m_NoneViewerMenuItem);
 	m_builder -> get_widget ("WorkspacesImage", m_WorkspacesImage);
+	m_builder -> get_widget ("WorkspacesImage1", m_WorkspacesImage1);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBox", m_HeaderBox);
@@ -189,12 +299,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LayoutMenuItem", m_LayoutMenuItem);
 	m_builder -> get_widget ("GridLayoutToolMenuItem", m_GridLayoutToolMenuItem);
 	m_builder -> get_widget ("AngleLayoutToolMenuItem", m_AngleLayoutToolMenuItem);
-	m_builder -> get_widget ("GridProperiesMenuItem", m_GridProperiesMenuItem);
-	m_builder -> get_widget ("ComponentsMenuItem", m_ComponentsMenuItem);
-	m_builder -> get_widget ("ComponentsMenu", m_ComponentsMenu);
-	m_builder -> get_widget ("CoreMenuItem", m_CoreMenuItem);
+	m_builder -> get_widget ("GridPropertiesMenuItem", m_GridPropertiesMenuItem);
 	m_builder -> get_widget ("HelpMenuItem", m_HelpMenuItem);
-	m_builder -> get_widget ("StandardSizeMenuItem", m_StandardSizeMenuItem);
 	m_builder -> get_widget ("InfoMenuItem", m_InfoMenuItem);
 	m_builder -> get_widget ("ToolBar", m_ToolBar);
 	m_builder -> get_widget ("LocationBar", m_LocationBar);
@@ -265,12 +371,92 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
 	m_builder -> get_widget ("MessageDialog", m_MessageDialog);
 
-	// Connect object Gtk::ImageMenuItem with id 'ExamineViewerMenuItem'.
-	m_ExamineViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_examine_viewer_activate));
-	m_WalkViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_walk_viewer_activate));
-	m_FlyViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fly_viewer_activate));
-	m_PlaneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_plane_viewer_activate));
-	m_NoneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_none_viewer_activate));
+	// Connect object Gtk::ImageMenuItem with id 'BrowserNewMenuItem'.
+	m_BrowserNewMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new_activated));
+	m_BrowserOpenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_activated));
+	m_BrowserOpenRecentMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_recent_activated));
+	m_BrowserOpenLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location_activated));
+	m_BrowserImportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import_activated));
+	m_BrowserSaveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_activated));
+	m_BrowserSaveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_as_activated));
+
+	// Connect object Gtk::MenuItem with id 'BrowserSaveACopyMenuItem'.
+	m_BrowserSaveACopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_a_copy_activated));
+
+	// Connect object Gtk::ImageMenuItem with id 'BrowserExportMenuItem'.
+	m_BrowserExportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_export_activated));
+	m_BrowserRevertMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved_activated));
+	m_BrowserRemoveUnusedPrototypesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_remove_unused_prototypes_activated));
+	m_BrowserCloseMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_close_activated));
+	m_BrowserQuitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_quit_activated));
+	m_BrowserUndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo_activated));
+	m_BrowserRedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo_activated));
+	m_BrowserCutMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_cut_activated));
+	m_BrowserCopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_copy_activated));
+	m_BrowserPasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paste_activated));
+	m_BrowserDeleteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_delete_activated));
+
+	// Connect object Gtk::MenuItem with id 'BrowserCreateCloneMenuItem'.
+	m_BrowserCreateCloneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_clone_activated));
+	m_BrowserUnlinkCloneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_unlink_clone_activated));
+
+	// Connect object Gtk::ImageMenuItem with id 'BrowserGroupSelectedNodesMenuItem'.
+	m_BrowserGroupSelectedNodesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_group_selected_nodes_activated));
+	m_BrowserUngroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_ungroup_activated));
+
+	// Connect object Gtk::MenuItem with id 'BrowserAddToGroupMenuItem'.
+	m_BrowserAddToGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_add_to_group_activated));
+	m_BrowserDetachFromGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_detach_from_group_activated));
+	m_BrowserCreateParentTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_transform_activated));
+	m_BrowserCreateParentGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_group_activated));
+	m_BrowserCreateParentStaticGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_static_group_activated));
+	m_BrowserCreateParentSwitchMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_switch_activated));
+	m_BrowserCreateParentBillboardMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_billboard_activated));
+	m_BrowserCreateParentCollisionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_collision_activated));
+	m_BrowserCreateParentLODMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_lod_activated));
+	m_BrowserCreateParentAnchorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_anchor_activated));
+	m_BrowserCreateParentLayoutLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layout_layer_activated));
+	m_BrowserCreateParentScreenGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_screen_group_activated));
+	m_BrowserCreateParentLayoutGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layout_group_activated));
+	m_BrowserCreateParentGeoTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_geo_transform_activated));
+	m_BrowserCreateParentGeoLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_geo_location_activated));
+	m_BrowserCreateParentCADPartMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_cad_part_activated));
+	m_BrowserCreateParentCADAssemblyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_cad_assembly_activated));
+	m_BrowserCreateParentCADLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_cad_layer_activated));
+	m_BrowserCreateParentLayerSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layer_set_activated));
+	m_BrowserCreateParentLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layer_activated));
+	m_BrowserCreateParentViewportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_viewport_activated));
+
+	// Connect object Gtk::ImageMenuItem with id 'BrowserMotionBlurMenuItem'.
+	m_BrowserMotionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_motion_blur_activated));
+
+	// Connect object Gtk::MenuItem with id 'BrowserHideAllObjectIconsMenuItem'.
+	m_BrowserHideAllObjectIconsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_all_object_icons_activated));
+
+	// Connect object Gtk::ImageMenuItem with id 'BrowserFullScreenMenuItem'.
+	m_BrowserFullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fullscreen_activated));
+	m_BrowserUnFullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_unfullscreen_activated));
+	m_BrowserSelectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_all_activated));
+
+	// Connect object Gtk::MenuItem with id 'BrowserDeselectAllMenuItem'.
+	m_BrowserDeselectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_deselect_all_activated));
+	m_BrowserHideSelectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_selected_objects_activated));
+	m_BrowserHideUnselectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_unselected_objects_activated));
+	m_BrowserShowSelectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_show_selected_objects_activated));
+	m_BrowserShowAllObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_show_all_objects_activated));
+
+	// Connect object Gtk::ImageMenuItem with id 'BrowserCombineMenuItem'.
+	m_BrowserCombineMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_combine_activated));
+	m_BrowserTransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
+	m_BrowserTextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_coordinate_editor_activated));
+	m_BrowserPaintPolygonsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paint_polygons_activated));
+	m_BrowserGridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_properties_activated));
+	m_BrowserInfoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info_activated));
+	m_ExamineViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_examine_viewer_activated));
+	m_WalkViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_walk_viewer_activated));
+	m_FlyViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fly_viewer_activated));
+	m_PlaneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_plane_viewer_activated));
+	m_NoneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_none_viewer_activated));
 
 	// Connect object Gtk::ApplicationWindow with id 'Window'.
 	m_Window -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_focus_out_event));
@@ -281,65 +467,65 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_MenuBar -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_menubar_button_press_event), false);
 
 	// Connect object Gtk::ImageMenuItem with id 'NewMenuItem'.
-	m_NewMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new));
-	m_OpenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open));
-	m_OpenRecentMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_recent));
-	m_OpenLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location));
-	m_ImportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import));
+	m_NewMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new_activated));
+	m_OpenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_activated));
+	m_OpenRecentMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_recent_activated));
+	m_OpenLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location_activated));
+	m_ImportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import_activated));
 
 	// Connect object Gtk::CheckMenuItem with id 'ImportAsInlineMenuItem'.
 	m_ImportAsInlineMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import_as_inline_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'SaveMenuItem'.
-	m_SaveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save));
-	m_SaveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_as));
+	m_SaveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_activated));
+	m_SaveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_as_activated));
 
 	// Connect object Gtk::MenuItem with id 'SaveACopyMenuItem'.
-	m_SaveACopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_a_copy));
+	m_SaveACopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_a_copy_activated));
 
 	// Connect object Gtk::ImageMenuItem with id 'ExportMenuItem'.
-	m_ExportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_export));
-	m_RevertMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved));
-	m_RemoveUnusedPrototypesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_remove_unused_prototypes));
-	m_CloseMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_close));
-	m_QuitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_quit));
-	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo));
-	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo));
-	m_CutMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_cut_nodes_activate));
-	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_copy_nodes_activate));
-	m_PasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paste_nodes_activate));
-	m_DeleteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_delete_nodes_activate));
+	m_ExportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_export_activated));
+	m_RevertMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved_activated));
+	m_RemoveUnusedPrototypesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_remove_unused_prototypes_activated));
+	m_CloseMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_close_activated));
+	m_QuitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_quit_activated));
+	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo_activated));
+	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo_activated));
+	m_CutMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_cut_activated));
+	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_copy_activated));
+	m_PasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paste_activated));
+	m_DeleteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_delete_activated));
 
 	// Connect object Gtk::MenuItem with id 'CreateCloneMenuItem'.
-	m_CreateCloneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_clone_activate));
-	m_UnlinkCloneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_unlink_clone_activate));
+	m_CreateCloneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_clone_activated));
+	m_UnlinkCloneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_unlink_clone_activated));
 
 	// Connect object Gtk::ImageMenuItem with id 'GroupSelectedNodesMenuItem'.
-	m_GroupSelectedNodesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_group_selected_nodes_activate));
-	m_UngroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_ungroup_node_activate));
+	m_GroupSelectedNodesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_group_selected_nodes_activated));
+	m_UngroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_ungroup_activated));
 
 	// Connect object Gtk::MenuItem with id 'AddToGroupMenuItem'.
-	m_AddToGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_add_to_group_activate));
-	m_DetachFromGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_detach_from_group_activate));
-	m_CreateParentTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_transform_activate));
-	m_CreateParentGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_group_activate));
-	m_CreateParentStaticGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_static_group_activate));
-	m_CreateParentSwitchMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_switch_activate));
-	m_CreateParentBillboardMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_billboard_activate));
-	m_CreateParentCollisionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_collision_activate));
-	m_CreateParentLODMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_lod_activate));
-	m_CreateParentAnchorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_anchor_activate));
-	m_CreateParentLayoutLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layout_layer_activate));
-	m_CreateParentScreenGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_screen_group_activate));
-	m_CreateParentLayoutGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layout_group_activate));
-	m_CreateParentGeoTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_geo_transform_activate));
-	m_CreateParentGeoLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_geo_location_activate));
-	m_CreateParentCADPartMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_cad_part_activate));
-	m_CreateParentCADAssemblyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_cad_assembly_activate));
-	m_CreateParentCADLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_cad_layer_activate));
-	m_CreateParentLayerSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layer_set_activate));
-	m_CreateParentLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layer_activate));
-	m_CreateParentViewportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_viewport_activate));
+	m_AddToGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_add_to_group_activated));
+	m_DetachFromGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_detach_from_group_activated));
+	m_CreateParentTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_transform_activated));
+	m_CreateParentGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_group_activated));
+	m_CreateParentStaticGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_static_group_activated));
+	m_CreateParentSwitchMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_switch_activated));
+	m_CreateParentBillboardMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_billboard_activated));
+	m_CreateParentCollisionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_collision_activated));
+	m_CreateParentLODMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_lod_activated));
+	m_CreateParentAnchorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_anchor_activated));
+	m_CreateParentLayoutLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layout_layer_activated));
+	m_CreateParentScreenGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_screen_group_activated));
+	m_CreateParentLayoutGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layout_group_activated));
+	m_CreateParentGeoTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_geo_transform_activated));
+	m_CreateParentGeoLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_geo_location_activated));
+	m_CreateParentCADPartMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_cad_part_activated));
+	m_CreateParentCADAssemblyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_cad_assembly_activated));
+	m_CreateParentCADLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_cad_layer_activated));
+	m_CreateParentLayerSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layer_set_activated));
+	m_CreateParentLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layer_activated));
+	m_CreateParentViewportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_viewport_activated));
 
 	// Connect object Gtk::CheckMenuItem with id 'ToolBarMenuItem'.
 	m_ToolBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolBar_toggled));
@@ -351,20 +537,20 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_EditorMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_editor_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'MotionBlurMenuItem'.
-	m_MotionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_motion_blur_activate));
+	m_MotionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_motion_blur_activated));
 
 	// Connect object Gtk::RadioMenuItem with id 'PhongMenuItem'.
-	m_PhongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_phong_activate));
-	m_GouraudMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_gouraud_activate));
-	m_FlatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_flat_activate));
-	m_WireFrameMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_wireframe_activate));
-	m_PointSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_pointset_activate));
-	m_PrimitiveHighQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_high_quality_activate));
-	m_PrimitiveMediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_medium_quality_activate));
-	m_PrimitiveLowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_low_quality_activate));
-	m_TextureHighQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_high_quality_activate));
-	m_TextureMediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_medium_quality_activate));
-	m_TextureLowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_low_quality_activate));
+	m_PhongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_phong_activated));
+	m_GouraudMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_gouraud_activated));
+	m_FlatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_flat_activated));
+	m_WireFrameMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_wireframe_activated));
+	m_PointSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_pointset_activated));
+	m_PrimitiveHighQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_high_quality_activated));
+	m_PrimitiveMediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_medium_quality_activated));
+	m_PrimitiveLowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_low_quality_activated));
+	m_TextureHighQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_high_quality_activated));
+	m_TextureMediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_medium_quality_activated));
+	m_TextureLowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_low_quality_activated));
 
 	// Connect object Gtk::CheckMenuItem with id 'BackgroundsMenuItem'.
 	m_BackgroundsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_backgrounds_toggled));
@@ -376,42 +562,41 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_ViewpointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewpoints_toggled));
 
 	// Connect object Gtk::MenuItem with id 'HideAllObjectIconsMenuItem'.
-	m_HideAllObjectIconsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_all_object_icons_activate));
+	m_HideAllObjectIconsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_all_object_icons_activated));
 
 	// Connect object Gtk::CheckMenuItem with id 'RubberbandMenuItem'.
 	m_RubberbandMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rubberband_toggled));
 	m_RenderingPropertiesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rendering_properties_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'FullScreenMenuItem'.
-	m_FullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fullscreen));
-	m_UnFullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_unfullscreen));
-	m_SelectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_all_activate));
+	m_FullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fullscreen_activated));
+	m_UnFullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_unfullscreen_activated));
+	m_SelectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_all_activated));
 
 	// Connect object Gtk::MenuItem with id 'DeselectAllMenuItem'.
-	m_DeselectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_deselect_all_activate));
-	m_HideSelectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_selected_objects_activate));
-	m_HideUnselectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_unselected_objects_activate));
-	m_ShowSelectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_show_selected_objects_activate));
-	m_ShowAllObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_show_all_objects_activate));
+	m_DeselectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_deselect_all_activated));
+	m_HideSelectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_selected_objects_activated));
+	m_HideUnselectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_unselected_objects_activated));
+	m_ShowSelectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_show_selected_objects_activated));
+	m_ShowAllObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_show_all_objects_activated));
 
 	// Connect object Gtk::CheckMenuItem with id 'SelectLowestMenuItem'.
 	m_SelectLowestMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_lowest_toggled));
 	m_FollowPrimarySelectionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'CombineMenuItem'.
-	m_CombineMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_combine_activate));
-	m_TransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_to_zero_activate));
-	m_TextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_edit_texture_coordinates_activate));
-	m_PaintPolygonsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paint_polygons_activate));
+	m_CombineMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_combine_activated));
+	m_TransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
+	m_TextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_coordinate_editor_activated));
+	m_PaintPolygonsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paint_polygons_activated));
 
 	// Connect object Gtk::CheckMenuItem with id 'GridLayoutToolMenuItem'.
 	m_GridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
 	m_AngleLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
 
-	// Connect object Gtk::ImageMenuItem with id 'GridProperiesMenuItem'.
-	m_GridProperiesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_properties_activate));
-	m_StandardSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_standard_size));
-	m_InfoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info));
+	// Connect object Gtk::ImageMenuItem with id 'GridPropertiesMenuItem'.
+	m_GridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_properties_activated));
+	m_InfoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info_activated));
 
 	// Connect object Gtk::Box with id 'ToolBar'.
 	m_ToolBar -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolbar_drag_data_received));
@@ -420,7 +605,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_LocationBar1 -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolbar_drag_data_received));
 
 	// Connect object Gtk::ToolButton with id 'AddTabButton'.
-	m_AddTabButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new));
+	m_AddTabButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new_activated));
 	m_HomeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_home));
 	m_PreviousButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_previous_button_press_event), false);
 	m_PreviousButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_previous_page));
@@ -432,18 +617,18 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_LocationEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_location_key_press_event), false);
 
 	// Connect object Gtk::ToolButton with id 'ReloadButton'.
-	m_ReloadButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved));
-	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new));
+	m_ReloadButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved_activated));
+	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new_activated));
 
 	// Connect object Gtk::MenuToolButton with id 'OpenButton'.
-	m_OpenButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open));
+	m_OpenButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_activated));
 
 	// Connect object Gtk::ToolButton with id 'ImportButton'.
-	m_ImportButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import));
-	m_SaveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save));
-	m_RefreshButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved));
-	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo));
-	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo));
+	m_ImportButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import_activated));
+	m_SaveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_activated));
+	m_RefreshButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved_activated));
+	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo_activated));
+	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo_activated));
 	m_NodePropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_properties_editor_clicked));
 	m_AppearanceEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_appearance_editor_clicked));
 	m_TextureEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_editor_clicked));
@@ -460,6 +645,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hammer_clicked));
 
 	// Connect object Gtk::Notebook with id 'BrowserNotebook'.
+	m_BrowserNotebook -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_notebook_button_press_event));
 	m_BrowserNotebook -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_browser_drag_data_received));
 	m_BrowserNotebook -> signal_page_reordered () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_browser_reordered));
 	m_BrowserNotebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_switch_browser));

@@ -62,7 +62,7 @@ X3DObjectOperations::X3DObjectOperations () :
 { }
 
 void
-X3DObjectOperations::on_combine_activate ()
+X3DObjectOperations::on_combine_activated ()
 {
 	try
 	{

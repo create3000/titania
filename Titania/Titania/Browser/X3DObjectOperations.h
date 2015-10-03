@@ -88,7 +88,7 @@ private:
 
 	virtual
 	void
-	on_combine_activate () final override;
+	on_combine_activated () final override;
 
 	void
 	combineCoordinates (const X3D::X3DPtrArray <X3D::X3DShapeNode> &,

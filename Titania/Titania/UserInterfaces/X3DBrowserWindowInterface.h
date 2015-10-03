@@ -80,20 +80,13 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
-	void
-	updateWidget (const Glib::ustring & name) const
-	{ getBuilder () -> add_from_file (filename, name); }
-
-	void
-	updateWidgets (const std::vector <Glib::ustring> & names) const
-	{ getBuilder () -> add_from_file (filename, names); }
-
 	template <class Type>
 	Type*
-	getWidget (const std::string & name) const
+	createWidget (const std::string & name) const
 	{
-		Type* widget = nullptr;
+		getBuilder () -> add_from_file (filename, name);
 
+		Type* widget = nullptr;
 		m_builder -> get_widget (name, widget);
 		return widget;
 	}
@@ -110,6 +103,434 @@ public:
 	getGridToolAction () const
 	{ return m_GridToolAction; }
 
+	Gtk::Menu &
+	getBrowserMenu () const
+	{ return *m_BrowserMenu; }
+
+	Gtk::MenuItem &
+	getBrowserFileMenuItem () const
+	{ return *m_BrowserFileMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserNewMenuItem () const
+	{ return *m_BrowserNewMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserOpenMenuItem () const
+	{ return *m_BrowserOpenMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserOpenRecentMenuItem () const
+	{ return *m_BrowserOpenRecentMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserOpenLocationMenuItem () const
+	{ return *m_BrowserOpenLocationMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserImportMenuItem () const
+	{ return *m_BrowserImportMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserImportAsInlineMenuItem () const
+	{ return *m_BrowserImportAsInlineMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserSaveMenuItem () const
+	{ return *m_BrowserSaveMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserSaveAsMenuItem () const
+	{ return *m_BrowserSaveAsMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserSaveACopyMenuItem () const
+	{ return *m_BrowserSaveACopyMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserExportMenuItem () const
+	{ return *m_BrowserExportMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserRevertMenuItem () const
+	{ return *m_BrowserRevertMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserRemoveUnusedPrototypesMenuItem () const
+	{ return *m_BrowserRemoveUnusedPrototypesMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserCloseMenuItem () const
+	{ return *m_BrowserCloseMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserQuitMenuItem () const
+	{ return *m_BrowserQuitMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserEditMenuItem () const
+	{ return *m_BrowserEditMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserUndoMenuItem () const
+	{ return *m_BrowserUndoMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserRedoMenuItem () const
+	{ return *m_BrowserRedoMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserCutMenuItem () const
+	{ return *m_BrowserCutMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserCopyMenuItem () const
+	{ return *m_BrowserCopyMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserPasteMenuItem () const
+	{ return *m_BrowserPasteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserDeleteMenuItem () const
+	{ return *m_BrowserDeleteMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCloneMenuItem () const
+	{ return *m_BrowserCloneMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateCloneMenuItem () const
+	{ return *m_BrowserCreateCloneMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserUnlinkCloneMenuItem () const
+	{ return *m_BrowserUnlinkCloneMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserGroupSelectedNodesMenuItem () const
+	{ return *m_BrowserGroupSelectedNodesMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserUngroupMenuItem () const
+	{ return *m_BrowserUngroupMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserAddToGroupMenuItem () const
+	{ return *m_BrowserAddToGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserDetachFromGroupMenuItem () const
+	{ return *m_BrowserDetachFromGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentMenuItem () const
+	{ return *m_BrowserCreateParentMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentTransformMenuItem () const
+	{ return *m_BrowserCreateParentTransformMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentGroupMenuItem () const
+	{ return *m_BrowserCreateParentGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentStaticGroupMenuItem () const
+	{ return *m_BrowserCreateParentStaticGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentSwitchMenuItem () const
+	{ return *m_BrowserCreateParentSwitchMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentBillboardMenuItem () const
+	{ return *m_BrowserCreateParentBillboardMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentCollisionMenuItem () const
+	{ return *m_BrowserCreateParentCollisionMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentLODMenuItem () const
+	{ return *m_BrowserCreateParentLODMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentAnchorMenuItem () const
+	{ return *m_BrowserCreateParentAnchorMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentLayoutLayerMenuItem () const
+	{ return *m_BrowserCreateParentLayoutLayerMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentScreenGroupMenuItem () const
+	{ return *m_BrowserCreateParentScreenGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentLayoutGroupMenuItem () const
+	{ return *m_BrowserCreateParentLayoutGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentGeoTransformMenuItem () const
+	{ return *m_BrowserCreateParentGeoTransformMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentGeoLocationMenuItem () const
+	{ return *m_BrowserCreateParentGeoLocationMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentCADPartMenuItem () const
+	{ return *m_BrowserCreateParentCADPartMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentCADAssemblyMenuItem () const
+	{ return *m_BrowserCreateParentCADAssemblyMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentCADLayerMenuItem () const
+	{ return *m_BrowserCreateParentCADLayerMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentLayerSetMenuItem () const
+	{ return *m_BrowserCreateParentLayerSetMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentLayerMenuItem () const
+	{ return *m_BrowserCreateParentLayerMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentViewportMenuItem () const
+	{ return *m_BrowserCreateParentViewportMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserViewMenuItem () const
+	{ return *m_BrowserViewMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserToolBarMenuItem () const
+	{ return *m_BrowserToolBarMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserSideBarMenuItem () const
+	{ return *m_BrowserSideBarMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserFooterMenuItem () const
+	{ return *m_BrowserFooterMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserEnvironmentMenuItem () const
+	{ return *m_BrowserEnvironmentMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserBrowserMenuItem () const
+	{ return *m_BrowserBrowserMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserEditorMenuItem () const
+	{ return *m_BrowserEditorMenuItem; }
+
+	Gtk::SeparatorMenuItem &
+	getBrowserOptionsSeparator1 () const
+	{ return *m_BrowserOptionsSeparator1; }
+
+	Gtk::ImageMenuItem &
+	getBrowserMotionBlurMenuItem () const
+	{ return *m_BrowserMotionBlurMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserShadingMenuItem () const
+	{ return *m_BrowserShadingMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserPhongMenuItem () const
+	{ return *m_BrowserPhongMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserGouraudMenuItem () const
+	{ return *m_BrowserGouraudMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserFlatMenuItem () const
+	{ return *m_BrowserFlatMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserWireFrameMenuItem () const
+	{ return *m_BrowserWireFrameMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserPointSetMenuItem () const
+	{ return *m_BrowserPointSetMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserPrimitiveQualityMenuItem () const
+	{ return *m_BrowserPrimitiveQualityMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserPrimitiveHighQualityMenuItem () const
+	{ return *m_BrowserPrimitiveHighQualityMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserPrimitiveMediumQualityMenuItem () const
+	{ return *m_BrowserPrimitiveMediumQualityMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserPrimitiveLowQualityMenuItem () const
+	{ return *m_BrowserPrimitiveLowQualityMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserTextureQualityMenuItem () const
+	{ return *m_BrowserTextureQualityMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserTextureHighQualityMenuItem () const
+	{ return *m_BrowserTextureHighQualityMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserTextureMediumQualityMenuItem () const
+	{ return *m_BrowserTextureMediumQualityMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserTextureLowQualityMenuItem () const
+	{ return *m_BrowserTextureLowQualityMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserShowHideEnvironmentalEffectsMenuItem () const
+	{ return *m_BrowserShowHideEnvironmentalEffectsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserBackgroundsMenuItem () const
+	{ return *m_BrowserBackgroundsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserFogsMenuItem () const
+	{ return *m_BrowserFogsMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserObjectIconsMenuItem () const
+	{ return *m_BrowserObjectIconsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserLightsMenuItem () const
+	{ return *m_BrowserLightsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserProximitySensorsMenuItem () const
+	{ return *m_BrowserProximitySensorsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserTransformSensorsMenuItem () const
+	{ return *m_BrowserTransformSensorsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserVisibilitySensorsMenuItem () const
+	{ return *m_BrowserVisibilitySensorsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserViewpointsMenuItem () const
+	{ return *m_BrowserViewpointsMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserHideAllObjectIconsMenuItem () const
+	{ return *m_BrowserHideAllObjectIconsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserRubberbandMenuItem () const
+	{ return *m_BrowserRubberbandMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserRenderingPropertiesMenuItem () const
+	{ return *m_BrowserRenderingPropertiesMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserFullScreenMenuItem () const
+	{ return *m_BrowserFullScreenMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserUnFullScreenMenuItem () const
+	{ return *m_BrowserUnFullScreenMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserSelectionMenuItem () const
+	{ return *m_BrowserSelectionMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserSelectAllMenuItem () const
+	{ return *m_BrowserSelectAllMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserDeselectAllMenuItem () const
+	{ return *m_BrowserDeselectAllMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserHideSelectedObjectsMenuItem () const
+	{ return *m_BrowserHideSelectedObjectsMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserHideUnselectedObjectsMenuItem () const
+	{ return *m_BrowserHideUnselectedObjectsMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserShowSelectedObjectsMenuItem () const
+	{ return *m_BrowserShowSelectedObjectsMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserShowAllObjectsMenuItem () const
+	{ return *m_BrowserShowAllObjectsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserSelectLowestMenuItem () const
+	{ return *m_BrowserSelectLowestMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserFollowPrimarySelectionMenuItem () const
+	{ return *m_BrowserFollowPrimarySelectionMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserObjectMenuItem () const
+	{ return *m_BrowserObjectMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserCombineMenuItem () const
+	{ return *m_BrowserCombineMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserTransformToZeroMenuItem () const
+	{ return *m_BrowserTransformToZeroMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserTextureCoordinateEditorMenuItem () const
+	{ return *m_BrowserTextureCoordinateEditorMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserPaintPolygonsMenuItem () const
+	{ return *m_BrowserPaintPolygonsMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserLayoutMenuItem () const
+	{ return *m_BrowserLayoutMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserGridLayoutToolMenuItem () const
+	{ return *m_BrowserGridLayoutToolMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserAngleLayoutToolMenuItem () const
+	{ return *m_BrowserAngleLayoutToolMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserGridPropertiesMenuItem () const
+	{ return *m_BrowserGridPropertiesMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserHelpMenuItem () const
+	{ return *m_BrowserHelpMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserInfoMenuItem () const
+	{ return *m_BrowserInfoMenuItem; }
+
 	Gtk::Image &
 	getExamineViewerImage () const
 	{ return *m_ExamineViewerImage; }
@@ -117,6 +538,10 @@ public:
 	Gtk::Image &
 	getFileImportImage () const
 	{ return *m_FileImportImage; }
+
+	Gtk::Image &
+	getFileImportImage1 () const
+	{ return *m_FileImportImage1; }
 
 	Gtk::Image &
 	getFlyViewerImage () const
@@ -133,6 +558,10 @@ public:
 	Gtk::Image &
 	getOpenLocationImage () const
 	{ return *m_OpenLocationImage; }
+
+	Gtk::Image &
+	getOpenLocationImage1 () const
+	{ return *m_OpenLocationImage1; }
 
 	Gtk::Image &
 	getPlaneViewerImage () const
@@ -169,6 +598,10 @@ public:
 	Gtk::Image &
 	getWorkspacesImage () const
 	{ return *m_WorkspacesImage; }
+
+	Gtk::Image &
+	getWorkspacesImage1 () const
+	{ return *m_WorkspacesImage1; }
 
 	Gtk::ApplicationWindow &
 	getWindow () const
@@ -603,28 +1036,12 @@ public:
 	{ return *m_AngleLayoutToolMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getGridProperiesMenuItem () const
-	{ return *m_GridProperiesMenuItem; }
-
-	Gtk::MenuItem &
-	getComponentsMenuItem () const
-	{ return *m_ComponentsMenuItem; }
-
-	Gtk::Menu &
-	getComponentsMenu () const
-	{ return *m_ComponentsMenu; }
-
-	Gtk::MenuItem &
-	getCoreMenuItem () const
-	{ return *m_CoreMenuItem; }
+	getGridPropertiesMenuItem () const
+	{ return *m_GridPropertiesMenuItem; }
 
 	Gtk::MenuItem &
 	getHelpMenuItem () const
 	{ return *m_HelpMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getStandardSizeMenuItem () const
-	{ return *m_StandardSizeMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getInfoMenuItem () const
@@ -904,23 +1321,263 @@ public:
 
 	virtual
 	void
-	on_examine_viewer_activate () = 0;
+	on_new_activated () = 0;
 
 	virtual
 	void
-	on_walk_viewer_activate () = 0;
+	on_open_activated () = 0;
 
 	virtual
 	void
-	on_fly_viewer_activate () = 0;
+	on_open_recent_activated () = 0;
 
 	virtual
 	void
-	on_plane_viewer_activate () = 0;
+	on_open_location_activated () = 0;
 
 	virtual
 	void
-	on_none_viewer_activate () = 0;
+	on_import_activated () = 0;
+
+	virtual
+	void
+	on_save_activated () = 0;
+
+	virtual
+	void
+	on_save_as_activated () = 0;
+
+	virtual
+	void
+	on_save_a_copy_activated () = 0;
+
+	virtual
+	void
+	on_export_activated () = 0;
+
+	virtual
+	void
+	on_revert_to_saved_activated () = 0;
+
+	virtual
+	void
+	on_remove_unused_prototypes_activated () = 0;
+
+	virtual
+	void
+	on_close_activated () = 0;
+
+	virtual
+	void
+	on_quit_activated () = 0;
+
+	virtual
+	void
+	on_undo_activated () = 0;
+
+	virtual
+	void
+	on_redo_activated () = 0;
+
+	virtual
+	void
+	on_cut_activated () = 0;
+
+	virtual
+	void
+	on_copy_activated () = 0;
+
+	virtual
+	void
+	on_paste_activated () = 0;
+
+	virtual
+	void
+	on_delete_activated () = 0;
+
+	virtual
+	void
+	on_create_clone_activated () = 0;
+
+	virtual
+	void
+	on_unlink_clone_activated () = 0;
+
+	virtual
+	void
+	on_group_selected_nodes_activated () = 0;
+
+	virtual
+	void
+	on_ungroup_activated () = 0;
+
+	virtual
+	void
+	on_add_to_group_activated () = 0;
+
+	virtual
+	void
+	on_detach_from_group_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_transform_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_group_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_static_group_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_switch_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_billboard_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_collision_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_lod_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_anchor_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_layout_layer_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_screen_group_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_layout_group_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_geo_transform_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_geo_location_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_cad_part_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_cad_assembly_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_cad_layer_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_layer_set_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_layer_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_viewport_activated () = 0;
+
+	virtual
+	void
+	on_motion_blur_activated () = 0;
+
+	virtual
+	void
+	on_hide_all_object_icons_activated () = 0;
+
+	virtual
+	void
+	on_fullscreen_activated () = 0;
+
+	virtual
+	void
+	on_unfullscreen_activated () = 0;
+
+	virtual
+	void
+	on_select_all_activated () = 0;
+
+	virtual
+	void
+	on_deselect_all_activated () = 0;
+
+	virtual
+	void
+	on_hide_selected_objects_activated () = 0;
+
+	virtual
+	void
+	on_hide_unselected_objects_activated () = 0;
+
+	virtual
+	void
+	on_show_selected_objects_activated () = 0;
+
+	virtual
+	void
+	on_show_all_objects_activated () = 0;
+
+	virtual
+	void
+	on_combine_activated () = 0;
+
+	virtual
+	void
+	on_transform_to_zero_activated () = 0;
+
+	virtual
+	void
+	on_texture_coordinate_editor_activated () = 0;
+
+	virtual
+	void
+	on_paint_polygons_activated () = 0;
+
+	virtual
+	void
+	on_grid_properties_activated () = 0;
+
+	virtual
+	void
+	on_info_activated () = 0;
+
+	virtual
+	void
+	on_examine_viewer_activated () = 0;
+
+	virtual
+	void
+	on_walk_viewer_activated () = 0;
+
+	virtual
+	void
+	on_fly_viewer_activated () = 0;
+
+	virtual
+	void
+	on_plane_viewer_activated () = 0;
+
+	virtual
+	void
+	on_none_viewer_activated () = 0;
 
 	virtual
 	bool
@@ -940,183 +1597,7 @@ public:
 
 	virtual
 	void
-	on_new () = 0;
-
-	virtual
-	void
-	on_open () = 0;
-
-	virtual
-	void
-	on_open_recent () = 0;
-
-	virtual
-	void
-	on_open_location () = 0;
-
-	virtual
-	void
-	on_import () = 0;
-
-	virtual
-	void
 	on_import_as_inline_toggled () = 0;
-
-	virtual
-	void
-	on_save () = 0;
-
-	virtual
-	void
-	on_save_as () = 0;
-
-	virtual
-	void
-	on_save_a_copy () = 0;
-
-	virtual
-	void
-	on_export () = 0;
-
-	virtual
-	void
-	on_revert_to_saved () = 0;
-
-	virtual
-	void
-	on_remove_unused_prototypes () = 0;
-
-	virtual
-	void
-	on_close () = 0;
-
-	virtual
-	void
-	on_quit () = 0;
-
-	virtual
-	void
-	on_undo () = 0;
-
-	virtual
-	void
-	on_redo () = 0;
-
-	virtual
-	void
-	on_cut_nodes_activate () = 0;
-
-	virtual
-	void
-	on_copy_nodes_activate () = 0;
-
-	virtual
-	void
-	on_paste_nodes_activate () = 0;
-
-	virtual
-	void
-	on_delete_nodes_activate () = 0;
-
-	virtual
-	void
-	on_create_clone_activate () = 0;
-
-	virtual
-	void
-	on_unlink_clone_activate () = 0;
-
-	virtual
-	void
-	on_group_selected_nodes_activate () = 0;
-
-	virtual
-	void
-	on_ungroup_node_activate () = 0;
-
-	virtual
-	void
-	on_add_to_group_activate () = 0;
-
-	virtual
-	void
-	on_detach_from_group_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_transform_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_group_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_static_group_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_switch_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_billboard_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_collision_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_lod_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_anchor_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_layout_layer_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_screen_group_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_layout_group_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_geo_transform_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_geo_location_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_cad_part_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_cad_assembly_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_cad_layer_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_layer_set_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_layer_activate () = 0;
-
-	virtual
-	void
-	on_create_parent_viewport_activate () = 0;
 
 	virtual
 	void
@@ -1140,51 +1621,47 @@ public:
 
 	virtual
 	void
-	on_motion_blur_activate () = 0;
+	on_phong_activated () = 0;
 
 	virtual
 	void
-	on_phong_activate () = 0;
+	on_gouraud_activated () = 0;
 
 	virtual
 	void
-	on_gouraud_activate () = 0;
+	on_flat_activated () = 0;
 
 	virtual
 	void
-	on_flat_activate () = 0;
+	on_wireframe_activated () = 0;
 
 	virtual
 	void
-	on_wireframe_activate () = 0;
+	on_pointset_activated () = 0;
 
 	virtual
 	void
-	on_pointset_activate () = 0;
+	on_primitive_high_quality_activated () = 0;
 
 	virtual
 	void
-	on_primitive_high_quality_activate () = 0;
+	on_primitive_medium_quality_activated () = 0;
 
 	virtual
 	void
-	on_primitive_medium_quality_activate () = 0;
+	on_primitive_low_quality_activated () = 0;
 
 	virtual
 	void
-	on_primitive_low_quality_activate () = 0;
+	on_texture_high_quality_activated () = 0;
 
 	virtual
 	void
-	on_texture_high_quality_activate () = 0;
+	on_texture_medium_quality_activated () = 0;
 
 	virtual
 	void
-	on_texture_medium_quality_activate () = 0;
-
-	virtual
-	void
-	on_texture_low_quality_activate () = 0;
+	on_texture_low_quality_activated () = 0;
 
 	virtual
 	void
@@ -1216,47 +1693,11 @@ public:
 
 	virtual
 	void
-	on_hide_all_object_icons_activate () = 0;
-
-	virtual
-	void
 	on_rubberband_toggled () = 0;
 
 	virtual
 	void
 	on_rendering_properties_toggled () = 0;
-
-	virtual
-	void
-	on_fullscreen () = 0;
-
-	virtual
-	void
-	on_unfullscreen () = 0;
-
-	virtual
-	void
-	on_select_all_activate () = 0;
-
-	virtual
-	void
-	on_deselect_all_activate () = 0;
-
-	virtual
-	void
-	on_hide_selected_objects_activate () = 0;
-
-	virtual
-	void
-	on_hide_unselected_objects_activate () = 0;
-
-	virtual
-	void
-	on_show_selected_objects_activate () = 0;
-
-	virtual
-	void
-	on_show_all_objects_activate () = 0;
 
 	virtual
 	void
@@ -1268,39 +1709,11 @@ public:
 
 	virtual
 	void
-	on_combine_activate () = 0;
-
-	virtual
-	void
-	on_transform_to_zero_activate () = 0;
-
-	virtual
-	void
-	on_edit_texture_coordinates_activate () = 0;
-
-	virtual
-	void
-	on_paint_polygons_activate () = 0;
-
-	virtual
-	void
 	on_grid_layout_tool_toggled () = 0;
 
 	virtual
 	void
 	on_angle_layout_tool_toggled () = 0;
-
-	virtual
-	void
-	on_grid_properties_activate () = 0;
-
-	virtual
-	void
-	on_standard_size () = 0;
-
-	virtual
-	void
-	on_info () = 0;
 
 	virtual
 	void
@@ -1391,6 +1804,10 @@ public:
 	on_hammer_clicked () = 0;
 
 	virtual
+	bool
+	on_notebook_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
 	void
 	on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
 
@@ -1458,12 +1875,121 @@ private:
 	Glib::RefPtr <Gtk::IconFactory>  m_IconFactory;
 	Glib::RefPtr <Gtk::ToggleAction> m_AngleToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_GridToolAction;
+	Gtk::Menu*                       m_BrowserMenu;
+	Gtk::MenuItem*                   m_BrowserFileMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserNewMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserOpenMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserOpenRecentMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserOpenLocationMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserImportMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserImportAsInlineMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserSaveMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserSaveAsMenuItem;
+	Gtk::MenuItem*                   m_BrowserSaveACopyMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserExportMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserRevertMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserRemoveUnusedPrototypesMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserCloseMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserQuitMenuItem;
+	Gtk::MenuItem*                   m_BrowserEditMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserUndoMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserRedoMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserCutMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserCopyMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserPasteMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserDeleteMenuItem;
+	Gtk::MenuItem*                   m_BrowserCloneMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateCloneMenuItem;
+	Gtk::MenuItem*                   m_BrowserUnlinkCloneMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserGroupSelectedNodesMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserUngroupMenuItem;
+	Gtk::MenuItem*                   m_BrowserAddToGroupMenuItem;
+	Gtk::MenuItem*                   m_BrowserDetachFromGroupMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentTransformMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentGroupMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentStaticGroupMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentSwitchMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentBillboardMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentCollisionMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentLODMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentAnchorMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentLayoutLayerMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentScreenGroupMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentLayoutGroupMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentGeoTransformMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentGeoLocationMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentCADPartMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentCADAssemblyMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentCADLayerMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentLayerSetMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentLayerMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentViewportMenuItem;
+	Gtk::MenuItem*                   m_BrowserViewMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserToolBarMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserSideBarMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserFooterMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserEnvironmentMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserBrowserMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserEditorMenuItem;
+	Gtk::SeparatorMenuItem*          m_BrowserOptionsSeparator1;
+	Gtk::ImageMenuItem*              m_BrowserMotionBlurMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserShadingMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserPhongMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserGouraudMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserFlatMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserWireFrameMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserPointSetMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserPrimitiveQualityMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserPrimitiveHighQualityMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserPrimitiveMediumQualityMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserPrimitiveLowQualityMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserTextureQualityMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserTextureHighQualityMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserTextureMediumQualityMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserTextureLowQualityMenuItem;
+	Gtk::MenuItem*                   m_BrowserShowHideEnvironmentalEffectsMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserBackgroundsMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserFogsMenuItem;
+	Gtk::MenuItem*                   m_BrowserObjectIconsMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserLightsMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserProximitySensorsMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserTransformSensorsMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserVisibilitySensorsMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserViewpointsMenuItem;
+	Gtk::MenuItem*                   m_BrowserHideAllObjectIconsMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserRubberbandMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserRenderingPropertiesMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserFullScreenMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserUnFullScreenMenuItem;
+	Gtk::MenuItem*                   m_BrowserSelectionMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserSelectAllMenuItem;
+	Gtk::MenuItem*                   m_BrowserDeselectAllMenuItem;
+	Gtk::MenuItem*                   m_BrowserHideSelectedObjectsMenuItem;
+	Gtk::MenuItem*                   m_BrowserHideUnselectedObjectsMenuItem;
+	Gtk::MenuItem*                   m_BrowserShowSelectedObjectsMenuItem;
+	Gtk::MenuItem*                   m_BrowserShowAllObjectsMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserSelectLowestMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserFollowPrimarySelectionMenuItem;
+	Gtk::MenuItem*                   m_BrowserObjectMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserCombineMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserTransformToZeroMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserTextureCoordinateEditorMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserPaintPolygonsMenuItem;
+	Gtk::MenuItem*                   m_BrowserLayoutMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserGridLayoutToolMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserAngleLayoutToolMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserGridPropertiesMenuItem;
+	Gtk::MenuItem*                   m_BrowserHelpMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserInfoMenuItem;
 	Gtk::Image*                      m_ExamineViewerImage;
 	Gtk::Image*                      m_FileImportImage;
+	Gtk::Image*                      m_FileImportImage1;
 	Gtk::Image*                      m_FlyViewerImage;
 	Gtk::Menu*                       m_HistoryMenu;
 	Gtk::Image*                      m_NoneViewerImage;
 	Gtk::Image*                      m_OpenLocationImage;
+	Gtk::Image*                      m_OpenLocationImage1;
 	Gtk::Image*                      m_PlaneViewerImage;
 	Gtk::Image*                      m_WalkViewerImage;
 	Gtk::Menu*                       m_ViewerTypeMenu;
@@ -1473,6 +1999,7 @@ private:
 	Gtk::ImageMenuItem*              m_PlaneViewerMenuItem;
 	Gtk::ImageMenuItem*              m_NoneViewerMenuItem;
 	Gtk::Image*                      m_WorkspacesImage;
+	Gtk::Image*                      m_WorkspacesImage1;
 	Gtk::ApplicationWindow*          m_Window;
 	Gtk::Box*                        m_Widget;
 	Gtk::Box*                        m_HeaderBox;
@@ -1581,12 +2108,8 @@ private:
 	Gtk::MenuItem*                   m_LayoutMenuItem;
 	Gtk::CheckMenuItem*              m_GridLayoutToolMenuItem;
 	Gtk::CheckMenuItem*              m_AngleLayoutToolMenuItem;
-	Gtk::ImageMenuItem*              m_GridProperiesMenuItem;
-	Gtk::MenuItem*                   m_ComponentsMenuItem;
-	Gtk::Menu*                       m_ComponentsMenu;
-	Gtk::MenuItem*                   m_CoreMenuItem;
+	Gtk::ImageMenuItem*              m_GridPropertiesMenuItem;
 	Gtk::MenuItem*                   m_HelpMenuItem;
-	Gtk::ImageMenuItem*              m_StandardSizeMenuItem;
 	Gtk::ImageMenuItem*              m_InfoMenuItem;
 	Gtk::Box*                        m_ToolBar;
 	Gtk::Box*                        m_LocationBar;

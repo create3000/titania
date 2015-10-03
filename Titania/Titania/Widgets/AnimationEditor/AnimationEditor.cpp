@@ -2356,7 +2356,7 @@ AnimationEditor::on_key_press_event (GdkEventKey* event)
 		case GDK_KEY_z:
 		{
 			if (event -> state == GDK_CONTROL_MASK)
-				getBrowserWindow () -> on_undo ();
+				getBrowserWindow () -> on_undo_activated ();
 
 			getDrawingArea () .grab_focus ();
 			return true;
@@ -2364,7 +2364,7 @@ AnimationEditor::on_key_press_event (GdkEventKey* event)
 		case GDK_KEY_Z:
 		{
 			if (event -> state == (GDK_CONTROL_MASK | GDK_SHIFT_MASK))
-				getBrowserWindow () -> on_redo ();
+				getBrowserWindow () -> on_redo_activated ();
 
 			getDrawingArea () .grab_focus ();
 			return true;

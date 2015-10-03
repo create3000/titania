@@ -204,6 +204,7 @@
     <Compile Include="Titania\Browser\RecentView.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditorPreferences.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditorSearch.cpp" />
+    <Compile Include="Titania\Browser\X3DBrowserMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1860,6 +1861,7 @@
     <None Include="Titania\Browser\RecentView.h" />
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditorPreferences.h" />
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditorSearch.h" />
+    <None Include="Titania\Browser\X3DBrowserMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -53,6 +53,7 @@
 
 #include "../UserInterfaces/X3DBrowserWindowInterface.h"
 #include "../Undo/UndoStep.h"
+#include "X3DBrowserMenu.h"
 
 #include <gtkmm.h>
 #include <memory>
@@ -65,7 +66,8 @@ class BrowserUserData;
 class UserData;
 
 class X3DBrowserWidget :
-	virtual public X3DBrowserWindowInterface
+	virtual public X3DBrowserWindowInterface,
+	public X3DBrowserMenu
 {
 public:
 

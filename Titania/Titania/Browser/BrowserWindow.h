@@ -138,19 +138,19 @@ private:
 
 	virtual
 	void
-	on_new () final override;
+	on_new_activated () final override;
 
 	virtual
 	void
-	on_open () final override;
+	on_open_activated () final override;
 
 	virtual
 	void
-	on_open_recent () final override;
+	on_open_recent_activated () final override;
 
 	virtual
 	void
-	on_open_location () final override;
+	on_open_location_activated () final override;
 
 	virtual
 	void
@@ -158,7 +158,7 @@ private:
 
 	virtual
 	void
-	on_import () final override;
+	on_import_activated () final override;
 
 	virtual
 	void
@@ -173,45 +173,45 @@ private:
 
 	virtual
 	void
-	on_save () final override;
+	on_save_activated () final override;
 
 	virtual
 	void
-	on_save_as () final override;
+	on_save_as_activated () final override;
 
 	virtual
 	void
-	on_save_a_copy () final override;
+	on_save_a_copy_activated () final override;
 
 	virtual
 	void
-	on_export () final override;
+	on_export_activated () final override;
 
 	virtual
 	void
-	on_revert_to_saved () final override;
+	on_revert_to_saved_activated () final override;
 
 	virtual
 	void
-	on_remove_unused_prototypes () final override;
+	on_remove_unused_prototypes_activated () final override;
 
 	virtual
 	void
-	on_close () final override;
+	on_close_activated () final override;
 
 	virtual
 	void
-	on_quit () final override;
+	on_quit_activated () final override;
 
 	/// @name Undo/Redo
 
 	virtual
 	void
-	on_undo () final override;
+	on_undo_activated () final override;
 
 	virtual
 	void
-	on_redo () final override;
+	on_redo_activated () final override;
 
 	///  @name Clipboard handling
 
@@ -220,121 +220,121 @@ private:
 
 	virtual
 	void
-	on_cut_nodes_activate () final override;
+	on_cut_activated () final override;
 
 	virtual
 	void
-	on_copy_nodes_activate () final override;
+	on_copy_activated () final override;
 
 	virtual
 	void
-	on_paste_nodes_activate () final override;
+	on_paste_activated () final override;
 
 	///  @name Edit menu
 
 	virtual
 	void
-	on_delete_nodes_activate () final override;
+	on_delete_activated () final override;
 
 	virtual
 	void
-	on_create_clone_activate () final override;
+	on_create_clone_activated () final override;
 
 	virtual
 	void
-	on_unlink_clone_activate () final override;
+	on_unlink_clone_activated () final override;
 
 	virtual
 	void
-	on_group_selected_nodes_activate () final override;
+	on_group_selected_nodes_activated () final override;
 
 	virtual
 	void
-	on_ungroup_node_activate () final override;
+	on_ungroup_activated () final override;
 
 	virtual
 	void
-	on_add_to_group_activate () final override;
+	on_add_to_group_activated () final override;
 
 	virtual
 	void
-	on_detach_from_group_activate () final override;
+	on_detach_from_group_activated () final override;
 
 	virtual
 	void
-	on_create_parent_transform_activate () final override;
+	on_create_parent_transform_activated () final override;
 
 	virtual
 	void
-	on_create_parent_group_activate () final override;
+	on_create_parent_group_activated () final override;
 
 	virtual
 	void
-	on_create_parent_static_group_activate () final override;
+	on_create_parent_static_group_activated () final override;
 
 	virtual
 	void
-	on_create_parent_switch_activate () final override;
+	on_create_parent_switch_activated () final override;
 
 	virtual
 	void
-	on_create_parent_billboard_activate () final override;
+	on_create_parent_billboard_activated () final override;
 
 	virtual
 	void
-	on_create_parent_collision_activate () final override;
+	on_create_parent_collision_activated () final override;
 
 	virtual
 	void
-	on_create_parent_lod_activate () final override;
+	on_create_parent_lod_activated () final override;
 
 	virtual
 	void
-	on_create_parent_anchor_activate () final override;
+	on_create_parent_anchor_activated () final override;
 
 	virtual
 	void
-	on_create_parent_layout_layer_activate () final override;
+	on_create_parent_layout_layer_activated () final override;
 
 	virtual
 	void
-	on_create_parent_screen_group_activate () final override;
+	on_create_parent_screen_group_activated () final override;
 
 	virtual
 	void
-	on_create_parent_layout_group_activate () final override;
+	on_create_parent_layout_group_activated () final override;
 
 	virtual
 	void
-	on_create_parent_geo_transform_activate () final override;
+	on_create_parent_geo_transform_activated () final override;
 
 	virtual
 	void
-	on_create_parent_geo_location_activate () final override;
+	on_create_parent_geo_location_activated () final override;
 
 	virtual
 	void
-	on_create_parent_cad_part_activate () final override;
+	on_create_parent_cad_part_activated () final override;
 
 	virtual
 	void
-	on_create_parent_cad_assembly_activate () final override;
+	on_create_parent_cad_assembly_activated () final override;
 
 	virtual
 	void
-	on_create_parent_cad_layer_activate () final override;
+	on_create_parent_cad_layer_activated () final override;
 
 	virtual
 	void
-	on_create_parent_layer_set_activate () final override;
+	on_create_parent_layer_set_activated () final override;
 
 	virtual
 	void
-	on_create_parent_layer_activate () final override;
+	on_create_parent_layer_activated () final override;
 
 	virtual
 	void
-	on_create_parent_viewport_activate () final override;
+	on_create_parent_viewport_activated () final override;
 
 	void
 	on_create_parent (const std::string &, const std::string & = "children");
@@ -363,32 +363,32 @@ private:
 
 	virtual
 	void
-	on_motion_blur_activate () final override;
+	on_motion_blur_activated () final override;
 
 	/// @name Shading
 
 	virtual
 	void
-	on_phong_activate () final override;
+	on_phong_activated () final override;
 
 	virtual
 	void
-	on_gouraud_activate () final override;
+	on_gouraud_activated () final override;
 
 	virtual
 	void
-	on_flat_activate () final override;
+	on_flat_activated () final override;
 
 	virtual
 	void
-	on_wireframe_activate () final override;
+	on_wireframe_activated () final override;
 
 	virtual
 	void
-	on_pointset_activate () final override;
+	on_pointset_activated () final override;
 
 	void
-	on_shading_activate (const std::string &);
+	on_shading_activated (const std::string &);
 
 	void
 	set_shading (const X3D::SFString &);
@@ -400,18 +400,18 @@ private:
 
 	virtual
 	void
-	on_primitive_high_quality_activate () final override;
+	on_primitive_high_quality_activated () final override;
 
 	virtual
 	void
-	on_primitive_medium_quality_activate () final override;
+	on_primitive_medium_quality_activated () final override;
 
 	virtual
 	void
-	on_primitive_low_quality_activate () final override;
+	on_primitive_low_quality_activated () final override;
 
 	void
-	on_primitiveQuality_activate (const std::string &);
+	on_primitiveQuality_activated (const std::string &);
 
 	void
 	set_primitiveQuality (const X3D::SFString &);
@@ -423,18 +423,18 @@ private:
 
 	virtual
 	void
-	on_texture_high_quality_activate () final override;
+	on_texture_high_quality_activated () final override;
 
 	virtual
 	void
-	on_texture_medium_quality_activate () final override;
+	on_texture_medium_quality_activated () final override;
 
 	virtual
 	void
-	on_texture_low_quality_activate () final override;
+	on_texture_low_quality_activated () final override;
 
 	void
-	on_textureQuality_activate (const std::string &);
+	on_textureQuality_activated (const std::string &);
 
 	void
 	set_textureQuality (const X3D::SFString &);
@@ -474,7 +474,7 @@ private:
 
 	virtual
 	void
-	on_hide_all_object_icons_activate () final override;
+	on_hide_all_object_icons_activated () final override;
 
 	virtual
 	void
@@ -490,37 +490,37 @@ private:
 
 	virtual
 	void
-	on_fullscreen () final override;
+	on_fullscreen_activated () final override;
 
 	virtual
 	void
-	on_unfullscreen () final override;
+	on_unfullscreen_activated () final override;
 
 	///  @name Selection
 
 	virtual
 	void
-	on_select_all_activate () final override;
+	on_select_all_activated () final override;
 
 	virtual
 	void
-	on_deselect_all_activate () final override;
+	on_deselect_all_activated () final override;
 
 	virtual
 	void
-	on_hide_selected_objects_activate () final override;
+	on_hide_selected_objects_activated () final override;
 
 	virtual
 	void
-	on_hide_unselected_objects_activate () final override;
+	on_hide_unselected_objects_activated () final override;
 
 	virtual
 	void
-	on_show_selected_objects_activate () final override;
+	on_show_selected_objects_activated () final override;
 
 	virtual
 	void
-	on_show_all_objects_activate () final override;
+	on_show_all_objects_activated () final override;
 
 	virtual
 	void
@@ -534,17 +534,17 @@ private:
 
 	virtual
 	void
-	on_transform_to_zero_activate () final override;
+	on_transform_to_zero_activated () final override;
 
 	virtual
 	void
-	on_edit_texture_coordinates_activate () final override;
+	on_texture_coordinate_editor_activated () final override;
 
 	virtual
 	void
-	on_paint_polygons_activate () final override;
+	on_paint_polygons_activated () final override;
 
-	///  @name Layout
+	///  @name Grid
 
 	virtual
 	void
@@ -556,17 +556,13 @@ private:
 
 	virtual
 	void
-	on_grid_properties_activate () final override;
+	on_grid_properties_activated () final override;
 
 	///  @name Help menu
 
 	virtual
 	void
-	on_info () final override;
-
-	virtual
-	void
-	on_standard_size () final override;
+	on_info_activated () final override;
 
 	/// Toolbar
 
@@ -699,23 +695,23 @@ private:
 
 	virtual
 	void
-	on_examine_viewer_activate () final override;
+	on_examine_viewer_activated () final override;
 
 	virtual
 	void
-	on_walk_viewer_activate () final override;
+	on_walk_viewer_activated () final override;
 
 	virtual
 	void
-	on_fly_viewer_activate () final override;
+	on_fly_viewer_activated () final override;
 
 	virtual
 	void
-	on_plane_viewer_activate () final override;
+	on_plane_viewer_activated () final override;
 
 	virtual
 	void
-	on_none_viewer_activate () final override;
+	on_none_viewer_activated () final override;
 
 	virtual
 	void
