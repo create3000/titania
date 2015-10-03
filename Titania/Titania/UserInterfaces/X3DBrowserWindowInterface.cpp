@@ -63,7 +63,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Get objects.
 	m_IconFactory                  = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
 	m_AngleLayoutToolAction        = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AngleLayoutToolAction"));
-	m_AngleToolAction              = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AngleToolAction"));
 	m_BackgroundsAction            = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("BackgroundsAction"));
 	m_EditorAction                 = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("EditorAction"));
 	m_BrowserAction                = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("BrowserAction"));
@@ -71,7 +70,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_FollowPrimarySelectionAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FollowPrimarySelectionAction"));
 	m_FooterAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FooterAction"));
 	m_GridLayoutToolAction         = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GridLayoutToolAction"));
-	m_GridToolAction               = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GridToolAction"));
 	m_ImportAsInlineAction         = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ImportAsInlineAction"));
 	m_LightsAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("LightsAction"));
 	m_MenubarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("MenubarAction"));
@@ -409,7 +407,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToggleAction with id 'AngleLayoutToolAction'.
 	m_AngleLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
-	m_AngleToolAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
 	m_BackgroundsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_backgrounds_toggled));
 
 	// Connect object Gtk::RadioAction with id 'EditorAction'.
@@ -420,7 +417,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_FollowPrimarySelectionAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
 	m_FooterAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_footer_toggled));
 	m_GridLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
-	m_GridToolAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
 	m_ImportAsInlineAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import_as_inline_toggled));
 	m_LightsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_lights_toggled));
 	m_MenubarAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_menubar_toggled));

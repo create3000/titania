@@ -112,7 +112,7 @@ X3DAngleEditor::X3DAngleEditor () :
 	                        "majorLineColor"),
 	              changing (false)
 {
-	getAngleCheckButton () .set_related_action (getBrowserWindow () -> getAngleToolAction ());
+	getAngleCheckButton () .set_related_action (getBrowserWindow () -> getAngleLayoutToolAction ());
 
 	translation     .setUndo (false);
 	scale           .setUndo (false);

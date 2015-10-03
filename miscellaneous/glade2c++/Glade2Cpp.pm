@@ -756,3 +756,5 @@ TreeView::drag_data_received
   virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
 CellRendererText::edited
   virtual void on_edited(const Glib::ustring& path, const Glib::ustring& new_text);
+RadioAction::toggled
+  virtual void on_toggled();

@@ -98,10 +98,6 @@ public:
 	{ return m_AngleLayoutToolAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
-	getAngleToolAction () const
-	{ return m_AngleToolAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
 	getBackgroundsAction () const
 	{ return m_BackgroundsAction; }
 
@@ -128,10 +124,6 @@ public:
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getGridLayoutToolAction () const
 	{ return m_GridLayoutToolAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
-	getGridToolAction () const
-	{ return m_GridToolAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getImportAsInlineAction () const
@@ -1988,7 +1980,6 @@ private:
 	Glib::RefPtr <Gtk::Builder>      m_builder;
 	Glib::RefPtr <Gtk::IconFactory>  m_IconFactory;
 	Glib::RefPtr <Gtk::ToggleAction> m_AngleLayoutToolAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_AngleToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_BackgroundsAction;
 	Glib::RefPtr <Gtk::RadioAction>  m_EditorAction;
 	Glib::RefPtr <Gtk::RadioAction>  m_BrowserAction;
@@ -1996,7 +1987,6 @@ private:
 	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FooterAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_GridLayoutToolAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_GridToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_ImportAsInlineAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_LightsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_MenubarAction;

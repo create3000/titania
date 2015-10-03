@@ -169,7 +169,7 @@ X3DBrowserWidget::restoreSession ()
 	// SideBar
 
 	if (not getConfig () .hasItem ("sidebar"))
-		getConfig () .setItem ("sidebarFullscreen", true);
+		getConfig () .setItem ("sidebar", true);
 
 	if (not getConfig () .hasItem ("sidebarFullscreen"))
 		getConfig () .setItem ("sidebarFullscreen", false);
