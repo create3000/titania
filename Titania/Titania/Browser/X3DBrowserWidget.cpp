@@ -154,27 +154,27 @@ X3DBrowserWidget::restoreSession ()
 	if (not getConfig () .hasItem ("toolBar"))
 		getConfig () .setItem ("toolBar", true);
 
-	getToolBarMenuItem () .set_active (getConfig () .getBoolean ("toolBar"));
+	getToolBarAction () -> set_active (getConfig () .getBoolean ("toolBar"));
 
 	// SideBar
 	if (not getConfig () .hasItem ("sideBar"))
 		getConfig () .setItem ("sideBar", true);
 
-	getSideBarMenuItem () .set_active (getConfig () .getBoolean ("sideBar"));
+	getSideBarAction () -> set_active (getConfig () .getBoolean ("sideBar"));
 
 	// Footer
 	if (not getConfig () .hasItem ("footer"))
 		getConfig () .setItem ("footer", true);
 
-	getFooterMenuItem () .set_active (getConfig () .getBoolean ("footer"));
+	getFooterAction () -> set_active (getConfig () .getBoolean ("footer"));
 
 	// RenderingProperties
 	if (getConfig () .hasItem ("renderingProperties"))
-		getRenderingPropertiesMenuItem () .set_active (getConfig () .getBoolean ("renderingProperties"));
+		getRenderingPropertiesAction () -> set_active (getConfig () .getBoolean ("renderingProperties"));
 
 	// Rubberband
 	if (getConfig () .hasItem ("rubberBand"))
-		getRubberbandMenuItem () .set_active (getConfig () .getBoolean ("rubberBand"));
+		getRubberbandAction () -> set_active (getConfig () .getBoolean ("rubberBand"));
 
 	if (not getConfig () .hasItem ("isLive"))
 		getConfig () .setItem ("isLive", true);
@@ -738,7 +738,7 @@ X3DBrowserWidget::on_switch_browser (Gtk::Widget*, guint pageNumber)
 }
 
 void
-X3DBrowserWidget::on_browser_reordered (Widget* widget, guint pageNumber)
+X3DBrowserWidget::on_browser_reordered (Gtk::Widget* widget, guint pageNumber)
 {
 	const auto iter = std::find (browsers .begin (), browsers .end (), widget);
 

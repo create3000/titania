@@ -96,7 +96,7 @@ X3DBrowserEditor::restoreSession ()
 {
 	// ImportAsInline
 	if (getConfig () .hasItem ("importAsInline"))
-		getImportAsInlineMenuItem () .set_active (getConfig () .getBoolean ("importAsInline"));
+		getImportAsInlineAction () -> set_active (getConfig () .getBoolean ("importAsInline"));
 
 	// Workspace
 	if (not getConfig () .hasItem ("workspace"))
@@ -109,11 +109,11 @@ X3DBrowserEditor::restoreSession ()
 
 	// SelectLowest
 	if (getConfig () .hasItem ("selectLowest"))
-		getSelectLowestMenuItem () .set_active (getConfig () .getBoolean ("selectLowest"));
+		getSelectLowestAction () -> set_active (getConfig () .getBoolean ("selectLowest"));
 
 	// FollowPrimarySelection
 	if (getConfig () .hasItem ("followPrimarySelection"))
-		getFollowPrimarySelectionMenuItem () .set_active (getConfig () .getBoolean ("followPrimarySelection"));
+		getFollowPrimarySelectionAction () -> set_active (getConfig () .getBoolean ("followPrimarySelection"));
 
 	// This must be done after.
 	X3DBrowserWidget::restoreSession ();

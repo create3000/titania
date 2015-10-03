@@ -138,7 +138,7 @@ private:
 
 	virtual
 	bool
-	on_search_entry_match_selected (const TreeModel::iterator &) final override;
+	on_search_entry_match_selected (const Gtk::TreeModel::iterator &) final override;
 
 	virtual
 	void

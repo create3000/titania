@@ -57,8 +57,6 @@
 namespace titania {
 namespace puck {
 
-using namespace Gtk;
-
 class X3DHistoryViewInterface :
 	public X3DUserInterface
 {
@@ -145,7 +143,7 @@ public:
 
 	virtual
 	void
-	on_row_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
+	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
 
 	virtual
 	~X3DHistoryViewInterface ();

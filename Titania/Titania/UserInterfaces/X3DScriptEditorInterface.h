@@ -57,8 +57,6 @@
 namespace titania {
 namespace puck {
 
-using namespace Gtk;
-
 class X3DScriptEditorInterface :
 	public X3DUserInterface
 {
@@ -417,7 +415,7 @@ public:
 
 	virtual
 	void
-	on_color_theme_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
+	on_color_theme_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
 
 	virtual
 	void
@@ -441,7 +439,7 @@ public:
 
 	virtual
 	void
-	on_search_menu_icon_released (EntryIconPosition icon_position, const GdkEventButton* event) = 0;
+	on_search_menu_icon_released (Gtk::EntryIconPosition icon_position, const GdkEventButton* event) = 0;
 
 	virtual
 	bool

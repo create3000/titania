@@ -61,11 +61,57 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_IconFactory     = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
-	m_AngleToolAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AngleToolAction"));
-	m_GridToolAction  = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GridToolAction"));
+	m_IconFactory                  = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
+	m_AngleLayoutToolAction        = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AngleLayoutToolAction"));
+	m_AngleToolAction              = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AngleToolAction"));
+	m_BackgroundsAction            = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("BackgroundsAction"));
+	m_BrowserAction                = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("BrowserAction"));
+	m_EditorAction                 = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("EditorAction"));
+	m_FlatAction                   = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("FlatAction"));
+	m_FogsAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FogsAction"));
+	m_FollowPrimarySelectionAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FollowPrimarySelectionAction"));
+	m_FooterAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FooterAction"));
+	m_GouraudAction                = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("GouraudAction"));
+	m_GridLayoutToolAction         = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GridLayoutToolAction"));
+	m_GridToolAction               = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GridToolAction"));
+	m_ImportAsInlineAction         = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ImportAsInlineAction"));
+	m_LightsAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("LightsAction"));
+	m_PhongAction                  = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("PhongAction"));
+	m_PointsetAction               = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("PointsetAction"));
+	m_PrimitiveQualityHighAction   = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityHighAction"));
+	m_PrimitiveQualityLowAction    = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityLowAction"));
+	m_PrimitiveQualityMediumAction = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityMediumAction"));
+	m_ProximitySensorsAction       = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ProximitySensorsAction"));
+	m_RenderingPropertiesAction    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("RenderingPropertiesAction"));
+	m_RubberbandAction             = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("RubberbandAction"));
+	m_SelectLowestAction           = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SelectLowestAction"));
+	m_SideBarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SideBarAction"));
+	m_TextureQualityHighAction     = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("TextureQualityHighAction"));
+	m_TextureQualityLowAction      = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("TextureQualityLowAction"));
+	m_TextureQualityMediumAction   = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("TextureQualityMediumAction"));
+	m_ToolBarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ToolBarAction"));
+	m_TransformSensorsAction       = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TransformSensorsAction"));
+	m_ViewpointsAction             = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ViewpointsAction"));
+	m_VisibilitySensorsAction      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("VisibilitySensorsAction"));
+	m_WireframeAction              = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("WireframeAction"));
 
 	// Get widgets.
+	m_builder -> get_widget ("ExamineViewerImage", m_ExamineViewerImage);
+	m_builder -> get_widget ("FileImportImage", m_FileImportImage);
+	m_builder -> get_widget ("FileImportImage1", m_FileImportImage1);
+	m_builder -> get_widget ("FlyViewerImage", m_FlyViewerImage);
+	m_builder -> get_widget ("HistoryMenu", m_HistoryMenu);
+	m_builder -> get_widget ("NoneViewerImage", m_NoneViewerImage);
+	m_builder -> get_widget ("OpenLocationImage", m_OpenLocationImage);
+	m_builder -> get_widget ("OpenLocationImage1", m_OpenLocationImage1);
+	m_builder -> get_widget ("PlaneViewerImage", m_PlaneViewerImage);
+	m_builder -> get_widget ("WalkViewerImage", m_WalkViewerImage);
+	m_builder -> get_widget ("ViewerTypeMenu", m_ViewerTypeMenu);
+	m_builder -> get_widget ("ExamineViewerMenuItem", m_ExamineViewerMenuItem);
+	m_builder -> get_widget ("WalkViewerMenuItem", m_WalkViewerMenuItem);
+	m_builder -> get_widget ("FlyViewerMenuItem", m_FlyViewerMenuItem);
+	m_builder -> get_widget ("PlaneViewerMenuItem", m_PlaneViewerMenuItem);
+	m_builder -> get_widget ("NoneViewerMenuItem", m_NoneViewerMenuItem);
 	m_builder -> get_widget ("BrowserMenu", m_BrowserMenu);
 	m_builder -> get_widget ("BrowserFileMenuItem", m_BrowserFileMenuItem);
 	m_builder -> get_widget ("BrowserNewMenuItem", m_BrowserNewMenuItem);
@@ -121,24 +167,24 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserSideBarMenuItem", m_BrowserSideBarMenuItem);
 	m_builder -> get_widget ("BrowserFooterMenuItem", m_BrowserFooterMenuItem);
 	m_builder -> get_widget ("BrowserEnvironmentMenuItem", m_BrowserEnvironmentMenuItem);
-	m_builder -> get_widget ("BrowserBrowserMenuItem", m_BrowserBrowserMenuItem);
 	m_builder -> get_widget ("BrowserEditorMenuItem", m_BrowserEditorMenuItem);
-	m_builder -> get_widget ("BrowserOptionsSeparator1", m_BrowserOptionsSeparator1);
+	m_builder -> get_widget ("BrowserBrowserMenuItem", m_BrowserBrowserMenuItem);
+	m_builder -> get_widget ("BrowserBrowserOptionsSeparator", m_BrowserBrowserOptionsSeparator);
 	m_builder -> get_widget ("BrowserMotionBlurMenuItem", m_BrowserMotionBlurMenuItem);
 	m_builder -> get_widget ("BrowserShadingMenuItem", m_BrowserShadingMenuItem);
 	m_builder -> get_widget ("BrowserPhongMenuItem", m_BrowserPhongMenuItem);
 	m_builder -> get_widget ("BrowserGouraudMenuItem", m_BrowserGouraudMenuItem);
 	m_builder -> get_widget ("BrowserFlatMenuItem", m_BrowserFlatMenuItem);
-	m_builder -> get_widget ("BrowserWireFrameMenuItem", m_BrowserWireFrameMenuItem);
-	m_builder -> get_widget ("BrowserPointSetMenuItem", m_BrowserPointSetMenuItem);
+	m_builder -> get_widget ("BrowserWireframeMenuItem", m_BrowserWireframeMenuItem);
+	m_builder -> get_widget ("BrowserPointsetMenuItem", m_BrowserPointsetMenuItem);
 	m_builder -> get_widget ("BrowserPrimitiveQualityMenuItem", m_BrowserPrimitiveQualityMenuItem);
-	m_builder -> get_widget ("BrowserPrimitiveHighQualityMenuItem", m_BrowserPrimitiveHighQualityMenuItem);
-	m_builder -> get_widget ("BrowserPrimitiveMediumQualityMenuItem", m_BrowserPrimitiveMediumQualityMenuItem);
-	m_builder -> get_widget ("BrowserPrimitiveLowQualityMenuItem", m_BrowserPrimitiveLowQualityMenuItem);
+	m_builder -> get_widget ("BrowserPrimitiveQualityHighMenuItem", m_BrowserPrimitiveQualityHighMenuItem);
+	m_builder -> get_widget ("BrowserPrimitiveQualityMediumMenuItem", m_BrowserPrimitiveQualityMediumMenuItem);
+	m_builder -> get_widget ("BrowserPrimitiveQualityLowMenuItem", m_BrowserPrimitiveQualityLowMenuItem);
 	m_builder -> get_widget ("BrowserTextureQualityMenuItem", m_BrowserTextureQualityMenuItem);
-	m_builder -> get_widget ("BrowserTextureHighQualityMenuItem", m_BrowserTextureHighQualityMenuItem);
-	m_builder -> get_widget ("BrowserTextureMediumQualityMenuItem", m_BrowserTextureMediumQualityMenuItem);
-	m_builder -> get_widget ("BrowserTextureLowQualityMenuItem", m_BrowserTextureLowQualityMenuItem);
+	m_builder -> get_widget ("BrowserTextureQualityHighMenuItem", m_BrowserTextureQualityHighMenuItem);
+	m_builder -> get_widget ("BrowserTextureQualityMediumMenuItem", m_BrowserTextureQualityMediumMenuItem);
+	m_builder -> get_widget ("BrowserTextureQualityLowMenuItem", m_BrowserTextureQualityLowMenuItem);
 	m_builder -> get_widget ("BrowserShowHideEnvironmentalEffectsMenuItem", m_BrowserShowHideEnvironmentalEffectsMenuItem);
 	m_builder -> get_widget ("BrowserBackgroundsMenuItem", m_BrowserBackgroundsMenuItem);
 	m_builder -> get_widget ("BrowserFogsMenuItem", m_BrowserFogsMenuItem);
@@ -173,22 +219,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserGridPropertiesMenuItem", m_BrowserGridPropertiesMenuItem);
 	m_builder -> get_widget ("BrowserHelpMenuItem", m_BrowserHelpMenuItem);
 	m_builder -> get_widget ("BrowserInfoMenuItem", m_BrowserInfoMenuItem);
-	m_builder -> get_widget ("ExamineViewerImage", m_ExamineViewerImage);
-	m_builder -> get_widget ("FileImportImage", m_FileImportImage);
-	m_builder -> get_widget ("FileImportImage1", m_FileImportImage1);
-	m_builder -> get_widget ("FlyViewerImage", m_FlyViewerImage);
-	m_builder -> get_widget ("HistoryMenu", m_HistoryMenu);
-	m_builder -> get_widget ("NoneViewerImage", m_NoneViewerImage);
-	m_builder -> get_widget ("OpenLocationImage", m_OpenLocationImage);
-	m_builder -> get_widget ("OpenLocationImage1", m_OpenLocationImage1);
-	m_builder -> get_widget ("PlaneViewerImage", m_PlaneViewerImage);
-	m_builder -> get_widget ("WalkViewerImage", m_WalkViewerImage);
-	m_builder -> get_widget ("ViewerTypeMenu", m_ViewerTypeMenu);
-	m_builder -> get_widget ("ExamineViewerMenuItem", m_ExamineViewerMenuItem);
-	m_builder -> get_widget ("WalkViewerMenuItem", m_WalkViewerMenuItem);
-	m_builder -> get_widget ("FlyViewerMenuItem", m_FlyViewerMenuItem);
-	m_builder -> get_widget ("PlaneViewerMenuItem", m_PlaneViewerMenuItem);
-	m_builder -> get_widget ("NoneViewerMenuItem", m_NoneViewerMenuItem);
 	m_builder -> get_widget ("WorkspacesImage", m_WorkspacesImage);
 	m_builder -> get_widget ("WorkspacesImage1", m_WorkspacesImage1);
 	m_builder -> get_widget ("Window", m_Window);
@@ -250,24 +280,24 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SideBarMenuItem", m_SideBarMenuItem);
 	m_builder -> get_widget ("FooterMenuItem", m_FooterMenuItem);
 	m_builder -> get_widget ("EnvironmentMenuItem", m_EnvironmentMenuItem);
-	m_builder -> get_widget ("BrowserMenuItem", m_BrowserMenuItem);
 	m_builder -> get_widget ("EditorMenuItem", m_EditorMenuItem);
+	m_builder -> get_widget ("BrowserMenuItem", m_BrowserMenuItem);
 	m_builder -> get_widget ("BrowserOptionsSeparator", m_BrowserOptionsSeparator);
 	m_builder -> get_widget ("MotionBlurMenuItem", m_MotionBlurMenuItem);
 	m_builder -> get_widget ("ShadingMenuItem", m_ShadingMenuItem);
 	m_builder -> get_widget ("PhongMenuItem", m_PhongMenuItem);
 	m_builder -> get_widget ("GouraudMenuItem", m_GouraudMenuItem);
 	m_builder -> get_widget ("FlatMenuItem", m_FlatMenuItem);
-	m_builder -> get_widget ("WireFrameMenuItem", m_WireFrameMenuItem);
-	m_builder -> get_widget ("PointSetMenuItem", m_PointSetMenuItem);
+	m_builder -> get_widget ("WireframeMenuItem", m_WireframeMenuItem);
+	m_builder -> get_widget ("PointsetMenuItem", m_PointsetMenuItem);
 	m_builder -> get_widget ("PrimitiveQualityMenuItem", m_PrimitiveQualityMenuItem);
-	m_builder -> get_widget ("PrimitiveHighQualityMenuItem", m_PrimitiveHighQualityMenuItem);
-	m_builder -> get_widget ("PrimitiveMediumQualityMenuItem", m_PrimitiveMediumQualityMenuItem);
-	m_builder -> get_widget ("PrimitiveLowQualityMenuItem", m_PrimitiveLowQualityMenuItem);
+	m_builder -> get_widget ("PrimitiveQualityHighMenuItem", m_PrimitiveQualityHighMenuItem);
+	m_builder -> get_widget ("PrimitiveQualityMediumMenuItem", m_PrimitiveQualityMediumMenuItem);
+	m_builder -> get_widget ("PrimitiveQualityLowMenuItem", m_PrimitiveQualityLowMenuItem);
 	m_builder -> get_widget ("TextureQualityMenuItem", m_TextureQualityMenuItem);
-	m_builder -> get_widget ("TextureHighQualityMenuItem", m_TextureHighQualityMenuItem);
-	m_builder -> get_widget ("TextureMediumQualityMenuItem", m_TextureMediumQualityMenuItem);
-	m_builder -> get_widget ("TextureLowQualityMenuItem", m_TextureLowQualityMenuItem);
+	m_builder -> get_widget ("TextureQualityHighMenuItem", m_TextureQualityHighMenuItem);
+	m_builder -> get_widget ("TextureQualityMediumMenuItem", m_TextureQualityMediumMenuItem);
+	m_builder -> get_widget ("TextureQualityLowMenuItem", m_TextureQualityLowMenuItem);
 	m_builder -> get_widget ("ShowHideEnvironmentalEffectsMenuItem", m_ShowHideEnvironmentalEffectsMenuItem);
 	m_builder -> get_widget ("BackgroundsMenuItem", m_BackgroundsMenuItem);
 	m_builder -> get_widget ("FogsMenuItem", m_FogsMenuItem);
@@ -371,6 +401,65 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
 	m_builder -> get_widget ("MessageDialog", m_MessageDialog);
 
+	// Connect object Gtk::ToggleAction with id 'AngleLayoutToolAction'.
+	m_AngleLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
+	m_AngleToolAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
+	m_BackgroundsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_backgrounds_toggled));
+
+	// Connect object Gtk::RadioAction with id 'BrowserAction'.
+	m_BrowserAction -> signal_changed () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_browser_activated));
+	m_EditorAction -> signal_changed () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_editor_activated));
+	m_FlatAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_flat_activated));
+
+	// Connect object Gtk::ToggleAction with id 'FogsAction'.
+	m_FogsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fogs_toggled));
+	m_FollowPrimarySelectionAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
+	m_FooterAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_footer_toggled));
+
+	// Connect object Gtk::RadioAction with id 'GouraudAction'.
+	m_GouraudAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_gouraud_activated));
+
+	// Connect object Gtk::ToggleAction with id 'GridLayoutToolAction'.
+	m_GridLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
+	m_GridToolAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
+	m_ImportAsInlineAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import_as_inline_toggled));
+	m_LightsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_lights_toggled));
+
+	// Connect object Gtk::RadioAction with id 'PhongAction'.
+	m_PhongAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_phong_activated));
+	m_PointsetAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_pointset_activated));
+	m_PrimitiveQualityHighAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_quality_high_activated));
+	m_PrimitiveQualityLowAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_quality_low_activated));
+	m_PrimitiveQualityMediumAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_quality_medium_activated));
+
+	// Connect object Gtk::ToggleAction with id 'ProximitySensorsAction'.
+	m_ProximitySensorsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_proximity_sensors_toggled));
+	m_RenderingPropertiesAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rendering_properties_toggled));
+	m_RubberbandAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rubberband_toggled));
+	m_SelectLowestAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_lowest_toggled));
+	m_SideBarAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_side_bar_toggled));
+
+	// Connect object Gtk::RadioAction with id 'TextureQualityHighAction'.
+	m_TextureQualityHighAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_quality_high_activated));
+	m_TextureQualityLowAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_quality_low_activated));
+	m_TextureQualityMediumAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_quality_medium_activated));
+
+	// Connect object Gtk::ToggleAction with id 'ToolBarAction'.
+	m_ToolBarAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_tool_bar_toggled));
+	m_TransformSensorsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_sensors_toggled));
+	m_ViewpointsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewpoints_toggled));
+	m_VisibilitySensorsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_visibility_sensors_toggled));
+
+	// Connect object Gtk::ImageMenuItem with id 'ExamineViewerMenuItem'.
+	m_ExamineViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_examine_viewer_activated));
+	m_WalkViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_walk_viewer_activated));
+	m_FlyViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fly_viewer_activated));
+	m_PlaneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_plane_viewer_activated));
+	m_NoneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_none_viewer_activated));
+
+	// Connect object Gtk::RadioAction with id 'WireframeAction'.
+	m_WireframeAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_wireframe_activated));
+
 	// Connect object Gtk::ImageMenuItem with id 'BrowserNewMenuItem'.
 	m_BrowserNewMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new_activated));
 	m_BrowserOpenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_activated));
@@ -452,11 +541,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_BrowserPaintPolygonsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paint_polygons_activated));
 	m_BrowserGridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_properties_activated));
 	m_BrowserInfoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info_activated));
-	m_ExamineViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_examine_viewer_activated));
-	m_WalkViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_walk_viewer_activated));
-	m_FlyViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fly_viewer_activated));
-	m_PlaneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_plane_viewer_activated));
-	m_NoneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_none_viewer_activated));
 
 	// Connect object Gtk::ApplicationWindow with id 'Window'.
 	m_Window -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_focus_out_event));
@@ -472,11 +556,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_OpenRecentMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_recent_activated));
 	m_OpenLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location_activated));
 	m_ImportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import_activated));
-
-	// Connect object Gtk::CheckMenuItem with id 'ImportAsInlineMenuItem'.
-	m_ImportAsInlineMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import_as_inline_toggled));
-
-	// Connect object Gtk::ImageMenuItem with id 'SaveMenuItem'.
 	m_SaveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_activated));
 	m_SaveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_as_activated));
 
@@ -527,46 +606,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_CreateParentLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layer_activated));
 	m_CreateParentViewportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_viewport_activated));
 
-	// Connect object Gtk::CheckMenuItem with id 'ToolBarMenuItem'.
-	m_ToolBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolBar_toggled));
-	m_SideBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_sideBar_toggled));
-	m_FooterMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_footer_toggled));
-
-	// Connect object Gtk::RadioMenuItem with id 'BrowserMenuItem'.
-	m_BrowserMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_browser_toggled));
-	m_EditorMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_editor_toggled));
-
 	// Connect object Gtk::ImageMenuItem with id 'MotionBlurMenuItem'.
 	m_MotionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_motion_blur_activated));
 
-	// Connect object Gtk::RadioMenuItem with id 'PhongMenuItem'.
-	m_PhongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_phong_activated));
-	m_GouraudMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_gouraud_activated));
-	m_FlatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_flat_activated));
-	m_WireFrameMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_wireframe_activated));
-	m_PointSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_pointset_activated));
-	m_PrimitiveHighQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_high_quality_activated));
-	m_PrimitiveMediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_medium_quality_activated));
-	m_PrimitiveLowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_low_quality_activated));
-	m_TextureHighQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_high_quality_activated));
-	m_TextureMediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_medium_quality_activated));
-	m_TextureLowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_low_quality_activated));
-
-	// Connect object Gtk::CheckMenuItem with id 'BackgroundsMenuItem'.
-	m_BackgroundsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_backgrounds_toggled));
-	m_FogsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fogs_toggled));
-	m_LightsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_lights_toggled));
-	m_ProximitySensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_proximity_sensors_toggled));
-	m_TransformSensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_sensors_toggled));
-	m_VisibilitySensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_visibility_sensors_toggled));
-	m_ViewpointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewpoints_toggled));
-
 	// Connect object Gtk::MenuItem with id 'HideAllObjectIconsMenuItem'.
 	m_HideAllObjectIconsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hide_all_object_icons_activated));
-
-	// Connect object Gtk::CheckMenuItem with id 'RubberbandMenuItem'.
-	m_RubberbandMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rubberband_toggled));
-	m_RenderingPropertiesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rendering_properties_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'FullScreenMenuItem'.
 	m_FullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fullscreen_activated));
@@ -580,21 +624,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_ShowSelectedObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_show_selected_objects_activated));
 	m_ShowAllObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_show_all_objects_activated));
 
-	// Connect object Gtk::CheckMenuItem with id 'SelectLowestMenuItem'.
-	m_SelectLowestMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_lowest_toggled));
-	m_FollowPrimarySelectionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
-
 	// Connect object Gtk::ImageMenuItem with id 'CombineMenuItem'.
 	m_CombineMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_combine_activated));
 	m_TransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
 	m_TextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_coordinate_editor_activated));
 	m_PaintPolygonsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paint_polygons_activated));
-
-	// Connect object Gtk::CheckMenuItem with id 'GridLayoutToolMenuItem'.
-	m_GridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
-	m_AngleLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
-
-	// Connect object Gtk::ImageMenuItem with id 'GridPropertiesMenuItem'.
 	m_GridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_properties_activated));
 	m_InfoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info_activated));
 

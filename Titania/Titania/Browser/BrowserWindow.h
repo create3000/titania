@@ -343,11 +343,11 @@ private:
 
 	virtual
 	void
-	on_toolBar_toggled () final override;
+	on_tool_bar_toggled () final override;
 
 	virtual
 	void
-	on_sideBar_toggled () final override;
+	on_side_bar_toggled () final override;
 
 	virtual
 	void
@@ -355,11 +355,11 @@ private:
 
 	virtual
 	void
-	on_browser_toggled () final override;
+	on_browser_activated (const Glib::RefPtr <Gtk::RadioAction> &) final override;
 
 	virtual
 	void
-	on_editor_toggled () final override;
+	on_editor_activated (const Glib::RefPtr <Gtk::RadioAction> &) final override;
 
 	virtual
 	void
@@ -400,15 +400,15 @@ private:
 
 	virtual
 	void
-	on_primitive_high_quality_activated () final override;
+	on_primitive_quality_high_activated () final override;
 
 	virtual
 	void
-	on_primitive_medium_quality_activated () final override;
+	on_primitive_quality_medium_activated () final override;
 
 	virtual
 	void
-	on_primitive_low_quality_activated () final override;
+	on_primitive_quality_low_activated () final override;
 
 	void
 	on_primitiveQuality_activated (const std::string &);
@@ -423,15 +423,15 @@ private:
 
 	virtual
 	void
-	on_texture_high_quality_activated () final override;
+	on_texture_quality_high_activated () final override;
 
 	virtual
 	void
-	on_texture_medium_quality_activated () final override;
+	on_texture_quality_medium_activated () final override;
 
 	virtual
 	void
-	on_texture_low_quality_activated () final override;
+	on_texture_quality_low_activated () final override;
 
 	void
 	on_textureQuality_activated (const std::string &);

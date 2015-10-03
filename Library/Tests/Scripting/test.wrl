@@ -62,3 +62,7 @@ DEF Box_1 Transform {
     geometry Box { }
   }
 }
+
+DEF Gray_1 Background {
+  skyColor 0.2 0.2 0.2
+}

@@ -223,7 +223,7 @@ private:
 
 	virtual
 	void
-	on_browser_reordered (Widget* page, guint page_num) final override;
+	on_browser_reordered (Gtk::Widget* page, guint page_num) final override;
 
 	void
 	set_executionContext ();

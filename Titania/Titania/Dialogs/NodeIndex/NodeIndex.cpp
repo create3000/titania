@@ -406,7 +406,7 @@ NodeIndex::on_search_entry_key_press_event (GdkEventKey* event)
 }
 
 bool
-NodeIndex::on_search_entry_match_selected (const TreeModel::iterator & iter)
+NodeIndex::on_search_entry_match_selected (const Gtk::TreeModel::iterator & iter)
 {
 	try
 	{

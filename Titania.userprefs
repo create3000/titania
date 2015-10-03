@@ -1,14 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
     <Files>
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.h" Line="2" Column="2" />
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="54" Column="54" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
-      <File FileName="Titania/share/titania/ui/ScriptEditor.xml" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp" Line="39" Column="39" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Grammar.cpp" Line="3" Column="3" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.h" Line="20" Column="20" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="26" Column="26" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/X3DScriptEditorSearch.h" Line="2" Column="2" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/X3DScriptEditorSearch.cpp" Line="59" Column="59" />
+      <File FileName="debian/control" Line="25" Column="25" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserMenu.cpp" Line="2" Column="2" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="9" Column="9" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="43" Column="43" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="3" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

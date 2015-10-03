@@ -130,8 +130,8 @@ OutlineDragDrop::on_drag_motion (const Glib::RefPtr <Gdk::DragContext> & context
 bool
 OutlineDragDrop::on_drag_motion_extern_proto (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time)
 {
-	TreeModel::Path      destinationPath;
-	TreeViewDropPosition position;
+	Gtk::TreeModel::Path      destinationPath;
+	Gtk::TreeViewDropPosition position;
 
 	//__LOG__ << "on_drag_motion_extern_proto" << std::endl;
 
@@ -173,8 +173,8 @@ OutlineDragDrop::on_drag_motion_extern_proto (const Glib::RefPtr <Gdk::DragConte
 bool
 OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time)
 {
-	TreeModel::Path      destinationPath;
-	TreeViewDropPosition position;
+	Gtk::TreeModel::Path      destinationPath;
+	Gtk::TreeViewDropPosition position;
 
 	if (treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
 	{
@@ -297,8 +297,8 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
                                                      guint info,
                                                      guint time)
 {
-	TreeModel::Path      destinationPath;
-	TreeViewDropPosition position;
+	Gtk::TreeModel::Path      destinationPath;
+	Gtk::TreeViewDropPosition position;
 
 	if (not treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
 	   return;
@@ -394,8 +394,8 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
                                                                    guint info,
                                                                    guint time)
 {
-	TreeModel::Path      destinationPath;
-	TreeViewDropPosition position;
+	Gtk::TreeModel::Path      destinationPath;
+	Gtk::TreeViewDropPosition position;
 
 	if (not treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
 	   return;
@@ -598,8 +598,8 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
                                                            guint info,
                                                            guint time)
 {
-	TreeModel::Path      destinationPath;
-	TreeViewDropPosition position;
+	Gtk::TreeModel::Path      destinationPath;
+	Gtk::TreeViewDropPosition position;
 
 	if (not treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
 	   return;
@@ -797,8 +797,8 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
                                                                     guint info,
                                                                     guint time)
 {
-	TreeModel::Path      destinationPath;
-	TreeViewDropPosition position;
+	Gtk::TreeModel::Path      destinationPath;
+	Gtk::TreeViewDropPosition position;
 
 	if (not treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
 	   return;

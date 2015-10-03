@@ -57,8 +57,6 @@
 namespace titania {
 namespace puck {
 
-using namespace Gtk;
-
 class X3DPrecisionPlacementPanelInterface :
 	public X3DEditorInterface
 {

@@ -57,8 +57,6 @@
 namespace titania {
 namespace puck {
 
-using namespace Gtk;
-
 class X3DBrowserWindowInterface :
 	public X3DUserInterface
 {
@@ -96,12 +94,196 @@ public:
 	{ return m_IconFactory; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
+	getAngleLayoutToolAction () const
+	{ return m_AngleLayoutToolAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getAngleToolAction () const
 	{ return m_AngleToolAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
+	getBackgroundsAction () const
+	{ return m_BackgroundsAction; }
+
+	const Glib::RefPtr <Gtk::RadioAction> &
+	getBrowserAction () const
+	{ return m_BrowserAction; }
+
+	const Glib::RefPtr <Gtk::RadioAction> &
+	getEditorAction () const
+	{ return m_EditorAction; }
+
+	const Glib::RefPtr <Gtk::RadioAction> &
+	getFlatAction () const
+	{ return m_FlatAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getFogsAction () const
+	{ return m_FogsAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getFollowPrimarySelectionAction () const
+	{ return m_FollowPrimarySelectionAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getFooterAction () const
+	{ return m_FooterAction; }
+
+	const Glib::RefPtr <Gtk::RadioAction> &
+	getGouraudAction () const
+	{ return m_GouraudAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getGridLayoutToolAction () const
+	{ return m_GridLayoutToolAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getGridToolAction () const
 	{ return m_GridToolAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getImportAsInlineAction () const
+	{ return m_ImportAsInlineAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getLightsAction () const
+	{ return m_LightsAction; }
+
+	const Glib::RefPtr <Gtk::RadioAction> &
+	getPhongAction () const
+	{ return m_PhongAction; }
+
+	const Glib::RefPtr <Gtk::RadioAction> &
+	getPointsetAction () const
+	{ return m_PointsetAction; }
+
+	const Glib::RefPtr <Gtk::RadioAction> &
+	getPrimitiveQualityHighAction () const
+	{ return m_PrimitiveQualityHighAction; }
+
+	const Glib::RefPtr <Gtk::RadioAction> &
+	getPrimitiveQualityLowAction () const
+	{ return m_PrimitiveQualityLowAction; }
+
+	const Glib::RefPtr <Gtk::RadioAction> &
+	getPrimitiveQualityMediumAction () const
+	{ return m_PrimitiveQualityMediumAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getProximitySensorsAction () const
+	{ return m_ProximitySensorsAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getRenderingPropertiesAction () const
+	{ return m_RenderingPropertiesAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getRubberbandAction () const
+	{ return m_RubberbandAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getSelectLowestAction () const
+	{ return m_SelectLowestAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getSideBarAction () const
+	{ return m_SideBarAction; }
+
+	const Glib::RefPtr <Gtk::RadioAction> &
+	getTextureQualityHighAction () const
+	{ return m_TextureQualityHighAction; }
+
+	const Glib::RefPtr <Gtk::RadioAction> &
+	getTextureQualityLowAction () const
+	{ return m_TextureQualityLowAction; }
+
+	const Glib::RefPtr <Gtk::RadioAction> &
+	getTextureQualityMediumAction () const
+	{ return m_TextureQualityMediumAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getToolBarAction () const
+	{ return m_ToolBarAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getTransformSensorsAction () const
+	{ return m_TransformSensorsAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getViewpointsAction () const
+	{ return m_ViewpointsAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getVisibilitySensorsAction () const
+	{ return m_VisibilitySensorsAction; }
+
+	const Glib::RefPtr <Gtk::RadioAction> &
+	getWireframeAction () const
+	{ return m_WireframeAction; }
+
+	Gtk::Image &
+	getExamineViewerImage () const
+	{ return *m_ExamineViewerImage; }
+
+	Gtk::Image &
+	getFileImportImage () const
+	{ return *m_FileImportImage; }
+
+	Gtk::Image &
+	getFileImportImage1 () const
+	{ return *m_FileImportImage1; }
+
+	Gtk::Image &
+	getFlyViewerImage () const
+	{ return *m_FlyViewerImage; }
+
+	Gtk::Menu &
+	getHistoryMenu () const
+	{ return *m_HistoryMenu; }
+
+	Gtk::Image &
+	getNoneViewerImage () const
+	{ return *m_NoneViewerImage; }
+
+	Gtk::Image &
+	getOpenLocationImage () const
+	{ return *m_OpenLocationImage; }
+
+	Gtk::Image &
+	getOpenLocationImage1 () const
+	{ return *m_OpenLocationImage1; }
+
+	Gtk::Image &
+	getPlaneViewerImage () const
+	{ return *m_PlaneViewerImage; }
+
+	Gtk::Image &
+	getWalkViewerImage () const
+	{ return *m_WalkViewerImage; }
+
+	Gtk::Menu &
+	getViewerTypeMenu () const
+	{ return *m_ViewerTypeMenu; }
+
+	Gtk::ImageMenuItem &
+	getExamineViewerMenuItem () const
+	{ return *m_ExamineViewerMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getWalkViewerMenuItem () const
+	{ return *m_WalkViewerMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getFlyViewerMenuItem () const
+	{ return *m_FlyViewerMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getPlaneViewerMenuItem () const
+	{ return *m_PlaneViewerMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getNoneViewerMenuItem () const
+	{ return *m_NoneViewerMenuItem; }
 
 	Gtk::Menu &
 	getBrowserMenu () const
@@ -324,16 +506,16 @@ public:
 	{ return *m_BrowserEnvironmentMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getBrowserBrowserMenuItem () const
-	{ return *m_BrowserBrowserMenuItem; }
-
-	Gtk::RadioMenuItem &
 	getBrowserEditorMenuItem () const
 	{ return *m_BrowserEditorMenuItem; }
 
+	Gtk::RadioMenuItem &
+	getBrowserBrowserMenuItem () const
+	{ return *m_BrowserBrowserMenuItem; }
+
 	Gtk::SeparatorMenuItem &
-	getBrowserOptionsSeparator1 () const
-	{ return *m_BrowserOptionsSeparator1; }
+	getBrowserBrowserOptionsSeparator () const
+	{ return *m_BrowserBrowserOptionsSeparator; }
 
 	Gtk::ImageMenuItem &
 	getBrowserMotionBlurMenuItem () const
@@ -356,44 +538,44 @@ public:
 	{ return *m_BrowserFlatMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getBrowserWireFrameMenuItem () const
-	{ return *m_BrowserWireFrameMenuItem; }
+	getBrowserWireframeMenuItem () const
+	{ return *m_BrowserWireframeMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getBrowserPointSetMenuItem () const
-	{ return *m_BrowserPointSetMenuItem; }
+	getBrowserPointsetMenuItem () const
+	{ return *m_BrowserPointsetMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getBrowserPrimitiveQualityMenuItem () const
 	{ return *m_BrowserPrimitiveQualityMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getBrowserPrimitiveHighQualityMenuItem () const
-	{ return *m_BrowserPrimitiveHighQualityMenuItem; }
+	getBrowserPrimitiveQualityHighMenuItem () const
+	{ return *m_BrowserPrimitiveQualityHighMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getBrowserPrimitiveMediumQualityMenuItem () const
-	{ return *m_BrowserPrimitiveMediumQualityMenuItem; }
+	getBrowserPrimitiveQualityMediumMenuItem () const
+	{ return *m_BrowserPrimitiveQualityMediumMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getBrowserPrimitiveLowQualityMenuItem () const
-	{ return *m_BrowserPrimitiveLowQualityMenuItem; }
+	getBrowserPrimitiveQualityLowMenuItem () const
+	{ return *m_BrowserPrimitiveQualityLowMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getBrowserTextureQualityMenuItem () const
 	{ return *m_BrowserTextureQualityMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getBrowserTextureHighQualityMenuItem () const
-	{ return *m_BrowserTextureHighQualityMenuItem; }
+	getBrowserTextureQualityHighMenuItem () const
+	{ return *m_BrowserTextureQualityHighMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getBrowserTextureMediumQualityMenuItem () const
-	{ return *m_BrowserTextureMediumQualityMenuItem; }
+	getBrowserTextureQualityMediumMenuItem () const
+	{ return *m_BrowserTextureQualityMediumMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getBrowserTextureLowQualityMenuItem () const
-	{ return *m_BrowserTextureLowQualityMenuItem; }
+	getBrowserTextureQualityLowMenuItem () const
+	{ return *m_BrowserTextureQualityLowMenuItem; }
 
 	Gtk::MenuItem &
 	getBrowserShowHideEnvironmentalEffectsMenuItem () const
@@ -530,70 +712,6 @@ public:
 	Gtk::ImageMenuItem &
 	getBrowserInfoMenuItem () const
 	{ return *m_BrowserInfoMenuItem; }
-
-	Gtk::Image &
-	getExamineViewerImage () const
-	{ return *m_ExamineViewerImage; }
-
-	Gtk::Image &
-	getFileImportImage () const
-	{ return *m_FileImportImage; }
-
-	Gtk::Image &
-	getFileImportImage1 () const
-	{ return *m_FileImportImage1; }
-
-	Gtk::Image &
-	getFlyViewerImage () const
-	{ return *m_FlyViewerImage; }
-
-	Gtk::Menu &
-	getHistoryMenu () const
-	{ return *m_HistoryMenu; }
-
-	Gtk::Image &
-	getNoneViewerImage () const
-	{ return *m_NoneViewerImage; }
-
-	Gtk::Image &
-	getOpenLocationImage () const
-	{ return *m_OpenLocationImage; }
-
-	Gtk::Image &
-	getOpenLocationImage1 () const
-	{ return *m_OpenLocationImage1; }
-
-	Gtk::Image &
-	getPlaneViewerImage () const
-	{ return *m_PlaneViewerImage; }
-
-	Gtk::Image &
-	getWalkViewerImage () const
-	{ return *m_WalkViewerImage; }
-
-	Gtk::Menu &
-	getViewerTypeMenu () const
-	{ return *m_ViewerTypeMenu; }
-
-	Gtk::ImageMenuItem &
-	getExamineViewerMenuItem () const
-	{ return *m_ExamineViewerMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getWalkViewerMenuItem () const
-	{ return *m_WalkViewerMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getFlyViewerMenuItem () const
-	{ return *m_FlyViewerMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getPlaneViewerMenuItem () const
-	{ return *m_PlaneViewerMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getNoneViewerMenuItem () const
-	{ return *m_NoneViewerMenuItem; }
 
 	Gtk::Image &
 	getWorkspacesImage () const
@@ -840,12 +958,12 @@ public:
 	{ return *m_EnvironmentMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getBrowserMenuItem () const
-	{ return *m_BrowserMenuItem; }
-
-	Gtk::RadioMenuItem &
 	getEditorMenuItem () const
 	{ return *m_EditorMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserMenuItem () const
+	{ return *m_BrowserMenuItem; }
 
 	Gtk::SeparatorMenuItem &
 	getBrowserOptionsSeparator () const
@@ -872,44 +990,44 @@ public:
 	{ return *m_FlatMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getWireFrameMenuItem () const
-	{ return *m_WireFrameMenuItem; }
+	getWireframeMenuItem () const
+	{ return *m_WireframeMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getPointSetMenuItem () const
-	{ return *m_PointSetMenuItem; }
+	getPointsetMenuItem () const
+	{ return *m_PointsetMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getPrimitiveQualityMenuItem () const
 	{ return *m_PrimitiveQualityMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getPrimitiveHighQualityMenuItem () const
-	{ return *m_PrimitiveHighQualityMenuItem; }
+	getPrimitiveQualityHighMenuItem () const
+	{ return *m_PrimitiveQualityHighMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getPrimitiveMediumQualityMenuItem () const
-	{ return *m_PrimitiveMediumQualityMenuItem; }
+	getPrimitiveQualityMediumMenuItem () const
+	{ return *m_PrimitiveQualityMediumMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getPrimitiveLowQualityMenuItem () const
-	{ return *m_PrimitiveLowQualityMenuItem; }
+	getPrimitiveQualityLowMenuItem () const
+	{ return *m_PrimitiveQualityLowMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getTextureQualityMenuItem () const
 	{ return *m_TextureQualityMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getTextureHighQualityMenuItem () const
-	{ return *m_TextureHighQualityMenuItem; }
+	getTextureQualityHighMenuItem () const
+	{ return *m_TextureQualityHighMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getTextureMediumQualityMenuItem () const
-	{ return *m_TextureMediumQualityMenuItem; }
+	getTextureQualityMediumMenuItem () const
+	{ return *m_TextureQualityMediumMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getTextureLowQualityMenuItem () const
-	{ return *m_TextureLowQualityMenuItem; }
+	getTextureQualityLowMenuItem () const
+	{ return *m_TextureQualityLowMenuItem; }
 
 	Gtk::MenuItem &
 	getShowHideEnvironmentalEffectsMenuItem () const
@@ -1321,6 +1439,146 @@ public:
 
 	virtual
 	void
+	on_angle_layout_tool_toggled () = 0;
+
+	virtual
+	void
+	on_backgrounds_toggled () = 0;
+
+	virtual
+	void
+	on_browser_activated (const Glib::RefPtr <Gtk::RadioAction> & current) = 0;
+
+	virtual
+	void
+	on_editor_activated (const Glib::RefPtr <Gtk::RadioAction> & current) = 0;
+
+	virtual
+	void
+	on_flat_activated () = 0;
+
+	virtual
+	void
+	on_fogs_toggled () = 0;
+
+	virtual
+	void
+	on_follow_primary_selection_toggled () = 0;
+
+	virtual
+	void
+	on_footer_toggled () = 0;
+
+	virtual
+	void
+	on_gouraud_activated () = 0;
+
+	virtual
+	void
+	on_grid_layout_tool_toggled () = 0;
+
+	virtual
+	void
+	on_import_as_inline_toggled () = 0;
+
+	virtual
+	void
+	on_lights_toggled () = 0;
+
+	virtual
+	void
+	on_phong_activated () = 0;
+
+	virtual
+	void
+	on_pointset_activated () = 0;
+
+	virtual
+	void
+	on_primitive_quality_high_activated () = 0;
+
+	virtual
+	void
+	on_primitive_quality_low_activated () = 0;
+
+	virtual
+	void
+	on_primitive_quality_medium_activated () = 0;
+
+	virtual
+	void
+	on_proximity_sensors_toggled () = 0;
+
+	virtual
+	void
+	on_rendering_properties_toggled () = 0;
+
+	virtual
+	void
+	on_rubberband_toggled () = 0;
+
+	virtual
+	void
+	on_select_lowest_toggled () = 0;
+
+	virtual
+	void
+	on_side_bar_toggled () = 0;
+
+	virtual
+	void
+	on_texture_quality_high_activated () = 0;
+
+	virtual
+	void
+	on_texture_quality_low_activated () = 0;
+
+	virtual
+	void
+	on_texture_quality_medium_activated () = 0;
+
+	virtual
+	void
+	on_tool_bar_toggled () = 0;
+
+	virtual
+	void
+	on_transform_sensors_toggled () = 0;
+
+	virtual
+	void
+	on_viewpoints_toggled () = 0;
+
+	virtual
+	void
+	on_visibility_sensors_toggled () = 0;
+
+	virtual
+	void
+	on_examine_viewer_activated () = 0;
+
+	virtual
+	void
+	on_walk_viewer_activated () = 0;
+
+	virtual
+	void
+	on_fly_viewer_activated () = 0;
+
+	virtual
+	void
+	on_plane_viewer_activated () = 0;
+
+	virtual
+	void
+	on_none_viewer_activated () = 0;
+
+	virtual
+	void
+	on_wireframe_activated () = 0;
+
+	virtual
+	void
 	on_new_activated () = 0;
 
 	virtual
@@ -1560,26 +1818,6 @@ public:
 	on_info_activated () = 0;
 
 	virtual
-	void
-	on_examine_viewer_activated () = 0;
-
-	virtual
-	void
-	on_walk_viewer_activated () = 0;
-
-	virtual
-	void
-	on_fly_viewer_activated () = 0;
-
-	virtual
-	void
-	on_plane_viewer_activated () = 0;
-
-	virtual
-	void
-	on_none_viewer_activated () = 0;
-
-	virtual
 	bool
 	on_focus_out_event (GdkEventFocus* event) = 0;
 
@@ -1597,127 +1835,7 @@ public:
 
 	virtual
 	void
-	on_import_as_inline_toggled () = 0;
-
-	virtual
-	void
-	on_toolBar_toggled () = 0;
-
-	virtual
-	void
-	on_sideBar_toggled () = 0;
-
-	virtual
-	void
-	on_footer_toggled () = 0;
-
-	virtual
-	void
-	on_browser_toggled () = 0;
-
-	virtual
-	void
-	on_editor_toggled () = 0;
-
-	virtual
-	void
-	on_phong_activated () = 0;
-
-	virtual
-	void
-	on_gouraud_activated () = 0;
-
-	virtual
-	void
-	on_flat_activated () = 0;
-
-	virtual
-	void
-	on_wireframe_activated () = 0;
-
-	virtual
-	void
-	on_pointset_activated () = 0;
-
-	virtual
-	void
-	on_primitive_high_quality_activated () = 0;
-
-	virtual
-	void
-	on_primitive_medium_quality_activated () = 0;
-
-	virtual
-	void
-	on_primitive_low_quality_activated () = 0;
-
-	virtual
-	void
-	on_texture_high_quality_activated () = 0;
-
-	virtual
-	void
-	on_texture_medium_quality_activated () = 0;
-
-	virtual
-	void
-	on_texture_low_quality_activated () = 0;
-
-	virtual
-	void
-	on_backgrounds_toggled () = 0;
-
-	virtual
-	void
-	on_fogs_toggled () = 0;
-
-	virtual
-	void
-	on_lights_toggled () = 0;
-
-	virtual
-	void
-	on_proximity_sensors_toggled () = 0;
-
-	virtual
-	void
-	on_transform_sensors_toggled () = 0;
-
-	virtual
-	void
-	on_visibility_sensors_toggled () = 0;
-
-	virtual
-	void
-	on_viewpoints_toggled () = 0;
-
-	virtual
-	void
-	on_rubberband_toggled () = 0;
-
-	virtual
-	void
-	on_rendering_properties_toggled () = 0;
-
-	virtual
-	void
-	on_select_lowest_toggled () = 0;
-
-	virtual
-	void
-	on_follow_primary_selection_toggled () = 0;
-
-	virtual
-	void
-	on_grid_layout_tool_toggled () = 0;
-
-	virtual
-	void
-	on_angle_layout_tool_toggled () = 0;
-
-	virtual
-	void
-	on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
+	on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const Gtk::SelectionData & selection_data, guint info, guint time) = 0;
 
 	virtual
 	void
@@ -1741,7 +1859,7 @@ public:
 
 	virtual
 	void
-	on_location_icon_released (EntryIconPosition icon_position, const GdkEventButton* event) = 0;
+	on_location_icon_released (Gtk::EntryIconPosition icon_position, const GdkEventButton* event) = 0;
 
 	virtual
 	bool
@@ -1809,15 +1927,15 @@ public:
 
 	virtual
 	void
-	on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
+	on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const Gtk::SelectionData & selection_data, guint info, guint time) = 0;
 
 	virtual
 	void
-	on_browser_reordered (Widget* page, guint page_num) = 0;
+	on_browser_reordered (Gtk::Widget* page, guint page_num) = 0;
 
 	virtual
 	void
-	on_switch_browser (Widget* page, guint page_num) = 0;
+	on_switch_browser (Gtk::Widget* page, guint page_num) = 0;
 
 	virtual
 	void
@@ -1873,8 +1991,54 @@ private:
 	std::string                      filename;
 	Glib::RefPtr <Gtk::Builder>      m_builder;
 	Glib::RefPtr <Gtk::IconFactory>  m_IconFactory;
+	Glib::RefPtr <Gtk::ToggleAction> m_AngleLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_AngleToolAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_BackgroundsAction;
+	Glib::RefPtr <Gtk::RadioAction>  m_BrowserAction;
+	Glib::RefPtr <Gtk::RadioAction>  m_EditorAction;
+	Glib::RefPtr <Gtk::RadioAction>  m_FlatAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_FogsAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_FooterAction;
+	Glib::RefPtr <Gtk::RadioAction>  m_GouraudAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_GridLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_GridToolAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_ImportAsInlineAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_LightsAction;
+	Glib::RefPtr <Gtk::RadioAction>  m_PhongAction;
+	Glib::RefPtr <Gtk::RadioAction>  m_PointsetAction;
+	Glib::RefPtr <Gtk::RadioAction>  m_PrimitiveQualityHighAction;
+	Glib::RefPtr <Gtk::RadioAction>  m_PrimitiveQualityLowAction;
+	Glib::RefPtr <Gtk::RadioAction>  m_PrimitiveQualityMediumAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_ProximitySensorsAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_RenderingPropertiesAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_RubberbandAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_SelectLowestAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_SideBarAction;
+	Glib::RefPtr <Gtk::RadioAction>  m_TextureQualityHighAction;
+	Glib::RefPtr <Gtk::RadioAction>  m_TextureQualityLowAction;
+	Glib::RefPtr <Gtk::RadioAction>  m_TextureQualityMediumAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_ToolBarAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_TransformSensorsAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_ViewpointsAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_VisibilitySensorsAction;
+	Glib::RefPtr <Gtk::RadioAction>  m_WireframeAction;
+	Gtk::Image*                      m_ExamineViewerImage;
+	Gtk::Image*                      m_FileImportImage;
+	Gtk::Image*                      m_FileImportImage1;
+	Gtk::Image*                      m_FlyViewerImage;
+	Gtk::Menu*                       m_HistoryMenu;
+	Gtk::Image*                      m_NoneViewerImage;
+	Gtk::Image*                      m_OpenLocationImage;
+	Gtk::Image*                      m_OpenLocationImage1;
+	Gtk::Image*                      m_PlaneViewerImage;
+	Gtk::Image*                      m_WalkViewerImage;
+	Gtk::Menu*                       m_ViewerTypeMenu;
+	Gtk::ImageMenuItem*              m_ExamineViewerMenuItem;
+	Gtk::ImageMenuItem*              m_WalkViewerMenuItem;
+	Gtk::ImageMenuItem*              m_FlyViewerMenuItem;
+	Gtk::ImageMenuItem*              m_PlaneViewerMenuItem;
+	Gtk::ImageMenuItem*              m_NoneViewerMenuItem;
 	Gtk::Menu*                       m_BrowserMenu;
 	Gtk::MenuItem*                   m_BrowserFileMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserNewMenuItem;
@@ -1930,24 +2094,24 @@ private:
 	Gtk::CheckMenuItem*              m_BrowserSideBarMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserFooterMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserEnvironmentMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserBrowserMenuItem;
 	Gtk::RadioMenuItem*              m_BrowserEditorMenuItem;
-	Gtk::SeparatorMenuItem*          m_BrowserOptionsSeparator1;
+	Gtk::RadioMenuItem*              m_BrowserBrowserMenuItem;
+	Gtk::SeparatorMenuItem*          m_BrowserBrowserOptionsSeparator;
 	Gtk::ImageMenuItem*              m_BrowserMotionBlurMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserShadingMenuItem;
 	Gtk::RadioMenuItem*              m_BrowserPhongMenuItem;
 	Gtk::RadioMenuItem*              m_BrowserGouraudMenuItem;
 	Gtk::RadioMenuItem*              m_BrowserFlatMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserWireFrameMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserPointSetMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserWireframeMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserPointsetMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserPrimitiveQualityMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserPrimitiveHighQualityMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserPrimitiveMediumQualityMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserPrimitiveLowQualityMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserPrimitiveQualityHighMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserPrimitiveQualityMediumMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserPrimitiveQualityLowMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserTextureQualityMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserTextureHighQualityMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserTextureMediumQualityMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserTextureLowQualityMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserTextureQualityHighMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserTextureQualityMediumMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserTextureQualityLowMenuItem;
 	Gtk::MenuItem*                   m_BrowserShowHideEnvironmentalEffectsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserBackgroundsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserFogsMenuItem;
@@ -1982,22 +2146,6 @@ private:
 	Gtk::ImageMenuItem*              m_BrowserGridPropertiesMenuItem;
 	Gtk::MenuItem*                   m_BrowserHelpMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserInfoMenuItem;
-	Gtk::Image*                      m_ExamineViewerImage;
-	Gtk::Image*                      m_FileImportImage;
-	Gtk::Image*                      m_FileImportImage1;
-	Gtk::Image*                      m_FlyViewerImage;
-	Gtk::Menu*                       m_HistoryMenu;
-	Gtk::Image*                      m_NoneViewerImage;
-	Gtk::Image*                      m_OpenLocationImage;
-	Gtk::Image*                      m_OpenLocationImage1;
-	Gtk::Image*                      m_PlaneViewerImage;
-	Gtk::Image*                      m_WalkViewerImage;
-	Gtk::Menu*                       m_ViewerTypeMenu;
-	Gtk::ImageMenuItem*              m_ExamineViewerMenuItem;
-	Gtk::ImageMenuItem*              m_WalkViewerMenuItem;
-	Gtk::ImageMenuItem*              m_FlyViewerMenuItem;
-	Gtk::ImageMenuItem*              m_PlaneViewerMenuItem;
-	Gtk::ImageMenuItem*              m_NoneViewerMenuItem;
 	Gtk::Image*                      m_WorkspacesImage;
 	Gtk::Image*                      m_WorkspacesImage1;
 	Gtk::ApplicationWindow*          m_Window;
@@ -2059,24 +2207,24 @@ private:
 	Gtk::CheckMenuItem*              m_SideBarMenuItem;
 	Gtk::CheckMenuItem*              m_FooterMenuItem;
 	Gtk::ImageMenuItem*              m_EnvironmentMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserMenuItem;
 	Gtk::RadioMenuItem*              m_EditorMenuItem;
+	Gtk::RadioMenuItem*              m_BrowserMenuItem;
 	Gtk::SeparatorMenuItem*          m_BrowserOptionsSeparator;
 	Gtk::ImageMenuItem*              m_MotionBlurMenuItem;
 	Gtk::ImageMenuItem*              m_ShadingMenuItem;
 	Gtk::RadioMenuItem*              m_PhongMenuItem;
 	Gtk::RadioMenuItem*              m_GouraudMenuItem;
 	Gtk::RadioMenuItem*              m_FlatMenuItem;
-	Gtk::RadioMenuItem*              m_WireFrameMenuItem;
-	Gtk::RadioMenuItem*              m_PointSetMenuItem;
+	Gtk::RadioMenuItem*              m_WireframeMenuItem;
+	Gtk::RadioMenuItem*              m_PointsetMenuItem;
 	Gtk::ImageMenuItem*              m_PrimitiveQualityMenuItem;
-	Gtk::RadioMenuItem*              m_PrimitiveHighQualityMenuItem;
-	Gtk::RadioMenuItem*              m_PrimitiveMediumQualityMenuItem;
-	Gtk::RadioMenuItem*              m_PrimitiveLowQualityMenuItem;
+	Gtk::RadioMenuItem*              m_PrimitiveQualityHighMenuItem;
+	Gtk::RadioMenuItem*              m_PrimitiveQualityMediumMenuItem;
+	Gtk::RadioMenuItem*              m_PrimitiveQualityLowMenuItem;
 	Gtk::ImageMenuItem*              m_TextureQualityMenuItem;
-	Gtk::RadioMenuItem*              m_TextureHighQualityMenuItem;
-	Gtk::RadioMenuItem*              m_TextureMediumQualityMenuItem;
-	Gtk::RadioMenuItem*              m_TextureLowQualityMenuItem;
+	Gtk::RadioMenuItem*              m_TextureQualityHighMenuItem;
+	Gtk::RadioMenuItem*              m_TextureQualityMediumMenuItem;
+	Gtk::RadioMenuItem*              m_TextureQualityLowMenuItem;
 	Gtk::MenuItem*                   m_ShowHideEnvironmentalEffectsMenuItem;
 	Gtk::CheckMenuItem*              m_BackgroundsMenuItem;
 	Gtk::CheckMenuItem*              m_FogsMenuItem;

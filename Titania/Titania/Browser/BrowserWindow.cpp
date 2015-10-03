@@ -204,8 +204,8 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 
 	set_browserHistory ();
 
-	getBrowser () -> getBrowserOptions () -> rubberBand ()   = getRubberbandMenuItem () .get_active ();
-	getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesMenuItem () .get_active ();
+	getBrowser () -> getBrowserOptions () -> rubberBand ()   = getRubberbandAction () -> get_active ();
+	getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesAction () -> get_active ();
 }
 
 void
@@ -221,32 +221,32 @@ BrowserWindow::set_scene ()
 
 	// View Menu
 
-	getBackgroundsMenuItem ()       .set_active (true);
-	getFogsMenuItem ()              .set_active (true);
-	getLightsMenuItem ()            .set_active (false);
-	getProximitySensorsMenuItem ()  .set_active (false);
-	getTransformSensorsMenuItem ()  .set_active (false);
-	getVisibilitySensorsMenuItem () .set_active (false);
-	getViewpointsMenuItem ()        .set_active (false);
+	getBackgroundsAction ()       -> set_active (true);
+	getFogsAction ()              -> set_active (true);
+	getLightsAction ()            -> set_active (false);
+	getProximitySensorsAction ()  -> set_active (false);
+	getTransformSensorsAction ()  -> set_active (false);
+	getVisibilitySensorsAction () -> set_active (false);
+	getViewpointsAction ()        -> set_active (false);
 	
 	// Layout Menu
 
 	try
 	{
-		getGridLayoutToolMenuItem () .set_active (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/Grid/enabled") .at (0));
+		getGridLayoutToolAction () -> set_active (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/Grid/enabled") .at (0));
 	}
 	catch (...)
 	{
-		getGridLayoutToolMenuItem () .set_active (false);
+		getGridLayoutToolAction () -> set_active (false);
 	}
 
 	try
 	{
-		getAngleLayoutToolMenuItem () .set_active (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/AngleGrid/enabled") .at (0));
+		getAngleLayoutToolAction () -> set_active (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/AngleGrid/enabled") .at (0));
 	}
 	catch (...)
 	{
-		getAngleLayoutToolMenuItem () .set_active (false);
+		getAngleLayoutToolAction () -> set_active (false);
 	}
 
 	changing = false;
@@ -340,7 +340,7 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	{
 		if (X3D::x3d_cast <X3D::X3DLightNode*> (node))
 		{
-			getLightsMenuItem () .set_active (true);
+			getLightsAction () -> set_active (true);
 			break;
 		}
 	}
@@ -349,7 +349,7 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	{
 		if (X3D::x3d_cast <X3D::ProximitySensor*> (node))
 		{
-			getProximitySensorsMenuItem () .set_active (true);
+			getProximitySensorsAction () -> set_active (true);
 			break;
 		}
 	}
@@ -358,7 +358,7 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	{
 		if (X3D::x3d_cast <X3D::TransformSensor*> (node))
 		{
-			getTransformSensorsMenuItem () .set_active (true);
+			getTransformSensorsAction () -> set_active (true);
 			break;
 		}
 	}
@@ -367,7 +367,7 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	{
 		if (X3D::x3d_cast <X3D::VisibilitySensor*> (node))
 		{
-			getVisibilitySensorsMenuItem () .set_active (true);
+			getVisibilitySensorsAction () -> set_active (true);
 			break;
 		}
 	}
@@ -376,7 +376,7 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	{
 		if (X3D::x3d_cast <X3D::X3DViewpointNode*> (node))
 		{
-			getViewpointsMenuItem () .set_active (true);
+			getViewpointsAction () -> set_active (true);
 			break;
 		}
 	}
@@ -549,7 +549,7 @@ BrowserWindow::on_import_activated ()
 void
 BrowserWindow::on_import_as_inline_toggled ()
 {
-	getConfig () .setItem ("importAsInline", getImportAsInlineMenuItem () .get_active ());
+	getConfig () .setItem ("importAsInline", getImportAsInlineAction () -> get_active ());
 }
 
 void
@@ -559,7 +559,7 @@ BrowserWindow::on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragConte
                                               guint info,
                                               guint time)
 {
-	on_drag_data_received (context, selection_data, time, getBrowserMenuItem () .get_active ());
+	on_drag_data_received (context, selection_data, time, getBrowserAction () -> get_active ());
 }
 
 void
@@ -1013,39 +1013,39 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 // View menu
 
 void
-BrowserWindow::on_toolBar_toggled ()
+BrowserWindow::on_tool_bar_toggled ()
 {
-	getConfig () .setItem ("toolBar", getToolBarMenuItem () .get_active ());
-	getToolBar () .set_visible (getToolBarMenuItem () .get_active ());
+	getConfig () .setItem ("toolBar", getToolBarAction () -> get_active ());
+	getToolBar () .set_visible (getToolBarAction () -> get_active ());
 }
 
 void
-BrowserWindow::on_sideBar_toggled ()
+BrowserWindow::on_side_bar_toggled ()
 {
-	getConfig () .setItem ("sideBar", getSideBarMenuItem () .get_active ());
-	getSideBar () .set_visible (getSideBarMenuItem () .get_active ());
+	getConfig () .setItem ("sideBar", getSideBarAction () -> get_active ());
+	getSideBar () .set_visible (getSideBarAction () -> get_active ());
 }
 
 void
 BrowserWindow::on_footer_toggled ()
 {
-	getConfig () .setItem ("footer", getFooterMenuItem  () .get_active ());
-	getFooter () .set_visible (getFooterMenuItem () .get_active ());
+	getConfig () .setItem ("footer", getFooterAction () -> get_active ());
+	getFooter () .set_visible (getFooterAction () -> get_active ());
 }
 
 void
-BrowserWindow::on_browser_toggled ()
+BrowserWindow::on_browser_activated (const Glib::RefPtr <Gtk::RadioAction> & current)
 {
-	if (getBrowserMenuItem () .get_active ())
+	if (getBrowserAction () -> get_active ())
 	{
 		isEditor (false);
 		isLive (true);
 
-		if (not getBackgroundsMenuItem () .get_active ())
-			getBackgroundsMenuItem () .set_active (true);
+		if (not getBackgroundsAction () -> get_active ())
+			getBackgroundsAction () -> set_active (true);
 
-		if (not getFogsMenuItem () .get_active ())
-			getFogsMenuItem () .set_active (true);
+		if (not getFogsAction () -> get_active ())
+			getFogsAction () -> set_active (true);
 
 		on_hide_all_object_icons_activated ();
 		on_show_all_objects_activated ();
@@ -1053,9 +1053,9 @@ BrowserWindow::on_browser_toggled ()
 }
 
 void
-BrowserWindow::on_editor_toggled ()
+BrowserWindow::on_editor_activated (const Glib::RefPtr <Gtk::RadioAction> & current)
 {
-	if (getEditorMenuItem () .get_active ())
+	if (getEditorAction () -> get_active ())
 		isEditor (true);
 }
 
@@ -1078,6 +1078,21 @@ BrowserWindow::isEditor (const bool enabled)
 	getSelectionMenuItem ()                    .set_visible (enabled);
 	getObjectMenuItem ()                       .set_visible (enabled);
 	getLayoutMenuItem ()                       .set_visible (enabled);
+
+	getBrowserOpenRecentMenuItem ()                   .set_visible (enabled);
+	getBrowserImportMenuItem ()                       .set_visible (enabled);
+	getBrowserImportAsInlineMenuItem ()               .set_visible (enabled);
+	getBrowserSaveMenuItem ()                         .set_visible (enabled);
+	getBrowserRemoveUnusedPrototypesMenuItem ()       .set_visible (enabled);
+	getBrowserEditMenuItem ()                         .set_visible (enabled);
+	getBrowserBrowserOptionsSeparator ()              .set_visible (enabled);
+	getBrowserMotionBlurMenuItem ()                   .set_visible (enabled);
+	getBrowserShadingMenuItem ()                      .set_visible (enabled);
+	getBrowserShowHideEnvironmentalEffectsMenuItem () .set_visible (enabled);
+	getBrowserObjectIconsMenuItem ()                  .set_visible (enabled);
+	getBrowserSelectionMenuItem ()                    .set_visible (enabled);
+	getBrowserObjectMenuItem ()                       .set_visible (enabled);
+	getBrowserLayoutMenuItem ()                       .set_visible (enabled);
 
 	getLocationBar () .set_visible (not enabled);
 	getEditToolBar () .set_visible (enabled);
@@ -1118,35 +1133,35 @@ BrowserWindow::on_motion_blur_activated ()
 void
 BrowserWindow::on_phong_activated ()
 {
-	if (getPhongMenuItem () .get_active ())
+	if (getPhongAction () -> get_active ())
 		on_shading_activated ("PHONG");
 }
 
 void
 BrowserWindow::on_gouraud_activated ()
 {
-	if (getGouraudMenuItem () .get_active ())
+	if (getGouraudAction () -> get_active ())
 		on_shading_activated ("GOURAUD");
 }
 
 void
 BrowserWindow::on_flat_activated ()
 {
-	if (getFlatMenuItem () .get_active ())
+	if (getFlatAction () -> get_active ())
 		on_shading_activated ("FLAT");
 }
 
 void
 BrowserWindow::on_wireframe_activated ()
 {
-	if (getWireFrameMenuItem () .get_active ())
+	if (getWireframeAction () -> get_active ())
 		on_shading_activated ("WIREFRAME");
 }
 
 void
 BrowserWindow::on_pointset_activated ()
 {
-	if (getPointSetMenuItem () .get_active ())
+	if (getPointsetAction () -> get_active ())
 		on_shading_activated ("POINTSET");
 }
 
@@ -1168,19 +1183,19 @@ BrowserWindow::set_shading (const X3D::SFString & value)
 	changing = true;
 
 	if (value == "PHONG")
-		getPhongMenuItem () .set_active (true);
+		getPhongAction () -> set_active (true);
 
 	else if (value == "FLAT")
-		getFlatMenuItem () .set_active (true);
+		getFlatAction () -> set_active (true);
 
 	else if (value == "WIREFRAME")
-		getWireFrameMenuItem () .set_active (true);
+		getWireframeAction () -> set_active (true);
 
 	else if (value == "POINTSET")
-		getPointSetMenuItem () .set_active (true);
+		getPointsetAction () -> set_active (true);
 
 	else
-		getGouraudMenuItem () .set_active (true);
+		getGouraudAction () -> set_active (true);
 
 	changing = false;
 }
@@ -1195,23 +1210,23 @@ BrowserWindow::connectShading (const X3D::SFString & field)
 // Primitive Quality
 
 void
-BrowserWindow::on_primitive_high_quality_activated ()
+BrowserWindow::on_primitive_quality_high_activated ()
 {
-	if (getPrimitiveHighQualityMenuItem () .get_active ())
+	if (getPrimitiveQualityHighAction () -> get_active ())
 		on_primitiveQuality_activated ("HIGH");
 }
 
 void
-BrowserWindow::on_primitive_medium_quality_activated ()
+BrowserWindow::on_primitive_quality_medium_activated ()
 {
-	if (getPrimitiveMediumQualityMenuItem () .get_active ())
+	if (getPrimitiveQualityMediumAction () -> get_active ())
 		on_primitiveQuality_activated ("MEDIUM");
 }
 
 void
-BrowserWindow::on_primitive_low_quality_activated ()
+BrowserWindow::on_primitive_quality_low_activated ()
 {
-	if (getPrimitiveLowQualityMenuItem () .get_active ())
+	if (getPrimitiveQualityLowAction () -> get_active ())
 		on_primitiveQuality_activated ("LOW");
 }
 
@@ -1233,13 +1248,13 @@ BrowserWindow::set_primitiveQuality (const X3D::SFString & value)
 	changing = true;
 
 	if (value == "HIGH")
-		getPrimitiveHighQualityMenuItem () .set_active (true);
+		getPrimitiveQualityHighAction () -> set_active (true);
 
 	else if (value == "LOW")
-		getPrimitiveLowQualityMenuItem () .set_active (true);
+		getPrimitiveQualityLowAction () -> set_active (true);
 
 	else
-		getPrimitiveMediumQualityMenuItem () .set_active (true);
+		getPrimitiveQualityMediumAction () -> set_active (true);
 
 	changing = false;
 }
@@ -1254,23 +1269,23 @@ BrowserWindow::connectPrimitiveQuality (const X3D::SFString & field)
 // Texture Quality
 
 void
-BrowserWindow::on_texture_high_quality_activated ()
+BrowserWindow::on_texture_quality_high_activated ()
 {
-	if (getTextureHighQualityMenuItem () .get_active ())
+	if (getTextureQualityHighAction () -> get_active ())
 		on_textureQuality_activated ("HIGH");
 }
 
 void
-BrowserWindow::on_texture_medium_quality_activated ()
+BrowserWindow::on_texture_quality_medium_activated ()
 {
-	if (getTextureMediumQualityMenuItem () .get_active ())
+	if (getTextureQualityMediumAction () -> get_active ())
 		on_textureQuality_activated ("MEDIUM");
 }
 
 void
-BrowserWindow::on_texture_low_quality_activated ()
+BrowserWindow::on_texture_quality_low_activated ()
 {
-	if (getTextureLowQualityMenuItem () .get_active ())
+	if (getTextureQualityLowAction () -> get_active ())
 		on_textureQuality_activated ("LOW");
 }
 
@@ -1292,13 +1307,13 @@ BrowserWindow::set_textureQuality (const X3D::SFString & value)
 	changing = true;
 
 	if (value == "HIGH")
-		getTextureHighQualityMenuItem () .set_active (true);
+		getTextureQualityHighAction () -> set_active (true);
 
 	else if (value == "LOW")
-		getTextureLowQualityMenuItem () .set_active (true);
+		getTextureQualityLowAction () -> set_active (true);
 
 	else
-		getTextureMediumQualityMenuItem () .set_active (true);
+		getTextureQualityMediumAction () -> set_active (true);
 
 	changing = false;
 }
@@ -1318,7 +1333,7 @@ BrowserWindow::on_backgrounds_toggled ()
 	if (changing)
 		return;
 
-	const bool hidden = not getBackgroundsMenuItem () .get_active ();
+	const bool hidden = not getBackgroundsAction () -> get_active ();
 
 	X3D::traverse (getExecutionContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
 	               {
@@ -1339,7 +1354,7 @@ BrowserWindow::on_fogs_toggled ()
 	if (changing)
 		return;
 
-	const bool hidden = not getFogsMenuItem () .get_active ();
+	const bool hidden = not getFogsAction () -> get_active ();
 
 	X3D::traverse (getExecutionContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
 	               {
@@ -1362,7 +1377,7 @@ BrowserWindow::on_lights_toggled ()
 	if (changing)
 		return;
 
-	if (getLightsMenuItem () .get_active ())
+	if (getLightsAction () -> get_active ())
 	{
 		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
@@ -1407,7 +1422,7 @@ BrowserWindow::on_proximity_sensors_toggled ()
 	if (changing)
 		return;
 
-	if (getProximitySensorsMenuItem () .get_active ())
+	if (getProximitySensorsAction () -> get_active ())
 	{
 		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
@@ -1443,7 +1458,7 @@ BrowserWindow::on_transform_sensors_toggled ()
 	if (changing)
 		return;
 
-	if (getTransformSensorsMenuItem () .get_active ())
+	if (getTransformSensorsAction () -> get_active ())
 	{
 		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
@@ -1479,7 +1494,7 @@ BrowserWindow::on_visibility_sensors_toggled ()
 	if (changing)
 		return;
 
-	if (getVisibilitySensorsMenuItem () .get_active ())
+	if (getVisibilitySensorsAction () -> get_active ())
 	{
 		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
@@ -1515,7 +1530,7 @@ BrowserWindow::on_viewpoints_toggled ()
 	if (changing)
 		return;
 
-	if (getViewpointsMenuItem () .get_active ())
+	if (getViewpointsAction () -> get_active ())
 	{
 		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
@@ -1557,27 +1572,27 @@ BrowserWindow::on_viewpoints_toggled ()
 void
 BrowserWindow::on_hide_all_object_icons_activated ()
 {
-	if (getLightsMenuItem () .get_active ())
-		getLightsMenuItem () .set_active (false);
+	if (getLightsAction () -> get_active ())
+		getLightsAction () -> set_active (false);
 
-	if (getProximitySensorsMenuItem () .get_active ())
-		getProximitySensorsMenuItem () .set_active (false);
+	if (getProximitySensorsAction () -> get_active ())
+		getProximitySensorsAction () -> set_active (false);
 
-	if (getTransformSensorsMenuItem () .get_active ())
-		getTransformSensorsMenuItem () .set_active (false);
+	if (getTransformSensorsAction () -> get_active ())
+		getTransformSensorsAction () -> set_active (false);
 
-	if (getVisibilitySensorsMenuItem () .get_active ())
-		getVisibilitySensorsMenuItem () .set_active (false);
+	if (getVisibilitySensorsAction () -> get_active ())
+		getVisibilitySensorsAction () -> set_active (false);
 
-	if (getViewpointsMenuItem () .get_active ())
-		getViewpointsMenuItem () .set_active (false);
+	if (getViewpointsAction () -> get_active ())
+		getViewpointsAction () -> set_active (false);
 }
 
 void
 BrowserWindow::on_rubberband_toggled ()
 {
-	getConfig () .setItem ("rubberBand", getRubberbandMenuItem () .get_active ());
-	getBrowser () -> getBrowserOptions () -> rubberBand () = getRubberbandMenuItem () .get_active ();
+	getConfig () .setItem ("rubberBand", getRubberbandAction () -> get_active ());
+	getBrowser () -> getBrowserOptions () -> rubberBand () = getRubberbandAction () -> get_active ();
 }
 
 // RenderingProperties
@@ -1585,8 +1600,8 @@ BrowserWindow::on_rubberband_toggled ()
 void
 BrowserWindow::on_rendering_properties_toggled ()
 {
-	getConfig () .setItem ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
-	getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesMenuItem () .get_active ();
+	getConfig () .setItem ("renderingProperties", getRenderingPropertiesAction () -> get_active ());
+	getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesAction () -> get_active ();
 }
 
 // Fullscreen
@@ -1594,8 +1609,10 @@ BrowserWindow::on_rendering_properties_toggled ()
 void
 BrowserWindow::on_fullscreen_activated ()
 {
-	getFullScreenMenuItem ()   .set_visible (false);
-	getUnFullScreenMenuItem () .set_visible (true);
+	getFullScreenMenuItem ()          .set_visible (false);
+	getUnFullScreenMenuItem ()        .set_visible (true);
+	getBrowserFullScreenMenuItem ()   .set_visible (false);
+	getBrowserUnFullScreenMenuItem () .set_visible (true);
 	getWindow () .fullscreen ();
 }
 
@@ -1710,17 +1727,17 @@ BrowserWindow::on_show_all_objects_activated ()
 void
 BrowserWindow::on_select_lowest_toggled ()
 {
-	getConfig () .setItem ("selectLowest", getSelectLowestMenuItem () .get_active ());
+	getConfig () .setItem ("selectLowest", getSelectLowestAction () -> get_active ());
 
-	getSelection () -> setSelectLowest (getSelectLowestMenuItem () .get_active ());
+	getSelection () -> setSelectLowest (getSelectLowestAction () -> get_active ());
 }
 
 void
 BrowserWindow::on_follow_primary_selection_toggled ()
 {
-	getConfig () .setItem ("followPrimarySelection", getFollowPrimarySelectionMenuItem () .get_active ());
+	getConfig () .setItem ("followPrimarySelection", getFollowPrimarySelectionAction () -> get_active ());
 
-	if (getFollowPrimarySelectionMenuItem () .get_active ())
+	if (getFollowPrimarySelectionAction () -> get_active ())
 		getSelection () -> getPickedTime () .addInterest (this, &BrowserWindow::set_touchTime);
 
 	else
@@ -1764,13 +1781,13 @@ BrowserWindow::on_grid_layout_tool_toggled ()
 	changing = true;
 
 	hasAngleTool (false);
-	getAngleLayoutToolMenuItem () .set_active (false);
+	getAngleLayoutToolAction () -> set_active (false);
 
 	changing = false;
 
 	// Toggle grid.
 
-	hasGridTool (getGridLayoutToolMenuItem () .get_active ());
+	hasGridTool (getGridLayoutToolAction () -> get_active ());
 }
 
 void
@@ -1782,13 +1799,13 @@ BrowserWindow::on_angle_layout_tool_toggled ()
 	changing = true;
 
 	hasGridTool (false);
-	getGridLayoutToolMenuItem () .set_active (false);
+	getGridLayoutToolAction () -> set_active (false);
 
 	changing = false;
 
 	// Toggle angle grid.
 
-	hasAngleTool (getAngleLayoutToolMenuItem () .get_active ());
+	hasAngleTool (getAngleLayoutToolAction () -> get_active ());
 }
 
 void
@@ -2059,7 +2076,7 @@ BrowserWindow::on_hammer_clicked ()
 void
 BrowserWindow::set_dashboard (const bool value)
 {
-	getDashboard () .set_visible (getEditorMenuItem () .get_active () or value);
+	getDashboard () .set_visible (getEditorAction () -> get_active () or value);
 }
 
 void
@@ -2496,7 +2513,7 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 void
 BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::ViewerType> & availableViewers)
 {
-	const bool editor = getEditorMenuItem () .get_active () and getArrowButton () .get_active ();
+	const bool editor = getEditorAction () -> get_active () and getArrowButton () .get_active ();
 
 	bool examine = editor;
 	bool walk    = editor;

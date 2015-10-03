@@ -57,8 +57,6 @@
 namespace titania {
 namespace puck {
 
-using namespace Gtk;
-
 class X3DColorPerVertexEditorInterface :
 	public X3DEditorInterface
 {

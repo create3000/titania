@@ -57,8 +57,6 @@
 namespace titania {
 namespace puck {
 
-using namespace Gtk;
-
 class X3DNodePropertiesEditorInterface :
 	public X3DEditorInterface
 {
@@ -493,11 +491,11 @@ public:
 
 	virtual
 	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const Gtk::SelectionData & selection_data, guint info, guint time) = 0;
 
 	virtual
 	void
-	on_user_defined_field_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
+	on_user_defined_field_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
 
 	virtual
 	void
@@ -517,7 +515,7 @@ public:
 
 	virtual
 	void
-	on_imported_toggled (const Glib::ustring &) = 0;
+	on_imported_toggled (const Glib::ustring & path) = 0;
 
 	virtual
 	void
@@ -525,7 +523,7 @@ public:
 
 	virtual
 	void
-	on_exported_node_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
+	on_exported_node_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
 
 	virtual
 	void

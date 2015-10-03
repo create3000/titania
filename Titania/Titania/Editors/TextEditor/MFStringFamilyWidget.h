@@ -176,7 +176,7 @@ MFStringFamilyWidget::openFontDialog (const std::string & defaultValue, std::str
 {
 	// Choose new URL
 
-	fontChooserDialog .reset (new FontChooserDialog ());
+	fontChooserDialog .reset (new Gtk::FontChooserDialog ());
 
 	fontChooserDialog -> set_transient_for (userInterface -> getWindow ());
 	fontChooserDialog -> set_modal (true);
