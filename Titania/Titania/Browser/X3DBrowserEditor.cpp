@@ -99,13 +99,13 @@ X3DBrowserEditor::restoreSession ()
 		getImportAsInlineAction () -> set_active (getConfig () .getBoolean ("importAsInline"));
 
 	// Workspace
-	if (not getConfig () .hasItem ("workspace"))
-	   getConfig () .setItem ("workspace", "EDITOR");
+	if (not getConfig () .hasItem ("environment"))
+	   getConfig () .setItem ("environment", 1);
 
-	if (getConfig () .getString ("workspace") == "EDITOR")
-		getEditorMenuItem () .set_active (true);
+	if (getConfig () .getInteger ("environment") == 1)
+		getEditorAction () -> set_active (true);
 	else
-		getBrowserMenuItem () .set_active (true);
+		getBrowserAction () -> set_active (true);
 
 	// SelectLowest
 	if (getConfig () .hasItem ("selectLowest"))
@@ -247,7 +247,7 @@ void
 X3DBrowserEditor::isEditor (const bool value)
 {
 	enabled = value;
-	getConfig () .setItem ("workspace", value ? "EDITOR" : "BROWSER");
+	getConfig () .setItem ("environment", value ? 1 : 0);
 }
 
 bool

@@ -88,15 +88,13 @@
   <object class="GtkRadioAction" id="EditorAction">
     <property name="label" translatable="yes">_Editor</property>
     <property name="draw_as_radio">True</property>
-    <property name="active">True</property>
     <property name="value">1</property>
-    <signal name="changed" handler="on_editor_activated" swapped="no"/>
+    <signal name="changed" handler="on_environment_changed" swapped="no"/>
   </object>
   <object class="GtkRadioAction" id="BrowserAction">
     <property name="label" translatable="yes">_Browser</property>
     <property name="draw_as_radio">True</property>
     <property name="group">EditorAction</property>
-    <signal name="changed" handler="on_browser_activated" swapped="no"/>
   </object>
   <object class="GtkImage" id="ExamineViewerImage">
     <property name="visible">True</property>
@@ -116,12 +114,6 @@
     <property name="icon_name">document-import</property>
     <property name="icon_size">1</property>
   </object>
-  <object class="GtkRadioAction" id="FlatAction">
-    <property name="label" translatable="yes">_Flat</property>
-    <property name="draw_as_radio">True</property>
-    <property name="value">2</property>
-    <signal name="activate" handler="on_flat_activated" swapped="no"/>
-  </object>
   <object class="GtkImage" id="FlyViewerImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -139,13 +131,6 @@
   <object class="GtkToggleAction" id="FooterAction">
     <property name="label" translatable="yes">Footer</property>
     <signal name="toggled" handler="on_footer_toggled" swapped="no"/>
-  </object>
-  <object class="GtkRadioAction" id="GouraudAction">
-    <property name="label" translatable="yes">_Gouraud</property>
-    <property name="draw_as_radio">True</property>
-    <property name="active">True</property>
-    <property name="value">3</property>
-    <signal name="activate" handler="on_gouraud_activated" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="GridLayoutToolAction">
     <property name="label" translatable="yes">Activate _Grid Layout Tool</property>
@@ -198,7 +183,30 @@
     <property name="label" translatable="yes">_Phong</property>
     <property name="draw_as_radio">True</property>
     <property name="value">4</property>
-    <signal name="activate" handler="on_phong_activated" swapped="no"/>
+    <signal name="changed" handler="on_shading_changed" swapped="no"/>
+  </object>
+  <object class="GtkRadioAction" id="FlatAction">
+    <property name="label" translatable="yes">_Flat</property>
+    <property name="draw_as_radio">True</property>
+    <property name="value">2</property>
+    <property name="group">PhongAction</property>
+  </object>
+  <object class="GtkRadioAction" id="GouraudAction">
+    <property name="label" translatable="yes">_Gouraud</property>
+    <property name="draw_as_radio">True</property>
+    <property name="value">3</property>
+    <property name="group">PhongAction</property>
+  </object>
+  <object class="GtkRadioAction" id="PointsetAction">
+    <property name="label" translatable="yes">_Pointset</property>
+    <property name="draw_as_radio">True</property>
+    <property name="group">PhongAction</property>
+  </object>
+  <object class="GtkRadioAction" id="WireframeAction">
+    <property name="label" translatable="yes">_Wireframe</property>
+    <property name="draw_as_radio">True</property>
+    <property name="value">1</property>
+    <property name="group">PhongAction</property>
   </object>
   <object class="GtkImage" id="PlaneViewerImage">
     <property name="visible">True</property>
@@ -206,28 +214,22 @@
     <property name="stock">PlaneViewer</property>
     <property name="icon_size">1</property>
   </object>
-  <object class="GtkRadioAction" id="PointsetAction">
-    <property name="label" translatable="yes">_Pointset</property>
-    <property name="draw_as_radio">True</property>
-    <signal name="activate" handler="on_pointset_activated" swapped="no"/>
-  </object>
   <object class="GtkRadioAction" id="PrimitiveQualityHighAction">
     <property name="label" translatable="yes">_High</property>
     <property name="draw_as_radio">True</property>
     <property name="value">2</property>
-    <signal name="activate" handler="on_primitive_quality_high_activated" swapped="no"/>
+    <signal name="changed" handler="on_primitive_quality_changed" swapped="no"/>
   </object>
   <object class="GtkRadioAction" id="PrimitiveQualityLowAction">
     <property name="label" translatable="yes">_Low</property>
     <property name="draw_as_radio">True</property>
-    <signal name="activate" handler="on_primitive_quality_low_activated" swapped="no"/>
+    <property name="group">PrimitiveQualityHighAction</property>
   </object>
   <object class="GtkRadioAction" id="PrimitiveQualityMediumAction">
     <property name="label" translatable="yes">_Medium</property>
     <property name="draw_as_radio">True</property>
-    <property name="active">True</property>
     <property name="value">1</property>
-    <signal name="activate" handler="on_primitive_quality_medium_activated" swapped="no"/>
+    <property name="group">PrimitiveQualityHighAction</property>
   </object>
   <object class="GtkToggleAction" id="ProximitySensorsAction">
     <property name="label" translatable="yes">_ProximitySensors</property>
@@ -253,19 +255,18 @@
     <property name="label" translatable="yes">_High</property>
     <property name="draw_as_radio">True</property>
     <property name="value">2</property>
-    <signal name="activate" handler="on_texture_quality_high_activated" swapped="no"/>
+    <signal name="changed" handler="on_texture_quality_changed" swapped="no"/>
   </object>
   <object class="GtkRadioAction" id="TextureQualityLowAction">
     <property name="label" translatable="yes">_Low</property>
     <property name="draw_as_radio">True</property>
-    <signal name="activate" handler="on_texture_quality_low_activated" swapped="no"/>
+    <property name="group">TextureQualityHighAction</property>
   </object>
   <object class="GtkRadioAction" id="TextureQualityMediumAction">
     <property name="label" translatable="yes">_Medium</property>
     <property name="draw_as_radio">True</property>
-    <property name="active">True</property>
     <property name="value">1</property>
-    <signal name="activate" handler="on_texture_quality_medium_activated" swapped="no"/>
+    <property name="group">TextureQualityHighAction</property>
   </object>
   <object class="GtkToggleAction" id="ToolBarAction">
     <property name="label" translatable="yes">Toolbar</property>
@@ -348,11 +349,155 @@
       </object>
     </child>
   </object>
-  <object class="GtkRadioAction" id="WireframeAction">
-    <property name="label" translatable="yes">_Wireframe</property>
-    <property name="draw_as_radio">True</property>
-    <property name="value">1</property>
-    <signal name="activate" handler="on_wireframe_activated" swapped="no"/>
+  <object class="GtkImage" id="WorkspacesImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Environment</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="WorkspacesImage1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Environment</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image10">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Grid</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image11">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Droplet</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image13">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Combine</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image14">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">PaintBrush</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image15">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Shading</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image16">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">TextureCoordinate</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image17">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">TransformToZero</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image18">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">PrimitiveQuality</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image19">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">TextureQuality</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image21">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Recent</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image22">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">document-export</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image23">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-clear</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image24">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">GroupNodes</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image25">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">UngroupNodes</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image26">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Droplet</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image27">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Shading</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image28">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">PrimitiveQuality</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image29">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">TextureQuality</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image30">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Combine</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image31">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">TransformToZero</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image32">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">TextureCoordinate</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image33">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">PaintBrush</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image34">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Grid</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkMenu" id="BrowserMenu">
     <property name="visible">True</property>
@@ -999,7 +1144,6 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">_Editor</property>
                         <property name="use_underline">True</property>
-                        <property name="active">True</property>
                         <property name="draw_as_radio">True</property>
                         <accelerator key="b" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                       </object>
@@ -1012,7 +1156,6 @@
                         <property name="label" translatable="yes">_Browser</property>
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
-                        <property name="group">BrowserEditorMenuItem</property>
                         <accelerator key="b" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
@@ -1067,7 +1210,6 @@
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <property name="draw_as_radio">True</property>
-                        <property name="group">BrowserPhongMenuItem</property>
                         <accelerator key="4" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
@@ -1079,7 +1221,6 @@
                         <property name="label" translatable="yes">_Flat</property>
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
-                        <property name="group">BrowserPhongMenuItem</property>
                         <accelerator key="3" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
@@ -1091,7 +1232,6 @@
                         <property name="label" translatable="yes">_Wireframe</property>
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
-                        <property name="group">BrowserPhongMenuItem</property>
                         <accelerator key="2" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
@@ -1103,7 +1243,6 @@
                         <property name="label" translatable="yes">_Pointset</property>
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
-                        <property name="group">BrowserPhongMenuItem</property>
                         <accelerator key="1" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
@@ -1142,7 +1281,6 @@
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <property name="draw_as_radio">True</property>
-                        <property name="group">BrowserPrimitiveQualityHighMenuItem</property>
                         <accelerator key="F2" signal="activate"/>
                       </object>
                     </child>
@@ -1154,7 +1292,6 @@
                         <property name="label" translatable="yes">_Low</property>
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
-                        <property name="group">BrowserPrimitiveQualityHighMenuItem</property>
                         <accelerator key="F1" signal="activate"/>
                       </object>
                     </child>
@@ -1193,7 +1330,6 @@
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <property name="draw_as_radio">True</property>
-                        <property name="group">BrowserTextureQualityHighMenuItem</property>
                         <accelerator key="F2" signal="activate"/>
                       </object>
                     </child>
@@ -1205,7 +1341,6 @@
                         <property name="label" translatable="yes">_Low</property>
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
-                        <property name="group">BrowserTextureQualityHighMenuItem</property>
                         <accelerator key="F1" signal="activate"/>
                       </object>
                     </child>
@@ -1621,156 +1756,6 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="WorkspacesImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Environment</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="WorkspacesImage1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Environment</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image10">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Grid</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image11">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Droplet</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image13">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Combine</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image14">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">PaintBrush</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image15">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Shading</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image16">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">TextureCoordinate</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image17">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">TransformToZero</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image18">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">PrimitiveQuality</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image19">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">TextureQuality</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image21">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Recent</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image22">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">document-export</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image23">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-clear</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image24">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">GroupNodes</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image25">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">UngroupNodes</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image26">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Droplet</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image27">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Shading</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image28">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">PrimitiveQuality</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image29">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">TextureQuality</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image30">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Combine</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image31">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">TransformToZero</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image32">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">TextureCoordinate</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image33">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">PaintBrush</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image34">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Grid</property>
-    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image4">
     <property name="visible">True</property>
@@ -2504,7 +2489,6 @@
                                         <property name="label" translatable="yes">_Browser</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
-                                        <property name="group">EditorMenuItem</property>
                                         <accelerator key="b" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                       </object>
                                     </child>

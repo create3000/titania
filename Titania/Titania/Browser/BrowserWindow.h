@@ -355,11 +355,7 @@ private:
 
 	virtual
 	void
-	on_browser_activated (const Glib::RefPtr <Gtk::RadioAction> &) final override;
-
-	virtual
-	void
-	on_editor_activated (const Glib::RefPtr <Gtk::RadioAction> &) final override;
+	on_environment_changed (const Glib::RefPtr <Gtk::RadioAction> &) final override;
 
 	virtual
 	void
@@ -369,26 +365,10 @@ private:
 
 	virtual
 	void
-	on_phong_activated () final override;
-
-	virtual
-	void
-	on_gouraud_activated () final override;
-
-	virtual
-	void
-	on_flat_activated () final override;
-
-	virtual
-	void
-	on_wireframe_activated () final override;
-
-	virtual
-	void
-	on_pointset_activated () final override;
+	on_shading_changed (const Glib::RefPtr <Gtk::RadioAction> &) final override;
 
 	void
-	on_shading_activated (const std::string &);
+	on_shading_changed (const std::string &);
 
 	void
 	set_shading (const X3D::SFString &);
@@ -400,18 +380,10 @@ private:
 
 	virtual
 	void
-	on_primitive_quality_high_activated () final override;
-
-	virtual
-	void
-	on_primitive_quality_medium_activated () final override;
-
-	virtual
-	void
-	on_primitive_quality_low_activated () final override;
+	on_primitive_quality_changed (const Glib::RefPtr <Gtk::RadioAction> &) final override;
 
 	void
-	on_primitiveQuality_activated (const std::string &);
+	on_primitive_quality_changed (const std::string &);
 
 	void
 	set_primitiveQuality (const X3D::SFString &);
@@ -423,18 +395,10 @@ private:
 
 	virtual
 	void
-	on_texture_quality_high_activated () final override;
-
-	virtual
-	void
-	on_texture_quality_medium_activated () final override;
-
-	virtual
-	void
-	on_texture_quality_low_activated () final override;
+	on_texture_quality_changed (const Glib::RefPtr <Gtk::RadioAction> &) final override;
 
 	void
-	on_textureQuality_activated (const std::string &);
+	on_texture_quality_changed (const std::string &);
 
 	void
 	set_textureQuality (const X3D::SFString &);

@@ -1034,29 +1034,34 @@ BrowserWindow::on_footer_toggled ()
 }
 
 void
-BrowserWindow::on_browser_activated (const Glib::RefPtr <Gtk::RadioAction> & current)
+BrowserWindow::on_environment_changed (const Glib::RefPtr <Gtk::RadioAction> & current)
 {
-	if (getBrowserAction () -> get_active ())
+	switch (current -> get_current_value ())
 	{
-		isEditor (false);
-		isLive (true);
+		case 0:
+		{
+			isEditor (false);
+			isLive (true);
 
-		if (not getBackgroundsAction () -> get_active ())
-			getBackgroundsAction () -> set_active (true);
+			if (not getBackgroundsAction () -> get_active ())
+				getBackgroundsAction () -> set_active (true);
 
-		if (not getFogsAction () -> get_active ())
-			getFogsAction () -> set_active (true);
+			if (not getFogsAction () -> get_active ())
+				getFogsAction () -> set_active (true);
 
-		on_hide_all_object_icons_activated ();
-		on_show_all_objects_activated ();
+			on_hide_all_object_icons_activated ();
+			on_show_all_objects_activated ();
+
+			break;
+		}
+		case 1:
+		{
+			isEditor (true);
+			break;
+		}
+		default:
+		   break;
 	}
-}
-
-void
-BrowserWindow::on_editor_activated (const Glib::RefPtr <Gtk::RadioAction> & current)
-{
-	if (getEditorAction () -> get_active ())
-		isEditor (true);
 }
 
 void
@@ -1131,42 +1136,32 @@ BrowserWindow::on_motion_blur_activated ()
 // Shading menu
 
 void
-BrowserWindow::on_phong_activated ()
+BrowserWindow::on_shading_changed (const Glib::RefPtr <Gtk::RadioAction> & current)
 {
-	if (getPhongAction () -> get_active ())
-		on_shading_activated ("PHONG");
+	switch (current -> get_current_value ())
+	{
+		case 0:
+			on_shading_changed ("POINTSET");
+			break;
+		case 1:
+			on_shading_changed ("WIREFRAME");
+			break;
+		case 2:
+			on_shading_changed ("FLAT");
+			break;
+		case 3:
+			on_shading_changed ("GOURAUD");
+			break;
+		case 4:
+			on_shading_changed ("PHONG");
+			break;
+	   default:
+			break;
+	}
 }
 
 void
-BrowserWindow::on_gouraud_activated ()
-{
-	if (getGouraudAction () -> get_active ())
-		on_shading_activated ("GOURAUD");
-}
-
-void
-BrowserWindow::on_flat_activated ()
-{
-	if (getFlatAction () -> get_active ())
-		on_shading_activated ("FLAT");
-}
-
-void
-BrowserWindow::on_wireframe_activated ()
-{
-	if (getWireframeAction () -> get_active ())
-		on_shading_activated ("WIREFRAME");
-}
-
-void
-BrowserWindow::on_pointset_activated ()
-{
-	if (getPointsetAction () -> get_active ())
-		on_shading_activated ("POINTSET");
-}
-
-void
-BrowserWindow::on_shading_activated (const std::string & value)
+BrowserWindow::on_shading_changed (const std::string & value)
 {
 	if (changing)
 		return;
@@ -1210,28 +1205,26 @@ BrowserWindow::connectShading (const X3D::SFString & field)
 // Primitive Quality
 
 void
-BrowserWindow::on_primitive_quality_high_activated ()
+BrowserWindow::on_primitive_quality_changed (const Glib::RefPtr <Gtk::RadioAction> & current)
 {
-	if (getPrimitiveQualityHighAction () -> get_active ())
-		on_primitiveQuality_activated ("HIGH");
+	switch (current -> get_current_value ())
+	{
+		case 0:
+			on_primitive_quality_changed ("LOW");
+			break;
+		case 1:
+			on_primitive_quality_changed ("MEDIUM");
+			break;
+		case 2:
+			on_primitive_quality_changed ("HIGH");
+			break;
+	   default:
+			break;
+	}
 }
 
 void
-BrowserWindow::on_primitive_quality_medium_activated ()
-{
-	if (getPrimitiveQualityMediumAction () -> get_active ())
-		on_primitiveQuality_activated ("MEDIUM");
-}
-
-void
-BrowserWindow::on_primitive_quality_low_activated ()
-{
-	if (getPrimitiveQualityLowAction () -> get_active ())
-		on_primitiveQuality_activated ("LOW");
-}
-
-void
-BrowserWindow::on_primitiveQuality_activated (const std::string & value)
+BrowserWindow::on_primitive_quality_changed (const std::string & value)
 {
 	if (changing)
 		return;
@@ -1269,28 +1262,26 @@ BrowserWindow::connectPrimitiveQuality (const X3D::SFString & field)
 // Texture Quality
 
 void
-BrowserWindow::on_texture_quality_high_activated ()
+BrowserWindow::on_texture_quality_changed (const Glib::RefPtr <Gtk::RadioAction> & current)
 {
-	if (getTextureQualityHighAction () -> get_active ())
-		on_textureQuality_activated ("HIGH");
+	switch (current -> get_current_value ())
+	{
+		case 0:
+			on_texture_quality_changed ("LOW");
+			break;
+		case 1:
+			on_texture_quality_changed ("MEDIUM");
+			break;
+		case 2:
+			on_texture_quality_changed ("HIGH");
+			break;
+	   default:
+			break;
+	}
 }
 
 void
-BrowserWindow::on_texture_quality_medium_activated ()
-{
-	if (getTextureQualityMediumAction () -> get_active ())
-		on_textureQuality_activated ("MEDIUM");
-}
-
-void
-BrowserWindow::on_texture_quality_low_activated ()
-{
-	if (getTextureQualityLowAction () -> get_active ())
-		on_textureQuality_activated ("LOW");
-}
-
-void
-BrowserWindow::on_textureQuality_activated (const std::string & value)
+BrowserWindow::on_texture_quality_changed (const std::string & value)
 {
 	if (changing)
 		return;

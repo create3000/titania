@@ -65,8 +65,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_AngleLayoutToolAction        = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AngleLayoutToolAction"));
 	m_AngleToolAction              = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AngleToolAction"));
 	m_BackgroundsAction            = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("BackgroundsAction"));
-	m_BrowserAction                = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("BrowserAction"));
 	m_EditorAction                 = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("EditorAction"));
+	m_BrowserAction                = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("BrowserAction"));
 	m_FlatAction                   = Glib::RefPtr <Gtk::RadioAction>::cast_dynamic (m_builder -> get_object ("FlatAction"));
 	m_FogsAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FogsAction"));
 	m_FollowPrimarySelectionAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FollowPrimarySelectionAction"));
@@ -112,6 +112,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FlyViewerMenuItem", m_FlyViewerMenuItem);
 	m_builder -> get_widget ("PlaneViewerMenuItem", m_PlaneViewerMenuItem);
 	m_builder -> get_widget ("NoneViewerMenuItem", m_NoneViewerMenuItem);
+	m_builder -> get_widget ("WorkspacesImage", m_WorkspacesImage);
+	m_builder -> get_widget ("WorkspacesImage1", m_WorkspacesImage1);
 	m_builder -> get_widget ("BrowserMenu", m_BrowserMenu);
 	m_builder -> get_widget ("BrowserFileMenuItem", m_BrowserFileMenuItem);
 	m_builder -> get_widget ("BrowserNewMenuItem", m_BrowserNewMenuItem);
@@ -219,8 +221,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserGridPropertiesMenuItem", m_BrowserGridPropertiesMenuItem);
 	m_builder -> get_widget ("BrowserHelpMenuItem", m_BrowserHelpMenuItem);
 	m_builder -> get_widget ("BrowserInfoMenuItem", m_BrowserInfoMenuItem);
-	m_builder -> get_widget ("WorkspacesImage", m_WorkspacesImage);
-	m_builder -> get_widget ("WorkspacesImage1", m_WorkspacesImage1);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBox", m_HeaderBox);
@@ -406,31 +406,21 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_AngleToolAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
 	m_BackgroundsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_backgrounds_toggled));
 
-	// Connect object Gtk::RadioAction with id 'BrowserAction'.
-	m_BrowserAction -> signal_changed () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_browser_activated));
-	m_EditorAction -> signal_changed () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_editor_activated));
-	m_FlatAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_flat_activated));
+	// Connect object Gtk::RadioAction with id 'EditorAction'.
+	m_EditorAction -> signal_changed () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_environment_changed));
 
 	// Connect object Gtk::ToggleAction with id 'FogsAction'.
 	m_FogsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fogs_toggled));
 	m_FollowPrimarySelectionAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
 	m_FooterAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_footer_toggled));
-
-	// Connect object Gtk::RadioAction with id 'GouraudAction'.
-	m_GouraudAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_gouraud_activated));
-
-	// Connect object Gtk::ToggleAction with id 'GridLayoutToolAction'.
 	m_GridLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
 	m_GridToolAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
 	m_ImportAsInlineAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import_as_inline_toggled));
 	m_LightsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_lights_toggled));
 
 	// Connect object Gtk::RadioAction with id 'PhongAction'.
-	m_PhongAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_phong_activated));
-	m_PointsetAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_pointset_activated));
-	m_PrimitiveQualityHighAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_quality_high_activated));
-	m_PrimitiveQualityLowAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_quality_low_activated));
-	m_PrimitiveQualityMediumAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_quality_medium_activated));
+	m_PhongAction -> signal_changed () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_shading_changed));
+	m_PrimitiveQualityHighAction -> signal_changed () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_primitive_quality_changed));
 
 	// Connect object Gtk::ToggleAction with id 'ProximitySensorsAction'.
 	m_ProximitySensorsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_proximity_sensors_toggled));
@@ -440,9 +430,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_SideBarAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_side_bar_toggled));
 
 	// Connect object Gtk::RadioAction with id 'TextureQualityHighAction'.
-	m_TextureQualityHighAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_quality_high_activated));
-	m_TextureQualityLowAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_quality_low_activated));
-	m_TextureQualityMediumAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_quality_medium_activated));
+	m_TextureQualityHighAction -> signal_changed () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_quality_changed));
 
 	// Connect object Gtk::ToggleAction with id 'ToolBarAction'.
 	m_ToolBarAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_tool_bar_toggled));
@@ -456,11 +444,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_FlyViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fly_viewer_activated));
 	m_PlaneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_plane_viewer_activated));
 	m_NoneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_none_viewer_activated));
-
-	// Connect object Gtk::RadioAction with id 'WireframeAction'.
-	m_WireframeAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_wireframe_activated));
-
-	// Connect object Gtk::ImageMenuItem with id 'BrowserNewMenuItem'.
 	m_BrowserNewMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new_activated));
 	m_BrowserOpenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_activated));
 	m_BrowserOpenRecentMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_recent_activated));

@@ -106,12 +106,12 @@ public:
 	{ return m_BackgroundsAction; }
 
 	const Glib::RefPtr <Gtk::RadioAction> &
-	getBrowserAction () const
-	{ return m_BrowserAction; }
-
-	const Glib::RefPtr <Gtk::RadioAction> &
 	getEditorAction () const
 	{ return m_EditorAction; }
+
+	const Glib::RefPtr <Gtk::RadioAction> &
+	getBrowserAction () const
+	{ return m_BrowserAction; }
 
 	const Glib::RefPtr <Gtk::RadioAction> &
 	getFlatAction () const
@@ -284,6 +284,14 @@ public:
 	Gtk::ImageMenuItem &
 	getNoneViewerMenuItem () const
 	{ return *m_NoneViewerMenuItem; }
+
+	Gtk::Image &
+	getWorkspacesImage () const
+	{ return *m_WorkspacesImage; }
+
+	Gtk::Image &
+	getWorkspacesImage1 () const
+	{ return *m_WorkspacesImage1; }
 
 	Gtk::Menu &
 	getBrowserMenu () const
@@ -712,14 +720,6 @@ public:
 	Gtk::ImageMenuItem &
 	getBrowserInfoMenuItem () const
 	{ return *m_BrowserInfoMenuItem; }
-
-	Gtk::Image &
-	getWorkspacesImage () const
-	{ return *m_WorkspacesImage; }
-
-	Gtk::Image &
-	getWorkspacesImage1 () const
-	{ return *m_WorkspacesImage1; }
 
 	Gtk::ApplicationWindow &
 	getWindow () const
@@ -1447,15 +1447,7 @@ public:
 
 	virtual
 	void
-	on_browser_activated (const Glib::RefPtr <Gtk::RadioAction> & current) = 0;
-
-	virtual
-	void
-	on_editor_activated (const Glib::RefPtr <Gtk::RadioAction> & current) = 0;
-
-	virtual
-	void
-	on_flat_activated () = 0;
+	on_environment_changed (const Glib::RefPtr <Gtk::RadioAction> & current) = 0;
 
 	virtual
 	void
@@ -1471,10 +1463,6 @@ public:
 
 	virtual
 	void
-	on_gouraud_activated () = 0;
-
-	virtual
-	void
 	on_grid_layout_tool_toggled () = 0;
 
 	virtual
@@ -1487,23 +1475,11 @@ public:
 
 	virtual
 	void
-	on_phong_activated () = 0;
+	on_shading_changed (const Glib::RefPtr <Gtk::RadioAction> & current) = 0;
 
 	virtual
 	void
-	on_pointset_activated () = 0;
-
-	virtual
-	void
-	on_primitive_quality_high_activated () = 0;
-
-	virtual
-	void
-	on_primitive_quality_low_activated () = 0;
-
-	virtual
-	void
-	on_primitive_quality_medium_activated () = 0;
+	on_primitive_quality_changed (const Glib::RefPtr <Gtk::RadioAction> & current) = 0;
 
 	virtual
 	void
@@ -1527,15 +1503,7 @@ public:
 
 	virtual
 	void
-	on_texture_quality_high_activated () = 0;
-
-	virtual
-	void
-	on_texture_quality_low_activated () = 0;
-
-	virtual
-	void
-	on_texture_quality_medium_activated () = 0;
+	on_texture_quality_changed (const Glib::RefPtr <Gtk::RadioAction> & current) = 0;
 
 	virtual
 	void
@@ -1572,10 +1540,6 @@ public:
 	virtual
 	void
 	on_none_viewer_activated () = 0;
-
-	virtual
-	void
-	on_wireframe_activated () = 0;
 
 	virtual
 	void
@@ -1994,8 +1958,8 @@ private:
 	Glib::RefPtr <Gtk::ToggleAction> m_AngleLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_AngleToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_BackgroundsAction;
-	Glib::RefPtr <Gtk::RadioAction>  m_BrowserAction;
 	Glib::RefPtr <Gtk::RadioAction>  m_EditorAction;
+	Glib::RefPtr <Gtk::RadioAction>  m_BrowserAction;
 	Glib::RefPtr <Gtk::RadioAction>  m_FlatAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FogsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
@@ -2039,6 +2003,8 @@ private:
 	Gtk::ImageMenuItem*              m_FlyViewerMenuItem;
 	Gtk::ImageMenuItem*              m_PlaneViewerMenuItem;
 	Gtk::ImageMenuItem*              m_NoneViewerMenuItem;
+	Gtk::Image*                      m_WorkspacesImage;
+	Gtk::Image*                      m_WorkspacesImage1;
 	Gtk::Menu*                       m_BrowserMenu;
 	Gtk::MenuItem*                   m_BrowserFileMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserNewMenuItem;
@@ -2146,8 +2112,6 @@ private:
 	Gtk::ImageMenuItem*              m_BrowserGridPropertiesMenuItem;
 	Gtk::MenuItem*                   m_BrowserHelpMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserInfoMenuItem;
-	Gtk::Image*                      m_WorkspacesImage;
-	Gtk::Image*                      m_WorkspacesImage1;
 	Gtk::ApplicationWindow*          m_Window;
 	Gtk::Box*                        m_Widget;
 	Gtk::Box*                        m_HeaderBox;

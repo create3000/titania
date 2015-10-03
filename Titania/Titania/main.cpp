@@ -141,7 +141,7 @@ main (int argc, char** argv)
 	std::locale::global (std::locale (""));
 
 	os::env ("LIBOVERLAY_SCROLLBAR", "0"); // XXX: This fixes the bug with modal windows.
-	os::env ("UBUNTU_MENUPROXY", "0");     // XXX: This fixes the bug with check button menu items.
+	os::env ("UBUNTU_MENUPROXY",     "0"); // XXX: This fixes the bug with check button menu items.
 
 	{
 		BrowserApplication browserApplication (argc, argv);
