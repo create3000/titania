@@ -26,6 +26,7 @@ if (($min > 16 and $min < 20) or 0)
 #$ENV {LIBOVERLAY_SCROLLBAR} = 0;
 $ENV {GTK_MODULES}      = "overlay-scrollbar:unity-gtk-module";
 $ENV {UBUNTU_MENUPROXY} = 1;
+$ENV {PATH}             = "$PROJECT_DIR/titania-info:$PROJECT_DIR/x3d2vrml/bin:$PROJECT_DIR/x3dtidy:$ENV{PATH}";
 $ENV {XDG_DATA_DIRS}    = "$PROJECT_DIR/Titania/share:$PROJECT_DIR/libtitania-x3d/share:$PROJECT_DIR/x3d2vrml/share:$ENV{XDG_DATA_DIRS}";
 #$ENV {LANG} = "C";
 
