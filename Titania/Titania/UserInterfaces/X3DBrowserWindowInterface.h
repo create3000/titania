@@ -101,13 +101,17 @@ public:
 	getBackgroundsAction () const
 	{ return m_BackgroundsAction; }
 
-	const Glib::RefPtr <Gtk::RadioAction> &
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getBrowserAction () const
+	{ return m_BrowserAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getEditorAction () const
 	{ return m_EditorAction; }
 
-	const Glib::RefPtr <Gtk::RadioAction> &
-	getBrowserAction () const
-	{ return m_BrowserAction; }
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getFlatAction () const
+	{ return m_FlatAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getFogsAction () const
@@ -120,6 +124,10 @@ public:
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getFooterAction () const
 	{ return m_FooterAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getGouraudAction () const
+	{ return m_GouraudAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getGridLayoutToolAction () const
@@ -137,35 +145,23 @@ public:
 	getMenubarAction () const
 	{ return m_MenubarAction; }
 
-	const Glib::RefPtr <Gtk::RadioAction> &
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getPhongAction () const
 	{ return m_PhongAction; }
 
-	const Glib::RefPtr <Gtk::RadioAction> &
-	getFlatAction () const
-	{ return m_FlatAction; }
-
-	const Glib::RefPtr <Gtk::RadioAction> &
-	getGouraudAction () const
-	{ return m_GouraudAction; }
-
-	const Glib::RefPtr <Gtk::RadioAction> &
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getPointsetAction () const
 	{ return m_PointsetAction; }
 
-	const Glib::RefPtr <Gtk::RadioAction> &
-	getWireframeAction () const
-	{ return m_WireframeAction; }
-
-	const Glib::RefPtr <Gtk::RadioAction> &
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getPrimitiveQualityHighAction () const
 	{ return m_PrimitiveQualityHighAction; }
 
-	const Glib::RefPtr <Gtk::RadioAction> &
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getPrimitiveQualityLowAction () const
 	{ return m_PrimitiveQualityLowAction; }
 
-	const Glib::RefPtr <Gtk::RadioAction> &
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getPrimitiveQualityMediumAction () const
 	{ return m_PrimitiveQualityMediumAction; }
 
@@ -193,15 +189,15 @@ public:
 	getTabsAction () const
 	{ return m_TabsAction; }
 
-	const Glib::RefPtr <Gtk::RadioAction> &
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getTextureQualityHighAction () const
 	{ return m_TextureQualityHighAction; }
 
-	const Glib::RefPtr <Gtk::RadioAction> &
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getTextureQualityLowAction () const
 	{ return m_TextureQualityLowAction; }
 
-	const Glib::RefPtr <Gtk::RadioAction> &
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getTextureQualityMediumAction () const
 	{ return m_TextureQualityMediumAction; }
 
@@ -220,6 +216,10 @@ public:
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getVisibilitySensorsAction () const
 	{ return m_VisibilitySensorsAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getWireframeAction () const
+	{ return m_WireframeAction; }
 
 	Gtk::Image &
 	getExamineViewerImage () const
@@ -521,11 +521,11 @@ public:
 	getBrowserEnvironmentMenuItem () const
 	{ return *m_BrowserEnvironmentMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getBrowserEditorMenuItem () const
 	{ return *m_BrowserEditorMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getBrowserBrowserMenuItem () const
 	{ return *m_BrowserBrowserMenuItem; }
 
@@ -541,23 +541,23 @@ public:
 	getBrowserShadingMenuItem () const
 	{ return *m_BrowserShadingMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getBrowserPhongMenuItem () const
 	{ return *m_BrowserPhongMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getBrowserGouraudMenuItem () const
 	{ return *m_BrowserGouraudMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getBrowserFlatMenuItem () const
 	{ return *m_BrowserFlatMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getBrowserWireframeMenuItem () const
 	{ return *m_BrowserWireframeMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getBrowserPointsetMenuItem () const
 	{ return *m_BrowserPointsetMenuItem; }
 
@@ -565,15 +565,15 @@ public:
 	getBrowserPrimitiveQualityMenuItem () const
 	{ return *m_BrowserPrimitiveQualityMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getBrowserPrimitiveQualityHighMenuItem () const
 	{ return *m_BrowserPrimitiveQualityHighMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getBrowserPrimitiveQualityMediumMenuItem () const
 	{ return *m_BrowserPrimitiveQualityMediumMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getBrowserPrimitiveQualityLowMenuItem () const
 	{ return *m_BrowserPrimitiveQualityLowMenuItem; }
 
@@ -581,15 +581,15 @@ public:
 	getBrowserTextureQualityMenuItem () const
 	{ return *m_BrowserTextureQualityMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getBrowserTextureQualityHighMenuItem () const
 	{ return *m_BrowserTextureQualityHighMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getBrowserTextureQualityMediumMenuItem () const
 	{ return *m_BrowserTextureQualityMediumMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getBrowserTextureQualityLowMenuItem () const
 	{ return *m_BrowserTextureQualityLowMenuItem; }
 
@@ -973,11 +973,11 @@ public:
 	getEnvironmentMenuItem () const
 	{ return *m_EnvironmentMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getEditorMenuItem () const
 	{ return *m_EditorMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getBrowserMenuItem () const
 	{ return *m_BrowserMenuItem; }
 
@@ -993,23 +993,23 @@ public:
 	getShadingMenuItem () const
 	{ return *m_ShadingMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getPhongMenuItem () const
 	{ return *m_PhongMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getGouraudMenuItem () const
 	{ return *m_GouraudMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getFlatMenuItem () const
 	{ return *m_FlatMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getWireframeMenuItem () const
 	{ return *m_WireframeMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getPointsetMenuItem () const
 	{ return *m_PointsetMenuItem; }
 
@@ -1017,15 +1017,15 @@ public:
 	getPrimitiveQualityMenuItem () const
 	{ return *m_PrimitiveQualityMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getPrimitiveQualityHighMenuItem () const
 	{ return *m_PrimitiveQualityHighMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getPrimitiveQualityMediumMenuItem () const
 	{ return *m_PrimitiveQualityMediumMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getPrimitiveQualityLowMenuItem () const
 	{ return *m_PrimitiveQualityLowMenuItem; }
 
@@ -1033,15 +1033,15 @@ public:
 	getTextureQualityMenuItem () const
 	{ return *m_TextureQualityMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getTextureQualityHighMenuItem () const
 	{ return *m_TextureQualityHighMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getTextureQualityMediumMenuItem () const
 	{ return *m_TextureQualityMediumMenuItem; }
 
-	Gtk::RadioMenuItem &
+	Gtk::CheckMenuItem &
 	getTextureQualityLowMenuItem () const
 	{ return *m_TextureQualityLowMenuItem; }
 
@@ -1463,7 +1463,15 @@ public:
 
 	virtual
 	void
-	on_environment_changed (const Glib::RefPtr <Gtk::RadioAction> & current) = 0;
+	on_browser_toggled () = 0;
+
+	virtual
+	void
+	on_editor_toggled () = 0;
+
+	virtual
+	void
+	on_flat_toggled () = 0;
 
 	virtual
 	void
@@ -1476,6 +1484,10 @@ public:
 	virtual
 	void
 	on_footer_toggled () = 0;
+
+	virtual
+	void
+	on_gouraud_toggled () = 0;
 
 	virtual
 	void
@@ -1495,11 +1507,23 @@ public:
 
 	virtual
 	void
-	on_shading_changed (const Glib::RefPtr <Gtk::RadioAction> & current) = 0;
+	on_phong_toggled () = 0;
 
 	virtual
 	void
-	on_primitive_quality_changed (const Glib::RefPtr <Gtk::RadioAction> & current) = 0;
+	on_pointset_toggled () = 0;
+
+	virtual
+	void
+	on_primitive_quality_high_toggled () = 0;
+
+	virtual
+	void
+	on_primitive_quality_low_toggled () = 0;
+
+	virtual
+	void
+	on_primitive_quality_medium_toggled () = 0;
 
 	virtual
 	void
@@ -1527,7 +1551,15 @@ public:
 
 	virtual
 	void
-	on_texture_quality_changed (const Glib::RefPtr <Gtk::RadioAction> & current) = 0;
+	on_texture_quality_high_toggled () = 0;
+
+	virtual
+	void
+	on_texture_quality_low_toggled () = 0;
+
+	virtual
+	void
+	on_texture_quality_medium_toggled () = 0;
 
 	virtual
 	void
@@ -1564,6 +1596,10 @@ public:
 	virtual
 	void
 	on_none_viewer_activated () = 0;
+
+	virtual
+	void
+	on_wireframe_toggled () = 0;
 
 	virtual
 	void
@@ -1981,36 +2017,36 @@ private:
 	Glib::RefPtr <Gtk::IconFactory>  m_IconFactory;
 	Glib::RefPtr <Gtk::ToggleAction> m_AngleLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_BackgroundsAction;
-	Glib::RefPtr <Gtk::RadioAction>  m_EditorAction;
-	Glib::RefPtr <Gtk::RadioAction>  m_BrowserAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_BrowserAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_EditorAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_FlatAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FogsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FooterAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_GouraudAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_GridLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_ImportAsInlineAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_LightsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_MenubarAction;
-	Glib::RefPtr <Gtk::RadioAction>  m_PhongAction;
-	Glib::RefPtr <Gtk::RadioAction>  m_FlatAction;
-	Glib::RefPtr <Gtk::RadioAction>  m_GouraudAction;
-	Glib::RefPtr <Gtk::RadioAction>  m_PointsetAction;
-	Glib::RefPtr <Gtk::RadioAction>  m_WireframeAction;
-	Glib::RefPtr <Gtk::RadioAction>  m_PrimitiveQualityHighAction;
-	Glib::RefPtr <Gtk::RadioAction>  m_PrimitiveQualityLowAction;
-	Glib::RefPtr <Gtk::RadioAction>  m_PrimitiveQualityMediumAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_PhongAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_PointsetAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_PrimitiveQualityHighAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_PrimitiveQualityLowAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_PrimitiveQualityMediumAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_ProximitySensorsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_RenderingPropertiesAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_RubberbandAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_SelectLowestAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_SidebarAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TabsAction;
-	Glib::RefPtr <Gtk::RadioAction>  m_TextureQualityHighAction;
-	Glib::RefPtr <Gtk::RadioAction>  m_TextureQualityLowAction;
-	Glib::RefPtr <Gtk::RadioAction>  m_TextureQualityMediumAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_TextureQualityHighAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_TextureQualityLowAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_TextureQualityMediumAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_ToolbarAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TransformSensorsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_ViewpointsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_VisibilitySensorsAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_WireframeAction;
 	Gtk::Image*                      m_ExamineViewerImage;
 	Gtk::Image*                      m_FileImportImage;
 	Gtk::Image*                      m_FileImportImage1;
@@ -2086,24 +2122,24 @@ private:
 	Gtk::CheckMenuItem*              m_BrowserFooterMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserTabsMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserEnvironmentMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserEditorMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserBrowserMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserEditorMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserBrowserMenuItem;
 	Gtk::SeparatorMenuItem*          m_BrowserBrowserOptionsSeparator;
 	Gtk::ImageMenuItem*              m_BrowserMotionBlurMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserShadingMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserPhongMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserGouraudMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserFlatMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserWireframeMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserPointsetMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserPhongMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserGouraudMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserFlatMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserWireframeMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserPointsetMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserPrimitiveQualityMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserPrimitiveQualityHighMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserPrimitiveQualityMediumMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserPrimitiveQualityLowMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserPrimitiveQualityHighMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserPrimitiveQualityMediumMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserPrimitiveQualityLowMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserTextureQualityMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserTextureQualityHighMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserTextureQualityMediumMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserTextureQualityLowMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserTextureQualityHighMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserTextureQualityMediumMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserTextureQualityLowMenuItem;
 	Gtk::MenuItem*                   m_BrowserShowHideEnvironmentalEffectsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserBackgroundsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserFogsMenuItem;
@@ -2199,24 +2235,24 @@ private:
 	Gtk::CheckMenuItem*              m_FooterMenuItem;
 	Gtk::CheckMenuItem*              m_TabsMenuItem;
 	Gtk::ImageMenuItem*              m_EnvironmentMenuItem;
-	Gtk::RadioMenuItem*              m_EditorMenuItem;
-	Gtk::RadioMenuItem*              m_BrowserMenuItem;
+	Gtk::CheckMenuItem*              m_EditorMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserMenuItem;
 	Gtk::SeparatorMenuItem*          m_BrowserOptionsSeparator;
 	Gtk::ImageMenuItem*              m_MotionBlurMenuItem;
 	Gtk::ImageMenuItem*              m_ShadingMenuItem;
-	Gtk::RadioMenuItem*              m_PhongMenuItem;
-	Gtk::RadioMenuItem*              m_GouraudMenuItem;
-	Gtk::RadioMenuItem*              m_FlatMenuItem;
-	Gtk::RadioMenuItem*              m_WireframeMenuItem;
-	Gtk::RadioMenuItem*              m_PointsetMenuItem;
+	Gtk::CheckMenuItem*              m_PhongMenuItem;
+	Gtk::CheckMenuItem*              m_GouraudMenuItem;
+	Gtk::CheckMenuItem*              m_FlatMenuItem;
+	Gtk::CheckMenuItem*              m_WireframeMenuItem;
+	Gtk::CheckMenuItem*              m_PointsetMenuItem;
 	Gtk::ImageMenuItem*              m_PrimitiveQualityMenuItem;
-	Gtk::RadioMenuItem*              m_PrimitiveQualityHighMenuItem;
-	Gtk::RadioMenuItem*              m_PrimitiveQualityMediumMenuItem;
-	Gtk::RadioMenuItem*              m_PrimitiveQualityLowMenuItem;
+	Gtk::CheckMenuItem*              m_PrimitiveQualityHighMenuItem;
+	Gtk::CheckMenuItem*              m_PrimitiveQualityMediumMenuItem;
+	Gtk::CheckMenuItem*              m_PrimitiveQualityLowMenuItem;
 	Gtk::ImageMenuItem*              m_TextureQualityMenuItem;
-	Gtk::RadioMenuItem*              m_TextureQualityHighMenuItem;
-	Gtk::RadioMenuItem*              m_TextureQualityMediumMenuItem;
-	Gtk::RadioMenuItem*              m_TextureQualityLowMenuItem;
+	Gtk::CheckMenuItem*              m_TextureQualityHighMenuItem;
+	Gtk::CheckMenuItem*              m_TextureQualityMediumMenuItem;
+	Gtk::CheckMenuItem*              m_TextureQualityLowMenuItem;
 	Gtk::MenuItem*                   m_ShowHideEnvironmentalEffectsMenuItem;
 	Gtk::CheckMenuItem*              m_BackgroundsMenuItem;
 	Gtk::CheckMenuItem*              m_FogsMenuItem;

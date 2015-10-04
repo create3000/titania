@@ -367,7 +367,11 @@ private:
 
 	virtual
 	void
-	on_environment_changed (const Glib::RefPtr <Gtk::RadioAction> &) final override;
+	on_editor_toggled () final override;
+
+	virtual
+	void
+	on_browser_toggled () final override;
 
 	virtual
 	void
@@ -377,7 +381,23 @@ private:
 
 	virtual
 	void
-	on_shading_changed (const Glib::RefPtr <Gtk::RadioAction> &) final override;
+	on_phong_toggled () final override;
+
+	virtual
+	void
+	on_gouraud_toggled () final override;
+
+	virtual
+	void
+	on_flat_toggled () final override;
+
+	virtual
+	void
+	on_wireframe_toggled () final override;
+
+	virtual
+	void
+	on_pointset_toggled () final override;
 
 	void
 	on_shading_changed (const std::string &);
@@ -392,7 +412,15 @@ private:
 
 	virtual
 	void
-	on_primitive_quality_changed (const Glib::RefPtr <Gtk::RadioAction> &) final override;
+	on_primitive_quality_high_toggled () final override;
+	
+	virtual
+	void
+	on_primitive_quality_medium_toggled () final override;
+
+	virtual
+	void
+	on_primitive_quality_low_toggled () final override;
 
 	void
 	on_primitive_quality_changed (const std::string &);
@@ -407,7 +435,15 @@ private:
 
 	virtual
 	void
-	on_texture_quality_changed (const Glib::RefPtr <Gtk::RadioAction> &) final override;
+	on_texture_quality_high_toggled () final override;
+
+	virtual
+	void
+	on_texture_quality_medium_toggled () final override;
+
+	virtual
+	void
+	on_texture_quality_low_toggled () final override;
 
 	void
 	on_texture_quality_changed (const std::string &);
@@ -709,11 +745,18 @@ private:
 	void
 	on_look_at_toggled () final override;
 
+	void
+	toggleActions (const Glib::RefPtr <Gtk::ToggleAction> &, const std::vector <Glib::RefPtr <Gtk::ToggleAction>> &);
+
 	///  @name Members
 
 	bool            changing;
 	X3D::ViewerType viewer;
 
+	std::vector <Glib::RefPtr <Gtk::ToggleAction>> environmentActions;
+	std::vector <Glib::RefPtr <Gtk::ToggleAction>> shadingActions;
+	std::vector <Glib::RefPtr <Gtk::ToggleAction>> primitiveQualityActions;
+	std::vector <Glib::RefPtr <Gtk::ToggleAction>> textureQualityActions;
 };
 
 } // puck

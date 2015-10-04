@@ -82,16 +82,15 @@
     <property name="label" translatable="yes">_Backgounds</property>
     <signal name="toggled" handler="on_backgrounds_toggled" swapped="no"/>
   </object>
-  <object class="GtkRadioAction" id="EditorAction">
-    <property name="label" translatable="yes">_Editor</property>
-    <property name="draw_as_radio">True</property>
-    <property name="value">1</property>
-    <signal name="changed" handler="on_environment_changed" swapped="no"/>
-  </object>
-  <object class="GtkRadioAction" id="BrowserAction">
+  <object class="GtkToggleAction" id="BrowserAction">
     <property name="label" translatable="yes">_Browser</property>
     <property name="draw_as_radio">True</property>
-    <property name="group">EditorAction</property>
+    <signal name="toggled" handler="on_browser_toggled" swapped="no"/>
+  </object>
+  <object class="GtkToggleAction" id="EditorAction">
+    <property name="label" translatable="yes">_Editor</property>
+    <property name="draw_as_radio">True</property>
+    <signal name="toggled" handler="on_editor_toggled" swapped="no"/>
   </object>
   <object class="GtkImage" id="ExamineViewerImage">
     <property name="visible">True</property>
@@ -111,6 +110,11 @@
     <property name="icon_name">document-import</property>
     <property name="icon_size">1</property>
   </object>
+  <object class="GtkToggleAction" id="FlatAction">
+    <property name="label" translatable="yes">_Flat</property>
+    <property name="draw_as_radio">True</property>
+    <signal name="toggled" handler="on_flat_toggled" swapped="no"/>
+  </object>
   <object class="GtkImage" id="FlyViewerImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -128,6 +132,11 @@
   <object class="GtkToggleAction" id="FooterAction">
     <property name="label" translatable="yes">Footer</property>
     <signal name="toggled" handler="on_footer_toggled" swapped="no"/>
+  </object>
+  <object class="GtkToggleAction" id="GouraudAction">
+    <property name="label" translatable="yes">_Gouraud</property>
+    <property name="draw_as_radio">True</property>
+    <signal name="toggled" handler="on_gouraud_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="GridLayoutToolAction">
     <property name="label" translatable="yes">Activate _Grid Layout Tool</property>
@@ -177,34 +186,10 @@
     <property name="stock">gtk-network</property>
     <property name="icon_size">1</property>
   </object>
-  <object class="GtkRadioAction" id="PhongAction">
-    <property name="label" translatable="yes">_Phong</property>
+  <object class="GtkToggleAction" id="PhongAction">
+    <property name="label" translatable="yes">P_hong</property>
     <property name="draw_as_radio">True</property>
-    <property name="value">4</property>
-    <signal name="changed" handler="on_shading_changed" swapped="no"/>
-  </object>
-  <object class="GtkRadioAction" id="FlatAction">
-    <property name="label" translatable="yes">_Flat</property>
-    <property name="draw_as_radio">True</property>
-    <property name="value">2</property>
-    <property name="group">PhongAction</property>
-  </object>
-  <object class="GtkRadioAction" id="GouraudAction">
-    <property name="label" translatable="yes">_Gouraud</property>
-    <property name="draw_as_radio">True</property>
-    <property name="value">3</property>
-    <property name="group">PhongAction</property>
-  </object>
-  <object class="GtkRadioAction" id="PointsetAction">
-    <property name="label" translatable="yes">_Pointset</property>
-    <property name="draw_as_radio">True</property>
-    <property name="group">PhongAction</property>
-  </object>
-  <object class="GtkRadioAction" id="WireframeAction">
-    <property name="label" translatable="yes">_Wireframe</property>
-    <property name="draw_as_radio">True</property>
-    <property name="value">1</property>
-    <property name="group">PhongAction</property>
+    <signal name="toggled" handler="on_phong_toggled" swapped="no"/>
   </object>
   <object class="GtkImage" id="PlaneViewerImage">
     <property name="visible">True</property>
@@ -212,22 +197,25 @@
     <property name="stock">PlaneViewer</property>
     <property name="icon_size">1</property>
   </object>
-  <object class="GtkRadioAction" id="PrimitiveQualityHighAction">
+  <object class="GtkToggleAction" id="PointsetAction">
+    <property name="label" translatable="yes">_Pointset</property>
+    <property name="draw_as_radio">True</property>
+    <signal name="toggled" handler="on_pointset_toggled" swapped="no"/>
+  </object>
+  <object class="GtkToggleAction" id="PrimitiveQualityHighAction">
     <property name="label" translatable="yes">_High</property>
     <property name="draw_as_radio">True</property>
-    <property name="value">2</property>
-    <signal name="changed" handler="on_primitive_quality_changed" swapped="no"/>
+    <signal name="toggled" handler="on_primitive_quality_high_toggled" swapped="no"/>
   </object>
-  <object class="GtkRadioAction" id="PrimitiveQualityLowAction">
+  <object class="GtkToggleAction" id="PrimitiveQualityLowAction">
     <property name="label" translatable="yes">_Low</property>
     <property name="draw_as_radio">True</property>
-    <property name="group">PrimitiveQualityHighAction</property>
+    <signal name="toggled" handler="on_primitive_quality_low_toggled" swapped="no"/>
   </object>
-  <object class="GtkRadioAction" id="PrimitiveQualityMediumAction">
+  <object class="GtkToggleAction" id="PrimitiveQualityMediumAction">
     <property name="label" translatable="yes">_Medium</property>
     <property name="draw_as_radio">True</property>
-    <property name="value">1</property>
-    <property name="group">PrimitiveQualityHighAction</property>
+    <signal name="toggled" handler="on_primitive_quality_medium_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="ProximitySensorsAction">
     <property name="label" translatable="yes">_ProximitySensors</property>
@@ -253,22 +241,20 @@
     <property name="label" translatable="yes">Tabs</property>
     <signal name="toggled" handler="on_tabs_toggled" swapped="no"/>
   </object>
-  <object class="GtkRadioAction" id="TextureQualityHighAction">
+  <object class="GtkToggleAction" id="TextureQualityHighAction">
     <property name="label" translatable="yes">_High</property>
     <property name="draw_as_radio">True</property>
-    <property name="value">2</property>
-    <signal name="changed" handler="on_texture_quality_changed" swapped="no"/>
+    <signal name="toggled" handler="on_texture_quality_high_toggled" swapped="no"/>
   </object>
-  <object class="GtkRadioAction" id="TextureQualityLowAction">
+  <object class="GtkToggleAction" id="TextureQualityLowAction">
     <property name="label" translatable="yes">_Low</property>
     <property name="draw_as_radio">True</property>
-    <property name="group">TextureQualityHighAction</property>
+    <signal name="toggled" handler="on_texture_quality_low_toggled" swapped="no"/>
   </object>
-  <object class="GtkRadioAction" id="TextureQualityMediumAction">
+  <object class="GtkToggleAction" id="TextureQualityMediumAction">
     <property name="label" translatable="yes">_Medium</property>
     <property name="draw_as_radio">True</property>
-    <property name="value">1</property>
-    <property name="group">TextureQualityHighAction</property>
+    <signal name="toggled" handler="on_texture_quality_medium_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="ToolbarAction">
     <property name="label" translatable="yes">Toolbar</property>
@@ -350,6 +336,11 @@
         <signal name="activate" handler="on_none_viewer_activated" swapped="no"/>
       </object>
     </child>
+  </object>
+  <object class="GtkToggleAction" id="WireframeAction">
+    <property name="label" translatable="yes">_Wireframe</property>
+    <property name="draw_as_radio">True</property>
+    <signal name="toggled" handler="on_wireframe_toggled" swapped="no"/>
   </object>
   <object class="GtkImage" id="WorkspacesImage">
     <property name="visible">True</property>
@@ -1159,7 +1150,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkRadioMenuItem" id="BrowserEditorMenuItem">
+                      <object class="GtkCheckMenuItem" id="BrowserEditorMenuItem">
                         <property name="related_action">EditorAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1170,7 +1161,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkRadioMenuItem" id="BrowserBrowserMenuItem">
+                      <object class="GtkCheckMenuItem" id="BrowserBrowserMenuItem">
                         <property name="related_action">BrowserAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1212,7 +1203,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkRadioMenuItem" id="BrowserPhongMenuItem">
+                      <object class="GtkCheckMenuItem" id="BrowserPhongMenuItem">
                         <property name="related_action">PhongAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1223,7 +1214,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkRadioMenuItem" id="BrowserGouraudMenuItem">
+                      <object class="GtkCheckMenuItem" id="BrowserGouraudMenuItem">
                         <property name="related_action">GouraudAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1234,7 +1225,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkRadioMenuItem" id="BrowserFlatMenuItem">
+                      <object class="GtkCheckMenuItem" id="BrowserFlatMenuItem">
                         <property name="related_action">FlatAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1245,7 +1236,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkRadioMenuItem" id="BrowserWireframeMenuItem">
+                      <object class="GtkCheckMenuItem" id="BrowserWireframeMenuItem">
                         <property name="related_action">WireframeAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1256,7 +1247,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkRadioMenuItem" id="BrowserPointsetMenuItem">
+                      <object class="GtkCheckMenuItem" id="BrowserPointsetMenuItem">
                         <property name="related_action">PointsetAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1282,7 +1273,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkRadioMenuItem" id="BrowserPrimitiveQualityHighMenuItem">
+                      <object class="GtkCheckMenuItem" id="BrowserPrimitiveQualityHighMenuItem">
                         <property name="related_action">PrimitiveQualityHighAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1293,7 +1284,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkRadioMenuItem" id="BrowserPrimitiveQualityMediumMenuItem">
+                      <object class="GtkCheckMenuItem" id="BrowserPrimitiveQualityMediumMenuItem">
                         <property name="related_action">PrimitiveQualityMediumAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1305,7 +1296,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkRadioMenuItem" id="BrowserPrimitiveQualityLowMenuItem">
+                      <object class="GtkCheckMenuItem" id="BrowserPrimitiveQualityLowMenuItem">
                         <property name="related_action">PrimitiveQualityLowAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1331,7 +1322,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkRadioMenuItem" id="BrowserTextureQualityHighMenuItem">
+                      <object class="GtkCheckMenuItem" id="BrowserTextureQualityHighMenuItem">
                         <property name="related_action">TextureQualityHighAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1342,7 +1333,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkRadioMenuItem" id="BrowserTextureQualityMediumMenuItem">
+                      <object class="GtkCheckMenuItem" id="BrowserTextureQualityMediumMenuItem">
                         <property name="related_action">TextureQualityMediumAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1353,7 +1344,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkRadioMenuItem" id="BrowserTextureQualityLowMenuItem">
+                      <object class="GtkCheckMenuItem" id="BrowserTextureQualityLowMenuItem">
                         <property name="related_action">TextureQualityLowAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -2509,7 +2500,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="EditorMenuItem">
+                                      <object class="GtkCheckMenuItem" id="EditorMenuItem">
                                         <property name="related_action">EditorAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
@@ -2520,7 +2511,7 @@
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="BrowserMenuItem">
+                                      <object class="GtkCheckMenuItem" id="BrowserMenuItem">
                                         <property name="related_action">BrowserAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
@@ -2562,7 +2553,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="PhongMenuItem">
+                                      <object class="GtkCheckMenuItem" id="PhongMenuItem">
                                         <property name="related_action">PhongAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
@@ -2573,7 +2564,7 @@
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="GouraudMenuItem">
+                                      <object class="GtkCheckMenuItem" id="GouraudMenuItem">
                                         <property name="related_action">GouraudAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
@@ -2584,38 +2575,35 @@
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="FlatMenuItem">
+                                      <object class="GtkCheckMenuItem" id="FlatMenuItem">
                                         <property name="related_action">FlatAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">_Flat</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
-                                        <property name="group">PhongMenuItem</property>
                                         <accelerator key="3" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="WireframeMenuItem">
+                                      <object class="GtkCheckMenuItem" id="WireframeMenuItem">
                                         <property name="related_action">WireframeAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">_Wireframe</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
-                                        <property name="group">PhongMenuItem</property>
                                         <accelerator key="2" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="PointsetMenuItem">
+                                      <object class="GtkCheckMenuItem" id="PointsetMenuItem">
                                         <property name="related_action">PointsetAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">_Pointset</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
-                                        <property name="group">PhongMenuItem</property>
                                         <accelerator key="1" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                       </object>
                                     </child>
@@ -2635,7 +2623,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="PrimitiveQualityHighMenuItem">
+                                      <object class="GtkCheckMenuItem" id="PrimitiveQualityHighMenuItem">
                                         <property name="related_action">PrimitiveQualityHighAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
@@ -2646,26 +2634,24 @@
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="PrimitiveQualityMediumMenuItem">
+                                      <object class="GtkCheckMenuItem" id="PrimitiveQualityMediumMenuItem">
                                         <property name="related_action">PrimitiveQualityMediumAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">_Medium</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
-                                        <property name="group">PrimitiveQualityHighMenuItem</property>
                                         <accelerator key="F2" signal="activate"/>
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="PrimitiveQualityLowMenuItem">
+                                      <object class="GtkCheckMenuItem" id="PrimitiveQualityLowMenuItem">
                                         <property name="related_action">PrimitiveQualityLowAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">_Low</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
-                                        <property name="group">PrimitiveQualityHighMenuItem</property>
                                         <accelerator key="F1" signal="activate"/>
                                       </object>
                                     </child>
@@ -2685,7 +2671,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="TextureQualityHighMenuItem">
+                                      <object class="GtkCheckMenuItem" id="TextureQualityHighMenuItem">
                                         <property name="related_action">TextureQualityHighAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
@@ -2696,26 +2682,24 @@
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="TextureQualityMediumMenuItem">
+                                      <object class="GtkCheckMenuItem" id="TextureQualityMediumMenuItem">
                                         <property name="related_action">TextureQualityMediumAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">_Medium</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
-                                        <property name="group">TextureQualityHighMenuItem</property>
                                         <accelerator key="F2" signal="activate"/>
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkRadioMenuItem" id="TextureQualityLowMenuItem">
+                                      <object class="GtkCheckMenuItem" id="TextureQualityLowMenuItem">
                                         <property name="related_action">TextureQualityLowAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">_Low</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
-                                        <property name="group">TextureQualityHighMenuItem</property>
                                         <accelerator key="F1" signal="activate"/>
                                       </object>
                                     </child>

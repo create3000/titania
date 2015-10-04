@@ -88,8 +88,37 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	         X3DBrowserWindow (browser),
 	      X3DObjectOperations (),
 	                 changing (false),
-	                   viewer (X3D::ViewerType::NONE)
+	                   viewer (X3D::ViewerType::NONE),
+	       environmentActions (),
+	           shadingActions (),
+	  primitiveQualityActions (),
+	    textureQualityActions ()
 {
+	environmentActions = {
+		getEditorAction (),
+		getBrowserAction ()
+	};
+
+	shadingActions = {
+		getPhongAction (),
+		getGouraudAction (),
+		getFlatAction (),
+		getWireframeAction (),
+		getPointsetAction ()
+	};
+
+	primitiveQualityActions = {
+		getPrimitiveQualityHighAction (),
+		getPrimitiveQualityMediumAction (),
+		getPrimitiveQualityLowAction (),
+	};
+
+	textureQualityActions = {
+		getTextureQualityHighAction (),
+		getTextureQualityMediumAction (),
+		getTextureQualityLowAction (),
+	};
+
 	if (getConfig () .getBoolean ("transparent"))
 		setTransparent (true);
 	else
@@ -1088,33 +1117,34 @@ BrowserWindow::on_tabs_toggled ()
 }
 
 void
-BrowserWindow::on_environment_changed (const Glib::RefPtr <Gtk::RadioAction> & current)
+BrowserWindow::on_browser_toggled ()
 {
-	switch (current -> get_current_value ())
+	if (getBrowserAction () -> get_active ())
 	{
-		case 0:
-		{
-			isEditor (false);
-			isLive (true);
+		toggleActions (getBrowserAction (), environmentActions);
 
-			if (not getBackgroundsAction () -> get_active ())
-				getBackgroundsAction () -> set_active (true);
+		isEditor (false);
+		isLive (true);
 
-			if (not getFogsAction () -> get_active ())
-				getFogsAction () -> set_active (true);
+		if (not getBackgroundsAction () -> get_active ())
+			getBackgroundsAction () -> set_active (true);
 
-			on_hide_all_object_icons_activated ();
-			on_show_all_objects_activated ();
+		if (not getFogsAction () -> get_active ())
+			getFogsAction () -> set_active (true);
 
-			break;
-		}
-		case 1:
-		{
-			isEditor (true);
-			break;
-		}
-		default:
-		   break;
+		on_hide_all_object_icons_activated ();
+		on_show_all_objects_activated ();
+	}
+}
+
+void
+BrowserWindow::on_editor_toggled ()
+{
+	if (getEditorAction () -> get_active ())
+	{
+		toggleActions (getEditorAction (), environmentActions);
+				
+		isEditor (true);
 	}
 }
 
@@ -1190,27 +1220,57 @@ BrowserWindow::on_motion_blur_activated ()
 // Shading menu
 
 void
-BrowserWindow::on_shading_changed (const Glib::RefPtr <Gtk::RadioAction> & current)
+BrowserWindow::on_phong_toggled ()
 {
-	switch (current -> get_current_value ())
+	if (getPhongAction () -> get_active ())
 	{
-		case 0:
-			on_shading_changed ("POINTSET");
-			break;
-		case 1:
-			on_shading_changed ("WIREFRAME");
-			break;
-		case 2:
-			on_shading_changed ("FLAT");
-			break;
-		case 3:
-			on_shading_changed ("GOURAUD");
-			break;
-		case 4:
-			on_shading_changed ("PHONG");
-			break;
-	   default:
-			break;
+		toggleActions (getPhongAction (), shadingActions);
+
+		on_shading_changed ("PHONG");
+	}
+}
+
+void
+BrowserWindow::on_gouraud_toggled ()
+{
+	if (getGouraudAction () -> get_active ())
+	{
+		toggleActions (getGouraudAction (), shadingActions);
+
+		on_shading_changed ("GOURAUD");
+	}
+}
+
+void
+BrowserWindow::on_flat_toggled ()
+{
+	if (getFlatAction () -> get_active ())
+	{
+		toggleActions (getFlatAction (), shadingActions);
+	
+		on_shading_changed ("FLAT");
+	}
+}
+
+void
+BrowserWindow::on_wireframe_toggled ()
+{
+	if (getWireframeAction () -> get_active ())
+	{
+		toggleActions (getWireframeAction (), shadingActions);
+
+		on_shading_changed ("WIREFRAME");
+	}
+}
+
+void
+BrowserWindow::on_pointset_toggled ()
+{
+	if (getPointsetAction () -> get_active ())
+	{
+		toggleActions (getPointsetAction (), shadingActions);
+
+		on_shading_changed ("POINTSET");
 	}
 }
 
@@ -1259,21 +1319,35 @@ BrowserWindow::connectShading (const X3D::SFString & field)
 // Primitive Quality
 
 void
-BrowserWindow::on_primitive_quality_changed (const Glib::RefPtr <Gtk::RadioAction> & current)
+BrowserWindow::on_primitive_quality_high_toggled ()
 {
-	switch (current -> get_current_value ())
+	if (getPrimitiveQualityHighAction () -> get_active ())
 	{
-		case 0:
-			on_primitive_quality_changed ("LOW");
-			break;
-		case 1:
-			on_primitive_quality_changed ("MEDIUM");
-			break;
-		case 2:
-			on_primitive_quality_changed ("HIGH");
-			break;
-	   default:
-			break;
+		toggleActions (getPrimitiveQualityHighAction (), primitiveQualityActions);
+
+		on_primitive_quality_changed ("HIGH");
+	}
+}
+
+void
+BrowserWindow::on_primitive_quality_medium_toggled ()
+{
+	if (getPrimitiveQualityMediumAction () -> get_active ())
+	{
+		toggleActions (getPrimitiveQualityMediumAction (), primitiveQualityActions);
+
+		on_primitive_quality_changed ("MEDIUM");
+	}
+}
+
+void
+BrowserWindow::on_primitive_quality_low_toggled ()
+{
+	if (getPrimitiveQualityLowAction () -> get_active ())
+	{
+		toggleActions (getPrimitiveQualityLowAction (), primitiveQualityActions);
+
+		on_primitive_quality_changed ("LOW");
 	}
 }
 
@@ -1316,21 +1390,35 @@ BrowserWindow::connectPrimitiveQuality (const X3D::SFString & field)
 // Texture Quality
 
 void
-BrowserWindow::on_texture_quality_changed (const Glib::RefPtr <Gtk::RadioAction> & current)
+BrowserWindow::on_texture_quality_high_toggled ()
 {
-	switch (current -> get_current_value ())
+	if (getTextureQualityHighAction () -> get_active ())
 	{
-		case 0:
-			on_texture_quality_changed ("LOW");
-			break;
-		case 1:
-			on_texture_quality_changed ("MEDIUM");
-			break;
-		case 2:
-			on_texture_quality_changed ("HIGH");
-			break;
-	   default:
-			break;
+		toggleActions (getTextureQualityHighAction (), textureQualityActions);
+
+		on_texture_quality_changed ("HIGH");
+	}
+}
+
+void
+BrowserWindow::on_texture_quality_medium_toggled ()
+{
+	if (getTextureQualityMediumAction () -> get_active ())
+	{
+		toggleActions (getTextureQualityMediumAction (), textureQualityActions);
+
+		on_texture_quality_changed ("MEDIUM");
+	}
+}
+
+void
+BrowserWindow::on_texture_quality_low_toggled ()
+{
+	if (getTextureQualityLowAction () -> get_active ())
+	{
+		toggleActions (getTextureQualityLowAction (), textureQualityActions);
+
+		on_texture_quality_changed ("LOW");
 	}
 }
 
@@ -2734,6 +2822,17 @@ BrowserWindow::on_look_at_toggled ()
 	{
 		if (getBrowser () -> getViewer () not_eq viewer)
 			getBrowser () -> setViewer (viewer);
+	}
+}
+
+void
+BrowserWindow::toggleActions (const Glib::RefPtr <Gtk::ToggleAction> & current,
+	                           const std::vector <Glib::RefPtr <Gtk::ToggleAction>> & actions)
+{
+	for (const auto & action : actions)
+	{
+		if (action not_eq current)
+			action -> set_active (false);
 	}
 }
 
