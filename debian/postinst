@@ -22,6 +22,9 @@ set -e
 #     installation fails and the `postinst' is called with `abort-upgrade',
 #     `abort-remove' or `abort-deconfigure'.
 
+NOTIFIER="/usr/share/update-notifier/notify-reboot-required";
+REBOOT_REQUIRED="YES"
+
 case "$1" in
     configure)
       
@@ -38,6 +41,13 @@ case "$1" in
       /usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/x3d+xml.xml 
       /usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/x3d+binary.xml 
 
+		if test "$REBOOT_REQUIRED" = "YES"
+		then
+			if [ -x $NOTIFIER ]
+			then
+				$NOTIFIER
+			fi
+		fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
