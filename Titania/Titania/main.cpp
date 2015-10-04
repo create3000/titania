@@ -50,7 +50,7 @@
 
 #include "Browser/BrowserWindow.h"
 
-#include <Titania/OS/env.h>
+#include <Titania/OS.h>
 
 namespace titania {
 namespace puck {
@@ -142,6 +142,8 @@ main (int argc, char** argv)
 
 	os::env ("LIBOVERLAY_SCROLLBAR", "0"); // XXX: This fixes the bug with modal windows.
 	os::env ("UBUNTU_MENUPROXY",     "0"); // XXX: This fixes the bug with check button menu items.
+
+	os::system ("mkdir", "-p", os::home () + "/.gconf");
 
 	{
 		BrowserApplication browserApplication (argc, argv);
