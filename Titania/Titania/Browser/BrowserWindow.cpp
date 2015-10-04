@@ -2586,8 +2586,8 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 void
 BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::ViewerType> & availableViewers)
 {
-	const bool editor = getEditorAction () -> get_active () and getArrowButton () .get_active ();
-	const bool enable = getBrowser () -> getBrowserOptions () -> Dashboard ();
+	const bool editor    = getEditorAction () -> get_active () and getArrowButton () .get_active ();
+	const bool dashboard = getBrowser () -> getBrowserOptions () -> Dashboard ();
 
 	bool examine = editor;
 	bool walk    = editor;
@@ -2601,35 +2601,37 @@ BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::ViewerType> & avai
 		switch (viewer)
 		{
 			case X3D::ViewerType::EXAMINE :
-				examine = enable;
+				examine = true;
 				break;
 			case X3D::ViewerType::WALK:
-				walk = enable;
+				walk = true;
 				break;
 			case X3D::ViewerType::FLY:
-				fly = enable;
+				fly = true;
 				break;
 			case X3D::ViewerType::PLANE:
-				plane = enable;
+				plane = true;
 				break;
 			case X3D::ViewerType::NONE:
-				none = enable;
+				none = true;
 				break;
 			case X3D::ViewerType::LOOKAT:
-				lookat = enable;
+				lookat = dashboard;
 				break;
 		}
 	}
 
+	getViewerButton ()          .set_visible (dashboard or editor);
 	getExamineViewerMenuItem () .set_visible (examine);
 	getWalkViewerMenuItem ()    .set_visible (walk);
 	getFlyViewerMenuItem ()     .set_visible (fly);
 	getPlaneViewerMenuItem ()   .set_visible (plane);
 	getNoneViewerMenuItem ()    .set_visible (none);
 
-	getLookAtSeparator () .set_visible (lookat);
-	getLookAtAllButton () .set_visible (lookat);
-	getLookAtButton ()    .set_visible (lookat);
+	getLookAtSelectionButton () .set_visible (dashboard or editor);
+	getLookAtSeparator ()       .set_visible (lookat);
+	getLookAtAllButton ()       .set_visible (lookat);
+	getLookAtButton ()          .set_visible (lookat);
 }
 
 void
