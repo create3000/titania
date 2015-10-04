@@ -54,6 +54,8 @@
 #include "OutlineTreeModel.h"
 #include "OutlineTreeViewEditor.h"
 
+#include <Titania/X3D/Components/Grouping/X3DTransformNode.h>
+#include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 #include <Titania/X3D/Parser/Parser.h>
 
 namespace titania {

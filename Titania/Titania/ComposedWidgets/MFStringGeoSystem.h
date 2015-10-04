@@ -53,6 +53,7 @@
 
 #include "../ComposedWidgets/X3DComposedWidget.h"
 
+#include <Titania/X3D/Components/Geospatial/X3DGeospatialObject.h>
 #include <Titania/String.h>
 
 namespace titania {

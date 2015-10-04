@@ -54,6 +54,10 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DTextEditorInterface.h"
 
+#include <Titania/X3D/Components/Text/Text.h>
+#include <Titania/X3D/Components/Text/FontStyle.h>
+#include <Titania/X3D/Components/Layout/ScreenFontStyle.h>
+
 namespace titania {
 namespace puck {
 

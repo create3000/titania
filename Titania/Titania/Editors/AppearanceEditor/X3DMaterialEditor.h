@@ -55,6 +55,9 @@
 #include "../../Undo/UndoStep.h"
 #include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
 
+#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Shape/X3DMaterialNode.h>
+
 namespace titania {
 namespace puck {
 

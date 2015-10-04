@@ -54,6 +54,10 @@
 #include "../Undo/UndoStep.h"
 #include "../UserInterfaces/X3DBrowserWindowInterface.h"
 
+#include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
+#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
+#include <Titania/X3D/Components/Rendering/X3DCoordinateNode.h>
+
 namespace titania {
 namespace puck {
 

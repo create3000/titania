@@ -54,6 +54,9 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Execution/BindableNodeList.h>
+#include <Titania/X3D/Parser/RegEx.h>
+
 namespace titania {
 namespace puck {
 

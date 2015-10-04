@@ -53,6 +53,8 @@
 
 #include "../../UserInterfaces/X3DTextureEditorInterface.h"
 
+#include <Titania/X3D/Components/Texturing/PixelTexture.h>
+
 namespace titania {
 namespace puck {
 

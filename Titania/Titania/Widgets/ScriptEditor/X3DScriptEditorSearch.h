@@ -56,6 +56,8 @@
 #include <gtksourceviewmm/buffer.h>
 #include <gtksourceviewmm/view.h>
 
+#include <Titania/X3D/Miscellaneous/Keys.h>
+
 namespace titania {
 namespace puck {
 

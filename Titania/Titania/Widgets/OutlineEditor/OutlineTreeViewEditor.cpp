@@ -57,6 +57,8 @@
 #include "OutlineTreeModel.h"
 #include "OutlineTreeObserver.h"
 
+#include <Titania/X3D/Execution/ImportedNode.h>
+#include <Titania/X3D/Execution/ExportedNode.h>
 #include <Titania/String.h>
 
 namespace titania {

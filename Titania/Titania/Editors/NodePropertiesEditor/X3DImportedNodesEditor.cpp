@@ -50,9 +50,13 @@
 
 #include "X3DImportedNodesEditor.h"
 
+#include <Titania/X3D/Components/Networking/Inline.h>
+#include <Titania/X3D/Execution/ImportedNode.h>
+#include <Titania/X3D/Execution/ExportedNode.h>
+#include <Titania/X3D/Parser/Filter.h>
+
 namespace titania {
 namespace puck {
-
 
 enum ImportedNodesEditorColumns
 {

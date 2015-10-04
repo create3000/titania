@@ -54,6 +54,18 @@
 #include "../../Configuration/config.h"
 #include "../FaceSelection.h"
 
+#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Grouping/Switch.h>
+#include <Titania/X3D/Components/Grouping/Transform.h>
+#include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
+#include <Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.h>
+#include <Titania/X3D/Components/Rendering/Coordinate.h>
+#include <Titania/X3D/Components/Rendering/IndexedLineSet.h>
+#include <Titania/X3D/Components/Shape/Shape.h>
+#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Texturing/MultiTexture.h>
+#include <Titania/X3D/Components/Texturing/MultiTextureTransform.h>
+
 #include <complex>
 
 namespace titania {

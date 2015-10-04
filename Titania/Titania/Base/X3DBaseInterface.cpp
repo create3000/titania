@@ -50,7 +50,13 @@
 
 #include "X3DBaseInterface.h"
 
+#include <Titania/X3D/Browser/X3DBrowser.h>
+#include <Titania/X3D/Components/Core/WorldInfo.h>
+#include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
+#include <Titania/X3D/Execution/X3DExecutionContext.h>
+
 #include "../Browser/X3DBrowserWindow.h"
+
 #include <cassert>
 
 namespace titania {
@@ -93,12 +99,17 @@ X3DBaseInterface::getBrowser () const
 	return browserWindow -> getBrowser ();
 }
 
+const X3D::WorldPtr &
+X3DBaseInterface::getWorld () const
+{
+	return getBrowser () -> getWorld ();
+}
+
 const X3D::X3DScenePtr &
 X3DBaseInterface::getScene () const
 {
 	return browserWindow -> getScene ();
 }
-
 void
 X3DBaseInterface::setExecutionContext (const X3D::X3DExecutionContextPtr & executionContext)
 {
@@ -118,6 +129,12 @@ X3DBaseInterface::getRootContext () const
 		return getExecutionContext ();
 
 	return getExecutionContext () -> getRootContext ();
+}
+
+bool
+X3DBaseInterface::inProtoDeclaration () const
+{
+	return getExecutionContext () -> isProtoDeclaration ();
 }
 
 bool

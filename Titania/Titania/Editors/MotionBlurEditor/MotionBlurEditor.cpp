@@ -53,6 +53,8 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Browser/Rendering/MotionBlur.h>
+
 namespace titania {
 namespace puck {
 

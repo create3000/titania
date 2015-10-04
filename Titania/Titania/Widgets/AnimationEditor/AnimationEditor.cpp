@@ -54,6 +54,16 @@
 #include "../../Configuration/config.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 
+#include <Titania/X3D/Components/Grouping/Group.h>
+#include <Titania/X3D/Components/Time/TimeSensor.h>
+#include <Titania/X3D/Components/EventUtilities/BooleanSequencer.h>
+#include <Titania/X3D/Components/EventUtilities/IntegerSequencer.h>
+#include <Titania/X3D/Components/Interpolation/ScalarInterpolator.h>
+#include <Titania/X3D/Components/Interpolation/PositionInterpolator2D.h>
+#include <Titania/X3D/Components/Interpolation/PositionInterpolator.h>
+#include <Titania/X3D/Parser/Filter.h>
+#include <Titania/X3D/Parser/RegEx.h>
+
 #include <Titania/Math/Algorithms/CatmullRomSplineInterpolator.h>
 #include <Titania/Math/Algorithms/SquadInterpolator.h>
 

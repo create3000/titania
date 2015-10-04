@@ -52,6 +52,8 @@
 
 #include "../../ComposedWidgets/RotationTool.h"
 
+#include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
+
 namespace titania {
 namespace puck {
 

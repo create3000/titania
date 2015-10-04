@@ -50,7 +50,9 @@
 
 #include "Browser/BrowserWindow.h"
 
-#include <Titania/OS.h>
+#include <Titania/OS/env.h>
+#include <Titania/OS/home.h>
+#include <Titania/OS/system.h>
 
 namespace titania {
 namespace puck {

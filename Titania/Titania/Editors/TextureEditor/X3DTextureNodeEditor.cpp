@@ -52,6 +52,8 @@
 
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Components/Shape/Appearance.h>
+
 namespace titania {
 namespace puck {
 

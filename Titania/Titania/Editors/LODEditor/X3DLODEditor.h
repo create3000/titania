@@ -54,6 +54,8 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DLODEditorInterface.h"
 
+#include <Titania/X3D/Components/Navigation/LOD.h>
+
 namespace titania {
 namespace puck {
 

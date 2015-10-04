@@ -52,7 +52,9 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 
-namespace titania {
+#include <Titania/X3D/Components/Core/WorldInfo.h>
+
+ namespace titania {
 namespace puck {
 
 AngleTool::AngleTool (X3DBrowserWindow* const browserWindow) :

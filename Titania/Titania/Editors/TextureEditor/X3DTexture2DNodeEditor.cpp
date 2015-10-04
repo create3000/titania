@@ -50,6 +50,9 @@
 
 #include "X3DTexture2DNodeEditor.h"
 
+#include <Titania/X3D/Components/Grouping/Transform.h>
+#include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
+
 namespace titania {
 namespace puck {
 

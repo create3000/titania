@@ -55,6 +55,12 @@
 #include "../../Base/X3DEditorObject.h"
 #include "../../UserInterfaces/X3DAnimationEditorInterface.h"
 
+#include <Titania/X3D/Components/Time/TimeSensor.h>
+#include <Titania/X3D/Components/Interpolation/ColorInterpolator.h>
+#include <Titania/X3D/Components/Interpolation/OrientationInterpolator.h>
+
+#include <Titania/Math/Algorithms/CatmullRomSplineInterpolator.h>
+
 namespace titania {
 namespace puck {
 

@@ -54,6 +54,15 @@
 #include "X3DBrowserWindow.h"
 
 #include <Titania/X3D/Browser/ContextLock.h>
+#include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
+#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Shape/Material.h>
+#include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
+#include <Titania/X3D/Components/Texturing3D/X3DTexture3DNode.h>
+#include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
+#include <Titania/X3D/Prototype/ProtoDeclaration.h>
+#include <Titania/X3D/Bits/Cast.h>
+#include <Titania/X3D/Bits/Traverse.h>
 
 namespace titania {
 namespace puck {

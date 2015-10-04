@@ -54,6 +54,8 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DScriptEditorInterface.h"
 
+#include <Titania/X3D/Components/Shaders/ShaderPart.h>
+
 namespace titania {
 namespace puck {
 

@@ -56,6 +56,9 @@
 #include "../../ComposedWidgets/MFColorRGBAButton.h"
 #include "../../Undo/UndoHistory.h"
 
+#include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
+#include <Titania/X3D/Components/Rendering/ColorRGBA.h>
+
 namespace titania {
 namespace puck {
 

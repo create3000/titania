@@ -125,11 +125,11 @@ X3DBrowser::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
-		if (browserOptions -> splashScreen ())
+		if (browserOptions -> SplashScreen ())
 		{
 			try
 			{
-				Loader (getPrivateScene ()) .parseIntoScene (X3DScenePtr (executionContext), browserOptions -> splashScreenURL ());
+				Loader (getPrivateScene ()) .parseIntoScene (X3DScenePtr (executionContext), browserOptions -> SplashScreenURL ());
 			}
 			catch (const X3DError & error)
 			{

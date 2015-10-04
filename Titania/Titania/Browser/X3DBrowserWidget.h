@@ -220,7 +220,7 @@ private:
 	set_initialized ();
 
 	void
-	set_splashScreen (const X3D::BrowserPtr &, const basic::uri &);
+	set_SplashScreen (const X3D::BrowserPtr &, const basic::uri &);
 
 	virtual
 	void

@@ -52,6 +52,8 @@
 #define __TITANIA_BASE_X3DBASE_INTERFACE_H__
 
 #include <Titania/X3D.h>
+#include <Titania/X3D/Base/X3DParentObject.h>
+
 #include <sigc++/trackable.h>
 #include "../Undo/UndoStep.h"
 
@@ -100,14 +102,13 @@ public:
 	virtual
 	const X3D::BrowserPtr &
 	getBrowser () const;
+	
+	const X3D::WorldPtr &
+	getWorld () const;
 
 	virtual
 	const X3D::X3DScenePtr &
 	getScene () const;
-	
-	const X3D::WorldPtr &
-	getWorld () const
-	{ return getBrowser () -> getWorld (); }
 
 	virtual
 	void
@@ -121,8 +122,7 @@ public:
 	getRootContext () const;
 
 	bool
-	inProtoDeclaration () const
-	{ return getExecutionContext () -> isProtoDeclaration (); }
+	inProtoDeclaration () const;
 
 	bool
 	inPrototypeInstance () const;

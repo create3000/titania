@@ -50,6 +50,8 @@
 
 #include "X3DPointLightEditor.h"
 
+#include <Titania/X3D/Components/Lighting/PointLight.h>
+
 namespace titania {
 namespace puck {
 

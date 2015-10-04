@@ -53,6 +53,10 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Components/Grouping/Switch.h>
+#include <Titania/X3D/Components/Shape/Material.h>
+#include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
+
 namespace titania {
 namespace puck {
 

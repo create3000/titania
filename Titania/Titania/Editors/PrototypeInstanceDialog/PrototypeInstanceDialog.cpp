@@ -53,6 +53,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Prototype/X3DProtoDeclarationNode.h>
 #include <Titania/OS.h>
 
 namespace titania {

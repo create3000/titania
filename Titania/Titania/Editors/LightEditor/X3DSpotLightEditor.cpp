@@ -52,6 +52,8 @@
 
 #include "../../ComposedWidgets/NormalTool.h"
 
+#include <Titania/X3D/Components/Lighting/SpotLight.h>
+
 namespace titania {
 namespace puck {
 

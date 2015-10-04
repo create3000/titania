@@ -55,6 +55,9 @@
 #include "../Browser/X3DBrowserWidget.h"
 #include "../Undo/UndoHistory.h"
 
+#include <Titania/X3D/Components/Rendering/X3DCoordinateNode.h>
+#include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
+
 namespace titania {
 namespace puck {
 

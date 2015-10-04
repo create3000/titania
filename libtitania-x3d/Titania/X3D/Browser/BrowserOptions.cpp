@@ -94,18 +94,18 @@ const std::string   BrowserOptions::typeName       = "BrowserOptions";
 const std::string   BrowserOptions::containerField = "browserOptions";
 
 BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
-	          splashScreen (new SFBool (false)),
-	       splashScreenURL (new MFString ({ get_page ("about/splash.x3dv") .str () })),
-	             dashboard (new SFBool (true)),
-	            rubberBand (new SFBool (true)),
-	enableInlineViewpoints (new SFBool (true)),
-	           antialiased (new SFBool (true)),
-	        textureQuality (new SFString ("MEDIUM")),
-	      primitiveQuality (new SFString ("MEDIUM")),
-	     qualityWhenMoving (new SFString ("MEDIUM")),
-	               shading (new SFString ("GOURAUD")),
-	     animateStairWalks (new SFBool ()),
-	               gravity (new SFFloat (P_GN))
+	          SplashScreen (new SFBool (false)),
+	       SplashScreenURL (new MFString ({ get_page ("about/splash.x3dv") .str () })),
+	             Dashboard (new SFBool (true)),
+	            RubberBand (new SFBool (true)),
+	EnableInlineViewpoints (new SFBool (true)),
+	           Antialiased (new SFBool (true)),
+	        TextureQuality (new SFString ("MEDIUM")),
+	      PrimitiveQuality (new SFString ("MEDIUM")),
+	     QualityWhenMoving (new SFString ("MEDIUM")),
+	               Shading (new SFString ("GOURAUD")),
+	     AnimateStairWalks (new SFBool ()),
+	               Gravity (new SFFloat (P_GN))
 { }
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
@@ -114,22 +114,22 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 {
 	addType (X3DConstants::BrowserOptions);
 
-	addField (inputOutput, "SplashScreen",           splashScreen ());
-	addField (inputOutput, "Dashboard",              dashboard ());
-	addField (inputOutput, "Rubberband",             rubberBand ());
-	addField (inputOutput, "EnableInlineViewpoints", enableInlineViewpoints ());
-	addField (inputOutput, "Antialiased",            antialiased ());
-	addField (inputOutput, "TextureQuality",         textureQuality ());
-	addField (inputOutput, "PrimitiveQuality",       primitiveQuality ());
-	addField (inputOutput, "QualityWhenMoving",      qualityWhenMoving ());
-	addField (inputOutput, "Shading",                shading ());
-	addField (inputOutput, "MotionBlur",             motionBlur ());
+	addField (inputOutput, "SplashScreen",           SplashScreen ());
+	addField (inputOutput, "Dashboard",              Dashboard ());
+	addField (inputOutput, "Rubberband",             RubberBand ());
+	addField (inputOutput, "EnableInlineViewpoints", EnableInlineViewpoints ());
+	addField (inputOutput, "Antialiased",            Antialiased ());
+	addField (inputOutput, "TextureQuality",         TextureQuality ());
+	addField (inputOutput, "PrimitiveQuality",       PrimitiveQuality ());
+	addField (inputOutput, "QualityWhenMoving",      QualityWhenMoving ());
+	addField (inputOutput, "Shading",                Shading ());
+	addField (inputOutput, "MotionBlur",             MotionBlur ());
 
 	// Non standard options
-	addField (inputOutput, "SplashScreenURL",        splashScreenURL ());
-	addField (inputOutput, "MotionBlurIntensity",    motionBlurIntensity ());
-	addField (inputOutput, "AnimateStairWalks",      animateStairWalks ());
-	addField (inputOutput, "Gravity",                gravity ());
+	addField (inputOutput, "SplashScreenURL",        SplashScreenURL ());
+	addField (inputOutput, "MotionBlurIntensity",    MotionBlurIntensity ());
+	addField (inputOutput, "AnimateStairWalks",      AnimateStairWalks ());
+	addField (inputOutput, "Gravity",                Gravity ());
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 }
@@ -145,45 +145,45 @@ BrowserOptions::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	antialiased ()      .addInterest (this, &BrowserOptions::set_antialiased);
-	textureQuality ()   .addInterest (this, &BrowserOptions::set_textureQuality);
-	primitiveQuality () .addInterest (this, &BrowserOptions::set_primitiveQuality);
-	shading ()          .addInterest (this, &BrowserOptions::set_shading);
+	Antialiased ()      .addInterest (this, &BrowserOptions::set_Antialiased);
+	TextureQuality ()   .addInterest (this, &BrowserOptions::set_TextureQuality);
+	PrimitiveQuality () .addInterest (this, &BrowserOptions::set_PrimitiveQuality);
+	Shading ()          .addInterest (this, &BrowserOptions::set_Shading);
 
-	set_antialiased ();
-	set_textureQuality ();
-	set_primitiveQuality ();
-	set_shading ();
+	set_Antialiased ();
+	set_TextureQuality ();
+	set_PrimitiveQuality ();
+	set_Shading ();
 }
 
 SFBool &
-BrowserOptions::motionBlur ()
+BrowserOptions::MotionBlur ()
 {
 	return getBrowser () -> getMotionBlur () -> enabled ();
 }
 
 const SFBool &
-BrowserOptions::motionBlur () const
+BrowserOptions::MotionBlur () const
 {
 	return getBrowser () -> getMotionBlur () -> enabled ();
 }
 
 SFFloat &
-BrowserOptions::motionBlurIntensity ()
+BrowserOptions::MotionBlurIntensity ()
 {
 	return getBrowser () -> getMotionBlur () -> intensity ();
 }
 
 const SFFloat &
-BrowserOptions::motionBlurIntensity () const
+BrowserOptions::MotionBlurIntensity () const
 {
 	return getBrowser () -> getMotionBlur () -> intensity ();
 }
 
 void
-BrowserOptions::set_antialiased ()
+BrowserOptions::set_Antialiased ()
 {
-	if (antialiased ())
+	if (Antialiased ())
 	{
 		glEnable (GL_MULTISAMPLE);
 
@@ -192,21 +192,21 @@ BrowserOptions::set_antialiased ()
 		glGetIntegerv (GL_SAMPLE_BUFFERS, &sampleBuffers);
 		glGetIntegerv (GL_SAMPLES, &samples);
 
-		getBrowser () -> getRenderingProperties () -> antialiased () = sampleBuffers and samples;
+		getBrowser () -> getRenderingProperties () -> Antialiased () = sampleBuffers and samples;
 	}
 	else
 	{
 		glDisable (GL_MULTISAMPLE);
-		getBrowser () -> getRenderingProperties () -> antialiased () = false;
+		getBrowser () -> getRenderingProperties () -> Antialiased () = false;
 	}
 }
 
 void
-BrowserOptions::set_textureQuality ()
+BrowserOptions::set_TextureQuality ()
 {
 	const auto & textureProperties = getBrowser () -> getTextureProperties ();
 
-	if (textureQuality () == "HIGH")
+	if (TextureQuality () == "HIGH")
 	{
 		textureProperties -> magnificationFilter () = "NICEST";
 		textureProperties -> minificationFilter ()  = "NICEST";
@@ -218,7 +218,7 @@ BrowserOptions::set_textureQuality ()
 		return;
 	}
 
-	if (textureQuality () == "LOW")
+	if (TextureQuality () == "LOW")
 	{
 		textureProperties -> magnificationFilter () = "NICEST";
 		textureProperties -> minificationFilter ()  = "AVG_PIXEL_NEAREST_MIPMAP";
@@ -242,9 +242,9 @@ BrowserOptions::set_textureQuality ()
 }
 
 void
-BrowserOptions::set_primitiveQuality ()
+BrowserOptions::set_PrimitiveQuality ()
 {
-	if (primitiveQuality () == "HIGH")
+	if (PrimitiveQuality () == "HIGH")
 	{
 		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = M_PI / 40;
 		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 40;
@@ -264,7 +264,7 @@ BrowserOptions::set_primitiveQuality ()
 		return;
 	}
 
-	if (primitiveQuality () == "LOW")
+	if (PrimitiveQuality () == "LOW")
 	{
 		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = M_PI / 10;
 		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 10;
@@ -303,28 +303,28 @@ BrowserOptions::set_primitiveQuality ()
 }
 
 void
-BrowserOptions::set_shading ()
+BrowserOptions::set_Shading ()
 {
-	getBrowser () -> getRenderingProperties () -> shading () = shading ();
+	getBrowser () -> getRenderingProperties () -> Shading () = Shading ();
 
-	if (shading () == "PHONG")
+	if (Shading () == "PHONG")
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 		glShadeModel (GL_SMOOTH);
 
-		getBrowser () -> getRenderingProperties () -> shading () = "GOURAUD";
+		getBrowser () -> getRenderingProperties () -> Shading () = "GOURAUD";
 	}
-	else if (shading () == "FLAT")
+	else if (Shading () == "FLAT")
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 		glShadeModel (GL_FLAT);
 	}
-	else if (shading () == "WIREFRAME")
+	else if (Shading () == "WIREFRAME")
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
 		glShadeModel (GL_SMOOTH);
 	}
-	else if (shading () == "POINTSET")
+	else if (Shading () == "POINTSET")
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
 		glShadeModel (GL_SMOOTH);
@@ -334,7 +334,7 @@ BrowserOptions::set_shading ()
 		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 		glShadeModel (GL_SMOOTH);
 
-		getBrowser () -> getRenderingProperties () -> shading () = "GOURAUD";
+		getBrowser () -> getRenderingProperties () -> Shading () = "GOURAUD";
 	}
 }
 

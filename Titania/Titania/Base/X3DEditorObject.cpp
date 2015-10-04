@@ -50,6 +50,8 @@
 
 #include "X3DEditorObject.h"
 
+#include <Titania/X3D/Parser/RegEx.h>
+
 namespace titania {
 namespace puck {
 

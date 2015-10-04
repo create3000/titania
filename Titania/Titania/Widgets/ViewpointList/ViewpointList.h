@@ -53,6 +53,9 @@
 
 #include "../../UserInterfaces/X3DViewpointListInterface.h"
 
+#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Execution/BindableNodeStack.h>
+
 namespace titania {
 namespace puck {
 

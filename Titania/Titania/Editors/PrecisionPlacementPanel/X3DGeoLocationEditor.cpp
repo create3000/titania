@@ -52,6 +52,8 @@
 
 #include "../../ComposedWidgets/MFStringGeoSystem.h"
 
+#include <Titania/X3D/Components/Geospatial/GeoLocation.h>
+
 namespace titania {
 namespace puck {
 

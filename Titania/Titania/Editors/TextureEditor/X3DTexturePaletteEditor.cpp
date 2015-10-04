@@ -55,6 +55,13 @@
 #include "../../Configuration/config.h"
 #include "../../Widgets/LibraryView/LibraryView.h"
 
+#include <Titania/X3D/Components/Geometry2D/Rectangle2D.h>
+#include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
+#include <Titania/X3D/Components/Grouping/Transform.h>
+#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Shape/Shape.h>
+#include <Titania/X3D/Components/Texturing/ImageTexture.h>
+
 namespace titania {
 namespace puck {
 

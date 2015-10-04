@@ -54,7 +54,13 @@
 #include "../Base/X3DBaseInterface.h"
 #include "../Browser/X3DBrowserWindow.h"
 
+#include <Titania/X3D/Bits/Traverse.h>
+#include <Titania/X3D/Basic/FieldSet.h>
+#include <Titania/X3D/Browser/X3DBrowser.h>
+#include <Titania/X3D/Fields/X3DPtrArray.h>
+
 #include <Titania/String/sprintf.h>
+#include <Titania/Utility/Range.h>
 
 namespace titania {
 namespace puck {

@@ -50,6 +50,9 @@
 
 #include "X3DPrimitiveCountEditor.h"
 
+#include <Titania/X3D/Execution/World.h>
+#include <Titania/X3D/Components/Layering/LayerSet.h>
+
 namespace titania {
 namespace puck {
 

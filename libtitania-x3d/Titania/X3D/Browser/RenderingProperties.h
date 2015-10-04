@@ -106,100 +106,100 @@ public:
 	///  @name Fields
 
 	SFBool &
-	enabled ()
-	{ return fields .enabled; }
+	Enabled ()
+	{ return fields .Enabled; }
 
 	const SFBool &
-	enabled () const
-	{ return fields .enabled; }
+	Enabled () const
+	{ return fields .Enabled; }
 
 	SFFloat &
-	cycleInterval ()
-	{ return fields .cycleInterval; }
+	CycleInterval ()
+	{ return fields .CycleInterval; }
 
 	const SFFloat &
-	cycleInterval () const
-	{ return fields .cycleInterval; }
+	CycleInterval () const
+	{ return fields .CycleInterval; }
 
 	SFString &
-	vendor ()
-	{ return *fields .vendor; }
+	Vendor ()
+	{ return *fields .Vendor; }
 
 	const SFString &
-	vendor () const
-	{ return *fields .vendor; }
+	Vendor () const
+	{ return *fields .Vendor; }
 
 	SFString &
-	renderer ()
-	{ return *fields .renderer; }
+	Renderer ()
+	{ return *fields .Renderer; }
 
 	const SFString &
-	renderer () const
-	{ return *fields .renderer; }
+	Renderer () const
+	{ return *fields .Renderer; }
 
 	SFString &
-	version ()
-	{ return *fields .version; }
+	Version ()
+	{ return *fields .Version; }
 
 	const SFString &
-	version () const
-	{ return *fields .version; }
+	Version () const
+	{ return *fields .Version; }
 
 	SFString &
-	shading ()
-	{ return *fields .shading; }
+	Shading ()
+	{ return *fields .Shading; }
 
 	const SFString &
-	shading () const
-	{ return *fields .shading; }
+	Shading () const
+	{ return *fields .Shading; }
 
 	SFInt32 &
-	maxTextureSize ()
-	{ return *fields .maxTextureSize; }
+	MaxTextureSize ()
+	{ return *fields .MaxTextureSize; }
 
 	const SFInt32 &
-	maxTextureSize () const
-	{ return *fields .maxTextureSize; }
+	MaxTextureSize () const
+	{ return *fields .MaxTextureSize; }
 
 	SFInt32 &
-	textureUnits ()
-	{ return *fields .textureUnits; }
+	TextureUnits ()
+	{ return *fields .TextureUnits; }
 
 	const SFInt32 &
-	textureUnits () const
-	{ return *fields .textureUnits; }
+	TextureUnits () const
+	{ return *fields .TextureUnits; }
 
 	SFInt32 &
-	maxLights ()
-	{ return *fields .maxLights; }
+	MaxLights ()
+	{ return *fields .MaxLights; }
 
 	const SFInt32 &
-	maxLights () const
-	{ return *fields .maxLights; }
+	MaxLights () const
+	{ return *fields .MaxLights; }
 
 	SFBool &
-	antialiased ()
-	{ return *fields .antialiased; }
+	Antialiased ()
+	{ return *fields .Antialiased; }
 
 	const SFBool &
-	antialiased () const
-	{ return *fields .antialiased; }
+	Antialiased () const
+	{ return *fields .Antialiased; }
 
 	SFInt32 &
-	colorDepth ()
-	{ return *fields .colorDepth; }
+	ColorDepth ()
+	{ return *fields .ColorDepth; }
 
 	const SFInt32 &
-	colorDepth () const
-	{ return *fields .colorDepth; }
+	ColorDepth () const
+	{ return *fields .ColorDepth; }
 
 	SFDouble &
-	textureMemory ()
-	{ return *fields .textureMemory; }
+	TextureMemory ()
+	{ return *fields .TextureMemory; }
 
 	const SFDouble &
-	textureMemory () const
-	{ return *fields .textureMemory; }
+	TextureMemory () const
+	{ return *fields .TextureMemory; }
 
 	///  @name Member access
 
@@ -231,7 +231,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_enabled ();
+	set_Enabled ();
 
 	void
 	reset ();
@@ -257,18 +257,18 @@ private:
 	{
 		Fields ();
 
-		SFBool enabled;
-		SFFloat cycleInterval;
-		SFString* const vendor;
-		SFString* const renderer;
-		SFString* const version;
-		SFString* const shading;
-		SFInt32* const maxTextureSize;
-		SFInt32* const textureUnits;
-		SFInt32* const maxLights;
-		SFBool* const antialiased;
-		SFInt32* const colorDepth;
-		SFDouble* const textureMemory;
+		SFBool Enabled;
+		SFFloat CycleInterval;
+		SFString* const Vendor;
+		SFString* const Renderer;
+		SFString* const Version;
+		SFString* const Shading;
+		SFInt32* const MaxTextureSize;
+		SFInt32* const TextureUnits;
+		SFInt32* const MaxLights;
+		SFBool* const Antialiased;
+		SFInt32* const ColorDepth;
+		SFDouble* const TextureMemory;
 
 	};
 

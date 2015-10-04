@@ -370,7 +370,7 @@ X3DRenderer::gravite ()
 
 			const float currentFrameRate = speed ? getBrowser () -> getCurrentFrameRate () : 1000000.0;
 
-			speed -= getBrowser () -> getBrowserOptions () -> gravity () / currentFrameRate;
+			speed -= getBrowser () -> getBrowserOptions () -> Gravity () / currentFrameRate;
 
 			float translation = speed / currentFrameRate;
 
@@ -395,7 +395,7 @@ X3DRenderer::gravite ()
 				// Step up
 				Vector3f translation = getCurrentLayer () -> getTranslation (Vector3f (), size, size, Vector3f (0, -distance, 0) * up);
 
-				if (getBrowser () -> getBrowserOptions () -> animateStairWalks ())
+				if (getBrowser () -> getBrowserOptions () -> AnimateStairWalks ())
 				{
 					float step = getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate ();
 					step = abs (getInverseCameraSpaceMatrix () .mult_matrix_dir (Vector3f (0, step, 0) * up));

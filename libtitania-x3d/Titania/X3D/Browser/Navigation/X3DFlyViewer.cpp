@@ -131,7 +131,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 
 			fromVector = toVector = Vector3f (event -> x, 0, event -> y);
 
-			if (getBrowser () -> getBrowserOptions () -> rubberBand ())
+			if (getBrowser () -> getBrowserOptions () -> RubberBand ())
 				getBrowser () -> displayed () .addInterest (this, &X3DFlyViewer::display);
 		}
 	}

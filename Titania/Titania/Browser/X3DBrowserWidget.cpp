@@ -57,6 +57,11 @@
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
 
+#include <Titania/X3D/Bits/Traverse.h>
+#include <Titania/X3D/Browser/BrowserOptions.h>
+#include <Titania/X3D/Browser/RenderingProperties.h>
+#include <Titania/X3D/Components/EnvironmentalEffects/Background.h>
+
 #include <Titania/OS/cwd.h>
 #include <Titania/String.h>
 #include <Titania/gzstream.h>
@@ -86,8 +91,8 @@ X3DBrowserWidget::initialize ()
 	recentView -> initialize ();
 
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
-	getBrowser () -> getBrowserOptions () -> splashScreen ()    = true;
-	getBrowser () -> getBrowserOptions () -> splashScreenURL () = { get_ui ("BrowserWidget.x3dv") };
+	getBrowser () -> getBrowserOptions () -> SplashScreen ()    = true;
+	getBrowser () -> getBrowserOptions () -> SplashScreenURL () = { get_ui ("BrowserWidget.x3dv") };
 	getBrowser () -> show ();
 
 	getSplashBox () .pack_start (*getBrowser (), true, true, 0);
@@ -428,10 +433,10 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 	browsers .emplace_back (browser);
 
 	if (not splashScreen and not URL .empty ())
-		browser -> getBrowserOptions () -> splashScreenURL () = { get_page ("about/blank.x3dv") .str () };
+		browser -> getBrowserOptions () -> SplashScreenURL () = { get_page ("about/blank.x3dv") .str () };
 
-	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_splashScreen, browser, URL);
-	browser -> getBrowserOptions () -> splashScreen () = not URL .empty ();
+	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_SplashScreen, browser, URL);
+	browser -> getBrowserOptions () -> SplashScreen () = not URL .empty ();
 	browser -> set_antialiasing (4);
 	browser -> show ();
 
@@ -473,9 +478,9 @@ X3DBrowserWidget::getShowTabs () const
 }
 
 void
-X3DBrowserWidget::set_splashScreen (const X3D::BrowserPtr & browser, const basic::uri & URL)
+X3DBrowserWidget::set_SplashScreen (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
-	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
+	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_SplashScreen);
 
 	load (browser, URL);
 }
@@ -745,7 +750,7 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser)
 	if (browser == getBrowser ())
 		recentView -> loadPreview (browser);
 
-	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
+	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_SplashScreen);
 
 	getUserData (browser) -> dispose ();
 

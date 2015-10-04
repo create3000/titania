@@ -52,6 +52,11 @@
 
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
+#include <Titania/X3D/Components/Geometry3D/ElevationGrid.h>
+#include <Titania/X3D/Components/Geospatial/GeoElevationGrid.h>
+#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
+
 namespace titania {
 namespace puck {
 

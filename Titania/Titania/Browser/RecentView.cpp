@@ -53,6 +53,11 @@
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
 
+#include <Titania/X3D/Components/Grouping/Switch.h>
+#include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
+#include <Titania/X3D/Components/Text/Text.h>
+#include <Titania/X3D/Components/Texturing/ImageTexture.h>
+
 #include <Titania/OS/cwd.h>
 #include <Titania/OS/home.h>
 #include <Titania/Stream/Base64.h>

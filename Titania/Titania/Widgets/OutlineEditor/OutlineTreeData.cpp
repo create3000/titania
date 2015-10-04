@@ -50,6 +50,9 @@
 
 #include "OutlineTreeData.h"
 
+#include <Titania/X3D/Execution/ImportedNode.h>
+#include <Titania/X3D/Execution/ExportedNode.h>
+
 namespace titania {
 namespace puck {
 

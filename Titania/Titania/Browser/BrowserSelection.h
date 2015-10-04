@@ -54,6 +54,8 @@
 #include "../Base/X3DBaseInterface.h"
 #include "../Undo/UndoStep.h"
 
+#include <Titania/X3D/Browser/Selection.h>
+
 namespace titania {
 namespace puck {
 

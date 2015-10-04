@@ -110,112 +110,112 @@ public:
 	///  @name Fields
 
 	SFBool &
-	splashScreen ()
-	{ return *fields .splashScreen; }
+	SplashScreen ()
+	{ return *fields .SplashScreen; }
 
 	const SFBool &
-	splashScreen () const
-	{ return *fields .splashScreen; }
+	SplashScreen () const
+	{ return *fields .SplashScreen; }
 
 	MFString &
-	splashScreenURL ()
-	{ return *fields .splashScreenURL; }
+	SplashScreenURL ()
+	{ return *fields .SplashScreenURL; }
 
 	const MFString &
-	splashScreenURL () const
-	{ return *fields .splashScreenURL; }
+	SplashScreenURL () const
+	{ return *fields .SplashScreenURL; }
 
 	SFBool &
-	dashboard ()
-	{ return *fields .dashboard; }
+	Dashboard ()
+	{ return *fields .Dashboard; }
 
 	const SFBool &
-	dashboard () const
-	{ return *fields .dashboard; }
+	Dashboard () const
+	{ return *fields .Dashboard; }
 
 	SFBool &
-	rubberBand ()
-	{ return *fields .rubberBand; }
+	RubberBand ()
+	{ return *fields .RubberBand; }
 
 	const SFBool &
-	rubberBand () const
-	{ return *fields .rubberBand; }
+	RubberBand () const
+	{ return *fields .RubberBand; }
 
 	SFBool &
-	enableInlineViewpoints ()
-	{ return *fields .enableInlineViewpoints; }
+	EnableInlineViewpoints ()
+	{ return *fields .EnableInlineViewpoints; }
 
 	const SFBool &
-	enableInlineViewpoints () const
-	{ return *fields .enableInlineViewpoints; }
+	EnableInlineViewpoints () const
+	{ return *fields .EnableInlineViewpoints; }
 
 	SFBool &
-	antialiased ()
-	{ return *fields .antialiased; }
+	Antialiased ()
+	{ return *fields .Antialiased; }
 
 	const SFBool &
-	antialiased () const
-	{ return *fields .antialiased; }
+	Antialiased () const
+	{ return *fields .Antialiased; }
 
 	SFString &
-	textureQuality ()
-	{ return *fields .textureQuality; }
+	TextureQuality ()
+	{ return *fields .TextureQuality; }
 
 	const SFString &
-	textureQuality () const
-	{ return *fields .textureQuality; }
+	TextureQuality () const
+	{ return *fields .TextureQuality; }
 
 	SFString &
-	primitiveQuality ()
-	{ return *fields .primitiveQuality; }
+	PrimitiveQuality ()
+	{ return *fields .PrimitiveQuality; }
 
 	const SFString &
-	primitiveQuality () const
-	{ return *fields .primitiveQuality; }
+	PrimitiveQuality () const
+	{ return *fields .PrimitiveQuality; }
 
 	SFString &
-	qualityWhenMoving ()
-	{ return *fields .qualityWhenMoving; }
+	QualityWhenMoving ()
+	{ return *fields .QualityWhenMoving; }
 
 	const SFString &
-	qualityWhenMoving () const
-	{ return *fields .qualityWhenMoving; }
+	QualityWhenMoving () const
+	{ return *fields .QualityWhenMoving; }
 
 	SFString &
-	shading ()
-	{ return *fields .shading; }
+	Shading ()
+	{ return *fields .Shading; }
 
 	const SFString &
-	shading () const
-	{ return *fields .shading; }
+	Shading () const
+	{ return *fields .Shading; }
 
 	SFBool &
-	motionBlur ();
+	MotionBlur ();
 
 	const SFBool &
-	motionBlur () const;
+	MotionBlur () const;
 
 	SFFloat &
-	motionBlurIntensity ();
+	MotionBlurIntensity ();
 
 	const SFFloat &
-	motionBlurIntensity () const;
+	MotionBlurIntensity () const;
 
 	const SFBool &
-	animateStairWalks () const
-	{ return *fields .animateStairWalks; }
+	AnimateStairWalks () const
+	{ return *fields .AnimateStairWalks; }
 
 	SFBool &
-	animateStairWalks ()
-	{ return *fields .animateStairWalks; }
+	AnimateStairWalks ()
+	{ return *fields .AnimateStairWalks; }
 
 	SFFloat &
-	gravity ()
-	{ return *fields .gravity; }
+	Gravity ()
+	{ return *fields .Gravity; }
 
 	const SFFloat &
-	gravity () const
-	{ return *fields .gravity; }
+	Gravity () const
+	{ return *fields .Gravity; }
 
 
 private:
@@ -229,16 +229,16 @@ private:
 	///  @name Event handlers
 
 	void
-	set_antialiased ();
+	set_Antialiased ();
 
 	void
-	set_textureQuality ();
+	set_TextureQuality ();
 
 	void
-	set_primitiveQuality ();
+	set_PrimitiveQuality ();
 
 	void
-	set_shading ();
+	set_Shading ();
 
 	///  @name Static members
 
@@ -252,18 +252,18 @@ private:
 	{
 		Fields (X3DExecutionContext* const);
 
-		SFBool* const splashScreen;
-		MFString* const splashScreenURL;
-		SFBool* const dashboard;
-		SFBool* const rubberBand;
-		SFBool* const enableInlineViewpoints;
-		SFBool* const antialiased;
-		SFString* const textureQuality;
-		SFString* const primitiveQuality;
-		SFString* const qualityWhenMoving;
-		SFString* const shading;
-		SFBool* const animateStairWalks;
-		SFFloat* const gravity;
+		SFBool* const SplashScreen;
+		MFString* const SplashScreenURL;
+		SFBool* const Dashboard;
+		SFBool* const RubberBand;
+		SFBool* const EnableInlineViewpoints;
+		SFBool* const Antialiased;
+		SFString* const TextureQuality;
+		SFString* const PrimitiveQuality;
+		SFString* const QualityWhenMoving;
+		SFString* const Shading;
+		SFBool* const AnimateStairWalks;
+		SFFloat* const Gravity;
 	};
 
 	Fields fields;

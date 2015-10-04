@@ -54,6 +54,9 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
 
+#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Shape/FillProperties.h>
+
 namespace titania {
 namespace puck {
 

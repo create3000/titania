@@ -50,6 +50,8 @@
 
 #include "X3DExportedNodesEditor.h"
 
+#include <Titania/X3D/Execution/ExportedNode.h>
+
 namespace titania {
 namespace puck {
 

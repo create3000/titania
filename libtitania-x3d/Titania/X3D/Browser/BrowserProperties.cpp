@@ -70,14 +70,14 @@ const std::string   BrowserProperties::typeName       = "BrowserProperties";
 const std::string   BrowserProperties::containerField = "browserProperties";
 
 BrowserProperties::Fields::Fields () :
-	       abstractNodes (new SFBool (true)),
-	       concreteNodes (new SFBool (true)),
-	externalInteractions (new SFBool ()),
-	     prototypeCreate (new SFBool (true)),
-	           domImport (new SFBool ()),
-	         xmlEncoding (new SFBool (true)),
-	 classicVrmlEncoding (new SFBool (true)),
-	      binaryEncoding (new SFBool ())
+	       ABSTRACT_NODES (new SFBool (true)),
+	       CONCRETE_NODES (new SFBool (true)),
+	EXTERNAL_INTERACTIONS (new SFBool ()),
+	     PROTOTYPE_CREATE (new SFBool (true)),
+	           DOM_IMPORT (new SFBool ()),
+	         XML_ENCODING (new SFBool (true)),
+	CLASSIC_VRML_ENCODING (new SFBool (true)),
+	      BINARY_ENCODING (new SFBool ())
 { }
 
 BrowserProperties::BrowserProperties (X3DExecutionContext* const executionContext) :
@@ -86,14 +86,14 @@ BrowserProperties::BrowserProperties (X3DExecutionContext* const executionContex
 {
 	addType (X3DConstants::BrowserProperties);
 
-	addField (outputOnly, "ABSTRACT_NODES",        abstractNodes ());
-	addField (outputOnly, "CONCRETE_NODES",        concreteNodes ());
-	addField (outputOnly, "EXTERNAL_INTERACTIONS", externalInteractions ());
-	addField (outputOnly, "PROTOTYPE_CREATE",      prototypeCreate ());
-	addField (outputOnly, "DOM_IMPORT",            domImport ());
-	addField (outputOnly, "XML_ENCODING",          xmlEncoding ());
-	addField (outputOnly, "CLASSIC_VRML_ENCODING", classicVrmlEncoding ());
-	addField (outputOnly, "BINARY_ENCODING",       binaryEncoding ());
+	addField (outputOnly, "ABSTRACT_NODES",        ABSTRACT_NODES ());
+	addField (outputOnly, "CONCRETE_NODES",        CONCRETE_NODES ());
+	addField (outputOnly, "EXTERNAL_INTERACTIONS", EXTERNAL_INTERACTIONS ());
+	addField (outputOnly, "PROTOTYPE_CREATE",      PROTOTYPE_CREATE ());
+	addField (outputOnly, "DOM_IMPORT",            DOM_IMPORT ());
+	addField (outputOnly, "XML_ENCODING",          XML_ENCODING ());
+	addField (outputOnly, "CLASSIC_VRML_ENCODING", CLASSIC_VRML_ENCODING ());
+	addField (outputOnly, "BINARY_ENCODING",       BINARY_ENCODING ());
 }
 
 BrowserProperties*

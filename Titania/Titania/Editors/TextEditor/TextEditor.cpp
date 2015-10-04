@@ -52,6 +52,7 @@
 
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 #include <Titania/String.h>
 
 namespace titania {

@@ -54,6 +54,18 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Browser/BrowserOptions.h>
+#include <Titania/X3D/Components/Grouping/Transform.h>
+#include <Titania/X3D/Components/Layering/LayerSet.h>
+#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Shape/Shape.h>
+#include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
+#include <Titania/X3D/Components/Rendering/Color.h>
+#include <Titania/X3D/Components/Rendering/Coordinate.h>
+#include <Titania/X3D/Components/Rendering/IndexedLineSet.h>
+#include <Titania/X3D/Components/Texturing/MultiTexture.h>
+#include <Titania/X3D/Components/Texturing/MultiTextureTransform.h>
+
 namespace titania {
 namespace puck {
 
@@ -363,7 +375,7 @@ ColorPerVertexEditor::on_pointset_activate ()
 void
 ColorPerVertexEditor::on_shading_activate (const std::string & value)
 {
-	preview -> getBrowserOptions () -> shading () = value;
+	preview -> getBrowserOptions () -> Shading () = value;
 }
 
 void

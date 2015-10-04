@@ -53,6 +53,9 @@
 #include "OutlineTreeModel.h"
 #include "X3DOutlineTreeView.h"
 
+#include <Titania/X3D/Components/Networking/Inline.h>
+#include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
+
 namespace titania {
 namespace puck {
 

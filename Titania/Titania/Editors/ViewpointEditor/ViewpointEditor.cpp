@@ -54,6 +54,9 @@
 #include "../../Configuration/config.h"
 #include "../../Widgets/ViewpointList/ViewpointList.h"
 
+#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Navigation/X3DViewpointNode.h>
+
 namespace titania {
 namespace puck {
 

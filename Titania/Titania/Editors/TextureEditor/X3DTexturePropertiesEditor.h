@@ -54,6 +54,8 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DTextureEditorInterface.h"
 
+#include <Titania/X3D/Components/Texturing/X3DTextureNode.h>
+
 namespace titania {
 namespace puck {
 

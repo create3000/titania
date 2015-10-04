@@ -97,68 +97,68 @@ public:
 	///  @name Fields
 
 	SFBool &
-	abstractNodes ()
-	{ return *fields .abstractNodes; }
+	ABSTRACT_NODES ()
+	{ return *fields .ABSTRACT_NODES; }
 
 	const SFBool &
-	abstractNodes () const
-	{ return *fields .abstractNodes; }
+	ABSTRACT_NODES () const
+	{ return *fields .ABSTRACT_NODES; }
 
 	SFBool &
-	concreteNodes ()
-	{ return *fields .concreteNodes; }
+	CONCRETE_NODES ()
+	{ return *fields .CONCRETE_NODES; }
 
 	const SFBool &
-	concreteNodes () const
-	{ return *fields .concreteNodes; }
+	CONCRETE_NODES () const
+	{ return *fields .CONCRETE_NODES; }
 
 	SFBool &
-	externalInteractions ()
-	{ return *fields .externalInteractions; }
+	EXTERNAL_INTERACTIONS ()
+	{ return *fields .EXTERNAL_INTERACTIONS; }
 
 	const SFBool &
-	externalInteractions () const
-	{ return *fields .externalInteractions; }
+	EXTERNAL_INTERACTIONS () const
+	{ return *fields .EXTERNAL_INTERACTIONS; }
 
 	SFBool &
-	prototypeCreate ()
-	{ return *fields .prototypeCreate; }
+	PROTOTYPE_CREATE ()
+	{ return *fields .PROTOTYPE_CREATE; }
 
 	const SFBool &
-	prototypeCreate () const
-	{ return *fields .prototypeCreate; }
+	PROTOTYPE_CREATE () const
+	{ return *fields .PROTOTYPE_CREATE; }
 
 	SFBool &
-	domImport ()
-	{ return *fields .domImport; }
+	DOM_IMPORT ()
+	{ return *fields .DOM_IMPORT; }
 
 	const SFBool &
-	domImport () const
-	{ return *fields .domImport; }
+	DOM_IMPORT () const
+	{ return *fields .DOM_IMPORT; }
 
 	SFBool &
-	xmlEncoding ()
-	{ return *fields .xmlEncoding; }
+	XML_ENCODING ()
+	{ return *fields .XML_ENCODING; }
 
 	const SFBool &
-	xmlEncoding () const
-	{ return *fields .xmlEncoding; }
+	XML_ENCODING () const
+	{ return *fields .XML_ENCODING; }
 
 	SFBool &
-	classicVrmlEncoding ()
-	{ return *fields .classicVrmlEncoding; }
+	CLASSIC_VRML_ENCODING ()
+	{ return *fields .CLASSIC_VRML_ENCODING; }
 
 	const SFBool &
-	classicVrmlEncoding () const
-	{ return *fields .classicVrmlEncoding; }
+	CLASSIC_VRML_ENCODING () const
+	{ return *fields .CLASSIC_VRML_ENCODING; }
 
 	SFBool &
-	binaryEncoding ()
-	{ return *fields .binaryEncoding; }
+	BINARY_ENCODING ()
+	{ return *fields .BINARY_ENCODING; }
 
 	const SFBool &
-	binaryEncoding () const
-	{ return *fields .binaryEncoding; }
+	BINARY_ENCODING () const
+	{ return *fields .BINARY_ENCODING; }
 
 
 private:
@@ -179,14 +179,14 @@ private:
 	{
 		Fields ();
 
-		SFBool* const abstractNodes;
-		SFBool* const concreteNodes;
-		SFBool* const externalInteractions;
-		SFBool* const prototypeCreate;
-		SFBool* const domImport;
-		SFBool* const xmlEncoding;
-		SFBool* const classicVrmlEncoding;
-		SFBool* const binaryEncoding;
+		SFBool* const ABSTRACT_NODES;
+		SFBool* const CONCRETE_NODES;
+		SFBool* const EXTERNAL_INTERACTIONS;
+		SFBool* const PROTOTYPE_CREATE;
+		SFBool* const DOM_IMPORT;
+		SFBool* const XML_ENCODING;
+		SFBool* const CLASSIC_VRML_ENCODING;
+		SFBool* const BINARY_ENCODING;
 	};
 
 	Fields fields;

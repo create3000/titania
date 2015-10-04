@@ -53,6 +53,8 @@
 #include "../../ComposedWidgets/MFStringGeoSystem.h"
 #include "../../ComposedWidgets/RotationTool.h"
 
+#include <Titania/X3D/Components/Geospatial/GeoViewpoint.h>
+
 namespace titania {
 namespace puck {
 

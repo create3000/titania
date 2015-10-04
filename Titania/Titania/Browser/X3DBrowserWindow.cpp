@@ -64,6 +64,8 @@
 #include "../Widgets/ViewpointList/ViewpointList.h"
 
 #include <Titania/X3D/Browser/ContextLock.h>
+#include <Titania/X3D/Components/Core/WorldInfo.h>
+#include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 
 namespace titania {
 namespace puck {

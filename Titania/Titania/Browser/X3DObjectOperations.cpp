@@ -52,6 +52,9 @@
 
 #include "../Base/X3DEditorObject.h"
 #include "../Browser/X3DBrowserWindow.h"
+
+#include <Titania/X3D/Components/Grouping/X3DGroupingNode.h>
+#include <Titania/X3D/Components/Rendering/Coordinate.h>
 #include <Titania/Utility/Map.h>
 
 namespace titania {

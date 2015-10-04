@@ -52,6 +52,8 @@
 
 #include "../../ComposedWidgets/RotationTool.h"
 
+#include <Titania/X3D/Components/Grouping/X3DTransformNode.h>
+
 namespace titania {
 namespace puck {
 

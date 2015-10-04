@@ -50,6 +50,8 @@
 
 #include "X3DTextureTransformNodeEditor.h"
 
+#include <Titania/X3D/Components/Shape/Appearance.h>
+
 namespace titania {
 namespace puck {
 

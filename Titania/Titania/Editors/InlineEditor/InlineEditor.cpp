@@ -56,7 +56,10 @@
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../ComposedWidgets/MFStringURLWidget.h"
 
+#include <Titania/X3D/Components/Grouping/Group.h>
+#include <Titania/X3D/Components/Networking/Inline.h>
 #include <Titania/X3D/InputOutput/GoldenGate.h>
+#include <Titania/X3D/Parser/Filter.h>
 
 namespace titania {
 namespace puck {

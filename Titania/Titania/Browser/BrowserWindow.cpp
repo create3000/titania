@@ -63,6 +63,14 @@
 #include "../Browser/BrowserUserData.h"
 #include "../Configuration/config.h"
 
+#include <Titania/X3D/Browser/BrowserOptions.h>
+#include <Titania/X3D/Browser/RenderingProperties.h>
+#include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
+#include <Titania/X3D/Components/Core/WorldInfo.h>
+#include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
+#include <Titania/X3D/Components/Grouping/Switch.h>
+#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Navigation/LOD.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/TransformSensorTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.h>
@@ -171,9 +179,9 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 	getBrowser () -> getViewer ()           .removeInterest (this, &BrowserWindow::set_viewer);
 	getBrowser () -> getAvailableViewers () .removeInterest (this, &BrowserWindow::set_available_viewers);
 
-	getBrowser () -> getBrowserOptions () -> dashboard ()        .removeInterest (this, &BrowserWindow::set_dashboard);
-	getBrowser () -> getBrowserOptions () -> shading ()          .removeInterest (this, &BrowserWindow::set_shading);
-	getBrowser () -> getBrowserOptions () -> primitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
+	getBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (this, &BrowserWindow::set_dashboard);
+	getBrowser () -> getBrowserOptions () -> Shading ()          .removeInterest (this, &BrowserWindow::set_shading);
+	getBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
 
 	getUserData (getBrowser ()) -> browserHistory .removeInterest (this, &BrowserWindow::set_browserHistory);
 
@@ -186,9 +194,9 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 	getBrowser () -> getViewer ()           .addInterest (this, &BrowserWindow::set_viewer);
 	getBrowser () -> getAvailableViewers () .addInterest (this, &BrowserWindow::set_available_viewers);
 
-	getBrowser () -> getBrowserOptions () -> dashboard ()        .addInterest (this, &BrowserWindow::set_dashboard);
-	getBrowser () -> getBrowserOptions () -> shading ()          .addInterest (this, &BrowserWindow::set_shading);
-	getBrowser () -> getBrowserOptions () -> primitiveQuality () .addInterest (this, &BrowserWindow::set_primitiveQuality);
+	getBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (this, &BrowserWindow::set_dashboard);
+	getBrowser () -> getBrowserOptions () -> Shading ()          .addInterest (this, &BrowserWindow::set_shading);
+	getBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (this, &BrowserWindow::set_primitiveQuality);
 
 	getUserData (getBrowser ()) -> browserHistory .addInterest (this, &BrowserWindow::set_browserHistory);
 
@@ -197,15 +205,15 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 	set_viewer (getBrowser () -> getViewer ());
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 
-	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
-	set_shading (getBrowser () -> getBrowserOptions () -> shading ());
-	set_primitiveQuality (getBrowser () -> getBrowserOptions () -> primitiveQuality ());
-	set_textureQuality (getBrowser () -> getBrowserOptions () -> textureQuality ());
+	set_dashboard (getBrowser () -> getBrowserOptions () -> Dashboard ());
+	set_shading (getBrowser () -> getBrowserOptions () -> Shading ());
+	set_primitiveQuality (getBrowser () -> getBrowserOptions () -> PrimitiveQuality ());
+	set_textureQuality (getBrowser () -> getBrowserOptions () -> TextureQuality ());
 
 	set_browserHistory ();
 
-	getBrowser () -> getBrowserOptions () -> rubberBand ()   = getRubberbandAction () -> get_active ();
-	getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesAction () -> get_active ();
+	getBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
+	getBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
 }
 
 void
@@ -1148,7 +1156,7 @@ BrowserWindow::isEditor (const bool enabled)
 	getLocationBar () .set_visible (not enabled);
 	getEditToolBar () .set_visible (enabled);
 
-	set_dashboard (getBrowser () -> getBrowserOptions () -> dashboard ());
+	set_dashboard (getBrowser () -> getBrowserOptions () -> Dashboard ());
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 
 	getTabButton ()             .set_visible (not enabled);
@@ -1212,10 +1220,10 @@ BrowserWindow::on_shading_changed (const std::string & value)
 	if (changing)
 		return;
 
-	getBrowser () -> getBrowserOptions () -> shading () .removeInterest (this, &BrowserWindow::set_shading);
-	getBrowser () -> getBrowserOptions () -> shading () .addInterest (this, &BrowserWindow::connectShading);
+	getBrowser () -> getBrowserOptions () -> Shading () .removeInterest (this, &BrowserWindow::set_shading);
+	getBrowser () -> getBrowserOptions () -> Shading () .addInterest (this, &BrowserWindow::connectShading);
 
-	getBrowser () -> getBrowserOptions () -> shading () = value;
+	getBrowser () -> getBrowserOptions () -> Shading () = value;
 }
 
 void
@@ -1275,10 +1283,10 @@ BrowserWindow::on_primitive_quality_changed (const std::string & value)
 	if (changing)
 		return;
 
-	getBrowser () -> getBrowserOptions () -> primitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
-	getBrowser () -> getBrowserOptions () -> primitiveQuality () .addInterest (this, &BrowserWindow::connectPrimitiveQuality);
+	getBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
+	getBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (this, &BrowserWindow::connectPrimitiveQuality);
 
-	getBrowser () -> getBrowserOptions () -> primitiveQuality () = value;
+	getBrowser () -> getBrowserOptions () -> PrimitiveQuality () = value;
 }
 
 void
@@ -1332,10 +1340,10 @@ BrowserWindow::on_texture_quality_changed (const std::string & value)
 	if (changing)
 		return;
 
-	getBrowser () -> getBrowserOptions () -> textureQuality () .removeInterest (this, &BrowserWindow::set_textureQuality);
-	getBrowser () -> getBrowserOptions () -> textureQuality () .addInterest (this, &BrowserWindow::connectTextureQuality);
+	getBrowser () -> getBrowserOptions () -> TextureQuality () .removeInterest (this, &BrowserWindow::set_textureQuality);
+	getBrowser () -> getBrowserOptions () -> TextureQuality () .addInterest (this, &BrowserWindow::connectTextureQuality);
 
-	getBrowser () -> getBrowserOptions () -> textureQuality () = value;
+	getBrowser () -> getBrowserOptions () -> TextureQuality () = value;
 }
 
 void
@@ -1629,7 +1637,7 @@ void
 BrowserWindow::on_rubberband_toggled ()
 {
 	getConfig () .setItem ("rubberBand", getRubberbandAction () -> get_active ());
-	getBrowser () -> getBrowserOptions () -> rubberBand () = getRubberbandAction () -> get_active ();
+	getBrowser () -> getBrowserOptions () -> RubberBand () = getRubberbandAction () -> get_active ();
 }
 
 // RenderingProperties
@@ -1638,7 +1646,7 @@ void
 BrowserWindow::on_rendering_properties_toggled ()
 {
 	getConfig () .setItem ("renderingProperties", getRenderingPropertiesAction () -> get_active ());
-	getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesAction () -> get_active ();
+	getBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
 }
 
 // Fullscreen
@@ -2129,6 +2137,11 @@ void
 BrowserWindow::set_dashboard (const bool value)
 {
 	getDashboard () .set_visible (getEditorAction () -> get_active () or value);
+
+	if (getHandButton () .get_active ())
+		on_hand_button_toggled ();
+	else
+		on_arrow_button_toggled ();
 }
 
 void
@@ -2138,6 +2151,10 @@ BrowserWindow::on_hand_button_toggled ()
 	{
 		getConfig () .setItem ("arrow", false);
 		getSelection () -> isEnabled (false);
+
+		getPlayPauseButton ()      .set_visible (false);
+		getSelectParentButton ()   .set_visible (false);
+		getSelectChildrenButton () .set_visible (false);
 	}
 
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
@@ -2150,6 +2167,10 @@ BrowserWindow::on_arrow_button_toggled ()
 	{
 		getConfig () .setItem ("arrow", true);
 		getSelection () -> isEnabled (true);
+
+		getPlayPauseButton ()      .set_visible (true);
+		getSelectParentButton ()   .set_visible (true);
+		getSelectChildrenButton () .set_visible (true);
 	}
 
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
@@ -2566,6 +2587,7 @@ void
 BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::ViewerType> & availableViewers)
 {
 	const bool editor = getEditorAction () -> get_active () and getArrowButton () .get_active ();
+	const bool enable = getBrowser () -> getBrowserOptions () -> Dashboard ();
 
 	bool examine = editor;
 	bool walk    = editor;
@@ -2579,22 +2601,22 @@ BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::ViewerType> & avai
 		switch (viewer)
 		{
 			case X3D::ViewerType::EXAMINE :
-				examine = true;
+				examine = enable;
 				break;
 			case X3D::ViewerType::WALK:
-				walk = true;
+				walk = enable;
 				break;
 			case X3D::ViewerType::FLY:
-				fly = true;
+				fly = enable;
 				break;
 			case X3D::ViewerType::PLANE:
-				plane = true;
+				plane = enable;
 				break;
 			case X3D::ViewerType::NONE:
-				none = true;
+				none = enable;
 				break;
 			case X3D::ViewerType::LOOKAT:
-				lookat = true;
+				lookat = enable;
 				break;
 		}
 	}

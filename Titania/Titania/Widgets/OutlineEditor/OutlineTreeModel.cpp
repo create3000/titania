@@ -53,6 +53,8 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Execution/ImportedNode.h>
+#include <Titania/X3D/Execution/ExportedNode.h>
 #include <cassert>
 
 namespace titania {

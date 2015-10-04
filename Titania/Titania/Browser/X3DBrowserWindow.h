@@ -53,6 +53,8 @@
 
 #include "../Browser/X3DBrowserEditor.h"
 
+#include <Titania/X3D/Miscellaneous/Keys.h>
+
 namespace titania {
 namespace X3D {
 

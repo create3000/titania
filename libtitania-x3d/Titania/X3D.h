@@ -55,32 +55,8 @@
 #include "X3D/Browser/Browser.h"
 #include "X3D/Browser/BrowserApplication.h"
 
-#include "X3D/Basic/FieldSet.h"
-
-#include "X3D/Bits/Cast.h"
-#include "X3D/Bits/Error.h"
-#include "X3D/Bits/Traverse.h"
-#include "X3D/Components.h"
-#include "X3D/Prototype/ExternProtoDeclaration.h"
-#include "X3D/Prototype/ProtoDeclaration.h"
-
-#include "X3D/Execution/BindableNodeList.h"
-#include "X3D/Execution/BindableNodeStack.h"
-#include "X3D/Execution/ExportedNode.h"
-#include "X3D/Execution/ImportedNode.h"
-#include "X3D/Execution/NamedNode.h"
-
-#include "X3D/Browser/BrowserOptions.h"
-#include "X3D/Browser/BrowserProperties.h"
-#include "X3D/Browser/Notification.h"
-#include "X3D/Browser/Rendering/MotionBlur.h"
-#include "X3D/Browser/RenderingProperties.h"
-#include "X3D/Browser/Selection.h"
-#include "X3D/InputOutput/Loader.h"
-#include "X3D/Miscellaneous/Keys.h"
-#include "X3D/Miscellaneous/MediaStream.h"
-#include "X3D/Parser/Filter.h"
-#include "X3D/Parser/RegEx.h"
+#include "X3D/Types/Pointer.h"
+#include "X3D/Rendering/OpenGL.h"
 
 namespace titania {
 namespace X3D {

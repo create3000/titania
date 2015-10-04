@@ -53,8 +53,9 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/OS.h>
+#include <Titania/X3D/Bits/Traverse.h>
 #include <Titania/X3D/Browser/ContextLock.h>
+#include <Titania/OS.h>
 
 namespace titania {
 namespace puck {

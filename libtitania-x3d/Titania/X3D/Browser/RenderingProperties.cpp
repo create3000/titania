@@ -79,18 +79,18 @@ const std::string   RenderingProperties::typeName       = "RenderingProperties";
 const std::string   RenderingProperties::containerField = "renderingProperties";
 
 RenderingProperties::Fields::Fields () :
-	        enabled (),
-	  cycleInterval (1),
-	         vendor (new SFString ()),
-	       renderer (new SFString ()),
-	        version (new SFString ()),
-	        shading (new SFString ("GOURAUD")),
-	 maxTextureSize (new SFInt32 ()),
-	   textureUnits (new SFInt32 ()),
-	      maxLights (new SFInt32 ()),
-	    antialiased (new SFBool ()),
-	     colorDepth (new SFInt32 ()),
-	  textureMemory (new SFDouble ())
+	        Enabled (),
+	  CycleInterval (1),
+	         Vendor (new SFString ()),
+	       Renderer (new SFString ()),
+	        Version (new SFString ()),
+	        Shading (new SFString ("GOURAUD")),
+	 MaxTextureSize (new SFInt32 ()),
+	   TextureUnits (new SFInt32 ()),
+	      MaxLights (new SFInt32 ()),
+	    Antialiased (new SFBool ()),
+	     ColorDepth (new SFInt32 ()),
+	  TextureMemory (new SFDouble ())
 { }
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
@@ -100,21 +100,21 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 {
 	addType (X3DConstants::RenderingProperties);
 
-	addField (outputOnly, "Vendor",         vendor ());
-	addField (outputOnly, "Renderer",       renderer ());
-	addField (outputOnly, "Version",        version ());
+	addField (outputOnly, "Vendor",         Vendor ());
+	addField (outputOnly, "Renderer",       Renderer ());
+	addField (outputOnly, "Version",        Version ());
 
-	addField (outputOnly, "Shading",        shading ());
-	addField (outputOnly, "MaxTextureSize", maxTextureSize ());
-	addField (outputOnly, "TextureUnits",   textureUnits ());
-	addField (outputOnly, "MaxLights",      maxLights ());
-	addField (outputOnly, "Antialiased",    antialiased ());
-	addField (outputOnly, "ColorDepth",     colorDepth ());
-	addField (outputOnly, "TextureMemory",  textureMemory ());
+	addField (outputOnly, "Shading",        Shading ());
+	addField (outputOnly, "MaxTextureSize", MaxTextureSize ());
+	addField (outputOnly, "TextureUnits",   TextureUnits ());
+	addField (outputOnly, "MaxLights",      MaxLights ());
+	addField (outputOnly, "Antialiased",    Antialiased ());
+	addField (outputOnly, "ColorDepth",     ColorDepth ());
+	addField (outputOnly, "TextureMemory",  TextureMemory ());
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
-	addChildren (enabled (), cycleInterval (), world);
+	addChildren (Enabled (), CycleInterval (), world);
 }
 
 RenderingProperties*
@@ -130,9 +130,9 @@ RenderingProperties::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
-		vendor ()   = (const char*) glGetString (GL_VENDOR);
-		renderer () = (const char*) glGetString (GL_RENDERER);
-		version ()  = (const char*) glGetString (GL_VERSION);
+		Vendor ()   = (const char*) glGetString (GL_VENDOR);
+		Renderer () = (const char*) glGetString (GL_RENDERER);
+		Version ()  = (const char*) glGetString (GL_VERSION);
 
 		GLint glRedBits, glGreen, glBlueBits, glAlphaBits;
 
@@ -141,24 +141,24 @@ RenderingProperties::initialize ()
 		glGetIntegerv (GL_BLUE_BITS,  &glBlueBits);
 		glGetIntegerv (GL_ALPHA_BITS, &glAlphaBits);
 
-		textureUnits ()   = getBrowser () -> getMaxTextureUnits ();
-		maxTextureSize () = getBrowser () -> getMaxTextureSize ();
-		textureMemory ()  = double (getBrowser () -> getTextureMemory ()) / (1 << 20);
-		maxLights ()      = getBrowser () -> getMaxLights ();
-		colorDepth ()     = glRedBits + glGreen + glBlueBits + glAlphaBits;
+		TextureUnits ()   = getBrowser () -> getMaxTextureUnits ();
+		MaxTextureSize () = getBrowser () -> getMaxTextureSize ();
+		TextureMemory ()  = double (getBrowser () -> getTextureMemory ()) / (1 << 20);
+		MaxLights ()      = getBrowser () -> getMaxLights ();
+		ColorDepth ()     = glRedBits + glGreen + glBlueBits + glAlphaBits;
 
-		enabled () .addInterest (this, &RenderingProperties::set_enabled);
+		Enabled () .addInterest (this, &RenderingProperties::set_Enabled);
 
-		getBrowser () -> initialized ()   .addInterest (this, &RenderingProperties::set_enabled);
+		getBrowser () -> initialized ()   .addInterest (this, &RenderingProperties::set_Enabled);
 	}
 }
 
 void
-RenderingProperties::set_enabled ()
+RenderingProperties::set_Enabled ()
 {
-	getBrowser () -> initialized () .removeInterest (this, &RenderingProperties::set_enabled);
+	getBrowser () -> initialized () .removeInterest (this, &RenderingProperties::set_Enabled);
 
-	if (enabled ())
+	if (Enabled ())
 	{
 		if (not world)
 		{
@@ -217,7 +217,7 @@ RenderingProperties::display ()
 	clock       .stop ();
 	renderClock .stop ();
 
-	if (clock .interval () > cycleInterval ())
+	if (clock .interval () > CycleInterval ())
 	{
 		build ();
 
@@ -284,15 +284,15 @@ RenderingProperties::build ()
 		std::ostringstream stringstream;
 
 		string .emplace_back (_ ("Current Graphics Renderer"));
-		string .emplace_back (basic::sprintf (_ ("  Name: %s"), renderer () .c_str ()));
+		string .emplace_back (basic::sprintf (_ ("  Name: %s"), Renderer () .c_str ()));
 		string .emplace_back ();
 		string .emplace_back (_ ("Rendering properties"));
 		string .emplace_back (basic::sprintf (_ ("Texture units:             %zd / %zd"), getBrowser () -> getMaxTextureUnits (), getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits ()));
 		string .emplace_back (basic::sprintf (_ ("Max texture size:          %zd × %zd pixel"), getBrowser () -> getMaxTextureSize (), getBrowser () -> getMaxTextureSize ()));
-		string .emplace_back (basic::sprintf (_ ("Antialiased:               %s (%d/%d)"), antialiased () .toString () .c_str (), sampleBuffers, samples));
-		string .emplace_back (basic::sprintf (_ ("Max lights:                %d"), maxLights () .getValue ()));
+		string .emplace_back (basic::sprintf (_ ("Antialiased:               %s (%d/%d)"), Antialiased () .toString () .c_str (), sampleBuffers, samples));
+		string .emplace_back (basic::sprintf (_ ("Max lights:                %d"), MaxLights () .getValue ()));
 		string .emplace_back (basic::sprintf (_ ("Max clip planes:           %zd"), getBrowser () -> getMaxClipPlanes ()));
-		string .emplace_back (basic::sprintf (_ ("Color depth:               %d bits"), colorDepth () .getValue ()));
+		string .emplace_back (basic::sprintf (_ ("Color depth:               %d bits"), ColorDepth () .getValue ()));
 		string .emplace_back (basic::sprintf (_ ("Texture memory:            %s"), strfsize (getBrowser () -> getTextureMemory ()) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), strfsize (getBrowser () -> getAvailableTextureMemory ()) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Memory usage:              %s"), strfsize (getBrowser () -> getMemoryUsage ()) .c_str ()));
@@ -316,17 +316,17 @@ RenderingProperties::toStream (std::ostream & stream) const
 {
 	stream
 		<< "\tCurrent Graphics Renderer" << std::endl
-		<< "\t\tName: " << vendor () .getValue () << ' ' << renderer () .getValue () << std::endl
-		<< "\tOpenGL extension version: " << version () .getValue () << std::endl
+		<< "\t\tName: " << Vendor () .getValue () << ' ' << Renderer () .getValue () << std::endl
+		<< "\tOpenGL extension version: " << Version () .getValue () << std::endl
 
 		<< "\tRendering Properties" << std::endl
-		<< "\t\tTexture units: " << textureUnits () << " / " << getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits () << std::endl
-		<< "\t\tMax texture size: " << maxTextureSize () << " × " << maxTextureSize () << " pixel" << std::endl
-		<< "\t\tMax lights: " << maxLights () << std::endl
+		<< "\t\tTexture units: " << TextureUnits () << " / " << getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits () << std::endl
+		<< "\t\tMax texture size: " << MaxTextureSize () << " × " << MaxTextureSize () << " pixel" << std::endl
+		<< "\t\tMax lights: " << MaxLights () << std::endl
 		<< "\t\tMax clip planes: " << getBrowser () -> getMaxClipPlanes () << std::endl
-		<< "\t\tAntialiased: " << antialiased () .getValue () << std::endl
-		<< "\t\tColor depth: " << colorDepth () << " bits" << std::endl
-		<< "\t\tTexture memory: " << (textureMemory () > 0 ? strfsize (textureMemory ()) : "n/a");
+		<< "\t\tAntialiased: " << Antialiased () .getValue () << std::endl
+		<< "\t\tColor depth: " << ColorDepth () << " bits" << std::endl
+		<< "\t\tTexture memory: " << (TextureMemory () > 0 ? strfsize (TextureMemory ()) : "n/a");
 }
 
 void

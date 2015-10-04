@@ -52,6 +52,8 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 
+#include <Titania/X3D/Components/Core/WorldInfo.h>
+
 namespace titania {
 namespace puck {
 

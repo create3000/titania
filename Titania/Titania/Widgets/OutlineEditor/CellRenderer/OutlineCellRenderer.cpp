@@ -57,6 +57,11 @@
 #include "../X3DOutlineTreeView.h"
 #include "OutlineFields.h"
 
+#include <Titania/X3D/Components/Networking/Inline.h>
+#include <Titania/X3D/Execution/ImportedNode.h>
+#include <Titania/X3D/Execution/ExportedNode.h>
+#include <Titania/X3D/Parser/RegEx.h>
+#include <Titania/X3D/Prototype/X3DProtoDeclarationNode.h>
 #include <Titania/String.h>
 
 namespace titania {
