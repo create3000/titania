@@ -722,6 +722,14 @@ public:
 	{ return *m_BrowserGridPropertiesMenuItem; }
 
 	Gtk::MenuItem &
+	getBrowserScenesMenuItem () const
+	{ return *m_BrowserScenesMenuItem; }
+
+	Gtk::Menu &
+	getBrowserScenesMenu () const
+	{ return *m_BrowserScenesMenu; }
+
+	Gtk::MenuItem &
 	getBrowserHelpMenuItem () const
 	{ return *m_BrowserHelpMenuItem; }
 
@@ -1172,6 +1180,14 @@ public:
 	Gtk::ImageMenuItem &
 	getGridPropertiesMenuItem () const
 	{ return *m_GridPropertiesMenuItem; }
+
+	Gtk::MenuItem &
+	getScenesMenuItem () const
+	{ return *m_ScenesMenuItem; }
+
+	Gtk::Menu &
+	getScenesMenu () const
+	{ return *m_ScenesMenu; }
 
 	Gtk::MenuItem &
 	getHelpMenuItem () const
@@ -2172,6 +2188,8 @@ private:
 	Gtk::CheckMenuItem*              m_BrowserGridLayoutToolMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserAngleLayoutToolMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserGridPropertiesMenuItem;
+	Gtk::MenuItem*                   m_BrowserScenesMenuItem;
+	Gtk::Menu*                       m_BrowserScenesMenu;
 	Gtk::MenuItem*                   m_BrowserHelpMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserInfoMenuItem;
 	Gtk::ApplicationWindow*          m_Window;
@@ -2285,6 +2303,8 @@ private:
 	Gtk::CheckMenuItem*              m_GridLayoutToolMenuItem;
 	Gtk::CheckMenuItem*              m_AngleLayoutToolMenuItem;
 	Gtk::ImageMenuItem*              m_GridPropertiesMenuItem;
+	Gtk::MenuItem*                   m_ScenesMenuItem;
+	Gtk::Menu*                       m_ScenesMenu;
 	Gtk::MenuItem*                   m_HelpMenuItem;
 	Gtk::ImageMenuItem*              m_InfoMenuItem;
 	Gtk::Box*                        m_Toolbar;

@@ -221,6 +221,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserGridLayoutToolMenuItem", m_BrowserGridLayoutToolMenuItem);
 	m_builder -> get_widget ("BrowserAngleLayoutToolMenuItem", m_BrowserAngleLayoutToolMenuItem);
 	m_builder -> get_widget ("BrowserGridPropertiesMenuItem", m_BrowserGridPropertiesMenuItem);
+	m_builder -> get_widget ("BrowserScenesMenuItem", m_BrowserScenesMenuItem);
+	m_builder -> get_widget ("BrowserScenesMenu", m_BrowserScenesMenu);
 	m_builder -> get_widget ("BrowserHelpMenuItem", m_BrowserHelpMenuItem);
 	m_builder -> get_widget ("BrowserInfoMenuItem", m_BrowserInfoMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
@@ -334,6 +336,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GridLayoutToolMenuItem", m_GridLayoutToolMenuItem);
 	m_builder -> get_widget ("AngleLayoutToolMenuItem", m_AngleLayoutToolMenuItem);
 	m_builder -> get_widget ("GridPropertiesMenuItem", m_GridPropertiesMenuItem);
+	m_builder -> get_widget ("ScenesMenuItem", m_ScenesMenuItem);
+	m_builder -> get_widget ("ScenesMenu", m_ScenesMenu);
 	m_builder -> get_widget ("HelpMenuItem", m_HelpMenuItem);
 	m_builder -> get_widget ("InfoMenuItem", m_InfoMenuItem);
 	m_builder -> get_widget ("Toolbar", m_Toolbar);

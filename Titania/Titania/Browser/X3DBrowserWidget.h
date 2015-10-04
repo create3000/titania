@@ -203,7 +203,7 @@ protected:
 	setBrowser (const X3D::BrowserPtr &);
 
 	void
-	setTitle () const;
+	setTitle ();
 
 	bool
 	getShowTabs () const;
@@ -237,12 +237,21 @@ private:
 	set_scene ();
 
 	///  @name Operations
-	
+
+	std::string
+	getTitle (const X3D::BrowserPtr &) const;
+
 	void
 	setWorldURL (const X3D::X3DScenePtr &, const basic::uri &, const UndoStepPtr &);
 
 	void
 	loadIcon ();
+
+	void
+	updateScenesMenus ();
+
+	void
+	updateScenesMenu (Gtk::Menu &);
 
 	bool
 	statistics ();

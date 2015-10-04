@@ -118,7 +118,8 @@ public:
 	virtual
 	std::string
 	getTitle () const
-	throw (Error <DISPOSED>) = 0;
+	throw (Error <DISPOSED>)
+	{ return getExecutionContext () -> getTitle (); }
 
 	virtual
 	const basic::uri &

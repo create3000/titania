@@ -87,7 +87,9 @@ void
 X3DBrowserWidget::initialize ()
 {
 	X3DBrowserWindowInterface::initialize ();
-	
+
+	getBrowsers () .addInterest (this, &X3DBrowserWidget::updateScenesMenus);
+
 	recentView -> initialize ();
 
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
@@ -370,21 +372,11 @@ X3DBrowserWidget::getUserData (const X3D::SFNode & node)
 }
 
 void
-X3DBrowserWidget::setTitle () const
+X3DBrowserWidget::setTitle ()
 {
 	const auto userData = getUserData (getBrowser ());
 	const bool modified = userData -> undoHistory .isModified () or userData -> modified;
-
-	auto title = getScene () -> getTitle ();
-
-	if (title .empty ())
-		title = userData -> URL .basename ();
-
-	if (title .empty ())
-		title = _ ("New Scene");
-
-	if (modified)
-		title += "*";
+	const auto title    = getTitle (getBrowser ());
 
 	getBrowserNotebook () .set_menu_label_text (*getBrowser (), title);
 
@@ -400,6 +392,28 @@ X3DBrowserWidget::setTitle () const
 	                         + (modified ? "*" : "")
 	                         + " · "
 	                         + getBrowser () -> getName ());
+	
+	updateScenesMenus ();
+}
+
+std::string
+X3DBrowserWidget::getTitle (const X3D::BrowserPtr & browser) const
+{
+	const auto userData = getUserData (browser);
+	const bool modified = userData -> undoHistory .isModified () or userData -> modified;
+
+	auto title = browser -> getExecutionContext () -> getTitle ();
+
+	if (title .empty ())
+		title = userData -> URL .basename ();
+
+	if (title .empty ())
+		title = _ ("New Scene");
+
+	if (modified)
+		title += "*";
+
+	return title;
 }
 
 void
@@ -679,6 +693,8 @@ X3DBrowserWidget::setWorldURL (const X3D::X3DScenePtr & scene, const basic::uri 
 	worldURL_changed () .processInterests ();
 
 	recentView -> loadPreview (scene -> getBrowser ());
+
+	updateScenesMenus ();
 }
 
 bool
@@ -940,6 +956,46 @@ X3DBrowserWidget::getIcon (const basic::uri & worldURL, const Gtk::IconSize & ic
 	}
 
 	return image;
+}
+
+void
+X3DBrowserWidget::updateScenesMenus ()
+{
+	updateScenesMenu (getScenesMenu ());
+	updateScenesMenu (getBrowserScenesMenu ());
+}
+
+void
+X3DBrowserWidget::updateScenesMenu (Gtk::Menu & menu)
+{
+	// Remove all menu items.
+
+	for (auto & widget : menu .get_children ())
+	   menu .remove (*widget);
+	
+	// Rebuild menu.
+
+	size_t pageNumber = 0;
+
+	for (const auto & browser : getBrowsers ())
+	{
+	   const auto URL      = browser -> getWorldURL ();
+		const auto icon     = Gtk::manage (new Gtk::Image (Gtk::StockID (URL .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
+		auto       menuItem = Gtk::manage (new Gtk::ImageMenuItem (getTitle (browser)));
+
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (getBrowserNotebook (), &Gtk::Notebook::set_current_page), pageNumber));
+
+		menuItem -> set_image (*icon);
+		menuItem -> set_label (getTitle (browser));
+		menuItem -> set_always_show_image (true);
+
+		icon -> show ();
+		menuItem -> show ();
+
+		menu .append (*menuItem);
+	
+	   ++ pageNumber;
+	}
 }
 
 void
