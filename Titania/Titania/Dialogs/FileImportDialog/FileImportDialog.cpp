@@ -169,8 +169,17 @@ FileImportDialog::run ()
 
 						for (const auto & fieldDefinition : prototype -> getFieldDefinitions ())
 						   _externInterfaceDeclarations .emplace_back (fieldDefinition -> copy (X3D::FLAT_COPY));
+
+						basic::uri worldURL (uri + "#" + name);
+			
+						const auto relativePath = getExecutionContext () -> getWorldURL () .relative_path (worldURL);
+
+						X3D::MFString url;
+
+						url .emplace_back (relativePath .str ());
+						url .emplace_back (worldURL .str ());
 						
-						const X3D::ExternProtoDeclarationPtr externproto = getExecutionContext () -> createExternProtoDeclaration (name, _externInterfaceDeclarations, X3D::MFString ({ uri + "#" + name }));
+						const X3D::ExternProtoDeclarationPtr externproto = getExecutionContext () -> createExternProtoDeclaration (name, _externInterfaceDeclarations, url);
 
 						getExecutionContext () -> updateExternProtoDeclaration (name, externproto);
 					}
