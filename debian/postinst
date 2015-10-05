@@ -22,8 +22,14 @@ set -e
 #     installation fails and the `postinst' is called with `abort-upgrade',
 #     `abort-remove' or `abort-deconfigure'.
 
-NOTIFIER="/usr/share/update-notifier/notify-reboot-required";
+TITANIA="/usr/bin/titania"
+NOTIFIER="/usr/share/update-notifier/notify-reboot-required"
 REBOOT_REQUIRED="YES"
+
+if [ -x $TITANIA ]
+then
+	REBOOT_REQUIRED="NO"
+fi
 
 case "$1" in
     configure)
