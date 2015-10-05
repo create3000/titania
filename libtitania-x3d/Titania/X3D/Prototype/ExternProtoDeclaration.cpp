@@ -195,8 +195,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 ExternProtoDeclaration::setProtodeclaration (ProtoDeclaration* value)
 {
-	__LOG__ << prototype << std::endl;
-
 	prototype = value;
 
 	if (prototype)
