@@ -60,6 +60,7 @@ namespace titania {
 namespace X3D {
 
 class Loader;
+class SceneLoader;
 
 class ExternProtoDeclaration :
 	public X3DProtoDeclarationNode, public X3DUrlObject
@@ -127,8 +128,8 @@ public:
 
 	virtual
 	ProtoDeclaration*
-	getProtoDeclaration () final override
-	{ return prototype; }
+	getProtoDeclaration ()
+	throw (Error <DISPOSED>) final override;
 
 	const X3DScenePtr &
 	getInternalScene () const
@@ -143,6 +144,9 @@ public:
 	virtual
 	void
 	requestImmediateLoad () final override;
+
+	void
+	requestAsyncLoad (const std::function <void ()> &);
 
 	///  @name Input/Output
 
@@ -172,13 +176,22 @@ private:
 	void
 	initialize () final override;
 
-	bool
-	rewrite (Loader &);
+	void
+	setProtodeclaration (ProtoDeclaration*);
+
+	void
+	setSceneAsync (X3DScenePtr &&, const std::function <void ()> &);
+
+	void
+	setScene (X3DScenePtr && value);
 
 	///  @name Event handlers
 
 	void
 	set_live ();
+
+	void
+	set_url ();
 
 	///  @name Input/Output
 
@@ -195,6 +208,8 @@ private:
 
 	X3DScenePtr         scene;
 	ProtoDeclarationPtr prototype;
+
+	std::unique_ptr <SceneLoader> future;
 
 };
 

@@ -1785,6 +1785,7 @@ Parser::fieldValue (X3DFieldDefinition* _field)
 	//__LOG__ << this << " " << _field -> getTypeName () << std::endl;
 
 	_field -> addComments (getComments ());
+	_field -> isSet (true);
 
 	switch (_field -> getType ())
 	{

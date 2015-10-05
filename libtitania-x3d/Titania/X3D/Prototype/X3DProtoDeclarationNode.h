@@ -80,7 +80,8 @@ public:
 
 	virtual
 	ProtoDeclaration*
-	getProtoDeclaration () = 0;
+	getProtoDeclaration ()
+	throw (Error <DISPOSED>) = 0;
 
 	///  @name Operations
 

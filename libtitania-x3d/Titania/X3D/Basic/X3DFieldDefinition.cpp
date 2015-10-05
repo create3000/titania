@@ -93,6 +93,43 @@ X3DFieldDefinition::hasRootedObjects (ChildObjectSet & seen)
 }
 
 void
+X3DFieldDefinition::isHidden (const bool value)
+{
+	realize ();
+
+	if (value)
+		io -> masks |= HIDDEN_BIT;
+	else
+		io -> masks &= ~HIDDEN_BIT;
+}
+
+bool
+X3DFieldDefinition::isHidden () const
+{
+	realize ();
+	return io -> masks & HIDDEN_BIT;
+}
+
+/// Returns true if is set during parse otherwise false;
+void
+X3DFieldDefinition::isSet (const bool value)
+{
+	realize ();
+
+	if (value)
+		io -> masks |= IS_SET_BIT;
+	else
+		io -> masks &= ~IS_SET_BIT;
+}
+
+bool
+X3DFieldDefinition::isSet () const
+{
+	realize ();
+	return io -> masks & IS_SET_BIT;
+}
+
+void
 X3DFieldDefinition::addIsReference (X3DFieldDefinition* const reference)
 {
 	realize ();

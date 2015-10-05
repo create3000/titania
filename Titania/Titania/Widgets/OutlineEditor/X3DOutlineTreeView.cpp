@@ -901,9 +901,10 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 		}
 		case OutlineIterType::ExternProtoDeclaration:
 		{
-			const auto & sfnode      = *static_cast <X3D::SFNode*> (get_object (iter));
-			const auto   externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
-			const auto   url         = &externProto -> url ();
+			const auto & sfnode           = *static_cast <X3D::SFNode*> (get_object (iter));
+			const auto   externProto      = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
+			const auto   executionContext = externProto -> getExecutionContext ();
+			const auto   url              = &externProto -> url ();
 
 			model_expand_node (sfnode, iter);
 
@@ -912,12 +913,24 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 
 			try
 			{
-				if (expandExternProtos)
-				{
-					if (externProto -> checkLoadState () == X3D::NOT_STARTED_STATE)
-						externProto -> requestImmediateLoad ();
+			   switch (externProto -> checkLoadState () .getValue ())
+			   {
+					case X3D::NOT_STARTED_STATE:
+						get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Loading externproto not started")));
+						break;
+					case X3D::IN_PROGRESS_STATE:
+						get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Loading externproto in progess")));
+						break;
+					case X3D::COMPLETE_STATE:
+					{
+						if (expandExternProtos)
+							get_model () -> append (iter, OutlineIterType::ProtoDeclaration, externProto -> getProtoDeclaration ());
 
-					get_model () -> append (iter, OutlineIterType::ProtoDeclaration, externProto -> getProtoDeclaration ());
+						break;
+					}
+					case X3D::FAILED_STATE:
+						get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Failed to load externproto")));
+						break;
 				}
 			}
 			catch (const X3D::X3DError &)

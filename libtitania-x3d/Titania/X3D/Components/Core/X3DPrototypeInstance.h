@@ -236,12 +236,12 @@ public:
 	virtual
 	void
 	isCompressed (const bool value) final override
-	{ protoNode -> getProtoDeclaration () -> isCompressed (value); }
+	{ getExecutionContext () -> isCompressed (value); }
 
 	virtual
 	bool
 	isCompressed () const final override
-	{ return protoNode -> getProtoDeclaration () -> isCompressed (); }
+	{ return getExecutionContext () -> isCompressed (); }
 
 	virtual
 	void
@@ -265,6 +265,9 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	void
+	construct ();
 
 	///  @name Event handlers
 

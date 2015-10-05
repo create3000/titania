@@ -56,11 +56,14 @@
 #include "../Execution/X3DScene.h"
 #include "../InputOutput/Loader.h"
 #include "../Parser/RegEx.h"
+#include "../Thread/SceneLoader.h"
 
 #include <iomanip>
 
 namespace titania {
 namespace X3D {
+
+static constexpr bool X3D_PARALLEL = true;
 
 const ComponentType ExternProtoDeclaration::component      = ComponentType::TITANIA;
 const std::string   ExternProtoDeclaration::typeName       = "EXTERNPROTO";
@@ -71,7 +74,8 @@ ExternProtoDeclaration::ExternProtoDeclaration (X3DExecutionContext* const execu
    X3DProtoDeclarationNode (),
 	X3DUrlObject (),
 	       scene (),
-	   prototype ()
+	   prototype (),
+	      future ()
 {
 	addType (X3DConstants::ExternProtoDeclaration);
 
@@ -146,8 +150,6 @@ ExternProtoDeclaration::createInstance (X3DExecutionContext* const executionCont
 //       Error <INVALID_OPERATION_TIMING>,
 //       Error <DISPOSED>)
 {
-	requestImmediateLoad ();
-
 	return new X3DPrototypeInstance (executionContext, this);
 }
 
@@ -159,6 +161,8 @@ ExternProtoDeclaration::initialize ()
 
 	getExecutionContext () -> isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
 	isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
+
+	url () .addInterest (this, &ExternProtoDeclaration::set_url);
 }
 
 void
@@ -173,6 +177,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	else if (scene)
 		scene -> setExecutionContext (executionContext);
 
+	if (future)
+		future -> setExecutionContext (executionContext);
+
 	X3DUrlObject::setExecutionContext (executionContext);
 	X3DProtoDeclarationNode::setExecutionContext (executionContext);
 
@@ -185,58 +192,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-ExternProtoDeclaration::requestImmediateLoad ()
-// Spec says
-//throw (<Error <INVALID_OPERATION_TIMING>,
-//       <Error <DISPOSED>)
+ExternProtoDeclaration::setProtodeclaration (ProtoDeclaration* value)
 {
-	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
-		return;
-
-	setLoadState (IN_PROGRESS_STATE);
-	
-	Loader loader (getExecutionContext ());
-
-	try
-	{
-		try
-		{
-			scene = getBrowser () -> createScene ();
-
-			scene -> isLive () = getExecutionContext () -> isLive () and isLive ();
-			scene -> isPrivate (getRootContext () -> isPrivate ());
-			scene -> setExecutionContext (getExecutionContext ());
-
-			loader .parseIntoScene (scene, url ());
-
-			if (getExecutionContext () -> isInitialized ())
-				scene -> setup ();
-
-			else
-				getExecutionContext () -> addUninitializedNode (scene);
-		}
-		catch (const X3DError & error)
-		{
-			scene = getBrowser () -> getPrivateScene ();
-
-			setLoadState (FAILED_STATE);
-
-			throw Error <URL_UNAVAILABLE> ("Couldn't load any URL specified for EXTERNPROTO '" + getName () + "'\n" + error .what ());
-		}
-	}
-	catch (...)
-	{
-		// Legacy code
-
-		if (not rewrite (loader))
-			throw;
-	}
-
-	const std::string protoName = loader .getWorldURL () .fragment () .empty ()
-	                              ? getName ()
-								       	: loader .getWorldURL () .fragment ();
-
-	prototype = scene -> getProtoDeclaration (protoName);
+	prototype = value;
 
 	if (prototype)
 	{
@@ -254,70 +212,135 @@ ExternProtoDeclaration::requestImmediateLoad ()
 					}
 					else
 					{
-						setLoadState (FAILED_STATE);
-						throw Error <INVALID_FIELD> ("EXTERNPROTO '" + getName () + "' field '" + fieldDefinition -> getName () + "' and PROTO field have different types");
+						__LOG__ << ("EXTERNPROTO '" + getName () + "' field '" + fieldDefinition -> getName () + "' and PROTO field have different types") << std::endl;
 					}
 				}
 				else
 				{
-					setLoadState (FAILED_STATE);
-					throw Error <INVALID_ACCESS_TYPE> ("EXTERNPROTO '" + getName () + "' field '" + fieldDefinition -> getName () + "' and PROTO field have different access types");
+					__LOG__ << ("EXTERNPROTO '" + getName () + "' field '" + fieldDefinition -> getName () + "' and PROTO field have different access types") << std::endl;
 				}
 			}
 			catch (const Error <INVALID_NAME> &)
 			{
-				setLoadState (FAILED_STATE);
-				throw Error <INVALID_NAME> ("EXTERNPROTO field '" + fieldDefinition -> getName () + "' not found in PROTO '" + prototype -> getName () + "'");
+				__LOG__ << ("EXTERNPROTO field '" + fieldDefinition -> getName () + "' not found in PROTO '" + prototype -> getName () + "'") << std::endl;
 			}
 		}
-
-		setLoadState (COMPLETE_STATE);
-		return;
-	}
-	else
-	{
-		setLoadState (FAILED_STATE);
-		throw Error <INVALID_NAME> ("No PROTO '" + protoName + "' found for EXTERNPROTO '" + getName () + "' in url '" + loader .getWorldURL () + "'");
 	}
 }
 
-bool
-ExternProtoDeclaration::rewrite (Loader & loader)
+ProtoDeclaration*
+ExternProtoDeclaration::getProtoDeclaration ()
+throw (Error <DISPOSED>)
 {
-	// Legacy code
+	if (prototype)
+		return prototype;
+	
+	throw Error <DISPOSED> ("No prototype declaration available.");
+}
+
+void
+ExternProtoDeclaration::requestImmediateLoad ()
+{
+	if (X3D_PARALLEL and checkLoadState () == IN_PROGRESS_STATE)
+	{
+		future -> wait ();
+		return;
+	}
+
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+		return;
+	
+	setLoadState (IN_PROGRESS_STATE);
+
+	Loader loader (getExecutionContext ());
 
 	try
 	{
-		for (auto & URL : url ())
-		{
-			static const pcrecpp::RE path ("file\\:///usr/share/titania/Library/Prototypes/(.*?)/(.*?)/(.*?)\\.x3dv");
-			
-			std::string rewritten = URL;
+		scene = getBrowser () -> createScene ();
 
-			if (path .Replace ("http://titania.create3000.de/Library/Prototypes/0.1/\\1/\\2.x3dv", &rewritten))
-			{
-				URL = rewritten;
+		loader .parseIntoScene (scene, url ());
 
-				scene = getBrowser () -> createScene ();
-
-				scene -> isLive () = getExecutionContext () -> isLive () and isLive ();
-
-				loader .parseIntoScene (scene, { URL });
-
-				if (getExecutionContext () -> isInitialized ())
-					scene -> setup ();
-
-				else
-					getExecutionContext () -> addUninitializedNode (scene);
-
-				return true;
-			}
-		}
+		setScene (std::move (scene));
 	}
-	catch (...)
-	{ }
+	catch (const X3DError & error)
+	{
+		setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
+	}
+}
 
-	return false;
+void
+ExternProtoDeclaration::requestAsyncLoad (const std::function <void ()> & callback)
+{
+	using namespace std::placeholders;
+
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+	{
+		callback ();
+		return;
+	}
+
+	setLoadState (IN_PROGRESS_STATE);
+
+	if (future)
+		future -> dispose ();
+
+	future .reset (new SceneLoader (getExecutionContext (),
+	                                url (),
+	                                std::bind (&ExternProtoDeclaration::setSceneAsync, this, _1, callback)));
+}
+
+void
+ExternProtoDeclaration::setSceneAsync (X3DScenePtr && value, const std::function <void ()> & callback)
+{
+	if (value)
+	{
+		setScene (std::move (value));
+	}
+	else
+	{
+		scene = getBrowser () -> getPrivateScene ();
+
+		setProtodeclaration (nullptr);
+
+		setLoadState (FAILED_STATE);
+	}
+
+	callback ();
+}
+
+void
+ExternProtoDeclaration::setScene (X3DScenePtr && value)
+{
+	scene = value;
+
+	try
+	{
+		scene -> isLive () = getExecutionContext () -> isLive () and isLive ();
+		scene -> isPrivate (getRootContext () -> isPrivate ());
+		scene -> setExecutionContext (getExecutionContext ());
+
+		if (getExecutionContext () -> isInitialized ())
+			scene -> setup ();
+
+		else
+			getExecutionContext () -> addUninitializedNode (scene);
+
+		const std::string protoName = scene -> getWorldURL () .fragment () .empty ()
+		                              ? getName ()
+									       	: scene -> getWorldURL () .fragment ();
+
+		setProtodeclaration (scene -> getProtoDeclaration (protoName));
+
+		setLoadState (COMPLETE_STATE);
+	}
+	catch (const X3DError & error)
+	{
+		scene = getBrowser () -> getPrivateScene ();
+
+		setProtodeclaration (nullptr);
+
+		setLoadState (FAILED_STATE);
+	}
 }
 
 void
@@ -330,6 +353,14 @@ ExternProtoDeclaration::set_live ()
 		if (value not_eq scene -> isLive ())
 			scene -> isLive () = value;
 	}
+}
+
+void
+ExternProtoDeclaration::set_url ()
+{
+	setLoadState (NOT_STARTED_STATE);
+
+	requestAsyncLoad ([ ] () { });
 }
 
 void
@@ -534,6 +565,12 @@ ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 void
 ExternProtoDeclaration::dispose ()
 {
+	if (future)
+	{
+		future -> dispose ();
+		future .reset ();
+	}
+
 	removeChildren (url ());
 
 	X3DUrlObject::dispose ();

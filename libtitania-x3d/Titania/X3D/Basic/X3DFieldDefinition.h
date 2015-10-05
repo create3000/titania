@@ -69,6 +69,9 @@ class X3DFieldDefinition :
 {
 public:
 
+	static constexpr uint8_t HIDDEN_BIT = 1 << 0;
+	static constexpr uint8_t IS_SET_BIT = 1 << 1;
+
 	using X3DChildObject::addInterest;
 	using X3DChildObject::removeInterest;
 
@@ -165,12 +168,17 @@ public:
 	isDefaultValue () const = 0;
 
 	void
-	isHidden (const bool value)
-	{ realize (); io -> hidden = value; }
+	isHidden (const bool);
 
 	bool
-	isHidden () const
-	{ realize (); return io -> hidden; }
+	isHidden () const;
+
+	/// Returns true if is set during parse otherwise false;
+	void
+	isSet (const bool);
+
+	bool
+	isSet () const;
 
 	/***
 	 *  @name Reference handling
@@ -305,7 +313,7 @@ private:
 	{
 		IO () :
 			accessType (initializeOnly),
-			    hidden (false)
+			     masks (0)
 		{ }
 
 		AccessType                           accessType;
@@ -314,7 +322,7 @@ private:
 		RouteSet                             outputRoutes;
 		std::set <const X3DFieldDefinition*> inputInterests;
 		std::set <X3DFieldDefinition*>       outputInterests;
-		bool                                 hidden;
+		uint8_t                              masks;
 	};
 
 	mutable std::unique_ptr <IO> io;

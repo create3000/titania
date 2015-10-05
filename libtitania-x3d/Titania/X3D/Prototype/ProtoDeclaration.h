@@ -210,7 +210,8 @@ public:
 
 	virtual
 	ProtoDeclaration*
-	getProtoDeclaration () final override
+	getProtoDeclaration ()
+	throw (Error <DISPOSED>) final override
 	{ return this; }
 	
 	///  @name Operations
