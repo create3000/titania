@@ -103,7 +103,7 @@ HistoryView::set_history ()
 	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
-	for (const auto & item : history .getItems (0, 1000))
+	for (const auto & item : history .getItems (0, 2000))
 	{
 		const auto & worldURL = item .at ("worldURL");
 		const auto   iter     = getListStore () -> append ();

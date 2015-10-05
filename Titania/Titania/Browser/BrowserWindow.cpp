@@ -1137,7 +1137,7 @@ BrowserWindow::on_editor_toggled ()
 	if (getEditorAction () -> get_active ())
 	{
 		toggleActions (getEditorAction (), environmentActions);
-				
+
 		isEditor (true);
 	}
 }
@@ -1178,7 +1178,6 @@ BrowserWindow::isEditor (const bool enabled)
 	getLocationBar () .set_visible (not enabled);
 	getEditToolBar () .set_visible (enabled);
 
-	set_dashboard (getBrowser () -> getBrowserOptions () -> Dashboard ());
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 
 	getTabButton ()             .set_visible (not enabled);
@@ -1201,6 +1200,8 @@ BrowserWindow::isEditor (const bool enabled)
 		getArrowButton () .set_active (true);
 	else
 		getHandButton () .set_active (true);
+	
+	set_dashboard (getBrowser () -> getBrowserOptions () -> Dashboard ());
 }
 
 void
