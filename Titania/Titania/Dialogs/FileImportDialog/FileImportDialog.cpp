@@ -168,7 +168,11 @@ FileImportDialog::run ()
 						X3D::FieldDefinitionArray _externInterfaceDeclarations;
 
 						for (const auto & fieldDefinition : prototype -> getFieldDefinitions ())
+						{
 						   _externInterfaceDeclarations .emplace_back (fieldDefinition -> copy (X3D::FLAT_COPY));
+							_externInterfaceDeclarations .back () -> setAccessType (fieldDefinition -> getAccessType ());
+							_externInterfaceDeclarations .back () -> setName (fieldDefinition -> getName ());
+						}
 
 						basic::uri worldURL (uri + "#" + name);
 			

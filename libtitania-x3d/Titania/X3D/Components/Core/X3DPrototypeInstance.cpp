@@ -177,7 +177,9 @@ X3DPrototypeInstance::construct ()
 
 	getRootNodes () .setAccessType (initializeOnly);
 
-	realize ();
+	setup ();
+
+	X3DChildObject::addEvent ();
 }
 
 X3DPrototypeInstance*
