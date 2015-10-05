@@ -72,7 +72,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_FooterAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FooterAction"));
 	m_GouraudAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GouraudAction"));
 	m_GridLayoutToolAction         = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GridLayoutToolAction"));
-	m_ImportAsInlineAction         = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ImportAsInlineAction"));
 	m_LightsAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("LightsAction"));
 	m_MenubarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("MenubarAction"));
 	m_PhongAction                  = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PhongAction"));
@@ -121,7 +120,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserOpenRecentMenuItem", m_BrowserOpenRecentMenuItem);
 	m_builder -> get_widget ("BrowserOpenLocationMenuItem", m_BrowserOpenLocationMenuItem);
 	m_builder -> get_widget ("BrowserImportMenuItem", m_BrowserImportMenuItem);
-	m_builder -> get_widget ("BrowserImportAsInlineMenuItem", m_BrowserImportAsInlineMenuItem);
 	m_builder -> get_widget ("BrowserSaveMenuItem", m_BrowserSaveMenuItem);
 	m_builder -> get_widget ("BrowserSaveAsMenuItem", m_BrowserSaveAsMenuItem);
 	m_builder -> get_widget ("BrowserSaveACopyMenuItem", m_BrowserSaveACopyMenuItem);
@@ -236,7 +234,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("OpenRecentMenuItem", m_OpenRecentMenuItem);
 	m_builder -> get_widget ("OpenLocationMenuItem", m_OpenLocationMenuItem);
 	m_builder -> get_widget ("ImportMenuItem", m_ImportMenuItem);
-	m_builder -> get_widget ("ImportAsInlineMenuItem", m_ImportAsInlineMenuItem);
 	m_builder -> get_widget ("SaveMenuItem", m_SaveMenuItem);
 	m_builder -> get_widget ("SaveAsMenuItem", m_SaveAsMenuItem);
 	m_builder -> get_widget ("SaveACopyMenuItem", m_SaveACopyMenuItem);
@@ -420,7 +417,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_FooterAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_footer_toggled));
 	m_GouraudAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_gouraud_toggled));
 	m_GridLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
-	m_ImportAsInlineAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import_as_inline_toggled));
 	m_LightsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_lights_toggled));
 	m_MenubarAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_menubar_toggled));
 	m_PhongAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_phong_toggled));

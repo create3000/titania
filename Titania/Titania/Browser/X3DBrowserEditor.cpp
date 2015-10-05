@@ -108,10 +108,6 @@ X3DBrowserEditor::initialize ()
 void
 X3DBrowserEditor::restoreSession ()
 {
-	// ImportAsInline
-	if (getConfig () .hasItem ("importAsInline"))
-		getImportAsInlineAction () -> set_active (getConfig () .getBoolean ("importAsInline"));
-
 	// Workspace
 	if (not getConfig () .hasItem ("environment"))
 	   getConfig () .setItem ("environment", 1);

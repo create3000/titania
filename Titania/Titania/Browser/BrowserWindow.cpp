@@ -596,12 +596,6 @@ BrowserWindow::on_import_activated ()
 }
 
 void
-BrowserWindow::on_import_as_inline_toggled ()
-{
-	getConfig () .setItem ("importAsInline", getImportAsInlineAction () -> get_active ());
-}
-
-void
 BrowserWindow::on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
                                               int x, int y,
                                               const Gtk::SelectionData & selection_data,
@@ -1155,7 +1149,6 @@ BrowserWindow::isEditor (const bool enabled)
 
 	getOpenRecentMenuItem ()                   .set_visible (enabled);
 	getImportMenuItem ()                       .set_visible (enabled);
-	getImportAsInlineMenuItem ()               .set_visible (enabled);
 	getSaveMenuItem ()                         .set_visible (enabled);
 	getRemoveUnusedPrototypesMenuItem ()       .set_visible (enabled);
 	getEditMenuItem ()                         .set_visible (enabled);
@@ -1170,7 +1163,6 @@ BrowserWindow::isEditor (const bool enabled)
 
 	getBrowserOpenRecentMenuItem ()                   .set_visible (enabled);
 	getBrowserImportMenuItem ()                       .set_visible (enabled);
-	getBrowserImportAsInlineMenuItem ()               .set_visible (enabled);
 	getBrowserSaveMenuItem ()                         .set_visible (enabled);
 	getBrowserRemoveUnusedPrototypesMenuItem ()       .set_visible (enabled);
 	getBrowserEditMenuItem ()                         .set_visible (enabled);

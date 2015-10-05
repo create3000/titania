@@ -134,10 +134,6 @@ public:
 	{ return m_GridLayoutToolAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
-	getImportAsInlineAction () const
-	{ return m_ImportAsInlineAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
 	getLightsAction () const
 	{ return m_LightsAction; }
 
@@ -320,10 +316,6 @@ public:
 	Gtk::ImageMenuItem &
 	getBrowserImportMenuItem () const
 	{ return *m_BrowserImportMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserImportAsInlineMenuItem () const
-	{ return *m_BrowserImportAsInlineMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getBrowserSaveMenuItem () const
@@ -780,10 +772,6 @@ public:
 	Gtk::ImageMenuItem &
 	getImportMenuItem () const
 	{ return *m_ImportMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getImportAsInlineMenuItem () const
-	{ return *m_ImportAsInlineMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getSaveMenuItem () const
@@ -1511,10 +1499,6 @@ public:
 
 	virtual
 	void
-	on_import_as_inline_toggled () = 0;
-
-	virtual
-	void
 	on_lights_toggled () = 0;
 
 	virtual
@@ -2049,7 +2033,6 @@ private:
 	Glib::RefPtr <Gtk::ToggleAction> m_FooterAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_GouraudAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_GridLayoutToolAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_ImportAsInlineAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_LightsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_MenubarAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_PhongAction;
@@ -2096,7 +2079,6 @@ private:
 	Gtk::ImageMenuItem*              m_BrowserOpenRecentMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserOpenLocationMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserImportMenuItem;
-	Gtk::CheckMenuItem*              m_BrowserImportAsInlineMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserSaveMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserSaveAsMenuItem;
 	Gtk::MenuItem*                   m_BrowserSaveACopyMenuItem;
@@ -2211,7 +2193,6 @@ private:
 	Gtk::ImageMenuItem*              m_OpenRecentMenuItem;
 	Gtk::ImageMenuItem*              m_OpenLocationMenuItem;
 	Gtk::ImageMenuItem*              m_ImportMenuItem;
-	Gtk::CheckMenuItem*              m_ImportAsInlineMenuItem;
 	Gtk::ImageMenuItem*              m_SaveMenuItem;
 	Gtk::ImageMenuItem*              m_SaveAsMenuItem;
 	Gtk::MenuItem*                   m_SaveACopyMenuItem;

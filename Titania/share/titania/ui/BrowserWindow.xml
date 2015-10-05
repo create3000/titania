@@ -155,10 +155,6 @@
       </object>
     </child>
   </object>
-  <object class="GtkToggleAction" id="ImportAsInlineAction">
-    <property name="label" translatable="yes">Import As Inline</property>
-    <signal name="toggled" handler="on_import_as_inline_toggled" swapped="no"/>
-  </object>
   <object class="GtkToggleAction" id="LightsAction">
     <property name="label" translatable="yes">_Lights</property>
     <signal name="toggled" handler="on_lights_toggled" swapped="no"/>
@@ -563,13 +559,6 @@
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_import_activated" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkCheckMenuItem" id="BrowserImportAsInlineMenuItem">
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Import As Inline ...</property>
-                <property name="use_underline">True</property>
               </object>
             </child>
             <child>
@@ -1920,14 +1909,6 @@
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_import_activated" swapped="no"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkCheckMenuItem" id="ImportAsInlineMenuItem">
-                                <property name="related_action">ImportAsInlineAction</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Import As Inline</property>
-                                <property name="use_underline">True</property>
                               </object>
                             </child>
                             <child>

@@ -166,10 +166,6 @@ private:
 
 	virtual
 	void
-	on_import_as_inline_toggled () final override;
-
-	virtual
-	void
 	on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint) final override;
 
 	void
