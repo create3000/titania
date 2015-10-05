@@ -93,7 +93,9 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	}
 
 	if (protoNode -> isExternproto ())
+	{
 	   static_cast <ExternProtoDeclaration*> (protoNode .getValue ()) -> requestAsyncLoad (std::bind (&X3DPrototypeInstance::construct, this));
+	}
 	else
 	{
 		ProtoDeclaration* const prototype = protoNode -> getProtoDeclaration ();
@@ -102,6 +104,8 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		importProtos (prototype);
 		copyRootNodes (prototype);
 	}
+
+	setExtendedEventHandling (false);
 }
 
 void
@@ -171,9 +175,9 @@ X3DPrototypeInstance::construct ()
 		__LOG__ << error .what () << std::endl;
 	}
 
-	setExtendedEventHandling (false);
-
 	getRootNodes () .setAccessType (initializeOnly);
+
+	realize ();
 }
 
 X3DPrototypeInstance*

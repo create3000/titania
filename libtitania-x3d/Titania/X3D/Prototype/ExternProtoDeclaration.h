@@ -180,7 +180,7 @@ private:
 	setProtodeclaration (ProtoDeclaration*);
 
 	void
-	setSceneAsync (X3DScenePtr &&, const std::function <void ()> &);
+	setSceneAsync (X3DScenePtr &&);
 
 	void
 	setScene (X3DScenePtr && value);
@@ -206,8 +206,9 @@ private:
 
 	///  @name Members
 
-	X3DScenePtr         scene;
-	ProtoDeclarationPtr prototype;
+	X3DScenePtr                           scene;
+	ProtoDeclarationPtr                   prototype;
+	std::vector <std::function <void ()>> callbacks;
 
 	std::unique_ptr <SceneLoader> future;
 

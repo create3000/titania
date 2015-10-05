@@ -75,6 +75,7 @@ ExternProtoDeclaration::ExternProtoDeclaration (X3DExecutionContext* const execu
 	X3DUrlObject (),
 	       scene (),
 	   prototype (),
+		callbacks (),
 	      future ()
 {
 	addType (X3DConstants::ExternProtoDeclaration);
@@ -194,6 +195,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 ExternProtoDeclaration::setProtodeclaration (ProtoDeclaration* value)
 {
+	__LOG__ << prototype << std::endl;
+
 	prototype = value;
 
 	if (prototype)
@@ -273,11 +276,13 @@ ExternProtoDeclaration::requestAsyncLoad (const std::function <void ()> & callba
 {
 	using namespace std::placeholders;
 
-	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
-	{
-		callback ();
+	if (checkLoadState () == COMPLETE_STATE)
 		return;
-	}
+	
+	callbacks .emplace_back (callback);
+
+	if (checkLoadState () == IN_PROGRESS_STATE)
+		return;
 
 	setLoadState (IN_PROGRESS_STATE);
 
@@ -286,11 +291,11 @@ ExternProtoDeclaration::requestAsyncLoad (const std::function <void ()> & callba
 
 	future .reset (new SceneLoader (getExecutionContext (),
 	                                url (),
-	                                std::bind (&ExternProtoDeclaration::setSceneAsync, this, _1, callback)));
+	                                std::bind (&ExternProtoDeclaration::setSceneAsync, this, _1)));
 }
 
 void
-ExternProtoDeclaration::setSceneAsync (X3DScenePtr && value, const std::function <void ()> & callback)
+ExternProtoDeclaration::setSceneAsync (X3DScenePtr && value)
 {
 	if (value)
 	{
@@ -305,7 +310,10 @@ ExternProtoDeclaration::setSceneAsync (X3DScenePtr && value, const std::function
 		setLoadState (FAILED_STATE);
 	}
 
-	callback ();
+	std::vector <std::function <void ()>> callbacksToProcess = std::move (callbacks);
+
+	for (const auto & callback : callbacksToProcess)
+		callback ();
 }
 
 void
@@ -335,6 +343,8 @@ ExternProtoDeclaration::setScene (X3DScenePtr && value)
 	}
 	catch (const X3DError & error)
 	{
+	   __LOG__ << error .what () << std::endl;
+
 		scene = getBrowser () -> getPrivateScene ();
 
 		setProtodeclaration (nullptr);
