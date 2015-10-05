@@ -101,6 +101,9 @@ public:
 	getExecutionContext () const final override
 	{ return executionContext; }
 
+	const basic::uri &
+	getWorldURL (const X3D::BrowserPtr &) const;
+
 	const X3D::Output &
 	worldURL_changed () const
 	{ return worldURLOutput; }
@@ -111,6 +114,11 @@ public:
 
 	bool
 	isLive () const;
+
+	virtual
+	bool
+	isModified (const X3D::BrowserPtr &) const
+	{ return false; }
 
 	static
 	std::shared_ptr <BrowserUserData>
@@ -220,7 +228,7 @@ private:
 	set_initialized ();
 
 	void
-	set_SplashScreen (const X3D::BrowserPtr &, const basic::uri &);
+	set_splashScreen (const X3D::BrowserPtr &, const basic::uri &);
 
 	virtual
 	void
@@ -246,12 +254,6 @@ private:
 
 	void
 	loadIcon ();
-
-	void
-	updateScenesMenus ();
-
-	void
-	updateScenesMenu (Gtk::Menu &);
 
 	bool
 	statistics ();

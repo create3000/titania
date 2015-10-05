@@ -1962,6 +1962,55 @@ BrowserWindow::on_grid_properties_activated ()
 	addDialog ("GridEditor");
 }
 
+// Scenes menu
+
+void
+BrowserWindow::on_scenes_activated ()
+{
+	on_scenes_activated (getScenesMenu ());
+}
+
+void
+BrowserWindow::on_browser_scenes_activated ()
+{
+	on_scenes_activated (getBrowserScenesMenu ());
+}
+
+void
+BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
+{
+	// Remove all menu items.
+
+	for (auto & widget : menu .get_children ())
+	   menu .remove (*widget);
+	
+	// Rebuild menu.
+
+	size_t pageNumber = 0;
+
+	for (const auto & browser : getBrowsers ())
+	{
+	   const auto & worldURL = getWorldURL (browser);
+	   const bool   modified = isModified (browser);
+		const auto   icon     = Gtk::manage (new Gtk::Image (Gtk::StockID (worldURL .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
+		auto         menuItem = Gtk::manage (new Gtk::ImageMenuItem ());
+
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (getBrowserNotebook (), &Gtk::Notebook::set_current_page), pageNumber));
+
+		menuItem -> set_image (*icon);
+		menuItem -> set_label (worldURL .basename () + (modified ? "*" : ""));
+		menuItem -> set_always_show_image (true);
+
+		if (browser == getBrowser ())
+		   menuItem -> get_style_context () -> add_class ("titania-menu-item-selected");
+
+		menu .append (*menuItem);
+		menu .show_all ();
+
+	   ++ pageNumber;
+	}
+}
+
 // Help menu
 
 void
@@ -2236,30 +2285,26 @@ void
 BrowserWindow::on_hand_button_toggled ()
 {
 	if (getHandButton () .get_active ())
-	{
-		getConfig () .setItem ("arrow", false);
-		getSelection () -> isEnabled (false);
-
-		getPlayPauseButton ()      .set_visible (false);
-		getSelectParentButton ()   .set_visible (false);
-		getSelectChildrenButton () .set_visible (false);
-	}
-
-	set_available_viewers (getBrowser () -> getAvailableViewers ());
+		set_arrow_button (false);
 }
 
 void
 BrowserWindow::on_arrow_button_toggled ()
 {
 	if (getArrowButton () .get_active ())
-	{
-		getConfig () .setItem ("arrow", true);
-		getSelection () -> isEnabled (true);
+		set_arrow_button (true);
+}
 
-		getPlayPauseButton ()      .set_visible (true);
-		getSelectParentButton ()   .set_visible (true);
-		getSelectChildrenButton () .set_visible (true);
-	}
+void
+BrowserWindow::set_arrow_button (const bool value)
+{
+	getConfig () .setItem ("arrow", value);
+	getSelection () -> isEnabled (value);
+
+	getPlayPauseButton ()      .set_visible (value);
+	getSelectSeparator ()      .set_visible (value);
+	getSelectParentButton ()   .set_visible (value);
+	getSelectChildrenButton () .set_visible (value);
 
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 }
@@ -2709,6 +2754,7 @@ BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::ViewerType> & avai
 		}
 	}
 
+	getViewerSeparator ()       .set_visible (dashboard or editor);
 	getViewerButton ()          .set_visible (dashboard or editor);
 	getExamineViewerMenuItem () .set_visible (examine);
 	getWalkViewerMenuItem ()    .set_visible (walk);

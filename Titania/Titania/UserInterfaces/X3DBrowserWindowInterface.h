@@ -1855,6 +1855,10 @@ public:
 
 	virtual
 	void
+	on_browser_scenes_activated () = 0;
+
+	virtual
+	void
 	on_info_activated () = 0;
 
 	virtual
@@ -1872,6 +1876,10 @@ public:
 	virtual
 	bool
 	on_menubar_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
+	void
+	on_scenes_activated () = 0;
 
 	virtual
 	void

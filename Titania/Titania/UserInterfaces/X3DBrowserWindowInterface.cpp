@@ -532,6 +532,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_BrowserTextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_coordinate_editor_activated));
 	m_BrowserPaintPolygonsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paint_polygons_activated));
 	m_BrowserGridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_properties_activated));
+
+	// Connect object Gtk::MenuItem with id 'BrowserScenesMenuItem'.
+	m_BrowserScenesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_browser_scenes_activated));
+
+	// Connect object Gtk::ImageMenuItem with id 'BrowserInfoMenuItem'.
 	m_BrowserInfoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info_activated));
 
 	// Connect object Gtk::ApplicationWindow with id 'Window'.
@@ -622,6 +627,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_TextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_coordinate_editor_activated));
 	m_PaintPolygonsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paint_polygons_activated));
 	m_GridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_properties_activated));
+
+	// Connect object Gtk::MenuItem with id 'ScenesMenuItem'.
+	m_ScenesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_scenes_activated));
+
+	// Connect object Gtk::ImageMenuItem with id 'InfoMenuItem'.
 	m_InfoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info_activated));
 
 	// Connect object Gtk::Box with id 'Toolbar'.

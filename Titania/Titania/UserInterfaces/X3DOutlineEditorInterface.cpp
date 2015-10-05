@@ -155,6 +155,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_unmap));
 
 	// Connect object Gtk::Button with id 'PreviousSceneButton'.
 	m_PreviousSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_previous_scene_clicked));

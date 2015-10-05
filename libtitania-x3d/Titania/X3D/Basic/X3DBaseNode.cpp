@@ -428,12 +428,12 @@ X3DBaseNode::getMasterContext () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	X3DExecutionContext* masterContext = getExecutionContext () -> getRootContext ();
+	X3DExecutionContext* executionContext = getExecutionContext () -> getRootContext ();
 
-	while (not masterContext -> isMasterContext ())
-		masterContext = masterContext -> getRootContext ();
+	while (not executionContext -> isMasterContext ())
+		executionContext = executionContext -> getRootContext ();
 
-	return masterContext;
+	return executionContext;
 }
 
 /***
@@ -444,12 +444,12 @@ X3DBaseNode::getRootContext () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	X3DExecutionContext* rootContext = getExecutionContext ();
+	X3DExecutionContext* executionContext = getExecutionContext ();
 
-	while (not rootContext -> isRootContext ())
-		rootContext = rootContext -> getExecutionContext ();
+	while (not executionContext -> isRootContext ())
+		executionContext = executionContext -> getExecutionContext ();
 
-	return rootContext;
+	return executionContext;
 }
 
 /***

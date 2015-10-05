@@ -39,6 +39,11 @@ GtkSeparator {
 	background: transparent;
 }
 
+.titania-menu-item-selected {
+	font-weight: bold;
+	font-style: italic;
+}
+
 GtkExpander > GtkLabel {
 	font-weight: bold;
 }

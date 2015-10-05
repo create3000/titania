@@ -574,6 +574,19 @@ private:
 	void
 	on_grid_properties_activated () final override;
 
+	///  @name Scenes menu
+
+	virtual
+	void
+	on_scenes_activated () final override;
+
+	virtual
+	void
+	on_browser_scenes_activated () final override;
+
+	void
+	on_scenes_activated (Gtk::Menu &);
+
 	///  @name Help menu
 
 	virtual
@@ -680,6 +693,9 @@ private:
 	virtual
 	void
 	on_arrow_button_toggled () final override;
+
+	void
+	set_arrow_button (const bool);
 
 	virtual
 	void

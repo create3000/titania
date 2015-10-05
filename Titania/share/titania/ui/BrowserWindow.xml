@@ -1747,6 +1747,7 @@
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">S_cenes</property>
         <property name="use_underline">True</property>
+        <signal name="activate" handler="on_browser_scenes_activated" swapped="no"/>
         <child type="submenu">
           <object class="GtkMenu" id="BrowserScenesMenu">
             <property name="visible">True</property>
@@ -3122,6 +3123,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">S_cenes</property>
                         <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_scenes_activated" swapped="no"/>
                         <child type="submenu">
                           <object class="GtkMenu" id="ScenesMenu">
                             <property name="visible">True</property>

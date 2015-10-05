@@ -427,6 +427,10 @@ public:
 
 	virtual
 	void
+	on_unmap () = 0;
+
+	virtual
+	void
 	on_previous_scene_clicked () = 0;
 
 	virtual

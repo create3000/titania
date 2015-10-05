@@ -88,8 +88,6 @@ X3DBrowserWidget::initialize ()
 {
 	X3DBrowserWindowInterface::initialize ();
 
-	getBrowsers () .addInterest (this, &X3DBrowserWidget::updateScenesMenus);
-
 	recentView -> initialize ();
 
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
@@ -108,7 +106,7 @@ X3DBrowserWidget::set_initialized ()
 	std::set <basic::uri> urlIndex;
 
 	for (const auto & browser : browsers)
-		urlIndex .emplace (getUserData (browser) -> URL);
+		urlIndex .emplace (getWorldURL (browser));
 
 	const auto empty     = browsers .empty ();
 	auto       worldURLs = basic::split (getConfig () .getString ("worldURL"), "\n");
@@ -292,14 +290,14 @@ X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
 X3D::X3DPtrArray <X3D::Browser>::const_iterator
 X3DBrowserWidget::getBrowser (const basic::uri & URL) const
 {
-	return std::find_if (browsers .cbegin (), browsers .cend (), [&URL] (const X3D::BrowserPtr & browser)
+	return std::find_if (browsers .cbegin (), browsers .cend (), [this, &URL] (const X3D::BrowserPtr & browser)
 	                     {
 	                        auto worldURL = browser -> getExecutionContext () -> getMasterContext () -> getWorldURL ();
 
-	                        if (worldURL .empty ())
-										worldURL = X3DBrowserWindow::getUserData (browser) -> URL;
-
-	                        return worldURL == URL;
+	                        if (browser -> isInitialized ())
+	                           return worldURL == URL;
+										
+									return getWorldURL (browser) == URL;
 								});
 }
 
@@ -323,6 +321,15 @@ X3DBrowserWidget::setExecutionContext (const X3D::X3DExecutionContextPtr & value
 	}
 	catch (const X3D::X3DError &)
 	{ }
+}
+
+const basic::uri &
+X3DBrowserWidget::getWorldURL (const X3D::BrowserPtr & browser) const
+{
+	if (browser -> isInitialized ())
+	   return browser -> getWorldURL ();
+
+	return getUserData (browser) -> URL;
 }
 
 void
@@ -375,7 +382,7 @@ void
 X3DBrowserWidget::setTitle ()
 {
 	const auto userData = getUserData (getBrowser ());
-	const bool modified = userData -> undoHistory .isModified () or userData -> modified;
+	const bool modified = isModified (getBrowser ());
 	const auto title    = getTitle (getBrowser ());
 
 	getBrowserNotebook () .set_menu_label_text (*getBrowser (), title);
@@ -386,26 +393,23 @@ X3DBrowserWidget::setTitle ()
 	if (userData -> label)
 		userData -> label -> set_text (title);
 
-	getWindow () .set_title (getScene () -> getTitle ()
+	getWindow () .set_title (getExecutionContext () -> getTitle ()
 	                         + " · "
-	                         + getScene () -> getWorldURL () .filename ()
+	                         + getExecutionContext () -> getWorldURL () .filename ()
 	                         + (modified ? "*" : "")
 	                         + " · "
 	                         + getBrowser () -> getName ());
-	
-	updateScenesMenus ();
 }
 
 std::string
 X3DBrowserWidget::getTitle (const X3D::BrowserPtr & browser) const
 {
-	const auto userData = getUserData (browser);
-	const bool modified = userData -> undoHistory .isModified () or userData -> modified;
+	const bool modified = isModified (browser);
 
 	auto title = browser -> getExecutionContext () -> getTitle ();
 
 	if (title .empty ())
-		title = userData -> URL .basename ();
+		title = getWorldURL (browser) .basename ();
 
 	if (title .empty ())
 		title = _ ("New Scene");
@@ -449,7 +453,7 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 	if (not splashScreen and not URL .empty ())
 		browser -> getBrowserOptions () -> SplashScreenURL () = { get_page ("about/blank.x3dv") .str () };
 
-	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_SplashScreen, browser, URL);
+	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_splashScreen, browser, URL);
 	browser -> getBrowserOptions () -> SplashScreen () = not URL .empty ();
 	browser -> set_antialiasing (4);
 	browser -> show ();
@@ -492,9 +496,9 @@ X3DBrowserWidget::getShowTabs () const
 }
 
 void
-X3DBrowserWidget::set_SplashScreen (const X3D::BrowserPtr & browser, const basic::uri & URL)
+X3DBrowserWidget::set_splashScreen (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
-	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_SplashScreen);
+	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
 
 	load (browser, URL);
 }
@@ -693,8 +697,6 @@ X3DBrowserWidget::setWorldURL (const X3D::X3DScenePtr & scene, const basic::uri 
 	worldURL_changed () .processInterests ();
 
 	recentView -> loadPreview (scene -> getBrowser ());
-
-	updateScenesMenus ();
 }
 
 bool
@@ -766,7 +768,7 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser)
 	if (browser == getBrowser ())
 		recentView -> loadPreview (browser);
 
-	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_SplashScreen);
+	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
 
 	getUserData (browser) -> dispose ();
 
@@ -793,7 +795,7 @@ X3DBrowserWidget::quit ()
 
 		auto URL = browser -> getExecutionContext () -> getMasterContext () -> getWorldURL ();
 
-		if (URL .empty ())
+		if (not browser -> isInitialized ())
 			URL = userData -> URL;
 
 		if (not URL .empty ())
@@ -956,46 +958,6 @@ X3DBrowserWidget::getIcon (const basic::uri & worldURL, const Gtk::IconSize & ic
 	}
 
 	return image;
-}
-
-void
-X3DBrowserWidget::updateScenesMenus ()
-{
-	updateScenesMenu (getScenesMenu ());
-	updateScenesMenu (getBrowserScenesMenu ());
-}
-
-void
-X3DBrowserWidget::updateScenesMenu (Gtk::Menu & menu)
-{
-	// Remove all menu items.
-
-	for (auto & widget : menu .get_children ())
-	   menu .remove (*widget);
-	
-	// Rebuild menu.
-
-	size_t pageNumber = 0;
-
-	for (const auto & browser : getBrowsers ())
-	{
-	   const auto URL      = browser -> getWorldURL ();
-		const auto icon     = Gtk::manage (new Gtk::Image (Gtk::StockID (URL .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
-		auto       menuItem = Gtk::manage (new Gtk::ImageMenuItem (getTitle (browser)));
-
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (getBrowserNotebook (), &Gtk::Notebook::set_current_page), pageNumber));
-
-		menuItem -> set_image (*icon);
-		menuItem -> set_label (getTitle (browser));
-		menuItem -> set_always_show_image (true);
-
-		icon -> show ();
-		menuItem -> show ();
-
-		menu .append (*menuItem);
-	
-	   ++ pageNumber;
-	}
 }
 
 void

@@ -81,8 +81,9 @@ public:
 	void
 	isModified (const X3D::BrowserPtr &, const bool);
 
+	virtual
 	bool
-	isModified (const X3D::BrowserPtr &) const;
+	isModified (const X3D::BrowserPtr &) const final override;
 
 	/// @name Operations
 

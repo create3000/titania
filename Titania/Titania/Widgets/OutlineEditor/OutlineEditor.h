@@ -88,6 +88,10 @@ private:
 
 	virtual
 	void
+	on_unmap () final override;
+
+	virtual
+	void
 	initialize () final override;
 
 	///  @name Event handlers
@@ -123,8 +127,17 @@ private:
 	void
 	on_next_scene_clicked () final override;
 
+	void
+	set_scenes_menu ();
+
 	std::pair <Gtk::RadioMenuItem*, size_t>
 	addSceneMenuItem (const X3D::X3DExecutionContextPtr &, const X3D::X3DExecutionContextPtr &);
+
+	std::string
+	getSceneLabelText (const X3D::X3DExecutionContextPtr & scene) const;
+
+	std::string
+	getSceneMenuLabelText (const X3D::X3DExecutionContextPtr & scene, const bool) const;
 
 	// Create Instance
 

@@ -85,7 +85,15 @@ OutlineEditor::on_map ()
 {
 	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("Outline Editor"));
 
+	getBrowserWindow () -> worldURL_changed () .addInterest (this, &OutlineEditor::set_scenes_menu);
+
 	treeView -> queue_draw ();
+}
+
+void
+OutlineEditor::on_unmap ()
+{
+	getBrowserWindow () -> worldURL_changed () .removeInterest (this, &OutlineEditor::set_scenes_menu);
 }
 
 void
@@ -320,12 +328,33 @@ OutlineEditor::on_next_scene_clicked ()
 		scenes [iter -> second + 1] .second -> set_active (true);
 }
 
+void
+OutlineEditor::set_scenes_menu ()
+{
+	if (scenes .empty ())
+		return;
+	
+	for (const auto & scene : scenes)
+	{
+	   const auto currentScene = scene .first;
+	   auto menuItem           = scene .second;
+
+		menuItem -> set_label (getSceneMenuLabelText (currentScene, false));
+
+		if (menuItem -> get_active ())
+		{
+			getSceneLabel () .set_markup (getSceneLabelText (currentScene));
+			getSceneMenuButton () .set_tooltip_text (currentScene  -> getWorldURL () .str ());
+		}
+	}
+}
+
 std::pair <Gtk::RadioMenuItem*, size_t>
 OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScene, const X3D::X3DExecutionContextPtr & scene)
 {
 	const auto basename = scene -> getWorldURL () .basename ();
 
-	getSceneLabel () .set_markup ("<i><b>" + std::string (_ ("Current Scene")) + "</b> »" + Glib::Markup::escape_text (basename) + "«</i>");
+	getSceneLabel () .set_markup (getSceneLabelText (scene));
 	getSceneMenuButton () .set_tooltip_text (scene -> getWorldURL () .str ());
 
 	if (currentScene)
@@ -369,10 +398,7 @@ OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScen
 
 	// Add menu item.
 
-	const auto label = scene -> isProtoDeclaration () or dynamic_cast <X3D::X3DPrototypeInstance*> (scene .getValue ())
-	                   ? scene -> getTypeName () + " " + scene -> getName ()
-							 : scene -> getTypeName () + " »" + basename + "«";
-
+	const auto label    = getSceneMenuLabelText (scene, false);
 	const auto menuItem = Gtk::manage (new Gtk::RadioMenuItem (sceneGroup, label));
 	menuItem -> set_active (true);
 	menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_scene_activate), menuItem, scenes .size ()));
@@ -384,6 +410,37 @@ OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScen
 	getSceneMenu () .append (*menuItem);
 
 	return std::make_pair (menuItem, scenes .size () - 1);
+}
+
+std::string
+OutlineEditor::getSceneLabelText (const X3D::X3DExecutionContextPtr & scene) const
+{
+	const auto basename = scene -> getWorldURL () .basename ();
+	const auto child    = getSceneMenuLabelText (scene, true);
+
+	return "<i><b>" + std::string (_ ("Current Scene")) + "</b> »" + Glib::Markup::escape_text (basename) + "«</i>" +
+	       "<i>" + (scene -> isRootContext () ? "" : " " + child) + "</i>";
+}
+
+std::string
+OutlineEditor::getSceneMenuLabelText (const X3D::X3DExecutionContextPtr & scene, const bool markup) const
+{
+	if (markup)
+	{
+		const auto basename = scene -> getWorldURL () .basename ();
+
+		return scene -> isProtoDeclaration () or dynamic_cast <X3D::X3DPrototypeInstance*> (scene .getValue ())
+		       ? "<b>" + scene -> getTypeName () + "</b> " + scene -> getName ()
+		       : scene -> getTypeName () + " »" + basename + "«";
+	}
+	else
+	{
+		const auto basename = scene -> getWorldURL () .basename ();
+
+		return scene -> isProtoDeclaration () or dynamic_cast <X3D::X3DPrototypeInstance*> (scene .getValue ())
+		       ? scene -> getTypeName () + " " + scene -> getName ()
+		       : scene -> getTypeName () + " »" + basename + "«";
+	}
 }
 
 void
