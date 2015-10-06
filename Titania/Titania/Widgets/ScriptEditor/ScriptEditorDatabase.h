@@ -109,8 +109,6 @@ public:
 		                                             "ORDER BY lastAccess DESC "
 		                                             "LIMIT 0, 1");
 
-		__LOG__ << database .last_query () << std::endl;
-		
 		const auto & item = result .at (0);
 
 		return std::make_tuple (item .at (0), std::atof (item .at (1) .c_str ()), std::atof (item .at (2) .c_str ()));

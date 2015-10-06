@@ -231,14 +231,6 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 			hadjustment -> restore (getScrolledWindow () .get_hadjustment (), std::get <1> (item));
 			vadjustment -> restore (getScrolledWindow () .get_vadjustment (), std::get <2> (item));
 		}
-		catch (const X3D::X3DError & error)
-		{
-			__LOG__ << error .what () << std::endl;
-		}
-		catch (const std::out_of_range & error)
-		{
-			__LOG__ << error .what () << std::endl;
-		}
 		catch (...)
 		{ }
 	}
@@ -436,14 +428,6 @@ ScriptEditor::restoreSession ()
 		const auto nodeName = std::get <0> (item);
 
 		set_node (getExecutionContext () -> getNamedNode (nodeName));
-	}
-	catch (const X3D::X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-	catch (const std::out_of_range & error)
-	{
-		__LOG__ << error .what () << std::endl;
 	}
 	catch (...)
 	{ }
