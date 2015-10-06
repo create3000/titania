@@ -138,6 +138,8 @@ HistoryView::set_history ()
 {
 	// Fill model.
 
+	const auto rows = getTreeView () .get_selection () -> get_selected_rows ();
+
 	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
@@ -153,7 +155,9 @@ HistoryView::set_history ()
 
 	getTreeView () .set_model (getListStore ());
 	getTreeView () .set_search_column (TITLE_COLUMN);
-	getTreeView () .get_selection () -> select (Gtk::TreePath ("0"));
+
+	for (const auto & path : rows)
+		getTreeView () .get_selection () -> select (path);
 
 	hadjustment -> restore (getTreeView () .get_hadjustment (), getConfig () .getDouble ("hadjustment"));
 	vadjustment -> restore (getTreeView () .get_vadjustment (), getConfig () .getDouble ("vadjustment"));
@@ -162,6 +166,9 @@ HistoryView::set_history ()
 void
 HistoryView::set_scene ()
 {
+	getConfig () .setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
+	getConfig () .setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
+
 	const std::string title    = getScene () -> getTitle ();
 	const basic::uri  worldURL = getScene () -> getWorldURL ();
 
@@ -184,20 +191,8 @@ HistoryView::set_scene ()
 
 	if (not getWidget () .get_mapped ())
 		return;
-
-	try
-	{
-		getListStore () -> erase (getListStore () -> get_iter (getBrowserWindow () -> getHistory () .getIndex (worldURL)));
-	}
-	catch (const std::out_of_range &)
-	{ }
-
-	const auto iter = getListStore () -> prepend ();
-	iter -> set_value (ICON_COLUMN,      worldURL .filename () .str ());
-	iter -> set_value (TITLE_COLUMN,     title);
-	iter -> set_value (WORLD_URL_COLUMN, worldURL .str ());
-
-	getListStore () -> row_changed (getListStore () -> get_path (iter), iter);
+	
+	set_history ();
 }
 
 void
