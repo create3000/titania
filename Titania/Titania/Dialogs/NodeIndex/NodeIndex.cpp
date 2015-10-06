@@ -195,12 +195,6 @@ NodeIndex::setNodes (X3D::MFNode && value)
 
 	nodes = std::move (value);
 
-	if (node)
-	{
-		if (std::find (nodes .begin (), nodes .end (), node) == nodes .end ())
-			node = nullptr;
-	}
-
 	hadjustment -> preserve (getTreeView () .get_hadjustment ());
 	vadjustment -> preserve (getTreeView () .get_vadjustment ());
 

@@ -134,6 +134,7 @@ X3DScriptEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_unmap));
 
 	// Connect object Gtk::ToolButton with id 'SaveButton'.
 	m_SaveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_apply_clicked));

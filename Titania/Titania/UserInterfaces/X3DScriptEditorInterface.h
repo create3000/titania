@@ -359,6 +359,10 @@ public:
 
 	virtual
 	void
+	on_unmap () = 0;
+
+	virtual
+	void
 	on_apply_clicked () = 0;
 
 	virtual

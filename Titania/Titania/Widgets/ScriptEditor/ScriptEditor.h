@@ -135,6 +135,10 @@ private:
 	void
 	on_map () final override;
 
+	virtual
+	void
+	on_unmap () final override;
+
 	void
 	set_label ();
 
@@ -177,6 +181,9 @@ private:
 	void
 	set_loadState (const X3D::LoadState);
 
+	void
+	set_executionContext ();
+
 	virtual
 	void
 	restoreSession () final override;
@@ -187,14 +194,15 @@ private:
 
 	///  @name Members
 
-	bool                        modified;
-	Glib::RefPtr <Gsv::Buffer>  textBuffer;
-	Gsv::View                   textView;
-	std::unique_ptr <NodeIndex> nodeIndex;
-	NameEntry                   nodeName;
-	X3D::SFNode                 node;
-	size_t                      index;
-	std::unique_ptr <Console>   console;
+	bool                                         modified;
+	const std::set <X3D::X3DConstants::NodeType> nodeTypes;
+	Glib::RefPtr <Gsv::Buffer>                   textBuffer;
+	Gsv::View                                    textView;
+	std::unique_ptr <NodeIndex>                  nodeIndex;
+	NameEntry                                    nodeName;
+	X3D::SFNode                                  node;
+	size_t                                       index;
+	std::unique_ptr <Console>                    console;
 
 	std::unique_ptr <AdjustmentObject> hadjustment;
 	std::unique_ptr <AdjustmentObject> vadjustment;
