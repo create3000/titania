@@ -110,25 +110,31 @@ Configuration::hasKey (const std::string & key) const
 }
 
 void
-Configuration::setBoolean (const std::string & key, const bool value)
+Configuration::setItem (const std::string & key, const bool value)
 {
 	keyfile .set_boolean (group, key, value);
 }
 
 void
-Configuration::setInteger (const std::string & key, const int value)
+Configuration::setItem (const std::string & key, const int value)
 {
 	keyfile .set_integer (group, key, value);
 }
 
 void
-Configuration::setDouble (const std::string & key, const double value)
+Configuration::setItem (const std::string & key, const double value)
 {
 	keyfile .set_double (group, key, value);
 }
 
 void
-Configuration::setString (const std::string & key, const std::string & value)
+Configuration::setItem (const std::string & key, const char* value)
+{
+	keyfile .set_string (group, key, value);
+}
+
+void
+Configuration::setItem (const std::string & key, const std::string & value)
 {
 	keyfile .set_string (group, key, value);
 }
@@ -200,6 +206,13 @@ Configuration::getString (const std::string & key) const
 Configuration::~Configuration ()
 {
 	keyfile .save_to_file (filename);
+
+	try
+	{
+		//client -> recursive_unset (key);
+	}
+	catch (const Gnome::Conf::Error & error)
+	{ }
 }
 
 } // puck

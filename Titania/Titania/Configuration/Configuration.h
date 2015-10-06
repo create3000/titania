@@ -76,16 +76,19 @@ public:
 	/// @name Set configuration value
 
 	void
-	setBoolean (const std::string &, const bool);
+	setItem (const std::string &, const bool);
 
 	void
-	setInteger (const std::string &, const int);
+	setItem (const std::string &, const int);
 
 	void
-	setDouble (const std::string &, const double);
+	setItem (const std::string &, const double);
 
 	void
-	setString (const std::string &, const std::string &);
+	setItem (const std::string &, const char*);
+
+	void
+	setItem (const std::string &, const std::string &);
 
 	template <class Type>
 	void
@@ -99,7 +102,7 @@ public:
 	int
 	getInteger (const std::string &) const;
 
-	int
+	double
 	getDouble (const std::string &) const;
 
 	Glib::ustring
