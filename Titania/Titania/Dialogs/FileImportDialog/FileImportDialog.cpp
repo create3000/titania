@@ -198,12 +198,14 @@ FileImportDialog::run ()
 			{
 				try
 				{
+				   // The URLs of the proto body must be rewriten, probable by setting execution context.
+
 					getConfig () .setItem ("importType", ImportType::PROTOS);
 
 					const auto scene = getBrowser () -> createX3DFromURL ({ Glib::uri_unescape_string (getWindow () .get_uri ()) });
 
 					for (const auto & prototype : scene -> getProtoDeclarations ())
-						getExecutionContext () -> addProtoDeclaration (prototype -> getName (), prototype);
+						getExecutionContext () -> updateProtoDeclaration (prototype -> getName (), prototype);
 				}
 				catch (const X3D::X3DError & error)
 				{

@@ -51,10 +51,11 @@
 #ifndef __TITANIA_CONFIGURATION_CONFIGURATION_H__
 #define __TITANIA_CONFIGURATION_CONFIGURATION_H__
 
-#include <gconfmm.h>
-#include <string>
-#include <sstream>
 #include <Titania/LOG.h>
+#include <gconfmm.h>
+#include <glibmm/keyfile.h>
+#include <sstream>
+#include <string>
 
 namespace titania {
 namespace puck {
@@ -67,19 +68,6 @@ public:
 
 	Configuration (const std::string &, const std::string & = "");
 
-	void
-	setPath (const std::string &);
-
-	const std::string &
-	getKey () const;
-
-	std::string
-	getKey (const std::string &) const;
-	
-	const std::string &
-	getName () const
-	{ return name; }
-
 	/// @name Key lockup
 
 	bool
@@ -88,19 +76,16 @@ public:
 	/// @name Set configuration value
 
 	void
-	setItem (const std::string &, const bool);
+	setBoolean (const std::string &, const bool);
 
 	void
-	setItem (const std::string &, const int);
+	setInteger (const std::string &, const int);
 
 	void
-	setItem (const std::string &, const double);
+	setDouble (const std::string &, const double);
 
 	void
-	setItem (const std::string &, const char*);
-
-	void
-	setItem (const std::string &, const std::string &);
+	setString (const std::string &, const std::string &);
 
 	template <class Type>
 	void
@@ -114,6 +99,9 @@ public:
 	int
 	getInteger (const std::string &) const;
 
+	int
+	getDouble (const std::string &) const;
+
 	Glib::ustring
 	getString (const std::string &) const;
 
@@ -121,22 +109,25 @@ public:
 	Type
 	get (const std::string &) const;
 
-	/// @name Directory handling
-
-	Configuration
-	getDirectory (const std::string &) const;
-
-	Array
-	getDirectories () const;
-
-	bool
-	exists () const;
-
-	void
-	remove ();
+	~Configuration ();
 
 
 private:
+
+	// Glib::KeyFile
+
+	bool
+	hasKey (const std::string &) const;
+
+	std::string   directory;
+	std::string   filename;
+	Glib::KeyFile keyfile;
+	std::string   group;
+
+	// Gnome::Conf::Client
+
+	std::string
+	getKey (const std::string &) const;
 
 	Glib::RefPtr <Gnome::Conf::Client> client;
 	std::string                        path;
@@ -147,46 +138,30 @@ private:
 
 template <class Type>
 void
-Configuration::set (const std::string & name, const Type & value)
+Configuration::set (const std::string & key, const Type & value)
 {
-	try
-	{
-		std::ostringstream osstream;
-		
-		osstream .imbue (std::locale::classic ());
+	std::ostringstream osstream;
 
-		osstream << value;	
+	osstream .imbue (std::locale::classic ());
 
-		client -> set (getKey (name), osstream .str ());
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	osstream << value;
+
+	setItem (key, osstream .str ());
 }
 
 template <class Type>
 Type
-Configuration::get (const std::string & name) const
+Configuration::get (const std::string & key) const
 {
-	try
-	{
-		std::istringstream isstream (client -> get_string (getKey (name)));
+	std::istringstream isstream (getString (name));
 
-		isstream .imbue (std::locale::classic ());
+	isstream .imbue (std::locale::classic ());
 
-		Type value = Type ();
+	Type value = Type ();
 
-		isstream >> value;
+	isstream >> value;
 
-		return value;
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-
-		return Type ();
-	}
+	return value;
 }
 
 } // puck

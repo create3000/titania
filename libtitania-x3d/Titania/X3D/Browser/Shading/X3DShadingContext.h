@@ -48,18 +48,51 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BITS_SHADER_H__
-#define __TITANIA_X3D_BITS_SHADER_H__
+#ifndef __TITANIA_X3D_BROWSER_SHADING_X3DSHADING_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_SHADING_X3DSHADING_CONTEXT_H__
 
-#include "../Execution/X3DExecutionContext.h"
+#include "../../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {
 
-std::string
-preProcessShaderSource (X3DBaseNode* const, const std::string &, const basic::uri &, const size_t = 0)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>);
+class X3DShadingContext :
+	virtual public X3DBaseNode
+{
+public:
+
+	///  @name Member access
+
+	float
+	getShadingLanguageVersion () const
+	{ return shadingLanguageVersion; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override
+	{ }
+
+
+protected:
+
+	///  @name Construction
+
+	X3DShadingContext ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Members
+
+	float shadingLanguageVersion;
+
+};
 
 } // X3D
 } // titania

@@ -48,63 +48,20 @@
  *
  ******************************************************************************/
 
-#include "Console.h"
+#ifndef __TITANIA_X3D_BITS_SHADER_H__
+#define __TITANIA_X3D_BITS_SHADER_H__
 
-#include "../Browser/X3DBrowser.h"
-#include "../Execution/X3DExecutionContext.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType Console::component      = ComponentType::TITANIA;
-const std::string   Console::typeName       = "Console";
-const std::string   Console::containerField = "console";
-
-Console::Console (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	        string (),
-	string_changed (),
-	         mutex ()
-{
-	addType (X3DConstants::Console);
-
-	addChildren (string_changed);
-}
-
-X3DBaseNode*
-Console::create (X3DExecutionContext* const executionContext) const
-{
-	return new Console (executionContext);
-}
-
-void
-Console::initialize ()
-{
-	X3DBaseNode::initialize ();
-
-	getBrowser () -> prepareEvents () .addInterest (this, &Console::prepareEvents);
-}
-
-void
-Console::addString (const std::string & value)
-{
-	std::lock_guard <std::mutex> lock (mutex);
-
-	string .emplace_back (value);
-}
-
-void
-Console::prepareEvents ()
-{
-	std::lock_guard <std::mutex> lock (mutex);
-
-	if (string .empty ())
-	   return;
-	
-	string_changed .assign (string .begin (), string .end ());
-	
-	string .clear ();
-}
+std::string
+preProcessShaderSource (X3DBaseNode* const, const std::string &, const basic::uri &, const size_t = 0)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>);
 
 } // X3D
 } // titania
+
+#endif

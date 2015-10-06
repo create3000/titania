@@ -48,62 +48,67 @@
  *
  ******************************************************************************/
 
-#include "Console.h"
+#include "Shader.h"
 
-#include "../Browser/X3DBrowser.h"
-#include "../Execution/X3DExecutionContext.h"
+#include "../../InputOutput/Loader.h"
+#include <pcrecpp.h>
 
 namespace titania {
 namespace X3D {
 
-const ComponentType Console::component      = ComponentType::TITANIA;
-const std::string   Console::typeName       = "Console";
-const std::string   Console::containerField = "console";
-
-Console::Console (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	        string (),
-	string_changed (),
-	         mutex ()
+std::string
+preProcessShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL, const size_t level, std::set <basic::uri> & files)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>)
 {
-	addType (X3DConstants::Console);
+	if (not files .insert (worldURL) .second)
+		return "";
 
-	addChildren (string_changed);
+	if (level > 1024)
+		throw Error <INVALID_URL> ("Header inclusion depth limit reached, might be caused by cyclic header inclusion.");
+
+	static const pcrecpp::RE include ("\\A#pragma\\s+X3D\\s+include\\s+\"(.*?)\"$");
+
+	std::istringstream input (string);
+	std::ostringstream output;
+
+	input  .imbue (std::locale::classic ());
+	output .imbue (std::locale::classic ());
+
+	size_t      lineNumber = 1;
+	std::string line;
+
+	output << "#line "<< lineNumber << " \"" << worldURL .filename () << "(" << node -> getName () << ")\""  << std::endl;
+
+	while (std::getline (input, line))
+	{
+		std::string filename;
+
+		if (include .FullMatch (line, &filename))
+		{
+			Loader loader (node -> getExecutionContext ());
+			output << preProcessShaderSource (node, loader .loadDocument (worldURL .transform (filename)), loader .getWorldURL (), level + 1, files) << std::endl;
+			output << "#line "<< lineNumber + 1 << " \"" << worldURL << "\""  << std::endl;
+		}
+		else
+		{
+			output << line << std::endl;
+		}
+
+		++ lineNumber;
+	}
+
+	return output .str ();
 }
 
-X3DBaseNode*
-Console::create (X3DExecutionContext* const executionContext) const
+std::string
+preProcessShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL, const size_t level)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>)
 {
-	return new Console (executionContext);
-}
-
-void
-Console::initialize ()
-{
-	X3DBaseNode::initialize ();
-
-	getBrowser () -> prepareEvents () .addInterest (this, &Console::prepareEvents);
-}
-
-void
-Console::addString (const std::string & value)
-{
-	std::lock_guard <std::mutex> lock (mutex);
-
-	string .emplace_back (value);
-}
-
-void
-Console::prepareEvents ()
-{
-	std::lock_guard <std::mutex> lock (mutex);
-
-	if (string .empty ())
-	   return;
+	std::set <basic::uri> files;
 	
-	string_changed .assign (string .begin (), string .end ());
-	
-	string .clear ();
+	return preProcessShaderSource (node, string, worldURL, level, files);
 }
 
 } // X3D

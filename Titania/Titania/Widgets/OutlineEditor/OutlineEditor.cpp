@@ -87,6 +87,7 @@ OutlineEditor::on_map ()
 
 	getBrowserWindow () -> worldURL_changed () .addInterest (this, &OutlineEditor::set_scenes_menu);
 
+	set_scenes_menu ();
 	treeView -> queue_draw ();
 }
 

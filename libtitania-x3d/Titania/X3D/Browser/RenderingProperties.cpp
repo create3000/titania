@@ -302,7 +302,8 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("Frame rate:                %.1f fps"), getFPS ()));
 		string .emplace_back (basic::sprintf (_ ("Display:                   %.2f %"), 100 * renderClock .average () / clock .average ()));
 		string .emplace_back (basic::sprintf (_ ("Shapes:                    %zd + %zd"), numOpaqueShapes, numTransparentShapes));
-		string .emplace_back (basic::sprintf (_ ("Sensors:                   %zd"), getBrowser () -> sensors () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 1));
+		string .emplace_back (basic::sprintf (_ ("Sensors:                   %zd"), getBrowser () -> sensors () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 2));
+		// Remove BrowserTimings and Console from sensors (-2).
 	}
 	catch (const X3DError & error)
 	{
@@ -314,19 +315,23 @@ RenderingProperties::build ()
 void
 RenderingProperties::toStream (std::ostream & stream) const
 {
-	stream
-		<< "\tCurrent Graphics Renderer" << std::endl
-		<< "\t\tName: " << Vendor () .getValue () << ' ' << Renderer () .getValue () << std::endl
-		<< "\tOpenGL extension version: " << Version () .getValue () << std::endl
+	if (glXGetCurrentContext ())
+	{
+		stream
+			<< "\tCurrent Graphics Renderer" << std::endl
+			<< "\t\tName: " << Vendor () .getValue () << ' ' << Renderer () .getValue () << std::endl
+			<< "\tOpenGL extension version: " << Version () .getValue () << std::endl
+			<< "\tShading language version: " << glGetString (GL_SHADING_LANGUAGE_VERSION) << std::endl
 
-		<< "\tRendering Properties" << std::endl
-		<< "\t\tTexture units: " << TextureUnits () << " / " << getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits () << std::endl
-		<< "\t\tMax texture size: " << MaxTextureSize () << " × " << MaxTextureSize () << " pixel" << std::endl
-		<< "\t\tMax lights: " << MaxLights () << std::endl
-		<< "\t\tMax clip planes: " << getBrowser () -> getMaxClipPlanes () << std::endl
-		<< "\t\tAntialiased: " << Antialiased () .getValue () << std::endl
-		<< "\t\tColor depth: " << ColorDepth () << " bits" << std::endl
-		<< "\t\tTexture memory: " << (TextureMemory () > 0 ? strfsize (TextureMemory ()) : "n/a");
+			<< "\tRendering Properties" << std::endl
+			<< "\t\tTexture units: " << TextureUnits () << " / " << getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits () << std::endl
+			<< "\t\tMax texture size: " << MaxTextureSize () << " × " << MaxTextureSize () << " pixel" << std::endl
+			<< "\t\tMax lights: " << MaxLights () << std::endl
+			<< "\t\tMax clip planes: " << getBrowser () -> getMaxClipPlanes () << std::endl
+			<< "\t\tAntialiased: " << Antialiased () .getValue () << std::endl
+			<< "\t\tColor depth: " << ColorDepth () << " bits" << std::endl
+			<< "\t\tTexture memory: " << (TextureMemory () > 0 ? strfsize (TextureMemory ()) : "n/a");
+	}
 }
 
 void

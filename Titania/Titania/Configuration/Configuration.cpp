@@ -50,32 +50,33 @@
 
 #include "Configuration.h"
 
+#include "config.h"
+
+#include <Titania/OS.h>
 #include <Titania/LOG.h>
 #include <Titania/String.h>
 
 namespace titania {
 namespace puck {
 
-Configuration::Configuration (const std::string & path, const std::string & name) :
-	path (path),
-	name (name),
-	 key (path + '/' + name)
+static const std::string DIRECTORY = config_dir ("configuration");
+
+Configuration::Configuration (const std::string & path, const std::string & group) :
+	directory (config_dir ("configuration/")),
+	 filename (directory + group + ".ini"),
+	  keyfile (),
+	    group (group),
+	     path (path),
+	     name (group),
+	      key (path + '/' + group)
 {
+	os::system ("mkdir", "-p", directory);
+	     
+	if (os::file_exists (filename))
+		keyfile .load_from_file (filename, Glib::KEY_FILE_KEEP_COMMENTS);
+
 	Gnome::Conf::init ();
 	client = Gnome::Conf::Client::get_default_client ();
-}
-
-void
-Configuration::setPath (const std::string & value)
-{
-	path = value;
-	key  = path + '/' + name;
-}
-
-const std::string &
-Configuration::getKey () const
-{
-	return key;
 }
 
 std::string
@@ -85,183 +86,120 @@ Configuration::getKey (const std::string & name) const
 }
 
 bool
-Configuration::hasItem (const std::string & name) const
+Configuration::hasItem (const std::string & key) const
 {
 	try
 	{
-		const auto item = client -> get_entry (getKey (name));
+	   if (hasKey (key))
+	      return true;
+
+		const auto item = client -> get_entry (getKey (key));
 
 		return item .get_value () .get_type () not_eq Gnome::Conf::VALUE_INVALID;
 	}
 	catch (const Gnome::Conf::Error & error)
 	{
-		__LOG__ << error .what () << std::endl;
 		return false;
 	}
 }
 
-void
-Configuration::setItem (const std::string & name, const bool value)
+bool
+Configuration::hasKey (const std::string & key) const
 {
-	try
-	{
-		client -> set (getKey (name), value);
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	return keyfile .has_group (group) and keyfile .has_key (group, key);
 }
 
 void
-Configuration::setItem (const std::string & name, const int value)
+Configuration::setBoolean (const std::string & key, const bool value)
 {
-	try
-	{
-		client -> set (getKey (name), value);
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	keyfile .set_boolean (group, key, value);
 }
 
 void
-Configuration::setItem (const std::string & name, const double value)
+Configuration::setInteger (const std::string & key, const int value)
 {
-	try
-	{
-		client -> set (getKey (name), value);
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	keyfile .set_integer (group, key, value);
 }
 
 void
-Configuration::setItem (const std::string & name, const char* value)
+Configuration::setDouble (const std::string & key, const double value)
 {
-	try
-	{
-		client -> set (getKey (name), std::string (value));
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	keyfile .set_double (group, key, value);
 }
 
 void
-Configuration::setItem (const std::string & name, const std::string & value)
+Configuration::setString (const std::string & key, const std::string & value)
 {
-	try
-	{
-		client -> set (getKey (name), value);
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	keyfile .set_string (group, key, value);
 }
 
 bool
-Configuration::getBoolean (const std::string & name) const
+Configuration::getBoolean (const std::string & key) const
 {
 	try
 	{
-		return client -> get_bool (getKey (name));
+		if (hasKey (key))
+			return keyfile .get_boolean (group, key);
+		
+		return client -> get_bool (getKey (key));
 	}
 	catch (const Gnome::Conf::Error & error)
 	{
-		__LOG__ << error .what () << std::endl;
-		
 		return false;
 	}
 }
 
 int
-Configuration::getInteger (const std::string & name) const
+Configuration::getInteger (const std::string & key) const
 {
 	try
 	{
-		return client -> get_int (getKey (name));
+		if (hasKey (key))
+			return keyfile .get_integer (group, key);
+		
+		return client -> get_int (getKey (key));
 	}
 	catch (const Gnome::Conf::Error & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		return 0;
+	}
+}
+
+double
+Configuration::getDouble (const std::string & key) const
+{
+	try
+	{
+		if (hasKey (key))
+			return keyfile .get_double (group, key);
 		
+		return client -> get_float (getKey (key));
+	}
+	catch (const Gnome::Conf::Error & error)
+	{
 		return 0;
 	}
 }
 
 Glib::ustring
-Configuration::getString (const std::string & name) const
+Configuration::getString (const std::string & key) const
 {
 	try
 	{
-		return client -> get_string (getKey (name));
+		if (hasKey (key))
+			return keyfile .get_string (group, key);
+		
+		return client -> get_string (getKey (key));
 	}
 	catch (const Gnome::Conf::Error & error)
 	{
-		__LOG__ << error .what () << std::endl;
-	
 		return "";
 	}
 }
 
-Configuration
-Configuration::getDirectory (const std::string & subdir) const
+Configuration::~Configuration ()
 {
-	return Configuration (path, name + '/' + subdir);
-}
-
-Configuration::Array
-Configuration::getDirectories () const
-{
-	Array directories;
-
-	try
-	{
-		for (const auto & subdir : client -> all_dirs (key))
-		{
-			const auto dirName = basic::split (subdir, "/");
-			directories .emplace_back (path, name + '/' + dirName .back ());
-		}
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-
-	return directories;
-}
-
-bool
-Configuration::exists () const
-{
-	try
-	{
-		return client -> dir_exists (key);
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-		return false;
-	}
-}
-
-void
-Configuration::remove ()
-{
-	try
-	{
-		client -> recursive_unset (key);
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	keyfile .save_to_file (filename);
 }
 
 } // puck

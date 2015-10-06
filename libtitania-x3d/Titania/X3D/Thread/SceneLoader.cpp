@@ -113,10 +113,13 @@ SceneLoader::loadAsync (const MFString & url)
 		if (running)
 			scene = getBrowser () -> createScene ();
 
-		if (running)
-			Loader (nullptr, referer) .parseIntoScene (scene, url);
+		Loader loader (nullptr, referer);
 
-		//std::lock_guard <std::mutex> result (mutex);
+		if (running)
+			loader .parseIntoScene (scene, url);
+		
+		for (const auto & string : loader .getUrlError ())
+			getBrowser () -> println (string .str ());
 
 		if (running)
 			return scene;

@@ -66,6 +66,7 @@
 #include "../Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h"
 #include "../Browser/Rendering/X3DRenderingContext.h"
 #include "../Browser/Scripting/X3DScriptingContext.h"
+#include "../Browser/Shading/X3DShadingContext.h"
 #include "../Browser/Shape/X3DShapeContext.h"
 #include "../Browser/Text/X3DTextContext.h"
 #include "../Browser/Texturing/X3DTexturingContext.h"
@@ -83,6 +84,7 @@ namespace X3D {
 class X3DBrowserContext :
 	public X3DScene,
 	public X3DCoreContext,
+	public X3DShadingContext,
 	public X3DGeometry2DContext,
 	public X3DGeometry3DContext,
 	public X3DKeyDeviceSensorContext,

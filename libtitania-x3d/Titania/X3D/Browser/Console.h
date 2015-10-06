@@ -93,7 +93,7 @@ public:
 	///  @name Fields
 
 	void
-	addString (std::string &&);
+	addString (const std::string &);
 
 	const MFString &
 	getString () const
@@ -102,6 +102,11 @@ public:
 
 private:
 
+
+	///  @name Construction
+
+	void
+	initialize ();
 
 	///  @name Event handlers
 
@@ -118,6 +123,7 @@ private:
 
 	std::vector <std::string> string;
 	MFString                  string_changed;
+	std::mutex                mutex;
 
 };
 

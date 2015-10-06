@@ -48,67 +48,30 @@
  *
  ******************************************************************************/
 
-#include "Shader.h"
+#include "X3DShadingContext.h"
 
-#include "../InputOutput/Loader.h"
-#include <pcrecpp.h>
+#include "../../Rendering/OpenGL.h"
 
 namespace titania {
 namespace X3D {
 
-std::string
-preProcessShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL, const size_t level, std::set <basic::uri> & files)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
+X3DShadingContext::X3DShadingContext () :
+	           X3DBaseNode (),
+	shadingLanguageVersion ()
 {
-	if (not files .insert (worldURL) .second)
-		return "";
-
-	if (level > 1024)
-		throw Error <INVALID_URL> ("Header inclusion depth limit reached, might be caused by cyclic header inclusion.");
-
-	static const pcrecpp::RE include ("\\A#pragma\\s+X3D\\s+include\\s+\"(.*?)\"$");
-
-	std::istringstream input (string);
-	std::ostringstream output;
-
-	input  .imbue (std::locale::classic ());
-	output .imbue (std::locale::classic ());
-
-	size_t      lineNumber = 1;
-	std::string line;
-
-	output << "#line "<< lineNumber << " \"" << worldURL .filename () << "(" << node -> getName () << ")\""  << std::endl;
-
-	while (std::getline (input, line))
-	{
-		std::string filename;
-
-		if (include .FullMatch (line, &filename))
-		{
-			Loader loader (node -> getExecutionContext ());
-			output << preProcessShaderSource (node, loader .loadDocument (worldURL .transform (filename)), loader .getWorldURL (), level + 1, files) << std::endl;
-			output << "#line "<< lineNumber + 1 << " \"" << worldURL << "\""  << std::endl;
-		}
-		else
-		{
-			output << line << std::endl;
-		}
-
-		++ lineNumber;
-	}
-
-	return output .str ();
 }
 
-std::string
-preProcessShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL, const size_t level)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
+void
+X3DShadingContext::initialize ()
 {
-	std::set <basic::uri> files;
-	
-	return preProcessShaderSource (node, string, worldURL, level, files);
+	if (glXGetCurrentContext ())
+	{
+		std::istringstream shadingLanguageVersionStream ((const char*) glGetString (GL_SHADING_LANGUAGE_VERSION));
+
+		shadingLanguageVersionStream .imbue (std::locale::classic ());
+
+		shadingLanguageVersionStream >> shadingLanguageVersion;
+	}
 }
 
 } // X3D
