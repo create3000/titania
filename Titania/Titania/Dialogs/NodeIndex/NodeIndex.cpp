@@ -186,21 +186,6 @@ NodeIndex::setAnimations ()
 	refresh ();
 }
 
-std::shared_ptr <UserData::NodeIndex>
-NodeIndex::getUserData (const X3D::X3DExecutionContextPtr & executionContext) const
-{
-	const auto userData = getBrowserWindow () -> getUserData (executionContext);
-
-	try
-	{
-		return userData -> nodeIndex .at (this);
-	}
-	catch (const std::out_of_range &)
-	{
-		return userData -> nodeIndex .emplace (this, std::make_shared <UserData::NodeIndex> ()) .first -> second;
-	}
-}
-
 void
 NodeIndex::setNodes (X3D::MFNode && value)
 {
@@ -371,7 +356,6 @@ NodeIndex::set_executionContext ()
 		executionContext -> sceneGraph_changed () .addInterest (this, &NodeIndex::refresh);
 
 	scene = executionContext;
-	node  = X3D::SFNode (getUserData (executionContext) -> node);
 
 	if (scene)
 		scene -> exportedNodes_changed () .addInterest (this, &NodeIndex::refresh);
@@ -434,8 +418,6 @@ void
 NodeIndex::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
 	node = nodes [path .front ()];
-
-	getUserData (getExecutionContext ()) -> node = node;
 
 	// Select node.
 

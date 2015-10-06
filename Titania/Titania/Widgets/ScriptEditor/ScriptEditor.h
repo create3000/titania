@@ -67,6 +67,7 @@ namespace puck {
 class BrowserWindow;
 class NodeIndex;
 class Console;
+class AdjustmentObject;
 
 class ScriptEditor :
 	virtual public X3DScriptEditorInterface,
@@ -176,6 +177,14 @@ private:
 	void
 	set_loadState (const X3D::LoadState);
 
+	virtual
+	void
+	restoreSession () final override;
+
+	virtual
+	void
+	saveSession () final override;
+
 	///  @name Members
 
 	bool                        modified;
@@ -186,6 +195,9 @@ private:
 	X3D::SFNode                 node;
 	size_t                      index;
 	std::unique_ptr <Console>   console;
+
+	std::unique_ptr <AdjustmentObject> hadjustment;
+	std::unique_ptr <AdjustmentObject> vadjustment;
 
 };
 

@@ -50,10 +50,12 @@
 
 #include "ScriptEditor.h"
 
+#include "../../Base/AdjustmentObject.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../Console/Console.h"
+#include "ScriptEditorDatabase.h"
 
 #include <gtksourceviewmm/init.h>
 #include <gtksourceviewmm/languagemanager.h>
@@ -76,7 +78,9 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	                  nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                      node (),
 	                     index (0),
-	                   console (new Console (browserWindow))
+	                   console (new Console (browserWindow)),
+	               hadjustment (new AdjustmentObject ()),
+	               vadjustment (new AdjustmentObject ())
 {
 	Gsv::init ();
 	setup ();
@@ -123,6 +127,8 @@ ScriptEditor::initialize ()
 	// Initialize after all.
 
 	X3DScriptEditorSearch::initialize ();
+
+	getExecutionContext () .addInterest (this, &ScriptEditor::restoreSession);
 }
 
 bool
@@ -185,6 +191,8 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 
 		if (urlObject)
 			urlObject -> checkLoadState () .removeInterest (this, &ScriptEditor::set_loadState);
+
+		saveSession ();
 	}
 
 	node = value;
@@ -212,6 +220,27 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 			urlObject -> checkLoadState () .addInterest (this, &ScriptEditor::set_loadState);
 			set_loadState (urlObject -> checkLoadState ());
 		}
+
+		try
+		{
+			ScriptEditorDatabase database;
+
+			const auto item     = database .getItem (getExecutionContext () -> getWorldURL () .filename (), node -> getName ());
+			const auto nodeName = std::get <0> (item);
+
+			hadjustment -> restore (getScrolledWindow () .get_hadjustment (), std::get <1> (item));
+			vadjustment -> restore (getScrolledWindow () .get_vadjustment (), std::get <2> (item));
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+		catch (const std::out_of_range & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+		catch (...)
+		{ }
 	}
 	else
 	{
@@ -394,6 +423,46 @@ ScriptEditor::set_loadState (const X3D::LoadState loadState)
 	}
 }
 
+void
+ScriptEditor::restoreSession ()
+{
+	// Initialize after all.
+
+	try
+	{
+		ScriptEditorDatabase database;
+
+		const auto item     = database .getItem (getExecutionContext () -> getWorldURL () .filename ());
+		const auto nodeName = std::get <0> (item);
+
+		set_node (getExecutionContext () -> getNamedNode (nodeName));
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+	catch (const std::out_of_range & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+	catch (...)
+	{ }
+}
+
+void
+ScriptEditor::saveSession ()
+{
+	if (node)
+	{
+		ScriptEditorDatabase database;
+
+		database .setItem (node -> getExecutionContext () -> getWorldURL () .filename (),
+		                   node -> getName (),
+		                   getScrolledWindow () .get_hadjustment () -> get_value (),
+		                   getScrolledWindow () .get_vadjustment () -> get_value ());
+	}
+}
+
 /*
  * Destruction
  */
@@ -402,6 +471,7 @@ ScriptEditor::~ScriptEditor ()
 {
 	getConfig () .setItem ("paned",     getPaned ()     .get_position ());
 	getConfig () .setItem ("sidePaned", getSidePaned () .get_position ());
+
 
 	dispose ();
 }

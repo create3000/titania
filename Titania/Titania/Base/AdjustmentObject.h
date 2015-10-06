@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_X3DFIELD_TOGGLE_BUTTON_H__
-#define __TITANIA_COMPOSED_WIDGETS_X3DFIELD_TOGGLE_BUTTON_H__
+#ifndef __TITANIA_BASE_ADJUSTMENT_OBJECT_H__
+#define __TITANIA_BASE_ADJUSTMENT_OBJECT_H__
 
 #include <gtkmm/adjustment.h>
 #include <sigc++/connection.h>
@@ -64,23 +64,23 @@ class AdjustmentObject :
 public:
 
 	AdjustmentObject () :
-	   sigc::trackable (),
+		sigc::trackable (),
 		     connection ()
 	{ }
 
 	void
 	preserve (const Glib::RefPtr <Gtk::Adjustment> & adjustment)
 	{
-		preserve (adjustment, adjustment -> get_value ());
+		restore (adjustment, adjustment -> get_value ());
 	}
 
 	void
-	preserve (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
+	restore (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
 	{
 		connection .disconnect ();
-		
+
 		adjustment -> set_value (value);
-		
+
 		connection = adjustment -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &AdjustmentObject::block), adjustment, value), false);
 
 		Glib::signal_idle () .connect_once (sigc::mem_fun (connection, &sigc::connection::disconnect));

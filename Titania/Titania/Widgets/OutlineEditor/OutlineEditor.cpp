@@ -1374,7 +1374,7 @@ OutlineEditor::restoreExpanded (const X3D::X3DExecutionContextPtr & executionCon
 	{
 		OutlineEditorDatabase database;
 
-		const auto item  = database .getItem (executionContext -> getWorldURL ());
+		const auto item  = database .getItem (executionContext -> getWorldURL () .filename ());
 		const auto paths = basic::split (std::get <0> (item), ";");
 
 		treeView -> set_adjustments (std::get <1> (item), std::get <2> (item));
@@ -1403,7 +1403,7 @@ OutlineEditor::saveExpanded (const X3D::X3DExecutionContextPtr & executionContex
 
 	OutlineEditorDatabase database;
 
-	database .setItem (executionContext -> getWorldURL (),
+	database .setItem (executionContext -> getWorldURL () .filename (),
 	                   basic::join (paths, ";"),
 	                   getScrolledWindow () .get_hadjustment () -> get_value (),
 	                   getScrolledWindow () .get_vadjustment () -> get_value ());

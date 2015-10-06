@@ -114,6 +114,10 @@ public:
 	last_insert_rowid () const
 	throw (std::out_of_range);
 
+	const std::string &
+	last_query () const
+	{ return lastQuery; }
+
 	/// @name Utility funtions
 
 	std::string
@@ -157,6 +161,7 @@ private:
 
 	mutable array_type array;
 	mutable assoc_type array_map;
+	mutable std::string lastQuery;
 
 };
 

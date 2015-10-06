@@ -298,8 +298,8 @@ X3DOutlineTreeView::preserve_adjustments ()
 void
 X3DOutlineTreeView::set_adjustments (const double h, const double v)
 {
-	hadjustment -> preserve (get_hadjustment (), h);
-	vadjustment -> preserve (get_vadjustment (), v);
+	hadjustment -> restore (get_hadjustment (), h);
+	vadjustment -> restore (get_vadjustment (), v);
 }
 
 std::vector <Gtk::TreeModel::iterator>

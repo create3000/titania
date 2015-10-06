@@ -108,9 +108,6 @@ private:
 	refresh ();
 
 	///  @name Operations
-	
-	std::shared_ptr <UserData::NodeIndex>
-	getUserData (const X3D::X3DExecutionContextPtr &) const;
 
 	void
 	setNodes (X3D::MFNode &&);

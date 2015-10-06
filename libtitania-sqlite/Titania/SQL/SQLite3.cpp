@@ -59,7 +59,8 @@ namespace sql {
 sqlite3::sqlite3 () :
 	 database (nullptr),
 	    array (),
-	array_map ()
+	array_map (),
+	lastQuery ()
 { }
 
 sqlite3::sqlite3 (const std::string & filename) :
@@ -194,6 +195,8 @@ void
 sqlite3::exec (const std::string & statement, int (* callback) (void*, int, char**, char**)) const
 throw (std::invalid_argument)
 {
+	lastQuery = statement;
+
 	char* errorMessage = nullptr;
 
 	if (::sqlite3_exec (database, statement .c_str (), callback, const_cast <sqlite3*> (this), &errorMessage) not_eq SQLITE_OK)

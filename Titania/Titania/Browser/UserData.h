@@ -58,9 +58,6 @@
 namespace titania {
 namespace puck {
 
-class NodeIndex;
-class ScriptEditor;
-
 constexpr int OUTLINE_SELECTED        = 1;
 constexpr int OUTLINE_SELECTED_INPUT  = 1 << 1;
 constexpr int OUTLINE_SELECTED_OUTPUT = 1 << 2;
@@ -72,9 +69,6 @@ class UserData :
 	public X3D::X3DBase
 {
 public:
-
-	class NodeIndex;
-	class ScriptEditor;
 
 	UserData () :
 		    open_path (),
@@ -91,9 +85,7 @@ public:
 	bool full_expanded;                        // Expanded mode
 	int  selected;                             // Selected state
 
-	std::shared_ptr <UserData>                                           user_data;
-	std::map <const puck::NodeIndex*, std::shared_ptr <NodeIndex>>       nodeIndex;
-	std::map <const puck::ScriptEditor*, std::shared_ptr <ScriptEditor>> scriptEditor;
+	std::shared_ptr <UserData> user_data;
 
 	virtual
 	void
@@ -114,35 +106,12 @@ private:
 
 };
 
-class UserData::NodeIndex
-{
-public:
-
-	X3D::X3DWeakPtr <X3D::X3DBaseNode> node;
-
-};
-
-class UserData::ScriptEditor
-{
-public:
-
-	ScriptEditor (const Glib::RefPtr <Gsv::Buffer> & textBuffer) :
-		textBuffer (textBuffer)
-	{ }
-
-	Glib::RefPtr <Gsv::Buffer> textBuffer;
-
-};
-
 inline
 void
 UserData::dispose ()
 {
 	if (user_data)
 		user_data -> dispose ();
-
-	nodeIndex    .clear ();
-	scriptEditor .clear ();
 }
 
 using UserDataPtr = std::shared_ptr <UserData>;

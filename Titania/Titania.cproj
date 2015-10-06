@@ -1860,6 +1860,7 @@
     <None Include="Titania\Browser\RecentView.h" />
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditorPreferences.h" />
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditorSearch.h" />
+    <None Include="Titania\Widgets\ScriptEditor\ScriptEditorDatabase.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

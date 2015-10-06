@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_EDITOR_DATABASE_H__
-#define __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_EDITOR_DATABASE_H__
+#ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_SCRIPT_EDITOR_DATABASE_H__
+#define __TITANIA_WIDGETS_SCRIPT_EDITOR_SCRIPT_EDITOR_DATABASE_H__
 
 #include "../../Configuration/config.h"
 
@@ -62,37 +62,41 @@
 namespace titania {
 namespace puck {
 
-class OutlineEditorDatabase
+class ScriptEditorDatabase
 {
 public:
 
-	OutlineEditorDatabase () :
+	ScriptEditorDatabase () :
 		database ()
 	{
 		os::system ("mkdir", "-p", config_dir ());
 
-		database .open (config_dir ("outline-editor.db"));
+		database .open (config_dir ("script-editor.db"));
 
-		database .query ("CREATE TABLE IF NOT EXISTS Paths ("
+		database .query ("CREATE TABLE IF NOT EXISTS Scripts ("
 		                 "id           INTEGER,"
 		                 "worldURL     TEXT, "
-		                 "expanded     TEXT,"
+		                 "nodeName     TEXT,"
+	                    "lastAccess   REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
+	                    "creationTime REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
 		                 "PRIMARY KEY (id ASC))");
 
-		database .try_query ("ALTER TABLE Paths ADD hAdjustment REAL DEFAULT 0");
-		database .try_query ("ALTER TABLE Paths ADD vAdjustment REAL DEFAULT 0");
+		database .try_query ("ALTER TABLE Scripts ADD hAdjustment  REAL DEFAULT 0");
+		database .try_query ("ALTER TABLE Scripts ADD vAdjustment  REAL DEFAULT 0");
+	
+		database .query ("DELETE FROM Scripts WHERE lastAccess < date ('now','-24 month')");
 	}
 
 	void
-	setItem (const std::string & worldURL, const std::string & expanded, const double hAdjustment, const double vAdjustment)
+	setItem (const std::string & worldURL, const std::string & nodeName, const double hAdjustment, const double vAdjustment)
 	{
 		try
 		{
-			update (getId (worldURL), expanded, hAdjustment, vAdjustment);
+			update (getId (worldURL, nodeName), hAdjustment, vAdjustment);
 		}
 		catch (const std::out_of_range &)
 		{
-			insert (worldURL, expanded, hAdjustment, vAdjustment);
+			insert (worldURL, nodeName, hAdjustment, vAdjustment);
 		}
 	}
 
@@ -100,8 +104,25 @@ public:
 	getItem (const std::string & worldURL) const
 	throw (std::out_of_range)
 	{
-		const auto & result = database .query_array ("SELECT expanded, hAdjustment, vAdjustment FROM Paths "
-		                                             "WHERE worldURL = " + database .quote (worldURL));
+		const auto & result = database .query_array ("SELECT nodeName, hAdjustment, vAdjustment FROM Scripts "
+		                                             "WHERE worldURL = " + database .quote (worldURL) + " "
+		                                             "ORDER BY lastAccess DESC "
+		                                             "LIMIT 0, 1");
+
+		__LOG__ << database .last_query () << std::endl;
+		
+		const auto & item = result .at (0);
+
+		return std::make_tuple (item .at (0), std::atof (item .at (1) .c_str ()), std::atof (item .at (2) .c_str ()));
+	}
+
+	std::tuple <std::string, double, double>
+	getItem (const std::string & worldURL, const std::string & nodeName) const
+	throw (std::out_of_range)
+	{
+		const auto & result = database .query_array ("SELECT nodeName, hAdjustment, vAdjustment FROM Scripts "
+		                                             "WHERE worldURL = " + database .quote (worldURL) + " "
+		                                             "AND nodeName = " + database .quote (nodeName));
 
 		const auto & item = result .at (0);
 
@@ -111,35 +132,36 @@ public:
 private:
 
 	void
-	insert (const std::string & worldURL, const std::string & expanded, const double hAdjustment, const double vAdjustment)
+	insert (const std::string & worldURL, const std::string & nodeName, const double hAdjustment, const double vAdjustment)
 	{
-		database .query ("INSERT INTO Paths "
-		                 "(worldURL, expanded, hAdjustment, vAdjustment)"
+		database .query ("INSERT INTO Scripts "
+		                 "(worldURL, nodeName, hAdjustment, vAdjustment)"
 		                 "VALUES ("
 		                 + database .quote (worldURL) + ","
-		                 + database .quote (expanded) + ","
+		                 + database .quote (nodeName) + ","
 		                 + database .quote (basic::to_string (hAdjustment)) + ","
 		                 + database .quote (basic::to_string (vAdjustment))
 		                 + ")");
 	}
 
 	void
-	update (const std::string & id, const std::string & expanded, const double hAdjustment, const double vAdjustment)
+	update (const std::string & id, const double hAdjustment, const double vAdjustment)
 	{
-		database .query ("UPDATE Paths "
+		database .query ("UPDATE Scripts "
 		                 "SET "
-		                 "expanded    = " + database .quote (expanded) + ", "
 		                 "hAdjustment = " + database .quote (basic::to_string (hAdjustment)) + ", "
-		                 "vAdjustment = " + database .quote (basic::to_string (vAdjustment)) + " "
+		                 "vAdjustment = " + database .quote (basic::to_string (vAdjustment)) + ", "
+		                 "lastAccess = strftime('%Y-%m-%d %H:%M:%f', 'now') "
 		                 "WHERE id = " + id);
 	}
 
 	const std::string &
-	getId (const std::string & worldURL) const
+	getId (const std::string & worldURL, const std::string & nodeName) const
 	throw (std::out_of_range)
 	{
-		const auto & result = database .query_array ("SELECT id FROM Paths WHERE "
-		                                             "worldURL = " + database .quote (worldURL));
+		const auto & result = database .query_array ("SELECT id FROM Scripts WHERE "
+		                                             "worldURL = " + database .quote (worldURL) + " AND "
+		                                             "nodeName = " + database .quote (nodeName));
 
 		return result .at (0) .at (0);
 	}

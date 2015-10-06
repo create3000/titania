@@ -82,7 +82,7 @@ History::History () :
 	                 "PRIMARY KEY (id ASC))");
 
 	database .try_query ("ALTER TABLE History ADD preview BLOB DEFAULT NULL");
-	//database .query ("DELETE FROM History WHERE lastAccess < date ('now','-12 month')");
+	database .query ("DELETE FROM History WHERE lastAccess < date ('now','-24 month')");
 
 	if (not have_history)
 	{
@@ -295,9 +295,9 @@ History::update (const std::string & id, const std::string & title)
 	database .query ("UPDATE History "
 	                 "SET "
 	                 "title = " + database .quote (title) + ","
-	                                                        "visited    = (visited + 1), "
-	                                                        "lastAccess = strftime('%Y-%m-%d %H:%M:%f', 'now') "
-	                                                        "WHERE id = " + id);
+	                 "visited    = (visited + 1), "
+	                 "lastAccess = strftime('%Y-%m-%d %H:%M:%f', 'now') "
+	                 "WHERE id = " + id);
 }
 
 const std::string &
