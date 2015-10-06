@@ -53,7 +53,6 @@
 
 #include "../Base/X3DBaseInterface.h"
 #include "../Configuration/Configuration.h"
-#include "../Widgets/HistoryView/History.h"
 
 #include <Titania/Basic/URI.h>
 
@@ -119,7 +118,6 @@ private:
 
 	///  @name Members
 
-	History       history;
 	Configuration gconf;
 
 };

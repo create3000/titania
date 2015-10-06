@@ -133,6 +133,30 @@ public:
 	getTreeView () const
 	{ return *m_TreeView; }
 
+	Gtk::Menu &
+	getMenu () const
+	{ return *m_Menu; }
+
+	Gtk::RadioMenuItem &
+	getNeverMenuItem () const
+	{ return *m_NeverMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getOneMonthMenuItem () const
+	{ return *m_OneMonthMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getHalfYearMenuItem () const
+	{ return *m_HalfYearMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getOneYearMenuItem () const
+	{ return *m_OneYearMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getAlwaysMenuItem () const
+	{ return *m_AlwaysMenuItem; }
+
 	virtual
 	void
 	on_map () = 0;
@@ -142,8 +166,32 @@ public:
 	on_unmap () = 0;
 
 	virtual
+	bool
+	on_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+
+	virtual
+	void
+	on_never_toggled () = 0;
+
+	virtual
+	void
+	on_on_month_toggled () = 0;
+
+	virtual
+	void
+	on_half_year_toggled () = 0;
+
+	virtual
+	void
+	on_one_year_toggled () = 0;
+
+	virtual
+	void
+	on_always_toggled () = 0;
 
 	virtual
 	~X3DHistoryViewInterface ();
@@ -169,6 +217,12 @@ private:
 	Gtk::Box*                              m_Widget;
 	Gtk::ScrolledWindow*                   m_ScrolledWindow;
 	Gtk::TreeView*                         m_TreeView;
+	Gtk::Menu*                             m_Menu;
+	Gtk::RadioMenuItem*                    m_NeverMenuItem;
+	Gtk::RadioMenuItem*                    m_OneMonthMenuItem;
+	Gtk::RadioMenuItem*                    m_HalfYearMenuItem;
+	Gtk::RadioMenuItem*                    m_OneYearMenuItem;
+	Gtk::RadioMenuItem*                    m_AlwaysMenuItem;
 
 };
 

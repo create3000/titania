@@ -53,6 +53,7 @@
 
 #include "../UserInterfaces/X3DBrowserWindowInterface.h"
 #include "../Undo/UndoStep.h"
+#include "../Widgets/HistoryView/History.h"
 
 #include <gtkmm.h>
 #include <memory>
@@ -70,6 +71,14 @@ class X3DBrowserWidget :
 public:
 
 	///  @name Member access
+
+	History &
+	getHistory ()
+	{ return history; }
+
+	const History &
+	getHistory () const
+	{ return history; }
 
 	const X3D::X3DPtrArray <X3D::Browser> &
 	getBrowsers () const
@@ -260,6 +269,7 @@ private:
 
 	///  @name Members
 
+	History                         history;
 	X3D::BrowserPtr                 masterBrowser;
 	X3D::BrowserPtr                 browser;
 	X3D::X3DPtrArray <X3D::Browser> browsers;

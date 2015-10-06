@@ -82,7 +82,6 @@ History::History () :
 	                 "PRIMARY KEY (id ASC))");
 
 	database .try_query ("ALTER TABLE History ADD preview BLOB DEFAULT NULL");
-	database .query ("DELETE FROM History WHERE lastAccess < date ('now','-24 month')");
 
 	if (not have_history)
 	{
@@ -123,6 +122,13 @@ History::on_history_changed (const Glib::RefPtr <Gio::File> & file, const Glib::
 {
 	if (event == Gio::FILE_MONITOR_EVENT_CHANGED)
 		processInterests ();
+}
+
+void
+History::constrainSize (const int32_t months)
+{
+	if (months > 0)
+		database .query ("DELETE FROM History WHERE lastAccess < date ('now','-" + basic::to_string (months) + " month')");
 }
 
 const std::string &

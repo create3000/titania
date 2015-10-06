@@ -52,7 +52,6 @@
 #define __TITANIA_HISTORY_EDITOR_HISTORY_EDITOR_H__
 
 #include "../../UserInterfaces/X3DHistoryViewInterface.h"
-#include "../HistoryView/History.h"
 
 namespace titania {
 namespace puck {
@@ -100,9 +99,32 @@ private:
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
-	///  @name Members
+	// Menu
 
-	History history;
+	virtual
+	bool
+	on_button_press_event (GdkEventButton*);
+
+	virtual
+	void
+	on_never_toggled () final override;
+
+	virtual
+	void
+	on_on_month_toggled () final override;
+
+	virtual
+	void
+	on_half_year_toggled () final override;
+
+	virtual
+	void
+	on_one_year_toggled () final override;
+
+	virtual
+	void
+	on_always_toggled () final override;
+
 
 };
 

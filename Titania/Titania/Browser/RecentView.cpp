@@ -73,7 +73,6 @@ static const std::string PREVIEW_TYPE    = "JPG";
 
 RecentView::RecentView (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	         history (),
 	           gconf (gconf_dir (), "RecentView")
 {
 	// Don't use browserWindow here.
@@ -117,7 +116,7 @@ RecentView::loadPreview (X3D::X3DBrowser* const browser)
 		Magick::Blob blob;
 		image -> write (&blob);
 
-		history .setPreview (browser -> getExecutionContext () -> getWorldURL (), std::string ((char*) blob .data (), blob .length ()));
+		getBrowserWindow () -> getHistory () .setPreview (browser -> getExecutionContext () -> getWorldURL (), std::string ((char*) blob .data (), blob .length ()));
 	}
 	catch (const std::exception & error)
 	{ }
@@ -165,24 +164,25 @@ RecentView::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 
 		getConfig () .setItem ("currentPage", page);
 		const auto previousPage = scene -> getNamedNode ("PreviousPage");
 		const auto nextPage     = scene -> getNamedNode ("NextPage");
+		const auto size         = getBrowserWindow () -> getHistory () .getSize ();
 
 		previousPage -> getField <X3D::SFInt32> ("keyValue") = page - 1;
 		nextPage -> getField <X3D::SFInt32> ("keyValue")     = page + 1;
 
 		scene -> getNamedNode <X3D::Switch> ("PreviousSwitch") -> whichChoice () = (page - 1) < 0 ? -1 : 0;
-		scene -> getNamedNode <X3D::Switch> ("NextSwitch") -> whichChoice ()     = (page + 1) * ITEMS < history .getSize () ? 0 : -1;
+		scene -> getNamedNode <X3D::Switch> ("NextSwitch") -> whichChoice ()     = (page + 1) * ITEMS < size ? 0 : -1;
 	}
 	catch (...)
 	{ }
 
 	size_t i = 0;
 
-	for (const auto & item : history .getItems (page * 9, ITEMS))
+	for (const auto & item : getBrowserWindow () -> getHistory () .getItems (page * 9, ITEMS))
 	{
 		try
 		{
 			const auto number = basic::to_string (i);
-			const auto image  = basic::base64_encode (history .getPreview (item .at ("id")));
+			const auto image  = basic::base64_encode (getBrowserWindow () -> getHistory () .getPreview (item .at ("id")));
 
 			const auto switchNode  = scene -> getNamedNode <X3D::Switch> ("Switch" + number);
 			const auto texture     = scene -> getNamedNode <X3D::ImageTexture> ("Texture" + number);

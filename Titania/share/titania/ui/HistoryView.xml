@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.1 -->
+<!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkListStore" id="ListStore">
@@ -19,7 +19,6 @@
     <property name="type_hint">utility</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
-    <property name="has_resize_grip">False</property>
     <child>
       <object class="GtkBox" id="Widget">
         <property name="visible">True</property>
@@ -40,6 +39,7 @@
                 <property name="headers_visible">False</property>
                 <property name="rules_hint">True</property>
                 <property name="search_column">1</property>
+                <signal name="button-press-event" handler="on_button_press_event" after="yes" swapped="no"/>
                 <signal name="row-activated" handler="on_row_activated" swapped="no"/>
                 <child internal-child="selection">
                   <object class="GtkTreeSelection" id="treeview-selection"/>
@@ -90,6 +90,75 @@
             <property name="position">0</property>
           </packing>
         </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkMenu" id="Menu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="menuitem1">
+        <property name="visible">True</property>
+        <property name="sensitive">False</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Remember History</property>
+        <property name="use_underline">True</property>
+        <style>
+          <class name="titania-menu-description"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRadioMenuItem" id="NeverMenuItem">
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Never</property>
+        <property name="use_underline">True</property>
+        <property name="draw_as_radio">True</property>
+        <signal name="toggled" handler="on_never_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRadioMenuItem" id="OneMonthMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">One Month</property>
+        <property name="use_underline">True</property>
+        <property name="draw_as_radio">True</property>
+        <property name="group">NeverMenuItem</property>
+        <signal name="toggled" handler="on_on_month_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRadioMenuItem" id="HalfYearMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Half Year</property>
+        <property name="use_underline">True</property>
+        <property name="draw_as_radio">True</property>
+        <property name="group">NeverMenuItem</property>
+        <signal name="toggled" handler="on_half_year_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRadioMenuItem" id="OneYearMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">One Year</property>
+        <property name="use_underline">True</property>
+        <property name="draw_as_radio">True</property>
+        <property name="group">NeverMenuItem</property>
+        <signal name="toggled" handler="on_one_year_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRadioMenuItem" id="AlwaysMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Always</property>
+        <property name="use_underline">True</property>
+        <property name="draw_as_radio">True</property>
+        <property name="group">NeverMenuItem</property>
+        <signal name="toggled" handler="on_always_toggled" swapped="no"/>
       </object>
     </child>
   </object>

@@ -63,8 +63,7 @@ static constexpr int WORLD_URL_COLUMN = 2;
 
 HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DHistoryViewInterface (get_ui ("HistoryView.xml"), gconf_dir ()),
-	                history ()
+	X3DHistoryViewInterface (get_ui ("HistoryView.xml"), gconf_dir ())
 {
 	getScene () .addInterest (this, &HistoryView::set_scene);
 	setup ();
@@ -73,8 +72,34 @@ HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
 void
 HistoryView::initialize ()
 {
-	for (const auto & item : history .getItems (0, 1000))
-		getBrowserWindow () -> loadIcon (item .at ("worldURL"), history .getIcon (item .at ("id")));
+	if (not getConfig () .hasItem ("rememberHistory"))
+		getConfig () .setItem ("rememberHistory", 12);
+
+	const auto rememberHistory = getConfig () .getInteger ("rememberHistory");
+
+	switch (rememberHistory)
+	{
+		case 0:
+			getNeverMenuItem () .set_active (true);
+			break;
+		case 1:
+			getOneMonthMenuItem () .set_active (true);
+			break;
+		case 6:
+			getHalfYearMenuItem () .set_active (true);
+			break;
+		case 12:
+			getOneYearMenuItem () .set_active (true);
+			break;
+		case -1:
+			getAlwaysMenuItem () .set_active (true);
+			break;
+		default:
+			break;
+	}
+
+	for (const auto & item : getBrowserWindow () -> getHistory () .getItems (0, 1000))
+		getBrowserWindow () -> loadIcon (item .at ("worldURL"), getBrowserWindow () -> getHistory () .getIcon (item .at ("id")));
 }
 
 void
@@ -82,7 +107,7 @@ HistoryView::on_map ()
 {
 	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("History"));
 
-	history .addInterest (this, &HistoryView::set_history);
+	getBrowserWindow () -> getHistory () .addInterest (this, &HistoryView::set_history);
 	getBrowserWindow () -> worldURL_changed () .addInterest (this, &HistoryView::set_scene);
 
 	set_history ();
@@ -91,7 +116,7 @@ HistoryView::on_map ()
 void
 HistoryView::on_unmap ()
 {
-	history .removeInterest (this, &HistoryView::set_history);
+	getBrowserWindow () -> getHistory () .removeInterest (this, &HistoryView::set_history);
 	getBrowserWindow () -> worldURL_changed () .removeInterest (this, &HistoryView::set_scene);
 }
 
@@ -103,7 +128,7 @@ HistoryView::set_history ()
 	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
-	for (const auto & item : history .getItems (0, 2000))
+	for (const auto & item : getBrowserWindow () -> getHistory () .getItems (0, 2000))
 	{
 		const auto & worldURL = item .at ("worldURL");
 		const auto   iter     = getListStore () -> append ();
@@ -137,7 +162,7 @@ HistoryView::set_scene ()
 
 	// Update history.
 
-	history .setItem (title, worldURL, getBrowserWindow () -> getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
+	getBrowserWindow () -> getHistory () .setItem (title, worldURL, getBrowserWindow () -> getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
 
 	// Move row.
 
@@ -146,7 +171,7 @@ HistoryView::set_scene ()
 
 	try
 	{
-		getListStore () -> erase (getListStore () -> get_iter (history .getIndex (worldURL)));
+		getListStore () -> erase (getListStore () -> get_iter (getBrowserWindow () -> getHistory () .getIndex (worldURL)));
 	}
 	catch (const std::out_of_range &)
 	{ }
@@ -164,13 +189,57 @@ HistoryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 {
 	// Open worldURL.
 
-	const std::string URL = history .getItemFromIndex (path .to_string ()) .at ("worldURL");
+	const std::string URL = getBrowserWindow () -> getHistory () .getItemFromIndex (path .to_string ()) .at ("worldURL");
 
 	getBrowserWindow () -> open (URL);
 }
 
+bool
+HistoryView::on_button_press_event (GdkEventButton* event)
+{
+	if (event -> button == 3)
+	{
+		getMenu () .popup (event -> button, event -> time);
+		return true;
+	}
+
+	return false;
+}
+
+void
+HistoryView::on_never_toggled ()
+{
+	getConfig () .setItem ("rememberHistory", 0);
+}
+
+void
+HistoryView::on_on_month_toggled ()
+{
+	getConfig () .setItem ("rememberHistory", 1);
+}
+
+void
+HistoryView::on_half_year_toggled ()
+{
+	getConfig () .setItem ("rememberHistory", 6);
+}
+
+void
+HistoryView::on_one_year_toggled ()
+{
+	getConfig () .setItem ("rememberHistory", 12);
+}
+
+void
+HistoryView::on_always_toggled ()
+{
+	getConfig () .setItem ("rememberHistory", -1);
+}
+
 HistoryView::~HistoryView ()
 {
+	getBrowserWindow () -> getHistory () .constrainSize (getConfig () .getInteger ("rememberHistory"));
+
 	dispose ();
 }
 

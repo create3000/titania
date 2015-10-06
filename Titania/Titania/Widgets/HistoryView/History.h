@@ -114,6 +114,9 @@ public:
 	const sql::sqlite3::assoc_type &
 	getItems (const size_t offset, const size_t limit, const Columns = LAST_ACCESS, const SortOrder = DESC) const;
 
+	void
+	constrainSize (const int32_t);
+
 	size_t
 	getSize () const;
 

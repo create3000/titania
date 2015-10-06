@@ -24,7 +24,7 @@ set -e
 
 TITANIA="/usr/bin/titania"
 NOTIFIER="/usr/share/update-notifier/notify-reboot-required"
-REBOOT_REQUIRED="YES"
+REBOOT_REQUIRED="NO"
 
 if [ -x $TITANIA ]
 then
