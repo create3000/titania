@@ -50,6 +50,7 @@
 
 #include "HistoryView.h"
 
+#include "../../Base/AdjustmentObject.h"
 #include "../../Browser/BrowserUserData.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
@@ -63,7 +64,9 @@ static constexpr int WORLD_URL_COLUMN = 2;
 
 HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DHistoryViewInterface (get_ui ("HistoryView.xml"), gconf_dir ())
+	X3DHistoryViewInterface (get_ui ("HistoryView.xml"), gconf_dir ()),
+	            hadjustment (new AdjustmentObject ()),
+	            vadjustment (new AdjustmentObject ())
 {
 	getScene () .addInterest (this, &HistoryView::set_scene);
 	setup ();
@@ -72,6 +75,16 @@ HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
 void
 HistoryView::initialize ()
 {
+	X3DHistoryViewInterface::initialize ();
+
+	getBrowserWindow () -> getHistory () .constrainSize (getConfig () .getInteger ("rememberHistory"));
+}
+
+void
+HistoryView::restoreSession ()
+{
+	X3DHistoryViewInterface::restoreSession ();
+			
 	if (not getConfig () .hasItem ("rememberHistory"))
 		getConfig () .setItem ("rememberHistory", 12);
 
@@ -98,7 +111,7 @@ HistoryView::initialize ()
 			break;
 	}
 
-	for (const auto & item : getBrowserWindow () -> getHistory () .getItems (0, 1000))
+	for (const auto & item : getBrowserWindow () -> getHistory () .getItems (0, 0))
 		getBrowserWindow () -> loadIcon (item .at ("worldURL"), getBrowserWindow () -> getHistory () .getIcon (item .at ("id")));
 }
 
@@ -141,6 +154,9 @@ HistoryView::set_history ()
 	getTreeView () .set_model (getListStore ());
 	getTreeView () .set_search_column (TITLE_COLUMN);
 	getTreeView () .get_selection () -> select (Gtk::TreePath ("0"));
+
+	hadjustment -> restore (getTreeView () .get_hadjustment (), getConfig () .getDouble ("hadjustment"));
+	vadjustment -> restore (getTreeView () .get_vadjustment (), getConfig () .getDouble ("vadjustment"));
 }
 
 void
@@ -238,7 +254,8 @@ HistoryView::on_always_toggled ()
 
 HistoryView::~HistoryView ()
 {
-	getBrowserWindow () -> getHistory () .constrainSize (getConfig () .getInteger ("rememberHistory"));
+	getConfig () .setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
+	getConfig () .setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
 
 	dispose ();
 }

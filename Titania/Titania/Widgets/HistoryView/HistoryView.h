@@ -57,6 +57,7 @@ namespace titania {
 namespace puck {
 
 class BrowserWindow;
+class AdjustmentObject;
 
 class HistoryView :
 	public X3DHistoryViewInterface
@@ -80,6 +81,10 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	virtual
+	void
+	restoreSession () final override;
 
 	virtual
 	void
@@ -125,6 +130,8 @@ private:
 	void
 	on_always_toggled () final override;
 
+	std::unique_ptr <AdjustmentObject> hadjustment;
+	std::unique_ptr <AdjustmentObject> vadjustment;
 
 };
 
