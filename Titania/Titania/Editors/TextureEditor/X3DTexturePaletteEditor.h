@@ -83,10 +83,13 @@ private:
 	///  @name Construction
 
 	void
-	set_initialized ();
+	set_browser ();
 
 	void
 	setCurrentFolder (const size_t);
+
+	void
+	set_initialized (const size_t);
 
 	void
 	addTexture (const size_t, const std::string &);

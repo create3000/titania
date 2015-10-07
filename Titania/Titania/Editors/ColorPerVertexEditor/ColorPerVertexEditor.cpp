@@ -107,8 +107,9 @@ ColorPerVertexEditor::initialize ()
 
 	getPreviewBox () .pack_start (*preview, true, true, 0);
 
+	preview -> initialized () .addInterest (this, &ColorPerVertexEditor::set_browser);
+	preview -> set_opacity (0);
 	preview -> show ();
-	preview -> initialized () .addInterest (this, &ColorPerVertexEditor::set_initialized);
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &ColorPerVertexEditor::set_selection);
 
@@ -116,14 +117,27 @@ ColorPerVertexEditor::initialize ()
 }
 
 void
-ColorPerVertexEditor::set_initialized ()
+ColorPerVertexEditor::set_browser ()
 {
-	preview -> initialized () .removeInterest (this, &ColorPerVertexEditor::set_initialized);
+	preview -> initialized () .removeInterest (this, &ColorPerVertexEditor::set_browser);
+	preview -> initialized () .addInterest (this, &ColorPerVertexEditor::set_initialized);
 
 	try
 	{
 		preview -> loadURL ({ get_ui ("Editors/ColorPerVertexEditorPreview.x3dv") }, { });
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
 
+void
+ColorPerVertexEditor::set_initialized ()
+{
+	preview -> initialized () .removeInterest (this, &ColorPerVertexEditor::set_initialized);
+	preview -> set_opacity (1);
+
+	try
+	{
 		const auto transform   = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
 		const auto shape       = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
 		const auto appearance  = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");

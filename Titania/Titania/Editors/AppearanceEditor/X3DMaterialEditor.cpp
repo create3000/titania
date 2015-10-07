@@ -96,8 +96,9 @@ X3DMaterialEditor::initialize ()
 {
 	getPreviewBox () .pack_start (*preview, true, true, 0);
 
+	preview -> initialized () .addInterest (this, &X3DMaterialEditor::set_browser);
+	preview -> set_opacity (0);
 	preview -> show ();
-	preview -> initialized () .addInterest (this, &X3DMaterialEditor::set_initialized);
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DMaterialEditor::set_selection);
 
@@ -105,14 +106,27 @@ X3DMaterialEditor::initialize ()
 }
 
 void
-X3DMaterialEditor::set_initialized ()
+X3DMaterialEditor::set_browser ()
 {
-	preview -> initialized () .removeInterest (this, &X3DMaterialEditor::set_initialized);
+	preview -> initialized () .removeInterest (this, &X3DMaterialEditor::set_browser);
+	preview -> initialized () .addInterest (this, &X3DMaterialEditor::set_initialized);
 
 	try
 	{
 		preview -> loadURL ({ get_ui ("Editors/MaterialEditorPreview.x3dv") }, { });
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
 
+void
+X3DMaterialEditor::set_initialized ()
+{
+	preview -> initialized () .removeInterest (this, &X3DMaterialEditor::set_initialized);
+	preview -> set_opacity (1);
+
+	try
+	{
 		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> isPrivate (true);
 	}
 	catch (const X3D::X3DError &)

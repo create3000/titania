@@ -153,7 +153,7 @@ throw (Error <INVALID_URL>,
 
 			else
 				executionContext -> getBrowser () -> loadURL ({ referer .transform (uri) .str () }, parameter);
-
+			
 			return;
 		}
 		catch (const X3DError &)

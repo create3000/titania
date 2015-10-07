@@ -133,10 +133,12 @@ TextureCoordinateEditor::initialize ()
 	getLeftBox ()  .pack_start (*left, true, true, 0);
 	getRightBox () .pack_start (*right, true, true, 0);
 
+	left  -> initialized () .addInterest (this, &TextureCoordinateEditor::set_left_browser);
+	right -> initialized () .addInterest (this, &TextureCoordinateEditor::set_right_browser);
+	left  -> set_opacity (0);
+	right -> set_opacity (0);
 	left  -> show ();
 	right -> show ();
-	left  -> initialized () .addInterest (this, &TextureCoordinateEditor::set_left_initialized);
-	right -> initialized () .addInterest (this, &TextureCoordinateEditor::set_right_initialized);
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &TextureCoordinateEditor::set_selection);
 
@@ -144,37 +146,50 @@ TextureCoordinateEditor::initialize ()
 }
 
 void
-TextureCoordinateEditor::set_left_initialized ()
+TextureCoordinateEditor::set_left_browser ()
 {
-	++ initialized;
-
-	left -> initialized () .removeInterest (this, &TextureCoordinateEditor::set_left_initialized);
+	left -> initialized () .removeInterest (this, &TextureCoordinateEditor::set_left_browser);
+	left -> initialized () .addInterest (this, &TextureCoordinateEditor::set_left_initialized);
 
 	try
 	{
 		left -> loadURL ({ get_ui ("Editors/TextureCoordinateEditorLeftPreview.x3dv") }, { });
-
-		set_initialized ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
 }
 
 void
-TextureCoordinateEditor::set_right_initialized ()
+TextureCoordinateEditor::set_right_browser ()
 {
-	++ initialized;
-
-	right -> initialized () .removeInterest (this, &TextureCoordinateEditor::set_right_initialized);
+	right -> initialized () .removeInterest (this, &TextureCoordinateEditor::set_right_browser);
+	right -> initialized () .addInterest (this, &TextureCoordinateEditor::set_right_initialized);
 
 	try
 	{
 		right -> loadURL ({ get_ui ("Editors/TextureCoordinateEditorRightPreview.x3dv") }, { });
 
-		set_initialized ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
+}
+
+void
+TextureCoordinateEditor::set_left_initialized ()
+{
+	left -> initialized () .removeInterest (this, &TextureCoordinateEditor::set_left_initialized);
+	left -> set_opacity (1);
+	++ initialized;
+	set_initialized ();
+}
+
+void
+TextureCoordinateEditor::set_right_initialized ()
+{
+	right -> initialized () .removeInterest (this, &TextureCoordinateEditor::set_left_initialized);
+	right -> set_opacity (1);
+	++ initialized;
+	set_initialized ();
 }
 
 void

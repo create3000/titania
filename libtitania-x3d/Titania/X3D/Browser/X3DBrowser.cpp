@@ -455,6 +455,8 @@ throw (Error <INVALID_URL>,
 
 			const X3DScenePtr scene = loader .createX3DFromURL (url);
 
+			println ("Done loading scene '", loader .getWorldURL (), "'.");
+
 			return scene;
 		}
 		catch (const X3DError & error)

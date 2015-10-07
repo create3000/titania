@@ -99,6 +99,12 @@ private:
 	initialize () final override;
 
 	void
+	set_left_browser ();
+
+	void
+	set_right_browser ();
+
+	void
 	set_left_initialized ();
 
 	void

@@ -105,17 +105,13 @@ throw (Error <INVALID_X3D>)
 	try
 	{
 		x3dScene ();
-
-		getBrowser () -> println ("Done parsing into scene '", scene -> getWorldURL (), "'.");
 	}
 	catch (const X3DError & error)
 	{
-		getBrowser () -> println ("Failed parsing into scene '", scene -> getWorldURL (), "'.");
 		throw Error <INVALID_X3D> (getMessageFromError (error));
 	}
 	catch (...)
 	{
-		getBrowser () -> println ("Failed parsing into scene '", scene -> getWorldURL (), "'.");
 		throw Error <INVALID_X3D> ("Unkown parser error.");
 	}
 }

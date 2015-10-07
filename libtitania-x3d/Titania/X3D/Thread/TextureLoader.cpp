@@ -109,11 +109,15 @@ TextureLoader::loadAsync (const MFString & url,
 
 				TexturePtr texture;
 
-				if (running)
-					texture .reset (new Texture (Loader (nullptr, referer) .loadDocument (URL)));
+				Loader loader (nullptr, referer);
 
 				if (running)
+					texture .reset (new Texture (loader .loadDocument (URL)));
+				
+				if (running)
 					texture -> process (minTextureSize, maxTextureSize);
+
+				getBrowser () -> println ("Done loading image '", loader .getWorldURL (), "'.");
 
 				return texture;
 			}
@@ -126,7 +130,7 @@ TextureLoader::loadAsync (const MFString & url,
 		}
 		catch (const std::exception & error)
 		{
-			getBrowser () -> println ("Bad Image: ", error .what (), ", in URL '", referer .transform (URL .str ()), "'");
+			getBrowser () -> println ("Bad Image: ", error .what (), ", in URL '", referer .transform (URL .str ()), "'.");
 		}
 	}
 

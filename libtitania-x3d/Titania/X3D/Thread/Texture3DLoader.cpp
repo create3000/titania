@@ -109,11 +109,15 @@ Texture3DLoader::loadAsync (const MFString & url,
 
 				Texture3DPtr texture;
 
+				Loader loader (nullptr, referer); 
+
 				if (running)
-					texture .reset (new Texture3D (Loader (nullptr, referer) .loadDocument (URL)));
+					texture .reset (new Texture3D (loader .loadDocument (URL)));
 
 				if (running)
 					texture -> process (minTextureSize, maxTextureSize);
+
+				getBrowser () -> println ("Done loading image '", loader .getWorldURL (), "'.");
 
 				return texture;
 			}

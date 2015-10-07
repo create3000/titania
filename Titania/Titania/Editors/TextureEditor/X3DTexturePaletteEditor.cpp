@@ -105,13 +105,13 @@ X3DTexturePaletteEditor::initialize ()
 	getPalettePreviewBox () .pack_start (*preview, true, true, 0);
 
 	preview -> show ();
-	preview -> initialized () .addInterest (this, &X3DTexturePaletteEditor::set_initialized);
+	preview -> initialized () .addInterest (this, &X3DTexturePaletteEditor::set_browser);
 }
 
 void
-X3DTexturePaletteEditor::set_initialized ()
+X3DTexturePaletteEditor::set_browser ()
 {
-	preview -> initialized () .removeInterest (this, &X3DTexturePaletteEditor::set_initialized);
+	preview -> initialized () .removeInterest (this, &X3DTexturePaletteEditor::set_browser);
 
 	if (folders .empty ())
 	{
@@ -130,6 +130,15 @@ X3DTexturePaletteEditor::set_initialized ()
 void
 X3DTexturePaletteEditor::setCurrentFolder (const size_t index)
 {
+	preview -> initialized () .removeInterest (this, &X3DTexturePaletteEditor::set_initialized);
+	preview -> initialized () .addInterest (this, &X3DTexturePaletteEditor::set_initialized, index);
+
+	preview -> loadURL ({ get_ui ("Editors/Palette.x3dv") }, { });
+}
+
+void
+X3DTexturePaletteEditor::set_initialized (const size_t index)
+{
 	getConfig () .setItem ("palette", (int) index);
 
 	getPalettePreviousButton () .set_sensitive (index > 0);
@@ -137,8 +146,6 @@ X3DTexturePaletteEditor::setCurrentFolder (const size_t index)
 
 	try
 	{
-		preview -> loadURL ({ get_ui ("Editors/Palette.x3dv") }, { });
-
 		files .clear ();
 
 		const auto folder = Gio::File::create_for_uri (folders .at (index));

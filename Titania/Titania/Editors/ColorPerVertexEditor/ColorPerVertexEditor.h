@@ -99,6 +99,9 @@ private:
 	initialize () final override;
 
 	void
+	set_browser ();
+
+	void
 	set_initialized ();
 
 	void

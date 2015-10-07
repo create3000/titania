@@ -120,6 +120,8 @@ SceneLoader::loadAsync (const MFString & url)
 		for (const auto & string : loader .getUrlError ())
 			getBrowser () -> println (string .str ());
 
+		getBrowser () -> println ("Done loading scene '", loader .getWorldURL (), "'.");
+		
 		if (running)
 			return scene;
 	}
