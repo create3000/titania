@@ -1330,8 +1330,8 @@ public:
 	{ return *m_HPaned; }
 
 	Gtk::Box &
-	getSplashBox () const
-	{ return *m_SplashBox; }
+	getMasterBox () const
+	{ return *m_MasterBox; }
 
 	Gtk::Notebook &
 	getBrowserNotebook () const
@@ -2332,7 +2332,7 @@ private:
 	Gtk::ToolButton*                 m_HammerButton;
 	Gtk::Paned*                      m_VPaned;
 	Gtk::Paned*                      m_HPaned;
-	Gtk::Box*                        m_SplashBox;
+	Gtk::Box*                        m_MasterBox;
 	Gtk::Notebook*                   m_BrowserNotebook;
 	Gtk::Box*                        m_Dashboard;
 	Gtk::Toolbar*                    m_DashboardToolBar;

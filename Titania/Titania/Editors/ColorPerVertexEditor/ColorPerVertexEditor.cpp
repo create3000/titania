@@ -122,7 +122,7 @@ ColorPerVertexEditor::set_initialized ()
 
 	try
 	{
-		preview -> loadURL ({ get_ui ("Editors/ColorPerVertexEditorPreview.x3dv") });
+		preview -> loadURL ({ get_ui ("Editors/ColorPerVertexEditorPreview.x3dv") }, { });
 
 		const auto transform   = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
 		const auto shape       = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");

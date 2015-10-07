@@ -2012,7 +2012,7 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 void
 BrowserWindow::on_info_activated ()
 {
-	X3DBrowserWidget::open (get_page ("about/info.x3dv"), false);
+	X3DBrowserWidget::open (get_page ("about/info.x3dv"));
 }
 
 /// Toolbar

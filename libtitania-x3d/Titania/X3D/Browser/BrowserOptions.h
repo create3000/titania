@@ -117,14 +117,6 @@ public:
 	SplashScreen () const
 	{ return *fields .SplashScreen; }
 
-	MFString &
-	SplashScreenURL ()
-	{ return *fields .SplashScreenURL; }
-
-	const MFString &
-	SplashScreenURL () const
-	{ return *fields .SplashScreenURL; }
-
 	SFBool &
 	Dashboard ()
 	{ return *fields .Dashboard; }
@@ -253,7 +245,6 @@ private:
 		Fields (X3DExecutionContext* const);
 
 		SFBool* const SplashScreen;
-		MFString* const SplashScreenURL;
 		SFBool* const Dashboard;
 		SFBool* const RubberBand;
 		SFBool* const EnableInlineViewpoints;

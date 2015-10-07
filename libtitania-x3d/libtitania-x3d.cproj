@@ -1281,8 +1281,6 @@
     <Folder Include="Titania\X3D\Browser\Geometry2D\" />
     <Folder Include="share\" />
     <Folder Include="share\titania\" />
-    <Folder Include="share\titania\pages\" />
-    <Folder Include="share\titania\pages\about\" />
     <Folder Include="Titania\X3D\Miscellaneous\" />
     <Folder Include="Titania\X3D\Thread\" />
     <Folder Include="share\icons\" />
@@ -1348,7 +1346,6 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <Content Include="share\titania\pages\about\splash.x3dv" />
     <Content Include="share\titania\goldengate\audio.x3dv">
       <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
       <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>

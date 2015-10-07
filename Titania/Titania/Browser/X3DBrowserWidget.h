@@ -142,7 +142,7 @@ public:
 
 	virtual
 	void
-	open (basic::uri, const bool = true);
+	open (const basic::uri &);
 
 	void
 	openRecent ();
@@ -152,7 +152,7 @@ public:
 	load (const X3D::BrowserPtr &, const basic::uri &);
 
 	void
-	append (const X3D::BrowserPtr &, const basic::uri &, const bool = true);
+	append (const X3D::BrowserPtr &, const basic::uri &);
 
 	void
 	loadIcon (const basic::uri &, const std::string &);
@@ -234,7 +234,10 @@ private:
 	set_initialized ();
 
 	void
-	set_splashScreen (const X3D::BrowserPtr &, const basic::uri &);
+	set_browser (const X3D::BrowserPtr &, const basic::uri &);
+
+	void
+	set_url (const X3D::BrowserPtr &, const basic::uri &);
 
 	virtual
 	void

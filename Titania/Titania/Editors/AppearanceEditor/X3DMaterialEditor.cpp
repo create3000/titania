@@ -111,7 +111,7 @@ X3DMaterialEditor::set_initialized ()
 
 	try
 	{
-		preview -> loadURL ({ get_ui ("Editors/MaterialEditorPreview.x3dv") });
+		preview -> loadURL ({ get_ui ("Editors/MaterialEditorPreview.x3dv") }, { });
 
 		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> isPrivate (true);
 	}

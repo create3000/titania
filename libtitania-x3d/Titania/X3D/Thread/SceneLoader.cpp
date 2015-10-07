@@ -52,7 +52,6 @@
 
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/X3DScene.h"
-#include "../InputOutput/Loader.h"
 
 namespace titania {
 namespace X3D {
@@ -67,7 +66,9 @@ SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFS
 	        callback (callback),
 	         running (true),
 	           mutex (),
-	          future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))
+	          future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */)),
+	          loader (nullptr, referer)
+	          
 {
 	getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::prepareEvents);
 	getBrowser () -> addEvent ();
@@ -112,8 +113,6 @@ SceneLoader::loadAsync (const MFString & url)
 
 		if (running)
 			scene = getBrowser () -> createScene ();
-
-		Loader loader (nullptr, referer);
 
 		if (running)
 			loader .parseIntoScene (scene, url);

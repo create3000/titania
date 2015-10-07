@@ -330,7 +330,7 @@ X3DBrowserEditor::blank ()
 {
 	if (isEditor ())
 	{
-		append (X3D::createBrowser (getBrowser ()), "", false);
+		append (X3D::createBrowser (getBrowser ()), "");
 		getBrowserNotebook () .set_current_page (getBrowsers () .size () - 1);
 	}
 	else
@@ -338,10 +338,10 @@ X3DBrowserEditor::blank ()
 }
 
 void
-X3DBrowserEditor::open (basic::uri URL, const bool splashScreen)
+X3DBrowserEditor::open (const basic::uri & URL)
 {
 	if (isEditor ())
-		X3DBrowserWidget::open (URL, splashScreen);
+		X3DBrowserWidget::open (URL);
 
 	else
 		load (getBrowser (), URL);

@@ -92,7 +92,7 @@ public:
 
 	virtual
 	void
-	open (basic::uri, const bool = true) final override;
+	open (const basic::uri &) final override;
 
 	virtual
 	void

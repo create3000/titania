@@ -98,7 +98,7 @@ X3DTextureNodeEditor::set_initialized ()
 
 	try
 	{
-		preview -> loadURL ({ get_ui ("Editors/TextureEditorPreview.x3dv") });
+		preview -> loadURL ({ get_ui ("Editors/TextureEditorPreview.x3dv") }, { });
 
 		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> isPrivate (true);
 	}

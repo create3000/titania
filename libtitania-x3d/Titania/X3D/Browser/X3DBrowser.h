@@ -42,6 +42,8 @@
 namespace titania {
 namespace X3D {
 
+class SceneLoader;
+
 class X3DBrowser :
 	virtual public X3DBaseNode, public X3DBrowserContext
 {
@@ -177,12 +179,6 @@ public:
 	       Error <NOT_SUPPORTED>);
 
 	void
-	loadURL (const MFString &)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>);
-
-	void
 	loadURL (const MFString &, const MFString &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>,
@@ -289,6 +285,11 @@ public:
 
 	///  @name Error handling
 
+	virtual
+	const SFEnum <LoadState> &
+	checkLoadState () const
+	{ return loadState; }
+
 	const MFString &
 	getUrlError () const
 	{ return urlError; }
@@ -316,6 +317,12 @@ protected:
 
 private:
 
+	///  @name Member access
+
+	void
+	setLoadState (const LoadState value)
+	{ loadState = value; }
+
 	///  @name Operations
 
 	void
@@ -336,6 +343,9 @@ private:
 
 	void
 	set_executionContext ();
+
+	void
+	set_scene (X3DScenePtr &&);
 
 	///  @name Static members
 
@@ -360,8 +370,11 @@ private:
 	RenderingPropertiesPtr renderingProperties;
 
 	X3DExecutionContextPtr executionContext;
+	SFEnum <LoadState>     loadState;
 	MFString               urlError;
 	size_t                 inShutdown;
+
+	std::unique_ptr <SceneLoader> future;
 
 };
 

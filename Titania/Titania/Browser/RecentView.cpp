@@ -96,10 +96,10 @@ void
 RecentView::open ()
 {
 	if (getBrowserWindow () -> isEditor ())
-		getBrowserWindow () -> X3DBrowserWidget::open (getURL (), false);
+		getBrowserWindow () -> X3DBrowserWidget::open (getURL ());
 	else
 	{
-		getBrowserWindow () -> append (X3D::createBrowser (getBrowser ()), getURL (), false);
+		getBrowserWindow () -> append (X3D::createBrowser (getBrowser ()), getURL ());
 		getBrowserWindow () -> getBrowserNotebook () .set_current_page (getBrowserWindow () -> getBrowsers () .size () - 1);
 	}
 }

@@ -152,7 +152,7 @@ TextureCoordinateEditor::set_left_initialized ()
 
 	try
 	{
-		left -> loadURL ({ get_ui ("Editors/TextureCoordinateEditorLeftPreview.x3dv") });
+		left -> loadURL ({ get_ui ("Editors/TextureCoordinateEditorLeftPreview.x3dv") }, { });
 
 		set_initialized ();
 	}
@@ -169,7 +169,7 @@ TextureCoordinateEditor::set_right_initialized ()
 
 	try
 	{
-		right -> loadURL ({ get_ui ("Editors/TextureCoordinateEditorRightPreview.x3dv") });
+		right -> loadURL ({ get_ui ("Editors/TextureCoordinateEditorRightPreview.x3dv") }, { });
 
 		set_initialized ();
 	}

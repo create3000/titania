@@ -219,10 +219,13 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 	{
 		getOutlineTreeView () -> expand_to (node);
 
-		for (const auto & iter : getOutlineTreeView () -> get_iters (node))
-		{
-			const auto path = getOutlineTreeView () -> get_model () -> get_path (iter);
+		std::vector <Gtk::TreePath> paths;
 
+		for (const auto & iter : getOutlineTreeView () -> get_iters (node))
+			paths .emplace_back (getOutlineTreeView () -> get_model () -> get_path (iter));
+
+		for (const auto & path : paths)
+		{
 			getOutlineTreeView () -> expand_row (path, false);
 			getOutlineTreeView () -> scroll_to_row (path);
 		}

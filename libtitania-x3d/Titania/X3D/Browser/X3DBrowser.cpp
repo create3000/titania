@@ -60,6 +60,7 @@
 #include "../Execution/Scene.h"
 #include "../Execution/World.h"
 #include "../InputOutput/Loader.h"
+#include "../Thread/SceneLoader.h"
 
 #include <Titania/Backtrace.h>
 
@@ -86,8 +87,10 @@ X3DBrowser::X3DBrowser () :
 	  browserProperties (new BrowserProperties (this)),
 	renderingProperties (new RenderingProperties (this)),
 	   executionContext (createScene ()),
+	          loadState (NOT_STARTED_STATE),
 	           urlError (),
-	         inShutdown ()
+	         inShutdown (),
+	             future ()
 {
 	enable_backtrace ();
 
@@ -99,6 +102,7 @@ X3DBrowser::X3DBrowser () :
 	             browserProperties,
 	             renderingProperties,
 	             executionContext,
+	             loadState,
 	             urlError,
 	             getRootNodes ());
 }
@@ -121,30 +125,7 @@ X3DBrowser::initialize ()
 
 	executionContext .addInterest (this, &X3DBrowser::set_executionContext);
 
-	// Show splash screen or proceed with empty scene.
-
-	if (glXGetCurrentContext ())
-	{
-		if (browserOptions -> SplashScreen ())
-		{
-			try
-			{
-				Loader (getPrivateScene ()) .parseIntoScene (X3DScenePtr (executionContext), browserOptions -> SplashScreenURL ());
-			}
-			catch (const X3DError & error)
-			{
-				std::clog << error .what () << std::endl;
-
-				executionContext .set (createScene ());
-			}
-		}
-
-		replaceWorld (executionContext);
-
-		update ();
-	}
-	else
-		replaceWorld (executionContext);
+	replaceWorld (executionContext);
 
 	// Welcome
 
@@ -164,8 +145,6 @@ X3DBrowser::initialize ()
 	       std::string (80, '*'), '\n',
 	       std::string (80, '*'), '\n',
 	       '\n');
-
-	initialized () = getCurrentTime ();
 }
 
 void
@@ -297,6 +276,9 @@ throw (Error <INVALID_SCENE>,
 {
 	ContextLock lock (this);
 
+	if (future)
+		future -> dispose ();
+
 	if (lock)
 	{
 		// Process shutdown.
@@ -327,6 +309,8 @@ throw (Error <INVALID_SCENE>,
 
 		// Process as normal.
 
+		getClock () -> advance ();
+
 		if (not initialized () or value not_eq executionContext)
 		{
 			// Remove world.
@@ -353,8 +337,7 @@ throw (Error <INVALID_SCENE>,
 		else
 			executionContext = value;
 
-		if (initialized ())
-			initialized () = getCurrentTime ();
+		initialized () = getCurrentTime ();
 
 	}
 	else
@@ -379,41 +362,35 @@ throw (Error <INVALID_DOCUMENT>,
 }
 
 void
-X3DBrowser::loadURL (const MFString & url)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_OPERATION_TIMING>)
-{
-	loadURL (url, { });
-}
-
-void
 X3DBrowser::loadURL (const MFString & url, const MFString & parameter)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>)
 {
-	// where parameter is "target=nameOfFrame"
+	if (future)
+		future -> dispose ();
 
-	Loader loader (this);
+   setLoadState (IN_PROGRESS_STATE);
 
-	try
+	using namespace std::placeholders;
+
+	future .reset (new SceneLoader (this,
+	                                url,
+	                                std::bind (&X3DBrowser::set_scene, this, _1)));
+}
+
+void
+X3DBrowser::set_scene (X3DScenePtr && scene)
+{
+	if (scene)
 	{
-		const X3DScenePtr scene = createScene ();
-
-		loader .parseIntoScene (scene, url);
-
 		replaceWorld (scene);
-
-		getClock () -> advance ();
-
-		return;
+		setLoadState (COMPLETE_STATE);
 	}
-	catch (const X3DError &)
+	else
 	{
-		urlError = loader .getUrlError ();
-
-		throw;
+		urlError = future -> getUrlError ();
+		setLoadState (FAILED_STATE);
 	}
 }
 
@@ -633,6 +610,12 @@ X3DBrowser::dispose ()
 	__LOG__ << this << std::endl;
 
 	lock ();
+
+	if (future)
+	{
+		future -> dispose ();
+		future .reset ();
+	}
 
 	supportedFields .dispose ();
 	supportedNodes  .dispose ();

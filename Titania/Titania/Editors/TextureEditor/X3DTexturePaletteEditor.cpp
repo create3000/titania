@@ -137,7 +137,7 @@ X3DTexturePaletteEditor::setCurrentFolder (const size_t index)
 
 	try
 	{
-		preview -> loadURL ({ get_ui ("Editors/Palette.x3dv") });
+		preview -> loadURL ({ get_ui ("Editors/Palette.x3dv") }, { });
 
 		files .clear ();
 

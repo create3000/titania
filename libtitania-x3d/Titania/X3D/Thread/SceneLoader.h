@@ -53,6 +53,7 @@
 
 #include "../Fields.h"
 #include "../Types/Pointer.h"
+#include "../InputOutput/Loader.h"
 
 #include <Titania/Basic/URI.h>
 #include <atomic>
@@ -72,17 +73,27 @@ public:
 
 	typedef std::function <void (X3DScenePtr &&)> Callback;
 
+	///  @name Construction
+
 	SceneLoader (X3DExecutionContext* const, const MFString &, const Callback &);
+
+	///  @name Member access
 
 	void
 	setExecutionContext (X3DExecutionContext* const);
 
-	virtual
-	void
-	dispose () final override;
+	const MFString &
+	getUrlError () const
+	{ return loader .getUrlError (); }
+
+	///  @name Destruction
 
 	void
 	wait ();
+
+	virtual
+	void
+	dispose () final override;
 
 	virtual
 	~SceneLoader ();
@@ -109,6 +120,7 @@ private:
 	std::atomic <bool>        running;
 	std::mutex                mutex;
 	std::future <X3DScenePtr> future;
+	Loader                    loader;
 
 };
 

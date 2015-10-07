@@ -95,7 +95,6 @@ const std::string   BrowserOptions::containerField = "browserOptions";
 
 BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	          SplashScreen (new SFBool (false)),
-	       SplashScreenURL (new MFString ({ get_page ("about/splash.x3dv") .str () })),
 	             Dashboard (new SFBool (true)),
 	            RubberBand (new SFBool (true)),
 	EnableInlineViewpoints (new SFBool (true)),
@@ -126,7 +125,6 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "MotionBlur",             MotionBlur ());
 
 	// Non standard options
-	addField (inputOutput, "SplashScreenURL",        SplashScreenURL ());
 	addField (inputOutput, "MotionBlurIntensity",    MotionBlurIntensity ());
 	addField (inputOutput, "AnimateStairWalks",      AnimateStairWalks ());
 	addField (inputOutput, "Gravity",                Gravity ());

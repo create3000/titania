@@ -3690,9 +3690,10 @@
                         <property name="can_focus">False</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkBox" id="SplashBox">
+                          <object class="GtkBox" id="MasterBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="opacity">0</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <placeholder/>

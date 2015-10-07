@@ -1989,6 +1989,7 @@
     <Content Include="share\titania\pages\about\library\logo.x3dv" />
     <Content Include="share\titania\pages\about\library\red.orange.yellow.x3dv" />
     <Content Include="share\titania\pages\about\library\Rotor.x3dv" />
+    <Content Include="share\titania\pages\about\splash.x3dv" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

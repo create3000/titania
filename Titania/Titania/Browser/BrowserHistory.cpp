@@ -134,7 +134,7 @@ BrowserHistory::setIndex (const int value)
 	browser -> initialized () .removeInterest (this, &BrowserHistory::set_initialized);
 	browser -> initialized () .addInterest (this, &BrowserHistory::connect);
 
-	browser -> loadURL ({ list [index] .second .str () });
+	browser -> loadURL ({ list [index] .second .str () }, { });
 }
 
 bool
