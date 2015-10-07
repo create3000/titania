@@ -1,12 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserWidget.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Thread/SceneLoader.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="9" Column="9" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="2" Column="2" />
-      <File FileName="Titania/Titania/main.cpp" Line="65" Column="65" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="2" Column="2" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="64" Column="64" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Switch.h" Line="2" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Switch.cpp" Line="47" Column="47" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/SwitchTool.h" Line="6" Column="6" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="4" Column="4" />
+      <File FileName="libtitania-x3d/Titania/X3D/Thread/SceneLoader.cpp" Line="2" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

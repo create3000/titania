@@ -122,14 +122,11 @@ TextureLoader::loadAsync (const MFString & url,
 		}
 		catch (const X3DError & error)
 		{
-			std::clog << "ImageTexture: " << error .what () << std::endl;
+			getBrowser () -> println (error .what ());
 		}
 		catch (const std::exception & error)
 		{
-			std::clog
-				<< "Bad Image: " << error .what () << ", "
-				<< "in URL '" << referer .transform (URL .str ()) << "'"
-				<< std::endl;
+			getBrowser () -> println ("Bad Image: ", error .what (), ", in URL '", referer .transform (URL .str ()), "'");
 		}
 	}
 
