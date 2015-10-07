@@ -94,7 +94,15 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	if (protoNode -> isExternproto ())
 	{
-	   static_cast <ExternProtoDeclaration*> (protoNode .getValue ()) -> requestAsyncLoad (std::bind (&X3DPrototypeInstance::construct, this));
+		const auto externproto = static_cast <ExternProtoDeclaration*> (protoNode .getValue ());
+
+		externproto -> getInternalScene () .addInterest (this, &X3DPrototypeInstance::construct);
+
+		if (externproto -> checkLoadState () not_eq COMPLETE_STATE)
+			externproto -> requestAsyncLoad ();
+
+		else
+		   construct ();
 	}
 	else
 	{
@@ -105,6 +113,8 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		copyRootNodes (prototype);
 	}
 
+	getRootNodes () .setAccessType (initializeOnly);
+
 	setExtendedEventHandling (false);
 }
 
@@ -113,6 +123,9 @@ X3DPrototypeInstance::construct ()
 {
 	try
 	{
+		const auto externproto = static_cast <ExternProtoDeclaration*> (protoNode .getValue ());
+		externproto -> getInternalScene () .addInterest (this, &X3DPrototypeInstance::construct);
+		
 		// Interface
 
 		ProtoDeclaration* const prototype = protoNode -> getProtoDeclaration ();
@@ -123,43 +136,40 @@ X3DPrototypeInstance::construct ()
 
 		if (protoNode -> isExternproto ())
 		{
-			if (protoNode -> isExternproto ())
+			const auto & fieldDefinitions = prototype -> getFieldDefinitions ();
+
+			for (const auto fieldDefinition : fieldDefinitions)
 			{
-				const auto & fieldDefinitions = prototype -> getFieldDefinitions ();
-
-				for (const auto fieldDefinition : fieldDefinitions)
+				try
 				{
-					try
-					{
-						const auto protoField = protoNode -> getField (fieldDefinition -> getName ());
-						const auto field      = getField (fieldDefinition -> getName ());
+					const auto protoField = protoNode -> getField (fieldDefinition -> getName ());
+					const auto field      = getField (fieldDefinition -> getName ());
 
-						// Return if something is wrong.
-						if (field -> getAccessType () != protoField -> getAccessType ())
-							continue;
+					// Return if something is wrong.
+					if (field -> getAccessType () != protoField -> getAccessType ())
+						continue;
 
-						// Return if something is wrong.
-						if (field -> getType () != protoField -> getType ())
-							continue;
+					// Return if something is wrong.
+					if (field -> getType () != protoField -> getType ())
+						continue;
 
-						// Continue if field is eventIn or eventOut.
-						if (not (field -> getAccessType () & initializeOnly))
-							continue;
+					// Continue if field is eventIn or eventOut.
+					if (not (field -> getAccessType () & initializeOnly))
+						continue;
 
-						// Is set during parse.
-						if (field -> isSet ())
-							continue;
+					// Is set during parse.
+					if (field -> isSet ())
+						continue;
 
-						field -> set (*protoField);
-					}
-					catch (const X3DError &)
-					{
-						// Definition exists in proto but does not exist in extern proto.
+					field -> set (*protoField);
+				}
+				catch (const X3DError &)
+				{
+					// Definition exists in proto but does not exist in extern proto.
 
-						addField (fieldDefinition -> getAccessType (),
-						          fieldDefinition -> getName (),
-						          *fieldDefinition -> copy (FLAT_COPY));
-					}
+					addField (fieldDefinition -> getAccessType (),
+					          fieldDefinition -> getName (),
+					          *fieldDefinition -> copy (FLAT_COPY));
 				}
 			}
 		}
@@ -175,11 +185,12 @@ X3DPrototypeInstance::construct ()
 		__LOG__ << error .what () << std::endl;
 	}
 
-	getRootNodes () .setAccessType (initializeOnly);
+	if (isInitialized ())
+	{
+		setup ();
 
-	setup ();
-
-	X3DChildObject::addEvent ();
+		X3DChildObject::addEvent ();
+	}
 }
 
 X3DPrototypeInstance*

@@ -70,13 +70,12 @@ const std::string   ExternProtoDeclaration::typeName       = "EXTERNPROTO";
 const std::string   ExternProtoDeclaration::containerField = "externProto";
 
 ExternProtoDeclaration::ExternProtoDeclaration (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
    X3DProtoDeclarationNode (),
-	X3DUrlObject (),
-	       scene (),
-	   prototype (),
-		callbacks (),
-	      future ()
+	           X3DUrlObject (),
+	                  scene (),
+	              prototype (),
+	                 future ()
 {
 	addType (X3DConstants::ExternProtoDeclaration);
 
@@ -270,16 +269,11 @@ ExternProtoDeclaration::requestImmediateLoad ()
 }
 
 void
-ExternProtoDeclaration::requestAsyncLoad (const std::function <void ()> & callback)
+ExternProtoDeclaration::requestAsyncLoad ()
 {
 	using namespace std::placeholders;
 
-	if (checkLoadState () == COMPLETE_STATE)
-		return;
-	
-	callbacks .emplace_back (callback);
-
-	if (checkLoadState () == IN_PROGRESS_STATE)
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 
 	setLoadState (IN_PROGRESS_STATE);
@@ -301,17 +295,12 @@ ExternProtoDeclaration::setSceneAsync (X3DScenePtr && value)
 	}
 	else
 	{
+		setLoadState (FAILED_STATE);
+
 		scene = getBrowser () -> getPrivateScene ();
 
 		setProtodeclaration (nullptr);
-
-		setLoadState (FAILED_STATE);
 	}
-
-	std::vector <std::function <void ()>> callbacksToProcess = std::move (callbacks);
-
-	for (const auto & callback : callbacksToProcess)
-		callback ();
 }
 
 void
@@ -321,6 +310,8 @@ ExternProtoDeclaration::setScene (X3DScenePtr && value)
 
 	try
 	{
+		setLoadState (COMPLETE_STATE);
+
 		scene -> isLive () = getExecutionContext () -> isLive () and isLive ();
 		scene -> isPrivate (getRootContext () -> isPrivate ());
 		scene -> setExecutionContext (getExecutionContext ());
@@ -336,18 +327,16 @@ ExternProtoDeclaration::setScene (X3DScenePtr && value)
 									       	: scene -> getWorldURL () .fragment ();
 
 		setProtodeclaration (scene -> getProtoDeclaration (protoName));
-
-		setLoadState (COMPLETE_STATE);
 	}
 	catch (const X3DError & error)
 	{
 	   __LOG__ << error .what () << std::endl;
 
+		setLoadState (FAILED_STATE);
+
 		scene = getBrowser () -> getPrivateScene ();
 
 		setProtodeclaration (nullptr);
-
-		setLoadState (FAILED_STATE);
 	}
 }
 
@@ -368,7 +357,7 @@ ExternProtoDeclaration::set_url ()
 {
 	setLoadState (NOT_STARTED_STATE);
 
-	requestAsyncLoad ([ ] () { });
+	requestAsyncLoad ();
 }
 
 void

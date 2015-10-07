@@ -76,22 +76,6 @@ X3DUrlObject::copy (X3DExecutionContext* const executionContext, const CopyType 
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
-	try
-	{
-		const X3DPtr <X3DPrototypeInstance> protoInstance (getExecutionContext ());
-
-		if (protoInstance)
-		{
-			__LOG__ << protoInstance -> getProtoNode () .getValue () << std::endl;
-			__LOG__ << protoInstance -> getProtoNode () -> getProtoDeclaration () << std::endl;
-			__LOG__ << protoInstance -> getProtoNode () -> getProtoDeclaration () -> getWorldURL () << std::endl;
-		}
-	}
-	catch (const std::exception & error)
-	{
-      __LOG__ << error .what () << std::endl; 
-	}
-
 	X3DUrlObject* const copy = dynamic_cast <X3DUrlObject*> (X3DBaseNode::copy (executionContext, type));
 
 	transform (copy -> url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());

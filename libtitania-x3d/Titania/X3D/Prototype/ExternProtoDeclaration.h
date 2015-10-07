@@ -146,7 +146,7 @@ public:
 	requestImmediateLoad () final override;
 
 	void
-	requestAsyncLoad (const std::function <void ()> &);
+	requestAsyncLoad ();
 
 	///  @name Input/Output
 
@@ -206,9 +206,8 @@ private:
 
 	///  @name Members
 
-	X3DScenePtr                           scene;
-	ProtoDeclarationPtr                   prototype;
-	std::vector <std::function <void ()>> callbacks;
+	X3DScenePtr         scene;
+	ProtoDeclarationPtr prototype;
 
 	std::unique_ptr <SceneLoader> future;
 
