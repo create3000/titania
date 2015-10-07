@@ -121,10 +121,12 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 void
 X3DPrototypeInstance::construct ()
 {
+	__LOG__ << std::endl;
+
 	try
 	{
 		const auto externproto = static_cast <ExternProtoDeclaration*> (protoNode .getValue ());
-		externproto -> getInternalScene () .addInterest (this, &X3DPrototypeInstance::construct);
+		externproto -> getInternalScene () .removeInterest (this, &X3DPrototypeInstance::construct);
 		
 		// Interface
 
@@ -209,28 +211,27 @@ X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 void
 X3DPrototypeInstance::initialize ()
 {
+	__LOG__ << std::endl;
+
 	try
 	{
 		ProtoDeclaration* const prototype = protoNode -> getProtoDeclaration ();
 
-	   if (not prototype -> isExternproto ())
-	   {
-			copyImportedNodes (prototype);
-			copyRoutes (prototype);
-		}
+		copyImportedNodes (prototype);
+		copyRoutes (prototype);
+
+		getExecutionContext () -> isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
+		X3DBaseNode::isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
+
+		set_live ();
+
+		// Now initialize bases.
+
+		X3DNode::initialize ();
+		X3DExecutionContext::initialize ();
 	}
 	catch (const X3DError &)
 	{ }
-
-	getExecutionContext () -> isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
-	X3DBaseNode::isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
-
-	set_live ();
-
-	// Now initialize bases.
-
-	X3DNode::initialize ();
-	X3DExecutionContext::initialize ();
 }
 
 void

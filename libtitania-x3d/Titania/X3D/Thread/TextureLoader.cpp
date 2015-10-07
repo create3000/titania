@@ -150,9 +150,11 @@ TextureLoader::prepareEvents ()
 
 			if (status == std::future_status::ready)
 			{
+				running = false;
+
 				callback (future .get ());
 
-				dispose ();
+				X3DInput::dispose ();
 			}
 		}
 	}

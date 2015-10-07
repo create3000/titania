@@ -53,12 +53,10 @@
 #include "../X3DBrowser.h"
 #include "../../Execution/Scene.h"
 
-#include <omp.h>
-
 namespace titania {
 namespace X3D {
 
-static constexpr int32_t DOWNLOAD_THREADS_MAX = 8;
+static constexpr size_t DOWNLOAD_THREADS_MAX = 8;
 
 const std::string X3DNetworkingContext::providerUrl = "http://titania.create3000.de";
 
@@ -81,7 +79,7 @@ X3DNetworkingContext::initialize ()
 	privateScene -> isPrivate (true);
 	privateScene -> setup ();
 
-	downloadMutexes .resize (std::min <int32_t> (omp_get_max_threads () * 2, DOWNLOAD_THREADS_MAX));
+	downloadMutexes .resize (DOWNLOAD_THREADS_MAX);
 
 	for (auto & mutex : std::make_pair (downloadMutexes .begin () + 1, downloadMutexes .end ()))
 		mutex .reset (new std::mutex ());

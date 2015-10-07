@@ -163,6 +163,12 @@ ExternProtoDeclaration::initialize ()
 	isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
 
 	url () .addInterest (this, &ExternProtoDeclaration::set_url);
+
+	if (scene)
+	{
+		scene .addEvent ();
+		setLoadState (checkLoadState ());
+	}
 }
 
 void

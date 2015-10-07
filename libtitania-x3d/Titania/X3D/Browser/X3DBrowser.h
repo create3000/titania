@@ -345,7 +345,10 @@ private:
 	set_executionContext ();
 
 	void
-	set_scene (X3DScenePtr &&);
+	set_scene_async (X3DScenePtr &&);
+
+	void
+	set_scene (const X3DScenePtr &);
 
 	///  @name Static members
 

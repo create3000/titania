@@ -276,11 +276,13 @@ throw (Error <INVALID_SCENE>,
 {
 	ContextLock lock (this);
 
-	if (future)
-		future -> dispose ();
-
 	if (lock)
 	{
+		if (future)
+			future -> dispose ();
+
+		prepareEvents () .removeInterest (this, &X3DBrowser::set_scene);
+
 		// Process shutdown.
 
 		if (initialized ()) // Don't do this if browser is not initialized.
@@ -367,21 +369,35 @@ throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>)
 {
+	using namespace std::placeholders;
+
 	if (future)
 		future -> dispose ();
 
-   setLoadState (IN_PROGRESS_STATE);
+	prepareEvents () .removeInterest (this, &X3DBrowser::set_scene);
 
-	using namespace std::placeholders;
+   setLoadState (IN_PROGRESS_STATE);
 
 	future .reset (new SceneLoader (this,
 	                                url,
-	                                std::bind (&X3DBrowser::set_scene, this, _1)));
+	                                std::bind (&X3DBrowser::set_scene_async, this, _1)));
 }
 
 void
-X3DBrowser::set_scene (X3DScenePtr && scene)
+X3DBrowser::set_scene_async (X3DScenePtr && scene)
 {
+	// This function is called from the future. Ensure here that the future is not accidentally deleted when calling replaceWorld.
+
+	prepareEvents () .addInterest (this, &X3DBrowser::set_scene, std::move (scene));
+
+	addEvent ();
+}
+
+void
+X3DBrowser::set_scene (const X3DScenePtr & scene)
+{
+	prepareEvents () .removeInterest (this, &X3DBrowser::set_scene);
+
 	if (scene)
 	{
 		replaceWorld (scene);

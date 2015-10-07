@@ -102,7 +102,12 @@ Console::prepareEvents ()
 	   return;
 	
 	string_changed .assign (string .begin (), string .end ());
+
+	for (const auto & value : string)
+		std::clog << value;
 	
+	std::clog << std::flush;
+
 	string .clear ();
 }
 

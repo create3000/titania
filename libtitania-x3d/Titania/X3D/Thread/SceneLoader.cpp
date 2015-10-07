@@ -142,6 +142,8 @@ SceneLoader::prepareEvents ()
 
 			if (status == std::future_status::ready)
 			{
+				running = false;
+
 				try
 				{
 					callback (future .get ());
@@ -152,7 +154,7 @@ SceneLoader::prepareEvents ()
 					callback (nullptr);
 				}
 
-				dispose ();
+				X3DInput::dispose ();
 			}
 		}
 	}
