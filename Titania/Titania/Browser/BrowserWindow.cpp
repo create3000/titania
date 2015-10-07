@@ -434,10 +434,13 @@ BrowserWindow::on_focus_out_event (GdkEventFocus*)
 bool
 BrowserWindow::on_key_press_event (GdkEventKey* event)
 {
+	getKeys () .press (event);
+
 	if (not hasAccelerators ())
 		return false;
 
-	getKeys () .press (event);
+	if (not getBrowser () -> has_focus ())
+	   return false;
 
 	getSelection () -> setMode (getKeys () .shift () and not getKeys () .control () ? X3D::Selection::MULTIPLE : X3D::Selection::SINGLE);
 
