@@ -52,6 +52,7 @@
 
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
+#include "../Widgets/HistoryView/History.h"
 
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
@@ -116,7 +117,7 @@ RecentView::loadPreview (X3D::X3DBrowser* const browser)
 		Magick::Blob blob;
 		image -> write (&blob);
 
-		getBrowserWindow () -> getHistory () .setPreview (browser -> getExecutionContext () -> getWorldURL (), std::string ((char*) blob .data (), blob .length ()));
+		getBrowserWindow () -> getHistory () -> setPreview (browser -> getExecutionContext () -> getWorldURL (), std::string ((char*) blob .data (), blob .length ()));
 	}
 	catch (const std::exception & error)
 	{ }
@@ -164,7 +165,7 @@ RecentView::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 
 		getConfig () .setItem ("currentPage", page);
 		const auto previousPage = scene -> getNamedNode ("PreviousPage");
 		const auto nextPage     = scene -> getNamedNode ("NextPage");
-		const auto size         = getBrowserWindow () -> getHistory () .getSize ();
+		const auto size         = getBrowserWindow () -> getHistory () -> getSize ();
 
 		previousPage -> getField <X3D::SFInt32> ("keyValue") = page - 1;
 		nextPage -> getField <X3D::SFInt32> ("keyValue")     = page + 1;
@@ -177,12 +178,12 @@ RecentView::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 
 
 	size_t i = 0;
 
-	for (const auto & item : getBrowserWindow () -> getHistory () .getItems (page * 9, ITEMS))
+	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (page * 9, ITEMS))
 	{
 		try
 		{
 			const auto number = basic::to_string (i);
-			const auto image  = basic::base64_encode (getBrowserWindow () -> getHistory () .getPreview (item .at ("id")));
+			const auto image  = basic::base64_encode (getBrowserWindow () -> getHistory () -> getPreview (item .at ("id")));
 
 			const auto switchNode  = scene -> getNamedNode <X3D::Switch> ("Switch" + number);
 			const auto texture     = scene -> getNamedNode <X3D::ImageTexture> ("Texture" + number);

@@ -4,11 +4,6 @@
 
 /*
 
-GtkSeparator {
-	border-width: 1px;
-}
-
-
 * {
 	-GtkTreeView-expander-size: 5;
 }
@@ -18,6 +13,10 @@ GtkSeparator {
 #Console GtkTextView,
 #ScriptEditor GtkTextView {
 	font: monospace;
+}
+
+#BrowserNotebook {
+	background: rgba(0,0,0,0);
 }
 
 /* Dialogs */

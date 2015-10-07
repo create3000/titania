@@ -50,6 +50,7 @@
 
 #include "X3DBrowserWidget.h"
 
+#include "../Widgets/HistoryView/History.h"
 #include "../Browser/RecentView.h"
 #include "../Browser/BrowserUserData.h"
 #include "../Browser/Image.h"
@@ -72,7 +73,7 @@ namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	X3DBrowserWindowInterface (),
-	                  history (),
+	                  history (new History ()),
 	            masterBrowser (masterBrowser_),
 	                  browser (masterBrowser_),
 	                 browsers (),

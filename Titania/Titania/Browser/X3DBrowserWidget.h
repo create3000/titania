@@ -61,6 +61,7 @@
 namespace titania {
 namespace puck {
 
+class History;
 class RecentView;
 class BrowserUserData;
 class UserData;
@@ -72,11 +73,7 @@ public:
 
 	///  @name Member access
 
-	History &
-	getHistory ()
-	{ return history; }
-
-	const History &
+	const std::unique_ptr <History> &
 	getHistory () const
 	{ return history; }
 
@@ -269,7 +266,7 @@ private:
 
 	///  @name Members
 
-	History                         history;
+	std::unique_ptr <History>       history;
 	X3D::BrowserPtr                 masterBrowser;
 	X3D::BrowserPtr                 browser;
 	X3D::X3DPtrArray <X3D::Browser> browsers;

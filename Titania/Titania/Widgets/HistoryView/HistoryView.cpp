@@ -77,7 +77,7 @@ HistoryView::initialize ()
 {
 	X3DHistoryViewInterface::initialize ();
 
-	getBrowserWindow () -> getHistory () .constrainSize (getConfig () .getInteger ("rememberHistory"));
+	getBrowserWindow () -> getHistory () -> constrainSize (getConfig () .getInteger ("rememberHistory"));
 }
 
 void
@@ -111,8 +111,8 @@ HistoryView::restoreSession ()
 			break;
 	}
 
-	for (const auto & item : getBrowserWindow () -> getHistory () .getItems (0, 0))
-		getBrowserWindow () -> loadIcon (item .at ("worldURL"), getBrowserWindow () -> getHistory () .getIcon (item .at ("id")));
+	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 0))
+		getBrowserWindow () -> loadIcon (item .at ("worldURL"), getBrowserWindow () -> getHistory () -> getIcon (item .at ("id")));
 }
 
 void
@@ -120,7 +120,7 @@ HistoryView::on_map ()
 {
 	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("History"));
 
-	getBrowserWindow () -> getHistory () .addInterest (this, &HistoryView::set_history);
+	getBrowserWindow () -> getHistory () -> addInterest (this, &HistoryView::set_history);
 	getBrowserWindow () -> worldURL_changed () .addInterest (this, &HistoryView::set_scene);
 
 	set_history ();
@@ -129,7 +129,7 @@ HistoryView::on_map ()
 void
 HistoryView::on_unmap ()
 {
-	getBrowserWindow () -> getHistory () .removeInterest (this, &HistoryView::set_history);
+	getBrowserWindow () -> getHistory () -> removeInterest (this, &HistoryView::set_history);
 	getBrowserWindow () -> worldURL_changed () .removeInterest (this, &HistoryView::set_scene);
 }
 
@@ -143,7 +143,7 @@ HistoryView::set_history ()
 	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
-	for (const auto & item : getBrowserWindow () -> getHistory () .getItems (0, 2000))
+	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 2000))
 	{
 		const auto & worldURL = item .at ("worldURL");
 		const auto   iter     = getListStore () -> append ();
@@ -185,7 +185,7 @@ HistoryView::set_scene ()
 
 	// Update history.
 
-	getBrowserWindow () -> getHistory () .setItem (title, worldURL, getBrowserWindow () -> getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
+	getBrowserWindow () -> getHistory () -> setItem (title, worldURL, getBrowserWindow () -> getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
 
 	// Move row.
 
@@ -200,7 +200,7 @@ HistoryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 {
 	// Open worldURL.
 
-	const std::string URL = getBrowserWindow () -> getHistory () .getItemFromIndex (path .to_string ()) .at ("worldURL");
+	const std::string URL = getBrowserWindow () -> getHistory () -> getItemFromIndex (path .to_string ()) .at ("worldURL");
 
 	getBrowserWindow () -> open (URL);
 }
