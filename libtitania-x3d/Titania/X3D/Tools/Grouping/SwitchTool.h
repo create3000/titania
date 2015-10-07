@@ -86,6 +86,16 @@ public:
 	whichChoice () const final override
 	{ return getNode () -> whichChoice (); }
 
+	virtual
+	void
+	setWhichChoice (const int32_t value) final override
+	{ getNode () -> setWhichChoice (value); }
+
+	virtual
+	int32_t
+	getWhichChoice () const final override
+	{ return getNode () -> getWhichChoice (); }
+
 };
 
 } // X3D

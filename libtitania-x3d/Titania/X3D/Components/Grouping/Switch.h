@@ -107,6 +107,15 @@ public:
 	Box3f
 	getBBox () const override;
 
+	virtual
+	void
+	setWhichChoice (const int32_t value)
+	{ privateChoice = value; }
+
+	virtual
+	int32_t
+	getWhichChoice () const;
+
 	///  @name Operations
 
 	virtual
@@ -119,6 +128,12 @@ public:
 
 
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize ();
 
 	///  @name Static members
 
@@ -136,6 +151,8 @@ private:
 	};
 
 	Fields fields;
+
+	int32_t privateChoice;
 
 };
 

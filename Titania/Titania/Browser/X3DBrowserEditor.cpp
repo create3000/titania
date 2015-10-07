@@ -249,7 +249,7 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
 		if (iter == switchNode -> children () .end ())
 			continue;
 
-		switchNode -> whichChoice () = iter - switchNode -> children () .begin ();
+		switchNode -> setWhichChoice (iter - switchNode -> children () .begin ());
 	}
 }
 

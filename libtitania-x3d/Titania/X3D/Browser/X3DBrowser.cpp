@@ -459,7 +459,7 @@ throw (Error <INVALID_URL>,
 		}
 		catch (const X3DError & error)
 		{
-			urlError = MFString ({ error .what () });
+			println (error .what ());
 
 			throw;
 		}

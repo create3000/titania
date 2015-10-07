@@ -68,7 +68,8 @@ Switch::Fields::Fields () :
 Switch::Switch (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGroupingNode (),
-	         fields ()
+	         fields (),
+	  privateChoice (-1)
 {
 	addType (X3DConstants::Switch);
 
@@ -89,14 +90,24 @@ Switch::create (X3DExecutionContext* const executionContext) const
 	return new Switch (executionContext);
 }
 
+void
+Switch::initialize ()
+{
+	X3DGroupingNode::initialize ();
+
+	whichChoice () .addInterest (this, &Switch::setWhichChoice, -1);
+}
+
 Box3f
 Switch::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 	{
-		if (whichChoice () >= 0 and whichChoice () < (int32_t) children () .size ())
+		const auto currentChoice = getWhichChoice ();
+
+		if (currentChoice >= 0 and currentChoice < (int32_t) children () .size ())
 		{
-			const auto child = x3d_cast <X3DBoundedObject*> (children () [whichChoice ()]);
+			const auto child = x3d_cast <X3DBoundedObject*> (children () [currentChoice]);
 
 			if (child)
 				return child -> getBBox ();
@@ -108,13 +119,24 @@ Switch::getBBox () const
 	return Box3f (bboxSize (), bboxCenter ());
 }
 
+int32_t
+Switch::getWhichChoice () const
+{
+	if (privateChoice > -1)
+		return privateChoice;
+	
+	return whichChoice ();
+}
+
 void
 Switch::traverse (const TraverseType type)
 {
-	if (whichChoice () >= 0 and whichChoice () < (int32_t) children () .size ())
+	const auto currentChoice = getWhichChoice ();
+
+	if (currentChoice >= 0 and currentChoice < (int32_t) children () .size ())
 	{
-		if (children () [whichChoice ()])
-			children () [whichChoice ()] -> traverse (type);
+		if (children () [currentChoice])
+			children () [currentChoice] -> traverse (type);
 	}
 }
 
