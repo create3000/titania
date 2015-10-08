@@ -319,11 +319,27 @@ public:
 
 	ValueType*
 	operator -> () const
-	{ return getValue (); }
+	throw (Error <DISPOSED>)
+	{
+	   const auto value = getValue ();
+
+	   if (value)
+			return value;
+
+		throw Error <DISPOSED> ("X3DPtr::operator -> ()");
+	}
 
 	ValueType &
 	operator * () const
-	{ return *getValue (); }
+	throw (Error <DISPOSED>)
+	{
+	   const auto value = getValue ();
+
+	   if (value)
+			return *value;
+
+		throw Error <DISPOSED> ("X3DPtr::operator * ()");
+	}
 
 	operator bool () const
 	{ return getValue (); }

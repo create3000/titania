@@ -514,14 +514,12 @@ X3DBrowserWidget::set_url (const X3D::BrowserPtr & browser, const basic::uri & U
 	load (browser, URL);
 }
 
-static constexpr double FADE_IN_TIME = 3;
-
 void
 X3DBrowserWidget::set_fadeIn (X3D::Browser* const browser, const std::shared_ptr <double> & opacity)
 {
-	*opacity = std::min (*opacity + 1 / (browser -> getCurrentFrameRate () * FADE_IN_TIME), 1.0);
+	static constexpr double FADE_IN_TIME = 1;
 
-	browser -> println (*opacity);
+	*opacity = std::min (*opacity + 1 / (browser -> getCurrentFrameRate () * FADE_IN_TIME), 1.0);
 
 	browser -> set_opacity (*opacity);
 	browser -> addEvent ();

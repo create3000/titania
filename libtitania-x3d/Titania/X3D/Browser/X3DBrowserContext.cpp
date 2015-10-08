@@ -136,45 +136,6 @@ X3DBrowserContext::initialize ()
 	console      -> setup ();
 }
 
-const WorldPtr &
-X3DBrowserContext::getWorld () const
-throw (Error <DISPOSED>)
-{
-	if (world)
-		return world;
-	
-	throw Error <DISPOSED> ("Browser::getWorld: Browser is already disposed.");
-}
-
-const SelectionPtr &
-X3DBrowserContext::getSelection ()
-throw (Error <DISPOSED>)
-{
-	if (selection)
-		return selection;
-	
-	throw Error <DISPOSED> ("Browser::getSelection: Browser is already disposed.");
-}
-
-const NotificationPtr &
-X3DBrowserContext::getNotification () const
-throw (Error <DISPOSED>)
-{
-	if (notification)
-		return notification;
-	
-	throw Error <DISPOSED> ("Browser::getNotification: Browser is already disposed.");
-}
-
-const ConsolePtr &
-X3DBrowserContext::getConsole () const
-throw (Error <DISPOSED>)
-{
-	if (console)
-		return console;
-	
-	throw Error <DISPOSED> ("Browser::getConsole: Browser is already disposed.");
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

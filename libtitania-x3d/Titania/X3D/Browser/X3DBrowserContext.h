@@ -145,19 +145,19 @@ public:
 
 	const WorldPtr &
 	getWorld () const
-	throw (Error <DISPOSED>);
+	{ return world; }
 
 	const SelectionPtr &
 	getSelection ()
-	throw (Error <DISPOSED>);
+	{ return selection; }
 
 	const NotificationPtr &
 	getNotification () const
-	throw (Error <DISPOSED>);
+	{ return notification; }
 
 	const ConsolePtr &
 	getConsole () const
-	throw (Error <DISPOSED>);
+	{ return console; }
 
 	///  @name Operations
 
