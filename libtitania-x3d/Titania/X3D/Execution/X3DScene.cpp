@@ -374,16 +374,7 @@ throw (Error <INVALID_NAME>,
 	if (lock)
 	{
 		if (getProfile () or not getComponents () .empty ())
-		{
-			if (executionContext -> getProfile ())
-			{
-				for (const auto & component : executionContext -> getProfile () -> getComponents ())
-					updateComponent (component);
-			}
-
-			for (const auto & component : executionContext -> getComponents ())
-				updateComponent (component);
-		}
+		   setProfile (getBrowser () -> getProfile ("Full"));
 
 		//importMetaData (executionContext);
 
