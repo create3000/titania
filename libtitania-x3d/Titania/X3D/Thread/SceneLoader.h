@@ -54,7 +54,7 @@
 #include "../Fields.h"
 #include "../Types/Pointer.h"
 #include "../InputOutput/Loader.h"
-#include "X3DInterruptibleFuture.h"
+#include "X3DInterruptibleThread.h"
 
 #include <Titania/Basic/URI.h>
 #include <atomic>
@@ -68,7 +68,7 @@ class X3DExecutionContext;
 class X3DScene;
 
 class SceneLoader :
-	public X3DInterruptibleFuture,
+	public X3DInterruptibleThread,
 	public X3DInput
 {
 public:

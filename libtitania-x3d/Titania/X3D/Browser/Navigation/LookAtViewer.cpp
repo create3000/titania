@@ -149,7 +149,7 @@ LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 	{
 		if (isOver)
 		{
-			getBrowser () -> setCursor (Gdk::ARROW);
+			getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
 			isOver = false;
 		}
 	}

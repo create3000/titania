@@ -136,7 +136,7 @@ Browser::initialize ()
 	set_can_focus (true);
 	grab_focus ();
 
-	setCursor (Gdk::ARROW);
+	setCursor (Gdk::TOP_LEFT_ARROW);
 }
 
 Color4f
@@ -193,7 +193,7 @@ Browser::set_cursor (const Gdk::CursorType value)
 void
 Browser::set_viewer (ViewerType type)
 {
-	setCursor (Gdk::ARROW);
+	setCursor (Gdk::TOP_LEFT_ARROW);
 
 	if (viewer -> getType () not_eq type or viewer -> getNavigationInfo () not_eq getActiveNavigationInfo ())
 	{

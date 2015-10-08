@@ -99,7 +99,7 @@ PlaneViewer::on_button_press_event (GdkEventButton* event)
 bool
 PlaneViewer::on_button_release_event (GdkEventButton* event)
 {
-	getBrowser () -> setCursor (Gdk::ARROW);
+	getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
 
 	button = 0;
 	return false;

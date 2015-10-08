@@ -284,9 +284,6 @@ ExternProtoDeclaration::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	if (future)
-		future -> dispose ();
-
 	future .reset (new SceneLoader (getExecutionContext (),
 	                                url (),
 	                                std::bind (&ExternProtoDeclaration::setSceneAsync, this, _1)));

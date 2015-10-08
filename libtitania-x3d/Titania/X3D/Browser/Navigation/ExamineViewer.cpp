@@ -134,7 +134,7 @@ ExamineViewer::on_button_release_event (GdkEventButton* event)
 {
 	if (button == 1)
 	{
-		getBrowser () -> setCursor (Gdk::ARROW);
+		getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
 
 		if (std::abs (rotation .angle ()) > SPIN_ANGLE and chrono::now () - motionTime < SPIN_RELEASE_TIME)
 		{
@@ -145,7 +145,7 @@ ExamineViewer::on_button_release_event (GdkEventButton* event)
 
 	else if (button == 2)
 	{
-		getBrowser () -> setCursor (Gdk::ARROW);
+		getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
 	}
 
 	button = 0;

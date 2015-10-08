@@ -60,7 +60,7 @@ namespace X3D {
 // how to handle the profile and component arguments/statements of inline nodes.
 
 SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFString & url, const Callback & callback) :
-	X3DInterruptibleFuture (),
+	X3DInterruptibleThread (),
 	              X3DInput (),
 	               browser (executionContext -> getBrowser ()),
 	               referer (executionContext -> getWorldURL ()),
@@ -132,7 +132,7 @@ SceneLoader::loadAsync (const MFString & url)
 void
 SceneLoader::prepareEvents ()
 {
-	if (stopping ())
+	if (isStopping ())
 		return;
 
 	getBrowser () -> addEvent ();
@@ -164,7 +164,7 @@ SceneLoader::prepareEvents ()
 void
 SceneLoader::dispose ()
 {
-	if (stopping ())
+	if (isStopping ())
 		return;
 
 	stop ();

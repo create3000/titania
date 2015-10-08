@@ -290,9 +290,6 @@ Inline::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	if (future)
-		future -> dispose ();
-
 	future .reset (new SceneLoader (getExecutionContext (),
 	                                url (),
 	                                std::bind (&Inline::setSceneAsync, this, _1)));
@@ -337,10 +334,8 @@ Inline::requestUnload ()
 	if (checkLoadState () == NOT_STARTED_STATE or checkLoadState () == FAILED_STATE)
 		return;
 
-	if (future)
-		future -> dispose ();
-
 	setLoadState (NOT_STARTED_STATE);
+
 	setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 }
 

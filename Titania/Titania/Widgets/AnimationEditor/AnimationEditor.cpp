@@ -2464,7 +2464,7 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 bool
 AnimationEditor::on_button_release_event (GdkEventButton* event)
 {
-	getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
+	getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::TOP_LEFT_ARROW));
 	getDrawingArea () .queue_draw ();
 
 	if (button == 1)

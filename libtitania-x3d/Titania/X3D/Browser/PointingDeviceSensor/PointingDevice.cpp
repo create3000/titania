@@ -63,7 +63,7 @@ PointingDevice::PointingDevice (Browser* const browser) :
 	button_release_conncection (),
 	 motion_notify_conncection (),
 	  leave_notify_conncection (),
-                       cursor (Gdk::ARROW),
+                       cursor (Gdk::TOP_LEFT_ARROW),
 	                    button (0),
 	                    isOver (false)
 { }
@@ -101,7 +101,7 @@ PointingDevice::set_pickable ()
 
 		getBrowser () -> buttonReleaseEvent ();
 		getBrowser () -> leaveNotifyEvent ();
-		getBrowser () -> setCursor (Gdk::ARROW);
+		getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
 	}
 
 	// Connect.
@@ -192,13 +192,13 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 	if (isOver)
 		getBrowser () -> setCursor (Gdk::HAND2);
 	else
-		getBrowser () -> setCursor (Gdk::ARROW);
+		getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
 
 	getBrowser () -> finished () .addInterest (this, &PointingDevice::set_verify_motion, event -> x, event -> y);
 	getBrowser () -> addEvent ();
 
 	button = 0;
-	cursor = Gdk::ARROW;
+	cursor = Gdk::TOP_LEFT_ARROW;
 	return false;
 }
 

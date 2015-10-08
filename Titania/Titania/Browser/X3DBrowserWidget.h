@@ -239,6 +239,9 @@ private:
 	void
 	set_url (const X3D::BrowserPtr &, const basic::uri &);
 
+	void
+	set_fadeIn (X3D::Browser* const, const std::shared_ptr <double> &);
+
 	virtual
 	void
 	on_switch_browser (Gtk::Widget*, guint) final override;

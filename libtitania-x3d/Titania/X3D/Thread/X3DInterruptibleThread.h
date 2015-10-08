@@ -70,38 +70,38 @@ public:
     { return "InterruptFutureException"; }
 };
 
-class X3DInterruptibleFuture
+class X3DInterruptibleThread
 {
 public:
 
 	///  @name Destruction
 
 	virtual
-	~X3DInterruptibleFuture () = default;
+	~X3DInterruptibleThread () = default;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DInterruptibleFuture () :
-		_stopping (false)
+	X3DInterruptibleThread () :
+		stopping (false)
 	{ }
 
 	///  @name Member access
 
 	bool
-	stopping () const
-	{ return _stopping .load (); }
+	isStopping () const
+	{ return stopping .load (); }
 
 	void
 	stop ()
-	{ _stopping .store (true); }
+	{ stopping .store (true); }
 
 	void
 	checkForInterrupt () const
 	{
-		if (not stopping ())
+		if (not isStopping ())
 			return;
 
 		throw InterruptFutureException ();
@@ -112,7 +112,7 @@ private:
 
 	///  @name Members
 
-	std::atomic <bool> _stopping;
+	std::atomic <bool> stopping;
 
 };
 

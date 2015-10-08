@@ -54,7 +54,7 @@
 #include "../Browser/X3DBrowser.h"
 #include "../InputOutput/Loader.h"
 #include "../Miscellaneous/Texture3D.h"
-#include "X3DInterruptibleFuture.h"
+#include "X3DInterruptibleThread.h"
 
 #include <atomic>
 #include <future>
@@ -63,7 +63,7 @@ namespace titania {
 namespace X3D {
 
 class Texture3DLoader :
-	public X3DInterruptibleFuture,
+	public X3DInterruptibleThread,
 	public X3DInput
 {
 public:

@@ -371,9 +371,6 @@ throw (Error <INVALID_URL>,
 {
 	using namespace std::placeholders;
 
-	if (future)
-		future -> dispose ();
-
 	prepareEvents () .removeInterest (this, &X3DBrowser::set_scene);
 
    setLoadState (IN_PROGRESS_STATE);

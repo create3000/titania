@@ -153,7 +153,7 @@ X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 {
 	disconnect ();
 	
-	getBrowser () -> setCursor (Gdk::ARROW);
+	getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
 
 	button = 0;
 	return false;

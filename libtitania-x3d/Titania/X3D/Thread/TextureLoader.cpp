@@ -59,7 +59,7 @@ TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
                               const MFString & url,
                               const size_t minTextureSize, const size_t maxTextureSize,
                               const Callback & callback) :
-	X3DInterruptibleFuture (),
+	X3DInterruptibleThread (),
 	              X3DInput (),
 	               browser (executionContext -> getBrowser ()),
 	               referer (executionContext -> getWorldURL ()),
@@ -145,7 +145,7 @@ TextureLoader::loadAsync (const MFString & url,
 void
 TextureLoader::prepareEvents ()
 {
-	if (stopping ())
+	if (isStopping ())
 		return;
 
 	getBrowser () -> addEvent ();
@@ -166,7 +166,7 @@ TextureLoader::prepareEvents ()
 void
 TextureLoader::dispose ()
 {
-	if (stopping ())
+	if (isStopping ())
 		return;
 
 	stop ();
