@@ -145,25 +145,26 @@ public:
 
 	const WorldPtr &
 	getWorld () const
-	{ return world; }
+	throw (Error <DISPOSED>);
 
 	const SelectionPtr &
 	getSelection ()
-	{ return selection; }
+	throw (Error <DISPOSED>);
 
 	const NotificationPtr &
 	getNotification () const
-	{ return notification; }
+	throw (Error <DISPOSED>);
 
 	const ConsolePtr &
 	getConsole () const
-	{ return console; }
+	throw (Error <DISPOSED>);
 
 	///  @name Operations
 
 	std::shared_ptr <Magick::Image>
 	getSnapshot (const size_t, const size_t, const bool, const size_t) const
 	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>,
 	       std::runtime_error);
 
 	///  @name Event handling
@@ -182,10 +183,14 @@ public:
 
 	virtual
 	void
-	reshape ();
+	reshape ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	void
-	update ();
+	update ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	virtual
 	void

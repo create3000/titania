@@ -627,23 +627,15 @@ X3DBrowser::dispose ()
 {
 	__LOG__ << this << std::endl;
 
-	lock ();
+	future .reset ();
 
-	if (future)
-	{
-		future -> dispose ();
-		future .reset ();
-	}
+	X3DBrowserContext::dispose ();
+	X3DBaseNode::dispose ();
 
 	supportedFields .dispose ();
 	supportedNodes  .dispose ();
 
 	removeChildren (getRootNodes ());
-
-	X3DBrowserContext::dispose ();
-	X3DBaseNode::dispose ();
-
-	unlock ();
 
 	__LOG__ << std::endl;
 }

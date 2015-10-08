@@ -244,6 +244,11 @@ Browser::dispose ()
 
 	X3DBrowser::dispose ();
 	opengl::Surface::dispose ();
+
+	const auto container = get_parent ();
+
+	if (container)
+	   container -> remove (*this);
 }
 
 Browser::~Browser ()

@@ -601,11 +601,7 @@ Context::setError (const pb::pbError & error) const
 void
 Context::dispose ()
 {
-	if (future)
-	{
-		future -> dispose ();
-		future .reset (); // XXX: See Inline
-	}
+	future .reset (); // XXX: See Inline
 
 	X3D::X3DJavaScriptContext::dispose ();
 }

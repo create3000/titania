@@ -59,13 +59,13 @@ TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
                               const MFString & url,
                               const size_t minTextureSize, const size_t maxTextureSize,
                               const Callback & callback) :
-	X3DInput (),
-	 browser (executionContext -> getBrowser ()),
-	 referer (executionContext -> getWorldURL ()),
-	callback (callback),
-	 running (true),
-	   mutex (),
-	  future (getFuture (url, minTextureSize, maxTextureSize))
+	X3DInterruptibleFuture (),
+	              X3DInput (),
+	               browser (executionContext -> getBrowser ()),
+	               referer (executionContext -> getWorldURL ()),
+	              callback (callback),
+	                 mutex (),
+	               future (getFuture (url, minTextureSize, maxTextureSize))
 {
 	getBrowser () -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
 	getBrowser () -> addEvent ();
@@ -101,32 +101,37 @@ TextureLoader::loadAsync (const MFString & url,
 	{
 		try
 		{
+			checkForInterrupt ();
+
 			const auto mutex = getBrowser () -> getDownloadMutex ();
 
-			if (running)
-			{
-				std::lock_guard <std::mutex> lock (*mutex);
+			std::lock_guard <std::mutex> lock (*mutex);
 
-				TexturePtr texture;
+			checkForInterrupt ();
 
-				Loader loader (nullptr, referer);
+			Loader loader (nullptr, referer);
 
-				if (running)
-					texture .reset (new Texture (loader .loadDocument (URL)));
-				
-				if (running)
-					texture -> process (minTextureSize, maxTextureSize);
+			TexturePtr texture (new Texture (loader .loadDocument (URL)));
 
-				getBrowser () -> println ("Done loading image '", loader .getWorldURL (), "'.");
+			checkForInterrupt ();
 
-				return texture;
-			}
+			texture -> process (minTextureSize, maxTextureSize);
 
-			return nullptr;
+			checkForInterrupt ();
+
+			getBrowser () -> println ("Done loading image '", loader .getWorldURL (), "'.");
+
+			checkForInterrupt ();
+
+			return texture;
 		}
 		catch (const X3DError & error)
 		{
 			getBrowser () -> println (error .what ());
+		}
+		catch (const InterruptFutureException &)
+		{
+			throw;
 		}
 		catch (const std::exception & error)
 		{
@@ -140,43 +145,43 @@ TextureLoader::loadAsync (const MFString & url,
 void
 TextureLoader::prepareEvents ()
 {
-	if (running)
-	{
-		getBrowser () -> addEvent ();
+	if (stopping ())
+		return;
 
-		if (future .valid ())
-		{
-			const auto status = future .wait_for (std::chrono::milliseconds (0));
+	getBrowser () -> addEvent ();
 
-			if (status == std::future_status::ready)
-			{
-				running = false;
+	if (not future .valid ())
+	   return;
 
-				callback (future .get ());
+	const auto status = future .wait_for (std::chrono::milliseconds (0));
 
-				X3DInput::dispose ();
-			}
-		}
-	}
+	if (status not_eq std::future_status::ready)
+	   return;
+
+	callback (future .get ());
+
+	X3DInput::dispose ();
 }
 
 void
 TextureLoader::dispose ()
 {
-	if (running)
-	{
-		running = false;
+	if (stopping ())
+		return;
 
-		X3DInput::dispose ();
+	stop ();
 
-		// Clear the bound callback arguments.
+	X3DInput::dispose ();
 
-		callback = [ ] (const TexturePtr &) { };
-	}
+	// Clear the bound callback arguments.
+
+	callback = [ ] (const TexturePtr &) { };
 }
 
 TextureLoader::~TextureLoader ()
 {
+	dispose ();
+
 	if (future .valid ())
 		future .wait ();
 }

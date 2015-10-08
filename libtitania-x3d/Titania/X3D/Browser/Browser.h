@@ -158,12 +158,16 @@ private:
 
 	virtual
 	void
-	reshape () final override
+	reshape ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
 	{ X3DBrowser::reshape (); }
 
 	virtual
 	void
-	update (const Cairo::RefPtr <Cairo::Context> &) final override
+	update (const Cairo::RefPtr <Cairo::Context> &)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
 	{ update (); }
 
 	///  @name Members

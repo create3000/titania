@@ -568,11 +568,7 @@ ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 void
 ExternProtoDeclaration::dispose ()
 {
-	if (future)
-	{
-		future -> dispose ();
-		future .reset ();
-	}
+	future .reset ();
 
 	removeChildren (url ());
 

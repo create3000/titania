@@ -121,8 +121,6 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 void
 X3DPrototypeInstance::construct ()
 {
-	__LOG__ << std::endl;
-
 	try
 	{
 		const auto externproto = static_cast <ExternProtoDeclaration*> (protoNode .getValue ());
@@ -211,8 +209,6 @@ X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 void
 X3DPrototypeInstance::initialize ()
 {
-	__LOG__ << std::endl;
-
 	try
 	{
 		ProtoDeclaration* const prototype = protoNode -> getProtoDeclaration ();

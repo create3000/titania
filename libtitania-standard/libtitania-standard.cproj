@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4978BF53-C409-4F1D-A898-AC2ADA52EFB7}</ProjectGuid>
     <Target>Bin</Target>
@@ -43,7 +43,8 @@
     <OutputPath>.</OutputPath>
     <WarningLevel>All</WarningLevel>
     <OptimizationLevel>3</OptimizationLevel>
-    <OutputName />
+    <OutputName>
+    </OutputName>
     <CompileTarget>SharedLibrary</CompileTarget>
     <DefineSymbols>MONODEVELOP</DefineSymbols>
   </PropertyGroup>

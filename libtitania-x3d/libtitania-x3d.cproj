@@ -753,6 +753,7 @@
     <None Include="libtitania-x3d.pidb" />
     <None Include="Titania\X3D\Browser\Shading\X3DShadingContext.h" />
     <None Include="Titania\X3D\Browser\Shading\Shader.h" />
+    <None Include="Titania\X3D\Thread\X3DInterruptibleFuture.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

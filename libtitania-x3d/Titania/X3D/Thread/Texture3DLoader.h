@@ -54,6 +54,7 @@
 #include "../Browser/X3DBrowser.h"
 #include "../InputOutput/Loader.h"
 #include "../Miscellaneous/Texture3D.h"
+#include "X3DInterruptibleFuture.h"
 
 #include <atomic>
 #include <future>
@@ -62,6 +63,7 @@ namespace titania {
 namespace X3D {
 
 class Texture3DLoader :
+	public X3DInterruptibleFuture,
 	public X3DInput
 {
 public:
@@ -101,7 +103,6 @@ private:
 	std::atomic <X3DBrowser*>  browser;
 	const basic::uri           referer;
 	Callback                   callback;
-	std::atomic <bool>         running;
 	std::mutex                 mutex;
 	std::future <Texture3DPtr> future;
 

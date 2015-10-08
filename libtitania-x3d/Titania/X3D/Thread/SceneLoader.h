@@ -54,6 +54,7 @@
 #include "../Fields.h"
 #include "../Types/Pointer.h"
 #include "../InputOutput/Loader.h"
+#include "X3DInterruptibleFuture.h"
 
 #include <Titania/Basic/URI.h>
 #include <atomic>
@@ -67,6 +68,7 @@ class X3DExecutionContext;
 class X3DScene;
 
 class SceneLoader :
+	public X3DInterruptibleFuture,
 	public X3DInput
 {
 public:
@@ -117,7 +119,6 @@ private:
 	std::atomic <X3DBrowser*> browser;
 	const basic::uri          referer;
 	Callback                  callback;
-	std::atomic <bool>        running;
 	std::mutex                mutex;
 	std::future <X3DScenePtr> future;
 	Loader                    loader;

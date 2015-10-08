@@ -60,14 +60,14 @@ namespace X3D {
 // how to handle the profile and component arguments/statements of inline nodes.
 
 SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFString & url, const Callback & callback) :
-	        X3DInput (),
-	         browser (executionContext -> getBrowser ()),
-	         referer (executionContext -> getWorldURL ()),
-	        callback (callback),
-	         running (true),
-	           mutex (),
-	          future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */)),
-	          loader (nullptr, referer)
+	X3DInterruptibleFuture (),
+	              X3DInput (),
+	               browser (executionContext -> getBrowser ()),
+	               referer (executionContext -> getWorldURL ()),
+	              callback (callback),
+	                 mutex (),
+	                future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */)),
+	                loader (nullptr, referer)
 	          
 {
 	getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::prepareEvents);
@@ -103,86 +103,83 @@ SceneLoader::getFuture (const MFString & url)
 X3DScenePtr
 SceneLoader::loadAsync (const MFString & url)
 {
+	checkForInterrupt ();
+
 	const auto mutex = getBrowser () -> getDownloadMutex ();
 
-	if (running)
-	{
-		std::lock_guard <std::mutex> lock (*mutex);
+	std::lock_guard <std::mutex> lock (*mutex);
 
-		X3DScenePtr scene;
+	checkForInterrupt ();
 
-		if (running)
-			scene = getBrowser () -> createScene ();
+	X3DScenePtr scene = getBrowser () -> createScene ();
 
-		if (running)
-			loader .parseIntoScene (scene, url);
+	checkForInterrupt ();
+
+	loader .parseIntoScene (scene, url);
 		
-		for (const auto & string : loader .getUrlError ())
-			getBrowser () -> println (string .str ());
+	checkForInterrupt ();
 
-		getBrowser () -> println ("Done loading scene '", loader .getWorldURL (), "'.");
+	for (const auto & string : loader .getUrlError ())
+		getBrowser () -> println (string .str ());
+
+	getBrowser () -> println ("Done loading scene '", loader .getWorldURL (), "'.");
 		
-		if (running)
-			return scene;
-	}
+	checkForInterrupt ();
 
-	return nullptr;
+	return scene;
 }
 
 void
 SceneLoader::prepareEvents ()
 {
-	if (running)
+	if (stopping ())
+		return;
+
+	getBrowser () -> addEvent ();
+
+	if (not future .valid ())
+		return;
+
+	const auto status = future .wait_for (std::chrono::milliseconds (0));
+
+	if (status not_eq std::future_status::ready)
+		return;
+		
+	try
 	{
-		getBrowser () -> addEvent ();
-
-		if (future .valid ())
-		{
-			const auto status = future .wait_for (std::chrono::milliseconds (0));
-
-			if (status == std::future_status::ready)
-			{
-				running = false;
-
-				try
-				{
-					callback (future .get ());
-				}
-				catch (const X3DError & error)
-				{
-					getBrowser () -> println (error .what ());
-					callback (nullptr);
-				}
-
-				X3DInput::dispose ();
-			}
-		}
+		callback (future .get ());
 	}
+	catch (const X3DError & error)
+	{
+		getBrowser () -> println (error .what ());
+
+		callback (nullptr);
+	}
+	catch (const std::exception &)
+	{ }
+
+	X3DInput::dispose ();
 }
 
 void
 SceneLoader::dispose ()
 {
-	//	std::lock_guard <std::mutex> result (mutex);
-	//	
-	//	callback = [ ] (X3DScenePtr &&) { };
-	//
-	//	prepareEvents ()
+	if (stopping ())
+		return;
 
-	if (running)
-	{
-		running = false;
+	stop ();
 
-		X3DInput::dispose ();
+	X3DInput::dispose ();
 		
-		// Clear the bound callback arguments.
+	// Clear the bound callback arguments.
 
-		callback = [ ] (X3DScenePtr &&) { };
-	}
+	callback = [ ] (X3DScenePtr &&) { };
 }
 
 SceneLoader::~SceneLoader ()
 {
+	dispose ();
+
 	if (future .valid ())
 		future .wait ();
 }

@@ -136,6 +136,46 @@ X3DBrowserContext::initialize ()
 	console      -> setup ();
 }
 
+const WorldPtr &
+X3DBrowserContext::getWorld () const
+throw (Error <DISPOSED>)
+{
+	if (world)
+		return world;
+	
+	throw Error <DISPOSED> ("Browser::getWorld: Browser is already disposed.");
+}
+
+const SelectionPtr &
+X3DBrowserContext::getSelection ()
+throw (Error <DISPOSED>)
+{
+	if (selection)
+		return selection;
+	
+	throw Error <DISPOSED> ("Browser::getSelection: Browser is already disposed.");
+}
+
+const NotificationPtr &
+X3DBrowserContext::getNotification () const
+throw (Error <DISPOSED>)
+{
+	if (notification)
+		return notification;
+	
+	throw Error <DISPOSED> ("Browser::getNotification: Browser is already disposed.");
+}
+
+const ConsolePtr &
+X3DBrowserContext::getConsole () const
+throw (Error <DISPOSED>)
+{
+	if (console)
+		return console;
+	
+	throw Error <DISPOSED> ("Browser::getConsole: Browser is already disposed.");
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /***
@@ -151,6 +191,7 @@ X3DBrowserContext::initialize ()
 std::shared_ptr <Magick::Image>
 X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing) const
 throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>,
        std::runtime_error)
 {
 	ContextLock lock (this);
@@ -230,6 +271,8 @@ X3DBrowserContext::endUpdateForFrame ()
 
 void
 X3DBrowserContext::reshape ()
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
 	ContextLock lock (this);
 
@@ -248,6 +291,8 @@ X3DBrowserContext::reshape ()
 
 void
 X3DBrowserContext::update ()
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
 	try
 	{
@@ -334,6 +379,7 @@ X3DBrowserContext::dispose ()
 	X3DShadingContext::dispose ();
 	X3DCoreContext::dispose ();
 	X3DScene::dispose ();
+
 }
 
 X3DBrowserContext::~X3DBrowserContext ()

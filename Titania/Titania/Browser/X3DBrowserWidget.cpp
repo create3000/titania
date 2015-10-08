@@ -774,8 +774,10 @@ X3DBrowserWidget::reload ()
 }
 
 void
-X3DBrowserWidget::close (const X3D::BrowserPtr & browser)
+X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
 {
+	const X3D::BrowserPtr browser = browser_;
+
 	if (browser == getBrowser ())
 		recentView -> loadPreview (browser);
 
@@ -787,7 +789,7 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser)
 
 	if (browsers .empty ())
 		openRecent ();
-
+	
 	getBrowserNotebook () .remove_page (*browser);
 	getBrowserNotebook () .set_show_tabs (getShowTabs ());
 }

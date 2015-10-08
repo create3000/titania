@@ -48,71 +48,75 @@
  *
  ******************************************************************************/
 
-#include "X3DNetworkingContext.h"
+#ifndef __TITANIA_X3D_THREAD_FUTURE_H__
+#define __TITANIA_X3D_THREAD_FUTURE_H__
 
-#include "../X3DBrowser.h"
-#include "../../Execution/Scene.h"
+#include "../Base/X3DInput.h"
+#include <atomic>
+#include <exception>
 
 namespace titania {
 namespace X3D {
 
-static constexpr size_t DOWNLOAD_THREADS_MAX = 8;
-
-const std::string X3DNetworkingContext::providerUrl = "http://titania.create3000.de";
-
-X3DNetworkingContext::X3DNetworkingContext () :
-	       X3DBaseNode (),
-	         userAgent (),
-	      privateScene (new Scene (getBrowser ())),
-	downloadMutexIndex (0),
-	   downloadMutexes ({ std::make_shared <std::mutex> () }),
-	     downloadMutex ()
+class InterruptFutureException:
+	virtual public std::exception
 {
-	addChildren (privateScene);
-}
+public:
 
-void
-X3DNetworkingContext::initialize ()
+    virtual
+    char const*
+    what () const
+    noexcept (true) override
+    { return "InterruptFutureException"; }
+};
+
+class X3DInterruptibleFuture
 {
-	userAgent = getBrowser () -> getName () + "/" + getBrowser () -> getVersion () + " (X3D Browser; +" + providerUrl + ")";
+public:
 
-	privateScene -> isPrivate (true);
-	privateScene -> setup ();
+	///  @name Destruction
 
-	downloadMutexes .resize (DOWNLOAD_THREADS_MAX);
+	virtual
+	~X3DInterruptibleFuture () = default;
 
-	for (auto & mutex : std::make_pair (downloadMutexes .begin () + 1, downloadMutexes .end ()))
-		mutex .reset (new std::mutex ());
-}
 
-const std::shared_ptr <std::mutex> &
-X3DNetworkingContext::getDownloadMutex ()
-{
-	std::lock_guard <std::mutex> lock (downloadMutex);
+protected:
 
-	downloadMutexIndex = (downloadMutexIndex + 1) % downloadMutexes .size ();
+	///  @name Construction
 
-	return downloadMutexes [downloadMutexIndex];
-}
+	X3DInterruptibleFuture () :
+		_stopping (false)
+	{ }
 
-// XXX: not used anymore
-void
-X3DNetworkingContext::lock ()
-{
-	for (auto & downloadMutex : downloadMutexes)
-		downloadMutex -> lock ();
-}
+	///  @name Member access
 
-// XXX: not used anymore
-void
-X3DNetworkingContext::unlock ()
-{
-	for (auto & downloadMutex : downloadMutexes)
-		downloadMutex -> unlock ();
-}
+	bool
+	stopping () const
+	{ return _stopping .load (); }
 
-X3DNetworkingContext::~X3DNetworkingContext ()
-{ }
+	void
+	stop ()
+	{ _stopping .store (true); }
+
+	void
+	checkForInterrupt () const
+	{
+		if (not stopping ())
+			return;
+
+		throw InterruptFutureException ();
+	}
+
+
+private:
+
+	///  @name Members
+
+	std::atomic <bool> _stopping;
+
+};
 
 } // X3D
 } // titania
+
+#endif

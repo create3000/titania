@@ -649,11 +649,7 @@ Context::set_shutdown ()
 	if (not JSVAL_IS_VOID (shutdownFn))
 		callFunction (shutdownFn);
 
-	if (future)
-	{
-		future -> dispose ();
-		future .reset (); // XXX: See Inline
-	}
+	future .reset (); // XXX: See Inline
 
 	for (auto & field : fields)
 		JS_RemoveValueRoot (cx, &field .second);
