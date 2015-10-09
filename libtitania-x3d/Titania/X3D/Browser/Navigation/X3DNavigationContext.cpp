@@ -66,6 +66,7 @@ X3DNavigationContext::X3DNavigationContext () :
 	               activeLayer (),
 	      activeNavigationInfo (nullptr),
 	activeNavigationInfoOutput (),
+	            viewerIsLocked (false),
 	                    viewer (ViewerType::NONE),
 	          availableViewers (),
 	     activeViewpointOutput ()
@@ -81,6 +82,15 @@ void
 X3DNavigationContext::initialize ()
 {
 	getBrowser () -> initialized () .addInterest (this, &X3DNavigationContext::set_initialized);
+}
+
+void
+X3DNavigationContext::setViewer (const ViewerType value)
+{
+   if (getLockViewer ())
+      return;
+     
+	viewer = value;
 }
 
 void
@@ -153,6 +163,9 @@ X3DNavigationContext::set_viewpoint ()
 void
 X3DNavigationContext::set_navigationInfo_type ()
 {
+	if (getLockViewer ())
+	   return;
+
 	availableViewers .clear ();
 
 	bool examineViewer = false;

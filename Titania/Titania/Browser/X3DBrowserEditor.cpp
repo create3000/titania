@@ -193,7 +193,7 @@ X3DBrowserEditor::set_executionContext ()
 
 		const auto & type = metadataSet -> getValue <X3D::MetadataString> ("type") -> value () .get1Value (0);
 
-		getBrowser () -> setViewer (viewerTypes .at (type));
+		setViewer (viewerTypes .at (type));
 	}
 	catch (const std::exception & error)
 	{ }
@@ -217,6 +217,14 @@ X3DBrowserEditor::set_executionContext ()
 	}
 	catch (const X3D::X3DError & error)
 	{ }
+}
+
+void
+X3DBrowserEditor::setViewer (const X3D::ViewerType viewer)
+{
+	getBrowser () -> setLockViewer (false);
+	getBrowser () -> setViewer (viewer);
+	getBrowser () -> setLockViewer (getArrowButton () .get_active ());
 }
 
 void

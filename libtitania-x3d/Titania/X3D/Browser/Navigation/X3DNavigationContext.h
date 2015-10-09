@@ -75,10 +75,17 @@ public:
 	getActiveViewpointEvent () const
 	{ return activeViewpointOutput; }
 
+	bool
+	getLockViewer () const
+	{ return viewerIsLocked; }
+
+	void
+	setLockViewer (const bool value)
+	{ viewerIsLocked = value; }
+
 	virtual
 	void
-	setViewer (const ViewerType value)
-	{ viewer = value; }
+	setViewer (const ViewerType);
 
 	virtual
 	const SFEnum <ViewerType> &
@@ -150,6 +157,7 @@ private:
 	X3DLayerNodePtr     activeLayer;
 	NavigationInfo*     activeNavigationInfo;
 	SFTime              activeNavigationInfoOutput;
+	bool                viewerIsLocked;
 	SFEnum <ViewerType> viewer;
 	MFEnum <ViewerType> availableViewers;
 	SFTime              activeViewpointOutput;

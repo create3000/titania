@@ -325,6 +325,9 @@ protected:
 	void
 	setBrowser (const X3D::BrowserPtr &) override;
 
+	void
+	setViewer (const X3D::ViewerType);
+
 	/// @name Undo
 
 	void

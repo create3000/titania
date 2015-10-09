@@ -1191,7 +1191,7 @@ BrowserWindow::isEditor (const bool enabled)
 	getSelectParentButton ()    .set_visible (enabled);
 	getSelectChildrenButton ()  .set_visible (enabled);
 	getViewerSeparator ()       .set_visible (enabled);
-	getLookAtSelectionButton () .set_visible (enabled);
+	getLookAtSelectionButton () .set_visible (enabled and getArrowButton () .get_active ());
 
 	getLibraryViewBox ()     .set_visible (enabled);
 	getOutlineEditorBox ()   .set_visible (enabled);
@@ -2297,12 +2297,15 @@ BrowserWindow::set_arrow_button (const bool value)
 	getConfig () .setItem ("arrow", value);
 	getSelection () -> isEnabled (value);
 
-	getPlayPauseButton ()      .set_visible (value);
-	getSelectSeparator ()      .set_visible (value);
-	getSelectParentButton ()   .set_visible (value);
-	getSelectChildrenButton () .set_visible (value);
+	getPlayPauseButton ()       .set_visible (value);
+	getSelectSeparator ()       .set_visible (value);
+	getSelectParentButton ()    .set_visible (value);
+	getSelectChildrenButton ()  .set_visible (value);
+	getLookAtSelectionButton () .set_visible (isEditor () and value);
 
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
+
+	getBrowser () -> setLockViewer (value);
 }
 
 void
@@ -2767,39 +2770,37 @@ void
 BrowserWindow::on_viewer_clicked ()
 {
 	if (getLookAtButton () .get_active ())
-	{
-		getBrowser () -> setViewer (viewer);
-	}
+		setViewer (viewer);
 }
 
 void
 BrowserWindow::on_examine_viewer_activated ()
 {
-	getBrowser () -> setViewer (X3D::ViewerType::EXAMINE);
+	setViewer (X3D::ViewerType::EXAMINE);
 }
 
 void
 BrowserWindow::on_walk_viewer_activated ()
 {
-	getBrowser () -> setViewer (X3D::ViewerType::WALK);
+	setViewer (X3D::ViewerType::WALK);
 }
 
 void
 BrowserWindow::on_fly_viewer_activated ()
 {
-	getBrowser () -> setViewer (X3D::ViewerType::FLY);
+	setViewer (X3D::ViewerType::FLY);
 }
 
 void
 BrowserWindow::on_plane_viewer_activated ()
 {
-	getBrowser () -> setViewer (X3D::ViewerType::PLANE);
+	setViewer (X3D::ViewerType::PLANE);
 }
 
 void
 BrowserWindow::on_none_viewer_activated ()
 {
-	getBrowser () -> setViewer (X3D::ViewerType::NONE);
+	setViewer (X3D::ViewerType::NONE);
 }
 
 void
@@ -2857,12 +2858,12 @@ BrowserWindow::on_look_at_toggled ()
 	if (getLookAtButton () .get_active ())
 	{
 		if (getBrowser () -> getViewer () not_eq X3D::ViewerType::LOOKAT)
-			getBrowser () -> setViewer (X3D::ViewerType::LOOKAT);
+			setViewer (X3D::ViewerType::LOOKAT);
 	}
 	else
 	{
 		if (getBrowser () -> getViewer () not_eq viewer)
-			getBrowser () -> setViewer (viewer);
+			setViewer (viewer);
 	}
 }
 
