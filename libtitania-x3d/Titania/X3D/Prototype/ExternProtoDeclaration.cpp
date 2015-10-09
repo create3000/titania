@@ -74,7 +74,7 @@ ExternProtoDeclaration::ExternProtoDeclaration (X3DExecutionContext* const execu
    X3DProtoDeclarationNode (),
 	           X3DUrlObject (),
 	                  scene (),
-	              prototype (),
+	                  proto (),
 	                 future ()
 {
 	addType (X3DConstants::ExternProtoDeclaration);
@@ -82,7 +82,7 @@ ExternProtoDeclaration::ExternProtoDeclaration (X3DExecutionContext* const execu
 	addField (inputOutput, "metadata", metadata ());
 	url () .setName ("url");
 
-	addChildren (url (), scene, prototype);
+	addChildren (url (), scene, proto);
 }
 
 ExternProtoDeclaration*
@@ -200,36 +200,30 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 ExternProtoDeclaration::setProtodeclaration (ProtoDeclaration* value)
 {
-	prototype = value;
+	proto = value;
 
-	if (prototype)
+	if (not proto)
+	   return;
+	
+	for (const auto & fieldDefinition : getFieldDefinitions ())
 	{
-		for (const auto & fieldDefinition : getFieldDefinitions ())
+		try
 		{
-			try
-			{
-				X3DFieldDefinition* const protoField = prototype -> getField (fieldDefinition -> getName ());
+			X3DFieldDefinition* const protoField = proto -> getField (fieldDefinition -> getName ());
 
-				if (protoField -> getAccessType () == fieldDefinition -> getAccessType ())
-				{
-					if (protoField -> getType () == fieldDefinition -> getType ())
-					{
-						fieldDefinition -> set (*protoField);
-					}
-					else
-					{
-						__LOG__ << ("EXTERNPROTO '" + getName () + "' field '" + fieldDefinition -> getName () + "' and PROTO field have different types") << std::endl;
-					}
-				}
-				else
-				{
-					__LOG__ << ("EXTERNPROTO '" + getName () + "' field '" + fieldDefinition -> getName () + "' and PROTO field have different access types") << std::endl;
-				}
-			}
-			catch (const Error <INVALID_NAME> &)
+			if (protoField -> getAccessType () == fieldDefinition -> getAccessType ())
 			{
-				__LOG__ << ("EXTERNPROTO field '" + fieldDefinition -> getName () + "' not found in PROTO '" + prototype -> getName () + "'") << std::endl;
+				if (protoField -> getType () == fieldDefinition -> getType ())
+					fieldDefinition -> set (*protoField);
+				else
+					getBrowser () -> println ("EXTERNPROTO '", getName (), "' field '", fieldDefinition -> getName (), "' and PROTO field have different types.");
 			}
+			else
+				getBrowser () -> println ("EXTERNPROTO '", getName (), "' field '", fieldDefinition -> getName (),+ "' and PROTO field have different access types.");
+		}
+		catch (const Error <INVALID_NAME> &)
+		{
+			getBrowser () -> println ("EXTERNPROTO field '", fieldDefinition -> getName (), "' not found in PROTO '", proto -> getName (), "'.");
 		}
 	}
 }
@@ -238,8 +232,8 @@ ProtoDeclaration*
 ExternProtoDeclaration::getProtoDeclaration ()
 throw (Error <DISPOSED>)
 {
-	if (prototype)
-		return prototype;
+	if (proto)
+		return proto;
 	
 	throw Error <DISPOSED> ("No prototype declaration available.");
 }
@@ -247,12 +241,6 @@ throw (Error <DISPOSED>)
 void
 ExternProtoDeclaration::requestImmediateLoad ()
 {
-	if (X3D_PARALLEL and checkLoadState () == IN_PROGRESS_STATE)
-	{
-		future -> wait ();
-		return;
-	}
-
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 	
@@ -341,6 +329,29 @@ ExternProtoDeclaration::setScene (X3DScenePtr && value)
 
 		setProtodeclaration (nullptr);
 	}
+}
+
+void
+ExternProtoDeclaration::updateInterfaceAndInstances ()
+{
+	if (not proto)
+	   return;
+
+	const auto fieldDefinitions = getUserDefinedFields ();
+
+	for (const auto & fieldDefinition : fieldDefinitions)
+	{
+	   removeUserDefinedField (fieldDefinition -> getName ());
+	}
+	
+	for (const auto & fieldDefinition : proto -> getUserDefinedFields ())
+	{
+		addUserDefinedField (fieldDefinition -> getAccessType (),
+		                     fieldDefinition -> getName (),
+		                     fieldDefinition -> copy (FLAT_COPY));
+	}
+
+	updated () .processInterests ();
 }
 
 void

@@ -53,6 +53,9 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/X3DScene.h"
 
+#include <sys/types.h>
+#include <unistd.h>
+
 namespace titania {
 namespace X3D {
 
@@ -70,7 +73,7 @@ SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFS
 	                loader (nullptr, referer)
 	          
 {
-	getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::prepareEvents);
+	getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::prepareEvents, true);
 	getBrowser () -> addEvent ();
 }
 
@@ -80,7 +83,7 @@ SceneLoader::setExecutionContext (X3DExecutionContext* const executionContext)
 	getBrowser () -> prepareEvents () .removeInterest (this, &SceneLoader::prepareEvents);
 
 	browser = executionContext -> getBrowser ();
-	getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::prepareEvents);
+	getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::prepareEvents, true);
 	getBrowser () -> addEvent ();
 }
 
@@ -90,7 +93,7 @@ SceneLoader::wait ()
 	if (future .valid ())
 	{
 		future .wait ();
-		prepareEvents ();
+		prepareEvents (false);
 	}
 }
 
@@ -130,12 +133,13 @@ SceneLoader::loadAsync (const MFString & url)
 }
 
 void
-SceneLoader::prepareEvents ()
+SceneLoader::prepareEvents (const bool addEvent)
 {
 	if (isStopping ())
 		return;
 
-	getBrowser () -> addEvent ();
+	if (addEvent)
+		getBrowser () -> addEvent ();
 
 	if (not future .valid ())
 		return;

@@ -1,16 +1,26 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Thread/SceneLoader.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="2" Column="2" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="37" Column="37" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.h" Line="42" Column="42" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="2" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="23" Column="23" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="24" Column="24" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="2" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.h" Line="20" Column="20" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="21" Column="21" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Thread/SceneLoader.h" Line="31" Column="31" />
-      <File FileName="libtitania-x3d/Titania/X3D/Thread/SceneLoader.cpp" Line="2" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Thread/X3DInterruptibleFuture.h" Line="22" Column="22" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/MotionBlur.cpp" Line="2" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ExternProtoDeclaration.cpp" Line="30" Column="30" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp" Line="2" Column="2" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineTreeObserver.cpp" Line="61" Column="61" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.h" Line="6" Column="6" />
+      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ExternProtoDeclaration.h" Line="2" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Prototype/X3DProtoDeclarationNode.h" Line="32" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="13" Column="13" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="25" Column="25" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp" Line="33" Column="33" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.h" Line="26" Column="26" />
+      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ProtoDeclaration.h" Line="32" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ProtoDeclaration.cpp" Line="49" Column="49" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

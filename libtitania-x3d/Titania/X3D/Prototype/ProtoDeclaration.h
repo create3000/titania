@@ -221,6 +221,10 @@ public:
 	requestImmediateLoad () final override
 	{ }
 
+	virtual
+	void
+	updateInterfaceAndInstances () final override;
+
 	///  @name Input/Output
 
 	virtual

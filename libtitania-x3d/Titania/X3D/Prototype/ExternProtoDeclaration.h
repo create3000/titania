@@ -148,6 +148,10 @@ public:
 	void
 	requestAsyncLoad ();
 
+	virtual
+	void
+	updateInterfaceAndInstances () final override;
+
 	///  @name Input/Output
 
 	virtual
@@ -207,7 +211,7 @@ private:
 	///  @name Members
 
 	X3DScenePtr         scene;
-	ProtoDeclarationPtr prototype;
+	ProtoDeclarationPtr proto;
 
 	std::unique_ptr <SceneLoader> future;
 

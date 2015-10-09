@@ -528,6 +528,11 @@ protected:
 	throw (Error <INVALID_NAME>,
 	       Error <DISPOSED>);
 
+	///  Remove field @a name from the set of fields.
+	void
+	removeField (const std::string &)
+	throw (Error <DISPOSED>);
+
 	///  Returns an array of all fields with non default value.
 	FieldDefinitionArray
 	getChangedFields () const;
@@ -578,11 +583,6 @@ private:
 	///  Replace @a node by this node.
 	void
 	replace (X3DBaseNode* const);
-
-	///  Remove field @a name from the set of fields.
-	void
-	removeField (const std::string &)
-	throw (Error <DISPOSED>);
 
 	///  Remove field implementation.
 	void

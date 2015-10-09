@@ -139,7 +139,15 @@ private:
 	std::string
 	getSceneMenuLabelText (const X3D::X3DExecutionContextPtr & scene, const bool) const;
 
-	// Create Instance
+	// Proto and externproto
+
+	virtual
+	void
+	on_update_interface_and_instances_activated () final override;
+
+	virtual
+	void
+	on_request_immediate_load_activated () final override;
 
 	virtual
 	void

@@ -68,6 +68,8 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SetAsCurrentSceneMenuItem", m_SetAsCurrentSceneMenuItem);
 	m_builder -> get_widget ("SetAsCurrentSceneSeparatorMenuItem", m_SetAsCurrentSceneSeparatorMenuItem);
 	m_builder -> get_widget ("CreateInstanceMenuItem", m_CreateInstanceMenuItem);
+	m_builder -> get_widget ("RequestImmediateLoadMenuItem", m_RequestImmediateLoadMenuItem);
+	m_builder -> get_widget ("UpdateInterfaceAndInstancesMenuItem", m_UpdateInterfaceAndInstancesMenuItem);
 	m_builder -> get_widget ("CreateReferenceMenuItem", m_CreateReferenceMenuItem);
 	m_builder -> get_widget ("CreateReferenceMenu", m_CreateReferenceMenu);
 	m_builder -> get_widget ("RemoveReferenceMenuItem", m_RemoveReferenceMenuItem);
@@ -118,6 +120,8 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::MenuItem with id 'SetAsCurrentSceneMenuItem'.
 	m_SetAsCurrentSceneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_set_as_current_scene_activate));
 	m_CreateInstanceMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_instance_activate));
+	m_RequestImmediateLoadMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_request_immediate_load_activated));
+	m_UpdateInterfaceAndInstancesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_update_interface_and_instances_activated));
 	m_UnlinkCloneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_unlink_clone_activate));
 	m_CreateParentTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_transform_activate));
 	m_CreateParentGroupMenuItem1 -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_group_activate));

@@ -2758,10 +2758,9 @@ BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::ViewerType> & avai
 	getPlaneViewerMenuItem ()   .set_visible (plane);
 	getNoneViewerMenuItem ()    .set_visible (none);
 
-	getLookAtSelectionButton () .set_visible (dashboard or editor);
-	getLookAtSeparator ()       .set_visible (lookat);
-	getLookAtAllButton ()       .set_visible (lookat);
-	getLookAtButton ()          .set_visible (lookat);
+	getLookAtSeparator () .set_visible (lookat);
+	getLookAtAllButton () .set_visible (lookat);
+	getLookAtButton ()    .set_visible (lookat);
 }
 
 void

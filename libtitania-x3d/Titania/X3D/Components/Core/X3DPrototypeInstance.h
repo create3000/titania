@@ -267,6 +267,9 @@ private:
 	initialize () final override;
 
 	void
+	update ();
+
+	void
 	construct ();
 
 	///  @name Event handlers

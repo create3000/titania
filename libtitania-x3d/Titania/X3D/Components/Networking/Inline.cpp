@@ -298,12 +298,6 @@ Inline::requestAsyncLoad ()
 void
 Inline::requestImmediateLoad ()
 {
-	if (X3D_PARALLEL and checkLoadState () == IN_PROGRESS_STATE)
-	{
-		future -> wait ();
-		return;
-	}
-
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 

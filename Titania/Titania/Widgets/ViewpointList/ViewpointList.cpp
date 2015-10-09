@@ -196,8 +196,11 @@ ViewpointList::set_viewpoints ()
 	for (const auto & viewpoint : std::make_pair (getViewpoints () -> begin () + 1, getViewpoints () -> end ()))
 	{
 		if (userViewpoints and not viewpoint -> description () .length ())
+		{
+		   ++ index;
 			continue;
-
+		}
+		
 		auto name = viewpoint -> getName ();
 
 		X3D::RegEx::LastNumber_ .Replace ("", &name);

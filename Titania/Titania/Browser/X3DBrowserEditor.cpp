@@ -58,6 +58,7 @@
 #include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
 
+#include <Titania/X3D/Components/Core/MetadataSet.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
@@ -68,6 +69,7 @@
 #include <Titania/X3D/Components/Rendering/Coordinate.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
+#include <Titania/X3D/Execution/World.h>
 #include <Titania/X3D/Prototype/ProtoDeclaration.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 #include <Titania/X3D/InputOutput/GoldenGate.h>

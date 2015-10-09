@@ -85,7 +85,9 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	addChildren (getRootNodes (), protoNode, live);
 
-	for (const auto & userDefinedField : protoNode_ -> getUserDefinedFields ())
+	protoNode -> updated () .addInterest (this, &X3DPrototypeInstance::update);
+
+	for (const auto & userDefinedField : protoNode -> getUserDefinedFields ())
 	{
 		addField (userDefinedField -> getAccessType (),
 		          userDefinedField -> getName (),
@@ -106,11 +108,13 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	}
 	else
 	{
-		ProtoDeclaration* const prototype = protoNode -> getProtoDeclaration ();
+		ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
 
-		importExternProtos (prototype);
-		importProtos (prototype);
-		copyRootNodes (prototype);
+		metadata () = proto -> metadata ();
+
+		importExternProtos (proto);
+		importProtos (proto);
+		copyRootNodes (proto);
 	}
 
 	getRootNodes () .setAccessType (initializeOnly);
@@ -119,66 +123,84 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 }
 
 void
+X3DPrototypeInstance::update ()
+{
+	X3DExecutionContext::dispose ();
+
+	try
+	{
+		for (const auto fieldDefinition : protoNode -> getUserDefinedFields ())
+		   removeField (fieldDefinition -> getName ());
+
+		for (const auto fieldDefinition : protoNode -> getProtoDeclaration () -> getUserDefinedFields ())
+		   removeField (fieldDefinition -> getName ());
+	}
+	catch (const X3DError & error)
+	{
+	   getBrowser () -> print (error .what ());
+	}
+
+	construct ();
+}
+
+void
 X3DPrototypeInstance::construct ()
 {
 	try
 	{
-		const auto externproto = static_cast <ExternProtoDeclaration*> (protoNode .getValue ());
-		externproto -> getInternalScene () .removeInterest (this, &X3DPrototypeInstance::construct);
-		
+	   if (protoNode -> isExternproto ())
+	   {
+			const auto externproto = static_cast <ExternProtoDeclaration*> (protoNode .getValue ());
+
+			externproto -> getInternalScene () .removeInterest (this, &X3DPrototypeInstance::construct);
+		}
+
 		// Interface
 
-		ProtoDeclaration* const prototype = protoNode -> getProtoDeclaration ();
+		ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
 
-		metadata () = prototype -> metadata ();
+		const auto & fieldDefinitions = proto -> getFieldDefinitions ();
 
-		// If extern proto then assign proto seted fields to this node.
-
-		if (protoNode -> isExternproto ())
+		for (const auto fieldDefinition : fieldDefinitions)
 		{
-			const auto & fieldDefinitions = prototype -> getFieldDefinitions ();
-
-			for (const auto fieldDefinition : fieldDefinitions)
+			try
 			{
-				try
-				{
-					const auto protoField = protoNode -> getField (fieldDefinition -> getName ());
-					const auto field      = getField (fieldDefinition -> getName ());
+				const auto protoField = proto -> getField (fieldDefinition -> getName ());
+				const auto field      = getField (fieldDefinition -> getName ());
 
-					// Return if something is wrong.
-					if (field -> getAccessType () != protoField -> getAccessType ())
-						continue;
+				// Return if something is wrong.
+				if (field -> getAccessType () != protoField -> getAccessType ())
+					continue;
 
-					// Return if something is wrong.
-					if (field -> getType () != protoField -> getType ())
-						continue;
+				// Return if something is wrong.
+				if (field -> getType () != protoField -> getType ())
+					continue;
 
-					// Continue if field is eventIn or eventOut.
-					if (not (field -> getAccessType () & initializeOnly))
-						continue;
+				// Continue if field is eventIn or eventOut.
+				if (not (field -> getAccessType () & initializeOnly))
+					continue;
 
-					// Is set during parse.
-					if (field -> isSet ())
-						continue;
+				// Is set during parse.
+				if (field -> isSet ())
+					continue;
 
-					field -> set (*protoField);
-				}
-				catch (const X3DError &)
-				{
-					// Definition exists in proto but does not exist in extern proto.
+				field -> set (*protoField);
+			}
+			catch (const X3DError &)
+			{
+				// Definition exists in proto but does not exist in extern proto.
 
-					addField (fieldDefinition -> getAccessType (),
-					          fieldDefinition -> getName (),
-					          *fieldDefinition -> copy (FLAT_COPY));
-				}
+				addField (fieldDefinition -> getAccessType (),
+				          fieldDefinition -> getName (),
+				          *fieldDefinition -> copy (FLAT_COPY));
 			}
 		}
 
 		// Assign protos and root nodes
 
-		importExternProtos (prototype); // XXX: deletable if all get/set are virtual
-		importProtos (prototype);       // XXX: deletable if all get/set are virtual
-		copyRootNodes (prototype);
+		importExternProtos (proto); // XXX: deletable if all get/set are virtual
+		importProtos (proto);       // XXX: deletable if all get/set are virtual
+		copyRootNodes (proto);
 	}
 	catch (const X3DError & error)
 	{
@@ -211,10 +233,10 @@ X3DPrototypeInstance::initialize ()
 {
 	try
 	{
-		ProtoDeclaration* const prototype = protoNode -> getProtoDeclaration ();
+		ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
 
-		copyImportedNodes (prototype);
-		copyRoutes (prototype);
+		copyImportedNodes (proto);
+		copyRoutes (proto);
 
 		getExecutionContext () -> isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
 		X3DBaseNode::isLive () .addInterest (this, &X3DPrototypeInstance::set_live);

@@ -35,6 +35,22 @@
       </object>
     </child>
     <child>
+      <object class="GtkMenuItem" id="RequestImmediateLoadMenuItem">
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Request Immediate Load</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="on_request_immediate_load_activated" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="UpdateInterfaceAndInstancesMenuItem">
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Update Interface and Instances</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="on_update_interface_and_instances_activated" swapped="no"/>
+      </object>
+    </child>
+    <child>
       <object class="GtkMenuItem" id="CreateReferenceMenuItem">
         <property name="visible">True</property>
         <property name="can_focus">False</property>

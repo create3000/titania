@@ -97,6 +97,14 @@ public:
 	void
 	requestImmediateLoad () = 0;
 
+	virtual
+	void
+	updateInterfaceAndInstances () = 0;
+
+	const Output &
+	updated () const
+	{ return updatedOutput; }
+
 	///  @name Comment handling
 
 	void
@@ -113,8 +121,9 @@ protected:
 	///  @name Construction
 
 	X3DProtoDeclarationNode () :
-		 X3DNode (),
-		comments ()
+		      X3DNode (),
+		updatedOutput (),
+		     comments ()
 	{
 		addType (X3DConstants::X3DProtoDeclarationNode);
 	}
@@ -123,6 +132,7 @@ private:
 
 	///  @name Members
 
+	Output                    updatedOutput;
 	std::vector <std::string> comments;
 
 };

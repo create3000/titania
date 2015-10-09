@@ -110,6 +110,14 @@ public:
 	{ return *m_CreateInstanceMenuItem; }
 
 	Gtk::MenuItem &
+	getRequestImmediateLoadMenuItem () const
+	{ return *m_RequestImmediateLoadMenuItem; }
+
+	Gtk::MenuItem &
+	getUpdateInterfaceAndInstancesMenuItem () const
+	{ return *m_UpdateInterfaceAndInstancesMenuItem; }
+
+	Gtk::MenuItem &
 	getCreateReferenceMenuItem () const
 	{ return *m_CreateReferenceMenuItem; }
 
@@ -303,6 +311,14 @@ public:
 
 	virtual
 	void
+	on_request_immediate_load_activated () = 0;
+
+	virtual
+	void
+	on_update_interface_and_instances_activated () = 0;
+
+	virtual
+	void
 	on_unlink_clone_activate () = 0;
 
 	virtual
@@ -459,6 +475,8 @@ private:
 	Gtk::MenuItem*                  m_SetAsCurrentSceneMenuItem;
 	Gtk::SeparatorMenuItem*         m_SetAsCurrentSceneSeparatorMenuItem;
 	Gtk::MenuItem*                  m_CreateInstanceMenuItem;
+	Gtk::MenuItem*                  m_RequestImmediateLoadMenuItem;
+	Gtk::MenuItem*                  m_UpdateInterfaceAndInstancesMenuItem;
 	Gtk::MenuItem*                  m_CreateReferenceMenuItem;
 	Gtk::Menu*                      m_CreateReferenceMenu;
 	Gtk::MenuItem*                  m_RemoveReferenceMenuItem;

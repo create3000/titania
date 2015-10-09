@@ -114,7 +114,7 @@ private:
 	loadAsync (const MFString &);
 
 	void
-	prepareEvents ();
+	prepareEvents (const bool);
 
 	std::atomic <X3DBrowser*> browser;
 	const basic::uri          referer;

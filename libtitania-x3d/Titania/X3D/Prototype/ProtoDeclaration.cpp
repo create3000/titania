@@ -175,6 +175,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
+ProtoDeclaration::updateInterfaceAndInstances ()
+{
+
+}
+
+void
 ProtoDeclaration::toStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());

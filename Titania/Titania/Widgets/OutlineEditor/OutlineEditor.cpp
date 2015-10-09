@@ -445,8 +445,57 @@ OutlineEditor::getSceneMenuLabelText (const X3D::X3DExecutionContextPtr & scene,
 }
 
 void
+OutlineEditor::on_request_immediate_load_activated ()
+{
+	if (nodePath .empty ())
+		return;
+
+	const auto iter = treeView -> get_model () -> get_iter (nodePath);
+
+	switch (treeView -> get_data_type (iter))
+	{
+		case OutlineIterType::ExternProtoDeclaration:
+		{
+			const auto & sfnode    = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   protoNode = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
+
+			protoNode -> url () .addEvent ();
+		}
+		default:
+			break;
+	}
+}
+
+
+void
+OutlineEditor::on_update_interface_and_instances_activated ()
+{
+	if (nodePath .empty ())
+		return;
+
+	const auto iter = treeView -> get_model () -> get_iter (nodePath);
+
+	switch (treeView -> get_data_type (iter))
+	{
+		case OutlineIterType::ExternProtoDeclaration:
+		case OutlineIterType::ProtoDeclaration:
+		{
+			const auto & sfnode    = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   protoNode = dynamic_cast <X3D::X3DProtoDeclarationNode*> (sfnode .getValue ());
+
+			protoNode -> updateInterfaceAndInstances ();
+		}
+		default:
+			break;
+	}
+}
+
+void
 OutlineEditor::OutlineEditor::on_create_instance_activate ()
 {
+	if (nodePath .empty ())
+		return;
+
 	const Gtk::TreeIter iter = treeView -> get_model () -> get_iter (nodePath);
 
 	switch (treeView -> get_data_type (iter))
@@ -1191,12 +1240,14 @@ OutlineEditor::selectNode (const double x, const double y)
 		}
 	}
 
-	getSetAsCurrentSceneMenuItem () .set_visible (isExternProto or isPrototype or isPrototypeInstance or isInlineNode or not isLocalNode);
-	getCreateInstanceMenuItem ()    .set_visible (not inPrototypeInstance () and isLocalNode and (isPrototype or isExternProto));
-	getUnlinkCloneMenuItem ()       .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode and isCloned);
-	getCreateParentGroupMenuItem () .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode); // XXX: and is X3DChildNode
-	getRemoveParentMenuItem ()      .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode and nodePath .size () > 1);
-	getRemoveMenuItem ()            .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode);
+	getSetAsCurrentSceneMenuItem ()           .set_visible (isExternProto or isPrototype or isPrototypeInstance or isInlineNode or not isLocalNode);
+	getCreateInstanceMenuItem ()              .set_visible (not inPrototypeInstance () and isLocalNode and (isPrototype or isExternProto));
+	//getRequestImmediateLoadMenuItem ()        .set_visible (not inPrototypeInstance () and isLocalNode and (isExternProto));
+	//getUpdateInterfaceAndInstancesMenuItem () .set_visible (not inPrototypeInstance () and isLocalNode and (isPrototype or isExternProto));
+	getUnlinkCloneMenuItem ()                 .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode and isCloned);
+	getCreateParentGroupMenuItem ()           .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode); // XXX: and is X3DChildNode
+	getRemoveParentMenuItem ()                .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode and nodePath .size () > 1);
+	getRemoveMenuItem ()                      .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode);
 }
 
 void
