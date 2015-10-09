@@ -574,7 +574,7 @@ throw (Error <INVALID_NODE>,
 	if (names [1] .empty ())
 		throw Error <INVALID_NAME> ("X3DNode::getMetadataSet: invalid key.");
 
-	auto metadataSet = dynamic_cast <MetadataSet*> (metadata () .getValue ());
+	auto metadataSet = x3d_cast <MetadataSet*> (metadata ());
 
 	if (not metadataSet or metadataSet -> name () not_eq names [1])
 	{

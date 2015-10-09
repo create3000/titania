@@ -84,6 +84,8 @@ class X3DBrowserWindow :
 {
 public:
 
+	using X3DBrowserEditor::getWorldInfo;
+
 	/// @name Member access
 
 	X3D::Keys &
@@ -100,6 +102,11 @@ public:
 	bool
 	hasAccelerators () const
 	{ return accelerators; }
+
+	virtual
+	X3D::WorldInfoPtr
+	getWorldInfo (const bool)
+	throw (X3D::Error <X3D::NOT_SUPPORTED>) final override;
 
 	void
 	hasGridTool (const bool);
@@ -118,11 +125,6 @@ public:
 
 	const X3D::X3DPtr <X3D::AngleTool> &
 	getAngleTool () const;
-
-	virtual
-	X3D::WorldInfoPtr
-	getWorldInfo (const bool = false) const
-	throw (X3D::Error <X3D::NOT_SUPPORTED>) final override;
 
 	/// @name Operations
 
@@ -152,6 +154,7 @@ protected:
 	virtual
 	void
 	setBrowser (const X3D::BrowserPtr &) override;
+
 
 
 private:

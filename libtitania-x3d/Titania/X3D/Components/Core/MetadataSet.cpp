@@ -146,10 +146,18 @@ MetadataSet::setValue (X3DMetadataObject* const metadataObject, const std::strin
 void
 MetadataSet::addValue (const SFNode & node)
 {
-	const auto metadataObject = dynamic_cast <X3DMetadataObject*> (node .getValue ());
+	const auto metadataObject = x3d_cast <X3DMetadataObject*> (node);
 
-	if (metadataObject)
-		metadataIndex .emplace (metadataObject -> name (), metadataObject) .first -> second .addParent (this);
+	if (not metadataObject)
+	   return;
+
+	if (metadataObject -> reference () .empty ())
+		metadataObject -> reference () = getBrowser () -> getProviderUrl ();
+
+	if (metadataObject -> reference () not_eq getBrowser () -> getProviderUrl ())
+		return;
+
+	metadataIndex .emplace (metadataObject -> name (), metadataObject) .first -> second .addParent (this);
 }
 
 void

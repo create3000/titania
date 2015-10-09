@@ -100,7 +100,7 @@ AngleTool::isEnabled (const bool value, const bool metadata)
 
 	if (metadata)
 	{
-		getWorldInfo (true) -> setMetaData <bool> ("/Titania/AngleGrid/enabled", enabled);
+		createWorldInfo () -> setMetaData <bool> ("/titania/angleGrid/enabled", enabled);
 		getBrowserWindow () -> isModified (getBrowser (), true);
 	}
 }
@@ -137,7 +137,7 @@ AngleTool::set_scene ()
 {
 	try
 	{
-		isEnabled (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/AngleGrid/enabled", false) .at (0), false);
+		isEnabled (getWorldInfo () -> getMetaData <X3D::MFBool> ("/titania/angleGrid/enabled", false) .at (0), false);
 	}
 	catch (...)
 	{
@@ -180,7 +180,7 @@ AngleTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/AngleGrid/translation", false);
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/titania/angleGrid/translation", false);
 
 		getTool () -> translation () = X3D::Vector3f (v .at (0), v .at (1), v .at (2));
 	}
@@ -191,7 +191,7 @@ AngleTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/AngleGrid/rotation", false);
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/titania/angleGrid/rotation", false);
 
 		getTool () -> rotation () = X3D::Rotation4f (v .at (0), v .at (1), v .at (2), v .at (3));
 	}
@@ -202,7 +202,7 @@ AngleTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/AngleGrid/scale", false);
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/titania/angleGrid/scale", false);
 
 		getTool () -> scale () = X3D::Vector3f (v .at (0), v .at (1), v .at (2));
 	}
@@ -213,7 +213,7 @@ AngleTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/AngleGrid/dimension", false);
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/titania/angleGrid/dimension", false);
 
 		getTool () -> dimension () = v;
 
@@ -233,7 +233,7 @@ AngleTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/AngleGrid/majorLineEvery", false);
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/titania/angleGrid/majorLineEvery", false);
 
 		getTool () -> majorLineEvery () = v;
 	}
@@ -244,7 +244,7 @@ AngleTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/AngleGrid/majorLineOffset", false);
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/titania/angleGrid/majorLineOffset", false);
 
 		getTool () -> majorLineOffset () = v;
 	}
@@ -255,7 +255,7 @@ AngleTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/AngleGrid/color", false);
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/titania/angleGrid/color", false);
 
 		getTool () -> color () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
 	}
@@ -266,7 +266,7 @@ AngleTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/AngleGrid/lineColor", false);
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/titania/angleGrid/lineColor", false);
 
 		getTool () -> lineColor () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
 	}
@@ -277,7 +277,7 @@ AngleTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/AngleGrid/majorLineColor", false);
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/titania/angleGrid/majorLineColor", false);
 
 		getTool () -> majorLineColor () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
 	}
@@ -290,63 +290,63 @@ AngleTool::configure ()
 void
 AngleTool::set_translation ()
 {
-	getWorldInfo (true) -> setMetaData <X3D::Vector3f> ("/Titania/AngleGrid/translation", getTool () -> translation ());
+	createWorldInfo () -> setMetaData <X3D::Vector3f> ("/titania/angleGrid/translation", getTool () -> translation ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
 AngleTool::set_rotation ()
 {
-	getWorldInfo (true) -> setMetaData <X3D::Rotation4f> ("/Titania/AngleGrid/rotation", getTool () -> rotation ());
+	createWorldInfo () -> setMetaData <X3D::Rotation4f> ("/titania/angleGrid/rotation", getTool () -> rotation ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
 AngleTool::set_scale ()
 {
-	getWorldInfo (true) -> setMetaData <X3D::Vector3f> ("/Titania/AngleGrid/scale", getTool () -> scale ());
+	createWorldInfo () -> setMetaData <X3D::Vector3f> ("/titania/angleGrid/scale", getTool () -> scale ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
 AngleTool::set_dimension ()
 {
-	getWorldInfo (true) -> setMetaData ("/Titania/AngleGrid/dimension", getTool () -> dimension ());
+	createWorldInfo () -> setMetaData ("/titania/angleGrid/dimension", getTool () -> dimension ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
 AngleTool::set_majorLineEvery ()
 {
-	getWorldInfo (true) -> setMetaData ("/Titania/AngleGrid/majorLineEvery", getTool () -> majorLineEvery ());
+	createWorldInfo () -> setMetaData ("/titania/angleGrid/majorLineEvery", getTool () -> majorLineEvery ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
 AngleTool::set_majorLineOffset ()
 {
-	getWorldInfo (true) -> setMetaData ("/Titania/AngleGrid/majorLineOffset", getTool () -> majorLineOffset ());
+	createWorldInfo () -> setMetaData ("/titania/angleGrid/majorLineOffset", getTool () -> majorLineOffset ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
 AngleTool::set_color ()
 {
-	getWorldInfo (true) -> setMetaData <X3D::Color4f> ("/Titania/AngleGrid/color", getTool () -> color ());
+	createWorldInfo () -> setMetaData <X3D::Color4f> ("/titania/angleGrid/color", getTool () -> color ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
 AngleTool::set_lineColor ()
 {
-	getWorldInfo (true) -> setMetaData <X3D::Color4f> ("/Titania/AngleGrid/lineColor", getTool () -> lineColor ());
+	createWorldInfo () -> setMetaData <X3D::Color4f> ("/titania/angleGrid/lineColor", getTool () -> lineColor ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
 AngleTool::set_majorLineColor ()
 {
-	getWorldInfo (true) -> setMetaData <X3D::Color4f> ("/Titania/AngleGrid/majorLineColor", getTool () -> majorLineColor ());
+	createWorldInfo () -> setMetaData <X3D::Color4f> ("/titania/angleGrid/majorLineColor", getTool () -> majorLineColor ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 

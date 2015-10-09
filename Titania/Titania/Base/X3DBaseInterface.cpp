@@ -144,7 +144,21 @@ X3DBaseInterface::inPrototypeInstance () const
 }
 
 X3D::WorldInfoPtr
-X3DBaseInterface::getWorldInfo (const bool create) const
+X3DBaseInterface::createWorldInfo ()
+throw (X3D::Error <X3D::NOT_SUPPORTED>)
+{
+	return getWorldInfo (true);
+}
+
+X3D::WorldInfoPtr
+X3DBaseInterface::getWorldInfo () const
+throw (X3D::Error <X3D::NOT_SUPPORTED>)
+{
+	return const_cast <X3DBaseInterface*> (this) -> getWorldInfo (false);
+}
+
+X3D::WorldInfoPtr
+X3DBaseInterface::getWorldInfo (const bool create)
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
 	return browserWindow -> getWorldInfo (create);

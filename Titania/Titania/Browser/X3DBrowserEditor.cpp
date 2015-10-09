@@ -59,6 +59,7 @@
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
 
 #include <Titania/X3D/Components/Core/MetadataSet.h>
+#include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
@@ -511,6 +512,17 @@ X3DBrowserEditor::getImportedRoutes (const X3D::X3DExecutionContextPtr & executi
 bool
 X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, const bool copy)
 {
+	if (true)
+	{
+		const auto worldInfo      = createWorldInfo ();
+		const auto navigationInfo = worldInfo -> createMetaData <X3D::MetadataSet> ("/titania/navigationInfo");
+		const auto viewpoint      = worldInfo -> createMetaData <X3D::MetadataSet> ("/titania/viewpoint");
+		const auto activeLayer    = getWorld () -> getLayerSet () -> getActiveLayer ();
+
+		navigationInfo -> value () = { activeLayer -> getNavigationInfo () };
+		viewpoint -> value ()      = { activeLayer -> getViewpoint () };
+	}
+
 	if (X3DBrowserWidget::save (worldURL, compressed, copy))
 	{
 		if (not copy)

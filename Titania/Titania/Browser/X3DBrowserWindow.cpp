@@ -169,7 +169,7 @@ X3DBrowserWindow::getAngleTool () const
 }
 
 X3D::WorldInfoPtr
-X3DBrowserWindow::getWorldInfo (const bool create) const
+X3DBrowserWindow::getWorldInfo (const bool create)
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
 	auto worldInfo = getRootContext () -> getWorldInfo ();

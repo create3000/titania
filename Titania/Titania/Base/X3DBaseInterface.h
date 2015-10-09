@@ -127,9 +127,17 @@ public:
 	bool
 	inPrototypeInstance () const;
 
+	X3D::WorldInfoPtr
+	createWorldInfo ()
+	throw (X3D::Error <X3D::NOT_SUPPORTED>);
+
+	X3D::WorldInfoPtr
+	getWorldInfo () const
+	throw (X3D::Error <X3D::NOT_SUPPORTED>);
+
 	virtual
 	X3D::WorldInfoPtr
-	getWorldInfo (const bool = false) const
+	getWorldInfo (const bool)
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
 
 	/***

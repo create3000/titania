@@ -102,7 +102,7 @@ public:
 
 	template <class Type>
 	Type &
-	getMetaData (const std::string &, const bool = false)
+	getMetaData (const std::string &, const bool)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <DISPOSED>);
