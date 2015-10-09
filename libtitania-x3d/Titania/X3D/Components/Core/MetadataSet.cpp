@@ -75,8 +75,7 @@ MetadataSet::MetadataSet (X3DExecutionContext* const executionContext) :
 	          X3DNode (),
 	X3DMetadataObject (),
 	           fields (),
-	         setIndex (),
-	       fieldIndex ()
+	      metadataSet ()
 {
 	addType (X3DConstants::MetadataSet);
 
@@ -101,36 +100,6 @@ MetadataSet::initialize ()
 	value () .addInterest (this, &MetadataSet::set_value);
 
 	set_value ();
-}
-
-const X3DPtr <MetadataSet> &
-MetadataSet::getSet (const std::string & name, const bool create)
-throw (Error <INVALID_NAME>,
-       Error <DISPOSED>)
-{
-	try
-	{
-		return setIndex .at (name);
-	}
-	catch (...)
-	{
-		if (not create)
-			throw Error <INVALID_NAME> ("MetadataSet::getSet: Invalid name.");
-
-		removeMetaData (name);
-
-		const auto set = new MetadataSet (getExecutionContext ());
-
-		value () .emplace_back (set);
-
-		auto & node = setIndex .emplace (name, set) .first -> second;
-
-		node .addParent (set);
-		node -> setup ();
-		node -> name () = name;
-
-		return node;
-	}
 }
 
 template <>
@@ -288,15 +257,46 @@ throw (Error <DISPOSED>)
 	addMetaData (value () .back ());
 }
 
+template <>
+void
+MetadataSet::setMetaData <MFNode> (const std::string & name, const MFNode & nodes)
+throw (Error <DISPOSED>)
+{
+	try
+	{
+		getMetaData <MFNode> (name) = nodes;
+		return;
+	}
+	catch (const Error <INVALID_FIELD> &)
+	{
+		removeMetaData (name);
+	}
+	catch (const Error <INVALID_NAME> &)
+	{ }
+	catch (...)
+	{
+		throw;
+	}
+
+	const auto node = new MetadataString (getExecutionContext ());
+
+	node -> setup ();
+	node -> name ()  = name;
+	node -> value () = nodes;
+
+	value () .emplace_back (node);
+	addMetaData (value () .back ());
+}
+
 X3DFieldDefinition*
 MetadataSet::getMetaData (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto iter = fieldIndex .find (name);
+	const auto iter = metadataSet .find (name);
 
-	if (iter not_eq fieldIndex .end ())
-		return iter -> second;
+	if (iter not_eq metadataSet .end ())
+		return iter -> second -> getField ("value");
 
 	throw Error <INVALID_NAME> ("MetadataSet::getMetaData: Invalid name.");
 }
@@ -321,40 +321,18 @@ throw (Error <DISPOSED>)
 void
 MetadataSet::addMetaData (const SFNode & node)
 {
-	const auto metadata = x3d_cast <X3DMetadataObject*> (node);
+	const auto metadataObject = dynamic_cast <X3DMetadataObject*> (node .getValue ());
 
-	if (not metadata)
-		return;
-
-	if (metadata == this)
-		return;
-
-	const auto set = dynamic_cast <MetadataSet*> (metadata);
-
-	if (set)
-	{
-		setIndex .emplace (set -> name (), set) .first -> second .addParent (this);
-		return;
-	}
-
-	if (metadata -> name () .empty ())
-		return;
-
-	const auto field = metadata -> getField ("value");
-
-	field -> addParent (this);
-
-	fieldIndex .emplace (metadata -> name (), field);
+	if (metadataObject)
+		metadataSet .emplace (metadataObject -> name (), metadataObject) .first -> second .addParent (this);
 }
 
 void
 MetadataSet::removeMetaData ()
 throw (Error <DISPOSED>)
 {
-	setIndex .clear ();
-
-	for (const auto & pair : fieldIndex)
-		pair .second -> removeParent (this);
+	for (const auto & pair : metadataSet)
+		metadataSet .second -> removeParent (this);
 
 	fieldIndex .clear ();
 }

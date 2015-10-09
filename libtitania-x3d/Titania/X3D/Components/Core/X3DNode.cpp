@@ -650,6 +650,9 @@ X3DNode::fieldToMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3
 		}
 		case X3D::X3DConstants::SFNode:
 		{
+			const auto & field = static_cast <const SFNode &> (*fieldDefinition);
+		
+			metadataSetNode -> setMetaData (field .getName (), MFNode ({ field }));
 			break;
 		}
 		case X3D::X3DConstants::SFRotation:
@@ -887,6 +890,9 @@ X3DNode::fieldToMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3
 		}
 		case X3D::X3DConstants::MFNode:
 		{
+			const auto & field = static_cast <const MFNode &> (*fieldDefinition);
+		
+			metadataSetNode -> setMetaData (field .getName (), field);
 			break;
 		}
 		case X3D::X3DConstants::MFRotation:

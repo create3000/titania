@@ -102,11 +102,6 @@ public:
 	
 	///  @name Member access
 
-	const X3DPtr <MetadataSet> &
-	getSet (const std::string & name, const bool = false)
-	throw (Error <INVALID_NAME>,
-          Error <DISPOSED>);
-
 	template <class Type>
 	void
 	setMetaData (const std::string & name, const Type & value)
@@ -181,8 +176,7 @@ private:
 
 	Fields fields;
 
-	std::map <std::string, X3DPtr <MetadataSet>> setIndex;
-	std::map <std::string, X3DFieldDefinition*>  fieldIndex;
+	std::map <std::string, X3DPtr <X3DMetadataObject>> metadataSet;
 
 };
 
@@ -215,6 +209,11 @@ throw (Error <DISPOSED>);
 template <>
 void
 MetadataSet::setMetaData <MFString> (const std::string &, const MFString &)
+throw (Error <DISPOSED>);
+
+template <>
+void
+MetadataSet::setMetaData <MFNode> (const std::string &, const MFNode &)
 throw (Error <DISPOSED>);
 
 ///  Return the field with @a name.
