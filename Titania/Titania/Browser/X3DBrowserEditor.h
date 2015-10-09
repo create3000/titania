@@ -353,6 +353,9 @@ private:
 	set_shutdown ();
 
 	void
+	set_executionContext ();
+
+	void
 	set_selection_active (const bool);
 
 	void

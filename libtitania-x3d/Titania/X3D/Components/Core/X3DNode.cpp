@@ -90,7 +90,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> createValue <MetadataBoolean> (names .back ());
@@ -103,7 +103,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> createValue <MetadataDouble> (names .back ());
@@ -116,7 +116,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> createValue <MetadataFloat> (names .back ());
@@ -129,7 +129,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> createValue <MetadataInteger> (names .back ());
@@ -142,7 +142,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> createValue <MetadataString> (names .back ());
@@ -155,7 +155,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> createValue <MetadataSet> (names .back ());
@@ -174,7 +174,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> getValue <MetadataBoolean> (names .back ());
@@ -187,7 +187,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> getValue <MetadataDouble> (names .back ());
@@ -200,7 +200,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> getValue <MetadataFloat> (names .back ());
@@ -213,7 +213,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> getValue <MetadataInteger> (names .back ());
@@ -226,7 +226,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> getValue <MetadataString> (names .back ());
@@ -239,7 +239,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> getValue <MetadataSet> (names .back ());
@@ -407,7 +407,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, true);
 
 	metadataSet -> createValue <MetadataBoolean> (names .back ()) -> value () = value;
@@ -420,7 +420,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, true);
 
 	metadataSet -> createValue <MetadataDouble> (names .back ()) -> value () = value;
@@ -433,7 +433,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, true);
 
 	metadataSet -> createValue <MetadataFloat> (names .back ()) -> value () = value;
@@ -446,7 +446,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, true);
 
 	metadataSet -> createValue <MetadataInteger> (names .back ()) -> value () = value;
@@ -459,7 +459,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, true);
 
 	metadataSet -> createValue <MetadataString> (names .back ()) -> value () = value;
@@ -472,7 +472,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, create);
 
 	if (create)
@@ -488,7 +488,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, create);
 
 	if (create)
@@ -504,7 +504,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, create);
 
 	if (create)
@@ -520,7 +520,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, create);
 
 	if (create)
@@ -536,7 +536,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, "/");
+	const auto names       = basic::split (key, ".");
 	const auto metadataSet = getMetadataSet (names, create);
 
 	if (create)
@@ -609,7 +609,7 @@ void
 X3DNode::removeMetaData (const std::string & key)
 throw (Error <DISPOSED>)
 {
-	auto names = basic::split (key, "/");
+	auto names = basic::split (key, ".");
 
 	if (not names .empty () and not names .front () .empty ())
 		throw Error <INVALID_NAME> ("X3DNode::removeMetaData: Invalid key.");
@@ -689,8 +689,11 @@ X3DNode::toMetaData () const
 {
 	auto metadataSetNode = getExecutionContext () -> createNode <MetadataSet> ();
 
+	metadataSetNode -> name () = getName ();
+	metadataSetNode -> createValue <MetadataString> ("TypeName") -> value () = { getTypeName () };
+
 	for (const auto & fieldDefinition : getChangedFields ())
-	   fieldToMetaData (metadataSetNode, fieldDefinition);
+		fieldToMetaData (metadataSetNode, fieldDefinition);
 
 	return metadataSetNode;
 }

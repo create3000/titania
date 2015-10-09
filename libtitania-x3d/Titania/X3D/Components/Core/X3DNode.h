@@ -184,17 +184,18 @@ protected:
 
 private:
 
-	///  @name Member access
+	///  @name Metadata handling
 
 	MetadataSet*
 	getMetadataSet (const std::deque <std::string> &, const bool = false) const
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <DISPOSED>);
-	
+
+	virtual
 	void
 	fieldToMetaData (const X3DPtr <MetadataSet> &, const X3DFieldDefinition* const) const;
-
+	
 	///  @name Static members
 
 	static Matrix4fStack modelViewMatrix;

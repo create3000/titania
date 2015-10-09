@@ -58,6 +58,7 @@
 #include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
 
+#include <Titania/X3D/Components/Core/MetadataDouble.h>
 #include <Titania/X3D/Components/Core/MetadataSet.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
@@ -104,6 +105,7 @@ X3DBrowserEditor::initialize ()
 {
 	X3DBrowserWidget::initialize ();
 
+	getExecutionContext () .addInterest (this, &X3DBrowserEditor::set_executionContext);
 	getBrowserWindow () -> getSelection () -> isActive () .addInterest (this, &X3DBrowserEditor::set_selection_active);
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DBrowserEditor::set_selection);
 }
@@ -167,6 +169,38 @@ X3DBrowserEditor::set_shutdown ()
 
 	else                                     // Cancel shutdown
 		setExecutionContext (getExecutionContext ());
+}
+	
+void
+X3DBrowserEditor::set_executionContext ()
+{
+	try
+	{
+		const auto worldInfo      = getWorldInfo ();
+		const auto navigationInfo = worldInfo -> getMetaData <X3D::MetadataSet> (".titania.navigationInfo");
+
+		X3D::X3DPtr <X3D::X3DBindableNode> bindableNode (navigationInfo -> value () .get1Value (0));
+		   
+		if (bindableNode)
+			bindableNode -> set_bind () = true;
+	}
+	catch (const X3D::X3DError &)
+	{ }
+
+	try
+	{
+		const auto worldInfo = getWorldInfo ();
+		const auto viewpoint = worldInfo -> getMetaData <X3D::MetadataSet> (".titania.viewpoint");
+
+
+
+		X3D::X3DPtr <X3D::X3DBindableNode> bindableNode (viewpoint -> value () .get1Value (0));
+		   
+		if (bindableNode)
+			bindableNode -> set_bind () = true;
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void
@@ -514,13 +548,28 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 {
 	if (true)
 	{
-		const auto worldInfo      = createWorldInfo ();
-		const auto navigationInfo = worldInfo -> createMetaData <X3D::MetadataSet> ("/titania/navigationInfo");
-		const auto viewpoint      = worldInfo -> createMetaData <X3D::MetadataSet> ("/titania/viewpoint");
-		const auto activeLayer    = getWorld () -> getLayerSet () -> getActiveLayer ();
+		const auto   worldInfo      = createWorldInfo ();
+		const auto & activeLayer    = getWorld () -> getActiveLayer ();
+		const auto   navigationInfo = worldInfo -> createMetaData <X3D::MetadataSet> (".titania.navigationInfo");
+		const auto   metadataSet    = activeLayer -> getNavigationInfo () -> toMetaData ();
 
-		navigationInfo -> value () = { activeLayer -> getNavigationInfo () };
-		viewpoint -> value ()      = { activeLayer -> getViewpoint () };
+		navigationInfo -> value () = { activeLayer -> getNavigationInfo (), metadataSet };
+	}
+
+	if (true)
+	{
+		const auto   worldInfo   = createWorldInfo ();
+		const auto   metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> (".titania.viewpoint");
+		const auto & activeLayer = getWorld () -> getActiveLayer ();
+		const auto   viewpoint   = activeLayer -> getViewpoint ();
+		const auto   node        = viewpoint -> toMetaData ();
+		const auto   position    = viewpoint -> getUserPosition ();
+		const auto   orientation = viewpoint -> getUserOrientation ();
+
+		node -> createValue <X3D::MetadataDouble> ("position")    -> value () = { position    .x (), position    .y (), position    .z () };
+		node -> createValue <X3D::MetadataDouble> ("orientation") -> value () = { orientation .x (), orientation .y (), orientation .z (), orientation .angle () };
+
+		metadataSet -> value () = { activeLayer -> getNavigationInfo (), node };
 	}
 
 	if (X3DBrowserWidget::save (worldURL, compressed, copy))
