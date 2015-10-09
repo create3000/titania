@@ -561,10 +561,6 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-   for (const auto & name : names)
-		std::clog << name << " ";
-	std::clog << std::endl;
-
 	if (names .size () < 3)
 		throw Error <INVALID_NAME> ("X3DNode::getMetadataSet: invalid key.");
 
@@ -595,8 +591,6 @@ throw (Error <INVALID_NODE>,
 	   else
 			metadataSet = metadataSet -> getValue <MetadataSet> (name);
 	}
-
-	std::clog << *metadataSet << std::endl;
 
 	return metadataSet;
 }
@@ -695,6 +689,7 @@ X3DNode::toMetaData () const
 	for (const auto & fieldDefinition : getChangedFields ())
 		fieldToMetaData (metadataSetNode, fieldDefinition);
 
+	metadataSetNode -> setup ();
 	return metadataSetNode;
 }
 

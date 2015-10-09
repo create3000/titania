@@ -164,10 +164,24 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DBindableNode::setExecutionContext (executionContext);
 }
 
+void
+X3DViewpointNode::setUserPosition (const Vector3f & userPosition)
+{
+__LOG__ << std::endl;
+	positionOffset () = userPosition - getPosition ();
+}
+
 Vector3f
 X3DViewpointNode::getUserPosition () const
 {
 	return getPosition () + positionOffset ();
+}
+
+void
+X3DViewpointNode::setUserOrientation (const Rotation4f & userOrientation)
+{
+__LOG__ << std::endl;
+	orientationOffset () = ~getOrientation () * userOrientation;
 }
 
 Rotation4f
@@ -180,6 +194,13 @@ Vector3f
 X3DViewpointNode::getUserCenterOfRotation () const
 {
 	return getCenterOfRotation () + centerOfRotationOffset ();
+}
+
+void
+X3DViewpointNode::setUserCenterOfRotation (const Vector3f & userCenterOfRotation)
+{
+__LOG__ << std::endl;
+	centerOfRotationOffset () = userCenterOfRotation - getCenterOfRotation ();
 }
 
 void
