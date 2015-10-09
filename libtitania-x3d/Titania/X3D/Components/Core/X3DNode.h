@@ -111,6 +111,14 @@ public:
 	removeMetaData (const std::string & = "")
 	throw (Error <DISPOSED>);
 
+	virtual
+	void
+	fromMetaData (const X3DPtr <MetadataSet> &);
+
+	virtual
+	X3DPtr <MetadataSet>
+	toMetaData () const;
+
 	///  @name Member access
 
 	std::vector <X3DLayerNode*>
@@ -160,6 +168,9 @@ private:
 	getMetadataSet (const std::deque <std::string> &, const bool = false) const
 	throw (Error <INVALID_NAME>,
 	       Error <DISPOSED>);
+
+	void
+	fieldToMetaData (const X3DPtr <MetadataSet> &, const X3DFieldDefinition* const) const;
 
 	///  @name Static members
 
