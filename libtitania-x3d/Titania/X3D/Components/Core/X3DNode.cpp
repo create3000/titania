@@ -605,9 +605,6 @@ throw (Error <DISPOSED>)
 {
 	auto names = basic::split (key, ".");
 
-	if (not names .empty () and not names .front () .empty ())
-		throw Error <INVALID_NAME> ("X3DNode::removeMetaData: Invalid key.");
-
 	switch (names .size ())
 	{
 		case 0:
@@ -621,9 +618,13 @@ throw (Error <DISPOSED>)
 		{
 			const auto metadataSet = x3d_cast <MetadataSet*> (metadata ());
 
-			if (metadataSet -> name () == names [1])
-				metadata () = nullptr;
+			if (not metadataSet)
+			   return;
+			 
+			if (metadataSet -> name () not_eq names [1])
+			   return;
 
+			metadata () = nullptr;
 			return;
 		}
 		default:
@@ -632,7 +633,10 @@ throw (Error <DISPOSED>)
 
 			const auto metadataSet = x3d_cast <MetadataSet*> (metadata ());
 
-			if (not metadataSet or metadataSet -> name () not_eq names [1])
+			if (not metadataSet)
+				return;
+			
+			if (metadataSet -> name () not_eq names [1])
 				return;
 
 			metadataSets .emplace_back (metadataSet);
