@@ -102,38 +102,29 @@ public:
 	
 	///  @name Member access
 
+	///  Return the metadata with where name is @a name if it exists otherwise create it.
 	template <class Type>
-	void
-	setMetaData (const std::string & name, const Type & value)
-	throw (Error <DISPOSED>);
-
-	///  Return the field with @a name.
-	template <class Type>
-	Type &
-	getMetaData (const std::string & name, const bool = false)
-	throw (Error <INVALID_FIELD>,
-	       Error <INVALID_NAME>,
-	       Error <DISPOSED>);
-
-	///  Return the field with @a name.
-	template <class Type>
-	const Type &
-	getMetaData (const std::string & name) const
-	throw (Error <INVALID_FIELD>,
-	       Error <INVALID_NAME>,
-	       Error <DISPOSED>);
-
-	X3DFieldDefinition*
-	getMetaData (const std::string &) const
+	Type*
+	createValue (const std::string & name)
 	throw (Error <INVALID_NAME>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return getValue <Type> (name, false); }
+
+	///  Return the metadata with where name is @a name if it exists otherwise throw an exception.
+	template <class Type>
+	Type*
+	getValue (const std::string & name)
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_NAME>,
+	       Error <DISPOSED>)
+	{ return getValue <Type> (name, true); }
 
 	void
-	removeMetaData (const std::string &)
+	removeValue (const std::string &)
 	throw (Error <DISPOSED>);
 
 	void
-	removeMetaData ()
+	removeValue ()
 	throw (Error <DISPOSED>);
 
 	///  @name Destruction
@@ -151,8 +142,24 @@ private:
 	void
 	initialize () final override;
 
+	///  Return the metadata with where name is @a name.
+	template <class Type>
+	Type*
+	getValue (const std::string & name, const bool)
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_NAME>,
+	       Error <DISPOSED>);
+
 	void
-	addMetaData (const SFNode &);
+	addValue (const SFNode &);
+
+	const X3DPtr <X3DMetadataObject> &
+	getObject (const std::string &) const
+	throw (Error <INVALID_NAME>,
+	       Error <DISPOSED>);
+
+	void
+	setValue (X3DMetadataObject* const, const std::string &);
 
 	///  @name Event handlers
 
@@ -176,94 +183,47 @@ private:
 
 	Fields fields;
 
-	std::map <std::string, X3DPtr <X3DMetadataObject>> metadataSet;
+	std::map <std::string, X3DPtr <X3DMetadataObject>> metadataIndex;
 
 };
 
-template <class Type>
-void
-MetadataSet::setMetaData (const std::string &, const Type &)
-throw (Error <DISPOSED>)
-{ }
-
-template <>
-void
-MetadataSet::setMetaData <MFBool> (const std::string &, const MFBool &)
-throw (Error <DISPOSED>);
-
-template <>
-void
-MetadataSet::setMetaData <MFDouble> (const std::string &, const MFDouble &)
-throw (Error <DISPOSED>);
-
-template <>
-void
-MetadataSet::setMetaData <MFFloat> (const std::string &, const MFFloat &)
-throw (Error <DISPOSED>);
-
-template <>
-void
-MetadataSet::setMetaData <MFInt32> (const std::string &, const MFInt32 &)
-throw (Error <DISPOSED>);
-
-template <>
-void
-MetadataSet::setMetaData <MFString> (const std::string &, const MFString &)
-throw (Error <DISPOSED>);
-
-template <>
-void
-MetadataSet::setMetaData <MFNode> (const std::string &, const MFNode &)
-throw (Error <DISPOSED>);
-
 ///  Return the field with @a name.
 template <class Type>
-Type &
-MetadataSet::getMetaData (const std::string & name, const bool create)
-throw (Error <INVALID_FIELD>,
-       Error <INVALID_NAME>,
+Type*
+MetadataSet::getValue (const std::string & name, const bool throw_)
+throw (Error <INVALID_NODE>,
+	    Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	try
 	{
-		X3DFieldDefinition* const fieldDefinition = getMetaData (name);
+	   Type* metadata = dynamic_cast <Type*> (getObject (name) .getValue ());
 
-		Type* const field = dynamic_cast <Type*> (fieldDefinition);
-
-		if (field)
-			return *field;
-
-		throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + fieldDefinition -> getTypeName () + ".");
+		if (metadata)
+			return metadata;
+		
+	   if (throw_)
+	      throw Error <INVALID_NODE> ("MetaData " + name + " has invalid type.");
+		
+		else
+			removeMetaData (name);
 	}
-	catch (const X3DError &)
+	catch (const Error <INVALID_NAME> &)
 	{
-		if (create)
-		{
-			setMetaData <Type> (name, Type ());
-
-			return getMetaData <Type> (name);
-		}
-
+	   if (throw_)
+	      throw;
+	}
+	catch (...)
+	{
 		throw;
 	}
-}
 
-///  Return the field with @a name.
-template <class Type>
-const Type &
-MetadataSet::getMetaData (const std::string & name) const
-throw (Error <INVALID_FIELD>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
-{
-	X3DFieldDefinition* const fieldDefinition = getMetaData (name);
+	const auto metadata = new Type (getExecutionContext ());
 
-	Type* const field = dynamic_cast <Type*> (fieldDefinition);
+	value () .emplace_back (metadata);
+	setValue (metadata, name);
 
-	if (field)
-		return *field;
-
-	throw Error <INVALID_FIELD> ("Invalid type: Field '" + name + "' has type " + fieldDefinition -> getTypeName () + ".");
+	return metadata;
 }
 
 } // X3D

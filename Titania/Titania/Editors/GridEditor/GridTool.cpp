@@ -137,7 +137,7 @@ GridTool::set_scene ()
 {
 	try
 	{
-		isEnabled (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/Grid/enabled") .at (0), false);
+		isEnabled (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/Grid/enabled", false) .at (0), false);
 	}
 	catch (...)
 	{
@@ -180,7 +180,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/translation");
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/translation", false);
 
 		getTool () -> translation () = X3D::Vector3f (v .at (0), v .at (1), v .at (2));
 	}
@@ -191,7 +191,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/rotation");
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/rotation", false);
 
 		getTool () -> rotation () = X3D::Rotation4f (v .at (0), v .at (1), v .at (2), v .at (3));
 	}
@@ -202,7 +202,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/scale");
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/scale", false);
 
 		getTool () -> scale () = X3D::Vector3f (v .at (0), v .at (1), v .at (2));
 	}
@@ -213,7 +213,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/Grid/dimension");
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/Grid/dimension", false);
 
 		getTool () -> dimension () = v;
 		getTool () -> dimension () .resize (3, X3D::SFInt32 (10));
@@ -225,7 +225,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/Grid/majorLineEvery");
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/Grid/majorLineEvery", false);
 
 		getTool () -> majorLineEvery () = v;
 	}
@@ -236,7 +236,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/Grid/majorLineOffset");
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/Grid/majorLineOffset", false);
 
 		getTool () -> majorLineOffset () = v;
 	}
@@ -247,7 +247,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/color");
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/color", false);
 
 		getTool () -> color () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
 	}
@@ -258,7 +258,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/lineColor");
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/lineColor", false);
 
 		getTool () -> lineColor () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
 	}
@@ -269,7 +269,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/majorLineColor");
+		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/majorLineColor", false);
 
 		getTool () -> majorLineColor () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
 	}

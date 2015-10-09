@@ -51,6 +51,7 @@
 #include "MetadataSet.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 #include "../Core/MetadataBoolean.h"
@@ -75,7 +76,7 @@ MetadataSet::MetadataSet (X3DExecutionContext* const executionContext) :
 	          X3DNode (),
 	X3DMetadataObject (),
 	           fields (),
-	      metadataSet ()
+	    metadataIndex ()
 {
 	addType (X3DConstants::MetadataSet);
 
@@ -102,207 +103,21 @@ MetadataSet::initialize ()
 	set_value ();
 }
 
-template <>
-void
-MetadataSet::setMetaData <MFBool> (const std::string & name, const MFBool & boolean)
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		getMetaData <MFBool> (name) = boolean;
-		return;
-	}
-	catch (const Error <INVALID_FIELD> &)
-	{
-		removeMetaData (name);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{ }
-	catch (...)
-	{
-		throw;
-	}
-
-	const auto node = new MetadataBoolean (getExecutionContext ());
-
-	node -> setup ();
-	node -> name ()  = name;
-	node -> value () = boolean;
-
-	value () .emplace_back (node);
-	addMetaData (value () .back ());
-}
-
-template <>
-void
-MetadataSet::setMetaData <MFDouble> (const std::string & name, const MFDouble & double_)
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		getMetaData <MFDouble> (name) = double_;
-		return;
-	}
-	catch (const Error <INVALID_FIELD> &)
-	{
-		removeMetaData (name);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{ }
-	catch (...)
-	{
-		throw;
-	}
-
-	const auto node = new MetadataDouble (getExecutionContext ());
-
-	node -> setup ();
-	node -> name ()  = name;
-	node -> value () = double_;
-
-	value () .emplace_back (node);
-	addMetaData (value () .back ());
-}
-
-template <>
-void
-MetadataSet::setMetaData <MFFloat> (const std::string & name, const MFFloat & float_)
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		getMetaData <MFFloat> (name) = float_;
-		return;
-	}
-	catch (const Error <INVALID_FIELD> &)
-	{
-		removeMetaData (name);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{ }
-	catch (...)
-	{
-		throw;
-	}
-
-	const auto node = new MetadataFloat (getExecutionContext ());
-
-	node -> setup ();
-	node -> name ()  = name;
-	node -> value () = float_;
-
-	value () .emplace_back (node);
-	addMetaData (value () .back ());
-}
-
-template <>
-void
-MetadataSet::setMetaData <MFInt32> (const std::string & name, const MFInt32 & integer)
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		getMetaData <MFInt32> (name) = integer;
-		return;
-	}
-	catch (const Error <INVALID_FIELD> &)
-	{
-		removeMetaData (name);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{ }
-	catch (...)
-	{
-		throw;
-	}
-
-	const auto node = new MetadataInteger (getExecutionContext ());
-
-	node -> setup ();
-	node -> name ()  = name;
-	node -> value () = integer;
-
-	value () .emplace_back (node);
-	addMetaData (value () .back ());
-}
-
-template <>
-void
-MetadataSet::setMetaData <MFString> (const std::string & name, const MFString & string)
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		getMetaData <MFString> (name) = string;
-		return;
-	}
-	catch (const Error <INVALID_FIELD> &)
-	{
-		removeMetaData (name);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{ }
-	catch (...)
-	{
-		throw;
-	}
-
-	const auto node = new MetadataString (getExecutionContext ());
-
-	node -> setup ();
-	node -> name ()  = name;
-	node -> value () = string;
-
-	value () .emplace_back (node);
-	addMetaData (value () .back ());
-}
-
-template <>
-void
-MetadataSet::setMetaData <MFNode> (const std::string & name, const MFNode & nodes)
-throw (Error <DISPOSED>)
-{
-	try
-	{
-		getMetaData <MFNode> (name) = nodes;
-		return;
-	}
-	catch (const Error <INVALID_FIELD> &)
-	{
-		removeMetaData (name);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{ }
-	catch (...)
-	{
-		throw;
-	}
-
-	const auto node = new MetadataString (getExecutionContext ());
-
-	node -> setup ();
-	node -> name ()  = name;
-	node -> value () = nodes;
-
-	value () .emplace_back (node);
-	addMetaData (value () .back ());
-}
-
-X3DFieldDefinition*
-MetadataSet::getMetaData (const std::string & name) const
+const X3DPtr <X3DMetadataObject> &
+MetadataSet::getObject (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto iter = metadataSet .find (name);
+	const auto iter = metadataIndex .find (name);
 
-	if (iter not_eq metadataSet .end ())
-		return iter -> second -> getField ("value");
+	if (iter not_eq metadataIndex .end ())
+		return iter -> second;
 
 	throw Error <INVALID_NAME> ("MetadataSet::getMetaData: Invalid name.");
 }
 
 void
-MetadataSet::removeMetaData (const std::string & name)
+MetadataSet::removeValue (const std::string & name)
 throw (Error <DISPOSED>)
 {
 	const auto iter = std::remove_if (value () .begin (), value () .end (), [&name] (const SFNode &node)
@@ -319,22 +134,32 @@ throw (Error <DISPOSED>)
 }
 
 void
-MetadataSet::addMetaData (const SFNode & node)
+MetadataSet::setValue (X3DMetadataObject* const metadataObject, const std::string & name)
+{
+	metadataIndex .emplace (name, metadataObject) .first -> second .addParent (this);
+
+	metadataObject -> name ()      = name;
+	metadataObject -> reference () = getBrowser () -> getProviderUrl ();
+	metadataObject -> setup ();
+}
+
+void
+MetadataSet::addValue (const SFNode & node)
 {
 	const auto metadataObject = dynamic_cast <X3DMetadataObject*> (node .getValue ());
 
 	if (metadataObject)
-		metadataSet .emplace (metadataObject -> name (), metadataObject) .first -> second .addParent (this);
+		metadataIndex .emplace (metadataObject -> name (), metadataObject) .first -> second .addParent (this);
 }
 
 void
-MetadataSet::removeMetaData ()
+MetadataSet::removeValue ()
 throw (Error <DISPOSED>)
 {
-	for (const auto & pair : metadataSet)
-		metadataSet .second -> removeParent (this);
+	for (const auto & pair : metadataIndex)
+		pair .second -> removeParent (this);
 
-	fieldIndex .clear ();
+	metadataIndex .clear ();
 }
 
 void
@@ -343,7 +168,7 @@ MetadataSet::set_value ()
 	removeMetaData ();
 
 	for (const auto & node : value ())
-		addMetaData (node);
+		addValue (node);
 }
 
 void

@@ -226,7 +226,7 @@ AnimationEditor::getDuration () const
 	try
 	{
 		if (animation)
-			return std::max <int32_t> (animation -> getMetaData <X3D::MFInt32> ("/Animation/duration") .at (0), 1);
+			return std::max <int32_t> (animation -> getMetaData <X3D::MFInt32> ("/Animation/duration", false) .at (0), 1);
 	}
 	catch (...)
 	{ }
@@ -240,7 +240,7 @@ AnimationEditor::getFramesPerSecond () const
 	try
 	{
 		if (animation)
-			return std::max <int32_t> (animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond") .at (0), 1);
+			return std::max <int32_t> (animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond", false) .at (0), 1);
 	}
 	catch (...)
 	{ }
@@ -321,8 +321,8 @@ AnimationEditor::on_new ()
 	animation -> setMetaData <int32_t> ("/Animation/duration",        getDurationAdjustment () -> get_value ());
 	animation -> setMetaData <int32_t> ("/Animation/framesPerSecond", getFPSAdjustment () -> get_value ());
 
-	animation -> getMetaData <X3D::MFInt32> ("/Animation/duration")        .addInterest (this, &AnimationEditor::set_duration);
-	animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond") .addInterest (this, &AnimationEditor::set_frames_per_second);
+	animation -> getMetaData <X3D::MFInt32> ("/Animation/duration", false)        .addInterest (this, &AnimationEditor::set_duration);
+	animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond", false) .addInterest (this, &AnimationEditor::set_frames_per_second);
 	
 	timeSensor -> loop ()     = getLoopSwitch () .get_active ();
 	timeSensor -> stopTime () = 1;
@@ -969,9 +969,9 @@ AnimationEditor::on_copy ()
 		{
 			const auto & interpolator = interpolatorIndex .at (std::get <1> (frame));
 			const auto & components   = interpolatorComponents .at (interpolator -> getType () .back ());
-			auto &       key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",      true);
+			auto &       key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",       true);
 			auto &       keyValue     = interpolator -> getMetaData <X3D::MFDouble> ("/Interpolator/keyValue", true);
-			auto &       keyType      = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType", true);
+			auto &       keyType      = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType",  true);
 			const auto   iter         = std::lower_bound (key .begin (), key .end (), std::get <0> (frame));
 			const auto   index        = iter - key .begin ();
 			const auto   indexN       = index * components;
@@ -1193,12 +1193,12 @@ AnimationEditor::on_time ()
 	undoStep -> addUndoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/duration", getDuration ());
 	undoStep -> addRedoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/duration", getDurationAdjustment () -> get_value ());
 	animation -> setMetaData <int32_t> ("/Animation/duration", getDurationAdjustment () -> get_value ());
-	animation -> getMetaData <X3D::MFInt32> ("/Animation/duration") .addInterest (this, &AnimationEditor::set_duration);
+	animation -> getMetaData <X3D::MFInt32> ("/Animation/duration", true) .addInterest (this, &AnimationEditor::set_duration);
 
 	undoStep -> addUndoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/framesPerSecond", getFramesPerSecond ());
 	undoStep -> addRedoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/framesPerSecond", getFPSAdjustment () -> get_value ());
 	animation -> setMetaData <int32_t> ("/Animation/framesPerSecond", getFPSAdjustment () -> get_value ());
-	animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond") .addInterest (this, &AnimationEditor::set_frames_per_second);
+	animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond", true) .addInterest (this, &AnimationEditor::set_frames_per_second);
 
 	// Adjust TimeSensor
 
@@ -1372,8 +1372,8 @@ AnimationEditor::set_key_type ()
 		try
 		{
 			const auto & interpolator = interpolatorIndex .at (std::get <1> (frame));
-			auto &       key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key");
-			auto &       keyType      = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType");
+			auto &       key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key", false);
+			auto &       keyType      = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType", false);
 			const auto   iter         = std::lower_bound (key .begin (), key .end (), std::get <0> (frame));
 			const auto   index        = iter - key .begin ();
 
@@ -1655,9 +1655,9 @@ AnimationEditor::addKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator,
 {
 	const size_t components = value .size ();
 
-	auto &     key      = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",      true);
+	auto &     key      = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",       true);
 	auto &     keyValue = interpolator -> getMetaData <X3D::MFDouble> ("/Interpolator/keyValue", true);
-	auto &     keyType  = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType", true);
+	auto &     keyType  = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType",  true);
 	const auto iter     = std::lower_bound (key .begin (), key .end (), frame);
 	const auto index    = iter - key .begin ();
 	const auto indexN   = index * components;
@@ -1776,9 +1776,9 @@ AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, 
 void
 AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const size_t components, const int32_t fromFrame, const int32_t toFrame, const UndoStepPtr & undoStep)
 {
-	auto &     key      = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",      true);
+	auto &     key      = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",       true);
 	auto &     keyValue = interpolator -> getMetaData <X3D::MFDouble> ("/Interpolator/keyValue", true);
-	auto &     keyType  = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType", true);
+	auto &     keyType  = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType",  true);
 	const auto iter     = std::lower_bound (key .begin (), key .end (), fromFrame);
 	const auto index    = iter - key .begin ();
 	const auto indexN   = index * components;
@@ -2766,7 +2766,7 @@ AnimationEditor::addKeyframes (const Gtk::TreePath & path,
 		const auto & node         = nodes .at (id);
 		const auto   field        = node -> getFieldDefinitions () .at (i);
 		const auto & interpolator = interpolatorIndex .at (field);
-		const auto & key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key");
+		const auto & key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key", false);
 		const auto   y1           = y - (FRAME_SIZE / 2 - 1);
 		const auto   y2           = y1 + FRAME_SIZE;
 
@@ -2961,7 +2961,7 @@ AnimationEditor::on_draw_keyframes (const Cairo::RefPtr <Cairo::Context> & conte
 		const auto & node         = nodes .at (id);
 		const auto   field        = node -> getFieldDefinitions () .at (i);
 		const auto & interpolator = interpolatorIndex .at (field);
-		const auto & key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key");
+		const auto & key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key", false);
 		const auto   first        = std::lower_bound (key .begin (), key .end (), firstFrame);
 		const auto   last         = std::upper_bound (key .begin (), key .end (), lastFrame);
 		const auto   y1           = y - (FRAME_SIZE / 2 - 1);

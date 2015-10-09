@@ -145,7 +145,7 @@ NodeIndex::refresh ()
 				try
 				{
 					X3D::X3DPtr <X3D::X3DNode> node (basenode);
-					node -> getMetaData <X3D::MFInt32> ("/Animation/duration");
+					node -> getMetaData <X3D::MFInt32> ("/Animation/duration", false);
 					animations .emplace_back (basenode);
 				}
 				catch (const X3D::X3DError &)
