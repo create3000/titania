@@ -190,6 +190,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Raise the current layer to the top</property>
                             <signal name="clicked" handler="on_top_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image8">
@@ -211,6 +212,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Raise the current layer</property>
                             <signal name="clicked" handler="on_up_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image5">
@@ -232,6 +234,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Lower the current layer</property>
                             <signal name="clicked" handler="on_down_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image6">
@@ -253,6 +256,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Lower the current layer to the bottom</property>
                             <signal name="clicked" handler="on_bottom_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image7">
