@@ -195,7 +195,7 @@
                   <object class="GtkImage" id="image2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="icon_name">document-import</property>
+                    <property name="stock">document-import</property>
                     <property name="icon_size">1</property>
                   </object>
                   <packing>
@@ -233,7 +233,7 @@
                   <object class="GtkImage" id="image3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="icon_name">document-export</property>
+                    <property name="stock">document-export</property>
                     <property name="icon_size">1</property>
                   </object>
                   <packing>

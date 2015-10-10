@@ -67,6 +67,8 @@ static constexpr int NAME      = 2;
 static constexpr int WEIGHT    = 3;
 static constexpr int STYLE     = 4;
 static constexpr int INDEX     = 5;
+static constexpr int PICKABLE  = 6;
+static constexpr int EYE       = 7;
 
 };
 
@@ -82,7 +84,8 @@ LayerEditor::LayerEditor (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DLayerEditorInterface (get_ui ("Editors/LayerEditor.xml"), gconf_dir ()),
 	                  world (),
-	               layerSet ()
+	               layerSet (),
+	                 layers ()
 {
 	setup ();
 }
@@ -143,6 +146,26 @@ LayerEditor::set_layersSet ()
 void
 LayerEditor::set_layers ()
 {
+	for (const auto & layer : layers)
+	{
+	   if (layer)
+	      layer -> isPickable () .removeInterest (this, &LayerEditor::set_treeView);
+	}
+
+	layers .assign (layerSet -> layers () .begin (), layerSet -> layers () .end ());
+
+	for (const auto & layer : layers)
+	{
+	   if (layer)
+	      layer -> isPickable () .addInterest (this, &LayerEditor::set_treeView);
+	}
+
+	set_treeView ();
+}
+
+void
+LayerEditor::set_treeView ()
+{
 	getLayerTreeView () .unset_model ();
 	getLayerListStore () -> clear ();
 
@@ -157,6 +180,8 @@ LayerEditor::set_layers ()
 
 		row -> set_value (Columns::INDEX,     0);
 		row -> set_value (Columns::VISIBLE,   visible);
+		row -> set_value (Columns::EYE,       std::string (visible ? "EyeOpen" : "EyeClosed"));
+		row -> set_value (Columns::PICKABLE,  std::string (layerSet -> getLayer0 () -> isPickable () ? "gtk-ok" : "gtk-stop"));
 		row -> set_value (Columns::TYPE_NAME, std::string ("Layer"));
 		row -> set_value (Columns::NAME,      std::string (_ ("Default Layer")));
 			
@@ -175,15 +200,18 @@ LayerEditor::set_layers ()
 
 		int32_t index = 1;
 
-		for (const auto & layer : layerSet -> layers ())
+		for (const auto & node : layerSet -> layers ())
 		{
-			const auto row     = getLayerListStore () -> append ();
-			const bool visible = std::find (order .begin (), order .end (), index) not_eq order .end ();
+		   const auto & layer   = layers [index - 1];
+			const auto   row     = getLayerListStore () -> append ();
+			const bool   visible = std::find (order .begin (), order .end (), index) not_eq order .end ();
 
 			row -> set_value (Columns::INDEX,     index);
 			row -> set_value (Columns::VISIBLE,   visible);
-			row -> set_value (Columns::TYPE_NAME, layer -> getTypeName ());
-			row -> set_value (Columns::NAME,      layer -> getName ());
+			row -> set_value (Columns::EYE,       std::string (visible ? "EyeOpen" : "EyeClosed"));
+			row -> set_value (Columns::PICKABLE,  std::string (layer and layer -> isPickable () ? "gtk-ok" : "gtk-stop"));
+			row -> set_value (Columns::TYPE_NAME, node -> getTypeName ());
+			row -> set_value (Columns::NAME,      node -> getName ());
 				
 			if (index == layerSet -> activeLayer ())
 			{
@@ -225,14 +253,45 @@ LayerEditor::connectLayers ()
 }
 
 void
-LayerEditor::on_visibility_toggled (const Glib::ustring & path)
+LayerEditor::connectIsPickable (const X3D::X3DLayerNodePtr & layer)
+{
+	layer -> isPickable () .removeInterest (this, &LayerEditor::connectIsPickable);
+	layer -> isPickable () .addInterest (this, &LayerEditor::set_treeView);
+}
+
+bool
+LayerEditor::on_layers_button_press_event (GdkEventButton* event)
+{
+	Gtk::TreePath        path;
+	Gtk::TreeViewColumn* column = nullptr;
+	int                  cell_x = 0;
+	int                  cell_y = 0;
+
+	getLayerTreeView () .get_path_at_pos (event -> x, event -> y, path, column, cell_x, cell_y);
+
+	if (column == getPickableColumn () .operator -> ())
+	   on_pickable_toggled (path);
+	
+	if (column == getVisibilityColumn () .operator -> ())
+	   on_visibility_toggled (path);
+
+	return false;
+}
+
+void
+LayerEditor::on_visibility_toggled (const Gtk::TreePath & path)
 {
 	// Toggle row
 
 	const auto row     = getLayerListStore () -> get_iter (path);
-	const bool visible = not getVisibilityCellRenderer () -> get_active ();
+	bool       visible = false;
+
+	row -> get_value (Columns::VISIBLE, visible);
+
+	visible = not visible;
 
 	row -> set_value (Columns::VISIBLE, visible);
+	row -> set_value (Columns::EYE,     std::string (visible ? "EyeOpen" : "EyeClosed"));
 
 	// Set order
 
@@ -241,6 +300,40 @@ LayerEditor::on_visibility_toggled (const Glib::ustring & path)
 	set_order (undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+LayerEditor::on_pickable_toggled (const Gtk::TreePath & path)
+{
+	size_t index = path .back () - 1;
+
+	if (index >= layerSet -> layers () .size ())
+	   return;
+
+	const auto & layer = layers [index];
+
+	if (not layer)
+	   return;
+
+	// Toggle isPickable
+
+	layer -> isPickable () .removeInterest (this, &LayerEditor::set_treeView);
+	layer -> isPickable () .addInterest (this, &LayerEditor::connectIsPickable, layer);
+
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Layer isPickable"));
+
+	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (layer -> isPickable ()), layer -> isPickable ());
+
+	layer -> isPickable () = not layer -> isPickable ();
+
+	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (layer -> isPickable ()), layer -> isPickable ());
+	getBrowserWindow () -> addUndoStep (undoStep);
+
+	// Toggle row
+
+	const auto row = getLayerListStore () -> get_iter (path);
+
+	row -> set_value (Columns::PICKABLE, std::string (layer -> isPickable () ? "gtk-ok" : "gtk-stop"));
 }
 
 void
@@ -408,6 +501,8 @@ LayerEditor::on_top_clicked ()
 
 	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	on_layer_selection_changed ();
 }
 
 void
@@ -467,6 +562,8 @@ LayerEditor::on_up_clicked ()
 
 	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	on_layer_selection_changed ();
 }
 
 void
@@ -534,6 +631,8 @@ LayerEditor::on_down_clicked ()
 
 	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	on_layer_selection_changed ();
 }
 
 void
@@ -582,6 +681,8 @@ LayerEditor::on_bottom_clicked ()
 
 	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	on_layer_selection_changed ();
 }
 
 LayerEditor::~LayerEditor ()

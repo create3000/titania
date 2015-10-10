@@ -101,9 +101,9 @@ public:
 	getVisibilityColumn () const
 	{ return m_VisibilityColumn; }
 
-	const Glib::RefPtr <Gtk::CellRendererToggle> &
-	getVisibilityCellRenderer () const
-	{ return m_VisibilityCellRenderer; }
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getPickableColumn () const
+	{ return m_PickableColumn; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getTypeNameColumn () const
@@ -162,16 +162,16 @@ public:
 	on_index_clicked () = 0;
 
 	virtual
+	bool
+	on_layers_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
 	void
 	on_layer_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
 
 	virtual
 	void
 	on_layer_selection_changed () = 0;
-
-	virtual
-	void
-	on_visibility_toggled (const Glib::ustring & path) = 0;
 
 	virtual
 	void
@@ -200,25 +200,25 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                            filename;
-	Glib::RefPtr <Gtk::Builder>            m_builder;
-	Glib::RefPtr <Gtk::ListStore>          m_LayerListStore;
-	Glib::RefPtr <Gtk::TreeSelection>      m_LayerSelection;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_VisibilityColumn;
-	Glib::RefPtr <Gtk::CellRendererToggle> m_VisibilityCellRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_TypeNameColumn;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_NameColumn;
-	Gtk::Window*                           m_Window;
-	Gtk::Box*                              m_Widget;
-	Gtk::Button*                           m_IndexButton;
-	Gtk::Expander*                         m_LayerSetExpander;
-	Gtk::ScrolledWindow*                   m_LayerScrolledWindow;
-	Gtk::TreeView*                         m_LayerTreeView;
-	Gtk::Box*                              m_MoveLayerBox;
-	Gtk::Button*                           m_TopButton;
-	Gtk::Button*                           m_UpButton;
-	Gtk::Button*                           m_DownButton;
-	Gtk::Button*                           m_BottomButton;
+	std::string                        filename;
+	Glib::RefPtr <Gtk::Builder>        m_builder;
+	Glib::RefPtr <Gtk::ListStore>      m_LayerListStore;
+	Glib::RefPtr <Gtk::TreeSelection>  m_LayerSelection;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_VisibilityColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_PickableColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_TypeNameColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_NameColumn;
+	Gtk::Window*                       m_Window;
+	Gtk::Box*                          m_Widget;
+	Gtk::Button*                       m_IndexButton;
+	Gtk::Expander*                     m_LayerSetExpander;
+	Gtk::ScrolledWindow*               m_LayerScrolledWindow;
+	Gtk::TreeView*                     m_LayerTreeView;
+	Gtk::Box*                          m_MoveLayerBox;
+	Gtk::Button*                       m_TopButton;
+	Gtk::Button*                       m_UpButton;
+	Gtk::Button*                       m_DownButton;
+	Gtk::Button*                       m_BottomButton;
 
 };
 

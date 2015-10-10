@@ -100,6 +100,10 @@ public:
 	getActiveLayer () const
 	{ return activeLayer; }
 
+	const X3DLayerNodePtr &
+	getLayer0 () const
+	{ return layer0; }
+
 	///  @name Display
 
 	virtual

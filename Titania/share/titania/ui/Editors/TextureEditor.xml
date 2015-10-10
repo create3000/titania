@@ -76,7 +76,6 @@
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
-    <property name="has_resize_grip">False</property>
     <child>
       <object class="GtkBox" id="Widget">
         <property name="visible">True</property>
@@ -134,6 +133,7 @@
                 <property name="name">TextureExpander</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="border_width">8</property>
                 <property name="expanded">True</property>
                 <property name="spacing">8</property>
                 <child>
@@ -457,7 +457,7 @@
                                               <object class="GtkImage" id="image12">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
-                                                <property name="icon_name">document-import</property>
+                                                <property name="stock">document-import</property>
                                                 <property name="icon_size">1</property>
                                               </object>
                                             </child>
@@ -473,13 +473,13 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
-                                            <property name="halign">end</property>
+                                            <property name="halign">start</property>
                                             <signal name="clicked" handler="on_image_texture_reload_clicked" swapped="no"/>
                                             <child>
                                               <object class="GtkImage" id="image10">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
-                                                <property name="icon_name">gtk-refresh</property>
+                                                <property name="stock">gtk-refresh</property>
                                                 <property name="icon_size">1</property>
                                               </object>
                                             </child>
@@ -841,6 +841,7 @@
                 <property name="name">TexturePropertiesExpander</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="border_width">8</property>
                 <property name="expanded">True</property>
                 <property name="spacing">8</property>
                 <child>
@@ -1313,6 +1314,7 @@
                 <property name="name">TextureTransformExpander</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="border_width">8</property>
                 <property name="expanded">True</property>
                 <property name="spacing">8</property>
                 <child>
@@ -1707,6 +1709,7 @@
                 <property name="name">TextureCoordinateGeneratorExpander</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="border_width">8</property>
                 <property name="expanded">True</property>
                 <property name="spacing">8</property>
                 <child>
@@ -1868,6 +1871,7 @@
               <object class="GtkBox" id="PaletteBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="border_width">8</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">4</property>
                 <child>

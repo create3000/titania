@@ -61,12 +61,12 @@ X3DLayerEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_LayerListStore         = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("LayerListStore"));
-	m_LayerSelection         = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("LayerSelection"));
-	m_VisibilityColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("VisibilityColumn"));
-	m_VisibilityCellRenderer = Glib::RefPtr <Gtk::CellRendererToggle>::cast_dynamic (m_builder -> get_object ("VisibilityCellRenderer"));
-	m_TypeNameColumn         = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("TypeNameColumn"));
-	m_NameColumn             = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
+	m_LayerListStore   = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("LayerListStore"));
+	m_LayerSelection   = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("LayerSelection"));
+	m_VisibilityColumn = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("VisibilityColumn"));
+	m_PickableColumn   = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("PickableColumn"));
+	m_TypeNameColumn   = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("TypeNameColumn"));
+	m_NameColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -85,13 +85,11 @@ X3DLayerEditorInterface::create (const std::string & filename)
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_index_clicked));
 
 	// Connect object Gtk::TreeView with id 'LayerTreeView'.
+	m_LayerTreeView -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_layers_button_press_event), false);
 	m_LayerTreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_layer_activated));
 
 	// Connect object Gtk::TreeSelection with id 'LayerSelection'.
 	m_LayerSelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_layer_selection_changed));
-
-	// Connect object Gtk::CellRendererToggle with id 'VisibilityCellRenderer'.
-	m_VisibilityCellRenderer -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_visibility_toggled));
 
 	// Connect object Gtk::Button with id 'TopButton'.
 	m_TopButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_top_clicked));

@@ -16,6 +16,10 @@
       <column type="guint"/>
       <!-- column-name Index -->
       <column type="gint"/>
+      <!-- column-name Pickable -->
+      <column type="gchararray"/>
+      <!-- column-name Eye -->
+      <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkWindow" id="Window">
@@ -119,6 +123,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="model">LayerListStore</property>
+                        <property name="headers_visible">False</property>
+                        <signal name="button-press-event" handler="on_layers_button_press_event" after="yes" swapped="no"/>
                         <signal name="row-activated" handler="on_layer_activated" swapped="no"/>
                         <child internal-child="selection">
                           <object class="GtkTreeSelection" id="LayerSelection">
@@ -129,11 +135,20 @@
                           <object class="GtkTreeViewColumn" id="VisibilityColumn">
                             <property name="title" translatable="yes">Visible</property>
                             <child>
-                              <object class="GtkCellRendererToggle" id="VisibilityCellRenderer">
-                                <signal name="toggled" handler="on_visibility_toggled" swapped="no"/>
-                              </object>
+                              <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf2"/>
                               <attributes>
-                                <attribute name="active">0</attribute>
+                                <attribute name="stock-id">7</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="PickableColumn">
+                            <property name="title" translatable="yes">Pickable</property>
+                            <child>
+                              <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf1"/>
+                              <attributes>
+                                <attribute name="stock-id">6</attribute>
                               </attributes>
                             </child>
                           </object>

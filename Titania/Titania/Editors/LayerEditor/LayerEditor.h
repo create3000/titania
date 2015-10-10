@@ -94,6 +94,9 @@ private:
 	set_layers ();
 
 	void
+	set_treeView ();
+
+	void
 	connectOrder ();
 
 	void
@@ -101,6 +104,9 @@ private:
 
 	void
 	connectLayers ();
+
+	void
+	connectIsPickable (const X3D::X3DLayerNodePtr &);
 
 	virtual
 	void
@@ -111,8 +117,14 @@ private:
 	on_layer_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
 	virtual
+	bool
+	on_layers_button_press_event (GdkEventButton*) final override;
+
 	void
-	on_visibility_toggled (const Glib::ustring & path) final override;
+	on_visibility_toggled (const Gtk::TreePath &);
+
+	void
+	on_pickable_toggled (const Gtk::TreePath &);
 
 	void
 	set_order (const UndoStepPtr &);
@@ -139,8 +151,9 @@ private:
 
 	///  @name Members
 
-	X3D::WorldPtr    world;
-	X3D::LayerSetPtr layerSet;
+	X3D::WorldPtr                        world;
+	X3D::LayerSetPtr                     layerSet;
+	X3D::X3DPtrArray <X3D::X3DLayerNode> layers;
 };
 
 } // puck
