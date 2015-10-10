@@ -176,6 +176,9 @@ X3DBrowserEditor::set_shutdown ()
 void
 X3DBrowserEditor::set_executionContext ()
 {
+	if (not getArrowButton () .get_active ())
+	   return;
+
 	try
 	{
 		static const std::map <std::string, X3D::ViewerType> viewerTypes = {
@@ -188,15 +191,16 @@ X3DBrowserEditor::set_executionContext ()
 			std::make_pair ("LOOKAT",              X3D::ViewerType::LOOKAT)
 		};
 
-		const auto worldInfo   = getWorldInfo ();
-		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/NavigationInfo");
+		const auto   worldInfo   = getWorldInfo ();
+		const auto   metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/NavigationInfo");
+		const auto & type        = metadataSet -> getValue <X3D::MetadataString> ("type") -> value ();
 
-		const auto & type = metadataSet -> getValue <X3D::MetadataString> ("type") -> value () .get1Value (0);
-
-		setViewer (viewerTypes .at (type));
+		setViewer (viewerTypes .at (type .at (0)));
 	}
 	catch (const std::exception & error)
-	{ }
+	{
+	   setViewer (X3D::ViewerType::EXAMINE);
+	}
 
 	try
 	{
