@@ -303,21 +303,21 @@ GridTool::set_scale ()
 void
 GridTool::set_dimension ()
 {
-	createWorldInfo () -> setMetaData ("/titania/grid.dimension", getTool () -> dimension ());
+	createWorldInfo () -> setMetaData (".titania.grid.dimension", getTool () -> dimension ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
 GridTool::set_majorLineEvery ()
 {
-	createWorldInfo () -> setMetaData ("/titania/grid.majorLineEvery", getTool () -> majorLineEvery ());
+	createWorldInfo () -> setMetaData (".titania.grid.majorLineEvery", getTool () -> majorLineEvery ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
 GridTool::set_majorLineOffset ()
 {
-	createWorldInfo () -> setMetaData ("/titania/grid.majorLineOffset", getTool () -> majorLineOffset ());
+	createWorldInfo () -> setMetaData (".titania.grid.majorLineOffset", getTool () -> majorLineOffset ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 

@@ -1,20 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.h" Line="39" Column="39" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="3" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.h" Line="25" Column="25" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DNavigationContext.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Viewpoint.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/NavigationInfo.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DViewer.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DNavigationContext.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/NavigationInfo.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DNavigationContext.cpp" Line="64" Column="64" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DNode.cpp" Line="94" Column="94" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/MetadataSet.cpp" Line="59" Column="59" />
-      <File FileName="libtitania-standard/Titania/Basic/Path.h" Line="18" Column="18" />
-      <File FileName="libtitania-standard/Titania/Basic/URI.h" Line="40" Column="40" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp" Line="39" Column="39" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

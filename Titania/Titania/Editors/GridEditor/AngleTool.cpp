@@ -311,21 +311,21 @@ AngleTool::set_scale ()
 void
 AngleTool::set_dimension ()
 {
-	createWorldInfo () -> setMetaData ("/titania/angleGrid/dimension", getTool () -> dimension ());
+	createWorldInfo () -> setMetaData (".titania.angleGrid.dimension", getTool () -> dimension ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
 AngleTool::set_majorLineEvery ()
 {
-	createWorldInfo () -> setMetaData ("/titania/angleGrid/majorLineEvery", getTool () -> majorLineEvery ());
+	createWorldInfo () -> setMetaData (".titania.angleGrid.majorLineEvery", getTool () -> majorLineEvery ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
 AngleTool::set_majorLineOffset ()
 {
-	createWorldInfo () -> setMetaData ("/titania/angleGrid/majorLineOffset", getTool () -> majorLineOffset ());
+	createWorldInfo () -> setMetaData (".titania.angleGrid.majorLineOffset", getTool () -> majorLineOffset ());
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
