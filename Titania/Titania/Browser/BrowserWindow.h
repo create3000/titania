@@ -661,6 +661,10 @@ private:
 
 	virtual
 	void
+	on_layer_editor_clicked () final override;
+
+	virtual
+	void
 	on_precision_placement_panel_clicked () final override;
 
 	virtual

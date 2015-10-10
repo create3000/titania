@@ -75,6 +75,7 @@
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
 #include "../Editors/ColorPerVertexEditor/ColorPerVertexEditor.h"
 #include "../Editors/TextureCoordinateEditor/TextureCoordinateEditor.h"
+#include "../Editors/LayerEditor/LayerEditor.h"
 
 namespace titania {
 namespace puck {
@@ -106,6 +107,7 @@ public:
 		         std::make_pair ("LODEditor",                constructDialog <LODEditor>),
 		         std::make_pair ("LightEditor",              constructDialog <LightEditor>),
 		         std::make_pair ("InlineEditor",             constructDialog <InlineEditor>),
+		         std::make_pair ("LayerEditor",              constructDialog <LayerEditor>),
 		         std::make_pair ("PrecisionPlacementPanel",  constructDialog <PrecisionPlacementPanel>),
 		         std::make_pair ("PrototypeInstanceDialog",  constructDialog <PrototypeInstanceDialog>),
 		         std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>)

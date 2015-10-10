@@ -204,6 +204,8 @@
     <Compile Include="Titania\Browser\RecentView.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditorPreferences.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditorSearch.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DLayerEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\LayerEditor\LayerEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1861,6 +1863,9 @@
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditorPreferences.h" />
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditorSearch.h" />
     <None Include="Titania\Widgets\ScriptEditor\ScriptEditorDatabase.h" />
+    <None Include="share\titania\ui\Editors\LayerEditor.xml" />
+    <None Include="Titania\UserInterfaces\X3DLayerEditorInterface.h" />
+    <None Include="Titania\Editors\LayerEditor\LayerEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -1947,6 +1952,7 @@
     <Folder Include="Titania\Editors\ColorPerVertexEditor\" />
     <Folder Include="Titania\Editors\TextureCoordinateEditor\" />
     <Folder Include="Titania\Widgets\AnimationEditor\" />
+    <Folder Include="Titania\Editors\LayerEditor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

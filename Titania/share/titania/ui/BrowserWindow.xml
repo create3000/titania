@@ -3570,6 +3570,20 @@
                           </packing>
                         </child>
                         <child>
+                          <object class="GtkToolButton" id="LayerEditorButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Layer Editor</property>
+                            <property name="use_underline">True</property>
+                            <property name="stock_id">gtk-justify-fill</property>
+                            <signal name="clicked" handler="on_layer_editor_clicked" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
                           <object class="GtkToolButton" id="PrecisionPlacementPanelButton">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>

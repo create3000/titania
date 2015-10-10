@@ -581,10 +581,13 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 			std::make_pair (X3D::ViewerType::LOOKAT,  "LOOKAT")
 	   };
 
-		const auto worldInfo   = createWorldInfo ();
-		const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> (".titania.navigationInfo");
+		const auto worldInfo        = createWorldInfo ();
+		const auto executionContext = worldInfo -> getExecutionContext ();
+		const auto metadataSet      = worldInfo -> createMetaData <X3D::MetadataSet> (".titania.navigationInfo");
 
 		const auto type = types .find (getBrowser () -> getViewer ());
+
+		executionContext -> addNamedNode (executionContext -> getUniqueName ("NavigationInfo"), metadataSet);
 
 		metadataSet -> createValue <X3D::MetadataString> ("type") -> value () = { type not_eq types .end () ? type -> second : "EXAMINE" };
 	}
@@ -592,12 +595,15 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 	if (true)
 	{
 		const auto   worldInfo        = createWorldInfo ();
+		const auto   executionContext = worldInfo -> getExecutionContext ();
 		const auto   metadataSet      = worldInfo -> createMetaData <X3D::MetadataSet> (".titania.viewpoint");
 		const auto & activeLayer      = getWorld () -> getActiveLayer ();
 		const auto   viewpoint        = activeLayer -> getViewpoint ();
 		const auto   position         = viewpoint -> getUserPosition ();
 		const auto   orientation      = viewpoint -> getUserOrientation ();
 		const auto   centerOfRotation = viewpoint -> getUserCenterOfRotation ();
+
+		executionContext -> addNamedNode (executionContext -> getUniqueName ("Viewpoint"), metadataSet);
 
 		metadataSet -> createValue <X3D::MetadataDouble> ("position")         -> value () = { position         .x (), position         .y (), position         .z () };
 		metadataSet -> createValue <X3D::MetadataDouble> ("orientation")      -> value () = { orientation      .x (), orientation      .y (), orientation      .z (), orientation .angle () };

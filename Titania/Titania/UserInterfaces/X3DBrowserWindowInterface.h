@@ -1306,6 +1306,10 @@ public:
 	{ return *m_InlineEditorButton; }
 
 	Gtk::ToolButton &
+	getLayerEditorButton () const
+	{ return *m_LayerEditorButton; }
+
+	Gtk::ToolButton &
 	getPrecisionPlacementPanelButton () const
 	{ return *m_PrecisionPlacementPanelButton; }
 
@@ -1939,6 +1943,10 @@ public:
 
 	virtual
 	void
+	on_layer_editor_clicked () = 0;
+
+	virtual
+	void
 	on_precision_placement_panel_clicked () = 0;
 
 	virtual
@@ -2326,6 +2334,7 @@ private:
 	Gtk::ToolButton*                 m_LightEditorButton;
 	Gtk::ToolButton*                 m_LODEditorButton;
 	Gtk::ToolButton*                 m_InlineEditorButton;
+	Gtk::ToolButton*                 m_LayerEditorButton;
 	Gtk::ToolButton*                 m_PrecisionPlacementPanelButton;
 	Gtk::ToolButton*                 m_CreatePrototypeInstanceButton;
 	Gtk::ToolButton*                 m_NodeIndexButton;

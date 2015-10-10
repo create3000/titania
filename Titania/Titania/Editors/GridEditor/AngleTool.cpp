@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 
+#include <Titania/X3D/Components/Core/MetadataSet.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 
  namespace titania {
@@ -100,6 +101,10 @@ AngleTool::isEnabled (const bool value, const bool metadata)
 
 	if (metadata)
 	{
+		const X3D::SFNode metadataSet (getWorldInfo () -> createMetaData <X3D::MetadataSet> (".titania.angleGrid"));
+		const auto executionContext = metadataSet -> getExecutionContext ();
+	
+		executionContext -> addNamedNode (executionContext -> getUniqueName ("AngleLayoutTool"), metadataSet);
 		createWorldInfo () -> setMetaData <bool> (".titania.angleGrid.enabled", enabled);
 		getBrowserWindow () -> isModified (getBrowser (), true);
 	}

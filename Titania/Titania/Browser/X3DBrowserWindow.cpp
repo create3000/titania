@@ -64,6 +64,7 @@
 #include "../Widgets/ViewpointList/ViewpointList.h"
 
 #include <Titania/X3D/Browser/ContextLock.h>
+#include <Titania/X3D/Components/Core/MetadataSet.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 
@@ -187,6 +188,9 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 
 		const_cast <X3DBrowserWindow*> (this) -> isModified (getBrowser (), true);
 	}
+
+	if (worldInfo -> metadata ())
+		getRootContext () -> addNamedNode (getRootContext () -> getUniqueName ("Titania"), worldInfo -> metadata ());
 
 	return worldInfo;
 }

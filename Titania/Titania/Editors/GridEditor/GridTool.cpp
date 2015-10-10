@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 
+#include <Titania/X3D/Components/Core/MetadataSet.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 
 namespace titania {
@@ -100,6 +101,10 @@ GridTool::isEnabled (const bool value, const bool metadata)
 
 	if (metadata)
 	{
+		const X3D::SFNode metadataSet (getWorldInfo () -> createMetaData <X3D::MetadataSet> (".titania.grid"));
+		const auto executionContext = metadataSet -> getExecutionContext ();
+	
+		executionContext -> addNamedNode (executionContext-> getUniqueName ("GridLayoutTool"), metadataSet);
 		createWorldInfo () -> setMetaData <bool> (".titania.grid.enabled", enabled);
 		getBrowserWindow () -> isModified (getBrowser (), true);
 	}

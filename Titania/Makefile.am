@@ -42,6 +42,7 @@ titania_SOURCES =  \
 	Titania/Editors/GridEditor/X3DAngleEditor.cpp \
 	Titania/Editors/GridEditor/X3DGridEditor.cpp \
 	Titania/Editors/InlineEditor/InlineEditor.cpp \
+	Titania/Editors/LayerEditor/LayerEditor.cpp \
 	Titania/Editors/LightEditor/LightEditor.cpp \
 	Titania/Editors/LightEditor/X3DDirectionalLightEditor.cpp \
 	Titania/Editors/LightEditor/X3DPointLightEditor.cpp \
@@ -97,6 +98,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DGridEditorInterface.cpp \
 	Titania/UserInterfaces/X3DHistoryViewInterface.cpp \
 	Titania/UserInterfaces/X3DInlineEditorInterface.cpp \
+	Titania/UserInterfaces/X3DLayerEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLibraryViewInterface.cpp \
 	Titania/UserInterfaces/X3DLightEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLODEditorInterface.cpp \

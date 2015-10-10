@@ -2184,6 +2184,12 @@ BrowserWindow::on_inline_editor_clicked ()
 }
 
 void
+BrowserWindow::on_layer_editor_clicked ()
+{
+	addDialog ("LayerEditor");
+}
+
+void
 BrowserWindow::on_precision_placement_panel_clicked ()
 {
 	addDialog ("PrecisionPlacementPanel");
