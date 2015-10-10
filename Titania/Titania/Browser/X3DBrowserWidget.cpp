@@ -455,8 +455,10 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 {
 	browsers .emplace_back (browser);
 
+	if (not URL .empty ())
+		browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_browser, browser, URL);
+
 	browser -> set_opacity (0);
-	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_browser, browser, URL);
 	browser -> set_antialiasing (4);
 	browser -> show ();
 
