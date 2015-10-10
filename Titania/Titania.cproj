@@ -1919,6 +1919,7 @@
     <None Include="share\titania\ui\icons\Faenza\16\gtk-jump-to-ltr.png" />
     <None Include="share\titania\ui\icons\Faenza\scalable\gtk-edit.svg" />
     <None Include="share\titania\ui\icons\Faenza\16\gtk-directory.png" />
+    <None Include="share\titania\ui\icons\Faenza\README.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
