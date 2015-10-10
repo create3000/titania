@@ -1786,7 +1786,6 @@
     <None Include="Titania.pidb" />
     <None Include="Titania\ComposedWidgets\SFRotationAdjustment.h" />
     <None Include="share\titania\ui\icons\Units.svg" />
-    <None Include="share\titania\ui\icons\Axis-Angle-Rotation.svg" />
     <None Include="share\titania\Library\Primitives\Interpolation\EaseInEaseOut.x3dv" />
     <None Include="share\titania\Library\Primitives\Interpolation\FadeOut.x3dv" />
     <None Include="share\titania\ui\icons\TransformToZero.svg" />
@@ -1866,6 +1865,7 @@
     <None Include="share\titania\ui\Editors\LayerEditor.xml" />
     <None Include="Titania\UserInterfaces\X3DLayerEditorInterface.h" />
     <None Include="Titania\Editors\LayerEditor\LayerEditor.h" />
+    <None Include="share\titania\ui\icons\LayerSet.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -62,6 +62,7 @@ X3DLayerEditorInterface::create (const std::string & filename)
 
 	// Get objects.
 	m_LayerListStore         = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("LayerListStore"));
+	m_LayerSelection         = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("LayerSelection"));
 	m_VisibilityColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("VisibilityColumn"));
 	m_VisibilityCellRenderer = Glib::RefPtr <Gtk::CellRendererToggle>::cast_dynamic (m_builder -> get_object ("VisibilityCellRenderer"));
 	m_TypeNameColumn         = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("TypeNameColumn"));
@@ -74,12 +75,11 @@ X3DLayerEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LayerSetExpander", m_LayerSetExpander);
 	m_builder -> get_widget ("LayerScrolledWindow", m_LayerScrolledWindow);
 	m_builder -> get_widget ("LayerTreeView", m_LayerTreeView);
-	m_builder -> get_widget ("URLAddButton", m_URLAddButton);
-	m_builder -> get_widget ("URLRemoveButton", m_URLRemoveButton);
-	m_builder -> get_widget ("URLRemoveButton4", m_URLRemoveButton4);
-	m_builder -> get_widget ("URLRemoveButton1", m_URLRemoveButton1);
-	m_builder -> get_widget ("URLRemoveButton2", m_URLRemoveButton2);
-	m_builder -> get_widget ("URLRemoveButton3", m_URLRemoveButton3);
+	m_builder -> get_widget ("MoveLayerBox", m_MoveLayerBox);
+	m_builder -> get_widget ("TopButton", m_TopButton);
+	m_builder -> get_widget ("UpButton", m_UpButton);
+	m_builder -> get_widget ("DownButton", m_DownButton);
+	m_builder -> get_widget ("BottomButton", m_BottomButton);
 
 	// Connect object Gtk::Button with id 'IndexButton'.
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_index_clicked));
@@ -87,14 +87,17 @@ X3DLayerEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::TreeView with id 'LayerTreeView'.
 	m_LayerTreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_layer_activated));
 
+	// Connect object Gtk::TreeSelection with id 'LayerSelection'.
+	m_LayerSelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_layer_selection_changed));
+
 	// Connect object Gtk::CellRendererToggle with id 'VisibilityCellRenderer'.
 	m_VisibilityCellRenderer -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_visibility_toggled));
 
-	// Connect object Gtk::Button with id 'URLRemoveButton4'.
-	m_URLRemoveButton4 -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_top_clicked));
-	m_URLRemoveButton1 -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_up_clicked));
-	m_URLRemoveButton2 -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_down_clicked));
-	m_URLRemoveButton3 -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_bottom_clicked));
+	// Connect object Gtk::Button with id 'TopButton'.
+	m_TopButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_top_clicked));
+	m_UpButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_up_clicked));
+	m_DownButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_down_clicked));
+	m_BottomButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_bottom_clicked));
 
 	// Call construct handler of base class.
 	construct ();

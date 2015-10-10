@@ -99,6 +99,9 @@ private:
 	void
 	connectActiveLayer ();
 
+	void
+	connectLayers ();
+
 	virtual
 	void
 	on_index_clicked () final override;
@@ -110,6 +113,13 @@ private:
 	virtual
 	void
 	on_visibility_toggled (const Glib::ustring & path) final override;
+
+	void
+	set_order (const UndoStepPtr &);
+
+	virtual
+	void
+	on_layer_selection_changed () final override;
 
 	virtual
 	void

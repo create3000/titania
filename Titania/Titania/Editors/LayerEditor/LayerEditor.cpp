@@ -98,6 +98,11 @@ LayerEditor::initialize ()
 }
 
 void
+LayerEditor::on_index_clicked ()
+{
+}
+
+void
 LayerEditor::set_executionContext ()
 {
 	if (world)
@@ -120,6 +125,7 @@ LayerEditor::set_layersSet ()
 	{
 		layerSet -> activeLayer () .removeInterest (this, &LayerEditor::set_layers);
 		layerSet -> order ()       .removeInterest (this, &LayerEditor::set_layers);
+		layerSet -> layers ()      .removeInterest (this, &LayerEditor::set_layers);
 	}
 
 	layerSet = world -> getLayerSet ();
@@ -128,6 +134,7 @@ LayerEditor::set_layersSet ()
 	{
 		layerSet -> activeLayer () .addInterest (this, &LayerEditor::set_layers);
 		layerSet -> order ()       .addInterest (this, &LayerEditor::set_layers);
+		layerSet -> layers ()      .addInterest (this, &LayerEditor::set_layers);
 
 		set_layers ();
 	}
@@ -139,45 +146,21 @@ LayerEditor::set_layers ()
 	getLayerTreeView () .unset_model ();
 	getLayerListStore () -> clear ();
 
-	const auto & layerSet = getWorld () -> getLayerSet ();
-	const auto & order    = layerSet -> order ();
-
-	// Layer0
-
-	const auto row     = getLayerListStore () -> append ();
-	const bool visible = std::find (order .begin (), order .end (), 0) not_eq order  .end ();
-
-	row -> set_value (Columns::INDEX,     0);
-	row -> set_value (Columns::VISIBLE,   visible);
-	row -> set_value (Columns::TYPE_NAME, std::string ("Layer"));
-	row -> set_value (Columns::NAME,      std::string ("Layer 0"));
-		
-	if (0 == layerSet -> activeLayer ())
+	if (layerSet not_eq world -> getDefaultLayerSet ())
 	{
-		row -> set_value (Columns::WEIGHT, Weight::BOLD);
-		row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
-	}
-	else
-	{
-		row -> set_value (Columns::WEIGHT, Weight::NORMAL);
-		row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
-	}
+		const auto & order = layerSet -> order ();
 
-	// Layers
+		// Layer0
 
-	int32_t index = 1;
-
-	for (const auto & layer : layerSet -> layers ())
-	{
 		const auto row     = getLayerListStore () -> append ();
-		const bool visible = std::find (order .begin (), order .end (), index) not_eq order .end ();
+		const bool visible = std::find (order .begin (), order .end (), 0) not_eq order  .end ();
 
-		row -> set_value (Columns::INDEX,     index);
+		row -> set_value (Columns::INDEX,     0);
 		row -> set_value (Columns::VISIBLE,   visible);
-		row -> set_value (Columns::TYPE_NAME, layer -> getTypeName ());
-		row -> set_value (Columns::NAME,      layer -> getName ());
+		row -> set_value (Columns::TYPE_NAME, std::string ("Layer"));
+		row -> set_value (Columns::NAME,      std::string (_ ("Default Layer")));
 			
-		if (index == layerSet -> activeLayer ())
+		if (0 == layerSet -> activeLayer ())
 		{
 			row -> set_value (Columns::WEIGHT, Weight::BOLD);
 			row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
@@ -185,10 +168,36 @@ LayerEditor::set_layers ()
 		else
 		{
 			row -> set_value (Columns::WEIGHT, Weight::NORMAL);
-			row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
+			row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
 		}
 
-		++ index;
+		// Layers
+
+		int32_t index = 1;
+
+		for (const auto & layer : layerSet -> layers ())
+		{
+			const auto row     = getLayerListStore () -> append ();
+			const bool visible = std::find (order .begin (), order .end (), index) not_eq order .end ();
+
+			row -> set_value (Columns::INDEX,     index);
+			row -> set_value (Columns::VISIBLE,   visible);
+			row -> set_value (Columns::TYPE_NAME, layer -> getTypeName ());
+			row -> set_value (Columns::NAME,      layer -> getName ());
+				
+			if (index == layerSet -> activeLayer ())
+			{
+				row -> set_value (Columns::WEIGHT, Weight::BOLD);
+				row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+			}
+			else
+			{
+				row -> set_value (Columns::WEIGHT, Weight::NORMAL);
+				row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
+			}
+
+			++ index;
+		}
 	}
 
 	getLayerTreeView () .set_model (getLayerListStore ());
@@ -209,16 +218,34 @@ LayerEditor::connectActiveLayer ()
 }
 
 void
+LayerEditor::connectLayers ()
+{
+	layerSet -> layers () .removeInterest (this, &LayerEditor::connectLayers);
+	layerSet -> layers () .addInterest (this, &LayerEditor::set_layers);
+}
+
+void
 LayerEditor::on_visibility_toggled (const Glib::ustring & path)
 {
 	// Toggle row
 
-	const auto & layerSet = getWorld () -> getLayerSet ();
-	const auto   row      = getLayerListStore () -> get_iter (path);
-	const bool   visible  = not getVisibilityCellRenderer () -> get_active ();
+	const auto row     = getLayerListStore () -> get_iter (path);
+	const bool visible = not getVisibilityCellRenderer () -> get_active ();
 
 	row -> set_value (Columns::VISIBLE, visible);
 
+	// Set order
+
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Visibility Of Layer"));
+
+	set_order (undoStep);
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+LayerEditor::set_order (const UndoStepPtr & undoStep)
+{
 	// Set order
 
 	X3D::MFInt32 order;
@@ -235,12 +262,14 @@ LayerEditor::on_visibility_toggled (const Glib::ustring & path)
 			order .emplace_back (index);
 	}
 
-	// Set order
+	undoStep -> addObjects (layerSet);
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (layerSet -> order ()), layerSet -> order ());
 
 	layerSet -> order () .removeInterest (this, &LayerEditor::set_layers);
 	layerSet -> order () .addInterest (this, &LayerEditor::connectOrder);
-
 	layerSet -> order () = std::move (order);
+
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (layerSet -> order ()), layerSet -> order ());
 }
 
 void
@@ -267,6 +296,11 @@ LayerEditor::on_layer_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 
 	// Activate layer
 
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Active Layer"));
+
+	undoStep -> addObjects (layerSet);
+	undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+
 	layerSet -> activeLayer () .removeInterest (this, &LayerEditor::set_layers);
 	layerSet -> activeLayer () .addInterest (this, &LayerEditor::connectActiveLayer);
 
@@ -290,31 +324,264 @@ LayerEditor::on_layer_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 		row -> set_value (Columns::WEIGHT, Weight::NORMAL);
 		row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
 	}
+
+	set_order (undoStep);
+
+	undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
-LayerEditor::on_index_clicked ()
+LayerEditor::on_layer_selection_changed ()
 {
+	const bool haveSelection = not getLayerSelection () -> get_selected_rows () .empty ();
+
+	int32_t selectedIndex = -1;
+
+	if (haveSelection)
+		getLayerSelection () -> get_selected () -> get_value (Columns::INDEX, selectedIndex);
+	
+	const bool isFirstRow = selectedIndex == 1;
+	const bool isLastRow  = selectedIndex == int32_t (getLayerListStore () -> children () .size ()) - 1;
+
+	// Move box
+
+	getMoveLayerBox () .set_sensitive (haveSelection and selectedIndex not_eq 0);
+
+	getTopButton ()    .set_sensitive (not isFirstRow);
+	getUpButton ()     .set_sensitive (not isFirstRow);
+	getDownButton ()   .set_sensitive (not isLastRow);
+	getBottomButton () .set_sensitive (not isLastRow);
 }
 
 void
 LayerEditor::on_top_clicked ()
 {
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Move Layer To Top"));
+
+	undoStep -> addObjects (layerSet);
+	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
+
+	layerSet -> layers () .removeInterest (this, &LayerEditor::set_layers);
+	layerSet -> layers () .addInterest (this, &LayerEditor::connectLayers);
+
+	// Move to top
+	{
+		const auto selected = getLayerSelection () -> get_selected ();
+
+		int32_t selectedIndex = 0;
+
+		selected -> get_value (Columns::INDEX, selectedIndex);
+
+		if (selectedIndex == 0)
+			return;
+
+		// Move row
+		{
+			Gtk::TreePath destination;
+
+			destination .push_back (1);
+
+			getLayerListStore () -> move (selected, getLayerListStore () -> get_iter (destination));
+		}
+
+		// Update index
+		{
+			int32_t index = 0;
+
+			for (const auto & row : getLayerListStore () -> children ())
+			   row -> set_value (Columns::INDEX, index ++);
+		}
+
+		// Move layer
+		{
+			-- selectedIndex;
+
+			auto layer = std::move (layerSet -> layers () [selectedIndex]);
+
+			layerSet -> layers () .erase (layerSet -> layers () .begin () + selectedIndex);
+			layerSet -> layers () .emplace_front (std::move (layer));
+		}
+	}
+
+	set_order (undoStep);
+
+	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
 LayerEditor::on_up_clicked ()
 {
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Move Layer Up"));
+
+	undoStep -> addObjects (layerSet);
+	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
+
+	layerSet -> layers () .removeInterest (this, &LayerEditor::set_layers);
+	layerSet -> layers () .addInterest (this, &LayerEditor::connectLayers);
+
+	// Move to top
+	{
+		const auto selected = getLayerSelection () -> get_selected ();
+
+		int32_t selectedIndex = 0;
+
+		selected -> get_value (Columns::INDEX, selectedIndex);
+
+		if (selectedIndex == 0)
+			return;
+
+		if (selectedIndex == 1)
+			return;
+
+		// Move row
+		{
+			Gtk::TreePath destination;
+
+			destination .push_back (selectedIndex - 1);
+
+			getLayerListStore () -> move (selected, getLayerListStore () -> get_iter (destination));
+		}
+
+		// Update index
+		{
+			int32_t index = 0;
+
+			for (const auto & row : getLayerListStore () -> children ())
+			   row -> set_value (Columns::INDEX, index ++);
+		}
+
+		// Move layer
+		{
+			-- selectedIndex;
+
+			auto layer = std::move (layerSet -> layers () [selectedIndex]);
+
+			layerSet -> layers () .erase (layerSet -> layers () .begin () + selectedIndex);
+			layerSet -> layers () .insert (layerSet -> layers () .begin () + (selectedIndex - 1), std::move (layer));
+		}
+	}
+
+	set_order (undoStep);
+
+	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
 LayerEditor::on_down_clicked ()
 {
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Move Layer Down"));
+
+	undoStep -> addObjects (layerSet);
+	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
+
+	layerSet -> layers () .removeInterest (this, &LayerEditor::set_layers);
+	layerSet -> layers () .addInterest (this, &LayerEditor::connectLayers);
+
+	// Move to top
+	{
+		const auto selected = getLayerSelection () -> get_selected ();
+		const auto children = getLayerListStore () -> children ();
+
+		int32_t selectedIndex = 0;
+
+		selected -> get_value (Columns::INDEX, selectedIndex);
+
+		if (selectedIndex == 0)
+			return;
+
+		if (selectedIndex > int32_t (children .size () - 1))
+			return;
+
+		// Move row
+		{
+			Gtk::TreePath destination;
+
+			destination .push_back (selectedIndex + 2);
+
+			if (destination .back () < int32_t (children .size ()))
+				getLayerListStore () -> move (selected, getLayerListStore () -> get_iter (destination));
+			else
+				getLayerListStore () -> move (selected, children .end ());
+		}
+
+		// Update index
+		{
+			int32_t index = 0;
+
+			for (const auto & row : getLayerListStore () -> children ())
+			   row -> set_value (Columns::INDEX, index ++);
+		}
+
+		// Move layer
+		{
+			-- selectedIndex;
+
+			auto layer = std::move (layerSet -> layers () [selectedIndex]);
+
+			layerSet -> layers () .erase (layerSet -> layers () .begin () + selectedIndex);
+
+			if (selectedIndex + 1 < int32_t (layerSet -> layers () .size ()))
+				layerSet -> layers () .insert (layerSet -> layers () .begin () + (selectedIndex + 1), std::move (layer));
+			else
+				layerSet -> layers () .emplace_back (std::move (layer));
+		}
+	}
+
+	set_order (undoStep);
+
+	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
 LayerEditor::on_bottom_clicked ()
 {
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Move Layer To Bottom"));
+
+	undoStep -> addObjects (layerSet);
+	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
+
+	layerSet -> layers () .removeInterest (this, &LayerEditor::set_layers);
+	layerSet -> layers () .addInterest (this, &LayerEditor::connectLayers);
+
+	// Move to bottom
+	{
+		const auto selected = getLayerSelection () -> get_selected ();
+
+		int32_t selectedIndex = 0;
+
+		selected -> get_value (Columns::INDEX, selectedIndex);
+
+		if (selectedIndex == 0)
+			return;
+		
+		// Move row
+		getLayerListStore () -> move (selected, getLayerListStore () -> children () .end ());
+	
+		// Update index
+		{
+			int32_t index = 0;
+
+			for (const auto & row : getLayerListStore () -> children ())
+			   row -> set_value (Columns::INDEX, index ++);
+		}
+
+		// Move layer
+		{
+			-- selectedIndex;
+
+			auto layer = std::move (layerSet -> layers () [selectedIndex]);
+
+			layerSet -> layers () .erase (layerSet -> layers () .begin () + selectedIndex);
+			layerSet -> layers () .emplace_back (std::move (layer));
+		}
+	}
+
+	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 LayerEditor::~LayerEditor ()

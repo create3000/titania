@@ -93,6 +93,10 @@ public:
 	getLayerListStore () const
 	{ return m_LayerListStore; }
 
+	const Glib::RefPtr <Gtk::TreeSelection> &
+	getLayerSelection () const
+	{ return m_LayerSelection; }
+
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getVisibilityColumn () const
 	{ return m_VisibilityColumn; }
@@ -133,29 +137,25 @@ public:
 	getLayerTreeView () const
 	{ return *m_LayerTreeView; }
 
-	Gtk::Button &
-	getURLAddButton () const
-	{ return *m_URLAddButton; }
+	Gtk::Box &
+	getMoveLayerBox () const
+	{ return *m_MoveLayerBox; }
 
 	Gtk::Button &
-	getURLRemoveButton () const
-	{ return *m_URLRemoveButton; }
+	getTopButton () const
+	{ return *m_TopButton; }
 
 	Gtk::Button &
-	getURLRemoveButton4 () const
-	{ return *m_URLRemoveButton4; }
+	getUpButton () const
+	{ return *m_UpButton; }
 
 	Gtk::Button &
-	getURLRemoveButton1 () const
-	{ return *m_URLRemoveButton1; }
+	getDownButton () const
+	{ return *m_DownButton; }
 
 	Gtk::Button &
-	getURLRemoveButton2 () const
-	{ return *m_URLRemoveButton2; }
-
-	Gtk::Button &
-	getURLRemoveButton3 () const
-	{ return *m_URLRemoveButton3; }
+	getBottomButton () const
+	{ return *m_BottomButton; }
 
 	virtual
 	void
@@ -164,6 +164,10 @@ public:
 	virtual
 	void
 	on_layer_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+
+	virtual
+	void
+	on_layer_selection_changed () = 0;
 
 	virtual
 	void
@@ -199,6 +203,7 @@ private:
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
 	Glib::RefPtr <Gtk::ListStore>          m_LayerListStore;
+	Glib::RefPtr <Gtk::TreeSelection>      m_LayerSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_VisibilityColumn;
 	Glib::RefPtr <Gtk::CellRendererToggle> m_VisibilityCellRenderer;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_TypeNameColumn;
@@ -209,12 +214,11 @@ private:
 	Gtk::Expander*                         m_LayerSetExpander;
 	Gtk::ScrolledWindow*                   m_LayerScrolledWindow;
 	Gtk::TreeView*                         m_LayerTreeView;
-	Gtk::Button*                           m_URLAddButton;
-	Gtk::Button*                           m_URLRemoveButton;
-	Gtk::Button*                           m_URLRemoveButton4;
-	Gtk::Button*                           m_URLRemoveButton1;
-	Gtk::Button*                           m_URLRemoveButton2;
-	Gtk::Button*                           m_URLRemoveButton3;
+	Gtk::Box*                              m_MoveLayerBox;
+	Gtk::Button*                           m_TopButton;
+	Gtk::Button*                           m_UpButton;
+	Gtk::Button*                           m_DownButton;
+	Gtk::Button*                           m_BottomButton;
 
 };
 

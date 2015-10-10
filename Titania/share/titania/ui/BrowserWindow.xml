@@ -10,6 +10,7 @@
       <source stock-id="Hammer" filename="icons/Hammer.svg"/>
       <source stock-id="SplitPoint" filename="icons/SplitPoint.svg"/>
       <source stock-id="Index" filename="icons/Index.svg"/>
+      <source stock-id="LayerSet" filename="icons/LayerSet.svg"/>
       <source stock-id="Appearance" filename="icons/Appearance.svg"/>
       <source stock-id="Checkerboard" filename="icons/Checkerboard.svg"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
@@ -50,8 +51,8 @@
       <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
       <source stock-id="Light" filename="icons/Light.svg"/>
       <source stock-id="Library" filename="icons/Library.svg"/>
-      <source stock-id="Flop" filename="icons/Flop.svg"/>
       <source stock-id="Droplet" filename="icons/Droplet.svg"/>
+      <source stock-id="Flop" filename="icons/Flop.svg"/>
       <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
       <source stock-id="Navigation" filename="icons/Navigation.svg"/>
       <source stock-id="SnapCenter" filename="icons/SnapCenter.svg"/>
@@ -63,8 +64,8 @@
       <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.96.svg"/>
       <source stock-id="TransformToZero" filename="icons/TransformToZero.svg"/>
       <source stock-id="Time" filename="icons/Time.svg"/>
-      <source stock-id="Placement" filename="icons/Placement.svg"/>
       <source stock-id="Texture" filename="icons/Texture.svg"/>
+      <source stock-id="Placement" filename="icons/Placement.svg"/>
       <source stock-id="Hand" filename="icons/Hand.svg"/>
       <source stock-id="PaintBrush" filename="icons/PaintBrush.svg"/>
       <source stock-id="Arrow" filename="icons/Arrow.svg"/>
@@ -3573,9 +3574,10 @@
                           <object class="GtkToolButton" id="LayerEditorButton">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">Layer Editor</property>
                             <property name="label" translatable="yes">Layer Editor</property>
                             <property name="use_underline">True</property>
-                            <property name="stock_id">gtk-justify-fill</property>
+                            <property name="stock_id">LayerSet</property>
                             <signal name="clicked" handler="on_layer_editor_clicked" swapped="no"/>
                           </object>
                           <packing>
