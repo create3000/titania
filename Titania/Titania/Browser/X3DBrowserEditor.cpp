@@ -189,7 +189,7 @@ X3DBrowserEditor::set_executionContext ()
 		};
 
 		const auto worldInfo   = getWorldInfo ();
-		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> (".titania.navigationInfo");
+		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/NavigationInfo");
 
 		const auto & type = metadataSet -> getValue <X3D::MetadataString> ("type") -> value () .get1Value (0);
 
@@ -201,7 +201,7 @@ X3DBrowserEditor::set_executionContext ()
 	try
 	{
 		const auto worldInfo   = getWorldInfo ();
-		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> (".titania.viewpoint");
+		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Viewpoint");
 
 		auto & p = metadataSet -> getValue <X3D::MetadataDouble> ("position") -> value ();
 		auto & o = metadataSet -> getValue <X3D::MetadataDouble> ("orientation") -> value ();
@@ -583,7 +583,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 
 		const auto worldInfo        = createWorldInfo ();
 		const auto executionContext = worldInfo -> getExecutionContext ();
-		const auto metadataSet      = worldInfo -> createMetaData <X3D::MetadataSet> (".titania.navigationInfo");
+		const auto metadataSet      = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/NavigationInfo");
 
 		const auto type = types .find (getBrowser () -> getViewer ());
 
@@ -596,7 +596,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 	{
 		const auto   worldInfo        = createWorldInfo ();
 		const auto   executionContext = worldInfo -> getExecutionContext ();
-		const auto   metadataSet      = worldInfo -> createMetaData <X3D::MetadataSet> (".titania.viewpoint");
+		const auto   metadataSet      = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Viewpoint");
 		const auto & activeLayer      = getWorld () -> getActiveLayer ();
 		const auto   viewpoint        = activeLayer -> getViewpoint ();
 		const auto   position         = viewpoint -> getUserPosition ();
