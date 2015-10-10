@@ -73,9 +73,11 @@ const ComponentType X3DBrowser::component      = ComponentType::TITANIA;
 const std::string   X3DBrowser::typeName       = "Browser";
 const std::string   X3DBrowser::containerField = "browser";
 
-X3DBrowser::X3DBrowser () :
+X3DBrowser::X3DBrowser (const MFString & url, const MFString & parameter) :
 	        X3DBaseNode (),
 	  X3DBrowserContext (),
+	                url (url),
+	          parameter (parameter),
 	        description (),
 	       currentSpeed (0),
 	   currentFrameRate (0),
@@ -89,7 +91,7 @@ X3DBrowser::X3DBrowser () :
 	   executionContext (createScene ()),
 	          loadState (NOT_STARTED_STATE),
 	           urlError (),
-	         inShutdown (),
+	         inShutdown (0),
 	             future ()
 {
 	enable_backtrace ();
@@ -126,6 +128,15 @@ X3DBrowser::initialize ()
 	executionContext .addInterest (this, &X3DBrowser::set_executionContext);
 
 	replaceWorld (executionContext);
+
+	if (url .empty ())
+	   initialized () = getCurrentTime ();
+	else
+	{
+	   initialized () .set (getCurrentTime ());
+
+	   loadURL (url, parameter);
+	}
 
 	// Welcome
 
@@ -339,8 +350,8 @@ throw (Error <INVALID_SCENE>,
 		else
 			executionContext = value;
 
-		initialized () = getCurrentTime ();
-
+		if (initialized ())
+			initialized () = getCurrentTime ();
 	}
 	else
 		throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");

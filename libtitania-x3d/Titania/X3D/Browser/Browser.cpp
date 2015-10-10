@@ -77,9 +77,9 @@
 namespace titania {
 namespace X3D {
 
-Browser::Browser () :
+Browser::Browser (const MFString & url, const MFString & parameter) :
 	    X3DBaseNode (this, this),
-	     X3DBrowser (),
+	     X3DBrowser (url, parameter),
 	opengl::Surface (),
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
@@ -89,9 +89,9 @@ Browser::Browser () :
 	addType (X3DConstants::Browser);
 }
 
-Browser::Browser (const Browser & other) :
+Browser::Browser (const Browser & other, const MFString & url, const MFString & parameter) :
 	    X3DBaseNode (this, this),
-	     X3DBrowser (),
+	     X3DBrowser (url, parameter),
 	opengl::Surface (other),
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
@@ -106,7 +106,7 @@ Browser::Browser (const Browser & other) :
 Browser*
 Browser::create (X3DExecutionContext* const) const
 {
-	return new Browser ();
+	return new Browser ({ }, { });
 }
 
 void

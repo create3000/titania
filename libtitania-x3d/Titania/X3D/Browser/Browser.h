@@ -73,9 +73,9 @@ public:
 
 	///  @name Construction
 
-	Browser ();
+	Browser (const MFString &, const MFString &);
 
-	Browser (const Browser &);
+	Browser (const Browser &, const MFString &, const MFString &);
 
 	Browser*
 	create (X3DExecutionContext* const) const;

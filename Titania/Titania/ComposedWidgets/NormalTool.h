@@ -125,7 +125,7 @@ NormalTool::NormalTool (X3DBaseInterface* const editor,
 	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
 	X3DComposedWidget (editor),
 	              box (box),
-	          browser (X3D::createBrowser (editor -> getBrowser ())),
+	          browser (X3D::createBrowser (editor -> getBrowser (), { get_ui ("Editors/NormalTool.x3dv") })),
 	            nodes (),
 	             name (name),
 	         undoStep (),
@@ -138,11 +138,11 @@ NormalTool::NormalTool (X3DBaseInterface* const editor,
 
 	// Browser
 
-	box .pack_start (*browser, true, true, 0);
-
+	browser -> initialized () .addInterest (this, &NormalTool::set_initialized);
 	browser -> set_antialiasing (4);
 	browser -> show ();
-	browser -> initialized () .addInterest (this, &NormalTool::set_initialized);
+
+	box .pack_start (*browser, true, true, 0);
 
 	// Setup
 
@@ -157,8 +157,6 @@ NormalTool::set_initialized ()
 
 	try
 	{
-		browser -> loadURL ({ get_ui ("Editors/NormalTool.x3dv") }, { });
-
 		const auto tool = browser -> getExecutionContext () -> getNamedNode ("Tool");
 
 		tool -> getField <X3D::SFRotation> ("outputRotation") .addInterest (this, &NormalTool::set_rotation);

@@ -63,7 +63,7 @@ throw (Error <BROWSER_UNAVAILABLE>)
 
 	if (not browserApplication)
 	{
-		browserApplication = new BrowserApplication ();
+		browserApplication = new BrowserApplication ({ }, { });
 
 		browserApplication -> setup ();
 	}
@@ -73,22 +73,22 @@ throw (Error <BROWSER_UNAVAILABLE>)
 
 ///  6.2.3 The createBrowser service creates a new instance of a browser application.
 BrowserPtr
-createBrowser (/* parameter */)
+createBrowser (const MFString & url, const MFString & parameter)
 throw (Error <BROWSER_UNAVAILABLE>)
 {
-	return new Browser ();
+	return new Browser (url, parameter);
 }
 
 ///  6.2.3 The createBrowser service creates a new instance of a browser application.
 BrowserPtr
-createBrowser (const BrowserPtr & sharingBrowser)
+createBrowser (const BrowserPtr & sharingBrowser, const MFString & url, const MFString & parameter)
 throw (Error <INVALID_NODE>,
        Error <BROWSER_UNAVAILABLE>)
 {
 	if (not sharingBrowser)
 		throw Error <INVALID_NODE> ("createBrowser: No sharingBrowser given.");
 
-	return new Browser (*sharingBrowser);
+	return new Browser (*sharingBrowser, url, parameter);
 }
 
 } // X3D

@@ -50,6 +50,7 @@
 
 #include "Browser/BrowserWindow.h"
 
+#include <Titania/X3D.h>
 #include <Titania/OS/env.h>
 
 namespace titania {

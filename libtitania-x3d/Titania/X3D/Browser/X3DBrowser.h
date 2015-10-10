@@ -308,7 +308,7 @@ protected:
 
 	///  @name Construction
 
-	X3DBrowser ();
+	X3DBrowser (const MFString &, const MFString &);
 
 	virtual
 	void
@@ -358,7 +358,8 @@ private:
 	static const std::string   containerField;
 
 	///  @name Members
-
+	MFString       url;
+	MFString       parameter;
 	SFString       description;
 	Speed <double> currentSpeed;
 	double         currentFrameRate;
