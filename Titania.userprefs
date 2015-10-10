@@ -1,8 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/ComposedWidgets/RotationTool.h">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="3" Column="3" />
+      <File FileName="Titania/Titania/Editors/LayerEditor/LayerEditor.cpp" Line="31" Column="31" />
+      <File FileName="Titania/Titania/Editors/LayerEditor/LayerEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/LibraryView/LibraryView.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="2" Column="2" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="51" Column="51" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.cpp" Line="2" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/CubeMapTexturing/X3DEnvironmentTextureNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/KeyDeviceSensor/KeySensor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/ComposedWidgets/RotationTool.h" Line="7" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
