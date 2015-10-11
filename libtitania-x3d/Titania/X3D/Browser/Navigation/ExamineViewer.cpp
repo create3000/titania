@@ -88,7 +88,7 @@ ExamineViewer::initialize ()
 		getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event),  false);
 		getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
 
-		getNavigationInfo () -> transitionStart () .addInterest (this, &ExamineViewer::disconnect);
+		getNavigationInfo () -> transitionStart () .addInterest (this, &ExamineViewer::disconnect); // XXX: getNavigationInfo kann sich auch ?ndern, bei allen!!!
 		getBrowser () -> getActiveViewpointEvent () .addInterest (this, &ExamineViewer::disconnect);
 	}
 	catch (const X3DError &)

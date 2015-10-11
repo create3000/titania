@@ -71,12 +71,13 @@ LayerSet::Fields::Fields () :
 { }
 
 LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	        X3DNode (),
-	         fields (),
-	     layerNodes ({ new Layer (executionContext) }),
-	     layerNode0 (layerNodes [0]),
-	activeLayerNode ()
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	           X3DNode (),
+	            fields (),
+	privateActiveLayer (-1),
+	        layerNodes ({ new Layer (executionContext) }),
+	        layerNode0 (layerNodes [0]),
+	   activeLayerNode ()
 {
 	addType (X3DConstants::LayerSet);
 
@@ -110,6 +111,23 @@ LayerSet::initialize ()
 }
 
 void
+LayerSet::setActiveLayerIndex (const int32_t value)
+{
+	privateActiveLayer = value;
+
+	set_activeLayer ();
+}
+
+int32_t
+LayerSet::getActiveLayerIndex () const
+{
+	if (privateActiveLayer < 0)
+		return activeLayer ();
+
+	return privateActiveLayer;
+}
+
+void
 LayerSet::setLayer0 (const X3DLayerNodePtr & value)
 {
 	layerNode0 = value;
@@ -120,14 +138,14 @@ LayerSet::setLayer0 (const X3DLayerNodePtr & value)
 void
 LayerSet::set_activeLayer ()
 {
-	if (activeLayer () == 0)
+	if (getActiveLayerIndex () == 0)
 	{
 		if (activeLayerNode not_eq layerNode0)
 			activeLayerNode = layerNode0;
 	}
 	else
 	{
-		const int32_t index = activeLayer () - 1;
+		const int32_t index = getActiveLayerIndex () - 1;
 
 		if (index >= 0 and index < (int32_t) layers () .size ())
 		{

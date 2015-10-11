@@ -185,7 +185,7 @@ LayerEditor::set_treeView ()
 		row -> set_value (Columns::TYPE_NAME, std::string ("Layer"));
 		row -> set_value (Columns::NAME,      std::string (_ ("Default Layer")));
 			
-		if (0 == layerSet -> activeLayer ())
+		if (0 == layerSet -> getActiveLayerIndex ())
 		{
 			row -> set_value (Columns::WEIGHT, Weight::BOLD);
 			row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
@@ -213,7 +213,7 @@ LayerEditor::set_treeView ()
 			row -> set_value (Columns::TYPE_NAME, node -> getTypeName ());
 			row -> set_value (Columns::NAME,      node -> getName ());
 				
-			if (index == layerSet -> activeLayer ())
+			if (index == layerSet -> getActiveLayerIndex ())
 			{
 				row -> set_value (Columns::WEIGHT, Weight::BOLD);
 				row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
@@ -370,7 +370,7 @@ LayerEditor::on_layer_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 {
 	// Deactivate layer
 
-	const int32_t activeLayer = layerSet -> activeLayer ();
+	const int32_t activeLayer = layerSet -> getActiveLayerIndex ();
 
 	if (activeLayer not_eq -1)
 	{
@@ -403,16 +403,16 @@ LayerEditor::on_layer_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 
 	row -> get_value (Columns::INDEX, index);
 
-	if (index not_eq layerSet -> activeLayer ())
+	if (index not_eq layerSet -> getActiveLayerIndex ())
 	{
-		layerSet -> activeLayer () = index;
+		layerSet -> setActiveLayerIndex (index);
 
 		row -> set_value (Columns::WEIGHT, Weight::BOLD);
 		row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
 	}
 	else
 	{
-		layerSet -> activeLayer () = -1;
+		layerSet -> setActiveLayerIndex (-1);
 
 		row -> set_value (Columns::WEIGHT, Weight::NORMAL);
 		row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);

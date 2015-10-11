@@ -119,6 +119,12 @@ public:
 	///  @name Member access
 
 	void
+	setActiveLayerIndex (const int32_t);
+
+	int32_t
+	getActiveLayerIndex () const;
+
+	void
 	setLayer0 (const X3DLayerNodePtr &);
 
 	const X3DLayerNodePtr &
@@ -182,6 +188,7 @@ private:
 
 	Fields fields;
 
+	int32_t                    privateActiveLayer;
 	X3DPtrArray <X3DLayerNode> layerNodes;
 	X3DLayerNodePtr            layerNode0;
 	X3DLayerNodePtr            activeLayerNode;
