@@ -122,10 +122,10 @@ Switch::getBBox () const
 int32_t
 Switch::getWhichChoice () const
 {
-	if (privateChoice > -1)
-		return privateChoice;
-	
-	return whichChoice ();
+	if (privateChoice < 0)
+		return whichChoice ();
+
+	return privateChoice;
 }
 
 void

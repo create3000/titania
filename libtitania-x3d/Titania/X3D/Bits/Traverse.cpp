@@ -213,9 +213,9 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 									
 								if (mfnode == &switchNode -> children ())
 								{
-									if (switchNode -> whichChoice () >= 0 and switchNode -> whichChoice () < (int32_t) switchNode -> children () .size ())
+									if (switchNode -> getWhichChoice () >= 0 and switchNode -> getWhichChoice () < (int32_t) switchNode -> children () .size ())
 									{
-										if (traverse (switchNode -> children () [switchNode -> whichChoice ()], callback, distinct, flags, seen))
+										if (traverse (switchNode -> children () [switchNode -> getWhichChoice ()], callback, distinct, flags, seen))
 											continue;
 										
 										return false;
@@ -540,11 +540,11 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 								
 							if (mfnode == &switchNode -> children ())
 							{
-								if (switchNode -> whichChoice () >= 0 and switchNode -> whichChoice () < (int32_t) switchNode -> children () .size ())
+								if (switchNode -> getWhichChoice () >= 0 and switchNode -> getWhichChoice () < (int32_t) switchNode -> children () .size ())
 								{
 									hierarchy .emplace_back (field);
 
-									if (find (switchNode -> children () [switchNode -> whichChoice ()], object, flags, hierarchy, seen))
+									if (find (switchNode -> children () [switchNode -> getWhichChoice ()], object, flags, hierarchy, seen))
 										return true;
 
 									hierarchy .pop_back ();
