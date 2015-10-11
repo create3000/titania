@@ -74,14 +74,15 @@
       <source stock-id="TextureQuality" filename="icons/TextureQuality.svg"/>
       <source stock-id="TextureQuality" filename="icons/TextureQuality.svg"/>
       <source stock-id="gtk-copy" filename="icons/Faenza/16/gtk-copy.png"/>
-      <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
+      <source stock-id="gtk-leave-fullscreen" filename="icons/Faenza/16/gtk-leave-fullscreen.png"/>
       <source stock-id="TextureCoordinate" filename="icons/TextureCoordinate.svg"/>
       <source stock-id="FragmentShader" filename="icons/FragmentShader.svg"/>
       <source stock-id="Green" filename="icons/Green.svg"/>
+      <source stock-id="document-import-scalable" filename="icons/Faenza/scalable/document-import.svg"/>
       <source stock-id="LOD" filename="icons/LOD.svg"/>
       <source stock-id="EyeOpen" filename="icons/EyeOpen.svg"/>
       <source stock-id="Texture" filename="icons/Texture.svg"/>
-      <source stock-id="gtk-leave-fullscreen" filename="icons/Faenza/16/gtk-leave-fullscreen.png"/>
+      <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="gtk-zoom-fit" filename="icons/Faenza/16/gtk-zoom-fit.png"/>
       <source stock-id="TransformToZero" filename="icons/TransformToZero.svg"/>
@@ -116,8 +117,8 @@
       <source stock-id="gtk-save-as" filename="icons/Faenza/16/gtk-save-as.png"/>
       <source stock-id="Flip" filename="icons/Flip.svg"/>
       <source stock-id="EyeClosed" filename="icons/EyeClosed.svg"/>
-      <source stock-id="Droplet" filename="icons/Droplet.svg"/>
       <source stock-id="gtk-go-back" filename="icons/Faenza/16/gtk-go-back-ltr.png"/>
+      <source stock-id="Droplet" filename="icons/Droplet.svg"/>
       <source stock-id="gtk-stop" filename="icons/Faenza/16/gtk-stop.png"/>
       <source stock-id="DotClear" filename="icons/dot-clear.png"/>
       <source stock-id="Inline" filename="icons/Inline.svg"/>
@@ -907,8 +908,8 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Detach From Group</property>
                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -2255,8 +2256,8 @@
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
