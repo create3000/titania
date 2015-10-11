@@ -103,6 +103,9 @@ private:
 	set_scene ();
 
 	void
+	set_activeLayer ();
+
+	void
 	set_executionContext ();
 
 	void

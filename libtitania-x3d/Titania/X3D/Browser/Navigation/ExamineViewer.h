@@ -66,17 +66,12 @@ class ExamineViewer :
 {
 public:
 
-	ExamineViewer (Browser* const, NavigationInfo* const);
+	ExamineViewer (Browser* const);
 
 	virtual
 	ViewerType
 	getType () const final override
 	{ return ViewerType::EXAMINE; }
-
-	virtual
-	NavigationInfo*
-	getNavigationInfo () const final override
-	{ return navigationInfo; }
 
 
 private:
@@ -111,8 +106,6 @@ private:
 
 	Rotation4f
 	getOrientationOffset ();
-
-	NavigationInfo* const navigationInfo;
 
 	Rotation4f       orientationOffset;
 	Rotation4f       rotation;

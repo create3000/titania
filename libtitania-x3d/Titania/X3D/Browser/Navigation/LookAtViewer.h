@@ -74,11 +74,6 @@ public:
 	getType () const final override
 	{ return ViewerType::LOOKAT; }
 
-	virtual
-	NavigationInfo*
-	getNavigationInfo () const final override
-	{ return nullptr; }
-
 	///  @name Destruction
 
 	virtual

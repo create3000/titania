@@ -61,7 +61,7 @@ class FlyViewer :
 {
 public:
 
-	FlyViewer (Browser* const, NavigationInfo*);
+	FlyViewer (Browser* const);
 
 	virtual
 	ViewerType

@@ -61,7 +61,7 @@ class WalkViewer :
 {
 public:
 
-	WalkViewer (Browser* const, NavigationInfo* const);
+	WalkViewer (Browser* const);
 
 	virtual
 	ViewerType

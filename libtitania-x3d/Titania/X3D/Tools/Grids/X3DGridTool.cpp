@@ -58,14 +58,17 @@ namespace titania {
 namespace X3D {
 
 X3DGridTool::Fields::Fields () :
-	   translation (new SFVec3f ()),
-	      rotation (new SFRotation ()),
-	         scale (new SFVec3f (1, 1, 1)),
-	         color (new SFColorRGBA (0.5, 0.5, 0.5, 0.2)),
-	     lineColor (new SFColorRGBA (1, 0.7, 0.7, 0.2)),
-	majorLineColor (new SFColorRGBA (1, 0.7, 0.7, 0.4)),
-	  snapToCenter (new SFBool (true)),
-	  snapDistance (new SFFloat (0.25))
+	    translation (new SFVec3f ()),
+	       rotation (new SFRotation ()),
+	          scale (new SFVec3f (1, 1, 1)),
+	          color (new SFColorRGBA (0.5, 0.5, 0.5, 0.2)),
+	      dimension (new MFInt32 ({ 10, 10, 10 })),
+	 majorLineEvery (new MFInt32 ({ 5, 5, 5 })),
+	majorLineOffset (new MFInt32 ({ 0, 0, 0 })),
+	      lineColor (new SFColorRGBA (1, 0.7, 0.7, 0.2)),
+	 majorLineColor (new SFColorRGBA (1, 0.7, 0.7, 0.4)),
+	   snapToCenter (new SFBool (true)),
+	   snapDistance (new SFFloat (0.25))
 { }
 
 X3DGridTool::X3DGridTool () :

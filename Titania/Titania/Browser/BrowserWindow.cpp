@@ -57,6 +57,7 @@
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
 #include "../Dialogs/NodeIndex/NodeIndex.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
+#include "../Editors/GridEditor/X3DGridTool.h"
 #include "../Editors/PrototypeInstanceDialog/PrototypeInstanceDialog.h"
 
 #include "../Browser/BrowserSelection.h"
@@ -71,6 +72,7 @@
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Navigation/LOD.h>
+#include <Titania/X3D/Tools/Grids/X3DGridTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/TransformSensorTool.h>
 #include <Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.h>
@@ -205,6 +207,7 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 {
 	// Disconnect
 
+	getBrowser () -> getActiveLayer ()      .removeInterest (this, &BrowserWindow::set_activeLayer);
 	getBrowser () -> getViewer ()           .removeInterest (this, &BrowserWindow::set_viewer);
 	getBrowser () -> getAvailableViewers () .removeInterest (this, &BrowserWindow::set_available_viewers);
 
@@ -220,6 +223,7 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 
 	// Connect
 
+	getBrowser () -> getActiveLayer ()      .addInterest (this, &BrowserWindow::set_activeLayer);
 	getBrowser () -> getViewer ()           .addInterest (this, &BrowserWindow::set_viewer);
 	getBrowser () -> getAvailableViewers () .addInterest (this, &BrowserWindow::set_available_viewers);
 
@@ -265,26 +269,22 @@ BrowserWindow::set_scene ()
 	getTransformSensorsAction ()  -> set_active (false);
 	getVisibilitySensorsAction () -> set_active (false);
 	getViewpointsAction ()        -> set_active (false);
-	
+
+	changing = false;
+}
+
+void
+BrowserWindow::set_activeLayer ()
+{
+	changing = true;
+
 	// Layout Menu
 
-	try
-	{
-		getGridLayoutToolAction () -> set_active (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/Grid/enabled", false) .at (0));
-	}
-	catch (...)
-	{
-		getGridLayoutToolAction () -> set_active (false);
-	}
+	getGridLayoutToolAction () -> set_active (getGridTool () -> isEnabled ());
+	getGridTool () -> isEnabled (getGridTool () -> isEnabled ());
 
-	try
-	{
-		getAngleLayoutToolAction () -> set_active (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/AngleGrid/enabled", false) .at (0));
-	}
-	catch (...)
-	{
-		getAngleLayoutToolAction () -> set_active (false);
-	}
+	getAngleLayoutToolAction () -> set_active (getAngleTool () -> isEnabled ());
+	getAngleTool () -> isEnabled (getAngleTool () -> isEnabled ());
 
 	changing = false;
 }
@@ -1924,14 +1924,14 @@ BrowserWindow::on_grid_layout_tool_toggled ()
 
 	changing = true;
 
-	hasAngleTool (false);
+	getAngleTool () -> isEnabled (false);
 	getAngleLayoutToolAction () -> set_active (false);
 
 	changing = false;
 
 	// Toggle grid.
 
-	hasGridTool (getGridLayoutToolAction () -> get_active ());
+	getGridTool () -> isEnabled (getGridLayoutToolAction () -> get_active ());
 }
 
 void
@@ -1942,14 +1942,14 @@ BrowserWindow::on_angle_layout_tool_toggled ()
 
 	changing = true;
 
-	hasGridTool (false);
+	getGridTool () -> isEnabled (false);
 	getGridLayoutToolAction () -> set_active (false);
 
 	changing = false;
 
 	// Toggle angle grid.
 
-	hasAngleTool (getAngleLayoutToolAction () -> get_active ());
+	getAngleTool () -> isEnabled (getAngleLayoutToolAction () -> get_active ());
 }
 
 void

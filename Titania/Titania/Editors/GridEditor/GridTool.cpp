@@ -52,6 +52,11 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 
+#include <Titania/X3D/Tools/Grids/GridTool.h>
+
+#include <Titania/X3D/Components/Core/MetadataBoolean.h>
+#include <Titania/X3D/Components/Core/MetadataFloat.h>
+#include <Titania/X3D/Components/Core/MetadataInteger.h>
 #include <Titania/X3D/Components/Core/MetadataSet.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 
@@ -60,63 +65,25 @@ namespace puck {
 
 GridTool::GridTool (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	            tool (),
-	         enabled (false)
+	     X3DGridTool (),
+	            tool ()
 {
-	getBrowserWindow () -> isEditor () .addInterest (this, &GridTool::set_enabled);
-	getScene () .addInterest (this, &GridTool::set_scene);
+	setName ("Grid");
+
 	setup ();
 }
 
 void
 GridTool::realize ()
 {
-	this -> tool = isEnabled ()
-	               ? getBrowser () -> getPrivateScene () -> createNode <X3D::GridTool> ()
-	               : getMasterBrowser () -> getPrivateScene () -> createNode <X3D::GridTool> ();
+	const auto & browser = isEnabled () ? getBrowser () : getMasterBrowser ();
 
-	configure ();
+	tool = browser -> getPrivateScene () -> createNode <X3D::GridTool> ();
 
 	tool -> getExecutionContext () -> realize ();
 }
 
-void
-GridTool::isEnabled (const bool value, const bool metadata)
-{
-	enabled = value;
-
-	if (isEnabled ())
-	{
-		getBrowser () .addInterest (this, &GridTool::set_browser);
-		set_browser (getBrowser ());
-	}
-	else
-	{
-		if (tool)
-		{
-			getBrowser () .removeInterest (this, &GridTool::set_browser);
-			set_browser (getMasterBrowser ());
-		}
-	}
-
-	if (metadata)
-	{
-		const X3D::SFNode metadataSet (getWorldInfo () -> createMetaData <X3D::MetadataSet> ("/Titania/Grid"));
-		const auto executionContext = metadataSet -> getExecutionContext ();
-	
-		executionContext -> addNamedNode (executionContext-> getUniqueName ("GridLayoutTool"), metadataSet);
-		createWorldInfo () -> setMetaData <bool> ("/Titania/Grid/enabled", enabled);
-		getBrowserWindow () -> isModified (getBrowser (), true);
-	}
-}
-
-bool
-GridTool::isEnabled () const
-{
-	return enabled and getBrowserWindow () -> isEditor ();
-}
-
-const X3D::X3DPtr <X3D::GridTool> &
+const X3D::X3DPtr <X3D::X3DGridTool> &
 GridTool::getTool () const
 {
 	if (not tool)
@@ -126,66 +93,11 @@ GridTool::getTool () const
 }
 
 void
-GridTool::set_enabled ()
-{
-	isEnabled (enabled, false);
-}
-
-void
-GridTool::set_browser (const X3D::BrowserPtr & browser)
-{
-	getTool () -> setExecutionContext (browser -> getPrivateScene ());
-}
-
-void
-GridTool::set_scene ()
+GridTool::configure (const X3D::X3DPtr <X3D::MetadataSet> & metadataSet)
 {
 	try
 	{
-		isEnabled (getWorldInfo () -> getMetaData <X3D::MFBool> ("/Titania/Grid/enabled", false) .at (0), false);
-	}
-	catch (...)
-	{
-		isEnabled (false, false);
-	}
-
-	if (tool)
-		configure ();
-}
-
-void
-GridTool::configure ()
-{
-	getTool () -> translation () .removeInterest (this, &GridTool::set_translation);
-	getTool () -> translation () .addInterest (this, &GridTool::connectTranslation);
-
-	getTool () -> rotation () .removeInterest (this, &GridTool::set_rotation);
-	getTool () -> rotation () .addInterest (this, &GridTool::connectRotation);
-
-	getTool () -> scale () .removeInterest (this, &GridTool::set_scale);
-	getTool () -> scale () .addInterest (this, &GridTool::connectScale);
-
-	getTool () -> dimension () .removeInterest (this, &GridTool::set_dimension);
-	getTool () -> dimension () .addInterest (this, &GridTool::connectDimension);
-
-	getTool () -> majorLineEvery () .removeInterest (this, &GridTool::set_majorLineEvery);
-	getTool () -> majorLineEvery () .addInterest (this, &GridTool::connectMajorLineEvery);
-
-	getTool () -> majorLineOffset () .removeInterest (this, &GridTool::set_majorLineOffset);
-	getTool () -> majorLineOffset () .addInterest (this, &GridTool::connectMajorLineOffset);
-
-	getTool () -> color () .removeInterest (this, &GridTool::set_color);
-	getTool () -> color () .addInterest (this, &GridTool::connectColor);
-
-	getTool () -> lineColor () .removeInterest (this, &GridTool::set_lineColor);
-	getTool () -> lineColor () .addInterest (this, &GridTool::connectLineColor);
-
-	getTool () -> majorLineColor () .removeInterest (this, &GridTool::set_majorLineColor);
-	getTool () -> majorLineColor () .addInterest (this, &GridTool::connectMajorLineColor);
-
-	try
-	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/translation", false);
+		const auto & v = metadataSet -> getValue <X3D::MetadataFloat> ("translation") -> value ();
 
 		getTool () -> translation () = X3D::Vector3f (v .at (0), v .at (1), v .at (2));
 	}
@@ -196,7 +108,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/rotation", false);
+		const auto & v = metadataSet -> getValue <X3D::MetadataFloat> ("rotation") -> value ();
 
 		getTool () -> rotation () = X3D::Rotation4f (v .at (0), v .at (1), v .at (2), v .at (3));
 	}
@@ -207,7 +119,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/scale", false);
+		const auto & v = metadataSet -> getValue <X3D::MetadataFloat> ("scale") -> value ();
 
 		getTool () -> scale () = X3D::Vector3f (v .at (0), v .at (1), v .at (2));
 	}
@@ -218,7 +130,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/Grid/dimension", false);
+		const auto & v = metadataSet -> getValue <X3D::MetadataInteger> ("dimension") -> value ();
 
 		getTool () -> dimension () = v;
 		getTool () -> dimension () .resize (3, X3D::SFInt32 (10));
@@ -230,7 +142,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/Grid/majorLineEvery", false);
+		const auto & v = metadataSet -> getValue <X3D::MetadataInteger> ("majorLineEvery") -> value ();
 
 		getTool () -> majorLineEvery () = v;
 	}
@@ -241,7 +153,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFInt32> ("/Titania/Grid/majorLineOffset", false);
+		const auto & v = metadataSet -> getValue <X3D::MetadataInteger> ("majorLineOffset") -> value ();
 
 		getTool () -> majorLineOffset () = v;
 	}
@@ -252,7 +164,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/color", false);
+		const auto & v = metadataSet -> getValue <X3D::MetadataFloat> ("color") -> value ();
 
 		getTool () -> color () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
 	}
@@ -263,7 +175,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/lineColor", false);
+		const auto & v = metadataSet -> getValue <X3D::MetadataFloat> ("lineColor") -> value ();
 
 		getTool () -> lineColor () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
 	}
@@ -274,7 +186,7 @@ GridTool::configure ()
 
 	try
 	{
-		const auto & v = getWorldInfo () -> getMetaData <X3D::MFFloat> ("/Titania/Grid/majorLineColor", false);
+		const auto & v = metadataSet -> getValue <X3D::MetadataFloat> ("majorLineColor") -> value ();
 
 		getTool () -> majorLineColor () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
 	}
@@ -282,132 +194,6 @@ GridTool::configure ()
 	{
 		getTool () -> majorLineColor () = X3D::Color4f (1, 0.7, 0.7, 0.4);
 	}
-}
-
-void
-GridTool::set_translation ()
-{
-	createWorldInfo () -> setMetaData <X3D::Vector3f> ("/Titania/Grid/translation", getTool () -> translation ());
-	getBrowserWindow () -> isModified (getBrowser (), true);
-}
-
-void
-GridTool::set_rotation ()
-{
-	createWorldInfo () -> setMetaData <X3D::Rotation4f> ("/Titania/Grid/rotation", getTool () -> rotation ());
-	getBrowserWindow () -> isModified (getBrowser (), true);
-}
-
-void
-GridTool::set_scale ()
-{
-	createWorldInfo () -> setMetaData <X3D::Vector3f> ("/Titania/Grid/scale", getTool () -> scale ());
-	getBrowserWindow () -> isModified (getBrowser (), true);
-}
-
-void
-GridTool::set_dimension ()
-{
-	createWorldInfo () -> setMetaData ("/Titania/Grid/dimension", getTool () -> dimension ());
-	getBrowserWindow () -> isModified (getBrowser (), true);
-}
-
-void
-GridTool::set_majorLineEvery ()
-{
-	createWorldInfo () -> setMetaData ("/Titania/Grid/majorLineEvery", getTool () -> majorLineEvery ());
-	getBrowserWindow () -> isModified (getBrowser (), true);
-}
-
-void
-GridTool::set_majorLineOffset ()
-{
-	createWorldInfo () -> setMetaData ("/Titania/Grid/majorLineOffset", getTool () -> majorLineOffset ());
-	getBrowserWindow () -> isModified (getBrowser (), true);
-}
-
-void
-GridTool::set_color ()
-{
-	createWorldInfo () -> setMetaData <X3D::Color4f> ("/Titania/Grid/color", getTool () -> color ());
-	getBrowserWindow () -> isModified (getBrowser (), true);
-}
-
-void
-GridTool::set_lineColor ()
-{
-	createWorldInfo () -> setMetaData <X3D::Color4f> ("/Titania/Grid/lineColor", getTool () -> lineColor ());
-	getBrowserWindow () -> isModified (getBrowser (), true);
-}
-
-void
-GridTool::set_majorLineColor ()
-{
-	createWorldInfo () -> setMetaData <X3D::Color4f> ("/Titania/Grid/majorLineColor", getTool () -> majorLineColor ());
-	getBrowserWindow () -> isModified (getBrowser (), true);
-}
-
-void
-GridTool::connectTranslation (const X3D::SFVec3f & field)
-{
-	field .removeInterest (this, &GridTool::connectTranslation);
-	field .addInterest (this, &GridTool::set_translation);
-}
-
-void
-GridTool::connectRotation (const X3D::SFRotation & field)
-{
-	field .removeInterest (this, &GridTool::connectRotation);
-	field .addInterest (this, &GridTool::set_rotation);
-}
-
-void
-GridTool::connectScale (const X3D::SFVec3f & field)
-{
-	field .removeInterest (this, &GridTool::connectScale);
-	field .addInterest (this, &GridTool::set_scale);
-}
-
-void
-GridTool::connectDimension (const X3D::MFInt32 & field)
-{
-	field .removeInterest (this, &GridTool::connectDimension);
-	field .addInterest (this, &GridTool::set_dimension);
-}
-
-void
-GridTool::connectMajorLineEvery (const X3D::MFInt32 & field)
-{
-	field .removeInterest (this, &GridTool::connectMajorLineEvery);
-	field .addInterest (this, &GridTool::set_majorLineEvery);
-}
-
-void
-GridTool::connectMajorLineOffset (const X3D::MFInt32 & field)
-{
-	field .removeInterest (this, &GridTool::connectMajorLineOffset);
-	field .addInterest (this, &GridTool::set_majorLineOffset);
-}
-
-void
-GridTool::connectColor (const X3D::SFColorRGBA & field)
-{
-	field .removeInterest (this, &GridTool::connectColor);
-	field .addInterest (this, &GridTool::set_color);
-}
-
-void
-GridTool::connectLineColor (const X3D::SFColorRGBA & field)
-{
-	field .removeInterest (this, &GridTool::connectLineColor);
-	field .addInterest (this, &GridTool::set_lineColor);
-}
-
-void
-GridTool::connectMajorLineColor (const X3D::SFColorRGBA & field)
-{
-	field .removeInterest (this, &GridTool::connectMajorLineColor);
-	field .addInterest (this, &GridTool::set_majorLineColor);
 }
 
 GridTool::~GridTool ()

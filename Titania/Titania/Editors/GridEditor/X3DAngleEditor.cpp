@@ -51,8 +51,9 @@
 #include "X3DAngleEditor.h"
 
 #include "../../Configuration/config.h"
+#include "X3DGridTool.h"
 
-#include <Titania/X3D/Tools/Grids/AngleTool.h>
+#include <Titania/X3D/Tools/Grids/X3DGridTool.h>
 
 namespace titania {
 namespace puck {
@@ -129,7 +130,7 @@ X3DAngleEditor::initialize ()
 {
 	getAngleUniformScaleButton () .set_active (getConfig () .getBoolean ("angleUniformScale"));
 
-	const auto & angleTool  = getBrowserWindow () -> getAngleTool ();
+	const auto & angleTool  = getBrowserWindow () -> getAngleTool () -> getTool ();
 	X3D::MFNode  angleTools = { angleTool };
 
 	translation     .setNodes (angleTools);
@@ -161,7 +162,7 @@ X3DAngleEditor::on_angle_plane_changed ()
 	if (changing)
 		return;
 
-	const auto & grid = getBrowserWindow () -> getAngleTool ();
+	const auto & grid = getBrowserWindow () -> getAngleTool () -> getTool ();
 
 	grid -> rotation () .removeInterest (this, &X3DAngleEditor::set_rotation);
 	grid -> rotation () .addInterest (this, &X3DAngleEditor::connectRotation);
@@ -188,7 +189,7 @@ X3DAngleEditor::set_rotation ()
 	changing = true;
 
 	constexpr float EPS  = math::radians (0.1);
-	const auto &    grid = getBrowserWindow () -> getAngleTool ();
+	const auto &    grid = getBrowserWindow () -> getAngleTool () -> getTool ();
 
 	if (std::abs ((grid -> rotation () * ~X_PLANE_ROTATION) .angle ()) < EPS)
 		getAnglePlaneComboBoxText () .set_active (0);
@@ -258,7 +259,7 @@ X3DAngleEditor::on_angle_add_major_line_grid ()
 void
 X3DAngleEditor::on_angle_remove_major_line_grid ()
 {
-	const auto & grid  = getBrowserWindow () -> getAngleTool ();
+	const auto & grid  = getBrowserWindow () -> getAngleTool () -> getTool ();
 	const int    size  = getAngleMajorGridAdjustment () -> get_upper () - 1;
 	const int    index = (getAngleMajorGridAdjustment () -> get_value () - 1) * INDICES;
 	const auto   iterL = grid -> majorLineEvery ()  .begin () + index;
@@ -279,7 +280,7 @@ X3DAngleEditor::on_angle_remove_major_line_grid ()
 void
 X3DAngleEditor::set_majorLineEvery ()
 {
-	const auto & grid = getBrowserWindow () -> getAngleTool ();
+	const auto & grid = getBrowserWindow () -> getAngleTool () -> getTool ();
 
 	getAngleMajorGridAdjustment () -> set_lower (bool (grid -> majorLineEvery () .size ()));
 	getAngleMajorGridAdjustment () -> set_upper (grid -> majorLineEvery () .size () / INDICES);

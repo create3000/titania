@@ -51,8 +51,9 @@
 #include "X3DGridEditor.h"
 
 #include "../../Configuration/config.h"
+#include "X3DGridTool.h"
 
-#include <Titania/X3D/Tools/Grids/GridTool.h>
+#include <Titania/X3D/Tools/Grids/X3DGridTool.h>
 
 namespace titania {
 namespace puck {
@@ -129,7 +130,7 @@ X3DGridEditor::initialize ()
 {
 	getGridUniformScaleButton () .set_active (getConfig () .getBoolean ("gridUniformScale"));
 
-	const auto & gridTool  = getBrowserWindow () -> getGridTool ();
+	const auto & gridTool  = getBrowserWindow () -> getGridTool () -> getTool ();
 	X3D::MFNode  gridTools = { gridTool };
 
 	translation     .setNodes (gridTools);
@@ -161,7 +162,7 @@ X3DGridEditor::on_grid_plane_changed ()
 	if (changing)
 		return;
 
-	const auto & grid = getBrowserWindow () -> getGridTool ();
+	const auto & grid = getBrowserWindow () -> getGridTool () -> getTool ();
 
 	grid -> rotation () .removeInterest (this, &X3DGridEditor::set_rotation);
 	grid -> rotation () .addInterest (this, &X3DGridEditor::connectRotation);
@@ -188,7 +189,7 @@ X3DGridEditor::set_rotation ()
 	changing = true;
 
 	constexpr float EPS  = math::radians (0.1);
-	const auto &    grid = getBrowserWindow () -> getGridTool ();
+	const auto &    grid = getBrowserWindow () -> getGridTool () -> getTool ();
 
 	if (std::abs ((grid -> rotation () * ~X_PLANE_ROTATION) .angle ()) < EPS)
 		getGridPlaneComboBoxText () .set_active (0);
@@ -258,7 +259,7 @@ X3DGridEditor::on_add_major_line_grid ()
 void
 X3DGridEditor::on_remove_major_line_grid ()
 {
-	const auto & grid  = getBrowserWindow () -> getGridTool ();
+	const auto & grid  = getBrowserWindow () -> getGridTool () -> getTool ();
 	const int    size  = getGridMajorGridAdjustment () -> get_upper () - 1;
 	const int    index = (getGridMajorGridAdjustment () -> get_value () - 1) * INDICES;
 	const auto   iterL = grid -> majorLineEvery ()  .begin () + index;
@@ -279,7 +280,7 @@ X3DGridEditor::on_remove_major_line_grid ()
 void
 X3DGridEditor::set_majorLineEvery ()
 {
-	const auto & grid = getBrowserWindow () -> getGridTool ();
+	const auto & grid = getBrowserWindow () -> getGridTool () -> getTool ();
 
 	getGridMajorGridAdjustment () -> set_lower (bool (grid -> majorLineEvery () .size ()));
 	getGridMajorGridAdjustment () -> set_upper (grid -> majorLineEvery () .size () / INDICES);

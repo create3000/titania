@@ -206,22 +206,22 @@ Browser::set_viewer (ViewerType type)
 			}
 			case ViewerType::EXAMINE:
 			{
-				viewer .reset (new ExamineViewer (this, getActiveNavigationInfo ()));
+				viewer .reset (new ExamineViewer (this));
 				break;
 			}
 			case ViewerType::WALK:
 			{
-				viewer .reset (new WalkViewer (this, getActiveNavigationInfo ()));
+				viewer .reset (new WalkViewer (this));
 				break;
 			}
 			case ViewerType::FLY:
 			{
-				viewer .reset (new FlyViewer (this, getActiveNavigationInfo ()));
+				viewer .reset (new FlyViewer (this));
 				break;
 			}
 			case ViewerType::PLANE:
 			{
-				viewer .reset (new PlaneViewer (this, getActiveNavigationInfo ()));
+				viewer .reset (new PlaneViewer (this));
 				break;
 			}
 			case ViewerType::LOOKAT:

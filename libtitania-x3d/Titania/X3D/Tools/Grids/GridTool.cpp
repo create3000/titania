@@ -60,16 +60,9 @@ const ComponentType GridTool::component      = ComponentType::TITANIA;
 const std::string   GridTool::typeName       = "GridTool";
 const std::string   GridTool::containerField = "grid";
 
-GridTool::Fields::Fields () :
-	      dimension (new MFInt32 ({ 10, 10, 10 })),
-	 majorLineEvery (new MFInt32 ({ 5, 5, 5 })),
-	majorLineOffset (new MFInt32 ({ 0, 0, 0 }))
-{ }
-
 GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGridTool (),
-	     fields ()
+	X3DGridTool ()
 {
 	addType (X3DConstants::GridTool);
 
@@ -85,6 +78,10 @@ GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "majorLineColor",  majorLineColor ());
 	addField (inputOutput, "snapToCenter",    snapToCenter ());
 	addField (inputOutput, "snapDistance",    snapDistance ());
+	      
+	dimension ()       = { 10, 10, 10 };
+	majorLineEvery ()  = { 5, 5, 5 };
+	majorLineOffset () = { 0, 0, 0 };
 }
 
 X3DBaseNode*

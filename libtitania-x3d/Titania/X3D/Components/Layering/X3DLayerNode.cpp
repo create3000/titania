@@ -112,6 +112,11 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* defaultViewpoint_, X3DGroupingNode
 	             group,
 	             friends);
 
+	defaultNavigationInfo -> isBound () = true;
+	defaultBackground     -> isBound () = true;
+	defaultFog            -> isBound () = true;
+	defaultViewpoint      -> isBound () = true;
+
 	defaultBackground -> isHidden (true);
 	defaultFog        -> isHidden (true);
 }

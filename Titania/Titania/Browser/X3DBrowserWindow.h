@@ -56,15 +56,6 @@
 #include <Titania/X3D/Miscellaneous/Keys.h>
 
 namespace titania {
-namespace X3D {
-
-class GridTool;
-class AngleTool;
-
-} // X3D
-} // titania
-
-namespace titania {
 namespace puck {
 
 class HistoryView;
@@ -76,8 +67,7 @@ class ViewpointList;
 class Console;
 class ScriptEditor;
 class AnimationEditor;
-class GridTool;
-class AngleTool;
+class X3DGridTool;
 
 class X3DBrowserWindow :
 	public X3DBrowserEditor
@@ -108,23 +98,13 @@ public:
 	getWorldInfo (const bool)
 	throw (X3D::Error <X3D::NOT_SUPPORTED>) final override;
 
-	void
-	hasGridTool (const bool);
+	const std::unique_ptr <X3DGridTool> &
+	getGridTool () const
+	{ return gridTool; }
 
-	bool
-	hasGridTool () const;
-
-	const X3D::X3DPtr <X3D::GridTool> &
-	getGridTool () const;
-
-	void
-	hasAngleTool (const bool);
-
-	bool
-	hasAngleTool () const;
-
-	const X3D::X3DPtr <X3D::AngleTool> &
-	getAngleTool () const;
+	const std::unique_ptr <X3DGridTool> &
+	getAngleTool () const
+	{ return angleTool; }
 
 	/// @name Operations
 
@@ -178,8 +158,8 @@ private:
 	std::unique_ptr <Console>         console;
 	std::unique_ptr <ScriptEditor>    scriptEditor;
 	std::unique_ptr <AnimationEditor> animationEditor;
-	std::unique_ptr <GridTool>        gridTool;
-	std::unique_ptr <AngleTool>       angleTool;
+	std::unique_ptr <X3DGridTool>     gridTool;
+	std::unique_ptr <X3DGridTool>     angleTool;
 
 	X3D::Keys keys;
 	bool      accelerators;

@@ -72,9 +72,8 @@ public:
 	ViewerType
 	getType () const = 0;
 
-	virtual
 	NavigationInfo*
-	getNavigationInfo () const = 0;
+	getNavigationInfo () const;
 
 
 protected:

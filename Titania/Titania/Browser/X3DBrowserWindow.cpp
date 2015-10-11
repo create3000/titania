@@ -133,42 +133,6 @@ X3DBrowserWindow::hasAccelerators (const bool value)
 	}
 }
 
-void
-X3DBrowserWindow::hasGridTool (const bool value)
-{
-	gridTool -> isEnabled (value);
-}
-
-bool
-X3DBrowserWindow::hasGridTool () const
-{
-	return gridTool -> isEnabled ();
-}
-
-const X3D::X3DPtr <X3D::GridTool> &
-X3DBrowserWindow::getGridTool () const
-{
-	return gridTool -> getTool ();
-}
-
-void
-X3DBrowserWindow::hasAngleTool (const bool value)
-{
-	angleTool -> isEnabled (value);
-}
-
-bool
-X3DBrowserWindow::hasAngleTool () const
-{
-	return angleTool -> isEnabled ();
-}
-
-const X3D::X3DPtr <X3D::AngleTool> &
-X3DBrowserWindow::getAngleTool () const
-{
-	return angleTool -> getTool ();
-}
-
 X3D::WorldInfoPtr
 X3DBrowserWindow::getWorldInfo (const bool create)
 throw (X3D::Error <X3D::NOT_SUPPORTED>)

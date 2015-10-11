@@ -51,15 +51,13 @@
 #ifndef __TITANIA_EDITORS_GRID_EDITOR_GRID_TOOL_H__
 #define __TITANIA_EDITORS_GRID_EDITOR_GRID_TOOL_H__
 
-#include "../../Base/X3DBaseInterface.h"
-
-#include <Titania/X3D/Tools/Grids/GridTool.h>
+#include "X3DGridTool.h"
 
 namespace titania {
 namespace puck {
 
 class GridTool :
-	virtual public X3DBaseInterface
+	public X3DGridTool
 {
 public:
 
@@ -67,15 +65,9 @@ public:
 
 	GridTool (X3DBrowserWindow* const);
 
-	void
-	isEnabled (const bool value)
-	{ isEnabled (value, true); }
-
-	bool
-	isEnabled () const;
-
-	const X3D::X3DPtr <X3D::GridTool> &
-	getTool () const;
+	virtual
+	const X3D::X3DPtr <X3D::X3DGridTool> &
+	getTool () const final override;
 
 	///  @name Destruction
 
@@ -88,79 +80,13 @@ private:
 	void
 	realize ();
 
+	virtual
 	void
-	isEnabled (const bool, const bool);
-
-	void
-	set_enabled ();
-
-	void
-	set_browser (const X3D::BrowserPtr &);
-
-	void
-	set_scene ();
-
-	void
-	configure ();
-
-	void
-	set_translation ();
-
-	void
-	set_rotation ();
-
-	void
-	set_scale ();
-
-	void
-	set_dimension ();
-
-	void
-	set_majorLineEvery ();
-
-	void
-	set_majorLineOffset ();
-
-	void
-	set_color ();
-
-	void
-	set_lineColor ();
-
-	void
-	set_majorLineColor ();
-
-	void
-	connectTranslation (const X3D::SFVec3f &);
-
-	void
-	connectRotation (const X3D::SFRotation &);
-
-	void
-	connectScale (const X3D::SFVec3f &);
-
-	void
-	connectDimension (const X3D::MFInt32 &);
-
-	void
-	connectMajorLineEvery (const X3D::MFInt32 &);
-
-	void
-	connectMajorLineOffset (const X3D::MFInt32 &);
-
-	void
-	connectColor (const X3D::SFColorRGBA &);
-
-	void
-	connectLineColor (const X3D::SFColorRGBA &);
-
-	void
-	connectMajorLineColor (const X3D::SFColorRGBA &);
+	configure (const X3D::X3DPtr <X3D::MetadataSet> &) final override;
 
 	///  @name Members
 
-	X3D::X3DPtr <X3D::GridTool> tool;
-	bool                        enabled;
+	X3D::X3DPtr <X3D::X3DGridTool> tool;
 
 };
 

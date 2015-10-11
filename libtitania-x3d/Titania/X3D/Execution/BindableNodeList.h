@@ -150,10 +150,13 @@ public:
 	const pointer_type &
 	bound () const
 	{
-		for (const auto & node : list)
-		{
-			if (node -> isBound ())
-				return node;
+	   if (not list .empty ())
+	   {
+			for (const auto & node : std::make_pair (list .begin () + 1, list .end ()))
+			{
+				if (node -> isBound ())
+					return node;
+			}
 		}
 
 		try

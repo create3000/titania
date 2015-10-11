@@ -74,11 +74,6 @@ public:
 	getType () const final override
 	{ return ViewerType::NONE; }
 
-	virtual
-	NavigationInfo*
-	getNavigationInfo () const final override
-	{ return nullptr; }
-
 };
 
 } // X3D

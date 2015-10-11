@@ -66,12 +66,7 @@ class X3DFlyViewer :
 {
 public:
 
-	X3DFlyViewer (Browser* const, NavigationInfo* const);
-
-	virtual
-	NavigationInfo*
-	getNavigationInfo () const final override
-	{ return navigationInfo; }
+	X3DFlyViewer (Browser* const);
 
 
 protected:
@@ -128,8 +123,6 @@ private:
 
 	void
 	display ();
-
-	NavigationInfo* const navigationInfo;
 
 	Vector3f         fromVector;
 	Vector3f         toVector;

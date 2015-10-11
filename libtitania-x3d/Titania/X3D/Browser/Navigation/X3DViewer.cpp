@@ -63,6 +63,12 @@ X3DViewer::X3DViewer (Browser* const browser) :
 	X3DBrowserObject (browser)
 { }
 
+NavigationInfo*
+X3DViewer::getNavigationInfo () const
+{
+	return getBrowser () -> getActiveLayer () -> getNavigationInfo ();
+}
+
 X3DViewpointNode*
 X3DViewer::getActiveViewpoint () const
 {
@@ -90,7 +96,7 @@ X3DViewer::getPointOnCenterPlane (const double x, const double y)
 
 		return direction * abs (getDistanceToCenter ()) / dot (direction, Vector3f (0, 0, -1));
 	}
-	catch (const std::domain_error & error)
+	catch (const std::exception & error)
 	{
 		return Vector3f ();
 	}

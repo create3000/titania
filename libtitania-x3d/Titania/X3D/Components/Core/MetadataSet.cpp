@@ -113,7 +113,7 @@ throw (Error <INVALID_NAME>,
 	if (iter not_eq metadataIndex .end ())
 		return iter -> second;
 
-	throw Error <INVALID_NAME> ("MetadataSet::getMetaData: Invalid name.");
+	throw Error <INVALID_NAME> ("MetadataSet::getObject: Invalid name '" + name + "'.");
 }
 
 void

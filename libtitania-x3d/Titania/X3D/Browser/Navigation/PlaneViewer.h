@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	PlaneViewer (Browser* const, NavigationInfo* const);
+	PlaneViewer (Browser* const);
 
 	///  @name Member access
 
@@ -73,11 +73,6 @@ public:
 	ViewerType
 	getType () const final override
 	{ return ViewerType::PLANE; }
-
-	virtual
-	NavigationInfo*
-	getNavigationInfo () const final override
-	{ return navigationInfo; }
 
 	///  @name Destruction
 
@@ -108,8 +103,6 @@ private:
 	constrainFieldOfViewScale () const;
 
 	///  @name Members
-
-	NavigationInfo* const navigationInfo;
 
 	Vector3f fromPoint;
 	guint    button;

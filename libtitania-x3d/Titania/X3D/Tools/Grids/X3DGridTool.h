@@ -97,6 +97,30 @@ public:
 	scale () const
 	{ return *fields .scale; }
 
+	MFInt32 &
+	dimension ()
+	{ return *fields .dimension; }
+
+	const MFInt32 &
+	dimension () const
+	{ return *fields .dimension; }
+
+	MFInt32 &
+	majorLineEvery ()
+	{ return *fields .majorLineEvery; }
+
+	const MFInt32 &
+	majorLineEvery () const
+	{ return *fields .majorLineEvery; }
+
+	MFInt32 &
+	majorLineOffset ()
+	{ return *fields .majorLineOffset; }
+
+	const MFInt32 &
+	majorLineOffset () const
+	{ return *fields .majorLineOffset; }
+
 	SFColorRGBA &
 	color ()
 	{ return *fields .color; }
@@ -215,6 +239,9 @@ private:
 		SFVec3f* const translation;
 		SFRotation* const rotation;
 		SFVec3f* const scale;
+		MFInt32* const dimension;
+		MFInt32* const majorLineEvery;
+		MFInt32* const majorLineOffset;
 		SFColorRGBA* const color;
 		SFColorRGBA* const lineColor;
 		SFColorRGBA* const majorLineColor;

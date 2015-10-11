@@ -83,19 +83,24 @@ LookAtViewer::initialize ()
 bool
 LookAtViewer::on_button_press_event (GdkEventButton* event)
 {
-	button = event -> button;
-	motion = false;
-
-	getBrowser () -> grab_focus ();
-
-	if (event -> button == 1)
+	try
 	{
-		getActiveViewpoint () -> transitionStop ();
+		button = event -> button;
+		motion = false;
 
-		orientation = getActiveViewpoint () -> getUserOrientation ();
+		getBrowser () -> grab_focus ();
 
-		fromVector = trackballProjectToSphere (event -> x, event -> y);
+		if (event -> button == 1)
+		{
+			getActiveViewpoint () -> transitionStop ();
+
+			orientation = getActiveViewpoint () -> getUserOrientation ();
+
+			fromVector = trackballProjectToSphere (event -> x, event -> y);
+		}
 	}
+	catch (const X3DError &)
+	{ }
 
 	return true;
 }
@@ -103,33 +108,38 @@ LookAtViewer::on_button_press_event (GdkEventButton* event)
 bool
 LookAtViewer::on_button_release_event (GdkEventButton* event)
 {
-	constexpr bool seek = true;
-
-	if (event -> button == 1)
+	try
 	{
-		if (not motion and touch (event -> x, event -> y))
+		constexpr bool seek = true;
+
+		if (event -> button == 1)
 		{
-			const auto hit = getBrowser () -> getNearestHit ();
-	
-			if (seek)
+			if (not motion and touch (event -> x, event -> y))
 			{
-				// Seek: look at selected point and fly a little closer.
+				const auto hit = getBrowser () -> getNearestHit ();
+		
+				if (seek)
+				{
+					// Seek: look at selected point and fly a little closer.
 
-				getActiveViewpoint () -> lookAt (hit -> intersection -> point * getActiveViewpoint () -> getCameraSpaceMatrix (), 2 - M_PHI);
-			}
-			else
-			{
-				// Look at as specification say.
+					getActiveViewpoint () -> lookAt (hit -> intersection -> point * getActiveViewpoint () -> getCameraSpaceMatrix (), 2 - M_PHI);
+				}
+				else
+				{
+					// Look at as specification say.
 
-				const auto modelViewMatrix = Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getCameraSpaceMatrix ();
-				const auto bbox            = hit -> shape -> getBBox () * modelViewMatrix;
+					const auto modelViewMatrix = Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getCameraSpaceMatrix ();
+					const auto bbox            = hit -> shape -> getBBox () * modelViewMatrix;
 
-				getActiveViewpoint () -> lookAt (bbox, 2 - M_PHI);
+					getActiveViewpoint () -> lookAt (bbox, 2 - M_PHI);
+				}
 			}
 		}
-	}
 
-	button = 0;
+		button = 0;
+	}
+	catch (const X3DError &)
+	{ }
 
 	return true;
 }
@@ -137,37 +147,42 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 bool
 LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 {
-	if (touch (event -> x, event -> y))
+	try
 	{
-		if (not isOver)
+		if (touch (event -> x, event -> y))
 		{
-			getBrowser () -> setCursor (Gdk::TARGET);
-			isOver = true;
+			if (not isOver)
+			{
+				getBrowser () -> setCursor (Gdk::TARGET);
+				isOver = true;
+			}
+		}
+		else
+		{
+			if (isOver)
+			{
+				getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
+				isOver = false;
+			}
+		}
+
+		if (button == 1)
+		{
+			motion = true;
+
+			const auto & viewpoint = getActiveViewpoint ();
+
+			const Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
+
+			rotation = Rotation4f (toVector, fromVector);
+
+			viewpoint -> orientationOffset () = getOrientationOffset ();
+
+			fromVector = toVector;
 		}
 	}
-	else
-	{
-		if (isOver)
-		{
-			getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
-			isOver = false;
-		}
-	}
-
-	if (button == 1)
-	{
-		motion = true;
-
-		const auto & viewpoint = getActiveViewpoint ();
-
-		const Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
-
-		rotation = Rotation4f (toVector, fromVector);
-
-		viewpoint -> orientationOffset () = getOrientationOffset ();
-
-		fromVector = toVector;
-	}
+	catch (const X3DError &)
+	{ }
 
 	return true;
 }
@@ -175,11 +190,18 @@ LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 Rotation4f
 LookAtViewer::getOrientationOffset ()
 {
-	const auto viewpoint = getActiveViewpoint ();
+	try
+	{
+		const auto viewpoint = getActiveViewpoint ();
 
-	orientation = rotation * orientation;
+		orientation = rotation * orientation;
 
-	return ~viewpoint -> getOrientation () * orientation;
+		return ~viewpoint -> getOrientation () * orientation;
+	}
+	catch (const X3DError &)
+	{
+	   return Rotation4f ();
+	}
 }
 
 bool

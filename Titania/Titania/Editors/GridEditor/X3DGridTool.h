@@ -48,28 +48,138 @@
  *
  ******************************************************************************/
 
-#include "WalkViewer.h"
+#ifndef __TITANIA_EDITORS_GRID_EDITOR_X3DGRID_TOOL_H__
+#define __TITANIA_EDITORS_GRID_EDITOR_X3DGRID_TOOL_H__
+
+#include "../../Base/X3DBaseInterface.h"
+
+#include <Titania/X3D/Tools/Grids/X3DGridTool.h>
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-WalkViewer::WalkViewer (Browser* const browser) :
-	X3DFlyViewer (browser)
-{ }
-
-Vector3f
-WalkViewer::getTranslationOffset (const Vector3f & velocity)
+class X3DGridTool :
+	virtual public X3DBaseInterface
 {
-	static constexpr Vector3f yAxis (0, 1, 0);
+public:
 
-	const auto     viewpoint = getActiveViewpoint ();
-	const Vector3f upVector  = viewpoint -> getUpVector ();
+	virtual
+	const X3D::X3DPtr <X3D::X3DGridTool> &
+	getTool () const = 0;
 
-	const Rotation4f userOrientation = viewpoint -> getUserOrientation ();
-	const Rotation4f orientation     = userOrientation * Rotation4f (yAxis * userOrientation, upVector);
+	void
+	isEnabled (const bool);
 
-	return velocity * orientation;
-}
+	bool
+	isEnabled () const;
 
-} // X3D
+	///  @name Destruction
+
+	virtual
+	~X3DGridTool ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DGridTool ();
+
+	///  @name Event handler
+
+	virtual
+	void
+	configure (const X3D::X3DPtr <X3D::MetadataSet> &) = 0;
+
+	void
+	connectTranslation (const X3D::SFVec3f &);
+
+	void
+	connectRotation (const X3D::SFRotation &);
+
+	void
+	connectScale (const X3D::SFVec3f &);
+
+	void
+	connectDimension (const X3D::MFInt32 &);
+
+	void
+	connectMajorLineEvery (const X3D::MFInt32 &);
+
+	void
+	connectMajorLineOffset (const X3D::MFInt32 &);
+
+	void
+	connectColor (const X3D::SFColorRGBA &);
+
+	void
+	connectLineColor (const X3D::SFColorRGBA &);
+
+	void
+	connectMajorLineColor (const X3D::SFColorRGBA &);
+
+	void
+	set_translation ();
+
+	void
+	set_rotation ();
+
+	void
+	set_scale ();
+
+	void
+	set_dimension ();
+
+	void
+	set_majorLineEvery ();
+
+	void
+	set_majorLineOffset ();
+
+	void
+	set_color ();
+
+	void
+	set_lineColor ();
+
+	void
+	set_majorLineColor ();
+
+	///  @name Metadata Handling
+
+	X3D::X3DPtr <X3D::MetadataSet>
+	createMetaData (const std::string &);
+
+	X3D::X3DPtr <X3D::MetadataSet>
+	getMetaData (const std::string &) const;
+
+
+private:
+
+	///  @name Operations
+
+	void
+	setEnabled (const bool);
+
+	bool
+	getEnabled () const;
+
+	void
+	set_browser (const X3D::BrowserPtr &);
+
+	void
+	set_activeLayer ();
+
+	void
+	enable ();
+
+	void
+	disable ();
+
+	X3D::BrowserPtr browser;
+};
+
+} // puck
 } // titania
+
+#endif

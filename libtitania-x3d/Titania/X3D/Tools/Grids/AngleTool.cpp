@@ -62,16 +62,9 @@ const ComponentType AngleTool::component      = ComponentType::TITANIA;
 const std::string   AngleTool::typeName       = "AngleTool";
 const std::string   AngleTool::containerField = "grid";
 
-AngleTool::Fields::Fields () :
-	      dimension (new MFInt32 ({ 5, 16, 10 })),
-	 majorLineEvery (new MFInt32 ({ 5, 2, 5 })),
-	majorLineOffset (new MFInt32 ({ 0, 0, 0 }))
-{ }
-
 AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGridTool (),
-	     fields ()
+	X3DGridTool ()
 {
 	addType (X3DConstants::AngleTool);
 
@@ -87,6 +80,10 @@ AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "majorLineColor",  majorLineColor ());
 	addField (inputOutput, "snapToCenter",    snapToCenter ());
 	addField (inputOutput, "snapDistance",    snapDistance ());
+
+	dimension ()       = { 5, 16, 10 };
+	majorLineEvery ()  = { 5, 2, 5 };
+	majorLineOffset () = { 0, 0, 0 };
 }
 
 X3DBaseNode*

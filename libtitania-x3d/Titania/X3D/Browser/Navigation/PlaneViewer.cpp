@@ -61,9 +61,8 @@ namespace X3D {
 
 static constexpr float SCROLL_FACTOR = 0.05;
 
-PlaneViewer::PlaneViewer (Browser* const browser, NavigationInfo* const navigationInfo) :
+PlaneViewer::PlaneViewer (Browser* const browser) :
 	     X3DViewer (browser),
-	navigationInfo (navigationInfo),
 	     fromPoint (),
 	        button (0)
 { }
@@ -82,16 +81,21 @@ PlaneViewer::initialize ()
 bool
 PlaneViewer::on_button_press_event (GdkEventButton* event)
 {
-	button = event -> button;
-
-	if (button == 2)
+	try
 	{
-		getBrowser () -> setCursor (Gdk::FLEUR);
+		button = event -> button;
 
-		getActiveViewpoint () -> transitionStop ();
+		if (button == 2)
+		{
+			getBrowser () -> setCursor (Gdk::FLEUR);
 
-		fromPoint = getPointOnCenterPlane (event -> x, event -> y);
+			getActiveViewpoint () -> transitionStop ();
+
+			fromPoint = getPointOnCenterPlane (event -> x, event -> y);
+		}
 	}
+	catch (const X3DError &)
+	{ }
 
 	return false;
 }
@@ -108,18 +112,23 @@ PlaneViewer::on_button_release_event (GdkEventButton* event)
 bool
 PlaneViewer::on_motion_notify_event (GdkEventMotion* event)
 {
-	if (button == 2)
+	try
 	{
-		const auto & viewpoint = getActiveViewpoint ();
+		if (button == 2)
+		{
+			const auto & viewpoint = getActiveViewpoint ();
 
-		const Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
-		const Vector3f translation = (fromPoint - toPoint) * viewpoint -> getUserOrientation ();
+			const Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
+			const Vector3f translation = (fromPoint - toPoint) * viewpoint -> getUserOrientation ();
 
-		viewpoint -> positionOffset ()         += translation;
-		viewpoint -> centerOfRotationOffset () += translation;
+			viewpoint -> positionOffset ()         += translation;
+			viewpoint -> centerOfRotationOffset () += translation;
 
-		fromPoint = toPoint;
+			fromPoint = toPoint;
+		}
 	}
+	catch (const X3DError &)
+	{ }
 
 	return false;
 }
@@ -127,29 +136,34 @@ PlaneViewer::on_motion_notify_event (GdkEventMotion* event)
 bool
 PlaneViewer::on_scroll_event (GdkEventScroll* event)
 {
-	const auto viewpoint = getActiveViewpoint ();
-
-	viewpoint -> transitionStop ();
-
-	const Vector3f fromPoint = getPointOnCenterPlane (event -> x, event -> y);
-
-	if (event -> direction == GDK_SCROLL_UP)      // Move backwards.
+	try
 	{
-		viewpoint -> fieldOfViewScale () = std::max (0.00001f, viewpoint -> fieldOfViewScale () * (1 - SCROLL_FACTOR));
+		const auto viewpoint = getActiveViewpoint ();
+
+		viewpoint -> transitionStop ();
+
+		const Vector3f fromPoint = getPointOnCenterPlane (event -> x, event -> y);
+
+		if (event -> direction == GDK_SCROLL_UP)      // Move backwards.
+		{
+			viewpoint -> fieldOfViewScale () = std::max (0.00001f, viewpoint -> fieldOfViewScale () * (1 - SCROLL_FACTOR));
+		}
+
+		else if (event -> direction == GDK_SCROLL_DOWN) // Move forwards.
+		{
+			viewpoint -> fieldOfViewScale () = viewpoint -> fieldOfViewScale () * (1 + SCROLL_FACTOR);
+
+			constrainFieldOfViewScale ();
+		}
+
+		const Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
+		const Vector3f translation = (fromPoint - toPoint) * viewpoint -> getUserOrientation ();
+
+		viewpoint -> positionOffset ()         += translation;
+		viewpoint -> centerOfRotationOffset () += translation;
 	}
-
-	else if (event -> direction == GDK_SCROLL_DOWN) // Move forwards.
-	{
-		viewpoint -> fieldOfViewScale () = viewpoint -> fieldOfViewScale () * (1 + SCROLL_FACTOR);
-
-		constrainFieldOfViewScale ();
-	}
-
-	const Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
-	const Vector3f translation = (fromPoint - toPoint) * viewpoint -> getUserOrientation ();
-
-	viewpoint -> positionOffset ()         += translation;
-	viewpoint -> centerOfRotationOffset () += translation;
+	catch (const X3DError &)
+	{ }
 
 	return false;
 }
@@ -157,25 +171,30 @@ PlaneViewer::on_scroll_event (GdkEventScroll* event)
 void
 PlaneViewer::constrainFieldOfViewScale () const
 {
-	const auto viewpointNode = getActiveViewpoint ();
-
-	const auto viewpoint = dynamic_cast <Viewpoint*> (viewpointNode);
-
-	if (viewpoint)
+	try
 	{
-		if (viewpoint -> fieldOfView () * viewpoint -> fieldOfViewScale () >= M_PI)
-			viewpoint -> fieldOfViewScale () = (M_PI - 0.001) / viewpoint -> fieldOfView ();
-	}
-	else
-	{
-		const auto geoViewpoint = dynamic_cast <GeoViewpoint*> (viewpointNode);
+		const auto viewpointNode = getActiveViewpoint ();
 
-		if (geoViewpoint)
+		const auto viewpoint = dynamic_cast <Viewpoint*> (viewpointNode);
+
+		if (viewpoint)
 		{
-			if (geoViewpoint -> fieldOfView () * geoViewpoint -> fieldOfViewScale () >= M_PI)
-				geoViewpoint -> fieldOfViewScale () = (M_PI - 0.001) / geoViewpoint -> fieldOfView ();
+			if (viewpoint -> fieldOfView () * viewpoint -> fieldOfViewScale () >= M_PI)
+				viewpoint -> fieldOfViewScale () = (M_PI - 0.001) / viewpoint -> fieldOfView ();
+		}
+		else
+		{
+			const auto geoViewpoint = dynamic_cast <GeoViewpoint*> (viewpointNode);
+
+			if (geoViewpoint)
+			{
+				if (geoViewpoint -> fieldOfView () * geoViewpoint -> fieldOfViewScale () >= M_PI)
+					geoViewpoint -> fieldOfViewScale () = (M_PI - 0.001) / geoViewpoint -> fieldOfView ();
+			}
 		}
 	}
+	catch (const X3DError &)
+	{ }
 }
 
 PlaneViewer::~PlaneViewer ()

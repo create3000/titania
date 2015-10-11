@@ -206,6 +206,7 @@
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditorSearch.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DLayerEditorInterface.cpp" />
     <Compile Include="Titania\Editors\LayerEditor\LayerEditor.cpp" />
+    <Compile Include="Titania\Editors\GridEditor\X3DGridTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1049,7 +1050,6 @@
     <None Include="share\titania\Library\Primitives\Geometry2D\Polyline2D.x3dv" />
     <None Include="share\titania\Library\Primitives\Geometry2D\Polypoint2D.x3dv" />
     <None Include="share\titania\Library\Primitives\Geometry2D\Rectangle2D.x3dv" />
-    <None Include="share\titania\Library\Primitives\Geometry2D\TriangleSet2D.x3dv" />
     <None Include="share\titania\Library\Primitives\Rendering\IndexedLineSet.x3dv" />
     <None Include="share\titania\Library\Primitives\Geometry3D\IndexedFaceSet.x3dv" />
     <None Include="share\titania\Library\Primitives\Rendering\PointSet.x3dv" />
@@ -1920,6 +1920,9 @@
     <None Include="share\titania\ui\icons\Faenza\scalable\gtk-edit.svg" />
     <None Include="share\titania\ui\icons\Faenza\16\gtk-directory.png" />
     <None Include="share\titania\ui\icons\Faenza\README.txt" />
+    <None Include="Titania\Editors\GridEditor\X3DGridTool.h" />
+    <None Include="share\titania\Library\Primitives\Geometry2D\TriangleSet2D.x3dv" />
+    <None Include="share\titania\Library\Primitives\Layering\LayerSet.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2010,6 +2013,7 @@
     <Folder Include="share\titania\ui\icons\Faenza\" />
     <Folder Include="share\titania\ui\icons\Faenza\16\" />
     <Folder Include="share\titania\ui\icons\Faenza\scalable\" />
+    <Folder Include="share\titania\Library\Primitives\Layering\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
