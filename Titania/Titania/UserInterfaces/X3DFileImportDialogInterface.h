@@ -110,10 +110,6 @@ public:
 	{ return m_FileFilterX3D; }
 
 	Gtk::Image &
-	getImportImage () const
-	{ return *m_ImportImage; }
-
-	Gtk::Image &
 	getImportImage1 () const
 	{ return *m_ImportImage1; }
 
@@ -130,20 +126,20 @@ public:
 	{ return *m_ImportDialog; }
 
 	Gtk::RadioButton &
-	getImportExternprotosButton () const
-	{ return *m_ImportExternprotosButton; }
-
-	Gtk::RadioButton &
-	getImportProtosButton () const
-	{ return *m_ImportProtosButton; }
-
-	Gtk::RadioButton &
 	getImportSceneButton () const
 	{ return *m_ImportSceneButton; }
 
 	Gtk::RadioButton &
 	getImportAsInlineButton () const
 	{ return *m_ImportAsInlineButton; }
+
+	Gtk::RadioButton &
+	getImportExternprotosButton () const
+	{ return *m_ImportExternprotosButton; }
+
+	Gtk::RadioButton &
+	getImportProtosButton () const
+	{ return *m_ImportProtosButton; }
 
 	virtual
 	~X3DFileImportDialogInterface ();
@@ -163,15 +159,14 @@ private:
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImage;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideo;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3D;
-	Gtk::Image*                    m_ImportImage;
 	Gtk::Image*                    m_ImportImage1;
 	Gtk::FileChooserDialog*        m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Dialog*                   m_ImportDialog;
-	Gtk::RadioButton*              m_ImportExternprotosButton;
-	Gtk::RadioButton*              m_ImportProtosButton;
 	Gtk::RadioButton*              m_ImportSceneButton;
 	Gtk::RadioButton*              m_ImportAsInlineButton;
+	Gtk::RadioButton*              m_ImportExternprotosButton;
+	Gtk::RadioButton*              m_ImportProtosButton;
 
 };
 

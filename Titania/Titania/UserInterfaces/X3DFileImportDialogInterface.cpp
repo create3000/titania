@@ -68,15 +68,14 @@ X3DFileImportDialogInterface::create (const std::string & filename)
 	m_FileFilterX3D   = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3D"));
 
 	// Get widgets.
-	m_builder -> get_widget ("ImportImage", m_ImportImage);
 	m_builder -> get_widget ("ImportImage1", m_ImportImage1);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("ImportDialog", m_ImportDialog);
-	m_builder -> get_widget ("ImportExternprotosButton", m_ImportExternprotosButton);
-	m_builder -> get_widget ("ImportProtosButton", m_ImportProtosButton);
 	m_builder -> get_widget ("ImportSceneButton", m_ImportSceneButton);
 	m_builder -> get_widget ("ImportAsInlineButton", m_ImportAsInlineButton);
+	m_builder -> get_widget ("ImportExternprotosButton", m_ImportExternprotosButton);
+	m_builder -> get_widget ("ImportProtosButton", m_ImportProtosButton);
 
 	// Call construct handler of base class.
 	construct ();

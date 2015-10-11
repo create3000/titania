@@ -61,14 +61,16 @@ namespace puck {
 
 namespace Columns {
 
-static constexpr int VISIBLE   = 0;
-static constexpr int TYPE_NAME = 1;
-static constexpr int NAME      = 2;
-static constexpr int WEIGHT    = 3;
-static constexpr int STYLE     = 4;
-static constexpr int INDEX     = 5;
-static constexpr int PICKABLE  = 6;
-static constexpr int EYE       = 7;
+static constexpr int VISIBLE            = 0;
+static constexpr int TYPE_NAME          = 1;
+static constexpr int NAME               = 2;
+static constexpr int WEIGHT             = 3;
+static constexpr int STYLE              = 4;
+static constexpr int INDEX              = 5;
+static constexpr int PICKABLE           = 6;
+static constexpr int EYE                = 7;
+static constexpr int ACTIVE_LAYER       = 8;
+static constexpr int ACTIVE_LAYER_IMAGE = 9;
 
 };
 
@@ -175,15 +177,18 @@ LayerEditor::set_treeView ()
 
 		// Layer0
 
-		const auto row     = getLayerListStore () -> append ();
-		const bool visible = std::find (order .begin (), order .end (), 0) not_eq order  .end ();
+		const auto row         = getLayerListStore () -> append ();
+		const bool visible     = std::find (order .begin (), order .end (), 0) not_eq order  .end ();
+		const bool activeLayer = 0 == layerSet -> activeLayer ();
 
-		row -> set_value (Columns::INDEX,     0);
-		row -> set_value (Columns::VISIBLE,   visible);
-		row -> set_value (Columns::EYE,       std::string (visible ? "EyeOpen" : "EyeClosed"));
-		row -> set_value (Columns::PICKABLE,  std::string (layerSet -> getLayer0 () -> isPickable () ? "gtk-ok" : "gtk-stop"));
-		row -> set_value (Columns::TYPE_NAME, std::string ("Layer"));
-		row -> set_value (Columns::NAME,      std::string (_ ("Default Layer")));
+		row -> set_value (Columns::INDEX,              0);
+		row -> set_value (Columns::VISIBLE,            visible);
+		row -> set_value (Columns::EYE,                std::string (visible ? "EyeOpen" : "EyeClosed"));
+		row -> set_value (Columns::PICKABLE,           std::string (layerSet -> getLayer0 () -> isPickable () ? "gtk-ok" : "gtk-stop"));
+		row -> set_value (Columns::TYPE_NAME,          std::string ("Layer"));
+		row -> set_value (Columns::NAME,               std::string (_ ("Default Layer")));
+		row -> set_value (Columns::ACTIVE_LAYER,       activeLayer);
+		row -> set_value (Columns::ACTIVE_LAYER_IMAGE, std::string (activeLayer ? "WalkViewer" : "gtk-stop"));
 			
 		if (0 == layerSet -> getActiveLayerIndex ())
 		{
@@ -202,16 +207,19 @@ LayerEditor::set_treeView ()
 
 		for (const auto & node : layerSet -> layers ())
 		{
-		   const auto & layer   = layers [index - 1];
-			const auto   row     = getLayerListStore () -> append ();
-			const bool   visible = std::find (order .begin (), order .end (), index) not_eq order .end ();
+		   const auto & layer       = layers [index - 1];
+			const auto   row         = getLayerListStore () -> append ();
+			const bool   visible     = std::find (order .begin (), order .end (), index) not_eq order .end ();
+			const bool   activeLayer = index == layerSet -> activeLayer ();
 
-			row -> set_value (Columns::INDEX,     index);
-			row -> set_value (Columns::VISIBLE,   visible);
-			row -> set_value (Columns::EYE,       std::string (visible ? "EyeOpen" : "EyeClosed"));
-			row -> set_value (Columns::PICKABLE,  std::string (layer and layer -> isPickable () ? "gtk-ok" : "gtk-stop"));
-			row -> set_value (Columns::TYPE_NAME, node -> getTypeName ());
-			row -> set_value (Columns::NAME,      node -> getName ());
+			row -> set_value (Columns::INDEX,              index);
+			row -> set_value (Columns::VISIBLE,            visible);
+			row -> set_value (Columns::EYE,                std::string (visible ? "EyeOpen" : "EyeClosed"));
+			row -> set_value (Columns::PICKABLE,           std::string (layer and layer -> isPickable () ? "gtk-ok" : "gtk-stop"));
+			row -> set_value (Columns::TYPE_NAME,          node -> getTypeName ());
+			row -> set_value (Columns::NAME,               node -> getName ());
+			row -> set_value (Columns::ACTIVE_LAYER,       activeLayer);
+			row -> set_value (Columns::ACTIVE_LAYER_IMAGE, std::string (activeLayer ? "WalkViewer" : "gtk-stop"));
 				
 			if (index == layerSet -> getActiveLayerIndex ())
 			{
@@ -260,7 +268,7 @@ LayerEditor::connectIsPickable (const X3D::X3DLayerNodePtr & layer)
 }
 
 bool
-LayerEditor::on_layers_button_press_event (GdkEventButton* event)
+LayerEditor::on_layers_button_release_event (GdkEventButton* event)
 {
 	Gtk::TreePath        path;
 	Gtk::TreeViewColumn* column = nullptr;
@@ -269,11 +277,28 @@ LayerEditor::on_layers_button_press_event (GdkEventButton* event)
 
 	getLayerTreeView () .get_path_at_pos (event -> x, event -> y, path, column, cell_x, cell_y);
 
-	if (column == getPickableColumn () .operator -> ())
-	   on_pickable_toggled (path);
-	
-	if (column == getVisibilityColumn () .operator -> ())
-	   on_visibility_toggled (path);
+	const auto row = getLayerListStore () -> get_iter (path);
+
+	if (getLayerListStore () -> iter_is_valid (row))
+	{
+		if (column == getPickableColumn () .operator -> ())
+		{
+			on_pickable_toggled (path);
+			return true;
+		}
+
+		if (column == getVisibilityColumn () .operator -> ())
+		{
+			on_visibility_toggled (path);
+			return true;
+		}
+
+		if (column == getActiveLayerColumn () .operator -> ())
+		{
+			on_active_layer_toggled (path);
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -322,6 +347,7 @@ LayerEditor::on_pickable_toggled (const Gtk::TreePath & path)
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Layer isPickable"));
 
+	undoStep -> addObjects (layer);
 	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (layer -> isPickable ()), layer -> isPickable ());
 
 	layer -> isPickable () = not layer -> isPickable ();
@@ -336,6 +362,66 @@ LayerEditor::on_pickable_toggled (const Gtk::TreePath & path)
 	row -> set_value (Columns::PICKABLE, std::string (layer -> isPickable () ? "gtk-ok" : "gtk-stop"));
 }
 
+void
+LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
+{
+	size_t last  = 0;
+	size_t index = path .back ();
+
+	// Find last active layer
+
+	for (const auto & row : getLayerListStore () -> children ())
+	{
+		bool active = false;
+
+		row -> get_value (Columns::ACTIVE_LAYER, active);
+
+		if (active)
+		   break;
+		
+		++ last;
+	}
+
+	// Toggle last to false
+
+	if (last >= 0)
+	{
+		const auto row = getLayerListStore () -> children () [last];
+		row -> set_value (Columns::ACTIVE_LAYER,       false);
+		row -> set_value (Columns::ACTIVE_LAYER_IMAGE, std::string ("gtk-stop"));
+	}
+
+	// Toggle current selection
+
+	bool active = false;
+
+	if (index not_eq last)
+	{
+		const auto row = getLayerListStore () -> get_iter (path);
+
+		row -> get_value (Columns::ACTIVE_LAYER, active);
+
+		active = not active;
+
+		row -> set_value (Columns::ACTIVE_LAYER, active);
+		row -> set_value (Columns::ACTIVE_LAYER_IMAGE, std::string (active ? "WalkViewer" : "gtk-stop"));
+	}
+
+	// Set value in LayerSet
+
+	layerSet -> activeLayer () .removeInterest (this, &LayerEditor::set_layers);
+	layerSet -> activeLayer () .addInterest (this, &LayerEditor::connectActiveLayer);
+
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Active Layer"));
+
+	undoStep -> addObjects (layerSet);
+	undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+
+	layerSet -> activeLayer () = active ? index : -1;
+
+	undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
 void
 LayerEditor::set_order (const UndoStepPtr & undoStep)
 {

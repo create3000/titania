@@ -113,6 +113,14 @@ public:
 	getNameColumn () const
 	{ return m_NameColumn; }
 
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getSpacerColumn () const
+	{ return m_SpacerColumn; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getActiveLayerColumn () const
+	{ return m_ActiveLayerColumn; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -163,7 +171,7 @@ public:
 
 	virtual
 	bool
-	on_layers_button_press_event (GdkEventButton* event) = 0;
+	on_layers_button_release_event (GdkEventButton* event) = 0;
 
 	virtual
 	void
@@ -208,6 +216,8 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn> m_PickableColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_TypeNameColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_NameColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_SpacerColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_ActiveLayerColumn;
 	Gtk::Window*                       m_Window;
 	Gtk::Box*                          m_Widget;
 	Gtk::Button*                       m_IndexButton;

@@ -118,13 +118,16 @@ private:
 
 	virtual
 	bool
-	on_layers_button_press_event (GdkEventButton*) final override;
+	on_layers_button_release_event (GdkEventButton*) final override;
 
 	void
 	on_visibility_toggled (const Gtk::TreePath &);
 
 	void
 	on_pickable_toggled (const Gtk::TreePath &);
+
+	void
+	on_active_layer_toggled (const Gtk::TreePath &);
 
 	void
 	set_order (const UndoStepPtr &);
