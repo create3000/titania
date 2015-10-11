@@ -92,7 +92,7 @@ X3DGridTool::setEnabled (const bool value)
 
 	executionContext -> addNamedNode (executionContext-> getUniqueName (getName ()), X3D::SFNode (metadataSet));
 	metadataSet-> createValue <X3D::MetadataBoolean> ("enabled") -> value () = { value };
-	getBrowserWindow () -> isModified (getBrowser (), true);
+	//getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 bool
