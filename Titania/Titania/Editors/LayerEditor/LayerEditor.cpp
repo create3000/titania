@@ -184,7 +184,7 @@ LayerEditor::set_treeView ()
 		row -> set_value (Columns::INDEX,              0);
 		row -> set_value (Columns::VISIBLE,            visible);
 		row -> set_value (Columns::EYE,                std::string (visible ? "EyeOpen" : "EyeClosed"));
-		row -> set_value (Columns::PICKABLE,           std::string (layerSet -> getLayer0 () -> isPickable () ? "gtk-ok" : "gtk-stop"));
+		row -> set_value (Columns::PICKABLE,           std::string (layerSet -> getLayer0 () -> isPickable () ? "Arrow" : "gtk-stop"));
 		row -> set_value (Columns::TYPE_NAME,          std::string ("Layer"));
 		row -> set_value (Columns::NAME,               std::string (_ ("Default Layer")));
 		row -> set_value (Columns::ACTIVE_LAYER,       activeLayer);
@@ -215,7 +215,7 @@ LayerEditor::set_treeView ()
 			row -> set_value (Columns::INDEX,              index);
 			row -> set_value (Columns::VISIBLE,            visible);
 			row -> set_value (Columns::EYE,                std::string (visible ? "EyeOpen" : "EyeClosed"));
-			row -> set_value (Columns::PICKABLE,           std::string (layer and layer -> isPickable () ? "gtk-ok" : "gtk-stop"));
+			row -> set_value (Columns::PICKABLE,           std::string (layer and layer -> isPickable () ? "Arrow" : "gtk-stop"));
 			row -> set_value (Columns::TYPE_NAME,          node -> getTypeName ());
 			row -> set_value (Columns::NAME,               node -> getName ());
 			row -> set_value (Columns::ACTIVE_LAYER,       activeLayer);
@@ -359,7 +359,7 @@ LayerEditor::on_pickable_toggled (const Gtk::TreePath & path)
 
 	const auto row = getLayerListStore () -> get_iter (path);
 
-	row -> set_value (Columns::PICKABLE, std::string (layer -> isPickable () ? "gtk-ok" : "gtk-stop"));
+	row -> set_value (Columns::PICKABLE, std::string (layer -> isPickable () ? "Arrow" : "gtk-stop"));
 }
 
 void
