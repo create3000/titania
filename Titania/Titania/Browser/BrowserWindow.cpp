@@ -1932,6 +1932,7 @@ BrowserWindow::on_grid_layout_tool_toggled ()
 	// Toggle grid.
 
 	getGridTool () -> isEnabled (getGridLayoutToolAction () -> get_active ());
+	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
@@ -1950,6 +1951,7 @@ BrowserWindow::on_angle_layout_tool_toggled ()
 	// Toggle angle grid.
 
 	getAngleTool () -> isEnabled (getAngleLayoutToolAction () -> get_active ());
+	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 
 void
