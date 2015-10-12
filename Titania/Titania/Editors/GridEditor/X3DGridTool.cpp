@@ -57,8 +57,6 @@
 #include <Titania/X3D/Components/Core/MetadataFloat.h>
 #include <Titania/X3D/Components/Core/MetadataInteger.h>
 #include <Titania/X3D/Components/Core/MetadataSet.h>
-#include <Titania/X3D/Components/Core/WorldInfo.h>
-#include <Titania/X3D/Execution/World.h>
 
 namespace titania {
 namespace puck {
@@ -72,10 +70,8 @@ X3DGridTool::X3DGridTool () :
 void
 X3DGridTool::isEnabled (const bool value)
 {
-	const auto metadataSet      = createMetaData ("/Titania/" + getName ());
-	const auto executionContext = metadataSet -> getExecutionContext ();
+	const auto metadataSet = createMetaData ("/Titania/" + getName ());
 
-	executionContext -> addNamedNode (executionContext-> getUniqueName (getName ()), X3D::SFNode (metadataSet));
 	metadataSet-> createValue <X3D::MetadataBoolean> ("enabled") -> value () = { value };
 }
 
@@ -346,28 +342,6 @@ X3DGridTool::connectMajorLineColor (const X3D::SFColorRGBA & field)
 {
 	field .removeInterest (this, &X3DGridTool::connectMajorLineColor);
 	field .addInterest (this, &X3DGridTool::set_majorLineColor);
-}
-
-X3D::X3DPtr <X3D::MetadataSet>
-X3DGridTool::createMetaData (const std::string & key)
-{
-	const auto & layerSet = getWorld () -> getLayerSet ();
-
-	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
-		return layerSet -> getActiveLayer () -> createMetaData <X3D::MetadataSet> (key);
-
-	return createWorldInfo () -> createMetaData <X3D::MetadataSet> (key);
-}
-
-X3D::X3DPtr <X3D::MetadataSet>
-X3DGridTool::getMetaData (const std::string & key) const
-{
-	const auto & layerSet = getWorld () -> getLayerSet ();
-
-	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
-		return layerSet -> getActiveLayer () -> getMetaData <X3D::MetadataSet> (key);
-	
-	return getWorldInfo () -> getMetaData <X3D::MetadataSet> (key);
 }
 
 X3DGridTool::~X3DGridTool ()

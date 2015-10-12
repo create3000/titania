@@ -94,13 +94,16 @@ private:
 	set_layers ();
 
 	void
+	set_order (const UndoStepPtr &);
+
+	void
 	set_treeView ();
 
 	void
-	connectOrder ();
+	connectActiveLayer ();
 
 	void
-	connectActiveLayer ();
+	connectOrder ();
 
 	void
 	connectLayers ();
@@ -128,9 +131,6 @@ private:
 
 	void
 	on_active_layer_toggled (const Gtk::TreePath &);
-
-	void
-	set_order (const UndoStepPtr &);
 
 	virtual
 	void

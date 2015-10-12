@@ -58,6 +58,14 @@
 #include "../Undo/UndoStep.h"
 
 namespace titania {
+namespace X3D {
+
+class MetadataSet;
+
+} // titania
+} // X3D
+
+namespace titania {
 namespace puck {
 
 class X3DBrowserWindow;
@@ -135,10 +143,11 @@ public:
 	getWorldInfo () const
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
 
-	virtual
-	X3D::WorldInfoPtr
-	getWorldInfo (const bool)
-	throw (X3D::Error <X3D::NOT_SUPPORTED>);
+	X3D::X3DPtr <X3D::MetadataSet>
+	createMetaData (const std::string &);
+
+	X3D::X3DPtr <X3D::MetadataSet>
+	getMetaData (const std::string &) const;
 
 	/***
 	 *  @name Undo/redo handling
@@ -215,6 +224,10 @@ private:
 	 
 	void
 	set_browser (const X3D::BrowserPtr &);
+
+	X3D::WorldInfoPtr
+	getWorldInfo (const bool)
+	throw (X3D::Error <X3D::NOT_SUPPORTED>);
 
 	/***
 	 *  @name Static members

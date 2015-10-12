@@ -135,32 +135,6 @@ X3DBrowserWindow::hasAccelerators (const bool value)
 	}
 }
 
-X3D::WorldInfoPtr
-X3DBrowserWindow::getWorldInfo (const bool create)
-throw (X3D::Error <X3D::NOT_SUPPORTED>)
-{
-	auto worldInfo = getRootContext () -> getWorldInfo ();
-
-	if (not worldInfo)
-	{
-		if (not create)
-			throw X3D::Error <X3D::NOT_SUPPORTED> ("X3DBrowserWindow::getWorldInfo: not supported.");
-	
-		worldInfo = getRootContext () -> createNode <X3D::WorldInfo> ();
-		worldInfo -> title () = getRootContext () -> getWorldURL () .basename (false);
-
-		getRootContext () -> getRootNodes () .emplace_front (worldInfo);
-		getRootContext () -> realize ();
-
-		const_cast <X3DBrowserWindow*> (this) -> isModified (getBrowser (), true);
-	}
-
-	if (worldInfo -> metadata ())
-		getRootContext () -> addNamedNode (getRootContext () -> getUniqueName ("Titania"), worldInfo -> metadata ());
-
-	return worldInfo;
-}
-
 bool
 X3DBrowserWindow::save (const basic::uri & worldURL, const bool compressed, const bool copy)
 {

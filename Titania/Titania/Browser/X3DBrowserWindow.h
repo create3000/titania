@@ -76,7 +76,7 @@ public:
 
 	using X3DBrowserEditor::getWorldInfo;
 
-	/// @name Member access
+	/// @name Key device handling
 
 	X3D::Keys &
 	getKeys ()
@@ -93,10 +93,7 @@ public:
 	hasAccelerators () const
 	{ return accelerators; }
 
-	virtual
-	X3D::WorldInfoPtr
-	getWorldInfo (const bool)
-	throw (X3D::Error <X3D::NOT_SUPPORTED>) final override;
+	///  @name Grid Tool
 
 	const std::unique_ptr <X3DGridTool> &
 	getGridTool () const

@@ -146,6 +146,35 @@ LayerEditor::set_layersSet ()
 }
 
 void
+LayerEditor::set_order (const UndoStepPtr & undoStep)
+{
+	// Set order
+
+	X3D::MFInt32 order;
+
+	for (const auto & row : getLayerListStore () -> children ())
+	{
+		int32_t index   = 0;
+		bool    visible = false;
+
+		row -> get_value (Columns::INDEX,   index);
+		row -> get_value (Columns::VISIBLE, visible);
+	   
+	   if (visible)
+			order .emplace_back (index);
+	}
+
+	undoStep -> addObjects (layerSet);
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (layerSet -> order ()), layerSet -> order ());
+
+	layerSet -> order () .removeInterest (this, &LayerEditor::set_layers);
+	layerSet -> order () .addInterest (this, &LayerEditor::connectOrder);
+	layerSet -> order () = std::move (order);
+
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (layerSet -> order ()), layerSet -> order ());
+}
+
+void
 LayerEditor::set_layers ()
 {
 	for (const auto & layer : layers)
@@ -237,17 +266,17 @@ LayerEditor::set_treeView ()
 }
 
 void
-LayerEditor::connectOrder ()
-{
-	layerSet -> order () .removeInterest (this, &LayerEditor::connectOrder);
-	layerSet -> order () .addInterest (this, &LayerEditor::set_layers);
-}
-
-void
 LayerEditor::connectActiveLayer ()
 {
 	layerSet -> activeLayer () .removeInterest (this, &LayerEditor::connectOrder);
 	layerSet -> activeLayer () .addInterest (this, &LayerEditor::set_layers);
+}
+
+void
+LayerEditor::connectOrder ()
+{
+	layerSet -> order () .removeInterest (this, &LayerEditor::connectOrder);
+	layerSet -> order () .addInterest (this, &LayerEditor::set_layers);
 }
 
 void
@@ -422,34 +451,6 @@ LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
 	undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
-void
-LayerEditor::set_order (const UndoStepPtr & undoStep)
-{
-	// Set order
-
-	X3D::MFInt32 order;
-
-	for (const auto & row : getLayerListStore () -> children ())
-	{
-		int32_t index   = 0;
-		bool    visible = false;
-
-		row -> get_value (Columns::INDEX,   index);
-		row -> get_value (Columns::VISIBLE, visible);
-	   
-	   if (visible)
-			order .emplace_back (index);
-	}
-
-	undoStep -> addObjects (layerSet);
-	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (layerSet -> order ()), layerSet -> order ());
-
-	layerSet -> order () .removeInterest (this, &LayerEditor::set_layers);
-	layerSet -> order () .addInterest (this, &LayerEditor::connectOrder);
-	layerSet -> order () = std::move (order);
-
-	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (layerSet -> order ()), layerSet -> order ());
-}
 
 void
 LayerEditor::on_layer_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
@@ -474,11 +475,6 @@ LayerEditor::on_layer_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 	}
 
 	// Activate layer
-
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Active Layer"));
-
-	undoStep -> addObjects (layerSet);
-	undoStep -> addUndoFunction (&X3D::LayerSet::setActiveLayerIndex, layerSet, layerSet -> getActiveLayerIndex ());
 
 	const auto row = getLayerListStore () -> get_iter (path);
 
@@ -508,11 +504,6 @@ LayerEditor::on_layer_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 			row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
 		}
 	}
-
-	set_order (undoStep);
-
-	undoStep -> addRedoFunction (&X3D::LayerSet::setActiveLayerIndex, layerSet, layerSet -> getActiveLayerIndex ());
-	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void

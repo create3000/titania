@@ -149,6 +149,8 @@ MetadataSet::setValue (X3DMetadataObject* const metadataObject, const std::strin
 	metadataObject -> name ()      = name;
 	metadataObject -> reference () = getBrowser () -> getProviderUrl ();
 	metadataObject -> setup ();
+
+	getExecutionContext () -> addNamedNode (getExecutionContext () -> getUniqueName (name), metadataObject);
 }
 
 void

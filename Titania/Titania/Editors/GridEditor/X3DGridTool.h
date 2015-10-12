@@ -162,14 +162,6 @@ private:
 	void
 	disable ();
 
-	///  @name Metadata Handling
-
-	X3D::X3DPtr <X3D::MetadataSet>
-	createMetaData (const std::string &);
-
-	X3D::X3DPtr <X3D::MetadataSet>
-	getMetaData (const std::string &) const;
-
 	///  @name Members
 
 	X3D::BrowserPtr browser;
