@@ -479,7 +479,6 @@
     <None Include="Titania\X3D\Miscellaneous\Keys.h" />
     <None Include="Titania\X3D\Miscellaneous\Texture.h" />
     <None Include="Titania\X3D\Miscellaneous\FontConfig.h" />
-    <None Include="Titania\X3D\Miscellaneous\MediaStream.h" />
     <None Include="Titania\X3D\InputOutput\Loader.h" />
     <None Include="Titania\X3D\Components\Core\MetadataBoolean.h" />
     <None Include="Titania\X3D\Bits\HatchStyles.h" />
@@ -754,6 +753,8 @@
     <None Include="Titania\X3D\Browser\Shading\X3DShadingContext.h" />
     <None Include="Titania\X3D\Browser\Shading\Shader.h" />
     <None Include="Titania\X3D\Thread\X3DInterruptibleThread.h" />
+    <None Include="share\titania\tools\SnapTarget.x3dv" />
+    <None Include="Titania\X3D\Browser\Sound\MediaStream.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1113,7 +1114,6 @@
     <Compile Include="Titania\X3D\Miscellaneous\Keys.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\Texture.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\FontConfig.cpp" />
-    <Compile Include="Titania\X3D\Miscellaneous\MediaStream.cpp" />
     <Compile Include="Titania\X3D\InputOutput\Loader.cpp" />
     <Compile Include="Titania\X3D\Components\Core\MetadataBoolean.cpp" />
     <Compile Include="Titania\X3D\Browser\Notification.cpp" />
@@ -1260,6 +1260,7 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DScene.cpp" />
     <Compile Include="Titania\X3D\Browser\Shading\X3DShadingContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Shading\Shader.cpp" />
+    <Compile Include="Titania\X3D\Browser\Sound\MediaStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1326,6 +1327,7 @@
     <Folder Include="Titania\X3D\Parser\Wavefront\" />
     <Folder Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\" />
     <Folder Include="Titania\X3D\Browser\Shading\" />
+    <Folder Include="Titania\X3D\Browser\Sound\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

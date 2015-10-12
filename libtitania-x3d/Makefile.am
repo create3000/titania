@@ -76,6 +76,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Shading/Shader.cpp \
 	Titania/X3D/Browser/Shading/X3DShadingContext.cpp \
 	Titania/X3D/Browser/Shape/X3DShapeContext.cpp \
+	Titania/X3D/Browser/Sound/MediaStream.cpp \
 	Titania/X3D/Browser/Text/X3DTextContext.cpp \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.cpp \
 	Titania/X3D/Browser/X3DBrowser.cpp \
@@ -467,7 +468,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Miscellaneous/BVH.cpp \
 	Titania/X3D/Miscellaneous/FontConfig.cpp \
 	Titania/X3D/Miscellaneous/Keys.cpp \
-	Titania/X3D/Miscellaneous/MediaStream.cpp \
 	Titania/X3D/Miscellaneous/Random.cpp \
 	Titania/X3D/Miscellaneous/Texture.cpp \
 	Titania/X3D/Miscellaneous/Texture3D.cpp \

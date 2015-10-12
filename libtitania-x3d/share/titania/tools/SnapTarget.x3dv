@@ -1,0 +1,219 @@
+#X3D V3.3 utf8 Titania V1.2.0
+
+META "comment" "World of Titania"
+META "created" "Mon, 12 Oct 2015 11:18:05 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.0, http://titania.create3000.de"
+META "modified" "Mon, 12 Oct 2015 11:40:58 GMT"
+
+DEF Titania WorldInfo {
+  metadata MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              -6.71921634674072,
+              6.47120046615601,
+              16.996374130249
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.575058579444885,
+              -0.812142193317413,
+              -0.0986547097563744,
+              0.415626257658005
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.548890829086304,
+              1.90654230117798,
+              -0.491859018802643
+            ]
+          }
+        ]
+      }
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value [
+          DEF enabled_1 MetadataBoolean {
+            name "enabled"
+            reference "http://titania.create3000.de"
+            value TRUE
+          }
+          DEF scale MetadataFloat {
+            name "scale"
+            reference "http://titania.create3000.de"
+            value [
+              1,
+              0.5,
+              1
+            ]
+          }
+          DEF dimension MetadataInteger {
+            name "dimension"
+            reference "http://titania.create3000.de"
+            value [
+              10,
+              20,
+              10
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+
+DEF Vector Transform {
+  children [
+    DEF Animation Group {
+      metadata MetadataSet {
+        name "Animation"
+        reference "http://titania.create3000.de"
+        value [
+          DEF duration MetadataInteger {
+            name "duration"
+            reference "http://titania.create3000.de"
+            value 42
+          }
+          DEF framesPerSecond MetadataInteger {
+            name "framesPerSecond"
+            reference "http://titania.create3000.de"
+            value 10
+          }
+        ]
+      }
+      children [
+        DEF _1 TimeSensor {
+          cycleInterval 4.2
+          loop TRUE
+        }
+        DEF Interpolator PositionInterpolator2D {
+          metadata MetadataSet {
+            name "Interpolator"
+            reference "http://titania.create3000.de"
+            value [
+              DEF key MetadataInteger {
+                name "key"
+                reference "http://titania.create3000.de"
+                value [
+                  0,
+                  42
+                ]
+              }
+              DEF keyValue MetadataDouble {
+                name "keyValue"
+                reference "http://titania.create3000.de"
+                value [
+                  0,
+                  1,
+                  0,
+                  0
+                ]
+              }
+              DEF keyType MetadataString {
+                name "keyType"
+                reference "http://titania.create3000.de"
+                value [
+                  "LINEAR",
+                  "SPLINE"
+                ]
+              }
+            ]
+          }
+          key [
+            0,
+            1
+          ]
+          keyValue [
+            0 1,
+            0 0
+          ]
+        }
+      ]
+    }
+    DEF Cone_1 Transform {
+      translation 0 4.75 0
+      scale 1 1.25 1
+      children Shape {
+        appearance Appearance {
+          material DEF _2 Material {
+            diffuseColor 0.902 0.902 0.902
+            specularColor 0.65 0.65 0.65
+            shininess 0.184713
+          }
+          texture DEF _3 PixelTexture {
+            image 2 2 4
+              0xffffffff 0xffffffff
+              0xff0000ff 0xff0000ff
+          }
+          textureTransform DEF _4 TextureTransform {
+            translation 0 0.0276895
+            scale 4.95 4.95
+          }
+        }
+        geometry Cone { }
+      }
+    }
+    DEF Sphere_1 Transform {
+      children Shape {
+        appearance Appearance {
+          material USE _2
+          texture USE _3
+          textureTransform USE _4
+        }
+        geometry Sphere { }
+      }
+    }
+    DEF Cylinder_1 Transform {
+      translation 0 2 0
+      scale 1 0.75 1
+      children Shape {
+        appearance Appearance {
+          material USE _2
+          texture USE _3
+          textureTransform USE _4
+        }
+        geometry Cylinder {
+          height 4
+          radius 0.4
+        }
+      }
+    }
+  ]
+}
+
+ROUTE _1.fraction_changed TO Interpolator.set_fraction
+ROUTE Interpolator.value_changed TO _4.set_translation

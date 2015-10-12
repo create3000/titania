@@ -51,7 +51,7 @@
 #include "GoldenGate.h"
 
 #include "../Fields.h"
-#include "../Miscellaneous/MediaStream.h"
+#include "../Browser/Sound/MediaStream.h"
 #include "../Parser/Filter.h"
 #include "../Parser/Wavefront/Parser.h"
 
