@@ -362,8 +362,11 @@ LayerEditor::on_pickable_toggled (const Gtk::TreePath & path)
 void
 LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
 {
-	size_t last  = 0;
-	size_t index = path .back ();
+	if (layerSet == getWorld () -> getDefaultLayerSet ())
+	   return;
+
+	int32_t last  = -1;
+	int32_t index = path .back ();
 
 	// Find last active layer
 
