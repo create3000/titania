@@ -138,14 +138,16 @@ LayerSet::setLayer0 (const X3DLayerNodePtr & value)
 void
 LayerSet::set_activeLayer ()
 {
-	if (getActiveLayerIndex () == 0)
+	int32_t index = getActiveLayerIndex ();
+
+	if (index == 0)
 	{
 		if (activeLayerNode not_eq layerNode0)
 			activeLayerNode = layerNode0;
 	}
 	else
 	{
-		const int32_t index = getActiveLayerIndex () - 1;
+		-- index;
 
 		if (index >= 0 and index < (int32_t) layers () .size ())
 		{

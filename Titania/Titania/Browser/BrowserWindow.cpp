@@ -281,10 +281,10 @@ BrowserWindow::set_activeLayer ()
 	// Layout Menu
 
 	getGridLayoutToolAction () -> set_active (getGridTool () -> isEnabled ());
-	getGridTool () -> isEnabled (getGridTool () -> isEnabled ());
+	getGridTool () -> update ();
 
 	getAngleLayoutToolAction () -> set_active (getAngleTool () -> isEnabled ());
-	getAngleTool () -> isEnabled (getAngleTool () -> isEnabled ());
+	getGridTool () -> update ();
 
 	changing = false;
 }
@@ -1925,6 +1925,7 @@ BrowserWindow::on_grid_layout_tool_toggled ()
 	changing = true;
 
 	getAngleTool () -> isEnabled (false);
+	getAngleTool () -> update ();
 	getAngleLayoutToolAction () -> set_active (false);
 
 	changing = false;
@@ -1932,6 +1933,7 @@ BrowserWindow::on_grid_layout_tool_toggled ()
 	// Toggle grid.
 
 	getGridTool () -> isEnabled (getGridLayoutToolAction () -> get_active ());
+	getGridTool () -> update ();
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 

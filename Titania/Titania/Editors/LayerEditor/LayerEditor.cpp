@@ -171,26 +171,55 @@ LayerEditor::set_treeView ()
 	getLayerTreeView () .unset_model ();
 	getLayerListStore () -> clear ();
 
-	if (layerSet not_eq world -> getDefaultLayerSet ())
+	const auto & order = layerSet -> order ();
+
+	// Layer0
+
+	const auto row         = getLayerListStore () -> append ();
+	const bool visible     = std::find (order .begin (), order .end (), 0) not_eq order  .end ();
+	const bool activeLayer = 0 == layerSet -> activeLayer ();
+
+	row -> set_value (Columns::INDEX,              0);
+	row -> set_value (Columns::VISIBLE,            visible);
+	row -> set_value (Columns::EYE,                std::string (visible ? "EyeOpen" : "EyeClosed"));
+	row -> set_value (Columns::PICKABLE,           std::string (layerSet -> getLayer0 () -> isPickable () ? "Arrow" : "gtk-stop"));
+	row -> set_value (Columns::TYPE_NAME,          std::string ("Layer"));
+	row -> set_value (Columns::NAME,               std::string (_ ("Default Layer")));
+	row -> set_value (Columns::ACTIVE_LAYER,       activeLayer);
+	row -> set_value (Columns::ACTIVE_LAYER_IMAGE, std::string (activeLayer ? "WalkViewer" : "gtk-stop"));
+		
+	if (0 == layerSet -> getActiveLayerIndex ())
 	{
-		const auto & order = layerSet -> order ();
+		row -> set_value (Columns::WEIGHT, Weight::BOLD);
+		row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+	}
+	else
+	{
+		row -> set_value (Columns::WEIGHT, Weight::NORMAL);
+		row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+	}
 
-		// Layer0
+	// Layers
 
-		const auto row         = getLayerListStore () -> append ();
-		const bool visible     = std::find (order .begin (), order .end (), 0) not_eq order  .end ();
-		const bool activeLayer = 0 == layerSet -> activeLayer ();
+	int32_t index = 1;
 
-		row -> set_value (Columns::INDEX,              0);
+	for (const auto & node : layerSet -> layers ())
+	{
+	   const auto & layer       = layers [index - 1];
+		const auto   row         = getLayerListStore () -> append ();
+		const bool   visible     = std::find (order .begin (), order .end (), index) not_eq order .end ();
+		const bool   activeLayer = index == layerSet -> activeLayer ();
+
+		row -> set_value (Columns::INDEX,              index);
 		row -> set_value (Columns::VISIBLE,            visible);
 		row -> set_value (Columns::EYE,                std::string (visible ? "EyeOpen" : "EyeClosed"));
-		row -> set_value (Columns::PICKABLE,           std::string (layerSet -> getLayer0 () -> isPickable () ? "Arrow" : "gtk-stop"));
-		row -> set_value (Columns::TYPE_NAME,          std::string ("Layer"));
-		row -> set_value (Columns::NAME,               std::string (_ ("Default Layer")));
+		row -> set_value (Columns::PICKABLE,           std::string (layer and layer -> isPickable () ? "Arrow" : "gtk-stop"));
+		row -> set_value (Columns::TYPE_NAME,          node -> getTypeName ());
+		row -> set_value (Columns::NAME,               node -> getName ());
 		row -> set_value (Columns::ACTIVE_LAYER,       activeLayer);
 		row -> set_value (Columns::ACTIVE_LAYER_IMAGE, std::string (activeLayer ? "WalkViewer" : "gtk-stop"));
 			
-		if (0 == layerSet -> getActiveLayerIndex ())
+		if (index == layerSet -> getActiveLayerIndex ())
 		{
 			row -> set_value (Columns::WEIGHT, Weight::BOLD);
 			row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
@@ -198,42 +227,10 @@ LayerEditor::set_treeView ()
 		else
 		{
 			row -> set_value (Columns::WEIGHT, Weight::NORMAL);
-			row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+			row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
 		}
 
-		// Layers
-
-		int32_t index = 1;
-
-		for (const auto & node : layerSet -> layers ())
-		{
-		   const auto & layer       = layers [index - 1];
-			const auto   row         = getLayerListStore () -> append ();
-			const bool   visible     = std::find (order .begin (), order .end (), index) not_eq order .end ();
-			const bool   activeLayer = index == layerSet -> activeLayer ();
-
-			row -> set_value (Columns::INDEX,              index);
-			row -> set_value (Columns::VISIBLE,            visible);
-			row -> set_value (Columns::EYE,                std::string (visible ? "EyeOpen" : "EyeClosed"));
-			row -> set_value (Columns::PICKABLE,           std::string (layer and layer -> isPickable () ? "Arrow" : "gtk-stop"));
-			row -> set_value (Columns::TYPE_NAME,          node -> getTypeName ());
-			row -> set_value (Columns::NAME,               node -> getName ());
-			row -> set_value (Columns::ACTIVE_LAYER,       activeLayer);
-			row -> set_value (Columns::ACTIVE_LAYER_IMAGE, std::string (activeLayer ? "WalkViewer" : "gtk-stop"));
-				
-			if (index == layerSet -> getActiveLayerIndex ())
-			{
-				row -> set_value (Columns::WEIGHT, Weight::BOLD);
-				row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
-			}
-			else
-			{
-				row -> set_value (Columns::WEIGHT, Weight::NORMAL);
-				row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
-			}
-
-			++ index;
-		}
+		++ index;
 	}
 
 	getLayerTreeView () .set_model (getLayerListStore ());
@@ -478,10 +475,7 @@ LayerEditor::on_layer_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Active Layer"));
 
 	undoStep -> addObjects (layerSet);
-	undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
-
-	layerSet -> activeLayer () .removeInterest (this, &LayerEditor::set_layers);
-	layerSet -> activeLayer () .addInterest (this, &LayerEditor::connectActiveLayer);
+	undoStep -> addUndoFunction (&X3D::LayerSet::setActiveLayerIndex, layerSet, layerSet -> getActiveLayerIndex ());
 
 	const auto row = getLayerListStore () -> get_iter (path);
 
@@ -496,17 +490,25 @@ LayerEditor::on_layer_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 		row -> set_value (Columns::WEIGHT, Weight::BOLD);
 		row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
 	}
-	else
+	else 
 	{
 		layerSet -> setActiveLayerIndex (-1);
 
-		row -> set_value (Columns::WEIGHT, Weight::NORMAL);
-		row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
+		if (index == layerSet -> activeLayer ())
+		{
+			row -> set_value (Columns::WEIGHT, Weight::BOLD);
+			row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+		}
+		else
+		{
+			row -> set_value (Columns::WEIGHT, Weight::NORMAL);
+			row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
+		}
 	}
 
 	set_order (undoStep);
 
-	undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+	undoStep -> addRedoFunction (&X3D::LayerSet::setActiveLayerIndex, layerSet, layerSet -> getActiveLayerIndex ());
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

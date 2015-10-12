@@ -73,6 +73,9 @@ public:
 	bool
 	isEnabled () const;
 
+	void
+	update ();
+
 	///  @name Destruction
 
 	virtual
@@ -145,6 +148,20 @@ protected:
 	void
 	set_majorLineColor ();
 
+
+private:
+
+	///  @name Operations
+
+	void
+	set_browser (const X3D::BrowserPtr &);
+
+	void
+	enable ();
+
+	void
+	disable ();
+
 	///  @name Metadata Handling
 
 	X3D::X3DPtr <X3D::MetadataSet>
@@ -153,28 +170,7 @@ protected:
 	X3D::X3DPtr <X3D::MetadataSet>
 	getMetaData (const std::string &) const;
 
-
-private:
-
-	///  @name Operations
-
-	void
-	setEnabled (const bool);
-
-	bool
-	getEnabled () const;
-
-	void
-	set_browser (const X3D::BrowserPtr &);
-
-	void
-	set_activeLayer ();
-
-	void
-	enable ();
-
-	void
-	disable ();
+	///  @name Members
 
 	X3D::BrowserPtr browser;
 };

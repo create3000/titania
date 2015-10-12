@@ -68,6 +68,8 @@
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 
+#include <Titania/Backtrace.h>
+
 namespace titania {
 namespace puck {
 

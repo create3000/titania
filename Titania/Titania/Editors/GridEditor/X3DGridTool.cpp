@@ -67,25 +67,10 @@ X3DGridTool::X3DGridTool () :
 	X3DBaseInterface (),
 	         browser ()
 {
-	getBrowserWindow () -> isEditor () .addInterest (this, &X3DGridTool::set_activeLayer);
+	getBrowserWindow () -> isEditor () .addInterest (this, &X3DGridTool::update);
 }
-
 void
 X3DGridTool::isEnabled (const bool value)
-{
-	setEnabled (value);
-
-	set_activeLayer ();
-}
-
-bool
-X3DGridTool::isEnabled () const
-{
-	return getEnabled ();
-}
-
-void
-X3DGridTool::setEnabled (const bool value)
 {
 	const auto metadataSet      = createMetaData ("/Titania/" + getName ());
 	const auto executionContext = metadataSet -> getExecutionContext ();
@@ -95,7 +80,7 @@ X3DGridTool::setEnabled (const bool value)
 }
 
 bool
-X3DGridTool::getEnabled () const
+X3DGridTool::isEnabled () const
 {
 	try
 	{
@@ -113,13 +98,13 @@ void
 X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 {
 	if (browser)
-		browser -> getActiveLayer () .removeInterest (this, &X3DGridTool::set_activeLayer);
+		browser -> getActiveLayer () .removeInterest (this, &X3DGridTool::update);
 
 	browser = value;
 
 	getTool () -> setExecutionContext (browser -> getPrivateScene ());
 
-	browser -> getActiveLayer () .addInterest (this, &X3DGridTool::set_activeLayer);
+	browser -> getActiveLayer () .addInterest (this, &X3DGridTool::update);
 
 	try
 	{
@@ -155,13 +140,11 @@ X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 		configure (metadataSet);
 	}
 	catch (const X3D::X3DError &)
-	{
-
-	}
+	{ }
 }
 
 void
-X3DGridTool::set_activeLayer ()
+X3DGridTool::update ()
 {
 	if (isEnabled () and getBrowserWindow () -> isEditor ())
 	   enable ();
@@ -173,7 +156,7 @@ void
 X3DGridTool::enable ()
 {
 	getBrowser () .addInterest (this, &X3DGridTool::set_browser);
-	getBrowser () -> getActiveLayer () .addInterest (this, &X3DGridTool::set_activeLayer);
+	getBrowser () -> getActiveLayer () .addInterest (this, &X3DGridTool::update);
 
 	set_browser (getBrowser ());
 }
@@ -182,7 +165,7 @@ void
 X3DGridTool::disable ()
 {
 	getBrowser () .removeInterest (this, &X3DGridTool::set_browser);
-	getBrowser () -> getActiveLayer () .removeInterest (this, &X3DGridTool::set_activeLayer);
+	getBrowser () -> getActiveLayer () .removeInterest (this, &X3DGridTool::update);
 
 	set_browser (getMasterBrowser ());
 }
@@ -373,7 +356,7 @@ X3DGridTool::createMetaData (const std::string & key)
 	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 		return layerSet -> getActiveLayer () -> createMetaData <X3D::MetadataSet> (key);
 
-	return getWorldInfo () -> createMetaData <X3D::MetadataSet> (key);
+	return createWorldInfo () -> createMetaData <X3D::MetadataSet> (key);
 }
 
 X3D::X3DPtr <X3D::MetadataSet>
