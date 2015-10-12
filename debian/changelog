@@ -1,3 +1,9 @@
+titania (1.2.0) trusty; urgency=medium
+
+  * Bump version number.
+
+ -- Holger Seelig <holger@qualle>  Mo, 12 Oct 2015 10:42:00 +0200
+
 titania (1.1.1) trusty; urgency=medium
 
   * Fixed fatal crash in font rendering.

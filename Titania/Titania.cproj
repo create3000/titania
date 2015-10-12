@@ -1923,6 +1923,7 @@
     <None Include="Titania\Editors\GridEditor\X3DGridTool.h" />
     <None Include="share\titania\Library\Primitives\Geometry2D\TriangleSet2D.x3dv" />
     <None Include="share\titania\Library\Primitives\Layering\LayerSet.x3dv" />
+    <None Include="share\titania\ui\logo.256.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
