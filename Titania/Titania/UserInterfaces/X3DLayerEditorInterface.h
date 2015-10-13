@@ -146,6 +146,10 @@ public:
 	{ return *m_NewLayerSetButton; }
 
 	Gtk::Button &
+	getRemoveLayerSetButton () const
+	{ return *m_RemoveLayerSetButton; }
+
+	Gtk::Button &
 	getIndexButton () const
 	{ return *m_IndexButton; }
 
@@ -189,6 +193,10 @@ public:
 	getBottomButton () const
 	{ return *m_BottomButton; }
 
+	Gtk::Label &
+	getLayerSetLabel () const
+	{ return *m_LayerSetLabel; }
+
 	virtual
 	void
 	on_new_layer_activated () = 0;
@@ -200,6 +208,10 @@ public:
 	virtual
 	void
 	on_new_layer_set_button_clicked () = 0;
+
+	virtual
+	void
+	on_remove_layer_set_clicked () = 0;
 
 	virtual
 	void
@@ -264,6 +276,7 @@ private:
 	Gtk::Window*                       m_Window;
 	Gtk::Box*                          m_Widget;
 	Gtk::Button*                       m_NewLayerSetButton;
+	Gtk::Button*                       m_RemoveLayerSetButton;
 	Gtk::Button*                       m_IndexButton;
 	Gtk::Expander*                     m_LayerSetExpander;
 	Gtk::ScrolledWindow*               m_LayerScrolledWindow;
@@ -275,6 +288,7 @@ private:
 	Gtk::Button*                       m_UpButton;
 	Gtk::Button*                       m_DownButton;
 	Gtk::Button*                       m_BottomButton;
+	Gtk::Label*                        m_LayerSetLabel;
 
 };
 

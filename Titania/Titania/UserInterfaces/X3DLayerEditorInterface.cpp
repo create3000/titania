@@ -77,6 +77,7 @@ X3DLayerEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("NewLayerSetButton", m_NewLayerSetButton);
+	m_builder -> get_widget ("RemoveLayerSetButton", m_RemoveLayerSetButton);
 	m_builder -> get_widget ("IndexButton", m_IndexButton);
 	m_builder -> get_widget ("LayerSetExpander", m_LayerSetExpander);
 	m_builder -> get_widget ("LayerScrolledWindow", m_LayerScrolledWindow);
@@ -88,6 +89,7 @@ X3DLayerEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UpButton", m_UpButton);
 	m_builder -> get_widget ("DownButton", m_DownButton);
 	m_builder -> get_widget ("BottomButton", m_BottomButton);
+	m_builder -> get_widget ("LayerSetLabel", m_LayerSetLabel);
 
 	// Connect object Gtk::MenuItem with id 'LayerMenuItem'.
 	m_LayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_new_layer_activated));
@@ -95,6 +97,7 @@ X3DLayerEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Button with id 'NewLayerSetButton'.
 	m_NewLayerSetButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_new_layer_set_button_clicked));
+	m_RemoveLayerSetButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_remove_layer_set_clicked));
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_index_clicked));
 
 	// Connect object Gtk::TreeView with id 'LayerTreeView'.

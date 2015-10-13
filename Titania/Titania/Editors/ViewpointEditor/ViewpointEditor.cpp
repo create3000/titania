@@ -141,13 +141,26 @@ ViewpointEditor::set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & valu
 
 	const auto viewpointNodes = viewpointNode ? X3D::MFNode ({ viewpointNode }) : X3D::MFNode ();
 
-	getViewpointBox () .set_sensitive (inScene);
+	getViewpointActionBox () .set_sensitive (inScene);
+	getViewpointBox ()       .set_sensitive (inScene);
 	getLockToCameraButton () .set_active (viewpointNode ? viewpointNode -> isLockedToCamera () : false);
 
 	nodeName          .setNode  (X3D::SFNode (viewpointNode));
 	description       .setNodes (viewpointNodes);
 	retainUserOffsets .setNodes (viewpointNodes);
 	jump              .setNodes (viewpointNodes);
+}
+
+void
+ViewpointEditor::on_remove_viewpoint_clicked ()
+{
+	if (not getBrowser () -> getActiveLayer ())
+		return;
+
+	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Remove %s"), viewpointNode-> getTypeName () .c_str ()));
+
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { viewpointNode }, undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void

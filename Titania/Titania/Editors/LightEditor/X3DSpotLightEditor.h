@@ -89,6 +89,12 @@ protected:
 
 private:
 
+	/// @name Event handlers
+	
+	virtual
+	void
+	on_new_spot_light_activated () final override;
+
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f> attenuation;

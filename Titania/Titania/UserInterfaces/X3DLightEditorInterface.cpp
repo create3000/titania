@@ -88,8 +88,13 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_SpotLightRadiusAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SpotLightRadiusAdjustment"));
 
 	// Get widgets.
+	m_builder -> get_widget ("NewLightMenu", m_NewLightMenu);
+	m_builder -> get_widget ("NewDirectionalLightMenuItem", m_NewDirectionalLightMenuItem);
+	m_builder -> get_widget ("NewPointLightMenuItem", m_NewPointLightMenuItem);
+	m_builder -> get_widget ("NewSpotLightMenuItem", m_NewSpotLightMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("RemoveLightButton", m_RemoveLightButton);
 	m_builder -> get_widget ("IndexButton", m_IndexButton);
 	m_builder -> get_widget ("LightExpander", m_LightExpander);
 	m_builder -> get_widget ("LightBox", m_LightBox);
@@ -137,6 +142,14 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SpotLightDirectionXSpinButton", m_SpotLightDirectionXSpinButton);
 	m_builder -> get_widget ("SpotLightDirectionYSpinButton", m_SpotLightDirectionYSpinButton);
 	m_builder -> get_widget ("SpotLightDirectionZSpinButton", m_SpotLightDirectionZSpinButton);
+
+	// Connect object Gtk::MenuItem with id 'NewDirectionalLightMenuItem'.
+	m_NewDirectionalLightMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_new_directional_light_activated));
+	m_NewPointLightMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_new_point_light_activated));
+	m_NewSpotLightMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_new_spot_light_activated));
+
+	// Connect object Gtk::Button with id 'RemoveLightButton'.
+	m_RemoveLightButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_remove_light_clicked));
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_index_clicked));
 
 	// Call construct handler of base class.

@@ -249,6 +249,22 @@ public:
 	getViewpointListStore () const
 	{ return m_ViewpointListStore; }
 
+	Gtk::Menu &
+	getNewViewpointMenu () const
+	{ return *m_NewViewpointMenu; }
+
+	Gtk::MenuItem &
+	getNewViewpointMenuItem () const
+	{ return *m_NewViewpointMenuItem; }
+
+	Gtk::MenuItem &
+	getNewOrthoViewpointMenuItem () const
+	{ return *m_NewOrthoViewpointMenuItem; }
+
+	Gtk::MenuItem &
+	getNewGeoViewpointMenuItem () const
+	{ return *m_NewGeoViewpointMenuItem; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -260,6 +276,14 @@ public:
 	Gtk::Box &
 	getViewpointListBox () const
 	{ return *m_ViewpointListBox; }
+
+	Gtk::Box &
+	getViewpointActionBox () const
+	{ return *m_ViewpointActionBox; }
+
+	Gtk::Button &
+	getRemoveViewpointButton () const
+	{ return *m_RemoveViewpointButton; }
 
 	Gtk::Expander &
 	getViewpointExpander () const
@@ -447,6 +471,22 @@ public:
 
 	virtual
 	void
+	on_new_viewpoint_activated () = 0;
+
+	virtual
+	void
+	on_new_ortho_viewpoint_activated () = 0;
+
+	virtual
+	void
+	on_new_geo_viewpoint_activated () = 0;
+
+	virtual
+	void
+	on_remove_viewpoint_clicked () = 0;
+
+	virtual
+	void
 	on_update_viewpoint_clicked () = 0;
 
 	virtual
@@ -506,9 +546,15 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointPositionZAdjustment;
 	Glib::RefPtr <Gtk::TextBuffer> m_ViewpointDescriptionTextBuffer;
 	Glib::RefPtr <Gtk::ListStore>  m_ViewpointListStore;
+	Gtk::Menu*                     m_NewViewpointMenu;
+	Gtk::MenuItem*                 m_NewViewpointMenuItem;
+	Gtk::MenuItem*                 m_NewOrthoViewpointMenuItem;
+	Gtk::MenuItem*                 m_NewGeoViewpointMenuItem;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Box*                      m_ViewpointListBox;
+	Gtk::Box*                      m_ViewpointActionBox;
+	Gtk::Button*                   m_RemoveViewpointButton;
 	Gtk::Expander*                 m_ViewpointExpander;
 	Gtk::Grid*                     m_ViewpointBox;
 	Gtk::CheckButton*              m_ViewpointJumpCheckButton;

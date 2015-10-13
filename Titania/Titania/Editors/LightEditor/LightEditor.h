@@ -89,6 +89,12 @@ private:
 	void
 	set_selection (const X3D::MFNode &);
 
+	/// @name Event handlers
+	
+	virtual
+	void
+	on_remove_light_clicked () final override;
+
 	virtual
 	void
 	on_index_clicked () final override;

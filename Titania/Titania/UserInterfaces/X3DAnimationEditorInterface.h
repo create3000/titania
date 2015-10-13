@@ -193,10 +193,6 @@ public:
 	getTimeLabel () const
 	{ return *m_TimeLabel; }
 
-	Gtk::ToolButton &
-	getCloseAnimationButton () const
-	{ return *m_CloseAnimationButton; }
-
 	Gtk::Paned &
 	getAnimationBox () const
 	{ return *m_AnimationBox; }
@@ -252,6 +248,10 @@ public:
 	Gtk::ToolButton &
 	getZoom100Button () const
 	{ return *m_Zoom100Button; }
+
+	Gtk::ToolButton &
+	getCloseAnimationButton () const
+	{ return *m_CloseAnimationButton; }
 
 	Gtk::Dialog &
 	getPropertiesDialog () const
@@ -350,10 +350,6 @@ public:
 	on_key_type_changed () = 0;
 
 	virtual
-	void
-	on_close () = 0;
-
-	virtual
 	bool
 	on_tree_view_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
 
@@ -427,6 +423,10 @@ public:
 
 	virtual
 	void
+	on_close () = 0;
+
+	virtual
+	void
 	on_new_name_changed () = 0;
 
 	virtual
@@ -480,7 +480,6 @@ private:
 	Gtk::ToolButton*                       m_TimeButton;
 	Gtk::ComboBoxText*                     m_KeyTypeButton;
 	Gtk::Label*                            m_TimeLabel;
-	Gtk::ToolButton*                       m_CloseAnimationButton;
 	Gtk::Paned*                            m_AnimationBox;
 	Gtk::Notebook*                         m_Notebook;
 	Gtk::Box*                              m_NodeIndexBox;
@@ -495,6 +494,7 @@ private:
 	Gtk::ToolButton*                       m_ZoomInButton;
 	Gtk::ToolButton*                       m_ZoomFitButton;
 	Gtk::ToolButton*                       m_Zoom100Button;
+	Gtk::ToolButton*                       m_CloseAnimationButton;
 	Gtk::Dialog*                           m_PropertiesDialog;
 	Gtk::Button*                           m_NewCancelButton;
 	Gtk::Button*                           m_NewOkButton;

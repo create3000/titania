@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.1 -->
+<!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkAdjustment" id="AmbientIntensityAdjustment">
@@ -34,6 +34,37 @@
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
+  </object>
+  <object class="GtkMenu" id="NewLightMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="NewDirectionalLightMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">DirectionalLight</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="on_new_directional_light_activated" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="NewPointLightMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">PointLight</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="on_new_point_light_activated" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="NewSpotLightMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">SpotLight</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="on_new_spot_light_activated" swapped="no"/>
+      </object>
+    </child>
   </object>
   <object class="GtkAdjustment" id="PointLightAttenuationXAdjustment">
     <property name="upper">1000000000</property>
@@ -148,7 +179,6 @@
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
-    <property name="has_resize_grip">False</property>
     <child>
       <object class="GtkBox" id="Widget">
         <property name="visible">True</property>
@@ -189,20 +219,72 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="IndexButton">
+              <object class="GtkBox" id="box4">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Node Index</property>
-                <property name="always_show_image">True</property>
-                <signal name="clicked" handler="on_index_clicked" swapped="no"/>
+                <property name="can_focus">False</property>
+                <property name="spacing">2</property>
                 <child>
-                  <object class="GtkImage" id="image2">
+                  <object class="GtkMenuButton" id="menubutton1">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="stock">Index</property>
-                    <property name="icon_size">1</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="popup">NewLightMenu</property>
+                    <child>
+                      <object class="GtkImage" id="image3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">gtk-new</property>
+                      </object>
+                    </child>
                   </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="RemoveLightButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="clicked" handler="on_remove_light_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image4">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">gtk-remove</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="IndexButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Node Index</property>
+                    <property name="always_show_image">True</property>
+                    <signal name="clicked" handler="on_index_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">Index</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
                 </child>
               </object>
               <packing>
@@ -245,8 +327,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -257,8 +337,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -273,8 +351,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -285,8 +361,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -299,8 +373,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">4</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -313,8 +385,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -356,8 +426,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -401,8 +469,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">4</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -415,8 +481,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">5</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -460,8 +524,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">5</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -474,8 +536,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -512,8 +572,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
               </object>
@@ -554,8 +612,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -595,7 +651,6 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">x-Axis</property>
-                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">DirectionalLightDirectionXAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -613,7 +668,6 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">y-Axis</property>
-                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">DirectionalLightDirectionYAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -631,7 +685,6 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">z-Axis</property>
-                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">DirectionalLightDirectionZAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -655,8 +708,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
               </object>
@@ -697,8 +748,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -714,7 +763,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightLocationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -732,7 +780,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightLocationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -750,7 +797,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
-                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightLocationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -767,8 +813,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -781,8 +825,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -795,8 +837,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -810,7 +850,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
-                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightAttenuationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -828,7 +867,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
-                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightAttenuationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -846,7 +884,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
-                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">PointLightAttenuationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -863,8 +900,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -872,7 +907,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
-                    <property name="width_chars">-1</property>
                     <property name="text" translatable="yes">0,000</property>
                     <property name="adjustment">PointLightRadiusAdjustment</property>
                     <property name="climb_rate">0.01</property>
@@ -882,8 +916,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
               </object>
@@ -924,8 +956,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -938,8 +968,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -953,7 +981,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
-                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightAttenuationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -971,7 +998,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
-                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightAttenuationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -989,7 +1015,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="halign">start</property>
-                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightAttenuationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1006,8 +1031,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -1020,8 +1043,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -1037,7 +1058,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">x-Axis</property>
-                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightLocationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1055,7 +1075,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">y-Axis</property>
-                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightLocationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1073,7 +1092,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">z-Axis</property>
-                        <property name="width_chars">-1</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">SpotLightLocationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1090,8 +1108,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -1104,8 +1120,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -1113,7 +1127,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
-                    <property name="width_chars">-1</property>
                     <property name="text" translatable="yes">0,000</property>
                     <property name="adjustment">SpotLightRadiusAdjustment</property>
                     <property name="climb_rate">0.01</property>
@@ -1123,8 +1136,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -1137,8 +1148,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">4</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -1151,8 +1160,6 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">5</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -1169,8 +1176,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">4</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -1187,8 +1192,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">5</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -1228,7 +1231,6 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">x-Axis</property>
-                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">SpotLightDirectionXAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -1246,7 +1248,6 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">y-Axis</property>
-                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">SpotLightDirectionYAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -1264,7 +1265,6 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">z-Axis</property>
-                            <property name="width_chars">-1</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">SpotLightDirectionZAdjustment</property>
                             <property name="climb_rate">0.01</property>
@@ -1288,8 +1288,6 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
               </object>

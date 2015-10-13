@@ -89,6 +89,14 @@ private:
 
 	virtual
 	void
+	on_new_navigation_info_clicked () final override;
+
+	virtual
+	void
+	on_remove_navigation_info_clicked () final override;
+
+	virtual
+	void
 	on_index_clicked () final override;
 
 	///  @name Members

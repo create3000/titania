@@ -89,7 +89,6 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TimeButton", m_TimeButton);
 	m_builder -> get_widget ("KeyTypeButton", m_KeyTypeButton);
 	m_builder -> get_widget ("TimeLabel", m_TimeLabel);
-	m_builder -> get_widget ("CloseAnimationButton", m_CloseAnimationButton);
 	m_builder -> get_widget ("AnimationBox", m_AnimationBox);
 	m_builder -> get_widget ("Notebook", m_Notebook);
 	m_builder -> get_widget ("NodeIndexBox", m_NodeIndexBox);
@@ -104,6 +103,7 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ZoomInButton", m_ZoomInButton);
 	m_builder -> get_widget ("ZoomFitButton", m_ZoomFitButton);
 	m_builder -> get_widget ("Zoom100Button", m_Zoom100Button);
+	m_builder -> get_widget ("CloseAnimationButton", m_CloseAnimationButton);
 	m_builder -> get_widget ("PropertiesDialog", m_PropertiesDialog);
 	m_builder -> get_widget ("NewCancelButton", m_NewCancelButton);
 	m_builder -> get_widget ("NewOkButton", m_NewOkButton);
@@ -137,9 +137,6 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::ComboBoxText with id 'KeyTypeButton'.
 	m_KeyTypeButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_key_type_changed));
 
-	// Connect object Gtk::ToolButton with id 'CloseAnimationButton'.
-	m_CloseAnimationButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_close));
-
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_draw () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_tree_view_draw));
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_row_activated));
@@ -167,6 +164,7 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_ZoomInButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_zoom_in));
 	m_ZoomFitButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_zoom_fit));
 	m_Zoom100Button -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_zoom_100));
+	m_CloseAnimationButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_close));
 
 	// Connect object Gtk::Entry with id 'NewNameEntry'.
 	m_NewNameEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new_name_changed));

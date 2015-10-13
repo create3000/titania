@@ -88,6 +88,12 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_new_geo_viewpoint_activated () final override;
+
 	///  @name Members
 
 	std::unique_ptr <MFStringGeoSystem>   geoSystem;

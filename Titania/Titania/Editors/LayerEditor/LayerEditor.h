@@ -145,6 +145,10 @@ private:
 
 	virtual
 	void
+	on_remove_layer_set_clicked () final override;
+
+	virtual
+	void
 	on_new_layer_activated () final override;
 
 	virtual

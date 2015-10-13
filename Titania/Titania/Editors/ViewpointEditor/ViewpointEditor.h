@@ -101,6 +101,10 @@ private:
 
 	virtual
 	void
+	on_remove_viewpoint_clicked () final override;
+
+	virtual
+	void
 	on_update_viewpoint_clicked () final override;
 
 	virtual

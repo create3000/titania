@@ -103,9 +103,15 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_ViewpointListStore                              = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ViewpointListStore"));
 
 	// Get widgets.
+	m_builder -> get_widget ("NewViewpointMenu", m_NewViewpointMenu);
+	m_builder -> get_widget ("NewViewpointMenuItem", m_NewViewpointMenuItem);
+	m_builder -> get_widget ("NewOrthoViewpointMenuItem", m_NewOrthoViewpointMenuItem);
+	m_builder -> get_widget ("NewGeoViewpointMenuItem", m_NewGeoViewpointMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("ViewpointListBox", m_ViewpointListBox);
+	m_builder -> get_widget ("ViewpointActionBox", m_ViewpointActionBox);
+	m_builder -> get_widget ("RemoveViewpointButton", m_RemoveViewpointButton);
 	m_builder -> get_widget ("ViewpointExpander", m_ViewpointExpander);
 	m_builder -> get_widget ("ViewpointBox", m_ViewpointBox);
 	m_builder -> get_widget ("ViewpointJumpCheckButton", m_ViewpointJumpCheckButton);
@@ -152,6 +158,14 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeoViewpointGeoSystemUTMBox", m_GeoViewpointGeoSystemUTMBox);
 	m_builder -> get_widget ("GeoViewpointHemisphereComboBoxText", m_GeoViewpointHemisphereComboBoxText);
 	m_builder -> get_widget ("GeoViewpointUTMOrderComboBoxText", m_GeoViewpointUTMOrderComboBoxText);
+
+	// Connect object Gtk::MenuItem with id 'NewViewpointMenuItem'.
+	m_NewViewpointMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_new_viewpoint_activated));
+	m_NewOrthoViewpointMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_new_ortho_viewpoint_activated));
+	m_NewGeoViewpointMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_new_geo_viewpoint_activated));
+
+	// Connect object Gtk::Button with id 'RemoveViewpointButton'.
+	m_RemoveViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_remove_viewpoint_clicked));
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_update_viewpoint_clicked));
 
 	// Connect object Gtk::ToggleButton with id 'LockToCameraButton'.

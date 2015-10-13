@@ -52,8 +52,10 @@
 
 #include "../../Configuration/config.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
-
 #include "../../ComposedWidgets/MFStringWidget.h"
+
+#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Execution/World.h>
 
 namespace titania {
 namespace puck {
@@ -114,6 +116,41 @@ NavigationInfoEditor::set_selection (const X3D::MFNode & selection)
 	visibilityLimit  .setNodes (navigationInfos);
 	transitionType -> setNodes (navigationInfos);
 	transitionTime   .setNodes (navigationInfos);
+
+	getRemoveNavigationInfoButton () .set_sensitive (navigationInfo);
+}
+
+void
+NavigationInfoEditor::on_new_navigation_info_clicked ()
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New Navigation"));
+
+	const auto & activeLayer = getWorld () -> getActiveLayer ();
+	auto &       children    = activeLayer and activeLayer not_eq getWorld () -> getLayer0 ()
+	                           ? activeLayer -> children ()
+	                           : getExecutionContext () -> getRootNodes ();
+
+	undoStep -> addObjects (getExecutionContext (), activeLayer);
+	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (children), children);
+
+	const auto node = getExecutionContext () -> createNode <X3D::NavigationInfo> ();
+	children .emplace_back (node);
+	getExecutionContext () -> realize ();
+	node -> set_bind () = true;
+	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
+
+	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (children), children);
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+NavigationInfoEditor::on_remove_navigation_info_clicked ()
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove NavigationInfo"));
+
+	getBrowserWindow () -> getSelection () -> clear (undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { nodeName .getNode () }, undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void

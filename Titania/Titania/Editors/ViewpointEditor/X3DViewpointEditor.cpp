@@ -53,6 +53,8 @@
 #include "../../ComposedWidgets/RotationTool.h"
 
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
+#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Execution/World.h>
 
 namespace titania {
 namespace puck {
@@ -103,6 +105,28 @@ X3DViewpointEditor::setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & vi
 	fieldOfView      .setNodes (viewpoints);
 
 	orientationTool -> setNodes (viewpoints);
+}
+
+void
+X3DViewpointEditor::on_new_viewpoint_activated ()
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New Viewpoint"));
+
+	const auto & activeLayer = getWorld () -> getActiveLayer ();
+	auto &       children    = activeLayer and activeLayer not_eq getWorld () -> getLayer0 ()
+	                           ? activeLayer -> children ()
+	                           : getExecutionContext () -> getRootNodes ();
+
+	undoStep -> addObjects (getExecutionContext (), activeLayer);
+	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (children), children);
+
+	const auto node = getExecutionContext () -> createNode <X3D::Viewpoint> ();
+	children .emplace_back (node);
+	getExecutionContext () -> realize ();
+	node -> set_bind () = true;
+
+	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (children), children);
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 X3DViewpointEditor::~X3DViewpointEditor ()

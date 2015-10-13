@@ -129,6 +129,18 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Box &
+	getNavigationInfoActionBox () const
+	{ return *m_NavigationInfoActionBox; }
+
+	Gtk::Button &
+	getNewNavigationInfoButton () const
+	{ return *m_NewNavigationInfoButton; }
+
+	Gtk::Button &
+	getRemoveNavigationInfoButton () const
+	{ return *m_RemoveNavigationInfoButton; }
+
 	Gtk::Button &
 	getIndexButton () const
 	{ return *m_IndexButton; }
@@ -203,6 +215,14 @@ public:
 
 	virtual
 	void
+	on_new_navigation_info_clicked () = 0;
+
+	virtual
+	void
+	on_remove_navigation_info_clicked () = 0;
+
+	virtual
+	void
 	on_index_clicked () = 0;
 
 	virtual
@@ -228,6 +248,9 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText> m_TransitionTypeCellRendererText;
 	Gtk::Window*                         m_Window;
 	Gtk::Box*                            m_Widget;
+	Gtk::Box*                            m_NavigationInfoActionBox;
+	Gtk::Button*                         m_NewNavigationInfoButton;
+	Gtk::Button*                         m_RemoveNavigationInfoButton;
 	Gtk::Button*                         m_IndexButton;
 	Gtk::Expander*                       m_NavigationInfoExpander;
 	Gtk::Box*                            m_AvatarSizeBox;

@@ -73,6 +73,9 @@ X3DNavigationInfoEditorInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("NavigationInfoActionBox", m_NavigationInfoActionBox);
+	m_builder -> get_widget ("NewNavigationInfoButton", m_NewNavigationInfoButton);
+	m_builder -> get_widget ("RemoveNavigationInfoButton", m_RemoveNavigationInfoButton);
 	m_builder -> get_widget ("IndexButton", m_IndexButton);
 	m_builder -> get_widget ("NavigationInfoExpander", m_NavigationInfoExpander);
 	m_builder -> get_widget ("AvatarSizeBox", m_AvatarSizeBox);
@@ -91,6 +94,8 @@ X3DNavigationInfoEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
+	m_NewNavigationInfoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_new_navigation_info_clicked));
+	m_RemoveNavigationInfoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_remove_navigation_info_clicked));
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_index_clicked));
 
 	// Call construct handler of base class.
