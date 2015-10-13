@@ -796,8 +796,6 @@ BrowserWindow::on_delete_activated ()
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Delete Node From Scene"));
 
-	getSelection () -> clear (undoStep);
-
 	removeNodesFromScene (getExecutionContext (), selection, undoStep);
 
 	addUndoStep (undoStep);

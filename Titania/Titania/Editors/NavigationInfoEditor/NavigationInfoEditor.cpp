@@ -148,7 +148,6 @@ NavigationInfoEditor::on_remove_navigation_info_clicked ()
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove NavigationInfo"));
 
-	getBrowserWindow () -> getSelection () -> clear (undoStep);
 	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { nodeName .getNode () }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }

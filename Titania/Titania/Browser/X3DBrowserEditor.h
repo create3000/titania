@@ -166,7 +166,7 @@ public:
 	/// @name Clipboard operations
 
 	void
-	cutNodes (X3D::MFNode, const UndoStepPtr &) const;
+	cutNodes (X3D::MFNode, const UndoStepPtr &);
 
 	void
 	copyNodes (X3D::MFNode) const;
@@ -177,46 +177,41 @@ public:
 	/// @name Edit operations
 
 	void
-	replaceNodes (const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
+	replaceNodes (const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	replaceNode (const X3D::SFNode &, X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
+	replaceNode (const X3D::SFNode &, X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	replaceNodes (const X3D::SFNode &, X3D::MFNode &, const X3D::MFNode &, const UndoStepPtr &) const;
+	replaceNodes (const X3D::SFNode &, X3D::MFNode &, const X3D::MFNode &, const UndoStepPtr &);
 
 	void
-	replaceNodes (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
+	replaceNodes (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	replaceNode (const X3D::SFNode &, X3D::MFNode &, const size_t, const X3D::SFNode &, const UndoStepPtr &) const;
+	replaceNode (const X3D::SFNode &, X3D::MFNode &, const size_t, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	removeNode (const X3D::SFNode &, X3D::SFNode &, const UndoStepPtr &) const;
+	removeNode (const X3D::SFNode &, X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	removeNode (const X3D::SFNode &, X3D::MFNode &, const size_t, const UndoStepPtr &) const;
+	removeNode (const X3D::SFNode &, X3D::MFNode &, const size_t, const UndoStepPtr &);
 
 	void
-	removeNodesFromSceneIfNotExists (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const UndoStepPtr &) const;
+	removeNodesFromSceneIfNotExists (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const UndoStepPtr &);
 
-	static
 	void
 	removeNodesFromScene (const X3D::X3DExecutionContextPtr &, X3D::MFNode, const UndoStepPtr &, const bool = true);
 
-	static
 	void
 	removeNodesFromSceneGraph (const X3D::MFNode &, const std::set <X3D::SFNode> &, const UndoStepPtr &);
 
-	static
 	void
 	updateNamedNode (const X3D::X3DExecutionContextPtr &, const std::string &, const X3D::SFNode &, const UndoStepPtr &);
 
-	static
 	void
 	removeImportedNodes (const X3D::X3DExecutionContextPtr &, const std::set <X3D::InlinePtr> &, const UndoStepPtr &);
 
-	static
 	void
 	addRoute (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &)
 	throw (X3D::Error <X3D::INVALID_NODE>,
@@ -224,30 +219,29 @@ public:
 	       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
 	       X3D::Error <X3D::DISPOSED>);
 
-	static
 	void
 	deleteRoute (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &);
 
 	void
-	createClone (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &) const;
+	createClone (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &);
 
 	X3D::MFNode
-	unlinkClone (const X3D::MFNode &, const UndoStepPtr &) const;
+	unlinkClone (const X3D::MFNode &, const UndoStepPtr &);
 
 	X3D::SFNode
-	groupNodes (const std::string &, const X3D::MFNode &, const UndoStepPtr &) const;
+	groupNodes (const std::string &, const X3D::MFNode &, const UndoStepPtr &);
 
 	X3D::MFNode
-	ungroupNodes (const X3D::MFNode &, const UndoStepPtr &) const;
+	ungroupNodes (const X3D::MFNode &, const UndoStepPtr &);
 
 	bool
-	addToGroup (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &) const;
+	addToGroup (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &);
 
 	void
-	detachFromGroup (X3D::MFNode, const bool, const UndoStepPtr &) const;
+	detachFromGroup (X3D::MFNode, const bool, const UndoStepPtr &);
 
 	X3D::SFNode
-	createParentGroup (const std::string &, const std::string &, const X3D::MFNode &, const UndoStepPtr &) const;
+	createParentGroup (const std::string &, const std::string &, const X3D::MFNode &, const UndoStepPtr &);
 
 	void
 	transformToZero (const X3D::MFNode &, const UndoStepPtr &);
@@ -381,36 +375,30 @@ private:
 	                      std::map <X3D::ProtoDeclarationPtr, size_t> &) const;
 
 	// Edit
-
-	static
+	                      
 	void
 	removeNodesFromExecutionContext (const X3D::X3DExecutionContextPtr &, const std::set <X3D::SFNode> &, const UndoStepPtr &, const bool);
 
-	static
 	void
 	removeNodesFromSceneGraph (const X3D::X3DExecutionContextPtr &, const std::set <X3D::SFNode> &, const UndoStepPtr &);
-	
-	static
+
 	void
 	removeNode (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &);
 
-	static
 	void
 	removeExportedNodes (const X3D::X3DScenePtr &, const std::set <X3D::SFNode> &, const UndoStepPtr &);
 
-	static
 	void
 	removeNamedNodes (const X3D::X3DExecutionContextPtr &, const std::set <X3D::SFNode> &, const UndoStepPtr &);
 
-	static
 	void
 	deleteRoutes (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	unlinkClone (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;
+	unlinkClone (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &);
 
 	void
-	createParentGroup (const X3D::X3DPtr <X3D::X3DNode> &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
+	createParentGroup (const X3D::X3DPtr <X3D::X3DNode> &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
 	transformToZero (const X3D::MFNode &, X3D::Matrix4fStack &, const UndoStepPtr &);

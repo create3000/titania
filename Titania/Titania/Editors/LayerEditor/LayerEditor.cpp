@@ -583,7 +583,6 @@ LayerEditor::on_remove_layer_set_clicked ()
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove LayerSet"));
 
-	getBrowserWindow () -> getSelection () -> removeChildren ({ layerSet }, undoStep);
 	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { layerSet }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -644,7 +643,6 @@ LayerEditor::on_remove_layer_button_clicked ()
 	undoStep -> addObjects (layerSet);
 	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
 
-	getBrowserWindow () -> getSelection () -> removeChildren ({ layerSet -> layers () [selectedIndex] }, undoStep);
 	getBrowserWindow () -> removeNode (X3D::SFNode (layerSet), layerSet -> layers (), selectedIndex, undoStep);
 
 	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());

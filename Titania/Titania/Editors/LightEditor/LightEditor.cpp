@@ -114,7 +114,6 @@ LightEditor::on_remove_light_clicked ()
 {
 	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Remove %s"), nodeName .getNode () -> getTypeName () .c_str ()));
 
-	getBrowserWindow () -> getSelection () -> clear (undoStep);
 	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { nodeName .getNode () }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
