@@ -145,11 +145,18 @@ private:
 	void
 	set_node (const X3D::SFNode &);
 
+	void
+	set_live ();
+
 	bool
 	on_focus_in_event (GdkEventFocus*);
 
 	bool
 	on_focus_out_event (GdkEventFocus*);
+
+	virtual
+	void
+	on_new_clicked () final override;
 
 	virtual
 	void

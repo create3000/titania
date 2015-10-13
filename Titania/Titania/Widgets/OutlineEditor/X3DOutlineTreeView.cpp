@@ -68,6 +68,8 @@
 #include <Titania/X3D/Execution/ExportedNode.h>
 #include <Titania/X3D/Bits/Traverse.h>
 
+#include <Titania/String/sprintf.h>
+
 namespace titania {
 namespace puck {
 
@@ -887,35 +889,42 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 
 			// Inline handling
 
-			if (expandInlineNodes)
+			const auto urlObject = dynamic_cast <X3D::X3DUrlObject*> (sfnode .getValue ());
+
+			if (urlObject)
 			{
-				const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
+				const auto executionContext = urlObject -> getExecutionContext ();
 
-				if (inlineNode)
+				switch (urlObject -> checkLoadState ()) 
 				{
-					const auto executionContext = inlineNode -> getExecutionContext ();
-
-					switch (inlineNode -> checkLoadState ()) 
+					case X3D::NOT_STARTED_STATE:
+						get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, basic::sprintf (_ ("Loading %s not started"), urlObject -> getTypeName () .c_str ())));
+						break;
+					case X3D::IN_PROGRESS_STATE:
+						get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, basic::sprintf (_ ("Loading %s in progess"), urlObject -> getTypeName () .c_str ())));
+						break;
+					case X3D::COMPLETE_STATE:
 					{
-						case X3D::NOT_STARTED_STATE:
-							get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Loading Inline not started")));
-							break;
-						case X3D::IN_PROGRESS_STATE:
-							get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Loading Inline in progess")));
-							break;
-						case X3D::COMPLETE_STATE:
-						{
-							if (inlineNode -> getInternalScene () not_eq inlineNode -> getBrowser () -> getPrivateScene ())
-							{
-								get_model () -> append (iter, OutlineIterType::X3DExecutionContext, inlineNode -> getInternalScene ());
-							}
+						const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
-							break;
+						if (inlineNode)
+						{
+							if (expandInlineNodes)
+							{
+								if (inlineNode -> getInternalScene () not_eq inlineNode -> getBrowser () -> getPrivateScene ())
+								{
+									get_model () -> append (iter, OutlineIterType::X3DExecutionContext, inlineNode -> getInternalScene ());
+								}
+							}
 						}
-						case X3D::FAILED_STATE:
-							get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Failed to load Inline")));
-							break;
+						else
+						   get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, basic::sprintf (_ ("Loading %s completed"), urlObject -> getTypeName () .c_str ())));
+
+						break;
 					}
+					case X3D::FAILED_STATE:
+						get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, basic::sprintf (_ ("Failed to load %s"), urlObject -> getTypeName () .c_str ())));
+						break;
 				}
 			}
 

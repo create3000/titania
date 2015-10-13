@@ -1104,7 +1104,6 @@ X3DBrowserEditor::createNode (const std::string & typeName, const UndoStepPtr & 
 	                           : getExecutionContext () -> getRootNodes ();
 
 	undoStep -> addObjects (getExecutionContext (), activeLayer);
-	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (children), children);
 
 	const auto node = getExecutionContext () -> createNode (typeName);
 	children .emplace_back (node);
@@ -1112,7 +1111,12 @@ X3DBrowserEditor::createNode (const std::string & typeName, const UndoStepPtr & 
 	getExecutionContext () -> realize ();
 	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
 
-	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (children), children);
+	const auto removeUndoStep = std::make_shared <UndoStep> ("");
+
+	removeNodesFromScene (getExecutionContext (), { node }, removeUndoStep);
+	undoStep -> addUndoFunction (&UndoStep::redoChanges, removeUndoStep);
+	removeUndoStep -> undoChanges ();
+	undoStep -> addRedoFunction (&UndoStep::undoChanges, removeUndoStep);
 	return node;
 }
 

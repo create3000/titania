@@ -101,11 +101,15 @@ ScriptEditor::initialize ()
 	X3DShaderPartEditor::initialize ();
 	X3DScriptEditorPreferences::initialize ();
 
+	// Config
+
 	if (getConfig () .hasItem ("paned"))
 		getPaned () .set_position (getConfig () .getInteger ("paned"));
 
 	if (getConfig () .hasItem ("sidePaned"))
 		getSidePaned () .set_position (getConfig () .getInteger ("sidePaned"));
+
+	// Text view
 
 	getTextBuffer () -> get_undo_manager () -> signal_can_undo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_undo_changed));
 	getTextBuffer () -> get_undo_manager () -> signal_can_redo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_redo_changed));
@@ -117,6 +121,8 @@ ScriptEditor::initialize ()
 
 	getScrolledWindow () .add (getTextView ());
 
+	// Node index
+
 	nodeIndex -> getNode () .addInterest (this, &ScriptEditor::set_node);
 	nodeIndex -> getHeaderBox () .set_visible (false);
 	nodeIndex -> getFooterBox () .set_visible (false);
@@ -127,6 +133,9 @@ ScriptEditor::initialize ()
 	                         X3D::X3DConstants::ShaderPart,
 	                         X3D::X3DConstants::ShaderProgram });
 
+	// Widgets
+
+	getNewButton () .set_menu (getNewScriptMenu ());
 	getApplyButton () .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_S, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 
 	console -> reparent (getConsoleBox (), getWindow ());
@@ -192,11 +201,12 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 
 	if (node)
 	{
-		if (isModified ())
+		if (isModified () and node -> isLive ())
 			on_apply_clicked ();
 
 		const auto cdata = node -> getCDATA ();
 
+		node  -> isLive () .removeInterest (this, &ScriptEditor::set_live);
 		cdata -> removeInterest (this, &ScriptEditor::set_cdata);
 		cdata -> removeInterest (this, &ScriptEditor::connectCDATA);
 
@@ -216,12 +226,14 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 
 	set_label ();
 
-	getScriptEditor () .set_sensitive (node);
+	getScriptEditorBox () .set_sensitive (node);
+	getToolbar ()         .set_sensitive (node);
 
 	if (node)
 	{
 		const auto cdata = node -> getCDATA ();
 
+		node  -> isLive () .addInterest (this, &ScriptEditor::set_live);
 		cdata -> addInterest (this, &ScriptEditor::set_cdata);
 
 		set_cdata ();
@@ -250,6 +262,16 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 	isModified (false);
 }
 
+void
+ScriptEditor::set_live ()
+{
+	if (not node -> isLive ())
+	{
+		modified = false;
+	   set_node (nullptr);
+	}
+}
+
 bool
 ScriptEditor::on_focus_in_event (GdkEventFocus*)
 {
@@ -264,6 +286,12 @@ ScriptEditor::on_focus_out_event (GdkEventFocus*)
 	getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
 	getBrowserWindow () -> hasAccelerators (true);
 	return false;
+}
+
+void
+ScriptEditor::on_new_clicked ()
+{
+	on_new_script_activated ();
 }
 
 void
