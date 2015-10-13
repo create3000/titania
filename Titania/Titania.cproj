@@ -1924,6 +1924,9 @@
     <None Include="share\titania\Library\Primitives\Geometry2D\TriangleSet2D.x3dv" />
     <None Include="share\titania\Library\Primitives\Layering\LayerSet.x3dv" />
     <None Include="share\titania\ui\logo.256.png" />
+    <None Include="share\titania\pages\about\library\gradient1.png" />
+    <None Include="share\titania\pages\about\library\gradient2.png" />
+    <None Include="share\titania\pages\about\library\gradient3.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
