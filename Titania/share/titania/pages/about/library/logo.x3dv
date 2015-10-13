@@ -4,23 +4,8 @@ META "comment" "World of Titania"
 META "created" "Tue, 13 Oct 2015 06:42:37 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Tue, 13 Oct 2015 06:52:54 GMT"
+META "modified" "Tue, 13 Oct 2015 07:51:40 GMT"
 META "title" "Logo"
-
-EXTERNPROTO Red [
-  inputOutput SFFloat transparency
-]
-"Colors.x3dv"
-
-EXTERNPROTO Orange [
-  inputOutput SFFloat transparency
-]
-"Colors.x3dv"
-
-EXTERNPROTO Yellow [
-  inputOutput SFFloat transparency
-]
-"Colors.x3dv"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {

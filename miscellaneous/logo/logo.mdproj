@@ -4,7 +4,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ItemType>GenericProject</ItemType>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{61BC6D29-D55B-43E3-917C-D8E5B14EC6CE}</ProjectGuid>
     <ReleaseVersion>0.3</ReleaseVersion>
@@ -68,6 +68,7 @@
     <None Include="website\welcome\welcome.x3d" />
     <None Include="logo.mdproj" />
     <None Include="logo.pidb" />
+    <None Include="website.15.10.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="website\" />

@@ -1,10 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/share/titania/ui/style.css">
+  <MonoDevelop.Ide.Workbench>
     <Files>
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Selection.cpp" Line="1" Column="1" />
-      <File FileName="Titania/share/titania/ui/style.css" Line="31" Column="31" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="9" Column="9" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="33" Column="33" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.h" Line="75" Column="75" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="17" Column="17" />
+      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.cpp" Line="5" Column="5" />
+      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
