@@ -149,6 +149,15 @@ ViewpointEditor::set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & valu
 	description       .setNodes (viewpointNodes);
 	retainUserOffsets .setNodes (viewpointNodes);
 	jump              .setNodes (viewpointNodes);
+
+	if (inScene)
+	{
+		const auto undoStep = std::make_shared <UndoStep> (_ ("Select Viewpoint"));
+
+	   getBrowserWindow () -> getSelection () -> setChildren ({ viewpointNode }, undoStep);
+
+		getBrowserWindow () -> addUndoStep (undoStep);
+	}
 }
 
 void
