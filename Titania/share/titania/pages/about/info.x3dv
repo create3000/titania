@@ -1,11 +1,11 @@
-#X3D V3.3 utf8 Titania V1.1.0
+#X3D V3.3 utf8 Titania V1.2.0
 
 META "comment" "World of Titania"
 META "created" "Fri, 05 Sep 2014 01:58:48 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.1.0, http://titania.create3000.de"
+META "generator" "Titania V1.2.0, http://titania.create3000.de"
 META "icon" "../../ui/icons/icon-bw.svg"
-META "modified" "Sat, 19 Sep 2015 15:21:06 GMT"
+META "modified" "Tue, 13 Oct 2015 06:59:08 GMT"
 META "title" "about:info"
 
 EXTERNPROTO Rotor [
@@ -23,6 +23,59 @@ EXTERNPROTO Rotor [
   outputOnly  SFRotation rotation_changed
 ]
 "library/Rotor.x3dv"
+
+WorldInfo {
+  metadata DEF Titania_1 MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "info"
+}
 
 NavigationInfo {
   type "NONE"
@@ -118,7 +171,7 @@ DEF about:info_1 LayerSet {
               children Shape {
                 appearance Appearance {
                   material Material {
-                    diffuseColor 1 0.890196 0.176471
+                    diffuseColor 0.52549 0.176471 1
                   }
                 }
                 geometry Rectangle2D {
@@ -148,6 +201,7 @@ DEF about:info_1 LayerSet {
                       loop TRUE
                     }
                     DEF Logo Transform {
+                      rotation 0 0 -1 1.779
                       center 5.6 -5.9 0
                       children Inline {
                         url "library/logo.x3dv"
@@ -159,8 +213,9 @@ DEF about:info_1 LayerSet {
                   translation -0.219 0.3611 1
                   children Shape {
                     appearance Appearance {
-                      material Material {
-                        diffuseColor 1 1 1
+                      material DEF _1 Material {
+                        diffuseColor 0 0 0
+                        emissiveColor 0.176471 0.819608 1
                       }
                     }
                     geometry Text {
@@ -180,9 +235,7 @@ DEF about:info_1 LayerSet {
                   translation -0.216884 0.26855 1
                   children Shape {
                     appearance Appearance {
-                      material Material {
-                        diffuseColor 1 1 1
-                      }
+                      material USE _1
                     }
                     geometry Text {
                       string "X3D Browser"
@@ -201,9 +254,7 @@ DEF about:info_1 LayerSet {
                   translation 0.0368572 0.219 1
                   children Shape {
                     appearance Appearance {
-                      material Material {
-                        diffuseColor 1 1 1
-                      }
+                      material USE _1
                     }
                     geometry Text {
                       string "Stay interactive!"
@@ -235,10 +286,10 @@ DEF about:info_1 LayerSet {
                         ]
                         fontStyle FontStyle {
                           family [
-                            "../../fonts/pt-sans/PTN57F.ttf",
+                            "../../fonts/pt-sans/PTN77F.ttf",
                             "sans"
                           ]
-                          style "NORMAL"
+                          style "BOLD"
                           size 0.04
                           spacing 1.2
                         }
@@ -295,11 +346,12 @@ DEF about:info_1 LayerSet {
                     Shape {
                       appearance Appearance {
                         material Material {
-                          diffuseColor 1 1 1
+                          diffuseColor 0 0 0
+                          emissiveColor 0.341176 0.517647 1
                         }
                       }
                       geometry DEF VersionNumberText Text {
-                        string "1.1.0"
+                        string "1.2.0"
                         maxExtent 0.65
                         fontStyle FontStyle {
                           family [

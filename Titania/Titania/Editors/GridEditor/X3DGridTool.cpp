@@ -160,10 +160,13 @@ X3DGridTool::enable ()
 void
 X3DGridTool::disable ()
 {
-	getBrowser () .removeInterest (this, &X3DGridTool::set_browser);
-	getBrowser () -> getActiveLayer () .removeInterest (this, &X3DGridTool::update);
+	if (browser)
+	{
+		getBrowser () .removeInterest (this, &X3DGridTool::set_browser);
+		getBrowser () -> getActiveLayer () .removeInterest (this, &X3DGridTool::update);
 
-	set_browser (getMasterBrowser ());
+		set_browser (getMasterBrowser ());
+	}
 }
 
 void

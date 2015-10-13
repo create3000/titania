@@ -235,6 +235,7 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 
 	// Initialize
 
+	set_activeLayer ();
 	set_viewer (getBrowser () -> getViewer ());
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 
@@ -284,7 +285,7 @@ BrowserWindow::set_activeLayer ()
 	getGridTool () -> update ();
 
 	getAngleLayoutToolAction () -> set_active (getAngleTool () -> isEnabled ());
-	getGridTool () -> update ();
+	getAngleTool () -> update ();
 
 	changing = false;
 }
@@ -1946,6 +1947,7 @@ BrowserWindow::on_angle_layout_tool_toggled ()
 	changing = true;
 
 	getGridTool () -> isEnabled (false);
+	getGridTool () -> update ();
 	getGridLayoutToolAction () -> set_active (false);
 
 	changing = false;
@@ -1953,6 +1955,7 @@ BrowserWindow::on_angle_layout_tool_toggled ()
 	// Toggle angle grid.
 
 	getAngleTool () -> isEnabled (getAngleLayoutToolAction () -> get_active ());
+	getAngleTool () -> update ();
 	getBrowserWindow () -> isModified (getBrowser (), true);
 }
 

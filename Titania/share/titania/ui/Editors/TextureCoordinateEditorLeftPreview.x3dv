@@ -1,10 +1,10 @@
-#X3D V3.3 utf8 Titania V0.7.6
+#X3D V3.3 utf8 Titania V1.2.0
 
 META "comment" "World of Titania"
 META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.6, http://titania.create3000.de"
-META "modified" "Mon, 08 Dec 2014 15:15:23 GMT"
+META "generator" "Titania V1.2.0, http://titania.create3000.de"
+META "modified" "Tue, 13 Oct 2015 07:35:17 GMT"
 
 PROTO IndexedPointSet [
   inputOnly      MFInt32 set_coordIndex
@@ -46,18 +46,18 @@ function set_coordIndex (value)
 
 function set_coord ()
 {
-	if (currentCoord != 'NULL')
+	if (currentCoord != null)
 		Browser .deleteRoute (currentCoord, 'point_changed', self, 'set_point');
 
 	currentCoord = coord;
 
-	if (currentCoord != 'NULL')
+	if (currentCoord != null)
 		Browser .addRoute (currentCoord, 'point_changed', self, 'set_point');
 }
 
 function eventsProcessed ()
 {
-	if (currentCoord == 'NULL')
+	if (currentCoord == null)
 	{
 		points .point .length = 0;
 	}
@@ -78,6 +78,59 @@ function eventsProcessed ()
 }
 "
   }
+}
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "TextureCoordinateEditorLeftPreview"
 }
 
 LayerSet {

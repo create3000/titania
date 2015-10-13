@@ -585,7 +585,7 @@ throw (Error <INVALID_NODE>,
 		metadataSet -> setup ();
 		const_cast <X3DNode*> (this) -> metadata () = metadataSet;
 	
-		getExecutionContext () -> addNamedNode (getExecutionContext () -> getUniqueName (names [1]), const_cast <X3DNode*> (this));
+		getExecutionContext () -> addNamedNode (getExecutionContext () -> getUniqueName (names [1]), const_cast <X3DNode*> (this) -> metadata ());
 	}
 
 	for (const auto & name : std::make_pair (names .begin () + 2, names .end () - 1))

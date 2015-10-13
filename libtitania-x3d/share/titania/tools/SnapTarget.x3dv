@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 12 Oct 2015 11:18:05 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Mon, 12 Oct 2015 11:40:58 GMT"
+META "modified" "Mon, 12 Oct 2015 14:56:26 GMT"
 
 DEF Titania WorldInfo {
   metadata MetadataSet {
@@ -28,28 +28,28 @@ DEF Titania WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              -6.71921634674072,
-              6.47120046615601,
-              16.996374130249
+              -7.67651081085205,
+              10.4631052017212,
+              10.8796195983887
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.575058579444885,
-              -0.812142193317413,
-              -0.0986547097563744,
-              0.415626257658005
+              0.69377475976944,
+              0.675387442111969,
+              0.250056743621826,
+              5.41924095153809
             ]
           }
           DEF centerOfRotation MetadataDouble {
             name "centerOfRotation"
             reference "http://titania.create3000.de"
             value [
-              -0.548890829086304,
-              1.90654230117798,
-              -0.491859018802643
+              -0.0737064555287361,
+              0.610252737998962,
+              -0.393778800964355
             ]
           }
         ]
@@ -85,9 +85,19 @@ DEF Titania WorldInfo {
             name "dimension"
             reference "http://titania.create3000.de"
             value [
-              10,
+              4,
               20,
-              10
+              4
+            ]
+          }
+          DEF rotation MetadataFloat {
+            name "rotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
             ]
           }
         ]
@@ -96,124 +106,207 @@ DEF Titania WorldInfo {
   }
 }
 
-DEF Vector Transform {
-  children [
-    DEF Animation Group {
-      metadata MetadataSet {
-        name "Animation"
-        reference "http://titania.create3000.de"
-        value [
-          DEF duration MetadataInteger {
-            name "duration"
-            reference "http://titania.create3000.de"
-            value 42
-          }
-          DEF framesPerSecond MetadataInteger {
-            name "framesPerSecond"
-            reference "http://titania.create3000.de"
-            value 10
-          }
-        ]
-      }
-      children [
-        DEF _1 TimeSensor {
-          cycleInterval 4.2
-          loop TRUE
-        }
-        DEF Interpolator PositionInterpolator2D {
-          metadata MetadataSet {
-            name "Interpolator"
-            reference "http://titania.create3000.de"
-            value [
-              DEF key MetadataInteger {
-                name "key"
-                reference "http://titania.create3000.de"
-                value [
-                  0,
-                  42
-                ]
+Transform {
+  children Collision {
+    enabled FALSE
+    children ScreenGroup {
+      children DEF Vector Transform {
+        rotation 1 0 0 1.5708
+        scale 13 13 13
+        children [
+          DEF Animation Group {
+            metadata MetadataSet {
+              name "Animation"
+              reference "http://titania.create3000.de"
+              value [
+                DEF duration MetadataInteger {
+                  name "duration"
+                  reference "http://titania.create3000.de"
+                  value 66
+                }
+                DEF framesPerSecond MetadataInteger {
+                  name "framesPerSecond"
+                  reference "http://titania.create3000.de"
+                  value 10
+                }
+              ]
+            }
+            children [
+              DEF _1 TimeSensor {
+                cycleInterval 6.6
+                loop TRUE
+                startTime 1444661784.53202
+                stopTime 1444661784.53202
               }
-              DEF keyValue MetadataDouble {
-                name "keyValue"
-                reference "http://titania.create3000.de"
-                value [
+              DEF TranslationInterpolator PositionInterpolator2D {
+                metadata DEF Interpolator_1 MetadataSet {
+                  name "Interpolator"
+                  reference "http://titania.create3000.de"
+                  value [
+                    DEF key MetadataInteger {
+                      name "key"
+                      reference "http://titania.create3000.de"
+                      value [
+                        0,
+                        66
+                      ]
+                    }
+                    DEF keyValue MetadataDouble {
+                      name "keyValue"
+                      reference "http://titania.create3000.de"
+                      value [
+                        0,
+                        0,
+                        0,
+                        1
+                      ]
+                    }
+                    DEF keyType MetadataString {
+                      name "keyType"
+                      reference "http://titania.create3000.de"
+                      value [
+                        "LINEAR",
+                        "LINEAR"
+                      ]
+                    }
+                  ]
+                }
+                key [
                   0,
-                  1,
-                  0,
-                  0
+                  1
                 ]
-              }
-              DEF keyType MetadataString {
-                name "keyType"
-                reference "http://titania.create3000.de"
-                value [
-                  "LINEAR",
-                  "SPLINE"
+                keyValue [
+                  0 0,
+                  0 1
                 ]
               }
             ]
           }
-          key [
-            0,
-            1
-          ]
-          keyValue [
-            0 1,
-            0 0
-          ]
-        }
-      ]
-    }
-    DEF Cone_1 Transform {
-      translation 0 4.75 0
-      scale 1 1.25 1
-      children Shape {
-        appearance Appearance {
-          material DEF _2 Material {
-            diffuseColor 0.902 0.902 0.902
-            specularColor 0.65 0.65 0.65
-            shininess 0.184713
+          DEF Grid_1 Transform {
+            scale 1.15 1 1.15
+            children Shape {
+              geometry IndexedLineSet {
+                colorPerVertex FALSE
+                colorIndex [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+                coordIndex [
+                  0,
+                  1,
+                  2,
+                  3,
+                  0,
+                  -1,
+                  4,
+                  5,
+                  -1,
+                  6,
+                  7,
+                  -1,
+                  8,
+                  9,
+                  -1,
+                  10,
+                  11,
+                  -1,
+                  12,
+                  13,
+                  -1,
+                  14,
+                  15,
+                  -1
+                ]
+                color Color {
+                  color 0.7 0.7 0.7
+                }
+                coord Coordinate {
+                  point [
+                    -2 0 2,
+                    2 0 2,
+                    2 0 -2,
+                    -2 0 -2,
+                    -1 0 2,
+                    -1 0 -2,
+                    0 0 2,
+                    0 0 -2,
+                    1 0 2,
+                    1 0 -2,
+                    -2 0 1,
+                    2 0 1,
+                    -2 0 0,
+                    2 0 0,
+                    -2 0 -1,
+                    2 0 -1
+                  ]
+                }
+              }
+            }
           }
-          texture DEF _3 PixelTexture {
-            image 2 2 4
-              0xffffffff 0xffffffff
-              0xff0000ff 0xff0000ff
+          DEF Sphere_1 Transform {
+            children Shape {
+              appearance Appearance {
+                material DEF _2 Material {
+                  diffuseColor 0.902 0.902 0.902
+                  specularColor 0.65 0.65 0.65
+                  shininess 0.184713
+                }
+                texture DEF _3 PixelTexture {
+                  image 2 2 4
+                    0xffffffff 0xffffffff
+                    0xff0000ff 0xff0000ff
+                }
+                textureTransform DEF _4 TextureTransform {
+                  translation 0 0.501282
+                  scale 4.95 4.95
+                }
+              }
+              geometry Sphere { }
+            }
           }
-          textureTransform DEF _4 TextureTransform {
-            translation 0 0.0276895
-            scale 4.95 4.95
+          DEF Cylinder_1 Transform {
+            translation 0 3 0
+            children Shape {
+              appearance Appearance {
+                material USE _2
+                texture USE _3
+                textureTransform DEF _5 TextureTransform {
+                  translation 0 0.501282
+                  scale 9 9
+                }
+              }
+              geometry Cylinder {
+                height 6
+                radius 0.4
+              }
+            }
           }
-        }
-        geometry Cone { }
+          DEF Cone_1 Transform {
+            translation 0 6.5 0
+            scaleOrientation -0.0133214 0.999909 0.00233769 2.35619
+            children Shape {
+              appearance Appearance {
+                material USE _2
+                texture USE _3
+                textureTransform USE _4
+              }
+              geometry Cone {
+                height 2.5
+                bottomRadius 0.9
+              }
+            }
+          }
+        ]
       }
     }
-    DEF Sphere_1 Transform {
-      children Shape {
-        appearance Appearance {
-          material USE _2
-          texture USE _3
-          textureTransform USE _4
-        }
-        geometry Sphere { }
-      }
-    }
-    DEF Cylinder_1 Transform {
-      translation 0 2 0
-      scale 1 0.75 1
-      children Shape {
-        appearance Appearance {
-          material USE _2
-          texture USE _3
-          textureTransform USE _4
-        }
-        geometry Cylinder {
-          height 4
-          radius 0.4
-        }
-      }
-    }
-  ]
+  }
 }
 
-ROUTE _1.fraction_changed TO Interpolator.set_fraction
-ROUTE Interpolator.value_changed TO _4.set_translation
+ROUTE _1.fraction_changed TO TranslationInterpolator.set_fraction
+ROUTE TranslationInterpolator.value_changed TO _4.set_translation
+ROUTE TranslationInterpolator.value_changed TO _5.set_translation
