@@ -20,110 +20,34 @@
     <property name="can_focus">False</property>
     <property name="stock">FragmentShader</property>
   </object>
-  <object class="GtkAdjustment" id="RightMarginAdjustment">
-    <property name="upper">1024</property>
-    <property name="value">80</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-  </object>
-  <object class="GtkMenu" id="SearchMenu">
+  <object class="GtkMenu" id="NewScriptMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkCheckMenuItem" id="CaseSensitiveMenuItem">
+      <object class="GtkMenuItem" id="NewScriptMenuItem">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Case Sensitive</property>
+        <property name="label" translatable="yes">Script</property>
         <property name="use_underline">True</property>
-        <signal name="toggled" handler="on_search_case_sensitve_toggled" swapped="no"/>
+        <signal name="activate" handler="on_new_script_activated" swapped="no"/>
       </object>
     </child>
     <child>
-      <object class="GtkCheckMenuItem" id="AtWordBoundariesMenuItem">
+      <object class="GtkMenuItem" id="ShaderPartMenuItem">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">At Word Boundaries</property>
+        <property name="label" translatable="yes">ShaderPart</property>
         <property name="use_underline">True</property>
-        <signal name="toggled" handler="on_search_at_word_boundaries_toggled" swapped="no"/>
+        <signal name="activate" handler="on_new_shader_part_activated" swapped="no"/>
       </object>
     </child>
     <child>
-      <object class="GtkCheckMenuItem" id="RegularExpressionMenuItem">
+      <object class="GtkMenuItem" id="ShaderProgramMenuItem">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Regular Expression</property>
+        <property name="label" translatable="yes">ShaderProgram</property>
         <property name="use_underline">True</property>
-        <signal name="toggled" handler="on_search_regex_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkCheckMenuItem" id="WithinSelectionMenuItem">
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Within Selection</property>
-        <property name="use_underline">True</property>
-        <signal name="toggled" handler="on_search_within_selection_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkCheckMenuItem" id="WrapAroundMenuItemMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Wrap Around</property>
-        <property name="use_underline">True</property>
-        <signal name="toggled" handler="on_search_wrap_around_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="menuitem1">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="RecentSearchesMenuItem">
-        <property name="visible">True</property>
-        <property name="sensitive">False</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Recent Searches</property>
-        <property name="use_underline">True</property>
-      </object>
-    </child>
-  </object>
-  <object class="GtkAdjustment" id="TabWidthAdjustment">
-    <property name="upper">24</property>
-    <property name="value">8</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-  </object>
-  <object class="GtkImage" id="ToggleReplaceImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-no</property>
-  </object>
-  <object class="GtkImage" id="VertexShaderImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">VertexShader</property>
-  </object>
-  <object class="GtkMenu" id="ShaderTypeMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkImageMenuItem" id="VertexMenuItem">
-        <property name="label" translatable="yes">VERTEX</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">VertexShaderImage</property>
-        <property name="use_stock">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="FragmentMenuItem">
-        <property name="label" translatable="yes">FRAGMENT</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">FragmentShaderImage</property>
-        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_new_shader_program_activated" swapped="no"/>
       </object>
     </child>
   </object>
@@ -269,25 +193,25 @@
                     <property name="toolbar_style">icons</property>
                     <property name="icon_size">1</property>
                     <child>
-                      <object class="GtkToolButton" id="SaveButton">
+                      <object class="GtkToolItem" id="toolitem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Apply current script or shader (Ctrl-S).</property>
-                        <property name="label" translatable="yes">Save</property>
-                        <property name="use_underline">True</property>
-                        <property name="stock_id">gtk-apply</property>
-                        <signal name="clicked" handler="on_apply_clicked" swapped="no"/>
-                        <accelerator key="s" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorToolItem" id="toolbutton1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Create new script</property>
+                        <child>
+                          <object class="GtkMenuButton" id="menubutton1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="popup">NewScriptMenu</property>
+                            <child>
+                              <object class="GtkImage" id="image7">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="stock">gtk-new</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -337,15 +261,15 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkToolButton" id="LoadStateButton">
+                      <object class="GtkToolButton" id="ApplyButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Notifies you whether the script is valid and shows the Console on click.</property>
+                        <property name="tooltip_text" translatable="yes">Click to apply script then it notifies you whether the script is valid.</property>
                         <property name="valign">start</property>
                         <property name="label" translatable="yes">Load State</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-yes</property>
-                        <signal name="clicked" handler="on_loadState_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_apply_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -446,6 +370,81 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkAdjustment" id="RightMarginAdjustment">
+    <property name="upper">1024</property>
+    <property name="value">80</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkMenu" id="SearchMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkCheckMenuItem" id="CaseSensitiveMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Case Sensitive</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_search_case_sensitve_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkCheckMenuItem" id="AtWordBoundariesMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">At Word Boundaries</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_search_at_word_boundaries_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkCheckMenuItem" id="RegularExpressionMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Regular Expression</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_search_regex_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkCheckMenuItem" id="WithinSelectionMenuItem">
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Within Selection</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_search_within_selection_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkCheckMenuItem" id="WrapAroundMenuItemMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Wrap Around</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_search_wrap_around_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="menuitem1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="RecentSearchesMenuItem">
+        <property name="visible">True</property>
+        <property name="sensitive">False</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Recent Searches</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAdjustment" id="TabWidthAdjustment">
+    <property name="upper">24</property>
+    <property name="value">8</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
   </object>
   <object class="GtkDialog" id="PreferencesDialog">
     <property name="can_focus">False</property>
@@ -897,6 +896,38 @@
             <property name="position">1</property>
           </packing>
         </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="ToggleReplaceImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-no</property>
+  </object>
+  <object class="GtkImage" id="VertexShaderImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">VertexShader</property>
+  </object>
+  <object class="GtkMenu" id="ShaderTypeMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImageMenuItem" id="VertexMenuItem">
+        <property name="label" translatable="yes">VERTEX</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">VertexShaderImage</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="FragmentMenuItem">
+        <property name="label" translatable="yes">FRAGMENT</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">FragmentShaderImage</property>
+        <property name="use_stock">False</property>
       </object>
     </child>
   </object>

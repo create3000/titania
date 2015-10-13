@@ -110,52 +110,20 @@ public:
 	{ return *m_FragmentShaderImage; }
 
 	Gtk::Menu &
-	getSearchMenu () const
-	{ return *m_SearchMenu; }
-
-	Gtk::CheckMenuItem &
-	getCaseSensitiveMenuItem () const
-	{ return *m_CaseSensitiveMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getAtWordBoundariesMenuItem () const
-	{ return *m_AtWordBoundariesMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getRegularExpressionMenuItem () const
-	{ return *m_RegularExpressionMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getWithinSelectionMenuItem () const
-	{ return *m_WithinSelectionMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getWrapAroundMenuItemMenuItem () const
-	{ return *m_WrapAroundMenuItemMenuItem; }
+	getNewScriptMenu () const
+	{ return *m_NewScriptMenu; }
 
 	Gtk::MenuItem &
-	getRecentSearchesMenuItem () const
-	{ return *m_RecentSearchesMenuItem; }
+	getNewScriptMenuItem () const
+	{ return *m_NewScriptMenuItem; }
 
-	Gtk::Image &
-	getToggleReplaceImage () const
-	{ return *m_ToggleReplaceImage; }
+	Gtk::MenuItem &
+	getShaderPartMenuItem () const
+	{ return *m_ShaderPartMenuItem; }
 
-	Gtk::Image &
-	getVertexShaderImage () const
-	{ return *m_VertexShaderImage; }
-
-	Gtk::Menu &
-	getShaderTypeMenu () const
-	{ return *m_ShaderTypeMenu; }
-
-	Gtk::ImageMenuItem &
-	getVertexMenuItem () const
-	{ return *m_VertexMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getFragmentMenuItem () const
-	{ return *m_FragmentMenuItem; }
+	Gtk::MenuItem &
+	getShaderProgramMenuItem () const
+	{ return *m_ShaderProgramMenuItem; }
 
 	Gtk::Window &
 	getWindow () const
@@ -206,10 +174,6 @@ public:
 	{ return *m_ScrolledWindow; }
 
 	Gtk::ToolButton &
-	getSaveButton () const
-	{ return *m_SaveButton; }
-
-	Gtk::ToolButton &
 	getUndoButton () const
 	{ return *m_UndoButton; }
 
@@ -218,8 +182,8 @@ public:
 	{ return *m_RedoButton; }
 
 	Gtk::ToolButton &
-	getLoadStateButton () const
-	{ return *m_LoadStateButton; }
+	getApplyButton () const
+	{ return *m_ApplyButton; }
 
 	Gtk::ToggleToolButton &
 	getDirectOutputToggleButton () const
@@ -236,6 +200,34 @@ public:
 	Gtk::ToolButton &
 	getPreferencesButton () const
 	{ return *m_PreferencesButton; }
+
+	Gtk::Menu &
+	getSearchMenu () const
+	{ return *m_SearchMenu; }
+
+	Gtk::CheckMenuItem &
+	getCaseSensitiveMenuItem () const
+	{ return *m_CaseSensitiveMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getAtWordBoundariesMenuItem () const
+	{ return *m_AtWordBoundariesMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getRegularExpressionMenuItem () const
+	{ return *m_RegularExpressionMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getWithinSelectionMenuItem () const
+	{ return *m_WithinSelectionMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getWrapAroundMenuItemMenuItem () const
+	{ return *m_WrapAroundMenuItemMenuItem; }
+
+	Gtk::MenuItem &
+	getRecentSearchesMenuItem () const
+	{ return *m_RecentSearchesMenuItem; }
 
 	Gtk::Dialog &
 	getPreferencesDialog () const
@@ -289,6 +281,26 @@ public:
 	getColorThemeTreeView () const
 	{ return *m_ColorThemeTreeView; }
 
+	Gtk::Image &
+	getToggleReplaceImage () const
+	{ return *m_ToggleReplaceImage; }
+
+	Gtk::Image &
+	getVertexShaderImage () const
+	{ return *m_VertexShaderImage; }
+
+	Gtk::Menu &
+	getShaderTypeMenu () const
+	{ return *m_ShaderTypeMenu; }
+
+	Gtk::ImageMenuItem &
+	getVertexMenuItem () const
+	{ return *m_VertexMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getFragmentMenuItem () const
+	{ return *m_FragmentMenuItem; }
+
 	Gtk::Revealer &
 	getSearchRevealer () const
 	{ return *m_SearchRevealer; }
@@ -335,6 +347,42 @@ public:
 
 	virtual
 	void
+	on_new_script_activated () = 0;
+
+	virtual
+	void
+	on_new_shader_part_activated () = 0;
+
+	virtual
+	void
+	on_new_shader_program_activated () = 0;
+
+	virtual
+	void
+	on_map () = 0;
+
+	virtual
+	void
+	on_unmap () = 0;
+
+	virtual
+	void
+	on_undo_clicked () = 0;
+
+	virtual
+	void
+	on_redo_clicked () = 0;
+
+	virtual
+	void
+	on_apply_clicked () = 0;
+
+	virtual
+	void
+	on_preferences_clicked () = 0;
+
+	virtual
+	void
 	on_search_case_sensitve_toggled () = 0;
 
 	virtual
@@ -352,34 +400,6 @@ public:
 	virtual
 	void
 	on_search_wrap_around_toggled () = 0;
-
-	virtual
-	void
-	on_map () = 0;
-
-	virtual
-	void
-	on_unmap () = 0;
-
-	virtual
-	void
-	on_apply_clicked () = 0;
-
-	virtual
-	void
-	on_undo_clicked () = 0;
-
-	virtual
-	void
-	on_redo_clicked () = 0;
-
-	virtual
-	void
-	on_loadState_clicked () = 0;
-
-	virtual
-	void
-	on_preferences_clicked () = 0;
 
 	virtual
 	bool
@@ -475,18 +495,10 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_RightMarginAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TabWidthAdjustment;
 	Gtk::Image*                    m_FragmentShaderImage;
-	Gtk::Menu*                     m_SearchMenu;
-	Gtk::CheckMenuItem*            m_CaseSensitiveMenuItem;
-	Gtk::CheckMenuItem*            m_AtWordBoundariesMenuItem;
-	Gtk::CheckMenuItem*            m_RegularExpressionMenuItem;
-	Gtk::CheckMenuItem*            m_WithinSelectionMenuItem;
-	Gtk::CheckMenuItem*            m_WrapAroundMenuItemMenuItem;
-	Gtk::MenuItem*                 m_RecentSearchesMenuItem;
-	Gtk::Image*                    m_ToggleReplaceImage;
-	Gtk::Image*                    m_VertexShaderImage;
-	Gtk::Menu*                     m_ShaderTypeMenu;
-	Gtk::ImageMenuItem*            m_VertexMenuItem;
-	Gtk::ImageMenuItem*            m_FragmentMenuItem;
+	Gtk::Menu*                     m_NewScriptMenu;
+	Gtk::MenuItem*                 m_NewScriptMenuItem;
+	Gtk::MenuItem*                 m_ShaderPartMenuItem;
+	Gtk::MenuItem*                 m_ShaderProgramMenuItem;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Paned*                    m_Paned;
@@ -499,14 +511,20 @@ private:
 	Gtk::Box*                      m_ScriptEditor;
 	Gtk::Overlay*                  m_SearchOverlay;
 	Gtk::ScrolledWindow*           m_ScrolledWindow;
-	Gtk::ToolButton*               m_SaveButton;
 	Gtk::ToolButton*               m_UndoButton;
 	Gtk::ToolButton*               m_RedoButton;
-	Gtk::ToolButton*               m_LoadStateButton;
+	Gtk::ToolButton*               m_ApplyButton;
 	Gtk::ToggleToolButton*         m_DirectOutputToggleButton;
 	Gtk::ToggleToolButton*         m_MustEvaluateToggleButton;
 	Gtk::MenuToolButton*           m_ShaderTypeMenuButton;
 	Gtk::ToolButton*               m_PreferencesButton;
+	Gtk::Menu*                     m_SearchMenu;
+	Gtk::CheckMenuItem*            m_CaseSensitiveMenuItem;
+	Gtk::CheckMenuItem*            m_AtWordBoundariesMenuItem;
+	Gtk::CheckMenuItem*            m_RegularExpressionMenuItem;
+	Gtk::CheckMenuItem*            m_WithinSelectionMenuItem;
+	Gtk::CheckMenuItem*            m_WrapAroundMenuItemMenuItem;
+	Gtk::MenuItem*                 m_RecentSearchesMenuItem;
 	Gtk::Dialog*                   m_PreferencesDialog;
 	Gtk::Expander*                 m_WordWrapExpander;
 	Gtk::CheckButton*              m_ShowLineNumbersCheckButton;
@@ -520,6 +538,11 @@ private:
 	Gtk::CheckButton*              m_InsertSpacesInsteadOfTabsCheckButton;
 	Gtk::Expander*                 m_ColorThemeExpander;
 	Gtk::TreeView*                 m_ColorThemeTreeView;
+	Gtk::Image*                    m_ToggleReplaceImage;
+	Gtk::Image*                    m_VertexShaderImage;
+	Gtk::Menu*                     m_ShaderTypeMenu;
+	Gtk::ImageMenuItem*            m_VertexMenuItem;
+	Gtk::ImageMenuItem*            m_FragmentMenuItem;
 	Gtk::Revealer*                 m_SearchRevealer;
 	Gtk::Box*                      m_SearchBox;
 	Gtk::Box*                      m_ReplaceButtonsBox;

@@ -61,6 +61,10 @@
 #include <gtksourceviewmm/languagemanager.h>
 #include <gtksourceviewmm/styleschememanager.h>
 
+#include <Titania/X3D/Components/Shaders/ShaderPart.h>
+#include <Titania/X3D/Components/Shaders/ShaderProgram.h>
+#include <Titania/X3D/Components/Scripting/Script.h>
+
 namespace titania {
 namespace puck {
 
@@ -123,7 +127,7 @@ ScriptEditor::initialize ()
 	                         X3D::X3DConstants::ShaderPart,
 	                         X3D::X3DConstants::ShaderProgram });
 
-	getSaveButton () .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_S, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+	getApplyButton () .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_S, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 
 	console -> reparent (getConsoleBox (), getWindow ());
 
@@ -263,6 +267,36 @@ ScriptEditor::on_focus_out_event (GdkEventFocus*)
 }
 
 void
+ScriptEditor::on_new_script_activated ()
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New Script"));
+	const auto node     = getBrowserWindow () -> createNode ("Script", undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
+
+	set_node (node);
+}
+
+void
+ScriptEditor::on_new_shader_part_activated ()
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New ShaderPart"));
+	const auto node     = getBrowserWindow () -> createNode ("ShaderPart", undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
+
+	set_node (node);
+}
+
+void
+ScriptEditor::on_new_shader_program_activated ()
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New ShaderProgram"));
+	const auto node     = getBrowserWindow () -> createNode ("ShaderProgram", undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
+
+	set_node (node);
+}
+
+void
 ScriptEditor::on_apply_clicked ()
 {
 	if (not node)
@@ -380,34 +414,28 @@ ScriptEditor::connectCDATA (const X3D::MFString & field)
 }
 
 void
-ScriptEditor::on_loadState_clicked ()
-{
-	getBrowserWindow () -> getFooterNotebook () .set_current_page (0);
-}
-
-void
 ScriptEditor::set_loadState (const X3D::LoadState loadState)
 {
 	switch (loadState)
 	{
 		case X3D::NOT_STARTED_STATE:
 		{
-			getLoadStateButton () .set_stock_id (Gtk::StockID ("gtk-stop"));
+			getApplyButton () .set_stock_id (Gtk::StockID ("gtk-stop"));
 			break;
 		}
 		case X3D::IN_PROGRESS_STATE:
 		{
-			getLoadStateButton () .set_stock_id (Gtk::StockID ("gtk-refresh"));
+			getApplyButton () .set_stock_id (Gtk::StockID ("gtk-refresh"));
 			break;
 		}
 		case X3D::COMPLETE_STATE:
 		{
-			getLoadStateButton () .set_stock_id (Gtk::StockID ("gtk-yes"));
+			getApplyButton () .set_stock_id (Gtk::StockID ("gtk-yes"));
 			break;
 		}
 		case X3D::FAILED_STATE:
 		{
-			getLoadStateButton () .set_stock_id (Gtk::StockID ("gtk-no"));
+			getApplyButton () .set_stock_id (Gtk::StockID ("gtk-no"));
 			break;
 		}
 	}

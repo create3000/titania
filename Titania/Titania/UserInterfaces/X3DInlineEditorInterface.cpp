@@ -74,6 +74,9 @@ X3DInlineEditorInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("InlineActionBox", m_InlineActionBox);
+	m_builder -> get_widget ("NewInlineButton", m_NewInlineButton);
+	m_builder -> get_widget ("RemoveInlineButton", m_RemoveInlineButton);
 	m_builder -> get_widget ("IndexButton", m_IndexButton);
 	m_builder -> get_widget ("ConvertMasterSelectionButton", m_ConvertMasterSelectionButton);
 	m_builder -> get_widget ("UpdateBoundingBoxFieldsSwitch", m_UpdateBoundingBoxFieldsSwitch);
@@ -98,7 +101,9 @@ X3DInlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("URLAddButton", m_URLAddButton);
 	m_builder -> get_widget ("URLRemoveButton", m_URLRemoveButton);
 
-	// Connect object Gtk::Button with id 'IndexButton'.
+	// Connect object Gtk::Button with id 'NewInlineButton'.
+	m_NewInlineButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_new_inline_clicked));
+	m_RemoveInlineButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_remove_inline_clicked));
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_index_clicked));
 	m_ConvertMasterSelectionButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_convert_master_selection_clicked));
 	m_FoldBackIntoSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_fold_back_into_scene_clicked));

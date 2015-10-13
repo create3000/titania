@@ -1349,9 +1349,9 @@ public:
 	getDashboardToolBar () const
 	{ return *m_DashboardToolBar; }
 
-	Gtk::ToolButton &
-	getTabButton () const
-	{ return *m_TabButton; }
+	Gtk::Box &
+	getLogoBox () const
+	{ return *m_LogoBox; }
 
 	Gtk::RadioToolButton &
 	getHandButton () const
@@ -2345,7 +2345,7 @@ private:
 	Gtk::Notebook*                   m_BrowserNotebook;
 	Gtk::Box*                        m_Dashboard;
 	Gtk::Toolbar*                    m_DashboardToolBar;
-	Gtk::ToolButton*                 m_TabButton;
+	Gtk::Box*                        m_LogoBox;
 	Gtk::RadioToolButton*            m_HandButton;
 	Gtk::RadioToolButton*            m_ArrowButton;
 	Gtk::ToolButton*                 m_PlayPauseButton;

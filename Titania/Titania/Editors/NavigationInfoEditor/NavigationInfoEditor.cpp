@@ -124,22 +124,8 @@ void
 NavigationInfoEditor::on_new_navigation_info_clicked ()
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New Navigation"));
-
-	const auto & activeLayer = getWorld () -> getActiveLayer ();
-	auto &       children    = activeLayer and activeLayer not_eq getWorld () -> getLayer0 ()
-	                           ? activeLayer -> children ()
-	                           : getExecutionContext () -> getRootNodes ();
-
-	undoStep -> addObjects (getExecutionContext (), activeLayer);
-	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (children), children);
-
-	const auto node = getExecutionContext () -> createNode <X3D::NavigationInfo> ();
-	children .emplace_back (node);
-	getExecutionContext () -> realize ();
+	const X3D::X3DPtr <X3D::X3DBindableNode> node (getBrowserWindow () -> createNode ("NavigationInfo", undoStep));
 	node -> set_bind () = true;
-	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
-
-	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (children), children);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

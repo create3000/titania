@@ -89,6 +89,14 @@ private:
 
 	virtual
 	void
+	on_new_inline_clicked () final override;
+
+	virtual
+	void
+	on_remove_inline_clicked () final override;
+
+	virtual
+	void
 	on_index_clicked () final override;
 
 	virtual

@@ -133,6 +133,18 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Box &
+	getInlineActionBox () const
+	{ return *m_InlineActionBox; }
+
+	Gtk::Button &
+	getNewInlineButton () const
+	{ return *m_NewInlineButton; }
+
+	Gtk::Button &
+	getRemoveInlineButton () const
+	{ return *m_RemoveInlineButton; }
+
 	Gtk::Button &
 	getIndexButton () const
 	{ return *m_IndexButton; }
@@ -227,6 +239,14 @@ public:
 
 	virtual
 	void
+	on_new_inline_clicked () = 0;
+
+	virtual
+	void
+	on_remove_inline_clicked () = 0;
+
+	virtual
+	void
 	on_index_clicked () = 0;
 
 	virtual
@@ -261,6 +281,9 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_URLCellrendererPixbuf;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
+	Gtk::Box*                              m_InlineActionBox;
+	Gtk::Button*                           m_NewInlineButton;
+	Gtk::Button*                           m_RemoveInlineButton;
 	Gtk::Button*                           m_IndexButton;
 	Gtk::Button*                           m_ConvertMasterSelectionButton;
 	Gtk::Switch*                           m_UpdateBoundingBoxFieldsSwitch;

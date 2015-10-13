@@ -141,6 +141,25 @@ InlineEditor::set_selection (const X3D::MFNode & selection)
 	url ->      setNodes (nodes);
 	bboxSize   .setNodes (nodes);
 	bboxCenter .setNodes (nodes);
+
+	getRemoveInlineButton () .set_sensitive (inlineNode);
+}
+
+void
+InlineEditor::on_new_inline_clicked ()
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New Inline"));
+	getBrowserWindow () -> createNode ("Inline", undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+InlineEditor::on_remove_inline_clicked ()
+{
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Inline"));
+
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { nodeName .getNode () }, undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void

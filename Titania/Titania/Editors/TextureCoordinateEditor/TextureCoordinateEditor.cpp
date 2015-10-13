@@ -89,8 +89,8 @@ infinity2f (std::numeric_limits <float>::infinity (), std::numeric_limits <float
 TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browserWindow) :
 	                   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DTextureCoordinateEditorInterface (get_ui ("Editors/TextureCoordinateEditor.xml"), gconf_dir ()),
-	                               left (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
-	                              right (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
+	                               left (X3D::createBrowser (getBrowserWindow () -> getBrowser (), { get_ui ("Editors/TextureCoordinateEditorLeftPreview.x3dv") })),
+	                              right (X3D::createBrowser (getBrowserWindow () -> getBrowser (), { get_ui ("Editors/TextureCoordinateEditorRightPreview.x3dv") })),
 	                        initialized (0),
 	                              shape (),
 	                         appearance (),
@@ -119,9 +119,6 @@ TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browse
 	                        undoHistory (),
 	                           undoStep ()
 {
-	left  -> set_antialiasing (4);
-	right -> set_antialiasing (4);
-
 	setup ();
 }
 
@@ -130,48 +127,22 @@ TextureCoordinateEditor::initialize ()
 {
 	X3DTextureCoordinateEditorInterface::initialize ();
 
-	getLeftBox ()  .pack_start (*left, true, true, 0);
-	getRightBox () .pack_start (*right, true, true, 0);
+	left  -> initialized () .addInterest (this, &TextureCoordinateEditor::set_left_initialized);
+	right -> initialized () .addInterest (this, &TextureCoordinateEditor::set_right_initialized);
 
-	left  -> initialized () .addInterest (this, &TextureCoordinateEditor::set_left_browser);
-	right -> initialized () .addInterest (this, &TextureCoordinateEditor::set_right_browser);
+	left  -> set_antialiasing (4);
+	right -> set_antialiasing (4);
 	left  -> set_opacity (0);
 	right -> set_opacity (0);
 	left  -> show ();
 	right -> show ();
 
+	getLeftBox ()  .pack_start (*left, true, true, 0);
+	getRightBox () .pack_start (*right, true, true, 0);
+
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &TextureCoordinateEditor::set_selection);
 
 	undoHistory .addInterest (this, &TextureCoordinateEditor::set_undoHistory);
-}
-
-void
-TextureCoordinateEditor::set_left_browser ()
-{
-	left -> initialized () .removeInterest (this, &TextureCoordinateEditor::set_left_browser);
-	left -> initialized () .addInterest (this, &TextureCoordinateEditor::set_left_initialized);
-
-	try
-	{
-		left -> loadURL ({ get_ui ("Editors/TextureCoordinateEditorLeftPreview.x3dv") }, { });
-	}
-	catch (const X3D::X3DError &)
-	{ }
-}
-
-void
-TextureCoordinateEditor::set_right_browser ()
-{
-	right -> initialized () .removeInterest (this, &TextureCoordinateEditor::set_right_browser);
-	right -> initialized () .addInterest (this, &TextureCoordinateEditor::set_right_initialized);
-
-	try
-	{
-		right -> loadURL ({ get_ui ("Editors/TextureCoordinateEditorRightPreview.x3dv") }, { });
-
-	}
-	catch (const X3D::X3DError &)
-	{ }
 }
 
 void

@@ -68,18 +68,10 @@ X3DScriptEditorInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("FragmentShaderImage", m_FragmentShaderImage);
-	m_builder -> get_widget ("SearchMenu", m_SearchMenu);
-	m_builder -> get_widget ("CaseSensitiveMenuItem", m_CaseSensitiveMenuItem);
-	m_builder -> get_widget ("AtWordBoundariesMenuItem", m_AtWordBoundariesMenuItem);
-	m_builder -> get_widget ("RegularExpressionMenuItem", m_RegularExpressionMenuItem);
-	m_builder -> get_widget ("WithinSelectionMenuItem", m_WithinSelectionMenuItem);
-	m_builder -> get_widget ("WrapAroundMenuItemMenuItem", m_WrapAroundMenuItemMenuItem);
-	m_builder -> get_widget ("RecentSearchesMenuItem", m_RecentSearchesMenuItem);
-	m_builder -> get_widget ("ToggleReplaceImage", m_ToggleReplaceImage);
-	m_builder -> get_widget ("VertexShaderImage", m_VertexShaderImage);
-	m_builder -> get_widget ("ShaderTypeMenu", m_ShaderTypeMenu);
-	m_builder -> get_widget ("VertexMenuItem", m_VertexMenuItem);
-	m_builder -> get_widget ("FragmentMenuItem", m_FragmentMenuItem);
+	m_builder -> get_widget ("NewScriptMenu", m_NewScriptMenu);
+	m_builder -> get_widget ("NewScriptMenuItem", m_NewScriptMenuItem);
+	m_builder -> get_widget ("ShaderPartMenuItem", m_ShaderPartMenuItem);
+	m_builder -> get_widget ("ShaderProgramMenuItem", m_ShaderProgramMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Paned", m_Paned);
@@ -92,14 +84,20 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ScriptEditor", m_ScriptEditor);
 	m_builder -> get_widget ("SearchOverlay", m_SearchOverlay);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
-	m_builder -> get_widget ("SaveButton", m_SaveButton);
 	m_builder -> get_widget ("UndoButton", m_UndoButton);
 	m_builder -> get_widget ("RedoButton", m_RedoButton);
-	m_builder -> get_widget ("LoadStateButton", m_LoadStateButton);
+	m_builder -> get_widget ("ApplyButton", m_ApplyButton);
 	m_builder -> get_widget ("DirectOutputToggleButton", m_DirectOutputToggleButton);
 	m_builder -> get_widget ("MustEvaluateToggleButton", m_MustEvaluateToggleButton);
 	m_builder -> get_widget ("ShaderTypeMenuButton", m_ShaderTypeMenuButton);
 	m_builder -> get_widget ("PreferencesButton", m_PreferencesButton);
+	m_builder -> get_widget ("SearchMenu", m_SearchMenu);
+	m_builder -> get_widget ("CaseSensitiveMenuItem", m_CaseSensitiveMenuItem);
+	m_builder -> get_widget ("AtWordBoundariesMenuItem", m_AtWordBoundariesMenuItem);
+	m_builder -> get_widget ("RegularExpressionMenuItem", m_RegularExpressionMenuItem);
+	m_builder -> get_widget ("WithinSelectionMenuItem", m_WithinSelectionMenuItem);
+	m_builder -> get_widget ("WrapAroundMenuItemMenuItem", m_WrapAroundMenuItemMenuItem);
+	m_builder -> get_widget ("RecentSearchesMenuItem", m_RecentSearchesMenuItem);
 	m_builder -> get_widget ("PreferencesDialog", m_PreferencesDialog);
 	m_builder -> get_widget ("WordWrapExpander", m_WordWrapExpander);
 	m_builder -> get_widget ("ShowLineNumbersCheckButton", m_ShowLineNumbersCheckButton);
@@ -113,6 +111,11 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("InsertSpacesInsteadOfTabsCheckButton", m_InsertSpacesInsteadOfTabsCheckButton);
 	m_builder -> get_widget ("ColorThemeExpander", m_ColorThemeExpander);
 	m_builder -> get_widget ("ColorThemeTreeView", m_ColorThemeTreeView);
+	m_builder -> get_widget ("ToggleReplaceImage", m_ToggleReplaceImage);
+	m_builder -> get_widget ("VertexShaderImage", m_VertexShaderImage);
+	m_builder -> get_widget ("ShaderTypeMenu", m_ShaderTypeMenu);
+	m_builder -> get_widget ("VertexMenuItem", m_VertexMenuItem);
+	m_builder -> get_widget ("FragmentMenuItem", m_FragmentMenuItem);
 	m_builder -> get_widget ("SearchRevealer", m_SearchRevealer);
 	m_builder -> get_widget ("SearchBox", m_SearchBox);
 	m_builder -> get_widget ("ReplaceButtonsBox", m_ReplaceButtonsBox);
@@ -125,23 +128,27 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SearchEntry", m_SearchEntry);
 	m_builder -> get_widget ("ToggleReplaceButton", m_ToggleReplaceButton);
 
+	// Connect object Gtk::MenuItem with id 'NewScriptMenuItem'.
+	m_NewScriptMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_new_script_activated));
+	m_ShaderPartMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_new_shader_part_activated));
+	m_ShaderProgramMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_new_shader_program_activated));
+
+	// Connect object Gtk::Box with id 'Widget'.
+	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_unmap));
+
+	// Connect object Gtk::ToolButton with id 'UndoButton'.
+	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_undo_clicked));
+	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_redo_clicked));
+	m_ApplyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_apply_clicked));
+	m_PreferencesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_preferences_clicked));
+
 	// Connect object Gtk::CheckMenuItem with id 'CaseSensitiveMenuItem'.
 	m_CaseSensitiveMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_case_sensitve_toggled));
 	m_AtWordBoundariesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_at_word_boundaries_toggled));
 	m_RegularExpressionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_regex_toggled));
 	m_WithinSelectionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_within_selection_toggled));
 	m_WrapAroundMenuItemMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_wrap_around_toggled));
-
-	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map));
-	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_unmap));
-
-	// Connect object Gtk::ToolButton with id 'SaveButton'.
-	m_SaveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_apply_clicked));
-	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_undo_clicked));
-	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_redo_clicked));
-	m_LoadStateButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_loadState_clicked));
-	m_PreferencesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_preferences_clicked));
 
 	// Connect object Gtk::Dialog with id 'PreferencesDialog'.
 	m_PreferencesDialog -> signal_delete_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_preferences_delete_event));

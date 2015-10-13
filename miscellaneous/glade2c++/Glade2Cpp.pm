@@ -766,3 +766,5 @@ TreeView::button_press_event
   virtual bool on_button_press_event(GdkEventButton* event);
 TreeView::button_release_event
   virtual bool on_button_release_event(GdkEventButton* event);
+Button::activate
+  virtual void on_activate();

@@ -74,6 +74,7 @@ namespace puck {
 X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	X3DBrowserWindowInterface (),
 	                  history (new History ()),
+	              logoBrowser (X3D::createBrowser ({ get_ui ("Logo.x3dv") })),
 	            masterBrowser (masterBrowser_),
 	                  browser (masterBrowser_),
 	                 browsers (),
@@ -92,10 +93,17 @@ X3DBrowserWidget::initialize ()
 
 	recentView -> initialize ();
 
+	// Master browser
+
 	getMasterBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
 	getMasterBrowser () -> show ();
-
 	getMasterBox () .pack_start (*getMasterBrowser (), true, true, 0);
+
+	// Logo Button
+
+	logoBrowser -> set_antialiasing (4);
+	logoBrowser -> show ();
+	getLogoBox () .pack_start (*logoBrowser, true, true, 0);
 }
 
 void

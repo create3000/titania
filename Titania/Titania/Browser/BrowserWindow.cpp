@@ -253,7 +253,6 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 void
 BrowserWindow::set_browsers ()
 {
-	getTabButton () .set_visible (getBrowsers () .size () > 1 and not isEditor ());
 }
 
 void
@@ -1182,7 +1181,6 @@ BrowserWindow::isEditor (const bool enabled)
 
 	set_available_viewers (getBrowser () -> getAvailableViewers ());
 
-	getTabButton ()             .set_visible (not enabled);
 	getHandButton ()            .set_visible (enabled);
 	getArrowButton ()           .set_visible (enabled);
 	getPlayPauseButton ()       .set_visible (enabled);

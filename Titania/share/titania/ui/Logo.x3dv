@@ -1,0 +1,362 @@
+#X3D V3.0 utf8 Titania V1.2.0
+
+META "comment" "World of Titania"
+META "created" "Tue, 13 Oct 2015 06:42:37 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.0, http://titania.create3000.de"
+META "modified" "Tue, 13 Oct 2015 16:33:35 GMT"
+META "title" "Logo"
+
+PROTO EnterWorld [
+  outputOnly SFBool isActive
+  outputOnly SFTime enterTime
+]
+{
+  DEF EnterWorld Script {
+    inputOnly  SFBool set_isActive
+    outputOnly SFBool isActive IS isActive
+    outputOnly SFTime enterTime IS enterTime
+
+    url "javascript:
+
+function initialize ()
+{
+	isActive = true;
+}
+
+function set_isActive (value, time)
+{
+	enterTime = time;
+}
+"
+  }
+
+  ROUTE EnterWorld.isActive TO EnterWorld.set_isActive
+}
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value [
+          DEF enabled_1 MetadataBoolean {
+            name "enabled"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF rotation MetadataFloat {
+            name "rotation"
+            reference "http://titania.create3000.de"
+            value [
+              1,
+              0,
+              0,
+              1.5708
+            ]
+          }
+          DEF dimension MetadataInteger {
+            name "dimension"
+            reference "http://titania.create3000.de"
+            value [
+              12,
+              10,
+              12
+            ]
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              33.4531555175781
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "logo"
+}
+
+DEF _1 EnterWorld { }
+
+Background {
+  transparency 1
+}
+
+DEF None NavigationInfo {
+  type "NONE"
+  headlight FALSE
+}
+
+Viewpoint {
+  position 0 0 14.5623
+}
+
+DEF Logo Transform {
+  scaleOrientation -0.357407 0.862856 -0.357407 4.51948
+  children [
+    DEF RotateAnim Group {
+      metadata DEF Animation MetadataSet {
+        name "Animation"
+        reference "http://titania.create3000.de"
+        value [
+          DEF duration MetadataInteger {
+            name "duration"
+            reference "http://titania.create3000.de"
+            value 42
+          }
+          DEF framesPerSecond MetadataInteger {
+            name "framesPerSecond"
+            reference "http://titania.create3000.de"
+            value 10
+          }
+        ]
+      }
+      children [
+        DEF _2 TimeSensor {
+          cycleInterval 4.2
+          loop TRUE
+        }
+        DEF LogoRotationInterpolator OrientationInterpolator {
+          metadata DEF Interpolator MetadataSet {
+            name "Interpolator"
+            reference "http://titania.create3000.de"
+            value [
+              DEF key MetadataInteger {
+                name "key"
+                reference "http://titania.create3000.de"
+                value [
+                  0,
+                  11,
+                  21,
+                  32,
+                  42
+                ]
+              }
+              DEF keyValue MetadataDouble {
+                name "keyValue"
+                reference "http://titania.create3000.de"
+                value [
+                  0,
+                  0,
+                  1,
+                  0,
+                  -1.82057435793581e-09,
+                  3.62532114195346e-06,
+                  -1,
+                  1.570796251297,
+                  -2.32068964045595e-09,
+                  3.62438709089474e-06,
+                  -1,
+                  3.14159274101257,
+                  3.7149245901702e-09,
+                  -3.62123296326899e-06,
+                  1,
+                  1.570796251297,
+                  0,
+                  0,
+                  1,
+                  0
+                ]
+              }
+              DEF keyType MetadataString {
+                name "keyType"
+                reference "http://titania.create3000.de"
+                value [
+                  "SPLINE",
+                  "SPLINE",
+                  "SPLINE",
+                  "SPLINE",
+                  "SPLINE"
+                ]
+              }
+            ]
+          }
+          key [
+            0,
+            0.0238095,
+            0.047619,
+            0.0714286,
+            0.0952381,
+            0.119048,
+            0.142857,
+            0.166667,
+            0.190476,
+            0.214286,
+            0.238095,
+            0.261905,
+            0.285714,
+            0.309524,
+            0.333333,
+            0.357143,
+            0.380952,
+            0.404762,
+            0.428571,
+            0.452381,
+            0.47619,
+            0.5,
+            0.52381,
+            0.547619,
+            0.571429,
+            0.595238,
+            0.619048,
+            0.642857,
+            0.666667,
+            0.690476,
+            0.714286,
+            0.738095,
+            0.761905,
+            0.785714,
+            0.809524,
+            0.833333,
+            0.857143,
+            0.880952,
+            0.904762,
+            0.928571,
+            0.952381,
+            0.97619,
+            1
+          ]
+          keyValue [
+            0 0 1 0,
+            -1.82057e-09 3.62532e-06 -1 0.142799,
+            -1.82057e-09 3.62532e-06 -1 0.285599,
+            -1.82057e-09 3.62532e-06 -1 0.428399,
+            -1.82057e-09 3.62532e-06 -1 0.571199,
+            -1.82057e-09 3.62532e-06 -1 0.713998,
+            -1.82057e-09 3.62532e-06 -1 0.856798,
+            -1.82057e-09 3.62532e-06 -1 0.999598,
+            -1.82057e-09 3.62532e-06 -1 1.1424,
+            -1.79931e-09 3.62535e-06 -1 1.2852,
+            -1.79758e-09 3.62536e-06 -1 1.428,
+            -1.82057e-09 3.62532e-06 -1 1.5708,
+            -1.85875e-09 3.62525e-06 -1 1.72788,
+            -1.95733e-09 3.62507e-06 -1 1.88496,
+            -1.93512e-09 3.62512e-06 -1 2.04204,
+            -2.06587e-09 3.62486e-06 -1 2.19911,
+            -2.11354e-09 3.62477e-06 -1 2.35619,
+            -2.15819e-09 3.62469e-06 -1 2.51327,
+            -2.12479e-09 3.62479e-06 -1 2.67035,
+            -2.18424e-09 3.62467e-06 -1 2.82743,
+            -2.24943e-09 3.62454e-06 -1 2.98451,
+            -2.32069e-09 3.62439e-06 -1 3.14159,
+            -2.39994e-09 3.62421e-06 -1 3.28439,
+            -2.49985e-09 3.62399e-06 -1 3.42719,
+            -2.61674e-09 3.62373e-06 -1 3.56999,
+            -2.74708e-09 3.62344e-06 -1 3.71279,
+            -2.88739e-09 3.62312e-06 -1 3.85559,
+            -3.0341e-09 3.62278e-06 -1 3.99839,
+            -3.082e-09 3.62266e-06 -1 4.14119,
+            -3.21671e-09 3.62236e-06 -1 4.28399,
+            -3.47321e-09 3.62178e-06 -1 4.42679,
+            -3.60334e-09 3.62149e-06 -1 4.56959,
+            3.71492e-09 -3.62123e-06 1 1.5708,
+            3.71492e-09 -3.62123e-06 1 1.41372,
+            3.71492e-09 -3.62123e-06 1 1.25664,
+            3.71492e-09 -3.62123e-06 1 1.09956,
+            3.71492e-09 -3.62123e-06 1 0.942478,
+            3.71492e-09 -3.62123e-06 1 0.785398,
+            3.60679e-09 -3.62144e-06 1 0.628318,
+            3.71492e-09 -3.62123e-06 1 0.471239,
+            3.71492e-09 -3.62123e-06 1 0.314159,
+            3.71492e-09 -3.62123e-06 1 0.15708,
+            0 0 1 0
+          ]
+        }
+      ]
+    }
+    Transform {
+      translation -5.53023 5.87268 0
+      center 5.53023 -5.87268 0
+      children Inline {
+        url "../pages/about/library/logo.x3dv"
+      }
+    }
+  ]
+}
+
+DEF Rectangle2D_1 Transform {
+  scale 1.68481 1.68481 1.68481
+  children Shape {
+    appearance Appearance {
+      material Material {
+        transparency 1
+      }
+    }
+    geometry Rectangle2D { }
+  }
+}
+
+DEF _3 TouchSensor { }
+
+DEF BooleanTimeFilter Script {
+  inputOnly  SFBool set_value
+  outputOnly SFTime triggerTrue
+  outputOnly SFTime triggerFalse
+
+  url "javascript:
+
+function set_value (value, time)
+{
+  if (value)
+    triggerTrue = time;
+  else
+    triggerFalse = time;
+}"
+}
+
+ROUTE _2.fraction_changed TO LogoRotationInterpolator.set_fraction
+ROUTE LogoRotationInterpolator.value_changed TO Logo.set_rotation
+ROUTE _1.enterTime TO _2.set_pauseTime
+ROUTE _3.isOver TO BooleanTimeFilter.set_value
+ROUTE BooleanTimeFilter.triggerTrue TO _2.set_resumeTime
+ROUTE BooleanTimeFilter.triggerFalse TO _2.set_pauseTime

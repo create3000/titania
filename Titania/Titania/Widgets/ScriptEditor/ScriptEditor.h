@@ -153,6 +153,18 @@ private:
 
 	virtual
 	void
+	on_new_script_activated () final override;
+
+	virtual
+	void
+	on_new_shader_part_activated () final override;
+
+	virtual
+	void
+	on_new_shader_program_activated () final override;
+
+	virtual
+	void
 	on_apply_clicked () final override;
 
 	virtual
@@ -174,9 +186,6 @@ private:
 
 	void
 	connectCDATA (const X3D::MFString &);
-
-	void
-	on_loadState_clicked ();
 
 	void
 	set_loadState (const X3D::LoadState);

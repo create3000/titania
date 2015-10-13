@@ -378,7 +378,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserNotebook", m_BrowserNotebook);
 	m_builder -> get_widget ("Dashboard", m_Dashboard);
 	m_builder -> get_widget ("DashboardToolBar", m_DashboardToolBar);
-	m_builder -> get_widget ("TabButton", m_TabButton);
+	m_builder -> get_widget ("LogoBox", m_LogoBox);
 	m_builder -> get_widget ("HandButton", m_HandButton);
 	m_builder -> get_widget ("ArrowButton", m_ArrowButton);
 	m_builder -> get_widget ("PlayPauseButton", m_PlayPauseButton);

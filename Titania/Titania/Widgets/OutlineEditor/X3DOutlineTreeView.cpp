@@ -891,9 +891,31 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			{
 				const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
-				if (inlineNode and inlineNode -> getInternalScene () not_eq inlineNode -> getBrowser () -> getPrivateScene ())
+				if (inlineNode)
 				{
-					get_model () -> append (iter, OutlineIterType::X3DExecutionContext, inlineNode -> getInternalScene ());
+					const auto executionContext = inlineNode -> getExecutionContext ();
+
+					switch (inlineNode -> checkLoadState ()) 
+					{
+						case X3D::NOT_STARTED_STATE:
+							get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Loading Inline not started")));
+							break;
+						case X3D::IN_PROGRESS_STATE:
+							get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Loading Inline in progess")));
+							break;
+						case X3D::COMPLETE_STATE:
+						{
+							if (inlineNode -> getInternalScene () not_eq inlineNode -> getBrowser () -> getPrivateScene ())
+							{
+								get_model () -> append (iter, OutlineIterType::X3DExecutionContext, inlineNode -> getInternalScene ());
+							}
+
+							break;
+						}
+						case X3D::FAILED_STATE:
+							get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Failed to load Inline")));
+							break;
+					}
 				}
 			}
 

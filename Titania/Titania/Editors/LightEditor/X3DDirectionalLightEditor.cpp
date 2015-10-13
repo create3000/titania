@@ -53,8 +53,6 @@
 #include "../../ComposedWidgets/NormalTool.h"
 
 #include <Titania/X3D/Components/Lighting/DirectionalLight.h>
-#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
-#include <Titania/X3D/Execution/World.h>
 
 namespace titania {
 namespace puck {
@@ -89,21 +87,7 @@ void
 X3DDirectionalLightEditor::on_new_directional_light_activated ()
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New DirectionalLight"));
-
-	const auto & activeLayer = getWorld () -> getActiveLayer ();
-	auto &       children    = activeLayer and activeLayer not_eq getWorld () -> getLayer0 ()
-	                           ? activeLayer -> children ()
-	                           : getExecutionContext () -> getRootNodes ();
-
-	undoStep -> addObjects (getExecutionContext (), activeLayer);
-	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (children), children);
-
-	const auto node = getExecutionContext () -> createNode <X3D::DirectionalLight> ();
-	children .emplace_back (node);
-	getExecutionContext () -> realize ();
-	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
-
-	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (children), children);
+	getBrowserWindow () -> createNode ("DirectionalLight", undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

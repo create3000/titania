@@ -81,54 +81,22 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="box3">
+              <object class="GtkBox" id="NavigationInfoActionBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">2</property>
                 <child>
-                  <object class="GtkBox" id="NavigationInfoActionBox">
+                  <object class="GtkButton" id="NewNavigationInfoButton">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="spacing">2</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="clicked" handler="on_new_navigation_info_clicked" swapped="no"/>
                     <child>
-                      <object class="GtkButton" id="NewNavigationInfoButton">
+                      <object class="GtkImage" id="image7">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_new_navigation_info_clicked" swapped="no"/>
-                        <child>
-                          <object class="GtkImage" id="image7">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="stock">gtk-new</property>
-                          </object>
-                        </child>
+                        <property name="can_focus">False</property>
+                        <property name="stock">gtk-new</property>
                       </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="RemoveNavigationInfoButton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_remove_navigation_info_clicked" swapped="no"/>
-                        <child>
-                          <object class="GtkImage" id="image8">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="stock">gtk-remove</property>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
                     </child>
                   </object>
                   <packing>
@@ -138,18 +106,16 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="IndexButton">
+                  <object class="GtkButton" id="RemoveNavigationInfoButton">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Node Index</property>
-                    <signal name="clicked" handler="on_index_clicked" swapped="no"/>
+                    <signal name="clicked" handler="on_remove_navigation_info_clicked" swapped="no"/>
                     <child>
-                      <object class="GtkImage" id="image2">
+                      <object class="GtkImage" id="image8">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="stock">Index</property>
-                        <property name="icon_size">1</property>
+                        <property name="stock">gtk-remove</property>
                       </object>
                     </child>
                   </object>
@@ -164,6 +130,28 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="IndexButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Node Index</property>
+                <signal name="clicked" handler="on_index_clicked" swapped="no"/>
+                <child>
+                  <object class="GtkImage" id="image2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">Index</property>
+                    <property name="icon_size">1</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>

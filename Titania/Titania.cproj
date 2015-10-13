@@ -1927,6 +1927,7 @@
     <None Include="share\titania\pages\about\library\gradient1.png" />
     <None Include="share\titania\pages\about\library\gradient2.png" />
     <None Include="share\titania\pages\about\library\gradient3.png" />
+    <None Include="share\titania\ui\Logo.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

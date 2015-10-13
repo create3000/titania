@@ -53,8 +53,6 @@
 #include "../../ComposedWidgets/NormalTool.h"
 
 #include <Titania/X3D/Components/Lighting/SpotLight.h>
-#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
-#include <Titania/X3D/Execution/World.h>
 
 namespace titania {
 namespace puck {
@@ -113,21 +111,7 @@ void
 X3DSpotLightEditor::on_new_spot_light_activated ()
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New SpotLight"));
-
-	const auto & activeLayer = getWorld () -> getActiveLayer ();
-	auto &       children    = activeLayer and activeLayer not_eq getWorld () -> getLayer0 ()
-	                           ? activeLayer -> children ()
-	                           : getExecutionContext () -> getRootNodes ();
-
-	undoStep -> addObjects (getExecutionContext (), activeLayer);
-	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (children), children);
-
-	const auto node = getExecutionContext () -> createNode <X3D::SpotLight> ();
-	children .emplace_back (node);
-	getExecutionContext () -> realize ();
-	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
-
-	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (children), children);
+	getBrowserWindow () -> createNode ("SpotLight", undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

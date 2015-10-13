@@ -176,6 +176,9 @@ public:
 
 	/// @name Edit operations
 
+	X3D::SFNode
+	createNode (const std::string & typeName, const UndoStepPtr &);
+
 	void
 	replaceNodes (const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &);
 

@@ -1095,6 +1095,27 @@ X3DBrowserEditor::getPasteStatus () const
 
 // Edit operations
 
+X3D::SFNode
+X3DBrowserEditor::createNode (const std::string & typeName, const UndoStepPtr & undoStep)
+{
+	const auto & activeLayer = getWorld () -> getActiveLayer ();
+	auto &       children    = activeLayer and activeLayer not_eq getWorld () -> getLayer0 ()
+	                           ? activeLayer -> children ()
+	                           : getExecutionContext () -> getRootNodes ();
+
+	undoStep -> addObjects (getExecutionContext (), activeLayer);
+	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (children), children);
+
+	const auto node = getExecutionContext () -> createNode (typeName);
+	children .emplace_back (node);
+	getExecutionContext () -> addUninitializedNode (node);
+	getExecutionContext () -> realize ();
+	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
+
+	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (children), children);
+	return node;
+}
+
 /***
  *  Replaces in the entire scene graph of current execution context @a node by @a newValue.
  */
