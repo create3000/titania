@@ -445,7 +445,7 @@ LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
 
 	// Remove active layer
 	{
-		const auto row = children [layerSet -> getActiveLayer ()];
+		const auto row = children [layerSet -> getActiveLayerIndex ()];
 		row -> set_value (Columns::WEIGHT, Weight::NORMAL);
 		row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
 	}
@@ -483,7 +483,7 @@ LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
 
 	// Set active layer
 	{
-		const auto row = children [layerSet -> getActiveLayer ()];
+		const auto row = children [layerSet -> getActiveLayerIndex ()];
 		row -> set_value (Columns::WEIGHT, Weight::BOLD);
 		row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
 	}
