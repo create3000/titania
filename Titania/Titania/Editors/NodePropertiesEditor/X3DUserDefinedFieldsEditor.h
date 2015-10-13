@@ -176,23 +176,23 @@ private:
 
 	static
 	void
-	addUserDefinedField (const X3D::SFNode &, X3D::X3DFieldDefinition* const, const UndoStepPtr &);
+	addUserDefinedField (X3DBrowserWindow* const, const X3D::SFNode &, X3D::X3DFieldDefinition* const, const UndoStepPtr &);
 
 	static
 	void
-	replaceUserDefinedField (const X3D::SFNode &, X3D::X3DFieldDefinition* const, X3D::X3DFieldDefinition* const, const UndoStepPtr &);
+	replaceUserDefinedField (X3DBrowserWindow* const, const X3D::SFNode &, X3D::X3DFieldDefinition* const, X3D::X3DFieldDefinition* const, const UndoStepPtr &);
 
 	static
 	void
-	removeUserDefinedField (const X3D::SFNode &, X3D::X3DFieldDefinition* const, const UndoStepPtr &);
+	removeUserDefinedField (X3DBrowserWindow* const, const X3D::SFNode &, X3D::X3DFieldDefinition* const, const UndoStepPtr &);
 
 	static
 	void
-	setUserDefinedFields (const X3D::SFNode &, const X3D::FieldDefinitionArray &, const UndoStepPtr &);
+	setUserDefinedFields (X3DBrowserWindow* const, const X3D::SFNode &, const X3D::FieldDefinitionArray &, const UndoStepPtr &);
 
 	static
 	void
-	removeRoutes (X3D::X3DFieldDefinition* const, const UndoStepPtr &);
+	removeRoutes (X3DBrowserWindow* const, X3D::X3DFieldDefinition* const, const UndoStepPtr &);
 
 	///  @name Members
 

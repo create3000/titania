@@ -216,7 +216,7 @@ X3DUserDefinedFieldsEditor::on_drag_data_received (const Glib::RefPtr <Gdk::Drag
 		node -> fields_changed () .removeInterest (this, &X3DUserDefinedFieldsEditor::set_fields);
 		node -> fields_changed () .addInterest (this, &X3DUserDefinedFieldsEditor::connectFields);
 
-		setUserDefinedFields (node, userDefinedFields, undoStep);
+		setUserDefinedFields (getBrowserWindow (), node, userDefinedFields, undoStep);
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
@@ -284,7 +284,7 @@ X3DUserDefinedFieldsEditor::on_remove_user_defined_field_clicked ()
 	node -> fields_changed () .removeInterest (this, &X3DUserDefinedFieldsEditor::set_fields);
 	node -> fields_changed () .addInterest (this, &X3DUserDefinedFieldsEditor::connectFields);
 
-	removeUserDefinedField (node, field, undoStep);
+	removeUserDefinedField (getBrowserWindow (), node, field, undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -386,7 +386,7 @@ X3DUserDefinedFieldsEditor::on_add_field_ok_clicked ()
 				node -> fields_changed () .removeInterest (this, &X3DUserDefinedFieldsEditor::set_fields);
 				node -> fields_changed () .addInterest (this, &X3DUserDefinedFieldsEditor::connectFields);
 
-				replaceUserDefinedField (node, userDefinedField, field, undoStep);
+				replaceUserDefinedField (getBrowserWindow (), node, userDefinedField, field, undoStep);
 
 				getBrowserWindow () -> addUndoStep (undoStep);
 			}
@@ -411,7 +411,7 @@ X3DUserDefinedFieldsEditor::on_add_field_ok_clicked ()
 			node -> fields_changed () .removeInterest (this, &X3DUserDefinedFieldsEditor::set_fields);
 			node -> fields_changed () .addInterest (this, &X3DUserDefinedFieldsEditor::connectFields);
 
-			addUserDefinedField (node, field, undoStep);
+			addUserDefinedField (getBrowserWindow (), node, field, undoStep);
 
 			getBrowserWindow () -> addUndoStep (undoStep);
 		}
@@ -483,7 +483,7 @@ X3DUserDefinedFieldsEditor::connectFields (const X3D::SFTime & field)
  **********************************************************************************************************************/
 
 void
-X3DUserDefinedFieldsEditor::addUserDefinedField (const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+X3DUserDefinedFieldsEditor::addUserDefinedField (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (X3D::FieldPtr (field));
 
@@ -494,7 +494,7 @@ X3DUserDefinedFieldsEditor::addUserDefinedField (const X3D::SFNode & node, X3D::
 }
 
 void
-X3DUserDefinedFieldsEditor::replaceUserDefinedField (const X3D::SFNode & node, X3D::X3DFieldDefinition* const oldField, X3D::X3DFieldDefinition* const newField, const UndoStepPtr & undoStep)
+X3DUserDefinedFieldsEditor::replaceUserDefinedField (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node, X3D::X3DFieldDefinition* const oldField, X3D::X3DFieldDefinition* const newField, const UndoStepPtr & undoStep)
 {
 	auto userDefinedFields = node -> getUserDefinedFields ();
 	auto iter              = std::find (userDefinedFields .begin (), userDefinedFields .end (), oldField);
@@ -530,6 +530,7 @@ X3DUserDefinedFieldsEditor::replaceUserDefinedField (const X3D::SFNode & node, X
             const bool selfConnection = route -> getSourceNode () == node and route -> getSourceField () == oldField -> getName ();
 
             addRoutes .emplace_back (std::bind (&X3DBrowserWindow::addRoute,
+                                                browserWindow,
                                                 node -> getExecutionContext (),
                                                 route -> getSourceNode (),
                                                 selfConnection ? newField -> getName () : route -> getSourceField (),
@@ -546,6 +547,7 @@ X3DUserDefinedFieldsEditor::replaceUserDefinedField (const X3D::SFNode & node, X
             const bool selfConnection = route -> getDestinationNode () == node and route -> getDestinationField () == oldField -> getName ();
 
             addRoutes .emplace_back (std::bind (&X3DBrowserWindow::addRoute,
+                                                browserWindow,
                                                 node -> getExecutionContext (),
                                                 node,
                                                 newField -> getName (),
@@ -568,7 +570,7 @@ X3DUserDefinedFieldsEditor::replaceUserDefinedField (const X3D::SFNode & node, X
 
 	// Remove routes from field.  We must do this as routes are associated with a node and we are self responsible for doing this.
    
-   removeRoutes (oldField, undoStep);
+   removeRoutes (browserWindow, oldField, undoStep);
 
 	// Restore old user defined fields in undo.
 
@@ -598,7 +600,7 @@ X3DUserDefinedFieldsEditor::replaceUserDefinedField (const X3D::SFNode & node, X
 }
 
 void
-X3DUserDefinedFieldsEditor::removeUserDefinedField (const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+X3DUserDefinedFieldsEditor::removeUserDefinedField (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
 {
 	const auto userDefinedFields = node -> getUserDefinedFields ();
 
@@ -610,7 +612,7 @@ X3DUserDefinedFieldsEditor::removeUserDefinedField (const X3D::SFNode & node, X3
  
 	// Remove routes from field.  We must do this as routes are associated with a node and we are self responsible for doing this.
    
-   removeRoutes (field, undoStep);
+   removeRoutes (browserWindow, field, undoStep);
 
 	undoStep -> addUndoFunction (&X3D::X3DBaseNode::setUserDefinedFields, node, userDefinedFields);
 	undoStep -> addRedoFunction (&X3D::X3DBaseNode::removeUserDefinedField, node, field -> getName ());
@@ -619,7 +621,7 @@ X3DUserDefinedFieldsEditor::removeUserDefinedField (const X3D::SFNode & node, X3
 }
 
 void
-X3DUserDefinedFieldsEditor::setUserDefinedFields (const X3D::SFNode & node, const X3D::FieldDefinitionArray & userDefinedFields, const UndoStepPtr & undoStep)
+X3DUserDefinedFieldsEditor::setUserDefinedFields (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node, const X3D::FieldDefinitionArray & userDefinedFields, const UndoStepPtr & undoStep)
 {
 	// Remove any routes and user data.
 
@@ -634,7 +636,7 @@ X3DUserDefinedFieldsEditor::setUserDefinedFields (const X3D::SFNode & node, cons
 	for (const auto field : difference)
 	{
 		undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::setUserData, field, nullptr);
-		removeRoutes (field, undoStep);
+		removeRoutes (browserWindow, field, undoStep);
 	}
 
 	// Replace the user defined fields.
@@ -646,28 +648,28 @@ X3DUserDefinedFieldsEditor::setUserDefinedFields (const X3D::SFNode & node, cons
 }
 
 void
-X3DUserDefinedFieldsEditor::removeRoutes (X3D::X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+X3DUserDefinedFieldsEditor::removeRoutes (X3DBrowserWindow* const browserWindow, X3D::X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
 {
 	// Remove routes from field.
 
    for (const auto & route : X3D::RouteSet (field -> getInputRoutes ()))
    {
-      X3DBrowserWindow::deleteRoute (route -> getExecutionContext (),
-                                     route -> getSourceNode (),
-                                     route -> getSourceField (),
-                                     route -> getDestinationNode (),
-                                     route -> getDestinationField (),
-                                     undoStep);
+      browserWindow -> deleteRoute (route -> getExecutionContext (),
+                                    route -> getSourceNode (),
+                                    route -> getSourceField (),
+                                    route -> getDestinationNode (),
+                                    route -> getDestinationField (),
+                                    undoStep);
    }
 
    for (const auto & route : X3D::RouteSet (field -> getOutputRoutes ()))
    {
-      X3DBrowserWindow::deleteRoute (route -> getExecutionContext (),
-                                     route -> getSourceNode (),
-                                     route -> getSourceField (),
-                                     route -> getDestinationNode (),
-                                     route -> getDestinationField (),
-                                     undoStep);
+      browserWindow -> deleteRoute (route -> getExecutionContext (),
+                                    route -> getSourceNode (),
+                                    route -> getSourceField (),
+                                    route -> getDestinationNode (),
+                                    route -> getDestinationField (),
+                                    undoStep);
    }
 }
 

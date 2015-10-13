@@ -418,9 +418,11 @@ LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
 	int32_t last  = -1;
 	int32_t index = path .back ();
 
+	const auto children = getLayerListStore () -> children ();
+		
 	// Find last active layer
 
-	for (const auto & row : getLayerListStore () -> children ())
+	for (const auto & row : children)
 	{
 		++ last;
 
@@ -436,9 +438,16 @@ LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
 
 	if (last >= 0)
 	{
-		const auto row = getLayerListStore () -> children () [last];
+		const auto row = children [last];
 		row -> set_value (Columns::ACTIVE_LAYER,       false);
 		row -> set_value (Columns::ACTIVE_LAYER_IMAGE, std::string ("gtk-stop"));
+	}
+
+	// Remove active layer
+	{
+		const auto row = children [layerSet -> getActiveLayer ()];
+		row -> set_value (Columns::WEIGHT, Weight::NORMAL);
+		row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
 	}
 
 	// Toggle current selection
@@ -471,6 +480,13 @@ LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
 
 	undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	// Set active layer
+	{
+		const auto row = children [layerSet -> getActiveLayer ()];
+		row -> set_value (Columns::WEIGHT, Weight::BOLD);
+		row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+	}
 }
 
 void

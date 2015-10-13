@@ -2,14 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="9" Column="9" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="33" Column="33" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.h" Line="75" Column="75" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="17" Column="17" />
-      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.cpp" Line="5" Column="5" />
-      <File FileName="Titania/Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="67" Column="67" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="24" Column="24" />
+      <File FileName="Titania/Titania/Editors/LayerEditor/LayerEditor.cpp" Line="28" Column="28" />
+      <File FileName="Titania/Titania/Editors/NodePropertiesEditor/X3DUserDefinedFieldsEditor.h" Line="48" Column="48" />
+      <File FileName="Titania/Titania/Editors/NodePropertiesEditor/X3DUserDefinedFieldsEditor.cpp" Line="62" Column="62" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
