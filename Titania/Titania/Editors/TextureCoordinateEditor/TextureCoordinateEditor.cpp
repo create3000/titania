@@ -824,9 +824,7 @@ TextureCoordinateEditor::on_select_all_activate ()
 			set_selectedPoints ();
 		}
 		catch (const X3D::X3DError & error)
-		{
-		   __LOG__ << error .what () << std::endl;
-		}
+		{ }
 	}
 
 	else if (right -> has_focus ())

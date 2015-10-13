@@ -115,14 +115,14 @@ X3DGridEditor::X3DGridEditor () :
 {
 	getGridCheckButton () .set_related_action (getBrowserWindow () -> getGridLayoutToolAction ());
 
-	translation     .setUndo (false);
-	scale           .setUndo (false);
-	dimension       .setUndo (false);
-	majorLineEvery  .setUndo (false);
-	majorLineOffset .setUndo (false);
-	color           .setUndo (false);
-	lineColor       .setUndo (false);
-	majorLineColor  .setUndo (false);
+	//translation     .setUndo (false);
+	//scale           .setUndo (false);
+	//dimension       .setUndo (false);
+	//majorLineEvery  .setUndo (false);
+	//majorLineOffset .setUndo (false);
+	//color           .setUndo (false);
+	//lineColor       .setUndo (false);
+	//majorLineColor  .setUndo (false);
 }
 
 void

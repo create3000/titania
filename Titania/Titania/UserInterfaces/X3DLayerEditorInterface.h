@@ -121,6 +121,18 @@ public:
 	getActiveLayerColumn () const
 	{ return m_ActiveLayerColumn; }
 
+	Gtk::Menu &
+	getNewMenu () const
+	{ return *m_NewMenu; }
+
+	Gtk::MenuItem &
+	getLayerMenuItem () const
+	{ return *m_LayerMenuItem; }
+
+	Gtk::MenuItem &
+	getLayoutLayerMenuItem () const
+	{ return *m_LayoutLayerMenuItem; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -128,6 +140,10 @@ public:
 	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
+
+	Gtk::Button &
+	getNewLayerSetButton () const
+	{ return *m_NewLayerSetButton; }
 
 	Gtk::Button &
 	getIndexButton () const
@@ -144,6 +160,14 @@ public:
 	Gtk::TreeView &
 	getLayerTreeView () const
 	{ return *m_LayerTreeView; }
+
+	Gtk::Box &
+	getLayerActionBox () const
+	{ return *m_LayerActionBox; }
+
+	Gtk::Button &
+	getRemoveLayerButton () const
+	{ return *m_RemoveLayerButton; }
 
 	Gtk::Box &
 	getMoveLayerBox () const
@@ -167,6 +191,18 @@ public:
 
 	virtual
 	void
+	on_new_layer_activated () = 0;
+
+	virtual
+	void
+	on_new_layout_layer_activated () = 0;
+
+	virtual
+	void
+	on_new_layer_set_button_clicked () = 0;
+
+	virtual
+	void
 	on_index_clicked () = 0;
 
 	virtual
@@ -180,6 +216,10 @@ public:
 	virtual
 	void
 	on_layer_selection_changed () = 0;
+
+	virtual
+	void
+	on_remove_layer_button_clicked () = 0;
 
 	virtual
 	void
@@ -218,12 +258,18 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn> m_NameColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_SpacerColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_ActiveLayerColumn;
+	Gtk::Menu*                         m_NewMenu;
+	Gtk::MenuItem*                     m_LayerMenuItem;
+	Gtk::MenuItem*                     m_LayoutLayerMenuItem;
 	Gtk::Window*                       m_Window;
 	Gtk::Box*                          m_Widget;
+	Gtk::Button*                       m_NewLayerSetButton;
 	Gtk::Button*                       m_IndexButton;
 	Gtk::Expander*                     m_LayerSetExpander;
 	Gtk::ScrolledWindow*               m_LayerScrolledWindow;
 	Gtk::TreeView*                     m_LayerTreeView;
+	Gtk::Box*                          m_LayerActionBox;
+	Gtk::Button*                       m_RemoveLayerButton;
 	Gtk::Box*                          m_MoveLayerBox;
 	Gtk::Button*                       m_TopButton;
 	Gtk::Button*                       m_UpButton;

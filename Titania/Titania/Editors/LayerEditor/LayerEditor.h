@@ -100,6 +100,9 @@ private:
 	set_treeView ();
 
 	void
+	connectPrivateActiveLayer ();
+
+	void
 	connectActiveLayer ();
 
 	void
@@ -135,6 +138,22 @@ private:
 	virtual
 	void
 	on_layer_selection_changed () final override;
+
+	virtual
+	void
+	on_new_layer_set_button_clicked () final override;
+
+	virtual
+	void
+	on_new_layer_activated () final override;
+
+	virtual
+	void
+	on_new_layout_layer_activated () final override;
+
+	virtual
+	void
+	on_remove_layer_button_clicked () final override;
 
 	virtual
 	void

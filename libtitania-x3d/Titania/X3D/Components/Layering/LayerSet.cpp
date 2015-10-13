@@ -65,19 +65,19 @@ const std::string   LayerSet::typeName       = "LayerSet";
 const std::string   LayerSet::containerField = "children";
 
 LayerSet::Fields::Fields () :
-	activeLayer (new SFInt32 ()),
-	      order (new MFInt32 ({ 0 })),
-	     layers (new MFNode ())
+	privateActiveLayer (-1),
+	       activeLayer (new SFInt32 ()),
+	             order (new MFInt32 ({ 0 })),
+	            layers (new MFNode ())
 { }
 
 LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	           X3DNode (),
-	            fields (),
-	privateActiveLayer (-1),
-	        layerNodes ({ new Layer (executionContext) }),
-	        layerNode0 (layerNodes [0]),
-	   activeLayerNode ()
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	        X3DNode (),
+	         fields (),
+	     layerNodes ({ new Layer (executionContext) }),
+	     layerNode0 (layerNodes [0]),
+	activeLayerNode ()
 {
 	addType (X3DConstants::LayerSet);
 
@@ -86,7 +86,7 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "order",       order ());
 	addField (inputOutput, "layers",      layers ());
 
-	addChildren (layerNodes, layerNode0, activeLayerNode);
+	addChildren (fields .privateActiveLayer, layerNodes, layerNode0, activeLayerNode);
 }
 
 X3DBaseNode*
@@ -103,28 +103,21 @@ LayerSet::initialize ()
 	layerNode0 -> isPrivate (true);
 	layerNode0 -> setup ();
 
-	activeLayer () .addInterest (this, &LayerSet::set_activeLayer);
-	order ()       .addInterest (this, &LayerSet::set_layers);
-	layers ()      .addInterest (this, &LayerSet::set_layers);
+	privateActiveLayer () .addInterest (this, &LayerSet::set_activeLayer);
+	activeLayer ()        .addInterest (this, &LayerSet::set_activeLayer);
+	order ()              .addInterest (this, &LayerSet::set_layers);
+	layers ()             .addInterest (this, &LayerSet::set_layers);
 
 	set_layers ();
-}
-
-void
-LayerSet::setActiveLayerIndex (const int32_t value)
-{
-	privateActiveLayer = value;
-
-	set_activeLayer ();
 }
 
 int32_t
 LayerSet::getActiveLayerIndex () const
 {
-	if (privateActiveLayer < 0)
+	if (privateActiveLayer () < 0)
 		return activeLayer ();
 
-	return privateActiveLayer;
+	return privateActiveLayer ();
 }
 
 void

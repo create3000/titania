@@ -93,6 +93,14 @@ public:
 	///  @name Fields
 
 	SFInt32 &
+	privateActiveLayer ()
+	{ return fields .privateActiveLayer; }
+
+	const SFInt32 &
+	privateActiveLayer () const
+	{ return fields .privateActiveLayer; }
+
+	SFInt32 &
 	activeLayer ()
 	{ return *fields .activeLayer; }
 
@@ -117,9 +125,6 @@ public:
 	{ return *fields .layers; }
 
 	///  @name Member access
-
-	void
-	setActiveLayerIndex (const int32_t);
 
 	int32_t
 	getActiveLayerIndex () const;
@@ -181,6 +186,7 @@ private:
 	{
 		Fields ();
 
+		SFInt32 privateActiveLayer;
 		SFInt32* const activeLayer;
 		MFInt32* const order;
 		MFNode* const layers;
@@ -188,7 +194,6 @@ private:
 
 	Fields fields;
 
-	int32_t                    privateActiveLayer;
 	X3DPtrArray <X3DLayerNode> layerNodes;
 	X3DLayerNodePtr            layerNode0;
 	X3DLayerNodePtr            activeLayerNode;
