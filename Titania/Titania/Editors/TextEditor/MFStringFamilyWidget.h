@@ -178,7 +178,7 @@ MFStringFamilyWidget::openFontDialog (const std::string & defaultValue, std::str
 
 	fontChooserDialog .reset (new Gtk::FontChooserDialog ());
 
-	fontChooserDialog -> set_transient_for (userInterface -> getWindow ());
+	fontChooserDialog -> set_transient_for (userInterface -> getBrowserWindow () -> getWindow ());
 	fontChooserDialog -> set_modal (true);
 
 	// Create font description.
@@ -210,7 +210,7 @@ MFStringFamilyWidget::openFileDialog (std::string & url)
 {
 	fileOpenDialog .reset (new FileOpenDialog (getBrowserWindow ()));
 
-	fileOpenDialog -> getWindow () .set_transient_for (userInterface -> getWindow ());
+	fileOpenDialog -> getWindow () .set_transient_for (userInterface -> getBrowserWindow () -> getWindow ());
 	fileOpenDialog -> getWindow () .set_modal (true);
 	fileOpenDialog -> getRelativePathBox () .set_visible (true);
 

@@ -100,6 +100,9 @@ private:
 	set_treeView ();
 
 	void
+	add_layer (const X3D::SFNode &, const X3D::X3DLayerNodePtr &, const int32_t);
+
+	void
 	connectPrivateActiveLayer ();
 
 	void
@@ -113,6 +116,21 @@ private:
 
 	void
 	connectIsPickable (const X3D::X3DLayerNodePtr &);
+
+	void
+	disconnectPrivateActiveLayer ();
+
+	void
+	disconnectActiveLayer ();
+
+	void
+	disconnectOrder ();
+
+	void
+	disconnectLayers ();
+
+	void
+	disconnectIsPickable (const X3D::X3DLayerNodePtr &);
 
 	virtual
 	void

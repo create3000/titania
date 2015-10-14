@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 13 Oct 2015 06:42:37 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Tue, 13 Oct 2015 16:33:35 GMT"
+META "modified" "Tue, 13 Oct 2015 19:06:53 GMT"
 META "title" "Logo"
 
 PROTO EnterWorld [
@@ -84,7 +84,7 @@ WorldInfo {
         value DEF type MetadataString {
           name "type"
           reference "http://titania.create3000.de"
-          value "EXAMINE"
+          value "NONE"
         }
       }
       DEF Viewpoint MetadataSet {
@@ -97,7 +97,7 @@ WorldInfo {
             value [
               0,
               0,
-              33.4531555175781
+              36.934986114502
             ]
           }
           DEF orientation MetadataDouble {
@@ -325,12 +325,13 @@ DEF Logo Transform {
 }
 
 DEF Rectangle2D_1 Transform {
-  scale 1.68481 1.68481 1.68481
+  scale 13.1706 13.1706 13.1706
   children Shape {
     appearance Appearance {
       material Material {
         transparency 1
       }
+      texture ImageTexture { }
     }
     geometry Rectangle2D { }
   }
@@ -347,10 +348,10 @@ DEF BooleanTimeFilter Script {
 
 function set_value (value, time)
 {
-  if (value)
-    triggerTrue = time;
-  else
-    triggerFalse = time;
+	if (value)
+		triggerTrue = time;
+	else
+		triggerFalse = time;
 }"
 }
 

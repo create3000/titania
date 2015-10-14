@@ -197,11 +197,11 @@ private:
 
 	virtual
 	void
-	set_pause () final override;
+	set_resume (const time_type) final override;
 
 	virtual
 	void
-	set_resume (const time_type) final override;
+	set_pause () final override;
 
 	void
 	set_end ();

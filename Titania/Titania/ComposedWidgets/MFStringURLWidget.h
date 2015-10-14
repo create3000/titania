@@ -121,7 +121,7 @@ MFStringURLWidget::on_add_clicked ()
 {
 	fileOpenDialog .reset (new FileOpenDialog (getBrowserWindow ()));
 
-	fileOpenDialog -> getWindow () .set_transient_for (userInterface -> getWindow ());
+	fileOpenDialog -> getWindow () .set_transient_for (userInterface -> getBrowserWindow () -> getWindow ());
 	fileOpenDialog -> getWindow () .set_modal (true);
 	fileOpenDialog -> getRelativePathBox () .set_visible (true);
 
@@ -160,7 +160,7 @@ MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 
 	fileOpenDialog .reset (new FileOpenDialog (getBrowserWindow ()));
 
-	fileOpenDialog -> getWindow () .set_transient_for (userInterface -> getWindow ());
+	fileOpenDialog -> getWindow () .set_transient_for (userInterface -> getBrowserWindow () -> getWindow ());
 	fileOpenDialog -> getWindow () .set_modal (true);
 	fileOpenDialog -> getRelativePathBox () .set_visible (true);
 

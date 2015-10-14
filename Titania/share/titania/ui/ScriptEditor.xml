@@ -592,7 +592,7 @@
                   <object class="GtkExpander" id="WordWrapExpander">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="border_width">4</property>
+                    <property name="border_width">8</property>
                     <property name="expanded">True</property>
                     <property name="spacing">8</property>
                     <property name="label_fill">True</property>

@@ -61,8 +61,8 @@ namespace X3D {
 X3DTimeDependentNode::Fields::Fields () :
 	       loop (new SFBool ()),
 	  startTime (new SFTime ()),
-	  pauseTime (new SFTime ()),
 	 resumeTime (new SFTime ()),
+	  pauseTime (new SFTime ()),
 	   stopTime (new SFTime ()),
 	   isPaused (new SFBool ()),
 	  cycleTime (new SFTime ()),
@@ -74,15 +74,15 @@ X3DTimeDependentNode::X3DTimeDependentNode () :
 	         fields (),
 	    initialized (),
 	 startTimeValue (0),
-	 pauseTimeValue (0),
 	resumeTimeValue (0),
+	 pauseTimeValue (0),
 	  stopTimeValue (0),
 	          start (0),
 	          pause (0),
 	  pauseInterval (0),
 	   startTimeout (),
-	   pauseTimeout (),
 	  resumeTimeout (),
+	   pauseTimeout (),
 	    stopTimeout (),
 	       evenLive (false),
 	       disabled (false)
@@ -105,13 +105,13 @@ X3DTimeDependentNode::initialize ()
 	enabled ()    .addInterest (this, &X3DTimeDependentNode::set_enabled);
 	loop ()       .addInterest (this, &X3DTimeDependentNode::set_loop);
 	startTime ()  .addInterest (this, &X3DTimeDependentNode::set_startTime);
-	pauseTime ()  .addInterest (this, &X3DTimeDependentNode::set_pauseTime);
 	resumeTime () .addInterest (this, &X3DTimeDependentNode::set_resumeTime);
+	pauseTime ()  .addInterest (this, &X3DTimeDependentNode::set_pauseTime);
 	stopTime ()   .addInterest (this, &X3DTimeDependentNode::set_stopTime);
 
 	startTimeValue  = startTime ();
-	pauseTimeValue  = pauseTime ();
 	resumeTimeValue = resumeTime ();
+	pauseTimeValue  = pauseTime ();
 	stopTimeValue   = stopTime ();
 
 	initialized = getCurrentTime ();
@@ -217,26 +217,6 @@ X3DTimeDependentNode::set_startTime ()
 }
 
 void
-X3DTimeDependentNode::set_pauseTime ()
-{
-	pauseTimeValue = pauseTime ();
-
-	if (enabled ())
-	{
-		pauseTimeout .disconnect ();
-
-		if (pauseTimeValue <= resumeTimeValue)
-			return;
-
-		if (pauseTimeValue <= getCurrentTime ())
-			do_pause ();
-
-		else
-			addTimeout (pauseTimeout, &X3DTimeDependentNode::do_pause, pauseTimeValue);
-	}
-}
-
-void
 X3DTimeDependentNode::set_resumeTime ()
 {
 	resumeTimeValue = resumeTime ();
@@ -253,6 +233,26 @@ X3DTimeDependentNode::set_resumeTime ()
 
 		else
 			addTimeout (resumeTimeout, &X3DTimeDependentNode::do_resume, resumeTimeValue);
+	}
+}
+
+void
+X3DTimeDependentNode::set_pauseTime ()
+{
+	pauseTimeValue = pauseTime ();
+
+	if (enabled ())
+	{
+		pauseTimeout .disconnect ();
+
+		if (pauseTimeValue <= resumeTimeValue)
+			return;
+
+		if (pauseTimeValue <= getCurrentTime ())
+			do_pause ();
+
+		else
+			addTimeout (pauseTimeout, &X3DTimeDependentNode::do_pause, pauseTimeValue);
 	}
 }
 
@@ -308,31 +308,6 @@ X3DTimeDependentNode::do_start ()
 }
 
 void
-X3DTimeDependentNode::do_pause ()
-{
-	if (isActive () and not isPaused ())
-	{
-		isPaused () = true;
-
-		if (pauseTimeValue not_eq getCurrentTime ())
-			pauseTimeValue = getCurrentTime ();
-
-		if (getLive ())
-			real_pause ();
-	}
-}
-
-void
-X3DTimeDependentNode::real_pause ()
-{
-	pause = getCurrentTime ();
-
-	set_pause ();
-
-	getBrowser () -> prepareEvents () .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
-}
-
-void
 X3DTimeDependentNode::do_resume ()
 {
 	if (isActive () and isPaused ())
@@ -358,6 +333,31 @@ X3DTimeDependentNode::real_resume ()
 
 	getBrowser () -> prepareEvents () .addInterest (this, &X3DTimeDependentNode::prepareEvents);
 	getBrowser () -> addEvent ();
+}
+
+void
+X3DTimeDependentNode::do_pause ()
+{
+	if (isActive () and not isPaused ())
+	{
+		isPaused () = true;
+
+		if (pauseTimeValue not_eq getCurrentTime ())
+			pauseTimeValue = getCurrentTime ();
+
+		if (getLive ())
+			real_pause ();
+	}
+}
+
+void
+X3DTimeDependentNode::real_pause ()
+{
+	pause = getCurrentTime ();
+
+	set_pause ();
+
+	getBrowser () -> prepareEvents () .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
 }
 
 void
@@ -416,8 +416,8 @@ void
 X3DTimeDependentNode::removeTimeouts ()
 {
 	startTimeout  .disconnect ();
-	pauseTimeout  .disconnect ();
 	resumeTimeout .disconnect ();
+	pauseTimeout  .disconnect ();
 	stopTimeout   .disconnect ();
 }
 

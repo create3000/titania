@@ -98,20 +98,20 @@ public:
 	{ return *fields .startTime; }
 
 	SFTime &
-	pauseTime ()
-	{ return *fields .pauseTime; }
-
-	const SFTime &
-	pauseTime () const
-	{ return *fields .pauseTime; }
-
-	SFTime &
 	resumeTime ()
 	{ return *fields .resumeTime; }
 
 	const SFTime &
 	resumeTime () const
 	{ return *fields .resumeTime; }
+
+	SFTime &
+	pauseTime ()
+	{ return *fields .pauseTime; }
+
+	const SFTime &
+	pauseTime () const
+	{ return *fields .pauseTime; }
 
 	SFTime &
 	stopTime ()
@@ -195,11 +195,11 @@ protected:
 
 	virtual
 	void
-	set_pause () = 0;
+	set_resume (const time_type) = 0;
 
 	virtual
 	void
-	set_resume (const time_type) = 0;
+	set_pause () = 0;
 
 	virtual
 	void
@@ -243,10 +243,10 @@ private:
 	set_startTime ();
 
 	void
-	set_pauseTime ();
+	set_resumeTime ();
 
 	void
-	set_resumeTime ();
+	set_pauseTime ();
 
 	void
 	set_stopTime ();
@@ -260,10 +260,10 @@ private:
 	real_pause ();
 
 	void
-	do_resume ();
+	real_resume ();
 
 	void
-	real_resume ();
+	do_resume ();
 
 	// Timeout
 
@@ -284,8 +284,8 @@ private:
 
 		SFBool* const loop;
 		SFTime* const startTime;
-		SFTime* const pauseTime;
 		SFTime* const resumeTime;
+		SFTime* const pauseTime;
 		SFTime* const stopTime;
 		SFBool* const isPaused;
 		SFTime* const cycleTime;
@@ -296,8 +296,8 @@ private:
 	
 	SFTime    initialized;
 	time_type startTimeValue;
-	time_type pauseTimeValue;
 	time_type resumeTimeValue;
+	time_type pauseTimeValue;
 	time_type stopTimeValue;
 
 	time_type start;
@@ -305,8 +305,8 @@ private:
 	time_type pauseInterval;
 
 	sigc::connection startTimeout;
-	sigc::connection pauseTimeout;
 	sigc::connection resumeTimeout;
+	sigc::connection pauseTimeout;
 	sigc::connection stopTimeout;
 
 	SFBool evenLive;

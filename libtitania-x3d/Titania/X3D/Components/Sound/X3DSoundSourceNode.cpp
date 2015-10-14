@@ -171,16 +171,16 @@ X3DSoundSourceNode::set_start ()
 }
 
 void
-X3DSoundSourceNode::set_pause ()
-{
-	mediaStream -> pause ();
-}
-
-void
 X3DSoundSourceNode::set_resume (const time_type)
 {
 	if (speed ())
 		mediaStream -> resume ();
+}
+
+void
+X3DSoundSourceNode::set_pause ()
+{
+	mediaStream -> pause ();
 }
 
 void

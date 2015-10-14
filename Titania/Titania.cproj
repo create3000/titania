@@ -1922,7 +1922,6 @@
     <None Include="share\titania\ui\icons\Faenza\README.txt" />
     <None Include="Titania\Editors\GridEditor\X3DGridTool.h" />
     <None Include="share\titania\Library\Primitives\Geometry2D\TriangleSet2D.x3dv" />
-    <None Include="share\titania\Library\Primitives\Layering\LayerSet.x3dv" />
     <None Include="share\titania\ui\logo.256.png" />
     <None Include="share\titania\pages\about\library\gradient1.png" />
     <None Include="share\titania\pages\about\library\gradient2.png" />
@@ -2018,7 +2017,6 @@
     <Folder Include="share\titania\ui\icons\Faenza\" />
     <Folder Include="share\titania\ui\icons\Faenza\16\" />
     <Folder Include="share\titania\ui\icons\Faenza\scalable\" />
-    <Folder Include="share\titania\Library\Primitives\Layering\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

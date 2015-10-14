@@ -181,8 +181,7 @@ LayerEditor::set_order (const UndoStepPtr & undoStep)
 	undoStep -> addObjects (layerSet);
 	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (layerSet -> order ()), layerSet -> order ());
 
-	layerSet -> order () .removeInterest (this, &LayerEditor::set_treeView);
-	layerSet -> order () .addInterest (this, &LayerEditor::connectOrder);
+	disconnectOrder ();
 	layerSet -> order () = std::move (order);
 
 	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (layerSet -> order ()), layerSet -> order ());
@@ -214,33 +213,9 @@ LayerEditor::set_treeView ()
 	getLayerTreeView () .unset_model ();
 	getLayerListStore () -> clear ();
 
-	const auto & order = layerSet -> order ();
-
 	// Layer0
 
-	const auto row         = getLayerListStore () -> append ();
-	const bool visible     = std::find (order .begin (), order .end (), 0) not_eq order  .end ();
-	const bool activeLayer = 0 == layerSet -> activeLayer ();
-
-	row -> set_value (Columns::INDEX,              0);
-	row -> set_value (Columns::VISIBLE,            visible);
-	row -> set_value (Columns::EYE,                std::string (visible ? "EyeOpen" : "EyeClosed"));
-	row -> set_value (Columns::PICKABLE,           std::string (layerSet -> getLayer0 () -> isPickable () ? "Hand" : "gtk-stop"));
-	row -> set_value (Columns::TYPE_NAME,          std::string ("Layer"));
-	row -> set_value (Columns::NAME,               std::string (_ ("Default Layer")));
-	row -> set_value (Columns::ACTIVE_LAYER,       activeLayer);
-	row -> set_value (Columns::ACTIVE_LAYER_IMAGE, std::string (activeLayer ? "WalkViewer" : "gtk-stop"));
-		
-	if (0 == layerSet -> getActiveLayerIndex ())
-	{
-		row -> set_value (Columns::WEIGHT, Weight::BOLD);
-		row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
-	}
-	else
-	{
-		row -> set_value (Columns::WEIGHT, Weight::NORMAL);
-		row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
-	}
+	add_layer (X3D::SFNode (layerSet -> getLayer0 ()), layerSet -> getLayer0 (), 0);
 
 	// Layers
 
@@ -248,35 +223,41 @@ LayerEditor::set_treeView ()
 
 	for (const auto & node : layerSet -> layers ())
 	{
-	   const auto & layer       = layers [index - 1];
-		const auto   row         = getLayerListStore () -> append ();
-		const bool   visible     = std::find (order .begin (), order .end (), index) not_eq order .end ();
-		const bool   activeLayer = index == layerSet -> activeLayer ();
-
-		row -> set_value (Columns::INDEX,              index);
-		row -> set_value (Columns::VISIBLE,            visible);
-		row -> set_value (Columns::EYE,                std::string (visible ? "EyeOpen" : "EyeClosed"));
-		row -> set_value (Columns::PICKABLE,           std::string (layer and layer -> isPickable () ? "Hand" : "gtk-stop"));
-		row -> set_value (Columns::TYPE_NAME,          node -> getTypeName ());
-		row -> set_value (Columns::NAME,               node -> getName ());
-		row -> set_value (Columns::ACTIVE_LAYER,       activeLayer);
-		row -> set_value (Columns::ACTIVE_LAYER_IMAGE, std::string (activeLayer ? "WalkViewer" : "gtk-stop"));
-			
-		if (index == layerSet -> getActiveLayerIndex ())
-		{
-			row -> set_value (Columns::WEIGHT, Weight::BOLD);
-			row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
-		}
-		else
-		{
-			row -> set_value (Columns::WEIGHT, Weight::NORMAL);
-			row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
-		}
+		add_layer (node, layers [index - 1], index);
 
 		++ index;
 	}
 
 	getLayerTreeView () .set_model (getLayerListStore ());
+}
+
+void
+LayerEditor::add_layer (const X3D::SFNode & node, const X3D::X3DLayerNodePtr & layer, const int32_t index)
+{
+	const auto   row         = getLayerListStore () -> append ();
+	const auto & order       = layerSet -> order ();
+	const bool   visible     = std::find (order .begin (), order .end (), index) not_eq order .end ();
+	const bool   activeLayer = (index == layerSet -> activeLayer ());
+
+	row -> set_value (Columns::INDEX,              index);
+	row -> set_value (Columns::VISIBLE,            visible);
+	row -> set_value (Columns::EYE,                std::string (visible ? "EyeOpen" : "EyeClosed"));
+	row -> set_value (Columns::PICKABLE,           std::string (layer and layer -> isPickable () ? "Hand" : "gtk-stop"));
+	row -> set_value (Columns::TYPE_NAME,          node -> getTypeName ());
+	row -> set_value (Columns::NAME,               node -> getName ());
+	row -> set_value (Columns::ACTIVE_LAYER,       activeLayer);
+	row -> set_value (Columns::ACTIVE_LAYER_IMAGE, std::string (activeLayer ? "WalkViewer" : "gtk-stop"));
+		
+	if (index == layerSet -> getActiveLayerIndex ())
+	{
+		row -> set_value (Columns::WEIGHT, Weight::BOLD);
+		row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+	}
+	else
+	{
+		row -> set_value (Columns::WEIGHT, Weight::NORMAL);
+		row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
+	}
 }
 
 void
@@ -312,6 +293,41 @@ LayerEditor::connectIsPickable (const X3D::X3DLayerNodePtr & layer)
 {
 	layer -> isPickable () .removeInterest (this, &LayerEditor::connectIsPickable);
 	layer -> isPickable () .addInterest (this, &LayerEditor::set_treeView);
+}
+
+void
+LayerEditor::disconnectPrivateActiveLayer ()
+{
+	layerSet -> privateActiveLayer () .removeInterest (this, &LayerEditor::set_treeView);
+	layerSet -> privateActiveLayer () .addInterest (this, &LayerEditor::connectPrivateActiveLayer);
+}
+
+void
+LayerEditor::disconnectActiveLayer ()
+{
+	layerSet -> activeLayer () .removeInterest (this, &LayerEditor::set_treeView);
+	layerSet -> activeLayer () .addInterest (this, &LayerEditor::connectActiveLayer);
+}
+
+void
+LayerEditor::disconnectOrder ()
+{
+	layerSet -> order () .removeInterest (this, &LayerEditor::set_treeView);
+	layerSet -> order () .addInterest (this, &LayerEditor::connectOrder);
+}
+
+void
+LayerEditor::disconnectLayers ()
+{
+	layerSet -> layers () .removeInterest (this, &LayerEditor::set_layers);
+	layerSet -> layers () .addInterest (this, &LayerEditor::connectLayers);
+}
+
+void
+LayerEditor::disconnectIsPickable (const X3D::X3DLayerNodePtr & layer)
+{
+	layer -> isPickable () .removeInterest (this, &LayerEditor::set_treeView);
+	layer -> isPickable () .addInterest (this, &LayerEditor::connectIsPickable, layer);
 }
 
 bool
@@ -389,8 +405,7 @@ LayerEditor::on_pickable_toggled (const Gtk::TreePath & path)
 
 	// Toggle isPickable
 
-	layer -> isPickable () .removeInterest (this, &LayerEditor::set_treeView);
-	layer -> isPickable () .addInterest (this, &LayerEditor::connectIsPickable, layer);
+	disconnectIsPickable (layer);
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Layer isPickable"));
 
@@ -468,8 +483,7 @@ LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
 
 	// Set value in LayerSet
 
-	layerSet -> activeLayer () .removeInterest (this, &LayerEditor::set_treeView);
-	layerSet -> activeLayer () .addInterest (this, &LayerEditor::connectActiveLayer);
+	disconnectActiveLayer ();
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Active Layer"));
 
@@ -513,8 +527,7 @@ LayerEditor::on_layer_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 
 	// Activate layer
 
-	layerSet -> privateActiveLayer () .removeInterest (this, &LayerEditor::set_treeView);
-	layerSet -> privateActiveLayer () .addInterest (this, &LayerEditor::connectPrivateActiveLayer);
+	disconnectPrivateActiveLayer ();
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Active Layer"));
 
@@ -606,6 +619,10 @@ LayerEditor::on_remove_layer_set_clicked ()
 void
 LayerEditor::on_new_layer_activated ()
 {
+	// Add to LayerSet
+
+	disconnectLayers ();
+
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New Layer"));
 
 	auto & layers = layerSet -> layers ();
@@ -618,11 +635,21 @@ LayerEditor::on_new_layer_activated ()
 
 	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (layers), layers);
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	// Add to tree view
+
+	this -> layers .emplace_back (layers .back ());
+
+	add_layer (X3D::SFNode (layers .back ()), this -> layers .back (), layers .size () - 1);
 }
 
 void
 LayerEditor::on_new_layout_layer_activated ()
 {
+	// Add to LayerSet
+
+	disconnectLayers ();
+
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New LayoutLayer"));
 
 	auto & layers = layerSet -> layers ();
@@ -635,6 +662,12 @@ LayerEditor::on_new_layout_layer_activated ()
 
 	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (layers), layers);
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	// Add to tree view
+
+	this -> layers .emplace_back (layers .back ());
+
+	add_layer (X3D::SFNode (layers .back ()), this -> layers .back (), layers .size () - 1);
 }
 
 void
@@ -653,6 +686,22 @@ LayerEditor::on_remove_layer_button_clicked ()
 	   return;
 
 	-- selectedIndex;
+
+	// Remove from tree view
+
+	getLayerListStore () -> erase (getLayerSelection () -> get_selected ());
+
+	// Update index
+	{
+		int32_t index = 0;
+
+		for (const auto & row : getLayerListStore () -> children ())
+		   row -> set_value (Columns::INDEX, index ++);
+	}
+
+	// Remove from  LayerSet
+
+	disconnectLayers ();
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Layer"));
 
@@ -673,8 +722,7 @@ LayerEditor::on_top_clicked ()
 	undoStep -> addObjects (layerSet);
 	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
 
-	layerSet -> layers () .removeInterest (this, &LayerEditor::set_layers);
-	layerSet -> layers () .addInterest (this, &LayerEditor::connectLayers);
+	disconnectLayers ();
 
 	// Move to top
 	{
@@ -731,8 +779,7 @@ LayerEditor::on_up_clicked ()
 	undoStep -> addObjects (layerSet);
 	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
 
-	layerSet -> layers () .removeInterest (this, &LayerEditor::set_layers);
-	layerSet -> layers () .addInterest (this, &LayerEditor::connectLayers);
+	disconnectLayers ();
 
 	// Move to top
 	{
@@ -792,8 +839,7 @@ LayerEditor::on_down_clicked ()
 	undoStep -> addObjects (layerSet);
 	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
 
-	layerSet -> layers () .removeInterest (this, &LayerEditor::set_layers);
-	layerSet -> layers () .addInterest (this, &LayerEditor::connectLayers);
+	disconnectLayers ();
 
 	// Move to top
 	{
@@ -861,8 +907,7 @@ LayerEditor::on_bottom_clicked ()
 	undoStep -> addObjects (layerSet);
 	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
 
-	layerSet -> layers () .removeInterest (this, &LayerEditor::set_layers);
-	layerSet -> layers () .addInterest (this, &LayerEditor::connectLayers);
+	disconnectLayers ();
 
 	// Move to bottom
 	{
