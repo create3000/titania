@@ -428,10 +428,10 @@ void
 LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
 {
 	if (layerSet == getWorld () -> getDefaultLayerSet ())
-	   return;
+		return;
 
-	int32_t last  = -1;
 	int32_t index = path .back ();
+	int32_t last  = -1;
 
 	const auto children = getLayerListStore () -> children ();
 		
@@ -439,14 +439,15 @@ LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
 
 	for (const auto & row : children)
 	{
-		++ last;
-
 		bool active = false;
 
 		row -> get_value (Columns::ACTIVE_LAYER, active);
 
-		if (active)
-			break;
+		if (not active)
+		   continue;
+
+		row -> get_value (Columns::INDEX, last);
+		break;
 	}
 
 	// Toggle last to false
@@ -459,6 +460,8 @@ LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
 	}
 
 	// Remove active layer
+
+	if (layerSet -> getActiveLayerIndex () >= 0 and layerSet -> getActiveLayerIndex () < int32_t (children .size ()))
 	{
 		const auto row = children [layerSet -> getActiveLayerIndex ()];
 		row -> set_value (Columns::WEIGHT, Weight::NORMAL);
@@ -496,6 +499,8 @@ LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	// Set active layer
+
+	if (layerSet -> getActiveLayerIndex () >= 0 and layerSet -> getActiveLayerIndex () < int32_t (children .size ()))
 	{
 		const auto row = children [layerSet -> getActiveLayerIndex ()];
 		row -> set_value (Columns::WEIGHT, Weight::BOLD);
