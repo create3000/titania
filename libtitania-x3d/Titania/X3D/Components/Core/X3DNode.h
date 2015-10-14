@@ -109,7 +109,7 @@ public:
 	
 	///  Return the metadata with where name is @a name if it exists otherwise create it.
 	template <class Type>
-	Type*
+	X3DPtr <Type>
 	createMetaData (const std::string & key)
 	throw (Error <NOT_SUPPORTED>,
 	       Error <INVALID_NAME>,
@@ -120,7 +120,7 @@ public:
 
 	///  Return the metadata with where name is @a name if it exists otherwise throw an exception.
 	template <class Type>
-	Type*
+	X3DPtr <Type>
 	getMetaData (const std::string & key)
 	throw (Error <NOT_SUPPORTED>,
 	       Error <INVALID_NAME>,
@@ -187,7 +187,7 @@ private:
 	///  @name Metadata handling
 
 	MetadataSet*
-	getMetadataSet (const std::deque <std::string> &, const bool = false) const
+	getMetadataSet (const std::deque <std::string> &, const bool) const
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <DISPOSED>);
@@ -218,42 +218,42 @@ private:
  */
 
 template <>
-MetadataBoolean*
+X3DPtr <MetadataBoolean>
 X3DNode::createMetaData <MetadataBoolean> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>);
 
 template <>
-MetadataDouble*
+X3DPtr <MetadataDouble>
 X3DNode::createMetaData <MetadataDouble> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>);
 
 template <>
-MetadataFloat*
+X3DPtr <MetadataFloat>
 X3DNode::createMetaData <MetadataFloat> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>);
 
 template <>
-MetadataInteger*
+X3DPtr <MetadataInteger>
 X3DNode::createMetaData <MetadataInteger> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>);
 
 template <>
-MetadataString*
+X3DPtr <MetadataString>
 X3DNode::createMetaData <MetadataString> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>);
 
 template <>
-MetadataSet*
+X3DPtr <MetadataSet>
 X3DNode::createMetaData <MetadataSet> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
@@ -265,43 +265,43 @@ throw (Error <NOT_SUPPORTED>,
  */
 
 
- template <>
-MetadataBoolean*
+template <>
+X3DPtr <MetadataBoolean>
 X3DNode::getMetaData <MetadataBoolean> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>);
 
 template <>
-MetadataDouble*
+X3DPtr <MetadataDouble>
 X3DNode::getMetaData <MetadataDouble> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>);
 
 template <>
-MetadataFloat*
+X3DPtr <MetadataFloat>
 X3DNode::getMetaData <MetadataFloat> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>);
 
 template <>
-MetadataInteger*
+X3DPtr <MetadataInteger>
 X3DNode::getMetaData <MetadataInteger> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>);
 
 template <>
-MetadataString*
+X3DPtr <MetadataString>
 X3DNode::getMetaData <MetadataString> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>);
 
 template <>
-MetadataSet*
+X3DPtr <MetadataSet>
 X3DNode::getMetaData <MetadataSet> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,

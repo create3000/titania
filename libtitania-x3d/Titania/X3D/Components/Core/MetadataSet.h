@@ -104,7 +104,7 @@ public:
 
 	///  Return the metadata with where name is @a name if it exists otherwise create it.
 	template <class Type>
-	Type*
+	X3DPtr <Type>
 	createValue (const std::string & name)
 	throw (Error <INVALID_NAME>,
 	       Error <DISPOSED>)
@@ -112,7 +112,7 @@ public:
 
 	///  Return the metadata with where name is @a name if it exists otherwise throw an exception.
 	template <class Type>
-	Type*
+	X3DPtr <Type>
 	getValue (const std::string & name)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
@@ -134,13 +134,11 @@ public:
 	dispose () final override;
 
 
-private:
+protected:
 
-	///  @name Construction
+	// @name Friends
 
-	virtual
-	void
-	initialize () final override;
+	friend class X3DNode;
 
 	///  Return the metadata with where name is @a name.
 	template <class Type>
@@ -149,6 +147,15 @@ private:
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <DISPOSED>);
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	void
 	addValue (const SFNode &);

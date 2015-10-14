@@ -1318,7 +1318,6 @@
     <Folder Include="Titania\X3D\JavaScript\PeaseBlossom\" />
     <Folder Include="Titania\X3D\Tools\Lighting\" />
     <Folder Include="Titania\X3D\Tools\Geospatial\" />
-    <Folder Include="Titania\Moth\" />
     <Folder Include="Titania\X3D\Tools\ParticleSystems\" />
     <Folder Include="Titania\X3D\Tools\CADGeometry\" />
     <Folder Include="Titania\X3D\Tools\Layering\" />
@@ -1328,6 +1327,7 @@
     <Folder Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\" />
     <Folder Include="Titania\X3D\Browser\Shading\" />
     <Folder Include="Titania\X3D\Browser\Sound\" />
+    <Folder Include="Titania\X3D\Editor\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

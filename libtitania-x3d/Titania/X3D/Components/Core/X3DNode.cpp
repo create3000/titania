@@ -86,79 +86,79 @@ X3DNode::X3DNode () :
 
 
 template <>
-MetadataBoolean*
+X3DPtr <MetadataBoolean>
 X3DNode::createMetaData <MetadataBoolean> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, true);
+	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> createValue <MetadataBoolean> (names .back ());
 }
 
 template <>
-MetadataDouble*
+X3DPtr <MetadataDouble>
 X3DNode::createMetaData <MetadataDouble> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, true);
+	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> createValue <MetadataDouble> (names .back ());
 }
 
 template <>
-MetadataFloat*
+X3DPtr <MetadataFloat>
 X3DNode::createMetaData <MetadataFloat> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, true);
+	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> createValue <MetadataFloat> (names .back ());
 }
 
 template <>
-MetadataInteger*
+X3DPtr <MetadataInteger>
 X3DNode::createMetaData <MetadataInteger> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, true);
+	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> createValue <MetadataInteger> (names .back ());
 }
 
 template <>
-MetadataString*
+X3DPtr <MetadataString>
 X3DNode::createMetaData <MetadataString> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, true);
+	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> createValue <MetadataString> (names .back ());
 }
 
 template <>
-MetadataSet*
+X3DPtr <MetadataSet>
 X3DNode::createMetaData <MetadataSet> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, true);
+	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> createValue <MetadataSet> (names .back ());
 }
@@ -170,79 +170,79 @@ throw (Error <NOT_SUPPORTED>,
 
 
 template <>
-MetadataBoolean*
+X3DPtr <MetadataBoolean>
 X3DNode::getMetaData <MetadataBoolean> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, false);
+	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> getValue <MetadataBoolean> (names .back ());
 }
 
 template <>
-MetadataDouble*
+X3DPtr <MetadataDouble>
 X3DNode::getMetaData <MetadataDouble> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, false);
+	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> getValue <MetadataDouble> (names .back ());
 }
 
 template <>
-MetadataFloat*
+X3DPtr <MetadataFloat>
 X3DNode::getMetaData <MetadataFloat> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, false);
+	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> getValue <MetadataFloat> (names .back ());
 }
 
 template <>
-MetadataInteger*
+X3DPtr <MetadataInteger>
 X3DNode::getMetaData <MetadataInteger> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, false);
+	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> getValue <MetadataInteger> (names .back ());
 }
 
 template <>
-MetadataString*
+X3DPtr <MetadataString>
 X3DNode::getMetaData <MetadataString> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, false);
+	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> getValue <MetadataString> (names .back ());
 }
 
 template <>
-MetadataSet*
+X3DPtr <MetadataSet>
 X3DNode::getMetaData <MetadataSet> (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, false);
+	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> getValue <MetadataSet> (names .back ());
 }
@@ -410,7 +410,7 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, true);
+	const auto metadataSet = getMetadataSet (names, false);
 
 	metadataSet -> createValue <MetadataBoolean> (names .back ()) -> value () = value;
 }
@@ -423,7 +423,7 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, true);
+	const auto metadataSet = getMetadataSet (names, false);
 
 	metadataSet -> createValue <MetadataDouble> (names .back ()) -> value () = value;
 }
@@ -436,7 +436,7 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, true);
+	const auto metadataSet = getMetadataSet (names, false);
 
 	metadataSet -> createValue <MetadataFloat> (names .back ()) -> value () = value;
 }
@@ -449,7 +449,7 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, true);
+	const auto metadataSet = getMetadataSet (names, false);
 
 	metadataSet -> createValue <MetadataInteger> (names .back ()) -> value () = value;
 }
@@ -462,7 +462,7 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, true);
+	const auto metadataSet = getMetadataSet (names, false);
 
 	metadataSet -> createValue <MetadataString> (names .back ()) -> value () = value;
 }
@@ -475,7 +475,7 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, create);
+	const auto metadataSet = getMetadataSet (names, not create);
 
 	if (create)
 		return metadataSet -> createValue <MetadataBoolean> (names .back ()) -> value ();
@@ -491,7 +491,7 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, create);
+	const auto metadataSet = getMetadataSet (names, not create);
 
 	if (create)
 		return metadataSet -> createValue <MetadataDouble> (names .back ()) -> value ();
@@ -507,7 +507,7 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, create);
+	const auto metadataSet = getMetadataSet (names, not create);
 
 	if (create)
 		return metadataSet -> createValue <MetadataFloat> (names .back ()) -> value ();
@@ -523,7 +523,7 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, create);
+	const auto metadataSet = getMetadataSet (names, not create);
 
 	if (create)
 		return metadataSet -> createValue <MetadataInteger> (names .back ()) -> value ();
@@ -539,7 +539,7 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>)
 {
 	const auto names       = basic::split (key, SEPARATOR);
-	const auto metadataSet = getMetadataSet (names, create);
+	const auto metadataSet = getMetadataSet (names, not create);
 
 	if (create)
 		return metadataSet -> createValue <MetadataString> (names .back ()) -> value ();
@@ -558,7 +558,7 @@ throw (Error <INVALID_NODE>,
  */
 
 MetadataSet*
-X3DNode::getMetadataSet (const std::deque <std::string> & names, const bool create) const
+X3DNode::getMetadataSet (const std::deque <std::string> & names, const bool throw_) const
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
@@ -576,7 +576,7 @@ throw (Error <INVALID_NODE>,
 
 	if (not metadataSet or metadataSet -> name () not_eq names [1])
 	{
-		if (not create)
+		if (throw_)
 			throw Error <INVALID_NAME> ("X3DNode::getMetadataSet: invalid key.");
 
 		metadataSet                 = new MetadataSet (getExecutionContext ());
@@ -590,10 +590,7 @@ throw (Error <INVALID_NODE>,
 
 	for (const auto & name : std::make_pair (names .begin () + 2, names .end () - 1))
 	{
-	   if (create)
-			metadataSet = metadataSet -> createValue <MetadataSet> (name);
-	   else
-			metadataSet = metadataSet -> getValue <MetadataSet> (name);
+	   metadataSet = metadataSet -> getValue <MetadataSet> (name, throw_);
 	}
 
 	return metadataSet;
