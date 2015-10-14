@@ -425,7 +425,7 @@ X3DEditor::addPrototypeInstance (const X3DExecutionContextPtr & executionContext
 	executionContext -> addUninitializedNode (instance);
 	executionContext -> realize ();
 
-	emplaceBack (SFNode (executionContext), executionContext -> getRootNodes (), instance, undoStep);
+	pushBackIntoArray (SFNode (executionContext), executionContext -> getRootNodes (), instance, undoStep);
 
 	return instance;
 }
@@ -1402,7 +1402,7 @@ X3DEditor::groupNodes (const X3DExecutionContextPtr & executionContext,
 
 		// Add to group
 
-		emplaceBack (groupNode, group -> children (), child, undoStep);
+		pushBackIntoArray (groupNode, group -> children (), child, undoStep);
 	}
 
 	group -> setup ();
@@ -1456,13 +1456,13 @@ X3DEditor::ungroupNodes (const X3DExecutionContextPtr & executionContext,
 				for (const auto & layer : layers)
 				{
 					if (layer -> isLayer0 ())
-						emplaceBack (SFNode (executionContext), executionContext -> getRootNodes (), child, undoStep);
+						pushBackIntoArray (SFNode (executionContext), executionContext -> getRootNodes (), child, undoStep);
 
 					else
 					{
 						undoStep -> addObjects (SFNode (layer));
 
-						emplaceBack (SFNode (layer), layer -> children (), child, undoStep);
+						pushBackIntoArray (SFNode (layer), layer -> children (), child, undoStep);
 					}
 				}
 
@@ -1563,7 +1563,7 @@ X3DEditor::addToGroup (const X3DExecutionContextPtr & executionContext,
 
 				if (mfnode)
 				{
-					emplaceBack (child, *mfnode, child, undoStep);
+					pushBackIntoArray (child, *mfnode, child, undoStep);
 
 					added = true;
 				}
@@ -1612,17 +1612,17 @@ X3DEditor::detachFromGroup (const X3DExecutionContextPtr & executionContext,
 		// Add to layers
 
 		if (detachToLayer0)
-			emplaceBack (SFNode (executionContext), executionContext -> getRootNodes (), child, undoStep);
+			pushBackIntoArray (SFNode (executionContext), executionContext -> getRootNodes (), child, undoStep);
 
 		else
 		{
 			for (const auto & layer : layers)
 			{
 				if (layer -> isLayer0 ())
-					emplaceBack (SFNode (executionContext), executionContext -> getRootNodes (), child, undoStep);
+					pushBackIntoArray (SFNode (executionContext), executionContext -> getRootNodes (), child, undoStep);
 
 				else
-					emplaceBack (SFNode (layer), layer -> children (), child, undoStep);
+					pushBackIntoArray (SFNode (layer), layer -> children (), child, undoStep);
 			}
 		}
 	}
@@ -1647,7 +1647,7 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 		if (not child)
 			continue;
 
-		emplaceBack (group, group -> getField <MFNode> (fieldName), child, undoStep);
+		pushBackIntoArray (group, group -> getField <MFNode> (fieldName), child, undoStep);
 
 		traverse (executionContext -> getRootNodes (), [&] (SFNode & parent)
 		               {
@@ -2077,7 +2077,7 @@ X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord, const Matr
  */
 
 void
-X3DEditor::emplaceBack (const SFNode & parent, MFNode & array, const SFNode & node, const UndoStepPtr & undoStep) const
+X3DEditor::pushBackIntoArray (const SFNode & parent, MFNode & array, const SFNode & node, const UndoStepPtr & undoStep) const
 {
 	// Add to group
 
@@ -2085,6 +2085,66 @@ X3DEditor::emplaceBack (const SFNode & parent, MFNode & array, const SFNode & no
 	undoStep -> addUndoFunction (&MFNode::setValue, std::ref (array), array);
 
 	array .emplace_back (node);
+
+	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (array), array);
+}
+
+void
+X3DEditor::insertIntoArray (const SFNode & parent, MFNode & array, const size_t index, const SFNode & node, const UndoStepPtr & undoStep) const
+{
+	undoStep -> addObjects (parent);
+	undoStep -> addUndoFunction (&MFNode::setValue, std::ref (array), array);
+
+	array .insert (array .begin () + index, node);
+
+	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (array), array);
+}
+
+void
+X3DEditor::insertIntoArray (const SFNode & parent, MFNode & array, const size_t index, const MFNode::iterator & first, const MFNode::iterator & last, const UndoStepPtr & undoStep) const
+{
+	undoStep -> addObjects (parent);
+	undoStep -> addUndoFunction (&MFNode::setValue, std::ref (array), array);
+
+	array .insert (array .begin () + index, first, last);
+
+	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (array), array);
+}
+
+void
+X3DEditor::moveValueWithinArray (const SFNode & parent, MFNode & array, const size_t fromIndex, const size_t toIndex, const UndoStepPtr & undoStep) const
+{
+	// Undo
+
+	undoStep -> addObjects (parent);
+	undoStep -> addUndoFunction (&MFNode::setValue, std::ref (array), array);
+
+	// Insert
+
+	const auto fromIter = array .begin () + fromIndex;
+	const auto toIter   = array .begin () + toIndex;
+
+	array .insert (toIter, std::move (*fromIter)); // XXX: array .emplace (toIter, std::move (*fromIter));
+
+	// Erase
+
+	if (fromIndex < toIndex)
+		array .erase (array .begin () + fromIndex);
+	else
+		array .erase (array .begin () + (fromIndex + 1));
+
+	// Redo
+
+	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (array), array);
+}
+
+void
+X3DEditor::eraseFromArray (const SFNode & parent, MFNode & array, const size_t index, const UndoStepPtr & undoStep) const
+{
+	undoStep -> addObjects (parent);
+	undoStep -> addUndoFunction (&MFNode::setValue, std::ref (array), array);
+
+	array .erase (array .begin () + index);
 
 	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (array), array);
 }

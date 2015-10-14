@@ -552,7 +552,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 			const auto mfnode = dynamic_cast <X3D::MFNode*> (containerField);
 
 			if (mfnode)
-				getBrowserWindow () -> emplaceBack (destNode, *mfnode, sourceNode, undoStep);
+				getBrowserWindow () -> pushBackIntoArray (destNode, *mfnode, sourceNode, undoStep);
 
 			// else shouldn't happen.
 		}
@@ -761,7 +761,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	   {
 			auto & mfnode = *static_cast <X3D::MFNode*> (destField);
 	   
-			getBrowserWindow () -> emplaceBack (destNode, mfnode, sourceNode, undoStep);
+			getBrowserWindow () -> pushBackIntoArray (destNode, mfnode, sourceNode, undoStep);
 
 	      break;
 	   }
@@ -972,10 +972,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 				if (sourceIndex >= insertIndex)
 					++ sourceIndex;
 
-				undoStep -> addObjects (*destParent);
-				undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
-				mfnode .insert (mfnode .begin () + insertIndex, sourceNode);
-				undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
+				getBrowserWindow () -> insertIntoArray (*destParent, mfnode, insertIndex, sourceNode, undoStep);
 				break;
 			}
 		}
@@ -996,11 +993,8 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
 			{
 			   auto & mfnode = *static_cast <X3D::MFNode*> (destField);
-
-				undoStep -> addObjects (*destParent);
-				undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
-			   mfnode .insert (mfnode .begin () + insertIndex, sourceNode);
-				undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
+				
+				getBrowserWindow () -> insertIntoArray (*destParent, mfnode, insertIndex, sourceNode, undoStep);
 			   break;
 			}
 		}
@@ -1044,12 +1038,7 @@ OutlineDragDrop::remove_source_node (X3D::SFNode* const sourceParent, X3D::X3DFi
 			auto & mfnode = *static_cast <X3D::MFNode*> (sourceField);
 
 			if (undo)
-			{
-				undoStep -> addObjects (*sourceParent);
-				undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
-				mfnode .erase (mfnode .begin () + sourceIndex);
-				undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
-			}
+				getBrowserWindow () -> eraseFromArray (*sourceParent, mfnode, sourceIndex, undoStep);
 			else
 			   mfnode .erase (mfnode .begin () + sourceIndex);
 			

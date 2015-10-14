@@ -845,9 +845,7 @@ BrowserWindow::on_group_selected_nodes_activated ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Group"));
 	const auto group    = groupNodes (getExecutionContext (), "Transform", selection, undoStep);
 
-	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (getExecutionContext () -> getRootNodes ()), getExecutionContext () -> getRootNodes ());
-	getExecutionContext () -> getRootNodes () .emplace_back (group);
-	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (getExecutionContext () -> getRootNodes ()), getExecutionContext () -> getRootNodes ());
+	pushBackIntoArray (X3D::SFNode (getExecutionContext ()), getExecutionContext () -> getRootNodes (), group, undoStep);
 
 	getSelection () -> setChildren ({ group }, undoStep);
 	addUndoStep (undoStep);

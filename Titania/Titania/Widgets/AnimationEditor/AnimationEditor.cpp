@@ -2293,7 +2293,7 @@ AnimationEditor::getInterpolator (const std::string & typeName,
 		interpolators .emplace (interpolatorNode);
 
 		undoStep -> addObjects (animation);
-		getBrowserWindow () -> emplaceBack (X3D::SFNode (animation), animation -> children (), interpolator, undoStep);
+		getBrowserWindow () -> pushBackIntoArray (X3D::SFNode (animation), animation -> children (), interpolator, undoStep);
 		getBrowserWindow () -> addRoute (getExecutionContext (), X3D::SFNode (timeSensor), "fraction_changed", interpolator, "set_fraction", undoStep);
 		getBrowserWindow () -> addRoute (getExecutionContext (), interpolator, "value_changed", node, field -> getName (), undoStep);
 		getBrowserWindow () -> updateNamedNode (getExecutionContext (), name, interpolator, undoStep);

@@ -240,8 +240,25 @@ public:
 
 	///  @name Array handling
 
+	virtual
 	void
-	emplaceBack (const SFNode &, MFNode &, const SFNode &, const UndoStepPtr &) const;
+	pushBackIntoArray (const SFNode &, MFNode &, const SFNode &, const UndoStepPtr &) const;
+
+	virtual
+	void
+	insertIntoArray (const SFNode &, MFNode &, const size_t, const SFNode &, const UndoStepPtr &) const;
+
+	virtual
+	void
+	insertIntoArray (const SFNode &, MFNode &, const size_t, const MFNode::iterator &, const MFNode::iterator &, const UndoStepPtr &) const;
+
+	virtual
+	void
+	moveValueWithinArray (const SFNode &, MFNode &, const size_t, const size_t, const UndoStepPtr &) const;
+
+	virtual
+	void
+	eraseFromArray (const SFNode &, MFNode &, const size_t, const UndoStepPtr &) const;
 
 	///  @name Destruction
 
