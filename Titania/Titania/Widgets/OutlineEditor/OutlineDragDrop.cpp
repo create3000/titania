@@ -467,7 +467,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 	   std::stringstream sstream;
 		X3D::MFNode toExport ({ sourceNode });
 
-	   getBrowserWindow () -> exportNodes (sstream, toExport);
+	   getBrowserWindow () -> exportNodes (treeView -> getExecutionContext (), sstream, toExport);
 	   X3D::Parser (sstream, scene) .parseIntoScene ();
 	   scene -> realize ();
 
@@ -686,7 +686,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	   std::stringstream sstream;
 		X3D::MFNode toExport ({ sourceNode });
 
-	   getBrowserWindow () -> exportNodes (sstream, toExport);
+	   getBrowserWindow () -> exportNodes (treeView -> getExecutionContext (), sstream, toExport);
 	   X3D::Parser (sstream, scene) .parseIntoScene ();
 	   scene -> realize ();
 
@@ -890,7 +890,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	   std::stringstream sstream;
 		X3D::MFNode toExport ({ sourceNode });
 
-	   getBrowserWindow () -> exportNodes (sstream, toExport);
+	   getBrowserWindow () -> exportNodes (treeView -> getExecutionContext (), sstream, toExport);
 	   X3D::Parser (sstream, scene) .parseIntoScene ();
 	   scene -> realize ();
 

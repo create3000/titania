@@ -72,6 +72,24 @@ public:
 
 	X3DBrowserEditor () = default;
 
+	///  @name Clipboard handling
+
+	virtual
+	std::string
+	cutNodes (const X3DExecutionContextPtr &, const MFNode &, const UndoStepPtr &) const;
+
+	virtual
+	std::string
+	copyNodes (const X3DExecutionContextPtr &, const MFNode &) const;
+
+	virtual
+	std::string
+	exportNodes (const X3DExecutionContextPtr &, MFNode &) const;
+
+	virtual
+	void
+	exportNodes (const X3DExecutionContextPtr &, std::ostream &, MFNode &) const;
+
 	///  @name Prototype handling
 
 	virtual
@@ -226,6 +244,14 @@ public:
 
 
 private:
+
+	///  @name Clipboard handling
+
+	std::vector <X3DProtoDeclarationNodePtr>
+	getUsedPrototypes (const X3DExecutionContextPtr &, MFNode &) const;
+
+	std::vector <Route*>
+	getConnectedRoutes (const X3DExecutionContextPtr &, MFNode &) const;
 
 	///  @name Prototype handling
 

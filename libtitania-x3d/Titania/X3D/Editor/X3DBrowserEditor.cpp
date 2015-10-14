@@ -183,6 +183,197 @@ X3DBrowserEditor::addPrototypeInstance (const X3DExecutionContextPtr & execution
 	return instance;
 }
 
+
+// Clipboard operations
+
+std::string
+X3DBrowserEditor::cutNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes_, const UndoStepPtr & undoStep) const
+{
+	MFNode nodes = nodes_;
+
+	// Detach from group
+
+	detachFromGroup (executionContext, nodes, true, undoStep);
+
+	// Set clipboard text
+
+	const auto string = exportNodes (executionContext, nodes);
+
+	// Remove nodes
+
+	removeNodesFromScene (executionContext, nodes, undoStep);
+
+	return string;
+}
+
+std::string
+X3DBrowserEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes_) const
+{
+	MFNode nodes = nodes_;
+
+	// Detach from group
+
+	const auto undoDetachFromGroup = std::make_shared <UndoStep> ();
+
+	const_cast <X3DBrowserEditor*> (this) -> detachFromGroup (executionContext, nodes, true, undoDetachFromGroup);
+
+	// Set clipboard text
+
+	const auto string = exportNodes (executionContext, nodes);
+
+	// Undo detach from group
+
+	undoDetachFromGroup -> undoChanges ();
+
+	return string;
+}
+
+std::string
+X3DBrowserEditor::exportNodes (const X3DExecutionContextPtr & executionContext, MFNode & nodes) const
+{
+	std::ostringstream osstream;
+
+	exportNodes (executionContext, osstream, nodes);
+
+	return osstream .str ();
+
+}
+
+void
+X3DBrowserEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::ostream & ostream, MFNode & nodes) const
+{
+	// Find proto declarations
+
+	const auto protoNodes = getUsedPrototypes (executionContext, nodes);
+	const auto routes     = getConnectedRoutes (executionContext, nodes);
+
+	// Generate text
+
+	ostream .imbue (std::locale::classic ());
+
+	ostream
+		<< "#" << LATEST_VERSION << " utf8 " << executionContext -> getBrowser () -> getName ()
+		<< std::endl
+		<< std::endl
+		<< '#' << executionContext -> getWorldURL ()
+		<< std::endl
+		<< std::endl;
+
+	Generator::CompactStyle ();
+	Generator::EnterScope ();
+
+	if (not protoNodes .empty ())
+	{
+		for (const auto & protoNode : protoNodes)
+			ostream << protoNode << std::endl;
+
+		ostream << std::endl;
+	}
+
+	for (const auto & node : nodes)
+		ostream << node << std::endl;
+
+	if (not routes .empty ())
+	{
+		ostream << std::endl;
+
+		for (const auto & route : routes)
+			ostream << *route << std::endl;
+	}
+
+	Generator::LeaveScope ();
+}
+
+std::vector <X3DProtoDeclarationNodePtr>
+X3DBrowserEditor::getUsedPrototypes (const X3DExecutionContextPtr & executionContext, MFNode & nodes) const
+{
+	std::map <X3DProtoDeclarationNodePtr, size_t> protoIndex;
+
+	traverse (nodes, [&] (SFNode & node)
+	               {
+	                  const X3DPrototypeInstancePtr protoInstance (node);
+
+	                  if (protoInstance)
+	                  {
+	                     traverse (node, [&] (SFNode & node)
+	                                    {
+	                                       if (node == protoInstance)
+															return true;
+
+	                                       const X3DPrototypeInstancePtr child (node);
+
+	                                       if (child)
+	                                       {
+	                                          try
+	                                          {
+	                                             if (child -> getProtoNode () == executionContext-> findProtoDeclaration (child -> getTypeName (), AvailableType { }))
+																	protoIndex .emplace (child -> getProtoNode (), protoIndex .size ());
+															}
+	                                          catch (const X3DError &)
+	                                          { }
+														}
+
+	                                       return true;
+													},
+	                                    true,
+	                                    TRAVERSE_PROTOTYPE_INSTANCES);
+
+	                     protoIndex .emplace (protoInstance -> getProtoNode (), protoIndex .size ());
+							}
+
+	                  return true;
+						});
+
+	std::vector <X3DProtoDeclarationNodePtr> protoNodes;
+
+	for (const auto & protoNode : basic::reverse (protoIndex))
+		protoNodes .emplace_back (std::move (protoNode .second));
+
+	return protoNodes;
+}
+
+std::vector <Route*>
+X3DBrowserEditor::getConnectedRoutes (const X3DExecutionContextPtr & executionContext, MFNode & nodes) const
+{
+	// Create node index
+
+	std::set <SFNode> nodeIndex;
+
+	traverse (nodes, [&nodeIndex] (SFNode & node)
+	               {
+	                  nodeIndex .emplace (node);
+	                  return true;
+						});
+
+	// Find connected routes
+
+	std::vector <Route*> routes;
+
+	traverse (nodes, [&] (SFNode & node)
+	               {
+	                  for (const auto & field: node -> getFieldDefinitions ())
+	                  {
+	                     for (const auto & route: field -> getOutputRoutes ())
+	                     {
+	                        if (route -> getExecutionContext () not_eq executionContext)
+	                           continue;
+
+                           try
+                           {
+                              if (nodeIndex .count (route -> getDestinationNode ()))
+											routes .emplace_back (route);
+									}
+                           catch (const X3DError &)
+                           { }
+								}
+							}
+
+	                  return true;
+						});
+
+	return routes;
+}
+
 /***
  *  Replaces in the entire scene graph of current execution context @a node by @a newValue.
  */

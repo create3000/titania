@@ -753,7 +753,7 @@ BrowserWindow::on_cut_activated ()
 
 	getSelection () -> clear (undoStep);
 
-	cutNodes (selection, undoStep);
+	cutNodes (getExecutionContext (), selection, undoStep);
 
 	getSelection () -> undoRestoreSelection (undoStep);
 
@@ -768,7 +768,7 @@ BrowserWindow::on_copy_activated ()
 	if (selection .empty ())
 		return;
 
-	copyNodes (selection);
+	copyNodes (getExecutionContext (), selection);
 }
 
 void
@@ -778,7 +778,7 @@ BrowserWindow::on_paste_activated ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Paste"));
 
-	pasteNodes (selection, undoStep);
+	pasteNodes (getExecutionContext (), selection, undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -2238,7 +2238,7 @@ BrowserWindow::on_hammer_clicked ()
 						if (geometry)
 						{
 							X3D::MFNode exports ({ geometry });
-							basic::ifilestream text (exportNodes (exports));
+							basic::ifilestream text (exportNodes (getExecutionContext (), exports));
 
 							const auto scene = getBrowser () -> createX3DFromStream (getExecutionContext () -> getWorldURL (), text);
 							const auto nodes = importScene (scene, getExecutionContext () -> getRootNodes (), undoStep);

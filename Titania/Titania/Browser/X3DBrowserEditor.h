@@ -113,12 +113,6 @@ public:
 	bool
 	save (const basic::uri &, const bool, const bool) override;
 
-	std::string
-	exportNodes (X3D::MFNode &) const;
-
-	void
-	exportNodes (std::ostream &, X3D::MFNode &) const;
-
 	virtual
 	void
 	reload () final override;
@@ -165,13 +159,13 @@ public:
 	/// @name Clipboard operations
 
 	void
-	cutNodes (X3D::MFNode, const X3D::UndoStepPtr &);
+	cutNodes (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const X3D::UndoStepPtr &);
 
 	void
-	copyNodes (X3D::MFNode) const;
+	copyNodes (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &);
 
 	void
-	pasteNodes (X3D::MFNode &, const X3D::UndoStepPtr &);
+	pasteNodes (const X3D::X3DExecutionContextPtr &, X3D::MFNode &, const X3D::UndoStepPtr &);
 
 	/// @name Edit operations
 
@@ -275,12 +269,6 @@ private:
 
 	bool
 	isSaved (const X3D::BrowserPtr &);
-
-	std::vector <X3D::X3DProtoDeclarationNodePtr>
-	getUsedPrototypes (X3D::MFNode &) const;
-
-	std::vector <X3D::Route*>
-	getConnectedRoutes (X3D::MFNode &) const;
 
 	// Edit
 

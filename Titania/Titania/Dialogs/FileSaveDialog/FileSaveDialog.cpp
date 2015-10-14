@@ -253,7 +253,7 @@ FileSaveDialog::exportNodes (X3D::MFNode & nodes, const basic::uri & worldURL, c
 
 	std::ofstream ofstream (worldURL .path ());
 
-	getBrowserWindow () -> exportNodes (ofstream, nodes);
+	getBrowserWindow () -> exportNodes (getExecutionContext (), ofstream, nodes);
 }
 
 FileSaveDialog::~FileSaveDialog ()

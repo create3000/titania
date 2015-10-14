@@ -1,13 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/ComposedWidgets/MFStringURLWidget.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserEditor.h">
     <Files>
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="33" Column="33" />
-      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="23" Column="23" />
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="2" Column="2" />
-      <File FileName="Titania/Titania/ComposedWidgets/MFStringURLWidget.h" Line="23" Column="23" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editor/X3DBrowserEditor.h" Line="44" Column="44" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editor/X3DBrowserEditor.cpp" Line="2" Column="2" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="2" Column="2" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="2" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
