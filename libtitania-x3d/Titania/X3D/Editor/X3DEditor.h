@@ -241,7 +241,7 @@ public:
 	///  @name Array handling
 
 	void
-	emplaceBack (MFNode &, const SFNode &, const UndoStepPtr &) const;
+	emplaceBack (const SFNode &, MFNode &, const SFNode &, const UndoStepPtr &) const;
 
 	///  @name Destruction
 

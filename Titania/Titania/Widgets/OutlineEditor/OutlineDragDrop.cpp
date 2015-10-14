@@ -552,11 +552,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 			const auto mfnode = dynamic_cast <X3D::MFNode*> (containerField);
 
 			if (mfnode)
-			{
-				undoStep -> addUndoFunction (&X3D::MFNode::setValue, mfnode, *mfnode);
-				mfnode -> emplace_back (sourceNode);
-				undoStep -> addRedoFunction (&X3D::MFNode::setValue, mfnode, *mfnode);
-			}
+				getBrowserWindow () -> emplaceBack (destNode, *mfnode, sourceNode, undoStep);
 
 			// else shouldn't happen.
 		}
@@ -764,11 +760,8 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	   case X3D::X3DConstants::MFNode:
 	   {
 			auto & mfnode = *static_cast <X3D::MFNode*> (destField);
-
-         undoStep -> addObjects (destNode);
-         undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
-         mfnode .emplace_back (sourceNode);
-         undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (mfnode), mfnode);
+	   
+			getBrowserWindow () -> emplaceBack (destNode, mfnode, sourceNode, undoStep);
 
 	      break;
 	   }

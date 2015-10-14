@@ -797,7 +797,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 		executionContext -> addUninitializedNode (group);
 		executionContext -> realize ();
 
-		getBrowserWindow () -> emplaceBack (children, child, undoStep);
+		getBrowserWindow () -> emplaceBack (group, children, child, undoStep);
 		getBrowserWindow () -> replaceNode (getExecutionContext (), parent, rootNodes, index, group, undoStep);
 		getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
 	}
@@ -842,7 +842,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 				executionContext -> addUninitializedNode (group);
 				executionContext -> realize ();
 
-				getBrowserWindow () -> emplaceBack (children, child, undoStep);
+				getBrowserWindow () -> emplaceBack (group, children, child, undoStep);
 				getBrowserWindow () -> replaceNode (getExecutionContext (), parent, child, group, undoStep);
 				getBrowserWindow () -> getSelection () -> setChildren (X3D::MFNode ({ group }), undoStep);
 				getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
@@ -859,7 +859,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 				executionContext -> addUninitializedNode (group);
 				executionContext -> realize ();
 
-				getBrowserWindow () -> emplaceBack (children, child, undoStep);
+				getBrowserWindow () -> emplaceBack (group, children, child, undoStep);
 				getBrowserWindow () -> replaceNode (getExecutionContext (), parent, mfnode, index, group, undoStep);
 				getBrowserWindow () -> getSelection () -> setChildren (X3D::MFNode ({ group }), undoStep);
 				getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));

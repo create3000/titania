@@ -307,6 +307,16 @@ X3DEditor::getConnectedRoutes (const X3DExecutionContextPtr & executionContext, 
 	return routes;
 }
 
+/***
+ *
+ *
+ *
+ * Prototype handling
+ *
+ *
+ *
+ */
+
 void
 X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep) const
 {
@@ -415,11 +425,21 @@ X3DEditor::addPrototypeInstance (const X3DExecutionContextPtr & executionContext
 	executionContext -> addUninitializedNode (instance);
 	executionContext -> realize ();
 
-	emplaceBack (executionContext -> getRootNodes (), instance, undoStep);
+	emplaceBack (SFNode (executionContext), executionContext -> getRootNodes (), instance, undoStep);
 
 	return instance;
 }
 
+
+/***
+ *
+ *
+ *
+ * Replace operations
+ *
+ *
+ *
+ */
 
 /***
  *  Replaces in the entire scene graph of current execution context @a node by @a newValue.
@@ -565,6 +585,16 @@ X3DEditor::replaceNode (const X3DExecutionContextPtr & executionContext, const S
 
 	removeNodesFromSceneIfNotExists (executionContext, { oldValue }, undoStep);
 }
+
+/***
+ *
+ *
+ *
+ * Remove operations
+ *
+ *
+ *
+ */
 
 void
 X3DEditor::removeNode (const X3DExecutionContextPtr & executionContext, const SFNode & parent, SFNode & node, const UndoStepPtr & undoStep) const
@@ -888,6 +918,16 @@ X3DEditor::removeImportedNodes (const X3DExecutionContextPtr & executionContext,
 	}
 }
 
+/***
+ *
+ *
+ *
+ * Named node handling
+ *
+ *
+ *
+ */
+
 void
 X3DEditor::updateNamedNode (const X3DExecutionContextPtr & executionContext, const std::string & name, const SFNode & node, const UndoStepPtr & undoStep) const
 {
@@ -911,6 +951,16 @@ X3DEditor::updateNamedNode (const X3DExecutionContextPtr & executionContext, con
 	catch (...)
 	{ }
 }
+
+/***
+ *
+ *
+ *
+ * Route handling
+ *
+ *
+ *
+ */
 
 void
 X3DEditor::deleteRoutes (const X3DExecutionContextPtr & executionContext, const SFNode & node, const UndoStepPtr & undoStep) const
@@ -1160,6 +1210,16 @@ X3DEditor::getImportedRoutes (const X3DExecutionContextPtr & executionContext, c
 	return routes;
 }
 
+/***
+ *
+ *
+ *
+ * Grouping operations
+ *
+ *
+ *
+ */
+
 void
 X3DEditor::createClone (const X3DExecutionContextPtr & executionContext, const SFNode & clone, const MFNode & nodes, const UndoStepPtr & undoStep) const
 {
@@ -1316,6 +1376,7 @@ X3DEditor::groupNodes (const X3DExecutionContextPtr & executionContext,
                               const UndoStepPtr & undoStep) const
 {
 	const X3DPtr <X3DGroupingNode> group (executionContext -> createNode (typeName));
+	const SFNode groupNode (group);
 
 	undoStep -> addObjects (group);
 
@@ -1341,7 +1402,7 @@ X3DEditor::groupNodes (const X3DExecutionContextPtr & executionContext,
 
 		// Add to group
 
-		emplaceBack (group -> children (), child, undoStep);
+		emplaceBack (groupNode, group -> children (), child, undoStep);
 	}
 
 	group -> setup ();
@@ -1395,13 +1456,13 @@ X3DEditor::ungroupNodes (const X3DExecutionContextPtr & executionContext,
 				for (const auto & layer : layers)
 				{
 					if (layer -> isLayer0 ())
-						emplaceBack (executionContext -> getRootNodes (), child, undoStep);
+						emplaceBack (SFNode (executionContext), executionContext -> getRootNodes (), child, undoStep);
 
 					else
 					{
 						undoStep -> addObjects (SFNode (layer));
 
-						emplaceBack (layer -> children (), child, undoStep);
+						emplaceBack (SFNode (layer), layer -> children (), child, undoStep);
 					}
 				}
 
@@ -1502,7 +1563,7 @@ X3DEditor::addToGroup (const X3DExecutionContextPtr & executionContext,
 
 				if (mfnode)
 				{
-					emplaceBack (*mfnode, child, undoStep);
+					emplaceBack (child, *mfnode, child, undoStep);
 
 					added = true;
 				}
@@ -1551,21 +1612,17 @@ X3DEditor::detachFromGroup (const X3DExecutionContextPtr & executionContext,
 		// Add to layers
 
 		if (detachToLayer0)
-			emplaceBack (executionContext -> getRootNodes (), child, undoStep);
+			emplaceBack (SFNode (executionContext), executionContext -> getRootNodes (), child, undoStep);
 
 		else
 		{
 			for (const auto & layer : layers)
 			{
 				if (layer -> isLayer0 ())
-					emplaceBack (executionContext -> getRootNodes (), child, undoStep);
+					emplaceBack (SFNode (executionContext), executionContext -> getRootNodes (), child, undoStep);
 
 				else
-				{
-					undoStep -> addObjects (SFNode (layer));
-
-					emplaceBack (layer -> children (), child, undoStep);
-				}
+					emplaceBack (SFNode (layer), layer -> children (), child, undoStep);
 			}
 		}
 	}
@@ -1590,7 +1647,7 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 		if (not child)
 			continue;
 
-		emplaceBack (group -> getField <MFNode> (fieldName), child, undoStep);
+		emplaceBack (group, group -> getField <MFNode> (fieldName), child, undoStep);
 
 		traverse (executionContext -> getRootNodes (), [&] (SFNode & parent)
 		               {
@@ -1666,6 +1723,16 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 		children [index] = group;
 	}
 }
+
+/***
+ *
+ *
+ *
+ * Node handling
+ *
+ *
+ *
+ */
 
 MFNode
 X3DEditor::getParentNodes (const SFNode & child) const
@@ -1765,6 +1832,16 @@ throw (Error <INVALID_NODE>)
 
 	throw Error <INVALID_NODE> ("No appropriate container field found.");
 }
+
+/***
+ *
+ *
+ *
+ * Modelview matrix handling
+ *
+ *
+ *
+ */
 
 Matrix4d
 X3DEditor::findModelViewMatrix (const X3DExecutionContextPtr & executionContext, const SFNode & node) const
@@ -1989,11 +2066,22 @@ X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord, const Matr
 	}
 }
 
+/***
+ *
+ *
+ *
+ * Array handling
+ *
+ *
+ *
+ */
+
 void
-X3DEditor::emplaceBack (MFNode & array, const SFNode & node, const UndoStepPtr & undoStep) const
+X3DEditor::emplaceBack (const SFNode & parent, MFNode & array, const SFNode & node, const UndoStepPtr & undoStep) const
 {
 	// Add to group
 
+	undoStep -> addObjects (parent);
 	undoStep -> addUndoFunction (&MFNode::setValue, std::ref (array), array);
 
 	array .emplace_back (node);
