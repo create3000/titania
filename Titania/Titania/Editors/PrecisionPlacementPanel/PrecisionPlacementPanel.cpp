@@ -157,7 +157,7 @@ PrecisionPlacementPanel::on_fill_bounding_box_fields_clicked ()
 	const auto bbox2       = group ? group -> X3DGroupingNode::getBBox () : boundedObject -> getBBox ();
 	const auto bboxSize2   = bbox2 .size ();
 	const auto bboxCenter2 = bbox2 .center ();
-	const auto undoStep    = std::make_shared <UndoStep> (_ ("Fill Bounding Box Fields"));
+	const auto undoStep    = std::make_shared <X3D::UndoStep> (_ ("Fill Bounding Box Fields"));
 
 	undoStep -> addObjects (boundedObject);
 	undoStep -> addUndoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxSize ()), bboxSize1);

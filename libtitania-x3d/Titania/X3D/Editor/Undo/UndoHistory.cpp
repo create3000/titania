@@ -48,96 +48,121 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_UNDO_UNDO_HISTORY_H__
-#define __TITANIA_UNDO_UNDO_HISTORY_H__
-
-#include "../Undo/UndoStep.h"
-
-#include <Titania/X3D/Base/X3DOutput.h>
-#include <memory>
+#include "UndoHistory.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-class UndoHistory :
-	public X3D::X3DOutput
+UndoHistory::UndoHistory () :
+	X3D::X3DOutput (),
+	          list (),
+	         index (-1),
+	    savedIndex (-1)
+{ }
+
+std::string
+UndoHistory::getUndoDescription () const
 {
-public:
+	return _ ("Undo ") + list [index] -> getDescription ();
+}
 
-	///  @name Construction
+std::string
+UndoHistory::getRedoDescription () const
+{
+	return _ ("Redo ") + list [index + 1] -> getDescription ();
+}
 
-	UndoHistory ();
+void
+UndoHistory::addUndoStep (const UndoStepPtr & undoStep)
+{
+	if (undoStep -> isEmpty ())
+		return;
 
-	///  @name Member access
-	
-	int
-	getIndex () const
-	{ return index; }
-	
-	const std::vector <UndoStepPtr> &
-	getList () const
-	{ return list; }
+	if (index < savedIndex)
+		savedIndex = -2;
 
-	std::string
-	getUndoDescription () const;
+	list .resize (index + 1);
 
-	std::string
-	getRedoDescription () const;
+	list .emplace_back (undoStep);
 
-	///  @name Operations
-	
-	bool
-	isModified () const
-	{ return index not_eq savedIndex; }
-	
-	void
-	setSaved ()
-	{ savedIndex = index; }
+	++ index;
 
-	void
-	addUndoStep (const UndoStepPtr &);
+	processInterests ();
+}
 
-	void
-	removeUndoStep ();
+void
+UndoHistory::removeUndoStep ()
+{
+	if (index >= 0)
+	{
+		list .pop_back ();
 
-	const std::shared_ptr <UndoStep> &
-	getUndoStep () const;
+		-- index;
 
-	bool
-	hasUndo () const;
+		processInterests ();
+	}
+}
 
-	bool
-	hasRedo () const;
+const std::shared_ptr <UndoStep> &
+UndoHistory::getUndoStep () const
+{
+	static const std::shared_ptr <UndoStep> empty;
 
-	void
-	undoChanges ();
+	if (list .empty () or index < 0)
+		return empty;
 
-	void
-	redoChanges ();
+	return list [index];
+}
 
-	void
-	clear ();
+bool
+UndoHistory::hasUndo () const
+{
+	return index >= 0;
+}
 
-	bool
-	isEmpty () const
-	{ return list .empty (); }
+bool
+UndoHistory::hasRedo () const
+{
+	return index + 1 < (int32_t) list .size ();
+}
 
-	size_t
-	getSize () const
-	{ return list .size (); }
+void
+UndoHistory::undoChanges ()
+{
+	if (index >= 0)
+	{
+		list [index] -> undoChanges ();
 
+		-- index;
 
-private:
+		processInterests ();
+	}
+}
 
-	///  @name Members
+void
+UndoHistory::redoChanges ()
+{
+	if (index + 1 < (int32_t) list .size ())
+	{
+		++ index;
 
-	std::vector <UndoStepPtr> list;
-	int                       index;
-	int                       savedIndex;
+		list [index] -> redoChanges ();
 
-};
+		processInterests ();
+	}
+}
 
-} // puck
+void
+UndoHistory::clear ()
+{
+	list .clear ();
+
+	index = -1;
+
+	setSaved ();
+
+	processInterests ();
+}
+
+} // X3D
 } // titania
-
-#endif

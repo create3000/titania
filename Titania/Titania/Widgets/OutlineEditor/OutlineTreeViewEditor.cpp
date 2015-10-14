@@ -511,7 +511,7 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 
 									try
 									{
-										const auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
+										const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Route"));
 										getBrowserWindow () -> saveMatrix (destinationNode, undoStep);
 										getBrowserWindow () -> addRoute (get_model () -> get_execution_context (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
 										getBrowserWindow () -> addUndoStep (undoStep);
@@ -566,7 +566,7 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 
 									try
 									{
-										const auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
+										const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Route"));
 										getBrowserWindow () -> saveMatrix (destinationNode, undoStep);
 										getBrowserWindow () -> addRoute (get_model () -> get_execution_context (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
 										getBrowserWindow () -> addUndoStep (undoStep);
@@ -678,7 +678,7 @@ OutlineTreeViewEditor::remove_route (const double x, const double y)
 						{
 							if (route -> getExecutionContext () == get_model () -> get_execution_context ())
 							{
-								const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
+								const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Route"));
 
 								getBrowserWindow () -> deleteRoute (route -> getExecutionContext (),
 								                                    route -> getSourceNode (),
@@ -756,7 +756,7 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 
 				if (route -> getExecutionContext () == get_model () -> get_execution_context ())
 				{
-					const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
+					const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Route"));
 
 					getBrowserWindow () -> deleteRoute (route -> getExecutionContext (),
 					                                    route -> getSourceNode (),

@@ -381,6 +381,10 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Configuration/SupporteFieldArray.cpp \
 	Titania/X3D/Configuration/Unit.cpp \
 	Titania/X3D/Configuration/UnitArray.cpp \
+	Titania/X3D/Editor/Undo/UndoGroup.cpp \
+	Titania/X3D/Editor/Undo/UndoHistory.cpp \
+	Titania/X3D/Editor/Undo/UndoStep.cpp \
+	Titania/X3D/Editor/X3DBrowserEditor.cpp \
 	Titania/X3D/Execution/BindableNodeList.cpp \
 	Titania/X3D/Execution/ExportedNode.cpp \
 	Titania/X3D/Execution/ExportedNodeIndex.cpp \

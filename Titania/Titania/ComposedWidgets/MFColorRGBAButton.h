@@ -190,7 +190,7 @@ private:
 	X3D::SFNode                          node;
 	const std::string                    name;
 	size_t                               index;
-	UndoStepPtr                          undoStep;
+	X3D::UndoStepPtr                          undoStep;
 	int                                  input;
 	bool                                 changing;
 	X3D::SFTime                          buffer;

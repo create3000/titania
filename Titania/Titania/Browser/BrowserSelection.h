@@ -52,7 +52,6 @@
 #define __TITANIA_BROWSER_BROWSER_SELECTION_H__
 
 #include "../Base/X3DBaseInterface.h"
-#include "../Undo/UndoStep.h"
 
 #include <Titania/X3D/Browser/Selection.h>
 
@@ -118,22 +117,22 @@ public:
 	///  @name Operations
 
 	void
-	addChildren (const X3D::MFNode &, const UndoStepPtr &) const;
+	addChildren (const X3D::MFNode &, const X3D::UndoStepPtr &) const;
 
 	void
-	removeChildren (const X3D::MFNode &, const UndoStepPtr &) const;
+	removeChildren (const X3D::MFNode &, const X3D::UndoStepPtr &) const;
 
 	void
-	setChildren (const X3D::MFNode &, const UndoStepPtr &) const;
+	setChildren (const X3D::MFNode &, const X3D::UndoStepPtr &) const;
 
 	void
-	clear (const UndoStepPtr &) const;
+	clear (const X3D::UndoStepPtr &) const;
 
 	void
-	redoRestoreSelection (const UndoStepPtr & undoStep) const;
+	redoRestoreSelection (const X3D::UndoStepPtr & undoStep) const;
 
 	void
-	undoRestoreSelection (const UndoStepPtr & undoStep) const;
+	undoRestoreSelection (const X3D::UndoStepPtr & undoStep) const;
 
 	///  @name Destruction
 

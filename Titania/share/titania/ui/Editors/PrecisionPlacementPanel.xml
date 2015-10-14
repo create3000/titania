@@ -341,7 +341,6 @@
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
-    <property name="has_resize_grip">False</property>
     <child>
       <object class="GtkBox" id="Widget">
         <property name="visible">True</property>
@@ -494,7 +493,7 @@
               <object class="GtkGrid" id="TransformBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="row_spacing">4</property>
+                <property name="row_spacing">12</property>
                 <property name="column_spacing">16</property>
                 <child>
                   <object class="GtkBox" id="TransformTranslationBox">

@@ -119,7 +119,7 @@ X3DImportedNodesEditor::on_imported_toggled (const Glib::ustring & path)
 	{
 		// Remove imported node.
 
-		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Remove Imported Node »%s«"), importedName .c_str ()));
+		const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Imported Node »%s«"), importedName .c_str ()));
 
 		inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (this, &X3DImportedNodesEditor::set_importedNodes);
 		inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (this, &X3DImportedNodesEditor::connectImportedNodes);
@@ -140,7 +140,7 @@ X3DImportedNodesEditor::on_imported_toggled (const Glib::ustring & path)
 	{
 		// Update imported node.
 	
-		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Update Imported Node »%s«"), importedName .c_str ()));
+		const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Update Imported Node »%s«"), importedName .c_str ()));
 
 		inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (this, &X3DImportedNodesEditor::set_importedNodes);
 		inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (this, &X3DImportedNodesEditor::connectImportedNodes);
@@ -190,7 +190,7 @@ X3DImportedNodesEditor::on_imported_name_edited (const Glib::ustring & path, con
 
 	// Update or remove imported node.
 
-	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Update Imported Node »%s«"), importedName .c_str ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Update Imported Node »%s«"), importedName .c_str ()));
 
 	inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (this, &X3DImportedNodesEditor::set_importedNodes);
 	inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (this, &X3DImportedNodesEditor::connectImportedNodes);
@@ -344,7 +344,7 @@ X3DImportedNodesEditor::updateImportedNode (const X3D::X3DExecutionContextPtr & 
                                             const X3D::InlinePtr & inlineNode,
                                             const std::string & exportedName,
                                             const std::string & importedName,
-                                            const UndoStepPtr & undoStep)
+                                            const X3D::UndoStepPtr & undoStep)
 {
 	try
 	{
@@ -375,7 +375,7 @@ X3DImportedNodesEditor::updateImportedNode (const X3D::X3DExecutionContextPtr & 
 void
 X3DImportedNodesEditor::removeImportedNode (const X3D::X3DExecutionContextPtr & executionContext,
                                             const std::string & importedName,
-                                            const UndoStepPtr & undoStep)
+                                            const X3D::UndoStepPtr & undoStep)
 {
 	try
 	{

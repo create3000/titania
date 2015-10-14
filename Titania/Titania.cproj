@@ -84,9 +84,6 @@
     <Compile Include="Titania\Browser\X3DBrowserEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DLibraryViewInterface.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DNodePropertiesEditorInterface.cpp" />
-    <Compile Include="Titania\Undo\UndoStep.cpp" />
-    <Compile Include="Titania\Undo\UndoGroup.cpp" />
-    <Compile Include="Titania\Undo\UndoHistory.cpp" />
     <Compile Include="Titania\Browser\MagicImport.cpp" />
     <Compile Include="Titania\Browser\BrowserSelection.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DTextureEditorInterface.cpp" />
@@ -671,7 +668,6 @@
     <None Include="share\titania\fonts\pt-sans\PT Free Font License.txt" />
     <None Include="share\titania\fonts\pt-sans\PTN57F.ttf" />
     <None Include="share\titania\fonts\pt-sans\PTN77F.ttf" />
-    <None Include="Titania\Undo\UndoHistory.h" />
     <None Include="share\titania\ui\icons\unused\Box.svg" />
     <None Include="share\titania\ui\icons\unused\Cone.svg" />
     <None Include="share\titania\ui\icons\unused\Cylinder.svg" />
@@ -679,8 +675,6 @@
     <None Include="share\titania\ui\icons\unused\Text.svg" />
     <None Include="share\titania\ui\icons\Ungroup.svg" />
     <None Include="share\titania\ui\icons\Group.svg" />
-    <None Include="Titania\Undo\UndoStep.h" />
-    <None Include="Titania\Undo\UndoGroup.h" />
     <None Include="share\titania\Library\Backgrounds\Gray.x3dv" />
     <None Include="share\titania\Library\Backgrounds\White.x3dv" />
     <None Include="Titania\Browser\MagicImport.h" />
@@ -1964,7 +1958,6 @@
     <Folder Include="share\titania\fonts\" />
     <Folder Include="share\titania\fonts\pt-sans\" />
     <Folder Include="share\titania\Library\Prototypes\Geometry2D\" />
-    <Folder Include="Titania\Undo\" />
     <Folder Include="share\titania\ui\icons\unused\" />
     <Folder Include="share\titania\Library\Textures\" />
     <Folder Include="scripts\" />

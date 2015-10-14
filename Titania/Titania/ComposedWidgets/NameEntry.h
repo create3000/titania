@@ -203,7 +203,7 @@ NameEntry::on_clicked ()
 
 	if (name not_eq node -> getName ())
 	{
-		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Rename %s"), node -> getTypeName () .c_str ()));
+		const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Rename %s"), node -> getTypeName () .c_str ()));
 
 		undoStep -> addUndoFunction (&NameEntry::updateNamedNode,
 		                             getBrowserWindow (),

@@ -48,11 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TYPES_MEDIA_STREAM_H__
-#define __TITANIA_X3D_TYPES_MEDIA_STREAM_H__
+#ifndef __TITANIA_X3D_BROWSER_SOUND_MEDIA_STREAM_H__
+#define __TITANIA_X3D_BROWSER_SOUND_MEDIA_STREAM_H__
 
-#include <gstreamermm.h>
 #include <Titania/Basic/URI.h>
+#include <gstreamermm.h>
 
 extern "C"
 {
@@ -70,7 +70,7 @@ public:
 	using VideoSink = Gst::XImageSink;
 
 	MediaStream ();
-	
+
 	void
 	setup ();
 
@@ -122,7 +122,7 @@ private:
 
 	Pixmap   pixmap;
 	Display* display;
-	
+
 	double volume;
 
 };

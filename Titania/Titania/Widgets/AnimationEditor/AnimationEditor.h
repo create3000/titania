@@ -349,61 +349,61 @@ private:
 	addKeyframe (const X3D::SFNode &, const X3D::X3DFieldDefinition* const);
 
 	void
-	addKeyframe (const X3D::X3DPtr <X3D::X3DNode> &, const int32_t, const std::vector <double> &, const std::string &, const UndoStepPtr &);
+	addKeyframe (const X3D::X3DPtr <X3D::X3DNode> &, const int32_t, const std::vector <double> &, const std::string &, const X3D::UndoStepPtr &);
 
 	void
 	moveKeyframes ();
 
 	void
-	moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> &, const int32_t, const int32_t, const UndoStepPtr &);
+	moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> &, const int32_t, const int32_t, const X3D::UndoStepPtr &);
 
 	void
-	moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> &, const size_t, const int32_t, const int32_t, const UndoStepPtr &);
+	moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> &, const size_t, const int32_t, const int32_t, const X3D::UndoStepPtr &);
 
 	void
 	removeKeyframes ();
 
 	void
-	removeKeyframe (const X3D::X3DPtr <X3D::X3DNode> &, const int32_t, const UndoStepPtr &);
+	removeKeyframe (const X3D::X3DPtr <X3D::X3DNode> &, const int32_t, const X3D::UndoStepPtr &);
 
 	void
-	removeKeyframe (const X3D::X3DPtr <X3D::X3DNode> &, const size_t, const int32_t, const UndoStepPtr &);
+	removeKeyframe (const X3D::X3DPtr <X3D::X3DNode> &, const size_t, const int32_t, const X3D::UndoStepPtr &);
 
 	void
-	scaleKeyframes (const int32_t, const int32_t, const UndoStepPtr &);
+	scaleKeyframes (const int32_t, const int32_t, const X3D::UndoStepPtr &);
 
 	void
-	scaleKeyframes (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const int32_t, const int32_t, const UndoStepPtr &);
+	scaleKeyframes (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const int32_t, const int32_t, const X3D::UndoStepPtr &);
 
 	void
-	setInterpolators (const UndoStepPtr &);
+	setInterpolators (const X3D::UndoStepPtr &);
 
 	void
-	setInterpolator (const X3D::X3DPtr <X3D::X3DNode> &, const UndoStepPtr &);
-
-	template <class Interpolator, class Field, class Type>
-	void
-	setSequencer (const X3D::X3DPtr <Interpolator> &, const UndoStepPtr &);
+	setInterpolator (const X3D::X3DPtr <X3D::X3DNode> &, const X3D::UndoStepPtr &);
 
 	template <class Interpolator, class Field, class Type>
 	void
-	setInterpolator (const X3D::X3DPtr <Interpolator> &, const UndoStepPtr &);
+	setSequencer (const X3D::X3DPtr <Interpolator> &, const X3D::UndoStepPtr &);
+
+	template <class Interpolator, class Field, class Type>
+	void
+	setInterpolator (const X3D::X3DPtr <Interpolator> &, const X3D::UndoStepPtr &);
 
 	void
-	setInterpolator (const X3D::X3DPtr <X3D::ColorInterpolator> &, const UndoStepPtr &);
+	setInterpolator (const X3D::X3DPtr <X3D::ColorInterpolator> &, const X3D::UndoStepPtr &);
 
 	void
-	setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolator> &, const UndoStepPtr &);
+	setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolator> &, const X3D::UndoStepPtr &);
 
 	template <class Type>
 	Type
 	getValue (const X3D::MFDouble &, const size_t) const;
 
 	void
-	resizeInterpolator (const X3D::X3DPtr <X3D::X3DNode> &, const size_t, const UndoStepPtr &);
+	resizeInterpolator (const X3D::X3DPtr <X3D::X3DNode> &, const size_t, const X3D::UndoStepPtr &);
 
 	X3D::X3DPtr <X3D::X3DNode>
-	getInterpolator (const std::string &, const X3D::SFNode &, const X3D::X3DFieldDefinition* const, const UndoStepPtr &);
+	getInterpolator (const std::string &, const X3D::SFNode &, const X3D::X3DFieldDefinition* const, const X3D::UndoStepPtr &);
 
 	std::string
 	getInterpolatorName (const X3D::SFNode &, const X3D::X3DFieldDefinition* const);
@@ -584,7 +584,7 @@ private:
 
 template <class Interpolator, class Field, class Type>
 void
-AnimationEditor::setSequencer (const X3D::X3DPtr <Interpolator> & interpolator, const UndoStepPtr & undoStep)
+AnimationEditor::setSequencer (const X3D::X3DPtr <Interpolator> & interpolator, const X3D::UndoStepPtr & undoStep)
 {
 	const auto   components = interpolatorComponents .at (interpolator -> getType () .back ());
 	const auto & key        = interpolator -> template getMetaData <X3D::MFInt32> ("/Interpolator/key",       true);
@@ -627,7 +627,7 @@ AnimationEditor::setSequencer (const X3D::X3DPtr <Interpolator> & interpolator, 
 
 template <class Interpolator, class Field, class Type>
 void
-AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolator, const UndoStepPtr & undoStep)
+AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolator, const X3D::UndoStepPtr & undoStep)
 {
 	const auto   components = interpolatorComponents .at (interpolator -> getType () .back ());
 	const auto & key        = interpolator -> template getMetaData <X3D::MFInt32> ("/Interpolator/key",      true);

@@ -48,21 +48,96 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_UNDO_UNDO_GROUP_H__
-#define __TITANIA_UNDO_UNDO_GROUP_H__
+#ifndef __TITANIA_X3D_EDITOR_UNDO_UNDO_HISTORY_H__
+#define __TITANIA_X3D_EDITOR_UNDO_UNDO_HISTORY_H__
+
+#include "../Undo/UndoStep.h"
+
+#include <Titania/X3D/Base/X3DOutput.h>
+#include <memory>
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-class UndoGroup
+class UndoHistory :
+	public X3D::X3DOutput
 {
 public:
 
-	UndoGroup ();
+	///  @name Construction
+
+	UndoHistory ();
+
+	///  @name Member access
+
+	int32_t
+	getIndex () const
+	{ return index; }
+
+	const std::vector <UndoStepPtr> &
+	getList () const
+	{ return list; }
+
+	std::string
+	getUndoDescription () const;
+
+	std::string
+	getRedoDescription () const;
+
+	///  @name Operations
+
+	bool
+	isModified () const
+	{ return index not_eq savedIndex; }
+
+	void
+	setSaved ()
+	{ savedIndex = index; }
+
+	void
+	addUndoStep (const UndoStepPtr &);
+
+	void
+	removeUndoStep ();
+
+	const std::shared_ptr <UndoStep> &
+	getUndoStep () const;
+
+	bool
+	hasUndo () const;
+
+	bool
+	hasRedo () const;
+
+	void
+	undoChanges ();
+
+	void
+	redoChanges ();
+
+	void
+	clear ();
+
+	bool
+	isEmpty () const
+	{ return list .empty (); }
+
+	size_t
+	getSize () const
+	{ return list .size (); }
+
+
+private:
+
+	///  @name Members
+
+	std::vector <UndoStepPtr> list;
+	int32_t                   index;
+	int32_t                   savedIndex;
 
 };
 
-} // puck
+} // X3D
 } // titania
 
 #endif

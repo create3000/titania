@@ -307,7 +307,7 @@ AnimationEditor::on_new ()
 
 	// Create new animation.
 
-	const auto undoStep   = std::make_shared <UndoStep> (_ ("Create New Animation"));
+	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Create New Animation"));
 	const auto name       = getExecutionContext () -> getUniqueName (getNewNameEntry () .get_text ());
 	const auto groups     = getSelection <X3D::X3DGroupingNode> ({ X3D::X3DConstants::X3DGroupingNode });
 	const auto group      = groups .back ();
@@ -332,10 +332,10 @@ AnimationEditor::on_new ()
 
 	// Undo/Redo
 
-	const auto undoRemoveNode = std::make_shared <UndoStep> ();
+	const auto undoRemoveNode = std::make_shared <X3D::UndoStep> ();
 	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { animation }, undoRemoveNode);
-	undoStep -> addUndoFunction (&UndoStep::redoChanges, undoRemoveNode);
-	undoStep -> addRedoFunction (&UndoStep::undoChanges, undoRemoveNode);
+	undoStep -> addUndoFunction (&X3D::UndoStep::redoChanges, undoRemoveNode);
+	undoStep -> addRedoFunction (&X3D::UndoStep::undoChanges, undoRemoveNode);
 	undoRemoveNode -> undoChanges ();
 
 	getBrowserWindow () -> addUndoStep (undoStep);
@@ -593,7 +593,7 @@ AnimationEditor::on_remove_member ()
 		{
 		   // Remove Animation
 
-			const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Animation"));
+			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Animation"));
 
 			getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { animation }, undoStep);
 			getBrowserWindow () -> addUndoStep (undoStep);
@@ -605,7 +605,7 @@ AnimationEditor::on_remove_member ()
 
 			try
 			{
-				const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Animation Member"));
+				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Animation Member"));
 
 				undoStep -> addUndoFunction (&AnimationEditor::set_interpolators, this);
 
@@ -674,7 +674,7 @@ AnimationEditor::on_remove_member ()
 					
 				// We have found the interpolators connected to this node and field.
 				
-				const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Interpolator"));
+				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Interpolator"));
 
 				undoStep -> addUndoFunction (&AnimationEditor::set_interpolators, this);
 				getBrowserWindow () -> deleteRoute (getExecutionContext (), X3D::SFNode (interpolator), "value_changed", node, field -> getName (), undoStep);
@@ -999,7 +999,7 @@ AnimationEditor::on_paste ()
 	if (copiedFrames .empty ())
 		return;
 		
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Paste Keyframes"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Paste Keyframes"));
 
 	std::sort (copiedFrames .begin (), copiedFrames .end (), [ ] (const CopiedFrame & lhs, const CopiedFrame & rhs)
 	{
@@ -1172,7 +1172,7 @@ AnimationEditor::on_time ()
 
 	using setMetaData = void (X3D::X3DNode::*) (const std::string &, const int32_t &);
 
-	const auto undoStep        = std::make_shared <UndoStep> (_ ("Edit Keyframe Animation Properties"));
+	const auto undoStep        = std::make_shared <X3D::UndoStep> (_ ("Edit Keyframe Animation Properties"));
 	const auto name            = getNewNameEntry () .get_text ();
 	const bool durationChanged = getDuration () not_eq getDurationAdjustment () -> get_value ();
 
@@ -1298,7 +1298,7 @@ AnimationEditor::on_key_type_changed ()
 
 	// Change key frame type of selection.
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Keyframe Type"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Keyframe Type"));
 
 	std::set <X3D::X3DPtr <X3D::X3DNode>> affectedInterpolators;
 
@@ -1547,7 +1547,7 @@ AnimationEditor::addKeyframe (const Gtk::TreePath & parentPath, const Gtk::TreeP
 void
 AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefinition* const field)
 {
-	const auto    undoStep = std::make_shared <UndoStep> (_ ("Add Keyframe"));
+	const auto    undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Keyframe"));
 	const int32_t frame    = std::round (getFrameAdjustment () -> get_value ());
 
 	std::vector <double> value;
@@ -1651,7 +1651,7 @@ AnimationEditor::addKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator,
                               const int32_t frame,
                               const std::vector <double> & value,
                               const std::string & type,
-                              const UndoStepPtr & undoStep)
+                              const X3D::UndoStepPtr & undoStep)
 {
 	const size_t components = value .size ();
 
@@ -1700,7 +1700,7 @@ AnimationEditor::moveKeyframes ()
 
 	using FrameToMove = std::tuple <int32_t, int32_t, const X3D::X3DFieldDefinition*>; // fromFrame, toFrame, field
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Move Keyframes"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Keyframes"));
 
 	// Sort
 	// The keyframes must be sorted depending on distance to avoid accidantialy removal of keyframes.
@@ -1760,7 +1760,7 @@ AnimationEditor::moveKeyframes ()
 }
 
 void
-AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const int32_t fromFrame, const int32_t toFrame, const UndoStepPtr & undoStep)
+AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const int32_t fromFrame, const int32_t toFrame, const X3D::UndoStepPtr & undoStep)
 {
 	if (fromFrame == toFrame)
 		return;
@@ -1774,7 +1774,7 @@ AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, 
 }
 
 void
-AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const size_t components, const int32_t fromFrame, const int32_t toFrame, const UndoStepPtr & undoStep)
+AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const size_t components, const int32_t fromFrame, const int32_t toFrame, const X3D::UndoStepPtr & undoStep)
 {
 	auto &     key      = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",       true);
 	auto &     keyValue = interpolator -> getMetaData <X3D::MFDouble> ("/Interpolator/keyValue", true);
@@ -1803,7 +1803,7 @@ AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, 
 void
 AnimationEditor::removeKeyframes ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Keyframes"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Keyframes"));
 
 	std::set <X3D::X3DPtr <X3D::X3DNode>> affectedInterpolators;
 
@@ -1842,7 +1842,7 @@ AnimationEditor::removeKeyframes ()
 }
 
 void
-AnimationEditor::removeKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const int32_t frame, const UndoStepPtr & undoStep)
+AnimationEditor::removeKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const int32_t frame, const X3D::UndoStepPtr & undoStep)
 {
 	try
 	{
@@ -1853,7 +1853,7 @@ AnimationEditor::removeKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator
 }
 
 void
-AnimationEditor::removeKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const size_t components, const int32_t frame, const UndoStepPtr & undoStep)
+AnimationEditor::removeKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const size_t components, const int32_t frame, const X3D::UndoStepPtr & undoStep)
 {
 	auto &     key      = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",      true);
 	auto &     keyValue = interpolator -> getMetaData <X3D::MFDouble> ("/Interpolator/keyValue", true);
@@ -1882,7 +1882,7 @@ AnimationEditor::removeKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator
 }
 
 void
-AnimationEditor::scaleKeyframes (const int32_t fromDuration, const int32_t toDuration, const UndoStepPtr & undoStep)
+AnimationEditor::scaleKeyframes (const int32_t fromDuration, const int32_t toDuration, const X3D::UndoStepPtr & undoStep)
 {
 	if (fromDuration == toDuration)
 		return;
@@ -1892,7 +1892,7 @@ AnimationEditor::scaleKeyframes (const int32_t fromDuration, const int32_t toDur
 }
 
 void
-AnimationEditor::scaleKeyframes (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const int32_t fromDuration, const int32_t toDuration, const UndoStepPtr & undoStep)
+AnimationEditor::scaleKeyframes (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const int32_t fromDuration, const int32_t toDuration, const X3D::UndoStepPtr & undoStep)
 {
 	auto & key = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key", true);
 
@@ -1907,7 +1907,7 @@ AnimationEditor::scaleKeyframes (const X3D::X3DPtr <X3D::X3DNode> & interpolator
 }
 
 void
-AnimationEditor::setInterpolators (const UndoStepPtr & undoStep)
+AnimationEditor::setInterpolators (const X3D::UndoStepPtr & undoStep)
 {
 	// Build interpolators.
 
@@ -1916,7 +1916,7 @@ AnimationEditor::setInterpolators (const UndoStepPtr & undoStep)
 }
 
 void
-AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const UndoStepPtr & undoStep)
+AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const X3D::UndoStepPtr & undoStep)
 {
 	switch (interpolator -> getType () .back ())
 	{
@@ -1968,7 +1968,7 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::X3DNode> & interpolato
 }
 
 void
-AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::ColorInterpolator> & interpolator, const UndoStepPtr & undoStep)
+AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::ColorInterpolator> & interpolator, const X3D::UndoStepPtr & undoStep)
 {
 	using Type = X3D::Color3d;
 
@@ -2114,7 +2114,7 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::ColorInterpolator> & i
 }
 
 void
-AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolator> & interpolator, const UndoStepPtr & undoStep)
+AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolator> & interpolator, const X3D::UndoStepPtr & undoStep)
 {
 	using Type = X3D::Rotation4d;
 
@@ -2244,7 +2244,7 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolato
 }
 
 void
-AnimationEditor::resizeInterpolator (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const size_t components, const UndoStepPtr & undoStep)
+AnimationEditor::resizeInterpolator (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const size_t components, const X3D::UndoStepPtr & undoStep)
 {
 	auto &     key      = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",      true);
 	auto &     keyValue = interpolator -> getMetaData <X3D::MFDouble> ("/Interpolator/keyValue", true);
@@ -2272,7 +2272,7 @@ X3D::X3DPtr <X3D::X3DNode>
 AnimationEditor::getInterpolator (const std::string & typeName, 
                                   const X3D::SFNode & node,
                                   const X3D::X3DFieldDefinition* const field,
-                                  const UndoStepPtr & undoStep)
+                                  const X3D::UndoStepPtr & undoStep)
 {
 	try
 	{

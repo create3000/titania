@@ -116,7 +116,7 @@ X3DImageTextureEditor::on_embed_image_clicked ()
 			bool        result_uncertain;
 			std::string contentType = Gio::content_type_guess (loader .getWorldURL () .path (), (guchar*) image .data (), image .size (), result_uncertain);
 
-			const auto  undoStep = std::make_shared <UndoStep> (_ ("Embed Image"));
+			const auto  undoStep = std::make_shared <X3D::UndoStep> (_ ("Embed Image"));
 			std::string data     = "data:" + contentType + ";base64," + basic::base64_encode (image);
 
 			undoStep -> addObjects (imageTexture);

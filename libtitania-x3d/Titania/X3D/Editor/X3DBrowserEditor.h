@@ -48,77 +48,40 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_BROWSER_USER_DATA_H__
-#define __TITANIA_BROWSER_BROWSER_USER_DATA_H__
-
-#include "../Browser/BrowserHistory.h"
-
-#include <Titania/X3D/Base/X3DBase.h>
-#include <Titania/X3D/Editor/Undo/UndoHistory.h>
-#include <gtkmm.h>
+#ifndef __TITANIA_X3D_EDITOR_X3DBROWSER_EDITOR_H__
+#define __TITANIA_X3D_EDITOR_X3DBROWSER_EDITOR_H__
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-class BrowserUserData :
-	public X3D::X3DBase
+class X3DBrowserEditor
 {
 public:
 
 	///  @name Construction
 
-	BrowserUserData (X3D::X3DBrowser* const browser) :
-		           URL (),
-		          icon (nullptr),
-		         label (nullptr),
-		browserHistory (browser),
-		   undoHistory (),
-		      modified (false),
-		 saveConfirmed (false),
-		  fileMonitors ()
-	{ }
+	X3DBrowserEditor () = default;
 
-	///  @name Members
-
-	basic::uri  URL;   // Original URL
-	Gtk::Image* icon;  // Favicon
-	Gtk::Label* label; // Tab label
-
-	BrowserHistory   browserHistory;
-	X3D::UndoHistory undoHistory;
-	bool             modified;
-	bool             saveConfirmed;
-
-	std::map <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>  fileMonitors;
+	///  @name Operations
 
 	///  @name Destruction
 
 	virtual
-	void
-	dispose () final override;
+	~X3DBrowserEditor () = default;
 
-	virtual
-	~BrowserUserData ()
-	{ }
+
+protected:
+
+	///  @name Operations
+
+
+private:
+
+	///  @name Operations
 
 };
 
-inline
-void
-BrowserUserData::dispose ()
-{
-	undoHistory  .clear ();
-
-	for (const auto & fileMonitor : fileMonitors)
-	{
-		fileMonitor .second -> cancel ();
-		fileMonitor .first -> remove ();
-	}
-
-	fileMonitors .clear ();
-}
-
-} // puck
+} // X3D
 } // titania
 
 #endif

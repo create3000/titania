@@ -146,7 +146,7 @@ X3DTransformEditor::on_transform_move_center_button ()
 
 	const X3D::X3DPtr <X3D::X3DTransformNode> transform (getBrowserWindow () -> getSelection () -> getChildren () .back ());
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Move Center To BBox Center"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Center To BBox Center"));
 
 	undoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter,
 	                             transform,

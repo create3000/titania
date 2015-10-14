@@ -125,7 +125,7 @@ BrowserSelection::setSelectLowest (const bool value)
 }
 
 void
-BrowserSelection::addChildren (const X3D::MFNode & nodes, const UndoStepPtr & undoStep) const
+BrowserSelection::addChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep) const
 {
 	const auto & selection = getBrowser () -> getSelection ();
 
@@ -141,7 +141,7 @@ BrowserSelection::addChildren (const X3D::MFNode & nodes, const UndoStepPtr & un
 }
 
 void
-BrowserSelection::removeChildren (const X3D::MFNode & nodes, const UndoStepPtr & undoStep) const
+BrowserSelection::removeChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep) const
 {
 	const auto & selection = getBrowser () -> getSelection ();
 
@@ -157,7 +157,7 @@ BrowserSelection::removeChildren (const X3D::MFNode & nodes, const UndoStepPtr &
 }
 
 void
-BrowserSelection::setChildren (const X3D::MFNode & nodes, const UndoStepPtr & undoStep) const
+BrowserSelection::setChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep) const
 {
 	const auto & selection = getBrowser () -> getSelection ();
 
@@ -173,7 +173,7 @@ BrowserSelection::setChildren (const X3D::MFNode & nodes, const UndoStepPtr & un
 }
 
 void
-BrowserSelection::redoRestoreSelection (const UndoStepPtr & undoStep) const
+BrowserSelection::redoRestoreSelection (const X3D::UndoStepPtr & undoStep) const
 {
 	undoStep -> addRedoFunction (&X3D::Selection::setChildren,
 	                             getBrowser () -> getSelection (),
@@ -183,7 +183,7 @@ BrowserSelection::redoRestoreSelection (const UndoStepPtr & undoStep) const
 }
 
 void
-BrowserSelection::undoRestoreSelection (const UndoStepPtr & undoStep) const
+BrowserSelection::undoRestoreSelection (const X3D::UndoStepPtr & undoStep) const
 {
 	//undoStep -> addUndoFunction (&X3D::X3DBrowser::update, getBrowser ());
 
@@ -195,7 +195,7 @@ BrowserSelection::undoRestoreSelection (const UndoStepPtr & undoStep) const
 }
 
 void
-BrowserSelection::clear (const UndoStepPtr & undoStep) const
+BrowserSelection::clear (const X3D::UndoStepPtr & undoStep) const
 {
 	const auto & selection = getBrowser () -> getSelection ();
 

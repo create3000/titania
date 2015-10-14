@@ -211,7 +211,7 @@ X3DUserDefinedFieldsEditor::on_drag_data_received (const Glib::RefPtr <Gdk::Drag
 
 		// Set user defined field.
 
-		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Reorder User-Defined Field »%s«"), field -> getName () .c_str ()));
+		const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Reorder User-Defined Field »%s«"), field -> getName () .c_str ()));
 
 		node -> fields_changed () .removeInterest (this, &X3DUserDefinedFieldsEditor::set_fields);
 		node -> fields_changed () .addInterest (this, &X3DUserDefinedFieldsEditor::connectFields);
@@ -279,7 +279,7 @@ X3DUserDefinedFieldsEditor::on_remove_user_defined_field_clicked ()
 
 	// Remove user defined field.
 
-	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Remove User-Defined Field »%s«"), field -> getName () .c_str ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove User-Defined Field »%s«"), field -> getName () .c_str ()));
 
 	node -> fields_changed () .removeInterest (this, &X3DUserDefinedFieldsEditor::set_fields);
 	node -> fields_changed () .addInterest (this, &X3DUserDefinedFieldsEditor::connectFields);
@@ -381,7 +381,7 @@ X3DUserDefinedFieldsEditor::on_add_field_ok_clicked ()
 
 				// Add user defined field.
 
-				const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Update User-Defined Field »%s«"), field -> getName () .c_str ()));
+				const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Update User-Defined Field »%s«"), field -> getName () .c_str ()));
 
 				node -> fields_changed () .removeInterest (this, &X3DUserDefinedFieldsEditor::set_fields);
 				node -> fields_changed () .addInterest (this, &X3DUserDefinedFieldsEditor::connectFields);
@@ -406,7 +406,7 @@ X3DUserDefinedFieldsEditor::on_add_field_ok_clicked ()
 
 			// Add user defined field.
 
-			const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Add User-Defined Field »%s«"), field -> getName () .c_str ()));
+			const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Add User-Defined Field »%s«"), field -> getName () .c_str ()));
 
 			node -> fields_changed () .removeInterest (this, &X3DUserDefinedFieldsEditor::set_fields);
 			node -> fields_changed () .addInterest (this, &X3DUserDefinedFieldsEditor::connectFields);
@@ -483,7 +483,7 @@ X3DUserDefinedFieldsEditor::connectFields (const X3D::SFTime & field)
  **********************************************************************************************************************/
 
 void
-X3DUserDefinedFieldsEditor::addUserDefinedField (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+X3DUserDefinedFieldsEditor::addUserDefinedField (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const X3D::UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (X3D::FieldPtr (field));
 
@@ -494,7 +494,7 @@ X3DUserDefinedFieldsEditor::addUserDefinedField (X3DBrowserWindow* const browser
 }
 
 void
-X3DUserDefinedFieldsEditor::replaceUserDefinedField (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node, X3D::X3DFieldDefinition* const oldField, X3D::X3DFieldDefinition* const newField, const UndoStepPtr & undoStep)
+X3DUserDefinedFieldsEditor::replaceUserDefinedField (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node, X3D::X3DFieldDefinition* const oldField, X3D::X3DFieldDefinition* const newField, const X3D::UndoStepPtr & undoStep)
 {
 	auto userDefinedFields = node -> getUserDefinedFields ();
 	auto iter              = std::find (userDefinedFields .begin (), userDefinedFields .end (), oldField);
@@ -600,7 +600,7 @@ X3DUserDefinedFieldsEditor::replaceUserDefinedField (X3DBrowserWindow* const bro
 }
 
 void
-X3DUserDefinedFieldsEditor::removeUserDefinedField (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+X3DUserDefinedFieldsEditor::removeUserDefinedField (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const X3D::UndoStepPtr & undoStep)
 {
 	const auto userDefinedFields = node -> getUserDefinedFields ();
 
@@ -621,7 +621,7 @@ X3DUserDefinedFieldsEditor::removeUserDefinedField (X3DBrowserWindow* const brow
 }
 
 void
-X3DUserDefinedFieldsEditor::setUserDefinedFields (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node, const X3D::FieldDefinitionArray & userDefinedFields, const UndoStepPtr & undoStep)
+X3DUserDefinedFieldsEditor::setUserDefinedFields (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node, const X3D::FieldDefinitionArray & userDefinedFields, const X3D::UndoStepPtr & undoStep)
 {
 	// Remove any routes and user data.
 
@@ -648,7 +648,7 @@ X3DUserDefinedFieldsEditor::setUserDefinedFields (X3DBrowserWindow* const browse
 }
 
 void
-X3DUserDefinedFieldsEditor::removeRoutes (X3DBrowserWindow* const browserWindow, X3D::X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+X3DUserDefinedFieldsEditor::removeRoutes (X3DBrowserWindow* const browserWindow, X3D::X3DFieldDefinition* const field, const X3D::UndoStepPtr & undoStep)
 {
 	// Remove routes from field.
 

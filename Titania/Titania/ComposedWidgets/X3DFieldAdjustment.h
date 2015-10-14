@@ -107,7 +107,7 @@ private:
 	Gtk::Widget &                        widget;
 	X3D::MFNode                          nodes;
 	const std::string                    name;
-	UndoStepPtr                          undoStep;
+	X3D::UndoStepPtr                          undoStep;
 	bool                                 changing;
 	X3D::SFTime                          buffer;
 

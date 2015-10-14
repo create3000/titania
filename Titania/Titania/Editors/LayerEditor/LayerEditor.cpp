@@ -160,7 +160,7 @@ LayerEditor::set_layersSet ()
 }
 
 void
-LayerEditor::set_order (const UndoStepPtr & undoStep)
+LayerEditor::set_order (const X3D::UndoStepPtr & undoStep)
 {
 	// Set order
 
@@ -383,7 +383,7 @@ LayerEditor::on_visibility_toggled (const Gtk::TreePath & path)
 
 	// Set order
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Visibility Of Layer"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Visibility Of Layer"));
 
 	set_order (undoStep);
 
@@ -407,7 +407,7 @@ LayerEditor::on_pickable_toggled (const Gtk::TreePath & path)
 
 	disconnectIsPickable (layer);
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Layer isPickable"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Layer isPickable"));
 
 	undoStep -> addObjects (layer);
 	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (layer -> isPickable ()), layer -> isPickable ());
@@ -488,7 +488,7 @@ LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
 
 	disconnectActiveLayer ();
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Active Layer"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Active Layer"));
 
 	undoStep -> addObjects (layerSet);
 	undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
@@ -534,7 +534,7 @@ LayerEditor::on_layer_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 
 	disconnectPrivateActiveLayer ();
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Change Active Layer"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Active Layer"));
 
 	undoStep -> addObjects (layerSet);
 	undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
@@ -599,7 +599,7 @@ LayerEditor::on_layer_selection_changed ()
 void
 LayerEditor::on_new_layer_set_button_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New LayerSet"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New LayerSet"));
 
 	auto & children = getExecutionContext () -> getRootNodes ();
 
@@ -615,7 +615,7 @@ LayerEditor::on_new_layer_set_button_clicked ()
 void
 LayerEditor::on_remove_layer_set_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove LayerSet"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove LayerSet"));
 
 	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { layerSet }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
@@ -628,7 +628,7 @@ LayerEditor::on_new_layer_activated ()
 
 	disconnectLayers ();
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New Layer"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Layer"));
 
 	auto & layers = layerSet -> layers ();
 
@@ -655,7 +655,7 @@ LayerEditor::on_new_layout_layer_activated ()
 
 	disconnectLayers ();
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New LayoutLayer"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New LayoutLayer"));
 
 	auto & layers = layerSet -> layers ();
 
@@ -708,7 +708,7 @@ LayerEditor::on_remove_layer_button_clicked ()
 
 	disconnectLayers ();
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Layer"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Layer"));
 
 	undoStep -> addObjects (layerSet);
 	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
@@ -722,7 +722,7 @@ LayerEditor::on_remove_layer_button_clicked ()
 void
 LayerEditor::on_top_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Move Layer To Top"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Layer To Top"));
 
 	undoStep -> addObjects (layerSet);
 	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
@@ -779,7 +779,7 @@ LayerEditor::on_top_clicked ()
 void
 LayerEditor::on_up_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Move Layer Up"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Layer Up"));
 
 	undoStep -> addObjects (layerSet);
 	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
@@ -839,7 +839,7 @@ LayerEditor::on_up_clicked ()
 void
 LayerEditor::on_down_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Move Layer Down"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Layer Down"));
 
 	undoStep -> addObjects (layerSet);
 	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
@@ -907,7 +907,7 @@ LayerEditor::on_down_clicked ()
 void
 LayerEditor::on_bottom_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Move Layer To Bottom"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Layer To Bottom"));
 
 	undoStep -> addObjects (layerSet);
 	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());

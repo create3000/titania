@@ -140,7 +140,7 @@ void
 GeometryPropertiesEditor::on_add_normals_clicked ()
 {
 	const auto geometries = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
-	const auto undoStep   = std::make_shared <UndoStep> (_ ("Add Normals"));
+	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Add Normals"));
 
 	for (const auto geometry : geometries)
 	{
@@ -225,7 +225,7 @@ void
 GeometryPropertiesEditor::on_remove_normals_clicked ()
 {
 	const auto geometries = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
-	const auto undoStep   = std::make_shared <UndoStep> (_ ("Remove Normals"));
+	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Remove Normals"));
 
 	for (const auto geometry : geometries)
 	{

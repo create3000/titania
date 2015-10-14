@@ -135,11 +135,11 @@ private:
 
 	static
 	void
-	updateExportedNode (const X3D::X3DScenePtr &, const std::string &, const X3D::SFNode &, const UndoStepPtr &);
+	updateExportedNode (const X3D::X3DScenePtr &, const std::string &, const X3D::SFNode &, const X3D::UndoStepPtr &);
 
 	static
 	void
-	removeExportedNode (const X3D::X3DScenePtr &, const std::string &, const UndoStepPtr &);
+	removeExportedNode (const X3D::X3DScenePtr &, const std::string &, const X3D::UndoStepPtr &);
 
 	///  @name Members
 

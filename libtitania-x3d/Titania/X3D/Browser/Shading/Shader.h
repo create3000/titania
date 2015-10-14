@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BITS_SHADER_H__
-#define __TITANIA_X3D_BITS_SHADER_H__
+#ifndef __TITANIA_X3D_BROWSER_SHADING_SHADER_H__
+#define __TITANIA_X3D_BROWSER_SHADING_SHADER_H__
 
 #include "../../Execution/X3DExecutionContext.h"
 

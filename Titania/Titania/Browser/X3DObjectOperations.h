@@ -51,7 +51,6 @@
 #ifndef __TITANIA_BROWSER_X3DOBJECT_OPERATIONS_H__
 #define __TITANIA_BROWSER_X3DOBJECT_OPERATIONS_H__
 
-#include "../Undo/UndoStep.h"
 #include "../UserInterfaces/X3DBrowserWindowInterface.h"
 
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
@@ -101,7 +100,7 @@ private:
 	                    const X3D::Matrix4d &);
 
 	void
-	removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> &, const X3D::MFNode &, const X3D::X3DPtr <X3D::X3DShapeNode> &, const UndoStepPtr &);
+	removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> &, const X3D::MFNode &, const X3D::X3DPtr <X3D::X3DShapeNode> &, const X3D::UndoStepPtr &);
 
 };
 

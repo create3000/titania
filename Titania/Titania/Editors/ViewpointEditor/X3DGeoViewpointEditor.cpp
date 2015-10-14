@@ -150,7 +150,7 @@ X3DGeoViewpointEditor::setGeoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode
 void
 X3DGeoViewpointEditor::on_new_geo_viewpoint_activated ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New GeoViewpoint"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New GeoViewpoint"));
 	const X3D::X3DPtr <X3D::X3DBindableNode> node (getBrowserWindow () -> createNode ("GeoViewpoint", undoStep));
 	node -> set_bind () = true;
 	getBrowserWindow () -> addUndoStep (undoStep);

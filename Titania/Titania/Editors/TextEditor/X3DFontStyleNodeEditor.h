@@ -139,8 +139,8 @@ private:
 	X3D::X3DPtr <X3D::X3DFontStyleNode> fontStyleNode;
 	X3D::X3DPtr <X3D::FontStyle>        fontStyle;
 	X3D::X3DPtr <X3D::ScreenFontStyle>  screenFontStyle;
-	UndoStepPtr                         undoStep;
-	UndoStepPtr                         styleUndoStep;
+	X3D::UndoStepPtr                         undoStep;
+	X3D::UndoStepPtr                         styleUndoStep;
 	bool                                changing;
 
 	std::unique_ptr <MFStringFamilyWidget> family;

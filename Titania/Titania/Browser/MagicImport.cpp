@@ -78,7 +78,7 @@ MagicImport::MagicImport (X3DBrowserWindow* const browserWindow) :
 }
 
 bool
-MagicImport::import (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, const UndoStepPtr & undoStep)
+MagicImport::import (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, const X3D::UndoStepPtr & undoStep)
 {
 	if (selection .empty ())
 		return false;
@@ -100,7 +100,7 @@ MagicImport::import (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, co
 }
 
 bool
-MagicImport::material (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, const UndoStepPtr & undoStep)
+MagicImport::material (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, const X3D::UndoStepPtr & undoStep)
 {
 	X3D::ContextLock lock (getBrowser ());
 
@@ -176,7 +176,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, 
 }
 
 bool
-MagicImport::texture (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, const UndoStepPtr & undoStep)
+MagicImport::texture (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, const X3D::UndoStepPtr & undoStep)
 {
 	X3D::ContextLock lock (getBrowser ());
 
@@ -241,7 +241,7 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, c
 }
 
 void
-MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr & undoStep)
+MagicImport::importProtoDeclaration (const X3D::SFNode & node, const X3D::UndoStepPtr & undoStep)
 {
 	const auto prototypeInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (node .getValue ());
 

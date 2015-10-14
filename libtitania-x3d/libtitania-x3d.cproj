@@ -755,6 +755,10 @@
     <None Include="Titania\X3D\Thread\X3DInterruptibleThread.h" />
     <None Include="share\titania\tools\SnapTarget.x3dv" />
     <None Include="Titania\X3D\Browser\Sound\MediaStream.h" />
+    <None Include="Titania\X3D\Editor\Undo\UndoGroup.h" />
+    <None Include="Titania\X3D\Editor\Undo\UndoHistory.h" />
+    <None Include="Titania\X3D\Editor\Undo\UndoStep.h" />
+    <None Include="Titania\X3D\Editor\X3DBrowserEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1261,6 +1265,10 @@
     <Compile Include="Titania\X3D\Browser\Shading\X3DShadingContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Shading\Shader.cpp" />
     <Compile Include="Titania\X3D\Browser\Sound\MediaStream.cpp" />
+    <Compile Include="Titania\X3D\Editor\Undo\UndoGroup.cpp" />
+    <Compile Include="Titania\X3D\Editor\Undo\UndoHistory.cpp" />
+    <Compile Include="Titania\X3D\Editor\Undo\UndoStep.cpp" />
+    <Compile Include="Titania\X3D\Editor\X3DBrowserEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

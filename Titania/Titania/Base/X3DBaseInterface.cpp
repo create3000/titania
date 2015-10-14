@@ -206,7 +206,7 @@ X3DBaseInterface::getMetaData (const std::string & key) const
 }
 
 void
-X3DBaseInterface::addUndoStep (const UndoStepPtr & undoStep)
+X3DBaseInterface::addUndoStep (const X3D::UndoStepPtr & undoStep)
 {
 	browserWindow -> addUndoStep (undoStep);
 }
@@ -217,7 +217,7 @@ X3DBaseInterface::removeUndoStep ()
 	browserWindow -> removeUndoStep ();
 }
 
-const std::shared_ptr <UndoStep> &
+const X3D::UndoStepPtr &
 X3DBaseInterface::getUndoStep () const
 {
 	return browserWindow -> getUndoStep ();

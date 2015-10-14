@@ -587,7 +587,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress, const 
 {
 	const auto suffix   = worldURL .suffix ();
 	const auto scene    = X3D::X3DScenePtr (getRootContext ());
-	const auto undoStep = std::make_shared <UndoStep> ("");
+	const auto undoStep = std::make_shared <X3D::UndoStep> ("");
 
 	scene -> isCompressed (compress);
 
@@ -709,7 +709,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress, const 
 }
 
 void
-X3DBrowserWidget::setWorldURL (const X3D::X3DScenePtr & scene, const basic::uri & worldURL, const UndoStepPtr & undoStep)
+X3DBrowserWidget::setWorldURL (const X3D::X3DScenePtr & scene, const basic::uri & worldURL, const X3D::UndoStepPtr & undoStep)
 {
 	if (worldURL == scene -> getWorldURL ())
 		return;
@@ -735,7 +735,7 @@ X3DBrowserWidget::setWorldURL (const X3D::X3DScenePtr & scene, const basic::uri 
 }
 
 bool
-X3DBrowserWidget::transform (const basic::uri & oldWorldURL, const basic::uri & newWorldURL, const UndoStepPtr & undoStep, X3D::SFNode & node)
+X3DBrowserWidget::transform (const basic::uri & oldWorldURL, const basic::uri & newWorldURL, const X3D::UndoStepPtr & undoStep, X3D::SFNode & node)
 {
 	using MFString = X3D::X3DField <X3D::MFString::internal_type>;
 	using set      = void (MFString::*) (const MFString &);

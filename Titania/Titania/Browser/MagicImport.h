@@ -52,7 +52,6 @@
 #define __TITANIA_BROWSER_MAGIC_IMPORT_H__
 
 #include "../Base/X3DBaseInterface.h"
-#include "../Undo/UndoStep.h"
 
 namespace titania {
 namespace puck {
@@ -69,7 +68,7 @@ public:
 	///  @name Operations
 
 	bool
-	import (X3D::MFNode &, const X3D::X3DScenePtr &, const UndoStepPtr &);
+	import (X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &);
 
 	///  @name Destruction
 
@@ -82,17 +81,17 @@ private:
 	///  @name Magic handlers
 
 	bool
-	material (X3D::MFNode &, const X3D::X3DScenePtr &, const UndoStepPtr &);
+	material (X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &);
 
 	bool
-	texture (X3D::MFNode &, const X3D::X3DScenePtr &, const UndoStepPtr &);
+	texture (X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &);
 
 	void
-	importProtoDeclaration (const X3D::SFNode &, const UndoStepPtr &);
+	importProtoDeclaration (const X3D::SFNode &, const X3D::UndoStepPtr &);
 
 	///  @name Members
 
-	using ImportFunction = std::function <bool (X3D::MFNode &, const X3D::X3DScenePtr &, const UndoStepPtr &)>;
+	using ImportFunction = std::function <bool (X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &)>;
 	
 	std::map <std::string, ImportFunction> importFunctions;
 

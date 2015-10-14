@@ -77,7 +77,7 @@ public:
 	getNodes ()
 	{ return nodes; }
 
-	const UndoStepPtr &
+	const X3D::UndoStepPtr &
 	getOwnUndoStep () const
 	{ return undoStep; }
 
@@ -112,7 +112,7 @@ private:
 	ToggleButtonType & toggleButton;
 	X3D::MFNode        nodes;
 	const std::string  name;
-	UndoStepPtr        undoStep;
+	X3D::UndoStepPtr        undoStep;
 	bool               changing;
 	X3D::SFTime        buffer;
 

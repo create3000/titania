@@ -94,7 +94,7 @@ private:
 	set_layers ();
 
 	void
-	set_order (const UndoStepPtr &);
+	set_order (const X3D::UndoStepPtr &);
 
 	void
 	set_treeView ();

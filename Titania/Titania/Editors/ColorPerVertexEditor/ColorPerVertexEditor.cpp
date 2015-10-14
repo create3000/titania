@@ -304,7 +304,7 @@ ColorPerVertexEditor::on_remove_unused_colors_activate ()
 	if (colors .size () == previewColor -> color () .size ())
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Unused Colors"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Unused Colors"));
 
 	undoStep -> addObjects (previewGeometry);
 
@@ -462,7 +462,7 @@ ColorPerVertexEditor::on_whole_object_clicked ()
 void
 ColorPerVertexEditor::on_remove_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Polygon Colors"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Polygon Colors"));
 
 	undoStep -> addObjects (geometry);
 
@@ -486,7 +486,7 @@ ColorPerVertexEditor::on_apply_clicked ()
 	geometry -> color ()      .removeInterest (this, &ColorPerVertexEditor::set_colorIndex);
 	geometry -> color ()      .addInterest (this, &ColorPerVertexEditor::connectColor);
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Apply Polygon Colors"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Polygon Colors"));
 
 	undoStep -> addObjects (geometry);
 
@@ -899,7 +899,7 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 				if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 				{
-					const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Singe Vertex"));
+					const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Colorize Singe Vertex"));
 
 					undoStep -> addObjects (previewGeometry);
 					undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, previewGeometry -> colorIndex () .get1Value (index));
@@ -913,7 +913,7 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 			}
 			case ADJACENT_VERTICES:
 			{
-				const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Adjacent Vertices"));
+				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Colorize Adjacent Vertices"));
 
 				undoStep -> addObjects (previewGeometry);
 
@@ -934,7 +934,7 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 			}
 			case SINGLE_FACE:
 			{
-				const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Single Face"));
+				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Colorize Single Face"));
 
 				undoStep -> addObjects (previewGeometry);
 
@@ -960,7 +960,7 @@ ColorPerVertexEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 				if (previewGeometry -> colorIndex () not_eq colorIndex)
 				{
-					const auto undoStep = std::make_shared <UndoStep> (_ ("Colorize Whole Object"));
+					const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Colorize Whole Object"));
 
 					undoStep -> addObjects (previewGeometry);
 

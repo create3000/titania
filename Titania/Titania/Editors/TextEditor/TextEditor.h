@@ -119,7 +119,7 @@ private:
 	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
 	X3D::SFTime                          geometryNodeBuffer;
 	X3D::X3DPtr <X3D::Text>              text;
-	UndoStepPtr                          undoStep;
+	X3D::UndoStepPtr                          undoStep;
 	bool                                 changing;
 
 	X3DFieldAdjustment <X3D::SFFloat> maxExtent;

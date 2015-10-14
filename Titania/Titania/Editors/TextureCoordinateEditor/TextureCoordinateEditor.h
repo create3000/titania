@@ -53,14 +53,13 @@
 
 #include "../../UserInterfaces/X3DTextureCoordinateEditorInterface.h"
 
-#include "../../Undo/UndoHistory.h"
-
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Texturing/TextureCoordinate.h>
 #include <Titania/X3D/Components/Texturing/MultiTextureCoordinate.h>
 #include <Titania/X3D/Components/Rendering/X3DCoordinateNode.h>
+#include <Titania/X3D/Editor/Undo/UndoHistory.h>
 
 namespace titania {
 namespace puck {
@@ -419,7 +418,7 @@ private:
 
 	virtual
 	void
-	addUndoStep (const UndoStepPtr & undoStep) final override
+	addUndoStep (const X3D::UndoStepPtr & undoStep) final override
 	{ undoHistory .addUndoStep (undoStep); }
 
 	virtual
@@ -428,7 +427,7 @@ private:
 	{ undoHistory .removeUndoStep (); }
 
 	virtual
-	const std::shared_ptr <UndoStep> &
+	const X3D::UndoStepPtr &
 	getUndoStep () const final override
 	{ return undoHistory .getUndoStep (); }
 
@@ -461,8 +460,8 @@ private:
 	std::vector <std::pair <int32_t, X3D::Vector2f>> startPositions;
 	X3D::Vector2f                                    startDistance;
 	X3D::Keys                                        keys;
-	UndoHistory                                      undoHistory;
-	UndoStepPtr                                      undoStep;
+	X3D::UndoHistory                                 undoHistory;
+	X3D::UndoStepPtr                                 undoStep;
 
 };
 

@@ -113,7 +113,7 @@ private:
 	X3D::X3DPtrArray <X3D::Appearance> appearances;
 	X3D::X3DPtr <X3D::FillProperties>  fillProperties;
 	X3D::SFTime                        fillPropertiesBuffer;
-	UndoStepPtr                        undoStep;
+	X3D::UndoStepPtr                        undoStep;
 	bool                               changing;
 
 	X3DFieldToggleButton <X3D::SFBool> filled;

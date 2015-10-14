@@ -119,7 +119,7 @@ X3DOrthoViewpointEditor::setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpoint
 void
 X3DOrthoViewpointEditor::on_new_ortho_viewpoint_activated ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New OrthoViewpoint"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New OrthoViewpoint"));
 	const X3D::X3DPtr <X3D::X3DBindableNode> node (getBrowserWindow () -> createNode ("OrthoViewpoint", undoStep));
 	node -> set_bind () = true;
 	getBrowserWindow () -> addUndoStep (undoStep);

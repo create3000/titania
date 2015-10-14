@@ -123,7 +123,7 @@ NavigationInfoEditor::set_selection (const X3D::MFNode & selection)
 void
 NavigationInfoEditor::on_new_navigation_info_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New Navigation"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Navigation"));
 	const X3D::X3DPtr <X3D::X3DBindableNode> node (getBrowserWindow () -> createNode ("NavigationInfo", undoStep));
 	node -> set_bind () = true;
 	getBrowserWindow () -> addUndoStep (undoStep);
@@ -132,7 +132,7 @@ NavigationInfoEditor::on_new_navigation_info_clicked ()
 void
 NavigationInfoEditor::on_remove_navigation_info_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove NavigationInfo"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove NavigationInfo"));
 
 	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { nodeName .getNode () }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);

@@ -374,7 +374,7 @@ TextureCoordinateEditor::on_z_plane_activate ()
 void
 TextureCoordinateEditor::on_plane_activate (const size_t x, const size_t y, const bool flop)
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Plane Mapping"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Plane Mapping"));
 
 	undoStep -> addObjects (previewGeometry, texCoord);
 	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
@@ -435,7 +435,7 @@ TextureCoordinateEditor::on_camera_activate ()
 		if (not activeLayer)
 			return;
 
-		const auto undoStep = std::make_shared <UndoStep> (_ ("Camera Mapping"));
+		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Camera Mapping"));
 
 		undoStep -> addObjects (previewGeometry, texCoord);
 		undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
@@ -507,7 +507,7 @@ TextureCoordinateEditor::on_cylinder_z_activate ()
 void
 TextureCoordinateEditor::on_cylinder_activate (const size_t x, const size_t y, const size_t z, const bool flip, const size_t f)
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Cylinder Mapping"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cylinder Mapping"));
 
 	undoStep -> addObjects (previewGeometry, texCoord);
 	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
@@ -582,7 +582,7 @@ TextureCoordinateEditor::on_sphere_z_activate ()
 void
 TextureCoordinateEditor::on_sphere_activate (const size_t x, const size_t y, const size_t z, const bool flip, const size_t f)
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Sphere Mapping"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Sphere Mapping"));
 
 	undoStep -> addObjects (previewGeometry, texCoord);
 	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
@@ -841,7 +841,7 @@ TextureCoordinateEditor::on_rotate_clockwise ()
 void
 TextureCoordinateEditor::on_rotate (const std::string & description, const double angle)
 {
-	const auto undoStep = std::make_shared <UndoStep> (description);
+	const auto undoStep = std::make_shared <X3D::UndoStep> (description);
 
 	undoStep -> addObjects (previewGeometry, texCoord);
 	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
@@ -878,7 +878,7 @@ TextureCoordinateEditor::on_rotate (const std::string & description, const doubl
 void
 TextureCoordinateEditor::on_flip ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Flip Horizontally"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Flip Horizontally"));
 
 	undoStep -> addObjects (previewGeometry, texCoord);
 	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
@@ -913,7 +913,7 @@ TextureCoordinateEditor::on_flip ()
 void
 TextureCoordinateEditor::on_flop ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Flip Vertically"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Flip Vertically"));
 
 	undoStep -> addObjects (previewGeometry, texCoord);
 	undoStep -> addUndoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
@@ -948,7 +948,7 @@ TextureCoordinateEditor::on_flop ()
 void
 TextureCoordinateEditor::on_merge_points ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Split Selected Points"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Split Selected Points"));
 
 	undoStep -> addObjects (previewGeometry, texCoord);
 	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
@@ -989,7 +989,7 @@ TextureCoordinateEditor::on_merge_points ()
 void
 TextureCoordinateEditor::on_split_point ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Split Selected Points"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Split Selected Points"));
 
 	undoStep -> addObjects (previewGeometry, texCoord);
 	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> texCoordIndex ()), previewGeometry -> texCoordIndex ());
@@ -1147,7 +1147,7 @@ TextureCoordinateEditor::on_right_look_at_toggled ()
 void
 TextureCoordinateEditor::on_remove_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Texture Coordinates"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Texture Coordinates"));
 
 	undoStep -> addObjects (geometry);
 
@@ -1176,7 +1176,7 @@ TextureCoordinateEditor::on_apply_clicked ()
 		geometry -> texCoord () .addInterest (this, &TextureCoordinateEditor::connectTexCoord);
 	}
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Apply Texture Coordinates"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Texture Coordinates"));
 
 	undoStep -> addObjects (geometry);
 
@@ -1789,17 +1789,17 @@ TextureCoordinateEditor::set_left_active (const bool value)
 		{
 			case ToolType::MOVE:
 			{
-				undoStep = std::make_shared <UndoStep> (_ ("Move Points"));
+				undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Points"));
 				break;
 			}
 			case ToolType::ROTATE:
 			{
-				undoStep = std::make_shared <UndoStep> (_ ("Rotate Points"));
+				undoStep = std::make_shared <X3D::UndoStep> (_ ("Rotate Points"));
 				break;
 			}
 			case ToolType::SCALE:
 			{
-				undoStep = std::make_shared <UndoStep> (_ ("Scale Points"));
+				undoStep = std::make_shared <X3D::UndoStep> (_ ("Scale Points"));
 				break;
 			}
 		}

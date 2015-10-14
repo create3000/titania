@@ -112,7 +112,7 @@ private:
 	const std::string   name;
 	const size_t        index;
 	const std::string   defaultValue;
-	UndoStepPtr         undoStep;
+	X3D::UndoStepPtr         undoStep;
 	bool                changing;
 	X3D::SFTime         buffer;
 

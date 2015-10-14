@@ -53,9 +53,9 @@
 
 #include <Titania/X3D.h>
 #include <Titania/X3D/Base/X3DParentObject.h>
+#include <Titania/X3D/Editor/Undo/UndoStep.h>
 
 #include <sigc++/trackable.h>
-#include "../Undo/UndoStep.h"
 
 namespace titania {
 namespace X3D {
@@ -155,14 +155,14 @@ public:
 
 	virtual
 	void
-	addUndoStep (const UndoStepPtr &);
+	addUndoStep (const X3D::UndoStepPtr &);
 	
 	virtual
 	void
 	removeUndoStep ();
 
 	virtual
-	const std::shared_ptr <UndoStep> &
+	const X3D::UndoStepPtr &
 	getUndoStep () const;
 
 	/***

@@ -52,7 +52,6 @@
 
 #include "../../../Browser/X3DBrowserWindow.h"
 #include "../../../Configuration/config.h"
-#include "../../../Undo/UndoStep.h"
 #include "../OutlineTreeModel.h"
 #include "../X3DOutlineTreeView.h"
 #include "OutlineFields.h"
@@ -807,7 +806,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 
 		if (string not_eq currentValue)
 		{
-			const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), field -> getName () .c_str ()));
+			const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), field -> getName () .c_str ()));
 
 			undoStep -> addObjects (node);
 
@@ -827,7 +826,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 	{
 		if (*value not_eq *field)
 		{
-			const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), field -> getName () .c_str ()));
+			const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), field -> getName () .c_str ()));
 
 			const X3D::X3DPtr <X3D::Inline> inlineNode (node);
 

@@ -52,7 +52,6 @@
 #define __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
 
 #include "../UserInterfaces/X3DBrowserWindowInterface.h"
-#include "../Undo/UndoStep.h"
 #include "../Widgets/HistoryView/History.h"
 
 #include <gtkmm.h>
@@ -166,7 +165,7 @@ public:
 
 	static
 	bool
-	transform (const basic::uri &, const basic::uri &, const UndoStepPtr &, X3D::SFNode &);
+	transform (const basic::uri &, const basic::uri &, const X3D::UndoStepPtr &, X3D::SFNode &);
 
 	virtual
 	void
@@ -262,7 +261,7 @@ private:
 	getTitle (const X3D::BrowserPtr &) const;
 
 	void
-	setWorldURL (const X3D::X3DScenePtr &, const basic::uri &, const UndoStepPtr &);
+	setWorldURL (const X3D::X3DScenePtr &, const basic::uri &, const X3D::UndoStepPtr &);
 
 	void
 	loadIcon ();

@@ -52,7 +52,6 @@
 #define __TITANIA_FILE_SAVE_DIALOG_FILE_SAVE_DIALOG_H__
 
 #include "../../UserInterfaces/X3DFileSaveDialogInterface.h"
-#include "../../Undo/UndoStep.h"
 
 namespace titania {
 namespace puck {
@@ -73,7 +72,7 @@ public:
 	exportImage ();
 
 	bool
-	exportNodes (X3D::MFNode &, basic::uri &, const UndoStepPtr &);
+	exportNodes (X3D::MFNode &, basic::uri &, const X3D::UndoStepPtr &);
 
 	///  @name Destruction
 
@@ -91,7 +90,7 @@ private:
 	///  @name Export nodes
 
 	void
-	exportNodes (X3D::MFNode &, const basic::uri &, const bool, const UndoStepPtr &);
+	exportNodes (X3D::MFNode &, const basic::uri &, const bool, const X3D::UndoStepPtr &);
 
 };
 

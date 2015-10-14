@@ -297,7 +297,7 @@ ScriptEditor::on_new_clicked ()
 void
 ScriptEditor::on_new_script_activated ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New Script"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Script"));
 	const auto node     = getBrowserWindow () -> createNode ("Script", undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -307,7 +307,7 @@ ScriptEditor::on_new_script_activated ()
 void
 ScriptEditor::on_new_shader_part_activated ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New ShaderPart"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New ShaderPart"));
 	const auto node     = getBrowserWindow () -> createNode ("ShaderPart", undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -317,7 +317,7 @@ ScriptEditor::on_new_shader_part_activated ()
 void
 ScriptEditor::on_new_shader_program_activated ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New ShaderProgram"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New ShaderProgram"));
 	const auto node     = getBrowserWindow () -> createNode ("ShaderProgram", undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -330,7 +330,7 @@ ScriptEditor::on_apply_clicked ()
 	if (not node)
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Apply Script"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Script"));
 
 	apply (undoStep);
 
@@ -339,7 +339,7 @@ ScriptEditor::on_apply_clicked ()
 }
 
 void
-ScriptEditor::apply (const UndoStepPtr & undoStep)
+ScriptEditor::apply (const X3D::UndoStepPtr & undoStep)
 {
 	const auto cdata = node -> getCDATA ();
 	const auto text  = getTextBuffer () -> get_text ();

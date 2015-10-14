@@ -80,7 +80,7 @@ public:
 
 	virtual
 	void
-	addUndoStep (const UndoStepPtr & undoStep) final override
+	addUndoStep (const X3D::UndoStepPtr & undoStep) final override
 	{ editor -> addUndoStep (undoStep); }
 
 	virtual
@@ -89,7 +89,7 @@ public:
 	{ editor -> removeUndoStep (); }
 
 	virtual
-	const std::shared_ptr <UndoStep> &
+	const X3D::UndoStepPtr &
 	getUndoStep () const final override
 	{ return editor -> getUndoStep (); }
 

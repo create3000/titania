@@ -248,7 +248,7 @@ X3DBrowserEditor::set_selection_active (const bool value)
 	{
 		bool changed = false;
 
-		const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Transform"));
+		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Edit Transform"));
 
 		getSelection () -> redoRestoreSelection (undoStep);
 
@@ -420,7 +420,7 @@ X3DBrowserEditor::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 }
 
 X3D::MFNode
-X3DBrowserEditor::importURL (const std::vector <basic::uri> & uris, const bool importAsInline, const UndoStepPtr & undoStep)
+X3DBrowserEditor::importURL (const std::vector <basic::uri> & uris, const bool importAsInline, const X3D::UndoStepPtr & undoStep)
 {
 	if (importAsInline)
 	{
@@ -477,7 +477,7 @@ X3DBrowserEditor::importURL (const std::vector <basic::uri> & uris, const bool i
 }
 
 X3D::MFNode
-X3DBrowserEditor::importScene (const X3D::X3DScenePtr & scene, X3D::MFNode & field, const UndoStepPtr & undoStep)
+X3DBrowserEditor::importScene (const X3D::X3DScenePtr & scene, X3D::MFNode & field, const X3D::UndoStepPtr & undoStep)
 {
 	const auto & executionContext = getExecutionContext ();
 
@@ -495,12 +495,12 @@ X3DBrowserEditor::importScene (const X3D::X3DScenePtr & scene, X3D::MFNode & fie
 
 		executionContext -> import (scene, importedNodes);
 
-		const auto undoRemoveNodes = std::make_shared <UndoStep> ();
+		const auto undoRemoveNodes = std::make_shared <X3D::UndoStep> ();
 
 		removeNodesFromScene (executionContext, importedNodes, undoRemoveNodes, false);
 
-		undoStep -> addUndoFunction (&UndoStep::redoChanges, undoRemoveNodes);
-		undoStep -> addRedoFunction (&UndoStep::undoChanges, undoRemoveNodes);
+		undoStep -> addUndoFunction (&X3D::UndoStep::redoChanges, undoRemoveNodes);
+		undoStep -> addRedoFunction (&X3D::UndoStep::undoChanges, undoRemoveNodes);
 		undoRemoveNodes -> undoChanges ();
 
 		using append = X3D::X3DArrayField <X3D::SFNode> & (X3D::MFNode::*) (const X3D::X3DArrayField <X3D::SFNode> &);
@@ -773,7 +773,7 @@ X3DBrowserEditor::reload ()
 }
 
 void
-X3DBrowserEditor::removeUnusedPrototypes (const UndoStepPtr & undoStep)
+X3DBrowserEditor::removeUnusedPrototypes (const X3D::UndoStepPtr & undoStep)
 {
 	// Get ExternProtos and Prototypes
 
@@ -901,26 +901,26 @@ X3DBrowserEditor::quit ()
 
 // Undo/Redo operations
 
-UndoHistory &
+X3D::UndoHistory &
 X3DBrowserEditor::getUndoHistory (const X3D::BrowserPtr & browser)
 {
    return getUserData (browser) -> undoHistory;
 }
 
-const UndoHistory &
+const X3D::UndoHistory &
 X3DBrowserEditor::getUndoHistory (const X3D::BrowserPtr & browser) const
 {
    return getUserData (browser) -> undoHistory;
 }
 
 void
-X3DBrowserEditor::addUndoStep (const UndoStepPtr & undoStep)
+X3DBrowserEditor::addUndoStep (const X3D::UndoStepPtr & undoStep)
 {
 	getUndoHistory (getBrowser ()) .addUndoStep (undoStep);
 }
 
 void
-X3DBrowserEditor::addUndoStep (const X3D::BrowserPtr & browser, const UndoStepPtr & undoStep)
+X3DBrowserEditor::addUndoStep (const X3D::BrowserPtr & browser, const X3D::UndoStepPtr & undoStep)
 {
 	getUndoHistory (browser) .addUndoStep (undoStep);
 }
@@ -982,7 +982,7 @@ X3DBrowserEditor::set_undoHistory ()
 // Clipboard operations
 
 void
-X3DBrowserEditor::cutNodes (X3D::MFNode nodes, const UndoStepPtr & undoStep)
+X3DBrowserEditor::cutNodes (X3D::MFNode nodes, const X3D::UndoStepPtr & undoStep)
 {
 	// Detach from group
 
@@ -1002,7 +1002,7 @@ X3DBrowserEditor::copyNodes (X3D::MFNode nodes) const
 {
 	// Detach from group
 
-	const auto undoDetachFromGroup = std::make_shared <UndoStep> ();
+	const auto undoDetachFromGroup = std::make_shared <X3D::UndoStep> ();
 
 	const_cast <X3DBrowserEditor*> (this) -> detachFromGroup (nodes, true, undoDetachFromGroup);
 
@@ -1016,7 +1016,7 @@ X3DBrowserEditor::copyNodes (X3D::MFNode nodes) const
 }
 
 void
-X3DBrowserEditor::pasteNodes (X3D::MFNode & nodes, const UndoStepPtr & undoStep)
+X3DBrowserEditor::pasteNodes (X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
 {
 	try
 	{
@@ -1096,7 +1096,7 @@ X3DBrowserEditor::getPasteStatus () const
 // Edit operations
 
 X3D::SFNode
-X3DBrowserEditor::createNode (const std::string & typeName, const UndoStepPtr & undoStep)
+X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepPtr & undoStep)
 {
 	const auto & activeLayer = getWorld () -> getActiveLayer ();
 	auto &       children    = activeLayer and activeLayer not_eq getWorld () -> getLayer0 ()
@@ -1111,12 +1111,12 @@ X3DBrowserEditor::createNode (const std::string & typeName, const UndoStepPtr & 
 	getExecutionContext () -> realize ();
 	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
 
-	const auto removeUndoStep = std::make_shared <UndoStep> ("");
+	const auto removeUndoStep = std::make_shared <X3D::UndoStep> ("");
 
 	removeNodesFromScene (getExecutionContext (), { node }, removeUndoStep);
-	undoStep -> addUndoFunction (&UndoStep::redoChanges, removeUndoStep);
+	undoStep -> addUndoFunction (&X3D::UndoStep::redoChanges, removeUndoStep);
 	removeUndoStep -> undoChanges ();
-	undoStep -> addRedoFunction (&UndoStep::undoChanges, removeUndoStep);
+	undoStep -> addRedoFunction (&X3D::UndoStep::undoChanges, removeUndoStep);
 	return node;
 }
 
@@ -1124,7 +1124,7 @@ X3DBrowserEditor::createNode (const std::string & typeName, const UndoStepPtr & 
  *  Replaces in the entire scene graph of current execution context @a node by @a newValue.
  */
 void
-X3DBrowserEditor::replaceNodes (const X3D::SFNode & node, const X3D::SFNode & newValue, const UndoStepPtr & undoStep)
+X3DBrowserEditor::replaceNodes (const X3D::SFNode & node, const X3D::SFNode & newValue, const X3D::UndoStepPtr & undoStep)
 {
    replaceNodes (X3D::SFNode (getExecutionContext ()), getExecutionContext () -> getRootNodes (), node, newValue, undoStep);
 
@@ -1163,7 +1163,7 @@ X3DBrowserEditor::replaceNodes (const X3D::SFNode & node, const X3D::SFNode & ne
  *  Sets @a sfnode to @a newValue.
  */
 void
-X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode, const X3D::SFNode & newValue, const UndoStepPtr & undoStep)
+X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode, const X3D::SFNode & newValue, const X3D::UndoStepPtr & undoStep)
 {
 	const auto oldValue = sfnode;
 
@@ -1171,12 +1171,12 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode,
 
 	//
 
-	const auto undoRemoveNode = std::make_shared <UndoStep> ();
+	const auto undoRemoveNode = std::make_shared <X3D::UndoStep> ();
 
 	removeNodesFromSceneIfNotExists (getExecutionContext (), { newValue }, undoRemoveNode);
 
-	undoStep -> addUndoFunction (&UndoStep::redoChanges, undoRemoveNode);
-	undoStep -> addRedoFunction (&UndoStep::undoChanges, undoRemoveNode);
+	undoStep -> addUndoFunction (&X3D::UndoStep::redoChanges, undoRemoveNode);
+	undoStep -> addRedoFunction (&X3D::UndoStep::undoChanges, undoRemoveNode);
 	undoRemoveNode -> undoChanges ();
 
 	//
@@ -1193,7 +1193,7 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & sfnode,
  *  Sets @a mfnode to @a newValue.
  */
 void
-X3DBrowserEditor::replaceNodes (const X3D::SFNode & parent, X3D::MFNode & mfnode, const X3D::MFNode & newValue, const UndoStepPtr & undoStep)
+X3DBrowserEditor::replaceNodes (const X3D::SFNode & parent, X3D::MFNode & mfnode, const X3D::MFNode & newValue, const X3D::UndoStepPtr & undoStep)
 {
 	const auto oldValue = mfnode;
 
@@ -1201,12 +1201,12 @@ X3DBrowserEditor::replaceNodes (const X3D::SFNode & parent, X3D::MFNode & mfnode
 
 	//
 
-	const auto undoRemoveNode = std::make_shared <UndoStep> ();
+	const auto undoRemoveNode = std::make_shared <X3D::UndoStep> ();
 
 	removeNodesFromSceneIfNotExists (getExecutionContext (), newValue, undoRemoveNode);
 
-	undoStep -> addUndoFunction (&UndoStep::redoChanges, undoRemoveNode);
-	undoStep -> addRedoFunction (&UndoStep::undoChanges, undoRemoveNode);
+	undoStep -> addUndoFunction (&X3D::UndoStep::redoChanges, undoRemoveNode);
+	undoStep -> addRedoFunction (&X3D::UndoStep::undoChanges, undoRemoveNode);
 	undoRemoveNode -> undoChanges ();
 
 	//
@@ -1223,7 +1223,7 @@ X3DBrowserEditor::replaceNodes (const X3D::SFNode & parent, X3D::MFNode & mfnode
  *  Replaces in @a mfnode all occurences of @a node by @a newValue.
  */
 void
-X3DBrowserEditor::replaceNodes (const X3D::SFNode & parent, X3D::MFNode & mfnode, const X3D::SFNode & node, const X3D::SFNode & newValue, const UndoStepPtr & undoStep)
+X3DBrowserEditor::replaceNodes (const X3D::SFNode & parent, X3D::MFNode & mfnode, const X3D::SFNode & node, const X3D::SFNode & newValue, const X3D::UndoStepPtr & undoStep)
 {
 	const auto indices = mfnode .indices_of (node);
 
@@ -1238,7 +1238,7 @@ X3DBrowserEditor::replaceNodes (const X3D::SFNode & parent, X3D::MFNode & mfnode
  *  Sets in @a mfnode at @a index the value to @a newValue.
  */
 void
-X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const size_t index, const X3D::SFNode & newValue, const UndoStepPtr & undoStep)
+X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const size_t index, const X3D::SFNode & newValue, const X3D::UndoStepPtr & undoStep)
 {
  	const X3D::SFNode oldValue = mfnode [index];
 
@@ -1246,12 +1246,12 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode,
 
 	//
 
-	const auto undoRemoveNode = std::make_shared <UndoStep> ();
+	const auto undoRemoveNode = std::make_shared <X3D::UndoStep> ();
 
 	removeNodesFromSceneIfNotExists (getExecutionContext (), { newValue }, undoRemoveNode);
 
-	undoStep -> addUndoFunction (&UndoStep::redoChanges, undoRemoveNode);
-	undoStep -> addRedoFunction (&UndoStep::undoChanges, undoRemoveNode);
+	undoStep -> addUndoFunction (&X3D::UndoStep::redoChanges, undoRemoveNode);
+	undoStep -> addRedoFunction (&X3D::UndoStep::undoChanges, undoRemoveNode);
 	undoRemoveNode -> undoChanges ();
 
 	//
@@ -1266,13 +1266,13 @@ X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::MFNode & mfnode,
 }
 
 void
-X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::SFNode & node, const UndoStepPtr & undoStep)
+X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::SFNode & node, const X3D::UndoStepPtr & undoStep)
 {
 	replaceNode (parent, node, nullptr, undoStep);
 }
 
 void
-X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const size_t index, const UndoStepPtr & undoStep)
+X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const size_t index, const X3D::UndoStepPtr & undoStep)
 {
 	if (index < mfnode .size ())
 	{
@@ -1293,7 +1293,7 @@ X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, 
  *  Removes @a node completely from scene if not exists in scene graph anymore.
  */
 void
-X3DBrowserEditor::removeNodesFromSceneIfNotExists (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes, const UndoStepPtr & undoStep)
+X3DBrowserEditor::removeNodesFromSceneIfNotExists (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
 {
 	X3D::MFNode remove;
 	
@@ -1314,7 +1314,7 @@ X3DBrowserEditor::removeNodesFromSceneIfNotExists (const X3D::X3DExecutionContex
  *  Does the same as Menu > Edit > Remove
  */
 void
-X3DBrowserEditor::removeNodesFromScene (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode nodes, const UndoStepPtr & undoStep, const bool doRemoveFromSceneGraph)
+X3DBrowserEditor::removeNodesFromScene (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode nodes, const X3D::UndoStepPtr & undoStep, const bool doRemoveFromSceneGraph)
 {
 	getSelection () -> removeChildren (nodes, undoStep);
 
@@ -1357,7 +1357,7 @@ X3DBrowserEditor::removeNodesFromScene (const X3D::X3DExecutionContextPtr & exec
 void
 X3DBrowserEditor::removeNodesFromExecutionContext (const X3D::X3DExecutionContextPtr & executionContext,
                                                    const std::set <X3D::SFNode> & nodes,
-                                                   const UndoStepPtr & undoStep,
+                                                   const X3D::UndoStepPtr & undoStep,
                                                    const bool doRemoveFromSceneGraph)
 {
 	// Remove node from scene graph
@@ -1405,7 +1405,7 @@ X3DBrowserEditor::removeNodesFromExecutionContext (const X3D::X3DExecutionContex
 }
 
 void
-X3DBrowserEditor::removeNodesFromSceneGraph (const X3D::X3DExecutionContextPtr & executionContext, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep)
+X3DBrowserEditor::removeNodesFromSceneGraph (const X3D::X3DExecutionContextPtr & executionContext, const std::set <X3D::SFNode> & nodes, const X3D::UndoStepPtr & undoStep)
 {
 	const X3D::SFNode executionContextNode (executionContext);
 
@@ -1416,7 +1416,7 @@ X3DBrowserEditor::removeNodesFromSceneGraph (const X3D::X3DExecutionContextPtr &
 }
 
 void
-X3DBrowserEditor::removeNodesFromSceneGraph (const X3D::MFNode & array, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep)
+X3DBrowserEditor::removeNodesFromSceneGraph (const X3D::MFNode & array, const std::set <X3D::SFNode> & nodes, const X3D::UndoStepPtr & undoStep)
 {
 	X3D::traverse (const_cast <X3D::MFNode &> (array), [&] (X3D::SFNode & parent)
 	               {
@@ -1460,7 +1460,7 @@ X3DBrowserEditor::removeNodesFromSceneGraph (const X3D::MFNode & array, const st
 }
 
 void
-X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const X3D::SFNode & node, const UndoStepPtr & undoStep)
+X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const X3D::SFNode & node, const X3D::UndoStepPtr & undoStep)
 {
 	if (std::find (mfnode .begin (), mfnode .end (), node) == mfnode .end ())
 		return;
@@ -1474,7 +1474,7 @@ X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, 
 }
 
 void
-X3DBrowserEditor::removeExportedNodes (const X3D::X3DScenePtr & scene, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep)
+X3DBrowserEditor::removeExportedNodes (const X3D::X3DScenePtr & scene, const std::set <X3D::SFNode> & nodes, const X3D::UndoStepPtr & undoStep)
 {
 	// Remove exported nodes
 
@@ -1499,7 +1499,7 @@ X3DBrowserEditor::removeExportedNodes (const X3D::X3DScenePtr & scene, const std
 }
 
 void
-X3DBrowserEditor::updateNamedNode (const X3D::X3DExecutionContextPtr & executionContext, const std::string & name, const X3D::SFNode & node, const UndoStepPtr & undoStep)
+X3DBrowserEditor::updateNamedNode (const X3D::X3DExecutionContextPtr & executionContext, const std::string & name, const X3D::SFNode & node, const X3D::UndoStepPtr & undoStep)
 {
 	try
 	{
@@ -1523,7 +1523,7 @@ X3DBrowserEditor::updateNamedNode (const X3D::X3DExecutionContextPtr & execution
 }
 
 void
-X3DBrowserEditor::removeNamedNodes (const X3D::X3DExecutionContextPtr & executionContext, const std::set <X3D::SFNode> & nodes, const UndoStepPtr & undoStep)
+X3DBrowserEditor::removeNamedNodes (const X3D::X3DExecutionContextPtr & executionContext, const std::set <X3D::SFNode> & nodes, const X3D::UndoStepPtr & undoStep)
 {
 	// Remove named node
 
@@ -1548,7 +1548,7 @@ X3DBrowserEditor::removeNamedNodes (const X3D::X3DExecutionContextPtr & executio
  *  Only pass inline nodes that are loaded and should be unloaded.
  */
 void
-X3DBrowserEditor::removeImportedNodes (const X3D::X3DExecutionContextPtr & executionContext, const std::set <X3D::InlinePtr> & inlineNodes, const UndoStepPtr & undoStep)
+X3DBrowserEditor::removeImportedNodes (const X3D::X3DExecutionContextPtr & executionContext, const std::set <X3D::InlinePtr> & inlineNodes, const X3D::UndoStepPtr & undoStep)
 {
 	// Remove nodes imported from node
 
@@ -1606,7 +1606,7 @@ X3DBrowserEditor::removeImportedNodes (const X3D::X3DExecutionContextPtr & execu
 }
 
 void
-X3DBrowserEditor::deleteRoutes (const X3D::X3DExecutionContextPtr & executionContext, const X3D::SFNode & node, const UndoStepPtr & undoStep)
+X3DBrowserEditor::deleteRoutes (const X3D::X3DExecutionContextPtr & executionContext, const X3D::SFNode & node, const X3D::UndoStepPtr & undoStep)
 {
 	// Delete routes from and to node
 
@@ -1662,7 +1662,7 @@ X3DBrowserEditor::addRoute (const X3D::X3DExecutionContextPtr & executionContext
                             const std::string & sourceField,
                             const X3D::SFNode & destinationNode,
                             const std::string & destinationField,
-                            const UndoStepPtr & undoStep)
+                            const X3D::UndoStepPtr & undoStep)
 throw (X3D::Error <X3D::INVALID_NODE>,
        X3D::Error <X3D::INVALID_FIELD>,
        X3D::Error <X3D::INVALID_OPERATION_TIMING>,
@@ -1710,7 +1710,7 @@ X3DBrowserEditor::deleteRoute (const X3D::X3DExecutionContextPtr & executionCont
                                const std::string & sourceField,
                                const X3D::SFNode & destinationNode,
                                const std::string & destinationField,
-                               const UndoStepPtr & undoStep)
+                               const X3D::UndoStepPtr & undoStep)
 {
 	using getImportedNode = X3D::SFNode (X3D::X3DExecutionContext::*) (const std::string &) const;
 	using addRoute        = const X3D::RoutePtr & (X3D::X3DExecutionContext::*) (const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &);
@@ -1800,7 +1800,7 @@ X3DBrowserEditor::deleteRoute (const X3D::X3DExecutionContextPtr & executionCont
 }
 
 void
-X3DBrowserEditor::createClone (const X3D::SFNode & clone, const X3D::MFNode & nodes, const UndoStepPtr & undoStep)
+X3DBrowserEditor::createClone (const X3D::SFNode & clone, const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
 {
 	for (const auto & node : nodes)
 	{
@@ -1843,7 +1843,7 @@ X3DBrowserEditor::createClone (const X3D::SFNode & clone, const X3D::MFNode & no
 }
 
 X3D::MFNode
-X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & undoStep)
+X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const X3D::UndoStepPtr & undoStep)
 {
 	X3D::MFNode nodes;
 
@@ -1918,7 +1918,7 @@ X3DBrowserEditor::unlinkClone (const X3D::SFNode & parent,
                                const X3D::SFNode & clone,
                                X3D::MFNode & nodes,
                                bool & first,
-                               const UndoStepPtr & undoStep)
+                               const X3D::UndoStepPtr & undoStep)
 {
 	const auto indices = mfnode .indices_of (clone);
 
@@ -1950,7 +1950,7 @@ X3DBrowserEditor::unlinkClone (const X3D::SFNode & parent,
 X3D::SFNode
 X3DBrowserEditor::groupNodes (const std::string & typeName,
                               const X3D::MFNode & nodes,
-                              const UndoStepPtr & undoStep)
+                              const X3D::UndoStepPtr & undoStep)
 {
 	const X3D::X3DPtr <X3D::X3DGroupingNode> group (getExecutionContext () -> createNode (typeName));
 
@@ -1988,7 +1988,7 @@ X3DBrowserEditor::groupNodes (const std::string & typeName,
 
 X3D::MFNode
 X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups,
-                                const UndoStepPtr & undoStep)
+                                const X3D::UndoStepPtr & undoStep)
 {
 	X3D::MFNode children;
 
@@ -2066,7 +2066,7 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups,
 bool
 X3DBrowserEditor::addToGroup (const X3D::SFNode & group,
                               const X3D::MFNode & children,
-                              const UndoStepPtr & undoStep)
+                              const X3D::UndoStepPtr & undoStep)
 {
 	if (not group)
 		return false;
@@ -2155,7 +2155,7 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group,
 void
 X3DBrowserEditor::detachFromGroup (X3D::MFNode children,
                                    const bool detachToLayer0,
-                                   const UndoStepPtr & undoStep)
+                                   const X3D::UndoStepPtr & undoStep)
 {
 	for (const auto & child : children)
 	{
@@ -2207,7 +2207,7 @@ X3D::SFNode
 X3DBrowserEditor::createParentGroup (const std::string & typeName,
 	                                  const std::string & fieldName,
                                      const X3D::MFNode & children,
-                                     const UndoStepPtr & undoStep)
+                                     const X3D::UndoStepPtr & undoStep)
 {
 	// Add node to group
 
@@ -2275,7 +2275,7 @@ X3DBrowserEditor::createParentGroup (const X3D::X3DPtr <X3D::X3DNode> & group,
                                      X3D::MFNode & mfnode,
                                      const X3D::SFNode & child,
                                      const X3D::SFNode & parent,
-                                     const UndoStepPtr & undoStep)
+                                     const X3D::UndoStepPtr & undoStep)
 {
 	const auto indices = mfnode .indices_of (child);
 
@@ -2298,7 +2298,7 @@ X3DBrowserEditor::createParentGroup (const X3D::X3DPtr <X3D::X3DNode> & group,
 }
 
 void
-X3DBrowserEditor::transformToZero (const X3D::MFNode & children, const UndoStepPtr & undoStep)
+X3DBrowserEditor::transformToZero (const X3D::MFNode & children, const X3D::UndoStepPtr & undoStep)
 {
 	X3D::Matrix4fStack modelViewMatrix;
 
@@ -2306,7 +2306,7 @@ X3DBrowserEditor::transformToZero (const X3D::MFNode & children, const UndoStepP
 }
 
 void
-X3DBrowserEditor::transformToZero (const X3D::MFNode & children, X3D::Matrix4fStack & modelViewMatrix, const UndoStepPtr & undoStep)
+X3DBrowserEditor::transformToZero (const X3D::MFNode & children, X3D::Matrix4fStack & modelViewMatrix, const X3D::UndoStepPtr & undoStep)
 {
 	for (const auto & child : children)
 	{
@@ -2316,7 +2316,7 @@ X3DBrowserEditor::transformToZero (const X3D::MFNode & children, X3D::Matrix4fSt
 }
 
 void
-X3DBrowserEditor::transformToZero (const X3D::SFNode & child, X3D::Matrix4fStack & modelViewMatrix, const UndoStepPtr & undoStep)
+X3DBrowserEditor::transformToZero (const X3D::SFNode & child, X3D::Matrix4fStack & modelViewMatrix, const X3D::UndoStepPtr & undoStep)
 {
    for (const auto & type : basic::make_reverse_range (child -> getType ()))
    {
@@ -2382,7 +2382,7 @@ X3DBrowserEditor::transformToZero (const X3D::SFNode & child, X3D::Matrix4fStack
 }
 
 void
-X3DBrowserEditor::transformToZero (const X3D::X3DPtr <X3D::X3DGeometryNode> & geometry, const X3D::Matrix4f & matrix, const UndoStepPtr & undoStep)
+X3DBrowserEditor::transformToZero (const X3D::X3DPtr <X3D::X3DGeometryNode> & geometry, const X3D::Matrix4f & matrix, const X3D::UndoStepPtr & undoStep)
 {
    for (const auto & type : basic::make_reverse_range (geometry -> getType ()))
    {
@@ -2405,7 +2405,7 @@ X3DBrowserEditor::transformToZero (const X3D::X3DPtr <X3D::X3DGeometryNode> & ge
 }
 
 void
-X3DBrowserEditor::transformToZero (const X3D::X3DPtr <X3D::X3DCoordinateNode> & coord, const X3D::Matrix4f & matrix, const UndoStepPtr & undoStep)
+X3DBrowserEditor::transformToZero (const X3D::X3DPtr <X3D::X3DCoordinateNode> & coord, const X3D::Matrix4f & matrix, const X3D::UndoStepPtr & undoStep)
 {
 	switch (coord -> getType () .back ())
 	{
@@ -2614,7 +2614,7 @@ X3DBrowserEditor::addPrototypeInstance (const std::string & name)
 {
 	try
 	{
-		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Create %s"), name .c_str ()));
+		const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create %s"), name .c_str ()));
 
 		const X3D::SFNode instance (getExecutionContext () -> createPrototypeInstance (name));
 
@@ -2653,7 +2653,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 		if (transform)
 		{
 			if (currentTool not_eq tool or chrono::now () - undoTime > UNDO_TIME or undoStep not_eq getBrowserWindow () -> getUndoStep ())
-				undoStep = std::make_shared <UndoStep> (_ (undoText [currentTool - NUDGE_LEFT]));
+				undoStep = std::make_shared <X3D::UndoStep> (_ (undoText [currentTool - NUDGE_LEFT]));
 
 			tool     = currentTool;
 			undoTime = chrono::now ();
@@ -2713,7 +2713,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 }
 
 void
-X3DBrowserEditor::saveMatrix (const X3D::SFNode & node, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::saveMatrix (const X3D::SFNode & node, const X3D::UndoStepPtr & undoStep) const
 {
 	X3D::X3DTransformNodePtr transform (node);
 
@@ -2726,7 +2726,7 @@ X3DBrowserEditor::saveMatrix (const X3D::SFNode & node, const UndoStepPtr & undo
 }
 
 void
-X3DBrowserEditor::setMatrix (const X3D::X3DTransformNodePtr & transform, const X3D::Matrix4d & matrix, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::setMatrix (const X3D::X3DTransformNodePtr & transform, const X3D::Matrix4d & matrix, const X3D::UndoStepPtr & undoStep) const
 {
 	undoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrix,
 	                             transform,
@@ -2740,7 +2740,7 @@ X3DBrowserEditor::setMatrix (const X3D::X3DTransformNodePtr & transform, const X
 }
 
 void
-X3DBrowserEditor::emplaceBack (X3D::MFNode & array, const X3D::SFNode & node, const UndoStepPtr & undoStep)
+X3DBrowserEditor::emplaceBack (X3D::MFNode & array, const X3D::SFNode & node, const X3D::UndoStepPtr & undoStep)
 {
 	// Add to group
 
@@ -2898,7 +2898,7 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 
 	if (string not_eq *cdata)
 	{
-		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), cdata -> getName () .c_str ()));
+		const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), cdata -> getName () .c_str ()));
 
 		undoStep -> addObjects (node);
 

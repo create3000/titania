@@ -212,7 +212,7 @@ FileSaveDialog::imageOptions ()
 // Export nodes
 
 bool
-FileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, const UndoStepPtr & undoStep)
+FileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, const X3D::UndoStepPtr & undoStep)
 {
 	if (getConfig () .hasItem ("exportFolder"))
 		getWindow () .set_current_folder_uri (getConfig () .getString ("exportFolder"));
@@ -240,7 +240,7 @@ FileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, const U
 }
 
 void
-FileSaveDialog::exportNodes (X3D::MFNode & nodes, const basic::uri & worldURL, const bool compressed, const UndoStepPtr & undoStep)
+FileSaveDialog::exportNodes (X3D::MFNode & nodes, const basic::uri & worldURL, const bool compressed, const X3D::UndoStepPtr & undoStep)
 {
 	using namespace std::placeholders;
 

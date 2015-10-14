@@ -54,10 +54,10 @@
 #include "../../UserInterfaces/X3DColorPerVertexEditorInterface.h"
 
 #include "../../ComposedWidgets/MFColorRGBAButton.h"
-#include "../../Undo/UndoHistory.h"
 
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 #include <Titania/X3D/Components/Rendering/ColorRGBA.h>
+#include <Titania/X3D/Editor/Undo/UndoHistory.h>
 
 namespace titania {
 namespace puck {
@@ -266,7 +266,7 @@ private:
 
 	virtual
 	void
-	addUndoStep (const UndoStepPtr & undoStep) final override
+	addUndoStep (const X3D::UndoStepPtr & undoStep) final override
 	{ undoHistory .addUndoStep (undoStep); }
 
 	virtual
@@ -275,7 +275,7 @@ private:
 	{ undoHistory .removeUndoStep (); }
 
 	virtual
-	const std::shared_ptr <UndoStep> &
+	const X3D::UndoStepPtr &
 	getUndoStep () const final override
 	{ return undoHistory .getUndoStep (); }
 
@@ -293,7 +293,7 @@ private:
 	X3D::X3DPtr <X3D::IndexedFaceSet>    previewGeometry;
 	X3D::X3DPtr <X3D::ColorRGBA>         previewColor;
 	std::unique_ptr <FaceSelection>      selection;         
-	UndoHistory                          undoHistory;
+	X3D::UndoHistory                     undoHistory;
 
 };
 

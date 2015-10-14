@@ -115,7 +115,7 @@ private:
 	set_lock_to_camera ();
 
 	void
-	update (const UndoStepPtr &);
+	update (const X3D::UndoStepPtr &);
 
 	///  @name Members
 

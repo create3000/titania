@@ -114,13 +114,13 @@ private:
                        const X3D::InlinePtr &,
                        const std::string &,
                        const std::string &,
-                       const UndoStepPtr &);
+                       const X3D::UndoStepPtr &);
 
 	static
 	void
 	removeImportedNode (const X3D::X3DExecutionContextPtr &,
                        const std::string &,
-                       const UndoStepPtr &);
+                       const X3D::UndoStepPtr &);
 
 	///  @name Members
 

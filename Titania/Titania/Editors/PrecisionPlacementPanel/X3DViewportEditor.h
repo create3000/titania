@@ -106,7 +106,7 @@ private:
 	X3D::MFNode                 nodes;
 	X3D::SFTime                 viewportBuffer;
 	X3D::X3DPtr <X3D::Viewport> viewport;
-	UndoStepPtr                 undoStep;
+	X3D::UndoStepPtr                 undoStep;
 	bool                        changing;
 
 	X3DFieldAdjustment4 <X3D::MFFloat> clipBoundary;

@@ -83,9 +83,6 @@ titania_SOURCES =  \
 	Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DViewpointEditor.cpp \
 	Titania/main.cpp \
-	Titania/Undo/UndoGroup.cpp \
-	Titania/Undo/UndoHistory.cpp \
-	Titania/Undo/UndoStep.cpp \
 	Titania/UserInterfaces/X3DAnimationEditorInterface.cpp \
 	Titania/UserInterfaces/X3DAppearanceEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \

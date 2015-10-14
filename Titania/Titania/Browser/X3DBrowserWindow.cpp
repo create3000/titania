@@ -139,7 +139,7 @@ bool
 X3DBrowserWindow::save (const basic::uri & worldURL, const bool compressed, const bool copy)
 {
 	if (scriptEditor -> isModified ())
-		scriptEditor -> apply (std::make_shared <UndoStep> (""));
+		scriptEditor -> apply (std::make_shared <X3D::UndoStep> (""));
 
 	return X3DBrowserEditor::save (worldURL, compressed, copy);
 }

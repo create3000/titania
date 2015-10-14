@@ -142,7 +142,7 @@ X3DExportedNodesEditor::on_remove_exported_node ()
 
 	// Remove
 
-	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Remove Exported Node »%s«"), exportedName .c_str ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Exported Node »%s«"), exportedName .c_str ()));
 
 	scene -> exportedNodes_changed () .removeInterest (this, &X3DExportedNodesEditor::set_exportedNodes);
 	scene -> exportedNodes_changed () .addInterest (this, &X3DExportedNodesEditor::connectExportedNodes);
@@ -178,7 +178,7 @@ X3DExportedNodesEditor::on_exported_node_ok_clicked ()
 	getExportedNodeDialog () .hide ();
 
 	const std::string exportedName = getExportedNameEntry () .get_text ();
-	const auto        undoStep     = std::make_shared <UndoStep> (basic::sprintf (_ ("Update Exported Node »%s«"), exportedName .c_str ()));
+	const auto        undoStep     = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Update Exported Node »%s«"), exportedName .c_str ()));
 
 	scene -> exportedNodes_changed () .removeInterest (this, &X3DExportedNodesEditor::set_exportedNodes);
 	scene -> exportedNodes_changed () .addInterest (this, &X3DExportedNodesEditor::connectExportedNodes);
@@ -255,7 +255,7 @@ X3DExportedNodesEditor::connectExportedNodes (const X3D::SFTime & field)
 }
 
 void
-X3DExportedNodesEditor::updateExportedNode (const X3D::X3DScenePtr & scene, const std::string & exportedName, const X3D::SFNode & node, const UndoStepPtr & undoStep)
+X3DExportedNodesEditor::updateExportedNode (const X3D::X3DScenePtr & scene, const std::string & exportedName, const X3D::SFNode & node, const X3D::UndoStepPtr & undoStep)
 {
 	try
 	{
@@ -282,7 +282,7 @@ X3DExportedNodesEditor::updateExportedNode (const X3D::X3DScenePtr & scene, cons
 }
 
 void
-X3DExportedNodesEditor::removeExportedNode (const X3D::X3DScenePtr & scene, const std::string & exportedName, const UndoStepPtr & undoStep)
+X3DExportedNodesEditor::removeExportedNode (const X3D::X3DScenePtr & scene, const std::string & exportedName, const X3D::UndoStepPtr & undoStep)
 {
 	try
 	{

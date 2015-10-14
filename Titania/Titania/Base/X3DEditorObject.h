@@ -139,23 +139,23 @@ protected:
 
 	template <class NodeType>
 	void
-	unlinkClone (const X3D::X3DPtrArray <NodeType> &, const std::string &, UndoStepPtr &);
+	unlinkClone (const X3D::X3DPtrArray <NodeType> &, const std::string &, X3D::UndoStepPtr &);
 
 	template <class FieldType, class NodeType>
 	void
-	addUndoFunction (const X3D::X3DPtrArray <NodeType> &, const std::string &, UndoStepPtr &);
+	addUndoFunction (const X3D::X3DPtrArray <NodeType> &, const std::string &, X3D::UndoStepPtr &);
 
 	template <class FieldType, class NodeType>
 	void
-	addRedoFunction (const X3D::X3DPtrArray <NodeType> &, const std::string &, UndoStepPtr &);
+	addRedoFunction (const X3D::X3DPtrArray <NodeType> &, const std::string &, X3D::UndoStepPtr &);
 
 	template <class FieldType, class NodeType>
 	void
-	addUndoFunction (const X3D::X3DPtr <NodeType> &, FieldType &, UndoStepPtr &);
+	addUndoFunction (const X3D::X3DPtr <NodeType> &, FieldType &, X3D::UndoStepPtr &);
 
 	template <class FieldType>
 	void
-	addRedoFunction (FieldType &, UndoStepPtr &);
+	addRedoFunction (FieldType &, X3D::UndoStepPtr &);
 
 	/// @name Destuction
 	
@@ -346,12 +346,12 @@ X3DEditorObject::getArray (const X3D::X3DPtrArray <NodeType> & nodes, const std:
 
 template <class NodeType>
 void
-X3DEditorObject::unlinkClone (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, UndoStepPtr & undoStep)
+X3DEditorObject::unlinkClone (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, X3D::UndoStepPtr & undoStep)
 {
 	if (nodes .empty ())
 		return;
 
-	undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Unlink Clone »%s«"), fieldName .c_str ()));
+	undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Unlink Clone »%s«"), fieldName .c_str ()));
 
 	const size_t cloneCount = nodes [0] -> template getField <X3D::SFNode> (fieldName) -> getCloneCount ();
 	bool         first      = (cloneCount == nodes .size ());
@@ -377,7 +377,7 @@ X3DEditorObject::unlinkClone (const X3D::X3DPtrArray <NodeType> & nodes, const s
 
 template <class FieldType, class NodeType>
 void
-X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, UndoStepPtr & undoStep)
+X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, X3D::UndoStepPtr & undoStep)
 {
 	if (not undo)
 		return;
@@ -445,7 +445,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 
 	// Undo
 
-	undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Change Field »%s«"), fieldName .c_str ()));
+	undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change Field »%s«"), fieldName .c_str ()));
 
 	undoStep -> addObjects (nodes);
 
@@ -472,7 +472,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 
 template <class FieldType, class NodeType>
 void
-X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, UndoStepPtr & undoStep)
+X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, X3D::UndoStepPtr & undoStep)
 {
 	if (not undo)
 		return;
@@ -523,7 +523,7 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 
 template <class FieldType, class NodeType>
 void
-X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType & field, UndoStepPtr & undoStep)
+X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType & field, X3D::UndoStepPtr & undoStep)
 {
 	if (not undo)
 		return;
@@ -547,7 +547,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 	// Undo
 
-	undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Change Field »%s«"), field .getName () .c_str ()));
+	undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change Field »%s«"), field .getName () .c_str ()));
 
 	undoStep -> addObjects (node);
 
@@ -564,7 +564,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 template <class FieldType>
 void
-X3DEditorObject::addRedoFunction (FieldType & field, UndoStepPtr & undoStep)
+X3DEditorObject::addRedoFunction (FieldType & field, X3D::UndoStepPtr & undoStep)
 {
 	if (not undo)
 		return;

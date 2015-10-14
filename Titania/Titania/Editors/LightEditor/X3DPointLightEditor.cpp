@@ -89,7 +89,7 @@ X3DPointLightEditor::setPointLight (const X3D::X3DPtr <X3D::X3DLightNode> & ligh
 void
 X3DPointLightEditor::on_new_point_light_activated ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New PointLight"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New PointLight"));
 	getBrowserWindow () -> createNode ("PointLight", undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }

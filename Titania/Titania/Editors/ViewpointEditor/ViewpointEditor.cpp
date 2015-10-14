@@ -157,7 +157,7 @@ ViewpointEditor::on_remove_viewpoint_clicked ()
 	if (not getBrowser () -> getActiveLayer ())
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Remove %s"), viewpointNode-> getTypeName () .c_str ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove %s"), viewpointNode-> getTypeName () .c_str ()));
 
 	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { viewpointNode }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
@@ -169,7 +169,7 @@ ViewpointEditor::on_update_viewpoint_clicked ()
 	if (not getBrowser () -> getActiveLayer ())
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Update Active Viewpoint"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Update Active Viewpoint"));
 
 	update (undoStep);
 
@@ -194,7 +194,7 @@ ViewpointEditor::on_lock_to_camera_toggled ()
 
 	using isLockedToCamera = void (X3D::X3DViewpointNode::*) (const bool);
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Lock Viewpoint To Camera"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Lock Viewpoint To Camera"));
 
 	undoStep -> addObjects (viewpointNode);
 	undoStep -> addUndoFunction ((isLockedToCamera) &X3D::X3DViewpointNode::isLockedToCamera, viewpointNode, viewpointNode -> isLockedToCamera ());
@@ -214,7 +214,7 @@ ViewpointEditor::set_lock_to_camera ()
 }
 
 void
-ViewpointEditor::update (const UndoStepPtr & undoStep)
+ViewpointEditor::update (const X3D::UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (viewpointNode);
 	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::transitionStart,     viewpointNode, viewpointNode);

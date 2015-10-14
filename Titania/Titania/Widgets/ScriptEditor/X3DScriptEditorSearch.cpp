@@ -116,6 +116,11 @@ X3DScriptEditorSearch::initialize ()
 	for (auto search : recentSearches)
 		search = basic::base64_decode (search);
 
+	// Restore search and replace strings
+
+	getSearchEntry ()  .set_text (getConfig () .getString ("searchString"));
+	getReplaceEntry () .set_text (getConfig () .getString ("replaceString"));
+
 	// Search Menu Icon (workaround issue, as settings are not applied from builder)
 
 	getSearchEntry () .set_icon_activatable (true, Gtk::ENTRY_ICON_PRIMARY);
@@ -474,6 +479,9 @@ X3DScriptEditorSearch::~X3DScriptEditorSearch ()
 
 	getConfig () .setItem ("searchEnabled",  getSearchRevealer ()      .get_child_revealed ());
 	getConfig () .setItem ("replaceEnabled", getToggleReplaceButton () .get_active ());
+
+	getConfig () .setItem ("searchString",  getSearchEntry ()  .get_text ());
+	getConfig () .setItem ("replaceString", getReplaceEntry () .get_text ());
 
 	getConfig () .setItem ("searchCaseSensitive",     getCaseSensitiveMenuItem ()      .get_active ());
 	getConfig () .setItem ("searchAtWordBoundaries",  getAtWordBoundariesMenuItem ()   .get_active ());

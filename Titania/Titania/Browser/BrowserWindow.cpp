@@ -644,8 +644,8 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 			else
 			{
 				const auto undoStep = getConfig () .getBoolean ("importAsInline")
-				                      ? std::make_shared <UndoStep> (_ ("Import As Inline"))
-											 : std::make_shared <UndoStep> (_ ("Import"));
+				                      ? std::make_shared <X3D::UndoStep> (_ ("Import As Inline"))
+											 : std::make_shared <X3D::UndoStep> (_ ("Import"));
 
 				const auto nodes = importURL (uris, getConfig () .getBoolean ("importAsInline"), undoStep);
 
@@ -694,7 +694,7 @@ BrowserWindow::on_export_activated ()
 void
 BrowserWindow::on_remove_unused_prototypes_activated ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Unused Prototypes"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Unused Prototypes"));
 
 	removeUnusedPrototypes (undoStep);
 
@@ -749,7 +749,7 @@ BrowserWindow::on_cut_activated ()
 	if (selection .empty ())
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Cut"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cut"));
 
 	getSelection () -> clear (undoStep);
 
@@ -776,7 +776,7 @@ BrowserWindow::on_paste_activated ()
 {
 	auto selection = getSelection () -> getChildren ();
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Paste"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Paste"));
 
 	pasteNodes (selection, undoStep);
 
@@ -793,7 +793,7 @@ BrowserWindow::on_delete_activated ()
 	if (selection .empty ())
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Delete Node From Scene"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Node From Scene"));
 
 	removeNodesFromScene (getExecutionContext (), selection, undoStep);
 
@@ -808,7 +808,7 @@ BrowserWindow::on_create_clone_activated ()
 	if (selection .size () < 2)
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Create Clone"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create Clone"));
 
 	const auto clone = selection .back ();
 	selection .pop_back ();
@@ -828,7 +828,7 @@ BrowserWindow::on_unlink_clone_activated ()
 	if (selection .empty ())
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Unlink Clone"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Unlink Clone"));
 
 	X3D::MFNode nodes = unlinkClone (selection, undoStep);
 
@@ -845,7 +845,7 @@ BrowserWindow::on_group_selected_nodes_activated ()
 	if (selection .empty ())
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Group"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Group"));
 	const auto group    = groupNodes ("Transform", selection, undoStep);
 
 	emplaceBack (getExecutionContext () -> getRootNodes (), group, undoStep);
@@ -864,7 +864,7 @@ BrowserWindow::on_ungroup_activated ()
 	if (selection .empty ())
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Ungroup"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Ungroup"));
 
 	getSelection () -> clear (undoStep);
 	getSelection () -> setChildren (ungroupNodes (selection, undoStep), undoStep);
@@ -880,7 +880,7 @@ BrowserWindow::on_add_to_group_activated ()
 	if (selection .size () < 2)
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Add To Group"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add To Group"));
 
 	getSelection () -> undoRestoreSelection (undoStep);
 
@@ -903,7 +903,7 @@ BrowserWindow::on_detach_from_group_activated ()
 	if (selection .empty ())
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Detach From Group"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Detach From Group"));
 
 	getSelection () -> undoRestoreSelection (undoStep);
 	getSelection () -> redoRestoreSelection (undoStep);
@@ -1035,7 +1035,7 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 	if (selection .empty ())
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Create Parent %s"), typeName .c_str ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent %s"), typeName .c_str ()));
 
 	getSelection () -> clear (undoStep);
 
@@ -1770,7 +1770,7 @@ BrowserWindow::set_fullscreen (const bool value)
 void
 BrowserWindow::on_select_all_activated ()
 {
-	const auto undoStep = std::make_shared <UndoStep> ();
+	const auto undoStep = std::make_shared <X3D::UndoStep> ();
 
 	getSelection () -> setChildren (getExecutionContext () -> getRootNodes (), undoStep);
 }
@@ -1778,7 +1778,7 @@ BrowserWindow::on_select_all_activated ()
 void
 BrowserWindow::on_deselect_all_activated ()
 {
-	const auto undoStep = std::make_shared <UndoStep> ();
+	const auto undoStep = std::make_shared <X3D::UndoStep> ();
 
 	getSelection () -> clear (undoStep);
 }
@@ -1892,7 +1892,7 @@ BrowserWindow::on_transform_to_zero_activated ()
 {
 	__LOG__ << "on_transform_to_zero_activate" << std::endl;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Transform To Zero"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Transform To Zero"));
 
 	transformToZero (getSelection () -> getChildren (), undoStep);
 
@@ -2215,7 +2215,7 @@ BrowserWindow::on_node_index_clicked ()
 void
 BrowserWindow::on_hammer_clicked ()
 {
-	const auto undoStep  = std::make_shared <UndoStep> (_ ("Smash Selection"));
+	const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Smash Selection"));
 	auto       selection = getSelection () -> getChildren ();
 
 	for (const auto & shape : X3DEditorObject::getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode }))

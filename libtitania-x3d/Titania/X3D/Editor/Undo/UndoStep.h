@@ -48,121 +48,102 @@
  *
  ******************************************************************************/
 
-#include "UndoHistory.h"
+#ifndef __TITANIA_X3D_EDITOR_UNDO_UNDO_STEP_H__
+#define __TITANIA_X3D_EDITOR_UNDO_UNDO_STEP_H__
+
+#include <Titania/LOG.h>
+
+#include <memory>
+#include <string>
+#include <vector>
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-UndoHistory::UndoHistory () :
-	X3D::X3DOutput (),
-	          list (),
-	         index (-1),
-	    savedIndex (-1)
-{ }
+class UndoStep;
 
-std::string
-UndoHistory::getUndoDescription () const
+using UndoFunction = std::function <void ()>;
+using UndoStepPtr  = std::shared_ptr <UndoStep>;
+
+/**
+ *  An UndoStep represents a group of UndoFunctions.
+ */
+class UndoStep
 {
-	return _ ("Undo ") + list [index] -> getDescription ();
-}
+public:
 
-std::string
-UndoHistory::getRedoDescription () const
-{
-	return _ ("Redo ") + list [index + 1] -> getDescription ();
-}
+	///  @name Construction
 
-void
-UndoHistory::addUndoStep (const UndoStepPtr & undoStep)
-{
-	if (undoStep -> isEmpty ())
-		return;
+	UndoStep ();
 
-	if (index < savedIndex)
-		savedIndex = -2;
+	UndoStep (const std::string &);
 
-	list .resize (index + 1);
+	///  @name Member access
 
-	list .emplace_back (undoStep);
+	const std::string &
+	getDescription () const
+	{ return description; }
 
-	++ index;
+	std::vector <UndoFunction> &
+	getUndoFunctions ()
+	{ return undoFunctions; }
 
-	processInterests ();
-}
+	const std::vector <UndoFunction> &
+	getUndoFunctions () const
+	{ return undoFunctions; }
 
-void
-UndoHistory::removeUndoStep ()
-{
-	if (index >= 0)
-	{
-		list .pop_back ();
+	std::vector <UndoFunction> &
+	getRedoFunctions ()
+	{ return redoFunctions; }
 
-		-- index;
+	const std::vector <UndoFunction> &
+	getRedoFunctions () const
+	{ return redoFunctions; }
 
-		processInterests ();
-	}
-}
+	///  @name Operations
 
-const std::shared_ptr <UndoStep> &
-UndoHistory::getUndoStep () const
-{
-	static const std::shared_ptr <UndoStep> empty;
+	template <class ... Args>
+	void
+	addObjects (const Args & ... args)
+	{ variables .emplace_back (std::bind ( [ ] (const Args &... args){ }, std::forward <const Args> (args) ...)); }
 
-	if (list .empty () or index < 0)
-		return empty;
+	template <class ... Args>
+	void
+	addUndoFunction (Args && ... args)
+	{ undoFunctions .emplace_back (std::bind (std::forward <Args> (args) ...)); }
 
-	return list [index];
-}
+	template <class ... Args>
+	void
+	addRedoFunction (Args && ... args)
+	{ redoFunctions .emplace_back (std::bind (std::forward <Args> (args) ...)); }
 
-bool
-UndoHistory::hasUndo () const
-{
-	return index >= 0;
-}
+	void
+	undoChanges ();
 
-bool
-UndoHistory::hasRedo () const
-{
-	return index + 1 < (int) list .size ();
-}
+	void
+	redoChanges ();
 
-void
-UndoHistory::undoChanges ()
-{
-	if (index >= 0)
-	{
-		list [index] -> undoChanges ();
+	bool
+	isEmpty () const
+	{ return undoFunctions .empty (); }
 
-		-- index;
+	size_t
+	getSize () const
+	{ return undoFunctions .size (); }
 
-		processInterests ();
-	}
-}
 
-void
-UndoHistory::redoChanges ()
-{
-	if (index + 1 < (int) list .size ())
-	{
-		++ index;
+private:
 
-		list [index] -> redoChanges ();
+	using Variables = std::function <void ()>;
 
-		processInterests ();
-	}
-}
+	const std::string          description;
+	std::vector <Variables>    variables;
+	std::vector <UndoFunction> undoFunctions;
+	std::vector <UndoFunction> redoFunctions;
 
-void
-UndoHistory::clear ()
-{
-	list .clear ();
+};
 
-	index = -1;
-
-	setSaved ();
-
-	processInterests ();
-}
-
-} // puck
+} // X3D
 } // titania
+
+#endif

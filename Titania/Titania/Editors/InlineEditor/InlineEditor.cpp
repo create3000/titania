@@ -148,7 +148,7 @@ InlineEditor::set_selection (const X3D::MFNode & selection)
 void
 InlineEditor::on_new_inline_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Create New Inline"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Inline"));
 	getBrowserWindow () -> createNode ("Inline", undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -156,7 +156,7 @@ InlineEditor::on_new_inline_clicked ()
 void
 InlineEditor::on_remove_inline_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Inline"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Inline"));
 
 	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { nodeName .getNode () }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
@@ -181,7 +181,7 @@ InlineEditor::on_convert_master_selection_clicked ()
 	X3D::MFNode  nodes            = { masterSelection };
 
 	const auto fileSaveDialog = std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false));
-	const auto undoStep       = std::make_shared <UndoStep> (_ ("Convert Master Selection Into Inline File"));
+	const auto undoStep       = std::make_shared <X3D::UndoStep> (_ ("Convert Master Selection Into Inline File"));
 	basic::uri worldURL;
 
 	if (fileSaveDialog -> exportNodes (nodes, worldURL, undoStep))
@@ -212,7 +212,7 @@ InlineEditor::on_update_bounding_box_fields_activate ()
 void
 InlineEditor::on_fold_back_into_scene_clicked ()
 {
-	const auto        undoStep         = std::make_shared <UndoStep> (_ ("Fold Inline Back Into Scene"));
+	const auto        undoStep         = std::make_shared <X3D::UndoStep> (_ ("Fold Inline Back Into Scene"));
 	const auto        scene            = inlineNode -> getInternalScene ();
 	const X3D::SFNode group            = new X3D::Group (getExecutionContext ());
 	const auto        name             = X3D::get_name_from_uri (scene -> getWorldURL ());

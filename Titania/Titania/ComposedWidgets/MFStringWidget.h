@@ -180,7 +180,7 @@ private:
 	const std::string                          name;
 	const Glib::ustring                        defaultValue;
 	X3D::MFString                              string;
-	UndoStepPtr                                undoStep;
+	X3D::UndoStepPtr                                undoStep;
 	X3D::SFTime                                buffer;
 
 };

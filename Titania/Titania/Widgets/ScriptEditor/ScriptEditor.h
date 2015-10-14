@@ -90,7 +90,7 @@ public:
 	///  @name Event handlers
 
 	void
-	apply (const UndoStepPtr &);
+	apply (const X3D::UndoStepPtr &);
 
 	///  @name Destruction
 

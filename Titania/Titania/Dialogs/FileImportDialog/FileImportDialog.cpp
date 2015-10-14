@@ -217,7 +217,7 @@ FileImportDialog::run ()
 			{
 				getConfig () .setItem ("importType", ImportType::SCENE);
 
-				const auto undoStep = std::make_shared <UndoStep> (_ ("Import As Inline"));
+				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import As Inline"));
 
 				const auto nodes = getBrowserWindow () -> importURL ({ Glib::uri_unescape_string (getWindow () .get_uri ()) },
 				                                                     false,
@@ -231,7 +231,7 @@ FileImportDialog::run ()
 			{
 				getConfig () .setItem ("importType", ImportType::INLINE);
 
-				const auto undoStep = std::make_shared <UndoStep> (_ ("Import"));
+				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import"));
 
 				const auto nodes = getBrowserWindow () -> importURL ({ Glib::uri_unescape_string (getWindow () .get_uri ()) },
 				                                                     true,

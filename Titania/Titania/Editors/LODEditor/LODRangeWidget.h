@@ -115,7 +115,7 @@ private:
 	Gtk::CheckButton &                   maxButton;
 	Gtk::Widget &                        widget;
 	X3D::MFNode                          nodes;
-	UndoStepPtr                          undoStep;
+	X3D::UndoStepPtr                          undoStep;
 	int                                  input;
 	bool                                 changing;
 	X3D::SFTime                          buffer;

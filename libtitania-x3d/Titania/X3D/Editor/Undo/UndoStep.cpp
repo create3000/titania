@@ -48,13 +48,72 @@
  *
  ******************************************************************************/
 
-#include "UndoGroup.h"
+#include "UndoStep.h"
+
+#include <Titania/Utility/Range.h>
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-UndoGroup::UndoGroup ()
+/***
+ *  Class to represent an undo/redo step.
+ *
+ *  To add another UndoStep to this UndoStep you can use:
+ *
+ *      undoStep -> addUndoFunction (&UndoStep::redoChanges, otherUndoStep);
+ *      undoStep -> addRedoFunction (&UndoStep::undoChanges, otherUndoStep);
+ *      otherUndoStep -> undoChanges ();
+ */
+UndoStep::UndoStep () :
+	UndoStep ("")
 { }
 
-} // puck
+UndoStep::UndoStep (const std::string & description) :
+	  description (description),
+	    variables (),
+	undoFunctions (),
+	redoFunctions ()
+{ }
+
+void
+UndoStep::undoChanges ()
+{
+	for (const auto & undoFunction : basic::make_reverse_range (undoFunctions))
+	{
+		try
+		{
+			undoFunction ();
+		}
+		catch (const std::exception & error)
+		{
+			std::clog
+				<< std::string (80, '*') << std::endl
+				<< "*  Warning:  Undo step not possible:" << std::endl
+				<< "*  " << error .what () << std::endl
+				<< std::string (80, '*') << std::endl;
+		}
+	}
+}
+
+void
+UndoStep::redoChanges ()
+{
+	for (const auto & redoFunction : redoFunctions)
+	{
+		try
+		{
+			redoFunction ();
+		}
+		catch (const std::exception & error)
+		{
+			std::clog
+				<< std::string (80, '*') << std::endl
+				<< "*  Warning:  Redo step not possible:" << std::endl
+				<< "*  " << error .what () << std::endl
+				<< std::string (80, '*') << std::endl;
+		}
+	}
+}
+
+} // X3D
 } // titania

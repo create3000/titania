@@ -72,7 +72,7 @@ X3DObjectOperations::on_combine_activated ()
 		if (not getExecutionContext () -> hasComponent (X3D::ComponentType::GEOMETRY_3D))
 			getExecutionContext () -> updateComponent (getBrowser () -> getComponent ("Geometry3D", 2));
 
-		const auto undoStep  = std::make_shared <UndoStep> (_ ("Combine Objects"));
+		const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Combine Objects"));
 		const auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
 		const auto shapes    = X3DEditorObject::getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 
@@ -173,7 +173,7 @@ X3DObjectOperations::combineCoordinates (const X3D::X3DPtrArray <X3D::X3DShapeNo
 }
 
 void
-X3DObjectOperations::removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> & shapes, const X3D::MFNode & selection, const X3D::X3DPtr <X3D::X3DShapeNode> & masterShape, const UndoStepPtr & undoStep)
+X3DObjectOperations::removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> & shapes, const X3D::MFNode & selection, const X3D::X3DPtr <X3D::X3DShapeNode> & masterShape, const X3D::UndoStepPtr & undoStep)
 {
 	// Remove Shape nodes that are direct selected.
 

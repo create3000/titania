@@ -528,7 +528,7 @@ OutlineEditor::on_create_reference_activate (const X3D::FieldPtr & fieldPtr, con
 	{
 		const auto field     = fieldPtr .getValue ();
 		const auto reference = referencePtr .getValue ();
-		const auto undoStep  = std::make_shared <UndoStep> (basic::sprintf (_ ("Create Reference To »%s«"), reference -> getName () .c_str ()));
+		const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Reference To »%s«"), reference -> getName () .c_str ()));
 
 		undoStep -> addObjects (fieldPtr, referencePtr);
 		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
@@ -552,7 +552,7 @@ OutlineEditor::on_remove_reference_activate (const X3D::FieldPtr & fieldPtr, con
 	{
 		const auto field     = fieldPtr .getValue ();
 		const auto reference = referencePtr .getValue ();
-		const auto undoStep  = std::make_shared <UndoStep> (basic::sprintf (_ ("Remove Reference To »%s«"), reference -> getName () .c_str ()));
+		const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Reference To »%s«"), reference -> getName () .c_str ()));
 
 		undoStep -> addObjects (fieldPtr, referencePtr);
 		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
@@ -580,7 +580,7 @@ OutlineEditor::on_unlink_clone_activate ()
 	if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DBaseNode)
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Unlink Clone"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Unlink Clone"));
 
 	if (nodePath .size () == 1)
 	{
@@ -774,7 +774,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 	if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DBaseNode)
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Create Parent %s"), typeName .c_str ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent %s"), typeName .c_str ()));
 
 	if (nodePath .size () == 1)
 	{
@@ -902,7 +902,7 @@ OutlineEditor::on_remove_parent_activate ()
 
 	const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Parent"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Parent"));
 
 	if (path .size () == 1)
 	{
@@ -1053,7 +1053,7 @@ OutlineEditor::on_remove_activate ()
 	if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DBaseNode)
 		return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ ("Delete Node"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Node"));
 
 	if (nodePath .size () == 1)
 	{

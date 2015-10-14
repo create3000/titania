@@ -112,7 +112,7 @@ private:
 	Gtk::Widget &                          gdBox;
 	Gtk::Widget &                          utmBox;
 	X3D::X3DPtr <X3D::X3DGeospatialObject> node;
-	UndoStepPtr                            undoStep;
+	X3D::UndoStepPtr                            undoStep;
 	int                                    input;
 	bool                                   changing;
 

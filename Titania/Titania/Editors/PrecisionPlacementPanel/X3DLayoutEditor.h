@@ -110,7 +110,7 @@ private:
 	X3D::MFNode               nodes;
 	X3D::SFTime               layoutBuffer;
 	X3D::X3DPtr <X3D::Layout> layout;
-	UndoStepPtr               undoStep;
+	X3D::UndoStepPtr               undoStep;
 	bool                      changing;
 
 	MFStringComboBoxText               alignX;          

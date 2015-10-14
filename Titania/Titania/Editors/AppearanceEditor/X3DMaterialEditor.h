@@ -52,7 +52,6 @@
 #define __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DMATERIAL_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
-#include "../../Undo/UndoStep.h"
 #include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
 
 #include <Titania/X3D/Components/Shape/Appearance.h>
@@ -155,7 +154,7 @@ private:
 	X3D::MaterialPtr                   material;
 	X3D::TwoSidedMaterialPtr           twoSidedMaterial;
 	bool                               isTwoSidedMaterial;
-	UndoStepPtr                        undoStep;
+	X3D::UndoStepPtr                        undoStep;
 	bool                               changing;
 
 	SFColorButton diffuseColor;

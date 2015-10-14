@@ -358,7 +358,7 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 
 				// Reorder extern protos.
 
-				const auto undoStep = std::make_shared <UndoStep> (_ ("Reorder Extern Prototypes"));
+				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Reorder Extern Prototypes"));
 
 				// Remove extern protos.
 				
@@ -494,7 +494,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 		}
 	}
 
-	const auto undoStep = std::make_shared <UndoStep> (_ (get_node_action_string ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string ()));
 
 	if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
 	{
@@ -713,7 +713,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 		}
 	}
 
-	const auto undoStep = std::make_shared <UndoStep> (_ (get_node_action_string ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string ()));
 
 	if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
 	{
@@ -920,7 +920,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	if (treeView -> is_expanded (destNodeIter) and position == Gtk::TREE_VIEW_DROP_AFTER)
 	   return;
 
-	const auto undoStep = std::make_shared <UndoStep> (_ (get_node_action_string ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string ()));
 
 	// Handle X3DTransformNode nodes.
 
@@ -1031,7 +1031,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 }
 
 void
-OutlineDragDrop::remove_source_node (X3D::SFNode* const sourceParent, X3D::X3DFieldDefinition* const sourceField, size_t sourceIndex, const bool undo, const UndoStepPtr & undoStep)
+OutlineDragDrop::remove_source_node (X3D::SFNode* const sourceParent, X3D::X3DFieldDefinition* const sourceField, size_t sourceIndex, const bool undo, const X3D::UndoStepPtr & undoStep)
 {
 	switch (sourceField -> getType ())
 	{

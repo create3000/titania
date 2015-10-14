@@ -112,7 +112,7 @@ LightEditor::set_selection (const X3D::MFNode & selection)
 void
 LightEditor::on_remove_light_clicked ()
 {
-	const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Remove %s"), nodeName .getNode () -> getTypeName () .c_str ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove %s"), nodeName .getNode () -> getTypeName () .c_str ()));
 
 	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { nodeName .getNode () }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);

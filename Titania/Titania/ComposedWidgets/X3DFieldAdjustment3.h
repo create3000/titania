@@ -137,7 +137,7 @@ private:
 	X3D::MFNode                                         nodes;
 	const std::string                                   name;
 	int                                                 index;
-	UndoStepPtr                                         undoStep;
+	X3D::UndoStepPtr                                         undoStep;
 	int                                                 input;
 	bool                                                changing;
 	X3D::SFTime                                         buffer;

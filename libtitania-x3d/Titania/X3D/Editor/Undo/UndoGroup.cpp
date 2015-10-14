@@ -48,102 +48,13 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_UNDO_UNDO_STEP_H__
-#define __TITANIA_UNDO_UNDO_STEP_H__
-
-#include <Titania/LOG.h>
-
-#include <string>
-#include <vector>
-#include <memory>
+#include "UndoGroup.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-class UndoStep;
+UndoGroup::UndoGroup ()
+{ }
 
-using UndoFunction = std::function <void ()>;
-using UndoStepPtr  = std::shared_ptr <UndoStep>;
-
-/**
- *  An UndoStep represents a group of UndoFunctions.
- */
-class UndoStep
-{
-public:
-
-	///  @name Construction
-
-	UndoStep ();
-
-	UndoStep (const std::string &);
-
-	///  @name Member access
-
-	const std::string &
-	getDescription () const
-	{ return description; }
-
-	std::vector <UndoFunction> &
-	getUndoFunctions ()
-	{ return undoFunctions; }
-
-	const std::vector <UndoFunction> &
-	getUndoFunctions () const
-	{ return undoFunctions; }
-
-	std::vector <UndoFunction> &
-	getRedoFunctions ()
-	{ return redoFunctions; }
-
-	const std::vector <UndoFunction> &
-	getRedoFunctions () const
-	{ return redoFunctions; }
-
-	///  @name Operations
-
-	template <class ... Args>
-	void
-	addObjects (const Args & ... args)
-	{ variables .emplace_back (std::bind ([ ] (const Args & ... args) {  }, std::forward <const Args> (args) ...)); }
-
-	template <class ... Args>
-	void
-	addUndoFunction (Args && ... args)
-	{ undoFunctions .emplace_back (std::bind (std::forward <Args> (args) ...)); }
-
-	template <class ... Args>
-	void
-	addRedoFunction (Args && ... args)
-	{ redoFunctions .emplace_back (std::bind (std::forward <Args> (args) ...)); }
-
-	void
-	undoChanges ();
-
-	void
-	redoChanges ();
-
-	bool
-	isEmpty () const
-	{ return undoFunctions .empty (); }
-
-	size_t
-	getSize () const
-	{ return undoFunctions .size (); }
-
-
-private:
-
-	using Variables = std::function <void ()>;
-
-	const std::string          description;
-	std::vector <Variables>    variables;
-	std::vector <UndoFunction> undoFunctions;
-	std::vector <UndoFunction> redoFunctions;
-
-};
-
-} // puck
+} // X3D
 } // titania
-
-#endif
