@@ -81,7 +81,7 @@ namespace X3D {
  */
 
 MFNode
-X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, MFNode & field, const X3DScenePtr & scene, const UndoStepPtr & undoStep) const
+X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & field, const X3DScenePtr & scene, const UndoStepPtr & undoStep) const
 {
 	try
 	{
@@ -89,6 +89,7 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, MFNode 
 
 		using resize = void (MFNode::*) (const MFNode::size_type);
 
+		undoStep -> addObjects (parent);
 		undoStep -> addUndoFunction ((resize) &MFNode::resize, std::ref (field), size);
 
 		// Imported scene
@@ -134,7 +135,7 @@ X3DEditor::cutNodes (const X3DExecutionContextPtr & executionContext, const MFNo
 
 	// Remove nodes
 
-	removeNodesFromScene (executionContext, nodes, undoStep);
+	removeNodesFromScene (executionContext, nodes, true, undoStep);
 
 	return string;
 }
@@ -644,20 +645,15 @@ X3DEditor::removeNodesFromSceneIfNotExists (const X3DExecutionContextPtr & execu
 /***
  *  Completely removes @a nodes from @a executionContext.
  */
-void
-X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const UndoStepPtr & undoStep) const
-{
-	removeNodesFromScene (executionContext, nodes, true, undoStep);
-}
 
 void
-X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext, const MFNode & nodes_, const bool doRemoveFromSceneGraph, const UndoStepPtr & undoStep) const
+X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext, const MFNode & nodes_, const bool removeFromSceneGraph, const UndoStepPtr & undoStep) const
 {
    MFNode nodes = nodes_;
   
 	// Remove exported nodes
 
-	if (doRemoveFromSceneGraph)
+	if (removeFromSceneGraph)
 		removeNodesFromSceneGraph (executionContext, std::set <SFNode> ( nodes .begin (), nodes .end () ), undoStep);
 
 	// Delete children of node if not in scene graph
@@ -1477,7 +1473,7 @@ X3DEditor::ungroupNodes (const X3DExecutionContextPtr & executionContext,
 
 			// Remove group from scene
 
-			removeNodesFromScene (executionContext, { node }, undoStep);
+			removeNodesFromScene (executionContext, { node }, true, undoStep);
 		}
 		catch (const Error <INVALID_NODE> &)
 		{

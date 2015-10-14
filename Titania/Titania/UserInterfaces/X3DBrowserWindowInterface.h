@@ -1862,6 +1862,10 @@ public:
 	on_key_release_event (GdkEventKey* event) = 0;
 
 	virtual
+	void
+	on_style_updated () = 0;
+
+	virtual
 	bool
 	on_menubar_button_press_event (GdkEventButton* event) = 0;
 

@@ -541,6 +541,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_Window -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_key_press_event), false);
 	m_Window -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_key_release_event), false);
 
+	// Connect object Gtk::Box with id 'Widget'.
+	m_Widget -> signal_style_updated () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_style_updated));
+
 	// Connect object Gtk::MenuBar with id 'Menubar'.
 	m_Menubar -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_menubar_button_press_event), false);
 

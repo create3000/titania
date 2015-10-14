@@ -88,7 +88,7 @@ private:
 	initialize ();
 
 	void
-	loadStyles () const;
+	loadStyles ();
 
 	///  @name Scene handling
 
@@ -118,6 +118,12 @@ private:
 
 	void
 	set_selection (const X3D::MFNode & children);
+
+	///  @name Key events
+
+	virtual
+	void
+	on_style_updated () final override;
 
 	///  @name Key events
 
@@ -772,6 +778,7 @@ private:
 	bool            changing;
 	X3D::ViewerType viewer;
 
+	Glib::RefPtr <Gtk::CssProvider>                cssProvider;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> environmentActions;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> shadingActions;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> primitiveQualityActions;

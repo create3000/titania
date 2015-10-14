@@ -159,7 +159,7 @@ ViewpointEditor::on_remove_viewpoint_clicked ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove %s"), viewpointNode-> getTypeName () .c_str ()));
 
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { viewpointNode }, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { viewpointNode }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

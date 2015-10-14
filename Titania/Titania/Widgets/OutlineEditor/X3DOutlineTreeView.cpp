@@ -81,6 +81,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	            treeObserver (new OutlineTreeObserver (this)),
 	              routeGraph (new OutlineRouteGraph (this)),
 	            cellrenderer (Gtk::manage (new OutlineCellRenderer (getBrowser (), this))),
+				padCellrenderer (Gtk::manage (new Gtk::CellRendererText ())),
 	             expandLevel (0),
 	            externProtos (false),
 	              prototypes (false),
@@ -99,11 +100,6 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	set_enable_search (false);
 	Gtk::TreeView::get_selection () -> set_mode (Gtk::SELECTION_NONE);
 
-	// Color
-
-	const auto selectedForegroundColor = get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
-	const auto selectedBackgroundColor = get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
-
 	// Columns
 
 	Gtk::TreeViewColumn* treeviewcolumn_name = Gtk::manage (new Gtk::TreeViewColumn (_ ("Scene")));
@@ -115,8 +111,6 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	treeviewcolumn_name -> add_attribute (*cellrenderer, "tree-data",           OutlineTreeModel::DATA_COLUMN);
 	treeviewcolumn_name -> add_attribute (*cellrenderer, "foreground-set",      OutlineTreeModel::SELECTED_COLUMN);
 	treeviewcolumn_name -> add_attribute (*cellrenderer, "cell-background-set", OutlineTreeModel::SELECTED_COLUMN);
-	cellrenderer -> property_foreground_rgba ()      = selectedForegroundColor;
-	cellrenderer -> property_cell_background_rgba () = selectedBackgroundColor;
 
 	// Append column
 
@@ -127,16 +121,30 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	Gtk::TreeViewColumn* treeviewcolumn_pad = Gtk::manage (new Gtk::TreeViewColumn ());
 	treeviewcolumn_pad -> set_expand (true);
 
-	const auto padCellrenderer = Gtk::manage (new Gtk::CellRendererText ());
 	treeviewcolumn_pad -> pack_start (*padCellrenderer, true);
 	treeviewcolumn_pad -> add_attribute (*padCellrenderer, "cell-background-set", OutlineTreeModel::SELECTED_COLUMN);
-	padCellrenderer -> property_cell_background_rgba () = selectedBackgroundColor;
 
 	append_column (*treeviewcolumn_pad);
+
+	on_style_updated ();
 
 	//
 
 	set_execution_context (executionContext);
+}
+
+void
+X3DOutlineTreeView::on_style_updated ()
+{
+	// Color
+
+	const auto selectedForegroundColor = get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+	const auto selectedBackgroundColor = get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
+
+	cellrenderer -> property_foreground_rgba ()      = selectedForegroundColor;
+	cellrenderer -> property_cell_background_rgba () = selectedBackgroundColor;
+
+	padCellrenderer -> property_cell_background_rgba () = selectedBackgroundColor;
 }
 
 void

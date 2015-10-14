@@ -134,7 +134,7 @@ NavigationInfoEditor::on_remove_navigation_info_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove NavigationInfo"));
 
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { nodeName .getNode () }, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { nodeName .getNode () }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

@@ -75,7 +75,7 @@ public:
 	///  @name Import/Export handling
 
 	MFNode
-	importScene (const X3DExecutionContextPtr &, MFNode &, const X3DScenePtr &, const UndoStepPtr &) const;
+	importScene (const X3DExecutionContextPtr &, const SFNode &, MFNode &, const X3DScenePtr &, const UndoStepPtr &) const;
 
 	virtual
 	std::string
@@ -141,7 +141,7 @@ public:
 
 	virtual
 	void
-	removeNodesFromScene (const X3DExecutionContextPtr &, const MFNode &, const UndoStepPtr &) const;
+	removeNodesFromScene (const X3DExecutionContextPtr &, const MFNode &, const bool, const UndoStepPtr &) const;
 
 	virtual
 	void
@@ -288,9 +288,6 @@ private:
 
 	void
 	removeNode (const SFNode &, MFNode &, const SFNode &, const UndoStepPtr &) const;
-
-	void
-	removeNodesFromScene (const X3DExecutionContextPtr &, const MFNode &, const bool, const UndoStepPtr &) const;
 
 	void
 	removeNodesFromExecutionContext (const X3DExecutionContextPtr &, const std::set <SFNode> &, const UndoStepPtr &, const bool) const;

@@ -158,7 +158,7 @@ InlineEditor::on_remove_inline_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Inline"));
 
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { nodeName .getNode () }, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { nodeName .getNode () }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -222,7 +222,7 @@ InlineEditor::on_fold_back_into_scene_clicked ()
 
 	getBrowserWindow () -> updateNamedNode (getExecutionContext (), name, group, undoStep);
 	getBrowserWindow () -> replaceNodes (getExecutionContext (), X3D::SFNode (inlineNode), group, undoStep);
-	getBrowserWindow () -> importScene (getExecutionContext (), groupNode -> children (), scene, undoStep);
+	getBrowserWindow () -> importScene (getExecutionContext (), group, groupNode -> children (), scene, undoStep);
 	group -> setup ();
 
 	for (const auto & route : importedRoutes)

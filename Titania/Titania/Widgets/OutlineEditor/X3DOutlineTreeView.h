@@ -268,6 +268,10 @@ private:
 
 	virtual
 	void
+	on_style_updated () final override;
+
+	virtual
+	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
 	void
@@ -312,12 +316,13 @@ private:
 
 	///  @name Members
 
-	Glib::RefPtr <OutlineTreeModel>       model;
-	std::unique_ptr <OutlineSelection>    selection;
-	std::unique_ptr <OutlineTreeObserver> treeObserver;
-	std::unique_ptr <OutlineRouteGraph>   routeGraph;
-	OutlineCellRenderer*                  cellrenderer;
-	size_t                                expandLevel;
+	Glib::RefPtr <OutlineTreeModel>             model;
+	const std::unique_ptr <OutlineSelection>    selection;
+	const std::unique_ptr <OutlineTreeObserver> treeObserver;
+	const std::unique_ptr <OutlineRouteGraph>   routeGraph;
+	OutlineCellRenderer* const                  cellrenderer;
+	Gtk::CellRendererText* const                padCellrenderer;
+	size_t                                      expandLevel;
 
 	bool externProtos;
 	bool prototypes;

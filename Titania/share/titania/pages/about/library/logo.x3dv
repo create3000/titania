@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 13 Oct 2015 06:42:37 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Tue, 13 Oct 2015 07:51:40 GMT"
+META "modified" "Wed, 14 Oct 2015 18:16:12 GMT"
 META "title" "Logo"
 
 WorldInfo {
@@ -58,6 +58,10 @@ WorldInfo {
     ]
   }
   title "logo"
+}
+
+Background {
+  transparency 1
 }
 
 DEF Red Transform {

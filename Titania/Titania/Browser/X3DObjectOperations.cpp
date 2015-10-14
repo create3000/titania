@@ -189,7 +189,7 @@ X3DObjectOperations::removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> & 
 		nodes .emplace_back (node);
 	}
 
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), nodes, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), nodes, true, undoStep);
 
 	// Remove Shape nodes from selection.
 
@@ -213,7 +213,7 @@ X3DObjectOperations::removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> & 
 			nodes .emplace_back (group);
 	}
 
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), nodes, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), nodes, true, undoStep);
 }
 
 X3DObjectOperations::~X3DObjectOperations ()

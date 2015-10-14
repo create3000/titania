@@ -171,7 +171,7 @@ public:
 
 	virtual
 	void
-	removeNodesFromScene (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const X3D::UndoStepPtr &) const final override;
+	removeNodesFromScene (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const bool, const X3D::UndoStepPtr &) const final override;
 
 	/// @name CDATA field operations
 

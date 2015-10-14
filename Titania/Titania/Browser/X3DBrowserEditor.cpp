@@ -420,8 +420,9 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 {
 	// Import into scene graph
 
-	X3D::MFNode nodes;
-	auto        selection = getSelection () -> getChildren ();
+	X3D::MFNode  nodes;
+	auto         selection = getSelection () -> getChildren ();
+	const auto & layerSet  = getWorld () -> getLayerSet ();
 
 	for (const auto & worldURL : uris)
 	{
@@ -431,8 +432,13 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 
 			if (MagicImport (getBrowserWindow ()) .import (selection, scene, undoStep))
 				return selection;
+			
+			X3D::MFNode importedNodes;
 
-			const auto importedNodes = importScene (getExecutionContext (), getExecutionContext () -> getRootNodes (), scene, undoStep);
+			if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
+				importedNodes = importScene (getExecutionContext (), X3D::SFNode (layerSet -> getActiveLayer ()), layerSet -> getActiveLayer () -> children (), scene, undoStep);
+			else
+				importedNodes = importScene (getExecutionContext (), X3D::SFNode (getExecutionContext ()), getExecutionContext () -> getRootNodes (), scene, undoStep);
 
 			nodes .insert (nodes .end (), importedNodes .begin (), importedNodes .end ());
 		}
@@ -444,6 +450,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 
 	return nodes;
 }
+
 
 X3D::MFNode
 X3DBrowserEditor::importAsInline (const std::vector <basic::uri> & uris, const X3D::UndoStepPtr & undoStep)
@@ -467,7 +474,7 @@ X3DBrowserEditor::importAsInline (const std::vector <basic::uri> & uris, const X
 
 		const auto scene = getBrowser () -> createX3DFromString (string);
 
-		return importScene (getExecutionContext (), getExecutionContext () -> getRootNodes (), scene, undoStep);
+		return importScene (getExecutionContext (), X3D::SFNode (getExecutionContext ()), getExecutionContext () -> getRootNodes (), scene, undoStep);
 	}
 
 	return X3D::MFNode ();
@@ -682,7 +689,7 @@ X3DBrowserEditor::pasteNodes (const X3D::X3DExecutionContextPtr & executionConte
 
 						if (not MagicImport (getBrowserWindow ()) .import (nodes, scene, undoStep))
 						{
-							getSelection () -> setChildren (importScene (getExecutionContext (), getExecutionContext () -> getRootNodes (), scene, undoStep),
+							getSelection () -> setChildren (importScene (getExecutionContext (), X3D::SFNode (getExecutionContext ()), getExecutionContext () -> getRootNodes (), scene, undoStep),
 							                                undoStep);
 						}
 					}
@@ -747,7 +754,7 @@ X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepP
 
 	const auto removeUndoStep = std::make_shared <X3D::UndoStep> ("");
 
-	removeNodesFromScene (getExecutionContext (), { node }, removeUndoStep);
+	removeNodesFromScene (getExecutionContext (), { node }, true, removeUndoStep);
 	undoStep -> addUndoFunction (&X3D::UndoStep::redo, removeUndoStep);
 	removeUndoStep -> undo ();
 	undoStep -> addRedoFunction (&X3D::UndoStep::undo, removeUndoStep);
@@ -758,11 +765,11 @@ X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepP
  *  Completely removes @a nodes from @a executionContext.
  */
 void
-X3DBrowserEditor::removeNodesFromScene (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep) const
+X3DBrowserEditor::removeNodesFromScene (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes, const bool removeFromSceneGraph, const X3D::UndoStepPtr & undoStep) const
 {
 	getSelection () -> removeChildren (nodes, undoStep);
 
-	X3D::X3DEditor::removeNodesFromScene (executionContext, nodes, undoStep);
+	X3D::X3DEditor::removeNodesFromScene (executionContext, nodes, removeFromSceneGraph, undoStep);
 }
 
 // Undo functions

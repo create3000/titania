@@ -768,3 +768,5 @@ TreeView::button_release_event
   virtual bool on_button_release_event(GdkEventButton* event);
 Button::activate
   virtual void on_activate();
+Box::style_updated
+  virtual void on_style_updated();

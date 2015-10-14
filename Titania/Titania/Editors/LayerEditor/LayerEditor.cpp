@@ -156,7 +156,7 @@ LayerEditor::set_layersSet ()
 		getLayerSetLabel () .set_text (isDefaultLayerSet ? _ ("Default LayerSet") : _ ("LayerSet"));
 	}
 
-	getWidget () .set_sensitive (getExecutionContext () == getScene ());
+	getWidget () .set_sensitive (not inPrototypeInstance ());
 }
 
 void
@@ -612,7 +612,7 @@ LayerEditor::on_remove_layer_set_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove LayerSet"));
 
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { layerSet }, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { layerSet }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

@@ -71,6 +71,7 @@ Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 	         context (),
 	  sharingContext (sharingContext)
 {
+	get_style_context () -> add_class ("titania-surface");
 	set_double_buffered (false);
 	set_app_paintable (true);
 
@@ -211,10 +212,9 @@ Surface::set_construct (const Cairo::RefPtr <Cairo::Context> & cairo)
 bool
 Surface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
-	//	while (Gtk::Main::events_pending ())
-	//		Gtk::Main::iteration ();
-
 	Gtk::Main::iteration (false);
+
+	//get_toplevel () -> get_style_context () -> render_background (cairo, 0, 0, get_width (), get_height ());
 
 	update (cairo);
 

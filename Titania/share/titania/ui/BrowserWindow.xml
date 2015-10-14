@@ -1882,6 +1882,7 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="orientation">vertical</property>
+        <signal name="style-updated" handler="on_style_updated" swapped="no"/>
         <child>
           <object class="GtkBox" id="HeaderBox">
             <property name="visible">True</property>

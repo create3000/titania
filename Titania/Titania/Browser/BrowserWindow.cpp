@@ -91,6 +91,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	      X3DObjectOperations (),
 	                 changing (false),
 	                   viewer (X3D::ViewerType::NONE),
+	              cssProvider (Gtk::CssProvider::create ()),
 	       environmentActions (),
 	           shadingActions (),
 	  primitiveQualityActions (),
@@ -168,33 +169,16 @@ BrowserWindow::initialize ()
 }
 
 void
-BrowserWindow::loadStyles () const
+BrowserWindow::loadStyles () 
 {
 	try
 	{
-		Glib::RefPtr <Gtk::CssProvider> cssProvider1 = Gtk::CssProvider::create ();
-		cssProvider1 -> load_from_path (get_ui ("style.css"));
-		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider1, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+		Glib::RefPtr <Gtk::CssProvider> fileCssProvider = Gtk::CssProvider::create ();
+		fileCssProvider -> load_from_path (get_ui ("style.css"));
+		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), fileCssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-		const auto styleContext = getWidget () .get_style_context ();
-		const auto fg_selected  = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED);
-		const auto bg_normal    = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL);
-		const auto bg_selected  = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED);
-
-		std::string string;
-
-		string += "#OutlineTreeViewEditor .titania-textview-editable GtkTextView {";
-		string += "  background-color: mix (" + bg_selected .to_string () + ", " + bg_normal .to_string () + ", 0.9);";
-		string += "}";
-		string += "";
-		string += "#OutlineTreeViewEditor .titania-textview-editable GtkTextView:selected {";
-		string += "  color: " + fg_selected .to_string () + ";";
-		string += "  background-color: " + bg_selected .to_string () + ";";
-		string += "}";
-
-		Glib::RefPtr <Gtk::CssProvider> cssProvider2 = Gtk::CssProvider::create ();
-		cssProvider2 -> load_from_data (string);
-		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider2, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+		on_style_updated ();
 	}
 	catch (const Glib::Error & error)
 	{
@@ -419,6 +403,37 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	}
 
 	changing = false;
+}
+
+// Style
+
+void
+BrowserWindow::on_style_updated ()
+{
+	try
+	{
+//		const auto styleContext = getWidget () .get_style_context ();
+//		const auto fg_selected  = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED);
+//		const auto bg_normal    = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL);
+//		const auto bg_selected  = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED);
+//
+//		std::string string;
+//
+//		string += "#OutlineTreeViewEditor .titania-textview-editable GtkTextView {";
+//		string += "  background-color: mix (" + bg_selected .to_string () + ", " + bg_normal .to_string () + ", 0.9);";
+//		string += "}";
+//		string += "";
+//		string += "#OutlineTreeViewEditor .titania-textview-editable GtkTextView:selected {";
+//		string += "  color: " + fg_selected .to_string () + ";";
+//		string += "  background-color: " + bg_selected .to_string () + ";";
+//		string += "}";
+//
+//		cssProvider -> load_from_data (string);
+	}
+	catch (const Glib::Error & error)
+	{
+	   __LOG__ << error .what () << std::endl;
+	}
 }
 
 // Keys
@@ -792,7 +807,7 @@ BrowserWindow::on_delete_activated ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Node From Scene"));
 
-	removeNodesFromScene (getExecutionContext (), selection, undoStep);
+	removeNodesFromScene (getExecutionContext (), selection, true, undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -2236,7 +2251,7 @@ BrowserWindow::on_hammer_clicked ()
 							basic::ifilestream text (exportNodes (getExecutionContext (), exports));
 
 							const auto scene = getBrowser () -> createX3DFromStream (getExecutionContext () -> getWorldURL (), text);
-							const auto nodes = importScene (getExecutionContext (), getExecutionContext () -> getRootNodes (), scene, undoStep);
+							const auto nodes = importScene (getExecutionContext (), X3D::SFNode (getExecutionContext ()), getExecutionContext () -> getRootNodes (), scene, undoStep);
 
 							addToGroup (getExecutionContext (), X3D::SFNode (shape), nodes, undoStep);
 						}

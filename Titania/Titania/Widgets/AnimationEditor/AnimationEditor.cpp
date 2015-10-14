@@ -333,7 +333,7 @@ AnimationEditor::on_new ()
 	// Undo/Redo
 
 	const auto undoRemoveNode = std::make_shared <X3D::UndoStep> ();
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { animation }, undoRemoveNode);
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { animation }, true, undoRemoveNode);
 	undoStep -> addUndoFunction (&X3D::UndoStep::redo, undoRemoveNode);
 	undoStep -> addRedoFunction (&X3D::UndoStep::undo, undoRemoveNode);
 	undoRemoveNode -> undo ();
@@ -595,7 +595,7 @@ AnimationEditor::on_remove_member ()
 
 			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Animation"));
 
-			getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { animation }, undoStep);
+			getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { animation }, true, undoStep);
 			getBrowserWindow () -> addUndoStep (undoStep);
 			break;
 		}
@@ -645,7 +645,7 @@ AnimationEditor::on_remove_member ()
 				
 				if (not interpolators .empty ())
 				{
-					getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), X3D::MFNode (interpolatorsToRemove .begin (), interpolatorsToRemove .end ()), undoStep);
+					getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), X3D::MFNode (interpolatorsToRemove .begin (), interpolatorsToRemove .end ()), true, undoStep);
 				}
 
 				undoStep -> addRedoFunction (&AnimationEditor::set_interpolators, this);
@@ -695,7 +695,7 @@ AnimationEditor::on_remove_member ()
 				}
 						
 				if (not isConnectedToOtherMembers)
-					getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { interpolator }, undoStep);
+					getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { interpolator }, true, undoStep);
 
 				undoStep -> addRedoFunction (&AnimationEditor::set_interpolators, this);
 				getBrowserWindow () -> addUndoStep (undoStep);
@@ -1836,7 +1836,7 @@ AnimationEditor::removeKeyframes ()
 			interpolatorsToRemove .emplace_back (interpolator);
 	}
 
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), interpolatorsToRemove, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), interpolatorsToRemove, true, undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }

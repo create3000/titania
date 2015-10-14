@@ -43,6 +43,12 @@ GtkExpander > GtkLabel {
 	font-weight: bold;
 }
 
+/* Surface */
+
+.titania-surface {
+	background: rgba(0,0,0,0);
+}
+
 /* Outline Editor */
 
 #SceneMenuButton {
