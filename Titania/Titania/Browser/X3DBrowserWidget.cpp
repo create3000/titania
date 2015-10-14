@@ -317,6 +317,9 @@ X3DBrowserWidget::setExecutionContext (const X3D::X3DExecutionContextPtr & value
 {
 	try
 	{
+		if (value == executionContext)
+		   return;
+	 
 		const X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (getBrowser ());
 
 		browserOptions -> assign (getBrowser () -> getBrowserOptions ());

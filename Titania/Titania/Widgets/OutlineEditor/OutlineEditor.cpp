@@ -501,22 +501,11 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 	switch (treeView -> get_data_type (iter))
 	{
 		case OutlineIterType::ExternProtoDeclaration:
-		{
-			const auto & sfnode      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto   externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
-			const auto   undoStep    = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create %s"), externProto -> getName () .c_str ()));
-			const auto   instance    = getBrowserWindow () -> addPrototypeInstance (getExecutionContext (), externProto -> getName (), undoStep);
-
-			getBrowserWindow () -> getSelection () -> setChildren ({ instance }, undoStep);
-			getBrowserWindow () -> addUndoStep (undoStep);
-			break;
-		}
 		case OutlineIterType::ProtoDeclaration:
 		{
-			const auto & sfnode    = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto   prototype = dynamic_cast <X3D::ProtoDeclaration*> (sfnode .getValue ());
-			const auto   undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create %s"), prototype -> getName () .c_str ()));
-			const auto   instance  = getBrowserWindow () -> addPrototypeInstance (getExecutionContext (), prototype -> getName (), undoStep);
+			const auto & sfnode   = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Instance %s"), sfnode -> getName () .c_str ()));
+			const auto   instance = getBrowserWindow () -> addPrototypeInstance (getExecutionContext (), sfnode -> getName (), undoStep);
 
 			getBrowserWindow () -> getSelection () -> setChildren ({ instance }, undoStep);
 			getBrowserWindow () -> addUndoStep (undoStep);
@@ -844,7 +833,6 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 
 				getBrowserWindow () -> pushBackIntoArray (group, children, child, undoStep);
 				getBrowserWindow () -> replaceNode (getExecutionContext (), parent, child, group, undoStep);
-				getBrowserWindow () -> getSelection () -> setChildren (X3D::MFNode ({ group }), undoStep);
 				getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
 				break;
 			}
@@ -861,7 +849,6 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 
 				getBrowserWindow () -> pushBackIntoArray (group, children, child, undoStep);
 				getBrowserWindow () -> replaceNode (getExecutionContext (), parent, mfnode, index, group, undoStep);
-				getBrowserWindow () -> getSelection () -> setChildren (X3D::MFNode ({ group }), undoStep);
 				getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
 				break;
 			}
