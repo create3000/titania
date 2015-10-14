@@ -614,7 +614,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress, const 
 					<< X3D::XMLEncode (scene);
 				
 				if (copy)
-					undoStep -> undoChanges ();
+					undoStep -> undo ();
 				
 				if (file)
 					return true;
@@ -633,7 +633,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress, const 
 					<< X3D::XMLEncode (scene);
 				
 				if (copy)
-					undoStep -> undoChanges ();
+					undoStep -> undo ();
 
 				if (file)
 					return true;
@@ -672,7 +672,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress, const 
 					<< scene;
 				
 				if (copy)
-					undoStep -> undoChanges ();
+					undoStep -> undo ();
 
 				if (file)
 					return true;
@@ -691,7 +691,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress, const 
 					<< scene;
 				
 				if (copy)
-					undoStep -> undoChanges ();
+					undoStep -> undo ();
 
 				if (file)
 					return true;

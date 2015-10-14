@@ -57,7 +57,7 @@
 #include <Titania/X3D/Components/Rendering/X3DCoordinateNode.h>
 #include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
 #include <Titania/X3D/Editor/Undo/UndoHistory.h>
-#include <Titania/X3D/Editor/X3DBrowserEditor.h>
+#include <Titania/X3D/Editor/X3DEditor.h>
 
 namespace titania {
 namespace puck {
@@ -66,7 +66,7 @@ class MagicImport;
 
 class X3DBrowserEditor :
 	public X3DBrowserWidget,
-	public X3D::X3DBrowserEditor
+	public X3D::X3DEditor
 {
 public:
 
@@ -101,13 +101,10 @@ public:
 	load (const X3D::BrowserPtr &, const basic::uri &) final override;
 
 	X3D::MFNode
-	importURL (const std::vector <basic::uri> &, const bool, const X3D::UndoStepPtr & undoStep);
+	import (const std::vector <basic::uri> &, const X3D::UndoStepPtr & undoStep);
 
 	X3D::MFNode
-	importScene (const X3D::X3DScenePtr &, X3D::MFNode &, const X3D::UndoStepPtr &);
-
-	std::vector <std::tuple <X3D::SFNode, std::string, X3D::SFNode, std::string>>
-	getImportedRoutes (const X3D::X3DExecutionContextPtr &, const X3D::X3DScenePtr &) const;
+	importAsInline (const std::vector <basic::uri> &, const X3D::UndoStepPtr & undoStep);
 
 	virtual
 	bool
@@ -174,7 +171,7 @@ public:
 
 	virtual
 	void
-	removeNodesFromScene (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const X3D::UndoStepPtr &, const bool = true) const final override;
+	removeNodesFromScene (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const X3D::UndoStepPtr &) const final override;
 
 	/// @name CDATA field operations
 

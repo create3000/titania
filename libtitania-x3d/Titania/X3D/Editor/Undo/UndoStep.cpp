@@ -60,9 +60,9 @@ namespace X3D {
  *
  *  To add another UndoStep to this UndoStep you can use:
  *
- *      undoStep -> addUndoFunction (&UndoStep::redoChanges, otherUndoStep);
- *      undoStep -> addRedoFunction (&UndoStep::undoChanges, otherUndoStep);
- *      otherUndoStep -> undoChanges ();
+ *      undoStep -> addUndoFunction (&UndoStep::redo, otherUndoStep);
+ *      undoStep -> addRedoFunction (&UndoStep::undo, otherUndoStep);
+ *      otherUndoStep -> undo ();
  */
 UndoStep::UndoStep () :
 	UndoStep ("")
@@ -76,7 +76,7 @@ UndoStep::UndoStep (const std::string & description) :
 { }
 
 void
-UndoStep::undoChanges ()
+UndoStep::undo ()
 {
 	for (const auto & undoFunction : basic::make_reverse_range (undoFunctions))
 	{
@@ -96,7 +96,7 @@ UndoStep::undoChanges ()
 }
 
 void
-UndoStep::redoChanges ()
+UndoStep::redo ()
 {
 	for (const auto & redoFunction : redoFunctions)
 	{

@@ -127,11 +127,11 @@ UndoHistory::hasRedo () const
 }
 
 void
-UndoHistory::undoChanges ()
+UndoHistory::undo ()
 {
 	if (index >= 0)
 	{
-		list [index] -> undoChanges ();
+		list [index] -> undo ();
 
 		-- index;
 
@@ -140,13 +140,13 @@ UndoHistory::undoChanges ()
 }
 
 void
-UndoHistory::redoChanges ()
+UndoHistory::redo ()
 {
 	if (index + 1 < (int32_t) list .size ())
 	{
 		++ index;
 
-		list [index] -> redoChanges ();
+		list [index] -> redo ();
 
 		processInterests ();
 	}
@@ -159,7 +159,7 @@ UndoHistory::clear ()
 
 	index = -1;
 
-	setSaved ();
+	save ();
 
 	processInterests ();
 }

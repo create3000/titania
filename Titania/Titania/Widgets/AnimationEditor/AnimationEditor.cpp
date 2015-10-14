@@ -334,9 +334,9 @@ AnimationEditor::on_new ()
 
 	const auto undoRemoveNode = std::make_shared <X3D::UndoStep> ();
 	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { animation }, undoRemoveNode);
-	undoStep -> addUndoFunction (&X3D::UndoStep::redoChanges, undoRemoveNode);
-	undoStep -> addRedoFunction (&X3D::UndoStep::undoChanges, undoRemoveNode);
-	undoRemoveNode -> undoChanges ();
+	undoStep -> addUndoFunction (&X3D::UndoStep::redo, undoRemoveNode);
+	undoStep -> addRedoFunction (&X3D::UndoStep::undo, undoRemoveNode);
+	undoRemoveNode -> undo ();
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }

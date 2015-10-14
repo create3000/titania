@@ -502,7 +502,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Editor/Undo/UndoGroup.lo \
 	Titania/X3D/Editor/Undo/UndoHistory.lo \
 	Titania/X3D/Editor/Undo/UndoStep.lo \
-	Titania/X3D/Editor/X3DBrowserEditor.lo \
+	Titania/X3D/Editor/X3DEditor.lo \
 	Titania/X3D/Execution/BindableNodeList.lo \
 	Titania/X3D/Execution/ExportedNode.lo \
 	Titania/X3D/Execution/ExportedNodeIndex.lo \
@@ -1239,7 +1239,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Editor/Undo/UndoGroup.cpp \
 	Titania/X3D/Editor/Undo/UndoHistory.cpp \
 	Titania/X3D/Editor/Undo/UndoStep.cpp \
-	Titania/X3D/Editor/X3DBrowserEditor.cpp \
+	Titania/X3D/Editor/X3DEditor.cpp \
 	Titania/X3D/Execution/BindableNodeList.cpp \
 	Titania/X3D/Execution/ExportedNode.cpp \
 	Titania/X3D/Execution/ExportedNodeIndex.cpp \
@@ -2929,8 +2929,7 @@ Titania/X3D/Editor/$(am__dirstamp):
 Titania/X3D/Editor/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Editor/$(DEPDIR)
 	@: > Titania/X3D/Editor/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Editor/X3DBrowserEditor.lo:  \
-	Titania/X3D/Editor/$(am__dirstamp) \
+Titania/X3D/Editor/X3DEditor.lo: Titania/X3D/Editor/$(am__dirstamp) \
 	Titania/X3D/Editor/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Execution/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Execution
@@ -3969,7 +3968,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/SupportedProfiles.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/Unit.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/UnitArray.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editor/$(DEPDIR)/X3DBrowserEditor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editor/$(DEPDIR)/X3DEditor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editor/Undo/$(DEPDIR)/UndoGroup.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editor/Undo/$(DEPDIR)/UndoHistory.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editor/Undo/$(DEPDIR)/UndoStep.Plo@am__quote@

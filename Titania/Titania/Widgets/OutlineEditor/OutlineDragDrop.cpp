@@ -589,7 +589,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 				break;
 		}
 
-		undoStep -> undoChanges ();
+		undoStep -> undo ();
 	}
 }
 

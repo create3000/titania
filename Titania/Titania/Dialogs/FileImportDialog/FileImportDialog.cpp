@@ -219,9 +219,7 @@ FileImportDialog::run ()
 
 				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import As Inline"));
 
-				const auto nodes = getBrowserWindow () -> importURL ({ Glib::uri_unescape_string (getWindow () .get_uri ()) },
-				                                                     false,
-				                                                     undoStep);
+				const auto nodes = getBrowserWindow () -> import ({ Glib::uri_unescape_string (getWindow () .get_uri ()) }, undoStep);
 
 				getBrowserWindow () -> getSelection () -> setChildren (nodes, undoStep);
 				getBrowserWindow () -> addUndoStep (undoStep);
@@ -233,9 +231,7 @@ FileImportDialog::run ()
 
 				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import"));
 
-				const auto nodes = getBrowserWindow () -> importURL ({ Glib::uri_unescape_string (getWindow () .get_uri ()) },
-				                                                     true,
-				                                                     undoStep);
+				const auto nodes = getBrowserWindow () -> importAsInline ({ Glib::uri_unescape_string (getWindow () .get_uri ()) }, undoStep);
 
 				getBrowserWindow () -> getSelection () -> setChildren (nodes, undoStep);
 				getBrowserWindow () -> addUndoStep (undoStep);

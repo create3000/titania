@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_EDITOR_X3DBROWSER_EDITOR_H__
-#define __TITANIA_X3D_EDITOR_X3DBROWSER_EDITOR_H__
+#ifndef __TITANIA_X3D_EDITOR_X3D_EDITOR_H__
+#define __TITANIA_X3D_EDITOR_X3D_EDITOR_H__
 
 #include "../Fields/SFNode.h"
 #include "../Fields/MFNode.h"
@@ -64,15 +64,18 @@ namespace X3D {
 class X3DGeometryNode;
 class X3DCoordinateNode;
 
-class X3DBrowserEditor
+class X3DEditor
 {
 public:
 
 	///  @name Construction
 
-	X3DBrowserEditor () = default;
+	X3DEditor () = default;
 
-	///  @name Clipboard handling
+	///  @name Import/Export handling
+
+	MFNode
+	importScene (const X3DExecutionContextPtr &, MFNode &, const X3DScenePtr &, const UndoStepPtr &) const;
 
 	virtual
 	std::string
@@ -138,7 +141,7 @@ public:
 
 	virtual
 	void
-	removeNodesFromScene (const X3DExecutionContextPtr &, const MFNode &, const UndoStepPtr &, const bool = true) const;
+	removeNodesFromScene (const X3DExecutionContextPtr &, const MFNode &, const UndoStepPtr &) const;
 
 	virtual
 	void
@@ -171,6 +174,10 @@ public:
 	virtual
 	void
 	deleteRoute (const X3DExecutionContextPtr &, const SFNode &, const std::string &, const SFNode &, const std::string &, const UndoStepPtr &) const;
+
+	virtual
+	std::vector <std::tuple <SFNode, std::string, SFNode, std::string>>
+	getImportedRoutes (const X3DExecutionContextPtr &, const X3DScenePtr &) const;
 
 	///  @name Grouping operations
 
@@ -239,7 +246,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DBrowserEditor () = default;
+	~X3DEditor () = default;
 
 
 
@@ -264,6 +271,9 @@ private:
 
 	void
 	removeNode (const SFNode &, MFNode &, const SFNode &, const UndoStepPtr &) const;
+
+	void
+	removeNodesFromScene (const X3DExecutionContextPtr &, const MFNode &, const bool, const UndoStepPtr &) const;
 
 	void
 	removeNodesFromExecutionContext (const X3DExecutionContextPtr &, const std::set <SFNode> &, const UndoStepPtr &, const bool) const;

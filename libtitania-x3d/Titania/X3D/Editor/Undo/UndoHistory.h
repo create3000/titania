@@ -91,7 +91,7 @@ public:
 	{ return index not_eq savedIndex; }
 
 	void
-	setSaved ()
+	save ()
 	{ savedIndex = index; }
 
 	void
@@ -110,10 +110,10 @@ public:
 	hasRedo () const;
 
 	void
-	undoChanges ();
+	undo ();
 
 	void
-	redoChanges ();
+	redo ();
 
 	void
 	clear ();

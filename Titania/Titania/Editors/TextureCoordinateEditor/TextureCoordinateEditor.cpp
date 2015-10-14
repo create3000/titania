@@ -259,13 +259,13 @@ TextureCoordinateEditor::on_key_release_event (GdkEventKey* event)
 void
 TextureCoordinateEditor::on_undo ()
 {
-	undoHistory .undoChanges ();
+	undoHistory .undo ();
 }
 
 void
 TextureCoordinateEditor::on_redo ()
 {
-	undoHistory .redoChanges ();
+	undoHistory .redo ();
 }
 
 void

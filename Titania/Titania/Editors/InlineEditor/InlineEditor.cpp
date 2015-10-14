@@ -222,7 +222,7 @@ InlineEditor::on_fold_back_into_scene_clicked ()
 
 	getBrowserWindow () -> updateNamedNode (getExecutionContext (), name, group, undoStep);
 	getBrowserWindow () -> replaceNodes (getExecutionContext (), X3D::SFNode (inlineNode), group, undoStep);
-	getBrowserWindow () -> importScene (scene, groupNode -> children (), undoStep);
+	getBrowserWindow () -> importScene (getExecutionContext (), groupNode -> children (), scene, undoStep);
 	group -> setup ();
 
 	for (const auto & route : importedRoutes)

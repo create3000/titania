@@ -118,10 +118,10 @@ public:
 	{ redoFunctions .emplace_back (std::bind (std::forward <Args> (args) ...)); }
 
 	void
-	undoChanges ();
+	undo ();
 
 	void
-	redoChanges ();
+	redo ();
 
 	bool
 	isEmpty () const

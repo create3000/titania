@@ -643,12 +643,9 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 			}
 			else
 			{
-				const auto undoStep = getConfig () .getBoolean ("importAsInline")
-				                      ? std::make_shared <X3D::UndoStep> (_ ("Import As Inline"))
-											 : std::make_shared <X3D::UndoStep> (_ ("Import"));
-
-				const auto nodes = importURL (uris, getConfig () .getBoolean ("importAsInline"), undoStep);
-
+				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import"));
+				const auto nodes    = import (uris, undoStep);
+	
 				getSelection () -> setChildren (nodes, undoStep);
 				addUndoStep (undoStep);
 			}
@@ -2241,7 +2238,7 @@ BrowserWindow::on_hammer_clicked ()
 							basic::ifilestream text (exportNodes (getExecutionContext (), exports));
 
 							const auto scene = getBrowser () -> createX3DFromStream (getExecutionContext () -> getWorldURL (), text);
-							const auto nodes = importScene (scene, getExecutionContext () -> getRootNodes (), undoStep);
+							const auto nodes = importScene (getExecutionContext (), getExecutionContext () -> getRootNodes (), scene, undoStep);
 
 							addToGroup (getExecutionContext (), X3D::SFNode (shape), nodes, undoStep);
 						}

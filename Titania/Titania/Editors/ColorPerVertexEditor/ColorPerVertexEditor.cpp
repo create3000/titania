@@ -216,7 +216,7 @@ ColorPerVertexEditor::on_undo ()
 {
 	preview -> grab_focus ();
 
-	undoHistory .undoChanges ();
+	undoHistory .undo ();
 }
 
 void
@@ -224,7 +224,7 @@ ColorPerVertexEditor::on_redo ()
 {
 	preview -> grab_focus ();
 
-	undoHistory .redoChanges ();
+	undoHistory .redo ();
 }
 
 void

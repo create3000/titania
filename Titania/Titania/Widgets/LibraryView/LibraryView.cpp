@@ -234,7 +234,7 @@ LibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 			case Gio::FILE_TYPE_SYMBOLIC_LINK:
 			{
 				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import From Library"));
-				const auto nodes    = getBrowserWindow () -> importURL ({ file -> get_uri () }, false, undoStep);
+				const auto nodes    = getBrowserWindow () -> import ({ file -> get_uri () }, undoStep);
 
 				getBrowserWindow () -> getSelection () -> setChildren (nodes, undoStep);
 				getBrowserWindow () -> addUndoStep (undoStep);
