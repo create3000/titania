@@ -486,7 +486,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 		if (transform)
 		{
-			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (toExport [0]);
+			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (treeView -> getExecutionContext (), toExport [0]);
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 
@@ -508,7 +508,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 			{
 				// Get group modelview matrix
 
-				X3D::Matrix4d groupModelViewMatrix (getBrowserWindow () -> findModelViewMatrix (destNode));
+				X3D::Matrix4d groupModelViewMatrix (getBrowserWindow () -> findModelViewMatrix (treeView -> getExecutionContext (), destNode));
 
 				const X3D::X3DTransformMatrix4DNodePtr groupTransform (destNode);
 
@@ -517,7 +517,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 				
 				// Adjust child transformation
 
-				X3D::Matrix4d childModelViewMatrix = getBrowserWindow () -> findModelViewMatrix (sourceNode);
+				X3D::Matrix4d childModelViewMatrix = getBrowserWindow () -> findModelViewMatrix (treeView -> getExecutionContext (), sourceNode);
 
 				childModelViewMatrix .mult_left (childTransform -> getMatrix ());
 				childModelViewMatrix .mult_right (~groupModelViewMatrix);
@@ -545,7 +545,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 		if (sfnode)
 		{
-			getBrowserWindow () -> replaceNode (destNode, *sfnode, sourceNode, undoStep);
+			getBrowserWindow () -> replaceNode (treeView -> getExecutionContext (), destNode, *sfnode, sourceNode, undoStep);
 		}
 		else
 		{
@@ -705,7 +705,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 		if (transform)
 		{
-			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (toExport [0]);
+			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (treeView -> getExecutionContext (), toExport [0]);
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 
@@ -727,7 +727,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 			{
 				// Get group modelview matrix
 
-				X3D::Matrix4d groupModelViewMatrix (getBrowserWindow () -> findModelViewMatrix (destNode));
+				X3D::Matrix4d groupModelViewMatrix (getBrowserWindow () -> findModelViewMatrix (treeView -> getExecutionContext (), destNode));
 
 				const X3D::X3DTransformMatrix4DNodePtr groupTransform (destNode);
 
@@ -736,7 +736,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 				
 				// Adjust child transformation
 
-				X3D::Matrix4d childModelViewMatrix = getBrowserWindow () -> findModelViewMatrix (sourceNode);
+				X3D::Matrix4d childModelViewMatrix = getBrowserWindow () -> findModelViewMatrix (treeView -> getExecutionContext (), sourceNode);
 
 				childModelViewMatrix .mult_left (childTransform -> getMatrix ());
 				childModelViewMatrix .mult_right (~groupModelViewMatrix);
@@ -758,7 +758,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	   {
 			auto & sfnode = *static_cast <X3D::SFNode*> (destField);
 
-			getBrowserWindow () -> replaceNode (destNode, sfnode, sourceNode, undoStep);
+			getBrowserWindow () -> replaceNode (treeView -> getExecutionContext (), destNode, sfnode, sourceNode, undoStep);
 	      break;
 	   }
 	   case X3D::X3DConstants::MFNode:
@@ -909,7 +909,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 		if (transform)
 		{
-			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (toExport [0]);
+			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (treeView -> getExecutionContext (), toExport [0]);
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 
@@ -934,7 +934,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 			{
 				// Get group modelview matrix
 
-				X3D::Matrix4d groupModelViewMatrix (getBrowserWindow () -> findModelViewMatrix (*destParent));
+				X3D::Matrix4d groupModelViewMatrix (getBrowserWindow () -> findModelViewMatrix (treeView -> getExecutionContext (), *destParent));
 
 				const X3D::X3DTransformMatrix4DNodePtr groupTransform (*destParent);
 
@@ -943,7 +943,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 				
 				// Adjust child transformation
 
-				X3D::Matrix4d childModelViewMatrix = getBrowserWindow () -> findModelViewMatrix (sourceNode);
+				X3D::Matrix4d childModelViewMatrix = getBrowserWindow () -> findModelViewMatrix (treeView -> getExecutionContext (), sourceNode);
 
 				childModelViewMatrix .mult_left (childTransform -> getMatrix ());
 				childModelViewMatrix .mult_right (~groupModelViewMatrix);
@@ -1040,7 +1040,7 @@ OutlineDragDrop::remove_source_node (X3D::SFNode* const sourceParent, X3D::X3DFi
 			auto & sfnode = *static_cast <X3D::SFNode*> (sourceField);
 
 			if (undo)
-				getBrowserWindow () -> replaceNode (*sourceParent, sfnode, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (treeView -> getExecutionContext (), *sourceParent, sfnode, nullptr, undoStep);
 			else
 				sfnode = nullptr;
 

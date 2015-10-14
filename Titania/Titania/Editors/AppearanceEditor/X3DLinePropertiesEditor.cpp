@@ -121,9 +121,9 @@ X3DLinePropertiesEditor::on_lineProperties_toggled ()
 			field .addInterest (this, &X3DLinePropertiesEditor::connectLineProperties);
 
 			if (getLinePropertiesCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, X3D::SFNode (lineProperties), undoStep);
+				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, X3D::SFNode (lineProperties), undoStep);
 			else
-				getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }

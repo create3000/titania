@@ -165,7 +165,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, 
 	                        getBrowserWindow () -> updateNamedNode (getExecutionContext (), rhs -> getName (), appearance -> material (), undoStep);
 								}
 	                     else
-									getBrowserWindow () -> replaceNode (node, appearance -> material (), material, undoStep);
+									getBrowserWindow () -> replaceNode (getExecutionContext (), node, appearance -> material (), material, undoStep);
 							}
 
 	                  return true;
@@ -230,7 +230,7 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::X3DScenePtr & scene, c
 	                        texture3D -> textureProperties () = oldTexture3D -> textureProperties ();
 								}
 
-	                     getBrowserWindow () -> replaceNode (node, appearance -> texture (), texture, undoStep);
+	                     getBrowserWindow () -> replaceNode (node -> getExecutionContext (), node, appearance -> texture (), texture, undoStep);
 							}
 
 	                  return true;

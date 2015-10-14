@@ -696,7 +696,7 @@ BrowserWindow::on_remove_unused_prototypes_activated ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Unused Prototypes"));
 
-	removeUnusedPrototypes (undoStep);
+	removeUnusedPrototypes (getExecutionContext (), undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -813,7 +813,7 @@ BrowserWindow::on_create_clone_activated ()
 	const auto clone = selection .back ();
 	selection .pop_back ();
 
-	createClone (clone, selection, undoStep);
+	createClone (getExecutionContext (), clone, selection, undoStep);
 
 	getSelection () -> setChildren ({ clone }, undoStep);
 
@@ -830,7 +830,7 @@ BrowserWindow::on_unlink_clone_activated ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Unlink Clone"));
 
-	X3D::MFNode nodes = unlinkClone (selection, undoStep);
+	auto nodes = unlinkClone (getExecutionContext (), selection, undoStep);
 
 	getSelection () -> setChildren (nodes, undoStep);
 
@@ -846,9 +846,11 @@ BrowserWindow::on_group_selected_nodes_activated ()
 		return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Group"));
-	const auto group    = groupNodes ("Transform", selection, undoStep);
+	const auto group    = groupNodes (getExecutionContext (), "Transform", selection, undoStep);
 
-	emplaceBack (getExecutionContext () -> getRootNodes (), group, undoStep);
+	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (getExecutionContext () -> getRootNodes ()), getExecutionContext () -> getRootNodes ());
+	getExecutionContext () -> getRootNodes () .emplace_back (group);
+	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (getExecutionContext () -> getRootNodes ()), getExecutionContext () -> getRootNodes ());
 
 	getSelection () -> setChildren ({ group }, undoStep);
 	addUndoStep (undoStep);
@@ -867,7 +869,7 @@ BrowserWindow::on_ungroup_activated ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Ungroup"));
 
 	getSelection () -> clear (undoStep);
-	getSelection () -> setChildren (ungroupNodes (selection, undoStep), undoStep);
+	getSelection () -> setChildren (ungroupNodes (getExecutionContext (), selection, undoStep), undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -887,7 +889,7 @@ BrowserWindow::on_add_to_group_activated ()
 	const auto group = selection .back ();
 	selection .pop_back ();
 
-	if (addToGroup (group, selection, undoStep))
+	if (addToGroup (getExecutionContext (), group, selection, undoStep))
 	{
 		getSelection () -> setChildren (selection, undoStep);
 
@@ -908,7 +910,7 @@ BrowserWindow::on_detach_from_group_activated ()
 	getSelection () -> undoRestoreSelection (undoStep);
 	getSelection () -> redoRestoreSelection (undoStep);
 
-	detachFromGroup (selection, getKeys () .shift (), undoStep);
+	detachFromGroup (getExecutionContext (), selection, getKeys () .shift (), undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -1042,10 +1044,10 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 	const auto leader = selection .back ();
 	selection .pop_back ();
 
-	const auto group = createParentGroup (typeName, fieldName, { leader }, undoStep);
+	const auto group = createParentGroup (getExecutionContext (), typeName, fieldName, { leader }, undoStep);
 
 	if (not selection .empty ())
-		addToGroup (group, selection, undoStep);
+		addToGroup (getExecutionContext (), group, selection, undoStep);
 
 	getSelection () -> setChildren ({ group }, undoStep);
 
@@ -2241,7 +2243,7 @@ BrowserWindow::on_hammer_clicked ()
 							const auto scene = getBrowser () -> createX3DFromStream (getExecutionContext () -> getWorldURL (), text);
 							const auto nodes = importScene (scene, getExecutionContext () -> getRootNodes (), undoStep);
 
-							addToGroup (X3D::SFNode (shape), nodes, undoStep);
+							addToGroup (getExecutionContext (), X3D::SFNode (shape), nodes, undoStep);
 						}
 					}
 					catch (const X3D::X3DError &)
@@ -2255,7 +2257,7 @@ BrowserWindow::on_hammer_clicked ()
 					{
 						const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry ());
 
-						replaceNode (X3D::SFNode (shape), shape -> geometry (), geometry -> toPrimitive (), undoStep);
+						replaceNode (getExecutionContext (), X3D::SFNode (shape), shape -> geometry (), geometry -> toPrimitive (), undoStep);
 					}
 					catch (const X3D::X3DError &)
 					{ }
@@ -2848,7 +2850,7 @@ BrowserWindow::on_look_at_selection_clicked ()
 		const auto boundedObject = X3D::x3d_cast <X3D::X3DBoundedObject*> (node);
 
 		if (boundedObject)
-			bbox += boundedObject -> getBBox () * X3D::Matrix4f (findModelViewMatrix (boundedObject));
+			bbox += boundedObject -> getBBox () * X3D::Matrix4f (findModelViewMatrix (getExecutionContext (), boundedObject));
 	}
 
 	activeViewpoint -> lookAt (bbox);

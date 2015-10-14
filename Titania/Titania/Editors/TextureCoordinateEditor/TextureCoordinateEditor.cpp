@@ -1155,7 +1155,7 @@ TextureCoordinateEditor::on_remove_clicked ()
 	undoStep -> addRedoFunction (&X3D::MFInt32::clear, std::ref (geometry -> texCoordIndex ()));
 	geometry -> texCoordIndex () .clear ();
 
-	getBrowserWindow () -> replaceNode (X3D::SFNode (geometry), geometry -> texCoord (), X3D::SFNode (), undoStep);
+	getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (geometry), geometry -> texCoord (), X3D::SFNode (), undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -1207,12 +1207,12 @@ TextureCoordinateEditor::on_apply_clicked ()
 		//
 		//		texCoords .set1Value (stage, texCoordNode);
 		//
-		//		getBrowserWindow () -> replaceNodes (X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), texCoords, undoStep);
+		//		getBrowserWindow () -> replaceNodes (getExecutionContext (), X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), texCoords, undoStep);
 
-		getBrowserWindow () -> replaceNodes (X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), { texCoordNode }, undoStep);
+		getBrowserWindow () -> replaceNodes (getExecutionContext (), X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), { texCoordNode }, undoStep);
 	}
 	else
-		getBrowserWindow () -> replaceNode (X3D::SFNode (geometry), geometry -> texCoord (), X3D::SFNode (texCoordNode), undoStep);
+		getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (geometry), geometry -> texCoord (), X3D::SFNode (texCoordNode), undoStep);
 
 	geometry -> getExecutionContext () -> realize ();
 
@@ -1276,7 +1276,7 @@ TextureCoordinateEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & valu
 		if (shape)
 		{
 			const auto transform       = right -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
-			const auto modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (shape);
+			const auto modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (getExecutionContext (), X3D::SFNode (shape));
 
 			transform -> setMatrix (modelViewMatrix);
 

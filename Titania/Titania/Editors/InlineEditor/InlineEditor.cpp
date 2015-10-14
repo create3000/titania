@@ -194,7 +194,7 @@ InlineEditor::on_convert_master_selection_clicked ()
 		inlineNode -> setup ();
 
 		getBrowserWindow () -> updateNamedNode (getExecutionContext (), name, X3D::SFNode (inlineNode), undoStep);
-		getBrowserWindow () -> replaceNodes (masterSelection, X3D::SFNode (inlineNode), undoStep);
+		getBrowserWindow () -> replaceNodes (getExecutionContext (), masterSelection, X3D::SFNode (inlineNode), undoStep);
 		getBrowserWindow () -> getSelection () -> setChildren ({ inlineNode }, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
 		getBrowserWindow () -> expandNodes ({ inlineNode });
@@ -221,7 +221,7 @@ InlineEditor::on_fold_back_into_scene_clicked ()
 	const X3D::GroupPtr groupNode (group);
 
 	getBrowserWindow () -> updateNamedNode (getExecutionContext (), name, group, undoStep);
-	getBrowserWindow () -> replaceNodes (X3D::SFNode (inlineNode), group, undoStep);
+	getBrowserWindow () -> replaceNodes (getExecutionContext (), X3D::SFNode (inlineNode), group, undoStep);
 	getBrowserWindow () -> importScene (scene, groupNode -> children (), undoStep);
 	group -> setup ();
 

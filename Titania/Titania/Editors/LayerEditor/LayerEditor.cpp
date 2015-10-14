@@ -713,7 +713,7 @@ LayerEditor::on_remove_layer_button_clicked ()
 	undoStep -> addObjects (layerSet);
 	undoStep -> addUndoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
 
-	getBrowserWindow () -> removeNode (X3D::SFNode (layerSet), layerSet -> layers (), selectedIndex, undoStep);
+	getBrowserWindow () -> removeNode (getExecutionContext (), X3D::SFNode (layerSet), layerSet -> layers (), selectedIndex, undoStep);
 
 	undoStep -> addRedoFunction (&X3D::MFNode::setValue, std::ref (layerSet -> layers ()), layerSet -> layers ());
 	getBrowserWindow () -> addUndoStep (undoStep);

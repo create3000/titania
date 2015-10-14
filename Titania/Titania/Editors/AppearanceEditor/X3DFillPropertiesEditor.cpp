@@ -123,9 +123,9 @@ X3DFillPropertiesEditor::on_fillProperties_toggled ()
 			field .addInterest (this, &X3DFillPropertiesEditor::connectFillProperties);
 
 			if (getFillPropertiesCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, X3D::SFNode (fillProperties), undoStep);
+				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, X3D::SFNode (fillProperties), undoStep);
 			else
-				getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }

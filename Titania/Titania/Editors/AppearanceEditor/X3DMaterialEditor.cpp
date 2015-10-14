@@ -394,17 +394,17 @@ X3DMaterialEditor::on_material_changed ()
 			{
 				case 0:
 				{
-					getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, nullptr, undoStep);
+					getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
 					break;
 				}
 				case 1:
 				{
-					getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, X3D::SFNode (material), undoStep);
+					getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, X3D::SFNode (material), undoStep);
 					break;
 				}
 				case 2:
 				{
-					getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), field, X3D::SFNode (twoSidedMaterial), undoStep);
+					getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, X3D::SFNode (twoSidedMaterial), undoStep);
 					break;
 				}
 				default:

@@ -57,6 +57,7 @@
 #include <Titania/X3D/Components/Rendering/X3DCoordinateNode.h>
 #include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
 #include <Titania/X3D/Editor/Undo/UndoHistory.h>
+#include <Titania/X3D/Editor/X3DBrowserEditor.h>
 
 namespace titania {
 namespace puck {
@@ -64,7 +65,8 @@ namespace puck {
 class MagicImport;
 
 class X3DBrowserEditor :
-	public X3DBrowserWidget
+	public X3DBrowserWidget,
+	public X3D::X3DBrowserEditor
 {
 public:
 
@@ -121,9 +123,6 @@ public:
 	void
 	reload () final override;
 
-	void
-	removeUnusedPrototypes (const X3D::UndoStepPtr &);
-
 	virtual
 	void
 	close (const X3D::BrowserPtr &) final override;
@@ -179,98 +178,9 @@ public:
 	X3D::SFNode
 	createNode (const std::string & typeName, const X3D::UndoStepPtr &);
 
+	virtual
 	void
-	replaceNodes (const X3D::SFNode &, const X3D::SFNode &, const X3D::UndoStepPtr &);
-
-	void
-	replaceNode (const X3D::SFNode &, X3D::SFNode &, const X3D::SFNode &, const X3D::UndoStepPtr &);
-
-	void
-	replaceNodes (const X3D::SFNode &, X3D::MFNode &, const X3D::MFNode &, const X3D::UndoStepPtr &);
-
-	void
-	replaceNodes (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const X3D::UndoStepPtr &);
-
-	void
-	replaceNode (const X3D::SFNode &, X3D::MFNode &, const size_t, const X3D::SFNode &, const X3D::UndoStepPtr &);
-
-	void
-	removeNode (const X3D::SFNode &, X3D::SFNode &, const X3D::UndoStepPtr &);
-
-	void
-	removeNode (const X3D::SFNode &, X3D::MFNode &, const size_t, const X3D::UndoStepPtr &);
-
-	void
-	removeNodesFromSceneIfNotExists (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const X3D::UndoStepPtr &);
-
-	void
-	removeNodesFromScene (const X3D::X3DExecutionContextPtr &, X3D::MFNode, const X3D::UndoStepPtr &, const bool = true);
-
-	void
-	removeNodesFromSceneGraph (const X3D::MFNode &, const std::set <X3D::SFNode> &, const X3D::UndoStepPtr &);
-
-	void
-	updateNamedNode (const X3D::X3DExecutionContextPtr &, const std::string &, const X3D::SFNode &, const X3D::UndoStepPtr &);
-
-	void
-	removeImportedNodes (const X3D::X3DExecutionContextPtr &, const std::set <X3D::InlinePtr> &, const X3D::UndoStepPtr &);
-
-	void
-	addRoute (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const X3D::UndoStepPtr &)
-	throw (X3D::Error <X3D::INVALID_NODE>,
-	       X3D::Error <X3D::INVALID_FIELD>,
-	       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
-	       X3D::Error <X3D::DISPOSED>);
-
-	void
-	deleteRoute (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const X3D::UndoStepPtr &);
-
-	void
-	createClone (const X3D::SFNode &, const X3D::MFNode &, const X3D::UndoStepPtr &);
-
-	X3D::MFNode
-	unlinkClone (const X3D::MFNode &, const X3D::UndoStepPtr &);
-
-	X3D::SFNode
-	groupNodes (const std::string &, const X3D::MFNode &, const X3D::UndoStepPtr &);
-
-	X3D::MFNode
-	ungroupNodes (const X3D::MFNode &, const X3D::UndoStepPtr &);
-
-	bool
-	addToGroup (const X3D::SFNode &, const X3D::MFNode &, const X3D::UndoStepPtr &);
-
-	void
-	detachFromGroup (X3D::MFNode, const bool, const X3D::UndoStepPtr &);
-
-	X3D::SFNode
-	createParentGroup (const std::string &, const std::string &, const X3D::MFNode &, const X3D::UndoStepPtr &);
-
-	void
-	transformToZero (const X3D::MFNode &, const X3D::UndoStepPtr &);
-
-	X3D::Matrix4d
-	findModelViewMatrix (X3D::X3DBaseNode* const) const;
-
-	std::vector <X3D::X3DBaseNode*>
-	getParentNodes (X3D::X3DBaseNode* const) const;
-
-	void
-	addPrototypeInstance (const std::string &);
-
-	void
-	saveMatrix (const X3D::SFNode &, const X3D::UndoStepPtr &) const;
-
-	void
-	setMatrix (const X3D::X3DTransformNodePtr &, const X3D::Matrix4d &, const X3D::UndoStepPtr &) const;
-
-	static
-	void
-	emplaceBack (X3D::MFNode &, const X3D::SFNode &, const X3D::UndoStepPtr &);
-
-	X3D::X3DFieldDefinition*
-	getContainerField (const X3D::SFNode &, const X3D::SFNode &) const
-	throw (X3D::Error <X3D::INVALID_NODE>);
+	removeNodesFromScene (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const X3D::UndoStepPtr &, const bool = true) const final override;
 
 	/// @name CDATA field operations
 
@@ -372,53 +282,7 @@ private:
 	std::vector <X3D::Route*>
 	getConnectedRoutes (X3D::MFNode &) const;
 
-	void
-	removeUsedPrototypes (X3D::X3DExecutionContext* const,
-	                      std::map <X3D::ExternProtoDeclarationPtr, size_t> &,
-	                      std::map <X3D::ProtoDeclarationPtr, size_t> &) const;
-
 	// Edit
-	                      
-	void
-	removeNodesFromExecutionContext (const X3D::X3DExecutionContextPtr &, const std::set <X3D::SFNode> &, const X3D::UndoStepPtr &, const bool);
-
-	void
-	removeNodesFromSceneGraph (const X3D::X3DExecutionContextPtr &, const std::set <X3D::SFNode> &, const X3D::UndoStepPtr &);
-
-	void
-	removeNode (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const X3D::UndoStepPtr &);
-
-	void
-	removeExportedNodes (const X3D::X3DScenePtr &, const std::set <X3D::SFNode> &, const X3D::UndoStepPtr &);
-
-	void
-	removeNamedNodes (const X3D::X3DExecutionContextPtr &, const std::set <X3D::SFNode> &, const X3D::UndoStepPtr &);
-
-	void
-	deleteRoutes (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const X3D::UndoStepPtr &);
-
-	void
-	unlinkClone (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const X3D::UndoStepPtr &);
-
-	void
-	createParentGroup (const X3D::X3DPtr <X3D::X3DNode> &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const X3D::UndoStepPtr &);
-
-	void
-	transformToZero (const X3D::MFNode &, X3D::Matrix4fStack &, const X3D::UndoStepPtr &);
-
-	void
-	transformToZero (const X3D::SFNode &, X3D::Matrix4fStack &, const X3D::UndoStepPtr &);
-
-	void
-	transformToZero (const X3D::X3DPtr <X3D::X3DGeometryNode> &, const X3D::Matrix4f &, const X3D::UndoStepPtr &);
-
-	void
-	transformToZero (const X3D::X3DPtr <X3D::X3DCoordinateNode> &, const X3D::Matrix4f &, const X3D::UndoStepPtr &);
-
-	///  @name Misc
-
-	bool
-	findModelViewMatrix (X3D::X3DBaseNode* const, X3D::Matrix4d &, std::set <X3D::X3DBaseNode*> &) const;
 
 	///  @name CDATA field
 

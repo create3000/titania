@@ -98,7 +98,13 @@ PrototypeInstanceDialog::run ()
 	const auto responseId = getWindow () .run ();
 
 	if (responseId == Gtk::RESPONSE_OK)
-		getBrowserWindow () -> addPrototypeInstance (getPrototypeLabel () .get_text ());
+	{
+		const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create %s"), getPrototypeLabel () .get_text () .c_str ()));
+		const auto instance  = getBrowserWindow () -> addPrototypeInstance (getExecutionContext (), getPrototypeLabel () .get_text (), undoStep);
+
+		getBrowserWindow () -> getSelection () -> setChildren ({ instance }, undoStep);
+		getBrowserWindow () -> addUndoStep (undoStep);
+	}
 
 	getWindow () .hide ();
 }

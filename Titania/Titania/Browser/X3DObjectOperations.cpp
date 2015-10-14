@@ -106,11 +106,11 @@ X3DObjectOperations::on_combine_activated ()
 
 		// Combine Coordinates
 
-		const auto targetMatrix = ~getBrowserWindow () -> findModelViewMatrix (masterShape);
+		const auto targetMatrix = ~getBrowserWindow () -> findModelViewMatrix (getExecutionContext (), X3D::SFNode (masterShape));
 
 		combineCoordinates (shapes, targetGeometry, targetCoord, targetMatrix);
 
-		getBrowserWindow () -> replaceNode (X3D::SFNode (masterShape), masterShape -> geometry (), X3D::SFNode (targetGeometry), undoStep);
+		getBrowserWindow () -> replaceNode (masterShape -> getExecutionContext (), X3D::SFNode (masterShape), masterShape -> geometry (), X3D::SFNode (targetGeometry), undoStep);
 	
 		//combineNormals (shapes, targetGeometry);
 
@@ -149,7 +149,7 @@ X3DObjectOperations::combineCoordinates (const X3D::X3DPtrArray <X3D::X3DShapeNo
 		if (not coord)
 			continue;
 
-		const auto matrix = getBrowserWindow () -> findModelViewMatrix (shape) * targetMatrix;
+		const auto matrix = getBrowserWindow () -> findModelViewMatrix (getExecutionContext (), X3D::SFNode (shape)) * targetMatrix;
 
 		std::map <int32_t, int32_t> coordIndex;
 

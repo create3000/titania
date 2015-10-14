@@ -135,9 +135,9 @@ X3DTextureCoordinateGeneratorEditor::on_textureCoordinateGenerator_toggled ()
 			field .addInterest (this, &X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator);
 
 			if (getTextureCoordinateGeneratorCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (X3D::SFNode (geometry), field, X3D::SFNode (textureCoordinateGenerator), undoStep);
+				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (geometry), field, X3D::SFNode (textureCoordinateGenerator), undoStep);
 			else
-				getBrowserWindow () -> replaceNode (X3D::SFNode (geometry), field, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (geometry), field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
