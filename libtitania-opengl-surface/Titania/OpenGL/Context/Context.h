@@ -51,16 +51,7 @@
 #ifndef __TITANIA_OPEN_GL_CONTEXT_CONTEXT_H__
 #define __TITANIA_OPEN_GL_CONTEXT_CONTEXT_H__
 
-extern "C"
-{
-#include <GL/glew.h>
-
-#include <GL/glu.h>
-
-#include <GL/gl.h>
-
-#include <GL/glx.h>
-}
+#include "OpenGL.h"
 
 namespace titania {
 namespace opengl {
@@ -69,8 +60,17 @@ class Context
 {
 public:
 
+	Display*
+	getDisplay () const
+	{ return xDisplay; }
+
+	GLXDrawable
+	getDrawable () const
+	{ return xDrawable; }
+
 	GLXContext
-	getContext () const;
+	getContext () const
+	{ return xContext; }
 
 	virtual
 	bool
@@ -87,9 +87,6 @@ public:
 protected:
 
 	Context (Display* const);
-
-	Display*
-	getDisplay () const;
 
 	void
 	setDrawable (const GLXDrawable);

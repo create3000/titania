@@ -139,22 +139,6 @@ Browser::initialize ()
 	setCursor (Gdk::TOP_LEFT_ARROW);
 }
 
-Color4f
-Browser::getForegroundColor () const
-{
-	const auto color = get_toplevel () -> get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
-
-	return Color4f (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
-}
-
-Color4f
-Browser::getBackgroundColor () const
-{
-	const auto color = get_toplevel () -> get_style_context () -> get_background_color (Gtk::STATE_FLAG_NORMAL);
-
-	return Color4f (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
-}
-
 void
 Browser::on_map ()
 {
@@ -236,8 +220,40 @@ Browser::set_viewer (ViewerType type)
 }
 
 void
+Browser::reshape ()
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+   try
+	{
+		X3DBrowser::reshape ();
+	}
+	catch (const X3D::X3DError &)
+	{
+	   // Send error message, via signal?
+	}
+}
+
+void
+Browser::update ()
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+   try
+	{
+		X3DBrowser::update ();
+	}
+	catch (const X3D::X3DError &)
+	{
+	   // Send error message, via signal?
+	}
+}
+
+void
 Browser::dispose ()
 {
+	notify_callbacks ();
+
 	viewer         .reset ();
 	keyDevice      .reset ();
 	pointingDevice .reset ();

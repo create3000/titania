@@ -99,7 +99,7 @@ RecentView::open ()
 		getBrowserWindow () -> X3DBrowserWidget::open (getURL ());
 	else
 	{
-		getBrowserWindow () -> append (X3D::createBrowser (getBrowser ()), getURL ());
+		getBrowserWindow () -> append (X3D::createBrowser (getMasterBrowser ()), getURL ());
 		getBrowserWindow () -> getBrowserNotebook () .set_current_page (getBrowserWindow () -> getBrowsers () .size () - 1);
 	}
 }

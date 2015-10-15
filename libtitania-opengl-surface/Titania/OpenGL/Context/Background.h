@@ -48,65 +48,47 @@
  *
  ******************************************************************************/
 
-#include "X3DRenderingContext.h"
+#ifndef __TITANIA_OPEN_GL_PRIMITIVES_BACKGROUND_H__
+#define __TITANIA_OPEN_GL_PRIMITIVES_BACKGROUND_H__
 
-#include "../Rendering/MotionBlur.h"
-#include "../../Rendering/OpenGL.h"
+#include <gtkmm/stylecontext.h>
 
-#include <Titania/String.h>
+#include "OpenGL.h"
+#include <Titania/Math/Numbers/Matrix4.h>
 
 namespace titania {
-namespace X3D {
+namespace opengl {
 
-X3DRenderingContext::X3DRenderingContext () :
-	  X3DBaseNode (),
-	maxClipPlanes (0),
-	   clipPlanes (),
-	   motionBlur (new MotionBlur (getExecutionContext ()))
+class Background
 {
-	addChildren (motionBlur);
-}
+public:
 
-void
-X3DRenderingContext::initialize ()
-{
-	if (glXGetCurrentContext ())
-	{
-		glEnable (GL_SCISSOR_TEST);
+	Background (const Glib::RefPtr <Gtk::StyleContext> &);
 
-		glCullFace (GL_BACK);
-		glEnable (GL_NORMALIZE);
+	void
+	setup ();
 
-		glDepthFunc (GL_LEQUAL);
-		glClearDepth (1);
+	void
+	configure (const size_t, const size_t);
 
-		glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
+	void
+	draw ();
 
-		glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
+	void
+	dispose ();
 
-		glHint (GL_FOG_HINT, GL_NICEST);
+	~Background ();
 
-		// ClipPlanes
 
-		glGetIntegerv (GL_MAX_CLIP_PLANES, &maxClipPlanes);
+private:
 
-		for (int32_t i = maxClipPlanes - 1; i >= 0; -- i)
-			clipPlanes .push (GL_CLIP_PLANE0 + i);
-	}
+	const Glib::RefPtr <Gtk::StyleContext> styleContext;
+	GLuint                                 textureId;
+	math::matrix4 <float>                  projectionMatrix;
+};
 
-	motionBlur -> setup ();
-}
 
-void
-X3DRenderingContext::renderBackground ()
-{
-	glClearColor (0, 0, 0, 0);
-	glClear (GL_COLOR_BUFFER_BIT);
-}
-
-X3DRenderingContext::~X3DRenderingContext ()
-{ }
-
-} // X3D
+} // opengl
 } // titania
+
+#endif

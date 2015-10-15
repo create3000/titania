@@ -72,11 +72,11 @@ static constexpr double DISTANCE  = 2.5;
 
 X3DTexturePaletteEditor::X3DTexturePaletteEditor () :
 	X3DTextureEditorInterface (),
-	                  preview (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
+	                  preview (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
 	                  folders (),
 	                    files ()
 {
-	preview -> set_antialiasing (4);
+	preview -> setAntialiasing (4);
 }
 
 void

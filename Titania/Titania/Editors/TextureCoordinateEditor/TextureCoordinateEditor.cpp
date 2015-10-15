@@ -89,8 +89,8 @@ infinity2f (std::numeric_limits <float>::infinity (), std::numeric_limits <float
 TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browserWindow) :
 	                   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DTextureCoordinateEditorInterface (get_ui ("Editors/TextureCoordinateEditor.xml"), gconf_dir ()),
-	                               left (X3D::createBrowser (getBrowserWindow () -> getBrowser (), { get_ui ("Editors/TextureCoordinateEditorLeftPreview.x3dv") })),
-	                              right (X3D::createBrowser (getBrowserWindow () -> getBrowser (), { get_ui ("Editors/TextureCoordinateEditorRightPreview.x3dv") })),
+	                               left (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/TextureCoordinateEditorLeftPreview.x3dv") })),
+	                              right (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/TextureCoordinateEditorRightPreview.x3dv") })),
 	                        initialized (0),
 	                              shape (),
 	                         appearance (),
@@ -130,8 +130,8 @@ TextureCoordinateEditor::initialize ()
 	left  -> initialized () .addInterest (this, &TextureCoordinateEditor::set_left_initialized);
 	right -> initialized () .addInterest (this, &TextureCoordinateEditor::set_right_initialized);
 
-	left  -> set_antialiasing (4);
-	right -> set_antialiasing (4);
+	left  -> setAntialiasing (4);
+	right -> setAntialiasing (4);
 	left  -> set_opacity (0);
 	right -> set_opacity (0);
 	left  -> show ();

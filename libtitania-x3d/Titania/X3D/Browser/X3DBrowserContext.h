@@ -182,29 +182,13 @@ public:
 	///  @name Rendering
 
 	virtual
-	void
-	reshape ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	void
-	update ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	virtual
-	void
-	traverse (const TraverseType) final override
-	{ update (); }
-
-	virtual
 	bool
 	makeCurrent () const
 	{ return true; }
 
 	virtual
 	void
-	swapBuffers () const
+	swapBuffers ()
 	{ }
 
 	///  @name Destruction
@@ -230,6 +214,22 @@ protected:
 	void
 	setWorld (World* const value)
 	{ world = value; }
+
+	virtual
+	void
+	reshape ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	update ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	virtual
+	void
+	traverse (const TraverseType) final override
+	{ update (); }
 
 
 private:

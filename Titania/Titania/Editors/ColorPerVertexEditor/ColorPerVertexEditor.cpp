@@ -72,7 +72,7 @@ namespace puck {
 ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindow) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DColorPerVertexEditorInterface (get_ui ("Editors/ColorPerVertexEditor.xml"), gconf_dir ()),
-	                         preview (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
+	                         preview (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
 	                     colorButton (this,
 	                                  getColorButton (),
 	                                  getColorAdjustment (),
@@ -93,7 +93,7 @@ ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindo
 	                       selection (new FaceSelection ()),
 	                     undoHistory ()
 {
-	preview -> set_antialiasing (4);
+	preview -> setAntialiasing (4);
 
 	getShadingButton () .set_menu (getShadingMenu ());
 

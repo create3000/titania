@@ -74,8 +74,8 @@ namespace puck {
 X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	X3DBrowserWindowInterface (),
 	                  history (new History ()),
-	              logoBrowser (X3D::createBrowser ({ get_ui ("Logo.x3dv") })),
 	            masterBrowser (masterBrowser_),
+	              logoBrowser (X3D::createBrowser ({ get_ui ("Logo.x3dv") })),
 	                  browser (masterBrowser_),
 	                 browsers (),
 	                    scene (browser -> getExecutionContext ()),
@@ -91,25 +91,19 @@ X3DBrowserWidget::initialize ()
 {
 	X3DBrowserWindowInterface::initialize ();
 
-	recentView -> initialize ();
-
 	// Master browser
 
 	getMasterBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
 	getMasterBrowser () -> show ();
 	getMasterBox () .pack_start (*getMasterBrowser (), true, true, 0);
-
-	// Logo Button
-
-	logoBrowser -> set_antialiasing (4);
-	logoBrowser -> show ();
-	getLogoBox () .pack_start (*logoBrowser, true, true, 0);
 }
 
 void
 X3DBrowserWidget::set_initialized ()
 {
 	getMasterBrowser () -> initialized () .removeInterest (this, &X3DBrowserWidget::set_initialized);
+
+	recentView -> initialize ();
 
 	// Restore browsers.
 
@@ -130,7 +124,7 @@ X3DBrowserWidget::set_initialized ()
 		if (urlIndex .count (worldURLs [i]))
 			continue;
 
-		const auto browser = X3D::createBrowser (getBrowser ());
+		const auto browser = X3D::createBrowser (getMasterBrowser ());
 
 		if (i < histories .size ())
 			getUserData (browser) -> browserHistory .fromString (histories [i]);
@@ -154,6 +148,12 @@ X3DBrowserWidget::set_initialized ()
 
 	getMasterBox ()       .set_visible (false);
 	getBrowserNotebook () .set_visible (true);
+
+	// Logo Button
+
+	logoBrowser -> setAntialiasing (4);
+	logoBrowser -> show ();
+	getLogoBox () .pack_start (*logoBrowser, true, true, 0);
 }
 
 void
@@ -456,7 +456,7 @@ X3DBrowserWidget::open (const basic::uri & URL_)
 
 	else
 	{
-		append (X3D::createBrowser (getBrowser ()), URL);
+		append (X3D::createBrowser (getMasterBrowser ()), URL);
 		getBrowserNotebook () .set_current_page (browsers .size () - 1);
 	}
 }
@@ -470,7 +470,7 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 		browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_browser, browser, URL);
 
 	browser -> set_opacity (0);
-	browser -> set_antialiasing (4);
+	browser -> setAntialiasing (4);
 	browser -> show ();
 
 	const auto text   = URL .empty () ? _ ("New Scene") : URL .basename ();

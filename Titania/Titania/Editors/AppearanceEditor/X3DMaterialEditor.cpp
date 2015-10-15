@@ -62,7 +62,7 @@ namespace puck {
 
 X3DMaterialEditor::X3DMaterialEditor () :
 	X3DAppearanceEditorInterface (),
-	                     preview (X3D::createBrowser (getBrowserWindow () -> getBrowser ())),
+	                     preview (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
 	                 appearances (),
 	                materialNode (),
 	          materialNodeBuffer (),
@@ -88,7 +88,7 @@ X3DMaterialEditor::X3DMaterialEditor () :
 	addChildren (materialNodeBuffer);
 	materialNodeBuffer .addInterest (this, &X3DMaterialEditor::set_node);
 
-	preview -> set_antialiasing (4);
+	preview -> setAntialiasing (4);
 }
 
 void

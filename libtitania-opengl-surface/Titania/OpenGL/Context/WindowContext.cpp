@@ -61,8 +61,9 @@ WindowContext::WindowContext (Display* const display,
                               const GLXWindow xWindow,
                               const Context & sharingContext,
                               const bool direct) :
-	Context (display),
-	xWindow (xWindow)
+	       Context (display),
+	       xWindow (xWindow),
+	visualInfoList (nullptr)
 {
 	setContext (create (sharingContext .getContext (), direct));
 	setDrawable (xWindow);
@@ -71,15 +72,16 @@ WindowContext::WindowContext (Display* const display,
 WindowContext::WindowContext (Display* const display,
                               const GLXWindow xWindow,
                               const bool direct) :
-	Context (display),
-	xWindow (xWindow)
+	       Context (display),
+	       xWindow (xWindow),
+	visualInfoList (nullptr)
 {
 	setContext (create (nullptr, direct));
 	setDrawable (xWindow);
 }
 
 void
-WindowContext::swapInterval (const size_t interval) const
+WindowContext::setSwapInterval (const size_t interval)
 {
 	if (makeCurrent ())
 	{
@@ -120,12 +122,11 @@ WindowContext::create (const GLXContext sharingContext, const bool direct)
 	XVisualInfo visualInfo;
 	visualInfo .visualid = XVisualIDFromVisual (attributes .visual);
 
-	int          numReturned    = 0;
-	XVisualInfo* visualInfoList = XGetVisualInfo (getDisplay (), VisualIDMask, &visualInfo, &numReturned);
+	int numReturned    = 0;
+
+	visualInfoList = XGetVisualInfo (getDisplay (), VisualIDMask, &visualInfo, &numReturned);
 
 	GLXContext xContext = glXCreateContext (getDisplay (), visualInfoList, sharingContext, direct);
-
-	XFree (visualInfoList);
 
 	if (not xContext)
 		throw std::runtime_error ("WindowContext::WindowContext: Couldn't create context.");
@@ -134,8 +135,10 @@ WindowContext::create (const GLXContext sharingContext, const bool direct)
 }
 
 WindowContext::~WindowContext ()
-{ }
-
+{
+	if (visualInfoList)
+	   XFree (visualInfoList);
+}
+	  
 } // opengl
-
 } // titania

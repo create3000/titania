@@ -61,6 +61,8 @@
 namespace titania {
 namespace opengl {
 
+class Background;
+
 class Surface :
 	public Gtk::DrawingArea
 {
@@ -70,16 +72,19 @@ public:
 	~Surface ();
 
 	void
-	set_antialiasing (const int32_t = 4);
+	setAntialiasing (const int32_t = 4);
+
+	void
+	renderBackground ();
 
 	bool
 	makeCurrent () const;
 
 	void
-	swapInterval (const size_t) const;
+	setSwapInterval (const size_t);
 
 	void
-	swapBuffers () const;
+	swapBuffers ();
 
 	void
 	dispose ();
@@ -90,6 +95,10 @@ protected:
 	Surface (const std::shared_ptr <WindowContext> & = nullptr);
 
 	Surface (const Surface &);
+
+	virtual
+	void
+	on_style_updated () override;
 
 	/// @name OpenGL handler
 
@@ -103,7 +112,7 @@ protected:
 
 	virtual
 	void
-	update (const Cairo::RefPtr <Cairo::Context> &) = 0;
+	update () = 0;
 
 
 private:
@@ -129,6 +138,8 @@ private:
 
 	std::shared_ptr <WindowContext> context;
 	std::shared_ptr <WindowContext> sharingContext;
+
+	std::unique_ptr <Background> background;
 
 };
 

@@ -48,65 +48,18 @@
  *
  ******************************************************************************/
 
-#include "X3DRenderingContext.h"
+#ifndef __TITANIA_OPEN_GL_CONTEXT_OPEN_GL_H__
+#define __TITANIA_OPEN_GL_CONTEXT_OPEN_GL_H__
 
-#include "../Rendering/MotionBlur.h"
-#include "../../Rendering/OpenGL.h"
-
-#include <Titania/String.h>
-
-namespace titania {
-namespace X3D {
-
-X3DRenderingContext::X3DRenderingContext () :
-	  X3DBaseNode (),
-	maxClipPlanes (0),
-	   clipPlanes (),
-	   motionBlur (new MotionBlur (getExecutionContext ()))
+extern "C"
 {
-	addChildren (motionBlur);
+#include <GL/glew.h>
+
+#include <GL/glu.h>
+
+#include <GL/gl.h>
+
+#include <GL/glx.h>
 }
 
-void
-X3DRenderingContext::initialize ()
-{
-	if (glXGetCurrentContext ())
-	{
-		glEnable (GL_SCISSOR_TEST);
-
-		glCullFace (GL_BACK);
-		glEnable (GL_NORMALIZE);
-
-		glDepthFunc (GL_LEQUAL);
-		glClearDepth (1);
-
-		glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
-
-		glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
-
-		glHint (GL_FOG_HINT, GL_NICEST);
-
-		// ClipPlanes
-
-		glGetIntegerv (GL_MAX_CLIP_PLANES, &maxClipPlanes);
-
-		for (int32_t i = maxClipPlanes - 1; i >= 0; -- i)
-			clipPlanes .push (GL_CLIP_PLANE0 + i);
-	}
-
-	motionBlur -> setup ();
-}
-
-void
-X3DRenderingContext::renderBackground ()
-{
-	glClearColor (0, 0, 0, 0);
-	glClear (GL_COLOR_BUFFER_BIT);
-}
-
-X3DRenderingContext::~X3DRenderingContext ()
-{ }
-
-} // X3D
-} // titania
+#endif

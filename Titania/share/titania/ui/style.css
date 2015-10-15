@@ -46,7 +46,6 @@ GtkExpander > GtkLabel {
 /* Surface */
 
 .titania-surface {
-	background: rgba(0,0,0,0);
 }
 
 /* Outline Editor */

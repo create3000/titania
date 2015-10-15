@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4D150C3C-1AA0-4470-B933-6EDA64083897}</ProjectGuid>
     <Target>SharedLibrary</Target>
@@ -58,6 +58,7 @@
     <Compile Include="Titania\OpenGL\Context\WindowContext.cpp" />
     <Compile Include="Titania\OpenGL\Surface.cpp" />
     <Compile Include="Titania\OpenGL\Context\Context.cpp" />
+    <Compile Include="Titania\OpenGL\Context\Background.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="info.h" />
@@ -69,6 +70,8 @@
     <None Include="Makefile.in" />
     <None Include="libtitania-opengl-canvas.pidb" />
     <None Include="libtitania-opengl-surface.cproj" />
+    <None Include="Titania\OpenGL\Context\OpenGL.h" />
+    <None Include="Titania\OpenGL\Context\Background.h" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

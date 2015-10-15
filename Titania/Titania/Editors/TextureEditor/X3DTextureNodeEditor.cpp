@@ -73,7 +73,7 @@ X3DTextureNodeEditor::X3DTextureNodeEditor (const X3D::BrowserPtr & preview) :
 	textureBuffer .addInterest (this, &X3DTextureNodeEditor::set_node);
 	textureNode   .addInterest (this, &X3DTextureNodeEditor::set_preview);
 
-	preview -> set_antialiasing (4);
+	preview -> setAntialiasing (4);
 }
 
 void

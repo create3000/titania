@@ -125,7 +125,7 @@ NormalTool::NormalTool (X3DBaseInterface* const editor,
 	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
 	X3DComposedWidget (editor),
 	              box (box),
-	          browser (X3D::createBrowser (editor -> getBrowser (), { get_ui ("Editors/NormalTool.x3dv") })),
+	          browser (X3D::createBrowser (editor -> getMasterBrowser (), { get_ui ("Editors/NormalTool.x3dv") })),
 	            nodes (),
 	             name (name),
 	         undoStep (),
@@ -139,7 +139,7 @@ NormalTool::NormalTool (X3DBaseInterface* const editor,
 	// Browser
 
 	browser -> initialized () .addInterest (this, &NormalTool::set_initialized);
-	browser -> set_antialiasing (4);
+	browser -> setAntialiasing (4);
 	browser -> show ();
 
 	box .pack_start (*browser, true, true, 0);

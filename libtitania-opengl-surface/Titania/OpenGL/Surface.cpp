@@ -59,9 +59,11 @@ extern "C"
 #include <gtkmm/main.h>
 
 #include "Context/WindowContext.h"
+#include "Context/Background.h"
 
 #include <Titania/LOG.h>
 #include <stdexcept>
+
 
 namespace titania {
 namespace opengl {
@@ -69,8 +71,10 @@ namespace opengl {
 Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 	Gtk::DrawingArea (),
 	         context (),
-	  sharingContext (sharingContext)
+	  sharingContext (sharingContext),
+	      background (new Background (get_style_context ()))
 {
+	get_style_context () -> add_class ("background");
 	get_style_context () -> add_class ("titania-surface");
 	set_double_buffered (false);
 	set_app_paintable (true);
@@ -88,7 +92,7 @@ Surface::Surface (const Surface & other) :
 { }
 
 void
-Surface::set_antialiasing (const int32_t samples)
+Surface::setAntialiasing (const int32_t samples)
 {
 	static
 	int32_t visualAttributes [ ] = {
@@ -131,6 +135,12 @@ Surface::set_antialiasing (const int32_t samples)
 	}
 }
 
+void
+Surface::renderBackground ()
+{
+	background -> draw ();
+}
+
 bool
 Surface::glew ()
 {
@@ -145,6 +155,24 @@ Surface::glew ()
 		throw std::runtime_error ("The glew vertex buffer objects are not supported.");
 
 	return true;
+}
+
+bool
+Surface::makeCurrent () const
+{
+	return context and context -> makeCurrent ();
+}
+
+void
+Surface::setSwapInterval (const size_t interval)
+{
+	context -> setSwapInterval (interval);
+}
+
+void
+Surface::swapBuffers ()
+{
+	context -> swapBuffers ();
 }
 
 bool
@@ -176,12 +204,24 @@ Surface::set_map_event (GdkEventAny* const event)
 	return false; // Propagate the event further.
 }
 
+void
+Surface::on_style_updated ()
+{
+	if (makeCurrent ())
+	{
+		if (background)
+		   background -> configure (get_width (), get_height ());
+	}
+}
+
 bool
 Surface::set_configure_event (GdkEventConfigure* const event)
 {
 	if (makeCurrent ())
 	{
 		glViewport (0, 0, get_width (), get_height ());
+
+		background -> configure (get_width (), get_height ());
 
 		reshape ();
 	}
@@ -203,6 +243,8 @@ Surface::set_construct (const Cairo::RefPtr <Cairo::Context> & cairo)
 	{
 		draw_connection = signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_draw));
 
+		background -> setup ();
+
 		construct ();
 	}
 
@@ -214,29 +256,9 @@ Surface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
 	Gtk::Main::iteration (false);
 
-	//get_toplevel () -> get_style_context () -> render_background (cairo, 0, 0, get_width (), get_height ());
-
-	update (cairo);
+	update ();
 
 	return false; // Propagate the event further.
-}
-
-bool
-Surface::makeCurrent () const
-{
-	return context and context -> makeCurrent ();
-}
-
-void
-Surface::swapInterval (const size_t interval) const
-{
-	context -> swapInterval (interval);
-}
-
-void
-Surface::swapBuffers () const
-{
-	context -> swapBuffers ();
 }
 
 void
@@ -244,10 +266,10 @@ Surface::dispose ()
 {
 	draw_connection .disconnect ();
 
+	background -> dispose ();
+
 	context .reset ();
 	sharingContext .reset ();
-
-	notify_callbacks ();
 }
 
 Surface::~Surface ()

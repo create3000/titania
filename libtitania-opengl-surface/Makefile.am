@@ -5,6 +5,7 @@ lib_LTLIBRARIES =  \
 	libtitania-opengl-surface.la
 
 libtitania_opengl_surface_la_SOURCES =  \
+	Titania/OpenGL/Context/Background.cpp \
 	Titania/OpenGL/Context/Context.cpp \
 	Titania/OpenGL/Context/WindowContext.cpp \
 	Titania/OpenGL/Surface.cpp

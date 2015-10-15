@@ -82,14 +82,6 @@ public:
 
 	///  @name Member access
 
-	virtual
-	Color4f
-	getForegroundColor () const final override;
-	
-	virtual
-	Color4f
-	getBackgroundColor () const final override;
-
 	void
 	setCursor (const Gdk::CursorType value)
 	{ cursor = value; }
@@ -101,13 +93,18 @@ public:
 	///  @name Operations
 
 	virtual
+	void
+	renderBackground () final override
+	{ opengl::Surface::renderBackground (); }
+
+	virtual
 	bool
 	makeCurrent () const final override
 	{ return opengl::Surface::makeCurrent (); }
 
 	virtual
 	void
-	swapBuffers () const final override
+	swapBuffers () final override
 	{ opengl::Surface::swapBuffers (); }
 
 	///  @name Destruction
@@ -160,15 +157,13 @@ private:
 	void
 	reshape ()
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ X3DBrowser::reshape (); }
-
+	       Error <DISPOSED>) final override;
+	
 	virtual
 	void
-	update (const Cairo::RefPtr <Cairo::Context> &)
+	update ()
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ update (); }
+	       Error <DISPOSED>) final override;
 
 	///  @name Members
 

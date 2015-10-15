@@ -436,13 +436,13 @@ X3DFlyViewer::display ()
 
 		const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
 
-		glDisable (GL_DEPTH_TEST);
-
 		glMatrixMode (GL_PROJECTION);
 		glLoadMatrixd (projection .data ());
 		glMatrixMode (GL_MODELVIEW);
 
 		// Display Rubberband.
+
+		glDisable (GL_DEPTH_TEST);
 
 		glLoadIdentity ();
 

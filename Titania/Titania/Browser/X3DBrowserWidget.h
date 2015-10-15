@@ -272,8 +272,8 @@ private:
 	///  @name Members
 
 	std::unique_ptr <History>       history;
-	X3D::BrowserPtr                 logoBrowser;
 	X3D::BrowserPtr                 masterBrowser;
+	X3D::BrowserPtr                 logoBrowser;
 	X3D::BrowserPtr                 browser;
 	X3D::X3DPtrArray <X3D::Browser> browsers;
 	X3D::X3DScenePtr                scene;

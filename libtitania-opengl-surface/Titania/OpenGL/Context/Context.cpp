@@ -61,12 +61,6 @@ Context::Context (Display* const xDisplay) :
 	xContext (nullptr)
 { }
 
-Display*
-Context::getDisplay () const
-{
-	return xDisplay;
-}
-
 void
 Context::setDrawable (const GLXDrawable value)
 {
@@ -77,12 +71,6 @@ void
 Context::setContext (const GLXContext value)
 {
 	xContext = value;
-}
-
-GLXContext
-Context::getContext () const
-{
-	return xContext;
 }
 
 bool

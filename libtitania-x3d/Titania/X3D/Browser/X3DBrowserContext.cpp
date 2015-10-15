@@ -159,7 +159,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (getWorld () and lock)
 	{
-		const auto backgroundColor  = alphaChannel ? X3D::Color4f () : getBrowser () -> getBackgroundColor ();
 		const bool backgroundHidden = getWorld () -> getLayerSet () -> getLayer0 () -> getBackground () -> isHidden ();
 	
 		getWorld () -> getLayerSet () -> getLayer0 () -> getBackground () -> isHidden (alphaChannel);
@@ -172,8 +171,11 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		frameBuffer .bind ();
 		const_cast <X3DBrowserContext*> (this) -> reshape ();
 
-		glClearColor (backgroundColor .r (), backgroundColor .g (), backgroundColor .b (), backgroundColor .a ());
-		glClear (GL_COLOR_BUFFER_BIT);
+		if (alphaChannel)
+			const_cast <X3DBrowserContext*> (this) -> X3DRenderingContext::renderBackground ();
+		else
+		   const_cast <X3DBrowserContext*> (this) -> renderBackground ();
+
 		getWorld () -> traverse (TraverseType::DISPLAY);
 
 		frameBuffer .get (pixels);
@@ -281,10 +283,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 			// Display
 
-			const auto color = getBackgroundColor ();
-
-			glClearColor (color .r (), color .g (), color .b (), color .a ());
-			glClear (GL_COLOR_BUFFER_BIT);
+			renderBackground ();
 
 			getWorld () -> traverse (TraverseType::DISPLAY);
 

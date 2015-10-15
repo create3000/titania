@@ -48,65 +48,88 @@
  *
  ******************************************************************************/
 
-#include "X3DRenderingContext.h"
+#include "Background.h"
 
-#include "../Rendering/MotionBlur.h"
-#include "../../Rendering/OpenGL.h"
-
-#include <Titania/String.h>
+#include <Titania/Math/Geometry/Camera.h>
 
 namespace titania {
-namespace X3D {
+namespace opengl {
 
-X3DRenderingContext::X3DRenderingContext () :
-	  X3DBaseNode (),
-	maxClipPlanes (0),
-	   clipPlanes (),
-	   motionBlur (new MotionBlur (getExecutionContext ()))
-{
-	addChildren (motionBlur);
-}
-
-void
-X3DRenderingContext::initialize ()
-{
-	if (glXGetCurrentContext ())
-	{
-		glEnable (GL_SCISSOR_TEST);
-
-		glCullFace (GL_BACK);
-		glEnable (GL_NORMALIZE);
-
-		glDepthFunc (GL_LEQUAL);
-		glClearDepth (1);
-
-		glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
-
-		glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
-
-		glHint (GL_FOG_HINT, GL_NICEST);
-
-		// ClipPlanes
-
-		glGetIntegerv (GL_MAX_CLIP_PLANES, &maxClipPlanes);
-
-		for (int32_t i = maxClipPlanes - 1; i >= 0; -- i)
-			clipPlanes .push (GL_CLIP_PLANE0 + i);
-	}
-
-	motionBlur -> setup ();
-}
-
-void
-X3DRenderingContext::renderBackground ()
-{
-	glClearColor (0, 0, 0, 0);
-	glClear (GL_COLOR_BUFFER_BIT);
-}
-
-X3DRenderingContext::~X3DRenderingContext ()
+Background::Background (const Glib::RefPtr <Gtk::StyleContext> & styleContext) :
+       styleContext (styleContext),
+	       textureId (0),
+	projectionMatrix (math::ortho <float> (0, 1, 0, 1, -1, 1))
 { }
 
-} // X3D
+void
+Background::setup ()
+{
+	glGenTextures (1, &textureId);
+}
+
+void
+Background::configure (const size_t width, const size_t height)
+{
+	Cairo::RefPtr <Cairo::ImageSurface> surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
+
+	const auto cairo = Cairo::Context::create (surface);
+
+	styleContext -> render_background (cairo, 0, 0, width, height);
+	//styleContext -> render_frame (cairo, 0, 0, get_width (), get_height ());
+
+	glEnable (GL_TEXTURE_2D);
+	glBindTexture (GL_TEXTURE_2D, textureId);
+	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, surface -> get_data ());
+
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glBindTexture (GL_TEXTURE_2D, 0);
+}
+
+void
+Background::draw ()
+{
+	glMatrixMode (GL_PROJECTION);
+	glLoadMatrixf (projectionMatrix .data ());
+
+	glMatrixMode (GL_MODELVIEW);
+	glLoadIdentity ();
+
+	glDisable (GL_LIGHTING);
+	glDisable (GL_DEPTH_TEST);
+
+	glEnable (GL_TEXTURE_2D);
+	glBindTexture (GL_TEXTURE_2D, textureId);
+
+	glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+	glBegin (GL_QUADS);
+	glNormal3f (0, 0, 1);
+	glTexCoord2f (0, 0);
+	glVertex2f (0, 0);
+	glTexCoord2f (1, 0);
+	glVertex2f (1, 0);
+	glTexCoord2f (1, 1);
+	glVertex2f (1, 1);
+	glTexCoord2f (0, 1);
+	glVertex2f (0, 1);
+	glEnd ();
+
+	glEnable (GL_DEPTH_TEST);
+	glBindTexture (GL_TEXTURE_2D, 0);
+}
+
+void
+Background::dispose ()
+{
+	if (textureId)
+		glDeleteTextures (1, &textureId);
+}
+
+Background::~Background ()
+{ }
+
+
+} // opengl
 } // titania

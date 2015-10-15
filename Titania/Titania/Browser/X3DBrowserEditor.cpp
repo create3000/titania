@@ -391,7 +391,7 @@ X3DBrowserEditor::blank ()
 {
 	if (isEditor ())
 	{
-		append (X3D::createBrowser (getBrowser ()), "");
+		append (X3D::createBrowser (getMasterBrowser ()), "");
 		getBrowserNotebook () .set_current_page (getBrowsers () .size () - 1);
 	}
 	else

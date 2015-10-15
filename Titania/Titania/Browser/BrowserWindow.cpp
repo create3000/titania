@@ -122,10 +122,10 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 		getTextureQualityLowAction (),
 	};
 
-	if (getConfig () .getBoolean ("transparent"))
-		setTransparent (true);
-	else
-		browser -> set_antialiasing (4);
+	//if (getConfig () .getBoolean ("transparent"))
+	//	setTransparent (true);
+	//else
+		browser -> setAntialiasing (4);
 
 	setup ();
 }

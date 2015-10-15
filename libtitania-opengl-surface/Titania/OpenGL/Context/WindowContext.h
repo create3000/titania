@@ -69,9 +69,13 @@ public:
 	WindowContext (Display* const,
 	               const GLXWindow,
 	               const bool = true);
+	              
+	Visual*
+	getVisual () const
+	{ return visualInfoList -> visual; }
 
 	void
-	swapInterval (const size_t) const;
+	setSwapInterval (const size_t);
 
 	virtual
 	~WindowContext ();
@@ -83,6 +87,7 @@ private:
 	create (const GLXContext, const bool);
 
 	const GLXWindow xWindow;
+	XVisualInfo*    visualInfoList;
 
 };
 
