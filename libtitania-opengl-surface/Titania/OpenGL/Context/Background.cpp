@@ -51,12 +51,12 @@
 #include "Background.h"
 
 #include <Titania/Math/Geometry/Camera.h>
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace opengl {
 
-Background::Background (const Glib::RefPtr <Gtk::StyleContext> & styleContext) :
-       styleContext (styleContext),
+Background::Background () :
 	       textureId (0),
 	projectionMatrix (math::ortho <float> (0, 1, 0, 1, -1, 1))
 { }
@@ -68,14 +68,13 @@ Background::setup ()
 }
 
 void
-Background::configure (const size_t width, const size_t height)
+Background::configure (const Glib::RefPtr <Gtk::StyleContext> & styleContext, const size_t width, const size_t height)
 {
 	Cairo::RefPtr <Cairo::ImageSurface> surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
 
 	const auto cairo = Cairo::Context::create (surface);
 
 	styleContext -> render_background (cairo, 0, 0, width, height);
-	//styleContext -> render_frame (cairo, 0, 0, get_width (), get_height ());
 
 	glEnable (GL_TEXTURE_2D);
 	glBindTexture (GL_TEXTURE_2D, textureId);

@@ -83,7 +83,7 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	           worldURLOutput (),
 	               recentView (new RecentView (getBrowserWindow ()))
 {
-	addChildren (masterBrowser, browsers, browser, scene, executionContext);
+	addChildren (masterBrowser, logoBrowser, browsers, browser, scene, executionContext);
 }
 
 void

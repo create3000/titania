@@ -622,15 +622,21 @@
                     <property name="hexpand">True</property>
                     <property name="spacing">8</property>
                     <child>
-                      <object class="GtkBox" id="DirectionalLightNormalToolBox">
-                        <property name="width_request">96</property>
+                      <object class="GtkViewport" id="viewport1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <property name="resize_mode">immediate</property>
-                        <property name="orientation">vertical</property>
                         <child>
-                          <placeholder/>
+                          <object class="GtkBox" id="DirectionalLightNormalToolBox">
+                            <property name="width_request">96</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="resize_mode">immediate</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
                         </child>
                       </object>
                       <packing>
@@ -1201,15 +1207,21 @@
                     <property name="halign">start</property>
                     <property name="spacing">8</property>
                     <child>
-                      <object class="GtkBox" id="SpotLightNormalToolBox">
-                        <property name="width_request">96</property>
+                      <object class="GtkViewport" id="viewport2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <property name="resize_mode">immediate</property>
-                        <property name="orientation">vertical</property>
                         <child>
-                          <placeholder/>
+                          <object class="GtkBox" id="SpotLightNormalToolBox">
+                            <property name="width_request">96</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="resize_mode">immediate</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
                         </child>
                       </object>
                       <packing>

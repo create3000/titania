@@ -567,17 +567,23 @@
                     <property name="halign">start</property>
                     <property name="spacing">8</property>
                     <child>
-                      <object class="GtkBox" id="TransformRotationToolBox">
-                        <property name="width_request">96</property>
+                      <object class="GtkViewport" id="viewport1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="orientation">vertical</property>
                         <child>
-                          <placeholder/>
+                          <object class="GtkBox" id="TransformRotationToolBox">
+                            <property name="width_request">96</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
+                        <property name="expand">True</property>
                         <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
@@ -691,17 +697,23 @@
                     <property name="halign">start</property>
                     <property name="spacing">8</property>
                     <child>
-                      <object class="GtkBox" id="TransformScaleOrientationToolBox">
-                        <property name="width_request">96</property>
+                      <object class="GtkViewport" id="viewport2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="orientation">vertical</property>
                         <child>
-                          <placeholder/>
+                          <object class="GtkBox" id="TransformScaleOrientationToolBox">
+                            <property name="width_request">96</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
+                        <property name="expand">True</property>
                         <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
@@ -1095,15 +1107,21 @@
                     <property name="hexpand">True</property>
                     <property name="spacing">8</property>
                     <child>
-                      <object class="GtkBox" id="BillboardAxisOfRotationToolBox">
-                        <property name="width_request">96</property>
+                      <object class="GtkViewport" id="viewport3">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <property name="resize_mode">immediate</property>
-                        <property name="orientation">vertical</property>
                         <child>
-                          <placeholder/>
+                          <object class="GtkBox" id="BillboardAxisOfRotationToolBox">
+                            <property name="width_request">96</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="resize_mode">immediate</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
                         </child>
                       </object>
                       <packing>
@@ -2000,17 +2018,23 @@
                     <property name="halign">start</property>
                     <property name="spacing">8</property>
                     <child>
-                      <object class="GtkBox" id="GeoTransformRotationToolBox">
-                        <property name="width_request">96</property>
+                      <object class="GtkViewport" id="viewport4">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="orientation">vertical</property>
                         <child>
-                          <placeholder/>
+                          <object class="GtkBox" id="GeoTransformRotationToolBox">
+                            <property name="width_request">96</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
+                        <property name="expand">True</property>
                         <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
@@ -2124,13 +2148,19 @@
                     <property name="halign">start</property>
                     <property name="spacing">8</property>
                     <child>
-                      <object class="GtkBox" id="GeoTransformScaleOrientationToolBox">
-                        <property name="width_request">96</property>
+                      <object class="GtkViewport" id="viewport5">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="orientation">vertical</property>
                         <child>
-                          <placeholder/>
+                          <object class="GtkBox" id="GeoTransformScaleOrientationToolBox">
+                            <property name="width_request">96</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
                         </child>
                       </object>
                       <packing>

@@ -63,13 +63,13 @@ class Background
 {
 public:
 
-	Background (const Glib::RefPtr <Gtk::StyleContext> &);
+	Background ();
 
 	void
 	setup ();
 
 	void
-	configure (const size_t, const size_t);
+	configure (const Glib::RefPtr <Gtk::StyleContext> &, const size_t, const size_t);
 
 	void
 	draw ();
@@ -82,9 +82,8 @@ public:
 
 private:
 
-	const Glib::RefPtr <Gtk::StyleContext> styleContext;
-	GLuint                                 textureId;
-	math::matrix4 <float>                  projectionMatrix;
+	GLuint                textureId;
+	math::matrix4 <float> projectionMatrix;
 };
 
 

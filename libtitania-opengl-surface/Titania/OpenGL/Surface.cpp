@@ -72,7 +72,7 @@ Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 	Gtk::DrawingArea (),
 	         context (),
 	  sharingContext (sharingContext),
-	      background (new Background (get_style_context ()))
+	      background (new Background ())
 {
 	get_style_context () -> add_class ("background");
 	get_style_context () -> add_class ("titania-surface");
@@ -210,7 +210,7 @@ Surface::on_style_updated ()
 	if (makeCurrent ())
 	{
 		if (background)
-		   background -> configure (get_width (), get_height ());
+		   background -> configure (get_style_context (), get_width (), get_height ());
 	}
 }
 
@@ -221,7 +221,7 @@ Surface::set_configure_event (GdkEventConfigure* const event)
 	{
 		glViewport (0, 0, get_width (), get_height ());
 
-		background -> configure (get_width (), get_height ());
+		background -> configure (get_style_context (), get_width (), get_height ());
 
 		reshape ();
 	}
@@ -265,8 +265,6 @@ void
 Surface::dispose ()
 {
 	draw_connection .disconnect ();
-
-	background -> dispose ();
 
 	context .reset ();
 	sharingContext .reset ();
