@@ -57,37 +57,30 @@ namespace puck {
 
 X3DDisk2DEditor::X3DDisk2DEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                          shapeNodes (),
 	                         innerRadius (this, getDisk2DInnerRadiusAdjustment (), getDisk2DInnerRadiusSpinButton (), "innerRadius"),
 	                         outerRadius (this, getDisk2DOuterRadiusAdjustment (), getDisk2DOuterRadiusSpinButton (), "outerRadius")
 { }
 
 void
-X3DDisk2DEditor::initialize ()
+X3DDisk2DEditor::addShapes ()
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DDisk2DEditor::set_selection);
-
-	set_selection ();
-}
-
-void
-X3DDisk2DEditor::set_selection ()
-{
-	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .removeInterest (this, &X3DDisk2DEditor::set_geometry);
-
-	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
-
-	for (const auto & shapeNode : shapeNodes)
+	for (const auto & shapeNode : getShapes ())
 		shapeNode -> geometry () .addInterest (this, &X3DDisk2DEditor::set_geometry);
 
 	set_geometry ();
 }
 
 void
+X3DDisk2DEditor::removeShapes ()
+{
+	for (const auto & shapeNode : getShapes ())
+		shapeNode -> geometry () .removeInterest (this, &X3DDisk2DEditor::set_geometry);
+}
+
+void
 X3DDisk2DEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Disk2D> (shapeNodes, "geometry"));
+	const auto        node  (getOneSelection <X3D::Disk2D> (getShapes (), "geometry"));
 	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
 
 	getDisk2DExpander () .set_visible (node);

@@ -57,7 +57,6 @@ namespace puck {
 
 X3DBoxEditor::X3DBoxEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                          shapeNodes (),
 	                                size (this,
 	                                      getBoxSizeXAdjustment (),
 	                                      getBoxSizeYAdjustment (),
@@ -67,33 +66,25 @@ X3DBoxEditor::X3DBoxEditor () :
 { }
 
 void
-X3DBoxEditor::initialize ()
+X3DBoxEditor::addShapes ()
 {
-	getBoxUniformSizeButton () .set_active (getConfig () .getBoolean ("boxUniformSize"));
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DBoxEditor::set_selection);
-
-	set_selection ();
-}
-
-void
-X3DBoxEditor::set_selection ()
-{
-	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .removeInterest (this, &X3DBoxEditor::set_geometry);
-
-	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
-
-	for (const auto & shapeNode : shapeNodes)
+	for (const auto & shapeNode : getShapes ())
 		shapeNode -> geometry () .addInterest (this, &X3DBoxEditor::set_geometry);
 
 	set_geometry ();
 }
 
 void
+X3DBoxEditor::removeShapes ()
+{
+	for (const auto & shapeNode : getShapes ())
+		shapeNode -> geometry () .removeInterest (this, &X3DBoxEditor::set_geometry);
+}
+
+void
 X3DBoxEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Box> (shapeNodes, "geometry"));
+	const auto        node  (getOneSelection <X3D::Box> (getShapes (), "geometry"));
 	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
 
 	getBoxExpander () .set_visible (node);

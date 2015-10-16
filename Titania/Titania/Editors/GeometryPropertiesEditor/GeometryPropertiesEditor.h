@@ -100,6 +100,11 @@ private:
 	void
 	initialize () final override;
 
+	virtual
+	const X3D::X3DPtrArray <X3D::X3DShapeNode> &
+	getShapes () final override
+	{ return shapes; }
+
 	void
 	set_selection ();
 

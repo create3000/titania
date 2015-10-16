@@ -76,9 +76,15 @@ protected:
 
 	X3DArc2DEditor ();
 
-	virtual
 	void
-	initialize () override;
+	addShapes ();
+
+	void
+	removeShapes ();
+
+	virtual
+	const X3D::X3DPtrArray <X3D::X3DShapeNode> &
+	getShapes () = 0;
 
 
 private:
@@ -86,14 +92,9 @@ private:
 	///  @name Construction
 
 	void
-	set_selection ();
-
-	void
 	set_geometry ();
 
 	///  @name Members
-
-	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
 
 	X3DFieldAdjustment <X3D::SFFloat> startAngle;
 	X3DFieldAdjustment <X3D::SFFloat> endAngle;

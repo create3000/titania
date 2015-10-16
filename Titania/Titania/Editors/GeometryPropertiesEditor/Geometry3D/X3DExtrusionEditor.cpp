@@ -57,37 +57,30 @@ namespace puck {
 
 X3DExtrusionEditor::X3DExtrusionEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                          shapeNodes (),
 	                            beginCap (this, getExtrusionBeginCapCheckButton (),"beginCap"),
 	                              endCap (this, getExtrusionEndCapCheckButton (), "endCap")
 { }
 
 void
-X3DExtrusionEditor::initialize ()
+X3DExtrusionEditor::addShapes ()
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DExtrusionEditor::set_selection);
-
-	set_selection ();
-}
-
-void
-X3DExtrusionEditor::set_selection ()
-{
-	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .removeInterest (this, &X3DExtrusionEditor::set_geometry);
-
-	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
-
-	for (const auto & shapeNode : shapeNodes)
+	for (const auto & shapeNode : getShapes ())
 		shapeNode -> geometry () .addInterest (this, &X3DExtrusionEditor::set_geometry);
 
 	set_geometry ();
 }
 
 void
+X3DExtrusionEditor::removeShapes ()
+{
+	for (const auto & shapeNode : getShapes ())
+		shapeNode -> geometry () .removeInterest (this, &X3DExtrusionEditor::set_geometry);
+}
+
+void
 X3DExtrusionEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Extrusion> (shapeNodes, "geometry"));
+	const auto        node  (getOneSelection <X3D::Extrusion> (getShapes (), "geometry"));
 	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
 
 	getExtrusionExpander () .set_visible (node);

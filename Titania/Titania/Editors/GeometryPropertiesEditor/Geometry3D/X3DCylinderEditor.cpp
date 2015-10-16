@@ -57,7 +57,6 @@ namespace puck {
 
 X3DCylinderEditor::X3DCylinderEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                          shapeNodes (),
 	                                 top (this, getCylinderTopCheckButton (),"top"),
 	                                side (this, getCylinderSideCheckButton (),"side"),
 	                              bottom (this, getCylinderBottomCheckButton (), "bottom"),
@@ -66,31 +65,25 @@ X3DCylinderEditor::X3DCylinderEditor () :
 { }
 
 void
-X3DCylinderEditor::initialize ()
+X3DCylinderEditor::addShapes ()
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DCylinderEditor::set_selection);
-
-	set_selection ();
-}
-
-void
-X3DCylinderEditor::set_selection ()
-{
-	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .removeInterest (this, &X3DCylinderEditor::set_geometry);
-
-	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
-
-	for (const auto & shapeNode : shapeNodes)
+	for (const auto & shapeNode : getShapes ())
 		shapeNode -> geometry () .addInterest (this, &X3DCylinderEditor::set_geometry);
 
 	set_geometry ();
 }
 
 void
+X3DCylinderEditor::removeShapes ()
+{
+	for (const auto & shapeNode : getShapes ())
+		shapeNode -> geometry () .removeInterest (this, &X3DCylinderEditor::set_geometry);
+}
+
+void
 X3DCylinderEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Cylinder> (shapeNodes, "geometry"));
+	const auto        node  (getOneSelection <X3D::Cylinder> (getShapes (), "geometry"));
 	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
 
 	getCylinderExpander () .set_visible (node);

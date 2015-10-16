@@ -96,15 +96,6 @@ void
 GeometryPropertiesEditor::initialize ()
 {
 	X3DGeometryPropertiesEditorInterface::initialize ();
-	X3DArc2DEditor::initialize ();
-	X3DArcClose2DEditor::initialize ();
-	X3DCircle2DEditor::initialize ();
-	X3DDisk2DEditor::initialize ();
-	X3DRectangle2DEditor::initialize ();
-	X3DBoxEditor::initialize ();
-	X3DConeEditor::initialize ();
-	X3DCylinderEditor::initialize ();
-	X3DExtrusionEditor::initialize ();
 	X3DPrimitiveCountEditor::initialize ();
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &GeometryPropertiesEditor::set_selection);
@@ -118,10 +109,30 @@ GeometryPropertiesEditor::set_selection ()
 	for (const auto & shape : shapes)
 		shape -> geometry () .removeInterest (this, &GeometryPropertiesEditor::set_nodes);
 
+	X3DArc2DEditor::removeShapes ();
+	X3DArcClose2DEditor::removeShapes ();
+	X3DCircle2DEditor::removeShapes ();
+	X3DDisk2DEditor::removeShapes ();
+	X3DRectangle2DEditor::removeShapes ();
+	X3DBoxEditor::removeShapes ();
+	X3DConeEditor::removeShapes ();
+	X3DCylinderEditor::removeShapes ();
+	X3DExtrusionEditor::removeShapes ();
+
 	shapes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
 	
 	for (const auto & shape : shapes)
 		shape -> geometry () .addInterest (this, &GeometryPropertiesEditor::set_nodes);
+
+	X3DArc2DEditor::addShapes ();
+	X3DArcClose2DEditor::addShapes ();
+	X3DCircle2DEditor::addShapes ();
+	X3DDisk2DEditor::addShapes ();
+	X3DRectangle2DEditor::addShapes ();
+	X3DBoxEditor::addShapes ();
+	X3DConeEditor::addShapes ();
+	X3DCylinderEditor::addShapes ();
+	X3DExtrusionEditor::addShapes ();
 
 	set_nodes ();
 }

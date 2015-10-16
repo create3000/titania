@@ -57,7 +57,6 @@ namespace puck {
 
 X3DArcClose2DEditor::X3DArcClose2DEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                          shapeNodes (),
 	                         closureType (this, getArcClose2DClosureTypeComboBoxText (), "closureType"),
 	                          startAngle (this, getArcClose2DStartAngleAdjustment (), getArcClose2DStartAngleSpinButton (), "startAngle"),
 	                            endAngle (this, getArcClose2DEndAngleAdjustment (), getArcClose2DEndAngleSpinButton (), "endAngle"),
@@ -65,31 +64,25 @@ X3DArcClose2DEditor::X3DArcClose2DEditor () :
 { }
 
 void
-X3DArcClose2DEditor::initialize ()
+X3DArcClose2DEditor::addShapes ()
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DArcClose2DEditor::set_selection);
-
-	set_selection ();
-}
-
-void
-X3DArcClose2DEditor::set_selection ()
-{
-	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .removeInterest (this, &X3DArcClose2DEditor::set_geometry);
-
-	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
-
-	for (const auto & shapeNode : shapeNodes)
+	for (const auto & shapeNode : getShapes ())
 		shapeNode -> geometry () .addInterest (this, &X3DArcClose2DEditor::set_geometry);
 
 	set_geometry ();
 }
 
 void
+X3DArcClose2DEditor::removeShapes ()
+{
+	for (const auto & shapeNode : getShapes ())
+		shapeNode -> geometry () .removeInterest (this, &X3DArcClose2DEditor::set_geometry);
+}
+
+void
 X3DArcClose2DEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::ArcClose2D> (shapeNodes, "geometry"));
+	const auto        node  (getOneSelection <X3D::ArcClose2D> (getShapes (), "geometry"));
 	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
 
 	getArcClose2DExpander () .set_visible (node);

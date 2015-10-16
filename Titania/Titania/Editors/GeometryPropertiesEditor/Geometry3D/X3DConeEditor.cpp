@@ -57,7 +57,6 @@ namespace puck {
 
 X3DConeEditor::X3DConeEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                          shapeNodes (),
 	                                side (this, getConeSideCheckButton (),"side"),
 	                              bottom (this, getConeBottomCheckButton (), "bottom"),
 	                              height (this, getConeHeightAdjustment (), getConeHeightSpinButton (), "height"),
@@ -65,31 +64,25 @@ X3DConeEditor::X3DConeEditor () :
 { }
 
 void
-X3DConeEditor::initialize ()
+X3DConeEditor::addShapes ()
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DConeEditor::set_selection);
-
-	set_selection ();
-}
-
-void
-X3DConeEditor::set_selection ()
-{
-	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .removeInterest (this, &X3DConeEditor::set_geometry);
-
-	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
-
-	for (const auto & shapeNode : shapeNodes)
+	for (const auto & shapeNode : getShapes ())
 		shapeNode -> geometry () .addInterest (this, &X3DConeEditor::set_geometry);
 
 	set_geometry ();
 }
 
 void
+X3DConeEditor::removeShapes ()
+{
+	for (const auto & shapeNode : getShapes ())
+		shapeNode -> geometry () .removeInterest (this, &X3DConeEditor::set_geometry);
+}
+
+void
 X3DConeEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Cone> (shapeNodes, "geometry"));
+	const auto        node  (getOneSelection <X3D::Cone> (getShapes (), "geometry"));
 	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
 
 	getConeExpander () .set_visible (node);

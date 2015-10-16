@@ -76,17 +76,20 @@ protected:
 
 	X3DRectangle2DEditor ();
 
-	virtual
 	void
-	initialize () override;
+	addShapes ();
+
+	void
+	removeShapes ();
+
+	virtual
+	const X3D::X3DPtrArray <X3D::X3DShapeNode> &
+	getShapes () = 0;
 
 
 private:
 
 	///  @name Construction
-
-	void
-	set_selection ();
 
 	void
 	set_geometry ();
@@ -98,8 +101,6 @@ private:
 	on_rectangle2d_uniform_size_clicked () final override;
 
 	///  @name Members
-
-	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
 
 	X3DFieldAdjustment2 <X3D::SFVec2f> size;
 

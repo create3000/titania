@@ -76,17 +76,20 @@ protected:
 
 	X3DBoxEditor ();
 
-	virtual
 	void
-	initialize () override;
+	addShapes ();
+
+	void
+	removeShapes ();
+
+	virtual
+	const X3D::X3DPtrArray <X3D::X3DShapeNode> &
+	getShapes () = 0;
 
 
 private:
 
 	///  @name Construction
-
-	void
-	set_selection ();
 
 	void
 	set_geometry ();
@@ -98,8 +101,6 @@ private:
 	on_box_uniform_size_clicked () final override;
 
 	///  @name Members
-
-	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
 
 	X3DFieldAdjustment3 <X3D::SFVec3f> size;
 

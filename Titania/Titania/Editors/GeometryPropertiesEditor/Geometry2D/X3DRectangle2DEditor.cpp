@@ -57,7 +57,6 @@ namespace puck {
 
 X3DRectangle2DEditor::X3DRectangle2DEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                          shapeNodes (),
 	                                size (this,
 	                                      getRectangle2DSizeXAdjustment (),
 	                                      getRectangle2DSizeYAdjustment (),
@@ -66,33 +65,25 @@ X3DRectangle2DEditor::X3DRectangle2DEditor () :
 { }
 
 void
-X3DRectangle2DEditor::initialize ()
+X3DRectangle2DEditor::addShapes ()
 {
-	getRectangle2DUniformSizeButton () .set_active (getConfig () .getBoolean ("rectangle2DUniformSize"));
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DRectangle2DEditor::set_selection);
-
-	set_selection ();
-}
-
-void
-X3DRectangle2DEditor::set_selection ()
-{
-	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .removeInterest (this, &X3DRectangle2DEditor::set_geometry);
-
-	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
-
-	for (const auto & shapeNode : shapeNodes)
+	for (const auto & shapeNode : getShapes ())
 		shapeNode -> geometry () .addInterest (this, &X3DRectangle2DEditor::set_geometry);
 
 	set_geometry ();
 }
 
 void
+X3DRectangle2DEditor::removeShapes ()
+{
+	for (const auto & shapeNode : getShapes ())
+		shapeNode -> geometry () .removeInterest (this, &X3DRectangle2DEditor::set_geometry);
+}
+
+void
 X3DRectangle2DEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Rectangle2D> (shapeNodes, "geometry"));
+	const auto        node  (getOneSelection <X3D::Rectangle2D> (getShapes (), "geometry"));
 	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
 
 	getRectangle2DExpander () .set_visible (node);

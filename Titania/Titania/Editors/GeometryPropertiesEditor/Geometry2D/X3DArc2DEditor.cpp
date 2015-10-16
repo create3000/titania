@@ -57,38 +57,31 @@ namespace puck {
 
 X3DArc2DEditor::X3DArc2DEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                          shapeNodes (),
 	                          startAngle (this, getArc2DStartAngleAdjustment (), getArc2DStartAngleSpinButton (), "startAngle"),
 	                            endAngle (this, getArc2DEndAngleAdjustment (), getArc2DEndAngleSpinButton (), "endAngle"),
 	                              radius (this, getArc2DRadiusAdjustment (), getArc2DRadiusSpinButton (), "radius")
 { }
-
+	
 void
-X3DArc2DEditor::initialize ()
+X3DArc2DEditor::addShapes ()
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DArc2DEditor::set_selection);
-
-	set_selection ();
-}
-
-void
-X3DArc2DEditor::set_selection ()
-{
-	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .removeInterest (this, &X3DArc2DEditor::set_geometry);
-
-	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
-
-	for (const auto & shapeNode : shapeNodes)
+	for (const auto & shapeNode : getShapes ())
 		shapeNode -> geometry () .addInterest (this, &X3DArc2DEditor::set_geometry);
 
 	set_geometry ();
 }
 
 void
+X3DArc2DEditor::removeShapes ()
+{
+	for (const auto & shapeNode : getShapes ())
+		shapeNode -> geometry () .removeInterest (this, &X3DArc2DEditor::set_geometry);
+}
+
+void
 X3DArc2DEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Arc2D> (shapeNodes, "geometry"));
+	const auto        node  (getOneSelection <X3D::Arc2D> (getShapes (), "geometry"));
 	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
 
 	getArc2DExpander () .set_visible (node);

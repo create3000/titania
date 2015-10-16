@@ -1939,6 +1939,7 @@
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DConeEditor.h" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DCylinderEditor.h" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DExtrusionEditor.h" />
+    <None Include="share\titania\ui\icons\Bind.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
