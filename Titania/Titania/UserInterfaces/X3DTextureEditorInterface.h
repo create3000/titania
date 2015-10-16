@@ -177,6 +177,10 @@ public:
 	getTextureBox () const
 	{ return *m_TextureBox; }
 
+	Gtk::Box &
+	getSelectTextureBox () const
+	{ return *m_SelectTextureBox; }
+
 	Gtk::ComboBoxText &
 	getTextureComboBoxText () const
 	{ return *m_TextureComboBoxText; }
@@ -273,6 +277,10 @@ public:
 	getTexturePropertiesExpander () const
 	{ return *m_TexturePropertiesExpander; }
 
+	Gtk::Box &
+	getSelectTexturePropertiesBox () const
+	{ return *m_SelectTexturePropertiesBox; }
+
 	Gtk::CheckButton &
 	getTexturePropertiesCheckButton () const
 	{ return *m_TexturePropertiesCheckButton; }
@@ -344,6 +352,10 @@ public:
 	Gtk::Box &
 	getTextureTransformNodeBox () const
 	{ return *m_TextureTransformNodeBox; }
+
+	Gtk::Box &
+	getSelectTextureTransBox () const
+	{ return *m_SelectTextureTransBox; }
 
 	Gtk::ComboBoxText &
 	getTextureTransformComboBoxText () const
@@ -420,6 +432,10 @@ public:
 	Gtk::Box &
 	getTextureCoordinateGeneratorMainBox () const
 	{ return *m_TextureCoordinateGeneratorMainBox; }
+
+	Gtk::Box &
+	getSelectTextureCoordinateGeneratorBox () const
+	{ return *m_SelectTextureCoordinateGeneratorBox; }
 
 	Gtk::CheckButton &
 	getTextureCoordinateGeneratorCheckButton () const
@@ -552,6 +568,7 @@ private:
 	Gtk::Notebook*                         m_TextureChildNotebook;
 	Gtk::Expander*                         m_TextureExpander;
 	Gtk::Box*                              m_TextureBox;
+	Gtk::Box*                              m_SelectTextureBox;
 	Gtk::ComboBoxText*                     m_TextureComboBoxText;
 	Gtk::Button*                           m_TextureUnlinkButton;
 	Gtk::Label*                            m_TextureFormatLabel;
@@ -576,6 +593,7 @@ private:
 	Gtk::CheckButton*                      m_Texture2DNodeRepeatSCheckButton;
 	Gtk::CheckButton*                      m_Texture2DNodeRepeatTCheckButton;
 	Gtk::Expander*                         m_TexturePropertiesExpander;
+	Gtk::Box*                              m_SelectTexturePropertiesBox;
 	Gtk::CheckButton*                      m_TexturePropertiesCheckButton;
 	Gtk::Button*                           m_TexturePropertiesUnlinkButton;
 	Gtk::Grid*                             m_TexturePropertiesBox;
@@ -594,6 +612,7 @@ private:
 	Gtk::Scale*                            m_TexturePropertiesBorderColorScale;
 	Gtk::Expander*                         m_TextureTransformExpander;
 	Gtk::Box*                              m_TextureTransformNodeBox;
+	Gtk::Box*                              m_SelectTextureTransBox;
 	Gtk::ComboBoxText*                     m_TextureTransformComboBoxText;
 	Gtk::Button*                           m_TextureTransformUnlinkButton;
 	Gtk::Notebook*                         m_TextureTransformNotebook;
@@ -613,6 +632,7 @@ private:
 	Gtk::SpinButton*                       m_TextureTransformRotationSpinButton;
 	Gtk::Expander*                         m_TextureCoordinateGeneratorExpander;
 	Gtk::Box*                              m_TextureCoordinateGeneratorMainBox;
+	Gtk::Box*                              m_SelectTextureCoordinateGeneratorBox;
 	Gtk::CheckButton*                      m_TextureCoordinateGeneratorCheckButton;
 	Gtk::Button*                           m_TextureCoordinateGeneratorUnlinkButton;
 	Gtk::Grid*                             m_TextureCoordinateGeneratorBox;

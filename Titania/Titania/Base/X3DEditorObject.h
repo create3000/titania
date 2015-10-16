@@ -123,6 +123,14 @@ protected:
 	getSelection (const std::set <X3D::X3DConstants::NodeType> &) const;
 
 	template <class FieldType, class NodeType>
+	std::tuple <X3D::X3DPtr <FieldType>, int32_t, int32_t>
+	getSelection (const X3D::X3DPtrArray <NodeType> &, const std::string &);
+
+	template <class FieldType, class NodeType>
+	X3D::X3DPtr <FieldType>
+	getOneSelection (const X3D::X3DPtrArray <NodeType> &, const std::string &);
+
+	template <class FieldType, class NodeType>
 	static
 	std::pair <X3D::X3DPtr <FieldType>, int32_t>
 	getNode (const X3D::X3DPtrArray <NodeType> &, const std::string &);
@@ -230,6 +238,49 @@ X3DEditorObject::getNodes (const X3D::MFNode & selection, const std::set <X3D::X
 	return nodes;
 }
 
+/***
+ *  Returns the last node of type @a FieldType in @a nodes in field @a fieldName. The second value indicates if the node
+ *  was found, where:
+ *  -2 means no field named @a fieldName found
+ *  -1 means inconsistent
+ *   0 means all values are NULL
+ *   1 means all values share the found node
+ *  The third value indicates whether the node has a parent or is a direct selection.
+ */
+template <class FieldType, class NodeType>
+std::tuple <X3D::X3DPtr <FieldType>, int32_t, int32_t>
+X3DEditorObject::getSelection (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
+{
+	// Check if there is a direct master selecection of our node type.
+
+	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
+
+	if (not selection .empty ())
+	{
+		const X3D::X3DPtr <FieldType> node (selection .back ());
+
+		if (node)
+			return std::make_tuple (node, SAME_NODE, false);
+	}
+
+	auto pair = getNode <FieldType, NodeType> (nodes, fieldName);
+
+	return std::make_tuple (std::move (pair .first), pair .second, true);
+}
+
+template <class FieldType, class NodeType>
+X3D::X3DPtr <FieldType>
+X3DEditorObject::getOneSelection (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
+{
+	auto          tuple  = getSelection <FieldType, NodeType> (nodes, fieldName);
+	const int32_t active = std::get <1> (tuple);
+
+	if (active == SAME_NODE) // All shapes share the same geometry
+		return std::move (std::get <0> (tuple));
+	else
+		return nullptr;
+}
+	
 /***
  *  Returns the last node of type @a FieldType in @a nodes in field @a fieldName. The second value indicates if the node
  *  was found, where:

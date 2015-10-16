@@ -326,8 +326,6 @@
                           <object class="GtkComboBoxText" id="ArcClose2DClosureTypeComboBoxText">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="hexpand">True</property>
                             <items>
                               <item>PIE</item>
                               <item translatable="yes">CHORD</item>

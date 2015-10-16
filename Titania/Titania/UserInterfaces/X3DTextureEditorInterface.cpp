@@ -85,6 +85,7 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextureChildNotebook", m_TextureChildNotebook);
 	m_builder -> get_widget ("TextureExpander", m_TextureExpander);
 	m_builder -> get_widget ("TextureBox", m_TextureBox);
+	m_builder -> get_widget ("SelectTextureBox", m_SelectTextureBox);
 	m_builder -> get_widget ("TextureComboBoxText", m_TextureComboBoxText);
 	m_builder -> get_widget ("TextureUnlinkButton", m_TextureUnlinkButton);
 	m_builder -> get_widget ("TextureFormatLabel", m_TextureFormatLabel);
@@ -109,6 +110,7 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Texture2DNodeRepeatSCheckButton", m_Texture2DNodeRepeatSCheckButton);
 	m_builder -> get_widget ("Texture2DNodeRepeatTCheckButton", m_Texture2DNodeRepeatTCheckButton);
 	m_builder -> get_widget ("TexturePropertiesExpander", m_TexturePropertiesExpander);
+	m_builder -> get_widget ("SelectTexturePropertiesBox", m_SelectTexturePropertiesBox);
 	m_builder -> get_widget ("TexturePropertiesCheckButton", m_TexturePropertiesCheckButton);
 	m_builder -> get_widget ("TexturePropertiesUnlinkButton", m_TexturePropertiesUnlinkButton);
 	m_builder -> get_widget ("TexturePropertiesBox", m_TexturePropertiesBox);
@@ -127,6 +129,7 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TexturePropertiesBorderColorScale", m_TexturePropertiesBorderColorScale);
 	m_builder -> get_widget ("TextureTransformExpander", m_TextureTransformExpander);
 	m_builder -> get_widget ("TextureTransformNodeBox", m_TextureTransformNodeBox);
+	m_builder -> get_widget ("SelectTextureTransBox", m_SelectTextureTransBox);
 	m_builder -> get_widget ("TextureTransformComboBoxText", m_TextureTransformComboBoxText);
 	m_builder -> get_widget ("TextureTransformUnlinkButton", m_TextureTransformUnlinkButton);
 	m_builder -> get_widget ("TextureTransformNotebook", m_TextureTransformNotebook);
@@ -146,6 +149,7 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextureTransformRotationSpinButton", m_TextureTransformRotationSpinButton);
 	m_builder -> get_widget ("TextureCoordinateGeneratorExpander", m_TextureCoordinateGeneratorExpander);
 	m_builder -> get_widget ("TextureCoordinateGeneratorMainBox", m_TextureCoordinateGeneratorMainBox);
+	m_builder -> get_widget ("SelectTextureCoordinateGeneratorBox", m_SelectTextureCoordinateGeneratorBox);
 	m_builder -> get_widget ("TextureCoordinateGeneratorCheckButton", m_TextureCoordinateGeneratorCheckButton);
 	m_builder -> get_widget ("TextureCoordinateGeneratorUnlinkButton", m_TextureCoordinateGeneratorUnlinkButton);
 	m_builder -> get_widget ("TextureCoordinateGeneratorBox", m_TextureCoordinateGeneratorBox);

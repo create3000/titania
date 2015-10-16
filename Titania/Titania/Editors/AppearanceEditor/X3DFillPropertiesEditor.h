@@ -106,9 +106,6 @@ private:
 	set_node ();
 
 	void
-	set_fill_properties_node (std::pair <X3D::X3DPtr <X3D::FillProperties>, int32_t> &&, const bool);
-
-	void
 	connectFillProperties (const X3D::SFNode &);
 
 	///  @name Members

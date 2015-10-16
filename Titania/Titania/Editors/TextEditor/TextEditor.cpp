@@ -168,38 +168,17 @@ TextEditor::connectGeometry (const X3D::SFNode & field)
 void
 TextEditor::set_node ()
 {
-	// Check if there is a direct master selecection of our node type.
-
-	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
-
-	if (not selection .empty ())
-	{
-		const X3D::X3DPtr <X3D::Text> node (selection .back ());
-
-		if (node)
-		{
-			set_text (std::make_pair (node, SAME_NODE), false);
-			return;
-		}
-	}
-
-	// Check if all shape node whithin the selection have a node of our type.
-
-	set_text (getNode <X3D::Text> (shapeNodes, "geometry"), true);
-}
-
-void
-TextEditor::set_text (std::pair <X3D::X3DPtr <X3D::Text>, int32_t> && pair, const bool hasParent)
-{
 	undoStep .reset ();
 
 	if (text)
 		text -> string () .removeInterest (this, &TextEditor::set_string);
 
-	const int32_t active   = pair .second;
-	const bool    hasField = (active not_eq -2);
+	auto  tuple             = getSelection <X3D::Text> (shapeNodes, "geometry");
+	const int32_t active    = std::get <1> (tuple);
+	const bool    hasParent = std::get <2> (tuple);
+	const bool    hasField  = (active not_eq -2);
 
-	text = std::move (pair .first);
+	text = std::move (std::get <0> (tuple));
 
 	if (not text)
 	{

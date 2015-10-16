@@ -221,38 +221,17 @@ X3DFontStyleNodeEditor::connectFontStyle (const X3D::SFNode & field)
 void
 X3DFontStyleNodeEditor::set_node ()
 {
-	// Check if there is a direct master selecection of our node type.
-
-	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
-
-	if (not selection .empty ())
-	{
-		const X3D::X3DPtr <X3D::X3DFontStyleNode> node (selection .back ());
-
-		if (node)
-		{
-			set_font_style_node (std::make_pair (node, SAME_NODE), false);
-			return;
-		}
-	}
-
-	// Check if all shape node whithin the selection have a node of our type.
-
-	set_font_style_node (getNode <X3D::X3DFontStyleNode> (texts, "fontStyle"), true);
-}
-
-void
-X3DFontStyleNodeEditor::set_font_style_node (std::pair <X3D::X3DPtr <X3D::X3DFontStyleNode>, int32_t> && pair, const bool hasParent)
-{
 	undoStep .reset ();
 
 	if (fontStyleNode)
 		fontStyleNode -> style () .removeInterest (this, &X3DFontStyleNodeEditor::set_style);
 
-	const int  active   = pair .second;
-	const bool hasField = (active not_eq -2);
+	auto  tuple             = getSelection <X3D::X3DFontStyleNode> (texts, "fontStyle");
+	const int32_t active    = std::get <1> (tuple);
+	const bool    hasParent = std::get <2> (tuple);
+	const bool    hasField  = (active not_eq -2);
 
-	fontStyleNode = std::move (pair .first);
+	fontStyleNode = std::move (std::get <0> (tuple));
 
 	fontStyle       = fontStyleNode;
 	screenFontStyle = fontStyleNode;

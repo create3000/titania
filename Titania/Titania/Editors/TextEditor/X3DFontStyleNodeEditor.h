@@ -110,9 +110,6 @@ private:
 	set_node ();
 
 	void
-	set_font_style_node (std::pair <X3D::X3DPtr <X3D::X3DFontStyleNode>, int32_t> &&, const bool);
-
-	void
 	set_widgets ();
 
 	///  @name style

@@ -178,11 +178,12 @@ X3DTextureTransformNodeEditor::set_node ()
 {
 	undoStep .reset ();
 
-	auto       pair     = getNode <X3D::X3DTextureTransformNode> (appearances, "textureTransform");
-	const int  active   = pair .second;
-	const bool hasField = (active not_eq -2);
+	auto          tuple     = getSelection <X3D::X3DTextureTransformNode> (appearances, "textureTransform");
+	const int32_t active    = std::get <1> (tuple);
+	const bool    hasParent = std::get <2> (tuple);
+	const bool    hasField = (active not_eq -2);
 
-	textureTransformNode = std::move (pair .first);
+	textureTransformNode = std::move (std::get <0> (tuple));
 
 	setTextureTransform (textureTransformNode);
 
@@ -208,6 +209,7 @@ X3DTextureTransformNodeEditor::set_node ()
 	else
 		getTextureTransformComboBoxText () .set_active (-1);
 
+	getSelectTextureTransBox ()        .set_sensitive (hasParent);
 	getTextureTransformNodeBox ()      .set_sensitive (hasField);
 	getTextureTransformUnlinkButton () .set_sensitive (active > 0 and textureTransformNode -> getCloneCount () > 1);
 

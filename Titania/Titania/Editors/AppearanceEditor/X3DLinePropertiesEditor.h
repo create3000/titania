@@ -106,9 +106,6 @@ private:
 	set_node ();
 
 	void
-	set_line_properties_node (std::pair <X3D::X3DPtr <X3D::LineProperties>, int32_t> &&, const bool);
-
-	void
 	connectLineProperties (const X3D::SFNode &);
 
 	///  @name Members

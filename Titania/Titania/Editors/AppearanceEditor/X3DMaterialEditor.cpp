@@ -437,35 +437,14 @@ X3DMaterialEditor::set_material ()
 void
 X3DMaterialEditor::set_node ()
 {
-	// Check if there is a direct master selecection of our node type.
-
-	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
-
-	if (not selection .empty ())
-	{
-		const X3D::X3DPtr <X3D::X3DMaterialNode> node (selection .back ());
-
-		if (node)
-		{
-			set_material_node (std::make_pair (node, SAME_NODE), false);
-			return;
-		}
-	}
-
-	// Check if all shape node whithin the selection have a node of our type.
-
-	set_material_node (getNode <X3D::X3DMaterialNode> (appearances, "material"), true);
-}
-
-void
-X3DMaterialEditor::set_material_node (std::pair <X3D::X3DPtr <X3D::X3DMaterialNode>, int32_t> && pair, const bool hasParent)
-{
 	undoStep .reset ();
 
-	const int  active   = pair .second;
-	const bool hasField = (active not_eq -2);
+	auto          tuple     = getSelection <X3D::X3DMaterialNode> (appearances, "material");
+	const int32_t active    = std::get <1> (tuple);
+	const bool    hasParent = std::get <2> (tuple);
+	const bool    hasField  = (active not_eq -2);
 
-	materialNode = std::move (pair .first);
+	materialNode = std::move (std::get <0> (tuple));
 
 	material           = materialNode;
 	twoSidedMaterial   = materialNode;

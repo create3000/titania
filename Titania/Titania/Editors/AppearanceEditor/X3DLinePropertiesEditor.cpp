@@ -143,35 +143,14 @@ X3DLinePropertiesEditor::set_lineProperties ()
 void
 X3DLinePropertiesEditor::set_node ()
 {
-	// Check if there is a direct master selecection of our node type.
-
-	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
-
-	if (not selection .empty ())
-	{
-		const X3D::X3DPtr <X3D::LineProperties> node (selection .back ());
-
-		if (node)
-		{
-			set_line_properties_node (std::make_pair (node, SAME_NODE), false);
-			return;
-		}
-	}
-
-	// Check if all shape node whithin the selection have a node of our type.
-
-	set_line_properties_node (getNode <X3D::LineProperties> (appearances, "lineProperties"), true);
-}
-
-void
-X3DLinePropertiesEditor::set_line_properties_node (std::pair <X3D::X3DPtr <X3D::LineProperties>, int32_t> && pair, const bool hasParent)
-{
 	undoStep .reset ();
 
-	const int  active   = pair .second;
-	const bool hasField = (active not_eq -2);
+	auto          tuple     = getSelection <X3D::LineProperties> (appearances, "lineProperties");
+	const int32_t active    = std::get <1> (tuple);
+	const bool    hasParent = std::get <2> (tuple);
+	const bool    hasField  = (active not_eq -2);
 
-	lineProperties = std::move (pair .first);
+	lineProperties = std::move (std::get <0> (tuple));
 
 	if (not lineProperties)
 	{

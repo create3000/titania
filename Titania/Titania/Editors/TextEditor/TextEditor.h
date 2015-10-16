@@ -102,9 +102,6 @@ private:
 	void
 	set_node ();
 
-	void
-	set_text (std::pair <X3D::X3DPtr <X3D::Text>, int32_t> &&, const bool);
-
 	///  @name string
 
 	virtual

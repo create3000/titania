@@ -159,11 +159,12 @@ X3DTextureCoordinateGeneratorEditor::set_node ()
 {
 	undoStep .reset ();
 
-	auto       pair     = getNode <X3D::TextureCoordinateGenerator> (geometryNodes, "texCoord");
-	const int  active   = pair .second;
-	const bool hasField = (active not_eq -2);
+	auto       tuple     = getSelection <X3D::TextureCoordinateGenerator> (geometryNodes, "texCoord");
+	const int  active    = std::get <1> (tuple);
+	const bool hasParent = std::get <2> (tuple);
+	const bool hasField  = (active not_eq -2);
 
-	textureCoordinateGenerator = std::move (pair .first);
+	textureCoordinateGenerator = std::move (std::get <0> (tuple));
 
 	if (not textureCoordinateGenerator)
 	{
@@ -173,6 +174,7 @@ X3DTextureCoordinateGeneratorEditor::set_node ()
 
 	changing = true;
 
+	getSelectTextureCoordinateGeneratorBox ()   .set_sensitive (hasParent);
 	getTextureCoordinateGeneratorMainBox ()     .set_sensitive (hasField);
 	getTextureCoordinateGeneratorCheckButton () .set_active (active > 0);
 	getTextureCoordinateGeneratorCheckButton () .set_inconsistent (active < 0);

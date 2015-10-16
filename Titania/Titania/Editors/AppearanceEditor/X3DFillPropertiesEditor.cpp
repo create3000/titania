@@ -145,35 +145,14 @@ X3DFillPropertiesEditor::set_fillProperties ()
 void
 X3DFillPropertiesEditor::set_node ()
 {
-	// Check if there is a direct master selecection of our node type.
-
-	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
-
-	if (not selection .empty ())
-	{
-		const X3D::X3DPtr <X3D::FillProperties> node (selection .back ());
-
-		if (node)
-		{
-			set_fill_properties_node (std::make_pair (node, SAME_NODE), false);
-			return;
-		}
-	}
-
-	// Check if all shape node whithin the selection have a node of our type.
-
-	set_fill_properties_node (getNode <X3D::FillProperties> (appearances, "fillProperties"), true);
-}
-
-void
-X3DFillPropertiesEditor::set_fill_properties_node (std::pair <X3D::X3DPtr <X3D::FillProperties>, int32_t> && pair, const bool hasParent)
-{
 	undoStep .reset ();
 
-	const int  active   = pair .second;
-	const bool hasField = (active not_eq -2);
+	auto          tuple     = getSelection <X3D::FillProperties> (appearances, "fillProperties");
+	const int32_t active    = std::get <1> (tuple);
+	const bool    hasParent = std::get <2> (tuple);
+	const bool    hasField  = (active not_eq -2);
 
-	fillProperties = std::move (pair .first);
+	fillProperties = std::move (std::get <0> (tuple));
 
 	if (not fillProperties)
 	{

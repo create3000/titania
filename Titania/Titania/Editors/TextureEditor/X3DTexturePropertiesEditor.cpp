@@ -178,11 +178,12 @@ X3DTexturePropertiesEditor::set_node ()
 {
 	undoStep .reset ();
 
-	auto       pair     = getNode <X3D::TextureProperties> (textureNodes, "textureProperties");
-	const int  active   = pair .second;
-	const bool hasField = (active not_eq -2);
+	auto          tuple     = getSelection <X3D::TextureProperties> (textureNodes, "textureProperties");
+	const int32_t active    = std::get <1> (tuple);
+	const bool    hasParent = std::get <2> (tuple);
+	const bool    hasField  = (active not_eq -2);
 
-	textureProperties = std::move (pair .first);
+	textureProperties = std::move (std::get <0> (tuple));
 
 	if (not textureProperties)
 	{
@@ -193,6 +194,7 @@ X3DTexturePropertiesEditor::set_node ()
 
 	changing = true;
 
+	getSelectTexturePropertiesBox ()   .set_sensitive (hasParent);
 	getTexturePropertiesCheckButton () .set_sensitive (hasField);
 	getTexturePropertiesCheckButton () .set_active (active > 0);
 	getTexturePropertiesCheckButton () .set_inconsistent (active < 0);

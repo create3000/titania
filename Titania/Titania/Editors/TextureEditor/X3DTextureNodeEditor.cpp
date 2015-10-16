@@ -266,11 +266,12 @@ X3DTextureNodeEditor::set_node ()
 		MOVIE_TEXTURE
 	};
 
-	auto       pair     = getNode <X3D::X3DTextureNode> (appearances, "texture");
-	const int  active   = pair .second;
-	const bool hasField = (active not_eq -2);
+	auto       tuple     = getSelection <X3D::X3DTextureNode> (appearances, "texture");
+	const int  active    = std::get <1> (tuple);
+	const bool hasParent = std::get <2> (tuple);
+	const bool hasField  = (active not_eq -2);
 
-	textureNode = std::move (pair .first);
+	textureNode = std::move (std::get <0> (tuple));
 
 	setTexture2DNode (textureNode);
 	//setTexture3DNode (textureNode);
@@ -309,6 +310,7 @@ X3DTextureNodeEditor::set_node ()
 		getTextureFormatLabel ()  .set_text ("");
 	}
 
+	getSelectTextureBox ()    .set_sensitive (hasParent);
 	getTextureBox ()          .set_sensitive (hasField);
 	getTextureUnlinkButton () .set_sensitive (active > 0 and textureNode -> getCloneCount () > 1);
 	getTextureNotebook ()     .set_current_page (getTextureComboBoxText () .get_active_row_number ());

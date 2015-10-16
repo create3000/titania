@@ -87,35 +87,7 @@ X3DExtrusionEditor::set_selection ()
 void
 X3DExtrusionEditor::set_geometry ()
 {
-	// Check if there is a direct master selecection of our node type.
-
-	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
-
-	if (not selection .empty ())
-	{
-		const X3D::X3DPtr <X3D::Extrusion> node (selection .back ());
-
-		if (node)
-		{
-			set_node (node);
-			return;
-		}
-	}
-
-	// Check if all shape node whithin the selection have a node of our type.
-
-	const auto    pair   = getNode <X3D::Extrusion> (shapeNodes, "geometry");
-	const int32_t active = pair .second;
-
-	if (active == SAME_NODE) // All shapes share the same geometry
-		set_node (pair .first);
-	else
-		set_node (nullptr);
-}
-
-void
-X3DExtrusionEditor::set_node (const X3D::X3DPtr <X3D::Extrusion> & node)
-{
+	const auto        node  (getOneSelection <X3D::Extrusion> (shapeNodes, "geometry"));
 	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
 
 	getExtrusionExpander () .set_visible (node);

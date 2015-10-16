@@ -91,9 +91,6 @@ private:
 	void
 	set_geometry ();
 
-	void
-	set_node (const X3D::X3DPtr <X3D::Box> &);
-
 	///  @name Event handlers
 
 	virtual
