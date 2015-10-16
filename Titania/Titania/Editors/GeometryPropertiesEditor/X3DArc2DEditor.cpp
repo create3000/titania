@@ -57,9 +57,9 @@ namespace puck {
 
 X3DArc2DEditor::X3DArc2DEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                         shapeNodes (),
-	                         startAngle (this, getArc2DStartAngleAdjustment (), getArc2DStartAngleSpinButton (), "startAngle"),
-	                           endAngle (this, getArc2DEndAngleAdjustment (), getArc2DEndAngleSpinButton (), "endAngle")
+	                          shapeNodes (),
+	                          startAngle (this, getArc2DStartAngleAdjustment (), getArc2DStartAngleSpinButton (), "startAngle"),
+	                            endAngle (this, getArc2DEndAngleAdjustment (), getArc2DEndAngleSpinButton (), "endAngle")
 { }
 
 void
@@ -97,11 +97,11 @@ X3DArc2DEditor::set_geometry ()
 
 		if (node)
 		{
-		   set_arc2D (node);
+			set_arc2D (node);
 			return;
 		}
 	}
-		
+
 	// Check if all shape node whithin the selection have a node of our type.
 
 	const auto    pair   = getNode <X3D::Arc2D> (shapeNodes, "geometry");
@@ -117,7 +117,7 @@ void
 X3DArc2DEditor::set_arc2D (const X3D::X3DPtr <X3D::Arc2D> & node)
 {
 	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
-		
+
 	getArc2DExpander () .set_visible (node);
 
 	startAngle .setNodes (nodes);

@@ -98,6 +98,10 @@ public:
 	{ return m_Arc2DStartAngleAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getCircle2DRadiusAdjustment () const
+	{ return m_Circle2DRadiusAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getCreaseAngleAdjustment () const
 	{ return m_CreaseAngleAdjustment; }
 
@@ -124,6 +128,14 @@ public:
 	Gtk::SpinButton &
 	getArc2DEndAngleSpinButton () const
 	{ return *m_Arc2DEndAngleSpinButton; }
+
+	Gtk::Expander &
+	getCircle2DExpander () const
+	{ return *m_Circle2DExpander; }
+
+	Gtk::SpinButton &
+	getCircle2DRadiusSpinButton () const
+	{ return *m_Circle2DRadiusSpinButton; }
 
 	Gtk::Expander &
 	getGeometryExpander () const
@@ -232,6 +244,7 @@ private:
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DEndAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DStartAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_Circle2DRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_CreaseAngleAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
@@ -239,6 +252,8 @@ private:
 	Gtk::Expander*                 m_Arc2DExpander;
 	Gtk::SpinButton*               m_Arc2DStartAngleSpinButton;
 	Gtk::SpinButton*               m_Arc2DEndAngleSpinButton;
+	Gtk::Expander*                 m_Circle2DExpander;
+	Gtk::SpinButton*               m_Circle2DRadiusSpinButton;
 	Gtk::Expander*                 m_GeometryExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;

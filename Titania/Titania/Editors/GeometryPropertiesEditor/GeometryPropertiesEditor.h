@@ -54,6 +54,7 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 #include "X3DArc2DEditor.h"
+#include "X3DCircle2DEditor.h"
 #include "X3DPrimitiveCountEditor.h"
 
 namespace titania {
@@ -62,6 +63,7 @@ namespace puck {
 class GeometryPropertiesEditor :
 	virtual public X3DGeometryPropertiesEditorInterface,
 	public X3DArc2DEditor,
+	public X3DCircle2DEditor,
 	public X3DPrimitiveCountEditor
 {
 public:

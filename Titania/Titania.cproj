@@ -205,6 +205,7 @@
     <Compile Include="Titania\Editors\LayerEditor\LayerEditor.cpp" />
     <Compile Include="Titania\Editors\GridEditor\X3DGridTool.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DArc2DEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DCircle2DEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1923,6 +1924,7 @@
     <None Include="share\titania\ui\Logo.x3dv" />
     <None Include="share\titania\ui\icons\PaintBrush.svg" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\X3DArc2DEditor.h" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\X3DCircle2DEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
