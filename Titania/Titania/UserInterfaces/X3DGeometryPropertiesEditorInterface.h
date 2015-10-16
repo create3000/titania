@@ -102,6 +102,18 @@ public:
 	{ return m_Arc2DStartAngleAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getArcClose2DEndAngleAdjustment () const
+	{ return m_ArcClose2DEndAngleAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getArcClose2DRadiusAdjustment () const
+	{ return m_ArcClose2DRadiusAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getArcClose2DStartAngleAdjustment () const
+	{ return m_ArcClose2DStartAngleAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getCircle2DRadiusAdjustment () const
 	{ return m_Circle2DRadiusAdjustment; }
 
@@ -152,6 +164,26 @@ public:
 	Gtk::SpinButton &
 	getArc2DRadiusSpinButton () const
 	{ return *m_Arc2DRadiusSpinButton; }
+
+	Gtk::Expander &
+	getArcClose2DExpander () const
+	{ return *m_ArcClose2DExpander; }
+
+	Gtk::SpinButton &
+	getArcClose2DRadiusSpinButton () const
+	{ return *m_ArcClose2DRadiusSpinButton; }
+
+	Gtk::SpinButton &
+	getArcClose2DEndAngleSpinButton () const
+	{ return *m_ArcClose2DEndAngleSpinButton; }
+
+	Gtk::SpinButton &
+	getArcClose2DStartAngleSpinButton () const
+	{ return *m_ArcClose2DStartAngleSpinButton; }
+
+	Gtk::ComboBoxText &
+	getArcClose2DClosureTypeComboBoxText () const
+	{ return *m_ArcClose2DClosureTypeComboBoxText; }
 
 	Gtk::Expander &
 	getCircle2DExpander () const
@@ -309,6 +341,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DEndAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DStartAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ArcClose2DEndAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ArcClose2DRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ArcClose2DStartAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Circle2DRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_CreaseAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Disk2DInnerRadiusAdjustment;
@@ -322,6 +357,11 @@ private:
 	Gtk::SpinButton*               m_Arc2DStartAngleSpinButton;
 	Gtk::SpinButton*               m_Arc2DEndAngleSpinButton;
 	Gtk::SpinButton*               m_Arc2DRadiusSpinButton;
+	Gtk::Expander*                 m_ArcClose2DExpander;
+	Gtk::SpinButton*               m_ArcClose2DRadiusSpinButton;
+	Gtk::SpinButton*               m_ArcClose2DEndAngleSpinButton;
+	Gtk::SpinButton*               m_ArcClose2DStartAngleSpinButton;
+	Gtk::ComboBoxText*             m_ArcClose2DClosureTypeComboBoxText;
 	Gtk::Expander*                 m_Circle2DExpander;
 	Gtk::SpinButton*               m_Circle2DRadiusSpinButton;
 	Gtk::Expander*                 m_Disk2DExpander;

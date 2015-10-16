@@ -92,7 +92,7 @@ private:
 	set_geometry ();
 
 	void
-	set_arc2D (const X3D::X3DPtr <X3D::Circle2D> &);
+	set_node (const X3D::X3DPtr <X3D::Circle2D> &);
 
 	///  @name Members
 

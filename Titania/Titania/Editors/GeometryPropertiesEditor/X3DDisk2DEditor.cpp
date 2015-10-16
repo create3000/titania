@@ -97,7 +97,7 @@ X3DDisk2DEditor::set_geometry ()
 
 		if (node)
 		{
-			set_arc2D (node);
+			set_node (node);
 			return;
 		}
 	}
@@ -108,13 +108,13 @@ X3DDisk2DEditor::set_geometry ()
 	const int32_t active = pair .second;
 
 	if (active == SAME_NODE) // All shapes share the same geometry
-		set_arc2D (pair .first);
+		set_node (pair .first);
 	else
-		set_arc2D (nullptr);
+		set_node (nullptr);
 }
 
 void
-X3DDisk2DEditor::set_arc2D (const X3D::X3DPtr <X3D::Disk2D> & node)
+X3DDisk2DEditor::set_node (const X3D::X3DPtr <X3D::Disk2D> & node)
 {
 	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
 

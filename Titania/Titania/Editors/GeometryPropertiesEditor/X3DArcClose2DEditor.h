@@ -48,82 +48,64 @@
  *
  ******************************************************************************/
 
-#include "X3DCircle2DEditor.h"
+#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DARC_CLOSE2DEDITOR_H__
+#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DARC_CLOSE2DEDITOR_H__
 
-#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+
+#include <Titania/X3D/Components/Geometry2D/ArcClose2D.h>
 
 namespace titania {
 namespace puck {
 
-X3DCircle2DEditor::X3DCircle2DEditor () :
-	X3DGeometryPropertiesEditorInterface (),
-	                          shapeNodes (),
-	                              radius (this, getCircle2DRadiusAdjustment (), getCircle2DRadiusSpinButton (), "radius")
-{ }
-
-void
-X3DCircle2DEditor::initialize ()
+class X3DArcClose2DEditor :
+	virtual public X3DGeometryPropertiesEditorInterface
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DCircle2DEditor::set_selection);
+public:
 
+	///  @name Destruction
+
+	virtual
+	~X3DArcClose2DEditor ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DArcClose2DEditor ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Construction
+
+	void
 	set_selection ();
-}
 
-void
-X3DCircle2DEditor::set_selection ()
-{
-	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .removeInterest (this, &X3DCircle2DEditor::set_geometry);
-
-	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
-
-	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .addInterest (this, &X3DCircle2DEditor::set_geometry);
-
+	void
 	set_geometry ();
-}
 
-void
-X3DCircle2DEditor::set_geometry ()
-{
-	// Check if there is a direct master selecection of our node type.
+	void
+	set_node (const X3D::X3DPtr <X3D::ArcClose2D> &);
 
-	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
+	///  @name Members
 
-	if (not selection .empty ())
-	{
-		const X3D::X3DPtr <X3D::Circle2D> node (selection .back ());
+	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
 
-		if (node)
-		{
-			set_node (node);
-			return;
-		}
-	}
+	SFStringComboBoxText              closureType;
+	X3DFieldAdjustment <X3D::SFFloat> startAngle;
+	X3DFieldAdjustment <X3D::SFFloat> endAngle;
+	X3DFieldAdjustment <X3D::SFFloat> radius;
 
-	// Check if all shape node whithin the selection have a node of our type.
-
-	const auto    pair   = getNode <X3D::Circle2D> (shapeNodes, "geometry");
-	const int32_t active = pair .second;
-
-	if (active == SAME_NODE) // All shapes share the same geometry
-		set_node (pair .first);
-	else
-		set_node (nullptr);
-}
-
-void
-X3DCircle2DEditor::set_node (const X3D::X3DPtr <X3D::Circle2D> & node)
-{
-	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
-
-	getCircle2DExpander () .set_visible (node);
-
-	radius .setNodes (nodes);
-}
-
-X3DCircle2DEditor::~X3DCircle2DEditor ()
-{ }
+};
 
 } // puck
 } // titania
+
+#endif

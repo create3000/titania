@@ -64,6 +64,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	 X3DGeometryPropertiesEditorInterface (get_ui ("Editors/GeometryPropertiesEditor.xml"), gconf_dir ()),
 	                       X3DArc2DEditor (),
+	                  X3DArcClose2DEditor (),
 	                    X3DCircle2DEditor (),
 	                      X3DDisk2DEditor (),
 	                 X3DRectangle2DEditor (),
@@ -90,6 +91,7 @@ GeometryPropertiesEditor::initialize ()
 {
 	X3DGeometryPropertiesEditorInterface::initialize ();
 	X3DArc2DEditor::initialize ();
+	X3DArcClose2DEditor::initialize ();
 	X3DCircle2DEditor::initialize ();
 	X3DDisk2DEditor::initialize ();
 	X3DRectangle2DEditor::initialize ();

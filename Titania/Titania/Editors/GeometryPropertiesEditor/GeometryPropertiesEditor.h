@@ -54,6 +54,7 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 #include "X3DArc2DEditor.h"
+#include "X3DArcClose2DEditor.h"
 #include "X3DCircle2DEditor.h"
 #include "X3DDisk2DEditor.h"
 #include "X3DRectangle2DEditor.h"
@@ -65,6 +66,7 @@ namespace puck {
 class GeometryPropertiesEditor :
 	virtual public X3DGeometryPropertiesEditorInterface,
 	public X3DArc2DEditor,
+	public X3DArcClose2DEditor,
 	public X3DCircle2DEditor,
 	public X3DDisk2DEditor,
 	public X3DRectangle2DEditor,

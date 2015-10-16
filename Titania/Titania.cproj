@@ -208,6 +208,7 @@
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DCircle2DEditor.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DDisk2DEditor.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DRectangle2DEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DArcClose2DEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1929,6 +1930,7 @@
     <None Include="Titania\Editors\GeometryPropertiesEditor\X3DCircle2DEditor.h" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\X3DDisk2DEditor.h" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\X3DRectangle2DEditor.h" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\X3DArcClose2DEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

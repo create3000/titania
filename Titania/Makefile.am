@@ -36,6 +36,7 @@ titania_SOURCES =  \
 	Titania/Editors/FaceSelection.cpp \
 	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DArc2DEditor.cpp \
+	Titania/Editors/GeometryPropertiesEditor/X3DArcClose2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DCircle2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DDisk2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp \

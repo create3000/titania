@@ -109,7 +109,7 @@ private:
 	X3D::X3DPtrArray <X3D::X3DGeometryNode>       geometryNodes;
 	X3D::SFTime                                   textureCoordinateGeneratorBuffer;
 	X3D::X3DPtr <X3D::TextureCoordinateGenerator> textureCoordinateGenerator;
-	X3D::UndoStepPtr                                   undoStep;
+	X3D::UndoStepPtr                              undoStep;
 	bool                                          changing;
 
 	SFStringComboBoxText mode;
