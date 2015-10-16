@@ -94,13 +94,16 @@ private:
 	on_text_toggled () final override;
 
 	void
-	set_text ();
+	set_geometry ();
+
+	void
+	connectGeometry (const X3D::SFNode &);
 
 	void
 	set_node ();
 
 	void
-	connectText (const X3D::SFNode &);
+	set_text (std::pair <X3D::X3DPtr <X3D::Text>, int32_t> &&, const bool);
 
 	///  @name string
 

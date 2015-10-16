@@ -212,14 +212,43 @@ X3DFontStyleNodeEditor::set_fontStyle ()
 }
 
 void
+X3DFontStyleNodeEditor::connectFontStyle (const X3D::SFNode & field)
+{
+	field .removeInterest (this, &X3DFontStyleNodeEditor::connectFontStyle);
+	field .addInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
+}
+
+void
 X3DFontStyleNodeEditor::set_node ()
+{
+	// Check if there is a direct master selecection of our node type.
+
+	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
+
+	if (not selection .empty ())
+	{
+		const X3D::X3DPtr <X3D::X3DFontStyleNode> node (selection .back ());
+
+		if (node)
+		{
+			set_font_style_node (std::make_pair (node, SAME_NODE), false);
+			return;
+		}
+	}
+
+	// Check if all shape node whithin the selection have a node of our type.
+
+	set_font_style_node (getNode <X3D::X3DFontStyleNode> (texts, "fontStyle"), true);
+}
+
+void
+X3DFontStyleNodeEditor::set_font_style_node (std::pair <X3D::X3DPtr <X3D::X3DFontStyleNode>, int32_t> && pair, const bool hasParent)
 {
 	undoStep .reset ();
 
 	if (fontStyleNode)
 		fontStyleNode -> style () .removeInterest (this, &X3DFontStyleNodeEditor::set_style);
 
-	auto       pair     = getNode <X3D::X3DFontStyleNode> (texts, "fontStyle");
 	const int  active   = pair .second;
 	const bool hasField = (active not_eq -2);
 
@@ -270,6 +299,7 @@ X3DFontStyleNodeEditor::set_node ()
 	else
 		getFontStyleComboBoxText () .set_active (-1);
 
+	getSelectFontStyleBox ()    .set_sensitive (hasParent);
 	getFontStyleComboBoxText () .set_sensitive (hasField);
 	getFontStyleUnlinkButton () .set_sensitive (active > 0 and fontStyleNode -> getCloneCount () > 1);
 
@@ -295,13 +325,6 @@ X3DFontStyleNodeEditor::set_widgets ()
 	topToBottom    .setNodes (nodes);
 	majorAlignment .setNodes (nodes);
 	minorAlignment .setNodes (nodes);
-}
-
-void
-X3DFontStyleNodeEditor::connectFontStyle (const X3D::SFNode & field)
-{
-	field .removeInterest (this, &X3DFontStyleNodeEditor::connectFontStyle);
-	field .addInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
 }
 
 /***********************************************************************************************************************

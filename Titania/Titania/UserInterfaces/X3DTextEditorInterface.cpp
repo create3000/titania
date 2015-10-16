@@ -77,6 +77,7 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("TextExpander", m_TextExpander);
+	m_builder -> get_widget ("SelectTextBox", m_SelectTextBox);
 	m_builder -> get_widget ("TextCheckButton", m_TextCheckButton);
 	m_builder -> get_widget ("TextUnlinkButton", m_TextUnlinkButton);
 	m_builder -> get_widget ("TextBox", m_TextBox);
@@ -85,6 +86,7 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LenghtBox", m_LenghtBox);
 	m_builder -> get_widget ("FontStyleExpander", m_FontStyleExpander);
 	m_builder -> get_widget ("FontStyleBox", m_FontStyleBox);
+	m_builder -> get_widget ("SelectFontStyleBox", m_SelectFontStyleBox);
 	m_builder -> get_widget ("FontStyleComboBoxText", m_FontStyleComboBoxText);
 	m_builder -> get_widget ("FontStyleUnlinkButton", m_FontStyleUnlinkButton);
 	m_builder -> get_widget ("FontStyleNodeBox", m_FontStyleNodeBox);

@@ -145,6 +145,10 @@ public:
 	getTextExpander () const
 	{ return *m_TextExpander; }
 
+	Gtk::Box &
+	getSelectTextBox () const
+	{ return *m_SelectTextBox; }
+
 	Gtk::CheckButton &
 	getTextCheckButton () const
 	{ return *m_TextCheckButton; }
@@ -176,6 +180,10 @@ public:
 	Gtk::Box &
 	getFontStyleBox () const
 	{ return *m_FontStyleBox; }
+
+	Gtk::Box &
+	getSelectFontStyleBox () const
+	{ return *m_SelectFontStyleBox; }
 
 	Gtk::ComboBoxText &
 	getFontStyleComboBoxText () const
@@ -304,6 +312,7 @@ private:
 	Gtk::Window*                         m_Window;
 	Gtk::Box*                            m_Widget;
 	Gtk::Expander*                       m_TextExpander;
+	Gtk::Box*                            m_SelectTextBox;
 	Gtk::CheckButton*                    m_TextCheckButton;
 	Gtk::Button*                         m_TextUnlinkButton;
 	Gtk::Grid*                           m_TextBox;
@@ -312,6 +321,7 @@ private:
 	Gtk::Box*                            m_LenghtBox;
 	Gtk::Expander*                       m_FontStyleExpander;
 	Gtk::Box*                            m_FontStyleBox;
+	Gtk::Box*                            m_SelectFontStyleBox;
 	Gtk::ComboBoxText*                   m_FontStyleComboBoxText;
 	Gtk::Button*                         m_FontStyleUnlinkButton;
 	Gtk::Grid*                           m_FontStyleNodeBox;

@@ -189,6 +189,10 @@ public:
 	getMaterialBox () const
 	{ return *m_MaterialBox; }
 
+	Gtk::Box &
+	getSelectMaterialBox () const
+	{ return *m_SelectMaterialBox; }
+
 	Gtk::ComboBoxText &
 	getMaterialComboBoxText () const
 	{ return *m_MaterialComboBoxText; }
@@ -320,6 +324,10 @@ public:
 	Gtk::Box &
 	getFillPropertiesMainBox () const
 	{ return *m_FillPropertiesMainBox; }
+
+	Gtk::Box &
+	getSelectFillPropertiesBox () const
+	{ return *m_SelectFillPropertiesBox; }
 
 	Gtk::CheckButton &
 	getFillPropertiesCheckButton () const
@@ -495,6 +503,7 @@ private:
 	Gtk::Button*                   m_ModelButton;
 	Gtk::Notebook*                 m_AppearanceChildNotebook;
 	Gtk::Box*                      m_MaterialBox;
+	Gtk::Box*                      m_SelectMaterialBox;
 	Gtk::ComboBoxText*             m_MaterialComboBoxText;
 	Gtk::Button*                   m_MaterialUnlinkButton;
 	Gtk::Expander*                 m_FrontExpander;
@@ -528,6 +537,7 @@ private:
 	Gtk::Button*                   m_BackEmissiveColorButton;
 	Gtk::Expander*                 m_FillPropertiesExpander;
 	Gtk::Box*                      m_FillPropertiesMainBox;
+	Gtk::Box*                      m_SelectFillPropertiesBox;
 	Gtk::CheckButton*              m_FillPropertiesCheckButton;
 	Gtk::Button*                   m_FillPropertiesUnlinkButton;
 	Gtk::Grid*                     m_FillPropertiesBox;

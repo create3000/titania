@@ -92,14 +92,14 @@ void
 TextEditor::set_selection ()
 {
 	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .removeInterest (this, &TextEditor::set_text);
+		shapeNode -> geometry () .removeInterest (this, &TextEditor::set_geometry);
 
 	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
 
 	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .addInterest (this, &TextEditor::set_text);
+		shapeNode -> geometry () .addInterest (this, &TextEditor::set_geometry);
 
-	set_text ();
+	set_geometry ();
 }
 
 /***********************************************************************************************************************
@@ -133,8 +133,8 @@ TextEditor::on_text_toggled ()
 		{
 			auto & field = shapeNode -> geometry ();
 
-			field .removeInterest (this, &TextEditor::set_text);
-			field .addInterest (this, &TextEditor::connectText);
+			field .removeInterest (this, &TextEditor::set_geometry);
+			field .addInterest (this, &TextEditor::connectGeometry);
 
 			if (getTextCheckButton () .get_active ())
 				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (shapeNode), field, X3D::SFNode (text), undoStep);
@@ -153,22 +153,51 @@ TextEditor::on_text_toggled ()
 }
 
 void
-TextEditor::set_text ()
+TextEditor::set_geometry ()
 {
 	geometryNodeBuffer .addEvent ();
 }
 
 void
+TextEditor::connectGeometry (const X3D::SFNode & field)
+{
+	field .removeInterest (this, &TextEditor::connectGeometry);
+	field .addInterest (this, &TextEditor::set_geometry);
+}
+
+void
 TextEditor::set_node ()
+{
+	// Check if there is a direct master selecection of our node type.
+
+	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
+
+	if (not selection .empty ())
+	{
+		const X3D::X3DPtr <X3D::Text> node (selection .back ());
+
+		if (node)
+		{
+			set_text (std::make_pair (node, SAME_NODE), false);
+			return;
+		}
+	}
+
+	// Check if all shape node whithin the selection have a node of our type.
+
+	set_text (getNode <X3D::Text> (shapeNodes, "geometry"), true);
+}
+
+void
+TextEditor::set_text (std::pair <X3D::X3DPtr <X3D::Text>, int32_t> && pair, const bool hasParent)
 {
 	undoStep .reset ();
 
 	if (text)
 		text -> string () .removeInterest (this, &TextEditor::set_string);
 
-	auto       pair     = getNode <X3D::Text> (shapeNodes, "geometry");
-	const int  active   = pair .second;
-	const bool hasField = (active not_eq -2);
+	const int32_t active   = pair .second;
+	const bool    hasField = (active not_eq -2);
 
 	text = std::move (pair .first);
 
@@ -181,6 +210,7 @@ TextEditor::set_node ()
 
 	changing = true;
 
+	getSelectTextBox ()   .set_sensitive (hasParent);
 	getTextCheckButton () .set_sensitive (hasField);
 	getTextCheckButton () .set_active (active > 0);
 	getTextCheckButton () .set_inconsistent (active < 0);
@@ -197,13 +227,6 @@ TextEditor::set_node ()
 	maxExtent .setNodes ({ text });
 
 	X3DFontStyleNodeEditor::set_selection ();
-}
-
-void
-TextEditor::connectText (const X3D::SFNode & field)
-{
-	field .removeInterest (this, &TextEditor::connectText);
-	field .addInterest (this, &TextEditor::set_text);
 }
 
 /***********************************************************************************************************************

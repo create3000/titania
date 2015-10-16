@@ -140,6 +140,9 @@ private:
 	set_node ();
 
 	void
+	set_material_node (std::pair <X3D::X3DPtr <X3D::X3DMaterialNode>, int32_t> && pair, const bool);
+
+	void
 	set_widgets ();
 
 	void

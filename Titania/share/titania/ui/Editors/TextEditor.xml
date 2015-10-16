@@ -120,7 +120,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkBox" id="box3">
+                      <object class="GtkBox" id="SelectTextBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="halign">start</property>
@@ -336,7 +336,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkBox" id="box4">
+                      <object class="GtkBox" id="SelectFontStyleBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>

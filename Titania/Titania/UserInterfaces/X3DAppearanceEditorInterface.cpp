@@ -88,6 +88,7 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ModelButton", m_ModelButton);
 	m_builder -> get_widget ("AppearanceChildNotebook", m_AppearanceChildNotebook);
 	m_builder -> get_widget ("MaterialBox", m_MaterialBox);
+	m_builder -> get_widget ("SelectMaterialBox", m_SelectMaterialBox);
 	m_builder -> get_widget ("MaterialComboBoxText", m_MaterialComboBoxText);
 	m_builder -> get_widget ("MaterialUnlinkButton", m_MaterialUnlinkButton);
 	m_builder -> get_widget ("FrontExpander", m_FrontExpander);
@@ -121,6 +122,7 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BackEmissiveColorButton", m_BackEmissiveColorButton);
 	m_builder -> get_widget ("FillPropertiesExpander", m_FillPropertiesExpander);
 	m_builder -> get_widget ("FillPropertiesMainBox", m_FillPropertiesMainBox);
+	m_builder -> get_widget ("SelectFillPropertiesBox", m_SelectFillPropertiesBox);
 	m_builder -> get_widget ("FillPropertiesCheckButton", m_FillPropertiesCheckButton);
 	m_builder -> get_widget ("FillPropertiesUnlinkButton", m_FillPropertiesUnlinkButton);
 	m_builder -> get_widget ("FillPropertiesBox", m_FillPropertiesBox);

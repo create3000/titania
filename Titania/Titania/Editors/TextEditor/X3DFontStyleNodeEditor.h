@@ -104,13 +104,16 @@ private:
 	set_fontStyle ();
 
 	void
+	connectFontStyle (const X3D::SFNode &);
+
+	void
 	set_node ();
 
 	void
-	set_widgets ();
+	set_font_style_node (std::pair <X3D::X3DPtr <X3D::X3DFontStyleNode>, int32_t> &&, const bool);
 
 	void
-	connectFontStyle (const X3D::SFNode &);
+	set_widgets ();
 
 	///  @name style
 
