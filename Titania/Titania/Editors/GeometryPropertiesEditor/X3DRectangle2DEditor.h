@@ -48,18 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DARC2DEDITOR_H__
-#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DARC2DEDITOR_H__
+#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DRECTANGLE2DEDITOR_H__
+#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DRECTANGLE2DEDITOR_H__
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
-#include <Titania/X3D/Components/Geometry2D/Arc2D.h>
+#include <Titania/X3D/Components/Geometry2D/Rectangle2D.h>
 
 namespace titania {
 namespace puck {
 
-class X3DArc2DEditor :
+class X3DRectangle2DEditor :
 	virtual public X3DGeometryPropertiesEditorInterface
 {
 public:
@@ -67,14 +67,14 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DArc2DEditor ();
+	~X3DRectangle2DEditor ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DArc2DEditor ();
+	X3DRectangle2DEditor ();
 
 	virtual
 	void
@@ -92,15 +92,19 @@ private:
 	set_geometry ();
 
 	void
-	set_arc2D (const X3D::X3DPtr <X3D::Arc2D> &);
+	set_arc2D (const X3D::X3DPtr <X3D::Rectangle2D> &);
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_rectangle2d_uniform_size_clicked () final override;
 
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
 
-	X3DFieldAdjustment <X3D::SFFloat> startAngle;
-	X3DFieldAdjustment <X3D::SFFloat> endAngle;
-	X3DFieldAdjustment <X3D::SFFloat> radius;
+	X3DFieldAdjustment2 <X3D::SFVec2f> size;
 
 };
 

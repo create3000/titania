@@ -48,45 +48,49 @@
  *
  ******************************************************************************/
 
-#include "X3DArc2DEditor.h"
+#include "X3DRectangle2DEditor.h"
 
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
 namespace puck {
 
-X3DArc2DEditor::X3DArc2DEditor () :
+X3DRectangle2DEditor::X3DRectangle2DEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                          shapeNodes (),
-	                          startAngle (this, getArc2DStartAngleAdjustment (), getArc2DStartAngleSpinButton (), "startAngle"),
-	                            endAngle (this, getArc2DEndAngleAdjustment (), getArc2DEndAngleSpinButton (), "endAngle"),
-	                              radius (this, getArc2DRadiusAdjustment (), getArc2DRadiusSpinButton (), "radius")
+	                                size (this,
+	                                      getRectangle2DSizeXAdjustment (),
+	                                      getRectangle2DSizeYAdjustment (),
+	                                      getRectangle2DSizeBox (),
+	                                      "size")
 { }
 
 void
-X3DArc2DEditor::initialize ()
+X3DRectangle2DEditor::initialize ()
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DArc2DEditor::set_selection);
+	getRectangle2DUniformSizeButton () .set_active (getConfig () .getBoolean ("rectangle2DUniformSize"));
+
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DRectangle2DEditor::set_selection);
 
 	set_selection ();
 }
 
 void
-X3DArc2DEditor::set_selection ()
+X3DRectangle2DEditor::set_selection ()
 {
 	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .removeInterest (this, &X3DArc2DEditor::set_geometry);
+		shapeNode -> geometry () .removeInterest (this, &X3DRectangle2DEditor::set_geometry);
 
 	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
 
 	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .addInterest (this, &X3DArc2DEditor::set_geometry);
+		shapeNode -> geometry () .addInterest (this, &X3DRectangle2DEditor::set_geometry);
 
 	set_geometry ();
 }
 
 void
-X3DArc2DEditor::set_geometry ()
+X3DRectangle2DEditor::set_geometry ()
 {
 	// Check if there is a direct master selecection of our node type.
 
@@ -94,7 +98,7 @@ X3DArc2DEditor::set_geometry ()
 
 	if (not selection .empty ())
 	{
-		const X3D::X3DPtr <X3D::Arc2D> node (selection .back ());
+		const X3D::X3DPtr <X3D::Rectangle2D> node (selection .back ());
 
 		if (node)
 		{
@@ -105,7 +109,7 @@ X3DArc2DEditor::set_geometry ()
 
 	// Check if all shape node whithin the selection have a node of our type.
 
-	const auto    pair   = getNode <X3D::Arc2D> (shapeNodes, "geometry");
+	const auto    pair   = getNode <X3D::Rectangle2D> (shapeNodes, "geometry");
 	const int32_t active = pair .second;
 
 	if (active == SAME_NODE) // All shapes share the same geometry
@@ -115,19 +119,34 @@ X3DArc2DEditor::set_geometry ()
 }
 
 void
-X3DArc2DEditor::set_arc2D (const X3D::X3DPtr <X3D::Arc2D> & node)
+X3DRectangle2DEditor::set_arc2D (const X3D::X3DPtr <X3D::Rectangle2D> & node)
 {
 	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
 
-	getArc2DExpander () .set_visible (node);
+	getRectangle2DExpander () .set_visible (node);
 
-	startAngle .setNodes (nodes);
-	endAngle   .setNodes (nodes);
-	radius     .setNodes (nodes);
+	size .setNodes (nodes);
 }
 
-X3DArc2DEditor::~X3DArc2DEditor ()
-{ }
+void
+X3DRectangle2DEditor::on_rectangle2d_uniform_size_clicked ()
+{
+	if (getRectangle2DUniformSizeButton () .get_active ())
+	{
+		getRectangle2DUniformSizeImage () .set (Gtk::StockID ("Connected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		size .setUniform (true);
+	}
+	else
+	{
+		getRectangle2DUniformSizeImage () .set (Gtk::StockID ("Disconnected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		size .setUniform (false);
+	}
+}
+
+X3DRectangle2DEditor::~X3DRectangle2DEditor ()
+{
+	getConfig () .setItem ("rectangle2DUniformSize", getRectangle2DUniformSizeButton () .get_active ());
+}
 
 } // puck
 } // titania

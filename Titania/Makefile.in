@@ -127,6 +127,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/X3DCircle2DEditor.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/X3DDisk2DEditor.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.$(OBJEXT) \
+	Titania/Editors/GeometryPropertiesEditor/X3DRectangle2DEditor.$(OBJEXT) \
 	Titania/Editors/GridEditor/AngleTool.$(OBJEXT) \
 	Titania/Editors/GridEditor/GridEditor.$(OBJEXT) \
 	Titania/Editors/GridEditor/GridTool.$(OBJEXT) \
@@ -510,6 +511,7 @@ titania_SOURCES = \
 	Titania/Editors/GeometryPropertiesEditor/X3DCircle2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DDisk2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp \
+	Titania/Editors/GeometryPropertiesEditor/X3DRectangle2DEditor.cpp \
 	Titania/Editors/GridEditor/AngleTool.cpp \
 	Titania/Editors/GridEditor/GridEditor.cpp \
 	Titania/Editors/GridEditor/GridTool.cpp \
@@ -904,6 +906,9 @@ Titania/Editors/GeometryPropertiesEditor/X3DDisk2DEditor.$(OBJEXT):  \
 	Titania/Editors/GeometryPropertiesEditor/$(am__dirstamp) \
 	Titania/Editors/GeometryPropertiesEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.$(OBJEXT):  \
+	Titania/Editors/GeometryPropertiesEditor/$(am__dirstamp) \
+	Titania/Editors/GeometryPropertiesEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/GeometryPropertiesEditor/X3DRectangle2DEditor.$(OBJEXT):  \
 	Titania/Editors/GeometryPropertiesEditor/$(am__dirstamp) \
 	Titania/Editors/GeometryPropertiesEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/GridEditor/$(am__dirstamp):
@@ -1439,6 +1444,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/$(DEPDIR)/X3DCircle2DEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/$(DEPDIR)/X3DDisk2DEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/$(DEPDIR)/X3DPrimitiveCountEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/$(DEPDIR)/X3DRectangle2DEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GridEditor/$(DEPDIR)/AngleTool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GridEditor/$(DEPDIR)/GridEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GridEditor/$(DEPDIR)/GridTool.Po@am__quote@

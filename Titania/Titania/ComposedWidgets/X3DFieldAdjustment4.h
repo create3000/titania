@@ -248,9 +248,18 @@ X3DFieldAdjustment4 <Type>::on_value_changed (const int id)
 				const auto index2 = (id + 2) % 4;
 				const auto index3 = (id + 3) % 4;
 
-				vector [index1] *= scale;
-				vector [index2] *= scale;
-				vector [index3] *= scale;
+				if (field .get1Value (id))
+				{
+					vector [index1] *= scale;
+					vector [index2] *= scale;
+					vector [index3] *= scale;
+				}
+				else
+				{
+					vector [index1] = vector [id];
+					vector [index2] = vector [id];
+					vector [index3] = vector [id];
+				}
 
 				adjustments [index1] -> set_value (vector [index1]);
 				adjustments [index2] -> set_value (vector [index2]);
