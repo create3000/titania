@@ -123,8 +123,6 @@ X3DUserInterface::on_constructed ()
 
 	getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
 
-	getWindow () .set_deletable (true);
-
 	on_map ();
 
 	std::clog << "Initializing widget: " << getWidgetName () << std::endl;

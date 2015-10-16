@@ -690,12 +690,12 @@ public:
 	{ return *m_BrowserTransformToZeroMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getBrowserTextureCoordinateEditorMenuItem () const
-	{ return *m_BrowserTextureCoordinateEditorMenuItem; }
+	getBrowserColorPerVertexMenuItem () const
+	{ return *m_BrowserColorPerVertexMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getBrowserPaintPolygonsMenuItem () const
-	{ return *m_BrowserPaintPolygonsMenuItem; }
+	getBrowserTextureCoordinateEditorMenuItem () const
+	{ return *m_BrowserTextureCoordinateEditorMenuItem; }
 
 	Gtk::MenuItem &
 	getBrowserLayoutMenuItem () const
@@ -1146,12 +1146,12 @@ public:
 	{ return *m_TransformToZeroMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getTextureCoordinateEditorMenuItem () const
-	{ return *m_TextureCoordinateEditorMenuItem; }
+	getColorPerVertexEditorMenuItem () const
+	{ return *m_ColorPerVertexEditorMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getPaintPolygonsMenuItem () const
-	{ return *m_PaintPolygonsMenuItem; }
+	getTextureCoordinateEditorMenuItem () const
+	{ return *m_TextureCoordinateEditorMenuItem; }
 
 	Gtk::MenuItem &
 	getLayoutMenuItem () const
@@ -1284,6 +1284,14 @@ public:
 	Gtk::ToolButton &
 	getGeometryPropertiesEditorButton () const
 	{ return *m_GeometryPropertiesEditorButton; }
+
+	Gtk::ToolButton &
+	getColorPerVertexEditorButton () const
+	{ return *m_ColorPerVertexEditorButton; }
+
+	Gtk::ToolButton &
+	getTextureCoordinateEditorButton () const
+	{ return *m_TextureCoordinateEditorButton; }
 
 	Gtk::ToolButton &
 	getNavigationInfoEditorButton () const
@@ -1831,11 +1839,11 @@ public:
 
 	virtual
 	void
-	on_texture_coordinate_editor_activated () = 0;
+	on_color_per_vertex_editor_clicked () = 0;
 
 	virtual
 	void
-	on_paint_polygons_activated () = 0;
+	on_texture_coordinate_editor_clicked () = 0;
 
 	virtual
 	void
@@ -2184,8 +2192,8 @@ private:
 	Gtk::MenuItem*                   m_BrowserObjectMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserCombineMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserTransformToZeroMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserColorPerVertexMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserTextureCoordinateEditorMenuItem;
-	Gtk::ImageMenuItem*              m_BrowserPaintPolygonsMenuItem;
 	Gtk::MenuItem*                   m_BrowserLayoutMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserGridLayoutToolMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserAngleLayoutToolMenuItem;
@@ -2298,8 +2306,8 @@ private:
 	Gtk::MenuItem*                   m_ObjectMenuItem;
 	Gtk::ImageMenuItem*              m_CombineMenuItem;
 	Gtk::ImageMenuItem*              m_TransformToZeroMenuItem;
+	Gtk::ImageMenuItem*              m_ColorPerVertexEditorMenuItem;
 	Gtk::ImageMenuItem*              m_TextureCoordinateEditorMenuItem;
-	Gtk::ImageMenuItem*              m_PaintPolygonsMenuItem;
 	Gtk::MenuItem*                   m_LayoutMenuItem;
 	Gtk::CheckMenuItem*              m_GridLayoutToolMenuItem;
 	Gtk::CheckMenuItem*              m_AngleLayoutToolMenuItem;
@@ -2333,6 +2341,8 @@ private:
 	Gtk::ToolButton*                 m_TextureEditorButton;
 	Gtk::ToolButton*                 m_TextEditorButton;
 	Gtk::ToolButton*                 m_GeometryPropertiesEditorButton;
+	Gtk::ToolButton*                 m_ColorPerVertexEditorButton;
+	Gtk::ToolButton*                 m_TextureCoordinateEditorButton;
 	Gtk::ToolButton*                 m_NavigationInfoEditorButton;
 	Gtk::ToolButton*                 m_ViewpointEditorButton;
 	Gtk::ToolButton*                 m_LightEditorButton;

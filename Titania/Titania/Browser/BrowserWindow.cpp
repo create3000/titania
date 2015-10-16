@@ -1911,18 +1911,6 @@ BrowserWindow::on_transform_to_zero_activated ()
 	addUndoStep (undoStep);
 }
 
-void
-BrowserWindow::on_texture_coordinate_editor_activated ()
-{
-	addDialog ("TextureCoordinateEditor");
-}
-
-void
-BrowserWindow::on_paint_polygons_activated ()
-{
-	addDialog ("ColorPerVertexEditor");
-}
-
 // Layout
 
 void
@@ -2166,6 +2154,18 @@ void
 BrowserWindow::on_geometry_properties_editor_clicked ()
 {
 	addDialog ("GeometryPropertiesEditor");
+}
+
+void
+BrowserWindow::on_color_per_vertex_editor_clicked ()
+{
+	addDialog ("ColorPerVertexEditor");
+}
+
+void
+BrowserWindow::on_texture_coordinate_editor_clicked ()
+{
+	addDialog ("TextureCoordinateEditor");
 }
 
 void

@@ -1715,6 +1715,17 @@
               </object>
             </child>
             <child>
+              <object class="GtkImageMenuItem" id="BrowserColorPerVertexMenuItem">
+                <property name="label" translatable="yes">_Paint Polygons...</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_underline">True</property>
+                <property name="image">image33</property>
+                <property name="use_stock">False</property>
+                <signal name="activate" handler="on_color_per_vertex_editor_clicked" swapped="no"/>
+              </object>
+            </child>
+            <child>
               <object class="GtkImageMenuItem" id="BrowserTextureCoordinateEditorMenuItem">
                 <property name="label" translatable="yes">Edit _Texture Mapping...</property>
                 <property name="visible">True</property>
@@ -1723,18 +1734,7 @@
                 <property name="image">image32</property>
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
-                <signal name="activate" handler="on_texture_coordinate_editor_activated" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkImageMenuItem" id="BrowserPaintPolygonsMenuItem">
-                <property name="label" translatable="yes">_Paint Polygons...</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="use_underline">True</property>
-                <property name="image">image33</property>
-                <property name="use_stock">False</property>
-                <signal name="activate" handler="on_paint_polygons_activated" swapped="no"/>
+                <signal name="activate" handler="on_texture_coordinate_editor_clicked" swapped="no"/>
               </object>
             </child>
           </object>
@@ -3079,31 +3079,29 @@
                             </child>
                             <child>
                               <object class="GtkSeparatorMenuItem" id="separatormenuitem18">
-                                <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="ColorPerVertexEditorMenuItem">
+                                <property name="label" translatable="yes">_Paint Polygons...</property>
+                                <property name="can_focus">False</property>
+                                <property name="use_underline">True</property>
+                                <property name="image">image14</property>
+                                <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
+                                <signal name="activate" handler="on_color_per_vertex_editor_clicked" swapped="no"/>
                               </object>
                             </child>
                             <child>
                               <object class="GtkImageMenuItem" id="TextureCoordinateEditorMenuItem">
                                 <property name="label" translatable="yes">Edit _Texture Mapping...</property>
-                                <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">image16</property>
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
-                                <signal name="activate" handler="on_texture_coordinate_editor_activated" swapped="no"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkImageMenuItem" id="PaintPolygonsMenuItem">
-                                <property name="label" translatable="yes">_Paint Polygons...</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="use_underline">True</property>
-                                <property name="image">image14</property>
-                                <property name="use_stock">False</property>
-                                <signal name="activate" handler="on_paint_polygons_activated" swapped="no"/>
+                                <signal name="activate" handler="on_texture_coordinate_editor_clicked" swapped="no"/>
                               </object>
                             </child>
                           </object>
@@ -3491,6 +3489,16 @@
                           </packing>
                         </child>
                         <child>
+                          <object class="GtkSeparatorToolItem" id="separatortoolitem2">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">False</property>
+                          </packing>
+                        </child>
+                        <child>
                           <object class="GtkToolButton" id="AppearanceEditorButton">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -3548,6 +3556,56 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSeparatorToolItem" id="separatortoolitem3">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkToolButton" id="ColorPerVertexEditorButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">Paint Polygons</property>
+                            <property name="label" translatable="yes">Paint Polygons</property>
+                            <property name="use_underline">True</property>
+                            <property name="stock_id">PaintBrush</property>
+                            <signal name="clicked" handler="on_color_per_vertex_editor_clicked" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkToolButton" id="TextureCoordinateEditorButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">Texture Coordinate Editor</property>
+                            <property name="label" translatable="yes">Texture Coordinate Editor</property>
+                            <property name="use_underline">True</property>
+                            <property name="stock_id">TextureCoordinate</property>
+                            <signal name="clicked" handler="on_texture_coordinate_editor_clicked" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSeparatorToolItem" id="separatortoolitem6">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">False</property>
                           </packing>
                         </child>
                         <child>
@@ -3656,6 +3714,16 @@
                           </packing>
                         </child>
                         <child>
+                          <object class="GtkSeparatorToolItem" id="separatortoolitem4">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">False</property>
+                          </packing>
+                        </child>
+                        <child>
                           <object class="GtkToolButton" id="CreatePrototypeInstanceButton">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -3668,6 +3736,16 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSeparatorToolItem" id="separatortoolitem5">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">False</property>
                           </packing>
                         </child>
                         <child>

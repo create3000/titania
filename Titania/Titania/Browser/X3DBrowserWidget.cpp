@@ -83,6 +83,7 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	           worldURLOutput (),
 	               recentView (new RecentView (getBrowserWindow ()))
 {
+	// For some reaseon, masterBrowser and loaoBrowser must be added, otherwise there is a Xlib error on destruction.
 	addChildren (masterBrowser, logoBrowser, browsers, browser, scene, executionContext);
 }
 

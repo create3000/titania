@@ -185,13 +185,13 @@ public:
 	getTextureUnlinkButton () const
 	{ return *m_TextureUnlinkButton; }
 
-	Gtk::Box &
-	getPreviewBox () const
-	{ return *m_PreviewBox; }
-
 	Gtk::Label &
 	getTextureFormatLabel () const
 	{ return *m_TextureFormatLabel; }
+
+	Gtk::Box &
+	getPreviewBox () const
+	{ return *m_PreviewBox; }
 
 	Gtk::Notebook &
 	getTextureNotebook () const
@@ -554,8 +554,8 @@ private:
 	Gtk::Box*                              m_TextureBox;
 	Gtk::ComboBoxText*                     m_TextureComboBoxText;
 	Gtk::Button*                           m_TextureUnlinkButton;
-	Gtk::Box*                              m_PreviewBox;
 	Gtk::Label*                            m_TextureFormatLabel;
+	Gtk::Box*                              m_PreviewBox;
 	Gtk::Notebook*                         m_TextureNotebook;
 	Gtk::Label*                            m_TextureLabel;
 	Gtk::Box*                              m_ImageTextureBox;

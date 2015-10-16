@@ -87,8 +87,8 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextureBox", m_TextureBox);
 	m_builder -> get_widget ("TextureComboBoxText", m_TextureComboBoxText);
 	m_builder -> get_widget ("TextureUnlinkButton", m_TextureUnlinkButton);
-	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("TextureFormatLabel", m_TextureFormatLabel);
+	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("TextureNotebook", m_TextureNotebook);
 	m_builder -> get_widget ("TextureLabel", m_TextureLabel);
 	m_builder -> get_widget ("ImageTextureBox", m_ImageTextureBox);

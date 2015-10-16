@@ -557,14 +557,6 @@ private:
 	void
 	on_transform_to_zero_activated () final override;
 
-	virtual
-	void
-	on_texture_coordinate_editor_activated () final override;
-
-	virtual
-	void
-	on_paint_polygons_activated () final override;
-
 	///  @name Grid
 
 	virtual
@@ -647,6 +639,14 @@ private:
 	virtual
 	void
 	on_geometry_properties_editor_clicked () final override;
+
+	virtual
+	void
+	on_color_per_vertex_editor_clicked () final override;
+
+	virtual
+	void
+	on_texture_coordinate_editor_clicked () final override;
 
 	virtual
 	void

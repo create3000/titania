@@ -1848,7 +1848,6 @@
     <None Include="share\titania\Prototypes\0.1\Widgets\RadioButton.x3d" />
     <None Include="share\titania\ui\icons\Droplet.svg" />
     <None Include="share\titania\ui\icons\Hand.svg" />
-    <None Include="share\titania\ui\icons\PaintBrush.svg" />
     <None Include="share\titania\ui\icons\PrimitiveQuality.svg" />
     <None Include="share\titania\ui\icons\TextureQuality.svg" />
     <None Include="Titania\Browser\RecentView.h" />
@@ -1921,6 +1920,7 @@
     <None Include="share\titania\pages\about\library\gradient2.png" />
     <None Include="share\titania\pages\about\library\gradient3.png" />
     <None Include="share\titania\ui\Logo.x3dv" />
+    <None Include="share\titania\ui\icons\PaintBrush.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

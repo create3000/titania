@@ -213,8 +213,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserObjectMenuItem", m_BrowserObjectMenuItem);
 	m_builder -> get_widget ("BrowserCombineMenuItem", m_BrowserCombineMenuItem);
 	m_builder -> get_widget ("BrowserTransformToZeroMenuItem", m_BrowserTransformToZeroMenuItem);
+	m_builder -> get_widget ("BrowserColorPerVertexMenuItem", m_BrowserColorPerVertexMenuItem);
 	m_builder -> get_widget ("BrowserTextureCoordinateEditorMenuItem", m_BrowserTextureCoordinateEditorMenuItem);
-	m_builder -> get_widget ("BrowserPaintPolygonsMenuItem", m_BrowserPaintPolygonsMenuItem);
 	m_builder -> get_widget ("BrowserLayoutMenuItem", m_BrowserLayoutMenuItem);
 	m_builder -> get_widget ("BrowserGridLayoutToolMenuItem", m_BrowserGridLayoutToolMenuItem);
 	m_builder -> get_widget ("BrowserAngleLayoutToolMenuItem", m_BrowserAngleLayoutToolMenuItem);
@@ -327,8 +327,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ObjectMenuItem", m_ObjectMenuItem);
 	m_builder -> get_widget ("CombineMenuItem", m_CombineMenuItem);
 	m_builder -> get_widget ("TransformToZeroMenuItem", m_TransformToZeroMenuItem);
+	m_builder -> get_widget ("ColorPerVertexEditorMenuItem", m_ColorPerVertexEditorMenuItem);
 	m_builder -> get_widget ("TextureCoordinateEditorMenuItem", m_TextureCoordinateEditorMenuItem);
-	m_builder -> get_widget ("PaintPolygonsMenuItem", m_PaintPolygonsMenuItem);
 	m_builder -> get_widget ("LayoutMenuItem", m_LayoutMenuItem);
 	m_builder -> get_widget ("GridLayoutToolMenuItem", m_GridLayoutToolMenuItem);
 	m_builder -> get_widget ("AngleLayoutToolMenuItem", m_AngleLayoutToolMenuItem);
@@ -362,6 +362,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextureEditorButton", m_TextureEditorButton);
 	m_builder -> get_widget ("TextEditorButton", m_TextEditorButton);
 	m_builder -> get_widget ("GeometryPropertiesEditorButton", m_GeometryPropertiesEditorButton);
+	m_builder -> get_widget ("ColorPerVertexEditorButton", m_ColorPerVertexEditorButton);
+	m_builder -> get_widget ("TextureCoordinateEditorButton", m_TextureCoordinateEditorButton);
 	m_builder -> get_widget ("NavigationInfoEditorButton", m_NavigationInfoEditorButton);
 	m_builder -> get_widget ("ViewpointEditorButton", m_ViewpointEditorButton);
 	m_builder -> get_widget ("LightEditorButton", m_LightEditorButton);
@@ -526,8 +528,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'BrowserCombineMenuItem'.
 	m_BrowserCombineMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_combine_activated));
 	m_BrowserTransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
-	m_BrowserTextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_coordinate_editor_activated));
-	m_BrowserPaintPolygonsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paint_polygons_activated));
+	m_BrowserColorPerVertexMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_color_per_vertex_editor_clicked));
+	m_BrowserTextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_coordinate_editor_clicked));
 	m_BrowserGridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_properties_activated));
 
 	// Connect object Gtk::MenuItem with id 'BrowserScenesMenuItem'.
@@ -624,8 +626,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'CombineMenuItem'.
 	m_CombineMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_combine_activated));
 	m_TransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
-	m_TextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_coordinate_editor_activated));
-	m_PaintPolygonsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paint_polygons_activated));
+	m_ColorPerVertexEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_color_per_vertex_editor_clicked));
+	m_TextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_coordinate_editor_clicked));
 	m_GridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_properties_activated));
 
 	// Connect object Gtk::MenuItem with id 'ScenesMenuItem'.
@@ -670,6 +672,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_TextureEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_editor_clicked));
 	m_TextEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_text_editor_clicked));
 	m_GeometryPropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_geometry_properties_editor_clicked));
+	m_ColorPerVertexEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_color_per_vertex_editor_clicked));
+	m_TextureCoordinateEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_coordinate_editor_clicked));
 	m_NavigationInfoEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_navigation_info_editor_clicked));
 	m_ViewpointEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewpoint_editor_clicked));
 	m_LightEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_light_editor_clicked));
