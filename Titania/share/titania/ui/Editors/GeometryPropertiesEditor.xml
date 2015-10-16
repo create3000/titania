@@ -165,11 +165,86 @@
               <object class="GtkBox" id="box1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="border_width">8</property>
                 <property name="orientation">vertical</property>
+                <property name="spacing">8</property>
+                <child>
+                  <object class="GtkBox" id="SelectGeometryBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkComboBoxText" id="GeometryComboBoxText">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <items>
+                          <item translatable="yes">None</item>
+                          <item translatable="yes">Arc2D</item>
+                          <item translatable="yes">ArcClose2D</item>
+                          <item translatable="yes">Circle2D</item>
+                          <item translatable="yes">Disk2D</item>
+                          <item translatable="yes">Polyline2D</item>
+                          <item translatable="yes">Polypoint2D</item>
+                          <item translatable="yes">Rectangle2D</item>
+                          <item translatable="yes">TriangleSet2D</item>
+                          <item translatable="yes">Box</item>
+                          <item translatable="yes">Cone</item>
+                          <item translatable="yes">Cylinder</item>
+                          <item translatable="yes">ElevationGrid</item>
+                          <item translatable="yes">Extrusion</item>
+                          <item translatable="yes">IndexedFaceSet</item>
+                          <item translatable="yes">Sphere</item>
+                          <item translatable="yes">IndexedLineSet</item>
+                          <item translatable="yes">IndexedQuadSet</item>
+                          <item translatable="yes">IndexedTriangleFanSet</item>
+                          <item translatable="yes">IndexedTriangleSet</item>
+                          <item translatable="yes">IndexedTriangleStripSet</item>
+                          <item translatable="yes">LineSet</item>
+                          <item translatable="yes">QuadSet</item>
+                          <item translatable="yes">TriangleFanSet</item>
+                          <item translatable="yes">TriangleSet</item>
+                          <item translatable="yes">TriangleStripSet</item>
+                        </items>
+                        <signal name="changed" handler="on_geometry_changed" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="GeometryUnlinkButton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Unlink Clone.</property>
+                        <signal name="clicked" handler="on_geometry_unlink_clicked" swapped="no"/>
+                        <child>
+                          <object class="GtkImage" id="image4">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixel_size">12</property>
+                            <property name="icon_name">emblem-shared-symbolic</property>
+                            <property name="icon_size">0</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
                 <child>
                   <object class="GtkExpander" id="Arc2DExpander">
                     <property name="can_focus">True</property>
-                    <property name="border_width">8</property>
                     <property name="expanded">True</property>
                     <child>
                       <object class="GtkGrid" id="grid4">
@@ -266,13 +341,12 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">0</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkExpander" id="ArcClose2DExpander">
                     <property name="can_focus">True</property>
-                    <property name="border_width">8</property>
                     <property name="expanded">True</property>
                     <child>
                       <object class="GtkGrid" id="grid8">
@@ -397,13 +471,12 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkExpander" id="Circle2DExpander">
                     <property name="can_focus">True</property>
-                    <property name="border_width">8</property>
                     <property name="expanded">True</property>
                     <child>
                       <object class="GtkGrid" id="grid5">
@@ -450,13 +523,12 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">2</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkExpander" id="Disk2DExpander">
                     <property name="can_focus">True</property>
-                    <property name="border_width">8</property>
                     <property name="expanded">True</property>
                     <child>
                       <object class="GtkGrid" id="grid6">
@@ -529,123 +601,12 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkExpander" id="Rectangle2DExpander">
-                    <property name="can_focus">True</property>
-                    <property name="border_width">8</property>
-                    <property name="expanded">True</property>
-                    <child>
-                      <object class="GtkGrid" id="grid7">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
-                        <property name="column_spacing">16</property>
-                        <child>
-                          <object class="GtkLabel" id="label23">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
-                            <property name="label" translatable="yes">Size:</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkBox" id="Rectangle2DSizeBox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="hexpand">True</property>
-                            <property name="spacing">2</property>
-                            <property name="homogeneous">True</property>
-                            <child>
-                              <object class="GtkSpinButton" id="Rectangle2DSizeXSpinButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="tooltip_text" translatable="yes">x-Axis</property>
-                                <property name="text" translatable="yes">0,000</property>
-                                <property name="adjustment">Rectangle2DSizeXAdjustment</property>
-                                <property name="climb_rate">0.01</property>
-                                <property name="digits">3</property>
-                                <property name="numeric">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkSpinButton" id="Rectangle2DSizeYSpinButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="tooltip_text" translatable="yes">y-Axis</property>
-                                <property name="text" translatable="yes">0,000</property>
-                                <property name="adjustment">Rectangle2DSizeYAdjustment</property>
-                                <property name="climb_rate">0.01</property>
-                                <property name="digits">3</property>
-                                <property name="numeric">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkToggleButton" id="Rectangle2DUniformSizeButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">If connected, change all axes by the same proportion.</property>
-                                <property name="halign">start</property>
-                                <signal name="toggled" handler="on_rectangle2d_uniform_size_clicked" swapped="no"/>
-                                <child>
-                                  <object class="GtkImage" id="Rectangle2DUniformSizeImage">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="stock">Disconnected</property>
-                                    <property name="icon_size">1</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">2</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">0</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                    <child type="label">
-                      <object class="GtkLabel" id="label25">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Rectangle2D</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
                     <property name="position">4</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkExpander" id="BoxExpander">
                     <property name="can_focus">True</property>
-                    <property name="border_width">8</property>
                     <property name="expanded">True</property>
                     <child>
                       <object class="GtkGrid" id="grid9">
@@ -672,7 +633,6 @@
                             <property name="halign">start</property>
                             <property name="hexpand">True</property>
                             <property name="spacing">2</property>
-                            <property name="homogeneous">True</property>
                             <child>
                               <object class="GtkSpinButton" id="BoxSizeXSpinButton">
                                 <property name="visible">True</property>
@@ -770,9 +730,116 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkExpander" id="Rectangle2DExpander">
+                    <property name="can_focus">True</property>
+                    <property name="expanded">True</property>
+                    <child>
+                      <object class="GtkGrid" id="grid7">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="row_spacing">4</property>
+                        <property name="column_spacing">16</property>
+                        <child>
+                          <object class="GtkLabel" id="label23">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="label" translatable="yes">Size:</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="Rectangle2DSizeBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="hexpand">True</property>
+                            <property name="spacing">2</property>
+                            <child>
+                              <object class="GtkSpinButton" id="Rectangle2DSizeXSpinButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                <property name="text" translatable="yes">0,000</property>
+                                <property name="adjustment">Rectangle2DSizeXAdjustment</property>
+                                <property name="climb_rate">0.01</property>
+                                <property name="digits">3</property>
+                                <property name="numeric">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSpinButton" id="Rectangle2DSizeYSpinButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                <property name="text" translatable="yes">0,000</property>
+                                <property name="adjustment">Rectangle2DSizeYAdjustment</property>
+                                <property name="climb_rate">0.01</property>
+                                <property name="digits">3</property>
+                                <property name="numeric">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToggleButton" id="Rectangle2DUniformSizeButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">If connected, change all axes by the same proportion.</property>
+                                <property name="halign">start</property>
+                                <signal name="toggled" handler="on_rectangle2d_uniform_size_clicked" swapped="no"/>
+                                <child>
+                                  <object class="GtkImage" id="Rectangle2DUniformSizeImage">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="stock">Disconnected</property>
+                                    <property name="icon_size">1</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="label">
+                      <object class="GtkLabel" id="label25">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Rectangle2D</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkExpander" id="ConeExpander">
                     <property name="can_focus">True</property>
-                    <property name="border_width">8</property>
                     <property name="expanded">True</property>
                     <child>
                       <object class="GtkGrid" id="grid10">
@@ -895,13 +962,12 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">6</property>
+                    <property name="position">7</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkExpander" id="CylinderExpander">
                     <property name="can_focus">True</property>
-                    <property name="border_width">8</property>
                     <property name="expanded">True</property>
                     <child>
                       <object class="GtkGrid" id="grid11">
@@ -1049,13 +1115,12 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">7</property>
+                    <property name="position">8</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkExpander" id="ExtrusionExpander">
                     <property name="can_focus">True</property>
-                    <property name="border_width">8</property>
                     <property name="expanded">True</property>
                     <child>
                       <object class="GtkGrid" id="grid12">
@@ -1126,18 +1191,14 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">8</property>
+                    <property name="position">9</property>
                   </packing>
-                </child>
-                <child>
-                  <placeholder/>
                 </child>
                 <child>
                   <object class="GtkExpander" id="GeometryExpander">
                     <property name="name">GeometryExpander</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="border_width">8</property>
                     <property name="expanded">True</property>
                     <property name="spacing">8</property>
                     <property name="resize_toplevel">True</property>

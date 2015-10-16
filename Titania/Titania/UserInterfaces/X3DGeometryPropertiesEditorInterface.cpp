@@ -85,6 +85,9 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("GeometryChildNotebook", m_GeometryChildNotebook);
+	m_builder -> get_widget ("SelectGeometryBox", m_SelectGeometryBox);
+	m_builder -> get_widget ("GeometryComboBoxText", m_GeometryComboBoxText);
+	m_builder -> get_widget ("GeometryUnlinkButton", m_GeometryUnlinkButton);
 	m_builder -> get_widget ("Arc2DExpander", m_Arc2DExpander);
 	m_builder -> get_widget ("Arc2DStartAngleSpinButton", m_Arc2DStartAngleSpinButton);
 	m_builder -> get_widget ("Arc2DEndAngleSpinButton", m_Arc2DEndAngleSpinButton);
@@ -99,12 +102,6 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Disk2DExpander", m_Disk2DExpander);
 	m_builder -> get_widget ("Disk2DInnerRadiusSpinButton", m_Disk2DInnerRadiusSpinButton);
 	m_builder -> get_widget ("Disk2DOuterRadiusSpinButton", m_Disk2DOuterRadiusSpinButton);
-	m_builder -> get_widget ("Rectangle2DExpander", m_Rectangle2DExpander);
-	m_builder -> get_widget ("Rectangle2DSizeBox", m_Rectangle2DSizeBox);
-	m_builder -> get_widget ("Rectangle2DSizeXSpinButton", m_Rectangle2DSizeXSpinButton);
-	m_builder -> get_widget ("Rectangle2DSizeYSpinButton", m_Rectangle2DSizeYSpinButton);
-	m_builder -> get_widget ("Rectangle2DUniformSizeButton", m_Rectangle2DUniformSizeButton);
-	m_builder -> get_widget ("Rectangle2DUniformSizeImage", m_Rectangle2DUniformSizeImage);
 	m_builder -> get_widget ("BoxExpander", m_BoxExpander);
 	m_builder -> get_widget ("BoxSizeBox", m_BoxSizeBox);
 	m_builder -> get_widget ("BoxSizeXSpinButton", m_BoxSizeXSpinButton);
@@ -112,6 +109,12 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BoxSizeZSpinButton", m_BoxSizeZSpinButton);
 	m_builder -> get_widget ("BoxUniformSizeButton", m_BoxUniformSizeButton);
 	m_builder -> get_widget ("BoxUniformSizeImage", m_BoxUniformSizeImage);
+	m_builder -> get_widget ("Rectangle2DExpander", m_Rectangle2DExpander);
+	m_builder -> get_widget ("Rectangle2DSizeBox", m_Rectangle2DSizeBox);
+	m_builder -> get_widget ("Rectangle2DSizeXSpinButton", m_Rectangle2DSizeXSpinButton);
+	m_builder -> get_widget ("Rectangle2DSizeYSpinButton", m_Rectangle2DSizeYSpinButton);
+	m_builder -> get_widget ("Rectangle2DUniformSizeButton", m_Rectangle2DUniformSizeButton);
+	m_builder -> get_widget ("Rectangle2DUniformSizeImage", m_Rectangle2DUniformSizeImage);
 	m_builder -> get_widget ("ConeExpander", m_ConeExpander);
 	m_builder -> get_widget ("ConeBottomRadiusSpinButton", m_ConeBottomRadiusSpinButton);
 	m_builder -> get_widget ("ConeHeightSpinButton", m_ConeHeightSpinButton);
@@ -146,9 +149,15 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PrimitiveCountTrianglesLabel", m_PrimitiveCountTrianglesLabel);
 	m_builder -> get_widget ("PrimitiveCountCountButton", m_PrimitiveCountCountButton);
 
-	// Connect object Gtk::ToggleButton with id 'Rectangle2DUniformSizeButton'.
-	m_Rectangle2DUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_rectangle2d_uniform_size_clicked));
+	// Connect object Gtk::ComboBoxText with id 'GeometryComboBoxText'.
+	m_GeometryComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_geometry_changed));
+
+	// Connect object Gtk::Button with id 'GeometryUnlinkButton'.
+	m_GeometryUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_geometry_unlink_clicked));
+
+	// Connect object Gtk::ToggleButton with id 'BoxUniformSizeButton'.
 	m_BoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_box_uniform_size_clicked));
+	m_Rectangle2DUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_rectangle2d_uniform_size_clicked));
 
 	// Connect object Gtk::Button with id 'AddNormalsButton'.
 	m_AddNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_add_normals_clicked));

@@ -979,7 +979,6 @@
                         <property name="halign">start</property>
                         <property name="hexpand">True</property>
                         <property name="spacing">2</property>
-                        <property name="homogeneous">True</property>
                         <child>
                           <object class="GtkSpinButton" id="spinbutton15">
                             <property name="visible">True</property>
@@ -1953,7 +1952,6 @@
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
                     <property name="spacing">2</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="spinbutton22">
                         <property name="visible">True</property>
@@ -2365,7 +2363,6 @@
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
                     <property name="spacing">2</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="GeoTransformGeoCenterXSpinButton">
                         <property name="visible">True</property>
@@ -2975,7 +2972,6 @@
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
                     <property name="spacing">2</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="GeoLocationGeoCoordsXSpinButton">
                         <property name="visible">True</property>
@@ -3181,7 +3177,6 @@
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
                     <property name="spacing">2</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="BBoxCenterXSpinButton">
                         <property name="visible">True</property>

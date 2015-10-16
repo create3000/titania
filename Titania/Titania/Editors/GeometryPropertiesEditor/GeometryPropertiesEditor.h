@@ -109,10 +109,21 @@ private:
 	set_selection ();
 
 	void
-	set_nodes ();
+	set_geometry ();
+
+	void
+	connectGeometry (const X3D::SFNode & field);
 
 	void
 	set_buffer ();
+
+	virtual
+	void
+	on_geometry_changed () final override;
+
+	virtual
+	void
+	on_geometry_unlink_clicked () final override;
 
 	virtual
 	void
@@ -133,6 +144,8 @@ private:
 
 	X3D::X3DPtrArray <X3D::X3DShapeNode> shapes;
 	X3D::SFTime                          nodesBuffer;
+
+	bool changing;
 
 };
 
