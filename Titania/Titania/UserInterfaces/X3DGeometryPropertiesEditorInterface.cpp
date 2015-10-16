@@ -123,6 +123,9 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("CylinderBottomCheckButton", m_CylinderBottomCheckButton);
 	m_builder -> get_widget ("CylinderSideCheckButton", m_CylinderSideCheckButton);
 	m_builder -> get_widget ("CylinderTopCheckButton", m_CylinderTopCheckButton);
+	m_builder -> get_widget ("ExtrusionExpander", m_ExtrusionExpander);
+	m_builder -> get_widget ("ExtrusionBeginCapCheckButton", m_ExtrusionBeginCapCheckButton);
+	m_builder -> get_widget ("ExtrusionEndCapCheckButton", m_ExtrusionEndCapCheckButton);
 	m_builder -> get_widget ("GeometryExpander", m_GeometryExpander);
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);

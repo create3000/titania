@@ -330,6 +330,18 @@ public:
 	{ return *m_CylinderTopCheckButton; }
 
 	Gtk::Expander &
+	getExtrusionExpander () const
+	{ return *m_ExtrusionExpander; }
+
+	Gtk::CheckButton &
+	getExtrusionBeginCapCheckButton () const
+	{ return *m_ExtrusionBeginCapCheckButton; }
+
+	Gtk::CheckButton &
+	getExtrusionEndCapCheckButton () const
+	{ return *m_ExtrusionEndCapCheckButton; }
+
+	Gtk::Expander &
 	getGeometryExpander () const
 	{ return *m_GeometryExpander; }
 
@@ -502,6 +514,9 @@ private:
 	Gtk::CheckButton*              m_CylinderBottomCheckButton;
 	Gtk::CheckButton*              m_CylinderSideCheckButton;
 	Gtk::CheckButton*              m_CylinderTopCheckButton;
+	Gtk::Expander*                 m_ExtrusionExpander;
+	Gtk::CheckButton*              m_ExtrusionBeginCapCheckButton;
+	Gtk::CheckButton*              m_ExtrusionEndCapCheckButton;
 	Gtk::Expander*                 m_GeometryExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;

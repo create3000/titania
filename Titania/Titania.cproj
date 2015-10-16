@@ -212,6 +212,7 @@
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DRectangle2DEditor.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DConeEditor.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DCylinderEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DExtrusionEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1937,6 +1938,7 @@
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DRectangle2DEditor.h" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DConeEditor.h" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DCylinderEditor.h" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DExtrusionEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
