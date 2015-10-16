@@ -70,6 +70,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                 X3DRectangle2DEditor (),
 	                         X3DBoxEditor (),
 	                        X3DConeEditor (),
+	                    X3DCylinderEditor (),
 	              X3DPrimitiveCountEditor (),
 	                                solid (this, getSolidCheckButton (),  "solid"),
 	                                  ccw (this, getCCWCheckButton (),    "ccw"),
@@ -99,6 +100,7 @@ GeometryPropertiesEditor::initialize ()
 	X3DRectangle2DEditor::initialize ();
 	X3DBoxEditor::initialize ();
 	X3DConeEditor::initialize ();
+	X3DCylinderEditor::initialize ();
 	X3DPrimitiveCountEditor::initialize ();
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &GeometryPropertiesEditor::set_selection);

@@ -142,6 +142,14 @@ public:
 	{ return m_CreaseAngleAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getCylinderHeightAdjustment () const
+	{ return m_CylinderHeightAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getCylinderRadiusAdjustment () const
+	{ return m_CylinderRadiusAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getDisk2DInnerRadiusAdjustment () const
 	{ return m_Disk2DInnerRadiusAdjustment; }
 
@@ -298,6 +306,30 @@ public:
 	{ return *m_ConeBottomCheckButton; }
 
 	Gtk::Expander &
+	getCylinderExpander () const
+	{ return *m_CylinderExpander; }
+
+	Gtk::SpinButton &
+	getCylinderRadiusSpinButton () const
+	{ return *m_CylinderRadiusSpinButton; }
+
+	Gtk::SpinButton &
+	getCylinderHeightSpinButton () const
+	{ return *m_CylinderHeightSpinButton; }
+
+	Gtk::CheckButton &
+	getCylinderBottomCheckButton () const
+	{ return *m_CylinderBottomCheckButton; }
+
+	Gtk::CheckButton &
+	getCylinderSideCheckButton () const
+	{ return *m_CylinderSideCheckButton; }
+
+	Gtk::CheckButton &
+	getCylinderTopCheckButton () const
+	{ return *m_CylinderTopCheckButton; }
+
+	Gtk::Expander &
 	getGeometryExpander () const
 	{ return *m_GeometryExpander; }
 
@@ -423,6 +455,8 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_ConeBottomRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ConeHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_CreaseAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_CylinderHeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_CylinderRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Disk2DInnerRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Disk2DOuterRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeXAdjustment;
@@ -462,6 +496,12 @@ private:
 	Gtk::SpinButton*               m_ConeHeightSpinButton;
 	Gtk::CheckButton*              m_ConeSideCheckButton;
 	Gtk::CheckButton*              m_ConeBottomCheckButton;
+	Gtk::Expander*                 m_CylinderExpander;
+	Gtk::SpinButton*               m_CylinderRadiusSpinButton;
+	Gtk::SpinButton*               m_CylinderHeightSpinButton;
+	Gtk::CheckButton*              m_CylinderBottomCheckButton;
+	Gtk::CheckButton*              m_CylinderSideCheckButton;
+	Gtk::CheckButton*              m_CylinderTopCheckButton;
 	Gtk::Expander*                 m_GeometryExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;

@@ -74,6 +74,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_ConeBottomRadiusAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeBottomRadiusAdjustment"));
 	m_ConeHeightAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeHeightAdjustment"));
 	m_CreaseAngleAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CreaseAngleAdjustment"));
+	m_CylinderHeightAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderHeightAdjustment"));
+	m_CylinderRadiusAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderRadiusAdjustment"));
 	m_Disk2DInnerRadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DInnerRadiusAdjustment"));
 	m_Disk2DOuterRadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DOuterRadiusAdjustment"));
 	m_Rectangle2DSizeXAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeXAdjustment"));
@@ -115,6 +117,12 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ConeHeightSpinButton", m_ConeHeightSpinButton);
 	m_builder -> get_widget ("ConeSideCheckButton", m_ConeSideCheckButton);
 	m_builder -> get_widget ("ConeBottomCheckButton", m_ConeBottomCheckButton);
+	m_builder -> get_widget ("CylinderExpander", m_CylinderExpander);
+	m_builder -> get_widget ("CylinderRadiusSpinButton", m_CylinderRadiusSpinButton);
+	m_builder -> get_widget ("CylinderHeightSpinButton", m_CylinderHeightSpinButton);
+	m_builder -> get_widget ("CylinderBottomCheckButton", m_CylinderBottomCheckButton);
+	m_builder -> get_widget ("CylinderSideCheckButton", m_CylinderSideCheckButton);
+	m_builder -> get_widget ("CylinderTopCheckButton", m_CylinderTopCheckButton);
 	m_builder -> get_widget ("GeometryExpander", m_GeometryExpander);
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);

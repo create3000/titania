@@ -67,11 +67,11 @@ const std::string   Cylinder::typeName       = "Cylinder";
 const std::string   Cylinder::containerField = "geometry";
 
 Cylinder::Fields::Fields () :
+	   top (new SFBool (true)),
+	  side (new SFBool (true)),
 	bottom (new SFBool (true)),
 	height (new SFFloat (2)),
 	radius (new SFFloat (1)),
-	  side (new SFBool (true)),
-	   top (new SFBool (true)),
 	 solid (new SFBool (true))
 { }
 
@@ -84,8 +84,8 @@ Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "top",      top ());
-	addField (initializeOnly, "bottom",   bottom ());
 	addField (initializeOnly, "side",     side ());
+	addField (initializeOnly, "bottom",   bottom ());
 	addField (initializeOnly, "height",   height ());
 	addField (initializeOnly, "radius",   radius ());
 	addField (initializeOnly, "solid",    solid ());
