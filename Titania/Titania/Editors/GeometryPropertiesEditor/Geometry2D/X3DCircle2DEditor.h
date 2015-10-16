@@ -48,80 +48,57 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
-#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
+#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY2D_X3DCIRCLE2DEDITOR_H__
+#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY2D_X3DCIRCLE2DEDITOR_H__
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
-#include "Geometry2D/X3DArc2DEditor.h"
-#include "Geometry2D/X3DArcClose2DEditor.h"
-#include "Geometry2D/X3DCircle2DEditor.h"
-#include "Geometry2D/X3DDisk2DEditor.h"
-#include "Geometry2D/X3DRectangle2DEditor.h"
-#include "Geometry3D/X3DBoxEditor.h"
-#include "Geometry3D/X3DConeEditor.h"
-#include "X3DPrimitiveCountEditor.h"
+#include "../../../ComposedWidgets.h"
+#include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+
+#include <Titania/X3D/Components/Geometry2D/Circle2D.h>
 
 namespace titania {
 namespace puck {
 
-class GeometryPropertiesEditor :
-	virtual public X3DGeometryPropertiesEditorInterface,
-	public X3DArc2DEditor,
-	public X3DArcClose2DEditor,
-	public X3DCircle2DEditor,
-	public X3DDisk2DEditor,
-	public X3DRectangle2DEditor,
-	public X3DBoxEditor,
-	public X3DConeEditor,
-	public X3DPrimitiveCountEditor
+class X3DCircle2DEditor :
+	virtual public X3DGeometryPropertiesEditorInterface
 {
 public:
-
-	///  @name Construction
-
-	GeometryPropertiesEditor (X3DBrowserWindow* const);
 
 	///  @name Destruction
 
 	virtual
-	~GeometryPropertiesEditor ();
+	~X3DCircle2DEditor ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DCircle2DEditor ();
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
 
 	///  @name Construction
 
-	virtual
-	void
-	initialize () final override;
-
 	void
 	set_selection ();
 
 	void
-	set_nodes ();
+	set_geometry ();
 
 	void
-	set_buffer ();
-
-	virtual
-	void
-	on_add_normals_clicked () final override;
-
-	virtual
-	void
-	on_remove_normals_clicked () final override;
+	set_node (const X3D::X3DPtr <X3D::Circle2D> &);
 
 	///  @name Members
 
-	X3DFieldToggleButton <X3D::SFBool> solid;
-	X3DFieldToggleButton <X3D::SFBool> ccw;
-	X3DFieldToggleButton <X3D::SFBool> convex;
-	X3DFieldAdjustment <X3D::SFFloat>  creaseAngle;
+	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
 
-	X3D::X3DPtrArray <X3D::X3DShapeNode> shapes;
-	X3D::SFTime                          nodesBuffer;
+	X3DFieldAdjustment <X3D::SFFloat> radius;
 
 };
 

@@ -204,11 +204,13 @@
     <Compile Include="Titania\UserInterfaces\X3DLayerEditorInterface.cpp" />
     <Compile Include="Titania\Editors\LayerEditor\LayerEditor.cpp" />
     <Compile Include="Titania\Editors\GridEditor\X3DGridTool.cpp" />
-    <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DArc2DEditor.cpp" />
-    <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DCircle2DEditor.cpp" />
-    <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DDisk2DEditor.cpp" />
-    <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DRectangle2DEditor.cpp" />
-    <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DArcClose2DEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DArc2DEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DArcClose2DEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DBoxEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DCircle2DEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DDisk2DEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DRectangle2DEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DConeEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1926,11 +1928,13 @@
     <None Include="share\titania\pages\about\library\gradient3.png" />
     <None Include="share\titania\ui\Logo.x3dv" />
     <None Include="share\titania\ui\icons\PaintBrush.svg" />
-    <None Include="Titania\Editors\GeometryPropertiesEditor\X3DArc2DEditor.h" />
-    <None Include="Titania\Editors\GeometryPropertiesEditor\X3DCircle2DEditor.h" />
-    <None Include="Titania\Editors\GeometryPropertiesEditor\X3DDisk2DEditor.h" />
-    <None Include="Titania\Editors\GeometryPropertiesEditor\X3DRectangle2DEditor.h" />
-    <None Include="Titania\Editors\GeometryPropertiesEditor\X3DArcClose2DEditor.h" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DArc2DEditor.h" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DArcClose2DEditor.h" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DBoxEditor.h" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DCircle2DEditor.h" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DDisk2DEditor.h" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DRectangle2DEditor.h" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DConeEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2020,6 +2024,8 @@
     <Folder Include="share\titania\ui\icons\Faenza\" />
     <Folder Include="share\titania\ui\icons\Faenza\16\" />
     <Folder Include="share\titania\ui\icons\Faenza\scalable\" />
+    <Folder Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\" />
+    <Folder Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

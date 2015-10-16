@@ -48,18 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DARC_CLOSE2DEDITOR_H__
-#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DARC_CLOSE2DEDITOR_H__
+#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY2D_X3DDISK2DEDITOR_H__
+#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY2D_X3DDISK2DEDITOR_H__
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+#include "../../../ComposedWidgets.h"
+#include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
-#include <Titania/X3D/Components/Geometry2D/ArcClose2D.h>
+#include <Titania/X3D/Components/Geometry2D/Disk2D.h>
 
 namespace titania {
 namespace puck {
 
-class X3DArcClose2DEditor :
+class X3DDisk2DEditor :
 	virtual public X3DGeometryPropertiesEditorInterface
 {
 public:
@@ -67,14 +67,14 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DArcClose2DEditor ();
+	~X3DDisk2DEditor ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DArcClose2DEditor ();
+	X3DDisk2DEditor ();
 
 	virtual
 	void
@@ -92,16 +92,14 @@ private:
 	set_geometry ();
 
 	void
-	set_node (const X3D::X3DPtr <X3D::ArcClose2D> &);
+	set_node (const X3D::X3DPtr <X3D::Disk2D> &);
 
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
 
-	SFStringComboBoxText              closureType;
-	X3DFieldAdjustment <X3D::SFFloat> startAngle;
-	X3DFieldAdjustment <X3D::SFFloat> endAngle;
-	X3DFieldAdjustment <X3D::SFFloat> radius;
+	X3DFieldAdjustment <X3D::SFFloat> innerRadius;
+	X3DFieldAdjustment <X3D::SFFloat> outerRadius;
 
 };
 

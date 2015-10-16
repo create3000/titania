@@ -34,13 +34,15 @@ titania_SOURCES =  \
 	Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp \
 	Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp \
 	Titania/Editors/FaceSelection.cpp \
+	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.cpp \
+	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArcClose2DEditor.cpp \
+	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DCircle2DEditor.cpp \
+	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DDisk2DEditor.cpp \
+	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DRectangle2DEditor.cpp \
+	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DBoxEditor.cpp \
+	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DConeEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
-	Titania/Editors/GeometryPropertiesEditor/X3DArc2DEditor.cpp \
-	Titania/Editors/GeometryPropertiesEditor/X3DArcClose2DEditor.cpp \
-	Titania/Editors/GeometryPropertiesEditor/X3DCircle2DEditor.cpp \
-	Titania/Editors/GeometryPropertiesEditor/X3DDisk2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp \
-	Titania/Editors/GeometryPropertiesEditor/X3DRectangle2DEditor.cpp \
 	Titania/Editors/GridEditor/AngleTool.cpp \
 	Titania/Editors/GridEditor/GridEditor.cpp \
 	Titania/Editors/GridEditor/GridTool.cpp \

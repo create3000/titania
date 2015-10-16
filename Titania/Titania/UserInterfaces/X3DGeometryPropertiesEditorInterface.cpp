@@ -67,7 +67,12 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_ArcClose2DEndAngleAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DEndAngleAdjustment"));
 	m_ArcClose2DRadiusAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DRadiusAdjustment"));
 	m_ArcClose2DStartAngleAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DStartAngleAdjustment"));
+	m_BoxSizeXAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BoxSizeXAdjustment"));
+	m_BoxSizeYAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BoxSizeYAdjustment"));
+	m_BoxSizeZAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BoxSizeZAdjustment"));
 	m_Circle2DRadiusAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Circle2DRadiusAdjustment"));
+	m_ConeBottomRadiusAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeBottomRadiusAdjustment"));
+	m_ConeHeightAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeHeightAdjustment"));
 	m_CreaseAngleAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CreaseAngleAdjustment"));
 	m_Disk2DInnerRadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DInnerRadiusAdjustment"));
 	m_Disk2DOuterRadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DOuterRadiusAdjustment"));
@@ -98,6 +103,18 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Rectangle2DSizeYSpinButton", m_Rectangle2DSizeYSpinButton);
 	m_builder -> get_widget ("Rectangle2DUniformSizeButton", m_Rectangle2DUniformSizeButton);
 	m_builder -> get_widget ("Rectangle2DUniformSizeImage", m_Rectangle2DUniformSizeImage);
+	m_builder -> get_widget ("BoxExpander", m_BoxExpander);
+	m_builder -> get_widget ("BoxSizeBox", m_BoxSizeBox);
+	m_builder -> get_widget ("BoxSizeXSpinButton", m_BoxSizeXSpinButton);
+	m_builder -> get_widget ("BoSizeYSpinButton", m_BoSizeYSpinButton);
+	m_builder -> get_widget ("BoxSizeZSpinButton", m_BoxSizeZSpinButton);
+	m_builder -> get_widget ("BoxUniformSizeButton", m_BoxUniformSizeButton);
+	m_builder -> get_widget ("BoxUniformSizeImage", m_BoxUniformSizeImage);
+	m_builder -> get_widget ("ConeExpander", m_ConeExpander);
+	m_builder -> get_widget ("ConeBottomRadiusSpinButton", m_ConeBottomRadiusSpinButton);
+	m_builder -> get_widget ("ConeHeightSpinButton", m_ConeHeightSpinButton);
+	m_builder -> get_widget ("ConeSideCheckButton", m_ConeSideCheckButton);
+	m_builder -> get_widget ("ConeBottomCheckButton", m_ConeBottomCheckButton);
 	m_builder -> get_widget ("GeometryExpander", m_GeometryExpander);
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);
@@ -118,6 +135,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToggleButton with id 'Rectangle2DUniformSizeButton'.
 	m_Rectangle2DUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_rectangle2d_uniform_size_clicked));
+	m_BoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_box_uniform_size_clicked));
 
 	// Connect object Gtk::Button with id 'AddNormalsButton'.
 	m_AddNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_add_normals_clicked));

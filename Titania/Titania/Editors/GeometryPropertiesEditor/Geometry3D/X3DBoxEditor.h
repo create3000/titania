@@ -48,18 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DCIRCLE2DEDITOR_H__
-#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DCIRCLE2DEDITOR_H__
+#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_X3DBOX_EDITOR_H__
+#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_X3DBOX_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+#include "../../../ComposedWidgets.h"
+#include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
-#include <Titania/X3D/Components/Geometry2D/Circle2D.h>
+#include <Titania/X3D/Components/Geometry3D/Box.h>
 
 namespace titania {
 namespace puck {
 
-class X3DCircle2DEditor :
+class X3DBoxEditor :
 	virtual public X3DGeometryPropertiesEditorInterface
 {
 public:
@@ -67,14 +67,14 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DCircle2DEditor ();
+	~X3DBoxEditor ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DCircle2DEditor ();
+	X3DBoxEditor ();
 
 	virtual
 	void
@@ -92,13 +92,19 @@ private:
 	set_geometry ();
 
 	void
-	set_node (const X3D::X3DPtr <X3D::Circle2D> &);
+	set_node (const X3D::X3DPtr <X3D::Box> &);
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_box_uniform_size_clicked () final override;
 
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
 
-	X3DFieldAdjustment <X3D::SFFloat> radius;
+	X3DFieldAdjustment3 <X3D::SFVec3f> size;
 
 };
 
