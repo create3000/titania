@@ -123,6 +123,8 @@ private:
 	X3DFieldToggleButton <X3D::SFBool> ccw;
 	X3DFieldToggleButton <X3D::SFBool> convex;
 	X3DFieldAdjustment <X3D::SFFloat>  creaseAngle;
+	X3DFieldToggleButton <X3D::SFBool> colorPerVertex;
+	X3DFieldToggleButton <X3D::SFBool> normalPerVertex;
 
 	X3D::X3DPtrArray <X3D::X3DShapeNode> shapes;
 	X3D::SFTime                          nodesBuffer;

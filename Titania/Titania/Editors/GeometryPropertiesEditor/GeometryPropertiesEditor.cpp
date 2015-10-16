@@ -77,6 +77,8 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                                  ccw (this, getCCWCheckButton (),    "ccw"),
 	                               convex (this, getConvexCheckButton (), "convex"),
 	                          creaseAngle (this, getCreaseAngleAdjustment (), getCreaseAngleBox (), "creaseAngle"),
+	                       colorPerVertex (this, getColorPerVertexCheckButton (), "colorPerVertex"),
+	                      normalPerVertex (this, getNormalPerVertexCheckButton (), "normalPerVertex"),
 	                               shapes (),
 	                          nodesBuffer ()
 {
@@ -135,10 +137,12 @@ GeometryPropertiesEditor::set_buffer ()
 {
 	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
 
-	solid       .setNodes (nodes);
-	ccw         .setNodes (nodes);
-	convex      .setNodes (nodes);
-	creaseAngle .setNodes (nodes);
+	solid           .setNodes (nodes);
+	ccw             .setNodes (nodes);
+	convex          .setNodes (nodes);
+	creaseAngle     .setNodes (nodes);
+	colorPerVertex  .setNodes (nodes);
+	normalPerVertex .setNodes (nodes);
 
 	// Normals Box
 

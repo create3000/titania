@@ -381,6 +381,14 @@ public:
 	getRemoveNormalsButton () const
 	{ return *m_RemoveNormalsButton; }
 
+	Gtk::CheckButton &
+	getColorPerVertexCheckButton () const
+	{ return *m_ColorPerVertexCheckButton; }
+
+	Gtk::CheckButton &
+	getNormalPerVertexCheckButton () const
+	{ return *m_NormalPerVertexCheckButton; }
+
 	Gtk::EventBox &
 	getPrimitiveCountEventBox () const
 	{ return *m_PrimitiveCountEventBox; }
@@ -527,6 +535,8 @@ private:
 	Gtk::Box*                      m_NormalsBox;
 	Gtk::Button*                   m_AddNormalsButton;
 	Gtk::Button*                   m_RemoveNormalsButton;
+	Gtk::CheckButton*              m_ColorPerVertexCheckButton;
+	Gtk::CheckButton*              m_NormalPerVertexCheckButton;
 	Gtk::EventBox*                 m_PrimitiveCountEventBox;
 	Gtk::Expander*                 m_PrimitiveCountExpander;
 	Gtk::Box*                      m_PrimitiveCountBox;

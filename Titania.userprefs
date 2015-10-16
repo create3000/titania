@@ -1,14 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/share/titania/ui/style.css" Line="2" Column="2" />
-      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.h" Line="1" Column="1" />
-      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.cpp" Line="3" Column="3" />
-      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Context/Background.h" Line="6" Column="6" />
-      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Context/Background.cpp" Line="2" Column="2" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="2" Column="2" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="54" Column="54" />
+      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTextureCoordinateGeneratorEditor.cpp" Line="24" Column="24" />
+      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTextureNodeEditor.cpp" Line="2" Column="2" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h" Line="51" Column="51" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp" Line="28" Column="28" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
