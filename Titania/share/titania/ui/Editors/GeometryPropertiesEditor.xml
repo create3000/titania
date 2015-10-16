@@ -171,6 +171,7 @@
                 <child>
                   <object class="GtkBox" id="SelectGeometryBox">
                     <property name="visible">True</property>
+                    <property name="sensitive">False</property>
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkComboBoxText" id="GeometryComboBoxText">

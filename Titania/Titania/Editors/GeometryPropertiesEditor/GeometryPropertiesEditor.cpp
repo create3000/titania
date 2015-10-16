@@ -79,6 +79,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                          creaseAngle (this, getCreaseAngleAdjustment (), getCreaseAngleBox (), "creaseAngle"),
 	                       colorPerVertex (this, getColorPerVertexCheckButton (), "colorPerVertex"),
 	                      normalPerVertex (this, getNormalPerVertexCheckButton (), "normalPerVertex"),
+	                         geometryNode (),
 	                               shapes (),
 	                          nodesBuffer (),
 	                            changing (false)
@@ -161,6 +162,8 @@ GeometryPropertiesEditor::set_buffer ()
 	const bool    hasParent = std::get <2> (tuple);
 	const bool    hasField  = (active not_eq -2);
 
+	geometryNode = std::move (std::get <0> (tuple));
+
 	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
 
 	solid           .setNodes (nodes);
@@ -209,10 +212,13 @@ GeometryPropertiesEditor::on_geometry_changed ()
 	{
 	   try
 	   {
-		   const auto node = getExecutionContext () -> createNode (getGeometryComboBoxText () .get_active_text ());
+		   auto node = getExecutionContext () -> createNode (getGeometryComboBoxText () .get_active_text ());
 
 			getExecutionContext () -> addUninitializedNode (node);
 			getExecutionContext () -> realize ();
+
+		   if (geometryNode -> getType () .back () == node -> getType () .back ())
+				node = geometryNode;
 
 			for (const auto & shapeNode : getShapes ())
 			{

@@ -142,6 +142,7 @@ private:
 	X3DFieldToggleButton <X3D::SFBool> colorPerVertex;
 	X3DFieldToggleButton <X3D::SFBool> normalPerVertex;
 
+	X3D::SFNode                          geometryNode;
 	X3D::X3DPtrArray <X3D::X3DShapeNode> shapes;
 	X3D::SFTime                          nodesBuffer;
 
