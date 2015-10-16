@@ -48,76 +48,84 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
-#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
-
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
-#include "X3DArc2DEditor.h"
-#include "X3DCircle2DEditor.h"
 #include "X3DDisk2DEditor.h"
-#include "X3DPrimitiveCountEditor.h"
+
+#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
 namespace puck {
 
-class GeometryPropertiesEditor :
-	virtual public X3DGeometryPropertiesEditorInterface,
-	public X3DArc2DEditor,
-	public X3DCircle2DEditor,
-	public X3DDisk2DEditor,
-	public X3DPrimitiveCountEditor
+X3DDisk2DEditor::X3DDisk2DEditor () :
+	X3DGeometryPropertiesEditorInterface (),
+	                          shapeNodes (),
+	                         innerRadius (this, getDisk2DInnerRadiusAdjustment (), getDisk2DInnerRadiusSpinButton (), "innerRadius"),
+	                         outerRadius (this, getDisk2DOuterRadiusAdjustment (), getDisk2DOuterRadiusSpinButton (), "outerRadius")
+{ }
+
+void
+X3DDisk2DEditor::initialize ()
 {
-public:
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DDisk2DEditor::set_selection);
 
-	///  @name Construction
-
-	GeometryPropertiesEditor (X3DBrowserWindow* const);
-
-	///  @name Destruction
-
-	virtual
-	~GeometryPropertiesEditor ();
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	void
 	set_selection ();
+}
 
-	void
-	set_nodes ();
+void
+X3DDisk2DEditor::set_selection ()
+{
+	for (const auto & shapeNode : shapeNodes)
+		shapeNode -> geometry () .removeInterest (this, &X3DDisk2DEditor::set_geometry);
 
-	void
-	set_buffer ();
+	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
 
-	virtual
-	void
-	on_add_normals_clicked () final override;
+	for (const auto & shapeNode : shapeNodes)
+		shapeNode -> geometry () .addInterest (this, &X3DDisk2DEditor::set_geometry);
 
-	virtual
-	void
-	on_remove_normals_clicked () final override;
+	set_geometry ();
+}
 
-	///  @name Members
+void
+X3DDisk2DEditor::set_geometry ()
+{
+	// Check if there is a direct master selecection of our node type.
 
-	X3DFieldToggleButton <X3D::SFBool> solid;
-	X3DFieldToggleButton <X3D::SFBool> ccw;
-	X3DFieldToggleButton <X3D::SFBool> convex;
-	X3DFieldAdjustment <X3D::SFFloat>  creaseAngle;
+	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
 
-	X3D::X3DPtrArray <X3D::X3DShapeNode> shapes;
-	X3D::SFTime                          nodesBuffer;
+	if (not selection .empty ())
+	{
+		const X3D::X3DPtr <X3D::Disk2D> node (selection .back ());
 
-};
+		if (node)
+		{
+			set_arc2D (node);
+			return;
+		}
+	}
+
+	// Check if all shape node whithin the selection have a node of our type.
+
+	const auto    pair   = getNode <X3D::Disk2D> (shapeNodes, "geometry");
+	const int32_t active = pair .second;
+
+	if (active == SAME_NODE) // All shapes share the same geometry
+		set_arc2D (pair .first);
+	else
+		set_arc2D (nullptr);
+}
+
+void
+X3DDisk2DEditor::set_arc2D (const X3D::X3DPtr <X3D::Disk2D> & node)
+{
+	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
+
+	getDisk2DExpander () .set_visible (node);
+
+	innerRadius .setNodes (nodes);
+	outerRadius .setNodes (nodes);
+}
+
+X3DDisk2DEditor::~X3DDisk2DEditor ()
+{ }
 
 } // puck
 } // titania
-
-#endif

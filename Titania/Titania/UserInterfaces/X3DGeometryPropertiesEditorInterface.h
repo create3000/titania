@@ -105,6 +105,14 @@ public:
 	getCreaseAngleAdjustment () const
 	{ return m_CreaseAngleAdjustment; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getDisk2DInnerRadiusAdjustment () const
+	{ return m_Disk2DInnerRadiusAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getDisk2DOuterRadiusAdjustment () const
+	{ return m_Disk2DOuterRadiusAdjustment; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -136,6 +144,18 @@ public:
 	Gtk::SpinButton &
 	getCircle2DRadiusSpinButton () const
 	{ return *m_Circle2DRadiusSpinButton; }
+
+	Gtk::Expander &
+	getDisk2DExpander () const
+	{ return *m_Disk2DExpander; }
+
+	Gtk::SpinButton &
+	getDisk2DInnerRadiusSpinButton () const
+	{ return *m_Disk2DInnerRadiusSpinButton; }
+
+	Gtk::SpinButton &
+	getDisk2DOuterRadiusSpinButton () const
+	{ return *m_Disk2DOuterRadiusSpinButton; }
 
 	Gtk::Expander &
 	getGeometryExpander () const
@@ -246,6 +266,8 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DStartAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Circle2DRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_CreaseAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_Disk2DInnerRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_Disk2DOuterRadiusAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Notebook*                 m_GeometryChildNotebook;
@@ -254,6 +276,9 @@ private:
 	Gtk::SpinButton*               m_Arc2DEndAngleSpinButton;
 	Gtk::Expander*                 m_Circle2DExpander;
 	Gtk::SpinButton*               m_Circle2DRadiusSpinButton;
+	Gtk::Expander*                 m_Disk2DExpander;
+	Gtk::SpinButton*               m_Disk2DInnerRadiusSpinButton;
+	Gtk::SpinButton*               m_Disk2DOuterRadiusSpinButton;
 	Gtk::Expander*                 m_GeometryExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;
