@@ -61,12 +61,17 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_CreaseAngleAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CreaseAngleAdjustment"));
+	m_Arc2DEndAngleAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DEndAngleAdjustment"));
+	m_Arc2DStartAngleAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DStartAngleAdjustment"));
+	m_CreaseAngleAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CreaseAngleAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("GeometryChildNotebook", m_GeometryChildNotebook);
+	m_builder -> get_widget ("Arc2DExpander", m_Arc2DExpander);
+	m_builder -> get_widget ("Arc2DStartAngleSpinButton", m_Arc2DStartAngleSpinButton);
+	m_builder -> get_widget ("Arc2DEndAngleSpinButton", m_Arc2DEndAngleSpinButton);
 	m_builder -> get_widget ("GeometryExpander", m_GeometryExpander);
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);

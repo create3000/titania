@@ -90,6 +90,14 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getArc2DEndAngleAdjustment () const
+	{ return m_Arc2DEndAngleAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getArc2DStartAngleAdjustment () const
+	{ return m_Arc2DStartAngleAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getCreaseAngleAdjustment () const
 	{ return m_CreaseAngleAdjustment; }
 
@@ -104,6 +112,18 @@ public:
 	Gtk::Notebook &
 	getGeometryChildNotebook () const
 	{ return *m_GeometryChildNotebook; }
+
+	Gtk::Expander &
+	getArc2DExpander () const
+	{ return *m_Arc2DExpander; }
+
+	Gtk::SpinButton &
+	getArc2DStartAngleSpinButton () const
+	{ return *m_Arc2DStartAngleSpinButton; }
+
+	Gtk::SpinButton &
+	getArc2DEndAngleSpinButton () const
+	{ return *m_Arc2DEndAngleSpinButton; }
 
 	Gtk::Expander &
 	getGeometryExpander () const
@@ -210,10 +230,15 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_Arc2DEndAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_Arc2DStartAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_CreaseAngleAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Notebook*                 m_GeometryChildNotebook;
+	Gtk::Expander*                 m_Arc2DExpander;
+	Gtk::SpinButton*               m_Arc2DStartAngleSpinButton;
+	Gtk::SpinButton*               m_Arc2DEndAngleSpinButton;
 	Gtk::Expander*                 m_GeometryExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;

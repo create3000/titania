@@ -48,81 +48,58 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXT_EDITOR_TEXT_EDITOR_H__
-#define __TITANIA_TEXT_EDITOR_TEXT_EDITOR_H__
+#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DARC2DEDITOR_H__
+#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DARC2DEDITOR_H__
 
 #include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DTextEditorInterface.h"
-#include "X3DFontStyleNodeEditor.h"
+#include "../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+
+#include <Titania/X3D/Components/Geometry2D/Arc2D.h>
 
 namespace titania {
 namespace puck {
 
-class TextEditor :
-	virtual public X3DTextEditorInterface,
-	public X3DFontStyleNodeEditor
+class X3DArc2DEditor :
+virtual public X3DGeometryPropertiesEditorInterface
 {
 public:
 
+	///  @name Destruction
+
+	virtual
+	~X3DArc2DEditor ();
+
+
+protected:
+
 	///  @name Construction
 
-	TextEditor (X3DBrowserWindow* const);
-	
+	X3DArc2DEditor ();
+
 	virtual
-	~TextEditor ();
+	void
+	initialize () override;
 
 
 private:
 
 	///  @name Construction
 
-	virtual
-	void
-	initialize () final override;
-
 	void
 	set_selection ();
 
-	///  @name text
-
-	virtual
 	void
-	on_text_unlink_clicked () final override;
-
-	virtual
-	void
-	on_text_toggled () final override;
+	set_geometry ();
 
 	void
-	set_text ();
-
-	void
-	set_node ();
-
-	void
-	connectText (const X3D::SFNode &);
-
-	///  @name string
-
-	virtual
-	void
-	on_string_changed () final override;
-
-	void
-	set_string ();
-
-	void
-	connectString (const X3D::MFString &);
+	set_arc2D (const X3D::X3DPtr <X3D::Arc2D> &);
 
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
-	X3D::SFTime                          geometryNodeBuffer;
-	X3D::X3DPtr <X3D::Text>              text;
-	X3D::UndoStepPtr                     undoStep;
-	bool                                 changing;
 
-	X3DFieldAdjustment <X3D::SFFloat> maxExtent;
+	X3DFieldAdjustment <X3D::SFFloat> startAngle;
+	X3DFieldAdjustment <X3D::SFFloat> endAngle;
 
 };
 

@@ -124,17 +124,17 @@ protected:
 
 	template <class FieldType, class NodeType>
 	static
-	std::pair <X3D::X3DPtr <FieldType>, int>
+	std::pair <X3D::X3DPtr <FieldType>, int32_t>
 	getNode (const X3D::X3DPtrArray <NodeType> &, const std::string &);
 
 	template <class NodeType>
 	static
-	int
+	int32_t
 	getBoolean (const X3D::X3DPtrArray <NodeType> &, const std::string &);
 
 	template <class FieldType, class NodeType>
 	static
-	std::pair <FieldType, int>
+	std::pair <FieldType, int32_t>
 	getArray (const X3D::X3DPtrArray <NodeType> &, const std::string &);
 
 	template <class NodeType>
@@ -163,6 +163,13 @@ protected:
 	void
 	dispose () override
 	{ }
+
+	/// @name Static members
+	
+	static constexpr int32_t NO_FIELD     = -2;
+	static constexpr int32_t INCONSISTENT = -1;
+	static constexpr int32_t FIELD_NULL   = 0;
+	static constexpr int32_t SAME_NODE    = 1;
 
 
 private:
@@ -232,11 +239,11 @@ X3DEditorObject::getNodes (const X3D::MFNode & selection, const std::set <X3D::X
  *   1 means all values share the found node
  */
 template <class FieldType, class NodeType>
-std::pair <X3D::X3DPtr <FieldType>, int>
+std::pair <X3D::X3DPtr <FieldType>, int32_t>
 X3DEditorObject::getNode (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
 {
 	X3D::X3DPtr <FieldType> found;
-	int                     active = -2;
+	int32_t                 active = -2;
 
 	for (const auto & node : basic::make_reverse_range (nodes))
 	{
@@ -274,10 +281,10 @@ X3DEditorObject::getNode (const X3D::X3DPtrArray <NodeType> & nodes, const std::
  *   1 means all values are true
  */
 template <class NodeType>
-int
+int32_t
 X3DEditorObject::getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
 {
-	int active = -2;
+	int32_t active = -2;
 
 	for (const auto & node : basic::make_reverse_range (nodes))
 	{
@@ -311,11 +318,11 @@ X3DEditorObject::getBoolean (const X3D::X3DPtrArray <NodeType> & nodes, const st
  *   1 means all values are equal
  */
 template <class FieldType, class NodeType>
-std::pair <FieldType, int>
+std::pair <FieldType, int32_t>
 X3DEditorObject::getArray (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
 {
 	FieldType found;
-	int       active = -2;
+	int32_t   active = -2;
 
 	for (const auto & node : basic::make_reverse_range (nodes))
 	{

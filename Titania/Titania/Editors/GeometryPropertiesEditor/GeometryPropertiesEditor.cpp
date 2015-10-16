@@ -63,6 +63,7 @@ namespace puck {
 GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const browserWindow) :
 	                     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	 X3DGeometryPropertiesEditorInterface (get_ui ("Editors/GeometryPropertiesEditor.xml"), gconf_dir ()),
+	                       X3DArc2DEditor (),
 	              X3DPrimitiveCountEditor (),
 	                                solid (this, getSolidCheckButton (),  "solid"),
 	                                  ccw (this, getCCWCheckButton (),    "ccw"),
@@ -85,6 +86,7 @@ void
 GeometryPropertiesEditor::initialize ()
 {
 	X3DGeometryPropertiesEditorInterface::initialize ();
+	X3DArc2DEditor::initialize ();
 	X3DPrimitiveCountEditor::initialize ();
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &GeometryPropertiesEditor::set_selection);

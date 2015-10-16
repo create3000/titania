@@ -668,7 +668,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">TransformRotationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
+                            <property name="digits">6</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -798,7 +798,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">TransformScaleOrientationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
+                            <property name="digits">6</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -2119,7 +2119,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">GeoTransformRotationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
+                            <property name="digits">6</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -2249,7 +2249,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">GeoTransformScaleOrientationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
+                            <property name="digits">6</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>

@@ -48,85 +48,84 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXT_EDITOR_TEXT_EDITOR_H__
-#define __TITANIA_TEXT_EDITOR_TEXT_EDITOR_H__
+#include "X3DArc2DEditor.h"
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DTextEditorInterface.h"
-#include "X3DFontStyleNodeEditor.h"
+#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
 namespace puck {
 
-class TextEditor :
-	virtual public X3DTextEditorInterface,
-	public X3DFontStyleNodeEditor
+X3DArc2DEditor::X3DArc2DEditor () :
+	X3DGeometryPropertiesEditorInterface (),
+	                         shapeNodes (),
+	                         startAngle (this, getArc2DStartAngleAdjustment (), getArc2DStartAngleSpinButton (), "startAngle"),
+	                           endAngle (this, getArc2DEndAngleAdjustment (), getArc2DEndAngleSpinButton (), "endAngle")
+{ }
+
+void
+X3DArc2DEditor::initialize ()
 {
-public:
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DArc2DEditor::set_selection);
 
-	///  @name Construction
-
-	TextEditor (X3DBrowserWindow* const);
-	
-	virtual
-	~TextEditor ();
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	void
 	set_selection ();
+}
 
-	///  @name text
+void
+X3DArc2DEditor::set_selection ()
+{
+	for (const auto & shapeNode : shapeNodes)
+		shapeNode -> geometry () .removeInterest (this, &X3DArc2DEditor::set_geometry);
 
-	virtual
-	void
-	on_text_unlink_clicked () final override;
+	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
 
-	virtual
-	void
-	on_text_toggled () final override;
+	for (const auto & shapeNode : shapeNodes)
+		shapeNode -> geometry () .addInterest (this, &X3DArc2DEditor::set_geometry);
 
-	void
-	set_text ();
+	set_geometry ();
+}
 
-	void
-	set_node ();
+void
+X3DArc2DEditor::set_geometry ()
+{
+	// Check if there is a direct master selecection of our node type.
 
-	void
-	connectText (const X3D::SFNode &);
+	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
 
-	///  @name string
+	if (not selection .empty ())
+	{
+		const X3D::X3DPtr <X3D::Arc2D> node (selection .back ());
 
-	virtual
-	void
-	on_string_changed () final override;
+		if (node)
+		{
+		   set_arc2D (node);
+			return;
+		}
+	}
+		
+	// Check if all shape node whithin the selection have a node of our type.
 
-	void
-	set_string ();
+	const auto    pair   = getNode <X3D::Arc2D> (shapeNodes, "geometry");
+	const int32_t active = pair .second;
 
-	void
-	connectString (const X3D::MFString &);
+	if (active == SAME_NODE) // All shapes share the same geometry
+		set_arc2D (pair .first);
+	else
+		set_arc2D (nullptr);
+}
 
-	///  @name Members
+void
+X3DArc2DEditor::set_arc2D (const X3D::X3DPtr <X3D::Arc2D> & node)
+{
+	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
+		
+	getArc2DExpander () .set_visible (node);
 
-	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
-	X3D::SFTime                          geometryNodeBuffer;
-	X3D::X3DPtr <X3D::Text>              text;
-	X3D::UndoStepPtr                     undoStep;
-	bool                                 changing;
+	startAngle .setNodes (nodes);
+	endAngle   .setNodes (nodes);
+}
 
-	X3DFieldAdjustment <X3D::SFFloat> maxExtent;
-
-};
+X3DArc2DEditor::~X3DArc2DEditor ()
+{ }
 
 } // puck
 } // titania
-
-#endif
