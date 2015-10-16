@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -206,13 +206,12 @@ GeometryPropertiesEditor::on_geometry_changed ()
 	if (changing)
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field ?geometry?"));
-
 	if (getGeometryComboBoxText () .get_active_row_number () > 0)
 	{
 	   try
 	   {
-		   auto node = getExecutionContext () -> createNode (getGeometryComboBoxText () .get_active_text ());
+			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
+		   auto       node     = getExecutionContext () -> createNode (getGeometryComboBoxText () .get_active_text ());
 
 			getExecutionContext () -> addUninitializedNode (node);
 			getExecutionContext () -> realize ();
@@ -229,12 +228,16 @@ GeometryPropertiesEditor::on_geometry_changed ()
 
 				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (shapeNode), field, node, undoStep);
 			}
+
+			getBrowserWindow () -> addUndoStep (undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 	else if (getGeometryComboBoxText () .get_active_row_number () == 0)
 	{
+		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
+
 		for (const auto & shapeNode : getShapes ())
 		{
 			auto & field = shapeNode -> geometry ();
@@ -244,6 +247,8 @@ GeometryPropertiesEditor::on_geometry_changed ()
 
 			getBrowserWindow () -> removeNode (getExecutionContext (), X3D::SFNode (shapeNode), field, undoStep);
 		}
+
+		getBrowserWindow () -> addUndoStep (undoStep);
 	}
 }
 
