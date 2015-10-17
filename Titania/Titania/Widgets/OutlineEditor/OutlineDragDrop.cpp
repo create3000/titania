@@ -326,7 +326,7 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 	const auto executionContext = destExternProto -> getExecutionContext ();
 
 	std::vector <X3D::ExternProtoDeclarationPtr> destExternProtos (executionContext -> getExternProtoDeclarations () .begin (),
-	                                                    executionContext -> getExternProtoDeclarations () .end ());
+	                                                               executionContext -> getExternProtoDeclarations () .end ());
 
 	// Insert source extern proto in destination extern protos.
 
@@ -347,13 +347,13 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 			{
 				if (eraseIndex < insertIndex)
 				{
-					destExternProtos .insert (destExternProtos .begin () + insertIndex, sourceExternProto);
+					destExternProtos .emplace (destExternProtos .begin () + insertIndex, sourceExternProto);
 					destExternProtos .erase (destExternProtos .begin () + eraseIndex);
 				}
 				else
 				{
 					destExternProtos .erase (destExternProtos .begin () + eraseIndex);
-					destExternProtos .insert (destExternProtos .begin () + insertIndex, sourceExternProto);
+					destExternProtos .emplace (destExternProtos .begin () + insertIndex, sourceExternProto);
 				}
 
 				// Reorder extern protos.

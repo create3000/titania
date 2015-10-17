@@ -1681,11 +1681,11 @@ AnimationEditor::addKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator,
 	}
 	else
 	{
-		key .insert (key .begin () + index, frame);
-		keyType .insert (keyType .begin () + index, type);
+		key .emplace (key .begin () + index, frame);
+		keyType .emplace (keyType .begin () + index, type);
 		
 		for (const auto & v : basic::make_reverse_range (value))
-			keyValue .insert (keyValue .begin () + indexN, v);
+			keyValue .emplace (keyValue .begin () + indexN, v);
 	}
 
 	undoStep -> addRedoFunction ((setMetaDataInteger) &X3D::X3DNode::setMetaData, interpolator, "/Interpolator/key",      key);

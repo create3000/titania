@@ -876,10 +876,10 @@ X3DBrowserWidget::on_browser_reordered (Gtk::Widget* widget, guint pageNumber)
 	if (iter == browsers .end ())
 		return;
 
-	const auto browser = *iter;
+	auto browser = std::move (*iter);
 
 	browsers .erase (iter);
-	browsers .insert (browsers .begin () + pageNumber, browser);
+	browsers .emplace (browsers .begin () + pageNumber, std::move (browser));
 }
 
 void

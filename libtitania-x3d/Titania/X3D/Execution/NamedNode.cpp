@@ -102,7 +102,7 @@ throw (Error <DISPOSED>)
 	if (node)
 		return SFNode (node);
 
-	throw Error <DISPOSED> ("NamedNode: Node named '" + name + "' is already disposed.");
+	throw Error <DISPOSED> ("NamedNode::getLocalNode: Node named '" + name + "' is already disposed.");
 }
 
 void

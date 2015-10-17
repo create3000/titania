@@ -102,7 +102,7 @@ private:
 	///  @name Members
 
 	NameEntry                          nodeName;
-	std::unique_ptr <MFStringWidget> type;
+	std::unique_ptr <MFStringWidget>   type;
 	X3DFieldAdjustment3 <X3D::MFFloat> avatarSize;
 	X3DFieldAdjustment <X3D::SFFloat>  speed;
 	X3DFieldToggleButton <X3D::SFBool> headlight;

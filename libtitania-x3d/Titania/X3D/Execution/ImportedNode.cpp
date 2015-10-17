@@ -128,7 +128,7 @@ throw (Error <DISPOSED>)
 	if (inlineNode)
 		return InlinePtr (inlineNode);
 
-	throw Error <DISPOSED> ("ImportedNode: Inline node is already disposed.");
+	throw Error <DISPOSED> ("ImportedNode::getInlineNode: Inline node is already disposed.");
 }
 
 SFNode
@@ -138,7 +138,7 @@ throw (Error <DISPOSED>)
 	if (exportedNode)
 		return SFNode (exportedNode);
 
-	throw Error <DISPOSED> ("ImportedNode: Exported node '" + exportedName + "' is already disposed.");
+	throw Error <DISPOSED> ("ImportedNodee::getExportedNode: Exported node '" + exportedName + "' is already disposed.");
 }
 
 void

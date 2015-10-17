@@ -2091,7 +2091,7 @@ X3DEditor::insertIntoArray (const SFNode & parent, MFNode & array, const size_t 
 	undoStep -> addObjects (parent);
 	undoStep -> addUndoFunction (&MFNode::setValue, std::ref (array), array);
 
-	array .insert (array .begin () + index, node);
+	array .emplace (array .begin () + index, node);
 
 	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (array), array);
 }
@@ -2120,7 +2120,7 @@ X3DEditor::moveValueWithinArray (const SFNode & parent, MFNode & array, const si
 	const auto fromIter = array .begin () + fromIndex;
 	const auto toIter   = array .begin () + toIndex;
 
-	array .insert (toIter, std::move (*fromIter)); // XXX: array .emplace (toIter, std::move (*fromIter));
+	array .emplace (toIter, std::move (*fromIter)); // XXX: array .emplace (toIter, std::move (*fromIter));
 
 	// Erase
 

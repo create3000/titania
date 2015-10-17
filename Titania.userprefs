@@ -1,11 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Editor/X3DEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTextureCoordinateGeneratorEditor.cpp" Line="24" Column="24" />
-      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTextureNodeEditor.cpp" Line="2" Column="2" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h" Line="51" Column="51" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp" Line="28" Column="28" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editor/X3DEditor.cpp" Line="5" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/Bits/Traverse.h" Line="38" Column="38" />
+      <File FileName="libtitania-x3d/Titania/X3D/Bits/Traverse.cpp" Line="86" Column="86" />
+      <File FileName="libtitania-x3d/Titania/X3D/Fields/X3DPtrArray.h" Line="17" Column="17" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="10" Column="10" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="62" Column="62" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp" Line="32" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/Fields/X3DPtr.h" Line="25" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.h" Line="23" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

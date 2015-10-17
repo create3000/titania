@@ -200,13 +200,13 @@ X3DUserDefinedFieldsEditor::on_drag_data_received (const Glib::RefPtr <Gdk::Drag
 
 		if (index < dest)
 		{
-			userDefinedFields .insert (userDefinedFields .begin () + dest, field);
+			userDefinedFields .emplace (userDefinedFields .begin () + dest, field);
 			userDefinedFields .erase (userDefinedFields .begin () + index);
 		}
 		else
 		{
 			userDefinedFields .erase (userDefinedFields .begin () + index);
-			userDefinedFields .insert (userDefinedFields .begin () + dest, field);
+			userDefinedFields .emplace (userDefinedFields .begin () + dest, field);
 		}
 
 		// Set user defined field.

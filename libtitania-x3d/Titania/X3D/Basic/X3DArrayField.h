@@ -114,8 +114,8 @@ public:
 	{ }
 
 	///  Copy constructor.
-	X3DArrayField (const X3DArrayField & field) :
-		X3DArrayField <ValueType> (field .begin (), field .end ())
+	X3DArrayField (const X3DArrayField & other) :
+		X3DArrayField <ValueType> (other .begin (), other .end ())
 	{ }
 
 	///  Move constructor.
@@ -196,9 +196,9 @@ public:
 
 	/// Assigns values to the array.
 	X3DArrayField &
-	operator = (const X3DArrayField & field)
+	operator = (const X3DArrayField & other)
 	{
-		assign (field .begin (), field .end ());
+		assign (other .begin (), other .end ());
 		return *this;
 	}
 
@@ -441,19 +441,28 @@ public:
 	clear ();
 
 	///  Inserts elements.
-	template <class Arg>
 	iterator
-	insert (const iterator &, Arg &&);
+	insert (const iterator & location, const ValueType & value)
+	{ return emplace (location, value); }
 
 	///  Inserts elements.
-	template <class Arg>
 	iterator
-	insert (const iterator &, const size_type, Arg &&);
+	insert (const iterator & location, const size_type count, const ValueType & value)
+	{ return emplace (location, count, value); }
 
 	///  Inserts elements.
 	template <class InputIterator>
 	iterator
 	insert (const iterator &, InputIterator, const InputIterator &);
+
+	template <class Arg>
+	iterator
+	emplace (const iterator &, Arg &&);
+
+	///  Inserts elements.
+	template <class Arg>
+	iterator
+	emplace (const iterator &, const size_type, Arg &&);
 
 	///  Appends X3DArrayField @a field.
 	X3DArrayField &
@@ -748,7 +757,7 @@ X3DArrayField <ValueType>::clear ()
 template <class ValueType>
 template <class Arg>
 typename X3DArrayField <ValueType>::iterator
-X3DArrayField <ValueType>::insert (const iterator & location, Arg && value)
+X3DArrayField <ValueType>::emplace (const iterator & location, Arg && value)
 {
 	const auto iter = get () .insert (location .base (), new ValueType (std::forward <Arg> (value)));
 
@@ -761,7 +770,7 @@ X3DArrayField <ValueType>::insert (const iterator & location, Arg && value)
 template <class ValueType>
 template <class Arg>
 typename X3DArrayField <ValueType>::iterator
-X3DArrayField <ValueType>::insert (const iterator & location, const size_type count, Arg && value)
+X3DArrayField <ValueType>::emplace (const iterator & location, const size_type count, Arg && value)
 {
 	const size_type pos = location - begin ();
 

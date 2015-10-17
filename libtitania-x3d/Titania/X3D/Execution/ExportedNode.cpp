@@ -123,7 +123,7 @@ throw (Error <DISPOSED>)
 	if (node)
 		return SFNode (node);
 
-	throw Error <DISPOSED> ("ExportedNode: Node '" + exportedName + "' is already disposed.");
+	throw Error <DISPOSED> ("ExportedNode::getLocalNode: Node '" + exportedName + "' is already disposed.");
 }
 
 void

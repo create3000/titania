@@ -80,6 +80,16 @@ typedef std::function <bool (X3D::SFNode &)> TraverseCallback;
 bool
 traverse (X3DExecutionContext* const, const TraverseCallback &, const bool = true, const int = TRAVERSE_ROOT_NODES);
 
+inline
+bool
+traverse (const X3DScenePtr & scene, const TraverseCallback & callback, const bool distinct = true, const int flags = TRAVERSE_ROOT_NODES)
+{ return traverse (scene .getValue (), callback, distinct, flags); }
+
+inline
+bool
+traverse (const X3DExecutionContextPtr & executionContext, const TraverseCallback & callback, const bool distinct = true, const int flags = TRAVERSE_ROOT_NODES)
+{ return traverse (executionContext, callback, distinct, flags); }
+
 bool
 traverse (MFNode &, const TraverseCallback &, const bool = true, const int = TRAVERSE_ROOT_NODES);
 
@@ -89,8 +99,18 @@ traverse (SFNode &, const TraverseCallback &, const bool = true, const int = TRA
 std::vector <X3DChildObject*>
 find (X3DScene* const, X3DChildObject* const, const int = TRAVERSE_ROOT_NODES);
 
+inline
+std::vector <X3DChildObject*>
+find (const X3DScenePtr & scene, X3DChildObject* const object, const int flags = TRAVERSE_ROOT_NODES)
+{ return find (scene .getValue (), object, flags); }
+
 std::vector <X3DChildObject*>
 find (X3DExecutionContext* const, X3DChildObject* const, const int = TRAVERSE_ROOT_NODES);
+
+inline
+std::vector <X3DChildObject*>
+find (const X3DExecutionContextPtr & executionContext, X3DChildObject* const object, const int flags = TRAVERSE_ROOT_NODES)
+{ return find (executionContext .getValue (), object, flags); }
 
 std::vector <X3DChildObject*>
 find (const X3D::MFNode &, X3DChildObject* const, const int = TRAVERSE_ROOT_NODES);
