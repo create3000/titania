@@ -61,14 +61,16 @@ X3DNavigationInfoEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_CollisionRadiusAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CollisionRadiusAdjustment"));
-	m_HeightAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("HeightAdjustment"));
-	m_SpeedAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SpeedAdjustment"));
-	m_StepHeightAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("StepHeightAdjustment"));
-	m_TransitionTimeAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransitionTimeAdjustment"));
-	m_VisibilityLimitAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("VisibilityLimitAdjustment"));
-	m_TypeCellRendererText           = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("TypeCellRendererText"));
-	m_TransitionTypeCellRendererText = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("TransitionTypeCellRendererText"));
+	m_CollisionRadiusAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CollisionRadiusAdjustment"));
+	m_HeightAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("HeightAdjustment"));
+	m_NavigationInfoTransitionTypeListStore = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("NavigationInfoTransitionTypeListStore"));
+	m_NavigationInfoTypeListStore           = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("NavigationInfoTypeListStore"));
+	m_SpeedAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SpeedAdjustment"));
+	m_StepHeightAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("StepHeightAdjustment"));
+	m_TransitionTimeAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransitionTimeAdjustment"));
+	m_VisibilityLimitAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("VisibilityLimitAdjustment"));
+	m_TypeCellRendererCombo                 = Glib::RefPtr <Gtk::CellRendererCombo>::cast_dynamic (m_builder -> get_object ("TypeCellRendererCombo"));
+	m_TransitionTypeCellRendererCombo       = Glib::RefPtr <Gtk::CellRendererCombo>::cast_dynamic (m_builder -> get_object ("TransitionTypeCellRendererCombo"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);

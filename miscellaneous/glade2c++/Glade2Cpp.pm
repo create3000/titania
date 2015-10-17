@@ -51,6 +51,7 @@ $objects {$_} = true foreach qw(
 	Gtk::TreeModelFilter
 	Gtk::TreeSelection
 	Gtk::TreeViewColumn
+	Gtk::CellRendererCombo
 	Gtk::CellRendererText
 	Gtk::CellRendererToggle
 	Gtk::CellRendererPixbuf

@@ -97,6 +97,14 @@ public:
 	getHeightAdjustment () const
 	{ return m_HeightAdjustment; }
 
+	const Glib::RefPtr <Gtk::ListStore> &
+	getNavigationInfoTransitionTypeListStore () const
+	{ return m_NavigationInfoTransitionTypeListStore; }
+
+	const Glib::RefPtr <Gtk::ListStore> &
+	getNavigationInfoTypeListStore () const
+	{ return m_NavigationInfoTypeListStore; }
+
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getSpeedAdjustment () const
 	{ return m_SpeedAdjustment; }
@@ -113,13 +121,13 @@ public:
 	getVisibilityLimitAdjustment () const
 	{ return m_VisibilityLimitAdjustment; }
 
-	const Glib::RefPtr <Gtk::CellRendererText> &
-	getTypeCellRendererText () const
-	{ return m_TypeCellRendererText; }
+	const Glib::RefPtr <Gtk::CellRendererCombo> &
+	getTypeCellRendererCombo () const
+	{ return m_TypeCellRendererCombo; }
 
-	const Glib::RefPtr <Gtk::CellRendererText> &
-	getTransitionTypeCellRendererText () const
-	{ return m_TransitionTypeCellRendererText; }
+	const Glib::RefPtr <Gtk::CellRendererCombo> &
+	getTransitionTypeCellRendererCombo () const
+	{ return m_TransitionTypeCellRendererCombo; }
 
 	Gtk::Window &
 	getWindow () const
@@ -236,39 +244,41 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                          filename;
-	Glib::RefPtr <Gtk::Builder>          m_builder;
-	Glib::RefPtr <Gtk::Adjustment>       m_CollisionRadiusAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>       m_HeightAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>       m_SpeedAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>       m_StepHeightAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>       m_TransitionTimeAdjustment;
-	Glib::RefPtr <Gtk::Adjustment>       m_VisibilityLimitAdjustment;
-	Glib::RefPtr <Gtk::CellRendererText> m_TypeCellRendererText;
-	Glib::RefPtr <Gtk::CellRendererText> m_TransitionTypeCellRendererText;
-	Gtk::Window*                         m_Window;
-	Gtk::Box*                            m_Widget;
-	Gtk::Box*                            m_NavigationInfoActionBox;
-	Gtk::Button*                         m_NewNavigationInfoButton;
-	Gtk::Button*                         m_RemoveNavigationInfoButton;
-	Gtk::Button*                         m_IndexButton;
-	Gtk::Expander*                       m_NavigationInfoExpander;
-	Gtk::Box*                            m_AvatarSizeBox;
-	Gtk::SpinButton*                     m_SpeedSpinButton;
-	Gtk::CheckButton*                    m_HeadlightCheckButton;
-	Gtk::SpinButton*                     m_TransitionTimeSpinButton;
-	Gtk::SpinButton*                     m_VisibilityLimitSpinButton;
-	Gtk::Box*                            m_TypeBox;
-	Gtk::TreeView*                       m_TypeTreeView;
-	Gtk::Button*                         m_TypeAddButton;
-	Gtk::Button*                         m_TypeRemoveButton;
-	Gtk::Box*                            m_TransitionTypeBox;
-	Gtk::TreeView*                       m_TransitionTypeTreeView;
-	Gtk::Button*                         m_TransitionTypeAddButton;
-	Gtk::Button*                         m_TransitionTypeRemoveButton;
-	Gtk::Box*                            m_NameBox;
-	Gtk::Entry*                          m_NameEntry;
-	Gtk::Button*                         m_RenameButton;
+	std::string                           filename;
+	Glib::RefPtr <Gtk::Builder>           m_builder;
+	Glib::RefPtr <Gtk::Adjustment>        m_CollisionRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>        m_HeightAdjustment;
+	Glib::RefPtr <Gtk::ListStore>         m_NavigationInfoTransitionTypeListStore;
+	Glib::RefPtr <Gtk::ListStore>         m_NavigationInfoTypeListStore;
+	Glib::RefPtr <Gtk::Adjustment>        m_SpeedAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>        m_StepHeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>        m_TransitionTimeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>        m_VisibilityLimitAdjustment;
+	Glib::RefPtr <Gtk::CellRendererCombo> m_TypeCellRendererCombo;
+	Glib::RefPtr <Gtk::CellRendererCombo> m_TransitionTypeCellRendererCombo;
+	Gtk::Window*                          m_Window;
+	Gtk::Box*                             m_Widget;
+	Gtk::Box*                             m_NavigationInfoActionBox;
+	Gtk::Button*                          m_NewNavigationInfoButton;
+	Gtk::Button*                          m_RemoveNavigationInfoButton;
+	Gtk::Button*                          m_IndexButton;
+	Gtk::Expander*                        m_NavigationInfoExpander;
+	Gtk::Box*                             m_AvatarSizeBox;
+	Gtk::SpinButton*                      m_SpeedSpinButton;
+	Gtk::CheckButton*                     m_HeadlightCheckButton;
+	Gtk::SpinButton*                      m_TransitionTimeSpinButton;
+	Gtk::SpinButton*                      m_VisibilityLimitSpinButton;
+	Gtk::Box*                             m_TypeBox;
+	Gtk::TreeView*                        m_TypeTreeView;
+	Gtk::Button*                          m_TypeAddButton;
+	Gtk::Button*                          m_TypeRemoveButton;
+	Gtk::Box*                             m_TransitionTypeBox;
+	Gtk::TreeView*                        m_TransitionTypeTreeView;
+	Gtk::Button*                          m_TransitionTypeAddButton;
+	Gtk::Button*                          m_TransitionTypeRemoveButton;
+	Gtk::Box*                             m_NameBox;
+	Gtk::Entry*                           m_NameEntry;
+	Gtk::Button*                          m_RenameButton;
 
 };
 
