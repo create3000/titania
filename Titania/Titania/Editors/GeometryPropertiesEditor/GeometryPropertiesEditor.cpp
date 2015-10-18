@@ -87,7 +87,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	nodesBuffer .addInterest (this, &GeometryPropertiesEditor::set_buffer);
 	addChildren (nodesBuffer);
 
-	getCreaseAngleAdjustment () -> set_upper (M_PI); // getExecutionContext () .fromRadiant (M_PI);
+	getCreaseAngleAdjustment () -> set_upper (M_PI);
 
 	getGeometryChildNotebook () .set_current_page (getConfig () .getInteger ("currentPage"));
 

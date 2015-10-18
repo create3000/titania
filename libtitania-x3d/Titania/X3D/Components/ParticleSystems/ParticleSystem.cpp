@@ -334,6 +334,8 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "geometry",          geometry ());
 	addField (initializeOnly, "physics",           physics ());
 
+	particleSize () .setUnit (UnitCategory::LENGTH);
+
 	addChildren (transformShader,
 	             geometryShader,
 	             emitterNode,

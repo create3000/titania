@@ -454,6 +454,8 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 		treeObserver -> unwatch_tree (child, false);
 	}
 
+	get_model () -> get_execution_context () -> getRootContext () -> units_changed () .removeInterest (this, &X3DOutlineTreeView::queue_draw);
+
 	get_model () -> get_execution_context () -> getRootNodes ()          .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
 	get_model () -> get_execution_context () -> importedNodes_changed () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
 	get_model () -> get_execution_context () -> prototypes_changed ()    .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
@@ -471,6 +473,8 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 
 	set_model (OutlineTreeModel::create (executionContext));
 	get_model () -> set_show_all_routes (get_expand_prototype_instances ());
+
+	get_model () -> get_execution_context () -> getRootContext () -> units_changed () .addInterest (this, &X3DOutlineTreeView::queue_draw);
 
 	executionContext -> getRootNodes ()          .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
 	executionContext -> importedNodes_changed () .addInterest (this, &X3DOutlineTreeView::set_rootNodes);

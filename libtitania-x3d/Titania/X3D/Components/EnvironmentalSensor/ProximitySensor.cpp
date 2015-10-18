@@ -88,6 +88,9 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "position_changed",         position_changed ());
 	addField (outputOnly,  "orientation_changed",      orientation_changed ());
 	addField (outputOnly,  "centerOfRotation_changed", centerOfRotation_changed ());
+
+	centerOfRotation_changed () .setUnit (UnitCategory::LENGTH);
+	position_changed ()         .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

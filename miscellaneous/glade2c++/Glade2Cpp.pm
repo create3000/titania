@@ -272,7 +272,7 @@ sub cpp_signals
 	}
 	
 	return if $name ne "signal";
-	
+
 	if ($self -> {object} ne $self -> {class})
 	{
 		$self -> {object} = $self -> {class};
@@ -771,3 +771,5 @@ Button::activate
   virtual void on_activate();
 Box::style_updated
   virtual void on_style_updated();
+Adjustment::changed
+  virtual void on_changed();

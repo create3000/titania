@@ -69,6 +69,7 @@ namespace X3D {
 typedef std::map <std::string, X3DFieldDefinition*> FieldIndex;
 
 class X3DBrowser;
+class X3DScene;
 class X3DExecutionContext;
 
 /**
@@ -157,13 +158,13 @@ public:
 	{ return executionContext; }
 
 	///  Returns a pointer to the master execution context this node belongs to.
-	X3DExecutionContext*
+	X3DScene*
 	getMasterContext () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	///  Returns a pointer to the root execution context this node belongs to.
-	X3DExecutionContext*
+	X3DScene*
 	getRootContext () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);

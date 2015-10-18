@@ -78,6 +78,8 @@ ExplosionEmitter::ExplosionEmitter (X3DExecutionContext* const executionContext)
 	addField (inputOutput,    "variation",   variation ());
 	addField (initializeOnly, "mass",        mass ());
 	addField (initializeOnly, "surfaceArea", surfaceArea ());
+
+	position () .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

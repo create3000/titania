@@ -78,6 +78,9 @@ GeoCoordinate::GeoCoordinate (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "geoSystem", geoSystem ());
 	addField (inputOutput,    "point",     point ());
 	addField (initializeOnly, "geoOrigin", geoOrigin ());
+
+	point () .setUnit (UnitCategory::LENGTH);
+	point () .isGeospatial (true);
 }
 
 X3DBaseNode*

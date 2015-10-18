@@ -125,11 +125,13 @@ TextViewEditable::on_current_time ()
 void
 TextViewEditable::on_reset_activate ()
 {
+	const auto scene = node -> getRootContext ();
+
 	try
 	{
 		const auto defaultField = node -> getDeclaration () -> getField (field -> getName ());
 
-		set_text (get_field_value (defaultField, false, useLocale));
+		set_text (puck::get_field_value (scene, defaultField, false, useLocale));
 	}
 	catch (...)
 	{
@@ -137,7 +139,7 @@ TextViewEditable::on_reset_activate ()
 
 		const auto defaultField = node -> getBrowser () -> getSupportedField (field -> getTypeName ());
 
-		set_text (get_field_value (defaultField, false, useLocale));
+		set_text (puck::get_field_value (scene, defaultField, false, useLocale));
 	}
 		
 	editing_done ();

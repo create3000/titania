@@ -93,21 +93,60 @@ X3DFieldDefinition::hasRootedObjects (ChildObjectSet & seen)
 }
 
 void
-X3DFieldDefinition::isHidden (const bool value)
+X3DFieldDefinition::setAccessType (const AccessType value)
+{
+	realize ();
+
+	io -> masks &= ~ACCESS_TYPE_BITS;
+	io -> masks |= MaskType (value) << ACCESS_TYPE_OFFSET;
+}
+
+AccessType
+X3DFieldDefinition::getAccessType () const
+{
+	if (io)
+		return AccessType ((io -> masks & ACCESS_TYPE_BITS) >> ACCESS_TYPE_OFFSET);
+
+	return AccessType::initializeOnly;
+}
+
+void
+X3DFieldDefinition::setUnit (const UnitCategory unit)
+{
+	realize ();
+
+	io -> masks &= ~UNIT_BITS;
+	io -> masks |= MaskType (unit) << UNIT_OFFSET;
+}
+
+UnitCategory
+X3DFieldDefinition::getUnit () const
+{
+	if (io)
+		return UnitCategory ((io -> masks & UNIT_BITS) >> UNIT_OFFSET);
+
+	return UnitCategory::NONE;
+}
+
+/// Returns true if is set during parse otherwise false;
+void
+X3DFieldDefinition::isGeospatial (const bool value)
 {
 	realize ();
 
 	if (value)
-		io -> masks |= HIDDEN_BIT;
+		io -> masks |= GEO_BIT;
 	else
-		io -> masks &= ~HIDDEN_BIT;
+		io -> masks &= ~GEO_BIT;
 }
 
 bool
-X3DFieldDefinition::isHidden () const
+X3DFieldDefinition::isGeospatial () const
 {
-	realize ();
-	return io -> masks & HIDDEN_BIT;
+	if (io)
+		return io -> masks & GEO_BIT;
+	
+	return false;
 }
 
 /// Returns true if is set during parse otherwise false;
@@ -125,8 +164,30 @@ X3DFieldDefinition::isSet (const bool value)
 bool
 X3DFieldDefinition::isSet () const
 {
+	if (io)
+		return io -> masks & IS_SET_BIT;
+	
+	return false;
+}
+
+void
+X3DFieldDefinition::isHidden (const bool value)
+{
 	realize ();
-	return io -> masks & IS_SET_BIT;
+
+	if (value)
+		io -> masks |= HIDDEN_BIT;
+	else
+		io -> masks &= ~HIDDEN_BIT;
+}
+
+bool
+X3DFieldDefinition::isHidden () const
+{
+	if (io)
+		return io -> masks & HIDDEN_BIT;
+	
+	return false;
 }
 
 void

@@ -197,15 +197,6 @@ public:
 	       Error <DISPOSED>) final override
 	{ return getExecutionContext () -> getComponents (); }
 
-	///  @name Unit handling
-
-	virtual
-	const UnitArray &
-	getUnits () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ return getExecutionContext () -> getUnits (); }
-
 	///  @name Member access
 
 	virtual

@@ -53,6 +53,7 @@
 
 #include "../Execution/ExportedNodeIndex.h"
 #include "../Execution/X3DExecutionContext.h"
+#include "../Configuration/X3DUnitContext.h"
 
 #include <map>
 
@@ -62,13 +63,11 @@ namespace X3D {
 using MetaDataIndex = std::multimap <std::string, std::string>;
 
 class X3DScene :
-	virtual public X3DBaseNode, public X3DExecutionContext
+	virtual public X3DBaseNode,
+	public X3DExecutionContext,
+	public X3DUnitContext
 {
 public:
-
-	///  @name Construction
-
-	X3DScene ();
 
 	///  @name Member access
 
@@ -179,21 +178,6 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
 	{ return components; }
-
-	///  @name Unit handling
-
-	void
-	updateUnit (const std::string &, const std::string &, const double)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	virtual
-	const UnitArray &
-	getUnits () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ return units; }
 
 	///  @name MetaData handling
 
@@ -323,6 +307,10 @@ protected:
 
 	///  @name Construction
 
+	X3DScene ();
+
+	///  @name Construction
+
 	virtual
 	void
 	initialize () override;
@@ -353,13 +341,6 @@ private:
 	updateExportedNodes (X3DScene* const) const;
 
 	/***
-	 *  @name Static members
-	 */
-
-	static const UnitIndex unitCategories;
-	static const UnitArray standardUnits;
-
-	/***
 	 *  @name Members
 	 */
 
@@ -370,7 +351,6 @@ private:
 	std::string              comment;
 	ProfileInfoPtr           profile;
 	ComponentInfoArray       components;
-	UnitArray                units;
 	MetaDataIndex            metadatas;
 	ExportedNodeIndex        exportedNodes;
 	SFTime                   exportedNodesOutput;

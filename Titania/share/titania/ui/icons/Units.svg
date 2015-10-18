@@ -13,7 +13,7 @@
    width="96"
    height="96"
    id="svg2408"
-   inkscape:version="0.48.5 r10040"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="Units.svg"
    inkscape:export-filename="/home/holger/Projekte/Titania/Titania/share/titania/ui/icon14x14.png"
    inkscape:export-xdpi="13.125"
@@ -31,13 +31,13 @@
      inkscape:window-height="1056"
      id="namedview3312"
      showgrid="true"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="-78.228241"
-     inkscape:cy="18.202601"
+     inkscape:zoom="4"
+     inkscape:cx="53.234237"
+     inkscape:cy="17.818824"
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer11"
      inkscape:snap-bbox="true"
      inkscape:bbox-paths="true"
      showguides="true"
@@ -129,7 +129,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -154,8 +154,8 @@
      style="display:inline">
     <g
        id="g4487-8"
-       style="fill:#ffffff;fill-opacity:1;display:inline;filter:url(#filter8810)"
-       transform="translate(0,4)">
+       style="display:inline;fill:#ffffff;fill-opacity:1;filter:url(#filter8810)"
+       transform="translate(0,-1)">
       <rect
          y="8"
          x="16"
@@ -190,28 +190,29 @@
          height="16"
          width="16"
          id="rect4431-2-16"
-         style="fill:#ffffff;fill-opacity:1;stroke:none;display:inline" />
+         style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none" />
       <rect
          y="72"
          x="64"
          height="16"
          width="16"
          id="rect4431-2-1-4"
-         style="fill:#ffffff;fill-opacity:1;stroke:none;display:inline" />
+         style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none" />
       <rect
          y="48"
          x="64"
          height="16"
          width="16"
          id="rect4431-2-1-2-5"
-         style="fill:#ffffff;fill-opacity:1;stroke:none;display:inline" />
+         style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none" />
     </g>
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Viewpoint"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <g
        id="g4487"
        style="fill:#2a2a2a;fill-opacity:1;filter:url(#filter4926-8-3)">
@@ -249,21 +250,21 @@
          height="16"
          width="16"
          id="rect4431-2"
-         style="fill:#2a2a2a;fill-opacity:1;stroke:none;display:inline" />
+         style="display:inline;fill:#2a2a2a;fill-opacity:1;stroke:none" />
       <rect
          y="72"
          x="64"
          height="16"
          width="16"
          id="rect4431-2-1"
-         style="fill:#2a2a2a;fill-opacity:1;stroke:none;display:inline" />
+         style="display:inline;fill:#2a2a2a;fill-opacity:1;stroke:none" />
       <rect
          y="48"
          x="64"
          height="16"
          width="16"
          id="rect4431-2-1-2"
-         style="fill:#2a2a2a;fill-opacity:1;stroke:none;display:inline" />
+         style="display:inline;fill:#2a2a2a;fill-opacity:1;stroke:none" />
     </g>
   </g>
 </svg>

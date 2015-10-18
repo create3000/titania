@@ -116,6 +116,15 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	addField (inputOutput,    "height",          height ());
 	addField (initializeOnly, "geoOrigin",       geoOrigin ());
 
+	geoGridOrigin () .setUnit (UnitCategory::LENGTH);
+	yScale ()        .setUnit (UnitCategory::LENGTH);
+	xSpacing ()      .setUnit (UnitCategory::LENGTH);
+	zSpacing ()      .setUnit (UnitCategory::LENGTH);
+	creaseAngle ()   .setUnit (UnitCategory::ANGLE);
+	height ()        .setUnit (UnitCategory::LENGTH);
+
+	geoGridOrigin () .isGeospatial (true);
+
 	addChildren (colorNode,
 	             texCoordNode,
 	             normalNode);

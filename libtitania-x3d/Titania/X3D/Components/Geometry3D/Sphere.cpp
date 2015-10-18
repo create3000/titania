@@ -76,6 +76,8 @@ Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "radius",   radius ());
 	addField (initializeOnly, "solid",    solid ());
+
+	radius () .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

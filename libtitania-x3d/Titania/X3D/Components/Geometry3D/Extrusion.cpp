@@ -98,6 +98,10 @@ Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "orientation",      orientation ());
 	addField (inputOutput,    "scale",            scale ());
 	addField (inputOutput,    "spine",            spine ());
+
+	creaseAngle ()  .setUnit (UnitCategory::ANGLE);
+	crossSection () .setUnit (UnitCategory::LENGTH);
+	spine ()        .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

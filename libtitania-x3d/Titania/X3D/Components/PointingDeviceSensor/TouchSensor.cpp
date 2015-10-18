@@ -85,6 +85,8 @@ TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "isActive",            isActive ());
 	addField (outputOnly,  "touchTime",           touchTime ());
 
+	hitPoint_changed () .setUnit (UnitCategory::LENGTH);
+
 	addChildren (hitTriangle);
 }
 

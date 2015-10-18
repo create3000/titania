@@ -88,6 +88,10 @@ Viewpoint::Viewpoint (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "retainUserOffsets", retainUserOffsets ());
 	addField (outputOnly,  "isBound",           isBound ());
 	addField (outputOnly,  "bindTime",          bindTime ());
+
+	position ()         .setUnit (UnitCategory::LENGTH);
+	centerOfRotation () .setUnit (UnitCategory::LENGTH);
+	fieldOfView ()      .setUnit (UnitCategory::ANGLE);
 }
 
 X3DBaseNode*

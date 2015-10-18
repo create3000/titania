@@ -101,6 +101,9 @@ private:
 	set_buffer ();
 
 	void
+	set_bounds ();
+
+	void
 	connect (const X3D::SFRotation &);
 
 	///  @name Members
@@ -109,10 +112,12 @@ private:
 	Gtk::Widget &                                       widget;
 	X3D::MFNode                                         nodes;
 	const std::string                                   name;
-	X3D::UndoStepPtr                                         undoStep;
+	X3D::UndoStepPtr                                    undoStep;
 	int                                                 input;
 	bool                                                changing;
 	X3D::SFTime                                         buffer;
+	double                                              lower;
+	double                                              upper;
 
 };
 
@@ -133,9 +138,14 @@ SFRotationAdjustment::SFRotationAdjustment (X3DBaseInterface* const editor,
 	         undoStep (),
 	            input (-1),
 	         changing (false),
-	           buffer ()
+	           buffer (),
+	            lower (0),
+	            upper (0)
 {
 	addChildren (buffer);
+
+	setup ();
+
 	buffer .addInterest (this, &SFRotationAdjustment::set_buffer);
 
 	adjustments [0] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &SFRotationAdjustment::on_value_changed), 0));
@@ -143,7 +153,8 @@ SFRotationAdjustment::SFRotationAdjustment (X3DBaseInterface* const editor,
 	adjustments [2] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &SFRotationAdjustment::on_value_changed), 2));
 	adjustments [3] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &SFRotationAdjustment::on_value_changed), 3));
 
-	setup ();
+	lower = adjustments [3] -> get_lower ();
+	upper = adjustments [3] -> get_upper ();
 }
 
 inline
@@ -154,7 +165,8 @@ SFRotationAdjustment::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFRotation> (name) .removeInterest (this, &SFRotationAdjustment::set_field);
+			node -> getRootContext () -> units_changed () .removeInterest (this, &SFRotationAdjustment::set_field);
+			node -> getField <X3D::SFRotation> (name)     .removeInterest (this, &SFRotationAdjustment::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -166,7 +178,8 @@ SFRotationAdjustment::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFRotation> (name) .addInterest (this, &SFRotationAdjustment::set_field);
+			node -> getRootContext () -> units_changed () .addInterest (this, &SFRotationAdjustment::set_field);
+			node -> getField <X3D::SFRotation> (name)     .addInterest (this, &SFRotationAdjustment::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -189,6 +202,8 @@ SFRotationAdjustment::on_value_changed (const int id)
 
 	addUndoFunction <X3D::SFRotation> (nodes, name, undoStep);
 
+	const auto scene = getExecutionContext () -> getRootContext ();
+
 	for (const auto & node : nodes)
 	{
 		try
@@ -201,7 +216,7 @@ SFRotationAdjustment::on_value_changed (const int id)
 			X3D::Rotation4f rotation (adjustments [0] -> get_value (),
 			                          adjustments [1] -> get_value (),
 			                          adjustments [2] -> get_value (),
-			                          adjustments [3] -> get_value ());
+			                          scene -> toUnit (X3D::UnitCategory::ANGLE, adjustments [3] -> get_value ()));
 
 			field = rotation;
 		}
@@ -231,16 +246,20 @@ SFRotationAdjustment::set_buffer ()
 
 	bool hasField = false;
 
+	const auto scene = getExecutionContext () -> getRootContext ();
+
 	for (const auto & node : basic::make_reverse_range (nodes))
 	{
 		try
 		{
 			auto & field = node -> getField <X3D::SFRotation> (name);
 
+			set_bounds ();
+
 			adjustments [0] -> set_value (field .getX ());
 			adjustments [1] -> set_value (field .getY ());
 			adjustments [2] -> set_value (field .getZ ());
-			adjustments [3] -> set_value (field .getAngle ());
+			adjustments [3] -> set_value (scene -> fromUnit (X3D::UnitCategory::ANGLE, field .getAngle ()));
 
 			hasField = true;
 			break;
@@ -251,6 +270,8 @@ SFRotationAdjustment::set_buffer ()
 
 	if (not hasField)
 	{
+		set_bounds ();
+
 		adjustments [0] -> set_value (adjustments [0] -> get_lower () / 2 + adjustments [0] -> get_upper () / 2);
 		adjustments [1] -> set_value (adjustments [1] -> get_lower () / 2 + adjustments [1] -> get_upper () / 2);
 		adjustments [2] -> set_value (adjustments [2] -> get_lower () / 2 + adjustments [2] -> get_upper () / 2);
@@ -260,6 +281,16 @@ SFRotationAdjustment::set_buffer ()
 	widget .set_sensitive (hasField);
 
 	changing = false;
+}
+
+inline
+void
+SFRotationAdjustment::set_bounds ()
+{
+	const auto scene = getExecutionContext () -> getRootContext ();
+
+	adjustments [3] -> set_lower (scene -> fromUnit (X3D::UnitCategory::ANGLE, lower));
+	adjustments [3] -> set_upper (scene -> fromUnit (X3D::UnitCategory::ANGLE, upper));
 }
 
 inline

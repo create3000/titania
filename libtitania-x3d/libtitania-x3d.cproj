@@ -649,7 +649,6 @@
     <None Include="Titania\X3D\Tools\Navigation\ViewpointTool.h" />
     <None Include="share\titania\tools\library\ToolShader.x3dv" />
     <None Include="Titania\X3D\Tools\Navigation\OrthoViewpointTool.h" />
-    <None Include="Titania\X3D\Prototype\X3DPrototype.h" />
     <None Include="Titania\X3D\Tools\Networking\X3DUrlObjectTool.h" />
     <None Include="Titania\X3D\Tools\ParticleSystems\ParticleSystemTool.h" />
     <None Include="Titania\X3D\Tools\CADGeometry\X3DProductStructureChildNodeTool.h" />
@@ -759,6 +758,9 @@
     <None Include="Titania\X3D\Editor\Undo\UndoHistory.h" />
     <None Include="Titania\X3D\Editor\Undo\UndoStep.h" />
     <None Include="Titania\X3D\Editor\X3DEditor.h" />
+    <None Include="Titania\X3D\Configuration\X3DUnitContext.h" />
+    <None Include="Titania\X3D\Prototype\X3DProtoDeclarationNode.h" />
+    <None Include="Titania\X3D\Configuration\UnitCategory.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1269,6 +1271,7 @@
     <Compile Include="Titania\X3D\Editor\Undo\UndoHistory.cpp" />
     <Compile Include="Titania\X3D\Editor\Undo\UndoStep.cpp" />
     <Compile Include="Titania\X3D\Editor\X3DEditor.cpp" />
+    <Compile Include="Titania\X3D\Configuration\X3DUnitContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

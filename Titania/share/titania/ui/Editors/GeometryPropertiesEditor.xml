@@ -283,7 +283,7 @@
                             <property name="can_focus">True</property>
                             <property name="adjustment">Arc2DStartAngleAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">6</property>
+                            <property name="digits">8</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -296,7 +296,7 @@
                             <property name="can_focus">True</property>
                             <property name="adjustment">Arc2DEndAngleAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">6</property>
+                            <property name="digits">8</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -376,7 +376,7 @@
                             <property name="text" translatable="yes">0,000000</property>
                             <property name="adjustment">ArcClose2DEndAngleAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">6</property>
+                            <property name="digits">8</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -390,7 +390,7 @@
                             <property name="text" translatable="yes">0,000000</property>
                             <property name="adjustment">ArcClose2DStartAngleAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">6</property>
+                            <property name="digits">8</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -1312,7 +1312,7 @@
                                     <property name="input_purpose">number</property>
                                     <property name="adjustment">CreaseAngleAdjustment</property>
                                     <property name="climb_rate">0.01</property>
-                                    <property name="digits">6</property>
+                                    <property name="digits">8</property>
                                     <property name="numeric">True</property>
                                   </object>
                                   <packing>

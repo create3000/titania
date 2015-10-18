@@ -96,6 +96,11 @@ CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "rotation_changed",   rotation_changed ());
 	addField (outputOnly,  "isOver",             isOver ());
 	addField (outputOnly,  "isActive",           isActive ());
+
+	diskAngle () .setUnit (UnitCategory::ANGLE);
+	minAngle ()  .setUnit (UnitCategory::ANGLE);
+	maxAngle ()  .setUnit (UnitCategory::ANGLE);
+	offset ()    .setUnit (UnitCategory::ANGLE);
 }
 
 X3DBaseNode*

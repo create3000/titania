@@ -99,6 +99,9 @@ private:
 	set_buffer ();
 
 	void
+	set_bounds ();
+
+	void
 	connect (const Type &);
 
 	///  @name Members
@@ -107,9 +110,12 @@ private:
 	Gtk::Widget &                        widget;
 	X3D::MFNode                          nodes;
 	const std::string                    name;
-	X3D::UndoStepPtr                          undoStep;
+	X3D::UndoStepPtr                     undoStep;
 	bool                                 changing;
 	X3D::SFTime                          buffer;
+	X3D::UnitCategory                    unit;
+	double                               lower;
+	double                               upper;
 
 };
 
@@ -126,24 +132,37 @@ X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBaseInterface* const editor,
 	             name (name),
 	         undoStep (),
 	         changing (false),
-	           buffer ()
+	           buffer (),
+	             unit (X3D::UnitCategory::NONE),
+	            lower (0),
+	            upper (0)
 {
 	addChildren (buffer);
-	buffer .addInterest (this, &X3DFieldAdjustment::set_buffer);
 
-	adjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment::on_value_changed));
 	setup ();
+
+	buffer                 .addInterest (this, &X3DFieldAdjustment::set_buffer);
+	getExecutionContext () .addInterest (this, &X3DFieldAdjustment::set_field);
+	   
+	adjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment::on_value_changed));
 }
 
 template <class Type>
 void
 X3DFieldAdjustment <Type>::setNodes (const X3D::MFNode & value)
 {
+	if (lower == upper)
+	{
+		lower = adjustment -> get_lower ();
+		upper = adjustment -> get_upper ();
+	}
+
 	for (const auto & node : nodes)
 	{
 		try
 		{
-			node -> getField <Type> (name) .removeInterest (this, &X3DFieldAdjustment::set_field);
+			node -> getRootContext () -> units_changed () .removeInterest (this, &X3DFieldAdjustment::set_field);
+			node -> getField <Type> (name)                .removeInterest (this, &X3DFieldAdjustment::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -155,7 +174,8 @@ X3DFieldAdjustment <Type>::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <Type> (name) .addInterest (this, &X3DFieldAdjustment::set_field);
+			node -> getRootContext () -> units_changed () .addInterest (this, &X3DFieldAdjustment::set_field);
+			node -> getField <Type> (name)                .addInterest (this, &X3DFieldAdjustment::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -173,6 +193,8 @@ X3DFieldAdjustment <Type>::on_value_changed ()
 
 	addUndoFunction <Type> (nodes, name, undoStep);
 
+	const auto scene = getExecutionContext () -> getRootContext ();
+
 	for (const auto & node : nodes)
 	{
 		try
@@ -182,7 +204,7 @@ X3DFieldAdjustment <Type>::on_value_changed ()
 			field .removeInterest (this, &X3DFieldAdjustment::set_field);
 			field .addInterest (this, &X3DFieldAdjustment::connect);
 
-			field = adjustment -> get_value ();
+			field = scene -> toUnit (unit, adjustment -> get_value ());
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -210,11 +232,20 @@ X3DFieldAdjustment <Type>::set_buffer ()
 
 	bool hasField = false;
 
+	const auto scene = getExecutionContext () -> getRootContext ();
+
 	for (const auto & node : basic::make_reverse_range (nodes))
 	{
 		try
 		{
-			adjustment -> set_value (node -> getField <Type> (name));
+		   const auto & field = node -> getField <Type> (name);
+
+			unit = field .getUnit ();
+
+			set_bounds ();
+
+			adjustment -> set_value (scene -> fromUnit (unit, field));
+
 			hasField = true;
 			break;
 		}
@@ -223,11 +254,27 @@ X3DFieldAdjustment <Type>::set_buffer ()
 	}
 
 	if (not hasField)
+	{
+		unit = X3D::UnitCategory::NONE;
+
+		set_bounds ();
+
 		adjustment -> set_value (adjustment -> get_lower () / 2 + adjustment -> get_upper () / 2);
+	}
 
 	widget .set_sensitive (hasField);
 
 	changing = false;
+}
+
+template <class Type>
+void
+X3DFieldAdjustment <Type>::set_bounds ()
+{
+	const auto scene = getExecutionContext () -> getRootContext ();
+
+	adjustment -> set_lower (scene -> fromUnit (unit, lower));
+	adjustment -> set_upper (scene -> fromUnit (unit, upper));
 }
 
 template <class Type>

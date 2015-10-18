@@ -169,15 +169,6 @@ public:
 	       Error <DISPOSED>) final override
 	{ return protoNode -> getProtoDeclaration () -> getComponents (); }
 
-	///  @name Unit handling
-
-	virtual
-	const UnitArray &
-	getUnits () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ return protoNode -> getProtoDeclaration () -> getUnits (); }
-
 	///  @name Member access
 
 	virtual

@@ -59,4 +59,4 @@ namespace X3D {
 } // titania
 
 template class std::map <std::string, titania::X3D::UnitCategory>;
-template class std::array <titania::X3D::Unit, 4>;
+template class std::array <titania::X3D::Unit, 5>;

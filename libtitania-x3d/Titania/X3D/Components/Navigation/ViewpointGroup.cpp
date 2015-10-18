@@ -85,6 +85,9 @@ ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "center",            center ());
 	addField (inputOutput, "children",          children ());
 
+	size ()   .setUnit (UnitCategory::LENGTH);
+	center () .setUnit (UnitCategory::LENGTH);
+
 	addChildren (proximitySensor);
 }
 

@@ -205,10 +205,18 @@ OutlineCellRenderer::on_data ()
 		}
 		case OutlineIterType::X3DFieldValue:
 		{
+			Gtk::TreePath parentPath (property_data () .get_value () -> get_path ());
+			parentPath .up ();
+			parentPath .up ();
+
+			const auto   parent = treeView -> get_model () -> get_iter (parentPath);
+			const auto & node   = *static_cast <X3D::SFNode*> (treeView -> get_object (parent));
+			const auto   scene  = node -> getRootContext ();
+
 			property_editable () = true;
 			set_alignment (0, 0);
 
-			property_text () = get_field_value (static_cast <X3D::X3DFieldDefinition*> (get_object ()), true, treeView -> get_use_locale ());
+			property_text () = get_field_value (scene, static_cast <X3D::X3DFieldDefinition*> (get_object ()), true, treeView -> get_use_locale ());
 			break;
 		}
 		case OutlineIterType::X3DField:
@@ -738,14 +746,15 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 			parentPath .up ();
 			parentPath .up ();
 
-			const auto parent = treeView -> get_model () -> get_iter (parentPath);
-			const auto node   = static_cast <X3D::SFNode*> (treeView -> get_object (parent));
-			const auto field  = static_cast <X3D::X3DFieldDefinition*> (get_object ());
-			const int  margin = ICON_X_PAD + icon_width + NAME_X_PAD;
+			const auto   parent = treeView -> get_model () -> get_iter (parentPath);
+			const auto & node   = *static_cast <X3D::SFNode*> (treeView -> get_object (parent));
+			const auto   scene  = node -> getRootContext ();
+			const auto   field  = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+			const int    margin = ICON_X_PAD + icon_width + NAME_X_PAD;
 
-			textview .reset (new TextViewEditable (*node, field, path, field -> isArray () or dynamic_cast <X3D::SFString*> (field), treeView -> get_use_locale ()));
+			textview .reset (new TextViewEditable (node, field, path, field -> isArray () or dynamic_cast <X3D::SFString*> (field), treeView -> get_use_locale ()));
 
-			textview -> set_text (get_field_value (field, false, treeView -> get_use_locale ()));
+			textview -> set_text (get_field_value (scene, field, false, treeView -> get_use_locale ()));
 			textview -> set_margin_left (margin);
 			textview -> set_padding (property_ypad (), property_xpad (), property_ypad (), property_xpad ());
 			textview -> set_size_request (cell_area .get_width () - margin, cell_area .get_height ());
@@ -819,10 +828,13 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 		return true;
 	}
 
-	const auto value  = field -> create ();
-	const auto locale = treeView -> get_use_locale () ? std::locale () : std::locale::classic ();
+	const auto scene = node -> getRootContext ();
+	const auto value = field -> create ();
 
-	if (value -> fromLocaleString (string, locale))
+	value -> setUnit (field -> getUnit ());
+	value -> isGeospatial (field -> isGeospatial ());
+
+	if (puck::set_field_value_from_string (scene, value, string, treeView -> get_use_locale ()))
 	{
 		if (*value not_eq *field)
 		{
@@ -831,8 +843,8 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 			const X3D::X3DPtr <X3D::Inline> inlineNode (node);
 
 			if (inlineNode and (
-			    (field -> getName () == "load" and value -> toString () == "FALSE") or 
-			     field -> getName () == "url"))
+				(field -> getName () == "load" and value -> toString () == "FALSE") or 
+				 field -> getName () == "url"))
 			{
 				treeView -> getBrowserWindow () -> removeImportedNodes (treeView -> get_model () -> get_execution_context (),
 				                                                        { inlineNode },
@@ -843,7 +855,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 
 			undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::fromString, field, field -> toString ());
 			undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::fromString, field, value -> toString ());
-			*field = *value;
+			*field = std::move (*value);
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 			delete value;

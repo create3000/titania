@@ -89,6 +89,11 @@ SpotLight::SpotLight (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "radius",           radius ());
 	addField (inputOutput, "beamWidth",        beamWidth ());
 	addField (inputOutput, "cutOffAngle",      cutOffAngle ());
+
+	location ()    .setUnit (UnitCategory::LENGTH);
+	radius ()      .setUnit (UnitCategory::LENGTH);
+	beamWidth ()   .setUnit (UnitCategory::ANGLE);
+	cutOffAngle () .setUnit (UnitCategory::ANGLE);
 }
 
 X3DBaseNode*

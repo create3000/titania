@@ -86,6 +86,11 @@ GeoTouchSensor::GeoTouchSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "isActive",            isActive ());
 	addField (outputOnly,     "touchTime",           touchTime ());
 	addField (initializeOnly, "geoOrigin",           geoOrigin ());
+
+	hitPoint_changed ()    .setUnit (UnitCategory::LENGTH);
+	hitGeoCoord_changed () .setUnit (UnitCategory::LENGTH);
+
+	hitGeoCoord_changed () .isGeospatial (true);
 }
 
 X3DBaseNode*

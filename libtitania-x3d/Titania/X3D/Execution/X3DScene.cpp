@@ -68,28 +68,13 @@
 namespace titania {
 namespace X3D {
 
-const UnitIndex X3DScene::unitCategories = {
-	std::make_pair ("angle",  UnitCategory::ANGLE),
-	std::make_pair ("force",  UnitCategory::FORCE),
-	std::make_pair ("length", UnitCategory::LENGTH),
-	std::make_pair ("mass",   UnitCategory::MASS)
-
-};
-
-const UnitArray X3DScene::standardUnits = {
-	Unit ("angle",  "radian",   1),
-	Unit ("force",  "newton",   1),
-	Unit ("length", "metre",    1),
-	Unit ("mass",   "kilogram", 1)
-
-};
-
 static std::default_random_engine
 random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
 X3DScene::X3DScene () :
 	         X3DBaseNode (),
 	 X3DExecutionContext (),
+	      X3DUnitContext (),
 	            worldURL (),
 	            encoding ("X3D"),
 	specificationVersion (LATEST_VERSION),
@@ -97,7 +82,6 @@ X3DScene::X3DScene () :
 	             comment ("Titania"),
 	             profile (),
 	          components (),
-	               units (standardUnits),
 	           metadatas (),
 	       exportedNodes (),
 	 exportedNodesOutput (),
@@ -113,6 +97,7 @@ X3DScene::initialize ()
 {
 	X3DBaseNode::initialize ();
 	X3DExecutionContext::initialize ();
+	X3DUnitContext::initialize ();
 }
 
 std::string
@@ -179,26 +164,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	catch (const std::out_of_range &)
 	{
 		components .push_back (component -> getType (), component);
-	}
-}
-
-// Unit handling
-
-void
-X3DScene::updateUnit (const std::string & category, const std::string & name, const double conversion)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	try
-	{
-		const auto & unitCategory = unitCategories .at (category);
-
-		units [size_t (unitCategory)] = Unit (category, name, conversion);
-	}
-	catch (const std::out_of_range &)
-	{
-		throw Error <INVALID_NAME> ("Unkown base unit category '" + category + "'.");
 	}
 }
 
@@ -555,7 +520,7 @@ X3DScene::toStream (std::ostream & ostream) const
 
 		for (const auto & unit : getUnits ())
 		{
-			if (unit .getConversion () not_eq 1)
+			if (unit .getConversionFactor () not_eq 1)
 			{
 				empty = false;
 
@@ -720,7 +685,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 
 	for (const auto & unit : getUnits ())
 	{
-		if (unit .getConversion () not_eq 1)
+		if (unit .getConversionFactor () not_eq 1)
 		{
 			ostream
 				<< XMLEncode (unit)
@@ -800,6 +765,7 @@ X3DScene::dispose ()
 	exportedNodes .clear ();
 
 	removeChildren (getRootNodes ());
+	X3DUnitContext::dispose ();
 	X3DExecutionContext::dispose ();
 	X3DBaseNode::dispose ();
 }

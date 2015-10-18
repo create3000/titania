@@ -63,6 +63,8 @@ X3DDragSensorNode::X3DDragSensorNode () :
 	                     fields ()
 {
 	addType (X3DConstants::X3DDragSensorNode);
+
+	trackPoint_changed () .setUnit (UnitCategory::LENGTH);
 }
 
 } // X3D

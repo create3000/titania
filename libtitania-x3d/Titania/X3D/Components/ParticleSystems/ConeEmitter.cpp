@@ -81,6 +81,9 @@ ConeEmitter::ConeEmitter (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "variation",   variation ());
 	addField (initializeOnly, "mass",        mass ());
 	addField (initializeOnly, "surfaceArea", surfaceArea ());
+
+	position () .setUnit (UnitCategory::LENGTH);
+	angle ()    .setUnit (UnitCategory::ANGLE);
 }
 
 X3DBaseNode*

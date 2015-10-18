@@ -798,6 +798,10 @@ public:
 	{ return *m_RemoveUnusedPrototypesMenuItem; }
 
 	Gtk::ImageMenuItem &
+	getScenePropertiesMenuItem () const
+	{ return *m_ScenePropertiesMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getCloseMenuItem () const
 	{ return *m_CloseMenuItem; }
 
@@ -1879,6 +1883,10 @@ public:
 
 	virtual
 	void
+	on_scene_properties_activated () = 0;
+
+	virtual
+	void
 	on_scenes_activated () = 0;
 
 	virtual
@@ -2219,6 +2227,7 @@ private:
 	Gtk::ImageMenuItem*              m_ExportMenuItem;
 	Gtk::ImageMenuItem*              m_RevertMenuItem;
 	Gtk::ImageMenuItem*              m_RemoveUnusedPrototypesMenuItem;
+	Gtk::ImageMenuItem*              m_ScenePropertiesMenuItem;
 	Gtk::ImageMenuItem*              m_CloseMenuItem;
 	Gtk::ImageMenuItem*              m_QuitMenuItem;
 	Gtk::MenuItem*                   m_EditMenuItem;

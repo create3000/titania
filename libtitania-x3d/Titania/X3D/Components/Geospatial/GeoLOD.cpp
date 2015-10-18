@@ -106,6 +106,11 @@ GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxCenter",    bboxCenter ());
 	addField (outputOnly,     "children",      children ());
 
+	center () .setUnit (UnitCategory::LENGTH);
+	range ()  .setUnit (UnitCategory::LENGTH);
+		
+	center () .isGeospatial (true);
+
 	addChildren (rootGroup, rootInline, child1Inline, child2Inline, child3Inline, child4Inline);
 }
 

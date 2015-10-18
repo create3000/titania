@@ -67,10 +67,10 @@ const std::string   Cone::typeName       = "Cone";
 const std::string   Cone::containerField = "geometry";
 
 Cone::Fields::Fields () :
-	      bottom (new SFBool (true)),
-	bottomRadius (new SFFloat (1)),
-	      height (new SFFloat (2)),
 	        side (new SFBool (true)),
+	      bottom (new SFBool (true)),
+	      height (new SFFloat (2)),
+	bottomRadius (new SFFloat (1)),
 	       solid (new SFBool (true))
 { }
 
@@ -87,6 +87,9 @@ Cone::Cone (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "height",       height ());
 	addField (initializeOnly, "bottomRadius", bottomRadius ());
 	addField (initializeOnly, "solid",        solid ());
+
+	height ()       .setUnit (UnitCategory::LENGTH);
+	bottomRadius () .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

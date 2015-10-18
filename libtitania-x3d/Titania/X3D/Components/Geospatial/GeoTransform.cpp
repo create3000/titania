@@ -89,6 +89,11 @@ GeoTransform::GeoTransform (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "addChildren",      addChildren ());
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
+
+	translation () .setUnit (UnitCategory::LENGTH);
+	geoCenter ()   .setUnit (UnitCategory::LENGTH);
+
+	geoCenter () .isGeospatial (true);
 }
 
 X3DBaseNode*

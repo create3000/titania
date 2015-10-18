@@ -81,8 +81,8 @@ public:
 	{ return name; }
 
 	double
-	getConversion () const
-	{ return conversion; }
+	getConversionFactor () const
+	{ return conversionFactor; }
 
 	///  @name Input/Output
 
@@ -99,7 +99,7 @@ private:
 
 	std::string category;
 	std::string name;
-	double      conversion;
+	double      conversionFactor;
 
 };
 

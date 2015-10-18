@@ -81,6 +81,12 @@ GeoPositionInterpolator::GeoPositionInterpolator (X3DExecutionContext* const exe
 	addField (outputOnly,     "value_changed",    value_changed ());
 	addField (outputOnly,     "geovalue_changed", geovalue_changed ());
 	addField (initializeOnly, "geoOrigin",        geoOrigin ());
+
+	keyValue ()         .setUnit (UnitCategory::LENGTH);
+	value_changed ()    .setUnit (UnitCategory::LENGTH);
+	geovalue_changed () .setUnit (UnitCategory::LENGTH);
+
+	geovalue_changed () .isGeospatial (true);
 }
 
 X3DBaseNode*

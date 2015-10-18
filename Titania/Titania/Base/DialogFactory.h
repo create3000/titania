@@ -76,6 +76,7 @@
 #include "../Editors/ColorPerVertexEditor/ColorPerVertexEditor.h"
 #include "../Editors/TextureCoordinateEditor/TextureCoordinateEditor.h"
 #include "../Editors/LayerEditor/LayerEditor.h"
+#include "../Editors/ScenePropertiesEditor/ScenePropertiesEditor.h"
 
 namespace titania {
 namespace puck {
@@ -93,15 +94,14 @@ public:
 		         std::make_pair ("FileImportDialog",         constructDialog <FileImportDialog>),
 		         std::make_pair ("FileSaveDialog",           constructDialog <FileSaveDialog>),
 		         std::make_pair ("FileSaveWarningDialog",    constructDialog <FileSaveWarningDialog>),
-		         std::make_pair ("TextureCoordinateEditor",  constructDialog <TextureCoordinateEditor>),
-		         std::make_pair ("ColorPerVertexEditor",     constructDialog <ColorPerVertexEditor>),
-		         std::make_pair ("GridEditor",               constructDialog <GridEditor>),
-		         std::make_pair ("NodeIndex",                constructDialog <NodeIndex>),
+		         std::make_pair ("ScenePropertiesEditor",    constructDialog <ScenePropertiesEditor>),
 		         std::make_pair ("NodePropertiesEditor",     constructDialog <NodePropertiesEditor>),
 		         std::make_pair ("AppearanceEditor",         constructDialog <AppearanceEditor>),
 		         std::make_pair ("TextureEditor",            constructDialog <TextureEditor>),
 		         std::make_pair ("TextEditor",               constructDialog <TextEditor>),
 		         std::make_pair ("GeometryPropertiesEditor", constructDialog <GeometryPropertiesEditor>),
+		         std::make_pair ("ColorPerVertexEditor",     constructDialog <ColorPerVertexEditor>),
+		         std::make_pair ("TextureCoordinateEditor",  constructDialog <TextureCoordinateEditor>),
 		         std::make_pair ("NavigationInfoEditor",     constructDialog <NavigationInfoEditor>),
 		         std::make_pair ("ViewpointEditor",          constructDialog <ViewpointEditor>),
 		         std::make_pair ("LODEditor",                constructDialog <LODEditor>),
@@ -110,7 +110,9 @@ public:
 		         std::make_pair ("LayerEditor",              constructDialog <LayerEditor>),
 		         std::make_pair ("PrecisionPlacementPanel",  constructDialog <PrecisionPlacementPanel>),
 		         std::make_pair ("PrototypeInstanceDialog",  constructDialog <PrototypeInstanceDialog>),
-		         std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>)
+		         std::make_pair ("NodeIndex",                constructDialog <NodeIndex>),
+		         std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>),
+		         std::make_pair ("GridEditor",               constructDialog <GridEditor>)
 				         })
 	{ }
 

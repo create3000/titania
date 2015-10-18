@@ -65,16 +65,6 @@ public:
 
 	virtual
 	SFVec3f &
-	center ()
-	{ return *fields .center; }
-
-	virtual
-	const SFVec3f &
-	center () const
-	{ return *fields .center; }
-
-	virtual
-	SFVec3f &
 	size ()
 	{ return *fields .size; }
 
@@ -82,6 +72,16 @@ public:
 	const SFVec3f &
 	size () const
 	{ return *fields .size; }
+
+	virtual
+	SFVec3f &
+	center ()
+	{ return *fields .center; }
+
+	virtual
+	const SFVec3f &
+	center () const
+	{ return *fields .center; }
 
 	virtual
 	SFTime &
@@ -119,8 +119,8 @@ private:
 	{
 		Fields ();
 
-		SFVec3f* const center;
 		SFVec3f* const size;
+		SFVec3f* const center;
 		SFTime* const enterTime;
 		SFTime* const exitTime;
 	};

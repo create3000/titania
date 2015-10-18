@@ -98,20 +98,20 @@ public:
 	///  @name Fields
 
 	SFBool &
+	side ()
+	{ return *fields .side; }
+
+	const SFBool &
+	side () const
+	{ return *fields .side; }
+
+	SFBool &
 	bottom ()
 	{ return *fields .bottom; }
 
 	const SFBool &
 	bottom () const
 	{ return *fields .bottom; }
-
-	SFFloat &
-	bottomRadius ()
-	{ return *fields .bottomRadius; }
-
-	const SFFloat &
-	bottomRadius () const
-	{ return *fields .bottomRadius; }
 
 	SFFloat &
 	height ()
@@ -121,13 +121,13 @@ public:
 	height () const
 	{ return *fields .height; }
 
-	SFBool &
-	side ()
-	{ return *fields .side; }
+	SFFloat &
+	bottomRadius ()
+	{ return *fields .bottomRadius; }
 
-	const SFBool &
-	side () const
-	{ return *fields .side; }
+	const SFFloat &
+	bottomRadius () const
+	{ return *fields .bottomRadius; }
 
 	SFBool &
 	solid ()
@@ -184,10 +184,10 @@ private:
 	{
 		Fields ();
 
-		SFBool* const bottom;
-		SFFloat* const bottomRadius;
-		SFFloat* const height;
 		SFBool* const side;
+		SFBool* const bottom;
+		SFFloat* const height;
+		SFFloat* const bottomRadius;
 		SFBool* const solid;
 	};
 

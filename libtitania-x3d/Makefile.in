@@ -499,6 +499,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Configuration/SupporteFieldArray.lo \
 	Titania/X3D/Configuration/Unit.lo \
 	Titania/X3D/Configuration/UnitArray.lo \
+	Titania/X3D/Configuration/X3DUnitContext.lo \
 	Titania/X3D/Editor/Undo/UndoGroup.lo \
 	Titania/X3D/Editor/Undo/UndoHistory.lo \
 	Titania/X3D/Editor/Undo/UndoStep.lo \
@@ -1236,6 +1237,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Configuration/SupporteFieldArray.cpp \
 	Titania/X3D/Configuration/Unit.cpp \
 	Titania/X3D/Configuration/UnitArray.cpp \
+	Titania/X3D/Configuration/X3DUnitContext.cpp \
 	Titania/X3D/Editor/Undo/UndoGroup.cpp \
 	Titania/X3D/Editor/Undo/UndoHistory.cpp \
 	Titania/X3D/Editor/Undo/UndoStep.cpp \
@@ -2908,6 +2910,9 @@ Titania/X3D/Configuration/Unit.lo:  \
 Titania/X3D/Configuration/UnitArray.lo:  \
 	Titania/X3D/Configuration/$(am__dirstamp) \
 	Titania/X3D/Configuration/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Configuration/X3DUnitContext.lo:  \
+	Titania/X3D/Configuration/$(am__dirstamp) \
+	Titania/X3D/Configuration/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Editor/Undo/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Editor/Undo
 	@: > Titania/X3D/Editor/Undo/$(am__dirstamp)
@@ -3968,6 +3973,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/SupportedProfiles.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/Unit.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/UnitArray.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/X3DUnitContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editor/$(DEPDIR)/X3DEditor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editor/Undo/$(DEPDIR)/UndoGroup.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editor/Undo/$(DEPDIR)/UndoHistory.Plo@am__quote@

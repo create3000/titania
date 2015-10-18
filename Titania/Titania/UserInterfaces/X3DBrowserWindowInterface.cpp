@@ -240,6 +240,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ExportMenuItem", m_ExportMenuItem);
 	m_builder -> get_widget ("RevertMenuItem", m_RevertMenuItem);
 	m_builder -> get_widget ("RemoveUnusedPrototypesMenuItem", m_RemoveUnusedPrototypesMenuItem);
+	m_builder -> get_widget ("ScenePropertiesMenuItem", m_ScenePropertiesMenuItem);
 	m_builder -> get_widget ("CloseMenuItem", m_CloseMenuItem);
 	m_builder -> get_widget ("QuitMenuItem", m_QuitMenuItem);
 	m_builder -> get_widget ("EditMenuItem", m_EditMenuItem);
@@ -565,6 +566,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_ExportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_export_activated));
 	m_RevertMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved_activated));
 	m_RemoveUnusedPrototypesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_remove_unused_prototypes_activated));
+	m_ScenePropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_scene_properties_activated));
 	m_CloseMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_close_activated));
 	m_QuitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_quit_activated));
 	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo_activated));

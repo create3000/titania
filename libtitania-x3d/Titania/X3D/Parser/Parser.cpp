@@ -499,8 +499,15 @@ Parser::unitStatement ()
 
 				if (unitConversionFactor (_unitConversionFactor))
 				{
-					scene -> updateUnit (_categoryNameId, _unitNameId, _unitConversionFactor);
-					return true;
+				   try
+				   {
+						scene -> updateUnit (_categoryNameId, _unitNameId, _unitConversionFactor);
+						return true;
+					}
+					catch (const X3DError & error)
+					{
+					   getBrowser () -> println (error .what ());
+					}
 				}
 
 				throw Error <INVALID_X3D> ("Expected unit conversion factor.");

@@ -94,6 +94,12 @@ Sound::Sound (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "priority",   priority ());
 	addField (inputOutput,    "source",     source ());
 
+	location () .setUnit (UnitCategory::LENGTH);
+	minBack ()  .setUnit (UnitCategory::LENGTH);
+	minFront () .setUnit (UnitCategory::LENGTH);
+	maxBack ()  .setUnit (UnitCategory::LENGTH);
+	maxFront () .setUnit (UnitCategory::LENGTH);
+
 	addChildren (sourceNode);
 }
 

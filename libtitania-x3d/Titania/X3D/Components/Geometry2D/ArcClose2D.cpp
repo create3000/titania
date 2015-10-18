@@ -87,6 +87,10 @@ ArcClose2D::ArcClose2D (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "endAngle",    endAngle ());
 	addField (initializeOnly, "radius",      radius ());
 	addField (initializeOnly, "solid",       solid ());
+
+	startAngle () .setUnit (UnitCategory::ANGLE);
+	endAngle ()   .setUnit (UnitCategory::ANGLE);
+	radius ()     .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

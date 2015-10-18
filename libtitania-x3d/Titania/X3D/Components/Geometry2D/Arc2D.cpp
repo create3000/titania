@@ -80,6 +80,10 @@ Arc2D::Arc2D (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "startAngle", startAngle ());
 	addField (inputOutput,    "endAngle",   endAngle ());
 	addField (initializeOnly, "radius",     radius ());
+
+	startAngle () .setUnit (UnitCategory::ANGLE);
+	endAngle ()   .setUnit (UnitCategory::ANGLE);
+	radius ()     .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

@@ -72,6 +72,8 @@ FogCoordinate::FogCoordinate (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "depth",    depth ());
+
+	depth () .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

@@ -68,6 +68,9 @@ X3DTransformNode::X3DTransformNode () :
 	                  fields ()
 {
 	addType (X3DConstants::X3DTransformNode);
+
+	translation () .setUnit (UnitCategory::LENGTH);
+	center ()      .setUnit (UnitCategory::LENGTH);
 }
 
 void

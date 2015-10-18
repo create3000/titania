@@ -91,6 +91,12 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "lineBounds", lineBounds ());
 	addField (inputOutput,    "fontStyle",  fontStyle ());
 
+	length ()     .setUnit (UnitCategory::LENGTH);
+	maxExtent ()  .setUnit (UnitCategory::LENGTH);
+	origin ()     .setUnit (UnitCategory::LENGTH);
+	textBounds () .setUnit (UnitCategory::LENGTH);
+	lineBounds () .setUnit (UnitCategory::LENGTH);
+
 	addChildren (fontStyleNode);
 }
 

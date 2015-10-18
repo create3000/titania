@@ -129,6 +129,9 @@ private:
 	set_buffer ();
 
 	void
+	set_bounds ();
+
+	void
 	connect (const Type &);
 
 	///  @name Members
@@ -138,12 +141,15 @@ private:
 	X3D::MFNode                                         nodes;
 	const std::string                                   name;
 	int                                                 index;
-	X3D::UndoStepPtr                                         undoStep;
+	X3D::UndoStepPtr                                    undoStep;
 	int                                                 input;
 	bool                                                changing;
 	X3D::SFTime                                         buffer;
 	bool                                                normalize;
 	bool                                                uniform;
+	X3D::UnitCategory                                   unit;
+	std::vector <double>                                lower;
+	std::vector <double>                                upper;
 
 };
 
@@ -167,27 +173,43 @@ X3DFieldAdjustment4 <Type>::X3DFieldAdjustment4 (X3DBaseInterface* const editor,
 	         changing (false),
 	           buffer (),
 	        normalize (false),
-	          uniform (false)
+	          uniform (false),
+	             unit (X3D::UnitCategory::NONE),
+	            lower (),
+	            upper ()
 {
 	addChildren (buffer);
-	buffer .addInterest (this, &X3DFieldAdjustment4::set_buffer);
+
+	setup ();
+
+	buffer                 .addInterest (this, &X3DFieldAdjustment4::set_buffer);
+	getExecutionContext () .addInterest (this, &X3DFieldAdjustment4::set_field);
 
 	adjustments [0] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed), 0));
 	adjustments [1] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed), 1));
 	adjustments [2] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed), 2));
 	adjustments [3] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed), 3));
-	setup ();
 }
 
 template <class Type>
 void
 X3DFieldAdjustment4 <Type>::setNodes (const X3D::MFNode & value)
 {
+	if (lower .empty ())
+	{
+		for (const auto adjustment : adjustments)
+		{
+			lower .emplace_back (adjustment -> get_lower ());
+			upper .emplace_back (adjustment -> get_upper ());
+		}
+	}
+	
 	for (const auto & node : nodes)
 	{
 		try
 		{
-			node -> getField <Type> (name) .removeInterest (this, &X3DFieldAdjustment4::set_field);
+			node -> getRootContext () -> units_changed () .removeInterest (this, &X3DFieldAdjustment4::set_field);
+			node -> getField <Type> (name)                .removeInterest (this, &X3DFieldAdjustment4::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -199,7 +221,8 @@ X3DFieldAdjustment4 <Type>::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <Type> (name) .addInterest (this, &X3DFieldAdjustment4::set_field);
+			node -> getRootContext () -> units_changed () .addInterest (this, &X3DFieldAdjustment4::set_field);
+			node -> getField <Type> (name)                .addInterest (this, &X3DFieldAdjustment4::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -222,6 +245,8 @@ X3DFieldAdjustment4 <Type>::on_value_changed (const int id)
 
 	addUndoFunction <Type> (nodes, name, undoStep);
 
+	const auto scene = getExecutionContext () -> getRootContext ();
+
 	for (const auto & node : nodes)
 	{
 		try
@@ -231,10 +256,10 @@ X3DFieldAdjustment4 <Type>::on_value_changed (const int id)
 			field .removeInterest (this, &X3DFieldAdjustment4::set_field);
 			field .addInterest (this, &X3DFieldAdjustment4::connect);
 
-			X3D::Vector4d vector (adjustments [0] -> get_value (),
-			                      adjustments [1] -> get_value (),
-			                      adjustments [2] -> get_value (),
-			                      adjustments [3] -> get_value ());
+			X3D::Vector4d vector (scene -> toUnit (unit, adjustments [0] -> get_value ()),
+			                      scene -> toUnit (unit, adjustments [1] -> get_value ()),
+			                      scene -> toUnit (unit, adjustments [2] -> get_value ()),
+			                      scene -> toUnit (unit, adjustments [3] -> get_value ()));
 
 			if (normalize)
 				vector .normalize ();
@@ -261,9 +286,9 @@ X3DFieldAdjustment4 <Type>::on_value_changed (const int id)
 					vector [index3] = vector [id];
 				}
 
-				adjustments [index1] -> set_value (vector [index1]);
-				adjustments [index2] -> set_value (vector [index2]);
-				adjustments [index3] -> set_value (vector [index3]);
+				adjustments [index1] -> set_value (scene -> fromUnit (unit, vector [index1]));
+				adjustments [index2] -> set_value (scene -> fromUnit (unit, vector [index2]));
+				adjustments [index3] -> set_value (scene -> fromUnit (unit, vector [index3]));
 
 				changing = false;
 			}
@@ -297,6 +322,8 @@ X3DFieldAdjustment4 <Type>::set_buffer ()
 
 	// Find last »creaseAngle« field.
 
+	const auto scene = getExecutionContext () -> getRootContext ();
+
 	bool hasField = false;
 
 	if (index >= 0)
@@ -307,10 +334,14 @@ X3DFieldAdjustment4 <Type>::set_buffer ()
 			{
 				auto & field = node -> getField <Type> (name);
 
-				adjustments [0] -> set_value (field .get1Value (index + 0));
-				adjustments [1] -> set_value (field .get1Value (index + 1));
-				adjustments [2] -> set_value (field .get1Value (index + 2));
-				adjustments [3] -> set_value (field .get1Value (index + 3));
+				unit = field .getUnit ();
+
+				set_bounds ();
+
+				adjustments [0] -> set_value (scene -> fromUnit (unit, field .get1Value (index + 0)));
+				adjustments [1] -> set_value (scene -> fromUnit (unit, field .get1Value (index + 1)));
+				adjustments [2] -> set_value (scene -> fromUnit (unit, field .get1Value (index + 2)));
+				adjustments [3] -> set_value (scene -> fromUnit (unit, field .get1Value (index + 3)));
 
 				hasField = true;
 				break;
@@ -322,6 +353,10 @@ X3DFieldAdjustment4 <Type>::set_buffer ()
 
 	if (not hasField)
 	{
+		unit = X3D::UnitCategory::NONE;
+
+		set_bounds ();
+
 		adjustments [0] -> set_value (adjustments [0] -> get_lower () / 2 + adjustments [0] -> get_upper () / 2);
 		adjustments [1] -> set_value (adjustments [1] -> get_lower () / 2 + adjustments [1] -> get_upper () / 2);
 		adjustments [2] -> set_value (adjustments [2] -> get_lower () / 2 + adjustments [2] -> get_upper () / 2);
@@ -331,6 +366,19 @@ X3DFieldAdjustment4 <Type>::set_buffer ()
 	widget .set_sensitive (hasField);
 
 	changing = false;
+}
+
+template <class Type>
+void
+X3DFieldAdjustment4 <Type>::set_bounds ()
+{
+	const auto scene = getExecutionContext () -> getRootContext ();
+
+	for (size_t i = 0, size = adjustments .size (); i < size; ++ i)
+		adjustments [i] -> set_lower (scene -> fromUnit (unit, lower [i]));
+
+	for (size_t i = 0, size = adjustments .size (); i < size; ++ i)
+		adjustments [i] -> set_upper (scene -> fromUnit (unit, upper [i]));
 }
 
 template <class Type>

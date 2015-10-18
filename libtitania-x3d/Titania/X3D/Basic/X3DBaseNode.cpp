@@ -52,6 +52,7 @@
 
 #include "../Bits/X3DConstants.h"
 #include "../Browser/X3DBrowser.h"
+#include "../Execution/X3DScene.h"
 #include "../Fields/ArrayFields.h"
 #include "../Fields/MFNode.h"
 #include "../Fields/SFNode.h"
@@ -62,8 +63,6 @@
 #include <cassert>
 #include <iomanip>
 #include <iostream>
-
-#include <Titania/Backtrace.h>
 
 namespace titania {
 namespace X3D {
@@ -423,7 +422,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 /***
  *  Returns the master execution context for this node.  This is normaly the initial scene the node belongs to.
  */
-X3DExecutionContext*
+X3DScene*
 X3DBaseNode::getMasterContext () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -433,13 +432,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	while (not executionContext -> isMasterContext ())
 		executionContext = executionContext -> getRootContext ();
 
-	return executionContext;
+	return dynamic_cast <X3DScene*> (executionContext);
 }
 
 /***
  *  Returns the root execution context for this node.  This is normaly the scene the node belongs to.
  */
-X3DExecutionContext*
+X3DScene*
 X3DBaseNode::getRootContext () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -449,7 +448,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	while (not executionContext -> isRootContext ())
 		executionContext = executionContext -> getExecutionContext ();
 
-	return executionContext;
+	return dynamic_cast <X3DScene*> (executionContext);
 }
 
 /***

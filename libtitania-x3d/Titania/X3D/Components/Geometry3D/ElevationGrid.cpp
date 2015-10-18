@@ -114,6 +114,11 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "normal",          normal ());
 	addField (inputOutput,    "height",          height ());
 
+	xSpacing ()    .setUnit (UnitCategory::LENGTH);
+	zSpacing ()    .setUnit (UnitCategory::LENGTH);
+	creaseAngle () .setUnit (UnitCategory::ANGLE);
+	height ()      .setUnit (UnitCategory::LENGTH);
+
 	addChildren (attribNodes,
 	             colorNode,
 	             texCoordNode,

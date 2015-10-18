@@ -407,18 +407,20 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 
 // Style
 
+
 void
 BrowserWindow::on_style_updated ()
 {
 	try
 	{
-//		const auto styleContext = getWidget () .get_style_context ();
-//		const auto fg_selected  = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED);
-//		const auto bg_normal    = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL);
-//		const auto bg_selected  = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED);
-//
-//		std::string string;
-//
+		const auto styleContext = getWidget () .get_style_context ();
+		const auto fg_normal    = styleContext -> get_color (Gtk::STATE_FLAG_NORMAL);
+		const auto fg_selected  = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED);
+		const auto bg_normal    = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL);
+		const auto bg_selected  = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED);
+
+		std::string string;
+
 //		string += "#OutlineTreeViewEditor .titania-textview-editable GtkTextView {";
 //		string += "  background-color: mix (" + bg_selected .to_string () + ", " + bg_normal .to_string () + ", 0.9);";
 //		string += "}";
@@ -427,8 +429,11 @@ BrowserWindow::on_style_updated ()
 //		string += "  color: " + fg_selected .to_string () + ";";
 //		string += "  background-color: " + bg_selected .to_string () + ";";
 //		string += "}";
-//
-//		cssProvider -> load_from_data (string);
+		string += "GtkExpander > GtkLabel {";
+		string += "	border-bottom: 1px solid " + fg_normal .to_string () + ";";
+		string += "}";
+
+		cssProvider -> load_from_data (string);
 	}
 	catch (const Glib::Error & error)
 	{
@@ -711,6 +716,12 @@ BrowserWindow::on_remove_unused_prototypes_activated ()
 	removeUnusedPrototypes (getExecutionContext (), undoStep);
 
 	addUndoStep (undoStep);
+}
+
+void
+BrowserWindow::on_scene_properties_activated ()
+{
+	addDialog ("ScenePropertiesEditor");
 }
 
 void

@@ -76,6 +76,8 @@ Box::Box (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "size",     size ());
 	addField (initializeOnly, "solid",    solid ());
+
+	size () .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

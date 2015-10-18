@@ -55,6 +55,7 @@
 #include "../Base/X3DObject.h"
 #include "../Basic/FieldDefinitionArray.h"
 #include "../Basic/FieldDefinitionSet.h"
+#include "../Configuration/UnitCategory.h"
 #include "../Routing/RouteSet.h"
 
 #include <vector>
@@ -68,9 +69,6 @@ class X3DFieldDefinition :
 	public X3DChildObject
 {
 public:
-
-	static constexpr uint8_t HIDDEN_BIT = 1 << 0;
-	static constexpr uint8_t IS_SET_BIT = 1 << 1;
 
 	using X3DChildObject::addInterest;
 	using X3DChildObject::removeInterest;
@@ -142,12 +140,10 @@ public:
 	getType () const = 0;
 
 	void
-	setAccessType (const AccessType value)
-	{ realize (); io -> accessType = value; }
+	setAccessType (const AccessType);
 
 	AccessType
-	getAccessType () const
-	{ realize (); return io -> accessType; }
+	getAccessType () const;
 
 	bool
 	isInitializable () const
@@ -168,10 +164,16 @@ public:
 	isDefaultValue () const = 0;
 
 	void
-	isHidden (const bool);
+	setUnit (const UnitCategory);
+
+	UnitCategory
+	getUnit () const;
+
+	void
+	isGeospatial (const bool);
 
 	bool
-	isHidden () const;
+	isGeospatial () const;
 
 	/// Returns true if is set during parse otherwise false;
 	void
@@ -179,6 +181,12 @@ public:
 
 	bool
 	isSet () const;
+
+	void
+	isHidden (const bool);
+
+	bool
+	isHidden () const;
 
 	/***
 	 *  @name Reference handling
@@ -305,6 +313,21 @@ private:
 	void
 	removeInputInterest (const X3DFieldDefinition* const) const;
 
+
+	/***
+	 *  @name Static Members
+	 */
+
+	using MaskType = uint16_t;
+
+	static constexpr MaskType ACCESS_TYPE_OFFSET = 0;
+	static constexpr MaskType ACCESS_TYPE_BITS   = 7 << ACCESS_TYPE_OFFSET;
+	static constexpr MaskType UNIT_OFFSET        = 3;
+	static constexpr MaskType UNIT_BITS          = 15 << UNIT_OFFSET;
+	static constexpr MaskType IS_SET_BIT         = 1 << 7;
+	static constexpr MaskType HIDDEN_BIT         = 1 << 8;
+	static constexpr MaskType GEO_BIT            = 1 << 9;
+
 	/***
 	 *  @name Members
 	 */
@@ -312,17 +335,15 @@ private:
 	struct IO
 	{
 		IO () :
-			accessType (initializeOnly),
-			     masks (0)
+			masks (initializeOnly)
 		{ }
 
-		AccessType                           accessType;
 		FieldDefinitionSet                   references;
 		RouteSet                             inputRoutes;
 		RouteSet                             outputRoutes;
 		std::set <const X3DFieldDefinition*> inputInterests;
 		std::set <X3DFieldDefinition*>       outputInterests;
-		uint8_t                              masks;
+		MaskType                             masks;
 	};
 
 	mutable std::unique_ptr <IO> io;

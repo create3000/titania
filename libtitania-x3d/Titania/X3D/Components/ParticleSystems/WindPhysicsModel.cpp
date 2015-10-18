@@ -80,6 +80,8 @@ WindPhysicsModel::WindPhysicsModel (X3DExecutionContext* const executionContext)
 	addField (inputOutput, "speed",      speed ());
 	addField (inputOutput, "gustiness",  gustiness ());
 	addField (inputOutput, "turbulence", turbulence ());
+
+	speed () .setUnit (UnitCategory::SPEED);
 }
 
 X3DBaseNode*

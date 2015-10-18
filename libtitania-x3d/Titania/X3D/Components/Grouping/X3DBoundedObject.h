@@ -69,16 +69,6 @@ public:
 
 	virtual
 	SFVec3f &
-	bboxCenter ()
-	{ return *fields .bboxCenter; }
-
-	virtual
-	const SFVec3f &
-	bboxCenter () const
-	{ return *fields .bboxCenter; }
-
-	virtual
-	SFVec3f &
 	bboxSize ()
 	{ return *fields .bboxSize; }
 
@@ -86,6 +76,16 @@ public:
 	const SFVec3f &
 	bboxSize () const
 	{ return *fields .bboxSize; }
+
+	virtual
+	SFVec3f &
+	bboxCenter ()
+	{ return *fields .bboxCenter; }
+
+	virtual
+	const SFVec3f &
+	bboxCenter () const
+	{ return *fields .bboxCenter; }
 
 	///  @name Member access
 
@@ -126,8 +126,8 @@ private:
 	{
 		Fields ();
 
-		SFVec3f* const bboxCenter;
 		SFVec3f* const bboxSize;
+		SFVec3f* const bboxCenter;
 	};
 
 	Fields fields;

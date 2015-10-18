@@ -74,6 +74,8 @@ Coordinate::Coordinate (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "point",    point ());
+
+	point () .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

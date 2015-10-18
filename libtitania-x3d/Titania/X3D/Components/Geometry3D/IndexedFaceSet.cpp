@@ -102,6 +102,8 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "texCoord",          texCoord ());
 	addField (inputOutput,    "normal",            normal ());
 	addField (inputOutput,    "coord",             coord ());
+
+	creaseAngle ()  .setUnit (UnitCategory::ANGLE);
 }
 
 X3DBaseNode*

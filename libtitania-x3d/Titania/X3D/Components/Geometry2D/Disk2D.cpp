@@ -83,6 +83,9 @@ Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "innerRadius", innerRadius ());
 	addField (inputOutput,    "outerRadius", outerRadius ());
 	addField (initializeOnly, "solid",       solid ());
+
+	innerRadius () .setUnit (UnitCategory::LENGTH);
+	outerRadius () .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

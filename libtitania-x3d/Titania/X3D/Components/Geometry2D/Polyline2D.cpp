@@ -78,6 +78,8 @@ Polyline2D::Polyline2D (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",     metadata ());
 	addField (inputOutput, "lineSegments", lineSegments ());
+
+	lineSegments () .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

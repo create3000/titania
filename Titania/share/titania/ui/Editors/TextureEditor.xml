@@ -1653,7 +1653,7 @@
                                 <property name="text" translatable="yes">0,000000</property>
                                 <property name="adjustment">TextureTransformRotationAdjustment</property>
                                 <property name="climb_rate">0.01</property>
-                                <property name="digits">6</property>
+                                <property name="digits">8</property>
                                 <property name="numeric">True</property>
                               </object>
                               <packing>

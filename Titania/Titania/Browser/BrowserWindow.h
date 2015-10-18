@@ -206,6 +206,10 @@ private:
 
 	virtual
 	void
+	on_scene_properties_activated () final override;
+
+	virtual
+	void
 	on_close_activated () final override;
 
 	virtual

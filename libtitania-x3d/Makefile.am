@@ -381,6 +381,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Configuration/SupporteFieldArray.cpp \
 	Titania/X3D/Configuration/Unit.cpp \
 	Titania/X3D/Configuration/UnitArray.cpp \
+	Titania/X3D/Configuration/X3DUnitContext.cpp \
 	Titania/X3D/Editor/Undo/UndoGroup.cpp \
 	Titania/X3D/Editor/Undo/UndoHistory.cpp \
 	Titania/X3D/Editor/Undo/UndoStep.cpp \

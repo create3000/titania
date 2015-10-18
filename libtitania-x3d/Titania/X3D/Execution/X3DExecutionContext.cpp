@@ -179,64 +179,6 @@ X3DExecutionContext::hasComponent (const ComponentType & component) const
 	return true;
 }
 
-// Unit handling
-
-double
-X3DExecutionContext::fromRadians (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value / getUnits () [size_t (UnitCategory::ANGLE)] .getConversion ();
-}
-
-double
-X3DExecutionContext::toRadians (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value * getUnits () [size_t (UnitCategory::ANGLE)] .getConversion ();
-}
-
-double
-X3DExecutionContext::fromNewton (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value / getUnits () [size_t (UnitCategory::FORCE)] .getConversion ();
-}
-
-double
-X3DExecutionContext::toNewton (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value * getUnits () [size_t (UnitCategory::FORCE)] .getConversion ();
-}
-
-double
-X3DExecutionContext::fromMetre (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value / getUnits () [size_t (UnitCategory::LENGTH)] .getConversion ();
-}
-
-double
-X3DExecutionContext::toMetre (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value * getUnits () [size_t (UnitCategory::LENGTH)] .getConversion ();
-}
-
-double
-X3DExecutionContext::fromKilogram (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value / getUnits () [size_t (UnitCategory::MASS)] .getConversion ();
-}
-
-double
-X3DExecutionContext::toKilogram (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value * getUnits () [size_t (UnitCategory::MASS)] .getConversion ();
-}
-
 // Meta data handling
 
 void

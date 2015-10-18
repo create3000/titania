@@ -83,6 +83,9 @@ PointLight::PointLight (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "attenuation",      attenuation ());
 	addField (inputOutput, "location",         location ());
 	addField (inputOutput, "radius",           radius ());
+
+	location () .setUnit (UnitCategory::LENGTH);
+	radius ()   .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

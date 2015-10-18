@@ -73,6 +73,8 @@ ForcePhysicsModel::ForcePhysicsModel (X3DExecutionContext* const executionContex
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "enabled",  enabled ());
 	addField (inputOutput, "force",    force ());
+
+	force () .setUnit (UnitCategory::FORCE);
 }
 
 X3DBaseNode*

@@ -102,6 +102,12 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "bindTime",          bindTime ());
 	addField (initializeOnly, "geoOrigin",         geoOrigin ());
 
+	position ()         .setUnit (UnitCategory::LENGTH);
+	centerOfRotation () .setUnit (UnitCategory::LENGTH);
+	fieldOfView ()      .setUnit (UnitCategory::ANGLE);
+
+	position () .isGeospatial (true);
+
 	switch (getExecutionContext () -> getSpecificationVersion ())
 	{
 		case VRML_V2_0:

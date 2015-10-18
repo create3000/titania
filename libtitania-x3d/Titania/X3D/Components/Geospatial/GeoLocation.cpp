@@ -80,6 +80,9 @@ GeoLocation::GeoLocation (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "addChildren",    addChildren ());
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
+
+	geoCoords () .setUnit (UnitCategory::LENGTH);
+	geoCoords () .isGeospatial (true);
 }
 
 X3DBaseNode*

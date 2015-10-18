@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_CONFIGURATION_UNIT_ARRAY_H__
 
 #include "../Configuration/Unit.h"
+#include "../Configuration/UnitCategory.h"
 
 #include <array>
 #include <map>
@@ -59,22 +60,13 @@
 namespace titania {
 namespace X3D {
 
-enum class UnitCategory : uint8_t
-{
-	ANGLE,
-	FORCE,
-	LENGTH,
-	MASS
-
-};
-
 using UnitIndex = std::map <std::string, UnitCategory>;
-using UnitArray = std::array <Unit, 4>;
+using UnitArray = std::array <Unit, 5>;
 
 } // X3D
 } // titania
 
 extern template class std::map <std::string, titania::X3D::UnitCategory>;
-extern template class std::array <titania::X3D::Unit, 4>;
+extern template class std::array <titania::X3D::Unit, 5>;
 
 #endif

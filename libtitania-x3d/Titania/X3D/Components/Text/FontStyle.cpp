@@ -185,6 +185,8 @@ FontStyle::FontStyle (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "leftToRight", leftToRight ());
 	addField (initializeOnly, "topToBottom", topToBottom ());
 	addField (initializeOnly, "justify",     justify ());
+
+	size () .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

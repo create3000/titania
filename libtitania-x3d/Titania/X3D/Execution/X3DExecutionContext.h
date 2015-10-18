@@ -54,7 +54,6 @@
 #include "../Basic/X3DBaseNode.h"
 #include "../Configuration/ProfileInfo.h"
 #include "../Configuration/SupportedComponents.h"
-#include "../Configuration/UnitArray.h"
 #include "../Execution/ImportedNodeIndex.h"
 #include "../Execution/NamedNodeIndex.h"
 #include "../Fields.h"
@@ -175,48 +174,6 @@ public:
 
 	bool
 	hasComponent (const ComponentType &) const;
-
-	/***
-	 *  @name Unit handling
-	 */
-
-	virtual
-	const UnitArray &
-	getUnits () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
-
-	double
-	fromRadians (const double) const
-	throw (Error <DISPOSED>);
-
-	double
-	toRadians (const double) const
-	throw (Error <DISPOSED>);
-
-	double
-	fromNewton (const double) const
-	throw (Error <DISPOSED>);
-
-	double
-	toNewton (const double) const
-	throw (Error <DISPOSED>);
-
-	double
-	fromMetre (const double) const
-	throw (Error <DISPOSED>);
-
-	double
-	toMetre (const double) const
-	throw (Error <DISPOSED>);
-
-	double
-	fromKilogram (const double) const
-	throw (Error <DISPOSED>);
-
-	double
-	toKilogram (const double) const
-	throw (Error <DISPOSED>);
 
 	/***
 	 *  @name WorldInfo handling

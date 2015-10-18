@@ -674,7 +674,7 @@
                         <property name="input_purpose">number</property>
                         <property name="adjustment">PerspectiveViewpointFieldOfViewAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">6</property>
+                        <property name="digits">8</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1033,7 +1033,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">PerspectiveViewpointOrientationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
+                            <property name="digits">8</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -1363,7 +1363,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">OrthoViewpointOrientationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
+                            <property name="digits">8</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -1548,7 +1548,7 @@
                         <property name="input_purpose">number</property>
                         <property name="adjustment">GeoViewpointFieldOfViewAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">6</property>
+                        <property name="digits">8</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1667,7 +1667,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointPositionXAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">8</property>
+                        <property name="digits">9</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1684,7 +1684,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointPositionYAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">8</property>
+                        <property name="digits">9</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1701,7 +1701,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointPositionZAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">8</property>
+                        <property name="digits">9</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1756,7 +1756,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointCenterOfRotationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">8</property>
+                        <property name="digits">9</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1773,7 +1773,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointCenterOfRotationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">8</property>
+                        <property name="digits">9</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1790,7 +1790,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointCenterOfRotationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">8</property>
+                        <property name="digits">9</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1907,7 +1907,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">GeoViewpointOrientationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
+                            <property name="digits">8</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>

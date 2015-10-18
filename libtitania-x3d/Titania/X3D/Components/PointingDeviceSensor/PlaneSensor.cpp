@@ -98,6 +98,11 @@ PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "translation_changed", translation_changed ());
 	addField (outputOnly,  "isOver",              isOver ());
 	addField (outputOnly,  "isActive",            isActive ());
+
+	offset ()              .setUnit (UnitCategory::LENGTH);
+	minPosition ()         .setUnit (UnitCategory::LENGTH);
+	maxPosition ()         .setUnit (UnitCategory::LENGTH);
+	translation_changed () .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

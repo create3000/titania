@@ -213,6 +213,9 @@
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DConeEditor.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DCylinderEditor.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DExtrusionEditor.cpp" />
+    <Compile Include="Titania\Editors\ScenePropertiesEditor\ScenePropertiesEditor.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DScenePropertiesEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\ScenePropertiesEditor\X3DUnitEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1940,6 +1943,11 @@
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DCylinderEditor.h" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DExtrusionEditor.h" />
     <None Include="share\titania\ui\icons\Bind.svg" />
+    <None Include="Titania\Editors\ScenePropertiesEditor\ScenePropertiesEditor.h" />
+    <None Include="Titania\UserInterfaces\X3DScenePropertiesEditorInterface.h" />
+    <None Include="share\titania\ui\icons\Faenza\16\gtk-properties.png" />
+    <None Include="share\titania\ui\Editors\Units.ini" />
+    <None Include="Titania\Editors\ScenePropertiesEditor\X3DUnitEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

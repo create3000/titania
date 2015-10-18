@@ -65,6 +65,10 @@ X3DParticleEmitterNode::X3DParticleEmitterNode () :
 	 fields ()
 {
 	addType (X3DConstants::X3DParticleEmitterNode);
+
+	speed ()       .setUnit (UnitCategory::SPEED);
+	mass ()        .setUnit (UnitCategory::MASS);
+	surfaceArea () .setUnit (UnitCategory::AREA);
 }
 
 void
