@@ -454,7 +454,7 @@ set_field_value (const X3D::X3DScene* const, const X3D::X3DFieldDefinition* cons
 template <class Type>
 static
 void
-set_array (const X3D::X3DScene* const scene, Type array)
+set_array (const X3D::X3DScene* const scene, Type & array)
 {
 	for (auto & value : array)
 	   set_field_value (scene, &array, &value);
@@ -469,28 +469,28 @@ set_field_value (const X3D::X3DScene* const scene,
 	switch (fieldDefinition -> getType ())
 	{
 		case X3D::X3DConstants::MFDouble:
-			return set_array (scene, *static_cast <const X3D::MFDouble*> (fieldDefinition));
+			return set_array (scene, *static_cast <X3D::MFDouble*> (fieldDefinition));
 
 		case X3D::X3DConstants::MFFloat:
-			return set_array (scene, *static_cast <const X3D::MFFloat*> (fieldDefinition));
+			return set_array (scene, *static_cast <X3D::MFFloat*> (fieldDefinition));
 
 		case X3D::X3DConstants::MFVec2d:
-			return set_array (scene, *static_cast <const X3D::MFVec2d*> (fieldDefinition));
+			return set_array (scene, *static_cast <X3D::MFVec2d*> (fieldDefinition));
 
 		case X3D::X3DConstants::MFVec2f:
-			return set_array (scene, *static_cast <const X3D::MFVec2f*> (fieldDefinition));
+			return set_array (scene, *static_cast <X3D::MFVec2f*> (fieldDefinition));
 
 		case X3D::X3DConstants::MFVec3d:
-			return set_array (scene, *static_cast <const X3D::MFVec3d*> (fieldDefinition));
+			return set_array (scene, *static_cast <X3D::MFVec3d*> (fieldDefinition));
 
 		case X3D::X3DConstants::MFVec3f:
-			return set_array (scene, *static_cast <const X3D::MFVec3f*> (fieldDefinition));
+			return set_array (scene, *static_cast <X3D::MFVec3f*> (fieldDefinition));
 
 		case X3D::X3DConstants::MFVec4d:
-			return set_array (scene, *static_cast <const X3D::MFVec4d*> (fieldDefinition));
+			return set_array (scene, *static_cast <X3D::MFVec4d*> (fieldDefinition));
 
 		case X3D::X3DConstants::MFVec4f:
-			return set_array (scene, *static_cast <const X3D::MFVec4f*> (fieldDefinition));
+			return set_array (scene, *static_cast <X3D::MFVec4f*> (fieldDefinition));
 
 		case X3D::X3DConstants::SFDouble:
 		{
