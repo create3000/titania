@@ -904,6 +904,8 @@ X3DBrowserEditor::editCDATA (const X3D::SFNode & node)
 
 	try
 	{
+		getBrowser () -> println ("Trying to start gnome-text-editor ...");
+
 		Gio::AppInfo::create_from_commandline (os::realpath ("/usr/bin/gnome-text-editor"), "", Gio::APP_INFO_CREATE_NONE) -> launch (file);
 	}
 	catch (...)

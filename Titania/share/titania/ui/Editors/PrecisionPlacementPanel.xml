@@ -1037,7 +1037,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="TransformMoveCenterButton">
-                        <property name="label" translatable="yes">Move Center To BBox Center</property>
+                        <property name="label" translatable="yes">Move Center To Bounding Box Center</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -3240,7 +3240,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="FillBoundingBoxFieldsButton">
-                    <property name="label" translatable="yes">Fill Bounding Box Fields</property>
+                    <property name="label" translatable="yes">Fill Bounding Box Fields From Scratch</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>

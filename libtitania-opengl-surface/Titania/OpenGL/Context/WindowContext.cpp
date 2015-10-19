@@ -114,17 +114,42 @@ WindowContext::setSwapInterval (const size_t interval)
 GLXContext
 WindowContext::create (const GLXContext sharingContext, const bool direct)
 {
-	XWindowAttributes attributes;
+//	XWindowAttributes attributes;
+//
+//	if (not XGetWindowAttributes (getDisplay (), xWindow, &attributes))
+//		throw std::runtime_error ("WindowContext::WindowContext: Couldn't get window attributes.");
+//
+//	XVisualInfo visualInfo;
+//	visualInfo .visualid = XVisualIDFromVisual (attributes .visual);
+//
+//	int numReturned = 0;
+//
+//	visualInfoList = XGetVisualInfo (getDisplay (), VisualIDMask, &visualInfo, &numReturned);
+//
+//	GLXContext xContext = glXCreateContext (getDisplay (), visualInfoList, sharingContext, direct);
+//
+//	if (not xContext)
+//		throw std::runtime_error ("WindowContext::WindowContext: Couldn't create context.");
+//
+//	return xContext;
 
-	if (not XGetWindowAttributes (getDisplay (), xWindow, &attributes))
-		throw std::runtime_error ("WindowContext::WindowContext: Couldn't get window attributes.");
+	static
+	int32_t visualAttributes [ ] = {
+		GLX_RGBA,
+		GLX_RED_SIZE,         1,
+		GLX_GREEN_SIZE,       1,
+		GLX_BLUE_SIZE,        1,
+		GLX_ALPHA_SIZE,       1,
+		GLX_ACCUM_RED_SIZE,   1,
+		GLX_ACCUM_GREEN_SIZE, 1,
+		GLX_ACCUM_BLUE_SIZE,  1,
+		GLX_ACCUM_ALPHA_SIZE, 1,
+		GLX_DOUBLEBUFFER,     true, 
+		GLX_DEPTH_SIZE,       24, 
+		0
+	};
 
-	XVisualInfo visualInfo;
-	visualInfo .visualid = XVisualIDFromVisual (attributes .visual);
-
-	int numReturned    = 0;
-
-	visualInfoList = XGetVisualInfo (getDisplay (), VisualIDMask, &visualInfo, &numReturned);
+	visualInfoList = glXChooseVisual (getDisplay (), DefaultScreen (getDisplay ()), visualAttributes);
 
 	GLXContext xContext = glXCreateContext (getDisplay (), visualInfoList, sharingContext, direct);
 
