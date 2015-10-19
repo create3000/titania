@@ -136,14 +136,14 @@ WindowContext::create (const GLXContext sharingContext, const bool direct)
 	static
 	int32_t xVisualAttributes [ ] = {
 		GLX_RGBA,
-		GLX_RED_SIZE,         1,
-		GLX_GREEN_SIZE,       1,
-		GLX_BLUE_SIZE,        1,
-		GLX_ALPHA_SIZE,       1,
-		GLX_ACCUM_RED_SIZE,   1,
-		GLX_ACCUM_GREEN_SIZE, 1,
-		GLX_ACCUM_BLUE_SIZE,  1,
-		GLX_ACCUM_ALPHA_SIZE, 1,
+		GLX_RED_SIZE,         8,
+		GLX_GREEN_SIZE,       8,
+		GLX_BLUE_SIZE,        8,
+		GLX_ALPHA_SIZE,       8,
+		GLX_ACCUM_RED_SIZE,   8,
+		GLX_ACCUM_GREEN_SIZE, 8,
+		GLX_ACCUM_BLUE_SIZE,  8,
+		GLX_ACCUM_ALPHA_SIZE, 8,
 		GLX_DOUBLEBUFFER,     true, 
 		GLX_DEPTH_SIZE,       24, 
 		0

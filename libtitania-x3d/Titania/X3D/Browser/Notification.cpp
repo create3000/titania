@@ -124,7 +124,7 @@ Notification::set_string ()
 		catch (const X3DError & error)
 		{
 			std::clog << error .what () << std::endl;
-
+	
 			scene = getBrowser () -> createScene ();
 			scene -> setup ();
 		}

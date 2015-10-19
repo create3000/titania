@@ -86,11 +86,13 @@ UndoStep::undo ()
 		}
 		catch (const std::exception & error)
 		{
+			#ifdef DEBUG
 			std::clog
 				<< std::string (80, '*') << std::endl
 				<< "*  Warning:  Undo step not possible:" << std::endl
 				<< "*  " << error .what () << std::endl
 				<< std::string (80, '*') << std::endl;
+			#endif
 		}
 	}
 }

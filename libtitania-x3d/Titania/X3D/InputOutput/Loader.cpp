@@ -327,7 +327,9 @@ throw (Error <INVALID_URL>,
 		}
 	}
 
+	#ifdef DEBUG
 	std::clog << osstream .str ();
+	#endif
 
 	throw Error <URL_UNAVAILABLE> (osstream .str ());
 }

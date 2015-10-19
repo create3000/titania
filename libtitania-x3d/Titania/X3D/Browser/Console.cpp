@@ -103,10 +103,12 @@ Console::prepareEvents ()
 	
 	string_changed .assign (string .begin (), string .end ());
 
+	#ifdef DEBUG
 	for (const auto & value : string)
 		std::clog << value;
 	
 	std::clog << std::flush;
+	#endif
 
 	string .clear ();
 }

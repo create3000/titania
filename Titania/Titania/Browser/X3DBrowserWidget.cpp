@@ -901,8 +901,10 @@ X3DBrowserWidget::set_scene ()
 {
 	loadTime = chrono::now () - loadTime;
 
+	#ifdef DEBUG
 	timeout .disconnect ();
 	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::statistics), 10 * 1000);
+	#endif
 
 	loadIcon ();
 	setTitle ();

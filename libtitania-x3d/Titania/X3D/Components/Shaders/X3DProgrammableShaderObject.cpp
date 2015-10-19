@@ -198,7 +198,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 				{
 					if (getBrowser () -> getCombinedTextureUnits () .empty ())
 					{
-						std::clog << "Warning: Not enough combined texture units for uniform variable '" << field -> getName () << "' available." << std::endl;
+						getBrowser () -> println ("Warning: Not enough combined texture units for uniform variable '", field -> getName (), "' available.");
 						break;
 					}
 					else
@@ -399,7 +399,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 					if (getBrowser () -> getCombinedTextureUnits () .empty ())
 					{
-						std::clog << "Warning: Not enough combined texture units for uniform variable '" << field -> getName () << "' available." << std::endl;
+						getBrowser () -> println ("Warning: Not enough combined texture units for uniform variable '", field -> getName (), "' available.");
 						break;
 					}
 					else
@@ -513,10 +513,12 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 	}
 	else
 	{
+		#ifdef DEBUG
 		std::clog << "Warning: Uniform variable '" << field -> getName () << "' not found." << std::endl;
 
 		if (not getProgramId ())
 			std::clog << "Warning: Couldn't allocate shader." << std::endl;
+		#endif
 	}
 
 	glUseProgram (0);
@@ -538,7 +540,7 @@ X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint 
 		{
 			if (getBrowser () -> getCombinedTextureUnits () .empty ())
 			{
-				std::clog << "Warning: Not enough combined texture units for uniform variable '" << name << "' available." << std::endl;
+				getBrowser () -> println ("Warning: Not enough combined texture units for uniform variable '", name, "' available.");
 				return;
 			}
 			else
@@ -557,7 +559,11 @@ X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint 
 
 	}
 	else
+	{
+		#ifdef DEBUG
 		std::clog << "Warning: Uniform variable '" << name << "' not found." << std::endl;
+		#endif
+	}
 
 	glUseProgram (0);
 }

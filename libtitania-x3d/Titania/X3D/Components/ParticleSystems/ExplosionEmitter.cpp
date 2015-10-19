@@ -123,7 +123,7 @@ ExplosionEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 	}
 	catch (const X3DError & error)
 	{
-		std::clog << "ConeEmitter: " << error .what () << std::endl;
+		std::clog << "ExplosionEmitter: " << error .what () << std::endl;
 	}
 }
 

@@ -296,8 +296,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 			const GLenum errorNum = glGetError ();
 
+			#ifdef DEBUG
 			if (errorNum not_eq GL_NO_ERROR)
 				std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toUTCString () << ": " << gluErrorString (errorNum) << std::endl;
+			#endif
 		}
 	}
 	catch (const std::exception & exception)

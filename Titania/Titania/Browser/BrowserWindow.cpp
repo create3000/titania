@@ -127,6 +127,9 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	//else
 		browser -> setAntialiasing (4);
 
+	//if (not getConfig () .hasItem ("maximized"))
+	//	getWindow () .maximize ();
+
 	setup ();
 }
 

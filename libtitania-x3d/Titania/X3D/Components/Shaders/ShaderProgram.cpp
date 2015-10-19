@@ -223,7 +223,9 @@ ShaderProgram::requestImmediateLoad ()
 		}
 		catch (const X3DError & error)
 		{
+			#ifdef DEBUG
 			std::clog << error .what () << std::endl;
+			#endif
 		}
 	}
 

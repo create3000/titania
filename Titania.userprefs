@@ -1,10 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserWidget.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/main.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="23" Column="23" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="35" Column="35" />
       <File FileName="Titania/Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.h" Line="3" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/FileSaveDialog/FileSaveDialog.cpp" Line="6" Column="6" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Console.cpp" Line="2" Column="2" />
+      <File FileName="Titania/Titania/Base/X3DUserInterface.cpp" Line="2" Column="2" />
+      <File FileName="Titania/Titania/main.cpp" Line="2" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -126,7 +126,9 @@ X3DUserInterface::on_constructed ()
 
 	on_map ();
 
+	#ifdef DEBUG
 	std::clog << "Initializing widget: " << getWidgetName () << std::endl;
+	#endif
 
 	initialize ();
 

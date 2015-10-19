@@ -360,7 +360,9 @@ throw (Error <INVALID_SCENE>,
 void
 X3DBrowser::set_executionContext ()
 {
+	#ifdef DEBUG
 	std::clog << "Replacing world done." << std::endl;
+	#endif
 }
 
 X3DScenePtr
@@ -603,7 +605,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 	catch (const Error <INVALID_NAME> & error)
 	{
+		#ifdef DEBUG
 		std::clog << error .what ();
+		#endif
 	}
 }
 

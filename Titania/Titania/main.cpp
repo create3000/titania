@@ -133,11 +133,13 @@ main (int argc, char** argv)
 	using namespace titania;
 	using namespace titania::puck;
 
+	#ifdef DEBUG
 	std::clog
 		<< std::boolalpha
 		<< "Titania started ..." << std::endl
 		<< " Compiled at " << __DATE__ << " " << __TIME__ << std::endl
 		<< std::endl;
+	#endif
 
 	std::locale::global (std::locale (""));
 
@@ -150,9 +152,11 @@ main (int argc, char** argv)
 		browserApplication .run ();
 	}
 
+	#ifdef DEBUG
 	std::clog
 		<< std::endl
 		<< "Titania finished." << std::endl;
+	#endif
 
 	return 0;
 }
