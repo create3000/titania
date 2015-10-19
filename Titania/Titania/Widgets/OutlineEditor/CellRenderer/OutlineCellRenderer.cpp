@@ -209,10 +209,8 @@ OutlineCellRenderer::on_data ()
 			parentPath .up ();
 			parentPath .up ();
 
-			const auto   parent = treeView -> get_model () -> get_iter (parentPath);
-			const auto & node   = *static_cast <X3D::SFNode*> (treeView -> get_object (parent));
-			const auto   scene  = node -> getScene ();
-			const auto   field  = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+			const auto & scene = treeView -> getScene ();
+			const auto   field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 
 			property_editable () = true;
 			set_alignment (0, 0);
@@ -747,13 +745,13 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 			parentPath .up ();
 			parentPath .up ();
 
+			const auto & scene  = treeView -> getScene ();
 			const auto   parent = treeView -> get_model () -> get_iter (parentPath);
 			const auto & node   = *static_cast <X3D::SFNode*> (treeView -> get_object (parent));
-			const auto   scene  = node -> getScene ();
 			const auto   field  = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 			const int    margin = ICON_X_PAD + icon_width + NAME_X_PAD;
 
-			textview .reset (new TextViewEditable (node, field, path, field -> isArray () or dynamic_cast <X3D::SFString*> (field), treeView -> get_use_locale ()));
+			textview .reset (new TextViewEditable (treeView, node, field, path, field -> isArray () or field -> getType () == X3D::X3DConstants::SFString, treeView -> get_use_locale ()));
 
 			textview -> set_text (puck::get_field_value (scene, field, false, treeView -> get_use_locale ()));
 			textview -> set_margin_left (margin);
@@ -829,8 +827,8 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 		return true;
 	}
 
-	const auto scene = node -> getScene ();
-	const auto value = field -> create ();
+	const auto & scene = treeView -> getScene ();
+	const auto   value = field -> create ();
 
 	value -> setUnit (field -> getUnit ());
 	value -> isGeospatial (field -> isGeospatial ());

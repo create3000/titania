@@ -51,6 +51,7 @@
 #include "TextViewEditable.h"
 
 #include "OutlineFields.h"
+#include "../X3DOutlineTreeView.h"
 
 #include <Titania/Chrono/Now.h>
 #include <Titania/LOG.h>
@@ -58,9 +59,15 @@
 namespace titania {
 namespace puck {
 
-TextViewEditable::TextViewEditable (const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const Glib::ustring & path, const bool multiline, const bool useLocale) :
+TextViewEditable::TextViewEditable (X3DOutlineTreeView* const treeView,
+                                    const X3D::SFNode & node,
+                                    X3D::X3DFieldDefinition* const field,
+                                    const Glib::ustring & path,
+                                    const bool multiline,
+                                    const bool useLocale) :
 	   Glib::ObjectBase (typeid (TextViewEditable)),
 	X3DTextViewEditable (multiline),
+	           treeView (treeView),
 	               node (node),
 	              field (field),
 	               path (path),
@@ -125,7 +132,7 @@ TextViewEditable::on_current_time ()
 void
 TextViewEditable::on_reset_activate ()
 {
-	const auto scene = node -> getScene ();
+	const auto & scene = treeView -> getScene ();
 
 	try
 	{

@@ -58,12 +58,19 @@
 namespace titania {
 namespace puck {
 
+class X3DOutlineTreeView;
+
 class TextViewEditable :
 	public X3DTextViewEditable
 {
 public:
 
-	TextViewEditable (const X3D::SFNode &, X3D::X3DFieldDefinition* const, const Glib::ustring &, const bool, const bool);
+	TextViewEditable (X3DOutlineTreeView* const,
+	                  const X3D::SFNode &,
+	                  X3D::X3DFieldDefinition* const,
+	                  const Glib::ustring &,
+	                  const bool,
+	                  const bool);
 
 	const X3D::SFNode &
 	get_node () const
@@ -99,10 +106,11 @@ private:
 	void
 	on_remove_widget () final override;
 
-	X3D::SFNode              node;
-	X3D::X3DFieldDefinition* field;
-	const Glib::ustring      path;
-	const bool               useLocale;
+	X3DOutlineTreeView* const treeView;
+	X3D::SFNode               node;
+	X3D::X3DFieldDefinition*  field;
+	const Glib::ustring       path;
+	const bool                useLocale;
 
 };
 

@@ -212,7 +212,7 @@ private:
 	typedef std::map <const X3D::X3DConstants::FieldType,  Glib::RefPtr <Gdk::Pixbuf>>               FieldTypeImageIndex;
 	typedef std::map <const X3D::X3DConstants::AccessType, std::vector <Glib::RefPtr <Gdk::Pixbuf>>> AccessTypeImageIndex;
 
-	X3DOutlineTreeView* treeView;
+	X3DOutlineTreeView* const treeView;
 
 	Glib::Property <OutlineTreeData*> data_property;
 
