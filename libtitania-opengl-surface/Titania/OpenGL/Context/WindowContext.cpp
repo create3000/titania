@@ -134,7 +134,7 @@ WindowContext::create (const GLXContext sharingContext, const bool direct)
 //	return xContext;
 
 	static
-	int32_t visualAttributes [ ] = {
+	int32_t xVisualAttributes [ ] = {
 		GLX_RGBA,
 		GLX_RED_SIZE,         1,
 		GLX_GREEN_SIZE,       1,
@@ -149,7 +149,7 @@ WindowContext::create (const GLXContext sharingContext, const bool direct)
 		0
 	};
 
-	visualInfoList = glXChooseVisual (getDisplay (), DefaultScreen (getDisplay ()), visualAttributes);
+	visualInfoList = glXChooseVisual (getDisplay (), DefaultScreen (getDisplay ()), xVisualAttributes);
 
 	GLXContext xContext = glXCreateContext (getDisplay (), visualInfoList, sharingContext, direct);
 

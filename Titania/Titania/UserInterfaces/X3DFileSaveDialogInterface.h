@@ -125,10 +125,6 @@ public:
 	getImageWidthAdjustment () const
 	{ return m_ImageWidthAdjustment; }
 
-	Gtk::SpinButton &
-	getAntialiasingSpinButton () const
-	{ return *m_AntialiasingSpinButton; }
-
 	Gtk::FileChooserDialog &
 	getWindow () const
 	{ return *m_Window; }
@@ -183,7 +179,6 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_ImageCompressionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageWidthAdjustment;
-	Gtk::SpinButton*               m_AntialiasingSpinButton;
 	Gtk::FileChooserDialog*        m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Box*                      m_CompressFileBox;

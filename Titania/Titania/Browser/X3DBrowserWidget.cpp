@@ -882,9 +882,6 @@ X3DBrowserWidget::on_browser_reordered (Gtk::Widget* widget, guint pageNumber)
 void
 X3DBrowserWidget::set_executionContext ()
 {
-	__LOG__ << executionContext -> getWorldURL () << std::endl;
-	__LOG__ << getBrowser () -> getExecutionContext () -> getWorldURL () << std::endl;
-
 	if (getBrowser () -> getExecutionContext () == executionContext)
 	   return;
 
@@ -895,8 +892,6 @@ X3DBrowserWidget::set_executionContext ()
 
 	if (currentScene not_eq scene)
 		scene = std::move (currentScene);
-
-	__LOG__ << scene -> getWorldURL () << std::endl;
 
 	executionContext = getBrowser () -> getExecutionContext ();
 }

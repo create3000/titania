@@ -169,9 +169,11 @@ FileSaveDialog::imageOptions ()
 {
 	// First configure adjustments.
 
-	getImageWidthAdjustment () -> set_upper (getBrowser () -> getMaxRenderBufferSize ());
+	const int32_t antialiasing = getBrowser () -> getMaxSamples ();
+
+	getImageWidthAdjustment ()  -> set_upper (getBrowser () -> getMaxRenderBufferSize ());
 	getImageHeightAdjustment () -> set_upper (getBrowser () -> getMaxRenderBufferSize ());
-	getImageAntialiasingAdjustment () -> set_upper (getBrowser () -> getMaxSamples ());
+	getImageAntialiasingAdjustment () -> set_upper (antialiasing);
 
 	// Restore image options.
 
@@ -184,7 +186,7 @@ FileSaveDialog::imageOptions ()
 	getImageAlphaChannelSwitch () .set_active (getConfig () .getBoolean ("imageAlphaChannel"));
 
 	if (getConfig () .hasItem ("imageAntialiasing"))
-		getImageAntialiasingAdjustment () -> set_value (getConfig () .getInteger ("imageAntialiasing"));
+		getImageAntialiasingAdjustment () -> set_value (std::min (getConfig () .getInteger ("imageAntialiasing"), antialiasing));
 
 	if (getConfig () .hasItem ("imageCompression"))
 		getImageCompressionAdjustment () -> set_value (getConfig () .getInteger ("imageCompression"));

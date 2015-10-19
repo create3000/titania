@@ -56,7 +56,48 @@
 
 namespace titania {
 
+#ifdef DEBUG
 #define __LOG__ (std::clog << "########## " __FILE__ << ":" << __LINE__ << ": in function '" << __func__ << "': ")
+#else
+struct LOGType
+{
+	template <class Type>
+	const LOGType &
+	operator << (Type &&) const
+	{
+	   return *this;
+	}
+
+	const LOGType &
+	operator << (std::basic_streambuf <std::ostream::char_type, std::ostream::traits_type>* sb) const
+	{
+	   return *this;
+	}
+
+	const LOGType &
+	operator << (std::ios_base & (*func) (std::ios_base &)) const
+	{
+	   return *this;
+	}
+	
+	const LOGType &
+	operator << (std::basic_ios <std::ostream::char_type, std::ostream::traits_type> & (*func) (std::basic_ios <std::ostream::char_type, std::ostream::traits_type> &)) const
+	{
+	   return *this;
+	}
+
+	const LOGType &
+	operator << (std::ostream & (*func) (std::ostream &)) const
+	{
+	   return *this;
+	}
+
+};
+
+static constexpr LOGType LOG;
+
+#define __LOG__ (LOG)
+#endif
 
 } // titania
 

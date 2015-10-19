@@ -72,7 +72,6 @@ X3DFileSaveDialogInterface::create (const std::string & filename)
 	m_ImageWidthAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageWidthAdjustment"));
 
 	// Get widgets.
-	m_builder -> get_widget ("AntialiasingSpinButton", m_AntialiasingSpinButton);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("CompressFileBox", m_CompressFileBox);
