@@ -212,11 +212,12 @@ OutlineCellRenderer::on_data ()
 			const auto   parent = treeView -> get_model () -> get_iter (parentPath);
 			const auto & node   = *static_cast <X3D::SFNode*> (treeView -> get_object (parent));
 			const auto   scene  = node -> getScene ();
+			const auto   field  = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 
 			property_editable () = true;
 			set_alignment (0, 0);
 
-			property_text () = get_field_value (scene, static_cast <X3D::X3DFieldDefinition*> (get_object ()), true, treeView -> get_use_locale ());
+			property_text () = puck::get_field_value (scene, field, true, treeView -> get_use_locale ());
 			break;
 		}
 		case OutlineIterType::X3DField:
@@ -754,7 +755,7 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 
 			textview .reset (new TextViewEditable (node, field, path, field -> isArray () or dynamic_cast <X3D::SFString*> (field), treeView -> get_use_locale ()));
 
-			textview -> set_text (get_field_value (scene, field, false, treeView -> get_use_locale ()));
+			textview -> set_text (puck::get_field_value (scene, field, false, treeView -> get_use_locale ()));
 			textview -> set_margin_left (margin);
 			textview -> set_padding (property_ypad (), property_xpad (), property_ypad (), property_xpad ());
 			textview -> set_size_request (cell_area .get_width () - margin, cell_area .get_height ());

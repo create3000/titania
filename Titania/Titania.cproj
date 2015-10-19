@@ -216,6 +216,7 @@
     <Compile Include="Titania\Editors\ScenePropertiesEditor\ScenePropertiesEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DScenePropertiesEditorInterface.cpp" />
     <Compile Include="Titania\Editors\ScenePropertiesEditor\X3DUnitEditor.cpp" />
+    <Compile Include="Titania\Widgets\OutlineEditor\CellRenderer\OutlineFields.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />

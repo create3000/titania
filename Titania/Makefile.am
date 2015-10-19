@@ -132,6 +132,7 @@ titania_SOURCES =  \
 	Titania/Widgets/HistoryView/HistoryView.cpp \
 	Titania/Widgets/LibraryView/LibraryView.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \
+	Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineSeparator.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/TextViewEditable.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/X3DTextViewEditable.cpp \

@@ -220,6 +220,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Widgets/HistoryView/HistoryView.$(OBJEXT) \
 	Titania/Widgets/LibraryView/LibraryView.$(OBJEXT) \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.$(OBJEXT) \
+	Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.$(OBJEXT) \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineSeparator.$(OBJEXT) \
 	Titania/Widgets/OutlineEditor/CellRenderer/TextViewEditable.$(OBJEXT) \
 	Titania/Widgets/OutlineEditor/CellRenderer/X3DTextViewEditable.$(OBJEXT) \
@@ -612,6 +613,7 @@ titania_SOURCES = \
 	Titania/Widgets/HistoryView/HistoryView.cpp \
 	Titania/Widgets/LibraryView/LibraryView.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \
+	Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineSeparator.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/TextViewEditable.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/X3DTextViewEditable.cpp \
@@ -1337,6 +1339,9 @@ Titania/Widgets/OutlineEditor/CellRenderer/$(DEPDIR)/$(am__dirstamp):
 Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.$(OBJEXT):  \
 	Titania/Widgets/OutlineEditor/CellRenderer/$(am__dirstamp) \
 	Titania/Widgets/OutlineEditor/CellRenderer/$(DEPDIR)/$(am__dirstamp)
+Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.$(OBJEXT):  \
+	Titania/Widgets/OutlineEditor/CellRenderer/$(am__dirstamp) \
+	Titania/Widgets/OutlineEditor/CellRenderer/$(DEPDIR)/$(am__dirstamp)
 Titania/Widgets/OutlineEditor/CellRenderer/OutlineSeparator.$(OBJEXT):  \
 	Titania/Widgets/OutlineEditor/CellRenderer/$(am__dirstamp) \
 	Titania/Widgets/OutlineEditor/CellRenderer/$(DEPDIR)/$(am__dirstamp)
@@ -1597,6 +1602,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/$(DEPDIR)/OutlineTreeViewEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/$(DEPDIR)/X3DOutlineTreeView.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/CellRenderer/$(DEPDIR)/OutlineCellRenderer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/CellRenderer/$(DEPDIR)/OutlineFields.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/CellRenderer/$(DEPDIR)/OutlineSeparator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/CellRenderer/$(DEPDIR)/TextViewEditable.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/CellRenderer/$(DEPDIR)/X3DTextViewEditable.Po@am__quote@
