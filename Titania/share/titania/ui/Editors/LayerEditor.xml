@@ -105,7 +105,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Create new LayerSet</property>
+                    <property name="tooltip_text" translatable="yes">Create new LayerSet node</property>
                     <signal name="clicked" handler="on_new_layer_set_button_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image9">
@@ -126,6 +126,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Remove this LayerSet node</property>
                     <signal name="clicked" handler="on_remove_layer_set_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image10">
@@ -308,7 +309,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Add new layer</property>
+                            <property name="tooltip_text" translatable="yes">Add new layer node</property>
                             <property name="popup">NewMenu</property>
                             <child>
                               <object class="GtkImage" id="image3">
@@ -329,7 +330,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Remove selected layer</property>
+                            <property name="tooltip_text" translatable="yes">Remove selected layer node</property>
                             <signal name="clicked" handler="on_remove_layer_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image4">

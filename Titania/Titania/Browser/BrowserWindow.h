@@ -654,6 +654,10 @@ private:
 
 	virtual
 	void
+	on_layer_editor_clicked () final override;
+
+	virtual
+	void
 	on_navigation_info_editor_clicked () final override;
 
 	virtual
@@ -671,10 +675,6 @@ private:
 	virtual
 	void
 	on_inline_editor_clicked () final override;
-
-	virtual
-	void
-	on_layer_editor_clicked () final override;
 
 	virtual
 	void

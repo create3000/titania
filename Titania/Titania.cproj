@@ -1949,6 +1949,10 @@
     <None Include="share\titania\ui\icons\Faenza\16\gtk-properties.png" />
     <None Include="Titania\Editors\ScenePropertiesEditor\X3DUnitEditor.h" />
     <None Include="share\titania\units\units.ini" />
+    <None Include="share\titania\ui\icons\Faenza\scalable\edit-find-symbolic.svg" />
+    <None Include="share\titania\ui\icons\Faenza\scalable\emblem-shared-symbolic.svg" />
+    <None Include="share\titania\ui\icons\Faenza\16\gtk-goto-top.png" />
+    <None Include="share\titania\ui\icons\Faenza\16\gtk-goto-bottom.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

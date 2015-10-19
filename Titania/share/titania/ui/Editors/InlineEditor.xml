@@ -95,6 +95,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Create new Inline node</property>
                     <signal name="clicked" handler="on_new_inline_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image6">
@@ -115,6 +116,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Remove this Inline node</property>
                     <signal name="clicked" handler="on_remove_inline_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image5">

@@ -320,7 +320,7 @@
                           <object class="GtkMenuToolButton" id="NewButton">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Create new script</property>
+                            <property name="tooltip_text" translatable="yes">Create new script node</property>
                             <property name="label" translatable="yes">New</property>
                             <property name="use_underline">True</property>
                             <property name="stock_id">gtk-new</property>
@@ -1132,7 +1132,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="hexpand">True</property>
-                    <property name="primary_icon_name">edit-find-symbolic</property>
+                    <property name="primary_icon_stock">edit-find-symbolic</property>
                     <signal name="focus-in-event" handler="on_search_entry_focus_in_event" swapped="no"/>
                     <signal name="focus-out-event" handler="on_search_entry_focus_out_event" swapped="no"/>
                     <signal name="icon-release" handler="on_search_menu_icon_released" after="yes" swapped="no"/>

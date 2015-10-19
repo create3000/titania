@@ -366,12 +366,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeometryPropertiesEditorButton", m_GeometryPropertiesEditorButton);
 	m_builder -> get_widget ("ColorPerVertexEditorButton", m_ColorPerVertexEditorButton);
 	m_builder -> get_widget ("TextureCoordinateEditorButton", m_TextureCoordinateEditorButton);
+	m_builder -> get_widget ("LayerEditorButton", m_LayerEditorButton);
 	m_builder -> get_widget ("NavigationInfoEditorButton", m_NavigationInfoEditorButton);
 	m_builder -> get_widget ("ViewpointEditorButton", m_ViewpointEditorButton);
 	m_builder -> get_widget ("LightEditorButton", m_LightEditorButton);
 	m_builder -> get_widget ("LODEditorButton", m_LODEditorButton);
 	m_builder -> get_widget ("InlineEditorButton", m_InlineEditorButton);
-	m_builder -> get_widget ("LayerEditorButton", m_LayerEditorButton);
 	m_builder -> get_widget ("PrecisionPlacementPanelButton", m_PrecisionPlacementPanelButton);
 	m_builder -> get_widget ("CreatePrototypeInstanceButton", m_CreatePrototypeInstanceButton);
 	m_builder -> get_widget ("NodeIndexButton", m_NodeIndexButton);
@@ -678,12 +678,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_GeometryPropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_geometry_properties_editor_clicked));
 	m_ColorPerVertexEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_color_per_vertex_editor_clicked));
 	m_TextureCoordinateEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_coordinate_editor_clicked));
+	m_LayerEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_layer_editor_clicked));
 	m_NavigationInfoEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_navigation_info_editor_clicked));
 	m_ViewpointEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewpoint_editor_clicked));
 	m_LightEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_light_editor_clicked));
 	m_LODEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_lod_editor_clicked));
 	m_InlineEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_inline_editor_clicked));
-	m_LayerEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_layer_editor_clicked));
 	m_PrecisionPlacementPanelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_precision_placement_panel_clicked));
 	m_CreatePrototypeInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_prototype_instance_dialog_clicked));
 	m_NodeIndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_index_clicked));

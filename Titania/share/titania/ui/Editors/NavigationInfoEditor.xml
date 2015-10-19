@@ -135,6 +135,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Create new NavigationInfo node</property>
                     <signal name="clicked" handler="on_new_navigation_info_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image7">
@@ -155,6 +156,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Remove this NavigationInfo node</property>
                     <signal name="clicked" handler="on_remove_navigation_info_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image8">

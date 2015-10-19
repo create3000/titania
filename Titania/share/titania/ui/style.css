@@ -40,13 +40,13 @@
 }
 
 GtkExpander {
-	padding-top: 8px;
+	padding-top: 4px;
 	padding-bottom: 2px;
 }
 
 GtkExpander > GtkLabel {
 	font-weight: bold;
-	font-size: 120%;
+	font-size: 114%;
 }
 
 /* Surface */

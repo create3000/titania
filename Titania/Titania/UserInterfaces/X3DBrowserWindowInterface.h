@@ -1302,6 +1302,10 @@ public:
 	{ return *m_TextureCoordinateEditorButton; }
 
 	Gtk::ToolButton &
+	getLayerEditorButton () const
+	{ return *m_LayerEditorButton; }
+
+	Gtk::ToolButton &
 	getNavigationInfoEditorButton () const
 	{ return *m_NavigationInfoEditorButton; }
 
@@ -1320,10 +1324,6 @@ public:
 	Gtk::ToolButton &
 	getInlineEditorButton () const
 	{ return *m_InlineEditorButton; }
-
-	Gtk::ToolButton &
-	getLayerEditorButton () const
-	{ return *m_LayerEditorButton; }
 
 	Gtk::ToolButton &
 	getPrecisionPlacementPanelButton () const
@@ -1947,6 +1947,10 @@ public:
 
 	virtual
 	void
+	on_layer_editor_clicked () = 0;
+
+	virtual
+	void
 	on_navigation_info_editor_clicked () = 0;
 
 	virtual
@@ -1964,10 +1968,6 @@ public:
 	virtual
 	void
 	on_inline_editor_clicked () = 0;
-
-	virtual
-	void
-	on_layer_editor_clicked () = 0;
 
 	virtual
 	void
@@ -2357,12 +2357,12 @@ private:
 	Gtk::ToolButton*                 m_GeometryPropertiesEditorButton;
 	Gtk::ToolButton*                 m_ColorPerVertexEditorButton;
 	Gtk::ToolButton*                 m_TextureCoordinateEditorButton;
+	Gtk::ToolButton*                 m_LayerEditorButton;
 	Gtk::ToolButton*                 m_NavigationInfoEditorButton;
 	Gtk::ToolButton*                 m_ViewpointEditorButton;
 	Gtk::ToolButton*                 m_LightEditorButton;
 	Gtk::ToolButton*                 m_LODEditorButton;
 	Gtk::ToolButton*                 m_InlineEditorButton;
-	Gtk::ToolButton*                 m_LayerEditorButton;
 	Gtk::ToolButton*                 m_PrecisionPlacementPanelButton;
 	Gtk::ToolButton*                 m_CreatePrototypeInstanceButton;
 	Gtk::ToolButton*                 m_NodeIndexButton;

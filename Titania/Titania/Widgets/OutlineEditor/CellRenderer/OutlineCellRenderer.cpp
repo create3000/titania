@@ -745,11 +745,11 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 			parentPath .up ();
 			parentPath .up ();
 
-			const auto & scene  = treeView -> getScene ();
-			const auto   parent = treeView -> get_model () -> get_iter (parentPath);
-			const auto & node   = *static_cast <X3D::SFNode*> (treeView -> get_object (parent));
-			const auto   field  = static_cast <X3D::X3DFieldDefinition*> (get_object ());
-			const int    margin = ICON_X_PAD + icon_width + NAME_X_PAD;
+			const auto &  scene  = treeView -> getScene ();
+			const auto    parent = treeView -> get_model () -> get_iter (parentPath);
+			const auto &  node   = *static_cast <X3D::SFNode*> (treeView -> get_object (parent));
+			const auto    field  = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+			const int32_t margin = ICON_X_PAD + icon_width + NAME_X_PAD;
 
 			textview .reset (new TextViewEditable (treeView, node, field, path, field -> isArray () or field -> getType () == X3D::X3DConstants::SFString, treeView -> get_use_locale ()));
 
@@ -883,13 +883,13 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 {
 	X3D::Vector2f point (point_x, point_y);
 
-	int x              = cell_area .get_x ();
-	int y              = cell_area .get_y ();
-	int height         = cell_area .get_height ();
-	int minimum_width  = 0;
-	int natural_width  = 0;
-	int minimum_height = 0;
-	int natural_height = 0;
+	int32_t x              = cell_area .get_x ();
+	int32_t y              = cell_area .get_y ();
+	int32_t height         = cell_area .get_height ();
+	int32_t minimum_width  = 0;
+	int32_t natural_width  = 0;
+	int32_t minimum_height = 0;
+	int32_t natural_height = 0;
 
 	// Icon
 
@@ -1100,14 +1100,14 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
                                    const Gdk::Rectangle & cell_area,
                                    Gtk::CellRendererState flags)
 {
-	int x              = cell_area .get_x ();
-	int y              = cell_area .get_y ();
-	int width          = cell_area .get_width ();
-	int height         = cell_area .get_height ();
-	int minimum_width  = 0;
-	int natural_width  = 0;
-	int minimum_height = 0;
-	int natural_height = 0;
+	int32_t x              = cell_area .get_x ();
+	int32_t y              = cell_area .get_y ();
+	int32_t width          = cell_area .get_width ();
+	int32_t height         = cell_area .get_height ();
+	int32_t minimum_width  = 0;
+	int32_t natural_width  = 0;
+	int32_t minimum_height = 0;
+	int32_t natural_height = 0;
 
 	const auto data_type = get_data_type ();
 
@@ -1177,7 +1177,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 		const double field_height = minimum_height;
 
 		const auto      data     = property_data () .get_value ();
-		const int       selected = data -> get_user_data () -> selected | property_cell_background_set ();
+		const int32_t   selected = data -> get_user_data () -> selected | property_cell_background_set ();
 		const Gdk::RGBA color    = selected & OUTLINE_SELECTED ? property_foreground_rgba () : property_cell_background_rgba ();
 
 		context -> reset_clip ();
@@ -1297,11 +1297,11 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
                                     int minimum_height,
                                     Gtk::CellRendererState flags)
 {
-	const int x      = cell_area .get_x ();
-	const int y      = background_area .get_y ();
-	const int width  = cell_area .get_width () - int (ROUTE_RADIUS);
-	const int height = background_area .get_height ();
-	const int y_pad  = (height - minimum_height) / 2;
+	const int32_t x      = cell_area .get_x ();
+	const int32_t y      = background_area .get_y ();
+	const int32_t width  = cell_area .get_width () - int32_t (ROUTE_RADIUS);
+	const int32_t height = background_area .get_height ();
+	const int32_t y_pad  = (height - minimum_height) / 2;
 
 	double       input_x  = x;
 	const double input_y  = y + y_pad + ROUTE_Y_PAD;
@@ -1324,9 +1324,8 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 	const auto foregroundColor         = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
 	const auto selectedForegroundColor = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
 
-	const int  selected      = data -> get_user_data () -> selected | property_cell_background_set ();
-	const auto color         = selected & OUTLINE_SELECTED ? selectedForegroundColor : foregroundColor;
-	const auto selectedColor = selected & OUTLINE_SELECTED ? selectedForegroundColor : property_cell_background_rgba () .get_value ();
+	const int32_t selected      = data -> get_user_data () -> selected | property_cell_background_set ();
+	const auto    selectedColor = selected & OUTLINE_SELECTED ? selectedForegroundColor : property_cell_background_rgba () .get_value ();
 
 	//	context -> set_source_rgb (0.9, 0.9, 0.9);
 	//	context -> rectangle (x, y, width, height);
@@ -1343,7 +1342,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		const auto selected_above = have_selected_routes (data -> get_inputs_above ());
 		const auto selected_below = have_selected_routes (data -> get_inputs_below ());
 
-		const auto c = selected_above or selected_below ? selectedColor : foregroundColor;
+		const auto & c = selected_above or selected_below ? selectedColor : foregroundColor;
 		context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 		context -> move_to (input_x, input_y);
@@ -1354,7 +1353,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 		if (not data -> get_inputs_above () .empty ())
 		{
-			const auto c = selected_above ? selectedColor : foregroundColor;
+			const auto & c = selected_above ? selectedColor : foregroundColor;
 			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 			context -> begin_new_sub_path ();
@@ -1369,7 +1368,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 		if (not data -> get_inputs_below () .empty ())
 		{
-			const auto c = selected_below ? selectedColor : foregroundColor;
+			const auto & c = selected_below ? selectedColor : foregroundColor;
 			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 			context -> begin_new_sub_path ();
@@ -1388,7 +1387,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		const auto selected_above = have_selected_routes (data -> get_outputs_above ());
 		const auto selected_below = have_selected_routes (data -> get_outputs_below ());
 
-		const auto c = selected_above or selected_below ? selectedColor : foregroundColor;
+		const auto & c = selected_above or selected_below ? selectedColor : foregroundColor;
 		context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 		context -> move_to (output_x, output_y);
@@ -1399,7 +1398,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 		if (not data -> get_outputs_above () .empty ())
 		{
-			const auto c = selected_above ? selectedColor : foregroundColor;
+			const auto & c = selected_above ? selectedColor : foregroundColor;
 			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 			context -> begin_new_sub_path ();
@@ -1414,7 +1413,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 		if (not data -> get_outputs_below () .empty ())
 		{
-			const auto c = selected_below ? selectedColor : foregroundColor;
+			const auto & c = selected_below ? selectedColor : foregroundColor;
 			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 			context -> begin_new_sub_path ();
@@ -1433,7 +1432,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		const double cy     = (input_y + output_y) / 2;
 		const double radius = (input_y + output_y) / 2 - input_y;
 
-		context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
+		context -> set_source_rgba (selectedColor .get_red (), selectedColor .get_green (), selectedColor .get_blue (), selectedColor .get_alpha ());
 
 		context -> move_to (input_x, input_y);
 		context -> line_to (output_x, input_y);
@@ -1447,7 +1446,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 	if (not data -> get_connections () .empty ())
 	{
-		const auto c = have_selected_routes (data -> get_connections ()) ? selectedColor : foregroundColor;
+		const auto & c = have_selected_routes (data -> get_connections ()) ? selectedColor : foregroundColor;
 		context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 		context -> move_to (connector_x, y);

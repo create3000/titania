@@ -30,9 +30,11 @@
       <source stock-id="Prototype" filename="icons/Node/Prototype.96.svg"/>
       <source stock-id="Index" filename="icons/Index.svg"/>
       <source stock-id="ColorSingleVertex" filename="icons/ColorSingleVertex.svg"/>
+      <source stock-id="gtk-goto-bottom" filename="icons/Faenza/16/gtk-goto-bottom.png"/>
       <source stock-id="gtk-media-play" filename="icons/Faenza/16/gtk-media-play-ltr.png"/>
       <source stock-id="gtk-apply" filename="icons/Faenza/16/gtk-apply.png"/>
       <source stock-id="gtk-redo" filename="icons/Faenza/16/gtk-redo-ltr.png"/>
+      <source stock-id="gtk-goto-top" filename="icons/Faenza/16/gtk-goto-top.png"/>
       <source stock-id="Hammer" filename="icons/Hammer.svg"/>
       <source stock-id="GroupNodes" filename="icons/Group.svg"/>
       <source stock-id="MustEvaluate" filename="icons/MustEvaluate.svg"/>
@@ -62,14 +64,16 @@
       <source stock-id="gtk-add" filename="icons/Faenza/16/gtk-add.png"/>
       <source stock-id="ColorSingleFace" filename="icons/ColorSingleFace.svg"/>
       <source stock-id="gtk-about" filename="icons/Faenza/16/gtk-about.png"/>
+      <source stock-id="emblem-shared-symbolic" filename="icons/Faenza/scalable/emblem-shared-symbolic.svg"/>
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>
       <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.96.svg"/>
-      <source stock-id="gtk-close" filename="icons/Faenza/16/gtk-close.png"/>
       <source stock-id="MergePoints" filename="icons/MergePoints.svg"/>
       <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
+      <source stock-id="gtk-close" filename="icons/Faenza/16/gtk-close.png"/>
       <source stock-id="Environment" filename="icons/Environment.svg"/>
       <source stock-id="gtk-open" filename="icons/Faenza/16/gtk-open.png"/>
       <source stock-id="gtk-properties" filename="icons/Faenza/16/gtk-properties.png"/>
+      <source stock-id="edit-find-symbolic" filename="icons/Faenza/scalable/edit-find-symbolic.svg"/>
       <source stock-id="gtk-remove" filename="icons/Faenza/16/gtk-remove.png"/>
       <source stock-id="Combine" filename="icons/Combine.svg"/>
       <source stock-id="TextureQuality" filename="icons/TextureQuality.svg"/>
@@ -100,17 +104,17 @@
       <source stock-id="gtk-edit-scalable" filename="icons/Faenza/scalable/gtk-edit.svg"/>
       <source stock-id="Checkerboard" filename="icons/Checkerboard.svg"/>
       <source stock-id="Blue" filename="icons/Blue.svg"/>
-      <source stock-id="Connected" filename="icons/Connected.svg"/>
       <source stock-id="Geometry" filename="icons/Geometry.svg"/>
       <source stock-id="History" filename="icons/History.svg"/>
+      <source stock-id="Connected" filename="icons/Connected.svg"/>
       <source stock-id="gtk-undo" filename="icons/Faenza/16/gtk-undo-ltr.png"/>
       <source stock-id="gtk-clear" filename="icons/Faenza/16/gtk-clear.png"/>
       <source stock-id="gtk-yes" filename="icons/Faenza/16/gtk-yes.png"/>
       <source stock-id="stock_new-tab" filename="icons/Faenza/16/stock_new-tab.png"/>
       <source stock-id="Time" filename="icons/Time.svg"/>
-      <source stock-id="PaintBrush" filename="icons/PaintBrush.svg"/>
       <source stock-id="gtk-cancel" filename="icons/Faenza/16/gtk-cancel.png"/>
       <source stock-id="gtk-ok" filename="icons/Faenza/16/gtk-ok.png"/>
+      <source stock-id="PaintBrush" filename="icons/PaintBrush.svg"/>
       <source stock-id="PrimitiveQuality" filename="icons/PrimitiveQuality.svg"/>
       <source stock-id="Navigation" filename="icons/Navigation.svg"/>
       <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
@@ -3644,6 +3648,21 @@
                           </packing>
                         </child>
                         <child>
+                          <object class="GtkToolButton" id="LayerEditorButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">Layer Editor</property>
+                            <property name="label" translatable="yes">Layer Editor</property>
+                            <property name="use_underline">True</property>
+                            <property name="stock_id">LayerSet</property>
+                            <signal name="clicked" handler="on_layer_editor_clicked" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
                           <object class="GtkToolButton" id="NavigationInfoEditorButton">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -3712,21 +3731,6 @@
                             <property name="use_underline">True</property>
                             <property name="stock_id">Inline</property>
                             <signal name="clicked" handler="on_inline_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="LayerEditorButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Layer Editor</property>
-                            <property name="label" translatable="yes">Layer Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">LayerSet</property>
-                            <signal name="clicked" handler="on_layer_editor_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>

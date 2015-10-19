@@ -227,6 +227,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Create new light node</property>
                     <property name="popup">NewLightMenu</property>
                     <child>
                       <object class="GtkImage" id="image3">
@@ -247,6 +248,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Remove this light node</property>
                     <signal name="clicked" handler="on_remove_light_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image4">

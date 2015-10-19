@@ -429,9 +429,9 @@ BrowserWindow::on_style_updated ()
 //		string += "  color: " + fg_selected .to_string () + ";";
 //		string += "  background-color: " + bg_selected .to_string () + ";";
 //		string += "}";
-		string += "GtkExpander > GtkLabel {";
-		string += "	border-bottom: 1px solid " + fg_normal .to_string () + ";";
-		string += "}";
+//		string += "GtkExpander > GtkLabel {";
+//		string += "	border-bottom: 1px solid " + fg_normal .to_string () + ";";
+//		string += "}";
 
 		cssProvider -> load_from_data (string);
 	}
@@ -2180,6 +2180,12 @@ BrowserWindow::on_texture_coordinate_editor_clicked ()
 }
 
 void
+BrowserWindow::on_layer_editor_clicked ()
+{
+	addDialog ("LayerEditor");
+}
+
+void
 BrowserWindow::on_navigation_info_editor_clicked ()
 {
 	addDialog ("NavigationInfoEditor");
@@ -2207,12 +2213,6 @@ void
 BrowserWindow::on_inline_editor_clicked ()
 {
 	addDialog ("InlineEditor");
-}
-
-void
-BrowserWindow::on_layer_editor_clicked ()
-{
-	addDialog ("LayerEditor");
 }
 
 void
