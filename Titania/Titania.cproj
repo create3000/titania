@@ -1946,8 +1946,8 @@
     <None Include="Titania\Editors\ScenePropertiesEditor\ScenePropertiesEditor.h" />
     <None Include="Titania\UserInterfaces\X3DScenePropertiesEditorInterface.h" />
     <None Include="share\titania\ui\icons\Faenza\16\gtk-properties.png" />
-    <None Include="share\titania\ui\Editors\Units.ini" />
     <None Include="Titania\Editors\ScenePropertiesEditor\X3DUnitEditor.h" />
+    <None Include="share\titania\units\units.ini" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2039,6 +2039,7 @@
     <Folder Include="share\titania\ui\icons\Faenza\scalable\" />
     <Folder Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\" />
     <Folder Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\" />
+    <Folder Include="share\titania\units\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

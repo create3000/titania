@@ -168,7 +168,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">UnitMassAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">16</property>
+                        <property name="digits">15</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -185,7 +185,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">UnitLengthAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">16</property>
+                        <property name="digits">15</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -202,7 +202,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">UnitForceAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">16</property>
+                        <property name="digits">15</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -219,7 +219,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">UnitAngleAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">16</property>
+                        <property name="digits">15</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>

@@ -66,30 +66,30 @@ X3DUnitEditor::initialize ()
 {
 	getExecutionContext () .addInterest (this, &X3DUnitEditor::set_execution_context);
 
-	keyfile .load_from_file (get_ui ("Editors/Units.ini"), Glib::KEY_FILE_KEEP_COMMENTS);
+	keyfile .load_from_file (find_data_file ("units/units.ini"));
 
 	if (keyfile .has_group ("angle"))
 	{
-	   for (const auto key : keyfile .get_keys ("angle"))
-			getUnitAngleCombo () .append (key);
+		for (const auto key : keyfile .get_keys ("angle"))
+			getUnitAngleCombo () .append (key, _ (key .c_str ()));
 	}
 
 	if (keyfile .has_group ("force"))
 	{
-	   for (const auto key : keyfile .get_keys ("force"))
-			getUnitForceCombo () .append (key);
+		for (const auto key : keyfile .get_keys ("force"))
+			getUnitForceCombo () .append (key, _ (key .c_str ()));
 	}
 
 	if (keyfile .has_group ("length"))
 	{
-	   for (const auto key : keyfile .get_keys ("length"))
-			getUnitLengthCombo () .append (key);
+		for (const auto key : keyfile .get_keys ("length"))
+			getUnitLengthCombo () .append (key, _ (key .c_str ()));
 	}
 
 	if (keyfile .has_group ("mass"))
 	{
-	   for (const auto key : keyfile .get_keys ("mass"))
-			getUnitMassCombo () .append (key);
+		for (const auto key : keyfile .get_keys ("mass"))
+			getUnitMassCombo () .append (key, _ (key .c_str ()));
 	}
 
 	set_execution_context ();
@@ -105,10 +105,10 @@ X3DUnitEditor::set_execution_context ()
 	const auto & length = getScene () -> getUnit (X3D::UnitCategory::LENGTH);
 	const auto & mass   = getScene () -> getUnit (X3D::UnitCategory::MASS);
 
-	getUnitAngleCombo ()  .get_entry () -> set_text (angle  .getName ());
-	getUnitForceCombo ()  .get_entry () -> set_text (force  .getName ());
-	getUnitLengthCombo () .get_entry () -> set_text (length .getName ());
-	getUnitMassCombo ()   .get_entry () -> set_text (mass   .getName ());
+	getUnitAngleEntry ()  .set_text (angle  .getName ());
+	getUnitForceEntry ()  .set_text (force  .getName ());
+	getUnitLengthEntry () .set_text (length .getName ());
+	getUnitMassEntry ()   .set_text (mass   .getName ());
 
 	getUnitAngleAdjustment ()  -> set_value (angle  .getConversionFactor ());
 	getUnitForceAdjustment ()  -> set_value (force  .getConversionFactor ());
@@ -189,29 +189,29 @@ X3DUnitEditor::on_unit_mass_delete_text (int start_pos, int end_pos)
 void
 X3DUnitEditor::on_unit_angle_changed ()
 {
-	on_unit_changed (getUnitAngleEntry (), getUnitAngleAdjustment (), "angle", "radian");
+	on_unit_changed (getUnitAngleCombo (), getUnitAngleAdjustment (), "angle", "radian");
 }
 
 void
 X3DUnitEditor::on_unit_force_changed ()
 {
-	on_unit_changed (getUnitForceEntry (), getUnitForceAdjustment (), "force", "newton");
+	on_unit_changed (getUnitForceCombo (), getUnitForceAdjustment (), "force", "newton");
 }
 
 void
 X3DUnitEditor::on_unit_length_changed ()
 {
-	on_unit_changed (getUnitLengthEntry (), getUnitLengthAdjustment (), "length", "metre");
+	on_unit_changed (getUnitLengthCombo (), getUnitLengthAdjustment (), "length", "metre");
 }
 
 void
 X3DUnitEditor::on_unit_mass_changed ()
 {
-	on_unit_changed (getUnitMassEntry (), getUnitMassAdjustment (), "mass", "kilogram");
+	on_unit_changed (getUnitMassCombo (), getUnitMassAdjustment (), "mass", "kilogram");
 }
 
 void
-X3DUnitEditor::on_unit_changed (const Gtk::Entry & entry,
+X3DUnitEditor::on_unit_changed (const Gtk::ComboBoxText & combo,
                                 const Glib::RefPtr <Gtk::Adjustment> & adjustment,
                                 const std::string & category,
                                 const std::string & defaultUnit)
@@ -220,20 +220,27 @@ X3DUnitEditor::on_unit_changed (const Gtk::Entry & entry,
 		return;
 
 	changing = true;
-	
-	auto name  = entry .get_text ();
+
+	std::string name;
+
+	if (combo .get_active_row_number () < 0)
+		name = combo .get_entry () -> get_text ();
+	else
+	   name = combo .get_active_id ();
 
 	if (name .empty ())
+	{
 	   name = defaultUnit;
-	
-	if (hasKey (category, name))
+		adjustment -> set_value (1);
+	}
+	else if (hasKey (category, name))
 		adjustment -> set_value (getKey (category, name));
 	
 	getScene () -> updateUnit (category, name, adjustment -> get_value ());
 
+	getBrowserWindow () -> isModified (getBrowser (), true);
+
 	changing = false;
-
-
 }
 
 X3DUnitEditor::~X3DUnitEditor ()

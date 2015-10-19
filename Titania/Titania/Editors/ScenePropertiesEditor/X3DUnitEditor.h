@@ -146,7 +146,7 @@ private:
 	on_unit_mass_changed () final override;
 
 	void
-	on_unit_changed (const Gtk::Entry &,
+	on_unit_changed (const Gtk::ComboBoxText &,
 	                 const Glib::RefPtr <Gtk::Adjustment> &,
 	                 const std::string &,
 	                 const std::string &);

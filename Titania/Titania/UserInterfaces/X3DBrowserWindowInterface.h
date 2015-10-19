@@ -342,6 +342,10 @@ public:
 	{ return *m_BrowserRemoveUnusedPrototypesMenuItem; }
 
 	Gtk::ImageMenuItem &
+	getBrowserScenePropertiesMenuItem () const
+	{ return *m_BrowserScenePropertiesMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getBrowserCloseMenuItem () const
 	{ return *m_BrowserCloseMenuItem; }
 
@@ -1663,6 +1667,10 @@ public:
 
 	virtual
 	void
+	on_scene_properties_activated () = 0;
+
+	virtual
+	void
 	on_close_activated () = 0;
 
 	virtual
@@ -1880,10 +1888,6 @@ public:
 	virtual
 	bool
 	on_menubar_button_press_event (GdkEventButton* event) = 0;
-
-	virtual
-	void
-	on_scene_properties_activated () = 0;
 
 	virtual
 	void
@@ -2113,6 +2117,7 @@ private:
 	Gtk::ImageMenuItem*              m_BrowserExportMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserRevertMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserRemoveUnusedPrototypesMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserScenePropertiesMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserCloseMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserQuitMenuItem;
 	Gtk::MenuItem*                   m_BrowserEditMenuItem;

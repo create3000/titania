@@ -674,7 +674,7 @@
                         <property name="input_purpose">number</property>
                         <property name="adjustment">PerspectiveViewpointFieldOfViewAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">8</property>
+                        <property name="digits">6</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -784,7 +784,6 @@
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
                     <property name="spacing">2</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="spinbutton2">
                         <property name="visible">True</property>
@@ -873,7 +872,6 @@
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
                     <property name="spacing">2</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="spinbutton9">
                         <property name="visible">True</property>
@@ -938,13 +936,19 @@
                     <property name="halign">start</property>
                     <property name="spacing">8</property>
                     <child>
-                      <object class="GtkBox" id="PerspectiveViewpointOrientationToolBox">
-                        <property name="width_request">96</property>
+                      <object class="GtkViewport" id="viewport1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="orientation">vertical</property>
                         <child>
-                          <placeholder/>
+                          <object class="GtkBox" id="PerspectiveViewpointOrientationToolBox">
+                            <property name="width_request">96</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
                         </child>
                       </object>
                       <packing>
@@ -1033,7 +1037,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">PerspectiveViewpointOrientationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">8</property>
+                            <property name="digits">6</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -1114,7 +1118,6 @@
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
                     <property name="spacing">2</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="spinbutton13">
                         <property name="visible">True</property>
@@ -1203,7 +1206,6 @@
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
                     <property name="spacing">2</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="spinbutton16">
                         <property name="visible">True</property>
@@ -1268,13 +1270,19 @@
                     <property name="halign">start</property>
                     <property name="spacing">8</property>
                     <child>
-                      <object class="GtkBox" id="OthoViewpointOrientationToolBox">
-                        <property name="width_request">96</property>
+                      <object class="GtkViewport" id="viewport2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="orientation">vertical</property>
                         <child>
-                          <placeholder/>
+                          <object class="GtkBox" id="OthoViewpointOrientationToolBox">
+                            <property name="width_request">96</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
                         </child>
                       </object>
                       <packing>
@@ -1363,7 +1371,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">OrthoViewpointOrientationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">8</property>
+                            <property name="digits">6</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -1548,7 +1556,7 @@
                         <property name="input_purpose">number</property>
                         <property name="adjustment">GeoViewpointFieldOfViewAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">8</property>
+                        <property name="digits">6</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1658,12 +1666,10 @@
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
                     <property name="spacing">2</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="GeoViewpointPositionXSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip_text" translatable="yes">x-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointPositionXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1680,7 +1686,6 @@
                       <object class="GtkSpinButton" id="GeoViewpointPositionYSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip_text" translatable="yes">y-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointPositionYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -1697,11 +1702,11 @@
                       <object class="GtkSpinButton" id="GeoViewpointPositionZSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip_text" translatable="yes">z-Axis</property>
+                        <property name="tooltip_text" translatable="yes">Height</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointPositionZAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">9</property>
+                        <property name="digits">3</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1747,7 +1752,6 @@
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
                     <property name="spacing">2</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="GeoViewpointCenterOfRotationXSpinButton">
                         <property name="visible">True</property>
@@ -1756,7 +1760,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointCenterOfRotationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">9</property>
+                        <property name="digits">3</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1773,7 +1777,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointCenterOfRotationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">9</property>
+                        <property name="digits">3</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1790,7 +1794,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointCenterOfRotationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">9</property>
+                        <property name="digits">3</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1812,13 +1816,19 @@
                     <property name="halign">start</property>
                     <property name="spacing">8</property>
                     <child>
-                      <object class="GtkBox" id="GeoViewpointOrientationToolBox">
-                        <property name="width_request">96</property>
+                      <object class="GtkViewport" id="viewport3">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="orientation">vertical</property>
                         <child>
-                          <placeholder/>
+                          <object class="GtkBox" id="GeoViewpointOrientationToolBox">
+                            <property name="width_request">96</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
                         </child>
                       </object>
                       <packing>
@@ -1907,7 +1917,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">GeoViewpointOrientationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">8</property>
+                            <property name="digits">6</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>

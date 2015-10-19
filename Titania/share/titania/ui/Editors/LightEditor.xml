@@ -1176,7 +1176,7 @@
                     <property name="text" translatable="yes">0,000</property>
                     <property name="adjustment">SpotLightBeamWidthAdjustment</property>
                     <property name="climb_rate">0.01</property>
-                    <property name="digits">8</property>
+                    <property name="digits">6</property>
                     <property name="numeric">True</property>
                   </object>
                   <packing>
@@ -1192,7 +1192,7 @@
                     <property name="text" translatable="yes">0,000</property>
                     <property name="adjustment">SpotLightCutOffAngleAdjustment</property>
                     <property name="climb_rate">0.01</property>
-                    <property name="digits">8</property>
+                    <property name="digits">6</property>
                     <property name="numeric">True</property>
                   </object>
                   <packing>

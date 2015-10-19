@@ -1,16 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Editor/X3DEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/share/titania/ui/Editors/PrecisionPlacementPanel.xml">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Editor/X3DEditor.cpp" Line="5" Column="5" />
-      <File FileName="libtitania-x3d/Titania/X3D/Bits/Traverse.h" Line="38" Column="38" />
-      <File FileName="libtitania-x3d/Titania/X3D/Bits/Traverse.cpp" Line="86" Column="86" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/X3DPtrArray.h" Line="17" Column="17" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="10" Column="10" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="62" Column="62" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp" Line="32" Column="32" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/X3DPtr.h" Line="25" Column="25" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.h" Line="23" Column="23" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.cpp" Line="52" Column="52" />
+      <File FileName="Titania/Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.h" Line="43" Column="43" />
+      <File FileName="Titania/share/titania/ui/Editors/PrecisionPlacementPanel.xml" Line="40" Column="40" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

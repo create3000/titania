@@ -502,7 +502,6 @@
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
                     <property name="spacing">2</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkSpinButton" id="spinbutton2">
                         <property name="visible">True</property>
@@ -668,7 +667,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">TransformRotationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">8</property>
+                            <property name="digits">6</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -798,7 +797,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">TransformScaleOrientationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">8</property>
+                            <property name="digits">6</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -2117,7 +2116,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">GeoTransformRotationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">8</property>
+                            <property name="digits">6</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -2247,7 +2246,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">GeoTransformScaleOrientationAAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">8</property>
+                            <property name="digits">6</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -2367,7 +2366,6 @@
                       <object class="GtkSpinButton" id="GeoTransformGeoCenterXSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip_text" translatable="yes">x-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoTransformGeoCenterXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -2384,7 +2382,6 @@
                       <object class="GtkSpinButton" id="GeoTransformGeoCenterYSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip_text" translatable="yes">y-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoTransformGeoCenterYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -2401,11 +2398,11 @@
                       <object class="GtkSpinButton" id="GeoTransformGeoCenterZSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip_text" translatable="yes">z-Axis</property>
+                        <property name="tooltip_text" translatable="yes">Height</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoTransformGeoCenterZAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">9</property>
+                        <property name="digits">3</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -2976,7 +2973,6 @@
                       <object class="GtkSpinButton" id="GeoLocationGeoCoordsXSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip_text" translatable="yes">x-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoLocationGeoCoordsXAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -2993,7 +2989,6 @@
                       <object class="GtkSpinButton" id="GeoLocationGeoCoordsYSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip_text" translatable="yes">y-Axis</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoLocationGeoCoordsYAdjustment</property>
                         <property name="climb_rate">0.01</property>
@@ -3010,11 +3005,11 @@
                       <object class="GtkSpinButton" id="GeoLocationGeoCoordsZSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip_text" translatable="yes">z-Axis</property>
+                        <property name="tooltip_text" translatable="yes">Height</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoLocationGeoCoordsZAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">9</property>
+                        <property name="digits">3</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
