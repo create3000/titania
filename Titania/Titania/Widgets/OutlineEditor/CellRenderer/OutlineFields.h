@@ -250,7 +250,7 @@ get_field_value (const X3D::X3DScene* scene, const X3D::X3DFieldDefinition* cons
 
 			osstream
 				<< X3D::Generator::Precision <X3D::SFDouble::value_type>
-				<< scene -> fromUnit (fieldDefinition -> getUnit (), *static_cast <const X3D::SFDouble*> (fieldDefinition));
+				<< scene -> fromBaseUnit (fieldDefinition -> getUnit (), *static_cast <const X3D::SFDouble*> (fieldDefinition));
 
 			return osstream .str ();
 		}
@@ -264,7 +264,7 @@ get_field_value (const X3D::X3DScene* scene, const X3D::X3DFieldDefinition* cons
 
 			osstream
 				<< X3D::Generator::Precision <X3D::SFFloat::value_type>
-				<< scene -> fromUnit (fieldDefinition -> getUnit (), *static_cast <const X3D::SFFloat*> (fieldDefinition));
+				<< scene -> fromBaseUnit (fieldDefinition -> getUnit (), *static_cast <const X3D::SFFloat*> (fieldDefinition));
 
 			return osstream .str ();
 		}
@@ -288,7 +288,7 @@ get_field_value (const X3D::X3DScene* scene, const X3D::X3DFieldDefinition* cons
 				<< " "
 				<< z
 				<< " "
-				<< scene -> fromUnit (X3D::UnitCategory::ANGLE, angle);
+				<< scene -> fromBaseUnit (X3D::UnitCategory::ANGLE, angle);
 
 			return osstream .str ();
 		}
@@ -305,9 +305,9 @@ get_field_value (const X3D::X3DScene* scene, const X3D::X3DFieldDefinition* cons
 
 			osstream
 				<< X3D::Generator::Precision <X3D::SFVec2d::value_type>
-				<< scene -> fromUnit (unit, field .getX ())
+				<< scene -> fromBaseUnit (unit, field .getX ())
 				<< " "
-				<< scene -> fromUnit (unit, field .getY ());
+				<< scene -> fromBaseUnit (unit, field .getY ());
 
 			return osstream .str ();
 		}
@@ -324,9 +324,9 @@ get_field_value (const X3D::X3DScene* scene, const X3D::X3DFieldDefinition* cons
 
 			osstream
 				<< X3D::Generator::Precision <X3D::SFVec2f::value_type>
-				<< scene -> fromUnit (unit, field .getX ())
+				<< scene -> fromBaseUnit (unit, field .getX ())
 				<< " "
-				<< scene -> fromUnit (unit, field .getY ());
+				<< scene -> fromBaseUnit (unit, field .getY ());
 
 			return osstream .str ();
 		}
@@ -344,11 +344,11 @@ get_field_value (const X3D::X3DScene* scene, const X3D::X3DFieldDefinition* cons
 
 			osstream
 				<< X3D::Generator::Precision <X3D::SFVec3d::value_type>
-				<< (geo ? field .getX () : scene -> fromUnit (unit, field .getX ()))
+				<< (geo ? field .getX () : scene -> fromBaseUnit (unit, field .getX ()))
 				<< " "
-				<< (geo ? field .getY () : scene -> fromUnit (unit, field .getY ()))
+				<< (geo ? field .getY () : scene -> fromBaseUnit (unit, field .getY ()))
 				<< " "
-				<< scene -> fromUnit (unit, field .getZ ());
+				<< scene -> fromBaseUnit (unit, field .getZ ());
 
 			return osstream .str ();
 		}
@@ -365,11 +365,11 @@ get_field_value (const X3D::X3DScene* scene, const X3D::X3DFieldDefinition* cons
 
 			osstream
 				<< X3D::Generator::Precision <X3D::SFVec3f::value_type>
-				<< scene -> fromUnit (unit, field .getX ())
+				<< scene -> fromBaseUnit (unit, field .getX ())
 				<< " "
-				<< scene -> fromUnit (unit, field .getY ())
+				<< scene -> fromBaseUnit (unit, field .getY ())
 				<< " "
-				<< scene -> fromUnit (unit, field .getZ ());
+				<< scene -> fromBaseUnit (unit, field .getZ ());
 
 			return osstream .str ();
 		}
@@ -386,13 +386,13 @@ get_field_value (const X3D::X3DScene* scene, const X3D::X3DFieldDefinition* cons
 
 			osstream
 				<< X3D::Generator::Precision <X3D::SFVec4d::value_type>
-				<< scene -> fromUnit (unit, field .getX ())
+				<< scene -> fromBaseUnit (unit, field .getX ())
 				<< " "
-				<< scene -> fromUnit (unit, field .getY ())
+				<< scene -> fromBaseUnit (unit, field .getY ())
 				<< " "
-				<< scene -> fromUnit (unit, field .getZ ())
+				<< scene -> fromBaseUnit (unit, field .getZ ())
 				<< " "
-				<< scene -> fromUnit (unit, field .getW ());
+				<< scene -> fromBaseUnit (unit, field .getW ());
 
 			return osstream .str ();
 		}
@@ -409,13 +409,13 @@ get_field_value (const X3D::X3DScene* scene, const X3D::X3DFieldDefinition* cons
 
 			osstream
 				<< X3D::Generator::Precision <X3D::SFVec4f::value_type>
-				<< scene -> fromUnit (unit, field .getX ())
+				<< scene -> fromBaseUnit (unit, field .getX ())
 				<< " "
-				<< scene -> fromUnit (unit, field .getY ())
+				<< scene -> fromBaseUnit (unit, field .getY ())
 				<< " "
-				<< scene -> fromUnit (unit, field .getZ ())
+				<< scene -> fromBaseUnit (unit, field .getZ ())
 				<< " "
-				<< scene -> fromUnit (unit, field .getW ());
+				<< scene -> fromBaseUnit (unit, field .getW ());
 
 			return osstream .str ();
 		}
@@ -477,7 +477,7 @@ set_field_value (X3D::X3DScene* const scene, X3D::X3DFieldDefinition* const fiel
 		{
 			auto & field = *static_cast <X3D::SFDouble*> (fieldDefinition);
 
-			field = scene -> toUnit (field .getUnit (), field);
+			field = scene -> toBaseUnit (field .getUnit (), field);
 			return;
 		}
 
@@ -485,7 +485,7 @@ set_field_value (X3D::X3DScene* const scene, X3D::X3DFieldDefinition* const fiel
 		{
 			auto & field = *static_cast <X3D::SFFloat*> (fieldDefinition);
 
-			field = scene -> toUnit (field .getUnit (), field);
+			field = scene -> toBaseUnit (field .getUnit (), field);
 			return;
 		}
 
@@ -494,8 +494,8 @@ set_field_value (X3D::X3DScene* const scene, X3D::X3DFieldDefinition* const fiel
 			auto &     field = *static_cast <X3D::SFVec2d*> (fieldDefinition);
 			const auto unit  = field .getUnit ();
 
-			field .setX (scene -> toUnit (unit, field .getX ()));
-			field .setY (scene -> toUnit (unit, field .getY ()));
+			field .setX (scene -> toBaseUnit (unit, field .getX ()));
+			field .setY (scene -> toBaseUnit (unit, field .getY ()));
 			return;
 		}
 
@@ -504,8 +504,8 @@ set_field_value (X3D::X3DScene* const scene, X3D::X3DFieldDefinition* const fiel
 			auto &     field = *static_cast <X3D::SFVec2f*> (fieldDefinition);
 			const auto unit  = field .getUnit ();
 
-			field .setX (scene -> toUnit (unit, field .getX ()));
-			field .setY (scene -> toUnit (unit, field .getY ()));
+			field .setX (scene -> toBaseUnit (unit, field .getX ()));
+			field .setY (scene -> toBaseUnit (unit, field .getY ()));
 			return;
 		}
 
@@ -516,11 +516,11 @@ set_field_value (X3D::X3DScene* const scene, X3D::X3DFieldDefinition* const fiel
 
 			if (not field .isGeospatial ())
 			{
-				field .setX (scene -> toUnit (unit, field .getX ()));
-				field .setY (scene -> toUnit (unit, field .getY ()));
+				field .setX (scene -> toBaseUnit (unit, field .getX ()));
+				field .setY (scene -> toBaseUnit (unit, field .getY ()));
 			}
 
-			field .setZ (scene -> toUnit (unit, field .getZ ()));
+			field .setZ (scene -> toBaseUnit (unit, field .getZ ()));
 			return;
 		}
 
@@ -529,9 +529,9 @@ set_field_value (X3D::X3DScene* const scene, X3D::X3DFieldDefinition* const fiel
 			auto &     field = *static_cast <X3D::SFVec3f*> (fieldDefinition);
 			const auto unit  = field .getUnit ();
 
-			field .setX (scene -> toUnit (unit, field .getX ()));
-			field .setY (scene -> toUnit (unit, field .getY ()));
-			field .setZ (scene -> toUnit (unit, field .getZ ()));
+			field .setX (scene -> toBaseUnit (unit, field .getX ()));
+			field .setY (scene -> toBaseUnit (unit, field .getY ()));
+			field .setZ (scene -> toBaseUnit (unit, field .getZ ()));
 			return;
 		}
 
@@ -540,10 +540,10 @@ set_field_value (X3D::X3DScene* const scene, X3D::X3DFieldDefinition* const fiel
 			auto &     field = *static_cast <X3D::SFVec4d*> (fieldDefinition);
 			const auto unit  = field .getUnit ();
 
-			field .setX (scene -> toUnit (unit, field .getX ()));
-			field .setY (scene -> toUnit (unit, field .getY ()));
-			field .setZ (scene -> toUnit (unit, field .getZ ()));
-			field .setW (scene -> toUnit (unit, field .getW ()));
+			field .setX (scene -> toBaseUnit (unit, field .getX ()));
+			field .setY (scene -> toBaseUnit (unit, field .getY ()));
+			field .setZ (scene -> toBaseUnit (unit, field .getZ ()));
+			field .setW (scene -> toBaseUnit (unit, field .getW ()));
 			return;
 		}
 
@@ -552,10 +552,10 @@ set_field_value (X3D::X3DScene* const scene, X3D::X3DFieldDefinition* const fiel
 			auto &     field = *static_cast <X3D::SFVec4f*> (fieldDefinition);
 			const auto unit  = field .getUnit ();
 
-			field .setX (scene -> toUnit (unit, field .getX ()));
-			field .setY (scene -> toUnit (unit, field .getY ()));
-			field .setZ (scene -> toUnit (unit, field .getZ ()));
-			field .setW (scene -> toUnit (unit, field .getW ()));
+			field .setX (scene -> toBaseUnit (unit, field .getX ()));
+			field .setY (scene -> toBaseUnit (unit, field .getY ()));
+			field .setZ (scene -> toBaseUnit (unit, field .getZ ()));
+			field .setW (scene -> toBaseUnit (unit, field .getW ()));
 			return;
 		}
 
@@ -584,7 +584,7 @@ set_field_value_from_string (X3D::X3DScene* const scene, X3D::X3DFieldDefinition
 			field .setValue (vector .getX (),
 			                 vector .getY (),
 			                 vector .getZ (),
-			                 scene -> toUnit (X3D::UnitCategory::ANGLE, vector .getW ()));
+			                 scene -> toBaseUnit (X3D::UnitCategory::ANGLE, vector .getW ()));
 		   return true;
 		}
 		case X3D::X3DConstants::MFRotation:
@@ -605,7 +605,7 @@ set_field_value_from_string (X3D::X3DScene* const scene, X3D::X3DFieldDefinition
 				field [i] .setValue (vector .getX (),
 				                     vector .getY (),
 				                     vector .getZ (),
-				                     scene -> toUnit (X3D::UnitCategory::ANGLE, vector .getW ()));
+				                     scene -> toBaseUnit (X3D::UnitCategory::ANGLE, vector .getW ()));
 			
 			   ++ i;
 			}

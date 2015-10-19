@@ -126,9 +126,6 @@ public:
 	const X3D::X3DExecutionContextPtr &
 	getExecutionContext () const;
 
-	X3D::X3DExecutionContext*
-	getRootContext () const;
-
 	bool
 	inProtoDeclaration () const;
 

@@ -69,7 +69,7 @@ FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 	getFileFilterFonts () -> set_name (_ ("Fonts"));
 	getFileFilterAll   () -> set_name (_ ("All Files"));
 
-	const auto worldURL = getRootContext () -> getWorldURL ();
+	const auto worldURL = getScene () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		getWindow () .set_uri (worldURL .filename () .str ());

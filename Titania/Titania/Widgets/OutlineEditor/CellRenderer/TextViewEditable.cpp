@@ -125,7 +125,7 @@ TextViewEditable::on_current_time ()
 void
 TextViewEditable::on_reset_activate ()
 {
-	const auto scene = node -> getRootContext ();
+	const auto scene = node -> getScene ();
 
 	try
 	{

@@ -1069,10 +1069,10 @@ X3DEditor::deleteRoute (const X3DExecutionContextPtr & executionContext,
 	using addRoute        = const RoutePtr & (X3DExecutionContext::*) (const SFNode &, const std::string &, const SFNode &, const std::string &);
 	using deleteRoute     = void (X3DExecutionContext::*) (const SFNode &, const std::string &, const SFNode &, const std::string &);
 
-	if (sourceNode -> getRootContext () -> isPrivate ())
+	if (sourceNode -> getScene () -> isPrivate ())
 		return;
 
-	if (destinationNode -> getRootContext () -> isPrivate ())
+	if (destinationNode -> getScene () -> isPrivate ())
 		return;
 
 	bool sourceImported      = false;

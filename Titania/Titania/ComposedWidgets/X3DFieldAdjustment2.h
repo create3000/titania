@@ -202,8 +202,8 @@ X3DFieldAdjustment2 <Type>::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getRootContext () -> units_changed () .removeInterest (this, &X3DFieldAdjustment2::set_field);
-			node -> getField <Type> (name)                .removeInterest (this, &X3DFieldAdjustment2::set_field);
+			node -> getScene () -> units_changed () .removeInterest (this, &X3DFieldAdjustment2::set_field);
+			node -> getField <Type> (name)          .removeInterest (this, &X3DFieldAdjustment2::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -215,8 +215,8 @@ X3DFieldAdjustment2 <Type>::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getRootContext () -> units_changed () .addInterest (this, &X3DFieldAdjustment2::set_field);
-			node -> getField <Type> (name)                .addInterest (this, &X3DFieldAdjustment2::set_field);
+			node -> getScene () -> units_changed () .addInterest (this, &X3DFieldAdjustment2::set_field);
+			node -> getField <Type> (name)          .addInterest (this, &X3DFieldAdjustment2::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -239,8 +239,6 @@ X3DFieldAdjustment2 <Type>::on_value_changed (const int id)
 
 	addUndoFunction <Type> (nodes, name, undoStep);
 
-	const auto scene = getExecutionContext () -> getRootContext ();
-
 	for (const auto & node : nodes)
 	{
 		try
@@ -250,8 +248,8 @@ X3DFieldAdjustment2 <Type>::on_value_changed (const int id)
 			field .removeInterest (this, &X3DFieldAdjustment2::set_field);
 			field .addInterest (this, &X3DFieldAdjustment2::connect);
 
-			X3D::Vector2d vector (scene -> toUnit (unit, adjustments [0] -> get_value ()),
-			                      scene -> toUnit (unit, adjustments [1] -> get_value ()));
+			X3D::Vector2d vector (getScene () -> toBaseUnit (unit, adjustments [0] -> get_value ()),
+			                      getScene () -> toBaseUnit (unit, adjustments [1] -> get_value ()));
 
 			if (normalize)
 				vector .normalize ();
@@ -268,7 +266,7 @@ X3DFieldAdjustment2 <Type>::on_value_changed (const int id)
 				else
 					vector [index1] = vector [id];
 
-				adjustments [index1] -> set_value (scene -> fromUnit (unit, vector [index1]));
+				adjustments [index1] -> set_value (getScene () -> fromBaseUnit (unit, vector [index1]));
 
 				changing = false;
 			}
@@ -302,8 +300,6 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 
 	bool hasField = false;
 
-	const auto scene = getExecutionContext () -> getRootContext ();
-
 	if (index >= 0)
 	{
 		for (const auto & node : basic::make_reverse_range (nodes))
@@ -316,8 +312,8 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 
 				set_bounds ();
 
-				adjustments [0] -> set_value (scene -> fromUnit (unit, field .get1Value (index + 0)));
-				adjustments [1] -> set_value (scene -> fromUnit (unit, field .get1Value (index + 1)));
+				adjustments [0] -> set_value (getScene () -> fromBaseUnit (unit, field .get1Value (index + 0)));
+				adjustments [1] -> set_value (getScene () -> fromBaseUnit (unit, field .get1Value (index + 1)));
 
 				hasField = true;
 				break;
@@ -346,13 +342,11 @@ template <class Type>
 void
 X3DFieldAdjustment2 <Type>::set_bounds ()
 {
-	const auto scene = getExecutionContext () -> getRootContext ();
-
 	for (size_t i = 0, size = adjustments .size (); i < size; ++ i)
-		adjustments [i] -> set_lower (scene -> fromUnit (unit, lower [i]));
-
-	for (size_t i = 0, size = adjustments .size (); i < size; ++ i)
-		adjustments [i] -> set_upper (scene -> fromUnit (unit, upper [i]));
+	{
+		adjustments [i] -> set_lower (getScene () -> fromBaseUnit (unit, lower [i]));
+		adjustments [i] -> set_upper (getScene () -> fromBaseUnit (unit, upper [i]));
+	}
 }
 
 template <class Type>

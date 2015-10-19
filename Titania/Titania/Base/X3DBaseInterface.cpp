@@ -125,15 +125,6 @@ X3DBaseInterface::getExecutionContext () const
 	return browserWindow -> getExecutionContext ();
 }
 
-X3D::X3DExecutionContext*
-X3DBaseInterface::getRootContext () const
-{
-	if (getExecutionContext () -> isRootContext ())
-		return getExecutionContext ();
-
-	return getExecutionContext () -> getRootContext ();
-}
-
 bool
 X3DBaseInterface::inProtoDeclaration () const
 {
@@ -164,18 +155,18 @@ X3D::WorldInfoPtr
 X3DBaseInterface::getWorldInfo (const bool create)
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
-	auto worldInfo = getRootContext () -> getWorldInfo ();
+	auto worldInfo = getScene () -> getWorldInfo ();
 
 	if (not worldInfo)
 	{
 		if (not create)
 			throw X3D::Error <X3D::NOT_SUPPORTED> ("X3DBaseInterface::getWorldInfo: not supported.");
 	
-		worldInfo = getRootContext () -> createNode <X3D::WorldInfo> ();
-		worldInfo -> title () = getRootContext () -> getWorldURL () .basename (false);
+		worldInfo = getScene () -> createNode <X3D::WorldInfo> ();
+		worldInfo -> title () = getScene () -> getWorldURL () .basename (false);
 
-		getRootContext () -> getRootNodes () .emplace_front (worldInfo);
-		getRootContext () -> realize ();
+		getScene () -> getRootNodes () .emplace_front (worldInfo);
+		getScene () -> realize ();
 
 		getBrowserWindow () -> isModified (getBrowser (), true);
 	}

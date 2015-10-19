@@ -161,8 +161,8 @@ X3DFieldAdjustment <Type>::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getRootContext () -> units_changed () .removeInterest (this, &X3DFieldAdjustment::set_field);
-			node -> getField <Type> (name)                .removeInterest (this, &X3DFieldAdjustment::set_field);
+			node -> getScene () -> units_changed () .removeInterest (this, &X3DFieldAdjustment::set_field);
+			node -> getField <Type> (name)          .removeInterest (this, &X3DFieldAdjustment::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -174,8 +174,8 @@ X3DFieldAdjustment <Type>::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getRootContext () -> units_changed () .addInterest (this, &X3DFieldAdjustment::set_field);
-			node -> getField <Type> (name)                .addInterest (this, &X3DFieldAdjustment::set_field);
+			node -> getScene () -> units_changed () .addInterest (this, &X3DFieldAdjustment::set_field);
+			node -> getField <Type> (name)          .addInterest (this, &X3DFieldAdjustment::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -193,8 +193,6 @@ X3DFieldAdjustment <Type>::on_value_changed ()
 
 	addUndoFunction <Type> (nodes, name, undoStep);
 
-	const auto scene = getExecutionContext () -> getRootContext ();
-
 	for (const auto & node : nodes)
 	{
 		try
@@ -204,7 +202,7 @@ X3DFieldAdjustment <Type>::on_value_changed ()
 			field .removeInterest (this, &X3DFieldAdjustment::set_field);
 			field .addInterest (this, &X3DFieldAdjustment::connect);
 
-			field = scene -> toUnit (unit, adjustment -> get_value ());
+			field = getScene () -> toBaseUnit (unit, adjustment -> get_value ());
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -232,8 +230,6 @@ X3DFieldAdjustment <Type>::set_buffer ()
 
 	bool hasField = false;
 
-	const auto scene = getExecutionContext () -> getRootContext ();
-
 	for (const auto & node : basic::make_reverse_range (nodes))
 	{
 		try
@@ -244,7 +240,7 @@ X3DFieldAdjustment <Type>::set_buffer ()
 
 			set_bounds ();
 
-			adjustment -> set_value (scene -> fromUnit (unit, field));
+			adjustment -> set_value (getScene () -> fromBaseUnit (unit, field));
 
 			hasField = true;
 			break;
@@ -271,10 +267,8 @@ template <class Type>
 void
 X3DFieldAdjustment <Type>::set_bounds ()
 {
-	const auto scene = getExecutionContext () -> getRootContext ();
-
-	adjustment -> set_lower (scene -> fromUnit (unit, lower));
-	adjustment -> set_upper (scene -> fromUnit (unit, upper));
+	adjustment -> set_lower (getScene () -> fromBaseUnit (unit, lower));
+	adjustment -> set_upper (getScene () -> fromBaseUnit (unit, upper));
 }
 
 template <class Type>

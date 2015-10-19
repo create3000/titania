@@ -423,29 +423,29 @@ throw (Error <INVALID_OPERATION_TIMING>,
  *  Returns the master execution context for this node.  This is normaly the initial scene the node belongs to.
  */
 X3DScene*
-X3DBaseNode::getMasterContext () const
+X3DBaseNode::getMasterScene () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	X3DExecutionContext* executionContext = getExecutionContext () -> getRootContext ();
+	X3DScene* scene = getExecutionContext () -> getScene ();
 
-	while (not executionContext -> isMasterContext ())
-		executionContext = executionContext -> getRootContext ();
+	while (not scene -> isMasterScene ())
+		scene = executionContext -> getScene ();
 
-	return dynamic_cast <X3DScene*> (executionContext);
+	return scene;
 }
 
 /***
  *  Returns the root execution context for this node.  This is normaly the scene the node belongs to.
  */
 X3DScene*
-X3DBaseNode::getRootContext () const
+X3DBaseNode::getScene () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	X3DExecutionContext* executionContext = getExecutionContext ();
 
-	while (not executionContext -> isRootContext ())
+	while (not executionContext -> isScene ())
 		executionContext = executionContext -> getExecutionContext ();
 
 	return dynamic_cast <X3DScene*> (executionContext);

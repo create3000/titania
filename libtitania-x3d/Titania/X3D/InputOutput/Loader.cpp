@@ -109,7 +109,7 @@ throw (Error <INVALID_X3D>,
 
 	scene -> setExecutionContext (executionContext);
 	scene -> isLive () = executionContext -> isLive ();
-	scene -> isPrivate (executionContext -> getRootContext () -> isPrivate ());
+	scene -> isPrivate (executionContext -> getScene () -> isPrivate ());
 
 	scene -> isCompressed (istream .is_compressed ());
 	scene -> setup ();
@@ -128,7 +128,7 @@ throw (Error <INVALID_URL>,
 
 	scene -> setExecutionContext (executionContext);
 	scene -> isLive () = executionContext -> isLive ();
-	scene -> isPrivate (executionContext -> getRootContext () -> isPrivate ());
+	scene -> isPrivate (executionContext -> getScene () -> isPrivate ());
 	scene -> setup ();
 
 	return scene;

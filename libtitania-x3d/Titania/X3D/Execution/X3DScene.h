@@ -71,9 +71,14 @@ public:
 
 	///  @name Member access
 
+	bool
+	isMasterScene () const
+	throw (Error <DISPOSED>)
+	{ return this == getExecutionContext (); }
+
 	virtual
 	bool
-	isRootContext () const
+	isScene () const
 	throw (Error <DISPOSED>) final override
 	{ return true; }
 

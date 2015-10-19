@@ -84,50 +84,16 @@ public:
 	{ return units; }
 
 	double
-	fromUnit (const UnitCategory, const double) const
+	fromBaseUnit (const UnitCategory, const double) const
 	throw (Error <DISPOSED>);
 
 	double
-	toUnit (const UnitCategory, const double) const
+	toBaseUnit (const UnitCategory, const double) const
 	throw (Error <DISPOSED>);
 
 	const SFTime &
 	units_changed () const
 	{ return unitsOutput; }
-
-	//
-
-	double
-	fromRadians (const double) const
-	throw (Error <DISPOSED>);
-
-	double
-	toRadians (const double) const
-	throw (Error <DISPOSED>);
-
-	double
-	fromNewton (const double) const
-	throw (Error <DISPOSED>);
-
-	double
-	toNewton (const double) const
-	throw (Error <DISPOSED>);
-
-	double
-	fromMetre (const double) const
-	throw (Error <DISPOSED>);
-
-	double
-	toMetre (const double) const
-	throw (Error <DISPOSED>);
-
-	double
-	fromKilogram (const double) const
-	throw (Error <DISPOSED>);
-
-	double
-	toKilogram (const double) const
-	throw (Error <DISPOSED>);
 
 	///  @name Destruction
 

@@ -194,7 +194,7 @@ Inline::setScene (X3DScenePtr && value)
 	{
 		value -> setExecutionContext (getExecutionContext ());
 		value -> isLive () = getExecutionContext () -> isLive () and isLive ();
-		value -> isPrivate (getRootContext () -> isPrivate ());
+		value -> isPrivate (getScene () -> isPrivate ());
 		value -> getRootNodes () .addInterest (group -> children ());
 
 		if (isInitialized ())

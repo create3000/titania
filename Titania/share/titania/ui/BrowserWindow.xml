@@ -710,6 +710,23 @@
               </object>
             </child>
             <child>
+              <object class="GtkImageMenuItem" id="BrowserScenePropertiesMenuItem">
+                <property name="label">gtk-properties</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+                <signal name="activate" handler="on_scene_properties_activated" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="separatormenuitem40">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+            <child>
               <object class="GtkImageMenuItem" id="BrowserCloseMenuItem">
                 <property name="label">gtk-close</property>
                 <property name="visible">True</property>
@@ -2068,6 +2085,12 @@
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_scene_properties_activated" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorMenuItem" id="separatormenuitem39">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                               </object>
                             </child>
                             <child>

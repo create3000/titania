@@ -838,7 +838,7 @@ throw (Error <INVALID_NAME>,
 		}
 		catch (const std::out_of_range &)
 		{
-			if (not isRootContext ())
+			if (not isScene ())
 				return getExecutionContext () -> findProtoDeclaration (name, available);
 
 			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + name + "'.");
@@ -895,7 +895,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		for (const auto & prototype : executionContext -> getExternProtoDeclarations ())
 			prototypes .emplace (prototype -> getName (), prototype);
 
-		if (executionContext -> isRootContext ())
+		if (executionContext -> isScene ())
 			break;
 
 		if (executionContext -> isProtoDeclaration ())
@@ -1084,7 +1084,7 @@ throw (Error <INVALID_NAME>,
 	}
 	catch (const X3DError & error)
 	{
-		if (not isRootContext ())
+		if (not isScene ())
 			getExecutionContext () -> changeViewpoint (name);
 		else
 			throw;
@@ -1332,7 +1332,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 		}
 	}
 
-	if (not getInnerComments () .empty () and not isRootContext ())
+	if (not getInnerComments () .empty () and not isScene ())
 	{
 		ostream << Generator::TidyBreak;
 

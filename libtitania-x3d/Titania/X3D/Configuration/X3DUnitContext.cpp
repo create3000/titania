@@ -111,7 +111,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 double
-X3DUnitContext::fromUnit (const UnitCategory category, const double value) const
+X3DUnitContext::fromBaseUnit (const UnitCategory category, const double value) const
 throw (Error <DISPOSED>)
 {
 	switch (category)
@@ -128,18 +128,22 @@ throw (Error <DISPOSED>)
 	
 		// Derived units
 		case UnitCategory::ACCELERATION:
+			return value / getUnit (UnitCategory::LENGTH) .getConversionFactor ();
 		case UnitCategory::ANGULAR_RATE:
+			return value / getUnit (UnitCategory::ANGLE) .getConversionFactor ();
 		case UnitCategory::AREA:
+			return value / std::pow (getUnit (UnitCategory::LENGTH) .getConversionFactor (), 2);
 		case UnitCategory::SPEED:
+			return value / getUnit (UnitCategory::LENGTH) .getConversionFactor ();
 		case UnitCategory::VOLUME:
-			return value;
+			return value / std::pow (getUnit (UnitCategory::LENGTH) .getConversionFactor (), 3);
 	}
 
 	return value;
 }
 
 double
-X3DUnitContext::toUnit (const UnitCategory category, const double value) const
+X3DUnitContext::toBaseUnit (const UnitCategory category, const double value) const
 throw (Error <DISPOSED>)
 {
 	switch (category)
@@ -156,70 +160,18 @@ throw (Error <DISPOSED>)
 	
 		// Derived units
 		case UnitCategory::ACCELERATION:
+			return value * getUnit (UnitCategory::LENGTH) .getConversionFactor ();
 		case UnitCategory::ANGULAR_RATE:
+			return value * getUnit (UnitCategory::ANGLE) .getConversionFactor ();
 		case UnitCategory::AREA:
+			return value * std::pow (getUnit (UnitCategory::LENGTH) .getConversionFactor (), 2);
 		case UnitCategory::SPEED:
+			return value * getUnit (UnitCategory::LENGTH) .getConversionFactor ();
 		case UnitCategory::VOLUME:
-			return value;
+			return value * std::pow (getUnit (UnitCategory::LENGTH) .getConversionFactor (), 3);
 	}
 
 	return value;
-}
-
-double
-X3DUnitContext::fromRadians (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value / getUnit (UnitCategory::ANGLE) .getConversionFactor ();
-}
-
-double
-X3DUnitContext::toRadians (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value * getUnit (UnitCategory::ANGLE) .getConversionFactor ();
-}
-
-double
-X3DUnitContext::fromNewton (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value / getUnit (UnitCategory::FORCE) .getConversionFactor ();
-}
-
-double
-X3DUnitContext::toNewton (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value * getUnit (UnitCategory::FORCE) .getConversionFactor ();
-}
-
-double
-X3DUnitContext::fromMetre (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value / getUnit (UnitCategory::LENGTH) .getConversionFactor ();
-}
-
-double
-X3DUnitContext::toMetre (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value * getUnit (UnitCategory::LENGTH) .getConversionFactor ();
-}
-
-double
-X3DUnitContext::fromKilogram (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value / getUnit (UnitCategory::MASS) .getConversionFactor ();
-}
-
-double
-X3DUnitContext::toKilogram (const double value) const
-throw (Error <DISPOSED>)
-{
-	return value * getUnit (UnitCategory::MASS) .getConversionFactor ();
 }
 
 void

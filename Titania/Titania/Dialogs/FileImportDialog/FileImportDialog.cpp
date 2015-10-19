@@ -105,7 +105,7 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 	getWindow () .add_filter (getFileFilterVideo ());
 	getWindow () .set_filter (getFileFilterX3D ());
 
-	const auto worldURL = getRootContext () -> getWorldURL ();
+	const auto worldURL = getScene () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		getWindow () .set_uri (worldURL .filename () .str ());

@@ -294,7 +294,7 @@ BrowserWindow::set_executionContext ()
 	changing = true;
 
 	getLocationEntry () .set_text (getExecutionContext () -> getWorldURL () .str ());
-	getLocationEntry () .set_icon_from_stock (Gtk::StockID (getExecutionContext () -> getMasterContext () -> getWorldURL () .filename () .str ()), Gtk::ENTRY_ICON_PRIMARY);
+	getLocationEntry () .set_icon_from_stock (Gtk::StockID (getExecutionContext () -> getMasterScene () -> getWorldURL () .filename () .str ()), Gtk::ENTRY_ICON_PRIMARY);
 
 	changing = false;
 }
@@ -681,13 +681,13 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 void
 BrowserWindow::on_save_activated ()
 {
-	const basic::uri worldURL = getRootContext () -> getWorldURL ();
+	const basic::uri worldURL = getScene () -> getWorldURL ();
 
 	if (worldURL .empty () or worldURL .is_network ())
 		on_save_as_activated ();
 
 	else
-		save (worldURL, getRootContext () -> isCompressed (), false);
+		save (worldURL, getScene () -> isCompressed (), false);
 }
 
 void

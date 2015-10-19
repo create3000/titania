@@ -211,7 +211,7 @@ OutlineCellRenderer::on_data ()
 
 			const auto   parent = treeView -> get_model () -> get_iter (parentPath);
 			const auto & node   = *static_cast <X3D::SFNode*> (treeView -> get_object (parent));
-			const auto   scene  = node -> getRootContext ();
+			const auto   scene  = node -> getScene ();
 
 			property_editable () = true;
 			set_alignment (0, 0);
@@ -748,7 +748,7 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 
 			const auto   parent = treeView -> get_model () -> get_iter (parentPath);
 			const auto & node   = *static_cast <X3D::SFNode*> (treeView -> get_object (parent));
-			const auto   scene  = node -> getRootContext ();
+			const auto   scene  = node -> getScene ();
 			const auto   field  = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 			const int    margin = ICON_X_PAD + icon_width + NAME_X_PAD;
 
@@ -828,7 +828,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 		return true;
 	}
 
-	const auto scene = node -> getRootContext ();
+	const auto scene = node -> getScene ();
 	const auto value = field -> create ();
 
 	value -> setUnit (field -> getUnit ());

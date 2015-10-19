@@ -288,7 +288,7 @@ X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
 	X3DBrowserWindowInterface::setBrowser (value);
 
 	browser          = value;
-	scene            = browser -> getExecutionContext () -> getMasterContext ();
+	scene            = browser -> getExecutionContext () -> getMasterScene ();
 	executionContext = browser -> getExecutionContext ();
 
 	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_executionContext);
@@ -304,7 +304,7 @@ X3DBrowserWidget::getBrowser (const basic::uri & URL) const
 {
 	return std::find_if (browsers .cbegin (), browsers .cend (), [this, &URL] (const X3D::BrowserPtr & browser)
 	                     {
-	                        auto worldURL = browser -> getExecutionContext () -> getMasterContext () -> getWorldURL ();
+	                        auto worldURL = browser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
 
 	                        if (browser -> isInitialized ())
 	                           return worldURL == URL;
@@ -330,9 +330,6 @@ X3DBrowserWidget::setExecutionContext (const X3D::X3DExecutionContextPtr & value
 
 		getBrowser () -> isLive () .addInterest (getScene () -> isLive ());
 		getScene () -> isLive () = getBrowser () -> isLive ();
-
-		// Assign as last step, after replaceWorld.
-		executionContext = value;
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -589,9 +586,9 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 bool
 X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress, const bool copy)
 {
-	const auto suffix   = worldURL .suffix ();
-	const auto scene    = X3D::X3DScenePtr (getRootContext ());
-	const auto undoStep = std::make_shared <X3D::UndoStep> ("");
+	const auto   suffix   = worldURL .suffix ();
+	const auto & scene    = getScene ();
+	const auto   undoStep = std::make_shared <X3D::UndoStep> ("");
 
 	scene -> isCompressed (compress);
 
@@ -834,7 +831,7 @@ X3DBrowserWidget::quit ()
 	{
 		const auto userData = getUserData (browser);
 
-		auto URL = browser -> getExecutionContext () -> getMasterContext () -> getWorldURL ();
+		auto URL = browser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
 
 		if (not browser -> isInitialized ())
 			URL = userData -> URL;
@@ -849,7 +846,7 @@ X3DBrowserWidget::quit ()
 
 	auto currentPage = getBrowserNotebook () .get_current_page ();
 
-	if (browsers [currentPage] -> getExecutionContext () -> getMasterContext () -> getWorldURL () .empty ())
+	if (browsers [currentPage] -> getExecutionContext () -> getMasterScene () -> getWorldURL () .empty ())
 		currentPage = 0;
 
 	getConfig () .setItem ("currentPage", currentPage);
@@ -885,13 +882,23 @@ X3DBrowserWidget::on_browser_reordered (Gtk::Widget* widget, guint pageNumber)
 void
 X3DBrowserWidget::set_executionContext ()
 {
-	if (getBrowser () -> getExecutionContext () not_eq executionContext)
-	{
-		if (X3D::X3DScenePtr (getBrowser () -> getExecutionContext ()))
-			scene = getBrowser () -> getExecutionContext ();
+	__LOG__ << executionContext -> getWorldURL () << std::endl;
+	__LOG__ << getBrowser () -> getExecutionContext () -> getWorldURL () << std::endl;
 
-		executionContext = getBrowser () -> getExecutionContext ();
-	}
+	if (getBrowser () -> getExecutionContext () == executionContext)
+	   return;
+
+	X3D::X3DScenePtr currentScene (getBrowser () -> getExecutionContext ());
+
+	if (not currentScene)
+		currentScene = getBrowser () -> getExecutionContext () -> getScene ();
+
+	if (currentScene not_eq scene)
+		scene = std::move (currentScene);
+
+	__LOG__ << scene -> getWorldURL () << std::endl;
+
+	executionContext = getBrowser () -> getExecutionContext ();
 }
 
 void

@@ -100,11 +100,10 @@ X3DUnitEditor::set_execution_context ()
 {
 	changing = true;
 
-	const auto   scene  = getExecutionContext () -> getRootContext ();
-	const auto & angle  = scene -> getUnit (X3D::UnitCategory::ANGLE);
-	const auto & force  = scene -> getUnit (X3D::UnitCategory::FORCE);
-	const auto & length = scene -> getUnit (X3D::UnitCategory::LENGTH);
-	const auto & mass   = scene -> getUnit (X3D::UnitCategory::MASS);
+	const auto & angle  = getScene () -> getUnit (X3D::UnitCategory::ANGLE);
+	const auto & force  = getScene () -> getUnit (X3D::UnitCategory::FORCE);
+	const auto & length = getScene () -> getUnit (X3D::UnitCategory::LENGTH);
+	const auto & mass   = getScene () -> getUnit (X3D::UnitCategory::MASS);
 
 	getUnitAngleCombo ()  .get_entry () -> set_text (angle  .getName ());
 	getUnitForceCombo ()  .get_entry () -> set_text (force  .getName ());
@@ -222,8 +221,7 @@ X3DUnitEditor::on_unit_changed (const Gtk::Entry & entry,
 
 	changing = true;
 	
-	const auto scene = getExecutionContext () -> getRootContext ();
-	auto       name  = entry .get_text ();
+	auto name  = entry .get_text ();
 
 	if (name .empty ())
 	   name = defaultUnit;
@@ -231,7 +229,7 @@ X3DUnitEditor::on_unit_changed (const Gtk::Entry & entry,
 	if (hasKey (category, name))
 		adjustment -> set_value (getKey (category, name));
 	
-	scene -> updateUnit (category, name, adjustment -> get_value ());
+	getScene () -> updateUnit (category, name, adjustment -> get_value ());
 
 	changing = false;
 

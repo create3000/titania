@@ -159,13 +159,13 @@ public:
 
 	///  Returns a pointer to the master execution context this node belongs to.
 	X3DScene*
-	getMasterContext () const
+	getMasterScene () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	///  Returns a pointer to the root execution context this node belongs to.
 	X3DScene*
-	getRootContext () const
+	getScene () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 

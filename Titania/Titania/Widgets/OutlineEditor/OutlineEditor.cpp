@@ -138,9 +138,9 @@ OutlineEditor::set_scene ()
 		executionContexts .emplace_back (executionContext);
 		executionContext = executionContext -> getExecutionContext ();
 	}
-	while (not executionContext -> isMasterContext ());
+	while (executionContext not_eq executionContext -> getExecutionContext ());
 
-	addSceneMenuItem (X3D::X3DExecutionContextPtr (), executionContext);
+	addSceneMenuItem (nullptr, executionContext);
 
 	for (const auto & executionContext : basic::make_reverse_range (executionContexts))
 		addSceneMenuItem (executionContext, executionContext);
@@ -358,16 +358,16 @@ OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScen
 	getSceneLabel () .set_markup (getSceneLabelText (scene));
 	getSceneMenuButton () .set_tooltip_text (scene -> getWorldURL () .str ());
 
+	// Return menu item if already created.
+	{
+		const auto iter = sceneIndex .find (scene);
+
+		if (sceneIndex .count (scene))
+			return std::make_pair (scenes [iter -> second] .second, iter -> second);
+	}
+
 	if (currentScene)
 	{
-		// Return menu item if already created.
-		{
-			const auto iter = sceneIndex .find (scene);
-
-			if (sceneIndex .count (scene))
-				return std::make_pair (scenes [iter -> second] .second, iter -> second);
-		}
-
 		// Remove menu items.
 		{
 			const auto iter = sceneIndex .find (currentScene);
@@ -420,7 +420,7 @@ OutlineEditor::getSceneLabelText (const X3D::X3DExecutionContextPtr & scene) con
 	const auto child    = getSceneMenuLabelText (scene, true);
 
 	return "<i><b>" + std::string (_ ("Current Scene")) + "</b> »" + Glib::Markup::escape_text (basename) + "«</i>" +
-	       "<i>" + (scene -> isRootContext () ? "" : " " + child) + "</i>";
+	       "<i>" + (scene -> isScene () ? "" : " " + child) + "</i>";
 }
 
 std::string
@@ -1394,7 +1394,7 @@ OutlineEditor::getPathAtPosition (const double x, const double y)
 void
 OutlineEditor::restoreExpanded (const X3D::X3DExecutionContextPtr & executionContext)
 {
-	if (not executionContext -> isRootContext ())
+	if (not executionContext -> isScene ())
 		return;
 
 	try
@@ -1421,7 +1421,7 @@ OutlineEditor::saveExpanded (const X3D::X3DExecutionContextPtr & executionContex
 	if (executionContext -> getWorldURL () .empty ())
 		return;
 
-	if (not executionContext -> isRootContext ())
+	if (not executionContext -> isScene ())
 		return;
 
 	std::deque <std::string> paths;

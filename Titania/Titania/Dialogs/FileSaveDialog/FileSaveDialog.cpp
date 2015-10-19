@@ -70,7 +70,7 @@ FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
 	getFileFilterVideo () -> set_name (_ ("Videos"));
 	getFileFilterAll   () -> set_name (_ ("All Files"));
 
-	const auto worldURL = getRootContext () -> getWorldURL ();
+	const auto worldURL = getScene () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		getWindow () .set_uri (worldURL .filename () .str ());
@@ -94,7 +94,7 @@ FileSaveDialog::saveScene (const bool copy)
 	getWindow () .set_filter (getFileFilterX3D ());
 
 	getCompressFileBox () .set_visible (true);
-	getCompressFileButton () .set_active (getRootContext () -> isCompressed ());
+	getCompressFileButton () .set_active (getScene () -> isCompressed ());
 
 	const auto responseId = getWindow () .run ();
 
@@ -221,7 +221,7 @@ FileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, const X
 	getWindow () .set_filter (getFileFilterX3D ());
 
 	getCompressFileBox () .set_visible (true);
-	getCompressFileButton () .set_active (getRootContext () -> isCompressed ());
+	getCompressFileButton () .set_active (getScene () -> isCompressed ());
 
 	const auto responseId = getWindow () .run ();
 
