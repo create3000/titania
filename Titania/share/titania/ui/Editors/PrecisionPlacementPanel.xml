@@ -337,7 +337,6 @@
     <property name="can_focus">False</property>
     <property name="border_width">8</property>
     <property name="title" translatable="yes">Precision Placement Panel</property>
-    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>

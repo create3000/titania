@@ -1,13 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserWidget.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="23" Column="23" />
       <File FileName="Titania/Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.h" Line="17" Column="17" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp" Line="40" Column="40" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp" Line="4" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

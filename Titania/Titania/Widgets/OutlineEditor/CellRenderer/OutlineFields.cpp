@@ -55,7 +55,7 @@
 namespace titania {
 namespace puck {
 
-static constexpr int VALUES_MAX = 64;
+static constexpr int32_t VALUES_MAX = 64;
 
 static constexpr X3D::Image::size_type WIDTH_MAX  = 16;
 static constexpr X3D::Image::size_type HEIGHT_MAX = 16;
@@ -645,7 +645,6 @@ set_field_value_from_string (const X3D::X3DScene* const scene,
 
 	return true;
 }
-
 
 } // puck
 } // titania

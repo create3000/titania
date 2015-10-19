@@ -51,7 +51,6 @@
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Import File ...</property>
     <property name="role">GtkFileChooserDialog</property>
-    <property name="destroy_with_parent">True</property>
     <property name="hide_titlebar_when_maximized">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
@@ -134,7 +133,6 @@
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
-    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>

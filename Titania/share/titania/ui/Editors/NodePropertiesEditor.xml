@@ -363,7 +363,6 @@
     <property name="can_focus">False</property>
     <property name="border_width">8</property>
     <property name="title" translatable="yes">Node Properties Editor</property>
-    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
@@ -1098,7 +1097,6 @@
     <property name="title" translatable="yes">Add Exported Node</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
-    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
@@ -1201,7 +1199,6 @@
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
-    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>

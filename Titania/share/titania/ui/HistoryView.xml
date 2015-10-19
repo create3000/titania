@@ -15,7 +15,6 @@
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Histroy Editor</property>
-    <property name="destroy_with_parent">True</property>
     <property name="type_hint">utility</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
