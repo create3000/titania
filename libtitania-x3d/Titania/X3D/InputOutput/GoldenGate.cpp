@@ -268,7 +268,21 @@ golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 	};
 
 	static const std::map <std::string, GoldenFunction> suffixes = {
-		std::make_pair (".obj", &golden_obj)
+		// VRML
+		std::make_pair (".wrl",      &golden_x3dv),
+		std::make_pair (".wrl.gz",   &golden_x3dv), /// Todo: does not work with URI::suffix
+		std::make_pair (".vrml",     &golden_x3dv),
+		std::make_pair (".vrm",      &golden_x3dv),
+		// X3D Vrml Classic Encoding 
+		std::make_pair (".x3dvz",    &golden_x3dv),
+		std::make_pair (".x3dv.gz",  &golden_x3dv), /// Todo: does not work with URI::suffix
+		std::make_pair (".x3dv",     &golden_x3dv),
+		// X3D XML Encoding 
+		std::make_pair (".x3d",      &golden_x3d),
+		std::make_pair (".x3d.gz",   &golden_x3d), /// Todo: does not work with URI::suffix
+		std::make_pair (".xml",      &golden_x3d),
+		// Wavefront OBJ
+		std::make_pair (".obj",      &golden_obj)
 	};
 
 	try
