@@ -150,30 +150,16 @@ static
 void
 golden_text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
 {
-	static const std::string X3D_XML = "<X3D ";
-
-	// Save current state of stream.
-
-	const auto state = istream .rdstate ();
-	const auto pos   = istream .tellg ();
-
-	// Read indentifer.
-
-	char data [X3D_XML .size ()];
-
-	istream .read (data, X3D_XML .size ());
-
-	// Reset stream.
-
-	istream .clear (state);
-	istream .seekg (pos - istream .tellg (), std::ios_base::cur);
-
 	// Test
 
-	if (std::string (data, istream .gcount ()) == "<X3D ")
+	try
+	{
 		return golden_x3d (scene, uri, std::move (istream));
-
-	return golden_x3dv (scene, uri, std::move (istream));
+	}
+	catch (const X3DError &)
+	{
+		return golden_x3dv (scene, uri, std::move (istream));
+	}
 }
 
 static
@@ -189,8 +175,8 @@ golden_image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/image.x3dv"));
 
-	Name   .GlobalReplace (get_name_from_uri (uri), &file);
-	Width  .GlobalReplace (basic::to_string (width), &file);
+	Name   .GlobalReplace (get_name_from_uri (uri),   &file);
+	Width  .GlobalReplace (basic::to_string (width),  &file);
 	Height .GlobalReplace (basic::to_string (height), &file);
 	URL    .GlobalReplace ("[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]", &file);
 
