@@ -97,6 +97,7 @@ Background::draw ()
 
 	glDisable (GL_LIGHTING);
 	glDisable (GL_DEPTH_TEST);
+	glDepthMask (GL_FALSE);
 
 	glEnable (GL_TEXTURE_2D);
 	glBindTexture (GL_TEXTURE_2D, textureId);
@@ -115,8 +116,10 @@ Background::draw ()
 	glVertex2f (0, 1);
 	glEnd ();
 
-	glEnable (GL_DEPTH_TEST);
 	glBindTexture (GL_TEXTURE_2D, 0);
+	glDisable (GL_TEXTURE_2D);
+	glDepthMask (GL_TRUE);
+	glEnable (GL_DEPTH_TEST);
 }
 
 void
