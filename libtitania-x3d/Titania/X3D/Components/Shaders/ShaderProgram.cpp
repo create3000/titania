@@ -223,7 +223,7 @@ ShaderProgram::requestImmediateLoad ()
 		}
 		catch (const X3DError & error)
 		{
-			#ifdef DEBUG
+			#ifdef TITANIA_DEBUG
 			std::clog << error .what () << std::endl;
 			#endif
 		}

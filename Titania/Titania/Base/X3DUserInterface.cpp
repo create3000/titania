@@ -126,7 +126,7 @@ X3DUserInterface::on_constructed ()
 
 	on_map ();
 
-	#ifdef DEBUG
+	#ifdef TITANIA_DEBUG
 	std::clog << "Initializing widget: " << getWidgetName () << std::endl;
 	#endif
 

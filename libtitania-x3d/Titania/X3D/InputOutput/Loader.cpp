@@ -327,7 +327,7 @@ throw (Error <INVALID_URL>,
 		}
 	}
 
-	#ifdef DEBUG
+	#ifdef TITANIA_DEBUG
 	std::clog << osstream .str ();
 	#endif
 

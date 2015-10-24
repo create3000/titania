@@ -4,8 +4,17 @@ META "comment" "World of Titania"
 META "created" "Tue, 13 Oct 2015 06:42:37 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Thu, 15 Oct 2015 18:53:58 GMT"
+META "modified" "Sat, 24 Oct 2015 10:45:28 GMT"
 META "title" "Logo"
+
+EXTERNPROTO Red [
+  inputOutput SFNode  metadata
+  inputOutput SFFloat transparency
+]
+[
+  "../pages/about/library/Colors.x3dv#Red",
+  "file:///usr/share/titania/pages/about/library/Colors.x3dv#Red"
+]
 
 PROTO EnterWorld [
   outputOnly SFBool isActive
@@ -187,7 +196,6 @@ Background {
 
 DEF None NavigationInfo {
   type "NONE"
-  headlight FALSE
 }
 
 Viewpoint {
@@ -218,6 +226,7 @@ DEF Logo Transform {
         DEF _2 TimeSensor {
           cycleInterval 4.2
           loop TRUE
+          pauseTime 1445683366.59026
         }
         DEF LogoRotationInterpolator OrientationInterpolator {
           metadata DEF Interpolator MetadataSet {
@@ -373,12 +382,7 @@ DEF Logo Transform {
       children DEF Yellow_1 Transform {
         children Shape {
           appearance Appearance {
-            texture ImageTexture {
-              url "../pages/about/library/gradient3.png"
-            }
-            textureTransform TextureTransform {
-              center 0.5 0.5
-            }
+            material Red { }
           }
           geometry IndexedFaceSet {
             texCoordIndex [

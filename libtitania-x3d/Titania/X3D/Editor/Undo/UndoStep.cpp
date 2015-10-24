@@ -86,7 +86,7 @@ UndoStep::undo ()
 		}
 		catch (const std::exception & error)
 		{
-			#ifdef DEBUG
+			#ifdef TITANIA_DEBUG
 			std::clog
 				<< std::string (80, '*') << std::endl
 				<< "*  Warning:  Undo step not possible:" << std::endl

@@ -324,7 +324,7 @@ template <class ... Args>
 void
 tessellator <Args ...>::tessError (const GLenum err_no)
 {
-	#ifdef DEBUG
+	#ifdef TITANIA_DEBUG
 	std::clog << "Warning: tessellation error: '" << (char*) gluErrorString (err_no) << "'." << std::endl;
 	#endif
 }

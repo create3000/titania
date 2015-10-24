@@ -513,7 +513,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 	}
 	else
 	{
-		#ifdef DEBUG
+		#ifdef TITANIA_DEBUG
 		std::clog << "Warning: Uniform variable '" << field -> getName () << "' not found." << std::endl;
 
 		if (not getProgramId ())
@@ -560,7 +560,7 @@ X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint 
 	}
 	else
 	{
-		#ifdef DEBUG
+		#ifdef TITANIA_DEBUG
 		std::clog << "Warning: Uniform variable '" << name << "' not found." << std::endl;
 		#endif
 	}

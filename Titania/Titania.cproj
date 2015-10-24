@@ -1929,9 +1929,6 @@
     <None Include="Titania\Editors\GridEditor\X3DGridTool.h" />
     <None Include="share\titania\Library\Primitives\Geometry2D\TriangleSet2D.x3dv" />
     <None Include="share\titania\ui\logo.256.png" />
-    <None Include="share\titania\pages\about\library\gradient1.png" />
-    <None Include="share\titania\pages\about\library\gradient2.png" />
-    <None Include="share\titania\pages\about\library\gradient3.png" />
     <None Include="share\titania\ui\Logo.x3dv" />
     <None Include="share\titania\ui\icons\PaintBrush.svg" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DArc2DEditor.h" />

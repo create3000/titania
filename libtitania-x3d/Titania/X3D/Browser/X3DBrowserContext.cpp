@@ -296,7 +296,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 			const GLenum errorNum = glGetError ();
 
-			#ifdef DEBUG
+			#ifdef TITANIA_DEBUG
 			if (errorNum not_eq GL_NO_ERROR)
 				std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toUTCString () << ": " << gluErrorString (errorNum) << std::endl;
 			#endif

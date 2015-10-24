@@ -133,7 +133,7 @@ main (int argc, char** argv)
 	using namespace titania;
 	using namespace titania::puck;
 
-	#ifdef DEBUG
+	#ifdef TITANIA_DEBUG
 	std::clog
 		<< std::boolalpha
 		<< "Titania started ..." << std::endl
@@ -152,7 +152,7 @@ main (int argc, char** argv)
 		browserApplication .run ();
 	}
 
-	#ifdef DEBUG
+	#ifdef TITANIA_DEBUG
 	std::clog
 		<< std::endl
 		<< "Titania finished." << std::endl;

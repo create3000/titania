@@ -95,6 +95,17 @@ get_field_value (const X3D::X3DScene* const,
 	return field .toString ();
 }
 
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const X3D::SFString* const fieldDefinition,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	return useLocale ? fieldDefinition -> toLocaleString () : fieldDefinition -> toString ();
+}
+
 template <class Type>
 static
 std::string

@@ -56,7 +56,7 @@
 
 namespace titania {
 
-#ifdef DEBUG
+#ifdef TITANIA_DEBUG
 #define __LOG__ (std::clog << "########## " __FILE__ << ":" << __LINE__ << ": in function '" << __func__ << "': ")
 #else
 struct LOGType

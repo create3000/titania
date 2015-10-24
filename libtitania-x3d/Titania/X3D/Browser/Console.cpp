@@ -103,7 +103,7 @@ Console::prepareEvents ()
 	
 	string_changed .assign (string .begin (), string .end ());
 
-	#ifdef DEBUG
+	#ifdef TITANIA_DEBUG
 	for (const auto & value : string)
 		std::clog << value;
 	

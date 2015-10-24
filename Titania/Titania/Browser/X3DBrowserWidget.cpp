@@ -901,7 +901,7 @@ X3DBrowserWidget::set_scene ()
 {
 	loadTime = chrono::now () - loadTime;
 
-	#ifdef DEBUG
+	#ifdef TITANIA_DEBUG
 	timeout .disconnect ();
 	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::statistics), 10 * 1000);
 	#endif

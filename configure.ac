@@ -92,7 +92,7 @@ if test "x$enable_parallel" = "xyes" ; then
 fi
 
 if test "x$enable_debug" = "xyes" ; then
-	CXXFLAGS=$CXXFLAGS" -DDEBUG"
+	CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG"
 fi
 
 LDFLAGS="-rdynamic"
@@ -173,8 +173,6 @@ PKG_CHECK_MODULES(TITANIA_OPENGL_SURFACE,
 gtkmm-3.0
 glew
 gl)
-
-dnl TITANIA_OPENGL_SURFACE_LIBS=$TITANIA_OPENGL_SURFACE_LIBS" -lsfml-graphics"
 
 PKG_CHECK_MODULES(TITANIA_GZSTREAM,
 zlib)
