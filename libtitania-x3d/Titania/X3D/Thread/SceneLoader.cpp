@@ -59,6 +59,33 @@
 namespace titania {
 namespace X3D {
 
+class FutureUrlErrorException:
+	virtual public std::exception
+{
+public:
+
+	FutureUrlErrorException (const MFString & urlError) :
+		std::exception (),
+	   urlError (urlError)
+	{ }
+
+	virtual
+	char const*
+	what () const
+	noexcept (true) override
+	{ return "FutureUrlErrorException"; }
+
+	const MFString &
+	getUrlError () const
+	{ return urlError; }
+
+
+private:
+
+	MFString urlError;
+
+};
+
 // See http://www.web3d.org/files/specifications/19775-1/V3.3/Part01/components/networking.html#X3DUrlObject for
 // how to handle the profile and component arguments/statements of inline nodes.
 
@@ -70,8 +97,7 @@ SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFS
 	              callback (callback),
 	                 mutex (),
 	                future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */)),
-	                loader (nullptr, referer)
-	          
+	              urlError ()
 {
 	getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::prepareEvents, true);
 	getBrowser () -> addEvent ();
@@ -114,16 +140,30 @@ SceneLoader::loadAsync (const MFString & url)
 
 	checkForInterrupt ();
 
-	X3DScenePtr scene = getBrowser () -> createScene ();
+	auto scene = getBrowser () -> createScene ();
 
 	checkForInterrupt ();
 
-	loader .parseIntoScene (scene, url);
+	Loader loader (nullptr, referer);
+
+	checkForInterrupt ();
+
+	try
+	{
+		loader .parseIntoScene (scene, url);
+	}
+	catch (const X3DError & error)
+	{
+		for (const auto & string : loader .getUrlError ())
+			getBrowser () -> println (string .str ());
+		
+		getBrowser () -> println (error .what ());
+
+		if (not loader .getUrlError () .empty ())
+			throw FutureUrlErrorException (loader .getUrlError ());
+	}
 		
 	checkForInterrupt ();
-
-	for (const auto & string : loader .getUrlError ())
-		getBrowser () -> println (string .str ());
 
 	getBrowser () -> println ("Done loading scene '", loader .getWorldURL (), "'.");
 		
@@ -153,14 +193,16 @@ SceneLoader::prepareEvents (const bool addEvent)
 	{
 		callback (future .get ());
 	}
-	catch (const X3DError & error)
+	catch (const FutureUrlErrorException & error)
 	{
-		getBrowser () -> println (error .what ());
+		urlError = error .getUrlError ();
 
 		callback (nullptr);
 	}
 	catch (const std::exception &)
-	{ }
+	{
+	   // Interupt
+	}
 
 	X3DInput::dispose ();
 }

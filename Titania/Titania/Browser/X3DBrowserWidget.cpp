@@ -284,6 +284,7 @@ void
 X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
 {
 	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_executionContext);
+	browser -> getUrlError () .removeInterest (this, &X3DBrowserWidget::set_urlError);
 
 	X3DBrowserWindowInterface::setBrowser (value);
 
@@ -292,6 +293,7 @@ X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
 	executionContext = browser -> getExecutionContext ();
 
 	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_executionContext);
+	browser -> getUrlError () .addInterest (this, &X3DBrowserWidget::set_urlError);
 
 	isLive (isLive ());
 }
@@ -547,40 +549,10 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 
 	loadTime = chrono::now ();
 
-	try
-	{
 		if (URL .empty ())
 			return;
 
 		browser -> loadURL ({ URL .str () }, { });
-	}
-	catch (const X3D::X3DError & error)
-	{
-		try
-		{
-			std::ostringstream osstream;
-
-			osstream
-				<< get_page ("about/url_error.x3dv")
-				<< "?type=" << basic::to_string (error .getType ())
-				<< ";what=" << Glib::uri_escape_string (error .what ());
-
-			const auto scene = browser -> createX3DFromURL ({ osstream .str () });
-
-			scene -> setWorldURL (URL);
-
-			browser -> replaceWorld (scene);
-		}
-		catch (const X3D::X3DError &)
-		{
-			try
-			{
-				browser -> replaceWorld (nullptr);
-			}
-			catch (const X3D::X3DError &)
-			{ }
-		}
-	}
 }
 
 bool
@@ -908,6 +880,40 @@ X3DBrowserWidget::set_scene ()
 
 	loadIcon ();
 	setTitle ();
+}
+
+void
+X3DBrowserWidget::set_urlError ()
+{
+	try
+	{
+		std::ostringstream error;
+
+		for (const auto & string : getBrowser () -> getUrlError ())
+			error << string .str ();
+
+		std::ostringstream osstream;
+
+		osstream
+			<< get_page ("about/url_error.x3dv")
+			<< "?type=" << basic::to_string (21)
+			<< ";what=" << Glib::uri_escape_string (error .str ());
+
+		const auto scene = getBrowser () -> createX3DFromURL ({ osstream .str () });
+
+		scene -> setWorldURL (getBrowser () -> getWorldURL ());
+
+		getBrowser () -> replaceWorld (scene);
+	}
+	catch (const X3D::X3DError &)
+	{
+		try
+		{
+			browser -> replaceWorld (nullptr);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
 }
 
 void

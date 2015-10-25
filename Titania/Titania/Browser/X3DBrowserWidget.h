@@ -255,6 +255,9 @@ private:
 	void
 	set_scene ();
 
+	void
+	set_urlError ();
+
 	///  @name Operations
 
 	std::string

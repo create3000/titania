@@ -113,10 +113,7 @@ Console::set_enabled ()
 		getBrowser () .removeInterest (this, &Console::set_browser);
 
 		for (const auto & browser : getBrowserWindow () -> getBrowsers ())
-		{
-			browser -> getUrlError () .removeInterest (this, &Console::set_string);
 			browser -> getConsole () -> getString () .removeInterest (this, &Console::set_string);
-		}
 	}
 }
 

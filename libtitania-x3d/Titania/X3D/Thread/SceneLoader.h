@@ -86,7 +86,7 @@ public:
 
 	const MFString &
 	getUrlError () const
-	{ return loader .getUrlError (); }
+	{ return urlError; }
 
 	///  @name Destruction
 
@@ -121,7 +121,7 @@ private:
 	Callback                  callback;
 	std::mutex                mutex;
 	std::future <X3DScenePtr> future;
-	Loader                    loader;
+	MFString                  urlError;
 
 };
 

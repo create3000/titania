@@ -177,7 +177,10 @@ throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
 	if (url .empty ())
-		throw Error <INVALID_URL> ("No URL given.");
+	{
+	   urlError .emplace_back ("No URL given.");
+		throw Error <INVALID_URL> ("Invalid url.");
+	}
 
 	for (const auto & URL : url)
 	{
@@ -196,15 +199,7 @@ throw (Error <INVALID_URL>,
 		}
 	}
 
-	std::ostringstream error;
-
-	for (const auto & string : urlError)
-		error << string .str ();
-
-	if (url .size () == 1)
-		throw Error <URL_UNAVAILABLE> (error .str ());
-
-	throw Error <URL_UNAVAILABLE> ("Couldn't load any URL of " + url .toString () + ":\n" + error .str ());
+	throw Error <URL_UNAVAILABLE> ("Couldn't load any URL of " + url .toString ());
 }
 
 //  Stream Handling

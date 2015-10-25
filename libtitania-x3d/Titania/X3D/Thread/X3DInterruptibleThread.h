@@ -63,11 +63,12 @@ class InterruptFutureException:
 {
 public:
 
-    virtual
-    char const*
-    what () const
-    noexcept (true) override
-    { return "InterruptFutureException"; }
+	virtual
+	char const*
+	what () const
+	noexcept (true) override
+	{ return "InterruptFutureException"; }
+
 };
 
 class X3DInterruptibleThread

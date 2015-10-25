@@ -85,8 +85,6 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	addChildren (getRootNodes (), protoNode, live);
 
-	protoNode -> updated () .addInterest (this, &X3DPrototypeInstance::update);
-
 	for (const auto & userDefinedField : protoNode -> getUserDefinedFields ())
 	{
 		addField (userDefinedField -> getAccessType (),
@@ -94,19 +92,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		          *userDefinedField -> copy (FLAT_COPY));
 	}
 
-	if (protoNode -> isExternproto ())
-	{
-		const auto externproto = static_cast <ExternProtoDeclaration*> (protoNode .getValue ());
-
-		externproto -> getInternalScene () .addInterest (this, &X3DPrototypeInstance::construct);
-
-		if (externproto -> checkLoadState () not_eq COMPLETE_STATE)
-			externproto -> requestAsyncLoad ();
-
-		else
-		   construct ();
-	}
-	else
+	if (not protoNode -> isExternproto ())
 	{
 		ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
 
@@ -122,6 +108,64 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	setExtendedEventHandling (false);
 }
 
+X3DPrototypeInstance*
+X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
+{
+	try
+	{
+		return executionContext -> findProtoDeclaration (getTypeName (), AvailableType { }) -> createInstance (executionContext);
+	}
+	catch (const X3DError & error)
+	{
+		throw Error <INVALID_NAME> (error .what ());
+	}
+}
+
+void
+X3DPrototypeInstance::initialize ()
+{
+	try
+	{
+		if (protoNode -> isExternproto ())
+		{
+			const auto externproto = static_cast <ExternProtoDeclaration*> (protoNode .getValue ());
+
+			if (externproto -> checkLoadState () == COMPLETE_STATE)
+				construct ();
+			else
+			{
+				for (const auto fieldDefinition : getUserDefinedFields ())
+					fieldDefinition -> addInterest (fieldDefinition, (void (X3DFieldDefinition::*) (const bool)) &X3DFieldDefinition::isSet, true);
+			
+				externproto -> getInternalScene () .addInterest (this, &X3DPrototypeInstance::construct);
+
+				externproto -> requestAsyncLoad ();
+			}
+		}
+		else
+		{
+			ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
+
+			copyImportedNodes (proto);
+			copyRoutes (proto);
+
+			protoNode -> updated () .addInterest (this, &X3DPrototypeInstance::update);
+		}
+
+		getExecutionContext () -> isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
+		X3DBaseNode::isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
+
+		set_live ();
+
+		// Now initialize bases.
+
+		X3DNode::initialize ();
+		X3DExecutionContext::initialize ();
+	}
+	catch (const X3DError &)
+	{ }
+}
+
 void
 X3DPrototypeInstance::update ()
 {
@@ -130,10 +174,10 @@ X3DPrototypeInstance::update ()
 	try
 	{
 		for (const auto fieldDefinition : protoNode -> getUserDefinedFields ())
-		   removeField (fieldDefinition -> getName ());
+			removeField (fieldDefinition -> getName ());
 
 		for (const auto fieldDefinition : protoNode -> getProtoDeclaration () -> getUserDefinedFields ())
-		   removeField (fieldDefinition -> getName ());
+			removeField (fieldDefinition -> getName ());
 	}
 	catch (const X3DError & error)
 	{
@@ -153,6 +197,9 @@ X3DPrototypeInstance::construct ()
 			const auto externproto = static_cast <ExternProtoDeclaration*> (protoNode .getValue ());
 
 			externproto -> getInternalScene () .removeInterest (this, &X3DPrototypeInstance::construct);
+				
+			for (const auto fieldDefinition : getUserDefinedFields ())
+				fieldDefinition -> removeInterest (fieldDefinition, (void (X3DFieldDefinition::*) (const bool)) &X3DFieldDefinition::isSet);
 		}
 
 		// Interface
@@ -180,7 +227,7 @@ X3DPrototypeInstance::construct ()
 				if (not (field -> getAccessType () & initializeOnly))
 					continue;
 
-				// Is set during parse.
+				// Is set during parse or an event occured.
 				if (field -> isSet ())
 					continue;
 
@@ -201,55 +248,19 @@ X3DPrototypeInstance::construct ()
 		importExternProtos (proto); // XXX: deletable if all get/set are virtual
 		importProtos (proto);       // XXX: deletable if all get/set are virtual
 		copyRootNodes (proto);
+		copyImportedNodes (proto);
+		copyRoutes (proto);
+
+		realize ();
+
+		protoNode -> updated () .addInterest (this, &X3DPrototypeInstance::update);
+
+		X3DChildObject::addEvent (); // XXX: called twice
 	}
 	catch (const X3DError & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
-
-	if (isInitialized ())
-	{
-		setup ();
-
-		X3DChildObject::addEvent ();
-	}
-}
-
-X3DPrototypeInstance*
-X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
-{
-	try
-	{
-		return executionContext -> findProtoDeclaration (getTypeName (), AvailableType { }) -> createInstance (executionContext);
-	}
-	catch (const X3DError & error)
-	{
-		throw Error <INVALID_NAME> (error .what ());
-	}
-}
-
-void
-X3DPrototypeInstance::initialize ()
-{
-	try
-	{
-		ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
-
-		copyImportedNodes (proto);
-		copyRoutes (proto);
-
-		getExecutionContext () -> isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
-		X3DBaseNode::isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
-
-		set_live ();
-
-		// Now initialize bases.
-
-		X3DNode::initialize ();
-		X3DExecutionContext::initialize ();
-	}
-	catch (const X3DError &)
-	{ }
 }
 
 void
