@@ -113,6 +113,8 @@ FileSaveDialog::exportImage ()
 
 	if (getConfig () .hasItem ("exportFolder"))
 		getWindow () .set_current_folder_uri (getConfig () .getString ("exportFolder"));
+	else
+		getWindow () .set_current_folder (os::home ());
 
 	getWindow () .set_current_name (worldURL .basename (false) + ".png");
 	getWindow () .add_filter (getFileFilterImage ());

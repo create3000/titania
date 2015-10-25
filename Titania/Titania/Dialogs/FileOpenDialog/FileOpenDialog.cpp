@@ -140,6 +140,8 @@ FileOpenDialog::run ()
 {
 	if (getConfig () .hasItem ("currentFolder"))
 		getWindow () .set_current_folder_uri (getConfig () .getString ("currentFolder"));
+	else
+		getWindow () .set_current_folder (os::home ());
 	
 	setMode (Mode::X3D);
 
