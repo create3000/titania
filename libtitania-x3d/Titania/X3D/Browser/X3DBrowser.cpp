@@ -330,7 +330,6 @@ throw (Error <INVALID_SCENE>,
 
 			isLive () .removeInterest (executionContext -> isLive ());
 			executionContext -> isLive () = false;
-			processEvents ();
 
 			// Replace world.
 

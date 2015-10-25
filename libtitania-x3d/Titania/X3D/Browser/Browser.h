@@ -149,7 +149,7 @@ private:
 	set_cursor (const Gdk::CursorType);
 
 	void
-	set_viewer (ViewerType);
+	set_viewer (const ViewerType);
 
 	///  @name Operations
 

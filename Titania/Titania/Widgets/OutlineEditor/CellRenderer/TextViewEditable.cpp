@@ -95,7 +95,7 @@ TextViewEditable::on_textview_populate_popup (Gtk::Menu* menu)
 
 	if (field -> getType () == X3D::X3DConstants::SFTime)
 	{
-		const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Current Time")));
+		const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Set Current Time")));
 
 		toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_current_time));
 		toggleMenuItem -> show ();

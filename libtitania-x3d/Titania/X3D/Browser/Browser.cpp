@@ -175,7 +175,7 @@ Browser::set_cursor (const Gdk::CursorType value)
 }
 
 void
-Browser::set_viewer (ViewerType type)
+Browser::set_viewer (const ViewerType type)
 {
 	setCursor (Gdk::TOP_LEFT_ARROW);
 
