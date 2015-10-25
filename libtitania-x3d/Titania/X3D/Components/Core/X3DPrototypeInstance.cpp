@@ -230,6 +230,9 @@ X3DPrototypeInstance::construct ()
 				// Is set during parse or an event occured.
 				if (field -> isSet ())
 					continue;
+				
+				if (not field -> getIsReferences () .empty ()) // hasIsReferences
+					continue;
 
 				field -> set (*protoField);
 			}

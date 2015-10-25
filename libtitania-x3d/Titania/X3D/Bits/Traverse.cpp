@@ -537,7 +537,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 						case X3DConstants::SwitchTool:
 						{
 							const auto switchNode = dynamic_cast <Switch*> (node);
-								
+
 							if (mfnode == &switchNode -> children ())
 							{
 								if (switchNode -> getWhichChoice () >= 0 and switchNode -> getWhichChoice () < (int32_t) switchNode -> children () .size ())
@@ -612,10 +612,15 @@ CONTINUE:;
 				{
 					if (flags & TRAVERSE_EXTERNPROTO_PROTO_DECLARATIONS)
 					{
-						const auto externProto = dynamic_cast <ExternProtoDeclaration*> (node);
+					   try
+					   {
+							const auto externProto = dynamic_cast <ExternProtoDeclaration*> (node);
 
-						if (find (static_cast <X3DBaseNode*> (externProto -> getProtoDeclaration ()), object, flags, hierarchy, seen))
-							return true;
+							if (find (static_cast <X3DBaseNode*> (externProto -> getProtoDeclaration ()), object, flags, hierarchy, seen))
+								return true;
+						}
+						catch (const X3DError &)
+						{ }
 					}
 
 					break;
