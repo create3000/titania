@@ -1,11 +1,11 @@
-#X3D V3.3 utf8 Titania V0.7.4
+#X3D V3.3 utf8 Titania V1.2.0
 
 META "comment" "World of Titania"
 META "created" "Thu, 04 Sep 2014 15:24:22 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "generator" "Titania V1.2.0, http://titania.create3000.de"
 META "icon" "../../ui/icons/icon-bw.svg"
-META "modified" "Tue, 16 Sep 2014 09:42:47 GMT"
+META "modified" "Sun, 25 Oct 2015 12:41:07 GMT"
 META "titania-history" "FALSE"
 META "title" "about:tab"
 
@@ -63,6 +63,59 @@ function set_triggerTime (value, time)
 }
 "
   }
+}
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "NONE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "tab"
 }
 
 DEF Default NavigationInfo {
