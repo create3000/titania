@@ -72,8 +72,10 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 	            overUserData (new UserData ()),
 	        selectedUserData (new UserData ()),
 	      matchingAccessType (0),
+	              sourcePath (),
 	              sourceNode (),
 	             sourceField (),
+	         destinationPath (),
 	         destinationNode (),
 	        destinationField (),
 	motion_notify_connection ()
@@ -497,6 +499,8 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 							{
 								if (field -> getType () == matchingFieldType)
 								{
+								   destinationPath = path;
+
 									path .up ();
 									const auto nodeIter = get_model () -> get_iter (path);
 									const auto nodeData = get_model () -> get_data (nodeIter);
@@ -522,11 +526,22 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 									// Clear selection
 
 									clear_access_type_selection (selectedUserData);
+
+									// Clear routes
+
+									clear_routes ();
+
+									// Select route
+
+									get_cellrenderer () -> add_routes ({ std::make_pair (sourcePath, destinationPath) });
+									get_route_graph () -> update (get_cellrenderer () -> get_routes ());
 								}
 							}
 
 							return true;
 						}
+
+						destinationPath = path;
 
 						path .up ();
 						const auto nodeIter = get_model () -> get_iter (path);
@@ -552,6 +567,8 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 							{
 								if (field -> getType () == matchingFieldType)
 								{
+								   sourcePath = path;
+
 									path .up ();
 									const auto nodeIter = get_model () -> get_iter (path);
 									const auto nodeData = get_model () -> get_data (nodeIter);
@@ -577,11 +594,22 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 									// Clear selection
 
 									clear_access_type_selection (selectedUserData);
+
+									// Clear routes
+
+									clear_routes ();
+
+									// Select route
+
+									get_cellrenderer () -> add_routes ({ std::make_pair (sourcePath, destinationPath) });
+									get_route_graph () -> update (get_cellrenderer () -> get_routes ());
 								}
 							}
 
 							return true;
 						}
+
+						sourcePath = path;
 
 						path .up ();
 						const auto nodeIter = get_model () -> get_iter (path);
@@ -825,9 +853,7 @@ OutlineTreeViewEditor::select_route (const double x, const double y)
 
 						// Clear routes
 
-						OutlineRoutes routes = get_cellrenderer () -> get_routes ();
-						get_cellrenderer () -> clear_routes ();
-						get_route_graph () -> update (routes);
+						clear_routes ();
 
 						// Select routes
 
@@ -850,9 +876,7 @@ OutlineTreeViewEditor::select_route (const double x, const double y)
 
 						// Clear routes
 
-						OutlineRoutes routes = get_cellrenderer () -> get_routes ();
-						get_cellrenderer () -> clear_routes ();
-						get_route_graph () -> update (routes);
+						clear_routes ();
 
 						// Select routes
 
@@ -896,9 +920,7 @@ OutlineTreeViewEditor::select_route (const double x, const double y)
 
 						// Clear routes
 
-						const OutlineRoutes routes = get_cellrenderer () -> get_routes ();
-						get_cellrenderer () -> clear_routes ();
-						get_route_graph () -> update (routes);
+						clear_routes ();
 
 						// Select routes
 
@@ -924,9 +946,7 @@ OutlineTreeViewEditor::select_route (const double x, const double y)
 
 						// Clear routes
 
-						const OutlineRoutes routes = get_cellrenderer () -> get_routes ();
-						get_cellrenderer () -> clear_routes ();
-						get_route_graph () -> update (routes);
+						clear_routes ();
 
 						// Select routes
 
@@ -946,6 +966,14 @@ OutlineTreeViewEditor::select_route (const double x, const double y)
 	}
 
 	return false;
+}
+
+void
+OutlineTreeViewEditor::clear_routes ()
+{
+	const OutlineRoutes routes = get_cellrenderer () -> get_routes ();
+	get_cellrenderer () -> clear_routes ();
+	get_route_graph () -> update (routes);
 }
 
 OutlineTreeViewEditor::~OutlineTreeViewEditor ()

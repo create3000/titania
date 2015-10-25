@@ -125,6 +125,9 @@ private:
 	bool
 	select_route (const double, const double);
 
+	void
+	clear_routes ();
+
 	///  @name Members
 
 	using FieldType = X3D::X3DConstants::FieldType;
@@ -134,8 +137,10 @@ private:
 	UserDataPtr                        selectedUserData;
 	FieldType                          matchingFieldType;
 	int                                matchingAccessType;
+	Gtk::TreePath                      sourcePath;
 	X3D::SFNode                        sourceNode;
 	std::string                        sourceField;
+	Gtk::TreePath                      destinationPath;
 	X3D::SFNode                        destinationNode;
 	std::string                        destinationField;
 
