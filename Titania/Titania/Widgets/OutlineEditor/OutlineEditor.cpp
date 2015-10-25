@@ -128,23 +128,6 @@ OutlineEditor::initialize ()
 void
 OutlineEditor::set_scene ()
 {
-	// Restore scene menu.
-
-	std::vector <X3D::X3DExecutionContextPtr> executionContexts;
-	X3D::X3DExecutionContext*                 executionContext = getExecutionContext ();
-
-	do
-	{
-		executionContexts .emplace_back (executionContext);
-		executionContext = executionContext -> getExecutionContext ();
-	}
-	while (executionContext not_eq executionContext -> getExecutionContext ());
-
-	addSceneMenuItem (nullptr, executionContext);
-
-	for (const auto & executionContext : basic::make_reverse_range (executionContexts))
-		addSceneMenuItem (executionContext, executionContext);
-
 	// Arrow buttons
 
 	getPreviousSceneButton () .set_sensitive (false);
@@ -157,18 +140,21 @@ OutlineEditor::set_executionContext ()
 	if (not realized)
 		return;
 
-	// Scene menu
-
-	const X3D::X3DExecutionContextPtr & currentScene = treeView -> get_model () -> get_execution_context ();
-
-	const auto menuItem = addSceneMenuItem (currentScene, getExecutionContext ());
+	const auto menuItem = addSceneMenuItem (getExecutionContext ());
 	menuItem .first -> set_active (true);
+
+	getSceneLabel () .set_markup (getSceneLabelText (getExecutionContext ()));
+	getSceneMenuButton () .set_tooltip_text (getExecutionContext () -> getWorldURL () .str ());
+
+	// Scene menu
 
 	getSceneImage ()          .set_sensitive (not inPrototypeInstance ());
 	getPreviousSceneButton () .set_sensitive (menuItem .second not_eq 0);
 	getNextSceneButton ()     .set_sensitive (menuItem .second not_eq scenes .size () - 1);
 
 	// Tree view
+
+	const auto & currentScene = treeView -> get_model () -> get_execution_context ();
 
 	saveExpanded (currentScene);
 
@@ -214,27 +200,17 @@ OutlineEditor::on_set_as_current_scene_activate ()
 			const auto   instance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
 
 			if (instance)
-			{
-				const auto menuItem = addSceneMenuItem (getExecutionContext (),
-				                                        X3D::X3DExecutionContextPtr (instance));
-				menuItem .first -> activate ();
-			}
+				setExecutionContext (instance);
+
 			else
 			{
 				const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
 				if (inlineNode)
-				{
-					const auto menuItem = addSceneMenuItem (getExecutionContext (),
-					                                        X3D::X3DExecutionContextPtr (inlineNode -> getInternalScene ()));
-					menuItem .first -> activate ();
-				}
+					setExecutionContext (X3D::X3DExecutionContextPtr (inlineNode -> getInternalScene ()));
+
 				else if (sfnode)
-				{
-					const auto menuItem = addSceneMenuItem (getExecutionContext (),
-					                                        sfnode -> getExecutionContext ());
-					menuItem .first -> activate ();
-				}
+					setExecutionContext (sfnode -> getExecutionContext ());
 			}
 
 			break;
@@ -250,11 +226,7 @@ OutlineEditor::on_set_as_current_scene_activate ()
 					externProto -> requestImmediateLoad ();
 
 				if (externProto -> checkLoadState () == X3D::COMPLETE_STATE)
-				{
-					const auto menuItem = addSceneMenuItem (getExecutionContext (),
-					                                        X3D::X3DExecutionContextPtr (externProto -> getInternalScene ()));
-					menuItem .first -> activate ();
-				}
+					setExecutionContext (X3D::X3DExecutionContextPtr (externProto -> getInternalScene ()));
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -268,7 +240,7 @@ OutlineEditor::on_set_as_current_scene_activate ()
 
 			prototype -> realize ();
 
-			addSceneMenuItem (getExecutionContext (), prototype) .first -> activate ();
+			setExecutionContext (prototype);
 			break;
 		}
 		case OutlineIterType::ImportedNode:
@@ -279,9 +251,7 @@ OutlineEditor::on_set_as_current_scene_activate ()
 				const auto   importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode .getValue ());
 				const auto   exportedNode = importedNode -> getExportedNode ();
 
-				const auto menuItem = addSceneMenuItem (getExecutionContext (),
-				                                        exportedNode -> getExecutionContext ());
-				menuItem .first -> activate ();
+				setExecutionContext (exportedNode -> getExecutionContext ());
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -351,66 +321,69 @@ OutlineEditor::set_scenes_menu ()
 }
 
 std::pair <Gtk::RadioMenuItem*, size_t>
-OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScene, const X3D::X3DExecutionContextPtr & scene)
+OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScene)
 {
-	const auto basename = scene -> getWorldURL () .basename ();
+	// Restore scene menu.
 
-	getSceneLabel () .set_markup (getSceneLabelText (scene));
-	getSceneMenuButton () .set_tooltip_text (scene -> getWorldURL () .str ());
+	X3D::X3DExecutionContext*                executionContext = currentScene;
+	std::deque <X3D::X3DExecutionContextPtr> executionContexts;
 
-	// Return menu item if already created.
+	while (executionContext not_eq executionContext -> getExecutionContext ())
 	{
-		const auto iter = sceneIndex .find (scene);
-
-		if (sceneIndex .count (scene))
-			return std::make_pair (scenes [iter -> second] .second, iter -> second);
+		executionContexts .emplace_front (executionContext);
+		executionContext = executionContext -> getExecutionContext ();
 	}
 
-	if (currentScene)
+	executionContexts .emplace_front (executionContext);
+
+	size_t i = 0;
+
+	for (size_t size = std::min (scenes .size (), executionContexts .size ()); i < size; ++ i)
 	{
-		// Remove menu items.
+	   if (scenes [i] .first not_eq executionContexts [i])
+	      break;
+	}
+
+	const size_t index = i;
+
+	if (index == executionContexts .size ())
+	   return std::make_pair (scenes [index - 1] .second, index - 1);
+
+	if (i < scenes .size ())
+	{
+		for (size_t size = scenes .size (); i < size; ++ i)
 		{
-			const auto iter = sceneIndex .find (currentScene);
-
-			if (iter not_eq sceneIndex .end ())
-			{
-				const size_t first = iter -> second + 1;
-
-				for (size_t i = first, size = scenes .size (); i < size; ++ i)
-				{
-					sceneIndex .erase (scenes [i] .first);
-					getSceneMenu () .remove (*scenes [i] .second);
-				}
-
-				scenes .resize (first);
-			}
+			sceneIndex .erase (scenes [i] .first);
+			getSceneMenu () .remove (*scenes [i] .second);
 		}
+
+		scenes .resize (index);
 	}
-	else
+
+	std::pair <Gtk::RadioMenuItem*, size_t> menuPair;
+		
+	for (size_t i = index, size = executionContexts .size (); i < size; ++ i)
 	{
-		// Remove all menu items.
+	   const auto executionContext = executionContexts [i];
+		const auto basename         = executionContext -> getWorldURL () .basename ();
+	
+		// Add menu item.
 
-		for (const auto & widget : getSceneMenu () .get_children ())
-			getSceneMenu () .remove (*widget);
+		const auto label    = getSceneMenuLabelText (executionContext, false);
+		const auto menuItem = Gtk::manage (new Gtk::RadioMenuItem (sceneGroup, label));
+		menuItem -> set_active (true);
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_scene_activate), menuItem, scenes .size ()));
+		menuItem -> show ();
 
-		sceneIndex .clear ();
-		scenes .clear ();
+		sceneIndex .emplace (executionContext, i);
+		scenes .emplace_back (executionContext, menuItem);
+
+		getSceneMenu () .append (*menuItem);
+
+		menuPair = std::make_pair (menuItem, i);
 	}
 
-	// Add menu item.
-
-	const auto label    = getSceneMenuLabelText (scene, false);
-	const auto menuItem = Gtk::manage (new Gtk::RadioMenuItem (sceneGroup, label));
-	menuItem -> set_active (true);
-	menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_scene_activate), menuItem, scenes .size ()));
-	menuItem -> show ();
-
-	sceneIndex .emplace (scene, scenes .size ());
-	scenes .emplace_back (scene, menuItem);
-
-	getSceneMenu () .append (*menuItem);
-
-	return std::make_pair (menuItem, scenes .size () - 1);
+	return menuPair;
 }
 
 std::string

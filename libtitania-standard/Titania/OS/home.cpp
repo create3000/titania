@@ -58,7 +58,12 @@ namespace os {
 std::string
 home ()
 {
-	return env ("HOME");
+	auto home = env ("HOME");
+
+	if (home .empty () || home .back () not_eq '/')
+	   home += '/';
+
+	return home;
 }
 
 } // os

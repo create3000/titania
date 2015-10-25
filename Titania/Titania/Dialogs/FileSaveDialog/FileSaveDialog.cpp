@@ -70,7 +70,7 @@ FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
 	getFileFilterVideo () -> set_name (_ ("Videos"));
 	getFileFilterAll   () -> set_name (_ ("All Files"));
 
-	const auto worldURL = getScene () -> getWorldURL ();
+	const auto & worldURL = getScene () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		getWindow () .set_uri (worldURL .filename () .str ());
@@ -78,8 +78,10 @@ FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
 	else
 	{
 		if (worldURL .basename () .empty ())
-			getWindow () .set_filename (os::home () + _ ("scene.x3dv"));
-
+		{
+			getWindow () .set_current_folder (os::home ());
+			getWindow () .set_current_name (_ ("scene.x3dv"));
+		}
 		else
 			getWindow () .set_current_name (worldURL .basename ());
 	}

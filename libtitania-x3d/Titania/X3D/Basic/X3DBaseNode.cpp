@@ -430,7 +430,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DScene* scene = getExecutionContext () -> getScene ();
 
 	while (not scene -> isMasterScene ())
-		scene = executionContext -> getScene ();
+		scene = scene -> getScene ();
 
 	return scene;
 }

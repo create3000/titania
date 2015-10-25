@@ -132,6 +132,7 @@ X3DPrototypeInstance::initialize ()
 
 			if (externproto -> checkLoadState () == COMPLETE_STATE)
 				construct ();
+			
 			else
 			{
 				for (const auto fieldDefinition : getUserDefinedFields ())

@@ -131,7 +131,7 @@ private:
 	set_scenes_menu ();
 
 	std::pair <Gtk::RadioMenuItem*, size_t>
-	addSceneMenuItem (const X3D::X3DExecutionContextPtr &, const X3D::X3DExecutionContextPtr &);
+	addSceneMenuItem (const X3D::X3DExecutionContextPtr &);
 
 	std::string
 	getSceneLabelText (const X3D::X3DExecutionContextPtr & scene) const;
