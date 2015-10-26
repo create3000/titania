@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 26 Oct 2015 05:51:17 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Mon, 26 Oct 2015 09:28:01 GMT"
+META "modified" "Mon, 26 Oct 2015 11:28:26 GMT"
 
 EXTERNPROTO RoundedRectangle2D [
   inputOutput    SFFloat cornerRadius
@@ -18,7 +18,7 @@ PROTO Interface [
   inputOutput SFTime   cycleInterval 3
   inputOutput SFFloat  cornerRadius 4
   inputOutput SFFloat  linewidthScaleFactor 1
-  inputOutput SFVec2f  borderWidth 10 5
+  inputOutput SFVec2f  padding 18 8
   # Required fields
   inputOutput SFString string ""
   inputOutput SFBool   isActive FALSE
@@ -81,7 +81,6 @@ WorldInfo {
 }
 
 DEF Notification Interface {
-  string "123"
 }
 
 Background {
@@ -109,7 +108,7 @@ LayoutGroup {
     scaleMode "PIXEL"
   }
   children DEF _1 Transform {
-    translation -14 0 0
+    translation -13.5 0 0
     children [
       Shape {
         appearance Appearance {
@@ -180,7 +179,7 @@ DEF NotificationScript Script {
   inputOnly      SFBool   set_end
   inputOutput    SFTime   cycleInterval 3
   inputOutput    SFFloat  linewidthScaleFactor 1
-  inputOutput    SFVec2f  borderWidth 18 8
+  inputOutput    SFVec2f  padding 18 8
   outputOnly     SFBool   isActive
   outputOnly     SFVec3f  translation_changed
   initializeOnly SFNode   background USE BackgroundGeometry
@@ -211,7 +210,7 @@ function set_string (value, time)
 
 function set_textBounds (value, time)
 {
-	background .size = value .add (borderWidth .multiply (2));
+	background .size = value .add (padding .multiply (2));
 	
 	// Align background line geometry on whole pixel
 	
@@ -224,7 +223,7 @@ function set_textBounds (value, time)
 			++ background .size .y;
 	}
 	
-	translation_changed = new SFVec3f (-value .x / 2 - borderWidth .x + cornerRadius, 0, 0);
+	translation_changed = new SFVec3f (-value .x / 2 - padding .x + cornerRadius + 0.5, 0, 0);
 }
 
 function set_start (value, time)
@@ -257,7 +256,6 @@ ROUTE Notification.linewidthScaleFactor_changed TO LineProperties.set_linewidthS
 ROUTE Notification.string_changed TO NotificationScript.set_string
 ROUTE Notification.cycleInterval_changed TO NotificationScript.set_cycleInterval
 ROUTE Notification.linewidthScaleFactor_changed TO NotificationScript.set_linewidthScaleFactor
-ROUTE Notification.borderWidth_changed TO NotificationScript.set_borderWidth
 
 # String
 
@@ -276,5 +274,6 @@ ROUTE EndTimer.fraction_changed TO TextMaterial.set_transparency
 ROUTE EndTimer.fraction_changed TO BorderMaterial.set_transparency
 ROUTE EndTimer.fraction_changed TO BackgroundMaterial.set_transparency
 ROUTE NotificationScript.translation_changed TO _1.set_translation
+ROUTE Notification.padding_changed TO NotificationScript.set_padding
 
 EXPORT Notification
