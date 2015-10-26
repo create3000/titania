@@ -163,12 +163,6 @@ ExternProtoDeclaration::initialize ()
 	isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
 
 	url () .addInterest (this, &ExternProtoDeclaration::set_url);
-
-	if (scene)
-	{
-		scene .addEvent ();
-		setLoadState (checkLoadState ());
-	}
 }
 
 void
@@ -198,7 +192,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-ExternProtoDeclaration::setProtodeclaration (ProtoDeclaration* value)
+ExternProtoDeclaration::setProtoDeclaration (ProtoDeclaration* value)
 {
 	proto = value;
 
@@ -241,9 +235,15 @@ throw (Error <DISPOSED>)
 void
 ExternProtoDeclaration::requestImmediateLoad ()
 {
-	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+	if (checkLoadState () == COMPLETE_STATE)
 		return;
-	
+
+	if (checkLoadState () == IN_PROGRESS_STATE)
+	{
+	   future -> wait ();
+		return;
+	}
+
 	setLoadState (IN_PROGRESS_STATE);
 
 	Loader loader (getExecutionContext ());
@@ -272,6 +272,8 @@ ExternProtoDeclaration::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
+	getScene () -> addExternProtoLoadCount (this);
+
 	future .reset (new SceneLoader (getExecutionContext (),
 	                                url (),
 	                                std::bind (&ExternProtoDeclaration::setSceneAsync, this, _1)));
@@ -280,6 +282,8 @@ ExternProtoDeclaration::requestAsyncLoad ()
 void
 ExternProtoDeclaration::setSceneAsync (X3DScenePtr && value)
 {
+	getScene () -> removeExternProtoLoadCount (this);
+
 	if (value)
 	{
 		setScene (std::move (value));
@@ -290,7 +294,7 @@ ExternProtoDeclaration::setSceneAsync (X3DScenePtr && value)
 
 		scene = getBrowser () -> getPrivateScene ();
 
-		setProtodeclaration (nullptr);
+		setProtoDeclaration (nullptr);
 	}
 }
 
@@ -317,7 +321,7 @@ ExternProtoDeclaration::setScene (X3DScenePtr && value)
 		                              ? getName ()
 									       	: scene -> getWorldURL () .fragment ();
 
-		setProtodeclaration (scene -> getProtoDeclaration (protoName));
+		setProtoDeclaration (scene -> getProtoDeclaration (protoName));
 	}
 	catch (const X3DError & error)
 	{
@@ -327,7 +331,7 @@ ExternProtoDeclaration::setScene (X3DScenePtr && value)
 
 		scene = getBrowser () -> getPrivateScene ();
 
-		setProtodeclaration (nullptr);
+		setProtoDeclaration (nullptr);
 	}
 }
 

@@ -58,7 +58,9 @@
 namespace titania {
 namespace X3D {
 
-class InterruptFutureException:
+// http://stackoverflow.com/questions/13893060/i-want-to-kill-a-stdthread-using-its-thread-object
+
+class InterruptThreadException:
 	virtual public std::exception
 {
 public:
@@ -67,7 +69,7 @@ public:
 	char const*
 	what () const
 	noexcept (true) override
-	{ return "InterruptFutureException"; }
+	{ return "InterruptThreadException"; }
 
 };
 
@@ -105,7 +107,7 @@ protected:
 		if (not isStopping ())
 			return;
 
-		throw InterruptFutureException ();
+		throw InterruptThreadException ();
 	}
 
 

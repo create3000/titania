@@ -136,7 +136,7 @@ public:
 
 	///  Returns true if this objects has unprocessed events otherwise false.
 	bool
-	isTainted ()
+	isTainted () const
 	{ return tainted; }
 
 	///  Set the value of this object without adding an event.  @a object must be of the same type as this object.

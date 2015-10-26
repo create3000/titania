@@ -290,7 +290,10 @@ throw (Error <INVALID_SCENE>,
 	if (lock)
 	{
 		if (future)
+		{
+			removeLoadCount (future .get ());
 			future -> dispose ();
+		}
 
 		prepareEvents () .removeInterest (this, &X3DBrowser::set_scene);
 
@@ -390,6 +393,8 @@ throw (Error <INVALID_URL>,
 	future .reset (new SceneLoader (this,
 	                                url,
 	                                std::bind (&X3DBrowser::set_scene_async, this, _1)));
+
+	addLoadCount (future .get ());
 }
 
 void
@@ -406,6 +411,8 @@ void
 X3DBrowser::set_scene (const X3DScenePtr & scene)
 {
 	prepareEvents () .removeInterest (this, &X3DBrowser::set_scene);
+
+	removeLoadCount (future .get ());
 
 	if (scene)
 	{

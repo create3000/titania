@@ -50,6 +50,7 @@
 
 #include "X3DUrlObject.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 #include "../Core/X3DPrototypeInstance.h"
@@ -105,6 +106,23 @@ X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const b
 			value .set (newWorldURL .relative_path (transformed) .str ());
 		}
 	}
+}
+
+void
+X3DUrlObject::setLoadState (const LoadState value, const bool notify)
+{
+	getBrowser () -> removeLoadCount (this);
+
+	if (notify and value == IN_PROGRESS_STATE)
+		getBrowser () -> addLoadCount (this);
+
+	loadState = value;
+}
+
+void
+X3DUrlObject::dispose ()
+{
+	getBrowser () -> removeLoadCount (this);
 }
 
 } // X3D

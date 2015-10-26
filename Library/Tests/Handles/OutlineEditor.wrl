@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Titania V0.7.1
+#VRML V2.0 utf8 Titania V1.2.0
 
 PROFILE Full
 
@@ -70,6 +70,22 @@ EXTERNPROTO Torus [
   "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/Torus.x3dv"
 ]
 
+EXTERNPROTO MFImage [
+  eventIn      SFTime  set_triggerTime
+  exposedField MFImage keyValue
+  eventOut     MFImage value_changed
+]
+[
+  "file:///usr/share/titania/Prototypes/0.1/Fields/MFImage.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Fields/MFImage.x3d",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFImage.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFImage.x3d",
+  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/MFImage.x3dv",
+  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/MFImage.x3d",
+  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/MFImage.x3dv",
+  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/MFImage.x3d"
+]
+
 PROTO A [ ]
 {
   Group { }
@@ -81,8 +97,8 @@ PROTO B [ ]
 }
 
 PROTO Children1 [
-  exposedField SFNode metadata MetadataDouble { }
-  exposedField SFNode node DEF _1 Transform { }
+  exposedField SFNode metadata DEF _1 MetadataDouble { }
+  exposedField SFNode node DEF _2 Transform { }
   exposedField MFNode children1 [ ]
 ]
 {
@@ -104,6 +120,59 @@ PROTO Children1 [
 PROTO C [ ]
 {
   Group { }
+}
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              1.6068799495697,
+              2.66329002380371,
+              3.62701010704041
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0.787842035293579,
+              0.597084045410156,
+              0.150982022285461,
+              5.73888063430786
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              3.65939998626709,
+              -0.295958995819092,
+              -2.40960001945496
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "OutlineEditor"
 }
 
 DEF None NavigationInfo {
@@ -147,7 +216,7 @@ DEF Sensors Transform {
   scale -1.01808 1.09117 1.09117
   center 3.20255 0 -1.19209e-07
   children [
-    DEF _2 ProximitySensor {
+    DEF _3 ProximitySensor {
       size 2 2 2
     }
     VisibilitySensor {
@@ -175,7 +244,7 @@ DEF Inline Transform {
   translation 5.51299 0.468949 1
   scale 0.329804 0.329803 1
   center -1.99912 -0.520307 0
-  children DEF _3 Inline {
+  children DEF _4 Inline {
     url "Inline.wrl"
   }
 }
@@ -211,10 +280,10 @@ DEF SnapTarget Transform {
 
 Group {
   children [
-    USE _2
+    USE _3
     DEF Box Transform {
       translation 1.40843 1.10727 0.193803
-      rotation 0 0 1 3.41044
+      rotation 0 0 1 2.12974
       scale 0.2 0.2 0.2
       children Transform {
         children Shape {
@@ -233,7 +302,7 @@ Group {
 DEF Sphere Transform {
   translation 2.22045 1.17457 6.31221e-08
   scale 0.208036 0.208036 -0.208036
-  children DEF _4 Transform {
+  children Transform {
     translation 0.0424875 -1.64825 0
     children Shape {
       appearance Appearance {
@@ -462,7 +531,10 @@ DEF EXPORT Transform {
 NULL
 
 DEF NULL Transform {
-	children [NULL NULL]
+  children [
+    NULL
+    NULL
+  ]
 }
 
 DEF InlineClone Transform {
@@ -478,7 +550,7 @@ DEF InlineClone Transform {
 A { }
 
 IMPORT _7.CubeExport
-IMPORT _3.Text AS ImportedInline
+IMPORT _4.Text AS ImportedInline
 
 ROUTE Rotor.rotation_changed TO Box.set_rotation
 ROUTE Sensors.translation_changed TO Inline.set_translation

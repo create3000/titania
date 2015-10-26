@@ -103,7 +103,6 @@ private:
 	std::atomic <X3DBrowser*> browser;
 	const basic::uri          referer;
 	Callback                  callback;
-	std::mutex                mutex;
 	std::future <TexturePtr>  future;
 
 };

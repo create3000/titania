@@ -132,15 +132,13 @@ protected:
 	///  @name Member access
 
 	void
-	setLoadState (const LoadState value)
-	{ loadState = value; }
+	setLoadState (const LoadState, const bool = true);
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () override
-	{ }
+	dispose () override;
 
 
 private:

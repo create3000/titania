@@ -1,6 +1,10 @@
-#X3D V3.3 utf8 Titania V0.6.7
+#X3D V3.3 utf8 Titania V1.2.0
 
-META "generator" "Titania V0.6.7, http://titania.create3000.de"
+META "comment" "World of Titania"
+META "created" "Mon, 26 Oct 2015 05:51:17 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.0, http://titania.create3000.de"
+META "modified" "Mon, 26 Oct 2015 09:28:01 GMT"
 
 EXTERNPROTO RoundedRectangle2D [
   inputOutput    SFFloat cornerRadius
@@ -23,6 +27,59 @@ PROTO Interface [
   Group { }
 }
 
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "Notification"
+}
+
 DEF Notification Interface {
   string "123"
 }
@@ -36,13 +93,13 @@ OrthoViewpoint { }
 LayoutGroup {
   layout Layout {
     align [
-      "CENTER",
-      "BOTTOM"
+      "RIGHT",
+      "TOP"
     ]
     offsetUnits "PIXEL"
     offset [
-      0,
-      50
+      100,
+      -40
     ]
     sizeUnits "PIXEL"
     size [
@@ -51,55 +108,58 @@ LayoutGroup {
     ]
     scaleMode "PIXEL"
   }
-  children [
-    Shape {
-      appearance Appearance {
-        material DEF BackgroundMaterial Material {
-          diffuseColor 0 0 0
-          transparency 1
+  children DEF _1 Transform {
+    translation -14 0 0
+    children [
+      Shape {
+        appearance Appearance {
+          material DEF BackgroundMaterial Material {
+            diffuseColor 0 0 0
+            transparency 1
+          }
+        }
+        geometry DEF BackgroundGeometry RoundedRectangle2D {
+          cornerRadius 4
+          size 37 17
         }
       }
-      geometry DEF BackgroundGeometry RoundedRectangle2D {
-        cornerRadius 4
-        size 43 19
+      Shape {
+        appearance Appearance {
+          fillProperties FillProperties {
+            filled FALSE
+            hatched FALSE
+          }
+          lineProperties DEF LineProperties LineProperties {
+            linewidthScaleFactor 1
+          }
+          material DEF BorderMaterial Material {
+            diffuseColor 1 1 1
+            transparency 1
+          }
+        }
+        geometry USE BackgroundGeometry
       }
-    }
-    Shape {
-      appearance Appearance {
-        fillProperties FillProperties {
-          filled FALSE
-          hatched FALSE
+      Shape {
+        appearance Appearance {
+          material DEF TextMaterial Material {
+            diffuseColor 1 1 1
+            transparency 1
+          }
         }
-        lineProperties DEF LineProperties LineProperties {
-          linewidthScaleFactor 1
-        }
-        material DEF BorderMaterial Material {
-          diffuseColor 1 1 1
-          transparency 1
-        }
-      }
-      geometry USE BackgroundGeometry
-    }
-    Shape {
-      appearance Appearance {
-        material DEF TextMaterial Material {
-          diffuseColor 1 1 1
-          transparency 1
-        }
-      }
-      geometry DEF Text Text {
-        string "123"
-        fontStyle ScreenFontStyle {
-          family "SANS"
-          pointSize 9
-          justify [
-            "MIDDLE",
-            "MIDDLE"
-          ]
+        geometry DEF Text Text {
+          string ""
+          fontStyle ScreenFontStyle {
+            family "SANS"
+            pointSize 9
+            justify [
+              "MIDDLE",
+              "MIDDLE"
+            ]
+          }
         }
       }
-    }
-  ]
+    ]
+  }
 }
 
 DEF FadeIn ScalarInterpolator {
@@ -120,20 +180,23 @@ DEF NotificationScript Script {
   inputOnly      SFBool   set_end
   inputOutput    SFTime   cycleInterval 3
   inputOutput    SFFloat  linewidthScaleFactor 1
-  inputOutput    SFVec2f  borderWidth 10 5
+  inputOutput    SFVec2f  borderWidth 18 8
   outputOnly     SFBool   isActive
+  outputOnly     SFVec3f  translation_changed
   initializeOnly SFNode   background USE BackgroundGeometry
   initializeOnly SFNode   text USE Text
   initializeOnly SFNode   startTimer DEF StartTimer TimeSensor {
-    startTime 1396316049.08285
+    startTime 1445851671.04429
   }
   initializeOnly SFNode   endTimer DEF EndTimer TimeSensor {
     cycleInterval 2
-    startTime 1396316053.08285
-    stopTime 1396316049.08285
+    startTime 1445851675.04429
+    stopTime 1445851671.04429
   }
 
   url "peaseblossom:
+
+var cornerRadius = 4;
 
 function set_string (value, time)
 {
@@ -160,6 +223,8 @@ function set_textBounds (value, time)
 		if (is_even (background .size .y))
 			++ background .size .y;
 	}
+	
+	translation_changed = new SFVec3f (-value .x / 2 - borderWidth .x + cornerRadius, 0, 0);
 }
 
 function set_start (value, time)
@@ -210,5 +275,6 @@ ROUTE NotificationScript.isActive TO Notification.set_isActive
 ROUTE EndTimer.fraction_changed TO TextMaterial.set_transparency
 ROUTE EndTimer.fraction_changed TO BorderMaterial.set_transparency
 ROUTE EndTimer.fraction_changed TO BackgroundMaterial.set_transparency
+ROUTE NotificationScript.translation_changed TO _1.set_translation
 
 EXPORT Notification

@@ -448,6 +448,22 @@ public:
 	       Error <DISPOSED>)
 	{ return externProtos; }
 
+	void
+	requestImmediateLoadOfExternProtos ();
+
+	void
+	requestAsyncLoadOfExternProtos ();
+
+	void
+	addExternProtoLoadCount (const ExternProtoDeclaration* const);
+
+	void
+	removeExternProtoLoadCount (const ExternProtoDeclaration* const);
+	       
+	const SFInt32 &
+	getExternProtosLoadCount () const
+	{ return externProtosLoadCount; }
+
 	const SFTime &
 	externProtos_changed () const
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -703,19 +719,21 @@ private:
 	 *  @name Members
 	 */
 
-	X3DWeakPtr <WorldInfo> worldInfo; 
-	NamedNodeIndex         namedNodes;
-	SFTime                 namedNodesOutput;
-	ImportedNodeIndex      importedNodes;
-	ImportedNamesIndex     importedNames;
-	SFTime                 importedNodesOutput;
-	ProtoArray             prototypes;
-	SFTime                 prototypesOutput;
-	ExternProtoArray       externProtos;
-	SFTime                 externProtosOutput;
-	RouteArray             routes;
-	MFNode* const          rootNodes;
-	SFTime                 sceneGraphOutput;
+	X3DWeakPtr <WorldInfo>                   worldInfo; 
+	NamedNodeIndex                           namedNodes;
+	SFTime                                   namedNodesOutput;
+	ImportedNodeIndex                        importedNodes;
+	ImportedNamesIndex                       importedNames;
+	SFTime                                   importedNodesOutput;
+	ProtoArray                               prototypes;
+	SFTime                                   prototypesOutput;
+	ExternProtoArray                         externProtos;
+	SFInt32                                  externProtosLoadCount;
+	std::set <const ExternProtoDeclaration*> loadingExternProtos;
+	SFTime                                   externProtosOutput;
+	RouteArray                               routes;
+	MFNode* const                            rootNodes;
+	SFTime                                   sceneGraphOutput;
 
 	MFNode uninitializedNodes;
 

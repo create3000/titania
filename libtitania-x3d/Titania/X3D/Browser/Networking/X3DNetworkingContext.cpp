@@ -51,7 +51,10 @@
 #include "X3DNetworkingContext.h"
 
 #include "../X3DBrowser.h"
+#include "../Notification.h"
 #include "../../Execution/Scene.h"
+
+#include <Titania/String/sprintf.h>
 
 namespace titania {
 namespace X3D {
@@ -66,9 +69,12 @@ X3DNetworkingContext::X3DNetworkingContext () :
 	      privateScene (new Scene (getBrowser ())),
 	downloadMutexIndex (0),
 	   downloadMutexes ({ std::make_shared <std::mutex> () }),
-	     downloadMutex ()
+	     downloadMutex (),
+	    loadingObjects (),
+	         loadCount (),
+	      notifyOnLoad (false)
 {
-	addChildren (privateScene);
+	addChildren (privateScene, loadCount);
 }
 
 void
@@ -95,20 +101,64 @@ X3DNetworkingContext::getDownloadMutex ()
 	return downloadMutexes [downloadMutexIndex];
 }
 
-// XXX: not used anymore
 void
-X3DNetworkingContext::lock ()
+X3DNetworkingContext::addLoadCount (const void* const object)
 {
-	for (auto & downloadMutex : downloadMutexes)
-		downloadMutex -> lock ();
+	try
+	{
+		loadingObjects .emplace (object);
+		
+		loadCount = loadingObjects .size ();
+
+		set_loadCount ();
+	}
+	catch (const X3DError &)
+	{ }
 }
 
-// XXX: not used anymore
 void
-X3DNetworkingContext::unlock ()
+X3DNetworkingContext::removeLoadCount (const void* const object)
 {
-	for (auto & downloadMutex : downloadMutexes)
-		downloadMutex -> unlock ();
+	try
+	{
+		if (not loadingObjects .erase (object))
+			return;
+ 
+		loadCount = loadingObjects .size ();
+
+		set_loadCount ();
+	}
+	catch (const X3DError &)
+	{ }
+}
+
+void
+X3DNetworkingContext::set_loadCount ()
+{
+	if (notifyOnLoad)
+	{
+		switch (loadCount)
+		{
+			case 0:
+				getBrowser () -> getNotification () -> string () = _("Loading done");
+				break;
+			case 1:
+				getBrowser () -> getNotification () -> string () = basic::sprintf (_ ("Loading %d file"), loadCount .getValue ());
+				break;
+			default:   
+				getBrowser () -> getNotification () -> string () = basic::sprintf (_ ("Loading %d files"), loadCount .getValue ());
+				break;
+		}
+	}
+
+	//setCursor ("DEFAULT");
+}
+
+void
+X3DNetworkingContext::resetLoadCount ()
+{
+	loadCount = 0;
+	loadingObjects .clear ();			   
 }
 
 X3DNetworkingContext::~X3DNetworkingContext ()

@@ -82,6 +82,27 @@ public:
 	const std::shared_ptr <std::mutex> &
 	getDownloadMutex ();
 
+	void
+	setNotifyOnLoad (const bool value)
+	{ notifyOnLoad = value; }
+
+	bool
+	getNotifyOnLoad () const
+	{ return notifyOnLoad; }
+
+	const SFInt32 &
+	getLoadCount () const
+	{ return loadCount; }
+
+	void
+	addLoadCount (const void* const);
+
+	void
+	removeLoadCount (const void* const);
+
+	void
+	resetLoadCount ();
+
 	///  @name Destruction
 
 	virtual
@@ -103,16 +124,13 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Operations
-
-	void
-	lock ();
-
-	void
-	unlock ();
-
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_loadCount ();
 
 	///  @name Static Members
 
@@ -127,6 +145,9 @@ private:
 	size_t                                    downloadMutexIndex;
 	std::deque <std::shared_ptr <std::mutex>> downloadMutexes;
 	std::mutex                                downloadMutex;
+	std::set <const void*>                    loadingObjects;
+	SFInt32                                   loadCount;
+	bool                                      notifyOnLoad;
 
 };
 

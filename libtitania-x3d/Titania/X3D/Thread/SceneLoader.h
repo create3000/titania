@@ -114,14 +114,17 @@ private:
 	loadAsync (const MFString &);
 
 	void
-	prepareEvents (const bool);
+	set_scene (const bool);
+
+	void
+	set_loadCount (const int32_t);
 
 	std::atomic <X3DBrowser*> browser;
 	const basic::uri          referer;
 	Callback                  callback;
-	std::mutex                mutex;
 	std::future <X3DScenePtr> future;
 	MFString                  urlError;
+	X3DScenePtr               scene;
 
 };
 

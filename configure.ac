@@ -92,7 +92,7 @@ if test "x$enable_parallel" = "xyes" ; then
 fi
 
 if test "x$enable_debug" = "xyes" ; then
-	CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG"
+	CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG -Wno-deprecated-declarations"
 fi
 
 LDFLAGS="-rdynamic"

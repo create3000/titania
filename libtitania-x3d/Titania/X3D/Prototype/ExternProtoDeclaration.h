@@ -181,7 +181,7 @@ private:
 	initialize () final override;
 
 	void
-	setProtodeclaration (ProtoDeclaration*);
+	setProtoDeclaration (ProtoDeclaration*);
 
 	void
 	setSceneAsync (X3DScenePtr &&);

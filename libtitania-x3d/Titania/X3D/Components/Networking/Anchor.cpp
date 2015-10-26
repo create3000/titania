@@ -127,15 +127,15 @@ Anchor::requestImmediateLoad ()
 {
 	try
 	{
-		setLoadState (IN_PROGRESS_STATE);
+		setLoadState (IN_PROGRESS_STATE, false);
 
 		Loader (getExecutionContext ()) .loadURL (url (), parameter ());
 
-		setLoadState (COMPLETE_STATE);
+		setLoadState (COMPLETE_STATE, false);
 	}
 	catch (const X3DError &)
 	{
-		setLoadState (FAILED_STATE);
+		setLoadState (FAILED_STATE, false);
 	}
 }
 

@@ -76,20 +76,21 @@ static std::default_random_engine
 random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
 X3DExecutionContext::X3DExecutionContext () :
-	         X3DBaseNode (),
-	           worldInfo (),
-	          namedNodes (),
-	       importedNodes (),
-	       importedNames (),
-	 importedNodesOutput (),
-	          prototypes (),
-	    prototypesOutput (),
-	        externProtos (),
-	  externProtosOutput (),
-	              routes (),
-	           rootNodes (new MFNode ()),
-	    sceneGraphOutput (),
-	  uninitializedNodes ()
+	          X3DBaseNode (),
+	            worldInfo (),
+	           namedNodes (),
+	        importedNodes (),
+	        importedNames (),
+	  importedNodesOutput (),
+	           prototypes (),
+	     prototypesOutput (),
+	         externProtos (),
+	externProtosLoadCount (),
+	   externProtosOutput (),
+	               routes (),
+	            rootNodes (new MFNode ()),
+	     sceneGraphOutput (),
+	   uninitializedNodes ()
 {
 	addType (X3DConstants::X3DExecutionContext);
 
@@ -97,6 +98,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	             namedNodesOutput,
 	             importedNodesOutput,
 	             prototypesOutput,
+	             externProtosLoadCount,
 	             externProtosOutput,
 	             sceneGraphOutput,
 	             uninitializedNodes);
@@ -115,6 +117,26 @@ X3DExecutionContext::initialize ()
 
 	if (not isProtoDeclaration ())
 		realize ();
+}
+
+void
+X3DExecutionContext::realize ()
+{
+	ContextLock lock (getBrowser ());
+
+	requestImmediateLoadOfExternProtos ();
+
+	if (lock)
+	{
+		while (not uninitializedNodes .empty ())
+		{
+			for (const auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
+				uninitializedNode -> setup ();
+		}
+	}
+
+	//else
+	//	throw Error <INVALID_OPERATION_TIMING> ("Couldn't realize nodes.");
 }
 
 void
@@ -137,24 +159,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		// Reset executionContext to set browser.
 		node -> setExecutionContext (this);
 	}
-}
-
-void
-X3DExecutionContext::realize ()
-{
-	ContextLock lock (getBrowser ());
-
-	if (lock)
-	{
-		while (not uninitializedNodes .empty ())
-		{
-			for (const auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
-				uninitializedNode -> setup ();
-		}
-	}
-
-	//else
-	//	throw Error <INVALID_OPERATION_TIMING> ("Couldn't realize nodes.");
 }
 
 // Component/Profile handling
@@ -816,6 +820,60 @@ throw (Error <INVALID_NAME>,
 	{
 		throw Error <INVALID_NAME> ("EXTERNPROTO '" + name + "' not found.");
 	}
+}
+
+void
+X3DExecutionContext::requestImmediateLoadOfExternProtos ()
+{
+	for (const auto externProto : getExternProtoDeclarations ())
+	{
+		if (externProto -> getInternalScene () .getRequesters () .empty ())
+		   continue;
+
+		externProto -> requestImmediateLoad ();
+		externProto -> getInternalScene () .processInterests ();
+	}
+
+	for (const auto proto : getProtoDeclarations ())
+		proto -> requestImmediateLoadOfExternProtos ();
+}
+
+void
+X3DExecutionContext::requestAsyncLoadOfExternProtos ()
+{
+	externProtosLoadCount .isTainted (false);
+	externProtosLoadCount .addEvent ();
+
+	for (const auto externProto : getExternProtoDeclarations ())
+	{
+		if (externProto -> getInternalScene () .getRequesters () .empty ())
+		   continue;
+
+		externProto -> setup ();
+		externProto -> requestAsyncLoad ();
+	}
+
+	for (const auto proto : getProtoDeclarations ())
+	{
+	   proto -> requestAsyncLoadOfExternProtos ();
+	}
+}
+
+void
+X3DExecutionContext::addExternProtoLoadCount (const ExternProtoDeclaration* const externProto)
+{
+	loadingExternProtos .emplace (externProto);
+		
+	externProtosLoadCount = loadingExternProtos .size ();
+}
+
+void
+X3DExecutionContext::removeExternProtoLoadCount (const ExternProtoDeclaration* const externProto)
+{
+	if (not loadingExternProtos .erase (externProto))
+		return;
+ 
+	externProtosLoadCount = loadingExternProtos .size ();
 }
 
 // ProtoObject handling

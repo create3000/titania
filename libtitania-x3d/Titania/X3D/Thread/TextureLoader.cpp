@@ -64,7 +64,6 @@ TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
 	               browser (executionContext -> getBrowser ()),
 	               referer (executionContext -> getWorldURL ()),
 	              callback (callback),
-	                 mutex (),
 	               future (getFuture (url, minTextureSize, maxTextureSize))
 {
 	getBrowser () -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
@@ -129,7 +128,7 @@ TextureLoader::loadAsync (const MFString & url,
 		{
 			getBrowser () -> println (error .what ());
 		}
-		catch (const InterruptFutureException &)
+		catch (const InterruptThreadException &)
 		{
 			throw;
 		}
@@ -157,8 +156,15 @@ TextureLoader::prepareEvents ()
 
 	if (status not_eq std::future_status::ready)
 	   return;
-
-	callback (future .get ());
+	
+	try
+	{
+		callback (future .get ());
+	}
+	catch (const std::exception &)
+	{
+	   // Interrupt
+	}
 
 	X3DInput::dispose ();
 }
@@ -172,10 +178,6 @@ TextureLoader::dispose ()
 	stop ();
 
 	X3DInput::dispose ();
-
-	// Clear the bound callback arguments.
-
-	callback = [ ] (const TexturePtr &) { };
 }
 
 TextureLoader::~TextureLoader ()
