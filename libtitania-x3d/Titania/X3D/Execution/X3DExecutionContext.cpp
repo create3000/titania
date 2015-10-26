@@ -825,6 +825,9 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::requestImmediateLoadOfExternProtos ()
 {
+	// Parallel load all extern protos, then sync.
+	requestAsyncLoadOfExternProtos ();
+
 	for (const auto externProto : getExternProtoDeclarations ())
 	{
 		if (externProto -> getInternalScene () .getRequesters () .empty ())
