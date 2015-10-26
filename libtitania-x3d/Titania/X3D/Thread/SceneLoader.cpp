@@ -122,6 +122,8 @@ SceneLoader::setExecutionContext (X3DExecutionContext* const executionContext)
 void
 SceneLoader::wait ()
 {
+	X3DInput::dispose ();
+
 	if (future .valid ())
 	{
 		future .wait ();
@@ -133,6 +135,8 @@ SceneLoader::wait ()
 			scene -> requestImmediateLoadOfExternProtos ();
 
 			callback (std::move (scene));
+
+			scene .dispose ();
 		}
 		catch (const FutureUrlErrorException & error)
 		{
@@ -242,6 +246,8 @@ SceneLoader::set_loadCount (const int32_t loadCount)
 	   return;
 
 	callback (std::move (scene));
+
+	scene .dispose ();
 
 	X3DInput::dispose ();
 }

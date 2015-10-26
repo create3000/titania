@@ -849,7 +849,6 @@ X3DExecutionContext::requestAsyncLoadOfExternProtos ()
 		if (externProto -> getInternalScene () .getRequesters () .empty ())
 		   continue;
 
-		externProto -> setup ();
 		externProto -> requestAsyncLoad ();
 	}
 

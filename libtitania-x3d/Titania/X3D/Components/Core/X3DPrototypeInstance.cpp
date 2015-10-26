@@ -103,7 +103,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 			externProto -> requestAsyncLoad ();
  
 			if (externProto -> checkLoadState () == COMPLETE_STATE)
-		      construct ();
+				construct ();
 		}
 	}
 	else

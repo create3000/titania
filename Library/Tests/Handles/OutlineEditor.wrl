@@ -283,7 +283,7 @@ Group {
     USE _3
     DEF Box Transform {
       translation 1.40843 1.10727 0.193803
-      rotation 0 0 1 2.12974
+      rotation 0 0 1 3.32387
       scale 0.2 0.2 0.2
       children Transform {
         children Shape {

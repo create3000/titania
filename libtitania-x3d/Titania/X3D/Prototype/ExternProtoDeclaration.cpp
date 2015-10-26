@@ -301,7 +301,7 @@ ExternProtoDeclaration::setSceneAsync (X3DScenePtr && value)
 void
 ExternProtoDeclaration::setScene (X3DScenePtr && value)
 {
-	scene = value;
+	scene = std::move (value);
 
 	try
 	{
@@ -580,6 +580,8 @@ ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 void
 ExternProtoDeclaration::dispose ()
 {
+	getScene () -> removeExternProtoLoadCount (this);
+
 	future .reset ();
 
 	removeChildren (url ());
