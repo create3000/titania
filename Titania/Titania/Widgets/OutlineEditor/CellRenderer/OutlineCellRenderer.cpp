@@ -370,7 +370,7 @@ OutlineCellRenderer::get_icon () const
 			if (not node)
 				return NULLImage;
 
-			if (node -> getExecutionContext () == treeView -> get_model () -> get_execution_context ())
+			if (node -> getExecutionContext () == treeView -> get_execution_context ())
 			{
 				if (node -> isInitialized () and not node -> getExecutionContext () -> isProtoDeclaration ())
 					return baseNodeImage;
@@ -378,7 +378,7 @@ OutlineCellRenderer::get_icon () const
 				return baseNodeUImage;
 			}
 
-			if (treeView -> get_model () -> get_execution_context () -> isImportedNode (*sfnode))
+			if (treeView -> get_execution_context () -> isImportedNode (*sfnode))
 				return importedNodeImage;
 
 			if (node -> isInitialized () and not node -> getExecutionContext () -> isProtoDeclaration ())
@@ -845,7 +845,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 				(field -> getName () == "load" and value -> toString () == "FALSE") or 
 				 field -> getName () == "url"))
 			{
-				treeView -> getBrowserWindow () -> removeImportedNodes (treeView -> get_model () -> get_execution_context (),
+				treeView -> getBrowserWindow () -> removeImportedNodes (treeView -> get_execution_context (),
 				                                                        { inlineNode },
 				                                                        undoStep);
 			}

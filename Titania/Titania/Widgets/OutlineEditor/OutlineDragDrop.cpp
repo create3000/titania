@@ -161,7 +161,7 @@ OutlineDragDrop::on_drag_motion_extern_proto (const Glib::RefPtr <Gdk::DragConte
 
 				const auto sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 
-				if (sfnode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
+				if (sfnode -> getExecutionContext () not_eq treeView -> get_execution_context ())
 					return true;
 
 				return false;
@@ -213,7 +213,7 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				const auto parent = treeView -> get_model () -> get_iter (destinationPath);
 				const auto sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (parent));
 
-				if (sfnode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
+				if (sfnode -> getExecutionContext () not_eq treeView -> get_execution_context ())
 					return true;
 
 				if (sfnode -> getType () .back () == X3D::X3DConstants::ImportedNode)
@@ -242,7 +242,7 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 
 				const auto sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 
-				if (sfnode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
+				if (sfnode -> getExecutionContext () not_eq treeView -> get_execution_context ())
 					return true;
 
 				//if (position == Gtk::TREE_VIEW_DROP_BEFORE and treeView -> get_model () -> iter_has_child_vfunc (iter))

@@ -226,7 +226,7 @@ OutlineTreeViewEditor::is_real_local_node (const Gtk::TreeModel::iterator & iter
 		case OutlineIterType::ExportedNode:
 		{
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
-			return sfnode and sfnode -> getExecutionContext () == get_model () -> get_execution_context ();
+			return sfnode and sfnode -> getExecutionContext () == get_execution_context ();
 		}
 		default:
 			break;
@@ -245,7 +245,7 @@ OutlineTreeViewEditor::is_local_node (const Gtk::TreeModel::iterator & iter) con
 		case OutlineIterType::ExportedNode:
 		{
 			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
-			return sfnode and sfnode -> getExecutionContext () == get_model () -> get_execution_context ();
+			return sfnode and sfnode -> getExecutionContext () == get_execution_context ();
 		}
 		default:
 			break;
@@ -418,7 +418,7 @@ OutlineTreeViewEditor::get_node (OutlineTreeData* const nodeData) const
 
 			if (sfnode)
 			{
-				if (sfnode -> getExecutionContext () == get_model () -> get_execution_context ())
+				if (sfnode -> getExecutionContext () == get_execution_context ())
 					return sfnode;
 			}
 
@@ -432,7 +432,7 @@ OutlineTreeViewEditor::get_node (OutlineTreeData* const nodeData) const
 				const auto importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode -> getValue ());
 				const auto exportedNode = importedNode -> getExportedNode ();
 
-				if (importedNode -> getExecutionContext () == get_model () -> get_execution_context ())
+				if (importedNode -> getExecutionContext () == get_execution_context ())
 					return exportedNode;
 			}
 			catch (...)
@@ -448,7 +448,7 @@ OutlineTreeViewEditor::get_node (OutlineTreeData* const nodeData) const
 				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode -> getValue ());
 				const auto localNode    = exportedNode -> getLocalNode ();
 
-				if (exportedNode -> getExecutionContext () == get_model () -> get_execution_context ())
+				if (exportedNode -> getExecutionContext () == get_execution_context ())
 					return localNode;
 			}
 			catch (...)
@@ -517,7 +517,7 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 									{
 										const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Route"));
 										getBrowserWindow () -> saveMatrix (destinationNode, undoStep);
-										getBrowserWindow () -> addRoute (get_model () -> get_execution_context (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
+										getBrowserWindow () -> addRoute (get_execution_context (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
 										getBrowserWindow () -> addUndoStep (undoStep);
 									}
 									catch (const X3D::X3DError &)
@@ -585,7 +585,7 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 									{
 										const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Route"));
 										getBrowserWindow () -> saveMatrix (destinationNode, undoStep);
-										getBrowserWindow () -> addRoute (get_model () -> get_execution_context (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
+										getBrowserWindow () -> addRoute (get_execution_context (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
 										getBrowserWindow () -> addUndoStep (undoStep);
 									}
 									catch (const X3D::X3DError &)
@@ -704,7 +704,7 @@ OutlineTreeViewEditor::remove_route (const double x, const double y)
 					{
 						try
 						{
-							if (route -> getExecutionContext () == get_model () -> get_execution_context ())
+							if (route -> getExecutionContext () == get_execution_context ())
 							{
 								const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Route"));
 
@@ -782,7 +782,7 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 			{
 				const auto route = routes [0];
 
-				if (route -> getExecutionContext () == get_model () -> get_execution_context ())
+				if (route -> getExecutionContext () == get_execution_context ())
 				{
 					const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Route"));
 

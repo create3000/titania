@@ -83,6 +83,9 @@ public:
 	void
 	set_execution_context (const X3D::X3DExecutionContextPtr &);
 
+	const X3D::X3DExecutionContextPtr &
+	get_execution_context () const;
+
 	void
 	set_show_extern_protos (const bool value)
 	{ externProtos = value; }

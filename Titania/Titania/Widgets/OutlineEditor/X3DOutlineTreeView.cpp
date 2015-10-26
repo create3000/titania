@@ -201,7 +201,7 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 	if (exportedNodes)
 		flags |= X3D::TRAVERSE_EXPORTED_NODES;
 
-	auto hierarchy = X3D::find (get_model () -> get_execution_context (), object, flags);
+	auto hierarchy = X3D::find (get_execution_context (), object, flags);
 
 	if (not hierarchy .empty ())
 		hierarchy .erase (hierarchy .begin ());
@@ -446,7 +446,7 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 
 	// Remove model.
 
-	X3D::X3DScenePtr scene (get_model () -> get_execution_context ());
+	X3D::X3DScenePtr scene (get_execution_context ());
 
 	for (const auto & child : get_model () -> children ())
 	{
@@ -454,12 +454,12 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 		treeObserver -> unwatch_tree (child, false);
 	}
 
-	get_model () -> get_execution_context () -> getScene () -> units_changed () .removeInterest (this, &X3DOutlineTreeView::queue_draw);
+	get_execution_context () -> getScene () -> units_changed () .removeInterest (this, &X3DOutlineTreeView::queue_draw);
 
-	get_model () -> get_execution_context () -> getRootNodes ()          .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
-	get_model () -> get_execution_context () -> importedNodes_changed () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
-	get_model () -> get_execution_context () -> prototypes_changed ()    .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
-	get_model () -> get_execution_context () -> externProtos_changed ()  .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
+	get_execution_context () -> getRootNodes ()          .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
+	get_execution_context () -> importedNodes_changed () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
+	get_execution_context () -> prototypes_changed ()    .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
+	get_execution_context () -> externProtos_changed ()  .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
 
 	if (scene)
 		scene -> exportedNodes_changed () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
@@ -474,7 +474,7 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 	set_model (OutlineTreeModel::create (executionContext));
 	get_model () -> set_show_all_routes (get_expand_prototype_instances ());
 
-	get_model () -> get_execution_context () -> getScene () -> units_changed () .addInterest (this, &X3DOutlineTreeView::queue_draw);
+	get_execution_context () -> getScene () -> units_changed () .addInterest (this, &X3DOutlineTreeView::queue_draw);
 
 	executionContext -> getRootNodes ()          .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
 	executionContext -> importedNodes_changed () .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
@@ -485,6 +485,12 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 		scene -> exportedNodes_changed () .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
 
 	set_rootNodes ();
+}
+
+const X3D::X3DExecutionContextPtr &
+X3DOutlineTreeView::get_execution_context () const
+{
+	return get_model () -> get_execution_context ();
 }
 
 void
@@ -504,7 +510,7 @@ X3DOutlineTreeView::set_rootNodes ()
 
 	// Fill model.
 
-	const X3D::X3DExecutionContextPtr & executionContext = get_model () -> get_execution_context ();
+	const X3D::X3DExecutionContextPtr & executionContext = get_execution_context ();
 
 	unset_model ();
 	get_model () -> clear ();
@@ -629,7 +635,7 @@ X3DOutlineTreeView::select_node (const Gtk::TreeModel::iterator & iter, const Gt
 
 			if (localNode)
 			{
-				if (localNode -> getExecutionContext () == get_model () -> get_execution_context ())
+				if (localNode -> getExecutionContext () == get_execution_context ())
 					selection -> select (localNode);
 			}
 
@@ -643,7 +649,7 @@ X3DOutlineTreeView::select_node (const Gtk::TreeModel::iterator & iter, const Gt
 				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode -> getValue ());
 				const auto localNode    = exportedNode -> getLocalNode ();
 
-				if (exportedNode -> getExecutionContext () == get_model () -> get_execution_context ())
+				if (exportedNode -> getExecutionContext () == get_execution_context ())
 					selection -> select (localNode);
 			}
 			catch (...)
