@@ -121,7 +121,6 @@ void
 ImageTexture3D::requestImmediateLoad ()
 {
 	requestAsyncLoad ();
-	future .get ();
 }
 
 void

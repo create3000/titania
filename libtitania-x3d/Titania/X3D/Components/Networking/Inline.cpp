@@ -281,25 +281,19 @@ throw (Error <NODE_NOT_AVAILABLE>,
 }
 
 void
-Inline::requestAsyncLoad ()
-{
-	using namespace std::placeholders;
-
-	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
-		return;
-
-	setLoadState (IN_PROGRESS_STATE);
-
-	future .reset (new SceneLoader (getExecutionContext (),
-	                                url (),
-	                                std::bind (&Inline::setSceneAsync, this, _1)));
-}
-
-void
 Inline::requestImmediateLoad ()
 {
-	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+	if (checkLoadState () == COMPLETE_STATE)
 		return;
+	
+	if (checkLoadState () == IN_PROGRESS_STATE)
+	{
+		if (future)
+		{
+			future -> wait ();
+			return;
+		}
+	}
 
 	setLoadState (IN_PROGRESS_STATE);
 
@@ -320,6 +314,21 @@ Inline::requestImmediateLoad ()
 
 		getBrowser () -> println (error .what ());
 	}
+}
+
+void
+Inline::requestAsyncLoad ()
+{
+	using namespace std::placeholders;
+
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+		return;
+
+	setLoadState (IN_PROGRESS_STATE);
+
+	future .reset (new SceneLoader (getExecutionContext (),
+	                                url (),
+	                                std::bind (&Inline::setSceneAsync, this, _1)));
 }
 
 void

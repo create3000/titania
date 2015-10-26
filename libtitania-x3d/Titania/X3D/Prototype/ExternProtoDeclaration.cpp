@@ -240,8 +240,11 @@ ExternProtoDeclaration::requestImmediateLoad ()
 
 	if (checkLoadState () == IN_PROGRESS_STATE)
 	{
-	   future -> wait ();
-		return;
+	   if (future)
+	   {
+	      future -> wait ();
+			return;
+		}
 	}
 
 	setLoadState (IN_PROGRESS_STATE);

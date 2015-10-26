@@ -129,7 +129,6 @@ void
 ImageTexture::requestImmediateLoad ()
 {
 	requestAsyncLoad ();
-	future .get ();
 }
 
 void

@@ -51,14 +51,17 @@
 #include "Background.h"
 
 #include <Titania/Math/Geometry/Camera.h>
+#include <Titania/Math/Numbers/Vector4.h>
 #include <Titania/LOG.h>
 
 namespace titania {
 namespace opengl {
 
+using namespace math;
+
 Background::Background () :
 	       textureId (0),
-	projectionMatrix (math::ortho <float> (0, 1, 0, 1, -1, 1))
+	projectionMatrix (ortho <float> (0, 1, 0, 1, -1, 1))
 { }
 
 void
@@ -89,32 +92,38 @@ Background::configure (const Glib::RefPtr <Gtk::StyleContext> & styleContext, co
 void
 Background::draw ()
 {
+	static const std::vector <vector4 <float>> coords = {
+		vector4 <float> (0, 0, 0, 1),
+		vector4 <float> (1, 0, 0, 1),
+		vector4 <float> (1, 1, 0, 1),
+		vector4 <float> (0, 1, 0, 1)
+	};
+
 	glMatrixMode (GL_PROJECTION);
 	glLoadMatrixf (projectionMatrix .data ());
 
 	glMatrixMode (GL_MODELVIEW);
 	glLoadIdentity ();
 
+	glEnable (GL_CULL_FACE);
 	glDisable (GL_LIGHTING);
 	glDisable (GL_DEPTH_TEST);
 	glDepthMask (GL_FALSE);
 
 	glEnable (GL_TEXTURE_2D);
 	glBindTexture (GL_TEXTURE_2D, textureId);
-
 	glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 
-	glBegin (GL_QUADS);
-	glNormal3f (0, 0, 1);
-	glTexCoord2f (0, 0);
-	glVertex2f (0, 0);
-	glTexCoord2f (1, 0);
-	glVertex2f (1, 0);
-	glTexCoord2f (1, 1);
-	glVertex2f (1, 1);
-	glTexCoord2f (0, 1);
-	glVertex2f (0, 1);
-	glEnd ();
+	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+	glTexCoordPointer (4, GL_FLOAT, 0, coords .data ());
+
+	glEnableClientState (GL_VERTEX_ARRAY);
+	glVertexPointer (4, GL_FLOAT, 0, coords .data ());
+
+	glDrawArrays (GL_QUADS, 0, coords .size ());
+
+	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState (GL_VERTEX_ARRAY);
 
 	glBindTexture (GL_TEXTURE_2D, 0);
 	glDisable (GL_TEXTURE_2D);

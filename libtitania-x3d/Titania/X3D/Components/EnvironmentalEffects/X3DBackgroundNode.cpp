@@ -382,7 +382,6 @@ X3DBackgroundNode::drawSphere ()
 		glEnable (GL_BLEND);
 
 	glEnable (GL_CULL_FACE);
-
 	glFrontFace (GL_CW);
 
 	glEnableClientState (GL_COLOR_ARRAY);
