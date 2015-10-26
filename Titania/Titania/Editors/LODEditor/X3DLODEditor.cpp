@@ -131,6 +131,28 @@ X3DLODEditor::set_selection (const X3D::MFNode & selection)
 }
 
 void
+X3DLODEditor::on_lod_move_center_button ()
+{
+	using setValue = void (X3D::SFVec3f::*) (const X3D::SFVec3f::internal_type &);
+
+	if (getBrowserWindow () -> getSelection () -> getChildren () .empty ())
+		return;
+
+	const X3D::X3DPtr <X3D::LOD> lod (getBrowserWindow () -> getSelection () -> getChildren () .back ());
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Center Of LOD To BBox Center"));
+
+	undoStep -> addObjects (lod);
+	undoStep -> addUndoFunction ((setValue) &X3D::SFVec3f::setValue, std::ref (lod -> center ()), lod -> center ());
+	
+	lod -> center () = lod -> getBBox () .center ();
+
+	undoStep -> addRedoFunction ((setValue) &X3D::SFVec3f::setValue, std::ref (lod -> center ()), lod -> center ());
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
 X3DLODEditor::on_lod_keep_current_level_activate ()
 {
 	lod -> setKeepCurrentLevel (getLODKeepCurrentLevelCheckButton () .get_active ());

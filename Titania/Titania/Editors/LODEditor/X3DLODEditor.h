@@ -95,6 +95,10 @@ private:
 	
 	virtual
 	void
+	on_lod_move_center_button () final override;
+
+	virtual
+	void
 	on_lod_keep_current_level_activate () final override;
 
 	///  @name Members

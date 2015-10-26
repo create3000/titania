@@ -202,22 +202,6 @@ public:
 	{ return *m_LODForceTransitionsCheckButton; }
 
 	Gtk::Box &
-	getLODCenterBox () const
-	{ return *m_LODCenterBox; }
-
-	Gtk::SpinButton &
-	getLODCenterXSpinButton () const
-	{ return *m_LODCenterXSpinButton; }
-
-	Gtk::SpinButton &
-	getLODCenterYSpinButton () const
-	{ return *m_LODCenterYSpinButton; }
-
-	Gtk::SpinButton &
-	getLODCenterZSpinButton () const
-	{ return *m_LODCenterZSpinButton; }
-
-	Gtk::Box &
 	getLODRangeBox () const
 	{ return *m_LODRangeBox; }
 
@@ -245,6 +229,26 @@ public:
 	getLODRenameButton () const
 	{ return *m_LODRenameButton; }
 
+	Gtk::Box &
+	getLODCenterBox () const
+	{ return *m_LODCenterBox; }
+
+	Gtk::SpinButton &
+	getLODCenterXSpinButton () const
+	{ return *m_LODCenterXSpinButton; }
+
+	Gtk::SpinButton &
+	getLODCenterYSpinButton () const
+	{ return *m_LODCenterYSpinButton; }
+
+	Gtk::SpinButton &
+	getLODCenterZSpinButton () const
+	{ return *m_LODCenterZSpinButton; }
+
+	Gtk::Button &
+	getLODMoveCenterButton () const
+	{ return *m_LODMoveCenterButton; }
+
 	virtual
 	void
 	on_index_clicked () = 0;
@@ -252,6 +256,10 @@ public:
 	virtual
 	void
 	on_lod_keep_current_level_activate () = 0;
+
+	virtual
+	void
+	on_lod_move_center_button () = 0;
 
 	virtual
 	~X3DLODEditorInterface ();
@@ -294,10 +302,6 @@ private:
 	Gtk::SpinButton*               m_LODLevelSpinButton;
 	Gtk::CheckButton*              m_LODKeepCurrentLevelCheckButton;
 	Gtk::CheckButton*              m_LODForceTransitionsCheckButton;
-	Gtk::Box*                      m_LODCenterBox;
-	Gtk::SpinButton*               m_LODCenterXSpinButton;
-	Gtk::SpinButton*               m_LODCenterYSpinButton;
-	Gtk::SpinButton*               m_LODCenterZSpinButton;
 	Gtk::Box*                      m_LODRangeBox;
 	Gtk::SpinButton*               m_LODRangeMinSpinButton;
 	Gtk::SpinButton*               m_LODRangeMaxSpinButton;
@@ -305,6 +309,11 @@ private:
 	Gtk::Box*                      m_LODNameBox;
 	Gtk::Entry*                    m_LODNameEntry;
 	Gtk::Button*                   m_LODRenameButton;
+	Gtk::Box*                      m_LODCenterBox;
+	Gtk::SpinButton*               m_LODCenterXSpinButton;
+	Gtk::SpinButton*               m_LODCenterYSpinButton;
+	Gtk::SpinButton*               m_LODCenterZSpinButton;
+	Gtk::Button*                   m_LODMoveCenterButton;
 
 };
 

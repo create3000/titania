@@ -91,10 +91,6 @@ X3DLODEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LODLevelSpinButton", m_LODLevelSpinButton);
 	m_builder -> get_widget ("LODKeepCurrentLevelCheckButton", m_LODKeepCurrentLevelCheckButton);
 	m_builder -> get_widget ("LODForceTransitionsCheckButton", m_LODForceTransitionsCheckButton);
-	m_builder -> get_widget ("LODCenterBox", m_LODCenterBox);
-	m_builder -> get_widget ("LODCenterXSpinButton", m_LODCenterXSpinButton);
-	m_builder -> get_widget ("LODCenterYSpinButton", m_LODCenterYSpinButton);
-	m_builder -> get_widget ("LODCenterZSpinButton", m_LODCenterZSpinButton);
 	m_builder -> get_widget ("LODRangeBox", m_LODRangeBox);
 	m_builder -> get_widget ("LODRangeMinSpinButton", m_LODRangeMinSpinButton);
 	m_builder -> get_widget ("LODRangeMaxSpinButton", m_LODRangeMaxSpinButton);
@@ -102,10 +98,18 @@ X3DLODEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LODNameBox", m_LODNameBox);
 	m_builder -> get_widget ("LODNameEntry", m_LODNameEntry);
 	m_builder -> get_widget ("LODRenameButton", m_LODRenameButton);
+	m_builder -> get_widget ("LODCenterBox", m_LODCenterBox);
+	m_builder -> get_widget ("LODCenterXSpinButton", m_LODCenterXSpinButton);
+	m_builder -> get_widget ("LODCenterYSpinButton", m_LODCenterYSpinButton);
+	m_builder -> get_widget ("LODCenterZSpinButton", m_LODCenterZSpinButton);
+	m_builder -> get_widget ("LODMoveCenterButton", m_LODMoveCenterButton);
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_index_clicked));
 
 	// Connect object Gtk::CheckButton with id 'LODKeepCurrentLevelCheckButton'.
 	m_LODKeepCurrentLevelCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_lod_keep_current_level_activate));
+
+	// Connect object Gtk::Button with id 'LODMoveCenterButton'.
+	m_LODMoveCenterButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_lod_move_center_button));
 
 	// Call construct handler of base class.
 	construct ();
