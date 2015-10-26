@@ -155,8 +155,8 @@ WorldInfo {
             value [
               0.787842035293579,
               0.597084045410156,
-              0.150982022285461,
-              5.73888063430786
+              0.150982052087784,
+              5.73888111114502
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -283,7 +283,7 @@ Group {
     USE _3
     DEF Box Transform {
       translation 1.40843 1.10727 0.193803
-      rotation 0 0 1 3.32387
+      rotation 0 0 1 4.24284
       scale 0.2 0.2 0.2
       children Transform {
         children Shape {
@@ -557,4 +557,5 @@ ROUTE Sensors.translation_changed TO Inline.set_translation
 ROUTE ModifiedScript.string_changed TO Text2.set_string
 ROUTE Rotor2.rotation_changed TO ImportedInline.set_rotation
 
+EXPORT EXPORT
 EXPORT Rotor

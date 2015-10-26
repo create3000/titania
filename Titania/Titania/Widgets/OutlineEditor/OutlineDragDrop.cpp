@@ -216,6 +216,9 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				if (sfnode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
 					return true;
 
+				if (sfnode -> getType () .back () == X3D::X3DConstants::ImportedNode)
+					return true;
+
 				return false;
 			}
 		}
