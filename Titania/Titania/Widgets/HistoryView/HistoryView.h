@@ -130,6 +130,8 @@ private:
 	void
 	on_always_toggled () final override;
 
+	// Members
+
 	std::unique_ptr <AdjustmentObject> hadjustment;
 	std::unique_ptr <AdjustmentObject> vadjustment;
 

@@ -50,6 +50,7 @@
 
 #include "LibraryView.h"
 
+#include "../../Base/AdjustmentObject.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
@@ -64,7 +65,9 @@ static constexpr int NAME_COLUMN = 1;
 
 LibraryView::LibraryView (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DLibraryViewInterface (get_ui ("LibraryView.xml"), gconf_dir ())
+	X3DLibraryViewInterface (get_ui ("LibraryView.xml"), gconf_dir ()),
+	            hadjustment (new AdjustmentObject ()),
+	            vadjustment (new AdjustmentObject ())
 {
 	setup ();
 }
@@ -256,6 +259,9 @@ LibraryView::restoreExpanded ()
 
 	for (const auto & path : paths)
 		getTreeView () .expand_row (Gtk::TreePath (path), false);
+
+	hadjustment -> restore (getTreeView () .get_hadjustment (), getConfig () .getDouble ("hadjustment"));
+	vadjustment -> restore (getTreeView () .get_vadjustment (), getConfig () .getDouble ("vadjustment"));
 }
 
 void
@@ -268,6 +274,8 @@ LibraryView::saveExpanded ()
 	const auto expanded = basic::join (paths, ";");
 
 	getConfig () .setItem ("expanded", expanded);
+	getConfig () .setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
+	getConfig () .setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
 }
 
 void
