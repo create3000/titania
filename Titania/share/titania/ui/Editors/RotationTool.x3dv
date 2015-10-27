@@ -1,10 +1,10 @@
-#X3D V3.3 utf8 Titania V1.1.1
+#X3D V3.3 utf8 Titania V1.2.0
 
 META "comment" "World of Titania"
 META "created" "Thu, 07 Aug 2014 10:10:14 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.1.1, http://titania.create3000.de"
-META "modified" "Sat, 10 Oct 2015 20:48:43 GMT"
+META "generator" "Titania V1.2.0, http://titania.create3000.de"
+META "modified" "Mon, 26 Oct 2015 20:09:28 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -41,19 +41,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              35.5159492492676,
-              10.0629911422729,
-              59.9813575744629
+              19.1648769378662,
+              14.3520612716675,
+              29.7611045837402
             ]
           }
           MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.223862037062645,
-              0.960673987865448,
-              0.164290323853493,
-              0.559486746788025
+              -0.526954829692841,
+              0.824607908725739,
+              0.205768153071404,
+              0.692914843559265
             ]
           }
           MetadataDouble {

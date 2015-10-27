@@ -129,12 +129,15 @@ ArcClose2D::getAngle ()
 	if (start == end)
 		return M_PI2;
 
-	const float difference = std::min (std::abs (end - start), float (M_PI2));
+	const float difference = std::abs (end - start);
 
 	if (start > end)
 		return M_PI2 - difference;
 
-	return difference;
+	if (not std::isnan (difference))
+		return difference;
+	
+	return 0;
 }
 
 void
