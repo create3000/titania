@@ -257,8 +257,8 @@ X3DBrowserContext::update ()
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-//	try
-//	{
+	try
+	{
 		ContextLock lock (this);
 
 		if (lock)
@@ -301,13 +301,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 				std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toUTCString () << ": " << gluErrorString (errorNum) << std::endl;
 			#endif
 		}
-//	}
-//	catch (const std::exception & exception)
-//	{
-//		__LOG__
-//			<< SFTime (getCurrentTime ()) .toUTCString () << " Unhandled exception:" << std::endl
-//			<< "  " << exception .what () << std::endl;
-//	}
+	}
+	catch (const std::exception & exception)
+	{
+		std::clog
+			<< SFTime (getCurrentTime ()) .toUTCString () << " Unhandled exception:" << std::endl
+			<< "  " << exception .what () << std::endl;
+	}
 }
 
 void
