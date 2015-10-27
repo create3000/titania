@@ -136,8 +136,8 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0</property>
                 <property name="label" translatable="yes">Edit Geometry Properties</property>
+                <property name="xalign">0</property>
                 <style>
                   <class name="titania-header"/>
                 </style>
@@ -172,6 +172,7 @@
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can_focus">False</property>
+                    <property name="spacing">2</property>
                     <child>
                       <object class="GtkComboBoxText" id="GeometryComboBoxText">
                         <property name="visible">True</property>
@@ -223,8 +224,8 @@
                           <object class="GtkImage" id="image4">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="pixel_size">12</property>
                             <property name="stock">emblem-shared-symbolic</property>
+                            <property name="pixel_size">12</property>
                             <property name="icon_size">1</property>
                           </object>
                         </child>
@@ -250,14 +251,14 @@
                       <object class="GtkGrid" id="grid4">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label16">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Start Angle:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -268,8 +269,8 @@
                           <object class="GtkLabel" id="label17">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">End Angle:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -306,8 +307,8 @@
                           <object class="GtkLabel" id="label26">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Radius:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -352,7 +353,7 @@
                       <object class="GtkGrid" id="grid8">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkSpinButton" id="ArcClose2DRadiusSpinButton">
@@ -414,8 +415,8 @@
                           <object class="GtkLabel" id="label29">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Radius:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -426,8 +427,8 @@
                           <object class="GtkLabel" id="label28">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">End Angle:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -438,8 +439,8 @@
                           <object class="GtkLabel" id="label27">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Start Angle:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -450,8 +451,8 @@
                           <object class="GtkLabel" id="label31">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Closure Type:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -482,14 +483,14 @@
                       <object class="GtkGrid" id="grid5">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label18">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Radius:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -534,14 +535,14 @@
                       <object class="GtkGrid" id="grid6">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label19">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Inner Radius:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -552,8 +553,8 @@
                           <object class="GtkLabel" id="label21">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Outer Radius:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -612,14 +613,14 @@
                       <object class="GtkGrid" id="grid9">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label32">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Size:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -737,14 +738,14 @@
                       <object class="GtkGrid" id="grid7">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label23">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Size:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -845,14 +846,14 @@
                       <object class="GtkGrid" id="grid10">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label35">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Bottom Radius:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -863,8 +864,8 @@
                           <object class="GtkLabel" id="label34">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Height:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -973,7 +974,7 @@
                       <object class="GtkGrid" id="grid11">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label41">
@@ -990,8 +991,8 @@
                           <object class="GtkLabel" id="label39">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Radius:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -1002,8 +1003,8 @@
                           <object class="GtkLabel" id="label40">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Height:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -1126,7 +1127,7 @@
                       <object class="GtkGrid" id="grid12">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label47">
@@ -1206,7 +1207,7 @@
                       <object class="GtkGrid" id="grid1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkCheckButton" id="SolidCheckButton">
@@ -1261,8 +1262,8 @@
                           <object class="GtkLabel" id="label7">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Normal Generation:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -1346,8 +1347,8 @@
                                           <object class="GtkLabel" id="label10">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
-                                            <property name="xalign">1</property>
                                             <property name="label" translatable="yes">Smooth</property>
+                                            <property name="xalign">1</property>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>
@@ -1561,8 +1562,8 @@
                               <object class="GtkLabel" id="label12">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">0</property>
                                 <property name="label" translatable="yes">Points:</property>
+                                <property name="xalign">0</property>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -1573,8 +1574,8 @@
                               <object class="GtkLabel" id="label13">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">0</property>
                                 <property name="label" translatable="yes">Lines:</property>
+                                <property name="xalign">0</property>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -1585,8 +1586,8 @@
                               <object class="GtkLabel" id="label14">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">0</property>
                                 <property name="label" translatable="yes">Triangles:</property>
+                                <property name="xalign">0</property>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -1602,9 +1603,9 @@
                                   <object class="GtkLabel" id="PrimitiveCountPointsLabel">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">0</property>
                                     <property name="selectable">True</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1627,9 +1628,9 @@
                                   <object class="GtkLabel" id="PrimitiveCountLinesLabel">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">0</property>
                                     <property name="selectable">True</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1652,9 +1653,9 @@
                                   <object class="GtkLabel" id="PrimitiveCountTrianglesLabel">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">0</property>
                                     <property name="selectable">True</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1679,14 +1680,14 @@
                           <object class="GtkGrid" id="grid3">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="row_spacing">4</property>
+                            <property name="row_spacing">8</property>
                             <property name="column_spacing">16</property>
                             <child>
                               <object class="GtkLabel" id="label24">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">0</property>
                                 <property name="label" translatable="yes">Count:</property>
+                                <property name="xalign">0</property>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>

@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Thu, 07 Aug 2014 10:10:14 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Mon, 26 Oct 2015 20:09:28 GMT"
+META "modified" "Tue, 27 Oct 2015 05:52:57 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -41,19 +41,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              19.1648769378662,
-              14.3520612716675,
-              29.7611045837402
+              0,
+              0,
+              38.1966018676758
             ]
           }
           MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.526954829692841,
-              0.824607908725739,
-              0.205768153071404,
-              0.692914843559265
+              0,
+              0,
+              1,
+              0
             ]
           }
           MetadataDouble {

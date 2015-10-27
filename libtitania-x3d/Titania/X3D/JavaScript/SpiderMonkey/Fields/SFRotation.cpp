@@ -130,7 +130,7 @@ SFRotation::construct (JSContext* cx, uint32_t argc, jsval* vp)
 				}
 				catch (const std::exception &)
 				{
-					const auto arg2 = getArgument <double> (cx, argv, 1);
+					const auto arg2 = getArgument <value_type> (cx, argv, 1);
 
 					return create <SFRotation> (cx, new X3D::SFRotation (*arg1, arg2), &JS_RVAL (cx, vp));				
 				}
@@ -138,10 +138,10 @@ SFRotation::construct (JSContext* cx, uint32_t argc, jsval* vp)
 			case 4:
 			{
 				const auto argv  = JS_ARGV (cx, vp);
-				const auto x     = getArgument <double> (cx, argv, X);
-				const auto y     = getArgument <double> (cx, argv, Y);
-				const auto z     = getArgument <double> (cx, argv, Z);
-				const auto angle = getArgument <double> (cx, argv, ANGLE);
+				const auto x     = getArgument <value_type> (cx, argv, X);
+				const auto y     = getArgument <value_type> (cx, argv, Y);
+				const auto z     = getArgument <value_type> (cx, argv, Z);
+				const auto angle = getArgument <value_type> (cx, argv, ANGLE);
 
 				return create <SFRotation> (cx, new X3D::SFRotation (x, y, z, angle), &JS_RVAL (cx, vp));
 			}
@@ -211,7 +211,7 @@ SFRotation::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsv
 	try
 	{
 		const auto lhs   = getThis <SFRotation> (cx, obj);
-		const auto value = getArgument <double> (cx, vp, 0);
+		const auto value = getArgument <value_type> (cx, vp, 0);
 
 		lhs -> set1Value (JSID_TO_INT (id), value);
 
@@ -358,7 +358,7 @@ SFRotation::slerp (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto argv = JS_ARGV (cx, vp);
 		const auto lhs  = getThis <SFRotation> (cx, vp);
 		const auto rhs  = getArgument <SFRotation> (cx, argv, 0);
-		const auto t    = getArgument <double> (cx, argv, 1);
+		const auto t    = getArgument <value_type> (cx, argv, 1);
 
 		return create <SFRotation> (cx, lhs -> slerp (*rhs, t), &JS_RVAL (cx, vp));
 	}

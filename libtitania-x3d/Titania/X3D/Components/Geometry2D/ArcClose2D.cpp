@@ -137,6 +137,7 @@ ArcClose2D::getAngle ()
 	if (not std::isnan (difference))
 		return difference;
 	
+	// We must test for NAN, as NAN to int is undefined.
 	return 0;
 }
 

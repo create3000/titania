@@ -72,6 +72,7 @@ public:
 	///  @name Member types
 
 	using internal_type = Type;
+	using value_type    = typename Type::value_type;
 	using vector3_type  = SFVec3 <typename Type::vector3_type>;
 	using rotation_type = SFRotation;
 
@@ -184,22 +185,22 @@ SFMatrix4 <Type>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 			case 16:
 			{
 				const auto argv = JS_ARGV (cx, vp);
-				const auto m11  = getArgument <double> (cx, argv,  0);
-				const auto m12  = getArgument <double> (cx, argv,  1);
-				const auto m13  = getArgument <double> (cx, argv,  2);
-				const auto m14  = getArgument <double> (cx, argv,  3);
-				const auto m21  = getArgument <double> (cx, argv,  4);
-				const auto m22  = getArgument <double> (cx, argv,  5);
-				const auto m23  = getArgument <double> (cx, argv,  6);
-				const auto m24  = getArgument <double> (cx, argv,  7);
-				const auto m31  = getArgument <double> (cx, argv,  8);
-				const auto m32  = getArgument <double> (cx, argv,  9);
-				const auto m33  = getArgument <double> (cx, argv, 10);
-				const auto m34  = getArgument <double> (cx, argv, 11);
-				const auto m41  = getArgument <double> (cx, argv, 12);
-				const auto m42  = getArgument <double> (cx, argv, 13);
-				const auto m43  = getArgument <double> (cx, argv, 14);
-				const auto m44  = getArgument <double> (cx, argv, 15);
+				const auto m11  = getArgument <value_type> (cx, argv,  0);
+				const auto m12  = getArgument <value_type> (cx, argv,  1);
+				const auto m13  = getArgument <value_type> (cx, argv,  2);
+				const auto m14  = getArgument <value_type> (cx, argv,  3);
+				const auto m21  = getArgument <value_type> (cx, argv,  4);
+				const auto m22  = getArgument <value_type> (cx, argv,  5);
+				const auto m23  = getArgument <value_type> (cx, argv,  6);
+				const auto m24  = getArgument <value_type> (cx, argv,  7);
+				const auto m31  = getArgument <value_type> (cx, argv,  8);
+				const auto m32  = getArgument <value_type> (cx, argv,  9);
+				const auto m33  = getArgument <value_type> (cx, argv, 10);
+				const auto m34  = getArgument <value_type> (cx, argv, 11);
+				const auto m41  = getArgument <value_type> (cx, argv, 12);
+				const auto m42  = getArgument <value_type> (cx, argv, 13);
+				const auto m43  = getArgument <value_type> (cx, argv, 14);
+				const auto m44  = getArgument <value_type> (cx, argv, 15);
 
 				return create <SFMatrix4> (cx, new Type (m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44), &JS_RVAL (cx, vp));
 			}
@@ -290,7 +291,7 @@ SFMatrix4 <Type>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool stric
 	{
 		const auto lhs   = getThis <SFMatrix4> (cx, obj);
 		const auto index = JSID_TO_INT (id);
-		const auto value = getArgument <double> (cx, vp, 0);
+		const auto value = getArgument <value_type> (cx, vp, 0);
 
 		lhs -> set1Value (index, value);
 

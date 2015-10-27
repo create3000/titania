@@ -66,6 +66,7 @@ public:
 	///  @name Member types
 
 	using internal_type = X3D::SFRotation;
+	using value_type    = X3D::SFRotation::value_type;
 
 	///  @name Construction
 

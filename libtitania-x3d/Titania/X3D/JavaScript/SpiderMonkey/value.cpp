@@ -87,7 +87,7 @@ setValue (JSContext* const cx, X3D::X3DFieldDefinition* const field, jsval* cons
 			}
 			case X3D::X3DConstants::SFFloat:
 			{
-				*static_cast <X3D::SFFloat*> (field) = getArgument <double> (cx, vp, 0);
+				*static_cast <X3D::SFFloat*> (field) = getArgument <float> (cx, vp, 0);
 				break;
 			}
 			case X3D::X3DConstants::SFInt32:

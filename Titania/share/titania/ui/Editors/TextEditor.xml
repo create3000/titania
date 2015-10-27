@@ -69,8 +69,8 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0</property>
                 <property name="label" translatable="yes">Edit Text</property>
+                <property name="xalign">0</property>
                 <style>
                   <class name="titania-header"/>
                 </style>
@@ -182,14 +182,14 @@
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can_focus">False</property>
-                    <property name="row_spacing">4</property>
+                    <property name="row_spacing">8</property>
                     <property name="column_spacing">16</property>
                     <child>
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">String:</property>
+                        <property name="xalign">0</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -199,8 +199,8 @@
                     <child>
                       <object class="GtkLabel" id="label3">
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">Length:</property>
+                        <property name="xalign">0</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -211,8 +211,8 @@
                       <object class="GtkLabel" id="label5">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">Max Extend:</property>
+                        <property name="xalign">0</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -325,9 +325,9 @@
                       <object class="GtkLabel" id="label8">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">FontStyle:</property>
                         <property name="ellipsize">start</property>
+                        <property name="xalign">0</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -339,6 +339,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
+                        <property name="spacing">2</property>
                         <child>
                           <object class="GtkComboBoxText" id="FontStyleComboBoxText">
                             <property name="visible">True</property>
@@ -397,13 +398,13 @@
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can_focus">False</property>
-                    <property name="row_spacing">4</property>
+                    <property name="row_spacing">8</property>
                     <property name="column_spacing">16</property>
                     <child>
                       <object class="GtkLabel" id="label9">
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">Language:</property>
+                        <property name="xalign">0</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -414,8 +415,8 @@
                       <object class="GtkLabel" id="label11">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">Family:</property>
+                        <property name="xalign">0</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -426,8 +427,8 @@
                       <object class="GtkLabel" id="label13">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">Style:</property>
+                        <property name="xalign">0</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -438,8 +439,8 @@
                       <object class="GtkLabel" id="FontStyleSizeLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">Size:</property>
+                        <property name="xalign">0</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -467,8 +468,8 @@
                       <object class="GtkLabel" id="label15">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">Spacing:</property>
+                        <property name="xalign">0</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -608,8 +609,8 @@
                       <object class="GtkLabel" id="label19">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">Major Alignment:</property>
+                        <property name="xalign">0</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -620,8 +621,8 @@
                       <object class="GtkLabel" id="label20">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">Minor Alignment:</property>
+                        <property name="xalign">0</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -831,8 +832,8 @@
                       <object class="GtkLabel" id="FontStylePointSizeLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">Point Size:</property>
+                        <property name="xalign">0</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>

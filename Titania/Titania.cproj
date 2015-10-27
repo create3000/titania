@@ -1950,6 +1950,8 @@
     <None Include="share\titania\ui\icons\Faenza\scalable\emblem-shared-symbolic.svg" />
     <None Include="share\titania\ui\icons\Faenza\16\gtk-goto-top.png" />
     <None Include="share\titania\ui\icons\Faenza\16\gtk-goto-bottom.png" />
+    <None Include="share\titania\ui\icons\Faenza\22\gtk-bold.png" />
+    <None Include="share\titania\ui\icons\Faenza\22\gtk-italic.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2042,6 +2044,7 @@
     <Folder Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\" />
     <Folder Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\" />
     <Folder Include="share\titania\units\" />
+    <Folder Include="share\titania\ui\icons\Faenza\22\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

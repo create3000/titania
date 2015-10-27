@@ -73,8 +73,8 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0</property>
                 <property name="label" translatable="yes">Edit Inline</property>
+                <property name="xalign">0</property>
                 <style>
                   <class name="titania-header"/>
                 </style>
@@ -229,14 +229,14 @@
               <object class="GtkGrid" id="InlineBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="row_spacing">4</property>
+                <property name="row_spacing">8</property>
                 <property name="column_spacing">16</property>
                 <child>
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">URL:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -296,8 +296,8 @@
                   <object class="GtkLabel" id="label6">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">BBox Size:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -308,8 +308,8 @@
                   <object class="GtkLabel" id="label7">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">BBox Center:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -450,8 +450,8 @@
                   <object class="GtkLabel" id="label9">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Load State:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -467,8 +467,8 @@
                       <object class="GtkLabel" id="LoadStateLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">FAILED</property>
+                        <property name="xalign">0</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -486,8 +486,8 @@
                   <object class="GtkLabel" id="label16">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Name:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>

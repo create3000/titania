@@ -153,7 +153,7 @@ WorldInfo {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0.787842035293579,
+              0.787841975688934,
               0.597084045410156,
               0.150982052087784,
               5.73888111114502
@@ -283,17 +283,15 @@ Group {
     USE _3
     DEF Box Transform {
       translation 1.40843 1.10727 0.193803
-      rotation 0 0 1 4.24284
+      rotation 0 0 1 2.76418
       scale 0.2 0.2 0.2
-      children Transform {
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0.8 0 0
-            }
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.8 0 0
           }
-          geometry Box { }
         }
+        geometry Box { }
       }
     }
   ]

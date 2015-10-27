@@ -73,6 +73,7 @@ public:
 	///  @name Member types
 
 	using internal_type = Type;
+	using value_type    = typename Type::value_type;
 	using vector2_type  = SFVec2 <typename Type::vector2_type>;
 	using vector3_type  = SFVec3 <typename X3D::SFVec3 <typename math::vector3 <typename Type::value_type>>>;
 
@@ -185,15 +186,15 @@ SFMatrix3 <Type>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 			case 9:
 			{
 				const auto argv = JS_ARGV (cx, vp);
-				const auto m11  = getArgument <double> (cx, argv, 0);
-				const auto m12  = getArgument <double> (cx, argv, 1);
-				const auto m13  = getArgument <double> (cx, argv, 2);
-				const auto m21  = getArgument <double> (cx, argv, 3);
-				const auto m22  = getArgument <double> (cx, argv, 4);
-				const auto m23  = getArgument <double> (cx, argv, 5);
-				const auto m31  = getArgument <double> (cx, argv, 6);
-				const auto m32  = getArgument <double> (cx, argv, 7);
-				const auto m33  = getArgument <double> (cx, argv, 8);
+				const auto m11  = getArgument <value_type> (cx, argv, 0);
+				const auto m12  = getArgument <value_type> (cx, argv, 1);
+				const auto m13  = getArgument <value_type> (cx, argv, 2);
+				const auto m21  = getArgument <value_type> (cx, argv, 3);
+				const auto m22  = getArgument <value_type> (cx, argv, 4);
+				const auto m23  = getArgument <value_type> (cx, argv, 5);
+				const auto m31  = getArgument <value_type> (cx, argv, 6);
+				const auto m32  = getArgument <value_type> (cx, argv, 7);
+				const auto m33  = getArgument <value_type> (cx, argv, 8);
 
 				return create <SFMatrix3> (cx, new Type (m11, m12, m13, m21, m22, m23, m31, m32, m33), &JS_RVAL (cx, vp));
 			}
@@ -284,7 +285,7 @@ SFMatrix3 <Type>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool stric
 	{
 		const auto lhs   = getThis <SFMatrix3> (cx, obj);
 		const auto index = JSID_TO_INT (id);
-		const auto value = getArgument <double> (cx, vp, 0);
+		const auto value = getArgument <value_type> (cx, vp, 0);
 
 		lhs -> set1Value (index, value);
 
@@ -342,7 +343,7 @@ SFMatrix3 <Type>::setTransform (JSContext* cx, uint32_t argc, jsval* vp)
 		try
 		{
 			if (argc > 1)
-				rotation = getArgument <double> (cx, argv, 1);
+				rotation = getArgument <value_type> (cx, argv, 1);
 		}
 		catch (const std::domain_error &)
 		{ }
@@ -358,7 +359,7 @@ SFMatrix3 <Type>::setTransform (JSContext* cx, uint32_t argc, jsval* vp)
 		try
 		{
 			if (argc > 3)
-				scaleOrientation = getArgument <double> (cx, argv, 3);
+				scaleOrientation = getArgument <value_type> (cx, argv, 3);
 		}
 		catch (const std::domain_error &)
 		{ }

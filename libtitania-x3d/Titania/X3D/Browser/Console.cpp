@@ -85,12 +85,17 @@ Console::initialize ()
 	getBrowser () -> prepareEvents () .addInterest (this, &Console::prepareEvents);
 }
 
+/// Adds a string to the console.  This function is thread save.
 void
 Console::addString (const std::string & value)
 {
 	std::lock_guard <std::mutex> lock (mutex);
 
 	string .emplace_back (value);
+
+	#ifdef TITANIA_DEBUG
+	std::clog << value << std::flush;
+	#endif
 }
 
 void
@@ -102,13 +107,6 @@ Console::prepareEvents ()
 	   return;
 	
 	string_changed .assign (string .begin (), string .end ());
-
-	#ifdef TITANIA_DEBUG
-	for (const auto & value : string)
-		std::clog << value;
-	
-	std::clog << std::flush;
-	#endif
 
 	string .clear ();
 }

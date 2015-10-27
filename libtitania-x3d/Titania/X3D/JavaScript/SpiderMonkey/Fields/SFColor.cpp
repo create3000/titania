@@ -112,9 +112,9 @@ SFColor::construct (JSContext* cx, uint32_t argc, jsval* vp)
 			case 3:
 			{
 				const auto argv = JS_ARGV (cx, vp);
-				const auto r    = getArgument <double> (cx, argv, R);
-				const auto g    = getArgument <double> (cx, argv, G);
-				const auto b    = getArgument <double> (cx, argv, B);
+				const auto r    = getArgument <value_type> (cx, argv, R);
+				const auto g    = getArgument <value_type> (cx, argv, G);
+				const auto b    = getArgument <value_type> (cx, argv, B);
 
 				return create <SFColor> (cx, new X3D::SFColor (r, g, b), &JS_RVAL (cx, vp));
 			}
@@ -184,7 +184,7 @@ SFColor::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval*
 	try
 	{
 		const auto lhs   = getThis <SFColor> (cx, obj);
-		const auto value = getArgument <double> (cx, vp, 0);
+		const auto value = getArgument <value_type> (cx, vp, 0);
 
 		lhs -> set1Value (JSID_TO_INT (id), value);
 
@@ -260,9 +260,9 @@ SFColor::setHSV (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto argv = JS_ARGV (cx, vp);
 		const auto lhs  = getThis <SFColor> (cx, vp);
-		const auto h    = getArgument <double> (cx, argv, 0);
-		const auto s    = getArgument <double> (cx, argv, 1);
-		const auto v    = getArgument <double> (cx, argv, 2);
+		const auto h    = getArgument <value_type> (cx, argv, 0);
+		const auto s    = getArgument <value_type> (cx, argv, 1);
+		const auto v    = getArgument <value_type> (cx, argv, 2);
 
 		lhs -> setHSV (h, s, v);
 

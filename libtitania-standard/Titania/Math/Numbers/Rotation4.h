@@ -194,18 +194,24 @@ public:
 	Type
 	angle () const;
 
+	///  Access x, y, z or angle.
 	member_value_type
 	operator [ ] (const size_type);
 
+	///  Access x, y, z or angle.
 	Type
 	operator [ ] (const size_type) const;
 
 	operator matrix3 <Type> () const;
 
+	///  Set @a x, @a y, @a z and @a angle componentwise.
+	void
+	set (const Type & x, const Type & y, const Type & z, const Type & angle);
+
 	///  Get @a x, @a y, @a z and @a angle componentwise.
 	template <class T>
 	void
-	get (T &, T &, T &, T &) const;
+	get (T & x, T & y, T & z, T & angle) const;
 
 	///  Set quaternion of this rotation.
 	void
@@ -262,23 +268,7 @@ private:
 template <class Type>
 rotation4 <Type>::rotation4 (const Type & x, const Type & y, const Type & z, const Type & angle)
 {
-	Type scale = std::sqrt (x * x + y * y + z * z);
-
-	if (scale == 0)
-	{
-		value = quaternion <Type> (0, 0, 0, 1);
-		return;
-	}
-
-	// Calculate quaternion
-
-	const Type halfTheta = angle / 2;
-	scale = std::sin (halfTheta) / scale;
-
-	value = quaternion <Type> (x * scale,
-	                           y * scale,
-	                           z * scale,
-	                           std::cos (halfTheta));
+	set (x, y, z, angle);
 }
 
 template <class Type>
@@ -435,7 +425,7 @@ template <class Type>
 vector3 <Type>
 rotation4 <Type>::axis () const
 {
-	if (std::abs (value .w ()) == 1)
+	if (std::abs (value .w ()) >= 1)
 		return vector3_type (0, 0, 1);
 
 	return normalize (imag (value));
@@ -453,7 +443,7 @@ template <class Type>
 Type
 rotation4 <Type>::angle () const
 {
-	if (std::abs (value .w () == 1))
+	if (std::abs (value .w ()) >= 1)
 		return 0;
 
 	return 2 * std::acos (value .w ());
@@ -495,20 +485,20 @@ rotation4 <Type>::operator [ ] (const size_type index) const
 template <class Type>
 rotation4 <Type>::operator matrix3 <Type> () const
 {
-	Type x = quat () .x ();
-	Type y = quat () .y ();
-	Type z = quat () .z ();
-	Type w = quat () .w ();
+	const Type x = quat () .x ();
+	const Type y = quat () .y ();
+	const Type z = quat () .z ();
+	const Type w = quat () .w ();
 
-	Type a = x * x;
-	Type b = x * y;
-	Type c = y * y;
-	Type d = y * z;
-	Type e = z * x;
-	Type f = z * z;
-	Type g = w * x;
-	Type h = w * y;
-	Type i = w * z;
+	const Type a = x * x;
+	const Type b = x * y;
+	const Type c = y * y;
+	const Type d = y * z;
+	const Type e = z * x;
+	const Type f = z * z;
+	const Type g = w * x;
+	const Type h = w * y;
+	const Type i = w * z;
 
 	return matrix3 <Type> (
 		1 - 2 * (c + f),
@@ -527,11 +517,35 @@ rotation4 <Type>::operator matrix3 <Type> () const
 
 
 template <class Type>
+void
+rotation4 <Type>::set (const Type & x, const Type & y, const Type & z, const Type & angle)
+{
+	Type scale = std::sqrt (x * x + y * y + z * z);
+
+	if (scale == 0)
+	{
+		value = quaternion <Type> (0, 0, 0, 1);
+		return;
+	}
+
+	// Calculate quaternion
+
+	const Type halfTheta = angle / 2;
+
+	scale = std::sin (halfTheta) / scale;
+
+	value = quaternion <Type> (x * scale,
+	                           y * scale,
+	                           z * scale,
+	                           std::cos (halfTheta));
+}
+
+template <class Type>
 template <class T>
 void
 rotation4 <Type>::get (T & x, T & y, T & z, T & angle) const
 {
-	if (std::abs (value .w ()) == 1)
+	if (std::abs (value .w ()) >= 1)
 	{
 		x     = 0;
 		y     = 0;
@@ -540,7 +554,7 @@ rotation4 <Type>::get (T & x, T & y, T & z, T & angle) const
 		return;
 	}
 
-	vector3_type vector = normalize (imag (value));
+	const vector3_type vector = normalize (imag (value));
 
 	x     = vector .x ();
 	y     = vector .y ();

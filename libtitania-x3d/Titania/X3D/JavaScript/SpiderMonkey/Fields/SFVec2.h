@@ -69,6 +69,7 @@ public:
 	///  @name Member types
 
 	using internal_type = Type;
+	using value_type    = typename Type::value_type;
 
 	///  @name Construction
 
@@ -192,8 +193,8 @@ SFVec2 <Type>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 			case 2:
 			{
 				const auto argv = JS_ARGV (cx, vp);
-				const auto x    = getArgument <double> (cx, argv, X);
-				const auto y    = getArgument <double> (cx, argv, Y);
+				const auto x    = getArgument <value_type> (cx, argv, X);
+				const auto y    = getArgument <value_type> (cx, argv, Y);
 
 				return create <SFVec2> (cx, new Type (x, y), &JS_RVAL (cx, vp));
 			}
@@ -265,7 +266,7 @@ SFVec2 <Type>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, 
 	try
 	{
 		const auto lhs   = getThis <SFVec2> (cx, obj);
-		const auto value = getArgument <double> (cx, vp, 0);
+		const auto value = getArgument <value_type> (cx, vp, 0);
 
 		lhs -> set1Value (JSID_TO_INT (id), value);
 
@@ -365,7 +366,7 @@ SFVec2 <Type>::multiply (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto argv = JS_ARGV (cx, vp);
 		const auto lhs  = getThis <SFVec2> (cx, vp);
-		const auto rhs  = getArgument <double> (cx, argv, 0);
+		const auto rhs  = getArgument <value_type> (cx, argv, 0);
 
 		return create <SFVec2> (cx, lhs -> multiply (rhs), &JS_RVAL (cx, vp));
 	}
@@ -407,7 +408,7 @@ SFVec2 <Type>::divide (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto argv = JS_ARGV (cx, vp);
 		const auto lhs  = getThis <SFVec2> (cx, vp);
-		const auto rhs  = getArgument <double> (cx, argv, 0);
+		const auto rhs  = getArgument <value_type> (cx, argv, 0);
 
 		return create <SFVec2> (cx, lhs -> divide (rhs), &JS_RVAL (cx, vp));
 	}

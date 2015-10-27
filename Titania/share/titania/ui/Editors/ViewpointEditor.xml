@@ -288,8 +288,8 @@
               <object class="GtkLabel" id="label14">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0</property>
                 <property name="label" translatable="yes">Viewpoint List</property>
+                <property name="xalign">0</property>
                 <style>
                   <class name="titania-small"/>
                 </style>
@@ -349,8 +349,8 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Edit Viewpoint</property>
+                    <property name="xalign">0</property>
                     <style>
                       <class name="titania-header"/>
                     </style>
@@ -441,7 +441,7 @@
               <object class="GtkGrid" id="ViewpointBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="row_spacing">4</property>
+                <property name="row_spacing">8</property>
                 <property name="column_spacing">16</property>
                 <child>
                   <object class="GtkLabel" id="label9">
@@ -497,8 +497,8 @@
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Description:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -509,8 +509,8 @@
                   <object class="GtkLabel" id="label16">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Name:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -660,7 +660,7 @@
               <object class="GtkGrid" id="PerspectiveViewpointBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="row_spacing">4</property>
+                <property name="row_spacing">8</property>
                 <property name="column_spacing">16</property>
                 <child>
                   <object class="GtkBox" id="PerspectiveViewpointFieldOfViewBox">
@@ -710,8 +710,8 @@
                               <object class="GtkLabel" id="label7">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Wide-angle</property>
+                                <property name="xalign">1</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -758,8 +758,8 @@
                   <object class="GtkLabel" id="label5">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Field Of View:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -770,8 +770,8 @@
                   <object class="GtkLabel" id="label8">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Position:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -846,8 +846,8 @@
                   <object class="GtkLabel" id="label12">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Orientation:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -858,8 +858,8 @@
                   <object class="GtkLabel" id="label13">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Center Of Rotation:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -1086,14 +1086,14 @@
               <object class="GtkGrid" id="OrthoViewpointBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="row_spacing">4</property>
+                <property name="row_spacing">8</property>
                 <property name="column_spacing">16</property>
                 <child>
                   <object class="GtkLabel" id="label18">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Field Of View:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -1104,8 +1104,8 @@
                   <object class="GtkLabel" id="label19">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Position:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -1180,8 +1180,8 @@
                   <object class="GtkLabel" id="label20">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Orientation:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -1192,8 +1192,8 @@
                   <object class="GtkLabel" id="label21">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Center Of Rotation:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -1542,7 +1542,7 @@
               <object class="GtkGrid" id="GeoViewpointBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="row_spacing">4</property>
+                <property name="row_spacing">8</property>
                 <property name="column_spacing">16</property>
                 <child>
                   <object class="GtkBox" id="GeoViewpointFieldOfViewBox">
@@ -1592,8 +1592,8 @@
                               <object class="GtkLabel" id="label27">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Wide-angle</property>
+                                <property name="xalign">1</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -1640,8 +1640,8 @@
                   <object class="GtkLabel" id="label28">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Field Of View:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -1652,8 +1652,8 @@
                   <object class="GtkLabel" id="label29">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Position:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -1726,8 +1726,8 @@
                   <object class="GtkLabel" id="label30">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Orientation:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -1738,8 +1738,8 @@
                   <object class="GtkLabel" id="label31">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Center Of Rotation:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -1944,8 +1944,8 @@
                   <object class="GtkLabel" id="label33">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Speed Factor:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -1972,8 +1972,8 @@
                   <object class="GtkLabel" id="label34">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Geo System:</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -1985,6 +1985,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
+                    <property name="spacing">4</property>
                     <child>
                       <object class="GtkBox" id="box16">
                         <property name="visible">True</property>
@@ -2079,6 +2080,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="orientation">vertical</property>
+                        <property name="spacing">4</property>
                         <child>
                           <object class="GtkComboBoxText" id="GeoViewpointGDOrderComboBoxText">
                             <property name="visible">True</property>

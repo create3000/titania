@@ -101,7 +101,6 @@ public:
 	constexpr
 	quaternion () :
 		value { Type (), Type (), Type (), Type () }
-
 	{ }
 
 	///  Copy constructor.
@@ -109,14 +108,12 @@ public:
 	constexpr
 	quaternion (const quaternion <Up> & quat) :
 		value { quat .x (), quat .y (), quat .z (), quat .w () }
-
 	{ }
 
 	///  Component constructor. Set values to @a x, @a y and @a z.
 	constexpr
 	quaternion (const Type & x, const Type & y, const Type & z, const Type & w) :
 		value { x, y, z, w }
-
 	{ }
 
 	///  Construct quaternion from vector @a imag and @a w.
@@ -124,7 +121,6 @@ public:
 	constexpr
 	quaternion (const vector3 <Up> & imag, const Type & w) :
 		value { imag .x (), imag .y (), imag .z (), w }
-
 	{ }
 
 	///  @name Assignment operator
@@ -473,11 +469,10 @@ constexpr
 bool
 operator == (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
-	return
-	   lhs .x () == rhs .x () and
-	   lhs .y () == rhs .y () and
-	   lhs .z () == rhs .z () and
-	   lhs .w () == rhs .w ();
+	return lhs .x () == rhs .x () and
+	       lhs .y () == rhs .y () and
+	       lhs .z () == rhs .z () and
+	       lhs .w () == rhs .w ();
 }
 
 ///  Compares two quaternion numbers.
@@ -488,11 +483,10 @@ constexpr
 bool
 operator not_eq (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
-	return
-	   lhs .x () not_eq rhs .x () or
-	   lhs .y () not_eq rhs .y () or
-	   lhs .z () not_eq rhs .z () or
-	   lhs .w () not_eq rhs .w ();
+	return lhs .x () not_eq rhs .x () or
+	       lhs .y () not_eq rhs .y () or
+	       lhs .z () not_eq rhs .z () or
+	       lhs .w () not_eq rhs .w ();
 }
 
 ///  Lexicographically compares two quaternion numbers.

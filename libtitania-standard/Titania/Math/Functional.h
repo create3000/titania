@@ -186,7 +186,8 @@ lerp (const Type & source, const Type & destination, const T & t)
 }
 
 ///  Spherical linear interpolate between two normal vectors @a source vector
-///  and @a destination vector by an amout of @a t.
+///  and @a destination vector by an amout of @a t.  Always returns a normal vector
+///  if the inputs vectors are normalized.
 template <typename Type, typename T>
 static
 Type
@@ -198,7 +199,7 @@ slerp (const Type & source, Type destination, const T & t)
 		throw std::domain_error ("slerp is not possible: vectors are inverse collinear.");
 
 	if (cosom >= 1) // both normal vectors are equal
-		return source;
+		return destination;
 
 	if (cosom < 0)
 	{
@@ -218,7 +219,8 @@ slerp (const Type & source, Type destination, const T & t)
 
 ///  Spherical linear interpolate between two normal vectors @a source vector
 ///  and @a destination vector by an amout of @a t. This version does not travel
-///  the short way when appropriate.
+///  the short way when appropriate.  Always returns a normal vector
+///  if the inputs vectors are normalized.
 template <typename Type, typename T>
 static
 Type
@@ -230,7 +232,7 @@ simple_slerp (const Type & source, const Type & destination, const T & t)
 		throw std::domain_error ("slerp is not possible: vectors are inverse collinear.");
 
 	if (cosom >= 1) // both normal vectors are equal
-		return source;
+		return destination;
 
 	const T omega = std::acos (cosom);
 	const T sinom = std::sin  (omega);

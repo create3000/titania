@@ -162,7 +162,7 @@
               <object class="GtkGrid" id="LODBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="row_spacing">12</property>
+                <property name="row_spacing">8</property>
                 <property name="column_spacing">16</property>
                 <child>
                   <object class="GtkLabel" id="label3">
@@ -560,7 +560,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
-                    <property name="spacing">2</property>
+                    <property name="spacing">4</property>
                     <child>
                       <object class="GtkBox" id="LODCenterBox">
                         <property name="visible">True</property>

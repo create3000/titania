@@ -66,6 +66,7 @@ public:
 	///  @name Member types
 
 	using internal_type = X3D::SFColor;
+	using value_type    = X3D::SFColor::value_type;
 
 	///  @name Construction
 

@@ -114,10 +114,10 @@ SFColorRGBA::construct (JSContext* cx, uint32_t argc, jsval* vp)
 			case 4:
 			{
 				const auto argv = JS_ARGV (cx, vp);
-				const auto r    = getArgument <double> (cx, argv, R);
-				const auto g    = getArgument <double> (cx, argv, G);
-				const auto b    = getArgument <double> (cx, argv, B);
-				const auto a    = getArgument <double> (cx, argv, A);
+				const auto r    = getArgument <value_type> (cx, argv, R);
+				const auto g    = getArgument <value_type> (cx, argv, G);
+				const auto b    = getArgument <value_type> (cx, argv, B);
+				const auto a    = getArgument <value_type> (cx, argv, A);
 
 				return create <SFColorRGBA> (cx, new X3D::SFColorRGBA (r, g, b, a), &JS_RVAL (cx, vp));
 			}
@@ -187,7 +187,7 @@ SFColorRGBA::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, js
 	try
 	{
 		const auto lhs   = getThis <SFColorRGBA> (cx, obj);
-		const auto value = getArgument <double> (cx, vp, 0);
+		const auto value = getArgument <value_type> (cx, vp, 0);
 
 		lhs -> set1Value (JSID_TO_INT (id), value);
 
@@ -263,9 +263,9 @@ SFColorRGBA::setHSV (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto argv = JS_ARGV (cx, vp);
 		const auto lhs  = getThis <SFColorRGBA> (cx, vp);
-		const auto h    = getArgument <double> (cx, argv, 0);
-		const auto s    = getArgument <double> (cx, argv, 1);
-		const auto v    = getArgument <double> (cx, argv, 2);
+		const auto h    = getArgument <value_type> (cx, argv, 0);
+		const auto s    = getArgument <value_type> (cx, argv, 1);
+		const auto v    = getArgument <value_type> (cx, argv, 2);
 
 		lhs -> setHSV (h, s, v);
 
