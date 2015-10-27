@@ -1,13 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h">
     <Files>
-      <File FileName="Titania/Titania/Editors/LODEditor/X3DLODEditor.h" Line="2" Column="2" />
-      <File FileName="Titania/Titania/Editors/LODEditor/X3DLODEditor.cpp" Line="2" Column="2" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp" Line="2" Column="2" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/X3DOutlineTreeView.cpp" Line="67" Column="67" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineTreeViewEditor.cpp" Line="70" Column="70" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp" Line="20" Column="20" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="52" Column="52" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DFlyViewer.h" Line="4" Column="4" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DFlyViewer.cpp" Line="3" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.h" Line="9" Column="9" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="11" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.h" Line="2" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="3" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/CollisionShape.h" Line="2" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/CollisionShape.cpp" Line="2" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.h" Line="6" Column="6" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h" Line="56" Column="56" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

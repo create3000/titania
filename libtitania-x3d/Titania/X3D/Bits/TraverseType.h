@@ -58,7 +58,6 @@ enum class TraverseType : uint8_t
 {
 	POINTER,
 	CAMERA,
-	NAVIGATION,
 	COLLISION,
 	DISPLAY
 

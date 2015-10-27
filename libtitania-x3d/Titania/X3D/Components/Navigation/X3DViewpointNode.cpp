@@ -83,7 +83,7 @@ X3DViewpointNode::X3DViewpointNode () :
 	             X3DBindableNode (),
 	          X3DViewpointObject (),
 	                      fields (),
-	                parentMatrix (),
+	        transformationMatrix (),
 	           cameraSpaceMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),
 	    inverseCameraSpaceMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
 	                  timeSensor (new TimeSensor (getBrowser () -> getPrivateScene ())),
@@ -207,7 +207,7 @@ X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoi
                                              Vector3f & relativeScale,
                                              Rotation4f & relativeScaleOrientation) const
 {
-	const Matrix4f differenceMatrix = ~(getParentMatrix () * fromViewpoint -> getInverseCameraSpaceMatrix ());
+	const Matrix4f differenceMatrix = ~(getTransformationMatrix () * fromViewpoint -> getInverseCameraSpaceMatrix ());
 
 	differenceMatrix .get (relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
 
@@ -216,7 +216,7 @@ X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoi
 }
 
 void
-X3DViewpointNode::setTransformationMatrix (Matrix4f value)
+X3DViewpointNode::setCameraSpaceMatrix (const Matrix4f & value)
 {
 	try
 	{
@@ -358,7 +358,7 @@ X3DViewpointNode::lookAt (Vector3f point, const float factor, const bool straigh
 
 	try
 	{
-		point = point * ~getParentMatrix ();
+		point = point * ~getTransformationMatrix ();
 
 		const float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
 
@@ -379,7 +379,7 @@ X3DViewpointNode::lookAt (Box3f bbox, const float factor, const bool straighten)
 
 	try
 	{
-		bbox *= ~getParentMatrix ();
+		bbox *= ~getTransformationMatrix ();
 
 		const float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
 
@@ -553,20 +553,20 @@ X3DViewpointNode::traverse (const TraverseType type)
 		{
 			getCurrentLayer () -> getViewpoints () -> push_back (this);
 
-			setParentMatrix (getModelViewMatrix () .get ());
+			setTransformationMatrix (getModelViewMatrix () .get ());
 
 			if (isBound ())
 			{
 				Matrix4f matrix;
 				matrix .set (getUserPosition (), getUserOrientation (), scaleOffset (), scaleOrientationOffset ());
 
-				setTransformationMatrix (matrix * getModelViewMatrix () .get ());
+				setCameraSpaceMatrix (matrix * getModelViewMatrix () .get ());
 			}
 
-			break;
+			return;
 		}
 		default:
-			break;
+			return;
 	}
 }
 

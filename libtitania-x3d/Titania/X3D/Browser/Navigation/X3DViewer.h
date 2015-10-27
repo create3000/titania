@@ -78,6 +78,9 @@ public:
 
 protected:
 
+	const X3DLayerNodePtr &
+	getActiveLayer () const;
+
 	X3DViewpointNode*
 	getActiveViewpoint () const;
 

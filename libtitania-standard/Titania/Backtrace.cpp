@@ -88,12 +88,23 @@ backtrace_signal_handler (int sig)
 	exit (1);
 }
 
+static
+void
+backtrace_terminate_handler ()
+{
+	// print out all the frames to stderr
+	backtrace_fn (100, SIGABRT);
+	exit (1);
+}
+
 void
 enable_backtrace ()
 {
 	// install our handler
-	std::signal (SIGSEGV, backtrace_signal_handler);
-	std::signal (SIGABRT, backtrace_signal_handler);
+	std::signal (SIGSEGV, &backtrace_signal_handler);
+	std::signal (SIGABRT, &backtrace_signal_handler);
+
+	std::set_terminate (&backtrace_terminate_handler);
 }
 
 } // titania

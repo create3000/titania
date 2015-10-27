@@ -830,11 +830,10 @@ X3DExecutionContext::requestImmediateLoadOfExternProtos ()
 
 	for (const auto externProto : getExternProtoDeclarations ())
 	{
-		if (externProto -> getInternalScene () .getRequesters () .empty ())
+		if (externProto -> getInstances () .empty ())
 		   continue;
 
 		externProto -> requestImmediateLoad ();
-		externProto -> getInternalScene () .processInterests ();
 	}
 
 	for (const auto proto : getProtoDeclarations ())
@@ -849,7 +848,7 @@ X3DExecutionContext::requestAsyncLoadOfExternProtos ()
 
 	for (const auto externProto : getExternProtoDeclarations ())
 	{
-		if (externProto -> getInternalScene () .getRequesters () .empty ())
+		if (externProto -> getInstances () .empty ())
 		   continue;
 
 		externProto -> requestAsyncLoad ();

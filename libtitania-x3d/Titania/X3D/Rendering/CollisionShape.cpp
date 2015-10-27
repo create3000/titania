@@ -55,35 +55,13 @@
 namespace titania {
 namespace X3D {
 
-CollisionShape::CollisionShape (X3DShapeNode* const shape,
-                                const CollisionArray & collisions,
-                                const CollectableObjectArray & localObjects,
-                                const Vector4i & scissor,
-                                const Matrix4f & matrix,
-                                const float distance) :
-	       shape (shape),
-	  collisions (collisions),
-	localObjects (localObjects),
-	      matrix (matrix),
-	     scissor (scissor),
-	    distance (distance)
+CollisionShape::CollisionShape () :
+	        scissor (),
+	modelViewMatrix (),
+	          shape (nullptr),
+	     collisions (),
+	     clipPlanes ()
 { }
-
-void
-CollisionShape::assign (X3DShapeNode* const shape,
-                        const CollisionArray & collisions,
-                        const CollectableObjectArray & localObjects,
-                        const Vector4i & scissor,
-                        const Matrix4f & matrix,
-                        const float distance)
-{
-	this -> shape        = shape;
-	this -> collisions   = collisions;
-	this -> localObjects = localObjects;
-	this -> scissor      = scissor;
-	this -> matrix       = matrix;
-	this -> distance     = distance;
-}
 
 bool
 CollisionShape::intersects (const Sphere3f & sphere) const
@@ -91,7 +69,7 @@ CollisionShape::intersects (const Sphere3f & sphere) const
 	if (collisions .empty ())
 		return false;
 
-	return shape -> intersects (sphere, matrix, localObjects);
+	return shape -> intersects (sphere, modelViewMatrix, clipPlanes);
 }
 
 void
@@ -102,15 +80,15 @@ CollisionShape::draw ()
 	           scissor [2],
 	           scissor [3]);
 
-	for (const auto & object : localObjects)
-		object -> enable ();
+	for (const auto & clipPlane : clipPlanes)
+		clipPlane -> enable ();
 
-	glLoadMatrixf (matrix .data ());
+	glLoadMatrixf (modelViewMatrix .data ());
 
 	shape -> drawCollision ();
 
-	for (const auto & object : basic::make_reverse_range (localObjects))
-		object -> disable ();
+	for (const auto & clipPlane : basic::make_reverse_range (clipPlanes))
+		clipPlane -> disable ();
 }
 
 } // X3D

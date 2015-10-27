@@ -156,7 +156,7 @@ ProximitySensor::update ()
 	{
 		if (inside)
 		{
-			Matrix4f centerOfRotationMatrix = viewpoint -> getParentMatrix ();
+			Matrix4f centerOfRotationMatrix = viewpoint -> getTransformationMatrix ();
 			centerOfRotationMatrix .translate (viewpoint -> getUserCenterOfRotation ());
 			centerOfRotationMatrix *= inverse (modelViewMatrix);
 

@@ -152,7 +152,7 @@ public:
 	const Matrix4d &
 	getTransformationMatrix () const
 	throw (Error <NOT_SUPPORTED>) final override
-	{ return parentMatrix; }
+	{ return transformationMatrix; }
 
 	virtual
 	Selection::ToolType
@@ -204,7 +204,7 @@ private:
 
 	///  @name Members
 
-	Matrix4d parentMatrix;
+	Matrix4d transformationMatrix;
 	Matrix4d matrix;
 	bool     changing;
 
@@ -213,7 +213,7 @@ private:
 template <class Type>
 X3DTransformNodeTool <Type>::X3DTransformNodeTool () :
 	X3DTransformMatrix4DNodeTool <Type> (ToolColors::GREEN),
-	                       parentMatrix (),
+	               transformationMatrix (),
 	                             matrix (),
 	                           changing (false)
 {
@@ -301,7 +301,7 @@ throw (Error <NOT_SUPPORTED>)
 {
 	try
 	{
-		const auto matrix = Matrix4d (getMatrix ()) * parentMatrix * absoluteMatrix * ~parentMatrix;
+		const auto matrix = Matrix4d (getMatrix ()) * transformationMatrix * absoluteMatrix * ~transformationMatrix;
 
 		if (keepCenter)
 			setMatrixKeepCenter (matrix);
@@ -323,7 +323,7 @@ X3DTransformNodeTool <Type>::eventsProcessed ()
 
 		else
 		{
-			const auto differenceMatrix = ~(matrix * parentMatrix) * Matrix4d (getMatrix ()) * parentMatrix;
+			const auto differenceMatrix = ~(matrix * transformationMatrix) * Matrix4d (getMatrix ()) * transformationMatrix;
 
 			for (const auto & node : getBrowser () -> getSelection () -> getChildren ())
 			{
@@ -380,8 +380,8 @@ X3DTransformNodeTool <Type>::traverse (const TraverseType type)
 
 	if (type == TraverseType::CAMERA)
 	{
-		parentMatrix = getModelViewMatrix () .get ();
-		matrix       = getMatrix ();
+		transformationMatrix = getModelViewMatrix () .get ();
+		matrix               = getMatrix ();
 	}
 
 	// Tool

@@ -357,8 +357,6 @@ ExternProtoDeclaration::updateInterfaceAndInstances ()
 		                     fieldDefinition -> getName (),
 		                     fieldDefinition -> copy (FLAT_COPY));
 	}
-
-	updated () .processInterests ();
 }
 
 void

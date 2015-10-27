@@ -213,8 +213,8 @@ public:
 	{ return inverseCameraSpaceMatrix; }
 
 	const Matrix4f &
-	getParentMatrix () const
-	{ return parentMatrix; }
+	getTransformationMatrix () const
+	{ return transformationMatrix; }
 
 	virtual
 	Vector3d
@@ -335,11 +335,11 @@ private:
 	///  @name Member access
 
 	void
-	setTransformationMatrix (Matrix4f);
+	setCameraSpaceMatrix (const Matrix4f &);
 
 	void
-	setParentMatrix (const Matrix4f & value)
-	{ parentMatrix = value; }
+	setTransformationMatrix (const Matrix4f & value)
+	{ transformationMatrix = value; }
 
 	///  @name Operations
 
@@ -377,7 +377,7 @@ private:
 
 	Fields fields;
 
-	Matrix4f parentMatrix;
+	Matrix4f transformationMatrix;
 	Matrix4f cameraSpaceMatrix;
 	Matrix4f inverseCameraSpaceMatrix;
 

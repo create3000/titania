@@ -58,8 +58,6 @@
 #include "../EnvironmentalEffects/Background.h"
 #include "../Layering/Viewport.h"
 
-#include <Titania/Math/Geometry/Camera.h>
-
 namespace titania {
 namespace X3D {
 
@@ -77,18 +75,18 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* defaultViewpoint_, X3DGroupingNode
 	               fields (),
 	               layer0 (false),
 	defaultNavigationInfo (new NavigationInfo (getExecutionContext ())),
+	     defaultViewpoint (defaultViewpoint_),
 	    defaultBackground (new Background (getExecutionContext ())),
 	           defaultFog (new Fog (getExecutionContext ())),
-	     defaultViewpoint (defaultViewpoint_),
 	      currentViewport (),
 	  navigationInfoStack (new NavigationInfoStack (getExecutionContext (), defaultNavigationInfo)),
+	       viewpointStack (new ViewpointStack (getExecutionContext (), defaultViewpoint)),
 	      backgroundStack (new BackgroundStack (getExecutionContext (), defaultBackground)),
 	             fogStack (new FogStack (getExecutionContext (), defaultFog)),
-	       viewpointStack (new ViewpointStack (getExecutionContext (), defaultViewpoint)),
 	      navigationInfos (new NavigationInfoList (getExecutionContext ())),
+	           viewpoints (new ViewpointList (getExecutionContext ())),
 	          backgrounds (new BackgroundList (getExecutionContext ())),
 	                 fogs (new FogList (getExecutionContext ())),
-	           viewpoints (new ViewpointList (getExecutionContext ())),
 	            localFogs (),
 	               hitRay (),
 	                group (layerGroup_),
@@ -97,25 +95,25 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* defaultViewpoint_, X3DGroupingNode
 	addType (X3DConstants::X3DLayerNode);
 
 	addChildren (defaultNavigationInfo,
+	             defaultViewpoint,
 	             defaultBackground,
 	             defaultFog,
-	             defaultViewpoint,
 	             currentViewport,
 	             navigationInfoStack,
+	             viewpointStack,
 	             backgroundStack,
 	             fogStack,
-	             viewpointStack,
 	             navigationInfos,
+	             viewpoints,
 	             backgrounds,
 	             fogs,
-	             viewpoints,
 	             group,
 	             friends);
 
 	defaultNavigationInfo -> isBound () = true;
+	defaultViewpoint      -> isBound () = true;
 	defaultBackground     -> isBound () = true;
 	defaultFog            -> isBound () = true;
-	defaultViewpoint      -> isBound () = true;
 
 	defaultBackground -> isHidden (true);
 	defaultFog        -> isHidden (true);
@@ -128,18 +126,18 @@ X3DLayerNode::initialize ()
 	X3DRenderer::initialize ();
 
 	defaultNavigationInfo -> setup ();
+	defaultViewpoint      -> setup ();
 	defaultBackground     -> setup ();
 	defaultFog            -> setup ();
-	defaultViewpoint      -> setup ();
 
 	navigationInfoStack -> setup ();
-	backgroundStack     -> setup ();
 	viewpointStack      -> setup ();
+	backgroundStack     -> setup ();
 	fogStack            -> setup ();
 
 	navigationInfos -> setup ();
-	backgrounds     -> setup ();
 	viewpoints      -> setup ();
+	backgrounds     -> setup ();
 	fogs            -> setup ();
 
 	group -> isPrivate (true);
@@ -160,18 +158,18 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	defaultNavigationInfo -> setExecutionContext (executionContext);
+	defaultViewpoint      -> setExecutionContext (executionContext);
 	defaultBackground     -> setExecutionContext (executionContext);
 	defaultFog            -> setExecutionContext (executionContext);
-	defaultViewpoint      -> setExecutionContext (executionContext);
 
 	navigationInfoStack -> setExecutionContext (executionContext);
-	backgroundStack     -> setExecutionContext (executionContext);
 	viewpointStack      -> setExecutionContext (executionContext);
+	backgroundStack     -> setExecutionContext (executionContext);
 	fogStack            -> setExecutionContext (executionContext);
 
 	navigationInfos -> setExecutionContext (executionContext);
-	backgrounds     -> setExecutionContext (executionContext);
 	viewpoints      -> setExecutionContext (executionContext);
+	backgrounds     -> setExecutionContext (executionContext);
 	fogs            -> setExecutionContext (executionContext);
 
 	group -> setExecutionContext (executionContext);
@@ -196,92 +194,16 @@ X3DLayerNode::getBBox () const
 	return group -> getBBox ();
 }
 
-Vector3f
-X3DLayerNode::getTranslation (const Vector3f & positionOffset, const float width, const float height, const Vector3f & translation)
-{
-	float       distance = getDistance (positionOffset, width, height, translation);
-	const float length   = math::abs (translation);
-
-	const float zFar            = getNavigationInfo () -> getFarPlane (getViewpoint ());
-	const float collisionRadius = getNavigationInfo () -> getCollisionRadius ();
-
-	if (zFar - distance > 0) // Are there polygons under the viewer
-	{
-		distance -= collisionRadius;
-
-		if (distance > 0)
-		{
-			// Move
-
-			if (length > distance)
-			{
-				// Collision: The wall has reached.
-				return normalize (translation) * distance;
-			}
-
-			else
-				return translation;
-		}
-		else
-		{
-			// Collision
-			return Vector3f ();
-		}
-	}
-	else
-		return translation;
-}
-
-float
-X3DLayerNode::getDistance (const Vector3f & positionOffset, const float width, const float height, const Vector3f & direction)
-{
-	getBrowser () -> getLayers () .push (this);
-
-	try
-	{
-		const double width1_2  = width / 2;
-		const double height1_2 = height / 2;
-
-		const double zNear = getNavigationInfo () -> getNearPlane ();
-		const double zFar  = getNavigationInfo () -> getFarPlane (getViewpoint ());
-
-		// Reshape camera
-
-		glMatrixMode (GL_PROJECTION);
-		glLoadMatrixd (ortho (-width1_2, width1_2, -height1_2, height1_2, zNear, zFar) .data ());
-		glMatrixMode (GL_MODELVIEW);
-
-		// Translate camera
-
-		Rotation4f localOrientation = ~getViewpoint () -> orientation () * getViewpoint () -> getOrientation ();
-		Matrix4f   modelViewMatrix  = getViewpoint () -> getParentMatrix ();
-
-		modelViewMatrix .translate (getViewpoint () -> getUserPosition () + positionOffset);
-		modelViewMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction) * localOrientation);
-		modelViewMatrix .inverse ();
-
-		getModelViewMatrix () .set (modelViewMatrix);
-
-		// Traverse and get distance
-
-		currentViewport -> push (TraverseType::NAVIGATION);
-
-		traverse (TraverseType::NAVIGATION);
-
-		currentViewport -> pop (TraverseType::NAVIGATION);
-	}
-	catch (const std::domain_error &)
-	{ }
-
-	getBrowser () -> getLayers () .pop ();
-
-	return X3DRenderer::getDistance ();
-}
-
 NavigationInfo*
 X3DLayerNode::getNavigationInfo () const
 {
 	return navigationInfoStack -> top ();
+}
+
+X3DViewpointNode*
+X3DLayerNode::getViewpoint () const
+{
+	return viewpointStack -> top ();
 }
 
 X3DBackgroundNode*
@@ -297,12 +219,6 @@ X3DLayerNode::getFog () const
 		return fogStack -> top ();
 
 	return localFogs .top ();
-}
-
-X3DViewpointNode*
-X3DLayerNode::getViewpoint () const
-{
-	return viewpointStack -> top ();
 }
 
 UserViewpointList
@@ -346,6 +262,13 @@ X3DLayerNode::bind ()
 		navigationInfo -> addLayer (this);
 	}
 
+	if (not getViewpoints () -> empty ())
+	{
+		const auto viewpoint = getViewpoints () -> bound ();
+		getViewpointStack () -> force_push (viewpoint);
+		viewpoint -> addLayer (this);
+	}
+
 	if (not getBackgrounds () -> empty ())
 	{
 		const auto background = getBackgrounds () -> bound ();
@@ -358,15 +281,6 @@ X3DLayerNode::bind ()
 		const auto fog = getFogs () -> bound ();
 		getFogStack () -> force_push (fog);
 		fog -> addLayer (this);
-	}
-
-	// Bind first viewpoint in viewpoint stack.
-
-	if (not getViewpoints () -> empty ())
-	{
-		const auto viewpoint = getViewpoints () -> bound ();
-		getViewpointStack () -> force_push (viewpoint);
-		viewpoint -> addLayer (this);
 	}
 }
 
@@ -389,11 +303,6 @@ X3DLayerNode::traverse (const TraverseType type)
 			camera ();
 			break;
 		}
-		case TraverseType::NAVIGATION:
-		{
-			navigation ();
-			break;
-		}
 		case TraverseType::COLLISION:
 		{
 			collision ();
@@ -401,7 +310,7 @@ X3DLayerNode::traverse (const TraverseType type)
 		}
 		case TraverseType::DISPLAY:
 		{
-			collect ();
+			display ();
 			break;
 		}
 	}
@@ -449,9 +358,9 @@ X3DLayerNode::camera ()
 	getViewpoint () -> reshape ();
 
 	defaultNavigationInfo -> traverse (TraverseType::CAMERA);
+	defaultViewpoint      -> traverse (TraverseType::CAMERA);
 	defaultBackground     -> traverse (TraverseType::CAMERA);
 	defaultFog            -> traverse (TraverseType::CAMERA);
-	defaultViewpoint      -> traverse (TraverseType::CAMERA);
 
 	currentViewport -> push (TraverseType::CAMERA);
 
@@ -460,65 +369,25 @@ X3DLayerNode::camera ()
 	currentViewport -> pop (TraverseType::CAMERA);
 
 	navigationInfos -> update ();
+	viewpoints      -> update ();
 	backgrounds     -> update ();
 	fogs            -> update ();
-	viewpoints      -> update ();
-}
-
-void
-X3DLayerNode::navigation ()
-{
-	// Render
-	currentViewport -> enable ();
-	render (TraverseType::NAVIGATION);
-	currentViewport -> disable ();
 }
 
 void
 X3DLayerNode::collision ()
 {
-	try
-	{
-		// Get NavigationInfo values
+	getViewpoint () -> reshape ();
+	getModelViewMatrix () .identity ();
 
-		const auto navigationInfo = getNavigationInfo ();
-
-		const double zNear           = navigationInfo -> getNearPlane ();
-		const double zFar            = navigationInfo -> getFarPlane (getViewpoint ());
-		const double collisionRadius = navigationInfo -> getCollisionRadius ();
-
-		// Reshape viewpoint for gravite
-
-		glMatrixMode (GL_PROJECTION);
-		glLoadMatrixd (ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar) .data ());
-		glMatrixMode (GL_MODELVIEW);
-
-		// Transform viewpoint
-
-		const auto viewpoint = getViewpoint ();
-
-		Matrix4f   modelViewMatrix = viewpoint -> getParentMatrix ();
-		Rotation4f down (Vector3f (0, 0, 1) * viewpoint -> getUserOrientation (), viewpoint -> getUpVector ());
-
-		modelViewMatrix .translate (viewpoint -> getUserPosition ());
-		modelViewMatrix .rotate (viewpoint -> getUserOrientation () * down);
-		modelViewMatrix .inverse ();
-
-		getModelViewMatrix () .set (modelViewMatrix);
-
-		// Render
-		currentViewport -> push (TraverseType::COLLISION);
-		render (TraverseType::COLLISION);
-		currentViewport -> pop (TraverseType::COLLISION);
-
-		gravite ();
-	}
-	catch (const std::domain_error &)
-	{ }
+	// Render
+	currentViewport -> push (TraverseType::COLLISION);
+	render (TraverseType::COLLISION);
+	currentViewport -> pop (TraverseType::COLLISION);
 }
 
 void
-X3DLayerNode::collect ()
+X3DLayerNode::display ()
 {
 	glClear (GL_DEPTH_BUFFER_BIT);
 

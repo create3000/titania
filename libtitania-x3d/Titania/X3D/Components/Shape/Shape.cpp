@@ -136,7 +136,6 @@ Shape::traverse (const TraverseType type)
 			pointer ();
 			break;
 		}
-		case TraverseType::NAVIGATION:
 		case TraverseType::COLLISION:
 		{
 			if (getGeometry ())

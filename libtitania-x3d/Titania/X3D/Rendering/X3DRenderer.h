@@ -89,9 +89,17 @@ public:
 
 	///  @name Member access
 
-	float
-	getDistance () const
-	{ return distance; }
+	virtual
+	NavigationInfo*
+	getNavigationInfo () const = 0;
+
+	virtual
+	X3DViewpointNode*
+	getViewpoint () const = 0;
+
+	virtual
+	X3DFogObject*
+	getFog () const = 0;
 
 	ViewVolumeStack &
 	getViewVolumeStack ()
@@ -131,13 +139,8 @@ public:
 	void
 	addCollision (X3DShapeNode* const);
 
-	///  @name Operations
-
-	void
-	render (const TraverseType);
-
-	void
-	gravite ();
+	Vector3f
+	constrainTranslation (const Vector3f &) const;
 
 	///  @name Destruction
 
@@ -159,15 +162,6 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Member access
-
-	virtual
-	X3DFogObject*
-	getFog () const = 0;
-
-
-private:
-
 	///  @name Operations
 
 	virtual
@@ -175,13 +169,27 @@ private:
 	collect (const TraverseType) = 0;
 
 	void
+	render (const TraverseType);
+
+
+private:
+
+	///  @name Operations
+
+	double
+	getDistance (const Vector3f &) const;
+
+	double
+	getDepth () const;
+
+	void
 	draw ();
 
 	void
-	navigation ();
+	collide ();
 
 	void
-	collide ();
+	gravite ();
 
 	bool
 	stepUp ();
@@ -202,8 +210,7 @@ private:
 	std::vector <Collision*> activeCollisions;
 
 	std::unique_ptr <FrameBuffer> depthBuffer;
-	float                         speed;
-	float                         distance;
+	double                        speed;
 
 	size_t numOpaqueShapes;
 	size_t numTransparentShapes;

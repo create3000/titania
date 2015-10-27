@@ -276,11 +276,12 @@ X3DFlyViewer::fly ()
 
 		const Vector3f translation = getTranslationOffset (speedFactor * direction);
 
-		viewpoint -> positionOffset () += getTranslation (translation);
+		viewpoint -> positionOffset () += getActiveLayer () -> constrainTranslation (translation);
 
 		// Rotation
 
 		float weight = ROTATION_SPEED_FACTOR * dt;
+
 		weight *= std::pow (rubberBandLength / (rubberBandLength + ROTATION_LIMIT), 2);
 
 		viewpoint -> orientationOffset () *= slerp (Rotation4f (), rubberBandRotation, weight);
@@ -321,7 +322,7 @@ X3DFlyViewer::pan ()
 		const Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (yAxis * viewpoint -> getUserOrientation (), upVector);
 		const Vector3f   translation = speedFactor * direction * orientation;
 
-		viewpoint -> positionOffset () += getTranslation (translation);
+		viewpoint -> positionOffset () += getActiveLayer () -> constrainTranslation (translation);
 
 		startTime = now;
 		return true;
@@ -354,6 +355,7 @@ X3DFlyViewer::roll ()
 	}
 }
 
+/*
 Vector3f
 X3DFlyViewer::getTranslation (const Vector3f & translation) const
 {
@@ -370,6 +372,7 @@ X3DFlyViewer::getTranslation (const Vector3f & translation) const
 
 	return getBrowser () -> getActiveLayer () -> getTranslation (Vector3f (0, -positionOffset, 0), width, height, translation);
 }
+*/
 
 void
 X3DFlyViewer::addFly ()

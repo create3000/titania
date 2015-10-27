@@ -51,6 +51,7 @@
 #include "X3DRenderer.h"
 
 #include "../Browser/BrowserOptions.h"
+#include "../Browser/ContextLock.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
@@ -58,6 +59,7 @@
 #include "../Components/Shape/Appearance.h"
 #include "../Rendering/FrameBuffer.h"
 
+#include <Titania/Math/Geometry/Camera.h>
 #include <Titania/Utility/Range.h>
 #include <algorithm>
 
@@ -66,6 +68,8 @@ namespace X3D {
 
 static constexpr size_t DEPTH_BUFFER_WIDTH  = 16;
 static constexpr size_t DEPTH_BUFFER_HEIGHT = 16;
+
+static constexpr auto zAxis = Vector3f (0, 0, 1);
 
 X3DRenderer::X3DRenderer () :
 	             X3DNode (),
@@ -79,7 +83,6 @@ X3DRenderer::X3DRenderer () :
 	    activeCollisions (),
 	         depthBuffer (),
 	               speed (),
-	            distance (),
 	     numOpaqueShapes (0),
 	numTransparentShapes (0),
 	  numCollisionShapes (0)
@@ -90,7 +93,7 @@ X3DRenderer::X3DRenderer () :
 void
 X3DRenderer::initialize ()
 {
-	depthBuffer .reset (new FrameBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, false));
+	depthBuffer .reset (new FrameBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true));
 }
 
 void
@@ -143,52 +146,156 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 void
 X3DRenderer::addCollision (X3DShapeNode* const shape)
 {
-	const Box3f bbox   = shape -> getBBox () * getModelViewMatrix () .get ();
-	const float depth  = bbox .size () .z () / 2;
-	const float min    = bbox .center () .z () - depth;
-	const float center = bbox .center () .z ();
+	if (numCollisionShapes == collisionShapes .size ())
+		collisionShapes .emplace_back (new CollisionShape ());
 
-	if (min < 0)
+	const auto & context = collisionShapes [numCollisionShapes];
+
+	++ numCollisionShapes;
+
+	context -> setScissor (getViewVolumeStack () .back () .getScissor ());
+	context -> setModelViewMatrix (getModelViewMatrix () .get ());
+	context -> setShape (shape);
+	context -> setCollisions (getCollisions ());
+	context -> setClipPlanes (getLocalObjects ());
+}
+
+Vector3f
+X3DRenderer::constrainTranslation (const Vector3f & translation) const
+{
+	const auto navigationInfo  = getNavigationInfo ();
+	float      distance        = getDistance (translation);
+	const auto zFar            = navigationInfo -> getFarPlane (getViewpoint ());
+
+	// Constrain translation when the viewer collides with a wall.
+
+	if (zFar - distance > 0) // Are there polygons before the viewer
 	{
-		const auto & viewVolume = viewVolumeStack .back ();
+		const auto collisionRadius = navigationInfo -> getCollisionRadius ();
 
-		if (viewVolume .intersects (bbox))
+		distance -= collisionRadius;
+
+		if (distance > 0)
 		{
-			if (numCollisionShapes < collisionShapes .size ())
-				collisionShapes [numCollisionShapes] -> assign (shape, getCollisions (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), center);
+			// Move
 
-			else
-				collisionShapes .emplace_back (new CollisionShape (shape, getCollisions (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), center));
+			const auto length = abs (translation);
+			
+			if (length > distance)
+			{
+				// Collision: The wall is reached.
+				return normalize (translation) * distance;
+			}
 
-			++ numCollisionShapes;
+			return translation;
+		}
+
+		// Collision
+		return normalize (translation) * distance;
+	}
+
+	return translation;
+}
+
+double
+X3DRenderer::getDistance (const Vector3f & translation) const
+{
+	try
+	{
+		ContextLock lock (getBrowser ());
+
+		if (lock)
+		{
+			// Determine width and height of camera
+
+			const auto viewpoint       = getViewpoint ();
+			const auto navigationInfo  = getNavigationInfo ();
+			const auto collisionRadius = navigationInfo -> getCollisionRadius ();
+			const auto bottom          = navigationInfo -> getStepHeight () - navigationInfo -> getAvatarHeight ();
+			const auto zNear           = navigationInfo -> getNearPlane ();
+			const auto zFar            = navigationInfo -> getFarPlane (viewpoint);
+
+			// Reshape camera
+
+			const auto projectionMatrix = ortho (-collisionRadius, collisionRadius, bottom, collisionRadius, zNear, zFar);
+
+			// Translate camera to user position and to look in the direction of the translation.
+
+			const auto localOrientation = ~viewpoint -> orientation () * viewpoint -> getOrientation ();
+			auto       rotation         = Rotation4f (zAxis, -translation) * localOrientation;
+		
+			// The viewer is alway a straight box depending on the upVector.
+			rotation *= viewpoint -> straightenHorizon (rotation);
+
+			auto modelViewMatrix = viewpoint -> getTransformationMatrix ();
+			modelViewMatrix .translate (viewpoint -> getUserPosition ());
+			modelViewMatrix .rotate (rotation);
+			modelViewMatrix .inverse ();
+
+			modelViewMatrix .mult_right (projectionMatrix);
+		
+			glMatrixMode (GL_PROJECTION);
+			glLoadMatrixf (modelViewMatrix .data ());
+			glMatrixMode (GL_MODELVIEW);
+
+			return getDepth ();
 		}
 	}
+	catch (const std::domain_error &)
+	{ }
+
+	return 0;
+}
+
+double
+X3DRenderer::getDepth () const
+{
+	// Render all objects
+
+	depthBuffer -> bind ();
+
+	glEnable (GL_DEPTH_TEST);
+	glDepthMask (GL_TRUE);
+	glDisable (GL_BLEND);
+
+	for (const auto & context : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
+		context -> draw ();
+
+	// Get distance from depth buffer
+		
+	const auto navigationInfo  = getNavigationInfo ();
+	const auto viewpoint       = getViewpoint ();
+	const auto zNear           = navigationInfo -> getNearPlane ();
+	const auto zFar            = navigationInfo -> getFarPlane (viewpoint);
+	const auto collisionRadius = navigationInfo -> getCollisionRadius ();
+
+	const auto distance = depthBuffer -> getDistance (collisionRadius, zNear, zFar);
+
+	depthBuffer -> unbind ();
+
+	return distance;
 }
 
 void
 X3DRenderer::render (const TraverseType type)
 {
-	numOpaqueShapes      = 0;
-	numTransparentShapes = 0;
-	numCollisionShapes   = 0;
-
 	switch (type)
 	{
-		case TraverseType::NAVIGATION:
-		{
-			collect (type);
-			navigation ();
-			break;
-		}
 		case TraverseType::COLLISION:
 		{
 			// Collect for collide and gravite
+			numCollisionShapes = 0;
+
 			collect (type);
 			collide ();
+			gravite ();
 			break;
 		}
 		case TraverseType::DISPLAY:
 		{
+			numOpaqueShapes      = 0;
+			numTransparentShapes = 0;
+
 			collect (type);
 			draw ();
 			break;
@@ -218,8 +325,8 @@ X3DRenderer::draw ()
 	glDepthMask (GL_TRUE);
 	glDisable (GL_BLEND);
 
-	for (const auto & shape : basic::make_range (shapes .cbegin (), numOpaqueShapes))
-		shape -> draw ();
+	for (const auto & context : basic::make_range (shapes .cbegin (), numOpaqueShapes))
+		context -> draw ();
 
 	// Render transparent objects
 
@@ -228,8 +335,8 @@ X3DRenderer::draw ()
 
 	std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
 
-	for (const auto & shape : basic::make_range (transparentShapes .cbegin (), numTransparentShapes))
-		shape -> draw ();
+	for (const auto & context : basic::make_range (transparentShapes .cbegin (), numTransparentShapes))
+		context -> draw ();
 
 	glDepthMask (GL_TRUE);
 	glDisable (GL_BLEND);
@@ -245,49 +352,32 @@ X3DRenderer::draw ()
 }
 
 void
-X3DRenderer::navigation ()
-{
-	// Measure distance
-
-	// Get NavigationInfo values
-
-	const auto navigationInfo  = getCurrentNavigationInfo ();
-	const auto viewpoint       = getCurrentViewpoint ();
-	const auto collisionRadius = navigationInfo -> getCollisionRadius ();
-	const auto zNear           = navigationInfo -> getNearPlane ();
-	const auto zFar            = navigationInfo -> getFarPlane (viewpoint);
-
-	// Render all objects
-
-	depthBuffer -> bind ();
-
-	for (const auto & shape : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
-		shape -> draw ();
-
-	distance = depthBuffer -> getDistance (collisionRadius, zNear, zFar);
-
-	depthBuffer -> unbind ();
-}
-
-void
 X3DRenderer::collide ()
 {
 	// Collision
 
+	const auto collisionRadius = getNavigationInfo () -> getCollisionRadius () * 1.2; // Make the radius a little bit larger.
+
 	std::vector <Collision*> collisions;
 
-	const Sphere3f collisionSphere (getCurrentNavigationInfo () -> getCollisionRadius () * 1.2f, Vector3f ());
-
-	for (const auto & shape : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
+	for (const auto & context : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
 	{
-		if (shape -> getCollisions () .empty ())
-			continue;
+	   try
+	   {
+	      if (context -> getCollisions () .empty ())
+	         continue;
 
-		if (shape -> intersects (collisionSphere))
-		{
-			for (auto & collision : shape -> getCollisions ())
-				collisions .emplace_back (collision);
+		   const auto invModelViewMatrix = inverse (context -> getModelViewMatrix () * getViewpoint () -> getInverseCameraSpaceMatrix ());
+			const auto collisionSphere    = Sphere3f (collisionRadius, invModelViewMatrix .origin ());
+
+			if (context -> intersects (collisionSphere))
+			{
+				for (auto & collision : context -> getCollisions ())
+					collisions .emplace_back (collision);
+			}
 		}
+		catch (const std::domain_error &)
+		{ }
 	}
 
 	// Set isActive to FALSE for appropriate nodes
@@ -326,96 +416,108 @@ X3DRenderer::collide ()
 void
 X3DRenderer::gravite ()
 {
-	// Terrain following and gravitation
-
-	if (getBrowser () -> getViewer () not_eq ViewerType::WALK)
-		return;
-
-	// Get NavigationInfo values
-
-	const auto navigationInfo  = getCurrentNavigationInfo ();
-	const auto viewpoint       = getCurrentViewpoint ();
-	const auto collisionRadius = navigationInfo -> getCollisionRadius ();
-	const auto zNear           = navigationInfo -> getNearPlane ();
-	const auto zFar            = navigationInfo -> getFarPlane (viewpoint);
-	const auto height          = navigationInfo -> getAvatarHeight ();
-	const auto stepHeight      = navigationInfo -> getStepHeight ();
-
-	// Bind buffer
-
-	depthBuffer -> bind ();
-
-	// Render as opaque objects
-
-	for (const auto & shape : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
-		shape -> draw ();
-
-	// Get distance and unbind buffer
-
-	float distance = depthBuffer -> getDistance (collisionRadius, zNear, zFar);
-
-	depthBuffer -> unbind ();
-
-	// Gravite or step up
-
-	if (zFar - distance > 0) // Are there polygons under the viewer
+	try
 	{
-		distance -= height;
+		// Terrain following and gravitation
 
-		const Rotation4f up (Vector3f (0, 1, 0), getCurrentViewpoint () -> getUpVector ());
+		if (getBrowser () -> getViewer () not_eq ViewerType::WALK)
+			return;
 
-		if (distance > 0)
+		// Get NavigationInfo values
+
+		const auto navigationInfo  = getNavigationInfo ();
+		const auto viewpoint       = getViewpoint ();
+		const auto collisionRadius = navigationInfo -> getCollisionRadius ();
+		const auto zNear           = navigationInfo -> getNearPlane ();
+		const auto zFar            = navigationInfo -> getFarPlane (viewpoint);
+		const auto height          = navigationInfo -> getAvatarHeight ();
+		const auto stepHeight      = navigationInfo -> getStepHeight ();
+
+		// Reshape viewpoint for gravite.
+
+		const auto projectionMatrix = ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar);
+					
+		// Transform viewpoint to look down the up vector
+
+		const auto upVector = viewpoint -> getUpVector ();
+		const auto down     = Rotation4f (zAxis, upVector);
+
+		auto modelViewMatrix = viewpoint -> getTransformationMatrix ();
+		modelViewMatrix .translate (viewpoint -> getUserPosition ());
+		modelViewMatrix .rotate (down);
+		modelViewMatrix .inverse ();
+
+		modelViewMatrix .mult_right (projectionMatrix);
+
+		glMatrixMode (GL_PROJECTION);
+		glLoadMatrixf (modelViewMatrix .data ());
+		glMatrixMode (GL_MODELVIEW);
+
+		auto distance = getDepth ();
+
+		// Gravite or step up
+
+		if (zFar - distance > 0) // Are there polygons under the viewer
 		{
-			// Gravite and fall down the floor
+			distance -= height;
 
-			const float currentFrameRate = speed ? getBrowser () -> getCurrentFrameRate () : 1000000.0;
+			const Rotation4f up (Vector3f (0, 1, 0), upVector);
 
-			speed -= getBrowser () -> getBrowserOptions () -> Gravity () / currentFrameRate;
-
-			float translation = speed / currentFrameRate;
-
-			if (translation < -distance)
+			if (distance > 0)
 			{
-				// The ground is reached.
-				translation = -distance;
-				speed       = 0;
-			}
+				// Gravite and fall down the floor
 
-			getCurrentViewpoint () -> positionOffset () += Vector3f (0, translation, 0) * up;
+				const auto currentFrameRate = speed ? getBrowser () -> getCurrentFrameRate () : 1000000.0;
+
+				speed -= getBrowser () -> getBrowserOptions () -> Gravity () / currentFrameRate;
+
+				auto translation = speed / currentFrameRate;
+
+				if (translation < -distance)
+				{
+					// The ground is reached.
+					translation = -distance;
+					speed       = 0;
+				}
+
+				getViewpoint () -> positionOffset () += Vector3f (0, translation, 0) * up;
+			}
+			else
+			{
+				speed = 0;
+
+				distance = -distance;
+
+				if (distance > 0.01 and distance < stepHeight)
+				{
+					// Step up
+					const auto translation = constrainTranslation (Vector3f (0, distance, 0) * up);
+
+					if (getBrowser () -> getBrowserOptions () -> AnimateStairWalks ())
+					{
+						auto step = getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate ();
+
+						step = abs (getInverseCameraSpaceMatrix () .mult_matrix_dir (Vector3f (0, step, 0) * up));
+
+						Vector3f offset = Vector3f (0, step, 0) * up;
+
+						if (math::abs (offset) > math::abs (translation) or getBrowser () -> getCurrentSpeed () == 0)
+							offset = translation;
+
+						getViewpoint () -> positionOffset () += offset;
+					}
+					else
+						getViewpoint () -> positionOffset () += translation;
+				}
+			}
 		}
 		else
 		{
 			speed = 0;
-
-			if (-distance > 0.01 and - distance < stepHeight)
-			{
-				// Get size of camera
-				const float size = getCurrentNavigationInfo () -> getCollisionRadius () * 2;
-
-				// Step up
-				Vector3f translation = getCurrentLayer () -> getTranslation (Vector3f (), size, size, Vector3f (0, -distance, 0) * up);
-
-				if (getBrowser () -> getBrowserOptions () -> AnimateStairWalks ())
-				{
-					float step = getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate ();
-					step = abs (getInverseCameraSpaceMatrix () .mult_matrix_dir (Vector3f (0, step, 0) * up));
-
-					Vector3f offset = Vector3f (0, step, 0) * up;
-
-					if (math::abs (offset) > math::abs (translation) or getBrowser () -> getCurrentSpeed () == 0)
-						offset = translation;
-
-					getCurrentViewpoint () -> positionOffset () += offset;
-				}
-				else
-					getCurrentViewpoint () -> positionOffset () += translation;
-			}
 		}
 	}
-	else
-	{
-		speed = 0;
-	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void

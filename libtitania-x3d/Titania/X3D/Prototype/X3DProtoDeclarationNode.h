@@ -97,13 +97,21 @@ public:
 	void
 	requestImmediateLoad () = 0;
 
+	void
+	addInstance (X3DPrototypeInstance* const instance)
+	{ instances .emplace (instance); }
+
+	void
+	removeInstance (X3DPrototypeInstance* const instance)
+	{ instances .erase (instance); }
+
+	std::set <X3DPrototypeInstance*>
+	getInstances () const
+	{ return instances; }
+
 	virtual
 	void
 	updateInterfaceAndInstances () = 0;
-
-	const Output &
-	updated () const
-	{ return updatedOutput; }
 
 	///  @name Comment handling
 
@@ -122,7 +130,7 @@ protected:
 
 	X3DProtoDeclarationNode () :
 		      X3DNode (),
-		updatedOutput (),
+		    instances (),
 		     comments ()
 	{
 		addType (X3DConstants::X3DProtoDeclarationNode);
@@ -132,8 +140,8 @@ private:
 
 	///  @name Members
 
-	Output                    updatedOutput;
-	std::vector <std::string> comments;
+	std::set <X3DPrototypeInstance*> instances;
+	std::vector <std::string>        comments;
 
 };
 

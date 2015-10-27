@@ -365,7 +365,6 @@ X3DGroupingNode::traverse (const TraverseType type)
 
 			break;
 		}
-		case TraverseType::NAVIGATION:
 		case TraverseType::COLLISION:
 		{
 			for (const auto & child : collectables)

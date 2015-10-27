@@ -66,28 +66,35 @@ class CollisionShape
 {
 public:
 
-	CollisionShape (X3DShapeNode* const,
-	                const CollisionArray &,
-	                const CollectableObjectArray &,
-	                const Vector4i &,
-	                const Matrix4f &,
-	                const float);
+	CollisionShape ();
 
 	void
-	assign (X3DShapeNode* const,
-	        const CollisionArray &,
-	        const CollectableObjectArray &,
-	        const Vector4i &,
-	        const Matrix4f &,
-	        const float);
+	setScissor (const Vector4i & value)
+	{ scissor = value; }
 
-	float
-	getDistance () const
-	{ return distance; }
+	void
+	setModelViewMatrix (const Matrix4f & value)
+	{ modelViewMatrix = value; }
+
+	const Matrix4f &
+	getModelViewMatrix () const
+	{ return modelViewMatrix; }
+
+	void
+	setShape (X3DShapeNode* const value)
+	{ shape = value; }
+
+	void
+	setCollisions (const CollisionArray & value)
+	{ collisions = value; }
 
 	const CollisionArray &
-	getCollisions ()
+	getCollisions () const
 	{ return collisions; }
+
+	void
+	setClipPlanes (const CollectableObjectArray & value)
+	{ clipPlanes = value; }
 
 	bool
 	intersects (const Sphere3f &) const;
@@ -98,12 +105,11 @@ public:
 
 private:
 
+	Vector4i               scissor;
+	Matrix4f               modelViewMatrix;
 	X3DShapeNode*          shape;
 	CollisionArray         collisions;
-	CollectableObjectArray localObjects;
-	Matrix4f               matrix;
-	Vector4i               scissor;
-	float                  distance;
+	CollectableObjectArray clipPlanes;
 
 };
 

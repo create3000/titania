@@ -143,20 +143,26 @@ public:
 	getViewport () const
 	{ return currentViewport; }
 
+	virtual
 	NavigationInfo*
-	getNavigationInfo () const;
+	getNavigationInfo () const final override;
+
+	virtual
+	X3DViewpointNode*
+	getViewpoint () const final override;
 
 	X3DBackgroundNode*
 	getBackground () const;
-
-	X3DViewpointNode*
-	getViewpoint () const;
 
 	///  @name X3DBindableNode stack handling
 
 	const NavigationInfoStackPtr &
 	getNavigationInfoStack () const
 	{ return navigationInfoStack; }
+
+	const ViewpointStackPtr &
+	getViewpointStack () const
+	{ return viewpointStack; }
 
 	const BackgroundStackPtr &
 	getBackgroundStack () const
@@ -166,15 +172,15 @@ public:
 	getFogStack () const
 	{ return fogStack; }
 
-	const ViewpointStackPtr &
-	getViewpointStack () const
-	{ return viewpointStack; }
-
 	///  @name X3DBindableNode list handling
 
 	const NavigationInfoListPtr &
 	getNavigationInfos () const
 	{ return navigationInfos; }
+
+	const ViewpointListPtr &
+	getViewpoints () const
+	{ return viewpoints; }
 
 	const BackgroundListPtr &
 	getBackgrounds () const
@@ -183,10 +189,6 @@ public:
 	const FogListPtr &
 	getFogs () const
 	{ return fogs; }
-
-	const ViewpointListPtr &
-	getViewpoints () const
-	{ return viewpoints; }
 
 	UserViewpointList
 	getUserViewpoints () const;
@@ -218,9 +220,6 @@ public:
 	{ return friends; }
 
 	///  @name Operations
-
-	Vector3f
-	getTranslation (const Vector3f &, const float, const float, const Vector3f &);
 
 	void
 	lookAt ();
@@ -265,11 +264,6 @@ protected:
 
 private:
 
-	///  @name Member access
-
-	float
-	getDistance (const Vector3f &, const float, const float, const Vector3f &);
-
 	///  @name Operations
 
 	void
@@ -282,17 +276,14 @@ private:
 	camera ();
 
 	void
-	navigation ();
-
-	void
 	collision ();
 
 	void
-	collect ();
+	display ();
 
 	virtual
 	void
-	collect (const TraverseType) override;
+	collect (const TraverseType) final override;
 
 	///  @name Members
 
@@ -312,21 +303,21 @@ private:
 	bool layer0;
 
 	NavigationInfoPtr    defaultNavigationInfo;
+	X3DViewpointNodePtr  defaultViewpoint;
 	X3DBackgroundNodePtr defaultBackground;
 	FogPtr               defaultFog;
-	X3DViewpointNodePtr  defaultViewpoint;
 
 	X3DViewportNodePtr currentViewport;
 
 	NavigationInfoStackPtr navigationInfoStack;
+	ViewpointStackPtr      viewpointStack;
 	BackgroundStackPtr     backgroundStack;
 	FogStackPtr            fogStack;
-	ViewpointStackPtr      viewpointStack;
 
 	NavigationInfoListPtr navigationInfos;
+	ViewpointListPtr      viewpoints;
 	BackgroundListPtr     backgrounds;
 	FogListPtr            fogs;
-	ViewpointListPtr      viewpoints;
 
 	LocalFogStack  localFogs;
 	

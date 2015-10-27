@@ -1,12 +1,69 @@
-#X3D V3.0 utf8 Titania
+#VRML V2.0 utf8 Titania V1.2.0
 
 META "title" "Collision"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "FLY"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "Collision"
+}
 
 Transform {
   children [
     NavigationInfo {
-      avatarSize [ 0.5, 1.6, 0.75 ]
       type "FLY"
+      avatarSize [
+        0.5,
+        1.6,
+        0.75
+      ]
     }
     DirectionalLight {
       direction 0 -1 0
@@ -44,7 +101,7 @@ Transform {
             }
           }
           geometry Box {
-            size 3 3 3
+            size 4 4 4
             solid FALSE
           }
         }
@@ -54,8 +111,8 @@ Transform {
 }
 
 DEF Debug Script {
-  inputOnly SFBool set_active
-  inputOnly SFTime set_time
+  eventIn SFBool set_active
+  eventIn SFTime set_time
 
   url "vrmlscript:
 function set_active (value)

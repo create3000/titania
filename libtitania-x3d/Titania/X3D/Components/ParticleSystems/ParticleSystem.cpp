@@ -1209,7 +1209,6 @@ ParticleSystem::traverse (const TraverseType type)
 		{
 			break;
 		}
-		case TraverseType::NAVIGATION:
 		case TraverseType::COLLISION:
 		{
 			break;

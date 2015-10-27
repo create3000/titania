@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-FrameBuffer::FrameBuffer (const X3DBrowserContext* const browser, const size_t width, const size_t height, const size_t samples_, const bool hasColorBuffer) :
+FrameBuffer::FrameBuffer (const X3DBrowserContext* const browser, const size_t width, const size_t height, const size_t samples_, const bool withColorBuffer) :
 	      browser (browser),
 	        width (width),
 	       height (height),
@@ -80,7 +80,7 @@ FrameBuffer::FrameBuffer (const X3DBrowserContext* const browser, const size_t w
 		glBindFramebuffer (GL_FRAMEBUFFER, id);
 
 		// The color buffer
-		if (hasColorBuffer)
+		if (withColorBuffer)
 		{
 			glGenRenderbuffers (1, &colorBufferId);
 			glBindRenderbuffer (GL_RENDERBUFFER, colorBufferId);

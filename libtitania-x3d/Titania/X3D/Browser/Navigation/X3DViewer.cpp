@@ -69,6 +69,12 @@ X3DViewer::getNavigationInfo () const
 	return getBrowser () -> getActiveLayer () -> getNavigationInfo ();
 }
 
+const X3DLayerNodePtr &
+X3DViewer::getActiveLayer () const
+{
+	return getBrowser () -> getActiveLayer ();
+}
+
 X3DViewpointNode*
 X3DViewer::getActiveViewpoint () const
 {
