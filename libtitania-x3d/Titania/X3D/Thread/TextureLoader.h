@@ -53,7 +53,7 @@
 
 #include "../Browser/X3DBrowser.h"
 #include "../InputOutput/Loader.h"
-#include "../Miscellaneous/Texture.h"
+#include "../Browser/Texturing/Texture.h"
 #include "X3DInterruptibleThread.h"
 
 #include <atomic>

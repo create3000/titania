@@ -53,8 +53,8 @@
 namespace titania {
 namespace X3D {
 
-X3DSelector::X3DSelector (Browser* const browser) :
-	X3DBrowserObject (browser)
+X3DSelector::X3DSelector () :
+	X3DBrowserObject ()
 { }
 
 } // X3D

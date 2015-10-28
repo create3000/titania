@@ -48,21 +48,98 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_NAVIGATION_VIEWER_TYPE_H__
-#define __TITANIA_X3D_BROWSER_NAVIGATION_VIEWER_TYPE_H__
+#ifndef __TITANIA_X3D_BITS_GEOSPATIAL_H__
+#define __TITANIA_X3D_BITS_GEOSPATIAL_H__
+
+#include "../../Fields.h"
+#include "../../Types/Geometry.h"
+
+#include <Titania/Geospatial/BasicConverter.h>
+#include <Titania/Geospatial/Geodetic.h>
+#include <memory>
 
 namespace titania {
 namespace X3D {
 
-enum class ViewerType :
-	uint8_t
+class Geospatial
 {
-	NONE,
-	EXAMINE,
-	WALK,
-	FLY,
-	PLANE,
-	LOOKAT
+public:
+
+	using ReferenceFramePtr = std::shared_ptr <geospatial::basic_converter <double>> ;
+	using ElevationFramePtr = std::shared_ptr <geospatial::geodetic <double>> ;
+
+	enum class CoordinateSystemType : uint8_t
+	{
+		GD,
+		UTM,
+		GC
+	};
+
+	static
+	ReferenceFramePtr
+	getReferenceFrame (const MFString &, const bool);
+
+	static
+	ElevationFramePtr
+	getElevationFrame (const MFString &, const bool);
+
+	static
+	CoordinateSystemType
+	getCoordinateSystem (const MFString &);
+
+	static
+	Spheroid3d
+	getEllipsoid (const MFString &);
+
+	static
+	std::string
+	getEllipsoidString (const MFString &);
+
+	static
+	bool
+	isStandardOrder (const MFString & geoSystem);
+
+	static
+	bool
+	getLatitudeFirst (const MFString &);
+
+	static
+	bool
+	getNorthingFirst (const MFString &);
+
+	static
+	int
+	getZone (const MFString &);
+
+	static
+	bool
+	getNorthernHemisphere (const MFString &);
+
+
+private:
+
+	// Dummy class for geocentric coordinates
+	class Geocentric :
+		public geospatial::basic_converter <double>
+	{
+	public:
+
+		virtual
+		Vector3d
+		convert (const Vector3d & geocentric) const final override
+		{ return geocentric; }
+
+		virtual
+		Vector3d
+		apply (const Vector3d & geocentric) const final override
+		{ return geocentric; }
+
+	};
+
+	//  @name Static members
+
+	static const std::map <std::string, CoordinateSystemType> coordinateSystems;
+	static const std::map <std::string, Spheroid3d>           ellipsoids;
 
 };
 

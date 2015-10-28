@@ -67,9 +67,10 @@ X3DNavigationContext::X3DNavigationContext () :
 	      activeNavigationInfo (nullptr),
 	activeNavigationInfoOutput (),
 	            viewerIsLocked (false),
-	                    viewer (ViewerType::NONE),
+	                    viewer (X3DConstants::NoneViewer),
 	          availableViewers (),
-	     activeViewpointOutput ()
+	     activeViewpointOutput (),
+	          activeCollisions ()
 {
 	addChildren (activeLayer,
 	             activeNavigationInfoOutput,
@@ -85,7 +86,7 @@ X3DNavigationContext::initialize ()
 }
 
 void
-X3DNavigationContext::setViewer (const ViewerType value)
+X3DNavigationContext::setViewer (const X3DConstants::NodeType value)
 {
    if (getLockViewer ())
       return;
@@ -177,19 +178,19 @@ X3DNavigationContext::set_navigationInfo_type ()
 
 	if (activeNavigationInfo)
 	{
-		static const std::map <std::string, ViewerType> viewerTypes = {
-			std::make_pair ("EXAMINE",             ViewerType::EXAMINE),
-			std::make_pair ("WALK",                ViewerType::WALK),
-			std::make_pair ("FLY",                 ViewerType::FLY),
-			std::make_pair ("PLANE",               ViewerType::PLANE),
-			std::make_pair ("PLANE_create3000.de", ViewerType::PLANE),
-			std::make_pair ("NONE",                ViewerType::NONE),
-			std::make_pair ("LOOKAT",              ViewerType::LOOKAT)
+		static const std::map <std::string, X3DConstants::NodeType> viewerTypes = {
+			std::make_pair ("EXAMINE",             X3DConstants::ExamineViewer),
+			std::make_pair ("WALK",                X3DConstants::WalkViewer),
+			std::make_pair ("FLY",                 X3DConstants::FlyViewer),
+			std::make_pair ("PLANE",               X3DConstants::PlaneViewer),
+			std::make_pair ("PLANE_create3000.de", X3DConstants::PlaneViewer),
+			std::make_pair ("NONE",                X3DConstants::NoneViewer),
+			std::make_pair ("LOOKAT",              X3DConstants::LookAtViewer)
 		};
 
 		// Determine active viewer.
 
-		viewer = ViewerType::EXAMINE;
+		viewer = X3DConstants::ExamineViewer;
 
 		for (const auto & string : activeNavigationInfo -> type ())
 		{
@@ -199,7 +200,7 @@ X3DNavigationContext::set_navigationInfo_type ()
 
 				switch (viewerType)
 				{
-					case ViewerType::LOOKAT:
+					case X3DConstants::NodeType::LookAtViewer:
 						// Continue with next type.
 						continue;
 					default:
@@ -237,23 +238,25 @@ X3DNavigationContext::set_navigationInfo_type ()
 				{
 					switch (viewerType -> second)
 					{
-						case ViewerType::EXAMINE:
+						case X3DConstants::ExamineViewer:
 							examineViewer = true;
 							continue;
-						case ViewerType::WALK:
+						case X3DConstants::WalkViewer:
 							walkViewer = true;
 							continue;
-						case ViewerType::FLY:
+						case X3DConstants::FlyViewer:
 							flyViewer = true;
 							continue;
-						case ViewerType::PLANE:
+						case X3DConstants::PlaneViewer:
 							planeViewer = true;
 							continue;
-						case ViewerType::NONE:
+						case X3DConstants::NoneViewer:
 							noneViewer = true;
 							continue;
-						case ViewerType::LOOKAT:
+						case X3DConstants::LookAtViewer:
 							lookAt = true;
+							continue;
+						default:
 							continue;
 					}
 
@@ -280,34 +283,35 @@ X3DNavigationContext::set_navigationInfo_type ()
 	}
 	else
 	{
-		viewer     = ViewerType::NONE;
+		viewer     = X3DConstants::NoneViewer;
 		noneViewer = true;
 	}
 
 	if (examineViewer)
-		availableViewers .emplace_back (ViewerType::EXAMINE);
+		availableViewers .emplace_back (X3DConstants::ExamineViewer);
 
 	if (walkViewer)
-		availableViewers .emplace_back (ViewerType::WALK);
+		availableViewers .emplace_back (X3DConstants::WalkViewer);
 
 	if (flyViewer)
-		availableViewers .emplace_back (ViewerType::FLY);
+		availableViewers .emplace_back (X3DConstants::FlyViewer);
 
 	if (planeViewer)
-		availableViewers .emplace_back (ViewerType::PLANE);
+		availableViewers .emplace_back (X3DConstants::PlaneViewer);
 
 	if (noneViewer)
-		availableViewers .emplace_back (ViewerType::NONE);
+		availableViewers .emplace_back (X3DConstants::NoneViewer);
 
 	if (lookAt)
 	{
 		if (availableViewers .empty ())
 		{
-			viewer = ViewerType::NONE;
-			availableViewers .emplace_back (ViewerType::NONE);
+			viewer = X3DConstants::NoneViewer;
+
+			availableViewers .emplace_back (X3DConstants::NoneViewer);
 		}
 
-		availableViewers .emplace_back (ViewerType::LOOKAT);
+		availableViewers .emplace_back (X3DConstants::LookAtViewer);
 	}
 }
 

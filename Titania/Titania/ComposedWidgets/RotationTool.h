@@ -122,7 +122,7 @@ inline
 RotationTool::RotationTool (X3DBaseInterface* const editor,
                             Gtk::Box & box,
                             const std::string & name) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
 	X3DComposedWidget (editor),
 	              box (box),
 	          browser (X3D::createBrowser (editor -> getMasterBrowser (), { get_ui ("Editors/RotationTool.x3dv") })),

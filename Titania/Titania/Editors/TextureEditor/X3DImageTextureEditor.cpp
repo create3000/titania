@@ -78,9 +78,9 @@ X3DImageTextureEditor::setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 
 	if (not imageTexture)
 	{
-		imageTexture = new X3D::ImageTexture (getExecutionContext ());
-		getExecutionContext () -> addUninitializedNode (imageTexture);
-		getExecutionContext () -> realize ();
+		imageTexture = new X3D::ImageTexture (getCurrentContext ());
+		getCurrentContext () -> addUninitializedNode (imageTexture);
+		getCurrentContext () -> realize ();
 	}
 
 	url -> setNodes ({ imageTexture });

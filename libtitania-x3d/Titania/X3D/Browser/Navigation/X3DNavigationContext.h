@@ -53,7 +53,6 @@
 
 #include "../../Fields.h"
 #include "../../Types/Pointer.h"
-#include "../Navigation/ViewerType.h"
 
 namespace titania {
 namespace X3D {
@@ -85,16 +84,28 @@ public:
 
 	virtual
 	void
-	setViewer (const ViewerType);
+	setViewer (const X3DConstants::NodeType);
 
 	virtual
-	const SFEnum <ViewerType> &
+	const SFEnum <X3DConstants::NodeType> &
 	getViewer () const
 	{ return viewer; }
 
-	const MFEnum <ViewerType> &
+	const MFEnum <X3DConstants::NodeType> &
 	getAvailableViewers () const
 	{ return availableViewers; }
+
+	void
+	addCollision (const X3DBaseNode* collision)
+	{ activeCollisions .emplace (collision); }
+
+	void
+	removeCollision (const X3DBaseNode* collision)
+	{ activeCollisions .erase (collision); }
+
+	std::set <const X3DBaseNode*>
+	getActiveCollisions () const
+	{ return activeCollisions; }
 
 	///  @name Destruction
 
@@ -154,13 +165,14 @@ private:
 
 	///  @name Members
 
-	X3DLayerNodePtr     activeLayer;
-	NavigationInfo*     activeNavigationInfo;
-	SFTime              activeNavigationInfoOutput;
-	bool                viewerIsLocked;
-	SFEnum <ViewerType> viewer;
-	MFEnum <ViewerType> availableViewers;
-	SFTime              activeViewpointOutput;
+	X3DLayerNodePtr                 activeLayer;
+	NavigationInfo*                 activeNavigationInfo;
+	SFTime                          activeNavigationInfoOutput;
+	bool                            viewerIsLocked;
+	SFEnum <X3DConstants::NodeType> viewer;
+	MFEnum <X3DConstants::NodeType> availableViewers;
+	SFTime                          activeViewpointOutput;
+	std::set <const X3DBaseNode*>   activeCollisions;
 
 };
 

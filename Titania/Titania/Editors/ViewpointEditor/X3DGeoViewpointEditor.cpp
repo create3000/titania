@@ -123,7 +123,7 @@ X3DGeoViewpointEditor::X3DGeoViewpointEditor () :
 	getGeoViewpointCenterOfRotationYSpinButton () .property_climb_rate () = 1e-6;
 	getGeoViewpointCenterOfRotationZSpinButton () .property_climb_rate () = 1e-1;
 
-	getGeoViewpointFieldOfViewAdjustment () -> set_upper (M_PI); // getExecutionContext () -> fromRadiant (M_PI);
+	getGeoViewpointFieldOfViewAdjustment () -> set_upper (M_PI); // getCurrentContext () -> fromRadiant (M_PI);
 }
 
 void

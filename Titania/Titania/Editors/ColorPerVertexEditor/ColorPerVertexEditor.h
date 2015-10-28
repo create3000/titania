@@ -57,7 +57,7 @@
 
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 #include <Titania/X3D/Components/Rendering/ColorRGBA.h>
-#include <Titania/X3D/Editor/Undo/UndoHistory.h>
+#include <Titania/X3D/Editing/Undo/UndoHistory.h>
 
 namespace titania {
 namespace puck {

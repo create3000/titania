@@ -103,7 +103,7 @@ X3DBrowserEditor::initialize ()
 {
 	X3DBrowserWidget::initialize ();
 
-	getExecutionContext () .addInterest (this, &X3DBrowserEditor::set_executionContext);
+	getCurrentContext () .addInterest (this, &X3DBrowserEditor::set_executionContext);
 	getBrowserWindow () -> getSelection () -> isActive () .addInterest (this, &X3DBrowserEditor::set_selection_active);
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DBrowserEditor::set_selection);
 }
@@ -135,17 +135,17 @@ X3DBrowserEditor::restoreSession ()
 void
 X3DBrowserEditor::setBrowser (const X3D::BrowserPtr & value)
 {
-	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserEditor::set_initialized);
-	getBrowser () -> shutdown ()    .removeInterest (this, &X3DBrowserEditor::set_shutdown);
-	getUndoHistory (getBrowser ())  .removeInterest (this, &X3DBrowserEditor::set_undoHistory);
+	getCurrentBrowser () -> initialized () .removeInterest (this, &X3DBrowserEditor::set_initialized);
+	getCurrentBrowser () -> shutdown ()    .removeInterest (this, &X3DBrowserEditor::set_shutdown);
+	getUndoHistory (getCurrentBrowser ())  .removeInterest (this, &X3DBrowserEditor::set_undoHistory);
 
 	X3DBrowserWidget::setBrowser (value);
 	
-	currentScene = getBrowser () -> getExecutionContext ();
+	currentScene = getCurrentBrowser () -> getExecutionContext ();
 
-	getBrowser () -> initialized () .addInterest (this, &X3DBrowserEditor::set_initialized);
-	getBrowser () -> shutdown ()    .addInterest (this, &X3DBrowserEditor::set_shutdown);
-	getUndoHistory (getBrowser ())  .addInterest (this, &X3DBrowserEditor::set_undoHistory);
+	getCurrentBrowser () -> initialized () .addInterest (this, &X3DBrowserEditor::set_initialized);
+	getCurrentBrowser () -> shutdown ()    .addInterest (this, &X3DBrowserEditor::set_shutdown);
+	getUndoHistory (getCurrentBrowser ())  .addInterest (this, &X3DBrowserEditor::set_undoHistory);
 
 	set_undoHistory ();
 }
@@ -153,20 +153,20 @@ X3DBrowserEditor::setBrowser (const X3D::BrowserPtr & value)
 void
 X3DBrowserEditor::set_initialized ()
 {
-	if (getExecutionContext () not_eq currentScene)
-		isModified (getBrowser (), false);
+	if (getCurrentContext () not_eq currentScene)
+		isModified (getCurrentBrowser (), false);
 
-	currentScene = getExecutionContext ();
+	currentScene = getCurrentContext ();
 }
 
 void
 X3DBrowserEditor::set_shutdown ()
 {
-	if (isSaved (getBrowser ()))
-		getUserData (getBrowser ()) -> dispose ();
+	if (isSaved (getCurrentBrowser ()))
+		getUserData (getCurrentBrowser ()) -> dispose ();
 
 	else                                     // Cancel shutdown
-		setExecutionContext (getExecutionContext ());
+		setCurrentContext (getCurrentContext ());
 }
 	
 void
@@ -177,14 +177,14 @@ X3DBrowserEditor::set_executionContext ()
 
 	try
 	{
-		static const std::map <std::string, X3D::ViewerType> viewerTypes = {
-			std::make_pair ("EXAMINE",             X3D::ViewerType::EXAMINE),
-			std::make_pair ("WALK",                X3D::ViewerType::WALK),
-			std::make_pair ("FLY",                 X3D::ViewerType::FLY),
-			std::make_pair ("PLANE",               X3D::ViewerType::PLANE),
-			std::make_pair ("PLANE_create3000.de", X3D::ViewerType::PLANE),
-			std::make_pair ("NONE",                X3D::ViewerType::NONE),
-			std::make_pair ("LOOKAT",              X3D::ViewerType::LOOKAT)
+		static const std::map <std::string, X3D::X3DConstants::NodeType> viewerTypes = {
+			std::make_pair ("EXAMINE",             X3D::X3DConstants::ExamineViewer),
+			std::make_pair ("WALK",                X3D::X3DConstants::WalkViewer),
+			std::make_pair ("FLY",                 X3D::X3DConstants::FlyViewer),
+			std::make_pair ("PLANE",               X3D::X3DConstants::PlaneViewer),
+			std::make_pair ("PLANE_create3000.de", X3D::X3DConstants::PlaneViewer),
+			std::make_pair ("NONE",                X3D::X3DConstants::NoneViewer),
+			std::make_pair ("LOOKAT",              X3D::X3DConstants::LookAtViewer)
 		};
 
 		const auto   worldInfo   = getWorldInfo ();
@@ -195,7 +195,7 @@ X3DBrowserEditor::set_executionContext ()
 	}
 	catch (const std::exception & error)
 	{
-	   setViewer (X3D::ViewerType::EXAMINE);
+	   setViewer (X3D::X3DConstants::ExamineViewer);
 	}
 
 	try
@@ -207,7 +207,7 @@ X3DBrowserEditor::set_executionContext ()
 		auto & o = metadataSet -> getValue <X3D::MetadataDouble> ("orientation") -> value ();
 		auto & c = metadataSet -> getValue <X3D::MetadataDouble> ("centerOfRotation") -> value ();
 
-		const auto viewpoint = getWorld () -> getActiveLayer () -> getViewpoint ();
+		const auto viewpoint = getCurrentWorld () -> getActiveLayer () -> getViewpoint ();
 		   
 		viewpoint -> setUserPosition         (X3D::Vector3f (p .get1Value (0), p .get1Value (1), p .get1Value (2)));
 		viewpoint -> setUserOrientation      (X3D::Rotation4f (o .get1Value (0), o .get1Value (1), o .get1Value (2), o .get1Value (3)));
@@ -220,11 +220,11 @@ X3DBrowserEditor::set_executionContext ()
 }
 
 void
-X3DBrowserEditor::setViewer (const X3D::ViewerType viewer)
+X3DBrowserEditor::setViewer (const X3D::X3DConstants::NodeType viewer)
 {
-	getBrowser () -> setLockViewer (false);
-	getBrowser () -> setViewer (viewer);
-	getBrowser () -> setLockViewer (getArrowButton () .get_active ());
+	getCurrentBrowser () -> setLockViewer (false);
+	getCurrentBrowser () -> setViewer (viewer);
+	getCurrentBrowser () -> setLockViewer (getArrowButton () .get_active ());
 }
 
 void
@@ -405,7 +405,7 @@ X3DBrowserEditor::open (const basic::uri & URL)
 		X3DBrowserWidget::open (URL);
 
 	else
-		load (getBrowser (), URL);
+		load (getCurrentBrowser (), URL);
 }
 
 void
@@ -422,13 +422,13 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 
 	X3D::MFNode  nodes;
 	auto         selection = getSelection () -> getChildren ();
-	const auto & layerSet  = getWorld () -> getLayerSet ();
+	const auto & layerSet  = getCurrentWorld () -> getLayerSet ();
 
 	for (const auto & worldURL : uris)
 	{
 		try
 		{
-			const auto scene = getBrowser () -> createX3DFromURL ({ worldURL .str () });
+			const auto scene = getCurrentBrowser () -> createX3DFromURL ({ worldURL .str () });
 
 			if (MagicImport (getBrowserWindow ()) .import (selection, scene, undoStep))
 				return selection;
@@ -436,9 +436,9 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 			X3D::MFNode importedNodes;
 
 			if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
-				importedNodes = importScene (getExecutionContext (), X3D::SFNode (layerSet -> getActiveLayer ()), layerSet -> getActiveLayer () -> children (), scene, undoStep);
+				importedNodes = importScene (getCurrentContext (), X3D::SFNode (layerSet -> getActiveLayer ()), layerSet -> getActiveLayer () -> children (), scene, undoStep);
 			else
-				importedNodes = importScene (getExecutionContext (), X3D::SFNode (getExecutionContext ()), getExecutionContext () -> getRootNodes (), scene, undoStep);
+				importedNodes = importScene (getCurrentContext (), X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), scene, undoStep);
 
 			nodes .insert (nodes .end (), importedNodes .begin (), importedNodes .end ());
 		}
@@ -459,7 +459,7 @@ X3DBrowserEditor::importAsInline (const std::vector <basic::uri> & uris, const X
 
 	for (const auto & worldURL : uris)
 	{
-		const auto relativePath = getExecutionContext () -> getWorldURL () .relative_path (worldURL);
+		const auto relativePath = getCurrentContext () -> getWorldURL () .relative_path (worldURL);
 
 		std::string string;
 
@@ -472,9 +472,9 @@ X3DBrowserEditor::importAsInline (const std::vector <basic::uri> & uris, const X
 		string += "  }";
 		string += "}";
 
-		const auto scene = getBrowser () -> createX3DFromString (string);
+		const auto scene = getCurrentBrowser () -> createX3DFromString (string);
 
-		return importScene (getExecutionContext (), X3D::SFNode (getExecutionContext ()), getExecutionContext () -> getRootNodes (), scene, undoStep);
+		return importScene (getCurrentContext (), X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), scene, undoStep);
 	}
 
 	return X3D::MFNode ();
@@ -485,19 +485,19 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 {
 	if (true)
 	{
-	   static const std::map <X3D::ViewerType, std::string> types = {
-			std::make_pair (X3D::ViewerType::EXAMINE, "EXAMINE"),
-			std::make_pair (X3D::ViewerType::WALK,    "WALK"),
-			std::make_pair (X3D::ViewerType::FLY,     "FLY"),
-			std::make_pair (X3D::ViewerType::PLANE,   "PLANE"),
-			std::make_pair (X3D::ViewerType::NONE,    "NONE"),
-			std::make_pair (X3D::ViewerType::LOOKAT,  "LOOKAT")
+	   static const std::map <X3D::X3DConstants::NodeType, std::string> types = {
+			std::make_pair (X3D::X3DConstants::ExamineViewer, "EXAMINE"),
+			std::make_pair (X3D::X3DConstants::WalkViewer,    "WALK"),
+			std::make_pair (X3D::X3DConstants::FlyViewer,     "FLY"),
+			std::make_pair (X3D::X3DConstants::PlaneViewer,   "PLANE"),
+			std::make_pair (X3D::X3DConstants::NoneViewer,    "NONE"),
+			std::make_pair (X3D::X3DConstants::LookAtViewer,  "LOOKAT")
 	   };
 
 		const auto worldInfo   = createWorldInfo ();
 		const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/NavigationInfo");
 
-		const auto type = types .find (getBrowser () -> getViewer ());
+		const auto type = types .find (getCurrentBrowser () -> getViewer ());
 
 		metadataSet -> createValue <X3D::MetadataString> ("type") -> value () = { type not_eq types .end () ? type -> second : "EXAMINE" };
 	}
@@ -506,7 +506,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 	{
 		const auto   worldInfo        = createWorldInfo ();
 		const auto   metadataSet      = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Viewpoint");
-		const auto & activeLayer      = getWorld () -> getActiveLayer ();
+		const auto & activeLayer      = getCurrentWorld () -> getActiveLayer ();
 		const auto   viewpoint        = activeLayer -> getViewpoint ();
 		const auto   position         = viewpoint -> getUserPosition ();
 		const auto   orientation      = viewpoint -> getUserOrientation ();
@@ -520,7 +520,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 	if (X3DBrowserWidget::save (worldURL, compressed, copy))
 	{
 		if (not copy)
-			isModified (getBrowser (), false);
+			isModified (getCurrentBrowser (), false);
 		
 		return true;
 	}
@@ -531,7 +531,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 void
 X3DBrowserEditor::reload ()
 {
-	if (isSaved (getBrowser ()))
+	if (isSaved (getCurrentBrowser ()))
 		X3DBrowserWidget::reload ();
 }
 
@@ -581,7 +581,7 @@ X3DBrowserEditor::getUndoHistory (const X3D::BrowserPtr & browser) const
 void
 X3DBrowserEditor::addUndoStep (const X3D::UndoStepPtr & undoStep)
 {
-	getUndoHistory (getBrowser ()) .addUndoStep (undoStep);
+	getUndoHistory (getCurrentBrowser ()) .addUndoStep (undoStep);
 }
 
 void
@@ -593,23 +593,23 @@ X3DBrowserEditor::addUndoStep (const X3D::BrowserPtr & browser, const X3D::UndoS
 void
 X3DBrowserEditor::undo ()
 {
-	getBrowser () -> grab_focus ();
+	getCurrentBrowser () -> grab_focus ();
 
-	getUndoHistory (getBrowser ()) .undo ();
+	getUndoHistory (getCurrentBrowser ()) .undo ();
 }
 
 void
 X3DBrowserEditor::redo ()
 {
-	getBrowser () -> grab_focus ();
+	getCurrentBrowser () -> grab_focus ();
 
-	getUndoHistory (getBrowser ()) .redo ();
+	getUndoHistory (getCurrentBrowser ()) .redo ();
 }
 
 void
 X3DBrowserEditor::set_undoHistory ()
 {
-	const auto & undoHistory = getUndoHistory (getBrowser ());
+	const auto & undoHistory = getUndoHistory (getCurrentBrowser ());
 
 	if (undoHistory .hasUndo ())
 	{
@@ -685,11 +685,11 @@ X3DBrowserEditor::pasteNodes (const X3D::X3DExecutionContextPtr & executionConte
 
 					if (X3D::Grammar::Comment (text, worldURL))
 					{
-						const auto scene = getBrowser () -> createX3DFromStream (worldURL, text);
+						const auto scene = getCurrentBrowser () -> createX3DFromStream (worldURL, text);
 
 						if (not MagicImport (getBrowserWindow ()) .import (nodes, scene, undoStep))
 						{
-							getSelection () -> setChildren (importScene (getExecutionContext (), X3D::SFNode (getExecutionContext ()), getExecutionContext () -> getRootNodes (), scene, undoStep),
+							getSelection () -> setChildren (importScene (getCurrentContext (), X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), scene, undoStep),
 							                                undoStep);
 						}
 					}
@@ -739,22 +739,22 @@ X3DBrowserEditor::getPasteStatus () const
 X3D::SFNode
 X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepPtr & undoStep)
 {
-	const auto & activeLayer = getWorld () -> getActiveLayer ();
-	auto &       children    = activeLayer and activeLayer not_eq getWorld () -> getLayer0 ()
+	const auto & activeLayer = getCurrentWorld () -> getActiveLayer ();
+	auto &       children    = activeLayer and activeLayer not_eq getCurrentWorld () -> getLayer0 ()
 	                           ? activeLayer -> children ()
-	                           : getExecutionContext () -> getRootNodes ();
+	                           : getCurrentContext () -> getRootNodes ();
 
-	undoStep -> addObjects (getExecutionContext (), activeLayer);
+	undoStep -> addObjects (getCurrentContext (), activeLayer);
 
-	const auto node = getExecutionContext () -> createNode (typeName);
+	const auto node = getCurrentContext () -> createNode (typeName);
 	children .emplace_back (node);
-	getExecutionContext () -> addUninitializedNode (node);
-	getExecutionContext () -> realize ();
+	getCurrentContext () -> addUninitializedNode (node);
+	getCurrentContext () -> realize ();
 	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
 
 	const auto removeUndoStep = std::make_shared <X3D::UndoStep> ("");
 
-	removeNodesFromScene (getExecutionContext (), { node }, true, removeUndoStep);
+	removeNodesFromScene (getCurrentContext (), { node }, true, removeUndoStep);
 	undoStep -> addUndoFunction (&X3D::UndoStep::redo, removeUndoStep);
 	removeUndoStep -> undo ();
 	undoStep -> addRedoFunction (&X3D::UndoStep::undo, removeUndoStep);
@@ -900,11 +900,11 @@ X3DBrowserEditor::editCDATA (const X3D::SFNode & node)
 	Glib::RefPtr <Gio::FileMonitor> fileMonitor = file -> monitor_file ();
 
 	fileMonitor -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserEditor::on_cdata_changed), node));
-	getUserData (getBrowser ()) -> fileMonitors .emplace (file, fileMonitor);
+	getUserData (getCurrentBrowser ()) -> fileMonitors .emplace (file, fileMonitor);
 
 	try
 	{
-		getBrowser () -> println ("Trying to start gnome-text-editor ...");
+		getCurrentBrowser () -> println ("Trying to start gnome-text-editor ...");
 
 		Gio::AppInfo::create_from_commandline (os::realpath ("/usr/bin/gnome-text-editor"), "", Gio::APP_INFO_CREATE_NONE) -> launch (file);
 	}
@@ -968,7 +968,7 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 		addUndoStep (undoStep);
 	}
 
-	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
+	getCurrentBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
 }
 
 X3DBrowserEditor::~X3DBrowserEditor ()

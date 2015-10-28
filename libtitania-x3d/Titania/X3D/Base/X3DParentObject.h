@@ -87,6 +87,7 @@ public:
 	 */
 
 	///  Returns a pointer to the browser this node belongs to.
+	virtual
 	X3DBrowser*
 	getBrowser () const
 	{ return browser; }

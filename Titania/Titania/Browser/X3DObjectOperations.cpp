@@ -69,8 +69,8 @@ X3DObjectOperations::on_combine_activated ()
 {
 	try
 	{
-		if (not getExecutionContext () -> hasComponent (X3D::ComponentType::GEOMETRY_3D))
-			getExecutionContext () -> updateComponent (getBrowser () -> getComponent ("Geometry3D", 2));
+		if (not getCurrentContext () -> hasComponent (X3D::ComponentType::GEOMETRY_3D))
+			getCurrentContext () -> updateComponent (getCurrentBrowser () -> getComponent ("Geometry3D", 2));
 
 		const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Combine Objects"));
 		const auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
@@ -86,27 +86,27 @@ X3DObjectOperations::on_combine_activated ()
 		X3D::X3DPtr <X3D::IndexedFaceSet>    masterGeometry (masterShape -> geometry ());
 		X3D::X3DPtr <X3D::X3DCoordinateNode> masterCoord (masterGeometry ? masterGeometry -> coord () : nullptr);
 
-		X3D::X3DPtr <X3D::IndexedFaceSet>    targetGeometry (getExecutionContext () -> createNode <X3D::IndexedFaceSet> ());
+		X3D::X3DPtr <X3D::IndexedFaceSet>    targetGeometry (getCurrentContext () -> createNode <X3D::IndexedFaceSet> ());
 		X3D::X3DPtr <X3D::X3DCoordinateNode> targetCoord;
 
 		if (masterCoord)
 		{
-			targetCoord = masterCoord -> create (getExecutionContext ());
-			getExecutionContext () -> addUninitializedNode (targetCoord);
+			targetCoord = masterCoord -> create (getCurrentContext ());
+			getCurrentContext () -> addUninitializedNode (targetCoord);
 		}
 		else
 		{
-			if (not getExecutionContext () -> hasComponent (X3D::ComponentType::RENDERING))
-				getExecutionContext () -> updateComponent (getBrowser () -> getComponent ("Rendering", 1));
+			if (not getCurrentContext () -> hasComponent (X3D::ComponentType::RENDERING))
+				getCurrentContext () -> updateComponent (getCurrentBrowser () -> getComponent ("Rendering", 1));
 
-			targetCoord = getExecutionContext () -> createNode <X3D::Coordinate> ();
+			targetCoord = getCurrentContext () -> createNode <X3D::Coordinate> ();
 		}
 		
 		targetGeometry -> coord () = targetCoord;
 
 		// Combine Coordinates
 
-		const auto targetMatrix = ~getBrowserWindow () -> findModelViewMatrix (getExecutionContext (), X3D::SFNode (masterShape));
+		const auto targetMatrix = ~getBrowserWindow () -> findModelViewMatrix (getCurrentContext (), X3D::SFNode (masterShape));
 
 		combineCoordinates (shapes, targetGeometry, targetCoord, targetMatrix);
 
@@ -125,7 +125,7 @@ X3DObjectOperations::on_combine_activated ()
 		getBrowserWindow () -> getSelection () -> setChildren ({ X3D::SFNode (hierarchy .front ()) }, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
 
-		getExecutionContext () -> realize ();
+		getCurrentContext () -> realize ();
 	}
 	catch (const std::exception &)
 	{ }
@@ -149,7 +149,7 @@ X3DObjectOperations::combineCoordinates (const X3D::X3DPtrArray <X3D::X3DShapeNo
 		if (not coord)
 			continue;
 
-		const auto matrix = getBrowserWindow () -> findModelViewMatrix (getExecutionContext (), X3D::SFNode (shape)) * targetMatrix;
+		const auto matrix = getBrowserWindow () -> findModelViewMatrix (getCurrentContext (), X3D::SFNode (shape)) * targetMatrix;
 
 		std::map <int32_t, int32_t> coordIndex;
 
@@ -189,7 +189,7 @@ X3DObjectOperations::removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> & 
 		nodes .emplace_back (node);
 	}
 
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), nodes, true, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), nodes, true, undoStep);
 
 	// Remove Shape nodes from selection.
 
@@ -199,7 +199,7 @@ X3DObjectOperations::removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> & 
 	getBrowserWindow () -> removeNodesFromSceneGraph (selection, std::set <X3D::SFNode> (nodes .begin (), nodes .end ()), undoStep);
 
 	for (const auto & node : nodes)
-		getBrowserWindow () -> removeNodesFromSceneIfNotExists (getExecutionContext (), { node }, undoStep);
+		getBrowserWindow () -> removeNodesFromSceneIfNotExists (getCurrentContext (), { node }, undoStep);
 
 	// Find empty groups in selection and remove from scene.
 
@@ -213,7 +213,7 @@ X3DObjectOperations::removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> & 
 			nodes .emplace_back (group);
 	}
 
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), nodes, true, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), nodes, true, undoStep);
 }
 
 X3DObjectOperations::~X3DObjectOperations ()

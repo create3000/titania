@@ -118,7 +118,7 @@ inline
 NameEntry::NameEntry (X3DBaseInterface* const editor,
                       Gtk::Entry & entry,
                       Gtk::Button & button) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
 	X3DComposedWidget (editor),
 	            entry (entry),
 	           button (button),

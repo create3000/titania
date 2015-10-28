@@ -51,55 +51,46 @@
 #ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_SURFACE_OBJECT_H__
 #define __TITANIA_X3D_BROWSER_X3DBROWSER_SURFACE_OBJECT_H__
 
-#include "../Base/X3DInput.h"
+#include "../Browser/Browser.h"
 #include <sigc++/trackable.h>
 
 namespace titania {
 namespace X3D {
 
-class Browser;
-
 class X3DBrowserObject :
-	virtual public X3DInput, virtual public sigc::trackable
+	virtual public X3DBaseNode,
+	virtual public sigc::trackable
 {
 public:
 
 	///  @name Construction
 
-	X3DBrowserObject (Browser* const browser = nullptr) :
-		       X3DInput (),
-		sigc::trackable (),
-		        browser (browser)
+	X3DBrowserObject () :
+		    X3DBaseNode (),
+		sigc::trackable ()
 	{ }
-
-	void
-	setup ()
-   { initialize (); }
 
 	///  @name Member access
 
+	virtual
 	Browser*
-	getBrowser () const
-	{ return browser; }
+	getBrowser () const final override
+	{ return static_cast <Browser*> (X3DBaseNode::getBrowser ()); }
 
 	///  @name Destruction
 
 	virtual
-	~X3DBrowserObject ()
-	{ }
+	void
+	dispose () override
+	{
+		notify_callbacks ();
 
-
-protected:
+		X3DBaseNode::dispose ();
+	}
 
 	virtual
-	void
-	initialize ()
+	~X3DBrowserObject ()
 	{ }
-
-
-private:
-
-	Browser* const browser;
 
 };
 

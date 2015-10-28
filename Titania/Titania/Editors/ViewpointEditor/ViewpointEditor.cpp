@@ -61,12 +61,12 @@ namespace titania {
 namespace puck {
 
 ViewpointEditor::ViewpointEditor (X3DBrowserWindow* const browserWindow) :
-	           X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	           X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DViewpointEditorInterface (get_ui ("Editors/ViewpointEditor.xml"), gconf_dir ()),
 	         X3DViewpointEditor (),
 	    X3DOrthoViewpointEditor (),
 	      X3DGeoViewpointEditor (),
-	                    browser (getBrowser ()),
+	                    browser (getCurrentBrowser ()),
 	              viewpointList (new ViewpointList (browserWindow)),
 	                   nodeName (this, getViewpointNameEntry (), getViewpointRenameButton ()),
 	                description (this, getViewpointDescriptionTextView (), "description"),
@@ -91,9 +91,9 @@ ViewpointEditor::initialize ()
 	X3DOrthoViewpointEditor::initialize ();
 	X3DGeoViewpointEditor::initialize ();
 
-	getBrowser () .addInterest (this, &ViewpointEditor::set_browser);
+	getCurrentBrowser () .addInterest (this, &ViewpointEditor::set_browser);
 
-	set_browser (getBrowser ());
+	set_browser (getCurrentBrowser ());
 }
 
 void
@@ -113,7 +113,7 @@ ViewpointEditor::set_browser (const X3D::BrowserPtr & value)
 void
 ViewpointEditor::set_active_viewpoint ()
 {
-	const auto activeLayer = getBrowser () -> getActiveLayer ();
+	const auto activeLayer = getCurrentBrowser () -> getActiveLayer ();
 
 	if (activeLayer and activeLayer -> getViewpointStack () -> bottom () not_eq activeLayer -> getViewpoint ())
 		set_viewpoint (activeLayer -> getViewpointStack () -> top ());
@@ -133,7 +133,7 @@ ViewpointEditor::set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & valu
 	if (viewpointNode)
 		viewpointNode -> isLockedToCamera () .addInterest (this, &ViewpointEditor::set_lock_to_camera);
 
-	const bool inScene = (viewpointNode and viewpointNode -> getExecutionContext () == getExecutionContext () and not inPrototypeInstance ());
+	const bool inScene = (viewpointNode and viewpointNode -> getExecutionContext () == getCurrentContext () and not inPrototypeInstance ());
 
 	setViewpoint (viewpointNode, inScene);
 	setOrthoViewpoint (viewpointNode, inScene);
@@ -155,19 +155,19 @@ ViewpointEditor::set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & valu
 void
 ViewpointEditor::on_remove_viewpoint_clicked ()
 {
-	if (not getBrowser () -> getActiveLayer ())
+	if (not getCurrentBrowser () -> getActiveLayer ())
 		return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove %s"), viewpointNode-> getTypeName () .c_str ()));
 
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { viewpointNode }, true, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { viewpointNode }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
 ViewpointEditor::on_update_viewpoint_clicked ()
 {
-	if (not getBrowser () -> getActiveLayer ())
+	if (not getCurrentBrowser () -> getActiveLayer ())
 		return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Update Active Viewpoint"));
@@ -180,7 +180,7 @@ ViewpointEditor::on_update_viewpoint_clicked ()
 void
 ViewpointEditor::on_lock_to_camera_toggled ()
 {
-	if (not getBrowser () -> getActiveLayer ())
+	if (not getCurrentBrowser () -> getActiveLayer ())
 		return;
 
 	if (getLockToCameraButton () .get_active ())

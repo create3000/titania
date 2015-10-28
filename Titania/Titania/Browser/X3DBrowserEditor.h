@@ -56,8 +56,8 @@
 
 #include <Titania/X3D/Components/Rendering/X3DCoordinateNode.h>
 #include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
-#include <Titania/X3D/Editor/Undo/UndoHistory.h>
-#include <Titania/X3D/Editor/X3DEditor.h>
+#include <Titania/X3D/Editing/Undo/UndoHistory.h>
+#include <Titania/X3D/Editing/X3DEditor.h>
 
 namespace titania {
 namespace puck {
@@ -140,12 +140,12 @@ public:
 	virtual
 	void
 	removeUndoStep () final override
-	{ getUndoHistory (getBrowser ()) .removeUndoStep (); }
+	{ getUndoHistory (getCurrentBrowser ()) .removeUndoStep (); }
 
 	virtual
 	const X3D::UndoStepPtr &
 	getUndoStep () const final override
-	{ return getUndoHistory (getBrowser ()) .getUndoStep (); }
+	{ return getUndoHistory (getCurrentBrowser ()) .getUndoStep (); }
 
 	void
 	undo ();
@@ -224,7 +224,7 @@ protected:
 	setBrowser (const X3D::BrowserPtr &) override;
 
 	void
-	setViewer (const X3D::ViewerType);
+	setViewer (const X3D::X3DConstants::NodeType);
 
 	/// @name Undo
 

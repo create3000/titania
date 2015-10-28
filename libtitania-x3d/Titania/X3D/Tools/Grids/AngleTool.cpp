@@ -50,7 +50,7 @@
 
 #include "AngleTool.h"
 
-#include "../../Bits/config.h"
+#include "../../Browser/Networking/config.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 #include <complex>

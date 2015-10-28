@@ -77,9 +77,9 @@ X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 
 	if (not movieTexture)
 	{
-		movieTexture = new X3D::MovieTexture (getExecutionContext ());
-		getExecutionContext () -> addUninitializedNode (movieTexture);
-		getExecutionContext () -> realize ();
+		movieTexture = new X3D::MovieTexture (getCurrentContext ());
+		getCurrentContext () -> addUninitializedNode (movieTexture);
+		getCurrentContext () -> realize ();
 	}
 
 	url -> setNodes ({ movieTexture });

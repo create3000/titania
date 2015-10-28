@@ -54,7 +54,7 @@
 #include "../Base/X3DBaseInterface.h"
 #include "../Browser/X3DBrowserWindow.h"
 
-#include <Titania/X3D/Bits/Traverse.h>
+#include <Titania/X3D/Basic/Traverse.h>
 #include <Titania/X3D/Basic/FieldSet.h>
 #include <Titania/X3D/Browser/X3DBrowser.h>
 #include <Titania/X3D/Fields/X3DPtrArray.h>
@@ -98,7 +98,7 @@ protected:
 		X3DBaseInterface (),
 		            undo (true),
 		    currentField (),
-		          fields (new X3D::FieldSet (getBrowser ())),
+		          fields (new X3D::FieldSet (getCurrentBrowser ())),
 		        undoSize (0)
 	{ }
 
@@ -421,7 +421,7 @@ X3DEditorObject::unlinkClone (const X3D::X3DPtrArray <NodeType> & nodes, const s
 			auto &            field = node -> template getField <X3D::SFNode> (fieldName);
 			const X3D::SFNode copy  = field -> copy (X3D::FLAT_COPY);
 
-			getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (node), field, copy, undoStep);
+			getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (node), field, copy, undoStep);
 		}
 
 		first = false;

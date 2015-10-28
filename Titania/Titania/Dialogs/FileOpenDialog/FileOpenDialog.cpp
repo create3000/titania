@@ -59,7 +59,7 @@ namespace titania {
 namespace puck {
 
 FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
-	          X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DFileOpenDialogInterface (get_ui ("Dialogs/FileOpenDialog.xml"), gconf_dir ())
 {
 	getFileFilterX3D   () -> set_name (_ ("X3D"));
@@ -69,7 +69,7 @@ FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 	getFileFilterFonts () -> set_name (_ ("Fonts"));
 	getFileFilterAll   () -> set_name (_ ("All Files"));
 
-	const auto worldURL = getScene () -> getWorldURL ();
+	const auto worldURL = getCurrentScene () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		getWindow () .set_uri (worldURL .filename () .str ());

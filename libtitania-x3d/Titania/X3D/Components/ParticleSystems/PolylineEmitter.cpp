@@ -50,7 +50,7 @@
 
 #include "PolylineEmitter.h"
 
-#include "../../Bits/config.h"
+#include "../../Browser/Networking/config.h"
 #include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"

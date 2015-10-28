@@ -58,7 +58,7 @@
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
 
-#include <Titania/X3D/Bits/Traverse.h>
+#include <Titania/X3D/Basic/Traverse.h>
 #include <Titania/X3D/Browser/BrowserOptions.h>
 #include <Titania/X3D/Browser/RenderingProperties.h>
 #include <Titania/X3D/Components/EnvironmentalEffects/Background.h>
@@ -145,7 +145,7 @@ X3DBrowserWidget::set_initialized ()
 
 	// 
 
-	getScene () .addInterest (this, &X3DBrowserWidget::set_scene);
+	getCurrentScene () .addInterest (this, &X3DBrowserWidget::set_scene);
 
 	getMasterBox ()       .set_visible (false);
 	getBrowserNotebook () .set_visible (true);
@@ -316,22 +316,22 @@ X3DBrowserWidget::getBrowser (const basic::uri & URL) const
 }
 
 void
-X3DBrowserWidget::setExecutionContext (const X3D::X3DExecutionContextPtr & value)
+X3DBrowserWidget::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 {
 	try
 	{
 		if (value == executionContext)
 		   return;
 	 
-		const X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (getBrowser ());
+		const X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (getCurrentBrowser ());
 
-		browserOptions -> assign (getBrowser () -> getBrowserOptions ());
+		browserOptions -> assign (getCurrentBrowser () -> getBrowserOptions ());
 
-		getBrowser () -> replaceWorld (value);
-		getBrowser () -> getBrowserOptions () -> assign (browserOptions, true);
+		getCurrentBrowser () -> replaceWorld (value);
+		getCurrentBrowser () -> getBrowserOptions () -> assign (browserOptions, true);
 
-		getBrowser () -> isLive () .addInterest (getScene () -> isLive ());
-		getScene () -> isLive () = getBrowser () -> isLive ();
+		getCurrentBrowser () -> isLive () .addInterest (getCurrentScene () -> isLive ());
+		getCurrentScene () -> isLive () = getCurrentBrowser () -> isLive ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -354,9 +354,9 @@ X3DBrowserWidget::isLive (const bool value)
 	getPlayPauseButton () .set_stock_id (Gtk::StockID (value ? "gtk-media-pause" : "gtk-media-play"));
 
 	if (value)
-		getBrowser () -> beginUpdate ();
+		getCurrentBrowser () -> beginUpdate ();
 	else
-		getBrowser () -> endUpdate ();
+		getCurrentBrowser () -> endUpdate ();
 }
 
 bool
@@ -395,24 +395,24 @@ X3DBrowserWidget::getUserData (const X3D::SFNode & node)
 void
 X3DBrowserWidget::setTitle ()
 {
-	const auto userData = getUserData (getBrowser ());
-	const bool modified = isModified (getBrowser ());
-	const auto title    = getTitle (getBrowser ());
+	const auto userData = getUserData (getCurrentBrowser ());
+	const bool modified = isModified (getCurrentBrowser ());
+	const auto title    = getTitle (getCurrentBrowser ());
 
-	getBrowserNotebook () .set_menu_label_text (*getBrowser (), title);
+	getBrowserNotebook () .set_menu_label_text (*getCurrentBrowser (), title);
 
 	if (userData -> icon)
-		userData -> icon -> set (Gtk::StockID (getScene () -> getWorldURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		userData -> icon -> set (Gtk::StockID (getCurrentScene () -> getWorldURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
 	if (userData -> label)
 		userData -> label -> set_text (title);
 
-	getWindow () .set_title (getExecutionContext () -> getTitle ()
+	getWindow () .set_title (getCurrentContext () -> getTitle ()
 	                         + " · "
-	                         + getExecutionContext () -> getWorldURL () .filename ()
+	                         + getCurrentContext () -> getWorldURL () .filename ()
 	                         + (modified ? "*" : "")
 	                         + " · "
-	                         + getBrowser () -> getName ());
+	                         + getCurrentBrowser () -> getName ());
 }
 
 std::string
@@ -437,7 +437,7 @@ X3DBrowserWidget::getTitle (const X3D::BrowserPtr & browser) const
 void
 X3DBrowserWidget::openRecent ()
 {
-	recentView -> loadPreview (getBrowser ());
+	recentView -> loadPreview (getCurrentBrowser ());
 	recentView -> open ();
 }
 
@@ -545,8 +545,8 @@ X3DBrowserWidget::set_fadeIn (X3D::Browser* const browser, const std::shared_ptr
 void
 X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
-	if (browser == getBrowser ())
-		recentView -> loadPreview (getBrowser ());
+	if (browser == getCurrentBrowser ())
+		recentView -> loadPreview (getCurrentBrowser ());
 
 	loadTime = chrono::now ();
 
@@ -560,7 +560,7 @@ bool
 X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress, const bool copy)
 {
 	const auto   suffix   = worldURL .suffix ();
-	const auto & scene    = getScene ();
+	const auto & scene    = getCurrentScene ();
 	const auto   undoStep = std::make_shared <X3D::UndoStep> ("");
 
 	scene -> isCompressed (compress);
@@ -768,7 +768,7 @@ X3DBrowserWidget::transform (const basic::uri & oldWorldURL, const basic::uri & 
 void
 X3DBrowserWidget::reload ()
 {
-	load (browser, getScene () -> getWorldURL ());
+	load (browser, getCurrentScene () -> getWorldURL ());
 }
 
 void
@@ -776,7 +776,7 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
 {
 	const X3D::BrowserPtr browser = browser_;
 
-	if (browser == getBrowser ())
+	if (browser == getCurrentBrowser ())
 		recentView -> loadPreview (browser);
 
 	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_browser);
@@ -795,7 +795,7 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
 bool
 X3DBrowserWidget::quit ()
 {
-	recentView -> loadPreview (getBrowser ());
+	recentView -> loadPreview (getCurrentBrowser ());
 
 	std::deque <std::string> worldURLs;
 	std::deque <std::string> browserHistories;
@@ -833,7 +833,7 @@ X3DBrowserWidget::quit ()
 void
 X3DBrowserWidget::on_switch_browser (Gtk::Widget*, guint pageNumber)
 {
-	recentView -> loadPreview (getBrowser ());
+	recentView -> loadPreview (getCurrentBrowser ());
 
 	setBrowser (browsers [pageNumber]);
 }
@@ -855,18 +855,18 @@ X3DBrowserWidget::on_browser_reordered (Gtk::Widget* widget, guint pageNumber)
 void
 X3DBrowserWidget::set_executionContext ()
 {
-	if (getBrowser () -> getExecutionContext () == executionContext)
+	if (getCurrentBrowser () -> getExecutionContext () == executionContext)
 	   return;
 
-	X3D::X3DScenePtr currentScene (getBrowser () -> getExecutionContext ());
+	X3D::X3DScenePtr currentScene (getCurrentBrowser () -> getExecutionContext ());
 
 	if (not currentScene)
-		currentScene = getBrowser () -> getExecutionContext () -> getScene ();
+		currentScene = getCurrentBrowser () -> getExecutionContext () -> getScene ();
 
 	if (currentScene not_eq scene)
 		scene = std::move (currentScene);
 
-	executionContext = getBrowser () -> getExecutionContext ();
+	executionContext = getCurrentBrowser () -> getExecutionContext ();
 }
 
 void
@@ -890,7 +890,7 @@ X3DBrowserWidget::set_urlError ()
 	{
 		std::ostringstream error;
 
-		for (const auto & string : getBrowser () -> getUrlError ())
+		for (const auto & string : getCurrentBrowser () -> getUrlError ())
 			error << string .str ();
 
 		std::ostringstream osstream;
@@ -900,11 +900,11 @@ X3DBrowserWidget::set_urlError ()
 			<< "?type=" << basic::to_string (21)
 			<< ";what=" << Glib::uri_escape_string (error .str ());
 
-		const auto scene = getBrowser () -> createX3DFromURL ({ osstream .str () });
+		const auto scene = getCurrentBrowser () -> createX3DFromURL ({ osstream .str () });
 
-		scene -> setWorldURL (getBrowser () -> getWorldURL ());
+		scene -> setWorldURL (getCurrentBrowser () -> getWorldURL ());
 
-		getBrowser () -> replaceWorld (scene);
+		getCurrentBrowser () -> replaceWorld (scene);
 	}
 	catch (const X3D::X3DError &)
 	{
@@ -920,7 +920,7 @@ X3DBrowserWidget::set_urlError ()
 void
 X3DBrowserWidget::loadIcon ()
 {
-	const basic::uri & worldURL = getScene () -> getWorldURL ();
+	const basic::uri & worldURL = getCurrentScene () -> getWorldURL ();
 
 	try
 	{
@@ -928,7 +928,7 @@ X3DBrowserWidget::loadIcon ()
 
 		try
 		{
-			uri = getScene () -> getMetaData ("icon");
+			uri = getCurrentScene () -> getMetaData ("icon");
 		}
 		catch (const X3D::Error <X3D::INVALID_NAME> &)
 		{
@@ -938,7 +938,7 @@ X3DBrowserWidget::loadIcon ()
 			uri = "/favicon.ico";
 		}
 
-		loadIcon (worldURL, X3D::Loader (getScene ()) .loadDocument (uri));
+		loadIcon (worldURL, X3D::Loader (getCurrentScene ()) .loadDocument (uri));
 	}
 	catch (const std::exception & error)
 	{
@@ -1027,18 +1027,18 @@ X3DBrowserWidget::setTransparent (const bool value)
 bool
 X3DBrowserWidget::statistics ()
 {
-	std::string title = getScene () -> getWorldURL ();
+	std::string title = getCurrentScene () -> getWorldURL ();
 
 	try
 	{
-		title = getScene () -> getMetaData ("title");
+		title = getCurrentScene () -> getMetaData ("title");
 		std::clog << "Statistics for: " << title << std::endl;
 	}
 	catch (...)
 	{ }
 
 	std::clog << "Load Time: " << loadTime << std::endl;
-	std::clog << "FPS: " << getBrowser () -> getRenderingProperties () -> getFPS () << std::endl;
+	std::clog << "FPS: " << getCurrentBrowser () -> getRenderingProperties () -> getFPS () << std::endl;
 
 	return false;
 }

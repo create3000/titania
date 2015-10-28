@@ -64,18 +64,18 @@ public:
 	BrowserApplication (const MFString & url, const MFString & parameter) :
 		    X3DBaseNode (this, this),
 		     X3DBrowser (url, parameter),
-		         viewer (ViewerType::NONE)
+		         viewer (X3DConstants::NoneViewer)
 	{
 		addType (X3DConstants::BrowserApplication);
 	}
 
 	virtual
 	void
-	setViewer (ViewerType)
+	setViewer (const X3DConstants::NodeType) final override
 	{ }
 
 	virtual
-	const SFEnum <ViewerType> &
+	const SFEnum <X3DConstants::NodeType> &
 	getViewer () const final override
 	{ return viewer; }
 
@@ -87,7 +87,7 @@ private:
 	create (X3DExecutionContext* const) const final override
 	{ return new BrowserApplication ({ }, { }); }
 
-	SFEnum <ViewerType> viewer;
+	SFEnum <X3DConstants::NodeType> viewer;
 
 };
 

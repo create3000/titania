@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BITS_HATCH_STYLES_H__
 #define __TITANIA_X3D_BITS_HATCH_STYLES_H__
 
-#include "../Rendering/OpenGL.h"
+#include "../../Rendering/OpenGL.h"
 
 #include <vector>
 

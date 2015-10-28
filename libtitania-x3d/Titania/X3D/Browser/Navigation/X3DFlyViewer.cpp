@@ -64,20 +64,20 @@
 namespace titania {
 namespace X3D {
 
-static constexpr float     SPEED_FACTOR           = 0.007;
-static constexpr float     SHIFT_SPEED_FACTOR     = 4 * SPEED_FACTOR;
-static constexpr float     ROTATION_SPEED_FACTOR  = 1.4;
-static constexpr int       ROTATION_LIMIT         = 40;
-static constexpr float     PAN_SPEED_FACTOR       = SPEED_FACTOR;
-static constexpr float     PAN_SHIFT_SPEED_FACTOR = 1.4 * PAN_SPEED_FACTOR;
-static constexpr float     ROLL_ANGLE             = M_PI / 32;
-static constexpr time_type ROLL_TIME              = 0.2;
-static constexpr time_type FRAME_RATE             = 60;
+static constexpr time_type  SPEED_FACTOR           = 0.007;
+static constexpr time_type  SHIFT_SPEED_FACTOR     = 4 * SPEED_FACTOR;
+static constexpr time_type  ROTATION_SPEED_FACTOR  = 1.4;
+static constexpr int        ROTATION_LIMIT         = 40;
+static constexpr time_type  PAN_SPEED_FACTOR       = SPEED_FACTOR;
+static constexpr time_type  PAN_SHIFT_SPEED_FACTOR = 1.4 * PAN_SPEED_FACTOR;
+static constexpr double     ROLL_ANGLE             = M_PI / 32;
+static constexpr time_type  ROLL_TIME              = 0.2;
+static constexpr time_type  FRAME_RATE             = 60;
 
 static constexpr Vector3f yAxis (0, 1, 0);
 
-X3DFlyViewer::X3DFlyViewer (Browser* const browser) :
-	          X3DViewer (browser),
+X3DFlyViewer::X3DFlyViewer () :
+	          X3DViewer (),
 	         fromVector (),
 	           toVector (),
 	          direction (),
@@ -93,6 +93,8 @@ X3DFlyViewer::X3DFlyViewer (Browser* const browser) :
 void
 X3DFlyViewer::initialize ()
 {
+	X3DViewer::initialize ();
+
 	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_press_event));
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_release_event), false);
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_motion_notify_event),  false);
@@ -108,42 +110,56 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 {
 	try
 	{
-		disconnect ();
-
-		button = event -> button;
-
-		getBrowser () -> addEvent ();
-
-		if (button == 1)
+		if (button)
+			return false;
+		
+		switch (event -> button)
 		{
-			getBrowser () -> setCursor (Gdk::FLEUR);
-
-			getActiveViewpoint () -> transitionStop ();
-
-			if (getBrowser () -> hasControlKey ())
+			case 1:
 			{
-				// Look around.
+				button = event -> button;
 
-				fromVector = trackballProjectToSphere (event -> x, event -> y);
+				disconnect ();
+
+				getBrowser () -> addEvent ();
+				getBrowser () -> setCursor (Gdk::FLEUR);
+				getBrowser () -> addCollision (this);
+				getActiveViewpoint () -> transitionStop ();
+
+				if (getBrowser () -> hasControlKey ())
+				{
+					// Look around.
+
+					fromVector = trackballProjectToSphere (event -> x, event -> y);
+				}
+				else
+				{
+					// Move.
+
+					fromVector = toVector = Vector3f (event -> x, 0, event -> y);
+
+					if (getBrowser () -> getBrowserOptions () -> RubberBand ())
+						getBrowser () -> displayed () .addInterest (this, &X3DFlyViewer::display);
+				}
+
+				return false;
 			}
-			else
+
+			case 2:
 			{
-				// Move.
+				button = event -> button;
 
-				fromVector = toVector = Vector3f (event -> x, 0, event -> y);
+				disconnect ();
 
-				if (getBrowser () -> getBrowserOptions () -> RubberBand ())
-					getBrowser () -> displayed () .addInterest (this, &X3DFlyViewer::display);
+				getBrowser () -> addEvent ();
+				getBrowser () -> setCursor (Gdk::FLEUR);
+				getBrowser () -> addCollision (this);
+				getActiveViewpoint () -> transitionStop ();
+
+				fromVector = toVector = Vector3f (event -> x, -event -> y, 0);
+
+				return false;
 			}
-		}
-
-		else if (button == 2)
-		{
-			getBrowser () -> setCursor (Gdk::FLEUR);
-
-			getActiveViewpoint () -> transitionStop ();
-
-			fromVector = toVector = Vector3f (event -> x, -event -> y, 0);
 		}
 	}
 	catch (const X3DError &)
@@ -155,11 +171,17 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 bool
 X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 {
-	disconnect ();
-	
-	getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
+	if (event -> button not_eq button)
+		return false;
 
 	button = 0;
+
+	disconnect ();
+	
+	getBrowser () -> addEvent ();
+	getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
+	getBrowser () -> removeCollision (this);
+
 	return false;
 }
 
@@ -170,43 +192,50 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 	{
 		getBrowser () -> addEvent ();
 
-		if (button == 1)
+		switch (button)
 		{
-			if (getBrowser () -> hasControlKey ())
+			case 1:
 			{
-				// Look around
+				if (getBrowser () -> hasControlKey ())
+				{
+					// Look around
 
-				const auto viewpoint = getActiveViewpoint ();
+					const auto & viewpoint = getActiveViewpoint ();
 
-				auto       orientation = getActiveViewpoint () -> getUserOrientation ();
-				const auto toVector    = trackballProjectToSphere (event -> x, event -> y);
+					auto       orientation = getActiveViewpoint () -> getUserOrientation ();
+					const auto toVector    = trackballProjectToSphere (event -> x, event -> y);
 
-				orientation  = Rotation4f (toVector, fromVector) * orientation;
-				orientation *= viewpoint -> straightenHorizon (orientation);
+					orientation  = Rotation4f (toVector, fromVector) * orientation;
+					orientation *= viewpoint -> straightenHorizon (orientation);
 
-				getActiveViewpoint () -> orientationOffset () = ~getActiveViewpoint () -> getOrientation () * orientation;
+					getActiveViewpoint () -> orientationOffset () = ~getActiveViewpoint () -> getOrientation () * orientation;
 
-				fromVector = toVector;
+					fromVector = toVector;
+				}
+				else
+				{
+					// Fly
+
+					toVector  = Vector3f (event -> x, 0, event -> y);
+					direction = toVector - fromVector;
+
+					addFly ();
+				}
+
+				return false;
 			}
-			else
-			{
-				// Fly
 
-				toVector  = Vector3f (event -> x, 0, event -> y);
+			case 2:
+			{
+				// Pan
+
+				toVector  = Vector3f (event -> x, -event -> y, 0);
 				direction = toVector - fromVector;
 
-				addFly ();
+				addPan ();
+
+				return false;
 			}
-		}
-
-		else if (button == 2)
-		{
-			// Pan
-
-			toVector  = Vector3f (event -> x, -event -> y, 0);
-			direction = toVector - fromVector;
-
-			addPan ();
 		}
 	}
 	catch (const X3DError &)
@@ -220,7 +249,7 @@ X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 {
 	try
 	{
-		const auto viewpoint = getActiveViewpoint ();
+		const auto & viewpoint = getActiveViewpoint ();
 
 		viewpoint  -> transitionStop ();
 
@@ -250,10 +279,10 @@ X3DFlyViewer::fly ()
 	try
 	{
 		const time_type now = chrono::now ();
-		const float     dt  = now - startTime;
+		const time_type dt  = now - startTime;
 
-		const auto     viewpoint = getActiveViewpoint ();
-		const Vector3f upVector  = viewpoint -> getUpVector ();
+		const auto &viewpoint = getActiveViewpoint ();
+		const auto  upVector  = viewpoint -> getUpVector ();
 
 		// Rubberband values
 
@@ -263,7 +292,7 @@ X3DFlyViewer::fly ()
 		                                      ? Rotation4f (direction * up, Vector3f (0, 0, 1) * up)
 														  : Rotation4f (Vector3f (0, 0, -1) * up, direction * up);
 
-		const float rubberBandLength = abs (direction);
+		const double rubberBandLength = abs (direction);
 
 		// Position offset
 
@@ -274,7 +303,7 @@ X3DFlyViewer::fly ()
 		speedFactor *= getBrowser () -> hasShiftKey () ? SHIFT_SPEED_FACTOR : SPEED_FACTOR;
 		speedFactor *= dt;
 
-		const Vector3f translation = getTranslationOffset (speedFactor * direction);
+		const auto translation = getTranslationOffset (speedFactor * direction);
 
 		viewpoint -> positionOffset () += getActiveLayer () -> constrainTranslation (translation);
 
@@ -288,7 +317,7 @@ X3DFlyViewer::fly ()
 
 		// GeoRotation
 
-		const Rotation4f geoRotation (upVector, viewpoint -> getUpVector ());
+		const auto geoRotation = Rotation4f (upVector, viewpoint -> getUpVector ());
 
 		viewpoint -> orientationOffset () *= geoRotation;
 
@@ -307,20 +336,20 @@ X3DFlyViewer::pan ()
 	try
 	{
 		const time_type now = chrono::now ();
-		const float     dt  = now - startTime;
+		const time_type dt  = now - startTime;
 
-		const auto     viewpoint = getActiveViewpoint ();
-		const Vector3f upVector  = viewpoint -> getUpVector ();
+		const auto & viewpoint = getActiveViewpoint ();
+		const auto   upVector  = viewpoint -> getUpVector ();
 
-		float speedFactor = 1;
+		float speedFactor = 1.0;
 
 		speedFactor *= getNavigationInfo () -> speed ();
 		speedFactor *= viewpoint -> getSpeedFactor ();
 		speedFactor *= getBrowser () -> hasShiftKey () ? PAN_SHIFT_SPEED_FACTOR : PAN_SPEED_FACTOR;
 		speedFactor *= dt;
 
-		const Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (yAxis * viewpoint -> getUserOrientation (), upVector);
-		const Vector3f   translation = speedFactor * direction * orientation;
+		const auto orientation = viewpoint -> getUserOrientation () * Rotation4f (yAxis * viewpoint -> getUserOrientation (), upVector);
+		const auto translation = speedFactor * direction * orientation;
 
 		viewpoint -> positionOffset () += getActiveLayer () -> constrainTranslation (translation);
 
@@ -343,7 +372,7 @@ X3DFlyViewer::roll ()
 		if (elapsedTime > ROLL_TIME)
 			return false;
 
-		const auto viewpoint = getActiveViewpoint ();
+		const auto & viewpoint = getActiveViewpoint ();
 
 		viewpoint -> orientationOffset () = slerp <float> (sourceRotation, destinationRotation, elapsedTime / ROLL_TIME);
 
@@ -354,25 +383,6 @@ X3DFlyViewer::roll ()
 	   return false;
 	}
 }
-
-/*
-Vector3f
-X3DFlyViewer::getTranslation (const Vector3f & translation) const
-{
-	const float collisionRadius = getNavigationInfo () -> getCollisionRadius ();
-
-	// Get width and height of camera
-
-	const float width  = collisionRadius * 2;
-	const float height = collisionRadius + getNavigationInfo () -> getAvatarHeight () - getNavigationInfo () -> getStepHeight ();
-
-	// Get position offset
-
-	const float positionOffset = height / 2 - collisionRadius;
-
-	return getBrowser () -> getActiveLayer () -> getTranslation (Vector3f (0, -positionOffset, 0), width, height, translation);
-}
-*/
 
 void
 X3DFlyViewer::addFly ()
@@ -400,6 +410,7 @@ X3DFlyViewer::addRoll ()
 	if (not roll_id .connected ())
 	{
 		disconnect ();
+
 		roll_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DFlyViewer::roll), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
 	}
 
@@ -410,16 +421,7 @@ void
 X3DFlyViewer::disconnect ()
 {
 	getBrowser () -> addEvent ();
-
-	if (button == 1)
-	{
-		getBrowser () -> displayed () .removeInterest (this, &X3DFlyViewer::display);
-	}
-
-	else if (button == 2)
-	{ }
-
-	button = 0;
+	getBrowser () -> displayed () .removeInterest (this, &X3DFlyViewer::display);
 
 	fly_id  .disconnect ();
 	pan_id  .disconnect ();
@@ -437,7 +439,7 @@ X3DFlyViewer::display ()
 		const int    width    = viewport [2];
 		const int    height   = viewport [3];
 
-		const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
+		const Matrix4d projection = ortho <double> (0, width, 0, height, -1, 1);
 
 		glMatrixMode (GL_PROJECTION);
 		glLoadMatrixd (projection .data ());
@@ -476,6 +478,17 @@ X3DFlyViewer::display ()
 		// unProjectPoint is not posible
 	}
 }
+
+void
+X3DFlyViewer::dispose ()
+{
+	getBrowser () -> removeCollision (this);
+
+	X3DViewer::dispose ();
+}
+
+X3DFlyViewer::~X3DFlyViewer ()
+{ }
 
 } // X3D
 } // titania

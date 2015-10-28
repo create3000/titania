@@ -53,7 +53,7 @@
 
 #include "../Core/X3DChildNodeTool.h"
 
-#include "../../Bits/config.h"
+#include "../../Browser/Networking/config.h"
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Grouping/X3DBoundedObject.h"

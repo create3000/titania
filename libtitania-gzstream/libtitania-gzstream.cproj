@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}</ProjectGuid>
     <Target>SharedLibrary</Target>
@@ -53,7 +53,6 @@
     <None Include="Titania\logo.gif" />
     <None Include="Titania\README" />
     <None Include="Titania\version" />
-    <None Include="info.h" />
     <None Include="libtitania-gzstream.md.pc" />
     <None Include="Makefile.am" />
     <None Include="Makefile.in" />

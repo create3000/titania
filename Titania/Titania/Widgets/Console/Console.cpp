@@ -57,7 +57,7 @@ namespace titania {
 namespace puck {
 
 Console::Console (X3DBrowserWindow* const browserWindow) :
-	   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DConsoleInterface (get_ui ("Console.xml"), gconf_dir ())
 {
 	getBrowserWindow () -> getFooterNotebook () .signal_map ()   .connect (sigc::mem_fun (*this, &Console::set_enabled));
@@ -104,13 +104,13 @@ Console::set_enabled ()
 {
 	if (isEnabled ())
 	{
-		getBrowser () .addInterest (this, &Console::set_browser);
+		getCurrentBrowser () .addInterest (this, &Console::set_browser);
 
-		set_browser (getBrowser ());
+		set_browser (getCurrentBrowser ());
 	}
 	else
 	{
-		getBrowser () .removeInterest (this, &Console::set_browser);
+		getCurrentBrowser () .removeInterest (this, &Console::set_browser);
 
 		for (const auto & browser : getBrowserWindow () -> getBrowsers ())
 			browser -> getConsole () -> getString () .removeInterest (this, &Console::set_string);

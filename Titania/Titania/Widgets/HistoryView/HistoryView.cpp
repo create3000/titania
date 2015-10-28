@@ -63,12 +63,12 @@ static constexpr int TITLE_COLUMN     = 1;
 static constexpr int WORLD_URL_COLUMN = 2;
 
 HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
-	       X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DHistoryViewInterface (get_ui ("HistoryView.xml"), gconf_dir ()),
 	            hadjustment (new AdjustmentObject ()),
 	            vadjustment (new AdjustmentObject ())
 {
-	getScene () .addInterest (this, &HistoryView::set_scene);
+	getCurrentScene () .addInterest (this, &HistoryView::set_scene);
 	setup ();
 }
 
@@ -169,15 +169,15 @@ HistoryView::set_scene ()
 	getConfig () .setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
 	getConfig () .setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
 
-	const std::string title    = getScene () -> getTitle ();
-	const basic::uri  worldURL = getScene () -> getWorldURL ();
+	const std::string title    = getCurrentScene () -> getTitle ();
+	const basic::uri  worldURL = getCurrentScene () -> getWorldURL ();
 
 	if (worldURL .empty ())
 		return;
 
 	try
 	{
-		if (getScene () -> getMetaData ("titania-history") == "FALSE")
+		if (getCurrentScene () -> getMetaData ("titania-history") == "FALSE")
 			return;
 	}
 	catch (const X3D::X3DError &)

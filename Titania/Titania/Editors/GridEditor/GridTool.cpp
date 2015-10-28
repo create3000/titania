@@ -64,7 +64,7 @@ namespace titania {
 namespace puck {
 
 GridTool::GridTool (X3DBrowserWindow* const browserWindow) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	     X3DGridTool (),
 	            tool ()
 {
@@ -76,7 +76,7 @@ GridTool::GridTool (X3DBrowserWindow* const browserWindow) :
 void
 GridTool::realize ()
 {
-	const auto & browser = isEnabled () ? getBrowser () : getMasterBrowser ();
+	const auto & browser = isEnabled () ? getCurrentBrowser () : getMasterBrowser ();
 
 	tool = browser -> getPrivateScene () -> createNode <X3D::GridTool> ();
 

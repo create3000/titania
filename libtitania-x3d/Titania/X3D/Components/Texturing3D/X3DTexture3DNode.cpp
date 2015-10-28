@@ -50,7 +50,7 @@
 
 #include "X3DTexture3DNode.h"
 
-#include "../../Bits/Cast.h"
+#include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 
 namespace titania {

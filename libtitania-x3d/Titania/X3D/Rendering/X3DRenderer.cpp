@@ -115,46 +115,48 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 	const float min    = bbox .center () .z () - depth;
 	const float center = bbox .center () .z ();
 
-	if (min < 0)
+	if (min > 0)
+	   return;
+
+	const auto & viewVolume = viewVolumeStack .back ();
+
+	if (viewVolume .intersects (bbox))
 	{
-		const auto & viewVolume = viewVolumeStack .back ();
+	   ShapeContainer* context = nullptr;
 
-		if (viewVolume .intersects (bbox))
+		if (shape -> isTransparent ())
 		{
-		   ShapeContainer* context = nullptr;
+		   if (numTransparentShapes == transparentShapes .size ())
+		      transparentShapes .emplace_back (new ShapeContainer (true));
 
-			if (shape -> isTransparent ())
-			{
-			   if (numTransparentShapes == transparentShapes .size ())
-			      transparentShapes .emplace_back (new ShapeContainer (true));
-	
-				context = transparentShapes [numTransparentShapes] .get ();
+			context = transparentShapes [numTransparentShapes] .get ();
 
-				++ numTransparentShapes;
-			}
-			else
-			{
-			   if (numOpaqueShapes == opaqueShapes .size ())
-			      opaqueShapes .emplace_back (new ShapeContainer (false));
-	
-				context = opaqueShapes [numOpaqueShapes] .get ();
-
-				++ numOpaqueShapes;
-			}
-
-			context -> setScissor (viewVolume .getScissor ());
-			context -> setModelViewMatrix (getModelViewMatrix () .get ());
-			context -> setShape (shape);
-			context -> setFog (getFog ());
-			context -> setLocalObjects (getLocalObjects ());
-			context -> setDistance (center);
+			++ numTransparentShapes;
 		}
+		else
+		{
+		   if (numOpaqueShapes == opaqueShapes .size ())
+		      opaqueShapes .emplace_back (new ShapeContainer (false));
+
+			context = opaqueShapes [numOpaqueShapes] .get ();
+
+			++ numOpaqueShapes;
+		}
+
+		context -> setScissor (viewVolume .getScissor ());
+		context -> setModelViewMatrix (getModelViewMatrix () .get ());
+		context -> setShape (shape);
+		context -> setFog (getFog ());
+		context -> setLocalObjects (getLocalObjects ());
+		context -> setDistance (center);
 	}
 }
 
 void
 X3DRenderer::addCollision (X3DShapeNode* const shape)
 {
+	// It should be possible to sort out shapes that are far away.
+
 	if (numCollisionContainers == collisionShapes .size ())
 		collisionShapes .emplace_back (new CollisionContainer ());
 
@@ -381,7 +383,7 @@ X3DRenderer::gravite ()
 	{
 		// Terrain following and gravitation
 
-		if (getBrowser () -> getViewer () not_eq ViewerType::WALK)
+		if (getBrowser () -> getViewer () not_eq X3DConstants::WalkViewer)
 			return;
 
 		// Get NavigationInfo values

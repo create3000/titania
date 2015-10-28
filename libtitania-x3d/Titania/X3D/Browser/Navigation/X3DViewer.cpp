@@ -59,8 +59,8 @@
 namespace titania {
 namespace X3D {
 
-X3DViewer::X3DViewer (Browser* const browser) :
-	X3DBrowserObject (browser)
+X3DViewer::X3DViewer () :
+	X3DBrowserObject ()
 { }
 
 NavigationInfo*
@@ -87,8 +87,8 @@ X3DViewer::getPointOnCenterPlane (const double x, const double y)
 {
 	try
 	{
-		const auto     viewpoint  = getActiveViewpoint ();
-		const auto     viewport   = getBrowser () -> getActiveLayer () -> getViewport () -> getRectangle ();
+		const auto &   viewpoint  = getActiveViewpoint ();
+		const auto &   viewport   = getBrowser () -> getActiveLayer () -> getViewport () -> getRectangle ();
 		const auto     projection = viewpoint -> getProjectionMatrix (getNavigationInfo () -> getNearPlane (), getNavigationInfo () -> getFarPlane (viewpoint), viewport);
 		const Matrix4d modelview; // Use identity
 
@@ -111,7 +111,7 @@ X3DViewer::getPointOnCenterPlane (const double x, const double y)
 Vector3f
 X3DViewer::getDistanceToCenter () const
 {
-	const auto viewpoint = getActiveViewpoint ();
+	const auto & viewpoint = getActiveViewpoint ();
 
 	return viewpoint -> getUserPosition () - viewpoint -> getUserCenterOfRotation ();
 }
@@ -125,10 +125,10 @@ X3DViewer::trackballProjectToSphere (double x, double y) const
 	return Vector3f (x, y, tb_project_to_sphere (0.5, x, y));
 }
 
-float
-X3DViewer::tb_project_to_sphere (const float r, const float x, const float y)
+double
+X3DViewer::tb_project_to_sphere (const double r, const double x, const double y)
 {
-	const float d = std::sqrt (x * x + y * y);
+	const double d = std::sqrt (x * x + y * y);
 
 	if (d < r * std::sqrt (0.5)) // Inside sphere
 	{
@@ -137,7 +137,7 @@ X3DViewer::tb_project_to_sphere (const float r, const float x, const float y)
 
 	// On hyperbola
 
-	const float t = r / std::sqrt (2);
+	const double t = r / std::sqrt (2);
 	return t * t / d;
 }
 

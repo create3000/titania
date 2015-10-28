@@ -118,9 +118,9 @@ X3DLayoutEditor::on_layout_toggled ()
 			field .addInterest (this, &X3DLayoutEditor::connectLayout);
 
 			if (getLayoutCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (getExecutionContext (), node, field, X3D::SFNode (layout), undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, X3D::SFNode (layout), undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getExecutionContext (), node, field, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -181,7 +181,7 @@ X3DLayoutEditor::set_node ()
 
 			if (not layout)
 			{
-				layout = new X3D::Layout (getExecutionContext ());
+				layout = new X3D::Layout (getCurrentContext ());
 				layout -> setup ();
 			}
 		}

@@ -53,7 +53,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/X3D/Bits/Traverse.h>
+#include <Titania/X3D/Basic/Traverse.h>
 #include <Titania/X3D/Browser/ContextLock.h>
 #include <Titania/OS.h>
 
@@ -61,7 +61,7 @@ namespace titania {
 namespace puck {
 
 FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
-	          X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DFileSaveDialogInterface (get_ui ("Dialogs/FileSaveDialog.xml"), gconf_dir ())
 {
 	getFileFilterX3D   () -> set_name (_ ("X3D"));
@@ -70,7 +70,7 @@ FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
 	getFileFilterVideo () -> set_name (_ ("Videos"));
 	getFileFilterAll   () -> set_name (_ ("All Files"));
 
-	const auto & worldURL = getScene () -> getWorldURL ();
+	const auto & worldURL = getCurrentScene () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		getWindow () .set_uri (worldURL .filename () .str ());
@@ -96,7 +96,7 @@ FileSaveDialog::saveScene (const bool copy)
 	getWindow () .set_filter (getFileFilterX3D ());
 
 	getCompressFileBox () .set_visible (true);
-	getCompressFileButton () .set_active (getScene () -> isCompressed ());
+	getCompressFileButton () .set_active (getCurrentScene () -> isCompressed ());
 
 	const auto responseId = getWindow () .run ();
 
@@ -111,7 +111,7 @@ FileSaveDialog::saveScene (const bool copy)
 void
 FileSaveDialog::exportImage ()
 {
-	const auto worldURL = getExecutionContext () -> getWorldURL ();
+	const auto worldURL = getCurrentContext () -> getWorldURL ();
 
 	if (getConfig () .hasItem ("exportFolder"))
 		getWindow () .set_current_folder_uri (getConfig () .getString ("exportFolder"));
@@ -140,7 +140,7 @@ FileSaveDialog::exportImage ()
 
 			try
 			{
-				const auto image = getBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
+				const auto image = getCurrentBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
 				                                                 getImageHeightAdjustment () -> get_value (),
 				                                                 getImageAlphaChannelSwitch () .get_active (),
 				                                                 getImageAntialiasingAdjustment () -> get_value ());
@@ -173,10 +173,10 @@ FileSaveDialog::imageOptions ()
 {
 	// First configure adjustments.
 
-	const int32_t antialiasing = getBrowser () -> getMaxSamples ();
+	const int32_t antialiasing = getCurrentBrowser () -> getMaxSamples ();
 
-	getImageWidthAdjustment ()  -> set_upper (getBrowser () -> getMaxRenderBufferSize ());
-	getImageHeightAdjustment () -> set_upper (getBrowser () -> getMaxRenderBufferSize ());
+	getImageWidthAdjustment ()  -> set_upper (getCurrentBrowser () -> getMaxRenderBufferSize ());
+	getImageHeightAdjustment () -> set_upper (getCurrentBrowser () -> getMaxRenderBufferSize ());
 	getImageAntialiasingAdjustment () -> set_upper (antialiasing);
 
 	// Restore image options.
@@ -195,7 +195,7 @@ FileSaveDialog::imageOptions ()
 	if (getConfig () .hasItem ("imageCompression"))
 		getImageCompressionAdjustment () -> set_value (getConfig () .getInteger ("imageCompression"));
 
-	getImageAntialiasingBox () .set_sensitive (getBrowser () -> hasExtension ("GL_EXT_framebuffer_multisample"));
+	getImageAntialiasingBox () .set_sensitive (getCurrentBrowser () -> hasExtension ("GL_EXT_framebuffer_multisample"));
 
 	// Run image options dialog.
 
@@ -227,7 +227,7 @@ FileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, const X
 	getWindow () .set_filter (getFileFilterX3D ());
 
 	getCompressFileBox () .set_visible (true);
-	getCompressFileButton () .set_active (getScene () -> isCompressed ());
+	getCompressFileButton () .set_active (getCurrentScene () -> isCompressed ());
 
 	const auto responseId = getWindow () .run ();
 
@@ -250,8 +250,8 @@ FileSaveDialog::exportNodes (X3D::MFNode & nodes, const basic::uri & worldURL, c
 {
 	using namespace std::placeholders;
 
-	X3D::traverse (getExecutionContext (),
-	               std::bind (&X3DBrowserWidget::transform, getExecutionContext () -> getWorldURL (), worldURL, undoStep, _1),
+	X3D::traverse (getCurrentContext (),
+	               std::bind (&X3DBrowserWidget::transform, getCurrentContext () -> getWorldURL (), worldURL, undoStep, _1),
 	               true,
 	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
 	               X3D::TRAVERSE_PROTO_DECLARATIONS |
@@ -259,7 +259,7 @@ FileSaveDialog::exportNodes (X3D::MFNode & nodes, const basic::uri & worldURL, c
 
 	std::ofstream ofstream (worldURL .path ());
 
-	getBrowserWindow () -> exportNodes (getExecutionContext (), ofstream, nodes);
+	getBrowserWindow () -> exportNodes (getCurrentContext (), ofstream, nodes);
 }
 
 FileSaveDialog::~FileSaveDialog ()

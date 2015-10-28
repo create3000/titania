@@ -83,7 +83,7 @@ X3DViewpointEditor::X3DViewpointEditor () :
 	                             getPerspectiveViewpointFieldOfViewBox (),
 	                             "fieldOfView")
 {
-	getPerspectiveViewpointFieldOfViewAdjustment () -> set_upper (M_PI); // getExecutionContext () -> fromRadiant (M_PI);
+	getPerspectiveViewpointFieldOfViewAdjustment () -> set_upper (M_PI); // getCurrentContext () -> fromRadiant (M_PI);
 }
 
 void

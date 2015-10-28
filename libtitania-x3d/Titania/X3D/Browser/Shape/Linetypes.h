@@ -48,110 +48,64 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BITS_ERROR_H__
-#define __TITANIA_X3D_BITS_ERROR_H__
+#ifndef __TITANIA_X3D_BITS_LINETYPES_H__
+#define __TITANIA_X3D_BITS_LINETYPES_H__
 
-#include "../Bits/X3DConstants.h"
+#include "../../Rendering/OpenGL.h"
 
-#include <exception>
-#include <string>
+#include <Titania/Math/Utility/strtol.h>
 
 namespace titania {
 namespace X3D {
 
-class X3DError :
-	public std::exception
+enum class LineType :
+	uint8_t
 {
-public:
+	NONE,
+	SOLID,
+	DASHED,
+	DOTTED,
+	DASHED_DOTTED,
+	DASH_DOT_DOT,
 
-	explicit
-	X3DError (const std::string &);
+	SINGLE_ARROW,
+	SINGLE_DOT,
+	DOUBLE_ARROW,
 
-	virtual
-	const char*
-	what () const
-	throw ();
+	STITCH_LINE,
+	CHAIN_LINE,
+	CENTER_LINE,
+	HIDDEN_LINE,
+	PHANTOM_LINE,
 
-	virtual
-	ErrorType
-	getType () const
-	throw () = 0;
-
-	virtual
-	const std::string &
-	toString () const
-	throw ();
-
-	virtual
-	~X3DError ()
-	throw ();
-
-
-private:
-
-	const std::string message;
+	BREAK_LINE_1,
+	BREAK_LINE_2
 
 };
 
-///  5.3.1 Error
-template <ErrorType Type>
-class Error :
-	public X3DError
-{
-public:
+static const std::vector <GLushort> linetypes = {
+	math::strtol ("0000000000000000", 2), // 0 None
+	math::strtol ("1111111111111111", 2), // 1 Solid
+	math::strtol ("1111111110000000", 2), // 2 Dashed
+	math::strtol ("1100110011001100", 2), // 3 Dotted
+	math::strtol ("1111111110001000", 2), // 4 Dashed-dotted
+	math::strtol ("1111100010001000", 2), // 5 Dash-dot-dot
 
-	explicit
-	Error (const std::string & message) :
-		X3DError (message)
-	{ }
+	math::strtol ("1111111111111111", 2), // 6 (single arrow)
+	math::strtol ("1111111111111111", 2), // 7 (single dot)
+	math::strtol ("1111111111111111", 2), // 8 (double arrow)
 
-	virtual
-	ErrorType
-	getType () const
-	throw () final override
-	{ return Type; }
+	math::strtol ("1111111100000000", 2), // 9 (stitch line)
+	math::strtol ("1111111000111000", 2), // 10 (chain line)
+	math::strtol ("1111111110011100", 2), // 11 (center line)
+	math::strtol ("1111111111100000", 2), // 12 (hidden line)
+	math::strtol ("1111111011101110", 2), // 13 (phantom line)
 
-	virtual
-	~Error ()
-	throw ()
-	{ }
+	math::strtol ("1111111111111111", 2), // 14 (break line - style 1)
+	math::strtol ("1111111111111111", 2), // 15 (break line - style 2)
+	math::strtol ("1111111111111111", 2)  // 16 User - specified dash pattern
 
 };
-
-///  @relates X3DError
-///  @name Input/Output operations
-
-///  Insertion operator for X3DError.
-template <class StringT, class Traits>
-inline
-std::basic_ostream <typename StringT::value_type, Traits> &
-operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream, const X3DError & error)
-{
-	return ostream << error .toString ();
-}
-
-extern template class Error <BROWSER_UNAVAILABLE>;
-extern template class Error <CONNECTION_ERROR>;
-extern template class Error <DISPOSED>;
-extern template class Error <IMPORTED_NODE>;
-extern template class Error <INITIALIZED_ERROR>;
-extern template class Error <INSUFFICIENT_CAPABILITIES>;
-extern template class Error <INVALID_ACCESS_TYPE>;
-extern template class Error <INVALID_BROWSER>;
-extern template class Error <INVALID_DOCUMENT>;
-extern template class Error <INVALID_EXECUTION_CONTEXT>;
-extern template class Error <INVALID_FIELD>;
-extern template class Error <INVALID_NAME>;
-extern template class Error <INVALID_NODE>;
-extern template class Error <INVALID_OPERATION_TIMING>;
-extern template class Error <INVALID_SCENE>;
-extern template class Error <INVALID_URL>;
-extern template class Error <INVALID_X3D>;
-extern template class Error <NODE_IN_USE>;
-extern template class Error <NODE_NOT_AVAILABLE>;
-extern template class Error <NOT_SHARED>;
-extern template class Error <NOT_SUPPORTED>;
-extern template class Error <URL_UNAVAILABLE>;
 
 } // X3D
 } // titania

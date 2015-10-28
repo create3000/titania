@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_CONFIGURATION_SUPPORTED_PROFILES_H__
 #define __TITANIA_X3D_CONFIGURATION_SUPPORTED_PROFILES_H__
 
-#include "../Bits/Error.h"
+#include "../Base/Error.h"
 #include "../Configuration/ProfileInfoArray.h"
 #include "../Configuration/SupportedComponents.h"
 

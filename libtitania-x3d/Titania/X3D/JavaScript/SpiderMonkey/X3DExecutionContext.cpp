@@ -50,8 +50,8 @@
 
 #include "X3DExecutionContext.h"
 
-#include "../../Bits/Cast.h"
-#include "../../Bits/Error.h"
+#include "../../Browser/Core/Cast.h"
+#include "../../Base/Error.h"
 #include "../../Components/Core/X3DPrototypeInstance.h"
 #include "../../Components/Networking/Inline.h"
 #include "../../Execution/X3DScene.h"

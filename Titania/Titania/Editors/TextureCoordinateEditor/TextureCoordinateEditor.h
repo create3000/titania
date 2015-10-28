@@ -59,7 +59,7 @@
 #include <Titania/X3D/Components/Texturing/TextureCoordinate.h>
 #include <Titania/X3D/Components/Texturing/MultiTextureCoordinate.h>
 #include <Titania/X3D/Components/Rendering/X3DCoordinateNode.h>
-#include <Titania/X3D/Editor/Undo/UndoHistory.h>
+#include <Titania/X3D/Editing/Undo/UndoHistory.h>
 
 namespace titania {
 namespace puck {

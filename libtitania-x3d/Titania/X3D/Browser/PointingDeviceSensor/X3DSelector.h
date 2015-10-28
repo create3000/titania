@@ -63,7 +63,7 @@ protected:
 
 	///  @name Constructors
 
-	X3DSelector (Browser* const);
+	X3DSelector ();
 
 };
 

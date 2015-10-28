@@ -87,7 +87,7 @@ X3DBaseInterface::setup ()
 {
 	X3D::X3DParentObject::setup ();
 
-	browserWindow -> getBrowser () .addInterest (this, &X3DBaseInterface::set_browser);
+	browserWindow -> getCurrentBrowser () .addInterest (this, &X3DBaseInterface::set_browser);
 }
 
 const X3D::BrowserPtr &
@@ -97,44 +97,44 @@ X3DBaseInterface::getMasterBrowser () const
 }
 
 const X3D::BrowserPtr &
-X3DBaseInterface::getBrowser () const
+X3DBaseInterface::getCurrentBrowser () const
 {
-	return browserWindow -> getBrowser ();
+	return browserWindow -> getCurrentBrowser ();
 }
 
 const X3D::WorldPtr &
-X3DBaseInterface::getWorld () const
+X3DBaseInterface::getCurrentWorld () const
 {
-	return getBrowser () -> getWorld ();
+	return getCurrentBrowser () -> getWorld ();
 }
 
 const X3D::X3DScenePtr &
-X3DBaseInterface::getScene () const
+X3DBaseInterface::getCurrentScene () const
 {
-	return browserWindow -> getScene ();
+	return browserWindow -> getCurrentScene ();
 }
 void
-X3DBaseInterface::setExecutionContext (const X3D::X3DExecutionContextPtr & executionContext)
+X3DBaseInterface::setCurrentContext (const X3D::X3DExecutionContextPtr & executionContext)
 {
-	return browserWindow -> setExecutionContext (executionContext);
+	return browserWindow -> setCurrentContext (executionContext);
 }
 
 const X3D::X3DExecutionContextPtr &
-X3DBaseInterface::getExecutionContext () const
+X3DBaseInterface::getCurrentContext () const
 {
-	return browserWindow -> getExecutionContext ();
+	return browserWindow -> getCurrentContext ();
 }
 
 bool
 X3DBaseInterface::inProtoDeclaration () const
 {
-	return getExecutionContext () -> isProtoDeclaration ();
+	return getCurrentContext () -> isProtoDeclaration ();
 }
 
 bool
 X3DBaseInterface::inPrototypeInstance () const
 {
-	return dynamic_cast <X3D::X3DPrototypeInstance*> (getExecutionContext () .getValue ());
+	return dynamic_cast <X3D::X3DPrototypeInstance*> (getCurrentContext () .getValue ());
 }
 
 X3D::WorldInfoPtr
@@ -155,20 +155,20 @@ X3D::WorldInfoPtr
 X3DBaseInterface::getWorldInfo (const bool create)
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
-	auto worldInfo = getScene () -> getWorldInfo ();
+	auto worldInfo = getCurrentScene () -> getWorldInfo ();
 
 	if (not worldInfo)
 	{
 		if (not create)
 			throw X3D::Error <X3D::NOT_SUPPORTED> ("X3DBaseInterface::getWorldInfo: not supported.");
 	
-		worldInfo = getScene () -> createNode <X3D::WorldInfo> ();
-		worldInfo -> title () = getScene () -> getWorldURL () .basename (false);
+		worldInfo = getCurrentScene () -> createNode <X3D::WorldInfo> ();
+		worldInfo -> title () = getCurrentScene () -> getWorldURL () .basename (false);
 
-		getScene () -> getRootNodes () .emplace_front (worldInfo);
-		getScene () -> realize ();
+		getCurrentScene () -> getRootNodes () .emplace_front (worldInfo);
+		getCurrentScene () -> realize ();
 
-		getBrowserWindow () -> isModified (getBrowser (), true);
+		getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 	}
 
 	return worldInfo;
@@ -177,7 +177,7 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 X3D::X3DPtr <X3D::MetadataSet>
 X3DBaseInterface::createMetaData (const std::string & key)
 {
-	const auto & layerSet = getWorld () -> getLayerSet ();
+	const auto & layerSet = getCurrentWorld () -> getLayerSet ();
 
 	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 		return layerSet -> getActiveLayer () -> createMetaData <X3D::MetadataSet> (key);
@@ -188,7 +188,7 @@ X3DBaseInterface::createMetaData (const std::string & key)
 X3D::X3DPtr <X3D::MetadataSet>
 X3DBaseInterface::getMetaData (const std::string & key) const
 {
-	const auto & layerSet = getWorld () -> getLayerSet ();
+	const auto & layerSet = getCurrentWorld () -> getLayerSet ();
 
 	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 		return layerSet -> getActiveLayer () -> getMetaData <X3D::MetadataSet> (key);

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXTURING_X3DTEXTURE2DNODE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXTURING_X3DTEXTURE2DNODE_H__
 
-#include "../../Miscellaneous/Texture.h"
+#include "../../Browser/Texturing/Texture.h"
 #include "../Texturing/X3DTextureNode.h"
 
 namespace titania {

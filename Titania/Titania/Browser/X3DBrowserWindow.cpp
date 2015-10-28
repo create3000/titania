@@ -149,15 +149,15 @@ X3DBrowserWindow::expandNodes (const X3D::MFNode & nodes)
 {
 	if (getConfig () .getBoolean ("followPrimarySelection"))
 	{
-		getBrowser () -> addEvent ();
-		getBrowser () -> finished () .addInterest (this, &X3DBrowserWindow::expandNodesImpl, nodes);
+		getCurrentBrowser () -> addEvent ();
+		getCurrentBrowser () -> finished () .addInterest (this, &X3DBrowserWindow::expandNodesImpl, nodes);
 	}
 }
 
 void
 X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 {
-	getBrowser () -> finished () .removeInterest (this, &X3DBrowserWindow::expandNodesImpl);
+	getCurrentBrowser () -> finished () .removeInterest (this, &X3DBrowserWindow::expandNodesImpl);
 
 	for (const auto & node : nodes)
 	{

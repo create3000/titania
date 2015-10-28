@@ -190,9 +190,9 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 			field .addInterest (this, &X3DFontStyleNodeEditor::connectFontStyle);
 
 			if (getFontStyleComboBoxText () .get_active_row_number () > 0)
-				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (text), field, X3D::SFNode (fontStyleNode), undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (text), field, X3D::SFNode (fontStyleNode), undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (text), field, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (text), field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -238,16 +238,16 @@ X3DFontStyleNodeEditor::set_node ()
 
 	if (not fontStyle)
 	{
-		fontStyle = new X3D::FontStyle (getExecutionContext ());
-		getExecutionContext () -> addUninitializedNode (fontStyle);
-		getExecutionContext () -> realize ();
+		fontStyle = new X3D::FontStyle (getCurrentContext ());
+		getCurrentContext () -> addUninitializedNode (fontStyle);
+		getCurrentContext () -> realize ();
 	}
 
 	if (not screenFontStyle)
 	{
-		screenFontStyle = new X3D::ScreenFontStyle (getExecutionContext ());
-		getExecutionContext () -> addUninitializedNode (screenFontStyle);
-		getExecutionContext () -> realize ();
+		screenFontStyle = new X3D::ScreenFontStyle (getCurrentContext ());
+		getCurrentContext () -> addUninitializedNode (screenFontStyle);
+		getCurrentContext () -> realize ();
 	}
 
 	if (not fontStyleNode)

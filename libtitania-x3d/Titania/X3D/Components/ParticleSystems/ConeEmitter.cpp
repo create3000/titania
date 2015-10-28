@@ -50,7 +50,7 @@
 
 #include "ConeEmitter.h"
 
-#include "../../Bits/config.h"
+#include "../../Browser/Networking/config.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {

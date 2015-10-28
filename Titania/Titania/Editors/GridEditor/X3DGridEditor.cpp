@@ -143,7 +143,7 @@ X3DGridEditor::initialize ()
 	majorLineColor  .setNodes (gridTools);
 
 	gridTool -> rotation () .addInterest (this, &X3DGridEditor::set_rotation);
-	getScene ()             .addInterest (this, &X3DGridEditor::set_majorLineEvery);
+	getCurrentScene ()      .addInterest (this, &X3DGridEditor::set_majorLineEvery);
 
 	on_grid_toggled ();
 	set_rotation ();

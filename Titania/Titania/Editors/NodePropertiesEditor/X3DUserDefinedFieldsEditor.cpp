@@ -370,7 +370,7 @@ X3DUserDefinedFieldsEditor::on_add_field_ok_clicked ()
 			{
 				// Edit field.
 
-				X3D::X3DFieldDefinition* const field = getBrowser () -> getSupportedField (getFieldTypeLabel () .get_text ()) -> create ();
+				X3D::X3DFieldDefinition* const field = getCurrentBrowser () -> getSupportedField (getFieldTypeLabel () .get_text ()) -> create ();
 
 				field -> setName (getFieldNameEntry () .get_text ());
 				field -> setAccessType (accessTypes .at (getAccessTypeLabel () .get_text ()));
@@ -395,7 +395,7 @@ X3DUserDefinedFieldsEditor::on_add_field_ok_clicked ()
 		{
 			// Create field.
 
-			X3D::X3DFieldDefinition* const field = getBrowser () -> getSupportedField (getFieldTypeLabel () .get_text ()) -> create ();
+			X3D::X3DFieldDefinition* const field = getCurrentBrowser () -> getSupportedField (getFieldTypeLabel () .get_text ()) -> create ();
 
 			field -> setName (getFieldNameEntry () .get_text ());
 			field -> setAccessType (accessTypes .at (getAccessTypeLabel () .get_text ()));

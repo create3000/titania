@@ -70,7 +70,7 @@ namespace titania {
 namespace puck {
 
 ColorPerVertexEditor::ColorPerVertexEditor (X3DBrowserWindow* const browserWindow) :
-	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	                X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DColorPerVertexEditorInterface (get_ui ("Editors/ColorPerVertexEditor.xml"), gconf_dir ()),
 	                         preview (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
 	                     colorButton (this,
@@ -417,13 +417,13 @@ ColorPerVertexEditor::on_look_at_toggled ()
 {
 	if (getLookAtButton () .get_active ())
 	{
-		if (preview -> getViewer () not_eq X3D::ViewerType::LOOKAT)
-			preview -> setViewer (X3D::ViewerType::LOOKAT);
+		if (preview -> getViewer () not_eq X3D::X3DConstants::LookAtViewer)
+			preview -> setViewer (X3D::X3DConstants::LookAtViewer);
 	}
 	else
 	{
-		if (preview -> getViewer () not_eq X3D::ViewerType::EXAMINE)
-			preview -> setViewer (X3D::ViewerType::EXAMINE);
+		if (preview -> getViewer () not_eq X3D::X3DConstants::ExamineViewer)
+			preview -> setViewer (X3D::X3DConstants::ExamineViewer);
 	}
 }
 
@@ -474,7 +474,7 @@ ColorPerVertexEditor::on_remove_clicked ()
 	undoStep -> addRedoFunction (&X3D::MFInt32::clear, std::ref (geometry -> colorIndex ()));
 	geometry -> colorIndex () .clear ();
 
-	getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (geometry), geometry -> color (), X3D::SFNode (), undoStep);
+	getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (geometry), geometry -> color (), X3D::SFNode (), undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -504,7 +504,7 @@ ColorPerVertexEditor::on_apply_clicked ()
 
 		color -> color () = previewColor -> color ();
 
-		getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (geometry), geometry -> color (), X3D::SFNode (color), undoStep);
+		getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (geometry), geometry -> color (), X3D::SFNode (color), undoStep);
 	}
 	else
 	{
@@ -513,7 +513,7 @@ ColorPerVertexEditor::on_apply_clicked ()
 		for (const auto & c : previewColor -> color ())
 			color -> color () .emplace_back (c .getRed (), c .getGreen (), c .getBlue ());
 
-		getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (geometry), geometry -> color (), X3D::SFNode (color), undoStep);
+		getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (geometry), geometry -> color (), X3D::SFNode (color), undoStep);
 	}
 
 	geometry -> getExecutionContext () -> realize ();
@@ -561,7 +561,7 @@ ColorPerVertexEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 		if (shape)
 		{
 			const auto transform       = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
-			const auto modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (getExecutionContext (), X3D::SFNode (shape));
+			const auto modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (getCurrentContext (), X3D::SFNode (shape));
 
 			transform -> setMatrix (modelViewMatrix);
 

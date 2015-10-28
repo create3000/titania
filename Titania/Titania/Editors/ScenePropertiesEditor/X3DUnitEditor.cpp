@@ -64,7 +64,7 @@ X3DUnitEditor::X3DUnitEditor () :
 void
 X3DUnitEditor::initialize ()
 {
-	getExecutionContext () .addInterest (this, &X3DUnitEditor::set_execution_context);
+	getCurrentContext () .addInterest (this, &X3DUnitEditor::set_execution_context);
 
 	keyfile .load_from_file (find_data_file ("units/units.ini"));
 
@@ -100,10 +100,10 @@ X3DUnitEditor::set_execution_context ()
 {
 	changing = true;
 
-	const auto & angle  = getScene () -> getUnit (X3D::UnitCategory::ANGLE);
-	const auto & force  = getScene () -> getUnit (X3D::UnitCategory::FORCE);
-	const auto & length = getScene () -> getUnit (X3D::UnitCategory::LENGTH);
-	const auto & mass   = getScene () -> getUnit (X3D::UnitCategory::MASS);
+	const auto & angle  = getCurrentScene () -> getUnit (X3D::UnitCategory::ANGLE);
+	const auto & force  = getCurrentScene () -> getUnit (X3D::UnitCategory::FORCE);
+	const auto & length = getCurrentScene () -> getUnit (X3D::UnitCategory::LENGTH);
+	const auto & mass   = getCurrentScene () -> getUnit (X3D::UnitCategory::MASS);
 
 	getUnitAngleEntry ()  .set_text (angle  .getName ());
 	getUnitForceEntry ()  .set_text (force  .getName ());
@@ -236,9 +236,9 @@ X3DUnitEditor::on_unit_changed (const Gtk::ComboBoxText & combo,
 	else if (hasKey (category, name))
 		adjustment -> set_value (getKey (category, name));
 	
-	getScene () -> updateUnit (category, name, adjustment -> get_value ());
+	getCurrentScene () -> updateUnit (category, name, adjustment -> get_value ());
 
-	getBrowserWindow () -> isModified (getBrowser (), true);
+	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 
 	changing = false;
 }

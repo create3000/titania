@@ -53,7 +53,7 @@
 
 #include <Titania/X3D.h>
 #include <Titania/X3D/Base/X3DParentObject.h>
-#include <Titania/X3D/Editor/Undo/UndoStep.h>
+#include <Titania/X3D/Editing/Undo/UndoStep.h>
 
 #include <sigc++/trackable.h>
 
@@ -109,22 +109,22 @@ public:
 
 	virtual
 	const X3D::BrowserPtr &
-	getBrowser () const;
+	getCurrentBrowser () const;
 	
 	const X3D::WorldPtr &
-	getWorld () const;
+	getCurrentWorld () const;
 
 	virtual
 	const X3D::X3DScenePtr &
-	getScene () const;
+	getCurrentScene () const;
 
 	virtual
 	void
-	setExecutionContext (const X3D::X3DExecutionContextPtr &);
+	setCurrentContext (const X3D::X3DExecutionContextPtr &);
 
 	virtual
 	const X3D::X3DExecutionContextPtr &
-	getExecutionContext () const;
+	getCurrentContext () const;
 
 	bool
 	inProtoDeclaration () const;

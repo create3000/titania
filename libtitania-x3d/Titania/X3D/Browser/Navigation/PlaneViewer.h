@@ -65,14 +65,31 @@ public:
 
 	///  @name Construction
 
-	PlaneViewer (Browser* const);
-
-	///  @name Member access
+	PlaneViewer (X3DExecutionContext* const);
 
 	virtual
-	ViewerType
-	getType () const final override
-	{ return ViewerType::PLANE; }
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
 
 	///  @name Destruction
 
@@ -101,6 +118,12 @@ private:
 
 	void
 	constrainFieldOfViewScale () const;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
 
 	///  @name Members
 

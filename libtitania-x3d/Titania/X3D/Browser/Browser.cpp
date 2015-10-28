@@ -100,7 +100,10 @@ Browser::Browser (const Browser & other, const MFString & url, const MFString & 
 {
 	addType (X3DConstants::Browser);
 
-	addChildren (cursor);
+	addChildren (viewer,
+	             keyDevice,
+                pointingDevice,
+	             cursor);
 }
 
 Browser*
@@ -116,6 +119,7 @@ Browser::initialize ()
 
 	//swapInterval (0);
 
+	viewer         -> setup ();
 	keyDevice      -> setup ();
 	pointingDevice -> setup ();
 
@@ -175,44 +179,46 @@ Browser::set_cursor (const Gdk::CursorType value)
 }
 
 void
-Browser::set_viewer (const ViewerType type)
+Browser::set_viewer (const X3DConstants::NodeType type)
 {
 	setCursor (Gdk::TOP_LEFT_ARROW);
 
-	if (viewer -> getType () not_eq type or viewer -> getNavigationInfo () not_eq getActiveNavigationInfo ())
+	if (viewer -> getType () .back () not_eq type)
 	{
 		switch (type)
 		{
-			case ViewerType::NONE:
+			case X3DConstants::NoneViewer:
 			{
-				viewer .reset (new NoneViewer (this));
+				viewer .setValue (new NoneViewer (this));
 				break;
 			}
-			case ViewerType::EXAMINE:
+			case X3DConstants::ExamineViewer:
 			{
-				viewer .reset (new ExamineViewer (this));
+				viewer .setValue (new ExamineViewer (this));
 				break;
 			}
-			case ViewerType::WALK:
+			case X3DConstants::WalkViewer:
 			{
-				viewer .reset (new WalkViewer (this));
+				viewer .setValue (new WalkViewer (this));
 				break;
 			}
-			case ViewerType::FLY:
+			case X3DConstants::FlyViewer:
 			{
-				viewer .reset (new FlyViewer (this));
+				viewer .setValue (new FlyViewer (this));
 				break;
 			}
-			case ViewerType::PLANE:
+			case X3DConstants::PlaneViewer:
 			{
-				viewer .reset (new PlaneViewer (this));
+				viewer .setValue (new PlaneViewer (this));
 				break;
 			}
-			case ViewerType::LOOKAT:
+			case X3DConstants::LookAtViewer:
 			{
-				viewer .reset (new LookAtViewer (this));
+				viewer .setValue (new LookAtViewer (this));
 				break;
 			}
+			default:
+			   break;
 		}
 
 		viewer -> setup ();
@@ -253,10 +259,6 @@ void
 Browser::dispose ()
 {
 	notify_callbacks ();
-
-	viewer         .reset ();
-	keyDevice      .reset ();
-	pointingDevice .reset ();
 
 	X3DBrowser::dispose ();
 	opengl::Surface::dispose ();

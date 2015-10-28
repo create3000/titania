@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_CONFIGURATION_SUPPORTED_NODES_H__
 
 #include "../Basic/BaseNodeArray.h"
-#include "../Bits/Error.h"
+#include "../Base/Error.h"
 
 namespace titania {
 namespace X3D {

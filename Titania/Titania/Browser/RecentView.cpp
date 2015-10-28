@@ -73,7 +73,7 @@ static constexpr size_t  PREVIEW_QUALITY = 90;
 static const std::string PREVIEW_TYPE    = "JPG";
 
 RecentView::RecentView (X3DBrowserWindow* const browserWindow) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	           gconf (gconf_dir (), "RecentView")
 {
 	// Don't use browserWindow here.
@@ -83,7 +83,7 @@ RecentView::RecentView (X3DBrowserWindow* const browserWindow) :
 void
 RecentView::initialize ()
 {
-	getScene () .addInterest (this, &RecentView::set_scene);
+	getCurrentScene () .addInterest (this, &RecentView::set_scene);
 }
 
 basic::uri
@@ -109,7 +109,7 @@ RecentView::loadPreview (X3D::X3DBrowser* const browser)
 {
 	try
 	{
-		const auto image = browser -> getSnapshot (PREVIEW_SIZE, PREVIEW_SIZE, false, std::min <size_t> (16, getBrowser () -> getMaxSamples ()));
+		const auto image = browser -> getSnapshot (PREVIEW_SIZE, PREVIEW_SIZE, false, std::min <size_t> (16, getCurrentBrowser () -> getMaxSamples ()));
 
 		image -> quality (PREVIEW_QUALITY);
 		image -> magick (PREVIEW_TYPE);
@@ -126,14 +126,14 @@ RecentView::loadPreview (X3D::X3DBrowser* const browser)
 void
 RecentView::set_scene ()
 {
-	const auto & scene = getScene ();
+	const auto & scene = getCurrentScene ();
 
 	if (scene -> getWorldURL () not_eq getURL ())
 		return;
 
 	// XXX: or extend the use of isPrivate
-	getBrowser () -> getSelection () -> isEnabled (false);
-	getBrowser () -> beginUpdate ();
+	getCurrentBrowser () -> getSelection () -> isEnabled (false);
+	getCurrentBrowser () -> beginUpdate ();
 
 	try
 	{
@@ -233,29 +233,29 @@ RecentView::set_url (const X3D::SFString & url)
 
 	if (iter not_eq browsers .cend ())
 	{
-		const X3D::BrowserPtr recentBrowser = getBrowser ();
+		const X3D::BrowserPtr recentBrowser = getCurrentBrowser ();
 
 		getBrowserWindow () -> getBrowserNotebook () .set_current_page (iter - browsers .cbegin ());
 
 		// Closing this browser must be deferred, as this browser is currently processing events.
-		getBrowser () -> finished () .addInterest (this, &RecentView::close, recentBrowser);
-		getBrowser () -> addEvent ();
+		getCurrentBrowser () -> finished () .addInterest (this, &RecentView::close, recentBrowser);
+		getCurrentBrowser () -> addEvent ();
 	}
 	else
 	{
 		if (not getBrowserWindow () -> isLive ())
-			getBrowserWindow () -> getBrowser () -> endUpdate ();
+			getBrowserWindow () -> getCurrentBrowser () -> endUpdate ();
 
-		getBrowserWindow () -> getBrowser () -> getSelection () -> isEnabled (getBrowserWindow () -> getSelection () -> isEnabled ());
+		getBrowserWindow () -> getCurrentBrowser () -> getSelection () -> isEnabled (getBrowserWindow () -> getSelection () -> isEnabled ());
 
-		getBrowserWindow () -> load (getBrowserWindow () -> getBrowser (), URL);
+		getBrowserWindow () -> load (getBrowserWindow () -> getCurrentBrowser (), URL);
 	}
 }
 
 void
 RecentView::close (const X3D::BrowserPtr & browser)
 {
-	getBrowser () -> finished () .removeInterest (this, &RecentView::close);
+	getCurrentBrowser () -> finished () .removeInterest (this, &RecentView::close);
 	getBrowserWindow () -> close (browser);
 }
 

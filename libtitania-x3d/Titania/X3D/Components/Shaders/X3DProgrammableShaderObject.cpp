@@ -50,7 +50,7 @@
 
 #include "X3DProgrammableShaderObject.h"
 
-#include "../../Bits/Cast.h"
+#include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
 #include "../Texturing/X3DTexture2DNode.h"

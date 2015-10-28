@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{277BAB61-D2B7-44BF-AEF2-06E328D7830F}</ProjectGuid>
     <Target>SharedLibrary</Target>
@@ -40,14 +40,14 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Parallel|AnyCPU' ">
     <OutputPath>.</OutputPath>
     <CompileTarget>SharedLibrary</CompileTarget>
-    <OutputName />
+    <OutputName>
+    </OutputName>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
     <Folder Include="Titania\SQL\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="info.h" />
     <None Include="Titania\SQL\SQLite3.h" />
     <None Include="libtitania-sqlite.md.pc" />
     <None Include="Makefile.am" />

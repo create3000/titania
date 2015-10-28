@@ -53,7 +53,7 @@
 
 #include "../Core/X3DBaseTool.h"
 
-#include "../../Bits/config.h"
+#include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
 
 namespace titania {

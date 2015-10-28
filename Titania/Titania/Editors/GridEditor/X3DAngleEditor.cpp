@@ -143,7 +143,7 @@ X3DAngleEditor::initialize ()
 	majorLineColor  .setNodes (angleTools);
 
 	angleTool -> rotation () .addInterest (this, &X3DAngleEditor::set_rotation);
-	getScene ()              .addInterest (this, &X3DAngleEditor::set_majorLineEvery);
+	getCurrentScene ()       .addInterest (this, &X3DAngleEditor::set_majorLineEvery);
 
 	on_grid_toggled ();
 	set_rotation ();

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 
-#include "../../Miscellaneous/FontConfig.h"
+#include "../../Browser/Text/FontConfig.h"
 #include "../../Types/Geometry.h"
 #include "../Core/X3DNode.h"
 

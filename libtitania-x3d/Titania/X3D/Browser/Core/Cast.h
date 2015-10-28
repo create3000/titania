@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,129 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_MISCELLANEOUS_X3DTEXTURE_H__
-#define __TITANIA_X3D_MISCELLANEOUS_X3DTEXTURE_H__
+#ifndef __TITANIA_X3D_BITS_CAST_H__
+#define __TITANIA_X3D_BITS_CAST_H__
 
-#include "../Rendering/OpenGL.h"
-#include "../Types/Numbers.h"
+#include "../../Base/Error.h"
 
-#include <Magick++.h>
-#include <memory>
-#include <string>
+#include <cstddef>
 
 namespace titania {
 namespace X3D {
 
-using MagickImageArray    = std::list <Magick::Image>;
-using MagickImageArrayPtr = std::unique_ptr <MagickImageArray>;
-
-class X3DTexture
+template <class Type, class Up>
+Type
+x3d_cast (Up & value)
 {
-public:
-
-	typedef int32_t size_type;
-
-	///  @name Member access
-
-	GLenum
-	getFormat ()
-	{ return format; }
-
-	size_type
-	getWidth () const
-	{ return width; }
-
-	size_type
-	getHeight () const
-	{ return height; }
-
-	size_type
-	getDepth () const
-	{ return depth; }
-
-	bool
-	getTransparency () const
-	{ return transparency; }
-
-	void
-	setComponents (size_type value)
-	{ components = value; }
-
-	size_type
-	getComponents () const
-	{ return components; }
-
-	size_type
-	getImageWidth () const
-	{ return imageWidth; }
-
-	size_type
-	getImageHeight () const
-	{ return imageHeight; }
-
-	const void*
-	getData ()
-	{ return blob .data (); }
-
-	///  @name Operations
-
-	void
-	process (const size_type, const size_type);
-
-	///  @name Destruction
-
-	virtual
-	~X3DTexture ()
+	try
+	{
+		if (value)
+			return dynamic_cast <Type> (value -> getInnerNode ());
+	}
+	catch (const X3DError &)
 	{ }
 
-
-protected:
-
-	///  @name Construction
-
-	X3DTexture (MagickImageArrayPtr &&);
-
-	///  @name Operations
-
-	virtual
-	MagickImageArrayPtr
-	readImages (const std::string &);
-
-
-private:
-
-	///  @name Operations
-
-	void
-	refineImageFormats ();
-
-	void
-	tryScaleImages (const size_type, const size_type);
-
-	void
-	scaleImages ();
-
-	void
-	writeImages ();
-
-	void
-	setTransparency ();
-
-	///  @name Members
-
-	MagickImageArrayPtr images;
-
-	GLenum       format;
-	size_type    width;
-	size_type    height;
-	size_type    depth;
-	bool         transparency;
-	size_type    components;
-	size_type    imageWidth;
-	size_type    imageHeight;
-	Magick::Blob blob;
-
-};
+	return nullptr;
+}
 
 } // X3D
 } // titania

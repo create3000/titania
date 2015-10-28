@@ -59,7 +59,7 @@ namespace titania {
 namespace puck {
 
 TextEditor::TextEditor (X3DBrowserWindow* const browserWindow) :
-	      X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	      X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DTextEditorInterface (get_ui ("Editors/TextEditor.xml"), gconf_dir ()),
 	X3DFontStyleNodeEditor (),
 	            shapeNodes (),
@@ -137,9 +137,9 @@ TextEditor::on_text_toggled ()
 			field .addInterest (this, &TextEditor::connectGeometry);
 
 			if (getTextCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (shapeNode), field, X3D::SFNode (text), undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (shapeNode), field, X3D::SFNode (text), undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (shapeNode), field, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (shapeNode), field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -182,9 +182,9 @@ TextEditor::set_node ()
 
 	if (not text)
 	{
-		text = new X3D::Text (getExecutionContext ());
-		getExecutionContext () -> addUninitializedNode (text);
-		getExecutionContext () -> realize ();
+		text = new X3D::Text (getCurrentContext ());
+		getCurrentContext () -> addUninitializedNode (text);
+		getCurrentContext () -> realize ();
 	}
 
 	changing = true;

@@ -151,7 +151,9 @@ X3DBrowser::initialize ()
 	       renderingProperties, '\n',
 	       getJavaScriptEngine (), '\n',
 
+	       #ifdef TITANIA_DEBUG
 	       "\tId: ", this, '\n',
+	       #endif
 
 	       std::string (80, '*'), '\n',
 	       std::string (80, '*'), '\n',

@@ -66,8 +66,13 @@ static constexpr float     SPIN_FACTOR       = 0.6;
 static constexpr float     SCROLL_FACTOR     = 1.0f / 50.0f;
 static constexpr time_type FRAME_RATE        = 60;
 
-ExamineViewer::ExamineViewer (Browser* const browser) :
-	        X3DViewer (browser),
+const ComponentType ExamineViewer::component      = ComponentType::TITANIA;
+const std::string   ExamineViewer::typeName       = "ExamineViewer";
+const std::string   ExamineViewer::containerField = "viewer";
+
+ExamineViewer::ExamineViewer (X3DExecutionContext* const executionContext) :
+		   X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	        X3DViewer (),
 	orientationOffset (),
 	         rotation (),
 	       fromVector (),
@@ -76,13 +81,23 @@ ExamineViewer::ExamineViewer (Browser* const browser) :
 	       motionTime (0),
 	           button (0),
 	          spin_id ()
-{ }
+{
+	addType (X3DConstants::ExamineViewer);
+}
+
+X3DBaseNode*
+ExamineViewer::create (X3DExecutionContext* const executionContext) const
+{
+	return new ExamineViewer (executionContext);
+}
 
 void
 ExamineViewer::initialize ()
 {
 	try
 	{
+		X3DViewer::initialize ();
+
 		getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_press_event));
 		getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_release_event), false);
 		getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event),  false);
@@ -106,30 +121,43 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 {
 	try
 	{
-		button    = event -> button;
+		if (button)
+			return false;
+
 		pressTime = chrono::now ();
 
-		if (button == 1)
+		switch (event -> button)
 		{
-			disconnect ();
-			getActiveViewpoint () -> transitionStop ();
+			case 1:
+			{
+				button = event -> button;
 
-			getBrowser () -> setCursor (Gdk::FLEUR);
+				disconnect ();
 
-			fromVector = trackballProjectToSphere (event -> x, event -> y);
-			rotation   = Rotation4f ();
+				getBrowser () -> setCursor (Gdk::FLEUR);
+				getActiveViewpoint () -> transitionStop ();
 
-			motionTime = 0;
-		}
+				fromVector = trackballProjectToSphere (event -> x, event -> y);
+				rotation   = Rotation4f ();
 
-		else if (button == 2)
-		{
-			disconnect ();
-			getActiveViewpoint () -> transitionStop ();
+				motionTime = 0;
 
-			getBrowser () -> setCursor (Gdk::FLEUR);
+				return false;
+			}
 
-			fromPoint = getPointOnCenterPlane (event -> x, event -> y);
+			case 2:
+			{
+				button = event -> button;
+
+				disconnect ();
+
+				getBrowser () -> setCursor (Gdk::FLEUR);
+				getActiveViewpoint () -> transitionStop ();
+
+				fromPoint = getPointOnCenterPlane (event -> x, event -> y);
+			
+				return false;
+			}
 		}
 	}
 	catch (const X3DError &)
@@ -141,23 +169,34 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 bool
 ExamineViewer::on_button_release_event (GdkEventButton* event)
 {
-	if (button == 1)
-	{
-		getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
-
-		if (std::abs (rotation .angle ()) > SPIN_ANGLE and chrono::now () - motionTime < SPIN_RELEASE_TIME)
-		{
-			rotation = slerp (Rotation4f (), rotation, SPIN_FACTOR);
-			addSpinning ();
-		}
-	}
-
-	else if (button == 2)
-	{
-		getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
-	}
+	if (event -> button not_eq button)
+		return false;
 
 	button = 0;
+
+	switch (event -> button)
+	{
+		case 1:
+		{
+			getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
+
+			if (std::abs (rotation .angle ()) > SPIN_ANGLE and chrono::now () - motionTime < SPIN_RELEASE_TIME)
+			{
+				rotation = slerp (Rotation4f (), rotation, SPIN_FACTOR);
+
+				addSpinning ();
+			}
+		
+		   return false;
+		}
+
+		case 2:
+		{
+			getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
+		
+		   return false;
+		}
+	}
 
 	return false;
 }
@@ -167,36 +206,41 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 {
 	try
 	{
-		if (button == 1)
+		switch (button)
 		{
-			const auto & viewpoint = getActiveViewpoint ();
+			case 1:
+			{
+				const auto & viewpoint = getActiveViewpoint ();
+				const auto   toVector = trackballProjectToSphere (event -> x, event -> y);
 
-			const Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
+				rotation = Rotation4f (toVector, fromVector);
 
-			rotation = Rotation4f (toVector, fromVector);
+				if (std::abs (rotation .angle ()) < SPIN_ANGLE and chrono::now () - pressTime < MOTION_TIME)
+					return false;
 
-			if (std::abs (rotation .angle ()) < SPIN_ANGLE and chrono::now () - pressTime < MOTION_TIME)
+				viewpoint -> orientationOffset () = getOrientationOffset ();
+				viewpoint -> positionOffset ()    = getPositionOffset ();
+
+				fromVector = toVector;
+
+				motionTime = chrono::now ();
+
 				return false;
+			}
 
-			viewpoint -> orientationOffset () = getOrientationOffset ();
-			viewpoint -> positionOffset ()    = getPositionOffset ();
+			case 2:
+			{
+				const auto & viewpoint   = getActiveViewpoint ();
+				const auto   toPoint     = getPointOnCenterPlane (event -> x, event -> y);
+				const auto   translation = (fromPoint - toPoint) * viewpoint -> getUserOrientation ();
 
-			fromVector = toVector;
+				viewpoint -> positionOffset ()         += translation;
+				viewpoint -> centerOfRotationOffset () += translation;
 
-			motionTime = chrono::now ();
-		}
+				fromPoint = toPoint;
 
-		else if (button == 2)
-		{
-			const auto & viewpoint = getActiveViewpoint ();
-
-			Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
-			Vector3f translation = (fromPoint - toPoint) * viewpoint -> getUserOrientation ();
-
-			viewpoint -> positionOffset ()         += translation;
-			viewpoint -> centerOfRotationOffset () += translation;
-
-			fromPoint = toPoint;
+				return false;
+			}
 		}
 	}
 	catch (const X3DError &)
@@ -210,12 +254,12 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 {
 	try
 	{
-		const auto viewpoint = getActiveViewpoint ();
+		const auto & viewpoint = getActiveViewpoint ();
 
 		viewpoint -> transitionStop ();
 
-		const Vector3f step           = getDistanceToCenter () * SCROLL_FACTOR;
-		const Vector3f positionOffset = Vector3f (0, 0, abs (step)) * viewpoint -> getUserOrientation ();
+		const auto step           = getDistanceToCenter () * SCROLL_FACTOR;
+		const auto positionOffset = Vector3f (0, 0, abs (step)) * viewpoint -> getUserOrientation ();
 
 		if (event -> direction == GDK_SCROLL_DOWN)    // Move backwards.
 		{
@@ -238,7 +282,7 @@ ExamineViewer::spin ()
 {
 	try
 	{
-		const auto viewpoint = getActiveViewpoint ();
+		const auto & viewpoint = getActiveViewpoint ();
 
 		viewpoint -> orientationOffset () = getOrientationOffset ();
 		viewpoint -> positionOffset ()    = getPositionOffset ();
@@ -261,7 +305,7 @@ ExamineViewer::addSpinning ()
 Vector3f
 ExamineViewer::getPositionOffset () const
 {
-	const auto viewpoint = getActiveViewpoint ();
+	const auto & viewpoint = getActiveViewpoint ();
 	const auto distance  = getDistanceToCenter ();
 
 	return distance * (~orientationOffset * viewpoint -> orientationOffset ()) - distance + viewpoint -> positionOffset ();
@@ -270,7 +314,7 @@ ExamineViewer::getPositionOffset () const
 Rotation4f
 ExamineViewer::getOrientationOffset ()
 {
-	const auto viewpoint = getActiveViewpoint ();
+	const auto & viewpoint = getActiveViewpoint ();
 
 	orientationOffset = viewpoint -> orientationOffset ();
 

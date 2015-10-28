@@ -106,7 +106,7 @@ MFStringURLWidget::MFStringURLWidget (X3DUserInterface* const userInterface,
                                       Gtk::Button & removeButton,
                                       const Glib::RefPtr <Gtk::TreeViewColumn> & URLChooserColumn,
                                       const std::string & name) :
-	 X3DBaseInterface (userInterface -> getBrowserWindow (), userInterface -> getBrowser ()),
+	 X3DBaseInterface (userInterface -> getBrowserWindow (), userInterface -> getCurrentBrowser ()),
 	X3DMFStringWidget (userInterface, treeView, cellRenderer, addButton, removeButton, name, ""),
 	    userInterface (userInterface),
 	 URLChooserColumn (URLChooserColumn),
@@ -130,7 +130,7 @@ MFStringURLWidget::on_add_clicked ()
 		auto URL = fileOpenDialog -> getURL ();
 
 		if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
-			URL = getExecutionContext () -> getWorldURL () .relative_path (URL);
+			URL = getCurrentContext () -> getWorldURL () .relative_path (URL);
 
 		append (URL .str ());
 	}
@@ -166,7 +166,7 @@ MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 
 	// Set URL
 
-	basic::uri URL = getExecutionContext () -> getWorldURL () .transform (get1Value (path .front ()) .raw ());
+	basic::uri URL = getCurrentContext () -> getWorldURL () .transform (get1Value (path .front ()) .raw ());
 
 	fileOpenDialog -> setURL (URL);
 
@@ -177,7 +177,7 @@ MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 		URL = fileOpenDialog -> getURL ();
 
 		if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
-			URL = getExecutionContext () -> getWorldURL () .relative_path (URL);
+			URL = getCurrentContext () -> getWorldURL () .relative_path (URL);
 
 		set1Value (path .front (), URL .str ());
 	}

@@ -54,7 +54,7 @@
 #include "../Base/X3DGarbageCollector.h"
 #include "../Base/X3DInput.h"
 #include "../Base/X3DOutput.h"
-#include "../Bits/Error.h"
+#include "../Base/Error.h"
 
 #include <Titania/LOG.h>
 

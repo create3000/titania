@@ -57,7 +57,7 @@ namespace titania {
 namespace puck {
 
 ScenePropertiesEditor::ScenePropertiesEditor (X3DBrowserWindow* const browserWindow) :
-	                 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DScenePropertiesEditorInterface (get_ui ("Editors/ScenePropertiesEditor.xml"), gconf_dir ()),
 	                    X3DUnitEditor ()
 {

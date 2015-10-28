@@ -124,7 +124,7 @@ X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBaseInterface* const editor,
                                                const Glib::RefPtr <Gtk::Adjustment> & adjustment,
                                                Gtk::Widget & widget,
                                                const std::string & name) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
 	X3DComposedWidget (editor),
 	       adjustment (adjustment),
 	           widget (widget),
@@ -142,7 +142,7 @@ X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBaseInterface* const editor,
 	setup ();
 
 	buffer                 .addInterest (this, &X3DFieldAdjustment::set_buffer);
-	getExecutionContext () .addInterest (this, &X3DFieldAdjustment::set_field);
+	getCurrentContext () .addInterest (this, &X3DFieldAdjustment::set_field);
 	   
 	adjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment::on_value_changed));
 }
@@ -202,7 +202,7 @@ X3DFieldAdjustment <Type>::on_value_changed ()
 			field .removeInterest (this, &X3DFieldAdjustment::set_field);
 			field .addInterest (this, &X3DFieldAdjustment::connect);
 
-			field = getScene () -> toBaseUnit (unit, adjustment -> get_value ());
+			field = getCurrentScene () -> toBaseUnit (unit, adjustment -> get_value ());
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -240,7 +240,7 @@ X3DFieldAdjustment <Type>::set_buffer ()
 
 			set_bounds ();
 
-			adjustment -> set_value (getScene () -> fromBaseUnit (unit, field));
+			adjustment -> set_value (getCurrentScene () -> fromBaseUnit (unit, field));
 
 			hasField = true;
 			break;
@@ -267,8 +267,8 @@ template <class Type>
 void
 X3DFieldAdjustment <Type>::set_bounds ()
 {
-	adjustment -> set_lower (getScene () -> fromBaseUnit (unit, lower));
-	adjustment -> set_upper (getScene () -> fromBaseUnit (unit, upper));
+	adjustment -> set_lower (getCurrentScene () -> fromBaseUnit (unit, lower));
+	adjustment -> set_upper (getCurrentScene () -> fromBaseUnit (unit, upper));
 }
 
 template <class Type>

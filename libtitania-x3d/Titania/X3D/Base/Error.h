@@ -48,13 +48,112 @@
  *
  ******************************************************************************/
 
-#include "UndoGroup.h"
+#ifndef __TITANIA_X3D_BITS_ERROR_H__
+#define __TITANIA_X3D_BITS_ERROR_H__
+
+#include "../Basic/X3DConstants.h"
+
+#include <exception>
+#include <string>
 
 namespace titania {
 namespace X3D {
 
-UndoGroup::UndoGroup ()
-{ }
+class X3DError :
+	public std::exception
+{
+public:
+
+	explicit
+	X3DError (const std::string &);
+
+	virtual
+	const char*
+	what () const
+	throw ();
+
+	virtual
+	ErrorType
+	getType () const
+	throw () = 0;
+
+	virtual
+	const std::string &
+	toString () const
+	throw ();
+
+	virtual
+	~X3DError ()
+	throw ();
+
+
+private:
+
+	const std::string message;
+
+};
+
+///  5.3.1 Error
+template <ErrorType Type>
+class Error :
+	public X3DError
+{
+public:
+
+	explicit
+	Error (const std::string & message) :
+		X3DError (message)
+	{ }
+
+	virtual
+	ErrorType
+	getType () const
+	throw () final override
+	{ return Type; }
+
+	virtual
+	~Error ()
+	throw ()
+	{ }
+
+};
+
+///  @relates X3DError
+///  @name Input/Output operations
+
+///  Insertion operator for X3DError.
+template <class StringT, class Traits>
+inline
+std::basic_ostream <typename StringT::value_type, Traits> &
+operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream, const X3DError & error)
+{
+	return ostream << error .toString ();
+}
+
+extern template class Error <BROWSER_UNAVAILABLE>;
+extern template class Error <CONNECTION_ERROR>;
+extern template class Error <DISPOSED>;
+extern template class Error <IMPORTED_NODE>;
+extern template class Error <INITIALIZED_ERROR>;
+extern template class Error <INSUFFICIENT_CAPABILITIES>;
+extern template class Error <INVALID_ACCESS_TYPE>;
+extern template class Error <INVALID_BROWSER>;
+extern template class Error <INVALID_DOCUMENT>;
+extern template class Error <INVALID_EXECUTION_CONTEXT>;
+extern template class Error <INVALID_FIELD>;
+extern template class Error <INVALID_NAME>;
+extern template class Error <INVALID_NODE>;
+extern template class Error <INVALID_OPERATION_TIMING>;
+extern template class Error <INVALID_SCENE>;
+extern template class Error <INVALID_URL>;
+extern template class Error <INVALID_X3D>;
+extern template class Error <NODE_IN_USE>;
+extern template class Error <NODE_NOT_AVAILABLE>;
+extern template class Error <NOT_SHARED>;
+extern template class Error <NOT_SUPPORTED>;
+extern template class Error <URL_UNAVAILABLE>;
 
 } // X3D
 } // titania
+
+#endif

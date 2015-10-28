@@ -61,7 +61,7 @@ namespace titania {
 namespace puck {
 
 GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const browserWindow) :
-	                     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	                     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	 X3DGeometryPropertiesEditorInterface (get_ui ("Editors/GeometryPropertiesEditor.xml"), gconf_dir ()),
 	                       X3DArc2DEditor (),
 	                  X3DArcClose2DEditor (),
@@ -211,10 +211,10 @@ GeometryPropertiesEditor::on_geometry_changed ()
 	   try
 	   {
 			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
-		   auto       node     = getExecutionContext () -> createNode (getGeometryComboBoxText () .get_active_text ());
+		   auto       node     = getCurrentContext () -> createNode (getGeometryComboBoxText () .get_active_text ());
 
-			getExecutionContext () -> addUninitializedNode (node);
-			getExecutionContext () -> realize ();
+			getCurrentContext () -> addUninitializedNode (node);
+			getCurrentContext () -> realize ();
 
 		   if (geometryNode -> getType () .back () == node -> getType () .back ())
 				node = geometryNode;
@@ -226,7 +226,7 @@ GeometryPropertiesEditor::on_geometry_changed ()
 				field .removeInterest (this, &GeometryPropertiesEditor::set_geometry);
 				field .addInterest (this, &GeometryPropertiesEditor::connectGeometry);
 
-				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (shapeNode), field, node, undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (shapeNode), field, node, undoStep);
 			}
 
 			getBrowserWindow () -> addUndoStep (undoStep);
@@ -245,7 +245,7 @@ GeometryPropertiesEditor::on_geometry_changed ()
 			field .removeInterest (this, &GeometryPropertiesEditor::set_geometry);
 			field .addInterest (this, &GeometryPropertiesEditor::connectGeometry);
 
-			getBrowserWindow () -> removeNode (getExecutionContext (), X3D::SFNode (shapeNode), field, undoStep);
+			getBrowserWindow () -> removeNode (getCurrentContext (), X3D::SFNode (shapeNode), field, undoStep);
 		}
 
 		getBrowserWindow () -> addUndoStep (undoStep);
@@ -281,7 +281,7 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (elevationGrid -> normalPerVertex ()), true);
 					elevationGrid -> normalPerVertex () = true;
 
-					getBrowserWindow () -> replaceNode (getExecutionContext (), geometry, elevationGrid -> normal (), nullptr, undoStep);
+					getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, elevationGrid -> normal (), nullptr, undoStep);
 
 					elevationGrid -> addNormals ();
 
@@ -297,7 +297,7 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (geoElevationGrid -> normalPerVertex ()), true);
 					geoElevationGrid -> normalPerVertex () = true;
 
-					getBrowserWindow () -> replaceNode (getExecutionContext (), geometry, geoElevationGrid -> normal (), nullptr, undoStep);
+					getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, geoElevationGrid -> normal (), nullptr, undoStep);
 
 					geoElevationGrid -> addNormals ();
 
@@ -314,7 +314,7 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 					indexedFaceSet -> normalPerVertex () = true;
 
 					undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> normalIndex ()), indexedFaceSet -> normalIndex ());
-					getBrowserWindow () -> replaceNode (getExecutionContext (), geometry, indexedFaceSet -> normal (), nullptr, undoStep);
+					getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, indexedFaceSet -> normal (), nullptr, undoStep);
 
 					indexedFaceSet -> addNormals ();
 
@@ -327,7 +327,7 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 					const auto composedGeometryNode = dynamic_cast <X3D::X3DComposedGeometryNode*> (geometry .getValue ());
 
 					undoStep -> addObjects (geometry);
-					getBrowserWindow () -> replaceNode (getExecutionContext (), geometry, composedGeometryNode -> normal (), nullptr, undoStep);
+					getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, composedGeometryNode -> normal (), nullptr, undoStep);
 
 					composedGeometryNode -> addNormals ();
 
@@ -369,7 +369,7 @@ GeometryPropertiesEditor::on_remove_normals_clicked ()
 		{
 			auto & normal = geometry -> getField <X3D::SFNode> ("normal");
 
-			getBrowserWindow () -> replaceNode (getExecutionContext (), geometry, normal, nullptr, undoStep);
+			getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, normal, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }

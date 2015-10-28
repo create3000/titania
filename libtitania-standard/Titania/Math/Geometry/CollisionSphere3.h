@@ -75,7 +75,7 @@ public:
 	///  Value typedef.
 	using value_type = Type;
 
-	///  @name Constructors
+	///  @name Constructin
 
 	///  Default constructor.
 	constexpr
@@ -97,7 +97,7 @@ public:
 		sphere_ (radius, center)
 	{ }
 
-	///  @name Element access
+	///  @name Member access
 
 	///  Sets the matrix of this collision sphere.
 	void
@@ -128,6 +128,18 @@ public:
 	const vector3 <Type> &
 	center () const
 	{ return sphere_ .center (); }
+
+	///  @name Operations
+
+	///  Transform this plane by @a matrix.
+	void
+	mult_right (const matrix4 <Type> & matrix)
+	{ matrix_ .mult_right (matrix); }
+
+	///  Transform this plane by @a matrix.
+	void
+	mult_left (const matrix4 <Type> & matrix)
+	{ matrix_ .mult_left (matrix); }
 
 	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this collision sphere.
 	bool

@@ -50,7 +50,7 @@
 
 #include "Notification.h"
 
-#include "../Bits/config.h"
+#include "../Browser/Networking/config.h"
 #include "../Execution/X3DExecutionContext.h"
 #include "../Browser/X3DBrowser.h"
 #include "../InputOutput/Loader.h"

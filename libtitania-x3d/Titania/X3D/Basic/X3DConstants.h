@@ -494,6 +494,15 @@ enum NodeType : uint16_t
 	X3DRouterObject,
 	X3DScene,
 
+	// Viewer
+
+	ExamineViewer,
+	FlyViewer,
+	LookAtViewer,
+	NoneViewer,
+	PlaneViewer,
+	WalkViewer,
+
 	// Tool nodes
 
 	AnchorTool,

@@ -61,7 +61,6 @@
     <Compile Include="Titania\OpenGL\Context\Background.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="info.h" />
     <None Include="Titania\OpenGL\Context\WindowContext.h" />
     <None Include="libtitania-opengl-surface.md.pc" />
     <None Include="Titania\OpenGL\Surface.h" />

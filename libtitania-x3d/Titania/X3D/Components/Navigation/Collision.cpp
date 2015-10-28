@@ -50,7 +50,7 @@
 
 #include "Collision.h"
 
-#include "../../Bits/Cast.h"
+#include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Layering/X3DLayerNode.h"
 #include "../../Tools/Navigation/CollisionTool.h"
@@ -103,9 +103,24 @@ Collision::initialize ()
 {
 	X3DGroupingNode::initialize ();
 
-	proxy () .addInterest (this, &Collision::set_proxy);
+	getExecutionContext () -> isLive () .addInterest (this, &Collision::set_live);
+	isLive () .addInterest (this, &Collision::set_live);
 
+	enabled () .addInterest (this, &Collision::set_live);
+	proxy ()   .addInterest (this, &Collision::set_proxy);
+
+	set_live ();
 	set_proxy ();
+}
+
+void
+Collision::set_live ()
+{
+	if (getExecutionContext () -> isLive () and isLive () and enabled ())
+		getBrowser () -> addCollision (this);
+
+	else
+		getBrowser () -> removeCollision (this);
 }
 
 void
@@ -160,6 +175,14 @@ void
 Collision::addTool ()
 {
 	X3DGroupingNode::addTool (new CollisionTool (this));
+}
+
+void
+Collision::dispose ()
+{
+	getBrowser () -> removeCollision (this);
+
+	X3DGroupingNode::dispose ();
 }
 
 } // X3D

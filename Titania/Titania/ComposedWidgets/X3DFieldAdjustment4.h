@@ -161,7 +161,7 @@ X3DFieldAdjustment4 <Type>::X3DFieldAdjustment4 (X3DBaseInterface* const editor,
                                                  const Glib::RefPtr <Gtk::Adjustment> & adjustment4,
                                                  Gtk::Widget & widget,
                                                  const std::string & name) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
 	X3DComposedWidget (editor),
 	      adjustments ({ adjustment1, adjustment2, adjustment3, adjustment4 }),
 	           widget (widget),
@@ -183,7 +183,7 @@ X3DFieldAdjustment4 <Type>::X3DFieldAdjustment4 (X3DBaseInterface* const editor,
 	setup ();
 
 	buffer                 .addInterest (this, &X3DFieldAdjustment4::set_buffer);
-	getExecutionContext () .addInterest (this, &X3DFieldAdjustment4::set_field);
+	getCurrentContext () .addInterest (this, &X3DFieldAdjustment4::set_field);
 
 	adjustments [0] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed), 0));
 	adjustments [1] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment4::on_value_changed), 1));
@@ -254,10 +254,10 @@ X3DFieldAdjustment4 <Type>::on_value_changed (const int id)
 			field .removeInterest (this, &X3DFieldAdjustment4::set_field);
 			field .addInterest (this, &X3DFieldAdjustment4::connect);
 
-			X3D::Vector4d vector (getScene () -> toBaseUnit (unit, adjustments [0] -> get_value ()),
-			                      getScene () -> toBaseUnit (unit, adjustments [1] -> get_value ()),
-			                      getScene () -> toBaseUnit (unit, adjustments [2] -> get_value ()),
-			                      getScene () -> toBaseUnit (unit, adjustments [3] -> get_value ()));
+			X3D::Vector4d vector (getCurrentScene () -> toBaseUnit (unit, adjustments [0] -> get_value ()),
+			                      getCurrentScene () -> toBaseUnit (unit, adjustments [1] -> get_value ()),
+			                      getCurrentScene () -> toBaseUnit (unit, adjustments [2] -> get_value ()),
+			                      getCurrentScene () -> toBaseUnit (unit, adjustments [3] -> get_value ()));
 
 			if (normalize)
 				vector .normalize ();
@@ -284,9 +284,9 @@ X3DFieldAdjustment4 <Type>::on_value_changed (const int id)
 					vector [index3] = vector [id];
 				}
 
-				adjustments [index1] -> set_value (getScene () -> fromBaseUnit (unit, vector [index1]));
-				adjustments [index2] -> set_value (getScene () -> fromBaseUnit (unit, vector [index2]));
-				adjustments [index3] -> set_value (getScene () -> fromBaseUnit (unit, vector [index3]));
+				adjustments [index1] -> set_value (getCurrentScene () -> fromBaseUnit (unit, vector [index1]));
+				adjustments [index2] -> set_value (getCurrentScene () -> fromBaseUnit (unit, vector [index2]));
+				adjustments [index3] -> set_value (getCurrentScene () -> fromBaseUnit (unit, vector [index3]));
 
 				changing = false;
 			}
@@ -334,10 +334,10 @@ X3DFieldAdjustment4 <Type>::set_buffer ()
 
 				set_bounds ();
 
-				adjustments [0] -> set_value (getScene () -> fromBaseUnit (unit, field .get1Value (index + 0)));
-				adjustments [1] -> set_value (getScene () -> fromBaseUnit (unit, field .get1Value (index + 1)));
-				adjustments [2] -> set_value (getScene () -> fromBaseUnit (unit, field .get1Value (index + 2)));
-				adjustments [3] -> set_value (getScene () -> fromBaseUnit (unit, field .get1Value (index + 3)));
+				adjustments [0] -> set_value (getCurrentScene () -> fromBaseUnit (unit, field .get1Value (index + 0)));
+				adjustments [1] -> set_value (getCurrentScene () -> fromBaseUnit (unit, field .get1Value (index + 1)));
+				adjustments [2] -> set_value (getCurrentScene () -> fromBaseUnit (unit, field .get1Value (index + 2)));
+				adjustments [3] -> set_value (getCurrentScene () -> fromBaseUnit (unit, field .get1Value (index + 3)));
 
 				hasField = true;
 				break;
@@ -370,8 +370,8 @@ X3DFieldAdjustment4 <Type>::set_bounds ()
 {
 	for (size_t i = 0, size = adjustments .size (); i < size; ++ i)
 	{
-		adjustments [i] -> set_lower (getScene () -> fromBaseUnit (unit, lower [i]));
-		adjustments [i] -> set_upper (getScene () -> fromBaseUnit (unit, upper [i]));
+		adjustments [i] -> set_lower (getCurrentScene () -> fromBaseUnit (unit, lower [i]));
+		adjustments [i] -> set_upper (getCurrentScene () -> fromBaseUnit (unit, upper [i]));
 	}
 }
 

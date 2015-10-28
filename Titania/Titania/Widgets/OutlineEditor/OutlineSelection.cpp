@@ -58,7 +58,7 @@ namespace titania {
 namespace puck {
 
 OutlineSelection::OutlineSelection (X3DBrowserWindow* const browserWindow, X3DOutlineTreeView* const treeView) :
-	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	        treeView (treeView),
 	  selectMultiple (false),
 	        children ()
@@ -110,7 +110,7 @@ OutlineSelection::select (const X3D::SFNode & node) const
 				selection -> setChildren ({ node });	
 		}
 
-		//getBrowser () -> update ();
+		//getCurrentBrowser () -> update ();
 	}
 }
 

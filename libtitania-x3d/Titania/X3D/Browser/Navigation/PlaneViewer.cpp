@@ -61,11 +61,24 @@ namespace X3D {
 
 static constexpr float SCROLL_FACTOR = 0.05;
 
-PlaneViewer::PlaneViewer (Browser* const browser) :
-	     X3DViewer (browser),
+const ComponentType PlaneViewer::component      = ComponentType::TITANIA;
+const std::string   PlaneViewer::typeName       = "PlaneViewer";
+const std::string   PlaneViewer::containerField = "viewer";
+
+PlaneViewer::PlaneViewer (X3DExecutionContext* const executionContext) :
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	     X3DViewer (),
 	     fromPoint (),
 	        button (0)
-{ }
+{
+	addType (X3DConstants::PlaneViewer);
+}
+
+X3DBaseNode*
+PlaneViewer::create (X3DExecutionContext* const executionContext) const
+{
+	return new PlaneViewer (executionContext);
+}
 
 void
 PlaneViewer::initialize ()
@@ -83,12 +96,14 @@ PlaneViewer::on_button_press_event (GdkEventButton* event)
 {
 	try
 	{
-		button = event -> button;
+		if (button)
+			return false;
 
-		if (button == 2)
+		if (event -> button == 2)
 		{
-			getBrowser () -> setCursor (Gdk::FLEUR);
+			button = event -> button;
 
+			getBrowser () -> setCursor (Gdk::FLEUR);
 			getActiveViewpoint () -> transitionStop ();
 
 			fromPoint = getPointOnCenterPlane (event -> x, event -> y);
@@ -103,9 +118,13 @@ PlaneViewer::on_button_press_event (GdkEventButton* event)
 bool
 PlaneViewer::on_button_release_event (GdkEventButton* event)
 {
-	getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
+	if (event -> button not_eq button)
+		return false;
 
 	button = 0;
+
+	getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
+
 	return false;
 }
 
@@ -118,13 +137,15 @@ PlaneViewer::on_motion_notify_event (GdkEventMotion* event)
 		{
 			const auto & viewpoint = getActiveViewpoint ();
 
-			const Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
-			const Vector3f translation = (fromPoint - toPoint) * viewpoint -> getUserOrientation ();
+			const auto toPoint     = getPointOnCenterPlane (event -> x, event -> y);
+			const auto translation = (fromPoint - toPoint) * viewpoint -> getUserOrientation ();
 
 			viewpoint -> positionOffset ()         += translation;
 			viewpoint -> centerOfRotationOffset () += translation;
 
 			fromPoint = toPoint;
+	
+			return false;
 		}
 	}
 	catch (const X3DError &)
@@ -138,11 +159,10 @@ PlaneViewer::on_scroll_event (GdkEventScroll* event)
 {
 	try
 	{
-		const auto viewpoint = getActiveViewpoint ();
+		const auto & viewpoint = getActiveViewpoint ();
+		const auto   fromPoint = getPointOnCenterPlane (event -> x, event -> y);
 
 		viewpoint -> transitionStop ();
-
-		const Vector3f fromPoint = getPointOnCenterPlane (event -> x, event -> y);
 
 		if (event -> direction == GDK_SCROLL_UP)      // Move backwards.
 		{
@@ -156,8 +176,8 @@ PlaneViewer::on_scroll_event (GdkEventScroll* event)
 			constrainFieldOfViewScale ();
 		}
 
-		const Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
-		const Vector3f translation = (fromPoint - toPoint) * viewpoint -> getUserOrientation ();
+		const auto toPoint     = getPointOnCenterPlane (event -> x, event -> y);
+		const auto translation = (fromPoint - toPoint) * viewpoint -> getUserOrientation ();
 
 		viewpoint -> positionOffset ()         += translation;
 		viewpoint -> centerOfRotationOffset () += translation;
@@ -173,9 +193,8 @@ PlaneViewer::constrainFieldOfViewScale () const
 {
 	try
 	{
-		const auto viewpointNode = getActiveViewpoint ();
-
-		const auto viewpoint = dynamic_cast <Viewpoint*> (viewpointNode);
+		const auto & viewpointNode = getActiveViewpoint ();
+		const auto   viewpoint     = dynamic_cast <Viewpoint*> (viewpointNode);
 
 		if (viewpoint)
 		{

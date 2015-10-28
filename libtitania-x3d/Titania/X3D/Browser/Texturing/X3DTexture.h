@@ -48,62 +48,127 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BITS_LINETYPES_H__
-#define __TITANIA_X3D_BITS_LINETYPES_H__
+#ifndef __TITANIA_X3D_MISCELLANEOUS_X3DTEXTURE_H__
+#define __TITANIA_X3D_MISCELLANEOUS_X3DTEXTURE_H__
 
-#include "../Rendering/OpenGL.h"
+#include "../../Rendering/OpenGL.h"
+#include "../../Types/Numbers.h"
 
-#include <Titania/Math/Utility/strtol.h>
+#include <Magick++.h>
+#include <memory>
+#include <string>
 
 namespace titania {
 namespace X3D {
 
-enum class LineType :
-	uint8_t
+using MagickImageArray    = std::list <Magick::Image>;
+using MagickImageArrayPtr = std::unique_ptr <MagickImageArray>;
+
+class X3DTexture
 {
-	NONE,
-	SOLID,
-	DASHED,
-	DOTTED,
-	DASHED_DOTTED,
-	DASH_DOT_DOT,
+public:
 
-	SINGLE_ARROW,
-	SINGLE_DOT,
-	DOUBLE_ARROW,
+	typedef int32_t size_type;
 
-	STITCH_LINE,
-	CHAIN_LINE,
-	CENTER_LINE,
-	HIDDEN_LINE,
-	PHANTOM_LINE,
+	///  @name Member access
 
-	BREAK_LINE_1,
-	BREAK_LINE_2
+	GLenum
+	getFormat ()
+	{ return format; }
 
-};
+	size_type
+	getWidth () const
+	{ return width; }
 
-static const std::vector <GLushort> linetypes = {
-	math::strtol ("0000000000000000", 2), // 0 None
-	math::strtol ("1111111111111111", 2), // 1 Solid
-	math::strtol ("1111111110000000", 2), // 2 Dashed
-	math::strtol ("1100110011001100", 2), // 3 Dotted
-	math::strtol ("1111111110001000", 2), // 4 Dashed-dotted
-	math::strtol ("1111100010001000", 2), // 5 Dash-dot-dot
+	size_type
+	getHeight () const
+	{ return height; }
 
-	math::strtol ("1111111111111111", 2), // 6 (single arrow)
-	math::strtol ("1111111111111111", 2), // 7 (single dot)
-	math::strtol ("1111111111111111", 2), // 8 (double arrow)
+	size_type
+	getDepth () const
+	{ return depth; }
 
-	math::strtol ("1111111100000000", 2), // 9 (stitch line)
-	math::strtol ("1111111000111000", 2), // 10 (chain line)
-	math::strtol ("1111111110011100", 2), // 11 (center line)
-	math::strtol ("1111111111100000", 2), // 12 (hidden line)
-	math::strtol ("1111111011101110", 2), // 13 (phantom line)
+	bool
+	getTransparency () const
+	{ return transparency; }
 
-	math::strtol ("1111111111111111", 2), // 14 (break line - style 1)
-	math::strtol ("1111111111111111", 2), // 15 (break line - style 2)
-	math::strtol ("1111111111111111", 2)  // 16 User - specified dash pattern
+	void
+	setComponents (size_type value)
+	{ components = value; }
+
+	size_type
+	getComponents () const
+	{ return components; }
+
+	size_type
+	getImageWidth () const
+	{ return imageWidth; }
+
+	size_type
+	getImageHeight () const
+	{ return imageHeight; }
+
+	const void*
+	getData ()
+	{ return blob .data (); }
+
+	///  @name Operations
+
+	void
+	process (const size_type, const size_type);
+
+	///  @name Destruction
+
+	virtual
+	~X3DTexture ()
+	{ }
+
+
+protected:
+
+	///  @name Construction
+
+	X3DTexture (MagickImageArrayPtr &&);
+
+	///  @name Operations
+
+	virtual
+	MagickImageArrayPtr
+	readImages (const std::string &);
+
+
+private:
+
+	///  @name Operations
+
+	void
+	refineImageFormats ();
+
+	void
+	tryScaleImages (const size_type, const size_type);
+
+	void
+	scaleImages ();
+
+	void
+	writeImages ();
+
+	void
+	setTransparency ();
+
+	///  @name Members
+
+	MagickImageArrayPtr images;
+
+	GLenum       format;
+	size_type    width;
+	size_type    height;
+	size_type    depth;
+	bool         transparency;
+	size_type    components;
+	size_type    imageWidth;
+	size_type    imageHeight;
+	Magick::Blob blob;
 
 };
 

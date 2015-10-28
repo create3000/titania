@@ -119,7 +119,7 @@ const std::map <X3D::X3DConstants::NodeType, size_t> AnimationEditor::interpolat
 };
 
 AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
-	           X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	           X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DAnimationEditorInterface (get_ui ("AnimationEditor.xml"), gconf_dir ()),
 	            X3DEditorObject (),
 	                    columns (),
@@ -174,8 +174,8 @@ AnimationEditor::initialize ()
 {
 	X3DAnimationEditorInterface::initialize ();
 
-	getBrowser ()           .addInterest (this, &AnimationEditor::set_animation, nullptr);
-	getExecutionContext ()  .addInterest (this, &AnimationEditor::set_animation, nullptr);
+	getCurrentBrowser ()           .addInterest (this, &AnimationEditor::set_animation, nullptr);
+	getCurrentContext ()  .addInterest (this, &AnimationEditor::set_animation, nullptr);
 
 	nodeIndex -> getNode () .addInterest (this, &AnimationEditor::set_animation);
 	nodeIndex -> getHeaderBox () .set_visible (false);
@@ -308,16 +308,16 @@ AnimationEditor::on_new ()
 	// Create new animation.
 
 	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Create New Animation"));
-	const auto name       = getExecutionContext () -> getUniqueName (getNewNameEntry () .get_text ());
+	const auto name       = getCurrentContext () -> getUniqueName (getNewNameEntry () .get_text ());
 	const auto groups     = getSelection <X3D::X3DGroupingNode> ({ X3D::X3DConstants::X3DGroupingNode });
 	const auto group      = groups .back ();
-	const auto animation  = getExecutionContext () -> createNode <X3D::Group> ();
-	const auto timeSensor = getExecutionContext () -> createNode <X3D::TimeSensor> ();
+	const auto animation  = getCurrentContext () -> createNode <X3D::Group> ();
+	const auto timeSensor = getCurrentContext () -> createNode <X3D::TimeSensor> ();
 
 	group -> children () .emplace_front (animation);
 	animation -> children () .emplace_front (timeSensor);
 
-	getExecutionContext () -> updateNamedNode (name, X3D::SFNode (animation));
+	getCurrentContext () -> updateNamedNode (name, X3D::SFNode (animation));
 	animation -> setMetaData <int32_t> ("/Animation/duration",        getDurationAdjustment () -> get_value ());
 	animation -> setMetaData <int32_t> ("/Animation/framesPerSecond", getFPSAdjustment () -> get_value ());
 
@@ -326,14 +326,14 @@ AnimationEditor::on_new ()
 	
 	timeSensor -> loop ()     = getLoopSwitch () .get_active ();
 	timeSensor -> stopTime () = 1;
-	getExecutionContext () -> realize ();
+	getCurrentContext () -> realize ();
 
 	set_animation (X3D::SFNode (animation));
 
 	// Undo/Redo
 
 	const auto undoRemoveNode = std::make_shared <X3D::UndoStep> ();
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { animation }, true, undoRemoveNode);
+	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { animation }, true, undoRemoveNode);
 	undoStep -> addUndoFunction (&X3D::UndoStep::redo, undoRemoveNode);
 	undoStep -> addRedoFunction (&X3D::UndoStep::undo, undoRemoveNode);
 	undoRemoveNode -> undo ();
@@ -444,11 +444,11 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 
 		if (timeSensors .empty ())
 		{
-			timeSensor = getExecutionContext () -> createNode <X3D::TimeSensor> ();
+			timeSensor = getCurrentContext () -> createNode <X3D::TimeSensor> ();
 
 			animation -> children () .emplace_front (timeSensor);
 
-			getExecutionContext () -> realize ();
+			getCurrentContext () -> realize ();
 		}
 		else
 			timeSensor = timeSensors .back ();
@@ -595,7 +595,7 @@ AnimationEditor::on_remove_member ()
 
 			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Animation"));
 
-			getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { animation }, true, undoStep);
+			getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { animation }, true, undoStep);
 			getBrowserWindow () -> addUndoStep (undoStep);
 			break;
 		}
@@ -626,7 +626,7 @@ AnimationEditor::on_remove_member ()
 
 					interpolatorsToRemove .emplace (interpolator);
 
-					getBrowserWindow () -> deleteRoute (getExecutionContext (), X3D::SFNode (interpolator), "value_changed", node, field -> getName (), undoStep);
+					getBrowserWindow () -> deleteRoute (getCurrentContext (), X3D::SFNode (interpolator), "value_changed", node, field -> getName (), undoStep);
 
 					interpolatorIndex .erase (iter);
 				}
@@ -645,7 +645,7 @@ AnimationEditor::on_remove_member ()
 				
 				if (not interpolators .empty ())
 				{
-					getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), X3D::MFNode (interpolatorsToRemove .begin (), interpolatorsToRemove .end ()), true, undoStep);
+					getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), X3D::MFNode (interpolatorsToRemove .begin (), interpolatorsToRemove .end ()), true, undoStep);
 				}
 
 				undoStep -> addRedoFunction (&AnimationEditor::set_interpolators, this);
@@ -677,7 +677,7 @@ AnimationEditor::on_remove_member ()
 				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Interpolator"));
 
 				undoStep -> addUndoFunction (&AnimationEditor::set_interpolators, this);
-				getBrowserWindow () -> deleteRoute (getExecutionContext (), X3D::SFNode (interpolator), "value_changed", node, field -> getName (), undoStep);
+				getBrowserWindow () -> deleteRoute (getCurrentContext (), X3D::SFNode (interpolator), "value_changed", node, field -> getName (), undoStep);
 
 				interpolatorIndex .erase (field);
 
@@ -695,7 +695,7 @@ AnimationEditor::on_remove_member ()
 				}
 						
 				if (not isConnectedToOtherMembers)
-					getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { interpolator }, true, undoStep);
+					getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { interpolator }, true, undoStep);
 
 				undoStep -> addRedoFunction (&AnimationEditor::set_interpolators, this);
 				getBrowserWindow () -> addUndoStep (undoStep);
@@ -1186,7 +1186,7 @@ AnimationEditor::on_time ()
 
 	undoStep -> addObjects (timeSensor);
 
-	getBrowserWindow () -> updateNamedNode (getExecutionContext (), name, X3D::SFNode (animation), undoStep);
+	getBrowserWindow () -> updateNamedNode (getCurrentContext (), name, X3D::SFNode (animation), undoStep);
 
 	// Adjust metadata
 
@@ -1836,7 +1836,7 @@ AnimationEditor::removeKeyframes ()
 			interpolatorsToRemove .emplace_back (interpolator);
 	}
 
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), interpolatorsToRemove, true, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), interpolatorsToRemove, true, undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -2280,13 +2280,13 @@ AnimationEditor::getInterpolator (const std::string & typeName,
 	}
 	catch (const std::out_of_range &)
 	{
-		const auto interpolator = getExecutionContext () -> createNode (typeName);
+		const auto interpolator = getCurrentContext () -> createNode (typeName);
 		const auto name         = getInterpolatorName (node, field);
 		
 		interpolator -> getField ("value_changed") -> addInterest (this, &AnimationEditor::set_value);
 
-		getExecutionContext () -> addUninitializedNode (interpolator);
-		getExecutionContext () -> realize ();
+		getCurrentContext () -> addUninitializedNode (interpolator);
+		getCurrentContext () -> realize ();
 
 		const X3D::X3DPtr <X3D::X3DNode> interpolatorNode (interpolator);
 		interpolatorIndex .emplace (field, interpolatorNode);
@@ -2294,9 +2294,9 @@ AnimationEditor::getInterpolator (const std::string & typeName,
 
 		undoStep -> addObjects (animation);
 		getBrowserWindow () -> pushBackIntoArray (X3D::SFNode (animation), animation -> children (), interpolator, undoStep);
-		getBrowserWindow () -> addRoute (getExecutionContext (), X3D::SFNode (timeSensor), "fraction_changed", interpolator, "set_fraction", undoStep);
-		getBrowserWindow () -> addRoute (getExecutionContext (), interpolator, "value_changed", node, field -> getName (), undoStep);
-		getBrowserWindow () -> updateNamedNode (getExecutionContext (), name, interpolator, undoStep);
+		getBrowserWindow () -> addRoute (getCurrentContext (), X3D::SFNode (timeSensor), "fraction_changed", interpolator, "set_fraction", undoStep);
+		getBrowserWindow () -> addRoute (getCurrentContext (), interpolator, "value_changed", node, field -> getName (), undoStep);
+		getBrowserWindow () -> updateNamedNode (getCurrentContext (), name, interpolator, undoStep);
 		return interpolatorNode;
 	}
 }

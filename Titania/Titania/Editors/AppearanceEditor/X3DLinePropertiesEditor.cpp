@@ -121,9 +121,9 @@ X3DLinePropertiesEditor::on_lineProperties_toggled ()
 			field .addInterest (this, &X3DLinePropertiesEditor::connectLineProperties);
 
 			if (getLinePropertiesCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, X3D::SFNode (lineProperties), undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (lineProperties), undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -154,7 +154,7 @@ X3DLinePropertiesEditor::set_node ()
 
 	if (not lineProperties)
 	{
-		lineProperties = new X3D::LineProperties (getExecutionContext ());
+		lineProperties = new X3D::LineProperties (getCurrentContext ());
 		lineProperties -> linewidthScaleFactor () = 1;
 		lineProperties -> setup ();
 	}

@@ -69,7 +69,7 @@ CollisionContainer::intersects (CollisionSphere3f sphere) const
 	if (collisions .empty ())
 		return false;
 	
-	sphere .matrix (modelViewMatrix * sphere .matrix ());
+	sphere .mult_left (modelViewMatrix);
 
 	return shape -> intersects (sphere, localObjects);
 }

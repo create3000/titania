@@ -271,7 +271,11 @@ throw (Error <INVALID_OPERATION_TIMING>,
 			processEvents ();
 
 			getWorld () -> traverse (TraverseType::CAMERA);
-			getWorld () -> traverse (TraverseType::COLLISION);
+
+			if (not getActiveCollisions () .empty ())
+				getWorld () -> traverse (TraverseType::COLLISION);
+
+			//__LOG__ << getActiveCollisions () .size () << std::endl;
 
 			sensors () .processInterests ();
 			processEvents ();
@@ -305,6 +309,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	catch (const std::exception & exception)
 	{
 		std::clog
+		   << getName () << " "
 			<< SFTime (getCurrentTime ()) .toUTCString () << " Unhandled exception:" << std::endl
 			<< "  " << exception .what () << std::endl;
 	}

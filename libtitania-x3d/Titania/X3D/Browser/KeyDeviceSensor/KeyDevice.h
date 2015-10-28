@@ -52,8 +52,8 @@
 #define __TITANIA_X3D_BROWSER_DEVICES_KEY_DEVICE_H__
 
 #include "../X3DBrowserObject.h"
-#include "../../Miscellaneous/Keys.h"
 #include "../../Types/String.h"
+#include "Keys.h"
 
 #include <sigc++/sigc++.h>
 #include <gtk/gtk.h>
@@ -68,7 +68,35 @@ class KeyDevice :
 {
 public:
 
-	KeyDevice (Browser* const);
+	///  @name Construction
+
+	KeyDevice (X3DExecutionContext* const);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Destruction
 
 	virtual
 	~KeyDevice ();
@@ -76,9 +104,13 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Event handlers
 
 	void
 	set_keyDeviceSensorNodeEvent ();
@@ -101,6 +133,14 @@ private:
 	static
 	void
 	on_commit (GtkIMContext*, gchar*, gpointer);
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Members
 
 	GtkIMContext* imContextPress;
 	GtkIMContext* imContextRelease;

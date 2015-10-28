@@ -50,7 +50,7 @@
 
 #include "LineProperties.h"
 
-#include "../../Bits/Linetypes.h"
+#include "../../Browser/Shape/Linetypes.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {

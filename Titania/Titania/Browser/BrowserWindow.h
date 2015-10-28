@@ -729,10 +729,10 @@ private:
 	getChildrenInProtoinstance (const X3D::SFNode &, const std::set <X3D::SFNode> &, std::set <X3D::SFNode> &) const;
 
 	void
-	set_viewer (X3D::ViewerType);
+	set_viewer (const X3D::X3DConstants::NodeType);
 
 	void
-	set_available_viewers (const X3D::MFEnum <X3D::ViewerType> &);
+	set_available_viewers (const X3D::MFEnum <X3D::X3DConstants::NodeType> &);
 
 	virtual
 	void
@@ -779,8 +779,8 @@ private:
 
 	///  @name Members
 
-	bool            changing;
-	X3D::ViewerType viewer;
+	bool                        changing;
+	X3D::X3DConstants::NodeType viewer;
 
 	Glib::RefPtr <Gtk::CssProvider>                cssProvider;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> environmentActions;

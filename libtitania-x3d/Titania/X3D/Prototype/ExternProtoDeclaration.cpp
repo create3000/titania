@@ -50,7 +50,7 @@
 
 #include "ExternProtoDeclaration.h"
 
-#include "../Bits/Error.h"
+#include "../Base/Error.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Execution/X3DScene.h"

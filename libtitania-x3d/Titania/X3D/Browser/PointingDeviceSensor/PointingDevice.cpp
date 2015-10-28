@@ -57,8 +57,13 @@
 namespace titania {
 namespace X3D {
 
-PointingDevice::PointingDevice (Browser* const browser) :
-	          X3DBrowserObject (browser),
+const ComponentType PointingDevice::component      = ComponentType::TITANIA;
+const std::string   PointingDevice::typeName       = "PointingDevice";
+const std::string   PointingDevice::containerField = "pointingDevice";
+
+PointingDevice::PointingDevice (X3DExecutionContext* const executionContext) :
+		            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	          X3DBrowserObject (),
 	  button_press_conncection (),
 	button_release_conncection (),
 	 motion_notify_conncection (),
@@ -67,6 +72,12 @@ PointingDevice::PointingDevice (Browser* const browser) :
 	                    button (0),
 	                    isOver (false)
 { }
+
+X3DBaseNode*
+PointingDevice::create (X3DExecutionContext* const executionContext) const
+{
+	return new PointingDevice (executionContext);
+}
 
 void
 PointingDevice::initialize ()

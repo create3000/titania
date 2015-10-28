@@ -69,7 +69,7 @@ namespace titania {
 namespace puck {
 
 ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
-	          X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	  X3DScriptEditorInterface (get_ui ("ScriptEditor.xml"), gconf_dir ()),
 	           X3DScriptEditor (),
 	       X3DShaderPartEditor (),
@@ -167,7 +167,7 @@ ScriptEditor::isModified () const
 void
 ScriptEditor::on_map ()
 {
-	getExecutionContext () .addInterest (this, &ScriptEditor::set_executionContext);
+	getCurrentContext () .addInterest (this, &ScriptEditor::set_executionContext);
 
 	set_label ();
 
@@ -177,7 +177,7 @@ ScriptEditor::on_map ()
 void
 ScriptEditor::on_unmap ()
 {
-	getExecutionContext () .removeInterest (this, &ScriptEditor::set_executionContext);
+	getCurrentContext () .removeInterest (this, &ScriptEditor::set_executionContext);
 }
 
 void
@@ -353,7 +353,7 @@ ScriptEditor::apply (const X3D::UndoStepPtr & undoStep)
 	cdata -> set1Value (index, text);
 	undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, *cdata);
 
-	getBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("%s »%s« is build."), node -> getTypeName () .c_str (), node -> getName () .c_str ()));
+	getCurrentBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("%s »%s« is build."), node -> getTypeName () .c_str (), node -> getName () .c_str ()));
 
 	isModified (false);
 }
@@ -477,9 +477,9 @@ ScriptEditor::set_executionContext ()
 	{
 		ScriptEditorDatabase database;
 
-		const auto item     = database .getItem (getExecutionContext () -> getWorldURL () .filename ());
+		const auto item     = database .getItem (getCurrentContext () -> getWorldURL () .filename ());
 		const auto nodeName = std::get <0> (item);
-		const auto node     = getExecutionContext () -> getNamedNode (nodeName);
+		const auto node     = getCurrentContext () -> getNamedNode (nodeName);
 
 		if (nodeTypes .count (node -> getType () .back ()))
 			return set_node (node);

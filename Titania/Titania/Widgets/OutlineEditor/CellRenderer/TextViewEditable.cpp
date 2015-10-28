@@ -132,7 +132,7 @@ TextViewEditable::on_current_time ()
 void
 TextViewEditable::on_reset_activate ()
 {
-	const auto & scene = treeView -> getScene ();
+	const auto & scene = treeView -> getCurrentScene ();
 
 	try
 	{

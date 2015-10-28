@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,30 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BITS_CAST_H__
-#define __TITANIA_X3D_BITS_CAST_H__
+#ifndef __TITANIA_X3D_BITS_RANDOM_H__
+#define __TITANIA_X3D_BITS_RANDOM_H__
 
-#include "../Bits/Error.h"
-
-#include <cstddef>
+#include "../../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type, class Up>
-Type
-x3d_cast (Up & value)
-{
-	try
-	{
-		if (value)
-			return dynamic_cast <Type> (value -> getInnerNode ());
-	}
-	catch (const X3DError &)
-	{ }
+int32_t
+randomi ();
 
-	return nullptr;
-}
+float
+random1 ();
+
+float
+random1 (const float, const float);
+
+Vector3f
+random_normal ();
 
 } // X3D
 } // titania

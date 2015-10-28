@@ -50,7 +50,7 @@
 
 #include "X3DNurbsSurfaceGeometryNode.h"
 
-#include "../../Bits/Cast.h"
+#include "../../Browser/Core/Cast.h"
 
 namespace titania {
 namespace X3D {

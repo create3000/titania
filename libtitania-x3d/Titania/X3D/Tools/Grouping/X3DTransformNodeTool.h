@@ -54,7 +54,7 @@
 #include "../Grouping/X3DTransformMatrix4DNodeTool.h"
 #include "../ToolColors.h"
 
-#include "../../Bits/config.h"
+#include "../../Browser/Networking/config.h"
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Layering/X3DLayerNode.h"

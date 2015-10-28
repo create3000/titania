@@ -51,7 +51,7 @@
 #include "WindPhysicsModel.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Miscellaneous/Random.h"
+#include "../../Browser/ParticleSystems/Random.h"
 
 namespace titania {
 namespace X3D {

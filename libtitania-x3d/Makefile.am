@@ -7,6 +7,7 @@ lib_LTLIBRARIES =  \
 libtitania_x3d_la_SOURCES =  \
 	Titania/X3D.cpp \
 	Titania/X3D/Base/ChildObjectSet.cpp \
+	Titania/X3D/Base/Error.cpp \
 	Titania/X3D/Base/Output.cpp \
 	Titania/X3D/Base/X3DChildObject.cpp \
 	Titania/X3D/Base/X3DGarbargeCollector.cpp \
@@ -21,12 +22,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Basic/FieldSet.cpp \
 	Titania/X3D/Basic/NodeSet.cpp \
 	Titania/X3D/Basic/NodeTypeArray.cpp \
+	Titania/X3D/Basic/Traverse.cpp \
 	Titania/X3D/Basic/X3DBaseNode.cpp \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \
-	Titania/X3D/Bits/config.cpp \
-	Titania/X3D/Bits/Error.cpp \
-	Titania/X3D/Bits/Geospatial.cpp \
-	Titania/X3D/Bits/Traverse.cpp \
 	Titania/X3D/Browser/Browser.cpp \
 	Titania/X3D/Browser/BrowserOptions.cpp \
 	Titania/X3D/Browser/BrowserProperties.cpp \
@@ -45,7 +43,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Geometry3D/QuadSphereOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DGeometry3DContext.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DSphereOptionNode.cpp \
+	Titania/X3D/Browser/Geospatial/Geospatial.cpp \
 	Titania/X3D/Browser/KeyDeviceSensor/KeyDevice.cpp \
+	Titania/X3D/Browser/KeyDeviceSensor/Keys.cpp \
 	Titania/X3D/Browser/KeyDeviceSensor/X3DKeyDeviceSensorContext.cpp \
 	Titania/X3D/Browser/Layering/X3DLayeringContext.cpp \
 	Titania/X3D/Browser/Lighting/X3DLightingContext.cpp \
@@ -58,8 +58,11 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Navigation/X3DFlyViewer.cpp \
 	Titania/X3D/Browser/Navigation/X3DNavigationContext.cpp \
 	Titania/X3D/Browser/Navigation/X3DViewer.cpp \
+	Titania/X3D/Browser/Networking/config.cpp \
 	Titania/X3D/Browser/Networking/X3DNetworkingContext.cpp \
 	Titania/X3D/Browser/Notification.cpp \
+	Titania/X3D/Browser/ParticleSystems/BVH.cpp \
+	Titania/X3D/Browser/ParticleSystems/Random.cpp \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/Hit.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/HitArray.cpp \
@@ -77,8 +80,12 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Shading/X3DShadingContext.cpp \
 	Titania/X3D/Browser/Shape/X3DShapeContext.cpp \
 	Titania/X3D/Browser/Sound/MediaStream.cpp \
+	Titania/X3D/Browser/Text/FontConfig.cpp \
 	Titania/X3D/Browser/Text/X3DTextContext.cpp \
+	Titania/X3D/Browser/Texturing/Texture.cpp \
+	Titania/X3D/Browser/Texturing/X3DTexture.cpp \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.cpp \
+	Titania/X3D/Browser/Texturing3D/Texture3D.cpp \
 	Titania/X3D/Browser/X3DBrowser.cpp \
 	Titania/X3D/Browser/X3DBrowserContext.cpp \
 	Titania/X3D/Components/CADGeometry/CADAssembly.cpp \
@@ -382,10 +389,10 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Configuration/Unit.cpp \
 	Titania/X3D/Configuration/UnitArray.cpp \
 	Titania/X3D/Configuration/X3DUnitContext.cpp \
-	Titania/X3D/Editor/Undo/UndoGroup.cpp \
-	Titania/X3D/Editor/Undo/UndoHistory.cpp \
-	Titania/X3D/Editor/Undo/UndoStep.cpp \
-	Titania/X3D/Editor/X3DEditor.cpp \
+	Titania/X3D/Editing/Undo/UndoGroup.cpp \
+	Titania/X3D/Editing/Undo/UndoHistory.cpp \
+	Titania/X3D/Editing/Undo/UndoStep.cpp \
+	Titania/X3D/Editing/X3DEditor.cpp \
 	Titania/X3D/Execution/BindableNodeList.cpp \
 	Titania/X3D/Execution/ExportedNode.cpp \
 	Titania/X3D/Execution/ExportedNodeIndex.cpp \
@@ -470,13 +477,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DScene.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptContext.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptEngine.cpp \
-	Titania/X3D/Miscellaneous/BVH.cpp \
-	Titania/X3D/Miscellaneous/FontConfig.cpp \
-	Titania/X3D/Miscellaneous/Keys.cpp \
-	Titania/X3D/Miscellaneous/Random.cpp \
-	Titania/X3D/Miscellaneous/Texture.cpp \
-	Titania/X3D/Miscellaneous/Texture3D.cpp \
-	Titania/X3D/Miscellaneous/X3DTexture.cpp \
 	Titania/X3D/Parser/Filter.cpp \
 	Titania/X3D/Parser/Grammar.cpp \
 	Titania/X3D/Parser/Parser.cpp \

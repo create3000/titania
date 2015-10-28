@@ -58,7 +58,7 @@ namespace puck {
 void
 X3DEditorObject::setup ()
 {
-	getBrowser () .addInterest (this, &X3DEditorObject::set_browser);
+	getCurrentBrowser () .addInterest (this, &X3DEditorObject::set_browser);
 }
 
 void

@@ -58,7 +58,7 @@ namespace titania {
 namespace puck {
 
 PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browserWindow) :
-	                   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	                   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DPrecisionPlacementPanelInterface (get_ui ("Editors/PrecisionPlacementPanel.xml"), gconf_dir ()),
 	                 X3DTransformEditor (),
 	                 X3DBillboardEditor (),

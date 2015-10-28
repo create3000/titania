@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_CONFIGURATION_COMPONENT_INFO_H__
 #define __TITANIA_X3D_CONFIGURATION_COMPONENT_INFO_H__
 
-#include "../Bits/X3DConstants.h"
+#include "../Basic/X3DConstants.h"
 
 #include <memory>
 #include <string>

@@ -48,98 +48,63 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BITS_GEOSPATIAL_H__
-#define __TITANIA_X3D_BITS_GEOSPATIAL_H__
+#ifndef __TITANIA_X3D_MISCELLANEOUS_BVH_H__
+#define __TITANIA_X3D_MISCELLANEOUS_BVH_H__
 
-#include "../Fields.h"
-#include "../Types/Geometry.h"
+#include "../../Types/Numbers.h"
 
-#include <Titania/Geospatial/BasicConverter.h>
-#include <Titania/Geospatial/Geodetic.h>
 #include <memory>
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-class Geospatial
+/**
+ *  BVH - class to represent a Bounded volume hierarchy.
+ */
+
+class BVH
 {
 public:
 
-	using ReferenceFramePtr = std::shared_ptr <geospatial::basic_converter <double>> ;
-	using ElevationFramePtr = std::shared_ptr <geospatial::geodetic <double>> ;
-
-	enum class CoordinateSystemType : uint8_t
+	struct ArrayValue
 	{
-		GD,
-		UTM,
-		GC
+		ArrayValue (int32_t type, Vector3f min, Vector3f max, int32_t left, int32_t right) :
+			 type (type),
+			  min (min),
+			  max (max),
+			 left (left),
+			right (right)
+	     	{ }
+
+		int32_t type;
+		Vector3f min;
+		Vector3f max;
+		int32_t left;
+		int32_t right;
 	};
 
-	static
-	ReferenceFramePtr
-	getReferenceFrame (const MFString &, const bool);
+	BVH (std::vector <Vector3f>&&);
 
-	static
-	ElevationFramePtr
-	getElevationFrame (const MFString &, const bool);
+	std::vector <ArrayValue>
+	toArray () const;
 
-	static
-	CoordinateSystemType
-	getCoordinateSystem (const MFString &);
-
-	static
-	Spheroid3d
-	getEllipsoid (const MFString &);
-
-	static
-	std::string
-	getEllipsoidString (const MFString &);
-
-	static
-	bool
-	isStandardOrder (const MFString & geoSystem);
-
-	static
-	bool
-	getLatitudeFirst (const MFString &);
-
-	static
-	bool
-	getNorthingFirst (const MFString &);
-
-	static
-	int
-	getZone (const MFString &);
-
-	static
-	bool
-	getNorthernHemisphere (const MFString &);
-
+	virtual
+	~BVH ();
 
 private:
 
-	// Dummy class for geocentric coordinates
-	class Geocentric :
-		public geospatial::basic_converter <double>
-	{
-	public:
+	class SortComparator;
+	class MedianComparator;
 
-		virtual
-		Vector3d
-		convert (const Vector3d & geocentric) const final override
-		{ return geocentric; }
+	class X3DNode;
+	class Triangle;
+	class Node;
 
-		virtual
-		Vector3d
-		apply (const Vector3d & geocentric) const final override
-		{ return geocentric; }
+	///  @name Members
 
-	};
-
-	//  @name Static members
-
-	static const std::map <std::string, CoordinateSystemType> coordinateSystems;
-	static const std::map <std::string, Spheroid3d>           ellipsoids;
+	std::vector <Vector3f>    vertices;
+	std::unique_ptr <X3DNode> root;
 
 };
 

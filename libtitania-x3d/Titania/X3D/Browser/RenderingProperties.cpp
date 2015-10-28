@@ -50,7 +50,7 @@
 
 #include "RenderingProperties.h"
 
-#include "../Bits/config.h"
+#include "../Browser/Networking/config.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/World.h"
 #include "../Execution/X3DExecutionContext.h"

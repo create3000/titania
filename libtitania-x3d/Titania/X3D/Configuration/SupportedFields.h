@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_CONFIGURATION_SUPPORTED_FIELDS_H__
 #define __TITANIA_X3D_CONFIGURATION_SUPPORTED_FIELDS_H__
 
-#include "../Bits/Error.h"
+#include "../Base/Error.h"
 #include "../Configuration/SupporteFieldArray.h"
 
 namespace titania {

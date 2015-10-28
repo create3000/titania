@@ -79,10 +79,10 @@ X3DPrimitiveCountEditor::on_unmap_primitive_count ()
 {
 	getBrowserWindow () -> getSelection () -> getChildren () .removeInterest (this, &X3DPrimitiveCountEditor::update);
 
-	getBrowser ()          .removeInterest (this, &X3DPrimitiveCountEditor::update);
-	getBrowser ()          .removeInterest (this, &X3DPrimitiveCountEditor::set_browser);
-	getExecutionContext () .removeInterest (this, &X3DPrimitiveCountEditor::update);
-	getExecutionContext () .removeInterest (this, &X3DPrimitiveCountEditor::set_executionContext);
+	getCurrentBrowser ()          .removeInterest (this, &X3DPrimitiveCountEditor::update);
+	getCurrentBrowser ()          .removeInterest (this, &X3DPrimitiveCountEditor::set_browser);
+	getCurrentContext () .removeInterest (this, &X3DPrimitiveCountEditor::update);
+	getCurrentContext () .removeInterest (this, &X3DPrimitiveCountEditor::set_executionContext);
 
 	if (browser)
 		browser -> displayed () .removeInterest (this, &X3DPrimitiveCountEditor::update);
@@ -103,16 +103,16 @@ X3DPrimitiveCountEditor::on_primitive_count_count_changed ()
 {
 	on_unmap_primitive_count ();
 
-	getExecutionContext () .addInterest (this, &X3DPrimitiveCountEditor::set_executionContext);
-	getExecutionContext () .addInterest (this, &X3DPrimitiveCountEditor::update);
+	getCurrentContext () .addInterest (this, &X3DPrimitiveCountEditor::set_executionContext);
+	getCurrentContext () .addInterest (this, &X3DPrimitiveCountEditor::update);
 
 	switch (getPrimitiveCountCountButton () .get_active_row_number ())
 	{
 		case 0:
-			getBrowser () .addInterest (this, &X3DPrimitiveCountEditor::update);
+			getCurrentBrowser () .addInterest (this, &X3DPrimitiveCountEditor::update);
 			break;
 		case 1:
-			getBrowser () .addInterest (this, &X3DPrimitiveCountEditor::set_browser);
+			getCurrentBrowser () .addInterest (this, &X3DPrimitiveCountEditor::set_browser);
 			set_browser ();
 			break;
 		case 2:
@@ -129,7 +129,7 @@ X3DPrimitiveCountEditor::update ()
 {
 	using namespace std::placeholders;
 
-	if (not getWorld ())
+	if (not getCurrentWorld ())
 		return;
 
 	points    = 0;
@@ -140,7 +140,7 @@ X3DPrimitiveCountEditor::update ()
 	{
 		case 0:
 		{
-			for (const auto & layer : getWorld () -> getLayerSet () -> getLayers ())
+			for (const auto & layer : getCurrentWorld () -> getLayerSet () -> getLayers ())
 			{
 				X3D::traverse (layer -> children (),
 				               std::bind (&X3DPrimitiveCountEditor::traverse, this, _1),
@@ -156,7 +156,7 @@ X3DPrimitiveCountEditor::update ()
 		}
 		case 1:
 		{
-			for (const auto & layer : getWorld () -> getLayerSet () -> getLayers ())
+			for (const auto & layer : getCurrentWorld () -> getLayerSet () -> getLayers ())
 			{
 				for (const auto & container : basic::make_range (layer -> getOpaqueShapes () .begin (), layer -> getNumOpaqueShapes ()))
 				{
@@ -264,7 +264,7 @@ X3DPrimitiveCountEditor::set_browser ()
 	if (browser)
 		browser -> displayed () .removeInterest (this, &X3DPrimitiveCountEditor::update);
 
-	browser = getBrowser ();
+	browser = getCurrentBrowser ();
 	browser -> displayed () .addInterest (this, &X3DPrimitiveCountEditor::update);
 }
 
@@ -274,7 +274,7 @@ X3DPrimitiveCountEditor::set_executionContext ()
 	if (executionContext)
 		executionContext -> sceneGraph_changed () .removeInterest (this, &X3DPrimitiveCountEditor::update);
 
-	executionContext = getExecutionContext ();
+	executionContext = getCurrentContext ();
 	executionContext -> sceneGraph_changed () .addInterest (this, &X3DPrimitiveCountEditor::update);
 }
 

@@ -40,7 +40,6 @@
     <CompileTarget>SharedLibrary</CompileTarget>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="info.h" />
     <None Include="Titania\Stream\InputFileStream.h" />
     <None Include="libtitania-stream.md.pc" />
     <None Include="Makefile.am" />

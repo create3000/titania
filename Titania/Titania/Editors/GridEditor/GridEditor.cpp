@@ -58,7 +58,7 @@ namespace titania {
 namespace puck {
 
 GridEditor::GridEditor (X3DBrowserWindow* const browserWindow) :
-	      X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	      X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DGridEditorInterface (get_ui ("Editors/GridEditor.xml"), gconf_dir ()),
 	         X3DGridEditor (),
 	        X3DAngleEditor ()

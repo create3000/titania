@@ -50,7 +50,7 @@
 
 #include "X3DGeospatialObject.h"
 
-#include "../../Bits/Cast.h"
+#include "../../Browser/Core/Cast.h"
 #include "../../Types/Geometry.h"
 #include "../../Execution/X3DScene.h"
 

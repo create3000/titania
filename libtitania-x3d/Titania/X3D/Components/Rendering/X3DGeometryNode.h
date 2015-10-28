@@ -137,13 +137,12 @@ public:
 	void
 	triangulate (std::vector <Color4f> &, TexCoordArray &, std::vector <Vector3f> &, std::vector <Vector3f> &) const;
 
+	void
+	collision (const CollisionContainer* const);
+
 	virtual
 	void
 	draw (const ShapeContainer* const);
-
-	// Used in CollisionContainer
-	void
-	collision (const CollisionContainer* const);
 
 	virtual
 	SFNode

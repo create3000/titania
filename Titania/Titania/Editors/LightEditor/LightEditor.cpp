@@ -58,7 +58,7 @@ namespace titania {
 namespace puck {
 
 LightEditor::LightEditor (X3DBrowserWindow* const browserWindow) :
-	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	         X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	  X3DLightEditorInterface (get_ui ("Editors/LightEditor.xml"), gconf_dir ()),
 	X3DDirectionalLightEditor (),
 	      X3DPointLightEditor (),
@@ -114,7 +114,7 @@ LightEditor::on_remove_light_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove %s"), nodeName .getNode () -> getTypeName () .c_str ()));
 
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { nodeName .getNode () }, true, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { nodeName .getNode () }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

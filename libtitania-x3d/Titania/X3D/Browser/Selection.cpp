@@ -50,8 +50,8 @@
 
 #include "Selection.h"
 
-#include "../Bits/Cast.h"
-#include "../Bits/Traverse.h"
+#include "../Browser/Core/Cast.h"
+#include "../Basic/Traverse.h"
 #include "../Browser/ContextLock.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Grouping/Transform.h"

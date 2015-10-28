@@ -690,7 +690,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hammer_clicked));
 
 	// Connect object Gtk::Notebook with id 'BrowserNotebook'.
-	m_BrowserNotebook -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_notebook_button_press_event));
+	m_BrowserNotebook -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_notebook_button_press_event), false);
 	m_BrowserNotebook -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_browser_drag_data_received));
 	m_BrowserNotebook -> signal_page_reordered () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_browser_reordered));
 	m_BrowserNotebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_switch_browser));

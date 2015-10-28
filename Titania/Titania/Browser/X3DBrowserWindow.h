@@ -53,7 +53,7 @@
 
 #include "../Browser/X3DBrowserEditor.h"
 
-#include <Titania/X3D/Miscellaneous/Keys.h>
+#include <Titania/X3D/Browser/KeyDeviceSensor/Keys.h>
 
 namespace titania {
 namespace puck {

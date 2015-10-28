@@ -50,7 +50,7 @@
 
 #include "GeoOrigin.h"
 
-#include "../../Bits/Geospatial.h"
+#include "../../Browser/Geospatial/Geospatial.h"
 #include "../../Execution/X3DScene.h"
 #include "../../Execution/X3DExecutionContext.h"
 

@@ -57,16 +57,29 @@
 namespace titania {
 namespace X3D {
 
-LookAtViewer::LookAtViewer (Browser* const browser) :
-	  X3DViewer (browser),
-	   pickable (browser -> isPickable ()),
+const ComponentType LookAtViewer::component      = ComponentType::TITANIA;
+const std::string   LookAtViewer::typeName       = "LookAtViewer";
+const std::string   LookAtViewer::containerField = "viewer";
+
+LookAtViewer::LookAtViewer (X3DExecutionContext* const executionContext) :
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	  X3DViewer (),
+	   pickable (executionContext -> getBrowser () -> isPickable ()),
 	     isOver (false),
 	orientation (),
 	   rotation (),
 	 fromVector (),
 	     button (0),
 	     motion (false)
-{ }
+{
+	addType (X3DConstants::LookAtViewer);
+}
+
+X3DBaseNode*
+LookAtViewer::create (X3DExecutionContext* const executionContext) const
+{
+	return new LookAtViewer (executionContext);
+}
 
 void
 LookAtViewer::initialize ()
@@ -85,13 +98,16 @@ LookAtViewer::on_button_press_event (GdkEventButton* event)
 {
 	try
 	{
-		button = event -> button;
-		motion = false;
-
-		getBrowser () -> grab_focus ();
+		if (button)
+			return false;
 
 		if (event -> button == 1)
 		{
+			button = event -> button;
+
+			motion = false;
+
+			getBrowser () -> grab_focus ();
 			getActiveViewpoint () -> transitionStop ();
 
 			orientation = getActiveViewpoint () -> getUserOrientation ();
@@ -110,7 +126,12 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 {
 	try
 	{
+		if (event -> button not_eq button)
+			return false;
+
 		constexpr bool seek = true;
+
+		button = 0;
 
 		if (event -> button == 1)
 		{
@@ -135,8 +156,6 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 				}
 			}
 		}
-
-		button = 0;
 	}
 	catch (const X3DError &)
 	{ }
@@ -171,8 +190,7 @@ LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 			motion = true;
 
 			const auto & viewpoint = getActiveViewpoint ();
-
-			const Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
+			const auto   toVector  = trackballProjectToSphere (event -> x, event -> y);
 
 			rotation = Rotation4f (toVector, fromVector);
 
@@ -192,7 +210,7 @@ LookAtViewer::getOrientationOffset ()
 {
 	try
 	{
-		const auto viewpoint = getActiveViewpoint ();
+		const auto & viewpoint = getActiveViewpoint ();
 
 		orientation = rotation * orientation;
 

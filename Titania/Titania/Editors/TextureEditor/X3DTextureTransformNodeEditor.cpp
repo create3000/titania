@@ -154,9 +154,9 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 			field .addInterest (this, &X3DTextureTransformNodeEditor::connectTextureTransform);
 
 			if (getTextureTransformComboBoxText () .get_active_row_number () > 0)
-				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, X3D::SFNode (textureTransformNode), undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (textureTransformNode), undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }

@@ -51,10 +51,10 @@
 #ifndef __TITANIA_X3D_BROWSER_NAVIGATION_X3DVIEWER_H__
 #define __TITANIA_X3D_BROWSER_NAVIGATION_X3DVIEWER_H__
 
+#include "../X3DBrowserObject.h"
+
 #include "../../Components/Navigation/NavigationInfo.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"
-#include "../X3DBrowserObject.h"
-#include "ViewerType.h"
 
 namespace titania {
 namespace X3D {
@@ -66,23 +66,23 @@ public:
 
 	///  @name Constructors
 
-	X3DViewer (Browser* const);
-
-	virtual
-	ViewerType
-	getType () const = 0;
-
-	NavigationInfo*
-	getNavigationInfo () const;
+	X3DViewer ();
 
 
 protected:
+
+	///  @name Member access
+
+	NavigationInfo*
+	getNavigationInfo () const;
 
 	const X3DLayerNodePtr &
 	getActiveLayer () const;
 
 	X3DViewpointNode*
 	getActiveViewpoint () const;
+
+	///  @name Operations
 
 	Vector3f
 	getPointOnCenterPlane (const double, const double);
@@ -96,9 +96,11 @@ protected:
 
 private:
 
+	///  @name Operations
+
 	static
-	float
-	tb_project_to_sphere (const float, const float, const float);
+	double
+	tb_project_to_sphere (const double, const double, const double);
 
 };
 

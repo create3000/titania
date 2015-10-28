@@ -163,7 +163,7 @@ X3DMaterialEditor::on_copy ()
 
 	text += "#X3D V3.3 utf8 Titania\n";
 	text += "\n";
-	text += "# " + getExecutionContext () -> getWorldURL () + "\n";
+	text += "# " + getCurrentContext () -> getWorldURL () + "\n";
 	text += "\n";
 	text += "META \"titania magic\" \"Material\"\n";
 	text += "\n";
@@ -394,17 +394,17 @@ X3DMaterialEditor::on_material_changed ()
 			{
 				case 0:
 				{
-					getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
+					getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
 					break;
 				}
 				case 1:
 				{
-					getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, X3D::SFNode (material), undoStep);
+					getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (material), undoStep);
 					break;
 				}
 				case 2:
 				{
-					getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, X3D::SFNode (twoSidedMaterial), undoStep);
+					getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (twoSidedMaterial), undoStep);
 					break;
 				}
 				default:
@@ -452,13 +452,13 @@ X3DMaterialEditor::set_node ()
 
 	if (not material)
 	{
-		material = new X3D::Material (getExecutionContext ());
+		material = new X3D::Material (getCurrentContext ());
 		material -> setup ();
 	}
 
 	if (not twoSidedMaterial)
 	{
-		twoSidedMaterial = new X3D::TwoSidedMaterial (getExecutionContext ());
+		twoSidedMaterial = new X3D::TwoSidedMaterial (getCurrentContext ());
 		twoSidedMaterial -> setup ();
 	}
 

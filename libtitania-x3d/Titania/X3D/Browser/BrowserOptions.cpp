@@ -50,7 +50,7 @@
 
 #include "BrowserOptions.h"
 
-#include "../Bits/config.h"
+#include "../Browser/Networking/config.h"
 #include "../Browser/Geometry2D/Arc2DOptions.h"
 #include "../Browser/Geometry2D/ArcClose2DOptions.h"
 #include "../Browser/Geometry2D/Circle2DOptions.h"

@@ -58,7 +58,7 @@ namespace titania {
 namespace puck {
 
 LODEditor::LODEditor (X3DBrowserWindow* const browserWindow) :
-	     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DLODEditorInterface (get_ui ("Editors/LODEditor.xml"), gconf_dir ()),
 	         X3DLODEditor ()//,
 	    //X3DGeoLODEditor ()

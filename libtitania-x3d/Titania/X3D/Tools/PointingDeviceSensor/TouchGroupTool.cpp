@@ -51,7 +51,7 @@
 #include "TouchGroupTool.h"
 
 #include "../ToolColors.h"
-#include "../../Bits/Linetypes.h"
+#include "../../Browser/Shape/Linetypes.h"
 
 namespace titania {
 namespace X3D {

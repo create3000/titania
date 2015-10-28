@@ -66,7 +66,7 @@
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
-#include <Titania/X3D/Bits/Traverse.h>
+#include <Titania/X3D/Basic/Traverse.h>
 
 #include <Titania/String/sprintf.h>
 
@@ -80,7 +80,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	               selection (new OutlineSelection (getBrowserWindow (), this)),
 	            treeObserver (new OutlineTreeObserver (this)),
 	              routeGraph (new OutlineRouteGraph (this)),
-	            cellrenderer (Gtk::manage (new OutlineCellRenderer (getBrowser (), this))),
+	            cellrenderer (Gtk::manage (new OutlineCellRenderer (getCurrentBrowser (), this))),
 				padCellrenderer (Gtk::manage (new Gtk::CellRendererText ())),
 	             expandLevel (0),
 	            externProtos (false),

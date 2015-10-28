@@ -65,7 +65,31 @@ public:
 
 	///  @name Construction
 
-	LassoSelection (Browser* const);
+	LassoSelection (X3DExecutionContext* const);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
 
 	///  @name Destruction
 
@@ -103,6 +127,12 @@ private:
 
 	void
 	polygon ();
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
 
 	///  @name Members
 

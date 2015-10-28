@@ -90,7 +90,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	         X3DBrowserWindow (browser),
 	      X3DObjectOperations (),
 	                 changing (false),
-	                   viewer (X3D::ViewerType::NONE),
+	                   viewer (X3D::X3DConstants::NodeType::NoneViewer),
 	              cssProvider (Gtk::CssProvider::create ()),
 	       environmentActions (),
 	           shadingActions (),
@@ -158,8 +158,8 @@ BrowserWindow::initialize ()
 
 	// Browser Events
 	getBrowsers ()         .addInterest (this, &BrowserWindow::set_browsers);
-	getScene ()            .addInterest (this, &BrowserWindow::set_scene);
-	getExecutionContext () .addInterest (this, &BrowserWindow::set_executionContext);
+	getCurrentScene ()     .addInterest (this, &BrowserWindow::set_scene);
+	getCurrentContext () .addInterest (this, &BrowserWindow::set_executionContext);
 
 	getSelection () -> getChildren () .addInterest (this, &BrowserWindow::set_selection);
 
@@ -194,15 +194,15 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 {
 	// Disconnect
 
-	getBrowser () -> getActiveLayer ()      .removeInterest (this, &BrowserWindow::set_activeLayer);
-	getBrowser () -> getViewer ()           .removeInterest (this, &BrowserWindow::set_viewer);
-	getBrowser () -> getAvailableViewers () .removeInterest (this, &BrowserWindow::set_available_viewers);
+	getCurrentBrowser () -> getActiveLayer ()      .removeInterest (this, &BrowserWindow::set_activeLayer);
+	getCurrentBrowser () -> getViewer ()           .removeInterest (this, &BrowserWindow::set_viewer);
+	getCurrentBrowser () -> getAvailableViewers () .removeInterest (this, &BrowserWindow::set_available_viewers);
 
-	getBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (this, &BrowserWindow::set_dashboard);
-	getBrowser () -> getBrowserOptions () -> Shading ()          .removeInterest (this, &BrowserWindow::set_shading);
-	getBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
+	getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (this, &BrowserWindow::set_dashboard);
+	getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .removeInterest (this, &BrowserWindow::set_shading);
+	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
 
-	getUserData (getBrowser ()) -> browserHistory .removeInterest (this, &BrowserWindow::set_browserHistory);
+	getUserData (getCurrentBrowser ()) -> browserHistory .removeInterest (this, &BrowserWindow::set_browserHistory);
 
 	// Set browser
 
@@ -210,31 +210,31 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 
 	// Connect
 
-	getBrowser () -> getActiveLayer ()      .addInterest (this, &BrowserWindow::set_activeLayer);
-	getBrowser () -> getViewer ()           .addInterest (this, &BrowserWindow::set_viewer);
-	getBrowser () -> getAvailableViewers () .addInterest (this, &BrowserWindow::set_available_viewers);
+	getCurrentBrowser () -> getActiveLayer ()      .addInterest (this, &BrowserWindow::set_activeLayer);
+	getCurrentBrowser () -> getViewer ()           .addInterest (this, &BrowserWindow::set_viewer);
+	getCurrentBrowser () -> getAvailableViewers () .addInterest (this, &BrowserWindow::set_available_viewers);
 
-	getBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (this, &BrowserWindow::set_dashboard);
-	getBrowser () -> getBrowserOptions () -> Shading ()          .addInterest (this, &BrowserWindow::set_shading);
-	getBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (this, &BrowserWindow::set_primitiveQuality);
+	getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (this, &BrowserWindow::set_dashboard);
+	getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .addInterest (this, &BrowserWindow::set_shading);
+	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (this, &BrowserWindow::set_primitiveQuality);
 
-	getUserData (getBrowser ()) -> browserHistory .addInterest (this, &BrowserWindow::set_browserHistory);
+	getUserData (getCurrentBrowser ()) -> browserHistory .addInterest (this, &BrowserWindow::set_browserHistory);
 
 	// Initialize
 
 	set_activeLayer ();
-	set_viewer (getBrowser () -> getViewer ());
-	set_available_viewers (getBrowser () -> getAvailableViewers ());
+	set_viewer (getCurrentBrowser () -> getViewer ());
+	set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 
-	set_dashboard (getBrowser () -> getBrowserOptions () -> Dashboard ());
-	set_shading (getBrowser () -> getBrowserOptions () -> Shading ());
-	set_primitiveQuality (getBrowser () -> getBrowserOptions () -> PrimitiveQuality ());
-	set_textureQuality (getBrowser () -> getBrowserOptions () -> TextureQuality ());
+	set_dashboard (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
+	set_shading (getCurrentBrowser () -> getBrowserOptions () -> Shading ());
+	set_primitiveQuality (getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality ());
+	set_textureQuality (getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ());
 
 	set_browserHistory ();
 
-	getBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
-	getBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
+	getCurrentBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
+	getCurrentBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
 }
 
 void
@@ -296,8 +296,8 @@ BrowserWindow::set_executionContext ()
 
 	changing = true;
 
-	getLocationEntry () .set_text (getExecutionContext () -> getWorldURL () .str ());
-	getLocationEntry () .set_icon_from_stock (Gtk::StockID (getExecutionContext () -> getMasterScene () -> getWorldURL () .filename () .str ()), Gtk::ENTRY_ICON_PRIMARY);
+	getLocationEntry () .set_text (getCurrentContext () -> getWorldURL () .str ());
+	getLocationEntry () .set_icon_from_stock (Gtk::StockID (getCurrentContext () -> getMasterScene () -> getWorldURL () .filename () .str ()), Gtk::ENTRY_ICON_PRIMARY);
 
 	changing = false;
 }
@@ -305,7 +305,7 @@ BrowserWindow::set_executionContext ()
 void
 BrowserWindow::set_browserHistory ()
 {
-	const auto & browserHistory = getUserData (getBrowser ()) -> browserHistory;
+	const auto & browserHistory = getUserData (getCurrentBrowser ()) -> browserHistory;
 
 	getPreviousButton () .set_sensitive (browserHistory .hasPreviousPage ());
 	getNextButton ()     .set_sensitive (browserHistory .hasNextPage ());
@@ -462,7 +462,7 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 	if (not hasAccelerators ())
 		return false;
 
-	if (not getBrowser () -> has_focus ())
+	if (not getCurrentBrowser () -> has_focus ())
 	   return false;
 
 	getSelection () -> setMode (getKeys () .shift () and not getKeys () .control () ? X3D::Selection::MULTIPLE : X3D::Selection::SINGLE);
@@ -523,22 +523,22 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 	{
 		case GDK_KEY_Home:
 		{
-			getBrowser () -> firstViewpoint ();
+			getCurrentBrowser () -> firstViewpoint ();
 			return true;
 		}
 		case GDK_KEY_Page_Up:
 		{
-			getBrowser () -> previousViewpoint ();
+			getCurrentBrowser () -> previousViewpoint ();
 			return true;
 		}
 		case GDK_KEY_Page_Down:
 		{
-			getBrowser () -> nextViewpoint ();
+			getCurrentBrowser () -> nextViewpoint ();
 			return true;
 		}
 		case GDK_KEY_End:
 		{
-			getBrowser () -> lastViewpoint ();
+			getCurrentBrowser () -> lastViewpoint ();
 			return true;
 		}
 		default:
@@ -684,13 +684,13 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 void
 BrowserWindow::on_save_activated ()
 {
-	const basic::uri worldURL = getScene () -> getWorldURL ();
+	const basic::uri worldURL = getCurrentScene () -> getWorldURL ();
 
 	if (worldURL .empty () or worldURL .is_network ())
 		on_save_as_activated ();
 
 	else
-		save (worldURL, getScene () -> isCompressed (), false);
+		save (worldURL, getCurrentScene () -> isCompressed (), false);
 }
 
 void
@@ -716,7 +716,7 @@ BrowserWindow::on_remove_unused_prototypes_activated ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Unused Prototypes"));
 
-	removeUnusedPrototypes (getExecutionContext (), undoStep);
+	removeUnusedPrototypes (getCurrentContext (), undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -730,7 +730,7 @@ BrowserWindow::on_scene_properties_activated ()
 void
 BrowserWindow::on_close_activated ()
 {
-	close (X3D::BrowserPtr (getBrowser ()));
+	close (X3D::BrowserPtr (getCurrentBrowser ()));
 }
 
 void
@@ -779,7 +779,7 @@ BrowserWindow::on_cut_activated ()
 
 	getSelection () -> clear (undoStep);
 
-	cutNodes (getExecutionContext (), selection, undoStep);
+	cutNodes (getCurrentContext (), selection, undoStep);
 
 	getSelection () -> undoRestoreSelection (undoStep);
 
@@ -794,7 +794,7 @@ BrowserWindow::on_copy_activated ()
 	if (selection .empty ())
 		return;
 
-	copyNodes (getExecutionContext (), selection);
+	copyNodes (getCurrentContext (), selection);
 }
 
 void
@@ -804,7 +804,7 @@ BrowserWindow::on_paste_activated ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Paste"));
 
-	pasteNodes (getExecutionContext (), selection, undoStep);
+	pasteNodes (getCurrentContext (), selection, undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -821,7 +821,7 @@ BrowserWindow::on_delete_activated ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Node From Scene"));
 
-	removeNodesFromScene (getExecutionContext (), selection, true, undoStep);
+	removeNodesFromScene (getCurrentContext (), selection, true, undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -839,7 +839,7 @@ BrowserWindow::on_create_clone_activated ()
 	const auto clone = selection .back ();
 	selection .pop_back ();
 
-	createClone (getExecutionContext (), clone, selection, undoStep);
+	createClone (getCurrentContext (), clone, selection, undoStep);
 
 	getSelection () -> setChildren ({ clone }, undoStep);
 
@@ -856,7 +856,7 @@ BrowserWindow::on_unlink_clone_activated ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Unlink Clone"));
 
-	auto nodes = unlinkClone (getExecutionContext (), selection, undoStep);
+	auto nodes = unlinkClone (getCurrentContext (), selection, undoStep);
 
 	getSelection () -> setChildren (nodes, undoStep);
 
@@ -872,9 +872,9 @@ BrowserWindow::on_group_selected_nodes_activated ()
 		return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Group"));
-	const auto group    = groupNodes (getExecutionContext (), "Transform", selection, undoStep);
+	const auto group    = groupNodes (getCurrentContext (), "Transform", selection, undoStep);
 
-	pushBackIntoArray (X3D::SFNode (getExecutionContext ()), getExecutionContext () -> getRootNodes (), group, undoStep);
+	pushBackIntoArray (X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), group, undoStep);
 
 	getSelection () -> setChildren ({ group }, undoStep);
 	addUndoStep (undoStep);
@@ -893,7 +893,7 @@ BrowserWindow::on_ungroup_activated ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Ungroup"));
 
 	getSelection () -> clear (undoStep);
-	getSelection () -> setChildren (ungroupNodes (getExecutionContext (), selection, undoStep), undoStep);
+	getSelection () -> setChildren (ungroupNodes (getCurrentContext (), selection, undoStep), undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -913,7 +913,7 @@ BrowserWindow::on_add_to_group_activated ()
 	const auto group = selection .back ();
 	selection .pop_back ();
 
-	if (addToGroup (getExecutionContext (), group, selection, undoStep))
+	if (addToGroup (getCurrentContext (), group, selection, undoStep))
 	{
 		getSelection () -> setChildren (selection, undoStep);
 
@@ -934,7 +934,7 @@ BrowserWindow::on_detach_from_group_activated ()
 	getSelection () -> undoRestoreSelection (undoStep);
 	getSelection () -> redoRestoreSelection (undoStep);
 
-	detachFromGroup (getExecutionContext (), selection, getKeys () .shift (), undoStep);
+	detachFromGroup (getCurrentContext (), selection, getKeys () .shift (), undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -1068,10 +1068,10 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 	const auto leader = selection .back ();
 	selection .pop_back ();
 
-	const auto group = createParentGroup (getExecutionContext (), typeName, fieldName, { leader }, undoStep);
+	const auto group = createParentGroup (getCurrentContext (), typeName, fieldName, { leader }, undoStep);
 
 	if (not selection .empty ())
-		addToGroup (getExecutionContext (), group, selection, undoStep);
+		addToGroup (getCurrentContext (), group, selection, undoStep);
 
 	getSelection () -> setChildren ({ group }, undoStep);
 
@@ -1205,7 +1205,7 @@ BrowserWindow::isEditor (const bool enabled)
 	getLocationBar () .set_visible (not enabled);
 	getEditToolBar () .set_visible (enabled);
 
-	set_available_viewers (getBrowser () -> getAvailableViewers ());
+	set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 
 	getHandButton ()            .set_visible (enabled);
 	getArrowButton ()           .set_visible (enabled);
@@ -1227,7 +1227,7 @@ BrowserWindow::isEditor (const bool enabled)
 	else
 		getHandButton () .set_active (true);
 	
-	set_dashboard (getBrowser () -> getBrowserOptions () -> Dashboard ());
+	set_dashboard (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
 }
 
 void
@@ -1299,10 +1299,10 @@ BrowserWindow::on_shading_changed (const std::string & value)
 	if (changing)
 		return;
 
-	getBrowser () -> getBrowserOptions () -> Shading () .removeInterest (this, &BrowserWindow::set_shading);
-	getBrowser () -> getBrowserOptions () -> Shading () .addInterest (this, &BrowserWindow::connectShading);
+	getCurrentBrowser () -> getBrowserOptions () -> Shading () .removeInterest (this, &BrowserWindow::set_shading);
+	getCurrentBrowser () -> getBrowserOptions () -> Shading () .addInterest (this, &BrowserWindow::connectShading);
 
-	getBrowser () -> getBrowserOptions () -> Shading () = value;
+	getCurrentBrowser () -> getBrowserOptions () -> Shading () = value;
 }
 
 void
@@ -1376,10 +1376,10 @@ BrowserWindow::on_primitive_quality_changed (const std::string & value)
 	if (changing)
 		return;
 
-	getBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
-	getBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (this, &BrowserWindow::connectPrimitiveQuality);
+	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
+	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (this, &BrowserWindow::connectPrimitiveQuality);
 
-	getBrowser () -> getBrowserOptions () -> PrimitiveQuality () = value;
+	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () = value;
 }
 
 void
@@ -1447,10 +1447,10 @@ BrowserWindow::on_texture_quality_changed (const std::string & value)
 	if (changing)
 		return;
 
-	getBrowser () -> getBrowserOptions () -> TextureQuality () .removeInterest (this, &BrowserWindow::set_textureQuality);
-	getBrowser () -> getBrowserOptions () -> TextureQuality () .addInterest (this, &BrowserWindow::connectTextureQuality);
+	getCurrentBrowser () -> getBrowserOptions () -> TextureQuality () .removeInterest (this, &BrowserWindow::set_textureQuality);
+	getCurrentBrowser () -> getBrowserOptions () -> TextureQuality () .addInterest (this, &BrowserWindow::connectTextureQuality);
 
-	getBrowser () -> getBrowserOptions () -> TextureQuality () = value;
+	getCurrentBrowser () -> getBrowserOptions () -> TextureQuality () = value;
 }
 
 void
@@ -1487,7 +1487,7 @@ BrowserWindow::on_backgrounds_toggled ()
 
 	const bool hidden = not getBackgroundsAction () -> get_active ();
 
-	X3D::traverse (getExecutionContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
+	X3D::traverse (getCurrentContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
 	               {
 	                  const auto background = dynamic_cast <X3D::X3DBackgroundNode*> (node .getValue ());
 
@@ -1508,7 +1508,7 @@ BrowserWindow::on_fogs_toggled ()
 
 	const bool hidden = not getFogsAction () -> get_active ();
 
-	X3D::traverse (getExecutionContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
+	X3D::traverse (getCurrentContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
 	               {
 	                  const auto fog = dynamic_cast <X3D::X3DFogObject*> (node .getValue ());
 
@@ -1531,7 +1531,7 @@ BrowserWindow::on_lights_toggled ()
 
 	if (getLightsAction () -> get_active ())
 	{
-		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
 		                  const auto tool = dynamic_cast <X3D::X3DLightNode*> (node .getValue ());
 
@@ -1545,7 +1545,7 @@ BrowserWindow::on_lights_toggled ()
 	}
 	else
 	{
-		X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 		               {
 		                  if (not node)
 									return true;
@@ -1576,7 +1576,7 @@ BrowserWindow::on_proximity_sensors_toggled ()
 
 	if (getProximitySensorsAction () -> get_active ())
 	{
-		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
 		                  const auto tool = dynamic_cast <X3D::ProximitySensor*> (node .getValue ());
 
@@ -1590,7 +1590,7 @@ BrowserWindow::on_proximity_sensors_toggled ()
 	}
 	else
 	{
-		X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 		               {
 		                  const auto tool = dynamic_cast <X3D::ProximitySensorTool*> (node .getValue ());
 
@@ -1612,7 +1612,7 @@ BrowserWindow::on_transform_sensors_toggled ()
 
 	if (getTransformSensorsAction () -> get_active ())
 	{
-		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
 		                  const auto tool = dynamic_cast <X3D::TransformSensor*> (node .getValue ());
 
@@ -1626,7 +1626,7 @@ BrowserWindow::on_transform_sensors_toggled ()
 	}
 	else
 	{
-		X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 		               {
 		                  const auto tool = dynamic_cast <X3D::TransformSensorTool*> (node .getValue ());
 
@@ -1648,7 +1648,7 @@ BrowserWindow::on_visibility_sensors_toggled ()
 
 	if (getVisibilitySensorsAction () -> get_active ())
 	{
-		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
 		                  const auto tool = dynamic_cast <X3D::VisibilitySensor*> (node .getValue ());
 
@@ -1662,7 +1662,7 @@ BrowserWindow::on_visibility_sensors_toggled ()
 	}
 	else
 	{
-		X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 		               {
 		                  const auto tool = dynamic_cast <X3D::VisibilitySensorTool*> (node .getValue ());
 
@@ -1684,7 +1684,7 @@ BrowserWindow::on_viewpoints_toggled ()
 
 	if (getViewpointsAction () -> get_active ())
 	{
-		X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
 		                  const auto tool = dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ());
 
@@ -1698,7 +1698,7 @@ BrowserWindow::on_viewpoints_toggled ()
 	}
 	else
 	{
-		X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 		               {
 		                  if (not node)
 									return true;
@@ -1744,7 +1744,7 @@ void
 BrowserWindow::on_rubberband_toggled ()
 {
 	getConfig () .setItem ("rubberBand", getRubberbandAction () -> get_active ());
-	getBrowser () -> getBrowserOptions () -> RubberBand () = getRubberbandAction () -> get_active ();
+	getCurrentBrowser () -> getBrowserOptions () -> RubberBand () = getRubberbandAction () -> get_active ();
 }
 
 // RenderingProperties
@@ -1753,7 +1753,7 @@ void
 BrowserWindow::on_rendering_properties_toggled ()
 {
 	getConfig () .setItem ("renderingProperties", getRenderingPropertiesAction () -> get_active ());
-	getBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
+	getCurrentBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
 }
 
 // Fullscreen
@@ -1798,7 +1798,7 @@ BrowserWindow::on_select_all_activated ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> ();
 
-	getSelection () -> setChildren (getExecutionContext () -> getRootNodes (), undoStep);
+	getSelection () -> setChildren (getCurrentContext () -> getRootNodes (), undoStep);
 }
 
 void
@@ -1844,7 +1844,7 @@ BrowserWindow::on_hide_unselected_objects_activated ()
 						},
 	               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
-	X3D::traverse (getExecutionContext () -> getRootNodes (), [&visibles] (X3D::SFNode & node)
+	X3D::traverse (getCurrentContext () -> getRootNodes (), [&visibles] (X3D::SFNode & node)
 	               {
 	                  const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
 
@@ -1879,7 +1879,7 @@ BrowserWindow::on_show_selected_objects_activated ()
 void
 BrowserWindow::on_show_all_objects_activated ()
 {
-	X3D::traverse (getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+	X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 	               {
 	                  const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
 
@@ -1945,7 +1945,7 @@ BrowserWindow::on_grid_layout_tool_toggled ()
 
 	getGridTool () -> isEnabled (getGridLayoutToolAction () -> get_active ());
 	getGridTool () -> update ();
-	getBrowserWindow () -> isModified (getBrowser (), true);
+	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
 
 void
@@ -1966,7 +1966,7 @@ BrowserWindow::on_angle_layout_tool_toggled ()
 
 	getAngleTool () -> isEnabled (getAngleLayoutToolAction () -> get_active ());
 	getAngleTool () -> update ();
-	getBrowserWindow () -> isModified (getBrowser (), true);
+	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
 
 void
@@ -2014,7 +2014,7 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 		menuItem -> set_label (worldURL .basename () + (modified ? "*" : ""));
 		menuItem -> set_always_show_image (true);
 
-		if (browser == getBrowser ())
+		if (browser == getCurrentBrowser ())
 		   menuItem -> get_style_context () -> add_class ("titania-menu-item-selected");
 
 		menu .append (*menuItem);
@@ -2037,19 +2037,19 @@ BrowserWindow::on_info_activated ()
 void
 BrowserWindow::on_home ()
 {
-	load (getBrowser (), get_page ("about/home.x3dv"));
+	load (getCurrentBrowser (), get_page ("about/home.x3dv"));
 }
 
 void
 BrowserWindow::on_previous_page ()
 {
-	getUserData (getBrowser ()) -> browserHistory .previousPage ();
+	getUserData (getCurrentBrowser ()) -> browserHistory .previousPage ();
 }
 
 void
 BrowserWindow::on_next_page ()
 {
-	getUserData (getBrowser ()) -> browserHistory .nextPage ();
+	getUserData (getCurrentBrowser ()) -> browserHistory .nextPage ();
 }
 
 bool
@@ -2058,7 +2058,7 @@ BrowserWindow::on_previous_button_press_event (GdkEventButton* event)
 	if (event -> button not_eq 3)
 		return false;
 
-	auto & browserHistory = getUserData (getBrowser ()) -> browserHistory;
+	auto & browserHistory = getUserData (getCurrentBrowser ()) -> browserHistory;
 
 	if (browserHistory .isEmpty ())
 		return false;
@@ -2120,7 +2120,7 @@ BrowserWindow::on_location_key_press_event (GdkEventKey* event)
 {
 	if (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter)
 	{
-		load (getBrowser (), Glib::uri_unescape_string (getLocationEntry () .get_text ()));
+		load (getCurrentBrowser (), Glib::uri_unescape_string (getLocationEntry () .get_text ()));
 		return true;
 	}
 
@@ -2262,12 +2262,12 @@ BrowserWindow::on_hammer_clicked ()
 						if (geometry)
 						{
 							X3D::MFNode exports ({ geometry });
-							basic::ifilestream text (exportNodes (getExecutionContext (), exports));
+							basic::ifilestream text (exportNodes (getCurrentContext (), exports));
 
-							const auto scene = getBrowser () -> createX3DFromStream (getExecutionContext () -> getWorldURL (), text);
-							const auto nodes = importScene (getExecutionContext (), X3D::SFNode (getExecutionContext ()), getExecutionContext () -> getRootNodes (), scene, undoStep);
+							const auto scene = getCurrentBrowser () -> createX3DFromStream (getCurrentContext () -> getWorldURL (), text);
+							const auto nodes = importScene (getCurrentContext (), X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), scene, undoStep);
 
-							addToGroup (getExecutionContext (), X3D::SFNode (shape), nodes, undoStep);
+							addToGroup (getCurrentContext (), X3D::SFNode (shape), nodes, undoStep);
 						}
 					}
 					catch (const X3D::X3DError &)
@@ -2281,7 +2281,7 @@ BrowserWindow::on_hammer_clicked ()
 					{
 						const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry ());
 
-						replaceNode (getExecutionContext (), X3D::SFNode (shape), shape -> geometry (), geometry -> toPrimitive (), undoStep);
+						replaceNode (getCurrentContext (), X3D::SFNode (shape), shape -> geometry (), geometry -> toPrimitive (), undoStep);
 					}
 					catch (const X3D::X3DError &)
 					{ }
@@ -2338,9 +2338,9 @@ BrowserWindow::set_arrow_button (const bool value)
 	getSelectChildrenButton ()  .set_visible (value);
 	getLookAtSelectionButton () .set_visible (isEditor () and value);
 
-	set_available_viewers (getBrowser () -> getAvailableViewers ());
+	set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 
-	getBrowser () -> setLockViewer (value);
+	getCurrentBrowser () -> setLockViewer (value);
 }
 
 void
@@ -2667,12 +2667,12 @@ BrowserWindow::getChildrenInProtoinstance (const X3D::SFNode & parent, const std
 // Viewer
 
 void
-BrowserWindow::set_viewer (X3D::ViewerType type)
+BrowserWindow::set_viewer (const X3D::X3DConstants::NodeType type)
 {
 	switch (type)
 	{
-		case X3D::ViewerType::PLANE:
-		case X3D::ViewerType::NONE:
+		case X3D::X3DConstants::PlaneViewer:
+		case X3D::X3DConstants::NoneViewer:
 		{
 			getStraightenButton () .set_visible (false);
 			break;
@@ -2686,7 +2686,7 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 
 	switch (type)
 	{
-		case X3D::ViewerType::LOOKAT:
+		case X3D::X3DConstants::LookAtViewer:
 		{
 			getHandButton ()  .set_sensitive (false);
 			getArrowButton () .set_sensitive (false);
@@ -2715,46 +2715,48 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 
 	switch (type)
 	{
-		case X3D::ViewerType::NONE:
+		case X3D::X3DConstants::NoneViewer:
 		{
 			getViewerButton () .set_stock_id (Gtk::StockID ("gtk-cancel"));
 			break;
 		}
-		case X3D::ViewerType::EXAMINE:
+		case X3D::X3DConstants::ExamineViewer:
 		{
 			getViewerButton () .set_stock_id (Gtk::StockID ("ExamineViewer"));
 			break;
 		}
-		case X3D::ViewerType::WALK:
+		case X3D::X3DConstants::WalkViewer:
 		{
 			getViewerButton () .set_stock_id (Gtk::StockID ("WalkViewer"));
 			break;
 		}
-		case X3D::ViewerType::FLY:
+		case X3D::X3DConstants::FlyViewer:
 		{
 			getViewerButton () .set_stock_id (Gtk::StockID ("FlyViewer"));
 			break;
 		}
-		case X3D::ViewerType::PLANE:
+		case X3D::X3DConstants::PlaneViewer:
 		{
 			getViewerButton () .set_stock_id (Gtk::StockID ("PlaneViewer"));
 			break;
 		}
-		case X3D::ViewerType::LOOKAT:
+		case X3D::X3DConstants::LookAtViewer:
 		{
 			if (not getLookAtButton () .get_active ())
 				getLookAtButton () .set_active (true);
 
 			break;
 		}
+		default:
+			break;
 	}
 }
 
 void
-BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::ViewerType> & availableViewers)
+BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::X3DConstants::NodeType> & availableViewers)
 {
 	const bool editor    = getEditorAction () -> get_active () and getArrowButton () .get_active ();
-	const bool dashboard = getBrowser () -> getBrowserOptions () -> Dashboard ();
+	const bool dashboard = getCurrentBrowser () -> getBrowserOptions () -> Dashboard ();
 
 	bool examine = editor;
 	bool walk    = editor;
@@ -2767,23 +2769,25 @@ BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::ViewerType> & avai
 	{
 		switch (viewer)
 		{
-			case X3D::ViewerType::EXAMINE :
+			case X3D::X3DConstants::ExamineViewer:
 				examine = true;
 				break;
-			case X3D::ViewerType::WALK:
+			case X3D::X3DConstants::WalkViewer:
 				walk = true;
 				break;
-			case X3D::ViewerType::FLY:
+			case X3D::X3DConstants::FlyViewer:
 				fly = true;
 				break;
-			case X3D::ViewerType::PLANE:
+			case X3D::X3DConstants::PlaneViewer:
 				plane = true;
 				break;
-			case X3D::ViewerType::NONE:
+			case X3D::X3DConstants::NoneViewer:
 				none = true;
 				break;
-			case X3D::ViewerType::LOOKAT:
+			case X3D::X3DConstants::LookAtViewer:
 				lookat = dashboard;
+				break;
+			default:
 				break;
 		}
 	}
@@ -2811,42 +2815,42 @@ BrowserWindow::on_viewer_clicked ()
 void
 BrowserWindow::on_examine_viewer_activated ()
 {
-	setViewer (X3D::ViewerType::EXAMINE);
+	setViewer (X3D::X3DConstants::ExamineViewer);
 }
 
 void
 BrowserWindow::on_walk_viewer_activated ()
 {
-	setViewer (X3D::ViewerType::WALK);
+	setViewer (X3D::X3DConstants::WalkViewer);
 }
 
 void
 BrowserWindow::on_fly_viewer_activated ()
 {
-	setViewer (X3D::ViewerType::FLY);
+	setViewer (X3D::X3DConstants::FlyViewer);
 }
 
 void
 BrowserWindow::on_plane_viewer_activated ()
 {
-	setViewer (X3D::ViewerType::PLANE);
+	setViewer (X3D::X3DConstants::PlaneViewer);
 }
 
 void
 BrowserWindow::on_none_viewer_activated ()
 {
-	setViewer (X3D::ViewerType::NONE);
+	setViewer (X3D::X3DConstants::NoneViewer);
 }
 
 void
 BrowserWindow::on_straighten_clicked ()
 {
-	if (getBrowser () -> getActiveLayer ())
+	if (getCurrentBrowser () -> getActiveLayer ())
 	{
-		if (getBrowser () -> getViewer () == X3D::ViewerType::EXAMINE)
-			getBrowser () -> getActiveLayer () -> getViewpoint () -> straighten (true);
+		if (getCurrentBrowser () -> getViewer () == X3D::X3DConstants::ExamineViewer)
+			getCurrentBrowser () -> getActiveLayer () -> getViewpoint () -> straighten (true);
 		else
-			getBrowser () -> getActiveLayer () -> getViewpoint () -> straighten ();
+			getCurrentBrowser () -> getActiveLayer () -> getViewpoint () -> straighten ();
 	}
 }
 
@@ -2857,7 +2861,7 @@ BrowserWindow::on_straighten_clicked ()
 void
 BrowserWindow::on_look_at_selection_clicked ()
 {
-	if (not getBrowser () -> getActiveLayer ())
+	if (not getCurrentBrowser () -> getActiveLayer ())
 		return;
 
 	const auto & selection = getSelection () -> getChildren ();
@@ -2865,7 +2869,7 @@ BrowserWindow::on_look_at_selection_clicked ()
 	if (selection .empty ())
 		return;
 
-	const auto activeViewpoint = getBrowser () -> getActiveLayer () -> getViewpoint ();
+	const auto activeViewpoint = getCurrentBrowser () -> getActiveLayer () -> getViewpoint ();
 
 	X3D::Box3f bbox;
 
@@ -2874,7 +2878,7 @@ BrowserWindow::on_look_at_selection_clicked ()
 		const auto boundedObject = X3D::x3d_cast <X3D::X3DBoundedObject*> (node);
 
 		if (boundedObject)
-			bbox += boundedObject -> getBBox () * X3D::Matrix4f (findModelViewMatrix (getExecutionContext (), boundedObject));
+			bbox += boundedObject -> getBBox () * X3D::Matrix4f (findModelViewMatrix (getCurrentContext (), boundedObject));
 	}
 
 	activeViewpoint -> lookAt (bbox);
@@ -2883,8 +2887,8 @@ BrowserWindow::on_look_at_selection_clicked ()
 void
 BrowserWindow::on_look_at_all_clicked ()
 {
-	if (getBrowser () -> getActiveLayer ())
-		getBrowser () -> getActiveLayer () -> lookAt ();
+	if (getCurrentBrowser () -> getActiveLayer ())
+		getCurrentBrowser () -> getActiveLayer () -> lookAt ();
 }
 
 void
@@ -2892,12 +2896,12 @@ BrowserWindow::on_look_at_toggled ()
 {
 	if (getLookAtButton () .get_active ())
 	{
-		if (getBrowser () -> getViewer () not_eq X3D::ViewerType::LOOKAT)
-			setViewer (X3D::ViewerType::LOOKAT);
+		if (getCurrentBrowser () -> getViewer () not_eq X3D::X3DConstants::LookAtViewer)
+			setViewer (X3D::X3DConstants::LookAtViewer);
 	}
 	else
 	{
-		if (getBrowser () -> getViewer () not_eq viewer)
+		if (getCurrentBrowser () -> getViewer () not_eq viewer)
 			setViewer (viewer);
 	}
 }

@@ -50,7 +50,7 @@
 
 #include "X3DEditor.h"
 
-#include "../Bits/Traverse.h"
+#include "../Basic/Traverse.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Geometry3D/IndexedFaceSet.h"
 #include "../Components/Grouping/X3DTransformNode.h"

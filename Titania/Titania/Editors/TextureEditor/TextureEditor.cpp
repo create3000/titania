@@ -59,7 +59,7 @@ namespace titania {
 namespace puck {
 
 TextureEditor::TextureEditor (X3DBrowserWindow* const browserWindow) :
-	                   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	                   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	          X3DTextureEditorInterface (get_ui ("Editors/TextureEditor.xml"), gconf_dir ()),
 	               X3DTextureNodeEditor (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
 	      X3DTextureTransformNodeEditor (),

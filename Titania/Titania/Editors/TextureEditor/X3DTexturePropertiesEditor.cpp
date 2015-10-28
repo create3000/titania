@@ -154,9 +154,9 @@ X3DTexturePropertiesEditor::on_textureProperties_toggled ()
 			field .addInterest (this, &X3DTexturePropertiesEditor::connectTextureProperties);
 
 			if (getTexturePropertiesCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (textureNode), field, X3D::SFNode (textureProperties), undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (textureNode), field, X3D::SFNode (textureProperties), undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (textureNode), field, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (textureNode), field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -187,9 +187,9 @@ X3DTexturePropertiesEditor::set_node ()
 
 	if (not textureProperties)
 	{
-		textureProperties = new X3D::TextureProperties (getExecutionContext ());
-		getExecutionContext () -> addUninitializedNode (textureProperties);
-		getExecutionContext () -> realize ();
+		textureProperties = new X3D::TextureProperties (getCurrentContext ());
+		getCurrentContext () -> addUninitializedNode (textureProperties);
+		getCurrentContext () -> realize ();
 	}
 
 	changing = true;

@@ -79,9 +79,9 @@ static constexpr int BOLD   = 700;
 };
 
 ViewpointList::ViewpointList (X3DBrowserWindow* const browserWindow, const bool label) :
-	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	         X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DViewpointListInterface (get_ui ("ViewpointList.xml"), gconf_dir ()),
-	                  browser (getBrowser ()),
+	                  browser (getCurrentBrowser ()),
 	              activeLayer (),
 	           userViewpoints (true),
 	                    label (label),
@@ -111,9 +111,9 @@ ViewpointList::initialize ()
 	getDescriptionCellRenderer () -> property_style_set () = true;
 	getTypeNameCellRenderer ()    -> property_style_set () = true;
 
-	getBrowser () .addInterest (this, &ViewpointList::set_browser);
+	getCurrentBrowser () .addInterest (this, &ViewpointList::set_browser);
 
-	set_browser (getBrowser ());
+	set_browser (getCurrentBrowser ());
 }
 
 void

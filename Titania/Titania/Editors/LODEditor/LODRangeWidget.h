@@ -131,7 +131,7 @@ LODRangeWidget::LODRangeWidget (X3DBaseInterface* const editor,
                                 Gtk::SpinButton & spinButton2,
                                 Gtk::CheckButton & maxButton,
                                 Gtk::Widget & widget) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
 	X3DComposedWidget (editor),
 	      adjustment1 (adjustment1),
 	      adjustment2 (adjustment2),

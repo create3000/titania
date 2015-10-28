@@ -66,7 +66,18 @@ class X3DFlyViewer :
 {
 public:
 
-	X3DFlyViewer (Browser* const);
+	///  @name Construction
+
+	X3DFlyViewer ();
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
+	virtual
+	~X3DFlyViewer ();
 
 
 protected:
@@ -78,9 +89,13 @@ protected:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () override;
+
+	///  @name Event handlers
 
 	void
 	set_collisionNormal ();
@@ -106,11 +121,6 @@ private:
 	bool
 	roll ();
 
-	/*
-	Vector3f
-	getTranslation (const Vector3f &) const;
-	*/
-
 	void
 	addFly ();
 
@@ -125,6 +135,8 @@ private:
 
 	void
 	display ();
+
+	///  @name Members
 
 	Vector3f         fromVector;
 	Vector3f         toVector;

@@ -149,7 +149,7 @@ private:
 	set_cursor (const Gdk::CursorType);
 
 	void
-	set_viewer (const ViewerType);
+	set_viewer (const X3DConstants::NodeType);
 
 	///  @name Operations
 
@@ -167,10 +167,10 @@ private:
 
 	///  @name Members
 
-	std::unique_ptr <X3DViewer>      viewer;
-	std::unique_ptr <KeyDevice>      keyDevice;
-	std::unique_ptr <PointingDevice> pointingDevice;
-	SFEnum <Gdk::CursorType>         cursor;
+	X3DPtr <X3DViewer>       viewer;
+	X3DPtr <KeyDevice>       keyDevice;
+	X3DPtr <PointingDevice>  pointingDevice;
+	SFEnum <Gdk::CursorType> cursor;
 };
 
 } // X3D

@@ -50,7 +50,7 @@
 
 #include "ComposedTexture3D.h"
 
-#include "../../Bits/Cast.h"
+#include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Texturing/X3DTexture2DNode.h"
 

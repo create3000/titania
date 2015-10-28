@@ -50,7 +50,7 @@
 
 #include "X3DComposedGeometryNode.h"
 
-#include "../../Bits/Cast.h"
+#include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry3D/IndexedFaceSet.h"
 #include "../Shaders/X3DVertexAttributeNode.h"

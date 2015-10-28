@@ -54,7 +54,7 @@
 #include "../Browser/BrowserHistory.h"
 
 #include <Titania/X3D/Base/X3DBase.h>
-#include <Titania/X3D/Editor/Undo/UndoHistory.h>
+#include <Titania/X3D/Editing/Undo/UndoHistory.h>
 #include <gtkmm.h>
 
 namespace titania {

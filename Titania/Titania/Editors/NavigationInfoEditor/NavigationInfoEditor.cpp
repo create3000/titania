@@ -61,7 +61,7 @@ namespace titania {
 namespace puck {
 
 NavigationInfoEditor::NavigationInfoEditor (X3DBrowserWindow* const browserWindow) :
-	                X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	                X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DNavigationInfoEditorInterface (get_ui ("Editors/NavigationInfoEditor.xml"), gconf_dir ()),
 	                        nodeName (this, getNameEntry (), getRenameButton ()),
 	                            type (new MFStringWidget (browserWindow,
@@ -134,7 +134,7 @@ NavigationInfoEditor::on_remove_navigation_info_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove NavigationInfo"));
 
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { nodeName .getNode () }, true, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { nodeName .getNode () }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

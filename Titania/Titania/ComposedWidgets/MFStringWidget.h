@@ -482,7 +482,7 @@ public:
 	                Gtk::Button & removeButton,
 	                const std::string & name,
 	                const Glib::ustring & defaultValue) :
-		 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getBrowser ()),
+		 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
 		X3DMFStringWidget (editor, treeView, cellRenderer, addButton, removeButton, name, defaultValue)
 	{ }
 

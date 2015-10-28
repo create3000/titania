@@ -123,9 +123,9 @@ X3DFillPropertiesEditor::on_fillProperties_toggled ()
 			field .addInterest (this, &X3DFillPropertiesEditor::connectFillProperties);
 
 			if (getFillPropertiesCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, X3D::SFNode (fillProperties), undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (fillProperties), undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -156,7 +156,7 @@ X3DFillPropertiesEditor::set_node ()
 
 	if (not fillProperties)
 	{
-		fillProperties = new X3D::FillProperties (getExecutionContext ());
+		fillProperties = new X3D::FillProperties (getCurrentContext ());
 		fillProperties -> setup ();
 	}
 

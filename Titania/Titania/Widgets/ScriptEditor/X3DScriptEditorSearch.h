@@ -56,7 +56,7 @@
 #include <gtksourceviewmm/buffer.h>
 #include <gtksourceviewmm/view.h>
 
-#include <Titania/X3D/Miscellaneous/Keys.h>
+#include <Titania/X3D/Browser/KeyDeviceSensor/Keys.h>
 
 namespace titania {
 namespace puck {

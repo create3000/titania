@@ -93,9 +93,9 @@ X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextu
 
 	if (not textureTransform)
 	{
-		textureTransform = new X3D::TextureTransform (getExecutionContext ());
-		getExecutionContext () -> addUninitializedNode (textureTransform);
-		getExecutionContext () -> realize ();
+		textureTransform = new X3D::TextureTransform (getCurrentContext ());
+		getCurrentContext () -> addUninitializedNode (textureTransform);
+		getCurrentContext () -> realize ();
 	}
 
 	translation .setNodes ({ textureTransform });

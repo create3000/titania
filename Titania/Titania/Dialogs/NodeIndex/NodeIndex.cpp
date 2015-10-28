@@ -54,7 +54,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/X3D/Bits/Traverse.h>
+#include <Titania/X3D/Basic/Traverse.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
 #include <Titania/X3D/Execution/NamedNode.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
@@ -82,7 +82,7 @@ static constexpr int EXPORTED_NODES = 3;
 };
 
 NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
-	     X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DNodeIndexInterface (get_ui ("Dialogs/NodeIndex.xml"), gconf_dir ()),
 	     executionContext (),
 	                index (NAMED_NODES_INDEX),
@@ -102,13 +102,13 @@ NodeIndex::initialize ()
 {
 	X3DNodeIndexInterface::initialize ();
 
-	getExecutionContext () .addInterest (this, &NodeIndex::set_executionContext);
+	getCurrentContext () .addInterest (this, &NodeIndex::set_executionContext);
 
 	set_executionContext ();
 
 	// Initialize SearchEntryCompletion:
 
-	for (const auto & node : getBrowser () -> getSupportedNodes ())
+	for (const auto & node : getCurrentBrowser () -> getSupportedNodes ())
 	{
 		const auto row = getSearchListStore () -> append ();
 		row -> set_value (Search::TYPE_NAME, node -> getTypeName ());
@@ -230,9 +230,9 @@ NodeIndex::getNodes (const std::set <X3D::X3DConstants::NodeType> & types)
 	if (inPrototypeInstance ())
 		return nodes;
 
-	X3D::traverse (getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+	X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 	               {
-	                  if (node -> getExecutionContext () not_eq getExecutionContext ())
+	                  if (node -> getExecutionContext () not_eq getCurrentContext ())
 								return true;
 
 	                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
@@ -268,7 +268,7 @@ NodeIndex::getNodes ()
 	if (inPrototypeInstance ())
 		return nodes;
 
-	for (const auto pair : getExecutionContext () -> getNamedNodes ())
+	for (const auto pair : getCurrentContext () -> getNamedNodes ())
 	{
 		try
 		{
@@ -291,7 +291,7 @@ NodeIndex::getImportingInlines () const
 {
 	std::set <X3D::SFNode> importingInlines;
 
-	for (const auto & pair : getExecutionContext () -> getImportedNodes ())
+	for (const auto & pair : getCurrentContext () -> getImportedNodes ())
 	{
 		try
 		{
@@ -309,7 +309,7 @@ NodeIndex::getExportedNodes () const
 {
 	std::set <X3D::SFNode> exportedNodes;
 
-	X3D::X3DScenePtr scene (getExecutionContext ());
+	X3D::X3DScenePtr scene (getCurrentContext ());
 
 	if (not scene)
 		return exportedNodes;
@@ -342,7 +342,7 @@ NodeIndex::set_executionContext ()
 	if (scene)
 		scene -> exportedNodes_changed () .removeInterest (this, &NodeIndex::refresh);
 
-	executionContext = getExecutionContext ();
+	executionContext = getCurrentContext ();
 	executionContext -> namedNodes_changed ()    .addInterest (this, &NodeIndex::refresh);
 	executionContext -> importedNodes_changed () .addInterest (this, &NodeIndex::refresh);
 

@@ -65,7 +65,7 @@ namespace titania {
 namespace puck {
 
 InlineEditor::InlineEditor (X3DBrowserWindow* const browserWindow) :
-	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DInlineEditorInterface (get_ui ("Editors/InlineEditor.xml"), gconf_dir ()),
 	                nodeName (this, getNameEntry (), getRenameButton ()),
 	                    load (this, getLoadCheckButton (),  "load"),
@@ -158,7 +158,7 @@ InlineEditor::on_remove_inline_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Inline"));
 
-	getBrowserWindow () -> removeNodesFromScene (getExecutionContext (), { nodeName .getNode () }, true, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { nodeName .getNode () }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -187,14 +187,14 @@ InlineEditor::on_convert_master_selection_clicked ()
 	if (fileSaveDialog -> exportNodes (nodes, worldURL, undoStep))
 	{
 		const auto           name       = X3D::get_name_from_uri (worldURL);
-		const X3D::InlinePtr inlineNode = new X3D::Inline (getExecutionContext ());
-		const X3D::MFString  url        = { getExecutionContext () -> getWorldURL () .relative_path (worldURL) .str (), worldURL .str () };
+		const X3D::InlinePtr inlineNode = new X3D::Inline (getCurrentContext ());
+		const X3D::MFString  url        = { getCurrentContext () -> getWorldURL () .relative_path (worldURL) .str (), worldURL .str () };
 
 		inlineNode -> url () = url;
 		inlineNode -> setup ();
 
-		getBrowserWindow () -> updateNamedNode (getExecutionContext (), name, X3D::SFNode (inlineNode), undoStep);
-		getBrowserWindow () -> replaceNodes (getExecutionContext (), masterSelection, X3D::SFNode (inlineNode), undoStep);
+		getBrowserWindow () -> updateNamedNode (getCurrentContext (), name, X3D::SFNode (inlineNode), undoStep);
+		getBrowserWindow () -> replaceNodes (getCurrentContext (), masterSelection, X3D::SFNode (inlineNode), undoStep);
 		getBrowserWindow () -> getSelection () -> setChildren ({ inlineNode }, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
 		getBrowserWindow () -> expandNodes ({ inlineNode });
@@ -214,19 +214,19 @@ InlineEditor::on_fold_back_into_scene_clicked ()
 {
 	const auto        undoStep         = std::make_shared <X3D::UndoStep> (_ ("Fold Inline Back Into Scene"));
 	const auto        scene            = inlineNode -> getInternalScene ();
-	const X3D::SFNode group            = new X3D::Group (getExecutionContext ());
+	const X3D::SFNode group            = new X3D::Group (getCurrentContext ());
 	const auto        name             = X3D::get_name_from_uri (scene -> getWorldURL ());
-	const auto        importedRoutes   = getBrowserWindow () -> getImportedRoutes (getExecutionContext (), scene);
+	const auto        importedRoutes   = getBrowserWindow () -> getImportedRoutes (getCurrentContext (), scene);
 
 	const X3D::GroupPtr groupNode (group);
 
-	getBrowserWindow () -> updateNamedNode (getExecutionContext (), name, group, undoStep);
-	getBrowserWindow () -> replaceNodes (getExecutionContext (), X3D::SFNode (inlineNode), group, undoStep);
-	getBrowserWindow () -> importScene (getExecutionContext (), group, groupNode -> children (), scene, undoStep);
+	getBrowserWindow () -> updateNamedNode (getCurrentContext (), name, group, undoStep);
+	getBrowserWindow () -> replaceNodes (getCurrentContext (), X3D::SFNode (inlineNode), group, undoStep);
+	getBrowserWindow () -> importScene (getCurrentContext (), group, groupNode -> children (), scene, undoStep);
 	group -> setup ();
 
 	for (const auto & route : importedRoutes)
-		getBrowserWindow () -> addRoute (getExecutionContext (), std::get <0> (route), std::get <1> (route), std::get <2> (route), std::get <3> (route), undoStep);
+		getBrowserWindow () -> addRoute (getCurrentContext (), std::get <0> (route), std::get <1> (route), std::get <2> (route), std::get <3> (route), undoStep);
 
 	getBrowserWindow () -> getSelection () -> setChildren ({ group }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);

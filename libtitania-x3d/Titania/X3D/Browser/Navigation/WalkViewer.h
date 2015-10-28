@@ -61,12 +61,33 @@ class WalkViewer :
 {
 public:
 
-	WalkViewer (Browser* const);
+	///  @name Construction
+
+	WalkViewer (X3DExecutionContext* const);
 
 	virtual
-	ViewerType
-	getType () const final override
-	{ return ViewerType::WALK; }
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
 
 
 private:
@@ -74,6 +95,12 @@ private:
 	virtual
 	Vector3f
 	getTranslationOffset (const Vector3f &) final override;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
 
 };
 

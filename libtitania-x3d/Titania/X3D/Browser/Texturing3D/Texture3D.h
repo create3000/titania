@@ -48,65 +48,37 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_MISCELLANEOUS_BVH_H__
-#define __TITANIA_X3D_MISCELLANEOUS_BVH_H__
+#ifndef __TITANIA_X3D_MISCELLANEOUS_TEXTURE3D_H__
+#define __TITANIA_X3D_MISCELLANEOUS_TEXTURE3D_H__
 
-#include "../Types/Numbers.h"
-
-#include <memory>
-#include <vector>
+#include "../Texturing/X3DTexture.h"
 
 namespace titania {
 namespace X3D {
 
-/**
- *  BVH - class to represent a Bounded volume hierarchy.
- */
-
-class BVH
+class Texture3D :
+	public X3DTexture
 {
 public:
 
-	struct ArrayValue
-	{
-		ArrayValue (int32_t type, Vector3f min, Vector3f max, int32_t left, int32_t right) :
-			 type (type),
-			  min (min),
-			  max (max),
-			 left (left),
-			right (right)
-	     	{ }
+	Texture3D (MagickImageArrayPtr &&);
 
-		int32_t type;
-		Vector3f min;
-		Vector3f max;
-		int32_t left;
-		int32_t right;
-	};
-
-	BVH (std::vector <Vector3f>&&);
-
-	std::vector <ArrayValue>
-	toArray () const;
+	Texture3D (const std::string &);
 
 	virtual
-	~BVH ();
+	~Texture3D ()
+	{ }
+
 
 private:
 
-	class SortComparator;
-	class MedianComparator;
-
-	class X3DNode;
-	class Triangle;
-	class Node;
-
-	///  @name Members
-
-	std::vector <Vector3f>    vertices;
-	std::unique_ptr <X3DNode> root;
+	virtual
+	MagickImageArrayPtr
+	readImages (const std::string &) final override;
 
 };
+
+typedef std::unique_ptr <Texture3D> Texture3DPtr;
 
 } // X3D
 } // titania

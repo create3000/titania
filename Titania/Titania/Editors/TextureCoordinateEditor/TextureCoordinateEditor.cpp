@@ -87,7 +87,7 @@ constexpr X3D::Vector2d
 infinity2f (std::numeric_limits <float>::infinity (), std::numeric_limits <float>::infinity ());
 
 TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browserWindow) :
-	                   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	                   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DTextureCoordinateEditorInterface (get_ui ("Editors/TextureCoordinateEditor.xml"), gconf_dir ()),
 	                               left (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/TextureCoordinateEditorLeftPreview.x3dv") })),
 	                              right (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/TextureCoordinateEditorRightPreview.x3dv") })),
@@ -1132,13 +1132,13 @@ TextureCoordinateEditor::on_right_look_at_toggled ()
 {
 	if (getRightLookAtButton () .get_active ())
 	{
-		if (right -> getViewer () not_eq X3D::ViewerType::LOOKAT)
-			right -> setViewer (X3D::ViewerType::LOOKAT);
+		if (right -> getViewer () not_eq X3D::X3DConstants::LookAtViewer)
+			right -> setViewer (X3D::X3DConstants::LookAtViewer);
 	}
 	else
 	{
-		if (right -> getViewer () not_eq X3D::ViewerType::EXAMINE)
-			right -> setViewer (X3D::ViewerType::EXAMINE);
+		if (right -> getViewer () not_eq X3D::X3DConstants::ExamineViewer)
+			right -> setViewer (X3D::X3DConstants::ExamineViewer);
 	}
 
 	right -> grab_focus ();
@@ -1155,7 +1155,7 @@ TextureCoordinateEditor::on_remove_clicked ()
 	undoStep -> addRedoFunction (&X3D::MFInt32::clear, std::ref (geometry -> texCoordIndex ()));
 	geometry -> texCoordIndex () .clear ();
 
-	getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (geometry), geometry -> texCoord (), X3D::SFNode (), undoStep);
+	getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (geometry), geometry -> texCoord (), X3D::SFNode (), undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -1207,12 +1207,12 @@ TextureCoordinateEditor::on_apply_clicked ()
 		//
 		//		texCoords .set1Value (stage, texCoordNode);
 		//
-		//		getBrowserWindow () -> replaceNodes (getExecutionContext (), X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), texCoords, undoStep);
+		//		getBrowserWindow () -> replaceNodes (getCurrentContext (), X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), texCoords, undoStep);
 
-		getBrowserWindow () -> replaceNodes (getExecutionContext (), X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), { texCoordNode }, undoStep);
+		getBrowserWindow () -> replaceNodes (getCurrentContext (), X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), { texCoordNode }, undoStep);
 	}
 	else
-		getBrowserWindow () -> replaceNode (getExecutionContext (), X3D::SFNode (geometry), geometry -> texCoord (), X3D::SFNode (texCoordNode), undoStep);
+		getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (geometry), geometry -> texCoord (), X3D::SFNode (texCoordNode), undoStep);
 
 	geometry -> getExecutionContext () -> realize ();
 
@@ -1276,7 +1276,7 @@ TextureCoordinateEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & valu
 		if (shape)
 		{
 			const auto transform       = right -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
-			const auto modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (getExecutionContext (), X3D::SFNode (shape));
+			const auto modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (getCurrentContext (), X3D::SFNode (shape));
 
 			transform -> setMatrix (modelViewMatrix);
 

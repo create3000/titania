@@ -48,94 +48,117 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_EDITOR_UNDO_UNDO_HISTORY_H__
-#define __TITANIA_X3D_EDITOR_UNDO_UNDO_HISTORY_H__
+#ifndef __TITANIA_X3D_MISCELLANEOUS_FONT_CONFIG_H__
+#define __TITANIA_X3D_MISCELLANEOUS_FONT_CONFIG_H__
 
-#include "../Undo/UndoStep.h"
+#include "../../Types/String.h"
 
-#include <Titania/X3D/Base/X3DOutput.h>
+#include <string>
 #include <memory>
+
+extern "C"
+{
+#include <fontconfig/fontconfig.h>
+}
 
 namespace titania {
 namespace X3D {
 
-class UndoHistory :
-	public X3D::X3DOutput
+class Font
 {
 public:
 
+	enum class Slant : uint8_t
+	{
+		ROMAN,
+		ITALIC
+	};
+
+	enum class Weight : uint8_t
+	{
+		NORMAL,
+		BOLD
+	};
+
+	struct PatternDeleter
+	{
+		void
+		operator () (FcPattern* pattern) const
+		{
+			FcPatternDestroy (pattern);
+		}
+
+	};
+
+	typedef std::shared_ptr <FcPattern> PatternPtr;
+
 	///  @name Construction
 
-	UndoHistory ();
+	Font ();
+
+	Font (const Font &);
 
 	///  @name Member access
 
-	int32_t
-	getIndex () const
-	{ return index; }
+	const PatternPtr &
+	getPattern () const;
 
-	const std::vector <UndoStepPtr> &
-	getList () const
-	{ return list; }
+	void
+	setFamilyName (const std::string &);
 
 	std::string
-	getUndoDescription () const;
+	getFamilyName () const;
+
+	void
+	setSlant (const Slant &);
+
+	void
+	setWeight (const Weight &);
+
+	void
+	setStyle (const std::string &);
+
+	void
+	setScalable (const bool value);
+
+	void
+	setFilename (const std::string &);
 
 	std::string
-	getRedoDescription () const;
+	getFilename () const;
 
 	///  @name Operations
 
-	bool
-	isModified () const
-	{ return index not_eq savedIndex; }
-
 	void
-	save ()
-	{ savedIndex = index; }
+	substitute ();
 
-	void
-	addUndoStep (const UndoStepPtr &);
+	Font
+	match () const;
 
-	void
-	removeUndoStep ();
+	///  @name Destruction
 
-	const std::shared_ptr <UndoStep> &
-	getUndoStep () const;
-
-	bool
-	hasUndo () const;
-
-	bool
-	hasRedo () const;
-
-	void
-	undo ();
-
-	void
-	redo ();
-
-	void
-	clear ();
-
-	bool
-	isEmpty () const
-	{ return list .empty (); }
-
-	size_t
-	getSize () const
-	{ return list .size (); }
+	virtual
+	~Font ();
 
 
 private:
 
+	///  @name Construction
+
+	Font (const PatternPtr &);
+
 	///  @name Members
 
-	std::vector <UndoStepPtr> list;
-	int32_t                   index;
-	int32_t                   savedIndex;
+	PatternPtr pattern;
 
 };
+
+inline
+bool
+operator == (const Font & lhs, const Font & rhs)
+{
+	return String (lhs .getFamilyName ())  .lowercase () == String (rhs .getFamilyName ())  .lowercase ();
+}
 
 } // X3D
 } // titania

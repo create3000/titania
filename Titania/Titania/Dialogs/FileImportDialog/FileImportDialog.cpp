@@ -71,7 +71,7 @@ static constexpr int INLINE        = 3;
 }
 
 FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
-	            X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DFileImportDialogInterface (get_ui ("Dialogs/FileImportDialog.xml"), gconf_dir ())
 {
 	if (getConfig () .hasItem ("importType"))
@@ -105,7 +105,7 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 	getWindow () .add_filter (getFileFilterVideo ());
 	getWindow () .set_filter (getFileFilterX3D ());
 
-	const auto worldURL = getScene () -> getWorldURL ();
+	const auto worldURL = getCurrentScene () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		getWindow () .set_uri (worldURL .filename () .str ());
@@ -161,7 +161,7 @@ FileImportDialog::run ()
 				try
 				{
 					const auto uri   = getWindow () .get_uri ();
-					const auto scene = getBrowser () -> createX3DFromURL ({ Glib::uri_unescape_string (uri) });
+					const auto scene = getCurrentBrowser () -> createX3DFromURL ({ Glib::uri_unescape_string (uri) });
 
 					for (const auto & prototype : scene -> getProtoDeclarations ())
 					{
@@ -178,21 +178,21 @@ FileImportDialog::run ()
 
 						basic::uri worldURL (uri + "#" + name);
 			
-						const auto relativePath = getExecutionContext () -> getWorldURL () .relative_path (worldURL);
+						const auto relativePath = getCurrentContext () -> getWorldURL () .relative_path (worldURL);
 
 						X3D::MFString url;
 
 						url .emplace_back (relativePath .str ());
 						url .emplace_back (worldURL .str ());
 						
-						const X3D::ExternProtoDeclarationPtr externproto = getExecutionContext () -> createExternProtoDeclaration (name, _externInterfaceDeclarations, url);
+						const X3D::ExternProtoDeclarationPtr externproto = getCurrentContext () -> createExternProtoDeclaration (name, _externInterfaceDeclarations, url);
 
-						getExecutionContext () -> updateExternProtoDeclaration (name, externproto);
+						getCurrentContext () -> updateExternProtoDeclaration (name, externproto);
 					}
 				}
 				catch (const X3D::X3DError & error)
 				{
-					getBrowser () -> print (error .what ());
+					getCurrentBrowser () -> print (error .what ());
 				}
 			}
 
@@ -204,14 +204,14 @@ FileImportDialog::run ()
 
 					getConfig () .setItem ("importType", ImportType::PROTOS);
 
-					const auto scene = getBrowser () -> createX3DFromURL ({ Glib::uri_unescape_string (getWindow () .get_uri ()) });
+					const auto scene = getCurrentBrowser () -> createX3DFromURL ({ Glib::uri_unescape_string (getWindow () .get_uri ()) });
 
 					for (const auto & prototype : scene -> getProtoDeclarations ())
-						getExecutionContext () -> updateProtoDeclaration (prototype -> getName (), prototype);
+						getCurrentContext () -> updateProtoDeclaration (prototype -> getName (), prototype);
 				}
 				catch (const X3D::X3DError & error)
 				{
-					getBrowser () -> print (error .what ());
+					getCurrentBrowser () -> print (error .what ());
 				}
 			}
 

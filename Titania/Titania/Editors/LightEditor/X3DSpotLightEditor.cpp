@@ -84,8 +84,8 @@ X3DSpotLightEditor::X3DSpotLightEditor () :
 {
 	direction .setNormalize (true);
 
-	getSpotLightBeamWidthAdjustment ()   -> set_upper (M_PI / 2); // getExecutionContext () -> fromRadiant (M_PI);
-	getSpotLightCutOffAngleAdjustment () -> set_upper (M_PI / 2); // getExecutionContext () -> fromRadiant (M_PI);
+	getSpotLightBeamWidthAdjustment ()   -> set_upper (M_PI / 2); // getCurrentContext () -> fromRadiant (M_PI);
+	getSpotLightCutOffAngleAdjustment () -> set_upper (M_PI / 2); // getCurrentContext () -> fromRadiant (M_PI);
 }
 
 void

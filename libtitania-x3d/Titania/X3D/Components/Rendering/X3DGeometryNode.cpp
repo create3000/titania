@@ -164,14 +164,14 @@ X3DGeometryNode::intersects (Line3f line, std::vector <IntersectionPtr> & inters
 			switch (element .vertexMode)
 			{
 				case GL_TRIANGLES :
+				{
+					for (size_t i = first, size = first + element .count; i < size; i += 3)
 					{
-						for (size_t i = first, size = first + element .count; i < size; i += 3)
-						{
-							intersected |= intersects (line, i, i + 1, i + 2, modelViewMatrix, intersections);
-						}
-
-						break;
+						intersected |= intersects (line, i, i + 1, i + 2, modelViewMatrix, intersections);
 					}
+
+					break;
+				}
 				case GL_QUADS:
 				{
 					for (size_t i = first, size = first + element .count; i < size; i += 4)
@@ -217,7 +217,12 @@ X3DGeometryNode::intersects (Line3f line, std::vector <IntersectionPtr> & inters
 }
 
 bool
-X3DGeometryNode::intersects (const Line3f & line, const size_t i1, const size_t i2, const size_t i3, const Matrix4f & modelViewMatrix, std::vector <IntersectionPtr> & intersections) const
+X3DGeometryNode::intersects (const Line3f & line,
+	                          const size_t i1,
+	                          const size_t i2,
+	                          const size_t i3,
+	                          const Matrix4f & modelViewMatrix,
+	                          std::vector <IntersectionPtr> & intersections) const
 {
 	float u, v, t;
 
@@ -249,11 +254,14 @@ X3DGeometryNode::isClipped (const Vector3f & point, const Matrix4f & modelViewMa
 }
 
 bool
-X3DGeometryNode::isClipped (const Vector3f & point, const Matrix4f & modelViewMatrix, const CollectableObjectArray & localObjects) const
+X3DGeometryNode::isClipped (const Vector3f & point,
+	                         const Matrix4f & modelViewMatrix,
+	                         const CollectableObjectArray & localObjects) const
 {
 	return std::any_of (localObjects .begin (),
 	                    localObjects .end (),
-	                    [&point, &modelViewMatrix] (const std::shared_ptr <X3DCollectableObject> & node) { return node -> isClipped (point, modelViewMatrix); });
+	                    [&point, &modelViewMatrix] (const std::shared_ptr <X3DCollectableObject> & node)
+	                    { return node -> isClipped (point, modelViewMatrix); });
 }
 
 bool
@@ -262,7 +270,7 @@ X3DGeometryNode::intersects (CollisionSphere3f sphere, const CollectableObjectAr
 	if (not sphere .intersects (getBBox ()))
 		return false;
 	
-	sphere .matrix (getMatrix () * sphere .matrix ());
+	sphere .mult_left (getMatrix ());
 
 	size_t first = 0;
 
@@ -339,7 +347,10 @@ X3DGeometryNode::intersects (CollisionSphere3f sphere, const CollectableObjectAr
 }
 
 void
-X3DGeometryNode::triangulate (std::vector <Color4f> & colors_, TexCoordArray & texCoords_, std::vector <Vector3f> & normals_, std::vector <Vector3f> & vertices_) const
+X3DGeometryNode::triangulate (std::vector <Color4f> & colors_,
+	                          TexCoordArray & texCoords_,
+	                          std::vector <Vector3f> & normals_,
+	                          std::vector <Vector3f> & vertices_) const
 {
 	size_t first = 0;
 
@@ -394,7 +405,13 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & colors_, TexCoordArray & t
 }
 
 void
-X3DGeometryNode::triangulate (const size_t i1, const size_t i2, const size_t i3, std::vector <Color4f> & colors_, TexCoordArray & texCoords_, std::vector <Vector3f> & normals_, std::vector <Vector3f> & vertices_) const
+X3DGeometryNode::triangulate (const size_t i1,
+	                           const size_t i2,
+	                           const size_t i3,
+	                           std::vector <Color4f> & colors_,
+	                           TexCoordArray & texCoords_,
+	                           std::vector <Vector3f> & normals_,
+	                           std::vector <Vector3f> & vertices_) const
 {
 	if (not colors .empty ())
 	{
@@ -523,7 +540,10 @@ X3DGeometryNode::getTexCoordParams (Vector3f & min, float & Ssize, int & Sindex,
  */
 
 void
-X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Vector3f> & normals, const float creaseAngle, const bool ccw) const
+X3DGeometryNode::refineNormals (const NormalIndex & normalIndex,
+                                std::vector <Vector3f> & normals,
+                                const float creaseAngle,
+                                const bool ccw) const
 {
 	if (not ccw)
 		std::for_each (normals .begin (), normals .end (), std::mem_fn (&Vector3f::negate));
@@ -692,10 +712,29 @@ X3DGeometryNode::transfer ()
 }
 
 void
+X3DGeometryNode::collision (const CollisionContainer* const context)
+{
+	glDisable (GL_CULL_FACE);
+
+	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
+	glEnableClientState (GL_VERTEX_ARRAY);
+	glVertexPointer (3, GL_FLOAT, 0, 0);
+
+	size_t first = 0;
+
+	for (const auto & element : elements)
+	{
+		glDrawArrays (element .vertexMode, first, element .count);
+		first += element .count;
+	}
+	
+	glDisableClientState (GL_VERTEX_ARRAY);
+	glBindBuffer (GL_ARRAY_BUFFER, 0);
+}
+
+void
 X3DGeometryNode::draw (const ShapeContainer* const context)
 {
-
-
 	if (not attribNodes .empty ())
 	{
 		GLint program = 0;
@@ -818,27 +857,6 @@ X3DGeometryNode::draw (const ShapeContainer* const context)
 
 	glDisableClientState (GL_COLOR_ARRAY);
 	glDisableClientState (GL_NORMAL_ARRAY);
-	glDisableClientState (GL_VERTEX_ARRAY);
-	glBindBuffer (GL_ARRAY_BUFFER, 0);
-}
-
-void
-X3DGeometryNode::collision (const CollisionContainer* const context)
-{
-	glDisable (GL_CULL_FACE);
-
-	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
-	glEnableClientState (GL_VERTEX_ARRAY);
-	glVertexPointer (3, GL_FLOAT, 0, 0);
-
-	size_t first = 0;
-
-	for (const auto & element : elements)
-	{
-		glDrawArrays (element .vertexMode, first, element .count);
-		first += element .count;
-	}
-	
 	glDisableClientState (GL_VERTEX_ARRAY);
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }

@@ -58,8 +58,13 @@
 namespace titania {
 namespace X3D {
 
-KeyDevice::KeyDevice (Browser* const browser) :
-	      X3DBrowserObject (browser),
+const ComponentType KeyDevice::component      = ComponentType::TITANIA;
+const std::string   KeyDevice::typeName       = "KeyDevice";
+const std::string   KeyDevice::containerField = "keyDevice";
+
+KeyDevice::KeyDevice (X3DExecutionContext* const executionContext) :
+		        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	      X3DBrowserObject (),
 	        imContextPress (gtk_im_context_simple_new ()),
 	      imContextRelease (gtk_im_context_simple_new ()),
 	              keyPress (),
@@ -68,6 +73,12 @@ KeyDevice::KeyDevice (Browser* const browser) :
 	key_release_connection (),
 	                  keys ()
 { }
+
+X3DBaseNode*
+KeyDevice::create (X3DExecutionContext* const executionContext) const
+{
+	return new KeyDevice (executionContext);
+}
 
 void
 KeyDevice::initialize ()

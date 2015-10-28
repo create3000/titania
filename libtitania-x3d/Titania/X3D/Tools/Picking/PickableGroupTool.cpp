@@ -50,7 +50,7 @@
 
 #include "PickableGroupTool.h"
 
-#include "../../Bits/Linetypes.h"
+#include "../../Browser/Shape/Linetypes.h"
 #include "../ToolColors.h"
 
 namespace titania {

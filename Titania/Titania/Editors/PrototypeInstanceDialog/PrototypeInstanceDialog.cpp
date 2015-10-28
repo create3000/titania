@@ -60,14 +60,14 @@ namespace titania {
 namespace puck {
 
 PrototypeInstanceDialog::PrototypeInstanceDialog (X3DBrowserWindow* const browserWindow) :
-	                   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	                   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DPrototypeInstanceDialogInterface (get_ui ("Editors/PrototypeInstanceDialog.xml"), gconf_dir ())
 {
 	getWindow () .set_modal (false);
 
 	// Find all available proto objects
 
-	const auto protoNodes = getExecutionContext () -> findProtoDeclarations ();
+	const auto protoNodes = getCurrentContext () -> findProtoDeclarations ();
 
 	// Remove all menu items
 
@@ -100,7 +100,7 @@ PrototypeInstanceDialog::run ()
 	if (responseId == Gtk::RESPONSE_OK)
 	{
 		const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create %s"), getPrototypeLabel () .get_text () .c_str ()));
-		const auto instance  = getBrowserWindow () -> addPrototypeInstance (getExecutionContext (), getPrototypeLabel () .get_text (), undoStep);
+		const auto instance  = getBrowserWindow () -> addPrototypeInstance (getCurrentContext (), getPrototypeLabel () .get_text (), undoStep);
 
 		getBrowserWindow () -> getSelection () -> setChildren ({ instance }, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);

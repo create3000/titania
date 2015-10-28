@@ -53,20 +53,33 @@
 namespace titania {
 namespace X3D {
 
-WalkViewer::WalkViewer (Browser* const browser) :
-	X3DFlyViewer (browser)
-{ }
+const ComponentType WalkViewer::component      = ComponentType::TITANIA;
+const std::string   WalkViewer::typeName       = "WalkViewer";
+const std::string   WalkViewer::containerField = "viewer";
+
+WalkViewer::WalkViewer (X3DExecutionContext* const executionContext) :
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DFlyViewer ()
+{
+	addType (X3DConstants::WalkViewer);
+}
+
+X3DBaseNode*
+WalkViewer::create (X3DExecutionContext* const executionContext) const
+{
+	return new WalkViewer (executionContext);
+}
 
 Vector3f
 WalkViewer::getTranslationOffset (const Vector3f & velocity)
 {
 	static constexpr Vector3f yAxis (0, 1, 0);
 
-	const auto     viewpoint = getActiveViewpoint ();
-	const Vector3f upVector  = viewpoint -> getUpVector ();
+	const auto & viewpoint = getActiveViewpoint ();
+	const auto   upVector  = viewpoint -> getUpVector ();
 
-	const Rotation4f userOrientation = viewpoint -> getUserOrientation ();
-	const Rotation4f orientation     = userOrientation * Rotation4f (yAxis * userOrientation, upVector);
+	const auto userOrientation = viewpoint -> getUserOrientation ();
+	const auto orientation     = userOrientation * Rotation4f (yAxis * userOrientation, upVector);
 
 	return velocity * orientation;
 }

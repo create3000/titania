@@ -64,7 +64,7 @@ static constexpr int ICON_COLUMN = 0;
 static constexpr int NAME_COLUMN = 1;
 
 LibraryView::LibraryView (X3DBrowserWindow* const browserWindow) :
-	       X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DLibraryViewInterface (get_ui ("LibraryView.xml"), gconf_dir ()),
 	            hadjustment (new AdjustmentObject ()),
 	            vadjustment (new AdjustmentObject ())

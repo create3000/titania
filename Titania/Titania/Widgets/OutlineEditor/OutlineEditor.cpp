@@ -67,9 +67,9 @@ namespace titania {
 namespace puck {
 
 OutlineEditor::OutlineEditor (X3DBrowserWindow* const browserWindow) :
-	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	         X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DOutlineEditorInterface (get_ui ("OutlineEditor.xml"), gconf_dir ()),
-	                 treeView (new OutlineTreeViewEditor (browserWindow, getExecutionContext ())),
+	                 treeView (new OutlineTreeViewEditor (browserWindow, getCurrentContext ())),
 	               sceneGroup (),
 	               sceneIndex (),
 	                   scenes (),
@@ -118,8 +118,8 @@ OutlineEditor::initialize ()
 
 	realized = true;
 
-	getScene ()            .addInterest (this, &OutlineEditor::set_scene);
-	getExecutionContext () .addInterest (this, &OutlineEditor::set_executionContext);
+	getCurrentScene ()     .addInterest (this, &OutlineEditor::set_scene);
+	getCurrentContext () .addInterest (this, &OutlineEditor::set_executionContext);
 
 	set_scene ();
 	set_executionContext ();
@@ -140,11 +140,11 @@ OutlineEditor::set_executionContext ()
 	if (not realized)
 		return;
 
-	const auto menuItem = addSceneMenuItem (getExecutionContext ());
+	const auto menuItem = addSceneMenuItem (getCurrentContext ());
 	menuItem .first -> set_active (true);
 
-	getSceneLabel () .set_markup (getSceneLabelText (getExecutionContext ()));
-	getSceneMenuButton () .set_tooltip_text (getExecutionContext () -> getWorldURL () .str ());
+	getSceneLabel () .set_markup (getSceneLabelText (getCurrentContext ()));
+	getSceneMenuButton () .set_tooltip_text (getCurrentContext () -> getWorldURL () .str ());
 
 	// Scene menu
 
@@ -158,9 +158,9 @@ OutlineEditor::set_executionContext ()
 
 	saveExpanded (currentScene);
 
-	treeView -> set_execution_context (getExecutionContext ());
+	treeView -> set_execution_context (getCurrentContext ());
 
-	restoreExpanded (getExecutionContext ());
+	restoreExpanded (getCurrentContext ());
 }
 
 // Pointing Device
@@ -200,17 +200,17 @@ OutlineEditor::on_set_as_current_scene_activate ()
 			const auto   instance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
 
 			if (instance)
-				setExecutionContext (instance);
+				setCurrentContext (instance);
 
 			else
 			{
 				const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
 
 				if (inlineNode)
-					setExecutionContext (X3D::X3DExecutionContextPtr (inlineNode -> getInternalScene ()));
+					setCurrentContext (X3D::X3DExecutionContextPtr (inlineNode -> getInternalScene ()));
 
 				else if (sfnode)
-					setExecutionContext (sfnode -> getExecutionContext ());
+					setCurrentContext (sfnode -> getExecutionContext ());
 			}
 
 			break;
@@ -226,7 +226,7 @@ OutlineEditor::on_set_as_current_scene_activate ()
 					externProto -> requestImmediateLoad ();
 
 				if (externProto -> checkLoadState () == X3D::COMPLETE_STATE)
-					setExecutionContext (X3D::X3DExecutionContextPtr (externProto -> getInternalScene ()));
+					setCurrentContext (X3D::X3DExecutionContextPtr (externProto -> getInternalScene ()));
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -240,7 +240,7 @@ OutlineEditor::on_set_as_current_scene_activate ()
 
 			prototype -> realize ();
 
-			setExecutionContext (prototype);
+			setCurrentContext (prototype);
 			break;
 		}
 		case OutlineIterType::ImportedNode:
@@ -251,7 +251,7 @@ OutlineEditor::on_set_as_current_scene_activate ()
 				const auto   importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode .getValue ());
 				const auto   exportedNode = importedNode -> getExportedNode ();
 
-				setExecutionContext (exportedNode -> getExecutionContext ());
+				setCurrentContext (exportedNode -> getExecutionContext ());
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -270,8 +270,8 @@ OutlineEditor::on_scene_activate (Gtk::RadioMenuItem* const menuItem, const size
 	{
 		const auto & scene = scenes [index] .first;
 
-		if (scene not_eq getExecutionContext ())
-			setExecutionContext (scene);
+		if (scene not_eq getCurrentContext ())
+			setCurrentContext (scene);
 	}
 }
 

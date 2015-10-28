@@ -60,12 +60,23 @@
 namespace titania {
 namespace X3D {
 
-LassoSelection::LassoSelection (Browser* const browser) :
-	X3DSelector (browser),
-	   pickable (browser -> isPickable ()),
-	     button (0),
-	     points ()
+const ComponentType LassoSelection::component      = ComponentType::TITANIA;
+const std::string   LassoSelection::typeName       = "LassoSelection";
+const std::string   LassoSelection::containerField = "lassoSelection";
+
+LassoSelection::LassoSelection (X3DExecutionContext* const executionContext) :
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	 X3DSelector (),
+	    pickable (executionContext -> getBrowser () -> isPickable ()),
+	      button (0),
+	      points ()
 { }
+
+X3DBaseNode*
+LassoSelection::create (X3DExecutionContext* const executionContext) const
+{
+	return new LassoSelection (executionContext);
+}
 
 void
 LassoSelection::initialize ()

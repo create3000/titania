@@ -50,7 +50,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="ChangeLog" />
-    <None Include="info.h" />
     <None Include="Titania\OS.h" />
     <None Include="Titania\Basic\BindStack.h" />
     <None Include="Titania\Basic\URI.h" />

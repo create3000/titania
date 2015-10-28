@@ -59,7 +59,7 @@ namespace titania {
 namespace puck {
 
 FileSaveWarningDialog::FileSaveWarningDialog (X3DBrowserWindow* const browserWindow) :
-	                 X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DFileSaveWarningDialogInterface (get_ui ("Dialogs/FileSaveWarningDialog.xml"), gconf_dir ())
 {
 	setup ();
@@ -68,7 +68,7 @@ FileSaveWarningDialog::FileSaveWarningDialog (X3DBrowserWindow* const browserWin
 int
 FileSaveWarningDialog::run ()
 {
-	const auto worlURL = getScene () -> getWorldURL ();
+	const auto worlURL = getCurrentScene () -> getWorldURL ();
 
 	getMessage () .set_text (basic::sprintf (_ ("Do you want to save changes to document »%s« before closing?"),
 	                                         worlURL .empty ()

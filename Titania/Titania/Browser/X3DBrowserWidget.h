@@ -89,21 +89,21 @@ public:
 
 	virtual
 	const X3D::BrowserPtr &
-	getBrowser () const final override
+	getCurrentBrowser () const final override
 	{ return browser; }
 
 	virtual
 	const X3D::X3DScenePtr &
-	getScene () const final override
+	getCurrentScene () const final override
 	{ return scene; }
 
 	virtual
 	void
-	setExecutionContext (const X3D::X3DExecutionContextPtr &) final override;
+	setCurrentContext (const X3D::X3DExecutionContextPtr &) final override;
 
 	virtual
 	const X3D::X3DExecutionContextPtr &
-	getExecutionContext () const final override
+	getCurrentContext () const final override
 	{ return executionContext; }
 
 	const basic::uri &

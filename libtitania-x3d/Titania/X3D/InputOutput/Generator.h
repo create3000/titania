@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_INPUT_OUTPUT_GENERATOR_H__
 #define __TITANIA_X3D_INPUT_OUTPUT_GENERATOR_H__
 
-#include "../Bits/X3DConstants.h"
+#include "../Basic/X3DConstants.h"
 #include "../InputOutput/X3DBaseGenerator.h"
 #include "../Execution/ExportedNodeIndex.h"
 #include "../Execution/ImportedNodeIndex.h"

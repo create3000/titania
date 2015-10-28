@@ -50,7 +50,7 @@
 
 #include "FillProperties.h"
 
-#include "../../Bits/HatchStyles.h"
+#include "../../Browser/Shape/HatchStyles.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {

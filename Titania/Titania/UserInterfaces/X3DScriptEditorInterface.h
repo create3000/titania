@@ -230,16 +230,16 @@ public:
 	{ return *m_Toolbar; }
 
 	Gtk::ToolButton &
+	getApplyButton () const
+	{ return *m_ApplyButton; }
+
+	Gtk::ToolButton &
 	getUndoButton () const
 	{ return *m_UndoButton; }
 
 	Gtk::ToolButton &
 	getRedoButton () const
 	{ return *m_RedoButton; }
-
-	Gtk::ToolButton &
-	getApplyButton () const
-	{ return *m_ApplyButton; }
 
 	Gtk::ToggleToolButton &
 	getDirectOutputToggleButton () const
@@ -399,15 +399,15 @@ public:
 
 	virtual
 	void
+	on_apply_clicked () = 0;
+
+	virtual
+	void
 	on_undo_clicked () = 0;
 
 	virtual
 	void
 	on_redo_clicked () = 0;
-
-	virtual
-	void
-	on_apply_clicked () = 0;
 
 	virtual
 	void
@@ -537,9 +537,9 @@ private:
 	Gtk::ScrolledWindow*           m_ScrolledWindow;
 	Gtk::MenuToolButton*           m_NewButton;
 	Gtk::Toolbar*                  m_Toolbar;
+	Gtk::ToolButton*               m_ApplyButton;
 	Gtk::ToolButton*               m_UndoButton;
 	Gtk::ToolButton*               m_RedoButton;
-	Gtk::ToolButton*               m_ApplyButton;
 	Gtk::ToggleToolButton*         m_DirectOutputToggleButton;
 	Gtk::ToggleToolButton*         m_MustEvaluateToggleButton;
 	Gtk::MenuToolButton*           m_ShaderTypeMenuButton;

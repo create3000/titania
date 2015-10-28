@@ -151,10 +151,10 @@ X3DGridTool::update ()
 void
 X3DGridTool::enable ()
 {
-	getBrowser () .addInterest (this, &X3DGridTool::set_browser);
-	getBrowser () -> getActiveLayer () .addInterest (this, &X3DGridTool::update);
+	getCurrentBrowser () .addInterest (this, &X3DGridTool::set_browser);
+	getCurrentBrowser () -> getActiveLayer () .addInterest (this, &X3DGridTool::update);
 
-	set_browser (getBrowser ());
+	set_browser (getCurrentBrowser ());
 }
 
 void
@@ -162,8 +162,8 @@ X3DGridTool::disable ()
 {
 	if (browser)
 	{
-		getBrowser () .removeInterest (this, &X3DGridTool::set_browser);
-		getBrowser () -> getActiveLayer () .removeInterest (this, &X3DGridTool::update);
+		getCurrentBrowser () .removeInterest (this, &X3DGridTool::set_browser);
+		getCurrentBrowser () -> getActiveLayer () .removeInterest (this, &X3DGridTool::update);
 
 		set_browser (getMasterBrowser ());
 	}
@@ -179,7 +179,7 @@ X3DGridTool::set_translation ()
 	          getTool () -> translation () .getY (),
 	          getTool () -> translation () .getZ () };
 
-	getBrowserWindow () -> isModified (getBrowser (), true);
+	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
 
 void
@@ -193,7 +193,7 @@ X3DGridTool::set_rotation ()
 	          getTool () -> rotation () .getZ (),
 	          getTool () -> rotation () .getAngle () };
 
-	getBrowserWindow () -> isModified (getBrowser (), true);
+	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
 
 void
@@ -206,7 +206,7 @@ X3DGridTool::set_scale ()
 	          getTool () -> scale () .getY (),
 	          getTool () -> scale () .getZ () };
 
-	getBrowserWindow () -> isModified (getBrowser (), true);
+	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
 
 void
@@ -217,7 +217,7 @@ X3DGridTool::set_dimension ()
 
 	value = getTool () -> dimension ();
 
-	getBrowserWindow () -> isModified (getBrowser (), true);
+	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
 
 void
@@ -228,7 +228,7 @@ X3DGridTool::set_majorLineEvery ()
 
 	value = getTool () -> majorLineEvery ();
 
-	getBrowserWindow () -> isModified (getBrowser (), true);
+	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
 
 void
@@ -239,7 +239,7 @@ X3DGridTool::set_majorLineOffset ()
 
 	value = getTool () -> majorLineOffset ();
 
-	getBrowserWindow () -> isModified (getBrowser (), true);
+	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
 
 void
@@ -253,7 +253,7 @@ X3DGridTool::set_color ()
 	          getTool () -> color () .getBlue (),
 	          getTool () -> color () .getAlpha () };
 
-	getBrowserWindow () -> isModified (getBrowser (), true);
+	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
 
 void
@@ -267,7 +267,7 @@ X3DGridTool::set_lineColor ()
 	          getTool () -> lineColor () .getBlue (),
 	          getTool () -> lineColor () .getAlpha () };
 
-	getBrowserWindow () -> isModified (getBrowser (), true);
+	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
 
 void
@@ -281,7 +281,7 @@ X3DGridTool::set_majorLineColor ()
 	          getTool () -> majorLineColor () .getBlue (),
 	          getTool () -> majorLineColor () .getAlpha () };
 
-	getBrowserWindow () -> isModified (getBrowser (), true);
+	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
 
 void

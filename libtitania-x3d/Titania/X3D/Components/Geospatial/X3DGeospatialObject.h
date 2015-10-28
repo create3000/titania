@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOSPATIAL_X3DGEOSPATIAL_OBJECT_H__
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_X3DGEOSPATIAL_OBJECT_H__
 
-#include "../../Bits/Geospatial.h"
+#include "../../Browser/Geospatial/Geospatial.h"
 #include "../Geospatial/GeoOrigin.h"
 
 namespace titania {

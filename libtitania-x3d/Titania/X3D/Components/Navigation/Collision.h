@@ -127,6 +127,12 @@ public:
 	void
 	addTool () override;
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
 
 protected:
 
@@ -140,6 +146,9 @@ protected:
 protected:
 
 	///  @name Event handlers
+
+	void
+	set_live ();
 
 	void
 	set_proxy ();
