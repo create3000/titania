@@ -1,10 +1,10 @@
-#X3D V3.3 utf8 Titania V0.7.1
+#X3D V3.3 utf8 Titania V1.2.0
 
 META "comment" "World of Titania"
 META "created" "Sun, 03 Aug 2014 14:00:40 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.1, http://titania.create3000.de"
-META "modified" "Sun, 03 Aug 2014 14:00:40 GMT"
+META "generator" "Titania V1.2.0, http://titania.create3000.de"
+META "modified" "Wed, 28 Oct 2015 12:49:06 GMT"
 
 PROTO ToolShader [
   inputOutput SFFloat ambientIntensity 0
@@ -27,7 +27,6 @@ PROTO ToolShader [
     parts [
       ShaderPart {
         url "data:text/plain,
-#version 120
 
 varying vec3 N;
 varying vec3 v;
@@ -44,7 +43,6 @@ void main(void)
       ShaderPart {
         type "FRAGMENT"
         url "data:text/plain,
-#version 120
 
 uniform float ambientIntensity;
 uniform vec3  diffuseColor;
@@ -57,7 +55,7 @@ varying vec3 v;
 
 void main (void)
 {
-	float alpha     = 1 - transparency;
+	float alpha     = 1.0 - transparency;
 	vec4 finalColor = vec4 (0, 0, 0, 0);
 
 	vec3 L = normalize (-v);
@@ -68,12 +66,12 @@ void main (void)
 	vec4 Iamb = vec4 (diffuseColor * ambientIntensity, alpha);
 
 	/* Calculate Diffuse Term: */
-	vec4 Idiff = vec4 (diffuseColor, alpha) * max (dot (N, L), 0);
-	Idiff = clamp (Idiff, 0, 1);
+	vec4 Idiff = vec4 (diffuseColor, alpha) * max (dot (N, L), 0.0);
+	Idiff = clamp (Idiff, 0.0, 1.0);
 
 	/* Calculate Specular Term: */
-	vec4 Ispec = vec4 (specularColor, alpha) * pow (max (dot (R, E), 0), 0.3 * shininess);
-	Ispec = clamp (Ispec, 0, 1);
+	vec4 Ispec = vec4 (specularColor, alpha) * pow (max (dot (R, E), 0.0), 0.3 * shininess);
+	Ispec = clamp (Ispec, 0.0, 1.0);
 
 	/* Write Total Color: */
 	finalColor += Iamb + Idiff + Ispec;
@@ -86,3 +84,55 @@ void main (void)
   }
 }
 
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "ToolShader"
+}

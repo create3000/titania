@@ -1567,6 +1567,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 					if (_field -> getType () == _existingField -> getType ())
 					{
 						_existingField -> set (*_field);
+						_existingField -> isSet (true);
 
 						_field -> dispose ();
 
@@ -1786,6 +1787,7 @@ Parser::fieldValue (X3DFieldDefinition* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 	//__LOG__ << this << " " << _field -> getTypeName () << std::endl;
+	//__LOG__ << this << " " << _field -> getName () << std::endl;
 
 	_field -> addComments (getComments ());
 	_field -> isSet (true);

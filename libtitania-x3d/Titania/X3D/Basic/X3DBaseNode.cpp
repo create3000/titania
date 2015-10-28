@@ -239,7 +239,11 @@ throw (Error <INVALID_NAME>,
 				if (fieldDefinition -> getIsReferences () .empty ())
 				{
 					if (fieldDefinition -> isInitializable ())
+					{
 						fieldDefinition -> copy (executionContext, field, COPY_OR_CLONE);
+					
+					   field -> isSet (fieldDefinition -> isSet ());
+					}
 				}
 				else
 				{
@@ -267,6 +271,10 @@ throw (Error <INVALID_NAME>,
 
 			if (fieldDefinition -> getIsReferences () .empty ())
 			{
+				const auto field = fieldDefinition -> copy (executionContext, COPY_OR_CLONE);
+
+				field -> isSet (fieldDefinition -> isSet ());
+
 				copy -> addUserDefinedField (fieldDefinition -> getAccessType (),
 				                             fieldDefinition -> getName (),
 				                             fieldDefinition -> copy (executionContext, COPY_OR_CLONE));

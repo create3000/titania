@@ -93,19 +93,21 @@ LassoSelection::initialize ()
 bool
 LassoSelection::on_button_press_event (GdkEventButton* event)
 {
+	if (button)
+		return false;
+
 	if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
 		return false;
 
-	button = event -> button;
-
-	getBrowser () -> addEvent ();
-
-	if (button == 1)
+	if (event -> button == 1)
 	{
+		button = event -> button;
+
 		if (getBrowser () -> getActiveLayer ())
 			getBrowser () -> getActiveLayer () -> getViewpoint () -> transitionStop ();
 		
 		getBrowser () -> displayed () .addInterest (this, &LassoSelection::display);
+		getBrowser () -> addEvent ();
 		
 		clear ();
 		addPoint (event -> x, event -> y);
@@ -122,6 +124,8 @@ LassoSelection::on_button_release_event (GdkEventButton* event)
 	if (event -> button not_eq button)
 		return false;
 
+	button = 0;
+
 	if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
 		return false;
 
@@ -133,8 +137,6 @@ LassoSelection::on_button_release_event (GdkEventButton* event)
 
 		return true;
 	}
-
-	button = 0;
 
 	return false;
 }

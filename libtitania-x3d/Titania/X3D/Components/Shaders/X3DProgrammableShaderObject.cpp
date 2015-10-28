@@ -129,89 +129,300 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 	const GLint location = glGetUniformLocation (getProgramId (), field -> getName () .c_str ());
 
-	if (location not_eq -1)
+	if (location == -1)
 	{
-		switch (field -> getType ())
+		#ifdef TITANIA_DEBUG
+		getBrowser () -> println ("Warning: Uniform variable '", field -> getName (), "' not found.");
+
+		if (not getProgramId ())
+			getBrowser () -> println ("Warning: Couldn't allocate shader.");
+		#endif
+
+		glUseProgram (0);
+		return;
+	}
+
+	switch (field -> getType ())
+	{
+		case X3DConstants::SFBool:
 		{
-			case X3DConstants::SFBool:
-			{
-				glUniform1i (location, static_cast <SFBool*> (field) -> getValue ());
-				break;
-			}
-			case X3DConstants::SFColor:
-			{
-				glUniform3fv (location, 1, static_cast <SFColor*> (field) -> getValue () .data ());
-				break;
-			}
-			case X3DConstants::SFColorRGBA:
-			{
-				glUniform4fv (location, 1, static_cast <SFColorRGBA*> (field) -> getValue () .data ());
-				break;
-			}
-			case X3DConstants::SFDouble:
-			{
-				glUniform1d (location, static_cast <SFDouble*> (field) -> getValue ());
-				break;
-			}
-			case X3DConstants::SFFloat:
-			{
-				glUniform1f (location, static_cast <SFFloat*> (field) -> getValue ());
-				break;
-			}
-			case X3DConstants::SFInt32:
-			{
-				glUniform1i (location, static_cast <SFInt32*> (field) -> getValue ());
-				break;
-			}
-			case X3DConstants::SFImage:
-			{
-				break;
-			}
-			case X3DConstants::SFMatrix3d:
-			{
-				glUniformMatrix3dv (location, 1, false, static_cast <SFMatrix3d*> (field) -> getValue () .data ());
-				break;
-			}
-			case X3DConstants::SFMatrix3f:
-			{
-				glUniformMatrix3fv (location, 1, false, static_cast <SFMatrix3f*> (field) -> getValue () .data ());
-				break;
-			}
-			case X3DConstants::SFMatrix4d:
-			{
-				glUniformMatrix4dv (location, 1, false, static_cast <SFMatrix4d*> (field) -> getValue () .data ());
-				break;
-			}
-			case X3DConstants::SFMatrix4f:
-			{
-				glUniformMatrix4fv (location, 1, false, static_cast <SFMatrix4f*> (field) -> getValue () .data ());
-				break;
-			}
-			case X3DConstants::SFNode:
-			{
-				const auto node = static_cast <SFNode*> (field);
+			glUniform1i (location, static_cast <SFBool*> (field) -> getValue ());
+			break;
+		}
+		case X3DConstants::SFColor:
+		{
+			glUniform3fv (location, 1, static_cast <SFColor*> (field) -> getValue () .data ());
+			break;
+		}
+		case X3DConstants::SFColorRGBA:
+		{
+			glUniform4fv (location, 1, static_cast <SFColorRGBA*> (field) -> getValue () .data ());
+			break;
+		}
+		case X3DConstants::SFDouble:
+		{
+			glUniform1d (location, static_cast <SFDouble*> (field) -> getValue ());
+			break;
+		}
+		case X3DConstants::SFFloat:
+		{
+			glUniform1f (location, static_cast <SFFloat*> (field) -> getValue ());
+			break;
+		}
+		case X3DConstants::SFInt32:
+		{
+			glUniform1i (location, static_cast <SFInt32*> (field) -> getValue ());
+			break;
+		}
+		case X3DConstants::SFImage:
+		{
+			break;
+		}
+		case X3DConstants::SFMatrix3d:
+		{
+			glUniformMatrix3dv (location, 1, false, static_cast <SFMatrix3d*> (field) -> getValue () .data ());
+			break;
+		}
+		case X3DConstants::SFMatrix3f:
+		{
+			glUniformMatrix3fv (location, 1, false, static_cast <SFMatrix3f*> (field) -> getValue () .data ());
+			break;
+		}
+		case X3DConstants::SFMatrix4d:
+		{
+			glUniformMatrix4dv (location, 1, false, static_cast <SFMatrix4d*> (field) -> getValue () .data ());
+			break;
+		}
+		case X3DConstants::SFMatrix4f:
+		{
+			glUniformMatrix4fv (location, 1, false, static_cast <SFMatrix4f*> (field) -> getValue () .data ());
+			break;
+		}
+		case X3DConstants::SFNode:
+		{
+			const auto node = static_cast <SFNode*> (field);
 
-				GLint textureUnit = 0;
-				glGetUniformiv (getProgramId (), location, &textureUnit);
+			GLint textureUnit = 0;
+			glGetUniformiv (getProgramId (), location, &textureUnit);
 
-				if (not textureUnit)
+			if (not textureUnit)
+			{
+				if (getBrowser () -> getCombinedTextureUnits () .empty ())
 				{
-					if (getBrowser () -> getCombinedTextureUnits () .empty ())
+					getBrowser () -> println ("Warning: Not enough combined texture units for uniform variable '", field -> getName (), "' available.");
+					break;
+				}
+				else
+				{
+					textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
+					getBrowser () -> getCombinedTextureUnits () .pop ();
+					textureUnits .emplace_back (textureUnit);
+				}
+			}
+
+			glActiveTexture (GL_TEXTURE0 + textureUnit);
+
+			const auto texture = x3d_cast <X3DTextureNode*> (*node);
+
+			if (x3d_cast <X3DTexture2DNode*> (texture))
+				glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
+
+			else if (x3d_cast <X3DTexture3DNode*> (texture))
+				glBindTexture (GL_TEXTURE_3D, texture -> getTextureId ());
+
+			else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
+				glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
+
+			else
+				glBindTexture (GL_TEXTURE_2D, 0);
+
+			glUniform1i (location, textureUnit);
+			glActiveTexture (GL_TEXTURE0);
+
+			break;
+		}
+		case X3DConstants::SFRotation:
+		{
+			glUniform4fv (location, 1, static_cast <SFRotation*> (field) -> getValue () .quat () .data ());
+			break;
+		}
+		case X3DConstants::SFString:
+		{
+			break;
+		}
+		case X3DConstants::SFTime:
+		{
+			glUniform1d (location, static_cast <SFTime*> (field) -> getValue ());
+			break;
+		}
+		case X3DConstants::SFVec2d:
+		{
+			glUniform2dv (location, 1, static_cast <SFVec2d*> (field) -> getValue () .data ());
+			break;
+			break;
+		}
+		case X3DConstants::SFVec2f:
+		{
+			glUniform2fv (location, 1, static_cast <SFVec2f*> (field) -> getValue () .data ());
+			break;
+		}
+		case X3DConstants::SFVec3d:
+		{
+			glUniform3dv (location, 1, static_cast <SFVec3d*> (field) -> getValue () .data ());
+			break;
+		}
+		case X3DConstants::SFVec3f:
+		{
+			glUniform3fv (location, 1, static_cast <SFVec3f*> (field) -> getValue () .data ());
+			break;
+		}
+		case X3DConstants::SFVec4d:
+		{
+			glUniform4dv (location, 1, static_cast <SFVec4d*> (field) -> getValue () .data ());
+			break;
+		}
+		case X3DConstants::SFVec4f:
+		{
+			glUniform4fv (location, 1, static_cast <SFVec4f*> (field) -> getValue () .data ());
+			break;
+		}
+		case X3DConstants::MFBool:
+		{
+			const auto array = static_cast <MFBool*> (field);
+
+			std::vector <GLint> vector (array -> begin (), array -> end ());
+			glUniform1iv (location, vector .size (), vector .data ());
+			break;
+		}
+		case X3DConstants::MFColor:
+		{
+			const auto array = static_cast <MFColor*> (field);
+
+			std::vector <Color3f> vector (array -> begin (), array -> end ());
+			glUniform3fv (location, vector .size (), vector [0] .data ());
+			break;
+		}
+		case X3DConstants::MFColorRGBA:
+		{
+			const auto array = static_cast <MFColorRGBA*> (field);
+
+			std::vector <Color4f> vector (array -> begin (), array -> end ());
+			glUniform4fv (location, vector .size (), vector [0] .data ());
+			break;
+		}
+		case X3DConstants::MFDouble:
+		{
+			const auto array = static_cast <MFDouble*> (field);
+
+			std::vector <GLdouble> vector (array -> begin (), array -> end ());
+			glUniform1dv (location, vector .size (), vector .data ());
+			break;
+		}
+		case X3DConstants::MFFloat:
+		{
+			const auto array = static_cast <MFFloat*> (field);
+
+			std::vector <GLfloat> vector (array -> begin (), array -> end ());
+			glUniform1fv (location, vector .size (), vector .data ());
+			break;
+		}
+		case X3DConstants::MFImage:
+		{
+			break;
+		}
+		case X3DConstants::MFInt32:
+		{
+			const auto array = static_cast <MFInt32*> (field);
+
+			std::vector <GLint> vector (array -> begin (), array -> end ());
+			glUniform1iv (location, vector .size (), vector .data ());
+			break;
+		}
+		case X3DConstants::MFMatrix3d:
+		{
+			const auto array = static_cast <MFMatrix3d*> (field);
+
+			std::vector <Matrix3d> vector (array -> begin (), array -> end ());
+			glUniformMatrix3dv (location, vector .size (), false, vector [0] .data ());
+			break;
+		}
+		case X3DConstants::MFMatrix3f:
+		{
+			const auto array = static_cast <MFMatrix3f*> (field);
+
+			std::vector <Matrix3f> vector (array -> begin (), array -> end ());
+			glUniformMatrix3fv (location, vector .size (), false, vector [0] .data ());
+			break;
+		}
+		case X3DConstants::MFMatrix4d:
+		{
+			const auto array = static_cast <MFMatrix4d*> (field);
+
+			std::vector <Matrix4d> vector (array -> begin (), array -> end ());
+			glUniformMatrix4dv (location, vector .size (), false, vector [0] .data ());
+			break;
+		}
+		case X3DConstants::MFMatrix4f:
+		{
+			const auto array = static_cast <MFMatrix4f*> (field);
+
+			std::vector <Matrix4f> vector (array -> begin (), array -> end ());
+			glUniformMatrix4fv (location, vector .size (), false, vector [0] .data ());
+			break;
+		}
+		case X3DConstants::MFNode:
+		{
+			// Push back texture units
+			{
+				std::vector <size_t> textureUnits;
+
+				for (size_t i = 0;; ++ i)
+				{
+					GLint textureUnit = 0;
+
+					const GLint location = glGetUniformLocation (getProgramId (), (field -> getName () [0] + "[" + basic::to_string (i) + "]") .c_str ());
+
+					if (location not_eq -1)
 					{
-						getBrowser () -> println ("Warning: Not enough combined texture units for uniform variable '", field -> getName (), "' available.");
-						break;
+						glGetUniformiv (getProgramId (), location, &textureUnit);
+
+						if (textureUnit)
+							textureUnits .emplace_back (textureUnit);
 					}
 					else
-					{
-						textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
-						getBrowser () -> getCombinedTextureUnits () .pop ();
-						textureUnits .emplace_back (textureUnit);
-					}
+						break;
+				}
+
+				for (const auto & textureUnit : textureUnits)
+					getBrowser () -> getCombinedTextureUnits () .push (textureUnit);
+			}
+
+			// Set uniform variable;
+
+			const auto array = static_cast <MFNode*> (field);
+
+			std::vector <GLint> vector;
+			vector .reserve (array -> size ());
+
+			for (const auto & node : *array)
+			{
+				GLint textureUnit = 0;
+
+				if (getBrowser () -> getCombinedTextureUnits () .empty ())
+				{
+					getBrowser () -> println ("Warning: Not enough combined texture units for uniform variable '", field -> getName (), "' available.");
+					break;
+				}
+				else
+				{
+					textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
+					getBrowser () -> getCombinedTextureUnits () .pop ();
+					textureUnits .emplace_back (textureUnit);
 				}
 
 				glActiveTexture (GL_TEXTURE0 + textureUnit);
 
-				const auto texture = x3d_cast <X3DTextureNode*> (*node);
+				const auto texture = x3d_cast <X3DTextureNode*> (node);
 
 				if (x3d_cast <X3DTexture2DNode*> (texture))
 					glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
@@ -225,300 +436,90 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 				else
 					glBindTexture (GL_TEXTURE_2D, 0);
 
-				glUniform1i (location, textureUnit);
-				glActiveTexture (GL_TEXTURE0);
-
-				break;
+				vector .emplace_back (textureUnit);
 			}
-			case X3DConstants::SFRotation:
-			{
-				glUniform4fv (location, 1, static_cast <SFRotation*> (field) -> getValue () .quat () .data ());
-				break;
-			}
-			case X3DConstants::SFString:
-			{
-				break;
-			}
-			case X3DConstants::SFTime:
-			{
-				glUniform1d (location, static_cast <SFTime*> (field) -> getValue ());
-				break;
-			}
-			case X3DConstants::SFVec2d:
-			{
-				glUniform2dv (location, 1, static_cast <SFVec2d*> (field) -> getValue () .data ());
-				break;
-				break;
-			}
-			case X3DConstants::SFVec2f:
-			{
-				glUniform2fv (location, 1, static_cast <SFVec2f*> (field) -> getValue () .data ());
-				break;
-			}
-			case X3DConstants::SFVec3d:
-			{
-				glUniform3dv (location, 1, static_cast <SFVec3d*> (field) -> getValue () .data ());
-				break;
-			}
-			case X3DConstants::SFVec3f:
-			{
-				glUniform3fv (location, 1, static_cast <SFVec3f*> (field) -> getValue () .data ());
-				break;
-			}
-			case X3DConstants::SFVec4d:
-			{
-				glUniform4dv (location, 1, static_cast <SFVec4d*> (field) -> getValue () .data ());
-				break;
-			}
-			case X3DConstants::SFVec4f:
-			{
-				glUniform4fv (location, 1, static_cast <SFVec4f*> (field) -> getValue () .data ());
-				break;
-			}
-			case X3DConstants::MFBool:
-			{
-				const auto array = static_cast <MFBool*> (field);
 
-				std::vector <GLint> vector (array -> begin (), array -> end ());
-				glUniform1iv (location, vector .size (), vector .data ());
-				break;
-			}
-			case X3DConstants::MFColor:
-			{
-				const auto array = static_cast <MFColor*> (field);
+			glUniform1iv (location, vector .size (), vector .data ());
+			glActiveTexture (GL_TEXTURE0);
 
-				std::vector <Color3f> vector (array -> begin (), array -> end ());
-				glUniform3fv (location, vector .size (), vector [0] .data ());
-				break;
-			}
-			case X3DConstants::MFColorRGBA:
-			{
-				const auto array = static_cast <MFColorRGBA*> (field);
-
-				std::vector <Color4f> vector (array -> begin (), array -> end ());
-				glUniform4fv (location, vector .size (), vector [0] .data ());
-				break;
-			}
-			case X3DConstants::MFDouble:
-			{
-				const auto array = static_cast <MFDouble*> (field);
-
-				std::vector <GLdouble> vector (array -> begin (), array -> end ());
-				glUniform1dv (location, vector .size (), vector .data ());
-				break;
-			}
-			case X3DConstants::MFFloat:
-			{
-				const auto array = static_cast <MFFloat*> (field);
-
-				std::vector <GLfloat> vector (array -> begin (), array -> end ());
-				glUniform1fv (location, vector .size (), vector .data ());
-				break;
-			}
-			case X3DConstants::MFImage:
-			{
-				break;
-			}
-			case X3DConstants::MFInt32:
-			{
-				const auto array = static_cast <MFInt32*> (field);
-
-				std::vector <GLint> vector (array -> begin (), array -> end ());
-				glUniform1iv (location, vector .size (), vector .data ());
-				break;
-			}
-			case X3DConstants::MFMatrix3d:
-			{
-				const auto array = static_cast <MFMatrix3d*> (field);
-
-				std::vector <Matrix3d> vector (array -> begin (), array -> end ());
-				glUniformMatrix3dv (location, vector .size (), false, vector [0] .data ());
-				break;
-			}
-			case X3DConstants::MFMatrix3f:
-			{
-				const auto array = static_cast <MFMatrix3f*> (field);
-
-				std::vector <Matrix3f> vector (array -> begin (), array -> end ());
-				glUniformMatrix3fv (location, vector .size (), false, vector [0] .data ());
-				break;
-			}
-			case X3DConstants::MFMatrix4d:
-			{
-				const auto array = static_cast <MFMatrix4d*> (field);
-
-				std::vector <Matrix4d> vector (array -> begin (), array -> end ());
-				glUniformMatrix4dv (location, vector .size (), false, vector [0] .data ());
-				break;
-			}
-			case X3DConstants::MFMatrix4f:
-			{
-				const auto array = static_cast <MFMatrix4f*> (field);
-
-				std::vector <Matrix4f> vector (array -> begin (), array -> end ());
-				glUniformMatrix4fv (location, vector .size (), false, vector [0] .data ());
-				break;
-			}
-			case X3DConstants::MFNode:
-			{
-				// Push back texture units
-				{
-					std::vector <size_t> textureUnits;
-
-					for (size_t i = 0;; ++ i)
-					{
-						GLint textureUnit = 0;
-
-						const GLint location = glGetUniformLocation (getProgramId (), (field -> getName () [0] + "[" + basic::to_string (i) + "]") .c_str ());
-
-						if (location not_eq -1)
-						{
-							glGetUniformiv (getProgramId (), location, &textureUnit);
-
-							if (textureUnit)
-								textureUnits .emplace_back (textureUnit);
-						}
-						else
-							break;
-					}
-
-					for (const auto & textureUnit : textureUnits)
-						getBrowser () -> getCombinedTextureUnits () .push (textureUnit);
-				}
-
-				// Set uniform variable;
-
-				const auto array = static_cast <MFNode*> (field);
-
-				std::vector <GLint> vector;
-				vector .reserve (array -> size ());
-
-				for (const auto & node : *array)
-				{
-					GLint textureUnit = 0;
-
-					if (getBrowser () -> getCombinedTextureUnits () .empty ())
-					{
-						getBrowser () -> println ("Warning: Not enough combined texture units for uniform variable '", field -> getName (), "' available.");
-						break;
-					}
-					else
-					{
-						textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
-						getBrowser () -> getCombinedTextureUnits () .pop ();
-						textureUnits .emplace_back (textureUnit);
-					}
-
-					glActiveTexture (GL_TEXTURE0 + textureUnit);
-
-					const auto texture = x3d_cast <X3DTextureNode*> (node);
-
-					if (x3d_cast <X3DTexture2DNode*> (texture))
-						glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
-
-					else if (x3d_cast <X3DTexture3DNode*> (texture))
-						glBindTexture (GL_TEXTURE_3D, texture -> getTextureId ());
-
-					else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
-						glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
-
-					else
-						glBindTexture (GL_TEXTURE_2D, 0);
-
-					vector .emplace_back (textureUnit);
-				}
-
-				glUniform1iv (location, vector .size (), vector .data ());
-				glActiveTexture (GL_TEXTURE0);
-
-				break;
-			}
-			case X3DConstants::MFRotation:
-			{
-				const auto array = static_cast <MFRotation*> (field);
-
-				std::vector <Vector4f> vector;
-				vector .reserve (array -> size ());
-
-				for (const auto & value : *array)
-				{
-					const auto & quat = value .getValue () .quat ();
-					vector .emplace_back (quat .x (), quat .y (), quat .z (), quat .w ());
-				}
-
-				glUniform4fv (location, vector .size (), vector [0] .data ());
-				break;
-			}
-			case X3DConstants::MFString:
-			{
-				break;
-			}
-			case X3DConstants::MFTime:
-			{
-				const auto array = static_cast <MFTime*> (field);
-
-				std::vector <GLdouble> vector (array -> begin (), array -> end ());
-				glUniform1dv (location, vector .size (), vector .data ());
-				break;
-			}
-			case X3DConstants::MFVec2d:
-			{
-				const auto array = static_cast <MFVec2d*> (field);
-
-				std::vector <Vector2d> vector (array -> begin (), array -> end ());
-				glUniform2dv (location, vector .size (), vector [0] .data ());
-				break;
-			}
-			case X3DConstants::MFVec2f:
-			{
-				const auto array = static_cast <MFVec2f*> (field);
-
-				std::vector <Vector2f> vector (array -> begin (), array -> end ());
-				glUniform2fv (location, vector .size (), vector [0] .data ());
-				break;
-			}
-			case X3DConstants::MFVec3d:
-			{
-				const auto array = static_cast <MFVec3d*> (field);
-
-				std::vector <Vector3d> vector (array -> begin (), array -> end ());
-				glUniform3dv (location, vector .size (), vector [0] .data ());
-				break;
-			}
-			case X3DConstants::MFVec3f:
-			{
-				const auto array = static_cast <MFVec3f*> (field);
-
-				std::vector <Vector3f> vector (array -> begin (), array -> end ());
-				glUniform3fv (location, vector .size (), vector [0] .data ());
-				break;
-			}
-			case X3DConstants::MFVec4d:
-			{
-				const auto array = static_cast <MFVec4d*> (field);
-
-				std::vector <Vector4d> vector (array -> begin (), array -> end ());
-				glUniform4dv (location, vector .size (), vector [0] .data ());
-				break;
-			}
-			case X3DConstants::MFVec4f:
-			{
-				const auto array = static_cast <MFVec4f*> (field);
-
-				std::vector <Vector4f> vector (array -> begin (), array -> end ());
-				glUniform4fv (location, vector .size (), vector [0] .data ());
-				break;
-			}
+			break;
 		}
-	}
-	else
-	{
-		#ifdef TITANIA_DEBUG
-		std::clog << "Warning: Uniform variable '" << field -> getName () << "' not found." << std::endl;
+		case X3DConstants::MFRotation:
+		{
+			const auto array = static_cast <MFRotation*> (field);
 
-		if (not getProgramId ())
-			std::clog << "Warning: Couldn't allocate shader." << std::endl;
-		#endif
+			std::vector <Vector4f> vector;
+			vector .reserve (array -> size ());
+
+			for (const auto & value : *array)
+			{
+				const auto & quat = value .getValue () .quat ();
+				vector .emplace_back (quat .x (), quat .y (), quat .z (), quat .w ());
+			}
+
+			glUniform4fv (location, vector .size (), vector [0] .data ());
+			break;
+		}
+		case X3DConstants::MFString:
+		{
+			break;
+		}
+		case X3DConstants::MFTime:
+		{
+			const auto array = static_cast <MFTime*> (field);
+
+			std::vector <GLdouble> vector (array -> begin (), array -> end ());
+			glUniform1dv (location, vector .size (), vector .data ());
+			break;
+		}
+		case X3DConstants::MFVec2d:
+		{
+			const auto array = static_cast <MFVec2d*> (field);
+
+			std::vector <Vector2d> vector (array -> begin (), array -> end ());
+			glUniform2dv (location, vector .size (), vector [0] .data ());
+			break;
+		}
+		case X3DConstants::MFVec2f:
+		{
+			const auto array = static_cast <MFVec2f*> (field);
+
+			std::vector <Vector2f> vector (array -> begin (), array -> end ());
+			glUniform2fv (location, vector .size (), vector [0] .data ());
+			break;
+		}
+		case X3DConstants::MFVec3d:
+		{
+			const auto array = static_cast <MFVec3d*> (field);
+
+			std::vector <Vector3d> vector (array -> begin (), array -> end ());
+			glUniform3dv (location, vector .size (), vector [0] .data ());
+			break;
+		}
+		case X3DConstants::MFVec3f:
+		{
+			const auto array = static_cast <MFVec3f*> (field);
+
+			std::vector <Vector3f> vector (array -> begin (), array -> end ());
+			glUniform3fv (location, vector .size (), vector [0] .data ());
+			break;
+		}
+		case X3DConstants::MFVec4d:
+		{
+			const auto array = static_cast <MFVec4d*> (field);
+
+			std::vector <Vector4d> vector (array -> begin (), array -> end ());
+			glUniform4dv (location, vector .size (), vector [0] .data ());
+			break;
+		}
+		case X3DConstants::MFVec4f:
+		{
+			const auto array = static_cast <MFVec4f*> (field);
+
+			std::vector <Vector4f> vector (array -> begin (), array -> end ());
+			glUniform4fv (location, vector .size (), vector [0] .data ());
+			break;
+		}
 	}
 
 	glUseProgram (0);
@@ -561,7 +562,7 @@ X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint 
 	else
 	{
 		#ifdef TITANIA_DEBUG
-		std::clog << "Warning: Uniform variable '" << name << "' not found." << std::endl;
+		getBrowser () -> println ("Warning: Uniform variable '", name, "' not found.");
 		#endif
 	}
 

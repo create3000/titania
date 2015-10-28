@@ -1,0 +1,84 @@
+#X3D V3.3 utf8 Titania V1.2.0
+
+META "comment" "World of Titania"
+META "created" "Wed, 28 Oct 2015 13:05:12 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.0, http://titania.create3000.de"
+META "modified" "Wed, 28 Oct 2015 13:05:46 GMT"
+
+EXTERNPROTO ToolShader [
+  inputOutput SFNode  metadata
+  inputOutput SFFloat ambientIntensity
+  inputOutput SFColor diffuseColor
+  inputOutput SFColor specularColor
+  inputOutput SFColor emissiveColor
+  inputOutput SFFloat shininess
+  inputOutput SFFloat transparency
+]
+[
+  "../../../libtitania-x3d/share/titania/tools/library/ToolShader.x3dv#ToolShader",
+  "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/ToolShader.x3dv#ToolShader"
+]
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              4.68469572067261,
+              4.85585689544678,
+              7.38070678710938
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.650030434131622,
+              0.733747243881226,
+              0.197675257921219,
+              0.75624543428421
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+
+DEF Box_1 Transform {
+  children Shape {
+    appearance Appearance {
+      shaders ToolShader {
+        diffuseColor 1 0 0
+      }
+    }
+    geometry Box { }
+  }
+}
