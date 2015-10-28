@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,72 +48,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_RENDERING_COLLISION_SHAPE_H__
-#define __TITANIA_X3D_RENDERING_COLLISION_SHAPE_H__
-
-#include "../Components/Navigation/Collision.h"
-#include "../Components/Shape/X3DShapeNode.h"
-#include "../Rendering/CollisionArray.h"
-#include "../Rendering/X3DCollectableObject.h"
-
-#include "../Types/Geometry.h"
-#include "../Types/Numbers.h"
+#include "CollisionSphere3.h"
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-class CollisionShape
-{
-public:
+template class collision_sphere3 <float>;
+template class collision_sphere3 <double>;
+template class collision_sphere3 <long double>;
 
-	CollisionShape ();
+//
+template std::istream & operator >> (std::istream &, collision_sphere3 <float> &);
+template std::istream & operator >> (std::istream &, collision_sphere3 <double> &);
+template std::istream & operator >> (std::istream &, collision_sphere3 <long double> &);
 
-	void
-	setScissor (const Vector4i & value)
-	{ scissor = value; }
+//
+template std::ostream & operator << (std::ostream &, const collision_sphere3 <float> &);
+template std::ostream & operator << (std::ostream &, const collision_sphere3 <double> &);
+template std::ostream & operator << (std::ostream &, const collision_sphere3 <long double> &);
 
-	void
-	setModelViewMatrix (const Matrix4f & value)
-	{ modelViewMatrix = value; }
-
-	const Matrix4f &
-	getModelViewMatrix () const
-	{ return modelViewMatrix; }
-
-	void
-	setShape (X3DShapeNode* const value)
-	{ shape = value; }
-
-	void
-	setCollisions (const CollisionArray & value)
-	{ collisions = value; }
-
-	const CollisionArray &
-	getCollisions () const
-	{ return collisions; }
-
-	void
-	setClipPlanes (const CollectableObjectArray & value)
-	{ clipPlanes = value; }
-
-	bool
-	intersects (const Sphere3f &) const;
-
-	void
-	draw ();
-
-
-private:
-
-	Vector4i               scissor;
-	Matrix4f               modelViewMatrix;
-	X3DShapeNode*          shape;
-	CollisionArray         collisions;
-	CollectableObjectArray clipPlanes;
-
-};
-
-} // X3D
+} // math
 } // titania
-
-#endif

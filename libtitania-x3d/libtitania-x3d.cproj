@@ -387,7 +387,6 @@
     <None Include="info.h" />
     <None Include="Titania\X3D\InputOutput\Generator.h" />
     <None Include="Titania\X3D\Rendering\LightContainer.h" />
-    <None Include="Titania\X3D\Rendering\ShapeContainer.h" />
     <None Include="Titania\X3D\Components.h" />
     <None Include="Titania\X3D\Extensions\CosmoWorlds\CosmoWorlds.wrl" />
     <None Include="Titania\X3D\Fields\SFVec4.h" />
@@ -449,7 +448,6 @@
     <None Include="Titania\X3D\Bits\Cast.h" />
     <None Include="Titania\X3D\Bits\TraverseType.h" />
     <None Include="Titania\X3D\Types\Speed.h" />
-    <None Include="Titania\X3D\Rendering\CollisionShape.h" />
     <None Include="Titania\X3D\Rendering\CollisionArray.h" />
     <None Include="Titania\X3D\Base\X3DBase.h" />
     <None Include="Titania\X3D\Browser\Console.h" />
@@ -761,6 +759,8 @@
     <None Include="Titania\X3D\Configuration\X3DUnitContext.h" />
     <None Include="Titania\X3D\Prototype\X3DProtoDeclarationNode.h" />
     <None Include="Titania\X3D\Configuration\UnitCategory.h" />
+    <None Include="Titania\X3D\Rendering\ShapeContainer.h" />
+    <None Include="Titania\X3D\Rendering\CollisionContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -800,7 +800,6 @@
     <Compile Include="Titania\X3D\Parser\X3DParser.cpp" />
     <Compile Include="Titania\X3D\Prototype\ExternProtoArray.cpp" />
     <Compile Include="Titania\X3D\Prototype\ProtoArray.cpp" />
-    <Compile Include="Titania\X3D\Rendering\ShapeContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\ViewVolume.cpp" />
     <Compile Include="Titania\X3D\Rendering\X3DRenderer.cpp" />
     <Compile Include="Titania\X3D\Routing\RouteArray.cpp" />
@@ -1096,7 +1095,6 @@
     <Compile Include="Titania\X3D\Base\X3DObject.cpp" />
     <Compile Include="Titania\X3D\Components\Navigation\X3DViewpointObject.cpp" />
     <Compile Include="Titania\X3D\Rendering\LightContainer.cpp" />
-    <Compile Include="Titania\X3D\Rendering\CollisionShape.cpp" />
     <Compile Include="Titania\X3D\Browser\Console.cpp" />
     <Compile Include="Titania\X3D\Bits\config.cpp" />
     <Compile Include="Titania\X3D\Parser\Grammar.cpp" />
@@ -1272,6 +1270,8 @@
     <Compile Include="Titania\X3D\Editor\Undo\UndoStep.cpp" />
     <Compile Include="Titania\X3D\Editor\X3DEditor.cpp" />
     <Compile Include="Titania\X3D\Configuration\X3DUnitContext.cpp" />
+    <Compile Include="Titania\X3D\Rendering\ShapeContainer.cpp" />
+    <Compile Include="Titania\X3D\Rendering\CollisionContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

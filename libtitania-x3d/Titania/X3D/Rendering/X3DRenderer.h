@@ -54,8 +54,6 @@
 #include "../Base/Output.h"
 #include "../Components/Core/X3DNode.h"
 #include "../Rendering/CollisionArray.h"
-#include "../Rendering/CollisionShape.h"
-#include "../Rendering/ShapeContainer.h"
 #include "../Rendering/ViewVolume.h"
 #include "../Rendering/X3DCollectableObject.h"
 
@@ -68,6 +66,8 @@ namespace X3D {
 using ViewVolumeStack = std::vector <ViewVolume>;
 
 class FrameBuffer;
+class CollisionContainer;
+class ShapeContainer;
 
 class X3DRenderer :
 	virtual public X3DNode
@@ -77,7 +77,7 @@ public:
 	///  @name Member types
 
 	using ShapeContainerArray = std::vector <std::shared_ptr <ShapeContainer>> ;
-	using CollisionShapeArray = std::vector <std::unique_ptr <CollisionShape>> ;
+	using CollisionContainerArray = std::vector <std::unique_ptr <CollisionContainer>> ;
 
 	///  @name Common members
 
@@ -123,7 +123,7 @@ public:
 
 	const ShapeContainerArray &
 	getOpaqueShapes () const
-	{ return shapes; }
+	{ return opaqueShapes; }
 
 	size_t
 	getNumTransparentShapes () const
@@ -183,19 +183,13 @@ private:
 	getDepth () const;
 
 	void
-	draw ();
-
-	void
 	collide ();
 
 	void
 	gravite ();
 
-	bool
-	stepUp ();
-
 	void
-	addStepUp ();
+	display ();
 
 	///  @name Members
 
@@ -204,9 +198,9 @@ private:
 	CollectableObjectArray localObjects;
 	CollisionArray         collisions;
 
-	ShapeContainerArray      shapes;
+	ShapeContainerArray      opaqueShapes;
 	ShapeContainerArray      transparentShapes;
-	CollisionShapeArray      collisionShapes;
+	CollisionContainerArray  collisionShapes;
 	std::vector <Collision*> activeCollisions;
 
 	std::unique_ptr <FrameBuffer> depthBuffer;
@@ -214,7 +208,7 @@ private:
 
 	size_t numOpaqueShapes;
 	size_t numTransparentShapes;
-	size_t numCollisionShapes;
+	size_t numCollisionContainers;
 
 };
 

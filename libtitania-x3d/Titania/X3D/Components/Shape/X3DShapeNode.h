@@ -61,6 +61,7 @@ namespace X3D {
 class X3DAppearanceNode;
 class X3DGeometryNode;
 class ShapeContainer;
+class CollisionContainer;
 
 class X3DShapeNode :
 	virtual public X3DChildNode, public X3DBoundedObject
@@ -128,15 +129,15 @@ public:
 	
 	virtual
 	bool
-	intersects (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) = 0;
+	intersects (const CollisionSphere3f &, const CollectableObjectArray &) = 0;
 
 	virtual
 	void
-	draw (const ShapeContainer* const);
+	display (const ShapeContainer* const);
 
 	virtual
 	void
-	drawCollision () = 0;
+	collision (const CollisionContainer* const) = 0;
 
 	///  @name Destruction
 
@@ -157,7 +158,7 @@ protected:
 
 	virtual
 	void
-	drawGeometry (const ShapeContainer* const) = 0;
+	draw (const ShapeContainer* const) = 0;
 
 
 private:

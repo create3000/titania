@@ -53,6 +53,7 @@
 #include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/ShapeContainer.h"
 #include "../Layering/X3DLayerNode.h"
 
 #include <cassert>
@@ -256,12 +257,12 @@ X3DGeometryNode::isClipped (const Vector3f & point, const Matrix4f & modelViewMa
 }
 
 bool
-X3DGeometryNode::intersects (const Sphere3f & sphere, Matrix4f modelViewMatrix, const CollectableObjectArray & localObjects) const
+X3DGeometryNode::intersects (CollisionSphere3f sphere, const CollectableObjectArray & localObjects) const
 {
-	if (not (getBBox () * modelViewMatrix) .intersects (sphere))
+	if (not sphere .intersects (getBBox ()))
 		return false;
-
-	modelViewMatrix .mult_left (getMatrix ()); // Multiply by current matrix from screen nodes.
+	
+	sphere .matrix (getMatrix () * sphere .matrix ());
 
 	size_t first = 0;
 
@@ -270,29 +271,29 @@ X3DGeometryNode::intersects (const Sphere3f & sphere, Matrix4f modelViewMatrix, 
 		switch (element .vertexMode)
 		{
 			case GL_TRIANGLES :
+			{
+				for (size_t i = first, size = first + element .count; i < size; i += 3)
 				{
-					for (size_t i = first, size = first + element .count; i < size; i += 3)
-					{
-						if (isClipped (vertices [i], modelViewMatrix, localObjects))
-							continue;
+					if (isClipped (vertices [i], sphere .matrix (), localObjects))
+						continue;
 
-						if (sphere .intersects (vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
-							return true;
-					}
-
-					break;
+					if (sphere .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
+						return true;
 				}
+
+				break;
+			}
 			case GL_QUADS:
 			{
 				for (size_t i = first, size = first + element .count; i < size; i += 4)
 				{
-					if (isClipped (vertices [i], modelViewMatrix, localObjects))
+					if (isClipped (vertices [i], sphere .matrix (), localObjects))
 						continue;
 
-					if (sphere .intersects (vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
+					if (sphere .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
 						return true;
 
-					if (sphere .intersects (vertices [i] * modelViewMatrix, vertices [i + 2] * modelViewMatrix, vertices [i + 3] * modelViewMatrix))
+					if (sphere .intersects (vertices [i], vertices [i + 2], vertices [i + 3]))
 						return true;
 				}
 
@@ -302,13 +303,13 @@ X3DGeometryNode::intersects (const Sphere3f & sphere, Matrix4f modelViewMatrix, 
 			{
 				for (size_t i = first, size = first + element .count - 2; i < size; i += 4)
 				{
-					if (isClipped (vertices [i], modelViewMatrix, localObjects))
+					if (isClipped (vertices [i], sphere .matrix (), localObjects))
 						continue;
 
-					if (sphere .intersects (vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
+					if (sphere .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
 						return true;
 
-					if (sphere .intersects (vertices [i + 1] * modelViewMatrix, vertices [i + 3] * modelViewMatrix, vertices [i + 2] * modelViewMatrix))
+					if (sphere .intersects (vertices [i + 1], vertices [i + 3], vertices [i + 2]))
 						return true;
 				}
 
@@ -318,10 +319,10 @@ X3DGeometryNode::intersects (const Sphere3f & sphere, Matrix4f modelViewMatrix, 
 			{
 				for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
 				{
-					if (isClipped (vertices [first], modelViewMatrix, localObjects))
+					if (isClipped (vertices [first], sphere .matrix (), localObjects))
 						continue;
 
-					if (sphere .intersects (vertices [first] * modelViewMatrix, vertices [i] * modelViewMatrix, vertices [i + 1] * modelViewMatrix))
+					if (sphere .intersects (vertices [first], vertices [i], vertices [i + 1]))
 						return true;
 				}
 
@@ -347,14 +348,14 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & colors_, TexCoordArray & t
 		switch (element .vertexMode)
 		{
 			case GL_TRIANGLES :
+			{
+				for (size_t i = first, size = first + element .count; i < size; i += 3)
 				{
-					for (size_t i = first, size = first + element .count; i < size; i += 3)
-					{
-						triangulate (i, i + 1, i + 2, colors_, texCoords_, normals_, vertices_);
-					}
-
-					break;
+					triangulate (i, i + 1, i + 2, colors_, texCoords_, normals_, vertices_);
 				}
+
+				break;
+			}
 			case GL_QUADS:
 			{
 				for (size_t i = first, size = first + element .count; i < size; i += 4)
@@ -693,12 +694,8 @@ X3DGeometryNode::transfer ()
 void
 X3DGeometryNode::draw (const ShapeContainer* const context)
 {
-	draw (context -> isTransparent (), solid, getBrowser () -> getTexture (), glIsEnabled (GL_LIGHTING));
-}
 
-void
-X3DGeometryNode::draw (const bool transparent, const bool solid, const bool texture, const bool lighting)
-{
+
 	if (not attribNodes .empty ())
 	{
 		GLint program = 0;
@@ -714,7 +711,7 @@ X3DGeometryNode::draw (const bool transparent, const bool solid, const bool text
 
 	if (not colors .empty ())
 	{
-		if (lighting)
+		if (glIsEnabled (GL_LIGHTING))
 			glEnable (GL_COLOR_MATERIAL);
 
 		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
@@ -722,13 +719,13 @@ X3DGeometryNode::draw (const bool transparent, const bool solid, const bool text
 		glColorPointer (4, GL_FLOAT, 0, 0);
 	}
 
-	if (texture)
+	if (getBrowser () -> getTexture ())
 	{
 		if (texCoordNode)
 			texCoordNode -> enable (texCoordBufferIds);
 	}
 
-	if (lighting /* or shader */)
+	if (glIsEnabled (GL_LIGHTING) /* or shader */)
 	{
 		if (not normals .empty ())
 		{
@@ -744,7 +741,7 @@ X3DGeometryNode::draw (const bool transparent, const bool solid, const bool text
 
 	const auto positiveScale = determinant3 (ModelViewMatrix4f ()) > 0;
 
-	if (transparent && !solid)
+	if (context -> isTransparent () && not solid)
 	{
 		glEnable (GL_CULL_FACE);
 		glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
@@ -811,7 +808,7 @@ X3DGeometryNode::draw (const bool transparent, const bool solid, const bool text
 
 	// Texture
 
-	if (texture)
+	if (getBrowser () -> getTexture ())
 	{
 		if (texCoordNode)
 			texCoordNode -> disable ();
@@ -821,6 +818,27 @@ X3DGeometryNode::draw (const bool transparent, const bool solid, const bool text
 
 	glDisableClientState (GL_COLOR_ARRAY);
 	glDisableClientState (GL_NORMAL_ARRAY);
+	glDisableClientState (GL_VERTEX_ARRAY);
+	glBindBuffer (GL_ARRAY_BUFFER, 0);
+}
+
+void
+X3DGeometryNode::collision (const CollisionContainer* const context)
+{
+	glDisable (GL_CULL_FACE);
+
+	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
+	glEnableClientState (GL_VERTEX_ARRAY);
+	glVertexPointer (3, GL_FLOAT, 0, 0);
+
+	size_t first = 0;
+
+	for (const auto & element : elements)
+	{
+		glDrawArrays (element .vertexMode, first, element .count);
+		first += element .count;
+	}
+	
 	glDisableClientState (GL_VERTEX_ARRAY);
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }

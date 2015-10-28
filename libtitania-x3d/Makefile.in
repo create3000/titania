@@ -606,7 +606,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Prototype/ProtoArray.lo \
 	Titania/X3D/Prototype/ProtoDeclaration.lo \
 	Titania/X3D/Rendering/ClipPlaneContainer.lo \
-	Titania/X3D/Rendering/CollisionShape.lo \
+	Titania/X3D/Rendering/CollisionContainer.lo \
 	Titania/X3D/Rendering/FrameBuffer.lo \
 	Titania/X3D/Rendering/LightContainer.lo \
 	Titania/X3D/Rendering/PolygonModeContainer.lo \
@@ -1355,7 +1355,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Prototype/ProtoArray.cpp \
 	Titania/X3D/Prototype/ProtoDeclaration.cpp \
 	Titania/X3D/Rendering/ClipPlaneContainer.cpp \
-	Titania/X3D/Rendering/CollisionShape.cpp \
+	Titania/X3D/Rendering/CollisionContainer.cpp \
 	Titania/X3D/Rendering/FrameBuffer.cpp \
 	Titania/X3D/Rendering/LightContainer.cpp \
 	Titania/X3D/Rendering/PolygonModeContainer.cpp \
@@ -3307,7 +3307,7 @@ Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp):
 Titania/X3D/Rendering/ClipPlaneContainer.lo:  \
 	Titania/X3D/Rendering/$(am__dirstamp) \
 	Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Rendering/CollisionShape.lo:  \
+Titania/X3D/Rendering/CollisionContainer.lo:  \
 	Titania/X3D/Rendering/$(am__dirstamp) \
 	Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Rendering/FrameBuffer.lo:  \
@@ -4090,7 +4090,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Prototype/$(DEPDIR)/ProtoArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Prototype/$(DEPDIR)/ProtoDeclaration.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/ClipPlaneContainer.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/CollisionShape.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/CollisionContainer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/FrameBuffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/LightContainer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/PolygonModeContainer.Plo@am__quote@

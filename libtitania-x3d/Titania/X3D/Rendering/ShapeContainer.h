@@ -67,48 +67,81 @@ class ShapeContainer
 {
 public:
 
-	ShapeContainer (X3DShapeNode* const,
-	                X3DFogObject* const,
-	                const CollectableObjectArray &,
-	                const Vector4i &,
-	                const Matrix4f &,
-	                const bool,
-	                const float);
+	///  @name Construction
 
-	void
-	assign (X3DShapeNode* const,
-	        X3DFogObject* const,
-	        const CollectableObjectArray &,
-	        const Vector4i &,
-	        const Matrix4f &,
-	        const bool,
-	        const float);
+	ShapeContainer (const bool);
 
-	X3DShapeNode*
-	getShape () const
-	{ return shape; }
+	///  @name Member access
 
 	bool
 	isTransparent () const
 	{ return transparent; }
 
-	float
+	void
+	setScissor (const Vector4i & value)
+	{ scissor = value; }
+
+	const Vector4i &
+	getScissor () const
+	{ return scissor; }
+
+	void
+	setModelViewMatrix (const Matrix4f & value)
+	{ modelViewMatrix = value; }
+
+	const Matrix4f &
+	getModelViewMatrix () const
+	{ return modelViewMatrix; }
+
+	void
+	setShape (X3DShapeNode* value)
+	{ shape = value; }
+
+	X3DShapeNode*
+	getShape () const
+	{ return shape; }
+
+	void
+	setFog (X3DFogObject* value)
+	{ fog = value; }
+
+	X3DFogObject*
+	getFog () const
+	{ return fog; }
+
+	void
+	setLocalObjects (const CollectableObjectArray & value)
+	{ localObjects = value; }
+
+	const CollectableObjectArray &
+	getLocalObjects () const
+	{ return localObjects; }
+
+	void
+	setDistance (double value)
+	{ distance = value; }
+
+	double
 	getDistance () const
 	{ return distance; }
 
+	///  @name Operations
+
 	void
-	draw ();
+	display ();
 
 
 private:
 
+	///  @name Members
+
+	bool                   transparent;
+	Vector4i               scissor;
+	Matrix4f               modelViewMatrix;
 	X3DShapeNode*          shape;
 	X3DFogObject*          fog;
 	CollectableObjectArray localObjects;
-	Vector4i               scissor;
-	Matrix4f               matrix;
-	bool                   transparent;
-	float                  distance;
+	double                 distance;
 
 };
 

@@ -59,6 +59,7 @@
 #include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/NURBS/CoordinateDouble.h"
 #include "../Components/Rendering/Coordinate.h"
+#include "../Components/Shape/X3DShapeNode.h"
 #include "../Execution/ImportedNode.h"
 #include "../Execution/ExportedNode.h"
 #include "../Execution/X3DExecutionContext.h"

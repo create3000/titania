@@ -65,6 +65,7 @@ namespace titania {
 namespace X3D {
 
 class ShapeContainer;
+class CollisionContainer;
 
 class X3DGeometryNode :
 	virtual public X3DNode
@@ -131,7 +132,7 @@ public:
 	intersects (Line3f, std::vector <IntersectionPtr> &) const;
 
 	bool
-	intersects (const Sphere3f &, Matrix4f, const CollectableObjectArray &) const;
+	intersects (CollisionSphere3f, const CollectableObjectArray &) const;
 
 	void
 	triangulate (std::vector <Color4f> &, TexCoordArray &, std::vector <Vector3f> &, std::vector <Vector3f> &) const;
@@ -140,9 +141,9 @@ public:
 	void
 	draw (const ShapeContainer* const);
 
-	// Used in CollisionShape
+	// Used in CollisionContainer
 	void
-	draw (const bool, const bool, const bool, const bool);
+	collision (const CollisionContainer* const);
 
 	virtual
 	SFNode

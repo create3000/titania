@@ -121,9 +121,9 @@ Shape::getBBox () const
 }
 
 bool
-Shape::intersects (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & localObjects)
+Shape::intersects (const CollisionSphere3f & sphere, const CollectableObjectArray & localObjects)
 {
-	return getGeometry () -> intersects (sphere, matrix, localObjects);
+	return getGeometry () -> intersects (sphere, localObjects);
 }
 
 void
@@ -216,13 +216,13 @@ Shape::pointer ()
 }
 
 void
-Shape::drawCollision ()
+Shape::collision (const CollisionContainer* const context)
 {
-	getGeometry () -> draw (false, false, false, false);
+	getGeometry () -> collision (context);
 }
 
 void
-Shape::drawGeometry (const ShapeContainer* const context)
+Shape::draw (const ShapeContainer* const context)
 {
 	getGeometry () -> draw (context);
 }

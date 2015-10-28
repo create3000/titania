@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,100 +48,50 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_SHAPE_SHAPE_H__
-#define __TITANIA_X3D_COMPONENTS_SHAPE_SHAPE_H__
+#include "CollisionContainer.h"
 
-#include "../Shape/X3DShapeNode.h"
+#include "../Components/Rendering/X3DGeometryNode.h"
 
 namespace titania {
 namespace X3D {
 
-class Shape :
-	public X3DShapeNode
+CollisionContainer::CollisionContainer () :
+	        scissor (),
+	modelViewMatrix (),
+	          shape (nullptr),
+	     collisions (),
+	   localObjects ()
+{ }
+
+bool
+CollisionContainer::intersects (CollisionSphere3f sphere) const
 {
-public:
-
-	///  @name Constuction
-
-	Shape (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Member access
-
-	virtual
-	bool
-	isTransparent () const override;
+	if (collisions .empty ())
+		return false;
 	
-	virtual
-	Box3f
-	getBBox () const override;
+	sphere .matrix (modelViewMatrix * sphere .matrix ());
 
-	///  @name Operations
+	return shape -> intersects (sphere, localObjects);
+}
 
-	virtual
-	bool
-	intersects (const CollisionSphere3f &, const CollectableObjectArray &) override;
+void
+CollisionContainer::draw ()
+{
+	glScissor (scissor [0],
+	           scissor [1],
+	           scissor [2],
+	           scissor [3]);
 
-	virtual
-	void
-	traverse (const TraverseType) override;
+	for (const auto & localObject : localObjects)
+		localObject -> enable ();
 
-	virtual
-	void
-	collision (const CollisionContainer* const) override;
+	glLoadMatrixf (modelViewMatrix .data ());
 
-	virtual
-	void
-	addTool () override;
+	shape -> collision (this);
 
-
-private:
-
-	///  @name Operations
-
-	virtual
-	bool
-	isLineGeometry () const final override;
-
-	void
-	pointer ();
-
-	virtual
-	void
-	draw (const ShapeContainer* const) final override;
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-};
+	for (const auto & localObject : basic::make_reverse_range (localObjects))
+		localObject -> disable ();
+}
 
 } // X3D
 } // titania
-
-#endif

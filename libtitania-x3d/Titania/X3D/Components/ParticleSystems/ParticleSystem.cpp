@@ -1195,7 +1195,7 @@ ParticleSystem::set_geometry_shader_texture_buffers ()
 }
 
 bool
-ParticleSystem::intersects (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & localObjects)
+ParticleSystem::intersects (const CollisionSphere3f & sphere, const CollectableObjectArray & localObjects)
 {
 	return false;
 }
@@ -1403,11 +1403,11 @@ ParticleSystem::update ()
 }
 
 void
-ParticleSystem::drawCollision ()
+ParticleSystem::collision (const CollisionContainer* const)
 { }
 
 void
-ParticleSystem::drawGeometry (const ShapeContainer* const context)
+ParticleSystem::draw (const ShapeContainer* const context)
 {
 	try
 	{

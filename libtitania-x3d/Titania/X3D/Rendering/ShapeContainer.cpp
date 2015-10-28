@@ -55,42 +55,18 @@
 namespace titania {
 namespace X3D {
 
-ShapeContainer::ShapeContainer (X3DShapeNode* const shape,
-                                X3DFogObject* const fog,
-                                const CollectableObjectArray & localObjects,
-                                const Vector4i & scissor,
-                                const Matrix4f & matrix,
-                                const bool transparent,
-                                const float distance) :
-	       shape (shape),
-	         fog (fog),
-	localObjects (localObjects),
-	     scissor (scissor),
-	      matrix (matrix),
-	 transparent (transparent),
-	    distance (distance)
+ShapeContainer::ShapeContainer (const bool transparent) :
+	    transparent (transparent),
+	        scissor (),
+	modelViewMatrix (),
+	          shape (nullptr),
+	            fog (nullptr),
+	   localObjects (),
+	      distance (0)
 { }
 
 void
-ShapeContainer::assign (X3DShapeNode* const shape,
-                        X3DFogObject* const fog,
-                        const CollectableObjectArray & localObjects,
-                        const Vector4i & scissor,
-                        const Matrix4f & matrix,
-                        const bool transparent,
-                        const float distance)
-{
-	this -> shape        = shape;
-	this -> fog          = fog;
-	this -> localObjects = localObjects;
-	this -> scissor      = scissor;
-	this -> matrix       = matrix;
-	this -> transparent  = transparent;
-	this -> distance     = distance;
-}
-
-void
-ShapeContainer::draw ()
+ShapeContainer::display ()
 {
 	glScissor (scissor [0],
 	           scissor [1],
@@ -100,11 +76,11 @@ ShapeContainer::draw ()
 	for (const auto & object : localObjects)
 		object -> enable ();
 
-	glLoadMatrixf (matrix .data ());
+	glLoadMatrixf (modelViewMatrix .data ());
 
 	fog -> enable ();
 
-	shape -> draw (this);
+	shape -> display (this);
 
 	for (const auto & object : basic::make_reverse_range (localObjects))
 		object -> disable ();

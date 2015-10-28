@@ -58,6 +58,8 @@
 namespace titania {
 namespace X3D {
 
+class ShapeContainer;
+
 template <class Type>
 class X3DShapeNodeTool :
 	virtual public X3DChildNodeTool <Type>,
@@ -106,8 +108,8 @@ public:
 
 	virtual
 	bool
-	intersects (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & collectableObjects) final override
-	{ return getNode () -> intersects (sphere, matrix, collectableObjects); }
+	intersects (const CollisionSphere3f & sphere, const CollectableObjectArray & clipPlanes) final override
+	{ return getNode () -> intersects (sphere, clipPlanes); }
 
 	/// @name Operations
 
@@ -121,13 +123,13 @@ public:
 
 	virtual
 	void
-	draw (const ShapeContainer* const context) final override
-	{ return getNode () -> draw (context); }
+	collision (const CollisionContainer* const context) final override
+	{ return getNode () -> collision (context); }
 
 	virtual
 	void
-	drawCollision () final override
-	{ return getNode () -> drawCollision (); }
+	display (const ShapeContainer* const context) final override
+	{ return getNode () -> display (context); }
 
 	/// @name Destruction
 

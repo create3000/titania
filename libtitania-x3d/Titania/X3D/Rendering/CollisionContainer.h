@@ -48,48 +48,80 @@
  *
  ******************************************************************************/
 
-#include "CollisionShape.h"
+#ifndef __TITANIA_X3D_RENDERING_COLLISION_SHAPE_H__
+#define __TITANIA_X3D_RENDERING_COLLISION_SHAPE_H__
 
-#include "../Components/Rendering/X3DGeometryNode.h"
+#include "../Components/Navigation/Collision.h"
+#include "../Components/Shape/X3DShapeNode.h"
+#include "../Rendering/CollisionArray.h"
+#include "../Rendering/X3DCollectableObject.h"
+
+#include "../Types/Geometry.h"
+#include "../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
 
-CollisionShape::CollisionShape () :
-	        scissor (),
-	modelViewMatrix (),
-	          shape (nullptr),
-	     collisions (),
-	     clipPlanes ()
-{ }
-
-bool
-CollisionShape::intersects (const Sphere3f & sphere) const
+class CollisionContainer
 {
-	if (collisions .empty ())
-		return false;
+public:
 
-	return shape -> intersects (sphere, modelViewMatrix, clipPlanes);
-}
+   ///  @name Construction
 
-void
-CollisionShape::draw ()
-{
-	glScissor (scissor [0],
-	           scissor [1],
-	           scissor [2],
-	           scissor [3]);
+	CollisionContainer ();
 
-	for (const auto & clipPlane : clipPlanes)
-		clipPlane -> enable ();
+   ///  @name Member access
 
-	glLoadMatrixf (modelViewMatrix .data ());
+	void
+	setScissor (const Vector4i & value)
+	{ scissor = value; }
 
-	shape -> drawCollision ();
+	void
+	setModelViewMatrix (const Matrix4f & value)
+	{ modelViewMatrix = value; }
 
-	for (const auto & clipPlane : basic::make_reverse_range (clipPlanes))
-		clipPlane -> disable ();
-}
+	const Matrix4f &
+	getModelViewMatrix () const
+	{ return modelViewMatrix; }
+
+	void
+	setShape (X3DShapeNode* const value)
+	{ shape = value; }
+
+	void
+	setCollisions (const CollisionArray & value)
+	{ collisions = value; }
+
+	const CollisionArray &
+	getCollisions () const
+	{ return collisions; }
+
+	void
+	setLocalObjects (const CollectableObjectArray & value)
+	{ localObjects = value; }
+
+   ///  @name Operations
+
+	bool
+	intersects (CollisionSphere3f) const;
+
+	void
+	draw ();
+
+
+private:
+
+   ///  @name Members
+
+	Vector4i               scissor;
+	Matrix4f               modelViewMatrix;
+	X3DShapeNode*          shape;
+	CollisionArray         collisions;
+	CollectableObjectArray localObjects;
+
+};
 
 } // X3D
 } // titania
+
+#endif

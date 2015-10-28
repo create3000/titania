@@ -81,33 +81,44 @@ public:
 	///  Default constructor.
 	constexpr
 	sphere3 () :
-		value ()
+		sphere3 (1, vector3 <Type> ())
 	{ }
 
 	///  Copy constructor.
 	template <class Up>
 	constexpr
 	sphere3 (const sphere3 <Up> & sphere) :
-		value { sphere .radius (), sphere .center () }
-
+		sphere3 (sphere .radius (), sphere .center ())
 	{ }
 
 	///  Constructs a line of from @a radius and @a center.
 	constexpr
 	sphere3 (const Type & radius, const vector3 <Type> & center) :
-		value { radius, center }
-
+		radius_ (radius),
+		center_ (center)
 	{ }
 
 	///  @name Element access
 
+	///  Sets the radius of this sphere.
+	void
+	radius (const Type & value)
+	{ radius_ = value; }
+
 	///  Returns the radius of this sphere.
 	const Type &
-	radius () const { return value .radius; }
+	radius () const
+	{ return radius_; }
+
+	///  Returns the center of this sphere.
+	void
+	center (const vector3 <Type> & value)
+	{ center_ = value; }
 
 	///  Returns the center of this sphere.
 	const vector3 <Type> &
-	center () const { return value .center; }
+	center () const
+	{ return center_; }
 
 	///  @name Intersection
 
@@ -129,13 +140,8 @@ public:
 
 private:
 
-	struct Value
-	{
-		Type radius;
-		vector3 <Type> center;
-	};
-
-	Value value;
+	Type           radius_;
+	vector3 <Type> center_;
 
 };
 

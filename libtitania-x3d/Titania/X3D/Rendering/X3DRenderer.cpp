@@ -58,6 +58,8 @@
 #include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Shape/Appearance.h"
 #include "../Rendering/FrameBuffer.h"
+#include "../Rendering/CollisionContainer.h"
+#include "../Rendering/ShapeContainer.h"
 
 #include <Titania/Math/Geometry/Camera.h>
 #include <Titania/Utility/Range.h>
@@ -77,7 +79,7 @@ X3DRenderer::X3DRenderer () :
 	       globalObjects (),
 	        localObjects (),
 	          collisions (),
-	              shapes (),
+	        opaqueShapes (),
 	   transparentShapes (),
 	     collisionShapes (),
 	    activeCollisions (),
@@ -85,7 +87,7 @@ X3DRenderer::X3DRenderer () :
 	               speed (),
 	     numOpaqueShapes (0),
 	numTransparentShapes (0),
-	  numCollisionShapes (0)
+	  numCollisionContainers (0)
 {
 	addType (X3DConstants::X3DRenderObject);
 }
@@ -119,26 +121,33 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 
 		if (viewVolume .intersects (bbox))
 		{
+		   ShapeContainer* context = nullptr;
+
 			if (shape -> isTransparent ())
 			{
-				if (numTransparentShapes < transparentShapes .size ())
-					transparentShapes [numTransparentShapes] -> assign (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), true, center);
-
-				else
-					transparentShapes .emplace_back (new ShapeContainer (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), true, center));
+			   if (numTransparentShapes == transparentShapes .size ())
+			      transparentShapes .emplace_back (new ShapeContainer (true));
+	
+				context = transparentShapes [numTransparentShapes] .get ();
 
 				++ numTransparentShapes;
 			}
 			else
 			{
-				if (numOpaqueShapes < shapes .size ())
-					shapes [numOpaqueShapes] -> assign (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), false, center);
-
-				else
-					shapes .emplace_back (new ShapeContainer (shape, getFog (), getLocalObjects (), viewVolume .getScissor (), getModelViewMatrix () .get (), false, center));
+			   if (numOpaqueShapes == opaqueShapes .size ())
+			      opaqueShapes .emplace_back (new ShapeContainer (false));
+	
+				context = opaqueShapes [numOpaqueShapes] .get ();
 
 				++ numOpaqueShapes;
 			}
+
+			context -> setScissor (viewVolume .getScissor ());
+			context -> setModelViewMatrix (getModelViewMatrix () .get ());
+			context -> setShape (shape);
+			context -> setFog (getFog ());
+			context -> setLocalObjects (getLocalObjects ());
+			context -> setDistance (center);
 		}
 	}
 }
@@ -146,18 +155,18 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 void
 X3DRenderer::addCollision (X3DShapeNode* const shape)
 {
-	if (numCollisionShapes == collisionShapes .size ())
-		collisionShapes .emplace_back (new CollisionShape ());
+	if (numCollisionContainers == collisionShapes .size ())
+		collisionShapes .emplace_back (new CollisionContainer ());
 
-	const auto & context = collisionShapes [numCollisionShapes];
+	const auto & context = collisionShapes [numCollisionContainers];
 
-	++ numCollisionShapes;
+	++ numCollisionContainers;
 
 	context -> setScissor (getViewVolumeStack () .back () .getScissor ());
 	context -> setModelViewMatrix (getModelViewMatrix () .get ());
 	context -> setShape (shape);
 	context -> setCollisions (getCollisions ());
-	context -> setClipPlanes (getLocalObjects ());
+	context -> setLocalObjects (getLocalObjects ());
 }
 
 Vector3f
@@ -258,7 +267,7 @@ X3DRenderer::getDepth () const
 	glDepthMask (GL_TRUE);
 	glDisable (GL_BLEND);
 
-	for (const auto & context : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
+	for (const auto & context : basic::make_range (collisionShapes .cbegin (), numCollisionContainers))
 		context -> draw ();
 
 	// Get distance from depth buffer
@@ -284,7 +293,7 @@ X3DRenderer::render (const TraverseType type)
 		case TraverseType::COLLISION:
 		{
 			// Collect for collide and gravite
-			numCollisionShapes = 0;
+			numCollisionContainers = 0;
 
 			collect (type);
 			collide ();
@@ -297,7 +306,7 @@ X3DRenderer::render (const TraverseType type)
 			numTransparentShapes = 0;
 
 			collect (type);
-			draw ();
+			display ();
 			break;
 		}
 		default:
@@ -308,68 +317,20 @@ X3DRenderer::render (const TraverseType type)
 }
 
 void
-X3DRenderer::draw ()
-{
-	static constexpr auto comp = ShapeContainerComp { };
-
-	// Enable global lights
-
-	for (const auto & object : getGlobalObjects ())
-		object -> enable ();
-
-	// Sorted blend
-
-	// Render opaque objects first
-
-	glEnable (GL_DEPTH_TEST);
-	glDepthMask (GL_TRUE);
-	glDisable (GL_BLEND);
-
-	for (const auto & context : basic::make_range (shapes .cbegin (), numOpaqueShapes))
-		context -> draw ();
-
-	// Render transparent objects
-
-	glDepthMask (GL_FALSE);
-	glEnable (GL_BLEND);
-
-	std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
-
-	for (const auto & context : basic::make_range (transparentShapes .cbegin (), numTransparentShapes))
-		context -> draw ();
-
-	glDepthMask (GL_TRUE);
-	glDisable (GL_BLEND);
-
-	// Disable global lights
-
-	for (const auto & object : basic::make_reverse_range (getGlobalObjects ()))
-		object -> disable ();
-
-	// Reset to default OpenGL appearance
-
-	getBrowser () -> getAppearance () -> draw ();
-}
-
-void
 X3DRenderer::collide ()
 {
 	// Collision
 
-	const auto collisionRadius = getNavigationInfo () -> getCollisionRadius () * 1.2; // Make the radius a little bit larger.
+	const auto collisionSphere = CollisionSphere3f (/* inverse ??? getNavigationInfo () -> getTransformationMatix () mult_right */ getViewpoint () -> getInverseCameraSpaceMatrix (),
+	                                                getNavigationInfo () -> getCollisionRadius () * 1.2f,
+	                                                Vector3f ());
 
 	std::vector <Collision*> collisions;
 
-	for (const auto & context : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
+	for (const auto & context : basic::make_range (collisionShapes .cbegin (), numCollisionContainers))
 	{
 	   try
 	   {
-	      if (context -> getCollisions () .empty ())
-	         continue;
-
-		   const auto invModelViewMatrix = inverse (context -> getModelViewMatrix () * getViewpoint () -> getInverseCameraSpaceMatrix ());
-			const auto collisionSphere    = Sphere3f (collisionRadius, invModelViewMatrix .origin ());
-
 			if (context -> intersects (collisionSphere))
 			{
 				for (auto & collision : context -> getCollisions ())
@@ -518,6 +479,50 @@ X3DRenderer::gravite ()
 	}
 	catch (const std::domain_error &)
 	{ }
+}
+
+void
+X3DRenderer::display ()
+{
+	static constexpr auto comp = ShapeContainerComp { };
+
+	// Enable global lights
+
+	for (const auto & object : getGlobalObjects ())
+		object -> enable ();
+
+	// Sorted blend
+
+	// Render opaque objects first
+
+	glEnable (GL_DEPTH_TEST);
+	glDepthMask (GL_TRUE);
+	glDisable (GL_BLEND);
+
+	for (const auto & context : basic::make_range (opaqueShapes .cbegin (), numOpaqueShapes))
+		context -> display ();
+
+	// Render transparent objects
+
+	glDepthMask (GL_FALSE);
+	glEnable (GL_BLEND);
+
+	std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
+
+	for (const auto & context : basic::make_range (transparentShapes .cbegin (), numTransparentShapes))
+		context -> display ();
+
+	glDepthMask (GL_TRUE);
+	glDisable (GL_BLEND);
+
+	// Disable global lights
+
+	for (const auto & object : basic::make_reverse_range (getGlobalObjects ()))
+		object -> disable ();
+
+	// Reset to default OpenGL appearance
+
+	getBrowser () -> getAppearance () -> draw ();
 }
 
 void

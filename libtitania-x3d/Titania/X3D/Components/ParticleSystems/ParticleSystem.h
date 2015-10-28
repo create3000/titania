@@ -259,7 +259,7 @@ public:
 
 	virtual
 	bool
-	intersects (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) override;
+	intersects (const CollisionSphere3f &, const CollectableObjectArray &) override;
 
 	virtual
 	void
@@ -267,7 +267,7 @@ public:
 
 	virtual
 	void
-	drawCollision () override;
+	collision (const CollisionContainer* const) override;
 
 	virtual
 	void
@@ -393,7 +393,7 @@ private:
 
 	virtual
 	void
-	drawGeometry (const ShapeContainer* const) final override;
+	draw (const ShapeContainer* const) final override;
 
 	Matrix3f
 	getScreenAlignedRotation () const
