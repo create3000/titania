@@ -280,9 +280,9 @@ GeoLOD::getDistance (const TraverseType type) const
 void
 GeoLOD::traverse (const TraverseType type)
 {
-	const size_t level = getLevel (type);
+	const int32_t level = getLevel (type);
 
-	if ((int32_t) level not_eq level_changed ())
+	if (level not_eq level_changed ())
 	{
 		level_changed () = level;
 

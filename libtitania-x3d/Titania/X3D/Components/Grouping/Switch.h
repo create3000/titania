@@ -160,8 +160,8 @@ private:
 
 	Fields fields;
 
-	int32_t       privateChoice;
-	X3DChildNode* childNode;
+	int32_t               privateChoice;
+	X3DPtr <X3DChildNode> childNode;
 
 };
 

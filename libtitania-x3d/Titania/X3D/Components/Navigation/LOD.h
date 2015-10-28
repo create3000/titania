@@ -173,6 +173,10 @@ private:
 	void
 	set_cameraObjects () final override;
 
+	void
+	set_child (const int32_t);
+
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -193,10 +197,10 @@ private:
 
 	Fields fields;
 
-	mutable float frameRate;
-	bool          changeLevel;
-	bool          keepCurrentLevel;
-	X3DChildNode* childNode;
+	mutable float         frameRate;
+	bool                  changeLevel;
+	bool                  keepCurrentLevel;
+	X3DPtr <X3DChildNode> childNode;
 
 };
 

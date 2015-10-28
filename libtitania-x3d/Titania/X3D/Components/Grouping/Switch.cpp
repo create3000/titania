@@ -70,7 +70,7 @@ Switch::Switch (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	         fields (),
 	  privateChoice (-1),
-	      childNode (nullptr)
+	      childNode ()
 {
 	addType (X3DConstants::Switch);
 
@@ -83,6 +83,8 @@ Switch::Switch (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "children",       children ());
 
 	addField (VRML_V2_0, "choice", "children");
+
+	X3DBaseNode::addChildren (childNode);
 }
 
 X3DBaseNode*
@@ -104,16 +106,11 @@ Switch::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 	{
-		const auto currentChoice = getWhichChoice ();
+		const auto boundedObject = x3d_cast <X3DBoundedObject*> (childNode);
 
-		if (currentChoice >= 0 and currentChoice < (int32_t) children () .size ())
-		{
-			const auto child = x3d_cast <X3DBoundedObject*> (children () [currentChoice]);
-
-			if (child)
-				return child -> getBBox ();
-		}
-
+		if (boundedObject)
+			return boundedObject -> getBBox ();
+		
 		return Box3f ();
 	}
 
@@ -149,18 +146,23 @@ Switch::set_cameraObjects ()
 	const auto currentChoice = getWhichChoice ();
 
 	if (currentChoice >= 0 and currentChoice < (int32_t) children () .size ())
-		childNode = x3d_cast <X3DChildNode*> (children () [currentChoice]);
-	else
-		childNode = nullptr;
+		childNode .set (x3d_cast <X3DChildNode*> (children () [currentChoice]));
 	
+	else
+		childNode .set (nullptr);
+
 	setCameraObject (childNode and childNode -> isCameraObject ());
 }
 
 void
 Switch::traverse (const TraverseType type)
 {
-	if (childNode)
+	try
+	{
 		childNode -> traverse (type);
+	}
+	catch (const X3DError &)
+	{ }
 }
 
 void

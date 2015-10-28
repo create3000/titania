@@ -318,15 +318,15 @@ private:
 	 *  @name Static Members
 	 */
 
-	using MaskType = uint16_t;
+	using FlagsType = uint16_t;
 
-	static constexpr MaskType ACCESS_TYPE_OFFSET = 0;
-	static constexpr MaskType ACCESS_TYPE_BITS   = 7 << ACCESS_TYPE_OFFSET;
-	static constexpr MaskType UNIT_OFFSET        = 3;
-	static constexpr MaskType UNIT_BITS          = 15 << UNIT_OFFSET;
-	static constexpr MaskType IS_SET_BIT         = 1 << 7;
-	static constexpr MaskType HIDDEN_BIT         = 1 << 8;
-	static constexpr MaskType GEO_BIT            = 1 << 9;
+	static constexpr FlagsType ACCESS_TYPE_OFFSET = 0;
+	static constexpr FlagsType ACCESS_TYPE_BITS   = 7 << ACCESS_TYPE_OFFSET;
+	static constexpr FlagsType UNIT_OFFSET        = 3;
+	static constexpr FlagsType UNIT_BITS          = 15 << UNIT_OFFSET;
+	static constexpr FlagsType IS_SET_BIT         = 1 << 7;
+	static constexpr FlagsType HIDDEN_BIT         = 1 << 8;
+	static constexpr FlagsType GEO_BIT            = 1 << 9;
 
 	/***
 	 *  @name Members
@@ -335,7 +335,7 @@ private:
 	struct IO
 	{
 		IO () :
-			masks (initializeOnly)
+			flags (initializeOnly)
 		{ }
 
 		FieldDefinitionSet                   references;
@@ -343,7 +343,7 @@ private:
 		RouteSet                             outputRoutes;
 		std::set <const X3DFieldDefinition*> inputInterests;
 		std::set <X3DFieldDefinition*>       outputInterests;
-		MaskType                             masks;
+		FlagsType                            flags;
 	};
 
 	mutable std::unique_ptr <IO> io;

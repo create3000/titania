@@ -185,62 +185,6 @@ X3DGroupingNode::set_removeChildren ()
 	if (children () .empty ())
 		return;
 
-	std::vector <X3DBaseNode*> innerNodes;
-
-	for (const auto & node : removeChildren ())
-	{
-		try
-		{
-			if (node)
-				innerNodes .emplace_back (node -> getInnerNode ());
-		}
-		catch (const X3DError &)
-		{ }
-	}
-
-	for (const auto & node : innerNodes)
-	{
-	   const auto childNode = dynamic_cast <X3DChildNode*> (node);
-
-	   if (childNode)
-	      childNode -> isCameraObject () .removeInterest (this, &X3DGroupingNode::set_cameraObjects);
-	}
-
-	if (not pointingDeviceSensors .empty ())
-	{
-		pointingDeviceSensors .erase (basic::remove (pointingDeviceSensors .begin (), pointingDeviceSensors .end (),
-		                                             innerNodes .begin (), innerNodes .end ()),
-		                              pointingDeviceSensors .end ());
-	}
-
-	if (not clipPlanes .empty ())
-	{
-		clipPlanes .erase (basic::remove (clipPlanes .begin (), clipPlanes .end (),
-		                                  innerNodes .begin (), innerNodes .end ()),
-		                     clipPlanes .end ());
-	}
-
-	if (not localFogs .empty ())
-	{
-		localFogs .erase (basic::remove (localFogs .begin (), localFogs .end (),
-		                                 innerNodes .begin (), innerNodes .end ()),
-		                  localFogs .end ());
-	}
-
-	if (not lights .empty ())
-	{
-		lights .erase (basic::remove (lights .begin (), lights .end (),
-		                              innerNodes .begin (), innerNodes .end ()),
-		                     lights .end ());
-	}
-
-	if (not childNodes .empty ())
-	{
-		childNodes .erase (basic::remove (childNodes .begin (), childNodes .end (),
-		                                  innerNodes .begin (), innerNodes .end ()),
-		                   childNodes .end ());
-	}
-
 	if (not children () .isTainted ())
 	{
 		children () .removeInterest (this, &X3DGroupingNode::set_children);
@@ -252,6 +196,8 @@ X3DGroupingNode::set_removeChildren ()
 	                    children () .end ());
 
 	removeChildren () .set ({ });
+
+	set_children ();
 }
 
 void
@@ -350,11 +296,15 @@ NEXT:
 void
 X3DGroupingNode::clear ()
 {
+	for (const auto & childNode : childNodes)
+		childNode -> isCameraObject () .removeInterest (this, &X3DGroupingNode::set_cameraObjects);
+	
 	pointingDeviceSensors .clear ();
-	clipPlanes   .clear ();
-	localFogs    .clear ();
-	lights       .clear ();
-	childNodes   .clear ();
+	cameraObjects .clear ();
+	clipPlanes    .clear ();
+	localFogs     .clear ();
+	lights        .clear ();
+	childNodes    .clear ();
 }
 
 void
@@ -392,7 +342,7 @@ X3DGroupingNode::traverse (const TraverseType type)
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type);
 
-			for (const auto & childNode : clipPlanes)
+			for (const auto & childNode : basic::make_reverse_range (clipPlanes))
 				childNode -> pop (type);
 
 			if (not pointingDeviceSensors .empty ())
@@ -415,7 +365,7 @@ X3DGroupingNode::traverse (const TraverseType type)
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type);
 
-			for (const auto & childNode : clipPlanes)
+			for (const auto & childNode : basic::make_reverse_range (clipPlanes))
 				childNode -> pop (type);
 
 			return;
@@ -434,13 +384,13 @@ X3DGroupingNode::traverse (const TraverseType type)
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type);
 
-			for (const auto & childNode : lights)
+			for (const auto & childNode : basic::make_reverse_range (lights))
 				childNode -> pop (type);
 
-			for (const auto & childNode : localFogs)
+			for (const auto & childNode : basic::make_reverse_range (localFogs))
 				childNode -> pop ();
 
-			for (const auto & childNode : clipPlanes)
+			for (const auto & childNode : basic::make_reverse_range (clipPlanes))
 				childNode -> pop (type);
 
 			return;

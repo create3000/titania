@@ -153,10 +153,10 @@ WorldInfo {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0.787841975688934,
+              0.787842035293579,
               0.597084045410156,
-              0.150982052087784,
-              5.73888111114502
+              0.150982022285461,
+              5.73888063430786
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -283,7 +283,7 @@ Group {
     USE _3
     DEF Box Transform {
       translation 1.40843 1.10727 0.193803
-      rotation 0 0 1 2.76418
+      rotation -0 -0 -1 5.09225
       scale 0.2 0.2 0.2
       children Shape {
         appearance Appearance {
@@ -361,15 +361,27 @@ DEF Yellow Switch {
 
 LOD {
   center 1 0 0
-  level DEF Text1 Transform {
-    translation 0.673213 0.0817185 0
-    children Shape {
-      appearance Appearance {
-        material Material { }
+  level [
+    DEF Text1 Transform {
+      translation 0.673213 0.0817185 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry USE Text
       }
-      geometry USE Text
     }
-  }
+    DEF Cylinder_1 Transform {
+      translation 2.69615 0.377117 0
+      scale 0.18003 0.18003 0.18003
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Cylinder { }
+      }
+    }
+  ]
 }
 
 Anchor {

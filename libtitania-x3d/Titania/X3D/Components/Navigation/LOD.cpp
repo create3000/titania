@@ -71,7 +71,7 @@ LOD::Fields::Fields () :
 	forceTransitions (new SFBool ()),
 	          center (new SFVec3f ()),
 	           range (new MFFloat ()),
-	   level_changed (new SFInt32 ())
+	   level_changed (new SFInt32 (-1))
 { }
 
 LOD::LOD (X3DExecutionContext* const executionContext) :
@@ -81,7 +81,7 @@ LOD::LOD (X3DExecutionContext* const executionContext) :
 	       frameRate (60),
         changeLevel (true),
 	keepCurrentLevel (false),
-	       childNode (nullptr)
+	       childNode ()
 {
 	addType (X3DConstants::LOD);
 
@@ -98,6 +98,8 @@ LOD::LOD (X3DExecutionContext* const executionContext) :
 
 	addField (VRML_V2_0, "level", "children");
 
+	X3DBaseNode::addChildren (childNode);
+
 	center () .setUnit (UnitCategory::LENGTH);
 	range ()  .setUnit (UnitCategory::LENGTH);
 }
@@ -113,16 +115,11 @@ LOD::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 	{
-		const size_t level = level_changed ();
+		const auto boundedObject = x3d_cast <X3DBoundedObject*> (childNode);
 
-		if (level < children () .size ())
-		{
-			const auto child = x3d_cast <X3DBoundedObject*> (children () [level]);
-
-			if (child)
-				return child -> getBBox ();
-		}
-
+		if (boundedObject)
+			return boundedObject -> getBBox ();
+		
 		return Box3f ();
 	}
 
@@ -183,43 +180,55 @@ LOD::set_cameraObjects ()
 void
 LOD::traverse (const TraverseType type)
 {
-	int32_t level = keepCurrentLevel ? level_changed () : getLevel (type);
+	int32_t level = 0;
 
-	if (forceTransitions ())
+	if (keepCurrentLevel)
+		level = level_changed ();
+	
+	else
 	{
-		if (level > level_changed ())
-			level = level_changed () + 1;
-		
-		else if (level < level_changed ())
-			level = level_changed () - 1;
+		int32_t level = getLevel (type);
+
+		if (forceTransitions ())
+		{
+			if (level > level_changed ())
+				level = level_changed () + 1;
+			
+			else if (level < level_changed ())
+				level = level_changed () - 1;
+		}
 	}
 
-	//// Clone save level change. This version prevents undesired event generation.
-	//// Only the first clone found during traverse does assign to level_changed.
 	if (type == TraverseType::DISPLAY)
 	{
-		//if (changeLevel)
-		//{
-		//	changeLevel = false;
+		if (level not_eq level_changed ())
+		{
+			level_changed () = level;
 
-			if (level not_eq level_changed ())
-			{
-				level_changed () = level;
-			
-				if (level >= 0 and level < (int32_t) children () .size ())
-					childNode = x3d_cast <X3DChildNode*> (children () [level]);
-				else
-					childNode = nullptr;
-				
-				set_cameraObjects ();
-			}
-		//}
+			set_child (level);
+		}
+		else if (keepCurrentLevel)
+			set_child (level);
 	}
-	//else
-	//   changeLevel = true;
 
-	if (childNode)
+	try
+	{
 		childNode -> traverse (type);
+	}
+	catch (const X3DError &)
+	{ }
+}
+
+void
+LOD::set_child (const int32_t level)
+{
+	if (level >= 0 and level < (int32_t) children () .size ())
+		childNode .set (x3d_cast <X3DChildNode*> (children () [level]));
+	
+	else
+		childNode .set (nullptr);
+			
+	set_cameraObjects ();
 }
 
 void
