@@ -78,7 +78,8 @@ throw (Error <INVALID_URL>,
 	size_t      lineNumber = 1;
 	std::string line;
 
-	output << "#line "<< lineNumber << " \"" << worldURL .filename () << "(" << node -> getName () << ")\""  << std::endl;
+	if (level)
+		output << "#line "<< lineNumber << " \"" << worldURL .filename () << "(" << node -> getName () << ")\""  << std::endl;
 
 	while (std::getline (input, line))
 	{

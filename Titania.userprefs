@@ -1,18 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="52" Column="52" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DFlyViewer.h" Line="4" Column="4" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DFlyViewer.cpp" Line="3" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.h" Line="9" Column="9" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="11" Column="11" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.h" Line="2" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="3" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/CollisionShape.h" Line="2" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/CollisionShape.cpp" Line="2" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.h" Line="6" Column="6" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h" Line="56" Column="56" />
+      <File FileName="libtitania-x3d/share/titania/shaders/ParticleSystems/X3DParticleEmitterNode.h" Line="23" Column="23" />
+      <File FileName="libtitania-x3d/share/titania/shaders/ParticleSystems/PointEmitter.vs" Line="2" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shading/Shader.cpp" Line="3" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

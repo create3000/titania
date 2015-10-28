@@ -1335,7 +1335,6 @@
     <Folder Include="Titania\X3D\Browser\Sound\" />
     <Folder Include="Titania\X3D\Browser\Texturing3D\" />
     <Folder Include="Titania\X3D\Browser\Geospatial\" />
-    <Folder Include="Titania\X3D\Browser\Geospatial\" />
     <Folder Include="Titania\X3D\Editing\" />
   </ItemGroup>
   <ProjectExtensions>
