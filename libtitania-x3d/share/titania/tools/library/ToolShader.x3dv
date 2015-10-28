@@ -27,6 +27,7 @@ PROTO ToolShader [
     parts [
       ShaderPart {
         url "data:text/plain,
+#version 120
 
 varying vec3 N;
 varying vec3 v;
@@ -43,6 +44,7 @@ void main(void)
       ShaderPart {
         type "FRAGMENT"
         url "data:text/plain,
+#version 120
 
 uniform float ambientIntensity;
 uniform vec3  diffuseColor;
