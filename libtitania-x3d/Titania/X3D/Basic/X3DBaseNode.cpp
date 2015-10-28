@@ -236,13 +236,15 @@ throw (Error <INVALID_NAME>,
 
 			if (field -> getAccessType () == fieldDefinition -> getAccessType () and field -> getType () == fieldDefinition -> getType ())
 			{
+				if (fieldDefinition -> isSet ())
+					field -> isSet (true);
+
 				if (fieldDefinition -> getIsReferences () .empty ())
 				{
 					if (fieldDefinition -> isInitializable ())
 					{
 						fieldDefinition -> copy (executionContext, field, COPY_OR_CLONE);
 					
-					   field -> isSet (fieldDefinition -> isSet ());
 					}
 				}
 				else
@@ -277,13 +279,15 @@ throw (Error <INVALID_NAME>,
 
 				copy -> addUserDefinedField (fieldDefinition -> getAccessType (),
 				                             fieldDefinition -> getName (),
-				                             fieldDefinition -> copy (executionContext, COPY_OR_CLONE));
+				                             field);
 			}
 			else
 			{
 				// IS relationship
 
 				X3DFieldDefinition* const field = fieldDefinition -> copy (COPY_OR_CLONE);
+
+				field -> isSet (fieldDefinition -> isSet ());
 
 				copy -> addUserDefinedField (fieldDefinition -> getAccessType (),
 				                             fieldDefinition -> getName (),

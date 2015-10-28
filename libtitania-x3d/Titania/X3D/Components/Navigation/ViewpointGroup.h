@@ -162,7 +162,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_enabled ();
+	set_displayed ();
 
 	void
 	set_children ();

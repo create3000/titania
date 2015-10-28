@@ -68,6 +68,7 @@ using ViewVolumeStack = std::vector <ViewVolume>;
 class FrameBuffer;
 class CollisionContainer;
 class ShapeContainer;
+class X3DFogObject;
 
 class X3DRenderer :
 	virtual public X3DNode

@@ -87,6 +87,11 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 	         cursor (Gdk::X_CURSOR)
 {
 	addType (X3DConstants::Browser);
+
+	addChildren (viewer,
+	             keyDevice,
+                pointingDevice,
+	             cursor);
 }
 
 Browser::Browser (const Browser & other, const MFString & url, const MFString & parameter) :

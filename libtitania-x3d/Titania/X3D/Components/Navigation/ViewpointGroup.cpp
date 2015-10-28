@@ -111,11 +111,11 @@ ViewpointGroup::initialize ()
 	proximitySensor -> size ()   = size ();
 	proximitySensor -> center () = center ();
 
-	displayed () .addInterest (this, &ViewpointGroup::set_enabled);
-	size ()      .addInterest (this, &ViewpointGroup::set_enabled);
+	displayed () .addInterest (this, &ViewpointGroup::set_displayed);
+	size ()      .addInterest (this, &ViewpointGroup::set_displayed);
 	children ()  .addInterest (this, &ViewpointGroup::set_children);
 
-	set_enabled ();
+	set_displayed ();
 	set_children ();
 }
 
@@ -136,9 +136,13 @@ ViewpointGroup::getViewpointObjects () const
 }
 
 void
-ViewpointGroup::set_enabled ()
+ViewpointGroup::set_displayed ()
 {
-	proximitySensor -> enabled () = displayed () and size () not_eq Vector3f ();
+	const bool enabled = displayed () and size () not_eq Vector3f ();
+
+	setCameraObject (enabled);
+
+	proximitySensor -> enabled () = enabled;
 }
 
 void

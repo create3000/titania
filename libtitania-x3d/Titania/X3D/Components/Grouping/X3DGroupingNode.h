@@ -57,12 +57,14 @@
 #include "../EnvironmentalEffects/LocalFog.h"
 #include "../Lighting/X3DLightNode.h"
 #include "../PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
+#include "../Rendering/ClipPlane.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DGroupingNode :
-	virtual public X3DChildNode, public X3DBoundedObject
+	virtual public X3DChildNode,
+	public X3DBoundedObject
 {
 public:
 
@@ -146,6 +148,8 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
 	void
 	set_hidden ();
 
@@ -158,6 +162,12 @@ private:
 	void
 	set_children ();
 
+	virtual
+	void
+	set_cameraObjects ();
+
+	///  @name Operations
+
 	void
 	connectChildren ();
 
@@ -166,6 +176,8 @@ private:
 
 	void
 	clear ();
+
+	///  @name Members
 
 	struct Fields
 	{
@@ -181,8 +193,10 @@ private:
 	bool                                      hidden;
 	MFBool                                    visible;
 	X3DPtrArray <X3DPointingDeviceSensorNode> pointingDeviceSensors;
+	X3DPtrArray <X3DChildNode>                cameraObjects;
+	X3DPtrArray <ClipPlane>                   clipPlanes;
 	X3DPtrArray <LocalFog>                    localFogs;
-	X3DPtrArray <X3DChildNode>                collectables;
+	X3DPtrArray <X3DLightNode>                lights;
 	X3DPtrArray <X3DChildNode>                childNodes;
 
 };

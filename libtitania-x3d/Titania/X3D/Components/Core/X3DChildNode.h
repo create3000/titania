@@ -61,6 +61,12 @@ class X3DChildNode :
 {
 public:
 
+	///  @name Member access
+
+	const SFBool &
+	isCameraObject () const
+	{ return cameraObject; }
+
 	///  @name Operations
 
 	virtual
@@ -79,6 +85,18 @@ protected:
 	///  @name Construction
 
 	X3DChildNode ();
+
+	///  @name Member access
+
+	void
+	setCameraObject (const bool);
+
+
+private:
+
+	///  @name Members
+
+	SFBool cameraObject;
 
 };
 

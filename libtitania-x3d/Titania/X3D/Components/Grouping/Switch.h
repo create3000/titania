@@ -109,8 +109,7 @@ public:
 
 	virtual
 	void
-	setWhichChoice (const int32_t value)
-	{ privateChoice = value; }
+	setWhichChoice (const int32_t);
 
 	virtual
 	int32_t
@@ -135,6 +134,15 @@ private:
 	void
 	initialize ();
 
+	///  @name Event handlers
+
+	void
+	set_whichChoice ();
+
+	virtual
+	void
+	set_cameraObjects () final override;
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -152,7 +160,8 @@ private:
 
 	Fields fields;
 
-	int32_t privateChoice;
+	int32_t       privateChoice;
+	X3DChildNode* childNode;
 
 };
 

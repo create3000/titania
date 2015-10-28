@@ -80,7 +80,8 @@ LOD::LOD (X3DExecutionContext* const executionContext) :
 	          fields (),
 	       frameRate (60),
         changeLevel (true),
-	keepCurrentLevel (false)
+	keepCurrentLevel (false),
+	       childNode (nullptr)
 {
 	addType (X3DConstants::LOD);
 
@@ -174,6 +175,12 @@ LOD::getDistance (const TraverseType type) const
 }
 
 void
+LOD::set_cameraObjects ()
+{
+	setCameraObject (childNode and childNode -> isCameraObject ());
+}
+
+void
 LOD::traverse (const TraverseType type)
 {
 	int32_t level = keepCurrentLevel ? level_changed () : getLevel (type);
@@ -187,28 +194,32 @@ LOD::traverse (const TraverseType type)
 			level = level_changed () - 1;
 	}
 
-	// Clone save level change. This version prevents undesired event generation.
-	// Only the first clone found during traverse does assign to level_changed.
+	//// Clone save level change. This version prevents undesired event generation.
+	//// Only the first clone found during traverse does assign to level_changed.
 	if (type == TraverseType::DISPLAY)
 	{
-		if (changeLevel)
-		{
-			changeLevel = false;
+		//if (changeLevel)
+		//{
+		//	changeLevel = false;
 
 			if (level not_eq level_changed ())
-			   level_changed () = level;
-		}
+			{
+				level_changed () = level;
+			
+				if (level >= 0 and level < (int32_t) children () .size ())
+					childNode = x3d_cast <X3DChildNode*> (children () [level]);
+				else
+					childNode = nullptr;
+				
+				set_cameraObjects ();
+			}
+		//}
 	}
-	else
-	   changeLevel = true;
+	//else
+	//   changeLevel = true;
 
-	if (children () .empty ())
-		return;
-
-	level = std::min <int32_t> (level, children () .size () - 1);
-
-	if (children () [level])
-		children () [level] -> traverse (type);
+	if (childNode)
+		childNode -> traverse (type);
 }
 
 void

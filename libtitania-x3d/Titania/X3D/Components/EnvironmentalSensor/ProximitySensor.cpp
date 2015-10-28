@@ -72,7 +72,7 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentalSensorNode (),
 	                    fields (),
-	                 viewpoint (NULL),
+	             viewpointNode (),
 	           modelViewMatrix (),
 	                    inside (false)
 {
@@ -135,11 +135,16 @@ void
 ProximitySensor::set_enabled ()
 {
 	if (enabled () and isLive () and getExecutionContext () -> isLive () and size () not_eq Vector3f ())
+	{
 		getBrowser () -> sensors () .addInterest (this, &ProximitySensor::update);
-
+	
+		setCameraObject (true);
+	}
 	else
 	{
 		getBrowser () -> sensors () .removeInterest (this, &ProximitySensor::update);
+
+		setCameraObject (false);
 			
 		if (isActive ())
 		{
@@ -156,11 +161,11 @@ ProximitySensor::update ()
 	{
 		if (inside)
 		{
-			Matrix4f centerOfRotationMatrix = viewpoint -> getTransformationMatrix ();
-			centerOfRotationMatrix .translate (viewpoint -> getUserCenterOfRotation ());
+			Matrix4f centerOfRotationMatrix = viewpointNode -> getTransformationMatrix ();
+			centerOfRotationMatrix .translate (viewpointNode -> getUserCenterOfRotation ());
 			centerOfRotationMatrix *= inverse (modelViewMatrix);
 
-			modelViewMatrix *= viewpoint -> getInverseCameraSpaceMatrix ();
+			modelViewMatrix *= viewpointNode -> getInverseCameraSpaceMatrix ();
 
 			Vector3f   translation, scale;
 			Rotation4f rotation;
@@ -215,7 +220,7 @@ ProximitySensor::traverse (const TraverseType type)
 		{
 			case TraverseType::CAMERA:
 			{
-				viewpoint       = getCurrentViewpoint ();
+				viewpointNode   = getCurrentViewpoint ();
 				modelViewMatrix = getModelViewMatrix () .get ();
 				break;
 			}

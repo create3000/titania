@@ -121,11 +121,16 @@ void
 VisibilitySensor::set_enabled ()
 {
 	if (enabled () and isLive () and getExecutionContext () -> isLive () and size () not_eq Vector3f ())
+	{
 		getBrowser () -> sensors () .addInterest (this, &VisibilitySensor::update);
-
+	
+		setCameraObject (true);
+	}
 	else
 	{
 		getBrowser () -> sensors () .removeInterest (this, &VisibilitySensor::update);
+	
+		setCameraObject (false);
 			
 		if (isActive ())
 		{

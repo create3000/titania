@@ -72,6 +72,8 @@ X3DBindableNode::X3DBindableNode () :
 	    wasBound (false)
 {
 	addType (X3DConstants::X3DBindableNode);
+
+	setCameraObject (true);
 }
 
 void

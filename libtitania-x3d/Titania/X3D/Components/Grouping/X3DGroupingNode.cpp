@@ -71,16 +71,20 @@ X3DGroupingNode::X3DGroupingNode () :
 	               hidden (false),
 	              visible (),
 	pointingDeviceSensors (),
+	        cameraObjects (),
+	           clipPlanes (),
 	            localFogs (),
-	         collectables (),
+	               lights (),
 	           childNodes ()
 {
 	addType (X3DConstants::X3DGroupingNode);
 
 	X3DParentObject::addChildren (visible,
 	                              pointingDeviceSensors,
+	                              cameraObjects,
+	                              clipPlanes,
 	                              localFogs,
-	                              collectables,
+	                              lights,
 	                              childNodes);
 }
 
@@ -92,8 +96,10 @@ X3DGroupingNode::initialize ()
 
 	visible               .isTainted (true);
 	pointingDeviceSensors .isTainted (true);
+	cameraObjects         .isTainted (true);
+	clipPlanes            .isTainted (true);
 	localFogs             .isTainted (true);
-	collectables          .isTainted (true);
+	lights                .isTainted (true);
 	childNodes            .isTainted (true);
 
 	addChildren ()    .addInterest (this, &X3DGroupingNode::set_addChildren);
@@ -192,11 +198,12 @@ X3DGroupingNode::set_removeChildren ()
 		{ }
 	}
 
-	if (not localFogs .empty ())
+	for (const auto & node : innerNodes)
 	{
-		localFogs .erase (basic::remove (localFogs .begin (), localFogs .end (),
-		                                 innerNodes .begin (), innerNodes .end ()),
-		                  localFogs .end ());
+	   const auto childNode = dynamic_cast <X3DChildNode*> (node);
+
+	   if (childNode)
+	      childNode -> isCameraObject () .removeInterest (this, &X3DGroupingNode::set_cameraObjects);
 	}
 
 	if (not pointingDeviceSensors .empty ())
@@ -206,11 +213,25 @@ X3DGroupingNode::set_removeChildren ()
 		                              pointingDeviceSensors .end ());
 	}
 
-	if (not collectables .empty ())
+	if (not clipPlanes .empty ())
 	{
-		collectables .erase (basic::remove (collectables .begin (), collectables .end (),
-		                                    innerNodes .begin (), innerNodes .end ()),
-		                     collectables .end ());
+		clipPlanes .erase (basic::remove (clipPlanes .begin (), clipPlanes .end (),
+		                                  innerNodes .begin (), innerNodes .end ()),
+		                     clipPlanes .end ());
+	}
+
+	if (not localFogs .empty ())
+	{
+		localFogs .erase (basic::remove (localFogs .begin (), localFogs .end (),
+		                                 innerNodes .begin (), innerNodes .end ()),
+		                  localFogs .end ());
+	}
+
+	if (not lights .empty ())
+	{
+		lights .erase (basic::remove (lights .begin (), lights .end (),
+		                              innerNodes .begin (), innerNodes .end ()),
+		                     lights .end ());
 	}
 
 	if (not childNodes .empty ())
@@ -267,11 +288,6 @@ X3DGroupingNode::add (const MFNode & children)
 				{
 					switch (type)
 					{
-						case X3DConstants::LocalFog :
-							{
-								localFogs .emplace_back (dynamic_cast <LocalFog*> (innerNode));
-								goto NEXT;
-							}
 						case X3DConstants::X3DPointingDeviceSensorNode:
 						{
 							pointingDeviceSensors .emplace_back (dynamic_cast <X3DPointingDeviceSensorNode*> (innerNode));
@@ -279,17 +295,26 @@ X3DGroupingNode::add (const MFNode & children)
 						}
 						case X3DConstants::ClipPlane:
 						{
-							collectables .emplace_back (dynamic_cast <X3DChildNode*> (innerNode));
+							clipPlanes .emplace_back (dynamic_cast <ClipPlane*> (innerNode));
+							goto NEXT;
+						}
+						case X3DConstants::LocalFog :
+						{
+							localFogs .emplace_back (dynamic_cast <LocalFog*> (innerNode));
 							goto NEXT;
 						}
 						case X3DConstants::X3DLightNode:
 						{
-							collectables .emplace_back (dynamic_cast <X3DChildNode*> (innerNode));
-							// Proceed with next step.
+							lights .emplace_back (dynamic_cast <X3DLightNode*> (innerNode));
+							goto NEXT;
 						}
 						case X3DConstants::X3DChildNode:
 						{
-							childNodes .emplace_back (dynamic_cast <X3DChildNode*> (innerNode));
+						   const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
+
+							childNodes .emplace_back (childNode);
+
+							childNode -> isCameraObject () .addInterest (this, &X3DGroupingNode::set_cameraObjects);
 							goto NEXT;
 						}
 						case X3DConstants::BooleanFilter:
@@ -318,15 +343,32 @@ X3DGroupingNode::add (const MFNode & children)
 NEXT:
 		++ i;
 	}
+
+	set_cameraObjects ();
 }
 
 void
 X3DGroupingNode::clear ()
 {
 	pointingDeviceSensors .clear ();
+	clipPlanes   .clear ();
 	localFogs    .clear ();
-	collectables .clear ();
+	lights       .clear ();
 	childNodes   .clear ();
+}
+
+void
+X3DGroupingNode::set_cameraObjects ()
+{
+	cameraObjects .clear ();
+
+	for (const auto & childNode : childNodes)
+	{
+		if (childNode -> isCameraObject ())
+			cameraObjects .emplace_back (childNode);
+	}
+
+	setCameraObject (not cameraObjects .empty ());
 }
 
 void
@@ -340,62 +382,68 @@ X3DGroupingNode::traverse (const TraverseType type)
 			{
 				getBrowser () -> getSensors () .emplace_back ();
 
-				for (const auto & child : pointingDeviceSensors)
-					child -> push ();
+				for (const auto & childNode : pointingDeviceSensors)
+					childNode -> push ();
 			}
 
-			for (const auto & child : collectables)
-				child -> push (type);
+			for (const auto & childNode : clipPlanes)
+				childNode -> push (type);
 
-			for (const auto & child : childNodes)
-				child -> traverse (type);
+			for (const auto & childNode : childNodes)
+				childNode -> traverse (type);
 
-			for (const auto & child : basic::make_reverse_range (collectables))
-				child -> pop (type);
+			for (const auto & childNode : clipPlanes)
+				childNode -> pop (type);
 
 			if (not pointingDeviceSensors .empty ())
 				getBrowser () -> getSensors () .pop_back ();
 
-			break;
+			return;
 		}
 		case TraverseType::CAMERA:
 		{
-			for (const auto & child : childNodes)
-				child -> traverse (type);
+			for (const auto & childNode : cameraObjects)
+				childNode -> traverse (type);
 
-			break;
+			return;
 		}
 		case TraverseType::COLLISION:
 		{
-			for (const auto & child : collectables)
-				child -> push (type);
+			for (const auto & childNode : clipPlanes)
+				childNode -> push (type);
 
-			for (const auto & child : childNodes)
-				child -> traverse (type);
+			for (const auto & childNode : childNodes)
+				childNode -> traverse (type);
 
-			for (const auto & child : basic::make_reverse_range (collectables))
-				child -> pop (type);
+			for (const auto & childNode : clipPlanes)
+				childNode -> pop (type);
 
-			break;
+			return;
 		}
 		case TraverseType::DISPLAY:
 		{
-			for (const auto & child : localFogs)
-				child -> push ();
+			for (const auto & childNode : clipPlanes)
+				childNode -> push (type);
 
-			for (const auto & child : collectables)
-				child -> push (type);
+			for (const auto & childNode : localFogs)
+				childNode -> push ();
 
-			for (const auto & child : childNodes)
-				child -> traverse (type);
+			for (const auto & childNode : lights)
+				childNode -> push (type);
 
-			for (const auto & child : basic::make_reverse_range (collectables))
-				child -> pop (type);
+			for (const auto & childNode : childNodes)
+				childNode -> traverse (type);
 
-			for (const auto & child : basic::make_reverse_range (localFogs))
-				child -> pop ();
+			for (const auto & childNode : lights)
+				childNode -> pop (type);
 
-			break;
+			for (const auto & childNode : localFogs)
+				childNode -> pop ();
+
+			for (const auto & childNode : clipPlanes)
+				childNode -> pop (type);
+
+			return;
 		}
 	}
 }

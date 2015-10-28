@@ -135,6 +135,8 @@ Inline::initialize ()
 		}
 	}
 
+	group -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
+
 	group -> isPrivate (true);
 	group -> setup ();
 }

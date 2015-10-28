@@ -167,6 +167,12 @@ private:
 	float
 	getDistance (const TraverseType) const;
 
+	///  @name Event handlers
+
+	virtual
+	void
+	set_cameraObjects () final override;
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -190,6 +196,7 @@ private:
 	mutable float frameRate;
 	bool          changeLevel;
 	bool          keepCurrentLevel;
+	X3DChildNode* childNode;
 
 };
 

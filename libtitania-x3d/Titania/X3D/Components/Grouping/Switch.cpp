@@ -69,7 +69,8 @@ Switch::Switch (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGroupingNode (),
 	         fields (),
-	  privateChoice (-1)
+	  privateChoice (-1),
+	      childNode (nullptr)
 {
 	addType (X3DConstants::Switch);
 
@@ -119,6 +120,14 @@ Switch::getBBox () const
 	return Box3f (bboxSize (), bboxCenter ());
 }
 
+void
+Switch::setWhichChoice (const int32_t value)
+{
+	privateChoice = value;
+
+	set_whichChoice ();
+}
+
 int32_t
 Switch::getWhichChoice () const
 {
@@ -129,15 +138,29 @@ Switch::getWhichChoice () const
 }
 
 void
-Switch::traverse (const TraverseType type)
+Switch::set_whichChoice ()
+{
+	set_cameraObjects ();
+}
+
+void
+Switch::set_cameraObjects ()
 {
 	const auto currentChoice = getWhichChoice ();
 
 	if (currentChoice >= 0 and currentChoice < (int32_t) children () .size ())
-	{
-		if (children () [currentChoice])
-			children () [currentChoice] -> traverse (type);
-	}
+		childNode = x3d_cast <X3DChildNode*> (children () [currentChoice]);
+	else
+		childNode = nullptr;
+	
+	setCameraObject (childNode and childNode -> isCameraObject ());
+}
+
+void
+Switch::traverse (const TraverseType type)
+{
+	if (childNode)
+		childNode -> traverse (type);
 }
 
 void
