@@ -187,7 +187,7 @@ LOD::traverse (const TraverseType type)
 	
 	else
 	{
-		int32_t level = getLevel (type);
+		level = getLevel (type);
 
 		if (forceTransitions ())
 		{

@@ -118,9 +118,14 @@ private:
 
 	X3D::BrowserPtr             browser;
 	X3D::X3DExecutionContextPtr executionContext;
-	size_t                      points;
-	size_t                      lines;
+	size_t                      nodes;
+	size_t                      opaqueShapes;
+	size_t                      transparentShapes;
+	size_t                      polygons;
+	size_t                      quads;
 	size_t                      triangles;
+	size_t                      lines;
+	size_t                      points;
 
 };
 

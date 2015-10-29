@@ -2,9 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/share/titania/shaders/ParticleSystems/X3DParticleEmitterNode.h" Line="23" Column="23" />
-      <File FileName="libtitania-x3d/share/titania/shaders/ParticleSystems/PointEmitter.vs" Line="2" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shading/Shader.cpp" Line="3" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.cpp" Line="28" Column="28" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/LOD.h" Line="28" Column="28" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/LOD.cpp" Line="3" Column="3" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp" Line="5" Column="5" />
+      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="2" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

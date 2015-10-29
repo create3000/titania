@@ -61,9 +61,14 @@ X3DPrimitiveCountEditor::X3DPrimitiveCountEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                             browser (),
 	                    executionContext (),
-			                        points (),
-			                         lines (),
-			                     triangles ()
+	                               nodes (0),
+	                        opaqueShapes (0),
+	                   transparentShapes (0),
+			                      polygons (0),
+			                         quads (0),
+			                     triangles (0),
+			                         lines (0),
+			                        points (0)
 {
 	getPrimitiveCountCountButton () .set_active (getConfig () .getInteger ("primitiveCount"));
 }
@@ -79,8 +84,8 @@ X3DPrimitiveCountEditor::on_unmap_primitive_count ()
 {
 	getBrowserWindow () -> getSelection () -> getChildren () .removeInterest (this, &X3DPrimitiveCountEditor::update);
 
-	getCurrentBrowser ()          .removeInterest (this, &X3DPrimitiveCountEditor::update);
-	getCurrentBrowser ()          .removeInterest (this, &X3DPrimitiveCountEditor::set_browser);
+	getCurrentBrowser () .removeInterest (this, &X3DPrimitiveCountEditor::update);
+	getCurrentBrowser () .removeInterest (this, &X3DPrimitiveCountEditor::set_browser);
 	getCurrentContext () .removeInterest (this, &X3DPrimitiveCountEditor::update);
 	getCurrentContext () .removeInterest (this, &X3DPrimitiveCountEditor::set_executionContext);
 
@@ -109,15 +114,22 @@ X3DPrimitiveCountEditor::on_primitive_count_count_changed ()
 	switch (getPrimitiveCountCountButton () .get_active_row_number ())
 	{
 		case 0:
+		{
 			getCurrentBrowser () .addInterest (this, &X3DPrimitiveCountEditor::update);
 			break;
+		}
 		case 1:
+		{
 			getCurrentBrowser () .addInterest (this, &X3DPrimitiveCountEditor::set_browser);
+
 			set_browser ();
 			break;
+		}
 		case 2:
+		{
 			getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DPrimitiveCountEditor::update);
 			break;
+		}
 	}
 
 	set_executionContext ();
@@ -132,18 +144,37 @@ X3DPrimitiveCountEditor::update ()
 	if (not getCurrentWorld ())
 		return;
 
-	points    = 0;
-	lines     = 0;
-	triangles = 0;
+	nodes             = 0;
+	opaqueShapes      = 0;
+	transparentShapes = 0;
+	polygons          = 0;
+	quads             = 0;
+	triangles         = 0;
+	lines             = 0;
+	points            = 0;
 
 	switch (getPrimitiveCountCountButton () .get_active_row_number ())
 	{
 		case 0:
 		{
+			// Entire Scene
+
+			X3D::traverse (getCurrentContext () -> getRootNodes (),
+			               std::bind (&X3DPrimitiveCountEditor::traverse, this, _1),
+			               true,
+			               X3D::TRAVERSE_ROOT_NODES |
+			               X3D::TRAVERSE_PROTOTYPE_INSTANCES |
+			               X3D::TRAVERSE_INLINE_NODES |
+			               X3D::TRAVERSE_CLONED_NODES);
+
+			break;
+		}
+		case 1:
+		{
 			for (const auto & layer : getCurrentWorld () -> getLayerSet () -> getLayers ())
 			{
 				X3D::traverse (layer -> children (),
-				               std::bind (&X3DPrimitiveCountEditor::traverse, this, _1),
+				               [&] (X3D::SFNode & ) { ++ nodes; return true; },
 				               true,
 				               X3D::TRAVERSE_ROOT_NODES |
 				               X3D::TRAVERSE_PROTOTYPE_INSTANCES |
@@ -152,14 +183,17 @@ X3DPrimitiveCountEditor::update ()
 				               X3D::TRAVERSE_CLONED_NODES);
 			}
 
-			break;
-		}
-		case 1:
-		{
+			// Rendered Objects
+
 			for (const auto & layer : getCurrentWorld () -> getLayerSet () -> getLayers ())
 			{
 				for (const auto & container : basic::make_range (layer -> getOpaqueShapes () .begin (), layer -> getNumOpaqueShapes ()))
 				{
+					if (container -> getShape () -> isTransparent ())
+						++ transparentShapes;
+					else
+						++ opaqueShapes;
+
 					const auto & geometry = container -> getShape () -> getGeometry ();
 
 					if (geometry)
@@ -171,6 +205,11 @@ X3DPrimitiveCountEditor::update ()
 
 				for (const auto & container : basic::make_range (layer -> getTransparentShapes () .begin (), layer -> getNumTransparentShapes ()))
 				{
+					if (container -> getShape () -> isTransparent ())
+						++ transparentShapes;
+					else
+						++ opaqueShapes;
+
 					const auto & geometry = container -> getShape () -> getGeometry ();
 
 					if (geometry)
@@ -185,6 +224,8 @@ X3DPrimitiveCountEditor::update ()
 		}
 		case 2:
 		{
+			// Selection
+
 			auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
 
 			X3D::traverse (selection,
@@ -200,24 +241,48 @@ X3DPrimitiveCountEditor::update ()
 		}
 	}
 
-	getPrimitiveCountPointsLabel ()    .set_text (X3D::SFInt32 (points)    .toLocaleString ());
-	getPrimitiveCountLinesLabel ()     .set_text (X3D::SFInt32 (lines)     .toLocaleString ());
+	getPrimitiveCountNodesLabel ()             .set_text (X3D::SFInt32 (nodes)             .toLocaleString ());
+	getPrimitiveCountOpaqueShapesLabel ()      .set_text (X3D::SFInt32 (opaqueShapes)      .toLocaleString ());
+	getPrimitiveCountTransparentShapesLabel () .set_text (X3D::SFInt32 (transparentShapes) .toLocaleString ());
+
+	getPrimitiveCountPolygonsLabel ()  .set_text (X3D::SFInt32 (polygons)  .toLocaleString ());
+	getPrimitiveCountQuadsLabel ()     .set_text (X3D::SFInt32 (quads)     .toLocaleString ());
 	getPrimitiveCountTrianglesLabel () .set_text (X3D::SFInt32 (triangles) .toLocaleString ());
+	getPrimitiveCountLinesLabel ()     .set_text (X3D::SFInt32 (lines)     .toLocaleString ());
+	getPrimitiveCountPointsLabel ()    .set_text (X3D::SFInt32 (points)    .toLocaleString ());
 }
 
 bool
 X3DPrimitiveCountEditor::traverse (X3D::SFNode & node)
 {
+	++ nodes;
+
 	for (const auto & type : basic::make_reverse_range (node -> getType ()))
 	{
-		if (type == X3D::X3DConstants::X3DGeometryNode)
+		switch (type)
 		{
-			const auto geometry = dynamic_cast <X3D::X3DGeometryNode*> (node .getValue ());
-		
-			for (const auto & element : geometry -> getElements ())
-				count (element);
+			case X3D::X3DConstants::X3DShapeNode:
+			{
+				const auto shapeNode = dynamic_cast <X3D::X3DShapeNode*> (node .getValue ());
+			
+			   if (shapeNode -> isTransparent ())
+			      ++ transparentShapes;
+			   else
+					++ opaqueShapes;
 
-			break;
+			   continue;
+			}
+			case X3D::X3DConstants::X3DGeometryNode:
+			{
+				const auto geometry = dynamic_cast <X3D::X3DGeometryNode*> (node .getValue ());
+			
+				for (const auto & element : geometry -> getElements ())
+					count (element);
+
+				continue;
+			}
+			default:
+			   continue;
 		}
 	}
 
@@ -245,15 +310,20 @@ X3DPrimitiveCountEditor::count (const X3D::X3DGeometryNode::Element & element)
 			triangles += element .count / 3;
 			break;
 		case GL_QUADS:
-			triangles += 2 * element .count / 4;
+			++ quads;
+			//triangles += 2 * element .count / 4;
 			break;
 		case GL_QUAD_STRIP:
-			triangles += 2 * (element .count / 2 - 1);
+			quads += element .count / 2 - 1;
+			//triangles += 2 * (element .count / 2 - 1);
 			break;
 		case GL_TRIANGLE_FAN:
 		case GL_TRIANGLE_STRIP:
-		case GL_POLYGON:
 			triangles += element .count - 2;
+			break;
+		case GL_POLYGON:
+			++ polygons;
+			//triangles += element .count - 2;
 			break;
 	}
 }
@@ -265,6 +335,7 @@ X3DPrimitiveCountEditor::set_browser ()
 		browser -> displayed () .removeInterest (this, &X3DPrimitiveCountEditor::update);
 
 	browser = getCurrentBrowser ();
+
 	browser -> displayed () .addInterest (this, &X3DPrimitiveCountEditor::update);
 }
 

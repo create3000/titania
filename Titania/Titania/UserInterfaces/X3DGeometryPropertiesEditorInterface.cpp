@@ -144,9 +144,14 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PrimitiveCountEventBox", m_PrimitiveCountEventBox);
 	m_builder -> get_widget ("PrimitiveCountExpander", m_PrimitiveCountExpander);
 	m_builder -> get_widget ("PrimitiveCountBox", m_PrimitiveCountBox);
+	m_builder -> get_widget ("PrimitiveCountNodesLabel", m_PrimitiveCountNodesLabel);
+	m_builder -> get_widget ("PrimitiveCountOpaqueShapesLabel", m_PrimitiveCountOpaqueShapesLabel);
+	m_builder -> get_widget ("PrimitiveCountTransparentShapesLabel", m_PrimitiveCountTransparentShapesLabel);
 	m_builder -> get_widget ("PrimitiveCountPointsLabel", m_PrimitiveCountPointsLabel);
 	m_builder -> get_widget ("PrimitiveCountLinesLabel", m_PrimitiveCountLinesLabel);
 	m_builder -> get_widget ("PrimitiveCountTrianglesLabel", m_PrimitiveCountTrianglesLabel);
+	m_builder -> get_widget ("PrimitiveCountQuadsLabel", m_PrimitiveCountQuadsLabel);
+	m_builder -> get_widget ("PrimitiveCountPolygonsLabel", m_PrimitiveCountPolygonsLabel);
 	m_builder -> get_widget ("PrimitiveCountCountButton", m_PrimitiveCountCountButton);
 
 	// Connect object Gtk::ComboBoxText with id 'GeometryComboBoxText'.

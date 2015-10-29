@@ -414,6 +414,18 @@ public:
 	{ return *m_PrimitiveCountBox; }
 
 	Gtk::Label &
+	getPrimitiveCountNodesLabel () const
+	{ return *m_PrimitiveCountNodesLabel; }
+
+	Gtk::Label &
+	getPrimitiveCountOpaqueShapesLabel () const
+	{ return *m_PrimitiveCountOpaqueShapesLabel; }
+
+	Gtk::Label &
+	getPrimitiveCountTransparentShapesLabel () const
+	{ return *m_PrimitiveCountTransparentShapesLabel; }
+
+	Gtk::Label &
 	getPrimitiveCountPointsLabel () const
 	{ return *m_PrimitiveCountPointsLabel; }
 
@@ -424,6 +436,14 @@ public:
 	Gtk::Label &
 	getPrimitiveCountTrianglesLabel () const
 	{ return *m_PrimitiveCountTrianglesLabel; }
+
+	Gtk::Label &
+	getPrimitiveCountQuadsLabel () const
+	{ return *m_PrimitiveCountQuadsLabel; }
+
+	Gtk::Label &
+	getPrimitiveCountPolygonsLabel () const
+	{ return *m_PrimitiveCountPolygonsLabel; }
 
 	Gtk::ComboBoxText &
 	getPrimitiveCountCountButton () const
@@ -563,9 +583,14 @@ private:
 	Gtk::EventBox*                 m_PrimitiveCountEventBox;
 	Gtk::Expander*                 m_PrimitiveCountExpander;
 	Gtk::Box*                      m_PrimitiveCountBox;
+	Gtk::Label*                    m_PrimitiveCountNodesLabel;
+	Gtk::Label*                    m_PrimitiveCountOpaqueShapesLabel;
+	Gtk::Label*                    m_PrimitiveCountTransparentShapesLabel;
 	Gtk::Label*                    m_PrimitiveCountPointsLabel;
 	Gtk::Label*                    m_PrimitiveCountLinesLabel;
 	Gtk::Label*                    m_PrimitiveCountTrianglesLabel;
+	Gtk::Label*                    m_PrimitiveCountQuadsLabel;
+	Gtk::Label*                    m_PrimitiveCountPolygonsLabel;
 	Gtk::ComboBoxText*             m_PrimitiveCountCountButton;
 
 };
