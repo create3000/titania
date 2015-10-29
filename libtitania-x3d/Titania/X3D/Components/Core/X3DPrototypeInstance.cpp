@@ -132,6 +132,16 @@ X3DPrototypeInstance::construct ()
 {
 	try
 	{
+		setExtendedEventHandling (false);
+
+		if (protoNode -> isExternproto ())
+		{
+			const auto externProto = static_cast <ExternProtoDeclaration*> (protoNode .getValue ());
+
+			if (externProto -> checkLoadState () not_eq COMPLETE_STATE)
+				return;
+		}
+
 		// Interface
 
 		ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
@@ -184,8 +194,6 @@ X3DPrototypeInstance::construct ()
 		importExternProtos (proto); // XXX: deletable if all get/set are virtual
 		importProtos (proto);       // XXX: deletable if all get/set are virtual
 		copyRootNodes (proto);
-
-		setExtendedEventHandling (false);
 	}
 	catch (const X3DError & error)
 	{

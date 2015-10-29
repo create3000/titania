@@ -1,15 +1,80 @@
-#X3D V3.3 utf8
+#X3D V3.3 utf8 Titania V1.2.0
+
+META "comment" "World of Titania"
+META "created" "Thu, 29 Oct 2015 07:18:17 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.0, http://titania.create3000.de"
+META "modified" "Thu, 29 Oct 2015 07:28:16 GMT"
 
 EXTERNPROTO QuadSphere [
-  exposedField SFInt32 uDimension
-  exposedField SFInt32 vDimension
-  exposedField SFFloat radius
-  field        SFBool  solid
+  inputOutput    SFInt32 uDimension
+  inputOutput    SFInt32 vDimension
+  inputOutput    SFFloat radius
+  initializeOnly SFBool  solid
 ]
 [
-  "../../../Titania/share/titania/Library/Prototypes/Geometry3D/QuadSphere/QuadSphere.x3dv",
-  "file:///usr/share/titania/Library/Prototypes/Geometry3D/QuadSphere/QuadSphere.x3dv"
+  "file:///usr/share/titania/Prototypes/0.1/Geometry3D/QuadSphere.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Geometry3D/QuadSphere.x3d",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/QuadSphere.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/QuadSphere.x3d",
+  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Geometry3D/QuadSphere.x3dv",
+  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Geometry3D/QuadSphere.x3d",
+  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Geometry3D/QuadSphere.x3dv",
+  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Geometry3D/QuadSphere.x3d"
 ]
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              20000000,
+              0,
+              0
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0.577349543571472,
+              0.577349543571472,
+              0.577351629734039,
+              2.09439301490784
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "test"
+}
 
 NavigationInfo { }
 
@@ -135,11 +200,14 @@ DEF Earth Transform {
       children Shape {
         appearance Appearance {
           fillProperties FillProperties {
+            filled FALSE
             hatched FALSE
           }
-          lineProperties LineProperties { }
+          lineProperties LineProperties {
+            linewidthScaleFactor 1
+          }
           material Material {
-            transparency 0.2
+            transparency 0.285714
           }
         }
         geometry QuadSphere {
@@ -29066,7 +29134,7 @@ DEF Satellite Transform {
     }
     DEF _6 GeoTransform {
       scale 200000 200000 200000
-      geoCenter 0 -1.42840311266677 1500000
+      geoCenter 0 3.09301314405403 1500000
       children [
         DEF Axes_3 Transform {
           scale 2 2 2
@@ -29167,7 +29235,7 @@ DEF UTM Transform {
 }
 
 DEF Debug Script {
-  eventIn SFVec3d set_geoCoord
+  inputOnly SFVec3d set_geoCoord
 
   url "vrmlscript:
 function set_geoCoord (value, time)

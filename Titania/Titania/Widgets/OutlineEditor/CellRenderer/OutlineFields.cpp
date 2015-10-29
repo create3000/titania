@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -86,7 +86,7 @@ get_field_value (const X3D::X3DScene* const,
 				<< X3D::Generator::Space
 				<< image .components ()
 				<< X3D::Generator::ForceBreak
-				<< "°≠";
+				<< "‚Ä¶";
 
 			return ostream .str ();
 		}
@@ -134,7 +134,7 @@ array_to_string (const X3D::X3DScene* const scene,
 	{
 		ostream
 			<< X3D::Generator::ForceBreak
-			<< '[' << array .size () << "]  °≠";
+			<< '[' << array .size () << "]  ‚Ä¶¬≠";
 	}
 
 	return ostream .str ();
@@ -169,7 +169,7 @@ array_to_string (const X3D::X3DScene* const scene,
 		{
 			ostream
 				<< X3D::Generator::ForceBreak
-				<< '[' << array .size () << "] °≠";
+				<< '[' << array .size () << "] ‚Ä¶";
 		}
 
 		return ostream .str ();
