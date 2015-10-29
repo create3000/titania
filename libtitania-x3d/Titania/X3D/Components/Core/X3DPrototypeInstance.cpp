@@ -93,9 +93,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	if (protoNode -> isExternproto ())
 	{
-		const auto externProto = static_cast <ExternProtoDeclaration*> (protoNode .getValue ());
-
-		if (externProto -> checkLoadState () == COMPLETE_STATE)
+		if (protoNode -> checkLoadState () == COMPLETE_STATE)
 			construct ();
 	}
 	else
@@ -134,13 +132,8 @@ X3DPrototypeInstance::construct ()
 	{
 		setExtendedEventHandling (false);
 
-		if (protoNode -> isExternproto ())
-		{
-			const auto externProto = static_cast <ExternProtoDeclaration*> (protoNode .getValue ());
-
-			if (externProto -> checkLoadState () not_eq COMPLETE_STATE)
-				return;
-		}
+		if (protoNode -> checkLoadState () not_eq COMPLETE_STATE)
+		   return;
 
 		// Interface
 
@@ -229,11 +222,14 @@ X3DPrototypeInstance::initialize ()
 	{
 		if (protoNode -> isExternproto () and getExtendedEventHandling ())
 			construct ();
-	
-		ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
 
-		copyImportedNodes (proto);
-		copyRoutes (proto);
+		if (protoNode -> checkLoadState () == COMPLETE_STATE)
+		{
+			ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
+
+			copyImportedNodes (proto);
+			copyRoutes (proto);
+		}
 
 		getExecutionContext () -> isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
 		X3DBaseNode::isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
@@ -304,6 +300,16 @@ throw (Error <DISPOSED>)
 	return getRootNode () -> getInnerNode ();
 }
 
+X3DBaseNode*
+X3DPrototypeInstance::getRootNode () const
+throw (Error <DISPOSED>)
+{
+	if (getRootNodes () .empty () or not getRootNodes () .front ())
+		throw Error <DISPOSED> ("Root node not available.");
+
+	return getRootNodes () .front ();
+}
+
 X3DProtoDeclarationNode*
 X3DPrototypeInstance::findProtoDeclaration (const std::string & name, const AvailableType & available) const
 throw (Error <INVALID_NAME>,
@@ -314,16 +320,6 @@ throw (Error <INVALID_NAME>,
 		return protoNode -> getProtoDeclaration () -> findProtoDeclaration (name, available);
 
 	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getType: node is already disposed.");
-}
-
-X3DBaseNode*
-X3DPrototypeInstance::getRootNode () const
-throw (Error <DISPOSED>)
-{
-	if (getRootNodes () .empty () or not getRootNodes () .front ())
-		throw Error <DISPOSED> ("Root node not available.");
-
-	return getRootNodes () .front ();
 }
 
 void

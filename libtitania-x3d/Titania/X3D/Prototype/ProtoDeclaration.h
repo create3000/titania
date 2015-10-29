@@ -206,6 +206,11 @@ public:
 	{ return this; }
 	
 	///  @name Operations
+
+	virtual
+	const SFEnum <LoadState> &
+	checkLoadState () const final override
+	{ return loadState; }
 	
 	virtual
 	void
@@ -261,6 +266,10 @@ private:
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
+
+	///  @name Static members
+
+	const SFEnum <LoadState> loadState;
 
 };
 

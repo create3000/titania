@@ -64,9 +64,10 @@ const std::string   ProtoDeclaration::typeName       = "PROTO";
 const std::string   ProtoDeclaration::containerField = "proto";
 
 ProtoDeclaration::ProtoDeclaration (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	       X3DProtoDeclarationNode (),
-	X3DExecutionContext ()
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DProtoDeclarationNode (),
+	    X3DExecutionContext (),
+	              loadState (COMPLETE_STATE)
 {
 	addType (X3DConstants::ProtoDeclaration);
 

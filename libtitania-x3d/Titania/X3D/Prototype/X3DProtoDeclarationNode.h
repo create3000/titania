@@ -97,6 +97,10 @@ public:
 	void
 	requestImmediateLoad () = 0;
 
+	virtual
+	const SFEnum <LoadState> &
+	checkLoadState () const = 0;
+
 	void
 	addInstance (X3DPrototypeInstance* const instance)
 	{ instances .emplace (instance); }

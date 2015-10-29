@@ -149,6 +149,11 @@ public:
 	requestAsyncLoad ();
 
 	virtual
+	const SFEnum <LoadState> &
+	checkLoadState () const final override
+	{ return X3DUrlObject::checkLoadState (); }
+
+	virtual
 	void
 	updateInterfaceAndInstances () final override;
 
