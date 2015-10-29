@@ -773,3 +773,5 @@ Box::style_updated
   virtual void on_style_updated();
 Adjustment::changed
   virtual void on_changed();
+TreeViewColumn::clicked
+  virtual void on_clicked();

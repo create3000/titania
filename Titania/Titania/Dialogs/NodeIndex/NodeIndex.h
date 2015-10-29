@@ -104,6 +104,9 @@ private:
 	void
 	initialize () final override;
 
+	int
+	on_compare_name (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::iterator &);
+
 	void
 	refresh ();
 

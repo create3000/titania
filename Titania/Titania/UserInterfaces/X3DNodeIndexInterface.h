@@ -101,6 +101,10 @@ public:
 	getSearchEntryCompletion () const
 	{ return m_SearchEntryCompletion; }
 
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getNameColumn () const
+	{ return m_NameColumn; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -157,6 +161,7 @@ private:
 	Glib::RefPtr <Gtk::ListStore>       m_ListStore;
 	Glib::RefPtr <Gtk::ListStore>       m_SearchListStore;
 	Glib::RefPtr <Gtk::EntryCompletion> m_SearchEntryCompletion;
+	Glib::RefPtr <Gtk::TreeViewColumn>  m_NameColumn;
 	Gtk::Window*                        m_Window;
 	Gtk::Box*                           m_Widget;
 	Gtk::Box*                           m_HeaderBox;

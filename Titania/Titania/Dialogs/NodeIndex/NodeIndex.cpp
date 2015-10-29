@@ -106,11 +106,14 @@ NodeIndex::initialize ()
 
 	set_executionContext ();
 
+	getListStore () -> set_sort_func (getNameColumn (), sigc::mem_fun (this, &NodeIndex::on_compare_name));
+
 	// Initialize SearchEntryCompletion:
 
 	for (const auto & node : getCurrentBrowser () -> getSupportedNodes ())
 	{
 		const auto row = getSearchListStore () -> append ();
+
 		row -> set_value (Search::TYPE_NAME, node -> getTypeName ());
 
 		nodeTypes .emplace (node -> getTypeName (), node -> getType () .back ());
@@ -121,6 +124,21 @@ NodeIndex::initialize ()
 	getSearchEntryCompletion () -> add_attribute (*cellrenderer, "text", Search::TYPE_NAME);
 
 	getSearchEntry () .grab_focus ();
+}
+
+int
+NodeIndex::on_compare_name (const Gtk::TreeModel::iterator & lhs, const Gtk::TreeModel::iterator & rhs)
+{
+	std::string lhsString;
+	std::string rhsString;
+	   
+	lhs -> get_value (Columns::NAME, lhsString);
+	rhs -> get_value (Columns::NAME, rhsString);
+
+	if (lhsString == rhsString)
+	   return 0;
+
+	return basic::naturally_compare (lhsString, rhsString) ? -1 : 1;
 }
 
 void
@@ -249,11 +267,6 @@ NodeIndex::getNodes (const std::set <X3D::X3DConstants::NodeType> & types)
 	                  return true;
 						});
 
-	std::sort (nodes .begin (), nodes .end (), [ ] (const X3D::SFNode & lhs, const X3D::SFNode & rhs)
-	           {
-	              return basic::naturally_compare (lhs -> getName (), rhs -> getName ());
-				  });
-
 	return nodes;
 }
 
@@ -279,11 +292,6 @@ NodeIndex::getNodes ()
 		catch (...)
 		{ }
 	}
-
-	std::sort (nodes .begin (), nodes .end (), [ ] (const X3D::SFNode & lhs, const X3D::SFNode & rhs)
-	           {
-	              return basic::naturally_compare (lhs -> getName (), rhs -> getName ());
-				  });
 
 	return nodes;
 }

@@ -64,6 +64,7 @@ X3DNodeIndexInterface::create (const std::string & filename)
 	m_ListStore             = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
 	m_SearchListStore       = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("SearchListStore"));
 	m_SearchEntryCompletion = Glib::RefPtr <Gtk::EntryCompletion>::cast_dynamic (m_builder -> get_object ("SearchEntryCompletion"));
+	m_NameColumn            = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
