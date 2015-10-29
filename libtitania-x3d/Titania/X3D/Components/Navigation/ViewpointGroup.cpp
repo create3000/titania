@@ -108,6 +108,8 @@ ViewpointGroup::initialize ()
 	size ()   .addInterest (proximitySensor -> size ());
 	center () .addInterest (proximitySensor -> center ());
 
+	proximitySensor -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
+
 	proximitySensor -> size ()   = size ();
 	proximitySensor -> center () = center ();
 
@@ -138,11 +140,7 @@ ViewpointGroup::getViewpointObjects () const
 void
 ViewpointGroup::set_displayed ()
 {
-	const bool enabled = displayed () and size () not_eq Vector3f ();
-
-	setCameraObject (enabled);
-
-	proximitySensor -> enabled () = enabled;
+	proximitySensor -> enabled () = displayed () and size () not_eq Vector3f ();
 }
 
 void
