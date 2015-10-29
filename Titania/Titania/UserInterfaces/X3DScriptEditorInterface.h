@@ -455,6 +455,14 @@ public:
 
 	virtual
 	void
+	on_replace_forward_clicked () = 0;
+
+	virtual
+	void
+	on_replace_all_clicked () = 0;
+
+	virtual
+	void
 	on_search_backward_clicked () = 0;
 
 	virtual

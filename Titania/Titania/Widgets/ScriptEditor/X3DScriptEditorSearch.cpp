@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -70,9 +70,9 @@ X3DScriptEditorSearch::X3DScriptEditorSearch () :
 	                    keys (),
 	              searchMark (),
 	        searchConnection (),
-	          recentSearches ()
-{
-}
+	          recentSearches (),
+	                replace (false)
+{ }
 
 void
 X3DScriptEditorSearch::initialize ()
@@ -83,9 +83,10 @@ X3DScriptEditorSearch::initialize ()
 	searchContext  = gtk_source_search_context_new (getTextBuffer () -> gobj (), searchSettings);
 	searchMark     = getTextBuffer () -> get_insert ();
 
-	getTextView () .signal_key_press_event ()   .connect (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_key_press_event),   false);
-	getTextView () .signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_key_release_event), false);
-	getTextView () .signal_size_allocate ()     .connect (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_size_allocate));
+	getTextView () .signal_key_press_event ()    .connect (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_key_press_event),   false);
+	getTextView () .signal_key_release_event ()  .connect (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_key_release_event), false);
+	getTextView () .signal_size_allocate ()      .connect (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_size_allocate));
+	getTextView () .signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_button_press_event), false);
 
 	// Search & Replace
 
@@ -457,10 +458,10 @@ X3DScriptEditorSearch::on_search_forward (GAsyncResult* const result)
 	if (not gtk_source_search_context_forward_finish (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &error))
 		return;
 
-	const auto match = getTextBuffer () -> get_text (matchBegin, matchEnd);
-
 	getTextView () .scroll_to (matchBegin, 0, 0.5, 2 - math::M_PHI);
 	getTextBuffer () -> select_range (matchBegin, matchEnd);
+
+	replace = true;
 }
 
 void
@@ -471,6 +472,45 @@ X3DScriptEditorSearch::on_hide_search_clicked ()
 	getTextView ()            .grab_focus ();
 
 	gtk_source_search_settings_set_search_text (searchSettings, nullptr);
+}
+
+void
+X3DScriptEditorSearch::on_replace_forward_clicked ()
+{
+	Gsv::Buffer::iterator selectionBegin;
+	Gsv::Buffer::iterator selectionEnd;
+
+	if (replace)
+	{
+	   if (getTextBuffer () -> get_selection_bounds (selectionBegin, selectionEnd))
+	   {
+			const auto selection = getTextBuffer () -> get_text (selectionBegin, selectionEnd);
+			const auto string    = getReplaceEntry () .get_text ();
+
+			GError* error = nullptr;
+
+			gtk_source_search_context_replace (searchContext, selectionBegin .gobj (), selectionEnd .gobj (), string .c_str (), string .size (), &error);
+		}
+	}
+
+	on_search_forward_clicked ();
+}
+
+bool
+X3DScriptEditorSearch::on_button_press_event (GdkEventButton* event)
+{
+	replace = false;
+	return false;
+}
+
+void
+X3DScriptEditorSearch::on_replace_all_clicked ()
+{
+	const auto string = getReplaceEntry () .get_text ();
+
+	GError* error = nullptr;
+
+	gtk_source_search_context_replace_all (searchContext, string .c_str (), string .size (), &error);
 }
 
 X3DScriptEditorSearch::~X3DScriptEditorSearch ()

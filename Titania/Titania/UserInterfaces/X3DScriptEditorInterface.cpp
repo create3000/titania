@@ -181,7 +181,9 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::TreeView with id 'ColorThemeTreeView'.
 	m_ColorThemeTreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_color_theme_activated));
 
-	// Connect object Gtk::Button with id 'SearchBackwardButton'.
+	// Connect object Gtk::Button with id 'ReplaceButton'.
+	m_ReplaceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_forward_clicked));
+	m_ReplaceAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_all_clicked));
 	m_SearchBackwardButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_backward_clicked));
 	m_SearchForwardButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_forward_clicked));
 	m_HideSearchButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_hide_search_clicked));

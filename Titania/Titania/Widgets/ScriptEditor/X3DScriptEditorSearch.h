@@ -193,6 +193,17 @@ private:
 	void
 	on_hide_search_clicked () final override;
 
+	virtual
+	void
+	on_replace_forward_clicked () final override;
+
+	bool
+	on_button_press_event (GdkEventButton*);
+
+	virtual
+	void
+	on_replace_all_clicked () final override;
+
 	///  @name Members
 
 	GtkSourceSearchSettings* searchSettings;
@@ -202,6 +213,7 @@ private:
 	Glib::RefPtr <Gsv::Buffer::Mark> searchMark;
 	sigc::connection                 searchConnection;
 	std::deque <Glib::ustring>       recentSearches;
+	bool                             replace;
 
 };
 

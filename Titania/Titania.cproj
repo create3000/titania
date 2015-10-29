@@ -1952,6 +1952,8 @@
     <None Include="share\titania\ui\icons\Faenza\16\gtk-goto-bottom.png" />
     <None Include="share\titania\ui\icons\Faenza\22\gtk-bold.png" />
     <None Include="share\titania\ui\icons\Faenza\22\gtk-italic.png" />
+    <None Include="share\titania\ui\icons\Faenza\16\gtk-find.png" />
+    <None Include="share\titania\ui\icons\Faenza\16\gtk-find-and-replace.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
