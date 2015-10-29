@@ -114,6 +114,8 @@ GeoProximitySensor::initialize ()
 	size ()    .addInterest (proximitySensor -> size ());
 	center ()  .addInterest (proximitySensor -> center ());
 
+	proximitySensor -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
+
 	proximitySensor -> isActive ()                 .addInterest (isActive ());
 	proximitySensor -> enterTime ()                .addInterest (enterTime ());
 	proximitySensor -> exitTime ()                 .addInterest (exitTime ());
