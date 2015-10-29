@@ -14,6 +14,9 @@
       <column type="gchararray"/>
     </columns>
   </object>
+  <object class="GtkTreeModelSort" id="TreeModelSort">
+    <property name="model">ListStore</property>
+  </object>
   <object class="GtkListStore" id="SearchListStore">
     <columns>
       <!-- column-name TypeName -->
@@ -112,7 +115,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="has_focus">True</property>
-                <property name="model">ListStore</property>
+                <property name="model">TreeModelSort</property>
                 <property name="headers_clickable">False</property>
                 <property name="rules_hint">True</property>
                 <property name="search_column">1</property>

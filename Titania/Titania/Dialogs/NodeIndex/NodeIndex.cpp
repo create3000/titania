@@ -106,7 +106,7 @@ NodeIndex::initialize ()
 
 	set_executionContext ();
 
-	getListStore () -> set_sort_func (getNameColumn (), sigc::mem_fun (this, &NodeIndex::on_compare_name));
+	getTreeModelSort () -> set_sort_func (getNameColumn (), sigc::mem_fun (this, &NodeIndex::on_compare_name));
 
 	// Initialize SearchEntryCompletion:
 
@@ -233,7 +233,7 @@ NodeIndex::setNodes (X3D::MFNode && value)
 		row -> set_value (Columns::EXPORTED_NODES, exportedNodes .count (node)    ? document_export : empty_string);
 	}
 
-	getTreeView () .set_model (getListStore ());
+	getTreeView () .set_model (getTreeModelSort ());
 	getTreeView () .set_search_column (Columns::NAME);
 }
 
@@ -421,7 +421,7 @@ NodeIndex::on_search_entry_match_selected (const Gtk::TreeModel::iterator & iter
 void
 NodeIndex::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
-	node = nodes [path .front ()];
+	node = nodes [getTreeModelSort () -> convert_path_to_child_path (path) .front ()];
 
 	// Select node.
 

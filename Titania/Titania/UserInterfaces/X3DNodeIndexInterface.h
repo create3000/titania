@@ -93,6 +93,10 @@ public:
 	getListStore () const
 	{ return m_ListStore; }
 
+	const Glib::RefPtr <Gtk::TreeModelSort> &
+	getTreeModelSort () const
+	{ return m_TreeModelSort; }
+
 	const Glib::RefPtr <Gtk::ListStore> &
 	getSearchListStore () const
 	{ return m_SearchListStore; }
@@ -159,6 +163,7 @@ private:
 	std::string                         filename;
 	Glib::RefPtr <Gtk::Builder>         m_builder;
 	Glib::RefPtr <Gtk::ListStore>       m_ListStore;
+	Glib::RefPtr <Gtk::TreeModelSort>   m_TreeModelSort;
 	Glib::RefPtr <Gtk::ListStore>       m_SearchListStore;
 	Glib::RefPtr <Gtk::EntryCompletion> m_SearchEntryCompletion;
 	Glib::RefPtr <Gtk::TreeViewColumn>  m_NameColumn;

@@ -49,6 +49,7 @@ $objects {$_} = true foreach qw(
 	Gtk::ListStore
 	Gtk::TreeStore
 	Gtk::TreeModelFilter
+	Gtk::TreeModelSort
 	Gtk::TreeSelection
 	Gtk::TreeViewColumn
 	Gtk::CellRendererCombo
