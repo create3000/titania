@@ -145,6 +145,18 @@ GeoProximitySensor::traverse (const TraverseType type)
 }
 
 void
+GeoProximitySensor::addTool ()
+{
+	proximitySensor -> addTool ();
+}
+
+void
+GeoProximitySensor::removeTool (const bool really)
+{
+	proximitySensor -> removeTool (really);
+}
+
+void
 GeoProximitySensor::dispose ()
 {
 	X3DGeospatialObject::dispose ();

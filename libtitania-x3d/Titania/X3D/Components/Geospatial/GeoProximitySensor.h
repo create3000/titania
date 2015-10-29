@@ -131,6 +131,14 @@ public:
 	void
 	traverse (const TraverseType) final override;
 
+	virtual
+	void
+	addTool () final override;
+
+	virtual
+	void
+	removeTool (const bool = false) final override;
+
 	///  @name Construction
 
 	virtual

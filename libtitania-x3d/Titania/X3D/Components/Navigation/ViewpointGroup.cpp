@@ -174,6 +174,18 @@ ViewpointGroup::traverse (const TraverseType type)
 }
 
 void
+ViewpointGroup::addTool ()
+{
+	proximitySensor -> addTool ();
+}
+
+void
+ViewpointGroup::removeTool (const bool really)
+{
+	proximitySensor -> removeTool (true);
+}
+
+void
 ViewpointGroup::dispose ()
 {
 	X3DViewpointObject::dispose ();

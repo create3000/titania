@@ -69,13 +69,13 @@
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
+#include <Titania/X3D/Components/EnvironmentalSensor/ProximitySensor.h>
+#include <Titania/X3D/Components/EnvironmentalSensor/TransformSensor.h>
+#include <Titania/X3D/Components/EnvironmentalSensor/VisibilitySensor.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Navigation/LOD.h>
 #include <Titania/X3D/Tools/Grids/X3DGridTool.h>
-#include <Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.h>
-#include <Titania/X3D/Tools/EnvironmentalSensor/TransformSensorTool.h>
-#include <Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.h>
 #include <Titania/X3D/Types/MatrixStack.h>
 
 #include <Titania/OS.h>
@@ -1533,10 +1533,8 @@ BrowserWindow::on_lights_toggled ()
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
-		                  const auto tool = dynamic_cast <X3D::X3DLightNode*> (node .getValue ());
-
-		                  if (tool)
-									tool -> addTool ();
+		                  if (dynamic_cast <X3D::X3DLightNode*> (node .getValue ()))
+									node -> addTool ();
 
 		                  return true;
 							},
@@ -1547,19 +1545,8 @@ BrowserWindow::on_lights_toggled ()
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 		               {
-		                  if (not node)
-									return true;
-
-		                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
-		                  {
-		                     if (type == X3D::X3DConstants::X3DLightNodeTool)
-		                     {
-		                        if (not getSelection () -> isSelected (node))
-											node -> removeTool (true);
-
-		                        break;
-									}
-								}
+				            if (dynamic_cast <X3D::X3DLightNode*> (node .getValue ()))
+									node -> removeTool (true);
 
 		                  return true;
 							},
@@ -1574,14 +1561,18 @@ BrowserWindow::on_proximity_sensors_toggled ()
 	if (changing)
 		return;
 
+	static const std::set <X3D::X3DConstants::NodeType> types = {
+		X3D::X3DConstants::ProximitySensor,
+		X3D::X3DConstants::GeoProximitySensor,
+		X3D::X3DConstants::ProximitySensorTool,
+	};
+
 	if (getProximitySensorsAction () -> get_active ())
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
-		                  const auto tool = dynamic_cast <X3D::ProximitySensor*> (node .getValue ());
-
-		                  if (tool)
-									tool -> addTool ();
+		                  if (types .count (node -> getType () .back ()))
+									node -> addTool ();
 
 		                  return true;
 							},
@@ -1592,10 +1583,8 @@ BrowserWindow::on_proximity_sensors_toggled ()
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 		               {
-		                  const auto tool = dynamic_cast <X3D::ProximitySensorTool*> (node .getValue ());
-
-		                  if (tool and not getSelection () -> isSelected (node))
-									tool -> removeTool (true);
+		                  if (types .count (node -> getType () .back ()))
+									node -> removeTool (true);
 
 		                  return true;
 							},
@@ -1614,10 +1603,8 @@ BrowserWindow::on_transform_sensors_toggled ()
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
-		                  const auto tool = dynamic_cast <X3D::TransformSensor*> (node .getValue ());
-
-		                  if (tool)
-									tool -> addTool ();
+		                  if (dynamic_cast <X3D::TransformSensor*> (node .getValue ()))
+									node -> addTool ();
 
 		                  return true;
 							},
@@ -1628,10 +1615,8 @@ BrowserWindow::on_transform_sensors_toggled ()
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 		               {
-		                  const auto tool = dynamic_cast <X3D::TransformSensorTool*> (node .getValue ());
-
-		                  if (tool and not getSelection () -> isSelected (node))
-									tool -> removeTool (true);
+		                  if (dynamic_cast <X3D::TransformSensor*> (node .getValue ()))
+									node -> removeTool (true);
 
 		                  return true;
 							},
@@ -1650,10 +1635,8 @@ BrowserWindow::on_visibility_sensors_toggled ()
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
-		                  const auto tool = dynamic_cast <X3D::VisibilitySensor*> (node .getValue ());
-
-		                  if (tool)
-									tool -> addTool ();
+		                  if (dynamic_cast <X3D::VisibilitySensor*> (node .getValue ()))
+									node -> addTool ();
 
 		                  return true;
 							},
@@ -1664,10 +1647,8 @@ BrowserWindow::on_visibility_sensors_toggled ()
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 		               {
-		                  const auto tool = dynamic_cast <X3D::VisibilitySensorTool*> (node .getValue ());
-
-		                  if (tool and not getSelection () -> isSelected (node))
-									tool -> removeTool (true);
+		                  if (dynamic_cast <X3D::VisibilitySensor*> (node .getValue ()))
+									node -> removeTool (true);
 
 		                  return true;
 							},
@@ -1686,10 +1667,8 @@ BrowserWindow::on_viewpoints_toggled ()
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
-		                  const auto tool = dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ());
-
-		                  if (tool)
-									tool -> addTool ();
+		                  if (dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ()))
+									node -> addTool ();
 
 		                  return true;
 							},
@@ -1700,19 +1679,8 @@ BrowserWindow::on_viewpoints_toggled ()
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 		               {
-		                  if (not node)
-									return true;
-
-		                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
-		                  {
-		                     if (type == X3D::X3DConstants::X3DViewpointNodeTool)
-		                     {
-		                        if (not getSelection () -> isSelected (node))
-											node -> removeTool (true);
-
-		                        break;
-									}
-								}
+		                  if (dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ()))
+									node -> removeTool (true);
 
 		                  return true;
 							},
