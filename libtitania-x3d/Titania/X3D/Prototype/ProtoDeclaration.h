@@ -269,7 +269,7 @@ private:
 
 	///  @name Static members
 
-	const SFEnum <LoadState> loadState;
+	SFEnum <LoadState> loadState;
 
 };
 

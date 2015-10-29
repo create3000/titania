@@ -1269,7 +1269,8 @@ Parser::routeStatement ()
 					}
 					catch (const Error <INVALID_NAME> &)
 					{
-						throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventOut '" + _eventOutId + "' in node '" + _fromNodeId + "' class " + _fromNode -> getTypeName ());
+						if (getBrowser () -> isStrict ())
+							throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventOut '" + _eventOutId + "' in node '" + _fromNodeId + "' class " + _fromNode -> getTypeName ());
 					}
 
 					comments ();
@@ -1300,7 +1301,10 @@ Parser::routeStatement ()
 									}
 									catch (const Error <INVALID_NAME> &)
 									{
-										throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventIn '" + _eventInId + "' in node '" + _toNodeId + "' class " + _toNode -> getTypeName ());
+										if (getBrowser () -> isStrict ())
+											throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventIn '" + _eventInId + "' in node '" + _toNodeId + "' class " + _toNode -> getTypeName ());
+										
+										return true;
 									}
 
 									const RoutePtr & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);

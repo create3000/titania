@@ -198,27 +198,38 @@ ExternProtoDeclaration::setProtoDeclaration (ProtoDeclaration* value)
 
 	if (not proto)
 	   return;
-	
-	for (const auto & fieldDefinition : getFieldDefinitions ())
-	{
-		try
-		{
-			X3DFieldDefinition* const protoField = proto -> getField (fieldDefinition -> getName ());
 
-			if (protoField -> getAccessType () == fieldDefinition -> getAccessType ())
-			{
-				if (protoField -> getType () == fieldDefinition -> getType ())
-					fieldDefinition -> set (*protoField);
-				else
-					getBrowser () -> println ("EXTERNPROTO '", getName (), "' field '", fieldDefinition -> getName (), "' and PROTO field have different types.");
-			}
-			else
-				getBrowser () -> println ("EXTERNPROTO '", getName (), "' field '", fieldDefinition -> getName (),+ "' and PROTO field have different access types.");
-		}
-		catch (const Error <INVALID_NAME> &)
+	if (getBrowser () -> isStrict ())
+	{
+		for (const auto & fieldDefinition : getFieldDefinitions ())
 		{
-			getBrowser () -> println ("EXTERNPROTO field '", fieldDefinition -> getName (), "' not found in PROTO '", proto -> getName (), "'.");
+			try
+			{
+				X3DFieldDefinition* const protoField = proto -> getField (fieldDefinition -> getName ());
+
+				if (protoField -> getAccessType () == fieldDefinition -> getAccessType ())
+				{
+					if (protoField -> getType () == fieldDefinition -> getType ())
+						fieldDefinition -> set (*protoField);
+					else
+						getBrowser () -> println ("EXTERNPROTO '", getName (), "' field '", fieldDefinition -> getName (), "' and PROTO field have different types.");
+				}
+				else
+					getBrowser () -> println ("EXTERNPROTO '", getName (), "' field '", fieldDefinition -> getName (),+ "' and PROTO field have different access types.");
+			}
+			catch (const Error <INVALID_NAME> &)
+			{
+				getBrowser () -> println ("EXTERNPROTO field '", fieldDefinition -> getName (), "' not found in PROTO '", proto -> getName (), "'.");
+			}
 		}
+	}
+	else
+	{
+		for (const auto & fieldDefinition : getUserDefinedFields ())
+		   removeField (fieldDefinition -> getName ());
+		
+		for (const auto & fieldDefinition : proto -> getUserDefinedFields ())
+			addUserDefinedField (fieldDefinition -> getAccessType (), fieldDefinition -> getName (), fieldDefinition);
 	}
 }
 

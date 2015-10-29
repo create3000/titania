@@ -93,15 +93,16 @@ public:
 	throw (Error <DISPOSED>) final override;
 
 	virtual
-	const X3DBaseNode*
-	getDeclaration () const
-	throw (Error <DISPOSED>) final override;
-
-	virtual
 	const std::string &
 	getContainerField () const
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
+
+	virtual
+	const ProtoDeclaration*
+	getInterfaceDeclaration () const
+	throw (Error <DISPOSED>) final override
+	{ return protoNode -> getProtoDeclaration (); }
 
 	///  @name Member access
 

@@ -54,6 +54,8 @@
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Fields/X3DScalar.h"
 
+#include <atomic>
+
 namespace titania {
 namespace X3D {
 
@@ -70,7 +72,7 @@ public:
 	{ strict = value; }
 
 	///  Returns true if strict warnings are enabled, otherwise false.
-	const SFBool &
+	bool
 	isStrict () const
 	{ return strict; }
 
@@ -112,7 +114,7 @@ private:
 
 	///  @name Members
 
-	SFBool                 strict;
+	std::atomic <bool>     strict;
 	std::set <std::string> extensions;
 
 };

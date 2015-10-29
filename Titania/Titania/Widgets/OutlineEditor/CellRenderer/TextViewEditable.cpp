@@ -136,7 +136,7 @@ TextViewEditable::on_reset_activate ()
 
 	try
 	{
-		const auto defaultField = node -> getDeclaration () -> getField (field -> getName ());
+		const auto defaultField = node -> getInterfaceDeclaration () -> getField (field -> getName ());
 
 		set_text (puck::get_field_value (scene, defaultField, false, useLocale));
 	}

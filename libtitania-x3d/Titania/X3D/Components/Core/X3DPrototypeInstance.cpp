@@ -89,7 +89,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		addField (userDefinedField -> getAccessType (),
 		          userDefinedField -> getName (),
 		          *userDefinedField -> copy (FLAT_COPY));
-	}	        
+	}
 
 	if (protoNode -> isExternproto ())
 	{
@@ -105,7 +105,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		importExternProtos (proto);
 		importProtos (proto);
 		copyRootNodes (proto);
-	
+
 		setExtendedEventHandling (false);
 	}
 
@@ -133,7 +133,7 @@ X3DPrototypeInstance::construct ()
 		setExtendedEventHandling (false);
 
 		if (protoNode -> checkLoadState () not_eq COMPLETE_STATE)
-		   return;
+			return;
 
 		// Interface
 
@@ -151,11 +151,11 @@ X3DPrototypeInstance::construct ()
 				const auto field      = getField (fieldDefinition -> getName ());
 
 				// Return if something is wrong.
-				if (field -> getAccessType () != protoField -> getAccessType ())
+				if (field -> getAccessType () not_eq protoField -> getAccessType ())
 					continue;
 
 				// Return if something is wrong.
-				if (field -> getType () != protoField -> getType ())
+				if (field -> getType () not_eq protoField -> getType ())
 					continue;
 
 				// Continue if field is eventIn or eventOut.
@@ -165,7 +165,7 @@ X3DPrototypeInstance::construct ()
 				// Is set during parse or an event occured.
 				if (field -> isSet ())
 					continue;
-				
+
 				// Has IS references.
 				if (not field -> getIsReferences () .empty ()) // hasIsReferences
 					continue;
@@ -209,7 +209,7 @@ X3DPrototypeInstance::update ()
 	}
 	catch (const X3DError & error)
 	{
-	   getBrowser () -> print (error .what ());
+		getBrowser () -> print (error .what ());
 	}
 
 	construct ();
@@ -272,18 +272,6 @@ throw (Error <DISPOSED>)
 	//backtrace_fn ();
 
 	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getTypeName: node is already disposed.");
-}
-
-const X3DBaseNode*
-X3DPrototypeInstance::getDeclaration () const
-throw (Error <DISPOSED>)
-{
-	if (protoNode)
-		return protoNode .getValue ();
-
-	backtrace_fn ();
-
-	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getType: node is already disposed.");
 }
 
 X3DBaseNode*

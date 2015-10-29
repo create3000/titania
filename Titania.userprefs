@@ -2,15 +2,14 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.cpp" Line="28" Column="28" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/LOD.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/LOD.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="19" Column="19" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp" Line="10" Column="10" />
-      <File FileName="Library/Tests/Geospatial/test.x3dv" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp" Line="3" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.h" Line="25" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="25" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="4" Column="4" />
+      <File FileName="Library/Tests/Geospatial/test.x3dv" Line="37" Column="37" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/TextViewEditable.cpp" Line="3" Column="3" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/X3DOutlineTreeView.cpp" Line="22" Column="22" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

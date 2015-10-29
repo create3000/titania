@@ -236,15 +236,13 @@ throw (Error <INVALID_NAME>,
 
 			if (field -> getAccessType () == fieldDefinition -> getAccessType () and field -> getType () == fieldDefinition -> getType ())
 			{
-				if (fieldDefinition -> isSet ())
-					field -> isSet (true);
+				field -> isSet (fieldDefinition -> isSet ());
 
 				if (fieldDefinition -> getIsReferences () .empty ())
 				{
 					if (fieldDefinition -> isInitializable ())
 					{
 						fieldDefinition -> copy (executionContext, field, COPY_OR_CLONE);
-					
 					}
 				}
 				else
@@ -464,10 +462,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 /***
- *  Returns the declaration node for this node.
+ *  Returns either a node declaration or the prototype of this node.
  */
 const X3DBaseNode*
-X3DBaseNode::getDeclaration () const
+X3DBaseNode::getInterfaceDeclaration () const
 throw (Error <DISPOSED>)
 {
 	try
@@ -718,6 +716,8 @@ throw (Error <DISPOSED>)
  */
 FieldDefinitionArray
 X3DBaseNode::getPreDefinedFields () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
 	FieldDefinitionArray predefinedFields;
 
@@ -728,13 +728,19 @@ X3DBaseNode::getPreDefinedFields () const
 
 		try
 		{
-			getDeclaration () -> getField (field -> getName ());
+			getInterfaceDeclaration () -> getField (field -> getName ());
 
 			predefinedFields .emplace_back (field);
 		}
-		catch (const X3D::X3DError &)
+		catch (const X3D::Error <INVALID_NAME> &)
 		{
 			// Field is not defined in ExternProto but in Proto.
+		}
+		catch (const X3D::Error <DISPOSED> &)
+		{
+			// Field is not defined in ExternProto but in Proto.
+
+			predefinedFields .emplace_back (field);
 		}
 	}
 
@@ -746,6 +752,8 @@ X3DBaseNode::getPreDefinedFields () const
  */
 FieldDefinitionArray
 X3DBaseNode::getUserDefinedFields () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
 	return FieldDefinitionArray (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end ());
 }
@@ -770,7 +778,11 @@ X3DBaseNode::getChangedFields () const
 				if (isDefaultValue (field))
 					continue;
 			}
-			catch (const X3DError &)
+			catch (const Error <DISPOSED> &)
+			{
+				// This can happen if a ExternProto is not loaded.
+			}
+			catch (const Error <INVALID_NAME> &)
 			{
 				// This can happen if a ExternProto has less fields than the prototype.
 				continue;
@@ -792,9 +804,18 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const X3DFieldDefinition* const declarationField = getDeclaration () -> getField (field -> getName ());
+	try
+	{
+		const X3DFieldDefinition* const declarationField = getInterfaceDeclaration () -> getField (field -> getName ());
 
-	return *field == *declarationField;
+		return *field == *declarationField;
+	}
+	catch (const Error <DISPOSED> &)
+	{
+	   // Externproto could not be loaded.
+
+		return not field -> isSet ();
+	}
 }
 
 /***

@@ -181,17 +181,17 @@ public:
 	throw (Error <DISPOSED>)
 	{ return type; }
 
-	///  Returns either a node declaration or the prototype of this node.
-	virtual
-	const X3DBaseNode*
-	getDeclaration () const
-	throw (Error <DISPOSED>);
-
 	///  Returns the XML container field for this node type.
 	virtual
 	const std::string &
 	getContainerField () const
 	throw (Error <DISPOSED>) = 0;
+
+	///  Returns either a node declaration or the prototype of this node.
+	virtual
+	const X3DBaseNode*
+	getInterfaceDeclaration () const
+	throw (Error <DISPOSED>);
 
 	///  Returns for X3DProtoypeInstances the innermost root node.
 	virtual
@@ -288,11 +288,15 @@ public:
 
 	///  Returns an array with all pre defined fields of this node.
 	FieldDefinitionArray
-	getPreDefinedFields () const;
+	getPreDefinedFields () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	///  Returns an array with all user defined fields of this node.
 	FieldDefinitionArray
-	getUserDefinedFields () const;
+	getUserDefinedFields () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	///  Return all field definition for this node, that is all predefined field and user defined fields.
 	const FieldDefinitionArray &

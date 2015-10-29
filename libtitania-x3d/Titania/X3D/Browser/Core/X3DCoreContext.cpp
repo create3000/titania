@@ -68,8 +68,6 @@ X3DCoreContext::X3DCoreContext () :
 	             strict (true),
 	         extensions ()
 {
-	addChildren (strict);
-
 	glibtop_init ();
 }
 

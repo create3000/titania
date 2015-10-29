@@ -478,6 +478,7 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 	browser -> set_opacity (0);
 	browser -> setAntialiasing (4);
 	browser -> setNotifyOnLoad (true);
+	browser -> isStrict (false);
 	browser -> show ();
 
 	const auto text   = URL .empty () ? _ ("New Scene") : URL .basename ();

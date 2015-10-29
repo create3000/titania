@@ -1071,10 +1071,10 @@ X3DOutlineTreeView::model_expand_node (const X3D::SFNode & sfnode, const Gtk::Tr
 							}
 						}
 					}
-					catch (const X3D::X3DError &)
+					catch (const X3D::Error <X3D::INVALID_NAME> &)
 					{
-						if (dynamic_cast <X3D::X3DPrototypeInstance*> (node))
-							continue;
+						// This can happen when the field is in the extern proto but not in the proto.
+						continue;
 					}
 
 					get_model () -> append (iter, OutlineIterType::X3DField, field);

@@ -67,7 +67,7 @@ ProtoDeclaration::ProtoDeclaration (X3DExecutionContext* const executionContext)
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DProtoDeclarationNode (),
 	    X3DExecutionContext (),
-	              loadState (COMPLETE_STATE)
+	              loadState (NOT_STARTED_STATE)
 {
 	addType (X3DConstants::ProtoDeclaration);
 
@@ -165,6 +165,8 @@ ProtoDeclaration::initialize ()
 
 	for (const auto & route : getRoutes ())
 		route -> setup ();
+
+	loadState = COMPLETE_STATE;
 }
 
 void
