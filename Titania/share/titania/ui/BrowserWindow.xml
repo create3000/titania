@@ -4,9 +4,7 @@
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
-       <source stock-id="gtk-find" filename="icons/Faenza/16/gtk-find.png"/>
-      <source stock-id="gtk-find-and-replace" filename="icons/Faenza/16/gtk-find-and-replace.png"/>
-     <source stock-id="Appearance" filename="icons/Appearance.svg"/>
+      <source stock-id="Appearance" filename="icons/Appearance.svg"/>
       <source stock-id="Text" filename="icons/Text.svg"/>
       <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
       <source stock-id="gtk-home" filename="icons/Faenza/16/gtk-home.png"/>
@@ -82,7 +80,7 @@
       <source stock-id="TextureQuality" filename="icons/TextureQuality.svg"/>
       <source stock-id="TextureQuality" filename="icons/TextureQuality.svg"/>
       <source stock-id="gtk-copy" filename="icons/Faenza/16/gtk-copy.png"/>
-      <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
+      <source stock-id="gtk-leave-fullscreen" filename="icons/Faenza/16/gtk-leave-fullscreen.png"/>
       <source stock-id="TextureCoordinate" filename="icons/TextureCoordinate.svg"/>
       <source stock-id="FragmentShader" filename="icons/FragmentShader.svg"/>
       <source stock-id="Green" filename="icons/Green.svg"/>
@@ -90,12 +88,12 @@
       <source stock-id="LOD" filename="icons/LOD.svg"/>
       <source stock-id="EyeOpen" filename="icons/EyeOpen.svg"/>
       <source stock-id="Texture" filename="icons/Texture.svg"/>
-      <source stock-id="gtk-leave-fullscreen" filename="icons/Faenza/16/gtk-leave-fullscreen.png"/>
+      <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="gtk-zoom-fit" filename="icons/Faenza/16/gtk-zoom-fit.png"/>
       <source stock-id="TransformToZero" filename="icons/TransformToZero.svg"/>
       <source stock-id="gtk-go-down" filename="icons/Faenza/16/gtk-go-down.png"/>
-      <source stock-id="Arrow" filename="icons/Arrow.svg"/>
+      <source stock-id="stock_script" filename="icons/Faenza/16/stock_script.png"/>
       <source stock-id="Shading" filename="icons/Shading.svg"/>
       <source stock-id="Flop" filename="icons/Flop.svg"/>
       <source stock-id="Red" filename="icons/Red.svg"/>
@@ -107,9 +105,11 @@
       <source stock-id="gtk-edit-scalable" filename="icons/Faenza/scalable/gtk-edit.svg"/>
       <source stock-id="Checkerboard" filename="icons/Checkerboard.svg"/>
       <source stock-id="Blue" filename="icons/Blue.svg"/>
+      <source stock-id="gtk-find" filename="icons/Faenza/16/gtk-find.png"/>
       <source stock-id="Geometry" filename="icons/Geometry.svg"/>
       <source stock-id="History" filename="icons/History.svg"/>
       <source stock-id="Connected" filename="icons/Connected.svg"/>
+      <source stock-id="Arrow" filename="icons/Arrow.svg"/>
       <source stock-id="gtk-undo" filename="icons/Faenza/16/gtk-undo-ltr.png"/>
       <source stock-id="gtk-clear" filename="icons/Faenza/16/gtk-clear.png"/>
       <source stock-id="gtk-yes" filename="icons/Faenza/16/gtk-yes.png"/>
@@ -122,6 +122,7 @@
       <source stock-id="PrimitiveQuality" filename="icons/PrimitiveQuality.svg"/>
       <source stock-id="Navigation" filename="icons/Navigation.svg"/>
       <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
+      <source stock-id="gtk-find-and-replace" filename="icons/Faenza/16/gtk-find-and-replace.png"/>
       <source stock-id="gtk-select-all" filename="icons/Faenza/16/gtk-select-all.png"/>
       <source stock-id="gtk-save-as" filename="icons/Faenza/16/gtk-save-as.png"/>
       <source stock-id="Flip" filename="icons/Flip.svg"/>
@@ -934,8 +935,8 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Detach From Group</property>
                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -2300,8 +2301,8 @@
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -4271,7 +4272,7 @@
                                   <object class="GtkImage" id="image20">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="stock">gtk-file</property>
+                                    <property name="stock">stock_script</property>
                                     <property name="icon_size">1</property>
                                   </object>
                                   <packing>
