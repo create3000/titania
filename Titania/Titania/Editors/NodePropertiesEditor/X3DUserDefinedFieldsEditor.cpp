@@ -305,7 +305,6 @@ X3DUserDefinedFieldsEditor::on_remove_user_defined_field_clicked ()
 	node -> fields_changed () .removeInterest (this, &X3DUserDefinedFieldsEditor::set_fields);
 	node -> fields_changed () .addInterest (this, &X3DUserDefinedFieldsEditor::connectFields);
 
-	removeReferences (getBrowserWindow (), X3D::ProtoDeclarationPtr (node), field, undoStep);
 	removeUserDefinedField (getBrowserWindow (), node, field, undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
@@ -624,6 +623,10 @@ X3DUserDefinedFieldsEditor::replaceUserDefinedField (X3DBrowserWindow* const bro
 void
 X3DUserDefinedFieldsEditor::removeUserDefinedField (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const X3D::UndoStepPtr & undoStep)
 {
+	removeReferences (browserWindow, X3D::ProtoDeclarationPtr (node), field, undoStep);
+
+	// Remove field from node
+
 	const auto userDefinedFields = node -> getUserDefinedFields ();
 
 	undoStep -> addObjects (X3D::FieldArray (userDefinedFields .begin (), userDefinedFields .end ()), X3D::FieldPtr (field));
@@ -703,7 +706,8 @@ X3DUserDefinedFieldsEditor::removeReferences (X3DBrowserWindow* const browserWin
 {
 	using namespace std::placeholders;
 
-	traverse (proto, std::bind (&X3DUserDefinedFieldsEditor::removeReferencesCallback, _1, browserWindow, field, undoStep));
+	if (proto)
+		traverse (proto, std::bind (&X3DUserDefinedFieldsEditor::removeReferencesCallback, _1, browserWindow, field, undoStep));
 }
 
 
@@ -717,8 +721,6 @@ X3DUserDefinedFieldsEditor::removeReferencesCallback (X3D::SFNode & node,
 	{
 		if (field -> getIsReferences () .count (protoField))
 		{
-			__LOG__ << node -> getTypeName () << " : " << field -> getName () << std::endl;
-
 		   undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::addIsReference,    field, protoField);
 		   undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::removeIsReference, field, protoField);
 
