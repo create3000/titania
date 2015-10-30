@@ -99,10 +99,12 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("DrawingAreaBox", m_DrawingAreaBox);
 	m_builder -> get_widget ("DrawingArea", m_DrawingArea);
 	m_builder -> get_widget ("TranslationSlider", m_TranslationSlider);
+	m_builder -> get_widget ("ToolBar2", m_ToolBar2);
 	m_builder -> get_widget ("ZoomOutButton", m_ZoomOutButton);
 	m_builder -> get_widget ("ZoomInButton", m_ZoomInButton);
 	m_builder -> get_widget ("ZoomFitButton", m_ZoomFitButton);
 	m_builder -> get_widget ("Zoom100Button", m_Zoom100Button);
+	m_builder -> get_widget ("ToolBar3", m_ToolBar3);
 	m_builder -> get_widget ("CloseAnimationButton", m_CloseAnimationButton);
 	m_builder -> get_widget ("PropertiesDialog", m_PropertiesDialog);
 	m_builder -> get_widget ("NewCancelButton", m_NewCancelButton);

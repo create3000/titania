@@ -233,6 +233,10 @@ public:
 	getTranslationSlider () const
 	{ return *m_TranslationSlider; }
 
+	Gtk::Toolbar &
+	getToolBar2 () const
+	{ return *m_ToolBar2; }
+
 	Gtk::ToolButton &
 	getZoomOutButton () const
 	{ return *m_ZoomOutButton; }
@@ -248,6 +252,10 @@ public:
 	Gtk::ToolButton &
 	getZoom100Button () const
 	{ return *m_Zoom100Button; }
+
+	Gtk::Toolbar &
+	getToolBar3 () const
+	{ return *m_ToolBar3; }
 
 	Gtk::ToolButton &
 	getCloseAnimationButton () const
@@ -490,10 +498,12 @@ private:
 	Gtk::Box*                              m_DrawingAreaBox;
 	Gtk::DrawingArea*                      m_DrawingArea;
 	Gtk::Scrollbar*                        m_TranslationSlider;
+	Gtk::Toolbar*                          m_ToolBar2;
 	Gtk::ToolButton*                       m_ZoomOutButton;
 	Gtk::ToolButton*                       m_ZoomInButton;
 	Gtk::ToolButton*                       m_ZoomFitButton;
 	Gtk::ToolButton*                       m_Zoom100Button;
+	Gtk::Toolbar*                          m_ToolBar3;
 	Gtk::ToolButton*                       m_CloseAnimationButton;
 	Gtk::Dialog*                           m_PropertiesDialog;
 	Gtk::Button*                           m_NewCancelButton;

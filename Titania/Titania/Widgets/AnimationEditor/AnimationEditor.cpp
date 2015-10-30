@@ -174,7 +174,7 @@ AnimationEditor::initialize ()
 {
 	X3DAnimationEditorInterface::initialize ();
 
-	getCurrentBrowser ()           .addInterest (this, &AnimationEditor::set_animation, nullptr);
+	getCurrentBrowser ()  .addInterest (this, &AnimationEditor::set_animation, nullptr);
 	getCurrentContext ()  .addInterest (this, &AnimationEditor::set_animation, nullptr);
 
 	nodeIndex -> getNode () .addInterest (this, &AnimationEditor::set_animation);
@@ -183,6 +183,8 @@ AnimationEditor::initialize ()
 	nodeIndex -> getScrolledWindow () .set_size_request (0, 0);
 	nodeIndex -> reparent (getNodeIndexBox (), getWindow ());
 	nodeIndex -> setAnimations ();
+
+	set_animation (nullptr);
 }
 
 void
@@ -293,7 +295,7 @@ AnimationEditor::on_new ()
 {
 	// Open »New Animation Dialog«.
 
-	getNewNameEntry () .set_text ("");
+	getNewNameEntry () .set_text (_ ("Animation"));
 	getDurationAdjustment () -> set_value (10);
 	getFPSAdjustment () -> set_value (10);
 	getLoopSwitch () .set_active (false);
@@ -433,6 +435,8 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	getKeyTypeButton ()        .set_sensitive (animation);
 	getCloseAnimationButton () .set_sensitive (animation);
 	getDrawingAreaBox ()       .set_sensitive (animation);
+	getToolBar2 ()             .set_sensitive (animation);
+	getToolBar3 ()             .set_sensitive (animation);
 	getNotebook ()             .set_current_page (animation ? 1 : 0);
 
 	if (animation)

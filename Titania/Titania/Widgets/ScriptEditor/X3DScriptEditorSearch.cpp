@@ -124,6 +124,9 @@ X3DScriptEditorSearch::initialize ()
 	getSearchEntry () .set_icon_activatable (true, Gtk::ENTRY_ICON_PRIMARY);
 	getSearchEntry () .set_icon_sensitive   (Gtk::ENTRY_ICON_PRIMARY, true);
 
+	getReplaceEntry ()  .property_primary_icon_name () = "";
+	getGoToLineEntry () .property_primary_icon_name () = "";
+
 	// Enable Search Widget
 
 	getToggleReplaceButton () .set_active (getConfig () .getBoolean ("replaceEnabled"));

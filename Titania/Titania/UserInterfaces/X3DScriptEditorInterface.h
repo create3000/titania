@@ -333,7 +333,7 @@ public:
 	getReplaceAllButton () const
 	{ return *m_ReplaceAllButton; }
 
-	Gtk::Entry &
+	Gtk::SearchEntry &
 	getReplaceEntry () const
 	{ return *m_ReplaceEntry; }
 
@@ -607,7 +607,7 @@ private:
 	Gtk::Box*                      m_ReplaceButtonsBox;
 	Gtk::Button*                   m_ReplaceButton;
 	Gtk::Button*                   m_ReplaceAllButton;
-	Gtk::Entry*                    m_ReplaceEntry;
+	Gtk::SearchEntry*              m_ReplaceEntry;
 	Gtk::Button*                   m_SearchBackwardButton;
 	Gtk::Button*                   m_SearchForwardButton;
 	Gtk::Button*                   m_HideSearchButton;

@@ -190,7 +190,7 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_ReplaceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_forward_clicked));
 	m_ReplaceAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_all_clicked));
 
-	// Connect object Gtk::Entry with id 'ReplaceEntry'.
+	// Connect object Gtk::SearchEntry with id 'ReplaceEntry'.
 	m_ReplaceEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_in_event));
 	m_ReplaceEntry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_out_event));
 	m_ReplaceEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_press_event), false);
