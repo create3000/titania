@@ -47,8 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_PROTOTYPE_INSTANCE_DIALOG_H__
-#define __TMP_GLAD2CPP_PROTOTYPE_INSTANCE_DIALOG_H__
+#ifndef __TMP_GLAD2CPP_PROTOTYPE_EDITOR_H__
+#define __TMP_GLAD2CPP_PROTOTYPE_EDITOR_H__
 
 #include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
@@ -57,17 +57,17 @@
 namespace titania {
 namespace puck {
 
-class X3DPrototypeInstanceDialogInterface :
+class X3DPrototypeEditorInterface :
 	public X3DEditorInterface
 {
 public:
 
-	X3DPrototypeInstanceDialogInterface () :
+	X3DPrototypeEditorInterface () :
 		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
-	X3DPrototypeInstanceDialogInterface (const std::string & filename, const Arguments & ... arguments) :
+	X3DPrototypeEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
@@ -93,32 +93,72 @@ public:
 	getPrototypeMenu () const
 	{ return *m_PrototypeMenu; }
 
-	Gtk::Dialog &
+	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
-
-	Gtk::Button &
-	getOkButton () const
-	{ return *m_OkButton; }
 
 	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Image &
+	getEditPrototypeImage () const
+	{ return *m_EditPrototypeImage; }
+
 	Gtk::Label &
 	getHeaderLabel () const
 	{ return *m_HeaderLabel; }
+
+	Gtk::Button &
+	getNewPrototypeButton () const
+	{ return *m_NewPrototypeButton; }
+
+	Gtk::Button &
+	getCreateInstanceButton () const
+	{ return *m_CreateInstanceButton; }
 
 	Gtk::MenuButton &
 	getMenuButton () const
 	{ return *m_MenuButton; }
 
+	Gtk::Image &
+	getPrototypeImage () const
+	{ return *m_PrototypeImage; }
+
 	Gtk::Label &
 	getPrototypeLabel () const
 	{ return *m_PrototypeLabel; }
 
+	Gtk::Box &
+	getNameBox () const
+	{ return *m_NameBox; }
+
+	Gtk::Entry &
+	getNameEntry () const
+	{ return *m_NameEntry; }
+
+	Gtk::Button &
+	getRenameButton () const
+	{ return *m_RenameButton; }
+
+	Gtk::Notebook &
+	getPrototypeNotebook () const
+	{ return *m_PrototypeNotebook; }
+
+	Gtk::Expander &
+	getInterfaceExpander () const
+	{ return *m_InterfaceExpander; }
+
+	Gtk::Box &
+	getInterfaceBox () const
+	{ return *m_InterfaceBox; }
+
 	virtual
-	~X3DPrototypeInstanceDialogInterface ();
+	void
+	on_create_instance_clicked () = 0;
+
+	virtual
+	~X3DPrototypeEditorInterface ();
 
 
 private:
@@ -131,12 +171,21 @@ private:
 	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Gtk::Menu*                  m_PrototypeMenu;
-	Gtk::Dialog*                m_Window;
-	Gtk::Button*                m_OkButton;
+	Gtk::Window*                m_Window;
 	Gtk::Box*                   m_Widget;
+	Gtk::Image*                 m_EditPrototypeImage;
 	Gtk::Label*                 m_HeaderLabel;
+	Gtk::Button*                m_NewPrototypeButton;
+	Gtk::Button*                m_CreateInstanceButton;
 	Gtk::MenuButton*            m_MenuButton;
+	Gtk::Image*                 m_PrototypeImage;
 	Gtk::Label*                 m_PrototypeLabel;
+	Gtk::Box*                   m_NameBox;
+	Gtk::Entry*                 m_NameEntry;
+	Gtk::Button*                m_RenameButton;
+	Gtk::Notebook*              m_PrototypeNotebook;
+	Gtk::Expander*              m_InterfaceExpander;
+	Gtk::Box*                   m_InterfaceBox;
 
 };
 

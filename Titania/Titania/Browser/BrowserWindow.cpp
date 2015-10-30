@@ -58,7 +58,7 @@
 #include "../Dialogs/NodeIndex/NodeIndex.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
 #include "../Editors/GridEditor/X3DGridTool.h"
-#include "../Editors/PrototypeInstanceDialog/PrototypeInstanceDialog.h"
+#include "../Editors/PrototypeEditor/PrototypeEditor.h"
 
 #include "../Browser/BrowserSelection.h"
 #include "../Browser/BrowserUserData.h"
@@ -1986,10 +1986,11 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 		   menuItem -> get_style_context () -> add_class ("titania-menu-item-selected");
 
 		menu .append (*menuItem);
-		menu .show_all ();
 
 	   ++ pageNumber;
 	}
+
+	menu .show_all ();
 }
 
 // Help menu
@@ -2195,7 +2196,7 @@ BrowserWindow::on_precision_placement_panel_clicked ()
 void
 BrowserWindow::on_prototype_instance_dialog_clicked ()
 {
-	std::dynamic_pointer_cast <PrototypeInstanceDialog> (addDialog ("PrototypeInstanceDialog", false)) -> run ();
+	addDialog ("PrototypeEditor");
 }
 
 void

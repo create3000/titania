@@ -53,6 +53,8 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Prototype/ProtoDeclaration.h>
+
 namespace titania {
 namespace puck {
 
@@ -62,7 +64,8 @@ X3DUserDefinedFieldsEditor::X3DUserDefinedFieldsEditor () :
 	                         columns (),
 	      userDefinedFieldsListStore (Gtk::ListStore::create (columns)),
 	                userDefinedField (nullptr),
-	                         editing (false)
+	                         editing (false),
+	                   isExternproto (false)
 {
 	getInitializeOnlyMenuItem () .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &X3DUserDefinedFieldsEditor::on_access_type_activate), "initializeOnly"));
 	getInputOnlyMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &X3DUserDefinedFieldsEditor::on_access_type_activate), "inputOnly"));
@@ -113,18 +116,12 @@ X3DUserDefinedFieldsEditor::X3DUserDefinedFieldsEditor () :
 	getMFVec4dMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &X3DUserDefinedFieldsEditor::on_field_type_activate), "MFVec4d"));
 	getMFVec4fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &X3DUserDefinedFieldsEditor::on_field_type_activate), "MFVec4f"));
 
-	//  Drag & Drop
-
-	getUserDefinedFieldsTreeView () .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
-	getUserDefinedFieldsTreeView () .enable_model_drag_dest ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
-
 	getUserDefinedFieldsTreeView () .set_model (getUserDefinedFieldsListStore ());
 }
 
 void
 X3DUserDefinedFieldsEditor::setNode (const X3D::SFNode & value)
 {
-
 	if (node and node -> canUserDefinedFields ())
 		node -> fields_changed () .removeInterest (this, &X3DUserDefinedFieldsEditor::set_fields);
 
@@ -133,15 +130,36 @@ X3DUserDefinedFieldsEditor::setNode (const X3D::SFNode & value)
 
 	if (node and node -> canUserDefinedFields ())
 	{
+	   isExternproto = node -> getType () .back () == X3D::X3DConstants::ExternProtoDeclaration;
+
 		getUserDefinedFieldsExpander () .set_visible (true);
+		getUserDefinedFieldsWidget () .set_sensitive (true);
 
 		node -> fields_changed () .addInterest (this, &X3DUserDefinedFieldsEditor::set_fields);
 
 		set_fields ();
+
+		//  Add and Remove Buttons
+
+		getUserDefinedFieldsActionBox () .set_sensitive (not isExternproto);
+
+		//  Drag & Drop
+
+		if (isExternproto)
+		{
+			getUserDefinedFieldsTreeView () .unset_rows_drag_source ();
+			getUserDefinedFieldsTreeView () .unset_rows_drag_dest ();
+		}
+		else
+		{
+			getUserDefinedFieldsTreeView () .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
+			getUserDefinedFieldsTreeView () .enable_model_drag_dest ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
+		}
 	}
 	else
 	{
 		getUserDefinedFieldsExpander () .set_visible (false);
+		getUserDefinedFieldsWidget () .set_sensitive (false);
 
 		getUserDefinedFieldsListStore () -> clear ();
 	}
@@ -231,6 +249,9 @@ X3DUserDefinedFieldsEditor::on_user_defined_field_activated (const Gtk::TreeMode
 {
 	try
 	{
+	   if (isExternproto)
+	      return;
+
 		editing          = true;
 		userDefinedField = node -> getUserDefinedFields () .at (path .front ());
 
@@ -284,6 +305,7 @@ X3DUserDefinedFieldsEditor::on_remove_user_defined_field_clicked ()
 	node -> fields_changed () .removeInterest (this, &X3DUserDefinedFieldsEditor::set_fields);
 	node -> fields_changed () .addInterest (this, &X3DUserDefinedFieldsEditor::connectFields);
 
+	removeReferences (getBrowserWindow (), X3D::ProtoDeclarationPtr (node), field, undoStep);
 	removeUserDefinedField (getBrowserWindow (), node, field, undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
@@ -671,6 +693,40 @@ X3DUserDefinedFieldsEditor::removeRoutes (X3DBrowserWindow* const browserWindow,
                                     route -> getDestinationField (),
                                     undoStep);
    }
+}
+
+void
+X3DUserDefinedFieldsEditor::removeReferences (X3DBrowserWindow* const browserWindow,
+                                              const X3D::ProtoDeclarationPtr & proto,
+                                              X3D::X3DFieldDefinition* const field,
+                                              const X3D::UndoStepPtr & undoStep)
+{
+	using namespace std::placeholders;
+
+	traverse (proto, std::bind (&X3DUserDefinedFieldsEditor::removeReferencesCallback, _1, browserWindow, field, undoStep));
+}
+
+
+bool
+X3DUserDefinedFieldsEditor::removeReferencesCallback (X3D::SFNode & node,
+	                                                   X3DBrowserWindow* const browserWindow,
+                                                      X3D::X3DFieldDefinition* const protoField,
+                                                      const X3D::UndoStepPtr & undoStep)
+{
+	for (const auto & field: node -> getFieldDefinitions ())
+	{
+		if (field -> getIsReferences () .count (protoField))
+		{
+			__LOG__ << node -> getTypeName () << " : " << field -> getName () << std::endl;
+
+		   undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::addIsReference,    field, protoField);
+		   undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::removeIsReference, field, protoField);
+
+		   field -> removeIsReference (protoField);
+		}
+	}
+
+	return true;
 }
 
 X3DUserDefinedFieldsEditor::~X3DUserDefinedFieldsEditor ()

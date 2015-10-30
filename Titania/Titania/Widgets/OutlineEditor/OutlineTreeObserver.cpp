@@ -136,6 +136,13 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 			externProto -> getInternalScene () .addInterest (this, &OutlineTreeObserver::toggle_path, path);
 			break;
 		}
+		case OutlineIterType::ProtoDeclaration:
+		{
+			const auto & sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+
+			sfnode -> fields_changed ()   .addInterest (this, &OutlineTreeObserver::toggle_path, path);
+			break;
+		}
 		default:
 			break;
 	}
@@ -308,7 +315,9 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 		{
 			const auto & sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 
-			sfnode -> name_changed () .removeInterest (this, &OutlineTreeObserver::on_row_changed);
+			sfnode -> name_changed ()   .removeInterest (this, &OutlineTreeObserver::on_row_changed);
+			sfnode -> fields_changed () .removeInterest (this, &OutlineTreeObserver::toggle_path);
+
 			clear_open_path (iter);
 			break;
 		}

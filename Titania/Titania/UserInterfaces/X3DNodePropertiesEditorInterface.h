@@ -397,9 +397,17 @@ public:
 	getUserDefinedFieldsExpander () const
 	{ return *m_UserDefinedFieldsExpander; }
 
+	Gtk::Box &
+	getUserDefinedFieldsWidget () const
+	{ return *m_UserDefinedFieldsWidget; }
+
 	Gtk::TreeView &
 	getUserDefinedFieldsTreeView () const
 	{ return *m_UserDefinedFieldsTreeView; }
+
+	Gtk::ButtonBox &
+	getUserDefinedFieldsActionBox () const
+	{ return *m_UserDefinedFieldsActionBox; }
 
 	Gtk::Button &
 	getAddUserDefinedFieldButton () const
@@ -667,7 +675,9 @@ private:
 	Gtk::Entry*                            m_ComponentEntry;
 	Gtk::Entry*                            m_ContainerFieldEntry;
 	Gtk::Expander*                         m_UserDefinedFieldsExpander;
+	Gtk::Box*                              m_UserDefinedFieldsWidget;
 	Gtk::TreeView*                         m_UserDefinedFieldsTreeView;
+	Gtk::ButtonBox*                        m_UserDefinedFieldsActionBox;
 	Gtk::Button*                           m_AddUserDefinedFieldButton;
 	Gtk::Button*                           m_RemoveUserDefinedFieldButton;
 	Gtk::Expander*                         m_CDATAFieldExpander;

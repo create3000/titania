@@ -116,6 +116,15 @@ PROTO Children1 [
   Children2 {
     children2 IS children1
   }
+
+  DEF Box_1 Transform {
+    children Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box { }
+    }
+  }
 }
 
 PROTO C [ ]
@@ -154,9 +163,9 @@ WorldInfo {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0.788882970809937,
-              0.595336079597473,
-              0.152442187070847,
+              0.788882911205292,
+              0.595336019992828,
+              0.152442142367363,
               5.73963785171509
             ]
           }
@@ -228,7 +237,6 @@ DEF Sensors Transform {
 }
 
 DEF Rotor Rotor {
-  metadata MetadataDouble { }
   cycleInterval 10
   angle 1.5708
   loop TRUE
@@ -284,7 +292,7 @@ Group {
     USE _3
     DEF Box Transform {
       translation 1.40843 1.10727 0.193803
-      rotation 0 0 1 5.336
+      rotation 0 0 1 5.12123
       scale 0.2 0.2 0.2
       children Shape {
         appearance Appearance {

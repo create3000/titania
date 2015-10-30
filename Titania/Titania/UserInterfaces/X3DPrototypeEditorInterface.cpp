@@ -47,71 +47,47 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#include "PrototypeInstanceDialog.h"
-
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
-
-#include <Titania/X3D/Prototype/X3DProtoDeclarationNode.h>
-#include <Titania/OS.h>
+#include "X3DPrototypeEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-PrototypeInstanceDialog::PrototypeInstanceDialog (X3DBrowserWindow* const browserWindow) :
-	                   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DPrototypeInstanceDialogInterface (get_ui ("Editors/PrototypeInstanceDialog.xml"), gconf_dir ())
-{
-	getWindow () .set_modal (false);
-
-	// Find all available proto objects
-
-	const auto protoNodes = getCurrentContext () -> findProtoDeclarations ();
-
-	// Remove all menu items
-
-	for (const auto & widget : getPrototypeMenu () .get_children ())
-		getPrototypeMenu () .remove (*widget);
-
-	for (const auto & pair : protoNodes)
-	{
-		const auto image    = Gtk::manage (new Gtk::Image (Gtk::StockID (pair .second -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_MENU));
-		const auto menuItem = Gtk::manage (new Gtk::ImageMenuItem (*image, pair .first));
-
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (getPrototypeLabel (), &Gtk::Label::set_text), pair .first));
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (getOkButton (), &Gtk::Button::set_sensitive), true));
-		menuItem -> show ();
-
-		getPrototypeMenu () .append (*menuItem);
-	}
-
-	getPrototypeLabel () .set_text ("");
-	getOkButton () .set_sensitive (false);
-
-	setup ();
-}
+const std::string X3DPrototypeEditorInterface::m_widgetName = "PrototypeEditor";
 
 void
-PrototypeInstanceDialog::run ()
+X3DPrototypeEditorInterface::create (const std::string & filename)
 {
-	const auto responseId = getWindow () .run ();
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	if (responseId == Gtk::RESPONSE_OK)
-	{
-		const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create %s"), getPrototypeLabel () .get_text () .c_str ()));
-		const auto instance  = getBrowserWindow () -> addPrototypeInstance (getCurrentContext (), getPrototypeLabel () .get_text (), undoStep);
+	// Get objects.
 
-		getBrowserWindow () -> getSelection () -> setChildren ({ instance }, undoStep);
-		getBrowserWindow () -> addUndoStep (undoStep);
-	}
+	// Get widgets.
+	m_builder -> get_widget ("PrototypeMenu", m_PrototypeMenu);
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("EditPrototypeImage", m_EditPrototypeImage);
+	m_builder -> get_widget ("HeaderLabel", m_HeaderLabel);
+	m_builder -> get_widget ("NewPrototypeButton", m_NewPrototypeButton);
+	m_builder -> get_widget ("CreateInstanceButton", m_CreateInstanceButton);
+	m_builder -> get_widget ("MenuButton", m_MenuButton);
+	m_builder -> get_widget ("PrototypeImage", m_PrototypeImage);
+	m_builder -> get_widget ("PrototypeLabel", m_PrototypeLabel);
+	m_builder -> get_widget ("NameBox", m_NameBox);
+	m_builder -> get_widget ("NameEntry", m_NameEntry);
+	m_builder -> get_widget ("RenameButton", m_RenameButton);
+	m_builder -> get_widget ("PrototypeNotebook", m_PrototypeNotebook);
+	m_builder -> get_widget ("InterfaceExpander", m_InterfaceExpander);
+	m_builder -> get_widget ("InterfaceBox", m_InterfaceBox);
+	m_CreateInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_instance_clicked));
 
-	getWindow () .hide ();
+	// Call construct handler of base class.
+	construct ();
 }
 
-PrototypeInstanceDialog::~PrototypeInstanceDialog ()
+X3DPrototypeEditorInterface::~X3DPrototypeEditorInterface ()
 {
-	dispose ();
+	delete m_Window;
 }
 
 } // puck

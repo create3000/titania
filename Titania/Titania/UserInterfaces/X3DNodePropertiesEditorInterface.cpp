@@ -140,7 +140,9 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ComponentEntry", m_ComponentEntry);
 	m_builder -> get_widget ("ContainerFieldEntry", m_ContainerFieldEntry);
 	m_builder -> get_widget ("UserDefinedFieldsExpander", m_UserDefinedFieldsExpander);
+	m_builder -> get_widget ("UserDefinedFieldsWidget", m_UserDefinedFieldsWidget);
 	m_builder -> get_widget ("UserDefinedFieldsTreeView", m_UserDefinedFieldsTreeView);
+	m_builder -> get_widget ("UserDefinedFieldsActionBox", m_UserDefinedFieldsActionBox);
 	m_builder -> get_widget ("AddUserDefinedFieldButton", m_AddUserDefinedFieldButton);
 	m_builder -> get_widget ("RemoveUserDefinedFieldButton", m_RemoveUserDefinedFieldButton);
 	m_builder -> get_widget ("CDATAFieldExpander", m_CDATAFieldExpander);

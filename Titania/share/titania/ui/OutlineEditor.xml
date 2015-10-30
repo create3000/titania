@@ -563,6 +563,9 @@
                 <property name="position">2</property>
               </packing>
             </child>
+            <style>
+              <class name="background"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>

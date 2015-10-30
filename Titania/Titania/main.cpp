@@ -143,6 +143,9 @@ main (int argc, char** argv)
 
 	std::locale::global (std::locale (""));
 
+	// XXX: This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
+	os::env ("UBUNTU_MENUPROXY", "0"); 
+
 	{
 		BrowserApplication browserApplication (argc, argv);
 

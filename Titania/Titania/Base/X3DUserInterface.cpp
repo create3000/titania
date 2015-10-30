@@ -81,6 +81,7 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 	"InlineEditor",
 	"LayerEditor",
 	"PrecisionPlacementPanel",
+	"PrototypeEditor",
 	"NodeIndex"
 
 };

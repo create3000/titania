@@ -61,6 +61,11 @@ class X3DUserDefinedFieldsEditor :
 {
 public:
 
+	///  @name Destruction
+
+	void
+	setNode (const X3D::SFNode &);
+
 	const Glib::RefPtr <Gtk::ListStore> &
 	getUserDefinedFieldsListStore () const
 	{ return userDefinedFieldsListStore; }
@@ -81,9 +86,6 @@ protected:
 	void
 	initialize () override
 	{ }
-
-	void
-	setNode (const X3D::SFNode &);
 
 
 private:
@@ -176,23 +178,53 @@ private:
 
 	static
 	void
-	addUserDefinedField (X3DBrowserWindow* const, const X3D::SFNode &, X3D::X3DFieldDefinition* const, const X3D::UndoStepPtr &);
+	addUserDefinedField (X3DBrowserWindow* const,
+	                     const X3D::SFNode &,
+	                     X3D::X3DFieldDefinition* const,
+	                     const X3D::UndoStepPtr &);
 
 	static
 	void
-	replaceUserDefinedField (X3DBrowserWindow* const, const X3D::SFNode &, X3D::X3DFieldDefinition* const, X3D::X3DFieldDefinition* const, const X3D::UndoStepPtr &);
+	replaceUserDefinedField (X3DBrowserWindow* const,
+	                        const X3D::SFNode &,
+	                        X3D::X3DFieldDefinition* const,
+	                        X3D::X3DFieldDefinition* const,
+	                        const X3D::UndoStepPtr &);
 
 	static
 	void
-	removeUserDefinedField (X3DBrowserWindow* const, const X3D::SFNode &, X3D::X3DFieldDefinition* const, const X3D::UndoStepPtr &);
+	removeUserDefinedField (X3DBrowserWindow* const,
+	                        const X3D::SFNode &,
+	                        X3D::X3DFieldDefinition* const,
+	                        const X3D::UndoStepPtr &);
 
 	static
 	void
-	setUserDefinedFields (X3DBrowserWindow* const, const X3D::SFNode &, const X3D::FieldDefinitionArray &, const X3D::UndoStepPtr &);
+	setUserDefinedFields (X3DBrowserWindow* const,
+	                      const X3D::SFNode &,
+	                      const X3D::FieldDefinitionArray &,
+	                      const X3D::UndoStepPtr &);
 
 	static
 	void
-	removeRoutes (X3DBrowserWindow* const, X3D::X3DFieldDefinition* const, const X3D::UndoStepPtr &);
+	removeRoutes (X3DBrowserWindow* const,
+	              X3D::X3DFieldDefinition* const,
+	              const X3D::UndoStepPtr &);
+
+	static
+	void
+	removeReferences (X3DBrowserWindow* const,
+	                  const X3D::ProtoDeclarationPtr &,
+	                  X3D::X3DFieldDefinition* const,
+	                  const X3D::UndoStepPtr &);
+
+	static
+	bool
+	removeReferencesCallback (X3D::SFNode &,
+	                          X3DBrowserWindow* const,
+                             X3D::X3DFieldDefinition* const,
+                             const X3D::UndoStepPtr &);
+
 
 	///  @name Members
 
@@ -201,6 +233,7 @@ private:
 	Glib::RefPtr <Gtk::ListStore> userDefinedFieldsListStore;
 	X3D::X3DFieldDefinition*      userDefinedField;
 	bool                          editing;
+	bool                          isExternproto;
 
 };
 

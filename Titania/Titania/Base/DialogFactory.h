@@ -67,7 +67,7 @@
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
 #include "../Editors/NodePropertiesEditor/NodePropertiesEditor.h"
 #include "../Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.h"
-#include "../Editors/PrototypeInstanceDialog/PrototypeInstanceDialog.h"
+#include "../Editors/PrototypeEditor/PrototypeEditor.h"
 #include "../Editors/TextEditor/TextEditor.h"
 #include "../Editors/TextureEditor/TextureEditor.h"
 #include "../Editors/NavigationInfoEditor/NavigationInfoEditor.h"
@@ -109,7 +109,7 @@ public:
 		         std::make_pair ("InlineEditor",             constructDialog <InlineEditor>),
 		         std::make_pair ("LayerEditor",              constructDialog <LayerEditor>),
 		         std::make_pair ("PrecisionPlacementPanel",  constructDialog <PrecisionPlacementPanel>),
-		         std::make_pair ("PrototypeInstanceDialog",  constructDialog <PrototypeInstanceDialog>),
+		         std::make_pair ("PrototypeEditor",          constructDialog <PrototypeEditor>),
 		         std::make_pair ("NodeIndex",                constructDialog <NodeIndex>),
 		         std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>),
 		         std::make_pair ("GridEditor",               constructDialog <GridEditor>)

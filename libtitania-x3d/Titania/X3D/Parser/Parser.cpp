@@ -1484,7 +1484,10 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 								}
 								catch (const Error <INVALID_NAME> &)
 								{
-									throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName () + " interface declaration.");
+									if (getBrowser () -> isStrict ())
+										throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName () + " interface declaration.");
+									
+									return true;
 								}
 
 								const X3DFieldDefinition* _supportedField = getBrowser () -> getSupportedField (_fieldType);
@@ -1648,7 +1651,10 @@ Parser::nodeBodyElement (X3DBaseNode* const _baseNode)
 					}
 					catch (const Error <INVALID_NAME> &)
 					{
-						throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName ());
+						if (getBrowser () -> isStrict ())
+							throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName ());
+
+						return true;
 					}
 
 					if (_field -> getType () == _reference -> getType ())
