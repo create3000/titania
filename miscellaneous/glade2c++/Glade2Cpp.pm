@@ -790,3 +790,9 @@ SearchEntry::configure_event
   virtual bool on_configure_event(GdkEventConfigure* event);
 SearchEntry::size_allocate
   virtual void on_size_allocate(Gtk::Allocation& allocation);
+Window::focus_out_event
+  virtual bool on_focus_out_event(GdkEventFocus* event);
+Window::key_press_event
+  virtual bool on_key_press_event(GdkEventKey* event);
+Window::key_release_event
+  virtual bool on_key_release_event(GdkEventKey* event);

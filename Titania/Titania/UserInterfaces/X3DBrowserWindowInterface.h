@@ -733,7 +733,7 @@ public:
 	getBrowserInfoMenuItem () const
 	{ return *m_BrowserInfoMenuItem; }
 
-	Gtk::ApplicationWindow &
+	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
 
@@ -2215,7 +2215,7 @@ private:
 	Gtk::Menu*                       m_BrowserScenesMenu;
 	Gtk::MenuItem*                   m_BrowserHelpMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserInfoMenuItem;
-	Gtk::ApplicationWindow*          m_Window;
+	Gtk::Window*                     m_Window;
 	Gtk::Box*                        m_Widget;
 	Gtk::Box*                        m_HeaderBox;
 	Gtk::Box*                        m_HeaderSubBox;
