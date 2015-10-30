@@ -299,6 +299,8 @@ ScriptEditor::on_new_script_activated ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Script"));
 	const auto node     = getBrowserWindow () -> createNode ("Script", undoStep);
+
+	getBrowserWindow () -> updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewScript"), node, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_node (node);
@@ -309,6 +311,8 @@ ScriptEditor::on_new_shader_part_activated ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New ShaderPart"));
 	const auto node     = getBrowserWindow () -> createNode ("ShaderPart", undoStep);
+
+	getBrowserWindow () -> updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewShader"), node, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_node (node);
@@ -319,6 +323,8 @@ ScriptEditor::on_new_shader_program_activated ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New ShaderProgram"));
 	const auto node     = getBrowserWindow () -> createNode ("ShaderProgram", undoStep);
+
+	getBrowserWindow () -> updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewShader"), node, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_node (node);

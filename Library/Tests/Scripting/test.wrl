@@ -131,3 +131,9 @@ DEF Box_1 Transform {
 DEF Gray_1 Background {
   skyColor 0.2 0.2 0.2
 }
+
+Script {
+  url "javascript:
+
+// New"
+}
