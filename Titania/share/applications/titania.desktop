@@ -8,7 +8,7 @@ Exec=titania %U
 Terminal=false
 StartupNotify=true
 Icon=titania
-Categories=Graphics;GNOME;GTK;
+Categories=GNOME;GTK;WebDevelopment;Development;3DGraphics;Graphics;
 MimeType=x-world/x-vrml;model/vrml;model/x3d+vrml;model/x3d+xml;
 GenericName=Titania X3D Browser
 

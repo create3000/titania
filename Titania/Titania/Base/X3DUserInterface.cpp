@@ -112,6 +112,8 @@ X3DUserInterface::construct ()
 	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_window_state_event));
 	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (*this, &X3DUserInterface::on_delete_event), false);
 
+	getWindow () .set_wmclass ("Titania", "Titania");
+
 	restoreInterface ();
 }
 

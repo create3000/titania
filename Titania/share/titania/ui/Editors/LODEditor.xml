@@ -77,7 +77,7 @@
     <property name="width_request">400</property>
     <property name="can_focus">False</property>
     <property name="border_width">8</property>
-    <property name="title" translatable="yes">LOD Editor</property>
+    <property name="title" translatable="yes">Level Of Detail Editor</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>

@@ -50,8 +50,8 @@
 
 #include "Browser/BrowserWindow.h"
 
-#include <Titania/X3D.h>
 #include <Titania/OS/env.h>
+#include <Titania/X3D.h>
 
 namespace titania {
 namespace puck {
@@ -62,7 +62,7 @@ class BrowserApplication :
 public:
 
 	///  @name Construction
-	
+
 	BrowserApplication (int & argc, char** & argv) :
 		Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN),
 		   browserWindow ()
@@ -72,7 +72,7 @@ public:
 private:
 
 	///  @name Operations
-	
+
 	void
 	realize ()
 	{
@@ -80,7 +80,7 @@ private:
 
 		add_window (browserWindow -> getWindow ());
 
-		browserWindow -> getWindow () .present ();	
+		browserWindow -> getWindow () .present ();
 	}
 
 	///  @name Event handlers
@@ -116,7 +116,7 @@ private:
 	on_window_removed (Gtk::Window* window) final override
 	{
 		quit ();
-	}	
+	}
 
 	///  @name Members
 
